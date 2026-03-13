@@ -5,24 +5,24 @@ name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 5392
-claim_count = 1155
-insight_count = 149
-experiment_count = 166
-complete_experiment_count = 94
+test_count = 5399
+claim_count = 1235
+insight_count = 154
+experiment_count = 187
+complete_experiment_count = 0
 paper_count = 111
-binary_count = 184
-kernel_checked_claims = 125
-proof_files = 187
+binary_count = 252
+kernel_checked_claims = 126
+proof_files = 191
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 [sprints.s83]
 number = 83
 date = "2026-03-12"
-test_count = 5392
-claim_count = 1155
-kernel_checked_claims = 125
-proof_files = 187
+test_count = 5395
+claim_count = 1186
+kernel_checked_claims = 127
+proof_files = 189
 summary = "S83: CUDA Performance Frontier + CPU AoSoA Vectorization + Null Hypothesis Validation + YSU-Inspired CUDA Optimization Suite. DEFINITIVE E-166 RESULT: 100-galaxy 128^3 GPU MRT D_f = 2.732 +/- 0.034, CI [2.725, 2.739], brackets CD D=16 prediction 2.7268 at 31st percentile. Phase 8: GPU thread coarsening (1T=2C) with __launch_bounds__(128, 9) for ILP doubling (1444 FMAs). Phase 10: mrt-stability-audit rewrite with LbmBackend dispatcher (CPU/GPU unified f64 interface). Phase 11: D=64 flat band fraction test (31 motif components). Phase 12: GPU-side max-Mach-number reduction (compute_speed_magnitude + reduce_max_f32, <10us vs 2ms readback). Phase 14: null hypothesis control experiment (6 conditions C0-C5, code complete, pending execution). Phase 15: CPU AoSoA + wide::f64x4 SIMD collision, UnsafeAoSoAPtr newtype, 608-byte chunk fits L1D. LbmBackend enum: runtime-dispatched CPU(AVX2/AoSoA f64) and GPU(CUDA/SoA f32) behind unified interface. YSU-Inspired CUDA Optimization Suite (E-177): MRT ILP restructure (balanced fmaf trees), CUDA Graph 2-step capture (double-buffer bug fix + step_n), shared-memory tiled pull-scheme (8x8x4 tile, 45.6KB shared), multi-stream galaxy pipeline (2-stream event-based overlap). 16 claims (C-1290..C-1307, gaps at C-1293..C-1294), 8 experiments (E-167..E-177, gaps at E-170..E-171,E-173), 12 insights (I-145..I-156)."
 
 [sprints.s82]

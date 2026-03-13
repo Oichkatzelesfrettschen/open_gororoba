@@ -94,7 +94,7 @@ Updated 2026-02-13 from `registry/next_actions.toml`.
 
 ### Low Priority / Long-Term
 
-7) **Coq/Rocq formalization** (ROADMAP 7.4)
+7) **Rocq formalization** (ROADMAP 7.4)
     - Decide semantics for `has_right`/`reachable_delegation`.
     - Prove a minimal non-trivial theorem end-to-end.
 

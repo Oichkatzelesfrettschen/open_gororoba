@@ -1,0 +1,94 @@
+[dataset]
+id = "PC-0104"
+slug = "precision_fp64_cpu_32"
+source_csv = "data/csv/precision_fp64_cpu_32.csv"
+source_sha256 = "397a6de0f8c8d8a8c08bba914ccc983ea4682ddf30a814790157a803bc323be8"
+source_size_bytes = 201
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 3
+column_count = 5
+header_value_sha256 = "44d41d20b887829f4e26622e18111271f93a9b4ef53aa590a73a4630f2f12f85"
+row_value_sha256 = "39e3fe1d8f7e330043cb6a035358eb3051861edbea92f965bff435f26147dc95"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "precision",
+    "step",
+    "ke",
+    "wall_ms_per_step",
+    "ke_rel_error_vs_ref",
+]
+original_header = [
+    "precision",
+    "step",
+    "ke",
+    "wall_ms_per_step",
+    "ke_rel_error_vs_ref",
+]
+rows = [
+    [
+    "fp64_cpu",
+    "0",
+    "0.000000000000e0",
+    "0.0000",
+    "1.000000e0",
+],
+    [
+    "fp64_cpu",
+    "100",
+    "4.838176856482e-3",
+    "5.0166",
+    "7.458721e-1",
+],
+    [
+    "fp64_cpu",
+    "200",
+    "1.922894671759e-2",
+    "5.0077",
+    "1.001114e-2",
+],
+]
+
+[[column]]
+index = 1
+name = "precision"
+original_name = "precision"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 2
+name = "step"
+original_name = "step"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 3
+name = "ke"
+original_name = "ke"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 4
+name = "wall_ms_per_step"
+original_name = "wall_ms_per_step"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 5
+name = "ke_rel_error_vs_ref"
+original_name = "ke_rel_error_vs_ref"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0

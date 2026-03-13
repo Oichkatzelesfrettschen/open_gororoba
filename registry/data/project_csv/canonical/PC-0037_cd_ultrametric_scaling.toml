@@ -1,0 +1,156 @@
+[dataset]
+id = "PC-0037"
+slug = "cd_ultrametric_scaling"
+source_csv = "data/csv/cd_ultrametric_scaling.csv"
+source_sha256 = "39ee5da3822a86e696b4420ffea84c57f6c6d601156a1cbffb740b6f19948a74"
+source_size_bytes = 467
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 7
+column_count = 7
+header_value_sha256 = "3620ece5f34d5c6df8e597f044f633c63df18cfb00d06a59b418f7fd53c68232"
+row_value_sha256 = "ffb381d7a652503553de9fdc3ec07dbcff6efe324d5fcb657114b11521b8cf81"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "dim",
+    "euclid_frac",
+    "euclid_null",
+    "euclid_excess",
+    "local_mean",
+    "baire_frac",
+    "baire_null",
+]
+original_header = [
+    "dim",
+    "euclid_frac",
+    "euclid_null",
+    "euclid_excess",
+    "local_mean",
+    "baire_frac",
+    "baire_null",
+]
+rows = [
+    [
+    "2",
+    "0.247000",
+    "0.153820",
+    "0.093180",
+    "0.151440",
+    "1.000000",
+    "1.000000",
+],
+    [
+    "4",
+    "0.217200",
+    "0.171273",
+    "0.045927",
+    "0.183280",
+    "1.000000",
+    "1.000000",
+],
+    [
+    "8",
+    "0.279200",
+    "0.220300",
+    "0.058900",
+    "0.242840",
+    "1.000000",
+    "1.000000",
+],
+    [
+    "16",
+    "0.356400",
+    "0.294647",
+    "0.061753",
+    "0.304480",
+    "1.000000",
+    "1.000000",
+],
+    [
+    "32",
+    "0.464000",
+    "0.393220",
+    "0.070780",
+    "0.259512",
+    "1.000000",
+    "1.000000",
+],
+    [
+    "64",
+    "0.620800",
+    "0.511680",
+    "0.109120",
+    "0.000000",
+    "1.000000",
+    "1.000000",
+],
+    [
+    "128",
+    "0.758800",
+    "0.664993",
+    "0.093807",
+    "NaN",
+    "1.000000",
+    "1.000000",
+],
+]
+
+[[column]]
+index = 1
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 2
+name = "euclid_frac"
+original_name = "euclid_frac"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 3
+name = "euclid_null"
+original_name = "euclid_null"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 4
+name = "euclid_excess"
+original_name = "euclid_excess"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 5
+name = "local_mean"
+original_name = "local_mean"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 6
+name = "baire_frac"
+original_name = "baire_frac"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 7
+name = "baire_null"
+original_name = "baire_null"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0

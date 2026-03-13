@@ -1,4 +1,4 @@
-# Experiments narrative overlay registry (TOML-first).
+# Experiments narrative overlay registry.
 # Captures long-form narrative previously maintained in docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md.
 
 [experiments_narrative]
@@ -10,7 +10,8 @@ preamble_markdown = """
 # Experiments Portfolio Shortlist
 
 Source-of-truth policy:
-- Authoritative machine-readable registry: `registry/experiments.toml`
+- Authoritative machine-readable source: `registry/canonical/control_plane.sqlite3`
+- SQLite-exported compatibility view: `registry/experiments.toml`
 - TOML-driven markdown mirror: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
 - This file remains narrative detail and historical context.
 

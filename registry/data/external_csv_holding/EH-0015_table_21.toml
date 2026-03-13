@@ -1,0 +1,364 @@
+[dataset]
+id = "EH-0015"
+slug = "table_21"
+source_csv = "data/external/alice_pbpb_raa/table_21.csv"
+source_sha256 = "89edefec28eaf0d8e6263b4ccdaba50971e0ad6817d28929591d4a41c05fce19"
+source_size_bytes = 1622
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 27
+column_count = 8
+header_value_sha256 = "89c501bde1083aeba3c8c6be054f8cc5b7d7e7c045d62847a145c06cb346673e"
+row_value_sha256 = "a2dc5a3747073afe7ab4b1aea65d140853fe275681df201de2f2f2f1469a2410"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "table_doi_10_17182_hepdata_89396_v1_t21",
+    "col_2",
+    "col_3",
+    "col_4",
+    "col_5",
+    "col_6",
+    "col_7",
+    "col_8",
+]
+original_header = ["#: table_doi: 10.17182/hepdata.89396.v1/t21"]
+rows = [
+    [
+    "#: name: Table 21",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: description: Average RAA for 8 < pT < 20 GeV/c versus centrality percentile",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: data_file: Table21.yaml",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword reactions: PB PB --> charged X",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword phrases: RAA",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword cmenergies: 5020.0",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "Centrality (%)",
+    "Centrality (%) LOW",
+    "Centrality (%) HIGH",
+    "R_{AA}",
+    "stat +",
+    "stat -",
+    "syst +",
+    "syst -",
+],
+    [
+    "2.5",
+    "0",
+    "5",
+    "0.146265",
+    "0.000653493",
+    "-0.000653493",
+    "0.00681491",
+    "-0.00681491",
+],
+    [
+    "7.5",
+    "5",
+    "10",
+    "0.170312",
+    "0.00077025",
+    "-0.00077025",
+    "0.00811015",
+    "-0.00811015",
+],
+    [
+    "12.5",
+    "10",
+    "15",
+    "0.195724",
+    "0.000898688",
+    "-0.000898688",
+    "0.00953277",
+    "-0.00953277",
+],
+    [
+    "17.5",
+    "15",
+    "20",
+    "0.223884",
+    "0.00104724",
+    "-0.00104724",
+    "0.0110874",
+    "-0.0110874",
+],
+    [
+    "22.5",
+    "20",
+    "25",
+    "0.253251",
+    "0.00121224",
+    "-0.00121224",
+    "0.0116854",
+    "-0.0116854",
+],
+    [
+    "27.5",
+    "25",
+    "30",
+    "0.286665",
+    "0.0014108",
+    "-0.0014108",
+    "0.0134193",
+    "-0.0134193",
+],
+    [
+    "32.5",
+    "30",
+    "35",
+    "0.325721",
+    "0.00165532",
+    "-0.00165532",
+    "0.0156178",
+    "-0.0156178",
+],
+    [
+    "37.5",
+    "35",
+    "40",
+    "0.369593",
+    "0.00195382",
+    "-0.00195382",
+    "0.018367",
+    "-0.018367",
+],
+    [
+    "42.5",
+    "40",
+    "45",
+    "0.413359",
+    "0.0023032",
+    "-0.0023032",
+    "0.0217765",
+    "-0.0217765",
+],
+    [
+    "47.5",
+    "45",
+    "50",
+    "0.462785",
+    "0.00274897",
+    "-0.00274897",
+    "0.0230098",
+    "-0.0230098",
+],
+    [
+    "52.5",
+    "50",
+    "55",
+    "0.523194",
+    "0.00334049",
+    "-0.00334049",
+    "0.0249994",
+    "-0.0249994",
+],
+    [
+    "57.5",
+    "55",
+    "60",
+    "0.582367",
+    "0.00408906",
+    "-0.00408906",
+    "0.0305972",
+    "-0.0305972",
+],
+    [
+    "62.5",
+    "60",
+    "65",
+    "0.638013",
+    "0.00504472",
+    "-0.00504472",
+    "0.0366922",
+    "-0.0366922",
+],
+    [
+    "67.5",
+    "65",
+    "70",
+    "0.684136",
+    "0.0062719",
+    "-0.0062719",
+    "0.0395941",
+    "-0.0395941",
+],
+    [
+    "72.5",
+    "70",
+    "75",
+    "0.732666",
+    "0.00795695",
+    "-0.00795695",
+    "0.0433481",
+    "-0.0433481",
+],
+    [
+    "77.5",
+    "75",
+    "80",
+    "0.758027",
+    "0.0100948",
+    "-0.0100948",
+    "0.0525538",
+    "-0.0525538",
+],
+    [
+    "82.5",
+    "80",
+    "85",
+    "0.757923",
+    "0.0129056",
+    "-0.0129056",
+    "0.0548008",
+    "-0.0548008",
+],
+    [
+    "87.5",
+    "85",
+    "90",
+    "0.657431",
+    "0.0157393",
+    "-0.0157393",
+    "0.0576379",
+    "-0.0576379",
+],
+    [
+    "92.5",
+    "90",
+    "95",
+    "0.39909",
+    "0.0163949",
+    "-0.0163949",
+    "0.0530245",
+    "-0.0530245",
+],
+    [
+    "97.5",
+    "95",
+    "100",
+    "0.150571",
+    "0.0128914",
+    "-0.0128914",
+    "0.0251805",
+    "-0.0251805",
+],
+]
+
+[[column]]
+index = 1
+name = "table_doi_10_17182_hepdata_89396_v1_t21"
+original_name = "#: table_doi: 10.17182/hepdata.89396.v1/t21"
+inferred_type = "string"
+non_empty_count = 27
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_2"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6
+
+[[column]]
+index = 3
+name = "col_3"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6
+
+[[column]]
+index = 4
+name = "col_4"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6
+
+[[column]]
+index = 5
+name = "col_5"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6
+
+[[column]]
+index = 6
+name = "col_6"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6
+
+[[column]]
+index = 7
+name = "col_7"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6
+
+[[column]]
+index = 8
+name = "col_8"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 6

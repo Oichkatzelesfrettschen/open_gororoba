@@ -1,0 +1,133 @@
+[dataset]
+id = "PC-0041"
+slug = "e027_channels"
+source_csv = "data/csv/e027_channels.csv"
+source_sha256 = "8a1ad5f2bfc99758ae8dc9827662721a5904e14af1578ec2e4ba73f63507e5e2"
+source_size_bytes = 134
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 10
+header_value_sha256 = "9c70abe665720fc0189704e7158f4d9bda8638f9bfffc1d36aea9af3410ddcbd"
+row_value_sha256 = "6c8e9b82e1b27c69578cf28e331a5ab06dc072a61d1675d92ba212aac1e86380"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "id",
+    "size",
+    "mean_velocity",
+    "max_velocity",
+    "x_min",
+    "x_max",
+    "y_min",
+    "y_max",
+    "z_min",
+    "z_max",
+]
+original_header = [
+    "id",
+    "size",
+    "mean_velocity",
+    "max_velocity",
+    "x_min",
+    "x_max",
+    "y_min",
+    "y_max",
+    "z_min",
+    "z_max",
+]
+rows = [[
+    "0",
+    "256",
+    "0.012187500000000047",
+    "0.01218750000000009",
+    "0",
+    "15",
+    "0",
+    "15",
+    "15",
+    "15",
+]]
+
+[[column]]
+index = 1
+name = "id"
+original_name = "id"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "size"
+original_name = "size"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "mean_velocity"
+original_name = "mean_velocity"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 4
+name = "max_velocity"
+original_name = "max_velocity"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 5
+name = "x_min"
+original_name = "x_min"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 6
+name = "x_max"
+original_name = "x_max"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 7
+name = "y_min"
+original_name = "y_min"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 8
+name = "y_max"
+original_name = "y_max"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 9
+name = "z_min"
+original_name = "z_min"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 10
+name = "z_max"
+original_name = "z_max"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0

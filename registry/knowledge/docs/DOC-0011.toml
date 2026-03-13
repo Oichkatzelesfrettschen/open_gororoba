@@ -9,10 +9,10 @@ kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "cc4c6d2f1178eed83d59ed27ff1d5a6eb068f9fcf71d16758a57e156f159eca0"
+source_sha256 = "ecb48cdd70a5b0ca8d1a6298bd43df0f8d6b4cb303c22364378b4339d9919a3c"
 source_line_count = 46
-source_size_bytes = 1542
-content_sha256 = "cc4c6d2f1178eed83d59ed27ff1d5a6eb068f9fcf71d16758a57e156f159eca0"
+source_size_bytes = 1572
+content_sha256 = "ecb48cdd70a5b0ca8d1a6298bd43df0f8d6b4cb303c22364378b4339d9919a3c"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -43,7 +43,7 @@ content_markdown = """
 
 Policy:
 - Files under `convos/` are treated as immutable inputs (they may contain Unicode).
-- All synthesis produced under `docs/` should be ASCII-only.
+- All synthesis produced under `docs/` should follow the ANSI-safe UTF-8 character policy.
 - Every claim extracted from `convos/` is treated as a hypothesis that must be tied to:
   - a first-party source (paper/book/manual), and
   - a repo test and/or a reproducible artifact.

@@ -1,0 +1,100 @@
+[dataset]
+id = "PC-0141"
+slug = "zd_spectral_dimension_plateaus"
+source_csv = "data/csv/zd_spectral_dimension_plateaus.csv"
+source_sha256 = "943c37f66359dc223722ad421c703fb5dc03b14573480aca7417031943ab78d6"
+source_size_bytes = 125
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 7
+header_value_sha256 = "805b73fb7b1718e9154cd09693eb5e5d4440c5d4eb1236e34f9d4271b6e9ff5d"
+row_value_sha256 = "44dee7a279927ecc7222301f25605a1d6a444e179ad83dde7262a76779d6b89f"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "cd_dim",
+    "n_components",
+    "nodes_per_component",
+    "d_s_plateau",
+    "ln_t_min",
+    "ln_t_max",
+    "r_squared",
+]
+original_header = [
+    "cd_dim",
+    "n_components",
+    "nodes_per_component",
+    "d_s_plateau",
+    "ln_t_min",
+    "ln_t_max",
+    "r_squared",
+]
+rows = [[
+    "16",
+    "7",
+    "6",
+    "0.249694",
+    "-4.548199",
+    "-2.953006",
+    "0.543652",
+]]
+
+[[column]]
+index = 1
+name = "cd_dim"
+original_name = "cd_dim"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_components"
+original_name = "n_components"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "nodes_per_component"
+original_name = "nodes_per_component"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 4
+name = "d_s_plateau"
+original_name = "d_s_plateau"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 5
+name = "ln_t_min"
+original_name = "ln_t_min"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 6
+name = "ln_t_max"
+original_name = "ln_t_max"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 7
+name = "r_squared"
+original_name = "r_squared"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0

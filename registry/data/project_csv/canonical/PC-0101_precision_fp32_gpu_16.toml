@@ -1,0 +1,94 @@
+[dataset]
+id = "PC-0101"
+slug = "precision_fp32_gpu_16"
+source_csv = "data/csv/precision_fp32_gpu_16.csv"
+source_sha256 = "78d42209a274e1354682e6d753ab14de58bc5781361db71718fe73138f021411"
+source_size_bytes = 200
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 3
+column_count = 5
+header_value_sha256 = "44d41d20b887829f4e26622e18111271f93a9b4ef53aa590a73a4630f2f12f85"
+row_value_sha256 = "a842f2dbc4455225555c558c7b9f9c4b2dde9d864af2c976fee6ad08804432e3"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "precision",
+    "step",
+    "ke",
+    "wall_ms_per_step",
+    "ke_rel_error_vs_ref",
+]
+original_header = [
+    "precision",
+    "step",
+    "ke",
+    "wall_ms_per_step",
+    "ke_rel_error_vs_ref",
+]
+rows = [
+    [
+    "fp32_gpu",
+    "0",
+    "0.000000000000e0",
+    "0.0000",
+    "1.000000e0",
+],
+    [
+    "fp32_gpu",
+    "50",
+    "1.131370941155e-5",
+    "0.0017",
+    "7.518383e-1",
+],
+    [
+    "fp32_gpu",
+    "100",
+    "4.558899151842e-5",
+    "0.0017",
+    "2.365996e-5",
+],
+]
+
+[[column]]
+index = 1
+name = "precision"
+original_name = "precision"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 2
+name = "step"
+original_name = "step"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 3
+name = "ke"
+original_name = "ke"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 4
+name = "wall_ms_per_step"
+original_name = "wall_ms_per_step"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 5
+name = "ke_rel_error_vs_ref"
+original_name = "ke_rel_error_vs_ref"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0

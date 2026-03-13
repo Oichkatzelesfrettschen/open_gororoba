@@ -1,11 +1,110 @@
 # Dataset label alias registry (execution-planning and governance support).
 
 [dataset_label_aliases]
-updated = "2026-03-10"
+updated = "2026-03-12"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-alias_count = 0
+alias_count = 11
 
 [dataset_label_aliases.schema]
 required_alias_fields = ["id", "label", "label_normalized", "canonical_dataset_id", "status", "status_token", "notes"]
+
+[[alias]]
+id = "DLA-001"
+label = "Lelli+2016"
+label_normalized = "lelli+2016"
+canonical_dataset_id = "EX-0001"
+status = "active"
+status_token = "ACTIVE"
+notes = "Short citation alias for Lelli et al. 2016 AJ 152 157 SPARC database. Used in E-180, E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-002"
+label = "Li+2020"
+label_normalized = "li+2020"
+canonical_dataset_id = "EX-0002"
+status = "active"
+status_token = "ACTIVE"
+notes = "Short citation alias for Li et al. 2020 ApJS 247 31 NFW fits for SPARC. Used in E-180, E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-003"
+label = "SPARC rotation curves"
+label_normalized = "sparc rotation curves"
+canonical_dataset_id = "EX-0001"
+status = "active"
+status_token = "ACTIVE"
+notes = "Descriptive alias for the SPARC rotation curve database (Lelli+2016). Used in E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-004"
+label = "Li et al. 2020 NFW fits"
+label_normalized = "li et al. 2020 nfw fits"
+canonical_dataset_id = "EX-0002"
+status = "active"
+status_token = "ACTIVE"
+notes = "Descriptive alias for Li et al. 2020 Bayesian NFW fitting parameters for SPARC galaxies. Used in E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-005"
+label = "MaNGA DR17 IFU kinematic maps"
+label_normalized = "manga dr17 ifu kinematic maps"
+canonical_dataset_id = "EX-0003"
+status = "active"
+status_token = "ACTIVE"
+notes = "Descriptive alias for MaNGA DR17 MAPS FITS files (EMLINE_GVEL extensions). Used in E-183 dataset_label_refs."
+
+[[alias]]
+id = "DLA-006"
+label = "THINGS HI rotation curves"
+label_normalized = "things hi rotation curves"
+canonical_dataset_id = "EX-0004"
+status = "active"
+status_token = "ACTIVE"
+notes = "HI rotation curves from The HI Nearby Galaxy Survey (Walter et al. 2008 AJ 136 2563). Available via VizieR J/AJ/136/2563."
+
+[[alias]]
+id = "DLA-007"
+label = "Gaia MW rotation curve"
+label_normalized = "gaia mw rotation curve"
+canonical_dataset_id = "EX-0005"
+status = "active"
+status_token = "ACTIVE"
+notes = "Milky Way rotation curve from Gaia DR3 proper motions (Jiao et al. 2023, Ou et al. 2024). Used in E-181."
+
+[[alias]]
+id = "DLA-008"
+label = "Li+2020-NFW"
+label_normalized = "li+2020-nfw"
+canonical_dataset_id = "EX-0002"
+status = "active"
+status_token = "ACTIVE"
+notes = "Hyphenated alias for Li et al. 2020 NFW fits (DLA-002). Used in experiment_lineage dataset_label_refs."
+
+[[alias]]
+id = "DLA-009"
+label = "SPARC"
+label_normalized = "sparc"
+canonical_dataset_id = "EX-0001"
+status = "active"
+status_token = "ACTIVE"
+notes = "Short uppercase alias for the SPARC rotation curve database (Lelli+2016). Used in experiment_lineage XL-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-010"
+label = "Li2020"
+label_normalized = "li2020"
+canonical_dataset_id = "EX-0002"
+status = "active"
+status_token = "ACTIVE"
+notes = "No-space alias for Li et al. 2020 NFW fits (DLA-002). Used in experiment_lineage XL-109 dataset_label_refs."
+
+[[alias]]
+id = "DLA-011"
+label = "MaNGA-DR17"
+label_normalized = "manga-dr17"
+canonical_dataset_id = "EX-0003"
+status = "active"
+status_token = "ACTIVE"
+notes = "Hyphenated short alias for MaNGA DR17 IFU kinematic maps (DLA-005). Used in E-183 and XL-183 dataset_label_refs."

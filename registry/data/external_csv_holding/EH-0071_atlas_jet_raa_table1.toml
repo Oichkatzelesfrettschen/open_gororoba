@@ -1,0 +1,308 @@
+[dataset]
+id = "EH-0071"
+slug = "atlas_jet_raa_table1"
+source_csv = "data/external/hic_raa/atlas_jet_raa_table1.csv"
+source_sha256 = "0c0207e18a020a9c810397fbe8f92bc67f799cd1a48fc4e852d63143ecf05d56"
+source_size_bytes = 1088
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 29
+column_count = 6
+header_value_sha256 = "7b3326909921c5cff3c7b160496ab78dc01822d7340746d9814596afe5e21339"
+row_value_sha256 = "c65e52b052cd1eb88d83ac6236a9dc803a5a87bb4dd2bb505af340034134f59d"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "table_doi_10_17182_hepdata_84819_v1_t1",
+    "col_2",
+    "col_3",
+    "col_4",
+    "col_5",
+    "col_6",
+]
+original_header = ["#: table_doi: 10.17182/hepdata.84819.v1/t1"]
+rows = [
+    [
+    "#: name: Table 1",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    '#: description: The \u27E8TAA\u27E9 and \u27E8Npart\u27E9 values and their uncertainties in each centrality bin.',
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: data_file: Npart_Taa.yaml",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword reactions: PB PB --> JETS X",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword observables: N",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword cmenergies: 5020.0",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword phrases: InclInclusive",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: RE",
+    "",
+    "",
+    "PB PB --> X",
+    "",
+    "",
+],
+    [
+    "#: SQRT(S) [GeV]",
+    "",
+    "",
+    "5020.0",
+    "",
+    "",
+],
+    [
+    "CENTRALITY [PERCENT]",
+    "CENTRALITY [PERCENT] LOW",
+    "CENTRALITY [PERCENT] HIGH",
+    "<TAA> [1/MB]",
+    "error +",
+    "error -",
+],
+    [
+    "5.0",
+    "0.0",
+    "10.0",
+    "23.4",
+    "0.2",
+    "-0.2",
+],
+    [
+    "15.0",
+    "10.0",
+    "20.0",
+    "14.3",
+    "0.18",
+    "-0.18",
+],
+    [
+    "25.0",
+    "20.0",
+    "30.0",
+    "8.64",
+    "0.17",
+    "-0.17",
+],
+    [
+    "35.0",
+    "30.0",
+    "40.0",
+    "4.94",
+    "0.15",
+    "-0.15",
+],
+    [
+    "45.0",
+    "40.0",
+    "50.0",
+    "2.63",
+    "0.11",
+    "-0.11",
+],
+    [
+    "55.0",
+    "50.0",
+    "60.0",
+    "1.28",
+    "0.07",
+    "-0.07",
+],
+    [
+    "65.0",
+    "60.0",
+    "70.0",
+    "0.57",
+    "0.04",
+    "-0.04",
+],
+    [
+    "75.0",
+    "70.0",
+    "80.0",
+    "0.22",
+    "0.02",
+    "-0.02",
+],
+    [
+    "#: RE",
+    "",
+    "",
+    "PB PB --> X",
+    "",
+    "",
+],
+    [
+    "#: SQRT(S) [GeV]",
+    "",
+    "",
+    "5020.0",
+    "",
+    "",
+],
+    [
+    "CENTRALITY [PERCENT]",
+    "CENTRALITY [PERCENT] LOW",
+    "CENTRALITY [PERCENT] HIGH",
+    "<NPART>",
+    "error +",
+    "error -",
+],
+    [
+    "5.0",
+    "0.0",
+    "10.0",
+    "358.8",
+    "2.2",
+    "-2.2",
+],
+    [
+    "15.0",
+    "10.0",
+    "20.0",
+    "264.1",
+    "2.8",
+    "-2.8",
+],
+    [
+    "25.0",
+    "20.0",
+    "30.0",
+    "189.2",
+    "2.8",
+    "-2.8",
+],
+    [
+    "35.0",
+    "30.0",
+    "40.0",
+    "131.4",
+    "2.6",
+    "-2.6",
+],
+    [
+    "45.0",
+    "40.0",
+    "50.0",
+    "87.0",
+    "2.3",
+    "-2.3",
+],
+    [
+    "55.0",
+    "50.0",
+    "60.0",
+    "53.9",
+    "2.0",
+    "-2.0",
+],
+    [
+    "65.0",
+    "60.0",
+    "70.0",
+    "30.6",
+    "1.6",
+    "-1.6",
+],
+    [
+    "75.0",
+    "70.0",
+    "80.0",
+    "15.4",
+    "1.0",
+    "-1.0",
+],
+]
+
+[[column]]
+index = 1
+name = "table_doi_10_17182_hepdata_84819_v1_t1"
+original_name = "#: table_doi: 10.17182/hepdata.84819.v1/t1"
+inferred_type = "string"
+non_empty_count = 29
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_2"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 18
+empty_count = 11
+
+[[column]]
+index = 3
+name = "col_3"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 18
+empty_count = 11
+
+[[column]]
+index = 4
+name = "col_4"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 7
+
+[[column]]
+index = 5
+name = "col_5"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 18
+empty_count = 11
+
+[[column]]
+index = 6
+name = "col_6"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 18
+empty_count = 11

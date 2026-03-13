@@ -1,0 +1,111 @@
+[dataset]
+id = "PC-0126"
+slug = "zd_crystal_bands_summary"
+source_csv = "data/csv/zd_crystal_bands_summary.csv"
+source_sha256 = "dcb04f6e992ba7a950792da2342d1a68449fe593d9c16e0c19485e2d8605b505"
+source_size_bytes = 169
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 2
+column_count = 7
+header_value_sha256 = "f9da7dc3189568ddd89ad98d76cd938ddfe99535a09eee13c5fdfbb13a5eb80e"
+row_value_sha256 = "79948b614b02fd55ae1ee2b21dea387081743db6ea48f4571ea783758effb795"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "dim",
+    "n_components",
+    "total_nodes",
+    "total_eigenvalues",
+    "flat_band_fraction",
+    "is_integer_spectrum",
+    "distinct_eigenvalue_count",
+]
+original_header = [
+    "dim",
+    "n_components",
+    "total_nodes",
+    "total_eigenvalues",
+    "flat_band_fraction",
+    "is_integer_spectrum",
+    "distinct_eigenvalue_count",
+]
+rows = [
+    [
+    "16",
+    "7",
+    "42",
+    "42",
+    "0.500000",
+    "true",
+    "3",
+],
+    [
+    "32",
+    "15",
+    "210",
+    "210",
+    "0.500000",
+    "true",
+    "6",
+],
+]
+
+[[column]]
+index = 1
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_components"
+original_name = "n_components"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 3
+name = "total_nodes"
+original_name = "total_nodes"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 4
+name = "total_eigenvalues"
+original_name = "total_eigenvalues"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 5
+name = "flat_band_fraction"
+original_name = "flat_band_fraction"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 6
+name = "is_integer_spectrum"
+original_name = "is_integer_spectrum"
+inferred_type = "bool"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 7
+name = "distinct_eigenvalue_count"
+original_name = "distinct_eigenvalue_count"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0

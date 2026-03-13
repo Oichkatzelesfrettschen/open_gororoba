@@ -1,0 +1,122 @@
+[dataset]
+id = "PC-0044"
+slug = "euclid_dm_coupling_summary"
+source_csv = "data/csv/euclid_dm_coupling_summary.csv"
+source_sha256 = "fe6d718dac5927f69b9ddbc6499ad8a1541091cd923a4d63f7ce297f3d56d8c1"
+source_size_bytes = 170
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 9
+header_value_sha256 = "0ad401053ee694cf27723d8e9059bbeb5fa9043e06bc3c6b5f8ed6fac7de9816"
+row_value_sha256 = "108d9bf4b66da1ad94ace9543bcfaea194ee9b74f7a7ba5594ee787cbbd8d7c7"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "grid",
+    "steps",
+    "sersic_n",
+    "r_e_kpc",
+    "m200",
+    "tau",
+    "df_initial",
+    "df_final",
+    "provenance",
+]
+original_header = [
+    "grid",
+    "steps",
+    "sersic_n",
+    "r_e_kpc",
+    "m200",
+    "tau",
+    "df_initial",
+    "df_final",
+    "provenance",
+]
+rows = [[
+    "32",
+    "200",
+    "1.47",
+    "5.87",
+    "2.83e11",
+    "1.50",
+    "2.7177",
+    "2.7146",
+    "Euclid Q1 object_id=-861130966084299185 (Zenodo 15106473)",
+]]
+
+[[column]]
+index = 1
+name = "grid"
+original_name = "grid"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "steps"
+original_name = "steps"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "sersic_n"
+original_name = "sersic_n"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 4
+name = "r_e_kpc"
+original_name = "r_e_kpc"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 5
+name = "m200"
+original_name = "m200"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 6
+name = "tau"
+original_name = "tau"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 7
+name = "df_initial"
+original_name = "df_initial"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 8
+name = "df_final"
+original_name = "df_final"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 9
+name = "provenance"
+original_name = "provenance"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0

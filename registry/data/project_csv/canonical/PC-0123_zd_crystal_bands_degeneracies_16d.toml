@@ -1,0 +1,55 @@
+[dataset]
+id = "PC-0123"
+slug = "zd_crystal_bands_degeneracies_16d"
+source_csv = "data/csv/zd_crystal_bands_degeneracies_16d.csv"
+source_sha256 = "97bfa4f8d5a8ba51a12f14b1d8ce8ba12666fd0ae03aa8eaf7f97819e7503cfb"
+source_size_bytes = 59
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 3
+column_count = 2
+header_value_sha256 = "f097e44550d6c1e1a7e566eda3a1c43a92377fbce0ed94a18a617dbf0270f942"
+row_value_sha256 = "a0a1f748be516974a4ae5b2480cde79a0152fd7d499639cd0be44bc2213e35b1"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "eigenvalue",
+    "degeneracy",
+]
+original_header = [
+    "eigenvalue",
+    "degeneracy",
+]
+rows = [
+    [
+    "-2.000000",
+    "14",
+],
+    [
+    "-0.000000",
+    "21",
+],
+    [
+    "4.000000",
+    "7",
+],
+]
+
+[[column]]
+index = 1
+name = "eigenvalue"
+original_name = "eigenvalue"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 2
+name = "degeneracy"
+original_name = "degeneracy"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0

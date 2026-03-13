@@ -1,0 +1,147 @@
+[dataset]
+id = "PC-0129"
+slug = "zd_nnsd"
+source_csv = "data/csv/zd_nnsd.csv"
+source_sha256 = "ad28d5f68d18e0996a52882b0d06c87d810524e49b932ddb3a96c9dd80faa5b3"
+source_size_bytes = 351
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 2
+column_count = 10
+header_value_sha256 = "e467824426bfbff1103e2dcdb25b25dd4e318846fcd91f0ee47e47981aa47b4d"
+row_value_sha256 = "34396a793b11a7a1d58759f4b670181e2034a356d9646d271174d186841177a4"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "cd_dim",
+    "n_eigenvalues",
+    "mean_spacing",
+    "spacing_variance",
+    "poisson_sse",
+    "goe_sse",
+    "ks_poisson",
+    "ks_goe",
+    "brody_q",
+    "verdict",
+]
+original_header = [
+    "cd_dim",
+    "n_eigenvalues",
+    "mean_spacing",
+    "spacing_variance",
+    "poisson_sse",
+    "goe_sse",
+    "ks_poisson",
+    "ks_goe",
+    "brody_q",
+    "verdict",
+]
+rows = [
+    [
+    "128",
+    "61",
+    "0.0083333333",
+    "58.9999997677",
+    "17.7621916525",
+    "25.4248182551",
+    "0.9833333255",
+    "0.9833333333",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "125",
+    "0.0040322581",
+    "122.9999995110",
+    "18.1055678744",
+    "25.8308856145",
+    "0.9919354730",
+    "0.9919354839",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+]
+
+[[column]]
+index = 1
+name = "cd_dim"
+original_name = "cd_dim"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_eigenvalues"
+original_name = "n_eigenvalues"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 3
+name = "mean_spacing"
+original_name = "mean_spacing"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 4
+name = "spacing_variance"
+original_name = "spacing_variance"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 5
+name = "poisson_sse"
+original_name = "poisson_sse"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 6
+name = "goe_sse"
+original_name = "goe_sse"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 7
+name = "ks_poisson"
+original_name = "ks_poisson"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 8
+name = "ks_goe"
+original_name = "ks_goe"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 9
+name = "brody_q"
+original_name = "brody_q"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 10
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 2
+empty_count = 0

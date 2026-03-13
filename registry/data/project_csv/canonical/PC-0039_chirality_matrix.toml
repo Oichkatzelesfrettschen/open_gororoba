@@ -1,0 +1,129 @@
+[dataset]
+id = "PC-0039"
+slug = "chirality_matrix"
+source_csv = "data/csv/chirality_matrix.csv"
+source_sha256 = "fb051f06cfe57763090b612c024a4094a2bce682c6c7f4d546f9f872e08ee5ee"
+source_size_bytes = 424
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 7
+header_value_sha256 = "3dfb597c2fab6f61e171a28ffad6906f74d6f40d59ec412e82f6e67788047415"
+row_value_sha256 = "436143e96554bdf62bfa825842fe16f98944d2ece722067eb072a8d47fd48124"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "config",
+    "mode",
+    "helicity",
+    "enstrophy",
+    "energy",
+    "associator_norm",
+    "stable",
+]
+original_header = [
+    "config",
+    "mode",
+    "helicity",
+    "enstrophy",
+    "energy",
+    "associator_norm",
+    "stable",
+]
+rows = [
+    [
+    "A",
+    "Std CD + Std vort",
+    "3.2864682821e-16",
+    "5.3546107431e-3",
+    "1.5098769094e3",
+    "4.8410862254e-2",
+    "true",
+],
+    [
+    "B",
+    "Std CD + Flip vort",
+    "-3.2789529320e-16",
+    "5.3546107431e-3",
+    "1.5098769094e3",
+    "4.8410862254e-2",
+    "true",
+],
+    [
+    "C",
+    "Conj CD + Std vort",
+    "-5.4995695784e-15",
+    "5.3550552344e-3",
+    "1.5099858260e3",
+    "5.5742223762e-2",
+    "true",
+],
+    [
+    "D",
+    "Conj CD + Flip vort",
+    "-6.1554331812e-15",
+    "5.3550552344e-3",
+    "1.5099858261e3",
+    "5.5742223764e-2",
+    "true",
+],
+]
+
+[[column]]
+index = 1
+name = "config"
+original_name = "config"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "mode"
+original_name = "mode"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "helicity"
+original_name = "helicity"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 4
+name = "enstrophy"
+original_name = "enstrophy"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 5
+name = "energy"
+original_name = "energy"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 6
+name = "associator_norm"
+original_name = "associator_norm"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 7
+name = "stable"
+original_name = "stable"
+inferred_type = "bool"
+non_empty_count = 4
+empty_count = 0

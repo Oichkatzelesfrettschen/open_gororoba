@@ -1,0 +1,133 @@
+[dataset]
+id = "PC-0121"
+slug = "wow_sedenion_report"
+source_csv = "data/csv/wow_sedenion_report.csv"
+source_sha256 = "b1b9c41b44a0cbb3b81eae79be56ec33061947d5385a4a890230ac9e60e860d9"
+source_size_bytes = 213
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 10
+header_value_sha256 = "d49aca4c5d50c3ff173610e815f11e04d443cda3c4a61f436bc33257aaf4ef0a"
+row_value_sha256 = "2c74fdea297be85929ca7311cb45832bf2827a92cf1f27cce3ecdf52cf20c3b9"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "ghost_detected",
+    "ghost_freq",
+    "ghost_snr",
+    "ghost_fwhm",
+    "top_peak_freq",
+    "lattice_frac",
+    "shallow_frac",
+    "deep_frac",
+    "ultrametric_frac",
+    "ultrametric_p_value",
+]
+original_header = [
+    "ghost_detected",
+    "ghost_freq",
+    "ghost_snr",
+    "ghost_fwhm",
+    "top_peak_freq",
+    "lattice_frac",
+    "shallow_frac",
+    "deep_frac",
+    "ultrametric_frac",
+    "ultrametric_p_value",
+]
+rows = [[
+    "true",
+    "0.213867",
+    "69.4598",
+    "0.000311",
+    "0.213867",
+    "0.0000",
+    "1.0000",
+    "0.0000",
+    "0.131000",
+    "0.564356",
+]]
+
+[[column]]
+index = 1
+name = "ghost_detected"
+original_name = "ghost_detected"
+inferred_type = "bool"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "ghost_freq"
+original_name = "ghost_freq"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "ghost_snr"
+original_name = "ghost_snr"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 4
+name = "ghost_fwhm"
+original_name = "ghost_fwhm"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 5
+name = "top_peak_freq"
+original_name = "top_peak_freq"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 6
+name = "lattice_frac"
+original_name = "lattice_frac"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 7
+name = "shallow_frac"
+original_name = "shallow_frac"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 8
+name = "deep_frac"
+original_name = "deep_frac"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 9
+name = "ultrametric_frac"
+original_name = "ultrametric_frac"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 10
+name = "ultrametric_p_value"
+original_name = "ultrametric_p_value"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0

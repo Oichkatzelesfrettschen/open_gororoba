@@ -1280,9 +1280,9 @@ id = "BIB-0085"
 order_index = 85
 group = "Primary Research & Data Sources"
 section = "Algebra & Mathematics"
-citation_markdown = "**Kinyon, M. K., & Sagle, A. A.** (2006). *Subalgebras of the real sedenions*. Canadian Mathematical Bulletin 49(4), 566-581. [PDF](https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf)."
-notes = ["*Discusses the action of G2 on norm-one sedenion zero divisors and related structure.*"]
-urls = ["https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf"]
+citation_markdown = "**Chan, K.-C., & Dokovic, D. Z.** (2006). *Conjugacy Classes of Subalgebras of the Real Sedenions*. Canadian Mathematical Bulletin 49(4), 492-507. [Article](https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/conjugacy-classes-of-subalgebras-of-the-real-sedenions/E3602D99D8C6C96F78EADAD2EDC1BC27) [PDF](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/E3602D99D8C6C96F78EADAD2EDC1BC27/S0008439500006020a.pdf/conjugacy-classes-of-subalgebras-of-the-real-sedenions.pdf)."
+notes = ["*Classifies conjugacy classes of subalgebras of the real sedenions.*", "*Replaces a stale legacy CMS mirror/citation mismatch with the verified Cambridge/DOI record.*"]
+urls = ["https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/conjugacy-classes-of-subalgebras-of-the-real-sedenions/E3602D99D8C6C96F78EADAD2EDC1BC27", "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/E3602D99D8C6C96F78EADAD2EDC1BC27/S0008439500006020a.pdf/conjugacy-classes-of-subalgebras-of-the-real-sedenions.pdf"]
 dois = []
 source_line = 184
 
@@ -1295,7 +1295,7 @@ citation_markdown = "**Moreno, G.** (1998). *The zero divisors of the Cayley-Dic
 notes = ["*Classification theorem for zero-divisors in Cayley-Dickson algebras.*"]
 urls = ["https://arxiv.org/abs/q-alg/9710013"]
 dois = []
-source_line = 186
+source_line = 187
 
 [[entry]]
 id = "BIB-0087"
@@ -1306,7 +1306,7 @@ citation_markdown = "**Reggiani, S.** (2024). *The geometry of sedenion zero div
 notes = ["DOI: 10.48550/arXiv.2411.18881.", "*Differential-geometric results about manifolds of sedenion zero divisors.*", "Auxiliary computations repo (cited in the paper as [Reg24]): https://github.com/silvioreggiani/sedenion-zero-div"]
 urls = ["https://arxiv.org/abs/2411.18881"]
 dois = ["10.48550/arXiv.2411.18881."]
-source_line = 188
+source_line = 189
 
 [[entry]]
 id = "BIB-0088"
@@ -1317,7 +1317,7 @@ citation_markdown = "**Koebisu, S.** (2025). *Singular structures and geometric 
 notes = ["DOI: 10.48550/arXiv.2512.13002."]
 urls = ["https://arxiv.org/abs/2512.13002"]
 dois = ["10.48550/arXiv.2512.13002."]
-source_line = 192
+source_line = 193
 
 [[entry]]
 id = "BIB-0089"
@@ -1328,7 +1328,7 @@ citation_markdown = "**Gazeau, J.-P.** (2025). *A Mnemonic Matrix Rule for (Spli
 notes = ["DOI: 10.48550/arXiv.2512.22134."]
 urls = ["https://arxiv.org/abs/2512.22134"]
 dois = ["10.48550/arXiv.2512.22134."]
-source_line = 194
+source_line = 195
 
 [[entry]]
 id = "BIB-0090"
@@ -1339,7 +1339,7 @@ citation_markdown = "**Wilmot, G. P.** (2025). *Automorphisms of Sedenions*. [ar
 notes = ["DOI: 10.48550/arXiv.2512.07210."]
 urls = ["https://arxiv.org/abs/2512.07210"]
 dois = ["10.48550/arXiv.2512.07210."]
-source_line = 196
+source_line = 197
 
 [[entry]]
 id = "BIB-0091"
@@ -1350,7 +1350,7 @@ citation_markdown = "**Moreno, G.** (1998). *The zero divisors of the Cayley-Dic
 notes = ["PDF (journal issue): https://smm.org.mx/boletin_anterior/v4/n1.pdf", "Earlier preprint: arXiv:q-alg/9710013 (cited in Baez 2002).", "*Shows norm-one zero-divisor pairs are homeomorphic to G_2.*"]
 urls = []
 dois = []
-source_line = 198
+source_line = 199
 
 [[entry]]
 id = "BIB-0092"
@@ -1361,7 +1361,7 @@ citation_markdown = "**Moreno, G.** (2005). *Constructing zero divisors in the h
 notes = ["*New construction methods; relates ZD set in A_{n+1} to Stiefel manifold V_{2^{n-1},2}.*"]
 urls = ["https://arxiv.org/abs/math/0512517"]
 dois = []
-source_line = 202
+source_line = 203
 
 [[entry]]
 id = "BIB-0093"
@@ -1372,7 +1372,7 @@ citation_markdown = "**Cawagas, R. E.** (2004). *On the structure and zero divis
 notes = ["*Complete subalgebra structure of S; quasi-octonion subalgebra contains ZDs; 84 -> 7 reduction via 3-cycles.*"]
 urls = []
 dois = ["10.7151/dmgaa.1088."]
-source_line = 204
+source_line = 205
 
 [[entry]]
 id = "BIB-0094"
@@ -1383,7 +1383,7 @@ citation_markdown = "**Guterman, A., & Zhilina, S.** (2023). *On Doubly Alternat
 notes = ["*ZDs over arbitrary fields (char != 2); hexagonal structures in ZD graph; explicit annihilators.*"]
 urls = []
 dois = []
-source_line = 206
+source_line = 207
 
 [[entry]]
 id = "BIB-0095"
@@ -1394,7 +1394,7 @@ citation_markdown = "**Biss, D. K., Dugger, D., & Isaksen, D. C.** (2008). *Larg
 notes = ["arXiv:math/0511691; DOI: 10.1080/00927870701724094."]
 urls = []
 dois = ["10.1080/00927870701724094."]
-source_line = 208
+source_line = 209
 
 [[entry]]
 id = "BIB-0096"
@@ -1405,7 +1405,7 @@ citation_markdown = "**Cayley, A.** (1845). *On Jacobi's Elliptic Functions, in 
 notes = ["*Historical foundation of the Dickson doubling process.*"]
 urls = []
 dois = []
-source_line = 210
+source_line = 211
 
 [[entry]]
 id = "BIB-0097"
@@ -1416,7 +1416,7 @@ citation_markdown = "**Bott, R., & Milnor, J.** (1958). *On the parallelizabilit
 notes = ["*Proves only S^0, S^1, S^3, S^7 are parallelizable; foundational for the normed division algebra classification used in Thesis 4.*"]
 urls = []
 dois = ["10.1090/S0002-9904-1958-10166-4."]
-source_line = 212
+source_line = 213
 
 [[entry]]
 id = "BIB-0098"
@@ -1427,7 +1427,7 @@ citation_markdown = "**Adams, J. F.** (1960). *On the non-existence of elements 
 notes = ["*Proves R, C, H, O are the only normed division algebras over the reals; the algebraic foundation for the Thesis 4 subalgebra retention pattern.*"]
 urls = []
 dois = ["10.2307/1970147."]
-source_line = 214
+source_line = 215
 
 [[entry]]
 id = "BIB-0099"
@@ -1438,7 +1438,7 @@ citation_markdown = "**'t Hooft, G. & Veltman, M. J. G.** (1972). *Regularizatio
 notes = []
 urls = ["https://dspace.library.uu.nl/handle/1874/4845"]
 dois = []
-source_line = 218
+source_line = 219
 
 [[entry]]
 id = "BIB-0100"
@@ -1449,7 +1449,7 @@ citation_markdown = "**Bollini, C. G. & Giambiagi, J. J.** (1972). *Lowest order
 notes = []
 urls = ["https://www.osti.gov/biblio/4628584"]
 dois = ["10.1016/0370-2693(72)90483-2."]
-source_line = 219
+source_line = 220
 
 [[entry]]
 id = "BIB-0101"
@@ -1460,7 +1460,7 @@ citation_markdown = "**Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Field
 notes = []
 urls = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
 dois = []
-source_line = 220
+source_line = 221
 
 [[entry]]
 id = "BIB-0102"
@@ -1471,7 +1471,7 @@ citation_markdown = "**Caffarelli, L., & Silvestre, L.** (2007). *An extension p
 notes = []
 urls = []
 dois = ["10.1080/03605300600987306."]
-source_line = 223
+source_line = 224
 
 [[entry]]
 id = "BIB-0103"
@@ -1482,7 +1482,7 @@ citation_markdown = "**Laskin, N.** (2000). *Fractional quantum mechanics and Le
 notes = []
 urls = []
 dois = ["10.1016/S0375-9601(00)00201-2."]
-source_line = 224
+source_line = 225
 
 [[entry]]
 id = "BIB-0104"
@@ -1493,7 +1493,7 @@ citation_markdown = "**Laskin, N.** (2002). *Fractional Schrodinger equation*. P
 notes = []
 urls = []
 dois = ["10.1103/PhysRevE.66.056108."]
-source_line = 225
+source_line = 226
 
 [[entry]]
 id = "BIB-0105"
@@ -1504,7 +1504,7 @@ citation_markdown = "**Stinga, P. R., & Torrea, J. L.** (2010). *Extension probl
 notes = ["*General extension framework for fractional powers of (certain) second-order operators; complements Caffarelli-Silvestre.*"]
 urls = []
 dois = ["10.1080/03605301003735680."]
-source_line = 226
+source_line = 227
 
 [[entry]]
 id = "BIB-0106"
@@ -1515,7 +1515,7 @@ citation_markdown = "**Di Nezza, E., Palatucci, G., & Valdinoci, E.** (2012). *H
 notes = ["arXiv:1104.4345."]
 urls = []
 dois = ["10.1016/j.bulsci.2011.12.004."]
-source_line = 228
+source_line = 229
 
 [[entry]]
 id = "BIB-0107"
@@ -1526,7 +1526,7 @@ citation_markdown = "**Kwasnicki, M.** (2017). *Ten equivalent definitions of th
 notes = []
 urls = []
 dois = ["10.1515/fca-2017-0002."]
-source_line = 230
+source_line = 231
 
 [[entry]]
 id = "BIB-0108"
@@ -1537,7 +1537,7 @@ citation_markdown = "**Zhou, S., & Zhang, Y.** (2024). *A novel and simple spect
 notes = ["arXiv:1507.07356."]
 urls = []
 dois = ["10.1016/j.camwa.2024.06.001."]
-source_line = 231
+source_line = 232
 
 [[entry]]
 id = "BIB-0109"
@@ -1548,7 +1548,7 @@ citation_markdown = "**Chen, W., et al.** (2024). *A novel and simple spectral m
 notes = []
 urls = []
 dois = ["10.1016/j.camwa.2024.06.001."]
-source_line = 233
+source_line = 234
 
 [[entry]]
 id = "BIB-0110"
@@ -1559,7 +1559,7 @@ citation_markdown = "**Vladimirov, V. S., Volovich, I. V., & Zelenov, E. I.** (1
 notes = []
 urls = []
 dois = []
-source_line = 236
+source_line = 237
 
 [[entry]]
 id = "BIB-0111"
@@ -1570,7 +1570,7 @@ citation_markdown = "**Taibleson, M. H.** (1975). *Fourier Analysis on Local Fie
 notes = []
 urls = []
 dois = []
-source_line = 237
+source_line = 238
 
 [[entry]]
 id = "BIB-0112"
@@ -1581,7 +1581,7 @@ citation_markdown = "**Kozyrev, S. V.** (2006). *Wavelet analysis as a p-adic sp
 notes = []
 urls = ["https://arxiv.org/abs/math/0612288"]
 dois = []
-source_line = 238
+source_line = 239
 
 [[entry]]
 id = "BIB-0113"
@@ -1592,7 +1592,7 @@ citation_markdown = "**Kac, V. G.** (1990). *Infinite-Dimensional Lie Algebras*.
 notes = ["*Definitive reference on Kac-Moody algebras; affine, hyperbolic, and indefinite types.*"]
 urls = []
 dois = []
-source_line = 241
+source_line = 242
 
 [[entry]]
 id = "BIB-0114"
@@ -1603,7 +1603,7 @@ citation_markdown = "**Damour, T., Henneaux, M., & Nicolai, H.** (2002). *E10 an
 notes = ["*E10 hyperbolic Kac-Moody as hidden symmetry of M-theory; cosmological billiards.*"]
 urls = ["https://arxiv.org/abs/hep-th/0207267"]
 dois = []
-source_line = 243
+source_line = 244
 
 [[entry]]
 id = "BIB-0115"
@@ -1614,7 +1614,7 @@ citation_markdown = "**West, P.** (2001). *E11 and M Theory*. Class. Quantum Gra
 notes = ["*E11 as hidden symmetry of 11D supergravity; level decomposition yields graviton + forms.*"]
 urls = ["https://arxiv.org/abs/hep-th/0104081"]
 dois = []
-source_line = 245
+source_line = 246
 
 [[entry]]
 id = "BIB-0116"
@@ -1625,7 +1625,7 @@ citation_markdown = "**Nicolai, H., & Samtleben, H.** (2005). *On K(E9)*. Q.J.Ma
 notes = ["*Structure of affine E9 = E8^{(1)} Kac-Moody algebra.*"]
 urls = ["https://arxiv.org/abs/hep-th/0407055"]
 dois = []
-source_line = 247
+source_line = 248
 
 [[entry]]
 id = "BIB-0117"
@@ -1636,7 +1636,7 @@ citation_markdown = "**Gaberdiel, M. R., Olive, D. I., & West, P. C.** (2002). *
 notes = ["*Classification of Lorentzian (hyperbolic) Kac-Moody algebras including E10.*"]
 urls = ["https://arxiv.org/abs/hep-th/0205068"]
 dois = []
-source_line = 249
+source_line = 250
 
 [[entry]]
 id = "BIB-0118"
@@ -1647,7 +1647,7 @@ citation_markdown = "**Conway, J. H., & Norton, S. P.** (1979). *Monstrous Moons
 notes = ["*Original Moonshine conjecture: j-function coefficients decompose as Monster group reps.*"]
 urls = []
 dois = []
-source_line = 253
+source_line = 254
 
 [[entry]]
 id = "BIB-0119"
@@ -1658,7 +1658,7 @@ citation_markdown = "**Borcherds, R. E.** (1992). *Monstrous moonshine and monst
 notes = ["*Fields Medal proof of Moonshine conjecture using Monster Lie algebra.*"]
 urls = []
 dois = []
-source_line = 255
+source_line = 256
 
 [[entry]]
 id = "BIB-0120"
@@ -1669,7 +1669,7 @@ citation_markdown = "**Gannon, T.** (2006). *Moonshine beyond the Monster: The B
 notes = ["*Comprehensive monograph on Moonshine phenomena and connections to physics.*"]
 urls = []
 dois = []
-source_line = 257
+source_line = 258
 
 [[entry]]
 id = "BIB-0121"
@@ -1680,7 +1680,7 @@ citation_markdown = "**Frenkel, I., Lepowsky, J., & Meurman, A.** (1988). *Verte
 notes = ["*Construction of Monster via vertex algebra; Moonshine module V^natural.*"]
 urls = []
 dois = []
-source_line = 259
+source_line = 260
 
 [[entry]]
 id = "BIB-0122"
@@ -1691,7 +1691,7 @@ citation_markdown = "**Stasheff, J. D.** (1963). *Homotopy associativity of H-sp
 notes = ["*Original A-infinity structures; Stasheff polytopes (associahedra).*"]
 urls = []
 dois = []
-source_line = 263
+source_line = 264
 
 [[entry]]
 id = "BIB-0123"
@@ -1702,7 +1702,7 @@ citation_markdown = "**Lada, T., & Stasheff, J.** (1993). *Introduction to SH Li
 notes = ["*Foundational reference for L-infinity (strongly homotopy Lie) algebras.*"]
 urls = ["https://arxiv.org/abs/hep-th/9209099"]
 dois = []
-source_line = 265
+source_line = 266
 
 [[entry]]
 id = "BIB-0124"
@@ -1713,7 +1713,7 @@ citation_markdown = "**Kontsevich, M.** (2003). *Deformation Quantization of Poi
 notes = ["*Formality theorem: DG-Lie of polyvectors is L-infinity quasi-isomorphic to polydifferential ops.*"]
 urls = ["https://arxiv.org/abs/q-alg/9709040"]
 dois = []
-source_line = 267
+source_line = 268
 
 [[entry]]
 id = "BIB-0125"
@@ -1724,7 +1724,7 @@ citation_markdown = "**Zwiebach, B.** (1993). *Closed String Field Theory: Quant
 notes = ["*Closed string field theory has L-infinity structure; vertices from Riemann surfaces.*"]
 urls = ["https://arxiv.org/abs/hep-th/9206084"]
 dois = []
-source_line = 269
+source_line = 270
 
 [[entry]]
 id = "BIB-0126"
@@ -1735,7 +1735,7 @@ citation_markdown = "**Gaberdiel, M. R., & Zwiebach, B.** (1997). *Tensor constr
 notes = ["*Open string field theory has A-infinity structure.*"]
 urls = []
 dois = []
-source_line = 271
+source_line = 272
 
 [[entry]]
 id = "BIB-0127"
@@ -1746,7 +1746,7 @@ citation_markdown = "**Kajiura, H., & Stasheff, J.** (2006). *Homotopy algebras 
 notes = ["*Open-closed homotopy algebra (OCHA) combining A-infinity and L-infinity.*"]
 urls = ["https://arxiv.org/abs/math/0410291"]
 dois = []
-source_line = 273
+source_line = 274
 
 [[entry]]
 id = "BIB-0128"
@@ -1757,7 +1757,7 @@ citation_markdown = "**Collingwood, D. H., & McGovern, W. M.** (1993). *Nilpoten
 notes = []
 urls = []
 dois = []
-source_line = 277
+source_line = 278
 
 [[entry]]
 id = "BIB-0129"
@@ -1768,7 +1768,7 @@ citation_markdown = "**Springer, T. A., & Veldkamp, F. D.** (2000). *Octonions, 
 notes = []
 urls = []
 dois = []
-source_line = 278
+source_line = 279
 
 [[entry]]
 id = "BIB-0130"
@@ -1779,7 +1779,7 @@ citation_markdown = "**UOR Foundation.** (2024). *Atlas of Resonance Classes: Ex
 notes = ["*96-vertex Atlas graph embeds canonically into E8; all 5 exceptional groups (G2, F4, E6, E7, E8) emerge as categorical operations on Atlas. Rust crate: atlas-embeddings.*"]
 urls = ["https://doi.org/10.5281/zenodo.17289540"]
 dois = ["10.5281/zenodo.17289540"]
-source_line = 279
+source_line = 280
 
 [[entry]]
 id = "BIB-0131"
@@ -1790,7 +1790,7 @@ citation_markdown = "**Conway, J. H., & Sloane, N. J. A.** (1999). *Sphere Packi
 notes = ["*Comprehensive reference on E8 lattice; 240 roots; densest lattice packing in 8D.*"]
 urls = []
 dois = []
-source_line = 281
+source_line = 282
 
 [[entry]]
 id = "BIB-0132"
@@ -1801,7 +1801,7 @@ citation_markdown = "**Choudhary, K., Garrity, K. F., Reid, A. C. E., et al.** (
 notes = []
 urls = ["https://www.nature.com/articles/s41524-020-00440-1"]
 dois = ["10.1038/s41524-020-00440-1."]
-source_line = 285
+source_line = 286
 
 [[entry]]
 id = "BIB-0133"
@@ -1812,7 +1812,7 @@ citation_markdown = "**JARVIS (NIST) landing page**. (Accessed 2026-01-27). http
 notes = []
 urls = []
 dois = []
-source_line = 286
+source_line = 287
 
 [[entry]]
 id = "BIB-0134"
@@ -1823,7 +1823,7 @@ citation_markdown = "**Furey, C.** (2016). *Standard model physics from an algeb
 notes = ["*R x C x H x O acting on itself -> SM Lorentz reps + one generation su(3)_c x u(1)_em.*"]
 urls = ["https://arxiv.org/abs/1611.09182"]
 dois = []
-source_line = 289
+source_line = 290
 
 [[entry]]
 id = "BIB-0135"
@@ -1834,7 +1834,7 @@ citation_markdown = "**Furey, C.** (2018a). *Three generations, two unbroken gau
 notes = ["*Complex octonions yield three-generation SU(3)_c reps; Cartan factorization.*"]
 urls = []
 dois = []
-source_line = 291
+source_line = 292
 
 [[entry]]
 id = "BIB-0136"
@@ -1845,7 +1845,7 @@ citation_markdown = "**Furey, C.** (2018b). *SU(3)_C x SU(2)_L x U(1)_Y (x U(1)_
 notes = ["*Full SM gauge group from division algebraic ladder operators; charge quantization.*"]
 urls = ["https://arxiv.org/abs/1702.04336"]
 dois = []
-source_line = 293
+source_line = 294
 
 [[entry]]
 id = "BIB-0137"
@@ -1856,7 +1856,7 @@ citation_markdown = "**Dixon, G. M.** (1994). *Division Algebras: Octonions, Qua
 notes = ["*T = C x H x O (64D): tensoring normed division algebras encodes SM symmetries.*"]
 urls = []
 dois = []
-source_line = 295
+source_line = 296
 
 [[entry]]
 id = "BIB-0138"
@@ -1867,7 +1867,7 @@ citation_markdown = "**Gillard, A. B., & Gresnigt, N. G.** (2019). *Three fermio
 notes = ["*C x S -> Cl(6) minimal left ideals describe three fermion generations.*"]
 urls = []
 dois = ["10.1140/epjc/s10052-019-6967-1."]
-source_line = 297
+source_line = 298
 
 [[entry]]
 id = "BIB-0139"
@@ -1878,7 +1878,7 @@ citation_markdown = "**Gresnigt, N. G., et al.** (2021). *An exceptional G(2) ex
 notes = ["*CD automorphism groups -> G(2) extension of SU(3); broken G(2) gluons as dark matter.*"]
 urls = []
 dois = ["10.1038/s41598-021-01814-1."]
-source_line = 299
+source_line = 300
 
 [[entry]]
 id = "BIB-0140"
@@ -1889,7 +1889,7 @@ citation_markdown = "**Gresnigt, N. G., Gourlay, L., & Varma, A.** (2023). *Towa
 notes = ["*Three octonion subalgebras of S differentiated by SU(3) color or chiral SU(2).*"]
 urls = []
 dois = []
-source_line = 301
+source_line = 302
 
 [[entry]]
 id = "BIB-0141"
@@ -1900,7 +1900,7 @@ citation_markdown = "**Furey, C., Gillard, A. B., & Sherwin, M.** (2024). *Cliff
 notes = ["*Cl(8) -> 3 generations via minimal left ideals; 256 basis elements; gamma matrix construction.*"]
 urls = []
 dois = []
-source_line = 303
+source_line = 304
 
 [[entry]]
 id = "BIB-0142"
@@ -1911,7 +1911,7 @@ citation_markdown = "**Tang, P. S., & Tang, C.** (2023). *Sedenion Algebra Model
 notes = ["*Sedenion-to-SU(5) mapping with associator-norm mass ratio predictions for leptons.*"]
 urls = ["https://arxiv.org/abs/2308.14768"]
 dois = []
-source_line = 305
+source_line = 306
 
 [[entry]]
 id = "BIB-0143"
@@ -1922,7 +1922,7 @@ citation_markdown = "**Lisi, A. G.** (2007). *An Exceptionally Simple Theory of 
 notes = ["*E8 -> SM + gravity proposal; 22 predicted bosons. Criticized by Distler & Garibaldi (2010).*"]
 urls = ["https://arxiv.org/abs/0711.0770"]
 dois = []
-source_line = 307
+source_line = 308
 
 [[entry]]
 id = "BIB-0144"
@@ -1933,7 +1933,7 @@ citation_markdown = "**Distler, J., & Garibaldi, S.** (2010). *There is no \"The
 notes = ["*Impossibility proof: cannot embed three fermion generations in E8.*"]
 urls = []
 dois = []
-source_line = 309
+source_line = 310
 
 [[entry]]
 id = "BIB-0145"
@@ -1944,7 +1944,7 @@ citation_markdown = "**Casimir, H. B. G.** (1948). *On the attraction between tw
 notes = ["*Original discovery of Casimir effect between parallel conducting plates.*"]
 urls = []
 dois = []
-source_line = 313
+source_line = 314
 
 [[entry]]
 id = "BIB-0146"
@@ -1955,7 +1955,7 @@ citation_markdown = "**Bordag, M., Mohideen, U., & Mostepanenko, V. M.** (2001).
 notes = ["*Comprehensive review: theory, experiments, finite conductivity and thermal corrections.*"]
 urls = []
 dois = ["10.1016/S0370-1573(01)00015-1."]
-source_line = 315
+source_line = 316
 
 [[entry]]
 id = "BIB-0147"
@@ -1966,7 +1966,7 @@ citation_markdown = "**Xu, Z., Ju, P., Gao, X., Shen, K., Jacob, Z., & Li, T.** 
 notes = ["*Three-terminal Casimir transistor: optically levitated silica spheres, first controlled modulation.*"]
 urls = []
 dois = ["10.1038/s41467-022-33915-4."]
-source_line = 317
+source_line = 318
 
 [[entry]]
 id = "BIB-0148"
@@ -1977,7 +1977,7 @@ citation_markdown = "**Derjaguin, B. V., Rabinovich, Y. I., & Churaev, N. V.** (
 notes = ["*Proximity Force Approximation (PFA) foundation for sphere-plate geometry.*"]
 urls = []
 dois = []
-source_line = 319
+source_line = 320
 
 [[entry]]
 id = "BIB-0149"
@@ -1988,7 +1988,7 @@ citation_markdown = "**Lamoreaux, S. K.** (1997). *Demonstration of the Casimir 
 notes = ["*First precision measurement of Casimir force; verified PFA scaling.*"]
 urls = []
 dois = ["10.1103/PhysRevLett.78.5."]
-source_line = 321
+source_line = 322
 
 [[entry]]
 id = "BIB-0150"
@@ -1999,7 +1999,7 @@ citation_markdown = "**Ahmadiniaz, N., Bastianelli, F., Karbstein, F., & Schuber
 notes = ["*Tadpole diagram contributes to one-loop photon-graviton amplitude but not to magnetic dichroism. Relevant to C-402 scope limits.*"]
 urls = ["https://arxiv.org/abs/2601.23279"]
 dois = []
-source_line = 325
+source_line = 326
 
 [[entry]]
 id = "BIB-0151"
@@ -2010,7 +2010,7 @@ citation_markdown = "**Son, C., & Chekhova, M.** (2026). *Spontaneous four-wave 
 notes = ["*Direct SFWM dominates over cascaded SHG+SPDC in thin LN layers (10 um) due to relaxed phase matching (Lcoh_SFWM=33.3 um >> Lcoh_SHG=3.1 um). Cascaded process is only 5% of total.*"]
 urls = ["https://arxiv.org/abs/2601.23137"]
 dois = []
-source_line = 327
+source_line = 328
 
 [[entry]]
 id = "BIB-0152"
@@ -2021,7 +2021,7 @@ citation_markdown = "**Qiskit.** (2023). *An Open-Source Framework for Quantum C
 notes = ["*Used for Quantum-Tensor simulations.*"]
 urls = []
 dois = []
-source_line = 331
+source_line = 332
 
 [[entry]]
 id = "BIB-0153"
@@ -2032,7 +2032,7 @@ citation_markdown = "**GWpy.** (2023). *A Python package for gravitational-wave 
 notes = ["*Used for LIGO O3 data acquisition.*"]
 urls = []
 dois = []
-source_line = 333
+source_line = 334
 
 [[entry]]
 id = "BIB-0154"
@@ -2043,7 +2043,7 @@ citation_markdown = "**nLab contributors.** *Kac-Moody algebra*. [nLab](https://
 notes = ["*Categorical perspective on Kac-Moody algebras; connections to loop groups and affine Lie algebras.*"]
 urls = ["https://ncatlab.org/nlab/show/Kac-Moody+algebra"]
 dois = []
-source_line = 337
+source_line = 338
 
 [[entry]]
 id = "BIB-0155"
@@ -2054,7 +2054,7 @@ citation_markdown = "**nLab contributors.** *L-infinity algebra*. [nLab](https:/
 notes = ["*Strongly homotopy Lie algebras; differential graded Lie algebras up to coherent homotopy.*"]
 urls = ["https://ncatlab.org/nlab/show/L-infinity-algebra"]
 dois = []
-source_line = 339
+source_line = 340
 
 [[entry]]
 id = "BIB-0156"
@@ -2065,7 +2065,7 @@ citation_markdown = "**nLab contributors.** *A-infinity algebra*. [nLab](https:/
 notes = ["*Homotopy associative algebras; Stasheff's original construction and modern interpretations.*"]
 urls = ["https://ncatlab.org/nlab/show/A-infinity-algebra"]
 dois = []
-source_line = 341
+source_line = 342
 
 [[entry]]
 id = "BIB-0157"
@@ -2076,7 +2076,7 @@ citation_markdown = "**nLab contributors.** *Monstrous Moonshine*. [nLab](https:
 notes = ["*Connection between Monster group and modular forms; vertex operator algebras.*"]
 urls = ["https://ncatlab.org/nlab/show/Monstrous+Moonshine"]
 dois = []
-source_line = 343
+source_line = 344
 
 [[entry]]
 id = "BIB-0158"
@@ -2087,7 +2087,7 @@ citation_markdown = "**nLab contributors.** *E8*. [nLab](https://ncatlab.org/nla
 notes = ["*Largest exceptional simple Lie group; 248 dimensions; connections to string theory.*"]
 urls = ["https://ncatlab.org/nlab/show/E8"]
 dois = []
-source_line = 345
+source_line = 346
 
 [[entry]]
 id = "BIB-0159"
@@ -2098,7 +2098,7 @@ citation_markdown = "**nLab contributors.** *BV-algebra*. [nLab](https://ncatlab
 notes = ["*Batalin-Vilkovisky algebras; BV-BRST formalism in quantum field theory.*"]
 urls = ["https://ncatlab.org/nlab/show/BV-algebra"]
 dois = []
-source_line = 347
+source_line = 348
 
 [[entry]]
 id = "BIB-0160"
@@ -2109,7 +2109,7 @@ citation_markdown = "**nLab contributors.** *Associahedron*. [nLab](https://ncat
 notes = ["*Stasheff polytopes K_n; vertices = Catalan numbers; encode A-infinity relations.*"]
 urls = ["https://ncatlab.org/nlab/show/associahedron"]
 dois = []
-source_line = 349
+source_line = 350
 
 [[entry]]
 id = "BIB-0161"
@@ -2120,7 +2120,7 @@ citation_markdown = "**Schafer, R. D.** (1966). *An Introduction to Nonassociati
 notes = ["*Standard reference for Cayley-Dickson process, alternative algebras, and composition algebras.*"]
 urls = []
 dois = []
-source_line = 353
+source_line = 354
 
 [[entry]]
 id = "BIB-0162"
@@ -2131,7 +2131,7 @@ citation_markdown = "**Eakin, P. M., & Sathaye, A.** (1990). *On automorphisms a
 notes = ["*Automorphism structure of Cayley-Dickson algebras beyond octonions.*", "*Canonical DOI/landing links are tracked; direct PDF endpoints remained gated in non-browser fetches as of 2026-02-15.*"]
 urls = []
 dois = []
-source_line = 355
+source_line = 356
 
 [[entry]]
 id = "BIB-0163"
@@ -2142,7 +2142,7 @@ citation_markdown = "**Smith, J. D. H.** (1995). *A left loop on the 15-sphere*.
 notes = ["*Loop structure on norm-one sedenions; relevant to non-associativity beyond octonions.*"]
 urls = []
 dois = []
-source_line = 358
+source_line = 359
 
 [[entry]]
 id = "BIB-0164"
@@ -2153,7 +2153,7 @@ citation_markdown = "**Bales, J. W.** (2023). *The Cayley-Dickson Algebras and t
 notes = ["*Modern combinatorial perspective on CD doubling; sign function structure.*"]
 urls = []
 dois = []
-source_line = 360
+source_line = 361
 
 [[entry]]
 id = "BIB-0165"
@@ -2164,7 +2164,7 @@ citation_markdown = "**Saniga, M., Holweck, F., & Pracna, P.** (2015). *Cayley-D
 notes = ["*Maps CD zero-divisor structure to PG(n-2,2) finite projective spaces; our A1-A4 implementation follows this framework.*"]
 urls = []
 dois = []
-source_line = 364
+source_line = 365
 
 [[entry]]
 id = "BIB-0166"
@@ -2175,7 +2175,7 @@ citation_markdown = "**Polster, B.** (1998). *A Geometrical Picture Book*. Sprin
 notes = ["*Accessible visual guide to finite geometries including PG(2,2) (Fano plane) and PG(3,2).*"]
 urls = []
 dois = []
-source_line = 366
+source_line = 367
 
 [[entry]]
 id = "BIB-0167"
@@ -2186,7 +2186,7 @@ citation_markdown = "**Hirschfeld, J. W. P.** (1998). *Projective Geometries ove
 notes = ["*Definitive reference for PG(m,q); point/line/hyperplane counting formulas.*"]
 urls = []
 dois = []
-source_line = 368
+source_line = 369
 
 [[entry]]
 id = "BIB-0168"
@@ -2197,7 +2197,7 @@ citation_markdown = "**Anderson, D. F., & Livingston, P. S.** (1999). *The zero-
 notes = ["*Foundational paper defining zero-divisor graphs for rings; our complement graph follows this tradition.*"]
 urls = []
 dois = []
-source_line = 372
+source_line = 373
 
 [[entry]]
 id = "BIB-0169"
@@ -2208,7 +2208,7 @@ citation_markdown = "**Mulay, S. B.** (2002). *Cycles and symmetries of zero-div
 notes = ["*Cycle structure and girth analysis for ZD graphs.*"]
 urls = []
 dois = []
-source_line = 374
+source_line = 375
 
 [[entry]]
 id = "BIB-0170"
@@ -2219,7 +2219,7 @@ citation_markdown = "**DeMeyer, F. R., McKenzie, T., & Schneider, K.** (2002). *
 notes = ["*Extension to semigroup setting; relevant for non-associative CD algebras.*"]
 urls = []
 dois = []
-source_line = 376
+source_line = 377
 
 [[entry]]
 id = "BIB-0171"
@@ -2230,7 +2230,7 @@ citation_markdown = "**Rammal, R., Toulouse, G., & Virasoro, M. A.** (1986). *Ul
 notes = ["*Classic introduction to ultrametric spaces in physics; spin glass connection. Our 5% tolerance threshold from Eq. 2.4.*"]
 urls = []
 dois = []
-source_line = 380
+source_line = 381
 
 [[entry]]
 id = "BIB-0172"
@@ -2241,7 +2241,7 @@ citation_markdown = "**Murtagh, F.** (2004). *On ultrametricity, data coding, an
 notes = ["*Baire metric encoding for hierarchical data; our baire.rs implements this approach.*"]
 urls = []
 dois = []
-source_line = 382
+source_line = 383
 
 [[entry]]
 id = "BIB-0173"
@@ -2252,7 +2252,7 @@ citation_markdown = "**Bradley, P. E.** (2008). *On p-adic classification*. p-Ad
 notes = ["*P-adic distance-based clustering; our p-adic ultrametric tests follow this framework.*"]
 urls = []
 dois = []
-source_line = 384
+source_line = 385
 
 [[entry]]
 id = "BIB-0174"
@@ -2263,7 +2263,7 @@ citation_markdown = "**Bradley, P. E.** (2010). *Ultrametric approximation of di
 notes = ["*Local ultrametricity quantification via neighborhood triple tests; our local.rs implements Bradley's method.*"]
 urls = []
 dois = []
-source_line = 386
+source_line = 387
 
 [[entry]]
 id = "BIB-0175"
@@ -2274,7 +2274,7 @@ citation_markdown = "**Besag, J., & Clifford, P.** (1991). *Sequential Monte Car
 notes = ["*Adaptive stopping rules for permutation tests via binomial confidence intervals. Our B4 implementation follows this.*"]
 urls = []
 dois = []
-source_line = 390
+source_line = 391
 
 [[entry]]
 id = "BIB-0176"
@@ -2285,7 +2285,7 @@ citation_markdown = "**Phipson, B., & Smyth, G. K.** (2010). *Permutation P-valu
 notes = ["*Correct (r+1)/(K+1) formula for permutation p-values; avoids zero p-values.*"]
 urls = []
 dois = []
-source_line = 392
+source_line = 393
 
 [[entry]]
 id = "BIB-0177"
@@ -2296,7 +2296,7 @@ citation_markdown = "**North, B. V., Curtis, D., & Sham, P. C.** (2002). *A note
 notes = ["*Practical guidelines for permutation p-value computation; minimum permutation counts.*"]
 urls = []
 dois = []
-source_line = 394
+source_line = 395
 
 [[entry]]
 id = "BIB-0178"
@@ -2307,7 +2307,7 @@ citation_markdown = "**Page, D. N., & Thorne, K. S.** (1974). *Disk-accretion on
 notes = ["*Foundational relativistic thin disk model; Page-Thorne efficiency. Our novikov_thorne.rs follows this.*"]
 urls = []
 dois = []
-source_line = 398
+source_line = 399
 
 [[entry]]
 id = "BIB-0179"
@@ -2318,7 +2318,7 @@ citation_markdown = "**Novikov, I. D., & Thorne, K. S.** (1973). *Astrophysics o
 notes = ["*Original Novikov-Thorne accretion disk theory; radial structure functions.*"]
 urls = []
 dois = []
-source_line = 400
+source_line = 401
 
 [[entry]]
 id = "BIB-0180"
@@ -2329,7 +2329,7 @@ citation_markdown = "**Boyer, R. H., & Lindquist, R. W.** (1967). *Maximal analy
 notes = ["*Boyer-Lindquist coordinates for the Kerr metric; our kerr.rs uses these throughout.*"]
 urls = []
 dois = []
-source_line = 402
+source_line = 403
 
 [[entry]]
 id = "BIB-0181"
@@ -2340,7 +2340,7 @@ citation_markdown = "**Bohren, C. F., & Huffman, D. R.** (1983). *Absorption and
 notes = ["*Definitive reference for Mie theory; our mie_efficiency() approximation follows Ch. 4.*"]
 urls = []
 dois = []
-source_line = 406
+source_line = 407
 
 [[entry]]
 id = "BIB-0182"
@@ -2351,7 +2351,7 @@ citation_markdown = "**Draine, B. T.** (2003). *Scattering by interstellar dust 
 notes = ["*ISM dust grain optical properties; size distribution and scattering regimes.*"]
 urls = []
 dois = []
-source_line = 408
+source_line = 409
 
 [[entry]]
 id = "BIB-0183"
@@ -2362,7 +2362,7 @@ citation_markdown = "**Mathis, J. S., Rumpl, W., & Nordsieck, K. H.** (1977). *T
 notes = ["*MRN power-law grain size distribution n(a) ~ a^{-3.5}; canonical ISM dust model.*"]
 urls = []
 dois = []
-source_line = 410
+source_line = 411
 
 [[entry]]
 id = "BIB-0184"
@@ -2373,7 +2373,7 @@ citation_markdown = "**Agazie, G., et al. (NANOGrav Collaboration).** (2023). *T
 notes = ["*First strong evidence for nanohertz GW background; our nanograv.rs provider uses free-spectrum posteriors.*"]
 urls = ["https://arxiv.org/abs/2306.16213"]
 dois = []
-source_line = 414
+source_line = 415
 
 [[entry]]
 id = "BIB-0185"
@@ -2384,7 +2384,7 @@ citation_markdown = "**Antoniadis, J., et al. (IPTA).** (2022). *The Internation
 notes = ["*IPTA DR2 combined analysis; correlated low-frequency noise.*"]
 urls = []
 dois = []
-source_line = 416
+source_line = 417
 
 [[entry]]
 id = "BIB-0186"
@@ -2395,7 +2395,7 @@ citation_markdown = "**EHT Collaboration.** (2019). *First M87 Event Horizon Tel
 notes = []
 urls = []
 dois = []
-source_line = 420
+source_line = 421
 
 [[entry]]
 id = "BIB-0187"
@@ -2406,7 +2406,7 @@ citation_markdown = "**EHT Collaboration.** (2019). *First M87 Event Horizon Tel
 notes = []
 urls = []
 dois = []
-source_line = 421
+source_line = 422
 
 [[entry]]
 id = "BIB-0188"
@@ -2417,7 +2417,7 @@ citation_markdown = "**EHT Collaboration.** (2019). *First M87 Event Horizon Tel
 notes = []
 urls = []
 dois = []
-source_line = 422
+source_line = 423
 
 [[entry]]
 id = "BIB-0189"
@@ -2428,7 +2428,7 @@ citation_markdown = "**EHT Collaboration.** (2019). *First M87 Event Horizon Tel
 notes = []
 urls = []
 dois = []
-source_line = 423
+source_line = 424
 
 [[entry]]
 id = "BIB-0190"
@@ -2439,7 +2439,7 @@ citation_markdown = "**EHT Collaboration.** (2019). *First M87 Event Horizon Tel
 notes = ["*Papers I-VI of the first EHT M87 results. Our eht.rs providers fetch data products from these releases.*"]
 urls = []
 dois = []
-source_line = 424
+source_line = 425
 
 [[entry]]
 id = "BIB-0191"
@@ -2450,7 +2450,7 @@ citation_markdown = "**Brans, C., & Dicke, R. H.** (1961). *Mach's principle and
 notes = ["*Foundational Jordan-Brans-Dicke scalar-tensor gravity formulation used by Thesis 1 falsification mapping.*"]
 urls = []
 dois = ["10.1103/PhysRev.124.925."]
-source_line = 428
+source_line = 429
 
 [[entry]]
 id = "BIB-0192"
@@ -2461,7 +2461,7 @@ citation_markdown = "**Bertotti, B., Iess, L., & Tortora, P.** (2003). *A test o
 notes = ["*Primary Cassini-bound source commonly used to constrain scalar-tensor parameters. Thesis 1 refutes when omega_BD falls below bound regime.*"]
 urls = []
 dois = ["10.1038/nature01997."]
-source_line = 430
+source_line = 431
 
 [[entry]]
 id = "BIB-0193"
@@ -2472,7 +2472,7 @@ citation_markdown = "**Will, C. M.** (2014). *The confrontation between general 
 notes = ["*Comprehensive review of post-Newtonian tests and scalar-tensor limits used to interpret Cassini-era bounds.*"]
 urls = []
 dois = ["10.12942/lrr-2014-4."]
-source_line = 432
+source_line = 433
 
 [[entry]]
 id = "BIB-0194"
@@ -2483,7 +2483,7 @@ citation_markdown = "**Will, C. M.** (2018). *Theory and experiment in gravitati
 notes = ["*Reference monograph for PPN interpretation and experimental-gravity methodology.*"]
 urls = []
 dois = []
-source_line = 434
+source_line = 435
 
 [[entry]]
 id = "BIB-0195"
@@ -2494,7 +2494,7 @@ citation_markdown = "**Bremner, M., & Hentzel, I.** (2001). *Identities for alge
 notes = ["*Determines multilinear identities of degree <= 5 for sedenions; confirms flexible and Jordan identities.*"]
 urls = []
 dois = ["10.1081/AGB-100105036."]
-source_line = 438
+source_line = 439
 
 [[entry]]
 id = "BIB-0196"
@@ -2505,7 +2505,7 @@ citation_markdown = "**Wilmot, G. P.** (2025). *Automorphisms of Sedenions*. [ar
 notes = ["*Extends Fano plane to 15D Fano volume; derives Aut(S) ~ G2.*"]
 urls = ["https://arxiv.org/abs/2512.07210"]
 dois = []
-source_line = 440
+source_line = 441
 
 [[entry]]
 id = "BIB-0197"
@@ -2516,7 +2516,7 @@ citation_markdown = "**STAR Collaboration.** (2026). *Measuring spin correlation
 notes = ["*Evidence of spin coherence in Lambda-AntiLambda pairs; observed decoherence trend.*"]
 urls = []
 dois = ["10.1038/s41586-025-09920-0."]
-source_line = 444
+source_line = 445
 
 [[entry]]
 id = "BIB-0198"
@@ -2527,7 +2527,7 @@ citation_markdown = "**Guevara, A., et al.** (2026). *Single-minus gluon tree am
 notes = ["*Derives non-vanishing single-minus amplitudes in half-collinear kinematics; discrete sign-logic closed form.*"]
 urls = ["https://arxiv.org/abs/2602.12176"]
 dois = []
-source_line = 448
+source_line = 449
 
 [[entry]]
 id = "BIB-0199"
@@ -2538,7 +2538,7 @@ citation_markdown = "**Gazeau, J.-P., Pejhan, H., & Todorov, I.** (2026). *Massl
 notes = ["*Monograph on conformal symmetry and split-octonionic fabric of inflationary dynamics.*"]
 urls = ["https://arxiv.org/abs/2601.18433"]
 dois = []
-source_line = 452
+source_line = 453
 
 [[entry]]
 id = "BIB-0200"
@@ -2549,7 +2549,7 @@ citation_markdown = "**Alvarez, P. D., Izaurieta, F., & Quinzacara, C.** (2026).
 notes = ["*Unification via Clifford-algebraic invariant in a ghost-free quadratic gravity framework.*"]
 urls = ["https://arxiv.org/abs/2601.19734"]
 dois = []
-source_line = 456
+source_line = 457
 
 [[entry]]
 id = "BIB-0201"
@@ -2560,7 +2560,7 @@ citation_markdown = "**Rakic, A. D., Djurisic, A. B., Elazar, J. M., & Majewski,
 notes = ["*Canonical 11-metal Drude-Lorentz parameter set; source for Be, Cr, Ni, Pd, Pt, Ti, W optical models in Sprint 43.*"]
 urls = []
 dois = ["10.1364/AO.37.005271."]
-source_line = 460
+source_line = 461
 
 [[entry]]
 id = "BIB-0202"
@@ -2571,7 +2571,7 @@ citation_markdown = "**Servoin, J. L., Luspin, Y., & Gervais, F.** (1980). *Infr
 notes = ["*IR phonon oscillator parameters for SrTiO3 (3-mode model); source for soft-mode soft-mode frequency near 11 meV.*"]
 urls = []
 dois = ["10.1103/PhysRevB.22.5501."]
-source_line = 462
+source_line = 463
 
 [[entry]]
 id = "BIB-0203"
@@ -2582,7 +2582,7 @@ citation_markdown = "**Okimoto, Y., Katsufuji, T., Ishikawa, T., Urushibara, A.,
 notes = ["*Optical conductivity and Mott gap structure in perovskite titanates; informs LaTiO3 absorption model.*"]
 urls = []
 dois = ["10.1103/PhysRevLett.75.109."]
-source_line = 464
+source_line = 465
 
 [[entry]]
 id = "BIB-0204"
@@ -2593,7 +2593,7 @@ citation_markdown = "**Barman, S. R., & Sarma, D. D.** (1995). *Electronic struc
 notes = ["*Band structure and optical properties of TiO (metallic); source for TiO Drude and interband parameters.*"]
 urls = []
 dois = ["10.1103/PhysRevB.51.13401."]
-source_line = 466
+source_line = 467
 
 [[entry]]
 id = "BIB-0205"
@@ -2604,7 +2604,7 @@ citation_markdown = "**van Mechelen, J. L. M., van der Marel, D., Grimaldi, C., 
 notes = ["*Extended Drude analysis of doped SrTiO3; demonstrates frequency-dependent scattering and non-Fermi-liquid character.*"]
 urls = []
 dois = ["10.1103/PhysRevLett.100.226403."]
-source_line = 468
+source_line = 469
 
 [[entry]]
 id = "BIB-0206"
@@ -2615,7 +2615,7 @@ citation_markdown = "**Granqvist, C. G.** (2000). *Electrochromic tungsten oxide
 notes = ["*Comprehensive review of WO3 electrochromic properties and optical constants; source for stoichiometric WO3 oscillator parameters.*"]
 urls = []
 dois = ["10.1016/S0927-0248(99)00088-4."]
-source_line = 470
+source_line = 471
 
 [[entry]]
 id = "BIB-0207"
@@ -2626,7 +2626,7 @@ citation_markdown = "**Niklasson, G. A., & Granqvist, C. G.** (2007). *Electroch
 notes = ["*Updated optical model for WO3 family including sub-stoichiometric and doped variants; phonon mode assignments.*"]
 urls = []
 dois = ["10.1039/B612174H."]
-source_line = 472
+source_line = 473
 
 [[entry]]
 id = "BIB-0208"
@@ -2637,7 +2637,7 @@ citation_markdown = "**Lynch, D. W., & Hunter, W. R.** (1991). *Comments on the 
 notes = ["*Anisotropic Drude parameters for hexagonal tungsten bronzes (Cs0.33WO3); source for uniaxial parallel/perpendicular optical constants.*"]
 urls = []
 dois = []
-source_line = 474
+source_line = 475
 
 [[entry]]
 id = "BIB-0209"
@@ -2648,7 +2648,7 @@ citation_markdown = "**Nikl, M., Bohacek, P., Mihokova, E., Kobayashi, M., Ishii
 notes = ["*Optical properties and scintillation characteristics of CaWO4 and PbWO4 scheelite crystals; band gap and refractive index data.*"]
 urls = []
 dois = ["10.1016/S1350-4487(01)00076-1."]
-source_line = 476
+source_line = 477
 
 [[entry]]
 id = "BIB-0210"
@@ -2659,7 +2659,7 @@ citation_markdown = "**Garcia, G., Buonsanti, R., Runnerstrom, E. L., Mendelsber
 notes = ["*Plasmonic response of oxygen-deficient WO3-x nanocrystals; carrier-density to plasma frequency derivation for sub-stoichiometric tungsten oxide.*"]
 urls = []
 dois = ["10.1021/nl202597n."]
-source_line = 478
+source_line = 479
 
 [[entry]]
 id = "BIB-0211"
@@ -2670,7 +2670,7 @@ citation_markdown = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Long, L. L.,
 notes = ["*Tabulated n,k for 14 metals from 0.667-286 um (far-IR). Au and Cu data used in SPLICED_AU and SPLICED_CU arrays in tabulated_nk.rs to replace the approximate Drude IR tail in the KK transform.*"]
 urls = []
 dois = []
-source_line = 480
+source_line = 481
 
 [[entry]]
 id = "BIB-0212"
@@ -2681,7 +2681,7 @@ citation_markdown = "**Ordal, M. A., Bell, R. J., Alexander, R. W., Newquist, L.
 notes = ["*Extended far-IR optical constants for metals at submillimeter wavelengths. Complementary to Ordal 1985; referenced for completeness of the Ordal measurement series.*"]
 urls = []
 dois = []
-source_line = 482
+source_line = 483
 
 [[entry]]
 id = "BIB-0213"
@@ -2692,7 +2692,7 @@ citation_markdown = "**Henke, B. L., Gullikson, E. M., & Davis, J. C.** (1993). 
 notes = ["*Foundational XUV/X-ray atomic scattering factors f1, f2 for all 92 elements from 10-30000 eV. Converted to n,k via n=1-delta, k=beta. Used in SPLICED3_AU, SPLICED3_AG, SPLICED3_CU arrays in tabulated_nk.rs to extend J&C+Ordal data through the XUV/soft X-ray region for complete KK integration.*"]
 urls = []
 dois = []
-source_line = 484
+source_line = 485
 
 [[entry]]
 id = "BIB-0214"
@@ -2703,7 +2703,7 @@ citation_markdown = "**Ehman, J. R.** (1997). *The Big Ear Wow! Signal: What We 
 notes = ["*Definitive 20th-anniversary analysis of the 1977 Wow! signal by the discoverer. Documents receiver configuration (50-channel, 10 kHz bandwidth), base-36 encoding, beam pattern, and the 6EQUJ5 intensity sequence. Primary reference for transcription verification.*"]
 urls = []
 dois = []
-source_line = 488
+source_line = 489
 
 [[entry]]
 id = "BIB-0215"
@@ -2714,7 +2714,7 @@ citation_markdown = "**Gray, R. H. & Ellingsen, S. P.** (2002). *A Search for Pe
 notes = ["*Targeted 14-month reobservation campaign at the Wow! signal coordinates using the 26m Mount Pleasant telescope and the VLA. No periodic signal detected at 1420 MHz. Establishes drift rate bounds and non-detection context for follow-up studies.*"]
 urls = []
 dois = []
-source_line = 490
+source_line = 491
 
 [[entry]]
 id = "BIB-0216"
@@ -2725,7 +2725,7 @@ citation_markdown = "**Perez, K., Zuluaga, J. I., Sheikh, S. Z., Enriquez, J. E.
 notes = ["*BL GBT observations at 1-12 GHz of the Wow! signal region using ABACAD cadence strategy. No narrowband or wideband signals detected above threshold. Establishes modern non-detection baseline with 2.5e6 channel resolution.*"]
 urls = []
 dois = []
-source_line = 492
+source_line = 493
 
 [[entry]]
 id = "BIB-0217"
@@ -2736,7 +2736,7 @@ citation_markdown = "**Barbero G., J. F.** (1995). *Real Ashtekar variables for 
 notes = ["*Introduces real-valued SU(2) connection with free parameter beta.*"]
 urls = ["https://arxiv.org/abs/gr-qc/9410014"]
 dois = []
-source_line = 496
+source_line = 497
 
 [[entry]]
 id = "BIB-0218"
@@ -2747,7 +2747,7 @@ citation_markdown = "**Immirzi, G.** (1997). *Real and complex connections for c
 notes = ["*Shows beta is free parameter; area spectrum scales as beta*hbar*kappa.*"]
 urls = ["https://arxiv.org/abs/gr-qc/9612030"]
 dois = []
-source_line = 498
+source_line = 499
 
 [[entry]]
 id = "BIB-0219"
@@ -2758,7 +2758,7 @@ citation_markdown = "**Chen, S. & Doolen, G. D.** (1998). *Lattice Boltzmann met
 notes = ["*Foundational review of LBM for computational fluid dynamics.*"]
 urls = ["https://doi.org/10.1146/annurev.fluid.30.1.329"]
 dois = []
-source_line = 502
+source_line = 503
 
 [[entry]]
 id = "BIB-0220"
@@ -2769,7 +2769,7 @@ citation_markdown = "**Succi, S.** (2001). *The Lattice Boltzmann Equation: For 
 notes = ["*Standard reference for LBM theory and applications.*"]
 urls = []
 dois = []
-source_line = 504
+source_line = 505
 
 [[entry]]
 id = "BIB-0221"
@@ -2780,7 +2780,7 @@ citation_markdown = "**Edelsbrunner, H. & Harer, J. L.** (2010). *Computational 
 notes = ["*Standard reference for persistent homology and computational topology.*"]
 urls = []
 dois = []
-source_line = 508
+source_line = 509
 
 [[entry]]
 id = "BIB-0222"
@@ -2791,7 +2791,7 @@ citation_markdown = "**Brax, P., et al.** (2026). *Illuminating the dark univers
 notes = ["*Cross-cutting review of dark matter and dark energy in the multi-messenger era.*"]
 urls = ["https://arxiv.org/abs/2603.03446"]
 dois = []
-source_line = 512
+source_line = 513
 
 [[entry]]
 id = "BIB-0223"
@@ -2802,7 +2802,7 @@ citation_markdown = "**Abdullahi, A., et al.** (2025). *From oversimplified to o
 notes = ["*Argues for rich dark sector models beyond minimal WIMP paradigm.*"]
 urls = ["https://arxiv.org/abs/2505.05663"]
 dois = []
-source_line = 514
+source_line = 515
 
 [[entry]]
 id = "BIB-0224"
@@ -2813,7 +2813,7 @@ citation_markdown = "**Crnogorcev, M.** (2025). *The Dark Matters at ICRC 2025*.
 notes = ["*Summary of dark matter results presented at ICRC 2025.*"]
 urls = ["https://arxiv.org/abs/2510.17473"]
 dois = []
-source_line = 516
+source_line = 517
 
 [[entry]]
 id = "BIB-0225"
@@ -2824,7 +2824,7 @@ citation_markdown = "**Bramante, J.** (2026). *Very Heavy and Composite Dark Mat
 notes = ["*Review of composite and very heavy dark matter candidates and search strategies.*"]
 urls = ["https://arxiv.org/abs/2602.23708"]
 dois = []
-source_line = 518
+source_line = 519
 
 [[entry]]
 id = "BIB-0226"
@@ -2835,7 +2835,7 @@ citation_markdown = "**Bodas, A., Buen-Abad, M. A., Hook, A., & Sundrum, R.** (2
 notes = ["*Analysis of the matter--dark matter cosmological abundance coincidence via mirror models.*"]
 urls = ["https://arxiv.org/abs/2401.12286"]
 dois = []
-source_line = 520
+source_line = 521
 
 [[entry]]
 id = "BIB-0227"
@@ -2846,7 +2846,7 @@ citation_markdown = "**ATLAS Collaboration.** (2025). *Shedding light with jets 
 notes = ["*ATLAS briefing on semi-visible jet searches for dark sector showers.*"]
 urls = []
 dois = []
-source_line = 524
+source_line = 525
 
 [[entry]]
 id = "BIB-0228"
@@ -2857,7 +2857,7 @@ citation_markdown = "**ATLAS Collaboration.** (2025). *Search for new physics in
 notes = ["*Full ATLAS semi-visible jet analysis for dark shower signatures at the LHC.*"]
 urls = ["https://arxiv.org/abs/2505.01634"]
 dois = []
-source_line = 526
+source_line = 527
 
 [[entry]]
 id = "BIB-0229"
@@ -2868,7 +2868,7 @@ citation_markdown = "**Wilson-Edwards, D.** (2026). *Searches for unusual signat
 notes = ["*Overview of ATLAS dark sector and long-lived particle searches.*"]
 urls = ["https://arxiv.org/abs/2601.13033"]
 dois = []
-source_line = 528
+source_line = 529
 
 [[entry]]
 id = "BIB-0230"
@@ -2879,7 +2879,7 @@ citation_markdown = "**ATLAS Collaboration.** (2023). *Not a jet all the way: is
 notes = ["*Earlier ATLAS briefing on semi-visible jet phenomenology.*"]
 urls = []
 dois = []
-source_line = 530
+source_line = 531
 
 [[entry]]
 id = "BIB-0231"
@@ -2890,7 +2890,7 @@ citation_markdown = "**ATLAS Collaboration.** (2023). *When jets go dark: identi
 notes = ["*ATLAS briefing on dark jet identification techniques.*"]
 urls = []
 dois = []
-source_line = 532
+source_line = 533
 
 [[entry]]
 id = "BIB-0232"
@@ -2901,7 +2901,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for low-mass hidden 
 notes = ["*CMS search for displaced dimuon signatures from hidden valley dark showers.*"]
 urls = []
 dois = []
-source_line = 534
+source_line = 535
 
 [[entry]]
 id = "BIB-0233"
@@ -2912,7 +2912,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for long-lived parti
 notes = ["*CMS scouting-based long-lived particle search via displaced dimuons.*"]
 urls = []
 dois = []
-source_line = 536
+source_line = 537
 
 [[entry]]
 id = "BIB-0234"
@@ -2923,7 +2923,7 @@ citation_markdown = "**CMS Collaboration.** (2024). *Search for long-lived parti
 notes = ["*Run 3 CMS search for long-lived particles decaying to muon pairs.*"]
 urls = ["https://arxiv.org/abs/2402.14491"]
 dois = []
-source_line = 538
+source_line = 539
 
 [[entry]]
 id = "BIB-0235"
@@ -2934,7 +2934,7 @@ citation_markdown = "**Ilten, P. J.** (2025). *Dark Sector Searches at LHCb*. CE
 notes = ["*Review of LHCb dark photon and dark sector search programme.*"]
 urls = []
 dois = []
-source_line = 540
+source_line = 541
 
 [[entry]]
 id = "BIB-0236"
@@ -2945,7 +2945,7 @@ citation_markdown = "**Fantini, L.** (2026). *How LHCb is shedding light on the 
 notes = ["*Latest LHCb results on dark sector mediator searches.*"]
 urls = []
 dois = []
-source_line = 542
+source_line = 543
 
 [[entry]]
 id = "BIB-0237"
@@ -2956,7 +2956,7 @@ citation_markdown = "**Cid Vidal, X.** (2021). *Searches for Dark Photons at LHC
 notes = ["*LHCb dark photon search results and projections.*"]
 urls = []
 dois = []
-source_line = 544
+source_line = 545
 
 [[entry]]
 id = "BIB-0238"
@@ -2967,7 +2967,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for soft unclustered
 notes = ["*CMS SUEP search in Z+jets final state for dark shower signatures.*"]
 urls = []
 dois = []
-source_line = 546
+source_line = 547
 
 [[entry]]
 id = "BIB-0239"
@@ -2978,7 +2978,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for soft unclustered
 notes = ["*CMS SUEP search in W+jets final state for dark shower signatures.*"]
 urls = []
 dois = []
-source_line = 548
+source_line = 549
 
 [[entry]]
 id = "BIB-0240"
@@ -2989,7 +2989,7 @@ citation_markdown = "**Lomte, S.** (2026). *Shedding Light on Dark Matter via th
 notes = ["*Higgs portal dark matter review covering invisible Higgs decays and direct detection.*"]
 urls = ["https://arxiv.org/abs/2601.06284"]
 dois = []
-source_line = 552
+source_line = 553
 
 [[entry]]
 id = "BIB-0241"
@@ -3000,7 +3000,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for light scalar par
 notes = ["*CMS exotic Higgs decay search via light scalar pair production.*"]
 urls = []
 dois = []
-source_line = 554
+source_line = 555
 
 [[entry]]
 id = "BIB-0242"
@@ -3011,7 +3011,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for exotic Higgs bos
 notes = ["*CMS diphoton search for exotic Higgs decays via pseudoscalar pairs.*"]
 urls = []
 dois = []
-source_line = 556
+source_line = 557
 
 [[entry]]
 id = "BIB-0243"
@@ -3022,7 +3022,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Search for light pseudoscal
 notes = ["*CMS search for light pseudoscalar bosons in 4-electron final states.*"]
 urls = []
 dois = []
-source_line = 558
+source_line = 559
 
 [[entry]]
 id = "BIB-0244"
@@ -3033,7 +3033,7 @@ citation_markdown = "**CMS Collaboration.** (2022). *Search for long-lived parti
 notes = ["*Run 2 CMS long-lived particle search in muon pair final states.*"]
 urls = ["https://arxiv.org/abs/2205.08582"]
 dois = []
-source_line = 560
+source_line = 561
 
 [[entry]]
 id = "BIB-0245"
@@ -3044,7 +3044,7 @@ citation_markdown = "**Huang, P., Medina, A. D., & Wagner, C. E. M.** (2026). *R
 notes = ["*Mechanism to dilute overabundant dark matter via first-order electroweak phase transition.*"]
 urls = ["https://arxiv.org/abs/2602.16822"]
 dois = []
-source_line = 562
+source_line = 563
 
 [[entry]]
 id = "BIB-0246"
@@ -3055,7 +3055,7 @@ citation_markdown = "**Feng, W.-Z. & Zhang, Z.-H.** (2026). *Gauge-independent g
 notes = ["*Gravitational wave production from a minimal dark U(1) phase transition.*"]
 urls = ["https://arxiv.org/abs/2602.14866"]
 dois = []
-source_line = 564
+source_line = 565
 
 [[entry]]
 id = "BIB-0247"
@@ -3066,7 +3066,7 @@ citation_markdown = "**Carvalho-Correa, J. P., Couto e Silva, B. A., & Sanchez-V
 notes = ["*Z4-symmetric two-scalar model with mixed freeze-in/freeze-out dark matter production.*"]
 urls = ["https://arxiv.org/abs/2602.18564"]
 dois = []
-source_line = 566
+source_line = 567
 
 [[entry]]
 id = "BIB-0248"
@@ -3077,7 +3077,7 @@ citation_markdown = "**Feiteira, D., Lebedev, O., & Oliveira, V.** (2026). *Warm
 notes = ["*Warm dark matter production via freeze-in mechanism at stronger-than-typical couplings.*"]
 urls = ["https://arxiv.org/abs/2602.20242"]
 dois = []
-source_line = 568
+source_line = 569
 
 [[entry]]
 id = "BIB-0249"
@@ -3088,7 +3088,7 @@ citation_markdown = "**Das, J., Niyogi, S., & Srivastava, T.** (2026). *Revisiti
 notes = ["*Updated analysis of singlet fermion dark matter with scalar portal and EWPT constraints.*"]
 urls = ["https://arxiv.org/abs/2601.13147"]
 dois = []
-source_line = 570
+source_line = 571
 
 [[entry]]
 id = "BIB-0250"
@@ -3099,7 +3099,7 @@ citation_markdown = "**Yamashita, K.** (2025). *Gravitational Positivity Bounds 
 notes = ["*Gravitational positivity bounds constraining Higgs-portal light dark matter parameter space.*"]
 urls = ["https://arxiv.org/abs/2504.16525"]
 dois = []
-source_line = 572
+source_line = 573
 
 [[entry]]
 id = "BIB-0251"
@@ -3110,7 +3110,7 @@ citation_markdown = "**Chaudhuri, A.** (2026). *Dark Temperature Hierarchies and
 notes = ["*Dark sector temperature hierarchies and their gravitational wave signatures from EWPT.*"]
 urls = ["https://arxiv.org/abs/2602.20760"]
 dois = []
-source_line = 574
+source_line = 575
 
 [[entry]]
 id = "BIB-0252"
@@ -3121,7 +3121,7 @@ citation_markdown = "**Elgammal, S. & De Filippis, N.** (2026). *Search for dark
 notes = ["*Projected FCC-ee sensitivity to dark Higgs boson via mono-Z-prime portal.*"]
 urls = ["https://arxiv.org/abs/2602.03235"]
 dois = []
-source_line = 576
+source_line = 577
 
 [[entry]]
 id = "BIB-0253"
@@ -3132,7 +3132,7 @@ citation_markdown = "**Abed, F., AlMellah, A., & Faisel, G.** (2025). *Dark Higg
 notes = ["*Hidden sector dark Higgs as mediator between SM and dark matter.*"]
 urls = ["https://arxiv.org/abs/2512.21457"]
 dois = []
-source_line = 578
+source_line = 579
 
 [[entry]]
 id = "BIB-0254"
@@ -3143,7 +3143,7 @@ citation_markdown = "**CMS Collaboration.** (2025). *Improved results on Higgs b
 notes = ["*Updated CMS di-Higgs search in the bbbb channel with Run 3 data.*"]
 urls = []
 dois = []
-source_line = 580
+source_line = 581
 
 [[entry]]
 id = "BIB-0255"
@@ -3154,7 +3154,7 @@ citation_markdown = "**ATLAS Collaboration.** (2024). *Combination of Searches f
 notes = ["*ATLAS Run 2 combination of di-Higgs searches across multiple decay channels.*"]
 urls = ["https://arxiv.org/abs/2406.09971"]
 dois = []
-source_line = 582
+source_line = 583
 
 [[entry]]
 id = "BIB-0256"
@@ -3165,7 +3165,7 @@ citation_markdown = "**Angel, L., et al.** (2026). *Search for Light Dark Sector
 notes = ["*Proposed electron-photon collision mode for light dark sector searches.*"]
 urls = ["https://arxiv.org/abs/2603.00247"]
 dois = []
-source_line = 586
+source_line = 587
 
 [[entry]]
 id = "BIB-0257"
@@ -3176,7 +3176,7 @@ citation_markdown = "**Gninenko, S. N., et al.** (2026). *Constraints on dark ax
 notes = ["*Dark axion portal constraints from missing-energy experiments and fermion EDMs.*"]
 urls = ["https://arxiv.org/abs/2602.11405"]
 dois = []
-source_line = 588
+source_line = 589
 
 [[entry]]
 id = "BIB-0258"
@@ -3187,7 +3187,7 @@ citation_markdown = "**Arza, A., et al.** (2026). *The COSMIC WISPers White Pape
 notes = ["*Community white paper on cosmic searches for WISPs: axions, dark photons, and ALPs.*"]
 urls = ["https://arxiv.org/abs/2603.03433"]
 dois = []
-source_line = 590
+source_line = 591
 
 [[entry]]
 id = "BIB-0259"
@@ -3198,7 +3198,7 @@ citation_markdown = "**Ivanov, A., et al.** (2026). *Sensitivity of a closed die
 notes = ["*Projected sensitivity of closed dielectric haloscope for axion dark matter detection.*"]
 urls = ["https://arxiv.org/abs/2603.05006"]
 dois = []
-source_line = 592
+source_line = 593
 
 [[entry]]
 id = "BIB-0260"
@@ -3209,7 +3209,7 @@ citation_markdown = "**De Romeri, V., et al.** (2026). *Testing light and heavy 
 notes = ["*Solar coherent neutrino scattering as probe for light and heavy vector mediators.*"]
 urls = ["https://arxiv.org/abs/2603.00554"]
 dois = []
-source_line = 594
+source_line = 595
 
 [[entry]]
 id = "BIB-0261"
@@ -3220,7 +3220,7 @@ citation_markdown = "**Barir, J., et al.** (2026). *NASDUCK-prime: Laboratory Li
 notes = ["*NASDUCK-prime magnetometry limits on ultralight dark photon dark matter.*"]
 urls = ["https://arxiv.org/abs/2602.22308"]
 dois = []
-source_line = 596
+source_line = 597
 
 [[entry]]
 id = "BIB-0262"
@@ -3231,7 +3231,7 @@ citation_markdown = "**Berger, J., et al.** (2025). *Galactic magnetic fields se
 notes = ["*Ultralight dark photon mechanism for seeding galactic-scale magnetic fields.*"]
 urls = ["https://arxiv.org/abs/2511.07508"]
 dois = []
-source_line = 598
+source_line = 599
 
 [[entry]]
 id = "BIB-0263"
@@ -3242,7 +3242,7 @@ citation_markdown = "**DESI Collaboration.** (2025). *More Than a Hint of Evolvi
 notes = ["*DESI DR2 announcement of strengthened evidence for evolving dark energy.*"]
 urls = []
 dois = []
-source_line = 602
+source_line = 603
 
 [[entry]]
 id = "BIB-0264"
@@ -3253,7 +3253,7 @@ citation_markdown = "**Abdul Karim, M., et al. (DESI).** (2025). *DESI DR2 Resul
 notes = ["*DESI DR2 BAO measurements with strengthened dark energy evolution signal.*"]
 urls = ["https://arxiv.org/abs/2503.14738"]
 dois = []
-source_line = 604
+source_line = 605
 
 [[entry]]
 id = "BIB-0265"
@@ -3264,7 +3264,7 @@ citation_markdown = "**ESA Euclid Mission.** (2025). *Euclid opens data treasure
 notes = ["*Euclid Q1 data release announcement with first deep field results.*"]
 urls = []
 dois = []
-source_line = 606
+source_line = 607
 
 [[entry]]
 id = "BIB-0266"
@@ -3275,7 +3275,7 @@ citation_markdown = "**ESA Euclid Mission.** (2024). *Ready, set, go! Euclid beg
 notes = ["*Euclid survey start announcement.*"]
 urls = []
 dois = []
-source_line = 608
+source_line = 609
 
 [[entry]]
 id = "BIB-0267"
@@ -3286,7 +3286,7 @@ citation_markdown = "**NASA Roman Mission.** (2026). *Core Survey by NASA Roman 
 notes = ["*Nancy Grace Roman Space Telescope core survey plans for dark matter and dark energy.*"]
 urls = []
 dois = []
-source_line = 610
+source_line = 611
 
 [[entry]]
 id = "BIB-0268"
@@ -3297,7 +3297,7 @@ citation_markdown = "**NASA Roman Mission.** (2026). *Cosmology with the Roman H
 notes = ["*Roman HLIS cosmology programme: weak lensing, galaxy clustering, SNe Ia.*"]
 urls = []
 dois = []
-source_line = 612
+source_line = 613
 
 [[entry]]
 id = "BIB-0269"
@@ -3308,7 +3308,7 @@ citation_markdown = "**NASA Roman Mission.** (2026). *Precursor Strong Lensing S
 notes = ["*Roman strong lensing precursor science for cosmological parameter estimation.*"]
 urls = []
 dois = []
-source_line = 614
+source_line = 615
 
 [[entry]]
 id = "BIB-0270"
@@ -3319,7 +3319,7 @@ citation_markdown = "**Pantos, I. & Perivolaropoulos, L.** (2026). *Status of th
 notes = ["*Comprehensive 2026 review of the S8 structure-growth tension across probes.*"]
 urls = ["https://arxiv.org/abs/2602.12238"]
 dois = []
-source_line = 616
+source_line = 617
 
 [[entry]]
 id = "BIB-0271"
@@ -3330,7 +3330,7 @@ citation_markdown = "**DES Collaboration.** (2026). *Dark Energy Survey Year 6 R
 notes = ["*DES Y6 3x2pt analysis: galaxy clustering + weak lensing cosmological constraints.*"]
 urls = ["https://arxiv.org/abs/2601.14559"]
 dois = []
-source_line = 618
+source_line = 619
 
 [[entry]]
 id = "BIB-0272"
@@ -3341,7 +3341,7 @@ citation_markdown = "**Fermilab / DES.** (2026). *Dark Energy Survey scientists 
 notes = ["*Fermilab announcement of DES Y6 results on cosmic expansion.*"]
 urls = []
 dois = []
-source_line = 620
+source_line = 621
 
 [[entry]]
 id = "BIB-0273"
@@ -3352,7 +3352,7 @@ citation_markdown = "**Escobal, A. A., et al.** (2026). *Linear Growth of Matter
 notes = ["*Matter perturbation growth in interacting dark energy--dark matter models.*"]
 urls = ["https://arxiv.org/abs/2602.11310"]
 dois = []
-source_line = 622
+source_line = 623
 
 [[entry]]
 id = "BIB-0274"
@@ -3363,7 +3363,7 @@ citation_markdown = "**Yildiz, L., et al.** (2026). *Linear Perturbations and Mu
 notes = ["*Modified gravity model with dark-sector selective f(R,T) coupling.*"]
 urls = ["https://arxiv.org/abs/2602.21774"]
 dois = []
-source_line = 624
+source_line = 625
 
 [[entry]]
 id = "BIB-0275"
@@ -3374,7 +3374,7 @@ citation_markdown = "**Pardo, L. & Castaneda, L.** (2026). *Cosmological constra
 notes = ["*Weak lensing constraints on f(R) modified gravity models.*"]
 urls = ["https://arxiv.org/abs/2601.04048"]
 dois = []
-source_line = 626
+source_line = 627
 
 [[entry]]
 id = "BIB-0276"
@@ -3385,7 +3385,7 @@ citation_markdown = "**London, A. S., et al.** (2026). *Cosmic voids as a probe 
 notes = ["*Cosmic void statistics as discriminating probe for dark matter models.*"]
 urls = ["https://arxiv.org/abs/2602.22990"]
 dois = []
-source_line = 628
+source_line = 629
 
 [[entry]]
 id = "BIB-0277"
@@ -3396,7 +3396,7 @@ citation_markdown = "**NASA Webb Team.** (2026). *NASA Reveals New Details About
 notes = ["*JWST observations revealing dark matter structure at high redshift.*"]
 urls = []
 dois = []
-source_line = 632
+source_line = 633
 
 [[entry]]
 id = "BIB-0278"
@@ -3407,7 +3407,7 @@ citation_markdown = "**Barranco, J., et al.** (2026). *Probing a minimal dark ga
 notes = ["*Microlensing signatures of compact dark objects from minimal dark gauge sectors.*"]
 urls = ["https://arxiv.org/abs/2512.00701"]
 dois = []
-source_line = 634
+source_line = 635
 
 [[entry]]
 id = "BIB-0279"
@@ -3418,7 +3418,7 @@ citation_markdown = "**Green, A. M.** (2026). *Stellar microlensing as a probe o
 notes = ["*Review of stellar microlensing constraints on primordial black hole dark matter.*"]
 urls = ["https://arxiv.org/abs/2602.15974"]
 dois = []
-source_line = 636
+source_line = 637
 
 [[entry]]
 id = "BIB-0280"
@@ -3429,7 +3429,7 @@ citation_markdown = "**Mroz, P., et al.** (2025). *Microlensing optical depth an
 notes = ["*20-year OGLE SMC microlensing survey: optical depth and compact object limits.*"]
 urls = ["https://arxiv.org/abs/2507.13794"]
 dois = []
-source_line = 638
+source_line = 639
 
 [[entry]]
 id = "BIB-0281"
@@ -3440,7 +3440,7 @@ citation_markdown = "**Turyshev, S. G.** (2025). *Solar-System Experiments in th
 notes = ["*Review of solar-system precision tests constraining dark energy and dark matter.*"]
 urls = ["https://arxiv.org/abs/2509.05910"]
 dois = []
-source_line = 640
+source_line = 641
 
 [[entry]]
 id = "BIB-0282"
@@ -3451,7 +3451,7 @@ citation_markdown = "**Thoss, V. & Loeb, A.** (2025). *Detecting dark objects in
 notes = ["*Gravitational wave detection prospects for dark objects in the Solar System.*"]
 urls = ["https://arxiv.org/abs/2507.19577"]
 dois = []
-source_line = 642
+source_line = 643
 
 [[entry]]
 id = "BIB-0283"
@@ -3462,7 +3462,7 @@ citation_markdown = "**Gurrola, A., Scherrer, R. J., & Trivedi, O.** (2026). *Pr
 notes = ["*Proposed lunar fifth-force experiment to probe dark energy models.*"]
 urls = ["https://arxiv.org/abs/2603.04841"]
 dois = []
-source_line = 644
+source_line = 645
 
 [[entry]]
 id = "BIB-0284"
@@ -3473,7 +3473,7 @@ citation_markdown = "**Maity, T. N., et al.** (2023). *Neutrinos from the Sun ca
 notes = ["*Solar neutrino detection as probe for dark matter-electron scattering interactions.*"]
 urls = ["https://arxiv.org/abs/2308.12336"]
 dois = []
-source_line = 646
+source_line = 647
 
 [[entry]]
 id = "BIB-0285"
@@ -3484,7 +3484,7 @@ citation_markdown = "**Couture, G.** (2022). *Solar wind bremsstrahlung off dark
 notes = ["*Solar wind bremsstrahlung from dark matter scattering in the heliosphere.*"]
 urls = []
 dois = []
-source_line = 648
+source_line = 649
 
 [[entry]]
 id = "BIB-0286"
@@ -3495,7 +3495,7 @@ citation_markdown = "**LUX-ZEPLIN Collaboration.** (2025). *Searches for Light D
 notes = ["*LZ experiment: light dark matter and coherent elastic neutrino-nucleus scattering results.*"]
 urls = ["https://arxiv.org/abs/2512.08065"]
 dois = []
-source_line = 652
+source_line = 653
 
 [[entry]]
 id = "BIB-0287"
@@ -3506,7 +3506,7 @@ citation_markdown = "**XENON Collaboration.** (2026). *Light Dark Matter Search 
 notes = ["*XENONnT ionization-only analysis: world-leading limits on light dark matter.*"]
 urls = ["https://arxiv.org/abs/2601.11296"]
 dois = []
-source_line = 654
+source_line = 655
 
 [[entry]]
 id = "BIB-0288"
@@ -3517,7 +3517,7 @@ citation_markdown = "**Asadi, P., Moore, M., Morrissey, D. E., & Shamma, M.** (2
 notes = ["*UV freeze-in co-genesis mechanism for simultaneous baryon and dark matter asymmetry production.*"]
 urls = ["https://arxiv.org/abs/2505.22710"]
 dois = []
-source_line = 658
+source_line = 659
 
 [[entry]]
 id = "BIB-0289"
@@ -3528,7 +3528,7 @@ citation_markdown = "**McKenna, H. G. F., Smirnov, J., & Gorbahn, M.** (2026). *
 notes = ["*Model linking leptogenesis to asymmetric dark matter via shared seesaw mechanism.*"]
 urls = ["https://arxiv.org/abs/2602.20237"]
 dois = []
-source_line = 660
+source_line = 661
 
 [[entry]]
 id = "BIB-0290"
@@ -3539,7 +3539,7 @@ citation_markdown = "**Takahashi, H. & Wada, J.** (2026). *Asymmetric Dark Matte
 notes = ["*Low-scale spontaneous leptogenesis producing asymmetric dark matter.*"]
 urls = ["https://arxiv.org/abs/2601.01849"]
 dois = []
-source_line = 662
+source_line = 663
 
 [[entry]]
 id = "BIB-0291"
@@ -3550,7 +3550,7 @@ citation_markdown = "**Abhishek & Mummidi, V. S.** (2026). *Asymmetric dark matt
 notes = ["*Type-III seesaw leptogenesis with modular S4 symmetry producing asymmetric dark matter.*"]
 urls = ["https://arxiv.org/abs/2602.03384"]
 dois = []
-source_line = 664
+source_line = 665
 
 [[entry]]
 id = "BIB-0292"
@@ -3561,7 +3561,7 @@ citation_markdown = "**Mojahed, M. A. & Weber, S.** (2025). *Asymgenesis*. [arXi
 notes = ["*Asymgenesis framework for simultaneous matter and dark matter asymmetry generation.*"]
 urls = ["https://arxiv.org/abs/2507.10655"]
 dois = []
-source_line = 666
+source_line = 667
 
 [[entry]]
 id = "BIB-0293"
@@ -3572,7 +3572,7 @@ citation_markdown = "**Kanemura, S., Li, S.-P., & Xie, K.-P.** (2025). *Asteroid
 notes = ["*Asteroid-mass solitonic dark matter as explanation for the DM-baryon abundance coincidence.*"]
 urls = ["https://arxiv.org/abs/2504.08304"]
 dois = []
-source_line = 668
+source_line = 669
 
 [[entry]]
 id = "BIB-0294"
@@ -3583,7 +3583,7 @@ citation_markdown = "**Di Mauro, M., et al.** (2026). *Enhanced Cosmic-Ray Antin
 notes = ["*Dark matter annihilation into SUEPs enhancing cosmic-ray antinuclei fluxes.*"]
 urls = ["https://arxiv.org/abs/2602.15132"]
 dois = []
-source_line = 670
+source_line = 671
 
 [[entry]]
 id = "BIB-0295"
@@ -3594,7 +3594,7 @@ citation_markdown = "**Reuters.** (2025). *Evidence mounts that universe dark en
 notes = ["*News coverage of DESI DR2 dark energy evolution results.*"]
 urls = []
 dois = []
-source_line = 674
+source_line = 675
 
 [[entry]]
 id = "BIB-0296"
@@ -3605,7 +3605,7 @@ citation_markdown = "**Reuters.** (2025). *Euclid mission data release is step t
 notes = ["*News coverage of Euclid Q1 data release and cosmic atlas programme.*"]
 urls = []
 dois = []
-source_line = 676
+source_line = 677
 
 [[entry]]
 id = "BIB-0297"
@@ -3616,7 +3616,7 @@ citation_markdown = "**The Guardian.** (2025). *Scientists hail avalanche of dis
 notes = ["*News coverage of Euclid mission early science discoveries.*"]
 urls = []
 dois = []
-source_line = 678
+source_line = 679
 
 [[entry]]
 id = "BIB-0298"
@@ -3627,7 +3627,7 @@ citation_markdown = "**Anderson, J. D., et al.** (2008). *Anomalous Orbital-Ener
 notes = ["*Foundational paper quantifying anomalous delta-V in 6 Earth flybys. Empirical formula: delta-v/v ~ 2*omega_E*R_E*(cos(delta_i) - cos(delta_o))/c. Baseline for all flyby anomaly work.*"]
 urls = []
 dois = []
-source_line = 682
+source_line = 683
 
 [[entry]]
 id = "BIB-0299"
@@ -3638,7 +3638,7 @@ citation_markdown = "**Lammerzahl, C., Preuss, O., & Dittus, H.** (2008). *Is th
 notes = ["*Comprehensive review of anomalous accelerations in the solar system: Pioneer, flyby, secular AU increase. Reference frame and ephemeris considerations.*"]
 urls = []
 dois = []
-source_line = 684
+source_line = 685
 
 [[entry]]
 id = "BIB-0300"
@@ -3649,7 +3649,7 @@ citation_markdown = "**Iorio, L.** (2015). *A flyby anomaly for Juno? Not from s
 notes = ["*Analysis showing Juno flyby null result is consistent with Anderson formula. Constrains new physics explanations.*"]
 urls = []
 dois = []
-source_line = 686
+source_line = 687
 
 [[entry]]
 id = "BIB-0301"
@@ -3660,7 +3660,7 @@ citation_markdown = "**Acedo, L.** (2017). *Anomalous accelerations in spacecraf
 notes = ["*Alternative thermal/anisotropic radiation analysis for flyby anomalies. Important negative-result baseline for non-gravitational explanations.*"]
 urls = []
 dois = []
-source_line = 688
+source_line = 689
 
 [[entry]]
 id = "BIB-0302"
@@ -3671,7 +3671,7 @@ citation_markdown = "**Pinheiro, M. J.** (2016). *The flyby anomaly and the grav
 notes = ["*Gravitational-loss hypothesis for flyby anomaly: energy exchange with local gravitational field. Provides testable velocity-dependent predictions.*"]
 urls = []
 dois = []
-source_line = 690
+source_line = 691
 
 [[entry]]
 id = "BIB-0303"
@@ -3682,7 +3682,7 @@ citation_markdown = "**Anderson, J. D., et al.** (2002). *Study of the anomalous
 notes = ["*Primary Pioneer anomaly benchmark paper. Reports the canonical anomalous acceleration scale used as the batch-1 governed benchmark input for the Pioneer fit lane.*"]
 urls = []
 dois = []
-source_line = 692
+source_line = 693
 
 [[entry]]
 id = "BIB-0304"
@@ -3693,7 +3693,7 @@ citation_markdown = "**Navarro, J. F., Frenk, C. S., & White, S. D. M.** (1996).
 notes = ["*Foundational NFW profile paper. rho(r) = rho_s / ((r/r_s)(1+r/r_s)^2). Basis for dm_force.rs and halo_profile.rs implementations.*"]
 urls = []
 dois = []
-source_line = 696
+source_line = 697
 
 [[entry]]
 id = "BIB-0305"
@@ -3704,7 +3704,7 @@ citation_markdown = "**Lundberg, J. & Edsjo, J.** (2004). *Weakly interacting ma
 notes = ["*Gravitational focusing of DM by the Sun and Earth: 10-20% density enhancement downstream. Referenced in flyby_crucible.rs ETA_WAKE.*"]
 urls = []
 dois = []
-source_line = 698
+source_line = 699
 
 [[entry]]
 id = "BIB-0306"
@@ -3715,7 +3715,7 @@ citation_markdown = "**Lee, B. J., Lisanti, M., & Safdi, B. R.** (2021). *Dark-M
 notes = ["*Angular dependence of DM wind from gravitational lensing. Directional enhancement near Earth. Referenced in flyby_crucible.rs line 67.*"]
 urls = ["https://arxiv.org/abs/2112.05718"]
 dois = []
-source_line = 700
+source_line = 701
 
 [[entry]]
 id = "BIB-0307"
@@ -3726,7 +3726,7 @@ citation_markdown = "**Xu, X. & Siegel, E. R.** (2008). *Dark Matter Heating and
 notes = ["*DM-baryon energy exchange in ISM plasma. Heating/cooling rates from DM scattering. Relevant to solar wind-DM coupling models.*"]
 urls = ["https://arxiv.org/abs/0806.3767"]
 dois = []
-source_line = 702
+source_line = 703
 
 [[entry]]
 id = "BIB-0308"
@@ -3737,7 +3737,7 @@ citation_markdown = "**Dvorkin, C., Blum, K., & Kamionkowski, M.** (2014). *Cons
 notes = ["*Cross-section bounds on DM-baryon interactions from CMB + large-scale structure. Provides upper limits constraining solar-system DM-plasma coupling strength.*"]
 urls = []
 dois = []
-source_line = 704
+source_line = 705
 
 [[entry]]
 id = "BIB-0309"
@@ -3748,7 +3748,7 @@ citation_markdown = "**Moreno, G.** (1998). *The zero divisors of the Cayley-Dic
 notes = ["*Classification of zero divisors in sedenions and higher CD algebras. Foundation for BoxKiteStabilizer topology.*"]
 urls = []
 dois = []
-source_line = 708
+source_line = 709
 
 [[entry]]
 id = "BIB-0310"
@@ -3759,7 +3759,7 @@ citation_markdown = "**Cawagas, R. E.** (2004). *On the Structure and Zero Divis
 notes = ["*Systematic enumeration of sedenion zero-divisor structure. K_{2,2,2} graph topology. Basis for qec_boxkite.rs 6-node stabilizer.*"]
 urls = []
 dois = []
-source_line = 710
+source_line = 711
 
 [[entry]]
 id = "BIB-0311"
@@ -3770,7 +3770,7 @@ citation_markdown = "**De Marrais, R. P.** (2006). *The 42 Assessors and the Box
 notes = ["*Box-kite geometry of sedenion ZDs: 7 box-kites, 42 assessors, diagonal axis pairs. Core reference for BoxKiteStabilizer and DekaVoudonStabilizer.*"]
 urls = ["https://arxiv.org/abs/math/0604092"]
 dois = []
-source_line = 712
+source_line = 713
 
 [[entry]]
 id = "BIB-0312"
@@ -3781,7 +3781,7 @@ citation_markdown = "**Brown, R. B. & Loeb, A. L.** (1997). *Nonassociative alge
 notes = ["*Mathematical properties of iterated Cayley-Dickson construction. Alternativity failure above dim 8, zero divisors above dim 16.*"]
 urls = []
 dois = []
-source_line = 714
+source_line = 715
 
 [[entry]]
 id = "BIB-0313"
@@ -3792,7 +3792,7 @@ citation_markdown = "**Gillard, A. & Gresnigt, N.** (2019). *Three fermion gener
 notes = ["*Sedenion algebraic structure maps to three fermion generations. Connects CD algebra to particle physics representation theory.*"]
 urls = []
 dois = []
-source_line = 716
+source_line = 717
 
 [[entry]]
 id = "BIB-0314"
@@ -3803,7 +3803,7 @@ citation_markdown = "**Conway, J. H. & Norton, S. P.** (1979). *Monstrous Moonsh
 notes = ["*Original conjecture connecting Monster group representations to j-function coefficients. Foundational for moonshine.rs.*"]
 urls = []
 dois = []
-source_line = 720
+source_line = 721
 
 [[entry]]
 id = "BIB-0315"
@@ -3814,7 +3814,7 @@ citation_markdown = "**Borcherds, R. E.** (1992). *Monstrous moonshine and monst
 notes = ["*Proof of the Monstrous Moonshine conjecture via vertex algebras and the Monster Lie algebra. Fields Medal work.*"]
 urls = []
 dois = []
-source_line = 722
+source_line = 723
 
 [[entry]]
 id = "BIB-0316"
@@ -3825,7 +3825,7 @@ citation_markdown = "**Kitaev, A. Y.** (2003). *Fault-tolerant quantum computati
 notes = ["*Topological quantum error correction via anyonic excitations. Foundation for stabilizer code theory used in qec_boxkite.rs.*"]
 urls = []
 dois = []
-source_line = 724
+source_line = 725
 
 [[entry]]
 id = "BIB-0317"
@@ -3836,7 +3836,7 @@ citation_markdown = "**Pastawski, F., Yoshida, B., Harlow, D., & Preskill, J.** 
 notes = ["*HaPPY code: holographic perfect tensor codes. Connects AdS/CFT to quantum error correction. Foundation for HolographicVacuumCode in deka_voudon_qec.rs.*"]
 urls = []
 dois = []
-source_line = 726
+source_line = 727
 
 [[entry]]
 id = "BIB-0318"
@@ -3847,4 +3847,4 @@ citation_markdown = "**Conway, J. H.** (1968). *A characterisation of Leech's la
 notes = ["*Original characterization of the Leech lattice in 24 dimensions. Unique even unimodular lattice with no roots. Connects to Monster group via automorphism tower.*"]
 urls = []
 dois = []
-source_line = 728
+source_line = 729

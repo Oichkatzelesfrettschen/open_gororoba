@@ -2,7 +2,7 @@
 id = "PG-0014"
 slug = "cd_motif_summary_by_dim"
 source_csv = "data/csv/cd_motif_summary_by_dim.csv"
-source_sha256 = "51634b044c02df2cd6d92d8015d85b10f4aff865153c0b7533b4e5229a28a603"
+source_sha256 = "dfa6e824c27837734eb8b455380a93d871915c727a292f59de68065358dd517c"
 source_size_bytes = 349
 has_header = true
 delimiter = ","
@@ -10,7 +10,7 @@ quotechar = '"'
 row_count = 5
 column_count = 11
 header_value_sha256 = "ba1f9c32b469620465aef4c1010178ee75feed78a4d2924cfdb70c22874983b3"
-row_value_sha256 = "d2b91e8eec84240ce4824369d15541fcc8b4f353d539e1a54aae867558179b12"
+row_value_sha256 = "2a9e2b6f20b1da452fdcb8da6d0d1802f616ae9a8cfb3c6ca7e3596683d0ea01"
 migrated_on = "2026-02-09"
 migrated_by = "gororoba_cli::scrollify-csv"
 dataset_class = "generated_artifact"
@@ -51,7 +51,7 @@ rows = [
     "7",
     "0",
     "3",
-    "False",
+    "false",
     "0",
     "0",
 ],
@@ -64,7 +64,7 @@ rows = [
     "0",
     "0",
     "7",
-    "False",
+    "false",
     "0",
     "0",
 ],
@@ -77,7 +77,7 @@ rows = [
     "0",
     "0",
     "15",
-    "False",
+    "false",
     "0",
     "0",
 ],
@@ -90,7 +90,7 @@ rows = [
     "0",
     "0",
     "31",
-    "False",
+    "false",
     "0",
     "0",
 ],
@@ -103,7 +103,7 @@ rows = [
     "0",
     "0",
     "63",
-    "False",
+    "false",
     "0",
     "0",
 ],

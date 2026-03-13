@@ -1,0 +1,363 @@
+[dataset]
+id = "PC-0136"
+slug = "zd_resonance_cuda_control_128"
+source_csv = "data/csv/zd_resonance_cuda_control_128.csv"
+source_sha256 = "83d4d1e7a1285ce4b8689a90e65c553a7a7ab8d29eae1da6e212faa01b74b99c"
+source_size_bytes = 1512
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 10
+column_count = 16
+header_value_sha256 = "1d6a2ac891b551b017106c75862767e0db2b2b6976129ebf33a40d239621d067"
+row_value_sha256 = "f584e013dd4a80248b11ab83e0915db66a777f7d83ec2701c0ce632f7a8cb3d3"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "tau",
+    "ke_ghost_detected",
+    "ke_ghost_freq",
+    "ke_ghost_snr",
+    "ke_ghost_fwhm",
+    "ke_dominant_freq",
+    "ke_dominant_power",
+    "var_ghost_detected",
+    "var_ghost_freq",
+    "var_ghost_snr",
+    "spatial_ghost_detected",
+    "spatial_ghost_freq",
+    "spatial_ghost_snr",
+    "final_ke",
+    "final_var",
+    "label",
+]
+original_header = [
+    "tau",
+    "ke_ghost_detected",
+    "ke_ghost_freq",
+    "ke_ghost_snr",
+    "ke_ghost_fwhm",
+    "ke_dominant_freq",
+    "ke_dominant_power",
+    "var_ghost_detected",
+    "var_ghost_freq",
+    "var_ghost_snr",
+    "spatial_ghost_detected",
+    "spatial_ghost_freq",
+    "spatial_ghost_snr",
+    "final_ke",
+    "final_var",
+    "label",
+]
+rows = [
+    [
+    "0.550",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.017635",
+    "0.410000",
+    "2.743519e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.117834e-5",
+    "0.000000e0",
+    "ctrl tau=0.55",
+],
+    [
+    "0.600",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.017635",
+    "0.410000",
+    "2.743519e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.117834e-5",
+    "0.000000e0",
+    "ctrl tau=0.60",
+],
+    [
+    "0.650",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.017635",
+    "0.410000",
+    "2.743519e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.117834e-5",
+    "0.000000e0",
+    "ctrl tau=0.65",
+],
+    [
+    "0.700",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.019657",
+    "0.070000",
+    "1.835633e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.116902e-5",
+    "0.000000e0",
+    "ctrl tau=0.70",
+],
+    [
+    "0.750",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.019657",
+    "0.070000",
+    "1.835633e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.116902e-5",
+    "0.000000e0",
+    "ctrl tau=0.75",
+],
+    [
+    "0.800",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.019657",
+    "0.070000",
+    "1.835633e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.116902e-5",
+    "0.000000e0",
+    "ctrl tau=0.80",
+],
+    [
+    "0.850",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.019657",
+    "0.070000",
+    "1.835633e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.116902e-5",
+    "0.000000e0",
+    "ctrl tau=0.85",
+],
+    [
+    "0.900",
+    "false",
+    "NaN",
+    "0.0000",
+    "NaN",
+    "0.190000",
+    "9.662049e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.161234e-5",
+    "0.000000e0",
+    "ctrl tau=0.90",
+],
+    [
+    "0.950",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.015655",
+    "0.410000",
+    "2.830123e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.116903e-5",
+    "0.000000e0",
+    "ctrl tau=0.95",
+],
+    [
+    "1.000",
+    "true",
+    "0.200000",
+    "0.0000",
+    "0.015655",
+    "0.410000",
+    "2.830123e-50",
+    "false",
+    "NaN",
+    "0.0000",
+    "false",
+    "NaN",
+    "0.0000",
+    "9.116903e-5",
+    "0.000000e0",
+    "ctrl tau=1.00",
+],
+]
+
+[[column]]
+index = 1
+name = "tau"
+original_name = "tau"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 2
+name = "ke_ghost_detected"
+original_name = "ke_ghost_detected"
+inferred_type = "bool"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 3
+name = "ke_ghost_freq"
+original_name = "ke_ghost_freq"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 4
+name = "ke_ghost_snr"
+original_name = "ke_ghost_snr"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 5
+name = "ke_ghost_fwhm"
+original_name = "ke_ghost_fwhm"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 6
+name = "ke_dominant_freq"
+original_name = "ke_dominant_freq"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 7
+name = "ke_dominant_power"
+original_name = "ke_dominant_power"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 8
+name = "var_ghost_detected"
+original_name = "var_ghost_detected"
+inferred_type = "bool"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 9
+name = "var_ghost_freq"
+original_name = "var_ghost_freq"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 10
+name = "var_ghost_snr"
+original_name = "var_ghost_snr"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 11
+name = "spatial_ghost_detected"
+original_name = "spatial_ghost_detected"
+inferred_type = "bool"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 12
+name = "spatial_ghost_freq"
+original_name = "spatial_ghost_freq"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 13
+name = "spatial_ghost_snr"
+original_name = "spatial_ghost_snr"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 14
+name = "final_ke"
+original_name = "final_ke"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 15
+name = "final_var"
+original_name = "final_var"
+inferred_type = "float"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 16
+name = "label"
+original_name = "label"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0

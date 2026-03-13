@@ -12,7 +12,7 @@ primary_markdown = "docs/REQUIREMENTS.md"
 module_count = 14
 coverage_gap_count = 2
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
-runtime_stack_allowlist = ["mixed", "rust", "python", "docker_python", "coq", "latex", "cpp"]
+runtime_stack_allowlist = ["mixed", "rust", "python", "docker_python", "rocq", "latex", "cpp"]
 
 [requirements.schema]
 required_module_fields = ["id", "name", "status", "status_token", "runtime_stack", "requires_modules", "install_targets", "verify_targets", "acceptance_criteria"]
@@ -56,14 +56,14 @@ acceptance_criteria = ["Runtime stack classification is explicit.", "Install and
 
 [[module]]
 id = "REQ-COQ"
-name = "coq"
-markdown = "docs/requirements/coq.md"
+name = "rocq"
+markdown = "docs/requirements/rocq.md"
 status = "active"
 status_token = "ACTIVE"
-runtime_stack = "coq"
+runtime_stack = "rocq"
 requires_modules = ["REQ-CORE"]
-install_targets = ["make coq"]
-verify_targets = ["make coq"]
+install_targets = ["make rocq"]
+verify_targets = ["make rocq"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]

@@ -1,0 +1,364 @@
+[dataset]
+id = "EH-0089"
+slug = "cms_pbpb_5020_v2_table1"
+source_csv = "data/external/hic_raa/cms_pbpb_5020_v2_table1.csv"
+source_sha256 = "84d09179f64c52cd3d666993461baea0f3f72b3edb62537154ff968ca8ca0a82"
+source_size_bytes = 1474
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 36
+column_count = 6
+header_value_sha256 = "ab75d041e5c946a2ede07521e2a12f865f076eea0d1e0b1e2a52dda127509af0"
+row_value_sha256 = "404a351bee3e211bfe6b37dbfe629cc4d310640591b23c05e9963cfe50cc7dfa"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "table_doi_10_17182_hepdata_77603_v1_t1",
+    "col_2",
+    "col_3",
+    "col_4",
+    "col_5",
+    "col_6",
+]
+original_header = ["#: table_doi: 10.17182/hepdata.77603.v1/t1"]
+rows = [
+    [
+    "#: name: Table 1",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    '#: description: The $v_{2}$ result from SP method as a function of $p_{T}$ in 0-5\% centrality bin of PbPb collisions at $\sqrt{s_{NN}}$ = 5.02 TeV. Shaded boxes represent systematic uncertainties.',
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: data_file: data1.yaml",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: data_license:   ",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword reactions: PB PB --> CHARGED X",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword observables: FLOW",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword phrases: ",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword cmenergies: 5020.0",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    '#: $|\eta|$',
+    "< 1",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    '#: $|\Delta\eta|$',
+    "> 3",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: $p_{T}$",
+    "> 1.0 GEV/C",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: centrality",
+    "0-5 PCT",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: RE",
+    "PB PB --> CHARGED X",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: SQRT(S) [GEV]",
+    "5020.0",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "$p_{T}$ [GEV/C]",
+    '$v_{2}\{SP\}$',
+    "stat +",
+    "stat -",
+    "sys +",
+    "sys -",
+],
+    [
+    "1.1",
+    "0.0381",
+    "0.0001",
+    "-0.0001",
+    "0.0008",
+    "-0.0008",
+],
+    [
+    "1.4",
+    "0.0441",
+    "0.0001",
+    "-0.0001",
+    "0.0009",
+    "-0.0009",
+],
+    [
+    "1.7",
+    "0.0512",
+    "0.0001",
+    "-0.0001",
+    "0.001",
+    "-0.001",
+],
+    [
+    "2.2",
+    "0.0603",
+    "0.0001",
+    "-0.0001",
+    "0.0012",
+    "-0.0012",
+],
+    [
+    "2.7",
+    "0.0674",
+    "0.0002",
+    "-0.0002",
+    "0.0013",
+    "-0.0013",
+],
+    [
+    "3.2",
+    "0.0712",
+    "0.0003",
+    "-0.0003",
+    "0.0014",
+    "-0.0014",
+],
+    [
+    "3.7",
+    "0.071",
+    "0.0004",
+    "-0.0004",
+    "0.0014",
+    "-0.0014",
+],
+    [
+    "4.4",
+    "0.0656",
+    "0.0005",
+    "-0.0005",
+    "0.0013",
+    "-0.0013",
+],
+    [
+    "5.4",
+    "0.0513",
+    "0.0009",
+    "-0.0009",
+    "0.001",
+    "-0.001",
+],
+    [
+    "6.4",
+    "0.0381",
+    "0.0015",
+    "-0.0015",
+    "0.0008",
+    "-0.0008",
+],
+    [
+    "7.4",
+    "0.0353",
+    "0.0021",
+    "-0.0021",
+    "0.0007",
+    "-0.0007",
+],
+    [
+    "8.8",
+    "0.0291",
+    "0.0023",
+    "-0.0023",
+    "0.0006",
+    "-0.0006",
+],
+    [
+    "10.9",
+    "0.0257",
+    "0.0035",
+    "-0.0035",
+    "0.0005",
+    "-0.0005",
+],
+    [
+    "12.9",
+    "0.0229",
+    "0.0051",
+    "-0.0051",
+    "0.0005",
+    "-0.0005",
+],
+    [
+    "16.3",
+    "0.0229",
+    "0.001",
+    "-0.001",
+    "0.0018",
+    "-0.0018",
+],
+    [
+    "22.4",
+    "0.0229",
+    "0.0018",
+    "-0.0018",
+    "0.0023",
+    "-0.0023",
+],
+    [
+    "29.5",
+    "0.0223",
+    "0.0026",
+    "-0.0026",
+    "0.0036",
+    "-0.0036",
+],
+    [
+    "39.1",
+    "0.0204",
+    "0.0037",
+    "-0.0037",
+    "0.0041",
+    "-0.0041",
+],
+    [
+    "50.8",
+    "0.0087",
+    "0.0058",
+    "-0.0058",
+    "0.0058",
+    "-0.0058",
+],
+    [
+    "67.7",
+    "0.0183",
+    "0.0101",
+    "-0.0101",
+    "0.0105",
+    "-0.0105",
+],
+    [
+    "88.2",
+    "0.0183",
+    "0.02",
+    "-0.02",
+    "0.0114",
+    "-0.0114",
+],
+]
+
+[[column]]
+index = 1
+name = "table_doi_10_17182_hepdata_77603_v1_t1"
+original_name = "#: table_doi: 10.17182/hepdata.77603.v1/t1"
+inferred_type = "string"
+non_empty_count = 36
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_2"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 28
+empty_count = 8
+
+[[column]]
+index = 3
+name = "col_3"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 14
+
+[[column]]
+index = 4
+name = "col_4"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 14
+
+[[column]]
+index = 5
+name = "col_5"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 14
+
+[[column]]
+index = 6
+name = "col_6"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 14

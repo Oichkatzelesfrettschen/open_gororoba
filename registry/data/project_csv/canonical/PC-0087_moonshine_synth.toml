@@ -1,0 +1,87 @@
+[dataset]
+id = "PC-0087"
+slug = "moonshine_synth"
+source_csv = "data/csv/moonshine_synth.csv"
+source_sha256 = "ef67ea68f9ad22b7855ee31af5f9980bfda9273cd26e0dfc4faf3cc2181520ce"
+source_size_bytes = 71
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 2
+column_count = 5
+header_value_sha256 = "0981ec64ab19d59144d51d9ad27eebae3c8cb106ae60531e1c67a2d29b946ff3"
+row_value_sha256 = "bdf0f8e0e22d61b741b09cbce873362bfcc79423364987e0a507d7901215d390"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "pointing",
+    "lattice",
+    "shallow",
+    "deep",
+    "total",
+]
+original_header = [
+    "pointing",
+    "lattice",
+    "shallow",
+    "deep",
+    "total",
+]
+rows = [
+    [
+    "ON",
+    "0",
+    "985",
+    "15",
+    "1000",
+],
+    [
+    "OFF",
+    "0",
+    "984",
+    "16",
+    "1000",
+],
+]
+
+[[column]]
+index = 1
+name = "pointing"
+original_name = "pointing"
+inferred_type = "string"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 2
+name = "lattice"
+original_name = "lattice"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 3
+name = "shallow"
+original_name = "shallow"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 4
+name = "deep"
+original_name = "deep"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 5
+name = "total"
+original_name = "total"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0

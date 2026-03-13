@@ -5,7 +5,7 @@
 updated = "2026-03-12"
 authoritative = true
 source_markdown_glob = "docs/book/src/**/*.md"
-document_count = 18
+document_count = 20
 
 [[document]]
 id = "BOOK-001"
@@ -15,8 +15,17 @@ slug = "docs_book_src_SUMMARY"
 title = "Summary"
 claim_refs = []
 path_refs = []
-line_count = 47
+line_count = 61
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -29,6 +38,7 @@ body_markdown = '''
 
 # Architecture
 
+- [Canonical Sources](./architecture/canonical-sources.md)
 - [Project Layout](./architecture/layout.md)
 - [Crate Ecosystem](./architecture/crates.md)
 - [Verification Ladder](./architecture/verification.md)
@@ -56,6 +66,10 @@ body_markdown = '''
 - [Insights](./registry/insights.md)
 - [Experiments Portfolio](./registry/experiments.md)
 
+# Proofs
+
+- [Proof Inventory](./proofs/index.md)
+
 # Papers
 
 - [Paper Collection](./papers/collection.md)
@@ -73,8 +87,17 @@ slug = "docs_book_src_algebra_box-kites"
 title = "Box-Kite Structure"
 claim_refs = ["C-050", "C-060", "C-454", "C-468", "C-475"]
 path_refs = ["crates/algebra_experimental/src/emanation.rs"]
-line_count = 47
+line_count = 56
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -131,8 +154,17 @@ slug = "docs_book_src_algebra_emanation"
 title = "Emanation Architecture"
 claim_refs = ["C-468", "C-469", "C-470", "C-471", "C-475"]
 path_refs = ["crates/algebra_experimental/src/emanation.rs"]
-line_count = 46
+line_count = 55
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -188,8 +220,17 @@ slug = "docs_book_src_algebra_motif-scaling"
 title = "Motif Scaling Laws"
 claim_refs = ["C-126", "C-130", "C-445", "C-448"]
 path_refs = ["crates/algebra_analysis/src/boxkites.rs"]
-line_count = 54
+line_count = 63
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -253,8 +294,17 @@ slug = "docs_book_src_algebra_zero-divisors"
 title = "Zero-Divisor Census"
 claim_refs = ["C-050", "C-060", "C-445", "C-448"]
 path_refs = ["crates/algebra_analysis/src/boxkites.rs"]
-line_count = 41
+line_count = 50
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -298,14 +348,14 @@ C-445 through C-448: XOR balanced search extension (I-012).
 '''
 
 [[document]]
-id = "BOOK-006"
-source_markdown = "docs/book/src/architecture/crates.md"
+id = "BOOK-019"
+source_markdown = "docs/book/src/architecture/canonical-sources.md"
 section = "architecture"
-slug = "docs_book_src_architecture_crates"
-title = "Crate Ecosystem"
-claim_refs = []
-path_refs = []
-line_count = 59
+slug = "docs_book_src_architecture_canonical-sources"
+title = "Canonical Sources"
+claim_refs = ["C-001"]
+path_refs = ["crates/", "docs/", "docs/book/", "docs/book/src/", "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md", "docs/latex/", "docs/latex/arxiv/*.tex", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "lib.rs", "proofs/", "registry/", "registry/book_docs.toml", "registry/canonical/", "registry/canonical/control_plane.sqlite3"]
+line_count = 101
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
@@ -313,7 +363,139 @@ body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+# Canonical Sources
+
+For everyday development and review, this repository should be read through
+the Rust and Markdown surfaces that are easy to browse on the web:
+
+- crate rustdoc from `cargo doc --workspace --no-deps`
+- the mdBook under `docs/book/`
+- the canonical SQLite control plane at `registry/canonical/control_plane.sqlite3`
+- generated compatibility registries under `registry/`
+- focused evidence and source docs under `docs/`
+
+## Canonical order
+
+When the same concept appears in multiple places, use this priority order:
+
+1. Rust source/tests in `crates/` and Rocq proof files in `proofs/`
+2. The canonical SQLite control plane in `registry/canonical/`
+3. Crate rustdoc on `lib.rs` and module docs
+4. mdBook pages in `docs/book/src/`
+5. Generated compatibility registries in `registry/`
+6. Focused Markdown narratives in `docs/`
+7. LaTeX under `docs/latex/`
+
+## What the LaTeX tree is for
+
+`docs/latex/` is publication output and paper assembly material. It is useful
+for thesis builds, appendices, and archival paper packaging, but it should not
+be treated as the primary place to learn current repo truth.
+
+In particular, the generated files below are mirrors, not canonical sources:
+
+- `docs/latex/claims_appendix.tex`
+- `docs/latex/experiments_appendix.tex`
+- `docs/latex/insights_appendix.tex`
+- `docs/latex/arxiv/*.tex`
+
+If a LaTeX appendix disagrees with a crate, test, registry row, or mdBook
+page, the LaTeX copy should be updated or removed rather than treated as the
+source of truth.
+
+## Recommended doc workflow
+
+Use these commands first:
+
+```sh
+# Inspect the canonical control plane directly
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  query claim C-001
+
+# Browse crate-level API and module docs
+cargo doc --workspace --no-deps
+
+# Build the web book
+mdbook build docs/book
+
+# Refresh the standard control-plane docs bundle, including docs/THEOREMS.md
+cargo run --release -p gororoba_cli_data --bin registry-emit -- \
+  control-plane-docs
+
+# Refresh the mdBook registry after editing docs/book/src
+cargo run --release --bin markdown-registry -- normalize-book-docs --bootstrap-from-markdown
+```
+
+## Scope for this repo
+
+This repository is Rust-first. That means:
+
+- new implementation detail belongs in crates and rustdoc
+- explanatory architecture belongs in the mdBook
+- claims, insights, experiments, binaries, theorem inventory, and source
+  indexing belong in the canonical SQLite control plane
+- generated TOML and Markdown views exist for compatibility and web browsing
+- LaTeX should be reserved for publication packaging, not duplicated operational
+  documentation
+
+## Current boundary: `book_docs`
+
+`registry/book_docs.toml` is intentionally not part of the SQLite control-plane
+migration. It indexes authored mdBook source pages under `docs/book/src/` and
+drives generated browsing aids such as `docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md`.
+
+For now, treat this lane as:
+
+- authored mdBook pages in `docs/book/src/` are the source material
+- `registry/book_docs.toml` is the mdBook catalog/normalization registry
+- the SQLite control plane remains canonical for claims, insights, experiments,
+  binaries, and theorems, but not for authored mdBook prose inventory
+
+This boundary is deliberate: the control plane owns structured research and
+verification state, while the mdBook still owns curated explanatory pages.
+'''
+
+[[document]]
+id = "BOOK-006"
+source_markdown = "docs/book/src/architecture/crates.md"
+section = "architecture"
+slug = "docs_book_src_architecture_crates"
+title = "Crate Ecosystem"
+claim_refs = []
+path_refs = []
+line_count = 79
+body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Crate Ecosystem
+
+For code-facing documentation, prefer crate rustdoc over paper appendices or
+registry mirrors:
+
+```sh
+cargo doc --workspace --no-deps
+```
+
+That surface is the easiest web-viewable path into the actual APIs, module
+boundaries, and crate-level caveats. The mdBook complements it with
+cross-cutting architecture notes.
 
 The workspace uses 30+ external crates for numerical computation, data formats,
 and hardware acceleration.  Key adopted crates:
@@ -373,10 +555,19 @@ source_markdown = "docs/book/src/architecture/layout.md"
 section = "architecture"
 slug = "docs_book_src_architecture_layout"
 title = "Project Layout"
-claim_refs = ["C-001", "C-475"]
-path_refs = ["Cargo.toml", "[workspace.dependencies]", "crates/", "papers/", "registry/"]
-line_count = 79
+claim_refs = []
+path_refs = ["Cargo.toml", "[workspace.dependencies]", "crates/", "docs/*.md", "papers/", "registry/canonical/", "registry/canonical/control_plane.sqlite3"]
+line_count = 100
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -386,8 +577,8 @@ body_markdown = '''
 # Project Layout
 
 open\_gororoba is organized as a Rust workspace with 15 member crates under
-`crates/`, a TOML registry under `registry/`, and a PDF research collection
-under `papers/`.
+`crates/`, a canonical SQLite control plane under `registry/canonical/`, and a
+PDF research collection under `papers/`.
 
 ## Directory structure
 
@@ -410,29 +601,37 @@ crates/
   gororoba_cli/       37 analysis binaries
 
 registry/
-  claims.toml         475 tracked claims (C-001..C-475)
-  insights.toml       16 insights (I-001..I-016)
-  experiments.toml    10 reproducible experiments (E-001..E-010)
-  binaries.toml       37 CLI binaries
-  project.toml        Version, counts, sprint history
+  canonical/          Canonical SQLite control plane and migration ledger
+  claims.toml         SQLite-exported claims compatibility view
+  insights.toml       SQLite-exported insights compatibility view
+  experiments.toml    SQLite-exported experiments compatibility view
+  binaries.toml       SQLite-exported CLI inventory compatibility view
+  project.toml        Version, synchronized counts, sprint history
 
 papers/
-  pdf/                19 research PDFs
-  bib/                BibTeX database (cayley_dickson.bib)
+  pdf/                Research PDFs
+  bib/                Bibliography database
   extracted/          Structured TOML extractions per paper
   MANIFEST.toml       Paper metadata registry
 
 docs/
-  latex/              MASTER_SYNTHESIS.tex, MATHEMATICAL_FORMALISM.tex
-  book/               This mdbook
-  CLAIMS_EVIDENCE_MATRIX.md   Markdown mirror of claims.toml
-  INSIGHTS.md                 Markdown mirror of insights.toml
+  book/               Canonical web-viewable architecture docs
+  generated/          Generated mirrors and registry exports for browsing
+  latex/              Publication output, appendices, paper assembly
+  CLAIMS_EVIDENCE_MATRIX.md   Generated claims mirror from the canonical SQLite control plane
+  INSIGHTS.md                 Generated insights mirror from the canonical SQLite control plane
   MATH_CONVENTIONS.md         9 mathematical conventions
 ```
 
 ## Build commands
 
 ```sh
+# Crate and module docs
+cargo doc --workspace --no-deps
+
+# mdBook
+mdbook build docs/book
+
 # Full test suite (2063 tests)
 cargo test --workspace -j$(nproc)
 
@@ -442,12 +641,16 @@ cargo clippy --workspace -j$(nproc) -- -D warnings
 # Registry validation
 cargo run --release --bin registry-check
 
-# LaTeX documents (requires texlive)
-make latex
-
 # GPU tests (requires CUDA + RTX 4070 Ti or similar)
 cargo test --workspace -j$(nproc) --features gpu
 ```
+
+`make latex` remains available for publication builds, but it is not the
+recommended first stop for development-facing documentation.
+
+The `docs/*.md` mirrors are still useful for quick browsing, but canonical
+authoring for claims, insights, experiments, binaries, and theorems now lives
+in the Rust workspace plus `registry/canonical/control_plane.sqlite3`.
 
 ## Dependency management
 
@@ -464,9 +667,18 @@ section = "architecture"
 slug = "docs_book_src_architecture_verification"
 title = "Verification Ladder"
 claim_refs = ["C-001", "C-006", "C-050", "C-060", "C-126", "C-130", "C-200", "C-210", "C-400", "C-410", "C-420", "C-425", "C-438", "C-445", "C-448", "C-454", "C-455", "C-458", "C-467", "C-468", "C-475"]
-path_refs = ["claims.toml", "registry/claims.toml"]
-line_count = 68
+path_refs = ["docs/THEOREMS.md", "proofs/_RocqProject", "registry/canonical/control_plane.sqlite3", "registry/claims.toml"]
+line_count = 85
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -525,15 +737,23 @@ Exploratory code with explicitly tracked falsification criteria.
 - Bounce cosmology vs Lambda-CDM (C-200 through C-210, Delta BIC = +7.37)
 - Negative-dimension eigenvalue convergence (C-420 through C-425)
 
-**Standard:** Claims tracked in `registry/claims.toml` with `where_stated`
-and falsification criteria.  No claim of physical validity.
+**Standard:** Claims tracked in `registry/canonical/control_plane.sqlite3`
+with `where_stated` and falsification criteria. Compatibility exports such as
+`registry/claims.toml` are downstream views, not the primary source of truth.
 
 ## Claims workflow
 
-1. New physical hypothesis gets a C-nnn entry in `claims.toml`
+1. New physical hypothesis gets a C-nnn entry in the canonical SQLite control plane
 2. Entry includes: statement, status, where\_stated, test function
 3. Status progresses through: Pending -> Verified / Refuted / Partial
-4. `registry-check` validates all entries for consistency
+4. `registry-check` and `provenance verify-control-plane` validate all entries for consistency
+
+## Proof inventory
+
+Formal proof files are indexed through the canonical SQLite control plane and
+surfaced as generated theorem docs. The live proof manifest comes from
+`proofs/_RocqProject`, while compatibility markdown such as `docs/THEOREMS.md`
+is generated downstream.
 '''
 
 [[document]]
@@ -544,8 +764,17 @@ slug = "docs_book_src_cli_catalog"
 title = "Binary Catalog"
 claim_refs = []
 path_refs = ["registry/binaries.toml"]
-line_count = 68
+line_count = 79
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -554,9 +783,9 @@ body_markdown = '''
 
 # Binary Catalog
 
-The `gororoba_cli` crate provides 40 binaries.  Each binary is
-registered in `registry/binaries.toml` with its description and associated
-experiment (if any).
+The `gororoba_cli` crate provides 40 binaries. Each binary is indexed in the
+canonical SQLite control plane and exported into `registry/binaries.toml` as a
+compatibility view.
 
 ## Experiment binaries
 
@@ -577,10 +806,12 @@ experiment (if any).
 
 | Binary | Description |
 |--------|-------------|
-| registry-check | Validate TOML registry for internal consistency |
-| migrate-claims | Bootstrap-import claims from legacy markdown into TOML |
-| migrate-insights | Migrate insights from markdown to TOML |
-| generate-latex | Generate LaTeX appendices from TOML registry |
+| registry-check | Validate canonical control-plane integrity and export freshness |
+| project-counter-sync | Synchronize top-level counters from the canonical control plane |
+| migrate-claims | Legacy/bootstrap import from markdown claims mirror into SQLite compatibility exports |
+| migrate-insights | Legacy/bootstrap import from markdown insights mirror into SQLite compatibility exports |
+| generate-latex | Publication export: generate LaTeX appendices from canonical control-plane data |
+| registry-emit | Export derived web and publication views; `control-plane-docs` is the standard refresh path for claims, insights, experiments, and theorems |
 | extract-papers | Batch PDF extraction to structured TOML |
 | export-hdf5 | Export computed data to HDF5 (feature-gated) |
 | fetch-chime-frb | Download CHIME/FRB catalog data |
@@ -623,8 +854,17 @@ slug = "docs_book_src_experiments_e001"
 title = "E-001: Cayley-Dickson Motif Census"
 claim_refs = ["C-100", "C-110", "C-126", "C-130"]
 path_refs = ["data/csv/motif_census_dim{N}.csv", "data/csv/motif_census_summary.csv"]
-line_count = 45
+line_count = 54
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -679,8 +919,17 @@ slug = "docs_book_src_experiments_e002"
 title = "E-002: Multi-Dataset GPU Ultrametric Sweep"
 claim_refs = ["C-071", "C-436", "C-440", "C-441", "C-444", "C-449"]
 path_refs = []
-line_count = 52
+line_count = 61
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -742,8 +991,17 @@ slug = "docs_book_src_experiments_e003"
 title = "E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)"
 claim_refs = ["C-200", "C-210"]
 path_refs = ["data/external/Pantheon+SH0ES.dat"]
-line_count = 40
+line_count = 49
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -793,8 +1051,17 @@ slug = "docs_book_src_glossary"
 title = "Glossary"
 claim_refs = ["C-442"]
 path_refs = ["Phi_n: {e_0, ..., e_{n-1}} -> Lambda_n", "e8_lattice.rs", "kac_moody.rs"]
-line_count = 188
+line_count = 197
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -990,10 +1257,19 @@ source_markdown = "docs/book/src/introduction.md"
 section = "introduction.md"
 slug = "docs_book_src_introduction"
 title = "open_gororoba"
-claim_refs = ["C-001", "C-475"]
-path_refs = []
-line_count = 65
+claim_refs = []
+path_refs = ["crates/", "docs/latex/", "papers/MANIFEST.toml", "registry/*.toml", "registry/binaries.toml", "registry/canonical/control_plane.sqlite3", "registry/claims.toml", "registry/experiments.toml", "registry/insights.toml", "registry/project.toml"]
+line_count = 101
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -1006,21 +1282,42 @@ A research workbench exploring whether algebraic structure in Cayley-Dickson
 algebras (real -> complex -> quaternion -> octonion -> sedenion -> ...) can
 explain or predict phenomena in quantum gravity, particle physics, and cosmology.
 
-## Key Numbers
+The canonical documentation path is now:
 
-- **2063** Rust tests (0 failures)
-- **475** tracked claims (C-001..C-475)
-- **16** insights (I-001..I-016)
-- **10** reproducible experiments (E-001..E-010)
-- **37** CLI binaries
-- **19** extracted research papers
-- **15** workspace crates
+- crate rustdoc for API and module behavior
+- this mdBook for architecture and navigation
+- `registry/canonical/control_plane.sqlite3` for claims, experiments, theorem
+  inventory, and evidence indexing
+- `registry/*.toml` as generated compatibility exports for legacy tooling and
+  lightweight browsing
+
+The LaTeX tree under `docs/latex/` is publication output, not the primary
+source for current repo truth.
+
+## Canonical Inventory
+
+For current counts and inventory, prefer the Rust workspace and canonical
+SQLite control plane over hard-coded narrative snapshots:
+
+- `crates/` for the active workspace members and public APIs
+- `registry/project.toml` for synchronized top-level counters
+- `registry/canonical/control_plane.sqlite3` for tracked claims, insights,
+  experiments, binaries, and theorem rows
+- `registry/claims.toml`, `registry/insights.toml`, `registry/experiments.toml`,
+  and `registry/binaries.toml` as generated compatibility exports
+- `papers/MANIFEST.toml` for the paper corpus
 
 ## Quick Start
 
 ```sh
 # Build everything
 cargo build --workspace -j$(nproc)
+
+# Generate crate docs
+cargo doc --workspace --no-deps
+
+# Build the web book
+mdbook build docs/book
 
 # Run tests
 cargo test --workspace -j$(nproc)
@@ -1030,6 +1327,9 @@ cargo clippy --workspace -j$(nproc) -- -D warnings
 
 # Check registry integrity
 cargo run --release --bin registry-check
+
+# Synchronize project counters from registry sources
+cargo run --release --bin project-counter-sync
 
 # Extract a paper to TOML
 cargo run --release --bin extract-papers -- --only demarrais-2000-math0011260
@@ -1054,10 +1354,13 @@ crates/
   docpipe/          PDF extraction (pdfium-render primary)
   gororoba_py/      PyO3 bindings (thin wrappers)
   gororoba_cli/     37 analysis binaries
-registry/           TOML registry (claims, insights, experiments)
+registry/           SQLite control plane plus generated compatibility registries
 papers/             PDF collection + TOML extractions
 docs/               Documentation and tracking
 ```
+
+Start with [Canonical Sources](./architecture/canonical-sources.md) if you are
+deciding which doc surface to trust.
 '''
 
 [[document]]
@@ -1068,8 +1371,17 @@ slug = "docs_book_src_papers_collection"
 title = "Paper Collection"
 claim_refs = []
 path_refs = ["papers/extracted/", "papers/pdf/"]
-line_count = 68
+line_count = 77
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -1140,15 +1452,70 @@ cargo run --release --bin extract-papers -- --only demarrais-2000-math0011260
 '''
 
 [[document]]
+id = "BOOK-020"
+source_markdown = "docs/book/src/proofs/index.md"
+section = "proofs"
+slug = "docs_book_src_proofs_index"
+title = "Proof Inventory"
+claim_refs = []
+path_refs = ["docs/THEOREMS.md", "docs/generated/THEOREMS_REGISTRY_MIRROR.md", "proofs/", "proofs/_RocqProject", "proofs/verified/*.v"]
+line_count = 35
+body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/canonical/control_plane.sqlite3 -->
+
+# Proof Inventory
+
+The Rocq proof inventory is indexed through the canonical SQLite control
+plane and exported into human-readable surfaces. The standard docs refresh
+path emits the theorem mirror and theorem index together with the rest of the
+control-plane web docs bundle.
+
+Primary sources for this lane:
+
+- `proofs/_RocqProject` for the live proof-file manifest
+- `proofs/verified/*.v` for kernel-checked proof files
+- `docs/THEOREMS.md` for the generated compatibility view
+
+Recommended workflow:
+
+```sh
+cargo run -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  export-control-plane
+
+cargo run -p gororoba_cli_data --bin registry-emit -- \
+  control-plane-docs
+```
+
+After export, use `docs/THEOREMS.md` as the web-readable theorem index and
+the proof files under `proofs/` as the canonical source material. Use
+`docs/generated/THEOREMS_REGISTRY_MIRROR.md` when you want the fuller
+registry-style mirror.
+'''
+
+[[document]]
 id = "BOOK-016"
 source_markdown = "docs/book/src/registry/claims.md"
 section = "registry"
 slug = "docs_book_src_registry_claims"
 title = "Claims Evidence Matrix"
-claim_refs = ["C-001", "C-455", "C-494"]
-path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/latex/claims_appendix.tex", "registry/claims.toml"]
-line_count = 56
+claim_refs = ["C-001", "C-455"]
+path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/latex/claims_appendix.tex", "registry/canonical/control_plane.sqlite3", "registry/claims.toml"]
+line_count = 95
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -1157,9 +1524,13 @@ body_markdown = '''
 
 # Claims Evidence Matrix
 
-The claims evidence matrix tracks 494 claims (C-001 through C-494) in
-`registry/claims.toml`.  Each claim records a testable statement about the
-codebase's mathematical or physical results.
+Claims are authored canonically in the SQLite control plane at
+`registry/canonical/control_plane.sqlite3`. The compatibility file
+`registry/claims.toml` and the web-viewable `docs/CLAIMS_EVIDENCE_MATRIX.md`
+are downstream exports.
+
+Each claim records a testable statement about the codebase's mathematical or
+physical results.
 
 ## Claim structure
 
@@ -1183,27 +1554,53 @@ The bulk of claims fall into these categories:
 
 ## Validation
 
-The `registry-check` binary validates all claims for:
+The `provenance` and `registry-check` binaries validate claims for:
 
 - Sequential ID gaps
 - Valid status enum values
 - Consistency with project.toml counts
+- SQLite control-plane integrity and proof linkage
 
 ```sh
-cargo run --release --bin registry-check
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  import-legacy-control-plane
+
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  export-control-plane
+
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  verify-control-plane
+
+cargo run --release -p gororoba_cli_data --bin registry-check -- \
+  --canonical-db registry/canonical/control_plane.sqlite3
 ```
+
+For direct inspection, prefer querying the DB instead of opening the exported
+TOML:
+
+```sh
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  query claim C-001
+```
+
+Use `project-counter-sync` if you need top-level counts refreshed from the
+current canonical DB state.
 
 ## Auto-generated appendix
 
 The `generate-latex` binary produces `docs/latex/claims_appendix.tex`, a
-claims longtable from claims.toml.  This ensures the LaTeX documents
-stay synchronized with the TOML source of truth.
+publication appendix from `registry/claims.toml`. That appendix is an export,
+not a source of truth.
 
 ## Markdown mirror
 
-`docs/CLAIMS_EVIDENCE_MATRIX.md` is a TOML-generated markdown mirror.
-Operational authoring is TOML-first (`registry/claims.toml` -> markdown export).
-`migrate-claims` is retained for explicit legacy/bootstrap import flows only.
+`docs/CLAIMS_EVIDENCE_MATRIX.md` is a generated convenience mirror for web
+browsing and review. `migrate-claims` is retained only for explicit
+legacy/bootstrap import flows, not steady-state authoring.
 '''
 
 [[document]]
@@ -1213,9 +1610,18 @@ section = "registry"
 slug = "docs_book_src_registry_experiments"
 title = "Experiments Portfolio"
 claim_refs = []
-path_refs = ["registry/experiments.toml"]
-line_count = 48
+path_refs = ["registry/canonical/control_plane.sqlite3", "registry/experiments.toml"]
+line_count = 81
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -1224,9 +1630,12 @@ body_markdown = '''
 
 # Experiments Portfolio
 
-The experiments registry tracks 10 reproducible experiments (E-001 through E-010)
-in `registry/experiments.toml`.  Each experiment specifies the binary, method,
-input data, output files, run command, and associated claims.
+Experiments are authored canonically in the SQLite control plane at
+`registry/canonical/control_plane.sqlite3`. The compatibility file
+`registry/experiments.toml` is exported from that DB for downstream tooling.
+
+Each experiment specifies the binary, method, input data, output files, run
+command, and associated claims.
 
 ## Experiment catalog
 
@@ -1263,6 +1672,27 @@ make fetch-data  # download datasets first
 cargo run --release --bin real-cosmo-fit
 cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
 ```
+
+## Registry posture
+
+`registry/experiments.toml` and the legacy Markdown views remain useful
+compatibility surfaces, but they should be treated as exported material.
+The SQLite control plane is the operational source of truth for experiment
+inventory and top-level counts.
+
+```sh
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  import-legacy-control-plane
+
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  export-control-plane
+
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  query experiment E-001
+```
 '''
 
 [[document]]
@@ -1272,9 +1702,18 @@ section = "registry"
 slug = "docs_book_src_registry_insights"
 title = "Insights"
 claim_refs = []
-path_refs = ["docs/latex/insights_appendix.tex", "registry/insights.toml"]
-line_count = 44
+path_refs = ["docs/latex/insights_appendix.tex", "registry/canonical/control_plane.sqlite3", "registry/insights.toml"]
+line_count = 81
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
 
@@ -1283,9 +1722,12 @@ body_markdown = '''
 
 # Insights
 
-The insights registry tracks 16 discoveries (I-001 through I-016) in
-`registry/insights.toml`.  Each insight records a significant finding or
-interpretation from the computational census.
+Insights are authored canonically in the SQLite control plane at
+`registry/canonical/control_plane.sqlite3`. The compatibility file
+`registry/insights.toml` and rendered Markdown views are exports.
+
+Each insight records a significant finding or interpretation from the
+computational census.
 
 ## Insight catalog
 
@@ -1314,8 +1756,33 @@ I-005 and I-008 are marked **superseded** because the GPU sweep (I-011) with
 10 million triples revealed that 5K subsampling destroyed the Hipparcos galactic
 spatial signal, making the earlier "radio-transient-specific" conclusion too narrow.
 
-## Auto-generated appendix
+## Validation and export
 
-The `generate-latex` binary produces `docs/latex/insights_appendix.tex` from
-insights.toml.
+Use the canonical DB flow first:
+
+```sh
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  import-legacy-control-plane
+
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  export-control-plane
+
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  verify-control-plane
+```
+
+SQLite-first inspection example:
+
+```sh
+cargo run --release -p gororoba_cli_data --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  query insight I-001
+```
+
+The `generate-latex` binary still produces `docs/latex/insights_appendix.tex`
+for publication packaging. That appendix is a rendered export, not a
+canonical source.
 '''

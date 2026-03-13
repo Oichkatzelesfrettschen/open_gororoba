@@ -1,0 +1,95 @@
+[dataset]
+id = "PC-0042"
+slug = "e027_correlation"
+source_csv = "data/csv/e027_correlation.csv"
+source_sha256 = "7ded9e956e0eaccd9857febfa13cd96fbe0d3bdd0b9cb17a32e34193383c5695"
+source_size_bytes = 267
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 13
+column_count = 2
+header_value_sha256 = "738de41415be4d67e19ddb1e8a31234b84744a929253b1280bd4610546c4b73e"
+row_value_sha256 = "a029ffbb08bd249bf041643229d72fca03f322d8ff64926080acad432af875ec"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "metric",
+    "value",
+]
+original_header = [
+    "metric",
+    "value",
+]
+rows = [
+    [
+    "grid_size",
+    "8",
+],
+    [
+    "lbm_steps",
+    "100",
+],
+    [
+    "nu_base",
+    "0.333000",
+],
+    [
+    "lambda",
+    "1.000000",
+],
+    [
+    "t_statistic",
+    "NaN",
+],
+    [
+    "p_value",
+    "1.000000",
+],
+    [
+    "effect_size",
+    "0.000000",
+],
+    [
+    "mean_frustration_channels",
+    "NaN",
+],
+    [
+    "mean_frustration_background",
+    "NaN",
+],
+    [
+    "n_channel",
+    "0",
+],
+    [
+    "n_background",
+    "512",
+],
+    [
+    "n_channels_detected",
+    "0",
+],
+    [
+    "null_model_p_value",
+    "0.500000",
+],
+]
+
+[[column]]
+index = 1
+name = "metric"
+original_name = "metric"
+inferred_type = "string"
+non_empty_count = 13
+empty_count = 0
+
+[[column]]
+index = 2
+name = "value"
+original_name = "value"
+inferred_type = "string"
+non_empty_count = 13
+empty_count = 0

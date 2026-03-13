@@ -1,0 +1,290 @@
+[python_retention]
+version = 1
+policy = "first_match_wins"
+inventory_output = "registry/python_retention_inventory.toml"
+notes = "Classify every remaining Python file by governance role so Rust-vs-Python decisions are explicit and machine-checkable."
+
+[[rule]]
+id = "PY-001"
+globs = [
+  "crates/gororoba_py/venv/**/*.py",
+  "venv/**/*.py",
+  ".venv/**/*.py",
+  "wow_analysis_venv/**/*.py",
+  "build/**/*.py",
+  "target/**/*.py",
+]
+classification = "exclude_vendored"
+action = "exclude_from_first_party_counts"
+canonical = false
+owner = "external"
+rationale = "Vendored environments and build outputs are not first-party repo logic."
+
+[[rule]]
+id = "PY-001A"
+globs = ["src/verification/verify_registry_crossrefs.py"]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Cross-registry verification is now owned by the Rust governance verifier; keep the Python file only as a short-lived reference until removal."
+
+[[rule]]
+id = "PY-001B"
+globs = [
+  "src/scripts/analysis/build_structured_knowledge_atoms.py",
+  "src/verification/verify_structured_knowledge_atoms.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Structured knowledge atom build/verify is now owned by the Rust knowledge-atoms CLI; keep the Python files only as short-lived reference shims until removal."
+
+[[rule]]
+id = "PY-001C"
+globs = [
+  "src/scripts/analysis/build_artifact_scrolls_registry.py",
+  "src/verification/verify_artifact_scrolls_registry.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Artifact scroll build/verify is now owned by the Rust artifact-scrolls CLI; keep the Python files only as short-lived reference shims until removal."
+
+[[rule]]
+id = "PY-001D"
+globs = [
+  "src/scripts/analysis/build_registry_semantic_atoms.py",
+  "src/verification/verify_registry_semantic_atoms.py",
+  "src/scripts/analysis/build_wave5_batch1_registries.py",
+  "src/verification/verify_wave5_batch1_registries.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Semantic-atoms build/verify is now owned by the Rust semantic-atoms CLI; keep the Python files only as short-lived compatibility references until removal."
+
+[[rule]]
+id = "PY-001E"
+globs = [
+  "src/scripts/analysis/build_registry_evidence_provenance.py",
+  "src/verification/verify_registry_evidence_provenance.py",
+  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "src/verification/verify_wave5_batch2_registries.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Evidence-provenance build/verify is now owned by the Rust evidence-provenance CLI; keep the Python files only as short-lived compatibility references until removal."
+
+[[rule]]
+id = "PY-001F"
+globs = [
+  "src/scripts/analysis/build_registry_integrity_resolution.py",
+  "src/verification/verify_registry_integrity_resolution.py",
+  "src/scripts/analysis/build_wave5_batch3_registries.py",
+  "src/verification/verify_wave5_batch3_registries.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Integrity-resolution build/verify is now owned by the Rust integrity-resolution CLI; keep the Python files only as short-lived compatibility references until removal."
+
+[[rule]]
+id = "PY-001G"
+globs = [
+  "src/scripts/analysis/build_registry_execution_planning.py",
+  "src/verification/verify_registry_execution_planning.py",
+  "src/scripts/analysis/build_wave5_batch4_registries.py",
+  "src/verification/verify_wave5_batch4_registries.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Execution-planning build/verify is now owned by the Rust execution-planning CLI; keep the Python files only as short-lived compatibility references until removal."
+
+[[rule]]
+id = "PY-001H"
+globs = [
+  "src/scripts/analysis/build_csv_inventory_registry.py",
+  "src/scripts/analysis/migrate_legacy_csv_to_toml.py",
+  "src/verification/verify_legacy_csv_toml_parity.py",
+  "src/scripts/analysis/build_project_csv_split_policy_registry.py",
+  "src/scripts/analysis/build_csv_holding_registries.py",
+  "src/scripts/analysis/build_csv_scroll_pipeline_registry.py",
+  "src/verification/verify_csv_scroll_pipeline.py",
+  "src/verification/verify_csv_holding_registries.py",
+  "src/verification/verify_csv_corpus_coverage.py",
+  "src/scripts/analysis/build_csv_migration_scope_registry.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "CSV inventory, canonicalization, holdings, scroll-pipeline verification, corpus coverage, and migration-scope generation are now owned by the Rust csv-canonicalization CLI; keep the Python files only as short-lived compatibility references until removal."
+
+[[rule]]
+id = "PY-001I"
+globs = ["src/scripts/analysis/build_synthesis_gate_rollup.py"]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Synthesis execution contract rollup is now owned by the Rust synthesis-execution-contract CLI; keep the Python file only as a short-lived reference shim until removal."
+
+[[rule]]
+id = "PY-001J"
+globs = [
+  "scripts/ci_affected_crates.py",
+  "scripts/run_local_nextest_plan.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Workspace routing and grouped local nextest planning are now owned by the Rust workspace-routing and local-nextest-plan CLIs; keep the Python files only as short-lived reference shims until removal."
+
+[[rule]]
+id = "PY-001K"
+globs = [
+  "src/verification/verify_pantheon_physicsforge_license_consistency.py",
+  "src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+  "src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+]
+classification = "bridge_or_retire"
+action = "retire_after_rust_parity_is_established"
+canonical = false
+owner = "gororoba_cli_data"
+rationale = "Pantheon/PhysicsForge migration verification is now owned by the Rust pantheon-physicsforge-verify CLI; keep the Python files only as short-lived reference shims until removal."
+
+[[rule]]
+id = "PY-002"
+globs = ["src/scripts/analysis/**/*.py", "src/verification/**/*.py"]
+classification = "rust_canonical_migrate_now"
+action = "port_to_gororoba_cli_data"
+canonical = true
+owner = "gororoba_cli_data"
+rationale = "Authoritative registry builders and verifiers belong in the Rust control plane."
+
+[[rule]]
+id = "PY-003"
+globs = ["scripts/**/*.py"]
+classification = "rust_canonical_migrate_now"
+action = "port_to_rust_workspace_tooling"
+canonical = true
+owner = "workspace_tooling"
+rationale = "CI scope, local test planning, and gate orchestration are Rust-workspace concerns."
+
+[[rule]]
+id = "PY-004"
+globs = ["tests/**/*.py"]
+classification = "rust_test_migration"
+action = "replace_with_rust_tests_when_touching_lane"
+canonical = true
+owner = "workspace_tests"
+rationale = "Python tests for canonical registries and claims should converge on Rust-native test surfaces."
+
+[[rule]]
+id = "PY-005"
+globs = ["bin/fetch_*.py", "bin/record_*.py", "bin/manga_dapall_to_csv.py"]
+classification = "python_utility_noncanonical"
+action = "wrap_with_rust_entrypoint_or_document_noncanonical"
+canonical = false
+owner = "bin_utilities"
+rationale = "Downloaders and one-shot ingest helpers are useful, but they should not define the canonical repo control plane."
+
+[[rule]]
+id = "PY-006"
+globs = [
+  "bin/analyze_*.py",
+  "bin/ascii_check.py",
+  "bin/ascii_placeholder_cleanup.py",
+  "bin/check_rho_mean_finite.py",
+  "bin/convos_chunker.py",
+  "bin/coq_prepare_confine.py",
+  "bin/doctor.py",
+  "bin/euclid_manga_crossmatch.py",
+  "bin/manga_maps_to_rotcurves.py",
+  "bin/patch_pyfilesystem_pkg_resources.py",
+  "bin/terminology_gate.py",
+]
+classification = "python_utility_noncanonical"
+action = "wrap_with_rust_entrypoint_or_document_noncanonical"
+canonical = false
+owner = "bin_utilities"
+rationale = "Small operational helpers can remain utilities, but they should be explicitly classified and wrapped if they become required."
+
+[[rule]]
+id = "PY-007"
+globs = ["src/ghost_stats/**/*.py", "src/scripts/visualization/**/*.py"]
+classification = "scientific_python_phaseout"
+action = "port_to_rust_artifact_or_analysis_bin"
+canonical = false
+owner = "scientific_analysis"
+rationale = "Scientific analysis and visualization are still Python-heavy, but the live artifact lane is being moved to Rust."
+
+[[rule]]
+id = "PY-008"
+globs = ["src/quantum/**/*.py"]
+classification = "scientific_python_phaseout"
+action = "port_to_rust_quantum_binaries"
+canonical = false
+owner = "scientific_analysis"
+rationale = "Quantum experiments should converge on the existing Rust quantum and physics crates."
+
+[[rule]]
+id = "PY-009"
+globs = ["src/gemini_physics/**/*.py", "src/quantum_runtime/**/*.py"]
+classification = "bridge_or_retire"
+action = "port_bridge_logic_or_remove_if_unused"
+canonical = false
+owner = "scientific_analysis"
+rationale = "Python bridge layers should either become Rust-native adapters or be retired."
+
+[[rule]]
+id = "PY-010"
+globs = ["src/fetch_*.py"]
+classification = "python_utility_noncanonical"
+action = "wrap_with_rust_entrypoint_or_fold_into_fetch_datasets"
+canonical = false
+owner = "data_fetch"
+rationale = "Top-level fetch helpers should eventually collapse into the Rust dataset/provenance pipeline."
+
+[[rule]]
+id = "PY-011"
+globs = ["src/assemble_*.py", "src/analyze_full_chat_log.py"]
+classification = "rust_canonical_migrate_now"
+action = "port_to_rust_publication_or_data_cli"
+canonical = true
+owner = "gororoba_cli_data"
+rationale = "Manuscript assembly and repo-wide analysis should not depend on Python when they affect canonical outputs."
+
+[[rule]]
+id = "PY-012"
+globs = [
+  "src/vis_*.py",
+  "src/*simulation*.py",
+  "src/entropy_pde_fit.py",
+  "src/topology_analysis.py",
+  "src/spectral_flow_sim.py",
+  "src/modular_classical_sim.py",
+  "src/nonlocal_long_range_ZZ.py",
+  "src/neg_dim_spectrum.py",
+  "src/map_cosmic_objects.py",
+  "src/materials_embedding_experiments.py",
+  "src/sedenion_field_sim.py",
+  "src/holo_tensor_net.py",
+]
+classification = "scientific_python_phaseout"
+action = "port_to_rust_artifact_or_analysis_bin"
+canonical = false
+owner = "scientific_analysis"
+rationale = "Scientific and visualization scripts should move behind Rust CLIs where they become part of the reproducible artifact path."

@@ -1,4 +1,4 @@
-# Insights narrative overlay registry (TOML-first).
+# Insights narrative overlay registry.
 # Captures long-form narrative previously maintained in docs/INSIGHTS.md.
 
 [insights_narrative]
@@ -10,7 +10,8 @@ preamble_markdown = """
 # Insights
 
 Source-of-truth policy:
-- Authoritative machine-readable registry: `registry/insights.toml`
+- Authoritative machine-readable source: `registry/canonical/control_plane.sqlite3`
+- SQLite-exported compatibility view: `registry/insights.toml`
 - TOML-driven markdown mirror: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
 - This file remains narrative detail and historical context.
 

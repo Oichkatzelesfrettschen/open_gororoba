@@ -211,13 +211,13 @@ last_checked_utc = "2026-02-16T01:56:18Z"
 required = [
   "cargo clippy --workspace -j$(nproc) -- -D warnings",
   "cargo test --workspace -j$(nproc)",
-  "make ascii-check",
+  "make ansi-check",
 ]
 recommended = ["make rust-smoke", "make mcp-smoke", "make cargo-deny-check", "make registry", "make check"]
 dependency_change = ["make dep-audit", "make cargo-deny-check"]
 pre_push = ["make pre-push-gate"]
 pre_push_strict = ["make pre-push-gate-strict"]
-core = ["check", "smoke", "ascii-check", "registry", "docs-publish", "governance-gate"]
+core = ["check", "smoke", "ansi-check", "registry", "docs-publish", "governance-gate"]
 rust = ["rust-test", "rust-clippy", "rust-smoke", "dep-audit", "cargo-deny-check", "mcp-smoke", "rust-parity", "rust-release-fat-lto"]
 registry = [
   "registry-verify-markdown-inventory",

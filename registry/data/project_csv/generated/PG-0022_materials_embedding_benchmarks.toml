@@ -2,15 +2,15 @@
 id = "PG-0022"
 slug = "materials_embedding_benchmarks"
 source_csv = "data/csv/materials_embedding_benchmarks.csv"
-source_sha256 = "f264b06fefee10fed7d56ad439e9ee8fcd41e7f604b8b1a008b9a3ed0d2da44a"
-source_size_bytes = 227
+source_sha256 = "b27d17c16226e6af0099346dd216dda9e0c3d53be410249bece3853aa69468be"
+source_size_bytes = 224
 has_header = true
 delimiter = ","
 quotechar = '"'
 row_count = 4
 column_count = 3
 header_value_sha256 = "c8d5660bf8a157d2dfaa16580a90a559e8340e89201ff16586793136de00e3cb"
-row_value_sha256 = "951e2f826ad7f93e4f7fa42152e7926dbdea6360aa40d4243107890887aa7313"
+row_value_sha256 = "67c28cd6b32ce5e62307379cf5b0d5063b1272500b4873720e3e0de733528fa9"
 migrated_on = "2026-02-09"
 migrated_by = "gororoba_cli::scrollify-csv"
 dataset_class = "generated_artifact"
@@ -28,23 +28,23 @@ original_header = [
 rows = [
     [
     "4",
-    "0.23564820502971764",
-    "0.30973727063262696",
+    "0.2787676863507075",
+    "0.32038418840505967",
 ],
     [
     "8",
-    "0.3921771952844037",
-    "0.42867038301412375",
+    "0.459579673583187",
+    "0.4406332057284676",
 ],
     [
     "16",
-    "0.6149785555742373",
-    "0.6040572956426018",
+    "0.6610445616417826",
+    "0.6256279045349904",
 ],
     [
     "32",
-    "0.8435078516467539",
-    "0.8219144993367273",
+    "0.8990688311627534",
+    "0.8495757157071938",
 ],
 ]
 

@@ -1,0 +1,135 @@
+[dataset]
+id = "EH-0124"
+slug = "collection_data_hvm_pa_crt_1hour_1_0"
+source_csv = "data/external/pioneer/pioneer10/pds_ppi_merged/collection-data-hvm-pa-crt-1hour-1.0.csv"
+source_sha256 = "da51a440b45e9198f2ccac8716d593fb372015059568b13869ea647e1ec36fe1"
+source_size_bytes = 1608
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 23
+column_count = 2
+header_value_sha256 = "c282b29b36fd0c928df8622580604a36dec3e354ce54e9054bde3f3878e96d80"
+row_value_sha256 = "6d13b8545d420841e2e926b2e4e1643fa15d349cc16b5e03f885bc713698a559"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "p",
+    "urn_nasa_pds_p10_hvm_pa_crt_cal_data_merged_1hour_p10_1972_1_0",
+]
+original_header = [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1972::1.0",
+]
+rows = [
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1973::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1974::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1975::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1976::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1977::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1978::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1979::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1980::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1981::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1982::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1983::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1984::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1985::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1986::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1987::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1988::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1989::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1990::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1991::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1992::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1993::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1994::1.0",
+],
+    [
+    "P",
+    "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1995::1.0",
+],
+]
+
+[[column]]
+index = 1
+name = "p"
+original_name = "P"
+inferred_type = "string"
+non_empty_count = 23
+empty_count = 0
+
+[[column]]
+index = 2
+name = "urn_nasa_pds_p10_hvm_pa_crt_cal_data_merged_1hour_p10_1972_1_0"
+original_name = "urn:nasa:pds:p10-hvm-pa-crt-cal:data-merged-1hour:p10_1972::1.0"
+inferred_type = "string"
+non_empty_count = 23
+empty_count = 0
