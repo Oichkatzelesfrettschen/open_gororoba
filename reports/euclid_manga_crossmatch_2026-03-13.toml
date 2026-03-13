@@ -1,0 +1,17 @@
+generated_at_utc = "2026-03-13T19:32:23.883265690+00:00"
+euclid_morphology_path = "data/external/euclid/zenodo/15106473/morphology_catalogue.parquet"
+manga_selection_path = "data/external/manga/dapall_selection.csv"
+manga_drpall_path = "data/external/manga/drpall-v3_1_1.fits"
+output_csv_path = "data/external/euclid/euclid_manga_crossmatch.csv"
+selection_row_count = 10262
+unique_plateifu_count = 10262
+duplicate_plateifu_count = 0
+missing_plateifu_count = 0
+match_radius_arcsec = 2.0
+matched_manga_count = 0
+selected_output_count = 0
+no_morphology_cuts = false
+featured_min = 0.5
+spiral_min = 0.5
+face_on_min = 0.5
+non_merge_min = 0.699999988079071

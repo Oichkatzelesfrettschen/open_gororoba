@@ -206,6 +206,7 @@ chardetng = "0.1"             # Charset detection for non-UTF8 intake text
 encoding_rs = "0.8"           # Decoding support for lossy/non-UTF8 source ingest
 blake3 = "1.8"                # Fast content hashing for ingest fingerprints
 sha2 = "0.10"                 # SHA-256 checksums for data provenance
+md5 = { package = "md-5", version = "0.10.6" } # Zenodo checksum verification (crate exports as md5)
 ureq = "3"                    # Minimal sync HTTP client for data fetching
 fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
 quick-xml = "0.38"            # SAX-style XML parser for VOTable and VO Cone Search responses
@@ -218,6 +219,10 @@ pdfium-render = "0.8"            # High-level PDFium wrapper (text, images, rend
 image = "0.25"                   # Image encoding/decoding (used by pdfium-render for PNG output)
 lopdf = "0.39"                   # Pure Rust PDF parser (fallback, object-level access)
 pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
+parquet = { version = "58.0.0", default-features = false, features = ["arrow", "snap"] }
+arrow-array = "58.0.0"
+arrow-ipc = "58.0.0"
+arrow-schema = "58.0.0"
 toml = "0.8"                     # TOML serialization/deserialization
 toml_edit = "0.23"               # Deterministic TOML emission/editing for compatibility exports
 camino = "1.2"                   # UTF-8 canonical repo-relative paths in provenance layers

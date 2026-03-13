@@ -438,6 +438,10 @@ name = "manga-maps-extractor"
 path = "src/bin/manga_maps_extractor.rs"
 
 [[bin]]
+name = "euclid-manga-crossmatch"
+path = "src/bin/euclid_manga_crossmatch.rs"
+
+[[bin]]
 name = "euclid-dm-coupling"
 path = "src/bin/euclid_dm_coupling.rs"
 
@@ -506,7 +510,7 @@ lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core" }
-data_core = { path = "../data_core" }
+data_core = { path = "../data_core", features = ["fits"] }
 snia_core = { path = "../snia_core" }
 sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
@@ -545,9 +549,10 @@ memmap2 = "0.9.10"
 fitsio = { workspace = true }
 ureq = { workspace = true }
 gauss-quad = { workspace = true }
-arrow-array = "58.0.0"
-arrow-ipc = "58.0.0"
-arrow-schema = "58.0.0"
+arrow-array = { workspace = true }
+arrow-ipc = { workspace = true }
+arrow-schema = { workspace = true }
+kiddo = { workspace = true }
 faer = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 

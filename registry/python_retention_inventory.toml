@@ -85,15 +85,6 @@ owner = "bin_utilities"
 rationale = "Small operational helpers can remain utilities, but they should be explicitly classified and wrapped if they become required."
 
 [[file]]
-path = "bin/euclid_manga_crossmatch.py"
-matched_rule = "PY-006"
-classification = "python_utility_noncanonical"
-action = "wrap_with_rust_entrypoint_or_document_noncanonical"
-canonical = false
-owner = "bin_utilities"
-rationale = "Small operational helpers can remain utilities, but they should be explicitly classified and wrapped if they become required."
-
-[[file]]
 path = "bin/fetch_ace_mag.py"
 matched_rule = "PY-005"
 classification = "python_utility_noncanonical"
@@ -113,24 +104,6 @@ rationale = "Downloaders and one-shot ingest helpers are useful, but they should
 
 [[file]]
 path = "bin/fetch_crs.py"
-matched_rule = "PY-005"
-classification = "python_utility_noncanonical"
-action = "wrap_with_rust_entrypoint_or_document_noncanonical"
-canonical = false
-owner = "bin_utilities"
-rationale = "Downloaders and one-shot ingest helpers are useful, but they should not define the canonical repo control plane."
-
-[[file]]
-path = "bin/fetch_euclid.py"
-matched_rule = "PY-005"
-classification = "python_utility_noncanonical"
-action = "wrap_with_rust_entrypoint_or_document_noncanonical"
-canonical = false
-owner = "bin_utilities"
-rationale = "Downloaders and one-shot ingest helpers are useful, but they should not define the canonical repo control plane."
-
-[[file]]
-path = "bin/fetch_euclid_zenodo.py"
 matched_rule = "PY-005"
 classification = "python_utility_noncanonical"
 action = "wrap_with_rust_entrypoint_or_document_noncanonical"
@@ -1838,4 +1811,3 @@ action = "replace_with_rust_tests_when_touching_lane"
 canonical = true
 owner = "workspace_tests"
 rationale = "Python tests for canonical registries and claims should converge on Rust-native test surfaces."
-

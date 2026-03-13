@@ -7,7 +7,8 @@
 //! # Data path
 //!
 //! Expected: `data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet`
-//! Download: `python3 bin/fetch_euclid_zenodo.py --catalog morphology --skip-existing`
+//! Download:
+//! `cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology`
 //!
 //! # Verified column names (2026-03-11)
 //!
@@ -59,6 +60,21 @@ pub struct EuclidSersicParams {
     pub log_luminosity: f64,
     /// log10(star formation rate / M_sun yr^-1).
     pub log_sfr: f64,
+}
+
+/// Euclid Q1 visual morphology row from `morphology_catalogue.parquet`.
+#[derive(Debug, Clone)]
+pub struct EuclidMorphologyRecord {
+    pub object_id: String,
+    pub ra_deg: f64,
+    pub dec_deg: f64,
+    pub ellipticity: f64,
+    pub featured_fraction: f32,
+    pub spiral_fraction: f32,
+    pub face_on_fraction: f32,
+    pub non_merging_fraction: f32,
+    pub bar_no_fraction: f32,
+    pub clumps_yes_fraction: f32,
 }
 
 impl EuclidSersicParams {
@@ -183,7 +199,7 @@ pub fn read_euclid_physical_measurements(
     if !Path::new(parquet_path).exists() {
         return Err(format!(
             "Parquet file not found: {parquet_path}\n\
-             Download: python3 bin/fetch_euclid_zenodo.py --catalog morphology --skip-existing"
+             Download: cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology"
         ));
     }
 
@@ -272,6 +288,96 @@ pub fn read_euclid_physical_measurements(
     Ok(result)
 }
 
+/// Read Euclid Q1 visual morphology classifications from the Zenodo parquet.
+#[cfg(feature = "euclid-catalog")]
+pub fn read_euclid_visual_morphology(
+    parquet_path: &str,
+) -> Result<Vec<EuclidMorphologyRecord>, String> {
+    use arrow_array::RecordBatch;
+    use parquet::arrow::arrow_reader::ParquetRecordBatchReaderBuilder;
+    use std::{fs::File, path::Path};
+
+    if !Path::new(parquet_path).exists() {
+        return Err(format!(
+            "Parquet file not found: {parquet_path}\n\
+             Download: cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology"
+        ));
+    }
+
+    let file = File::open(parquet_path).map_err(|e| format!("Failed to open: {e}"))?;
+    let builder = ParquetRecordBatchReaderBuilder::try_new(file)
+        .map_err(|e| format!("Failed to read parquet metadata: {e}"))?;
+    let schema = builder.schema();
+    let col_names: Vec<&str> = schema.fields().iter().map(|f| f.name().as_str()).collect();
+    let required = [
+        "object_id",
+        "ra",
+        "dec",
+        "ellipticity",
+        "smooth-or-featured_featured-or-disk_fraction",
+        "has-spiral-arms_yes_fraction",
+        "disk-edge-on_no_fraction",
+        "merging_none_fraction",
+        "bar_no_fraction",
+        "clumps_yes_fraction",
+    ];
+    for &col in &required {
+        if !col_names.contains(&col) {
+            return Err(format!(
+                "Required column '{col}' not found.\n\
+                 Available columns: {col_names:?}\n\
+                 Is this morphology_catalogue.parquet?"
+            ));
+        }
+    }
+
+    let reader = builder
+        .build()
+        .map_err(|e| format!("Failed to build reader: {e}"))?;
+    let mut result = Vec::new();
+
+    for batch_result in reader {
+        let batch: RecordBatch = batch_result.map_err(|e| format!("Failed to read batch: {e}"))?;
+        let object_id = col_string(&batch, "object_id")?;
+        let ra = col_f64(&batch, "ra")?;
+        let dec = col_f64(&batch, "dec")?;
+        let ellipticity = col_f64(&batch, "ellipticity")?;
+        let featured = col_f32(&batch, "smooth-or-featured_featured-or-disk_fraction")?;
+        let spiral = col_f32(&batch, "has-spiral-arms_yes_fraction")?;
+        let face_on = col_f32(&batch, "disk-edge-on_no_fraction")?;
+        let non_merging = col_f32(&batch, "merging_none_fraction")?;
+        let bar_no = col_f32(&batch, "bar_no_fraction")?;
+        let clumps_yes = col_f32(&batch, "clumps_yes_fraction")?;
+
+        for i in 0..batch.num_rows() {
+            let ra_deg = ra.value(i);
+            let dec_deg = dec.value(i);
+            if !ra_deg.is_finite() || !dec_deg.is_finite() {
+                continue;
+            }
+            result.push(EuclidMorphologyRecord {
+                object_id: object_id.value(i).to_string(),
+                ra_deg,
+                dec_deg,
+                ellipticity: ellipticity.value(i),
+                featured_fraction: featured.value(i),
+                spiral_fraction: spiral.value(i),
+                face_on_fraction: face_on.value(i),
+                non_merging_fraction: non_merging.value(i),
+                bar_no_fraction: bar_no.value(i),
+                clumps_yes_fraction: clumps_yes.value(i),
+            });
+        }
+    }
+
+    result.sort_by(|a, b| {
+        a.object_id
+            .cmp(&b.object_id)
+            .then_with(|| a.ra_deg.partial_cmp(&b.ra_deg).unwrap_or(std::cmp::Ordering::Equal))
+    });
+    Ok(result)
+}
+
 #[cfg(feature = "euclid-catalog")]
 fn col_f64<'a>(
     batch: &'a arrow_array::RecordBatch,
@@ -296,6 +402,32 @@ fn col_i64<'a>(
         .as_any()
         .downcast_ref::<arrow_array::Int64Array>()
         .ok_or_else(|| format!("Column '{name}' is not Int64"))
+}
+
+#[cfg(feature = "euclid-catalog")]
+fn col_f32<'a>(
+    batch: &'a arrow_array::RecordBatch,
+    name: &str,
+) -> Result<&'a arrow_array::Float32Array, String> {
+    batch
+        .column_by_name(name)
+        .ok_or_else(|| format!("Column '{name}' not in batch"))?
+        .as_any()
+        .downcast_ref::<arrow_array::Float32Array>()
+        .ok_or_else(|| format!("Column '{name}' is not Float32"))
+}
+
+#[cfg(feature = "euclid-catalog")]
+fn col_string<'a>(
+    batch: &'a arrow_array::RecordBatch,
+    name: &str,
+) -> Result<&'a arrow_array::StringArray, String> {
+    batch
+        .column_by_name(name)
+        .ok_or_else(|| format!("Column '{name}' not in batch"))?
+        .as_any()
+        .downcast_ref::<arrow_array::StringArray>()
+        .ok_or_else(|| format!("Column '{name}' is not Utf8"))
 }
 
 #[cfg(test)]

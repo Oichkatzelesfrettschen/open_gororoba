@@ -716,6 +716,22 @@ description = "LoTSS DR1/DR2/DR3 bulk FITS downloader, DR3 MaNGA-footprint tile 
 experiment = "E-198"
 
 [[binary]]
+name = "lotss-analysis"
+crate = "gororoba_cli_data"
+description = "Rust-native LoTSS analysis suite replacing src/lotss_analysis Python utilities. Subcommands cover DR1/DR2/DR3 flux-distribution fits, MaNGA radio-loud versus radio-quiet kinematic bisection, and LoTSS DR1 ultrametric null testing."
+
+[[binary]]
+name = "euclid-fetch"
+crate = "gororoba_cli_data"
+description = "Rust-native Euclid Q1 fetcher for Zenodo supplementary catalogs and ESA/IRSA TAP queries. Subcommands: zenodo-discover, zenodo-download, tap-tables, tap-query. Replaces the fetch_euclid.py and fetch_euclid_zenodo.py bridge scripts."
+experiment = "E-140"
+
+[[binary]]
+name = "euclid-manga-crossmatch"
+crate = "gororoba_cli_physics"
+description = "Rust-native Euclid Q1 morphology x MaNGA selected-sample sky crossmatch. Reads morphology_catalogue.parquet plus MaNGA selection/DRPall coordinates, applies optional morphology cuts, and emits a plateifu CSV for morphology-filtered harmonic stacking."
+
+[[binary]]
 name = "magnonic-band-structure"
 crate = "gororoba_cli_physics"
 description = "9-band magnonic crystal tight-binding engine. 6 subcommands: bands (dispersion plot), chern (valley Chern numbers), flat-band (flat band fraction), sweep (parameter space), domain-wall (edge mode spectrum), defect (point defect bound states)."
