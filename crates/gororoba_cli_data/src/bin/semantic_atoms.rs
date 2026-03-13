@@ -23,8 +23,10 @@ struct Args {
     repo_root: PathBuf,
     #[arg(long, default_value_t = false)]
     verify: bool,
+    /// Canonical SQLite control-plane DB used for live claim metadata.
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
+    /// Compatibility-export claims TOML, used only when the canonical DB is unavailable.
     #[arg(long, default_value = "registry/claims.toml")]
     claims_path: PathBuf,
     #[arg(long, default_value = "registry/knowledge/proof_atoms.toml")]

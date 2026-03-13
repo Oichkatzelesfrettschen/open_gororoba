@@ -30,6 +30,7 @@ enum Command {
 struct BuildArgs {
     #[arg(long, default_value = ".")]
     repo_root: PathBuf,
+    /// Canonical SQLite control-plane DB used for claim metadata; falls back to claims_registry if absent.
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
     #[arg(long, default_value = "registry/data_artifact_narratives.toml")]
@@ -38,6 +39,7 @@ struct BuildArgs {
     equation_registry: PathBuf,
     #[arg(long, default_value = "registry/knowledge/proof_atoms.toml")]
     proof_registry: PathBuf,
+    /// Compatibility-export claims TOML, used only when the canonical DB is unavailable.
     #[arg(long, default_value = "registry/claims.toml")]
     claims_registry: PathBuf,
     #[arg(long, default_value = "registry/artifact_scrolls.toml")]

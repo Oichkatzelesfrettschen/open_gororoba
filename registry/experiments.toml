@@ -4,12 +4,12 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 140
-experiment_count = 187
+deterministic_count = 145
+experiment_count = 192
 gpu_count = 28
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
-updated = "2026-02-10"
+updated = "2026-03-13"
 
 [[experiment]]
 binary = "motif-census"
@@ -4921,56 +4921,130 @@ truth_surface_consumption = []
 
 [[experiment]]
 binary = "hi-cube-rotcurve-extractor"
-claim_ids = ["C-1375"]
-description = "Extract rotation curves from THINGS FITS 21cm cubes to x > 10 r_s using hi_cube_rotcurve_extractor. Target: 34 THINGS galaxies with good inclination (i=30-70 deg). Validates HI outer-halo reach vs MaNGA IFU truncation at x~1.36 r_s."
+binary_experiment_declared = "E-193"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
 id = "E-193"
-inputs = ["data/external/things/*.fits"]
-outputs = ["data/external/things/hi_rotcurves.csv"]
-sprint = 83
+input = "data/external/things/*.fits"
+input_path_refs = ["data/external/things/*.fits"]
+lineage_id = "XL-193"
+method = "Extract rotation curves from THINGS FITS HI cubes to x > 10 r_s with hi-cube-rotcurve-extractor. Target the 34 THINGS galaxies with usable inclination control so the lane can test whether HI kinematics extend the outer-halo reach beyond the MaNGA IFU truncation limit near x~1.36 r_s."
+output = ["data/external/things/hi_rotcurves.csv"]
+output_path_refs = ["data/external/things/hi_rotcurves.csv"]
+reproducibility_class = "deterministic_replay"
+run = 'hi-cube-rotcurve-extractor --input-glob "data/external/things/*.fits" --output data/external/things/hi_rotcurves.csv'
+run_command_sha256 = "7f65fe328e30f5a609dfb74cc1e44a0b49d8fe82def02d7654601805dc70ecc7"
 status = "planned"
+status_token = "PLANNED"
 title = "THINGS HI 21cm Rotation Curve Extraction"
+truth_surface_consumption = []
 
 [[experiment]]
 binary = "harmonic-halo-galaxy-phase"
-claim_ids = ["C-1376"]
-description = "Run galaxy-ensemble Rayleigh test on N=6992 MaNGA galaxies at all 7 CD-ZD wavenumbers. Expected: R < 0.024, p > 0.5 for all modes, confirming incoherent phases. Fixes N=19 limitation of E-192 jackknife."
+binary_experiment_declared = "E-194"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
 id = "E-194"
-inputs = ["data/external/manga/manga_rotcurves_all.csv", "data/external/manga/dapall_selection.csv"]
-outputs = ["data/external/manga/galaxy_phase_coherence.csv"]
-sprint = 83
+input = "data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
+input_path_refs = ["data/external/manga/manga_rotcurves_all.csv", "data/external/manga/dapall_selection.csv"]
+lineage_id = "XL-194"
+method = "Run the galaxy-ensemble Rayleigh phase-coherence test on all 6992 MaNGA galaxies at the seven CD-ZD wavenumbers. The goal is to confirm that ensemble phases stay incoherent (target R < 0.024 and p > 0.5 at every mode) and to remove the N=19 jackknife limitation from E-192."
+output = ["data/external/manga/galaxy_phase_coherence.csv"]
+output_path_refs = ["data/external/manga/galaxy_phase_coherence.csv"]
+reproducibility_class = "deterministic_replay"
+run = "harmonic-halo-galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv"
+run_command_sha256 = "b1496949ef957c906dd8a9d23f660f033a2fcee0d75c7a56160820a522e4a6e4"
 status = "planned"
+status_token = "PLANNED"
 title = "Galaxy-Ensemble Rayleigh Phase Coherence"
+truth_surface_consumption = []
 
 [[experiment]]
 binary = "harmonic-halo-visualize"
-claim_ids = ["C-1377"]
-description = "Generate publication-ready PGFPlots panels: (1) STFT spectrogram, (2) derivative DFT, (3) stacked profile with systematics. Output three .tex files for inclusion in manga_zd_null_result.tex."
+binary_experiment_declared = "E-195"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
 id = "E-195"
-inputs = ["manga_stack_D16.csv", "manga_stft.csv", "manga_deriv.csv"]
-outputs = ["docs/latex/figs/stft_spectrogram.tex", "docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex"]
-sprint = 83
+input = "data/results/e183/manga_stack_D16.csv, data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv"
+input_path_refs = ["data/results/e183/manga_stack_D16.csv", "data/results/e183/stft_full.csv", "data/results/e183/deriv_full.csv"]
+lineage_id = "XL-195"
+method = "Generate the publication-ready PGFPlots panels for the E-183/E-192 null-result lane: the stacked spatial residual profile with systematics, the derivative DFT, and the STFT spectrogram. Emit three .tex fragments that can be dropped directly into the MaNGA manuscript build."
+output = ["docs/latex/figs/stft_spectrogram.tex", "docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex"]
+output_path_refs = ["docs/latex/figs/stft_spectrogram.tex", "docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex"]
+reproducibility_class = "deterministic_replay"
+run = "harmonic-halo-visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs"
+run_command_sha256 = "86e3c76410d3ec0ee99d50bb20ffe0853c4ebf807d519131698ba9cfffb47493"
 status = "planned"
+status_token = "PLANNED"
 title = "Multi-Panel Null Result Visualization"
+truth_surface_consumption = []
 
 [[experiment]]
 binary = "harmonic-halo-stacking-manga"
-claim_ids = ["C-1378"]
-description = "Re-run MaNGA E-183 stacking with PSF-flagged inner bins excluded (r < PSF_FWHM ~ 2.5 arcsec). Expected: reduces +29% IFU spike at x~0.95, lowers RMS from 0.075 to ~0.060. Compares SNR with and without exclusion."
+binary_experiment_declared = "E-196"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
 id = "E-196"
-inputs = ["data/external/manga/manga_rotcurves_all.csv", "data/external/manga/dapall_selection.csv"]
-outputs = ["data/external/manga/manga_stack_psf_corrected.csv"]
-sprint = 83
+input = "data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
+input_path_refs = ["data/external/manga/manga_rotcurves_all.csv", "data/external/manga/dapall_selection.csv"]
+lineage_id = "XL-196"
+method = "Re-run the MaNGA stacking lane from E-183 with PSF-flagged inner bins excluded (r < PSF_FWHM ~= 2.5 arcsec). The expected outcome is a smaller inner-bin spike near x~0.95, a lower RMS residual, and a clean side-by-side SNR comparison with and without the beam-smearing mask."
+output = ["data/external/manga/manga_stack_psf_corrected.csv"]
+output_path_refs = ["data/external/manga/manga_stack_psf_corrected.csv"]
+reproducibility_class = "deterministic_replay"
+run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv"
+run_command_sha256 = "96618130008a4a2533f98a9e8049a8af07569c2b0baf6718c2bf96777c8b76a1"
 status = "planned"
+status_token = "PLANNED"
 title = "MaNGA Stacking with PSF Beam-Smearing Correction"
+truth_surface_consumption = []
 
 [[experiment]]
 binary = "harmonic-halo-injection"
-claim_ids = ["C-1379"]
-description = "Inject ZD harmonic signal at alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} into MaNGA rotation curves. Measure SNR and recovery ratio. Expected: SNR > 3 and recovery_ratio in [0.7, 1.3] for alpha_zd >= 0.004."
+binary_experiment_declared = "E-197"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
 id = "E-197"
-inputs = ["data/external/manga/manga_rotcurves_all.csv", "data/external/manga/dapall_selection.csv"]
-outputs = ["data/external/manga/injection_recovery.csv"]
-sprint = 83
+input = "data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
+input_path_refs = ["data/external/manga/manga_rotcurves_all.csv", "data/external/manga/dapall_selection.csv"]
+lineage_id = "XL-197"
+method = "Inject synthetic ZD harmonic signals with alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} into the MaNGA rotation-curve lane, then measure SNR and recovery ratio. The planned acceptance target is SNR > 3 with recovery_ratio in [0.7, 1.3] for alpha_zd >= 0.004."
+output = ["data/external/manga/injection_recovery.csv"]
+output_path_refs = ["data/external/manga/injection_recovery.csv"]
+reproducibility_class = "deterministic_replay"
+run = "harmonic-halo-injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv"
+run_command_sha256 = "7bdb454c8c7e9f96d3ca3fbc5131a7e1d5ceb88ea0a04cfb29a35c39bd91f8b1"
 status = "planned"
+status_token = "PLANNED"
 title = "Signal Injection-Recovery Validation"
-
+truth_surface_consumption = []

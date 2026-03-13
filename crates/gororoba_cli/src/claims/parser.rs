@@ -50,7 +50,7 @@ pub struct ClaimRow {
 }
 
 static CLAIM_ID_RE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^C-(\d{3})$").expect("valid regex"));
+    LazyLock::new(|| Regex::new(r"^C-(\d{3,})$").expect("valid regex"));
 
 static STATUS_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^\*\*([^*]+)\*\*").expect("valid regex"));

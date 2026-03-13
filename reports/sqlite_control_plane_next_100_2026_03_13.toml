@@ -412,42 +412,42 @@ notes = "Expanded the timing baseline report with registry-check plus warm-run t
 [[item]]
 id = "N100-051"
 priority = "P2"
-status = "active"
+status = "done"
 area = "migration"
 title = "Migrate claims_consolidate input path to SQLite-first"
-notes = "Registry TOML should be fallback/import only once the lane is fully cut over."
+notes = "Claims-consolidate now reads claims/insights/experiments from the canonical DB first and synchronizes in-place claims writes back through the control plane plus compatibility export."
 
 [[item]]
 id = "N100-052"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Migrate export-hdf5 claim reads to SQLite-first"
-notes = "Avoid direct operational claim parsing from compatibility exports."
+notes = "export-hdf5 now loads claims from the canonical DB first and falls back to the compatibility export only when the DB is unavailable."
 
 [[item]]
 id = "N100-053"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Migrate artifact_scrolls CLI defaults and docs from TOML-first wording"
-notes = "Even if runtime support stays, the UX should not signal the wrong source of truth."
+notes = "CLI help now marks the canonical DB as primary and claims.toml as fallback compatibility input."
 
 [[item]]
 id = "N100-054"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Migrate semantic_atoms CLI defaults and docs from TOML-first wording"
-notes = "Align user-facing defaults with the control-plane cutover."
+notes = "CLI help now marks the canonical DB as primary and claims.toml as fallback compatibility input."
 
 [[item]]
 id = "N100-055"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Migrate claims_audit from markdown-matrix default assumptions"
-notes = "This binary still centers the old markdown matrix."
+notes = "claims-audit now renders a legacy six-column matrix from the canonical DB when available and falls back to docs/CLAIMS_EVIDENCE_MATRIX.md only if the DB is absent."
 
 [[item]]
 id = "N100-056"
@@ -468,31 +468,31 @@ notes = "Doc link extraction should not encode the old canonical assumption."
 [[item]]
 id = "N100-058"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Update comments in data_governance.rs that imply experiments TOML canonicality"
-notes = "Small but important contract hygiene."
+notes = "DEFAULT_EXPERIMENTS_PATH is now documented explicitly as a compatibility export path rather than operational truth."
 
 [[item]]
 id = "N100-059"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Retire or relabel migrate-claims as legacy bootstrap only"
-notes = "It should not look like a normal authoring workflow anymore."
+notes = "migrate-claims now documents itself as a legacy recovery/import utility rather than a normal authoring path."
 
 [[item]]
 id = "N100-060"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "migration"
 title = "Retire or relabel migrate-insights as legacy bootstrap only"
-notes = "Same cutover boundary as migrate-claims."
+notes = "migrate-insights now documents itself as a legacy recovery/import utility rather than a normal authoring path."
 
 [[item]]
 id = "N100-061"
 priority = "P2"
-status = "todo"
+status = "active"
 area = "validation"
 title = "Add explicit test for execution-planning DB sync to experiments lane"
 notes = "Verify planner regeneration cannot stale the control-plane export again."

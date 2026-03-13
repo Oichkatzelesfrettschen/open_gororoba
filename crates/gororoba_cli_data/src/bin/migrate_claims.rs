@@ -1,21 +1,23 @@
-//! Migrate claims from CLAIMS_EVIDENCE_MATRIX.md (markdown table) to TOML.
+//! Legacy bootstrap: migrate claims from CLAIMS_EVIDENCE_MATRIX.md (markdown table) to TOML.
 //!
 //! Parses the pipe-delimited markdown table and outputs registry/claims.toml.
+//! This is a recovery/import utility only; the canonical operational source of
+//! truth for claims now lives in registry/canonical/control_plane.sqlite3.
 
 use std::path::PathBuf;
 
 use clap::Parser;
 use regex::Regex;
 
-/// Migrate claims from markdown evidence matrix to TOML registry format.
+/// Legacy bootstrap utility for migrating the markdown evidence matrix into TOML.
 #[derive(Parser)]
 #[command(name = "migrate-claims")]
 struct Args {
-    /// Path to CLAIMS_EVIDENCE_MATRIX.md
+    /// Path to the legacy CLAIMS_EVIDENCE_MATRIX.md compatibility mirror.
     #[arg(long, default_value = "docs/CLAIMS_EVIDENCE_MATRIX.md")]
     input: PathBuf,
 
-    /// Output TOML file
+    /// Output TOML compatibility file.
     #[arg(long, default_value = "registry/claims.toml")]
     output: PathBuf,
 }

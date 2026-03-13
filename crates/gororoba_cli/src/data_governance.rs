@@ -13,6 +13,8 @@ use std::{
 use walkdir::WalkDir;
 
 pub const DEFAULT_GOVERNANCE_PATH: &str = "registry/data_governance.toml";
+// Compatibility-export experiments registry; canonical operational counts and
+// migrated-lane reads now live in registry/canonical/control_plane.sqlite3.
 pub const DEFAULT_EXPERIMENTS_PATH: &str = "registry/experiments.toml";
 pub const DEFAULT_EXTERNAL_PROVENANCE_PATH: &str = "data/external/PROVENANCE.local.json";
 pub const DEFAULT_EXTERNAL_SOURCES_PATH: &str = "data/external/SOURCES.toml";
