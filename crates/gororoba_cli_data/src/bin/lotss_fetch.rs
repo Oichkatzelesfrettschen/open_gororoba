@@ -2851,20 +2851,20 @@ mod tests {
             .write_col(
                 &mut fits,
                 "Source_Name",
-                &vec!["ILTJ1500+3200".to_string(), "ILTJ1510+3500".to_string()],
+                &["ILTJ1500+3200".to_string(), "ILTJ1510+3500".to_string()],
             )
             .unwrap();
         table_hdu
-            .write_col(&mut fits, "RA", &vec![150.0002_f64, 151.0002_f64])
+            .write_col(&mut fits, "RA", &[150.0002_f64, 151.0002_f64])
             .unwrap();
         table_hdu
-            .write_col(&mut fits, "DEC", &vec![32.0001_f64, 35.0001_f64])
+            .write_col(&mut fits, "DEC", &[32.0001_f64, 35.0001_f64])
             .unwrap();
         table_hdu
-            .write_col(&mut fits, "Total_flux", &vec![3.5_f32, 7.2_f32])
+            .write_col(&mut fits, "Total_flux", &[3.5_f32, 7.2_f32])
             .unwrap();
         table_hdu
-            .write_col(&mut fits, "S_Code", &vec!["S".to_string(), "M".to_string()])
+            .write_col(&mut fits, "S_Code", &["S".to_string(), "M".to_string()])
             .unwrap();
         drop(fits);
 
