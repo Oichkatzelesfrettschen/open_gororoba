@@ -47,6 +47,12 @@ jobs:
           latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
             -output-directory=out MATHEMATICAL_FORMALISM.tex
 
+      - name: Build MaNGA null result paper
+        working-directory: docs/latex
+        run: |
+          latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error \
+            -output-directory=out manga_zd_null_result.tex
+
       - name: Upload PDF artifacts
         uses: actions/upload-artifact@v4
         with:
