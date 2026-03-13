@@ -71,6 +71,7 @@ pub mod optimizer_argmin;
 pub mod orthoplex_crystal;
 pub mod orthoplex_diffusion;
 pub mod sersic;
+pub mod slit_projection;
 pub mod spectral;
 pub mod tov;
 pub mod voudon_friedmann;
@@ -177,8 +178,9 @@ pub use harmonic_halos::{
 };
 
 pub use harmonic_stacking::{
-    CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig, StackingResult,
-    detection_threshold, predicted_wavenumbers, predicted_wavenumbers_cd, stack_residuals,
+    CdDimensionParams, EigenmodeStackResult, NormalizedPoint, NormalizedResiduals, StackingConfig,
+    StackingResult, detection_threshold, eigenmode_stack, predicted_wavenumbers,
+    predicted_wavenumbers_cd, stack_residuals,
 };
 
 pub use sersic::{

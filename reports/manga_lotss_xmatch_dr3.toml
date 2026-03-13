@@ -1,0 +1,64 @@
+generated_at_utc = "2026-03-13T18:58:16.510536286+00:00"
+release = "DR3"
+input_format = "fits"
+input_path = "data/external/radio_surveys/lotss_dr3.fits"
+manga_selection_path = "data/external/manga/dapall_selection.csv"
+manga_drpall_path = "data/external/manga/drpall-v3_1_1.fits"
+output_path = "data/external/manga/manga_lotss_xmatch_dr3.csv"
+report_path = "reports/manga_lotss_xmatch_dr3.toml"
+radius_arcsec = 3.0
+allow_partial = false
+execution_mode = "pinned_physical"
+execution_worker_count = 4
+execution_chunk_rows = 176128
+execution_pinned_core_ids = [
+    0,
+    1,
+    2,
+    3,
+]
+execution_l3_cache_bytes = 100663296
+execution_l3_safe_working_set_bytes = 90596966
+execution_thread_pinning_enabled = true
+execution_simd_lane_f64 = 4
+execution_avx2_detected = true
+execution_fma_detected = true
+execution_x87_extended_precision_used = false
+execution_precision_strategy = "native-f64"
+lotss_source_count_raw = 13667877
+lotss_source_count_effective = 13667877
+manga_target_count = 10262
+detected_target_count = 3591
+quiet_target_count = 6671
+detection_fraction = 0.3499317871759891
+flux_min_mjy = 0.2049412578344345
+flux_median_mjy = 4.4912109375
+flux_max_mjy = 3265.055908203125
+
+[[declination_bands]]
+band = "<27"
+total = 4220
+detected = 1242
+quiet = 2978
+detection_fraction = 0.2943127962085308
+
+[[declination_bands]]
+band = "27-30"
+total = 1063
+detected = 314
+quiet = 749
+detection_fraction = 0.2953904045155221
+
+[[declination_bands]]
+band = "30-40"
+total = 1596
+detected = 638
+quiet = 958
+detection_fraction = 0.39974937343358397
+
+[[declination_bands]]
+band = ">=40"
+total = 3383
+detected = 1397
+quiet = 1986
+detection_fraction = 0.4129470883830919

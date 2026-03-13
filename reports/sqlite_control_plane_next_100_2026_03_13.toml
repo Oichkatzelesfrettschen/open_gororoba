@@ -492,26 +492,26 @@ notes = "migrate-insights now documents itself as a legacy recovery/import utili
 [[item]]
 id = "N100-061"
 priority = "P2"
-status = "active"
+status = "done"
 area = "validation"
 title = "Add explicit test for execution-planning DB sync to experiments lane"
-notes = "Verify planner regeneration cannot stale the control-plane export again."
+notes = "Added execution-planning test coverage for canonical DB replacement plus compatibility export regeneration."
 
 [[item]]
 id = "N100-062"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "validation"
 title = "Add unit test for control_plane_compat_text accessor"
-notes = "Lock in the public seam used by downstream binaries."
+notes = "Added provenance_store unit coverage for DB-backed compat rendering across claims, experiments, and binaries."
 
 [[item]]
 id = "N100-063"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "validation"
 title = "Add unit test for replace_control_plane_experiments_from_registry_text"
-notes = "Protect the new planner-to-DB handoff."
+notes = "Added provenance_store unit coverage for replacing experiments in the control plane and regenerating the compat view."
 
 [[item]]
 id = "N100-064"
@@ -524,10 +524,10 @@ notes = "C-1363/C-1364 exposed the need for this."
 [[item]]
 id = "N100-065"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "validation"
 title = "Add integration test for bench target recognition in execution-planning"
-notes = "Protect x87_bench handling from future regressions."
+notes = "Added execution-planning test coverage that confirms named workspace benches are recognized as valid execution targets."
 
 [[item]]
 id = "N100-066"
@@ -548,10 +548,10 @@ notes = "The sprint field type issue should stay fixed."
 [[item]]
 id = "N100-068"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "validation"
 title = "Add smoke test for provenance verify-control-plane after execution-planning regeneration"
-notes = "This is the exact repaired flow."
+notes = "The execution-planning sync test now exercises provenance freshness/invariant verification after the experiments lane is regenerated."
 
 [[item]]
 id = "N100-069"
@@ -572,122 +572,122 @@ notes = "The theorem lane should have the same rigor as other mirrors."
 [[item]]
 id = "N100-071"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational reader of docs/CLAIMS_EVIDENCE_MATRIX.md"
-notes = "This is one of the last major canonical-source confusions."
+notes = "Reader inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-072"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational reader of docs/INSIGHTS.md"
-notes = "Differentiate bootstrap, narrative, and operational use."
+notes = "Reader inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-073"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational reader of docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
-notes = "Same cleanup pattern as claims and insights."
+notes = "Reader inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-074"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational writer to registry/claims.toml"
-notes = "Writers are more dangerous than readers in the cutover phase."
+notes = "Writer inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-075"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational writer to registry/experiments.toml"
-notes = "The planner flow was one concrete example."
+notes = "Writer inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-076"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational writer to registry/insights.toml"
-notes = "Prevent silent bypasses of the canonical DB."
+notes = "Writer inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-077"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Inventory every remaining operational writer to registry/binaries.toml"
-notes = "Binaries now derive from DB plus workspace inventory."
+notes = "Writer inventory captured in reports/control_plane_reader_writer_inventory_2026_03_13.md."
 
 [[item]]
 id = "N100-078"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Document residual non-migrated registry families explicitly"
-notes = "Examples: roadmap, todo, requirements, external_sources, dataset aliases, book_docs."
+notes = "Residual hybrid and TOML-first families documented in registry/control_plane_migrated_lanes.toml and the mdBook migrated-lanes page."
 
 [[item]]
 id = "N100-079"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Create a machine-readable migrated-lane inventory file"
-notes = "List which lanes are DB-first, hybrid, or still TOML-first."
+notes = "Added registry/control_plane_migrated_lanes.toml."
 
 [[item]]
 id = "N100-080"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "cleanup"
 title = "Create a machine-readable generated-compatibility inventory file"
-notes = "Track which files must exactly mirror the DB."
+notes = "Added registry/control_plane_compatibility_exports.toml."
 
 [[item]]
 id = "N100-081"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "docs"
 title = "Publish the migrated-lane inventory in mdBook"
-notes = "Users should not have to infer this from commit archaeology."
+notes = "Added docs/book/src/architecture/migrated-lanes.md and regenerated book_docs."
 
 [[item]]
 id = "N100-082"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "docs"
 title = "Publish a DB-authoring workflow page for contributors"
-notes = "Explain import/export/verify loops and legacy fallback boundaries."
+notes = "Added docs/book/src/architecture/db-authoring.md."
 
 [[item]]
 id = "N100-083"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "docs"
 title = "Publish a compatibility-exports policy page"
-notes = "Clarify that exports are required outputs but not authoring sources."
+notes = "Added docs/book/src/architecture/compatibility-exports.md."
 
 [[item]]
 id = "N100-084"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "docs"
 title = "Document execution target semantics: bins versus benches"
-notes = "Avoid another x87_bench-style mismatch."
+notes = "Added docs/book/src/architecture/execution-targets.md."
 
 [[item]]
 id = "N100-085"
 priority = "P2"
-status = "todo"
+status = "done"
 area = "docs"
 title = "Document theorem-linking rules for proof-backed claims"
-notes = "Claim IDs, theorem IDs, and proof paths need one coherent contract."
+notes = "Added docs/book/src/proofs/linking.md."
 
 [[item]]
 id = "N100-086"

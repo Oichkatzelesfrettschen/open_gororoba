@@ -3,4 +3,4 @@
 //! This crate contains 40 binaries covering claims management, data governance,
 //! dataset fetching, registry operations, publishing, and quality gates.
 
-pub mod source_provenance;
+pub use provenance_ops::source_provenance;

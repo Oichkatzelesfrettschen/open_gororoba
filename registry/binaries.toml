@@ -285,8 +285,8 @@ description = "Dispersion measure ultrametric analysis"
 
 [[binary]]
 name = "download-recovery"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+crate = "gororoba_cli_provenance"
+description = "Workspace binary discovered from crates/gororoba_cli_provenance/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "dump-assessors"
@@ -710,6 +710,12 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "lotss-fetch"
+crate = "gororoba_cli_data"
+description = "LoTSS DR1/DR2/DR3 bulk FITS downloader, DR3 MaNGA-footprint tile cache fallback, and MaNGA crossmatch utility. Subcommands: download, cone-search, verify, summary, manga-footprint, manga-preflight, crossmatch-manga. Emits CSV/TOML reports for E-198 coverage ceilings and DR2/DR3 detection fractions."
+experiment = "E-198"
+
+[[binary]]
 name = "magnonic-band-structure"
 crate = "gororoba_cli_physics"
 description = "9-band magnonic crystal tight-binding engine. 6 subcommands: bands (dispersion plot), chern (valley Chern numbers), flat-band (flat band fraction), sweep (parameter space), domain-wall (edge mode spectrum), defect (point defect bound states)."
@@ -910,8 +916,8 @@ description = "Synchronize top-level [project] counters with claims/insights/exp
 
 [[binary]]
 name = "provenance"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+crate = "gororoba_cli_provenance"
+description = "Workspace binary discovered from crates/gororoba_cli_provenance/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "python-retention"
@@ -1368,4 +1374,3 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
-

@@ -1,12 +1,16 @@
+use backon::{BlockingRetryable, ExponentialBuilder};
 use reqwest::{
     blocking::{Client, Response},
-    header::{ACCEPT, HeaderMap, HeaderName, HeaderValue, RANGE, USER_AGENT},
+    header::{
+        ACCEPT, ACCEPT_RANGES, CONTENT_LENGTH, CONTENT_RANGE, HeaderMap, HeaderName, HeaderValue,
+        RANGE, USER_AGENT,
+    },
 };
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
     fmt, fs,
-    io::{self, Read},
+    io::{self, Read, Write},
     path::{Path, PathBuf},
     process::{Command, Stdio},
     time::{Duration, SystemTime, UNIX_EPOCH},
@@ -17,6 +21,8 @@ use url::Url;
 
 pub const DEFAULT_USER_AGENT: &str = "gororoba-download-stack/0.1 (research)";
 pub const DEFAULT_PROBE_BYTES: usize = 1024;
+const DEFAULT_RESUME_CHUNK_BYTES: u64 = 64 * 1024 * 1024;
+const DEFAULT_REQWEST_RETRY_ATTEMPTS: usize = 5;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -30,6 +36,7 @@ pub enum TransferKind {
 pub enum DownloadBackend {
     Auto,
     Reqwest,
+    RsyncCli,
     CurlCli,
     WgetCli,
     Aria2Cli,
@@ -41,6 +48,7 @@ impl DownloadBackend {
         match self {
             Self::Auto => "auto",
             Self::Reqwest => "reqwest",
+            Self::RsyncCli => "rsync-cli",
             Self::CurlCli => "curl-cli",
             Self::WgetCli => "wget-cli",
             Self::Aria2Cli => "aria2-cli",
@@ -52,6 +60,7 @@ impl DownloadBackend {
         match value.trim() {
             "auto" => Some(Self::Auto),
             "reqwest" => Some(Self::Reqwest),
+            "rsync-cli" => Some(Self::RsyncCli),
             "curl-cli" => Some(Self::CurlCli),
             "wget-cli" => Some(Self::WgetCli),
             "aria2-cli" => Some(Self::Aria2Cli),
@@ -114,6 +123,15 @@ pub struct TransferResult {
     pub is_pdf: bool,
     pub output_path: Option<PathBuf>,
     pub note: String,
+}
+
+#[derive(Debug, Clone)]
+struct HttpDownloadProbe {
+    final_url: String,
+    status: u16,
+    content_type: Option<String>,
+    total_bytes: Option<u64>,
+    supports_ranges: bool,
 }
 
 impl TransferResult {
@@ -447,6 +465,10 @@ impl DownloadStack {
                 TransferKind::Probe => vec![DownloadBackend::CurlCli],
                 TransferKind::Download => vec![DownloadBackend::CurlCli, DownloadBackend::Aria2Cli],
             },
+            "rsync" => match kind {
+                TransferKind::Probe => vec![DownloadBackend::RsyncCli],
+                TransferKind::Download => vec![DownloadBackend::RsyncCli],
+            },
             "http" | "https" => match kind {
                 TransferKind::Probe if difficult_host => vec![
                     DownloadBackend::CurlCli,
@@ -600,6 +622,7 @@ impl DownloadStack {
     ) -> Result<TransferResult, TransferError> {
         match backend {
             DownloadBackend::Reqwest => self.execute_reqwest(request, kind),
+            DownloadBackend::RsyncCli => self.execute_rsync_cli(request, kind),
             DownloadBackend::CurlCli => self.execute_curl_cli(request, kind),
             DownloadBackend::WgetCli => self.execute_wget_cli(request, kind),
             DownloadBackend::Aria2Cli => self.execute_aria2_cli(request, kind),
@@ -613,42 +636,33 @@ impl DownloadStack {
         request: &TransferRequest,
         kind: TransferKind,
     ) -> Result<TransferResult, TransferError> {
-        let probe_end = request.probe_bytes.saturating_sub(1) as u64;
-        let headers = self.build_headers(
-            request,
-            (kind == TransferKind::Probe).then_some((0_u64, probe_end)),
-        )?;
         let client = self.client()?;
-        let mut response = client
-            .get(&request.url)
-            .headers(headers)
-            .send()
-            .map_err(|source| TransferError::Reqwest {
-                url: request.url.clone(),
-                source,
-            })?;
+        match kind {
+            TransferKind::Probe => self.execute_reqwest_probe(request, &client),
+            TransferKind::Download => self.execute_reqwest_download(request, &client),
+        }
+    }
+
+    fn execute_reqwest_probe(
+        &self,
+        request: &TransferRequest,
+        client: &Client,
+    ) -> Result<TransferResult, TransferError> {
+        let probe_end = request.probe_bytes.saturating_sub(1) as u64;
+        let headers = self.build_headers(request, Some((0_u64, probe_end)))?;
+        let mut response = self.send_reqwest_with_retry(client, request, headers)?;
 
         let final_url = response.url().to_string();
         let status = response.status().as_u16();
         let content_type = content_type_from_headers(response.headers());
-        let destination = match kind {
-            TransferKind::Probe => ephemeral_download_path("reqwest_probe", None),
-            TransferKind::Download => request
-                .output_path
-                .clone()
-                .ok_or(TransferError::MissingOutputPath)?,
-        };
+        let destination = ephemeral_download_path("reqwest_probe", None);
         let bytes = write_response_to_path(&mut response, &destination)?;
         let prefix = read_prefix(&destination, request.probe_bytes)?;
         let is_pdf = looks_like_pdf(content_type.as_deref(), &prefix);
         let sha256 = Some(sha256_file(&destination)?);
-        if kind == TransferKind::Probe {
-            fs::remove_file(&destination).ok();
-        }
+        fs::remove_file(&destination).ok();
+
         if !status_is_success(status) {
-            if kind == TransferKind::Download {
-                fs::remove_file(&destination).ok();
-            }
             return Err(TransferError::BackendFailure {
                 backend: DownloadBackend::Reqwest,
                 url: request.url.clone(),
@@ -658,7 +672,7 @@ impl DownloadStack {
 
         Ok(TransferResult {
             backend: DownloadBackend::Reqwest,
-            kind,
+            kind: TransferKind::Probe,
             requested_url: request.url.clone(),
             final_url: Some(final_url),
             http_code: Some(status),
@@ -666,9 +680,258 @@ impl DownloadStack {
             bytes,
             sha256,
             is_pdf,
-            output_path: (kind == TransferKind::Download).then_some(destination),
-            note: compose_note(&request.note, DownloadBackend::Reqwest, kind),
+            output_path: None,
+            note: compose_note(&request.note, DownloadBackend::Reqwest, TransferKind::Probe),
         })
+    }
+
+    fn execute_reqwest_download(
+        &self,
+        request: &TransferRequest,
+        client: &Client,
+    ) -> Result<TransferResult, TransferError> {
+        let destination = request
+            .output_path
+            .clone()
+            .ok_or(TransferError::MissingOutputPath)?;
+        if let Some(parent) = destination.parent() {
+            fs::create_dir_all(parent)?;
+        }
+
+        let probe = self.probe_reqwest_download(request, client)?;
+        if !status_is_success(probe.status) {
+            return Err(TransferError::BackendFailure {
+                backend: DownloadBackend::Reqwest,
+                url: request.url.clone(),
+                message: format!("HTTP {} from {}", probe.status, probe.final_url),
+            });
+        }
+
+        let mut note = compose_note(&request.note, DownloadBackend::Reqwest, TransferKind::Download);
+        let mut local_bytes = fs::metadata(&destination).map(|meta| meta.len()).unwrap_or(0);
+
+        if probe.supports_ranges {
+            if let Some(total_bytes) = probe.total_bytes {
+                if local_bytes > total_bytes {
+                    fs::remove_file(&destination).ok();
+                    local_bytes = 0;
+                    note.push_str("; removed oversized local partial before range resume");
+                } else if local_bytes == total_bytes && total_bytes > 0 {
+                    let prefix = read_prefix(&destination, request.probe_bytes)?;
+                    let is_pdf = looks_like_pdf(probe.content_type.as_deref(), &prefix);
+                    let sha256 = Some(sha256_file(&destination)?);
+                    note.push_str("; local file already matched remote content-length");
+                    return Ok(TransferResult {
+                        backend: DownloadBackend::Reqwest,
+                        kind: TransferKind::Download,
+                        requested_url: request.url.clone(),
+                        final_url: Some(probe.final_url),
+                        http_code: Some(probe.status),
+                        content_type: probe.content_type,
+                        bytes: total_bytes,
+                        sha256,
+                        is_pdf,
+                        output_path: Some(destination),
+                        note,
+                    });
+                }
+
+                if local_bytes > 0 {
+                    note.push_str(&format!("; resumed from byte {}", local_bytes));
+                } else {
+                    note.push_str("; ranged download");
+                }
+
+                while local_bytes < total_bytes {
+                    self.download_reqwest_range_chunk(
+                        request,
+                        client,
+                        &destination,
+                        total_bytes,
+                        DEFAULT_RESUME_CHUNK_BYTES,
+                    )?;
+                    local_bytes = fs::metadata(&destination)?.len();
+                }
+
+                let prefix = read_prefix(&destination, request.probe_bytes)?;
+                let is_pdf = looks_like_pdf(probe.content_type.as_deref(), &prefix);
+                let sha256 = Some(sha256_file(&destination)?);
+                return Ok(TransferResult {
+                    backend: DownloadBackend::Reqwest,
+                    kind: TransferKind::Download,
+                    requested_url: request.url.clone(),
+                    final_url: Some(probe.final_url),
+                    http_code: Some(probe.status),
+                    content_type: probe.content_type,
+                    bytes: fs::metadata(&destination)?.len(),
+                    sha256,
+                    is_pdf,
+                    output_path: Some(destination),
+                    note,
+                });
+            }
+        }
+
+        if destination.exists() {
+            fs::remove_file(&destination).ok();
+        }
+        note.push_str("; full-body reqwest fallback (range metadata unavailable)");
+        let bytes = self.download_reqwest_full(request, client, &destination)?;
+        let prefix = read_prefix(&destination, request.probe_bytes)?;
+        let is_pdf = looks_like_pdf(probe.content_type.as_deref(), &prefix);
+        let sha256 = Some(sha256_file(&destination)?);
+
+        Ok(TransferResult {
+            backend: DownloadBackend::Reqwest,
+            kind: TransferKind::Download,
+            requested_url: request.url.clone(),
+            final_url: Some(probe.final_url),
+            http_code: Some(probe.status),
+            content_type: probe.content_type,
+            bytes,
+            sha256,
+            is_pdf,
+            output_path: Some(destination),
+            note,
+        })
+    }
+
+    fn probe_reqwest_download(
+        &self,
+        request: &TransferRequest,
+        client: &Client,
+    ) -> Result<HttpDownloadProbe, TransferError> {
+        let headers = self.build_headers(request, Some((0_u64, 0_u64)))?;
+        let response = self.send_reqwest_with_retry(client, request, headers)?;
+        let status = response.status().as_u16();
+        let headers = response.headers().clone();
+        let final_url = response.url().to_string();
+        let content_type = content_type_from_headers(&headers);
+        let supports_ranges = status == 206
+            || headers
+                .get(ACCEPT_RANGES)
+                .and_then(|value| value.to_str().ok())
+                .map(|value| value.eq_ignore_ascii_case("bytes"))
+                .unwrap_or(false);
+        let total_bytes = parse_total_bytes(&headers, status);
+        drop(response);
+
+        Ok(HttpDownloadProbe {
+            final_url,
+            status,
+            content_type,
+            total_bytes,
+            supports_ranges,
+        })
+    }
+
+    fn send_reqwest_with_retry(
+        &self,
+        client: &Client,
+        request: &TransferRequest,
+        headers: HeaderMap,
+    ) -> Result<Response, TransferError> {
+        let url = request.url.clone();
+        let retry = ExponentialBuilder::default()
+            .with_min_delay(Duration::from_millis(250))
+            .with_max_delay(Duration::from_secs(5))
+            .with_max_times(DEFAULT_REQWEST_RETRY_ATTEMPTS);
+
+        (|| {
+            let response = client
+                .get(&url)
+                .headers(headers.clone())
+                .send()
+                .map_err(|source| TransferError::Reqwest {
+                    url: url.clone(),
+                    source,
+                })?;
+            let status = response.status().as_u16();
+            if should_retry_http_status(status) {
+                return Err(TransferError::BackendFailure {
+                    backend: DownloadBackend::Reqwest,
+                    url: url.clone(),
+                    message: format!("HTTP {status} from {}", response.url()),
+                });
+            }
+            Ok(response)
+        })
+        .retry(retry)
+        .sleep(std::thread::sleep)
+        .when(should_retry_transfer_error)
+        .call()
+    }
+
+    fn download_reqwest_range_chunk(
+        &self,
+        request: &TransferRequest,
+        client: &Client,
+        destination: &Path,
+        total_bytes: u64,
+        chunk_bytes: u64,
+    ) -> Result<(), TransferError> {
+        let current_bytes = fs::metadata(destination).map(|meta| meta.len()).unwrap_or(0);
+        if current_bytes >= total_bytes {
+            return Ok(());
+        }
+
+        let end = (current_bytes + chunk_bytes)
+            .saturating_sub(1)
+            .min(total_bytes.saturating_sub(1));
+        let headers = self.build_headers(request, Some((current_bytes, end)))?;
+        let mut response = self.send_reqwest_with_retry(client, request, headers)?;
+        let status = response.status().as_u16();
+        if status != 206 && !(status == 200 && current_bytes == 0) {
+            return Err(TransferError::BackendFailure {
+                backend: DownloadBackend::Reqwest,
+                url: request.url.clone(),
+                message: format!(
+                    "Expected partial content for bytes {}-{}, got HTTP {} from {}",
+                    current_bytes,
+                    end,
+                    status,
+                    response.url()
+                ),
+            });
+        }
+
+        if let Some(parent) = destination.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        let mut file = fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(destination)?;
+        copy_response_to_writer(&mut response, &mut file)?;
+        file.flush()?;
+        Ok(())
+    }
+
+    fn download_reqwest_full(
+        &self,
+        request: &TransferRequest,
+        client: &Client,
+        destination: &Path,
+    ) -> Result<u64, TransferError> {
+        let temp_path = destination.with_extension("part");
+        if temp_path.exists() {
+            fs::remove_file(&temp_path).ok();
+        }
+        let headers = self.build_headers(request, None)?;
+        let mut response = self.send_reqwest_with_retry(client, request, headers)?;
+        let status = response.status().as_u16();
+        let final_url = response.url().to_string();
+        if !status_is_success(status) {
+            fs::remove_file(&temp_path).ok();
+            return Err(TransferError::BackendFailure {
+                backend: DownloadBackend::Reqwest,
+                url: request.url.clone(),
+                message: format!("HTTP {status} from {final_url}"),
+            });
+        }
+        let bytes = write_response_to_path(&mut response, &temp_path)?;
+        fs::rename(&temp_path, destination)?;
+        Ok(bytes)
     }
 
     fn execute_ureq(
@@ -743,6 +1006,72 @@ impl DownloadStack {
         })
     }
 
+    fn execute_rsync_cli(
+        &self,
+        request: &TransferRequest,
+        kind: TransferKind,
+    ) -> Result<TransferResult, TransferError> {
+        ensure_tool_available("rsync", DownloadBackend::RsyncCli)?;
+        let destination = match kind {
+            TransferKind::Probe => ephemeral_download_path("rsync_probe", None),
+            TransferKind::Download => request
+                .output_path
+                .clone()
+                .ok_or(TransferError::MissingOutputPath)?,
+        };
+        if let Some(parent) = destination.parent() {
+            fs::create_dir_all(parent)?;
+        }
+
+        let output = Command::new("rsync")
+            .args([
+                "--partial",
+                "--append-verify",
+                "--times",
+                "--contimeout=30",
+                "--timeout=120",
+            ])
+            .arg(&request.url)
+            .arg(&destination)
+            .output()?;
+
+        if !output.status.success() {
+            if kind == TransferKind::Probe {
+                fs::remove_file(&destination).ok();
+            }
+            return Err(TransferError::BackendFailure {
+                backend: DownloadBackend::RsyncCli,
+                url: request.url.clone(),
+                message: String::from_utf8_lossy(&output.stderr).trim().to_string(),
+            });
+        }
+
+        let bytes = fs::metadata(&destination)
+            .map(|meta| meta.len())
+            .unwrap_or(0);
+        let prefix = read_prefix(&destination, request.probe_bytes)?;
+        let content_type = guess_content_type_from_path(&destination);
+        let is_pdf = looks_like_pdf(content_type.as_deref(), &prefix);
+        let sha256 = Some(sha256_file(&destination)?);
+        if kind == TransferKind::Probe {
+            fs::remove_file(&destination).ok();
+        }
+
+        Ok(TransferResult {
+            backend: DownloadBackend::RsyncCli,
+            kind,
+            requested_url: request.url.clone(),
+            final_url: Some(request.url.clone()),
+            http_code: None,
+            content_type,
+            bytes,
+            sha256,
+            is_pdf,
+            output_path: (kind == TransferKind::Download).then_some(destination),
+            note: compose_note(&request.note, DownloadBackend::RsyncCli, kind),
+        })
+    }
+
     fn execute_curl_cli(
         &self,
         request: &TransferRequest,
@@ -774,6 +1103,8 @@ impl DownloadStack {
         if kind == TransferKind::Probe {
             let probe_end = request.probe_bytes.saturating_sub(1);
             command.args(["--range", &format!("0-{probe_end}")]);
+        } else {
+            command.args(["--continue-at", "-"]);
         }
         for (name, value) in &request.headers {
             command.args(["--header", &format!("{name}: {value}")]);
@@ -782,7 +1113,9 @@ impl DownloadStack {
 
         let output = command.output()?;
         if !output.status.success() {
-            fs::remove_file(&destination).ok();
+            if kind == TransferKind::Probe {
+                fs::remove_file(&destination).ok();
+            }
             return Err(TransferError::BackendFailure {
                 backend: DownloadBackend::CurlCli,
                 url: request.url.clone(),
@@ -804,7 +1137,7 @@ impl DownloadStack {
         if let Some(code) = http_code
             && !status_is_success(code)
         {
-            if kind == TransferKind::Download {
+            if kind == TransferKind::Probe {
                 fs::remove_file(&destination).ok();
             }
             return Err(TransferError::BackendFailure {
@@ -854,7 +1187,8 @@ impl DownloadStack {
             &self.user_agent,
             "--server-response",
             "--max-redirect=10",
-            "--tries=2",
+            "--tries=5",
+            "--waitretry=5",
             "--timeout=120",
         ]);
         if kind == TransferKind::Probe {
@@ -862,6 +1196,8 @@ impl DownloadStack {
                 "--header",
                 &format!("Range: bytes=0-{}", request.probe_bytes.saturating_sub(1)),
             ]);
+        } else {
+            command.arg("--continue");
         }
         for (name, value) in &request.headers {
             command.args(["--header", &format!("{name}: {value}")]);
@@ -869,7 +1205,9 @@ impl DownloadStack {
         command.arg(&request.url);
         let output = command.output()?;
         if !output.status.success() {
-            fs::remove_file(&destination).ok();
+            if kind == TransferKind::Probe {
+                fs::remove_file(&destination).ok();
+            }
             return Err(TransferError::BackendFailure {
                 backend: DownloadBackend::WgetCli,
                 url: request.url.clone(),
@@ -893,7 +1231,7 @@ impl DownloadStack {
         if let Some(code) = http_code
             && !status_is_success(code)
         {
-            if kind == TransferKind::Download {
+            if kind == TransferKind::Probe {
                 fs::remove_file(&destination).ok();
             }
             return Err(TransferError::BackendFailure {
@@ -967,9 +1305,16 @@ impl DownloadStack {
             .args([
                 "--allow-overwrite=true",
                 "--auto-file-renaming=false",
+                "--continue=true",
                 "--file-allocation=none",
-                "--max-connection-per-server=4",
-                "--split=4",
+                "--max-concurrent-downloads=1",
+                "--max-connection-per-server=2",
+                "--split=2",
+                "--min-split-size=64M",
+                "--max-tries=5",
+                "--retry-wait=5",
+                "--timeout=120",
+                "--connect-timeout=30",
                 "--summary-interval=0",
                 "--dir",
                 &directory.to_string_lossy(),
@@ -982,7 +1327,6 @@ impl DownloadStack {
             .output()?;
 
         if !output.status.success() {
-            fs::remove_file(&destination).ok();
             return Err(TransferError::BackendFailure {
                 backend: DownloadBackend::Aria2Cli,
                 url: request.url.clone(),
@@ -1117,6 +1461,45 @@ fn default_host_policies() -> Vec<HostRoutingPolicy> {
             note: Some("CORE frequently redirects to fileserver mirrors before terminal status".to_string()),
         },
         HostRoutingPolicy {
+            name: "lofar_surveys".to_string(),
+            host_suffix: "lofar-surveys.org".to_string(),
+            retry_class: RetryClass::ProbeFirst,
+            probe_backends: vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::CurlCli,
+                DownloadBackend::Ureq,
+            ],
+            download_backends: vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::Aria2Cli,
+                DownloadBackend::CurlCli,
+                DownloadBackend::WgetCli,
+            ],
+            note: Some(
+                "LoTSS bulk FITS downloads support HTTP byte ranges; prefer reqwest resume, then aria2 for gentle segmented fallback before curl/wget"
+                    .to_string(),
+            ),
+        },
+        HostRoutingPolicy {
+            name: "astron_vo".to_string(),
+            host_suffix: "vo.astron.nl".to_string(),
+            retry_class: RetryClass::ProbeFirst,
+            probe_backends: vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::CurlCli,
+                DownloadBackend::Ureq,
+            ],
+            download_backends: vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::CurlCli,
+                DownloadBackend::WgetCli,
+            ],
+            note: Some(
+                "VO cone-search responses are small XML payloads; reqwest first with retry, shell fallbacks only if needed"
+                    .to_string(),
+            ),
+        },
+        HostRoutingPolicy {
             name: "sciencedirect".to_string(),
             host_suffix: "sciencedirect.com".to_string(),
             retry_class: RetryClass::CurlFirst,
@@ -1194,12 +1577,7 @@ fn write_response_to_path(response: &mut Response, path: &Path) -> Result<u64, T
         fs::create_dir_all(parent)?;
     }
     let mut file = fs::File::create(path)?;
-    response
-        .copy_to(&mut file)
-        .map_err(|source| TransferError::Reqwest {
-            url: response.url().to_string(),
-            source,
-        })
+    copy_response_to_writer(response, &mut file)
 }
 
 fn content_type_from_headers(headers: &reqwest::header::HeaderMap) -> Option<String> {
@@ -1243,6 +1621,68 @@ fn compose_note(
 
 fn status_is_success(status: u16) -> bool {
     (200..300).contains(&status)
+}
+
+fn should_retry_http_status(status: u16) -> bool {
+    matches!(status, 408 | 425 | 429) || (500..600).contains(&status)
+}
+
+fn should_retry_transfer_error(err: &TransferError) -> bool {
+    match err {
+        TransferError::Reqwest { source, .. } => {
+            source.is_timeout() || source.is_connect() || source.is_request() || source.is_body()
+        }
+        TransferError::Io(_) => true,
+        TransferError::BackendFailure { message, .. } => {
+            let lower = message.to_ascii_lowercase();
+            lower.starts_with("http 408")
+                || lower.starts_with("http 425")
+                || lower.starts_with("http 429")
+                || lower.starts_with("http 5")
+                || lower.contains("connection")
+                || lower.contains("timed out")
+                || lower.contains("timeout")
+                || lower.contains("reset")
+                || lower.contains("temporary")
+                || lower.contains("interrupted")
+        }
+        _ => false,
+    }
+}
+
+fn copy_response_to_writer<W: Write>(
+    response: &mut Response,
+    writer: &mut W,
+) -> Result<u64, TransferError> {
+    response
+        .copy_to(writer)
+        .map_err(|source| TransferError::Reqwest {
+            url: response.url().to_string(),
+            source,
+        })
+}
+
+fn parse_total_bytes(headers: &reqwest::header::HeaderMap, status: u16) -> Option<u64> {
+    if status == 206 {
+        headers
+            .get(CONTENT_RANGE)
+            .and_then(|value| value.to_str().ok())
+            .and_then(parse_total_bytes_from_content_range)
+    } else {
+        headers
+            .get(CONTENT_LENGTH)
+            .and_then(|value| value.to_str().ok())
+            .and_then(|value| value.parse::<u64>().ok())
+    }
+}
+
+fn parse_total_bytes_from_content_range(value: &str) -> Option<u64> {
+    let total = value.trim().split('/').nth(1)?;
+    if total == "*" {
+        None
+    } else {
+        total.parse::<u64>().ok()
+    }
 }
 
 fn parse_cli_metadata(stdout: &str) -> (Option<u16>, Option<String>, Option<String>) {
@@ -1321,9 +1761,16 @@ fn ensure_tool_available(tool: &str, backend: DownloadBackend) -> Result<(), Tra
 }
 
 fn sha256_file(path: &Path) -> Result<String, TransferError> {
-    let raw = fs::read(path)?;
+    let mut file = fs::File::open(path)?;
+    let mut buffer = [0_u8; 64 * 1024];
     let mut hasher = Sha256::new();
-    hasher.update(raw);
+    loop {
+        let bytes = file.read(&mut buffer)?;
+        if bytes == 0 {
+            break;
+        }
+        hasher.update(&buffer[..bytes]);
+    }
     Ok(format!("{:x}", hasher.finalize()))
 }
 
@@ -1408,6 +1855,25 @@ mod tests {
     }
 
     #[test]
+    fn test_route_prefers_reqwest_for_lofar_download() {
+        let stack = DownloadStack::default();
+        let request = TransferRequest::download(
+            "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits",
+            "target/lotss_dr2.fits",
+        );
+        let route = stack.route(&request, TransferKind::Download);
+        assert_eq!(
+            route.backends,
+            vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::Aria2Cli,
+                DownloadBackend::CurlCli,
+                DownloadBackend::WgetCli,
+            ]
+        );
+    }
+
+    #[test]
     fn test_route_uses_transfer_protocol_backends_for_ftp() {
         let stack = DownloadStack::default();
         let request = TransferRequest::download("ftp://example.com/data.bin", "target/out.bin");
@@ -1416,6 +1882,17 @@ mod tests {
             route.backends,
             vec![DownloadBackend::CurlCli, DownloadBackend::Aria2Cli]
         );
+    }
+
+    #[test]
+    fn test_route_uses_rsync_backend_for_rsync_scheme() {
+        let stack = DownloadStack::default();
+        let request = TransferRequest::download(
+            "rsync://example.com/module/path/data.bin",
+            "target/out.bin",
+        );
+        let route = stack.route(&request, TransferKind::Download);
+        assert_eq!(route.backends, vec![DownloadBackend::RsyncCli]);
     }
 
     #[test]
@@ -1445,5 +1922,15 @@ mod tests {
         assert_eq!(row.id, "paper_001");
         assert_eq!(row.http_code, "206");
         assert_eq!(row.is_pdf, "yes");
+    }
+
+    #[test]
+    fn test_parse_total_bytes_from_content_range() {
+        assert_eq!(
+            parse_total_bytes_from_content_range("bytes 0-1023/949599360"),
+            Some(949_599_360)
+        );
+        assert_eq!(parse_total_bytes_from_content_range("bytes 0-0/*"), None);
+        assert_eq!(parse_total_bytes_from_content_range("not-a-range"), None);
     }
 }

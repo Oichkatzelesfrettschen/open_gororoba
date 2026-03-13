@@ -372,7 +372,14 @@ The x87 lane is only one part of the repository's current algebra precision stac
   histogram partitions as structure signals rather than exact quotient
   reductions. The first histogram-projected structure-aware prototype is now in
   the benchmark lane as well; it is much faster on the current obstruction
-  families, but its spectrum error is far too large for promotion.
+  families, but its spectrum error is far too large for promotion. A follow-up
+  two-level histogram-lifted prototype materially improves that approximation
+  on `quantized_obstruction_graph`, but it still does not generalize to the
+  real obstruction family. The current structure-aware benchmark now also
+  records a centered cross-cell coupling ratio, and that metric is the clearest
+  explanation so far: it is effectively zero for `quantized_obstruction_graph`,
+  but rises into the 4-7% range for `quantized_shell_permutation` and the real
+  obstruction family.
 - `algebra_analysis::tests::precision_tier_dispatch` and
   `gororoba_cli_algebra --bin x87-strategy-bench` plus
   `gororoba_cli_algebra --bin jacobi-backend-sweep` currently provide evidence and

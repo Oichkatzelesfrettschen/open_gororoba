@@ -1,0 +1,201 @@
+title = "Repository scope reset and repo-level clarification"
+
+[report]
+id = "REPO-SCOPE-RESET-2026-03-12"
+created = "2026-03-12"
+author = "Codex"
+status = "active"
+status_token = "ACTIVE"
+scope = "repo-wide reset after subsystem-focused algebra/x87 work"
+
+[summary]
+headline = "The repository is a broad Rust-first scientific workspace whose biggest current need is scope clarity and gate closure, not another isolated subsystem sprint."
+body = "open_gororoba is not just an x87 crate, a Jacobi project, or a single physics codepath. It is a multi-domain Rust workspace that combines hypercomplex algebra, simulation physics, data/provenance governance, publication/report generation, and a TOML-first control plane. The strongest repo-level mismatch is that the internal registry/report system is rich, but the public entrypoints are sparse and the remaining active work is concentrated in gate stabilization, governance closure, and the promotion boundary between production-safe and exploratory solver lanes."
+
+[[source]]
+kind = "workspace_manifest"
+path = "Cargo.toml"
+note = "Workspace members, execution policy, shared dependency policy."
+
+[[source]]
+kind = "project_metadata"
+path = "registry/project.toml"
+note = "Project counts, sprint summaries, scope description."
+
+[[source]]
+kind = "crate_catalog"
+path = "registry/rust_crate_catalog.toml"
+note = "Domain grouping across the Rust workspace."
+
+[[source]]
+kind = "roadmap"
+path = "registry/roadmap.toml"
+note = "Active workstreams and completion state."
+
+[[source]]
+kind = "next_actions"
+path = "registry/next_actions.toml"
+note = "Remaining concrete near-term actions."
+
+[[source]]
+kind = "gap_audit"
+path = "reports/repo_completion_gap_audit_2026_02_14.toml"
+note = "Existing repo-level open-item audit."
+
+[[source]]
+kind = "structure_audit"
+path = "reports/repo_structure_audit.toml"
+note = "File distribution and repository shape snapshot."
+
+[[source]]
+kind = "requirements"
+path = "registry/requirements_narrative.toml"
+note = "Canonical install and reproducibility narrative."
+
+[[section]]
+name = "repo_identity"
+
+[[section.item]]
+key = "overall_character"
+value = "Rust-first, evidence-first scientific workbench with a TOML-first governance/control plane."
+
+[[section.item]]
+key = "workspace_member_count"
+value = "43"
+
+[[section.item]]
+key = "dominant_operating_mode"
+value = "Many domain crates plus a large registry/report layer, not a single application."
+
+[[section.item]]
+key = "root_entrypoint_problem"
+value = "The root README had effectively no explanatory body before this reset."
+
+[[section]]
+name = "domain_clusters"
+
+[[section.item]]
+key = "algebra_and_kernels"
+value = "algebra_analysis, gororoba_algebra, algebra_experimental, cd_kernel, pathion_ellip, verified_core, cd_spin_bridge"
+
+[[section.item]]
+key = "physics_and_simulation"
+value = "cosmology_core, gr_core, materials_core, optics_core, qgp_scaling, cr_transport, snia_core, lbm_core, lbm_3d, lbm_3d_cuda, lbm_vulkan, casimir_core"
+
+[[section.item]]
+key = "quantum_and_spectral"
+value = "quantum_core, spin_tomography_core, spectral_core, lattice_filtration, stats_core, neural_homotopy"
+
+[[section.item]]
+key = "governance_and_provenance"
+value = "data_core, provenance_core, provenance_ops, provenance_store, scrolls_core, docpipe, control_core, gororoba_contracts"
+
+[[section.item]]
+key = "execution_and_surface"
+value = "gororoba_engine, gororoba_pipeline, gororoba_gpu_bridge, gororoba_cli*, gororoba_py, cosmic_scheduler"
+
+[[section]]
+name = "stable_vs_exploratory"
+
+[[section.item]]
+key = "stable_foundations"
+value = "Rust-first workspace policy, TOML-first registry authority, active crate ecosystem, CLI/report generation, evidence-oriented governance."
+
+[[section.item]]
+key = "stable_subsystem_example"
+value = "The algebra precision lane now distinguishes production-safe exact paths from benchmark-only structure-aware prototypes."
+
+[[section.item]]
+key = "exploratory_subsystems"
+value = "Block Jacobi, partial spectrum solver promotion thresholds, histogram-based structured solvers, portions of GPU/CUDA optimization lanes."
+
+[[section.item]]
+key = "important_truth"
+value = "Benchmark-only solver families should not be read as default production behavior unless an explicit dispatch or promotion rule says so."
+
+[[section]]
+name = "current_repo_level_deficiencies"
+
+[[section.item]]
+key = "clarity"
+value = "Repo-facing entrypoints are much weaker than the internal report/registry layer; this makes scope easy to misread."
+
+[[section.item]]
+key = "gate_closure"
+value = "The active near-term operational work is still gate stabilization and final required-gate acceptance."
+
+[[section.item]]
+key = "report_sprawl"
+value = "The repo contains many detailed reports, but they are hard to synthesize into a single current-state view."
+
+[[section.item]]
+key = "exploratory_boundary"
+value = "Several advanced algebra and structure-aware lanes have evidence, but not enough cross-family validation for silent promotion."
+
+[[section.item]]
+key = "remaining_placeholder_surface"
+value = "Code-level TODO/FIXME residue remains, especially in GPU/CUDA and physics CLIs, even though much of the registry backlog is closed."
+
+[[section]]
+name = "active_workstreams"
+
+[[section.item]]
+key = "WS-GATES-001"
+value = "Required Gate Stabilization remains in progress."
+
+[[section.item]]
+key = "WS-CLAIMS-001"
+value = "Claims evidence governance is an active perpetual-maintenance lane."
+
+[[section.item]]
+key = "WS-QUALITY-001"
+value = "Warnings-as-errors discipline remains an active perpetual-maintenance lane."
+
+[[section.item]]
+key = "WS-OPTICS-GR-001"
+value = "Optics + GR infrastructure expansion is still in progress."
+
+[[section]]
+name = "open_next_actions"
+
+[[section.item]]
+key = "NA-034"
+value = "Rust Regression Lane Stabilization"
+
+[[section.item]]
+key = "NA-035"
+value = "Gate Audit and Mirror Truth Refresh"
+
+[[section.item]]
+key = "NA-036"
+value = "Final Required-Gate Acceptance"
+
+[[section.item]]
+key = "NA-027"
+value = "Studio Native Packaging Pilot is deferred, not active."
+
+[[section]]
+name = "what_needs_to_be_done_next"
+
+[[section.item]]
+key = "priority_1"
+value = "Keep repo-facing entrypoints truthful and concise so the workspace can be understood without reading dozens of reports."
+
+[[section.item]]
+key = "priority_2"
+value = "Close the required-gate lane before broadening more exploratory subsystem scope."
+
+[[section.item]]
+key = "priority_3"
+value = "Continue subsystem work only where production-safe vs benchmark-only boundaries are explicit."
+
+[[section.item]]
+key = "priority_4"
+value = "Treat algebra structure-aware solver work as a benchmark/prototype lane until cross-cell correction is proven on real obstruction matrices."
+
+[[section.item]]
+key = "priority_5"
+value = "Reduce report sprawl by pointing more top-level entry surfaces at current authoritative registries and current reset reports."
+
+[assessment]
+honest_read = "The repository is impressive in breadth and discipline, but its biggest practical weakness is that the public-facing scope story lags the actual system. The repo is more mature internally than it appears from the root, and more exploratory in some solver lanes than a casual reader would realize. The right next move is synthesis and closure, not pretending every promising experiment is already a productized default."

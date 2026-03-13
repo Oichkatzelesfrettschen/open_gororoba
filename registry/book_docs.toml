@@ -5,7 +5,7 @@
 updated = "2026-03-12"
 authoritative = true
 source_markdown_glob = "docs/book/src/**/*.md"
-document_count = 20
+document_count = 25
 
 [[document]]
 id = "BOOK-001"
@@ -15,7 +15,7 @@ slug = "docs_book_src_SUMMARY"
 title = "Summary"
 claim_refs = []
 path_refs = []
-line_count = 61
+line_count = 66
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/book_docs.toml -->
@@ -39,6 +39,10 @@ body_markdown = '''
 # Architecture
 
 - [Canonical Sources](./architecture/canonical-sources.md)
+- [Migrated Lanes](./architecture/migrated-lanes.md)
+- [DB Authoring Workflow](./architecture/db-authoring.md)
+- [Compatibility Exports](./architecture/compatibility-exports.md)
+- [Execution Targets](./architecture/execution-targets.md)
 - [Project Layout](./architecture/layout.md)
 - [Crate Ecosystem](./architecture/crates.md)
 - [Verification Ladder](./architecture/verification.md)
@@ -69,6 +73,7 @@ body_markdown = '''
 # Proofs
 
 - [Proof Inventory](./proofs/index.md)
+- [Theorem Linking](./proofs/linking.md)
 
 # Papers
 
@@ -412,7 +417,7 @@ Use these commands first:
 
 ```sh
 # Inspect the canonical control plane directly
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   query claim C-001
 
@@ -457,6 +462,65 @@ For now, treat this lane as:
 
 This boundary is deliberate: the control plane owns structured research and
 verification state, while the mdBook still owns curated explanatory pages.
+'''
+
+[[document]]
+id = "BOOK-021"
+source_markdown = "docs/book/src/architecture/compatibility-exports.md"
+section = "architecture"
+slug = "docs_book_src_architecture_compatibility-exports"
+title = "Compatibility Exports"
+claim_refs = []
+path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "docs/INSIGHTS.md", "docs/THEOREMS.md", "registry/binaries.toml", "registry/claims.toml", "registry/control_plane_compatibility_exports.toml", "registry/experiments.toml", "registry/insights.toml"]
+line_count = 48
+body_markdown = '''
+# Compatibility Exports
+
+Compatibility exports are generated files that remain useful for web browsing,
+publication assembly, and transitional tooling, but they are not the canonical
+authoring surface for migrated lanes.
+
+Canonical machine-readable inventory:
+
+- `registry/control_plane_compatibility_exports.toml`
+
+## Examples
+
+- `registry/claims.toml`
+- `registry/insights.toml`
+- `registry/experiments.toml`
+- `registry/binaries.toml`
+- `docs/CLAIMS_EVIDENCE_MATRIX.md`
+- `docs/INSIGHTS.md`
+- `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md`
+- `docs/THEOREMS.md`
+
+## Required behavior
+
+Compatibility exports must satisfy two constraints:
+
+1. They must be reproducible from the canonical DB.
+2. They must not silently become a second authoring source.
+
+## How they are checked
+
+- `provenance verify-control-plane`
+  Verifies DB invariants and freshness for the migrated control-plane exports.
+- `verify-registry-mirror-freshness`
+  Verifies generated Markdown mirror freshness.
+- `registry-check`
+  Cross-checks counts, identities, execution targets, and canonical DB parity.
+
+## Contributor guidance
+
+If you edit a compatibility export directly, you are almost always doing one of
+two things:
+
+- repairing a bootstrap/import path
+- creating drift that will be overwritten by export
+
+If the file is listed in the compatibility-export inventory, prefer changing
+the canonical source path and regenerating instead.
 '''
 
 [[document]]
@@ -547,6 +611,122 @@ Some algorithms remain hand-rolled for justified reasons:
 - **HDF5 2.0.0**: The original `hdf5` 0.8.1 crate panics on HDF5 2.0.
   We use `hdf5-metno` 0.12 (MET Norway fork), which supports HDF5 1.8.4
   through 2.0.x.  The `hdf5-export` feature requires `libhdf5` at link time.
+'''
+
+[[document]]
+id = "BOOK-022"
+source_markdown = "docs/book/src/architecture/db-authoring.md"
+section = "architecture"
+slug = "docs_book_src_architecture_db-authoring"
+title = "DB Authoring Workflow"
+claim_refs = []
+path_refs = ["registry/canonical/control_plane.sqlite3", "registry/claims.toml", "registry/experiments.toml"]
+line_count = 55
+body_markdown = '''
+# DB Authoring Workflow
+
+For the migrated control-plane lanes, the canonical operational source of truth
+is `registry/canonical/control_plane.sqlite3`.
+
+That means the normal loop is:
+
+```sh
+cargo run -p gororoba_cli_provenance --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  import-legacy-control-plane
+
+cargo run -p gororoba_cli_provenance --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  export-control-plane
+
+cargo run -p gororoba_cli_provenance --bin provenance -- \
+  --db registry/canonical/control_plane.sqlite3 \
+  verify-control-plane
+```
+
+## What \u201Cauthoring\u201D means here
+
+For now, some lanes still originate from compatibility material and are then
+re-indexed into SQLite. That is a migration bridge, not the intended steady
+state.
+
+Operationally, contributors should think in this order:
+
+1. update the canonical control-plane state
+2. export the compatibility files
+3. verify freshness and integrity
+
+## Canonical-path writers that already sync through the DB
+
+- `claims-consolidate`
+  In-place writes to `registry/claims.toml` reindex and re-export through the DB.
+- `execution-planning`
+  Canonical writes to `registry/experiments.toml` now replace the experiments
+  slice in the DB and re-export the compat files.
+
+## Recovery and bootstrap tools
+
+These commands still exist, but they are not normal authoring workflows:
+
+- `migrate-claims`
+- `migrate-insights`
+
+Treat them as import/recovery utilities only.
+
+## Practical rule
+
+If you changed a migrated lane and did not run both export and verify against
+the canonical DB, the repo is not fully updated yet.
+'''
+
+[[document]]
+id = "BOOK-023"
+source_markdown = "docs/book/src/architecture/execution-targets.md"
+section = "architecture"
+slug = "docs_book_src_architecture_execution-targets"
+title = "Execution Targets"
+claim_refs = []
+path_refs = []
+line_count = 39
+body_markdown = '''
+# Execution Targets
+
+Experiments do not only point at CLI binaries. Some valid execution targets are
+workspace benches.
+
+This matters because the control plane checks experiment lineage against the
+workspace execution inventory.
+
+## Current rule
+
+An execution target is valid if it is one of:
+
+- a workspace binary target
+- a workspace bench target
+
+Examples:
+
+- `thesis-42-support` is a binary target
+- `x87_bench` is a bench target
+
+## Why this page exists
+
+We previously had a false mismatch because the repo treated benches as missing
+binaries. The current contract is stricter and more accurate:
+
+- active experiments must resolve to a real execution target
+- planned or blocked experiments may reference future targets without failing
+  the active execution-target gate
+
+## Validation
+
+The execution-target contract is checked by:
+
+- `execution-planning`
+- `registry-check`
+
+Both now use Cargo target discovery rather than a narrower hand-maintained view
+of the workspace.
 '''
 
 [[document]]
@@ -658,6 +838,75 @@ All external crates are declared at the workspace level in the root `Cargo.toml`
 under `[workspace.dependencies]` and referenced by sub-crates with
 `workspace = true`.  This prevents version conflicts and keeps the dependency
 tree consistent.
+'''
+
+[[document]]
+id = "BOOK-024"
+source_markdown = "docs/book/src/architecture/migrated-lanes.md"
+section = "architecture"
+slug = "docs_book_src_architecture_migrated-lanes"
+title = "Migrated Lanes"
+claim_refs = []
+path_refs = ["provenance query ...", "registry/canonical/control_plane.sqlite3", "registry/control_plane_migrated_lanes.toml"]
+line_count = 58
+body_markdown = '''
+# Migrated Lanes
+
+The SQLite-first migration does not apply to the whole repo uniformly. This
+page is the quick map of which structured lanes are already DB-first and which
+are still intentionally outside the control-plane cutover.
+
+Canonical machine-readable inventory:
+
+- `registry/control_plane_migrated_lanes.toml`
+
+## DB-first lanes
+
+These lanes are operationally authored in
+`registry/canonical/control_plane.sqlite3` and exported outward for
+compatibility:
+
+- claims
+- insights
+- experiments
+- binaries
+- theorems
+
+For those lanes:
+
+- query live state with `provenance query ...`
+- verify integrity with `provenance verify-control-plane`
+- refresh exports with `provenance export-control-plane`
+
+## Hybrid or non-migrated lanes
+
+These lanes are still intentionally outside the control-plane migration or only
+partially synchronized:
+
+- `book_docs`
+  Authored mdBook prose remains outside the SQLite control plane.
+- roadmap / todo / requirements / module requirements
+  Planning lanes remain TOML-first today.
+- external source governance and dataset alias lanes
+  These remain TOML-first pending a later migration tranche.
+
+## Why this matters
+
+When a lane is DB-first, compatibility files are required outputs but not
+authoring sources. When a lane is still TOML-first, editing the TOML is
+expected.
+
+That distinction is the difference between:
+
+- a normal workflow
+- a recovery/bootstrap workflow
+- a stale-export bug
+
+## Related docs
+
+- [Canonical Sources](./canonical-sources.md)
+- [DB Authoring Workflow](./db-authoring.md)
+- [Compatibility Exports](./compatibility-exports.md)
 '''
 
 [[document]]
@@ -1483,7 +1732,7 @@ Primary sources for this lane:
 Recommended workflow:
 
 ```sh
-cargo run -p gororoba_cli_data --bin provenance -- \
+cargo run -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   export-control-plane
 
@@ -1495,6 +1744,55 @@ After export, use `docs/THEOREMS.md` as the web-readable theorem index and
 the proof files under `proofs/` as the canonical source material. Use
 `docs/generated/THEOREMS_REGISTRY_MIRROR.md` when you want the fuller
 registry-style mirror.
+'''
+
+[[document]]
+id = "BOOK-025"
+source_markdown = "docs/book/src/proofs/linking.md"
+section = "proofs"
+slug = "docs_book_src_proofs_linking"
+title = "Theorem Linking"
+claim_refs = []
+path_refs = ["docs/THEOREMS.md", "docs/generated/THEOREMS_REGISTRY_MIRROR.md", "proofs/", "proofs/_RocqProject", "registry/canonical/control_plane.sqlite3"]
+line_count = 38
+body_markdown = '''
+# Theorem Linking
+
+The theorem lane connects three things:
+
+- Rocq proof files in `proofs/`
+- theorem inventory rows in the canonical SQLite control plane
+- linked claim IDs in the claims lane
+
+## Canonical sources
+
+- proof manifest: `proofs/_RocqProject`
+- canonical structured state: `registry/canonical/control_plane.sqlite3`
+- generated web views: `docs/THEOREMS.md` and
+  `docs/generated/THEOREMS_REGISTRY_MIRROR.md`
+
+## Linking rule
+
+Each theorem row should link to one or more claim IDs unless it is in the
+small justified-unlinked allowlist used for historical or structural proof
+artifacts.
+
+The control-plane verifier checks:
+
+- proof path exists on disk
+- linked claim IDs exist
+- unexpected unlinked theorem rows fail verification
+
+## Why the link matters
+
+Proofs are not just a file inventory. They feed:
+
+- `kernel_checked_claims`
+- theorem-facing documentation
+- claim-level formal proof status
+
+This is why theorem-link propagation is part of the control-plane verification
+contract rather than a documentation-only feature.
 '''
 
 [[document]]
@@ -1562,15 +1860,15 @@ The `provenance` and `registry-check` binaries validate claims for:
 - SQLite control-plane integrity and proof linkage
 
 ```sh
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   import-legacy-control-plane
 
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   export-control-plane
 
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   verify-control-plane
 
@@ -1582,7 +1880,7 @@ For direct inspection, prefer querying the DB instead of opening the exported
 TOML:
 
 ```sh
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   query claim C-001
 ```
@@ -1681,15 +1979,15 @@ The SQLite control plane is the operational source of truth for experiment
 inventory and top-level counts.
 
 ```sh
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   import-legacy-control-plane
 
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   export-control-plane
 
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   query experiment E-001
 ```
@@ -1761,15 +2059,15 @@ spatial signal, making the earlier "radio-transient-specific" conclusion too nar
 Use the canonical DB flow first:
 
 ```sh
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   import-legacy-control-plane
 
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   export-control-plane
 
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   verify-control-plane
 ```
@@ -1777,7 +2075,7 @@ cargo run --release -p gororoba_cli_data --bin provenance -- \
 SQLite-first inspection example:
 
 ```sh
-cargo run --release -p gororoba_cli_data --bin provenance -- \
+cargo run --release -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   query insight I-001
 ```

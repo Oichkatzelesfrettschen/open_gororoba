@@ -1,0 +1,11 @@
+# LoTSS Analysis -- Python dependencies
+# E-198: LoTSS-MaNGA Kinematic Bisection
+# E-199: LoTSS DR1 Ultrametric Structure
+# E-200: LoTSS N(S) Flux Distribution DR1->DR2->DR3
+#
+# Install: python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+
+astropy>=7.0
+scipy>=1.14
+numpy>=2.0
+matplotlib>=3.9

@@ -26,6 +26,8 @@ pub mod ibex;
 pub mod jarvis;
 pub mod juno;
 pub mod landsat;
+#[cfg(feature = "fits")]
+pub mod lotss;
 pub mod manga;
 pub mod mcgill;
 pub mod nanograv;

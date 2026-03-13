@@ -8,6 +8,11 @@ pub mod mcmc_chain;
 pub mod pantheon_dat;
 pub mod tap;
 
+#[cfg(feature = "fits")]
+pub mod fits_table;
+#[cfg(feature = "fits")]
+pub mod votable;
+
 pub use gfc::{
     GravityCoefficient, GravityField, actual_max_degree, parse_gfc, validate_gfc_degrees,
 };

@@ -2866,6 +2866,198 @@ fn collapse(text: &str) -> String {
         .join(" ")
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    struct TestWorkspace {
+        root: PathBuf,
+        db: PathBuf,
+    }
+
+    impl Drop for TestWorkspace {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.root);
+        }
+    }
+
+    #[test]
+    fn load_workspace_bench_targets_includes_named_bench() -> Result<()> {
+        let fixture = make_test_workspace("bench_targets")?;
+        let benches = load_workspace_bench_targets(&fixture.root)?;
+        assert!(benches.contains("x87_bench"));
+        Ok(())
+    }
+
+    #[test]
+    fn sync_or_write_experiments_registry_updates_db_and_export() -> Result<()> {
+        let fixture = make_test_workspace("sync_experiments")?;
+        let args = Args {
+            repo_root: fixture.root.clone(),
+            db: PathBuf::from("registry/canonical/control_plane.sqlite3"),
+            verify: false,
+            experiments_out: PathBuf::from("registry/experiments.toml"),
+            lineage_out: PathBuf::from("registry/experiment_lineage.toml"),
+            roadmap_out: PathBuf::from("registry/roadmap.toml"),
+            todo_out: PathBuf::from("registry/todo.toml"),
+            next_actions_out: PathBuf::from("registry/next_actions.toml"),
+            requirements_out: PathBuf::from("registry/requirements.toml"),
+            module_requirements_out: PathBuf::from("registry/module_requirements.toml"),
+        };
+        let replacement = r#"[experiments]
+authoritative = true
+status_allowlist = ["active", "planned", "blocked", "deprecated"]
+
+[[experiment]]
+id = "E-002"
+title = "Synced replacement experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+deterministic = true
+"#;
+
+        sync_or_write_experiments_registry(&fixture.root, &args, replacement)?;
+
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        let exported = fs::read_to_string(fixture.root.join("registry/experiments.toml"))?;
+        assert!(rendered.contains("id = \"E-002\""));
+        assert!(!rendered.contains("id = \"E-001\""));
+        assert!(exported.contains("id = \"E-002\""));
+        store.verify_control_plane_invariants(&fixture.root)?;
+        store.verify_control_plane_compat_exports(
+            &fixture.root,
+            &fixture.root.join("registry/claims.toml"),
+            &fixture.root.join("registry/insights.toml"),
+            &fixture.root.join("registry/experiments.toml"),
+            &fixture.root.join("registry/binaries.toml"),
+            &fixture.root.join("docs/THEOREMS.md"),
+            &fixture.root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
+        )?;
+        Ok(())
+    }
+
+    fn make_test_workspace(label: &str) -> Result<TestWorkspace> {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("time")
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "gororoba_execution_planning_{label}_{}_{}",
+            std::process::id(),
+            unique
+        ));
+        fs::create_dir_all(&root)?;
+
+        write_ascii(
+            &root.join("Cargo.toml"),
+            r#"[workspace]
+resolver = "3"
+members = ["crates/test_cli"]
+"#,
+        )?;
+        write_ascii(
+            &root.join("crates/test_cli/Cargo.toml"),
+            r#"[package]
+name = "test_cli"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "mini-bin"
+path = "src/main.rs"
+
+[[bench]]
+name = "x87_bench"
+path = "benches/x87_bench.rs"
+"#,
+        )?;
+        write_ascii(
+            &root.join("crates/test_cli/src/main.rs"),
+            "fn main() { println!(\"mini-bin\"); }\n",
+        )?;
+        write_ascii(
+            &root.join("crates/test_cli/benches/x87_bench.rs"),
+            "fn main() {}\n",
+        )?;
+
+        write_ascii(
+            &root.join("registry/claims.toml"),
+            r#"[[claim]]
+id = "C-001"
+statement = "Mini claim"
+status = "Verified"
+where_stated = "`crates/test_cli/src/main.rs`"
+last_verified = "2026-03-13"
+formal_proof = "proofs/verified/C001_Test.v"
+status_note = "Mini proof"
+"#,
+        )?;
+        write_ascii(
+            &root.join("registry/insights.toml"),
+            r#"[[insight]]
+id = "I-001"
+title = "Mini insight"
+status = "verified"
+claims = ["C-001"]
+"#,
+        )?;
+        write_ascii(
+            &root.join("registry/experiments.toml"),
+            r#"[experiments]
+authoritative = true
+status_allowlist = ["active", "planned", "blocked", "deprecated"]
+
+[[experiment]]
+id = "E-001"
+title = "Original experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+deterministic = true
+"#,
+        )?;
+        write_ascii(
+            &root.join("registry/binaries.toml"),
+            r#"[[binary]]
+name = "mini-bin"
+crate = "test_cli"
+description = "Mini binary"
+experiment = "E-001"
+"#,
+        )?;
+        write_ascii(&root.join("proofs/_RocqProject"), "verified/C001_Test.v\n")?;
+        write_ascii(
+            &root.join("proofs/verified/C001_Test.v"),
+            "(* proof placeholder *)\n",
+        )?;
+
+        let db = root.join("registry/canonical/control_plane.sqlite3");
+        let mut store = ProvenanceStore::open(&db)?;
+        store.reindex_control_plane_from_registries(
+            &root,
+            &root.join("registry/claims.toml"),
+            &root.join("registry/insights.toml"),
+            &root.join("registry/experiments.toml"),
+            &root.join("registry/binaries.toml"),
+            &root.join("proofs/_RocqProject"),
+        )?;
+        store.export_control_plane_compat(
+            &root,
+            &root.join("registry/claims.toml"),
+            &root.join("registry/insights.toml"),
+            &root.join("registry/experiments.toml"),
+            &root.join("registry/binaries.toml"),
+            &root.join("docs/THEOREMS.md"),
+            &root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
+        )?;
+
+        Ok(TestWorkspace { root, db })
+    }
+}
+
 fn build_status_token(status: &str) -> String {
     let mut token = collapse(status)
         .to_uppercase()

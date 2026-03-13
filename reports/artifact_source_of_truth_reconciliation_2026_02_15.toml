@@ -4,112 +4,13 @@
 id = "ASOT-RECON-2026-02-15"
 updated = "2026-03-13"
 authoritative = true
-artifact_count = 3045
-downloaded_count = 1397
-downloadable_count = 252
+artifact_count = 3042
+downloaded_count = 1407
+downloadable_count = 327
 blocked_count = 0
-citation_only_no_link_count = 1220
-unverified_count = 176
-missing_minimum_requirement_count = 1396
-
-[[missing_minimum_requirement]]
-key = "arxiv:1306.1646"
-title = "Hitzer (2013) Crystal planes and reciprocal space in Clifford GA (arXiv)"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/40::HITZER_2013_CRYSTAL_PLANES_ARXIV"]
-all_links = ["https://arxiv.org/abs/1306.1646", "https://arxiv.org/pdf/1306.1646.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/1306.1646", "https://arxiv.org/pdf/1306.1646.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:1310.5455"
-title = "Elduque (2013) Okubo algebras: automorphisms, derivations and idempotents"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/20::ELDUQUE_2013_OKUBO_AUT_DER_IDEMP"]
-all_links = ["https://arxiv.org/abs/1310.5455", "https://arxiv.org/pdf/1310.5455.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/1310.5455", "https://arxiv.org/pdf/1310.5455.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:1603.07291"
-title = "Niezgoda et al. (2016) Symmetrized Bingham distribution for texture"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/53::NIEZGODA_2016_SYMMETRIZED_BINGHAM"]
-all_links = ["https://arxiv.org/abs/1603.07291", "https://arxiv.org/pdf/1603.07291.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/1603.07291", "https://arxiv.org/pdf/1603.07291.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:1712.06436"
-title = "Baez (2017) From the Icosahedron to E8"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/0::BAEZ_2017_FROM_ICOSAHEDRON_TO_E8"]
-all_links = ["https://arxiv.org/abs/1712.06436", "https://arxiv.org/pdf/1712.06436.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/1712.06436", "https://arxiv.org/pdf/1712.06436.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:1905.12631"
-title = "Blaszczyk (2019) Generalization of the octonion Fourier transform to 3-D"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/36::BLASZCZYK_2019_OCTONION_FOURIER_3D"]
-all_links = ["https://arxiv.org/abs/1905.12631", "https://arxiv.org/pdf/1905.12631.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/1905.12631", "https://arxiv.org/pdf/1905.12631.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:2303.12219"
-title = "Corradetti et al. (2023) Jordan algebras over icosahedral cut-and-project quasicrystals"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/60::CORRADETTI_2023_JORDAN_ALG_ICOSAHEDRAL_CNP"]
-all_links = ["https://arxiv.org/abs/2303.12219", "https://arxiv.org/pdf/2303.12219.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/2303.12219", "https://arxiv.org/pdf/2303.12219.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:2309.15774"
-title = "Baez (2023) The Icosidodecahedron"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/1::BAEZ_2023_ICOSIDODECAHEDRON"]
-all_links = ["https://arxiv.org/abs/2309.15774", "https://arxiv.org/pdf/2309.15774.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/2309.15774", "https://arxiv.org/pdf/2309.15774.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:hep-th/9501007"
-title = "Dixon (1995) Octonions: E8 lattice to Lambda16"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/61::DIXON_1995_OCTONIONS_E8_LAMBDA16"]
-all_links = ["https://arxiv.org/abs/hep-th/9501007", "https://arxiv.org/pdf/hep-th/9501007.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/hep-th/9501007", "https://arxiv.org/pdf/hep-th/9501007.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:math/0507282"
-title = "Elduque (2005) Symmetric composition algebras / magic square references"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/16::ELDUQUE_2005_SYMMETRIC_COMP_ARXIV"]
-all_links = ["https://arxiv.org/pdf/math/0507282.pdf", "https://arxiv.org/abs/math/0507282"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0507282.pdf", "https://arxiv.org/abs/math/0507282"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:math/0603578"
-title = "Said et al. (2006) Fast complexified quaternion Fourier transform"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/35::SAID_2006_FAST_COMPLEXIFIED_QFFT"]
-all_links = ["https://arxiv.org/abs/math/0603578", "https://arxiv.org/pdf/math/0603578.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math/0603578", "https://arxiv.org/pdf/math/0603578.pdf"]
-
-[[missing_minimum_requirement]]
-key = "arxiv:math/0701701"
-title = "Vojtechovsky (2007) Generators for finite simple Moufang loops"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/32::VOJTECHOVSKY_2007_GENERATORS_MOUFANG"]
-all_links = ["https://arxiv.org/abs/math/0701701", "https://arxiv.org/pdf/math/0701701.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math/0701701", "https://arxiv.org/pdf/math/0701701.pdf"]
+citation_only_no_link_count = 1209
+unverified_count = 99
+missing_minimum_requirement_count = 1308
 
 [[missing_minimum_requirement]]
 key = "cambridge:journal_article"
@@ -130,19 +31,10 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://www.cambridge.org/core/tdm/tdm-policy.json"]
 
 [[missing_minimum_requirement]]
-key = "diva:1910472"
-title = "Huang (2024) Synthesis and Characterization of Quasicrystals and Approximants (dissertation)"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/58::HUANG_2024_QUASICRYSTALS_DISSERTATION_DIVA"]
-all_links = ["https://www.diva-portal.org/smash/get/diva2%3A1910472/FULLTEXT01.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.diva-portal.org/smash/get/diva2%3A1910472/FULLTEXT01.pdf"]
-
-[[missing_minimum_requirement]]
 key = "dml:10338.dmlcz/140113"
 title = "Zorn vector matrices and Paige loops (DML mirror)"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/34::DML_2010_ZORN_VECTOR_MATRICES_PAIGE_LOOPS"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/35::DML_2010_ZORN_VECTOR_MATRICES_PAIGE_LOOPS"]
 all_links = ["https://dml.cz/bitstream/handle/10338.dmlcz/140113/CommentatMathUnivCarolRetro_51-2010-2_20.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://dml.cz/bitstream/handle/10338.dmlcz/140113/CommentatMathUnivCarolRetro_51-2010-2_20.pdf"]
@@ -296,27 +188,27 @@ key = "doi:10.1007/bf00653317"
 title = "Majernik, V. (1971) Astrophysics and Space Science, 14, 265-285."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1928", "reports/provenance_recovery_plan.toml::candidate/16::ASOT-0018"]
-all_links = ["http://dx.doi.org/10.1007/BF00653317", "https://doi.org/10.1007/BF00653317"]
+all_links = ["https://doi.org/10.1007/BF00653317"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/BF00653317", "https://doi.org/10.1007/BF00653317"]
+unverified_mirrors = ["https://doi.org/10.1007/BF00653317"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/bf00669760"
 title = "31] Schwebel, S. (1970) International Journal of Theoretical Physics, 3, 315-330."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1993", "reports/provenance_recovery_plan.toml::candidate/17::ASOT-0019"]
-all_links = ["http://dx.doi.org/10.1007/BF00669760", "https://doi.org/10.1007/BF00669760"]
+all_links = ["https://doi.org/10.1007/BF00669760"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/BF00669760", "https://doi.org/10.1007/BF00669760"]
+unverified_mirrors = ["https://doi.org/10.1007/BF00669760"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/bf00713636"
 title = "21] Majernik, V. (1982) Astrophysics and Space Science, 84, 191-204."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1976", "reports/provenance_recovery_plan.toml::candidate/18::ASOT-0020"]
-all_links = ["http://dx.doi.org/10.1007/BF00713636", "https://doi.org/10.1007/BF00713636"]
+all_links = ["https://doi.org/10.1007/BF00713636"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/BF00713636", "https://doi.org/10.1007/BF00713636"]
+unverified_mirrors = ["https://doi.org/10.1007/BF00713636"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/bf01645742"
@@ -350,27 +242,27 @@ key = "doi:10.1007/bf02726749"
 title = "15] Imaeda, K. (1976) Il Nuovo Cimento B, 32, 138-162."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1967", "reports/provenance_recovery_plan.toml::candidate/22::ASOT-0024"]
-all_links = ["http://dx.doi.org/10.1007/BF02726749", "https://doi.org/10.1007/BF02726749"]
+all_links = ["https://doi.org/10.1007/BF02726749"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/BF02726749", "https://doi.org/10.1007/BF02726749"]
+unverified_mirrors = ["https://doi.org/10.1007/BF02726749"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/bf02799188"
 title = "Singh, A. (1981) Lettere Al Nuovo Cimento, 32, 231-234."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1932", "reports/provenance_recovery_plan.toml::candidate/23::ASOT-0025"]
-all_links = ["http://dx.doi.org/10.1007/BF02799188", "https://doi.org/10.1007/BF02799188"]
+all_links = ["https://doi.org/10.1007/BF02799188"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/BF02799188", "https://doi.org/10.1007/BF02799188"]
+unverified_mirrors = ["https://doi.org/10.1007/BF02799188"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/bf03041944"
 title = "14] Majernik, V. (1999) Advances in Applied Clifford Algebras, 9, 119-130."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1966", "reports/provenance_recovery_plan.toml::candidate/24::ASOT-0026"]
-all_links = ["http://dx.doi.org/10.1007/BF03041944", "https://doi.org/10.1007/BF03041944"]
+all_links = ["https://doi.org/10.1007/BF03041944"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/BF03041944", "https://doi.org/10.1007/BF03041944"]
+unverified_mirrors = ["https://doi.org/10.1007/BF03041944"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/jhep01"
@@ -743,12 +635,12 @@ unverified_mirrors = ["https://doi.org/10.1007/JHEP12(2014)162"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s00006-006-0014-7"
-title = "http://dx.doi.org/10.1007/s00006-006-0014-7"
+title = "https://doi.org/10.1007/s00006-006-0014-7"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1991"]
-all_links = ["http://dx.doi.org/10.1007/s00006-006-0014-7", "https://doi.org/10.1007/s00006-006-0014-7"]
+all_links = ["https://doi.org/10.1007/s00006-006-0014-7"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/s00006-006-0014-7", "https://doi.org/10.1007/s00006-006-0014-7"]
+unverified_mirrors = ["https://doi.org/10.1007/s00006-006-0014-7"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s00006-010-0214-z"
@@ -818,9 +710,9 @@ key = "doi:10.1007/s10509-012-0992-y"
 title = "33] Hajdukovic, D.S. (2013) Astrophysics and Space Science, 339, 1-5."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1996"]
-all_links = ["http://dx.doi.org/10.1007/s10509-012-0992-y", "https://doi.org/10.1007/s10509-012-0992-y"]
+all_links = ["https://doi.org/10.1007/s10509-012-0992-y"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/s10509-012-0992-y", "https://doi.org/10.1007/s10509-012-0992-y"]
+unverified_mirrors = ["https://doi.org/10.1007/s10509-012-0992-y"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s10714-008-0661-1"
@@ -851,21 +743,21 @@ unverified_mirrors = ["https://doi.org/10.1007/s10714-021-02831-1"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s10773-010-0314-5"
-title = "http://dx.doi.org/10.1007/s10773-010-0314-5"
+title = "https://doi.org/10.1007/s10773-010-0314-5"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1974"]
-all_links = ["http://dx.doi.org/10.1007/s10773-010-0314-5", "https://doi.org/10.1007/s10773-010-0314-5"]
+all_links = ["https://doi.org/10.1007/s10773-010-0314-5"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/s10773-010-0314-5", "https://doi.org/10.1007/s10773-010-0314-5"]
+unverified_mirrors = ["https://doi.org/10.1007/s10773-010-0314-5"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s10773-011-0999-0"
-title = "http://dx.doi.org/10.1007/s10773-011-0999-0"
+title = "https://doi.org/10.1007/s10773-011-0999-0"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1987"]
-all_links = ["http://dx.doi.org/10.1007/s10773-011-0999-0", "https://doi.org/10.1007/s10773-011-0999-0"]
+all_links = ["https://doi.org/10.1007/s10773-011-0999-0"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/s10773-011-0999-0", "https://doi.org/10.1007/s10773-011-0999-0"]
+unverified_mirrors = ["https://doi.org/10.1007/s10773-011-0999-0"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s10836016-5590-4"
@@ -917,9 +809,9 @@ key = "doi:10.1007/s11214-009-9537-2"
 title = "13] Sch fer, G. (2009) Space Science Review, 148, 37-52."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1960"]
-all_links = ["http://dx.doi.org/10.1007/s11214-009-9537-2", "https://doi.org/10.1007/s11214-009-9537-2"]
+all_links = ["https://doi.org/10.1007/s11214-009-9537-2"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1007/s11214-009-9537-2", "https://doi.org/10.1007/s11214-009-9537-2"]
+unverified_mirrors = ["https://doi.org/10.1007/s11214-009-9537-2"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1007/s11214-017-0450-9"
@@ -958,15 +850,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://doi.org/10.1007/s41781-024-001214"]
 
 [[missing_minimum_requirement]]
-key = "doi:10.1016/0022-3093(93)90351-w"
-title = "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf"
-status = "citation_only_no_link"
-source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/28::ASOT_3018_sadoc_doi"]
-all_links = ["https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf", "https://doi.org/10.1016/0022-3093(93)90351-W", "https://www.sciencedirect.com/science/article/pii/002230939390351W"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf", "https://doi.org/10.1016/0022-3093(93)90351-W", "https://www.sciencedirect.com/science/article/pii/002230939390351W"]
-
-[[missing_minimum_requirement]]
 key = "doi:10.1016/0041-5553(64)90137-5"
 title = "Phys. 4, 5 (1964), 1   17. (64)90137-5"
 status = "citation_only_no_link"
@@ -980,9 +863,9 @@ key = "doi:10.1016/0096-3003(88)90133-6"
 title = "88)90133-6"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1983"]
-all_links = ["http://dx.doi.org/10.1016/0096-3003", "https://doi.org/10.1016/0096-3003(88)90133-6", "https://doi.org/10.1016/0096-3003"]
+all_links = ["https://doi.org/10.1016/0096-3003", "https://doi.org/10.1016/0096-3003(88)90133-6"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1016/0096-3003", "https://doi.org/10.1016/0096-3003(88)90133-6", "https://doi.org/10.1016/0096-3003"]
+unverified_mirrors = ["https://doi.org/10.1016/0096-3003", "https://doi.org/10.1016/0096-3003(88)90133-6"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1016/0166-218x(82)90033-6"
@@ -1295,9 +1178,9 @@ key = "doi:10.1016/j.physletb.2005.12.050"
 title = "22] Ulrych, S. (2006) Physics Letters B, 633, 631-635."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1977"]
-all_links = ["http://dx.doi.org/10.1016/j.physletb.2005.12.050", "https://doi.org/10.1016/j.physletb.2005.12.050"]
+all_links = ["https://doi.org/10.1016/j.physletb.2005.12.050"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1016/j.physletb.2005.12.050", "https://doi.org/10.1016/j.physletb.2005.12.050"]
+unverified_mirrors = ["https://doi.org/10.1016/j.physletb.2005.12.050"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1016/j.physletb.2012.11.025"
@@ -1430,18 +1313,18 @@ key = "doi:10.1016/s0096-3003(96)00051-3"
 title = "96)00051-3"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1985"]
-all_links = ["http://dx.doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(96)00051-3", "https://doi.org/10.1016/S0096-3003"]
+all_links = ["https://doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(96)00051-3"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(96)00051-3", "https://doi.org/10.1016/S0096-3003"]
+unverified_mirrors = ["https://doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(96)00051-3"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1016/s0096-3003(99)00140-x"
 title = "99)00140-X"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1981"]
-all_links = ["http://dx.doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(99)00140-X", "https://doi.org/10.1016/S0096-3003"]
+all_links = ["https://doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(99)00140-X"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(99)00140-X", "https://doi.org/10.1016/S0096-3003"]
+unverified_mirrors = ["https://doi.org/10.1016/S0096-3003", "https://doi.org/10.1016/S0096-3003(99)00140-X"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1016/s0168-9002(03"
@@ -1691,9 +1574,9 @@ key = "doi:10.1023/a:1003762405951"
 title = "20] Shaarawi, A.M. (2000) Foundations of Physics, 30, 1911-1941."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1975"]
-all_links = ["http://dx.doi.org/10.1023/A:1003762405951", "https://doi.org/10.1023/A:1003762405951"]
+all_links = ["https://doi.org/10.1023/A:1003762405951"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1023/A:1003762405951", "https://doi.org/10.1023/A:1003762405951"]
+unverified_mirrors = ["https://doi.org/10.1023/A:1003762405951"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1023/a:1025754515197"
@@ -1708,7 +1591,7 @@ unverified_mirrors = ["https://doi.org/10.1023/A:1025754515197"]
 key = "doi:10.1023/b:matg.0000048799.56445.59"
 title = "Kunze & Schaeben (2004) Bingham distribution of quaternions (texture analysis)"
 status = "citation_only_no_link"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/52::KUNZE_SCHAEBEN_2004_BINGHAM_DISTRIBUTION"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/53::KUNZE_SCHAEBEN_2004_BINGHAM_DISTRIBUTION"]
 all_links = ["https://link.springer.com/content/pdf/10.1023/B%3AMATG.0000048799.56445.59.pdf", "https://doi.org/10.1023/B:MATG.0000048799.56445.59"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://link.springer.com/content/pdf/10.1023/B%3AMATG.0000048799.56445.59.pdf", "https://doi.org/10.1023/B:MATG.0000048799.56445.59"]
@@ -1913,12 +1796,12 @@ unverified_mirrors = ["https://doi.org/10.1063/1.1666501"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1063/1.3041499"
-title = "http://dx.doi.org/10.1063/1.3041499"
+title = "https://doi.org/10.1063/1.3041499"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1971"]
-all_links = ["http://dx.doi.org/10.1063/1.3041499", "https://doi.org/10.1063/1.3041499"]
+all_links = ["https://doi.org/10.1063/1.3041499"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1063/1.3041499", "https://doi.org/10.1063/1.3041499"]
+unverified_mirrors = ["https://doi.org/10.1063/1.3041499"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1080/00222937808682457"
@@ -2552,12 +2435,12 @@ unverified_mirrors = ["https://doi.org/10.1088/0264-9381/4/2/015"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1088/0305-4470/34/10/304"
-title = "http://dx.doi.org/10.1088/0305-4470/34/10/304"
+title = "https://doi.org/10.1088/0305-4470/34/10/304"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1989"]
-all_links = ["http://dx.doi.org/10.1088/0305-4470/34/10/304", "https://doi.org/10.1088/0305-4470/34/10/304"]
+all_links = ["https://doi.org/10.1088/0305-4470/34/10/304"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1088/0305-4470/34/10/304", "https://doi.org/10.1088/0305-4470/34/10/304"]
+unverified_mirrors = ["https://doi.org/10.1088/0305-4470/34/10/304"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1088/0305-4470/39/7/008"
@@ -3452,12 +3335,12 @@ unverified_mirrors = ["https://doi.org/10.1098/rsta.2017.0286", "https://doi.org
 
 [[missing_minimum_requirement]]
 key = "doi:10.1098/rstl.1865.0008"
-title = "http://dx.doi.org/10.1098/rstl.1865.0008"
+title = "https://doi.org/10.1098/rstl.1865.0008"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1919"]
-all_links = ["http://dx.doi.org/10.1098/rstl.1865.0008", "https://doi.org/10.1098/rstl.1865.0008"]
+all_links = ["https://doi.org/10.1098/rstl.1865.0008"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1098/rstl.1865.0008", "https://doi.org/10.1098/rstl.1865.0008"]
+unverified_mirrors = ["https://doi.org/10.1098/rstl.1865.0008"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1103/6c61-fm1n"
@@ -4505,12 +4388,12 @@ unverified_mirrors = ["https://doi.org/10.1103/PhysRevD.80.122003"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1103/physrevd.80.124014"
-title = "http://dx.doi.org/10.1103/PhysRevD.80.124014"
+title = "https://doi.org/10.1103/PhysRevD.80.124014"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1955"]
-all_links = ["http://dx.doi.org/10.1103/PhysRevD.80.124014", "https://doi.org/10.1103/PhysRevD.80.124014"]
+all_links = ["https://doi.org/10.1103/PhysRevD.80.124014"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1103/PhysRevD.80.124014", "https://doi.org/10.1103/PhysRevD.80.124014"]
+unverified_mirrors = ["https://doi.org/10.1103/PhysRevD.80.124014"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1103/physrevd.82.064010"
@@ -6413,21 +6296,21 @@ unverified_mirrors = ["https://doi.org/10.1142/9789813226609"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1142/s0217751x09047739"
-title = "http://dx.doi.org/10.1142/S0217751X09047739"
+title = "https://doi.org/10.1142/S0217751X09047739"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1995"]
-all_links = ["http://dx.doi.org/10.1142/S0217751X09047739", "https://doi.org/10.1142/S0217751X09047739"]
+all_links = ["https://doi.org/10.1142/S0217751X09047739"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1142/S0217751X09047739", "https://doi.org/10.1142/S0217751X09047739"]
+unverified_mirrors = ["https://doi.org/10.1142/S0217751X09047739"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1142/s0217751x13501121"
-title = "http://dx.doi.org/10.1142/S0217751X13501121"
+title = "https://doi.org/10.1142/S0217751X13501121"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1979"]
-all_links = ["http://dx.doi.org/10.1142/S0217751X13501121", "https://doi.org/10.1142/S0217751X13501121"]
+all_links = ["https://doi.org/10.1142/S0217751X13501121"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1142/S0217751X13501121", "https://doi.org/10.1142/S0217751X13501121"]
+unverified_mirrors = ["https://doi.org/10.1142/S0217751X13501121"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1142/s0218271802002888"
@@ -6440,12 +6323,12 @@ unverified_mirrors = ["https://doi.org/10.1142/S0218271802002888"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1142/s0218271806007663"
-title = "http://dx.doi.org/10.1142/S0218271806007663"
+title = "https://doi.org/10.1142/S0218271806007663"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1957"]
-all_links = ["http://dx.doi.org/10.1142/S0218271806007663", "https://doi.org/10.1142/S0218271806007663"]
+all_links = ["https://doi.org/10.1142/S0218271806007663"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1142/S0218271806007663", "https://doi.org/10.1142/S0218271806007663"]
+unverified_mirrors = ["https://doi.org/10.1142/S0218271806007663"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1142/s0218271806008966"
@@ -6845,12 +6728,12 @@ unverified_mirrors = ["https://doi.org/10.1364/ao.48.000355"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.1364/ao.xx.xxxxxx"
-title = "http://dx.doi.org/10.1364/ao.XX.XXXXXX"
+title = "https://doi.org/10.1364/ao.XX.XXXXXX"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.txt:33"]
-all_links = ["http://dx.doi.org/10.1364/ao.XX.XXXXXX", "https://doi.org/10.1364/ao.XX.XXXXXX"]
+all_links = ["https://doi.org/10.1364/ao.XX.XXXXXX"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.1364/ao.XX.XXXXXX", "https://doi.org/10.1364/ao.XX.XXXXXX"]
+unverified_mirrors = ["https://doi.org/10.1364/ao.XX.XXXXXX"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.14569/ijacsa.2016.070731"
@@ -7126,7 +7009,7 @@ unverified_mirrors = ["https://doi.org/10.3390/s100706901"]
 key = "doi:10.3390/sym16070818"
 title = "Katrusiak & Llenga (2024) Crystallographic Quaternions (MDPI Symmetry)"
 status = "citation_only_no_link"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/62::MDPI_2024_CRYSTALLOGRAPHIC_QUATERNIONS"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/63::MDPI_2024_CRYSTALLOGRAPHIC_QUATERNIONS"]
 all_links = ["https://doi.org/10.3390/sym16070818", "https://www.mdpi.com/2073-8994/16/7/818/pdf", "https://www.mdpi.com/2073-8994/16/7/818"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://doi.org/10.3390/sym16070818", "https://www.mdpi.com/2073-8994/16/7/818/pdf", "https://www.mdpi.com/2073-8994/16/7/818"]
@@ -7712,18 +7595,18 @@ key = "doi:10.4236/am.2013.410a3007"
 title = "30] Mironov, V.L. and Mironov, S.V. (2013) Applied Mathematics, 4, 53-60."
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:1992"]
-all_links = ["http://dx.doi.org/10.4236/am.2013.410A3007", "https://doi.org/10.4236/am.2013.410A3007"]
+all_links = ["https://doi.org/10.4236/am.2013.410A3007"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.4236/am.2013.410A3007", "https://doi.org/10.4236/am.2013.410A3007"]
+unverified_mirrors = ["https://doi.org/10.4236/am.2013.410A3007"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.4236/jmp.2014.510095"
-title = "http://dx.doi.org/10.4236/jmp.2014.510095"
+title = "https://doi.org/10.4236/jmp.2014.510095"
 status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:3", "data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt:42"]
-all_links = ["http://dx.doi.org/10.4236/jmp.2014.510095", "https://doi.org/10.4236/jmp.2014.510095"]
+all_links = ["https://doi.org/10.4236/jmp.2014.510095"]
 nonworking_mirrors = []
-unverified_mirrors = ["http://dx.doi.org/10.4236/jmp.2014.510095", "https://doi.org/10.4236/jmp.2014.510095"]
+unverified_mirrors = ["https://doi.org/10.4236/jmp.2014.510095"]
 
 [[missing_minimum_requirement]]
 key = "doi:10.4303/jglta/g110901"
@@ -7756,7 +7639,7 @@ unverified_mirrors = ["https://doi.org/10.5019/j.ijcir.2007.88"]
 key = "doi:10.5061/dryad.83bk3j9sj"
 title = "Dryad dataset: Multi-modal dataset of a polycrystalline metallic material"
 status = "citation_only_no_link"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/64::DATASET_DRYAD_STINVILLE_202x"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/65::DATASET_DRYAD_STINVILLE_202x"]
 all_links = ["https://doi.org/10.5061/dryad.83bk3j9sj"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://doi.org/10.5061/dryad.83bk3j9sj"]
@@ -7913,15 +7796,6 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2006
 all_links = ["https://doi.org/10.7935/zzw5-ak90"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://doi.org/10.7935/zzw5-ak90"]
-
-[[missing_minimum_requirement]]
-key = "iowa_state:79b32677-687d-4469-979a-df3da9fcf6db"
-title = "Wells (2010) Zorn vector matrices over commutative rings and loops (thesis/dissertation)"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/33::WELLS_2010_ZORN_VECTOR_MATRICES_THESIS"]
-all_links = ["https://dr.lib.iastate.edu/bitstreams/79b32677-687d-4469-979a-df3da9fcf6db/download"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://dr.lib.iastate.edu/bitstreams/79b32677-687d-4469-979a-df3da9fcf6db/download"]
 
 [[missing_minimum_requirement]]
 key = "title:abbott_r_et_al_2020_gw190521_a_binary_black_hole_merger_with_a_total_mass_of_150_solar_masses_physical_review_letters_125_10_101102"
@@ -9130,204 +9004,6 @@ nonworking_mirrors = []
 unverified_mirrors = []
 
 [[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/0804.4881"
-title = "2008 2011. Available at"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt:887"]
-all_links = ["http://arxiv.org/abs/0804.4881"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/0804.4881"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1007.0740v1"
-title = "online at"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5541"]
-all_links = ["http://arxiv.org/abs/1007.0740v1"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1007.0740v1"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1007.1726"
-title = "2010. Available at"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt:896"]
-all_links = ["http://arxiv.org/abs/1007.1726"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1007.1726"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1007.2114v3"
-title = "at"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5642"]
-all_links = ["http://arxiv.org/abs/1007.2114v3"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1007.2114v3"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1009.1166"
-title = "David I. Spivak. 2010. Functorial Data Migration. CoRR abs/1009.1166 (2010). arXiv:1009.1166"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2074"]
-all_links = ["http://arxiv.org/abs/1009.1166"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1009.1166"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1101.4381v1"
-title = "http://arxiv.org/abs/1101.4381v1"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5451"]
-all_links = ["http://arxiv.org/abs/1101.4381v1"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1101.4381v1"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1103.6205"
-title = "Math. Anal., available online at"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5639"]
-all_links = ["http://arxiv.org/abs/1103.6205"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1103.6205"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1104.1725v2"
-title = "http://arxiv.org/abs/1104.1725v2"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5622"]
-all_links = ["http://arxiv.org/abs/1104.1725v2"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1104.1725v2"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1108.1060"
-title = "at"
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt:869"]
-all_links = ["http://arxiv.org/abs/1108.1060"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1108.1060"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1404.0099"
-title = "2014. URL"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md:1523"]
-all_links = ["http://arxiv.org/abs/1404.0099"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1404.0099"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1412.0035"
-title = "abs/1412.0035 (2014). arXiv:1412.0035"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2046"]
-all_links = ["http://arxiv.org/abs/1412.0035"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1412.0035"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1412.1897"
-title = "for Unrecognizable Images. CoRR abs/1412.1897 (2014). arXiv:1412.1897"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2048"]
-all_links = ["http://arxiv.org/abs/1412.1897"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1412.1897"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1412.6980"
-title = "Yann LeCun (Eds.)."
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2042"]
-all_links = ["http://arxiv.org/abs/1412.6980"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1412.6980"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1506.02753"
-title = "abs/1506.02753 (2015). arXiv:1506.02753"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2016"]
-all_links = ["http://arxiv.org/abs/1506.02753"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1506.02753"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1509.02992"
-title = "disintegration, 2015. URL"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md:1603"]
-all_links = ["http://arxiv.org/abs/1509.02992"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1509.02992"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1606.08514"
-title = "http://arxiv.org/abs/1606.08514"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2067"]
-all_links = ["http://arxiv.org/abs/1606.08514"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1606.08514"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1711.10455"
-title = "learning. CoRR abs/1711.10455 (2017). arXiv:1711.10455"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2024"]
-all_links = ["http://arxiv.org/abs/1711.10455"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1711.10455"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1804.00746"
-title = "CoRR abs/1804.00746 (2018). arXiv:1804.00746"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2020"]
-all_links = ["http://arxiv.org/abs/1804.00746"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1804.00746"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1812.01158"
-title = "CoRR, abs/1812.01158, 2018. URL:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/dpll_cdcl.md:311"]
-all_links = ["http://arxiv.org/abs/1812.01158"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1812.01158"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/1903.01093"
-title = "2019). arXiv:1903.01093"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2076"]
-all_links = ["http://arxiv.org/abs/1903.01093"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/1903.01093"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/hep-th/0603081"
-title = "hep-th/0603081."
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.txt:3383"]
-all_links = ["http://arxiv.org/abs/hep-th/0603081"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/hep-th/0603081"]
-
-[[missing_minimum_requirement]]
-key = "url:http://arxiv.org/abs/hep-th/0605073"
-title = "hep-th/0605073."
-status = "citation_only_no_link"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.txt:3330"]
-all_links = ["http://arxiv.org/abs/hep-th/0605073"]
-nonworking_mirrors = []
-unverified_mirrors = ["http://arxiv.org/abs/hep-th/0605073"]
-
-[[missing_minimum_requirement]]
 key = "url:http://e-collection.library.ethz.ch/eserv/eth:30090/eth30090-02.pdf"
 title = "ethz-a-005539347. url: (visited on 2018-08-30)."
 status = "unverified"
@@ -9402,7 +9078,7 @@ unverified_mirrors = ["http://osf.io/registries/"]
 [[missing_minimum_requirement]]
 key = "url:http://soho.esac.esa.int/data/archive/index_gsfc.html"
 title = "SOHO Archive Mirror Audit (2026-03-09)"
-status = "unverified"
+status = "citation_only_no_link"
 source_refs = ["XS-020"]
 all_links = ["http://soho.esac.esa.int/data/archive/index_gsfc.html", "http://soho.esac.esa.int/data/archive/index_ssa.html", "http://solar.oato.inaf.it/", "http://solar.to.astro.it/", "https://idoc-medoc.ias.u-psud.fr/sitools/client-user/index.html?project=Medoc-Solar-Portal", "https://lasco-www.nrl.navy.mil/index.php?p=get_data", "https://sdac.virtualsolar.org/cgi/search", "https://seal.nascom.nasa.gov/cgi-bin/gui_seal", "https://soho.nascom.nasa.gov/data/.dash/sohoar-dashboard.html", "https://soho.nascom.nasa.gov/data/archive.html", "https://soho.nascom.nasa.gov/data/archive/", "https://soho.nascom.nasa.gov/data/archive/index_gsfc.html", "https://ssa.esac.esa.int/ssa-sl-tap/tap/capabilities", "https://ssa.esac.esa.int/ssa-sl-tap/tap/tables", "https://ssa.esac.esa.int/ssa/", "https://umbra.nascom.nasa.gov/eit/eit-catalog.html", "https://www.cosmos.esa.int/web/soho/command-line", "https://www.cosmos.esa.int/web/soho/mission-long-files", "https://www.cosmos.esa.int/web/soho/tap-main-functionalities", "https://www.ukssdc.ac.uk/solar/soho/data.html", "https://www2.mps.mpg.de/"]
 nonworking_mirrors = []
@@ -9429,7 +9105,7 @@ unverified_mirrors = ["http://www.iumj.indiana.edu/IUMJ/Preprints/4433.pdf"]
 [[missing_minimum_requirement]]
 key = "url:http://www.numdam.org/item/aihpa_1965__2_4_283_0/"
 title = "http://www.numdam.org/item/AIHPA_1965__2_4_283_0/"
-status = "unverified"
+status = "citation_only_no_link"
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt:757"]
 all_links = ["http://www.numdam.org/item/AIHPA_1965__2_4_283_0/"]
 nonworking_mirrors = []
@@ -9470,33 +9146,6 @@ source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sed
 all_links = ["https://8ecm.eu/system/admin/abstracts/pdfs/000/000/454/original/svetlana-zhilina.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://8ecm.eu/system/admin/abstracts/pdfs/000/000/454/original/svetlana-zhilina.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albz.pdf"
-title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z and other rings"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/25::GPR_2023_ALBERT_ALG_Z_LOOS"]
-all_links = ["https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albZ.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albZ.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf"
-title = "Elduque (2004/2005) The Magic Square and Symmetric Compositions"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/18::ELDUQUE_MAGIC_SQUARE_PDF"]
-all_links = ["https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf"
-title = "openpdf/integral-arithmetic"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:59"]
-all_links = ["https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://aimspress.com/aimspress-data/math/2022/5/pdf/math-07-05-483.pdf"
@@ -9544,31 +9193,13 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://archive.org/stream/electromagnetict01heavrich"]
 
 [[missing_minimum_requirement]]
-key = "url:https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/arxiv-1602.02317/1602.02317.pdf"
-title = "onion-location:"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/27_ARCHIVE-DIRECT.headers.txt:8", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_009.bin.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_arxiv-1602.02317_1602.02317.pdf.headers.txt:8"]
-all_links = ["https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/arxiv-1602.02317/1602.02317.pdf"]
+key = "url:https://arxiv.org/abs/0804.4881"
+title = "2008 2011. Available at"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt:887"]
+all_links = ["https://arxiv.org/abs/0804.4881"]
 nonworking_mirrors = []
-unverified_mirrors = ["https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/arxiv-1602.02317/1602.02317.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf"
-title = "onion-location:"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_033.bin.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_elementarytreat00tailuoft_elementarytreat00tailuoft.pdf.headers.txt:8"]
-all_links = ["https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf"
-title = "onion-location:"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_034.bin.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_theoryofbiquater00conwrich_theoryofbiquater00conwrich.pdf.headers.txt:8"]
-all_links = ["https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf"]
+unverified_mirrors = ["https://arxiv.org/abs/0804.4881"]
 
 [[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/0806.3767"
@@ -9580,6 +9211,132 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/0806.3767"]
 
 [[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1007.0740v1"
+title = "online at"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5541"]
+all_links = ["https://arxiv.org/abs/1007.0740v1"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1007.0740v1"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1007.1726"
+title = "2010. Available at"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt:896"]
+all_links = ["https://arxiv.org/abs/1007.1726"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1007.1726"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1007.2114v3"
+title = "at"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5642"]
+all_links = ["https://arxiv.org/abs/1007.2114v3"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1007.2114v3"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1009.1166"
+title = "David I. Spivak. 2010. Functorial Data Migration. CoRR abs/1009.1166 (2010). arXiv:1009.1166"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2074"]
+all_links = ["https://arxiv.org/abs/1009.1166"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1009.1166"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1101.4381v1"
+title = "https://arxiv.org/abs/1101.4381v1"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5451"]
+all_links = ["https://arxiv.org/abs/1101.4381v1"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1101.4381v1"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1103.6205"
+title = "Math. Anal., available online at"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5639"]
+all_links = ["https://arxiv.org/abs/1103.6205"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1103.6205"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1104.1725v2"
+title = "https://arxiv.org/abs/1104.1725v2"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5622"]
+all_links = ["https://arxiv.org/abs/1104.1725v2"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1104.1725v2"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1108.1060"
+title = "at"
+status = "citation_only_no_link"
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt:869"]
+all_links = ["https://arxiv.org/abs/1108.1060"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1108.1060"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1404.0099"
+title = "2014. URL"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md:1523"]
+all_links = ["https://arxiv.org/abs/1404.0099"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1404.0099"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1412.0035"
+title = "abs/1412.0035 (2014). arXiv:1412.0035"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2046"]
+all_links = ["https://arxiv.org/abs/1412.0035"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1412.0035"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1412.1897"
+title = "for Unrecognizable Images. CoRR abs/1412.1897 (2014). arXiv:1412.1897"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2048"]
+all_links = ["https://arxiv.org/abs/1412.1897"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1412.1897"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1412.6980"
+title = "Yann LeCun (Eds.)."
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2042"]
+all_links = ["https://arxiv.org/abs/1412.6980"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1412.6980"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1506.02753"
+title = "abs/1506.02753 (2015). arXiv:1506.02753"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2016"]
+all_links = ["https://arxiv.org/abs/1506.02753"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1506.02753"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1509.02992"
+title = "disintegration, 2015. URL"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md:1603"]
+all_links = ["https://arxiv.org/abs/1509.02992"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1509.02992"]
+
+[[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/1605.01665"
 title = "Cannon, K., Cariou, R., Chapman, A., et al. 2012, ApJ,"
 status = "citation_only_no_link"
@@ -9587,6 +9344,33 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2106
 all_links = ["https://arxiv.org/abs/1605.01665"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/1605.01665"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1606.08514"
+title = "https://arxiv.org/abs/1606.08514"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2067"]
+all_links = ["https://arxiv.org/abs/1606.08514"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1606.08514"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1711.10455"
+title = "learning. CoRR abs/1711.10455 (2017). arXiv:1711.10455"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2024"]
+all_links = ["https://arxiv.org/abs/1711.10455"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1711.10455"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1804.00746"
+title = "CoRR abs/1804.00746 (2018). arXiv:1804.00746"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2020"]
+all_links = ["https://arxiv.org/abs/1804.00746"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1804.00746"]
 
 [[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/1805.10457"
@@ -9605,6 +9389,24 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2106
 all_links = ["https://arxiv.org/abs/1807.07062"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/1807.07062"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1812.01158"
+title = "CoRR, abs/1812.01158, 2018. URL:"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/dpll_cdcl.md:311"]
+all_links = ["https://arxiv.org/abs/1812.01158"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1812.01158"]
+
+[[missing_minimum_requirement]]
+key = "url:https://arxiv.org/abs/1903.01093"
+title = "2019). arXiv:1903.01093"
+status = "citation_only_no_link"
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2076"]
+all_links = ["https://arxiv.org/abs/1903.01093"]
+nonworking_mirrors = []
+unverified_mirrors = ["https://arxiv.org/abs/1903.01093"]
 
 [[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/1905.03813"
@@ -10210,24 +10012,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/2603.05006"]
 
 [[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/astro-ph/9801276"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_abs_astro-ph_9801276.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/astro-ph/9801276"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/astro-ph/9801276"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/cond-mat/0503172"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_abs_cond-mat_0503172.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/cond-mat/0503172"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/cond-mat/0503172"]
-
-[[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/cond-mat/9701074"
 title = "superconductor below 70 K under e.m. field ,"
 status = "citation_only_no_link"
@@ -10235,15 +10019,6 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Rodal_2025
 all_links = ["https://arxiv.org/abs/cond-mat/9701074"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/cond-mat/9701074"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/gr-qc/0407075"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_abs_gr-qc_0407075.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/gr-qc/0407075"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/gr-qc/0407075"]
 
 [[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/gr-qc/9410014"
@@ -10282,58 +10057,13 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/gr-qc/9702026"]
 
 [[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/hep-th/9501007"
-title = "Location:"
+key = "url:https://arxiv.org/abs/hep-th/0603081"
+title = "hep-th/0603081."
 status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_abs_hep-th_9501007.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/hep-th/9501007"]
+source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.txt:3383"]
+all_links = ["https://arxiv.org/abs/hep-th/0603081"]
 nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/hep-th/9501007"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/hep-th/9506080"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs_hep-th_9506080.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/hep-th/9506080"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/hep-th/9506080"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/math.dg/0203158"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs_math.DG_0203158.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/math.DG/0203158"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math.DG/0203158"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/math.gm/0011260"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs_math.GM_0011260.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/math.GM/0011260"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math.GM/0011260"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/math.qa/9802116"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs_math.QA_9802116.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/math.QA/9802116"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math.QA/9802116"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/math.ra/0207003"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs_math.RA_0207003.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/math.RA/0207003"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math.RA/0207003"]
+unverified_mirrors = ["https://arxiv.org/abs/hep-th/0603081"]
 
 [[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/math/0604092"
@@ -10345,15 +10075,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/math/0604092"]
 
 [[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/math/0608640"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_abs_math_0608640.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/math/0608640"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/math/0608640"]
-
-[[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/physics/9912033"
 title = "https://arxiv.org/abs/physics/9912033"
 status = "citation_only_no_link"
@@ -10363,15 +10084,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://arxiv.org/abs/physics/9912033"]
 
 [[missing_minimum_requirement]]
-key = "url:https://arxiv.org/abs/quant-ph/0206098"
-title = "Location:"
-status = "citation_only_no_link"
-source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_abs_quant-ph_0206098.headers.txt:6"]
-all_links = ["https://arxiv.org/abs/quant-ph/0206098"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/abs/quant-ph/0206098"]
-
-[[missing_minimum_requirement]]
 key = "url:https://arxiv.org/abs/unknown"
 title = "Monograph: Composition Algebras and Physical Applications"
 status = "citation_only_no_link"
@@ -10379,222 +10091,6 @@ source_refs = ["registry/third_party_markdown_cache.toml::external_source/0"]
 all_links = ["https://arxiv.org/abs/unknown"]
 nonworking_mirrors = ["https://arxiv.org/abs/unknown"]
 unverified_mirrors = []
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2309.01776.pdf"
-title = "octonions/general-fields-rings-schemes"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:118"]
-all_links = ["https://arxiv.org/pdf/2309.01776.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2309.01776.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2310.09972.pdf"
-title = "octonions/scispace-general-fields"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:184"]
-all_links = ["https://arxiv.org/pdf/2310.09972.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2310.09972.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2311.02269.pdf"
-title = "octonions/scispace-general-fields"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:186"]
-all_links = ["https://arxiv.org/pdf/2311.02269.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2311.02269.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2401.01166.pdf"
-title = "openpdf/nonstandard-16d"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:23", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:62"]
-all_links = ["https://arxiv.org/pdf/2401.01166.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2401.01166.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2403.03763.pdf"
-title = "tags/m3"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:102"]
-all_links = ["https://arxiv.org/pdf/2403.03763.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2403.03763.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2409.13736.pdf"
-title = "octonions/real-split"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:108"]
-all_links = ["https://arxiv.org/pdf/2409.13736.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2409.13736.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2409.16970.pdf"
-title = "quaternions/arithmetic-orders"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:51", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:61"]
-all_links = ["https://arxiv.org/pdf/2409.16970.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2409.16970.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2412.00032.pdf"
-title = "octonions/scispace-split"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:168"]
-all_links = ["https://arxiv.org/pdf/2412.00032.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2412.00032.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2412.11059.pdf"
-title = "quaternions/reduced-quaternions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:81"]
-all_links = ["https://arxiv.org/pdf/2412.11059.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2412.11059.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2501.18139.pdf"
-title = "octonions/complexified-bioctonions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:124"]
-all_links = ["https://arxiv.org/pdf/2501.18139.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2501.18139.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2504.16465.pdf"
-title = "octonions/complexified-bioctonions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:125"]
-all_links = ["https://arxiv.org/pdf/2504.16465.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2504.16465.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2512.13002.pdf"
-title = "m3/zero-divisors"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:20"]
-all_links = ["https://arxiv.org/pdf/2512.13002.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2512.13002.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/2512.14007.pdf"
-title = "adjacent/split-complex"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:94"]
-all_links = ["https://arxiv.org/pdf/2512.14007.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/2512.14007.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/hep-th/0505101.pdf"
-title = "octonions/real-split"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:105"]
-all_links = ["https://arxiv.org/pdf/hep-th/0505101.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/hep-th/0505101.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0011260.pdf"
-title = "tags/m2"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:79", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:6"]
-all_links = ["https://arxiv.org/pdf/math/0011260.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0011260.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0105155.pdf"
-title = "octonions/real-division"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:97", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:160"]
-all_links = ["https://arxiv.org/pdf/math/0105155.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0105155.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0206028.pdf"
-title = "octonions/presentation-zorn"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:156"]
-all_links = ["https://arxiv.org/pdf/math/0206028.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0206028.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0405424.pdf"
-title = "openpdf/core-cd"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:37"]
-all_links = ["https://arxiv.org/pdf/math/0405424.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0405424.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0405471.pdf"
-title = "m7/function-base"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:51"]
-all_links = ["https://arxiv.org/pdf/math/0405471.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0405471.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0406306.pdf"
-title = "m7/function-base"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:52"]
-all_links = ["https://arxiv.org/pdf/math/0406306.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0406306.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0506190.pdf"
-title = "quaternions/biquaternions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:24"]
-all_links = ["https://arxiv.org/pdf/math/0506190.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0506190.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0506349.pdf"
-title = "octonions/integral-arithmetic"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:138"]
-all_links = ["https://arxiv.org/pdf/math/0506349.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0506349.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/math/0512517.pdf"
-title = "m3/zero-divisors"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:17"]
-all_links = ["https://arxiv.org/pdf/math/0512517.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/math/0512517.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://arxiv.org/pdf/q-alg/9710013.pdf"
-title = "m3/zero-divisors"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:16"]
-all_links = ["https://arxiv.org/pdf/q-alg/9710013.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://arxiv.org/pdf/q-alg/9710013.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://carmamaths.org/resources/mahler/docs/073.pdf"
@@ -10618,7 +10114,7 @@ unverified_mirrors = ["https://cds.cern.ch/record/2951492/files/ilten.pdf"]
 key = "url:https://ceid.utsa.edu/agrigoryan/wp-content/uploads/sites/23/2017/08/art_spie20172dodft.pdf"
 title = "Grigoryan et al. (2017) 2-D Octonion Discrete Fourier Transform: Fast Algorithms"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/37::GRIGORYAN_2017_SPIE_2D_ODFT_FAST"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/38::GRIGORYAN_2017_SPIE_2D_ODFT_FAST"]
 all_links = ["https://ceid.utsa.edu/agrigoryan/wp-content/uploads/sites/23/2017/08/Art_spie20172dODFT.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://ceid.utsa.edu/agrigoryan/wp-content/uploads/sites/23/2017/08/Art_spie20172dODFT.pdf"]
@@ -10633,24 +10129,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://clifford.readthedocs.io/_/downloads/en/v1.3.0/pdf/"]
 
 [[missing_minimum_requirement]]
-key = "url:https://cm.episciences.org/12476/pdf"
-title = "m7/function-base"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:50"]
-all_links = ["https://cm.episciences.org/12476/pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://cm.episciences.org/12476/pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://cm.episciences.org/15431/pdf"
-title = "octonions/real-split"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:109"]
-all_links = ["https://cm.episciences.org/15431/pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://cm.episciences.org/15431/pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://cms.math.ca/wp-json/"
 title = "link: <>; rel=\"\""
 status = "unverified"
@@ -10663,7 +10141,7 @@ unverified_mirrors = ["https://cms.math.ca/wp-json/"]
 key = "url:https://cmsa.fas.harvard.edu/media/intro-g2-notes-1.pdf"
 title = "Karigiannis (2019) Introduction to G2 geometry"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/29::KARIGIANNIS_2019_INTRO_G2"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/30::KARIGIANNIS_2019_INTRO_G2"]
 all_links = ["https://cmsa.fas.harvard.edu/media/intro-G2-notes-1.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://cmsa.fas.harvard.edu/media/intro-G2-notes-1.pdf"]
@@ -10750,19 +10228,10 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://doi.org/null"]
 
 [[missing_minimum_requirement]]
-key = "url:https://dr.lib.iastate.edu/server/api/core/bitstreams/5c18ea0e-08ae-4d8a-86b7-4522d482d42b/content"
-title = "m4/subloop-subalgebra"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:30", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:66"]
-all_links = ["https://dr.lib.iastate.edu/server/api/core/bitstreams/5c18ea0e-08ae-4d8a-86b7-4522d482d42b/content"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://dr.lib.iastate.edu/server/api/core/bitstreams/5c18ea0e-08ae-4d8a-86b7-4522d482d42b/content"]
-
-[[missing_minimum_requirement]]
 key = "url:https://dspace.mit.edu/bitstream/handle/1721.1/78248/mit-csail-tr-2013-005.pdf"
 title = "Glover (2013) Tracking 3-D rotations with the Quaternion Bingham Filter"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/54::GLOVER_2013_QUAT_BINGHAM_FILTER"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/55::GLOVER_2013_QUAT_BINGHAM_FILTER"]
 all_links = ["https://dspace.mit.edu/bitstream/handle/1721.1/78248/MIT-CSAIL-TR-2013-005.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://dspace.mit.edu/bitstream/handle/1721.1/78248/MIT-CSAIL-TR-2013-005.pdf"]
@@ -10789,7 +10258,7 @@ unverified_mirrors = ["https://elib.mi.sanu.ac.rs/files/journals/flmt/223/flmn22
 key = "url:https://eprints.gla.ac.uk/205247/1/205247.pdf"
 title = "Krakow et al. (2017) On three-dimensional misorientation spaces (Glasgow mirror)"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/47::KRAKOW_2017_MISORIENTATION_GLASGOW"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/48::KRAKOW_2017_MISORIENTATION_GLASGOW"]
 all_links = ["https://eprints.gla.ac.uk/205247/1/205247.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://eprints.gla.ac.uk/205247/1/205247.pdf"]
@@ -10811,24 +10280,6 @@ source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_
 all_links = ["https://faculty.etsu.edu/gardnerr/4127/notes-Herstein/notes-Cayley-Dickson.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://faculty.etsu.edu/gardnerr/4127/notes-Herstein/notes-Cayley-Dickson.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://faculty.sites.iastate.edu/jia/files/inline-files/dual-quaternion.pdf"
-title = "quaternions/dual-quaternions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:30"]
-all_links = ["https://faculty.sites.iastate.edu/jia/files/inline-files/dual-quaternion.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://faculty.sites.iastate.edu/jia/files/inline-files/dual-quaternion.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://faculty.sites.iastate.edu/jia/files/inline-files/quaternion.pdf"
-title = "quaternions/real-hamilton"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:2"]
-all_links = ["https://faculty.sites.iastate.edu/jia/files/inline-files/quaternion.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://faculty.sites.iastate.edu/jia/files/inline-files/quaternion.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://fs.unm.edu/dualnumbers.pdf"
@@ -10912,15 +10363,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://isogenyschool2020.co.uk/schedule/QuaternionNotes%281%29.pdf"]
 
 [[missing_minimum_requirement]]
-key = "url:https://jdhsmith.math.iastate.edu/math/okuboqgp.pdf"
-title = "Smith & Vojtechovsky Okubo quasigroups"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/23::SMITH_VOJTECHOVSKY_OKUBO_QUASIGROUPS"]
-all_links = ["https://jdhsmith.math.iastate.edu/math/OKUBOQGP.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://jdhsmith.math.iastate.edu/math/OKUBOQGP.pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://journals.aps.org/prl/abstract/10.1103/physrevlett.43.744"
 title = "**Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744)."
 status = "citation_only_no_link"
@@ -10928,51 +10370,6 @@ source_refs = ["BIB-0101", "registry/bibliography.toml::entry/100::BIB-0101"]
 all_links = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
 nonworking_mirrors = ["https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"]
 unverified_mirrors = []
-
-[[missing_minimum_requirement]]
-key = "url:https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf"
-title = "He & Jonas (2007) Orientation relationships in Rodrigues-Frank space"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/44::HE_JONAS_2007_RODRIGUES_FRANK_SPACE"]
-all_links = ["https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf"
-title = "Quey-Villani-Maurice (2018) Nearly uniform sampling of crystal orientations"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/48::QUEY_2018_NEARLY_UNIFORM_ORIENTATION_SAMPLING"]
-all_links = ["https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf"
-title = "De Graef (2024) Applications of the Clifford torus to material textures"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/43::DE_GRAEF_2024_CLIFFORD_TORUS_TEXTURES"]
-all_links = ["https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://jvoight.github.io/articles/v_0.1.pdf"
-title = "quaternions/arithmetic-orders"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:53"]
-all_links = ["https://jvoight.github.io/articles/v_0.1.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://jvoight.github.io/articles/v_0.1.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://jvoight.github.io/quat-book.pdf"
-title = "quaternions/scalar-extension"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:21", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:37"]
-all_links = ["https://jvoight.github.io/quat-book.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://jvoight.github.io/quat-book.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://kconrad.math.uconn.edu/blurbs/ringtheory/quaternionalg.pdf"
@@ -10987,7 +10384,7 @@ unverified_mirrors = ["https://kconrad.math.uconn.edu/blurbs/ringtheory/quaterni
 key = "url:https://knowen-production.s3.amazonaws.com/uploads/attachment/file/29/tsai2008.pdf"
 title = "Tsai (2008) Icosahedral clusters and stability of quasicrystals"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/55::TSAI_2008_ICOSAHEDRAL_ORDER_QC"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/56::TSAI_2008_ICOSAHEDRAL_ORDER_QC"]
 all_links = ["https://knowen-production.s3.amazonaws.com/uploads/attachment/file/29/Tsai2008.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://knowen-production.s3.amazonaws.com/uploads/attachment/file/29/Tsai2008.pdf"]
@@ -11014,7 +10411,7 @@ unverified_mirrors = ["https://link.springer.com/article/10.1155/2008/213293"]
 key = "url:https://link.springer.com/article/10.1186/2193-9772-3-4"
 title = "h5ebsd format paper landing (Springer)"
 status = "citation_only_no_link"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/69::H5EBSD_FORMAT_LANDING"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/70::H5EBSD_FORMAT_LANDING"]
 all_links = ["https://link.springer.com/article/10.1186/2193-9772-3-4"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://link.springer.com/article/10.1186/2193-9772-3-4"]
@@ -11176,7 +10573,7 @@ unverified_mirrors = ["https://mesonpiold.cbpf.br/e2006/posgraduacao/pdf_p10/dra
 key = "url:https://mimp.materials.cmu.edu/rohrer/papers/2015_12.pdf"
 title = "Rowenhorst et al. (2015) Consistent representations of and conversions between 3D rotations"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/41::ROWENHORST_2015_CONSISTENT_ROTATIONS"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/42::ROWENHORST_2015_CONSISTENT_ROTATIONS"]
 all_links = ["https://mimp.materials.cmu.edu/rohrer/papers/2015_12.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://mimp.materials.cmu.edu/rohrer/papers/2015_12.pdf"]
@@ -11254,28 +10651,10 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://osf.io/zab38/wiki/"]
 
 [[missing_minimum_requirement]]
-key = "url:https://pages.uoregon.edu/ddugger/lann.pdf"
-title = "m3/zero-divisors"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:21", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:36"]
-all_links = ["https://pages.uoregon.edu/ddugger/lann.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://pages.uoregon.edu/ddugger/lann.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://pages.uoregon.edu/koch/octonions.pdf"
-title = "octonions/real-division"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:99", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:150"]
-all_links = ["https://pages.uoregon.edu/koch/Octonions.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://pages.uoregon.edu/koch/Octonions.pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://pajarito.materials.cmu.edu/lectures/l20-descriptions-of-orientation-tugceozturk_27750-12apr16.pdf"
 title = "CMU lecture Descriptions of Orientation"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/50::CMU_LECTURE_DESCRIPTIONS_OF_ORIENTATION"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/51::CMU_LECTURE_DESCRIPTIONS_OF_ORIENTATION"]
 all_links = ["https://pajarito.materials.cmu.edu/lectures/L20-Descriptions-of-Orientation-TugceOzturk_27750-12Apr16.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://pajarito.materials.cmu.edu/lectures/L20-Descriptions-of-Orientation-TugceOzturk_27750-12Apr16.pdf"]
@@ -11284,7 +10663,7 @@ unverified_mirrors = ["https://pajarito.materials.cmu.edu/lectures/L20-Descripti
 key = "url:https://paulsteinhardt.org/wp-content/uploads/2020/10/steinhardt_rendiconti-lincei-2012.pdf"
 title = "Steinhardt (2012) Quasicrystals: a brief history of the impossible"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/56::STEINHARDT_2012_QC_HISTORY"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/57::STEINHARDT_2012_QC_HISTORY"]
 all_links = ["https://paulsteinhardt.org/wp-content/uploads/2020/10/Steinhardt_Rendiconti-Lincei-2012.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://paulsteinhardt.org/wp-content/uploads/2020/10/Steinhardt_Rendiconti-Lincei-2012.pdf"]
@@ -11302,7 +10681,7 @@ unverified_mirrors = ["https://pdfs.semanticscholar.org/1c9b/af0f0e56f844c7a0d6d
 key = "url:https://people.math.ethz.ch/~salamon/preprints/octonions.pdf"
 title = "octonions/real-division"
 status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:98", "registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/30::SALAMON_WALPUSKI_2017_NOTES_OCTONIONS"]
+source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:98", "registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/31::SALAMON_WALPUSKI_2017_NOTES_OCTONIONS"]
 all_links = ["https://people.math.ethz.ch/~salamon/PREPRINTS/Octonions.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://people.math.ethz.ch/~salamon/PREPRINTS/Octonions.pdf"]
@@ -11317,33 +10696,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://people.maths.ox.ac.uk/joyce/theses/WiddowsDPhil.pdf"]
 
 [[missing_minimum_requirement]]
-key = "url:https://personal.unizar.es/elduque/talks/cimpa_madagascar2021_elduque_compositionalgebras.pdf"
-title = "octonions/classification-two-real"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:113"]
-all_links = ["https://personal.unizar.es/elduque/Talks/CIMPA_Madagascar2021_Elduque_CompositionAlgebras.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://personal.unizar.es/elduque/Talks/CIMPA_Madagascar2021_Elduque_CompositionAlgebras.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://personal.unizar.es/elduque/talks/liejor.pdf"
-title = "Elduque slides LieJor (Symmetric compositions / Magic Square / Triality)"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/17::ELDUQUE_SLIDES_LIEJOR"]
-all_links = ["https://personal.unizar.es/elduque/Talks/LieJor.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://personal.unizar.es/elduque/Talks/LieJor.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://personal.unizar.es/elduque/talks/okuboalgebras_uppsala.pdf"
-title = "Elduque slides Okubo algebras"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/19::ELDUQUE_OKUBO_UPPSALA_SLIDES"]
-all_links = ["https://personal.unizar.es/elduque/Talks/OkuboAlgebras_Uppsala.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://personal.unizar.es/elduque/Talks/OkuboAlgebras_Uppsala.pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://real.mtak.hu/94961/1/2550.pdf"
 title = "quaternions/biquaternions"
 status = "unverified"
@@ -11356,7 +10708,7 @@ unverified_mirrors = ["https://real.mtak.hu/94961/1/2550.pdf"]
 key = "url:https://repo.pw.edu.pl/docstore/download/wutbf02dba4bb844d4e958c55ec5a66a9de/wut729391fd969a453c882f92ef89a09358.pdf"
 title = "Blaszczyk et al. (2020) Discrete octonion Fourier transform (WUT repository)"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/38::BLASZCZYK_2020_WUT_DISCRETE_OFT"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/39::BLASZCZYK_2020_WUT_DISCRETE_OFT"]
 all_links = ["https://repo.pw.edu.pl/docstore/download/WUTbf02dba4bb844d4e958c55ec5a66a9de/WUT729391fd969a453c882f92ef89a09358.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://repo.pw.edu.pl/docstore/download/WUTbf02dba4bb844d4e958c55ec5a66a9de/WUT729391fd969a453c882f92ef89a09358.pdf"]
@@ -12031,7 +11383,7 @@ unverified_mirrors = ["https://scispace.com/papers/zorn-vector-matrices-over-com
 key = "url:https://sites.esm.psu.edu/~mcd18/ebsd.pdf"
 title = "EBSD notes (Penn State) (quaternion formalism)"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/51::PSU_EBSD_NOTES"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/52::PSU_EBSD_NOTES"]
 all_links = ["https://sites.esm.psu.edu/~mcd18/EBSD.PDF"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://sites.esm.psu.edu/~mcd18/EBSD.PDF"]
@@ -12109,24 +11461,6 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://wkchan.faculty.wesleyan.edu/files/2019/04/quaternion-2012.pdf"]
 
 [[missing_minimum_requirement]]
-key = "url:https://wstein.org/edu/2010/581b/projects/alyson_deines/maximalorders.pdf"
-title = "quaternions/arithmetic-orders"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:48", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:62"]
-all_links = ["https://wstein.org/edu/2010/581b/projects/alyson_deines/MaximalOrders.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://wstein.org/edu/2010/581b/projects/alyson_deines/MaximalOrders.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://wstein.org/edu/2010/581d/projects/alyson_deines/compmathhilbertsymbols.pdf"
-title = "quaternions/arithmetic-orders"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:52"]
-all_links = ["https://wstein.org/edu/2010/581d/projects/alyson_deines/CompMathHilbertSymbols.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://wstein.org/edu/2010/581d/projects/alyson_deines/CompMathHilbertSymbols.pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://www.7stones.com/homepage/8lattice.pdf"
 title = "octonions/integral-arithmetic"
 status = "unverified"
@@ -12143,24 +11477,6 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Rodal_2025
 all_links = ["https://www.academia.edu/83953289/Lectures_in_UFO_"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.academia.edu/83953289/Lectures_in_UFO_"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.actaphys.uj.edu.pl/r/27/8/1849/pdf"
-title = "20] P. O. Mazur, Acta Phys. Polon. B 27, 1849 (1996),"
-status = "unverified"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt:717"]
-all_links = ["https://www.actaphys.uj.edu.pl/R/27/8/1849/pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.actaphys.uj.edu.pl/R/27/8/1849/pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.actaphys.uj.edu.pl/r/41/9/2031/pdf"
-title = "14] E. Mottola, Acta Phys. Polon. B 41, 2031 (2010),"
-status = "unverified"
-source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt:711"]
-all_links = ["https://www.actaphys.uj.edu.pl/R/41/9/2031/pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.actaphys.uj.edu.pl/R/41/9/2031/pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://www.agner.org/optimize/instruction_tables.pdf"
@@ -12235,19 +11551,10 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://www.cmup.pt/sites/default/files/2024-09/1201.5817v2.pdf"]
 
 [[missing_minimum_requirement]]
-key = "url:https://www.diva-portal.org/smash/get/diva2:1969088/fulltext01.pdf"
-title = "openpdf/generalized-cd"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:49"]
-all_links = ["https://www.diva-portal.org/smash/get/diva2:1969088/FULLTEXT01.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.diva-portal.org/smash/get/diva2:1969088/FULLTEXT01.pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://www.dora.lib4ri.ch/empa/islandora/object/empa%3a2673/datastream/pdf/britton-2016-tutorial-%28published_version%29.pdf"
 title = "Britton et al. (2016) Tutorial: Crystal orientations and EBSD"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/42::BRITTON_2016_EBSD_TUTORIAL"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/43::BRITTON_2016_EBSD_TUTORIAL"]
 all_links = ["https://www.dora.lib4ri.ch/empa/islandora/object/empa%3A2673/datastream/PDF/Britton-2016-Tutorial-%28published_version%29.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.dora.lib4ri.ch/empa/islandora/object/empa%3A2673/datastream/PDF/Britton-2016-Tutorial-%28published_version%29.pdf"]
@@ -12256,7 +11563,7 @@ unverified_mirrors = ["https://www.dora.lib4ri.ch/empa/islandora/object/empa%3A2
 key = "url:https://www.f08.uni-stuttgart.de/.content/media/downloads/mathematik/mathematische_berichte/2018/2018-003.pdf"
 title = "Kollross (2018) Octonions, triality, exceptional Lie algebra F4"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/28::KOLLROSS_2018_F4_TRIALITY"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/29::KOLLROSS_2018_F4_TRIALITY"]
 all_links = ["https://www.f08.uni-stuttgart.de/.content/media/downloads/Mathematik/mathematische_berichte/2018/2018-003.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.f08.uni-stuttgart.de/.content/media/downloads/Mathematik/mathematische_berichte/2018/2018-003.pdf"]
@@ -12305,24 +11612,6 @@ source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hyp
 all_links = ["https://www.imath.kiev.ua/~complex/sotrudniki/Shpakivskyi/papers/EQUATIONS-6-7.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.imath.kiev.ua/~complex/sotrudniki/Shpakivskyi/papers/EQUATIONS-6-7.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.imim.pl/personal/adam.morawiec/a_morawiec_web_page/publications/1996_philmag.pdf"
-title = "Morawiec & Field (1996) Rodrigues parameterization for orientation distributions"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/45::MORAWIEC_FIELD_1996_RODRIGUES_PARAMETERIZATION"]
-all_links = ["https://www.imim.pl/personal/adam.morawiec/A_Morawiec_Web_Page/Publications/1996_PhilMag.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.imim.pl/personal/adam.morawiec/A_Morawiec_Web_Page/Publications/1996_PhilMag.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.imim.pl/phd/www.imim-phd.edu.pl/contents/lectures/morawiec%20an%20introduction%20to%20computations%20in%20crystallographic%20part%203.pdf"
-title = "Morawiec lecture notes Rotation/orientation parameterizations"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/49::MORAWIEC_LECTURE_ROTATION_PARAMETERIZATIONS"]
-all_links = ["https://www.imim.pl/PHD/www.imim-phd.edu.pl/contents/Lectures/MORAWIEC%20An%20introduction%20to%20computations%20in%20crystallographic%20part%203.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.imim.pl/PHD/www.imim-phd.edu.pl/contents/Lectures/MORAWIEC%20An%20introduction%20to%20computations%20in%20crystallographic%20part%203.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://www.iri.upc.edu/files/scidoc/1463-approaching-dual-quaternions-from-matrix-algebra.pdf"
@@ -12391,7 +11680,7 @@ unverified_mirrors = ["https://www.maths.tcd.ie/pub/HistMath/People/Hamilton/Qua
 key = "url:https://www.matrix-inst.org.au/wp_matrix2016/wp-content/uploads/2019/01/lackmann.pdf"
 title = "Lackmann The octonionic projective plane OP^2"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/31::LACKMANN_OP2_PDF"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/32::LACKMANN_OP2_PDF"]
 all_links = ["https://www.matrix-inst.org.au/wp_Matrix2016/wp-content/uploads/2019/01/Lackmann.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.matrix-inst.org.au/wp_Matrix2016/wp-content/uploads/2019/01/Lackmann.pdf"]
@@ -12406,28 +11695,10 @@ nonworking_mirrors = []
 unverified_mirrors = ["https://www.neo-classical-physics.info/uploads/3/4/3/6/34363841/grunwald_-_dual_numbers_and_geometry.pdf"]
 
 [[missing_minimum_requirement]]
-key = "url:https://www.numdam.org/item/jmpa_1923_9_2__281_0.pdf"
-title = "octonions/integral-arithmetic"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:145"]
-all_links = ["https://www.numdam.org/item/JMPA_1923_9_2__281_0.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.numdam.org/item/JMPA_1923_9_2__281_0.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.numdam.org/item/jtnb_2000__12_2_367_0.pdf"
-title = "quaternions/general-field"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:45"]
-all_links = ["https://www.numdam.org/item/JTNB_2000__12_2_367_0.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.numdam.org/item/JTNB_2000__12_2_367_0.pdf"]
-
-[[missing_minimum_requirement]]
 key = "url:https://www.phase-trans.msm.cam.ac.uk/2017/three-dimensional-misorientation.pdf"
 title = "Krakow et al. (2017) On three-dimensional misorientation spaces (Cambridge)"
 status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/46::KRAKOW_2017_MISORIENTATION_CAMBRIDGE"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/47::KRAKOW_2017_MISORIENTATION_CAMBRIDGE"]
 all_links = ["https://www.phase-trans.msm.cam.ac.uk/2017/three-dimensional-misorientation.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.phase-trans.msm.cam.ac.uk/2017/three-dimensional-misorientation.pdf"]
@@ -12440,51 +11711,6 @@ source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hyp
 all_links = ["https://www.physi.uni-heidelberg.de/~vhollmeier/ga4p/materials/ga_lecture_notes.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www.physi.uni-heidelberg.de/~vhollmeier/ga4p/materials/ga_lecture_notes.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.pmf.ni.ac.rs/filomat-content/2023/37-3/37-3-14-15290.pdf"
-title = "quaternions/reduced-quaternions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:82"]
-all_links = ["https://www.pmf.ni.ac.rs/filomat-content/2023/37-3/37-3-14-15290.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.pmf.ni.ac.rs/filomat-content/2023/37-3/37-3-14-15290.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.pmf.ni.ac.rs/filomat-content/2024/38-15/38-15-12-21745.pdf"
-title = "quaternions/reduced-quaternions"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:80"]
-all_links = ["https://www.pmf.ni.ac.rs/filomat-content/2024/38-15/38-15-12-21745.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.pmf.ni.ac.rs/filomat-content/2024/38-15/38-15-12-21745.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.researchgate.net/profile/jean-francois-sadoc/publication/243298250_the_e8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/the-e8-lattice-and-quasicrystals.pdf"
-title = "Sadoc The E8 lattice and quasicrystals (ResearchGate mirror; may be blocked)"
-status = "unverified"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/57::SADOC_E8_LATTICE_QUASICRYSTALS_RG"]
-all_links = ["https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.researchgate.net/profile/john-bales/publication/51915595_cayley-dickson_and_clifford_algebras_as_twisted_group_algebras/links/0fcfd512d4ccc2eed9000000/cayley-dickson-and-clifford-algebras-as-twisted-group-algebras.pdf"
-title = "openpdf/generalized-cd"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:47"]
-all_links = ["https://www.researchgate.net/profile/John-Bales/publication/51915595_Cayley-Dickson_and_Clifford_Algebras_as_Twisted_Group_Algebras/links/0fcfd512d4ccc2eed9000000/Cayley-Dickson-and-Clifford-Algebras-as-Twisted-Group-Algebras.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.researchgate.net/profile/John-Bales/publication/51915595_Cayley-Dickson_and_Clifford_Algebras_as_Twisted_Group_Algebras/links/0fcfd512d4ccc2eed9000000/Cayley-Dickson-and-Clifford-Algebras-as-Twisted-Group-Algebras.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www.researchgate.net/profile/richard-lockyer-2/publication/380847813_an_algebraic_proof_sedenions_are_not_a_division_algebra_and_other_consequences_of_cayley-dickson_algebra_definition_variation/links/6650b5fc0b0d284574580e1c/an-algebraic-proof-sedenions-are-not-a-division-algebra-and-other-consequences-of-cayley-dickson-algebra-definition-variation.pdf"
-title = "openpdf/core-cd"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:38"]
-all_links = ["https://www.researchgate.net/profile/Richard-Lockyer-2/publication/380847813_An_algebraic_proof_Sedenions_are_not_a_division_algebra_and_other_consequences_of_Cayley-Dickson_Algebra_definition_variation/links/6650b5fc0b0d284574580e1c/An-algebraic-proof-Sedenions-are-not-a-division-algebra-and-other-consequences-of-Cayley-Dickson-Algebra-definition-variation.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www.researchgate.net/profile/Richard-Lockyer-2/publication/380847813_An_algebraic_proof_Sedenions_are_not_a_division_algebra_and_other_consequences_of_Cayley-Dickson_Algebra_definition_variation/links/6650b5fc0b0d284574580e1c/An-algebraic-proof-Sedenions-are-not-a-division-algebra-and-other-consequences-of-Cayley-Dickson-Algebra-definition-variation.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://www.sci.utah.edu/~jmk/papers/quaternions.pdf"
@@ -12512,24 +11738,6 @@ source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hyp
 all_links = ["https://www2.gwu.edu/~spwm/erin_alissa.pdf"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://www2.gwu.edu/~spwm/erin_alissa.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www2.math.ou.edu/~kmartin/quaint/ch3.pdf"
-title = "quaternions/general-field"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:41"]
-all_links = ["https://www2.math.ou.edu/~kmartin/quaint/ch3.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www2.math.ou.edu/~kmartin/quaint/ch3.pdf"]
-
-[[missing_minimum_requirement]]
-key = "url:https://www2.math.ou.edu/~kmartin/quaint/ch6.pdf"
-title = "quaternions/arithmetic-orders"
-status = "unverified"
-source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:47"]
-all_links = ["https://www2.math.ou.edu/~kmartin/quaint/ch6.pdf"]
-nonworking_mirrors = []
-unverified_mirrors = ["https://www2.math.ou.edu/~kmartin/quaint/ch6.pdf"]
 
 [[missing_minimum_requirement]]
 key = "url:https://zenodo.org/api/records"
@@ -12571,7 +11779,7 @@ unverified_mirrors = ["https://zenodo.org/records/17289540"]
 key = "zenodo:1214829"
 title = "Zenodo dataset: Deformed Iron EBSD data set"
 status = "citation_only_no_link"
-source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/65::DATASET_ZENODO_DEFORMED_IRON_EBSD"]
+source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/66::DATASET_ZENODO_DEFORMED_IRON_EBSD"]
 all_links = ["https://zenodo.org/records/1214829"]
 nonworking_mirrors = []
 unverified_mirrors = ["https://zenodo.org/records/1214829"]

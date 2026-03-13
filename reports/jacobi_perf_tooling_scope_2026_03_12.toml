@@ -110,6 +110,12 @@ command = "make structured-spectrum-bench FAMILIES=real_obstruction,quantized_ob
 notes = "Adds the benchmark-only histogram-projected structure-aware prototype. It is dramatically faster on the tested obstruction families, but its spectral error is much too large for any production promotion."
 
 [[validated_command]]
+name = "structured_spectrum_bench_lifted_focus"
+status = "passed"
+command = "cargo run --release -p gororoba_cli_algebra --bin structured-spectrum-bench -- --sizes 16,32,64 --repeats 1 --families real_obstruction,quantized_obstruction_graph,quantized_shell_permutation --output reports/benchmarks/structured_spectrum_bench_lifted_focus.csv --summary reports/benchmarks/structured_spectrum_bench_lifted_focus.md"
+notes = "Adds the two-level histogram-lifted prototype. It substantially repairs the projected model on quantized_obstruction_graph, but remains inaccurate on quantized_shell_permutation and the real obstruction family."
+
+[[validated_command]]
 name = "jacobi_threshold_seed"
 status = "passed"
 command = "make jacobi-backend-sweep SIZES=4,8,16,24,32,48,64 REPEATS=3 OUT=reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.md"

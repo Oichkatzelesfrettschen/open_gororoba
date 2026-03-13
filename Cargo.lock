@@ -709,6 +709,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be5eb007b7cacc6c660343e96f650fedf4b5a77512399eb952ca6642cf8d13f7"
 
 [[package]]
+name = "backon"
+version = "1.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cffb0e931875b666fc4fcb20fee52e9bbd1ef836fd9e9e04ec21555f9f85f7ef"
+dependencies = [
+ "fastrand",
+ "gloo-timers",
+ "tokio",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.76"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1772,6 +1783,7 @@ dependencies = [
 name = "cosmology_core"
 version = "0.1.0"
 dependencies = [
+ "algebra_analysis",
  "algebra_experimental",
  "approx",
  "argmin",
@@ -2236,8 +2248,10 @@ name = "data_core"
 version = "0.1.0"
 dependencies = [
  "approx",
+ "backon",
  "chrono",
  "csv",
+ "fitsio",
  "flate2",
  "gororoba_contracts",
  "hdf5-metno",
@@ -2246,6 +2260,7 @@ dependencies = [
  "memmap2",
  "nalgebra 0.33.2",
  "polars",
+ "quick-xml 0.38.4",
  "rand 0.8.5",
  "rand_distr 0.4.3",
  "reqwest",
@@ -3609,6 +3624,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
 
 [[package]]
+name = "gloo-timers"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bbb143cf96099802033e0d4f4963b19fd2e0b728bcf076cd9cf7f6634f092994"
+dependencies = [
+ "futures-channel",
+ "futures-core",
+ "js-sys",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "glow"
 version = "0.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3751,19 +3778,23 @@ dependencies = [
  "arrow-schema",
  "chrono",
  "clap",
+ "core_affinity",
  "csv",
  "data_core",
  "docpipe",
  "env_logger",
+ "fitsio",
  "glob",
  "gororoba_cli",
  "hifitime",
  "provenance_core",
+ "provenance_ops",
  "provenance_store",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rayon",
  "regex",
+ "rusqlite",
  "scrolls_core",
  "serde",
  "serde_json",
@@ -3775,6 +3806,7 @@ dependencies = [
  "unicode-normalization",
  "ureq",
  "url",
+ "verified_core",
  "walkdir",
 ]
 
@@ -3840,6 +3872,24 @@ dependencies = [
  "ureq",
  "verified_core",
  "zip 2.4.2",
+]
+
+[[package]]
+name = "gororoba_cli_provenance"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "clap",
+ "csv",
+ "data_core",
+ "provenance_core",
+ "provenance_ops",
+ "provenance_store",
+ "serde",
+ "serde_json",
+ "toml",
+ "url",
 ]
 
 [[package]]
@@ -7636,6 +7686,20 @@ dependencies = [
  "camino",
  "chrono",
  "serde",
+]
+
+[[package]]
+name = "provenance_ops"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "csv",
+ "regex",
+ "rusqlite",
+ "toml",
+ "url",
+ "walkdir",
 ]
 
 [[package]]

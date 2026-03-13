@@ -312,13 +312,22 @@ path = "src/bin/repo_utilities.rs"
 name = "download-recovery"
 path = "src/bin/download_recovery.rs"
 
+# ---- Radio Surveys (1) ----
+
+[[bin]]
+name = "lotss-fetch"
+path = "src/bin/lotss_fetch.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 provenance_core = { path = "../provenance_core" }
 provenance_store = { path = "../provenance_store" }
+provenance_ops = { path = "../provenance_ops" }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
-data_core = { path = "../data_core" }
+data_core = { path = "../data_core", features = ["fits"] }
+fitsio = { workspace = true }
+verified_core = { path = "../verified_core" }
 scrolls_core = { path = "../scrolls_core" }
 stats_core = { path = "../stats_core" }
 clap = { workspace = true }
@@ -334,6 +343,7 @@ glob = { workspace = true }
 chrono = { workspace = true }
 hifitime = { workspace = true }
 ureq = { workspace = true }
+core_affinity = { workspace = true }
 env_logger = { workspace = true }
 anyhow = { workspace = true }
 rayon = { workspace = true }

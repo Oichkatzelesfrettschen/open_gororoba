@@ -170,11 +170,11 @@ fn main() {
                 // So the input `r` is correctly scaled.
                 let a_r_geom = pot.radial_acceleration(r); // [1/km] in geometrized units
 
-                // Acceleration in geometrized units is unitless (dl/dtau = l/l = 1).
-                // Physical acceleration [km/s^2] = a_geom * c^2
-                // We know c = 299792.458 km/s
-                let c_km_s = 299792.458;
-                a_r_geom * c_km_s * c_km_s
+                // We must scale back to physical acceleration [km/s^2].
+                // Instead of using `c^2` which introduces floating point mismatch with the 
+                // exact GM_SUN constant, we use the exact ratio to ensure the far-field 
+                // matches Schwarzschild perfectly up to machine precision.
+                a_r_geom * (GM_SUN / GM_OVER_C2_SUN)
             } else {
                 -GM_SUN / (r * r)
             };

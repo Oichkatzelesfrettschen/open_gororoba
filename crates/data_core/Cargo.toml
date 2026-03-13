@@ -12,6 +12,7 @@ serde_json = { workspace = true }
 toml = { workspace = true }
 sha2 = { workspace = true }
 reqwest = { workspace = true }
+backon = { workspace = true }
 ureq = { workspace = true }
 thiserror = { workspace = true }
 url = { workspace = true }
@@ -26,6 +27,8 @@ hifitime = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 hdf5 = { workspace = true, optional = true }
 polars = { workspace = true, optional = true }
+fitsio = { workspace = true, optional = true }
+quick-xml = { workspace = true, optional = true }
 memmap2 = "0.9.10"
 wide.workspace = true
 
@@ -33,6 +36,7 @@ wide.workspace = true
 default = []
 hdf5-export = ["dep:hdf5"]
 dataframe = ["dep:polars"]
+fits = ["dep:fitsio", "dep:quick-xml"]
 
 [dev-dependencies]
 approx = { workspace = true }

@@ -1587,6 +1587,15 @@ impl LbmSolver3D {
         // V-Cache Tiling: Determine how many Z-slices fit in our L3 target
         let z_chunk_size = std::cmp::max(1, l3_target_bytes / bytes_per_z_slice);
 
+        if self.timestep == 0 {
+            eprintln!(
+                "LBM V-Cache Tiling: Grid uses {:.1} MB. L3 limit is {:.1} MB. Processing in {} Z-slice chunks.",
+                total_bytes as f64 / 1024.0 / 1024.0,
+                l3_target_bytes as f64 / 1024.0 / 1024.0,
+                z_chunk_size
+            );
+        }
+
         let mut z = 0;
         while z < self.nz {
             let z_end = std::cmp::min(self.nz, z + z_chunk_size);
