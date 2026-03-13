@@ -353,6 +353,17 @@ description = "Single-galaxy NFW+Sersic dark matter density coupling via D3Q19 L
 experiment = "E-148"
 
 [[binary]]
+name = "euclid-fetch"
+crate = "gororoba_cli_data"
+description = "Rust-native Euclid Q1 fetcher for Zenodo supplementary catalogs and ESA/IRSA TAP queries. Subcommands: zenodo-discover, zenodo-download, tap-tables, tap-query. Replaces the fetch_euclid.py and fetch_euclid_zenodo.py bridge scripts."
+experiment = "E-140"
+
+[[binary]]
+name = "euclid-manga-crossmatch"
+crate = "gororoba_cli_physics"
+description = "Rust-native Euclid Q1 morphology x MaNGA selected-sample sky crossmatch. Reads morphology_catalogue.parquet plus MaNGA selection/DRPall coordinates, applies optional morphology cuts, and emits a plateifu CSV for morphology-filtered harmonic stacking."
+
+[[binary]]
 name = "evidence-package"
 crate = "gororoba_cli"
 description = "Evidence artifact packaging and checksum verification. Subcommands: check (list+flag missing), bundle (SHA-256 manifest), verify (re-check)."
@@ -552,6 +563,11 @@ description = "Stack SPARC rotation curve residuals in normalized r/r_s coordina
 experiment = "E-180"
 
 [[binary]]
+name = "harmonic-halo-stacking-hi"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "harmonic-halo-stacking-manga"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
@@ -710,26 +726,15 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
-name = "lotss-fetch"
-crate = "gororoba_cli_data"
-description = "LoTSS DR1/DR2/DR3 bulk FITS downloader, DR3 MaNGA-footprint tile cache fallback, and MaNGA crossmatch utility. Subcommands: download, cone-search, verify, summary, manga-footprint, manga-preflight, crossmatch-manga. Emits CSV/TOML reports for E-198 coverage ceilings and DR2/DR3 detection fractions."
-experiment = "E-198"
-
-[[binary]]
 name = "lotss-analysis"
 crate = "gororoba_cli_data"
 description = "Rust-native LoTSS analysis suite replacing src/lotss_analysis Python utilities. Subcommands cover DR1/DR2/DR3 flux-distribution fits, MaNGA radio-loud versus radio-quiet kinematic bisection, and LoTSS DR1 ultrametric null testing."
 
 [[binary]]
-name = "euclid-fetch"
+name = "lotss-fetch"
 crate = "gororoba_cli_data"
-description = "Rust-native Euclid Q1 fetcher for Zenodo supplementary catalogs and ESA/IRSA TAP queries. Subcommands: zenodo-discover, zenodo-download, tap-tables, tap-query. Replaces the fetch_euclid.py and fetch_euclid_zenodo.py bridge scripts."
-experiment = "E-140"
-
-[[binary]]
-name = "euclid-manga-crossmatch"
-crate = "gororoba_cli_physics"
-description = "Rust-native Euclid Q1 morphology x MaNGA selected-sample sky crossmatch. Reads morphology_catalogue.parquet plus MaNGA selection/DRPall coordinates, applies optional morphology cuts, and emits a plateifu CSV for morphology-filtered harmonic stacking."
+description = "LoTSS DR1/DR2/DR3 bulk FITS downloader, DR3 MaNGA-footprint tile cache fallback, and MaNGA crossmatch utility. Subcommands: download, cone-search, verify, summary, manga-footprint, manga-preflight, crossmatch-manga. Emits CSV/TOML reports for E-198 coverage ceilings and DR2/DR3 detection fractions."
+experiment = "E-198"
 
 [[binary]]
 name = "magnonic-band-structure"
@@ -1029,6 +1034,11 @@ name = "sky-limit-set"
 crate = "gororoba_cli"
 description = "Skybox invariant vs Coxeter invariant correspondence analysis"
 experiment = "E-013"
+
+[[binary]]
+name = "slit-deproject"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "snia-ddt"
@@ -1390,3 +1400,4 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
+
