@@ -1063,6 +1063,9 @@ quotechar = "\""
 header_value_sha256 = "1e23258b8698bd9028e8f513ce6437979ba434917800827141bc4519db60230b"
 row_value_sha256 = "2025b32433d68c245814db27f5f9c42c5d16678c82d637956ac16cf9b7ef92fd"
 dataset_class = "holding_external_csv"
+row_payload_backend = "sqlite"
+row_payload_sqlite = "registry/canonical/csv_holding_payloads.sqlite3"
+row_payload_table = "dataset_rows"
 
 [[dataset]]
 id = "EH-0067"

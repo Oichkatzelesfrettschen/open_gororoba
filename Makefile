@@ -667,7 +667,7 @@ verify-pantheon-physicsforge-overflow:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin pantheon-physicsforge-verify -- overflow
 
 seed-pantheon-physicsforge-sqlite:
-	cargo run --release -p gororoba_cli_data --bin provenance -- --db build/pantheon_physicsforge_migration.db pantheon-seed
+	cargo run --release -p gororoba_cli_provenance --bin provenance -- --db build/pantheon_physicsforge_migration.db pantheon-seed
 
 registry-knowledge:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-knowledge-sources
@@ -1011,6 +1011,9 @@ registry-scroll-external-csv-holding: registry-csv-holdings
 		--index-table external_csv_holding_datasets \
 		--dataset-prefix EH \
 		--corpus-label 'external CSV holding queue' \
+		--sqlite-overflow-db registry/canonical/csv_holding_payloads.sqlite3 \
+		--max-inline-toml-bytes 50000000 \
+		--rows-preview-count 8 \
 		--dataset-class holding-external
 
 registry-csv-scroll-pipeline: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
@@ -1209,22 +1212,22 @@ provenance-audit: install
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
 
 provenance-registry-index:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- index
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- index
 
 provenance-registry-export:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- export
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- export
 
 provenance-registry-verify:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- verify
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- verify
 
 provenance-registry-doctor:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- doctor
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- doctor
 
 provenance-registry-link-audit:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- link-audit
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- link-audit
 
 provenance-registry-recover:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin provenance -- recover
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- recover
 
 external-redownload-audit: install
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
