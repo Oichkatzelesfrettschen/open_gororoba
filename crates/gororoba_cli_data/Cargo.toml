@@ -163,6 +163,10 @@ name = "verify-project-csv-split"
 path = "src/bin/verify_project_csv_split.rs"
 
 [[bin]]
+name = "synthesis-execution-contract"
+path = "src/bin/synthesis_execution_contract.rs"
+
+[[bin]]
 name = "test-spk"
 path = "src/bin/test_spk.rs"
 
@@ -252,6 +256,62 @@ path = "src/bin/test_inventory.rs"
 name = "crate-inventory"
 path = "src/bin/crate_inventory.rs"
 
+[[bin]]
+name = "python-retention"
+path = "src/bin/python_retention.rs"
+
+[[bin]]
+name = "workspace-routing"
+path = "src/bin/workspace_routing.rs"
+
+[[bin]]
+name = "local-nextest-plan"
+path = "src/bin/local_nextest_plan.rs"
+
+[[bin]]
+name = "pantheon-physicsforge-verify"
+path = "src/bin/pantheon_physicsforge_verify.rs"
+
+[[bin]]
+name = "governance-verify"
+path = "src/bin/governance_verify.rs"
+
+[[bin]]
+name = "knowledge-atoms"
+path = "src/bin/knowledge_atoms.rs"
+
+[[bin]]
+name = "artifact-scrolls"
+path = "src/bin/artifact_scrolls.rs"
+
+[[bin]]
+name = "semantic-atoms"
+path = "src/bin/semantic_atoms.rs"
+
+[[bin]]
+name = "evidence-provenance"
+path = "src/bin/evidence_provenance.rs"
+
+[[bin]]
+name = "integrity-resolution"
+path = "src/bin/integrity_resolution.rs"
+
+[[bin]]
+name = "execution-planning"
+path = "src/bin/execution_planning.rs"
+
+[[bin]]
+name = "csv-canonicalization"
+path = "src/bin/csv_canonicalization.rs"
+
+[[bin]]
+name = "repo-utilities"
+path = "src/bin/repo_utilities.rs"
+
+[[bin]]
+name = "download-recovery"
+path = "src/bin/download_recovery.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 provenance_core = { path = "../provenance_core" }
@@ -280,6 +340,8 @@ rayon = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 tracing-subscriber = { workspace = true }
+anstyle = { workspace = true }
+unicode-normalization = { workspace = true }
 arrow-array = "58.0.0"
 arrow-ipc = "58.0.0"
 arrow-schema = "58.0.0"

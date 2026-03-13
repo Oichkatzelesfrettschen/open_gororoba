@@ -1705,7 +1705,7 @@ async fn reproducibility_experiment(
 /// Serve artifact files from the workspace root with path traversal protection.
 ///
 /// The workspace root is determined by walking up from the binary's working
-/// directory until a Cargo.toml with [workspace] is found, or falling back
+/// directory until a `Cargo.toml` with a `[workspace]` section is found, or falling back
 /// to the current directory.
 async fn serve_artifact(AxumPath(requested): AxumPath<String>) -> impl IntoResponse {
     // Determine workspace root (directory containing workspace Cargo.toml)
@@ -1754,7 +1754,8 @@ async fn serve_artifact(AxumPath(requested): AxumPath<String>) -> impl IntoRespo
     (StatusCode::OK, [("content-type", mime)], content).into_response()
 }
 
-/// Walk up from CWD to find workspace root (directory with Cargo.toml containing [workspace]).
+/// Walk up from CWD to find the workspace root (directory with `Cargo.toml`
+/// containing a `[workspace]` section).
 fn find_workspace_root() -> Option<PathBuf> {
     let mut dir = std::env::current_dir().ok()?;
     loop {

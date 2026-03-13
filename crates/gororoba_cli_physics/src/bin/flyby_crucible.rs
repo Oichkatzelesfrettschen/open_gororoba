@@ -10,9 +10,9 @@
 use clap::Parser;
 use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
-use gr_core::forces::chingon_bivector_drag::{
-    ThreeBodyOrbitalParams, compute_chingon_bivector_drag_3body,
-};
+#[cfg(feature = "gpu")]
+use gr_core::forces::chingon_bivector_drag::ThreeBodyOrbitalParams;
+use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag_3body;
 #[cfg(feature = "gpu")]
 use lbm_3d_cuda::chingon_gpu::ChingonGpuPipeline;
 use nalgebra::{Matrix3, Vector3};
@@ -476,7 +476,9 @@ fn run_flyby(
     ephem: Option<&EphemerisLoader>,
     trace_h: bool,
     eta_wake: f64,
-    gpu_pipeline: Option<&Mutex<GpuPipeline>>,
+    #[cfg_attr(not(feature = "gpu"), allow(unused_variables))] gpu_pipeline: Option<
+        &Mutex<GpuPipeline>,
+    >,
 ) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
     let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_before);
     let total_time = t_before + t_after;

@@ -6,10 +6,7 @@
 //! Source: https://gwosc.org/eventapi/json/GWTC-3-confident/
 //! Reference: Abbott et al. (2023), PRX 13, 041039
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_zero,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_zero};
 use std::path::Path;
 
 /// A gravitational wave event from GWTC-3.

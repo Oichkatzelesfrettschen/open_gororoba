@@ -25,6 +25,21 @@
 //! - Yagi & Yunes (2013): Science 341, 365 (I-Love-Q universality)
 //! - Abbott et al. (2017): PRL 119, 161101 (GW170817)
 //! - Li et al. (2025): arXiv:2506.15644 (CDG-2 ultra-diffuse galaxy)
+//!
+//! # Canonical docs
+//!
+//! Use crate rustdoc and the mdBook as the primary web-viewable documentation
+//! surfaces for this crate. The generated LaTeX appendices under `docs/latex/`
+//! are publication outputs and may lag behind the actual Rust implementation.
+//!
+//! In particular:
+//!
+//! - module docs and tests define current code behavior
+//! - `docs/book/` explains architecture and navigation
+//! - `registry/canonical/control_plane.sqlite3` tracks evidence posture for
+//!   physical interpretations
+//! - `registry/claims.toml` is a generated compatibility export from that
+//!   control plane
 
 use gauss_quad::GaussLegendre;
 
@@ -36,24 +51,26 @@ pub mod cmb_axis;
 pub mod deka_voudon_cmb;
 pub mod dimensional_geometry;
 pub mod distances;
+pub mod eos;
 #[cfg(feature = "euclid-catalog")]
 pub mod euclid_morphology;
-pub mod eos;
-pub mod galaxy_pipeline;
 pub mod flrw;
+pub mod galaxy_pipeline;
 pub mod gravastar;
 pub mod gravastar_potential;
 pub mod halo;
 pub mod halo_profile;
+pub mod harmonic_halos;
+pub mod harmonic_stacking;
 pub mod homotopy_bridge;
 pub mod nfw_utils;
 pub mod observational;
 pub mod optimizer;
-pub mod sersic;
 #[cfg(feature = "argmin-optimizers")]
 pub mod optimizer_argmin;
 pub mod orthoplex_crystal;
 pub mod orthoplex_diffusion;
+pub mod sersic;
 pub mod spectral;
 pub mod tov;
 pub mod voudon_friedmann;
@@ -154,10 +171,20 @@ pub use deka_voudon_cmb::{
 };
 pub use voudon_friedmann::VoudonFriedmann;
 
+pub use harmonic_halos::{
+    HarmonicHaloConfig, default_box_kite_phases, default_phases, harmonic_halo_force_modulation,
+    harmonic_halo_modulation, v_circ_nfw, v_circ_with_halos,
+};
+
+pub use harmonic_stacking::{
+    CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig, StackingResult,
+    detection_threshold, predicted_wavenumbers, predicted_wavenumbers_cd, stack_residuals,
+};
+
 pub use sersic::{
     SersicLbmConfig, box_counting_fractal_dim, box_counting_fractal_dim_f32,
-    otsu_threshold, otsu_threshold_f32, sersic_bn, sersic_deprojected_density,
-    sersic_profile_2d, sersic_to_lbm_density, sersic_total_luminosity,
+    box_counting_fractal_dim_threshold, otsu_threshold, otsu_threshold_f32, sersic_bn,
+    sersic_deprojected_density, sersic_profile_2d, sersic_to_lbm_density, sersic_total_luminosity,
 };
 
 pub use cdg2_mapping::{

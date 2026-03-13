@@ -23,7 +23,7 @@ use super::{
     schema::{is_canonical_domain, is_canonical_status, is_canonical_task_status},
 };
 
-/// Verify claims matrix metadata hygiene.
+/// Verify legacy markdown claims-matrix metadata hygiene.
 ///
 /// Checks:
 /// - All rows have exactly 6 columns
@@ -80,7 +80,7 @@ pub fn verify_matrix_metadata(matrix_text: &str) -> Vec<String> {
 
 /// Verify that backtick-referenced paths in claims docs exist on disk.
 ///
-/// Checks both CLAIMS_EVIDENCE_MATRIX.md and VERIFIED_CLAIMS_INDEX.md.
+/// Checks the generated claims matrix mirror and VERIFIED_CLAIMS_INDEX.md.
 pub fn verify_evidence_links(repo_root: &Path) -> Vec<String> {
     let mut failures = Vec::new();
 
@@ -196,7 +196,8 @@ pub fn verify_tasks_metadata(tasks_text: &str) -> Vec<String> {
     failures
 }
 
-/// Verify consistency between CLAIMS_EVIDENCE_MATRIX.md and CLAIMS_TASKS.md.
+/// Verify consistency between a claims compatibility text surface and
+/// CLAIMS_TASKS.md.
 ///
 /// Checks that open claims have corresponding task entries.
 pub fn verify_tasks_consistency(matrix_text: &str, tasks_text: &str) -> Vec<String> {
@@ -402,58 +403,49 @@ pub fn verify_dataset_providers(
     out
 }
 
-/// Run all verification checks and return combined results.
+/// Run all verification checks and return combined results using already-loaded
+/// claims compatibility text.
 ///
 /// Returns `Ok(summary)` if all pass, `Err(failures)` if any fail.
-pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
+pub fn run_all_verifications_with_claims_text(
+    repo_root: &Path,
+    claims_text: &str,
+) -> Result<String, Vec<String>> {
     let mut all_failures = Vec::new();
     let mut summaries = Vec::new();
 
-    // 1. Matrix metadata.
-    let matrix_path = repo_root.join("docs/CLAIMS_EVIDENCE_MATRIX.md");
-    if matrix_path.exists() {
-        if let Ok(text) = std::fs::read_to_string(&matrix_path) {
-            let f = verify_matrix_metadata(&text);
-            summaries.push(format!("matrix_metadata: {} issues", f.len()));
-            all_failures.extend(f);
+    let f = verify_matrix_metadata(claims_text);
+    summaries.push(format!("matrix_metadata: {} issues", f.len()));
+    all_failures.extend(f);
 
-            // 2. Where stated pointers.
-            let f = verify_where_stated_pointers(&text);
-            summaries.push(format!("where_stated: {} issues", f.len()));
-            all_failures.extend(f);
+    let f = verify_where_stated_pointers(claims_text);
+    summaries.push(format!("where_stated: {} issues", f.len()));
+    all_failures.extend(f);
 
-            // 5. Tasks consistency (needs tasks file).
-            let tasks_path = repo_root.join("docs/CLAIMS_TASKS.md");
-            if tasks_path.exists()
-                && let Ok(tasks_text) = std::fs::read_to_string(&tasks_path)
-            {
-                let f = verify_tasks_consistency(&text, &tasks_text);
-                summaries.push(format!("tasks_consistency: {} issues", f.len()));
-                all_failures.extend(f);
+    let tasks_path = repo_root.join("docs/CLAIMS_TASKS.md");
+    if tasks_path.exists()
+        && let Ok(tasks_text) = std::fs::read_to_string(&tasks_path)
+    {
+        let f = verify_tasks_consistency(claims_text, &tasks_text);
+        summaries.push(format!("tasks_consistency: {} issues", f.len()));
+        all_failures.extend(f);
 
-                // Tasks metadata.
-                let f = verify_tasks_metadata(&tasks_text);
-                summaries.push(format!("tasks_metadata: {} issues", f.len()));
-                all_failures.extend(f);
+        let f = verify_tasks_metadata(&tasks_text);
+        summaries.push(format!("tasks_metadata: {} issues", f.len()));
+        all_failures.extend(f);
 
-                // Task artifact links.
-                let f = verify_task_artifact_links(&tasks_text, repo_root);
-                summaries.push(format!("task_artifacts: {} issues", f.len()));
-                all_failures.extend(f);
-            }
+        let f = verify_task_artifact_links(&tasks_text, repo_root);
+        summaries.push(format!("task_artifacts: {} issues", f.len()));
+        all_failures.extend(f);
+    }
 
-            // 6. Domain mapping.
-            let domain_path = repo_root.join("docs/claims/CLAIMS_DOMAIN_MAP.csv");
-            if domain_path.exists()
-                && let Ok(csv_text) = std::fs::read_to_string(&domain_path)
-            {
-                let f = verify_domain_mapping(&text, &csv_text);
-                summaries.push(format!("domain_mapping: {} issues", f.len()));
-                all_failures.extend(f);
-            }
-        }
-    } else {
-        all_failures.push("Missing docs/CLAIMS_EVIDENCE_MATRIX.md".to_string());
+    let domain_path = repo_root.join("docs/claims/CLAIMS_DOMAIN_MAP.csv");
+    if domain_path.exists()
+        && let Ok(csv_text) = std::fs::read_to_string(&domain_path)
+    {
+        let f = verify_domain_mapping(claims_text, &csv_text);
+        summaries.push(format!("domain_mapping: {} issues", f.len()));
+        all_failures.extend(f);
     }
 
     // 3. Evidence links.
@@ -511,6 +503,23 @@ pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
         Ok(summaries.join("\n"))
     } else {
         Err(all_failures)
+    }
+}
+
+/// Run all verification checks using the generated markdown claims mirror as a
+/// legacy fallback input.
+pub fn run_all_verifications(repo_root: &Path) -> Result<String, Vec<String>> {
+    let matrix_path = repo_root.join("docs/CLAIMS_EVIDENCE_MATRIX.md");
+    if !matrix_path.exists() {
+        return Err(vec![
+            "Missing docs/CLAIMS_EVIDENCE_MATRIX.md legacy compatibility mirror".to_string(),
+        ]);
+    }
+    match std::fs::read_to_string(&matrix_path) {
+        Ok(text) => run_all_verifications_with_claims_text(repo_root, &text),
+        Err(err) => Err(vec![format!(
+            "Cannot read docs/CLAIMS_EVIDENCE_MATRIX.md legacy compatibility mirror: {err}"
+        )]),
     }
 }
 

@@ -28,3 +28,5 @@ pub mod pathion_entropy;
 pub mod quaternion;
 pub mod s3_mixing;
 pub mod spectral_dim;
+pub mod topology;
+pub mod x87_math;

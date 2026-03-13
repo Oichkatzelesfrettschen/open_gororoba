@@ -37,8 +37,13 @@
 //! - Kontsevich, M. (2003). Deformation Quantization of Poisson Manifolds. Lett. Math. Phys.
 //! - Zwiebach, B. (1993). Closed String Field Theory. Nucl. Phys. B 390.
 
-use cd_kernel::error::{AlgebraError, AlgebraResult};
+use cd_kernel::error::AlgebraResult;
 use std::collections::HashMap;
+
+use crate::{
+    precision_policy::{MatrixStructureHints, SpectrumDispatchInput, SpectrumObjective},
+    spectrum_solvers::{classify_symmetric_matrix, solve_spectrum},
+};
 
 /// Grading for elements in a homotopy algebra.
 pub type Degree = i32;
@@ -697,21 +702,9 @@ impl SedenionAInfinity {
         residual.sqrt()
     }
 
-    /// Compute the obstruction spectrum of the m_3 operator.
-    ///
-    /// Flattens m_3 into a dim x dim^2 matrix M where M[i, j*dim+k] is the
-    /// i-th component of m_3(e_j, ?, e_k) summed over the middle slot using
-    /// basis elements. Then computes eigenvalues of M^T M (a dim^2 x dim^2
-    /// symmetric matrix) to get the singular values.
-    ///
-    /// For practical reasons, we compute the Frobenius norm and spectral
-    /// properties via the reduced dim x dim matrix M M^T instead.
-    pub fn obstruction_spectrum(&self) -> AlgebraResult<ObstructionSpectrum> {
+    /// Build the symmetric obstruction matrix O[i][j] = ||m_3(e_i, *, e_j)||^2.
+    pub fn obstruction_matrix(&self) -> Vec<Vec<f64>> {
         let d = self.dim;
-
-        // Build the "obstruction matrix" O[i][j] = ||m_3(e_i, *, e_j)||^2
-        // where * is summed over all basis elements.
-        // This is a d x d matrix capturing the pairwise obstruction landscape.
         let mut obs_matrix = vec![vec![0.0f64; d]; d];
 
         for i in 0..d {
@@ -732,15 +725,37 @@ impl SedenionAInfinity {
             }
         }
 
-        // Compute eigenvalues of obs_matrix via power iteration on the
-        // symmetric matrix (obs_matrix is symmetric by construction since
-        // we sum over the middle slot).
-        // For a 16x16 matrix, direct computation suffices.
-        let eigenvalues = Self::symmetric_eigenvalues(&obs_matrix)?;
+        obs_matrix
+    }
+
+    /// Classify matrix-structure hints for the current obstruction matrix.
+    pub fn obstruction_matrix_metadata(&self) -> AlgebraResult<MatrixStructureHints> {
+        classify_symmetric_matrix(&self.obstruction_matrix(), 1.0e-12)
+    }
+
+    /// Compute the obstruction spectrum of the m_3 operator.
+    ///
+    /// Flattens m_3 into a dim x dim^2 matrix M where M[i, j*dim+k] is the
+    /// i-th component of m_3(e_j, ?, e_k) summed over the middle slot using
+    /// basis elements. Then computes eigenvalues of M^T M (a dim^2 x dim^2
+    /// symmetric matrix) to get the singular values.
+    ///
+    /// For practical reasons, we compute eigenvalues of the reduced dim x dim
+    /// obstruction matrix and use exact zero-mode deflation when present.
+    pub fn obstruction_spectrum(&self) -> AlgebraResult<ObstructionSpectrum> {
+        let d = self.dim;
+        let obs_matrix = self.obstruction_matrix();
+
+        let eigenvalues =
+            self.solve_obstruction_objective(SpectrumObjective::FullSpectrum, &obs_matrix)?;
 
         let frobenius_norm = eigenvalues.iter().map(|e| e.powi(2)).sum::<f64>().sqrt();
         let spectral_radius = eigenvalues.iter().map(|e| e.abs()).fold(0.0f64, f64::max);
-        let nonzero_count = eigenvalues.iter().filter(|e| e.abs() > 1e-10).count();
+        let zero_threshold = 1e-14;
+        let nonzero_count = eigenvalues
+            .iter()
+            .filter(|e| e.abs() > zero_threshold)
+            .count();
         let rank_fraction = nonzero_count as f64 / d as f64;
 
         Ok(ObstructionSpectrum {
@@ -751,77 +766,28 @@ impl SedenionAInfinity {
         })
     }
 
-    /// Compute eigenvalues of a symmetric matrix using Jacobi iteration.
-    /// Suitable for small matrices (dim <= 64).
-    #[allow(clippy::needless_range_loop)]
-    fn symmetric_eigenvalues(matrix: &[Vec<f64>]) -> AlgebraResult<Vec<f64>> {
-        let n = matrix.len();
-        let mut a: Vec<Vec<f64>> = matrix.to_vec();
+    /// Compute a partial obstruction spectrum using the solver-family dispatch.
+    pub fn obstruction_extremal_spectrum(
+        &self,
+        objective: SpectrumObjective,
+    ) -> AlgebraResult<Vec<f64>> {
+        let obs_matrix = self.obstruction_matrix();
+        self.solve_obstruction_objective(objective, &obs_matrix)
+    }
 
-        // Jacobi eigenvalue algorithm for symmetric matrices
-        let mut converged = false;
-        for _ in 0..100 * n * n {
-            // Find largest off-diagonal element
-            let mut max_val = 0.0f64;
-            let mut p = 0;
-            let mut q = 1;
-            for i in 0..n {
-                for j in (i + 1)..n {
-                    if a[i][j].abs() > max_val {
-                        max_val = a[i][j].abs();
-                        p = i;
-                        q = j;
-                    }
-                }
+    fn solve_obstruction_objective(
+        &self,
+        objective: SpectrumObjective,
+        matrix: &[Vec<f64>],
+    ) -> AlgebraResult<Vec<f64>> {
+        let hints = classify_symmetric_matrix(matrix, 1.0e-12)?;
+        let input = match objective {
+            SpectrumObjective::FullSpectrum => {
+                SpectrumDispatchInput::obstruction_full_spectrum(matrix.len(), hints)
             }
-
-            if max_val < 1e-12 {
-                converged = true;
-                break;
-            }
-
-            // Compute rotation angle
-            let theta = if (a[p][p] - a[q][q]).abs() < 1e-15 {
-                std::f64::consts::FRAC_PI_4
-            } else {
-                0.5 * ((2.0 * a[p][q]) / (a[p][p] - a[q][q])).atan()
-            };
-
-            let (sin_t, cos_t) = theta.sin_cos();
-
-            // Apply Givens rotation
-            let mut new_a = a.clone();
-            for i in 0..n {
-                if i != p && i != q {
-                    new_a[i][p] = cos_t * a[i][p] + sin_t * a[i][q];
-                    new_a[p][i] = new_a[i][p];
-                    new_a[i][q] = -sin_t * a[i][p] + cos_t * a[i][q];
-                    new_a[q][i] = new_a[i][q];
-                }
-            }
-            new_a[p][p] =
-                cos_t * cos_t * a[p][p] + 2.0 * sin_t * cos_t * a[p][q] + sin_t * sin_t * a[q][q];
-            new_a[q][q] =
-                sin_t * sin_t * a[p][p] - 2.0 * sin_t * cos_t * a[p][q] + cos_t * cos_t * a[q][q];
-            new_a[p][q] = 0.0;
-            new_a[q][p] = 0.0;
-
-            a = new_a;
-        }
-
-        if !converged {
-            return Err(AlgebraError::NumericalError(
-                "Jacobi iteration did not converge".to_string(),
-            ));
-        }
-
-        let mut eigenvalues: Vec<f64> = (0..n).map(|i| a[i][i]).collect();
-        eigenvalues.sort_by(|a, b| {
-            b.abs()
-                .partial_cmp(&a.abs())
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
-        Ok(eigenvalues)
+            _ => SpectrumDispatchInput::obstruction_extremal(matrix.len(), objective, hints),
+        };
+        solve_spectrum(matrix, input, 1.0e-12)
     }
 
     /// Compute the scalar obstruction norm: a single number summarizing the
@@ -1114,6 +1080,7 @@ mod tests {
 
         // e_0 (identity) should have zero associator with everything,
         // so the matrix should have a zero row/column, reducing rank.
+        println!("Full Sedenion Spectrum: {:?}", spectrum.eigenvalues);
         assert!(
             spectrum.rank_fraction < 1.0,
             "rank should be < full due to identity element"
@@ -1142,5 +1109,77 @@ mod tests {
             "Top 5 eigenvalues: {:?}",
             &spectrum.eigenvalues[..5.min(spectrum.eigenvalues.len())]
         );
+    }
+
+    #[test]
+    fn test_obstruction_matrix_metadata_detects_identity_zero_mode() {
+        let sa = SedenionAInfinity::new(16);
+        let metadata = sa.obstruction_matrix_metadata().expect("metadata failed");
+
+        assert!(metadata.symmetric);
+        assert!(metadata.nonnegative);
+        assert!(metadata.zero_diagonal);
+        assert!(metadata.isolated_zero_modes);
+    }
+
+    #[test]
+    fn test_obstruction_extremal_spectrum_returns_requested_count() {
+        let sa = SedenionAInfinity::new(16);
+        let eigs = sa
+            .obstruction_extremal_spectrum(SpectrumObjective::SmallestAbs { k: 2 })
+            .expect("extremal spectrum failed");
+
+        assert_eq!(eigs.len(), 2);
+    }
+
+    // C-1357, E-186: obstruction_norm depends on normalization convention.
+    // The current convention (frobenius / dim^1.5) is one of many valid choices.
+    // Testing 5 conventions confirms that values differ by >10%, making the
+    // physical interpretation (and gravastar coupling) normalization-dependent.
+    #[test]
+    fn test_c1357_obstruction_norm_normalization_sensitivity() {
+        let dim = 16_usize;
+        let sa = SedenionAInfinity::new(dim);
+        let spectrum = sa.obstruction_norm().expect("Norm failed");
+        let full_spectrum = sa.obstruction_spectrum().expect("Spectrum failed");
+
+        let frobenius = full_spectrum.frobenius_norm;
+        let spectral_r = full_spectrum.spectral_radius;
+        let d = dim as f64;
+
+        // Convention 1 (current): frobenius / dim^1.5
+        let conv1 = frobenius / d.powf(1.5);
+        // Convention 2: frobenius / dim
+        let conv2 = frobenius / d;
+        // Convention 3: frobenius / sqrt(dim)
+        let conv3 = frobenius / d.sqrt();
+        // Convention 4: frobenius / dim^2
+        let conv4 = frobenius / d.powi(2);
+        // Convention 5: spectral_radius / dim^1.5
+        let conv5 = spectral_r / d.powf(1.5);
+
+        // The public obstruction_norm() must match convention 1.
+        assert!(
+            (spectrum - conv1).abs() < 1e-10,
+            "obstruction_norm() must equal frobenius/dim^1.5: got {spectrum:.6} vs {conv1:.6}"
+        );
+
+        // All 5 conventions must be distinct (>10% relative difference between max and min).
+        let values = [conv1, conv2, conv3, conv4, conv5];
+        let vmax = values.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        let vmin = values.iter().cloned().fold(f64::INFINITY, f64::min);
+        let rel_spread = (vmax - vmin) / vmax;
+        assert!(
+            rel_spread > 0.10,
+            "C-1357: normalization conventions must differ >10%, got spread={rel_spread:.4} (max={vmax:.4}, min={vmin:.4})"
+        );
+
+        eprintln!("Obstruction norm conventions at dim=16:");
+        eprintln!("  frobenius/dim^1.5 = {conv1:.6}  (current)");
+        eprintln!("  frobenius/dim     = {conv2:.6}");
+        eprintln!("  frobenius/sqrt(d) = {conv3:.6}");
+        eprintln!("  frobenius/dim^2   = {conv4:.6}");
+        eprintln!("  spectral/dim^1.5  = {conv5:.6}");
+        eprintln!("  relative spread   = {rel_spread:.4}");
     }
 }

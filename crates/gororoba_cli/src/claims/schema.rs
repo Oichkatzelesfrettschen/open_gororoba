@@ -93,7 +93,7 @@ pub const CANONICAL_DOMAINS: &[&str] = &[
     "datasets",
     "visualization",
     "cpp",
-    "coq",
+    "rocq",
     "legacy",
 ];
 

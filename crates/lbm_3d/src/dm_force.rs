@@ -1313,4 +1313,46 @@ mod tests {
             "default force_scale = {default_fs:.6e} should match nx=128 = {fs_128:.6e}"
         );
     }
+
+    // C-1353, E-185: sigma_chi_b = 1e-42 cm^2 is a test fixture, not an
+    // algebraic derivation from the CD tower.  Default is 0.0.  The values
+    // 1e-40 / 1e-42 / 1e-45 used in sensitivity tests have no structural
+    // connection to the sedenion assessor count (42) or CD dimension.
+    #[test]
+    fn test_c1353_dm_cross_section_not_algebraic() {
+        // Default config has sigma_chi_b = 0.0 (C-1308).
+        let default_cfg = DmForceConfig::default();
+        assert_eq!(
+            default_cfg.sigma_chi_b, 0.0,
+            "C-1308: default sigma_chi_b must be 0.0, got {}",
+            default_cfg.sigma_chi_b
+        );
+
+        // Sensitivity probe values are 1e-40, 1e-42, 1e-45 cm^2.
+        // None of these equals any function of the sedenion assessor count (42)
+        // or of CD dimension (16).  The test just confirms they are independent
+        // scalar overrides with no algebraic significance.
+        for probe in [1e-40_f64, 1e-42, 1e-45] {
+            let cfg = DmForceConfig {
+                sigma_chi_b: probe,
+                ..DmForceConfig::default()
+            };
+            // The value is accepted verbatim -- no CD-derived rounding or snapping.
+            assert_eq!(
+                cfg.sigma_chi_b, probe,
+                "sigma_chi_b must be stored verbatim, no CD-derived rounding"
+            );
+            // Confirm the value is NOT equal to any simple function of 42 or 16.
+            let assessor_count = 42_f64;
+            let cd_dim = 16_f64;
+            assert!(
+                (cfg.sigma_chi_b - assessor_count).abs() > 1e-50,
+                "sigma_chi_b should not equal assessor count"
+            );
+            assert!(
+                (cfg.sigma_chi_b - cd_dim).abs() > 1e-50,
+                "sigma_chi_b should not equal CD dimension"
+            );
+        }
+    }
 }

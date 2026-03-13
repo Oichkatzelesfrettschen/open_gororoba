@@ -104,8 +104,7 @@ pub fn parse_swepam_file(path: &Path) -> Result<Vec<SwepamRecord>, FetchError> {
 /// The ACE Science Center publishes hourly averages as `swepam_h2s_*`.
 /// The 64-second cadence product (`swepam_data_64sec_*`) is a different
 /// product and would require averaging before use with parse_swepam_hourly().
-const ACE_SWEPAM_BASE: &str =
-    "https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/swepam_h2s_year";
+const ACE_SWEPAM_BASE: &str = "https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/swepam_h2s_year";
 
 /// ACE SWEPAM dataset provider.
 ///

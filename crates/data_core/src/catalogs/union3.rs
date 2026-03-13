@@ -6,10 +6,7 @@
 //! Source: DESI Y3 BAO cosmology data release
 //! https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 /// One row from a whitespace-delimited chain file.

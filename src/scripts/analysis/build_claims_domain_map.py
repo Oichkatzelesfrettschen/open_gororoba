@@ -8,7 +8,7 @@ without changing the canonical matrix in `docs/CLAIMS_EVIDENCE_MATRIX.md`.
 Notes:
 - This is a heuristic bootstrap, not a truth claim.
 - The mapping should be reviewed and refined over time.
-- Output is ASCII-only.
+- Output follows the ANSI-safe UTF-8 character policy.
 """
 
 # SCRIPT_CONTRACT: {"inferred":true,"inputs":[],"network":"forbidden","network_env":"","outputs":[],"version":1}
@@ -95,7 +95,7 @@ def _load_claim_rows(matrix_path: Path) -> list[ClaimRow]:
 
 
 DOMAIN_KEYWORDS: dict[str, tuple[str, ...]] = {
-    "coq": ("coq", "rocq", "coqc"),
+    "rocq": ("rocq", "rocq", "coqc"),
     "cpp": ("c++", "cmake", "conan", "cpp/"),
     "materials": (
         "metamaterial",
@@ -144,7 +144,7 @@ ALGEBRA_KEYWORDS = (
 )
 
 PRIMARY_PRIORITY: tuple[str, ...] = (
-    "coq",
+    "rocq",
     "cpp",
     "materials",
     "gravitational-waves",

@@ -3,6 +3,7 @@
 //! Generalizes the fetch pattern from fetch_chime_frb.rs into reusable functions
 //! that all catalog modules share.
 
+use crate::download_stack::{DownloadStack, TransferRequest};
 use sha2::{Digest, Sha256};
 use std::{
     fs, io,
@@ -48,152 +49,31 @@ impl Default for FetchConfig {
     }
 }
 
-/// Try downloading via wget. Returns Ok(bytes) on success.
-fn download_via_wget(url: &str, path: &Path) -> Result<u64, FetchError> {
-    let status = std::process::Command::new("wget")
-        .args([
-            "--quiet",
-            "--output-document",
-            &path.to_string_lossy(),
-            "--header",
-            "User-Agent: gororoba-fetch/0.1 (research)",
-            "--timeout=60",
-            "--tries=2",
-            url,
-        ])
-        .status()
-        .map_err(|e| FetchError::HttpError {
-            url: url.to_string(),
-            source: Box::new(e),
-        })?;
-
-    if !status.success() {
-        fs::remove_file(path).ok();
-        return Err(FetchError::HttpError {
-            url: url.to_string(),
-            source: format!("wget exited with {}", status).into(),
-        });
-    }
-
-    let bytes = fs::metadata(path).map(|m| m.len()).unwrap_or(0);
-    Ok(bytes)
-}
-
-/// Try downloading via curl. Returns Ok(bytes) on success.
-fn download_via_curl(url: &str, path: &Path) -> Result<u64, FetchError> {
-    let status = std::process::Command::new("curl")
-        .args([
-            "--silent",
-            "--show-error",
-            "--fail",
-            "--location",
-            "--output",
-            &path.to_string_lossy(),
-            "--header",
-            "User-Agent: gororoba-fetch/0.1 (research)",
-            "--max-time",
-            "120",
-            "--retry",
-            "2",
-            url,
-        ])
-        .status()
-        .map_err(|e| FetchError::HttpError {
-            url: url.to_string(),
-            source: Box::new(e),
-        })?;
-
-    if !status.success() {
-        fs::remove_file(path).ok();
-        return Err(FetchError::HttpError {
-            url: url.to_string(),
-            source: format!("curl exited with {}", status).into(),
-        });
-    }
-
-    let bytes = fs::metadata(path).map(|m| m.len()).unwrap_or(0);
-    Ok(bytes)
-}
-
-/// Try downloading via ureq (Rust-native). Returns Ok(bytes) on success.
-fn download_via_ureq(url: &str, path: &Path) -> Result<u64, FetchError> {
-    let response = ureq::get(url)
-        .header("Accept", "text/csv,text/plain,application/octet-stream,*/*")
-        .header("User-Agent", "gororoba-fetch/0.1 (research)")
-        .call()
-        .map_err(|e| FetchError::HttpError {
-            url: url.to_string(),
-            source: Box::new(e),
-        })?;
-
-    let status = response.status();
-    if status != 200 {
-        return Err(FetchError::HttpStatus {
-            url: url.to_string(),
-            status: status.into(),
-        });
-    }
-
-    let mut reader = response.into_body().into_reader();
-    let mut file = fs::File::create(path)?;
-    let bytes = io::copy(&mut reader, &mut file)?;
-    Ok(bytes)
-}
-
 /// Download a URL to a file, returning the number of bytes written.
 ///
-/// Tries wget first (most robust for academic data servers), then curl,
-/// then falls back to ureq (Rust-native). This ordering reflects that
-/// wget and curl handle redirects, compression, and large responses
-/// better than ureq's default 10MB limit.
+/// Routes through the standardized universal download stack so existing
+/// dataset providers inherit the shared backend policy automatically.
 pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent)?;
-    }
-
-    // Primary: wget
-    match download_via_wget(url, path) {
-        Ok(bytes) if bytes > 0 => return Ok(bytes),
-        Ok(_) => { /* zero bytes, try next */ }
-        Err(e) => log::debug!("wget failed: {}", e),
-    }
-
-    // Secondary: curl
-    match download_via_curl(url, path) {
-        Ok(bytes) if bytes > 0 => return Ok(bytes),
-        Ok(_) => { /* zero bytes, try next */ }
-        Err(e) => log::debug!("curl failed: {}", e),
-    }
-
-    // Fallback: ureq (Rust-native)
-    download_via_ureq(url, path)
+    let stack = DownloadStack::default();
+    let request = TransferRequest::download(url.to_string(), path.to_path_buf());
+    let result = stack
+        .recover(&request)
+        .map_err(|source| FetchError::HttpError {
+            url: url.to_string(),
+            source: Box::new(source),
+        })?;
+    Ok(result.bytes)
 }
 
 /// Download a URL as a string (for small text files).
 pub fn download_to_string(url: &str) -> Result<String, FetchError> {
-    let response = ureq::get(url)
-        .header("Accept", "text/csv,text/plain,*/*")
-        .header("User-Agent", "gororoba-fetch/0.1 (research)")
-        .call()
-        .map_err(|e| FetchError::HttpError {
+    let stack = DownloadStack::default();
+    stack
+        .fetch_text(&TransferRequest::probe(url.to_string()))
+        .map_err(|source| FetchError::HttpError {
             url: url.to_string(),
-            source: Box::new(e),
-        })?;
-
-    let status = response.status();
-    if status != 200 {
-        return Err(FetchError::HttpStatus {
-            url: url.to_string(),
-            status: status.into(),
-        });
-    }
-
-    let body = response
-        .into_body()
-        .read_to_string()
-        .map_err(|e| FetchError::Io(io::Error::other(e)))?;
-
-    Ok(body)
+            source: Box::new(source),
+        })
 }
 
 /// Compute SHA-256 hash of a file, returning hex string.

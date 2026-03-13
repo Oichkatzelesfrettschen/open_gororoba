@@ -1,10 +1,8 @@
 //! Deterministic callgrind benches for tensor_avt host-side costs.
 
-use gororoba_algebra::gpu::{
-    TensorAVT, TensorAvtAutoConfig, TensorAvtCalibrationMode,
-};
 #[cfg(feature = "gpu")]
 use gororoba_algebra::gpu::is_gpu_available;
+use gororoba_algebra::gpu::{TensorAVT, TensorAvtAutoConfig, TensorAvtCalibrationMode};
 use iai_callgrind::{library_benchmark, library_benchmark_group, main};
 use std::hint::black_box;
 
@@ -64,7 +62,10 @@ fn cd_mul_batch_cpu_256x64() -> Vec<f32> {
     let x_batch = values(dim * batch_size, 0xFACEFEED);
     let cfg = cpu_only_config();
     avt.compute_cd_mul_batch_auto_with_config(
-        black_box(&a), black_box(&x_batch), black_box(batch_size), &cfg,
+        black_box(&a),
+        black_box(&x_batch),
+        black_box(batch_size),
+        &cfg,
     )
     .expect("batch")
     .value
@@ -79,7 +80,10 @@ fn cd_mul_batch_cpu_4096x8() -> Vec<f32> {
     let x_batch = values(dim * batch_size, 0xFACEFEED + batch_size as u64);
     let cfg = cpu_only_config();
     avt.compute_cd_mul_batch_auto_with_config(
-        black_box(&a), black_box(&x_batch), black_box(batch_size), &cfg,
+        black_box(&a),
+        black_box(&x_batch),
+        black_box(batch_size),
+        &cfg,
     )
     .expect("batch")
     .value
@@ -92,11 +96,9 @@ fn norm_sq_batch_cpu_256x64() -> Vec<f32> {
     let avt = TensorAVT::new(dim);
     let vectors = values(dim * batch_size, 0xDEADBEEF);
     let cfg = cpu_only_config();
-    avt.compute_norm_sq_batch_auto_with_config(
-        black_box(&vectors), black_box(batch_size), &cfg,
-    )
-    .expect("norms")
-    .value
+    avt.compute_norm_sq_batch_auto_with_config(black_box(&vectors), black_box(batch_size), &cfg)
+        .expect("norms")
+        .value
 }
 
 #[library_benchmark]
@@ -106,11 +108,9 @@ fn norm_sq_batch_cpu_4096x8() -> Vec<f32> {
     let avt = TensorAVT::new(dim);
     let vectors = values(dim * batch_size, 0xDEADBEEF + dim as u64);
     let cfg = cpu_only_config();
-    avt.compute_norm_sq_batch_auto_with_config(
-        black_box(&vectors), black_box(batch_size), &cfg,
-    )
-    .expect("norms")
-    .value
+    avt.compute_norm_sq_batch_auto_with_config(black_box(&vectors), black_box(batch_size), &cfg)
+        .expect("norms")
+        .value
 }
 
 library_benchmark_group!(

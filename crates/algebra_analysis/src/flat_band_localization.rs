@@ -50,14 +50,8 @@ pub fn flat_band_scaling(dims: &[usize], tol: f64) -> FlatBandScaling {
         fractions.iter().map(|f| (f - mean).abs()).sum::<f64>() / fractions.len() as f64
     };
 
-    let range = fractions
-        .iter()
-        .copied()
-        .fold(f64::NAN, f64::max)
-        - fractions
-            .iter()
-            .copied()
-            .fold(f64::NAN, f64::min);
+    let range = fractions.iter().copied().fold(f64::NAN, f64::max)
+        - fractions.iter().copied().fold(f64::NAN, f64::min);
 
     let (fit_type, fit_value) = if range.is_nan() || range < tol {
         ("constant".to_string(), mean)

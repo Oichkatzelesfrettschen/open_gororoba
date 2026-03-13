@@ -20,6 +20,7 @@ rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 num-bigint = { workspace = true }
 petgraph = { workspace = true }
+serde = { workspace = true }
 cudarc = { workspace = true, optional = true }
 
 [features]

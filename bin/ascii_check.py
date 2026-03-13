@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Repo ASCII-only gate.
+Repo ANSI-safe UTF-8 gate.
 
 Policy:
-- All repo-authored docs/code/data should be ASCII-only.
+- All repo-authored docs/code/data should be ANSI-safe UTF-8.
 - Source transcripts under convos/ may contain Unicode; treat as immutable inputs.
 
 Usage:

@@ -1,6 +1,6 @@
 (** * FloatRealBridge: instantiate FLOAT_OPS with stdlib R.
 
-    This module proves that Coq's real numbers R satisfy FLOAT_OPS,
+    This module proves that Rocq's real numbers R satisfy FLOAT_OPS,
     bridging the abstract extraction pipeline to concrete real analysis.
 
     The key result: the abstract QuatOps operations agree with the

@@ -23,6 +23,11 @@
 use crate::gravastar::{PolytropicEos, TovState};
 use std::f64::consts::PI;
 
+#[inline(always)]
+fn rk4_accumulate(y: f64, h: f64, k1: f64, k2: f64, k3: f64, k4: f64) -> f64 {
+    y + (h / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+}
+
 // ============================================================================
 // Named EOS presets for neutron stars
 // ============================================================================
@@ -195,8 +200,8 @@ pub fn integrate_neutron_star(
         let rho4 = eos.density(p4);
         let (dm4, dp4) = tov_rhs(r4, m4, p4, rho4);
 
-        state.m += dr * (dm1 + 2.0 * dm2 + 2.0 * dm3 + dm4) / 6.0;
-        state.p += dr * (dp1 + 2.0 * dp2 + 2.0 * dp3 + dp4) / 6.0;
+        state.m = rk4_accumulate(state.m, dr, dm1, dm2, dm3, dm4);
+        state.p = rk4_accumulate(state.p, dr, dp1, dp2, dp3, dp4).max(0.0);
         state.r += dr;
 
         if state.p < 0.0 {

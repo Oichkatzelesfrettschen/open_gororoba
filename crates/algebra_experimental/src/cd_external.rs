@@ -274,7 +274,7 @@ pub fn parse_lattice_point(s: &str) -> Option<Vec<i32>> {
 /// fields that parse as f64 are collected. Non-numeric fields (e.g., string
 /// row labels) are silently skipped.
 ///
-/// Returns the matrix as Vec<Vec<f64>> (row-major).
+/// Returns the matrix as `Vec<Vec<f64>>` (row-major).
 pub fn parse_adjacency_csv(content: &str) -> Vec<Vec<f64>> {
     let mut rows = Vec::new();
     let lines: Vec<&str> = content.lines().collect();
@@ -614,7 +614,7 @@ pub fn learn_full_filtration_cuts() -> Vec<(usize, usize, LexPrefixCut)> {
 // ---------------------------------------------------------------------------
 
 /// Enumerate the base universe S_base: all vectors in {-1,0,1}^8 satisfying
-/// coord[0] != +1, even sum, and even nonzero count.
+/// `coord[0] != +1`, even sum, and even nonzero count.
 pub fn enumerate_base_universe() -> BTreeSet<Vec<i32>> {
     let mut result = BTreeSet::new();
     // coord[0] in {-1, 0}, coords[1..8] in {-1, 0, 1}

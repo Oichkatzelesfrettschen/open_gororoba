@@ -271,8 +271,7 @@ mod tests {
     #[test]
     fn test_parse_pioneer10_inner_heliosphere() {
         // P10 at ~10 AU: B ceiling = 200/100 = 2.0, density ceiling = 500/100 = 5.0
-        let data =
-            "1975 100 12 10.0 1.0 180.0 0.3 -0.1 0.05 0.5 400.0 5.0 180.0 0.5 50000.0\n";
+        let data = "1975 100 12 10.0 1.0 180.0 0.3 -0.1 0.05 0.5 400.0 5.0 180.0 0.5 50000.0\n";
         let records = parse_pioneer_merged(data, PioneerSpacecraft::P10);
         assert_eq!(records.len(), 1);
         let r = &records[0];
@@ -285,8 +284,7 @@ mod tests {
     #[test]
     fn test_parse_pioneer10_outer_heliosphere() {
         // P10 at ~60 AU: B ceiling = 200/3600 = 0.056, density ceiling = 500/3600 = 0.139
-        let data =
-            "1993 200 6 60.0 3.0 150.0 0.02 -0.01 0.005 0.03 400.0 1.0 180.0 0.01 10000.0\n";
+        let data = "1993 200 6 60.0 3.0 150.0 0.02 -0.01 0.005 0.03 400.0 1.0 180.0 0.01 10000.0\n";
         let records = parse_pioneer_merged(data, PioneerSpacecraft::P10);
         assert_eq!(records.len(), 1);
         let r = &records[0];
@@ -299,8 +297,7 @@ mod tests {
     fn test_parse_pioneer11_saturn_distance() {
         // P11 near Saturn (~9.5 AU), inclined ~17 deg from ecliptic
         // B ceiling = 200/90.25 = 2.22, density ceiling = 500/90.25 = 5.54
-        let data =
-            "1979 245 12 9.5 -15.0 200.0 0.4 -0.2 0.1 0.8 450.0 -5.0 180.0 0.8 80000.0\n";
+        let data = "1979 245 12 9.5 -15.0 200.0 0.4 -0.2 0.1 0.8 450.0 -5.0 180.0 0.8 80000.0\n";
         let records = parse_pioneer_merged(data, PioneerSpacecraft::P11);
         assert_eq!(records.len(), 1);
         let r = &records[0];
@@ -326,8 +323,7 @@ mod tests {
 
     #[test]
     fn test_pioneer_to_omni_populates_r_au() {
-        let data =
-            "1975 200 12 10.0 1.0 180.0 0.3 -0.1 0.05 0.5 400.0 5.0 180.0 0.5 50000.0\n";
+        let data = "1975 200 12 10.0 1.0 180.0 0.3 -0.1 0.05 0.5 400.0 5.0 180.0 0.5 50000.0\n";
         let spdf = parse_pioneer_merged(data, PioneerSpacecraft::P10);
         let omni = pioneer_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
@@ -363,8 +359,7 @@ mod tests {
 
     #[test]
     fn test_parse_reachable_p11_saturn_encounter_row() {
-        let data =
-            " 79 212  0   9.21   -5.0   90.6   0.0265  -0.3685   0.0334   0.3755  394.9   -1.8   -2.6   0.0850   30073.\n";
+        let data = " 79 212  0   9.21   -5.0   90.6   0.0265  -0.3685   0.0334   0.3755  394.9   -1.8   -2.6   0.0850   30073.\n";
         let records = parse_pioneer_merged(data, PioneerSpacecraft::P11);
         assert_eq!(records.len(), 1);
         let r = &records[0];

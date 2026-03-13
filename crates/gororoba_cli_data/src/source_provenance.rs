@@ -2,10 +2,12 @@ use anyhow::{Context, Result, bail};
 use chrono::Utc;
 use csv::ReaderBuilder;
 use regex::Regex;
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
-use std::fs;
-use std::path::{Path, PathBuf};
-use std::sync::OnceLock;
+use std::{
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
+    fs,
+    path::{Path, PathBuf},
+    sync::OnceLock,
+};
 use toml::Value;
 use url::Url;
 use walkdir::WalkDir;
@@ -17,17 +19,31 @@ const ARTIFACT_LOCAL_PREFIXES: &[&str] = &[
     "registry/knowledge/artifacts/",
 ];
 
-const NON_AUTHORITATIVE_REGISTRY_PREFIXES: &[&str] = &[
-    "registry/knowledge/",
-    "registry/source_lanes/",
-];
+const NON_AUTHORITATIVE_REGISTRY_PREFIXES: &[&str] =
+    &["registry/knowledge/", "registry/source_lanes/"];
 
 const NON_AUTHORITATIVE_REGISTRY_EXACT: &[&str] = &[
     "registry/embedded_markdown_chunks.toml",
     "registry/embedded_markdown_payloads.toml",
+    "registry/bibliography_normalized.toml",
+    "registry/markdown_corpus_registry.toml",
+    "registry/markdown_governance.toml",
+    "registry/markdown_inventory.toml",
+    "registry/markdown_origin_audit.toml",
+    "registry/markdown_owner_map.toml",
     "registry/markdown_payload_chunks.toml",
     "registry/markdown_payloads.toml",
     "registry/source_infrastructure.toml",
+    "registry/toml_inventory.toml",
+];
+
+const NON_AUTHORITATIVE_REPORT_PREFIXES: &[&str] = &[
+    "reports/blocked_artifact_retry_plan_",
+    "reports/blocked_artifact_recovery_attempts_",
+    "reports/data_origin_audit_",
+    "reports/external_redownload_audit_",
+    "reports/data_semantic_validate_external_",
+    "reports/literature_inventory_",
 ];
 
 const TITLE_KEYS: &[&str] = &[
@@ -39,18 +55,14 @@ const TITLE_KEYS: &[&str] = &[
     "reference",
 ];
 
-const CITATION_KEYS: &[&str] = &[
-    "citation",
-    "citation_markdown",
-    "reference",
-    "summary",
-];
+const CITATION_KEYS: &[&str] = &["citation", "citation_markdown", "reference", "summary"];
 
 const ID_KEYS: &[&str] = &["id", "key", "slug", "paper_id", "artifact_id"];
 
 const REFERENCE_HOST_HINTS: &[&str] = &[
     "arxiv.org",
     "export.arxiv.org",
+    "academia.edu",
     "scispace.com",
     "doi.org",
     "core.ac.uk",
@@ -89,9 +101,11 @@ const REFERENCE_HOST_HINTS: &[&str] = &[
     "bibliotekanauki.pl",
     "pldml.icm.edu.pl",
     "sciendo.com",
+    "jwbales.us",
     "journals.sagepub.com",
     "pubmed.ncbi.nlm.nih.gov",
     "raw.githubusercontent.com",
+    "inspirehep.net",
 ];
 
 const DATASET_EXTENSIONS: &[&str] = &[
@@ -105,7 +119,12 @@ const SLIDE_ARTIFACT_EXTENSIONS: &[&str] = &[
 
 const PDF_EXTENSIONS: &[&str] = &[".pdf"];
 
-const LANE_ORDER: &[&str] = &["datasets", "slides_artifacts", "papers_pdf", "web_references"];
+const LANE_ORDER: &[&str] = &[
+    "datasets",
+    "slides_artifacts",
+    "papers_pdf",
+    "web_references",
+];
 
 const BEST_PRACTICE_SOURCES: &[&str] = &[
     "https://www.w3.org/TR/prov-overview/",
@@ -133,6 +152,7 @@ struct LinkObservation {
 struct CandidateRecord {
     source_kind: String,
     source_ref: String,
+    identity_override: Option<String>,
     title: String,
     citation: String,
     dois: Vec<String>,
@@ -284,8 +304,53 @@ fn slug(text: &str) -> String {
     }
 }
 
+fn normalize_identity_hint(hint: &str) -> String {
+    let trimmed = hint.trim();
+    if trimmed.is_empty() {
+        return String::new();
+    }
+    if let Some(url) = trimmed.strip_prefix("url:") {
+        let normalized = normalize_url(url);
+        if !normalized.is_empty() {
+            if let Some(content_id) = cambridge_content_id(&normalized) {
+                return format!("cambridge:{}", content_id.to_ascii_lowercase());
+            }
+            return format!("url:{}", normalized.to_ascii_lowercase());
+        }
+    }
+    if let Some(doi) = trimmed.strip_prefix("doi:") {
+        let normalized = normalize_doi(doi);
+        if !normalized.is_empty() {
+            return format!("doi:{}", normalized.to_ascii_lowercase());
+        }
+    }
+    if url_re().is_match(trimmed) {
+        let normalized = normalize_url(trimmed);
+        if !normalized.is_empty() {
+            if let Some(content_id) = cambridge_content_id(&normalized) {
+                return format!("cambridge:{}", content_id.to_ascii_lowercase());
+            }
+            return format!("url:{}", normalized.to_ascii_lowercase());
+        }
+    }
+    let normalized_doi = normalize_doi(trimmed);
+    if !normalized_doi.is_empty() {
+        return format!("doi:{}", normalized_doi.to_ascii_lowercase());
+    }
+    trimmed.to_string()
+}
+
 fn normalize_url(url: &str) -> String {
     let mut value = url.trim().trim_matches('`').to_string();
+    if value.contains('|') {
+        for part in value.split('|') {
+            let normalized = normalize_url(part);
+            if !normalized.is_empty() {
+                return normalized;
+            }
+        }
+        return String::new();
+    }
     while let Some(ch) = value.chars().next() {
         if "(<[{\"'".contains(ch) {
             value.remove(0);
@@ -300,7 +365,141 @@ fn normalize_url(url: &str) -> String {
             break;
         }
     }
-    value.trim().to_string()
+    let trimmed = value.trim();
+    if let Some(suffix) = trimmed
+        .strip_prefix("http://arxiv.org.abs/")
+        .or_else(|| trimmed.strip_prefix("https://arxiv.org.abs/"))
+    {
+        return normalize_url(&format!("https://arxiv.org/abs/{suffix}"));
+    }
+    if let Some(suffix) = trimmed
+        .strip_prefix("http://arxiv.org/abs.")
+        .or_else(|| trimmed.strip_prefix("https://arxiv.org/abs."))
+    {
+        return normalize_url(&format!("https://arxiv.org/abs/{suffix}"));
+    }
+    let Ok(parsed) = Url::parse(trimmed) else {
+        return trimmed.to_string();
+    };
+    let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    if host == "idp.springer.com" {
+        for (key, val) in parsed.query_pairs() {
+            if key == "redirect_uri" {
+                let redirected = val.trim();
+                if !redirected.is_empty() {
+                    return normalize_url(redirected);
+                }
+            }
+        }
+        return String::new();
+    }
+    let mut parsed = parsed;
+    if parsed.scheme() == "http"
+        && matches!(
+            host.as_str(),
+            "www.mdpi.com"
+                | "mdpi.com"
+                | "doi.org"
+                | "www.doi.org"
+                | "www.cambridge.org"
+                | "cambridge.org"
+                | "www.academia.edu"
+                | "academia.edu"
+                | "www.researchgate.net"
+                | "researchgate.net"
+        )
+    {
+        let _ = parsed.set_scheme("https");
+    }
+    parsed.set_fragment(None);
+    if is_non_reference_service_url(&parsed) {
+        return String::new();
+    }
+    if host == "arxiv.org" {
+        if parsed.path().starts_with("/pdf/") && !parsed.path().ends_with(".pdf") {
+            parsed.set_path(&format!("{}.pdf", parsed.path()));
+        } else if let Some(vc_suffix) = parsed.path().strip_prefix("/vc/") {
+            let parts: Vec<_> = vc_suffix.split('/').collect();
+            if parts.len() >= 4 && parts[1] == "papers" && parts[3].ends_with(".pdf") {
+                parsed.set_path(&format!("/pdf/{}/{}", parts[0], parts[3]));
+            }
+        }
+    }
+    if host == "core.ac.uk" && parsed.path().starts_with("/download/") {
+        let path = parsed.path();
+        if let Some(suffix) = path.strip_prefix("/download/")
+            && suffix.ends_with(".pdf")
+            && !suffix.starts_with("pdf/")
+        {
+            parsed.set_path(&format!("/download/pdf/{suffix}"));
+        }
+    }
+    if host == "files01.core.ac.uk" && parsed.path().starts_with("/download/") {
+        let path = parsed.path();
+        if let Some(suffix) = path.strip_prefix("/download/")
+            && suffix.ends_with(".pdf")
+            && !suffix.starts_with("pdf/")
+        {
+            parsed.set_path(&format!("/download/pdf/{suffix}"));
+        }
+    }
+    if host == "www.sciencedirect.com" && parsed.path().contains("/pdfft") {
+        parsed.set_path(&parsed.path().replace("/pdfft", "/pdf"));
+    }
+    let filtered = parsed
+        .query_pairs()
+        .filter(|(key, _)| {
+            let lower = key.to_ascii_lowercase();
+            !lower.starts_with("utm_")
+                && !matches!(
+                    lower.as_str(),
+                    "download" | "isdtmredir" | "md5" | "pid" | "version" | "code"
+                )
+        })
+        .map(|(k, v)| (k.into_owned(), v.into_owned()))
+        .collect::<Vec<_>>();
+    if filtered.is_empty() {
+        parsed.set_query(None);
+    } else {
+        let mut qp = parsed.query_pairs_mut();
+        qp.clear();
+        for (k, v) in filtered {
+            qp.append_pair(&k, &v);
+        }
+        drop(qp);
+    }
+    parsed.to_string()
+}
+
+fn is_non_reference_service_url(parsed: &Url) -> bool {
+    let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    let path = parsed.path().to_ascii_lowercase();
+    if matches!(
+        host.as_str(),
+        "apollo.archive.org"
+            | "av.archive.org"
+            | "av.dev.archive.org"
+            | "emularity-bios.ux-b.archive.org"
+            | "emularity-config.ux-b.archive.org"
+            | "emularity-engine.ux-b.archive.org"
+            | "esm.archive.org"
+            | "esm.ext.archive.org"
+            | "offshoot.prod.archive.org"
+            | "polyfill.archive.org"
+    ) {
+        return true;
+    }
+    if host == "archive.org" {
+        return path.starts_with("/services/")
+            || path.starts_with("/components/")
+            || path.starts_with("/includes/")
+            || path.starts_with("/offshoot_assets/")
+            || path.starts_with("/upload/app/")
+            || path == "/"
+            || path == "/v/"
+            || path.starts_with("/v/");
+    }
+    false
 }
 
 fn find_urls(text: &str) -> Vec<String> {
@@ -333,11 +532,13 @@ fn extract_strings(value: &Value) -> Vec<String> {
 fn extract_urls(value: &Value) -> Vec<String> {
     let mut urls = Vec::new();
     for text in extract_strings(value) {
-        let normalized = normalize_url(&text);
-        if url_re().is_match(&normalized) {
-            urls.push(normalized);
-        } else {
-            urls.extend(find_urls(&text));
+        for part in text.split('|') {
+            let normalized = normalize_url(part);
+            if url_re().is_match(&normalized) {
+                urls.push(normalized);
+            } else {
+                urls.extend(find_urls(part));
+            }
         }
     }
     dedupe(urls)
@@ -367,18 +568,43 @@ fn normalize_doi(doi: &str) -> String {
     if value.to_ascii_lowercase().starts_with("doi:") {
         value = value[4..].trim().to_string();
     }
-    value
+    let mut normalized = value
         .trim()
         .trim_start_matches('(')
         .trim_end_matches(['.', ',', ';', ')'])
-        .to_string()
+        .to_string();
+    loop {
+        let lower = normalized.to_ascii_lowercase();
+        if lower.ends_with("/fulltext") {
+            normalized.truncate(normalized.len() - "/fulltext".len());
+            continue;
+        }
+        if lower.ends_with("/pdf") {
+            normalized.truncate(normalized.len() - "/pdf".len());
+            continue;
+        }
+        if lower.ends_with(".pdf") {
+            normalized.truncate(normalized.len() - ".pdf".len());
+            continue;
+        }
+        break;
+    }
+    if doi_re().is_match(&normalized)
+        && doi_re().find(&normalized).map(|m| m.as_str()) == Some(normalized.as_str())
+    {
+        normalized
+    } else {
+        String::new()
+    }
 }
 
 fn extract_dois(value: &Value) -> Vec<String> {
     let mut out = Vec::new();
     for text in extract_strings(value) {
         let cleaned = normalize_doi(&text);
-        if doi_re().is_match(&cleaned) && doi_re().find(&cleaned).map(|m| m.as_str()) == Some(cleaned.as_str()) {
+        if doi_re().is_match(&cleaned)
+            && doi_re().find(&cleaned).map(|m| m.as_str()) == Some(cleaned.as_str())
+        {
             out.push(cleaned);
             continue;
         }
@@ -397,7 +623,10 @@ fn doi_from_url(url: &str) -> String {
     if let Ok(parsed) = Url::parse(url) {
         let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
         if matches!(host.as_str(), "doi.org" | "dx.doi.org") {
-            return normalize_doi(parsed.path().trim_start_matches('/'));
+            let doi = normalize_doi(parsed.path().trim_start_matches('/'));
+            if !doi.is_empty() {
+                return doi;
+            }
         }
     }
     String::new()
@@ -420,6 +649,9 @@ fn looks_like_reference_url(url: &str) -> bool {
         return false;
     };
     let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    if host == "idp.springer.com" || is_non_reference_service_url(&parsed) {
+        return false;
+    }
     if REFERENCE_HOST_HINTS
         .iter()
         .any(|hint| host == *hint || host.ends_with(&format!(".{hint}")))
@@ -433,6 +665,81 @@ fn looks_like_reference_url(url: &str) -> bool {
     path.ends_with(".pdf") || path.contains("/pdf")
 }
 
+fn is_citation_locator_url(url: &str) -> bool {
+    let Ok(parsed) = Url::parse(url) else {
+        return false;
+    };
+    let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    let path = parsed.path().to_ascii_lowercase();
+    if matches!(host.as_str(), "doi.org" | "dx.doi.org") {
+        return true;
+    }
+    if host == "arxiv.org" || host.ends_with(".arxiv.org") {
+        return path.starts_with("/abs") || path.starts_with("/abs.") || path.starts_with("/abs/");
+    }
+    if host == "scispace.com" {
+        return path.starts_with("/papers/");
+    }
+    if host == "linkinghub.elsevier.com" {
+        return path.starts_with("/retrieve/pii/");
+    }
+    if host == "link.springer.com" {
+        return path.starts_with("/article/")
+            || path.starts_with("/chapter/")
+            || path.starts_with("/referenceworkentry/");
+    }
+    if host == "www.cambridge.org" || host == "cambridge.org" {
+        return path.starts_with("/core/product/identifier/") || path.starts_with("/core/tdm/");
+    }
+    if host == "zenodo.org" {
+        return path.starts_with("/record/") || path.starts_with("/records/");
+    }
+    if host == "ncatlab.org" {
+        return path.starts_with("/nlab/show/");
+    }
+    if host == "osf.io" {
+        if path == "/" {
+            return true;
+        }
+        let trimmed = path.trim_matches('/');
+        if trimmed.is_empty() || trimmed.contains('.') {
+            return false;
+        }
+        if trimmed.ends_with("/wiki") || trimmed == "wiki" {
+            return true;
+        }
+        return trimmed
+            .chars()
+            .all(|ch| ch.is_ascii_alphanumeric() || ch == '-');
+    }
+    if host == "core.ac.uk" {
+        return path.starts_with("/reader/");
+    }
+    if host == "www.sciencedirect.com" {
+        return path.starts_with("/science/article/pii/") || path.starts_with("/journal/");
+    }
+    if host == "journals.aps.org" {
+        return path.contains("/abstract/");
+    }
+    if host == "archive.org" {
+        return path.starts_with("/details/") || path.starts_with("/stream/");
+    }
+    if host == "web.archive.org" {
+        return path.starts_with("/web/");
+    }
+    false
+}
+
+fn key_is_citation_locator(key: &str) -> bool {
+    if key.to_ascii_lowercase().starts_with("doi:") {
+        return true;
+    }
+    if let Some(url) = key.strip_prefix("url:") {
+        return is_citation_locator_url(url);
+    }
+    false
+}
+
 fn is_artifact_local_path(path: &str) -> bool {
     ARTIFACT_LOCAL_PREFIXES
         .iter()
@@ -442,26 +749,29 @@ fn is_artifact_local_path(path: &str) -> bool {
 fn extract_local_paths(value: &Value, repo_root: &Path) -> Vec<String> {
     let mut out = Vec::new();
     for text in extract_strings(value) {
-        if text.is_empty() || !text.is_ascii() || url_re().is_match(&text) {
-            continue;
-        }
-        let path = Path::new(&text);
-        if path.is_absolute() {
-            if path.exists()
-                && let Ok(relative) = path.strip_prefix(repo_root)
-            {
-                let rel = relative.to_string_lossy().replace('\\', "/");
+        for part in text.split('|') {
+            let candidate = part.trim();
+            if candidate.is_empty() || !candidate.is_ascii() || url_re().is_match(candidate) {
+                continue;
+            }
+            let path = Path::new(candidate);
+            if path.is_absolute() {
+                if path.exists()
+                    && let Ok(relative) = path.strip_prefix(repo_root)
+                {
+                    let rel = relative.to_string_lossy().replace('\\', "/");
+                    if is_artifact_local_path(&rel) {
+                        out.push(rel);
+                    }
+                }
+                continue;
+            }
+            let full = repo_root.join(path);
+            if full.exists() {
+                let rel = path.to_string_lossy().replace('\\', "/");
                 if is_artifact_local_path(&rel) {
                     out.push(rel);
                 }
-            }
-            continue;
-        }
-        let full = repo_root.join(path);
-        if full.exists() {
-            let rel = path.to_string_lossy().replace('\\', "/");
-            if is_artifact_local_path(&rel) {
-                out.push(rel);
             }
         }
     }
@@ -488,7 +798,11 @@ fn derive_status(row: &HashMap<String, String>) -> String {
         return result;
     }
     let http_code = row.get("http_code").cloned().unwrap_or_default();
-    let is_pdf_raw = row.get("is_pdf").cloned().unwrap_or_default().to_ascii_lowercase();
+    let is_pdf_raw = row
+        .get("is_pdf")
+        .cloned()
+        .unwrap_or_default()
+        .to_ascii_lowercase();
     let is_pdf = matches!(is_pdf_raw.as_str(), "yes" | "true" | "1");
     if http_code.starts_with('2') && is_pdf {
         return "pdf_ok".to_string();
@@ -525,20 +839,27 @@ fn read_tsv_rows(path: &Path) -> Result<Vec<HashMap<String, String>>> {
 
 type LinkMap = (HashMap<String, Vec<LinkObservation>>, Vec<String>);
 fn collect_link_observations(repo_root: &Path) -> Result<LinkMap> {
-    let intake_root = repo_root.join("data/external/intake");
     let mut table_paths = Vec::new();
-    if intake_root.exists() {
-        for entry in WalkDir::new(&intake_root).into_iter().filter_map(|e| e.ok()) {
-            let path = entry.path();
-            if !path.is_file() {
-                continue;
-            }
-            let name = path.file_name().and_then(|n| n.to_str()).unwrap_or_default();
-            if (name.starts_with("fetch_results") && name.ends_with("_normalized.tsv"))
-                || name.starts_with("mirror_retry_results")
-                || name.starts_with("link_audit_results")
+    for intake_root in provenance_intake_roots(repo_root) {
+        if intake_root.exists() {
+            for entry in WalkDir::new(&intake_root)
+                .into_iter()
+                .filter_map(|e| e.ok())
             {
-                table_paths.push(path.to_path_buf());
+                let path = entry.path();
+                if !path.is_file() {
+                    continue;
+                }
+                let name = path
+                    .file_name()
+                    .and_then(|n| n.to_str())
+                    .unwrap_or_default();
+                if (name.starts_with("fetch_results") && name.ends_with("_normalized.tsv"))
+                    || name.starts_with("mirror_retry_results")
+                    || name.starts_with("link_audit_results")
+                {
+                    table_paths.push(path.to_path_buf());
+                }
             }
         }
     }
@@ -563,14 +884,22 @@ fn collect_link_observations(repo_root: &Path) -> Result<LinkMap> {
             observations
                 .entry(url.clone())
                 .or_default()
-                .push(LinkObservation { status: status.clone() });
+                .push(LinkObservation {
+                    status: status.clone(),
+                });
 
-            let effective = normalize_url(row.get("url_effective").map(String::as_str).unwrap_or_default());
+            let effective = normalize_url(
+                row.get("url_effective")
+                    .map(String::as_str)
+                    .unwrap_or_default(),
+            );
             if url_re().is_match(&effective) && effective != url {
                 observations
                     .entry(effective)
                     .or_default()
-                    .push(LinkObservation { status: status.clone() });
+                    .push(LinkObservation {
+                        status: status.clone(),
+                    });
             }
         }
     }
@@ -579,28 +908,38 @@ fn collect_link_observations(repo_root: &Path) -> Result<LinkMap> {
 
 fn collect_download_map(repo_root: &Path) -> Result<HashMap<String, Vec<String>>> {
     let mut url_to_paths: HashMap<String, Vec<String>> = HashMap::new();
-    let intake_root = repo_root.join("data/external/intake");
-    if intake_root.exists() {
-        for entry in WalkDir::new(&intake_root).into_iter().filter_map(|e| e.ok()) {
-            let path = entry.path();
-            if !path.is_file() || path.file_name().and_then(|n| n.to_str()) != Some("pdf_success_added.tsv") {
-                continue;
-            }
-            let pdf_dir = path.parent().unwrap_or(path).join("pdf_success");
-            for row in read_tsv_rows(path)? {
-                let source_url = normalize_url(row.get("source_url").map(String::as_str).unwrap_or_default());
-                let name = row.get("canonical_pdf_name").cloned().unwrap_or_default();
-                if !url_re().is_match(&source_url) || name.is_empty() {
+    for intake_root in provenance_intake_roots(repo_root) {
+        if intake_root.exists() {
+            for entry in WalkDir::new(&intake_root)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
+                let path = entry.path();
+                if !path.is_file()
+                    || path.file_name().and_then(|n| n.to_str()) != Some("pdf_success_added.tsv")
+                {
                     continue;
                 }
-                let candidate = pdf_dir.join(&name);
-                if candidate.exists() {
-                    let rel = candidate
-                        .strip_prefix(repo_root)
-                        .unwrap_or(candidate.as_path())
-                        .to_string_lossy()
-                        .replace('\\', "/");
-                    url_to_paths.entry(source_url).or_default().push(rel);
+                let pdf_dir = path.parent().unwrap_or(path).join("pdf_success");
+                for row in read_tsv_rows(path)? {
+                    let source_url = normalize_url(
+                        row.get("source_url")
+                            .map(String::as_str)
+                            .unwrap_or_default(),
+                    );
+                    let name = row.get("canonical_pdf_name").cloned().unwrap_or_default();
+                    if !url_re().is_match(&source_url) || name.is_empty() {
+                        continue;
+                    }
+                    let candidate = pdf_dir.join(&name);
+                    if candidate.exists() {
+                        let rel = candidate
+                            .strip_prefix(repo_root)
+                            .unwrap_or(candidate.as_path())
+                            .to_string_lossy()
+                            .replace('\\', "/");
+                        register_download_aliases(&mut url_to_paths, &source_url, &rel);
+                    }
                 }
             }
         }
@@ -611,9 +950,20 @@ fn collect_download_map(repo_root: &Path) -> Result<HashMap<String, Vec<String>>
         let data = load_toml_value(&cdcs_path)?;
         if let Some(papers) = data.get("paper").and_then(Value::as_array) {
             for paper in papers {
-                let Some(table) = paper.as_table() else { continue };
-                let path = table.get("canonical_pdf_path").and_then(Value::as_str).unwrap_or("").trim();
-                let url = normalize_url(table.get("canonical_functional_url").and_then(Value::as_str).unwrap_or(""));
+                let Some(table) = paper.as_table() else {
+                    continue;
+                };
+                let path = table
+                    .get("canonical_pdf_path")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim();
+                let url = normalize_url(
+                    table
+                        .get("canonical_functional_url")
+                        .and_then(Value::as_str)
+                        .unwrap_or(""),
+                );
                 if path.is_empty() {
                     continue;
                 }
@@ -627,13 +977,13 @@ fn collect_download_map(repo_root: &Path) -> Result<HashMap<String, Vec<String>>
                     .to_string_lossy()
                     .replace('\\', "/");
                 if url_re().is_match(&url) {
-                    url_to_paths.entry(url).or_default().push(rel.clone());
+                    register_download_aliases(&mut url_to_paths, &url, &rel);
                 }
                 if let Some(mirrors) = table.get("working_pdf_mirrors").and_then(Value::as_array) {
                     for mirror in mirrors.iter().filter_map(Value::as_str) {
                         let mirror_url = normalize_url(mirror);
                         if url_re().is_match(&mirror_url) {
-                            url_to_paths.entry(mirror_url).or_default().push(rel.clone());
+                            register_download_aliases(&mut url_to_paths, &mirror_url, &rel);
                         }
                     }
                 }
@@ -645,8 +995,17 @@ fn collect_download_map(repo_root: &Path) -> Result<HashMap<String, Vec<String>>
     if brown_report.exists() {
         let data = load_toml_value(&brown_report)?;
         if let Some(table) = data.get("brown_1972").and_then(Value::as_table) {
-            let path = table.get("canonical_pdf_path").and_then(Value::as_str).unwrap_or("").trim();
-            let url = normalize_url(table.get("core_download_url").and_then(Value::as_str).unwrap_or(""));
+            let path = table
+                .get("canonical_pdf_path")
+                .and_then(Value::as_str)
+                .unwrap_or("")
+                .trim();
+            let url = normalize_url(
+                table
+                    .get("core_download_url")
+                    .and_then(Value::as_str)
+                    .unwrap_or(""),
+            );
             if !path.is_empty() && url_re().is_match(&url) {
                 let candidate = repo_root.join(path);
                 if candidate.exists() {
@@ -667,12 +1026,250 @@ fn collect_download_map(repo_root: &Path) -> Result<HashMap<String, Vec<String>>
     Ok(url_to_paths)
 }
 
+fn provenance_intake_roots(repo_root: &Path) -> Vec<PathBuf> {
+    let mut roots = vec![
+        repo_root.join("data/external/intake"),
+        repo_root.join("data/papers/intake"),
+    ];
+    roots.sort();
+    roots.dedup();
+    roots
+}
+
+fn extend_download_map_from_local_artifacts(
+    download_map: &mut HashMap<String, Vec<String>>,
+    artifacts: &[UnifiedArtifact],
+) {
+    for artifact in artifacts {
+        if artifact.local_paths.is_empty() {
+            continue;
+        }
+        for rel in &artifact.local_paths {
+            for link in &artifact.links {
+                register_download_aliases(download_map, link, rel);
+            }
+        }
+    }
+}
+
+fn register_download_aliases(
+    url_to_paths: &mut HashMap<String, Vec<String>>,
+    source_url: &str,
+    rel: &str,
+) {
+    let aliases = arxiv_equivalent_urls(source_url);
+    if aliases.is_empty() {
+        url_to_paths
+            .entry(source_url.to_string())
+            .or_default()
+            .push(rel.to_string());
+        return;
+    }
+    for alias in aliases {
+        url_to_paths.entry(alias).or_default().push(rel.to_string());
+    }
+}
+
+fn arxiv_equivalent_urls(url: &str) -> Vec<String> {
+    let Ok(parsed) = Url::parse(url) else {
+        return Vec::new();
+    };
+    let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    if host != "arxiv.org" {
+        return Vec::new();
+    }
+    let path = parsed.path();
+    let ident = if let Some(rest) = path.strip_prefix("/pdf/") {
+        rest.strip_suffix(".pdf").unwrap_or(rest)
+    } else if let Some(rest) = path.strip_prefix("/abs/") {
+        rest
+    } else {
+        return Vec::new();
+    };
+    let base_ident = strip_arxiv_version(ident);
+    let mut aliases = vec![
+        normalize_url(&format!("https://arxiv.org/abs/{ident}")),
+        normalize_url(&format!("https://arxiv.org/pdf/{ident}.pdf")),
+    ];
+    if base_ident != ident {
+        aliases.push(normalize_url(&format!(
+            "https://arxiv.org/abs/{base_ident}"
+        )));
+        aliases.push(normalize_url(&format!(
+            "https://arxiv.org/pdf/{base_ident}.pdf"
+        )));
+    }
+    dedupe(aliases)
+}
+
+fn strip_arxiv_version(ident: &str) -> String {
+    let Some((prefix, suffix)) = ident.rsplit_once('v') else {
+        return ident.to_string();
+    };
+    if !suffix.is_empty() && suffix.chars().all(|ch| ch.is_ascii_digit()) {
+        prefix.to_string()
+    } else {
+        ident.to_string()
+    }
+}
+
+fn core_id_from_url(url: &str) -> Option<String> {
+    let parsed = Url::parse(url).ok()?;
+    let host = parsed.host_str()?.to_ascii_lowercase();
+    if host != "core.ac.uk" && host != "files01.core.ac.uk" {
+        return None;
+    }
+    let path = parsed.path().trim_matches('/');
+    if let Some(id) = path
+        .strip_prefix("download/pdf/")
+        .and_then(|value| value.strip_suffix(".pdf"))
+    {
+        return Some(id.to_string());
+    }
+    for prefix in ["reader/", "works/", "display/"] {
+        if let Some(id) = path.strip_prefix(prefix)
+            && !id.is_empty()
+        {
+            return Some(id.to_string());
+        }
+    }
+    None
+}
+
+fn mdpi_path_looks_article(parts: &[&str]) -> bool {
+    if parts.len() != 4 {
+        return false;
+    }
+    let issn = parts[0];
+    let issn_ok = issn.len() == 9
+        && issn.chars().enumerate().all(|(idx, ch)| {
+            if idx == 4 {
+                ch == '-'
+            } else {
+                ch.is_ascii_digit()
+            }
+        });
+    issn_ok
+        && parts[1..]
+            .iter()
+            .all(|part| !part.is_empty() && part.chars().all(|ch| ch.is_ascii_digit()))
+}
+
+fn cambridge_content_id(url: &str) -> Option<String> {
+    let parsed = Url::parse(url).ok()?;
+    let host = parsed.host_str()?.to_ascii_lowercase();
+    if host != "www.cambridge.org" && host != "cambridge.org" {
+        return None;
+    }
+    let segments = parsed
+        .path_segments()?
+        .filter(|segment| !segment.is_empty())
+        .collect::<Vec<_>>();
+    for (index, segment) in segments.iter().enumerate() {
+        if segment.eq_ignore_ascii_case("view") {
+            return segments
+                .get(index + 1)
+                .map(|value| value.to_ascii_lowercase());
+        }
+    }
+    segments.last().map(|value| value.to_ascii_lowercase())
+}
+
+fn canonical_identity_url(urls: &[String]) -> Option<String> {
+    for url in urls {
+        if let Some(content_id) = cambridge_content_id(url) {
+            return Some(format!("cambridge:{content_id}"));
+        }
+    }
+    for url in urls {
+        let Ok(parsed) = Url::parse(url) else {
+            continue;
+        };
+        let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+        if host == "www.mdpi.com" || host == "mdpi.com" {
+            let path = parsed.path().trim_end_matches('/');
+            let parts = path.trim_matches('/').split('/').collect::<Vec<_>>();
+            if mdpi_path_looks_article(&parts) {
+                return Some(normalize_url(&format!(
+                    "https://{host}/{}/{}/{}/{}/pdf",
+                    parts[0], parts[1], parts[2], parts[3]
+                )));
+            }
+            if parts.len() == 5
+                && parts[4].eq_ignore_ascii_case("pdf")
+                && mdpi_path_looks_article(&parts[..4])
+            {
+                return Some(normalize_url(url));
+            }
+        }
+    }
+    urls.first().cloned()
+}
+
+fn expand_reference_aliases(url: &str) -> Vec<String> {
+    let mut aliases = Vec::new();
+    if let Some(core_id) = core_id_from_url(url) {
+        aliases.push(normalize_url(&format!(
+            "https://core.ac.uk/download/pdf/{core_id}.pdf"
+        )));
+        aliases.push(normalize_url(&format!(
+            "https://core.ac.uk/reader/{core_id}"
+        )));
+        aliases.push(normalize_url(&format!(
+            "https://core.ac.uk/works/{core_id}"
+        )));
+        aliases.push(normalize_url(&format!(
+            "https://core.ac.uk/display/{core_id}"
+        )));
+    }
+    if let Ok(parsed) = Url::parse(url) {
+        let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+        if host == "www.mdpi.com" || host == "mdpi.com" {
+            let path = parsed.path().trim_end_matches('/');
+            let parts = path.trim_matches('/').split('/').collect::<Vec<_>>();
+            if mdpi_path_looks_article(&parts) {
+                aliases.push(normalize_url(&format!(
+                    "https://{host}/{}/{}/{}/{}/pdf",
+                    parts[0], parts[1], parts[2], parts[3]
+                )));
+            } else if parts.len() == 5
+                && parts[4].eq_ignore_ascii_case("pdf")
+                && mdpi_path_looks_article(&parts[..4])
+            {
+                aliases.push(normalize_url(&format!(
+                    "https://{host}/{}/{}/{}/{}",
+                    parts[0], parts[1], parts[2], parts[3]
+                )));
+            }
+        }
+        if host == "www.wolframscience.com" || host == "wolframscience.com" {
+            let path = parsed.path();
+            if path.contains("/presentations/materials/") {
+                aliases.push(normalize_url(&format!(
+                    "https://{host}{}",
+                    path.replace("/presentations/materials/", "/presentations/material/")
+                )));
+            }
+        }
+    }
+    dedupe(aliases)
+}
+
 fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
     let suffixes = [".toml", ".bib", ".bibtex", ".md", ".txt", ".rst"];
     let text_suffixes = [".md", ".txt", ".rst"];
     let text_keywords = [
-        "source", "bibli", "reconcil", "artifact", "intake", "cayley", "sedenion",
-        "octonion", "quaternion", "mirror", "provenance",
+        "source",
+        "bibli",
+        "reconcil",
+        "artifact",
+        "intake",
+        "cayley",
+        "sedenion",
+        "octonion",
+        "quaternion",
+        "mirror",
+        "provenance",
     ];
     let allowed_prefixes = ["registry/", "reports/", "docs/", "papers/", "data/papers/"];
     let excluded_prefixes = [
@@ -681,6 +1278,7 @@ fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
         "data/external/intake/",
         "data/external/raw/",
         "data/external/cache/",
+        "registry/source_lanes/",
     ];
     let excluded_exact = [
         "registry/artifact_source_of_truth.toml",
@@ -704,13 +1302,28 @@ fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
         if !suffixes.contains(&suffix.as_str()) {
             continue;
         }
-        if rel != "refs.bib" && !allowed_prefixes.iter().any(|prefix| rel.starts_with(prefix)) {
+        if rel != "refs.bib"
+            && !allowed_prefixes
+                .iter()
+                .any(|prefix| rel.starts_with(prefix))
+        {
             continue;
         }
         if excluded_exact.contains(&rel.as_str())
             || NON_AUTHORITATIVE_REGISTRY_EXACT.contains(&rel.as_str())
-            || excluded_prefixes.iter().any(|prefix| rel.starts_with(prefix))
-            || NON_AUTHORITATIVE_REGISTRY_PREFIXES.iter().any(|prefix| rel.starts_with(prefix))
+            || excluded_prefixes
+                .iter()
+                .any(|prefix| rel.starts_with(prefix))
+            || NON_AUTHORITATIVE_REPORT_PREFIXES
+                .iter()
+                .any(|prefix| rel.starts_with(prefix))
+            || rel.contains("/lambda_gororoba_backups/")
+            || NON_AUTHORITATIVE_REGISTRY_PREFIXES
+                .iter()
+                .any(|prefix| rel.starts_with(prefix))
+            || rel.contains("/files/open-pdf/")
+            || rel.ends_with("_link_search.md")
+            || rel.ends_with(".proxy.txt")
         {
             continue;
         }
@@ -756,9 +1369,22 @@ fn extract_candidates_from_toml_node(
             let mut title = pick_first_str(table, TITLE_KEYS);
             let citation = {
                 let picked = pick_first_str(table, CITATION_KEYS);
-                if picked.is_empty() { title.clone() } else { picked }
+                if picked.is_empty() {
+                    title.clone()
+                } else {
+                    picked
+                }
             };
             let ref_hint = pick_first_str(table, ID_KEYS);
+            let identity_override = {
+                let hint = pick_first_str(table, &["artifact_key_hint", "identity_hint"]);
+                let normalized = normalize_identity_hint(&hint);
+                if normalized.is_empty() {
+                    None
+                } else {
+                    Some(normalized)
+                }
+            };
             let mut source_ref = format!("{source_rel}::{}", breadcrumbs.join("/"));
             if !ref_hint.is_empty() {
                 source_ref.push_str("::");
@@ -771,7 +1397,11 @@ fn extract_candidates_from_toml_node(
             let mut notes = Vec::new();
             for (key, value) in table {
                 let lower = key.to_ascii_lowercase();
-                if lower.contains("url") || lower.contains("link") || lower.contains("mirror") || lower.contains("href") {
+                if lower.contains("url")
+                    || lower.contains("link")
+                    || lower.contains("mirror")
+                    || lower.contains("href")
+                {
                     urls.extend(extract_urls(value));
                 } else if lower.contains("doi") {
                     dois.extend(extract_dois(value));
@@ -781,7 +1411,10 @@ fn extract_candidates_from_toml_node(
                     || lower == "files"
                 {
                     local_paths.extend(extract_local_paths(value, repo_root));
-                } else if matches!(lower.as_str(), "status" | "note" | "notes" | "reason" | "manual_intervention_reason") {
+                } else if matches!(
+                    lower.as_str(),
+                    "status" | "note" | "notes" | "reason" | "manual_intervention_reason"
+                ) {
                     notes.extend(extract_strings(value));
                 }
             }
@@ -810,6 +1443,7 @@ fn extract_candidates_from_toml_node(
                 out.push(CandidateRecord {
                     source_kind: "toml_source".to_string(),
                     source_ref,
+                    identity_override,
                     title: title.clone(),
                     citation: if citation.is_empty() { title } else { citation },
                     dois,
@@ -831,19 +1465,29 @@ fn extract_candidates_from_toml_node(
 }
 
 fn extract_bib_field(body: &str, field: &str) -> String {
-    let brace = Regex::new(&format!(r"(?is){}\s*=\s*\{{(?P<value>.*?)\}}", regex::escape(field)))
-        .expect("valid brace regex");
+    let brace = Regex::new(&format!(
+        r"(?is){}\s*=\s*\{{(?P<value>.*?)\}}",
+        regex::escape(field)
+    ))
+    .expect("valid brace regex");
     if let Some(captures) = brace.captures(body) {
         return captures
             .name("value")
             .map(|m| m.as_str().trim().to_string())
             .unwrap_or_default();
     }
-    let quote = Regex::new(&format!(r#"(?is){}\s*=\s*"(?P<value>.*?)""#, regex::escape(field)))
-        .expect("valid quote regex");
+    let quote = Regex::new(&format!(
+        r#"(?is){}\s*=\s*"(?P<value>.*?)""#,
+        regex::escape(field)
+    ))
+    .expect("valid quote regex");
     quote
         .captures(body)
-        .and_then(|captures| captures.name("value").map(|m| m.as_str().trim().to_string()))
+        .and_then(|captures| {
+            captures
+                .name("value")
+                .map(|m| m.as_str().trim().to_string())
+        })
         .unwrap_or_default()
 }
 
@@ -856,8 +1500,14 @@ fn extract_candidates_from_bib_file(repo_root: &Path, path: &Path) -> Result<Vec
     let text = read_text_lossy(path)?;
     let mut out = Vec::new();
     for captures in bib_entry_re().captures_iter(&text) {
-        let etype = captures.name("etype").map(|m| m.as_str().trim()).unwrap_or("");
-        let key = captures.name("key").map(|m| m.as_str().trim()).unwrap_or("");
+        let etype = captures
+            .name("etype")
+            .map(|m| m.as_str().trim())
+            .unwrap_or("");
+        let key = captures
+            .name("key")
+            .map(|m| m.as_str().trim())
+            .unwrap_or("");
         let body = captures.name("body").map(|m| m.as_str()).unwrap_or("");
         let title = extract_bib_field(body, "title");
         let citation = format!("@{etype}{{{key}}}");
@@ -869,12 +1519,21 @@ fn extract_candidates_from_bib_file(repo_root: &Path, path: &Path) -> Result<Vec
         if !urls.iter().any(|url| looks_like_reference_url(url)) && dois.is_empty() {
             continue;
         }
-        urls = dedupe(urls.into_iter().filter(|url| looks_like_reference_url(url)).collect());
+        urls = dedupe(
+            urls.into_iter()
+                .filter(|url| looks_like_reference_url(url))
+                .collect(),
+        );
         urls.extend(dois.iter().map(|doi| doi_to_url(doi)));
         out.push(CandidateRecord {
             source_kind: "bibtex_entry".to_string(),
             source_ref: format!("{rel}::{key}"),
-            title: if title.is_empty() { key.to_string() } else { title },
+            identity_override: None,
+            title: if title.is_empty() {
+                key.to_string()
+            } else {
+                title
+            },
             citation,
             dois: dedupe(dois),
             links: dedupe(urls),
@@ -895,7 +1554,10 @@ fn clean_line_title(line: &str) -> String {
     trimmed.trim().to_string()
 }
 
-fn extract_candidates_from_text_file(repo_root: &Path, path: &Path) -> Result<Vec<CandidateRecord>> {
+fn extract_candidates_from_text_file(
+    repo_root: &Path,
+    path: &Path,
+) -> Result<Vec<CandidateRecord>> {
     let rel = path
         .strip_prefix(repo_root)
         .unwrap_or(path)
@@ -929,6 +1591,7 @@ fn extract_candidates_from_text_file(repo_root: &Path, path: &Path) -> Result<Ve
         out.push(CandidateRecord {
             source_kind: "text_reference".to_string(),
             source_ref: format!("{rel}:{}", line_no + 1),
+            identity_override: None,
             title: title.clone(),
             citation: title,
             dois: dedupe(dois),
@@ -940,8 +1603,15 @@ fn extract_candidates_from_text_file(repo_root: &Path, path: &Path) -> Result<Ve
     Ok(out)
 }
 
-fn extract_candidates_from_source_file(repo_root: &Path, path: &Path) -> Result<Vec<CandidateRecord>> {
-    match path.extension().and_then(|ext| ext.to_str()).unwrap_or_default() {
+fn extract_candidates_from_source_file(
+    repo_root: &Path,
+    path: &Path,
+) -> Result<Vec<CandidateRecord>> {
+    match path
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .unwrap_or_default()
+    {
         "bib" | "bibtex" => extract_candidates_from_bib_file(repo_root, path),
         "toml" => {
             let value = match load_toml_value(path) {
@@ -970,7 +1640,9 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
         let value = load_toml_value(&bibliography_path)?;
         if let Some(entries) = value.get("entry").and_then(Value::as_array) {
             for entry in entries {
-                let Some(table) = entry.as_table() else { continue };
+                let Some(table) = entry.as_table() else {
+                    continue;
+                };
                 let entry_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim();
                 let citation = table
                     .get("citation_markdown")
@@ -1002,7 +1674,8 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                     .get("notes")
                     .and_then(Value::as_array)
                     .map(|items| {
-                        items.iter()
+                        items
+                            .iter()
                             .filter_map(Value::as_str)
                             .map(|note| note.trim().to_string())
                             .filter(|note| !note.is_empty())
@@ -1011,7 +1684,12 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                     .unwrap_or_default();
                 candidates.push(CandidateRecord {
                     source_kind: "bibliography_entry".to_string(),
-                    source_ref: if entry_id.is_empty() { "BIB-UNKNOWN".to_string() } else { entry_id.to_string() },
+                    source_ref: if entry_id.is_empty() {
+                        "BIB-UNKNOWN".to_string()
+                    } else {
+                        entry_id.to_string()
+                    },
+                    identity_override: None,
                     title: title.clone(),
                     citation,
                     dois: dedupe(dois),
@@ -1028,9 +1706,16 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
         let value = load_toml_value(&external_sources_path)?;
         if let Some(documents) = value.get("document").and_then(Value::as_array) {
             for document in documents {
-                let Some(table) = document.as_table() else { continue };
+                let Some(table) = document.as_table() else {
+                    continue;
+                };
                 let doc_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim();
-                let title = table.get("title").and_then(Value::as_str).unwrap_or("").trim().to_string();
+                let title = table
+                    .get("title")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim()
+                    .to_string();
                 let mut links = Vec::new();
                 if let Some(url_refs) = table.get("url_refs").and_then(Value::as_array) {
                     for value in url_refs.iter().filter_map(Value::as_str) {
@@ -1044,7 +1729,10 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                 if let Some(path_refs) = table.get("path_refs").and_then(Value::as_array) {
                     for path_ref in path_refs.iter().filter_map(Value::as_str) {
                         let trimmed = path_ref.trim();
-                        if !trimmed.is_empty() && is_artifact_local_path(trimmed) && repo_root.join(trimmed).exists() {
+                        if !trimmed.is_empty()
+                            && is_artifact_local_path(trimmed)
+                            && repo_root.join(trimmed).exists()
+                        {
                             existing_paths.push(trimmed.to_string());
                         }
                     }
@@ -1058,7 +1746,12 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                     .collect::<Vec<_>>();
                 candidates.push(CandidateRecord {
                     source_kind: "external_source_document".to_string(),
-                    source_ref: if doc_id.is_empty() { "XS-UNKNOWN".to_string() } else { doc_id.to_string() },
+                    source_ref: if doc_id.is_empty() {
+                        "XS-UNKNOWN".to_string()
+                    } else {
+                        doc_id.to_string()
+                    },
+                    identity_override: None,
                     title: title.clone(),
                     citation: title,
                     dois: Vec::new(),
@@ -1075,9 +1768,20 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
         let value = load_toml_value(&cdcs_path)?;
         if let Some(papers) = value.get("paper").and_then(Value::as_array) {
             for paper in papers {
-                let Some(table) = paper.as_table() else { continue };
-                let key = table.get("key").and_then(Value::as_str).unwrap_or("CDCS-UNKNOWN").trim();
-                let title = table.get("title").and_then(Value::as_str).unwrap_or("").trim().to_string();
+                let Some(table) = paper.as_table() else {
+                    continue;
+                };
+                let key = table
+                    .get("key")
+                    .and_then(Value::as_str)
+                    .unwrap_or("CDCS-UNKNOWN")
+                    .trim();
+                let title = table
+                    .get("title")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim()
+                    .to_string();
                 let doi = normalize_doi(table.get("doi").and_then(Value::as_str).unwrap_or(""));
                 let mut links = Vec::new();
                 for field in [
@@ -1095,7 +1799,12 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                         }
                     }
                 }
-                let canonical_url = normalize_url(table.get("canonical_functional_url").and_then(Value::as_str).unwrap_or(""));
+                let canonical_url = normalize_url(
+                    table
+                        .get("canonical_functional_url")
+                        .and_then(Value::as_str)
+                        .unwrap_or(""),
+                );
                 if !canonical_url.is_empty() {
                     links.push(canonical_url);
                 }
@@ -1103,7 +1812,11 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                     links.push(doi_to_url(&doi));
                 }
                 let mut local_paths = Vec::new();
-                let canonical_pdf_path = table.get("canonical_pdf_path").and_then(Value::as_str).unwrap_or("").trim();
+                let canonical_pdf_path = table
+                    .get("canonical_pdf_path")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim();
                 if !canonical_pdf_path.is_empty()
                     && is_artifact_local_path(canonical_pdf_path)
                     && repo_root.join(canonical_pdf_path).exists()
@@ -1111,7 +1824,11 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                     local_paths.push(canonical_pdf_path.to_string());
                 }
                 let mut notes = Vec::new();
-                let status = table.get("status").and_then(Value::as_str).unwrap_or("").trim();
+                let status = table
+                    .get("status")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim();
                 if !status.is_empty() {
                     notes.push(format!("status={status}"));
                 }
@@ -1126,9 +1843,14 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
                 candidates.push(CandidateRecord {
                     source_kind: "canonical_cayley_dickson".to_string(),
                     source_ref: key.to_string(),
+                    identity_override: None,
                     title: title.clone(),
                     citation: title,
-                    dois: if doi.is_empty() { Vec::new() } else { vec![doi] },
+                    dois: if doi.is_empty() {
+                        Vec::new()
+                    } else {
+                        vec![doi]
+                    },
                     links: dedupe(links),
                     local_paths: dedupe(local_paths),
                     notes: dedupe(notes),
@@ -1147,10 +1869,15 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
             let mut all_dois = candidate.dois.clone();
             all_dois.extend(link_dois.iter().cloned());
             candidate.dois = dedupe(all_dois);
-            let mut all_links = candidate.links.clone();
-            all_links.extend(link_dois.iter().map(|doi| doi_to_url(doi)));
-            candidate.links = dedupe(all_links);
         }
+        let mut all_links = candidate.links.clone();
+        all_links.extend(link_dois.iter().map(|doi| doi_to_url(doi)));
+        let alias_expansions = all_links
+            .iter()
+            .flat_map(|url| expand_reference_aliases(url))
+            .collect::<Vec<_>>();
+        all_links.extend(alias_expansions);
+        candidate.links = dedupe(all_links);
     }
     let source_files = discovered_files
         .iter()
@@ -1165,10 +1892,16 @@ fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<Strin
 }
 
 fn identity_key(candidate: &CandidateRecord) -> String {
+    if let Some(identity_override) = &candidate.identity_override {
+        return identity_override.clone();
+    }
     if let Some(doi) = candidate.dois.first() {
         return format!("doi:{}", doi.to_ascii_lowercase());
     }
-    if let Some(url) = candidate.links.first() {
+    if let Some(url) = canonical_identity_url(&candidate.links) {
+        if url.starts_with("cambridge:") {
+            return url;
+        }
         return format!("url:{}", url.to_ascii_lowercase());
     }
     if !candidate.title.is_empty() {
@@ -1185,10 +1918,12 @@ fn unify_candidates(candidates: Vec<CandidateRecord>) -> Vec<UnifiedArtifact> {
     let mut merged: BTreeMap<String, UnifiedArtifact> = BTreeMap::new();
     for candidate in candidates {
         let key = identity_key(&candidate);
-        let entry = merged.entry(key.clone()).or_insert_with(|| UnifiedArtifact {
-            key,
-            ..UnifiedArtifact::default()
-        });
+        let entry = merged
+            .entry(key.clone())
+            .or_insert_with(|| UnifiedArtifact {
+                key,
+                ..UnifiedArtifact::default()
+            });
         if entry.title.is_empty() && !candidate.title.is_empty() {
             entry.title = candidate.title.clone();
         }
@@ -1228,12 +1963,18 @@ fn classify_artifacts(
 
         for url in &artifact.links {
             let obs_list = observations.get(url).cloned().unwrap_or_default();
-            let statuses = obs_list.iter().map(|obs| obs.status.as_str()).collect::<Vec<_>>();
+            let statuses = obs_list
+                .iter()
+                .map(|obs| obs.status.as_str())
+                .collect::<Vec<_>>();
             let has_pdf_ok = obs_list.iter().any(|obs| obs.status == "pdf_ok");
             let has_ok = obs_list.iter().any(|obs| obs.status == "ok_nonpdf");
             let has_nonworking = statuses.iter().any(|status| {
                 (status.starts_with("http_")
-                    && !matches!(*status, "http_200" | "http_201" | "http_202" | "http_203" | "http_204"))
+                    && !matches!(
+                        *status,
+                        "http_200" | "http_201" | "http_202" | "http_203" | "http_204"
+                    ))
                     || *status == "failed"
             });
             if has_pdf_ok {
@@ -1256,15 +1997,27 @@ fn classify_artifacts(
         artifact.nonworking_mirrors = dedupe(nonworking);
         artifact.unverified_mirrors = dedupe(unverified);
         artifact.downloaded_paths = dedupe(downloaded);
+        let citation_locator_identity = key_is_citation_locator(&artifact.key);
+        let citation_locator_only_links = !artifact.links.is_empty()
+            && artifact
+                .links
+                .iter()
+                .all(|url| is_citation_locator_url(url));
         artifact.minimum_requirement_met =
             !(artifact.working_mirrors.is_empty() && artifact.downloaded_paths.is_empty());
-        artifact.manual_intervention_required = !artifact.links.is_empty() && !artifact.minimum_requirement_met;
+        artifact.manual_intervention_required = !artifact.links.is_empty()
+            && !artifact.minimum_requirement_met
+            && !citation_locator_identity
+            && !citation_locator_only_links;
 
         artifact.status = if !artifact.downloaded_paths.is_empty() {
             "downloaded".to_string()
         } else if !artifact.working_mirrors.is_empty() {
             "downloadable".to_string()
-        } else if artifact.links.is_empty() {
+        } else if citation_locator_identity
+            || citation_locator_only_links
+            || artifact.links.is_empty()
+        {
             "citation_only_no_link".to_string()
         } else if !artifact.nonworking_mirrors.is_empty() && artifact.working_mirrors.is_empty() {
             "blocked".to_string()
@@ -1272,7 +2025,8 @@ fn classify_artifacts(
             "unverified".to_string()
         };
 
-        artifact.canonical_functional_url = if let Some(url) = artifact.working_pdf_mirrors.first() {
+        artifact.canonical_functional_url = if let Some(url) = artifact.working_pdf_mirrors.first()
+        {
             url.clone()
         } else if let Some(url) = artifact.working_mirrors.first() {
             url.clone()
@@ -1281,7 +2035,11 @@ fn classify_artifacts(
         } else {
             String::new()
         };
-        artifact.canonical_download_path = artifact.downloaded_paths.first().cloned().unwrap_or_default();
+        artifact.canonical_download_path = artifact
+            .downloaded_paths
+            .first()
+            .cloned()
+            .unwrap_or_default();
         artifact.manual_intervention_reason = if artifact.manual_intervention_required {
             "No working mirror observed from current fetch/retry ledgers; manual link intervention required.".to_string()
         } else {
@@ -1297,16 +2055,34 @@ fn render_artifact_registry(
     now: &str,
 ) -> String {
     let total = artifacts.len();
-    let downloaded = artifacts.iter().filter(|artifact| artifact.status == "downloaded").count();
-    let downloadable = artifacts.iter().filter(|artifact| artifact.status == "downloadable").count();
-    let blocked = artifacts.iter().filter(|artifact| artifact.status == "blocked").count();
+    let downloaded = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "downloaded")
+        .count();
+    let downloadable = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "downloadable")
+        .count();
+    let blocked = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "blocked")
+        .count();
     let citation_only = artifacts
         .iter()
         .filter(|artifact| artifact.status == "citation_only_no_link")
         .count();
-    let unverified = artifacts.iter().filter(|artifact| artifact.status == "unverified").count();
-    let missing_minimum = artifacts.iter().filter(|artifact| !artifact.minimum_requirement_met).count();
-    let manual = artifacts.iter().filter(|artifact| artifact.manual_intervention_required).count();
+    let unverified = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "unverified")
+        .count();
+    let missing_minimum = artifacts
+        .iter()
+        .filter(|artifact| !artifact.minimum_requirement_met)
+        .count();
+    let manual = artifacts
+        .iter()
+        .filter(|artifact| artifact.manual_intervention_required)
+        .count();
 
     let mut lines = vec![
         "# Single source-of-truth registry for cited artifacts and mirror status.".to_string(),
@@ -1350,12 +2126,21 @@ fn render_artifact_registry(
 
     for (index, artifact) in artifacts.iter().enumerate() {
         lines.push("[[artifact]]".to_string());
-        lines.push(format!("id = {}", escape_toml(&format!("ASOT-{:04}", index + 1))));
+        lines.push(format!(
+            "id = {}",
+            escape_toml(&format!("ASOT-{:04}", index + 1))
+        ));
         lines.push(format!("key = {}", escape_toml(&artifact.key)));
         lines.push(format!("title = {}", escape_toml(&artifact.title)));
         lines.push(format!("citation = {}", escape_toml(&artifact.citation)));
-        lines.push(format!("source_kinds = {}", render_list(&artifact.source_kinds)));
-        lines.push(format!("source_refs = {}", render_list(&artifact.source_refs)));
+        lines.push(format!(
+            "source_kinds = {}",
+            render_list(&artifact.source_kinds)
+        ));
+        lines.push(format!(
+            "source_refs = {}",
+            render_list(&artifact.source_refs)
+        ));
         lines.push(format!("doi_list = {}", render_list(&artifact.doi_list)));
         lines.push(format!(
             "canonical_functional_url = {}",
@@ -1378,7 +2163,10 @@ fn render_artifact_registry(
             "manual_intervention_reason = {}",
             escape_toml(&artifact.manual_intervention_reason)
         ));
-        lines.push(format!("working_mirror_count = {}", artifact.working_mirrors.len()));
+        lines.push(format!(
+            "working_mirror_count = {}",
+            artifact.working_mirrors.len()
+        ));
         lines.push(format!(
             "working_pdf_mirror_count = {}",
             artifact.working_pdf_mirrors.len()
@@ -1424,14 +2212,26 @@ fn render_artifact_registry(
 
 fn render_reconciliation_report(artifacts: &[UnifiedArtifact], now: &str) -> String {
     let total = artifacts.len();
-    let downloaded = artifacts.iter().filter(|artifact| artifact.status == "downloaded").count();
-    let downloadable = artifacts.iter().filter(|artifact| artifact.status == "downloadable").count();
-    let blocked = artifacts.iter().filter(|artifact| artifact.status == "blocked").count();
+    let downloaded = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "downloaded")
+        .count();
+    let downloadable = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "downloadable")
+        .count();
+    let blocked = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "blocked")
+        .count();
     let citation_only = artifacts
         .iter()
         .filter(|artifact| artifact.status == "citation_only_no_link")
         .count();
-    let unverified = artifacts.iter().filter(|artifact| artifact.status == "unverified").count();
+    let unverified = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "unverified")
+        .count();
     let missing = artifacts
         .iter()
         .filter(|artifact| !artifact.minimum_requirement_met)
@@ -1458,7 +2258,10 @@ fn render_reconciliation_report(artifacts: &[UnifiedArtifact], now: &str) -> Str
         lines.push(format!("key = {}", escape_toml(&artifact.key)));
         lines.push(format!("title = {}", escape_toml(&artifact.title)));
         lines.push(format!("status = {}", escape_toml(&artifact.status)));
-        lines.push(format!("source_refs = {}", render_list(&artifact.source_refs)));
+        lines.push(format!(
+            "source_refs = {}",
+            render_list(&artifact.source_refs)
+        ));
         lines.push(format!("all_links = {}", render_list(&artifact.links)));
         lines.push(format!(
             "nonworking_mirrors = {}",
@@ -1480,9 +2283,10 @@ pub fn build_artifact_source_of_truth(
 ) -> Result<BuildSummary> {
     let now = Utc::now().format("%Y-%m-%d").to_string();
     let (observations, source_tables) = collect_link_observations(repo_root)?;
-    let download_map = collect_download_map(repo_root)?;
+    let mut download_map = collect_download_map(repo_root)?;
     let (candidates, source_files) = build_candidates(repo_root)?;
     let mut artifacts = unify_candidates(candidates);
+    extend_download_map_from_local_artifacts(&mut download_map, &artifacts);
     classify_artifacts(&mut artifacts, &observations, &download_map);
     let registry_text = render_artifact_registry(&artifacts, &source_tables, &source_files, &now);
     let report_text = render_reconciliation_report(&artifacts, &now);
@@ -1506,7 +2310,9 @@ pub fn build_artifact_source_of_truth(
 fn lane_description(name: &str) -> &'static str {
     match name {
         "datasets" => "Numerical or tabular research datasets and machine-readable data artifacts.",
-        "slides_artifacts" => "Slides, decks, archives, notebooks, and non-dataset non-paper binary artifacts.",
+        "slides_artifacts" => {
+            "Slides, decks, archives, notebooks, and non-dataset non-paper binary artifacts."
+        }
         "papers_pdf" => "Paper-oriented references with PDF documents or PDF mirrors.",
         _ => "Reference URLs without locally identified PDF/data/artifact files.",
     }
@@ -1554,11 +2360,15 @@ fn classify_lane(artifact: &toml::map::Map<String, Value>) -> (String, Vec<Strin
         values.push(canonical_path.to_string());
     }
 
-    let has_dataset = values.iter().any(|value| value_endswith_any(value, DATASET_EXTENSIONS));
+    let has_dataset = values
+        .iter()
+        .any(|value| value_endswith_any(value, DATASET_EXTENSIONS));
     let has_slide_artifact = values
         .iter()
         .any(|value| value_endswith_any(value, SLIDE_ARTIFACT_EXTENSIONS));
-    let has_pdf = values.iter().any(|value| value_endswith_any(value, PDF_EXTENSIONS));
+    let has_pdf = values
+        .iter()
+        .any(|value| value_endswith_any(value, PDF_EXTENSIONS));
     let mut tags = Vec::new();
     if has_dataset {
         tags.push("datasets".to_string());
@@ -1584,7 +2394,11 @@ fn classify_lane(artifact: &toml::map::Map<String, Value>) -> (String, Vec<Strin
     (primary.to_string(), tags)
 }
 
-fn render_lane(name: &str, artifacts: &[toml::map::Map<String, Value>], generated_at: &str) -> String {
+fn render_lane(
+    name: &str,
+    artifacts: &[toml::map::Map<String, Value>],
+    generated_at: &str,
+) -> String {
     let counts = artifacts.iter().fold(HashMap::new(), |mut acc, artifact| {
         let status = artifact
             .get("status")
@@ -1608,17 +2422,26 @@ fn render_lane(name: &str, artifacts: &[toml::map::Map<String, Value>], generate
         format!("# Lane: {name}"),
         String::new(),
         "[lane]".to_string(),
-        format!("id = {}", escape_toml(&format!("SLANE-{}-2026-02-15", name.to_ascii_uppercase()))),
+        format!(
+            "id = {}",
+            escape_toml(&format!("SLANE-{}-2026-02-15", name.to_ascii_uppercase()))
+        ),
         format!("name = {}", escape_toml(name)),
         format!("description = {}", escape_toml(lane_description(name))),
         format!("generated_at = {}", escape_toml(generated_at)),
         format!("artifact_count = {}", artifacts.len()),
-        format!("downloaded_count = {}", counts.get("downloaded").copied().unwrap_or_default()),
+        format!(
+            "downloaded_count = {}",
+            counts.get("downloaded").copied().unwrap_or_default()
+        ),
         format!(
             "downloadable_count = {}",
             counts.get("downloadable").copied().unwrap_or_default()
         ),
-        format!("blocked_count = {}", counts.get("blocked").copied().unwrap_or_default()),
+        format!(
+            "blocked_count = {}",
+            counts.get("blocked").copied().unwrap_or_default()
+        ),
         format!(
             "citation_only_no_link_count = {}",
             counts
@@ -1626,7 +2449,10 @@ fn render_lane(name: &str, artifacts: &[toml::map::Map<String, Value>], generate
                 .copied()
                 .unwrap_or_default()
         ),
-        format!("unverified_count = {}", counts.get("unverified").copied().unwrap_or_default()),
+        format!(
+            "unverified_count = {}",
+            counts.get("unverified").copied().unwrap_or_default()
+        ),
         format!("missing_minimum_requirement_count = {missing_minimum}"),
         String::new(),
     ];
@@ -1646,19 +2472,43 @@ fn render_lane(name: &str, artifacts: &[toml::map::Map<String, Value>], generate
         lines.push("[[artifact_ref]]".to_string());
         lines.push(format!(
             "id = {}",
-            escape_toml(artifact.get("id").and_then(Value::as_str).unwrap_or("").trim())
+            escape_toml(
+                artifact
+                    .get("id")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim()
+            )
         ));
         lines.push(format!(
             "key = {}",
-            escape_toml(artifact.get("key").and_then(Value::as_str).unwrap_or("").trim())
+            escape_toml(
+                artifact
+                    .get("key")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim()
+            )
         ));
         lines.push(format!(
             "title = {}",
-            escape_toml(artifact.get("title").and_then(Value::as_str).unwrap_or("").trim())
+            escape_toml(
+                artifact
+                    .get("title")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim()
+            )
         ));
         lines.push(format!(
             "status = {}",
-            escape_toml(artifact.get("status").and_then(Value::as_str).unwrap_or("").trim())
+            escape_toml(
+                artifact
+                    .get("status")
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim()
+            )
         ));
         lines.push(format!(
             "minimum_requirement_met = {}",
@@ -1722,7 +2572,10 @@ fn render_infrastructure(
     for lane in LANE_ORDER {
         lines.push("[[lane]]".to_string());
         lines.push(format!("name = {}", escape_toml(lane)));
-        lines.push(format!("description = {}", escape_toml(lane_description(lane))));
+        lines.push(format!(
+            "description = {}",
+            escape_toml(lane_description(lane))
+        ));
         lines.push(format!(
             "path = {}",
             escape_toml(lane_files.get(*lane).map(String::as_str).unwrap_or(""))
@@ -1787,7 +2640,9 @@ pub fn build_source_truth_infrastructure(
         .collect();
 
     for artifact in artifacts {
-        let Some(table) = artifact.as_table().cloned() else { continue };
+        let Some(table) = artifact.as_table().cloned() else {
+            continue;
+        };
         let (primary, _) = classify_lane(&table);
         lane_map.entry(primary).or_default().push(table);
     }
@@ -1806,7 +2661,8 @@ pub fn build_source_truth_infrastructure(
         let lane_text = render_lane(lane, &lane_artifacts, &generated_at);
         let lane_path = lane_dir.join(format!("{lane}.toml"));
         assert_ascii(&lane_text, &lane_path.display().to_string())?;
-        fs::write(&lane_path, lane_text).with_context(|| format!("write {}", lane_path.display()))?;
+        fs::write(&lane_path, lane_text)
+            .with_context(|| format!("write {}", lane_path.display()))?;
         let rel = lane_path
             .strip_prefix(repo_root)
             .unwrap_or(lane_path.as_path())
@@ -1832,7 +2688,10 @@ pub fn build_source_truth_infrastructure(
         lane_counts.values().copied().sum(),
         &generated_at,
     );
-    assert_ascii(&infrastructure_text, &out_infrastructure.display().to_string())?;
+    assert_ascii(
+        &infrastructure_text,
+        &out_infrastructure.display().to_string(),
+    )?;
     assert_ascii(&report_text, &out_report.display().to_string())?;
     if let Some(parent) = out_infrastructure.parent() {
         fs::create_dir_all(parent)?;
@@ -1842,16 +2701,23 @@ pub fn build_source_truth_infrastructure(
     }
     fs::write(out_infrastructure, infrastructure_text)
         .with_context(|| format!("write {}", out_infrastructure.display()))?;
-    fs::write(out_report, report_text).with_context(|| format!("write {}", out_report.display()))?;
+    fs::write(out_report, report_text)
+        .with_context(|| format!("write {}", out_report.display()))?;
     Ok(SourceInfrastructureSummary {
         total_artifact_count: lane_counts.values().copied().sum(),
         lane_counts,
     })
 }
 
-pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -> Result<VerifySummary> {
+pub fn verify_artifact_source_of_truth(
+    repo_root: &Path,
+    registry_path: &Path,
+) -> Result<VerifySummary> {
     let value = load_toml_value(registry_path)?;
-    let Some(head) = value.get("artifact_source_of_truth").and_then(Value::as_table) else {
+    let Some(head) = value
+        .get("artifact_source_of_truth")
+        .and_then(Value::as_table)
+    else {
         bail!("artifact_source_of_truth header missing");
     };
     let Some(coverage) = value.get("coverage").and_then(Value::as_table) else {
@@ -1876,7 +2742,8 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
         .get("artifacts_without_working_mirror")
         .and_then(Value::as_array)
         .map(|items| {
-            items.iter()
+            items
+                .iter()
                 .filter_map(Value::as_str)
                 .map(|value| value.trim().to_string())
                 .filter(|value| !value.is_empty())
@@ -1889,9 +2756,24 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
             failures.push(format!("artifact[{index}] is not a table"));
             continue;
         };
-        let art_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim().to_string();
-        let key = table.get("key").and_then(Value::as_str).unwrap_or("").trim().to_string();
-        let status = table.get("status").and_then(Value::as_str).unwrap_or("").trim().to_string();
+        let art_id = table
+            .get("id")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let key = table
+            .get("key")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let status = table
+            .get("status")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
         let minimum_met = table
             .get("minimum_requirement_met")
             .and_then(Value::as_bool)
@@ -1904,7 +2786,8 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
             .get("all_links")
             .and_then(Value::as_array)
             .map(|items| {
-                items.iter()
+                items
+                    .iter()
                     .filter_map(Value::as_str)
                     .map(|value| value.trim().to_string())
                     .filter(|value| !value.is_empty())
@@ -1914,27 +2797,57 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
         let working = table
             .get("working_mirrors")
             .and_then(Value::as_array)
-            .map(|items| items.iter().filter_map(Value::as_str).map(str::to_string).collect::<Vec<_>>())
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .map(str::to_string)
+                    .collect::<Vec<_>>()
+            })
             .unwrap_or_default();
         let working_pdf = table
             .get("working_pdf_mirrors")
             .and_then(Value::as_array)
-            .map(|items| items.iter().filter_map(Value::as_str).map(str::to_string).collect::<Vec<_>>())
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .map(str::to_string)
+                    .collect::<Vec<_>>()
+            })
             .unwrap_or_default();
         let nonworking = table
             .get("nonworking_mirrors")
             .and_then(Value::as_array)
-            .map(|items| items.iter().filter_map(Value::as_str).map(str::to_string).collect::<Vec<_>>())
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .map(str::to_string)
+                    .collect::<Vec<_>>()
+            })
             .unwrap_or_default();
         let unverified = table
             .get("unverified_mirrors")
             .and_then(Value::as_array)
-            .map(|items| items.iter().filter_map(Value::as_str).map(str::to_string).collect::<Vec<_>>())
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .map(str::to_string)
+                    .collect::<Vec<_>>()
+            })
             .unwrap_or_default();
         let downloaded_paths = table
             .get("downloaded_paths")
             .and_then(Value::as_array)
-            .map(|items| items.iter().filter_map(Value::as_str).map(str::to_string).collect::<Vec<_>>())
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .map(str::to_string)
+                    .collect::<Vec<_>>()
+            })
             .unwrap_or_default();
         let canonical_url = table
             .get("canonical_functional_url")
@@ -1955,7 +2868,14 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
             failures.push(format!("duplicate artifact id: {art_id}"));
         }
         if key.is_empty() {
-            failures.push(format!("{} missing key", if art_id.is_empty() { format!("index {index}") } else { art_id.clone() }));
+            failures.push(format!(
+                "{} missing key",
+                if art_id.is_empty() {
+                    format!("index {index}")
+                } else {
+                    art_id.clone()
+                }
+            ));
         } else if !keys.insert(key.clone()) {
             failures.push(format!("duplicate artifact key: {key}"));
         }
@@ -1963,13 +2883,17 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
             failures.push(format!("{art_id}: invalid status {status:?}"));
         }
         if !canonical_url.is_empty() && !all_links.contains(&canonical_url) {
-            failures.push(format!("{art_id}: canonical_functional_url not in all_links"));
+            failures.push(format!(
+                "{art_id}: canonical_functional_url not in all_links"
+            ));
         }
         match status.as_str() {
             "downloaded" => {
                 downloaded_count += 1;
                 if downloaded_paths.is_empty() {
-                    failures.push(format!("{art_id}: downloaded status requires downloaded_paths"));
+                    failures.push(format!(
+                        "{art_id}: downloaded status requires downloaded_paths"
+                    ));
                 }
             }
             "downloadable" => downloadable_count += 1,
@@ -1981,8 +2905,13 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
             }
             "citation_only_no_link" => {
                 citation_only_count += 1;
-                if !all_links.is_empty() {
-                    failures.push(format!("{art_id}: citation_only_no_link but all_links is not empty"));
+                if !all_links.is_empty()
+                    && !key_is_citation_locator(&key)
+                    && !all_links.iter().all(|url| is_citation_locator_url(url))
+                {
+                    failures.push(format!(
+                        "{art_id}: citation_only_no_link but all_links is not empty"
+                    ));
                 }
             }
             "unverified" => unverified_count += 1,
@@ -2006,7 +2935,9 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
             manual_count += 1;
         }
         if working_pdf.len() > working.len() {
-            failures.push(format!("{art_id}: working_pdf_mirrors cannot exceed working_mirrors"));
+            failures.push(format!(
+                "{art_id}: working_pdf_mirrors cannot exceed working_mirrors"
+            ));
         }
         if !canonical_path.is_empty() && !repo_root.join(&canonical_path).exists() {
             failures.push(format!(
@@ -2057,7 +2988,8 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
         .and_then(Value::as_integer)
         .unwrap_or(-1);
     if source_file_count != source_files.len() as i64 {
-        failures.push("header source_file_count mismatch with source_files list length".to_string());
+        failures
+            .push("header source_file_count mismatch with source_files list length".to_string());
     }
     let source_tables = head
         .get("source_tables")
@@ -2069,7 +3001,8 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
         .and_then(Value::as_integer)
         .unwrap_or(-1);
     if source_table_count != source_tables.len() as i64 {
-        failures.push("header source_table_count mismatch with source_tables list length".to_string());
+        failures
+            .push("header source_table_count mismatch with source_tables list length".to_string());
     }
     let coverage_count = coverage
         .get("artifacts_without_working_mirror_count")
@@ -2086,7 +3019,10 @@ pub fn verify_artifact_source_of_truth(repo_root: &Path, registry_path: &Path) -
         );
     }
     if !failures.is_empty() {
-        bail!("artifact source-of-truth verification failed:\n- {}", failures.join("\n- "));
+        bail!(
+            "artifact source-of-truth verification failed:\n- {}",
+            failures.join("\n- ")
+        );
     }
     Ok(VerifySummary {
         artifact_count: artifacts.len(),
@@ -2151,9 +3087,22 @@ pub fn verify_source_infrastructure(
             failures.push("lane definition missing name/path".to_string());
             continue;
         };
-        let lane_name = table.get("name").and_then(Value::as_str).unwrap_or("").trim().to_string();
-        let lane_rel = table.get("path").and_then(Value::as_str).unwrap_or("").trim().to_string();
-        let expected_count = table.get("artifact_count").and_then(Value::as_integer).unwrap_or(-1);
+        let lane_name = table
+            .get("name")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let lane_rel = table
+            .get("path")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let expected_count = table
+            .get("artifact_count")
+            .and_then(Value::as_integer)
+            .unwrap_or(-1);
         if lane_name.is_empty() || lane_rel.is_empty() {
             failures.push("lane definition missing name/path".to_string());
             continue;
@@ -2164,7 +3113,11 @@ pub fn verify_source_infrastructure(
             continue;
         }
         let lane_data = load_toml_value(&lane_path)?;
-        let lane_head = lane_data.get("lane").and_then(Value::as_table).cloned().unwrap_or_default();
+        let lane_head = lane_data
+            .get("lane")
+            .and_then(Value::as_table)
+            .cloned()
+            .unwrap_or_default();
         let lane_artifacts = lane_data
             .get("artifact_ref")
             .and_then(Value::as_array)
@@ -2191,7 +3144,12 @@ pub fn verify_source_infrastructure(
                 failures.push(format!("{lane_rel}: artifact_ref missing id"));
                 continue;
             };
-            let aid = artifact_table.get("id").and_then(Value::as_str).unwrap_or("").trim().to_string();
+            let aid = artifact_table
+                .get("id")
+                .and_then(Value::as_str)
+                .unwrap_or("")
+                .trim()
+                .to_string();
             if aid.is_empty() {
                 failures.push(format!("{lane_rel}: artifact_ref missing id"));
                 continue;
@@ -2213,7 +3171,9 @@ pub fn verify_source_infrastructure(
         .difference(&lane_membership.keys().cloned().collect())
         .count();
     if missing_from_lanes > 0 {
-        failures.push(format!("{missing_from_lanes} master artifacts missing lane assignment"));
+        failures.push(format!(
+            "{missing_from_lanes} master artifacts missing lane assignment"
+        ));
     }
     let infra_total = infra_head
         .get("total_artifact_count")
@@ -2232,7 +3192,10 @@ pub fn verify_source_infrastructure(
         ));
     }
     if !failures.is_empty() {
-        bail!("source infrastructure verification failed:\n- {}", failures.join("\n- "));
+        bail!(
+            "source infrastructure verification failed:\n- {}",
+            failures.join("\n- ")
+        );
     }
     Ok(SourceInfrastructureSummary {
         total_artifact_count: artifacts.len(),
@@ -2260,5 +3223,74 @@ mod tests {
         let (primary, tags) = classify_lane(&artifact);
         assert_eq!(primary, "datasets");
         assert!(tags.contains(&"datasets".to_string()));
+    }
+
+    #[test]
+    fn normalize_url_upgrades_mdpi_http_and_drops_query_noise() {
+        let normalized =
+            normalize_url("http://www.mdpi.com/2073-8994/16/5/626/pdf?version=1715949362");
+        assert_eq!(normalized, "https://www.mdpi.com/2073-8994/16/5/626/pdf");
+    }
+
+    #[test]
+    fn canonical_identity_prefers_mdpi_pdf_variant() {
+        let urls = vec!["https://www.mdpi.com/2073-8994/16/5/626".to_string()];
+        assert_eq!(
+            canonical_identity_url(&urls).as_deref(),
+            Some("https://www.mdpi.com/2073-8994/16/5/626/pdf")
+        );
+    }
+
+    #[test]
+    fn cambridge_content_id_unifies_article_and_pdf_variants() {
+        let article = "https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/conjugacy-classes-of-subalgebras-of-the-real-sedenions/E3602D99D8C6C96F78EADAD2EDC1BC27";
+        let pdf = "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/E3602D99D8C6C96F78EADAD2EDC1BC27/S0008439500006020a.pdf/conjugacy-classes-of-subalgebras-of-the-real-sedenions.pdf";
+        assert_eq!(
+            cambridge_content_id(article).as_deref(),
+            Some("e3602d99d8c6c96f78eadad2edc1bc27")
+        );
+        assert_eq!(
+            cambridge_content_id(pdf).as_deref(),
+            Some("e3602d99d8c6c96f78eadad2edc1bc27")
+        );
+        let urls = vec![article.to_string(), pdf.to_string()];
+        assert_eq!(
+            canonical_identity_url(&urls).as_deref(),
+            Some("cambridge:e3602d99d8c6c96f78eadad2edc1bc27")
+        );
+    }
+
+    #[test]
+    fn identity_key_keeps_cambridge_identity_prefix() {
+        let candidate = CandidateRecord {
+            links: vec![
+                "https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/conjugacy-classes-of-subalgebras-of-the-real-sedenions/E3602D99D8C6C96F78EADAD2EDC1BC27".to_string(),
+            ],
+            ..CandidateRecord::default()
+        };
+        assert_eq!(
+            identity_key(&candidate),
+            "cambridge:e3602d99d8c6c96f78eadad2edc1bc27"
+        );
+    }
+
+    #[test]
+    fn aps_abstract_pages_are_citation_locators() {
+        assert!(is_citation_locator_url(
+            "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"
+        ));
+        assert!(key_is_citation_locator(
+            "url:https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744"
+        ));
+    }
+
+    #[test]
+    fn cambridge_service_pages_are_citation_locators() {
+        assert!(is_citation_locator_url(
+            "https://www.cambridge.org/core/product/identifier/S0960129503004110/type/journal_article"
+        ));
+        assert!(is_citation_locator_url(
+            "https://www.cambridge.org/core/tdm/tdm-policy.json"
+        ));
     }
 }

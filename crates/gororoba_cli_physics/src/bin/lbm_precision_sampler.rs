@@ -9,7 +9,9 @@
 // noise). This experiment closes the loop by comparing across all available
 // precisions on the same hardware.
 
-use anyhow::{Context, Result};
+#[cfg(feature = "gpu")]
+use anyhow::Context;
+use anyhow::Result;
 use clap::{Parser, Subcommand};
 use std::{
     io::Write,
@@ -95,6 +97,7 @@ fn kolmogorov_force(n: usize, amplitude: f64) -> Vec<[f64; 3]> {
 }
 
 /// Compute kinetic energy from f32 host buffers (GPU path)
+#[cfg(feature = "gpu")]
 fn compute_ke_f32(rho: &[f32], u: &[[f32; 3]]) -> f64 {
     let mut ke = 0.0_f64;
     for (r, v) in rho.iter().zip(u.iter()) {

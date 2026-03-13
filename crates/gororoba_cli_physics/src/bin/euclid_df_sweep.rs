@@ -19,8 +19,8 @@ use std::{io::Write, time::Instant};
 
 #[cfg(feature = "euclid-catalog")]
 use cosmology_core::{
-    box_counting_fractal_dim,
-    euclid_morphology::read_euclid_physical_measurements, galaxy_pipeline::prepare_galaxy,
+    box_counting_fractal_dim, euclid_morphology::read_euclid_physical_measurements,
+    galaxy_pipeline::prepare_galaxy,
 };
 
 #[derive(Parser)]
@@ -173,6 +173,7 @@ fn main() {
             alpha_zd: args.alpha_zd,
             softening_eps: args.softening_eps,
             density_floor: args.density_floor,
+            halo_n_modes: 7,
         };
 
         run_sweep(&args, &config, use_gpu);
@@ -339,6 +340,11 @@ fn run_gpu_sweep(
         solver.set_tiling(true);
     }
 
+    // Pin rho in L2 cache for collision kernel locality (SM 8.0+).
+    if let Err(e) = solver.set_l2_pinning(true) {
+        eprintln!("WARNING: L2 pinning failed: {e} (non-fatal, continuing without)");
+    }
+
     // Stream A: solver's default stream (LBM evolution + initial D_f)
     // Stream B: forked stream for final box-counting (overlaps with CPU prep)
     let stream_b = solver.fork_stream().unwrap_or_else(|e| {
@@ -352,8 +358,8 @@ fn run_gpu_sweep(
         std::process::exit(1);
     });
     // box_counter_b on stream B: used for final D_f measurement (after LBM)
-    let mut box_counter_b =
-        GpuBoxCounter::new_with_stream(solver.context(), stream_b.clone()).unwrap_or_else(|e| {
+    let mut box_counter_b = GpuBoxCounter::new_with_stream(solver.context(), stream_b.clone())
+        .unwrap_or_else(|e| {
             eprintln!("ERROR: GpuBoxCounter (stream B) init failed: {e}");
             std::process::exit(1);
         });
@@ -475,11 +481,7 @@ fn run_gpu_sweep(
                 for step in 0..config.lbm_steps {
                     if step % 10 == 0 {
                         solver
-                            .update_smagorinsky_tau(
-                                args.smagorinsky_cs,
-                                config.dx_kpc,
-                                config.tau,
-                            )
+                            .update_smagorinsky_tau(args.smagorinsky_cs, config.dx_kpc, config.tau)
                             .unwrap_or_else(|e| {
                                 eprintln!(
                                     "  WARN: Smagorinsky update failed for obj={}: {e}",
@@ -583,11 +585,7 @@ fn run_cpu_sweep(
             for step in 0..config.lbm_steps {
                 if use_smag && step % 10 == 0 {
                     solver
-                        .update_smagorinsky_tau(
-                            args.smagorinsky_cs,
-                            config.dx_kpc,
-                            config.tau,
-                        )
+                        .update_smagorinsky_tau(args.smagorinsky_cs, config.dx_kpc, config.tau)
                         .unwrap_or_else(|e| {
                             eprintln!(
                                 "  WARN: Smagorinsky update failed for obj={}: {e}",
@@ -722,7 +720,7 @@ fn compute_zd_force_standalone(
 
 #[cfg(all(feature = "euclid-catalog", feature = "gpu"))]
 fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
-    use lbm_3d_cuda::{box_counting_gpu::GpuBoxCounter, LbmSolver3DCuda, Precision};
+    use lbm_3d_cuda::{LbmSolver3DCuda, Precision, box_counting_gpu::GpuBoxCounter};
 
     let g = config.grid_dim;
     let n_cells = g * g * g;
@@ -745,6 +743,10 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
 
     if args.tiling {
         solver.set_tiling(true);
+    }
+
+    if let Err(e) = solver.set_l2_pinning(true) {
+        eprintln!("WARNING: L2 pinning failed: {e} (non-fatal, continuing without)");
     }
 
     let mut box_counter = GpuBoxCounter::new(solver.context()).unwrap_or_else(|e| {
@@ -820,9 +822,7 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
                 .unwrap_or(3.0);
 
             let elapsed = t0.elapsed().as_millis() as u64;
-            eprintln!(
-                "  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)"
-            );
+            eprintln!("  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)");
             NullTrialResult {
                 condition: label,
                 trial,
@@ -894,7 +894,7 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
 
 #[cfg(feature = "euclid-catalog")]
 fn run_null_hypothesis_cpu(args: &Args, config: &GalaxyPipelineConfig) {
-    use lbm_3d::solver::{aosoa_idx, BgkCollision, LbmSolver3D};
+    use lbm_3d::solver::{BgkCollision, LbmSolver3D, aosoa_idx};
 
     let g = config.grid_dim;
     let n_cells = g * g * g;
@@ -935,55 +935,53 @@ fn run_null_hypothesis_cpu(args: &Args, config: &GalaxyPipelineConfig) {
 
     // Helper: run one CPU trial with a fresh solver.
     // Takes force by reference and clones for set_force_field (which takes Vec).
-    let run_cpu_trial =
-        |rho: &[f64], force: &[[f64; 3]], label: &str, trial: usize| -> NullTrialResult {
-            let mut solver = if args.mrt {
-                LbmSolver3D::new_mrt(g, g, g, config.tau)
-            } else {
-                LbmSolver3D::new(g, g, g, config.tau)
-            };
-
-            let lattice = &solver.collider.lattice;
-            for idx in 0..n_cells {
-                let f_eq = BgkCollision::initialize_rest(rho[idx], lattice);
-                for (dir, &val) in f_eq.iter().enumerate() {
-                    solver.f[aosoa_idx(idx, dir)] = val;
-                }
-                solver.rho[idx] = rho[idx];
-                solver.u[idx] = [0.0, 0.0, 0.0];
-            }
-            solver
-                .set_force_field(force.to_vec())
-                .expect("force size mismatch");
-
-            let df_initial = box_counting_fractal_dim(&solver.rho, g, g, g);
-            let t0 = Instant::now();
-
-            for step in 0..config.lbm_steps {
-                if use_smag && step % 10 == 0 {
-                    let _ = solver.update_smagorinsky_tau(
-                        args.smagorinsky_cs,
-                        config.dx_kpc,
-                        config.tau,
-                    );
-                }
-                solver.evolve_one_step();
-            }
-
-            let df_final = box_counting_fractal_dim(&solver.rho, g, g, g);
-            let elapsed = t0.elapsed().as_millis() as u64;
-
-            eprintln!(
-                "  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)"
-            );
-            NullTrialResult {
-                condition: label.to_string(),
-                trial,
-                df_initial,
-                df_final,
-                elapsed_ms: elapsed,
-            }
+    let run_cpu_trial = |rho: &[f64],
+                         force: &[[f64; 3]],
+                         label: &str,
+                         trial: usize|
+     -> NullTrialResult {
+        let mut solver = if args.mrt {
+            LbmSolver3D::new_mrt(g, g, g, config.tau)
+        } else {
+            LbmSolver3D::new(g, g, g, config.tau)
         };
+
+        let lattice = &solver.collider.lattice;
+        for idx in 0..n_cells {
+            let f_eq = BgkCollision::initialize_rest(rho[idx], lattice);
+            for (dir, &val) in f_eq.iter().enumerate() {
+                solver.f[aosoa_idx(idx, dir)] = val;
+            }
+            solver.rho[idx] = rho[idx];
+            solver.u[idx] = [0.0, 0.0, 0.0];
+        }
+        solver
+            .set_force_field(force.to_vec())
+            .expect("force size mismatch");
+
+        let df_initial = box_counting_fractal_dim(&solver.rho, g, g, g);
+        let t0 = Instant::now();
+
+        for step in 0..config.lbm_steps {
+            if use_smag && step % 10 == 0 {
+                let _ =
+                    solver.update_smagorinsky_tau(args.smagorinsky_cs, config.dx_kpc, config.tau);
+            }
+            solver.evolve_one_step();
+        }
+
+        let df_final = box_counting_fractal_dim(&solver.rho, g, g, g);
+        let elapsed = t0.elapsed().as_millis() as u64;
+
+        eprintln!("  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)");
+        NullTrialResult {
+            condition: label.to_string(),
+            trial,
+            df_initial,
+            df_final,
+            elapsed_ms: elapsed,
+        }
+    };
 
     // C0: Uniform + zero force
     results.push(run_cpu_trial(&rho_uniform, &zeros_f, "C0-uniform-zero", 0));

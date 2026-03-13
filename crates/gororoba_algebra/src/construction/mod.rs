@@ -40,3 +40,4 @@ pub mod auxiliary {
         wheels::*,
     };
 }
+pub mod complex_octonion;

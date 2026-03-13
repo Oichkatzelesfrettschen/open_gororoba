@@ -52,7 +52,7 @@ pub struct FlatLCDM {
     pub omega_m: f64,
     /// Baryon density parameter
     pub omega_b: f64,
-    /// CMB temperature [K]
+    /// CMB temperature in kelvin.
     pub t_cmb: f64,
 }
 
@@ -92,14 +92,14 @@ impl FlatLCDM {
         1.0 / self.h0
     }
 
-    /// Hubble length D_H = c/H_0 [Mpc].
+    /// Hubble length `D_H = c/H_0` in `Mpc`.
     ///
     /// The characteristic distance scale of the universe, ~4450 Mpc for Planck 2018.
     pub fn hubble_length(&self) -> f64 {
         C_KM_S / self.h0
     }
 
-    /// Comoving distance d_C(z) [Mpc].
+    /// Comoving distance `d_C(z)` in `Mpc`.
     ///
     /// d_C(z) = (c/H_0) integral_0^z dz'/E(z')
     ///
@@ -122,12 +122,12 @@ impl FlatLCDM {
         self.hubble_length() * z
     }
 
-    /// Luminosity distance d_L(z) = (1+z) d_C(z) [Mpc].
+    /// Luminosity distance `d_L(z) = (1+z) d_C(z)` in `Mpc`.
     pub fn luminosity_distance(&self, z: f64) -> f64 {
         (1.0 + z) * self.comoving_distance(z)
     }
 
-    /// Angular diameter distance d_A(z) = d_C(z)/(1+z) [Mpc].
+    /// Angular diameter distance `d_A(z) = d_C(z)/(1+z)` in `Mpc`.
     ///
     /// Has a maximum at z ~ 1.6 for Planck 2018 parameters: objects at higher
     /// redshift appear _larger_ on the sky (the angular diameter distance turnover).
@@ -138,7 +138,7 @@ impl FlatLCDM {
         self.comoving_distance(z) / (1.0 + z)
     }
 
-    /// Distance modulus mu = 5 log10(d_L [Mpc]) + 25 [mag].
+    /// Distance modulus `mu = 5 log10(d_L in Mpc) + 25` in magnitudes.
     ///
     /// The +25 comes from expressing d_L in Mpc: 5 log10(d_L_Mpc * 1e6 / 10) =
     /// 5 log10(d_L_Mpc) + 5 log10(1e5) = 5 log10(d_L_Mpc) + 25.
@@ -170,7 +170,7 @@ impl FlatLCDM {
         deceleration_parameter(self.omega_m, z)
     }
 
-    /// Lookback time t_L(z) [Gyr].
+    /// Lookback time `t_L(z)` in `Gyr`.
     ///
     /// t_L(z) = (1/H_0) integral_0^z dz' / ((1+z') E(z'))
     ///
@@ -181,7 +181,7 @@ impl FlatLCDM {
         lookback_time(z, self.h0, self.omega_m)
     }
 
-    /// Age of the universe at redshift z [Gyr].
+    /// Age of the universe at redshift `z` in `Gyr`.
     ///
     /// Computes the integral directly from z to z_max to avoid catastrophic
     /// cancellation from subtracting two nearly-equal large numbers.
@@ -217,10 +217,10 @@ pub const PLANCK18_OMEGA_M: f64 = 0.3153;
 /// Planck 2018 baryon density parameter.
 pub const PLANCK18_OMEGA_B: f64 = 0.0493;
 
-/// Planck 2018 CMB temperature [K].
+/// Planck 2018 CMB temperature in kelvin.
 pub const PLANCK18_T_CMB: f64 = 2.7255;
 
-/// Planck 2018 sound horizon at recombination [Mpc].
+/// Planck 2018 sound horizon at recombination in `Mpc`.
 pub const PLANCK18_SOUND_HORIZON: f64 = 147.09;
 
 // ============================================================================
@@ -289,7 +289,7 @@ pub fn verify_distance_duality(d_l: f64, d_a: f64, z: f64, tol: f64) -> bool {
 // Lookback time
 // ============================================================================
 
-/// Lookback time to redshift z [Gyr].
+/// Lookback time to redshift `z` in `Gyr`.
 ///
 /// t_L(z) = (1/H_0) integral_0^z dz' / ((1+z') E(z'))
 ///
@@ -313,7 +313,7 @@ pub fn lookback_time(z: f64, h0: f64, omega_m: f64) -> f64 {
     (MPC_PER_KM_S_TO_GYR / h0) * integral
 }
 
-/// Age of the universe [Gyr] for given cosmological parameters.
+/// Age of the universe in `Gyr` for given cosmological parameters.
 ///
 /// Equivalent to `age_at_z(0.0, h0, omega_m)`.
 ///
@@ -322,7 +322,7 @@ pub fn universe_age(h0: f64, omega_m: f64) -> f64 {
     age_at_z(0.0, h0, omega_m)
 }
 
-/// Age of the universe at redshift z [Gyr].
+/// Age of the universe at redshift `z` in `Gyr`.
 ///
 /// Uses scale-factor integration for numerical stability:
 ///

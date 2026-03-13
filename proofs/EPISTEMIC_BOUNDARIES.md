@@ -48,8 +48,8 @@ Numerical code extracted this way is not usable without heavy manual editing.
 ## 5. Alectryon Rendering
 
 **Status**: Blocked.
-**Barrier**: Alectryon 1.4 requires coq-serapi (sertop), which supports
-Coq <= 8.20. Not ported to Rocq 9.x. No known timeline for a port.
+**Barrier**: Alectryon 1.4 requires coq-serapi (sertop), which supports the
+legacy Coq <= 8.20 line. Not ported to Rocq 9.x. No known timeline for a port.
 
 ## 6. Conjugation Involution Coverage
 

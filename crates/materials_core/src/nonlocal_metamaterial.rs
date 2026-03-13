@@ -14,7 +14,7 @@ use algebra_analysis::{
 };
 use num_complex::Complex64;
 use optics_core::absorber_benchmark::CouplingTopology;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::Path};
 
 /// Metadata for one assessor node in the canonical 42-node topology.
@@ -192,6 +192,22 @@ pub struct SyntheticCouplingModel {
     pub floquet_effective: FloquetEffectiveModel,
 }
 
+/// Compact summary of the assessor-to-tensor lift used by thesis support lanes.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct SyntheticCouplingReport {
+    pub calibration_id: String,
+    pub platform: String,
+    pub dim: usize,
+    pub node_count: usize,
+    pub masked_edge_count: usize,
+    pub boxkite_count: usize,
+    pub boxkite_sizes: Vec<usize>,
+    pub reggiani_partner_graph_order: usize,
+    pub average_nonzero_coupling: f64,
+    pub mean_active_weight: f64,
+    pub max_active_weight: f64,
+}
+
 impl SyntheticCouplingModel {
     /// Build the full non-local synthetic-coupling model.
     pub fn build(
@@ -249,6 +265,42 @@ impl SyntheticCouplingModel {
             }
         }
         if count == 0 { 0.0 } else { sum / count as f64 }
+    }
+
+    /// Export a typed summary of the masked 42-assessor synthetic coupling lift.
+    pub fn report(&self) -> SyntheticCouplingReport {
+        let mut weight_sum = 0.0;
+        let mut weight_count = 0usize;
+        let mut max_active_weight = 0.0_f64;
+
+        for i in 0..self.normalized_assessor_weights.len() {
+            for j in (i + 1)..self.normalized_assessor_weights.len() {
+                let value = self.normalized_assessor_weights[i][j];
+                if value > 0.0 {
+                    weight_sum += value;
+                    weight_count += 1;
+                    max_active_weight = max_active_weight.max(value);
+                }
+            }
+        }
+
+        SyntheticCouplingReport {
+            calibration_id: self.calibration.id.clone(),
+            platform: self.calibration.platform.clone(),
+            dim: self.config.dim,
+            node_count: self.topology.nodes.len(),
+            masked_edge_count: self.topology.edge_count(),
+            boxkite_count: self.topology.boxkite_sizes.len(),
+            boxkite_sizes: self.topology.boxkite_sizes.clone(),
+            reggiani_partner_graph_order: self.topology.reggiani_partner_graph_order,
+            average_nonzero_coupling: self.average_nonzero_coupling(),
+            mean_active_weight: if weight_count == 0 {
+                0.0
+            } else {
+                weight_sum / weight_count as f64
+            },
+            max_active_weight,
+        }
     }
 }
 
@@ -613,5 +665,26 @@ mod tests {
         let gate = ProjectionGate::c010_default();
         let result = gate.evaluate(&benchmark);
         assert!(result.pass, "gate should pass, got {}", result.verdict);
+    }
+
+    #[test]
+    fn synthetic_coupling_report_captures_topology_summary() {
+        let model = SyntheticCouplingModel::build(
+            &M3ProjectionConfig::c010_hybrid_default(),
+            &sample_calibration(),
+        )
+        .expect("synthetic model");
+        let report = model.report();
+
+        assert_eq!(report.calibration_id, "unit_test");
+        assert_eq!(report.dim, 16);
+        assert_eq!(report.node_count, 42);
+        assert_eq!(report.masked_edge_count, 7 * 15);
+        assert_eq!(report.boxkite_count, 7);
+        assert_eq!(report.boxkite_sizes, vec![6; 7]);
+        assert_eq!(report.reggiani_partner_graph_order, 84);
+        assert!(report.average_nonzero_coupling > 0.0);
+        assert!(report.mean_active_weight > 0.0);
+        assert!(report.max_active_weight >= report.mean_active_weight);
     }
 }

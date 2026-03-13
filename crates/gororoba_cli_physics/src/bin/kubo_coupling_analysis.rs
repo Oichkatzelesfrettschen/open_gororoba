@@ -77,13 +77,11 @@ fn compute_point(
     let model = build_interpolated(&cd_model, lambda);
     let imbalance = graph_imbalance_index(&model);
 
-    let transport;
     #[cfg(feature = "gpu")]
     {
         if let Some(ref ctx) = dispatcher.gpu_ctx
-            && let Ok(t) = ctx.kubo_transport(&model, temperature, 1e-10)
+            && let Ok(transport) = ctx.kubo_transport(&model, temperature, 1e-10)
         {
-            transport = t;
             let ed = exact_diagonalize(&model).expect("ED failed");
             return CouplingPoint {
                 lambda,
@@ -102,7 +100,8 @@ fn compute_point(
     }
     let _ = &dispatcher; // suppress unused warning on non-GPU builds
 
-    transport = kubo_transport_optimized(&model, temperature, 1e-10).expect("CPU transport failed");
+    let transport =
+        kubo_transport_optimized(&model, temperature, 1e-10).expect("CPU transport failed");
     let ed = exact_diagonalize(&model).expect("ED failed");
     let thermo = thermodynamic_quantities(&ed, temperature).expect("thermo failed");
 

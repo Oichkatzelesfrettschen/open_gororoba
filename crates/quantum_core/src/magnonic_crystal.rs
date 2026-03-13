@@ -30,9 +30,9 @@
 use faer::complex_native::c64;
 
 use crate::tight_binding::{
-    BravaisLattice2D, Hopping, OrbitalSite, TightBindingModel, Valley, Vec2,
-    band_chern_number, detect_flat_bands, hexagonal_high_symmetry_path,
-    hexagonal_symmetry_labels, valley_chern_number,
+    BravaisLattice2D, Hopping, OrbitalSite, TightBindingModel, Valley, Vec2, band_chern_number,
+    detect_flat_bands, hexagonal_high_symmetry_path, hexagonal_symmetry_labels,
+    valley_chern_number,
 };
 
 /// Tight-binding parameters for the 9-band magnonic crystal model.
@@ -125,7 +125,7 @@ pub struct MagnonicBandResult {
 /// Bond angles from A to its 3 nearest kagome sites.
 /// Measured from positive x-axis in radians.
 const BOND_ANGLES: [f64; 3] = [
-    std::f64::consts::FRAC_PI_2,         // 90 deg (up to K1)
+    std::f64::consts::FRAC_PI_2, // 90 deg (up to K1)
     std::f64::consts::FRAC_PI_2 + 2.0 * std::f64::consts::FRAC_PI_3, // 210 deg
     std::f64::consts::FRAC_PI_2 - 2.0 * std::f64::consts::FRAC_PI_3, // -30 deg
 ];
@@ -163,17 +163,53 @@ pub fn build_magnonic_9band(
 
     let orbitals = vec![
         // Honeycomb A: indices 0, 1, 2
-        OrbitalSite { position: pos_a, label: "s_A".to_string(), on_site_energy: eps_s_a },
-        OrbitalSite { position: pos_a, label: "px_A".to_string(), on_site_energy: eps_p_a },
-        OrbitalSite { position: pos_a, label: "py_A".to_string(), on_site_energy: eps_p_a },
+        OrbitalSite {
+            position: pos_a,
+            label: "s_A".to_string(),
+            on_site_energy: eps_s_a,
+        },
+        OrbitalSite {
+            position: pos_a,
+            label: "px_A".to_string(),
+            on_site_energy: eps_p_a,
+        },
+        OrbitalSite {
+            position: pos_a,
+            label: "py_A".to_string(),
+            on_site_energy: eps_p_a,
+        },
         // Honeycomb B: indices 3, 4, 5
-        OrbitalSite { position: pos_b, label: "s_B".to_string(), on_site_energy: eps_s_b },
-        OrbitalSite { position: pos_b, label: "px_B".to_string(), on_site_energy: eps_p_b },
-        OrbitalSite { position: pos_b, label: "py_B".to_string(), on_site_energy: eps_p_b },
+        OrbitalSite {
+            position: pos_b,
+            label: "s_B".to_string(),
+            on_site_energy: eps_s_b,
+        },
+        OrbitalSite {
+            position: pos_b,
+            label: "px_B".to_string(),
+            on_site_energy: eps_p_b,
+        },
+        OrbitalSite {
+            position: pos_b,
+            label: "py_B".to_string(),
+            on_site_energy: eps_p_b,
+        },
         // Kagome: indices 6, 7, 8
-        OrbitalSite { position: pos_k1, label: "s_K1".to_string(), on_site_energy: params.eps_k },
-        OrbitalSite { position: pos_k2, label: "s_K2".to_string(), on_site_energy: params.eps_k },
-        OrbitalSite { position: pos_k3, label: "s_K3".to_string(), on_site_energy: params.eps_k },
+        OrbitalSite {
+            position: pos_k1,
+            label: "s_K1".to_string(),
+            on_site_energy: params.eps_k,
+        },
+        OrbitalSite {
+            position: pos_k2,
+            label: "s_K2".to_string(),
+            on_site_energy: params.eps_k,
+        },
+        OrbitalSite {
+            position: pos_k3,
+            label: "s_K3".to_string(),
+            on_site_energy: params.eps_k,
+        },
     ];
 
     let mut hoppings = Vec::new();
@@ -184,15 +220,33 @@ pub fn build_magnonic_9band(
 
     // Bond 0: A(0,0) -- K1(0,0), angle = 90 deg
     add_honeycomb_kagome_hoppings(
-        &mut hoppings, 0, 6, [0, 0], BOND_ANGLES[0], params.t_sk, params.t_pk,
+        &mut hoppings,
+        0,
+        6,
+        [0, 0],
+        BOND_ANGLES[0],
+        params.t_sk,
+        params.t_pk,
     );
     // Bond 1: A(0,0) -- K2(0,0), angle = 210 deg
     add_honeycomb_kagome_hoppings(
-        &mut hoppings, 0, 7, [0, 0], BOND_ANGLES[1], params.t_sk, params.t_pk,
+        &mut hoppings,
+        0,
+        7,
+        [0, 0],
+        BOND_ANGLES[1],
+        params.t_sk,
+        params.t_pk,
     );
     // Bond 2: A(0,0) -- K3(0,0), angle = -30 deg
     add_honeycomb_kagome_hoppings(
-        &mut hoppings, 0, 8, [0, 0], BOND_ANGLES[2], params.t_sk, params.t_pk,
+        &mut hoppings,
+        0,
+        8,
+        [0, 0],
+        BOND_ANGLES[2],
+        params.t_sk,
+        params.t_pk,
     );
 
     // --- B-sublattice to kagome hoppings ---
@@ -201,19 +255,34 @@ pub fn build_magnonic_9band(
 
     // Bond 0: B(0,0) -- K1(0,0), angle = 270 deg (-90 deg from B)
     add_honeycomb_kagome_hoppings(
-        &mut hoppings, 3, 6, [0, 0],
-        BOND_ANGLES[0] + std::f64::consts::PI, params.t_sk, params.t_pk,
+        &mut hoppings,
+        3,
+        6,
+        [0, 0],
+        BOND_ANGLES[0] + std::f64::consts::PI,
+        params.t_sk,
+        params.t_pk,
     );
     // Bond 1: B(0,0) -- K2(0,-1+1=0)... need cell offsets for inter-cell bonds
     // B connects to K2 in cell [0, 1] (K2 is midpoint of the A(0,1)-B(0,0) bond)
     add_honeycomb_kagome_hoppings(
-        &mut hoppings, 3, 7, [0, 1],
-        BOND_ANGLES[1] + std::f64::consts::PI, params.t_sk, params.t_pk,
+        &mut hoppings,
+        3,
+        7,
+        [0, 1],
+        BOND_ANGLES[1] + std::f64::consts::PI,
+        params.t_sk,
+        params.t_pk,
     );
     // Bond 2: B(0,0) -- K3 in cell [-1, 1]
     add_honeycomb_kagome_hoppings(
-        &mut hoppings, 3, 8, [-1, 1],
-        BOND_ANGLES[2] + std::f64::consts::PI, params.t_sk, params.t_pk,
+        &mut hoppings,
+        3,
+        8,
+        [-1, 1],
+        BOND_ANGLES[2] + std::f64::consts::PI,
+        params.t_sk,
+        params.t_pk,
     );
 
     // --- Kagome-kagome hoppings (direct, within triangles) ---
@@ -380,8 +449,8 @@ pub fn build_domain_wall_supercell(
                     });
                 } else {
                     // Wraps around -> supercell boundary
-                    let wrapped = ((target_cell % n_cells as i32) + n_cells as i32) as usize
-                        % n_cells;
+                    let wrapped =
+                        ((target_cell % n_cells as i32) + n_cells as i32) as usize % n_cells;
                     let super_offset_1 = if target_cell < 0 { -1 } else { 1 };
                     hoppings.push(Hopping {
                         from: hop.from + cell * n_orb_cell,
@@ -437,8 +506,7 @@ pub fn point_defect_modes(
     let mut global_idx = 0;
     for ci in 0..side {
         for cj in 0..side {
-            let offset = base.lattice.a1.scale(ci as f64)
-                + base.lattice.a2.scale(cj as f64);
+            let offset = base.lattice.a1.scale(ci as f64) + base.lattice.a2.scale(cj as f64);
             let mut mapping = vec![None; n_orb_cell];
 
             for (local, base_orb) in base.orbitals.iter().enumerate() {
@@ -572,7 +640,10 @@ mod tests {
                 assert!(
                     err_re < 1e-10 && err_im < 1e-10,
                     "H not Hermitian at ({},{}): re_err={}, im_err={}",
-                    i, j, err_re, err_im
+                    i,
+                    j,
+                    err_re,
+                    err_im
                 );
             }
         }
@@ -606,7 +677,8 @@ mod tests {
             assert!(
                 (a - b).abs() < 1e-10,
                 "TRS violated: E(k)={}, E(-k)={}",
-                a, b
+                a,
+                b
             );
         }
     }
@@ -615,7 +687,8 @@ mod tests {
     fn test_9band_inversion_breaking_opens_gap() {
         let params = MagnonicTBParams::kaman_default();
         let model_sym = build_magnonic_9band(&params, &InversionBreakingParams::none(), 400.0);
-        let model_broken = build_magnonic_9band(&params, &InversionBreakingParams::kaman_default(), 400.0);
+        let model_broken =
+            build_magnonic_9band(&params, &InversionBreakingParams::kaman_default(), 400.0);
 
         let lat = &model_sym.lattice;
         let k_pt = lat.b1.scale(2.0 / 3.0) + lat.b2.scale(1.0 / 3.0);
@@ -624,14 +697,21 @@ mod tests {
         let evals_broken = model_broken.band_energies(k_pt.x, k_pt.y);
 
         // Find smallest gap between adjacent bands near the Dirac point region
-        let min_gap_sym: f64 = evals_sym.windows(2).map(|w| w[1] - w[0]).fold(f64::MAX, f64::min);
-        let min_gap_broken: f64 = evals_broken.windows(2).map(|w| w[1] - w[0]).fold(f64::MAX, f64::min);
+        let min_gap_sym: f64 = evals_sym
+            .windows(2)
+            .map(|w| w[1] - w[0])
+            .fold(f64::MAX, f64::min);
+        let min_gap_broken: f64 = evals_broken
+            .windows(2)
+            .map(|w| w[1] - w[0])
+            .fold(f64::MAX, f64::min);
 
         // Broken inversion should increase the minimum gap
         assert!(
             min_gap_broken > min_gap_sym || min_gap_sym < 0.01,
             "Inversion breaking should open gap: sym={}, broken={}",
-            min_gap_sym, min_gap_broken
+            min_gap_sym,
+            min_gap_broken
         );
     }
 

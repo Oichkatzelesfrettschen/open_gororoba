@@ -16,6 +16,13 @@
 //! - Tang & Tang 2023: Sedenion-SU(5) mapping
 //! - Gresnigt 2023: Unified sedenion lepton model
 //! - Palik (1998): Handbook of Optical Constants
+//!
+//! # Canonical docs
+//!
+//! For materials and metamaterial work, the canonical documentation surfaces
+//! are crate rustdoc, focused Markdown docs under `docs/`, and the claim and
+//! experiment registries. Generated LaTeX under `docs/latex/` is publication
+//! packaging, not the primary source of current implementation truth.
 
 pub mod baselines;
 pub mod cif_parser;
@@ -42,8 +49,8 @@ pub use metamaterial::{
 
 pub use nonlocal_metamaterial::{
     AssessorNode, AssessorTopology, FloquetEffectiveModel, LcAdmittanceModel, M3ProjectionConfig,
-    MaterialCalibrationRecord, SyntheticCouplingModel, find_calibration_record,
-    load_calibration_records,
+    MaterialCalibrationRecord, SyntheticCouplingModel, SyntheticCouplingReport,
+    find_calibration_record, load_calibration_records,
 };
 
 pub use pathion_toy_mapping::{

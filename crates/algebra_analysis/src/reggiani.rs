@@ -420,10 +420,7 @@ mod tests {
         assert_eq!(adj.len(), 84);
         for (i, row) in adj.iter().enumerate() {
             let degree: usize = row.iter().filter(|&&x| x).count();
-            assert_eq!(
-                degree, 4,
-                "ZD {i} has partner degree {degree}, expected 4"
-            );
+            assert_eq!(degree, 4, "ZD {i} has partner degree {degree}, expected 4");
         }
     }
 

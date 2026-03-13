@@ -525,7 +525,15 @@ mod tests {
         // Verify it flows through to OmniRecord
         let omni = ace_mag_to_omni(&hourly);
         let o = &omni[0];
-        assert!(o.year > 0, "OmniRecord year should be non-zero, got {}", o.year);
-        assert!(o.doy > 0, "OmniRecord doy should be non-zero, got {}", o.doy);
+        assert!(
+            o.year > 0,
+            "OmniRecord year should be non-zero, got {}",
+            o.year
+        );
+        assert!(
+            o.doy > 0,
+            "OmniRecord doy should be non-zero, got {}",
+            o.doy
+        );
     }
 }

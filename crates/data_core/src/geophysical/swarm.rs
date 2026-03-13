@@ -7,10 +7,7 @@
 //!
 //! HAPI CSV format: ISO 8601 timestamp, then parameter columns.
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 const SWARM_URLS: &[&str] = &[

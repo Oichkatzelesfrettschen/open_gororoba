@@ -255,9 +255,7 @@ pub fn parse_bartol_v2(content: &str) -> Vec<SpdfMergedRecord> {
 }
 
 /// Parse Bartol-format Voyager 2 data from a file.
-pub fn parse_bartol_file(
-    path: &std::path::Path,
-) -> Result<Vec<SpdfMergedRecord>, FetchError> {
+pub fn parse_bartol_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
     Ok(parse_bartol_v2(&content))
@@ -341,25 +339,17 @@ impl DatasetProvider for VoyagerProvider {
                         && (1977..=1997).contains(&year)
                     {
                         let bartol_fname = format!("vy2_{}.dat", year % 100);
-                        let bartol_url =
-                            format!("{}{}", VOYAGER2_BARTOL_BASE, bartol_fname);
+                        let bartol_url = format!("{}{}", VOYAGER2_BARTOL_BASE, bartol_fname);
                         match download_to_string(&bartol_url) {
                             Ok(data) => {
                                 let bartol_dir = dir.join("bartol");
                                 std::fs::create_dir_all(&bartol_dir)?;
                                 let bartol_out = bartol_dir.join(&bartol_fname);
                                 std::fs::write(&bartol_out, &data)?;
-                                log::info!(
-                                    "Bartol fallback saved {}",
-                                    bartol_fname,
-                                );
+                                log::info!("Bartol fallback saved {}", bartol_fname,);
                             }
                             Err(e2) => {
-                                log::warn!(
-                                    "Bartol fallback also failed for {}: {}",
-                                    year,
-                                    e2,
-                                );
+                                log::warn!("Bartol fallback also failed for {}: {}", year, e2,);
                             }
                         }
                     }

@@ -6,7 +6,8 @@ pub mod chingon_gpu;
 
 use anyhow::{Context, Result, ensure};
 use cudarc::driver::{
-    CudaContext, CudaFunction, CudaGraph, CudaSlice, CudaStream, DevicePtr, LaunchConfig, PushKernelArg,
+    CudaContext, CudaFunction, CudaGraph, CudaSlice, CudaStream, DevicePtr, LaunchConfig,
+    PushKernelArg,
 };
 use std::sync::Arc;
 
@@ -89,6 +90,8 @@ pub struct LbmSolver3DCuda {
     soa_init_uniform_kernel: Option<CudaFunction>,
     soa_init_custom_kernel: Option<CudaFunction>,
     soa_smagorinsky_kernel: Option<CudaFunction>,
+    /// Shared-memory tiled Smagorinsky kernel (8x8x4 tile + 1-cell halo).
+    soa_smagorinsky_tiled_kernel: Option<CudaFunction>,
     #[allow(dead_code)]
     soa_batch_step_kernel: Option<CudaFunction>,
     #[allow(dead_code)]
@@ -108,6 +111,10 @@ pub struct LbmSolver3DCuda {
     soa_tiled_step_kernel: Option<CudaFunction>,
     /// Shared-memory tiled MRT kernel (8x8x4 tile + halo, pull-scheme).
     soa_mrt_tiled_step_kernel: Option<CudaFunction>,
+    /// A-A (Alternating-Address) BGK kernel -- single buffer, no ping-pong.
+    soa_aa_step_kernel: Option<CudaFunction>,
+    /// A-A MRT kernel -- single buffer, no ping-pong.
+    soa_mrt_aa_step_kernel: Option<CudaFunction>,
     /// Whether the solver uses SoA layout (default true for FP32).
     use_soa: bool,
     /// Whether to use MRT collision instead of BGK (FP32 SoA only).
@@ -120,6 +127,11 @@ pub struct LbmSolver3DCuda {
     /// Whether to use shared-memory tiled kernels (8x8x4 tile).
     /// Highest priority dispatch: tiling > pull > coarsening > standard.
     use_tiling: bool,
+    /// Whether to use A-A (Alternating-Address) single-buffer streaming.
+    /// Halves VRAM for f by eliminating ping-pong. Incompatible with graph capture.
+    use_aa: bool,
+    /// A-A parity: toggles 0/1 each step. Even=push-to-opposite, odd=pull-from-opposite.
+    aa_parity: i32,
     lbm_block_dim: (u32, u32, u32),
     #[cfg(feature = "cufft")]
     fft_plan: Option<cudarc::cufft::sys::cufftHandle>,
@@ -135,6 +147,9 @@ pub struct LbmSolver3DCuda {
     /// first `step_graph_pair()` call. Amortizes launch overhead for bulk
     /// stepping via `step_n()`.
     step_graph_cache: Option<SendSyncGraph>,
+    /// Whether L2 cache pinning is active for the rho field.
+    /// When true, re-pin after d_rho reallocation (e.g. initialize_custom).
+    l2_pinned: bool,
 }
 
 impl LbmSolver3DCuda {
@@ -304,6 +319,7 @@ impl LbmSolver3DCuda {
             soa_init_uniform_kernel,
             soa_init_custom_kernel,
             soa_smagorinsky_kernel,
+            soa_smagorinsky_tiled_kernel,
             soa_batch_step_kernel,
             soa_batch_init_kernel,
             soa_mrt_step_kernel,
@@ -314,6 +330,8 @@ impl LbmSolver3DCuda {
             soa_mrt_pull_step_kernel,
             soa_tiled_step_kernel,
             soa_mrt_tiled_step_kernel,
+            soa_aa_step_kernel,
+            soa_mrt_aa_step_kernel,
         ) = if precision == Precision::FP32 {
             let soa_opts = cudarc::nvrtc::CompileOptions {
                 arch: Some("sm_89"),
@@ -326,6 +344,7 @@ impl LbmSolver3DCuda {
                 Some(soa_module.load_function("initialize_uniform_soa_kernel")?),
                 Some(soa_module.load_function("initialize_custom_soa_kernel")?),
                 Some(soa_module.load_function("compute_smagorinsky_tau_kernel")?),
+                Some(soa_module.load_function("compute_smagorinsky_tau_tiled")?),
                 Some(soa_module.load_function("lbm_step_soa_batch_kernel")?),
                 Some(soa_module.load_function("initialize_custom_soa_batch_kernel")?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_fused")?),
@@ -336,9 +355,14 @@ impl LbmSolver3DCuda {
                 Some(soa_module.load_function("lbm_step_soa_mrt_pull")?),
                 Some(soa_module.load_function("lbm_step_soa_tiled")?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_tiled")?),
+                Some(soa_module.load_function("lbm_step_soa_aa")?),
+                Some(soa_module.load_function("lbm_step_soa_mrt_aa")?),
             )
         } else {
-            (None, None, None, None, None, None, None, None, None, None, None, None, None, None)
+            (
+                None, None, None, None, None, None, None, None, None, None, None, None, None, None,
+                None, None, None,
+            )
         };
         let use_soa = precision == Precision::FP32;
 
@@ -480,6 +504,7 @@ impl LbmSolver3DCuda {
             soa_init_uniform_kernel,
             soa_init_custom_kernel,
             soa_smagorinsky_kernel,
+            soa_smagorinsky_tiled_kernel,
             soa_batch_step_kernel,
             soa_batch_init_kernel,
             soa_mrt_step_kernel,
@@ -490,11 +515,15 @@ impl LbmSolver3DCuda {
             soa_mrt_pull_step_kernel,
             soa_tiled_step_kernel,
             soa_mrt_tiled_step_kernel,
+            soa_aa_step_kernel,
+            soa_mrt_aa_step_kernel,
             use_soa,
             use_mrt: false,
             use_coarsening: false,
             use_pull_stream: false,
             use_tiling: false,
+            use_aa: false,
+            aa_parity: 0,
             lbm_block_dim,
             #[cfg(feature = "cufft")]
             fft_plan: None,
@@ -507,6 +536,7 @@ impl LbmSolver3DCuda {
             rho: vec![1.0; n_cells],
             u: vec![[0.0; 3]; n_cells],
             step_graph_cache: None,
+            l2_pinned: false,
         })
     }
 
@@ -762,7 +792,9 @@ impl LbmSolver3DCuda {
                     .arg(&nx_i)
                     .arg(&ny_i)
                     .arg(&nz_i);
-                unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+                unsafe {
+                    init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision))
+                }?;
             }
         }
         Ok(())
@@ -811,8 +843,8 @@ impl LbmSolver3DCuda {
             let n = self.n_cells;
             let mut force_soa = vec![0.0f32; n * 3];
             for (i, v) in force_field.iter().enumerate() {
-                force_soa[i] = v[0] as f32;         // fx at offset 0*N+i
-                force_soa[n + i] = v[1] as f32;     // fy at offset 1*N+i
+                force_soa[i] = v[0] as f32; // fx at offset 0*N+i
+                force_soa[n + i] = v[1] as f32; // fy at offset 1*N+i
                 force_soa[2 * n + i] = v[2] as f32; // fz at offset 2*N+i
             }
             let bytes = Self::encode_f32_to_bytes(&force_soa);
@@ -873,29 +905,56 @@ impl LbmSolver3DCuda {
     /// the local viscosity to velocity gradients. High-gradient regions
     /// (galaxy cores) get higher tau, preserving structure against diffusion.
     pub fn update_smagorinsky_tau(&mut self, cs: f64, dx: f64, tau_base: f64) -> Result<()> {
-        let soa_kernel = self
-            .soa_smagorinsky_kernel
-            .as_ref()
-            .context("Smagorinsky kernel requires SoA mode (FP32)")?;
         let (nx_i, ny_i, nz_i) = (self.nx as i32, self.ny as i32, self.nz as i32);
         let cs_sq_dx_sq = (cs * cs * dx * dx) as f32;
         let tau_base_f32 = tau_base as f32;
-        let threads = 128u32;
-        let blocks = (self.n_cells as u32).div_ceil(threads);
-        let config = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
-        let mut b = self.stream.launch_builder(soa_kernel);
-        b.arg(&self.d_u)
-            .arg(&mut self.d_tau)
-            .arg(&tau_base_f32)
-            .arg(&cs_sq_dx_sq)
-            .arg(&nx_i)
-            .arg(&ny_i)
-            .arg(&nz_i);
-        unsafe { b.launch(config) }?;
+
+        if self.use_tiling {
+            // Tiled path: 3D grid of 8x8x4 tiles, shared-memory velocity gradients.
+            let soa_kernel = self
+                .soa_smagorinsky_tiled_kernel
+                .as_ref()
+                .context("Tiled Smagorinsky kernel requires SoA mode (FP32)")?;
+            let gx = (self.nx as u32).div_ceil(8);
+            let gy = (self.ny as u32).div_ceil(8);
+            let gz = (self.nz as u32).div_ceil(4);
+            let config = LaunchConfig {
+                grid_dim: (gx, gy, gz),
+                block_dim: (8, 8, 4),
+                shared_mem_bytes: 0, // statically allocated __shared__
+            };
+            let mut b = self.stream.launch_builder(soa_kernel);
+            b.arg(&self.d_u)
+                .arg(&mut self.d_tau)
+                .arg(&tau_base_f32)
+                .arg(&cs_sq_dx_sq)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { b.launch(config) }?;
+        } else {
+            // Untiled path: 1D grid, scattered global reads.
+            let soa_kernel = self
+                .soa_smagorinsky_kernel
+                .as_ref()
+                .context("Smagorinsky kernel requires SoA mode (FP32)")?;
+            let threads = 128u32;
+            let blocks = (self.n_cells as u32).div_ceil(threads);
+            let config = LaunchConfig {
+                grid_dim: (blocks, 1, 1),
+                block_dim: (threads, 1, 1),
+                shared_mem_bytes: 0,
+            };
+            let mut b = self.stream.launch_builder(soa_kernel);
+            b.arg(&self.d_u)
+                .arg(&mut self.d_tau)
+                .arg(&tau_base_f32)
+                .arg(&cs_sq_dx_sq)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { b.launch(config) }?;
+        }
         Ok(())
     }
 
@@ -959,7 +1018,40 @@ impl LbmSolver3DCuda {
         let (nx, ny, nz) = (self.nx as i32, self.ny as i32, self.nz as i32);
 
         if self.use_soa {
-            if self.use_tiling {
+            if self.use_aa {
+                // A-A streaming: single-buffer, parity-dependent direction remap.
+                // Highest priority: overrides all other streaming modes since it
+                // changes the fundamental buffer strategy (one f, no f_tmp).
+                let threads = 128u32;
+                let soa_kernel = if self.use_mrt {
+                    self.soa_mrt_aa_step_kernel
+                        .as_ref()
+                        .context("A-A MRT SoA step kernel not loaded")?
+                } else {
+                    self.soa_aa_step_kernel
+                        .as_ref()
+                        .context("A-A BGK SoA step kernel not loaded")?
+                };
+                let blocks = (self.n_cells as u32).div_ceil(threads);
+                let config = LaunchConfig {
+                    grid_dim: (blocks, 1, 1),
+                    block_dim: (threads, 1, 1),
+                    shared_mem_bytes: 0,
+                };
+                let parity = self.aa_parity;
+                let mut b = self.stream.launch_builder(soa_kernel);
+                b.arg(&mut self.d_f)
+                    .arg(&mut self.d_rho)
+                    .arg(&mut self.d_u)
+                    .arg(&self.d_tau)
+                    .arg(&self.d_force)
+                    .arg(&nx)
+                    .arg(&ny)
+                    .arg(&nz)
+                    .arg(&parity);
+                unsafe { b.launch(config) }?;
+                return Ok(());
+            } else if self.use_tiling {
                 // Tiled path: 3D grid of 8x8x4 tiles, shared-memory pull scheme.
                 // Highest priority: overrides coarsening and pull-stream flags.
                 let soa_kernel = if self.use_mrt {
@@ -1105,7 +1197,12 @@ impl LbmSolver3DCuda {
 
     pub fn step(&mut self) -> Result<()> {
         self.launch_step_kernel()?;
-        std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
+        if self.use_aa {
+            // A-A: toggle parity, no buffer swap needed (single buffer)
+            self.aa_parity = 1 - self.aa_parity;
+        } else {
+            std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
+        }
         Ok(())
     }
 
@@ -1121,12 +1218,14 @@ impl LbmSolver3DCuda {
     pub fn step_graph_pair(&mut self) -> Result<()> {
         use cudarc::driver::sys;
 
-        ensure!(self.use_soa, "step_graph_pair() requires SoA layout (use_soa=true)");
+        ensure!(
+            self.use_soa,
+            "step_graph_pair() requires SoA layout (use_soa=true)"
+        );
 
         if self.step_graph_cache.is_none() {
-            self.stream.begin_capture(
-                sys::CUstreamCaptureMode::CU_STREAM_CAPTURE_MODE_GLOBAL,
-            )?;
+            self.stream
+                .begin_capture(sys::CUstreamCaptureMode::CU_STREAM_CAPTURE_MODE_GLOBAL)?;
 
             // Step 1: A -> B
             self.launch_step_kernel()?;
@@ -1145,7 +1244,9 @@ impl LbmSolver3DCuda {
             self.step_graph_cache = Some(SendSyncGraph(graph));
         }
 
-        let graph = self.step_graph_cache.as_ref()
+        let graph = self
+            .step_graph_cache
+            .as_ref()
             .context("step_graph_cache unexpectedly empty after capture")?;
         graph.0.launch()?;
         Ok(())
@@ -1157,7 +1258,13 @@ impl LbmSolver3DCuda {
     /// plus one regular `step()` for odd remainders.
     /// AoS: falls back to `n` individual `step()` calls.
     pub fn step_n(&mut self, n: usize) -> Result<()> {
-        if self.use_soa {
+        if self.use_aa {
+            // A-A: no graph acceleration (graph bakes in buffer pointers,
+            // but A-A uses one buffer with parity-dependent semantics)
+            for _ in 0..n {
+                self.step()?;
+            }
+        } else if self.use_soa {
             let pairs = n / 2;
             let remainder = n % 2;
             for _ in 0..pairs {
@@ -1442,6 +1549,28 @@ impl LbmSolver3DCuda {
         self.use_tiling
     }
 
+    /// Enable A-A (Alternating-Address) single-buffer streaming.
+    ///
+    /// Halves VRAM for f by eliminating the ping-pong buffer. Each step uses
+    /// a parity-dependent direction remap via the OPP[] LUT. Incompatible
+    /// with CUDA graph capture (graph bakes in buffer pointers, but A-A
+    /// reads/writes the same buffer with varying semantics).
+    ///
+    /// The d_f_tmp allocation is NOT freed (would require re-creation to
+    /// switch back). It simply goes unused when A-A is active.
+    pub fn set_aa_streaming(&mut self, enabled: bool) {
+        self.use_aa = enabled;
+        self.aa_parity = 0;
+        if enabled {
+            self.invalidate_graph();
+        }
+    }
+
+    /// Whether A-A streaming is currently enabled.
+    pub fn use_aa_streaming(&self) -> bool {
+        self.use_aa
+    }
+
     /// Grid dimension along X.
     pub fn nx(&self) -> usize {
         self.nx
@@ -1641,6 +1770,112 @@ impl LbmSolver3DCuda {
     /// Used by GpuBoxCounter for zero-copy box-counting on GPU-evolved density.
     pub fn d_rho_bytes(&self) -> &CudaSlice<u8> {
         &self.d_rho
+    }
+
+    /// Pin the rho field in L2 cache via CUDA access policy window.
+    ///
+    /// Reserves 16 MB of L2 set-aside budget via `cuCtxSetLimit` and marks
+    /// the rho buffer as PERSISTING. Only effective on SM 8.0+ (Ampere+).
+    pub fn pin_rho_in_l2(&self) -> Result<()> {
+        use cudarc::driver::sys::{
+            CUaccessPolicyWindow_st, CUaccessProperty_enum, CUlimit_enum, CUstreamAttrID,
+            CUstreamAttrValue, cuCtxSetLimit, cuStreamSetAttribute,
+        };
+
+        // Reserve 32 MB of L2 for persistent data.
+        // Rho is pinned via access policy window; tau benefits from the enlarged
+        // budget via LRU (rho + tau = 16 MB at 128^3, fits in 32 MB with headroom).
+        // Only ONE access policy window per stream -- tau stays LRU-warm.
+        let budget: usize = 32 * 1024 * 1024;
+        let limit_result =
+            unsafe { cuCtxSetLimit(CUlimit_enum::CU_LIMIT_PERSISTING_L2_CACHE_SIZE, budget) };
+        if limit_result != cudarc::driver::sys::CUresult::CUDA_SUCCESS {
+            eprintln!(
+                "    L2 budget reservation failed: {:?} (non-fatal, pinning may be ineffective)",
+                limit_result
+            );
+        }
+
+        let rho_bytes = self.d_rho.len(); // CudaSlice<u8>.len() = byte count
+        let (rho_ptr, _guard) = self.d_rho.device_ptr(&self.stream);
+
+        let policy = CUaccessPolicyWindow_st {
+            base_ptr: rho_ptr as *mut std::ffi::c_void,
+            num_bytes: rho_bytes,
+            hitRatio: 1.0,
+            hitProp: CUaccessProperty_enum::CU_ACCESS_PROPERTY_PERSISTING,
+            missProp: CUaccessProperty_enum::CU_ACCESS_PROPERTY_NORMAL,
+        };
+        let attr_value = CUstreamAttrValue {
+            accessPolicyWindow: policy,
+        };
+        let result = unsafe {
+            cuStreamSetAttribute(
+                self.stream.cu_stream(),
+                CUstreamAttrID::CU_LAUNCH_ATTRIBUTE_ACCESS_POLICY_WINDOW,
+                &attr_value,
+            )
+        };
+        if result != cudarc::driver::sys::CUresult::CUDA_SUCCESS {
+            anyhow::bail!("cuStreamSetAttribute failed: {:?}", result);
+        }
+
+        eprintln!(
+            "    L2 residency: pinned {} KB rho field (hitRatio=1.0, PERSISTING, budget={}MB)",
+            rho_bytes / 1024,
+            budget / (1024 * 1024),
+        );
+        Ok(())
+    }
+
+    /// Remove L2 access policy (reset to NORMAL hit behavior).
+    fn unpin_l2(&self) -> Result<()> {
+        use cudarc::driver::sys::{
+            CUaccessPolicyWindow_st, CUaccessProperty_enum, CUstreamAttrID, CUstreamAttrValue,
+            cuStreamSetAttribute,
+        };
+
+        let rho_bytes = self.d_rho.len();
+        let (rho_ptr, _guard) = self.d_rho.device_ptr(&self.stream);
+
+        let policy = CUaccessPolicyWindow_st {
+            base_ptr: rho_ptr as *mut std::ffi::c_void,
+            num_bytes: rho_bytes,
+            hitRatio: 0.0,
+            hitProp: CUaccessProperty_enum::CU_ACCESS_PROPERTY_NORMAL,
+            missProp: CUaccessProperty_enum::CU_ACCESS_PROPERTY_NORMAL,
+        };
+        let attr_value = CUstreamAttrValue {
+            accessPolicyWindow: policy,
+        };
+        let result = unsafe {
+            cuStreamSetAttribute(
+                self.stream.cu_stream(),
+                CUstreamAttrID::CU_LAUNCH_ATTRIBUTE_ACCESS_POLICY_WINDOW,
+                &attr_value,
+            )
+        };
+        if result != cudarc::driver::sys::CUresult::CUDA_SUCCESS {
+            anyhow::bail!("cuStreamSetAttribute (unpin) failed: {:?}", result);
+        }
+        Ok(())
+    }
+
+    /// Enable or disable L2 cache pinning for the rho field.
+    ///
+    /// When enabled, reserves 32 MB of L2 set-aside budget and marks the rho
+    /// buffer as PERSISTING. Tau benefits from the enlarged budget via LRU.
+    /// When disabled, resets to NORMAL access policy.
+    /// Re-pins automatically if d_rho is reallocated (e.g. via initialize_custom).
+    pub fn set_l2_pinning(&mut self, enabled: bool) -> Result<()> {
+        if enabled {
+            self.pin_rho_in_l2()?;
+            self.l2_pinned = true;
+        } else {
+            self.unpin_l2()?;
+            self.l2_pinned = false;
+        }
+        Ok(())
     }
 }
 
@@ -1881,9 +2116,23 @@ impl DarkHaloCudaSolver {
     /// Only effective on SM 8.0+ (Ampere/Ada Lovelace). No-op on older GPUs.
     pub fn pin_rho_in_l2(&self) -> Result<()> {
         use cudarc::driver::sys::{
-            CUaccessPolicyWindow_st, CUaccessProperty_enum, CUstreamAttrID, CUstreamAttrValue,
-            cuStreamSetAttribute,
+            CUaccessPolicyWindow_st, CUaccessProperty_enum, CUlimit_enum, CUstreamAttrID,
+            CUstreamAttrValue, cuCtxSetLimit, cuStreamSetAttribute,
         };
+
+        // Reserve 32 MB of L2 for persistent data.
+        // Rho is pinned via access policy window; tau benefits from the enlarged
+        // budget via LRU (rho + tau = 16 MB at 128^3, fits in 32 MB with headroom).
+        // Only ONE access policy window per stream -- tau stays LRU-warm.
+        let budget: usize = 32 * 1024 * 1024;
+        let limit_result =
+            unsafe { cuCtxSetLimit(CUlimit_enum::CU_LIMIT_PERSISTING_L2_CACHE_SIZE, budget) };
+        if limit_result != cudarc::driver::sys::CUresult::CUDA_SUCCESS {
+            eprintln!(
+                "    L2 budget reservation failed: {:?} (non-fatal, pinning may be ineffective)",
+                limit_result
+            );
+        }
 
         let rho_bytes = self.n_cells * std::mem::size_of::<f32>();
         let (rho_ptr, _guard) = self.d_rho.device_ptr(&self.stream);
@@ -1915,8 +2164,9 @@ impl DarkHaloCudaSolver {
         }
 
         eprintln!(
-            "    L2 residency: pinned {} KB rho field (hitRatio=1.0, PERSISTING)",
-            rho_bytes / 1024
+            "    L2 residency: pinned {} KB rho field (hitRatio=1.0, PERSISTING, budget={}MB)",
+            rho_bytes / 1024,
+            budget / (1024 * 1024),
         );
         Ok(())
     }

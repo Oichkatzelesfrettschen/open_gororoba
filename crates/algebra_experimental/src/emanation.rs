@@ -70,7 +70,7 @@ pub struct EmanationTable {
     pub dim: usize,
     /// Table size: dim - 1 (indices 1..dim-1, square matrix).
     pub size: usize,
-    /// Row-major storage: cells[i][j] for i,j in 0..size
+    /// Row-major storage: `cells[i][j]` for `i,j in 0..size`
     /// where basis index = i + 1.
     pub cells: Vec<Vec<EtCell>>,
     /// Number of cells marked as zero-divisor pairs.
@@ -1305,7 +1305,7 @@ pub fn loop_boxkite_pairs() -> Vec<(usize, usize)> {
 
 /// PSL(2,7) navigation table: how each Fano-plane automorphism maps box-kites.
 ///
-/// Returns a 7x7 table where entry [i][j] indicates the box-kite that results
+/// Returns a 7x7 table where entry `table[i][j]` indicates the box-kite that results
 /// from applying the j-th basic Fano transformation to box-kite i.
 ///
 /// PSL(2,7) has order 168 = 7 * 24 and acts transitively on the 7 Fano lines.
@@ -1764,7 +1764,7 @@ pub struct ToneRow {
     pub k: usize,
     /// Low-index tone row (ordered), length K.
     pub lo: Vec<usize>,
-    /// High-index tone row (ordered), length K.  hi[i] is the HI partner of lo[i].
+    /// High-index tone row (ordered), length K. `hi[i]` is the HI partner of `lo[i]`.
     pub hi: Vec<usize>,
 }
 
@@ -1880,7 +1880,7 @@ pub struct StruttedEmanationTable {
     /// The tone row this table is built from.
     pub tone_row: ToneRow,
     /// K x K grid of cells (some may be empty/non-DMZ).
-    /// Indexed as cells[row][col] where row, col are tone-row positions.
+    /// Indexed as `cells[row][col]` where row and col are tone-row positions.
     pub cells: Vec<Vec<Option<StruttedEtCell>>>,
     /// Number of DMZ (filled) cells.
     pub dmz_count: usize,
@@ -2474,7 +2474,7 @@ pub struct Skybox {
     pub edge: usize,
     /// The underlying ET.
     pub et: StruttedEmanationTable,
-    /// G x G grid of cells. Indexed as grid[row][col].
+    /// `G x G` grid of cells, indexed as `grid[row][col]`.
     pub grid: Vec<Vec<SkyboxCell>>,
     /// Number of DMZ cells in the skybox (including label-line DMZs).
     pub dmz_count: usize,
@@ -4472,7 +4472,7 @@ pub struct VentPairingAnalysis {
     #[allow(clippy::type_complexity)]
     pub pairings: [((usize, usize, usize), (usize, usize, usize)); 3],
     /// Which Fano line element each pairing's XOR corresponds to:
-    /// 0 = source_strut (S), 1 = perp[0], 2 = perp[1].
+    /// `0 = source_strut (S)`, `1 = perp[0]`, `2 = perp[1]`.
     pub pairing_fano_roles: [usize; 3],
     /// The twist targets currently computed by twist_transition_table().
     pub current_twist_targets: (usize, usize),
@@ -4484,7 +4484,7 @@ pub struct VentPairingAnalysis {
 ///
 /// The 4 vent assessors of a tray-rack partition into 2+2 in three ways.
 /// Each pairing produces a consistent XOR value that lies on the Fano line
-/// {S, perp[0], perp[1]}. This function documents which pairing the
+/// `{S, perp[0], perp[1]}`. This function documents which pairing the
 /// twist_transition_table currently selects and whether it's consistent.
 pub fn vent_pairing_analysis() -> Vec<VentPairingAnalysis> {
     let bks = find_box_kites(16, 1e-10);

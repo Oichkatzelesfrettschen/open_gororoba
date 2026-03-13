@@ -15,7 +15,11 @@ use std::{
 use toml::Value;
 use walkdir::{DirEntry, WalkDir};
 
-type DomainParseResult = (Vec<DomainRecord>, Vec<DomainEntry>, BTreeMap<String, Vec<String>>);
+type DomainParseResult = (
+    Vec<DomainRecord>,
+    Vec<DomainEntry>,
+    BTreeMap<String, Vec<String>>,
+);
 type OverlaySections = (String, Vec<(String, String, String)>);
 
 const DEFAULT_IGNORED_PREFIXES: &[&str] = &[
@@ -43,6 +47,7 @@ const DEFAULT_IGNORED_PARTS: &[&str] = &[
     ".pytest_cache",
     "venv",
     ".venv",
+    "lambda_gororoba_backups",
     "target",
     "logs",
     "build",
@@ -778,10 +783,10 @@ fn main() -> Result<()> {
         Commands::NormalizeOperationalNarratives(args) => {
             normalize_operational_narratives(&repo_root, &args)
         }
-        Commands::PromoteDocsRootNarratives(args) => promote_docs_root_narratives(&repo_root, &args),
-        Commands::PromoteResearchNarratives(args) => {
-            promote_research_narratives(&repo_root, &args)
+        Commands::PromoteDocsRootNarratives(args) => {
+            promote_docs_root_narratives(&repo_root, &args)
         }
+        Commands::PromoteResearchNarratives(args) => promote_research_narratives(&repo_root, &args),
         Commands::VerifyCorpus(args) => verify_corpus(&repo_root, &args),
         Commands::VerifyTomlInventory(args) => verify_toml_inventory(&repo_root, &args),
         Commands::VerifyEmbedded(args) => verify_embedded(&repo_root, &args),
@@ -812,7 +817,9 @@ fn build_knowledge_sources(repo_root: &Path, args: &BuildKnowledgeSourcesArgs) -
                 .and_then(|s| s.to_str())
                 .unwrap_or(rel_path),
         );
-        let (kind, authoring_mode, generated) = knowledge_kind_for_path(rel_path, &text);
+        let toml_backing = knowledge_toml_backing_for_document(rel_path, &text);
+        let (kind, authoring_mode, generated) =
+            knowledge_kind_for_path(rel_path, &text, &toml_backing);
         let row = KnowledgeSourceRow {
             doc_id: format!("DOC-{idx:04}", idx = idx + 1),
             path: rel_path.clone(),
@@ -822,10 +829,11 @@ fn build_knowledge_sources(repo_root: &Path, args: &BuildKnowledgeSourcesArgs) -
             generated,
             status: knowledge_status_for_path(rel_path),
             migration_priority: knowledge_migration_priority(&kind, rel_path),
-            toml_backing: knowledge_toml_backing_for_path(rel_path),
+            toml_backing,
             sha256: sha256_hex(text.as_bytes()),
             size_bytes: raw.len(),
-            line_count: text.lines().count() + usize::from(!text.is_empty() && !text.ends_with('\n')),
+            line_count: text.lines().count()
+                + usize::from(!text.is_empty() && !text.ends_with('\n')),
             claim_ref_count: count_regex(r"\bC-\d{3}\b", &text)?,
             insight_ref_count: count_regex(r"\bI-\d{3}\b", &text)?,
             experiment_ref_count: count_regex(r"\bE-\d{3}\b", &text)?,
@@ -860,7 +868,10 @@ fn build_knowledge_sources(repo_root: &Path, args: &BuildKnowledgeSourcesArgs) -
         lines.push(format!("authoring_mode = {}", q(&row.authoring_mode)));
         lines.push(format!("generated = {}", bool_toml(row.generated)));
         lines.push(format!("status = {}", q(&row.status)));
-        lines.push(format!("migration_priority = {}", q(&row.migration_priority)));
+        lines.push(format!(
+            "migration_priority = {}",
+            q(&row.migration_priority)
+        ));
         if !row.toml_backing.is_empty() {
             lines.push(format!("toml_backing = {}", q(&row.toml_backing)));
         }
@@ -869,7 +880,10 @@ fn build_knowledge_sources(repo_root: &Path, args: &BuildKnowledgeSourcesArgs) -
         lines.push(format!("line_count = {}", row.line_count));
         lines.push(format!("claim_ref_count = {}", row.claim_ref_count));
         lines.push(format!("insight_ref_count = {}", row.insight_ref_count));
-        lines.push(format!("experiment_ref_count = {}", row.experiment_ref_count));
+        lines.push(format!(
+            "experiment_ref_count = {}",
+            row.experiment_ref_count
+        ));
         lines.push(format!("link_count = {}", row.link_count));
         lines.push(format!("link_sample = {}", q_list(&row.link_sample)));
         lines.push(String::new());
@@ -896,10 +910,7 @@ fn build_governance(repo_root: &Path, args: &BuildGovernanceArgs) -> Result<()> 
         .into_iter()
         .map(|row| (row.path.clone(), row))
         .collect::<HashMap<_, _>>();
-    let mut governed_paths = knowledge_by_path
-        .keys()
-        .cloned()
-        .collect::<BTreeSet<_>>();
+    let mut governed_paths = knowledge_by_path.keys().cloned().collect::<BTreeSet<_>>();
     governed_paths.extend(refs.keys().cloned());
     governed_paths.extend(tracked_markdown);
 
@@ -910,11 +921,19 @@ fn build_governance(repo_root: &Path, args: &BuildGovernanceArgs) -> Result<()> 
         }
         let row = knowledge_by_path.get(&path);
         let inv_row = inventory_by_path.get(&path);
+        let exists_on_disk = repo_root.join(&path).is_file();
+        if row.is_none() && inv_row.is_none() && !exists_on_disk {
+            continue;
+        }
         let classification = inv_row
             .map(|item| item.classification.clone())
             .unwrap_or_default();
-        let git_status = inv_row.map(|item| item.git_status.clone()).unwrap_or_default();
-        if !git_status.is_empty() && git_status != "tracked" && classification != "generated_artifact"
+        let git_status = inv_row
+            .map(|item| item.git_status.clone())
+            .unwrap_or_default();
+        if !git_status.is_empty()
+            && git_status != "tracked"
+            && classification != "generated_artifact"
         {
             continue;
         }
@@ -975,7 +994,8 @@ fn build_governance(repo_root: &Path, args: &BuildGovernanceArgs) -> Result<()> 
 
     let mut lines = vec![
         "# Markdown lifecycle governance registry (TOML-first).".to_string(),
-        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-governance".to_string(),
+        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-governance"
+            .to_string(),
         String::new(),
         "[markdown_governance]".to_string(),
         "generated_at = \"deterministic\"".to_string(),
@@ -997,18 +1017,19 @@ fn build_governance(repo_root: &Path, args: &BuildGovernanceArgs) -> Result<()> 
     lines.push("[policy]".to_string());
     lines.push(format!(
         "safe_classifications = {}",
-        q_list(
-            &[
-                "toml_published_markdown".to_string(),
-                "toml_destination_exists_manual_markdown".to_string(),
-                "generated_artifact".to_string(),
-                "third_party_markdown".to_string(),
-            ]
-        )
+        q_list(&[
+            "toml_published_markdown".to_string(),
+            "toml_destination_exists_manual_markdown".to_string(),
+            "generated_artifact".to_string(),
+            "third_party_markdown".to_string(),
+        ])
     ));
     lines.push(format!(
         "tracked_allowed_modes = {}",
-        q_list(&["toml_generated_mirror".to_string(), "toml_manual_source".to_string()])
+        q_list(&[
+            "toml_generated_mirror".to_string(),
+            "toml_manual_source".to_string()
+        ])
     ));
     lines.push(format!(
         "tracked_allowed_paths = {}",
@@ -1032,9 +1053,11 @@ fn build_governance(repo_root: &Path, args: &BuildGovernanceArgs) -> Result<()> 
     ));
     lines.push(format!(
         "owner_scope_prefixes = {}",
-        q_list(
-            &["docs/".to_string(), "reports/".to_string(), "data/artifacts/".to_string()]
-        )
+        q_list(&[
+            "docs/".to_string(),
+            "reports/".to_string(),
+            "data/artifacts/".to_string()
+        ])
     ));
     lines.push(format!(
         "owner_scope_paths = {}",
@@ -1088,7 +1111,11 @@ fn build_governance(repo_root: &Path, args: &BuildGovernanceArgs) -> Result<()> 
         lines.push(String::new());
     }
     write_ascii(&repo_path(repo_root, &args.out), &lines.join("\n"))?;
-    println!("Wrote {} with {} entries.", args.out.display(), mode_counts.values().sum::<usize>());
+    println!(
+        "Wrote {} with {} entries.",
+        args.out.display(),
+        mode_counts.values().sum::<usize>()
+    );
     Ok(())
 }
 
@@ -1128,7 +1155,12 @@ fn migrate_corpus(repo_root: &Path, args: &MigrateCorpusArgs) -> Result<()> {
         .with_context(|| format!("read_dir {}", out_dir.display()))?
         .filter_map(|entry| entry.ok())
         .map(|entry| entry.path())
-        .filter(|path| path.file_name().and_then(|s| s.to_str()).unwrap_or_default().starts_with("DOC-"))
+        .filter(|path| {
+            path.file_name()
+                .and_then(|s| s.to_str())
+                .unwrap_or_default()
+                .starts_with("DOC-")
+        })
         .filter(|path| path.extension().and_then(|s| s.to_str()) == Some("toml"))
     {
         if expected.contains(&existing) {
@@ -1140,12 +1172,19 @@ fn migrate_corpus(repo_root: &Path, args: &MigrateCorpusArgs) -> Result<()> {
         }
     }
 
-    write_ascii(&manifest_path, &render_raw_capture_manifest(&ingested, &skipped))?;
+    write_ascii(
+        &manifest_path,
+        &render_raw_capture_manifest(&ingested, &skipped),
+    )?;
     println!(
         "Raw-captured {} markdown docs into TOML; skipped {} generated docs; stale captures {}={}.",
         ingested.len(),
         skipped.len(),
-        if args.prune_stale { "pruned" } else { "retained" },
+        if args.prune_stale {
+            "pruned"
+        } else {
+            "retained"
+        },
         stale_count
     );
     Ok(())
@@ -1208,14 +1247,16 @@ fn normalize_bibliography(repo_root: &Path, args: &NormalizeBibliographyArgs) ->
         &repo_path(repo_root, &args.out),
         &render_bibliography_registry(&entries, &groups, &sections, &now),
     )?;
-    println!("Wrote {} from {}; entries={}.", args.out.display(), args.source.display(), entries.len());
+    println!(
+        "Wrote {} from {}; entries={}.",
+        args.out.display(),
+        args.source.display(),
+        entries.len()
+    );
     Ok(())
 }
 
-fn normalize_external_sources(
-    repo_root: &Path,
-    args: &NormalizeExternalSourcesArgs,
-) -> Result<()> {
+fn normalize_external_sources(repo_root: &Path, args: &NormalizeExternalSourcesArgs) -> Result<()> {
     if !args.bootstrap_from_markdown {
         bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
     }
@@ -1241,7 +1282,11 @@ fn normalize_external_sources(
     }
     records.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
     write_ascii(&out_path, &render_external_sources_registry(&records))?;
-    println!("Wrote {} with {} documents.", args.out.display(), records.len());
+    println!(
+        "Wrote {} with {} documents.",
+        args.out.display(),
+        records.len()
+    );
     Ok(())
 }
 
@@ -1265,7 +1310,11 @@ fn normalize_book_docs(repo_root: &Path, args: &NormalizeBookDocsArgs) -> Result
     }
     docs.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
     write_ascii(&out_path, &render_book_docs_registry(&docs))?;
-    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    println!(
+        "Wrote {} with {} documents.",
+        args.out.display(),
+        docs.len()
+    );
     Ok(())
 }
 
@@ -1292,7 +1341,11 @@ fn normalize_reports_narratives(
     }
     docs.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
     write_ascii(&out_path, &render_reports_registry(&docs))?;
-    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    println!(
+        "Wrote {} with {} documents.",
+        args.out.display(),
+        docs.len()
+    );
     Ok(())
 }
 
@@ -1309,14 +1362,23 @@ fn normalize_docs_convos(repo_root: &Path, args: &NormalizeDocsConvosArgs) -> Re
         let path = entry?;
         let rel = repo_rel(repo_root, &path);
         let text = read_text_lossy(&path)?;
-        docs.push(parse_docs_convo_doc(&rel, &text, &mut assigned, &mut next_id));
+        docs.push(parse_docs_convo_doc(
+            &rel,
+            &text,
+            &mut assigned,
+            &mut next_id,
+        ));
     }
     if docs.is_empty() {
         bail!("ERROR: no docs/convos markdown files found");
     }
     docs.sort_by(|a, b| a.source_markdown.cmp(&b.source_markdown));
     write_ascii(&out_path, &render_docs_convos_registry(&docs))?;
-    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    println!(
+        "Wrote {} with {} documents.",
+        args.out.display(),
+        docs.len()
+    );
     Ok(())
 }
 
@@ -1348,14 +1410,15 @@ fn normalize_data_artifact_narratives(
     }
     docs.sort_by(|a, b| a.id.cmp(&b.id).reverse());
     write_ascii(&out_path, &render_data_artifact_registry(&docs, &targets))?;
-    println!("Wrote {} with {} documents.", args.out.display(), docs.len());
+    println!(
+        "Wrote {} with {} documents.",
+        args.out.display(),
+        docs.len()
+    );
     Ok(())
 }
 
-fn normalize_entrypoint_docs(
-    repo_root: &Path,
-    args: &NormalizeEntrypointDocsArgs,
-) -> Result<()> {
+fn normalize_entrypoint_docs(repo_root: &Path, args: &NormalizeEntrypointDocsArgs) -> Result<()> {
     if !args.bootstrap_from_markdown {
         bail!("ERROR: pass --bootstrap-from-markdown to ingest markdown sources");
     }
@@ -1376,7 +1439,11 @@ fn normalize_entrypoint_docs(
         &repo_path(repo_root, &args.out),
         &render_entrypoint_docs_registry(&docs),
     )?;
-    println!("Wrote {} with {} entrypoint docs.", args.out.display(), docs.len());
+    println!(
+        "Wrote {} with {} entrypoint docs.",
+        args.out.display(),
+        docs.len()
+    );
     Ok(())
 }
 
@@ -1480,12 +1547,19 @@ fn parse_task_table_row(
     }
     let status_raw = parts.last()?.to_string();
     let output_raw = parts.get(parts.len().saturating_sub(2))?.to_string();
-    let task_text = parts[1..parts.len().saturating_sub(2)].join("|").trim().to_string();
+    let task_text = parts[1..parts.len().saturating_sub(2)]
+        .join("|")
+        .trim()
+        .to_string();
     Some((parts[0].to_string(), task_text, output_raw, status_raw))
 }
 
 fn normalize_task_status(raw: &str) -> String {
-    let cleaned = raw.split_whitespace().collect::<Vec<_>>().join(" ").to_ascii_uppercase();
+    let cleaned = raw
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_ascii_uppercase();
     match cleaned.as_str() {
         "IN PROGRESS" => "IN_PROGRESS".to_string(),
         other => other.replace(' ', "_"),
@@ -1510,7 +1584,9 @@ fn parse_domains(
     let csv_map = parse_claims_domain_map(csv_path)?;
     let mut domain_records = Vec::new();
     let mut all_entries = Vec::new();
-    for entry in fs::read_dir(by_domain_dir).with_context(|| format!("read {}", by_domain_dir.display()))? {
+    for entry in
+        fs::read_dir(by_domain_dir).with_context(|| format!("read {}", by_domain_dir.display()))?
+    {
         let path = entry?.path();
         if path.extension().and_then(|ext| ext.to_str()) != Some("md") {
             continue;
@@ -1518,7 +1594,11 @@ fn parse_domains(
         let rel_markdown = repo_rel(repo_root, &path);
         let (declared_count, entries) = parse_by_domain_markdown(&path, &rel_markdown)?;
         all_entries.extend(entries.iter().cloned());
-        let domain = path.file_stem().and_then(|s| s.to_str()).unwrap_or_default().to_string();
+        let domain = path
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default()
+            .to_string();
         let csv_claim_ids = csv_map
             .iter()
             .filter_map(|(claim_id, domains)| domains.contains(&domain).then_some(claim_id.clone()))
@@ -1572,12 +1652,19 @@ fn parse_claims_domain_map(csv_path: &Path) -> Result<BTreeMap<String, Vec<Strin
     Ok(out)
 }
 
-fn parse_by_domain_markdown(path: &Path, source_markdown: &str) -> Result<(usize, Vec<DomainEntry>)> {
+fn parse_by_domain_markdown(
+    path: &Path,
+    source_markdown: &str,
+) -> Result<(usize, Vec<DomainEntry>)> {
     let lines = read_text_lossy(path)?
         .lines()
         .map(ToString::to_string)
         .collect::<Vec<_>>();
-    let domain = path.file_stem().and_then(|s| s.to_str()).unwrap_or_default().to_string();
+    let domain = path
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or_default()
+        .to_string();
     let hypothesis_re = Regex::new(r"^-\s+Hypothesis\s+(C-\d{3})\s+\((.*?)\):\s+(.*)$")?;
     let date_re = Regex::new(r",\s*([0-9]{4}-[0-9]{2}-[0-9]{2})\s*$")?;
     let mut declared_count = 0usize;
@@ -1589,18 +1676,43 @@ fn parse_by_domain_markdown(path: &Path, source_markdown: &str) -> Result<(usize
             declared_count = rest.trim().parse::<usize>().unwrap_or(0);
         }
         if let Some(caps) = hypothesis_re.captures(&line) {
-            let claim_id = caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string();
-            let status_blob = caps.get(2).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
-            let summary = caps.get(3).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
-            let (status_text, status_date) = if let Some(date_caps) = date_re.captures(&status_blob) {
-                let date = date_caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string();
-                let cut = status_blob[..date_caps.get(0).map(|m| m.start()).unwrap_or(status_blob.len())]
+            let claim_id = caps
+                .get(1)
+                .map(|m| m.as_str())
+                .unwrap_or_default()
+                .to_string();
+            let status_blob = caps
+                .get(2)
+                .map(|m| m.as_str())
+                .unwrap_or_default()
+                .trim()
+                .to_string();
+            let summary = caps
+                .get(3)
+                .map(|m| m.as_str())
+                .unwrap_or_default()
+                .trim()
+                .to_string();
+            let (status_text, status_date) = if let Some(date_caps) = date_re.captures(&status_blob)
+            {
+                let date = date_caps
+                    .get(1)
+                    .map(|m| m.as_str())
+                    .unwrap_or_default()
+                    .to_string();
+                let cut = status_blob[..date_caps
+                    .get(0)
+                    .map(|m| m.start())
+                    .unwrap_or(status_blob.len())]
                     .trim()
                     .trim_end_matches(',')
                     .replace("**", "");
                 (cut.trim().to_string(), date)
             } else {
-                (status_blob.replace("**", "").trim().to_string(), String::new())
+                (
+                    status_blob.replace("**", "").trim().to_string(),
+                    String::new(),
+                )
             };
             let mut where_lines = Vec::new();
             let mut j = i + 1;
@@ -1609,12 +1721,15 @@ fn parse_by_domain_markdown(path: &Path, source_markdown: &str) -> Result<(usize
                 if stripped.starts_with("- Hypothesis ") || stripped.starts_with("## ") {
                     break;
                 }
-                if stripped.starts_with("- Where stated:") || stripped.starts_with("Where stated:") {
+                if stripped.starts_with("- Where stated:") || stripped.starts_with("Where stated:")
+                {
                     where_lines.push(stripped.to_string());
                     j += 1;
                     continue;
                 }
-                if !where_lines.is_empty() && (lines[j].starts_with("  ") || lines[j].starts_with('\t')) {
+                if !where_lines.is_empty()
+                    && (lines[j].starts_with("  ") || lines[j].starts_with('\t'))
+                {
                     where_lines.push(stripped.to_string());
                     j += 1;
                     continue;
@@ -1670,7 +1785,9 @@ fn normalize_domain_status(raw: &str) -> String {
 
 fn parse_tickets(tickets_dir: &Path, repo_root: &Path) -> Result<Vec<TicketRecord>> {
     let mut out = Vec::new();
-    for entry in fs::read_dir(tickets_dir).with_context(|| format!("read {}", tickets_dir.display()))? {
+    for entry in
+        fs::read_dir(tickets_dir).with_context(|| format!("read {}", tickets_dir.display()))?
+    {
         let path = entry?.path();
         if path.extension().and_then(|ext| ext.to_str()) != Some("md") {
             continue;
@@ -1691,14 +1808,31 @@ fn parse_ticket(path: &Path, repo_root: &Path) -> Result<TicketRecord> {
     let open_re = Regex::new(r"(?m)^\s*-\s+\[\s\]\s+")?;
     let title = lines
         .iter()
-        .find_map(|line| line.strip_prefix("# ").map(|value| value.trim().to_string()))
-        .unwrap_or_else(|| path.file_stem().and_then(|s| s.to_str()).unwrap_or_default().to_string());
+        .find_map(|line| {
+            line.strip_prefix("# ")
+                .map(|value| value.trim().to_string())
+        })
+        .unwrap_or_else(|| {
+            path.file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or_default()
+                .to_string()
+        });
     let meta = extract_ticket_meta(&lines)?;
-    let stem = path.file_name().and_then(|s| s.to_str()).unwrap_or_default();
+    let stem = path
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or_default();
     let (ticket_kind, claim_range_start, claim_range_end, ticket_id) =
         if let Some(caps) = ticket_range_re.captures(stem) {
-            let start = caps.get(1).and_then(|m| m.as_str().parse::<usize>().ok()).unwrap_or(0);
-            let end = caps.get(2).and_then(|m| m.as_str().parse::<usize>().ok()).unwrap_or(0);
+            let start = caps
+                .get(1)
+                .and_then(|m| m.as_str().parse::<usize>().ok())
+                .unwrap_or(0);
+            let end = caps
+                .get(2)
+                .and_then(|m| m.as_str().parse::<usize>().ok())
+                .unwrap_or(0);
             (
                 "CLAIMS_AUDIT_BATCH".to_string(),
                 start,
@@ -1707,7 +1841,12 @@ fn parse_ticket(path: &Path, repo_root: &Path) -> Result<TicketRecord> {
             )
         } else {
             let normalized = Regex::new(r"[^A-Za-z0-9]+")?
-                .replace_all(path.file_stem().and_then(|s| s.to_str()).unwrap_or_default(), "-")
+                .replace_all(
+                    path.file_stem()
+                        .and_then(|s| s.to_str())
+                        .unwrap_or_default(),
+                    "-",
+                )
                 .trim_matches('-')
                 .to_ascii_uppercase();
             ("GENERAL".to_string(), 0, 0, format!("TICKET-{normalized}"))
@@ -1736,10 +1875,8 @@ fn parse_ticket(path: &Path, repo_root: &Path) -> Result<TicketRecord> {
             .filter(|item| is_path_like(item))
             .collect();
     }
-    let acceptance_checks = parse_ticket_acceptance_checks(&extract_ticket_section(
-        &lines,
-        "## Acceptance checks",
-    ))?;
+    let acceptance_checks =
+        parse_ticket_acceptance_checks(&extract_ticket_section(&lines, "## Acceptance checks"))?;
     let goal_summary = extract_ticket_section(&lines, "## Goal")
         .into_iter()
         .map(|line| line.trim().to_string())
@@ -1777,8 +1914,15 @@ fn extract_ticket_meta(lines: &[String]) -> Result<BTreeMap<String, String>> {
     for line in lines.iter().take(40) {
         if let Some(caps) = meta_re.captures(line.trim()) {
             meta.insert(
-                caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string(),
-                caps.get(2).map(|m| m.as_str()).unwrap_or_default().trim().to_string(),
+                caps.get(1)
+                    .map(|m| m.as_str())
+                    .unwrap_or_default()
+                    .to_string(),
+                caps.get(2)
+                    .map(|m| m.as_str())
+                    .unwrap_or_default()
+                    .trim()
+                    .to_string(),
             );
         }
     }
@@ -1861,12 +2005,22 @@ fn parse_bibliography(source: &Path) -> Result<(Vec<BibliographyEntry>, Vec<Stri
     let mut i = 0usize;
     while i < lines.len() {
         if let Some(caps) = h2_re.captures(&lines[i]) {
-            group = caps.get(1).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
+            group = caps
+                .get(1)
+                .map(|m| m.as_str())
+                .unwrap_or_default()
+                .trim()
+                .to_string();
             i += 1;
             continue;
         }
         if let Some(caps) = h3_re.captures(&lines[i]) {
-            section = caps.get(1).map(|m| m.as_str()).unwrap_or_default().trim().to_string();
+            section = caps
+                .get(1)
+                .map(|m| m.as_str())
+                .unwrap_or_default()
+                .trim()
+                .to_string();
             i += 1;
             continue;
         }
@@ -1951,19 +2105,31 @@ fn parse_external_source_doc(
         .unwrap_or(rel_path);
     let meta = external_source_meta(filename)
         .with_context(|| format!("ERROR: Missing SOURCE_META entry for {filename}"))?;
-    let body = strip_generated_preamble(&ascii_clean(text)).trim().to_string();
+    let body = strip_generated_preamble(&ascii_clean(text))
+        .trim()
+        .to_string();
     Ok(SourceDoc {
         doc_id: narrative_id_for_path(rel_path, "XS", assigned, next_id),
         source_markdown: rel_path.to_string(),
         slug: filename.trim_end_matches(".md").to_ascii_lowercase(),
-        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        title: first_title(
+            &body,
+            Path::new(rel_path)
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or(rel_path),
+        ),
         status_token: meta.status_token.to_string(),
         content_kind: meta.content_kind.to_string(),
         authority_level: meta.authority_level.to_string(),
         verification_level: meta.verification_level.to_string(),
         operational_role: meta.operational_role.to_string(),
         source_lineage_summary: meta.source_lineage_summary.to_string(),
-        truth_surfaces: meta.truth_surfaces.iter().map(|s| (*s).to_string()).collect(),
+        truth_surfaces: meta
+            .truth_surfaces
+            .iter()
+            .map(|s| (*s).to_string())
+            .collect(),
         artifact_contract_paths: meta
             .artifact_contract_paths
             .iter()
@@ -1996,7 +2162,10 @@ fn parse_book_doc(
             .map(|part| part.as_os_str().to_string_lossy().to_string())
             .unwrap_or_else(|| "root".to_string()),
         slug: rel.with_extension("").to_string_lossy().replace('/', "_"),
-        title: first_title(&body, rel.file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        title: first_title(
+            &body,
+            rel.file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path),
+        ),
         content_kind: String::new(),
         claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
         path_refs: extract_backtick_paths(&body),
@@ -2020,8 +2189,18 @@ fn parse_reports_doc(
         id: narrative_id_for_path(rel_path, "RPT", assigned, next_id),
         source_markdown: rel_path.to_string(),
         section: String::new(),
-        slug: Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path).to_string(),
-        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        slug: Path::new(rel_path)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or(rel_path)
+            .to_string(),
+        title: first_title(
+            &body,
+            Path::new(rel_path)
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or(rel_path),
+        ),
         content_kind: report_category(filename),
         claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
         path_refs: extract_backtick_paths(&body),
@@ -2045,8 +2224,18 @@ fn parse_docs_convo_doc(
         id: narrative_id_for_path(rel_path, "CVX", assigned, next_id),
         source_markdown: rel_path.to_string(),
         section: String::new(),
-        slug: Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path).to_string(),
-        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        slug: Path::new(rel_path)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or(rel_path)
+            .to_string(),
+        title: first_title(
+            &body,
+            Path::new(rel_path)
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or(rel_path),
+        ),
         content_kind: docs_convo_kind(filename),
         claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
         path_refs: extract_backtick_paths(&body),
@@ -2070,8 +2259,18 @@ fn parse_data_artifact_doc(
         id: narrative_id_for_path(rel_path, "ART", assigned, next_id),
         source_markdown: rel_path.to_string(),
         section: String::new(),
-        slug: Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path).to_string(),
-        title: first_title(&body, Path::new(rel_path).file_stem().and_then(|s| s.to_str()).unwrap_or(rel_path)),
+        slug: Path::new(rel_path)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or(rel_path)
+            .to_string(),
+        title: first_title(
+            &body,
+            Path::new(rel_path)
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or(rel_path),
+        ),
         content_kind: data_artifact_kind(filename),
         claim_refs: extract_refs_by_regex(&body, r"\bC-\d{3}\b").unwrap_or_default(),
         path_refs: extract_backtick_paths(&body),
@@ -2099,10 +2298,18 @@ fn render_claims_tasks_toml(
         format!("task_count = {}", tasks.len()),
         format!("section_count = {}", sections.len()),
         format!("canonical_status_task_count = {canonical_count}"),
-        format!("noncanonical_status_task_count = {}", tasks.len().saturating_sub(canonical_count)),
+        format!(
+            "noncanonical_status_task_count = {}",
+            tasks.len().saturating_sub(canonical_count)
+        ),
         format!(
             "canonical_status_tokens = {}",
-            q_list(&CANONICAL_TASK_STATUS.iter().map(|s| (*s).to_string()).collect::<Vec<_>>())
+            q_list(
+                &CANONICAL_TASK_STATUS
+                    .iter()
+                    .map(|s| (*s).to_string())
+                    .collect::<Vec<_>>()
+            )
         ),
         String::new(),
     ];
@@ -2124,9 +2331,15 @@ fn render_claims_tasks_toml(
         lines.push(format!("order_index = {}", task.order_index));
         lines.push(format!("status_token = {}", q(&task.status_token)));
         lines.push(format!("status_raw = {}", q(&task.status_raw)));
-        lines.push(format!("status_canonical = {}", bool_toml(task.status_canonical)));
+        lines.push(format!(
+            "status_canonical = {}",
+            bool_toml(task.status_canonical)
+        ));
         lines.push(format!("task = {}", q(&task.task_text)));
-        lines.push(format!("output_artifacts = {}", q_list(&task.output_artifacts)));
+        lines.push(format!(
+            "output_artifacts = {}",
+            q_list(&task.output_artifacts)
+        ));
         lines.push(format!("output_artifacts_raw = {}", q(&task.output_raw)));
         lines.push(format!("source_line = {}", task.source_line));
         lines.push(String::new());
@@ -2174,7 +2387,10 @@ fn render_claims_domains_toml(
         lines.push(format!("source_markdown = {}", q(&record.source_markdown)));
         lines.push(format!("declared_count = {}", record.declared_count));
         lines.push(format!("csv_claim_count = {}", record.csv_claim_ids.len()));
-        lines.push(format!("markdown_claim_count = {}", record.markdown_claim_ids.len()));
+        lines.push(format!(
+            "markdown_claim_count = {}",
+            record.markdown_claim_ids.len()
+        ));
         lines.push(format!(
             "count_match = {}",
             bool_toml(record.declared_count == record.markdown_claim_ids.len())
@@ -2259,7 +2475,10 @@ fn render_claim_tickets_toml(tickets: &[TicketRecord], now: &str) -> String {
             "claims_referenced = {}",
             q_list(&ticket.claims_referenced)
         ));
-        lines.push(format!("backlog_reports = {}", q_list(&ticket.backlog_reports)));
+        lines.push(format!(
+            "backlog_reports = {}",
+            q_list(&ticket.backlog_reports)
+        ));
         lines.push(format!(
             "deliverable_links = {}",
             q_list(&ticket.deliverable_links)
@@ -2311,7 +2530,10 @@ fn render_bibliography_registry(
         lines.push(String::new());
     }
     for (idx, name) in sections.iter().enumerate() {
-        let entry_count = entries.iter().filter(|entry| &entry.section == name).count();
+        let entry_count = entries
+            .iter()
+            .filter(|entry| &entry.section == name)
+            .count();
         let group_names = entries
             .iter()
             .filter(|entry| &entry.section == name)
@@ -2390,7 +2612,10 @@ fn render_external_sources_registry(records: &[SourceDoc]) -> String {
         lines.push(format!("path_refs = {}", q_list(&rec.path_refs)));
         lines.push(format!("line_count = {}", rec.line_count));
         lines.push(format!("notes = {}", q(&rec.notes)));
-        lines.push(format!("body_markdown = {}", toml_multiline(&rec.body_markdown)));
+        lines.push(format!(
+            "body_markdown = {}",
+            toml_multiline(&rec.body_markdown)
+        ));
         lines.push(String::new());
     }
     lines.join("\n")
@@ -2419,7 +2644,10 @@ fn render_book_docs_registry(docs: &[SimpleMarkdownDoc]) -> String {
         lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
         lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
         lines.push(format!("line_count = {}", doc.line_count));
-        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(format!(
+            "body_markdown = {}",
+            toml_multiline(&doc.body_markdown)
+        ));
         lines.push(String::new());
     }
     lines.join("\n")
@@ -2448,7 +2676,10 @@ fn render_reports_registry(docs: &[SimpleMarkdownDoc]) -> String {
         lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
         lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
         lines.push(format!("line_count = {}", doc.line_count));
-        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(format!(
+            "body_markdown = {}",
+            toml_multiline(&doc.body_markdown)
+        ));
         lines.push(String::new());
     }
     lines.join("\n")
@@ -2477,7 +2708,10 @@ fn render_docs_convos_registry(docs: &[SimpleMarkdownDoc]) -> String {
         lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
         lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
         lines.push(format!("line_count = {}", doc.line_count));
-        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(format!(
+            "body_markdown = {}",
+            toml_multiline(&doc.body_markdown)
+        ));
         lines.push(String::new());
     }
     lines.join("\n")
@@ -2512,7 +2746,10 @@ fn render_data_artifact_registry(docs: &[SimpleMarkdownDoc], targets: &[String])
         lines.push(format!("claim_refs = {}", q_list(&doc.claim_refs)));
         lines.push(format!("path_refs = {}", q_list(&doc.path_refs)));
         lines.push(format!("line_count = {}", doc.line_count));
-        lines.push(format!("body_markdown = {}", toml_multiline(&doc.body_markdown)));
+        lines.push(format!(
+            "body_markdown = {}",
+            toml_multiline(&doc.body_markdown)
+        ));
         lines.push(String::new());
     }
     lines.join("\n")
@@ -2611,7 +2848,7 @@ fn entrypoint_files() -> Vec<&'static str> {
         "GEMINI.md",
         "README.md",
         "curated/README.md",
-        "curated/01_theory_frameworks/README_COQ.md",
+        "curated/01_theory_frameworks/README_ROCQ.md",
         "data/csv/README.md",
         "data/artifacts/README.md",
     ]
@@ -2919,7 +3156,8 @@ fn normalize_narrative_overlays(
                     path.display()
                 );
             }
-            let raw = fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
+            let raw =
+                fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
             assert_ascii(&raw, &path.display().to_string())?;
         }
         println!(
@@ -2989,7 +3227,8 @@ fn normalize_operational_narratives(
                     path.display()
                 );
             }
-            let raw = fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
+            let raw =
+                fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
             assert_ascii(&raw, &path.display().to_string())?;
         }
         println!(
@@ -3033,22 +3272,16 @@ fn normalize_operational_narratives(
         repo_root.join("docs/REQUIREMENTS.md"),
     ];
     let mut requirement_docs = Vec::<(String, String, String)>::new();
-    for file in requirement_files
-        .into_iter()
-        .chain(
-            fs::read_dir(repo_root.join("docs/requirements"))
-                .with_context(|| "read_dir docs/requirements".to_string())?
-                .filter_map(|entry| entry.ok())
-                .map(|entry| entry.path())
-                .filter(|path| path.extension().and_then(|s| s.to_str()) == Some("md"))
-                .collect::<Vec<_>>(),
-        )
-    {
+    for file in requirement_files.into_iter().chain(
+        fs::read_dir(repo_root.join("docs/requirements"))
+            .with_context(|| "read_dir docs/requirements".to_string())?
+            .filter_map(|entry| entry.ok())
+            .map(|entry| entry.path())
+            .filter(|path| path.extension().and_then(|s| s.to_str()) == Some("md"))
+            .collect::<Vec<_>>(),
+    ) {
         if !file.exists() {
-            bail!(
-                "missing {} for bootstrap mode",
-                repo_rel(repo_root, &file)
-            );
+            bail!("missing {} for bootstrap mode", repo_rel(repo_root, &file));
         }
         let body = read_overlay_markdown(&file)?;
         requirement_docs.push((
@@ -3077,7 +3310,11 @@ fn build_inventory(repo_root: &Path, args: &BuildInventoryArgs) -> Result<()> {
         .map(|row| row.path)
         .collect::<HashSet<_>>();
     let tracked = git_paths(repo_root, &["ls-files"], "*.md")?;
-    let untracked = git_paths(repo_root, &["ls-files", "--others", "--exclude-standard"], "*.md")?;
+    let untracked = git_paths(
+        repo_root,
+        &["ls-files", "--others", "--exclude-standard"],
+        "*.md",
+    )?;
     let ignored = git_paths(
         repo_root,
         &["ls-files", "--others", "--ignored", "--exclude-standard"],
@@ -3124,9 +3361,18 @@ fn build_inventory(repo_root: &Path, args: &BuildInventoryArgs) -> Result<()> {
             .then_with(|| a.path.cmp(&b.path))
     });
 
-    let tracked_count = docs.iter().filter(|doc| doc.git_status == "tracked").count();
-    let untracked_count = docs.iter().filter(|doc| doc.git_status == "untracked").count();
-    let ignored_count = docs.iter().filter(|doc| doc.git_status == "ignored").count();
+    let tracked_count = docs
+        .iter()
+        .filter(|doc| doc.git_status == "tracked")
+        .count();
+    let untracked_count = docs
+        .iter()
+        .filter(|doc| doc.git_status == "untracked")
+        .count();
+    let ignored_count = docs
+        .iter()
+        .filter(|doc| doc.git_status == "ignored")
+        .count();
     let filesystem_only_count = docs
         .iter()
         .filter(|doc| doc.git_status == "filesystem_only")
@@ -3155,7 +3401,8 @@ fn build_inventory(repo_root: &Path, args: &BuildInventoryArgs) -> Result<()> {
         .cloned()
         .collect::<Vec<_>>();
 
-    let mut lines = vec![
+    let mut lines =
+        vec![
         "# Full markdown inventory registry (TOML-first governance support).".to_string(),
         "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-inventory"
             .to_string(),
@@ -3300,7 +3547,11 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
             ));
         }
     }
-    risk_rows.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| b.1.cmp(&a.1)).then_with(|| a.2.cmp(&b.2)));
+    risk_rows.sort_by(|a, b| {
+        b.0.cmp(&a.0)
+            .then_with(|| b.1.cmp(&a.1))
+            .then_with(|| a.2.cmp(&b.2))
+    });
 
     let mut lines = vec![
         "# Wave 4 markdown corpus control-plane registry (TOML-first).".to_string(),
@@ -3310,7 +3561,10 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
         "[markdown_corpus_registry]".to_string(),
         "updated = \"deterministic\"".to_string(),
         "authoritative = true".to_string(),
-        format!("source_inventory = {}", q(args.inventory.to_string_lossy().as_ref())),
+        format!(
+            "source_inventory = {}",
+            q(args.inventory.to_string_lossy().as_ref())
+        ),
         format!("document_count = {}", docs.len()),
         format!("tracked_violation_count = {}", tracked_violations.len()),
         format!(
@@ -3391,9 +3645,15 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
         lines.push(format!("risk_score = {}", risk));
         lines.push(format!("classification = {}", q(&row.classification)));
         lines.push(format!("migration_action = {}", q(&row.migration_action)));
-        lines.push(format!("migration_priority = {}", q(&row.migration_priority)));
+        lines.push(format!(
+            "migration_priority = {}",
+            q(&row.migration_priority)
+        ));
         lines.push(format!("lifecycle = {}", q(lifecycle)));
-        lines.push(format!("destination_exists = {}", bool_toml(*destination_exists)));
+        lines.push(format!(
+            "destination_exists = {}",
+            bool_toml(*destination_exists)
+        ));
         if !row.toml_destination.is_empty() {
             lines.push(format!("toml_destination = {}", q(&row.toml_destination)));
         }
@@ -3407,8 +3667,8 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
         let lifecycle = lifecycle_for_path(&row.path, row);
         let destination_exists =
             !row.toml_destination.is_empty() && repo_root.join(&row.toml_destination).is_file();
-        let tracked_allowed = row.git_status != "tracked"
-            || policy.tracked_allowed_paths.contains(&row.path);
+        let tracked_allowed =
+            row.git_status != "tracked" || policy.tracked_allowed_paths.contains(&row.path);
         lines.push("[[document]]".to_string());
         lines.push(format!("path = {}", q(&row.path)));
         lines.push(format!("git_status = {}", q(&row.git_status)));
@@ -3417,7 +3677,10 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
         lines.push(format!("generated = {}", bool_toml(row.generated)));
         lines.push(format!("third_party = {}", bool_toml(row.third_party)));
         lines.push(format!("tracked_allowed = {}", bool_toml(tracked_allowed)));
-        lines.push(format!("destination_exists = {}", bool_toml(destination_exists)));
+        lines.push(format!(
+            "destination_exists = {}",
+            bool_toml(destination_exists)
+        ));
         lines.push(format!(
             "risk_score = {}",
             risk_score(&row.path, row, destination_exists, &policy)
@@ -3441,16 +3704,17 @@ fn build_corpus(repo_root: &Path, args: &BuildCorpusArgs) -> Result<()> {
 
 fn build_toml_inventory(repo_root: &Path, args: &BuildTomlInventoryArgs) -> Result<()> {
     let tracked = git_paths(repo_root, &["ls-files"], "*.toml")?;
-    let untracked = git_paths(repo_root, &["ls-files", "--others", "--exclude-standard"], "*.toml")?;
+    let untracked = git_paths(
+        repo_root,
+        &["ls-files", "--others", "--exclude-standard"],
+        "*.toml",
+    )?;
     let ignored = git_paths(
         repo_root,
         &["ls-files", "--others", "--ignored", "--exclude-standard"],
         "*.toml",
     )?;
-    let mut all_paths = tracked
-        .union(&untracked)
-        .cloned()
-        .collect::<BTreeSet<_>>();
+    let mut all_paths = tracked.union(&untracked).cloned().collect::<BTreeSet<_>>();
     all_paths.extend(ignored.iter().cloned());
     let mut rows = Vec::new();
     let mut status_counts = BTreeMap::<String, usize>::new();
@@ -3618,7 +3882,8 @@ fn build_embedded(repo_root: &Path, args: &BuildEmbeddedArgs) -> Result<()> {
             source_registry: candidate.source_registry.clone(),
             source_document_id: candidate.source_document_id.clone(),
             source_title: candidate.source_title.clone(),
-            line_count: body.lines().count() + usize::from(!body.is_empty() && !body.ends_with('\n')),
+            line_count: body.lines().count()
+                + usize::from(!body.is_empty() && !body.ends_with('\n')),
             size_bytes: body_bytes.len(),
             content_sha256: sha256_hex(body_bytes),
             chunk_count: chunk_ids.len(),
@@ -3630,22 +3895,42 @@ fn build_embedded(repo_root: &Path, args: &BuildEmbeddedArgs) -> Result<()> {
             chunk_ids,
         });
     }
-    chunks.sort_by(|a, b| a.document_id.cmp(&b.document_id).then_with(|| a.chunk_index.cmp(&b.chunk_index)));
+    chunks.sort_by(|a, b| {
+        a.document_id
+            .cmp(&b.document_id)
+            .then_with(|| a.chunk_index.cmp(&b.chunk_index))
+    });
 
     let mut payload_lines = vec![
         "# Embedded markdown structured payload registry (pure TOML units).".to_string(),
-        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-embedded".to_string(),
+        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-embedded"
+            .to_string(),
         String::new(),
         "[embedded_markdown_payloads]".to_string(),
         "updated = \"deterministic\"".to_string(),
         "authoritative = true".to_string(),
         "representation = \"structured_toml_units\"".to_string(),
         format!("document_count = {}", documents.len()),
-        format!("heading_count = {}", kind_counts.get("heading").copied().unwrap_or(0)),
-        format!("paragraph_count = {}", kind_counts.get("paragraph").copied().unwrap_or(0)),
-        format!("list_item_count = {}", kind_counts.get("list_item").copied().unwrap_or(0)),
-        format!("table_row_count = {}", kind_counts.get("table_row").copied().unwrap_or(0)),
-        format!("code_block_count = {}", kind_counts.get("code_block").copied().unwrap_or(0)),
+        format!(
+            "heading_count = {}",
+            kind_counts.get("heading").copied().unwrap_or(0)
+        ),
+        format!(
+            "paragraph_count = {}",
+            kind_counts.get("paragraph").copied().unwrap_or(0)
+        ),
+        format!(
+            "list_item_count = {}",
+            kind_counts.get("list_item").copied().unwrap_or(0)
+        ),
+        format!(
+            "table_row_count = {}",
+            kind_counts.get("table_row").copied().unwrap_or(0)
+        ),
+        format!(
+            "code_block_count = {}",
+            kind_counts.get("code_block").copied().unwrap_or(0)
+        ),
         String::new(),
     ];
     for row in &documents {
@@ -3653,9 +3938,15 @@ fn build_embedded(repo_root: &Path, args: &BuildEmbeddedArgs) -> Result<()> {
         payload_lines.push(format!("id = {}", q(&row.id)));
         payload_lines.push(format!("path = {}", q(&row.path)));
         payload_lines.push(format!("scope = {}", q(&row.scope)));
-        payload_lines.push(format!("exists_on_disk = {}", bool_toml(row.exists_on_disk)));
+        payload_lines.push(format!(
+            "exists_on_disk = {}",
+            bool_toml(row.exists_on_disk)
+        ));
         payload_lines.push(format!("source_registry = {}", q(&row.source_registry)));
-        payload_lines.push(format!("source_document_id = {}", q(&row.source_document_id)));
+        payload_lines.push(format!(
+            "source_document_id = {}",
+            q(&row.source_document_id)
+        ));
         payload_lines.push(format!("source_title = {}", q(&row.source_title)));
         payload_lines.push(format!("line_count = {}", row.line_count));
         payload_lines.push(format!("size_bytes = {}", row.size_bytes));
@@ -3673,7 +3964,8 @@ fn build_embedded(repo_root: &Path, args: &BuildEmbeddedArgs) -> Result<()> {
 
     let mut chunk_lines = vec![
         "# Embedded markdown structured chunks (pure TOML units).".to_string(),
-        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-embedded".to_string(),
+        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- build-embedded"
+            .to_string(),
         String::new(),
         "[embedded_markdown_chunks]".to_string(),
         "updated = \"deterministic\"".to_string(),
@@ -3697,8 +3989,14 @@ fn build_embedded(repo_root: &Path, args: &BuildEmbeddedArgs) -> Result<()> {
         chunk_lines.push(String::new());
     }
 
-    write_ascii(&repo_path(repo_root, &args.payload_out), &payload_lines.join("\n"))?;
-    write_ascii(&repo_path(repo_root, &args.chunks_out), &chunk_lines.join("\n"))?;
+    write_ascii(
+        &repo_path(repo_root, &args.payload_out),
+        &payload_lines.join("\n"),
+    )?;
+    write_ascii(
+        &repo_path(repo_root, &args.chunks_out),
+        &chunk_lines.join("\n"),
+    )?;
     println!(
         "Wrote embedded markdown structured registries: documents={} chunks={}",
         documents.len(),
@@ -4255,7 +4553,10 @@ fn build_payloads(repo_root: &Path, args: &BuildPayloadsArgs) -> Result<()> {
     Ok(())
 }
 
-fn promote_docs_root_narratives(repo_root: &Path, args: &PromoteDocsRootNarrativesArgs) -> Result<()> {
+fn promote_docs_root_narratives(
+    repo_root: &Path,
+    args: &PromoteDocsRootNarrativesArgs,
+) -> Result<()> {
     const EXCLUDED_ROOT_DOCS: &[&str] = &[
         "BIBLIOGRAPHY.md",
         "CLAIMS_EVIDENCE_MATRIX.md",
@@ -4277,7 +4578,12 @@ fn promote_docs_root_narratives(repo_root: &Path, args: &PromoteDocsRootNarrativ
         .map(|entry| entry.path())
         .filter(|path| path.extension().and_then(|ext| ext.to_str()) == Some("md"))
         .filter(|path| {
-            !EXCLUDED_ROOT_DOCS.contains(&path.file_name().and_then(|name| name.to_str()).unwrap_or(""))
+            !EXCLUDED_ROOT_DOCS.contains(
+                &path
+                    .file_name()
+                    .and_then(|name| name.to_str())
+                    .unwrap_or(""),
+            )
         })
         .map(|path| repo_rel(repo_root, &path))
         .collect::<Vec<_>>();
@@ -4293,11 +4599,18 @@ fn promote_docs_root_narratives(repo_root: &Path, args: &PromoteDocsRootNarrativ
     let rendered = render_docs_root_narratives(&docs);
     let out_path = repo_path(repo_root, &args.out);
     write_ascii(&out_path, &rendered)?;
-    println!("Wrote {} with {} documents.", out_path.display(), docs.len());
+    println!(
+        "Wrote {} with {} documents.",
+        out_path.display(),
+        docs.len()
+    );
     Ok(())
 }
 
-fn promote_research_narratives(repo_root: &Path, args: &PromoteResearchNarrativesArgs) -> Result<()> {
+fn promote_research_narratives(
+    repo_root: &Path,
+    args: &PromoteResearchNarrativesArgs,
+) -> Result<()> {
     let existing_ids = load_existing_document_ids(&repo_path(repo_root, &args.out))?;
     let mut paths = Vec::new();
     for folder in ["docs/theory", "docs/engineering", "docs/research"] {
@@ -4329,7 +4642,11 @@ fn promote_research_narratives(repo_root: &Path, args: &PromoteResearchNarrative
     let rendered = render_research_narratives(&docs);
     let out_path = repo_path(repo_root, &args.out);
     write_ascii(&out_path, &rendered)?;
-    println!("Wrote {} with {} documents.", out_path.display(), docs.len());
+    println!(
+        "Wrote {} with {} documents.",
+        out_path.display(),
+        docs.len()
+    );
     Ok(())
 }
 
@@ -4374,7 +4691,10 @@ fn verify_corpus(repo_root: &Path, args: &VerifyCorpusArgs) -> Result<()> {
             && row.git_status == "tracked"
             && !policy.tracked_allowed_paths.contains(&row.path)
         {
-            failures.push(format!("{}: tracked markdown is outside allowlist", row.path));
+            failures.push(format!(
+                "{}: tracked markdown is outside allowlist",
+                row.path
+            ));
         }
         if row.classification == "toml_published_markdown" {
             if row.toml_destination.is_empty() {
@@ -4393,7 +4713,9 @@ fn verify_corpus(repo_root: &Path, args: &VerifyCorpusArgs) -> Result<()> {
             failures.join("\n- ")
         );
     }
-    println!("OK: Wave 4 markdown corpus policy matches markdown_governance and markdown_inventory.");
+    println!(
+        "OK: Wave 4 markdown corpus policy matches markdown_governance and markdown_inventory."
+    );
     Ok(())
 }
 
@@ -4516,7 +4838,9 @@ fn parse_research_narrative(
 
 fn normalize_promoted_body(text: &str) -> String {
     let cleaned = strip_generated_preamble(text);
-    ascii_clean(cleaned.trim_matches('\n')).trim_end().to_string()
+    ascii_clean(cleaned.trim_matches('\n'))
+        .trim_end()
+        .to_string()
 }
 
 fn strip_generated_preamble(text: &str) -> String {
@@ -4627,7 +4951,10 @@ fn extract_urls(text: &str) -> Vec<String> {
     let re = Regex::new(r#"https?://[^\s)>\"]+"#).expect("url regex");
     let mut seen = BTreeSet::new();
     for matched in re.find_iter(text) {
-        let token = matched.as_str().trim_end_matches(&['.', ',', ';'][..]).to_string();
+        let token = matched
+            .as_str()
+            .trim_end_matches(&['.', ',', ';'][..])
+            .to_string();
         if !token.is_empty() {
             seen.insert(token);
         }
@@ -4690,14 +5017,8 @@ fn render_docs_root_narratives(docs: &[NarrativeDocRow]) -> String {
         ));
         lines.push(format!("slug = {}", toml_string(&doc.slug)));
         lines.push(format!("title = {}", toml_string(&doc.title)));
-        lines.push(format!(
-            "status_token = {}",
-            toml_string(&doc.status_token)
-        ));
-        lines.push(format!(
-            "content_kind = {}",
-            toml_string(&doc.content_kind)
-        ));
+        lines.push(format!("status_token = {}", toml_string(&doc.status_token)));
+        lines.push(format!("content_kind = {}", toml_string(&doc.content_kind)));
         lines.push(format!("claim_refs = {}", toml_list(&doc.claim_refs)));
         lines.push(format!("path_refs = {}", toml_list(&doc.path_refs)));
         lines.push(format!("line_count = {}", doc.line_count));
@@ -4733,14 +5054,8 @@ fn render_research_narratives(docs: &[NarrativeDocRow]) -> String {
         lines.push(format!("domain = {}", toml_string(&doc.domain)));
         lines.push(format!("slug = {}", toml_string(&doc.slug)));
         lines.push(format!("title = {}", toml_string(&doc.title)));
-        lines.push(format!(
-            "status_token = {}",
-            toml_string(&doc.status_token)
-        ));
-        lines.push(format!(
-            "content_kind = {}",
-            toml_string(&doc.content_kind)
-        ));
+        lines.push(format!("status_token = {}", toml_string(&doc.status_token)));
+        lines.push(format!("content_kind = {}", toml_string(&doc.content_kind)));
         lines.push(format!(
             "verification_level = {}",
             toml_string(&doc.verification_level)
@@ -5246,19 +5561,19 @@ fn verify_owner_map(repo_root: &Path, args: &VerifyOwnerArgs) -> Result<()> {
             })
             .unwrap_or_default();
         if canonical.is_empty() {
-            failures.push(format!("{}: owner map canonical_toml is empty", row.path));
+            failures.push(format!("{}: owner map canonical source is empty", row.path));
             continue;
         }
         if !repo_root.join(&canonical).is_file() {
             failures.push(format!(
-                "{}: canonical_toml missing on disk: {}",
+                "{}: canonical source missing on disk: {}",
                 row.path, canonical
             ));
         }
         if owner.is_some() && !row.toml_destination.is_empty() && row.toml_destination != canonical
         {
             failures.push(format!(
-                "{}: owner canonical_toml mismatch inventory destination ({} != {})",
+                "{}: owner canonical source mismatch inventory destination ({} != {})",
                 row.path, canonical, row.toml_destination
             ));
         }
@@ -5284,7 +5599,7 @@ fn verify_owner_map(repo_root: &Path, args: &VerifyOwnerArgs) -> Result<()> {
             }
             if !head.contains(&canonical) {
                 failures.push(format!(
-                    "{}: Source of truth header does not reference canonical_toml ({})",
+                    "{}: Source of truth header does not reference canonical source ({})",
                     row.path, canonical
                 ));
             }
@@ -5297,7 +5612,7 @@ fn verify_owner_map(repo_root: &Path, args: &VerifyOwnerArgs) -> Result<()> {
         );
     }
     println!(
-        "OK: markdown owner map verified. All in-scope markdown has explicit canonical TOML ownership."
+        "OK: markdown owner map verified. All in-scope markdown has explicit canonical source ownership."
     );
     Ok(())
 }
@@ -5312,7 +5627,13 @@ fn build_inventory_doc(
     let full = repo_root.join(path);
     let raw = fs::read(&full).with_context(|| format!("read {}", full.display()))?;
     let text = String::from_utf8_lossy(&raw).to_string();
-    let title = first_title(&text, Path::new(path).file_stem().and_then(|s| s.to_str()).unwrap_or(path));
+    let title = first_title(
+        &text,
+        Path::new(path)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or(path),
+    );
     let generated_declared = declared_generated(&text);
     let generated_pattern = is_generated_pattern(path);
     let mut toml_destination = markdown_destination_override(path).unwrap_or_default();
@@ -5331,8 +5652,13 @@ fn build_inventory_doc(
     );
     let third_party = is_third_party(path);
     let manual_exception = MANUAL_EXCEPTIONS.contains(&path);
-    let (classification, migration_action, migration_priority, rationale) =
-        classify_markdown(path, generated, third_party, manual_exception, &toml_destination);
+    let (classification, migration_action, migration_priority, rationale) = classify_markdown(
+        path,
+        generated,
+        third_party,
+        manual_exception,
+        &toml_destination,
+    );
     Ok(InventoryDoc {
         path: path.to_string(),
         title: collapse(&title),
@@ -5358,62 +5684,93 @@ fn build_inventory_doc(
 }
 
 fn markdown_destination_override(path: &str) -> Option<String> {
-    Some(match path {
-        "proofs/README.md" => "registry/roadmap.toml",
-        "proofs/EPISTEMIC_BOUNDARIES.md" => "registry/entrypoint_docs.toml",
-        "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md"
-        | "PHASE10_11_ULTIMATE_ROADMAP.md"
-        | "PYTHON_REFACTORING_ROADMAP.md"
-        | "SYNTHESIS_PIPELINE_PROGRESS.md"
-        | "crates/sign_imbalance/IMPLEMENTATION_NOTES.md" => {
-            "registry/legacy_markdown_interfaces.toml"
+    Some(
+        match path {
+            "proofs/README.md" => "registry/roadmap.toml",
+            "proofs/EPISTEMIC_BOUNDARIES.md" => "registry/entrypoint_docs.toml",
+            "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md"
+            | "PHASE10_11_ULTIMATE_ROADMAP.md"
+            | "PYTHON_REFACTORING_ROADMAP.md"
+            | "SYNTHESIS_PIPELINE_PROGRESS.md"
+            | "crates/sign_imbalance/IMPLEMENTATION_NOTES.md" => {
+                "registry/legacy_markdown_interfaces.toml"
+            }
+            "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
+            | "data/artifacts/BIBLIOGRAPHY.md"
+            | "data/artifacts/FINAL_REPORT.md"
+            | "data/artifacts/QUANTUM_REPORT.md"
+            | "data/artifacts/SIMULATION_REPORT.md"
+            | "data/artifacts/WARP_RING_REPORT.md"
+            | "data/artifacts/extracted_equations.md"
+            | "data/artifacts/reality_check_and_synthesis.md" => "registry/artifact_scrolls.toml",
+            "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md" => "registry/bibliography.toml",
+            "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md" => "registry/book_docs.toml",
+            "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md" => "registry/claims_domains.toml",
+            "docs/generated/CLAIMS_REGISTRY_MIRROR.md" => {
+                "registry/canonical/control_plane.sqlite3"
+            }
+            "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md" => "registry/claims_tasks.toml",
+            "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md" => "registry/claim_tickets.toml",
+            "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md" => {
+                "registry/artifact_scrolls.toml"
+            }
+            "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md" => "registry/docs_convos.toml",
+            "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md" => {
+                "registry/docs_root_narratives.toml"
+            }
+            "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md" => "registry/entrypoint_docs.toml",
+            "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md" => {
+                "registry/canonical/control_plane.sqlite3"
+            }
+            "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md" => {
+                "registry/external_sources.toml"
+            }
+            "docs/generated/INSIGHTS_REGISTRY_MIRROR.md" => {
+                "registry/canonical/control_plane.sqlite3"
+            }
+            "docs/generated/THEOREMS_REGISTRY_MIRROR.md" => {
+                "registry/canonical/control_plane.sqlite3"
+            }
+            "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md" => {
+                "registry/knowledge_migration_plan.toml"
+            }
+            "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md" => {
+                "registry/markdown_governance.toml"
+            }
+            "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md" => "registry/navigator.toml",
+            "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md" => "registry/next_actions.toml",
+            "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md" => {
+                "registry/reports_narratives.toml"
+            }
+            "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md" => "registry/requirements.toml",
+            "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md" => {
+                "registry/research_narratives.toml"
+            }
+            "docs/generated/ROADMAP_REGISTRY_MIRROR.md" => "registry/roadmap.toml",
+            "docs/generated/TODO_REGISTRY_MIRROR.md" => "registry/todo.toml",
+            "docs/claims/INDEX.md" => "registry/claims_domains.toml",
+            "docs/DATASET_MANIFEST.md" => "registry/external_sources.toml",
+            "crates/lbm_3d_cuda/README.md" => "registry/entrypoint_docs.toml",
+            _ => return None,
         }
-        "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-        | "data/artifacts/BIBLIOGRAPHY.md"
-        | "data/artifacts/FINAL_REPORT.md"
-        | "data/artifacts/QUANTUM_REPORT.md"
-        | "data/artifacts/SIMULATION_REPORT.md"
-        | "data/artifacts/WARP_RING_REPORT.md"
-        | "data/artifacts/extracted_equations.md"
-        | "data/artifacts/reality_check_and_synthesis.md" => "registry/artifact_scrolls.toml",
-        "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md" => "registry/bibliography.toml",
-        "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md" => "registry/book_docs.toml",
-        "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md" => "registry/claims_domains.toml",
-        "docs/generated/CLAIMS_REGISTRY_MIRROR.md" => "registry/claims.toml",
-        "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md" => "registry/claims_tasks.toml",
-        "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md" => "registry/claim_tickets.toml",
-        "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md" => "registry/artifact_scrolls.toml",
-        "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md" => "registry/docs_convos.toml",
-        "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md" => "registry/docs_root_narratives.toml",
-        "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md" => "registry/entrypoint_docs.toml",
-        "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md" => "registry/experiments.toml",
-        "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md" => "registry/external_sources.toml",
-        "docs/generated/INSIGHTS_REGISTRY_MIRROR.md" => "registry/insights.toml",
-        "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md" => "registry/knowledge_migration_plan.toml",
-        "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md" => "registry/markdown_governance.toml",
-        "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md" => "registry/navigator.toml",
-        "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md" => "registry/next_actions.toml",
-        "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md" => "registry/reports_narratives.toml",
-        "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md" => "registry/requirements.toml",
-        "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md" => "registry/research_narratives.toml",
-        "docs/generated/ROADMAP_REGISTRY_MIRROR.md" => "registry/roadmap.toml",
-        "docs/generated/TODO_REGISTRY_MIRROR.md" => "registry/todo.toml",
-        "docs/claims/INDEX.md" => "registry/claims_domains.toml",
-        "docs/DATASET_MANIFEST.md" => "registry/external_sources.toml",
-        "crates/lbm_3d_cuda/README.md" => "registry/entrypoint_docs.toml",
-        _ => return None,
-    }
-    .to_string())
+        .to_string(),
+    )
 }
 
 fn destination_by_scope(path: &str) -> String {
     match path {
         "AGENTS.md" => "agents.toml".to_string(),
-        _ if path.starts_with("build/docs/generated/") => "registry/markdown_payloads.toml".to_string(),
+        _ if path.starts_with("build/docs/generated/") => {
+            "registry/markdown_payloads.toml".to_string()
+        }
         _ if path.starts_with("docs/generated/") => "registry/markdown_payloads.toml".to_string(),
         _ if path.starts_with("docs/book/src/") => "registry/book_docs.toml".to_string(),
-        _ if path.starts_with("docs/external_sources/") => "registry/external_sources.toml".to_string(),
-        _ if path.starts_with("docs/claims/by_domain/") => "registry/claims_domains.toml".to_string(),
+        _ if path.starts_with("docs/external_sources/") => {
+            "registry/external_sources.toml".to_string()
+        }
+        _ if path.starts_with("docs/claims/by_domain/") => {
+            "registry/claims_domains.toml".to_string()
+        }
         _ if path.starts_with("docs/tickets/") => "registry/claim_tickets.toml".to_string(),
         _ if path.starts_with("docs/convos/") => "registry/docs_convos.toml".to_string(),
         _ if path.starts_with("docs/engineering/")
@@ -5428,14 +5785,21 @@ fn destination_by_scope(path: &str) -> String {
         _ if path.starts_with("data/artifacts/") && path != "data/artifacts/README.md" => {
             "registry/artifact_scrolls.toml".to_string()
         }
-        "CLAUDE.md" | "GEMINI.md" | "README.md" | "curated/README.md"
-        | "curated/01_theory_frameworks/README_COQ.md" | "data/csv/README.md"
+        "CLAUDE.md"
+        | "GEMINI.md"
+        | "README.md"
+        | "curated/README.md"
+        | "curated/01_theory_frameworks/README_ROCQ.md"
+        | "data/csv/README.md"
         | "data/artifacts/README.md" => "registry/entrypoint_docs.toml".to_string(),
         "NAVIGATOR.md" => "registry/navigator.toml".to_string(),
         "REQUIREMENTS.md" | "docs/REQUIREMENTS.md" => "registry/requirements.toml".to_string(),
-        "docs/CLAIMS_EVIDENCE_MATRIX.md" => "registry/claims.toml".to_string(),
-        "docs/INSIGHTS.md" => "registry/insights.toml".to_string(),
-        "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md" => "registry/experiments.toml".to_string(),
+        "docs/CLAIMS_EVIDENCE_MATRIX.md" => "registry/canonical/control_plane.sqlite3".to_string(),
+        "docs/INSIGHTS.md" => "registry/canonical/control_plane.sqlite3".to_string(),
+        "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md" => {
+            "registry/canonical/control_plane.sqlite3".to_string()
+        }
+        "docs/THEOREMS.md" => "registry/canonical/control_plane.sqlite3".to_string(),
         "docs/ROADMAP.md" => "registry/roadmap.toml".to_string(),
         "docs/TODO.md" => "registry/todo.toml".to_string(),
         "docs/NEXT_ACTIONS.md" => "registry/next_actions.toml".to_string(),
@@ -5486,10 +5850,12 @@ fn is_generated_pattern(path: &str) -> bool {
 
 fn first_title(text: &str, fallback: &str) -> String {
     let heading_re = Regex::new(r"(?m)^#\s+(.+?)\s*$").expect("heading regex");
-    collapse(&heading_re
-        .captures(text)
-        .and_then(|caps| caps.get(1).map(|m| m.as_str().trim().to_string()))
-        .unwrap_or_else(|| fallback.to_string()))
+    collapse(
+        &heading_re
+            .captures(text)
+            .and_then(|caps| caps.get(1).map(|m| m.as_str().trim().to_string()))
+            .unwrap_or_else(|| fallback.to_string()),
+    )
 }
 
 fn declared_generated(text: &str) -> bool {
@@ -5508,8 +5874,12 @@ fn is_pipeline_generated(
     generated_pattern
         || (generated_declared
             && !toml_destination.is_empty()
-            && IN_SCOPE_PREFIXES.iter().any(|prefix| path.starts_with(prefix)))
-        || (generated_allowlist.contains(path) && generated_declared && !toml_destination.is_empty())
+            && IN_SCOPE_PREFIXES
+                .iter()
+                .any(|prefix| path.starts_with(prefix)))
+        || (generated_allowlist.contains(path)
+            && generated_declared
+            && !toml_destination.is_empty())
 }
 
 fn is_third_party(path: &str) -> bool {
@@ -5738,7 +6108,12 @@ fn lifecycle_for_path(path: &str, row: &InventoryRow) -> String {
     }
 }
 
-fn risk_score(path: &str, row: &InventoryRow, destination_exists: bool, policy: &GovernancePolicy) -> i64 {
+fn risk_score(
+    path: &str,
+    row: &InventoryRow,
+    destination_exists: bool,
+    policy: &GovernancePolicy,
+) -> i64 {
     let mut score = 0i64;
     if !policy.safe_classifications.contains(&row.classification) {
         score += 100;
@@ -5788,15 +6163,30 @@ fn classify_toml_path(path: &str) -> (String, String) {
     if path.starts_with("registry/data/") {
         ("dataset_scroll".to_string(), "registry_dataset".to_string())
     } else if path.starts_with("registry/") {
-        ("registry_control_plane".to_string(), "registry_control".to_string())
+        (
+            "registry_control_plane".to_string(),
+            "registry_control".to_string(),
+        )
     } else if path == "Cargo.toml" {
-        ("cargo_workspace_manifest".to_string(), "workspace_manifest".to_string())
+        (
+            "cargo_workspace_manifest".to_string(),
+            "workspace_manifest".to_string(),
+        )
     } else if path.ends_with("/Cargo.toml") {
-        ("cargo_crate_manifest".to_string(), "crate_manifest".to_string())
+        (
+            "cargo_crate_manifest".to_string(),
+            "crate_manifest".to_string(),
+        )
     } else if path == ".cargo/config.toml" {
-        ("cargo_toolchain_config".to_string(), "toolchain_config".to_string())
+        (
+            "cargo_toolchain_config".to_string(),
+            "toolchain_config".to_string(),
+        )
     } else if path == "pyproject.toml" {
-        ("python_project_config".to_string(), "python_config".to_string())
+        (
+            "python_project_config".to_string(),
+            "python_config".to_string(),
+        )
     } else if path.starts_with("papers/") {
         ("papers_registry".to_string(), "papers".to_string())
     } else {
@@ -5961,7 +6351,11 @@ fn pick_embedded_path(row: &toml::map::Map<String, Value>) -> String {
         .unwrap_or_default()
 }
 
-fn is_target_embedded_path(path: &str, prefixes: &HashSet<String>, roots: &HashSet<String>) -> bool {
+fn is_target_embedded_path(
+    path: &str,
+    prefixes: &HashSet<String>,
+    roots: &HashSet<String>,
+) -> bool {
     path.ends_with(".md")
         && (roots.contains(path) || prefixes.iter().any(|prefix| path.starts_with(prefix)))
 }
@@ -6235,6 +6629,9 @@ fn keep_entry(repo_root: &Path, entry: &DirEntry, policy: &GovernancePolicy) -> 
 }
 
 fn should_skip_path(path: &str, policy: &GovernancePolicy) -> bool {
+    if path.contains("/lambda_gororoba_backups/") {
+        return true;
+    }
     if policy
         .skip_prefixes
         .iter()
@@ -6485,7 +6882,7 @@ fn conversion_hint(path: &str, destination: &str) -> String {
         || path.starts_with("data/artifacts/")
     {
         format!(
-            "Edit the canonical TOML source{} and regenerate markdown mirrors with the Rust registry pipeline.",
+            "Edit the canonical source{} and regenerate markdown mirrors with the Rust registry pipeline.",
             if destination.is_empty() {
                 "".to_string()
             } else {
@@ -6493,7 +6890,7 @@ fn conversion_hint(path: &str, destination: &str) -> String {
             }
         )
     } else {
-        "Assign canonical TOML ownership and regenerate via the Rust markdown registry pipeline."
+        "Assign canonical source ownership and regenerate via the Rust markdown registry pipeline."
             .to_string()
     }
 }
@@ -6501,20 +6898,31 @@ fn conversion_hint(path: &str, destination: &str) -> String {
 fn knowledge_toml_backing_for_path(path: &str) -> String {
     match path {
         "AGENTS.md" => "agents.toml".to_string(),
-        "CLAUDE.md" | "GEMINI.md" | "README.md" | "curated/README.md"
-        | "curated/01_theory_frameworks/README_COQ.md" | "data/csv/README.md"
-        | "data/artifacts/README.md" => "registry/entrypoint_docs.toml".to_string(),
+        "CLAUDE.md"
+        | "GEMINI.md"
+        | "README.md"
+        | "curated/README.md"
+        | "curated/01_theory_frameworks/README_ROCQ.md"
+        | "data/csv/README.md"
+        | "data/artifacts/README.md"
+        | "data/external/README.md" => "registry/entrypoint_docs.toml".to_string(),
         "NAVIGATOR.md" => "registry/navigator.toml".to_string(),
         "REQUIREMENTS.md" | "docs/REQUIREMENTS.md" => "registry/requirements.toml".to_string(),
-        "docs/CLAIMS_EVIDENCE_MATRIX.md" | "docs/book/src/registry/claims.md" => {
-            "registry/claims.toml".to_string()
+        "proofs/README.md" | "proofs/EPISTEMIC_BOUNDARIES.md" => {
+            "registry/requirements.toml".to_string()
         }
+        "docs/CLAIMS_EVIDENCE_MATRIX.md" => "registry/canonical/control_plane.sqlite3".to_string(),
+        "docs/book/src/registry/claims.md" => "registry/book_docs.toml".to_string(),
         "docs/BIBLIOGRAPHY.md" => "registry/bibliography.toml".to_string(),
-        "docs/INSIGHTS.md" | "docs/book/src/registry/insights.md" => {
-            "registry/insights.toml".to_string()
+        "docs/INSIGHTS.md" => "registry/canonical/control_plane.sqlite3".to_string(),
+        "docs/book/src/registry/insights.md" => "registry/book_docs.toml".to_string(),
+        "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md" => {
+            "registry/canonical/control_plane.sqlite3".to_string()
         }
-        "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
-        | "docs/book/src/registry/experiments.md" => "registry/experiments.toml".to_string(),
+        "docs/book/src/registry/experiments.md" => "registry/book_docs.toml".to_string(),
+        "docs/THEOREMS.md" | "docs/generated/THEOREMS_REGISTRY_MIRROR.md" => {
+            "registry/canonical/control_plane.sqlite3".to_string()
+        }
         "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md" => {
             "registry/reports_narratives.toml".to_string()
         }
@@ -6537,7 +6945,9 @@ fn knowledge_toml_backing_for_path(path: &str) -> String {
             "registry/docs_root_narratives.toml".to_string()
         }
         _ if path.starts_with("docs/book/src/") => "registry/book_docs.toml".to_string(),
-        _ if path.starts_with("docs/external_sources/") => "registry/external_sources.toml".to_string(),
+        _ if path.starts_with("docs/external_sources/") => {
+            "registry/external_sources.toml".to_string()
+        }
         _ if path.starts_with("docs/theory/") || path.starts_with("docs/engineering/") => {
             "registry/research_narratives.toml".to_string()
         }
@@ -6545,10 +6955,41 @@ fn knowledge_toml_backing_for_path(path: &str) -> String {
     }
 }
 
-fn knowledge_kind_for_path(path: &str, text: &str) -> (String, String, bool) {
+fn knowledge_toml_backing_from_header(text: &str) -> String {
+    for line in text.lines().take(6) {
+        let trimmed = line.trim();
+        if !trimmed.starts_with("<!--") || !trimmed.contains("Source of truth:") {
+            continue;
+        }
+        let content = trimmed
+            .trim_start_matches("<!--")
+            .trim_end_matches("-->")
+            .trim();
+        let Some((_, value)) = content.split_once("Source of truth:") else {
+            continue;
+        };
+        for candidate in value.split(';').flat_map(|part| part.split(',')) {
+            let path = candidate.trim();
+            if !path.is_empty() && path.ends_with(".toml") {
+                return path.to_string();
+            }
+        }
+    }
+    String::new()
+}
+
+fn knowledge_toml_backing_for_document(path: &str, text: &str) -> String {
+    let explicit = knowledge_toml_backing_for_path(path);
+    if !explicit.is_empty() {
+        return explicit;
+    }
+    knowledge_toml_backing_from_header(text)
+}
+
+fn knowledge_kind_for_path(path: &str, text: &str, toml_backing: &str) -> (String, String, bool) {
     if IMMUTABLE_AGENT_OVERLAYS.contains(&path) {
         ("manual_source".to_string(), "manual".to_string(), false)
-    } else if (knowledge_toml_backing_for_path(path) == "registry/data_artifact_narratives.toml"
+    } else if (toml_backing == "registry/data_artifact_narratives.toml"
         && path.starts_with("data/artifacts/"))
         || path.starts_with("reports/")
         || path.starts_with("docs/convos/")
@@ -6557,7 +6998,7 @@ fn knowledge_kind_for_path(path: &str, text: &str) -> (String, String, bool) {
         || path.starts_with("docs/theory/")
         || path.starts_with("docs/engineering/")
         || path.starts_with("docs/external_sources/")
-        || !knowledge_toml_backing_for_path(path).is_empty()
+        || !toml_backing.is_empty()
     {
         ("markdown_mirror".to_string(), "generated".to_string(), true)
     } else if path.starts_with("convos/") {
@@ -6570,7 +7011,11 @@ fn knowledge_kind_for_path(path: &str, text: &str) -> (String, String, bool) {
         || text.to_ascii_lowercase().contains("auto-generated")
         || text.to_ascii_lowercase().contains("do not edit")
     {
-        ("generated_markdown".to_string(), "generated".to_string(), true)
+        (
+            "generated_markdown".to_string(),
+            "generated".to_string(),
+            true,
+        )
     } else {
         ("manual_source".to_string(), "manual".to_string(), false)
     }
@@ -6642,7 +7087,7 @@ fn embedded_markdown_root_paths() -> Vec<String> {
         "SYNTHESIS_PIPELINE_PROGRESS.md",
         "crates/sign_imbalance/IMPLEMENTATION_NOTES.md",
         "curated/README.md",
-        "curated/01_theory_frameworks/README_COQ.md",
+        "curated/01_theory_frameworks/README_ROCQ.md",
         "data/csv/README.md",
         "data/artifacts/README.md",
         "NAVIGATOR.md",
@@ -6738,7 +7183,7 @@ fn generated_mirror_pattern(path: &str) -> bool {
         "AGENTS.md",
         "README.md",
         "curated/README.md",
-        "curated/01_theory_frameworks/README_COQ.md",
+        "curated/01_theory_frameworks/README_ROCQ.md",
         "data/csv/README.md",
         "data/artifacts/README.md",
         "NAVIGATOR.md",
@@ -6825,7 +7270,8 @@ fn render_raw_capture_manifest(
 ) -> String {
     let mut lines = vec![
         "# Central document manifest for TOML-backed markdown knowledge corpus.".to_string(),
-        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- migrate-corpus".to_string(),
+        "# Generated by cargo run -p gororoba_cli_data --bin markdown-registry -- migrate-corpus"
+            .to_string(),
         "# This is a raw capture layer, not a normalized authoritative schema.".to_string(),
         String::new(),
         "[knowledge_documents]".to_string(),
@@ -6866,10 +7312,7 @@ fn render_raw_capture_manifest(
     lines.join("\n")
 }
 
-fn parse_overlay_sections(
-    source_path: &Path,
-    heading_re: &Regex,
-) -> Result<OverlaySections> {
+fn parse_overlay_sections(source_path: &Path, heading_re: &Regex) -> Result<OverlaySections> {
     let raw_lines = fs::read_to_string(source_path)
         .with_context(|| format!("read {}", source_path.display()))?
         .lines()
@@ -6886,10 +7329,22 @@ fn parse_overlay_sections(
     for line in lines {
         if let Some(caps) = heading_re.captures(&line) {
             if !current_id.is_empty() {
-                entries.push((current_id.clone(), current_title.clone(), current_body.clone()));
+                entries.push((
+                    current_id.clone(),
+                    current_title.clone(),
+                    current_body.clone(),
+                ));
             }
-            current_id = caps.get(1).map(|m| m.as_str()).unwrap_or_default().to_string();
-            current_title = caps.get(2).map(|m| m.as_str().trim()).unwrap_or_default().to_string();
+            current_id = caps
+                .get(1)
+                .map(|m| m.as_str())
+                .unwrap_or_default()
+                .to_string();
+            current_title = caps
+                .get(2)
+                .map(|m| m.as_str().trim())
+                .unwrap_or_default()
+                .to_string();
             current_body.clear();
             seen_first = true;
             continue;
@@ -6921,7 +7376,10 @@ fn strip_generated_header_lines(lines: Vec<String>) -> Vec<String> {
             idx += 1;
             continue;
         }
-        if GENERATED_MARKERS.iter().any(|prefix| stripped.contains(prefix)) {
+        if GENERATED_MARKERS
+            .iter()
+            .any(|prefix| stripped.contains(prefix))
+        {
             idx += 1;
             continue;
         }
@@ -6936,12 +7394,24 @@ fn strip_generated_header_lines(lines: Vec<String>) -> Vec<String> {
 
 fn clean_entry_body(text: &str) -> String {
     let mut lines = text.lines().map(ToString::to_string).collect::<Vec<_>>();
-    while lines.first().map(|line| line.trim().is_empty()).unwrap_or(false) {
+    while lines
+        .first()
+        .map(|line| line.trim().is_empty())
+        .unwrap_or(false)
+    {
         lines.remove(0);
     }
-    while lines.first().map(|line| line.trim() == "---").unwrap_or(false) {
+    while lines
+        .first()
+        .map(|line| line.trim() == "---")
+        .unwrap_or(false)
+    {
         lines.remove(0);
-        while lines.first().map(|line| line.trim().is_empty()).unwrap_or(false) {
+        while lines
+            .first()
+            .map(|line| line.trim().is_empty())
+            .unwrap_or(false)
+        {
             lines.remove(0);
         }
     }
@@ -6949,7 +7419,11 @@ fn clean_entry_body(text: &str) -> String {
         .into_iter()
         .filter(|line| line.trim() != "---")
         .collect::<Vec<_>>();
-    while out.last().map(|line| line.trim().is_empty()).unwrap_or(false) {
+    while out
+        .last()
+        .map(|line| line.trim().is_empty())
+        .unwrap_or(false)
+    {
         out.pop();
     }
     out.join("\n").trim().to_string()
@@ -6987,12 +7461,12 @@ fn render_narrative_overlay(
 
 fn read_overlay_markdown(path: &Path) -> Result<String> {
     let raw = fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
-    Ok(strip_generated_header_lines(
-        raw.lines().map(ToString::to_string).collect::<Vec<_>>(),
+    Ok(
+        strip_generated_header_lines(raw.lines().map(ToString::to_string).collect::<Vec<_>>())
+            .join("\n")
+            .trim()
+            .to_string(),
     )
-    .join("\n")
-    .trim()
-    .to_string())
 }
 
 fn render_single_overlay(title: &str, section: &str, source_markdown: &str, body: &str) -> String {
@@ -7024,7 +7498,10 @@ fn render_requirements_overlay(documents: &[(String, String, String)]) -> String
         lines.push("[[document]]".to_string());
         lines.push(format!("path = {}", q(path)));
         lines.push(format!("title = {}", q(title)));
-        lines.push(format!("body_markdown = {}", toml_multiline_ascii(body.trim())));
+        lines.push(format!(
+            "body_markdown = {}",
+            toml_multiline_ascii(body.trim())
+        ));
         lines.push(String::new());
     }
     lines.join("\n")
@@ -7032,7 +7509,10 @@ fn render_requirements_overlay(documents: &[(String, String, String)]) -> String
 
 fn title_from_markdown(path: &Path, body: &str) -> String {
     body.lines()
-        .find_map(|line| line.strip_prefix("# ").map(|value| value.trim().to_string()))
+        .find_map(|line| {
+            line.strip_prefix("# ")
+                .map(|value| value.trim().to_string())
+        })
         .unwrap_or_else(|| {
             path.file_stem()
                 .and_then(|stem| stem.to_str())

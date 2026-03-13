@@ -184,10 +184,7 @@ pub struct FlatBandInfo {
 
 #[inline]
 fn cmul(a: c64, b: c64) -> c64 {
-    c64::new(
-        a.re * b.re - a.im * b.im,
-        a.re * b.im + a.im * b.re,
-    )
+    c64::new(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re)
 }
 
 #[inline]
@@ -210,9 +207,7 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
     let eig = h.selfadjoint_eigendecomposition(Side::Lower);
 
     let s_diag = eig.s();
-    let eigenvalues_raw: Vec<f64> = (0..n)
-        .map(|i| s_diag.column_vector().read(i).re)
-        .collect();
+    let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector().read(i).re).collect();
 
     let mut indexed: Vec<(usize, f64)> = eigenvalues_raw
         .iter()
@@ -257,10 +252,7 @@ impl TightBindingModel {
         // Off-diagonal: hoppings + automatic Hermitian conjugate
         let k = Vec2::new(kx, ky);
         for hop in &self.hoppings {
-            let r = self
-                .lattice
-                .a1
-                .scale(hop.cell_offset[0] as f64)
+            let r = self.lattice.a1.scale(hop.cell_offset[0] as f64)
                 + self.lattice.a2.scale(hop.cell_offset[1] as f64);
             let phase_angle = k.dot(r);
             let phase = c64::new(phase_angle.cos(), phase_angle.sin());
@@ -289,10 +281,7 @@ impl TightBindingModel {
     /// Compute band structure along a k-path.
     ///
     /// Returns (k_distances, band_energies) where band_energies[band][k_idx].
-    pub fn band_structure_along_path(
-        &self,
-        path: &[(f64, f64)],
-    ) -> (Vec<f64>, Vec<Vec<f64>>) {
+    pub fn band_structure_along_path(&self, path: &[(f64, f64)]) -> (Vec<f64>, Vec<Vec<f64>>) {
         let n_bands = self.n_orbitals();
         let n_k = path.len();
 
@@ -323,19 +312,15 @@ impl TightBindingModel {
 
 /// High-symmetry path Gamma -> M -> K -> Gamma for hexagonal lattice.
 /// Returns n points per segment (3*n + 1 total).
-pub fn hexagonal_high_symmetry_path(
-    lattice: &BravaisLattice2D,
-    n: usize,
-) -> Vec<(f64, f64)> {
+pub fn hexagonal_high_symmetry_path(lattice: &BravaisLattice2D, n: usize) -> Vec<(f64, f64)> {
     let gamma = Vec2::zero();
     let m = lattice.b1.scale(0.5);
     let k_pt = lattice.b1.scale(2.0 / 3.0) + lattice.b2.scale(1.0 / 3.0);
 
     let mut path = Vec::with_capacity(3 * n + 1);
 
-    let lerp = |a: Vec2, b: Vec2, t: f64| -> (f64, f64) {
-        (a.x + t * (b.x - a.x), a.y + t * (b.y - a.y))
-    };
+    let lerp =
+        |a: Vec2, b: Vec2, t: f64| -> (f64, f64) { (a.x + t * (b.x - a.x), a.y + t * (b.y - a.y)) };
 
     // Gamma -> M (n points, excluding M)
     for i in 0..n {
@@ -354,9 +339,7 @@ pub fn hexagonal_high_symmetry_path(
 }
 
 /// Symmetry point labels with k-distance positions for hexagonal path.
-pub fn hexagonal_symmetry_labels(
-    lattice: &BravaisLattice2D,
-) -> Vec<(String, f64)> {
+pub fn hexagonal_symmetry_labels(lattice: &BravaisLattice2D) -> Vec<(String, f64)> {
     let m = lattice.b1.scale(0.5);
     let k_pt = lattice.b1.scale(2.0 / 3.0) + lattice.b2.scale(1.0 / 3.0);
 
@@ -380,11 +363,7 @@ pub fn hexagonal_symmetry_labels(
 ///
 /// The BZ is the parallelogram spanned by b1, b2, discretized into
 /// n_grid x n_grid plaquettes.
-pub fn fhs_berry_curvature(
-    model: &TightBindingModel,
-    band: usize,
-    n_grid: usize,
-) -> Vec<Vec<f64>> {
+pub fn fhs_berry_curvature(model: &TightBindingModel, band: usize, n_grid: usize) -> Vec<Vec<f64>> {
     let n_orb = model.n_orbitals();
     let b1 = model.lattice.b1;
     let b2 = model.lattice.b2;
@@ -448,14 +427,18 @@ pub fn fhs_berry_curvature(
 }
 
 /// Compute Chern number for a single band (should be integer).
-pub fn band_chern_number(
-    model: &TightBindingModel,
-    band: usize,
-    n_grid: usize,
-) -> f64 {
+///
+/// Uses Kahan compensated summation to guarantee O(eps) accumulation error
+/// instead of O(n^2 * eps), ensuring correct integer rounding for large n_grid.
+pub fn band_chern_number(model: &TightBindingModel, band: usize, n_grid: usize) -> f64 {
     let curvature = fhs_berry_curvature(model, band, n_grid);
-    let f_sum: f64 = curvature.iter().flat_map(|row| row.iter()).sum();
-    f_sum / (2.0 * PI)
+    let mut f_sum = crate::kahan::KahanSum::new();
+    for row in &curvature {
+        for &f_ij in row {
+            f_sum.add(f_ij);
+        }
+    }
+    f_sum.total() / (2.0 * PI)
 }
 
 /// Compute valley Chern number by integrating Berry curvature over half BZ.
@@ -469,7 +452,7 @@ pub fn valley_chern_number(
     valley: Valley,
 ) -> f64 {
     let curvature = fhs_berry_curvature(model, band, n_grid);
-    let mut f_sum = 0.0;
+    let mut f_sum = crate::kahan::KahanSum::new();
     for (i, row) in curvature.iter().enumerate() {
         for (j, &f_ij) in row.iter().enumerate() {
             let s = (i as f64 + 0.5) / n_grid as f64;
@@ -479,19 +462,15 @@ pub fn valley_chern_number(
                 Valley::KPrime => s < t,
             };
             if in_valley {
-                f_sum += f_ij;
+                f_sum.add(f_ij);
             }
         }
     }
-    f_sum / (2.0 * PI)
+    f_sum.total() / (2.0 * PI)
 }
 
 /// Detect flat bands: bands with bandwidth below threshold.
-pub fn detect_flat_bands(
-    model: &TightBindingModel,
-    n_k: usize,
-    threshold: f64,
-) -> FlatBandInfo {
+pub fn detect_flat_bands(model: &TightBindingModel, n_k: usize, threshold: f64) -> FlatBandInfo {
     let n_bands = model.n_orbitals();
     let b1 = model.lattice.b1;
     let b2 = model.lattice.b2;
@@ -791,12 +770,42 @@ mod tests {
         ];
         let amp = c64::new(t, 0.0);
         let hoppings = vec![
-            Hopping { from: 0, to: 1, cell_offset: [0, 0], amplitude: amp },
-            Hopping { from: 0, to: 1, cell_offset: [-1, 0], amplitude: amp },
-            Hopping { from: 0, to: 2, cell_offset: [0, 0], amplitude: amp },
-            Hopping { from: 0, to: 2, cell_offset: [0, -1], amplitude: amp },
-            Hopping { from: 1, to: 2, cell_offset: [0, 0], amplitude: amp },
-            Hopping { from: 1, to: 2, cell_offset: [1, -1], amplitude: amp },
+            Hopping {
+                from: 0,
+                to: 1,
+                cell_offset: [0, 0],
+                amplitude: amp,
+            },
+            Hopping {
+                from: 0,
+                to: 1,
+                cell_offset: [-1, 0],
+                amplitude: amp,
+            },
+            Hopping {
+                from: 0,
+                to: 2,
+                cell_offset: [0, 0],
+                amplitude: amp,
+            },
+            Hopping {
+                from: 0,
+                to: 2,
+                cell_offset: [0, -1],
+                amplitude: amp,
+            },
+            Hopping {
+                from: 1,
+                to: 2,
+                cell_offset: [0, 0],
+                amplitude: amp,
+            },
+            Hopping {
+                from: 1,
+                to: 2,
+                cell_offset: [1, -1],
+                amplitude: amp,
+            },
         ];
         TightBindingModel {
             lattice: lat,
@@ -830,11 +839,7 @@ mod tests {
             "Flat band at Gamma: {}",
             e_gamma[0]
         );
-        assert!(
-            (e_m[0] - (-2.0)).abs() < TOL,
-            "Flat band at M: {}",
-            e_m[0]
-        );
+        assert!((e_m[0] - (-2.0)).abs() < TOL, "Flat band at M: {}", e_m[0]);
     }
 
     #[test]

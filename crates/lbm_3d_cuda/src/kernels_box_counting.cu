@@ -119,23 +119,46 @@ extern "C" __global__ void reduce_minmax_f32(
 }
 
 // Build 256-bin histogram of density values between [vmin, vmax].
-// Uses warp-level private histograms to reduce atomic contention.
+//
+// Per-block shared-memory histogram eliminates global atomic contention:
+// Phase 1: cooperative zero of 256-bin shared histogram (1 KB)
+// Phase 2: grid-stride accumulate via shared-memory atomicAdd (~20 cycles)
+// Phase 3: block-stride reduce shared -> global (256 atomicAdd per block)
+//
+// At 128^3 with 8192 blocks, global atomicAdd calls drop from ~2M to ~2M
+// (8192 * 256 = 2M in worst case), but each global add aggregates many cells,
+// so effective contention drops by ~blockDim.x factor (256x fewer per bin).
 extern "C" __global__ void build_histogram_f32(
     const float* __restrict__ data,
     unsigned int* __restrict__ hist,   // [256] output histogram (must be zeroed)
     float vmin, float vmax,
     int n
 ) {
+    __shared__ unsigned int s_hist[256];
+
+    // Phase 1: block-stride cooperative zero (handles blockDim != 256)
+    for (int i = threadIdx.x; i < 256; i += blockDim.x)
+        s_hist[i] = 0;
+    __syncthreads();
+
     float scale = (vmax - vmin > 1e-30f) ? (255.0f / (vmax - vmin)) : 0.0f;
 
+    // Phase 2: grid-stride accumulate to shared histogram
     int gid = blockIdx.x * blockDim.x + threadIdx.x;
     for (int i = gid; i < n; i += gridDim.x * blockDim.x) {
-        float v = data[i];
+        float v = __ldg(&data[i]);
         if (v != v) continue;  // skip NaN
         int bin = (int)((v - vmin) * scale);
         if (bin < 0) bin = 0;
         if (bin > 255) bin = 255;
-        atomicAdd(&hist[bin], 1u);
+        atomicAdd(&s_hist[bin], 1u);  // shared-memory atomic (~20 cycles vs ~200 global)
+    }
+    __syncthreads();
+
+    // Phase 3: block-stride reduce shared -> global
+    for (int i = threadIdx.x; i < 256; i += blockDim.x) {
+        if (s_hist[i] > 0)
+            atomicAdd(&hist[i], s_hist[i]);
     }
 }
 

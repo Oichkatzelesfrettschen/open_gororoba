@@ -72,7 +72,7 @@ pub fn hubble(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -
 // Distance measures
 // ============================================================================
 
-/// Comoving distance d_C(z) [Mpc] for the axiodilaton model.
+/// Comoving distance `d_C(z)` in `Mpc` for the axiodilaton model.
 ///
 /// d_C(z) = (c/H_0) integral_0^z dz' / E(z')
 ///
@@ -90,12 +90,12 @@ pub fn comoving_distance(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64,
     (C_KM_S / h0) * integral
 }
 
-/// Luminosity distance d_L(z) = (1+z) d_C(z) [Mpc].
+/// Luminosity distance `d_L(z) = (1+z) d_C(z)` in `Mpc`.
 pub fn luminosity_distance(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -> f64 {
     (1.0 + z) * comoving_distance(z, omega_m, omega_ad, omega_lambda, h0)
 }
 
-/// Angular diameter distance d_A(z) = d_C(z) / (1+z) [Mpc].
+/// Angular diameter distance `d_A(z) = d_C(z) / (1+z)` in `Mpc`.
 pub fn angular_diameter_distance(
     z: f64,
     omega_m: f64,
@@ -106,7 +106,7 @@ pub fn angular_diameter_distance(
     comoving_distance(z, omega_m, omega_ad, omega_lambda, h0) / (1.0 + z)
 }
 
-/// Distance modulus mu = 5 log10(d_L / 10 pc) [mag].
+/// Distance modulus `mu = 5 log10(d_L / 10 pc)` in magnitudes.
 pub fn distance_modulus(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -> f64 {
     let d_l_mpc = luminosity_distance(z, omega_m, omega_ad, omega_lambda, h0);
     // d_L in pc = d_L_Mpc * 1e6

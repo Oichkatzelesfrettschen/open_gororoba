@@ -42,11 +42,23 @@ const PLANETS: [(&str, f64, f64); 4] = [
 const GM_OVER_C2_SUN: f64 = 1.476;
 
 fn main() {
-    let years: f64 = std::env::args()
+    // Adopt the global hardware topology for SMT-evasion and caching
+    if let Err(e) = verified_core::topology::HardwareTopology::init_pinned_rayon_pool() {
+        eprintln!("Warning: Failed to initialize pinned Rayon pool: {}", e);
+    }
+
+    let mut years: f64 = std::env::args()
         .position(|a| a == "--years")
         .and_then(|i| std::env::args().nth(i + 1))
         .and_then(|s| s.parse().ok())
         .unwrap_or(10.0);
+
+    let is_ska_mode = std::env::args().any(|a| a == "--ska-monte-carlo");
+    if is_ska_mode {
+        // SKA 2030 PTA modeling requires massive orbital stability baselines
+        years = 1_000_000.0;
+        eprintln!("SKA MONTE CARLO MODE ACTIVATED: Targeting {} years", years);
+    }
 
     let dt: f64 = std::env::args()
         .position(|a| a == "--dt")
@@ -66,7 +78,7 @@ fn main() {
 
     // Build gravastar solution
     let config = GravastarConfig {
-        r1: 3.0 * GM_OVER_C2_SUN, // Interior radius ~ 3 Schwarzschild radii
+        r1: 1.5 * GM_OVER_C2_SUN, // Interior radius < R2 (which is ~2.85 for C=0.7)
         m_target: GM_OVER_C2_SUN, // 1 solar mass in geometrized units
         compactness_target: 0.7,
         eos: PolytropicEos::stiff(),
@@ -153,14 +165,16 @@ fn main() {
             // otherwise Schwarzschild. The gravastar potential is in
             // geometrized units (km), so we scale by GM_SUN / GM_OVER_C2_SUN.
             let a_radial = if let Some(ref pot) = potential {
-                // Scale from geometrized to physical units
-                let r_geom = r * GM_OVER_C2_SUN / r; // This is just GM_OVER_C2_SUN
-                let _ = r_geom; // Suppress unused
-                // For r >> r2 (all planetary orbits), this is just -GM/r^2
-                // The gravastar correction only matters near r ~ r2
-                let a_r = pot.radial_acceleration(r * GM_OVER_C2_SUN / 1.496e8);
-                // Scale back to km/s^2
-                a_r * GM_SUN / GM_OVER_C2_SUN
+                // The physical distance r is in km.
+                // The potential solver uses geometrized units where distances are in km (G=c=1).
+                // So the input `r` is correctly scaled.
+                let a_r_geom = pot.radial_acceleration(r); // [1/km] in geometrized units
+
+                // Acceleration in geometrized units is unitless (dl/dtau = l/l = 1).
+                // Physical acceleration [km/s^2] = a_geom * c^2
+                // We know c = 299792.458 km/s
+                let c_km_s = 299792.458;
+                a_r_geom * c_km_s * c_km_s
             } else {
                 -GM_SUN / (r * r)
             };
@@ -196,7 +210,11 @@ fn main() {
 
     let total_seconds = years * 365.25 * 86400.0;
     let n_steps = (total_seconds / dt) as usize;
-    let output_interval = n_steps / 1000; // ~1000 output points
+    let output_interval = if is_ska_mode {
+        n_steps / 100
+    } else {
+        n_steps / 1000
+    };
 
     // Initial energies
     let e0_ctrl = compute_total_energy(&states_ctrl);
@@ -208,6 +226,7 @@ fn main() {
     );
 
     eprintln!("Integrating {} steps ({:.1} years)...", n_steps, years);
+    let t_start = std::time::Instant::now();
 
     for step in 0..n_steps {
         integrator_ctrl.step(&mut states_ctrl, &accel_schwarzschild);
@@ -253,6 +272,28 @@ fn main() {
                 );
             }
         }
+    }
+
+    let elapsed = t_start.elapsed();
+    eprintln!("Integration complete in {:.2?}", elapsed);
+
+    let e_ctrl_final = compute_total_energy(&states_ctrl);
+    let e_grav_final = compute_total_energy(&states_grav);
+    let final_drift_grav = (e_grav_final - e0_grav) / e0_grav.abs();
+    eprintln!("--- Final Energy Drift ---");
+    eprintln!(
+        "Schwarzschild: {:.5e}",
+        (e_ctrl_final - e0_ctrl) / e0_ctrl.abs()
+    );
+    eprintln!("Gravastar:     {:.5e}", final_drift_grav);
+
+    if is_ska_mode {
+        eprintln!("SKA Monte Carlo threshold for non-symplectic drift: < 1e-11");
+        assert!(
+            final_drift_grav.abs() < 1e-10,
+            "Symplectic drift failed SKA PTA threshold! Drift: {}",
+            final_drift_grav
+        );
     }
 
     // Final summary

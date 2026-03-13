@@ -18,7 +18,9 @@ use std::fmt;
 #[cfg(feature = "euclid-catalog")]
 use crate::euclid_morphology::EuclidSersicParams;
 #[cfg(feature = "euclid-catalog")]
-use crate::nfw_utils::{nfw_density_from_params, nfw_enclosed_mass_from_params, nfw_params_from_mass};
+use crate::nfw_utils::{
+    nfw_density_from_params, nfw_enclosed_mass_from_params, nfw_params_from_mass,
+};
 #[cfg(feature = "euclid-catalog")]
 use crate::sersic::{SersicLbmConfig, sersic_to_lbm_density};
 
@@ -55,6 +57,9 @@ pub struct GalaxyPipelineConfig {
     /// in a single step, causing compressibility instability regardless
     /// of collision operator (BGK or MRT).
     pub density_floor: f64,
+    /// Number of box-kite harmonic modes for ZD forcing (1..=7, default 7).
+    /// Only used when alpha_zd > 0.
+    pub halo_n_modes: usize,
 }
 
 impl Default for GalaxyPipelineConfig {
@@ -69,6 +74,7 @@ impl Default for GalaxyPipelineConfig {
             alpha_zd: 0.0,
             softening_eps: 1.0,
             density_floor: 0.1,
+            halo_n_modes: 7,
         }
     }
 }
@@ -262,7 +268,11 @@ pub fn prepare_galaxy(
 
     // 4. Compute Otsu threshold for box-counting (replaces median which fails
     //    on bimodal distributions where >50% of cells sit at the density floor)
-    let finite: Vec<f64> = rho_total.iter().copied().filter(|v| v.is_finite()).collect();
+    let finite: Vec<f64> = rho_total
+        .iter()
+        .copied()
+        .filter(|v| v.is_finite())
+        .collect();
     let threshold = if finite.is_empty() {
         0.0
     } else {
@@ -318,14 +328,15 @@ pub fn prepare_galaxy(
         })
         .collect();
 
-    // 6. Optional ZD algebraic forcing (topological confinement)
-    // The flat band fraction = 0.5 for D>=16 implies localization that
-    // prevents energy propagation through ZD modes. This adds a confining
-    // radial force that exponentially decays from the galaxy center,
-    // strengthening core confinement against LBM homogenization.
+    // 6. Optional ZD harmonic halo forcing (topological confinement)
+    // Modulates NFW force field with 7-mode box-kite harmonic structure.
+    // At alpha_zd=0, force_field is unchanged (modulation = 1.0 exactly).
     let force_field = if config.alpha_zd > 0.0 {
-        let flat_band_fraction = 0.5; // proven constant for D>=16
-        let coupling = config.alpha_zd * (1.0 - flat_band_fraction);
+        let halo_config = crate::harmonic_halos::HarmonicHaloConfig::new(
+            config.alpha_zd,
+            config.halo_n_modes,
+            nfw.r_s_kpc,
+        );
         let mut ff = force_field;
         for iz in 0..g {
             for iy in 0..g {
@@ -336,15 +347,10 @@ pub fn prepare_galaxy(
                     let r = (dx * dx + dy * dy + dz * dz).sqrt().max(0.1);
                     let idx = iz * g * g + iy * g + ix;
 
-                    // Exponential decay weighted by R_e (galaxy scale length)
-                    let weight = coupling * (-r / r_e_kpc).exp();
-
-                    // Radial inward force (confining)
-                    if r > 0.1 {
-                        ff[idx][0] -= weight * force_target * dx / r;
-                        ff[idx][1] -= weight * force_target * dy / r;
-                        ff[idx][2] -= weight * force_target * dz / r;
-                    }
+                    let m = crate::harmonic_halos::harmonic_halo_force_modulation(r, &halo_config);
+                    ff[idx][0] *= m;
+                    ff[idx][1] *= m;
+                    ff[idx][2] *= m;
                 }
             }
         }
@@ -475,7 +481,9 @@ fn bootstrap_ci_simple(data: &[f64], seed: u64) -> (f64, f64) {
     // Simple LCG for reproducibility without external crate
     let mut rng_state = seed;
     let lcg_next = |state: &mut u64| -> usize {
-        *state = state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        *state = state
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
         ((*state >> 33) as usize) % n
     };
 

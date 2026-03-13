@@ -184,6 +184,7 @@ anyhow = "1.0"
 clap = { version = "4.5", features = ["derive"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+anstyle = "1.0"
 axum = "0.8"
 tokio = { version = "1.48", features = ["rt-multi-thread", "macros"] }
 csv = "1.3"
@@ -195,6 +196,7 @@ glob = "0.3"                  # Unix shell pattern matching for artifact paths
 pulldown-cmark = "0.13"       # Markdown parser for provenance extraction
 linkify = "0.10"              # URL extraction from prose without ad hoc regex-only parsing
 url = "2.5"                   # URL parsing for provenance and artifact reconciliation
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip", "brotli", "deflate"] } # Standardized blocking HTTP transfer stack for universal recovery routing
 rusqlite = { version = "0.38", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
 rusqlite_migration = "2.4"    # SQLite schema migrations for provenance_store
 chardetng = "0.1"             # Charset detection for non-UTF8 intake text
@@ -202,6 +204,7 @@ encoding_rs = "0.8"           # Decoding support for lossy/non-UTF8 source inges
 blake3 = "1.8"                # Fast content hashing for ingest fingerprints
 sha2 = "0.10"                 # SHA-256 checksums for data provenance
 ureq = "3"                    # Minimal sync HTTP client for data fetching
+fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
 flate2 = "1.1"                # Gzip compression/decompression
 zip = "2.2"                   # ZIP archive extraction
 tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extraction)
@@ -215,6 +218,7 @@ toml = "0.8"                     # TOML serialization/deserialization
 toml_edit = "0.23"               # Deterministic TOML emission/editing for compatibility exports
 camino = "1.2"                   # UTF-8 canonical repo-relative paths in provenance layers
 strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
+unicode-normalization = "0.1"    # Unicode normalization for ANSI-safe UTF-8 sanitation
 
 # HDF5 data export (requires system libhdf5)
 # Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
@@ -313,6 +317,14 @@ codegen-backend = "llvm"
 codegen-backend = "llvm"
 
 [profile.test.package.lbm_3d]
+codegen-backend = "llvm"
+
+# algebra_analysis uses x87 inline asm for 80-bit extended precision Jacobi
+# eigenvalue solver. Cranelift does not support inline assembly.
+[profile.dev.package.algebra_analysis]
+codegen-backend = "llvm"
+
+[profile.test.package.algebra_analysis]
 codegen-backend = "llvm"
 
 # Release: maximum optimization, no debug data, stripped for distribution.

@@ -5,10 +5,7 @@
 //! Catalog 1: 536 events, Amiri+ (2021)
 //! Catalog 2: 4539 events, CHIME/FRB Collaboration (2025)
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 /// A single FRB event from the CHIME catalog.

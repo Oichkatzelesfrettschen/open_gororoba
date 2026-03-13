@@ -45,7 +45,7 @@ def main() -> int:
     lines.append("## Documentation presence")
     lines.append("")
     lines.append(f"- docs/requirements/cpp.md: {_has(repo_root, 'docs/requirements/cpp.md')}")
-    lines.append(f"- docs/requirements/coq.md: {_has(repo_root, 'docs/requirements/coq.md')}")
+    lines.append(f"- docs/requirements/rocq.md: {_has(repo_root, 'docs/requirements/rocq.md')}")
     lines.append(f"- docs/requirements/latex.md: {_has(repo_root, 'docs/requirements/latex.md')}")
     quantum_doc = "docs/requirements/quantum-docker.md"
     lines.append(f"- {quantum_doc}: {_has(repo_root, quantum_doc)}")
@@ -53,7 +53,7 @@ def main() -> int:
     lines.append("## Makefile targets (manual check)")
     lines.append("")
     lines.append("- C++: `cpp-deps`, `cpp-build`, `cpp-test`, `cpp-bench`, `cpp-clean`")
-    lines.append("- Coq/Rocq: `coq` (depends on `coqc`)")
+    lines.append("- Rocq: `rocq` (compiled via `coqc`)")
     lines.append("- LaTeX: `latex` (depends on `latexmk`)")
     lines.append(
         "- Docker/Qiskit: `docker-quantum-build`, `docker-quantum-run`, "

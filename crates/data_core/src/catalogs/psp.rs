@@ -72,9 +72,7 @@ pub fn parse_psp_merged(content: &str) -> Vec<SpdfMergedRecord> {
 }
 
 /// Parse PSP merged hourly data from a file.
-pub fn parse_psp_file(
-    path: &std::path::Path,
-) -> Result<Vec<SpdfMergedRecord>, FetchError> {
+pub fn parse_psp_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
     Ok(parse_psp_merged(&content))

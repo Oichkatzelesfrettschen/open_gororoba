@@ -1,11 +1,11 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum bootstrap-dev
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe lint-advisory check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
-.PHONY: verify verify-grand verify-c010-c011-theses ascii-check ascii-check-strict terminology-gate doctor doctor-blas provenance patch-pyfilesystem2
+.PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance patch-pyfilesystem2
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
-.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt
+.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit profile-python-toml-inventory
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -53,9 +53,10 @@
 .PHONY: verify-python-core-algorithms
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
-.PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run coq latex
+.PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all
+.PHONY: run-e183
 
 .NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
@@ -151,23 +152,23 @@ lint-all-fix-safe: install
 	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
 
 verify-no-reports-writes: install
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_no_reports_writes.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- no-reports-writes
 
-check: lint python-smoke ascii-check terminology-gate verify-no-reports-writes
+check: lint python-smoke ansi-check terminology-gate verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
 registry-verify-markdown-governance:
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
 
 governance-gate-readonly:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_schema_signatures.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_registry_crossrefs.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_label_aliases.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_external_source_operational_contracts.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
@@ -195,10 +196,10 @@ gate-local:
 	run_rust="true"; \
 	run_governance="true"; \
 	echo "[gate-local] determining scope..."; \
-	if command -v python3 >/dev/null 2>&1 && [ -f scripts/ci_affected_crates.py ]; then \
+	if command -v cargo >/dev/null 2>&1; then \
 	    scope_file="$$(mktemp)"; \
 	    meta_file="$$(mktemp)"; \
-	    python3 scripts/ci_affected_crates.py --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
+	    $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
 	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
 	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
 	    rm -f "$$scope_file" "$$meta_file"; \
@@ -206,7 +207,7 @@ gate-local:
 	    printf '%s\n' "$$routing_meta" | grep -q 'run_rust=False' && run_rust="false" || true; \
 	    printf '%s\n' "$$routing_meta" | grep -q 'run_governance=False' && run_governance="false" || true; \
 	else \
-	    echo "[gate-local] WARNING: ci_affected_crates.py not found, running full workspace"; \
+	    echo "[gate-local] WARNING: workspace-routing unavailable, running full workspace"; \
 	    scope="--workspace"; \
 	fi; \
 	$(MAKE) check; \
@@ -339,11 +340,11 @@ rust-regression: rust-clippy
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy -p algebra_analysis -p gr_core
 	@echo "OK: Rust regression lane passed."
 
-# Scoped Rust regression gate: only affected crates (via ci_affected_crates.py).
+# Scoped Rust regression gate: only affected crates (via workspace-routing).
 # Usage: make rust-regression-scoped  (auto-detects changes vs origin/main)
 #        make rust-regression-scoped RUST_SCOPE="-p gororoba_algebra -p gr_core"
 rust-regression-scoped:
-	$(eval RUST_SCOPE ?= $(shell python3 scripts/ci_affected_crates.py --local 2>/dev/null || echo "--workspace"))
+	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
 	$(eval RUST_RUN_HEAVY ?= 1)
 	@set -e; \
 	if [ -z "$(RUST_SCOPE)" ]; then \
@@ -389,9 +390,9 @@ rust-regression-scoped:
 	    elif [ -n "$$local_light_packages" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
+	            $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin local-nextest-plan -- --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
 	        else \
-	            $(CARGO_ENV) python3 scripts/run_local_nextest_plan.py --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
+	            $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin local-nextest-plan -- --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
 	        fi; \
 	    fi; \
 	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \
@@ -430,6 +431,161 @@ studio-check:
 
 profile-tensor-avt:
 	CARGO_HOME=$(REPO_CARGO_HOME) scripts/profile_tensor_avt.sh
+
+x87-strategy-bench:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin x87-strategy-bench -- \
+		--len $${LEN:-1048576} \
+		--repeats $${REPEATS:-7} \
+		--worker-counts $${WORKER_COUNTS:-1,2,4,6} \
+		--output $${OUT:-reports/benchmarks/x87_strategy_bench.csv} \
+		--summary $${SUMMARY:-reports/benchmarks/x87_strategy_bench.md}
+	@echo "OK: x87 strategy benchmark completed."
+
+x87-strategy-perf:
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-strategy-bench
+	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench \
+		--len $${LEN:-262144} \
+		--repeats $${REPEATS:-5} \
+		--worker-counts $${WORKER_COUNTS:-1,2,4,6} \
+		--output $${OUT:-reports/benchmarks/x87_strategy_perf.csv} \
+		--summary $${SUMMARY:-reports/benchmarks/x87_strategy_perf.md}
+	@echo "OK: x87 strategy perf-stat sweep completed."
+
+x87-strategy-hyperfine:
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-strategy-bench
+	hyperfine --shell=none --warmup $${WARMUP:-1} --runs $${RUNS:-5} \
+		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 1 --output /tmp/x87_strategy_hyperfine_1.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 2 --output /tmp/x87_strategy_hyperfine_2.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 4 --output /tmp/x87_strategy_hyperfine_4.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 6 --output /tmp/x87_strategy_hyperfine_6.csv'
+	@echo "OK: x87 strategy hyperfine sweep completed."
+
+x87-strategy-flamegraph:
+	CARGO_PROFILE_RELEASE_DEBUG=$${PROFILE_DEBUG:-true} $(CARGO_ENV) cargo flamegraph -p gororoba_cli_algebra --bin x87-strategy-bench --root -- \
+		--len $${LEN:-262144} \
+		--repeats $${REPEATS:-3} \
+		--worker-counts $${WORKER_COUNTS:-1} \
+		--output /tmp/x87_strategy_flamegraph.csv
+	@echo "OK: x87 strategy flamegraph captured."
+
+x87-givens-microbench:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin x87-givens-microbench -- \
+		--iterations $${ITERATIONS:-200000} \
+		--repeats $${REPEATS:-9} \
+		$${CASES:+--cases $${CASES}} \
+		$${KERNELS:+--kernels $${KERNELS}} \
+		--output $${OUT:-reports/benchmarks/x87_givens_microbench.csv} \
+		$${SUMMARY:+--summary $${SUMMARY}}
+	@echo "OK: x87 Givens microbench completed."
+
+x87-givens-microbench-perf:
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-givens-microbench
+	perf stat -x, -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-5} \
+		$(REPO_CARGO_TARGET_DIR)/release/x87-givens-microbench \
+		--iterations $${ITERATIONS:-200000} \
+		--repeats $${REPEATS:-9} \
+		$${CASES:+--cases $${CASES}} \
+		$${KERNELS:+--kernels $${KERNELS}} \
+		--output $${OUT:-reports/benchmarks/x87_givens_microbench_perf.csv} \
+		$${SUMMARY:+--summary $${SUMMARY}} \
+		2> $${COUNTERS_OUT:-reports/benchmarks/x87_givens_microbench_perf.stat}
+	@echo "OK: x87 Givens perf-stat microbench completed."
+
+jacobi-backend-sweep:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin jacobi-backend-sweep -- \
+		--sizes $${SIZES:-4,8,16,24,32} \
+		--repeats $${REPEATS:-5} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${BACKENDS:+--backends $${BACKENDS}} \
+		--output $${OUT:-reports/benchmarks/jacobi_backend_sweep.csv} \
+		--summary $${SUMMARY:-reports/benchmarks/jacobi_backend_sweep.md}
+	@echo "OK: Jacobi backend sweep completed."
+
+block-jacobi-backend-sweep:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin block-jacobi-backend-sweep -- \
+		--sizes $${SIZES:-8,16,24,32} \
+		--repeats $${REPEATS:-3} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${SOLVERS:+--solvers $${SOLVERS}} \
+		--output $${OUT:-reports/benchmarks/block_jacobi_backend_sweep.csv} \
+		$${SUMMARY:+--summary $${SUMMARY}}
+	@echo "OK: block Jacobi backend sweep completed."
+
+partial-spectrum-bench:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin partial-spectrum-bench -- \
+		--sizes $${SIZES:-16,32,64} \
+		--k-values $${K_VALUES:-1,2,4} \
+		--repeats $${REPEATS:-3} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${OBJECTIVES:+--objectives $${OBJECTIVES}} \
+		--output $${OUT:-reports/benchmarks/partial_spectrum_bench.csv} \
+		$${SUMMARY:+--summary $${SUMMARY}}
+	@echo "OK: partial spectrum benchmark completed."
+
+structured-spectrum-bench:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin structured-spectrum-bench -- \
+		--sizes $${SIZES:-16,32,64} \
+		--repeats $${REPEATS:-3} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${SOLVERS:+--solvers $${SOLVERS}} \
+		--output $${OUT:-reports/benchmarks/structured_spectrum_bench.csv} \
+		$${SUMMARY:+--summary $${SUMMARY}}
+	@echo "OK: structured spectrum benchmark completed."
+
+jacobi-backend-perf:
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin jacobi-backend-sweep
+	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release/jacobi-backend-sweep \
+		--sizes $${SIZES:-68} \
+		--repeats $${REPEATS:-3} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${BACKENDS:+--backends $${BACKENDS}} \
+		--output $${OUT:-/tmp/jacobi_backend_perf.csv} \
+		--summary $${SUMMARY:-/tmp/jacobi_backend_perf.md}
+	@echo "OK: Jacobi backend perf sweep completed."
+
+jacobi-backend-flamegraph:
+	CARGO_PROFILE_RELEASE_DEBUG=$${PROFILE_DEBUG:-true} $(CARGO_ENV) cargo flamegraph -p gororoba_cli_algebra --bin jacobi-backend-sweep --root \
+		-o $${OUT:-/tmp/jacobi_backend_flamegraph.svg} \
+		--title "$${TITLE:-Jacobi Backend Flamegraph}" \
+		--deterministic \
+		-- \
+		--sizes $${SIZES:-72} \
+		--repeats $${REPEATS:-30} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${BACKENDS:+--backends $${BACKENDS}} \
+		--output /tmp/jacobi_backend_flamegraph.csv \
+		--summary /tmp/jacobi_backend_flamegraph.md
+	@echo "OK: Jacobi backend flamegraph captured."
+
+jacobi-backend-samply:
+	$(CARGO_ENV) cargo build --profile $${PROFILE:-bench} -p gororoba_cli_algebra --bin jacobi-backend-sweep $${FEATURES:+--features "$${FEATURES}"}
+	@profile_dir="$${PROFILE:-bench}"; \
+	if [ "$$profile_dir" = "bench" ] || [ "$$profile_dir" = "release" ]; then \
+		profile_dir="release"; \
+	elif [ "$$profile_dir" = "dev" ] || [ "$$profile_dir" = "test" ]; then \
+		profile_dir="debug"; \
+	fi; \
+	samply record --save-only --output $${OUT:-reports/benchmarks/jacobi_backend_samply.json.gz} \
+		--profile-name "$${TITLE:-Jacobi Backend Samply}" \
+		$${PRESYMBOLICATE:+--unstable-presymbolicate} \
+		$(REPO_CARGO_TARGET_DIR)/$$profile_dir/jacobi-backend-sweep \
+		--sizes $${SIZES:-72} \
+		--repeats $${REPEATS:-30} \
+		$${FAMILIES:+--families $${FAMILIES}} \
+		$${BACKENDS:+--backends $${BACKENDS}} \
+		--output /tmp/jacobi_backend_samply.csv \
+		--summary /tmp/jacobi_backend_samply.md
+	@echo "OK: Jacobi backend samply profile captured."
+
+jacobi-backend-samply-compare:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin jacobi-backend-samply-compare -- \
+		--reference $${REFERENCE:-reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.gz} \
+		--x87 $${X87:-reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.gz} \
+		--double-double $${DD:-reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.gz} \
+		--output $${OUT:-reports/benchmarks/jacobi_backend_samply_compare.csv} \
+		--summary $${SUMMARY:-reports/benchmarks/jacobi_backend_samply_compare.md} \
+		--top $${TOP:-10}
+	@echo "OK: Jacobi samply comparison completed."
 
 dep-audit:
 	@echo "== dependency audit: duplicate versions =="
@@ -496,19 +652,19 @@ rust-pgo-build:
 	@echo "OK: PGO-optimized release build completed."
 
 verify-pantheon-physicsforge-license:
-	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_license_consistency.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin pantheon-physicsforge-verify -- license
 
 verify-pantheon-physicsforge-provenance:
-	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin pantheon-physicsforge-verify -- provenance
 
 verify-pantheon-physicsforge-mapping:
-	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin pantheon-physicsforge-verify -- mapping
 
 verify-pantheon-physicsforge-license-headers:
-	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_license_headers.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin pantheon-physicsforge-verify -- license-headers
 
 verify-pantheon-physicsforge-overflow:
-	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin pantheon-physicsforge-verify -- overflow
 
 seed-pantheon-physicsforge-sqlite:
 	cargo run --release -p gororoba_cli_data --bin provenance -- --db build/pantheon_physicsforge_migration.db pantheon-seed
@@ -593,17 +749,23 @@ registry-ingest-legacy: registry-normalize-narratives registry-normalize-operati
 
 registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-governance
 
+python-retention-sync:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin python-retention -- sync
+
+python-retention-verify:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin python-retention -- verify
+
 registry-knowledge-atoms:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_structured_knowledge_atoms.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin knowledge-atoms -- build
 
 registry-verify-knowledge-atoms:
-	PYTHONWARNINGS=error python3 src/verification/verify_structured_knowledge_atoms.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin knowledge-atoms -- verify
 
 registry-artifact-scrolls: registry-knowledge-atoms
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_artifact_scrolls_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin artifact-scrolls -- build
 
 registry-verify-artifact-scrolls:
-	PYTHONWARNINGS=error python3 src/verification/verify_artifact_scrolls_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin artifact-scrolls -- verify
 
 registry-markdown-inventory:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-inventory
@@ -652,11 +814,11 @@ registry-wave4: registry-control-plane-gate
 	@echo "DEPRECATED: make registry-wave4 is a legacy alias. Use make registry-control-plane-gate."
 
 registry-strict-toml-batch1-build: registry-markdown-owner-map
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_semantic_atoms.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --repo-root .
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-payloads
 
 registry-verify-strict-toml-batch1:
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_semantic_atoms.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --verify --repo-root .
 
 registry-strict-toml-batch1: registry-verify-strict-toml-batch1
 	@echo "OK: semantic-atoms registry lane complete (legacy wave5-batch1 compatibility)."
@@ -677,10 +839,10 @@ registry-wave5-batch1: registry-strict-toml-batch1
 	@echo "DEPRECATED: make registry-wave5-batch1 is a legacy alias. Use make registry-semantic-atoms-gate."
 
 registry-strict-toml-batch2-build: registry-strict-toml-batch1-build
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_evidence_provenance.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin evidence-provenance -- --repo-root .
 
 registry-verify-strict-toml-batch2:
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_evidence_provenance.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin evidence-provenance -- --verify --repo-root .
 
 registry-strict-toml-batch2: registry-verify-strict-toml-batch2
 	@echo "OK: evidence-provenance registry lane complete (legacy wave5-batch2 compatibility)."
@@ -701,26 +863,26 @@ registry-wave5-batch2: registry-strict-toml-batch2
 	@echo "DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
 
 registry-strict-toml-batch3-build:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_integrity_resolution.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --repo-root .
 
 registry-verify-schema-signatures:
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
 
 registry-verify-crossrefs:
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
 
 registry-verify-dataset-label-aliases:
-	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
 
 registry-verify-external-source-operational-contracts:
-	PYTHONWARNINGS=error python3 src/verification/verify_external_source_operational_contracts.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
 
 registry-verify-strict-toml-batch3:
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_integrity_resolution.py
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
-	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
-	PYTHONWARNINGS=error python3 src/verification/verify_external_source_operational_contracts.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --verify --repo-root .
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
 
 registry-strict-toml-batch3: registry-verify-strict-toml-batch3
 	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
@@ -741,12 +903,12 @@ registry-wave5-batch3: registry-strict-toml-batch3
 	@echo "DEPRECATED: make registry-wave5-batch3 is a legacy alias. Use make registry-integrity-resolution-gate."
 
 registry-strict-toml-batch4-build:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_registry_execution_planning.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin execution-planning -- --repo-root .
 
 registry-verify-strict-toml-batch4:
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_execution_planning.py
-	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
-	PYTHONWARNINGS=error python3 src/verification/verify_dataset_label_aliases.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin execution-planning -- --verify --repo-root .
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
 
@@ -782,16 +944,16 @@ registry-wave5: registry-acceptance-gate
 	@echo "DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."
 
 registry-csv-inventory:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_inventory_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . inventory
 
 registry-migrate-legacy-csv:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_legacy_csv_to_toml.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . migrate
 
 registry-verify-legacy-csv: registry-migrate-legacy-csv
-	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify
 
 registry-migrate-curated-csv:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_legacy_csv_to_toml.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . migrate \
 		--source-glob 'curated/**/*.csv' \
 		--out-index registry/curated_csv_datasets.toml \
 		--out-dir registry/data/curated_csv \
@@ -800,16 +962,16 @@ registry-migrate-curated-csv:
 		--corpus-label 'curated CSV'
 
 registry-verify-curated-csv: registry-migrate-curated-csv
-	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify \
 		--index-path registry/curated_csv_datasets.toml \
 		--source-glob 'curated/**/*.csv' \
 		--corpus-label 'curated CSV'
 
 registry-project-csv-split:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_project_csv_split_policy_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . project-split-policy
 
 registry-csv-holdings:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_holding_registries.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . holdings
 
 registry-scroll-project-csv-canonical: registry-project-csv-split
 	$(CARGO_ENV) cargo run --release --bin scrollify-csv -- \
@@ -852,17 +1014,17 @@ registry-scroll-external-csv-holding: registry-csv-holdings
 		--dataset-class holding-external
 
 registry-csv-scroll-pipeline: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_scroll_pipeline_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . scroll-pipeline
 
 registry-verify-csv-scroll-pipeline: registry-csv-scroll-pipeline
-	PYTHONWARNINGS=error python3 src/verification/verify_csv_scroll_pipeline.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify-scroll-pipeline
 
 registry-verify-project-csv-split: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
-	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify \
 		--index-path registry/project_csv_canonical_datasets.toml \
 		--source-manifest registry/manifests/project_csv_canonical_manifest.txt \
 		--corpus-label 'project CSV canonical dataset'
-	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify \
 		--index-path registry/project_csv_generated_artifacts.toml \
 		--source-manifest registry/manifests/project_csv_generated_manifest.txt \
 		--corpus-label 'project CSV generated artifact'
@@ -870,19 +1032,19 @@ registry-verify-project-csv-split: registry-scroll-project-csv-canonical registr
 		--repo-root .
 
 registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
-	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify \
 		--index-path registry/external_csv_holding_datasets.toml \
 		--source-manifest registry/manifests/external_csv_holding_manifest.txt \
 		--corpus-label 'external CSV holding queue' \
 		--coverage-only
-	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify \
 		--index-path registry/archive_csv_holding_datasets.toml \
 		--source-manifest registry/manifests/archive_csv_holding_manifest.txt \
 		--corpus-label 'archive CSV holding queue'
-	PYTHONWARNINGS=error python3 src/verification/verify_csv_holding_registries.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify-holdings
 
 registry-verify-csv-corpus-coverage: registry-csv-inventory registry-verify-project-csv-split registry-verify-csv-holdings
-	PYTHONWARNINGS=error python3 src/verification/verify_csv_corpus_coverage.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify-corpus-coverage
 
 registry-csv-pipeline-gate: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-verify-csv-scroll-pipeline
 
@@ -890,7 +1052,7 @@ registry-wave3: registry-csv-pipeline-gate
 	@echo "DEPRECATED: make registry-wave3 is a legacy alias. Use make registry-csv-pipeline-gate."
 
 registry-csv-scope: registry-csv-inventory
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . migration-scope
 
 registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-csv-pipeline-gate registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope registry-control-plane-gate
 	@echo "OK: CSV data registry lane complete."
@@ -906,6 +1068,8 @@ registry-export-markdown: registry-refresh
 		--output "$(MARKDOWN_EXPORT_OUT_DIR)/BIBLIOGRAPHY_REGISTRY_MIRROR.md"; \
 	cargo run -q -p gororoba_cli_data --bin registry-emit -- experiments-mirror \
 		--output "$(MARKDOWN_EXPORT_OUT_DIR)/EXPERIMENTS_REGISTRY_MIRROR.md"; \
+	cargo run -q -p gororoba_cli_data --bin registry-emit -- theorems-mirror \
+		--output "$(MARKDOWN_EXPORT_OUT_DIR)/THEOREMS_REGISTRY_MIRROR.md"; \
 	cargo run -q -p gororoba_cli_data --bin registry-emit -- roadmap-mirror \
 		--output "$(MARKDOWN_EXPORT_OUT_DIR)/ROADMAP_REGISTRY_MIRROR.md"; \
 	cargo run -q -p gororoba_cli_data --bin registry-emit -- todo-mirror \
@@ -945,6 +1109,7 @@ registry-export-markdown: registry-refresh
 	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
 		cargo run -q -p gororoba_cli_data --bin registry-emit -- insights-legacy; \
 		cargo run -q -p gororoba_cli_data --bin registry-emit -- experiments-legacy; \
+		cargo run -q -p gororoba_cli_data --bin registry-emit -- theorems-legacy; \
 		cargo run -q -p gororoba_cli_data --bin registry-emit -- roadmap-legacy; \
 		cargo run -q -p gororoba_cli_data --bin registry-emit -- todo-legacy; \
 		cargo run -q -p gororoba_cli_data --bin registry-emit -- next-actions-legacy; \
@@ -982,10 +1147,10 @@ registry-verify-mirrors:
 		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag --legacy-claims-sync $$claims_value
 	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-toml-first
 	@if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
-		PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py; \
-		PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py; \
-		PYTHONWARNINGS=error python3 src/verification/verify_toml_generated_mirror_immutability.py; \
-		PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py; \
+		cargo run -q -p gororoba_cli_data --bin governance-verify -- markdown-headers; \
+		cargo run -q -p gororoba_cli_data --bin governance-verify -- markdown-parity; \
+		cargo run -q -p gororoba_cli_data --bin governance-verify -- mirror-immutability; \
+		cargo run -q -p gororoba_cli_data --bin governance-verify -- claim-ticket-mirrors; \
 	else \
 		echo "SKIP: legacy mirror immutability checks disabled in strict markdown-free publish profile."; \
 	fi
@@ -1000,7 +1165,7 @@ registry-verify-typed-policy-error:
 	$(CARGO_ENV) cargo run --release --bin registry-check -- --typed-policy error
 
 synthesis-execution-contract:
-	PYTHONWARNINGS=error python3 src/scripts/analysis/build_synthesis_gate_rollup.py \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin synthesis-execution-contract -- \
 		--date-token "$(SYNTHESIS_CONTRACT_DATE)" \
 		--report-path "$(SYNTHESIS_CONTRACT_REPORT)"
 
@@ -1009,13 +1174,13 @@ docs-publish: registry-export-markdown
 	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
 
 terminology-gate:
-	python3 bin/terminology_gate.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- terminology-gate
 
-ascii-check:
-	python3 bin/ascii_check.py --check
+ansi-check:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- ansi-check --check
 
-ascii-check-strict:
-	python3 bin/ascii_check.py --check --strict-placeholders --placeholder-scope-prefix crates/ --placeholder-scope-prefix tests/
+ansi-check-strict:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- ansi-check --check --strict-placeholders --placeholder-scope-prefix crates/ --placeholder-scope-prefix tests/
 
 verify: install
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
@@ -1030,7 +1195,7 @@ verify-python-core-algorithms:
 	PYTHONWARNINGS=error python3 src/verification/verify_python_core_algorithms_pyo3.py
 
 doctor: install
-	$(PYTHON) bin/doctor.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- doctor
 	sh scripts/detect_native_blas.sh
 
 doctor-blas:
@@ -1083,29 +1248,29 @@ artifacts: artifacts-motifs artifacts-boxkites artifacts-reggiani artifacts-m3 a
 	@echo "OK: all core artifacts regenerated."
 
 artifacts-dimensional: install
-	PYTHONWARNINGS=error $(PYTHON) src/vis_dimensional_geometry.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- dimensional-geometry
 
 artifacts-materials: install
-	PYTHONWARNINGS=error $(PYTHON) src/fetch_materials_jarvis_subset.py --n 200 --seed 0
-	PYTHONWARNINGS=error $(PYTHON) src/materials_embedding_experiments.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- materials-subset --n 200 --seed 0
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- materials-embedding
 
 artifacts-boxkites: install
-	PYTHONWARNINGS=error $(PYTHON) src/export_de_marrais_boxkites.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- de-marrais-boxkites
 
 artifacts-reggiani: install
-	PYTHONWARNINGS=error $(PYTHON) src/export_reggiani_annihilator_stats.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- reggiani-annihilator-stats
 
 artifacts-m3: install
-	PYTHONWARNINGS=error $(PYTHON) src/export_m3_table.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- m3-table
 
 artifacts-motifs:
 	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 16,32 --details
-	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- motif-summary
 
 artifacts-motifs-big:
 	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 16,32,64,128 --summary-only
 	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
-	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- motif-summary
 
 # ---- Data fetching ----
 #
@@ -1134,13 +1299,38 @@ run: rust-smoke
 	$(CARGO_ENV) cargo run --release --bin entropy_pde -- --depth 50
 	@echo "OK: All core Rust simulations completed and artifacts generated."
 
-# ---- Coq proofs ----
+# E-183: MaNGA N~2500 harmonic halo stacking sweep (D=16,64,256,1024).
+# WHY: Full-sample N>=2500 stack reaches alpha_zd threshold ~0.004,
+#      7x improvement over SPARC N=93. Each CD dimension is an independent run.
+# HOW: Run after manga-maps-extractor finishes (check: wc -l data/external/manga/rotcurves/manga_rotcurves_all.csv)
+# OUTPUT: data/results/e183/manga_stack_D{16,64,256,1024}.csv
+run-e183:
+	@mkdir -p data/results/e183
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
+		--dapall data/external/manga/dapall_selection.csv \
+		--cd-dim 16 --csv data/results/e183/manga_stack_D16.csv
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
+		--dapall data/external/manga/dapall_selection.csv \
+		--cd-dim 64 --csv data/results/e183/manga_stack_D64.csv
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
+		--dapall data/external/manga/dapall_selection.csv \
+		--cd-dim 256 --csv data/results/e183/manga_stack_D256.csv
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
+		--dapall data/external/manga/dapall_selection.csv \
+		--cd-dim 1024 --csv data/results/e183/manga_stack_D1024.csv
+	@echo "E-183 sweep complete. Results in data/results/e183/"
 
-coq:
-	@command -v coqc >/dev/null 2>&1 || { echo "ERROR: coqc not found. See docs/requirements/coq.md"; exit 1; }
-	python3 bin/coq_prepare_confine.py curated/01_theory_frameworks/confine_theorems_512.v curated/01_theory_frameworks/confine_theorems_512_axioms.v
-	python3 bin/coq_prepare_confine.py curated/01_theory_frameworks/confine_theorems_1024.v curated/01_theory_frameworks/confine_theorems_1024_axioms.v
-	python3 bin/coq_prepare_confine.py curated/01_theory_frameworks/confine_theorems_2048.v curated/01_theory_frameworks/confine_theorems_2048_axioms.v
+# ---- Rocq proofs ----
+
+rocq:
+	@command -v coqc >/dev/null 2>&1 || { echo "ERROR: coqc not found. See docs/requirements/rocq.md"; exit 1; }
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_512.v curated/01_theory_frameworks/confine_theorems_512_axioms.v
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_1024.v curated/01_theory_frameworks/confine_theorems_1024_axioms.v
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_2048.v curated/01_theory_frameworks/confine_theorems_2048_axioms.v
 	cd curated/01_theory_frameworks && \
 		coqc ConfineModel.v && \
 		coqc confine_theorems_512_axioms.v && \
@@ -1243,8 +1433,8 @@ help:
 	@echo "    make integrity            Python-only integrity lane (artifacts, mirrors, markdown)"
 	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
 	@echo "    make check                Fast local check (lint + python-smoke + ascii + terminology + no-reports)"
-	@echo "    make ascii-check          Verify ASCII-only policy"
-	@echo "    make ascii-check-strict   Verify ASCII-only policy + fail on <U+....> placeholders in crates/tests"
+	@echo "    make ansi-check           Verify ANSI-safe UTF-8 character policy"
+	@echo "    make ansi-check-strict    Verify ANSI-safe UTF-8 policy + fail on <U+....> placeholders in crates/tests"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration matrix/todo mapping completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify GPL-2.0-only header consistency in migrated files"
 	@echo "    make verify-pantheon-physicsforge-overflow Verify overflow tracker max-5-active policy"
@@ -1261,13 +1451,27 @@ help:
 	@echo "    make test-inventory       Enforce taxonomy coverage and stale-doc checks"
 	@echo "    make mcp-smoke            Re-test configured MCP server parity and startup health"
 	@echo "    make cargo-deny-check     Enforce deny.toml (advisories, bans, licenses, sources)"
+	@echo "    make x87-strategy-bench   Run pinned-core x87/AVX2 worker sweep and write CSV+Markdown reports"
+	@echo "    make x87-strategy-perf    Run perf stat around the pinned-core x87/AVX2 benchmark binary"
+	@echo "    make x87-strategy-hyperfine Compare 1/2/4/6-worker strategy runs with hyperfine"
+	@echo "    make x87-strategy-flamegraph Capture a flamegraph for a focused x87-strategy-bench run"
+	@echo "    make x87-givens-microbench Measure the actual composed x87 Givens/transcendental helper costs"
+	@echo "    make x87-givens-microbench-perf Run perf stat around focused x87 Givens/transcendental microbench cases/kernels"
+	@echo "    make jacobi-backend-sweep Run solver-shaped x87/DD/f64 Jacobi backend sweep across matrix sizes (optional FAMILIES=a,b and BACKENDS=x,y subsets)"
+	@echo "    make block-jacobi-backend-sweep Run the block-Jacobi prototype sweep with block sizes 2 and 4 against current dense backends"
+	@echo "    make partial-spectrum-bench Benchmark k=1,2,4 largest/smallest-magnitude partial-spectrum lanes against full-spectrum Jacobi baselines"
+	@echo "    make structured-spectrum-bench Benchmark exact structured zero-mode deflation on quantized and real obstruction-like matrices"
+	@echo "    make jacobi-backend-perf   Run perf stat around a focused jacobi-backend-sweep configuration"
+	@echo "    make jacobi-backend-flamegraph Capture a flamegraph for a focused jacobi-backend-sweep configuration (defaults to release debuginfo for readable stacks)"
+	@echo "    make jacobi-backend-samply Capture a focused samply profile for jacobi-backend-sweep (supports FEATURES=profile-dd-hotspots for less-inlined DD attribution)"
+	@echo "    make jacobi-backend-samply-compare Summarize weighted line-level hotspots across the current reference/x87/DD samply artifacts"
 	@echo "    make registry             Validate TOML registry consistency"
 	@echo "    make registry-verify-typed-policy-error Strict registry-check typed-policy lane (--typed-policy error)"
 	@echo "    make synthesis-execution-contract Run full synthesis execution contract and emit rollup TOML"
 	@echo "    make governance-gate-readonly Read-only TOML registry governance gate"
 	@echo "    make registry-control-plane-gate-readonly Read-only markdown/TOML control-plane gate"
 	@echo "    make registry-csv-pipeline-gate  Validate project/external/archive CSV scroll pipeline lanes"
-	@echo "    make registry-semantic-atoms-gate      Legacy build+verify semantic-atoms lane"
+	@echo "    make registry-semantic-atoms-gate      Rust semantic-atoms build+verify lane"
 	@echo "    make registry-evidence-provenance-gate Legacy build+verify evidence-provenance lane"
 	@echo "    make registry-integrity-resolution-gate Legacy build+verify integrity-resolution lane"
 	@echo "    make registry-execution-planning-gate  Legacy build+verify execution-planning lane"
@@ -1341,7 +1545,7 @@ help:
 	@echo ""
 	@echo "  Other:"
 	@echo "    make run                  Run simulations (sedenion, modular, entropy)"
-	@echo "    make coq                  Compile Coq proofs"
+	@echo "    make rocq                Compile Rocq proofs"
 	@echo "    make latex                Build MASTER_SYNTHESIS.pdf"
 	@echo "    make docker-quantum-build Build qiskit-env Docker image"
 	@echo "    make docker-quantum-run   Run quantum script in Docker (ARGS=...)"

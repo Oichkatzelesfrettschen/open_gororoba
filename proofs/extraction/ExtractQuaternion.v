@@ -20,5 +20,5 @@ From OpenGororoba Require Import FloatAxioms FloatQuaternion.
 Require Extraction.
 Require Import ExtrOcamlBasic.
 
-(** Extract the abstract functor only -- no dependency on Coq reals. *)
+(** Extract the abstract functor only -- no dependency on Rocq reals. *)
 Extraction "extraction/extracted_quat.ml" QuatOps.

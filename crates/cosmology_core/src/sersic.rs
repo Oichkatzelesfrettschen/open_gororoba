@@ -40,7 +40,9 @@ pub fn sersic_bn(n: f64) -> f64 {
         return 0.0;
     }
     // Ciotti & Bertin (1999) Eq. 18 with third-order correction
-    2.0 * n - 1.0 / 3.0 + 4.0 / (405.0 * n) + 46.0 / (25515.0 * n * n)
+    2.0 * n - 1.0 / 3.0
+        + 4.0 / (405.0 * n)
+        + 46.0 / (25515.0 * n * n)
         + 131.0 / (1148175.0 * n * n * n)
 }
 
@@ -174,7 +176,16 @@ pub struct SersicLbmConfig {
 /// Returns: density field of size nx * ny * nz (row-major).
 pub fn sersic_to_lbm_density(cfg: &SersicLbmConfig) -> Vec<f64> {
     let SersicLbmConfig {
-        nx, ny, nz, dx_kpc, r_e_kpc, n, i_e, ellipticity, pa_rad, ml_ratio,
+        nx,
+        ny,
+        nz,
+        dx_kpc,
+        r_e_kpc,
+        n,
+        i_e,
+        ellipticity,
+        pa_rad,
+        ml_ratio,
     } = *cfg;
     let total = nx * ny * nz;
     let mut rho = vec![0.0_f64; total];
@@ -200,9 +211,8 @@ pub fn sersic_to_lbm_density(cfg: &SersicLbmConfig) -> Vec<f64> {
                 let y_rot = -dx_cell * sin_pa + dy_cell * cos_pa;
 
                 // Elliptical radius
-                let r = (x_rot * x_rot + (y_rot * q_inv) * (y_rot * q_inv)
-                    + dz_cell * dz_cell)
-                    .sqrt();
+                let r =
+                    (x_rot * x_rot + (y_rot * q_inv) * (y_rot * q_inv) + dz_cell * dz_cell).sqrt();
 
                 if r > 0.0 {
                     let j = sersic_deprojected_density(r, r_e_kpc, n, i_e);
@@ -336,7 +346,11 @@ pub fn box_counting_fractal_dim(rho: &[f64], nx: usize, ny: usize, nz: usize) ->
 /// Widens to f64 internally for the regression but computes Otsu threshold
 /// directly on f32 values widened to f64.
 pub fn box_counting_fractal_dim_f32(rho: &[f32], nx: usize, ny: usize, nz: usize) -> f64 {
-    let finite: Vec<f64> = rho.iter().filter(|v| v.is_finite()).map(|&v| v as f64).collect();
+    let finite: Vec<f64> = rho
+        .iter()
+        .filter(|v| v.is_finite())
+        .map(|&v| v as f64)
+        .collect();
     if finite.is_empty() {
         return 3.0;
     }
@@ -345,8 +359,11 @@ pub fn box_counting_fractal_dim_f32(rho: &[f32], nx: usize, ny: usize, nz: usize
     box_counting_fractal_dim_threshold(&rho_f64, nx, ny, nz, threshold)
 }
 
-/// Internal: box-counting with explicit threshold.
-fn box_counting_fractal_dim_threshold(
+/// Box-counting fractal dimension with an explicit threshold.
+///
+/// Use this when the threshold is computed externally (e.g., GPU Otsu)
+/// and you need to compare GPU vs CPU box-counting with the same threshold.
+pub fn box_counting_fractal_dim_threshold(
     rho: &[f64],
     nx: usize,
     ny: usize,
@@ -485,11 +502,7 @@ mod tests {
         for i in 1..10 {
             let r = i as f64 * 1.0;
             let j = sersic_deprojected_density(r, r_e, n, i_e);
-            assert!(
-                j >= 0.0,
-                "Deprojected density negative at r={}: {}",
-                r, j
-            );
+            assert!(j >= 0.0, "Deprojected density negative at r={}: {}", r, j);
         }
     }
 
@@ -498,8 +511,16 @@ mod tests {
         // Circular (e=0) -> should be azimuthally symmetric
         let nx = 16;
         let cfg = SersicLbmConfig {
-            nx, ny: nx, nz: nx, dx_kpc: 1.0, r_e_kpc: 3.0,
-            n: 4.0, i_e: 1.0, ellipticity: 0.0, pa_rad: 0.0, ml_ratio: 1.0,
+            nx,
+            ny: nx,
+            nz: nx,
+            dx_kpc: 1.0,
+            r_e_kpc: 3.0,
+            n: 4.0,
+            i_e: 1.0,
+            ellipticity: 0.0,
+            pa_rad: 0.0,
+            ml_ratio: 1.0,
         };
         let rho = sersic_to_lbm_density(&cfg);
         // Check xy symmetry at z=center
@@ -520,8 +541,16 @@ mod tests {
         let n = 1.0;
         let ml = 1.0;
         let cfg = SersicLbmConfig {
-            nx, ny: nx, nz: nx, dx_kpc: dx, r_e_kpc: r_e,
-            n, i_e, ellipticity: 0.0, pa_rad: 0.0, ml_ratio: ml,
+            nx,
+            ny: nx,
+            nz: nx,
+            dx_kpc: dx,
+            r_e_kpc: r_e,
+            n,
+            i_e,
+            ellipticity: 0.0,
+            pa_rad: 0.0,
+            ml_ratio: ml,
         };
         let rho = sersic_to_lbm_density(&cfg);
 
@@ -652,10 +681,7 @@ mod tests {
         let c = n / 2;
         rho[c * n * n + c * n + c] = 10.0;
         let df = box_counting_fractal_dim(&rho, n, n, n);
-        assert!(
-            df < 1.0,
-            "Single cell D_f={df:.4}, expected < 1.0"
-        );
+        assert!(df < 1.0, "Single cell D_f={df:.4}, expected < 1.0");
     }
 
     #[test]
@@ -670,18 +696,13 @@ mod tests {
             }
         }
         let df = box_counting_fractal_dim(&rho, n, n, n);
-        assert!(
-            df > 1.5 && df < 2.5,
-            "Plane D_f={df:.4}, expected ~2.0"
-        );
+        assert!(df > 1.5 && df < 2.5, "Plane D_f={df:.4}, expected ~2.0");
     }
 
     #[test]
     fn test_box_counting_f32_agrees_with_f64() {
         let n = 16;
-        let rho_f64: Vec<f64> = (0..(n * n * n))
-            .map(|i| ((i % 7) as f64) * 0.3)
-            .collect();
+        let rho_f64: Vec<f64> = (0..(n * n * n)).map(|i| ((i % 7) as f64) * 0.3).collect();
         let rho_f32: Vec<f32> = rho_f64.iter().map(|&v| v as f32).collect();
         let df_64 = box_counting_fractal_dim(&rho_f64, n, n, n);
         let df_32 = box_counting_fractal_dim_f32(&rho_f32, n, n, n);

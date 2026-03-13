@@ -92,6 +92,7 @@ dependencies = [
  "approx",
  "cd_kernel",
  "core_affinity",
+ "criterion",
  "nalgebra 0.33.2",
  "petgraph 0.7.1",
  "rand 0.8.5",
@@ -99,6 +100,7 @@ dependencies = [
  "rand_distr 0.4.3",
  "rayon",
  "serde",
+ "verified_core",
 ]
 
 [[package]]
@@ -118,6 +120,7 @@ dependencies = [
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
  "rayon",
+ "serde",
  "wide",
 ]
 
@@ -137,6 +140,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc890384c8602f339876ded803c97ad529f3842aba97f6392b3dba0dd171769b"
 dependencies = [
  "equator 0.4.2",
+]
+
+[[package]]
+name = "alloc-no-stdlib"
+version = "2.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cc7bb162ec39d46ab1ca8c77bf72e890535becd1751bb45f64c597edb4c8c6b3"
+
+[[package]]
+name = "alloc-stdlib"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "94fb8275041c72129eb51b7d0322c29b8387a0386127718b096429201a5d6ece"
+dependencies = [
+ "alloc-no-stdlib",
 ]
 
 [[package]]
@@ -494,6 +512,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-compression"
+version = "0.4.36"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "98ec5f6c2f8bc326c994cb9e241cc257ddaba9afa8555a43cffbb5dd86efaa37"
+dependencies = [
+ "compression-codecs",
+ "compression-core",
+ "futures-core",
+ "pin-project-lite",
+ "tokio",
+]
+
+[[package]]
 name = "async-lock"
 version = "3.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -839,6 +870,27 @@ name = "boxcar"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "36f64beae40a84da1b4b26ff2761a5b895c12adc41dc25aaee1c4f2bbfe97a6e"
+
+[[package]]
+name = "brotli"
+version = "8.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4bd8b9603c7aa97359dbd97ecf258968c95f3adddd6db2f7e7a5bef101c84560"
+dependencies = [
+ "alloc-no-stdlib",
+ "alloc-stdlib",
+ "brotli-decompressor",
+]
+
+[[package]]
+name = "brotli-decompressor"
+version = "5.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "874bb8112abecc98cbd6d81ea4fa7e94fb9449648c93cc89aa40c81c24d7de03"
+dependencies = [
+ "alloc-no-stdlib",
+ "alloc-stdlib",
+]
 
 [[package]]
 name = "bstr"
@@ -1272,6 +1324,7 @@ name = "cd_kernel"
 version = "0.1.0"
 dependencies = [
  "approx",
+ "core_affinity",
  "proptest",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
@@ -1279,6 +1332,7 @@ dependencies = [
  "rayon",
  "sha2",
  "thiserror 2.0.18",
+ "verified_core",
  "wide",
 ]
 
@@ -1515,6 +1569,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "compression-codecs"
+version = "0.4.35"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0f7ac3e5b97fdce45e8922fb05cae2c37f7bbd63d30dd94821dacfd8f3f2bf2"
+dependencies = [
+ "brotli",
+ "compression-core",
+ "flate2",
+ "memchr",
+]
+
+[[package]]
+name = "compression-core"
+version = "0.4.31"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75984efb6ed102a0d42db99afb6c1948f0380d1d91808d5529916e6c08b49d8d"
+
+[[package]]
 name = "concurrent-queue"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1713,6 +1785,7 @@ dependencies = [
  "rand_distr 0.4.3",
  "rayon",
  "statrs",
+ "verified_core",
 ]
 
 [[package]]
@@ -2175,13 +2248,16 @@ dependencies = [
  "polars",
  "rand 0.8.5",
  "rand_distr 0.4.3",
+ "reqwest",
  "serde",
  "serde_json",
  "sha2",
  "tar",
  "tempfile",
  "thiserror 2.0.18",
+ "toml",
  "ureq",
+ "url",
  "wide",
  "zip 2.4.2",
 ]
@@ -2779,6 +2855,25 @@ name = "find-msvc-tools"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
+
+[[package]]
+name = "fitsio"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f447457cde7aee12bfbf2ca638100cc6b4cd1c8a5382b202b1439f70b7a123fe"
+dependencies = [
+ "fitsio-sys",
+ "libc",
+]
+
+[[package]]
+name = "fitsio-sys"
+version = "0.5.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14929d0b6fa44a87b374a138ea2256c02c1b5beae1dbc98f62a3e132f862fed1"
+dependencies = [
+ "pkg-config",
+]
 
 [[package]]
 name = "fixed"
@@ -3562,6 +3657,7 @@ dependencies = [
  "serde",
  "sha2",
  "thiserror 2.0.18",
+ "verified_core",
  "wheel",
  "wide",
 ]
@@ -3570,6 +3666,7 @@ dependencies = [
 name = "gororoba_cli"
 version = "0.1.0"
 dependencies = [
+ "algebra_experimental",
  "anyhow",
  "ash",
  "axum",
@@ -3581,6 +3678,7 @@ dependencies = [
  "env_logger",
  "glob",
  "gororoba_algebra",
+ "gororoba_cli_physics",
  "gororoba_engine",
  "gr_core",
  "lattice_filtration",
@@ -3589,12 +3687,14 @@ dependencies = [
  "lbm_core",
  "lbm_vulkan",
  "log",
+ "materials_core",
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "neural_homotopy",
  "optics_core",
  "pgfplots",
  "plotters",
+ "provenance_store",
  "quantum_core",
  "rand 0.8.5",
  "regex",
@@ -3619,14 +3719,19 @@ dependencies = [
  "algebra_analysis",
  "algebra_experimental",
  "anyhow",
+ "cd_kernel",
  "clap",
  "csv",
  "env_logger",
+ "flate2",
  "gororoba_algebra",
  "gororoba_engine",
+ "nalgebra 0.33.2",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rustfft",
+ "serde",
+ "serde_json",
  "spectral_core",
  "stats_core",
  "tracing",
@@ -3639,6 +3744,7 @@ name = "gororoba_cli_data"
 version = "0.1.0"
 dependencies = [
  "algebra_analysis",
+ "anstyle",
  "anyhow",
  "arrow-array",
  "arrow-ipc",
@@ -3666,6 +3772,7 @@ dependencies = [
  "tempfile",
  "toml",
  "tracing-subscriber",
+ "unicode-normalization",
  "ureq",
  "url",
  "walkdir",
@@ -3694,6 +3801,8 @@ dependencies = [
  "data_core",
  "env_logger",
  "faer",
+ "fitsio",
+ "gauss-quad",
  "glob",
  "gororoba_algebra",
  "gr_core",
@@ -3711,6 +3820,7 @@ dependencies = [
  "num-complex",
  "optics_core",
  "pathion_ellip",
+ "plotters",
  "qgp_scaling",
  "quantum_core",
  "rand 0.8.5",
@@ -3724,8 +3834,11 @@ dependencies = [
  "snia_core",
  "spectral_core",
  "spin_tomography_core",
+ "statrs",
  "stats_core",
  "toml",
+ "ureq",
+ "verified_core",
  "zip 2.4.2",
 ]
 
@@ -3930,6 +4043,7 @@ dependencies = [
  "num-complex",
  "ode_solvers",
  "rayon",
+ "verified_core",
 ]
 
 [[package]]
@@ -4226,6 +4340,7 @@ dependencies = [
  "tokio",
  "tokio-rustls",
  "tower-service",
+ "webpki-roots",
 ]
 
 [[package]]
@@ -4790,8 +4905,10 @@ dependencies = [
  "cosmic_scheduler",
  "cosmology_core",
  "criterion",
+ "raw-cpuid 11.6.0",
  "rayon",
  "thiserror 2.0.18",
+ "verified_core",
  "wide",
 ]
 
@@ -7532,6 +7649,7 @@ dependencies = [
  "provenance_core",
  "rusqlite",
  "rusqlite_migration",
+ "serde",
  "serde_json",
  "toml",
  "url",
@@ -8148,6 +8266,7 @@ checksum = "eddd3ca559203180a307f12d114c268abf583f59b03cb906fd0b3ff8646c1147"
 dependencies = [
  "base64",
  "bytes",
+ "futures-channel",
  "futures-core",
  "futures-util",
  "h2",
@@ -8180,6 +8299,7 @@ dependencies = [
  "wasm-bindgen-futures",
  "wasm-streams",
  "web-sys",
+ "webpki-roots",
 ]
 
 [[package]]
@@ -9559,13 +9679,18 @@ version = "0.6.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4e6559d53cc268e5031cd8429d05415bc4cb4aefc4aa5d6cc35fbf5b924a1f8"
 dependencies = [
+ "async-compression",
  "bitflags 2.11.0",
  "bytes",
+ "futures-core",
  "futures-util",
  "http",
  "http-body",
+ "http-body-util",
  "iri-string",
  "pin-project-lite",
+ "tokio",
+ "tokio-util",
  "tower",
  "tower-layer",
  "tower-service",
@@ -9962,10 +10087,13 @@ dependencies = [
 name = "verified_core"
 version = "0.1.0"
 dependencies = [
+ "core_affinity",
  "cosmology_core",
  "gororoba_algebra",
  "gr_core",
  "optics_core",
+ "raw-cpuid 11.6.0",
+ "rayon",
 ]
 
 [[package]]

@@ -1547,6 +1547,244 @@ lbm_step_soa_mrt_coarsened(
 // ---------------------------------------------------------------------------
 // Two-pass shared-memory tree reduction over SoA velocity field.
 // Pass 1: N cells -> ceil(N/128) per-block maxima
+// ---------------------------------------------------------------------------
+// A-A (Alternating-Address) streaming: single-buffer, half VRAM
+// ---------------------------------------------------------------------------
+// Eliminates the ping-pong buffer (d_f_tmp) by using one f array with
+// parity-dependent direction remapping. On even steps, read direction i
+// and write to opposite direction at the neighbor. On odd steps, read
+// from opposite direction and write to direction i. After two steps,
+// data is back in canonical order.
+//
+// VRAM savings: 19*N*4 bytes (76 MB at 128^3, 608 MB at 256^3).
+// Performance: ~neutral (one extra LUT lookup per direction vs saved alloc).
+// Enables 256^3 on 12 GB GPUs (impossible with ping-pong).
+
+// D3Q19 opposite-direction LUT: opp[i] = index of direction opposite to i.
+// dir 0 = rest (self-opposite), dirs 1-18 come in pairs.
+__constant__ int OPP[19] = {
+    0,  2,  1,  4,  3,  6,  5,  8,  7, 10,
+    9, 12, 11, 14, 13, 16, 15, 18, 17
+};
+
+// A-A BGK kernel: fused collision + A-A streaming in a single buffer.
+//
+// parity=0 (even step): read f[i * N + idx], write f[opp[i] * N + dst]
+// parity=1 (odd step):  read f[opp[i] * N + src], write f[i * N + idx]
+//
+// On even steps, the collision reads canonical direction slots and pushes
+// post-collision distributions into the opposite slot at the neighbor.
+// On odd steps, the collision reads from opposite slots (where the previous
+// even step deposited them) via pull from neighbors, and writes back to
+// canonical slots at self.
+extern "C" __global__ void lbm_step_soa_aa(
+    float* __restrict__ f,            // single buffer, in-place
+    float* __restrict__ rho_out,
+    float* __restrict__ u_out,
+    const float* __restrict__ tau,
+    const float* __restrict__ force,
+    int nx, int ny, int nz,
+    int parity                        // 0 = even step, 1 = odd step
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int N = nx * ny * nz;
+    if (idx >= N) return;
+
+    int x = idx % nx;
+    int y = (idx / nx) % ny;
+    int z = idx / (nx * ny);
+
+    // 1. Read distributions (direction depends on parity)
+    float rho_local = 0.0f;
+    float mx = 0.0f, my = 0.0f, mz = 0.0f;
+    float f_local[19];
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        int read_dir, src;
+        if (parity == 0) {
+            // Even: read canonical direction at self
+            read_dir = i;
+            src = idx;
+        } else {
+            // Odd: pull from neighbor's opposite slot
+            int xn = (x - CX[i] + nx) % nx;
+            int yn = (y - CY[i] + ny) % ny;
+            int zn = (z - CZ[i] + nz) % nz;
+            src = xn + nx * (yn + ny * zn);
+            read_dir = OPP[i];
+        }
+        float fi = __ldg(&f[read_dir * N + src]);
+        if (!finite_check(fi)) fi = 0.0f;
+        f_local[i] = fi;
+        rho_local += fi;
+        mx += CX[i] * fi;
+        my += CY[i] * fi;
+        mz += CZ[i] * fi;
+    }
+
+    // 2. Macroscopic quantities
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    if (finite_check(rho_local) && rho_local > 1.0e-20f) {
+        float inv_rho = 1.0f / rho_local;
+        ux = mx * inv_rho;
+        uy = my * inv_rho;
+        uz = mz * inv_rho;
+    } else {
+        rho_local = 1.0f;
+    }
+
+    rho_out[idx] = rho_local;
+    u_out[idx]         = ux;
+    u_out[N + idx]     = uy;
+    u_out[2 * N + idx] = uz;
+
+    // 3. BGK collision
+    float tau_local = __ldg(&tau[idx]);
+    float inv_tau = 1.0f / tau_local;
+    float u_sq = ux * ux + uy * uy + uz * uz;
+    float base = fmaf(-1.5f, u_sq, 1.0f);
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        float eu = fmaf((float)CX[i], ux, fmaf((float)CY[i], uy, (float)CZ[i] * uz));
+        float w_rho = W[i] * rho_local;
+        float f_eq = w_rho * fmaf(fmaf(eu, 4.5f, 3.0f), eu, base);
+        f_local[i] -= (f_local[i] - f_eq) * inv_tau;
+    }
+
+    // 4. Guo forcing
+    float fx = __ldg(&force[idx]);
+    float fy = __ldg(&force[N + idx]);
+    float fz = __ldg(&force[2 * N + idx]);
+    float force_mag_sq = fx * fx + fy * fy + fz * fz;
+
+    if (force_mag_sq >= 1e-40f) {
+        float prefactor = 1.0f - 0.5f * inv_tau;
+        #pragma unroll
+        for (int i = 0; i < 19; i++) {
+            float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
+            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+            f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+        }
+    }
+
+    // 5. Write (direction and destination depend on parity)
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        if (parity == 0) {
+            // Even: push to neighbor's opposite slot
+            int xn = (x + CX[i] + nx) % nx;
+            int yn = (y + CY[i] + ny) % ny;
+            int zn = (z + CZ[i] + nz) % nz;
+            int dst = xn + nx * (yn + ny * zn);
+            f[OPP[i] * N + dst] = f_local[i];
+        } else {
+            // Odd: write to canonical slot at self
+            f[i * N + idx] = f_local[i];
+        }
+    }
+}
+
+// A-A MRT kernel: identical structure but uses MRT collision.
+extern "C" __global__ void lbm_step_soa_mrt_aa(
+    float* __restrict__ f,
+    float* __restrict__ rho_out,
+    float* __restrict__ u_out,
+    const float* __restrict__ tau,
+    const float* __restrict__ force,
+    int nx, int ny, int nz,
+    int parity
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int N = nx * ny * nz;
+    if (idx >= N) return;
+
+    int x = idx % nx;
+    int y = (idx / nx) % ny;
+    int z = idx / (nx * ny);
+
+    float rho_local = 0.0f;
+    float mx = 0.0f, my = 0.0f, mz = 0.0f;
+    float f_local[19];
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        int read_dir, src;
+        if (parity == 0) {
+            read_dir = i;
+            src = idx;
+        } else {
+            int xn = (x - CX[i] + nx) % nx;
+            int yn = (y - CY[i] + ny) % ny;
+            int zn = (z - CZ[i] + nz) % nz;
+            src = xn + nx * (yn + ny * zn);
+            read_dir = OPP[i];
+        }
+        float fi = __ldg(&f[read_dir * N + src]);
+        if (!finite_check(fi)) fi = 0.0f;
+        f_local[i] = fi;
+        rho_local += fi;
+        mx += CX[i] * fi;
+        my += CY[i] * fi;
+        mz += CZ[i] * fi;
+    }
+
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    if (finite_check(rho_local) && rho_local > 1.0e-20f) {
+        float inv_rho = 1.0f / rho_local;
+        ux = mx * inv_rho;
+        uy = my * inv_rho;
+        uz = mz * inv_rho;
+    } else {
+        rho_local = 1.0f;
+    }
+
+    rho_out[idx] = rho_local;
+    u_out[idx]         = ux;
+    u_out[N + idx]     = uy;
+    u_out[2 * N + idx] = uz;
+
+    float tau_local = __ldg(&tau[idx]);
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+
+    float fx = __ldg(&force[idx]);
+    float fy = __ldg(&force[N + idx]);
+    float fz = __ldg(&force[2 * N + idx]);
+    float force_mag_sq = fx * fx + fy * fy + fz * fz;
+
+    if (force_mag_sq >= 1e-40f) {
+        float inv_tau_f = 1.0f / tau_local;
+        float prefactor = 1.0f - 0.5f * inv_tau_f;
+        #pragma unroll
+        for (int i = 0; i < 19; i++) {
+            float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
+            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+            f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+        }
+    }
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        if (parity == 0) {
+            int xn = (x + CX[i] + nx) % nx;
+            int yn = (y + CY[i] + ny) % ny;
+            int zn = (z + CZ[i] + nz) % nz;
+            int dst = xn + nx * (yn + ny * zn);
+            f[OPP[i] * N + dst] = f_local[i];
+        } else {
+            f[i * N + idx] = f_local[i];
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// GPU max-speed reduction (Phase 12: Mach number telemetry)
+// ---------------------------------------------------------------------------
 // Pass 2: per-block maxima -> single max (launch with 1 block)
 // Host reads back 1 float (4 bytes) instead of 24 MB sync_to_host().
 //
@@ -1584,4 +1822,105 @@ extern "C" __global__ void reduce_max_speed_f32(
     if (tid == 0) {
         out_max[blockIdx.x] = sdata[0];
     }
+}
+
+// ---------------------------------------------------------------------------
+// Shared-memory tiled Smagorinsky LES tau computation
+// ---------------------------------------------------------------------------
+// Copies the proven 8x8x4 tile pattern from lbm_step_soa_tiled.
+// Loads ux, uy, uz into shared memory with 1-cell halo, computes all 9
+// velocity gradient components from shared memory (~20-cycle LDS vs
+// ~200-cycle L2 miss for the 18 scattered global reads in the untiled kernel).
+//
+// Shared memory budget: 3 components * 10*10*6 * 4B = 7200B = 7.2 KB per block.
+// Ada Lovelace has 96 KB per SM -- two blocks/SM use 14.4 KB. Negligible.
+
+#define SMAG_TX 8
+#define SMAG_TY 8
+#define SMAG_TZ 4
+#define SMAG_PX (SMAG_TX + 2)
+#define SMAG_PY (SMAG_TY + 2)
+#define SMAG_PZ (SMAG_TZ + 2)
+#define SMAG_PVOL (SMAG_PX * SMAG_PY * SMAG_PZ)
+
+extern "C" __global__ void __launch_bounds__(256)
+compute_smagorinsky_tau_tiled(
+    const float* __restrict__ u,      // [3*N] velocity (SoA)
+    float* __restrict__ tau_out,      // [N] output tau
+    float tau_base,
+    float cs_sq_dx_sq,               // (C_s * dx)^2, precomputed on host
+    int nx, int ny, int nz
+) {
+    __shared__ float s_ux[SMAG_PVOL];
+    __shared__ float s_uy[SMAG_PVOL];
+    __shared__ float s_uz[SMAG_PVOL];
+
+    int N = nx * ny * nz;
+    int bx0 = blockIdx.x * SMAG_TX;
+    int by0 = blockIdx.y * SMAG_TY;
+    int bz0 = blockIdx.z * SMAG_TZ;
+    int tid = threadIdx.x + SMAG_TX * (threadIdx.y + SMAG_TY * threadIdx.z);
+
+    // Phase 1: cooperative halo load (same striped pattern as lbm_step_soa_tiled)
+    for (int i = tid; i < SMAG_PVOL; i += 256) {
+        int lz = i / (SMAG_PX * SMAG_PY);
+        int ly = (i % (SMAG_PX * SMAG_PY)) / SMAG_PX;
+        int lx = i % SMAG_PX;
+        int gx = (bx0 + lx - 1 + nx) % nx;
+        int gy = (by0 + ly - 1 + ny) % ny;
+        int gz = (bz0 + lz - 1 + nz) % nz;
+        int gidx = gx + nx * (gy + ny * gz);
+        s_ux[i] = __ldg(&u[gidx]);
+        s_uy[i] = __ldg(&u[N + gidx]);
+        s_uz[i] = __ldg(&u[2 * N + gidx]);
+    }
+    __syncthreads();
+
+    // Phase 2: boundary guard
+    int gx = bx0 + (int)threadIdx.x;
+    int gy = by0 + (int)threadIdx.y;
+    int gz = bz0 + (int)threadIdx.z;
+    if (gx >= nx || gy >= ny || gz >= nz) return;
+
+    int idx = gx + nx * (gy + ny * gz);
+
+    // Shared-memory coordinates (offset by +1 for halo)
+    int sx = (int)threadIdx.x + 1;
+    int sy = (int)threadIdx.y + 1;
+    int sz = (int)threadIdx.z + 1;
+
+    // Phase 3: compute 3x3 velocity gradient tensor from shared memory
+    #define SMAG_IDX(lx, ly, lz) ((lx) + SMAG_PX * ((ly) + SMAG_PY * (lz)))
+
+    float dux_dx = (s_ux[SMAG_IDX(sx+1,sy,sz)] - s_ux[SMAG_IDX(sx-1,sy,sz)]) * 0.5f;
+    float dux_dy = (s_ux[SMAG_IDX(sx,sy+1,sz)] - s_ux[SMAG_IDX(sx,sy-1,sz)]) * 0.5f;
+    float dux_dz = (s_ux[SMAG_IDX(sx,sy,sz+1)] - s_ux[SMAG_IDX(sx,sy,sz-1)]) * 0.5f;
+
+    float duy_dx = (s_uy[SMAG_IDX(sx+1,sy,sz)] - s_uy[SMAG_IDX(sx-1,sy,sz)]) * 0.5f;
+    float duy_dy = (s_uy[SMAG_IDX(sx,sy+1,sz)] - s_uy[SMAG_IDX(sx,sy-1,sz)]) * 0.5f;
+    float duy_dz = (s_uy[SMAG_IDX(sx,sy,sz+1)] - s_uy[SMAG_IDX(sx,sy,sz-1)]) * 0.5f;
+
+    float duz_dx = (s_uz[SMAG_IDX(sx+1,sy,sz)] - s_uz[SMAG_IDX(sx-1,sy,sz)]) * 0.5f;
+    float duz_dy = (s_uz[SMAG_IDX(sx,sy+1,sz)] - s_uz[SMAG_IDX(sx,sy-1,sz)]) * 0.5f;
+    float duz_dz = (s_uz[SMAG_IDX(sx,sy,sz+1)] - s_uz[SMAG_IDX(sx,sy,sz-1)]) * 0.5f;
+
+    #undef SMAG_IDX
+
+    // Symmetric strain rate tensor S_ij = 0.5 * (du_i/dx_j + du_j/dx_i)
+    float s11 = dux_dx;
+    float s22 = duy_dy;
+    float s33 = duz_dz;
+    float s12 = 0.5f * (dux_dy + duy_dx);
+    float s13 = 0.5f * (dux_dz + duz_dx);
+    float s23 = 0.5f * (duy_dz + duz_dy);
+
+    // |S| = sqrt(2 * S_ij * S_ij) (Frobenius norm of strain rate)
+    float s_mag = sqrtf(2.0f * (s11*s11 + s22*s22 + s33*s33
+                                + 2.0f*(s12*s12 + s13*s13 + s23*s23)));
+
+    // nu_turb = (C_s * dx)^2 * |S|, tau = tau_base + 3 * nu_turb
+    float tau_new = tau_base + 3.0f * cs_sq_dx_sq * s_mag;
+
+    // Phase 4: coalesced write to tau_out, clamped to stability range
+    tau_out[idx] = fmaxf(0.505f, fminf(5.0f, tau_new));
 }

@@ -55,7 +55,7 @@ pub struct LandyParams {
     pub eps_inf: f64,
     /// Background permeability (typically 1.0).
     pub mu_inf: f64,
-    /// Slab thickness [m].
+    /// Slab thickness in meters.
     pub thickness: f64,
 }
 
