@@ -122,15 +122,15 @@ fn main() {
             failures.extend(db_failures);
 
             let tasks_path = repo_root.join("docs/CLAIMS_TASKS.md");
-            if tasks_path.exists() {
-                if let Ok(tasks_text) = std::fs::read_to_string(&tasks_path) {
-                    let f = verify::verify_tasks_metadata(&tasks_text);
-                    summaries.push(format!("tasks_metadata: {} issues", f.len()));
-                    failures.extend(f);
-                    let f = verify::verify_task_artifact_links(&tasks_text, &repo_root);
-                    summaries.push(format!("task_artifacts: {} issues", f.len()));
-                    failures.extend(f);
-                }
+            if tasks_path.exists()
+                && let Ok(tasks_text) = std::fs::read_to_string(&tasks_path)
+            {
+                let f = verify::verify_tasks_metadata(&tasks_text);
+                summaries.push(format!("tasks_metadata: {} issues", f.len()));
+                failures.extend(f);
+                let f = verify::verify_task_artifact_links(&tasks_text, &repo_root);
+                summaries.push(format!("task_artifacts: {} issues", f.len()));
+                failures.extend(f);
             }
 
             let domain_path = repo_root.join("docs/claims/CLAIMS_DOMAIN_MAP.csv");
