@@ -45,8 +45,8 @@ path = "docs/requirements/astro.md"
 [[section.item]]
 key = "REQ-COQ"
 value = 1
-module_name = "coq"
-path = "docs/requirements/coq.md"
+module_name = "rocq"
+path = "docs/requirements/rocq.md"
 [[section.item]]
 key = "REQ-CORE"
 value = 1

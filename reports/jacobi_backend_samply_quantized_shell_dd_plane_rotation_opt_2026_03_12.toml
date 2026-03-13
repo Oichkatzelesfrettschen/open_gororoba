@@ -1,0 +1,43 @@
+[report]
+title = "Jacobi quantized_shell_permutation n=72 double-double plane-rotation optimization"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "The next DD optimization slice targeted the plane-rotation/update hotspot after the pivot comparator win. A row-contiguous matrix-access experiment regressed badly and was rejected. The retained optimization is arithmetic-focused: dd_apply_plane_rotation now uses dd_mul_add_pair so the rotation update does fewer separate DD mul/add renormalizations."
+
+[artifacts]
+profile = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_fused_opt_dev.json.gz"
+sidecar = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_fused_opt_dev.json.syms.json"
+compare_csv = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.csv"
+compare_markdown = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.md"
+
+[validated_command]
+name = "jacobi_shell_samply_dd_dev_noinline_fused_opt"
+status = "passed"
+command = "orig=$(cat /proc/sys/kernel/perf_event_paranoid); sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev FEATURES=profile-dd-hotspots PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_fused_opt_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 double_double samply dev noinline fused-opt'; rc=$?; sudo -A sh -c \"echo $orig > /proc/sys/kernel/perf_event_paranoid\"; exit $rc"
+notes = "Reuses the profiling-only DD feature lane and captures the post-optimization helper mix."
+
+[before_after]
+baseline_ms = 46.593
+optimized_ms = 45.175
+max_abs_err = 1.591616e-12
+summary = "The helper-specialization step is a small but real win on the profiled lane. Relative to the post-pivot baseline, the profiled quantized_shell_permutation n=72 median drops by about 1.418 ms while keeping the same reported max_abs_err."
+
+[hotspots]
+dd_find_pivot_percent = 54.95
+dd_apply_plane_rotation_percent = 32.42
+dd_mul_add_pair_percent = 19.91
+two_sum_percent = 14.90
+dd_rotation_percent = 9.90
+dd_sqrt_percent = 7.62
+dd_div_percent = 4.21
+
+[rejected_experiment]
+summary = "Two follow-up experiments were measured and discarded. A row-contiguous plane-rotation access experiment pushed the same profiled lane to about 79.267 ms, and a conservative dd_rotation small-angle branch pushed it to about 49.312 ms. The repo should not revisit either path without stronger evidence."
+artifacts = [
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_rotation_opt_dev.json.gz",
+  "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_noinline_rotation_branch_dev.json.gz",
+]
+
+[next_decision]
+summary = "The next DD runtime target is no longer pivot scanning or basic plane-update arithmetic. After dd_mul_add_pair, the remaining high-value question is whether dd_rotation should be reformulated to reduce sqrt/div cost."

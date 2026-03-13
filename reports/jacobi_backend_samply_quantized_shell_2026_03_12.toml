@@ -1,0 +1,54 @@
+title = "Samply attribution for quantized_shell_permutation x87 Jacobi backend"
+date = "2026-03-12"
+family = "quantized_shell_permutation"
+size = 72
+backend = "x87"
+profile = "dev"
+repeats = 20
+
+[takeaway]
+summary = "The deeper attribution lane now works for x87. A presymbolicated samply capture built with the dev profile resolves the internal Rust/x87 stack that remained monolithic in the release-style flamegraphs. The resolved path includes algebra_analysis::x87_jacobi::symmetric_eigenvalues_x87, algebra_analysis::jacobi_shared::symmetric_eigenvalues_with_backend, and the cd_kernel x87 Givens helpers including givens_sincos_f64, x87_givens_sincos, givens_sincos_ext80, x87_givens_diagonal_update, and Ext80 helpers such as scale_pow2 and to_f64."
+
+[artifact]
+profile_json = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.gz"
+symbol_sidecar = "reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.syms.json"
+median_ms = 26.978
+max_abs_err = 4.774847e-12
+
+[[resolved_symbol]]
+name = "algebra_analysis::x87_jacobi::symmetric_eigenvalues_x87"
+source = "crates/algebra_analysis/src/x87_jacobi.rs"
+
+[[resolved_symbol]]
+name = "algebra_analysis::jacobi_shared::symmetric_eigenvalues_with_backend::<algebra_analysis::x87_jacobi::x87_rotation_f64, cd_kernel::x87_jacobi_kernels::x87_givens_diagonal_update>"
+source = "crates/algebra_analysis/src/jacobi_shared.rs"
+
+[[resolved_symbol]]
+name = "cd_kernel::x87_jacobi_kernels::givens_sincos_f64"
+source = "crates/cd_kernel/src/x87_jacobi_kernels.rs"
+
+[[resolved_symbol]]
+name = "cd_kernel::x87_jacobi_kernels::x87_givens_sincos"
+source = "crates/cd_kernel/src/x87_jacobi_kernels.rs"
+
+[[resolved_symbol]]
+name = "cd_kernel::x87_jacobi_kernels::givens_sincos_ext80"
+source = "crates/cd_kernel/src/x87_jacobi_kernels.rs"
+
+[[resolved_symbol]]
+name = "cd_kernel::x87_jacobi_kernels::x87_givens_diagonal_update"
+source = "crates/cd_kernel/src/x87_jacobi_kernels.rs"
+
+[[resolved_symbol]]
+name = "<cd_kernel::x87_ext80::Ext80>::scale_pow2"
+source = "crates/cd_kernel/src/x87_ext80.rs"
+
+[[resolved_symbol]]
+name = "<cd_kernel::x87_ext80::Ext80>::to_f64"
+source = "crates/cd_kernel/src/x87_ext80.rs"
+
+[command]
+value = "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=x87 SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 x87 samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'"
+
+[limitation]
+summary = "This deeper attribution path currently depends on a temporary system-wide perf_event_paranoid relaxation and a presymbolicated samply sidecar. The equivalent release-style samply/flamegraph captures remain too monolithic to serve as a full internal-hotspot explanation without this richer symbol path."

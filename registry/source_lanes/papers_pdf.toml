@@ -5,13 +5,13 @@ id = "SLANE-PAPERS_PDF-2026-02-15"
 name = "papers_pdf"
 description = "Paper-oriented references with PDF documents or PDF mirrors."
 generated_at = "2026-03-13"
-artifact_count = 322
+artifact_count = 325
 downloaded_count = 59
-downloadable_count = 99
+downloadable_count = 101
 blocked_count = 0
-citation_only_no_link_count = 10
+citation_only_no_link_count = 11
 unverified_count = 154
-missing_minimum_requirement_count = 164
+missing_minimum_requirement_count = 165
 
 [[artifact_ref]]
 id = "ASOT-0002"
@@ -264,7 +264,17 @@ canonical_download_path = ""
 source_refs = ["EAKIN_SATHAYE_1990", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:5", "registry/cayley_dickson_canonical_sources.toml::paper/1::CDCS-002", "registry/research_intake_2026_02_15_cayley_dickson.toml::paper_resolution/0::EAKIN_SATHAYE_1990", "reports/cayley_dickson_source_recovery_2026_02_15.toml::eakin_sathaye_1990", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::paper_level_status/0::EAKIN_SATHAYE_1990"]
 
 [[artifact_ref]]
-id = "ASOT-0213"
+id = "ASOT-0120"
+key = "doi:10.1016/0022-3093(93)90351-w"
+title = "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf"
+status = "citation_only_no_link"
+minimum_requirement_met = false
+canonical_functional_url = "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf"
+canonical_download_path = ""
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/28::ASOT_3018_sadoc_doi"]
+
+[[artifact_ref]]
+id = "ASOT-0214"
 key = "doi:10.1023/b:matg.0000048799.56445.59"
 title = "Kunze & Schaeben (2004) Bingham distribution of quaternions (texture analysis)"
 status = "citation_only_no_link"
@@ -274,7 +284,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/52::KUNZE_SCHAEBEN_2004_BINGHAM_DISTRIBUTION"]
 
 [[artifact_ref]]
-id = "ASOT-0230"
+id = "ASOT-0231"
 key = "doi:10.1038/s41586-025-09920-0"
 title = "**STAR Collaboration.** (2026). *Measuring spin correlation between quarks during QCD confinement*. Nature 650, 65-71. DOI: 10.1038/s41586-025-09920-0."
 status = "downloaded"
@@ -284,7 +294,7 @@ canonical_download_path = "data/papers/corpus/star_spin_correlation/star_spin_co
 source_refs = ["BIB-0197", "docs/BIBLIOGRAPHY.md:445", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:381", "docs/latex/arxiv/refs.bib::STAR2026SpinCorrelation", "docs/latex/refs.bib::STAR2026SpinCorrelation", "registry/bibliography.toml::entry/196::BIB-0197", "registry/research_intake_2026_02_15_grand_synthesis.toml::artifact/0::STAR-2026"]
 
 [[artifact_ref]]
-id = "ASOT-0248"
+id = "ASOT-0249"
 key = "doi:10.1073/pnas.0402717101"
 title = "**Mazur, P. O., & Mottola, E.** (2004). *Gravitational vacuum condensate stars*. PNAS 101, 9545-9550. DOI: 10.1073/pnas.0402717101."
 status = "downloadable"
@@ -294,7 +304,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0005", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1073_pnas.0402717101.headers.txt:4", "docs/BIBLIOGRAPHY.md:19", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:23", "docs/latex/arxiv/refs.bib::Mazur2004GravastarPNAS", "docs/latex/refs.bib::Mazur2004GravastarPNAS", "registry/bibliography.toml::entry/4::BIB-0005", "registry/recovered_mirrors.toml::recovered_mirror/0::ASOT-0021"]
 
 [[artifact_ref]]
-id = "ASOT-0249"
+id = "ASOT-0250"
 key = "doi:10.1080/00222937808682457"
 title = "link: <> ; rel=\"cite-as\" , <> ; rel=\"describedby\" ; type=\"application/dcat+xml\" , <> ; rel=\"describedby\" ; type=\"application/json\" , <> ; rel=\"describedby\" ; type=\"application/ld+json\" , <> ; rel=\"describedby\" ; type=\"application/ld+json;profile=\"\"\" , <> ; rel=\"describedby\" ; type=\"application/marcxml+xml\" , <> ; rel=\"describedby\" ; type=\"application/vnd.citationstyles.csl+json\" , <> ; rel=\"describedby\" ; type=\"application/vnd.datacite.datacite+json\" , <> ; rel=\"describedby\" ; type=\"application/vnd.datacite.datacite+xml\" , <> ; rel=\"describedby\" ; type=\"application/vnd.geo+json\" , <> ; rel=\"describedby\" ; type=\"application/vnd.inveniordm.v1+json\" , <> ; rel=\"describedby\" ; type=\"application/vnd.inveniordm.v1.full+csv\" , <> ; rel=\"describedby\" ; type=\"application/vnd.inveniordm.v1.simple+csv\" , <> ; rel=\"describedby\" ; type=\"application/x-bibtex\" , <> ; rel=\"describedby\" ; type=\"application/x-dc+xml\" , <> ; rel=\"describedby\" ; type=\"text/x-bibliography\" , <> ; rel=\"item\" ; type=\"application/pdf\" , <> ; rel=\"license\" , <> ; rel=\"type\" , <> ; rel=\"type\" , <> ; rel=\"linkset\" ; type=\"application/linkset+json\""
 status = "citation_only_no_link"
@@ -304,7 +314,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/zenodo.org_records_1430243.headers.txt:7"]
 
 [[artifact_ref]]
-id = "ASOT-0250"
+id = "ASOT-0251"
 key = "doi:10.1080/00927870701724094"
 title = "**Biss, D. K., Dugger, D., & Isaksen, D. C.** (2008). *Large annihilators in Cayley-Dickson algebras*. *Communications in Algebra* 36(2), 632-664. (Cited by Reggiani 2024; annihilator structure.)"
 status = "downloaded"
@@ -314,7 +324,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["BIB-0095", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_00927870701724094.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_00927870701724094.headers.txt:24", "docs/BIBLIOGRAPHY.md:210", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:196", "docs/latex/arxiv/refs.bib::BissDuggerIsaksen2008Annihilators", "docs/latex/refs.bib::BissDuggerIsaksen2008Annihilators", "registry/bibliography.toml::entry/94::BIB-0095", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/5::ASOT_0022_large_annihilators_arxiv"]
 
 [[artifact_ref]]
-id = "ASOT-0252"
+id = "ASOT-0253"
 key = "doi:10.1080/03605300600987306"
 title = "**Caffarelli, L., & Silvestre, L.** (2007). *An extension problem related to the fractional Laplacian*. Communications in Partial Differential Equations, 32(7-9), 1245-1260. DOI: 10.1080/03605300600987306."
 status = "downloadable"
@@ -324,7 +334,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0102", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_03605300600987306.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_03605300600987306.headers.txt:24", "docs/BIBLIOGRAPHY.md:224", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:206", "docs/latex/arxiv/refs.bib::CaffarelliSilvestre2007Extension", "docs/latex/refs.bib::CaffarelliSilvestre2007Extension", "registry/bibliography.toml::entry/101::BIB-0102", "registry/recovered_mirrors.toml::recovered_mirror/1::ASOT-0023"]
 
 [[artifact_ref]]
-id = "ASOT-0253"
+id = "ASOT-0254"
 key = "doi:10.1080/03605301003735680"
 title = "**Stinga, P. R., & Torrea, J. L.** (2010). *Extension problem and Harnack's inequality for some fractional operators*. Communications in Partial Differential Equations, 35(11), 2092-2122. DOI: 10.1080/03605301003735680."
 status = "downloaded"
@@ -334,7 +344,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["BIB-0105", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_03605301003735680.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_03605301003735680.headers.txt:24", "docs/BIBLIOGRAPHY.md:227", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:209", "docs/latex/arxiv/refs.bib::StingaTorrea2010Extension", "docs/latex/refs.bib::StingaTorrea2010Extension", "registry/bibliography.toml::entry/104::BIB-0105", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/6::ASOT_0024_stinga_torrea_arxiv"]
 
 [[artifact_ref]]
-id = "ASOT-0257"
+id = "ASOT-0258"
 key = "doi:10.1080/14786444908646169"
 title = "location:"
 status = "downloaded"
@@ -344,7 +354,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1080_14786444908646169.headers.txt:4", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/8::ASOT_0026_cockle_zenodo", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/4::CAN-COQ-1849-COCKLE-SYSTEMS"]
 
 [[artifact_ref]]
-id = "ASOT-0258"
+id = "ASOT-0259"
 key = "doi:10.1081/agb-100105036"
 title = "**Bremner, M., & Hentzel, I.** (2001). *Identities for algebras obtained from the Cayley-Dickson process*. Communications in Algebra 29(8), 3523-3544. DOI: 10.1081/AGB-100105036."
 status = "downloadable"
@@ -354,7 +364,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0195", "BREMNER_HENTZEL_2001", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:117", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:25", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1081_AGB-100105036.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1081_AGB-100105036.headers.txt:24", "docs/BIBLIOGRAPHY.md:439", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:377", "docs/latex/arxiv/refs.bib::Bremner2001SedenionIdentities", "docs/latex/refs.bib::Bremner2001SedenionIdentities", "registry/bibliography.toml::entry/194::BIB-0195", "registry/cayley_dickson_canonical_sources.toml::paper/3::CDCS-004", "registry/research_intake_2026_02_15_cayley_dickson.toml::paper_resolution/2::BREMNER_HENTZEL_2001", "registry/research_intake_2026_02_15_grand_synthesis.toml::artifact/5::BREMNER-2001", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::paper_level_status/2::BREMNER_HENTZEL_2001"]
 
 [[artifact_ref]]
-id = "ASOT-0425"
+id = "ASOT-0426"
 key = "doi:10.1098/rspa.1984.0023"
 title = "**Berry, M. V.** (1984). *Quantal Phase Factors Accompanying Adiabatic Changes*. Proc. R. Soc. Lond. A 392, 45-57. DOI: 10.1098/rspa.1984.0023."
 status = "downloaded"
@@ -364,7 +374,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["BIB-0029", "docs/BIBLIOGRAPHY.md:73", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:71", "docs/latex/arxiv/refs.bib::Berry1984GeometricPhase", "docs/latex/refs.bib::Berry1984GeometricPhase", "registry/bibliography.toml::entry/28::BIB-0029", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/9::ASOT_0030_berry_1984_mirrors"]
 
 [[artifact_ref]]
-id = "ASOT-0619"
+id = "ASOT-0620"
 key = "doi:10.1103/physreve.66.056108"
 title = "**Laskin, N.** (2002). *Fractional Schrodinger equation*. Physical Review E, 66, 056108. DOI: 10.1103/PhysRevE.66.056108."
 status = "downloadable"
@@ -374,7 +384,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0104", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1103_PhysRevE.66.056108.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/harvest.aps.org_v2_journals_articles_10.1103_PhysRevE.66.056108_fulltext.headers.txt:7", "docs/BIBLIOGRAPHY.md:226", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:208", "docs/latex/arxiv/refs.bib::Laskin2002FractionalSchrodinger", "docs/latex/refs.bib::Laskin2002FractionalSchrodinger", "registry/bibliography.toml::entry/103::BIB-0104", "registry/recovered_mirrors.toml::recovered_mirror/5::ASOT-0035"]
 
 [[artifact_ref]]
-id = "ASOT-0763"
+id = "ASOT-0764"
 key = "doi:10.1140/epjc/s10052-023-11923-y_a"
 title = "openpdf/complexified"
 status = "citation_only_no_link"
@@ -384,7 +394,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:53"]
 
 [[artifact_ref]]
-id = "ASOT-0777"
+id = "ASOT-0778"
 key = "doi:10.1143/jpsj.74.1674"
 title = "**Fukui, T., Hatsugai, Y., & Suzuki, H.** (2005). *Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances*. J. Phys. Soc. Jpn. 74, 1674-1677. DOI: 10.1143/JPSJ.74.1674."
 status = "downloadable"
@@ -394,7 +404,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0026", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1143_JPSJ.74.1674.headers.txt:4", "docs/BIBLIOGRAPHY.md:67", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:65", "docs/latex/arxiv/refs.bib::FukuiHatsugaiSuzuki2005ChernNumbers", "docs/latex/refs.bib::FukuiHatsugaiSuzuki2005ChernNumbers", "registry/bibliography.toml::entry/25::BIB-0026", "registry/recovered_mirrors.toml::recovered_mirror/11::ASOT-0045"]
 
 [[artifact_ref]]
-id = "ASOT-0809"
+id = "ASOT-0810"
 key = "doi:10.1155/2008/213293"
 title = "https://doi.org/10.1155/2008/213293"
 status = "downloadable"
@@ -404,7 +414,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/4::RI-005", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:73", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1155_2008_213293.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1155_2008_213293.headers.txt:24", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1155_2008_213293.headers.txt:39", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1155_2008_213293.headers.txt:95", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.1155_2008_213293.headers.txt:131", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf.headers.txt:58", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf.headers.txt:102", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf_utm_source=chatgpt.com.headers.txt:58", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf_utm_source=chatgpt.com.headers.txt:102", "registry/research_intake_2026_02_14.toml::entry/4::RI-005"]
 
 [[artifact_ref]]
-id = "ASOT-0837"
+id = "ASOT-0838"
 key = "doi:10.2140/pjm.1985.117.163"
 title = "Derivations and Cayley derivations of generalized Cayley-Dickson algebras"
 status = "downloaded"
@@ -414,7 +424,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["MCCRIMMON_1985", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:23", "registry/cayley_dickson_canonical_sources.toml::paper/2::CDCS-003", "registry/research_intake_2026_02_15_cayley_dickson.toml::paper_resolution/1::MCCRIMMON_1985", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::paper_level_status/1::MCCRIMMON_1985"]
 
 [[artifact_ref]]
-id = "ASOT-0847"
+id = "ASOT-0848"
 key = "doi:10.25088/complexsystems.17.2.125"
 title = "**de Marrais, R. P. C.** (2007). *Placeholder Substructures I: The Road from NKS to Scale-Free Networks is Paved with Zero-Divisors*. Complex Systems, 17(2), 125-142. DOI: 10.25088/ComplexSystems.17.2.125. [PDF](https://content.wolfram.com/sites/13/2023/02/17-2-3.pdf)."
 status = "downloadable"
@@ -424,7 +434,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0076", "docs/BIBLIOGRAPHY.md:173", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:159", "docs/latex/arxiv/refs.bib::deMarrais2007ComplexSystems", "docs/latex/refs.bib::deMarrais2007ComplexSystems", "registry/bibliography.toml::entry/75::BIB-0076"]
 
 [[artifact_ref]]
-id = "ASOT-0863"
+id = "ASOT-0864"
 key = "doi:10.35834/mjms/1474295358"
 title = "tags/m3"
 status = "downloaded"
@@ -434,7 +444,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:100", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:45"]
 
 [[artifact_ref]]
-id = "ASOT-0865"
+id = "ASOT-0866"
 key = "doi:10.3836/tjm/1270151571"
 title = "adjacent/split-complex"
 status = "citation_only_no_link"
@@ -444,7 +454,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:93"]
 
 [[artifact_ref]]
-id = "ASOT-0929"
+id = "ASOT-0930"
 key = "doi:10.4153/cmb-2006-048-6"
 title = "Conjugacy Classes of Subalgebras of the Real Sedenions"
 status = "downloadable"
@@ -454,7 +464,7 @@ canonical_download_path = ""
 source_refs = ["docs/latex/arxiv/refs.bib::KinyonSagle2006SedenionSubalgebras", "docs/latex/refs.bib::KinyonSagle2006SedenionSubalgebras", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/19::ASOT_8341_cms_math_pdf"]
 
 [[artifact_ref]]
-id = "ASOT-0935"
+id = "ASOT-0936"
 key = "doi:10.48550/arxiv.1602.02317"
 title = "An Alternate Cayley-Dickson Product"
 status = "downloaded"
@@ -464,7 +474,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["BALES_2016_ALT_CD", "registry/cayley_dickson_canonical_sources.toml::paper/4::CDCS-005", "registry/research_intake_2026_02_15_cayley_dickson.toml::paper_resolution/3::BALES_2016_ALT_CD", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::paper_level_status/3::BALES_2016_ALT_CD"]
 
 [[artifact_ref]]
-id = "ASOT-0936"
+id = "ASOT-0937"
 key = "doi:10.48550/arxiv.2411.18881"
 title = "**Reggiani, S.** (2024). *The geometry of sedenion zero divisors*. [arXiv:2411.18881](https://arxiv.org/abs/2411.18881)."
 status = "downloaded"
@@ -474,7 +484,7 @@ canonical_download_path = "data/papers/corpus/reggiani_2024_2411.18881.pdf"
 source_refs = ["BIB-0087", "docs/BIBLIOGRAPHY.md:190", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:176", "docs/latex/arxiv/refs.bib::Reggiani2024ZDGeometry", "docs/latex/refs.bib::Reggiani2024ZDGeometry", "registry/bibliography.toml::entry/86::BIB-0087"]
 
 [[artifact_ref]]
-id = "ASOT-0959"
+id = "ASOT-0960"
 key = "doi:10.7151/dmgaa.1088"
 title = "**Cawagas, R. E.** (2004). *On the structure and zero divisors of the Cayley-Dickson sedenion algebra*. Discussiones Mathematicae -- General Algebra and Applications 24(2), 251-265. DOI: 10.7151/dmgaa.1088."
 status = "downloaded"
@@ -484,7 +494,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["BIB-0093", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.7151_DMGAA.1088.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.7151_dmgaa.1088.headers.txt:4", "docs/BIBLIOGRAPHY.md:205", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:191", "docs/latex/arxiv/refs.bib::Cawagas2004SedenionStructure", "docs/latex/refs.bib::Cawagas2004SedenionStructure", "registry/bibliography.toml::entry/92::BIB-0093", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/12::ASOT_0062_cawagas_2004_bibliotekanauki", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/10::CAN-SED-2004-CAWAGAS"]
 
 [[artifact_ref]]
-id = "ASOT-0981"
+id = "ASOT-0982"
 key = "title:automorphisms_of_sedenions"
 title = "Automorphisms of Sedenions"
 status = "downloaded"
@@ -494,7 +504,7 @@ canonical_download_path = "data/papers/corpus/arxiv_2512.07210v1_automorphisms_s
 source_refs = ["registry/research_intake_2026_02_15_grand_synthesis.toml::artifact/2::WILMOT-2025"]
 
 [[artifact_ref]]
-id = "ASOT-1119"
+id = "ASOT-1120"
 key = "title:massless_representations_in_conformal_space_and_their_de_sitter_ds_restrictions"
 title = "Massless Representations in Conformal Space and Their de Sitter (dS) Restrictions"
 status = "downloaded"
@@ -504,7 +514,7 @@ canonical_download_path = "data/papers/corpus/arxiv_2601.18433v1_clifford_split_
 source_refs = ["registry/research_intake_2026_02_15_grand_synthesis.toml::artifact/3::GAZEAU-2026"]
 
 [[artifact_ref]]
-id = "ASOT-1156"
+id = "ASOT-1157"
 key = "title:pdf_inventory"
 title = "PDF Inventory"
 status = "downloaded"
@@ -514,7 +524,7 @@ canonical_download_path = "data/papers/corpus/CMS_TOP-22-007.pdf"
 source_refs = ["registry/reports_narratives.toml::document/43::RPT-044"]
 
 [[artifact_ref]]
-id = "ASOT-2385"
+id = "ASOT-2387"
 key = "title:single_minus_gluon_tree_amplitudes_are_nonzero"
 title = "Single-minus gluon tree amplitudes are nonzero"
 status = "downloaded"
@@ -524,7 +534,7 @@ canonical_download_path = "data/papers/corpus/single_minus_gluons/single_minus_g
 source_refs = ["registry/research_intake_2026_02_15_grand_synthesis.toml::artifact/1::OPENAI-2026"]
 
 [[artifact_ref]]
-id = "ASOT-2402"
+id = "ASOT-2404"
 key = "title:towards_an_action_principle_unifying_the_standard_model_and_gravity"
 title = "Towards an Action Principle Unifying the Standard Model and Gravity"
 status = "downloaded"
@@ -534,7 +544,7 @@ canonical_download_path = "data/papers/corpus/arxiv_2601.19734v1_clifford_invari
 source_refs = ["registry/research_intake_2026_02_15_grand_synthesis.toml::artifact/4::ALVAREZ-2026"]
 
 [[artifact_ref]]
-id = "ASOT-2403"
+id = "ASOT-2405"
 key = "title:tscp_trial_factor_ledger_2026_02_04"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 status = "downloaded"
@@ -544,7 +554,7 @@ canonical_download_path = "data/papers/corpus/abdi_2007_bonferroni_sidak_correct
 source_refs = ["registry/reports_narratives.toml::document/51::RPT-052"]
 
 [[artifact_ref]]
-id = "ASOT-2423"
+id = "ASOT-2425"
 key = "url:http://arxiv.org.abs/q-alg/9710013"
 title = "Presto! Digitization: Part I"
 status = "downloadable"
@@ -554,7 +564,7 @@ canonical_download_path = ""
 source_refs = ["XS-010"]
 
 [[artifact_ref]]
-id = "ASOT-2451"
+id = "ASOT-2453"
 key = "url:http://arxiv.org/abs/math.gm/0011260"
 title = "Flying Higher Than A Box-Kite"
 status = "downloadable"
@@ -564,7 +574,7 @@ canonical_download_path = ""
 source_refs = ["XS-007", "data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2002_math0207003_placeholder_substructures_I.txt:1838", "data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_math0403113_boxkites_III.txt:1412", "data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_wolfram_science_slides.txt:1089", "data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2006_math0603281_presto_digitization_I.txt:1799", "docs/external_sources/DE_MARRAIS_BOXKITES_III.md:553", "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md:1001", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md:1514", "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md:844", "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md:206", "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md:237", "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md:284", "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md:304", "registry/external_sources.toml::document/6::XS-007", "registry/external_sources.toml::document/9::XS-010"]
 
 [[artifact_ref]]
-id = "ASOT-2456"
+id = "ASOT-2458"
 key = "url:http://e-collection.library.ethz.ch/eserv/eth:30090/eth30090-02.pdf"
 title = "ethz-a-005539347. url: (visited on 2018-08-30)."
 status = "unverified"
@@ -574,7 +584,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/taylor_expansion_lambda.md:1737"]
 
 [[artifact_ref]]
-id = "ASOT-2458"
+id = "ASOT-2460"
 key = "url:http://jetp.ras.ru/cgi-bin/dn/e_022_02_0378.pdf"
 title = "http://jetp.ras.ru/cgi-bin/dn/e_022_02_0378.pdf"
 status = "unverified"
@@ -584,7 +594,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt:704"]
 
 [[artifact_ref]]
-id = "ASOT-2459"
+id = "ASOT-2461"
 key = "url:http://mathsociety.ph/matimyas/images/vol28/cawagasmatimyas.pdf"
 title = "m4/subloop-subalgebra"
 status = "unverified"
@@ -594,7 +604,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:28"]
 
 [[artifact_ref]]
-id = "ASOT-2467"
+id = "ASOT-2469"
 key = "url:http://www.iumj.indiana.edu/iumj/preprints/4433.pdf"
 title = "http://www.iumj.indiana.edu/IUMJ/Preprints/4433.pdf"
 status = "unverified"
@@ -604,7 +614,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt:5519"]
 
 [[artifact_ref]]
-id = "ASOT-2470"
+id = "ASOT-2472"
 key = "url:http://www.stat.sfu.ca/%e2%88%bclockhart/richard/banff2010/demortier.pdf"
 title = "http://www.stat.sfu.ca/%E2%88%BClockhart/richard/banff2010/demortier.pdf"
 status = "unverified"
@@ -614,7 +624,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.txt:439"]
 
 [[artifact_ref]]
-id = "ASOT-2472"
+id = "ASOT-2474"
 key = "url:http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf"
 title = "Buck',"
 status = "downloadable"
@@ -624,7 +634,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2006_math0603281_presto_digitization_I.txt:1807", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md:1523", "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md:288", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/15::ASOT_8231_wolfram_archive"]
 
 [[artifact_ref]]
-id = "ASOT-2473"
+id = "ASOT-2475"
 key = "url:https://8ecm.eu/system/admin/abstracts/pdfs/000/000/454/original/svetlana-zhilina.pdf"
 title = "openpdf/split-family"
 status = "unverified"
@@ -634,7 +644,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:42"]
 
 [[artifact_ref]]
-id = "ASOT-2474"
+id = "ASOT-2476"
 key = "url:https://academic.oup.com/ptep/article-pdf/2014/1/013a03/4432616/ptt110.pdf"
 title = "ptt110"
 status = "downloadable"
@@ -644,7 +654,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/7::CDS-C-0008", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/7::CDS-E-0008", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:14", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/16::ASOT_8232_oup_ptt110", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/7::LFI-008"]
 
 [[artifact_ref]]
-id = "ASOT-2475"
+id = "ASOT-2477"
 key = "url:https://agt2.cie.uma.es/~loos/jordan/archive/garibaldi/garibaldi-petersson-racine-albz.pdf"
 title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z and other rings"
 status = "unverified"
@@ -654,7 +664,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/25::GPR_2023_ALBERT_ALG_Z_LOOS"]
 
 [[artifact_ref]]
-id = "ASOT-2476"
+id = "ASOT-2478"
 key = "url:https://agt2.cie.uma.es/~loos/jordan/archive/magic/magic.pdf"
 title = "Elduque (2004/2005) The Magic Square and Symmetric Compositions"
 status = "unverified"
@@ -664,7 +674,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/18::ELDUQUE_MAGIC_SQUARE_PDF"]
 
 [[artifact_ref]]
-id = "ASOT-2477"
+id = "ASOT-2479"
 key = "url:https://agt2.cie.uma.es/~loos/jordan/archive/non-orth-cd/non-orth-cd.pdf"
 title = "openpdf/integral-arithmetic"
 status = "unverified"
@@ -674,7 +684,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:59"]
 
 [[artifact_ref]]
-id = "ASOT-2478"
+id = "ASOT-2480"
 key = "url:https://aimspress.com/aimspress-data/math/2022/5/pdf/math-07-05-483.pdf"
 title = "octonions/dual-number-coeff"
 status = "unverified"
@@ -684,7 +694,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:134"]
 
 [[artifact_ref]]
-id = "ASOT-2479"
+id = "ASOT-2481"
 key = "url:https://archive.org/details/elementarytreat00tailuoft"
 title = "https://archive.org/details/elementarytreat00tailuoft"
 status = "citation_only_no_link"
@@ -694,7 +704,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/17::ASOT_8233_archive_direct_pdf", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/2::CAN-QUAT-1867-TAIT"]
 
 [[artifact_ref]]
-id = "ASOT-2481"
+id = "ASOT-2483"
 key = "url:https://archive.org/details/theoryofbiquater00conwrich"
 title = "https://archive.org/details/theoryofbiquater00conwrich"
 status = "citation_only_no_link"
@@ -704,7 +714,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/18::ASOT_8234_archive_direct_pdf", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/6::CAN-BIQ-1911-CONWAY"]
 
 [[artifact_ref]]
-id = "ASOT-2482"
+id = "ASOT-2484"
 key = "url:https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
 title = "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
 status = "downloaded"
@@ -714,7 +724,7 @@ canonical_download_path = "data/papers/corpus/bales_2016_arxiv_withdrawn_version
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/5", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::mirror_retry_pdf_success/5::ARCHIVE-DIRECT"]
 
 [[artifact_ref]]
-id = "ASOT-2484"
+id = "ASOT-2486"
 key = "url:https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/arxiv-1602.02317/1602.02317.pdf"
 title = "onion-location:"
 status = "unverified"
@@ -724,7 +734,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/27_ARCHIVE-DIRECT.headers.txt:8", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_009.bin.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_arxiv-1602.02317_1602.02317.pdf.headers.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2485"
+id = "ASOT-2487"
 key = "url:https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/elementarytreat00tailuoft/elementarytreat00tailuoft.pdf"
 title = "onion-location:"
 status = "unverified"
@@ -734,7 +744,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_033.bin.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_elementarytreat00tailuoft_elementarytreat00tailuoft.pdf.headers.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2486"
+id = "ASOT-2488"
 key = "url:https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/download/theoryofbiquater00conwrich/theoryofbiquater00conwrich.pdf"
 title = "onion-location:"
 status = "unverified"
@@ -744,7 +754,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_034.bin.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_theoryofbiquater00conwrich_theoryofbiquater00conwrich.pdf.headers.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2498"
+id = "ASOT-2500"
 key = "url:https://arxiv.org/abs/1102.5151"
 title = "https://arxiv.org/abs/1102.5151"
 status = "downloadable"
@@ -754,7 +764,17 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/21::RI-022", "registry/research_intake_2026_02_14.toml::entry/21::RI-022"]
 
 [[artifact_ref]]
-id = "ASOT-2504"
+id = "ASOT-2501"
+key = "url:https://arxiv.org/abs/1107.1375"
+title = "https://www.researchgate.net/profile/John-Bales/publication/51915595_Cayley-Dickson_and_Clifford_Algebras_as_Twisted_Group_Algebras/links/0fcfd512d4ccc2eed9000000/Cayley-Dickson-and-Clifford-Algebras-as-Twisted-Group-Algebras.pdf"
+status = "downloadable"
+minimum_requirement_met = true
+canonical_functional_url = "https://arxiv.org/pdf/1107.1375.pdf"
+canonical_download_path = ""
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/29::ASOT_3020_bales_twisted_group_algebras_arxiv"]
+
+[[artifact_ref]]
+id = "ASOT-2507"
 key = "url:https://arxiv.org/abs/1602.02317"
 title = "location:"
 status = "downloaded"
@@ -764,7 +784,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.48550_arXiv.1602.02317.headers.txt:4"]
 
 [[artifact_ref]]
-id = "ASOT-2539"
+id = "ASOT-2542"
 key = "url:https://arxiv.org/abs/2411.18881"
 title = "Reggiani 2024 manifold identifications (C-005)"
 status = "downloaded"
@@ -774,7 +794,7 @@ canonical_download_path = "data/papers/corpus/reggiani_2024_2411.18881.pdf"
 source_refs = ["XS-018", "data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.48550_arXiv.2411.18881.headers.txt:4", "docs/BIBLIOGRAPHY.md:189", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md:17", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:175", "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md:414", "papers/bib/cayley_dickson.bib::reggiani2024", "registry/external_sources.toml::document/17::XS-018", "reports/c010_nonlocal_and_markdown_control_plane_synthesis_2026_03_12.toml::source/1::SRC-C010-002"]
 
 [[artifact_ref]]
-id = "ASOT-2547"
+id = "ASOT-2550"
 key = "url:https://arxiv.org/abs/2505.11747"
 title = "The Structure of {Cayley-Dickson"
 status = "downloaded"
@@ -784,7 +804,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2505.11747
 source_refs = ["papers/bib/cayley_dickson.bib::structure2025"]
 
 [[artifact_ref]]
-id = "ASOT-2554"
+id = "ASOT-2557"
 key = "url:https://arxiv.org/abs/2509.08099"
 title = "https://arxiv.org/abs/2509.08099"
 status = "downloaded"
@@ -794,7 +814,7 @@ canonical_download_path = "data/papers/sensational_primary/2026_02_14/ri-034-pri
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/33::RI-034", "data/papers/sensational_primary/2026_02_14/provenance.toml::artifact/7", "registry/research_intake_2026_02_14.toml::entry/33::RI-034", "reports/sensational_primary_source_mapping_2026_02_14.toml::item/7::RI-034"]
 
 [[artifact_ref]]
-id = "ASOT-2630"
+id = "ASOT-2633"
 key = "url:https://arxiv.org/abs/math.ra/0403113"
 title = "Location:"
 status = "downloaded"
@@ -804,7 +824,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs.math.RA_0403113.headers.txt:6", "data/papers/intake/global_link_audit_2026_02_15/tmp/arXiv.org_abs_math.RA_0403113.headers.txt:6", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/13::ASOT_8219_fix_arxiv_math_0403113"]
 
 [[artifact_ref]]
-id = "ASOT-2631"
+id = "ASOT-2634"
 key = "url:https://arxiv.org/abs/math/0011260"
 title = "location:"
 status = "downloadable"
@@ -814,7 +834,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/doi.org_10.48550_arXiv.math_0011260.headers.txt:4", "docs/BIBLIOGRAPHY.md:169", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:155", "papers/bib/cayley_dickson.bib::demarrais2000", "reports/c010_nonlocal_and_markdown_control_plane_synthesis_2026_03_12.toml::source/0::SRC-C010-001"]
 
 [[artifact_ref]]
-id = "ASOT-2632"
+id = "ASOT-2635"
 key = "url:https://arxiv.org/abs/math/0105155"
 title = "https://arxiv.org/abs/math/0105155"
 status = "downloadable"
@@ -824,7 +844,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/6::RI-007", "papers/bib/cayley_dickson.bib::baez2002", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/7::CAN-OCT-2002-BAEZ"]
 
 [[artifact_ref]]
-id = "ASOT-2634"
+id = "ASOT-2637"
 key = "url:https://arxiv.org/abs/math/0207003"
 title = "**de Marrais, R. P. C.** (2002). *Placeholder Substructures I: The Road from NKS to Scale-Free Networks Is Paved with Zero-Divisors*. [arXiv:math/0207003](https://arxiv.org/abs/math/0207003). (Later revision: arXiv:math/0703745v3, with corrections and expanded proofs.)"
 status = "downloadable"
@@ -834,7 +854,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0075", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/19::RI-020", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/22::RI-023", "docs/BIBLIOGRAPHY.md:172", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:158", "papers/bib/cayley_dickson.bib::demarrais2002", "registry/bibliography.toml::entry/74::BIB-0075"]
 
 [[artifact_ref]]
-id = "ASOT-2635"
+id = "ASOT-2638"
 key = "url:https://arxiv.org/abs/math/0403113"
 title = "**de Marrais, R. P. C.** (2004). *Box-Kites III: Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-Suppressing \"Sleeper Cell\" Structures in the Sedenions and 2^n-ions*. [arXiv:math/0403113](https://arxiv.org/abs/math/0403113)."
 status = "downloaded"
@@ -844,7 +864,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["BIB-0077", "docs/BIBLIOGRAPHY.md:174", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:160", "papers/bib/cayley_dickson.bib::demarrais2004boxkites", "registry/bibliography.toml::entry/76::BIB-0077"]
 
 [[artifact_ref]]
-id = "ASOT-2652"
+id = "ASOT-2655"
 key = "url:https://arxiv.org/pdf/0704.0026.pdf"
 title = "0704"
 status = "downloadable"
@@ -854,7 +874,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/11::CDS-C-0012", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/11::CDS-E-0012", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:25", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_0704.0026.headers.txt:7", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/11::LFI-012"]
 
 [[artifact_ref]]
-id = "ASOT-2653"
+id = "ASOT-2656"
 key = "url:https://arxiv.org/pdf/0707.0554.pdf"
 title = "octonions/complexified-bioctonions"
 status = "downloadable"
@@ -864,7 +884,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:128"]
 
 [[artifact_ref]]
-id = "ASOT-2654"
+id = "ASOT-2657"
 key = "url:https://arxiv.org/pdf/0808.2496.pdf"
 title = "octonions/real-split"
 status = "downloadable"
@@ -874,7 +894,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:103"]
 
 [[artifact_ref]]
-id = "ASOT-2655"
+id = "ASOT-2658"
 key = "url:https://arxiv.org/pdf/0905.2987.pdf"
 title = "openpdf/core-cd"
 status = "downloadable"
@@ -884,7 +904,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:35"]
 
 [[artifact_ref]]
-id = "ASOT-2656"
+id = "ASOT-2659"
 key = "url:https://arxiv.org/pdf/0907.2047.pdf"
 title = "m4/subloop-subalgebra"
 status = "downloadable"
@@ -894,7 +914,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:29", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:63", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:75", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:28"]
 
 [[artifact_ref]]
-id = "ASOT-2657"
+id = "ASOT-2660"
 key = "url:https://arxiv.org/pdf/0910.2569.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -904,7 +924,7 @@ canonical_download_path = "data/papers/corpus/asot_0024_stinga_torrea_arxiv_arxi
 source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_011.bin.headers.txt:24", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_0910.2569.pdf.headers.txt:24", "registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/7"]
 
 [[artifact_ref]]
-id = "ASOT-2658"
+id = "ASOT-2661"
 key = "url:https://arxiv.org/pdf/1011.3922.pdf"
 title = "octonions/real-split"
 status = "downloadable"
@@ -914,7 +934,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:104", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:157"]
 
 [[artifact_ref]]
-id = "ASOT-2659"
+id = "ASOT-2662"
 key = "url:https://arxiv.org/pdf/1102.5151.pdf"
 title = "https://arxiv.org/pdf/1102.5151.pdf"
 status = "downloadable"
@@ -924,7 +944,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/21::RI-022", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/13::CDS-C-0014", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/13::CDS-E-0014", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:33", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1102.5151.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1102.5151.pdf.headers.txt:18", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/13::LFI-014"]
 
 [[artifact_ref]]
-id = "ASOT-2660"
+id = "ASOT-2663"
 key = "url:https://arxiv.org/pdf/1107.1301.pdf"
 title = "m6/representation"
 status = "downloadable"
@@ -934,7 +954,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:40", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:44"]
 
 [[artifact_ref]]
-id = "ASOT-2661"
+id = "ASOT-2664"
 key = "url:https://arxiv.org/pdf/1204.3246.pdf"
 title = "m7/function-base"
 status = "downloadable"
@@ -944,7 +964,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:53"]
 
 [[artifact_ref]]
-id = "ASOT-2662"
+id = "ASOT-2665"
 key = "url:https://arxiv.org/pdf/1209.0585.pdf"
 title = "quaternions/biquaternions"
 status = "downloadable"
@@ -954,7 +974,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:26"]
 
 [[artifact_ref]]
-id = "ASOT-2663"
+id = "ASOT-2666"
 key = "url:https://arxiv.org/pdf/1210.3947.pdf"
 title = "octonions/general-fields-rings-schemes"
 status = "downloadable"
@@ -964,7 +984,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:115"]
 
 [[artifact_ref]]
-id = "ASOT-2664"
+id = "ASOT-2667"
 key = "url:https://arxiv.org/pdf/1405.0187.pdf"
 title = "quaternions/split-coquaternions"
 status = "downloadable"
@@ -974,7 +994,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:15"]
 
 [[artifact_ref]]
-id = "ASOT-2665"
+id = "ASOT-2668"
 key = "url:https://arxiv.org/pdf/1405.5652.pdf"
 title = "quaternions/signature-generalized"
 status = "downloadable"
@@ -984,7 +1004,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:10"]
 
 [[artifact_ref]]
-id = "ASOT-2666"
+id = "ASOT-2669"
 key = "url:https://arxiv.org/pdf/1405.6888.pdf"
 title = "1405"
 status = "downloadable"
@@ -994,7 +1014,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/17::CDS-C-0018", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/17::CDS-E-0018", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:38", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1405.6888.headers.txt:2", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/17::LFI-018"]
 
 [[artifact_ref]]
-id = "ASOT-2667"
+id = "ASOT-2670"
 key = "url:https://arxiv.org/pdf/1502.02578.pdf"
 title = "octonions/integral-arithmetic"
 status = "downloadable"
@@ -1004,7 +1024,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:141"]
 
 [[artifact_ref]]
-id = "ASOT-2668"
+id = "ASOT-2671"
 key = "url:https://arxiv.org/pdf/1503.06098.pdf"
 title = "octonions/complexified-bioctonions"
 status = "downloadable"
@@ -1014,7 +1034,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:126"]
 
 [[artifact_ref]]
-id = "ASOT-2669"
+id = "ASOT-2672"
 key = "url:https://arxiv.org/pdf/1512.02121.pdf"
 title = "quaternions/quad-quaternions"
 status = "downloadable"
@@ -1024,7 +1044,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:74"]
 
 [[artifact_ref]]
-id = "ASOT-2670"
+id = "ASOT-2673"
 key = "url:https://arxiv.org/pdf/1602.02317.pdf"
 title = "1602"
 status = "downloaded"
@@ -1034,7 +1054,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/19::CDS-C-0020", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/19::CDS-E-0020", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:41", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/19_ARXIV-V1.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/20_ARXIV-V2.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/22_ARXIV-V1-PDF.headers.txt:18", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_006.bin.headers.txt:18", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_007.bin.headers.txt:18", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1602.02317v1.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1602.02317v1.pdf.headers.txt:18", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1602.02317v2.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1602.02317v2.pdf.headers.txt:18", "registry/recovered_mirrors.toml::recovered_mirror/13::ASOT-8318", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/19::LFI-020"]
 
 [[artifact_ref]]
-id = "ASOT-2671"
+id = "ASOT-2674"
 key = "url:https://arxiv.org/pdf/1602.02317v1.pdf"
 title = "https://arxiv.org/pdf/1602.02317v1.pdf"
 status = "downloaded"
@@ -1044,7 +1064,7 @@ canonical_download_path = "data/papers/corpus/bales_2016_arxiv_withdrawn_version
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/2", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::mirror_retry_pdf_success/2::ARXIV-V1", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::mirror_retry_pdf_success/4::ARXIV-V1-PDF"]
 
 [[artifact_ref]]
-id = "ASOT-2672"
+id = "ASOT-2675"
 key = "url:https://arxiv.org/pdf/1602.02317v2.pdf"
 title = "https://arxiv.org/pdf/1602.02317v2.pdf"
 status = "downloaded"
@@ -1054,7 +1074,7 @@ canonical_download_path = "data/papers/corpus/bales_2016_arxiv_withdrawn_version
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/3", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::mirror_retry_pdf_success/3::ARXIV-V2"]
 
 [[artifact_ref]]
-id = "ASOT-2673"
+id = "ASOT-2676"
 key = "url:https://arxiv.org/pdf/1602.02843.pdf"
 title = "1602"
 status = "downloadable"
@@ -1064,7 +1084,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/20::CDS-C-0021", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/20::CDS-E-0021", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:42", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1602.02843.headers.txt:8", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/20::LFI-021"]
 
 [[artifact_ref]]
-id = "ASOT-2674"
+id = "ASOT-2677"
 key = "url:https://arxiv.org/pdf/1606.05958.pdf"
 title = "octonions/integral-arithmetic"
 status = "downloadable"
@@ -1074,7 +1094,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:139"]
 
 [[artifact_ref]]
-id = "ASOT-2675"
+id = "ASOT-2678"
 key = "url:https://arxiv.org/pdf/1610.06418.pdf"
 title = "octonions/real-split"
 status = "downloadable"
@@ -1084,7 +1104,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:106"]
 
 [[artifact_ref]]
-id = "ASOT-2676"
+id = "ASOT-2679"
 key = "url:https://arxiv.org/pdf/1702.08657.pdf"
 title = "octonions/dual-number-coeff"
 status = "downloadable"
@@ -1094,7 +1114,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:130"]
 
 [[artifact_ref]]
-id = "ASOT-2677"
+id = "ASOT-2680"
 key = "url:https://arxiv.org/pdf/1704.03657.pdf"
 title = "octonions/general-fields-rings-schemes"
 status = "downloadable"
@@ -1104,7 +1124,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:117", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:153"]
 
 [[artifact_ref]]
-id = "ASOT-2678"
+id = "ASOT-2681"
 key = "url:https://arxiv.org/pdf/1704.05229.pdf"
 title = "octonions/general-fields-rings-schemes"
 status = "downloadable"
@@ -1114,7 +1134,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:116"]
 
 [[artifact_ref]]
-id = "ASOT-2679"
+id = "ASOT-2682"
 key = "url:https://arxiv.org/pdf/1707.05029.pdf"
 title = "octonions/integral-arithmetic"
 status = "downloadable"
@@ -1124,7 +1144,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:140"]
 
 [[artifact_ref]]
-id = "ASOT-2680"
+id = "ASOT-2683"
 key = "url:https://arxiv.org/pdf/1707.07318.pdf"
 title = "openpdf/generalized-cd"
 status = "downloaded"
@@ -1134,7 +1154,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/1707.07318
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:46", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_1707.07318v4.pdf.headers.txt:21"]
 
 [[artifact_ref]]
-id = "ASOT-2681"
+id = "ASOT-2684"
 key = "url:https://arxiv.org/pdf/1707.07318v4.pdf"
 title = "https://arxiv.org/pdf/1707.07318v4.pdf"
 status = "downloaded"
@@ -1144,7 +1164,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/1707.07318
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/1::HRHS-0002"]
 
 [[artifact_ref]]
-id = "ASOT-2682"
+id = "ASOT-2685"
 key = "url:https://arxiv.org/pdf/1808.09248.pdf"
 title = "openpdf/nonstandard-16d"
 status = "downloadable"
@@ -1154,7 +1174,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:61"]
 
 [[artifact_ref]]
-id = "ASOT-2683"
+id = "ASOT-2686"
 key = "url:https://arxiv.org/pdf/1810.03152.pdf"
 title = "quaternions/signature-generalized"
 status = "downloadable"
@@ -1164,7 +1184,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:9"]
 
 [[artifact_ref]]
-id = "ASOT-2684"
+id = "ASOT-2687"
 key = "url:https://arxiv.org/pdf/1904.03186.pdf"
 title = "openpdf/complexified"
 status = "downloadable"
@@ -1174,7 +1194,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:51"]
 
 [[artifact_ref]]
-id = "ASOT-2685"
+id = "ASOT-2688"
 key = "url:https://arxiv.org/pdf/1910.01868.pdf"
 title = "quaternions/general-field"
 status = "downloadable"
@@ -1184,7 +1204,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:44"]
 
 [[artifact_ref]]
-id = "ASOT-2686"
+id = "ASOT-2689"
 key = "url:https://arxiv.org/pdf/2008.00120.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -1194,7 +1214,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2008.00120
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2008.00120v1.pdf.headers.txt:16"]
 
 [[artifact_ref]]
-id = "ASOT-2687"
+id = "ASOT-2690"
 key = "url:https://arxiv.org/pdf/2008.00120v1.pdf"
 title = "https://arxiv.org/pdf/2008.00120v1.pdf"
 status = "downloaded"
@@ -1204,7 +1224,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2008.00120
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/5::HRHS-0006"]
 
 [[artifact_ref]]
-id = "ASOT-2688"
+id = "ASOT-2691"
 key = "url:https://arxiv.org/pdf/2012.02255.pdf"
 title = "octonions/real-split"
 status = "downloadable"
@@ -1214,7 +1234,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:107"]
 
 [[artifact_ref]]
-id = "ASOT-2689"
+id = "ASOT-2692"
 key = "url:https://arxiv.org/pdf/2101.11928.pdf"
 title = "quaternions/signature-generalized"
 status = "downloadable"
@@ -1224,7 +1244,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2690"
+id = "ASOT-2693"
 key = "url:https://arxiv.org/pdf/2108.01858.pdf"
 title = "octonions/complexified-bioctonions"
 status = "downloadable"
@@ -1234,7 +1254,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:123"]
 
 [[artifact_ref]]
-id = "ASOT-2691"
+id = "ASOT-2694"
 key = "url:https://arxiv.org/pdf/2202.02050.pdf"
 title = "octonions/complexified-bioctonions"
 status = "downloadable"
@@ -1244,7 +1264,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:122"]
 
 [[artifact_ref]]
-id = "ASOT-2692"
+id = "ASOT-2695"
 key = "url:https://arxiv.org/pdf/2203.04509.pdf"
 title = "quaternions/reduced-quaternions"
 status = "downloadable"
@@ -1254,7 +1274,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:78"]
 
 [[artifact_ref]]
-id = "ASOT-2693"
+id = "ASOT-2696"
 key = "url:https://arxiv.org/pdf/2204.07139.pdf"
 title = "octonions/scispace-general-fields"
 status = "downloadable"
@@ -1264,7 +1284,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:176"]
 
 [[artifact_ref]]
-id = "ASOT-2694"
+id = "ASOT-2697"
 key = "url:https://arxiv.org/pdf/2205.05605.pdf"
 title = "m7/function-base"
 status = "downloadable"
@@ -1274,7 +1294,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:49"]
 
 [[artifact_ref]]
-id = "ASOT-2695"
+id = "ASOT-2698"
 key = "url:https://arxiv.org/pdf/2205.07986.pdf"
 title = "tags/m3"
 status = "downloadable"
@@ -1284,7 +1304,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:95"]
 
 [[artifact_ref]]
-id = "ASOT-2696"
+id = "ASOT-2699"
 key = "url:https://arxiv.org/pdf/2209.02398.pdf"
 title = "octonions/scispace-integral"
 status = "downloadable"
@@ -1294,7 +1314,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:196"]
 
 [[artifact_ref]]
-id = "ASOT-2697"
+id = "ASOT-2700"
 key = "url:https://arxiv.org/pdf/2209.12620.pdf"
 title = "octonions/scispace-general-fields"
 status = "downloadable"
@@ -1304,7 +1324,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:180"]
 
 [[artifact_ref]]
-id = "ASOT-2698"
+id = "ASOT-2701"
 key = "url:https://arxiv.org/pdf/2306.13098.pdf"
 title = "openpdf/complexified"
 status = "downloadable"
@@ -1314,7 +1334,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:52"]
 
 [[artifact_ref]]
-id = "ASOT-2699"
+id = "ASOT-2702"
 key = "url:https://arxiv.org/pdf/2308.14768.pdf"
 title = "openpdf/complexified"
 status = "downloadable"
@@ -1324,7 +1344,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:19"]
 
 [[artifact_ref]]
-id = "ASOT-2700"
+id = "ASOT-2703"
 key = "url:https://arxiv.org/pdf/2309.01776.pdf"
 title = "octonions/general-fields-rings-schemes"
 status = "unverified"
@@ -1334,7 +1354,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:118"]
 
 [[artifact_ref]]
-id = "ASOT-2701"
+id = "ASOT-2704"
 key = "url:https://arxiv.org/pdf/2310.09972.pdf"
 title = "octonions/scispace-general-fields"
 status = "unverified"
@@ -1344,7 +1364,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:184"]
 
 [[artifact_ref]]
-id = "ASOT-2702"
+id = "ASOT-2705"
 key = "url:https://arxiv.org/pdf/2311.02269.pdf"
 title = "octonions/scispace-general-fields"
 status = "unverified"
@@ -1354,7 +1374,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:186"]
 
 [[artifact_ref]]
-id = "ASOT-2703"
+id = "ASOT-2706"
 key = "url:https://arxiv.org/pdf/2311.18594.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -1364,7 +1384,7 @@ canonical_download_path = "data/papers/corpus/asot_8374_cambridge_to_arxiv_arxiv
 source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_037.bin.headers.txt:18", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2311.18594.pdf.headers.txt:18", "registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/12"]
 
 [[artifact_ref]]
-id = "ASOT-2704"
+id = "ASOT-2707"
 key = "url:https://arxiv.org/pdf/2401.01166.pdf"
 title = "openpdf/nonstandard-16d"
 status = "unverified"
@@ -1374,7 +1394,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:23", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:62"]
 
 [[artifact_ref]]
-id = "ASOT-2705"
+id = "ASOT-2708"
 key = "url:https://arxiv.org/pdf/2403.03763.pdf"
 title = "tags/m3"
 status = "unverified"
@@ -1384,7 +1404,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:102"]
 
 [[artifact_ref]]
-id = "ASOT-2706"
+id = "ASOT-2709"
 key = "url:https://arxiv.org/pdf/2404.12534.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -1394,7 +1414,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2404.12534
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2404.12534v3.pdf.headers.txt:16"]
 
 [[artifact_ref]]
-id = "ASOT-2707"
+id = "ASOT-2710"
 key = "url:https://arxiv.org/pdf/2404.12534v3.pdf"
 title = "https://arxiv.org/pdf/2404.12534v3.pdf"
 status = "downloaded"
@@ -1404,7 +1424,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2404.12534
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/4::HRHS-0005"]
 
 [[artifact_ref]]
-id = "ASOT-2708"
+id = "ASOT-2711"
 key = "url:https://arxiv.org/pdf/2409.13736.pdf"
 title = "octonions/real-split"
 status = "unverified"
@@ -1414,7 +1434,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:108"]
 
 [[artifact_ref]]
-id = "ASOT-2709"
+id = "ASOT-2712"
 key = "url:https://arxiv.org/pdf/2409.16970.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -1424,7 +1444,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:51", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:61"]
 
 [[artifact_ref]]
-id = "ASOT-2710"
+id = "ASOT-2713"
 key = "url:https://arxiv.org/pdf/2411.18881.pdf"
 title = "m3/zero-divisors"
 status = "downloaded"
@@ -1434,7 +1454,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2411.18881
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:19", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:82", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2411.18881.pdf.headers.txt:22", "registry/hypothesis_runtime_hott_sources.toml::record/2::HRHS-0003"]
 
 [[artifact_ref]]
-id = "ASOT-2711"
+id = "ASOT-2714"
 key = "url:https://arxiv.org/pdf/2412.00032.pdf"
 title = "octonions/scispace-split"
 status = "unverified"
@@ -1444,7 +1464,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:168"]
 
 [[artifact_ref]]
-id = "ASOT-2712"
+id = "ASOT-2715"
 key = "url:https://arxiv.org/pdf/2412.11059.pdf"
 title = "quaternions/reduced-quaternions"
 status = "unverified"
@@ -1454,7 +1474,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:81"]
 
 [[artifact_ref]]
-id = "ASOT-2713"
+id = "ASOT-2716"
 key = "url:https://arxiv.org/pdf/2501.18139.pdf"
 title = "octonions/complexified-bioctonions"
 status = "unverified"
@@ -1464,7 +1484,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:124"]
 
 [[artifact_ref]]
-id = "ASOT-2714"
+id = "ASOT-2717"
 key = "url:https://arxiv.org/pdf/2504.16465.pdf"
 title = "octonions/complexified-bioctonions"
 status = "unverified"
@@ -1474,7 +1494,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:125"]
 
 [[artifact_ref]]
-id = "ASOT-2715"
+id = "ASOT-2718"
 key = "url:https://arxiv.org/pdf/2505.11747.pdf"
 title = "m1/construction"
 status = "downloaded"
@@ -1484,7 +1504,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2505.11747
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:10", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:60", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2505.11747v3.pdf.headers.txt:23"]
 
 [[artifact_ref]]
-id = "ASOT-2716"
+id = "ASOT-2719"
 key = "url:https://arxiv.org/pdf/2505.11747v3.pdf"
 title = "https://arxiv.org/pdf/2505.11747v3.pdf"
 status = "downloaded"
@@ -1494,7 +1514,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2505.11747
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/0::HRHS-0001"]
 
 [[artifact_ref]]
-id = "ASOT-2717"
+id = "ASOT-2720"
 key = "url:https://arxiv.org/pdf/2509.08099.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -1504,7 +1524,7 @@ canonical_download_path = "data/papers/sensational_primary/2026_02_14/ri-034-can
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2509.08099.pdf.headers.txt:18", "data/papers/sensational_primary/2026_02_14/provenance.toml::artifact/10"]
 
 [[artifact_ref]]
-id = "ASOT-2718"
+id = "ASOT-2721"
 key = "url:https://arxiv.org/pdf/2510.25427.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -1514,7 +1534,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2510.25427
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2510.25427v1.pdf.headers.txt:21"]
 
 [[artifact_ref]]
-id = "ASOT-2719"
+id = "ASOT-2722"
 key = "url:https://arxiv.org/pdf/2510.25427v1.pdf"
 title = "https://arxiv.org/pdf/2510.25427v1.pdf"
 status = "downloaded"
@@ -1524,7 +1544,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2510.25427
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/6::HRHS-0007"]
 
 [[artifact_ref]]
-id = "ASOT-2720"
+id = "ASOT-2723"
 key = "url:https://arxiv.org/pdf/2512.13002.pdf"
 title = "m3/zero-divisors"
 status = "unverified"
@@ -1534,7 +1554,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:20"]
 
 [[artifact_ref]]
-id = "ASOT-2721"
+id = "ASOT-2724"
 key = "url:https://arxiv.org/pdf/2512.14007.pdf"
 title = "adjacent/split-complex"
 status = "unverified"
@@ -1544,7 +1564,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:94"]
 
 [[artifact_ref]]
-id = "ASOT-2722"
+id = "ASOT-2725"
 key = "url:https://arxiv.org/pdf/2601.18944.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloaded"
@@ -1554,7 +1574,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2601.18944
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_2601.18944v2.pdf.headers.txt:20"]
 
 [[artifact_ref]]
-id = "ASOT-2723"
+id = "ASOT-2726"
 key = "url:https://arxiv.org/pdf/2601.18944v2.pdf"
 title = "https://arxiv.org/pdf/2601.18944v2.pdf"
 status = "downloaded"
@@ -1564,7 +1584,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/2601.18944
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/3::HRHS-0004"]
 
 [[artifact_ref]]
-id = "ASOT-2724"
+id = "ASOT-2727"
 key = "url:https://arxiv.org/pdf/cond-mat/0503172.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloadable"
@@ -1574,7 +1594,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_cond-mat_0503172.headers.txt:10"]
 
 [[artifact_ref]]
-id = "ASOT-2725"
+id = "ASOT-2728"
 key = "url:https://arxiv.org/pdf/gr-qc/0407075.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloadable"
@@ -1584,7 +1604,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_gr-qc_0407075.headers.txt:7"]
 
 [[artifact_ref]]
-id = "ASOT-2726"
+id = "ASOT-2729"
 key = "url:https://arxiv.org/pdf/hep-th/0505101.pdf"
 title = "octonions/real-split"
 status = "unverified"
@@ -1594,7 +1614,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:105"]
 
 [[artifact_ref]]
-id = "ASOT-2727"
+id = "ASOT-2730"
 key = "url:https://arxiv.org/pdf/math/0011260.pdf"
 title = "tags/m2"
 status = "unverified"
@@ -1604,7 +1624,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:79", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:6"]
 
 [[artifact_ref]]
-id = "ASOT-2728"
+id = "ASOT-2731"
 key = "url:https://arxiv.org/pdf/math/0105155.pdf"
 title = "octonions/real-division"
 status = "unverified"
@@ -1614,7 +1634,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:97", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:160"]
 
 [[artifact_ref]]
-id = "ASOT-2729"
+id = "ASOT-2732"
 key = "url:https://arxiv.org/pdf/math/0206028.pdf"
 title = "octonions/presentation-zorn"
 status = "unverified"
@@ -1624,7 +1644,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:156"]
 
 [[artifact_ref]]
-id = "ASOT-2730"
+id = "ASOT-2733"
 key = "url:https://arxiv.org/pdf/math/0207003.pdf"
 title = "https://arxiv.org/pdf/math/0207003.pdf"
 status = "downloadable"
@@ -1634,7 +1654,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/22::RI-023", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/8::CDS-C-0009", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/8::CDS-E-0009", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:22", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0207003.headers.txt:7", "registry/research_intake_2026_02_14.toml::entry/22::RI-023", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/8::LFI-009"]
 
 [[artifact_ref]]
-id = "ASOT-2731"
+id = "ASOT-2734"
 key = "url:https://arxiv.org/pdf/math/0207003v1.pdf"
 title = "https://arxiv.org/pdf/math/0207003v1.pdf"
 status = "downloadable"
@@ -1644,7 +1664,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/19::RI-020", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:58", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:68", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:81", "registry/research_intake_2026_02_14.toml::entry/19::RI-020"]
 
 [[artifact_ref]]
-id = "ASOT-2732"
+id = "ASOT-2735"
 key = "url:https://arxiv.org/pdf/math/0403113.pdf"
 title = "0403113"
 status = "downloaded"
@@ -1654,7 +1674,7 @@ canonical_download_path = "data/papers/corpus/asot_8219_fix_arxiv_math_0403113_a
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/9::CDS-C-0010", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/9::CDS-E-0010", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:23", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_028.bin.headers.txt:22", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_029.bin.headers.txt:21", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0403113.headers.txt:8", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0403113.pdf.headers.txt:22", "data/papers/intake/global_link_audit_2026_02_15/tmp/export.arxiv.org_pdf_math_0403113.pdf.headers.txt:21", "registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/11", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/9::LFI-010"]
 
 [[artifact_ref]]
-id = "ASOT-2733"
+id = "ASOT-2736"
 key = "url:https://arxiv.org/pdf/math/0405424.pdf"
 title = "openpdf/core-cd"
 status = "unverified"
@@ -1664,7 +1684,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:37"]
 
 [[artifact_ref]]
-id = "ASOT-2734"
+id = "ASOT-2737"
 key = "url:https://arxiv.org/pdf/math/0405471.pdf"
 title = "m7/function-base"
 status = "unverified"
@@ -1674,7 +1694,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:51"]
 
 [[artifact_ref]]
-id = "ASOT-2735"
+id = "ASOT-2738"
 key = "url:https://arxiv.org/pdf/math/0406306.pdf"
 title = "m7/function-base"
 status = "unverified"
@@ -1684,7 +1704,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:52"]
 
 [[artifact_ref]]
-id = "ASOT-2736"
+id = "ASOT-2739"
 key = "url:https://arxiv.org/pdf/math/0412390.pdf"
 title = "0412390"
 status = "downloadable"
@@ -1694,7 +1714,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/15::CDS-C-0016", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/15::CDS-E-0016", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:35", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0412390.headers.txt:7", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/15::LFI-016"]
 
 [[artifact_ref]]
-id = "ASOT-2737"
+id = "ASOT-2740"
 key = "url:https://arxiv.org/pdf/math/0506190.pdf"
 title = "quaternions/biquaternions"
 status = "unverified"
@@ -1704,7 +1724,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:24"]
 
 [[artifact_ref]]
-id = "ASOT-2738"
+id = "ASOT-2741"
 key = "url:https://arxiv.org/pdf/math/0506349.pdf"
 title = "octonions/integral-arithmetic"
 status = "unverified"
@@ -1714,7 +1734,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:138"]
 
 [[artifact_ref]]
-id = "ASOT-2739"
+id = "ASOT-2742"
 key = "url:https://arxiv.org/pdf/math/0510397.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloadable"
@@ -1724,7 +1744,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/meta/14_EAKIN-SUBSTITUTE-MORENO.headers.txt:21", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/meta/18_EAKIN-SUBSTITUTE-MATH0510397.headers.txt:21"]
 
 [[artifact_ref]]
-id = "ASOT-2740"
+id = "ASOT-2743"
 key = "url:https://arxiv.org/pdf/math/0511691.pdf"
 title = "tags/s1"
 status = "downloaded"
@@ -1734,7 +1754,7 @@ canonical_download_path = "data/papers/corpus/asot_0022_large_annihilators_arxiv
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:71", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:88", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_010.bin.headers.txt:21", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0511691.pdf.headers.txt:21", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0511691v1.pdf.headers.txt:21", "registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/6"]
 
 [[artifact_ref]]
-id = "ASOT-2741"
+id = "ASOT-2744"
 key = "url:https://arxiv.org/pdf/math/0511691v1.pdf"
 title = "https://arxiv.org/pdf/math/0511691v1.pdf"
 status = "downloaded"
@@ -1744,7 +1764,7 @@ canonical_download_path = "data/papers/corpus/hypothesis_runtime_hott/math-05116
 source_refs = ["registry/hypothesis_runtime_hott_sources.toml::record/7::HRHS-0008"]
 
 [[artifact_ref]]
-id = "ASOT-2742"
+id = "ASOT-2745"
 key = "url:https://arxiv.org/pdf/math/0512517.pdf"
 title = "m3/zero-divisors"
 status = "unverified"
@@ -1754,7 +1774,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:17"]
 
 [[artifact_ref]]
-id = "ASOT-2743"
+id = "ASOT-2746"
 key = "url:https://arxiv.org/pdf/math/0603281.pdf"
 title = "0603281"
 status = "downloadable"
@@ -1764,7 +1784,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/10::CDS-C-0011", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/10::CDS-E-0011", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:24", "data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0603281.headers.txt:9", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/10::LFI-011"]
 
 [[artifact_ref]]
-id = "ASOT-2744"
+id = "ASOT-2747"
 key = "url:https://arxiv.org/pdf/math/0608640.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloadable"
@@ -1774,7 +1794,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_math_0608640.headers.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2745"
+id = "ASOT-2748"
 key = "url:https://arxiv.org/pdf/q-alg/9710013.pdf"
 title = "m3/zero-divisors"
 status = "unverified"
@@ -1784,7 +1804,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:16"]
 
 [[artifact_ref]]
-id = "ASOT-2746"
+id = "ASOT-2749"
 key = "url:https://arxiv.org/pdf/quant-ph/0206098.pdf"
 title = "link: <>; rel='canonical'"
 status = "downloadable"
@@ -1794,7 +1814,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pdf_quant-ph_0206098.headers.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2747"
+id = "ASOT-2750"
 key = "url:https://bibliotekanauki.pl/articles/729117.pdf"
 title = "m3/zero-divisors"
 status = "downloaded"
@@ -1804,7 +1824,7 @@ canonical_download_path = "data/papers/corpus/asot_0062_cawagas_2004_bibliotekan
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:18", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:30", "registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/10"]
 
 [[artifact_ref]]
-id = "ASOT-2749"
+id = "ASOT-2752"
 key = "url:https://carmamaths.org/resources/mahler/docs/073.pdf"
 title = "m8/arithmetic"
 status = "unverified"
@@ -1814,7 +1834,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:56"]
 
 [[artifact_ref]]
-id = "ASOT-2750"
+id = "ASOT-2753"
 key = "url:https://cds.cern.ch/record/2951492/files/ilten.pdf"
 title = "Dark Sector Searches at LHCb"
 status = "unverified"
@@ -1824,7 +1844,7 @@ canonical_download_path = ""
 source_refs = ["papers/MANIFEST.toml::paper/53::ilten-2025-cds2951492"]
 
 [[artifact_ref]]
-id = "ASOT-2751"
+id = "ASOT-2754"
 key = "url:https://ceid.utsa.edu/agrigoryan/wp-content/uploads/sites/23/2017/08/art_spie20172dodft.pdf"
 title = "Grigoryan et al. (2017) 2-D Octonion Discrete Fourier Transform: Fast Algorithms"
 status = "unverified"
@@ -1834,7 +1854,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/37::GRIGORYAN_2017_SPIE_2D_ODFT_FAST"]
 
 [[artifact_ref]]
-id = "ASOT-2756"
+id = "ASOT-2759"
 key = "url:https://cmsa.fas.harvard.edu/media/intro-g2-notes-1.pdf"
 title = "Karigiannis (2019) Introduction to G2 geometry"
 status = "unverified"
@@ -1844,7 +1864,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/29::KARIGIANNIS_2019_INTRO_G2"]
 
 [[artifact_ref]]
-id = "ASOT-2757"
+id = "ASOT-2760"
 key = "url:https://content.wolfram.com/uploads/sites/13/2023/02/17-2-3.pdf"
 title = "17 2 3"
 status = "downloadable"
@@ -1854,7 +1874,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/12::CDS-C-0013", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/12::CDS-E-0013", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:26", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/12::LFI-013"]
 
 [[artifact_ref]]
-id = "ASOT-2758"
+id = "ASOT-2761"
 key = "url:https://core.ac.uk/download/pdf/132798758.pdf"
 title = "quaternions/split-coquaternions"
 status = "downloadable"
@@ -1864,7 +1884,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:16"]
 
 [[artifact_ref]]
-id = "ASOT-2759"
+id = "ASOT-2762"
 key = "url:https://core.ac.uk/download/pdf/204756513.pdf"
 title = "m4/subloop-subalgebra"
 status = "downloadable"
@@ -1874,7 +1894,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:31", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:67"]
 
 [[artifact_ref]]
-id = "ASOT-2760"
+id = "ASOT-2763"
 key = "url:https://core.ac.uk/download/pdf/229066012.pdf"
 title = "Structure of zero divisors, and other algebraic structures, in higher dimensional real Cayley-Dickson algebras"
 status = "downloaded"
@@ -1884,7 +1904,7 @@ canonical_download_path = "data/papers/corpus/brown_1972_structure_of_zero_divis
 source_refs = ["BROWN_1972", "registry/cayley_dickson_canonical_sources.toml::paper/0::CDCS-001", "reports/cayley_dickson_source_recovery_2026_02_15.toml::brown_1972"]
 
 [[artifact_ref]]
-id = "ASOT-2761"
+id = "ASOT-2764"
 key = "url:https://core.ac.uk/download/pdf/82141950.pdf"
 title = "https://core.ac.uk/download/pdf/82141950.pdf"
 status = "downloadable"
@@ -1894,7 +1914,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/theory_narrative_next25.md:45", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:10", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:12", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md:13", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:33", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/unresolved_direct_sources.md:3", "registry/research_intake_2026_02_15_cayley_dickson.toml::research_intake::RI-2026-02-15-cayley-dickson-lambda-first", "registry/research_intake_2026_02_15_cayley_dickson.toml::unresolved/0::UR-001"]
 
 [[artifact_ref]]
-id = "ASOT-2762"
+id = "ASOT-2765"
 key = "url:https://core.ac.uk/reader/229066012"
 title = "link: <>; rel=\"canonical\""
 status = "downloaded"
@@ -1904,7 +1924,7 @@ canonical_download_path = "data/papers/corpus/brown_1972_structure_of_zero_divis
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_brown_229066012.headers.refetch.txt:21", "data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_brown_229066012.headers.txt:21", "data/papers/intake/global_link_audit_2026_02_15/tmp/core.ac.uk_download_229066012.pdf.headers.txt:21"]
 
 [[artifact_ref]]
-id = "ASOT-2763"
+id = "ASOT-2766"
 key = "url:https://ctnt-summer.math.uconn.edu/wp-content/uploads/sites/1632/2016/02/xiao.pdf"
 title = "quaternions/general-field"
 status = "unverified"
@@ -1914,7 +1934,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:42"]
 
 [[artifact_ref]]
-id = "ASOT-2764"
+id = "ASOT-2767"
 key = "url:https://dair.dias.ie/id/eprint/23/1/dias-stp-communications-009-obrienandsynge.pdf"
 title = "https://dair.dias.ie/id/eprint/23/1/DIAS-STP-Communications-009-OBrienandSynge.pdf"
 status = "unverified"
@@ -1924,7 +1944,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt:779"]
 
 [[artifact_ref]]
-id = "ASOT-2770"
+id = "ASOT-2773"
 key = "url:https://digital.csic.es/bitstream/10261/15773/1/rockycfg.pdf"
 title = "adjacent/split-complex"
 status = "unverified"
@@ -1934,7 +1954,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:92"]
 
 [[artifact_ref]]
-id = "ASOT-2771"
+id = "ASOT-2774"
 key = "url:https://dn711104.ca.archive.org/0/items/arxiv-1602.02317/1602.02317.pdf"
 title = "location:"
 status = "downloadable"
@@ -1944,7 +1964,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/27_ARCHIVE-DIRECT.headers.txt:5", "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_009.bin.headers.txt:5", "data/papers/intake/global_link_audit_2026_02_15/tmp/archive.org_download_arxiv-1602.02317_1602.02317.pdf.headers.txt:5"]
 
 [[artifact_ref]]
-id = "ASOT-2782"
+id = "ASOT-2785"
 key = "url:https://dspace.mit.edu/bitstream/handle/1721.1/78248/mit-csail-tr-2013-005.pdf"
 title = "Glover (2013) Tracking 3-D rotations with the Quaternion Bingham Filter"
 status = "unverified"
@@ -1954,7 +1974,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/54::GLOVER_2013_QUAT_BINGHAM_FILTER"]
 
 [[artifact_ref]]
-id = "ASOT-2783"
+id = "ASOT-2786"
 key = "url:https://dtecta.com/files/gdc13_vandenbergen_gino_math_tut.pdf"
 title = "adjacent/dual-numbers"
 status = "unverified"
@@ -1964,7 +1984,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:87", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/retry_remaining.txt:8"]
 
 [[artifact_ref]]
-id = "ASOT-2784"
+id = "ASOT-2787"
 key = "url:https://elib.mi.sanu.ac.rs/files/journals/flmt/223/flmn223p8441-8454.pdf"
 title = "quaternions/hyperbolic-terminology"
 status = "unverified"
@@ -1974,7 +1994,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:19"]
 
 [[artifact_ref]]
-id = "ASOT-2785"
+id = "ASOT-2788"
 key = "url:https://eprints.gla.ac.uk/205247/1/205247.pdf"
 title = "Krakow et al. (2017) On three-dimensional misorientation spaces (Glasgow mirror)"
 status = "unverified"
@@ -1984,7 +2004,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/47::KRAKOW_2017_MISORIENTATION_GLASGOW"]
 
 [[artifact_ref]]
-id = "ASOT-2786"
+id = "ASOT-2789"
 key = "url:https://eprints.whiterose.ac.uk/id/eprint/154980/1/dtd_cl_final.pdf"
 title = "quaternions/quad-quaternions"
 status = "unverified"
@@ -1994,7 +2014,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:76"]
 
 [[artifact_ref]]
-id = "ASOT-2787"
+id = "ASOT-2790"
 key = "url:https://faculty.etsu.edu/gardnerr/4127/notes-herstein/notes-cayley-dickson.pdf"
 title = "m1/construction"
 status = "unverified"
@@ -2004,7 +2024,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:6"]
 
 [[artifact_ref]]
-id = "ASOT-2788"
+id = "ASOT-2791"
 key = "url:https://faculty.sites.iastate.edu/jia/files/inline-files/dual-quaternion.pdf"
 title = "quaternions/dual-quaternions"
 status = "unverified"
@@ -2014,7 +2034,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:30"]
 
 [[artifact_ref]]
-id = "ASOT-2789"
+id = "ASOT-2792"
 key = "url:https://faculty.sites.iastate.edu/jia/files/inline-files/quaternion.pdf"
 title = "quaternions/real-hamilton"
 status = "unverified"
@@ -2024,7 +2044,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:2"]
 
 [[artifact_ref]]
-id = "ASOT-2790"
+id = "ASOT-2793"
 key = "url:https://files01.core.ac.uk/download/pdf/229066012.pdf"
 title = "location:"
 status = "downloaded"
@@ -2034,7 +2054,7 @@ canonical_download_path = "data/papers/corpus/brown_1972_structure_of_zero_divis
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_brown_229066012.headers.refetch.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_brown_229066012.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/core.ac.uk_download_229066012.pdf.headers.txt:4"]
 
 [[artifact_ref]]
-id = "ASOT-2791"
+id = "ASOT-2794"
 key = "url:https://files01.core.ac.uk/download/pdf/82141950.pdf"
 title = "location:"
 status = "downloadable"
@@ -2044,7 +2064,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_alt_no_pdf_segment.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_pdf.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/eakin1990_core_download_82141950.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/01_CORE-1.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/02_CORE-2.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15/meta/03_CORE-3.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/meta/01_CORE-DL-PDF.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/meta/02_CORE-DL-PDF-DL1.headers.txt:4", "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/meta/03_CORE-DL-PLAIN.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/core.ac.uk_download_82141950.pdf.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/core.ac.uk_download_pdf_82141950.pdf.headers.txt:4", "data/papers/intake/global_link_audit_2026_02_15/tmp/core.ac.uk_download_pdf_82141950.pdf_download=1.headers.txt:4"]
 
 [[artifact_ref]]
-id = "ASOT-2792"
+id = "ASOT-2795"
 key = "url:https://fs.unm.edu/dualnumbers.pdf"
 title = "adjacent/dual-numbers"
 status = "unverified"
@@ -2054,7 +2074,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:86"]
 
 [[artifact_ref]]
-id = "ASOT-2793"
+id = "ASOT-2796"
 key = "url:https://gaetan.chenevier.perso.math.cnrs.fr/coursihp/chenevier_lecture6.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -2064,7 +2084,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:49", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/retry_remaining.txt:4"]
 
 [[artifact_ref]]
-id = "ASOT-2796"
+id = "ASOT-2799"
 key = "url:https://graphics.stanford.edu/courses/cs348a-17-winter/papers/quaternion.pdf"
 title = "quaternions/real-hamilton"
 status = "unverified"
@@ -2074,7 +2094,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:3"]
 
 [[artifact_ref]]
-id = "ASOT-2797"
+id = "ASOT-2800"
 key = "url:https://iel.ucdavis.edu/publication/journal/j_ec1.pdf"
 title = "adjacent/dual-numbers"
 status = "unverified"
@@ -2084,7 +2104,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:88"]
 
 [[artifact_ref]]
-id = "ASOT-2798"
+id = "ASOT-2801"
 key = "url:https://ijgeometry.com/wp-content/uploads/2014/10/7.pdf"
 title = "quaternions/split-coquaternions"
 status = "unverified"
@@ -2094,7 +2114,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:13"]
 
 [[artifact_ref]]
-id = "ASOT-2799"
+id = "ASOT-2802"
 key = "url:https://imath.kiev.ua/~complex/sotrudniki/shpakivskyi/papers/10.1007_s00006-013-0387-3%5b1%5d.pdf"
 title = "quaternions/biquaternions"
 status = "unverified"
@@ -2104,7 +2124,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:27"]
 
 [[artifact_ref]]
-id = "ASOT-2801"
+id = "ASOT-2804"
 key = "url:https://isidore.co/misc/physics%20papers%20and%20books/modern%20papers/good%20overview%20of%20aharanov-bohm%20effect%3a%20proc.%20r.%20soc.%20lond.%20a-1984-berry-45-57.pdf"
 title = "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf"
 status = "downloaded"
@@ -2114,7 +2134,7 @@ canonical_download_path = "data/papers/corpus/asot_0030_berry_1984_mirrors_isido
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/9"]
 
 [[artifact_ref]]
-id = "ASOT-2802"
+id = "ASOT-2805"
 key = "url:https://isogenyschool2020.co.uk/schedule/quaternionnotes%281%29.pdf"
 title = "quaternions/general-field"
 status = "unverified"
@@ -2124,7 +2144,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:43"]
 
 [[artifact_ref]]
-id = "ASOT-2803"
+id = "ASOT-2806"
 key = "url:https://jdhsmith.math.iastate.edu/math/okuboqgp.pdf"
 title = "Smith & Vojtechovsky Okubo quasigroups"
 status = "unverified"
@@ -2134,7 +2154,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/23::SMITH_VOJTECHOVSKY_OKUBO_QUASIGROUPS"]
 
 [[artifact_ref]]
-id = "ASOT-2806"
+id = "ASOT-2809"
 key = "url:https://journals.iucr.org/j/issues/2007/03/00/ks5136/ks5136.pdf"
 title = "He & Jonas (2007) Orientation relationships in Rodrigues-Frank space"
 status = "unverified"
@@ -2144,7 +2164,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/44::HE_JONAS_2007_RODRIGUES_FRANK_SPACE"]
 
 [[artifact_ref]]
-id = "ASOT-2807"
+id = "ASOT-2810"
 key = "url:https://journals.iucr.org/j/issues/2018/04/00/ks5599/ks5599.pdf"
 title = "Quey-Villani-Maurice (2018) Nearly uniform sampling of crystal orientations"
 status = "unverified"
@@ -2154,7 +2174,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/48::QUEY_2018_NEARLY_UNIFORM_ORIENTATION_SAMPLING"]
 
 [[artifact_ref]]
-id = "ASOT-2808"
+id = "ASOT-2811"
 key = "url:https://journals.iucr.org/j/issues/2024/03/00/iu5046/iu5046.pdf"
 title = "De Graef (2024) Applications of the Clifford torus to material textures"
 status = "unverified"
@@ -2164,7 +2184,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/43::DE_GRAEF_2024_CLIFFORD_TORUS_TEXTURES"]
 
 [[artifact_ref]]
-id = "ASOT-2809"
+id = "ASOT-2812"
 key = "url:https://jvoight.github.io/articles/v_0.1.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -2174,7 +2194,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:53"]
 
 [[artifact_ref]]
-id = "ASOT-2810"
+id = "ASOT-2813"
 key = "url:https://jvoight.github.io/quat-book.pdf"
 title = "quaternions/scalar-extension"
 status = "unverified"
@@ -2184,7 +2204,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:21", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:37"]
 
 [[artifact_ref]]
-id = "ASOT-2811"
+id = "ASOT-2814"
 key = "url:https://kconrad.math.uconn.edu/blurbs/ringtheory/quaternionalg.pdf"
 title = "quaternions/scalar-extension"
 status = "unverified"
@@ -2194,7 +2214,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:22", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:38"]
 
 [[artifact_ref]]
-id = "ASOT-2812"
+id = "ASOT-2815"
 key = "url:https://knowen-production.s3.amazonaws.com/uploads/attachment/file/29/tsai2008.pdf"
 title = "Tsai (2008) Icosahedral clusters and stability of quasicrystals"
 status = "unverified"
@@ -2204,7 +2224,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/55::TSAI_2008_ICOSAHEDRAL_ORDER_QC"]
 
 [[artifact_ref]]
-id = "ASOT-2813"
+id = "ASOT-2816"
 key = "url:https://koreascience.kr/article/jako201401657870716.pdf"
 title = "https://koreascience.kr/article/JAKO201401657870716.pdf"
 status = "downloadable"
@@ -2214,7 +2234,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/17::RI-018", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/17::RI-018", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_retry_firefox.toml::artifact/1::RI-018", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_retry_firefox_profile.toml::artifact/1::RI-018", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_retry_ri018.toml::artifact/0::RI-018", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_retry_ri018_pyo3.toml::artifact/0::RI-018", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_retry_ri018_rust.toml::artifact/0::RI-018", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:56", "registry/research_intake_2026_02_14.toml::entry/17::RI-018"]
 
 [[artifact_ref]]
-id = "ASOT-2822"
+id = "ASOT-2825"
 key = "url:https://link.springer.com/content/pdf/10.1155/2008/213293.pdf"
 title = "https://link.springer.com/content/pdf/10.1155/2008/213293.pdf"
 status = "downloadable"
@@ -2224,7 +2244,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/4::RI-005", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf.headers.txt:15", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf.headers.txt:30", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf_utm_source=chatgpt.com.headers.txt:15", "data/papers/intake/global_link_audit_2026_02_15/tmp/link.springer.com_content_pdf_10.1155_2008_213293.pdf_utm_source=chatgpt.com.headers.txt:30"]
 
 [[artifact_ref]]
-id = "ASOT-2835"
+id = "ASOT-2838"
 key = "url:https://mat76.mat.uni-miskolc.hu/mnotes/download_article/364.pdf"
 title = "quaternions/split-coquaternions"
 status = "unverified"
@@ -2234,7 +2254,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:14"]
 
 [[artifact_ref]]
-id = "ASOT-2836"
+id = "ASOT-2839"
 key = "url:https://math.berkeley.edu/~reb/courses/261/27.pdf"
 title = "octonions/real-division"
 status = "unverified"
@@ -2244,7 +2264,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:101"]
 
 [[artifact_ref]]
-id = "ASOT-2837"
+id = "ASOT-2840"
 key = "url:https://math.colorado.edu/~rohi1040/expository/sumoffoursquares.pdf"
 title = "quaternions/lipschitz"
 status = "unverified"
@@ -2254,7 +2274,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:56"]
 
 [[artifact_ref]]
-id = "ASOT-2838"
+id = "ASOT-2841"
 key = "url:https://math.mit.edu/~hrm/palestine/schafer-nonassociative-algebras.pdf"
 title = "schafer nonassociative algebras"
 status = "downloadable"
@@ -2264,7 +2284,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/4::CDS-C-0005", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/4::CDS-E-0005", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:7", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/4::LFI-005"]
 
 [[artifact_ref]]
-id = "ASOT-2839"
+id = "ASOT-2842"
 key = "url:https://math.ucr.edu/home/baez/octonions/octonions.pdf"
 title = "https://math.ucr.edu/home/baez/octonions/octonions.pdf"
 status = "downloadable"
@@ -2274,7 +2294,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/6::RI-007", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:96", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:149", "registry/research_intake_2026_02_14.toml::entry/6::RI-007"]
 
 [[artifact_ref]]
-id = "ASOT-2840"
+id = "ASOT-2843"
 key = "url:https://math.uni.lu/wiese/quatalg/wolter.pdf"
 title = "quaternions/general-field"
 status = "unverified"
@@ -2284,7 +2304,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:39"]
 
 [[artifact_ref]]
-id = "ASOT-2841"
+id = "ASOT-2844"
 key = "url:https://mesonpiold.cbpf.br/e2006/posgraduacao/pdf_p10/draft%20split.pdf"
 title = "octonions/classification-two-real"
 status = "unverified"
@@ -2294,7 +2314,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:112"]
 
 [[artifact_ref]]
-id = "ASOT-2842"
+id = "ASOT-2845"
 key = "url:https://mimp.materials.cmu.edu/rohrer/papers/2015_12.pdf"
 title = "Rowenhorst et al. (2015) Consistent representations of and conversions between 3D rotations"
 status = "unverified"
@@ -2304,7 +2324,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/41::ROWENHORST_2015_CONSISTENT_ROTATIONS"]
 
 [[artifact_ref]]
-id = "ASOT-2843"
+id = "ASOT-2846"
 key = "url:https://msp.org/pjm/1967/20-3/pjm-v20-n3-p03-s.pdf"
 title = "pjm v20 n3 p03 s"
 status = "downloadable"
@@ -2314,7 +2334,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/5::CDS-C-0006", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/5::CDS-E-0006", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:8", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/5::LFI-006"]
 
 [[artifact_ref]]
-id = "ASOT-2845"
+id = "ASOT-2848"
 key = "url:https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
 title = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
 status = "downloaded"
@@ -2324,7 +2344,7 @@ canonical_download_path = "data/papers/corpus/mccrimmon_1985_euclid_mirror_msp_o
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/0", "reports/cd_transfer_retry_reconciliation_2026_02_15.toml::mirror_retry_pdf_success/0::MSP-4"]
 
 [[artifact_ref]]
-id = "ASOT-2846"
+id = "ASOT-2849"
 key = "url:https://msp.org/pjm/1985/117-1/pjm-v117-n1-pjm-v117-n1-p10-s.pdf"
 title = "pjm v117 n1 pjm v117 n1 p10 s"
 status = "downloaded"
@@ -2334,7 +2354,7 @@ canonical_download_path = "data/papers/intake/2026_02_15_manual_override_fetch/p
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/6::CDS-C-0007", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/6::CDS-E-0007", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:9", "registry/recovered_mirrors.toml::recovered_mirror/15::ASOT-8360", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/6::LFI-007"]
 
 [[artifact_ref]]
-id = "ASOT-2847"
+id = "ASOT-2850"
 key = "url:https://mtm.ufsc.br/~coloquio/20172/slides/selig.pdf"
 title = "quaternions/dual-quaternions"
 status = "unverified"
@@ -2344,7 +2364,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:34", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/retry_remaining.txt:9"]
 
 [[artifact_ref]]
-id = "ASOT-2848"
+id = "ASOT-2851"
 key = "url:https://mysite.science.uottawa.ca/neher/papers/alternative/2.3.cayley-dickson%20process.pdf"
 title = "2 3 Cayley Dickson 20process"
 status = "downloadable"
@@ -2354,7 +2374,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/3::CDS-C-0004", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/3::CDS-E-0004", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:5", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/3::LFI-004"]
 
 [[artifact_ref]]
-id = "ASOT-2856"
+id = "ASOT-2859"
 key = "url:https://nntdm.net/papers/nntdm-25/nntdm-25-1-137-149.pdf"
 title = "octonions/dual-number-coeff"
 status = "unverified"
@@ -2364,7 +2384,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:131"]
 
 [[artifact_ref]]
-id = "ASOT-2859"
+id = "ASOT-2862"
 key = "url:https://opensiuc.lib.siu.edu/context/math_misc/article/1039/viewcontent/octonions.pdf"
 title = "octonions/real-division"
 status = "unverified"
@@ -2374,7 +2394,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:100"]
 
 [[artifact_ref]]
-id = "ASOT-2863"
+id = "ASOT-2866"
 key = "url:https://pages.uoregon.edu/ddugger/lann.pdf"
 title = "m3/zero-divisors"
 status = "unverified"
@@ -2384,7 +2404,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:21", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:36"]
 
 [[artifact_ref]]
-id = "ASOT-2864"
+id = "ASOT-2867"
 key = "url:https://pages.uoregon.edu/koch/octonions.pdf"
 title = "octonions/real-division"
 status = "unverified"
@@ -2394,7 +2414,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:99", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:150"]
 
 [[artifact_ref]]
-id = "ASOT-2865"
+id = "ASOT-2868"
 key = "url:https://pajarito.materials.cmu.edu/lectures/l20-descriptions-of-orientation-tugceozturk_27750-12apr16.pdf"
 title = "CMU lecture Descriptions of Orientation"
 status = "unverified"
@@ -2404,7 +2424,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/50::CMU_LECTURE_DESCRIPTIONS_OF_ORIENTATION"]
 
 [[artifact_ref]]
-id = "ASOT-2866"
+id = "ASOT-2869"
 key = "url:https://paulsteinhardt.org/wp-content/uploads/2020/10/steinhardt_rendiconti-lincei-2012.pdf"
 title = "Steinhardt (2012) Quasicrystals: a brief history of the impossible"
 status = "unverified"
@@ -2414,7 +2434,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/56::STEINHARDT_2012_QC_HISTORY"]
 
 [[artifact_ref]]
-id = "ASOT-2867"
+id = "ASOT-2870"
 key = "url:https://pdfs.semanticscholar.org/1c9b/af0f0e56f844c7a0d6d4b57726fb5ba633c3.pdf"
 title = "quaternions/reduced-quaternions"
 status = "unverified"
@@ -2424,7 +2444,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:79"]
 
 [[artifact_ref]]
-id = "ASOT-2868"
+id = "ASOT-2871"
 key = "url:https://people.math.ethz.ch/~salamon/preprints/octonions.pdf"
 title = "octonions/real-division"
 status = "unverified"
@@ -2434,7 +2454,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:98", "registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/30::SALAMON_WALPUSKI_2017_NOTES_OCTONIONS"]
 
 [[artifact_ref]]
-id = "ASOT-2869"
+id = "ASOT-2872"
 key = "url:https://people.maths.ox.ac.uk/joyce/theses/widdowsdphil.pdf"
 title = "quaternions/tensor-tower"
 status = "unverified"
@@ -2444,7 +2464,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:71"]
 
 [[artifact_ref]]
-id = "ASOT-2870"
+id = "ASOT-2873"
 key = "url:https://personal.unizar.es/elduque/talks/cimpa_madagascar2021_elduque_compositionalgebras.pdf"
 title = "octonions/classification-two-real"
 status = "unverified"
@@ -2454,7 +2474,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:113"]
 
 [[artifact_ref]]
-id = "ASOT-2871"
+id = "ASOT-2874"
 key = "url:https://personal.unizar.es/elduque/talks/liejor.pdf"
 title = "Elduque slides LieJor (Symmetric compositions / Magic Square / Triality)"
 status = "unverified"
@@ -2464,7 +2484,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/17::ELDUQUE_SLIDES_LIEJOR"]
 
 [[artifact_ref]]
-id = "ASOT-2872"
+id = "ASOT-2875"
 key = "url:https://personal.unizar.es/elduque/talks/okuboalgebras_uppsala.pdf"
 title = "Elduque slides Okubo algebras"
 status = "unverified"
@@ -2474,7 +2494,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/19::ELDUQUE_OKUBO_UPPSALA_SLIDES"]
 
 [[artifact_ref]]
-id = "ASOT-2873"
+id = "ASOT-2876"
 key = "url:https://projecteuclid.org/journals/journal-of-generalized-lie-theory-and-applications/volume-6/issue-none/automorphism-groups-of-cayley-dickson-loops/jglta/1505440830.pdf"
 title = "1505440830"
 status = "downloadable"
@@ -2484,7 +2504,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/14::CDS-C-0015", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/14::CDS-E-0015", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:34", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/14::LFI-015"]
 
 [[artifact_ref]]
-id = "ASOT-2874"
+id = "ASOT-2877"
 key = "url:https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/an-alternate-cayley-dickson-product/10.35834/mjms/1474295358.pdf"
 title = "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf"
 status = "downloaded"
@@ -2494,7 +2514,7 @@ canonical_download_path = "data/papers/corpus/bales_2016_arxiv_withdrawn_version
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/4"]
 
 [[artifact_ref]]
-id = "ASOT-2875"
+id = "ASOT-2878"
 key = "url:https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/derivations-and-cayley-derivations-of-generalized-cayley-dickson-algebras/pjm/1102706933.pdf"
 title = "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf"
 status = "downloaded"
@@ -2504,7 +2524,7 @@ canonical_download_path = "data/papers/corpus/mccrimmon_1985_euclid_mirror_proje
 source_refs = ["registry/provenance_manual_override_fetch_2026_02_15.toml::artifact/1"]
 
 [[artifact_ref]]
-id = "ASOT-2877"
+id = "ASOT-2880"
 key = "url:https://real.mtak.hu/94961/1/2550.pdf"
 title = "quaternions/biquaternions"
 status = "unverified"
@@ -2514,7 +2534,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:28"]
 
 [[artifact_ref]]
-id = "ASOT-2878"
+id = "ASOT-2881"
 key = "url:https://repo.pw.edu.pl/docstore/download/wutbf02dba4bb844d4e958c55ec5a66a9de/wut729391fd969a453c882f92ef89a09358.pdf"
 title = "Blaszczyk et al. (2020) Discrete octonion Fourier transform (WUT repository)"
 status = "unverified"
@@ -2524,7 +2544,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/38::BLASZCZYK_2020_WUT_DISCRETE_OFT"]
 
 [[artifact_ref]]
-id = "ASOT-2879"
+id = "ASOT-2882"
 key = "url:https://repository.essex.ac.uk/5561/1/1001.0240v1.pdf"
 title = "quaternions/biquaternions"
 status = "unverified"
@@ -2534,7 +2554,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:25"]
 
 [[artifact_ref]]
-id = "ASOT-2880"
+id = "ASOT-2883"
 key = "url:https://research.protocol.ai/publications/dioptics-a-common-generalization-of-open-games-and-gradient-basedlearners/dalrymple2019.pdf"
 title = "2019)."
 status = "unverified"
@@ -2544,7 +2564,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md:2014"]
 
 [[artifact_ref]]
-id = "ASOT-2939"
+id = "ASOT-2942"
 key = "url:https://scispace.com/papers/structure-of-zero-divisors-and-other-algebraic-structures-in-2dzr8sw00c"
 title = "tags/r1"
 status = "downloaded"
@@ -2554,7 +2574,7 @@ canonical_download_path = "data/papers/corpus/brown_1972_structure_of_zero_divis
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:118"]
 
 [[artifact_ref]]
-id = "ASOT-2955"
+id = "ASOT-2958"
 key = "url:https://sites.esm.psu.edu/~mcd18/ebsd.pdf"
 title = "EBSD notes (Penn State) (quaternion formalism)"
 status = "unverified"
@@ -2564,7 +2584,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/51::PSU_EBSD_NOTES"]
 
 [[artifact_ref]]
-id = "ASOT-2956"
+id = "ASOT-2959"
 key = "url:https://smm.org.mx/boletin_anterior/v4/n1.pdf"
 title = "PDF (journal issue):"
 status = "downloadable"
@@ -2574,7 +2594,7 @@ canonical_download_path = ""
 source_refs = ["docs/BIBLIOGRAPHY.md:200", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:186"]
 
 [[artifact_ref]]
-id = "ASOT-2957"
+id = "ASOT-2960"
 key = "url:https://squoze.net/math/biquat.pdf"
 title = "quaternions/clifford-ga"
 status = "unverified"
@@ -2584,7 +2604,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:67"]
 
 [[artifact_ref]]
-id = "ASOT-2958"
+id = "ASOT-2961"
 key = "url:https://stephenmontgomerysmith.github.io/preprints/introduction.pdf"
 title = "quaternions/dual-quaternions"
 status = "unverified"
@@ -2594,7 +2614,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:31"]
 
 [[artifact_ref]]
-id = "ASOT-2960"
+id = "ASOT-2963"
 key = "url:https://users.cs.utah.edu/~ladislav/kavan06dual/kavan06dual.pdf"
 title = "quaternions/dual-quaternions"
 status = "unverified"
@@ -2604,7 +2624,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:32"]
 
 [[artifact_ref]]
-id = "ASOT-2961"
+id = "ASOT-2964"
 key = "url:https://users.math.msu.edu/users/halljo/research/composition_2012-04-19.pdf"
 title = "octonions/classification-two-real"
 status = "unverified"
@@ -2614,7 +2634,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:111", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:152"]
 
 [[artifact_ref]]
-id = "ASOT-2962"
+id = "ASOT-2965"
 key = "url:https://vadim.sdsu.edu/amm-perplex.pdf"
 title = "adjacent/split-complex"
 status = "unverified"
@@ -2624,7 +2644,17 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:91"]
 
 [[artifact_ref]]
-id = "ASOT-2964"
+id = "ASOT-2966"
+key = "url:https://vixra.org/pdf/2010.0086v3.pdf"
+title = "https://www.researchgate.net/profile/Richard-Lockyer-2/publication/380847813_An_algebraic_proof_Sedenions_are_not_a_division_algebra_and_other_consequences_of_Cayley-Dickson_Algebra_definition_variation/links/6650b5fc0b0d284574580e1c/An-algebraic-proof-Sedenions-are-not-a-division-algebra-and-other-consequences-of-Cayley-Dickson-Algebra-definition-variation.pdf"
+status = "downloadable"
+minimum_requirement_met = true
+canonical_functional_url = "https://vixra.org/pdf/2010.0086v3.pdf"
+canonical_download_path = ""
+source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/30::ASOT_3021_lockyer_vixra_pdf"]
+
+[[artifact_ref]]
+id = "ASOT-2968"
 key = "url:https://web.ma.utexas.edu/users/allcock/research/oideals.pdf"
 title = "octonions/integral-arithmetic"
 status = "unverified"
@@ -2634,7 +2664,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:144"]
 
 [[artifact_ref]]
-id = "ASOT-2965"
+id = "ASOT-2969"
 key = "url:https://wkchan.faculty.wesleyan.edu/files/2019/04/quaternion-2012.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -2644,7 +2674,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:50", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:60"]
 
 [[artifact_ref]]
-id = "ASOT-2966"
+id = "ASOT-2970"
 key = "url:https://wstein.org/edu/2010/581b/projects/alyson_deines/maximalorders.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -2654,7 +2684,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:48", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:62"]
 
 [[artifact_ref]]
-id = "ASOT-2967"
+id = "ASOT-2971"
 key = "url:https://wstein.org/edu/2010/581d/projects/alyson_deines/compmathhilbertsymbols.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -2664,7 +2694,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:52"]
 
 [[artifact_ref]]
-id = "ASOT-2968"
+id = "ASOT-2972"
 key = "url:https://www.7stones.com/homepage/8lattice.pdf"
 title = "octonions/integral-arithmetic"
 status = "unverified"
@@ -2674,7 +2704,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:142"]
 
 [[artifact_ref]]
-id = "ASOT-2972"
+id = "ASOT-2976"
 key = "url:https://www.agner.org/optimize/instruction_tables.pdf"
 title = "https://www.agner.org/optimize/instruction_tables.pdf"
 status = "unverified"
@@ -2684,7 +2714,7 @@ canonical_download_path = ""
 source_refs = ["reports/x87_crate_rescope_2026_03_12.toml::validated_claim/2::VC-003"]
 
 [[artifact_ref]]
-id = "ASOT-2973"
+id = "ASOT-2977"
 key = "url:https://www.aimspress.com/aimspress-data/math/2022/3/pdf/math-07-03-181.pdf"
 title = "quaternions/reduced-quaternions"
 status = "unverified"
@@ -2694,7 +2724,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:83"]
 
 [[artifact_ref]]
-id = "ASOT-2974"
+id = "ASOT-2978"
 key = "url:https://www.ams.org/journals/proc/2015-143-11/s0002-9939-2015-12826-2/s0002-9939-2015-12826-2.pdf"
 title = "openpdf/core-cd"
 status = "unverified"
@@ -2704,7 +2734,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:34"]
 
 [[artifact_ref]]
-id = "ASOT-2975"
+id = "ASOT-2979"
 key = "url:https://www.anstuocmath.ro/mathematics/pdf2/flaut.pdf"
 title = "m2/identity-regime"
 status = "unverified"
@@ -2714,7 +2744,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:13", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:48"]
 
 [[artifact_ref]]
-id = "ASOT-2976"
+id = "ASOT-2980"
 key = "url:https://www.astro.sk/~msaniga/pub/ftp/ceedeenions.pdf"
 title = "ceedeenions"
 status = "downloadable"
@@ -2724,7 +2754,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/18::CDS-C-0019", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/18::CDS-E-0019", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:39", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/18::LFI-019"]
 
 [[artifact_ref]]
-id = "ASOT-2977"
+id = "ASOT-2981"
 key = "url:https://www.ccas.ru/ca/_media/gevorkyan_2025_06_en.pdf"
 title = "quaternions/dual-quaternions"
 status = "unverified"
@@ -2734,7 +2764,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:35", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/retry_remaining.txt:2"]
 
 [[artifact_ref]]
-id = "ASOT-2978"
+id = "ASOT-2982"
 key = "url:https://www.cirm-math.fr/reporga/2076/slides/elduque.pdf"
 title = "Elduque slides Triality / Hurwitz algebras"
 status = "unverified"
@@ -2744,7 +2774,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/21::ELDUQUE_TRIALITY_CIRM_SLIDES"]
 
 [[artifact_ref]]
-id = "ASOT-2979"
+id = "ASOT-2983"
 key = "url:https://www.clear.rice.edu/comp360/lectures/old/quaternionweb.pdf"
 title = "quaternions/real-hamilton"
 status = "unverified"
@@ -2754,7 +2784,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:5"]
 
 [[artifact_ref]]
-id = "ASOT-2980"
+id = "ASOT-2984"
 key = "url:https://www.cmup.pt/sites/default/files/2024-09/1201.5817v2.pdf"
 title = "quaternions/lipschitz"
 status = "unverified"
@@ -2764,7 +2794,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:55"]
 
 [[artifact_ref]]
-id = "ASOT-2981"
+id = "ASOT-2985"
 key = "url:https://www.diva-portal.org/smash/get/diva2:1969088/fulltext01.pdf"
 title = "openpdf/generalized-cd"
 status = "unverified"
@@ -2774,7 +2804,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:49"]
 
 [[artifact_ref]]
-id = "ASOT-2982"
+id = "ASOT-2986"
 key = "url:https://www.dora.lib4ri.ch/empa/islandora/object/empa%3a2673/datastream/pdf/britton-2016-tutorial-%28published_version%29.pdf"
 title = "Britton et al. (2016) Tutorial: Crystal orientations and EBSD"
 status = "unverified"
@@ -2784,7 +2814,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/42::BRITTON_2016_EBSD_TUTORIAL"]
 
 [[artifact_ref]]
-id = "ASOT-2983"
+id = "ASOT-2987"
 key = "url:https://www.f08.uni-stuttgart.de/.content/media/downloads/mathematik/mathematische_berichte/2018/2018-003.pdf"
 title = "Kollross (2018) Octonions, triality, exceptional Lie algebra F4"
 status = "unverified"
@@ -2794,7 +2824,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/28::KOLLROSS_2018_F4_TRIALITY"]
 
 [[artifact_ref]]
-id = "ASOT-2984"
+id = "ASOT-2988"
 key = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/an_algebraic_formalism_for_the_octonionic_structure_of_the_e8_lattice.pdf"
 title = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/an_algebraic_formalism_for_the_octonionic_structure_of_the_e8_lattice.pdf"
 status = "downloadable"
@@ -2804,7 +2834,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/8::RI-009", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/8::RI-009", "registry/research_intake_2026_02_14.toml::entry/8::RI-009"]
 
 [[artifact_ref]]
-id = "ASOT-2985"
+id = "ASOT-2989"
 key = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/ass.-rem.-int.-oct.pdf"
 title = "octonions/integral-arithmetic"
 status = "downloadable"
@@ -2814,7 +2844,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:136"]
 
 [[artifact_ref]]
-id = "ASOT-2986"
+id = "ASOT-2990"
 key = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/comp-alg-rings.pdf"
 title = "Petersson (2007) Composition algebras over commutative rings"
 status = "downloadable"
@@ -2824,7 +2854,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/14::PETERSSON_2007_COMP_ALG_RINGS"]
 
 [[artifact_ref]]
-id = "ASOT-2987"
+id = "ASOT-2991"
 key = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/fms_2300007_fn.pdf"
 title = "Garibaldi-Petersson-Racine (2023) Albert algebras over Z (alternate host)"
 status = "downloadable"
@@ -2834,7 +2864,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/26::GPR_2023_ALBERT_ALG_Z_FERNI"]
 
 [[artifact_ref]]
-id = "ASOT-2988"
+id = "ASOT-2992"
 key = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/lopera16.pdf"
 title = "octonions/general-fields-rings-schemes"
 status = "downloadable"
@@ -2844,7 +2874,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:119"]
 
 [[artifact_ref]]
-id = "ASOT-2989"
+id = "ASOT-2993"
 key = "url:https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf"
 title = "https://www.fernuni-hagen.de/mi/fakultaet/emeriti/docs/petersson/north-cd-e8.pdf"
 status = "downloadable"
@@ -2854,7 +2884,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance.toml::artifact/18::RI-019", "data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/18::RI-019", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:55", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:137", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:58", "registry/research_intake_2026_02_14.toml::entry/18::RI-019"]
 
 [[artifact_ref]]
-id = "ASOT-2990"
+id = "ASOT-2994"
 key = "url:https://www.fields.utoronto.ca/programs/scientific/11-12/exceptional/alb.-alg.-ottawa-2012-vii-new.pdf"
 title = "octonions/presentation-zorn"
 status = "unverified"
@@ -2864,7 +2894,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:154", "registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/24::PETERSSON_2012_ALBERT_ALGEBRAS_FIELDS"]
 
 [[artifact_ref]]
-id = "ASOT-2991"
+id = "ASOT-2995"
 key = "url:https://www.garibaldibros.com/linked-files/gpr-solns.pdf"
 title = "Garibaldi-Petersson-Racine solutions/errata companion"
 status = "unverified"
@@ -2874,7 +2904,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/27::GPR_SOLNS_PDF"]
 
 [[artifact_ref]]
-id = "ASOT-2992"
+id = "ASOT-2996"
 key = "url:https://www.gutenberg.org/files/25156/25156-pdf.pdf"
 title = "octonions/general-fields-rings-schemes"
 status = "unverified"
@@ -2884,7 +2914,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:120"]
 
 [[artifact_ref]]
-id = "ASOT-2995"
+id = "ASOT-2999"
 key = "url:https://www.hilarispublisher.com/open-access/cayleydickson-algebras-and-loops-1736-4337-1-101.pdf"
 title = "cayleydickson algebras and loops 1736 4337 1 101"
 status = "downloadable"
@@ -2894,7 +2924,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/16::CDS-C-0017", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/16::CDS-E-0017", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:36", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/16::LFI-017"]
 
 [[artifact_ref]]
-id = "ASOT-2996"
+id = "ASOT-3000"
 key = "url:https://www.i2m.univ-amu.fr/perso/david.kohel/alg/doc/algquat.pdf"
 title = "quaternions/general-field"
 status = "unverified"
@@ -2904,7 +2934,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:40"]
 
 [[artifact_ref]]
-id = "ASOT-2997"
+id = "ASOT-3001"
 key = "url:https://www.imath.kiev.ua/~complex/sotrudniki/shpakivskyi/papers/equations-6-7.pdf"
 title = "quaternions/hyperbolic-terminology"
 status = "unverified"
@@ -2914,7 +2944,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:18"]
 
 [[artifact_ref]]
-id = "ASOT-2998"
+id = "ASOT-3002"
 key = "url:https://www.imim.pl/personal/adam.morawiec/a_morawiec_web_page/publications/1996_philmag.pdf"
 title = "Morawiec & Field (1996) Rodrigues parameterization for orientation distributions"
 status = "unverified"
@@ -2924,7 +2954,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/45::MORAWIEC_FIELD_1996_RODRIGUES_PARAMETERIZATION"]
 
 [[artifact_ref]]
-id = "ASOT-2999"
+id = "ASOT-3003"
 key = "url:https://www.imim.pl/phd/www.imim-phd.edu.pl/contents/lectures/morawiec%20an%20introduction%20to%20computations%20in%20crystallographic%20part%203.pdf"
 title = "Morawiec lecture notes Rotation/orientation parameterizations"
 status = "unverified"
@@ -2934,7 +2964,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/49::MORAWIEC_LECTURE_ROTATION_PARAMETERIZATIONS"]
 
 [[artifact_ref]]
-id = "ASOT-3000"
+id = "ASOT-3004"
 key = "url:https://www.iri.upc.edu/files/scidoc/1463-approaching-dual-quaternions-from-matrix-algebra.pdf"
 title = "quaternions/dual-quaternions"
 status = "unverified"
@@ -2944,7 +2974,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:33"]
 
 [[artifact_ref]]
-id = "ASOT-3001"
+id = "ASOT-3005"
 key = "url:https://www.jocm.us/uploadfile/2014/1023/20141023120423925.pdf"
 title = "quaternions/quad-quaternions"
 status = "unverified"
@@ -2954,7 +2984,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:75"]
 
 [[artifact_ref]]
-id = "ASOT-3002"
+id = "ASOT-3006"
 key = "url:https://www.matfis.uniroma3.it/allegati/dottorato/tesi/cigliola/cigliola%20-%20phd_thesis.pdf"
 title = "quaternions/signature-generalized"
 status = "unverified"
@@ -2964,7 +2994,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:11"]
 
 [[artifact_ref]]
-id = "ASOT-3003"
+id = "ASOT-3007"
 key = "url:https://www.math.fsu.edu/~hoeij/2021/thesis-3.3.pdf"
 title = "Thesis 3 3"
 status = "downloadable"
@@ -2974,7 +3004,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/22::CDS-C-0023", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/22::CDS-E-0023", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:44", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/22::LFI-023"]
 
 [[artifact_ref]]
-id = "ASOT-3004"
+id = "ASOT-3008"
 key = "url:https://www.math.stonybrook.edu/~oleg/courses/mat150-spr16/lecture-5.pdf"
 title = "quaternions/real-hamilton"
 status = "unverified"
@@ -2984,7 +3014,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:6"]
 
 [[artifact_ref]]
-id = "ASOT-3005"
+id = "ASOT-3009"
 key = "url:https://www.math.uni-bielefeld.de/lag/man/565.pdf"
 title = "quaternions/tensor-tower"
 status = "unverified"
@@ -2994,7 +3024,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:70"]
 
 [[artifact_ref]]
-id = "ASOT-3007"
+id = "ASOT-3011"
 key = "url:https://www.maths.tcd.ie/pub/histmath/people/hamilton/quatern2/quatern2.pdf"
 title = "quaternions/real-hamilton"
 status = "unverified"
@@ -3004,7 +3034,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:1"]
 
 [[artifact_ref]]
-id = "ASOT-3008"
+id = "ASOT-3012"
 key = "url:https://www.matrix-inst.org.au/wp_matrix2016/wp-content/uploads/2019/01/lackmann.pdf"
 title = "Lackmann The octonionic projective plane OP^2"
 status = "unverified"
@@ -3014,7 +3044,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/31::LACKMANN_OP2_PDF"]
 
 [[artifact_ref]]
-id = "ASOT-3009"
+id = "ASOT-3013"
 key = "url:https://www.neo-classical-physics.info/uploads/3/4/3/6/34363841/grunwald_-_dual_numbers_and_geometry.pdf"
 title = "adjacent/dual-numbers"
 status = "unverified"
@@ -3024,7 +3054,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:85"]
 
 [[artifact_ref]]
-id = "ASOT-3010"
+id = "ASOT-3014"
 key = "url:https://www.numdam.org/item/afst_1993_6_2_2_271_0.pdf"
 title = "octonions/integral-arithmetic"
 status = "downloadable"
@@ -3034,7 +3064,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:143", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/24::ASOT_3010_numdam_afst_pdf"]
 
 [[artifact_ref]]
-id = "ASOT-3011"
+id = "ASOT-3015"
 key = "url:https://www.numdam.org/item/jmpa_1923_9_2__281_0.pdf"
 title = "octonions/integral-arithmetic"
 status = "unverified"
@@ -3044,7 +3074,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:145"]
 
 [[artifact_ref]]
-id = "ASOT-3012"
+id = "ASOT-3016"
 key = "url:https://www.numdam.org/item/jtnb_2000__12_2_367_0.pdf"
 title = "quaternions/general-field"
 status = "unverified"
@@ -3054,7 +3084,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:45"]
 
 [[artifact_ref]]
-id = "ASOT-3013"
+id = "ASOT-3017"
 key = "url:https://www.phase-trans.msm.cam.ac.uk/2017/three-dimensional-misorientation.pdf"
 title = "Krakow et al. (2017) On three-dimensional misorientation spaces (Cambridge)"
 status = "unverified"
@@ -3064,7 +3094,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/46::KRAKOW_2017_MISORIENTATION_CAMBRIDGE"]
 
 [[artifact_ref]]
-id = "ASOT-3014"
+id = "ASOT-3018"
 key = "url:https://www.physi.uni-heidelberg.de/~vhollmeier/ga4p/materials/ga_lecture_notes.pdf"
 title = "quaternions/clifford-ga"
 status = "unverified"
@@ -3074,7 +3104,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:64"]
 
 [[artifact_ref]]
-id = "ASOT-3015"
+id = "ASOT-3019"
 key = "url:https://www.pmf.ni.ac.rs/filomat-content/2023/37-3/37-3-14-15290.pdf"
 title = "quaternions/reduced-quaternions"
 status = "unverified"
@@ -3084,7 +3114,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:82"]
 
 [[artifact_ref]]
-id = "ASOT-3016"
+id = "ASOT-3020"
 key = "url:https://www.pmf.ni.ac.rs/filomat-content/2024/38-15/38-15-12-21745.pdf"
 title = "quaternions/reduced-quaternions"
 status = "unverified"
@@ -3094,7 +3124,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:80"]
 
 [[artifact_ref]]
-id = "ASOT-3017"
+id = "ASOT-3021"
 key = "url:https://www.researchgate.net/profile/arjeh-cohen/publication/254815349_cayley_orders/links/557603fc08ae15962d8951c0/cayley-orders.pdf"
 title = "octonions/integral-arithmetic"
 status = "downloadable"
@@ -3104,7 +3134,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:146", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/retry_remaining.txt:1", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/25::ASOT_81460_cayley_orders_numdam"]
 
 [[artifact_ref]]
-id = "ASOT-3018"
+id = "ASOT-3022"
 key = "url:https://www.researchgate.net/profile/jean-francois-sadoc/publication/243298250_the_e8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/the-e8-lattice-and-quasicrystals.pdf"
 title = "Sadoc The E8 lattice and quasicrystals (ResearchGate mirror; may be blocked)"
 status = "unverified"
@@ -3114,7 +3144,7 @@ canonical_download_path = ""
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/57::SADOC_E8_LATTICE_QUASICRYSTALS_RG"]
 
 [[artifact_ref]]
-id = "ASOT-3019"
+id = "ASOT-3023"
 key = "url:https://www.researchgate.net/profile/john-bales/publication/238738095_a_tree_for_computing_the_cayley-dickson_twist/links/0a85e53a8b63445499000000/a-tree-for-computing-the-cayley-dickson-twist.pdf"
 title = "A Tree for Computing the Cayley Dickson Twist"
 status = "downloadable"
@@ -3124,7 +3154,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::claims/21::CDS-C-0022", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/claims_experiments.toml::experiments/21::CDS-E-0022", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:43", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/22::ASOT_8381_bales_tree_scispace", "registry/manual_mirror_overrides_2026_02_15.toml::mirror_override/26::ASOT_3019_bales_jwbales_html", "registry/research_intake_2026_02_15_cayley_dickson.toml::lane_item/21::LFI-022"]
 
 [[artifact_ref]]
-id = "ASOT-3020"
+id = "ASOT-3024"
 key = "url:https://www.researchgate.net/profile/john-bales/publication/51915595_cayley-dickson_and_clifford_algebras_as_twisted_group_algebras/links/0fcfd512d4ccc2eed9000000/cayley-dickson-and-clifford-algebras-as-twisted-group-algebras.pdf"
 title = "openpdf/generalized-cd"
 status = "unverified"
@@ -3134,7 +3164,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:47"]
 
 [[artifact_ref]]
-id = "ASOT-3021"
+id = "ASOT-3025"
 key = "url:https://www.researchgate.net/profile/richard-lockyer-2/publication/380847813_an_algebraic_proof_sedenions_are_not_a_division_algebra_and_other_consequences_of_cayley-dickson_algebra_definition_variation/links/6650b5fc0b0d284574580e1c/an-algebraic-proof-sedenions-are-not-a-division-algebra-and-other-consequences-of-cayley-dickson-algebra-definition-variation.pdf"
 title = "openpdf/core-cd"
 status = "unverified"
@@ -3144,7 +3174,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/raw_links.txt:38"]
 
 [[artifact_ref]]
-id = "ASOT-3023"
+id = "ASOT-3027"
 key = "url:https://www.sci.utah.edu/~jmk/papers/quaternions.pdf"
 title = "quaternions/real-hamilton"
 status = "unverified"
@@ -3154,7 +3184,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:4"]
 
 [[artifact_ref]]
-id = "ASOT-3028"
+id = "ASOT-3032"
 key = "url:https://www.utgjiu.ro/math/sma/v17/p17_12.pdf"
 title = "adjacent/split-complex"
 status = "unverified"
@@ -3164,7 +3194,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:90"]
 
 [[artifact_ref]]
-id = "ASOT-3029"
+id = "ASOT-3033"
 key = "url:https://www.wolframscience.com/conference/2004/presentations/material/rdemarrais.pdf"
 title = "**de Marrais, R. P. C.** (2004). *The \"Something From Nothing\" Insertion Point: Where NKS Research into Physics Foundations Can Expect the \"Most Bang for the Buck\"*. Wolfram Science Conference 2004 (slides). [PDF](https://www.wolframscience.com/conference/2004/presentations/material/rdemarrais.pdf)."
 status = "downloadable"
@@ -3174,7 +3204,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0074", "docs/BIBLIOGRAPHY.md:171", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:157", "registry/bibliography.toml::entry/73::BIB-0074"]
 
 [[artifact_ref]]
-id = "ASOT-3030"
+id = "ASOT-3034"
 key = "url:https://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf"
 title = "location:"
 status = "downloadable"
@@ -3184,7 +3214,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/tmp_030.bin.headers.txt:3", "data/papers/intake/global_link_audit_2026_02_15/tmp/www.wolframscience.com_conference_2004_presentations_materials_rdemarrais.pdf.headers.txt:3"]
 
 [[artifact_ref]]
-id = "ASOT-3031"
+id = "ASOT-3035"
 key = "url:https://www2.gwu.edu/~spwm/erin_alissa.pdf"
 title = "quaternions/lipschitz"
 status = "unverified"
@@ -3194,7 +3224,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:58"]
 
 [[artifact_ref]]
-id = "ASOT-3032"
+id = "ASOT-3036"
 key = "url:https://www2.math.ou.edu/~kmartin/quaint/ch3.pdf"
 title = "quaternions/general-field"
 status = "unverified"
@@ -3204,7 +3234,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:41"]
 
 [[artifact_ref]]
-id = "ASOT-3033"
+id = "ASOT-3037"
 key = "url:https://www2.math.ou.edu/~kmartin/quaint/ch6.pdf"
 title = "quaternions/arithmetic-orders"
 status = "unverified"
@@ -3214,7 +3244,7 @@ canonical_download_path = ""
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:47"]
 
 [[artifact_ref]]
-id = "ASOT-3034"
+id = "ASOT-3038"
 key = "url:https://www2.math.su.se/reports/2001/11/2001-11.pdf"
 title = "**Carlstrom, J.** (2001). *Wheels - On Division by Zero*. Stockholm University Research Reports in Mathematics, 2001:11. [PDF](https://www2.math.su.se/reports/2001/11/2001-11.pdf)."
 status = "downloadable"
@@ -3224,7 +3254,7 @@ canonical_download_path = ""
 source_refs = ["BIB-0065", "docs/BIBLIOGRAPHY.md:157", "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md:143", "registry/bibliography.toml::entry/64::BIB-0065"]
 
 [[artifact_ref]]
-id = "ASOT-3036"
+id = "ASOT-3040"
 key = "url:https://zenodo.org/record/1431095/files/article.pdf"
 title = "https://zenodo.org/record/1431095/files/article.pdf"
 status = "downloaded"

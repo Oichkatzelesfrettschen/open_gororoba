@@ -27,6 +27,9 @@ pub struct MangaRotationPoint {
     pub v_obs_km_s: f64,
     /// Velocity uncertainty in km/s.
     pub v_err_km_s: f64,
+    /// True if this bin is within 1 PSF FWHM of the galaxy center.
+    /// Beam smearing biases the velocity gradient in this region.
+    pub psf_flag: bool,
 }
 
 /// A MaNGA galaxy rotation curve.
@@ -156,6 +159,7 @@ pub fn parse_manga_rotcurves(path: &Path) -> Result<Vec<MangaGalaxy>, String> {
             r_kpc: r,
             v_obs_km_s: v,
             v_err_km_s: if e.is_finite() && e > 0.0 { e } else { 10.0 },
+            psf_flag: false,
         });
     }
 

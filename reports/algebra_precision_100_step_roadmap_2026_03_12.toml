@@ -1,0 +1,541 @@
+[report]
+title = "Algebra precision lane 100-step roadmap"
+date = "2026-03-12"
+status = "active"
+status_token = "ACTIVE"
+summary = "Tracked expansion plan for the algebra precision lane after the DD hotspot decomposition and x87 micro-kernel evidence work. Steps are intentionally granular so future execution can mark them complete with artifact-backed evidence instead of collapsing progress into vague themes."
+
+[[step]]
+id = "001"
+title = "Create the tracked 100-step roadmap artifact"
+status = "completed"
+
+[[step]]
+id = "002"
+title = "Stabilize explicit precision-policy dispatch instead of architecture-only selection"
+status = "completed"
+
+[[step]]
+id = "003"
+title = "Seed the first offline threshold table from deterministic Jacobi sweep artifacts"
+status = "completed"
+
+[[step]]
+id = "004"
+title = "Extend the threshold sweep with obstruction-like spectral proxy families"
+status = "completed"
+
+[[step]]
+id = "005"
+title = "Add entrywise obstruction-like matrix families"
+status = "completed"
+
+[[step]]
+id = "006"
+title = "Repair the DD Jacobi rotation path on obstruction-like matrices"
+status = "completed"
+
+[[step]]
+id = "007"
+title = "Build the first x87 multicore strategy benchmark lane"
+status = "completed"
+
+[[step]]
+id = "008"
+title = "Build the first solver-shaped Jacobi backend sweep lane"
+status = "completed"
+
+[[step]]
+id = "009"
+title = "Add focused perf wrappers for the Jacobi backend sweep"
+status = "completed"
+
+[[step]]
+id = "010"
+title = "Add flamegraph attribution for the backend sweep"
+status = "completed"
+
+[[step]]
+id = "011"
+title = "Capture dev-profile samply artifacts for reference_f64, x87, and DD"
+status = "completed"
+
+[[step]]
+id = "012"
+title = "Build a Rust-native line-level samply comparer"
+status = "completed"
+
+[[step]]
+id = "013"
+title = "Fix DD inline-frame misattribution in the comparer"
+status = "completed"
+
+[[step]]
+id = "014"
+title = "Separate backend-core, shared/support, dependency, and runtime buckets in profiler summaries"
+status = "completed"
+
+[[step]]
+id = "015"
+title = "Add regression tests for comparer frame-selection and category rules"
+status = "completed"
+
+[[step]]
+id = "016"
+title = "Add profiling-only low-inlining DD feature surface"
+status = "completed"
+
+[[step]]
+id = "017"
+title = "Capture the first less-inlined DD samply artifact"
+status = "completed"
+
+[[step]]
+id = "018"
+title = "Break DD attribution below the solver entrypoint"
+status = "completed"
+
+[[step]]
+id = "019"
+title = "Split DD solver into explicit phase helpers for profiler visibility"
+status = "completed"
+
+[[step]]
+id = "020"
+title = "Identify the first DD runtime target from helper-level profiling"
+status = "completed"
+
+[[step]]
+id = "021"
+title = "Optimize DD pivot scanning via direct hi/lo comparator"
+status = "completed"
+
+[[step]]
+id = "022"
+title = "Validate DD pivot optimization against regression spectra"
+status = "completed"
+
+[[step]]
+id = "023"
+title = "Re-profile DD after the pivot optimization"
+status = "completed"
+
+[[step]]
+id = "024"
+title = "Record before/after DD profiling evidence in tracked TOML"
+status = "completed"
+
+[[step]]
+id = "025"
+title = "Replace stale x87 benchmark prose with implementation-accurate wording"
+status = "completed"
+
+[[step]]
+id = "026"
+title = "Add a dedicated x87 Givens/transcendental microbench lane"
+status = "completed"
+
+[[step]]
+id = "027"
+title = "Capture first x87 Givens microbench smoke artifact"
+status = "completed"
+
+[[step]]
+id = "028"
+title = "Update evidence docs with measured composed x87 path costs"
+status = "completed"
+
+[[step]]
+id = "029"
+title = "Decide whether mirrored low-inlining reference profiling is warranted"
+status = "completed"
+decision = "not_needed_now"
+
+[[step]]
+id = "030"
+title = "Decide whether mirrored low-inlining x87 profiling is warranted"
+status = "completed"
+decision = "not_needed_now"
+
+[[step]]
+id = "031"
+title = "Add perf-counter wrapper for x87 Givens microbench"
+status = "completed"
+
+[[step]]
+id = "032"
+title = "Capture first x87 Givens microbench perf-stat artifact"
+status = "completed"
+
+[[step]]
+id = "033"
+title = "Compare nanosecond timings and perf counters for composed x87 kernels"
+status = "completed"
+
+[[step]]
+id = "034"
+title = "Decide whether x87 transcendental path needs further decomposition beyond current microbench"
+status = "completed"
+decision = "not_needed_now"
+
+[[step]]
+id = "035"
+title = "Scope the next DD runtime target after pivot optimization"
+status = "completed"
+decision = "plane_rotation_update_next"
+
+[[step]]
+id = "036"
+title = "Prototype a DD plane-rotation/update optimization"
+status = "completed"
+
+[[step]]
+id = "037"
+title = "Measure DD plane-rotation/update optimization impact"
+status = "completed"
+
+[[step]]
+id = "038"
+title = "Decide whether DD arithmetic helper specialization is needed for rotation-heavy code"
+status = "completed"
+decision = "yes_dd_mul_add_pair"
+
+[[step]]
+id = "039"
+title = "Determine whether DD sqrt/div costs justify algorithmic reformulation"
+status = "in_progress"
+
+[[step]]
+id = "040"
+title = "Decide whether DD should gain a dedicated microbench lane beyond solver profiling"
+status = "pending"
+
+[[step]]
+id = "041"
+title = "Audit x87 asm modules for stack/clobber policy consistency"
+status = "pending"
+
+[[step]]
+id = "042"
+title = "Normalize any remaining legacy x87 asm blocks to current documented discipline"
+status = "pending"
+
+[[step]]
+id = "043"
+title = "Add status-returning coverage where x87 helper APIs still discard useful flags"
+status = "pending"
+
+[[step]]
+id = "044"
+title = "Evaluate whether x87 inline-asm pseudo-symbols need better profiler naming"
+status = "pending"
+
+[[step]]
+id = "045"
+title = "Decide whether x87 helper-level no-inline profiling is worth the maintenance cost"
+status = "pending"
+
+[[step]]
+id = "046"
+title = "Add an x87 microbench perf narrative to the requirements registry"
+status = "pending"
+
+[[step]]
+id = "047"
+title = "Add regression tests for x87 Givens microbench checksum stability"
+status = "pending"
+
+[[step]]
+id = "048"
+title = "Decide whether x87 reduced-trig paths need separate benchmark coverage"
+status = "pending"
+
+[[step]]
+id = "049"
+title = "Benchmark reduced trig vs unreduced trig on large-angle ext80 inputs"
+status = "pending"
+
+[[step]]
+id = "050"
+title = "Document when reduced trig should be preferred in future consumers"
+status = "pending"
+
+[[step]]
+id = "051"
+title = "Revisit the 64 cutoff only if new family or backend evidence justifies it"
+status = "pending"
+
+[[step]]
+id = "052"
+title = "Stress the cutoff with additional entrywise obstruction-like families if needed"
+status = "pending"
+
+[[step]]
+id = "053"
+title = "Decide whether family-aware policy is justified over the current global cutoff"
+status = "pending"
+
+[[step]]
+id = "054"
+title = "Add policy evidence for portable non-x86 backends if deployment scope expands"
+status = "pending"
+
+[[step]]
+id = "055"
+title = "Assess whether DD improvements change non-x86 recommended backend wording"
+status = "pending"
+
+[[step]]
+id = "056"
+title = "Decide whether reference_f64 should remain the default through order 64"
+status = "pending"
+
+[[step]]
+id = "057"
+title = "Capture solver-level before/after artifacts if any threshold-affecting optimization lands"
+status = "pending"
+
+[[step]]
+id = "058"
+title = "Add a policy-change gate requiring named artifact evidence"
+status = "pending"
+
+[[step]]
+id = "059"
+title = "Document threshold invariants in a machine-readable policy artifact"
+status = "pending"
+
+[[step]]
+id = "060"
+title = "Add a verifier that rejects unsupported threshold changes without artifact references"
+status = "pending"
+
+[[step]]
+id = "061"
+title = "Assess whether multicore x87 policy wording needs refinement after newer artifacts"
+status = "pending"
+
+[[step]]
+id = "062"
+title = "Add targeted perf rows for x87 worker-count transitions if policy language changes"
+status = "pending"
+
+[[step]]
+id = "063"
+title = "Determine whether SMT-specific caution needs explicit benchmark evidence in docs"
+status = "pending"
+
+[[step]]
+id = "064"
+title = "Benchmark any candidate heterogeneous x87/AVX phase split on a real solver-shaped workload"
+status = "pending"
+
+[[step]]
+id = "065"
+title = "Decide whether x87 broad-phase plus AVX cleanup is ever beneficial on current host"
+status = "pending"
+
+[[step]]
+id = "066"
+title = "Document multicore x87 exactness limitations for cancellation-heavy reductions"
+status = "completed"
+
+[[step]]
+id = "067"
+title = "Decide whether multicore x87 strategy target should emit extra instability metadata"
+status = "pending"
+
+[[step]]
+id = "068"
+title = "Add worker/core-affinity provenance to any future multicore artifacts"
+status = "pending"
+
+[[step]]
+id = "069"
+title = "Revisit multicore x87 after any major kernel optimization lands"
+status = "pending"
+
+[[step]]
+id = "070"
+title = "Keep multicore x87 as semantics-first rather than throughput-first in current docs"
+status = "completed"
+
+[[step]]
+id = "071"
+title = "Assess whether profiler CSVs need a normalized schema version field"
+status = "pending"
+
+[[step]]
+id = "072"
+title = "Decide whether existing compare CSV is sufficient machine-readable hotspot output"
+status = "completed"
+decision = "sufficient_for_now"
+
+[[step]]
+id = "073"
+title = "Add schema docs for profiler compare CSV if downstream consumers appear"
+status = "pending"
+
+[[step]]
+id = "074"
+title = "Evaluate whether hotspot deltas should be emitted directly in compare output"
+status = "pending"
+
+[[step]]
+id = "075"
+title = "Add a lightweight report-diff tool for profiler before/after artifacts if needed"
+status = "pending"
+
+[[step]]
+id = "076"
+title = "Decide whether perf stat outputs should be normalized into tracked CSV form"
+status = "pending"
+
+[[step]]
+id = "077"
+title = "Add report parser for perf stat CSV if manual TOML summaries become a bottleneck"
+status = "pending"
+
+[[step]]
+id = "078"
+title = "Evaluate whether samply compare output needs an explicit backend-phase column"
+status = "pending"
+
+[[step]]
+id = "079"
+title = "Add phase tagging for DD helper profiles if more phase optimizations land"
+status = "pending"
+
+[[step]]
+id = "080"
+title = "Add x87 micro-kernel family grouping if the microbench grows beyond current cases"
+status = "pending"
+
+[[step]]
+id = "081"
+title = "Keep all new profiler tooling Rust-native and warnings-as-errors clean"
+status = "completed"
+
+[[step]]
+id = "082"
+title = "Keep build-system entry points aligned with Cargo binary registry"
+status = "completed"
+
+[[step]]
+id = "083"
+title = "Maintain report TOMLs as the tracked evidence layer for each new lane"
+status = "completed"
+
+[[step]]
+id = "084"
+title = "Update rescope docs whenever a profiler result changes optimization ordering"
+status = "completed"
+
+[[step]]
+id = "085"
+title = "Update requirements_narrative whenever a new reproducible lane is added"
+status = "completed"
+
+[[step]]
+id = "086"
+title = "Audit old benchmark comments for unsupported generalized performance claims"
+status = "pending"
+
+[[step]]
+id = "087"
+title = "Convert any remaining untracked benchmark lore into measured artifact-backed text"
+status = "pending"
+
+[[step]]
+id = "088"
+title = "Keep absolute dates and artifact names explicit in all future roadmap updates"
+status = "completed"
+
+[[step]]
+id = "089"
+title = "Record host-specific caveats when measurements depend on perf_event_paranoid or toolchain choice"
+status = "completed"
+
+[[step]]
+id = "090"
+title = "Re-run critical profiler lanes after major compiler/toolchain upgrades"
+status = "pending"
+
+[[step]]
+id = "091"
+title = "Identify the next highest-value optimization slice after DD pivot and x87 microbench evidence"
+status = "completed"
+decision = "dd_plane_rotation_update_after_x87_perf_follow_up"
+
+[[step]]
+id = "092"
+title = "Choose between DD plane-rotation work and x87 perf-counter follow-up as the next code slice"
+status = "completed"
+decision = "x87_perf_follow_up_first_dd_rotation_second"
+
+[[step]]
+id = "093"
+title = "Execute the chosen next optimization slice with before/after artifacts"
+status = "completed"
+
+[[step]]
+id = "094"
+title = "Decide whether the next slice changes policy guidance or only implementation guidance"
+status = "completed"
+decision = "implementation_guidance_only"
+
+[[step]]
+id = "095"
+title = "Update the roadmap ordering after the next slice lands"
+status = "completed"
+
+[[step]]
+id = "096"
+title = "Fold any new decisions back into the explicit policy layer if warranted"
+status = "pending"
+
+[[step]]
+id = "097"
+title = "Verify that no profiler-driven change regresses correctness or portability claims"
+status = "pending"
+
+[[step]]
+id = "098"
+title = "Summarize state-of-the-lane after each tranche with artifact-backed takeaways"
+status = "active"
+
+[[step]]
+id = "099"
+title = "Keep the roadmap alive by marking completed and superseded steps explicitly"
+status = "active"
+
+[[step]]
+id = "100"
+title = "Close the precision-lane program only when policy, tooling, and evidence surfaces agree"
+status = "active"
+
+[[step]]
+id = "101"
+title = "Lift dispatch from backend-only selection to solver-family plus backend selection"
+status = "completed"
+
+[[step]]
+id = "102"
+title = "Expose the real obstruction matrix and its structure metadata as first-class APIs"
+status = "completed"
+
+[[step]]
+id = "103"
+title = "Add the first production-safe structure-aware path via exact isolated-zero-mode deflation"
+status = "completed"
+
+[[step]]
+id = "104"
+title = "Add block-Jacobi, partial-spectrum, and structured-spectrum benchmark binaries"
+status = "completed"
+
+[[step]]
+id = "105"
+title = "Decide whether DD rotation remains the next default optimization target after solver-family expansion"
+status = "completed"
+decision = "second_order_after_solver_family_expansion"

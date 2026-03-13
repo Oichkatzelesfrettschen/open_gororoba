@@ -1,0 +1,133 @@
+[report]
+title = "x87 crate re-scope"
+date = "2026-03-12"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+summary = "The repository already contains a serious x87 subsystem, but it is still split across cd_kernel and algebra_analysis. The current slice promotes that subsystem into a more coherent backend by adding shared ext80 transcendental kernels, extracting reusable Jacobi/Givens micro-kernels into cd_kernel, and tightening the tracked requirements narrative to reflect the new topology."
+
+[current_topology]
+backend_crate = "crates/cd_kernel"
+algorithm_crate = "crates/algebra_analysis"
+cli_benchmark = "crates/gororoba_cli_algebra/src/bin/x87_strategy_bench.rs"
+benchmark_harness = "crates/algebra_analysis/benches/x87_bench.rs"
+notes = [
+  "Reduction-style x87 kernels already exist in cd_kernel::x87_primitives.",
+  "Jacobi solver orchestration still lives in algebra_analysis::x87_jacobi, but the reusable Givens and diagonal-update kernels now live in cd_kernel::x87_jacobi_kernels.",
+  "Shared ext80 transcendental and range-reduction kernels now live in cd_kernel::x87_transcendentals.",
+  "The multicore strategy lane already exists and is integrated through make x87-strategy-bench.",
+]
+
+[landed_this_turn]
+ext80_module = "crates/cd_kernel/src/x87_ext80.rs"
+transcendental_module = "crates/cd_kernel/src/x87_transcendentals.rs"
+jacobi_kernel_module = "crates/cd_kernel/src/x87_jacobi_kernels.rs"
+reexport_module = "crates/cd_kernel/src/lib.rs"
+requirements_source_of_truth = "registry/requirements_narrative.toml"
+requirements_mirror = "docs/requirements/algebra.md"
+new_capabilities = [
+  "Exact Ext80 10-byte payload storage.",
+  "f64/i32/i64 conversion boundaries.",
+  "Truncating integer conversion via FISTTP with a round-toward-zero fallback when SSE3 is unavailable.",
+  "Core ext80 arithmetic through Add/Sub/Mul/Div traits.",
+  "sqrt and scale_pow2 kernels.",
+  "Explicit X87ControlWord, X87StatusWord, and X87ControlGuard wrappers.",
+  "Shared atan2/sincos/fprem1/reduced-trig kernels that return x87 status words together with ext80 payloads.",
+  "Reusable Givens/Jacobi micro-kernels extracted into cd_kernel and consumed by algebra_analysis.",
+]
+
+[[validated_claim]]
+id = "VC-001"
+claim = "Rust inline asm does not treat x87 stack registers like ordinary input/output operands, which pushes the backend toward medium-granularity kernels."
+status = "supported"
+evidence_kind = "primary_source"
+source_url = "https://doc.rust-lang.org/nightly/reference/inline-assembly.html"
+
+[[validated_claim]]
+id = "VC-002"
+claim = "The current repo already has real x87 backend code, but it does not yet have a fully separated x87 crate."
+status = "supported"
+evidence_kind = "repo_audit"
+source_paths = [
+  "crates/cd_kernel/src/x87_primitives.rs",
+  "crates/algebra_analysis/src/x87_jacobi.rs",
+  "crates/cd_kernel/src/parallel_primitives.rs",
+]
+
+[[validated_claim]]
+id = "VC-003"
+claim = "Agner Fog's Zen 3 measurements are the best public timing proxy for a Ryzen 5 5600X3D x87 design pass, but they are still proxy data rather than 5600X3D-only vendor timings."
+status = "supported_with_scope_limit"
+evidence_kind = "public_measurement_reference"
+source_url = "https://www.agner.org/optimize/instruction_tables.pdf"
+
+[[validated_claim]]
+id = "VC-004"
+claim = "FISTTP is the right truncation fast path when available, but the backend should avoid turning that into an unchecked illegal instruction on older x86_64 hosts."
+status = "implemented"
+evidence_kind = "source_plus_code"
+source_url = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+source_paths = ["crates/cd_kernel/src/x87_ext80.rs"]
+
+[[validated_claim]]
+id = "VC-005"
+claim = "FSINCOS and FPREM1 use the x87 status word in correctness-relevant ways, so the shared backend should return status metadata instead of discarding it."
+status = "supported_and_implemented"
+evidence_kind = "primary_source_plus_code"
+source_url = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+source_paths = [
+  "crates/cd_kernel/src/x87_transcendentals.rs",
+  "crates/cd_kernel/src/x87_jacobi_kernels.rs",
+]
+
+[[validated_claim]]
+id = "VC-006"
+claim = "Rust inline asm on x86 should be treated conservatively around the x87 stack, which makes explicit stack balancing and, where practical, full x87-stack clobbers the safer backend direction."
+status = "supported_with_remaining_audit_work"
+evidence_kind = "primary_source_plus_repo_audit"
+source_url = "https://doc.rust-lang.org/nightly/reference/inline-assembly.html"
+source_paths = [
+  "crates/cd_kernel/src/x87_transcendentals.rs",
+  "crates/cd_kernel/src/x87_jacobi_kernels.rs",
+  "crates/cd_kernel/src/x87_primitives.rs",
+]
+
+[[overstated_or_false]]
+id = "OF-001"
+statement = "The repository already had a dedicated x87 crate."
+verdict = "false"
+reason = "Before this turn, the x87 logic was split across generic reduction kernels in cd_kernel and Jacobi-specific kernels in algebra_analysis."
+
+[[overstated_or_false]]
+id = "OF-002"
+statement = "The current repo has a reusable ext80 transcendental toolkit."
+verdict = "was_false_before_this_slice"
+reason = "This statement described a target state rather than the state of the repo before the new x87_transcendentals module landed."
+
+[[overstated_or_false]]
+id = "OF-003"
+statement = "x87 plus AVX2/FMA is a free overlap lane on Zen 3."
+verdict = "overstated"
+reason = "Current repo guidance and public Zen 3 measurements support phase separation or per-core partitioning, not instruction-level interleaving as a default rule."
+
+[remaining_gaps]
+gaps = [
+  "Broaden the Rust inline-asm x87-stack compliance sweep across the older reduction kernels in x87_primitives and the remaining ext80 leaf kernels.",
+  "Decide whether the current medium-granularity inline-asm approach should later migrate to out-of-line assembly once the API stabilizes.",
+  "Add more ext80 transcendental building blocks such as FSCALE- and FYL2X-based helpers once a concrete consumer needs them.",
+]
+
+[next_steps]
+ordered = [
+  "Treat cd_kernel::x87_ext80 as the canonical ext80 storage/control boundary.",
+  "Treat cd_kernel::x87_transcendentals as the canonical shared status-aware trig/range-reduction layer.",
+  "Keep algebra_analysis focused on solver orchestration while cd_kernel owns reusable x87 micro-kernels.",
+  "Audit the rest of the x87 asm surface against the Rust reference's stack/clobber rules and normalize the old modules to the newer style.",
+  "Keep benchmark claims scoped to the measured host/workload unless a deterministic verifier exists.",
+]
+
+[validation]
+commands = [
+  "cargo test -p cd_kernel --lib",
+  "cargo test -p algebra_analysis --lib x87_jacobi",
+  "cargo clippy -p cd_kernel -p algebra_analysis --all-targets -- -D warnings",
+]

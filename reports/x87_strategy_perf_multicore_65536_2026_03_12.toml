@@ -1,0 +1,25 @@
+title = "Focused perf smoke for multicore x87 strategy sweep"
+date = "2026-03-12"
+len = 65536
+repeats = 3
+worker_counts = [1, 2, 4, 6]
+perf_repetitions = 3
+perf_events = ["cycles:u", "instructions:u", "branches:u", "branch-misses:u"]
+command = "make x87-strategy-perf LEN=65536 REPEATS=3 PERF_RUNS=3 WORKER_COUNTS=1,2,4,6 OUT=reports/benchmarks/x87_strategy_perf_multicore_65536.csv SUMMARY=reports/benchmarks/x87_strategy_perf_multicore_65536.md"
+
+[takeaway]
+summary = "The multicore x87 perf smoke is useful as coverage, not as a dispatch oracle. The aggregate counter set completed cleanly and the summary artifact still shows the same semantic split between exact FP80 and throughput-oriented lanes, but the elapsed-time variance is high because one perf invocation spans multiple worker counts, workloads, and strategies. This supports keeping multicore x87 decisions artifact-driven and workload-specific rather than introducing a single size threshold."
+
+[counters]
+cycles = 44096938
+instructions = 49043361
+branches = 7509624
+branch_misses = 66150
+ipc = 1.112
+branch_miss_rate = 0.008809
+elapsed_seconds = 0.0392
+elapsed_relative_stddev = 0.3485
+
+[artifacts]
+csv = "reports/benchmarks/x87_strategy_perf_multicore_65536.csv"
+markdown = "reports/benchmarks/x87_strategy_perf_multicore_65536.md"

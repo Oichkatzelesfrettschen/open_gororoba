@@ -1,0 +1,286 @@
+# Rust-generated provenance recovery plan
+
+[plan]
+generated_at = "2026-03-13T00:57:45.811406761+00:00"
+candidate_count = 40
+
+[[candidate]]
+id = "ASOT-0001"
+key = "doi:10.1002/9781118886663"
+title = "http://doi.org/10.1002/9781118886663"
+status = "citation_only_no_link"
+canonical_functional_url = "http://doi.org/10.1002/9781118886663"
+
+[[candidate]]
+id = "ASOT-0003"
+key = "doi:10.1002/andp.200510172"
+title = "Annalen Phys. 15 (2006), 109-128 doi:10.1002/andp.200510172 [arXiv:0801.0735 [gr-qc]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1002/andp.200510172"
+
+[[candidate]]
+id = "ASOT-0004"
+key = "doi:10.1002/mma.1442"
+title = "Hitzer (2010) Crystal planes and reciprocal space in Clifford geometric algebra"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1002/MMA.1442"
+
+[[candidate]]
+id = "ASOT-0005"
+key = "doi:10.1002/prop.201300020"
+title = "Phys. 61, 781 (2013) doi:10.1002/prop.201300020 [arXiv:1306.0533 [hep-th]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1002/prop.201300020"
+
+[[candidate]]
+id = "ASOT-0006"
+key = "doi:10.1002/pssb.2221440107"
+title = "Metallic glasses and chiral nematic liquid crystals (PSSB 1987)"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1002/PSSB.2221440107"
+
+[[candidate]]
+id = "ASOT-0007"
+key = "doi:10.1006/inco.1996.2613"
+title = "doi: 10.1006/inco.1996.2613."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1006/inco.1996.2613"
+
+[[candidate]]
+id = "ASOT-0008"
+key = "doi:10.1007/11693024_2"
+title = "Science). Ed. by Peter Sestoft. Vol. 3924. Springer, 7 21. doi: 10.1007/11693024_2."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/11693024_2"
+
+[[candidate]]
+id = "ASOT-0009"
+key = "doi:10.1007/3-540-45332-6_7"
+title = "International Workshop, TIC 2000, Montreal, Canada, September 21, 2000, Revised Selected Papers (Lecture Notes in Computer Science). Ed. by Robert Harper. Vol. 2071. Springer, 177 206. doi: 10.1007/3-540-45332-6_7."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/3-540-45332-6_7"
+
+[[candidate]]
+id = "ASOT-0010"
+key = "doi:10.1007/3-540-46425-5_24"
+title = "Science). Ed. by Gert Smolka. Vol. 1782. Springer, 366 381. doi: 10.1007/3-540-46425-5_24."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/3-540-46425-5_24"
+
+[[candidate]]
+id = "ASOT-0011"
+key = "doi:10.1007/978-1-4939-3210-8"
+title = "doi:10.1007/978-1-4939-3210-8 3 [arXiv:1405.0403 [physics.hist-ph]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-1-4939-3210-8"
+
+[[candidate]]
+id = "ASOT-0012"
+key = "doi:10.1007/978-3-030-35184-7"
+title = "Te rica (IFT), Madrid, Spain (2019) [DOI:10.1007/978-3-030-35184-7] [arXiv:1908.02667"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-3-030-35184-7"
+
+[[candidate]]
+id = "ASOT-0013"
+key = "doi:10.1007/978-3-319-52573-0"
+title = "DOI:10.1007/978-3-319-52573-0] [INSPIRE]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-3-319-52573-0"
+
+[[candidate]]
+id = "ASOT-0014"
+key = "doi:10.1007/978-3-319-55182-1"
+title = "Fundam. Theor. Phys. 189 (2017), pp.1-279 doi:10.1007/978-3-319-55182-1"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-3-319-55182-1"
+
+[[candidate]]
+id = "ASOT-0015"
+key = "doi:10.1007/978-3-642-12821-9_4"
+title = "https://doi.org/10.1007/978-3-642-12821-9_4"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-3-642-12821-9_4"
+
+[[candidate]]
+id = "ASOT-0016"
+key = "doi:10.1007/978-4-431-55441-7"
+title = "DOI:10.1007/978-4-431-55441-7] [INSPIRE]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-4-431-55441-7"
+
+[[candidate]]
+id = "ASOT-0017"
+key = "doi:10.1007/978-94-010-1909-5"
+title = "DOI:10.1007/978-94-010-1909-5]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/978-94-010-1909-5"
+
+[[candidate]]
+id = "ASOT-0018"
+key = "doi:10.1007/bf00653317"
+title = "Majernik, V. (1971) Astrophysics and Space Science, 14, 265-285."
+status = "citation_only_no_link"
+canonical_functional_url = "http://dx.doi.org/10.1007/BF00653317"
+
+[[candidate]]
+id = "ASOT-0019"
+key = "doi:10.1007/bf00669760"
+title = "31] Schwebel, S. (1970) International Journal of Theoretical Physics, 3, 315-330."
+status = "citation_only_no_link"
+canonical_functional_url = "http://dx.doi.org/10.1007/BF00669760"
+
+[[candidate]]
+id = "ASOT-0020"
+key = "doi:10.1007/bf00713636"
+title = "21] Majernik, V. (1982) Astrophysics and Space Science, 84, 191-204."
+status = "citation_only_no_link"
+canonical_functional_url = "http://dx.doi.org/10.1007/BF00713636"
+
+[[candidate]]
+id = "ASOT-0021"
+key = "doi:10.1007/bf01645742"
+title = "ics,  Commun. Math. Phys. 31, 161 (1973). doi:10.1007/BF01645742"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/BF01645742"
+
+[[candidate]]
+id = "ASOT-0022"
+key = "doi:10.1007/bf02412838"
+title = "r dimensioni, Ann. Mat. Pura Appl. (4) 36 (1954), 191 213, doi:10.1007/BF02412838."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/BF02412838"
+
+[[candidate]]
+id = "ASOT-0023"
+key = "doi:10.1007/bf02705207"
+title = "traversable wormholes , Pramana 63 (2004), 859-864 doi:10.1007/BF02705207"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/BF02705207"
+
+[[candidate]]
+id = "ASOT-0024"
+key = "doi:10.1007/bf02726749"
+title = "15] Imaeda, K. (1976) Il Nuovo Cimento B, 32, 138-162."
+status = "citation_only_no_link"
+canonical_functional_url = "http://dx.doi.org/10.1007/BF02726749"
+
+[[candidate]]
+id = "ASOT-0025"
+key = "doi:10.1007/bf02799188"
+title = "Singh, A. (1981) Lettere Al Nuovo Cimento, 32, 231-234."
+status = "citation_only_no_link"
+canonical_functional_url = "http://dx.doi.org/10.1007/BF02799188"
+
+[[candidate]]
+id = "ASOT-0026"
+key = "doi:10.1007/bf03041944"
+title = "14] Majernik, V. (1999) Advances in Applied Clifford Algebras, 9, 119-130."
+status = "citation_only_no_link"
+canonical_functional_url = "http://dx.doi.org/10.1007/BF03041944"
+
+[[candidate]]
+id = "ASOT-0027"
+key = "doi:10.1007/jhep01(2014)048"
+title = "Phys. 01 (2014) 048, (2014)048, arXiv:1309.5569."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP01"
+
+[[candidate]]
+id = "ASOT-0028"
+key = "doi:10.1007/jhep01(2025)025"
+title = "2025)025"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP01"
+
+[[candidate]]
+id = "ASOT-0029"
+key = "doi:10.1007/jhep02(2013)062"
+title = "Firewalls?,  JHEP 1302, 062 (2013) doi:10.1007/JHEP02(2013)062 [arXiv:1207.3123"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP02(2013)062"
+
+[[candidate]]
+id = "ASOT-0030"
+key = "doi:10.1007/jhep03(2014)051"
+title = "doi:10.1007/JHEP03(2014)051 [arXiv:1312.7856 [hep-th]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP03(2014)051"
+
+[[candidate]]
+id = "ASOT-0031"
+key = "doi:10.1007/jhep03(2014)118"
+title = "formation in AdS/CFT,  JHEP 1403, 118 (2014) doi:10.1007/JHEP03(2014)118"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP03(2014)118"
+
+[[candidate]]
+id = "ASOT-0032"
+key = "doi:10.1007/jhep03(2015)075"
+title = "doi:10.1007/JHEP03(2015)075 [arXiv:1407.7816 [hep-th]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP03(2015)075"
+
+[[candidate]]
+id = "ASOT-0033"
+key = "doi:10.1007/jhep04(2014)195"
+title = "doi:10.1007/JHEP04(2014)195 [arXiv:1308.3716 [hep-th]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP04(2014)195"
+
+[[candidate]]
+id = "ASOT-0034"
+key = "doi:10.1007/jhep04(2015)163"
+title = "rection in AdS/CFT,  JHEP 1504, 163 (2015) doi:10.1007/JHEP04(2015)163"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP04(2015)163"
+
+[[candidate]]
+id = "ASOT-0035"
+key = "doi:10.1007/jhep04(2017)039"
+title = "doi:10.1007/JHEP04(2017)039, arXiv:1611.01664."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP04(2017)039"
+
+[[candidate]]
+id = "ASOT-0036"
+key = "doi:10.1007/jhep04(2025)034"
+title = "doi:10.1007/JHEP04(2025)034, arXiv:2410.22405."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP04(2025)034"
+
+[[candidate]]
+id = "ASOT-0037"
+key = "doi:10.1007/jhep05(2011)036"
+title = "entanglement entropy,  JHEP 1105, 036 (2011) doi:10.1007/JHEP05(2011)036"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP05(2011)036"
+
+[[candidate]]
+id = "ASOT-0038"
+key = "doi:10.1007/jhep05(2014)053"
+title = "doi:10.1007/JHEP05(2014)053 [arXiv:1403.3426 [hep-th]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP05(2014)053"
+
+[[candidate]]
+id = "ASOT-0039"
+key = "doi:10.1007/jhep05(2021)038"
+title = "Apostolatos, T. A., Cutler, C., Sussman, G. J., & Thorne, JHEP, 05, 038, doi: 10.1007/JHEP05(2021)038"
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP05(2021)038"
+
+[[candidate]]
+id = "ASOT-0040"
+key = "doi:10.1007/jhep06(2010)043"
+title = "Phys. 06 (2010) 043, (2010)043, arXiv:1002.2581."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP06"
+
+[[candidate]]
+id = "ASOT-0041"
+key = "doi:10.1007/jhep06(2012)114"
+title = "114 (2012) doi:10.1007/JHEP06(2012)114 [arXiv:1204.1698 [hep-th]]."
+status = "citation_only_no_link"
+canonical_functional_url = "https://doi.org/10.1007/JHEP06(2012)114"
+

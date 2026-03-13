@@ -14,7 +14,7 @@ unverified_count = 0
 missing_minimum_requirement_count = 0
 
 [[artifact_ref]]
-id = "ASOT-0948"
+id = "ASOT-0949"
 key = "doi:10.5281/zenodo.17289540"
 title = "**UOR Foundation.** (2024). *Atlas of Resonance Classes: Exceptional Lie Groups from First Principles*. [DOI:10.5281/zenodo.17289540](https://doi.org/10.5281/zenodo.17289540)."
 status = "downloadable"

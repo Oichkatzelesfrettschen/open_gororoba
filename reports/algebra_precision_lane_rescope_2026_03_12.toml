@@ -1,0 +1,183 @@
+[report]
+title = "Algebra precision lane re-scope"
+date = "2026-03-12"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+summary = "The x87 backend is now a cleaner shared subsystem, and the duplicated Jacobi solver loop has been collapsed into one shared flat-array scaffold used by the x87 lane, the double-double fallback, and the remaining f64 oracle path. The larger algebra precision story is still a three-lane system: AVX2 throughput kernels, x87/FP80 kernels, and a double-double fallback. The next work is not 'more x87 everywhere'; it is clarifying dispatch policy, normalizing the remaining x87 asm surface, and keeping benchmark evidence separate from production-policy claims until the selection layer is real. That selection layer now exists as a typed deterministic policy, the repo now has a solver-shaped sweep binary that measures the Jacobi backends directly, the DD lane has been repaired on obstruction-like families, and the offline obstruction-spectrum threshold table has been re-confirmed at 64 after both spectral-proxy and entrywise obstruction-like sweeps."
+
+[current_system]
+backend_crate = "crates/cd_kernel"
+analysis_crate = "crates/algebra_analysis"
+benchmark_cli = "crates/gororoba_cli_algebra/src/bin/x87_strategy_bench.rs"
+jacobi_sweep_cli = "crates/gororoba_cli_algebra/src/bin/jacobi_backend_sweep.rs"
+benchmark_harness = "crates/algebra_analysis/benches/x87_bench.rs"
+precision_lanes = [
+  "AVX2/FMA binary64 throughput kernels in cd_kernel::avx2_primitives",
+  "x87/FP80 kernels in cd_kernel::x87_primitives, x87_ext80, x87_transcendentals, and x87_jacobi_kernels",
+  "software double-double fallback in algebra_analysis::double_double and dd_jacobi",
+]
+dispatch_surface = [
+  "typed deterministic Jacobi dispatch in algebra_analysis::precision_policy",
+  "solver-family dispatch via SpectrumObjective / MatrixWorkloadClass / MatrixStructureHints in algebra_analysis::precision_policy",
+  "policy-driven solver selection in algebra_analysis::homotopy_algebra",
+  "heuristic and benchmark evidence in precision_tier_dispatch tests plus x87-strategy-bench",
+]
+
+[[validated_claim]]
+id = "VC-001"
+claim = "The current algebra precision stack is broader than the x87 backend alone."
+status = "supported"
+evidence_kind = "repo_audit"
+source_paths = [
+  "crates/cd_kernel/src/avx2_primitives.rs",
+  "crates/cd_kernel/src/x87_primitives.rs",
+  "crates/cd_kernel/src/x87_ext80.rs",
+  "crates/cd_kernel/src/x87_transcendentals.rs",
+  "crates/cd_kernel/src/x87_jacobi_kernels.rs",
+  "crates/algebra_analysis/src/double_double.rs",
+  "crates/algebra_analysis/src/dd_jacobi.rs",
+]
+
+[[validated_claim]]
+id = "VC-002"
+claim = "The current Jacobi dispatch policy is deterministic and explicit, and now includes a first offline threshold table derived from the solver-shaped sweep artifacts."
+status = "implemented"
+evidence_kind = "repo_audit"
+source_paths = [
+  "crates/algebra_analysis/src/precision_policy.rs",
+  "crates/algebra_analysis/src/homotopy_algebra.rs",
+  "crates/algebra_analysis/tests/precision_tier_dispatch.rs",
+  "crates/gororoba_cli_algebra/src/bin/x87_strategy_bench.rs",
+  "reports/benchmarks/jacobi_backend_boundary_24_40.csv",
+  "reports/benchmarks/jacobi_backend_boundary_44_56.csv",
+  "reports/benchmarks/jacobi_backend_boundary_60_68.csv",
+  "reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.csv",
+  "reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.csv",
+  "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.csv",
+  "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.csv",
+]
+
+[[validated_claim]]
+id = "VC-003"
+claim = "The x87 strategy benchmark exists as a research and evidence lane, but it is not yet wired into runtime solver selection."
+status = "supported"
+evidence_kind = "repo_audit"
+source_paths = [
+  "crates/gororoba_cli_algebra/src/bin/x87_strategy_bench.rs",
+  "crates/gororoba_cli_algebra/src/bin/jacobi_backend_sweep.rs",
+  "crates/algebra_analysis/src/homotopy_algebra.rs",
+]
+
+[[validated_claim]]
+id = "VC-004"
+claim = "The x87 extraction improved backend modularity, but the older reduction asm still needs a broader inline-asm compliance sweep."
+status = "supported"
+evidence_kind = "repo_audit_plus_primary_source"
+source_paths = [
+  "crates/cd_kernel/src/x87_transcendentals.rs",
+  "crates/cd_kernel/src/x87_jacobi_kernels.rs",
+  "crates/cd_kernel/src/x87_primitives.rs",
+  "crates/cd_kernel/src/x87_ext80.rs",
+]
+source_url = "https://doc.rust-lang.org/nightly/reference/inline-assembly.html"
+
+[[validated_claim]]
+id = "VC-005"
+claim = "The x87 lane, the double-double fallback, and the remaining f64 oracle path now share one backend-agnostic flat-array Jacobi scaffold, so backend choice changes precision policy without duplicating the main sweep logic."
+status = "implemented"
+evidence_kind = "repo_audit"
+source_paths = [
+  "crates/algebra_analysis/src/jacobi_shared.rs",
+  "crates/algebra_analysis/src/reference_jacobi.rs",
+  "crates/algebra_analysis/src/x87_jacobi.rs",
+  "crates/algebra_analysis/src/dd_jacobi.rs",
+  "crates/algebra_analysis/src/homotopy_algebra.rs",
+]
+
+[[validated_claim]]
+id = "VC-006"
+claim = "The repo now has a solver-shaped Jacobi evidence lane that can compare f64, double-double, and x87 directly across matrix sizes without relying on the reduction-only benchmark."
+status = "implemented"
+evidence_kind = "repo_audit_plus_artifact"
+source_paths = [
+  "crates/gororoba_cli_algebra/src/bin/jacobi_backend_sweep.rs",
+  "reports/benchmarks/jacobi_backend_sweep_smoke.csv",
+  "reports/benchmarks/jacobi_backend_sweep_smoke.md",
+]
+
+[[overstated_or_false]]
+id = "OF-001"
+statement = "The algebra precision work is now 'done' because the x87 backend passes."
+verdict = "false"
+reason = "The repo still has unresolved integration work around solver-structure sharing, dispatch policy, benchmark evidence, and older x87 asm normalization."
+
+[[overstated_or_false]]
+id = "OF-002"
+statement = "The current dispatch chooses the numerically best backend for each workload."
+verdict = "false"
+reason = "The current production dispatch is typed and deterministic, and it now includes a first offline threshold table. It is still intentionally simple and artifact-driven rather than a dynamic benchmark-informed chooser."
+
+[[overstated_or_false]]
+id = "OF-003"
+statement = "The benchmark narrative automatically counts as tracked evidence for all precision-policy claims."
+verdict = "overstated"
+reason = "The repo has benchmark code and reports, but several high-level engineering conclusions are still comments or reports rather than enforced selection logic or deterministic claim verifiers."
+
+[remaining_gaps]
+gaps = [
+  "Decide whether and when block-Jacobi should graduate from benchmark-only prototype to a production default for any full-spectrum workload class.",
+  "Measure the crossover between the new partial-spectrum lane and truncated full-spectrum Jacobi on larger obstruction matrices before adding more iterative sophistication.",
+  "Decide whether the validated equitable-partition candidate reduction should remain benchmark/support infrastructure or be promoted to a production structured solver after stronger error and lifting checks. The current focused follow-up found zero exact validated quotient cells on the real and entrywise obstruction families, even though exploratory histogram partitions remain nontrivial. The first histogram-projected benchmark prototype was very fast but far too inaccurate, so the next structure-aware step must improve lifting/model fidelity rather than just compressing harder.",
+  "Add one more entrywise obstruction-like family if the repo needs a stronger claim than the current pair of quantized entrywise families.",
+  "Normalize the remaining older x87 asm blocks to the same documented stack/clobber discipline as the newer status-aware modules.",
+  "Audit benchmark-doc comments that still read like conclusions without tracked evidence, especially where they describe rejected alternatives or generalized performance ratios.",
+  "The deeper samply lane now works for all three current backends, the line-level compare artifact resolves DD ownership cleanly to dd_jacobi.rs, and the profiling-only profile-dd-hotspots build now exposes helper-level DD hotspots. After the direct hi/lo pivot-comparator optimization, a first plane-rotation helper specialization via dd_mul_add_pair improved the profiled DD lane again. The next DD profiler gap is now dd_rotation and its sqrt/div cost rather than pivot scanning or basic plane-update arithmetic.",
+  "Map the typed policy surface onto a reproducible performance lane with perf, hyperfine, and flamegraph traces instead of one-off shell history.",
+]
+
+[roadmap]
+ordered = [
+  "Keep x87 as one precision lane, not the whole precision roadmap.",
+  "Use the shared Jacobi scaffold as the insertion point for any future precision backend instead of cloning solver orchestration again.",
+  "Keep future threshold changes tied to named sweep artifacts or registry inputs rather than ad hoc judgment.",
+  "Collect cycle, throughput, and flamegraph evidence with native build-system targets before moving the current size-based threshold table.",
+  "Use the new Jacobi backend sweep artifacts to stress and, if needed, refine the 64/68 obstruction-spectrum crossover.",
+  "Treat the quantized_shell_permutation perf pass as a keep-cutoff checkpoint: reference_f64 stayed ahead of x87 at 68 and 72 once the backend-isolated perf counters were collected.",
+  "Treat the quantized_shell_permutation flamegraph pass as a partial attribution lane: reference_f64 exposes libm atan2, but x87 and DD still need a stronger profiler setup for internal hotspot decomposition.",
+  "Use the new samply lane when we need that stronger profiler setup: the dev-profile presymbolicated capture now resolves the reference scaffold/libm path, the x87 Jacobi/kernel path, and the DD solver path, jacobi-backend-samply-compare reconciles those raw captures into one backend-core/shared/dependency/runtime line-level report, and FEATURES=profile-dd-hotspots gives a profiling-only DD helper breakdown.",
+  "Do not mirror the low-inlining lane onto reference_f64 yet; the current reference samply artifacts already answer the cross-backend attribution question well enough, and the stronger need was DD decomposition.",
+  "Do not mirror the low-inlining lane onto x87 yet; the x87 stack is already visible enough in the current samply artifacts, and the missing evidence was the cost of the composed Givens path itself, which is now covered by the x87 Givens microbench plus focused perf-stat follow-up.",
+  "Do not treat the stronger DD profiling lane as threshold-moving evidence by itself; the current 64 cutoff remains a solver-speed policy decision backed by the existing sweep artifacts even after the DD pivot optimization and the new x87 perf-stat follow-up.",
+  "Use the new multicore x87 worker-sweep artifacts to distinguish exact FP80 lanes from throughput-oriented AVX2 and hybrid lanes when writing policy notes.",
+  "Keep the repaired DD lane under regression coverage on obstruction-like matrices so the old failure mode does not return silently.",
+  "Only expand the x87 transcendental surface further when a concrete consumer needs the next primitive.",
+]
+
+[validation]
+commands = [
+  "cargo test -p cd_kernel --lib",
+  "cargo test -p algebra_analysis --lib x87_jacobi",
+  "cargo test -p algebra_analysis --test precision_tier_dispatch",
+  "cargo clippy -p cd_kernel -p algebra_analysis --all-targets -- -D warnings",
+  "make jacobi-backend-sweep SIZES=4,8,16,24,32,48,64 REPEATS=3 OUT=reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.md",
+  "make jacobi-backend-sweep SIZES=52,56,60,64 REPEATS=5 OUT=reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.md",
+  "make jacobi-backend-sweep SIZES=60,64,68 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.md",
+  "make jacobi-backend-sweep SIZES=64,68,72 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.md",
+  "make jacobi-backend-sweep SIZES=64,68,72 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.csv SUMMARY=reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.md",
+  "make jacobi-backend-sweep FAMILIES=quantized_obstruction_graph,quantized_shell_permutation SIZES=64,68,72 REPEATS=7 OUT=reports/benchmarks/jacobi_backend_entrywise_pair_64_72.csv SUMMARY=reports/benchmarks/jacobi_backend_entrywise_pair_64_72.md",
+  "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68 --repeats 5 --families quantized_shell_permutation --backends reference_f64 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.md",
+  "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68 --repeats 5 --families quantized_shell_permutation --backends x87 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.md",
+  "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 68 --repeats 5 --families quantized_shell_permutation --backends double_double --output reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.md",
+  "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 72 --repeats 5 --families quantized_shell_permutation --backends reference_f64 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.md",
+  "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 72 --repeats 5 --families quantized_shell_permutation --backends x87 --output reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.md",
+  "perf stat -x, -e cycles:u,instructions:u,branches:u,branch-misses:u -r 5 ./.cache/cargo-default-target/release/jacobi-backend-sweep --sizes 72 --repeats 5 --families quantized_shell_permutation --backends double_double --output reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.csv --summary reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.md",
+  "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=reference_f64 SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_reference.svg TITLE='Jacobi quantized_shell_permutation n=72 reference_f64'",
+  "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=x87 SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_x87.svg TITLE='Jacobi quantized_shell_permutation n=72 x87'",
+  "make jacobi-backend-flamegraph FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=30 OUT=reports/benchmarks/jacobi_backend_flamegraph_quantized_shell_72_dd.svg TITLE='Jacobi quantized_shell_permutation n=72 double_double'",
+  "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=reference_f64 SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_reference_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 reference_f64 samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'",
+  "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=x87 SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_x87_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 x87 samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'",
+  "sudo -A sh -c 'echo 1 > /proc/sys/kernel/perf_event_paranoid'; make jacobi-backend-samply PROFILE=dev PRESYMBOLICATE=1 FAMILIES=quantized_shell_permutation BACKENDS=double_double SIZES=72 REPEATS=20 OUT=reports/benchmarks/jacobi_backend_samply_quantized_shell_72_dd_dev.json.gz TITLE='Jacobi quantized_shell_permutation n=72 double_double samply dev'; sudo -A sh -c 'echo 2 > /proc/sys/kernel/perf_event_paranoid'",
+  "make jacobi-backend-samply-compare TOP=8 OUT=reports/benchmarks/jacobi_backend_samply_compare.csv SUMMARY=reports/benchmarks/jacobi_backend_samply_compare.md",
+  "make x87-strategy-bench LEN=65536 REPEATS=5 WORKER_COUNTS=1,2,4,6 OUT=reports/benchmarks/x87_strategy_multicore_65536.csv SUMMARY=reports/benchmarks/x87_strategy_multicore_65536.md",
+  "make x87-strategy-perf LEN=65536 REPEATS=3 PERF_RUNS=3 WORKER_COUNTS=1,2,4,6 OUT=reports/benchmarks/x87_strategy_perf_multicore_65536.csv SUMMARY=reports/benchmarks/x87_strategy_perf_multicore_65536.md",
+]

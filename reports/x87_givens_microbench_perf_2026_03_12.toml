@@ -1,0 +1,45 @@
+[report]
+title = "x87 Givens microbench perf smoke"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "A focused perf-stat follow-up now exists for the x87 Givens microbench lane. The first obstruction_like capture uses the new case/kernel filters to keep the counter lane on the main composed x87 path instead of the entire microbench bundle, which lets the repo compare nanosecond timings and aggregate perf counters for the same selected kernels."
+
+[artifacts]
+csv = "reports/benchmarks/x87_givens_microbench_perf_smoke.csv"
+markdown = "reports/benchmarks/x87_givens_microbench_perf_smoke.md"
+perf_stat = "reports/benchmarks/x87_givens_microbench_perf_smoke.stat"
+binary = "crates/gororoba_cli_algebra/src/bin/x87_givens_microbench.rs"
+
+[validated_command]
+name = "x87_givens_microbench_perf_smoke"
+status = "passed"
+command = "make x87-givens-microbench-perf ITERATIONS=50000 REPEATS=7 PERF_RUNS=5 CASES=obstruction_like KERNELS=x87_atan2_sincos,givens_sincos_ext80,x87_givens_diagonal_update OUT=reports/benchmarks/x87_givens_microbench_perf_smoke.csv SUMMARY=reports/benchmarks/x87_givens_microbench_perf_smoke.md COUNTERS_OUT=reports/benchmarks/x87_givens_microbench_perf_smoke.stat"
+notes = "Uses the conservative user-space event tuple cycles:u,instructions:u,branches:u,branch-misses:u and the new x87 microbench case/kernel filters."
+
+[selection]
+case = "obstruction_like"
+kernels = [
+  "x87_atan2_sincos",
+  "givens_sincos_ext80",
+  "x87_givens_diagonal_update",
+]
+iterations = 50000
+repeats = 7
+perf_runs = 5
+
+[timings_ns_per_call]
+x87_atan2_sincos = 101.7512
+givens_sincos_ext80 = 103.8538
+x87_givens_diagonal_update = 5.8312
+
+[counters]
+cycles = 871901553
+instructions = 170270428
+branches = 6055695
+branch_misses = 7950
+ipc = 0.195286
+branch_miss_rate = 0.001313
+
+[takeaway]
+summary = "The focused perf-stat follow-up does not justify more x87 decomposition right now. On the obstruction_like hot path, the current half-angle Ext80 Givens path stays within about 2.1 percent of the older full-angle composition, while the diagonal-update kernel remains about 17 times cheaper. That means the current x87 optimization target is still the transcendental path as a whole, not the diagonal update, and the existing microbench plus perf follow-up are sufficient for the present roadmap step."

@@ -10,9 +10,9 @@ intent = "Normalize thesis language, remove non-technical rhetoric, define falsi
 
 [policy]
 warnings_as_errors = true
-ascii_only = true
+ansi_safe_utf8 = true
 registry_first = true
-build_discipline = "cargo clippy --workspace -D warnings; cargo test --workspace; make ascii-check"
+build_discipline = "cargo clippy --workspace -D warnings; cargo test --workspace; make ansi-check"
 cuda_backend_policy = "Prefer cudarc runtime NVRTC/PTX path; avoid build-time nvcc pipelines unless explicitly scoped."
 email_alerts_allowed = false
 s3_dependencies_allowed = false

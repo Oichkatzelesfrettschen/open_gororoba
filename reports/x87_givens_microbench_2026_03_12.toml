@@ -1,0 +1,29 @@
+[report]
+title = "x87 Givens microbench smoke"
+date = "2026-03-12"
+status = "implemented"
+status_token = "IMPLEMENTED"
+summary = "A dedicated x87 microbench lane now measures the actual composed Givens/transcendental helpers used by the current backend instead of relying on stale narrative about one monolithic ST-register chain. The first smoke run shows that the composed transcendental path is much more expensive than the diagonal-update micro-kernel, which validates the need to describe the backend as a composed Ext80 path rather than a single ~40-cycle chain."
+
+[artifacts]
+csv = "reports/benchmarks/x87_givens_microbench_smoke.csv"
+markdown = "reports/benchmarks/x87_givens_microbench_smoke.md"
+binary = "crates/gororoba_cli_algebra/src/bin/x87_givens_microbench.rs"
+
+[validated_command]
+name = "x87_givens_microbench_smoke"
+status = "passed"
+command = "make x87-givens-microbench ITERATIONS=50000 REPEATS=7 OUT=reports/benchmarks/x87_givens_microbench_smoke.csv SUMMARY=reports/benchmarks/x87_givens_microbench_smoke.md"
+notes = "Measures the actual composed x87 Givens/transcendental helper costs on four fixed cases."
+
+[findings]
+quarter_pi = "On the quarter_pi case, x87_atan2_sincos measured about 103.912 ns/call, givens_sincos_f64 about 107.663 ns/call, givens_sincos_ext80 about 104.837 ns/call, and x87_givens_diagonal_update about 8.188 ns/call."
+obstruction_like = "On the obstruction_like case, x87_atan2_sincos measured about 102.186 ns/call, givens_sincos_f64 about 119.738 ns/call, givens_sincos_ext80 about 113.925 ns/call, and x87_givens_diagonal_update about 5.932 ns/call."
+mixed_signs = "On the mixed_signs case, x87_atan2_sincos measured about 110.502 ns/call, givens_sincos_f64 about 125.208 ns/call, givens_sincos_ext80 about 113.194 ns/call, and x87_givens_diagonal_update about 6.057 ns/call."
+tiny_angle = "On the tiny_angle case, x87_atan2_sincos measured about 114.455 ns/call, givens_sincos_f64 about 125.873 ns/call, givens_sincos_ext80 about 117.574 ns/call, and x87_givens_diagonal_update about 8.326 ns/call."
+
+[takeaway]
+summary = "The composed x87 transcendental path is roughly one to two orders of magnitude more expensive than the diagonal-update micro-kernel in this smoke run. That means the current x87 Jacobi backend should be described as a composed Ext80 transcendental/update pipeline, not as a zero-conversion monolithic chain, and future x87 performance work should focus on the Givens/transcendental path before the diagonal update."
+
+[follow_up]
+summary = "A focused perf-stat follow-up now exists as a separate lane through make x87-givens-microbench-perf. On the obstruction_like case with x87_atan2_sincos, givens_sincos_ext80, and x87_givens_diagonal_update selected explicitly, the current half-angle Ext80 path stayed within about 2.1 percent of the older full-angle composition, while the diagonal update remained about 17 times cheaper. That closes the immediate x87 decomposition question for the current backend: we need better transcendental throughput if we optimize further, not finer-grained diagonal-update profiling."
