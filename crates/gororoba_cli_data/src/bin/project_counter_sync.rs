@@ -10,6 +10,7 @@
 use std::{collections::HashSet, path::PathBuf};
 
 use clap::Parser;
+use provenance_store::ProvenanceStore;
 use regex::Regex;
 
 #[derive(Parser)]
@@ -35,6 +36,10 @@ struct Args {
     /// Path to registry/binaries.toml.
     #[arg(long, default_value = "registry/binaries.toml")]
     binaries: PathBuf,
+
+    /// Canonical SQLite database path.
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    db: PathBuf,
 
     /// Check-only mode: exit non-zero if drift exists.
     #[arg(long, default_value_t = false)]
@@ -78,6 +83,8 @@ struct ProjectCounts {
     experiment_count: usize,
     complete_experiment_count: usize,
     binary_count: usize,
+    kernel_checked_claims: usize,
+    proof_files: usize,
 }
 
 impl ProjectCounts {
@@ -88,6 +95,8 @@ impl ProjectCounts {
             "experiment_count" => Some(self.experiment_count),
             "complete_experiment_count" => Some(self.complete_experiment_count),
             "binary_count" => Some(self.binary_count),
+            "kernel_checked_claims" => Some(self.kernel_checked_claims),
+            "proof_files" => Some(self.proof_files),
             _ => None,
         }
     }
@@ -100,6 +109,23 @@ fn read_toml<T: serde::de::DeserializeOwned>(path: &PathBuf) -> Result<T, String
 }
 
 fn compute_counts(args: &Args) -> Result<ProjectCounts, String> {
+    if args.db.exists() {
+        let store = ProvenanceStore::open(&args.db)
+            .map_err(|err| format!("open canonical db {}: {err}", args.db.display()))?;
+        let counts = store
+            .control_plane_counts()
+            .map_err(|err| format!("read control-plane counts: {err}"))?;
+        return Ok(ProjectCounts {
+            claim_count: counts.claim_count,
+            insight_count: counts.insight_count,
+            experiment_count: counts.experiment_count,
+            complete_experiment_count: counts.complete_experiment_count,
+            binary_count: counts.binary_count,
+            kernel_checked_claims: counts.kernel_checked_claim_count,
+            proof_files: counts.proof_file_count,
+        });
+    }
+
     let claims: ClaimsRegistry = read_toml(&args.claims)?;
     let insights: InsightsRegistry = read_toml(&args.insights)?;
     let experiments: ExperimentsRegistry = read_toml(&args.experiments)?;
@@ -120,6 +146,8 @@ fn compute_counts(args: &Args) -> Result<ProjectCounts, String> {
         experiment_count: experiments.experiment.len(),
         complete_experiment_count,
         binary_count: binaries.binary.len(),
+        kernel_checked_claims: 0,
+        proof_files: 0,
     })
 }
 
@@ -128,7 +156,7 @@ fn sync_project_block(
     counts: ProjectCounts,
 ) -> Result<(String, Vec<String>), String> {
     let assignment_re = Regex::new(
-        r"^(\s*)(claim_count|insight_count|experiment_count|complete_experiment_count|binary_count)\s*=\s*([0-9]+)(\s*(?:#.*)?)$",
+        r"^(\s*)(claim_count|insight_count|experiment_count|complete_experiment_count|binary_count|kernel_checked_claims|proof_files)\s*=\s*([0-9]+)(\s*(?:#.*)?)$",
     )
     .map_err(|err| format!("compile assignment regex: {err}"))?;
 
@@ -183,6 +211,8 @@ fn sync_project_block(
         "experiment_count",
         "complete_experiment_count",
         "binary_count",
+        "kernel_checked_claims",
+        "proof_files",
     ] {
         if !seen_keys.contains(key) {
             return Err(format!("missing [project] key: {key}"));

@@ -4,10 +4,10 @@
 //!
 //!   eps(i*xi) = 1 + (2/pi) * integral_0^inf omega*eps2(omega)/(omega^2+xi^2) d omega
 //!
-//! where eps2(omega) = Im[eps(omega)] = 2*n(omega)*k(omega).
+//! where `eps2(omega) = Im[eps(omega)] = 2*n(omega)*k(omega)`.
 //!
 //! This follows from Cauchy's theorem applied to eps(omega)-1, which is analytic
-//! in the upper half-plane with Im[eps] >= 0 (passivity). The imaginary-axis
+//! in the upper half-plane with `Im[eps] >= 0` (passivity). The imaginary-axis
 //! dielectric function is real, smooth, and monotone-decreasing -- properties that
 //! make Gauss-Legendre quadrature of the Lifshitz formula exponentially convergent
 //! in n_matsubara.

@@ -2,7 +2,7 @@
 """
 Generate a lightweight, reproducible repo structure report.
 
-This intentionally avoids external dependencies and produces ASCII-only markdown.
+This intentionally avoids external dependencies and produces ANSI-safe UTF-8 markdown.
 It is designed for "audit" visibility, not for CI gating.
 """
 

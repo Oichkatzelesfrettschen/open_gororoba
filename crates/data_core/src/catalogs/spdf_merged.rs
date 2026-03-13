@@ -456,10 +456,19 @@ mod tests {
     fn test_spdf_to_omni_rtn_rotation_lon0() {
         // At lon=0, rotation is identity: bx=br, by=bt, bz=bn
         let rec = SpdfMergedRecord {
-            year: 2020, doy: 100, hour: 6, distance_au: 5.0,
-            lat_deg: 0.0, lon_deg: 0.0,
-            b_magnitude: 1.0, br: 0.5, bt: 0.3, bn: 0.1,
-            proton_density: 0.5, bulk_speed: 700.0, proton_temperature: 200000.0,
+            year: 2020,
+            doy: 100,
+            hour: 6,
+            distance_au: 5.0,
+            lat_deg: 0.0,
+            lon_deg: 0.0,
+            b_magnitude: 1.0,
+            br: 0.5,
+            bt: 0.3,
+            bn: 0.1,
+            proton_density: 0.5,
+            bulk_speed: 700.0,
+            proton_temperature: 200000.0,
         };
         let omni = spdf_to_omni(&[rec], false);
         let o = &omni[0];
@@ -472,10 +481,19 @@ mod tests {
     fn test_spdf_to_omni_rtn_rotation_lon90() {
         // At lon=90, cos=0 sin=1: bx=-bt, by=br, bz=bn
         let rec = SpdfMergedRecord {
-            year: 2020, doy: 100, hour: 6, distance_au: 5.0,
-            lat_deg: 0.0, lon_deg: 90.0,
-            b_magnitude: 1.0, br: 0.5, bt: 0.3, bn: 0.1,
-            proton_density: 0.5, bulk_speed: 700.0, proton_temperature: 200000.0,
+            year: 2020,
+            doy: 100,
+            hour: 6,
+            distance_au: 5.0,
+            lat_deg: 0.0,
+            lon_deg: 90.0,
+            b_magnitude: 1.0,
+            br: 0.5,
+            bt: 0.3,
+            bn: 0.1,
+            proton_density: 0.5,
+            bulk_speed: 700.0,
+            proton_temperature: 200000.0,
         };
         let omni = spdf_to_omni(&[rec], false);
         let o = &omni[0];
@@ -488,10 +506,19 @@ mod tests {
     fn test_spdf_to_omni_rtn_nan_lon_fallback() {
         // NaN longitude falls back to separation_angle=0: (br, -bt, bn)
         let rec = SpdfMergedRecord {
-            year: 2020, doy: 100, hour: 6, distance_au: 5.0,
-            lat_deg: f64::NAN, lon_deg: f64::NAN,
-            b_magnitude: 1.0, br: 0.5, bt: 0.3, bn: 0.1,
-            proton_density: 0.5, bulk_speed: 700.0, proton_temperature: 200000.0,
+            year: 2020,
+            doy: 100,
+            hour: 6,
+            distance_au: 5.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            b_magnitude: 1.0,
+            br: 0.5,
+            bt: 0.3,
+            bn: 0.1,
+            proton_density: 0.5,
+            bulk_speed: 700.0,
+            proton_temperature: 200000.0,
         };
         let omni = spdf_to_omni(&[rec], false);
         let o = &omni[0];

@@ -606,7 +606,10 @@ mod tests {
     fn test_nfw_params_nan_z_returns_finite() {
         let p = nfw_params_from_mass(1.0e12, f64::NAN);
         assert!(p.r200_kpc.is_finite(), "r200 must be finite for NaN z");
-        assert!(p.rho_s_solar_per_kpc3.is_finite(), "rho_s must be finite for NaN z");
+        assert!(
+            p.rho_s_solar_per_kpc3.is_finite(),
+            "rho_s must be finite for NaN z"
+        );
         assert!(p.c200.is_finite(), "c200 must be finite for NaN z");
         assert!(p.r200_kpc > 0.0, "r200 must be positive");
     }
@@ -615,7 +618,10 @@ mod tests {
     fn test_nfw_params_negative_z_returns_finite() {
         let p = nfw_params_from_mass(1.0e12, -1.0);
         assert!(p.r200_kpc.is_finite(), "r200 must be finite for z=-1");
-        assert!(p.rho_s_solar_per_kpc3.is_finite(), "rho_s must be finite for z=-1");
+        assert!(
+            p.rho_s_solar_per_kpc3.is_finite(),
+            "rho_s must be finite for z=-1"
+        );
         assert!(p.r200_kpc > 0.0, "r200 must be positive for z=-1");
     }
 
@@ -624,7 +630,11 @@ mod tests {
         // Regression guard: z=0 behavior must not change.
         let p = nfw_params_from_mass(1.0e12, 0.0);
         assert!((7.0..=11.0).contains(&p.c200), "c200(z=0) = {:.2}", p.c200);
-        assert!(p.r200_kpc > 150.0 && p.r200_kpc < 280.0, "r200(z=0) = {:.1}", p.r200_kpc);
+        assert!(
+            p.r200_kpc > 150.0 && p.r200_kpc < 280.0,
+            "r200(z=0) = {:.1}",
+            p.r200_kpc
+        );
     }
 
     #[test]

@@ -71,3 +71,13 @@ $\alpha$ & $\beta$ & \textbf{Power Index} & \textbf{Slope Ratio} & \textbf{Non-N
 \bottomrule
 \end{longtable}
 
+\noindent\textbf{Note on slope ratio 0.1764 (C-1329, FALSIFIED):}
+The slope ratio at power index $n=1.5$ equals 0.1764, which appears close to
+$42^2/10{,}000 = 0.1764$. This is a \emph{numerical coincidence}, not an
+algebraic connection to sedenion zero-divisor structure. The associator norm
+$\|m_3\|$ enters the viscosity formula as a multiplicative factor
+$\|m_3\|^{\beta}$ that cancels exactly in the ratio $\text{post\_slope}/\text{pre\_slope}$.
+The value depends only on $n$ and the strain-rate grid sampling points; changing
+the grid destroys the 0.1764 value entirely. See \texttt{test\_c1329\_*} in
+\texttt{lbm\_core/src/lib.rs} for three independent falsification proofs.
+

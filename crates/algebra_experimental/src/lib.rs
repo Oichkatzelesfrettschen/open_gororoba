@@ -3,6 +3,13 @@
 //! Emanation tables (de Marrais), E10-octonion bridge, billiard statistics,
 //! Monstrous Moonshine, Golay code, Leech lattice, algebraic dynamics,
 //! SO(7) drift analysis, and external CD data cross-validation.
+//!
+//! # Canonical docs
+//!
+//! This crate's rustdoc is part of the canonical repo documentation surface.
+//! Prefer it, the mdBook, and the relevant registries over generated LaTeX
+//! mirrors when you need the current meaning of an algebraic experiment or
+//! boundary note.
 
 pub mod algebraic_dynamics;
 pub mod bell_inequality;

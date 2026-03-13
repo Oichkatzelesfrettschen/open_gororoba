@@ -33,9 +33,92 @@
 //! - Schafer (1966): Introduction to Non-Associative Algebras
 //! - Baez (2001): The Octonions (math/0105155)
 
-use crate::physics::octonion_field::{oct_conjugate, oct_multiply, oct_norm_sq};
+use crate::{
+    construction::complex_octonion::ComplexOctonion,
+    physics::octonion_field::{oct_conjugate, oct_multiply, oct_norm_sq},
+};
+use num_complex::Complex;
 
-/// A 3x3 Hermitian matrix over the octonions.
+/// A 3x3 Hermitian matrix over the Complexified Octonions $J_3(\mathbb{O}_\mathbb{C})$.
+///
+/// Layout: 3 complex diagonal entries + 3 complex octonion off-diagonal entries.
+///
+/// The matrix is:
+///   [ d[0]     o[2]^\dagger   o[1]  ]
+///   [ o[2]     d[1]           o[0]^\dagger ]
+///   [ o[1]^\dagger o[0]       d[2]  ]
+///
+/// where ^\dagger denotes the Hermitian conjugate (octonion + complex conjugation).
+#[derive(Debug, Clone)]
+pub struct ComplexAlbertElement {
+    pub diag: [Complex<f64>; 3],
+    pub off: [ComplexOctonion; 3],
+}
+
+impl ComplexAlbertElement {
+    pub fn zero() -> Self {
+        Self {
+            diag: [Complex::new(0.0, 0.0); 3],
+            off: [ComplexOctonion::zero(); 3],
+        }
+    }
+
+    pub fn trace(&self) -> Complex<f64> {
+        self.diag[0] + self.diag[1] + self.diag[2]
+    }
+
+    /// Second symmetric function S_2(X).
+    pub fn s2(&self) -> Complex<f64> {
+        let d = &self.diag;
+        let cross_diag = d[0] * d[1] + d[1] * d[2] + d[2] * d[0];
+        let norm_sq_sum = self.off[0].norm_sq_complex()
+            + self.off[1].norm_sq_complex()
+            + self.off[2].norm_sq_complex();
+        cross_diag - norm_sq_sum
+    }
+
+    /// Determinant: det(X) (Freudenthal formula).
+    pub fn det(&self) -> Complex<f64> {
+        let d = &self.diag;
+        let triple_diag = d[0] * d[1] * d[2];
+
+        // Triple product: (x_1 * x_2) * x_3
+        let x1x2 = self.off[0].multiply(&self.off[1]);
+        let x1x2x3 = x1x2.multiply(&self.off[2]);
+
+        // Re_O(q) = q[0], but it is still a complex number
+        let re_triple = Complex::new(2.0 * x1x2x3.real[0], 2.0 * x1x2x3.imag[0]);
+
+        let diag_norm_terms = d[0] * self.off[0].norm_sq_complex()
+            + d[1] * self.off[1].norm_sq_complex()
+            + d[2] * self.off[2].norm_sq_complex();
+
+        triple_diag + re_triple - diag_norm_terms
+    }
+
+    /// Characteristic polynomial coefficients [a, b, c] where
+    /// lambda^3 - a*lambda^2 + b*lambda - c = 0.
+    pub fn characteristic_coefficients(&self) -> (Complex<f64>, Complex<f64>, Complex<f64>) {
+        (self.trace(), self.s2(), self.det())
+    }
+
+    /// Compute eigenvalues via x87 80-bit extended precision Cardano solver.
+    /// Note: By definition, Hermitian matrices over J_3(O_C) have real eigenvalues
+    /// even though their characteristic coefficients may have negligible imaginary parts.
+    pub fn eigenvalues_x87(&self) -> [f64; 3] {
+        let (tr, s2, det) = self.characteristic_coefficients();
+        // Discard negligible imaginary parts for the solver
+        verified_core::x87_math::x87_cubic_roots(tr.re, s2.re, det.re)
+    }
+
+    /// Compute delta^2 using x87 high precision.
+    pub fn delta_squared_x87(&self) -> f64 {
+        let eigs = self.eigenvalues_x87();
+        let delta = (eigs[2] - eigs[0]) / 2.0;
+        delta * delta
+    }
+}
+
 ///
 /// Layout: 3 real diagonal entries + 3 octonion off-diagonal entries = 27D.
 ///
@@ -174,6 +257,28 @@ impl AlbertElement {
             // Complex roots (shouldn't happen for Hermitian matrices)
             [f64::NAN, f64::NAN, f64::NAN]
         }
+    }
+
+    /// Compute eigenvalues via x87 80-bit extended precision Cardano solver.
+    pub fn eigenvalues_x87(&self) -> [f64; 3] {
+        let (tr, s2, det) = self.characteristic_coefficients();
+        verified_core::x87_math::x87_cubic_roots(tr, s2, det)
+    }
+
+    /// High-precision check if the element is a rank-1 projector (idempotent).
+    /// Eigenvalues must be exactly (1, 0, 0) within 80-bit precision.
+    pub fn is_idempotent_x87(&self) -> bool {
+        let eigs = self.eigenvalues_x87();
+        // Check for (0, 0, 1) pattern
+        let eps = 1e-16;
+        eigs[0].abs() < eps && eigs[1].abs() < eps && (eigs[2] - 1.0).abs() < eps
+    }
+
+    /// Compute delta^2 using x87 high precision.
+    pub fn delta_squared_x87(&self) -> f64 {
+        let eigs = self.eigenvalues_x87();
+        let delta = (eigs[2] - eigs[0]) / 2.0;
+        delta * delta
     }
 
     /// Compute delta^2 for the eigenvalue spectrum.
@@ -426,51 +531,16 @@ mod tests {
 
         // First: simple trace-free diagonal
         let x = AlbertElement::diagonal(1.0, 0.0, -1.0);
-        let eigs = x.eigenvalues();
-        let d2 = x.delta_squared();
+        let eigs = x.eigenvalues_x87();
+        let d2 = x.delta_squared_x87();
 
         eprintln!("Trace-free diagonal (1,0,-1):");
         eprintln!("  eigenvalues: {:?}", eigs);
         eprintln!("  delta^2 = {:.6}", d2);
         // This gives delta^2 = 1 (eigenvalues are -1, 0, 1)
 
-        // Now with off-diagonal octonion entries.
-        // Try a rank-1 projector: P = v v* / (v* v) where v = (1, e_1, e_2)
-        // This is an idempotent in J_3(O) with Tr = 1.
-        // For trace-free: X = P - I/3 has Tr = 0.
-        //
-        // P = [ 1    e_1*  e_2  ]   (normalized)
-        //     [ e_1  1     ?    ]
-        //     [ e_2* ?     1    ]
-        //
-        // Actually, let's try the specific construction from Singh:
-        // Take X with diagonal (a, b, -(a+b)) and off-diagonal entries
-        // that make the characteristic polynomial have the right form.
-
-        // A general trace-free element with unit octonion entries:
-        let mut y = AlbertElement::zero();
-        y.diag = [1.0, 0.0, -1.0];
-        // x_1 = e_1 (unit imaginary octonion)
-        y.off[0][1] = 1.0;
-        // x_2 = e_2
-        y.off[1][2] = 1.0;
-        // x_3 = e_4
-        y.off[2][4] = 1.0;
-
-        let eigs_y = y.eigenvalues();
-        let d2_y = y.delta_squared();
-        let (is_arith, q, delta, residual) = y.eigenvalue_arithmetic_check();
-
-        eprintln!("Trace-free with unit octonion off-diagonals:");
-        eprintln!("  eigenvalues: {:?}", eigs_y);
-        eprintln!("  delta^2 = {:.6}", d2_y);
-        eprintln!(
-            "  arithmetic: {}, q={:.6}, delta={:.6}, residual={:.2e}",
-            is_arith, q, delta, residual
-        );
-
-        // Explore a range of configurations
-        eprintln!("\nSingh delta^2 survey:");
+        // Explore a range of configurations using high-precision x87
+        eprintln!("\nSingh delta^2 survey (x87 precision):");
         let mut delta_sq_values = Vec::new();
 
         // Sweep: vary diagonal and off-diagonal
@@ -484,11 +554,11 @@ mod tests {
                 z.off[1][(oct_idx + 1) % 7 + 1] = 1.0;
                 z.off[2][(oct_idx + 2) % 7 + 1] = 1.0;
 
-                let eigs_z = z.eigenvalues();
+                let eigs_z = z.eigenvalues_x87();
                 if eigs_z[0].is_nan() {
                     continue;
                 }
-                let d2_z = z.delta_squared();
+                let d2_z = z.delta_squared_x87();
                 let tr = z.trace();
 
                 eprintln!(
@@ -522,7 +592,7 @@ mod tests {
                 .copied()
                 .fold(f64::NEG_INFINITY, f64::max);
             eprintln!(
-                "\ndelta^2 statistics: mean={:.6}, min={:.6}, max={:.6}",
+                "\ndelta^2 statistics (x87): mean={:.6}, min={:.6}, max={:.6}",
                 mean, min, max
             );
             eprintln!("  3/8 = {:.6}", 3.0 / 8.0);
@@ -564,6 +634,97 @@ mod tests {
                 lambda,
                 val
             );
+        }
+    }
+
+    #[test]
+    fn test_singh_delta_squared_complexified_tracefree() {
+        eprintln!("\nSingh delta^2 survey (x87 precision) over J_3(O_C):");
+        let mut delta_sq_values = Vec::new();
+
+        // We construct complexified trace-free elements.
+        // According to Singh, the eigenvalues should show exactly delta^2 = 3/8 (0.375)
+        for &a in &[1.0, 0.5, 0.3] {
+            let b = -a / 2.0;
+            let c = -a - b;
+            for oct_idx in [1, 2, 3, 4, 5, 6, 7] {
+                let mut z = ComplexAlbertElement::zero();
+
+                // Real part of diagonal is trace-free. Imaginary part is 0.
+                z.diag = [
+                    Complex::new(a, 0.0),
+                    Complex::new(b, 0.0),
+                    Complex::new(c, 0.0),
+                ];
+
+                // Construct complexified off-diagonal entries (e.g. 1 + i*e_k)
+                // where the imaginary component sits in the octonion space.
+                // We use unit real parts and unit imaginary parts for the octonions.
+                let mut off_0 = ComplexOctonion::zero();
+                off_0.real[oct_idx] = 1.0;
+                off_0.imag[(oct_idx + 1) % 7 + 1] = 1.0; // i * e_{k+1}
+                z.off[0] = off_0;
+
+                let mut off_1 = ComplexOctonion::zero();
+                off_1.real[(oct_idx + 1) % 7 + 1] = 1.0;
+                off_1.imag[(oct_idx + 2) % 7 + 1] = 1.0;
+                z.off[1] = off_1;
+
+                let mut off_2 = ComplexOctonion::zero();
+                off_2.real[(oct_idx + 2) % 7 + 1] = 1.0;
+                off_2.imag[(oct_idx + 3) % 7 + 1] = 1.0;
+                z.off[2] = off_2;
+
+                let eigs_z = z.eigenvalues_x87();
+                if eigs_z[0].is_nan() {
+                    continue;
+                }
+
+                // Singh's delta^2 is invariant for normalized elements (or specific projectors).
+                // Let's normalize the trace-free element by dividing by its largest eigenvalue magnitude.
+                let max_eig = eigs_z[0].abs().max(eigs_z[2].abs());
+                let normalized_eigs = [
+                    eigs_z[0] / max_eig,
+                    eigs_z[1] / max_eig,
+                    eigs_z[2] / max_eig,
+                ];
+
+                let delta = (normalized_eigs[2] - normalized_eigs[0]) / 2.0;
+                let d2_z = delta * delta;
+
+                eprintln!(
+                    "  J_3(O_C) diag=({:.2},{:.2},{:.2}), oct=[{},{},{}]: eigs=[{:.4},{:.4},{:.4}], d2={:.6}",
+                    a,
+                    b,
+                    c,
+                    oct_idx,
+                    (oct_idx + 1) % 7 + 1,
+                    (oct_idx + 2) % 7 + 1,
+                    normalized_eigs[0],
+                    normalized_eigs[1],
+                    normalized_eigs[2],
+                    d2_z
+                );
+
+                delta_sq_values.push(d2_z);
+            }
+        }
+
+        if !delta_sq_values.is_empty() {
+            let mean = delta_sq_values.iter().sum::<f64>() / delta_sq_values.len() as f64;
+            let min = delta_sq_values
+                .iter()
+                .copied()
+                .fold(f64::INFINITY, f64::min);
+            let max = delta_sq_values
+                .iter()
+                .copied()
+                .fold(f64::NEG_INFINITY, f64::max);
+            eprintln!(
+                "\ndelta^2 statistics (x87 J_3(O_C)): mean={:.6}, min={:.6}, max={:.6}",
+                mean, min, max
+            );
+            eprintln!("  Singh Expectation 3/8 = {:.6}", 3.0 / 8.0);
         }
     }
 }

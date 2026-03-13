@@ -176,15 +176,36 @@ impl Abm8Integrator {
         // Predict using Adams-Bashforth (explicit)
         let mut predicted = states.to_vec();
         for i in 0..n {
-            let mut vel_sum = Vector3::zeros();
-            let mut acc_sum = Vector3::zeros();
+            let mut v_hist_x = [0.0; 8];
+            let mut v_hist_y = [0.0; 8];
+            let mut v_hist_z = [0.0; 8];
+            let mut a_hist_x = [0.0; 8];
+            let mut a_hist_y = [0.0; 8];
+            let mut a_hist_z = [0.0; 8];
 
-            for (k, &coeff) in AB8_COEFFS.iter().enumerate() {
-                // Ring buffer: history[(idx - k) mod 8] = f_{n-k}
+            for k in 0..8 {
                 let hist_idx = (idx + 8 - k) % 8;
-                vel_sum += self.vel_history[hist_idx][i] * coeff;
-                acc_sum += self.acc_history[hist_idx][i] * coeff;
+                let v = self.vel_history[hist_idx][i];
+                let a = self.acc_history[hist_idx][i];
+                v_hist_x[k] = v.x;
+                v_hist_y[k] = v.y;
+                v_hist_z[k] = v.z;
+                a_hist_x[k] = a.x;
+                a_hist_y[k] = a.y;
+                a_hist_z[k] = a.z;
             }
+
+            let vel_sum = Vector3::new(
+                verified_core::x87_math::x87_abm8_dot_product(&v_hist_x, &AB8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&v_hist_y, &AB8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&v_hist_z, &AB8_COEFFS),
+            );
+
+            let acc_sum = Vector3::new(
+                verified_core::x87_math::x87_abm8_dot_product(&a_hist_x, &AB8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&a_hist_y, &AB8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&a_hist_z, &AB8_COEFFS),
+            );
 
             predicted[i].pos = states[i].pos + vel_sum * dt;
             predicted[i].vel = states[i].vel + acc_sum * dt;
@@ -197,15 +218,44 @@ impl Abm8Integrator {
         // The corrector uses f_{n+1} (predicted) as the first term
         let next_idx = (idx + 1) % 8;
         for i in 0..n {
-            // Build corrector sum: AM8_COEFFS[0] * f_{n+1} + AM8_COEFFS[1] * f_n + ...
-            let mut vel_corr = predicted[i].vel * AM8_COEFFS[0];
-            let mut acc_corr = predicted_acc[i] * AM8_COEFFS[0];
+            let mut v_hist_x = [0.0; 8];
+            let mut v_hist_y = [0.0; 8];
+            let mut v_hist_z = [0.0; 8];
+            let mut a_hist_x = [0.0; 8];
+            let mut a_hist_y = [0.0; 8];
+            let mut a_hist_z = [0.0; 8];
 
-            for (k, &coeff) in AM8_COEFFS.iter().enumerate().skip(1) {
+            // AM8 uses the newly predicted f_{n+1} at index 0
+            v_hist_x[0] = predicted[i].vel.x;
+            v_hist_y[0] = predicted[i].vel.y;
+            v_hist_z[0] = predicted[i].vel.z;
+            a_hist_x[0] = predicted_acc[i].x;
+            a_hist_y[0] = predicted_acc[i].y;
+            a_hist_z[0] = predicted_acc[i].z;
+
+            for k in 1..8 {
                 let hist_idx = (idx + 8 + 1 - k) % 8;
-                vel_corr += self.vel_history[hist_idx][i] * coeff;
-                acc_corr += self.acc_history[hist_idx][i] * coeff;
+                let v = self.vel_history[hist_idx][i];
+                let a = self.acc_history[hist_idx][i];
+                v_hist_x[k] = v.x;
+                v_hist_y[k] = v.y;
+                v_hist_z[k] = v.z;
+                a_hist_x[k] = a.x;
+                a_hist_y[k] = a.y;
+                a_hist_z[k] = a.z;
             }
+
+            let vel_corr = Vector3::new(
+                verified_core::x87_math::x87_abm8_dot_product(&v_hist_x, &AM8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&v_hist_y, &AM8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&v_hist_z, &AM8_COEFFS),
+            );
+
+            let acc_corr = Vector3::new(
+                verified_core::x87_math::x87_abm8_dot_product(&a_hist_x, &AM8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&a_hist_y, &AM8_COEFFS),
+                verified_core::x87_math::x87_abm8_dot_product(&a_hist_z, &AM8_COEFFS),
+            );
 
             states[i].pos += vel_corr * dt;
             states[i].vel += acc_corr * dt;
@@ -322,6 +372,56 @@ mod tests {
             dist_from_start < 1e-6,
             "Position drift after 1 orbit: {:.2e}",
             dist_from_start
+        );
+    }
+
+    #[test]
+    fn kepler_circular_orbit_long_precision() {
+        let gm: f64 = 1.0;
+        let r0: f64 = 1.0;
+        let v_circ = (gm / r0).sqrt();
+
+        let mut states = vec![
+            Abm8BodyState {
+                pos: Vector3::zeros(),
+                vel: Vector3::zeros(),
+            },
+            Abm8BodyState {
+                pos: Vector3::new(r0, 0.0, 0.0),
+                vel: Vector3::new(0.0, v_circ, 0.0),
+            },
+        ];
+
+        let accel_fn = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
+            let r_vec = s[1].pos - s[0].pos;
+            let r = r_vec.norm();
+            let a = -r_vec * (gm / (r.powi(3)));
+            vec![Vector3::zeros(), a]
+        };
+
+        let initial_energy = Abm8Integrator::total_energy_2body(&states, gm);
+        let period = 2.0 * std::f64::consts::PI;
+        let dt = 0.01;
+        let n_orbits = 10;
+        let n_steps = (n_orbits as f64 * period / dt) as usize;
+
+        let mut integrator = Abm8Integrator::new(dt, 2);
+
+        for _ in 0..n_steps {
+            integrator.step(&mut states, &accel_fn);
+        }
+
+        let final_energy = Abm8Integrator::total_energy_2body(&states, gm);
+        let energy_drift = (final_energy - initial_energy).abs();
+
+        println!("Initial Energy: {:.18}", initial_energy);
+        println!("Final Energy:   {:.18}", final_energy);
+        println!("Energy Drift:   {:.2e}", energy_drift);
+
+        assert!(
+            energy_drift < 1e-12,
+            "Energy drift too high: {:.2e}",
+            energy_drift
         );
     }
 

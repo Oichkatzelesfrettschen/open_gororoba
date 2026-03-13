@@ -803,7 +803,7 @@ impl DrudeLorentzParams {
         integral / (std::f64::consts::PI / 2.0)
     }
 
-    /// Screened plasma frequency from Re[eps] = 0 crossing.
+    /// Screened plasma frequency from `Re[eps] = 0` crossing.
     ///
     /// For metals, Re[eps(omega)] crosses zero at the screened plasma frequency
     /// omega_p* = omega_p / sqrt(eps_inf + chi_bound). Scans the specified range
@@ -1527,8 +1527,8 @@ impl DrudeLorentzParams {
     ///
     /// k_spp = (omega/c) * sqrt(eps_m * eps_d / (eps_m + eps_d))
     /// where eps_d is the dielectric medium permittivity (default: vacuum = 1).
-    /// SPPs exist when Re[eps_m] < -Re[eps_d]. Returns the complex k_spp;
-    /// Re[k_spp] gives the spatial wavelength, Im[k_spp] the decay.
+    /// SPPs exist when `Re[eps_m] < -Re[eps_d]`. Returns the complex `k_spp`;
+    /// `Re[k_spp]` gives the spatial wavelength, `Im[k_spp]` the decay.
     pub fn spp_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
         let eps_m = self.epsilon(omega);
         let eps_d = Complex64::new(eps_dielectric, 0.0);
@@ -1538,9 +1538,9 @@ impl DrudeLorentzParams {
 
     /// SPP propagation length in meters.
     ///
-    /// L_spp = 1 / (2 * Im[k_spp]). This is the 1/e decay length of
+    /// `L_spp = 1 / (2 * Im[k_spp])`. This is the `1/e` decay length of
     /// the SPP intensity along the surface. For gold at 633 nm, L_spp ~ 10 um.
-    /// Returns None if Im[k_spp] is non-positive (no damping, unphysical).
+    /// Returns `None` if `Im[k_spp]` is non-positive (no damping, unphysical).
     pub fn spp_propagation_length(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
         let k_spp = self.spp_wavevector(omega, eps_dielectric);
         let k_im = k_spp.im.abs();
@@ -1552,9 +1552,9 @@ impl DrudeLorentzParams {
 
     /// Evanescent decay length into vacuum (or dielectric medium) in meters.
     ///
-    /// delta = c / (omega * sqrt(-eps_m')) where eps_m' = Re[eps_m].
-    /// Valid only when Re[eps_m] < 0 (metallic regime). Returns None for
-    /// dielectrics with Re[eps] > 0. This determines how deeply evanescent
+    /// `delta = c / (omega * sqrt(-eps_m'))` where `eps_m' = Re[eps_m]`.
+    /// Valid only when `Re[eps_m] < 0` (metallic regime). Returns `None` for
+    /// dielectrics with `Re[eps] > 0`. This determines how deeply evanescent
     /// fields penetrate into the medium -- critical for Casimir proximity effects.
     pub fn evanescent_decay_length(&self, omega: f64) -> Option<f64> {
         let eps_re = self.epsilon(omega).re;
@@ -1624,7 +1624,7 @@ impl DrudeLorentzParams {
     /// Brewster angle in radians for p-polarized light.
     ///
     /// theta_B = atan(n2/n1) for non-absorbing dielectrics.
-    /// Returns None if the material is absorbing (Im[n] > 0.01 * Re[n])
+    /// Returns `None` if the material is absorbing (`Im[n] > 0.01 * Re[n]`)
     /// because the pseudo-Brewster angle in absorbing media requires
     /// numerical search. For low-loss dielectrics, this gives the angle
     /// where p-polarization reflectivity vanishes.
@@ -1731,7 +1731,7 @@ impl DrudeLorentzParams {
 
     /// Faraday rotation per unit length in rad/m.
     ///
-    /// theta_F = omega * Re[eps_xy] / (2 * n * c) where n is the real
+    /// `theta_F = omega * Re[eps_xy] / (2 * n * c)` where `n` is the real
     /// refractive index and eps_xy is the off-diagonal Voigt element.
     /// Returns None if no Drude term.
     pub fn faraday_rotation(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<f64> {
@@ -1874,7 +1874,7 @@ impl DrudeLorentzParams {
     /// Epsilon-near-zero (ENZ) frequency: where Re[epsilon(omega)] crosses zero.
     ///
     /// Scans from scan_min to scan_max (rad/s) looking for a sign change in
-    /// Re[epsilon]. Returns the frequency in rad/s via bisection.
+    /// `Re[epsilon]`. Returns the frequency in `rad/s` via bisection.
     /// For metals, this is the screened plasma frequency.
     pub fn enz_frequency(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
         let n_scan = 2000;
@@ -1908,8 +1908,8 @@ impl DrudeLorentzParams {
 
     /// Group velocity at the ENZ frequency, normalized to c.
     ///
-    /// v_g/c = 1 / Re[n_g] where n_g = n + omega * dn/domega.
-    /// At the ENZ point, Re[eps] ~ 0 so the phase velocity diverges, but the
+    /// `v_g/c = 1 / Re[n_g]` where `n_g = n + omega * dn/domega`.
+    /// At the ENZ point, `Re[eps] ~ 0` so the phase velocity diverges, but the
     /// group velocity remains finite and can be very slow (slow light).
     /// Returns v_g/c, or None if no ENZ crossing exists.
     pub fn enz_group_velocity(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
@@ -1924,7 +1924,7 @@ impl DrudeLorentzParams {
     /// Reststrahlen band boundaries for polar dielectrics.
     ///
     /// In a polar dielectric with TO and LO phonon frequencies, the region
-    /// omega_TO < omega < omega_LO has Re[eps] < 0 (metallic-like behavior).
+    /// `omega_TO < omega < omega_LO` has `Re[eps] < 0` (metallic-like behavior).
     /// This method returns (omega_TO, omega_LO) in rad/s if such a band exists,
     /// detected from the Lorentz oscillators.
     ///
@@ -1966,7 +1966,7 @@ impl DrudeLorentzParams {
     ///
     /// The surface loss function describes the probability of energy loss for
     /// electrons scattered from a surface, probing surface plasmon excitations.
-    /// Peaks at the surface plasmon frequency where Re[eps] = -1.
+    /// Peaks at the surface plasmon frequency where `Re[eps] = -1`.
     pub fn surface_loss_function(&self, omega: f64) -> f64 {
         let eps = self.epsilon(omega);
         let denom = Complex64::new(1.0, 0.0) + eps;
@@ -2098,7 +2098,7 @@ impl DrudeLorentzParams {
 
     /// Figure of merit for surface plasmon polariton propagation.
     ///
-    /// FoM = Re[k_spp] / (2 * Im[k_spp]) = number of wavelengths the SPP
+    /// `FoM = Re[k_spp] / (2 * Im[k_spp])` = number of wavelengths the SPP
     /// propagates before decaying to 1/e. Higher FoM means longer-range SPPs.
     /// Returns None if no SPP exists (dielectric material).
     pub fn figure_of_merit_spp(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
@@ -2111,8 +2111,8 @@ impl DrudeLorentzParams {
 
     /// Partial spectral weight in a frequency window [omega_min, omega_max].
     ///
-    /// SW = integral[sigma_1(omega) d_omega] from omega_min to omega_max
-    /// where sigma_1 = Re[sigma] = omega * Im[eps] * eps_0.
+    /// `SW = integral[sigma_1(omega) d_omega]` from `omega_min` to `omega_max`
+    /// where `sigma_1 = Re[sigma] = omega * Im[eps] * eps_0`.
     /// This is the partial oscillator strength sum rule.
     pub fn spectral_weight_window(&self, omega_min: f64, omega_max: f64, n_steps: usize) -> f64 {
         if n_steps < 2 || omega_max <= omega_min {
@@ -2387,10 +2387,10 @@ impl DrudeLorentzParams {
         Some(PI * w * w)
     }
 
-    /// Modal birefringence: difference between Re[n] at two polarizations.
+    /// Modal birefringence: difference between `Re[n]` at two polarizations.
     ///
     /// For isotropic DL materials this is zero by symmetry, but for materials
-    /// with strong absorption the effective birefringence |n - n*| = 2*Im[n]
+    /// with strong absorption the effective birefringence `|n - n*| = 2*Im[n]`
     /// characterizes polarization-dependent loss.
     pub fn modal_birefringence(&self, omega: f64) -> f64 {
         let n = self.refractive_index(omega);
@@ -2522,10 +2522,10 @@ impl DrudeLorentzParams {
         numerator / denominator
     }
 
-    /// Hot-electron generation rate proxy: proportional to Im[eps] at the given frequency.
+    /// Hot-electron generation rate proxy: proportional to `Im[eps]` at the given frequency.
     ///
-    /// Hot electron generation from plasmon decay scales as Im[eps(omega)] * |E|^2.
-    /// This returns Im[eps] as the material-dependent factor; the field enhancement
+    /// Hot electron generation from plasmon decay scales as `Im[eps(omega)] * |E|^2`.
+    /// This returns `Im[eps]` as the material-dependent factor; the field enhancement
     /// must be computed separately from geometry.
     pub fn hot_electron_generation_proxy(&self, omega: f64) -> f64 {
         self.epsilon(omega).im.abs()
@@ -2584,7 +2584,7 @@ impl DrudeLorentzParams {
 
     /// Phase shift accumulated by light traversing the film once.
     ///
-    /// phi = Re[n] * omega * d / c (in radians).
+    /// `phi = Re[n] * omega * d / c` (in radians).
     pub fn thin_film_phase_shift(&self, omega: f64, thickness_m: f64) -> f64 {
         let n = self.refractive_index(omega);
         n.re * omega * thickness_m / C
@@ -2776,7 +2776,7 @@ impl DrudeLorentzParams {
 
     /// Photo-induced absorption change from transient carrier density.
     ///
-    /// Delta_alpha = (omega/c) * Im[delta_eps] / Re[n], where delta_eps
+    /// `Delta_alpha = (omega/c) * Im[delta_eps] / Re[n]`, where `delta_eps`
     /// comes from the Drude response of injected carriers.
     /// Returns None if no Drude component.
     pub fn photo_induced_absorption(
@@ -2927,7 +2927,8 @@ impl DrudeLorentzParams {
     // Part 17b: Fluctuation Electrodynamics and Noise
     // Thermal and quantum fluctuation properties of dielectric functions.
 
-    /// Fluctuation-dissipation spectral density: S(omega,T) = (2*hbar*omega/pi) * Im[eps] * (n_BE + 1/2).
+    /// Fluctuation-dissipation spectral density:
+    /// `S(omega,T) = (2*hbar*omega/pi) * Im[eps] * (n_BE + 1/2)`.
     /// Returns spectral density in eV^2/(rad/s) units.
     pub fn fluctuation_dissipation_spectral(&self, omega: f64, temperature_k: f64) -> f64 {
         let eps_im = self.epsilon(omega).im;
@@ -2945,7 +2946,8 @@ impl DrudeLorentzParams {
         (2.0 * hbar_omega_ev / std::f64::consts::PI) * eps_im.abs() * (n_be + 0.5)
     }
 
-    /// Thermal noise power density: P(omega) = hbar*omega * Im[eps] * coth(hbar*omega / 2*k_B*T).
+    /// Thermal noise power density:
+    /// `P(omega) = hbar*omega * Im[eps] * coth(hbar*omega / 2*k_B*T)`.
     pub fn thermal_noise_power_density(&self, omega: f64, temperature_k: f64) -> f64 {
         let eps_im = self.epsilon(omega).im;
         let hbar_omega_ev = HBAR_EV_S * omega;
@@ -5339,7 +5341,7 @@ pub struct SellmeierParams {
 }
 
 impl SellmeierParams {
-    /// Refractive index at wavelength lambda_um [micrometers].
+    /// Refractive index at wavelength `lambda_um` in micrometers.
     ///
     /// Returns n(lambda) from the Sellmeier equation.
     pub fn refractive_index(&self, lambda_um: f64) -> f64 {

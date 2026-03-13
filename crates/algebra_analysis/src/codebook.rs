@@ -1549,6 +1549,34 @@ pub fn compute_multiplication_coupling(
     }
 }
 
+/// Kahan compensated dot product for 8D vectors.
+/// O(eps) error instead of O(8*eps) for naive sum, critical for rank detection
+/// near linear dependence where dot products approach zero.
+fn kahan_dot(a: &[f64], b: &[f64]) -> f64 {
+    let mut sum = 0.0_f64;
+    let mut c = 0.0_f64;
+    for (&ai, &bi) in a.iter().zip(b.iter()) {
+        let y = ai * bi - c;
+        let t = sum + y;
+        c = (t - sum) - y;
+        sum = t;
+    }
+    sum
+}
+
+/// Kahan compensated squared norm.
+fn kahan_norm_sq(v: &[f64]) -> f64 {
+    let mut sum = 0.0_f64;
+    let mut c = 0.0_f64;
+    for &x in v {
+        let y = x * x - c;
+        let t = sum + y;
+        c = (t - sum) - y;
+        sum = t;
+    }
+    sum
+}
+
 /// Build an orthonormal basis for the column space of the given vectors.
 /// Returns (basis_vectors, rank).
 fn gram_schmidt_basis(vectors: &[[f64; 8]]) -> (Vec<[f64; 8]>, usize) {
@@ -1560,12 +1588,12 @@ fn gram_schmidt_basis(vectors: &[[f64; 8]]) -> (Vec<[f64; 8]>, usize) {
         }
         let mut w = *v;
         for b in &basis {
-            let dot: f64 = w.iter().zip(b.iter()).map(|(a, b)| a * b).sum();
+            let dot = kahan_dot(&w, b);
             for (wk, &bk) in w.iter_mut().zip(b.iter()) {
                 *wk -= dot * bk;
             }
         }
-        let norm = w.iter().map(|x| x * x).sum::<f64>().sqrt();
+        let norm = kahan_norm_sq(&w).sqrt();
         if norm > 1e-10 {
             w.iter_mut().for_each(|x| *x /= norm);
             basis.push(w);
@@ -1578,10 +1606,7 @@ fn gram_schmidt_basis(vectors: &[[f64; 8]]) -> (Vec<[f64; 8]>, usize) {
 
 /// Project an 8D vector onto the orthonormal basis, giving an r-dimensional vector.
 fn project_to_basis(v: &[f64; 8], basis: &[[f64; 8]]) -> Vec<f64> {
-    basis
-        .iter()
-        .map(|b| v.iter().zip(b.iter()).map(|(&vi, &bi)| vi * bi).sum())
-        .collect()
+    basis.iter().map(|b| kahan_dot(v, b)).collect()
 }
 
 /// Find r linearly independent columns from reduced-space vectors.
@@ -1596,8 +1621,8 @@ fn find_pivot_columns_reduced(phi_r: &[Vec<f64>], rank: usize) -> Vec<usize> {
 
         let mut v = col.clone();
         for b in &basis {
-            let dot: f64 = v.iter().zip(b.iter()).map(|(a, b)| a * b).sum();
-            let norm_sq: f64 = b.iter().map(|x| x * x).sum();
+            let dot = kahan_dot(&v, b);
+            let norm_sq = kahan_norm_sq(b);
             if norm_sq > 1e-12 {
                 for (vk, &bk) in v.iter_mut().zip(b.iter()) {
                     *vk -= (dot / norm_sq) * bk;
@@ -1605,7 +1630,7 @@ fn find_pivot_columns_reduced(phi_r: &[Vec<f64>], rank: usize) -> Vec<usize> {
             }
         }
 
-        let norm_sq: f64 = v.iter().map(|x| x * x).sum();
+        let norm_sq = kahan_norm_sq(&v);
         if norm_sq > 1e-8 {
             basis.push(v);
             pivots.push(c);

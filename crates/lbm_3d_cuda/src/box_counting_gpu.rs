@@ -82,7 +82,9 @@ impl GpuBoxCounter {
 
         let d_count = stream.alloc_zeros::<u32>(1).context("Alloc d_count")?;
         // 256-bin histogram for Otsu threshold
-        let d_histogram = stream.alloc_zeros::<u32>(256).context("Alloc d_histogram")?;
+        let d_histogram = stream
+            .alloc_zeros::<u32>(256)
+            .context("Alloc d_histogram")?;
         // Min/max reduction buffers (max 1024 blocks)
         let d_min_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_min_buf")?;
         let d_max_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_max_buf")?;
@@ -127,7 +129,9 @@ impl GpuBoxCounter {
             .context("Load zero_histogram")?;
 
         let d_count = stream.alloc_zeros::<u32>(1).context("Alloc d_count")?;
-        let d_histogram = stream.alloc_zeros::<u32>(256).context("Alloc d_histogram")?;
+        let d_histogram = stream
+            .alloc_zeros::<u32>(256)
+            .context("Alloc d_histogram")?;
         let d_min_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_min_buf")?;
         let d_max_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_max_buf")?;
 
@@ -335,8 +339,7 @@ impl GpuBoxCounter {
             let mean_bg = sum_bg / weight_bg as f64;
             let mean_fg = (sum_total - sum_bg) / weight_fg as f64;
 
-            let between_var =
-                (weight_bg as f64) * (weight_fg as f64) * (mean_bg - mean_fg).powi(2);
+            let between_var = (weight_bg as f64) * (weight_fg as f64) * (mean_bg - mean_fg).powi(2);
 
             if between_var > max_variance {
                 max_variance = between_var;
@@ -485,23 +488,24 @@ mod tests {
     #[test]
     #[ignore]
     fn test_gpu_cpu_agreement() {
-        use cosmology_core::sersic::box_counting_fractal_dim_f32;
+        use cosmology_core::sersic::{box_counting_fractal_dim_threshold, otsu_threshold_f32};
 
         let ctx = CudaContext::new(0).expect("CUDA context");
         let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
         let n = 16usize;
         let rho: Vec<f32> = (0..(n * n * n)).map(|i| ((i % 7) as f32) * 0.3).collect();
 
-        // GPU
-        let mut sorted = rho.clone();
-        sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        let threshold = sorted[sorted.len() / 2];
+        // Compute Otsu threshold once on CPU -- same threshold for both paths
+        let threshold = otsu_threshold_f32(&rho);
+
+        // GPU box-counting with Otsu threshold
         let gpu_result = counter
             .fractal_dimension(&rho, threshold, n, n, n)
             .expect("fractal_dimension");
 
-        // CPU
-        let cpu_df = box_counting_fractal_dim_f32(&rho, n, n, n);
+        // CPU box-counting with same Otsu threshold
+        let rho_f64: Vec<f64> = rho.iter().map(|&v| v as f64).collect();
+        let cpu_df = box_counting_fractal_dim_threshold(&rho_f64, n, n, n, threshold as f64);
 
         assert!(
             (gpu_result.d_f - cpu_df).abs() < 0.05,

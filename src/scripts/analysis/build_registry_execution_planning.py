@@ -45,7 +45,7 @@ RUNTIME_STACK_ALLOWLIST = [
     "rust",
     "python",
     "docker_python",
-    "coq",
+    "rocq",
     "latex",
     "cpp",
 ]
@@ -573,7 +573,7 @@ def _infer_runtime_stack(module_name: str) -> str:
         "materials": "mixed",
         "particle": "python",
         "quantum_docker": "docker_python",
-        "coq": "coq",
+        "rocq": "rocq",
         "latex": "latex",
         "cpp": "cpp",
     }

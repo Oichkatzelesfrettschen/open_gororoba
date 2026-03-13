@@ -4,3 +4,4 @@ papers/pdf/*.pdf    -text
 data/external/documents_ingest/**/*.pdf    -text
 data/external/documents_extracted/**/*.png    -text
 data/output/heliosphere/soho/celias_pm_native_5min.csv    -text
+registry/canonical/control_plane.sqlite3    -text

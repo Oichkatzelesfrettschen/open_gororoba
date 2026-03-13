@@ -8,8 +8,10 @@
 //! This module centralises that pipeline so individual spacecraft modules
 //! only need to declare their parameters and delegate to `SpdfMission`.
 
-use super::omni::OmniRecord;
-use super::spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni};
+use super::{
+    omni::OmniRecord,
+    spdf_merged::{SpdfColumnLayout, SpdfMergedRecord, parse_spdf_merged, spdf_to_omni},
+};
 use crate::fetcher::FetchError;
 
 /// Shared parse/to-OMNI configuration for a SPDF merged hourly dataset.

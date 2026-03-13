@@ -10,7 +10,7 @@ Output:
 - docs/claims/INDEX.md
 - docs/claims/by_domain/<domain>.md
 
-This is deterministic and offline. Output is ASCII-only.
+This is deterministic and offline. Output follows the ANSI-safe UTF-8 character policy.
 """
 
 # SCRIPT_CONTRACT: {"inferred":true,"inputs":[],"network":"forbidden","network_env":"","outputs":[],"version":1}
@@ -38,7 +38,7 @@ CANONICAL_DOMAINS = (
     "datasets",
     "visualization",
     "cpp",
-    "coq",
+    "rocq",
     "legacy",
 )
 

@@ -95,11 +95,7 @@ impl EuclidSersicParams {
     pub fn ml_ratio(&self) -> f64 {
         let m_star = 10.0_f64.powf(self.log_stellar_mass);
         let lum = 10.0_f64.powf(self.log_luminosity);
-        if lum > 0.0 {
-            m_star / lum
-        } else {
-            1.0
-        }
+        if lum > 0.0 { m_star / lum } else { 1.0 }
     }
 
     /// Morphological mass-to-light ratio based on Sersic index.
@@ -112,11 +108,7 @@ impl EuclidSersicParams {
     /// The original `ml_ratio()` is preserved for future audit when the
     /// column convention is resolved.
     pub fn ml_ratio_morphological(&self) -> f64 {
-        if self.n < 2.0 {
-            2.0
-        } else {
-            5.0
-        }
+        if self.n < 2.0 { 2.0 } else { 5.0 }
     }
 
     /// Broad morphological type from Sersic index.
@@ -124,11 +116,7 @@ impl EuclidSersicParams {
     /// n < 2: "disk" (exponential-dominated, late-type).
     /// n >= 2: "elliptical" (de Vaucouleurs-like, early-type).
     pub fn morphological_type(&self) -> &'static str {
-        if self.n < 2.0 {
-            "disk"
-        } else {
-            "elliptical"
-        }
+        if self.n < 2.0 { "disk" } else { "elliptical" }
     }
 }
 
@@ -190,8 +178,7 @@ pub fn read_euclid_physical_measurements(
 ) -> Result<Vec<EuclidSersicParams>, String> {
     use arrow_array::RecordBatch;
     use parquet::arrow::arrow_reader::ParquetRecordBatchReaderBuilder;
-    use std::fs::File;
-    use std::path::Path;
+    use std::{fs::File, path::Path};
 
     if !Path::new(parquet_path).exists() {
         return Err(format!(
@@ -238,8 +225,7 @@ pub fn read_euclid_physical_measurements(
     let mut result = Vec::new();
 
     for batch_result in reader {
-        let batch: RecordBatch =
-            batch_result.map_err(|e| format!("Failed to read batch: {e}"))?;
+        let batch: RecordBatch = batch_result.map_err(|e| format!("Failed to read batch: {e}"))?;
 
         let object_id = col_i64(&batch, "object_id")?;
         let ra = col_f64(&batch, "right_ascension")?;
@@ -367,11 +353,7 @@ mod tests {
         let m_halo = 1e12;
         let m_star = smhm_moster2013(m_halo);
         let m_halo_recovered = smhm_invert_moster2013(m_star);
-        assert_relative_eq!(
-            m_halo_recovered.log10(),
-            m_halo.log10(),
-            epsilon = 0.01
-        );
+        assert_relative_eq!(m_halo_recovered.log10(), m_halo.log10(), epsilon = 0.01);
     }
 
     #[test]
@@ -403,9 +385,17 @@ mod tests {
     #[test]
     fn test_ml_ratio_morphological_disk() {
         let p = EuclidSersicParams {
-            object_id: 1, ra_deg: 0.0, dec_deg: 0.0,
-            n: 1.0, r_e_arcsec: 1.0, ellipticity: 0.0, pa_deg: 0.0,
-            photo_z: 0.3, log_stellar_mass: 10.0, log_luminosity: 10.0, log_sfr: 0.0,
+            object_id: 1,
+            ra_deg: 0.0,
+            dec_deg: 0.0,
+            n: 1.0,
+            r_e_arcsec: 1.0,
+            ellipticity: 0.0,
+            pa_deg: 0.0,
+            photo_z: 0.3,
+            log_stellar_mass: 10.0,
+            log_luminosity: 10.0,
+            log_sfr: 0.0,
         };
         assert_relative_eq!(p.ml_ratio_morphological(), 2.0, epsilon = 1e-10);
         assert_eq!(p.morphological_type(), "disk");
@@ -414,9 +404,17 @@ mod tests {
     #[test]
     fn test_ml_ratio_morphological_elliptical() {
         let p = EuclidSersicParams {
-            object_id: 2, ra_deg: 0.0, dec_deg: 0.0,
-            n: 4.0, r_e_arcsec: 1.0, ellipticity: 0.0, pa_deg: 0.0,
-            photo_z: 0.3, log_stellar_mass: 10.0, log_luminosity: 10.0, log_sfr: 0.0,
+            object_id: 2,
+            ra_deg: 0.0,
+            dec_deg: 0.0,
+            n: 4.0,
+            r_e_arcsec: 1.0,
+            ellipticity: 0.0,
+            pa_deg: 0.0,
+            photo_z: 0.3,
+            log_stellar_mass: 10.0,
+            log_luminosity: 10.0,
+            log_sfr: 0.0,
         };
         assert_relative_eq!(p.ml_ratio_morphological(), 5.0, epsilon = 1e-10);
         assert_eq!(p.morphological_type(), "elliptical");
@@ -426,9 +424,17 @@ mod tests {
     fn test_ml_ratio_morphological_boundary() {
         // n=2.0 should be classified as elliptical
         let p = EuclidSersicParams {
-            object_id: 3, ra_deg: 0.0, dec_deg: 0.0,
-            n: 2.0, r_e_arcsec: 1.0, ellipticity: 0.0, pa_deg: 0.0,
-            photo_z: 0.3, log_stellar_mass: 10.0, log_luminosity: 10.0, log_sfr: 0.0,
+            object_id: 3,
+            ra_deg: 0.0,
+            dec_deg: 0.0,
+            n: 2.0,
+            r_e_arcsec: 1.0,
+            ellipticity: 0.0,
+            pa_deg: 0.0,
+            photo_z: 0.3,
+            log_stellar_mass: 10.0,
+            log_luminosity: 10.0,
+            log_sfr: 0.0,
         };
         assert_relative_eq!(p.ml_ratio_morphological(), 5.0, epsilon = 1e-10);
         assert_eq!(p.morphological_type(), "elliptical");

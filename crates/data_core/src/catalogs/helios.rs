@@ -111,10 +111,7 @@ pub static HELIOS2_MISSION: SpdfMission = SpdfMission {
 };
 
 /// Parse Helios merged hourly data from a string.
-pub fn parse_helios_merged(
-    content: &str,
-    spacecraft: HeliosSpacecraft,
-) -> Vec<SpdfMergedRecord> {
+pub fn parse_helios_merged(content: &str, spacecraft: HeliosSpacecraft) -> Vec<SpdfMergedRecord> {
     let mission = match spacecraft {
         HeliosSpacecraft::H1 => &HELIOS1_MISSION,
         HeliosSpacecraft::H2 => &HELIOS2_MISSION,
@@ -144,10 +141,8 @@ pub fn helios_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
 }
 
 /// Base URL for Helios merged hourly data at SPDF (blocked from this host).
-const HELIOS1_SPDF_BASE: &str =
-    "https://spdf.gsfc.nasa.gov/pub/data/helios/helios1/merged/";
-const HELIOS2_SPDF_BASE: &str =
-    "https://spdf.gsfc.nasa.gov/pub/data/helios/helios2/merged/";
+const HELIOS1_SPDF_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/helios/helios1/merged/";
+const HELIOS2_SPDF_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/helios/helios2/merged/";
 
 /// NASA Helios dataset provider.
 pub struct HeliosProvider {

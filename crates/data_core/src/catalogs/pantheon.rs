@@ -6,10 +6,7 @@
 //! Source: https://github.com/PantheonPlusSH0ES/DataRelease
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 /// A Type Ia supernova from Pantheon+.

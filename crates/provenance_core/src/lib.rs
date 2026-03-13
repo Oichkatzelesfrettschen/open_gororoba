@@ -110,6 +110,93 @@ pub struct DocumentQueryResult {
     pub source_refs: Vec<String>,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DownloadJobRecord {
+    pub id: Option<i64>,
+    pub requested_url: String,
+    pub transfer_kind: String,
+    pub requested_backend: String,
+    pub route_scheme: String,
+    pub route_host: Option<String>,
+    pub route_backends: Vec<String>,
+    pub note: Option<String>,
+    pub status: String,
+    pub final_url: Option<String>,
+    pub output_path: Option<String>,
+    pub created_at: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DownloadAttemptRecord {
+    pub id: Option<i64>,
+    pub job_id: Option<i64>,
+    pub backend: String,
+    pub succeeded: bool,
+    pub failure_class: Option<String>,
+    pub http_code: Option<i64>,
+    pub content_type: Option<String>,
+    pub bytes: i64,
+    pub sha256: Option<String>,
+    pub is_pdf: bool,
+    pub final_url: Option<String>,
+    pub note: String,
+    pub error_message: Option<String>,
+    pub recorded_at: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DownloadQueryResult {
+    pub job: DownloadJobRecord,
+    pub attempts: Vec<DownloadAttemptRecord>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DownloadCampaignRecord {
+    pub id: Option<i64>,
+    pub name: String,
+    pub command_kind: String,
+    pub input_path: String,
+    pub out_ledger_path: Option<String>,
+    pub dest_dir: Option<String>,
+    pub note: Option<String>,
+    pub created_at: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DownloadCampaignQueryResult {
+    pub campaign: DownloadCampaignRecord,
+    pub job_count: usize,
+    pub success_count: usize,
+    pub failure_count: usize,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct CountSummary {
+    pub key: String,
+    pub count: usize,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct BackendHealthSummary {
+    pub backend: String,
+    pub success_count: usize,
+    pub failure_count: usize,
+    pub total_bytes: u64,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DownloadLedgerProjectionRow {
+    pub id: String,
+    pub url: String,
+    pub http_code: String,
+    pub content_type: String,
+    pub bytes: u64,
+    pub sha256: String,
+    pub is_pdf: String,
+    pub note: String,
+    pub status: String,
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct IndexStats {
     pub indexed_at: String,
@@ -117,6 +204,11 @@ pub struct IndexStats {
     pub document_count: usize,
     pub lane_assignment_count: usize,
     pub mirror_observation_count: usize,
+    pub claim_count: usize,
+    pub insight_count: usize,
+    pub experiment_count: usize,
+    pub binary_count: usize,
+    pub theorem_count: usize,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -130,6 +222,11 @@ pub struct DoctorReport {
     pub citation_only_count: usize,
     pub missing_lane_assignment_count: usize,
     pub documents_without_backing_count: usize,
+    pub download_job_count: usize,
+    pub download_attempt_count: usize,
+    pub top_failed_download_hosts: Vec<CountSummary>,
+    pub top_active_download_hosts: Vec<CountSummary>,
+    pub backend_health: Vec<BackendHealthSummary>,
     pub last_indexed_at: Option<String>,
     pub last_exported_at: Option<String>,
 }
@@ -141,4 +238,66 @@ pub struct PantheonSeedSummary {
     pub risk_count: usize,
     pub overflow_task_count: usize,
     pub max_active_overflow: usize,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ClaimRecord {
+    pub id: String,
+    pub statement: String,
+    pub status: String,
+    pub where_stated: String,
+    pub last_verified: String,
+    pub formal_proof: Option<String>,
+    pub status_note: Option<String>,
+    pub compat_toml_text: String,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct InsightRecord {
+    pub id: String,
+    pub title: String,
+    pub status: String,
+    pub claim_refs: Vec<String>,
+    pub compat_toml_text: String,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ExperimentRecord {
+    pub id: String,
+    pub title: String,
+    pub status: String,
+    pub binary: Option<String>,
+    pub claim_refs: Vec<String>,
+    pub compat_toml_text: String,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct BinaryRecord {
+    pub name: String,
+    pub crate_name: String,
+    pub description: String,
+    pub experiment: Option<String>,
+    pub source: String,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct TheoremRecord {
+    pub id: String,
+    pub title: String,
+    pub proof_path: Utf8PathBuf,
+    pub status: String,
+    pub linked_claim_ids: Vec<String>,
+    pub source: String,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ControlPlaneCounts {
+    pub claim_count: usize,
+    pub insight_count: usize,
+    pub experiment_count: usize,
+    pub complete_experiment_count: usize,
+    pub binary_count: usize,
+    pub theorem_count: usize,
+    pub kernel_checked_claim_count: usize,
+    pub proof_file_count: usize,
 }

@@ -1,4 +1,5 @@
-//! Validate the TOML registry for internal consistency.
+//! Validate generated TOML compatibility registries for internal consistency
+//! and drift relative to the canonical SQLite control plane.
 //!
 //! Checks:
 //! - Claim/insight ID gaps are governed by policy (warn/error/off)
@@ -6,17 +7,19 @@
 //! - No duplicate IDs in any registry
 //! - Status values are from valid enum set
 //! - Claim count matches project.toml
-//! - Binary registry matches actual [[bin]] sections in Cargo.toml
+//! - Binary registry matches actual workspace [[bin]] sections in Cargo.toml
 //! - Experiment->binary cross-references resolve
 
 use std::{
     collections::{BTreeSet, HashSet},
     path::{Path, PathBuf},
+    time::Instant,
 };
 
 use clap::{Parser, ValueEnum};
 use data_core::registry::{ArtifactRegistry, LacunaeRegistry, MonographRegistry};
 use gororoba_cli::claims::schema::TOML_CLAIM_STATUSES;
+use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
 use walkdir::WalkDir;
 
 /// Validate the open_gororoba TOML registry for consistency.
@@ -27,27 +30,49 @@ struct Args {
     #[arg(long, default_value = "registry")]
     dir: PathBuf,
 
-    /// Path to gororoba_cli Cargo.toml for binary cross-check
-    #[arg(long, default_value = "crates/gororoba_cli/Cargo.toml")]
+    /// Path to the root workspace Cargo.toml for binary cross-check
+    #[arg(long, default_value = "Cargo.toml")]
     cargo_toml: PathBuf,
 
     /// Typed schema policy for selected registry files.
-    /// warn: emit warnings but continue (default).
+    /// error: fail when typed schema drift is found (default).
+    /// warn: emit warnings but continue.
     /// error: fail when typed schema drift is found.
     /// off: skip typed schema drift checks.
-    #[arg(long, value_enum, default_value_t = TypedPolicy::Warn)]
+    #[arg(long, value_enum, default_value_t = TypedPolicy::Error)]
     typed_policy: TypedPolicy,
 
     /// Identity gap policy for claim/insight ID gaps.
-    /// warn: emit warnings for drift beyond governed baseline (default).
+    /// error: fail when drift beyond governed baseline is found (default).
+    /// warn: emit warnings for drift beyond governed baseline.
     /// error: fail when drift beyond governed baseline is found.
     /// off: skip claim/insight governed gap checks.
-    #[arg(long, value_enum, default_value_t = IdentityGapPolicy::Warn)]
+    #[arg(long, value_enum, default_value_t = IdentityGapPolicy::Error)]
     identity_gap_policy: IdentityGapPolicy,
 
     /// Path to governed identity-gap baseline file.
     #[arg(long, default_value = "registry/identity_gap_policy.toml")]
     identity_gap_policy_file: PathBuf,
+
+    /// Canonical SQLite control-plane database.
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
+
+    /// Scope for the TOML parse sweep.
+    /// canonical: parse the canonical control-plane and typed-schema registry files (default).
+    /// deep: parse every TOML file under registry/.
+    #[arg(long, value_enum, default_value_t = RegistrySweepScope::Canonical)]
+    sweep_scope: RegistrySweepScope,
+
+    /// Compatibility export freshness policy.
+    /// on: verify exported TOML/markdown views match the canonical DB (default).
+    /// off: skip compatibility export freshness checks and validate source invariants only.
+    #[arg(long, value_enum, default_value_t = CompatExportPolicy::On)]
+    compat_export_policy: CompatExportPolicy,
+
+    /// Print elapsed time for major validation phases.
+    #[arg(long, default_value_t = false)]
+    timings: bool,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
@@ -84,6 +109,36 @@ impl IdentityGapPolicy {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
+enum RegistrySweepScope {
+    Canonical,
+    Deep,
+}
+
+impl RegistrySweepScope {
+    fn as_str(self) -> &'static str {
+        match self {
+            Self::Canonical => "canonical",
+            Self::Deep => "deep",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
+enum CompatExportPolicy {
+    On,
+    Off,
+}
+
+impl CompatExportPolicy {
+    fn as_str(self) -> &'static str {
+        match self {
+            Self::On => "on",
+            Self::Off => "off",
+        }
+    }
+}
+
 #[derive(serde::Deserialize)]
 struct ClaimsRegistry {
     claim: Vec<ClaimEntry>,
@@ -114,7 +169,7 @@ struct ClaimEntry {
     #[serde(default)]
     phase: Option<String>,
     #[serde(default)]
-    sprint: Option<u32>,
+    sprint: Option<toml::Value>,
     #[serde(default)]
     dependencies: Option<Vec<String>>,
     #[serde(default)]
@@ -151,7 +206,7 @@ struct InsightEntry {
     #[serde(default)]
     related_claims: Vec<String>,
     #[serde(default)]
-    sprint: Option<u32>,
+    sprint: Option<toml::Value>,
     #[serde(default)]
     summary: Option<String>,
     #[serde(default)]
@@ -246,6 +301,20 @@ struct ExperimentEntry {
     reproducibility_class: Option<String>,
 }
 
+fn load_control_plane_registry<T>(
+    store: &mut ProvenanceStore,
+    kind: ControlPlaneCompatKind,
+) -> Result<T, String>
+where
+    T: serde::de::DeserializeOwned,
+{
+    let text = store
+        .control_plane_compat_text(kind)
+        .map_err(|err| format!("render {kind:?} compatibility text from canonical DB: {err}"))?;
+    toml::from_str(&text)
+        .map_err(|err| format!("parse {kind:?} compatibility TOML from canonical DB: {err}"))
+}
+
 #[derive(serde::Deserialize)]
 struct BinariesRegistry {
     binary: Vec<BinaryEntry>,
@@ -281,12 +350,28 @@ struct ProjectMeta {
 #[derive(serde::Deserialize)]
 struct CargoManifest {
     #[serde(default)]
+    workspace: Option<CargoWorkspace>,
+    #[serde(default)]
     bin: Vec<CargoBinEntry>,
+    #[serde(default, rename = "bench")]
+    benches: Vec<CargoBinEntry>,
+}
+
+#[derive(Default, serde::Deserialize)]
+struct CargoWorkspace {
+    #[serde(default)]
+    members: Vec<String>,
 }
 
 #[derive(serde::Deserialize)]
 struct CargoBinEntry {
     name: String,
+}
+
+#[derive(Default)]
+struct WorkspaceExecutionInventory {
+    bins: HashSet<String>,
+    benches: HashSet<String>,
 }
 
 #[derive(Default, serde::Deserialize)]
@@ -309,8 +394,8 @@ struct LoadedIdentityGapPolicy {
     insights: BTreeSet<u32>,
 }
 
-/// Valid claim statuses: canonical TOML tokens from schema.rs plus legacy
-/// parenthetical variants still found in the registry.
+/// Valid claim statuses: canonical TOML tokens from schema.rs plus a minimal
+/// legacy ingress set while the control plane normalizes older snapshots.
 const VALID_CLAIM_STATUSES_LEGACY: &[&str] = &[
     // Legacy parenthetical variants (pre-consolidation)
     "Verified (algebraic)",
@@ -330,9 +415,18 @@ const VALID_CLAIM_STATUSES_LEGACY: &[&str] = &[
     "Verified (unit test)",
     "Refuted (E8 connection absent)",
     "Refuted (CSV wrong)",
-    // Legacy open statuses
+    // Legacy ingress statuses that are normalized during control-plane import.
     "Open",
     "Pending",
+    "Active",
+    "Proposed",
+    "Deferred",
+    "Speculative",
+    "Conjecture",
+    "Falsified",
+    "Closed/Verified",
+    "Closed/Falsified",
+    "Closed/Methodology-Mismatch",
 ];
 
 const VALID_INSIGHT_STATUSES: &[&str] = &[
@@ -343,22 +437,45 @@ const VALID_INSIGHT_STATUSES: &[&str] = &[
     "partial",
 ];
 
-fn parse_all_registry_toml_files(registry_dir: &Path) -> (usize, Vec<String>) {
+fn canonical_registry_parse_paths(registry_dir: &Path) -> Vec<PathBuf> {
+    [
+        "claims.toml",
+        "insights.toml",
+        "experiments.toml",
+        "binaries.toml",
+        "project.toml",
+        "identity_gap_policy.toml",
+        "monograph.toml",
+        "lacunae.toml",
+        "data_artifact_narratives.toml",
+    ]
+    .into_iter()
+    .map(|name| registry_dir.join(name))
+    .filter(|path| path.exists())
+    .collect()
+}
+
+fn parse_all_registry_toml_files(
+    registry_dir: &Path,
+    scope: RegistrySweepScope,
+) -> (usize, Vec<String>) {
     let mut parsed_files = 0usize;
     let mut parse_errors = Vec::new();
 
-    for entry in WalkDir::new(registry_dir)
-        .into_iter()
-        .filter_map(Result::ok)
-        .filter(|entry| entry.file_type().is_file())
-    {
-        let path = entry.path();
-        if path.extension().and_then(|ext| ext.to_str()) != Some("toml") {
-            continue;
-        }
+    let parse_paths: Vec<PathBuf> = match scope {
+        RegistrySweepScope::Canonical => canonical_registry_parse_paths(registry_dir),
+        RegistrySweepScope::Deep => WalkDir::new(registry_dir)
+            .into_iter()
+            .filter_map(Result::ok)
+            .filter(|entry| entry.file_type().is_file())
+            .map(|entry| entry.into_path())
+            .filter(|path| path.extension().and_then(|ext| ext.to_str()) == Some("toml"))
+            .collect(),
+    };
 
+    for path in parse_paths {
         parsed_files += 1;
-        let content = match std::fs::read_to_string(path) {
+        let content = match std::fs::read_to_string(&path) {
             Ok(content) => content,
             Err(err) => {
                 parse_errors.push(format!("{} (read error: {err})", path.display()));
@@ -404,24 +521,95 @@ fn parse_typed_registry_file<T: serde::de::DeserializeOwned>(
     }
 }
 
-fn load_cargo_bin_names(cargo_toml: &Path) -> Result<HashSet<String>, String> {
+fn report_phase_timing(enabled: bool, label: &str, started_at: Instant) {
+    if enabled {
+        println!(
+            "Timing: {label} = {:.3}s",
+            started_at.elapsed().as_secs_f64()
+        );
+    }
+}
+
+fn load_workspace_execution_inventory(
+    cargo_toml: &Path,
+) -> Result<WorkspaceExecutionInventory, String> {
+    let mut visited = HashSet::new();
+    let mut inventory = WorkspaceExecutionInventory::default();
+    load_workspace_execution_inventory_inner(cargo_toml, &mut visited, &mut inventory)?;
+    Ok(inventory)
+}
+
+fn load_workspace_execution_inventory_inner(
+    cargo_toml: &Path,
+    visited: &mut HashSet<PathBuf>,
+    inventory: &mut WorkspaceExecutionInventory,
+) -> Result<(), String> {
+    let canonical_path = cargo_toml
+        .canonicalize()
+        .map_err(|err| format!("{} canonicalize failure: {err}", cargo_toml.display()))?;
+    if !visited.insert(canonical_path) {
+        return Ok(());
+    }
+
     let cargo_content = std::fs::read_to_string(cargo_toml)
         .map_err(|err| format!("{} read failure: {err}", cargo_toml.display()))?;
     let manifest: CargoManifest = toml::from_str(&cargo_content)
         .map_err(|err| format!("{} parse failure: {err}", cargo_toml.display()))?;
 
-    Ok(manifest
-        .bin
-        .into_iter()
-        .filter_map(|bin| {
+    inventory
+        .bins
+        .extend(manifest.bin.into_iter().filter_map(|bin| {
             let name = bin.name.trim();
             if name.is_empty() {
                 None
             } else {
                 Some(name.to_string())
             }
-        })
-        .collect())
+        }));
+
+    inventory
+        .benches
+        .extend(manifest.benches.into_iter().filter_map(|bench| {
+            let name = bench.name.trim();
+            if name.is_empty() {
+                None
+            } else {
+                Some(name.to_string())
+            }
+        }));
+
+    if let Some(workspace) = manifest.workspace {
+        let base_dir = cargo_toml
+            .parent()
+            .ok_or_else(|| format!("{} has no parent directory", cargo_toml.display()))?;
+        for member in workspace.members {
+            let member_manifest = member_manifest_path(base_dir, &member);
+            if !member_manifest.exists() {
+                return Err(format!(
+                    "workspace member manifest missing for {}: {}",
+                    member,
+                    member_manifest.display()
+                ));
+            }
+            load_workspace_execution_inventory_inner(&member_manifest, visited, inventory)?;
+        }
+    }
+
+    Ok(())
+}
+
+fn member_manifest_path(base_dir: &Path, member: &str) -> PathBuf {
+    let member_path = base_dir.join(member);
+    if member_path
+        .file_name()
+        .and_then(|value| value.to_str())
+        .map(|value| value.eq_ignore_ascii_case("Cargo.toml"))
+        .unwrap_or(false)
+    {
+        member_path
+    } else {
+        member_path.join("Cargo.toml")
+    }
 }
 
 fn parse_numbered_id(id: &str, prefix: &str) -> Option<u32> {
@@ -607,6 +795,7 @@ fn evaluate_identity_gap_lane(
 
 fn main() {
     let args = Args::parse();
+    let repo_root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let mut errors = 0u32;
     let mut warnings = 0u32;
 
@@ -615,12 +804,17 @@ fn main() {
         eprintln!("ERROR: registry directory {} not found", args.dir.display());
         errors += 1;
     } else {
-        let (parsed_files, parse_errors) = parse_all_registry_toml_files(&args.dir);
+        let parse_sweep_started_at = Instant::now();
+        let (parsed_files, parse_errors) =
+            parse_all_registry_toml_files(&args.dir, args.sweep_scope);
         if parsed_files == 0 {
             eprintln!("ERROR: no TOML files found under {}", args.dir.display());
             errors += 1;
         } else {
-            println!("Registry TOML parse sweep: {parsed_files} files parsed");
+            println!(
+                "Registry TOML parse sweep (scope={}): {parsed_files} files parsed",
+                args.sweep_scope.as_str()
+            );
         }
 
         for err in parse_errors {
@@ -682,7 +876,73 @@ fn main() {
                 }
             }
         }
+        report_phase_timing(args.timings, "parse_sweep", parse_sweep_started_at);
     }
+
+    let claims_path = args.dir.join("claims.toml");
+    let insights_path = args.dir.join("insights.toml");
+    let experiments_path = args.dir.join("experiments.toml");
+    let binaries_path = args.dir.join("binaries.toml");
+    let project_path = args.dir.join("project.toml");
+    let theorems_path = repo_root.join("docs/THEOREMS.md");
+    let theorems_mirror_path = repo_root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
+
+    let canonical_setup_started_at = Instant::now();
+    let mut canonical_store = if args.canonical_db.exists() {
+        match ProvenanceStore::open(&args.canonical_db) {
+            Ok(mut store) => {
+                if let Err(err) = store.verify_control_plane_invariants(&repo_root) {
+                    eprintln!(
+                        "ERROR: canonical control-plane invariants failed for {}: {err}",
+                        args.canonical_db.display()
+                    );
+                    errors += 1;
+                }
+                match args.compat_export_policy {
+                    CompatExportPolicy::On => {
+                        if let Err(err) = store.verify_control_plane_compat_exports(
+                            &repo_root,
+                            &claims_path,
+                            &insights_path,
+                            &experiments_path,
+                            &binaries_path,
+                            &theorems_path,
+                            &theorems_mirror_path,
+                        ) {
+                            eprintln!(
+                                "ERROR: canonical control-plane compatibility exports failed for {}: {err}",
+                                args.canonical_db.display()
+                            );
+                            errors += 1;
+                        }
+                    }
+                    CompatExportPolicy::Off => {
+                        println!(
+                            "Compatibility export policy: {} (skipping canonical export freshness checks)",
+                            args.compat_export_policy.as_str()
+                        );
+                    }
+                }
+                Some(store)
+            }
+            Err(err) => {
+                eprintln!(
+                    "ERROR: failed to open canonical db {}: {err}",
+                    args.canonical_db.display()
+                );
+                errors += 1;
+                None
+            }
+        }
+    } else {
+        eprintln!(
+            "WARNING: canonical control-plane db not found at {}",
+            args.canonical_db.display()
+        );
+        warnings += 1;
+        None
+    };
+    report_phase_timing(args.timings, "canonical_setup", canonical_setup_started_at);
 
     let mut identity_gap_policy = LoadedIdentityGapPolicy::default();
     match args.identity_gap_policy {
@@ -724,14 +984,40 @@ fn main() {
     }
 
     // --- Claims ---
-    let claims_path = args.dir.join("claims.toml");
     let claim_ids: HashSet<String>;
     let claim_count: usize;
 
-    if claims_path.exists() {
-        let content = std::fs::read_to_string(&claims_path).unwrap();
-        let registry: ClaimsRegistry = toml::from_str(&content).unwrap();
+    let claims_started_at = Instant::now();
+    let claims_registry = if let Some(store) = canonical_store.as_mut() {
+        match load_control_plane_registry::<ClaimsRegistry>(store, ControlPlaneCompatKind::Claims) {
+            Ok(registry) => Some(registry),
+            Err(err) => {
+                eprintln!("ERROR: {err}");
+                errors += 1;
+                None
+            }
+        }
+    } else if claims_path.exists() {
+        match std::fs::read_to_string(&claims_path) {
+            Ok(content) => match toml::from_str(&content) {
+                Ok(registry) => Some(registry),
+                Err(err) => {
+                    eprintln!("ERROR: parse {}: {err}", claims_path.display());
+                    errors += 1;
+                    None
+                }
+            },
+            Err(err) => {
+                eprintln!("ERROR: read {}: {err}", claims_path.display());
+                errors += 1;
+                None
+            }
+        }
+    } else {
+        None
+    };
 
+    if let Some(registry) = claims_registry {
         claim_ids = registry.claim.iter().map(|c| c.id.clone()).collect();
         claim_count = registry.claim.len();
 
@@ -791,10 +1077,10 @@ fn main() {
                 };
                 if !is_canonical && !is_legacy && !is_case_variant {
                     eprintln!(
-                        "WARNING: claim {} has unusual status: \"{}\"",
+                        "ERROR: claim {} has unusual status: \"{}\"",
                         claim.id, claim.status
                     );
-                    warnings += 1;
+                    errors += 1;
                 }
             }
         }
@@ -811,16 +1097,46 @@ fn main() {
         claim_ids = HashSet::new();
         claim_count = 0;
     }
+    report_phase_timing(args.timings, "claims", claims_started_at);
 
     // --- Insights ---
-    let insights_path = args.dir.join("insights.toml");
     let insight_ids: HashSet<String>;
     let insight_count: usize;
 
-    if insights_path.exists() {
-        let content = std::fs::read_to_string(&insights_path).unwrap();
-        let registry: InsightsRegistry = toml::from_str(&content).unwrap();
+    let insights_started_at = Instant::now();
+    let insights_registry = if let Some(store) = canonical_store.as_mut() {
+        match load_control_plane_registry::<InsightsRegistry>(
+            store,
+            ControlPlaneCompatKind::Insights,
+        ) {
+            Ok(registry) => Some(registry),
+            Err(err) => {
+                eprintln!("ERROR: {err}");
+                errors += 1;
+                None
+            }
+        }
+    } else if insights_path.exists() {
+        match std::fs::read_to_string(&insights_path) {
+            Ok(content) => match toml::from_str(&content) {
+                Ok(registry) => Some(registry),
+                Err(err) => {
+                    eprintln!("ERROR: parse {}: {err}", insights_path.display());
+                    errors += 1;
+                    None
+                }
+            },
+            Err(err) => {
+                eprintln!("ERROR: read {}: {err}", insights_path.display());
+                errors += 1;
+                None
+            }
+        }
+    } else {
+        None
+    };
 
+    if let Some(registry) = insights_registry {
         insight_ids = registry.insight.iter().map(|i| i.id.clone()).collect();
         insight_count = registry.insight.len();
 
@@ -877,10 +1193,10 @@ fn main() {
                 && !VALID_INSIGHT_STATUSES.contains(&status.as_str())
             {
                 eprintln!(
-                    "WARNING: insight {} has unusual status: \"{}\"",
+                    "ERROR: insight {} has unusual status: \"{}\"",
                     insight.id, status
                 );
-                warnings += 1;
+                errors += 1;
             }
         }
 
@@ -902,18 +1218,48 @@ fn main() {
         insight_ids = HashSet::new();
         insight_count = 0;
     }
+    report_phase_timing(args.timings, "insights", insights_started_at);
 
     // --- Experiments ---
-    let experiments_path = args.dir.join("experiments.toml");
     let experiment_ids: HashSet<String>;
     let experiment_count: usize;
     let complete_experiment_count: usize;
     let binary_names_from_experiments: HashSet<String>;
 
-    if experiments_path.exists() {
-        let content = std::fs::read_to_string(&experiments_path).unwrap();
-        let registry: ExperimentsRegistry = toml::from_str(&content).unwrap();
+    let experiments_started_at = Instant::now();
+    let experiments_registry = if let Some(store) = canonical_store.as_mut() {
+        match load_control_plane_registry::<ExperimentsRegistry>(
+            store,
+            ControlPlaneCompatKind::Experiments,
+        ) {
+            Ok(registry) => Some(registry),
+            Err(err) => {
+                eprintln!("ERROR: {err}");
+                errors += 1;
+                None
+            }
+        }
+    } else if experiments_path.exists() {
+        match std::fs::read_to_string(&experiments_path) {
+            Ok(content) => match toml::from_str(&content) {
+                Ok(registry) => Some(registry),
+                Err(err) => {
+                    eprintln!("ERROR: parse {}: {err}", experiments_path.display());
+                    errors += 1;
+                    None
+                }
+            },
+            Err(err) => {
+                eprintln!("ERROR: read {}: {err}", experiments_path.display());
+                errors += 1;
+                None
+            }
+        }
+    } else {
+        None
+    };
 
+    if let Some(registry) = experiments_registry {
         experiment_ids = registry.experiment.iter().map(|e| e.id.clone()).collect();
         experiment_count = registry.experiment.len();
         complete_experiment_count = registry
@@ -927,7 +1273,10 @@ fn main() {
         binary_names_from_experiments = registry
             .experiment
             .iter()
-            .filter_map(|e| e.binary.clone())
+            .filter_map(|e| e.binary.as_deref())
+            .map(str::trim)
+            .filter(|name| !name.is_empty())
+            .map(str::to_string)
             .collect();
 
         // Check cross-references
@@ -952,15 +1301,45 @@ fn main() {
         complete_experiment_count = 0;
         binary_names_from_experiments = HashSet::new();
     }
+    report_phase_timing(args.timings, "experiments", experiments_started_at);
 
     // --- Binaries ---
-    let binaries_path = args.dir.join("binaries.toml");
     let registry_binary_names: HashSet<String>;
 
-    if binaries_path.exists() {
-        let content = std::fs::read_to_string(&binaries_path).unwrap();
-        let registry: BinariesRegistry = toml::from_str(&content).unwrap();
+    let binaries_started_at = Instant::now();
+    let binaries_registry = if let Some(store) = canonical_store.as_mut() {
+        match load_control_plane_registry::<BinariesRegistry>(
+            store,
+            ControlPlaneCompatKind::Binaries,
+        ) {
+            Ok(registry) => Some(registry),
+            Err(err) => {
+                eprintln!("ERROR: {err}");
+                errors += 1;
+                None
+            }
+        }
+    } else if binaries_path.exists() {
+        match std::fs::read_to_string(&binaries_path) {
+            Ok(content) => match toml::from_str(&content) {
+                Ok(registry) => Some(registry),
+                Err(err) => {
+                    eprintln!("ERROR: parse {}: {err}", binaries_path.display());
+                    errors += 1;
+                    None
+                }
+            },
+            Err(err) => {
+                eprintln!("ERROR: read {}: {err}", binaries_path.display());
+                errors += 1;
+                None
+            }
+        }
+    } else {
+        None
+    };
 
+    if let Some(registry) = binaries_registry {
         registry_binary_names = registry.binary.iter().map(|b| b.name.clone()).collect();
 
         // Check experiment cross-references
@@ -976,11 +1355,33 @@ fn main() {
             }
         }
 
+        let workspace_inventory = if args.cargo_toml.exists() {
+            match load_workspace_execution_inventory(&args.cargo_toml) {
+                Ok(inventory) => Some(inventory),
+                Err(err) => {
+                    eprintln!("WARNING: {err}");
+                    warnings += 1;
+                    None
+                }
+            }
+        } else {
+            None
+        };
+        let workspace_bench_names = workspace_inventory
+            .as_ref()
+            .map(|inventory| inventory.benches.clone())
+            .unwrap_or_default();
+        let known_execution_targets = registry_binary_names
+            .iter()
+            .cloned()
+            .chain(workspace_bench_names.iter().cloned())
+            .collect::<HashSet<_>>();
+
         // Check experiment->binary cross-references
         for exp_binary in &binary_names_from_experiments {
-            if !registry_binary_names.contains(exp_binary) {
+            if !known_execution_targets.contains(exp_binary) {
                 eprintln!(
-                    "WARNING: experiment references binary \"{}\" not in binaries.toml",
+                    "WARNING: experiment references execution target \"{}\" not in binaries.toml or workspace benches",
                     exp_binary
                 );
                 warnings += 1;
@@ -989,8 +1390,9 @@ fn main() {
 
         // Cross-check against Cargo.toml [[bin]] sections
         if args.cargo_toml.exists() {
-            match load_cargo_bin_names(&args.cargo_toml) {
-                Ok(cargo_binary_names) => {
+            match workspace_inventory {
+                Some(inventory) => {
+                    let cargo_binary_names = inventory.bins;
                     let mut missing_from_registry: Vec<String> = cargo_binary_names
                         .difference(&registry_binary_names)
                         .cloned()
@@ -1019,8 +1421,11 @@ fn main() {
                         errors += 1;
                     }
                 }
-                Err(err) => {
-                    eprintln!("ERROR: {err}");
+                None => {
+                    eprintln!(
+                        "ERROR: workspace execution inventory unavailable for {}",
+                        args.cargo_toml.display()
+                    );
                     errors += 1;
                 }
             }
@@ -1035,9 +1440,10 @@ fn main() {
         warnings += 1;
         registry_binary_names = HashSet::new();
     }
+    report_phase_timing(args.timings, "binaries", binaries_started_at);
 
     // --- Project ---
-    let project_path = args.dir.join("project.toml");
+    let project_started_at = Instant::now();
     if project_path.exists() {
         let content = std::fs::read_to_string(&project_path).unwrap();
         let project: ProjectRegistry = toml::from_str(&content).unwrap();
@@ -1094,6 +1500,58 @@ fn main() {
     } else {
         eprintln!("WARNING: {} not found", project_path.display());
         warnings += 1;
+    }
+    report_phase_timing(args.timings, "project", project_started_at);
+
+    if let Some(store) = canonical_store.as_ref() {
+        match store.control_plane_counts() {
+            Ok(counts) => {
+                if counts.claim_count != claim_count {
+                    eprintln!(
+                        "ERROR: canonical db claim_count={} but claims.toml has {} entries",
+                        counts.claim_count, claim_count
+                    );
+                    errors += 1;
+                }
+                if counts.insight_count != insight_count {
+                    eprintln!(
+                        "ERROR: canonical db insight_count={} but insights.toml has {} entries",
+                        counts.insight_count, insight_count
+                    );
+                    errors += 1;
+                }
+                if counts.experiment_count != experiment_count {
+                    eprintln!(
+                        "ERROR: canonical db experiment_count={} but experiments.toml has {} entries",
+                        counts.experiment_count, experiment_count
+                    );
+                    errors += 1;
+                }
+                if counts.binary_count != registry_binary_names.len() {
+                    eprintln!(
+                        "ERROR: canonical db binary_count={} but binaries.toml has {} entries",
+                        counts.binary_count,
+                        registry_binary_names.len()
+                    );
+                    errors += 1;
+                }
+                println!(
+                    "Canonical DB: claims={} insights={} experiments={} binaries={} theorems={}",
+                    counts.claim_count,
+                    counts.insight_count,
+                    counts.experiment_count,
+                    counts.binary_count,
+                    counts.theorem_count
+                );
+            }
+            Err(err) => {
+                eprintln!(
+                    "ERROR: failed to read canonical control-plane counts from {}: {err}",
+                    args.canonical_db.display()
+                );
+                errors += 1;
+            }
+        }
     }
 
     // --- Summary ---

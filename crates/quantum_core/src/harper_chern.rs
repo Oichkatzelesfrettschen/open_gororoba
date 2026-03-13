@@ -237,7 +237,7 @@ pub fn fhs_chern_numbers(p: u32, q: u32, n_grid: usize) -> ChernResult {
     let mut band_cherns = Vec::with_capacity(q_usize);
 
     for n in 0..q_usize {
-        let mut f_sum = 0.0;
+        let mut f_sum = crate::kahan::KahanSum::new();
 
         for i in 0..n_grid {
             for j in 0..n_grid {
@@ -267,11 +267,11 @@ pub fn fhs_chern_numbers(p: u32, q: u32, n_grid: usize) -> ChernResult {
                 );
 
                 let f_ij = plaquette.im.atan2(plaquette.re);
-                f_sum += f_ij;
+                f_sum.add(f_ij);
             }
         }
 
-        let chern = (f_sum / (2.0 * PI)).round() as i32;
+        let chern = (f_sum.total() / (2.0 * PI)).round() as i32;
         band_cherns.push(chern);
     }
 

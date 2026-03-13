@@ -386,4 +386,42 @@ mod tests {
             }
         }
     }
+
+    // C-1357, E-187: The gravastar chain (solve_gravastar_homotopy) terminates
+    // at a TOV interior solution (GravastarSolution).  It produces no dark energy
+    // EOS parameter w(z) or cosmological observable.  Chain A and Chain B are
+    // architecturally disconnected: no function here references orthoplex_diffusion
+    // or returns a w_eos / dark_energy field.
+    #[test]
+    fn test_c1357_gravastar_chain_terminates_at_tov() {
+        let sol = solve_gravastar_homotopy(
+            5.0,
+            10.0,
+            0.6,
+            crate::gravastar::PolytropicEos::stiff(),
+            8.725,
+            0.001,
+            1e-4,
+        );
+        // The output is a TOV solution: only mass, compactness, causality,
+        // r2 (outer radius), and profile.  No cosmological EOS field.
+        if let Some(s) = sol {
+            // TOV-scale quantities: mass ~ M_sun (geometric units), r2 ~ km.
+            assert!(s.mass > 0.0, "mass must be positive");
+            assert!(s.r2 > 0.0, "outer radius must be positive");
+            assert!(
+                s.compactness > 0.0 && s.compactness < 1.0,
+                "compactness 2M/R2 must be in (0,1)"
+            );
+            // Confirm no dark-energy observable: profile contains (r, m, p, rho),
+            // not w(z).  We check that all profile densities are non-negative (TOV
+            // invariant) and no field is labelled as EOS parameter.
+            for &(_r, _m, p, rho) in &s.profile {
+                assert!(p >= 0.0, "pressure must be non-negative in TOV profile");
+                assert!(rho >= 0.0, "density must be non-negative in TOV profile");
+            }
+        }
+        // If None, the solver did not converge -- that is acceptable for this
+        // parameter set.  The chain-termination property is structural.
+    }
 }

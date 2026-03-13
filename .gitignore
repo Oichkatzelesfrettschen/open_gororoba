@@ -166,6 +166,7 @@ archive/external_nonreproducible_snapshots/**
 # SQLite databases
 *.db
 *.sqlite3
+!registry/canonical/control_plane.sqlite3
 
 # ------------------------------------------------------------------------------
 # 5. Secrets & Credentials (NEVER COMMIT)
@@ -182,6 +183,9 @@ credentials.*
 # Strict TOML-only policy: markdown files are generated/ephemeral and not tracked.
 # EXCEPTIONS: Mandatory repo entrypoints and authoritative research syntheses.
 *.md
+!docs/THEOREMS.md
+!docs/generated/THEOREMS_REGISTRY_MIRROR.md
+!docs/book/src/proofs/index.md
 ![Aa][Gg][Ee][Nn][Tt][Ss].md
 ![Cc][Ll][Aa][Uu][Dd][Ee].md
 ![Gg][Ee][Mm][Ii][Nn][Ii].md

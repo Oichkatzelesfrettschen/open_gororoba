@@ -6,10 +6,7 @@
 //! Source: LASP Interactive Solar Irradiance Datacenter (LISIRD)
 //! Reference: Kopp (2021), https://doi.org/10.1007/s11207-021-01853-x
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use hifitime::Epoch;
 use std::path::Path;
 

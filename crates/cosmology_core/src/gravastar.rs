@@ -25,6 +25,11 @@ pub const G_GEOM: f64 = 1.0;
 /// Speed of light in geometrized units.
 pub const C_GEOM: f64 = 1.0;
 
+#[inline(always)]
+fn rk4_accumulate(y: f64, h: f64, k1: f64, k2: f64, k3: f64, k4: f64) -> f64 {
+    y + (h / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+}
+
 /// Polytropic equation of state parameters.
 #[derive(Debug, Clone, Copy)]
 pub struct PolytropicEos {
@@ -309,8 +314,8 @@ pub fn solve_gravastar(config: &GravastarConfig) -> Option<GravastarSolution> {
         };
 
         // Update state
-        state.m += config.dr * (dm1 + 2.0 * dm2 + 2.0 * dm3 + dm4) / 6.0;
-        state.p += config.dr * (dp1 + 2.0 * dp2 + 2.0 * dp3 + dp4) / 6.0;
+        state.m = rk4_accumulate(state.m, config.dr, dm1, dm2, dm3, dm4);
+        state.p = rk4_accumulate(state.p, config.dr, dp1, dp2, dp3, dp4);
         state.r += config.dr;
 
         if state.p < 0.0 {
@@ -441,7 +446,7 @@ pub struct AnisotropicStabilityResult {
     pub lambdas: Vec<f64>,
     /// Gamma values
     pub gammas: Vec<f64>,
-    /// Stability matrix: stable[lambda_idx][gamma_idx]
+    /// Stability matrix indexed as `stable[lambda_idx][gamma_idx]`.
     pub stable_matrix: Vec<Vec<bool>>,
     /// Key finding: does anisotropy permit gamma < 4/3 stability?
     pub permits_subcritical_gamma: bool,

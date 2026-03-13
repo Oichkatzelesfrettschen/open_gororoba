@@ -32,6 +32,9 @@ pub mod harper_chern;
 pub mod holographic;
 pub mod hypothesis_search;
 pub mod intention_operator;
+pub(crate) mod kahan;
+pub mod magnonic;
+pub mod magnonic_crystal;
 pub mod mera;
 pub mod mps;
 pub mod peps;
@@ -41,8 +44,6 @@ pub mod superfluid;
 pub mod tensor_network_classical;
 pub mod tensor_networks;
 pub mod tight_binding;
-pub mod magnonic;
-pub mod magnonic_crystal;
 pub mod two_fluid;
 
 #[cfg(feature = "gpu")]

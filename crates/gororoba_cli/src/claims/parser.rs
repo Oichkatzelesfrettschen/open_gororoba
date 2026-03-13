@@ -138,9 +138,11 @@ pub fn iter_table_rows(text: &str) -> Vec<ParsedRow> {
     rows
 }
 
-/// Parse all claim rows from the 6-column CLAIMS_EVIDENCE_MATRIX.md format.
+/// Parse all claim rows from the legacy 6-column markdown claims matrix format.
 ///
-/// Only returns rows where column 1 matches `C-NNN`.
+/// This parser exists for generated compatibility mirrors and
+/// bootstrap/recovery workflows. Canonical operational claim data lives in the
+/// SQLite control plane and may be exported back into this format.
 pub fn parse_claim_rows(text: &str) -> Vec<ClaimRow> {
     let mut claims = Vec::new();
     for row in iter_table_rows(text) {

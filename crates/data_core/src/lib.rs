@@ -26,6 +26,7 @@ mod macros;
 pub mod benchmarks;
 pub mod catalogs;
 pub mod doc_links;
+pub mod download_stack;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
@@ -37,10 +38,15 @@ pub mod quality;
 pub mod registry;
 pub mod seti;
 pub mod spice;
-pub mod time_bounds;
 #[cfg(feature = "dataframe")]
 pub mod tabular;
+pub mod time_bounds;
 
+pub use download_stack::{
+    DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, HostPolicyRegistry,
+    HostRoutingPolicy, RetryClass, TransferAttempt, TransferKind, TransferRequest, TransferResult,
+    TransferTrace, load_host_policy_registry,
+};
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
 };

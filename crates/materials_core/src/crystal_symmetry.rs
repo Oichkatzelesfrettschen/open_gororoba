@@ -7,7 +7,7 @@
 //! - **230 Space Groups**: International Tables of Crystallography
 //! - **7 Lattice Systems**: Cubic, tetragonal, orthorhombic, monoclinic, triclinic, hexagonal, rhombohedral
 //! - **Symmetry Operations**: Rotation, reflection, inversion, improper axes, translations
-//! - **Miller Indices**: Crystal plane (hkl) and direction [uvw] notation
+//! - **Miller Indices**: Crystal plane `(hkl)` and direction `[uvw]` notation
 //!
 //! # Key Structures
 //! - `PointGroup`: One of 32 crystallographic point groups
@@ -15,7 +15,7 @@
 //! - `LatticeSystem`: Classification by lattice parameters
 //! - `SymmetryOperation`: Matrix representation of rotations/reflections
 //! - `MillerPlane`: Crystal plane with (h,k,l) indices
-//! - `MillerDirection`: Crystal direction with [u,v,w] indices
+//! - `MillerDirection`: Crystal direction with `[u,v,w]` indices
 //!
 //! # References
 //! - International Union of Crystallography, International Tables for Crystallography
@@ -682,7 +682,7 @@ impl MillerPlane {
     }
 
     /// Check if plane is perpendicular to a given direction.
-    /// For cubic: (h,k,l) perpendicular to [u,v,w] iff h*u + k*v + l*w = 0
+    /// For cubic: `(h,k,l)` is perpendicular to `[u,v,w]` iff `h*u + k*v + l*w = 0`
     pub fn perpendicular_to_direction(&self, dir: &MillerDirection) -> bool {
         let dot = self.h * dir.u + self.k * dir.v + self.l * dir.w;
         dot == 0
@@ -894,7 +894,7 @@ impl MillerDirection {
     }
 
     /// Check if direction is perpendicular to a given plane.
-    /// For cubic: [u,v,w] perpendicular to (h,k,l) iff u*h + v*k + w*l = 0
+    /// For cubic: `[u,v,w]` is perpendicular to `(h,k,l)` iff `u*h + v*k + w*l = 0`
     pub fn perpendicular_to_plane(&self, plane: &MillerPlane) -> bool {
         plane.perpendicular_to_direction(self)
     }
@@ -948,7 +948,7 @@ pub struct CharacterTable {
     pub irreps: Vec<IrreducibleRepresentation>,
     /// Conjugacy classes (columns)
     pub classes: Vec<ConjugacyClass>,
-    /// Character matrix: irreps[i] x classes[j]
+    /// Character matrix: `irreps[i] x classes[j]`
     /// Complex numbers represented as (real, imaginary)
     pub characters: Vec<Vec<(f64, f64)>>,
 }

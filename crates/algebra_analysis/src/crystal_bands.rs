@@ -20,8 +20,7 @@
 //! on box-kite triangles produces the same algebraic localization as
 //! kagome frustrated hopping in condensed matter.
 
-use crate::boxkites::motif_components_for_cross_assessors;
-use crate::reggiani::partner_graph_degeneracies;
+use crate::{boxkites::motif_components_for_cross_assessors, reggiani::partner_graph_degeneracies};
 
 /// Spectrum of a single motif component class (isomorphic components).
 #[derive(Debug, Clone)]
@@ -125,10 +124,7 @@ pub fn verify_reggiani_factorization(tol: f64) -> ReggianiFacResult {
     let n_components = motif_components_for_cross_assessors(16).len();
 
     // Compute GCD of all degeneracies
-    let gcd = full_degs
-        .iter()
-        .map(|(_, d)| *d)
-        .fold(0, gcd_usize);
+    let gcd = full_degs.iter().map(|(_, d)| *d).fold(0, gcd_usize);
 
     let factorizes = gcd > 1;
 
@@ -168,7 +164,9 @@ pub fn dim_spectrum_summary(dim: usize, tol: f64) -> DimSpectrumSummary {
         let spec = comp.spectrum();
         all_evals.extend_from_slice(&spec);
 
-        let entry = class_map.entry((nc, ec)).or_insert_with(|| (spec.clone(), 0));
+        let entry = class_map
+            .entry((nc, ec))
+            .or_insert_with(|| (spec.clone(), 0));
         entry.1 += 1;
     }
 
@@ -232,8 +230,17 @@ mod tests {
             result.full_degeneracies,
         );
         // Reduced degeneracies should be {1, 2, 6, 2, 1}
-        let reduced: Vec<usize> = result.per_component_degeneracies.iter().map(|(_, d)| *d).collect();
-        assert_eq!(reduced, vec![1, 2, 6, 2, 1], "Reduced degeneracies: {:?}", reduced);
+        let reduced: Vec<usize> = result
+            .per_component_degeneracies
+            .iter()
+            .map(|(_, d)| *d)
+            .collect();
+        assert_eq!(
+            reduced,
+            vec![1, 2, 6, 2, 1],
+            "Reduced degeneracies: {:?}",
+            reduced
+        );
     }
 
     #[test]
@@ -249,7 +256,12 @@ mod tests {
     fn test_d16_degeneracy_table() {
         let degs = partner_graph_degeneracies(TOL);
         // Expected: {-4:7, -2:14, 0:42, +2:14, +4:7}
-        assert_eq!(degs.len(), 5, "Expected 5 distinct eigenvalues, got {}", degs.len());
+        assert_eq!(
+            degs.len(),
+            5,
+            "Expected 5 distinct eigenvalues, got {}",
+            degs.len()
+        );
         let expected_counts: Vec<usize> = vec![7, 14, 42, 14, 7];
         let actual_counts: Vec<usize> = degs.iter().map(|(_, d)| *d).collect();
         assert_eq!(
@@ -278,8 +290,10 @@ mod tests {
         );
         eprintln!(
             "D=16 summary: {} components, {} nodes, {} evals, fbf={:.4}",
-            summary.n_components, summary.total_nodes,
-            summary.total_eigenvalues, summary.flat_band_fraction
+            summary.n_components,
+            summary.total_nodes,
+            summary.total_eigenvalues,
+            summary.flat_band_fraction
         );
     }
 

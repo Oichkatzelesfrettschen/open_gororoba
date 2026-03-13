@@ -1,6 +1,7 @@
 //! Provenance recording for gororoba-engine.
 //!
-//! Automatically records hashes of produced datasets into the registry.
+//! Automatically records hashes of produced datasets into a compatibility
+//! artifact-hash ledger. The canonical control plane can ingest this downstream.
 
 use anyhow::Result;
 use sha2::{Digest, Sha256};
@@ -31,8 +32,9 @@ impl ProvenanceRecorder {
 
         let hash = format!("{:x}", hasher.finalize());
 
-        // Append to registry/claims.toml (or update if exists)
-        // Simple append for this prototype
+        // Append to the compatibility artifact hash ledger.
+        // The canonical control plane ingests this downstream; this helper
+        // intentionally avoids writing into registry/claims.toml directly.
         let mut registry = std::fs::OpenOptions::new()
             .create(true)
             .append(true)

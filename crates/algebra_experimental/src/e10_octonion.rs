@@ -59,7 +59,7 @@ pub fn fano_complement(i: usize, j: usize) -> Option<usize> {
 
 /// Build the full Fano complement lookup table for efficiency.
 ///
-/// Returns a 8x8 array where table[i][j] = Some(k) if {e_i, e_j, e_k}
+/// Returns a 8x8 array where `table[i][j] = Some(k)` if `{e_i, e_j, e_k}`
 /// is a Fano triple, or None otherwise.
 pub fn fano_complement_table() -> [[Option<usize>; 8]; 8] {
     let mut table = [[None; 8]; 8];
@@ -316,7 +316,7 @@ pub fn verify_cayley_integer_norms(basis: &CayleyBasis) -> (usize, f64) {
 /// For a given CayleyBasis, compute the multiplication table of the
 /// 8 simple roots viewed as Cayley integers.
 ///
-/// Returns an 8x8 array where entry [i][j] is the octonion product
+/// Returns an 8x8 array where entry `table[i][j]` is the octonion product
 /// of the i-th and j-th simple root images. This reveals which simple
 /// root pairs are related by Fano triple structure.
 pub fn simple_root_products(basis: &CayleyBasis) -> [[Octonion; 8]; 8] {

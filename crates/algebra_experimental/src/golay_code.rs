@@ -1,6 +1,6 @@
-//! Extended binary Golay code [24, 12, 8].
+//! Extended binary Golay code `\[24, 12, 8]`.
 //!
-//! The extended binary Golay code C_24 is a [24,12,8] self-dual binary code.
+//! The extended binary Golay code `C_24` is a `\[24,12,8]` self-dual binary code.
 //! It has 4096 codewords, minimum Hamming distance 8, and is unique up to
 //! equivalence. It is the foundation for constructing the Leech lattice
 //! via Construction A.
@@ -10,7 +10,7 @@
 //! 12x12 binary matrix from Conway & Sloane, "Sphere Packings, Lattices
 //! and Groups", Chapter 2, Table 2.6.
 
-/// The P matrix for the extended [24,12,8] Golay code in systematic form.
+/// The P matrix for the extended `\[24,12,8]` Golay code in systematic form.
 /// G = [I_12 | P]. Each row of P is a 12-bit binary vector.
 ///
 /// This is the standard form where the first 12 columns are the identity

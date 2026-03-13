@@ -263,6 +263,7 @@ path = "src/bin/chrono_flyby_probe.rs"
 [[bin]]
 name = "chsh-betti-sweep"
 path = "src/bin/chsh_betti_sweep.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "he4-superfluid"
@@ -382,7 +383,35 @@ path = "src/bin/kerr_chingon_sweep.rs"
 name = "dark-halo-nfw-fit"
 path = "src/bin/dark_halo_nfw_fit.rs"
 
+[[bin]]
+name = "harmonic-halo-rotation-curve"
+path = "src/bin/harmonic_halo_rotation_curve.rs"
+
+[[bin]]
+name = "harmonic-halo-stacking"
+path = "src/bin/harmonic_halo_stacking.rs"
+
+[[bin]]
+name = "harmonic-halo-mw"
+path = "src/bin/harmonic_halo_mw.rs"
+
+[[bin]]
+name = "harmonic-halo-stacking-manga"
+path = "src/bin/harmonic_halo_stacking_manga.rs"
+
+[[bin]]
+name = "lie-jordan-halo-analysis"
+path = "src/bin/lie_jordan_halo_analysis.rs"
+
+[[bin]]
+name = "harmonic-halo-signal-analysis"
+path = "src/bin/harmonic_halo_signal_analysis.rs"
+
 # ---- Euclid / Morphology (2) ----
+
+[[bin]]
+name = "manga-maps-extractor"
+path = "src/bin/manga_maps_extractor.rs"
 
 [[bin]]
 name = "euclid-dm-coupling"
@@ -434,6 +463,10 @@ path = "src/bin/mass_gap_spectrum.rs"
 name = "eht-pathion-separation"
 path = "src/bin/eht_pathion_separation.rs"
 
+[[bin]]
+name = "artifact-regen"
+path = "src/bin/artifact_regen.rs"
+
 [dependencies]
 gororoba_algebra = { path = "../gororoba_algebra" }
 algebra_analysis = { path = "../algebra_analysis" }
@@ -479,14 +512,20 @@ mimalloc = { workspace = true }
 zip = { workspace = true }
 chrono = { workspace = true }
 hifitime = { workspace = true }
+plotters = { workspace = true }
+statrs = { workspace = true }
 pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 anise = { workspace = true }
 cr_transport = { path = "../cr_transport" }
 memmap2 = "0.9.10"
+fitsio = { workspace = true }
+ureq = { workspace = true }
+gauss-quad = { workspace = true }
 arrow-array = "58.0.0"
 arrow-ipc = "58.0.0"
 arrow-schema = "58.0.0"
 faer = { workspace = true }
+verified_core = { version = "0.1.0", path = "../verified_core" }
 
 [features]
 default = ["gpu"]

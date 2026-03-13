@@ -88,11 +88,17 @@ path = "src/bin/percolation_experiment.rs"
 name = "test-tda-api"
 path = "src/bin/test_tda_api.rs"
 
+[[bin]]
+name = "thesis-42-support"
+path = "src/bin/thesis_42_support.rs"
+
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
+algebra_experimental = { path = "../algebra_experimental" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
+materials_core = { path = "../materials_core" }
 optics_core = { path = "../optics_core" }
 quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
@@ -105,6 +111,8 @@ sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 gororoba_engine = { path = "../gororoba_engine" }
+gororoba_cli_physics = { path = "../gororoba_cli_physics" }
+provenance_store = { path = "../provenance_store" }
 tda = { workspace = true }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 ash = { version = "0.38.0", features = ["debug"] }

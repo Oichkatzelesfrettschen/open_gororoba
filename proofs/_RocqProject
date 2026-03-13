@@ -188,3 +188,8 @@ verified/C1233_ChernSumZero.v
 verified/C1234_ValleyChernAntisymmetry.v
 verified/C1236_FlatBandGroupVelocity.v
 verified/C1262_FlatBandFractionHalf.v
+verified/C1313_Thesis42Arithmetic.v
+verified/C1363_HarmonicHaloExactRecovery.v
+verified/C1364_HomotopyBridgeLaw.v
+verified/C016_ParityFlips.v
+verified/C010_ConnectivityObstruction.v

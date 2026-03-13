@@ -10,7 +10,7 @@
 //!   zd-crystal-bands --dims 16,32 --details --tol 0.01  # per-component CSVs
 
 use algebra_analysis::crystal_bands::{
-    dim_spectrum_summary, verify_reggiani_factorization, DimSpectrumSummary,
+    DimSpectrumSummary, dim_spectrum_summary, verify_reggiani_factorization,
 };
 use clap::Parser;
 use std::{fs, path::Path, time::Instant};
@@ -66,10 +66,7 @@ fn write_summary_csv(summaries: &[DimSpectrumSummary], path: &Path) -> std::io::
     wtr.flush()
 }
 
-fn write_degeneracy_csv(
-    summary: &DimSpectrumSummary,
-    path: &Path,
-) -> std::io::Result<()> {
+fn write_degeneracy_csv(summary: &DimSpectrumSummary, path: &Path) -> std::io::Result<()> {
     let mut wtr = csv::Writer::from_path(path)?;
     wtr.write_record(["eigenvalue", "degeneracy"])?;
     for (ev, deg) in &summary.degeneracies {
@@ -78,10 +75,7 @@ fn write_degeneracy_csv(
     wtr.flush()
 }
 
-fn write_class_csv(
-    summary: &DimSpectrumSummary,
-    path: &Path,
-) -> std::io::Result<()> {
+fn write_class_csv(summary: &DimSpectrumSummary, path: &Path) -> std::io::Result<()> {
     let mut wtr = csv::Writer::from_path(path)?;
     wtr.write_record([
         "node_count",
@@ -187,7 +181,9 @@ fn main() {
 
         eprintln!(
             "\nReggiani factorization: factorizes={}, n_components={}, {:.2}s",
-            result.factorizes, result.n_components, elapsed.as_secs_f64()
+            result.factorizes,
+            result.n_components,
+            elapsed.as_secs_f64()
         );
         eprintln!("  Full degeneracies: {:?}", result.full_degeneracies);
         eprintln!(

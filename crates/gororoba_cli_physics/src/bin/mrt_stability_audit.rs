@@ -254,7 +254,13 @@ fn main() {
     } else {
         eprintln!(
             "MRT Stability Audit [{backend_name}{kernel_tag}]: {}^3 grid, tau={}, {} steps (Mach interval={}), {} levels [{:.1}..{:.1}]",
-            args.n, args.tau, args.steps, args.mach_interval, args.n_levels, args.contrast_min, args.contrast_max
+            args.n,
+            args.tau,
+            args.steps,
+            args.mach_interval,
+            args.n_levels,
+            args.contrast_min,
+            args.contrast_max
         );
         println!(
             "{:>10} {:>5} {:>8} {:>10} {:>12} {:>10}",

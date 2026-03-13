@@ -201,9 +201,6 @@ mod tests {
     fn test_geometry_hole_diameter() {
         let geom = MagnonicCrystalGeometry::kaman_standard();
         let d = geom.hole_diameter();
-        assert!(
-            (d - 240e-9).abs() < 1e-12,
-            "d = 0.6 * 400nm = 240nm"
-        );
+        assert!((d - 240e-9).abs() < 1e-12, "d = 0.6 * 400nm = 240nm");
     }
 }

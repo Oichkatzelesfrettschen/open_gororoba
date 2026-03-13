@@ -195,8 +195,8 @@ pub fn drude(omega: &[f64], eps_inf: f64, omega_p: f64, gamma: f64) -> Vec<Compl
 /// Verify Kramers-Kronig consistency of a dielectric function via FFT Hilbert transform.
 ///
 /// Uses:
-///   chi'(w) = -H[chi''](w)  (real part from imaginary)
-///   chi''(w) = H[chi'](w)   (imaginary part from real)
+///   `chi'(w) = -H[chi''](w)`  (real part from imaginary)
+///   `chi''(w) = H[chi'](w)`   (imaginary part from real)
 ///
 /// # Arguments
 /// * `eps` - Dielectric function array (positive frequencies only)

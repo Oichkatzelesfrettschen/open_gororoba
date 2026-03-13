@@ -29,7 +29,7 @@ use nalgebra::{Matrix3, SymmetricEigen, Vector3};
 /// Q is a symmetric, traceless 3x3 matrix with 5 independent components.
 /// It describes the orientational order of rod-like molecules:
 /// - Isotropic phase: Q = 0
-/// - Uniaxial nematic: Q = S(nn^T - I/3) where n is the director, S in [0,1]
+/// - Uniaxial nematic: `Q = S(nn^T - I/3)` where `n` is the director and `S in [0,1]`
 /// - Biaxial: Q has two distinct non-zero eigenvalues
 #[derive(Clone, Debug)]
 pub struct QTensor {

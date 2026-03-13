@@ -74,21 +74,11 @@ impl LbmBackend {
 
     /// Force GPU backend (CUDA FP32/SoA).
     #[cfg(feature = "gpu")]
-    pub fn cuda(
-        nx: usize,
-        ny: usize,
-        nz: usize,
-        tau: f64,
-        mode: CollisionMode,
-    ) -> Result<Self> {
+    pub fn cuda(nx: usize, ny: usize, nz: usize, tau: f64, mode: CollisionMode) -> Result<Self> {
         let solver = match mode {
-            CollisionMode::Bgk => lbm_3d_cuda::LbmSolver3DCuda::new(
-                nx,
-                ny,
-                nz,
-                tau,
-                lbm_3d_cuda::Precision::FP32,
-            )?,
+            CollisionMode::Bgk => {
+                lbm_3d_cuda::LbmSolver3DCuda::new(nx, ny, nz, tau, lbm_3d_cuda::Precision::FP32)?
+            }
             CollisionMode::Mrt => lbm_3d_cuda::LbmSolver3DCuda::new_mrt(
                 nx,
                 ny,

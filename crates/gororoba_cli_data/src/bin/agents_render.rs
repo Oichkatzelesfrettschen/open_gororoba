@@ -51,6 +51,11 @@ fn repo_root() -> PathBuf {
         .to_path_buf()
 }
 
+fn has_disallowed_controls(text: &str) -> bool {
+    text.chars()
+        .any(|ch| ch.is_control() && !matches!(ch, '\n' | '\r' | '\t'))
+}
+
 fn load_agents(path: &Path) -> Result<AgentsRoot> {
     let raw = fs::read_to_string(path)
         .with_context(|| format!("read agents policy {}", path.display()))?;
@@ -105,8 +110,8 @@ fn render_markdown(config: &AgentsMdRender) -> Result<String> {
     lines.push(String::new());
 
     let rendered = lines.join("\n");
-    if !rendered.is_ascii() {
-        bail!("rendered AGENTS.md must remain ASCII-only");
+    if has_disallowed_controls(&rendered) {
+        bail!("rendered AGENTS.md must remain ANSI-safe UTF-8 without control escapes");
     }
     Ok(rendered)
 }

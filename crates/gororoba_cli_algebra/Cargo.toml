@@ -126,8 +126,37 @@ path = "src/bin/dm_cd_4096_analysis.rs"
 name = "zd-crystal-bands"
 path = "src/bin/zd_crystal_bands.rs"
 
+[[bin]]
+name = "x87-strategy-bench"
+path = "src/bin/x87_strategy_bench.rs"
+
+[[bin]]
+name = "jacobi-backend-sweep"
+path = "src/bin/jacobi_backend_sweep.rs"
+
+[[bin]]
+name = "jacobi-backend-samply-compare"
+path = "src/bin/jacobi_backend_samply_compare.rs"
+
+[[bin]]
+name = "x87-givens-microbench"
+path = "src/bin/x87_givens_microbench.rs"
+
+[[bin]]
+name = "block-jacobi-backend-sweep"
+path = "src/bin/block_jacobi_backend_sweep.rs"
+
+[[bin]]
+name = "partial-spectrum-bench"
+path = "src/bin/partial_spectrum_bench.rs"
+
+[[bin]]
+name = "structured-spectrum-bench"
+path = "src/bin/structured_spectrum_bench.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
+cd_kernel = { workspace = true }
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 algebra_experimental = { workspace = true }
 gororoba_engine = { path = "../gororoba_engine" }
@@ -143,11 +172,16 @@ rand = { workspace = true }
 rand_chacha = { workspace = true }
 rustfft = { workspace = true }
 anyhow.workspace = true
+nalgebra = { workspace = true }
+flate2 = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 [features]
 default = []
 gpu = ["gororoba_algebra/gpu"]
 tracy-profile = ["dep:tracing-tracy"]
+profile-dd-hotspots = ["algebra_analysis/profile-dd-hotspots"]
 
 [lints]
 workspace = true

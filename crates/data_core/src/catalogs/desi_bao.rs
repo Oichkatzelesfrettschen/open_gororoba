@@ -137,7 +137,7 @@ pub fn desi_dr2_bao() -> Vec<BaoMeasurement> {
         BaoMeasurement {
             z_eff: 0.295,
             is_isotropic: true,
-            dm_over_rd: 7.942,  // DV/rd from Table IV
+            dm_over_rd: 7.942, // DV/rd from Table IV
             dm_over_rd_err: 0.075,
             dh_over_rd: 0.0,
             dh_over_rd_err: 0.0,

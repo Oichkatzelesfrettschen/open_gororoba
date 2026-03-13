@@ -35,6 +35,7 @@ diffusionx = { workspace = true }
 
 # GPU acceleration (optional, feature-gated)
 cudarc = { workspace = true, optional = true }
+verified_core = { version = "0.1.0", path = "../verified_core" }
 
 [features]
 default = ["core", "analysis", "physics"]

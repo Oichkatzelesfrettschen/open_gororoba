@@ -14,6 +14,10 @@ use crate::bell_inequality::{SignTableCache, known_sedenion_zd_pairs, rotate_spa
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 use gororoba_algebra::physics::clifford::{GammaMatrix, gamma_matrices_cl8};
 use num_complex::Complex64;
+use serde::{Deserialize, Serialize};
+
+/// Planck time in seconds, used only for algebraic complex-time bookkeeping.
+pub const PLANCK_TIME_SECONDS: f64 = 5.391_247e-44;
 
 /// A Majorana mode mapped to a CD basis element.
 #[derive(Debug, Clone)]
@@ -51,6 +55,48 @@ pub struct BraidingExperimentResult {
     pub friction_per_braid: Vec<f64>,
     pub total_friction: f64,
     pub fidelity: f64,
+}
+
+/// Configuration for the structured complex-time friction sweep.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct MajoranaFrictionSweepConfig {
+    pub dim: usize,
+    pub theta_steps: usize,
+    /// Algebraic phase-bias control used for phenomenological sweeps.
+    /// This is not a physical CP-violation observable.
+    pub cp_phase_bias_rad: f64,
+}
+
+/// One row of the structured friction sweep.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct MajoranaFrictionSweepRow {
+    pub theta_rad: f64,
+    pub tau_seconds: f64,
+    pub raw_friction: f64,
+    pub normalized_friction: f64,
+    pub max_associator_norm: f64,
+    pub phase_bias_factor: f64,
+}
+
+/// Comparison against candidate inverse bounds.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InverseBoundComparison {
+    pub label: String,
+    pub target_value: f64,
+    pub absolute_residual: f64,
+}
+
+/// Full structured friction sweep report.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct MajoranaFrictionSweepReport {
+    pub config: MajoranaFrictionSweepConfig,
+    pub rows: Vec<MajoranaFrictionSweepRow>,
+    pub terminal_normalized_friction: f64,
+    pub inverse_42: InverseBoundComparison,
+    pub inverse_1764: InverseBoundComparison,
+    pub closest_bound_label: String,
+    pub bound_supported: bool,
+    pub support_tolerance: f64,
 }
 
 /// Construct the braid operator U_ij = (1/sqrt(2))(I + gamma_i * gamma_j).
@@ -414,6 +460,87 @@ pub fn friction_dimensional_scaling(max_dim: usize) -> Vec<(usize, f64, f64)> {
     results
 }
 
+/// Algebraic phase-bias factor used for phenomenological sweep control.
+///
+/// This preserves the current behavior at zero bias and keeps the theta sweep
+/// monotone because it rescales every row by a constant positive factor.
+pub fn algebraic_phase_bias_factor(cp_phase_bias_rad: f64) -> f64 {
+    1.0 + 0.5 * cp_phase_bias_rad.sin().abs()
+}
+
+/// Structured complex-time friction sweep with inverse-bound comparisons.
+pub fn majorana_friction_sweep(
+    config: &MajoranaFrictionSweepConfig,
+) -> MajoranaFrictionSweepReport {
+    assert!(
+        config.dim >= 16 && config.dim.is_power_of_two(),
+        "dim must be a power of two >= 16"
+    );
+    assert!(config.theta_steps > 0, "theta_steps must be > 0");
+
+    let modes = map_majoranas_to_cd(4, config.dim);
+    let sign_table = SignTableCache::new(config.dim);
+    let phase_bias_factor = algebraic_phase_bias_factor(config.cp_phase_bias_rad);
+
+    let mut rows = Vec::with_capacity(config.theta_steps + 1);
+    for step in 0..=config.theta_steps {
+        let theta = std::f64::consts::FRAC_PI_2 * step as f64 / config.theta_steps as f64;
+        let mut result = complex_time_braid(&modes[0], &modes[1], theta, &sign_table);
+        result.topological_friction *= phase_bias_factor;
+        result.max_associator_norm *= phase_bias_factor;
+        rows.push(MajoranaFrictionSweepRow {
+            theta_rad: theta,
+            tau_seconds: theta * PLANCK_TIME_SECONDS,
+            raw_friction: result.topological_friction,
+            normalized_friction: 0.0,
+            max_associator_norm: result.max_associator_norm,
+            phase_bias_factor,
+        });
+    }
+
+    let baseline = rows
+        .first()
+        .map(|row| row.raw_friction)
+        .unwrap_or(1.0)
+        .max(1.0e-30);
+    for row in &mut rows {
+        row.normalized_friction = row.raw_friction / baseline;
+    }
+
+    let terminal_normalized_friction = rows
+        .last()
+        .map(|row| row.normalized_friction)
+        .unwrap_or(0.0);
+    let inverse_42 = InverseBoundComparison {
+        label: "1/42".to_string(),
+        target_value: 1.0 / 42.0,
+        absolute_residual: (terminal_normalized_friction - 1.0 / 42.0).abs(),
+    };
+    let inverse_1764 = InverseBoundComparison {
+        label: "1/1764".to_string(),
+        target_value: 1.0 / 1764.0,
+        absolute_residual: (terminal_normalized_friction - 1.0 / 1764.0).abs(),
+    };
+    let support_tolerance = 1.0e-6;
+    let (closest_bound_label, best_residual) =
+        if inverse_42.absolute_residual <= inverse_1764.absolute_residual {
+            (inverse_42.label.clone(), inverse_42.absolute_residual)
+        } else {
+            (inverse_1764.label.clone(), inverse_1764.absolute_residual)
+        };
+
+    MajoranaFrictionSweepReport {
+        config: config.clone(),
+        rows,
+        terminal_normalized_friction,
+        inverse_42,
+        inverse_1764,
+        closest_bound_label,
+        bound_supported: best_residual <= support_tolerance,
+        support_tolerance,
+    }
+}
+
 /// CHSH test with probes aligned along braiding channels instead of random.
 ///
 /// Uses box-kite assessor pairs as measurement planes instead of the
@@ -684,6 +811,60 @@ mod tests {
     }
 
     #[test]
+    fn test_majorana_friction_sweep_zero_bias_matches_existing_curve() {
+        let config = MajoranaFrictionSweepConfig {
+            dim: 16,
+            theta_steps: 8,
+            cp_phase_bias_rad: 0.0,
+        };
+        let report = majorana_friction_sweep(&config);
+        let modes = map_majoranas_to_cd(4, 16);
+        let sign_table = SignTableCache::new(16);
+
+        for row in &report.rows {
+            let expected = complex_time_braid(&modes[0], &modes[1], row.theta_rad, &sign_table);
+            assert!(
+                (row.raw_friction - expected.topological_friction).abs() < 1.0e-12,
+                "theta={} raw={} expected={}",
+                row.theta_rad,
+                row.raw_friction,
+                expected.topological_friction
+            );
+        }
+    }
+
+    #[test]
+    fn test_majorana_friction_sweep_normalized_curve_is_monotone() {
+        let report = majorana_friction_sweep(&MajoranaFrictionSweepConfig {
+            dim: 16,
+            theta_steps: 16,
+            cp_phase_bias_rad: 0.3,
+        });
+
+        for window in report.rows.windows(2) {
+            assert!(
+                window[1].normalized_friction <= window[0].normalized_friction + 1.0e-12,
+                "normalized friction should be non-increasing"
+            );
+        }
+    }
+
+    #[test]
+    fn test_majorana_friction_sweep_reports_inverse_bound_residuals() {
+        let report = majorana_friction_sweep(&MajoranaFrictionSweepConfig {
+            dim: 16,
+            theta_steps: 20,
+            cp_phase_bias_rad: 0.0,
+        });
+
+        assert!(report.terminal_normalized_friction.is_finite());
+        assert!(report.inverse_42.absolute_residual.is_finite());
+        assert!(report.inverse_1764.absolute_residual.is_finite());
+        assert_eq!(report.closest_bound_label, "1/42");
+        assert!(!report.bound_supported);
+    }
+
+    #[test]
     fn test_aligned_probes_change_chsh() {
         let result = chsh_braid_aligned(16, 1000, 42);
         assert!(
@@ -706,5 +887,50 @@ mod tests {
             "Braiding experiment: parity_cliff={}, parity_cd={}, friction={}",
             result.clifford_parity, result.cd_parity, result.total_friction
         );
+    }
+
+    // C-1350, C-1351, E-184: Braid fidelity is always < 1.0 at dim >= 16.
+    // BraidResult.fidelity = 1.0 only when total_friction < 1e-12.
+    // C-1134 guarantees topological_friction >= 4 at dim >= 16, so fidelity
+    // is structurally 0.0 -- this is not a defect but a property of
+    // non-associative braiding.
+    #[test]
+    fn test_c1350_braid_fidelity_always_below_unity() {
+        for dim in [16_usize, 32] {
+            let modes = map_majoranas_to_cd(4, dim);
+            let sign_table = SignTableCache::new(dim);
+            // Test multiple braid pairs to confirm universality.
+            for (a, b) in [(0, 1), (1, 2), (0, 2)] {
+                if a < modes.len() && b < modes.len() {
+                    let result = cd_braid(&modes[a], &modes[b], &sign_table);
+                    assert!(
+                        result.topological_friction >= 4.0,
+                        "C-1134 violated: friction={:.6} at dim={dim} pair ({a},{b})",
+                        result.topological_friction
+                    );
+                    assert!(
+                        result.fidelity < 1.0,
+                        "C-1350: fidelity must be < 1.0 at dim={dim} pair ({a},{b}), got {:.6}",
+                        result.fidelity
+                    );
+                }
+            }
+        }
+        // Confirm friction grows from dim=16 to dim=32 (C-1136 empirical claim).
+        let scaling = friction_dimensional_scaling(32);
+        let f16 = scaling
+            .iter()
+            .find(|&&(d, _, _)| d == 16)
+            .map(|&(_, f, _)| f);
+        let f32 = scaling
+            .iter()
+            .find(|&&(d, _, _)| d == 32)
+            .map(|&(_, f, _)| f);
+        if let (Some(f16), Some(f32)) = (f16, f32) {
+            assert!(
+                f32 >= f16,
+                "C-1136: friction should be non-decreasing with dim, f16={f16:.4} f32={f32:.4}"
+            );
+        }
     }
 }

@@ -124,7 +124,10 @@ pub fn bounds_from_omni(records: &[OmniRecord]) -> Option<TimeBounds> {
 }
 
 pub fn bounds_from_soho_celias(records: &[SohoCeliasRecord]) -> Option<TimeBounds> {
-    let timestamps: Vec<i64> = records.iter().filter_map(soho_celias_timestamp_ms).collect();
+    let timestamps: Vec<i64> = records
+        .iter()
+        .filter_map(soho_celias_timestamp_ms)
+        .collect();
     TimeBounds::from_sorted_epoch_ms(&timestamps)
 }
 

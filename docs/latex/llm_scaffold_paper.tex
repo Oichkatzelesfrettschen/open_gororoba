@@ -2458,7 +2458,7 @@ checks before any code can be pushed:
     counterparts.
 \end{enumerate}
 A pre-push hook chains the governance gate with \texttt{cargo clippy}
-(warnings-as-errors), the full test suite, and an ASCII-only check,
+(warnings-as-errors), the full test suite, and an ANSI-safe UTF-8 character-policy check,
 ensuring that no commit reaches the remote repository without passing
 all quality gates.
 

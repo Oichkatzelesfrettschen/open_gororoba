@@ -400,7 +400,11 @@ pub fn holonomy_between(z1: &[f64], z2: &[f64]) -> Option<HolonomyResult> {
 
     // Project v2 orthogonal to u2 (it should already be, but ensure numerical cleanliness)
     let v2u2 = inner_product(&v2, &u2);
-    let mut v2_orth: Vec<f64> = v2.iter().zip(u2.iter()).map(|(&vi, &ui)| vi - v2u2 * ui).collect();
+    let mut v2_orth: Vec<f64> = v2
+        .iter()
+        .zip(u2.iter())
+        .map(|(&vi, &ui)| vi - v2u2 * ui)
+        .collect();
     let v2_orth_norm = vec_norm(&v2_orth);
     if v2_orth_norm > 1e-14 {
         for x in &mut v2_orth {
@@ -679,8 +683,8 @@ mod tests {
         // We need a perp b in R^8, so use e_1 + e_10 instead:
         //   a = (0,1,0,0,0,0,0,0), b = (0,0,1,0,0,0,0,0)
         let mut z = [0.0f64; 16];
-        z[1] = 1.0;   // e_1 in lower half
-        z[10] = 1.0;  // e_2 in upper half (different R^8 component)
+        z[1] = 1.0; // e_1 in lower half
+        z[10] = 1.0; // e_2 in upper half (different R^8 component)
         let result = holonomy_between(&z, &z).expect("should compute holonomy");
         assert!(
             result.geodesic_distance.abs() < 1e-10,
@@ -700,11 +704,11 @@ mod tests {
         // z1: a=(e_1), b=(e_2) => u1=e_1, v1=e_2 (orthogonal ok)
         // z2: a=(e_3), b=(e_4) => u2=e_3, v2=e_4 (orthogonal ok)
         let mut z1 = [0.0f64; 16];
-        z1[1] = 1.0;   // a = e_1
-        z1[10] = 1.0;  // b = e_2 (in upper half)
+        z1[1] = 1.0; // a = e_1
+        z1[10] = 1.0; // b = e_2 (in upper half)
         let mut z2 = [0.0f64; 16];
-        z2[3] = 1.0;   // a = e_3
-        z2[12] = 1.0;  // b = e_4 (in upper half)
+        z2[3] = 1.0; // a = e_3
+        z2[12] = 1.0; // b = e_4 (in upper half)
         let result = holonomy_between(&z1, &z2).expect("should compute holonomy");
         // u1 = e_1, u2 = e_3 in R^8 => <u1,u2> = 0 => geodesic distance = pi/2
         assert!(
@@ -721,11 +725,11 @@ mod tests {
         // u1 ~ -u2 (antipodal on S^7): geodesic is non-unique,
         // parallel transport is path-dependent => returns None.
         let mut z1 = [0.0f64; 16];
-        z1[1] = 1.0;    // a = +e_1
-        z1[10] = 1.0;   // b = e_2 (in upper half)
+        z1[1] = 1.0; // a = +e_1
+        z1[10] = 1.0; // b = e_2 (in upper half)
         let mut z2 = [0.0f64; 16];
-        z2[1] = -1.0;   // a = -e_1  (antipodal to z1's a-half)
-        z2[10] = 1.0;   // b = e_2
+        z2[1] = -1.0; // a = -e_1  (antipodal to z1's a-half)
+        z2[10] = 1.0; // b = e_2
         let result = holonomy_between(&z1, &z2);
         assert!(
             result.is_none(),

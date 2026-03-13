@@ -226,7 +226,7 @@ pub fn cmb_shift_parameter(omega_m: f64, q_corr: f64, z_star: f64) -> f64 {
 /// BAO sound horizon r_d via Eisenstein & Hu (1998) fitting formula.
 ///
 /// r_d ~ 147.05 * (Omega_m * h^2 / 0.1326)^{-0.255}
-///       * (Omega_b * h^2 / 0.02273)^{-0.128}  [Mpc]
+///       * (Omega_b * h^2 / 0.02273)^{-0.128}  in `Mpc`
 pub fn bao_sound_horizon(omega_m: f64, h0: f64) -> f64 {
     let h = h0 / 100.0;
     let omega_mh2 = omega_m * h * h;

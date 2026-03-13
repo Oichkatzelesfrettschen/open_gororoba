@@ -29,6 +29,11 @@ pub enum LbmError {
 
 type Result<T> = std::result::Result<T, LbmError>;
 
+#[inline]
+fn sum_19(values: &[f64; 19]) -> f64 {
+    values.iter().sum()
+}
+
 /// Collision operator selection.
 #[derive(Clone, Debug, Copy, PartialEq, Eq)]
 pub enum CollisionMode {
@@ -128,7 +133,7 @@ impl BgkCollision {
     /// Recover macroscopic density from distribution function.
     /// rho = sum_i f_i
     pub fn density_from_f(f: &[f64; 19]) -> f64 {
-        f.iter().sum()
+        sum_19(f)
     }
 
     /// Recover macroscopic velocity from distribution function.
@@ -366,25 +371,88 @@ pub struct LbmSolver3D {
 #[cfg(test)]
 fn mrt_forward_transform(f: &[f64; 19]) -> [f64; 19] {
     [
-        f[0]+f[1]+f[2]+f[3]+f[4]+f[5]+f[6]+f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18],
-        -30.0*f[0] - 11.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + 8.0*(f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]),
-        12.0*f[0] - 4.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + (f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]),
-        f[1]-f[2] + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14],
-        -4.0*(f[1]-f[2]) + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14],
-        f[3]-f[4] + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18],
-        -4.0*(f[3]-f[4]) + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18],
-        f[5]-f[6] + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18],
-        -4.0*(f[5]-f[6]) + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18],
-        2.0*(f[1]+f[2]) - (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]),
-        -2.0*(f[1]+f[2]) + (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]),
-        (f[3]+f[4]) - (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]),
-        -(f[3]+f[4]) + (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]),
-        f[7]+f[8]-f[9]-f[10],
-        f[11]+f[12]-f[13]-f[14],
-        f[15]+f[16]-f[17]-f[18],
-        f[7]-f[8]-f[9]+f[10] - f[11]+f[12]+f[13]-f[14],
-        -f[7]+f[8]-f[9]+f[10] + f[15]-f[16]+f[17]-f[18],
-        f[11]-f[12]+f[13]-f[14] - f[15]+f[16]+f[17]-f[18],
+        f[0] + f[1]
+            + f[2]
+            + f[3]
+            + f[4]
+            + f[5]
+            + f[6]
+            + f[7]
+            + f[8]
+            + f[9]
+            + f[10]
+            + f[11]
+            + f[12]
+            + f[13]
+            + f[14]
+            + f[15]
+            + f[16]
+            + f[17]
+            + f[18],
+        -30.0 * f[0] - 11.0 * (f[1] + f[2] + f[3] + f[4] + f[5] + f[6])
+            + 8.0
+                * (f[7]
+                    + f[8]
+                    + f[9]
+                    + f[10]
+                    + f[11]
+                    + f[12]
+                    + f[13]
+                    + f[14]
+                    + f[15]
+                    + f[16]
+                    + f[17]
+                    + f[18]),
+        12.0 * f[0] - 4.0 * (f[1] + f[2] + f[3] + f[4] + f[5] + f[6])
+            + (f[7]
+                + f[8]
+                + f[9]
+                + f[10]
+                + f[11]
+                + f[12]
+                + f[13]
+                + f[14]
+                + f[15]
+                + f[16]
+                + f[17]
+                + f[18]),
+        f[1] - f[2] + f[7] - f[8] + f[9] - f[10] + f[11] - f[12] + f[13] - f[14],
+        -4.0 * (f[1] - f[2]) + f[7] - f[8] + f[9] - f[10] + f[11] - f[12] + f[13] - f[14],
+        f[3] - f[4] + f[7] - f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18],
+        -4.0 * (f[3] - f[4]) + f[7] - f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18],
+        f[5] - f[6] + f[11] - f[12] - f[13] + f[14] + f[15] - f[16] - f[17] + f[18],
+        -4.0 * (f[5] - f[6]) + f[11] - f[12] - f[13] + f[14] + f[15] - f[16] - f[17] + f[18],
+        2.0 * (f[1] + f[2]) - (f[3] + f[4] + f[5] + f[6])
+            + f[7]
+            + f[8]
+            + f[9]
+            + f[10]
+            + f[11]
+            + f[12]
+            + f[13]
+            + f[14]
+            - 2.0 * (f[15] + f[16] + f[17] + f[18]),
+        -2.0 * (f[1] + f[2])
+            + (f[3] + f[4] + f[5] + f[6])
+            + f[7]
+            + f[8]
+            + f[9]
+            + f[10]
+            + f[11]
+            + f[12]
+            + f[13]
+            + f[14]
+            - 2.0 * (f[15] + f[16] + f[17] + f[18]),
+        (f[3] + f[4]) - (f[5] + f[6]) + f[7] + f[8] + f[9] + f[10]
+            - (f[11] + f[12] + f[13] + f[14]),
+        -(f[3] + f[4]) + (f[5] + f[6]) + f[7] + f[8] + f[9] + f[10]
+            - (f[11] + f[12] + f[13] + f[14]),
+        f[7] + f[8] - f[9] - f[10],
+        f[11] + f[12] - f[13] - f[14],
+        f[15] + f[16] - f[17] - f[18],
+        f[7] - f[8] - f[9] + f[10] - f[11] + f[12] + f[13] - f[14],
+        -f[7] + f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18],
+        f[11] - f[12] + f[13] - f[14] - f[15] + f[16] + f[17] - f[18],
     ]
 }
 
@@ -400,47 +468,111 @@ fn mrt_forward_transform(f: &[f64; 19]) -> [f64; 19] {
 #[inline(always)]
 fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f64) -> [f64; 19] {
     // Relaxation rates (diagonal of S matrix)
-    let s_nu = 1.0 / tau;  // Physical kinematic viscosity
-    let s_e = 1.19;        // Energy relaxation
-    let s_eps = 1.4;       // Energy squared
-    let s_q = 1.2;         // Energy flux
-    let s_ghost = 1.0;     // Instant damping for ghost moments
+    let s_nu = 1.0 / tau; // Physical kinematic viscosity
+    let s_e = 1.19; // Energy relaxation
+    let s_eps = 1.4; // Energy squared
+    let s_q = 1.2; // Energy flux
+    let s_ghost = 1.0; // Instant damping for ghost moments
 
     let u_sq = ux * ux + uy * uy + uz * uz;
 
     // Forward transform: f -> moment space (m = M * f)
     // Using the d'Humieres D3Q19 orthogonal basis
-    let m0  = f[0]+f[1]+f[2]+f[3]+f[4]+f[5]+f[6]+f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18];
-    let m1  = -30.0*f[0] - 11.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + 8.0*(f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
-    let m2  = 12.0*f[0] - 4.0*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + (f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
-    let m3  = f[1]-f[2] + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
-    let m4  = -4.0*(f[1]-f[2]) + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
-    let m5  = f[3]-f[4] + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
-    let m6  = -4.0*(f[3]-f[4]) + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
-    let m7  = f[5]-f[6] + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
-    let m8  = -4.0*(f[5]-f[6]) + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
-    let m9  = 2.0*(f[1]+f[2]) - (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]);
-    let m10 = -2.0*(f[1]+f[2]) + (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - 2.0*(f[15]+f[16]+f[17]+f[18]);
-    let m11 = (f[3]+f[4]) - (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
-    let m12 = -(f[3]+f[4]) + (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
-    let m13 = f[7]+f[8]-f[9]-f[10];
-    let m14 = f[11]+f[12]-f[13]-f[14];
-    let m15 = f[15]+f[16]-f[17]-f[18];
-    let m16 = f[7]-f[8]-f[9]+f[10] - f[11]+f[12]+f[13]-f[14];
-    let m17 = -f[7]+f[8]-f[9]+f[10] + f[15]-f[16]+f[17]-f[18];
-    let m18 = f[11]-f[12]+f[13]-f[14] - f[15]+f[16]+f[17]-f[18];
+    let m0 = f[0]
+        + f[1]
+        + f[2]
+        + f[3]
+        + f[4]
+        + f[5]
+        + f[6]
+        + f[7]
+        + f[8]
+        + f[9]
+        + f[10]
+        + f[11]
+        + f[12]
+        + f[13]
+        + f[14]
+        + f[15]
+        + f[16]
+        + f[17]
+        + f[18];
+    let m1 = -30.0 * f[0] - 11.0 * (f[1] + f[2] + f[3] + f[4] + f[5] + f[6])
+        + 8.0
+            * (f[7]
+                + f[8]
+                + f[9]
+                + f[10]
+                + f[11]
+                + f[12]
+                + f[13]
+                + f[14]
+                + f[15]
+                + f[16]
+                + f[17]
+                + f[18]);
+    let m2 = 12.0 * f[0] - 4.0 * (f[1] + f[2] + f[3] + f[4] + f[5] + f[6])
+        + (f[7]
+            + f[8]
+            + f[9]
+            + f[10]
+            + f[11]
+            + f[12]
+            + f[13]
+            + f[14]
+            + f[15]
+            + f[16]
+            + f[17]
+            + f[18]);
+    let m3 = f[1] - f[2] + f[7] - f[8] + f[9] - f[10] + f[11] - f[12] + f[13] - f[14];
+    let m4 = -4.0 * (f[1] - f[2]) + f[7] - f[8] + f[9] - f[10] + f[11] - f[12] + f[13] - f[14];
+    let m5 = f[3] - f[4] + f[7] - f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18];
+    let m6 = -4.0 * (f[3] - f[4]) + f[7] - f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18];
+    let m7 = f[5] - f[6] + f[11] - f[12] - f[13] + f[14] + f[15] - f[16] - f[17] + f[18];
+    let m8 = -4.0 * (f[5] - f[6]) + f[11] - f[12] - f[13] + f[14] + f[15] - f[16] - f[17] + f[18];
+    let m9 = 2.0 * (f[1] + f[2]) - (f[3] + f[4] + f[5] + f[6])
+        + f[7]
+        + f[8]
+        + f[9]
+        + f[10]
+        + f[11]
+        + f[12]
+        + f[13]
+        + f[14]
+        - 2.0 * (f[15] + f[16] + f[17] + f[18]);
+    let m10 = -2.0 * (f[1] + f[2])
+        + (f[3] + f[4] + f[5] + f[6])
+        + f[7]
+        + f[8]
+        + f[9]
+        + f[10]
+        + f[11]
+        + f[12]
+        + f[13]
+        + f[14]
+        - 2.0 * (f[15] + f[16] + f[17] + f[18]);
+    let m11 = (f[3] + f[4]) - (f[5] + f[6]) + f[7] + f[8] + f[9] + f[10]
+        - (f[11] + f[12] + f[13] + f[14]);
+    let m12 = -(f[3] + f[4]) + (f[5] + f[6]) + f[7] + f[8] + f[9] + f[10]
+        - (f[11] + f[12] + f[13] + f[14]);
+    let m13 = f[7] + f[8] - f[9] - f[10];
+    let m14 = f[11] + f[12] - f[13] - f[14];
+    let m15 = f[15] + f[16] - f[17] - f[18];
+    let m16 = f[7] - f[8] - f[9] + f[10] - f[11] + f[12] + f[13] - f[14];
+    let m17 = -f[7] + f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18];
+    let m18 = f[11] - f[12] + f[13] - f[14] - f[15] + f[16] + f[17] - f[18];
 
     // Equilibrium moments
     // m0_eq = rho (conserved, not needed for relaxation)
-    let m1_eq  = rho * (-11.0 + 19.0 * u_sq);
-    let m2_eq  = rho * (3.0 - 5.5 * u_sq);
+    let m1_eq = rho * (-11.0 + 19.0 * u_sq);
+    let m2_eq = rho * (3.0 - 5.5 * u_sq);
     // m3_eq = rho*ux (conserved)
-    let m4_eq  = -2.0 / 3.0 * rho * ux;
+    let m4_eq = -2.0 / 3.0 * rho * ux;
     // m5_eq = rho*uy (conserved)
-    let m6_eq  = -2.0 / 3.0 * rho * uy;
+    let m6_eq = -2.0 / 3.0 * rho * uy;
     // m7_eq = rho*uz (conserved)
-    let m8_eq  = -2.0 / 3.0 * rho * uz;
-    let m9_eq  = rho * (2.0 * ux * ux - uy * uy - uz * uz);
+    let m8_eq = -2.0 / 3.0 * rho * uz;
+    let m9_eq = rho * (2.0 * ux * ux - uy * uy - uz * uz);
     let m10_eq = -0.5 * rho * (2.0 * ux * ux - uy * uy - uz * uz);
     let m11_eq = rho * (uy * uy - uz * uz);
     let m12_eq = -0.5 * rho * (uy * uy - uz * uz);
@@ -453,25 +585,25 @@ fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f6
 
     // Relax moments: m* = m - S * (m - m_eq)
     // Mass (m0) and momentum (m3, m5, m7) are conserved (s=0).
-    let ms0  = m0;                                      // conserved
-    let ms1  = m1  - s_e    * (m1  - m1_eq);            // energy
-    let ms2  = m2  - s_eps  * (m2  - m2_eq);            // energy^2
-    let ms3  = m3;                                      // conserved
-    let ms4  = m4  - s_q    * (m4  - m4_eq);            // energy flux
-    let ms5  = m5;                                      // conserved
-    let ms6  = m6  - s_q    * (m6  - m6_eq);            // energy flux
-    let ms7  = m7;                                      // conserved
-    let ms8  = m8  - s_q    * (m8  - m8_eq);            // energy flux
-    let ms9  = m9  - s_nu   * (m9  - m9_eq);            // stress (physical)
-    let ms10 = m10 - s_ghost* (m10 - m10_eq);           // ghost
-    let ms11 = m11 - s_nu   * (m11 - m11_eq);           // stress (physical)
-    let ms12 = m12 - s_ghost* (m12 - m12_eq);           // ghost
-    let ms13 = m13 - s_nu   * (m13 - m13_eq);           // stress (physical)
-    let ms14 = m14 - s_nu   * (m14 - m14_eq);           // stress (physical)
-    let ms15 = m15 - s_nu   * (m15 - m15_eq);           // stress (physical)
-    let ms16 = m16 - s_ghost* (m16 - m16_eq);           // ghost
-    let ms17 = m17 - s_ghost* (m17 - m17_eq);           // ghost
-    let ms18 = m18 - s_ghost* (m18 - m18_eq);           // ghost
+    let ms0 = m0; // conserved
+    let ms1 = m1 - s_e * (m1 - m1_eq); // energy
+    let ms2 = m2 - s_eps * (m2 - m2_eq); // energy^2
+    let ms3 = m3; // conserved
+    let ms4 = m4 - s_q * (m4 - m4_eq); // energy flux
+    let ms5 = m5; // conserved
+    let ms6 = m6 - s_q * (m6 - m6_eq); // energy flux
+    let ms7 = m7; // conserved
+    let ms8 = m8 - s_q * (m8 - m8_eq); // energy flux
+    let ms9 = m9 - s_nu * (m9 - m9_eq); // stress (physical)
+    let ms10 = m10 - s_ghost * (m10 - m10_eq); // ghost
+    let ms11 = m11 - s_nu * (m11 - m11_eq); // stress (physical)
+    let ms12 = m12 - s_ghost * (m12 - m12_eq); // ghost
+    let ms13 = m13 - s_nu * (m13 - m13_eq); // stress (physical)
+    let ms14 = m14 - s_nu * (m14 - m14_eq); // stress (physical)
+    let ms15 = m15 - s_nu * (m15 - m15_eq); // stress (physical)
+    let ms16 = m16 - s_ghost * (m16 - m16_eq); // ghost
+    let ms17 = m17 - s_ghost * (m17 - m17_eq); // ghost
+    let ms18 = m18 - s_ghost * (m18 - m18_eq); // ghost
 
     // Inverse transform: f* = M^{-1} * m*
     // M^{-1}_{ij} = M_{ji} / ||row_j||^2 (orthogonal, non-orthonormal basis).
@@ -479,16 +611,16 @@ fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f6
     let mut fo = [0.0; 19];
 
     // Reciprocal norms (1 / ||row_j||^2)
-    let rn0  = 1.0 / 19.0;
-    let rn1  = 1.0 / 2394.0;
-    let rn2  = 1.0 / 252.0;
-    let rn3  = 1.0 / 10.0;
-    let rn4  = 1.0 / 40.0;
-    let rn5  = 1.0 / 10.0;
-    let rn6  = 1.0 / 40.0;
-    let rn7  = 1.0 / 10.0;
-    let rn8  = 1.0 / 40.0;
-    let rn9  = 1.0 / 36.0;
+    let rn0 = 1.0 / 19.0;
+    let rn1 = 1.0 / 2394.0;
+    let rn2 = 1.0 / 252.0;
+    let rn3 = 1.0 / 10.0;
+    let rn4 = 1.0 / 40.0;
+    let rn5 = 1.0 / 10.0;
+    let rn6 = 1.0 / 40.0;
+    let rn7 = 1.0 / 10.0;
+    let rn8 = 1.0 / 40.0;
+    let rn9 = 1.0 / 36.0;
     let rn10 = 1.0 / 36.0;
     let rn11 = 1.0 / 12.0;
     let rn12 = 1.0 / 12.0;
@@ -500,16 +632,16 @@ fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f6
     let rn18 = 1.0 / 8.0;
 
     // Scale relaxed moments by reciprocal norms: s[j] = ms_j / ||row_j||^2
-    let s0  = ms0  * rn0;
-    let s1  = ms1  * rn1;
-    let s2  = ms2  * rn2;
-    let s3  = ms3  * rn3;
-    let s4  = ms4  * rn4;
-    let s5  = ms5  * rn5;
-    let s6  = ms6  * rn6;
-    let s7  = ms7  * rn7;
-    let s8  = ms8  * rn8;
-    let s9  = ms9  * rn9;
+    let s0 = ms0 * rn0;
+    let s1 = ms1 * rn1;
+    let s2 = ms2 * rn2;
+    let s3 = ms3 * rn3;
+    let s4 = ms4 * rn4;
+    let s5 = ms5 * rn5;
+    let s6 = ms6 * rn6;
+    let s7 = ms7 * rn7;
+    let s8 = ms8 * rn8;
+    let s9 = ms9 * rn9;
     let s10 = ms10 * rn10;
     let s11 = ms11 * rn11;
     let s12 = ms12 * rn12;
@@ -523,45 +655,45 @@ fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f6
     // f[i] = sum_j M[j][i] * s[j]   (M[j][i] = coefficient of f[i] in row j of M)
 
     // Rest (i=0): M columns [1, -30, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    fo[0] = s0 - 30.0*s1 + 12.0*s2;
+    fo[0] = s0 - 30.0 * s1 + 12.0 * s2;
 
     // Face +x (i=1): [1, -11, -4, 1, -4, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0]
-    fo[1] = s0 - 11.0*s1 - 4.0*s2 + s3 - 4.0*s4 + 2.0*s9 - 2.0*s10;
+    fo[1] = s0 - 11.0 * s1 - 4.0 * s2 + s3 - 4.0 * s4 + 2.0 * s9 - 2.0 * s10;
     // Face -x (i=2)
-    fo[2] = s0 - 11.0*s1 - 4.0*s2 - s3 + 4.0*s4 + 2.0*s9 - 2.0*s10;
+    fo[2] = s0 - 11.0 * s1 - 4.0 * s2 - s3 + 4.0 * s4 + 2.0 * s9 - 2.0 * s10;
     // Face +y (i=3): [1, -11, -4, 0, 0, 1, -4, 0, 0, -1, 1, 1, -1, 0, 0, 0, 0, 0, 0]
-    fo[3] = s0 - 11.0*s1 - 4.0*s2 + s5 - 4.0*s6 - s9 + s10 + s11 - s12;
+    fo[3] = s0 - 11.0 * s1 - 4.0 * s2 + s5 - 4.0 * s6 - s9 + s10 + s11 - s12;
     // Face -y (i=4)
-    fo[4] = s0 - 11.0*s1 - 4.0*s2 - s5 + 4.0*s6 - s9 + s10 + s11 - s12;
+    fo[4] = s0 - 11.0 * s1 - 4.0 * s2 - s5 + 4.0 * s6 - s9 + s10 + s11 - s12;
     // Face +z (i=5): [1, -11, -4, 0, 0, 0, 0, 1, -4, -1, 1, -1, 1, 0, 0, 0, 0, 0, 0]
-    fo[5] = s0 - 11.0*s1 - 4.0*s2 + s7 - 4.0*s8 - s9 + s10 - s11 + s12;
+    fo[5] = s0 - 11.0 * s1 - 4.0 * s2 + s7 - 4.0 * s8 - s9 + s10 - s11 + s12;
     // Face -z (i=6)
-    fo[6] = s0 - 11.0*s1 - 4.0*s2 - s7 + 4.0*s8 - s9 + s10 - s11 + s12;
+    fo[6] = s0 - 11.0 * s1 - 4.0 * s2 - s7 + 4.0 * s8 - s9 + s10 - s11 + s12;
 
     // Edge +x+y (i=7): [1, 8, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, -1, 0]
-    fo[7]  = s0 + 8.0*s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
+    fo[7] = s0 + 8.0 * s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
     // Edge -x-y (i=8)
-    fo[8]  = s0 + 8.0*s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
+    fo[8] = s0 + 8.0 * s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
     // Edge +x-y (i=9)
-    fo[9]  = s0 + 8.0*s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
+    fo[9] = s0 + 8.0 * s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
     // Edge -x+y (i=10)
-    fo[10] = s0 + 8.0*s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
+    fo[10] = s0 + 8.0 * s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
     // Edge +x+z (i=11): [1, 8, 1, 1, 1, 0, 0, 1, 1, 1, 1, -1, -1, 0, 1, 0, -1, 0, 1]
-    fo[11] = s0 + 8.0*s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
+    fo[11] = s0 + 8.0 * s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
     // Edge -x-z (i=12)
-    fo[12] = s0 + 8.0*s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
+    fo[12] = s0 + 8.0 * s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
     // Edge +x-z (i=13)
-    fo[13] = s0 + 8.0*s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
+    fo[13] = s0 + 8.0 * s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
     // Edge -x+z (i=14)
-    fo[14] = s0 + 8.0*s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
+    fo[14] = s0 + 8.0 * s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
     // Edge +y+z (i=15): [1, 8, 1, 0, 0, 1, 1, 1, 1, -2, -2, 0, 0, 0, 0, 1, 0, 1, -1]
-    fo[15] = s0 + 8.0*s1 + s2 + s5 + s6 + s7 + s8 - 2.0*s9 - 2.0*s10 + s15 + s17 - s18;
+    fo[15] = s0 + 8.0 * s1 + s2 + s5 + s6 + s7 + s8 - 2.0 * s9 - 2.0 * s10 + s15 + s17 - s18;
     // Edge -y-z (i=16)
-    fo[16] = s0 + 8.0*s1 + s2 - s5 - s6 - s7 - s8 - 2.0*s9 - 2.0*s10 + s15 - s17 + s18;
+    fo[16] = s0 + 8.0 * s1 + s2 - s5 - s6 - s7 - s8 - 2.0 * s9 - 2.0 * s10 + s15 - s17 + s18;
     // Edge +y-z (i=17)
-    fo[17] = s0 + 8.0*s1 + s2 + s5 + s6 - s7 - s8 - 2.0*s9 - 2.0*s10 - s15 - s17 - s18;
+    fo[17] = s0 + 8.0 * s1 + s2 + s5 + s6 - s7 - s8 - 2.0 * s9 - 2.0 * s10 - s15 - s17 - s18;
     // Edge -y+z (i=18)
-    fo[18] = s0 + 8.0*s1 + s2 - s5 - s6 + s7 + s8 - 2.0*s9 - 2.0*s10 - s15 + s17 + s18;
+    fo[18] = s0 + 8.0 * s1 + s2 - s5 - s6 + s7 + s8 - 2.0 * s9 - 2.0 * s10 - s15 + s17 + s18;
 
     fo
 }
@@ -574,7 +706,12 @@ fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f6
 #[inline(always)]
 #[allow(dead_code)]
 fn collide_mrt_d3q19_x4(
-    f: &[f64x4; 19], rho: f64x4, ux: f64x4, uy: f64x4, uz: f64x4, tau: f64x4,
+    f: &[f64x4; 19],
+    rho: f64x4,
+    ux: f64x4,
+    uy: f64x4,
+    uz: f64x4,
+    tau: f64x4,
 ) -> [f64x4; 19] {
     let one = f64x4::splat(1.0);
     let s_nu = one / tau;
@@ -586,33 +723,105 @@ fn collide_mrt_d3q19_x4(
     let u_sq = ux * ux + uy * uy + uz * uz;
 
     // Forward transform: f -> moment space (m = M * f)
-    let m0  = f[0]+f[1]+f[2]+f[3]+f[4]+f[5]+f[6]+f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18];
-    let m1  = f64x4::splat(-30.0)*f[0] + f64x4::splat(-11.0)*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + f64x4::splat(8.0)*(f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
-    let m2  = f64x4::splat(12.0)*f[0] + f64x4::splat(-4.0)*(f[1]+f[2]+f[3]+f[4]+f[5]+f[6]) + (f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14]+f[15]+f[16]+f[17]+f[18]);
-    let m3  = f[1]-f[2] + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
-    let m4  = f64x4::splat(-4.0)*(f[1]-f[2]) + f[7]-f[8]+f[9]-f[10]+f[11]-f[12]+f[13]-f[14];
-    let m5  = f[3]-f[4] + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
-    let m6  = f64x4::splat(-4.0)*(f[3]-f[4]) + f[7]-f[8]-f[9]+f[10]+f[15]-f[16]+f[17]-f[18];
-    let m7  = f[5]-f[6] + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
-    let m8  = f64x4::splat(-4.0)*(f[5]-f[6]) + f[11]-f[12]-f[13]+f[14]+f[15]-f[16]-f[17]+f[18];
-    let m9  = f64x4::splat(2.0)*(f[1]+f[2]) - (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - f64x4::splat(2.0)*(f[15]+f[16]+f[17]+f[18]);
-    let m10 = f64x4::splat(-2.0)*(f[1]+f[2]) + (f[3]+f[4]+f[5]+f[6]) + f[7]+f[8]+f[9]+f[10]+f[11]+f[12]+f[13]+f[14] - f64x4::splat(2.0)*(f[15]+f[16]+f[17]+f[18]);
-    let m11 = (f[3]+f[4]) - (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
-    let m12 = -(f[3]+f[4]) + (f[5]+f[6]) + f[7]+f[8]+f[9]+f[10] - (f[11]+f[12]+f[13]+f[14]);
-    let m13 = f[7]+f[8]-f[9]-f[10];
-    let m14 = f[11]+f[12]-f[13]-f[14];
-    let m15 = f[15]+f[16]-f[17]-f[18];
-    let m16 = f[7]-f[8]-f[9]+f[10] - f[11]+f[12]+f[13]-f[14];
-    let m17 = -f[7]+f[8]-f[9]+f[10] + f[15]-f[16]+f[17]-f[18];
-    let m18 = f[11]-f[12]+f[13]-f[14] - f[15]+f[16]+f[17]-f[18];
+    let m0 = f[0]
+        + f[1]
+        + f[2]
+        + f[3]
+        + f[4]
+        + f[5]
+        + f[6]
+        + f[7]
+        + f[8]
+        + f[9]
+        + f[10]
+        + f[11]
+        + f[12]
+        + f[13]
+        + f[14]
+        + f[15]
+        + f[16]
+        + f[17]
+        + f[18];
+    let m1 = f64x4::splat(-30.0) * f[0]
+        + f64x4::splat(-11.0) * (f[1] + f[2] + f[3] + f[4] + f[5] + f[6])
+        + f64x4::splat(8.0)
+            * (f[7]
+                + f[8]
+                + f[9]
+                + f[10]
+                + f[11]
+                + f[12]
+                + f[13]
+                + f[14]
+                + f[15]
+                + f[16]
+                + f[17]
+                + f[18]);
+    let m2 = f64x4::splat(12.0) * f[0]
+        + f64x4::splat(-4.0) * (f[1] + f[2] + f[3] + f[4] + f[5] + f[6])
+        + (f[7]
+            + f[8]
+            + f[9]
+            + f[10]
+            + f[11]
+            + f[12]
+            + f[13]
+            + f[14]
+            + f[15]
+            + f[16]
+            + f[17]
+            + f[18]);
+    let m3 = f[1] - f[2] + f[7] - f[8] + f[9] - f[10] + f[11] - f[12] + f[13] - f[14];
+    let m4 = f64x4::splat(-4.0) * (f[1] - f[2]) + f[7] - f[8] + f[9] - f[10] + f[11] - f[12]
+        + f[13]
+        - f[14];
+    let m5 = f[3] - f[4] + f[7] - f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18];
+    let m6 = f64x4::splat(-4.0) * (f[3] - f[4]) + f[7] - f[8] - f[9] + f[10] + f[15] - f[16]
+        + f[17]
+        - f[18];
+    let m7 = f[5] - f[6] + f[11] - f[12] - f[13] + f[14] + f[15] - f[16] - f[17] + f[18];
+    let m8 =
+        f64x4::splat(-4.0) * (f[5] - f[6]) + f[11] - f[12] - f[13] + f[14] + f[15] - f[16] - f[17]
+            + f[18];
+    let m9 = f64x4::splat(2.0) * (f[1] + f[2]) - (f[3] + f[4] + f[5] + f[6])
+        + f[7]
+        + f[8]
+        + f[9]
+        + f[10]
+        + f[11]
+        + f[12]
+        + f[13]
+        + f[14]
+        - f64x4::splat(2.0) * (f[15] + f[16] + f[17] + f[18]);
+    let m10 = f64x4::splat(-2.0) * (f[1] + f[2])
+        + (f[3] + f[4] + f[5] + f[6])
+        + f[7]
+        + f[8]
+        + f[9]
+        + f[10]
+        + f[11]
+        + f[12]
+        + f[13]
+        + f[14]
+        - f64x4::splat(2.0) * (f[15] + f[16] + f[17] + f[18]);
+    let m11 = (f[3] + f[4]) - (f[5] + f[6]) + f[7] + f[8] + f[9] + f[10]
+        - (f[11] + f[12] + f[13] + f[14]);
+    let m12 = -(f[3] + f[4]) + (f[5] + f[6]) + f[7] + f[8] + f[9] + f[10]
+        - (f[11] + f[12] + f[13] + f[14]);
+    let m13 = f[7] + f[8] - f[9] - f[10];
+    let m14 = f[11] + f[12] - f[13] - f[14];
+    let m15 = f[15] + f[16] - f[17] - f[18];
+    let m16 = f[7] - f[8] - f[9] + f[10] - f[11] + f[12] + f[13] - f[14];
+    let m17 = -f[7] + f[8] - f[9] + f[10] + f[15] - f[16] + f[17] - f[18];
+    let m18 = f[11] - f[12] + f[13] - f[14] - f[15] + f[16] + f[17] - f[18];
 
     // Equilibrium moments
-    let m1_eq  = rho * (f64x4::splat(-11.0) + f64x4::splat(19.0) * u_sq);
-    let m2_eq  = rho * (f64x4::splat(3.0) - f64x4::splat(5.5) * u_sq);
-    let m4_eq  = f64x4::splat(-2.0 / 3.0) * rho * ux;
-    let m6_eq  = f64x4::splat(-2.0 / 3.0) * rho * uy;
-    let m8_eq  = f64x4::splat(-2.0 / 3.0) * rho * uz;
-    let m9_eq  = rho * (f64x4::splat(2.0) * ux * ux - uy * uy - uz * uz);
+    let m1_eq = rho * (f64x4::splat(-11.0) + f64x4::splat(19.0) * u_sq);
+    let m2_eq = rho * (f64x4::splat(3.0) - f64x4::splat(5.5) * u_sq);
+    let m4_eq = f64x4::splat(-2.0 / 3.0) * rho * ux;
+    let m6_eq = f64x4::splat(-2.0 / 3.0) * rho * uy;
+    let m8_eq = f64x4::splat(-2.0 / 3.0) * rho * uz;
+    let m9_eq = rho * (f64x4::splat(2.0) * ux * ux - uy * uy - uz * uz);
     let m10_eq = f64x4::splat(-0.5) * rho * (f64x4::splat(2.0) * ux * ux - uy * uy - uz * uz);
     let m11_eq = rho * (uy * uy - uz * uz);
     let m12_eq = f64x4::splat(-0.5) * rho * (uy * uy - uz * uz);
@@ -622,37 +831,37 @@ fn collide_mrt_d3q19_x4(
     let zero = f64x4::ZERO;
 
     // Relax moments: m* = m - S * (m - m_eq)
-    let ms0  = m0;
-    let ms1  = m1  - s_e     * (m1  - m1_eq);
-    let ms2  = m2  - s_eps   * (m2  - m2_eq);
-    let ms3  = m3;
-    let ms4  = m4  - s_q     * (m4  - m4_eq);
-    let ms5  = m5;
-    let ms6  = m6  - s_q     * (m6  - m6_eq);
-    let ms7  = m7;
-    let ms8  = m8  - s_q     * (m8  - m8_eq);
-    let ms9  = m9  - s_nu    * (m9  - m9_eq);
+    let ms0 = m0;
+    let ms1 = m1 - s_e * (m1 - m1_eq);
+    let ms2 = m2 - s_eps * (m2 - m2_eq);
+    let ms3 = m3;
+    let ms4 = m4 - s_q * (m4 - m4_eq);
+    let ms5 = m5;
+    let ms6 = m6 - s_q * (m6 - m6_eq);
+    let ms7 = m7;
+    let ms8 = m8 - s_q * (m8 - m8_eq);
+    let ms9 = m9 - s_nu * (m9 - m9_eq);
     let ms10 = m10 - s_ghost * (m10 - m10_eq);
-    let ms11 = m11 - s_nu    * (m11 - m11_eq);
+    let ms11 = m11 - s_nu * (m11 - m11_eq);
     let ms12 = m12 - s_ghost * (m12 - m12_eq);
-    let ms13 = m13 - s_nu    * (m13 - m13_eq);
-    let ms14 = m14 - s_nu    * (m14 - m14_eq);
-    let ms15 = m15 - s_nu    * (m15 - m15_eq);
+    let ms13 = m13 - s_nu * (m13 - m13_eq);
+    let ms14 = m14 - s_nu * (m14 - m14_eq);
+    let ms15 = m15 - s_nu * (m15 - m15_eq);
     let ms16 = m16 - s_ghost * (m16 - zero);
     let ms17 = m17 - s_ghost * (m17 - zero);
     let ms18 = m18 - s_ghost * (m18 - zero);
 
     // Inverse transform: f* = M^{-1} * m*
-    let rn0  = f64x4::splat(1.0 / 19.0);
-    let rn1  = f64x4::splat(1.0 / 2394.0);
-    let rn2  = f64x4::splat(1.0 / 252.0);
-    let rn3  = f64x4::splat(1.0 / 10.0);
-    let rn4  = f64x4::splat(1.0 / 40.0);
-    let rn5  = f64x4::splat(1.0 / 10.0);
-    let rn6  = f64x4::splat(1.0 / 40.0);
-    let rn7  = f64x4::splat(1.0 / 10.0);
-    let rn8  = f64x4::splat(1.0 / 40.0);
-    let rn9  = f64x4::splat(1.0 / 36.0);
+    let rn0 = f64x4::splat(1.0 / 19.0);
+    let rn1 = f64x4::splat(1.0 / 2394.0);
+    let rn2 = f64x4::splat(1.0 / 252.0);
+    let rn3 = f64x4::splat(1.0 / 10.0);
+    let rn4 = f64x4::splat(1.0 / 40.0);
+    let rn5 = f64x4::splat(1.0 / 10.0);
+    let rn6 = f64x4::splat(1.0 / 40.0);
+    let rn7 = f64x4::splat(1.0 / 10.0);
+    let rn8 = f64x4::splat(1.0 / 40.0);
+    let rn9 = f64x4::splat(1.0 / 36.0);
     let rn10 = f64x4::splat(1.0 / 36.0);
     let rn11 = f64x4::splat(1.0 / 12.0);
     let rn12 = f64x4::splat(1.0 / 12.0);
@@ -663,16 +872,16 @@ fn collide_mrt_d3q19_x4(
     let rn17 = f64x4::splat(1.0 / 8.0);
     let rn18 = f64x4::splat(1.0 / 8.0);
 
-    let s0  = ms0  * rn0;
-    let s1  = ms1  * rn1;
-    let s2  = ms2  * rn2;
-    let s3  = ms3  * rn3;
-    let s4  = ms4  * rn4;
-    let s5  = ms5  * rn5;
-    let s6  = ms6  * rn6;
-    let s7  = ms7  * rn7;
-    let s8  = ms8  * rn8;
-    let s9  = ms9  * rn9;
+    let s0 = ms0 * rn0;
+    let s1 = ms1 * rn1;
+    let s2 = ms2 * rn2;
+    let s3 = ms3 * rn3;
+    let s4 = ms4 * rn4;
+    let s5 = ms5 * rn5;
+    let s6 = ms6 * rn6;
+    let s7 = ms7 * rn7;
+    let s8 = ms8 * rn8;
+    let s9 = ms9 * rn9;
     let s10 = ms10 * rn10;
     let s11 = ms11 * rn11;
     let s12 = ms12 * rn12;
@@ -683,34 +892,34 @@ fn collide_mrt_d3q19_x4(
     let s17 = ms17 * rn17;
     let s18 = ms18 * rn18;
 
-    let c2  = f64x4::splat(2.0);
-    let c4  = f64x4::splat(4.0);
-    let c8  = f64x4::splat(8.0);
+    let c2 = f64x4::splat(2.0);
+    let c4 = f64x4::splat(4.0);
+    let c8 = f64x4::splat(8.0);
     let c11 = f64x4::splat(11.0);
     let c30 = f64x4::splat(30.0);
     let c12 = f64x4::splat(12.0);
 
     let mut fo = [f64x4::ZERO; 19];
 
-    fo[0]  = s0 - c30*s1 + c12*s2;
-    fo[1]  = s0 - c11*s1 - c4*s2 + s3 - c4*s4 + c2*s9 - c2*s10;
-    fo[2]  = s0 - c11*s1 - c4*s2 - s3 + c4*s4 + c2*s9 - c2*s10;
-    fo[3]  = s0 - c11*s1 - c4*s2 + s5 - c4*s6 - s9 + s10 + s11 - s12;
-    fo[4]  = s0 - c11*s1 - c4*s2 - s5 + c4*s6 - s9 + s10 + s11 - s12;
-    fo[5]  = s0 - c11*s1 - c4*s2 + s7 - c4*s8 - s9 + s10 - s11 + s12;
-    fo[6]  = s0 - c11*s1 - c4*s2 - s7 + c4*s8 - s9 + s10 - s11 + s12;
-    fo[7]  = s0 + c8*s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
-    fo[8]  = s0 + c8*s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
-    fo[9]  = s0 + c8*s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
-    fo[10] = s0 + c8*s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
-    fo[11] = s0 + c8*s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
-    fo[12] = s0 + c8*s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
-    fo[13] = s0 + c8*s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
-    fo[14] = s0 + c8*s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
-    fo[15] = s0 + c8*s1 + s2 + s5 + s6 + s7 + s8 - c2*s9 - c2*s10 + s15 + s17 - s18;
-    fo[16] = s0 + c8*s1 + s2 - s5 - s6 - s7 - s8 - c2*s9 - c2*s10 + s15 - s17 + s18;
-    fo[17] = s0 + c8*s1 + s2 + s5 + s6 - s7 - s8 - c2*s9 - c2*s10 - s15 - s17 - s18;
-    fo[18] = s0 + c8*s1 + s2 - s5 - s6 + s7 + s8 - c2*s9 - c2*s10 - s15 + s17 + s18;
+    fo[0] = s0 - c30 * s1 + c12 * s2;
+    fo[1] = s0 - c11 * s1 - c4 * s2 + s3 - c4 * s4 + c2 * s9 - c2 * s10;
+    fo[2] = s0 - c11 * s1 - c4 * s2 - s3 + c4 * s4 + c2 * s9 - c2 * s10;
+    fo[3] = s0 - c11 * s1 - c4 * s2 + s5 - c4 * s6 - s9 + s10 + s11 - s12;
+    fo[4] = s0 - c11 * s1 - c4 * s2 - s5 + c4 * s6 - s9 + s10 + s11 - s12;
+    fo[5] = s0 - c11 * s1 - c4 * s2 + s7 - c4 * s8 - s9 + s10 - s11 + s12;
+    fo[6] = s0 - c11 * s1 - c4 * s2 - s7 + c4 * s8 - s9 + s10 - s11 + s12;
+    fo[7] = s0 + c8 * s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
+    fo[8] = s0 + c8 * s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
+    fo[9] = s0 + c8 * s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
+    fo[10] = s0 + c8 * s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
+    fo[11] = s0 + c8 * s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
+    fo[12] = s0 + c8 * s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
+    fo[13] = s0 + c8 * s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
+    fo[14] = s0 + c8 * s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
+    fo[15] = s0 + c8 * s1 + s2 + s5 + s6 + s7 + s8 - c2 * s9 - c2 * s10 + s15 + s17 - s18;
+    fo[16] = s0 + c8 * s1 + s2 - s5 - s6 - s7 - s8 - c2 * s9 - c2 * s10 + s15 - s17 + s18;
+    fo[17] = s0 + c8 * s1 + s2 + s5 + s6 - s7 - s8 - c2 * s9 - c2 * s10 - s15 - s17 - s18;
+    fo[18] = s0 + c8 * s1 + s2 - s5 - s6 + s7 + s8 - c2 * s9 - c2 * s10 - s15 + s17 + s18;
 
     fo
 }
@@ -972,14 +1181,25 @@ impl LbmSolver3D {
 
     /// Compute macroscopic quantities (rho, u) from distribution function.
     pub fn compute_macroscopic(&mut self) {
+        self.compute_macroscopic_range(0..self.nz);
+    }
+
+    /// Compute macroscopic quantities for a specific Z-range.
+    pub fn compute_macroscopic_range(&mut self, z_range: core::ops::Range<usize>) {
         let lattice = self.collider.lattice.clone();
         let f_slice = &self.f;
+        let nx = self.nx;
+        let ny = self.ny;
 
-        self.rho
+        let start_idx = z_range.start * nx * ny;
+        let end_idx = z_range.end * nx * ny;
+
+        self.rho[start_idx..end_idx]
             .par_iter_mut()
-            .zip(self.u.par_iter_mut())
+            .zip(self.u[start_idx..end_idx].par_iter_mut())
             .enumerate()
-            .for_each(|(idx, (rho_out, u_out))| {
+            .for_each(|(i, (rho_out, u_out))| {
+                let idx = start_idx + i;
                 let mut f = [0.0; 19];
                 for (dir, fi) in f.iter_mut().enumerate() {
                     *fi = f_slice[aosoa_idx(idx, dir)];
@@ -991,14 +1211,16 @@ impl LbmSolver3D {
     }
 
     /// Phase 1 (collision): Compute macroscopic quantities and apply collision operator.
-    ///
-    /// Dispatches BGK or MRT based on `self.collision_mode`:
-    /// - BGK: f_i^new <- f_i - (f_i - f_i^eq) / tau(x,y,z)
-    /// - MRT: f^new <- M^{-1} * (m - S*(m - m^eq))  (d'Humieres 2002)
-    ///
-    /// Both modes use Guo forcing with force-corrected velocity u*.
     pub fn phase1_collision(&mut self) -> ScheduleResult<()> {
-        self.compute_macroscopic();
+        self.phase1_collision_range(0..self.nz)
+    }
+
+    /// Phase 1 (collision) restricted to a specific Z-range.
+    pub fn phase1_collision_range(
+        &mut self,
+        z_range: core::ops::Range<usize>,
+    ) -> ScheduleResult<()> {
+        self.compute_macroscopic_range(z_range.clone());
 
         let lattice = self.collider.lattice.clone();
         let tau_field = &self.collider.tau_field;
@@ -1013,141 +1235,172 @@ impl LbmSolver3D {
         let mode = self.collision_mode;
 
         // AoSoA collision: chunk-based SIMD iteration.
-        // Each rayon thread processes one CHUNK=4 cells via f64x4 (256-bit AVX2).
-        // The AoSoA layout guarantees that each chunk's 19 * 4 = 608 bytes are
-        // contiguous in memory, fitting in 2% of the 32 KB L1D cache.
-        let n_cells = self.nx * self.ny * self.nz;
-        let num_chunks = n_cells / AOSOA_CHUNK;
-        let tail_start = num_chunks * AOSOA_CHUNK;
+        let nx = self.nx;
+        let ny = self.ny;
+        let start_cell = z_range.start * nx * ny;
+        let end_cell = z_range.end * nx * ny;
+
+        // Ensure chunks align properly. We process in AOSOA_CHUNK sizes.
+        // Assuming the total grid size is a multiple of AOSOA_CHUNK.
+        let start_chunk = start_cell / AOSOA_CHUNK;
+        let end_chunk = end_cell / AOSOA_CHUNK;
+        let tail_start = end_chunk * AOSOA_CHUNK;
+        let n_cells = end_cell;
 
         // SAFETY: each chunk maps to non-overlapping AoSoA locations.
-        // UnsafeAoSoAPtr asserts Send+Sync; disjoint-access proof is in
-        // the aosoa_idx algebra (no two chunks share memory addresses).
         let f_ptr = UnsafeAoSoAPtr(self.f.as_mut_ptr());
 
         // --- SIMD path: process 4 cells per chunk via f64x4 ---
-        (0..num_chunks).into_par_iter().for_each(|chunk_idx| {
-            unsafe {
-                let base_cell = chunk_idx * AOSOA_CHUNK;
-                let chunk_offset = chunk_idx * 19 * AOSOA_CHUNK;
+        (start_chunk..end_chunk)
+            .into_par_iter()
+            .for_each(|chunk_idx| {
+                unsafe {
+                    let base_cell = chunk_idx * AOSOA_CHUNK;
+                    let chunk_offset = chunk_idx * 19 * AOSOA_CHUNK;
 
-                // Load 19 f64x4 vectors (each = one direction across 4 cells)
-                let mut f_local = [f64x4::ZERO; 19];
-                for (dir, f_val) in f_local.iter_mut().enumerate() {
-                    *f_val = f_ptr.read_x4(chunk_offset + dir * AOSOA_CHUNK);
-                }
+                    // Load 19 f64x4 vectors (each = one direction across 4 cells)
+                    let mut f_local = [f64x4::ZERO; 19];
+                    for (dir, f_val) in f_local.iter_mut().enumerate() {
+                        *f_val = f_ptr.read_x4(chunk_offset + dir * AOSOA_CHUNK);
+                    }
 
-                // Gather macroscopic quantities for the 4 cells
-                let rho4 = f64x4::new([
-                    rho[base_cell], rho[base_cell + 1],
-                    rho[base_cell + 2], rho[base_cell + 3],
-                ]);
-                let ux4 = f64x4::new([
-                    u[base_cell][0], u[base_cell + 1][0],
-                    u[base_cell + 2][0], u[base_cell + 3][0],
-                ]);
-                let uy4 = f64x4::new([
-                    u[base_cell][1], u[base_cell + 1][1],
-                    u[base_cell + 2][1], u[base_cell + 3][1],
-                ]);
-                let uz4 = f64x4::new([
-                    u[base_cell][2], u[base_cell + 1][2],
-                    u[base_cell + 2][2], u[base_cell + 3][2],
-                ]);
-
-                // Gather tau for the 4 cells
-                let tau4 = if base_cell + 3 < tau_field.len() {
-                    f64x4::new([
-                        tau_field[base_cell], tau_field[base_cell + 1],
-                        tau_field[base_cell + 2], tau_field[base_cell + 3],
-                    ])
-                } else {
-                    f64x4::splat(default_tau)
-                };
-
-                // Force-corrected velocity: u* = u + F / (2 * rho)
-                let (ux_star, uy_star, uz_star) = if let Some(ff) = force_field {
-                    let inv_2rho = f64x4::splat(0.5)
-                        / rho4.max(f64x4::splat(1e-30));
-                    let fx = f64x4::new([
-                        ff[base_cell][0], ff[base_cell + 1][0],
-                        ff[base_cell + 2][0], ff[base_cell + 3][0],
+                    // Gather macroscopic quantities for the 4 cells
+                    let rho4 = f64x4::new([
+                        rho[base_cell],
+                        rho[base_cell + 1],
+                        rho[base_cell + 2],
+                        rho[base_cell + 3],
                     ]);
-                    let fy = f64x4::new([
-                        ff[base_cell][1], ff[base_cell + 1][1],
-                        ff[base_cell + 2][1], ff[base_cell + 3][1],
+                    let ux4 = f64x4::new([
+                        u[base_cell][0],
+                        u[base_cell + 1][0],
+                        u[base_cell + 2][0],
+                        u[base_cell + 3][0],
                     ]);
-                    let fz = f64x4::new([
-                        ff[base_cell][2], ff[base_cell + 1][2],
-                        ff[base_cell + 2][2], ff[base_cell + 3][2],
+                    let uy4 = f64x4::new([
+                        u[base_cell][1],
+                        u[base_cell + 1][1],
+                        u[base_cell + 2][1],
+                        u[base_cell + 3][1],
                     ]);
-                    (ux4 + fx * inv_2rho, uy4 + fy * inv_2rho, uz4 + fz * inv_2rho)
-                } else {
-                    (ux4, uy4, uz4)
-                };
+                    let uz4 = f64x4::new([
+                        u[base_cell][2],
+                        u[base_cell + 1][2],
+                        u[base_cell + 2][2],
+                        u[base_cell + 3][2],
+                    ]);
 
-                // Collision
-                match mode {
-                    CollisionMode::Bgk => {
-                        let u_sq = ux_star * ux_star + uy_star * uy_star + uz_star * uz_star;
+                    // Gather tau for the 4 cells
+                    let tau4 = if base_cell + 3 < tau_field.len() {
+                        f64x4::new([
+                            tau_field[base_cell],
+                            tau_field[base_cell + 1],
+                            tau_field[base_cell + 2],
+                            tau_field[base_cell + 3],
+                        ])
+                    } else {
+                        f64x4::splat(default_tau)
+                    };
+
+                    // Force-corrected velocity: u* = u + F / (2 * rho)
+                    let (ux_star, uy_star, uz_star) = if let Some(ff) = force_field {
+                        let inv_2rho = f64x4::splat(0.5) / rho4.max(f64x4::splat(1e-30));
+                        let fx = f64x4::new([
+                            ff[base_cell][0],
+                            ff[base_cell + 1][0],
+                            ff[base_cell + 2][0],
+                            ff[base_cell + 3][0],
+                        ]);
+                        let fy = f64x4::new([
+                            ff[base_cell][1],
+                            ff[base_cell + 1][1],
+                            ff[base_cell + 2][1],
+                            ff[base_cell + 3][1],
+                        ]);
+                        let fz = f64x4::new([
+                            ff[base_cell][2],
+                            ff[base_cell + 1][2],
+                            ff[base_cell + 2][2],
+                            ff[base_cell + 3][2],
+                        ]);
+                        (
+                            ux4 + fx * inv_2rho,
+                            uy4 + fy * inv_2rho,
+                            uz4 + fz * inv_2rho,
+                        )
+                    } else {
+                        (ux4, uy4, uz4)
+                    };
+
+                    // Collision
+                    match mode {
+                        CollisionMode::Bgk => {
+                            let u_sq = ux_star * ux_star + uy_star * uy_star + uz_star * uz_star;
+                            for (dir, f_val) in f_local.iter_mut().enumerate() {
+                                let w = f64x4::splat(lattice.weights[dir]);
+                                let cx = f64x4::splat(lattice.velocities[dir][0] as f64);
+                                let cy = f64x4::splat(lattice.velocities[dir][1] as f64);
+                                let cz = f64x4::splat(lattice.velocities[dir][2] as f64);
+                                let cu = cx * ux_star + cy * uy_star + cz * uz_star;
+                                let f_eq = w
+                                    * rho4
+                                    * (f64x4::splat(1.0)
+                                        + f64x4::splat(3.0) * cu
+                                        + f64x4::splat(4.5) * cu * cu
+                                        - f64x4::splat(1.5) * u_sq);
+                                *f_val -= (*f_val - f_eq) / tau4;
+                            }
+                        }
+                        CollisionMode::Mrt => {
+                            f_local = collide_mrt_d3q19_x4(
+                                &f_local, rho4, ux_star, uy_star, uz_star, tau4,
+                            );
+                        }
+                    }
+
+                    // Exact Guo source term Phi_i using u*
+                    if let Some(ff) = force_field {
+                        let fx = f64x4::new([
+                            ff[base_cell][0],
+                            ff[base_cell + 1][0],
+                            ff[base_cell + 2][0],
+                            ff[base_cell + 3][0],
+                        ]);
+                        let fy = f64x4::new([
+                            ff[base_cell][1],
+                            ff[base_cell + 1][1],
+                            ff[base_cell + 2][1],
+                            ff[base_cell + 3][1],
+                        ]);
+                        let fz = f64x4::new([
+                            ff[base_cell][2],
+                            ff[base_cell + 1][2],
+                            ff[base_cell + 2][2],
+                            ff[base_cell + 3][2],
+                        ]);
+                        let prefactor =
+                            f64x4::splat(1.0) - f64x4::splat(1.0) / (f64x4::splat(2.0) * tau4);
                         for (dir, f_val) in f_local.iter_mut().enumerate() {
                             let w = f64x4::splat(lattice.weights[dir]);
                             let cx = f64x4::splat(lattice.velocities[dir][0] as f64);
                             let cy = f64x4::splat(lattice.velocities[dir][1] as f64);
                             let cz = f64x4::splat(lattice.velocities[dir][2] as f64);
-                            let cu = cx * ux_star + cy * uy_star + cz * uz_star;
-                            let f_eq = w * rho4
-                                * (f64x4::splat(1.0)
-                                    + f64x4::splat(3.0) * cu
-                                    + f64x4::splat(4.5) * cu * cu
-                                    - f64x4::splat(1.5) * u_sq);
-                            *f_val -= (*f_val - f_eq) / tau4;
+                            let ei_minus_u_dot_f =
+                                (cx - ux_star) * fx + (cy - uy_star) * fy + (cz - uz_star) * fz;
+                            let ei_dot_u = cx * ux_star + cy * uy_star + cz * uz_star;
+                            let ei_dot_f = cx * fx + cy * fy + cz * fz;
+                            let phi_i = ei_minus_u_dot_f * f64x4::splat(3.0)
+                                + (ei_dot_u * ei_dot_f) * f64x4::splat(9.0);
+                            *f_val += prefactor * w * phi_i;
                         }
                     }
-                    CollisionMode::Mrt => {
-                        f_local = collide_mrt_d3q19_x4(
-                            &f_local, rho4, ux_star, uy_star, uz_star, tau4,
-                        );
+
+                    // Store 19 f64x4 vectors back to AoSoA
+                    for (dir, &f_val) in f_local.iter().enumerate() {
+                        f_ptr.write_x4(chunk_offset + dir * AOSOA_CHUNK, f_val);
                     }
                 }
-
-                // Exact Guo source term Phi_i using u*
-                if let Some(ff) = force_field {
-                    let fx = f64x4::new([
-                        ff[base_cell][0], ff[base_cell + 1][0],
-                        ff[base_cell + 2][0], ff[base_cell + 3][0],
-                    ]);
-                    let fy = f64x4::new([
-                        ff[base_cell][1], ff[base_cell + 1][1],
-                        ff[base_cell + 2][1], ff[base_cell + 3][1],
-                    ]);
-                    let fz = f64x4::new([
-                        ff[base_cell][2], ff[base_cell + 1][2],
-                        ff[base_cell + 2][2], ff[base_cell + 3][2],
-                    ]);
-                    let prefactor = f64x4::splat(1.0) - f64x4::splat(1.0) / (f64x4::splat(2.0) * tau4);
-                    for (dir, f_val) in f_local.iter_mut().enumerate() {
-                        let w = f64x4::splat(lattice.weights[dir]);
-                        let cx = f64x4::splat(lattice.velocities[dir][0] as f64);
-                        let cy = f64x4::splat(lattice.velocities[dir][1] as f64);
-                        let cz = f64x4::splat(lattice.velocities[dir][2] as f64);
-                        let ei_minus_u_dot_f = (cx - ux_star) * fx
-                            + (cy - uy_star) * fy
-                            + (cz - uz_star) * fz;
-                        let ei_dot_u = cx * ux_star + cy * uy_star + cz * uz_star;
-                        let ei_dot_f = cx * fx + cy * fy + cz * fz;
-                        let phi_i = ei_minus_u_dot_f * f64x4::splat(3.0)
-                            + (ei_dot_u * ei_dot_f) * f64x4::splat(9.0);
-                        *f_val += prefactor * w * phi_i;
-                    }
-                }
-
-                // Store 19 f64x4 vectors back to AoSoA
-                for (dir, &f_val) in f_local.iter().enumerate() {
-                    f_ptr.write_x4(chunk_offset + dir * AOSOA_CHUNK, f_val);
-                }
-            }
-        });
+            });
 
         // --- Scalar tail: handle remaining cells if n_cells % 4 != 0 ---
         for idx in tail_start..n_cells {
@@ -1256,8 +1509,7 @@ impl LbmSolver3D {
                         let sy = (y as i32 - c[1]).rem_euclid(ny as i32) as usize;
                         let sz = (z as i32 - c[2]).rem_euclid(nz as i32) as usize;
                         let src_idx = sz * (nx * ny) + sy * nx + sx;
-                        self.f_scratch[aosoa_idx(dst_idx, i)] =
-                            f_src[aosoa_idx(src_idx, i)];
+                        self.f_scratch[aosoa_idx(dst_idx, i)] = f_src[aosoa_idx(src_idx, i)];
                     }
                 }
             }
@@ -1270,12 +1522,85 @@ impl LbmSolver3D {
         Ok(())
     }
 
-    /// Perform one complete LBM timestep via two-phase coordination:
-    /// Phase 1: Collision operator (BGK) applied to population distribution functions
-    /// Phase 2: Macroscopic quantity recovery (streaming implicit in D3Q19 lattice structure)
+    /// Phase 2 (streaming) over a subset of Z slices.
+    ///
+    /// This tiled variant writes into the shared scratch buffer but leaves the
+    /// final swap, macroscopic recompute, and timestep increment to the caller.
+    pub fn phase2_streaming_range(
+        &mut self,
+        z_range: core::ops::Range<usize>,
+    ) -> ScheduleResult<()> {
+        let nx = self.nx;
+        let ny = self.ny;
+        let nz = self.nz;
+        let lattice = self.collider.lattice.clone();
+        let f_src = &self.f;
+
+        #[allow(clippy::needless_range_loop)]
+        for z in z_range {
+            for y in 0..ny {
+                for x in 0..nx {
+                    let dst_idx = z * (nx * ny) + y * nx + x;
+
+                    for i in 0..19 {
+                        let c = lattice.velocities[i];
+                        let sx = (x as i32 - c[0]).rem_euclid(nx as i32) as usize;
+                        let sy = (y as i32 - c[1]).rem_euclid(ny as i32) as usize;
+                        let sz = (z as i32 - c[2]).rem_euclid(nz as i32) as usize;
+                        let src_idx = sz * (nx * ny) + sy * nx + sx;
+                        self.f_scratch[aosoa_idx(dst_idx, i)] = f_src[aosoa_idx(src_idx, i)];
+                    }
+                }
+            }
+        }
+
+        Ok(())
+    }
+
+    /// Perform one complete LBM timestep.
+    ///
+    /// Uses Z-axis V-Cache Tiling for large grids to keep the active working set
+    /// within the CPU's L3 cache. Defaults to a heuristic 16MB if undetected, but
+    /// explicitly scales up to Ryzen 5600X3D's 96MB V-Cache if detected.
+    /// If the grid fits entirely in cache or is too small, falls back to standard
+    /// two-phase coordination.
     pub fn evolve_one_step(&mut self) {
-        let _ = self.phase1_collision();
-        let _ = self.phase2_streaming();
+        // Calculate grid memory footprint.
+        // 19 f64s per cell for f, plus scratch, rho, and u.
+        let bytes_per_cell = 19 * 8 * 2 + 8 + 3 * 8;
+        let total_bytes = self.nx * self.ny * self.nz * bytes_per_cell;
+
+        // Dynamically detect L3 cache size via global oracle
+        let topo = verified_core::topology::HardwareTopology::current();
+        let l3_target_bytes = topo.l3_safe_working_set_bytes;
+
+        let bytes_per_z_slice = self.nx * self.ny * bytes_per_cell;
+
+        // If the entire grid fits in L3, or a single Z-slice is too big for L3,
+        // tiling won't help much. Fall back to standard.
+        if total_bytes <= l3_target_bytes || bytes_per_z_slice > l3_target_bytes {
+            let _ = self.phase1_collision();
+            let _ = self.phase2_streaming();
+            return;
+        }
+
+        // V-Cache Tiling: Determine how many Z-slices fit in our L3 target
+        let z_chunk_size = std::cmp::max(1, l3_target_bytes / bytes_per_z_slice);
+
+        let mut z = 0;
+        while z < self.nz {
+            let z_end = std::cmp::min(self.nz, z + z_chunk_size);
+            let z_range = z..z_end;
+
+            let _ = self.phase1_collision_range(z_range.clone());
+            let _ = self.phase2_streaming_range(z_range);
+
+            z += z_chunk_size;
+        }
+
+        std::mem::swap(&mut self.f, &mut self.f_scratch);
+        self.compute_macroscopic();
+        self.timestep += 1;
     }
 
     /// Perform multiple LBM timesteps.
@@ -2382,7 +2707,8 @@ mod tests {
             assert!(
                 diff < 1e-12,
                 "BGK/MRT disagree at cell {i}: bgk={}, mrt={}, diff={diff}",
-                bgk_solver.rho[i], mrt_solver.rho[i]
+                bgk_solver.rho[i],
+                mrt_solver.rho[i]
             );
         }
     }
@@ -2397,11 +2723,8 @@ mod tests {
     fn test_mrt_relaxation_rates_and_row_norms() {
         // Published row squared-norms for d'Humieres D3Q19 M matrix
         let expected_row_norms: [f64; 19] = [
-            19.0, 2394.0, 252.0,
-            10.0, 40.0, 10.0, 40.0, 10.0, 40.0,
-            36.0, 36.0, 12.0, 12.0,
-            4.0, 4.0, 4.0,
-            8.0, 8.0, 8.0,
+            19.0, 2394.0, 252.0, 10.0, 40.0, 10.0, 40.0, 10.0, 40.0, 36.0, 36.0, 12.0, 12.0, 4.0,
+            4.0, 4.0, 8.0, 8.0, 8.0,
         ];
 
         // Verify by computing M * e_i for each canonical basis vector.
@@ -2419,8 +2742,10 @@ mod tests {
             }
         }
 
-        for (j, (&computed, &expected)) in
-            row_norm_sq.iter().zip(expected_row_norms.iter()).enumerate()
+        for (j, (&computed, &expected)) in row_norm_sq
+            .iter()
+            .zip(expected_row_norms.iter())
+            .enumerate()
         {
             let rel_err = (computed - expected).abs() / expected;
             assert!(
@@ -2439,11 +2764,8 @@ mod tests {
         let s_ghost = 1.0;
 
         let s_diag: [f64; 19] = [
-            0.0, s_e, s_eps,
-            0.0, s_q, 0.0, s_q, 0.0, s_q,
-            s_nu, s_ghost, s_nu, s_ghost,
-            s_nu, s_nu, s_nu,
-            s_ghost, s_ghost, s_ghost,
+            0.0, s_e, s_eps, 0.0, s_q, 0.0, s_q, 0.0, s_q, s_nu, s_ghost, s_nu, s_ghost, s_nu,
+            s_nu, s_nu, s_ghost, s_ghost, s_ghost,
         ];
 
         for (j, &s) in s_diag.iter().enumerate() {

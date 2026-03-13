@@ -124,13 +124,16 @@ pub fn principal_angles(a: &Subspace, b: &Subspace) -> Vec<f64> {
     let svd = SVD::new(atb, false, false);
     let singular_values = svd.singular_values;
 
-    // Convert singular values to angles
+    // Convert singular values to angles via atan2 (stable near s = +/-1).
+    // acos(s) has catastrophic cancellation when s is near +/-1 because it
+    // internally computes pi/2 - arcsin(s). atan2(sqrt(1-s^2), s) avoids
+    // this: both arguments are well-conditioned across the full range.
     let mut angles: Vec<f64> = singular_values
         .iter()
         .map(|&s| {
-            // Clamp to [-1, 1] for numerical stability
             let clamped = s.clamp(-1.0, 1.0);
-            clamped.acos()
+            let sin_part = (1.0 - clamped * clamped).max(0.0).sqrt();
+            sin_part.atan2(clamped)
         })
         .collect();
 

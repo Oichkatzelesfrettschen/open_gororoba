@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
 use csv::WriterBuilder;
+use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
 use regex::Regex;
 use serde::Deserialize;
 use std::{
@@ -8,10 +9,11 @@ use std::{
 };
 use toml::Value;
 
-/// Emit non-canonical views from TOML registries (markdown, bibtex, tex, pgfplots, svg, mermaid).
+/// Emit non-canonical views from canonical registries and SQLite-backed compatibility exports
+/// (markdown, bibtex, tex, pgfplots, svg, mermaid).
 #[derive(Debug, Parser)]
 #[command(name = "registry-emit")]
-#[command(about = "TOML-first multi-format emitter frontend")]
+#[command(about = "Registry/control-plane multi-format emitter frontend")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -55,22 +57,28 @@ enum Commands {
     ResearchNarrativesMirror(ResearchNarrativesMirrorArgs),
     /// Emit the legacy published docs/theory|engineering|research markdown from registry/research_narratives.toml.
     ResearchNarrativesLegacy(ResearchNarrativesLegacyArgs),
-    /// Emit the insights markdown mirror from registry/insights.toml.
+    /// Emit the insights markdown mirror from the canonical control plane.
     InsightsMirror(InsightsMirrorArgs),
-    /// Emit the legacy insights markdown from registry/insights.toml and registry/insights_narrative.toml.
+    /// Emit the legacy insights markdown from canonical control-plane data and the narrative overlay.
     InsightsLegacy(InsightsLegacyArgs),
-    /// Emit the claims markdown mirror from registry/claims.toml.
+    /// Emit the claims markdown mirror from the canonical control plane.
     ClaimsMirror(ClaimsMirrorArgs),
-    /// Emit the legacy claims matrix markdown from registry/claims.toml.
+    /// Emit the legacy claims matrix markdown from canonical control-plane data.
     ClaimsMatrixLegacy(ClaimsMatrixLegacyArgs),
     /// Emit the bibliography markdown mirror from registry/bibliography.toml.
     BibliographyMirror(BibliographyMirrorArgs),
     /// Emit the legacy bibliography markdown from registry/bibliography.toml.
     BibliographyLegacy(BibliographyLegacyArgs),
-    /// Emit the experiments markdown mirror from registry/experiments.toml.
+    /// Emit the experiments markdown mirror from the canonical control plane.
     ExperimentsMirror(ExperimentsMirrorArgs),
-    /// Emit the legacy experiments markdown from registry/experiments.toml and registry/experiments_narrative.toml.
+    /// Emit the legacy experiments markdown from canonical control-plane data and the narrative overlay.
     ExperimentsLegacy(ExperimentsLegacyArgs),
+    /// Emit the theorem markdown mirror from the canonical control plane.
+    TheoremsMirror(TheoremsMirrorArgs),
+    /// Emit the legacy theorem index markdown from the canonical control plane.
+    TheoremsLegacy(TheoremsLegacyArgs),
+    /// Emit the standard control-plane web docs bundle from the canonical SQLite source.
+    ControlPlaneDocs(ControlPlaneDocsArgs),
     /// Emit the markdown governance mirror from registry/markdown_governance.toml.
     MarkdownGovernanceMirror(MarkdownGovernanceMirrorArgs),
     /// Emit the claims-tasks markdown mirror from registry/claims_tasks.toml.
@@ -229,7 +237,10 @@ struct KnowledgeMigrationPlanMirrorArgs {
     #[arg(long, default_value = "registry/knowledge_migration_plan.toml")]
     input: PathBuf,
     /// Output markdown mirror path.
-    #[arg(long, default_value = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     /// Allow unicode output (default false to satisfy repository ASCII policy).
     #[arg(long, default_value_t = false)]
@@ -260,7 +271,10 @@ struct NavigatorLegacyArgs {
 struct EntrypointDocsMirrorArgs {
     #[arg(long, default_value = "registry/entrypoint_docs.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -302,7 +316,10 @@ struct RequirementsLegacyArgs {
 struct DocsRootNarrativesMirrorArgs {
     #[arg(long, default_value = "registry/docs_root_narratives.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -322,7 +339,10 @@ struct DocsRootNarrativesLegacyArgs {
 struct ResearchNarrativesMirrorArgs {
     #[arg(long, default_value = "registry/research_narratives.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -342,6 +362,8 @@ struct ResearchNarrativesLegacyArgs {
 struct InsightsMirrorArgs {
     #[arg(long, default_value = "registry/insights.toml")]
     input: PathBuf,
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
     #[arg(long, default_value = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md")]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
@@ -352,6 +374,8 @@ struct InsightsMirrorArgs {
 struct InsightsLegacyArgs {
     #[arg(long, default_value = "registry/insights.toml")]
     input: PathBuf,
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
     #[arg(long, default_value = "registry/insights_narrative.toml")]
     narrative: PathBuf,
     #[arg(long, default_value = "docs/INSIGHTS.md")]
@@ -364,6 +388,8 @@ struct InsightsLegacyArgs {
 struct ClaimsMirrorArgs {
     #[arg(long, default_value = "registry/claims.toml")]
     input: PathBuf,
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
     #[arg(long, default_value = "docs/generated/CLAIMS_REGISTRY_MIRROR.md")]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
@@ -374,6 +400,8 @@ struct ClaimsMirrorArgs {
 struct ClaimsMatrixLegacyArgs {
     #[arg(long, default_value = "registry/claims.toml")]
     input: PathBuf,
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
     #[arg(long, default_value = "docs/CLAIMS_EVIDENCE_MATRIX.md")]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
@@ -404,6 +432,8 @@ struct BibliographyLegacyArgs {
 struct ExperimentsMirrorArgs {
     #[arg(long, default_value = "registry/experiments.toml")]
     input: PathBuf,
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
     #[arg(long, default_value = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md")]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
@@ -414,6 +444,8 @@ struct ExperimentsMirrorArgs {
 struct ExperimentsLegacyArgs {
     #[arg(long, default_value = "registry/experiments.toml")]
     input: PathBuf,
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
     #[arg(long, default_value = "registry/experiments_narrative.toml")]
     narrative: PathBuf,
     #[arg(long, default_value = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md")]
@@ -423,10 +455,67 @@ struct ExperimentsLegacyArgs {
 }
 
 #[derive(Debug, Parser)]
+struct TheoremsMirrorArgs {
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
+    #[arg(long, default_value = "docs/generated/THEOREMS_REGISTRY_MIRROR.md")]
+    output: PathBuf,
+    #[arg(long, default_value_t = false)]
+    allow_unicode: bool,
+}
+
+#[derive(Debug, Parser)]
+struct TheoremsLegacyArgs {
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
+    #[arg(long, default_value = "docs/THEOREMS.md")]
+    output: PathBuf,
+    #[arg(long, default_value_t = false)]
+    allow_unicode: bool,
+}
+
+#[derive(Debug, Parser)]
+struct ControlPlaneDocsArgs {
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    canonical_db: PathBuf,
+    #[arg(long, default_value = "registry/claims.toml")]
+    claims_input: PathBuf,
+    #[arg(long, default_value = "registry/insights.toml")]
+    insights_input: PathBuf,
+    #[arg(long, default_value = "registry/experiments.toml")]
+    experiments_input: PathBuf,
+    #[arg(long, default_value = "registry/insights_narrative.toml")]
+    insights_narrative: PathBuf,
+    #[arg(long, default_value = "registry/experiments_narrative.toml")]
+    experiments_narrative: PathBuf,
+    #[arg(long, default_value = "docs/generated/CLAIMS_REGISTRY_MIRROR.md")]
+    claims_mirror_output: PathBuf,
+    #[arg(long, default_value = "docs/CLAIMS_EVIDENCE_MATRIX.md")]
+    claims_legacy_output: PathBuf,
+    #[arg(long, default_value = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md")]
+    insights_mirror_output: PathBuf,
+    #[arg(long, default_value = "docs/INSIGHTS.md")]
+    insights_legacy_output: PathBuf,
+    #[arg(long, default_value = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md")]
+    experiments_mirror_output: PathBuf,
+    #[arg(long, default_value = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md")]
+    experiments_legacy_output: PathBuf,
+    #[arg(long, default_value = "docs/generated/THEOREMS_REGISTRY_MIRROR.md")]
+    theorems_mirror_output: PathBuf,
+    #[arg(long, default_value = "docs/THEOREMS.md")]
+    theorems_legacy_output: PathBuf,
+    #[arg(long, default_value_t = false)]
+    allow_unicode: bool,
+}
+
+#[derive(Debug, Parser)]
 struct MarkdownGovernanceMirrorArgs {
     #[arg(long, default_value = "registry/markdown_governance.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -456,7 +545,10 @@ struct ClaimsTasksLegacyArgs {
 struct ClaimsDomainsMirrorArgs {
     #[arg(long, default_value = "registry/claims_domains.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -476,7 +568,10 @@ struct ClaimsDomainsLegacyArgs {
 struct ClaimTicketsMirrorArgs {
     #[arg(long, default_value = "registry/claim_tickets.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -496,7 +591,10 @@ struct ClaimTicketsLegacyArgs {
 struct ExternalSourcesMirrorArgs {
     #[arg(long, default_value = "registry/external_sources.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -536,7 +634,10 @@ struct BookDocsLegacyArgs {
 struct DataArtifactNarrativesMirrorArgs {
     #[arg(long, default_value = "registry/data_artifact_narratives.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -558,7 +659,10 @@ struct DataArtifactNarrativesLegacyArgs {
 struct ReportsNarrativesMirrorArgs {
     #[arg(long, default_value = "registry/reports_narratives.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md")]
+    #[arg(
+        long,
+        default_value = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -865,12 +969,67 @@ fn read_toml_value(path: &Path) -> Result<Value, String> {
     toml::from_str(&text).map_err(|err| format!("parse {}: {}", path.display(), err))
 }
 
+fn read_control_plane_compat_value(
+    input: &Path,
+    canonical_db: &Path,
+    kind: ControlPlaneCompatKind,
+) -> Result<(Value, String), String> {
+    if canonical_db.exists() {
+        let mut store = ProvenanceStore::open(canonical_db)
+            .map_err(|err| format!("open canonical db {}: {err}", canonical_db.display()))?;
+        let text = store.control_plane_compat_text(kind).map_err(|err| {
+            format!(
+                "render {:?} compatibility text from canonical db {}: {err}",
+                kind,
+                canonical_db.display()
+            )
+        })?;
+        let value = toml::from_str(&text).map_err(|err| {
+            format!(
+                "parse {:?} compatibility text from canonical db {}: {err}",
+                kind,
+                canonical_db.display()
+            )
+        })?;
+        return Ok((value, canonical_db.display().to_string()));
+    }
+
+    Ok((read_toml_value(input)?, input.display().to_string()))
+}
+
+fn read_control_plane_compat_text(
+    canonical_db: &Path,
+    kind: ControlPlaneCompatKind,
+) -> Result<String, String> {
+    let mut store = ProvenanceStore::open(canonical_db)
+        .map_err(|err| format!("open canonical db {}: {err}", canonical_db.display()))?;
+    store.control_plane_compat_text(kind).map_err(|err| {
+        format!(
+            "render {:?} compatibility text from canonical db {}: {err}",
+            kind,
+            canonical_db.display()
+        )
+    })
+}
+
 fn markdown_header(title: &str, source: &str) -> Vec<String> {
     vec![
         format!("# {}", title),
         String::new(),
         "<!-- AUTO-GENERATED: DO NOT EDIT -->".to_string(),
-        "<!-- Source of truth: TOML registry files under registry/ -->".to_string(),
+        "<!-- Source of truth: see authoritative source line below -->".to_string(),
+        String::new(),
+        format!("Authoritative source: `{}`.", source),
+        String::new(),
+    ]
+}
+
+fn control_plane_markdown_header(title: &str, source: &str) -> Vec<String> {
+    vec![
+        format!("# {}", title),
+        String::new(),
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->".to_string(),
+        "<!-- Source of truth: registry/canonical/control_plane.sqlite3 -->".to_string(),
         String::new(),
         format!("Authoritative source: `{}`.", source),
         String::new(),
@@ -1098,7 +1257,11 @@ fn single_overlay_body(path: &Path, table_name: &str) -> Result<String, String> 
         .unwrap_or_default())
 }
 
-fn legacy_lines_from_body(body: &str, fallback_title: &str, fallback_lines: &[&str]) -> Vec<String> {
+fn legacy_lines_from_body(
+    body: &str,
+    fallback_title: &str,
+    fallback_lines: &[&str],
+) -> Vec<String> {
     if !body.trim().is_empty() {
         let mut lines = body.lines().map(ToString::to_string).collect::<Vec<_>>();
         if lines.is_empty() || !lines.last().map(|line| line.is_empty()).unwrap_or(false) {
@@ -1203,7 +1366,10 @@ fn emit_next_actions_mirror(args: NextActionsMirrorArgs) -> Result<(), String> {
         ));
         lines.push(String::new());
         lines.push(format!("- Status: `{}`", str_field(action, "status")));
-        lines.push(format!("- Description: {}", str_field(action, "description")));
+        lines.push(format!(
+            "- Description: {}",
+            str_field(action, "description")
+        ));
         lines.push("- References:".to_string());
         for reference in array_of_strings(action, "references")
             .into_iter()
@@ -1246,7 +1412,10 @@ fn emit_navigator_mirror(args: NavigatorMirrorArgs) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let meta = table(&data, "navigator")?;
     let sections = rows(&data, "section");
-    let mut lines = markdown_header("Navigator Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Navigator Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
     lines.push(format!("- Epoch: {}", str_field(meta, "epoch")));
     lines.push(format!("- Mission: {}", str_field(meta, "mission")));
@@ -1277,7 +1446,9 @@ fn emit_navigator_mirror(args: NavigatorMirrorArgs) -> Result<(), String> {
             ));
             lines.push(format!(
                 "  - Hypothesis narrative: `{}`",
-                link.get("hypothesis").and_then(Value::as_bool).unwrap_or(false)
+                link.get("hypothesis")
+                    .and_then(Value::as_bool)
+                    .unwrap_or(false)
             ));
             let notes = str_field(link, "notes");
             if !notes.is_empty() {
@@ -1318,7 +1489,14 @@ fn emit_navigator_legacy(args: NavigatorLegacyArgs) -> Result<(), String> {
     let sections = rows(&data, "section");
     let mut lines = generated_doc_header("registry/navigator.toml");
     let title = str_field(meta, "title");
-    lines.push(format!("# {}", if title.is_empty() { "Navigator" } else { &title }));
+    lines.push(format!(
+        "# {}",
+        if title.is_empty() {
+            "Navigator"
+        } else {
+            &title
+        }
+    ));
     lines.push(String::new());
     let epoch = str_field(meta, "epoch");
     let mission = str_field(meta, "mission");
@@ -1332,7 +1510,7 @@ fn emit_navigator_legacy(args: NavigatorLegacyArgs) -> Result<(), String> {
         lines.push(String::new());
     }
     lines.push(
-        "**Important:** This file is generated from TOML registry state and is not authoritative."
+        "**Important:** This file is generated from registry compatibility data and is not authoritative."
             .to_string(),
     );
     lines.push(String::new());
@@ -1363,7 +1541,11 @@ fn emit_navigator_legacy(args: NavigatorLegacyArgs) -> Result<(), String> {
             if !notes.is_empty() {
                 lines.push(format!("  - {}", notes));
             }
-            if link.get("hypothesis").and_then(Value::as_bool).unwrap_or(false) {
+            if link
+                .get("hypothesis")
+                .and_then(Value::as_bool)
+                .unwrap_or(false)
+            {
                 lines.push("  - Status: hypothesis narrative".to_string());
             }
         }
@@ -1429,7 +1611,8 @@ fn emit_entrypoint_docs_legacy(args: EntrypointDocsLegacyArgs) -> Result<(), Str
     let docs = rows(&data, "document");
     for doc in docs {
         let rel_path = str_field(doc, "path");
-        if rel_path.is_empty() || matches!(rel_path.as_str(), "AGENTS.md" | "CLAUDE.md" | "GEMINI.md")
+        if rel_path.is_empty()
+            || matches!(rel_path.as_str(), "AGENTS.md" | "CLAUDE.md" | "GEMINI.md")
         {
             continue;
         }
@@ -1438,12 +1621,19 @@ fn emit_entrypoint_docs_legacy(args: EntrypointDocsLegacyArgs) -> Result<(), Str
         if !body.trim().is_empty() {
             lines.extend(body.lines().map(ToString::to_string));
         } else {
-            lines.push(format!("# {}", fallback_title(&rel_path, &str_field(doc, "title"))));
+            lines.push(format!(
+                "# {}",
+                fallback_title(&rel_path, &str_field(doc, "title"))
+            ));
             lines.push(String::new());
             lines.push("(No body_markdown captured in registry/entrypoint_docs.toml.)".to_string());
         }
         lines.push(String::new());
-        write_output(&args.repo_root.join(&rel_path), &lines.join("\n"), args.allow_unicode)?;
+        write_output(
+            &args.repo_root.join(&rel_path),
+            &lines.join("\n"),
+            args.allow_unicode,
+        )?;
     }
     println!(
         "Emitted entrypoint legacy markdown from {} into {}.",
@@ -1544,7 +1734,10 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
         if path.is_empty() {
             continue;
         }
-        body_by_path.insert(path.clone(), raw_str_field(doc, "body_markdown").trim().to_string());
+        body_by_path.insert(
+            path.clone(),
+            raw_str_field(doc, "body_markdown").trim().to_string(),
+        );
         title_by_path.insert(path, str_field(doc, "title"));
     }
     let module_rows = rows(&req_data, "module");
@@ -1555,8 +1748,9 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
             .cloned()
             .unwrap_or_else(|| fallback_title(&rel_path, ""));
         let body = body_by_path.get(&rel_path).cloned().unwrap_or_default();
-        let mut lines =
-            generated_doc_header("registry/requirements.toml; registry/requirements_narrative.toml");
+        let mut lines = generated_doc_header(
+            "registry/requirements.toml; registry/requirements_narrative.toml",
+        );
         if !body.is_empty() {
             lines.extend(body.lines().map(ToString::to_string));
         } else {
@@ -1564,8 +1758,14 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
             lines.push(String::new());
             lines.push("This file is generated from `registry/requirements.toml` and `registry/requirements_narrative.toml`.".to_string());
             lines.push(String::new());
-            lines.push("See the structured mirror at `docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md`.".to_string());
-            if let Some(module) = module_rows.iter().find(|row| str_field(row, "markdown") == rel_path) {
+            lines.push(
+                "See the structured mirror at `docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md`."
+                    .to_string(),
+            );
+            if let Some(module) = module_rows
+                .iter()
+                .find(|row| str_field(row, "markdown") == rel_path)
+            {
                 lines.push(String::new());
                 lines.push(format!("- Module ID: `{}`", str_field(module, "id")));
                 lines.push(format!("- Module name: `{}`", str_field(module, "name")));
@@ -1580,7 +1780,11 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
             }
         }
         lines.push(String::new());
-        write_output(&args.repo_root.join(&rel_path), &lines.join("\n"), args.allow_unicode)?;
+        write_output(
+            &args.repo_root.join(&rel_path),
+            &lines.join("\n"),
+            args.allow_unicode,
+        )?;
     }
     println!(
         "Emitted requirements legacy markdown from {} and {} into {}.",
@@ -1591,7 +1795,9 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
     Ok(())
 }
 
-fn emit_knowledge_migration_plan_mirror(args: KnowledgeMigrationPlanMirrorArgs) -> Result<(), String> {
+fn emit_knowledge_migration_plan_mirror(
+    args: KnowledgeMigrationPlanMirrorArgs,
+) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let meta = table(&data, "migration")?;
     let domains = rows(&data, "domain");
@@ -1742,7 +1948,11 @@ fn emit_docs_root_narratives_mirror(args: DocsRootNarrativesMirrorArgs) -> Resul
         lines.push(format!("- Line count: {}", int_field(doc, "line_count")));
         let claims = array_of_strings(doc, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
     }
@@ -1773,7 +1983,9 @@ fn emit_docs_root_narratives_legacy(args: DocsRootNarrativesLegacyArgs) -> Resul
                 fallback_title(&rel_path, &str_field(doc, "title"))
             ));
             lines.push(String::new());
-            lines.push("(No body_markdown captured in registry/docs_root_narratives.toml.)".to_string());
+            lines.push(
+                "(No body_markdown captured in registry/docs_root_narratives.toml.)".to_string(),
+            );
         } else {
             lines.extend(body.lines().map(ToString::to_string));
         }
@@ -1801,7 +2013,8 @@ fn emit_research_narratives_mirror(args: ResearchNarrativesMirrorArgs) -> Result
     if !globs.is_empty() {
         lines.push(format!(
             "- Source markdown globs: {}",
-            globs.iter()
+            globs
+                .iter()
                 .map(|item| format!("`{}`", item))
                 .collect::<Vec<_>>()
                 .join(", ")
@@ -1841,7 +2054,11 @@ fn emit_research_narratives_mirror(args: ResearchNarrativesMirrorArgs) -> Result
         lines.push(format!("- Line count: {}", int_field(doc, "line_count")));
         let claims = array_of_strings(doc, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
     }
@@ -1873,7 +2090,8 @@ fn emit_research_narratives_legacy(args: ResearchNarrativesLegacyArgs) -> Result
         "<!-- AUTO-GENERATED: DO NOT EDIT -->".to_string(),
         "<!-- Source of truth: registry/research_narratives.toml -->".to_string(),
         String::new(),
-        "This index and all files under `docs/engineering/*.md` are generated from TOML.".to_string(),
+        "This index and all files under `docs/engineering/*.md` are generated from TOML."
+            .to_string(),
         String::new(),
     ];
     for doc in docs {
@@ -1890,7 +2108,9 @@ fn emit_research_narratives_legacy(args: ResearchNarrativesLegacyArgs) -> Result
                 fallback_title(&rel_path, &str_field(doc, "title"))
             ));
             lines.push(String::new());
-            lines.push("(No body_markdown captured in registry/research_narratives.toml.)".to_string());
+            lines.push(
+                "(No body_markdown captured in registry/research_narratives.toml.)".to_string(),
+            );
         } else {
             lines.extend(body.lines().map(ToString::to_string));
         }
@@ -1929,7 +2149,10 @@ fn emit_research_narratives_legacy(args: ResearchNarrativesLegacyArgs) -> Result
     Ok(())
 }
 
-fn narrative_overlay_map(path: &Path, section_key: &str) -> Result<(String, std::collections::BTreeMap<String, String>), String> {
+fn narrative_overlay_map(
+    path: &Path,
+    section_key: &str,
+) -> Result<(String, std::collections::BTreeMap<String, String>), String> {
     if !path.exists() {
         return Ok((String::new(), std::collections::BTreeMap::new()));
     }
@@ -1937,7 +2160,11 @@ fn narrative_overlay_map(path: &Path, section_key: &str) -> Result<(String, std:
     let preamble = data
         .get(section_key)
         .and_then(Value::as_table)
-        .map(|section| raw_str_field(section, "preamble_markdown").trim().to_string())
+        .map(|section| {
+            raw_str_field(section, "preamble_markdown")
+                .trim()
+                .to_string()
+        })
         .unwrap_or_default();
     let mut body_by_id = std::collections::BTreeMap::new();
     for row in rows(&data, "entry") {
@@ -1950,10 +2177,14 @@ fn narrative_overlay_map(path: &Path, section_key: &str) -> Result<(String, std:
 }
 
 fn emit_insights_mirror(args: InsightsMirrorArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
+    let (data, source_label) = read_control_plane_compat_value(
+        &args.input,
+        &args.canonical_db,
+        ControlPlaneCompatKind::Insights,
+    )?;
     let mut insights = rows(&data, "insight");
     insights.sort_by_key(|row| str_field(row, "id"));
-    let mut lines = markdown_header("Insights Registry Mirror", &args.input.display().to_string());
+    let mut lines = control_plane_markdown_header("Insights Registry Mirror", &source_label);
     lines.push(format!("Total insights: {}", insights.len()));
     lines.push(String::new());
     for row in insights {
@@ -1969,7 +2200,11 @@ fn emit_insights_mirror(args: InsightsMirrorArgs) -> Result<(), String> {
         lines.push(format!("- Sprint: {}", int_field(row, "sprint")));
         lines.push(format!(
             "- Claims: {}",
-            if claims.is_empty() { "(none)".to_string() } else { claims.join(", ") }
+            if claims.is_empty() {
+                "(none)".to_string()
+            } else {
+                claims.join(", ")
+            }
         ));
         lines.push(String::new());
         lines.push(str_field(row, "summary"));
@@ -1978,18 +2213,24 @@ fn emit_insights_mirror(args: InsightsMirrorArgs) -> Result<(), String> {
     write_output(&args.output, &lines.join("\n"), args.allow_unicode)?;
     println!(
         "Emitted insights markdown mirror from {} to {}.",
-        args.input.display(),
+        source_label,
         args.output.display()
     );
     Ok(())
 }
 
 fn emit_insights_legacy(args: InsightsLegacyArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
+    let (data, source_label) = read_control_plane_compat_value(
+        &args.input,
+        &args.canonical_db,
+        ControlPlaneCompatKind::Insights,
+    )?;
     let (preamble, body_by_id) = narrative_overlay_map(&args.narrative, "insights_narrative")?;
     let mut insights = rows(&data, "insight");
     insights.sort_by_key(|row| str_field(row, "id"));
-    let mut lines = generated_doc_header("registry/insights.toml, registry/insights_narrative.toml");
+    let mut lines = generated_doc_header(
+        "registry/canonical/control_plane.sqlite3, registry/insights_narrative.toml",
+    );
     if !preamble.is_empty() {
         lines.extend(preamble.lines().map(ToString::to_string));
     } else {
@@ -1997,10 +2238,13 @@ fn emit_insights_legacy(args: InsightsLegacyArgs) -> Result<(), String> {
             "# Insights".to_string(),
             String::new(),
             "Source-of-truth policy:".to_string(),
-            "- Authoritative machine-readable registry: `registry/insights.toml`".to_string(),
+            "- Authoritative machine-readable source: `registry/canonical/control_plane.sqlite3`"
+                .to_string(),
+            "- SQLite-exported compatibility view: `registry/insights.toml`".to_string(),
             "- Narrative overlay registry: `registry/insights_narrative.toml`".to_string(),
-            "- TOML-driven markdown mirror: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`".to_string(),
-            "- This file is generated from TOML sources.".to_string(),
+            "- TOML-driven markdown mirror: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`"
+                .to_string(),
+            "- This file is generated from canonical SQLite control-plane data plus the narrative overlay.".to_string(),
             String::new(),
         ]);
     }
@@ -2019,7 +2263,11 @@ fn emit_insights_legacy(args: InsightsLegacyArgs) -> Result<(), String> {
             lines.push(format!("Status: {}", str_field(row, "status")));
             lines.push(format!(
                 "Claims: {}",
-                if claims.is_empty() { "(none)".to_string() } else { claims.join(", ") }
+                if claims.is_empty() {
+                    "(none)".to_string()
+                } else {
+                    claims.join(", ")
+                }
             ));
             lines.push(String::new());
             lines.push(str_field(row, "summary"));
@@ -2028,14 +2276,18 @@ fn emit_insights_legacy(args: InsightsLegacyArgs) -> Result<(), String> {
         lines.push("---".to_string());
         lines.push(String::new());
     }
-    while lines.last().map(|line| line.trim().is_empty()).unwrap_or(false) {
+    while lines
+        .last()
+        .map(|line| line.trim().is_empty())
+        .unwrap_or(false)
+    {
         lines.pop();
     }
     lines.push(String::new());
     write_output(&args.output, &lines.join("\n"), args.allow_unicode)?;
     println!(
         "Emitted insights legacy markdown from {} and {} to {}.",
-        args.input.display(),
+        source_label,
         args.narrative.display(),
         args.output.display()
     );
@@ -2043,19 +2295,29 @@ fn emit_insights_legacy(args: InsightsLegacyArgs) -> Result<(), String> {
 }
 
 fn emit_claims_mirror(args: ClaimsMirrorArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
+    let (data, source_label) = read_control_plane_compat_value(
+        &args.input,
+        &args.canonical_db,
+        ControlPlaneCompatKind::Claims,
+    )?;
     let mut claims = rows(&data, "claim");
     claims.sort_by_key(|row| claim_sort_key(&str_field(row, "id")));
-    let mut lines = markdown_header("Claims Registry Mirror", &args.input.display().to_string());
+    let mut lines = control_plane_markdown_header("Claims Registry Mirror", &source_label);
     lines.push(format!("Total claims: {}", claims.len()));
     lines.push(String::new());
     for row in claims {
         lines.push(format!("## {}", str_field(row, "id")));
         lines.push(String::new());
         lines.push(format!("- Status: `{}`", str_field(row, "status")));
-        lines.push(format!("- Last verified: {}", str_field(row, "last_verified")));
+        lines.push(format!(
+            "- Last verified: {}",
+            str_field(row, "last_verified")
+        ));
         lines.push(format!("- Statement: {}", str_field(row, "statement")));
-        lines.push(format!("- Where stated: {}", str_field(row, "where_stated")));
+        lines.push(format!(
+            "- Where stated: {}",
+            str_field(row, "where_stated")
+        ));
         lines.push(format!(
             "- What would verify/refute it: {}",
             str_field(row, "what_would_verify_refute")
@@ -2065,23 +2327,28 @@ fn emit_claims_mirror(args: ClaimsMirrorArgs) -> Result<(), String> {
     write_output(&args.output, &lines.join("\n"), args.allow_unicode)?;
     println!(
         "Emitted claims markdown mirror from {} to {}.",
-        args.input.display(),
+        source_label,
         args.output.display()
     );
     Ok(())
 }
 
 fn emit_claims_matrix_legacy(args: ClaimsMatrixLegacyArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
+    let (data, source_label) = read_control_plane_compat_value(
+        &args.input,
+        &args.canonical_db,
+        ControlPlaneCompatKind::Claims,
+    )?;
     let mut claims = rows(&data, "claim");
     claims.sort_by_key(|row| claim_sort_key(&str_field(row, "id")));
-    let mut lines = generated_doc_header("registry/claims.toml");
+    let mut lines = generated_doc_header("registry/canonical/control_plane.sqlite3");
     lines.extend([
         "# Claims / Evidence Matrix (Markdown Mirror)".to_string(),
         String::new(),
-        "This file is generated from `registry/claims.toml`.".to_string(),
+        "This file is generated from the canonical SQLite control plane (`registry/canonical/control_plane.sqlite3`).".to_string(),
         String::new(),
-        "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it |".to_string(),
+        "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it |"
+            .to_string(),
         "|---:|---|---|---|---|---|".to_string(),
     ]);
     for row in claims {
@@ -2099,7 +2366,7 @@ fn emit_claims_matrix_legacy(args: ClaimsMatrixLegacyArgs) -> Result<(), String>
     write_output(&args.output, &lines.join("\n"), args.allow_unicode)?;
     println!(
         "Emitted claims matrix legacy markdown from {} to {}.",
-        args.input.display(),
+        source_label,
         args.output.display()
     );
     Ok(())
@@ -2110,11 +2377,23 @@ fn emit_bibliography_mirror(args: BibliographyMirrorArgs) -> Result<(), String> 
     let meta = table(&data, "bibliography")?;
     let groups = rows(&data, "group");
     let entries = rows(&data, "entry");
-    let mut lines = markdown_header("Bibliography Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Bibliography Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
-    lines.push(format!("- Source markdown: `{}`", str_field(meta, "source_markdown")));
-    lines.push(format!("- Group count: {}", int_field(meta, "group_count").max(groups.len() as i64)));
-    lines.push(format!("- Entry count: {}", int_field(meta, "entry_count").max(entries.len() as i64)));
+    lines.push(format!(
+        "- Source markdown: `{}`",
+        str_field(meta, "source_markdown")
+    ));
+    lines.push(format!(
+        "- Group count: {}",
+        int_field(meta, "group_count").max(groups.len() as i64)
+    ));
+    lines.push(format!(
+        "- Entry count: {}",
+        int_field(meta, "entry_count").max(entries.len() as i64)
+    ));
     lines.push(String::new());
     for group in groups {
         let group_name = str_field(group, "name");
@@ -2165,7 +2444,11 @@ fn emit_bibliography_legacy(args: BibliographyLegacyArgs) -> Result<(), String> 
             }
             let section_name = {
                 let raw = str_field(entry, "section");
-                if raw.is_empty() { "Unscoped".to_string() } else { raw }
+                if raw.is_empty() {
+                    "Unscoped".to_string()
+                } else {
+                    raw
+                }
             };
             if !section_names.contains(&section_name) {
                 section_names.push(section_name);
@@ -2177,15 +2460,14 @@ fn emit_bibliography_legacy(args: BibliographyLegacyArgs) -> Result<(), String> 
                 .iter()
                 .copied()
                 .filter(|entry| {
-                    str_field(entry, "group") == group_name
-                        && {
-                            let raw = str_field(entry, "section");
-                            if raw.is_empty() {
-                                "Unscoped".to_string()
-                            } else {
-                                raw
-                            }
-                        } == section_name
+                    str_field(entry, "group") == group_name && {
+                        let raw = str_field(entry, "section");
+                        if raw.is_empty() {
+                            "Unscoped".to_string()
+                        } else {
+                            raw
+                        }
+                    } == section_name
                 })
                 .collect::<Vec<_>>();
             section_entries.sort_by_key(|entry| int_field(entry, "order_index"));
@@ -2208,10 +2490,14 @@ fn emit_bibliography_legacy(args: BibliographyLegacyArgs) -> Result<(), String> 
 }
 
 fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
+    let (data, source_label) = read_control_plane_compat_value(
+        &args.input,
+        &args.canonical_db,
+        ControlPlaneCompatKind::Experiments,
+    )?;
     let mut experiments = rows(&data, "experiment");
     experiments.sort_by_key(|row| str_field(row, "id"));
-    let mut lines = markdown_header("Experiments Registry Mirror", &args.input.display().to_string());
+    let mut lines = control_plane_markdown_header("Experiments Registry Mirror", &source_label);
     lines.push(format!("Total experiments: {}", experiments.len()));
     lines.push(String::new());
     for row in experiments {
@@ -2226,9 +2512,16 @@ fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
         let outputs = array_of_strings(row, "output");
         lines.push(format!(
             "- Output: {}",
-            if outputs.is_empty() { "(none)".to_string() } else { outputs.join(", ") }
+            if outputs.is_empty() {
+                "(none)".to_string()
+            } else {
+                outputs.join(", ")
+            }
         ));
-        lines.push(format!("- Deterministic: `{}`", bool_field(row, "deterministic")));
+        lines.push(format!(
+            "- Deterministic: `{}`",
+            bool_field(row, "deterministic")
+        ));
         if row.contains_key("seed") {
             lines.push(format!("- Seed: `{}`", int_field(row, "seed")));
         }
@@ -2236,7 +2529,11 @@ fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
         let claims = array_of_strings(row, "claims");
         lines.push(format!(
             "- Claims: {}",
-            if claims.is_empty() { "(none)".to_string() } else { claims.join(", ") }
+            if claims.is_empty() {
+                "(none)".to_string()
+            } else {
+                claims.join(", ")
+            }
         ));
         lines.push(String::new());
         lines.push("Method:".to_string());
@@ -2251,20 +2548,24 @@ fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
     write_output(&args.output, &lines.join("\n"), args.allow_unicode)?;
     println!(
         "Emitted experiments markdown mirror from {} to {}.",
-        args.input.display(),
+        source_label,
         args.output.display()
     );
     Ok(())
 }
 
 fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
-    let data = read_toml_value(&args.input)?;
-    let (preamble, body_by_id) =
-        narrative_overlay_map(&args.narrative, "experiments_narrative")?;
+    let (data, source_label) = read_control_plane_compat_value(
+        &args.input,
+        &args.canonical_db,
+        ControlPlaneCompatKind::Experiments,
+    )?;
+    let (preamble, body_by_id) = narrative_overlay_map(&args.narrative, "experiments_narrative")?;
     let mut experiments = rows(&data, "experiment");
     experiments.sort_by_key(|row| str_field(row, "id"));
-    let mut lines =
-        generated_doc_header("registry/experiments.toml, registry/experiments_narrative.toml");
+    let mut lines = generated_doc_header(
+        "registry/canonical/control_plane.sqlite3, registry/experiments_narrative.toml",
+    );
     if !preamble.is_empty() {
         lines.extend(preamble.lines().map(ToString::to_string));
     } else {
@@ -2272,10 +2573,13 @@ fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
             "# Experiments Portfolio Shortlist".to_string(),
             String::new(),
             "Source-of-truth policy:".to_string(),
-            "- Authoritative machine-readable registry: `registry/experiments.toml`".to_string(),
+            "- Authoritative machine-readable source: `registry/canonical/control_plane.sqlite3`"
+                .to_string(),
+            "- SQLite-exported compatibility view: `registry/experiments.toml`".to_string(),
             "- Narrative overlay registry: `registry/experiments_narrative.toml`".to_string(),
-            "- TOML-driven markdown mirror: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`".to_string(),
-            "- This file is generated from TOML sources.".to_string(),
+            "- TOML-driven markdown mirror: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`"
+                .to_string(),
+            "- This file is generated from canonical SQLite control-plane data plus the narrative overlay.".to_string(),
             String::new(),
         ]);
     }
@@ -2294,7 +2598,11 @@ fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
             let outputs = array_of_strings(row, "output");
             lines.push(format!(
                 "Output: {}",
-                if outputs.is_empty() { "(none)".to_string() } else { outputs.join(", ") }
+                if outputs.is_empty() {
+                    "(none)".to_string()
+                } else {
+                    outputs.join(", ")
+                }
             ));
             lines.push("Run:".to_string());
             lines.push("```bash".to_string());
@@ -2305,16 +2613,100 @@ fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
         lines.push("---".to_string());
         lines.push(String::new());
     }
-    while lines.last().map(|line| line.trim().is_empty()).unwrap_or(false) {
+    while lines
+        .last()
+        .map(|line| line.trim().is_empty())
+        .unwrap_or(false)
+    {
         lines.pop();
     }
     lines.push(String::new());
     write_output(&args.output, &lines.join("\n"), args.allow_unicode)?;
     println!(
         "Emitted experiments legacy markdown from {} and {} to {}.",
-        args.input.display(),
+        source_label,
         args.narrative.display(),
         args.output.display()
+    );
+    Ok(())
+}
+
+fn emit_theorems_mirror(args: TheoremsMirrorArgs) -> Result<(), String> {
+    let text =
+        read_control_plane_compat_text(&args.canonical_db, ControlPlaneCompatKind::TheoremsMirror)?;
+    write_output(&args.output, &text, args.allow_unicode)?;
+    println!(
+        "Emitted theorem markdown mirror from {} to {}.",
+        args.canonical_db.display(),
+        args.output.display()
+    );
+    Ok(())
+}
+
+fn emit_theorems_legacy(args: TheoremsLegacyArgs) -> Result<(), String> {
+    let text =
+        read_control_plane_compat_text(&args.canonical_db, ControlPlaneCompatKind::Theorems)?;
+    write_output(&args.output, &text, args.allow_unicode)?;
+    println!(
+        "Emitted theorem legacy markdown from {} to {}.",
+        args.canonical_db.display(),
+        args.output.display()
+    );
+    Ok(())
+}
+
+fn emit_control_plane_docs(args: ControlPlaneDocsArgs) -> Result<(), String> {
+    emit_claims_mirror(ClaimsMirrorArgs {
+        input: args.claims_input.clone(),
+        canonical_db: args.canonical_db.clone(),
+        output: args.claims_mirror_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_claims_matrix_legacy(ClaimsMatrixLegacyArgs {
+        input: args.claims_input.clone(),
+        canonical_db: args.canonical_db.clone(),
+        output: args.claims_legacy_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_insights_mirror(InsightsMirrorArgs {
+        input: args.insights_input.clone(),
+        canonical_db: args.canonical_db.clone(),
+        output: args.insights_mirror_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_insights_legacy(InsightsLegacyArgs {
+        input: args.insights_input.clone(),
+        canonical_db: args.canonical_db.clone(),
+        narrative: args.insights_narrative.clone(),
+        output: args.insights_legacy_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_experiments_mirror(ExperimentsMirrorArgs {
+        input: args.experiments_input.clone(),
+        canonical_db: args.canonical_db.clone(),
+        output: args.experiments_mirror_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_experiments_legacy(ExperimentsLegacyArgs {
+        input: args.experiments_input.clone(),
+        canonical_db: args.canonical_db.clone(),
+        narrative: args.experiments_narrative.clone(),
+        output: args.experiments_legacy_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_theorems_mirror(TheoremsMirrorArgs {
+        canonical_db: args.canonical_db.clone(),
+        output: args.theorems_mirror_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    emit_theorems_legacy(TheoremsLegacyArgs {
+        canonical_db: args.canonical_db.clone(),
+        output: args.theorems_legacy_output.clone(),
+        allow_unicode: args.allow_unicode,
+    })?;
+    println!(
+        "Emitted standard control-plane docs bundle from {}.",
+        args.canonical_db.display()
     );
     Ok(())
 }
@@ -2328,7 +2720,10 @@ fn emit_markdown_governance_mirror(args: MarkdownGovernanceMirrorArgs) -> Result
         "Markdown Governance Registry Mirror",
         &args.input.display().to_string(),
     );
-    lines.push(format!("- Generated at: {}", str_field(meta, "generated_at")));
+    lines.push(format!(
+        "- Generated at: {}",
+        str_field(meta, "generated_at")
+    ));
     lines.push(format!(
         "- Document count: {}",
         int_field(meta, "document_count").max(docs.len() as i64)
@@ -2457,9 +2852,15 @@ fn emit_claims_tasks_mirror(args: ClaimsTasksMirrorArgs) -> Result<(), String> {
     let meta = table(&data, "claims_tasks")?;
     let sections = rows(&data, "section");
     let tasks = rows(&data, "task");
-    let mut lines = markdown_header("Claims Tasks Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Claims Tasks Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
-    lines.push(format!("- Source markdown: `{}`", str_field(meta, "source_markdown")));
+    lines.push(format!(
+        "- Source markdown: `{}`",
+        str_field(meta, "source_markdown")
+    ));
     lines.push(format!(
         "- Task count: {}",
         int_field(meta, "task_count").max(tasks.len() as i64)
@@ -2503,7 +2904,10 @@ fn emit_claims_tasks_mirror(args: ClaimsTasksMirrorArgs) -> Result<(), String> {
         lines.push(format!("- Section: {}", str_field(task, "section")));
         lines.push(format!("- Source line: {}", int_field(task, "source_line")));
         lines.push(format!("- Status raw: {}", str_field(task, "status_raw")));
-        lines.push(format!("- Canonical: `{}`", bool_field(task, "status_canonical")));
+        lines.push(format!(
+            "- Canonical: `{}`",
+            bool_field(task, "status_canonical")
+        ));
         lines.push(String::new());
         lines.push(str_field(task, "task"));
         lines.push(String::new());
@@ -2529,7 +2933,8 @@ fn emit_claims_tasks_legacy(args: ClaimsTasksLegacyArgs) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let sections = rows(&data, "section");
     let tasks = rows(&data, "task");
-    let mut tasks_by_section = std::collections::BTreeMap::<String, Vec<&toml::map::Map<String, Value>>>::new();
+    let mut tasks_by_section =
+        std::collections::BTreeMap::<String, Vec<&toml::map::Map<String, Value>>>::new();
     for task in &tasks {
         tasks_by_section
             .entry(str_field(task, "section"))
@@ -2592,8 +2997,10 @@ fn emit_claims_domains_mirror(args: ClaimsDomainsMirrorArgs) -> Result<(), Strin
     let meta = table(&data, "claims_domains")?;
     let domains = rows(&data, "domain");
     let claim_domains = rows(&data, "claim_domain");
-    let mut lines =
-        markdown_header("Claims Domains Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Claims Domains Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
     lines.push(format!("- Source CSV: `{}`", str_field(meta, "source_csv")));
     lines.push(format!(
@@ -2620,13 +3027,22 @@ fn emit_claims_domains_mirror(args: ClaimsDomainsMirrorArgs) -> Result<(), Strin
             "- Source markdown: `{}`",
             str_field(row, "source_markdown")
         ));
-        lines.push(format!("- Declared count: {}", int_field(row, "declared_count")));
-        lines.push(format!("- CSV claim count: {}", int_field(row, "csv_claim_count")));
+        lines.push(format!(
+            "- Declared count: {}",
+            int_field(row, "declared_count")
+        ));
+        lines.push(format!(
+            "- CSV claim count: {}",
+            int_field(row, "csv_claim_count")
+        ));
         lines.push(format!(
             "- Markdown claim count: {}",
             int_field(row, "markdown_claim_count")
         ));
-        lines.push(format!("- Count match: `{}`", bool_field(row, "count_match")));
+        lines.push(format!(
+            "- Count match: `{}`",
+            bool_field(row, "count_match")
+        ));
         lines.push(format!(
             "- Mapping match: `{}`",
             bool_field(row, "mapping_match")
@@ -2698,7 +3114,8 @@ fn emit_claims_domains_legacy(args: ClaimsDomainsLegacyArgs) -> Result<(), Strin
         args.allow_unicode,
     )?;
 
-    let mut entries_by_domain = std::collections::BTreeMap::<String, Vec<&toml::map::Map<String, Value>>>::new();
+    let mut entries_by_domain =
+        std::collections::BTreeMap::<String, Vec<&toml::map::Map<String, Value>>>::new();
     for entry in &entries {
         entries_by_domain
             .entry(str_field(entry, "domain"))
@@ -2742,7 +3159,11 @@ fn emit_claims_domains_legacy(args: ClaimsDomainsLegacyArgs) -> Result<(), Strin
             }
             lines.push(String::new());
         }
-        write_output(&args.repo_root.join(rel_path), &lines.join("\n"), args.allow_unicode)?;
+        write_output(
+            &args.repo_root.join(rel_path),
+            &lines.join("\n"),
+            args.allow_unicode,
+        )?;
     }
     println!(
         "Emitted claims-domains legacy markdown/csv from {} into {}.",
@@ -2757,7 +3178,10 @@ fn emit_claim_tickets_mirror(args: ClaimTicketsMirrorArgs) -> Result<(), String>
     let meta = table(&data, "claim_tickets")?;
     let mut tickets = rows(&data, "ticket");
     tickets.sort_by_key(|row| str_field(row, "id"));
-    let mut lines = markdown_header("Claim Tickets Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Claim Tickets Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
     lines.push(format!(
         "- Source markdown glob: `{}`",
@@ -2801,7 +3225,11 @@ fn emit_claim_tickets_mirror(args: ClaimTicketsMirrorArgs) -> Result<(), String>
         ));
         let claims = array_of_strings(row, "claims_referenced");
         if !claims.is_empty() {
-            lines.push(format!("- Claims referenced ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claims referenced ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         let backlog = array_of_strings(row, "backlog_reports");
         if !backlog.is_empty() {
@@ -2836,7 +3264,9 @@ fn emit_claim_tickets_legacy(args: ClaimTicketsLegacyArgs) -> Result<(), String>
     let mut index_lines = generated_doc_header("registry/claim_tickets.toml");
     index_lines.push("# Claim Audit Tickets".to_string());
     index_lines.push(String::new());
-    index_lines.push("This index and all files under `docs/tickets/*.md` are generated from TOML.".to_string());
+    index_lines.push(
+        "This index and all files under `docs/tickets/*.md` are generated from TOML.".to_string(),
+    );
     index_lines.push(String::new());
 
     for row in tickets {
@@ -2854,17 +3284,27 @@ fn emit_claim_tickets_legacy(args: ClaimTicketsLegacyArgs) -> Result<(), String>
         lines.push("## Goal".to_string());
         lines.push(String::new());
         let goal = str_field(row, "goal_summary");
-        lines.push(if goal.is_empty() { "(not specified)".to_string() } else { goal });
+        lines.push(if goal.is_empty() {
+            "(not specified)".to_string()
+        } else {
+            goal
+        });
         lines.push(String::new());
         lines.push("## Scope".to_string());
         lines.push(String::new());
         lines.push(format!("- Ticket ID: `{}`", str_field(row, "id")));
         lines.push(format!("- Kind: `{}`", str_field(row, "ticket_kind")));
-        lines.push(format!("- Status token: `{}`", str_field(row, "status_token")));
+        lines.push(format!(
+            "- Status token: `{}`",
+            str_field(row, "status_token")
+        ));
         let claim_start = int_field(row, "claim_range_start");
         let claim_end = int_field(row, "claim_range_end");
         if claim_start > 0 && claim_end > 0 {
-            lines.push(format!("- Claim range: C-{:03}..C-{:03}", claim_start, claim_end));
+            lines.push(format!(
+                "- Claim range: C-{:03}..C-{:03}",
+                claim_start, claim_end
+            ));
         } else {
             lines.push("- Claim range: none (general ticket)".to_string());
         }
@@ -2872,7 +3312,11 @@ fn emit_claim_tickets_legacy(args: ClaimTicketsLegacyArgs) -> Result<(), String>
         if claims.is_empty() {
             lines.push("- Claims referenced: none".to_string());
         } else {
-            lines.push(format!("- Claims referenced ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claims referenced ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
         lines.push("## Deliverables".to_string());
@@ -2899,8 +3343,14 @@ fn emit_claim_tickets_legacy(args: ClaimTicketsLegacyArgs) -> Result<(), String>
         lines.push(String::new());
         lines.push("## Progress snapshot".to_string());
         lines.push(String::new());
-        lines.push(format!("- Completed checkboxes: {}", int_field(row, "done_checkboxes")));
-        lines.push(format!("- Open checkboxes: {}", int_field(row, "open_checkboxes")));
+        lines.push(format!(
+            "- Completed checkboxes: {}",
+            int_field(row, "done_checkboxes")
+        ));
+        lines.push(format!(
+            "- Open checkboxes: {}",
+            int_field(row, "open_checkboxes")
+        ));
         let backlog = array_of_strings(row, "backlog_reports");
         if !backlog.is_empty() {
             lines.push("- Backlog reports:".to_string());
@@ -2909,7 +3359,11 @@ fn emit_claim_tickets_legacy(args: ClaimTicketsLegacyArgs) -> Result<(), String>
             }
         }
         lines.push(String::new());
-        write_output(&args.repo_root.join(&rel_path), &lines.join("\n"), args.allow_unicode)?;
+        write_output(
+            &args.repo_root.join(&rel_path),
+            &lines.join("\n"),
+            args.allow_unicode,
+        )?;
         index_lines.push(format!("- `{}`: `{}`", str_field(row, "id"), rel_path));
     }
 
@@ -2931,8 +3385,10 @@ fn emit_external_sources_mirror(args: ExternalSourcesMirrorArgs) -> Result<(), S
     let data = read_toml_value(&args.input)?;
     let meta = table(&data, "external_sources")?;
     let docs = narrative_docs(&data);
-    let mut lines =
-        markdown_header("External Sources Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "External Sources Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
     lines.push(format!(
         "- Source markdown glob: `{}`",
@@ -2952,11 +3408,23 @@ fn emit_external_sources_mirror(args: ExternalSourcesMirrorArgs) -> Result<(), S
             str_field(row, "title")
         ));
         lines.push(String::new());
-        lines.push(format!("- Source markdown: `{}`", str_field(row, "source_markdown")));
+        lines.push(format!(
+            "- Source markdown: `{}`",
+            str_field(row, "source_markdown")
+        ));
         lines.push(format!("- Slug: `{}`", str_field(row, "slug")));
-        lines.push(format!("- Status token: `{}`", str_field(row, "status_token")));
-        lines.push(format!("- Content kind: `{}`", str_field(row, "content_kind")));
-        lines.push(format!("- Authority level: `{}`", str_field(row, "authority_level")));
+        lines.push(format!(
+            "- Status token: `{}`",
+            str_field(row, "status_token")
+        ));
+        lines.push(format!(
+            "- Content kind: `{}`",
+            str_field(row, "content_kind")
+        ));
+        lines.push(format!(
+            "- Authority level: `{}`",
+            str_field(row, "authority_level")
+        ));
         lines.push(format!(
             "- Verification level: `{}`",
             str_field(row, "verification_level")
@@ -2987,7 +3455,11 @@ fn emit_external_sources_mirror(args: ExternalSourcesMirrorArgs) -> Result<(), S
         lines.push(format!("- Line count: {}", int_field(row, "line_count")));
         let claims = array_of_strings(row, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         let urls = array_of_strings(row, "url_refs");
         if !urls.is_empty() {
@@ -3028,7 +3500,10 @@ fn emit_external_sources_legacy(args: ExternalSourcesLegacyArgs) -> Result<(), S
     let mut index_lines = generated_doc_header("registry/external_sources.toml");
     index_lines.push("# External Sources".to_string());
     linesep(&mut index_lines);
-    index_lines.push("This index and all files under `docs/external_sources/*.md` are generated from TOML.".to_string());
+    index_lines.push(
+        "This index and all files under `docs/external_sources/*.md` are generated from TOML."
+            .to_string(),
+    );
     linesep(&mut index_lines);
     for row in docs {
         index_lines.push(format!(
@@ -3056,7 +3531,10 @@ fn emit_book_docs_mirror(args: BookDocsMirrorArgs) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let meta = table(&data, "book_docs")?;
     let docs = narrative_docs(&data);
-    let mut lines = markdown_header("Book Docs Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Book Docs Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
     lines.push(format!(
         "- Source markdown glob: `{}`",
@@ -3076,13 +3554,20 @@ fn emit_book_docs_mirror(args: BookDocsMirrorArgs) -> Result<(), String> {
             str_field(row, "title")
         ));
         lines.push(String::new());
-        lines.push(format!("- Source markdown: `{}`", str_field(row, "source_markdown")));
+        lines.push(format!(
+            "- Source markdown: `{}`",
+            str_field(row, "source_markdown")
+        ));
         lines.push(format!("- Section: `{}`", str_field(row, "section")));
         lines.push(format!("- Slug: `{}`", str_field(row, "slug")));
         lines.push(format!("- Line count: {}", int_field(row, "line_count")));
         let claims = array_of_strings(row, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
     }
@@ -3140,7 +3625,9 @@ fn render_artifact_sections_from_scroll(scroll: &ArtifactScrollDoc) -> Vec<Strin
     out
 }
 
-fn emit_data_artifact_narratives_mirror(args: DataArtifactNarrativesMirrorArgs) -> Result<(), String> {
+fn emit_data_artifact_narratives_mirror(
+    args: DataArtifactNarrativesMirrorArgs,
+) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let meta = table(&data, "data_artifact_narratives")?;
     let docs = narrative_docs(&data);
@@ -3171,12 +3658,22 @@ fn emit_data_artifact_narratives_mirror(args: DataArtifactNarrativesMirrorArgs) 
             str_field(row, "title")
         ));
         lines.push(String::new());
-        lines.push(format!("- Source markdown: `{}`", str_field(row, "source_markdown")));
-        lines.push(format!("- Content kind: `{}`", str_field(row, "content_kind")));
+        lines.push(format!(
+            "- Source markdown: `{}`",
+            str_field(row, "source_markdown")
+        ));
+        lines.push(format!(
+            "- Content kind: `{}`",
+            str_field(row, "content_kind")
+        ));
         lines.push(format!("- Line count: {}", int_field(row, "line_count")));
         let claims = array_of_strings(row, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
     }
@@ -3189,10 +3686,13 @@ fn emit_data_artifact_narratives_mirror(args: DataArtifactNarrativesMirrorArgs) 
     Ok(())
 }
 
-fn emit_data_artifact_narratives_legacy(args: DataArtifactNarrativesLegacyArgs) -> Result<(), String> {
+fn emit_data_artifact_narratives_legacy(
+    args: DataArtifactNarrativesLegacyArgs,
+) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let docs = narrative_docs(&data);
-    let artifact_index: ArtifactScrollIndex = read_toml(&args.repo_root.join(&args.artifact_index))?;
+    let artifact_index: ArtifactScrollIndex =
+        read_toml(&args.repo_root.join(&args.artifact_index))?;
     let scroll_by_source = artifact_index
         .scroll
         .into_iter()
@@ -3225,15 +3725,25 @@ fn emit_data_artifact_narratives_legacy(args: DataArtifactNarrativesLegacyArgs) 
         if !rendered_from_scroll {
             let body = raw_str_field(row, "body_markdown");
             if body.is_empty() {
-                lines.push(format!("# {}", fallback_title(&rel_path, &str_field(row, "title"))));
+                lines.push(format!(
+                    "# {}",
+                    fallback_title(&rel_path, &str_field(row, "title"))
+                ));
                 lines.push(String::new());
-                lines.push("(No section/body content captured in registry/artifact_scrolls.toml.)".to_string());
+                lines.push(
+                    "(No section/body content captured in registry/artifact_scrolls.toml.)"
+                        .to_string(),
+                );
             } else {
                 lines.extend(body.lines().map(ToString::to_string));
             }
         }
         lines.push(String::new());
-        write_output(&args.repo_root.join(&rel_path), &lines.join("\n"), args.allow_unicode)?;
+        write_output(
+            &args.repo_root.join(&rel_path),
+            &lines.join("\n"),
+            args.allow_unicode,
+        )?;
     }
     println!(
         "Emitted data-artifact narratives legacy markdown from {} into {}.",
@@ -3270,12 +3780,19 @@ fn emit_reports_narratives_mirror(args: ReportsNarrativesMirrorArgs) -> Result<(
             str_field(row, "title")
         ));
         lines.push(String::new());
-        lines.push(format!("- Source markdown: `{}`", str_field(row, "source_markdown")));
+        lines.push(format!(
+            "- Source markdown: `{}`",
+            str_field(row, "source_markdown")
+        ));
         lines.push(format!("- Category: `{}`", str_field(row, "category")));
         lines.push(format!("- Line count: {}", int_field(row, "line_count")));
         let claims = array_of_strings(row, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
     }
@@ -3311,7 +3828,10 @@ fn emit_docs_convos_mirror(args: DocsConvosMirrorArgs) -> Result<(), String> {
     let data = read_toml_value(&args.input)?;
     let meta = table(&data, "docs_convos")?;
     let docs = narrative_docs(&data);
-    let mut lines = markdown_header("Docs Convos Registry Mirror", &args.input.display().to_string());
+    let mut lines = markdown_header(
+        "Docs Convos Registry Mirror",
+        &args.input.display().to_string(),
+    );
     lines.push(format!("- Updated: {}", str_field(meta, "updated")));
     lines.push(format!(
         "- Source markdown glob: `{}`",
@@ -3331,12 +3851,22 @@ fn emit_docs_convos_mirror(args: DocsConvosMirrorArgs) -> Result<(), String> {
             str_field(row, "title")
         ));
         lines.push(String::new());
-        lines.push(format!("- Source markdown: `{}`", str_field(row, "source_markdown")));
-        lines.push(format!("- Content kind: `{}`", str_field(row, "content_kind")));
+        lines.push(format!(
+            "- Source markdown: `{}`",
+            str_field(row, "source_markdown")
+        ));
+        lines.push(format!(
+            "- Content kind: `{}`",
+            str_field(row, "content_kind")
+        ));
         lines.push(format!("- Line count: {}", int_field(row, "line_count")));
         let claims = array_of_strings(row, "claim_refs");
         if !claims.is_empty() {
-            lines.push(format!("- Claim refs ({}): {}", claims.len(), claims.join(", ")));
+            lines.push(format!(
+                "- Claim refs ({}): {}",
+                claims.len(),
+                claims.join(", ")
+            ));
         }
         lines.push(String::new());
     }
@@ -3379,14 +3909,21 @@ fn emit_monograph_legacy(args: MonographLegacyArgs) -> Result<(), String> {
         let mut lines = generated_doc_header("registry/monograph.toml");
         let body = raw_str_field(doc, "body_markdown");
         if body.is_empty() {
-            lines.push(format!("# {}", fallback_title(&rel_path, &str_field(doc, "title"))));
+            lines.push(format!(
+                "# {}",
+                fallback_title(&rel_path, &str_field(doc, "title"))
+            ));
             lines.push(String::new());
             lines.push("(No body_markdown captured in registry/monograph.toml.)".to_string());
         } else {
             lines.extend(body.lines().map(ToString::to_string));
         }
         lines.push(String::new());
-        write_output(&args.repo_root.join(&rel_path), &lines.join("\n"), args.allow_unicode)?;
+        write_output(
+            &args.repo_root.join(&rel_path),
+            &lines.join("\n"),
+            args.allow_unicode,
+        )?;
     }
     println!(
         "Emitted monograph legacy markdown from {} into {}.",
@@ -3916,9 +4453,7 @@ fn run(cli: Cli) -> Result<(), String> {
         Commands::RoadmapLegacy(args) => emit_roadmap_legacy(args),
         Commands::NextActionsMirror(args) => emit_next_actions_mirror(args),
         Commands::NextActionsLegacy(args) => emit_next_actions_legacy(args),
-        Commands::KnowledgeMigrationPlanMirror(args) => {
-            emit_knowledge_migration_plan_mirror(args)
-        }
+        Commands::KnowledgeMigrationPlanMirror(args) => emit_knowledge_migration_plan_mirror(args),
         Commands::NavigatorMirror(args) => emit_navigator_mirror(args),
         Commands::NavigatorLegacy(args) => emit_navigator_legacy(args),
         Commands::EntrypointDocsMirror(args) => emit_entrypoint_docs_mirror(args),
@@ -3937,6 +4472,9 @@ fn run(cli: Cli) -> Result<(), String> {
         Commands::BibliographyLegacy(args) => emit_bibliography_legacy(args),
         Commands::ExperimentsMirror(args) => emit_experiments_mirror(args),
         Commands::ExperimentsLegacy(args) => emit_experiments_legacy(args),
+        Commands::TheoremsMirror(args) => emit_theorems_mirror(args),
+        Commands::TheoremsLegacy(args) => emit_theorems_legacy(args),
+        Commands::ControlPlaneDocs(args) => emit_control_plane_docs(args),
         Commands::MarkdownGovernanceMirror(args) => emit_markdown_governance_mirror(args),
         Commands::ClaimsTasksMirror(args) => emit_claims_tasks_mirror(args),
         Commands::ClaimsTasksLegacy(args) => emit_claims_tasks_legacy(args),

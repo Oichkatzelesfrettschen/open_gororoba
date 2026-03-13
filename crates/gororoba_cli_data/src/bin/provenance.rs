@@ -1,11 +1,17 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand, ValueEnum};
 use gororoba_cli_data::source_provenance;
-use provenance_core::{ArtifactQueryResult, DoctorReport, DocumentQueryResult, PantheonSeedSummary};
+use provenance_core::{
+    ArtifactQueryResult, BinaryRecord, ClaimRecord, ControlPlaneCounts, DoctorReport,
+    DocumentQueryResult, DownloadCampaignQueryResult, DownloadQueryResult, ExperimentRecord,
+    InsightRecord, PantheonSeedSummary, TheoremRecord,
+};
 use provenance_store::ProvenanceStore;
 use serde_json::json;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(name = "provenance", about = "SQLite-backed provenance operator CLI")]
@@ -15,7 +21,7 @@ struct Cli {
     repo_root: PathBuf,
 
     /// SQLite database path.
-    #[arg(long, default_value = ".cache/provenance/provenance.sqlite3")]
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     db: PathBuf,
 
     #[command(subcommand)]
@@ -30,6 +36,13 @@ enum Commands {
     Export(ExportArgs),
     /// Verify SQLite invariants and optionally compatibility export invariants.
     Verify(VerifyArgs),
+    /// Legacy/bootstrap import from compatibility TOML/proof manifests into the canonical SQLite control plane.
+    #[command(visible_alias = "import-legacy-control-plane")]
+    IndexControlPlane(IndexControlPlaneArgs),
+    /// Export compatibility TOML and theorem markdown views from the canonical SQLite control plane.
+    ExportControlPlane(ExportControlPlaneArgs),
+    /// Verify canonical SQLite control-plane invariants and generated compatibility exports.
+    VerifyControlPlane(VerifyControlPlaneArgs),
     /// Query one artifact or document from the SQLite index.
     Query(QueryArgs),
     /// Print operator-focused health and drift summary from the SQLite index.
@@ -99,6 +112,69 @@ struct VerifyArgs {
 }
 
 #[derive(Parser, Debug)]
+struct IndexControlPlaneArgs {
+    #[arg(long, default_value = "registry/claims.toml")]
+    claims: PathBuf,
+
+    #[arg(long, default_value = "registry/insights.toml")]
+    insights: PathBuf,
+
+    #[arg(long, default_value = "registry/experiments.toml")]
+    experiments: PathBuf,
+
+    #[arg(long, default_value = "registry/binaries.toml")]
+    binaries: PathBuf,
+
+    #[arg(long, default_value = "proofs/_RocqProject")]
+    rocq_project: PathBuf,
+}
+
+#[derive(Parser, Debug)]
+struct ExportControlPlaneArgs {
+    #[arg(long, default_value = "registry/claims.toml")]
+    claims: PathBuf,
+
+    #[arg(long, default_value = "registry/insights.toml")]
+    insights: PathBuf,
+
+    #[arg(long, default_value = "registry/experiments.toml")]
+    experiments: PathBuf,
+
+    #[arg(long, default_value = "registry/binaries.toml")]
+    binaries: PathBuf,
+
+    #[arg(long, default_value = "docs/THEOREMS.md")]
+    theorems: PathBuf,
+
+    #[arg(long, default_value = "docs/generated/THEOREMS_REGISTRY_MIRROR.md")]
+    theorems_mirror: PathBuf,
+}
+
+#[derive(Parser, Debug)]
+struct VerifyControlPlaneArgs {
+    #[arg(long, default_value_t = true)]
+    verify_compat_exports: bool,
+
+    #[arg(long, default_value = "registry/claims.toml")]
+    claims: PathBuf,
+
+    #[arg(long, default_value = "registry/insights.toml")]
+    insights: PathBuf,
+
+    #[arg(long, default_value = "registry/experiments.toml")]
+    experiments: PathBuf,
+
+    #[arg(long, default_value = "registry/binaries.toml")]
+    binaries: PathBuf,
+
+    #[arg(long, default_value = "docs/THEOREMS.md")]
+    theorems: PathBuf,
+
+    #[arg(long, default_value = "docs/generated/THEOREMS_REGISTRY_MIRROR.md")]
+    theorems_mirror: PathBuf,
+}
+
+#[derive(Parser, Debug)]
 struct QueryArgs {
     #[command(subcommand)]
     kind: QueryKind,
@@ -106,8 +182,43 @@ struct QueryArgs {
 
 #[derive(Subcommand, Debug)]
 enum QueryKind {
-    Artifact { needle: String },
-    Document { needle: String },
+    Artifact {
+        needle: String,
+    },
+    Claim {
+        needle: String,
+    },
+    Download {
+        #[arg(long, default_value_t = 20)]
+        limit: usize,
+        #[arg(long)]
+        needle: Option<String>,
+        #[arg(long)]
+        host: Option<String>,
+        #[arg(long)]
+        status: Option<String>,
+        #[arg(long)]
+        backend: Option<String>,
+    },
+    Campaign {
+        #[arg(long, default_value_t = 20)]
+        limit: usize,
+    },
+    Document {
+        needle: String,
+    },
+    Insight {
+        needle: String,
+    },
+    Experiment {
+        needle: String,
+    },
+    Binary {
+        needle: String,
+    },
+    Theorem {
+        needle: String,
+    },
 }
 
 #[derive(Parser, Debug)]
@@ -167,6 +278,9 @@ fn main() -> Result<()> {
         Commands::Index(args) => run_index(&repo_root, &db_path, args),
         Commands::Export(args) => run_export(&repo_root, &db_path, args),
         Commands::Verify(args) => run_verify(&repo_root, &db_path, args),
+        Commands::IndexControlPlane(args) => run_index_control_plane(&repo_root, &db_path, args),
+        Commands::ExportControlPlane(args) => run_export_control_plane(&repo_root, &db_path, args),
+        Commands::VerifyControlPlane(args) => run_verify_control_plane(&repo_root, &db_path, args),
         Commands::Query(args) => run_query(&db_path, args),
         Commands::Doctor(args) => run_doctor(&db_path, args),
         Commands::LinkAudit(args) => run_link_audit(&db_path, args),
@@ -177,18 +291,21 @@ fn main() -> Result<()> {
 
 fn run_index(repo_root: &Path, db_path: &Path, args: IndexArgs) -> Result<()> {
     if args.refresh_compat_exports {
-        rebuild_compatibility_exports(repo_root, &ExportArgs {
-            out_registry: PathBuf::from("registry/artifact_source_of_truth.toml"),
-            out_artifact_report: PathBuf::from(
-                "reports/artifact_source_of_truth_reconciliation_2026_02_15.toml",
-            ),
-            out_infrastructure: PathBuf::from("registry/source_infrastructure.toml"),
-            lane_dir: PathBuf::from("registry/source_lanes"),
-            out_infrastructure_report: PathBuf::from(
-                "reports/source_infrastructure_reconciliation_2026_02_15.toml",
-            ),
-            reindex_after: false,
-        })?;
+        rebuild_compatibility_exports(
+            repo_root,
+            &ExportArgs {
+                out_registry: PathBuf::from("registry/artifact_source_of_truth.toml"),
+                out_artifact_report: PathBuf::from(
+                    "reports/artifact_source_of_truth_reconciliation_2026_02_15.toml",
+                ),
+                out_infrastructure: PathBuf::from("registry/source_infrastructure.toml"),
+                lane_dir: PathBuf::from("registry/source_lanes"),
+                out_infrastructure_report: PathBuf::from(
+                    "reports/source_infrastructure_reconciliation_2026_02_15.toml",
+                ),
+                reindex_after: false,
+            },
+        )?;
     }
 
     let artifact_registry = repo_path(repo_root, &args.artifact_registry);
@@ -247,6 +364,82 @@ fn run_export(repo_root: &Path, db_path: &Path, args: ExportArgs) -> Result<()> 
     Ok(())
 }
 
+fn run_index_control_plane(
+    repo_root: &Path,
+    db_path: &Path,
+    args: IndexControlPlaneArgs,
+) -> Result<()> {
+    let mut store = ProvenanceStore::open(db_path)?;
+    let stats = store.reindex_control_plane_from_registries(
+        repo_root,
+        &repo_path(repo_root, &args.claims),
+        &repo_path(repo_root, &args.insights),
+        &repo_path(repo_root, &args.experiments),
+        &repo_path(repo_root, &args.binaries),
+        &repo_path(repo_root, &args.rocq_project),
+    )?;
+    println!(
+        "Indexed canonical control plane: claims={} insights={} experiments={} binaries={} theorems={} indexed_at={}",
+        stats.claim_count,
+        stats.insight_count,
+        stats.experiment_count,
+        stats.binary_count,
+        stats.theorem_count,
+        stats.indexed_at
+    );
+    Ok(())
+}
+
+fn run_export_control_plane(
+    repo_root: &Path,
+    db_path: &Path,
+    args: ExportControlPlaneArgs,
+) -> Result<()> {
+    let mut store = ProvenanceStore::open(db_path)?;
+    store.export_control_plane_compat(
+        repo_root,
+        &repo_path(repo_root, &args.claims),
+        &repo_path(repo_root, &args.insights),
+        &repo_path(repo_root, &args.experiments),
+        &repo_path(repo_root, &args.binaries),
+        &repo_path(repo_root, &args.theorems),
+        &repo_path(repo_root, &args.theorems_mirror),
+    )?;
+    let counts = store.control_plane_counts()?;
+    println!(
+        "Exported control-plane compatibility outputs: claims={} insights={} experiments={} binaries={} theorems={}",
+        counts.claim_count,
+        counts.insight_count,
+        counts.experiment_count,
+        counts.binary_count,
+        counts.theorem_count
+    );
+    Ok(())
+}
+
+fn run_verify_control_plane(
+    repo_root: &Path,
+    db_path: &Path,
+    args: VerifyControlPlaneArgs,
+) -> Result<()> {
+    let mut store = ProvenanceStore::open(db_path)?;
+    store.verify_control_plane_invariants(repo_root)?;
+    let counts = store.control_plane_counts()?;
+    if args.verify_compat_exports {
+        store.verify_control_plane_compat_exports(
+            repo_root,
+            &repo_path(repo_root, &args.claims),
+            &repo_path(repo_root, &args.insights),
+            &repo_path(repo_root, &args.experiments),
+            &repo_path(repo_root, &args.binaries),
+            &repo_path(repo_root, &args.theorems),
+            &repo_path(repo_root, &args.theorems_mirror),
+        )?;
+    }
+    println!("{}", render_control_plane_counts(&counts));
+    Ok(())
+}
+
 fn run_verify(repo_root: &Path, db_path: &Path, args: VerifyArgs) -> Result<()> {
     let store = ProvenanceStore::open(db_path)?;
     store.verify_invariants(repo_root)?;
@@ -280,11 +473,98 @@ fn run_query(db_path: &Path, args: QueryArgs) -> Result<()> {
             };
             print_artifact_query(&result);
         }
+        QueryKind::Claim { needle } => {
+            let claim = store
+                .list_claims()?
+                .into_iter()
+                .find(|row| {
+                    row.id == needle
+                        || row
+                            .statement
+                            .to_lowercase()
+                            .contains(&needle.to_lowercase())
+                })
+                .with_context(|| format!("no claim matched {needle}"))?;
+            print_claim_query(&claim);
+        }
+        QueryKind::Download {
+            limit,
+            needle,
+            host,
+            status,
+            backend,
+        } => {
+            let results = store.query_download_jobs(
+                limit,
+                needle.as_deref(),
+                host.as_deref(),
+                status.as_deref(),
+                backend.as_deref(),
+            )?;
+            if results.is_empty() {
+                bail!("no download jobs matched the requested filters");
+            }
+            print_download_queries(&results);
+        }
+        QueryKind::Campaign { limit } => {
+            let results = store.recent_download_campaigns(limit)?;
+            if results.is_empty() {
+                bail!("no download campaigns found");
+            }
+            print_download_campaigns(&results);
+        }
         QueryKind::Document { needle } => {
             let Some(result) = store.document_by_needle(&needle)? else {
                 bail!("no document matched {needle}");
             };
             print_document_query(&result);
+        }
+        QueryKind::Insight { needle } => {
+            let insight = store
+                .list_insights()?
+                .into_iter()
+                .find(|row| {
+                    row.id == needle || row.title.to_lowercase().contains(&needle.to_lowercase())
+                })
+                .with_context(|| format!("no insight matched {needle}"))?;
+            print_insight_query(&insight);
+        }
+        QueryKind::Experiment { needle } => {
+            let experiment = store
+                .list_experiments()?
+                .into_iter()
+                .find(|row| {
+                    row.id == needle
+                        || row.title.to_lowercase().contains(&needle.to_lowercase())
+                        || row.binary.as_deref() == Some(needle.as_str())
+                })
+                .with_context(|| format!("no experiment matched {needle}"))?;
+            print_experiment_query(&experiment);
+        }
+        QueryKind::Binary { needle } => {
+            let binary = store
+                .list_binaries()?
+                .into_iter()
+                .find(|row| {
+                    row.name == needle
+                        || row.crate_name == needle
+                        || row
+                            .description
+                            .to_lowercase()
+                            .contains(&needle.to_lowercase())
+                })
+                .with_context(|| format!("no binary matched {needle}"))?;
+            print_binary_query(&binary);
+        }
+        QueryKind::Theorem { needle } => {
+            let theorem = store
+                .list_theorems()?
+                .into_iter()
+                .find(|row| {
+                    row.id == needle || row.title.to_lowercase().contains(&needle.to_lowercase())
+                })
+                .with_context(|| format!("no theorem matched {needle}"))?;
+            print_theorem_query(&theorem);
         }
     }
     Ok(())
@@ -349,7 +629,11 @@ fn rebuild_compatibility_exports(repo_root: &Path, args: &ExportArgs) -> Result<
     let lane_dir = repo_path(repo_root, &args.lane_dir);
     let out_infrastructure_report = repo_path(repo_root, &args.out_infrastructure_report);
 
-    source_provenance::build_artifact_source_of_truth(repo_root, &out_registry, &out_artifact_report)?;
+    source_provenance::build_artifact_source_of_truth(
+        repo_root,
+        &out_registry,
+        &out_artifact_report,
+    )?;
     source_provenance::build_source_truth_infrastructure(
         repo_root,
         &out_registry,
@@ -426,6 +710,125 @@ fn print_document_query(result: &DocumentQueryResult) {
     println!("Source Refs: {}", result.source_refs.join(", "));
 }
 
+fn print_claim_query(claim: &ClaimRecord) {
+    println!("Claim: {}", claim.id);
+    println!("Status: {}", claim.status);
+    println!("Statement: {}", claim.statement);
+    println!("Where Stated: {}", claim.where_stated);
+    println!("Last Verified: {}", claim.last_verified);
+    println!(
+        "Formal Proof: {}",
+        claim.formal_proof.as_deref().unwrap_or("")
+    );
+    println!(
+        "Status Note: {}",
+        claim.status_note.as_deref().unwrap_or("")
+    );
+}
+
+fn print_download_queries(results: &[DownloadQueryResult]) {
+    for result in results {
+        println!(
+            "Download Job: {}",
+            result
+                .job
+                .id
+                .map(|value| value.to_string())
+                .unwrap_or_default()
+        );
+        println!("  URL: {}", result.job.requested_url);
+        println!("  Kind: {}", result.job.transfer_kind);
+        println!("  Requested Backend: {}", result.job.requested_backend);
+        println!("  Route Scheme: {}", result.job.route_scheme);
+        println!(
+            "  Route Host: {}",
+            result.job.route_host.as_deref().unwrap_or("")
+        );
+        println!("  Route Backends: {}", result.job.route_backends.join(", "));
+        println!("  Status: {}", result.job.status);
+        println!(
+            "  Final URL: {}",
+            result.job.final_url.as_deref().unwrap_or("")
+        );
+        println!(
+            "  Output Path: {}",
+            result.job.output_path.as_deref().unwrap_or("")
+        );
+        println!("  Created At: {}", result.job.created_at);
+        println!("  Note: {}", result.job.note.as_deref().unwrap_or(""));
+        if !result.attempts.is_empty() {
+            println!("  Attempts:");
+            for attempt in &result.attempts {
+                println!(
+                    "    - backend={} succeeded={} failure_class={} http_code={} bytes={} is_pdf={} error={}",
+                    attempt.backend,
+                    attempt.succeeded,
+                    attempt.failure_class.as_deref().unwrap_or(""),
+                    attempt
+                        .http_code
+                        .map(|value| value.to_string())
+                        .unwrap_or_default(),
+                    attempt.bytes,
+                    attempt.is_pdf,
+                    attempt.error_message.as_deref().unwrap_or("")
+                );
+            }
+        }
+    }
+}
+
+fn print_download_campaigns(results: &[DownloadCampaignQueryResult]) {
+    for result in results {
+        println!(
+            "Download Campaign: {}",
+            result
+                .campaign
+                .id
+                .map(|value| value.to_string())
+                .unwrap_or_default()
+        );
+        println!("  Name: {}", result.campaign.name);
+        println!("  Command Kind: {}", result.campaign.command_kind);
+        println!("  Input Path: {}", result.campaign.input_path);
+        println!(
+            "  Out Ledger: {}",
+            result.campaign.out_ledger_path.as_deref().unwrap_or("")
+        );
+        println!(
+            "  Dest Dir: {}",
+            result.campaign.dest_dir.as_deref().unwrap_or("")
+        );
+        println!("  Created At: {}", result.campaign.created_at);
+        println!("  Note: {}", result.campaign.note.as_deref().unwrap_or(""));
+        println!("  Job Count: {}", result.job_count);
+        println!("  Success Count: {}", result.success_count);
+        println!("  Failure Count: {}", result.failure_count);
+    }
+}
+
+fn print_insight_query(insight: &InsightRecord) {
+    println!("Insight: {}", insight.id);
+    println!("Status: {}", insight.status);
+    println!("Title: {}", insight.title);
+    println!("Claim Refs: {}", insight.claim_refs.join(", "));
+}
+
+fn print_experiment_query(experiment: &ExperimentRecord) {
+    println!("Experiment: {}", experiment.id);
+    println!("Status: {}", experiment.status);
+    println!("Title: {}", experiment.title);
+    println!("Binary: {}", experiment.binary.as_deref().unwrap_or(""));
+    println!("Claim Refs: {}", experiment.claim_refs.join(", "));
+}
+
+fn print_binary_query(binary: &BinaryRecord) {
+    println!("Binary: {}", binary.name);
+    println!("Crate: {}", binary.crate_name);
+    println!("Description: {}", binary.description);
+    println!("Experiment: {}", binary.experiment.as_deref().unwrap_or(""));
+    println!("Source: {}", binary.source);
+}
+
 fn print_pantheon_seed_summary(summary: &PantheonSeedSummary) {
     println!(
         "Seeded Pantheon/PhysicsForge migration sqlite: db={} findings={} risks={} overflow_tasks={} max_active_overflow={}",
@@ -437,28 +840,84 @@ fn print_pantheon_seed_summary(summary: &PantheonSeedSummary) {
     );
 }
 
+fn print_theorem_query(theorem: &TheoremRecord) {
+    println!("Theorem: {}", theorem.id);
+    println!("Title: {}", theorem.title);
+    println!("Proof Path: {}", theorem.proof_path);
+    println!("Status: {}", theorem.status);
+    println!("Linked Claims: {}", theorem.linked_claim_ids.join(", "));
+    println!("Source: {}", theorem.source);
+}
+
+fn render_control_plane_counts(counts: &ControlPlaneCounts) -> String {
+    format!(
+        "claims={}\ninsights={}\nexperiments={}\ncomplete_experiments={}\nbinaries={}\ntheorems={}\nkernel_checked_claims={}\nproof_files={}",
+        counts.claim_count,
+        counts.insight_count,
+        counts.experiment_count,
+        counts.complete_experiment_count,
+        counts.binary_count,
+        counts.theorem_count,
+        counts.kernel_checked_claim_count,
+        counts.proof_file_count
+    )
+}
+
 fn render_doctor_report(report: &DoctorReport, format: OutputFormat) -> Result<String> {
     match format {
-        OutputFormat::Text => Ok(format!(
-            "generated_at={}\nartifacts={}\ndocuments={}\nmissing_minimum={}\nblocked={}\nunverified={}\ncitation_only={}\nmissing_lane_assignments={}\ndocuments_without_backing={}\nlast_indexed_at={}\nlast_exported_at={}",
-            report.generated_at,
-            report.artifact_count,
-            report.document_count,
-            report.missing_minimum_count,
-            report.blocked_count,
-            report.unverified_count,
-            report.citation_only_count,
-            report.missing_lane_assignment_count,
-            report.documents_without_backing_count,
-            report.last_indexed_at.as_deref().unwrap_or(""),
-            report.last_exported_at.as_deref().unwrap_or(""),
-        )),
+        OutputFormat::Text => {
+            let failed_hosts = report
+                .top_failed_download_hosts
+                .iter()
+                .map(|entry| format!("{}:{}", entry.key, entry.count))
+                .collect::<Vec<_>>()
+                .join(", ");
+            let active_hosts = report
+                .top_active_download_hosts
+                .iter()
+                .map(|entry| format!("{}:{}", entry.key, entry.count))
+                .collect::<Vec<_>>()
+                .join(", ");
+            let backend_health = report
+                .backend_health
+                .iter()
+                .map(|entry| {
+                    format!(
+                        "{}(ok={},fail={},bytes={})",
+                        entry.backend, entry.success_count, entry.failure_count, entry.total_bytes
+                    )
+                })
+                .collect::<Vec<_>>()
+                .join(", ");
+            Ok(format!(
+                "generated_at={}\nartifacts={}\ndocuments={}\nmissing_minimum={}\nblocked={}\nunverified={}\ncitation_only={}\nmissing_lane_assignments={}\ndocuments_without_backing={}\ndownload_jobs={}\ndownload_attempts={}\ntop_failed_download_hosts={}\ntop_active_download_hosts={}\nbackend_health={}\nlast_indexed_at={}\nlast_exported_at={}",
+                report.generated_at,
+                report.artifact_count,
+                report.document_count,
+                report.missing_minimum_count,
+                report.blocked_count,
+                report.unverified_count,
+                report.citation_only_count,
+                report.missing_lane_assignment_count,
+                report.documents_without_backing_count,
+                report.download_job_count,
+                report.download_attempt_count,
+                failed_hosts,
+                active_hosts,
+                backend_health,
+                report.last_indexed_at.as_deref().unwrap_or(""),
+                report.last_exported_at.as_deref().unwrap_or(""),
+            ))
+        }
         OutputFormat::Json => serde_json::to_string_pretty(report).context("serialize doctor JSON"),
         OutputFormat::Toml => toml::to_string_pretty(report).context("serialize doctor TOML"),
     }
 }
 
-fn render_link_audit(report: &DoctorReport, candidates: &[provenance_core::ArtifactRecord]) -> String {
+fn render_link_audit(
+    report: &DoctorReport,
+    candidates: &[provenance_core::ArtifactRecord],
+) -> String {
     let mut out = String::new();
     out.push_str(&format!(
         "link_audit generated_at={}\nartifacts={} missing_minimum={} blocked={} unverified={}\n",
@@ -486,13 +945,22 @@ fn render_recovery_plan(candidates: &[provenance_core::ArtifactRecord]) -> Strin
     let mut out = String::new();
     out.push_str("# Rust-generated provenance recovery plan\n\n");
     out.push_str("[plan]\n");
-    out.push_str(&format!("generated_at = \"{}\"\n", chrono::Utc::now().to_rfc3339()));
+    out.push_str(&format!(
+        "generated_at = \"{}\"\n",
+        chrono::Utc::now().to_rfc3339()
+    ));
     out.push_str(&format!("candidate_count = {}\n\n", candidates.len()));
     for artifact in candidates {
         out.push_str("[[candidate]]\n");
         out.push_str(&format!("id = \"{}\"\n", artifact.id.replace('"', "\\\"")));
-        out.push_str(&format!("key = \"{}\"\n", artifact.key.replace('"', "\\\"")));
-        out.push_str(&format!("title = \"{}\"\n", artifact.title.replace('"', "\\\"")));
+        out.push_str(&format!(
+            "key = \"{}\"\n",
+            artifact.key.replace('"', "\\\"")
+        ));
+        out.push_str(&format!(
+            "title = \"{}\"\n",
+            artifact.title.replace('"', "\\\"")
+        ));
         out.push_str(&format!("status = \"{}\"\n", artifact.status.as_str()));
         out.push_str(&format!(
             "canonical_functional_url = \"{}\"\n",

@@ -163,3 +163,5 @@ verified/C955_CrossBlockCoupling.v
 verified/C956_RoutonAVT.v
 verified/C957_VoudonZD.v
 verified/C958_ZDGraphTopology.v
+verified/C016_ParityFlips.v
+verified/C010_ConnectivityObstruction.v
