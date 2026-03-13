@@ -11,7 +11,7 @@ document_count = 5
 id = "CVX-001"
 source_markdown = "docs/convos/CONVOS_CLAIMS_INBOX.md"
 slug = "CONVOS_CLAIMS_INBOX"
-title = "Convos Claims Inbox (Triage Queue, ASCII-only)"
+title = "Convos Claims Inbox (Triage Queue, ANSI-safe UTF-8)"
 content_kind = "claims_inbox"
 claim_refs = ["C-403", "C-404", "C-405", "C-406", "C-407", "C-408"]
 path_refs = ["convos/", "data/external/...", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "reports/convos_claim_candidates.md", "reports/convos_claim_candidates_prioritized.md"]
@@ -35,7 +35,7 @@ body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 
-# Convos Claims Inbox (Triage Queue, ASCII-only)
+# Convos Claims Inbox (Triage Queue, ANSI-safe UTF-8)
 
 Purpose: extract claim-like content from `convos/` and convert it into
 testable, source-indexed entries (eventually tracked in
@@ -193,7 +193,7 @@ body_markdown = '''
 
 Policy:
 - Files under `convos/` are treated as immutable inputs (they may contain Unicode).
-- All synthesis produced under `docs/` should be ASCII-only.
+- All synthesis produced under `docs/` should follow the ANSI-safe UTF-8 character policy.
 - Every claim extracted from `convos/` is treated as a hypothesis that must be tied to:
   - a first-party source (paper/book/manual), and
   - a repo test and/or a reproducible artifact.
@@ -1071,7 +1071,7 @@ Status: drafted (updated from direct read)
   - Defer the physical narrative.
   - If we keep any part, keep it explicitly as a synthetic visualization utility:
     - factor a small "layered spiral plot" helper that saves a PNG artifact deterministically,
-    - keep all repo-authored annotations ASCII-only (no Unicode math in titles/labels),
+    - keep all repo-authored annotations ANSI-safe UTF-8 (avoid embedded control escapes and unstable Unicode math in titles/labels),
     - include a note that this is an illustrative diagram, not a derived embedding.
 - Source needs (first-party):
   - None for generic plotting; any claim of "negative-dimensional embeddings" requires a precise,
@@ -1094,7 +1094,7 @@ Status: drafted (updated from direct read)
     - treat it as illustrative only and do not present `x -> 1/x` as a definition of negative dimension,
     - enforce numerical hygiene under `PYTHONWARNINGS=error` (mask `x=0`, or define a well-posed operator
       and use that instead),
-    - keep annotations ASCII-only and save artifacts deterministically.
+    - keep annotations ANSI-safe UTF-8 and save artifacts deterministically.
 - Source needs (first-party):
   - Any legitimate "negative dimension" usage must be routed through CX-005 (dim-reg / Parisi-Sourlas),
     not through an `x -> 1/x` inversion ansatz.
@@ -1117,7 +1117,7 @@ Status: drafted (updated from direct read)
   - If we keep a "visualization template" artifact:
     - keep it explicitly as illustrative,
     - remove singular expressions (mask `x=0` or avoid `1/x` entirely) so it survives `PYTHONWARNINGS=error`,
-    - keep all repo-authored annotations ASCII-only and save artifacts deterministically.
+    - keep all repo-authored annotations ANSI-safe UTF-8 and save artifacts deterministically.
 - Source needs (first-party):
   - If we claim any of the overlaid equations represent repo-implemented physics, add primary sources and
     map each equation to actual code/tests. Otherwise treat as decorative.
@@ -1229,7 +1229,7 @@ Status: drafted (updated from direct read)
   - Defer these narrative "expansion vectors".
   - If we keep a drift-map artifact at all:
     - label it explicitly as a synthetic visualization of a chosen scalar field on `(d,x)`,
-    - keep repo-authored text ASCII-only and remove any Unicode minus signs from titles/labels,
+    - keep repo-authored text ANSI-safe UTF-8 and remove any embedded control escapes or unstable Unicode minus signs from titles/labels,
     - avoid implying that varying `d` is "negative dimension" unless tied to dim-reg / analytic continuation.
 - Source needs (first-party):
   - Any claim involving "negative dimension" must be grounded in dim-reg or Parisi-Sourlas sources (CX-005),
@@ -1402,7 +1402,7 @@ Pointers:
 
 ## Quality gate (required before expanding scope)
 
-- [ ] `make ascii-check`
+- [ ] `make ansi-check`
 - [ ] `PYTHONWARNINGS=error make check`
 '''
 
@@ -1437,7 +1437,7 @@ body_markdown = '''
 # Convos keyword summary: convos/1_read_nonuser_lines_cont.md
 
 Notes:
-- This summary is ASCII-only (Unicode in the source transcript is ignored in tokenization).
+- This summary follows the ANSI-safe UTF-8 policy (Unicode in the source transcript is ignored in tokenization).
 - Tokens are rough heuristics to guide audits; they are not citations.
 
 ## Top unigrams (filtered)

@@ -6,7 +6,7 @@ updated_at_utc = "2026-02-11T12:10:00Z"
 goal = "Evaluate falsifiable homotopy-viscosity equivalence for hypothesis-driven research lane."
 constraints = [
   "TOML-first outputs",
-  "ASCII-only authored files",
+  "ANSI-safe UTF-8 authored files",
   "No edits to concurrent in-flight files from other running instance",
 ]
 

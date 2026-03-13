@@ -1,0 +1,108 @@
+[dataset]
+id = "PC-0094"
+slug = "pathion_coupling_sweep"
+source_csv = "data/csv/pathion_coupling_sweep.csv"
+source_sha256 = "3aff9ec72cccfa5ea327551fe98d311a38b3e5918c6dee01043c9b53b7ec2f28"
+source_size_bytes = 272
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 5
+column_count = 5
+header_value_sha256 = "64e02c3024a7d62990f6e83447b355bd540cf4730a0f49784581fd6a5896b8ce"
+row_value_sha256 = "4630df5b82a56284e861c14d72c7e64b33955dd1dadea0b7cb93f23ead553a6a"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "coupling",
+    "damping",
+    "instability_onset",
+    "final_energy",
+    "absorbed",
+]
+original_header = [
+    "coupling",
+    "damping",
+    "instability_onset",
+    "final_energy",
+    "absorbed",
+]
+rows = [
+    [
+    "0.01",
+    "0.01",
+    "500",
+    "1.4714271838e3",
+    "3.8250111711e1",
+],
+    [
+    "0.05",
+    "0.01",
+    "500",
+    "1.4700035886e3",
+    "1.9115699803e2",
+],
+    [
+    "0.1",
+    "0.01",
+    "500",
+    "1.4682291198e3",
+    "3.8208053814e2",
+],
+    [
+    "0.5",
+    "0.01",
+    "500",
+    "1.4542309922e3",
+    "1.9011519235e3",
+],
+    [
+    "1",
+    "0.01",
+    "500",
+    "1.4372115504e3",
+    "3.7796040442e3",
+],
+]
+
+[[column]]
+index = 1
+name = "coupling"
+original_name = "coupling"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 2
+name = "damping"
+original_name = "damping"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 3
+name = "instability_onset"
+original_name = "instability_onset"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 4
+name = "final_energy"
+original_name = "final_energy"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 5
+name = "absorbed"
+original_name = "absorbed"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0

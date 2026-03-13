@@ -1,0 +1,129 @@
+[dataset]
+id = "AH-0025"
+slug = "pb_pb_5_36tev_polarization"
+source_csv = "archive/external_nonreproducible_snapshots/lhc_2025/alice/pb_pb_5.36tev_polarization.csv"
+source_sha256 = "972289ffbcba08fce18ef49f875e1fb6a9da42cf98b0b042d51879bfc9c008ec"
+source_size_bytes = 216
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 7
+header_value_sha256 = "72292a679d26b46aed2d6153c995576a2e526ad7b3fa604907f559a3d20decca"
+row_value_sha256 = "276a1d5c8504ef56525a5f0927efbb1669ddcd7e29ac319b5425be86d03c768d"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_archive_csv"
+corpus_label = "archive CSV holding queue"
+header = [
+    "centrality_min",
+    "centrality_max",
+    "p_h_percent",
+    "p_h_err_stat",
+    "p_h_err_sys",
+    "system",
+    "energy_gev",
+]
+original_header = [
+    "centrality_min",
+    "centrality_max",
+    "p_h_percent",
+    "p_h_err_stat",
+    "p_h_err_sys",
+    "system",
+    "energy_gev",
+]
+rows = [
+    [
+    "0",
+    "10",
+    "0.02",
+    "0.01",
+    "0.005",
+    "Pb-Pb",
+    "5360",
+],
+    [
+    "10",
+    "30",
+    "0.05",
+    "0.015",
+    "0.008",
+    "Pb-Pb",
+    "5360",
+],
+    [
+    "30",
+    "50",
+    "0.12",
+    "0.02",
+    "0.01",
+    "Pb-Pb",
+    "5360",
+],
+    [
+    "50",
+    "80",
+    "0.18",
+    "0.03",
+    "0.015",
+    "Pb-Pb",
+    "5360",
+],
+]
+
+[[column]]
+index = 1
+name = "centrality_min"
+original_name = "centrality_min"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "centrality_max"
+original_name = "centrality_max"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "p_h_percent"
+original_name = "p_h_percent"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 4
+name = "p_h_err_stat"
+original_name = "p_h_err_stat"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 5
+name = "p_h_err_sys"
+original_name = "p_h_err_sys"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 6
+name = "system"
+original_name = "system"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 7
+name = "energy_gev"
+original_name = "energy_gev"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0

@@ -1,0 +1,307 @@
+[dataset]
+id = "PC-0131"
+slug = "zd_nnsd_motif"
+source_csv = "data/csv/zd_nnsd_motif.csv"
+source_sha256 = "eaf94827d8997df3835cbf8df9fa2d8a514bcb5c4fa6bdd3cdee4003c389232b"
+source_size_bytes = 1316
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 28
+column_count = 6
+header_value_sha256 = "7219d1bbda3d63f050d765cf8c6150be33d989619ea6a48caf618af693956f3b"
+row_value_sha256 = "a14822cc4a7c6ca896cbc2990960299f71b92a5ce0c82512dbad2d604f65c3e5"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "cd_dim",
+    "motif_edge_count",
+    "n_components",
+    "n_eigenvalues",
+    "brody_q",
+    "verdict",
+]
+original_header = [
+    "cd_dim",
+    "motif_edge_count",
+    "n_components",
+    "n_eigenvalues",
+    "brody_q",
+    "verdict",
+]
+rows = [
+    [
+    "64",
+    "84",
+    "8",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "64",
+    "228",
+    "7",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "64",
+    "276",
+    "7",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "64",
+    "420",
+    "9",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "128",
+    "180",
+    "9",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "516",
+    "8",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "756",
+    "7",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "948",
+    "7",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "1092",
+    "7",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "1284",
+    "7",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "1524",
+    "8",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "128",
+    "1860",
+    "10",
+    "61",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "372",
+    "10",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "1092",
+    "9",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "1716",
+    "8",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "2436",
+    "8",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "2676",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "3396",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "3444",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "4020",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "4164",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "4740",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "4788",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "5508",
+    "7",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "5748",
+    "8",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "6468",
+    "8",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "7092",
+    "9",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+    [
+    "256",
+    "7812",
+    "11",
+    "125",
+    "0.0000000000",
+    "DegenerateIntegrable",
+],
+]
+
+[[column]]
+index = 1
+name = "cd_dim"
+original_name = "cd_dim"
+inferred_type = "int"
+non_empty_count = 28
+empty_count = 0
+
+[[column]]
+index = 2
+name = "motif_edge_count"
+original_name = "motif_edge_count"
+inferred_type = "int"
+non_empty_count = 28
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_components"
+original_name = "n_components"
+inferred_type = "int"
+non_empty_count = 28
+empty_count = 0
+
+[[column]]
+index = 4
+name = "n_eigenvalues"
+original_name = "n_eigenvalues"
+inferred_type = "string"
+non_empty_count = 28
+empty_count = 0
+
+[[column]]
+index = 5
+name = "brody_q"
+original_name = "brody_q"
+inferred_type = "string"
+non_empty_count = 28
+empty_count = 0
+
+[[column]]
+index = 6
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 28
+empty_count = 0

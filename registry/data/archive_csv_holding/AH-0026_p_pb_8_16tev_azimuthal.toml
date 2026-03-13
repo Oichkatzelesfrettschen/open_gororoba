@@ -1,0 +1,155 @@
+[dataset]
+id = "AH-0026"
+slug = "p_pb_8_16tev_azimuthal"
+source_csv = "archive/external_nonreproducible_snapshots/lhc_2025/cms/p_pb_8.16tev_azimuthal.csv"
+source_sha256 = "fd89ebaf366c2bf9e9e1f5aca1f058adaddc6ebbb90caf8d3a5a5a84ab49030f"
+source_size_bytes = 359
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 9
+column_count = 6
+header_value_sha256 = "de668b7ebabe47f6df94059d0f5fa1f9bdfde53aa94e2f2a7f1333f37085e21b"
+row_value_sha256 = "6eb59b978497ce2ea286f3ae32a8d23a17bc714bb8058dac5debec56f294f0a2"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_archive_csv"
+corpus_label = "archive CSV holding queue"
+header = [
+    "phi_rad",
+    "p_z_val",
+    "p_z_err",
+    "hydro_model_val",
+    "system",
+    "energy_gev",
+]
+original_header = [
+    "phi_rad",
+    "p_z_val",
+    "p_z_err",
+    "hydro_model_val",
+    "system",
+    "energy_gev",
+]
+rows = [
+    [
+    "0.0",
+    "0.000",
+    "0.001",
+    "0.000",
+    "pPb",
+    "8160",
+],
+    [
+    "0.393",
+    "0.005",
+    "0.002",
+    "-0.008",
+    "pPb",
+    "8160",
+],
+    [
+    "0.785",
+    "0.012",
+    "0.003",
+    "-0.015",
+    "pPb",
+    "8160",
+],
+    [
+    "1.178",
+    "0.008",
+    "0.002",
+    "-0.010",
+    "pPb",
+    "8160",
+],
+    [
+    "1.571",
+    "0.000",
+    "0.001",
+    "0.000",
+    "pPb",
+    "8160",
+],
+    [
+    "1.963",
+    "-0.007",
+    "0.002",
+    "0.009",
+    "pPb",
+    "8160",
+],
+    [
+    "2.356",
+    "-0.011",
+    "0.003",
+    "0.014",
+    "pPb",
+    "8160",
+],
+    [
+    "2.749",
+    "-0.006",
+    "0.002",
+    "0.007",
+    "pPb",
+    "8160",
+],
+    [
+    "3.142",
+    "0.000",
+    "0.001",
+    "0.000",
+    "pPb",
+    "8160",
+],
+]
+
+[[column]]
+index = 1
+name = "phi_rad"
+original_name = "phi_rad"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 2
+name = "p_z_val"
+original_name = "p_z_val"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 3
+name = "p_z_err"
+original_name = "p_z_err"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 4
+name = "hydro_model_val"
+original_name = "hydro_model_val"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 5
+name = "system"
+original_name = "system"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 6
+name = "energy_gev"
+original_name = "energy_gev"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0

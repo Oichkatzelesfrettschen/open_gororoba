@@ -10,10 +10,21 @@ scope = "Makefile registry lanes and acceptance gates"
 [policy]
 goal = "Replace phase labels (wave/batch) with durable functional names."
 legacy_alias_policy = "Preserve legacy target names as compatibility aliases until explicit deprecation."
+legacy_term_policy = "Legacy wave/batch labels are archival or compatibility-only terms and must not be introduced in new canonical targets, new CLI names, or new source-of-truth documents."
 prefix_rules = [
   "registry-build-* => mutating/generation targets",
   "registry-verify-* => read-only verification targets",
   "registry-*-gate => aggregate pass/fail gates",
+]
+canonical_lane_names = [
+  "registry-control-plane-gate",
+  "registry-semantic-atoms-gate",
+  "registry-evidence-provenance-gate",
+  "registry-integrity-resolution-gate",
+  "registry-execution-planning-gate",
+  "registry-csv-pipeline-gate",
+  "registry-acceptance-gate",
+  "governance-gate",
 ]
 
 [legacy_alias_deprecation_horizon]
@@ -69,9 +80,17 @@ legacy_alias_removal_criteria = [
 scope = "Project/external/archive CSV split, holdings, and corpus coverage verification."
 evidence_refs = [
   "Makefile",
-  "src/verification/verify_csv_scroll_pipeline.py",
-  "src/verification/verify_csv_corpus_coverage.py",
-  "src/verification/verify_legacy_csv_toml_parity.py",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . inventory",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . migrate",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . project-split-policy",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . holdings",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify-holdings",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . scroll-pipeline",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify-scroll-pipeline",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . verify-corpus-coverage",
+  "cargo run -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . migration-scope",
 ]
 rationale = "Names the data lane by function (CSV pipeline) instead of rollout phase."
 
@@ -89,6 +108,7 @@ legacy_alias_removal_criteria = [
 scope = "Markdown/TOML control-plane inventory, ownership, origin audit, and atom-scroll verification."
 evidence_refs = [
   "Makefile",
+  "crates/gororoba_cli_data/src/bin/artifact_scrolls.rs",
   "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-corpus",
   "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory",
   "cargo run -p gororoba_cli_data --bin markdown-registry -- verify-origin-audit",
@@ -117,10 +137,10 @@ legacy_alias_removal_criteria = [
 ]
 scope = "Claims atoms/evidence edges, equation atoms/symbols, proof skeletons, markdown payload structure."
 evidence_refs = [
-  "src/verification/verify_registry_semantic_atoms.py",
-  "src/scripts/analysis/build_registry_semantic_atoms.py",
-  "src/verification/verify_wave5_batch1_registries.py",
-  "src/scripts/analysis/build_wave5_batch1_registries.py",
+  "crates/gororoba_cli_data/src/bin/semantic_atoms.rs",
+  "Makefile",
+  "cargo run -p gororoba_cli_data --bin semantic-atoms -- --repo-root .",
+  "cargo run -p gororoba_cli_data --bin semantic-atoms -- --verify --repo-root .",
 ]
 rationale = "Semantic structure and payload atomization are the primary responsibilities of this lane."
 
@@ -146,10 +166,10 @@ legacy_alias_removal_criteria = [
 ]
 scope = "Derivation steps, normalized bibliography, provenance sources, narrative paragraph atoms."
 evidence_refs = [
-  "src/verification/verify_registry_evidence_provenance.py",
-  "src/scripts/analysis/build_registry_evidence_provenance.py",
-  "src/verification/verify_wave5_batch2_registries.py",
-  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "crates/gororoba_cli_data/src/bin/evidence_provenance.rs",
+  "Makefile",
+  "cargo run -p gororoba_cli_data --bin evidence-provenance -- --repo-root .",
+  "cargo run -p gororoba_cli_data --bin evidence-provenance -- --verify --repo-root .",
 ]
 rationale = "Groups all evidence-chain and provenance normalization checks under one lane."
 
@@ -175,12 +195,13 @@ legacy_alias_removal_criteria = [
 ]
 scope = "Conflict marker integrity, lacuna triage structure, schema signatures, and cross-registry references."
 evidence_refs = [
-  "src/verification/verify_registry_integrity_resolution.py",
-  "src/scripts/analysis/build_registry_integrity_resolution.py",
-  "src/verification/verify_wave5_batch3_registries.py",
-  "src/scripts/analysis/build_wave5_batch3_registries.py",
-  "src/verification/verify_registry_schema_signatures.py",
-  "src/verification/verify_registry_crossrefs.py",
+  "crates/gororoba_cli_data/src/bin/integrity_resolution.rs",
+  "crates/gororoba_cli_data/src/bin/governance_verify.rs",
+  "Makefile",
+  "cargo run -p gororoba_cli_data --bin integrity-resolution -- --repo-root .",
+  "cargo run -p gororoba_cli_data --bin integrity-resolution -- --verify --repo-root .",
+  "cargo run -p gororoba_cli_data --bin governance-verify -- schema-signatures",
+  "cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs",
 ]
 rationale = "Focuses this lane on integrity remediation and crossref consistency."
 
@@ -206,10 +227,14 @@ legacy_alias_removal_criteria = [
 ]
 scope = "Experiment/lineage registries, planning registries (roadmap/todo/next_actions), and requirements decomposition."
 evidence_refs = [
-  "src/verification/verify_registry_execution_planning.py",
-  "src/scripts/analysis/build_registry_execution_planning.py",
-  "src/verification/verify_wave5_batch4_registries.py",
-  "src/scripts/analysis/build_wave5_batch4_registries.py",
+  "crates/gororoba_cli_data/src/bin/execution_planning.rs",
+  "crates/gororoba_cli_data/src/bin/governance_verify.rs",
+  "crates/gororoba_cli_data/src/bin/markdown_registry.rs",
+  "Makefile",
+  "cargo run -p gororoba_cli_data --bin execution-planning -- --repo-root .",
+  "cargo run -p gororoba_cli_data --bin execution-planning -- --verify --repo-root .",
+  "cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs",
+  "cargo run -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases",
 ]
 rationale = "Captures execution and planning governance as one coherent lane."
 

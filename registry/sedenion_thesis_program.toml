@@ -26,7 +26,7 @@ workspace_crates = [
 required_gates = [
   "cargo clippy --workspace -j$(nproc) -- -D warnings",
   "cargo test --workspace -j$(nproc)",
-  "make ascii-check"
+  "make ansi-check"
 ]
 
 [chat_review]
@@ -37,7 +37,7 @@ key_decisions = [
   "Use TOML-first updates, then regenerate derived mirrors."
 ]
 constraints = [
-  "ASCII-only outputs.",
+  "ANSI-safe UTF-8 outputs.",
   "Warnings-as-errors discipline.",
   "No unverifiable claim promotion."
 ]
@@ -278,7 +278,7 @@ id = "STPT-012"
 thesis_id = "STP-T4"
 title = "Run full workspace gates after integration"
 owner = "qa_lane"
-responsibility = "clippy/test/ascii-check evidence"
+responsibility = "clippy/test/ansi-check evidence"
 effort = "M"
 duration_estimate = "1d"
 status = "done"
@@ -598,7 +598,7 @@ id = "STPT-036"
 thesis_id = "STP-T4"
 title = "Re-run strict gates and refresh synthesis report with corrected statuses"
 owner = "qa_lane"
-responsibility = "execute clippy/test/ascii and refresh phase synthesis to match real state"
+responsibility = "execute clippy/test/ansi and refresh phase synthesis to match real state"
 effort = "M"
 duration_estimate = "0.5d"
 status = "done"

@@ -1,0 +1,157 @@
+[dataset]
+id = "PC-0099"
+slug = "precision_combined_16"
+source_csv = "data/csv/precision_combined_16.csv"
+source_sha256 = "8cb4398bf64b0227eec6d1e54ce849534d6cbcf4085e602d4de391d971f69a31"
+source_size_bytes = 630
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 12
+column_count = 5
+header_value_sha256 = "44d41d20b887829f4e26622e18111271f93a9b4ef53aa590a73a4630f2f12f85"
+row_value_sha256 = "7815868b394cdf9432cd8da8fec8766f8440343effacbf5f9599d01e34c88c10"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "precision",
+    "step",
+    "ke",
+    "wall_ms_per_step",
+    "ke_rel_error_vs_ref",
+]
+original_header = [
+    "precision",
+    "step",
+    "ke",
+    "wall_ms_per_step",
+    "ke_rel_error_vs_ref",
+]
+rows = [
+    [
+    "bf16_gpu",
+    "0",
+    "0.000000000000e0",
+    "0.0000",
+    "1.000000e0",
+],
+    [
+    "bf16_gpu",
+    "50",
+    "0.000000000000e0",
+    "0.0017",
+    "1.000000e0",
+],
+    [
+    "bf16_gpu",
+    "100",
+    "0.000000000000e0",
+    "0.0017",
+    "1.000000e0",
+],
+    [
+    "fp32_gpu",
+    "0",
+    "0.000000000000e0",
+    "0.0000",
+    "1.000000e0",
+],
+    [
+    "fp32_gpu",
+    "50",
+    "1.131370941155e-5",
+    "0.0017",
+    "7.518383e-1",
+],
+    [
+    "fp32_gpu",
+    "100",
+    "4.558899151842e-5",
+    "0.0017",
+    "2.365996e-5",
+],
+    [
+    "fp64_gpu",
+    "0",
+    "0.000000000000e0",
+    "0.0000",
+    "1.000000e0",
+],
+    [
+    "fp64_gpu",
+    "50",
+    "1.131410913904e-5",
+    "0.0017",
+    "7.518295e-1",
+],
+    [
+    "fp64_gpu",
+    "100",
+    "4.559007017743e-5",
+    "0.0016",
+    "0.000000e0",
+],
+    [
+    "fp64_cpu",
+    "0",
+    "0.000000000000e0",
+    "0.0000",
+    "1.000000e0",
+],
+    [
+    "fp64_cpu",
+    "50",
+    "1.177538292845e-5",
+    "0.6264",
+    "7.417117e-1",
+],
+    [
+    "fp64_cpu",
+    "100",
+    "4.650517169062e-5",
+    "0.6297",
+    "2.007239e-2",
+],
+]
+
+[[column]]
+index = 1
+name = "precision"
+original_name = "precision"
+inferred_type = "string"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 2
+name = "step"
+original_name = "step"
+inferred_type = "int"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 3
+name = "ke"
+original_name = "ke"
+inferred_type = "float"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 4
+name = "wall_ms_per_step"
+original_name = "wall_ms_per_step"
+inferred_type = "float"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 5
+name = "ke_rel_error_vs_ref"
+original_name = "ke_rel_error_vs_ref"
+inferred_type = "float"
+non_empty_count = 12
+empty_count = 0

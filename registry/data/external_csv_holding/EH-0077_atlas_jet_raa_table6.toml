@@ -1,0 +1,424 @@
+[dataset]
+id = "EH-0077"
+slug = "atlas_jet_raa_table6"
+source_csv = "data/external/hic_raa/atlas_jet_raa_table6.csv"
+source_sha256 = "f268ae902755053ea2c42854e9b72313bc372367f847fe5ea220d16e523adc47"
+source_size_bytes = 1539
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 26
+column_count = 10
+header_value_sha256 = "1dfadc7e42da544e0d5053dc642eec2ec328d2acfb8af8b3fa08601d26579d9c"
+row_value_sha256 = "c1034b5c15a71ecf42b0094d3e0d67492f551af81632367cc9c2906653fa9a3a"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "table_doi_10_17182_hepdata_84819_v1_t6",
+    "col_2",
+    "col_3",
+    "col_4",
+    "col_5",
+    "col_6",
+    "col_7",
+    "col_8",
+    "col_9",
+    "col_10",
+]
+original_header = ["#: table_doi: 10.17182/hepdata.84819.v1/t6"]
+rows = [
+    [
+    "#: name: Table 6",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: description: No description provided.",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: data_file: ppCrossX_y2.yaml",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword reactions: P P --> JETS X",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword observables: D2SIG/DPT/DYRAP",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword cmenergies: 5020.0",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: keyword phrases: Inclusive | Double Differential Cross Section | Transverse Momentum Dependence | Rapidity Dependence | Proton-Proton Scattering | Jet Production",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: ABS(YRAP)",
+    "",
+    "",
+    "0.3 < |y| < 0.8",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: R(JETS)",
+    "",
+    "",
+    "0.4",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: RE",
+    "",
+    "",
+    "P P --> JET(S) X",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "#: SQRT(S) [GeV]",
+    "",
+    "",
+    "5020.0",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+],
+    [
+    "PT [GEV] [GeV]",
+    "PT [GEV] [GeV] LOW",
+    "PT [GEV] [GeV] HIGH",
+    "D2(SIG)/DPT/DYRAP [NB/GEV]",
+    "sys +",
+    "sys -",
+    "stat +",
+    "stat -",
+    "sys luminosity uncertainty +",
+    "sys luminosity uncertainty -",
+],
+    [
+    "45.0",
+    "40",
+    "50",
+    "185.6",
+    "28.8",
+    "-27.2",
+    "0.6",
+    "-0.6",
+    "3.5",
+    "-3.5",
+],
+    [
+    "56.5",
+    "50",
+    "63",
+    "60.95",
+    "8.16",
+    "-7.69",
+    "0.17",
+    "-0.17",
+    "1.14",
+    "-1.14",
+],
+    [
+    "71.0",
+    "63",
+    "79",
+    "19.41",
+    "2.31",
+    "-2.2",
+    "0.06",
+    "-0.06",
+    "0.36",
+    "-0.36",
+],
+    [
+    "89.5",
+    "79",
+    "100",
+    "5.904",
+    "0.616",
+    "-0.594",
+    "0.017",
+    "-0.017",
+    "0.111",
+    "-0.111",
+],
+    [
+    "113.0",
+    "100",
+    "126",
+    "1.737",
+    "0.173",
+    "-0.169",
+    "0.004",
+    "-0.004",
+    "0.033",
+    "-0.033",
+],
+    [
+    "142.0",
+    "126",
+    "158",
+    "0.4957",
+    "0.0479",
+    "-0.0458",
+    "0.0014",
+    "-0.0014",
+    "0.0093",
+    "-0.0093",
+],
+    [
+    "179.0",
+    "158",
+    "200",
+    "0.1374",
+    "0.0126",
+    "-0.0125",
+    "0.0005",
+    "-0.0005",
+    "0.0026",
+    "-0.0026",
+],
+    [
+    "225.5",
+    "200",
+    "251",
+    "0.03546",
+    "0.00321",
+    "-0.00309",
+    "0.00018",
+    "-0.00018",
+    "0.00067",
+    "-0.00067",
+],
+    [
+    "283.5",
+    "251",
+    "316",
+    "0.00871",
+    "0.00075",
+    "-0.00075",
+    "7e-05",
+    "-7e-05",
+    "0.00016",
+    "-0.00016",
+],
+    [
+    "357.0",
+    "316",
+    "398",
+    "0.001975",
+    "0.000173",
+    "-0.000167",
+    "3.2e-05",
+    "-3.2e-05",
+    "3.7e-05",
+    "-3.7e-05",
+],
+    [
+    "449.5",
+    "398",
+    "501",
+    "0.000409",
+    "3.6e-05",
+    "-3.5e-05",
+    "1.3e-05",
+    "-1.3e-05",
+    "8e-06",
+    "-8e-06",
+],
+    [
+    "566.0",
+    "501",
+    "631",
+    "8.7e-05",
+    "8e-06",
+    "-7e-06",
+    "5e-06",
+    "-5e-06",
+    "2e-06",
+    "-2e-06",
+],
+    [
+    "715.5",
+    "631",
+    "800",
+    "1.37e-05",
+    "1.6e-06",
+    "-1.5e-06",
+    "1.9e-06",
+    "-1.9e-06",
+    "3e-07",
+    "-3e-07",
+],
+    [
+    "900.0",
+    "800",
+    "1000",
+    "1.3e-06",
+    "2e-07",
+    "-2e-07",
+    "5e-07",
+    "-5e-07",
+    "0.0",
+    "-0.0",
+],
+]
+
+[[column]]
+index = 1
+name = "table_doi_10_17182_hepdata_84819_v1_t6"
+original_name = "#: table_doi: 10.17182/hepdata.84819.v1/t6"
+inferred_type = "string"
+non_empty_count = 26
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_2"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 3
+name = "col_3"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 4
+name = "col_4"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 19
+empty_count = 7
+
+[[column]]
+index = 5
+name = "col_5"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 6
+name = "col_6"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 7
+name = "col_7"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 8
+name = "col_8"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 9
+name = "col_9"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11
+
+[[column]]
+index = 10
+name = "col_10"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 15
+empty_count = 11

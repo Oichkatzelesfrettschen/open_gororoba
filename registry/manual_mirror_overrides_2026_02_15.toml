@@ -125,6 +125,7 @@ urls = [
   "https://doi.org/10.1098/rspa.1984.0023",
   "https://royalsocietypublishing.org/doi/pdf/10.1098/rspa.1984.0023",
   "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+  "https://physics.gu.se/~tfkhj/Berry1984.pdf",
 ]
 
 [[mirror_override]]
@@ -230,11 +231,15 @@ urls = [
 
 [[mirror_override]]
 id = "ASOT_8341_cms_math_pdf"
-artifact_key_hint = "url:https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf"
+artifact_key_hint = "doi:10.4153/CMB-2006-048-6"
 urls = [
   "https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf",
   "https://cms.math.ca/wp-content/uploads/2020/01/cmb49-4-6.pdf",
+  "https://doi.org/10.4153/CMB-2006-048-6",
+  "https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/conjugacy-classes-of-subalgebras-of-the-real-sedenions/E3602D99D8C6C96F78EADAD2EDC1BC27",
+  "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/E3602D99D8C6C96F78EADAD2EDC1BC27/S0008439500006020a.pdf/conjugacy-classes-of-subalgebras-of-the-real-sedenions.pdf",
 ]
+notes = "Legacy CMS mirror is stale; Cambridge article/PDF and DOI are the verified live record for the real sedenions Canadian Mathematical Bulletin paper."
 
 [[mirror_override]]
 id = "ASOT_8368_nlab_github_raw"
@@ -261,4 +266,93 @@ urls = [
   "https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf",
   "https://scispace.com/pdf/a-tree-for-computing-the-cayley-dickson-twist-2vy32iu9ys.pdf",
   "https://doi.org/10.35834/MJMS/1316027241",
+  "https://jwbales.us/",
+  "https://www.academia.edu/48876376/A_Tree_for_Computing_the_Cayley_Dickson_Twist",
 ]
+notes = "DOI is the stable citation mirror; jwbales.us and the Academia paper page are substantive public HTML fallbacks for the twist construction."
+
+[[mirror_override]]
+id = "ASOT_2972_cambridge_sedenions_pdf"
+artifact_key_hint = "url:https://www.cambridge.org/core/services/aop-cambridge-core/content/view/e3602d99d8c6c96f78eadad2edc1bc27/s0008439500006020a.pdf/conjugacy-classes-of-subalgebras-of-the-real-sedenions.pdf"
+urls = [
+  "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/E3602D99D8C6C96F78EADAD2EDC1BC27/S0008439500006020a.pdf/conjugacy-classes-of-subalgebras-of-the-real-sedenions.pdf",
+  "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/E3602D99D8C6C96F78EADAD2EDC1BC27/S0008439500006020a.pdf/div-class-title-conjugacy-classes-of-subalgebras-of-the-real-sedenions-div.pdf",
+]
+notes = "Canonical Cambridge direct PDF now probe-verified; alternate path retained because some fetchers land there."
+
+[[mirror_override]]
+id = "ASOT_3010_numdam_afst_pdf"
+artifact_key_hint = "url:https://www.numdam.org/item/afst_1993_6_2_2_271_0.pdf"
+urls = [
+  "https://www.numdam.org/item/AFST_1993_6_2_2_271_0.pdf",
+]
+notes = "Canonical Numdam direct PDF probe-verified."
+
+[[mirror_override]]
+id = "ASOT_81460_cayley_orders_numdam"
+artifact_key_hint = "url:https://www.researchgate.net/profile/arjeh-cohen/publication/254815349_cayley_orders/links/557603fc08ae15962d8951c0/cayley-orders.pdf"
+urls = [
+  "https://www.researchgate.net/profile/Arjeh-Cohen/publication/254815349_Cayley_Orders/links/557603fc08ae15962d8951c0/Cayley-Orders.pdf",
+  "https://www.numdam.org/article/CM_1996__103_1_63_0.pdf",
+]
+notes = "Numdam direct PDF is a stable public workaround for the blocked ResearchGate Cayley Orders link."
+
+[[mirror_override]]
+id = "ASOT_3019_bales_jwbales_html"
+artifact_key_hint = "url:https://www.researchgate.net/profile/john-bales/publication/238738095_a_tree_for_computing_the_cayley-dickson_twist/links/0a85e53a8b63445499000000/a-tree-for-computing-the-cayley-dickson-twist.pdf"
+urls = [
+  "https://www.researchgate.net/profile/John-Bales/publication/238738095_A_Tree_for_Computing_the_Cayley-Dickson_Twist/links/0a85e53a8b63445499000000/A-Tree-for-Computing-the-Cayley-Dickson-Twist.pdf",
+  "https://jwbales.us/",
+  "https://www.academia.edu/48876376/A_Tree_for_Computing_the_Cayley_Dickson_Twist",
+]
+notes = "Author-hosted and Academia HTML pages are substantive public fallbacks for the blocked ResearchGate PDF row."
+
+[[mirror_override]]
+id = "ASOT_3028_iastate_bitstream"
+artifact_key_hint = "url:https://www.researchgate.net/publication/2414187_identities_for_algebras_obtained_from_the_cayley-dickson_process"
+urls = [
+  "https://www.researchgate.net/publication/2414187_Identities_For_Algebras_Obtained_From_The_Cayley-Dickson_Process",
+  "https://dr.lib.iastate.edu/server/api/core/bitstreams/7acefa00-fdc3-4691-a20f-4a3494587690/content",
+]
+notes = "Iowa State public bitstream mirror resolves the otherwise blocked ResearchGate publication landing page for the same paper."
+
+[[mirror_override]]
+id = "ASOT_3018_sadoc_doi"
+artifact_key_hint = "doi:10.1016/0022-3093(93)90351-W"
+urls = [
+  "https://www.researchgate.net/profile/Jean-Francois-Sadoc/publication/243298250_The_E8_lattice_and_quasicrystals/links/5ac084ebaca27222c759d102/The-E8-lattice-and-quasicrystals.pdf",
+  "https://doi.org/10.1016/0022-3093(93)90351-W",
+  "https://www.sciencedirect.com/science/article/pii/002230939390351W",
+]
+notes = "No public PDF mirror has been confirmed yet; DOI and ScienceDirect article page are the stable citation surfaces for the Sadoc quasicrystal paper."
+
+[[mirror_override]]
+id = "ASOT_3020_bales_twisted_group_algebras_arxiv"
+artifact_key_hint = "url:https://arxiv.org/abs/1107.1375"
+urls = [
+  "https://www.researchgate.net/profile/John-Bales/publication/51915595_Cayley-Dickson_and_Clifford_Algebras_as_Twisted_Group_Algebras/links/0fcfd512d4ccc2eed9000000/Cayley-Dickson-and-Clifford-Algebras-as-Twisted-Group-Algebras.pdf",
+  "https://arxiv.org/abs/1107.1375",
+  "https://arxiv.org/pdf/1107.1375.pdf",
+]
+notes = "The blocked ResearchGate PDF corresponds to the public arXiv preprint 1107.1375."
+
+[[mirror_override]]
+id = "ASOT_3021_lockyer_vixra_pdf"
+artifact_key_hint = "url:https://vixra.org/pdf/2010.0086v3.pdf"
+urls = [
+  "https://www.researchgate.net/profile/Richard-Lockyer-2/publication/380847813_An_algebraic_proof_Sedenions_are_not_a_division_algebra_and_other_consequences_of_Cayley-Dickson_Algebra_definition_variation/links/6650b5fc0b0d284574580e1c/An-algebraic-proof-Sedenions-are-not-a-division-algebra-and-other-consequences-of-Cayley-Dickson-Algebra-definition-variation.pdf",
+  "https://vixra.org/pdf/2010.0086v3.pdf",
+  "https://vixra.org/mathph/2010",
+]
+notes = "The blocked ResearchGate PDF has a public viXra PDF mirror at 2010.0086v3."
+
+[[mirror_override]]
+id = "ASOT_3014_mdpi_inspire_pdf"
+artifact_key_hint = "doi:10.3390/sym16050626"
+urls = [
+  "https://www.mdpi.com/2073-8994/16/5/626/pdf",
+  "https://www.mdpi.com/2073-8994/16/5/626",
+  "https://doi.org/10.3390/sym16050626",
+  "https://inspirehep.net/files/388fd0094ce3d24e532efc93a38e9912",
+]
+notes = "MDPI publisher endpoints are bot-gated in this environment; verified Inspire-hosted PDF provides a public workaround for the Symmetry article."

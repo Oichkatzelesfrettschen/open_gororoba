@@ -5,7 +5,7 @@
 updated = "2026-03-12"
 authoritative = true
 source_markdown_glob = "docs/external_sources/*.md"
-document_count = 23
+document_count = 29
 
 [[document]]
 id = "XS-001"
@@ -7259,4 +7259,186 @@ bandwidth requirements. For 128^3 and larger grids, our kernels are bandwidth-bo
 Shared memory tiling reduces effective bandwidth pressure for stencil patterns by
 converting redundant global reads (where multiple threads read the same neighbor
 cell) into a single global read followed by shared memory broadcast.
+'''
+
+[[document]]
+id = "XS-024"
+source_markdown = ""
+slug = "lelli_2016_sparc"
+title = "SPARC: Mass Models for 175 Disk Galaxies (Lelli et al. 2016 AJ 152 157)"
+status_token = "ACTIVE"
+content_kind = "observational_dataset_paper"
+authority_level = "primary_paper"
+verification_level = "source_reference"
+operational_role = "claim_bridge"
+source_lineage_summary = "Lelli, F., McGaugh, S.S., Schombert, J.M. (2016) AJ 152 157. SPARC database of 175 nearby disk galaxies with Spitzer photometry and HI/Halpha rotation curves."
+truth_surfaces = ["observation_benchmark"]
+artifact_contract_paths = ["data/external/sparc/", "crates/data_core/src/catalogs/sparc.rs"]
+has_full_transcript = false
+claim_refs = ["C-1338"]
+url_refs = ["https://doi.org/10.3847/0004-6256/152/6/157"]
+path_refs = []
+line_count = 0
+notes = "Primary SPARC database paper. Source for E-179, E-180, E-182 rotation curve stacking experiments."
+body_markdown = '''
+Lelli, F., McGaugh, S.S., Schombert, J.M. (2016) AJ 152 157.
+SPARC: Mass Models for 175 Disk Galaxies with Spitzer Photometry and Accurate Rotation Curves.
+Used as primary observational dataset for harmonic halo stacking (E-179, E-180, E-182).
+'''
+
+[[document]]
+id = "XS-025"
+source_markdown = ""
+slug = "li_2020_sparc_nfw_fits"
+title = "SPARC NFW Fitting Parameters (Li et al. 2020 ApJS 247 31)"
+status_token = "ACTIVE"
+content_kind = "observational_dataset_paper"
+authority_level = "primary_paper"
+verification_level = "source_reference"
+operational_role = "claim_bridge"
+source_lineage_summary = "Li, P., Lelli, F., McGaugh, S.S., Schombert, J.M. (2020) ApJS 247 31. Bayesian analysis of SPARC galaxy rotation curves with NFW and other halo profiles."
+truth_surfaces = ["observation_benchmark"]
+artifact_contract_paths = ["data/external/sparc_nfw/", "bin/fetch_sparc_nfw_fits.py"]
+has_full_transcript = false
+claim_refs = ["C-1338"]
+url_refs = ["https://doi.org/10.3847/1538-4365/ab700e"]
+path_refs = []
+line_count = 0
+notes = "Published NFW fitting parameters for SPARC sample. Used to initialize NFW priors in E-180, E-182 stacking."
+body_markdown = '''
+Li, P., Lelli, F., McGaugh, S.S., Schombert, J.M. (2020) ApJS 247 31.
+Fitting the Radial Acceleration Relation to Individual SDSS Galaxies.
+Provides per-galaxy NFW fit parameters (r_s, rho_0, chi2) used as priors in E-180, E-182.
+'''
+
+[[document]]
+id = "XS-026"
+source_markdown = ""
+slug = "westfall_2019_manga_drp"
+title = "MaNGA Data Reduction Pipeline (Westfall et al. 2019 AJ 158 231)"
+status_token = "ACTIVE"
+content_kind = "observational_dataset_paper"
+authority_level = "primary_paper"
+verification_level = "source_reference"
+operational_role = "claim_bridge"
+source_lineage_summary = "Westfall, K.B. et al. (2019) AJ 158 231. Description of the MaNGA Data Analysis Pipeline (DAP) and DRP used to produce MAPS FITS files."
+truth_surfaces = ["observation_benchmark"]
+artifact_contract_paths = ["data/external/manga/", "crates/data_core/src/catalogs/manga.rs"]
+has_full_transcript = false
+claim_refs = []
+url_refs = ["https://doi.org/10.3847/1538-3881/ab44a2"]
+path_refs = []
+line_count = 0
+notes = "MaNGA DAP/DRP pipeline paper. Describes the MAPS FITS format consumed by manga-maps-extractor (E-183)."
+body_markdown = '''
+Westfall, K.B. et al. (2019) AJ 158 231.
+The MaNGA Data Analysis Pipeline.
+Describes the EMLINE_GVEL extension format used by the manga-maps-extractor Rust binary (E-183).
+'''
+
+[[document]]
+id = "XS-027"
+source_markdown = ""
+slug = "bundy_2015_manga_overview"
+title = "MaNGA Survey Overview (Bundy et al. 2015 ApJ 798 7)"
+status_token = "ACTIVE"
+content_kind = "observational_dataset_paper"
+authority_level = "primary_paper"
+verification_level = "source_reference"
+operational_role = "claim_bridge"
+source_lineage_summary = "Bundy, K. et al. (2015) ApJ 798 7. Overview of the SDSS-IV MaNGA survey: instrument, target selection, and scientific goals."
+truth_surfaces = ["observation_benchmark"]
+artifact_contract_paths = ["data/external/manga/"]
+has_full_transcript = false
+claim_refs = []
+url_refs = ["https://doi.org/10.1088/0004-637X/798/1/7"]
+path_refs = []
+line_count = 0
+notes = "MaNGA survey overview paper. Context for E-183 MaNGA rotation curve stacking experiment."
+body_markdown = '''
+Bundy, K. et al. (2015) ApJ 798 7.
+Overview of the SDSS-IV MaNGA Survey: Mapping nearby Galaxies at Apache Point Observatory.
+Provides survey context (IFU design, 2.5x Re coverage, 0.5 arcsec spaxels) for E-183.
+'''
+
+[[document]]
+id = "XS-028"
+source_markdown = ""
+slug = "moster_2013_smhm"
+title = "Stellar-to-Halo Mass Relation (Moster et al. 2013 MNRAS 428 3121)"
+status_token = "ACTIVE"
+content_kind = "observational_dataset_paper"
+authority_level = "primary_paper"
+verification_level = "source_reference"
+operational_role = "claim_bridge"
+source_lineage_summary = "Moster, B.P., Naab, T., White, S.D.M. (2013) MNRAS 428 3121. Empirical stellar-to-halo mass relation used to convert observed M* to NFW halo parameters for rotation curve normalization."
+truth_surfaces = ["observation_benchmark"]
+artifact_contract_paths = ["crates/cosmology_core/src/harmonic_stacking.rs"]
+has_full_transcript = false
+claim_refs = []
+url_refs = ["https://doi.org/10.1093/mnras/sts261"]
+path_refs = []
+line_count = 0
+notes = "Moster+2013 SMHM relation used to normalize MaNGA/SPARC rotation curves by NFW v_200 in E-180, E-182, E-183."
+body_markdown = '''
+Moster, B.P., Naab, T., White, S.D.M. (2013) MNRAS 428 3121.
+Constraints on the Relationship between Stellar Mass and Halo Mass at Low and High Redshift.
+SMHM parametrization: M_halo(M_star) used in harmonic_stacking.rs for NFW normalization.
+'''
+
+[[document]]
+id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+slug = "x87_avx_accumulation_sources"
+title = "x87 / AVX Accumulation Sources"
+status_token = "REFERENCE"
+content_kind = "technical_reference"
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+operational_role = "claim_bridge"
+source_lineage_summary = "Primary-source bundle for the x87/AVX accumulation claim cluster: AMD64 instruction semantics for `FDIVR` / `FUCOMPP`, Intel FMA single-rounding reference, Rust intrinsic docs for AVX packed-double operations, and Ogita-Rump-Oishi compensated-summation error bounds."
+truth_surfaces = ["environment_context"]
+artifact_contract_paths = ["crates/algebra_analysis/src/x87_jacobi.rs", "crates/cd_kernel/src/x87_primitives.rs", "crates/cd_kernel/src/avx2_primitives.rs"]
+has_full_transcript = false
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+url_refs = ["https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content", "https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html", "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html", "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html", "https://epubs.siam.org/doi/10.1137/030601818"]
+path_refs = ["crates/algebra_analysis/src/x87_jacobi.rs", "crates/algebra_analysis/benches/x87_bench.rs", "crates/cd_kernel/src/x87_primitives.rs", "crates/cd_kernel/src/avx2_primitives.rs", "data/csv/x87_avx_fma_followup_benchmark_summary.csv"]
+line_count = 0
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+body_markdown = '''
+# x87 / AVX Accumulation Sources
+
+## Scope
+
+This dossier hardens the x87 / AVX accumulation claim cluster:
+
+- `C-1359`: x87 `FDIVR` / `FUCOMPP` semantics inside the Givens rotation path
+- `C-1360`: AVX packed-double vs `fma` feature split and single-rounding wording
+- `C-1361`: measured x87 norm-squared throughput win
+- `C-1362`: Ogita-Rump-Oishi crossover heuristic and dispatch guidance
+
+## Primary instruction-set references
+
+- AMD64 Architecture Programmer's Manual, Volume 5:
+  instruction semantics for `FDIVR` and `FUCOMPP`
+- AMD64 Architecture Programmer's Manual, Volume 4:
+  SIMD / AVX / F16C / FMA-family opcode tables adjacent to the packed-double path
+- Intel intrinsic reference for `_mm256_fmadd_pd`:
+  explicit statement that the fused multiply-add forms the product and sum with
+  an infinite-precision intermediate and rounds once to `float64`
+- Rust intrinsic docs for `_mm256_extractf128_pd` and `_mm256_hadd_pd`:
+  confirms the AVX packed-double reduction path used by `hsum256`
+
+## Numerical-analysis reference
+
+- Ogita, Rump, Oishi (2005), "Accurate Sum and Dot Product":
+  provides the compensated-summation error bounds used for the `N = 2048`
+  crossover arithmetic (`2^-53 / 2^-64`)
+
+## Provenance note
+
+The user referenced local files `26568.pdf` / `26569.pdf` during review, but
+those artifacts are not present inside this repository. The governed source lane
+for this claim cluster is therefore the official vendor / doc URLs above plus
+the Ogita-Rump-Oishi paper and the repo-local verifier / benchmark artifacts.
 '''

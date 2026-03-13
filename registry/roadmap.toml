@@ -20,9 +20,9 @@ dependency_id_pattern = "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"
 [roadmap.sections]
 architectural_evolution = "## 1. Architectural Evolution"
 crate_ecosystem = "## 2. Crate Ecosystem"
-remaining_workstreams = "## 7. Remaining Workstreams from ULTRA_ROADMAP.md"
-long_term_vision = "## 8. Long-Term Vision"
 documentation_registry = "### 1.5 Documentation Registry Evolution (Sprint 13)"
+long_term_vision = "## 8. Long-Term Vision"
+remaining_workstreams = "## 7. Remaining Workstreams from ULTRA_ROADMAP.md"
 
 [[workstream]]
 id = "WS-ALGEBRA-FLUID-001"
@@ -168,7 +168,7 @@ description = "Move markdown operational docs to TOML-first authoritative regist
 primary_outputs = ["registry/knowledge_sources.toml", "registry/knowledge/documents.toml", "registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/claims_tasks.toml", "registry/claims_domains.toml", "registry/claim_tickets.toml", "registry/lacunae.toml", "registry/monograph.toml", "crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md", "docs/CLAIMS_TASKS.md", "docs/claims/INDEX.md"]
 dependencies = []
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["docs/CLAIMS_TASKS.md", "docs/claims/INDEX.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md", "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md", "registry/claim_tickets.toml", "registry/claims_domains.toml", "registry/claims_tasks.toml", "registry/knowledge/documents.toml", "registry/knowledge_sources.toml", "registry/lacunae.toml", "registry/monograph.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/roadmap.toml", "registry/todo.toml", "crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs"]
+evidence_refs = ["crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs", "docs/CLAIMS_TASKS.md", "docs/claims/INDEX.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md", "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md", "registry/claim_tickets.toml", "registry/claims_domains.toml", "registry/claims_tasks.toml", "registry/knowledge/documents.toml", "registry/knowledge_sources.toml", "registry/lacunae.toml", "registry/monograph.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/roadmap.toml", "registry/todo.toml"]
 
 [[workstream]]
 id = "WS-REGISTRY-002"

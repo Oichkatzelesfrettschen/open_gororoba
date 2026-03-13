@@ -1,0 +1,122 @@
+[dataset]
+id = "EH-0126"
+slug = "pioneer_anomaly_benchmark"
+source_csv = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
+source_sha256 = "58ecdfc06800bac735f2b77b801425cb4daede1afc008d1c04886cccbde80a4e"
+source_size_bytes = 406
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 9
+header_value_sha256 = "a02941f278d9d046ff1cec3b5ae001d75a4708c00d20b3c89f034654da0e76af"
+row_value_sha256 = "392980a79c636d01273ebbf7572785c0655c11f212b0db100f751f819e4f07e7"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "spacecraft",
+    "interval_start_utc",
+    "interval_end_utc",
+    "observed_anomalous_accel_m_s2",
+    "observed_sigma_m_s2",
+    "source_bib",
+    "source_doi",
+    "benchmark_kind",
+    "notes",
+]
+original_header = [
+    "spacecraft",
+    "interval_start_utc",
+    "interval_end_utc",
+    "observed_anomalous_accel_m_s2",
+    "observed_sigma_m_s2",
+    "source_bib",
+    "source_doi",
+    "benchmark_kind",
+    "notes",
+]
+rows = [[
+    "Pioneer 11",
+    "1987-01-05T00:00:00Z",
+    "1990-10-01T00:00:00Z",
+    "8.74e-10",
+    "1.33e-10",
+    "BIB-0317",
+    "10.1103/PhysRevD.65.082004",
+    "combined_reference",
+    "Anderson et al. 2002 combined benchmark acceleration for Pioneer 11 (Pioneer 10 removed: data lane ends 1995 but interval extended to 1998)",
+]]
+
+[[column]]
+index = 1
+name = "spacecraft"
+original_name = "spacecraft"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "interval_start_utc"
+original_name = "interval_start_utc"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "interval_end_utc"
+original_name = "interval_end_utc"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 4
+name = "observed_anomalous_accel_m_s2"
+original_name = "observed_anomalous_accel_m_s2"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 5
+name = "observed_sigma_m_s2"
+original_name = "observed_sigma_m_s2"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 6
+name = "source_bib"
+original_name = "source_bib"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 7
+name = "source_doi"
+original_name = "source_doi"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 8
+name = "benchmark_kind"
+original_name = "benchmark_kind"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 9
+name = "notes"
+original_name = "notes"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0

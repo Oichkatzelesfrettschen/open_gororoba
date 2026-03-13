@@ -250,7 +250,7 @@ source_markdown = [
   "GEMINI.md",
   "README.md",
   "curated/README.md",
-  "curated/01_theory_frameworks/README_COQ.md",
+  "curated/01_theory_frameworks/README_ROCQ.md",
   "data/csv/README.md",
   "data/artifacts/README.md",
 ]
@@ -258,7 +258,7 @@ authoritative_toml = ["registry/entrypoint_docs.toml"]
 generated_mirror = [
   "README.md",
   "curated/README.md",
-  "curated/01_theory_frameworks/README_COQ.md",
+  "curated/01_theory_frameworks/README_ROCQ.md",
   "data/csv/README.md",
   "data/artifacts/README.md",
   "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
@@ -441,12 +441,12 @@ id = "KMP-P14"
 name = "legacy_csv_canonical_toml_migration"
 status = "complete"
 deliverables = [
-  "src/scripts/analysis/build_csv_inventory_registry.py",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (inventory)",
   "registry/csv_inventory.toml",
-  "src/scripts/analysis/migrate_legacy_csv_to_toml.py",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (migrate)",
   "registry/legacy_csv_datasets.toml",
   "registry/data/legacy_csv/*.toml",
-  "src/verification/verify_legacy_csv_toml_parity.py",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (verify)",
   "Makefile registry-data targets",
 ]
 
@@ -457,10 +457,10 @@ status = "complete"
 deliverables = [
   "registry/curated_csv_datasets.toml",
   "registry/data/curated_csv/*.toml",
-  "src/scripts/analysis/migrate_legacy_csv_to_toml.py (corpus-parameterized)",
-  "src/verification/verify_legacy_csv_toml_parity.py (corpus-parameterized)",
-  "src/scripts/analysis/build_csv_inventory_registry.py (canonicalized progress classification)",
-  "src/scripts/analysis/build_csv_migration_scope_registry.py (wave status from counts)",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (corpus-parameterized migrate)",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (corpus-parameterized verify)",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (inventory progress classification)",
+  "crates/gororoba_cli_data/src/bin/csv_canonicalization.rs (migration-scope summary from inventory counts)",
   "registry/csv_migration_scope.toml wave_2 complete",
 ]
 
@@ -526,6 +526,6 @@ status = "active"
 statement = "Legacy CSV under data/csv/legacy must be represented by canonical TOML datasets under registry/data/legacy_csv with parity verification."
 enforcement = [
   "make registry-data builds csv inventory and migrates legacy CSV to TOML canon",
-  "verify_legacy_csv_toml_parity.py enforces full coverage and checksum/row parity",
+  "csv-canonicalization verify enforces full coverage and checksum/row parity",
   "registry/legacy_csv_datasets.toml is authoritative for legacy CSV canonical map",
 ]

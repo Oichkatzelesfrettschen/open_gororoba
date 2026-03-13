@@ -1,0 +1,157 @@
+[dataset]
+id = "PC-0122"
+slug = "x87_avx_fma_followup_benchmark_summary"
+source_csv = "data/csv/x87_avx_fma_followup_benchmark_summary.csv"
+source_sha256 = "c057d08495f0fb9c29020f798c1a971b6298049e1f4caf9c8de8195550df2e6c"
+source_size_bytes = 956
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 12
+column_count = 5
+header_value_sha256 = "a47b8a904cb1ea013db68de3af06c6f62f3a6bfac1585a3df84fff8a56adea31"
+row_value_sha256 = "8523b9adfc317e03aabb27406a86d9c64d8eb16c6a57e0b7bc6fabe64153a21f"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "operation",
+    "implementation",
+    "n",
+    "median_ns",
+    "notes",
+]
+original_header = [
+    "operation",
+    "implementation",
+    "n",
+    "median_ns",
+    "notes",
+]
+rows = [
+    [
+    "sum",
+    "naive_f64",
+    "512",
+    "313.99",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "sum",
+    "kahan",
+    "512",
+    "1378.40",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "sum",
+    "x87_fp80",
+    "512",
+    "352.69",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "sum",
+    "avx2_fma",
+    "512",
+    "32.252",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "dot",
+    "naive_f64",
+    "512",
+    "331.39",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "dot",
+    "kahan",
+    "512",
+    "1381.30",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "dot",
+    "x87_fp80",
+    "512",
+    "388.85",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "dot",
+    "avx2_fma",
+    "512",
+    "62.565",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "norm_sq",
+    "naive_f64",
+    "512",
+    "329.43",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "norm_sq",
+    "kahan",
+    "512",
+    "1380.70",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "norm_sq",
+    "x87_fp80",
+    "512",
+    "238.19",
+    "Criterion midpoint of reported confidence interval",
+],
+    [
+    "norm_sq",
+    "avx2_fma",
+    "512",
+    "49.398",
+    "Criterion midpoint of reported confidence interval",
+],
+]
+
+[[column]]
+index = 1
+name = "operation"
+original_name = "operation"
+inferred_type = "string"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 2
+name = "implementation"
+original_name = "implementation"
+inferred_type = "string"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n"
+original_name = "n"
+inferred_type = "int"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 4
+name = "median_ns"
+original_name = "median_ns"
+inferred_type = "float"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 5
+name = "notes"
+original_name = "notes"
+inferred_type = "string"
+non_empty_count = 12
+empty_count = 0

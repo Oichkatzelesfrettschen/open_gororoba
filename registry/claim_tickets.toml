@@ -5,7 +5,7 @@
 authoritative = true
 updated = "2026-03-12"
 source_markdown_glob = "docs/tickets/*.md"
-ticket_count = 12
+ticket_count = 13
 
 [[ticket]]
 id = "TICKET-C001-C050"
@@ -232,5 +232,24 @@ backlog_reports = []
 deliverable_links = ["data/papers/corpus/", "references/", "src/gemini_physics/optics/grin_solver.py", "src/scripts/visualization/animate_warp_v8_rigorous.py"]
 acceptance_checks = ["(none recorded)"]
 goal_summary = "Elevate the \"Silicon-Gold-Ice VIII\" Warp Ring simulation from cinematic pseudo-physics to a rigorously defended Analogue Optics experiment (Phase 6.5 -> Phase 7.0)."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-TICKET-X87-AVX-PRECISION-HARDENING"
+title = "Ticket: x87 / AVX Precision Hardening"
+source_markdown = "docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md"
+ticket_kind = "GENERAL"
+owner = "agent"
+created = "2026-03-12"
+status_raw = "IN_PROGRESS"
+status_token = "IN_PROGRESS"
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = ["C-1359", "C-1360", "C-1361", "C-1362"]
+backlog_reports = []
+deliverable_links = ["crates/algebra_analysis/src/x87_jacobi.rs", "crates/cd_kernel/src/avx2_primitives.rs", "crates/algebra_analysis/tests/precision_tier_dispatch.rs", "data/csv/x87_avx_fma_followup_benchmark_summary.csv", "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/INSIGHTS.md"]
+acceptance_checks = ["cargo test -p cd_kernel --lib", "cargo test -p algebra_analysis --test precision_tier_dispatch", "cargo bench -p algebra_analysis -- x87"]
+goal_summary = "Keep the x87 instruction semantics and measured throughput result verified, but harden the wider dispatch guidance with primary sources, a deterministic crossover test, and a post-AVX benchmark artifact before promoting the `N=2048` heuristic back to Verified."
 done_checkboxes = 0
 open_checkboxes = 0

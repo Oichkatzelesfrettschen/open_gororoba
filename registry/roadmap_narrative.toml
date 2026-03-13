@@ -337,7 +337,7 @@ WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUD
 WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo test --workspace
 
 # Additional gates:
-make ascii-check          # No Unicode in source
+make ansi-check           # ANSI-safe UTF-8 in source
 python -m pytest tests/   # Python integration tests
 ```
 
@@ -552,7 +552,7 @@ here for completeness.
 - [x] OLS linear regression baselines (SVD-based, formation energy + band gap)
 - [x] materials-baseline CLI binary (cross-database comparison)
 
-### 7.4 Coq/Rocq Formalization (Section F)
+### 7.4 Rocq Formalization (Section F)
 - [x] Buildable stub + compile workflow
 - [ ] Decide semantics for `has_right`/`reachable_delegation`
 - [ ] Prove a minimal non-trivial theorem end-to-end

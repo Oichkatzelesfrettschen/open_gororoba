@@ -1,0 +1,183 @@
+[dataset]
+id = "PC-0007"
+slug = "c053_pathion_tmm_summary"
+source_csv = "data/csv/c053_pathion_tmm_summary.csv"
+source_sha256 = "db20eec50448c54cc09c49ae31f9b79a01690249850fb6aa3997ece64429eeac"
+source_size_bytes = 893
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 8
+column_count = 8
+header_value_sha256 = "66b6ef0d1b0d8a9c19384b9b3ae245d9736e0d972afbaa046da0a193eac3db97"
+row_value_sha256 = "e7997d5ed22ec6313290afcefe1ee326f98055371473336f291925c7d1813c4e"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "layer_id",
+    "pathion_indices",
+    "diag_abs_mean",
+    "n_real",
+    "n_imag",
+    "thickness_nm",
+    "tmm_absorptance",
+    "degeneracy_note",
+]
+original_header = [
+    "layer_id",
+    "pathion_indices",
+    "diag_abs_mean",
+    "n_real",
+    "n_imag",
+    "thickness_nm",
+    "tmm_absorptance",
+    "degeneracy_note",
+]
+rows = [
+    [
+    "0",
+    "0-3",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "1",
+    "4-7",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "2",
+    "8-11",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "3",
+    "12-15",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "4",
+    "16-19",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "5",
+    "20-23",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "6",
+    "24-27",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+    [
+    "7",
+    "28-31",
+    "1.000000",
+    "1.750000",
+    "0.050000",
+    "40.000000",
+    "0.925620",
+    "diagonal-only toy map: uniform layer response",
+],
+]
+
+[[column]]
+index = 1
+name = "layer_id"
+original_name = "layer_id"
+inferred_type = "int"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 2
+name = "pathion_indices"
+original_name = "pathion_indices"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 3
+name = "diag_abs_mean"
+original_name = "diag_abs_mean"
+inferred_type = "float"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 4
+name = "n_real"
+original_name = "n_real"
+inferred_type = "float"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 5
+name = "n_imag"
+original_name = "n_imag"
+inferred_type = "float"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 6
+name = "thickness_nm"
+original_name = "thickness_nm"
+inferred_type = "float"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 7
+name = "tmm_absorptance"
+original_name = "tmm_absorptance"
+inferred_type = "float"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 8
+name = "degeneracy_note"
+original_name = "degeneracy_note"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0

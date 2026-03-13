@@ -1,0 +1,243 @@
+[dataset]
+id = "EH-0068"
+slug = "anderson_2008_flyby_catalog"
+source_csv = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
+source_sha256 = "1ff6fc6607a7f60f523ed80221b40b4d21cc9b9ea8bbba4ea006018b9b2eeed2"
+source_size_bytes = 1299
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 6
+column_count = 13
+header_value_sha256 = "a86f092426874bacbda6e5e7186cdbd72004cfd52a327e31fb7f9d8cb9432dfa"
+row_value_sha256 = "7807357f261a211ea79ed6d85e618d12653d1bf3131468331c60ffaaa89bcc1d"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "name",
+    "perigee_date_utc",
+    "perigee_jed",
+    "perigee_alt_km",
+    "v_inf_km_s",
+    "inbound_dec_deg",
+    "inbound_ra_deg",
+    "outbound_dec_deg",
+    "outbound_ra_deg",
+    "observed_dv_mm_s",
+    "source_bib",
+    "source_doi",
+    "notes",
+]
+original_header = [
+    "name",
+    "perigee_date_utc",
+    "perigee_jed",
+    "perigee_alt_km",
+    "v_inf_km_s",
+    "inbound_dec_deg",
+    "inbound_ra_deg",
+    "outbound_dec_deg",
+    "outbound_ra_deg",
+    "observed_dv_mm_s",
+    "source_bib",
+    "source_doi",
+    "notes",
+]
+rows = [
+    [
+    "Galileo-I (1990-12-08)",
+    "1990-12-08T08:34:05Z",
+    "2448233.357",
+    "960.0",
+    "8.949",
+    "-12.5",
+    "263.0",
+    "-4.9",
+    "223.0",
+    "3.92",
+    "BIB-0297",
+    "10.1103/PhysRevLett.100.091102",
+    "Canonical Anderson et al. 2008 event table value",
+],
+    [
+    "NEAR (1998-01-23)",
+    "1998-01-23T07:23:31Z",
+    "2450836.808",
+    "539.0",
+    "6.851",
+    "-20.8",
+    "280.0",
+    "72.0",
+    "89.0",
+    "13.46",
+    "BIB-0297",
+    "10.1103/PhysRevLett.100.091102",
+    "Canonical Anderson et al. 2008 event table value",
+],
+    [
+    "Cassini (1999-08-18)",
+    "1999-08-18T03:28:48Z",
+    "2451409.645",
+    "1175.0",
+    "16.01",
+    "-12.9",
+    "257.0",
+    "-5.0",
+    "344.0",
+    "-2.0",
+    "BIB-0297",
+    "10.1103/PhysRevLett.100.091102",
+    "Canonical Anderson et al. 2008 event table value",
+],
+    [
+    "Rosetta-I (2005-03-04)",
+    "2005-03-04T22:10:34Z",
+    "2453434.424",
+    "1956.0",
+    "3.863",
+    "-34.3",
+    "247.0",
+    "-20.6",
+    "116.0",
+    "1.80",
+    "BIB-0297",
+    "10.1103/PhysRevLett.100.091102",
+    "Canonical Anderson et al. 2008 event table value",
+],
+    [
+    "MESSENGER (2005-08-02)",
+    "2005-08-02T19:13:26Z",
+    "2453585.301",
+    "2347.0",
+    "4.056",
+    "31.4",
+    "232.0",
+    "75.4",
+    "174.0",
+    "0.02",
+    "BIB-0297",
+    "10.1103/PhysRevLett.100.091102",
+    "Canonical Anderson et al. 2008 event table value",
+],
+    [
+    "Juno (2013-10-09)",
+    "2013-10-09T19:20:38Z",
+    "2456574.306",
+    "559.0",
+    "9.897",
+    "-13.6",
+    "0.0",
+    "-5.3",
+    "345.0",
+    "0.0",
+    "BIB-0299",
+    "10.1016/j.asr.2014.08.014",
+    "Null-result per Iorio 2015 analysis; consistent with Anderson formula prediction dv~0",
+],
+]
+
+[[column]]
+index = 1
+name = "name"
+original_name = "name"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 2
+name = "perigee_date_utc"
+original_name = "perigee_date_utc"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 3
+name = "perigee_jed"
+original_name = "perigee_jed"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 4
+name = "perigee_alt_km"
+original_name = "perigee_alt_km"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 5
+name = "v_inf_km_s"
+original_name = "v_inf_km_s"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 6
+name = "inbound_dec_deg"
+original_name = "inbound_dec_deg"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 7
+name = "inbound_ra_deg"
+original_name = "inbound_ra_deg"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 8
+name = "outbound_dec_deg"
+original_name = "outbound_dec_deg"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 9
+name = "outbound_ra_deg"
+original_name = "outbound_ra_deg"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 10
+name = "observed_dv_mm_s"
+original_name = "observed_dv_mm_s"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 11
+name = "source_bib"
+original_name = "source_bib"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 12
+name = "source_doi"
+original_name = "source_doi"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 13
+name = "notes"
+original_name = "notes"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0

@@ -1,0 +1,89 @@
+[dataset]
+id = "PC-0120"
+slug = "wow_followup_snr"
+source_csv = "data/csv/wow_followup_snr.csv"
+source_sha256 = "c514e8858100c33f113f67c43dcf910b482cfd3048f47362722598d20593110c"
+source_size_bytes = 102
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 6
+header_value_sha256 = "3d9a0cf42605c7475b011bcf70af59bb75c39a673ba7276b558a7e963e13ef18"
+row_value_sha256 = "86c0bba5860b7e18d4af934d4b966103a7744d8362979aa9954b52de8620988f"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "catalog",
+    "band_ghz",
+    "n_files",
+    "stacked_snr",
+    "verdict",
+    "source_experiment",
+]
+original_header = [
+    "catalog",
+    "band_ghz",
+    "n_files",
+    "stacked_snr",
+    "verdict",
+    "source_experiment",
+]
+rows = [[
+    "wow_gbt_s_band",
+    "2.25",
+    "12",
+    "0.38",
+    "NULL",
+    "E-061",
+]]
+
+[[column]]
+index = 1
+name = "catalog"
+original_name = "catalog"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "band_ghz"
+original_name = "band_ghz"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_files"
+original_name = "n_files"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 4
+name = "stacked_snr"
+original_name = "stacked_snr"
+inferred_type = "float"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 5
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 6
+name = "source_experiment"
+original_name = "source_experiment"
+inferred_type = "string"
+non_empty_count = 1
+empty_count = 0

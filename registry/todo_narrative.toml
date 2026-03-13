@@ -20,7 +20,7 @@ Note:
 - Smoke, regression, and heavy lanes are defined in `registry/test_taxonomy.toml`; use `cargo run -p gororoba_cli_data --bin test-inventory -- --check` for current counts.
 - Claims: C-001..C-674 (674 total, enriched). Insights: I-001..I-066.
 - Experiments: E-001..E-033 (31 total). Binaries: 66.
-- All governance gates pass (governance-gate, schema signatures, ASCII-only).
+- All governance gates pass (governance-gate, schema signatures, ANSI-safe UTF-8 policy).
 
 ## Current sprint: Sprint 41 -- Phase 5 Publication Preparation (PLANNED)
 

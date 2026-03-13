@@ -220,7 +220,7 @@ dataset_class = "generated_artifact"
 id = "PG-0014"
 slug = "cd_motif_summary_by_dim"
 source_csv = "data/csv/cd_motif_summary_by_dim.csv"
-source_sha256 = "51634b044c02df2cd6d92d8015d85b10f4aff865153c0b7533b4e5229a28a603"
+source_sha256 = "dfa6e824c27837734eb8b455380a93d871915c727a292f59de68065358dd517c"
 source_size_bytes = 349
 canonical_toml = "registry/data/project_csv/generated/PG-0014_cd_motif_summary_by_dim.toml"
 row_count = 5
@@ -229,7 +229,7 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "ba1f9c32b469620465aef4c1010178ee75feed78a4d2924cfdb70c22874983b3"
-row_value_sha256 = "d2b91e8eec84240ce4824369d15541fcc8b4f353d539e1a54aae867558179b12"
+row_value_sha256 = "2a9e2b6f20b1da452fdcb8da6d0d1802f616ae9a8cfb3c6ca7e3596683d0ea01"
 dataset_class = "generated_artifact"
 
 [[dataset]]
@@ -252,8 +252,8 @@ dataset_class = "generated_artifact"
 id = "PG-0016"
 slug = "de_marrais_boxkite_edges"
 source_csv = "data/csv/de_marrais_boxkite_edges.csv"
-source_sha256 = "09702fde47074061477fcc4f016cdaa83f8be3dd1b991dcb23cf41bfe7110dd9"
-source_size_bytes = 3832
+source_sha256 = "0bf0af5d412ba3acabe168db70ffee90b562c20c98eea6359c7a9c751e43115a"
+source_size_bytes = 3328
 canonical_toml = "registry/data/project_csv/generated/PG-0016_de_marrais_boxkite_edges.toml"
 row_count = 84
 column_count = 8
@@ -261,7 +261,7 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "10eea9f897467aa6425c3164307b4e797fcb01bb481beb02fe0ecc5c1ecebb17"
-row_value_sha256 = "0ec0eeccf528bbc904c7d403fbfab4ea9657011f727d541b60d07da0c503bbff"
+row_value_sha256 = "f2ee9864536187c2dd7c65f44d3365f03315f47bffbcc59731f750f6a4e6fea9"
 dataset_class = "generated_artifact"
 
 [[dataset]]
@@ -284,7 +284,7 @@ dataset_class = "generated_artifact"
 id = "PG-0018"
 slug = "de_marrais_strut_table"
 source_csv = "data/csv/de_marrais_strut_table.csv"
-source_sha256 = "cc9d06b756802af667466309ec2926b121d3cc98370f40308afca570755af870"
+source_sha256 = "0f48a0e004d30d557d8b6d28b033a770bc1822254ae5fa28c875a969118beeb0"
 source_size_bytes = 335
 canonical_toml = "registry/data/project_csv/generated/PG-0018_de_marrais_strut_table.toml"
 row_count = 7
@@ -293,15 +293,15 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "3ec0bca8337e02b67038cf012b6e7684729f4e16595718ca07f34271c3783caf"
-row_value_sha256 = "97f97ef23caec1e719a02e8df6803eb16534e829cd76cdb11c99e9ddfc908e99"
+row_value_sha256 = "be6f3591293b75dc6b3d7eaa398ceae68fee153d61db0f7e5d6274feb0f86912"
 dataset_class = "generated_artifact"
 
 [[dataset]]
 id = "PG-0019"
 slug = "dimensional_geometry_4_to_16"
 source_csv = "data/csv/dimensional_geometry_-4_to_16.csv"
-source_sha256 = "c439a73849d5313f0021ffcc7ee6760ec21fe08b849ec4dfa6cf151fc70d8cef"
-source_size_bytes = 301644
+source_sha256 = "fb572e129a9aa7294e21d70a2d0ca2f151df62366715d303185a0217feb1f0c5"
+source_size_bytes = 197634
 canonical_toml = "registry/data/project_csv/generated/PG-0019_dimensional_geometry_4_to_16.toml"
 row_count = 4001
 column_count = 3
@@ -309,15 +309,15 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "4044df9b772df51fe20f0e67e35d5d5b0adaca47bea1d9159d1a419d5b8ea077"
-row_value_sha256 = "2e1b5136b12185722e53f43ff831c6c80558dd5d18ed4f2bfca8df42714698dc"
+row_value_sha256 = "3b6ef6bdf4364e01453c4236a8938d08752cfa18d3d88dc07767135e1741be3a"
 dataset_class = "generated_artifact"
 
 [[dataset]]
 id = "PG-0020"
 slug = "dimensional_geometry_0_to_32"
 source_csv = "data/csv/dimensional_geometry_0_to_32.csv"
-source_sha256 = "a0dba8b3274848599bc79137b6e3af8d00833790e36ba18b293632807a9d6ff3"
-source_size_bytes = 300109
+source_sha256 = "2e6d654e8627ee3f06b091adadf9f91a9d7b41456d7afffdbd76092e62c874ef"
+source_size_bytes = 190542
 canonical_toml = "registry/data/project_csv/generated/PG-0020_dimensional_geometry_0_to_32.toml"
 row_count = 4001
 column_count = 3
@@ -325,31 +325,31 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "4044df9b772df51fe20f0e67e35d5d5b0adaca47bea1d9159d1a419d5b8ea077"
-row_value_sha256 = "2664988acfab0af0ec3f2d9359634ea8bbc10a3d4d2e505caa7dab0f22e0b4a6"
+row_value_sha256 = "99b87108866a8826ff33657cde4dc191c125799c56d1457390b88dbf34649749"
 dataset_class = "generated_artifact"
 
 [[dataset]]
 id = "PG-0021"
 slug = "m3_table"
 source_csv = "data/csv/m3_table.csv"
-source_sha256 = "e8f8366e47867a9b75b9b4581bd675e1b7180d022b8d164d9c49c87e701bb8e6"
-source_size_bytes = 6170
+source_sha256 = "df1c9bc9cfdaf45b4c085e511ca796207c5f7df0ff93bf4e3f7603dcf81a85d0"
+source_size_bytes = 44483
 canonical_toml = "registry/data/project_csv/generated/PG-0021_m3_table.toml"
-row_count = 343
+row_count = 1848
 column_count = 6
 has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "dd8dc13b208d840ba2e9ea609163b692d0bf85732560707765d6a39a5a293fe8"
-row_value_sha256 = "cd34025ab33577579081a28cf224e325acb03408b34e53e0dec35f40018efb8b"
+row_value_sha256 = "33fc848b58abf607322083189bf67c7cdf10f5fac92ad0376322ea3f415e9949"
 dataset_class = "generated_artifact"
 
 [[dataset]]
 id = "PG-0022"
 slug = "materials_embedding_benchmarks"
 source_csv = "data/csv/materials_embedding_benchmarks.csv"
-source_sha256 = "f264b06fefee10fed7d56ad439e9ee8fcd41e7f604b8b1a008b9a3ed0d2da44a"
-source_size_bytes = 227
+source_sha256 = "b27d17c16226e6af0099346dd216dda9e0c3d53be410249bece3853aa69468be"
+source_size_bytes = 224
 canonical_toml = "registry/data/project_csv/generated/PG-0022_materials_embedding_benchmarks.toml"
 row_count = 4
 column_count = 3
@@ -357,23 +357,23 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "c8d5660bf8a157d2dfaa16580a90a559e8340e89201ff16586793136de00e3cb"
-row_value_sha256 = "951e2f826ad7f93e4f7fa42152e7926dbdea6360aa40d4243107890887aa7313"
+row_value_sha256 = "67c28cd6b32ce5e62307379cf5b0d5063b1272500b4873720e3e0de733528fa9"
 dataset_class = "generated_artifact"
 
 [[dataset]]
 id = "PG-0023"
 slug = "materials_jarvis_subset"
 source_csv = "data/csv/materials_jarvis_subset.csv"
-source_sha256 = "04c5f12d7d41eac081bf2a5dd7ddf7469b6605c5a721520799e50416443a8e37"
-source_size_bytes = 16000
+source_sha256 = "0ef4c7e3386b75aa70d0ecba3233f16d8f5a4089849e5ff95eaadbb71a4e61f7"
+source_size_bytes = 10571
 canonical_toml = "registry/data/project_csv/generated/PG-0023_materials_jarvis_subset.toml"
 row_count = 200
-column_count = 12
+column_count = 7
 has_header = true
 delimiter = ","
 quotechar = "\""
-header_value_sha256 = "1e9ec222b3bb01ae36aa4530b48021f4ec1d2c8997b72dae2a8565384508a23a"
-row_value_sha256 = "b3644722893598b0dd0db571d40ee026d333e62e5d2532e7f78e63064f58af0b"
+header_value_sha256 = "c5dc3e5aadabea6f93cbfd201010c3e96d2cfbcdd0d3bb24e3dc9794798b4f4f"
+row_value_sha256 = "253f60e7d861d54469e0afcddaa342abed90865285c212076c153ed409ba483b"
 dataset_class = "generated_artifact"
 
 [[dataset]]
@@ -428,7 +428,7 @@ dataset_class = "generated_artifact"
 id = "PG-0027"
 slug = "reggiani_standard_zero_divisor_pairs"
 source_csv = "data/csv/reggiani_standard_zero_divisor_pairs.csv"
-source_sha256 = "41da21824eb1531e84edc1c1cc78191d06f5b05ca9042b4fbf6c27881f74c727"
+source_sha256 = "a8e6222ba0ba38ce7bb04aa11233f407f9b5b8ab7b1030e3fb6a25eb0d1af3b5"
 source_size_bytes = 4984
 canonical_toml = "registry/data/project_csv/generated/PG-0027_reggiani_standard_zero_divisor_pairs.toml"
 row_count = 336
@@ -437,23 +437,23 @@ has_header = true
 delimiter = ","
 quotechar = "\""
 header_value_sha256 = "380f80404f00d93781372ef5f96b462431211f0bcf766a1fcd3385a2adc0a479"
-row_value_sha256 = "aeb60b470ed6afcefe729606f4dd46e871109fb1d840104bf1ec59a1bcd16ca8"
+row_value_sha256 = "2e06dc0499645c9f0e5778416a358303344349d295403071187cc980c5cc793c"
 dataset_class = "generated_artifact"
 
 [[dataset]]
 id = "PG-0028"
 slug = "reggiani_standard_zero_divisors"
 source_csv = "data/csv/reggiani_standard_zero_divisors.csv"
-source_sha256 = "47dc94ad441b77327e1b40a29312abd6fef8f6aaf1b5956ceca7a178b76af345"
-source_size_bytes = 1371
+source_sha256 = "0f18c2c6590e345dca79a5473f279ec48bc9df992b44534741c5ae0481dc1727"
+source_size_bytes = 1022
 canonical_toml = "registry/data/project_csv/generated/PG-0028_reggiani_standard_zero_divisors.toml"
 row_count = 84
-column_count = 6
+column_count = 5
 has_header = true
 delimiter = ","
 quotechar = "\""
-header_value_sha256 = "4e09545fa9ba1fa99bff89c89d6cd102b045e77b48c604d25dd7eb2748ab607e"
-row_value_sha256 = "bd7997467ac4ea7c8112c2265f15a566b6ee2c6ba47981f5d8caef3f8c935c24"
+header_value_sha256 = "98ff5cac066517f4822020278d4b6c29f3a0d69cd9ca3f71f5509ec3907ca1a0"
+row_value_sha256 = "093210b774f658b947e0016c7f80906d527eb47ffcb56d4546733d10c2e98c60"
 dataset_class = "generated_artifact"
 
 [[dataset]]

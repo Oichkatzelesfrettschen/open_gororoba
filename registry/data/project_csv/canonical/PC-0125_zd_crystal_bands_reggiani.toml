@@ -1,0 +1,78 @@
+[dataset]
+id = "PC-0125"
+slug = "zd_crystal_bands_reggiani"
+source_csv = "data/csv/zd_crystal_bands_reggiani.csv"
+source_sha256 = "0cf502780389e85ee17c7a742fcd60dc76109f7a3c263f29b6e628b3f65d228f"
+source_size_bytes = 117
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 5
+column_count = 3
+header_value_sha256 = "da3d9a5ed296edd90a78bcaece93c7fa57e328111fdf4946493276d7fe8bb043"
+row_value_sha256 = "096ac1d9e6bc93b59250bf0618c6ec95c786d10188e5cf79776af2f74f09ce19"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "eigenvalue",
+    "full_degeneracy",
+    "reduced_degeneracy",
+]
+original_header = [
+    "eigenvalue",
+    "full_degeneracy",
+    "reduced_degeneracy",
+]
+rows = [
+    [
+    "-4.000000",
+    "7",
+    "1",
+],
+    [
+    "-2.000000",
+    "14",
+    "2",
+],
+    [
+    "-0.000000",
+    "42",
+    "6",
+],
+    [
+    "2.000000",
+    "14",
+    "2",
+],
+    [
+    "4.000000",
+    "7",
+    "1",
+],
+]
+
+[[column]]
+index = 1
+name = "eigenvalue"
+original_name = "eigenvalue"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 2
+name = "full_degeneracy"
+original_name = "full_degeneracy"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 3
+name = "reduced_degeneracy"
+original_name = "reduced_degeneracy"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0

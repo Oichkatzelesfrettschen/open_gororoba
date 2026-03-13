@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 6
-skipped_generated_count = 10
+raw_capture_count = 3
+skipped_generated_count = 13
 authoritative = false
 normalization_required = true
 
@@ -32,17 +32,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0003.toml"
 
 [[document]]
-id = "DOC-0010"
-source_path = "data/external/README.md"
-title = "External Data Lane"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0010.toml"
-
-[[document]]
 id = "DOC-0011"
 source_path = "docs/convos/README.md"
 title = "Convos audit workspace"
@@ -52,28 +41,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0011.toml"
-
-[[document]]
-id = "DOC-0015"
-source_path = "proofs/EPISTEMIC_BOUNDARIES.md"
-title = "Epistemic Boundaries"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0015.toml"
-
-[[document]]
-id = "DOC-0016"
-source_path = "proofs/README.md"
-title = "Living Verification Artifact -- Pipeline Architecture"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0016.toml"
 
 [[document]]
 id = "DOC-0001"
@@ -97,7 +64,7 @@ skip_reason = "generated_markdown_or_artifact"
 id = "DOC-0005"
 source_path = "apps/gororoba_studio/README.md"
 title = "Requirements: Gororoba Studio (Rust Web App)"
-kind = "generated_markdown"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
@@ -106,7 +73,7 @@ skip_reason = "generated_markdown_or_artifact"
 id = "DOC-0006"
 source_path = "crates/lbm_3d_cuda/README.md"
 title = "README"
-kind = "generated_markdown"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
@@ -139,6 +106,15 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
+id = "DOC-0010"
+source_path = "data/external/README.md"
+title = "External Data Lane"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
 id = "DOC-0012"
 source_path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 title = "Pioneer and Flyby Anomaly Primary Sources"
@@ -151,7 +127,7 @@ skip_reason = "generated_markdown_or_artifact"
 id = "DOC-0013"
 source_path = "docs/research/high_dimensional_algebra_unification_2026.md"
 title = "Research Summary: High-Dimensional Cayley-Dickson Physics (2024-2026)"
-kind = "generated_markdown"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
@@ -160,7 +136,25 @@ skip_reason = "generated_markdown_or_artifact"
 id = "DOC-0014"
 source_path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
 title = "Ticket: Pioneer/Flyby Fractal Bridge"
-kind = "generated_markdown"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0015"
+source_path = "proofs/EPISTEMIC_BOUNDARIES.md"
+title = "Epistemic Boundaries"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0016"
+source_path = "proofs/README.md"
+title = "Living Verification Artifact -- Pipeline Architecture"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"

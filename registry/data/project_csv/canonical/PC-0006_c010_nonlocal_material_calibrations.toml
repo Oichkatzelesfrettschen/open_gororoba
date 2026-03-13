@@ -1,0 +1,275 @@
+[dataset]
+id = "PC-0006"
+slug = "c010_nonlocal_material_calibrations"
+source_csv = "data/csv/c010_nonlocal_material_calibrations.csv"
+source_sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+source_size_bytes = 2627
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 7
+column_count = 14
+header_value_sha256 = "4c37b5a95e24c879bc4d65263869f11d87ee8832276578ec98cfd868f56d4437"
+row_value_sha256 = "064947e2bf666d0aaf09134bdf13841a7039485f352be8205e0d85aef41c49d7"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "id",
+    "platform",
+    "carrier_material",
+    "data_provenance_class",
+    "citation_key",
+    "citation_url",
+    "coupling_scale",
+    "modulation_depth",
+    "loss_tangent",
+    "phase_bias_rad",
+    "modulation_frequency_hz",
+    "quality_factor",
+    "nonlocality_score",
+    "notes",
+]
+original_header = [
+    "id",
+    "platform",
+    "carrier_material",
+    "data_provenance_class",
+    "citation_key",
+    "citation_url",
+    "coupling_scale",
+    "modulation_depth",
+    "loss_tangent",
+    "phase_bias_rad",
+    "modulation_frequency_hz",
+    "quality_factor",
+    "nonlocality_score",
+    "notes",
+]
+rows = [
+    [
+    "yig_magnonic_kaman_2026",
+    "magnonic_crystal",
+    "YIG",
+    "measured_table",
+    "Kaman2026",
+    "https://arxiv.org/abs/2601.03210",
+    "0.25",
+    "0.15",
+    "0.02",
+    "0.0",
+    "2080000000.0",
+    "4100.0",
+    "0.72",
+    "Table-I tight-binding fit in GHz: eps_s=1.50, eps_p=1.80, eps_k=2.08, t_sk=0.25, t_pk=0.15; point-defect Q about 4100.",
+],
+    [
+    "lc_circuit_wang_2020",
+    "topolectrical_circuit",
+    "FR4_BNC_network",
+    "published_model_normalized",
+    "Wang2020",
+    "https://doi.org/10.1038/s41467-020-15940-3",
+    "1.0",
+    "0.25",
+    "0.03",
+    "1.57079632679",
+    "10000000.0",
+    "120.0",
+    "0.95",
+    "Normalized from the 4D electric-circuit TI hopping model. The design encodes non-local couplers in explicit circuit connections rather than spatial embedding.",
+],
+    [
+    "floquet_ring_yuan_2017",
+    "synthetic_frequency_rings",
+    "LiNbO3_or_fiber_ring",
+    "published_model_normalized",
+    "Yuan2017",
+    "https://arxiv.org/abs/1710.01373",
+    "0.8",
+    "0.85",
+    "0.05",
+    "1.0471975512",
+    "1000000000.0",
+    "5000.0",
+    "0.88",
+    "Normalized from the arbitrary-dimension synthetic-space ring proposal where modulation phases provide the gauge potential and three rings implement the Haldane model.",
+],
+    [
+    "boundary_ring_dutt_2022",
+    "synthetic_frequency_boundary",
+    "fiber_ring_auxiliary",
+    "published_response_normalized",
+    "Dutt2022",
+    "https://doi.org/10.1038/s41467-022-31140-7",
+    "0.7",
+    "0.9",
+    "0.04",
+    "0.78539816339",
+    "1000000000.0",
+    "3200.0",
+    "0.93",
+    "Boundary-forming auxiliary ring used to terminate the synthetic frequency lattice and protect chiral transport against backscatter.",
+],
+    [
+    "synthetic_graphene_yu_2021",
+    "synthetic_graphene_rings",
+    "modulated_ring_array",
+    "published_model_normalized",
+    "Yu2021",
+    "https://doi.org/10.1038/s42005-021-00719-9",
+    "1.0",
+    "1.0",
+    "0.05",
+    "0.0",
+    "500000000.0",
+    "2800.0",
+    "0.86",
+    "Hamiltonian Eq. (1) uses kappa = g_i = g with phase-programmable modulation, enabling graphene-like Dirac transport and valley-selective edge control.",
+],
+    [
+    "mechano_optical_vangorp_2025",
+    "nonlocal_metasurface",
+    "patterned_silicon_membrane",
+    "published_response_normalized",
+    "vanGorp2025",
+    "https://doi.org/10.1021/acsphotonics.5c01385",
+    "0.65",
+    "0.75",
+    "0.03",
+    "0.52359877559",
+    "193000000000000.0",
+    "1000.0",
+    "0.90",
+    "Broad-range strain tuning of a high-Q nonlocal resonance in a nanopatterned silicon metasurface; used here as an optical non-locality envelope, not as a direct circuit analogue.",
+],
+    [
+    "nonlocal_cable_chen_2023",
+    "cable_network_metamaterial",
+    "coaxial_cable_BNC",
+    "published_response_normalized",
+    "Chen2023",
+    "https://doi.org/10.1002/adma.202209988",
+    "1.2",
+    "0.1",
+    "0.02",
+    "0.0",
+    "1000000000.0",
+    "200.0",
+    "0.98",
+    "Coaxial-cable network metamaterial dominated by engineered non-local interactions; dispersion control is achieved by the network topology instead of resonant inclusions.",
+],
+]
+
+[[column]]
+index = 1
+name = "id"
+original_name = "id"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 2
+name = "platform"
+original_name = "platform"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 3
+name = "carrier_material"
+original_name = "carrier_material"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 4
+name = "data_provenance_class"
+original_name = "data_provenance_class"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 5
+name = "citation_key"
+original_name = "citation_key"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 6
+name = "citation_url"
+original_name = "citation_url"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 7
+name = "coupling_scale"
+original_name = "coupling_scale"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 8
+name = "modulation_depth"
+original_name = "modulation_depth"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 9
+name = "loss_tangent"
+original_name = "loss_tangent"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 10
+name = "phase_bias_rad"
+original_name = "phase_bias_rad"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 11
+name = "modulation_frequency_hz"
+original_name = "modulation_frequency_hz"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 12
+name = "quality_factor"
+original_name = "quality_factor"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 13
+name = "nonlocality_score"
+original_name = "nonlocality_score"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 14
+name = "notes"
+original_name = "notes"
+inferred_type = "string"
+non_empty_count = 7
+empty_count = 0

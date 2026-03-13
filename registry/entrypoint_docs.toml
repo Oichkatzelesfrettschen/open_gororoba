@@ -53,10 +53,10 @@ body_markdown = """
 """
 
 [[document]]
-path = "curated/01_theory_frameworks/README_COQ.md"
-title = "Coq Proofs: The Computational Substrate"
+path = "curated/01_theory_frameworks/README_ROCQ.md"
+title = "Rocq Proofs: The Computational Substrate"
 body_markdown = """
-# Coq Proofs: The Computational Substrate
+# Rocq Proofs: The Computational Substrate
 
 (No body_markdown captured in registry/entrypoint_docs.toml.)
 """
