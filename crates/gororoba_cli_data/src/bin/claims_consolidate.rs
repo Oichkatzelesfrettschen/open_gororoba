@@ -240,6 +240,7 @@ fn main() {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn write_claims_output(
     cli: &Cli,
     repo_root: &std::path::Path,
