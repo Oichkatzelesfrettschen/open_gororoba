@@ -31,7 +31,7 @@ use crate::{
         spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
-    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
 use std::path::PathBuf;
@@ -99,9 +99,9 @@ pub fn parse_juno_helio1hr_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
             year,
             doy,
             hour,
-            distance_au: parse_f64_or_nan(record.get(1).unwrap_or("")),
-            lat_deg: parse_f64_or_nan(record.get(2).unwrap_or("")),
-            lon_deg: parse_f64_or_nan(record.get(3).unwrap_or("")),
+            distance_au: parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or("")),
+            lat_deg: parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or("")),
+            lon_deg: parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or("")),
             b_magnitude: f64::NAN,
             br: f64::NAN,
             bt: f64::NAN,

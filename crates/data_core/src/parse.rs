@@ -26,6 +26,21 @@ pub fn parse_f64_or_nan(s: &str) -> f64 {
     s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
+/// Parse a HAPI space-physics numeric field to `f64`, mapping transport fill
+/// sentinels such as `-1.0E31` to NAN.
+///
+/// CDAWeb/SPDF HAPI feeds commonly use huge-magnitude values near `1e31` to
+/// represent missing data. Those values are valid transport sentinels but are
+/// never physically meaningful for the heliosphere mission lanes in this repo.
+pub fn parse_hapi_spacephysics_f64_or_nan(s: &str) -> f64 {
+    let parsed = parse_f64_or_nan(s);
+    if parsed.is_nan() || parsed.abs() >= 1.0e30 {
+        f64::NAN
+    } else {
+        parsed
+    }
+}
+
 /// Parse a trimmed string to `f64`, returning 0.0 for unparseable values.
 ///
 /// Used by GWTC parser where missing numeric fields default to zero
@@ -139,6 +154,14 @@ mod tests {
     fn test_parse_f64_or_nan_garbage() {
         assert!(parse_f64_or_nan("abc").is_nan());
         assert!(parse_f64_or_nan("N/A").is_nan());
+    }
+
+    #[test]
+    fn test_parse_hapi_spacephysics_f64_or_nan_fill_values() {
+        assert!(parse_hapi_spacephysics_f64_or_nan("-1.0E31").is_nan());
+        assert!(parse_hapi_spacephysics_f64_or_nan("1.0E31").is_nan());
+        assert!(parse_hapi_spacephysics_f64_or_nan("-9.9e30").is_nan());
+        assert!((parse_hapi_spacephysics_f64_or_nan("12.5") - 12.5).abs() < 1e-12);
     }
 
     #[test]

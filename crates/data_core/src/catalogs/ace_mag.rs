@@ -14,7 +14,7 @@
 use crate::{
     catalogs::omni::OmniRecord,
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
-    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
 use std::{
@@ -385,10 +385,10 @@ pub fn parse_ace_mag_hapi_csv(content: &str) -> Vec<AceMagHourly> {
             year,
             doy,
             hour,
-            b_magnitude: parse_f64_or_nan(record.get(1).unwrap_or("")),
-            bx_gse: parse_f64_or_nan(record.get(2).unwrap_or("")),
-            by_gse: parse_f64_or_nan(record.get(3).unwrap_or("")),
-            bz_gse: parse_f64_or_nan(record.get(4).unwrap_or("")),
+            b_magnitude: parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or("")),
+            bx_gse: parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or("")),
+            by_gse: parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or("")),
+            bz_gse: parse_hapi_spacephysics_f64_or_nan(record.get(4).unwrap_or("")),
             sample_count: 1,
         });
     }

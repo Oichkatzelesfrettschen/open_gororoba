@@ -19,9 +19,17 @@
 //! aligned with the local interstellar magnetic field direction.
 //! Constrains the interstellar B-field orientation (~3 uG, l~221, b~39).
 //!
-//! Source: <https://ibex.princeton.edu/>
+//! Source:
+//!   ENA sky maps: <https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/>
+//!   Orbit time series: IBEX_OR_SSC via CDAWeb HAPI
+//!     <https://cdaweb.gsfc.nasa.gov/hapi/info?id=IBEX_OR_SSC>
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_string},
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
+};
+use csv::ReaderBuilder;
+use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 /// IBEX ENA sky map pixel.
@@ -50,6 +58,15 @@ pub struct IbexEnaMap {
     pub instrument: String,
     /// Sky map pixels (6 deg x 6 deg grid = 60 x 30 = 1800 pixels).
     pub pixels: Vec<IbexEnaPixel>,
+}
+
+/// IBEX orbit/support time-series row from CDAWeb HAPI.
+#[derive(Debug, Clone)]
+pub struct IbexOrbitRecord {
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub radius_re: f64,
 }
 
 /// Parse IBEX ENA sky map from a CSV-like format.
@@ -123,6 +140,7 @@ pub fn parse_ibex_ena_file(
 }
 
 const IBEX_BASE: &str = "https://ibex.princeton.edu/DataAction";
+const IBEX_ORBIT_HAPI_DATASET: &str = "IBEX_OR_SSC";
 
 /// IBEX ENA sky map dataset provider.
 pub struct IbexProvider {
@@ -175,6 +193,99 @@ impl DatasetProvider for IbexProvider {
     }
 }
 
+pub fn parse_ibex_orbit_hapi_csv(content: &str) -> Vec<IbexOrbitRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut hourly: BTreeMap<(u16, u16, u8), IbexOrbitRecord> = BTreeMap::new();
+    for record in reader.records().flatten() {
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        let radius_re = parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or(""));
+        hourly.entry((year, doy, hour)).or_insert(IbexOrbitRecord {
+            year,
+            doy,
+            hour,
+            radius_re,
+        });
+    }
+    hourly.into_values().collect()
+}
+
+pub fn parse_ibex_orbit_file(path: &std::path::Path) -> Result<Vec<IbexOrbitRecord>, FetchError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
+    Ok(parse_ibex_orbit_hapi_csv(&content))
+}
+
+/// IBEX orbit support dataset provider.
+pub struct IbexOrbitProvider {
+    pub year_start: u16,
+    pub year_end: u16,
+}
+
+impl Default for IbexOrbitProvider {
+    fn default() -> Self {
+        Self {
+            year_start: 2016,
+            year_end: 2016,
+        }
+    }
+}
+
+impl DatasetProvider for IbexOrbitProvider {
+    fn name(&self) -> &str {
+        "IBEX Orbit SSC"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let dir = config.output_dir.join("ibex").join("orbits");
+        std::fs::create_dir_all(&dir)?;
+
+        for year in self.year_start..=self.year_end {
+            let fname = format!("ibex_or_ssc_{year}.csv");
+            let output = dir.join(&fname);
+            if config.skip_existing && output.exists() {
+                continue;
+            }
+            match download_hapi_csv(
+                IBEX_ORBIT_HAPI_DATASET,
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                Some(&["Time", "RADIUS"]),
+            ) {
+                Ok(data) => {
+                    std::fs::write(&output, data)?;
+                    log::info!("saved {}", fname);
+                }
+                Err(e) => {
+                    log::warn!("failed to download IBEX orbit support {}: {}", year, e);
+                }
+            }
+        }
+
+        Ok(dir)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        let dir = config.output_dir.join("ibex").join("orbits");
+        std::fs::read_dir(&dir)
+            .ok()
+            .into_iter()
+            .flatten()
+            .filter_map(|entry| entry.ok())
+            .any(|entry| {
+                let name = entry.file_name();
+                let name = name.to_string_lossy();
+                name.starts_with("ibex_or_ssc_") && name.ends_with(".csv")
+            })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -216,5 +327,16 @@ mod tests {
         assert_eq!(map.pixels.len(), 2);
         assert!(map.pixels[0].flux_err.is_nan(), "no error column");
         assert!((map.pixels[0].flux - 1.5e4).abs() < 1.0);
+    }
+
+    #[test]
+    fn test_parse_ibex_orbit_hapi_csv() {
+        let data = "Time,RADIUS\n2016-01-01T00:00:27.000Z,28.66\n2016-01-01T00:15:27.000Z,28.67\n2016-01-01T01:00:27.000Z,28.70\n";
+        let rows = parse_ibex_orbit_hapi_csv(data);
+        assert_eq!(rows.len(), 2, "rows are hourly-deduplicated for overlay use");
+        assert_eq!(rows[0].year, 2016);
+        assert_eq!(rows[0].doy, 1);
+        assert_eq!(rows[0].hour, 0);
+        assert!((rows[0].radius_re - 28.66).abs() < 0.01);
     }
 }

@@ -42,8 +42,8 @@ use crate::{
         spdf_fleet::SpdfMission,
         spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
-    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_file},
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
 use std::{collections::BTreeMap, path::PathBuf};
@@ -162,16 +162,16 @@ pub fn parse_ulysses_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
             year,
             doy,
             hour,
-            distance_au: parse_f64_or_nan(record.get(1).unwrap_or("")),
-            lat_deg: parse_f64_or_nan(record.get(2).unwrap_or("")),
-            lon_deg: parse_f64_or_nan(record.get(3).unwrap_or("")),
-            br: parse_f64_or_nan(record.get(4).unwrap_or("")),
-            bt: parse_f64_or_nan(record.get(5).unwrap_or("")),
-            bn: parse_f64_or_nan(record.get(6).unwrap_or("")),
-            b_magnitude: parse_f64_or_nan(record.get(7).unwrap_or("")),
-            proton_density: parse_f64_or_nan(record.get(12).unwrap_or("")),
-            bulk_speed: parse_f64_or_nan(record.get(9).unwrap_or("")),
-            proton_temperature: parse_f64_or_nan(record.get(14).unwrap_or("")),
+            distance_au: parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or("")),
+            lat_deg: parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or("")),
+            lon_deg: parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or("")),
+            br: parse_hapi_spacephysics_f64_or_nan(record.get(4).unwrap_or("")),
+            bt: parse_hapi_spacephysics_f64_or_nan(record.get(5).unwrap_or("")),
+            bn: parse_hapi_spacephysics_f64_or_nan(record.get(6).unwrap_or("")),
+            b_magnitude: parse_hapi_spacephysics_f64_or_nan(record.get(7).unwrap_or("")),
+            proton_density: parse_hapi_spacephysics_f64_or_nan(record.get(12).unwrap_or("")),
+            bulk_speed: parse_hapi_spacephysics_f64_or_nan(record.get(9).unwrap_or("")),
+            proton_temperature: parse_hapi_spacephysics_f64_or_nan(record.get(14).unwrap_or("")),
         });
     }
     rows
@@ -254,6 +254,7 @@ pub fn merge_ulysses_swoops_mag(
 }
 
 const ULYSSES_HAPI_DATASET: &str = "UY_COHO1HR_MERGED_MAG_PLASMA";
+const ULYSSES_SPDF_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/ulysses/merged/";
 
 /// NASA SPDF Ulysses dataset provider.
 pub struct UlyssesProvider {
@@ -266,8 +267,8 @@ pub struct UlyssesProvider {
 impl Default for UlyssesProvider {
     fn default() -> Self {
         Self {
-            year_start: 1994,
-            year_end: 1995,
+            year_start: 1997,
+            year_end: 2009,
         }
     }
 }
@@ -282,11 +283,29 @@ impl DatasetProvider for UlyssesProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("uy_coho1hr_merged_mag_plasma_{year}.csv");
-            let output = dir.join(&fname);
-            if config.skip_existing && output.exists() {
+            let asc_name = format!("uly_{year}.asc");
+            let asc_output = dir.join(&asc_name);
+            let csv_name = format!("uy_coho1hr_merged_mag_plasma_{year}.csv");
+            let csv_output = dir.join(&csv_name);
+            if config.skip_existing && (asc_output.exists() || csv_output.exists()) {
                 continue;
             }
+
+            let asc_url = format!("{ULYSSES_SPDF_BASE}{asc_name}");
+            match download_to_file(&asc_url, &asc_output) {
+                Ok(_) => {
+                    log::info!("saved {}", asc_name);
+                    continue;
+                }
+                Err(e) => {
+                    log::warn!(
+                        "failed to download official Ulysses merged file {}: {}",
+                        asc_url,
+                        e
+                    );
+                }
+            }
+
             match download_hapi_csv(
                 ULYSSES_HAPI_DATASET,
                 &format!("{year}-01-01T00:00:00Z"),
@@ -310,11 +329,11 @@ impl DatasetProvider for UlyssesProvider {
                 ]),
             ) {
                 Ok(data) => {
-                    std::fs::write(&output, data)?;
-                    log::info!("saved {}", fname);
+                    std::fs::write(&csv_output, data)?;
+                    log::info!("saved {}", csv_name);
                 }
                 Err(e) => {
-                    log::warn!("failed to download Ulysses {}: {}", year, e);
+                    log::warn!("failed to download Ulysses {} via HAPI fallback: {}", year, e);
                 }
             }
         }
@@ -323,7 +342,18 @@ impl DatasetProvider for UlyssesProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("ulysses").exists()
+        let dir = config.output_dir.join("ulysses");
+        std::fs::read_dir(&dir)
+            .ok()
+            .into_iter()
+            .flatten()
+            .filter_map(|entry| entry.ok())
+            .any(|entry| {
+                let name = entry.file_name();
+                let name = name.to_string_lossy();
+                (name.starts_with("uly_") && name.ends_with(".asc"))
+                    || (name.starts_with("uy_coho1hr_") && name.ends_with(".csv"))
+            })
     }
 }
 
