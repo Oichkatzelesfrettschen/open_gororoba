@@ -152,23 +152,23 @@ lint-all-fix-safe: install
 	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
 
 verify-no-reports-writes: install
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- no-reports-writes
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- no-reports-writes
 
 check: lint python-smoke ansi-check terminology-gate verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
 registry-verify-markdown-governance:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
 
 governance-gate-readonly:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- schema-signatures
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"

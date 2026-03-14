@@ -2,6 +2,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use serde_json::json;
 use std::{
+    collections::BTreeMap,
     fs::{self, OpenOptions},
     io::Write,
     path::{Path, PathBuf},
@@ -204,11 +205,12 @@ fn package_plan(root: &Path, package: &str) -> Result<Option<PackagePlan>> {
 
 fn build_command(
     packages: &[String],
-    plan: &PackagePlan,
+    run_lib: bool,
+    run_tests: bool,
     build_jobs: &str,
     test_threads: &str,
     filterset: &str,
-) -> (Vec<String>, serde_json::Value) {
+) -> Vec<String> {
     let mut command = vec![
         "cargo".to_string(),
         "nextest".to_string(),
@@ -218,34 +220,21 @@ fn build_command(
         "--test-threads".to_string(),
         test_threads.to_string(),
     ];
-    if plan.has_lib_tests {
+    if run_lib {
         command.push("--lib".to_string());
+    }
+    if run_tests {
+        command.push("--tests".to_string());
     }
     for package in packages {
         command.push("-p".to_string());
         command.push(package.clone());
     }
-    for test_name in &plan.tests {
-        command.push("--test".to_string());
-        command.push(test_name.clone());
-    }
     if !filterset.is_empty() {
         command.push("-E".to_string());
         command.push(filterset.to_string());
     }
-
-    let targets = packages
-        .iter()
-        .map(|package| {
-            let mut selected = Vec::new();
-            if plan.has_lib_tests {
-                selected.push("lib".to_string());
-            }
-            selected.extend(plan.tests.iter().map(|name| format!("test:{name}")));
-            (package.clone(), json!(selected))
-        })
-        .collect::<serde_json::Map<String, serde_json::Value>>();
-    (command, serde_json::Value::Object(targets))
+    command
 }
 
 fn run_command(
@@ -292,7 +281,9 @@ fn run_command(
 fn run(cli: Cli) -> Result<i32> {
     let root = repo_root();
     let mut timing = TimingRecorder::new(cli.timing_json_out);
-    let mut grouped_plans: Vec<(PackagePlan, Vec<String>)> = Vec::new();
+    let mut package_plans = BTreeMap::<String, PackagePlan>::new();
+    let mut lib_packages = Vec::<String>::new();
+    let mut test_packages = Vec::<String>::new();
 
     for package in &cli.packages {
         let Some(plan) = package_plan(&root, package)? else {
@@ -301,27 +292,76 @@ fn run(cli: Cli) -> Result<i32> {
             timing.record_skip(package, reason)?;
             continue;
         };
-
-        if let Some((_, packages)) = grouped_plans
-            .iter_mut()
-            .find(|(signature, _)| *signature == plan)
-        {
-            packages.push(package.clone());
-        } else {
-            grouped_plans.push((plan, vec![package.clone()]));
+        if plan.has_lib_tests {
+            lib_packages.push(package.clone());
         }
+        if !plan.tests.is_empty() {
+            test_packages.push(package.clone());
+        }
+        package_plans.insert(package.clone(), plan);
     }
 
     let mut exit_code = 0;
-    for (plan, packages) in &grouped_plans {
-        let (command, targets) = build_command(
-            packages,
-            plan,
+    if !lib_packages.is_empty() {
+        let command = build_command(
+            &lib_packages,
+            true,
+            false,
             &cli.build_jobs,
             &cli.test_threads,
             &cli.filterset,
         );
-        exit_code = run_command(&root, packages, &command, &targets, &mut timing)?;
+        let targets = lib_packages
+            .iter()
+            .map(|package| (package.clone(), json!(["lib"])))
+            .collect::<serde_json::Map<String, serde_json::Value>>();
+        exit_code = run_command(
+            &root,
+            &lib_packages,
+            &command,
+            &serde_json::Value::Object(targets),
+            &mut timing,
+        )?;
+        if exit_code != 0 {
+            timing.record_summary(exit_code)?;
+            return Ok(exit_code);
+        }
+    }
+    if !test_packages.is_empty() {
+        let command = build_command(
+            &test_packages,
+            false,
+            true,
+            &cli.build_jobs,
+            &cli.test_threads,
+            &cli.filterset,
+        );
+        let targets = test_packages
+            .iter()
+            .map(|package| {
+                let selected = package_plans
+                    .get(package)
+                    .map(|plan| {
+                        if plan.tests.is_empty() {
+                            vec!["tests".to_string()]
+                        } else {
+                            plan.tests
+                                .iter()
+                                .map(|name| format!("test:{name}"))
+                                .collect::<Vec<_>>()
+                        }
+                    })
+                    .unwrap_or_else(|| vec!["tests".to_string()]);
+                (package.clone(), json!(selected))
+            })
+            .collect::<serde_json::Map<String, serde_json::Value>>();
+        exit_code = run_command(
+            &root,
+            &test_packages,
+            &command,
+            &serde_json::Value::Object(targets),
+            &mut timing,
+        )?;
         if exit_code != 0 {
             timing.record_summary(exit_code)?;
             return Ok(exit_code);
