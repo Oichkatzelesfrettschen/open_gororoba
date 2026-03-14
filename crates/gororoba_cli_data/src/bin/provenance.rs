@@ -217,6 +217,9 @@ struct UpdateExternalSourceArgs {
     #[arg(long)]
     id: String,
 
+    #[arg(long, default_value_t = false)]
+    create_if_missing: bool,
+
     #[arg(long)]
     path_glob: Option<String>,
 
@@ -597,20 +600,26 @@ fn run_update_external_source(
     }
 
     let mut store = ProvenanceStore::open(db_path)?;
-    let updated = store.update_external_source_contract(
-        &args.id,
-        ExternalSourceContractPatch {
-            path_glob: args.path_glob.as_deref(),
-            canonical_url: args.canonical_url.as_deref(),
-            access_class: args.access_class.as_deref(),
-            status: args.status.as_deref(),
-            retrieval_method: args.retrieval_method.as_deref(),
-            attempt_deadline_utc: args.attempt_deadline_utc.as_deref(),
-            resolution_deadline_utc: args.resolution_deadline_utc.as_deref(),
-            blocker_note: args.blocker_note.as_deref(),
-        },
-    )?;
-    if !updated {
+    let patch = ExternalSourceContractPatch {
+        path_glob: args.path_glob.as_deref(),
+        canonical_url: args.canonical_url.as_deref(),
+        access_class: args.access_class.as_deref(),
+        status: args.status.as_deref(),
+        retrieval_method: args.retrieval_method.as_deref(),
+        attempt_deadline_utc: args.attempt_deadline_utc.as_deref(),
+        resolution_deadline_utc: args.resolution_deadline_utc.as_deref(),
+        blocker_note: args.blocker_note.as_deref(),
+    };
+    let created = if args.create_if_missing {
+        store.upsert_external_source_contract(&args.id, patch)?
+    } else {
+        let updated = store.update_external_source_contract(&args.id, patch)?;
+        if !updated {
+            bail!("external source contract not found: {}", args.id);
+        }
+        false
+    };
+    if !args.create_if_missing && created {
         bail!("external source contract not found: {}", args.id);
     }
 
@@ -629,7 +638,11 @@ fn run_update_external_source(
             &repo_path(repo_root, &args.dossiers_registry),
         )?;
     }
-    println!("Updated SQLite-backed external source contract {}", args.id);
+    if created {
+        println!("Created SQLite-backed external source contract {}", args.id);
+    } else {
+        println!("Updated SQLite-backed external source contract {}", args.id);
+    }
     Ok(())
 }
 

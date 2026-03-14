@@ -32,8 +32,10 @@ use crate::{
         spdf_fleet::SpdfMission,
         spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
 };
+use csv::ReaderBuilder;
 use std::path::PathBuf;
 
 /// SPDF column layout for New Horizons SWAP hourly data.
@@ -82,7 +84,44 @@ pub fn parse_nh_swap(content: &str) -> Vec<SpdfMergedRecord> {
 
 /// Parse New Horizons SWAP hourly data from a file.
 pub fn parse_nh_swap_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    NH_SWAP_MISSION.parse_file(path)
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
+    if path.extension().and_then(|value| value.to_str()) == Some("csv") {
+        Ok(parse_nh_position_hapi_csv(&content))
+    } else {
+        Ok(parse_nh_swap(&content))
+    }
+}
+
+pub fn parse_nh_position_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut rows = Vec::new();
+    for record in reader.records().flatten() {
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        rows.push(SpdfMergedRecord {
+            year,
+            doy,
+            hour,
+            distance_au: parse_f64_or_nan(record.get(1).unwrap_or("")),
+            lat_deg: parse_f64_or_nan(record.get(2).unwrap_or("")),
+            lon_deg: parse_f64_or_nan(record.get(3).unwrap_or("")),
+            b_magnitude: f64::NAN,
+            br: f64::NAN,
+            bt: f64::NAN,
+            bn: f64::NAN,
+            proton_density: f64::NAN,
+            bulk_speed: f64::NAN,
+            proton_temperature: f64::NAN,
+        });
+    }
+    rows
 }
 
 /// Convert NH SWAP records to OmniRecord format.
@@ -93,7 +132,7 @@ pub fn nh_swap_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     NH_SWAP_MISSION.to_omni(records)
 }
 
-const NH_SWAP_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/new-horizons/swap/merged/";
+const NH_POSITION_HAPI_DATASET: &str = "NEW_HORIZONS_HELIO1HR_POSITION";
 
 /// NASA SPDF New Horizons SWAP dataset provider.
 pub struct NhSwapProvider {
@@ -120,13 +159,17 @@ impl DatasetProvider for NhSwapProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("nh_swap_{}_hourly.asc", year);
+            let fname = format!("new_horizons_helio1hr_position_{year}.csv");
             let output = dir.join(&fname);
             if config.skip_existing && output.exists() {
                 continue;
             }
-            let url = format!("{}{}", NH_SWAP_BASE, fname);
-            match download_to_string(&url) {
+            match download_hapi_csv(
+                NH_POSITION_HAPI_DATASET,
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                Some(&["Time", "RAD_AU", "HG_LAT", "HG_LON"]),
+            ) {
                 Ok(data) => {
                     std::fs::write(&output, data)?;
                     log::info!("saved {}", fname);

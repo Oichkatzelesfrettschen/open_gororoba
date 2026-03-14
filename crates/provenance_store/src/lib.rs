@@ -1,4 +1,4 @@
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result, anyhow, bail};
 use blake3::Hasher;
 use camino::Utf8PathBuf;
 use chrono::Utc;
@@ -367,6 +367,7 @@ pub struct ProvenanceStore {
     conn: Connection,
 }
 
+#[derive(Clone, Copy)]
 pub struct ExternalSourceContractPatch<'a> {
     pub path_glob: Option<&'a str>,
     pub canonical_url: Option<&'a str>,
@@ -1429,6 +1430,63 @@ impl ProvenanceStore {
             )?;
         }
 
+        self.conn.execute(
+            "UPDATE external_source_contracts_meta
+             SET updated = ?1, authoritative = 1
+             WHERE kind = 'source_contracts'",
+            [Utc::now().to_rfc3339()],
+        )?;
+        Ok(true)
+    }
+
+    pub fn upsert_external_source_contract(
+        &self,
+        id: &str,
+        patch: ExternalSourceContractPatch<'_>,
+    ) -> Result<bool> {
+        if self.update_external_source_contract(id, patch.clone())? {
+            return Ok(false);
+        }
+        let path_glob = patch.path_glob.ok_or_else(|| {
+            anyhow!("path_glob is required when creating external source contract {id}")
+        })?;
+        let canonical_url = patch.canonical_url.ok_or_else(|| {
+            anyhow!("canonical_url is required when creating external source contract {id}")
+        })?;
+        let access_class = patch.access_class.ok_or_else(|| {
+            anyhow!("access_class is required when creating external source contract {id}")
+        })?;
+        let status = patch.status.ok_or_else(|| {
+            anyhow!("status is required when creating external source contract {id}")
+        })?;
+        let retrieval_method = patch.retrieval_method.ok_or_else(|| {
+            anyhow!("retrieval_method is required when creating external source contract {id}")
+        })?;
+        let attempt_deadline_utc = patch.attempt_deadline_utc.ok_or_else(|| {
+            anyhow!("attempt_deadline_utc is required when creating external source contract {id}")
+        })?;
+        let resolution_deadline_utc = patch.resolution_deadline_utc.ok_or_else(|| {
+            anyhow!("resolution_deadline_utc is required when creating external source contract {id}")
+        })?;
+        let blocker_note = patch.blocker_note.unwrap_or("");
+
+        self.conn.execute(
+            "INSERT INTO external_source_contracts(
+                id, path_glob, canonical_url, access_class, status, retrieval_method,
+                attempt_deadline_utc, resolution_deadline_utc, blocker_note
+            ) VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
+            params![
+                id,
+                path_glob,
+                canonical_url,
+                access_class,
+                status,
+                retrieval_method,
+                attempt_deadline_utc,
+                resolution_deadline_utc,
+                blocker_note,
+            ],
+        )?;
         self.conn.execute(
             "UPDATE external_source_contracts_meta
              SET updated = ?1, authoritative = 1

@@ -8,7 +8,11 @@
 //! Source: <https://izw1.caltech.edu/ACE/ASC/level2/>
 //! Reference: McComas et al. (1998), Space Sci. Rev. 86, 563
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::{
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
+};
+use csv::ReaderBuilder;
 use std::path::{Path, PathBuf};
 
 /// A single hourly ACE SWEPAM solar wind measurement.
@@ -96,15 +100,39 @@ pub fn parse_swepam_hourly(content: &str) -> Vec<SwepamRecord> {
 pub fn parse_swepam_file(path: &Path) -> Result<Vec<SwepamRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
-    Ok(parse_swepam_hourly(&content))
+    if path.extension().and_then(|value| value.to_str()) == Some("csv") {
+        Ok(parse_swepam_hapi_csv(&content))
+    } else {
+        Ok(parse_swepam_hourly(&content))
+    }
 }
 
-/// Base URL for ACE Level 2 hourly SWEPAM data.
-///
-/// The ACE Science Center publishes hourly averages as `swepam_h2s_*`.
-/// The 64-second cadence product (`swepam_data_64sec_*`) is a different
-/// product and would require averaging before use with parse_swepam_hourly().
-const ACE_SWEPAM_BASE: &str = "https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/swepam_h2s_year";
+pub fn parse_swepam_hapi_csv(content: &str) -> Vec<SwepamRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut records = Vec::new();
+    for record in reader.records().flatten() {
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        let decimal_year = year as f64 + (doy as f64 - 1.0 + hour as f64 / 24.0) / 365.25;
+        records.push(SwepamRecord {
+            decimal_year,
+            doy,
+            hour,
+            proton_density: parse_f64_or_nan(record.get(1).unwrap_or("")),
+            bulk_speed: parse_f64_or_nan(record.get(2).unwrap_or("")),
+            ion_temperature: parse_f64_or_nan(record.get(3).unwrap_or("")),
+        });
+    }
+    records
+}
+
+const ACE_SWEPAM_HAPI_DATASET: &str = "AC_H2_SWE";
 
 /// ACE SWEPAM dataset provider.
 ///
@@ -135,14 +163,17 @@ impl DatasetProvider for AceSwepamProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("swepam_h2s_{}0101_{}1231.txt", year, year);
+            let fname = format!("ac_h2_swe_{year}.csv");
             let output = dir.join(&fname);
             if config.skip_existing && output.exists() {
                 continue;
             }
-            // ACE publishes yearly hourly averages
-            let url = format!("{}{}.txt", ACE_SWEPAM_BASE, year);
-            match download_to_string(&url) {
+            match download_hapi_csv(
+                ACE_SWEPAM_HAPI_DATASET,
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                Some(&["Time", "Np", "Vp", "Tpr"]),
+            ) {
                 Ok(data) => {
                     std::fs::write(&output, data)?;
                     log::info!("Saved {}", fname);
