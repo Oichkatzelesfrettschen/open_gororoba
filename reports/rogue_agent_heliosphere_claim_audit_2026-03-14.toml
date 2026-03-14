@@ -1,0 +1,42 @@
+generated_at_utc = "2026-03-14T00:00:00Z"
+scope = "rogue-agent heliosphere/algebra note audit"
+policy = "Treat narrative claims as hypotheses unless backed by runnable evidence or primary-source provenance."
+
+[[item]]
+path = "docs/research/heliosphere_algebra_breakthrough.md"
+classification = "discard_from_authoritative_lanes"
+claim_refs = ["C-1134"]
+reasons = [
+  "The note asserts a physical solar-wind/topological-isomorphism breakthrough without a reproducible Rust artifact or primary-source-backed validation path.",
+  "Claim C-1134 is an algebraic braid-friction statement, not a verified heliosphere measurement claim.",
+  "The note cites obsolete AMDA/Python staging paths rather than the current Rust SPDF/CDAWeb fleet lane.",
+]
+action = "Remove the note from authoritative markdown discovery and regenerate research-narrative exports."
+
+[[item]]
+path = "docs/engineering/DETAILED_WALKTHROUGH_RESCOPE.md"
+classification = "discard_from_authoritative_lanes"
+reasons = [
+  "The walkthrough centers speculative heliosphere-algebra conclusions that are not supported by runnable evidence.",
+  "It reintroduces Python operational guidance into a Rust-only data lane.",
+  "Its workstream statements belong in evidence-backed planning artifacts, not an unevidenced engineering note.",
+]
+action = "Remove the note and keep any valid operational follow-up only in the Rust planning/execution path."
+
+[[item]]
+path = "registry/requirements.toml"
+classification = "rework_to_rust_only"
+reasons = [
+  "The rogue edit reintroduced python fetch targets into REQ-HELIOSPHERE.",
+  "Operational dataset acquisition for Helios/Voyager/OMNI now exists in Rust through fetch-datasets and related mission providers.",
+]
+action = "Replace heliosphere install/verify commands with Rust-only fetch-datasets invocations."
+
+[[item]]
+path = "crates/lbm_3d_cuda/src/lib.rs"
+classification = "keep_separate_if_verified"
+reasons = [
+  "The NVRTC option change is technically independent of the heliosphere narrative claims.",
+  "It should be retained only if compilation remains clean and it is committed separately from the speculative doc lane.",
+]
+action = "Validate with cargo check before deciding whether to keep in a separate commit."
