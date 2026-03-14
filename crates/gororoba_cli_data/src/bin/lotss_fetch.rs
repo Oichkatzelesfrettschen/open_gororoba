@@ -22,8 +22,8 @@ use clap::{Parser, Subcommand, ValueEnum};
 use data_core::{
     SkyPoint,
     catalogs::lotss::{
-        LoTSSRelease, LoTSSSource, LotssFitsExecutionReport, crossmatch_points_against_fits_catalog,
-        load_from_votable,
+        LoTSSRelease, LoTSSSource, LotssFitsExecutionReport,
+        crossmatch_points_against_fits_catalog, load_from_votable,
     },
     download_stack::{DownloadStack, TransferRequest, TransferResult},
     fetcher::{compute_sha256, validate_not_html},
@@ -933,54 +933,53 @@ fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
         dr3_tile_count,
         input_path,
         shared_execution,
-    ) =
-        match resolved_format {
-            InputFormatArg::Fits => {
-                let input_path = match input {
-                    Some(path) => path,
-                    None => default_bulk_catalog_path(release)?,
-                };
-                let summary = crossmatch_targets_with_fits_catalog(
-                    &sample.targets,
-                    &input_path,
-                    release.as_catalog_release(),
-                    radius_arcsec,
-                    &execution_plan,
-                )?;
-                (
-                    summary.matches,
-                    summary.raw_source_count,
-                    summary.effective_source_count,
-                    None,
-                    input_path,
-                    summary.shared_execution,
-                )
-            }
-            InputFormatArg::Dr3Tiles => {
-                let input_path = input.unwrap_or_else(default_dr3_tile_dir);
-                footprint_report = Some(load_or_validate_footprint_summary(
-                    summary_path
-                        .as_deref()
-                        .ok_or_else(|| "missing DR3 summary path".to_string())?,
-                    allow_partial,
-                )?);
-                let loaded = load_dr3_sources_from_tiles(&input_path)?;
-                let matches = crossmatch_targets_with_sources_parallel(
-                    &sample.targets,
-                    &loaded.sources,
-                    radius_arcsec,
-                    &execution_plan,
-                );
-                (
-                    matches,
-                    loaded.summary.raw_source_count,
-                    loaded.summary.deduped_source_count,
-                    Some(loaded.summary.tile_file_count),
-                    input_path,
-                    None,
-                )
-            }
-        };
+    ) = match resolved_format {
+        InputFormatArg::Fits => {
+            let input_path = match input {
+                Some(path) => path,
+                None => default_bulk_catalog_path(release)?,
+            };
+            let summary = crossmatch_targets_with_fits_catalog(
+                &sample.targets,
+                &input_path,
+                release.as_catalog_release(),
+                radius_arcsec,
+                &execution_plan,
+            )?;
+            (
+                summary.matches,
+                summary.raw_source_count,
+                summary.effective_source_count,
+                None,
+                input_path,
+                summary.shared_execution,
+            )
+        }
+        InputFormatArg::Dr3Tiles => {
+            let input_path = input.unwrap_or_else(default_dr3_tile_dir);
+            footprint_report = Some(load_or_validate_footprint_summary(
+                summary_path
+                    .as_deref()
+                    .ok_or_else(|| "missing DR3 summary path".to_string())?,
+                allow_partial,
+            )?);
+            let loaded = load_dr3_sources_from_tiles(&input_path)?;
+            let matches = crossmatch_targets_with_sources_parallel(
+                &sample.targets,
+                &loaded.sources,
+                radius_arcsec,
+                &execution_plan,
+            );
+            (
+                matches,
+                loaded.summary.raw_source_count,
+                loaded.summary.deduped_source_count,
+                Some(loaded.summary.tile_file_count),
+                input_path,
+                None,
+            )
+        }
+    };
 
     write_crossmatch_csv(&output_path, &sample.targets, &matches, release)?;
 

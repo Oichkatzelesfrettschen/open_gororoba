@@ -101,8 +101,7 @@ impl DatasetProvider for VoyagerCrsFluxProvider {
         if is_hapi_no_data_response(&body) {
             return Err(FetchError::Validation(format!(
                 "Dataset {dataset_id} returned no data for requested window {}..{}",
-                self.year_start,
-                self.year_end
+                self.year_start, self.year_end
             )));
         }
         let body = synthesize_hapi_header_if_missing(dataset_id, &body)?;
@@ -111,10 +110,14 @@ impl DatasetProvider for VoyagerCrsFluxProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("voyager_crs").join(format!(
-            "voyager{}_crs_daily_flux_{}_{}.csv",
-            self.spacecraft, self.year_start, self.year_end
-        )).exists()
+        config
+            .output_dir
+            .join("voyager_crs")
+            .join(format!(
+                "voyager{}_crs_daily_flux_{}_{}.csv",
+                self.spacecraft, self.year_start, self.year_end
+            ))
+            .exists()
     }
 }
 
@@ -175,9 +178,19 @@ fn render_flux_csv(
     out.push_str(&header.join(","));
     out.push('\n');
     for record in records {
-        let mut fields = vec![record.decimal_year.to_string(), record.distance_au.to_string()];
+        let mut fields = vec![
+            record.decimal_year.to_string(),
+            record.distance_au.to_string(),
+        ];
         for channel in 0..proton_channel_count {
-            fields.push(record.proton_flux.get(channel).copied().unwrap_or(f64::NAN).to_string());
+            fields.push(
+                record
+                    .proton_flux
+                    .get(channel)
+                    .copied()
+                    .unwrap_or(f64::NAN)
+                    .to_string(),
+            );
             fields.push(
                 record
                     .proton_flux_error
@@ -196,12 +209,15 @@ fn render_flux_csv(
 fn hapi_parameter_names(dataset_id: &str) -> Result<Vec<String>, FetchError> {
     let info_url = format!("{HAPI_INFO_ROOT}?id={dataset_id}");
     let info = download_to_string(&info_url)?;
-    let value: Value = serde_json::from_str(&info)
-        .map_err(|err| FetchError::Validation(format!("invalid HAPI info JSON for {dataset_id}: {err}")))?;
+    let value: Value = serde_json::from_str(&info).map_err(|err| {
+        FetchError::Validation(format!("invalid HAPI info JSON for {dataset_id}: {err}"))
+    })?;
     let parameters = value
         .get("parameters")
         .and_then(Value::as_array)
-        .ok_or_else(|| FetchError::Validation(format!("HAPI info for {dataset_id} is missing parameters")))?;
+        .ok_or_else(|| {
+            FetchError::Validation(format!("HAPI info for {dataset_id} is missing parameters"))
+        })?;
     let names = parameters
         .iter()
         .filter_map(|parameter| parameter.get("name").and_then(Value::as_str))
@@ -247,25 +263,33 @@ fn parse_voyager_archive_flux(
     spacecraft: u8,
 ) -> Result<Vec<VoyagerCrsFluxRecord>, FetchError> {
     let mut lines = data.lines().map(str::trim).filter(|line| !line.is_empty());
-    let _spacecraft_label = lines
-        .next()
-        .ok_or_else(|| FetchError::Validation("Voyager archive payload missing spacecraft line".to_string()))?;
-    let _start = lines
-        .next()
-        .ok_or_else(|| FetchError::Validation("Voyager archive payload missing start line".to_string()))?;
-    let _stop = lines
-        .next()
-        .ok_or_else(|| FetchError::Validation("Voyager archive payload missing stop line".to_string()))?;
+    let _spacecraft_label = lines.next().ok_or_else(|| {
+        FetchError::Validation("Voyager archive payload missing spacecraft line".to_string())
+    })?;
+    let _start = lines.next().ok_or_else(|| {
+        FetchError::Validation("Voyager archive payload missing start line".to_string())
+    })?;
+    let _stop = lines.next().ok_or_else(|| {
+        FetchError::Validation("Voyager archive payload missing stop line".to_string())
+    })?;
     let quantity_count = lines
         .next()
-        .ok_or_else(|| FetchError::Validation("Voyager archive payload missing quantity-count line".to_string()))?
+        .ok_or_else(|| {
+            FetchError::Validation(
+                "Voyager archive payload missing quantity-count line".to_string(),
+            )
+        })?
         .parse::<usize>()
-        .map_err(|err| FetchError::Validation(format!("invalid Voyager archive quantity count: {err}")))?;
+        .map_err(|err| {
+            FetchError::Validation(format!("invalid Voyager archive quantity count: {err}"))
+        })?;
     let mut proton_positions = Vec::new();
     for quantity_index in 0..quantity_count {
-        let descriptor = lines
-            .next()
-            .ok_or_else(|| FetchError::Validation(format!("Voyager archive payload missing descriptor line {quantity_index}")))?;
+        let descriptor = lines.next().ok_or_else(|| {
+            FetchError::Validation(format!(
+                "Voyager archive payload missing descriptor line {quantity_index}"
+            ))
+        })?;
         if descriptor.to_ascii_lowercase().contains("hydrogen flux") {
             proton_positions.push(quantity_index);
         }
@@ -390,7 +414,10 @@ pub fn parse_voyager_crs_flux_csv(
         .iter()
         .position(|header| {
             let normalized = header.trim().to_ascii_lowercase();
-            matches!(normalized.as_str(), "time" | "time_tag" | "date" | "datetime" | "decimal_year")
+            matches!(
+                normalized.as_str(),
+                "time" | "time_tag" | "date" | "datetime" | "decimal_year"
+            )
         })
         .unwrap_or_else(|| panic!("CRS flux CSV is missing a time column"));
     let distance_idx = headers.iter().position(|header| {

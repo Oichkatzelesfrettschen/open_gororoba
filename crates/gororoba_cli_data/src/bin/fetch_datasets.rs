@@ -843,7 +843,11 @@ fn main() {
                     );
                     failed += 1;
                 } else {
-                    eprintln!("  OK: {} ({} staged files)", path.display(), staged_files.max(1));
+                    eprintln!(
+                        "  OK: {} ({} staged files)",
+                        path.display(),
+                        staged_files.max(1)
+                    );
                     success += 1;
                 }
             }

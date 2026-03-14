@@ -50,10 +50,16 @@ struct Cli {
     #[arg(long, default_value = "data/external/voyager2")]
     voyager2_dir: PathBuf,
 
-    #[arg(long, default_value = "data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv"
+    )]
     voyager1_crs: PathBuf,
 
-    #[arg(long, default_value = "data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv"
+    )]
     voyager2_crs: PathBuf,
 
     #[arg(long, default_value = "data/external/ace_mag")]
@@ -312,7 +318,8 @@ fn main() -> Result<()> {
         &cli.psp_dir,
         |path| {
             (file_name_starts_with(path, "psp_") && file_name_ends_with(path, ".asc"))
-                || (file_name_starts_with(path, "psp_coho1hr_") && file_name_ends_with(path, ".csv"))
+                || (file_name_starts_with(path, "psp_coho1hr_")
+                    && file_name_ends_with(path, ".csv"))
         },
         |path| Ok(parse_psp_file(path)?),
     )?;
@@ -350,13 +357,19 @@ fn main() -> Result<()> {
         "Voyager 1 CRS daily flux",
         &cli.voyager1_crs,
         voyager1_crs.as_deref(),
-        Some("Daily-flux calibration lane; used as the chronology-tight third component.".to_string()),
+        Some(
+            "Daily-flux calibration lane; used as the chronology-tight third component."
+                .to_string(),
+        ),
     );
     let voyager2_crs_series = crs_overlay_series(
         "Voyager 2 CRS daily flux",
         &cli.voyager2_crs,
         voyager2_crs.as_deref(),
-        Some("Daily-flux calibration lane; current local cache stops at 2016 for Voyager 2.".to_string()),
+        Some(
+            "Daily-flux calibration lane; current local cache stops at 2016 for Voyager 2."
+                .to_string(),
+        ),
     );
     let ace_mag_series = ace_mag_overlay_series(&cli.ace_mag_dir, ace_mag.as_deref());
     let ace_swepam_series = swepam_overlay_series(&cli.ace_swepam_dir, ace_swepam.as_deref());
@@ -389,10 +402,17 @@ fn main() -> Result<()> {
         "Cassini cruise merged hourly",
         &cli.cassini_dir,
         cassini.as_deref(),
-        Some("Cruise lane is a governed hybrid with modeled plasma and measured trajectory/MAG.".to_string()),
+        Some(
+            "Cruise lane is a governed hybrid with modeled plasma and measured trajectory/MAG."
+                .to_string(),
+        ),
     );
-    let juno_series =
-        merged_overlay_series("Juno cruise merged hourly", &cli.juno_dir, juno.as_deref(), None);
+    let juno_series = merged_overlay_series(
+        "Juno cruise merged hourly",
+        &cli.juno_dir,
+        juno.as_deref(),
+        None,
+    );
     let new_horizons_series = merged_overlay_series(
         "New Horizons SWAP hourly",
         &cli.new_horizons_dir,
@@ -408,8 +428,7 @@ fn main() -> Result<()> {
         Some("ENA sky maps are governed here as a sky-map lane, not a heliocentric time-series overlay.".to_string()),
     );
     let ibex_orbit_series = ibex_orbit_overlay_series(&cli.ibex_orbit_dir, ibex_orbit.as_deref());
-    let psp_series =
-        merged_overlay_series("PSP merged hourly", &cli.psp_dir, psp.as_deref(), None);
+    let psp_series = merged_overlay_series("PSP merged hourly", &cli.psp_dir, psp.as_deref(), None);
     let solar_orbiter_series = merged_overlay_series(
         "Solar Orbiter merged hourly",
         &cli.solar_orbiter_dir,
@@ -842,8 +861,8 @@ fn main() -> Result<()> {
 }
 
 fn load_contract_ids(path: &Path) -> Result<HashSet<String>> {
-    let conn =
-        Connection::open(path).with_context(|| format!("open control-plane DB {}", path.display()))?;
+    let conn = Connection::open(path)
+        .with_context(|| format!("open control-plane DB {}", path.display()))?;
     let mut stmt = conn
         .prepare("select id from external_source_contracts")
         .context("prepare external_source_contracts query")?;
@@ -919,7 +938,11 @@ where
     }
 }
 
-fn load_merged_optional<F, P>(dir: &Path, predicate: P, parser: F) -> Result<Option<Vec<SpdfMergedRecord>>>
+fn load_merged_optional<F, P>(
+    dir: &Path,
+    predicate: P,
+    parser: F,
+) -> Result<Option<Vec<SpdfMergedRecord>>>
 where
     F: Fn(&Path) -> Result<Vec<SpdfMergedRecord>>,
     P: Fn(&Path) -> bool,
@@ -938,9 +961,13 @@ fn load_ace_mag_hourly_optional(dir: &Path) -> Result<Option<Vec<AceMagHourly>>>
     let mut hourly = Vec::new();
     for path in paths {
         if path.extension().and_then(|value| value.to_str()) == Some("csv") {
-            hourly.extend(parse_ace_mag_hapi_file(&path).with_context(|| format!("parse {}", path.display()))?);
+            hourly.extend(
+                parse_ace_mag_hapi_file(&path)
+                    .with_context(|| format!("parse {}", path.display()))?,
+            );
         } else {
-            let raw = parse_ace_mag_file(&path).with_context(|| format!("parse {}", path.display()))?;
+            let raw =
+                parse_ace_mag_file(&path).with_context(|| format!("parse {}", path.display()))?;
             hourly.extend(average_to_hourly(&raw));
         }
     }
@@ -1168,7 +1195,10 @@ fn ibex_orbit_overlay_series(path: &Path, records: Option<&[IbexOrbitRecord]>) -
         if !path.exists() {
             Some("IBEX orbit support files are not staged locally.".to_string())
         } else {
-            Some("SSC orbit series complements the ENA sky-map family for same-epoch overlay only.".to_string())
+            Some(
+                "SSC orbit series complements the ENA sky-map family for same-epoch overlay only."
+                    .to_string(),
+            )
         },
     )
 }
@@ -1191,7 +1221,10 @@ fn dataset_window_from_series(series: &OverlaySeries) -> DatasetWindow {
             .bounds
             .as_ref()
             .map(|bounds| format_timestamp_ms(bounds.end_ms)),
-        cadence_seconds: series.bounds.as_ref().and_then(|bounds| bounds.cadence_seconds),
+        cadence_seconds: series
+            .bounds
+            .as_ref()
+            .and_then(|bounds| bounds.cadence_seconds),
         notes: series.notes.clone(),
     }
 }
@@ -1230,9 +1263,12 @@ fn build_overlay(
         "temporal_unknown"
     };
 
-    let mean_distance = distance_records.and_then(|records| mean_distance_on_days(records, &simultaneous));
-    let min_distance = distance_records.and_then(|records| min_distance_on_days(records, &simultaneous));
-    let max_distance = distance_records.and_then(|records| max_distance_on_days(records, &simultaneous));
+    let mean_distance =
+        distance_records.and_then(|records| mean_distance_on_days(records, &simultaneous));
+    let min_distance =
+        distance_records.and_then(|records| min_distance_on_days(records, &simultaneous));
+    let max_distance =
+        distance_records.and_then(|records| max_distance_on_days(records, &simultaneous));
 
     MissionOverlay {
         mission: mission.to_string(),
@@ -1267,7 +1303,10 @@ fn build_coverage_row(
 ) -> FleetCoverageRow {
     FleetCoverageRow {
         mission: mission.to_string(),
-        provider_names: provider_names.iter().map(|name| (*name).to_string()).collect(),
+        provider_names: provider_names
+            .iter()
+            .map(|name| (*name).to_string())
+            .collect(),
         fetch_registered: true,
         cache_present: cache_paths.iter().any(|path| path.exists()),
         parser_working: status.parser_working,
@@ -1404,8 +1443,12 @@ fn wind_mfi_day_keys(records: &[WindMfiRecord]) -> BTreeSet<i32> {
     records
         .iter()
         .filter_map(|record| {
-            chrono::NaiveDate::from_ymd_opt(record.year as i32, record.month as u32, record.day as u32)
-                .map(|date| record.year as i32 * 1000 + date.ordinal() as i32)
+            chrono::NaiveDate::from_ymd_opt(
+                record.year as i32,
+                record.month as u32,
+                record.day as u32,
+            )
+            .map(|date| record.year as i32 * 1000 + date.ordinal() as i32)
         })
         .collect()
 }
@@ -1420,10 +1463,7 @@ fn bounds_from_wind_swe(records: &[WindSweRecord]) -> Option<TimeBounds> {
 }
 
 fn wind_swe_day_keys(records: &[WindSweRecord]) -> BTreeSet<i32> {
-    records
-        .iter()
-        .filter_map(wind_swe_day_key)
-        .collect()
+    records.iter().filter_map(wind_swe_day_key).collect()
 }
 
 fn wind_swe_day_key(record: &WindSweRecord) -> Option<i32> {
@@ -1445,7 +1485,9 @@ fn bounds_from_stereo_plastic(records: &[StereoPlasticRecord]) -> Option<TimeBou
     bounds_from_timestamps(
         records
             .iter()
-            .filter_map(|record| ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32))
+            .filter_map(|record| {
+                ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32)
+            })
             .collect::<Vec<_>>(),
     )
 }
@@ -1461,7 +1503,9 @@ fn bounds_from_stereo_mag(records: &[StereoMagRecord]) -> Option<TimeBounds> {
     bounds_from_timestamps(
         records
             .iter()
-            .filter_map(|record| ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32))
+            .filter_map(|record| {
+                ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32)
+            })
             .collect::<Vec<_>>(),
     )
 }
@@ -1477,7 +1521,9 @@ fn bounds_from_ibex_orbit(records: &[IbexOrbitRecord]) -> Option<TimeBounds> {
     bounds_from_timestamps(
         records
             .iter()
-            .filter_map(|record| ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32))
+            .filter_map(|record| {
+                ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32)
+            })
             .collect::<Vec<_>>(),
     )
 }

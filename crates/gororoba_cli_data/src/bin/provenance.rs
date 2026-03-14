@@ -364,10 +364,18 @@ fn main() -> Result<()> {
         Commands::IndexControlPlane(args) => run_index_control_plane(&repo_root, &db_path, args),
         Commands::ExportControlPlane(args) => run_export_control_plane(&repo_root, &db_path, args),
         Commands::VerifyControlPlane(args) => run_verify_control_plane(&repo_root, &db_path, args),
-        Commands::IndexExternalSources(args) => run_index_external_sources(&repo_root, &db_path, args),
-        Commands::ExportExternalSources(args) => run_export_external_sources(&repo_root, &db_path, args),
-        Commands::VerifyExternalSources(args) => run_verify_external_sources(&repo_root, &db_path, args),
-        Commands::UpdateExternalSource(args) => run_update_external_source(&repo_root, &db_path, args),
+        Commands::IndexExternalSources(args) => {
+            run_index_external_sources(&repo_root, &db_path, args)
+        }
+        Commands::ExportExternalSources(args) => {
+            run_export_external_sources(&repo_root, &db_path, args)
+        }
+        Commands::VerifyExternalSources(args) => {
+            run_verify_external_sources(&repo_root, &db_path, args)
+        }
+        Commands::UpdateExternalSource(args) => {
+            run_update_external_source(&repo_root, &db_path, args)
+        }
         Commands::Query(args) => run_query(&db_path, args),
         Commands::Doctor(args) => run_doctor(&db_path, args),
         Commands::LinkAudit(args) => run_link_audit(&db_path, args),

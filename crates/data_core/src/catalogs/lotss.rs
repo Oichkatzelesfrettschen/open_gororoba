@@ -22,15 +22,15 @@ use crate::{
     fetcher::FetchError,
     spatial::{SkyGridIndex, SkyPoint, angular_separation_arcsec},
 };
+#[cfg(all(feature = "fits", target_arch = "x86_64"))]
+use cd_kernel::angular_separation_arcsec_ext80_deg;
 #[cfg(feature = "fits")]
 use rayon::prelude::*;
 use std::{collections::HashMap, ops::Range, path::Path, time::Instant};
 #[cfg(feature = "fits")]
-use wide::f64x4;
-#[cfg(feature = "fits")]
 use verified_core::topology::HardwareTopology;
-#[cfg(all(feature = "fits", target_arch = "x86_64"))]
-use cd_kernel::angular_separation_arcsec_ext80_deg;
+#[cfg(feature = "fits")]
+use wide::f64x4;
 
 /// LoTSS catalog release identifier.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -575,18 +575,15 @@ fn build_lotss_execution_plan(
         .l3_safe_working_set_bytes
         .max(LOTSS_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW)
         / worker_count.max(1);
-    let auto_chunk_rows = (per_worker_bytes / LOTSS_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW)
-        .clamp(
-            LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS,
-            LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS,
-        );
+    let auto_chunk_rows = (per_worker_bytes / LOTSS_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW).clamp(
+        LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS,
+        LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS,
+    );
     let alignment_rows = (simd_lane_f64 * 256).max(1);
-    let chunk_rows = (chunk_rows_override.unwrap_or(auto_chunk_rows))
-        .clamp(
-            LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS,
-            LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS,
-        )
-        / alignment_rows
+    let chunk_rows = (chunk_rows_override.unwrap_or(auto_chunk_rows)).clamp(
+        LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS,
+        LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS,
+    ) / alignment_rows
         * alignment_rows;
 
     LotssExecutionPlan {
@@ -670,12 +667,16 @@ fn inspect_lotss_position_layout(path: &Path) -> Result<LotssPositionLayout, Fet
         .iter()
         .find(|name| name.eq_ignore_ascii_case("RA"))
         .cloned()
-        .ok_or_else(|| FetchError::Validation(format!("No RA column found in {}", path.display())))?;
+        .ok_or_else(|| {
+            FetchError::Validation(format!("No RA column found in {}", path.display()))
+        })?;
     let dec_column = column_names
         .iter()
         .find(|name| name.eq_ignore_ascii_case("DEC"))
         .cloned()
-        .ok_or_else(|| FetchError::Validation(format!("No DEC column found in {}", path.display())))?;
+        .ok_or_else(|| {
+            FetchError::Validation(format!("No DEC column found in {}", path.display()))
+        })?;
 
     Ok(LotssPositionLayout {
         table_idx,
@@ -715,8 +716,9 @@ fn scan_lotss_best_match_range(
 ) -> Result<PointBestMatchScanSummary, FetchError> {
     use fitsio::FitsFile;
 
-    let mut fits = FitsFile::open(lotss_path)
-        .map_err(|e| FetchError::Validation(format!("FITS open {}: {}", lotss_path.display(), e)))?;
+    let mut fits = FitsFile::open(lotss_path).map_err(|e| {
+        FetchError::Validation(format!("FITS open {}: {}", lotss_path.display(), e))
+    })?;
     let table_hdu = fits
         .hdu(layout.table_idx)
         .map_err(|e| FetchError::Validation(format!("hdu {}: {}", layout.table_idx, e)))?;
@@ -807,13 +809,16 @@ fn finalize_pending_lotss_best_matches(
     for entry in pending {
         match entry {
             Some(entry) => {
-                let source = rows_by_index.get(&entry.row_index).cloned().ok_or_else(|| {
-                    FetchError::Validation(format!(
-                        "Missing LoTSS source row {} during batch finalization for {}",
-                        entry.row_index,
-                        path.display()
-                    ))
-                })?;
+                let source = rows_by_index
+                    .get(&entry.row_index)
+                    .cloned()
+                    .ok_or_else(|| {
+                        FetchError::Validation(format!(
+                            "Missing LoTSS source row {} during batch finalization for {}",
+                            entry.row_index,
+                            path.display()
+                        ))
+                    })?;
                 finalized.push(Some(LotssFitsBestMatch {
                     source_row_index: entry.row_index,
                     separation_arcsec: entry.separation_arcsec,
@@ -902,11 +907,14 @@ fn for_each_prepared_point_match<F>(
     F: FnMut(usize, f64),
 {
     let mut candidate_indices = Vec::new();
-    prepared
-        .grid
-        .for_each_search_candidate(query_ra_deg, query_dec_deg, match_radius_arcsec, |idx| {
+    prepared.grid.for_each_search_candidate(
+        query_ra_deg,
+        query_dec_deg,
+        match_radius_arcsec,
+        |idx| {
             candidate_indices.push(idx);
-        });
+        },
+    );
     if candidate_indices.is_empty() {
         return;
     }

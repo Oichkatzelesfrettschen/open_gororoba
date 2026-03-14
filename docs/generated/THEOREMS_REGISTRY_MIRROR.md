@@ -1,4 +1,5 @@
 <!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Source of truth: registry/canonical/control_plane.sqlite3 -->
 <!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
 <!-- Source label: registry/canonical/control_plane.sqlite3 -->
 <!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane -->
@@ -153,3 +154,4 @@ This file is generated from the canonical SQLite control plane and currently ind
 | `C_TraceTracefreeVanishes` | `proofs/verified/C_TraceTracefreeVanishes.v` | kernel_checked | - |
 | `C_WECImpliesNEC` | `proofs/verified/C_WECImpliesNEC.v` | kernel_checked | - |
 | `C_WarpEnergyNonpositive` | `proofs/verified/C_WarpEnergyNonpositive.v` | kernel_checked | - |
+

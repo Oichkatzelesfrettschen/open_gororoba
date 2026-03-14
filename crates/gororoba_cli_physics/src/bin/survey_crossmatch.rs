@@ -2,12 +2,12 @@
 
 #[cfg(feature = "euclid-catalog")]
 use anyhow::{Result, anyhow, bail};
+#[cfg(all(feature = "euclid-catalog", target_arch = "x86_64"))]
+use cd_kernel::angular_separation_arcsec_ext80_deg;
 #[cfg(feature = "euclid-catalog")]
 use clap::{Parser, Subcommand, ValueEnum};
 #[cfg(feature = "euclid-catalog")]
 use cosmology_core::euclid_morphology::{EuclidMorphologyRecord, read_euclid_visual_morphology};
-#[cfg(all(feature = "euclid-catalog", target_arch = "x86_64"))]
-use cd_kernel::angular_separation_arcsec_ext80_deg;
 #[cfg(feature = "euclid-catalog")]
 use data_core::{
     CatalogModality, SkyGridIndex, SkyPoint,
@@ -31,8 +31,6 @@ use rayon::prelude::*;
 #[cfg(feature = "euclid-catalog")]
 use serde::{Deserialize, Serialize};
 #[cfg(feature = "euclid-catalog")]
-use wide::f64x4;
-#[cfg(feature = "euclid-catalog")]
 use std::{
     collections::{HashMap, HashSet},
     fs,
@@ -41,6 +39,8 @@ use std::{
 };
 #[cfg(feature = "euclid-catalog")]
 use verified_core::topology::HardwareTopology;
+#[cfg(feature = "euclid-catalog")]
+use wide::f64x4;
 
 #[cfg(feature = "euclid-catalog")]
 const DRPALL_COLUMNS: &[&str] = &["plateifu", "mangaid", "objra", "objdec"];
@@ -770,9 +770,8 @@ fn main() -> Result<()> {
             euclid_morphology,
             release,
             lotss: lotss.unwrap_or_else(|| default_lotss_path(release)),
-            output: output.unwrap_or_else(|| {
-                default_euclid_lotss_csv_for_mode(release, no_morphology_cuts)
-            }),
+            output: output
+                .unwrap_or_else(|| default_euclid_lotss_csv_for_mode(release, no_morphology_cuts)),
             report: report.unwrap_or_else(|| {
                 default_euclid_lotss_report_for_mode(release, no_morphology_cuts)
             }),
@@ -1400,8 +1399,7 @@ fn cmd_things_manga(
     if match_radius_arcsec <= 0.0 {
         bail!("match_radius_arcsec must be positive");
     }
-    let things =
-        load_things_galaxies_filtered(&things_table1, things_rotcurves.as_deref())?;
+    let things = load_things_galaxies_filtered(&things_table1, things_rotcurves.as_deref())?;
     let thing_points = things_to_points(&things);
     let manga_sample = load_selected_manga_targets(&manga_selection, &manga_drpall)?;
     let manga_matches = match_points_to_manga(&thing_points, &manga_sample, match_radius_arcsec);
@@ -1449,10 +1447,8 @@ fn cmd_things_lotss(args: ThingsLotssArgs) -> Result<()> {
     if args.match_radius_arcsec <= 0.0 {
         bail!("match_radius_arcsec must be positive");
     }
-    let things = load_things_galaxies_filtered(
-        &args.things_table1,
-        args.things_rotcurves.as_deref(),
-    )?;
+    let things =
+        load_things_galaxies_filtered(&args.things_table1, args.things_rotcurves.as_deref())?;
     let thing_points = things_to_points(&things);
     let best_match_result = find_best_lotss_matches(
         &args.lotss,
@@ -1527,10 +1523,8 @@ fn cmd_things_manga_lotss(args: ThingsMangaLotssArgs) -> Result<()> {
     if args.match_radius_arcsec <= 0.0 {
         bail!("match_radius_arcsec must be positive");
     }
-    let things = load_things_galaxies_filtered(
-        &args.things_table1,
-        args.things_rotcurves.as_deref(),
-    )?;
+    let things =
+        load_things_galaxies_filtered(&args.things_table1, args.things_rotcurves.as_deref())?;
     let thing_points = things_to_points(&things);
     let manga_sample = load_selected_manga_targets(&args.manga_selection, &args.manga_drpall)?;
     let manga_matches =
@@ -1661,7 +1655,8 @@ fn cmd_catalog_matrix(args: CatalogMatrixArgs) -> Result<()> {
     }
 
     let execution_plan = build_catalog_matrix_execution_plan(args.workers, args.chunk_rows);
-    let euclid_report_path = resolve_euclid_lotss_report_path(args.release, &args.euclid_lotss_report);
+    let euclid_report_path =
+        resolve_euclid_lotss_report_path(args.release, &args.euclid_lotss_report);
     let mut entries = Vec::new();
     entries.push(CatalogMatrixEntry {
         catalog: format!("LoTSS {}", args.release.label().to_ascii_uppercase()),
@@ -1768,7 +1763,10 @@ fn cmd_catalog_matrix(args: CatalogMatrixArgs) -> Result<()> {
         point_catalogs.push(PreparedPointMatrixCatalog {
             catalog: "THINGS HI rotcurves".to_string(),
             path: rotcurves_path.clone(),
-            points: load_things_points_filtered(&args.things_table1, Some(rotcurves_path.as_path()))?,
+            points: load_things_points_filtered(
+                &args.things_table1,
+                Some(rotcurves_path.as_path()),
+            )?,
         });
     }
     let scan_started = Instant::now();
@@ -1799,10 +1797,7 @@ fn cmd_catalog_matrix(args: CatalogMatrixArgs) -> Result<()> {
         modality: modality_label(CatalogModality::SkyPoint),
         path: euclid_report_path.display().to_string(),
         row_count: None,
-        exact_overlap_with_lotss: read_report_usize(
-            &euclid_report_path,
-            "matched_euclid_count",
-        ),
+        exact_overlap_with_lotss: read_report_usize(&euclid_report_path, "matched_euclid_count"),
         status: if euclid_report_path.exists() {
             "implemented".to_string()
         } else {
@@ -2123,19 +2118,15 @@ fn build_catalog_matrix_execution_plan(
         .l3_safe_working_set_bytes
         .max(MATRIX_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW)
         / worker_count.max(1);
-    let auto_chunk_rows = (per_worker_bytes / MATRIX_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW)
-        .clamp(
-            MATRIX_MIN_PARALLEL_FITS_CHUNK_ROWS,
-            MATRIX_MAX_PARALLEL_FITS_CHUNK_ROWS,
-        );
+    let auto_chunk_rows = (per_worker_bytes / MATRIX_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW).clamp(
+        MATRIX_MIN_PARALLEL_FITS_CHUNK_ROWS,
+        MATRIX_MAX_PARALLEL_FITS_CHUNK_ROWS,
+    );
     let alignment_rows = (simd_lane_f64 * 256).max(1);
-    let chunk_rows = chunk_rows_override
-        .unwrap_or(auto_chunk_rows)
-        .clamp(
-            MATRIX_MIN_PARALLEL_FITS_CHUNK_ROWS,
-            MATRIX_MAX_PARALLEL_FITS_CHUNK_ROWS,
-        )
-        / alignment_rows
+    let chunk_rows = chunk_rows_override.unwrap_or(auto_chunk_rows).clamp(
+        MATRIX_MIN_PARALLEL_FITS_CHUNK_ROWS,
+        MATRIX_MAX_PARALLEL_FITS_CHUNK_ROWS,
+    ) / alignment_rows
         * alignment_rows;
     let chunk_rows = chunk_rows.max(MATRIX_MIN_PARALLEL_FITS_CHUNK_ROWS);
 
@@ -2245,8 +2236,7 @@ fn prepare_point_matrix_grids(
 
 #[cfg(feature = "euclid-catalog")]
 fn inspect_lotss_position_layout(path: &Path) -> Result<LotssPositionLayout> {
-    let mut fits = FitsFile::open(path)
-        .map_err(|e| anyhow!("open {}: {}", path.display(), e))?;
+    let mut fits = FitsFile::open(path).map_err(|e| anyhow!("open {}: {}", path.display(), e))?;
     let num_hdus = {
         let mut count = 0usize;
         for _ in fits.iter() {
@@ -2276,8 +2266,8 @@ fn inspect_lotss_position_layout(path: &Path) -> Result<LotssPositionLayout> {
         }
     }
 
-    let table_idx = table_idx
-        .ok_or_else(|| anyhow!("No BINTABLE HDU found in {}", path.display()))?;
+    let table_idx =
+        table_idx.ok_or_else(|| anyhow!("No BINTABLE HDU found in {}", path.display()))?;
     let ra_column = column_names
         .iter()
         .find(|name| name.eq_ignore_ascii_case("RA"))
@@ -2325,8 +2315,8 @@ fn scan_lotss_point_overlap_range(
     worker_bounds: std::ops::Range<usize>,
     chunk_rows: usize,
 ) -> Result<MatrixScanSummary> {
-    let mut fits = FitsFile::open(lotss_path)
-        .map_err(|e| anyhow!("open {}: {}", lotss_path.display(), e))?;
+    let mut fits =
+        FitsFile::open(lotss_path).map_err(|e| anyhow!("open {}: {}", lotss_path.display(), e))?;
     let table_hdu = fits
         .hdu(layout.table_idx)
         .map_err(|e| anyhow!("hdu {}: {}", layout.table_idx, e))?;
@@ -2340,10 +2330,26 @@ fn scan_lotss_point_overlap_range(
         let row_range = start..end;
         let ras: Vec<f64> = table_hdu
             .read_col_range(&mut fits, &layout.ra_column, &row_range)
-            .map_err(|e| anyhow!("Load FITS {} rows {}..{}: {}", layout.ra_column, start, end, e))?;
+            .map_err(|e| {
+                anyhow!(
+                    "Load FITS {} rows {}..{}: {}",
+                    layout.ra_column,
+                    start,
+                    end,
+                    e
+                )
+            })?;
         let decs: Vec<f64> = table_hdu
             .read_col_range(&mut fits, &layout.dec_column, &row_range)
-            .map_err(|e| anyhow!("Load FITS {} rows {}..{}: {}", layout.dec_column, start, end, e))?;
+            .map_err(|e| {
+                anyhow!(
+                    "Load FITS {} rows {}..{}: {}",
+                    layout.dec_column,
+                    start,
+                    end,
+                    e
+                )
+            })?;
 
         for row_idx in 0..ras.len() {
             let ra_deg = *ras.get(row_idx).unwrap_or(&f64::NAN);
@@ -2425,7 +2431,9 @@ fn find_best_lotss_matches(
 }
 
 #[cfg(feature = "euclid-catalog")]
-fn shared_execution_to_local(execution: &data_core::LotssFitsExecutionReport) -> LotssExecutionReport {
+fn shared_execution_to_local(
+    execution: &data_core::LotssFitsExecutionReport,
+) -> LotssExecutionReport {
     LotssExecutionReport {
         mode: execution.mode.clone(),
         worker_count: execution.worker_count,
@@ -2465,11 +2473,14 @@ fn for_each_catalog_match<F>(
     F: FnMut(usize, f64),
 {
     let mut candidate_indices = Vec::new();
-    catalog
-        .grid
-        .for_each_search_candidate(query_ra_deg, query_dec_deg, match_radius_arcsec, |idx| {
+    catalog.grid.for_each_search_candidate(
+        query_ra_deg,
+        query_dec_deg,
+        match_radius_arcsec,
+        |idx| {
             candidate_indices.push(idx);
-        });
+        },
+    );
     if candidate_indices.is_empty() {
         return;
     }
@@ -2685,10 +2696,7 @@ fn resolve_euclid_lotss_report_path(release: ReleaseArg, requested: &Path) -> Pa
                 continue;
             }
             if patterns.iter().any(|prefix| name.starts_with(prefix)) {
-                let modified = entry
-                    .metadata()
-                    .and_then(|meta| meta.modified())
-                    .ok();
+                let modified = entry.metadata().and_then(|meta| meta.modified()).ok();
                 candidates.push((modified, path));
             }
         }
@@ -2790,10 +2798,7 @@ fn default_euclid_lotss_report(release: ReleaseArg) -> PathBuf {
 }
 
 #[cfg(feature = "euclid-catalog")]
-fn default_euclid_lotss_report_for_mode(
-    release: ReleaseArg,
-    no_morphology_cuts: bool,
-) -> PathBuf {
+fn default_euclid_lotss_report_for_mode(release: ReleaseArg, no_morphology_cuts: bool) -> PathBuf {
     if no_morphology_cuts {
         PathBuf::from("reports").join(format!(
             "euclid_lotss_xmatch_{}_nocuts_{}.toml",

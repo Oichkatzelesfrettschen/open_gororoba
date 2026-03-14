@@ -277,7 +277,11 @@ impl DatasetProvider for HeliosProvider {
                     log::info!("saved {}", csv_name);
                 }
                 Err(e) => {
-                    log::warn!("failed to download Helios {} via HAPI fallback: {}", year, e);
+                    log::warn!(
+                        "failed to download Helios {} via HAPI fallback: {}",
+                        year,
+                        e
+                    );
                 }
             }
         }

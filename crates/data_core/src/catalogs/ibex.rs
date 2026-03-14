@@ -29,8 +29,7 @@ use crate::{
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 /// IBEX ENA sky map pixel.
 #[derive(Debug, Clone)]
@@ -333,7 +332,11 @@ mod tests {
     fn test_parse_ibex_orbit_hapi_csv() {
         let data = "Time,RADIUS\n2016-01-01T00:00:27.000Z,28.66\n2016-01-01T00:15:27.000Z,28.67\n2016-01-01T01:00:27.000Z,28.70\n";
         let rows = parse_ibex_orbit_hapi_csv(data);
-        assert_eq!(rows.len(), 2, "rows are hourly-deduplicated for overlay use");
+        assert_eq!(
+            rows.len(),
+            2,
+            "rows are hourly-deduplicated for overlay use"
+        );
         assert_eq!(rows[0].year, 2016);
         assert_eq!(rows[0].doy, 1);
         assert_eq!(rows[0].hour, 0);
