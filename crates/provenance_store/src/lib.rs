@@ -1444,7 +1444,7 @@ impl ProvenanceStore {
         id: &str,
         patch: ExternalSourceContractPatch<'_>,
     ) -> Result<bool> {
-        if self.update_external_source_contract(id, patch.clone())? {
+        if self.update_external_source_contract(id, patch)? {
             return Ok(false);
         }
         let path_glob = patch.path_glob.ok_or_else(|| {
