@@ -84,7 +84,7 @@ pub struct LbmSolver3DCuda {
     convert_real_to_complex_kernel: CudaFunction,
     convert_complex_to_real_kernel: CudaFunction,
     #[allow(dead_code)]
-    update_tau_from_voudon_kernel: CudaFunction,
+    update_tau_from_voudon_kernel: Option<CudaFunction>,
     // SoA kernel functions (FP32 only, loaded from kernels_soa.cu)
     soa_step_kernel: Option<CudaFunction>,
     soa_init_uniform_kernel: Option<CudaFunction>,
@@ -310,8 +310,9 @@ impl LbmSolver3DCuda {
             Precision::FP64 => "convert_complex_f32_to_real_fp64_kernel",
             Precision::FP32 => "convert_complex_to_real_kernel",
         })?;
-        let update_tau_from_voudon_kernel =
-            module.load_function("update_tau_from_voudon_frustration_kernel")?;
+        let update_tau_from_voudon_kernel = module
+            .load_function("update_tau_from_voudon_frustration_kernel")
+            .ok();
 
         // Compile SoA kernels for FP32 (production path with coalesced memory)
         let (
@@ -808,9 +809,11 @@ impl LbmSolver3DCuda {
     ) -> Result<()> {
         let n_cells = self.n_cells as u32;
         let n_cells_i = n_cells as i32;
-        let mut b = self
-            .stream
-            .launch_builder(&self.update_tau_from_voudon_kernel);
+        let mut b = self.stream.launch_builder(
+            self.update_tau_from_voudon_kernel
+                .as_ref()
+                .context("Voudon kernel not available")?,
+        );
         b.arg(&mut self.d_tau)
             .arg(frustration)
             .arg(&tau_base)
