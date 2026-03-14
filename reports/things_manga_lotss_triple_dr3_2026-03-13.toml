@@ -1,0 +1,33 @@
+generated_at_utc = "2026-03-13T23:17:38.048108384+00:00"
+things_table1_path = "data/external/things/table1.dat"
+manga_selection_path = "data/external/manga/dapall_selection.csv"
+manga_drpall_path = "data/external/manga/drpall-v3_1_1.fits"
+lotss_path = "data/external/radio_surveys/lotss_dr3.fits"
+output_csv_path = "data/external/things/things_manga_lotss_triple_dr3.csv"
+release = "DR3"
+input_things_count = 34
+manga_overlap_count = 0
+lotss_overlap_count = 16
+triple_overlap_count = 0
+match_radius_arcsec = 15.0
+chunk_rows = 628736
+
+[execution]
+mode = "pinned_physical_single_pass"
+worker_count = 6
+chunk_rows = 628736
+pinned_core_ids = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+]
+l3_cache_bytes = 100663296
+l3_safe_working_set_bytes = 90596966
+avx2_detected = true
+fma_detected = true
+simd_lane_f64 = 4
+x87_confirmation_used = true
+scan_wall_seconds = 44.42308297

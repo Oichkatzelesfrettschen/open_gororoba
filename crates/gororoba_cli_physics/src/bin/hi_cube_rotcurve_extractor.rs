@@ -31,7 +31,10 @@ use anyhow::{Context, Result, anyhow};
 use clap::Parser;
 use data_core::catalogs::hi_cube::{HiCubeMetadata, parse_hi_cube_metadata};
 use fitsio::{FitsFile, hdu::HduInfo};
-use std::path::{Path, PathBuf};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 /// HI 21cm rest frequency in Hz.
 const HI_REST_FREQ_HZ: f64 = 1_420_405_751.77;
@@ -54,6 +57,10 @@ struct Cli {
     ///   beam_fwhm_arcsec,channel_width_km_s,v_sys_km_s.
     #[arg(long, default_value = "data/external/things/things_metadata.csv")]
     meta_csv: PathBuf,
+
+    /// Optional preferred-cube manifest written by `things-fetch cubes`.
+    #[arg(long)]
+    cube_manifest: Option<PathBuf>,
 
     /// Output rotation curves CSV.
     #[arg(long, default_value = "data/external/things/things_rotcurves.csv")]
@@ -385,6 +392,58 @@ fn find_fits_file(dir: &Path, needle: &str) -> Option<PathBuf> {
     candidates.into_iter().next()
 }
 
+fn things_name_key(raw: &str) -> String {
+    raw.chars()
+        .filter(|ch| ch.is_ascii_alphanumeric())
+        .map(|ch| ch.to_ascii_uppercase())
+        .collect()
+}
+
+fn load_cube_manifest(path: &Path) -> Result<HashMap<String, PathBuf>> {
+    let mut reader = csv::Reader::from_path(path)?;
+    let headers = reader.headers()?.clone();
+    let key_idx = headers
+        .iter()
+        .position(|header| header == "galaxy_key")
+        .context("cube manifest missing galaxy_key column")?;
+    let filename_idx = headers
+        .iter()
+        .position(|header| header == "filename")
+        .context("cube manifest missing filename column")?;
+    let mut map = HashMap::new();
+    for row in reader.records() {
+        let row = row?;
+        let key = row.get(key_idx).unwrap_or("").trim();
+        let filename = row.get(filename_idx).unwrap_or("").trim();
+        if key.is_empty() || filename.is_empty() {
+            continue;
+        }
+        map.insert(key.to_string(), PathBuf::from(filename));
+    }
+    Ok(map)
+}
+
+fn resolve_cube_path(
+    cube_dir: &Path,
+    manifest: Option<&HashMap<String, PathBuf>>,
+    galaxy_name: &str,
+) -> Option<PathBuf> {
+    if let Some(manifest) = manifest {
+        let key = things_name_key(galaxy_name);
+        if let Some(relative) = manifest.get(&key) {
+            let candidate = if relative.is_absolute() {
+                relative.clone()
+            } else {
+                cube_dir.join(relative)
+            };
+            if candidate.exists() {
+                return Some(candidate);
+            }
+        }
+    }
+    find_fits_file(cube_dir, galaxy_name)
+}
+
 // ---- Entry point ----
 
 fn main() -> Result<()> {
@@ -394,15 +453,32 @@ fn main() -> Result<()> {
     eprintln!("Loading metadata from {}...", cli.meta_csv.display());
     let metas = parse_hi_cube_metadata(&cli.meta_csv).map_err(|e| anyhow::anyhow!(e))?;
     eprintln!("  {} galaxies in metadata catalog", metas.len());
+    let cube_manifest = if let Some(path) = &cli.cube_manifest {
+        if path.exists() {
+            eprintln!("Loading preferred cube manifest from {}...", path.display());
+            Some(load_cube_manifest(path)?)
+        } else {
+            None
+        }
+    } else {
+        None
+    };
 
     let mut wtr = csv::Writer::from_path(&cli.out_csv)?;
-    wtr.write_record(["name", "r_kpc", "v_obs_km_s", "v_err_km_s", "psf_flag"])?;
+    wtr.write_record([
+        "name",
+        "r_kpc",
+        "v_obs_km_s",
+        "v_err_km_s",
+        "psf_flag",
+        "distance_mpc",
+    ])?;
 
     let mut n_ok = 0_usize;
     let mut n_skip = 0_usize;
 
     for meta in &metas {
-        let cube_path = match find_fits_file(&cli.cube_dir, &meta.name) {
+        let cube_path = match resolve_cube_path(&cli.cube_dir, cube_manifest.as_ref(), &meta.name) {
             Some(p) => p,
             None => {
                 eprintln!(
@@ -441,6 +517,7 @@ fn main() -> Result<()> {
                 &format!("{v_circ:.4}"),
                 &format!("{v_err:.4}"),
                 if *psf_flag { "true" } else { "false" },
+                &format!("{:.6}", meta.distance_mpc),
             ])?;
         }
 

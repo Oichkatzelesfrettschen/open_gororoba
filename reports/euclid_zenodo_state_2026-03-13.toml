@@ -1,0 +1,37 @@
+generated_at_utc = "2026-03-14T00:37:43.053804549+00:00"
+provisional_targets = [
+    "photo_z",
+    "galaxy_clustering",
+    "compact_groups",
+    "globular_clusters",
+]
+
+[[verified_targets]]
+catalog = "morphology"
+record_id = 15106473
+description = "Euclid Q1 Visual Morphology Classification Catalogue"
+target_files = [
+    "morphology_catalogue.parquet",
+    "useful_physical_measurements.parquet",
+]
+
+[[verified_targets]]
+catalog = "strong_lensing"
+record_id = 15025832
+description = "Euclid Q1 Strong Lensing Discovery Engine Candidates"
+target_files = ["q1_discovery_engine_lens_catalog.csv"]
+
+[[verified_targets]]
+catalog = "mergers"
+record_id = 17087034
+description = "Euclid Q1 Galaxy Merger Classification"
+target_files = ["Q1_merger_classification.csv"]
+
+[[verified_targets]]
+catalog = "morphology_supplementary"
+record_id = 15027787
+description = "Euclid Q1 Morphology latent-space representations"
+target_files = [
+    "representations_pca_40.parquet",
+    "representations_pca_100.parquet",
+]

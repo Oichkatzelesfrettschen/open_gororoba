@@ -1,0 +1,36 @@
+generated_at_utc = "2026-03-13T23:20:28.394989476+00:00"
+release = "DR3"
+euclid_morphology_path = "data/external/euclid/zenodo/15106473/morphology_catalogue.parquet"
+lotss_path = "data/external/radio_surveys/lotss_dr3.fits"
+output_csv_path = "data/external/euclid/euclid_lotss_xmatch_dr3_nocuts.csv"
+selected_euclid_count = 380111
+matched_euclid_count = 0
+detection_fraction = 0.0
+lotss_source_count_scanned = 13667877
+chunk_rows = 628736
+match_radius_arcsec = 3.0
+no_morphology_cuts = true
+featured_min = 0.5
+spiral_min = 0.5
+face_on_min = 0.5
+non_merge_min = 0.699999988079071
+
+[execution]
+mode = "pinned_physical_single_pass"
+worker_count = 6
+chunk_rows = 628736
+pinned_core_ids = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+]
+l3_cache_bytes = 100663296
+l3_safe_working_set_bytes = 90596966
+avx2_detected = true
+fma_detected = true
+simd_lane_f64 = 4
+x87_confirmation_used = true
+scan_wall_seconds = 26.655153532

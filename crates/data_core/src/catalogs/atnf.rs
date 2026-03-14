@@ -1,12 +1,18 @@
 //! ATNF Pulsar Catalogue (Manchester et al. 2005) parser and fetcher.
 //!
 //! The ATNF pulsar catalogue is the canonical reference for known pulsars.
-//! We fetch via the HEASARC Xamin query API which provides CSV output.
+//! We currently fetch via the HEASARC Xamin query API which provides
+//! pipe-delimited tabular output. Some cached exports expose only Galactic
+//! coordinates (`lii`, `bii`), so the parser derives J2000 equatorial
+//! coordinates as a pure-Rust fallback for downstream crossmatch use.
 //!
 //! Source: https://www.atnf.csiro.au/research/pulsar/psrcat/
 //! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
 
-use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
+use crate::{
+    fetcher::FetchError,
+    parse::{galactic_to_equatorial_j2000, parse_f64_or_nan},
+};
 use std::path::Path;
 
 /// A pulsar from the ATNF catalogue.
@@ -84,8 +90,8 @@ pub fn parse_atnf_csv(path: &Path) -> Result<Vec<Pulsar>, FetchError> {
     let idx_name = col("name").or_else(|| col("jname")).or_else(|| col("psrj"));
     let idx_ra = col("rajd").or_else(|| col("ra"));
     let idx_dec = col("decjd").or_else(|| col("dec"));
-    let idx_gl = col("gl");
-    let idx_gb = col("gb");
+    let idx_gl = col("gl").or_else(|| col("lii"));
+    let idx_gb = col("gb").or_else(|| col("bii"));
     let idx_p0 = col("p0").or_else(|| col("period"));
     let idx_p1 = col("p1").or_else(|| col("period_dot"));
     let idx_dm = col("dm");
@@ -123,12 +129,22 @@ pub fn parse_atnf_csv(path: &Path) -> Result<Vec<Pulsar>, FetchError> {
             continue;
         }
 
+        let gl = get_f64(&record, idx_gl);
+        let gb = get_f64(&record, idx_gb);
+        let mut ra = get_f64(&record, idx_ra);
+        let mut dec = get_f64(&record, idx_dec);
+        if (!ra.is_finite() || !dec.is_finite()) && gl.is_finite() && gb.is_finite() {
+            let (derived_ra, derived_dec) = galactic_to_equatorial_j2000(gl, gb);
+            ra = derived_ra;
+            dec = derived_dec;
+        }
+
         pulsars.push(Pulsar {
             name,
-            ra: get_f64(&record, idx_ra),
-            dec: get_f64(&record, idx_dec),
-            gl: get_f64(&record, idx_gl),
-            gb: get_f64(&record, idx_gb),
+            ra,
+            dec,
+            gl,
+            gb,
             p0: get_f64(&record, idx_p0),
             p1: get_f64(&record, idx_p1),
             dm: get_f64(&record, idx_dm),
@@ -153,7 +169,8 @@ const ATNF_URLS: &[&str] = &[
     // HEASARC Xamin Query API -- returns pipe-delimited CSV (needs post-processing)
     // Note: the VO cone search endpoint returns VOTable XML, not CSV.
     // The QueryServlet with format=csv returns pipe-delimited text that needs
-    // conversion to proper CSV. For pre-processed data, use the cached file.
+    // conversion to proper CSV. Some mirrors omit equatorial columns, so the
+    // parser falls back to Galactic->equatorial conversion when needed.
     "https://heasarc.gsfc.nasa.gov/xamin/QueryServlet?table=atnfpulsar&format=csv&resultmax=0&fields=name,lii,bii,period,period_dot,dm,s1400,dist",
 ];
 
@@ -215,6 +232,21 @@ J0000+0000,null,,,,null,null,null,,,,,,,,
         assert_eq!(pulsars.len(), 1);
         assert!(pulsars[0].ra.is_nan());
         assert!(pulsars[0].dm.is_nan());
+    }
+
+    #[test]
+    fn test_parse_atnf_derives_equatorial_from_galactic() {
+        let csv = "\
+name,lii,bii,p0,dm
+GC,0.0,0.0,1.0,0.0
+";
+        let f = write_temp_csv(csv);
+        let pulsars = parse_atnf_csv(f.path()).unwrap();
+        assert_eq!(pulsars.len(), 1);
+        assert!(pulsars[0].ra.is_finite());
+        assert!(pulsars[0].dec.is_finite());
+        assert!((pulsars[0].ra - 266.40499).abs() < 0.05);
+        assert!((pulsars[0].dec + 28.93617).abs() < 0.05);
     }
 
     #[test]

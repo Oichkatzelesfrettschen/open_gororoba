@@ -111,6 +111,14 @@ name = "fetch-datasets"
 path = "src/bin/fetch_datasets.rs"
 
 [[bin]]
+name = "things-fetch"
+path = "src/bin/things_fetch.rs"
+
+[[bin]]
+name = "algebra-theory-crosswalk"
+path = "src/bin/algebra_theory_crosswalk.rs"
+
+[[bin]]
 name = "heliosphere-stage"
 path = "src/bin/heliosphere_stage.rs"
 
@@ -243,6 +251,10 @@ path = "src/bin/frb_ultrametric.rs"
 [[bin]]
 name = "multi-dataset-ultrametric"
 path = "src/bin/multi_dataset_ultrametric.rs"
+
+[[bin]]
+name = "ultrametric-core-extract"
+path = "src/bin/ultrametric_core_extract.rs"
 
 [[bin]]
 name = "baire-compact"

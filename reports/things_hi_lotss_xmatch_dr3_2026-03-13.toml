@@ -1,0 +1,31 @@
+generated_at_utc = "2026-03-14T00:59:01.801020511+00:00"
+things_table1_path = "data/external/things/table1.dat"
+things_rotcurves_path = "data/external/things/things_rotcurves.csv"
+lotss_path = "data/external/radio_surveys/lotss_dr3.fits"
+output_csv_path = "data/external/things/things_hi_lotss_xmatch_dr3.csv"
+release = "DR3"
+input_things_count = 29
+matched_things_count = 14
+detection_fraction = 0.4827586206896552
+match_radius_arcsec = 15.0
+chunk_rows = 943104
+
+[execution]
+mode = "pinned_physical_single_pass"
+worker_count = 6
+chunk_rows = 943104
+pinned_core_ids = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+]
+l3_cache_bytes = 100663296
+l3_safe_working_set_bytes = 90596966
+avx2_detected = true
+fma_detected = true
+simd_lane_f64 = 4
+x87_confirmation_used = true
+scan_wall_seconds = 23.652673263

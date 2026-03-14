@@ -137,6 +137,13 @@ const STOPWORDS: &[&str] = &[
     "without",
 ];
 
+const DB_BACKED_COMPAT_SIGNATURE_PATHS: &[&str] = &[
+    "registry/claims.toml",
+    "registry/insights.toml",
+    "registry/experiments.toml",
+    "registry/binaries.toml",
+];
+
 fn main() -> Result<()> {
     let args = Args::parse();
     let repo_root = args.repo_root.canonicalize().context("resolve repo root")?;
@@ -229,9 +236,6 @@ fn build_integrity_resolution(repo_root: &Path, args: &Args) -> Result<()> {
 
     let registry_paths = vec![
         "registry/artifact_experiment_links.toml",
-        "registry/claims.toml",
-        "registry/insights.toml",
-        "registry/experiments.toml",
         "registry/external_sources.toml",
         "registry/project_csv_canonical_datasets.toml",
         "registry/dataset_label_aliases.toml",
@@ -253,6 +257,7 @@ fn build_integrity_resolution(repo_root: &Path, args: &Args) -> Result<()> {
         "registry/third_party_source_verification.toml",
     ]
     .into_iter()
+    .filter(|path| !DB_BACKED_COMPAT_SIGNATURE_PATHS.contains(path))
     .map(ToOwned::to_owned)
     .collect::<Vec<_>>();
     let (signature_rows, signature_meta) = build_schema_signatures(repo_root, &registry_paths)?;

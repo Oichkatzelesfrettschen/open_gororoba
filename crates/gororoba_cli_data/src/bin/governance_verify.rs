@@ -12,6 +12,13 @@ use std::{
 use toml::Value;
 use walkdir::WalkDir;
 
+const DB_BACKED_COMPAT_SIGNATURE_PATHS: &[&str] = &[
+    "registry/claims.toml",
+    "registry/insights.toml",
+    "registry/experiments.toml",
+    "registry/binaries.toml",
+];
+
 #[derive(Parser, Debug)]
 #[command(
     name = "governance-verify",
@@ -441,6 +448,10 @@ fn verify_schema_signatures(args: &CommonArgs) -> Result<()> {
         .unwrap_or_default();
     let rows = table_array(&schema, "signature");
     let mut failures = Vec::new();
+    let skipped_paths: BTreeSet<String> = DB_BACKED_COMPAT_SIGNATURE_PATHS
+        .iter()
+        .map(|path| (*path).to_string())
+        .collect();
     if meta
         .get("signature_count")
         .and_then(Value::as_integer)
@@ -455,6 +466,9 @@ fn verify_schema_signatures(args: &CommonArgs) -> Result<()> {
     let mut seen = BTreeSet::new();
     for row in rows {
         let rel = table_str(row, "path");
+        if skipped_paths.contains(rel) {
+            continue;
+        }
         if !seen.insert(rel.to_string()) {
             failures.push(format!("duplicate schema signature path: {rel}"));
             continue;
@@ -512,8 +526,13 @@ fn verify_schema_signatures(args: &CommonArgs) -> Result<()> {
                 .collect()
         })
         .unwrap_or_default();
-    if seen != declared_paths {
-        let missing: Vec<String> = declared_paths.difference(&seen).cloned().collect();
+    let effective_declared_paths: BTreeSet<String> =
+        declared_paths.difference(&skipped_paths).cloned().collect();
+    if seen != effective_declared_paths {
+        let missing: Vec<String> = effective_declared_paths
+            .difference(&seen)
+            .cloned()
+            .collect();
         let extra: Vec<String> = seen.difference(&declared_paths).cloned().collect();
         if !missing.is_empty() {
             failures.push(format!(
@@ -532,8 +551,10 @@ fn verify_schema_signatures(args: &CommonArgs) -> Result<()> {
         bail!(failures.join("\n"));
     }
     println!(
-        "OK: schema signatures verified for {} registries.",
+        "OK: schema signatures verified for {} registries ({} DB-backed compat exports skipped).",
         rows.len()
+            .saturating_sub(skipped_paths.intersection(&declared_paths).count()),
+        skipped_paths.intersection(&declared_paths).count()
     );
     Ok(())
 }
@@ -559,7 +580,6 @@ struct ExtractedRefs {
 fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
     let required = [
-        "registry/experiment_lineage.toml",
         "registry/roadmap.toml",
         "registry/todo.toml",
         "registry/next_actions.toml",
@@ -598,7 +618,14 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
         ControlPlaneCompatKind::Experiments,
         "registry/experiments.toml",
     )?;
-    let lineage = load_toml(&root.join("registry/experiment_lineage.toml"))?;
+    let lineage = {
+        let path = root.join("registry/experiment_lineage.toml");
+        if path.exists() {
+            Some(load_toml(&path)?)
+        } else {
+            None
+        }
+    };
     let roadmap = load_toml(&root.join("registry/roadmap.toml"))?;
     let todo = load_toml(&root.join("registry/todo.toml"))?;
     let next_actions = load_toml(&root.join("registry/next_actions.toml"))?;
@@ -625,8 +652,14 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
     let claim_rows = table_array(&claims, "claim");
     let insight_rows = table_array(&insights, "insight");
     let experiment_rows = table_array(&experiments, "experiment");
-    let lineage_rows = table_array(&lineage, "lineage");
-    let lineage_edges = table_array(&lineage, "edge");
+    let lineage_rows = lineage
+        .as_ref()
+        .map(|value| table_array(value, "lineage"))
+        .unwrap_or(&[]);
+    let lineage_edges = lineage
+        .as_ref()
+        .map(|value| table_array(value, "edge"))
+        .unwrap_or(&[]);
     let roadmap_rows = table_array(&roadmap, "workstream");
     let todo_rows = table_array(&todo, "item");
     let action_rows = table_array(&next_actions, "action");
@@ -1777,8 +1810,9 @@ fn verify_dataset_label_aliases(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
     let alias_path = root.join("registry/dataset_label_aliases.toml");
     let lineage_path = root.join("registry/experiment_lineage.toml");
-    for path in [&alias_path, &lineage_path] {
-        read_ascii_text(path)?;
+    read_ascii_text(&alias_path)?;
+    if lineage_path.exists() {
+        read_ascii_text(&lineage_path)?;
     }
     let alias_raw = load_toml(&alias_path)?;
     let experiments = load_control_plane_registry(
@@ -1787,7 +1821,11 @@ fn verify_dataset_label_aliases(args: &CommonArgs) -> Result<()> {
         ControlPlaneCompatKind::Experiments,
         "registry/experiments.toml",
     )?;
-    let lineages = load_toml(&lineage_path)?;
+    let lineages = if lineage_path.exists() {
+        Some(load_toml(&lineage_path)?)
+    } else {
+        None
+    };
     let dataset_ids = collect_dataset_ids(&root)?;
     let dataset_re = Regex::new(r"^(?:PC|PG|EX|AR|CU)-\d{4}$")?;
     let mut failures = Vec::new();
@@ -1855,7 +1893,11 @@ fn verify_dataset_label_aliases(args: &CommonArgs) -> Result<()> {
             }
         }
     }
-    for row in table_array(&lineages, "lineage") {
+    for row in lineages
+        .as_ref()
+        .map(|value| table_array(value, "lineage"))
+        .unwrap_or(&[])
+    {
         let lineage_id = table_str(row, "id");
         for label in string_list(row, "dataset_label_refs") {
             let normalized = normalize_dataset_label(&label);
@@ -1873,7 +1915,10 @@ fn verify_dataset_label_aliases(args: &CommonArgs) -> Result<()> {
         "OK: dataset label aliases verified. aliases={} experiments={} lineages={}",
         rows.len(),
         table_array(&experiments, "experiment").len(),
-        table_array(&lineages, "lineage").len()
+        lineages
+            .as_ref()
+            .map(|value| table_array(value, "lineage").len())
+            .unwrap_or(0)
     );
     Ok(())
 }

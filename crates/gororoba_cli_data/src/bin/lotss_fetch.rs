@@ -14,17 +14,21 @@
 //!   lotss-fetch manga-footprint [--tile-dir path] [--summary-out path]
 //!       [--manga-selection path] [--manga-drpall path] [--full-bounding-box]
 //!   lotss-fetch manga-preflight [--manga-selection path] [--manga-drpall path] [--report path]
-//!   lotss-fetch crossmatch-manga --release dr2|dr3 [--input-format fits|dr3-tiles] [--input path]
+//!   lotss-fetch crossmatch-manga --release dr1|dr2|dr3 [--input-format fits|dr3-tiles] [--input path]
 //!       [--manga-selection path] [--manga-drpall path] [--radius-arcsec 3.0]
 //!       [--output path] [--report path] [--summary path] [--allow-partial]
 
 use clap::{Parser, Subcommand, ValueEnum};
 use data_core::{
-    catalogs::lotss::{LoTSSRelease, LoTSSSource, load_from_votable},
-    fetcher::{compute_sha256, download_to_file, validate_not_html},
+    SkyPoint,
+    catalogs::lotss::{
+        LoTSSRelease, LoTSSSource, LotssFitsExecutionReport, crossmatch_points_against_fits_catalog,
+        load_from_votable,
+    },
+    download_stack::{DownloadStack, TransferRequest, TransferResult},
+    fetcher::{compute_sha256, validate_not_html},
     formats::fits_table::{FitsValue, read_fits_table},
 };
-use fitsio::{FitsFile, hdu::HduInfo};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, HashMap, HashSet},
@@ -209,7 +213,7 @@ impl InputFormatArg {
 
 // ---- Constants ---------------------------------------------------------------
 
-const DR1_URL: &str = "https://lofar-surveys.org/public/LoTSS_DR1_v1.1.srl.fits";
+const DR1_URL: &str = "https://lofar-surveys.org/public/LOFAR_HBA_T1_DR1_catalog_v1.0.srl.fits";
 const DR2_URL: &str =
     "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits";
 const DR3_URL: &str = "https://lofar-surveys.org/public/DR3/catalogues/LoTSS_DR3_v1.0.srl.fits";
@@ -529,6 +533,34 @@ fn default_dr3_summary_path() -> PathBuf {
     PathBuf::from("reports/lotss_dr3_manga_footprint_summary.toml")
 }
 
+fn build_download_stack() -> DownloadStack {
+    DownloadStack::new().with_user_agent("gororoba-lotss-fetch/0.1 (research)")
+}
+
+fn recover_with_capabilities(
+    url: &str,
+    output_path: &Path,
+    note: impl Into<String>,
+) -> Result<TransferResult, String> {
+    let stack = build_download_stack();
+    let mut request = TransferRequest::download(url.to_string(), output_path.to_path_buf());
+    request.note = Some(note.into());
+    let trace = stack.recover_with_trace(&request);
+    let capabilities = trace.capabilities.clone();
+    let result = trace.into_result(url).map_err(|err| err.to_string())?;
+    if let Some(capabilities) = capabilities {
+        println!(
+            "Detected surface={} ranges={} rsync_reachable={} content_type={} backend={}",
+            capabilities.surface,
+            capabilities.supports_ranges,
+            capabilities.rsync_reachable,
+            capabilities.content_type.unwrap_or_default(),
+            result.backend
+        );
+    }
+    Ok(result)
+}
+
 fn cmd_download(release: ReleaseArg, output: Option<PathBuf>) -> Result<(), String> {
     let out_path = match output {
         Some(path) => path,
@@ -553,7 +585,12 @@ fn cmd_download(release: ReleaseArg, output: Option<PathBuf>) -> Result<(), Stri
 
     println!("Downloading LoTSS {} from {}...", release.label(), url);
 
-    let bytes = download_to_file(url, &out_path).map_err(|e| format!("Download failed: {}", e))?;
+    let result = recover_with_capabilities(
+        url,
+        &out_path,
+        format!("LoTSS {} bulk catalog", release.label()),
+    )?;
+    let bytes = result.bytes;
 
     println!("Saved {} bytes -> {}", bytes, out_path.display());
 
@@ -627,8 +664,12 @@ fn cmd_cone_search(
     );
     println!("URL: {}", url);
 
-    let bytes = download_to_file(&url, &out_path)
-        .map_err(|e| format!("Cone search request failed: {}", e))?;
+    let bytes = recover_with_capabilities(
+        &url,
+        &out_path,
+        format!("LoTSS DR3 cone search RA={ra_center:.3} Dec={dec_center:.3}"),
+    )?
+    .bytes;
     let data = fs::read(&out_path).map_err(|e| format!("Read back failed: {}", e))?;
     validate_not_html(&data).map_err(|e| format!("Validation failed: {}", e))?;
 
@@ -696,8 +737,12 @@ fn cmd_manga_footprint(
         }
 
         let url = scs_url(DR3_CONE_BASE, ra, dec, tile_radius);
-        match download_to_file(&url, &tile_path) {
-            Ok(bytes) => match fs::read(&tile_path) {
+        match recover_with_capabilities(
+            &url,
+            &tile_path,
+            format!("LoTSS DR3 footprint tile RA={ra:.3} Dec={dec:.3}"),
+        ) {
+            Ok(result) => match fs::read(&tile_path) {
                 Ok(data) => {
                     if let Err(e) = validate_not_html(&data) {
                         eprintln!(
@@ -707,7 +752,7 @@ fn cmd_manga_footprint(
                         fail_count += 1;
                     } else {
                         downloaded_tile_count += 1;
-                        total_bytes_downloaded += bytes;
+                        total_bytes_downloaded += result.bytes;
                     }
                 }
                 Err(e) => {
@@ -881,7 +926,14 @@ fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
     );
 
     let mut footprint_report: Option<FootprintSweepReport> = None;
-    let (matches, raw_source_count, effective_source_count, dr3_tile_count, input_path) =
+    let (
+        matches,
+        raw_source_count,
+        effective_source_count,
+        dr3_tile_count,
+        input_path,
+        shared_execution,
+    ) =
         match resolved_format {
             InputFormatArg::Fits => {
                 let input_path = match input {
@@ -901,6 +953,7 @@ fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
                     summary.effective_source_count,
                     None,
                     input_path,
+                    summary.shared_execution,
                 )
             }
             InputFormatArg::Dr3Tiles => {
@@ -924,6 +977,7 @@ fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
                     loaded.summary.deduped_source_count,
                     Some(loaded.summary.tile_file_count),
                     input_path,
+                    None,
                 )
             }
         };
@@ -934,6 +988,7 @@ fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
     let quiet = sample.targets.len().saturating_sub(detected);
     let detection_fraction = fraction(detected, sample.targets.len());
     let flux_stats = matched_flux_stats(&matches);
+    let shared_execution = shared_execution.as_ref();
     let report_model = CrossmatchReport {
         generated_at_utc: timestamp_utc(),
         release: release.label().to_string(),
@@ -945,18 +1000,45 @@ fn cmd_crossmatch_manga(args: CrossmatchMangaArgs) -> Result<(), String> {
         report_path: report_path.display().to_string(),
         radius_arcsec,
         allow_partial,
-        execution_mode: execution_plan.mode.to_string(),
-        execution_worker_count: execution_plan.worker_count,
-        execution_chunk_rows: execution_plan.chunk_rows,
-        execution_pinned_core_ids: execution_plan.physical_core_ids.clone(),
-        execution_l3_cache_bytes: execution_plan.l3_cache_bytes,
-        execution_l3_safe_working_set_bytes: execution_plan.l3_safe_working_set_bytes,
+        execution_mode: shared_execution
+            .map(|report| report.mode.clone())
+            .unwrap_or_else(|| execution_plan.mode.to_string()),
+        execution_worker_count: shared_execution
+            .map(|report| report.worker_count)
+            .unwrap_or(execution_plan.worker_count),
+        execution_chunk_rows: shared_execution
+            .map(|report| report.chunk_rows)
+            .unwrap_or(execution_plan.chunk_rows),
+        execution_pinned_core_ids: shared_execution
+            .map(|report| report.pinned_core_ids.clone())
+            .unwrap_or_else(|| execution_plan.physical_core_ids.clone()),
+        execution_l3_cache_bytes: shared_execution
+            .map(|report| report.l3_cache_bytes)
+            .unwrap_or(execution_plan.l3_cache_bytes),
+        execution_l3_safe_working_set_bytes: shared_execution
+            .map(|report| report.l3_safe_working_set_bytes)
+            .unwrap_or(execution_plan.l3_safe_working_set_bytes),
         execution_thread_pinning_enabled: execution_plan.pin_threads,
-        execution_simd_lane_f64: execution_plan.simd_lane_f64,
-        execution_avx2_detected: execution_plan.avx2_detected,
-        execution_fma_detected: execution_plan.fma_detected,
-        execution_x87_extended_precision_used: execution_plan.x87_extended_precision_used,
-        execution_precision_strategy: execution_plan.precision_strategy.to_string(),
+        execution_simd_lane_f64: shared_execution
+            .map(|report| report.simd_lane_f64)
+            .unwrap_or(execution_plan.simd_lane_f64),
+        execution_avx2_detected: shared_execution
+            .map(|report| report.avx2_detected)
+            .unwrap_or(execution_plan.avx2_detected),
+        execution_fma_detected: shared_execution
+            .map(|report| report.fma_detected)
+            .unwrap_or(execution_plan.fma_detected),
+        execution_x87_extended_precision_used: shared_execution
+            .map(|report| report.x87_confirmation_used)
+            .unwrap_or(execution_plan.x87_extended_precision_used),
+        execution_precision_strategy: if shared_execution
+            .map(|report| report.x87_confirmation_used)
+            .unwrap_or(false)
+        {
+            "simd-prefilter+x87-confirmation".to_string()
+        } else {
+            execution_plan.precision_strategy.to_string()
+        },
         footprint_summary_path: summary_path.as_ref().map(|path| path.display().to_string()),
         footprint_fail_count: footprint_report.as_ref().map(|r| r.fail_count),
         footprint_tile_count: footprint_report.as_ref().map(|r| r.tile_count),
@@ -1668,34 +1750,7 @@ struct StreamingCrossmatchSummary {
     matches: Vec<Option<MatchRecord>>,
     raw_source_count: usize,
     effective_source_count: usize,
-}
-
-#[derive(Debug, Clone)]
-struct PendingMatchRecord {
-    separation_arcsec: f64,
-    source_row_index: usize,
-    source_ra_deg: f64,
-    source_dec_deg: f64,
-    flux_mjy: f32,
-    spectral_index: Option<f32>,
-}
-
-struct FitsCrossmatchColumns {
-    ra: String,
-    dec: String,
-    total_flux: String,
-    spectral_index: Option<String>,
-}
-
-struct FitsScanTask<'a> {
-    path: &'a Path,
-    layout: &'a FitsCrossmatchLayout,
-    targets: &'a [MangaTarget],
-    grid: &'a TargetGrid,
-    radius_arcsec: f64,
-    worker_bounds: std::ops::Range<usize>,
-    chunk_rows: usize,
-    log_progress: bool,
+    shared_execution: Option<LotssFitsExecutionReport>,
 }
 
 fn crossmatch_targets_with_sources(
@@ -1773,250 +1828,48 @@ fn crossmatch_targets_with_sources_parallel(
 fn crossmatch_targets_with_fits_catalog(
     targets: &[MangaTarget],
     path: &Path,
-    _release: LoTSSRelease,
+    release: LoTSSRelease,
     radius_arcsec: f64,
     execution_plan: &CrossmatchExecutionPlan,
 ) -> Result<StreamingCrossmatchSummary, String> {
-    let layout = inspect_fits_crossmatch_layout(path)?;
-    let radius_deg = radius_arcsec / 3600.0;
-    let grid = build_target_grid(targets, radius_deg);
-    let bounds = split_work_bounds(layout.row_count, execution_plan.worker_count);
-    let pin_threads = execution_plan.pin_threads;
-    let core_ids = execution_plan.physical_core_ids.clone();
-
-    let worker_results = thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(bounds.len());
-        for (worker_idx, (start, end)) in bounds.iter().copied().enumerate() {
-            let path_ref = path;
-            let layout_ref = &layout;
-            let targets_ref = targets;
-            let grid_ref = &grid;
-            let core_id = core_ids
-                .get(worker_idx)
-                .copied()
-                .unwrap_or_else(|| *core_ids.first().unwrap_or(&0));
-            let chunk_rows = execution_plan.chunk_rows;
-            handles.push(scope.spawn(move || {
-                if pin_threads {
-                    pin_current_thread_to_core(core_id);
-                }
-                scan_fits_pending_matches_range(FitsScanTask {
-                    path: path_ref,
-                    layout: layout_ref,
-                    targets: targets_ref,
-                    grid: grid_ref,
-                    radius_arcsec,
-                    worker_bounds: start..end,
-                    chunk_rows,
-                    log_progress: execution_plan.worker_count == 1,
-                })
-            }));
-        }
-
-        handles
-            .into_iter()
-            .map(|handle| {
-                handle
-                    .join()
-                    .expect("parallel FITS crossmatch worker panicked")
+    let points = targets
+        .iter()
+        .map(|target| SkyPoint {
+            id: target.plateifu.clone(),
+            ra_deg: target.ra_deg,
+            dec_deg: target.dec_deg,
+        })
+        .collect::<Vec<_>>();
+    let shared = crossmatch_points_against_fits_catalog(
+        path,
+        release,
+        &points,
+        radius_arcsec,
+        Some(execution_plan.worker_count),
+        Some(execution_plan.chunk_rows),
+    )
+    .map_err(|e| e.to_string())?;
+    let matches = shared
+        .matches
+        .into_iter()
+        .map(|entry| {
+            entry.map(|entry| MatchRecord {
+                separation_arcsec: entry.separation_arcsec,
+                source_name: entry.source.source_name,
+                source_ra_deg: entry.source.ra_deg,
+                source_dec_deg: entry.source.dec_deg,
+                flux_mjy: entry.source.flux_mjy,
+                spectral_index: entry.source.spectral_index,
+                structure_code: entry.source.structure_code,
             })
-            .collect::<Vec<_>>()
-    });
-
-    let mut best_matches: Vec<Option<PendingMatchRecord>> = vec![None; targets.len()];
-    let mut effective_source_count = 0usize;
-    for result in worker_results {
-        let worker = result?;
-        effective_source_count += worker.effective_source_count;
-        merge_pending_match_vectors(&mut best_matches, &worker.matches);
-    }
-
-    let mut lookup = RawFitsStringLookup::open(path)?;
-    let matches = finalize_pending_matches(&mut lookup, best_matches)?;
+        })
+        .collect();
 
     Ok(StreamingCrossmatchSummary {
         matches,
-        raw_source_count: layout.row_count,
-        effective_source_count,
-    })
-}
-
-struct FitsCrossmatchLayout {
-    table_idx: usize,
-    row_count: usize,
-    columns: FitsCrossmatchColumns,
-}
-
-struct PendingScanSummary {
-    matches: Vec<Option<PendingMatchRecord>>,
-    effective_source_count: usize,
-}
-
-fn inspect_fits_crossmatch_layout(path: &Path) -> Result<FitsCrossmatchLayout, String> {
-    let mut fits = FitsFile::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
-    let num_hdus = {
-        let mut count = 0usize;
-        for _ in fits.iter() {
-            count += 1;
-        }
-        count
-    };
-
-    let mut table_idx = None;
-    let mut row_count = 0usize;
-    let mut column_names = Vec::new();
-    for idx in 1..num_hdus {
-        let hdu = fits.hdu(idx).map_err(|e| format!("hdu {}: {}", idx, e))?;
-        if let HduInfo::TableInfo {
-            column_descriptions,
-            num_rows,
-            ..
-        } = hdu.info
-        {
-            table_idx = Some(idx);
-            row_count = num_rows;
-            column_names = column_descriptions
-                .into_iter()
-                .map(|description| description.name)
-                .collect();
-            break;
-        }
-    }
-
-    let table_idx = table_idx.ok_or_else(|| {
-        format!(
-            "No BINTABLE HDU found while scanning LoTSS FITS {}",
-            path.display()
-        )
-    })?;
-
-    Ok(FitsCrossmatchLayout {
-        table_idx,
-        row_count,
-        columns: FitsCrossmatchColumns {
-            ra: resolve_required_fits_column(&column_names, "RA", path)?,
-            dec: resolve_required_fits_column(&column_names, "DEC", path)?,
-            total_flux: resolve_required_fits_column(&column_names, "Total_flux", path)?,
-            spectral_index: resolve_optional_fits_column(&column_names, "Spectral_index"),
-        },
-    })
-}
-
-fn scan_fits_pending_matches_range(task: FitsScanTask<'_>) -> Result<PendingScanSummary, String> {
-    let FitsScanTask {
-        path,
-        layout,
-        targets,
-        grid,
-        radius_arcsec,
-        worker_bounds,
-        chunk_rows,
-        log_progress,
-    } = task;
-    let mut fits = FitsFile::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
-    let table_hdu = fits
-        .hdu(layout.table_idx)
-        .map_err(|e| format!("hdu {}: {}", layout.table_idx, e))?;
-    let mut best_matches = vec![None; targets.len()];
-    let mut effective_source_count = 0usize;
-    let scan_len = worker_bounds.end.saturating_sub(worker_bounds.start);
-    let total_chunks = scan_len.div_ceil(chunk_rows.max(1));
-
-    for (chunk_idx, start) in (worker_bounds.start..worker_bounds.end)
-        .step_by(chunk_rows.max(1))
-        .enumerate()
-    {
-        let end = (start + chunk_rows).min(worker_bounds.end);
-        let row_range = start..end;
-        let ras: Vec<f64> = table_hdu
-            .read_col_range(&mut fits, &layout.columns.ra, &row_range)
-            .map_err(|e| {
-                format!(
-                    "Load FITS {} rows {}..{}: {}",
-                    layout.columns.ra, start, end, e
-                )
-            })?;
-        let decs: Vec<f64> = table_hdu
-            .read_col_range(&mut fits, &layout.columns.dec, &row_range)
-            .map_err(|e| {
-                format!(
-                    "Load FITS {} rows {}..{}: {}",
-                    layout.columns.dec, start, end, e
-                )
-            })?;
-        let fluxes: Vec<f32> = table_hdu
-            .read_col_range(&mut fits, &layout.columns.total_flux, &row_range)
-            .map_err(|e| {
-                format!(
-                    "Load FITS {} rows {}..{}: {}",
-                    layout.columns.total_flux, start, end, e
-                )
-            })?;
-        let spectral_indices: Vec<f32> = if let Some(col) = layout.columns.spectral_index.as_ref() {
-            table_hdu
-                .read_col_range(&mut fits, col, &row_range)
-                .map_err(|e| format!("Load FITS {} rows {}..{}: {}", col, start, end, e))?
-        } else {
-            vec![f32::NAN; ras.len()]
-        };
-
-        for row_idx in 0..ras.len() {
-            let ra_deg = *ras.get(row_idx).unwrap_or(&f64::NAN);
-            let dec_deg = *decs.get(row_idx).unwrap_or(&f64::NAN);
-            if !ra_deg.is_finite() || !dec_deg.is_finite() {
-                continue;
-            }
-            effective_source_count += 1;
-            let (cell_x, cell_y) =
-                grid_cell(projected_x(ra_deg, dec_deg), dec_deg, grid.cell_size_deg);
-            for dx in -1..=1 {
-                for dy in -1..=1 {
-                    if let Some(target_indices) = grid.cells.get(&(cell_x + dx, cell_y + dy)) {
-                        for &target_idx in target_indices {
-                            let target = &targets[target_idx];
-                            let separation_arcsec = angular_separation_arcsec(
-                                target.ra_deg,
-                                target.dec_deg,
-                                ra_deg,
-                                dec_deg,
-                            );
-                            if separation_arcsec <= radius_arcsec {
-                                let candidate = PendingMatchRecord {
-                                    separation_arcsec,
-                                    source_row_index: start + row_idx,
-                                    source_ra_deg: ra_deg,
-                                    source_dec_deg: dec_deg,
-                                    flux_mjy: *fluxes.get(row_idx).unwrap_or(&f32::NAN),
-                                    spectral_index: spectral_indices
-                                        .get(row_idx)
-                                        .copied()
-                                        .filter(|value| value.is_finite()),
-                                };
-                                update_best_pending_match(&mut best_matches[target_idx], candidate);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if log_progress
-            && total_chunks > 1
-            && ((chunk_idx + 1) == total_chunks || chunk_idx == 0 || (chunk_idx + 1) % 10 == 0)
-        {
-            println!(
-                "Scanned {} / {} FITS rows ({:.1}%)",
-                end,
-                worker_bounds.end,
-                (end as f64 / worker_bounds.end as f64) * 100.0
-            );
-        }
-    }
-
-    std::mem::forget(fits);
-    Ok(PendingScanSummary {
-        matches: best_matches,
-        effective_source_count,
+        raw_source_count: shared.scanned_source_count,
+        effective_source_count: shared.scanned_source_count,
+        shared_execution: Some(shared.execution),
     })
 }
 
@@ -2040,17 +1893,6 @@ fn split_work_bounds(len: usize, parts: usize) -> Vec<(usize, usize)> {
 
 fn pin_current_thread_to_core(core_id: usize) {
     let _ = core_affinity::set_for_current(core_affinity::CoreId { id: core_id });
-}
-
-fn merge_pending_match_vectors(
-    merged: &mut [Option<PendingMatchRecord>],
-    local: &[Option<PendingMatchRecord>],
-) {
-    for (slot, candidate) in merged.iter_mut().zip(local.iter().cloned()) {
-        if let Some(candidate) = candidate {
-            update_best_pending_match(slot, candidate);
-        }
-    }
 }
 
 fn merge_match_vectors(merged: &mut [Option<MatchRecord>], local: &[Option<MatchRecord>]) {
@@ -2136,170 +1978,6 @@ fn update_best_match(slot: &mut Option<MatchRecord>, candidate: MatchRecord) {
         Some(existing) if existing.separation_arcsec <= candidate.separation_arcsec => {}
         _ => *slot = Some(candidate),
     }
-}
-
-fn update_best_pending_match(slot: &mut Option<PendingMatchRecord>, candidate: PendingMatchRecord) {
-    match slot {
-        Some(existing) if existing.separation_arcsec <= candidate.separation_arcsec => {}
-        _ => *slot = Some(candidate),
-    }
-}
-
-struct RawFitsStringLookup {
-    file: File,
-    row_count: usize,
-    table_data_offset: u64,
-    row_size_bytes: usize,
-    source_name_offset: usize,
-    source_name_width: usize,
-    s_code_offset: usize,
-    s_code_width: usize,
-}
-
-impl RawFitsStringLookup {
-    fn open(path: &Path) -> Result<Self, String> {
-        let mut file = File::open(path).map_err(|e| format!("open {}: {}", path.display(), e))?;
-        let file_len = file
-            .metadata()
-            .map_err(|e| format!("metadata {}: {}", path.display(), e))?
-            .len();
-        let mut hdu_offset = 0u64;
-        let (table_cards, table_header_bytes, table_offset) = loop {
-            if hdu_offset >= file_len {
-                return Err(format!(
-                    "No BINTABLE HDU found while scanning {}",
-                    path.display()
-                ));
-            }
-            let (cards, header_bytes) = read_fits_header_cards(&mut file, hdu_offset)?;
-            let xtension = fits_header_value(&cards, "XTENSION").unwrap_or_default();
-            if xtension.eq_ignore_ascii_case("BINTABLE") {
-                break (cards, header_bytes, hdu_offset);
-            }
-            let data_bytes = padded_hdu_data_bytes(&cards)?;
-            let next_offset = hdu_offset + header_bytes + data_bytes;
-            if next_offset <= hdu_offset {
-                return Err(format!(
-                    "Failed to advance while scanning FITS HDUs in {}",
-                    path.display()
-                ));
-            }
-            hdu_offset = next_offset;
-        };
-
-        let row_size_bytes = fits_header_usize(&table_cards, "NAXIS1")?;
-        let row_count = fits_header_usize(&table_cards, "NAXIS2")?;
-        let tfields = fits_header_usize(&table_cards, "TFIELDS")?;
-        let mut cursor = 0usize;
-        let mut source_name = None;
-        let mut s_code = None;
-
-        for idx in 1..=tfields {
-            let name = fits_header_value(&table_cards, &format!("TTYPE{idx}"))
-                .ok_or_else(|| format!("Missing TTYPE{idx} while scanning {}", path.display()))?;
-            let form = fits_header_value(&table_cards, &format!("TFORM{idx}"))
-                .ok_or_else(|| format!("Missing TFORM{idx} while scanning {}", path.display()))?;
-            let width = fits_tform_width(&form)?;
-            if name.eq_ignore_ascii_case("Source_Name") {
-                source_name = Some((cursor, width));
-            } else if name.eq_ignore_ascii_case("S_Code") {
-                s_code = Some((cursor, width));
-            }
-            cursor += width;
-        }
-
-        let (source_name_offset, source_name_width) = source_name.ok_or_else(|| {
-            format!(
-                "Source_Name column not found while scanning {}",
-                path.display()
-            )
-        })?;
-        let (s_code_offset, s_code_width) = s_code
-            .ok_or_else(|| format!("S_Code column not found while scanning {}", path.display()))?;
-
-        Ok(Self {
-            file,
-            row_count,
-            table_data_offset: table_offset + table_header_bytes,
-            row_size_bytes,
-            source_name_offset,
-            source_name_width,
-            s_code_offset,
-            s_code_width,
-        })
-    }
-
-    fn read_match_metadata(&mut self, row_idx: usize) -> Result<(String, char), String> {
-        if row_idx >= self.row_count {
-            return Err(format!(
-                "Row {} out of range for FITS metadata lookup with {} rows",
-                row_idx, self.row_count
-            ));
-        }
-        let source_name =
-            self.read_ascii_cell(row_idx, self.source_name_offset, self.source_name_width)?;
-        let s_code = self.read_ascii_cell(row_idx, self.s_code_offset, self.s_code_width)?;
-        Ok((source_name, s_code.chars().next().unwrap_or('S')))
-    }
-
-    fn read_ascii_cell(
-        &mut self,
-        row_idx: usize,
-        column_offset: usize,
-        column_width: usize,
-    ) -> Result<String, String> {
-        let byte_offset = self.table_data_offset
-            + (row_idx as u64 * self.row_size_bytes as u64)
-            + column_offset as u64;
-        self.file
-            .seek(SeekFrom::Start(byte_offset))
-            .map_err(|e| format!("seek row {} offset {}: {}", row_idx, byte_offset, e))?;
-        let mut buffer = vec![0u8; column_width];
-        self.file
-            .read_exact(&mut buffer)
-            .map_err(|e| format!("read row {} offset {}: {}", row_idx, byte_offset, e))?;
-        Ok(String::from_utf8_lossy(&buffer)
-            .trim_matches(char::from(0))
-            .trim()
-            .to_string())
-    }
-}
-
-fn finalize_pending_matches(
-    lookup: &mut RawFitsStringLookup,
-    pending: Vec<Option<PendingMatchRecord>>,
-) -> Result<Vec<Option<MatchRecord>>, String> {
-    let mut metadata_cache: HashMap<usize, (String, char)> = HashMap::new();
-    let mut matches = Vec::with_capacity(pending.len());
-
-    for maybe_match in pending {
-        match maybe_match {
-            Some(pending_match) => {
-                let (source_name, structure_code) = if let Some(metadata) =
-                    metadata_cache.get(&pending_match.source_row_index)
-                {
-                    metadata.clone()
-                } else {
-                    let metadata = lookup.read_match_metadata(pending_match.source_row_index)?;
-                    metadata_cache.insert(pending_match.source_row_index, metadata.clone());
-                    metadata
-                };
-
-                matches.push(Some(MatchRecord {
-                    separation_arcsec: pending_match.separation_arcsec,
-                    source_name,
-                    source_ra_deg: pending_match.source_ra_deg,
-                    source_dec_deg: pending_match.source_dec_deg,
-                    flux_mjy: pending_match.flux_mjy,
-                    spectral_index: pending_match.spectral_index,
-                    structure_code,
-                }));
-            }
-            None => matches.push(None),
-        }
-    }
-
-    Ok(matches)
 }
 
 fn angular_separation_arcsec(ra1_deg: f64, dec1_deg: f64, ra2_deg: f64, dec2_deg: f64) -> f64 {
@@ -2540,31 +2218,6 @@ fn timestamp_utc() -> String {
     chrono::Utc::now().to_rfc3339()
 }
 
-fn resolve_required_fits_column(
-    column_names: &[String],
-    want: &str,
-    path: &Path,
-) -> Result<String, String> {
-    column_names
-        .iter()
-        .find(|name| name.eq_ignore_ascii_case(want))
-        .cloned()
-        .ok_or_else(|| {
-            format!(
-                "Required FITS column '{}' not found in {}",
-                want,
-                path.display()
-            )
-        })
-}
-
-fn resolve_optional_fits_column(column_names: &[String], want: &str) -> Option<String> {
-    column_names
-        .iter()
-        .find(|name| name.eq_ignore_ascii_case(want))
-        .cloned()
-}
-
 fn read_fits_header_cards(file: &mut File, offset: u64) -> Result<(Vec<String>, u64), String> {
     file.seek(SeekFrom::Start(offset))
         .map_err(|e| format!("seek header {}: {}", offset, e))?;
@@ -2655,45 +2308,6 @@ fn padded_hdu_data_bytes(cards: &[String]) -> Result<u64, String> {
     Ok(raw_bytes.div_ceil(2880) * 2880)
 }
 
-fn fits_tform_width(tform: &str) -> Result<usize, String> {
-    let cleaned = tform.trim().trim_matches('\'').trim();
-    if cleaned.is_empty() {
-        return Err("Empty TFORM value".to_string());
-    }
-    let mut repeat = String::new();
-    let mut kind = None;
-    for ch in cleaned.chars() {
-        if ch.is_ascii_digit() && kind.is_none() {
-            repeat.push(ch);
-        } else {
-            kind = Some(ch.to_ascii_uppercase());
-            break;
-        }
-    }
-    let repeat = if repeat.is_empty() {
-        1usize
-    } else {
-        repeat
-            .parse::<usize>()
-            .map_err(|e| format!("Parse TFORM repeat '{}': {}", cleaned, e))?
-    };
-    let width = match kind.ok_or_else(|| format!("Missing TFORM kind in '{}'", cleaned))? {
-        'A' | 'L' | 'B' => repeat,
-        'X' => repeat.div_ceil(8),
-        'I' => repeat * 2,
-        'J' | 'E' => repeat * 4,
-        'K' | 'D' | 'C' => repeat * 8,
-        'M' => repeat * 16,
-        other => {
-            return Err(format!(
-                "Unsupported TFORM kind '{}' in '{}'",
-                other, cleaned
-            ));
-        }
-    };
-    Ok(width)
-}
-
 fn fraction(numerator: usize, denominator: usize) -> f64 {
     if denominator == 0 {
         0.0
@@ -2707,6 +2321,7 @@ fn fraction(numerator: usize, denominator: usize) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use fitsio::FitsFile;
 
     fn sample_source(name: &str, ra_deg: f64, dec_deg: f64) -> LoTSSSource {
         LoTSSSource {
@@ -2840,9 +2455,33 @@ mod tests {
                 .with_type(ColumnDataType::Float)
                 .create()
                 .unwrap(),
+            ColumnDescription::new("E_Total_flux")
+                .with_type(ColumnDataType::Float)
+                .create()
+                .unwrap(),
+            ColumnDescription::new("Peak_flux")
+                .with_type(ColumnDataType::Float)
+                .create()
+                .unwrap(),
+            ColumnDescription::new("Isl_rms")
+                .with_type(ColumnDataType::Float)
+                .create()
+                .unwrap(),
             ColumnDescription::new("S_Code")
                 .with_type(ColumnDataType::String)
                 .that_repeats(1)
+                .create()
+                .unwrap(),
+            ColumnDescription::new("Maj")
+                .with_type(ColumnDataType::Float)
+                .create()
+                .unwrap(),
+            ColumnDescription::new("Min")
+                .with_type(ColumnDataType::Float)
+                .create()
+                .unwrap(),
+            ColumnDescription::new("PA")
+                .with_type(ColumnDataType::Float)
                 .create()
                 .unwrap(),
         ];
@@ -2864,7 +2503,25 @@ mod tests {
             .write_col(&mut fits, "Total_flux", &[3.5_f32, 7.2_f32])
             .unwrap();
         table_hdu
+            .write_col(&mut fits, "E_Total_flux", &[0.2_f32, 0.3_f32])
+            .unwrap();
+        table_hdu
+            .write_col(&mut fits, "Peak_flux", &[3.2_f32, 6.8_f32])
+            .unwrap();
+        table_hdu
+            .write_col(&mut fits, "Isl_rms", &[0.05_f32, 0.07_f32])
+            .unwrap();
+        table_hdu
             .write_col(&mut fits, "S_Code", &["S".to_string(), "M".to_string()])
+            .unwrap();
+        table_hdu
+            .write_col(&mut fits, "Maj", &[6.0_f32, 9.0_f32])
+            .unwrap();
+        table_hdu
+            .write_col(&mut fits, "Min", &[5.0_f32, 7.0_f32])
+            .unwrap();
+        table_hdu
+            .write_col(&mut fits, "PA", &[30.0_f32, 45.0_f32])
             .unwrap();
         drop(fits);
 

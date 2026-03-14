@@ -2,7 +2,7 @@
 //!
 //! Supports three releases:
 //! - DR1: ~325K sources, Shimwell et al. 2019, A&A 622 A1
-//!   https://lofar-surveys.org/public/LoTSS_DR1_v1.1.srl.fits
+//!   https://lofar-surveys.org/public/LOFAR_HBA_T1_DR1_catalog_v1.0.srl.fits
 //! - DR2: ~4.4M sources, Shimwell et al. 2022, A&A 659 A1
 //!   https://lofar-surveys.org/public/LoTSS_DR2_v110.srl.fits
 //! - DR3: ~13.7M sources (Feb 2026), 88% northern sky at 144 MHz, 6" resolution
@@ -18,8 +18,19 @@
 //!
 //! Feature-gated behind `data_core/fits`.
 
-use crate::fetcher::FetchError;
-use std::{collections::HashMap, ops::Range, path::Path};
+use crate::{
+    fetcher::FetchError,
+    spatial::{SkyGridIndex, SkyPoint, angular_separation_arcsec},
+};
+#[cfg(feature = "fits")]
+use rayon::prelude::*;
+use std::{collections::HashMap, ops::Range, path::Path, time::Instant};
+#[cfg(feature = "fits")]
+use wide::f64x4;
+#[cfg(feature = "fits")]
+use verified_core::topology::HardwareTopology;
+#[cfg(all(feature = "fits", target_arch = "x86_64"))]
+use cd_kernel::angular_separation_arcsec_ext80_deg;
 
 /// LoTSS catalog release identifier.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -75,6 +86,41 @@ pub struct LoTSSSource {
     pub release: LoTSSRelease,
 }
 
+/// Execution metadata for pinned multicore LoTSS FITS point crossmatches.
+#[cfg(feature = "fits")]
+#[derive(Debug, Clone)]
+pub struct LotssFitsExecutionReport {
+    pub mode: String,
+    pub worker_count: usize,
+    pub chunk_rows: usize,
+    pub pinned_core_ids: Vec<usize>,
+    pub l3_cache_bytes: usize,
+    pub l3_safe_working_set_bytes: usize,
+    pub avx2_detected: bool,
+    pub fma_detected: bool,
+    pub simd_lane_f64: usize,
+    pub x87_confirmation_used: bool,
+    pub scan_wall_seconds: f64,
+}
+
+/// Best-match record for one sky point against a LoTSS FITS catalog.
+#[cfg(feature = "fits")]
+#[derive(Debug, Clone)]
+pub struct LotssFitsBestMatch {
+    pub source_row_index: usize,
+    pub separation_arcsec: f64,
+    pub source: LoTSSSource,
+}
+
+/// Summary for a point-to-LoTSS FITS best-match scan.
+#[cfg(feature = "fits")]
+#[derive(Debug, Clone)]
+pub struct LotssFitsBestMatchSummary {
+    pub matches: Vec<Option<LotssFitsBestMatch>>,
+    pub scanned_source_count: usize,
+    pub execution: LotssFitsExecutionReport,
+}
+
 /// Columns commonly present across LoTSS releases.
 ///
 /// DR2 masked source catalogs omit some value-added columns like
@@ -96,6 +142,13 @@ const LOTSS_FITS_COLUMNS: &[&str] = &[
     "E_spectral_index",
     "Resolved",
 ];
+
+#[cfg(feature = "fits")]
+const LOTSS_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW: usize = 16;
+#[cfg(feature = "fits")]
+const LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS: usize = 65_536;
+#[cfg(feature = "fits")]
+const LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS: usize = 1_048_576;
 
 /// Load LoTSS sources from a FITS BINTABLE file (DR1 or DR2 bulk download).
 ///
@@ -361,6 +414,640 @@ pub fn load_from_votable(xml: &str, release: LoTSSRelease) -> Result<Vec<LoTSSSo
     Ok(sources)
 }
 
+/// Crossmatch sky points against a LoTSS FITS catalog using a pinned multicore
+/// broad-phase scan plus precise angular confirmation.
+#[cfg(feature = "fits")]
+pub fn crossmatch_points_against_fits_catalog(
+    path: &Path,
+    release: LoTSSRelease,
+    points: &[SkyPoint],
+    match_radius_arcsec: f64,
+    requested_workers: Option<usize>,
+    chunk_rows_override: Option<usize>,
+) -> Result<LotssFitsBestMatchSummary, FetchError> {
+    if match_radius_arcsec <= 0.0 {
+        return Err(FetchError::Validation(
+            "match_radius_arcsec must be positive".to_string(),
+        ));
+    }
+    if points.is_empty() {
+        return Ok(LotssFitsBestMatchSummary {
+            matches: Vec::new(),
+            scanned_source_count: 0,
+            execution: LotssFitsExecutionReport {
+                mode: "empty".to_string(),
+                worker_count: 0,
+                chunk_rows: 0,
+                pinned_core_ids: Vec::new(),
+                l3_cache_bytes: 0,
+                l3_safe_working_set_bytes: 0,
+                avx2_detected: detect_avx2(),
+                fma_detected: detect_fma(),
+                simd_lane_f64: preferred_f64_simd_lane(detect_avx2()),
+                x87_confirmation_used: cfg!(target_arch = "x86_64"),
+                scan_wall_seconds: 0.0,
+            },
+        });
+    }
+
+    let execution_plan = build_lotss_execution_plan(requested_workers, chunk_rows_override);
+    let prepared = prepare_point_grid(points, match_radius_arcsec);
+    let layout = inspect_lotss_position_layout(path)?;
+    let bounds = split_lotss_work_bounds(layout.row_count, execution_plan.worker_count);
+    let core_ids = execution_plan.physical_core_ids.clone();
+    let scan_started = Instant::now();
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(execution_plan.worker_count.max(1))
+        .start_handler(move |idx| {
+            if let Some(&core_id) = core_ids.get(idx) {
+                let _ = core_affinity::set_for_current(core_affinity::CoreId { id: core_id });
+            }
+        })
+        .build()
+        .map_err(|e| FetchError::Validation(format!("build LoTSS rayon pool: {}", e)))?;
+
+    let worker_summaries = pool.install(|| {
+        bounds
+            .into_par_iter()
+            .map(|(start, end)| {
+                scan_lotss_best_match_range(
+                    path,
+                    &layout,
+                    &prepared,
+                    match_radius_arcsec,
+                    start..end,
+                    execution_plan.chunk_rows,
+                )
+            })
+            .collect::<Vec<_>>()
+    });
+
+    let mut merged = vec![None; prepared.point_count];
+    for summary in worker_summaries {
+        let summary = summary?;
+        merge_pending_best_match_vectors(&mut merged, &summary.matches);
+    }
+    let matches = finalize_pending_lotss_best_matches(path, release, merged)?;
+    let scan_wall_seconds = scan_started.elapsed().as_secs_f64();
+    Ok(LotssFitsBestMatchSummary {
+        matches,
+        scanned_source_count: layout.row_count,
+        execution: LotssFitsExecutionReport {
+            mode: execution_plan.mode.to_string(),
+            worker_count: execution_plan.worker_count,
+            chunk_rows: execution_plan.chunk_rows,
+            pinned_core_ids: execution_plan.physical_core_ids,
+            l3_cache_bytes: execution_plan.l3_cache_bytes,
+            l3_safe_working_set_bytes: execution_plan.l3_safe_working_set_bytes,
+            avx2_detected: execution_plan.avx2_detected,
+            fma_detected: execution_plan.fma_detected,
+            simd_lane_f64: execution_plan.simd_lane_f64,
+            x87_confirmation_used: cfg!(target_arch = "x86_64"),
+            scan_wall_seconds,
+        },
+    })
+}
+
+#[cfg(feature = "fits")]
+#[derive(Debug)]
+struct LotssExecutionPlan {
+    mode: &'static str,
+    worker_count: usize,
+    chunk_rows: usize,
+    physical_core_ids: Vec<usize>,
+    l3_cache_bytes: usize,
+    l3_safe_working_set_bytes: usize,
+    avx2_detected: bool,
+    fma_detected: bool,
+    simd_lane_f64: usize,
+}
+
+#[cfg(feature = "fits")]
+#[derive(Debug)]
+struct LotssPositionLayout {
+    table_idx: usize,
+    row_count: usize,
+    ra_column: String,
+    dec_column: String,
+}
+
+#[cfg(feature = "fits")]
+#[derive(Debug)]
+struct PreparedLotssPointGrid {
+    point_count: usize,
+    grid: SkyGridIndex,
+    unit_x: Vec<f64>,
+    unit_y: Vec<f64>,
+    unit_z: Vec<f64>,
+}
+
+#[cfg(feature = "fits")]
+#[derive(Debug, Clone)]
+struct PendingLotssBestMatch {
+    row_index: usize,
+    separation_arcsec: f64,
+}
+
+#[cfg(feature = "fits")]
+#[derive(Debug)]
+struct PointBestMatchScanSummary {
+    matches: Vec<Option<PendingLotssBestMatch>>,
+}
+
+#[cfg(feature = "fits")]
+fn build_lotss_execution_plan(
+    requested_workers: Option<usize>,
+    chunk_rows_override: Option<usize>,
+) -> LotssExecutionPlan {
+    let topo = HardwareTopology::current();
+    let mut physical_core_ids = topo.physical_core_ids.clone();
+    if physical_core_ids.is_empty() {
+        physical_core_ids.push(0);
+    }
+    if let Some(limit) = requested_workers {
+        physical_core_ids.truncate(limit.max(1).min(physical_core_ids.len()));
+    }
+    let worker_count = physical_core_ids.len().max(1);
+    let avx2_detected = detect_avx2();
+    let fma_detected = detect_fma();
+    let simd_lane_f64 = preferred_f64_simd_lane(avx2_detected);
+    let per_worker_bytes = topo
+        .l3_safe_working_set_bytes
+        .max(LOTSS_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW)
+        / worker_count.max(1);
+    let auto_chunk_rows = (per_worker_bytes / LOTSS_NUMERIC_FITS_WORKING_SET_BYTES_PER_ROW)
+        .clamp(
+            LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS,
+            LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS,
+        );
+    let alignment_rows = (simd_lane_f64 * 256).max(1);
+    let chunk_rows = (chunk_rows_override.unwrap_or(auto_chunk_rows))
+        .clamp(
+            LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS,
+            LOTSS_MAX_PARALLEL_FITS_CHUNK_ROWS,
+        )
+        / alignment_rows
+        * alignment_rows;
+
+    LotssExecutionPlan {
+        mode: if worker_count > 1 {
+            "pinned_physical_single_pass"
+        } else {
+            "scalar_single_pass"
+        },
+        worker_count,
+        chunk_rows: chunk_rows.max(LOTSS_MIN_PARALLEL_FITS_CHUNK_ROWS),
+        physical_core_ids,
+        l3_cache_bytes: topo.l3_cache_bytes,
+        l3_safe_working_set_bytes: topo.l3_safe_working_set_bytes,
+        avx2_detected,
+        fma_detected,
+        simd_lane_f64,
+    }
+}
+
+#[cfg(feature = "fits")]
+fn prepare_point_grid(points: &[SkyPoint], match_radius_arcsec: f64) -> PreparedLotssPointGrid {
+    let mut unit_x = Vec::with_capacity(points.len());
+    let mut unit_y = Vec::with_capacity(points.len());
+    let mut unit_z = Vec::with_capacity(points.len());
+    for point in points {
+        let [x, y, z] = sky_point_unit_vector(point.ra_deg, point.dec_deg);
+        unit_x.push(x);
+        unit_y.push(y);
+        unit_z.push(z);
+    }
+    PreparedLotssPointGrid {
+        point_count: points.len(),
+        grid: SkyGridIndex::from_points(points.to_vec(), (match_radius_arcsec / 3600.0).max(0.01)),
+        unit_x,
+        unit_y,
+        unit_z,
+    }
+}
+
+#[cfg(feature = "fits")]
+fn inspect_lotss_position_layout(path: &Path) -> Result<LotssPositionLayout, FetchError> {
+    use fitsio::{FitsFile, hdu::HduInfo};
+
+    let mut fits = FitsFile::open(path)
+        .map_err(|e| FetchError::Validation(format!("FITS open {}: {}", path.display(), e)))?;
+    let num_hdus = {
+        let mut count = 0usize;
+        for _ in fits.iter() {
+            count += 1;
+        }
+        count
+    };
+
+    let mut table_idx = None;
+    let mut row_count = 0usize;
+    let mut column_names = Vec::new();
+    for idx in 1..num_hdus {
+        let hdu = fits
+            .hdu(idx)
+            .map_err(|e| FetchError::Validation(format!("hdu {}: {}", idx, e)))?;
+        if let HduInfo::TableInfo {
+            column_descriptions,
+            num_rows,
+            ..
+        } = hdu.info
+        {
+            table_idx = Some(idx);
+            row_count = num_rows;
+            column_names = column_descriptions
+                .into_iter()
+                .map(|description| description.name)
+                .collect();
+            break;
+        }
+    }
+
+    let table_idx = table_idx.ok_or_else(|| {
+        FetchError::Validation(format!("No BINTABLE HDU found in {}", path.display()))
+    })?;
+    let ra_column = column_names
+        .iter()
+        .find(|name| name.eq_ignore_ascii_case("RA"))
+        .cloned()
+        .ok_or_else(|| FetchError::Validation(format!("No RA column found in {}", path.display())))?;
+    let dec_column = column_names
+        .iter()
+        .find(|name| name.eq_ignore_ascii_case("DEC"))
+        .cloned()
+        .ok_or_else(|| FetchError::Validation(format!("No DEC column found in {}", path.display())))?;
+
+    Ok(LotssPositionLayout {
+        table_idx,
+        row_count,
+        ra_column,
+        dec_column,
+    })
+}
+
+#[cfg(feature = "fits")]
+fn split_lotss_work_bounds(len: usize, parts: usize) -> Vec<(usize, usize)> {
+    if len == 0 {
+        return vec![(0, 0)];
+    }
+    let parts = parts.max(1).min(len);
+    let base = len / parts;
+    let remainder = len % parts;
+    let mut bounds = Vec::with_capacity(parts);
+    let mut start = 0usize;
+    for idx in 0..parts {
+        let extra = usize::from(idx < remainder);
+        let end = start + base + extra;
+        bounds.push((start, end));
+        start = end;
+    }
+    bounds
+}
+
+#[cfg(feature = "fits")]
+fn scan_lotss_best_match_range(
+    lotss_path: &Path,
+    layout: &LotssPositionLayout,
+    prepared: &PreparedLotssPointGrid,
+    match_radius_arcsec: f64,
+    worker_bounds: Range<usize>,
+    chunk_rows: usize,
+) -> Result<PointBestMatchScanSummary, FetchError> {
+    use fitsio::FitsFile;
+
+    let mut fits = FitsFile::open(lotss_path)
+        .map_err(|e| FetchError::Validation(format!("FITS open {}: {}", lotss_path.display(), e)))?;
+    let table_hdu = fits
+        .hdu(layout.table_idx)
+        .map_err(|e| FetchError::Validation(format!("hdu {}: {}", layout.table_idx, e)))?;
+    let mut matches: Vec<Option<PendingLotssBestMatch>> = vec![None; prepared.point_count];
+
+    for start in (worker_bounds.start..worker_bounds.end).step_by(chunk_rows.max(1)) {
+        let end = (start + chunk_rows).min(worker_bounds.end);
+        let row_range = start..end;
+        let ras: Vec<f64> = table_hdu
+            .read_col_range(&mut fits, &layout.ra_column, &row_range)
+            .map_err(|e| {
+                FetchError::Validation(format!(
+                    "Load FITS {} rows {}..{}: {}",
+                    layout.ra_column, start, end, e
+                ))
+            })?;
+        let decs: Vec<f64> = table_hdu
+            .read_col_range(&mut fits, &layout.dec_column, &row_range)
+            .map_err(|e| {
+                FetchError::Validation(format!(
+                    "Load FITS {} rows {}..{}: {}",
+                    layout.dec_column, start, end, e
+                ))
+            })?;
+
+        for row_idx in 0..ras.len() {
+            let ra_deg = *ras.get(row_idx).unwrap_or(&f64::NAN);
+            let dec_deg = *decs.get(row_idx).unwrap_or(&f64::NAN);
+            if !ra_deg.is_finite() || !dec_deg.is_finite() {
+                continue;
+            }
+            for_each_prepared_point_match(
+                prepared,
+                ra_deg,
+                dec_deg,
+                match_radius_arcsec,
+                |candidate_index, separation_arcsec| {
+                    update_pending_best_match(
+                        &mut matches[candidate_index],
+                        PendingLotssBestMatch {
+                            row_index: start + row_idx,
+                            separation_arcsec,
+                        },
+                    );
+                },
+            );
+        }
+    }
+
+    Ok(PointBestMatchScanSummary { matches })
+}
+
+#[cfg(feature = "fits")]
+fn merge_pending_best_match_vectors(
+    merged: &mut [Option<PendingLotssBestMatch>],
+    local: &[Option<PendingLotssBestMatch>],
+) {
+    for (slot, candidate) in merged.iter_mut().zip(local.iter().cloned()) {
+        if let Some(candidate) = candidate {
+            update_pending_best_match(slot, candidate);
+        }
+    }
+}
+
+#[cfg(feature = "fits")]
+fn update_pending_best_match(
+    slot: &mut Option<PendingLotssBestMatch>,
+    candidate: PendingLotssBestMatch,
+) {
+    match slot {
+        Some(existing) if existing.separation_arcsec <= candidate.separation_arcsec => {}
+        _ => *slot = Some(candidate),
+    }
+}
+
+#[cfg(feature = "fits")]
+fn finalize_pending_lotss_best_matches(
+    path: &Path,
+    release: LoTSSRelease,
+    pending: Vec<Option<PendingLotssBestMatch>>,
+) -> Result<Vec<Option<LotssFitsBestMatch>>, FetchError> {
+    let row_indices = pending
+        .iter()
+        .filter_map(|entry| entry.as_ref().map(|entry| entry.row_index))
+        .collect::<Vec<_>>();
+    let rows_by_index = load_fits_rows_by_index(path, release, &row_indices)?;
+    let mut finalized = Vec::with_capacity(pending.len());
+    for entry in pending {
+        match entry {
+            Some(entry) => {
+                let source = rows_by_index.get(&entry.row_index).cloned().ok_or_else(|| {
+                    FetchError::Validation(format!(
+                        "Missing LoTSS source row {} during batch finalization for {}",
+                        entry.row_index,
+                        path.display()
+                    ))
+                })?;
+                finalized.push(Some(LotssFitsBestMatch {
+                    source_row_index: entry.row_index,
+                    separation_arcsec: entry.separation_arcsec,
+                    source,
+                }));
+            }
+            None => finalized.push(None),
+        }
+    }
+    Ok(finalized)
+}
+
+#[cfg(feature = "fits")]
+fn load_fits_rows_by_index(
+    path: &Path,
+    release: LoTSSRelease,
+    row_indices: &[usize],
+) -> Result<HashMap<usize, LoTSSSource>, FetchError> {
+    let mut sorted = row_indices.to_vec();
+    sorted.sort_unstable();
+    sorted.dedup();
+    let mut rows_by_index = HashMap::with_capacity(sorted.len());
+    for (start, end) in group_consecutive_row_runs(&sorted) {
+        for (row_index, source) in load_from_fits_indexed_range(path, release, start..end)? {
+            rows_by_index.insert(row_index, source);
+        }
+    }
+    Ok(rows_by_index)
+}
+
+#[cfg(feature = "fits")]
+fn load_from_fits_indexed_range(
+    path: &Path,
+    release: LoTSSRelease,
+    row_range: Range<usize>,
+) -> Result<Vec<(usize, LoTSSSource)>, FetchError> {
+    let start = row_range.start;
+    let sources = load_from_fits_range(path, release, row_range.clone())?;
+    let expected = row_range.end.saturating_sub(row_range.start);
+    if sources.len() != expected {
+        return Err(FetchError::Validation(format!(
+            "Expected {} LoTSS rows from {}..{} in {}, got {}",
+            expected,
+            row_range.start,
+            row_range.end,
+            path.display(),
+            sources.len()
+        )));
+    }
+    Ok(sources
+        .into_iter()
+        .enumerate()
+        .map(|(offset, source)| (start + offset, source))
+        .collect())
+}
+
+#[cfg(feature = "fits")]
+fn group_consecutive_row_runs(sorted_row_indices: &[usize]) -> Vec<(usize, usize)> {
+    if sorted_row_indices.is_empty() {
+        return Vec::new();
+    }
+    let mut runs = Vec::new();
+    let mut start = sorted_row_indices[0];
+    let mut prev = start;
+    for &row_index in &sorted_row_indices[1..] {
+        if row_index == prev + 1 {
+            prev = row_index;
+            continue;
+        }
+        runs.push((start, prev + 1));
+        start = row_index;
+        prev = row_index;
+    }
+    runs.push((start, prev + 1));
+    runs
+}
+
+#[cfg(feature = "fits")]
+fn for_each_prepared_point_match<F>(
+    prepared: &PreparedLotssPointGrid,
+    query_ra_deg: f64,
+    query_dec_deg: f64,
+    match_radius_arcsec: f64,
+    mut visitor: F,
+) where
+    F: FnMut(usize, f64),
+{
+    let mut candidate_indices = Vec::new();
+    prepared
+        .grid
+        .for_each_search_candidate(query_ra_deg, query_dec_deg, match_radius_arcsec, |idx| {
+            candidate_indices.push(idx);
+        });
+    if candidate_indices.is_empty() {
+        return;
+    }
+
+    let [query_x, query_y, query_z] = sky_point_unit_vector(query_ra_deg, query_dec_deg);
+    let cos_threshold = (match_radius_arcsec / 3600.0).to_radians().cos();
+    let cos_threshold_slack = 1.0e-12;
+    let points = prepared.grid.points();
+
+    let mut offset = 0usize;
+    while offset + 4 <= candidate_indices.len() {
+        let chunk = &candidate_indices[offset..offset + 4];
+        let dots = candidate_dot_chunk(prepared, query_x, query_y, query_z, chunk);
+        let dot_arr = dots.to_array();
+        for lane in 0..4 {
+            if dot_arr[lane] + cos_threshold_slack < cos_threshold {
+                continue;
+            }
+            let candidate_index = chunk[lane];
+            let point = &points[candidate_index];
+            let separation_arcsec = precise_angular_separation_arcsec(
+                query_ra_deg,
+                query_dec_deg,
+                point.ra_deg,
+                point.dec_deg,
+            );
+            if separation_arcsec <= match_radius_arcsec {
+                visitor(candidate_index, separation_arcsec);
+            }
+        }
+        offset += 4;
+    }
+
+    while offset < candidate_indices.len() {
+        let candidate_index = candidate_indices[offset];
+        let point = &points[candidate_index];
+        let separation_arcsec = precise_angular_separation_arcsec(
+            query_ra_deg,
+            query_dec_deg,
+            point.ra_deg,
+            point.dec_deg,
+        );
+        if separation_arcsec <= match_radius_arcsec {
+            visitor(candidate_index, separation_arcsec);
+        }
+        offset += 1;
+    }
+}
+
+#[cfg(feature = "fits")]
+fn candidate_dot_chunk(
+    prepared: &PreparedLotssPointGrid,
+    query_x: f64,
+    query_y: f64,
+    query_z: f64,
+    candidate_indices: &[usize],
+) -> f64x4 {
+    let idx0 = candidate_indices[0];
+    let idx1 = candidate_indices[1];
+    let idx2 = candidate_indices[2];
+    let idx3 = candidate_indices[3];
+    let xs = f64x4::from([
+        prepared.unit_x[idx0],
+        prepared.unit_x[idx1],
+        prepared.unit_x[idx2],
+        prepared.unit_x[idx3],
+    ]);
+    let ys = f64x4::from([
+        prepared.unit_y[idx0],
+        prepared.unit_y[idx1],
+        prepared.unit_y[idx2],
+        prepared.unit_y[idx3],
+    ]);
+    let zs = f64x4::from([
+        prepared.unit_z[idx0],
+        prepared.unit_z[idx1],
+        prepared.unit_z[idx2],
+        prepared.unit_z[idx3],
+    ]);
+    xs * f64x4::splat(query_x) + ys * f64x4::splat(query_y) + zs * f64x4::splat(query_z)
+}
+
+#[cfg(feature = "fits")]
+fn sky_point_unit_vector(ra_deg: f64, dec_deg: f64) -> [f64; 3] {
+    let ra = ra_deg.to_radians();
+    let dec = dec_deg.to_radians();
+    let cos_dec = dec.cos();
+    [cos_dec * ra.cos(), cos_dec * ra.sin(), dec.sin()]
+}
+
+#[cfg(feature = "fits")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+fn detect_avx2() -> bool {
+    std::arch::is_x86_feature_detected!("avx2")
+}
+
+#[cfg(feature = "fits")]
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+fn detect_avx2() -> bool {
+    false
+}
+
+#[cfg(feature = "fits")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+fn detect_fma() -> bool {
+    std::arch::is_x86_feature_detected!("fma")
+}
+
+#[cfg(feature = "fits")]
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+fn detect_fma() -> bool {
+    false
+}
+
+#[cfg(feature = "fits")]
+fn preferred_f64_simd_lane(avx2_detected: bool) -> usize {
+    if avx2_detected { 4 } else { 1 }
+}
+
+#[cfg(feature = "fits")]
+fn precise_angular_separation_arcsec(
+    ra1_deg: f64,
+    dec1_deg: f64,
+    ra2_deg: f64,
+    dec2_deg: f64,
+) -> f64 {
+    #[cfg(target_arch = "x86_64")]
+    {
+        let separation = angular_separation_arcsec_ext80_deg(ra1_deg, dec1_deg, ra2_deg, dec2_deg);
+        if separation.is_finite() {
+            separation
+        } else {
+            angular_separation_arcsec(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
+        }
+    }
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        angular_separation_arcsec(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
+    }
+}
+
 // ---- Internal helpers --------------------------------------------------------
 
 #[cfg(feature = "fits")]
@@ -459,5 +1146,11 @@ mod tests {
         assert_eq!(s.structure_code, 'S');
         assert!((s.flux_mjy - 3.4).abs() < 0.01);
         assert_eq!(s.release, LoTSSRelease::DR3);
+    }
+
+    #[test]
+    fn consecutive_row_runs_are_grouped() {
+        let runs = group_consecutive_row_runs(&[2, 3, 4, 9, 12, 13]);
+        assert_eq!(runs, vec![(2, 5), (9, 10), (12, 14)]);
     }
 }

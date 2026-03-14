@@ -2249,7 +2249,9 @@ version = "0.1.0"
 dependencies = [
  "approx",
  "backon",
+ "cd_kernel",
  "chrono",
+ "core_affinity",
  "csv",
  "fitsio",
  "flate2",
@@ -2263,6 +2265,7 @@ dependencies = [
  "quick-xml 0.38.4",
  "rand 0.8.5",
  "rand_distr 0.4.3",
+ "rayon",
  "reqwest",
  "serde",
  "serde_json",
@@ -2273,6 +2276,7 @@ dependencies = [
  "toml",
  "ureq",
  "url",
+ "verified_core",
  "wide",
  "zip 2.4.2",
 ]
@@ -3828,6 +3832,7 @@ dependencies = [
  "arrow-schema",
  "ash",
  "casimir_core",
+ "cd_kernel",
  "cd_spin_bridge",
  "chrono",
  "clap",
@@ -3877,6 +3882,7 @@ dependencies = [
  "toml",
  "ureq",
  "verified_core",
+ "wide",
  "zip 2.4.2",
 ]
 

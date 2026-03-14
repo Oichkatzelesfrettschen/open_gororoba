@@ -11,7 +11,253 @@
 //! Reference: Walter, Brinks, de Blok et al., AJ 136 (2008) 2563.
 //!            "THINGS: The HI Nearby Galaxy Survey"
 
-use std::path::Path;
+use crate::{
+    catalogs::hi_cube::HiCubeMetadata,
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string},
+};
+use std::{
+    collections::{BTreeMap, HashMap},
+    fs,
+    path::{Path, PathBuf},
+};
+
+/// CDS VizieR root for the THINGS catalog tables.
+pub const THINGS_VIZIER_ROOT: &str = "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2563";
+/// MPIA THINGS data-products landing page.
+pub const THINGS_MPIA_DATA_URL: &str = "https://www2.mpia-hd.mpg.de/THINGS/Data.html";
+/// MPIA THINGS absolute URL prefix.
+pub const THINGS_MPIA_ROOT: &str = "https://www2.mpia-hd.mpg.de/THINGS/";
+
+/// One THINGS file advertised by the MPIA data-products page.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ThingsCubeManifestEntry {
+    pub galaxy_slug: String,
+    pub galaxy_key: String,
+    pub filename: String,
+    pub weighting: String,
+    pub product_kind: String,
+    pub url: String,
+}
+
+/// Rust-native provider for the canonical THINGS catalog tables.
+pub struct ThingsTablesProvider;
+
+/// Rust-native provider for preferred THINGS HI velocity cubes.
+///
+/// Preference order per galaxy:
+/// 1. RO_CUBE_THINGS.FITS
+/// 2. NA_CUBE_THINGS.FITS
+pub struct ThingsPreferredCubesProvider;
+
+fn extract_href_values(html: &str) -> Vec<String> {
+    let mut hrefs = Vec::new();
+    let mut offset = 0usize;
+    while let Some(start) = html[offset..].find("href=\"") {
+        let href_start = offset + start + 6;
+        let Some(end_rel) = html[href_start..].find('"') else {
+            break;
+        };
+        let href_end = href_start + end_rel;
+        hrefs.push(html[href_start..href_end].to_string());
+        offset = href_end + 1;
+    }
+    hrefs
+}
+
+fn things_name_key(raw: &str) -> String {
+    raw.chars()
+        .filter(|ch| ch.is_ascii_alphanumeric())
+        .map(|ch| ch.to_ascii_uppercase())
+        .collect()
+}
+
+fn parse_manifest_entry_from_filename(filename: &str) -> Option<(String, String, String)> {
+    let stem = filename.strip_suffix(".FITS")?;
+    for product in ["CUBE", "MOM0", "MOM1", "MOM2"] {
+        for weighting in ["RO", "NA"] {
+            let suffix = format!("_{weighting}_{product}_THINGS");
+            if let Some(prefix) = stem.strip_suffix(&suffix) {
+                return Some((prefix.to_string(), weighting.to_string(), product.to_string()));
+            }
+        }
+    }
+    None
+}
+
+/// Parse the MPIA THINGS landing page into a manifest of FITS data products.
+pub fn parse_things_cube_manifest_html(html: &str) -> Vec<ThingsCubeManifestEntry> {
+    let mut entries = Vec::new();
+    for href in extract_href_values(html) {
+        if !href.ends_with(".FITS") {
+            continue;
+        }
+        let filename = href.rsplit('/').next().unwrap_or(&href).to_string();
+        let Some((galaxy_slug, weighting, product_kind)) =
+            parse_manifest_entry_from_filename(&filename)
+        else {
+            continue;
+        };
+        let url = if href.starts_with("http://") || href.starts_with("https://") {
+            href
+        } else {
+            format!("{THINGS_MPIA_ROOT}{href}")
+        };
+        entries.push(ThingsCubeManifestEntry {
+            galaxy_key: things_name_key(&galaxy_slug),
+            galaxy_slug,
+            filename,
+            weighting,
+            product_kind,
+            url,
+        });
+    }
+    entries.sort_by(|left, right| {
+        left.galaxy_slug
+            .cmp(&right.galaxy_slug)
+            .then_with(|| left.product_kind.cmp(&right.product_kind))
+            .then_with(|| left.weighting.cmp(&right.weighting))
+    });
+    entries
+}
+
+/// Discover all THINGS cube/data-product links from the MPIA landing page.
+pub fn discover_things_cube_manifest() -> Result<Vec<ThingsCubeManifestEntry>, FetchError> {
+    let html = download_to_string(THINGS_MPIA_DATA_URL)?;
+    let entries = parse_things_cube_manifest_html(&html);
+    if entries.is_empty() {
+        return Err(FetchError::Validation(
+            "THINGS MPIA landing page exposed no FITS data products".to_string(),
+        ));
+    }
+    Ok(entries)
+}
+
+/// Select one preferred HI velocity cube per galaxy.
+pub fn preferred_things_cube_entries(
+    entries: &[ThingsCubeManifestEntry],
+) -> Vec<ThingsCubeManifestEntry> {
+    let mut grouped: BTreeMap<String, Vec<&ThingsCubeManifestEntry>> = BTreeMap::new();
+    for entry in entries.iter().filter(|entry| entry.product_kind == "CUBE") {
+        grouped
+            .entry(entry.galaxy_key.clone())
+            .or_default()
+            .push(entry);
+    }
+    let mut preferred = Vec::new();
+    for (_galaxy_key, group) in grouped {
+        let selected = group
+            .iter()
+            .find(|entry| entry.weighting == "RO")
+            .or_else(|| group.iter().find(|entry| entry.weighting == "NA"))
+            .copied();
+        if let Some(entry) = selected {
+            preferred.push(entry.clone());
+        }
+    }
+    preferred.sort_by(|left, right| left.galaxy_slug.cmp(&right.galaxy_slug));
+    preferred
+}
+
+pub fn write_things_cube_manifest_csv(
+    path: &Path,
+    entries: &[ThingsCubeManifestEntry],
+) -> Result<(), FetchError> {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    let mut wtr = csv::Writer::from_path(path)
+        .map_err(|err| FetchError::Validation(format!("open THINGS manifest CSV: {err}")))?;
+    wtr.write_record([
+        "galaxy_slug",
+        "galaxy_key",
+        "filename",
+        "weighting",
+        "product_kind",
+        "url",
+    ])
+    .map_err(|err| FetchError::Validation(format!("write THINGS manifest header: {err}")))?;
+    for entry in entries {
+        wtr.write_record([
+            entry.galaxy_slug.as_str(),
+            entry.galaxy_key.as_str(),
+            entry.filename.as_str(),
+            entry.weighting.as_str(),
+            entry.product_kind.as_str(),
+            entry.url.as_str(),
+        ])
+        .map_err(|err| FetchError::Validation(format!("write THINGS manifest row: {err}")))?;
+    }
+    wtr.flush()
+        .map_err(|err| FetchError::Validation(format!("flush THINGS manifest CSV: {err}")))?;
+    Ok(())
+}
+
+impl DatasetProvider for ThingsTablesProvider {
+    fn name(&self) -> &str {
+        "THINGS Tables"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let dir = config.output_dir.join("things");
+        fs::create_dir_all(&dir)?;
+        for filename in ["table1.dat", "table4.dat", "refs.dat", "ReadMe"] {
+            let destination = dir.join(filename);
+            if config.skip_existing && destination.exists() {
+                continue;
+            }
+            let url = format!("{THINGS_VIZIER_ROOT}/{filename}");
+            download_to_file(&url, &destination)?;
+        }
+        Ok(dir)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        let dir = config.output_dir.join("things");
+        dir.join("table1.dat").exists()
+            && dir.join("table4.dat").exists()
+            && dir.join("refs.dat").exists()
+            && dir.join("ReadMe").exists()
+    }
+}
+
+impl DatasetProvider for ThingsPreferredCubesProvider {
+    fn name(&self) -> &str {
+        "THINGS Preferred HI Cubes"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let base_dir = config.output_dir.join("things");
+        let cube_dir = base_dir.join("cubes");
+        fs::create_dir_all(&cube_dir)?;
+        let manifest_entries = preferred_things_cube_entries(&discover_things_cube_manifest()?);
+        if manifest_entries.is_empty() {
+            return Err(FetchError::Validation(
+                "No preferred THINGS cubes were discoverable".to_string(),
+            ));
+        }
+        for entry in &manifest_entries {
+            let destination = cube_dir.join(&entry.filename);
+            if config.skip_existing && destination.exists() {
+                continue;
+            }
+            download_to_file(&entry.url, &destination)?;
+        }
+        write_things_cube_manifest_csv(
+            &base_dir.join("things_cube_manifest.csv"),
+            &manifest_entries,
+        )?;
+        Ok(cube_dir)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        let manifest = config
+            .output_dir
+            .join("things")
+            .join("things_cube_manifest.csv");
+        let cube_dir = config.output_dir.join("things").join("cubes");
+        manifest.exists() && cube_dir.exists()
+    }
+}
 
 /// Galaxy properties from THINGS table1.dat.
 ///
@@ -118,6 +364,27 @@ impl ThingsHiSpectrum {
         let v_min = above.iter().cloned().fold(f64::INFINITY, f64::min);
         let v_max = above.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
         (v_max - v_min).abs()
+    }
+
+    /// Approximate channel spacing in km/s derived from adjacent velocity bins.
+    pub fn channel_width_km_s(&self) -> f64 {
+        if self.channels.len() < 2 {
+            return f64::NAN;
+        }
+        let mut total = 0.0_f64;
+        let mut count = 0usize;
+        for window in self.channels.windows(2) {
+            let dv = (window[1].velocity_km_s - window[0].velocity_km_s).abs();
+            if dv.is_finite() && dv > 0.0 {
+                total += dv;
+                count += 1;
+            }
+        }
+        if count == 0 {
+            f64::NAN
+        } else {
+            total / count as f64
+        }
     }
 }
 
@@ -300,6 +567,49 @@ pub fn parse_things_hi_spectra(path: &Path) -> Result<Vec<ThingsHiSpectrum>, Str
     }
 
     Ok(spectra)
+}
+
+/// Build HI cube metadata rows from THINGS table1 and table4 products.
+///
+/// The tables provide positions, distances, inclination, PA, and integrated HI
+/// spectra. THINGS was designed for an approximately 6 arcsec synthesized beam,
+/// so callers may override that survey default if a later cube/header audit
+/// materializes per-galaxy beam metadata.
+pub fn build_things_hi_metadata(
+    galaxies: &[ThingsGalaxy],
+    spectra: &[ThingsHiSpectrum],
+    default_beam_fwhm_arcsec: f64,
+) -> Vec<HiCubeMetadata> {
+    let spectra_by_name: HashMap<&str, &ThingsHiSpectrum> = spectra
+        .iter()
+        .map(|spectrum| (spectrum.name.as_str(), spectrum))
+        .collect();
+
+    galaxies
+        .iter()
+        .map(|galaxy| {
+            let spectrum = spectra_by_name.get(galaxy.name.as_str()).copied();
+            let channel_width_km_s = spectrum
+                .map(ThingsHiSpectrum::channel_width_km_s)
+                .filter(|value| value.is_finite() && *value > 0.0)
+                .unwrap_or(5.2);
+            let v_sys_km_s = spectrum
+                .map(ThingsHiSpectrum::systemic_velocity_km_s)
+                .filter(|value| value.is_finite())
+                .unwrap_or(0.0);
+            HiCubeMetadata {
+                name: galaxy.name.clone(),
+                ra_deg: galaxy.ra_hours * 15.0,
+                dec_deg: galaxy.dec_deg,
+                distance_mpc: galaxy.distance_mpc,
+                inclination_deg: galaxy.inclination_deg,
+                pa_deg: galaxy.pa_deg,
+                beam_fwhm_arcsec: default_beam_fwhm_arcsec,
+                channel_width_km_s,
+                v_sys_km_s,
+            }
+        })
+        .collect()
 }
 
 #[cfg(test)]
@@ -503,5 +813,47 @@ DDO 154       439.6   5.6403E-03
             let total: usize = spectra.iter().map(|s| s.channels.len()).sum();
             assert_eq!(total, 2688, "THINGS should have 2688 total channels");
         }
+    }
+
+    #[test]
+    fn test_build_things_hi_metadata_from_tables() {
+        let galaxies = vec![ThingsGalaxy {
+            name: "NGC 2403".to_string(),
+            alt_names: String::new(),
+            ra_hours: 7.0,
+            dec_deg: 65.0,
+            distance_mpc: 3.2,
+            log_d25: 2.2,
+            b_mag: 8.1,
+            abs_b_mag: -19.4,
+            inclination_deg: 63.0,
+            pa_deg: 124.0,
+            metallicity: 8.3,
+            sfr_msun_yr: 0.85,
+            morph_type: 6,
+        }];
+        let spectra = vec![ThingsHiSpectrum {
+            name: "NGC 2403".to_string(),
+            channels: vec![
+                ThingsHiChannel {
+                    velocity_km_s: 100.0,
+                    flux_jy: 1.0,
+                },
+                ThingsHiChannel {
+                    velocity_km_s: 105.2,
+                    flux_jy: 2.0,
+                },
+                ThingsHiChannel {
+                    velocity_km_s: 110.4,
+                    flux_jy: 1.0,
+                },
+            ],
+        }];
+        let rows = build_things_hi_metadata(&galaxies, &spectra, 6.0);
+        assert_eq!(rows.len(), 1);
+        assert!((rows[0].ra_deg - 105.0).abs() < 1e-9);
+        assert!((rows[0].channel_width_km_s - 5.2).abs() < 1e-9);
+        assert!((rows[0].beam_fwhm_arcsec - 6.0).abs() < 1e-9);
+        assert!(rows[0].v_sys_km_s.is_finite());
     }
 }

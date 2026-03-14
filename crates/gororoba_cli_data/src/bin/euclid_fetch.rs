@@ -44,6 +44,11 @@ enum Command {
         #[arg(long)]
         manifest: Option<PathBuf>,
     },
+    /// Emit the current governed Zenodo target state (verified vs provisional).
+    ZenodoState {
+        #[arg(long)]
+        report: Option<PathBuf>,
+    },
     /// Download one or more governed Euclid Zenodo catalogs.
     ZenodoDownload {
         #[arg(long, default_value = "all")]
@@ -139,6 +144,21 @@ struct ZenodoDownloadEntry {
     note: String,
 }
 
+#[derive(Debug, Clone, Serialize)]
+struct ZenodoStateReport {
+    generated_at_utc: String,
+    verified_targets: Vec<ZenodoStateEntry>,
+    provisional_targets: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+struct ZenodoStateEntry {
+    catalog: String,
+    record_id: u64,
+    description: String,
+    target_files: Vec<String>,
+}
+
 #[derive(Debug, Clone)]
 struct EuclidZenodoTarget {
     name: &'static str,
@@ -172,33 +192,19 @@ const ZENODO_TARGETS: &[EuclidZenodoTarget] = &[
     EuclidZenodoTarget {
         name: "morphology_supplementary",
         record_id: 15_027_787,
-        description: "Euclid Q1 Galaxy Morphology Supplementary Release",
-        target_files: &["morphology_supplementary.parquet"],
+        description: "Euclid Q1 Morphology latent-space representations",
+        target_files: &[
+            "representations_pca_40.parquet",
+            "representations_pca_100.parquet",
+        ],
     },
-    EuclidZenodoTarget {
-        name: "photo_z",
-        record_id: 14_935_225,
-        description: "Euclid Q1 Photometric Redshift PDFs",
-        target_files: &["photoz_pdfs.parquet"],
-    },
-    EuclidZenodoTarget {
-        name: "galaxy_clustering",
-        record_id: 15_025_557,
-        description: "Euclid Q1 Galaxy Clustering Catalog",
-        target_files: &["clustering_catalog.parquet"],
-    },
-    EuclidZenodoTarget {
-        name: "compact_groups",
-        record_id: 15_108_017,
-        description: "Euclid Q1 Compact Galaxy Groups",
-        target_files: &["compact_groups.csv"],
-    },
-    EuclidZenodoTarget {
-        name: "globular_clusters",
-        record_id: 14_951_889,
-        description: "Euclid Q1 Globular Cluster Candidates",
-        target_files: &["globular_cluster_candidates.csv"],
-    },
+];
+
+const PROVISIONAL_ZENODO_TARGETS: &[&str] = &[
+    "photo_z",
+    "galaxy_clustering",
+    "compact_groups",
+    "globular_clusters",
 ];
 
 const ESA_TAP: &str = "https://eas.esac.esa.int/tap-server/tap";
@@ -255,6 +261,7 @@ fn main() -> Result<()> {
             skip_existing,
             manifest,
         } => cmd_zenodo_download(&catalog, skip_existing, manifest.as_deref()),
+        Command::ZenodoState { report } => cmd_zenodo_state(report.as_deref()),
         Command::TapTables { endpoint, output } => cmd_tap_tables(endpoint, output.as_deref()),
         Command::TapQuery {
             endpoint,
@@ -280,6 +287,36 @@ fn main() -> Result<()> {
     }
 }
 
+fn cmd_zenodo_state(report: Option<&Path>) -> Result<()> {
+    let state = ZenodoStateReport {
+        generated_at_utc: chrono::Utc::now().to_rfc3339(),
+        verified_targets: ZENODO_TARGETS
+            .iter()
+            .map(|target| ZenodoStateEntry {
+                catalog: target.name.to_string(),
+                record_id: target.record_id,
+                description: target.description.to_string(),
+                target_files: target.target_files.iter().map(|item| item.to_string()).collect(),
+            })
+            .collect(),
+        provisional_targets: PROVISIONAL_ZENODO_TARGETS
+            .iter()
+            .map(|item| item.to_string())
+            .collect(),
+    };
+    let output = report
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("reports/euclid_zenodo_state_2026-03-13.toml"));
+    if let Some(parent) = output.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    fs::write(&output, toml::to_string_pretty(&state)?)?;
+    println!("Verified targets:   {}", state.verified_targets.len());
+    println!("Provisional targets: {}", state.provisional_targets.len());
+    println!("Report:             {}", output.display());
+    Ok(())
+}
+
 struct TapQueryArgs<'a> {
     endpoint: TapEndpointArg,
     catalog: TapCatalogArg,
@@ -298,7 +335,7 @@ fn cmd_zenodo_discover(max_pages: usize, page_size: usize, manifest: Option<&Pat
     let mut seen = std::collections::BTreeSet::new();
     for page in 1..=max_pages {
         let url = format!(
-            "{ZENODO_API}?q=euclid+q1&size={page_size}&sort=mostrecent&type=dataset&page={page}"
+            "{ZENODO_API}?q=title:euclid+q1&size={page_size}&sort=bestmatch&page={page}"
         );
         let response = stack
             .fetch_text(&TransferRequest::probe(url))
@@ -320,6 +357,14 @@ fn cmd_zenodo_discover(max_pages: usize, page_size: usize, manifest: Option<&Pat
                 continue;
             }
             let metadata = hit.get("metadata").unwrap_or(&Value::Null);
+            let resource_type = metadata
+                .get("resource_type")
+                .and_then(|value| value.get("type"))
+                .and_then(Value::as_str)
+                .unwrap_or_default();
+            if resource_type != "dataset" {
+                continue;
+            }
             let title = metadata
                 .get("title")
                 .and_then(Value::as_str)
@@ -418,6 +463,18 @@ fn cmd_zenodo_download(catalog: &str, skip_existing: bool, manifest: Option<&Pat
             .fetch_text(&TransferRequest::probe(url))
             .map_err(|e| anyhow!(e.to_string()))?;
         let metadata: Value = serde_json::from_str(&metadata_text)?;
+        let title = metadata
+            .get("metadata")
+            .and_then(|value| value.get("title"))
+            .and_then(Value::as_str)
+            .unwrap_or_default();
+        if !title.to_ascii_lowercase().contains("euclid") {
+            bail!(
+                "Zenodo record {} resolved to a non-Euclid title: {}",
+                target.record_id,
+                title
+            );
+        }
         let files = metadata
             .get("files")
             .and_then(Value::as_array)
@@ -572,6 +629,12 @@ fn build_stack() -> DownloadStack {
 fn resolve_targets(catalog: &str) -> Result<Vec<&'static EuclidZenodoTarget>> {
     if catalog == "all" {
         return Ok(ZENODO_TARGETS.iter().collect());
+    }
+    if PROVISIONAL_ZENODO_TARGETS.contains(&catalog) {
+        bail!(
+            "Catalog {} is currently disabled until its official Euclid Zenodo record is verified",
+            catalog
+        );
     }
     let target = ZENODO_TARGETS
         .iter()

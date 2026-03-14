@@ -32,6 +32,75 @@ pub fn parse_f64_or_zero(s: &str) -> f64 {
     s.trim().parse::<f64>().unwrap_or(0.0)
 }
 
+fn sexagesimal_tokens(s: &str) -> Vec<f64> {
+    let normalized = s
+        .trim()
+        .replace(['h', 'H', 'm', 'M', 's', 'S', 'd', 'D', ':'], " ");
+    normalized
+        .split_whitespace()
+        .filter_map(|token| token.parse::<f64>().ok())
+        .collect()
+}
+
+/// Parse a sexagesimal right ascension string into decimal degrees.
+///
+/// Accepts common forms such as `01 46 22.407`, `01:46:22.407`, or `1.77289`.
+/// Single-token inputs are treated as decimal degrees when their absolute value
+/// exceeds 24, otherwise as decimal hours.
+pub fn parse_sexagesimal_ra_to_deg(s: &str) -> f64 {
+    let tokens = sexagesimal_tokens(s);
+    match tokens.as_slice() {
+        [] => f64::NAN,
+        [value] if value.abs() > 24.0 => *value,
+        [hours] => hours * 15.0,
+        [hours, minutes] => (hours + minutes / 60.0) * 15.0,
+        [hours, minutes, seconds, ..] => (hours + minutes / 60.0 + seconds / 3600.0) * 15.0,
+    }
+}
+
+/// Parse a sexagesimal declination string into decimal degrees.
+///
+/// Accepts common forms such as `+61 45 03.19`, `-72:11:33.8`, or `-28.94`.
+pub fn parse_sexagesimal_dec_to_deg(s: &str) -> f64 {
+    let trimmed = s.trim();
+    let sign = if trimmed.starts_with('-') { -1.0 } else { 1.0 };
+    let tokens = sexagesimal_tokens(trimmed);
+    match tokens.as_slice() {
+        [] => f64::NAN,
+        [degrees] => *degrees,
+        [degrees, minutes] => sign * (degrees.abs() + minutes.abs() / 60.0),
+        [degrees, minutes, seconds, ..] => {
+            sign * (degrees.abs() + minutes.abs() / 60.0 + seconds.abs() / 3600.0)
+        }
+    }
+}
+
+/// Convert Galactic coordinates (l, b) in degrees to J2000 equatorial (RA, Dec).
+///
+/// Uses the standard IAU 1958 Galactic system expressed in the J2000/ICRS
+/// rotation matrix adopted by Hipparcos/astrometry toolchains.
+pub fn galactic_to_equatorial_j2000(l_deg: f64, b_deg: f64) -> (f64, f64) {
+    let l = l_deg.to_radians();
+    let b = b_deg.to_radians();
+
+    let x_gal = b.cos() * l.cos();
+    let y_gal = b.cos() * l.sin();
+    let z_gal = b.sin();
+
+    // Equatorial <- Galactic rotation = transpose of the standard
+    // J2000 equatorial->Galactic rotation matrix.
+    let x_eq = -0.054_875_560_4 * x_gal + 0.494_109_427_9 * y_gal - 0.867_666_149 * z_gal;
+    let y_eq = -0.873_437_090_2 * x_gal - 0.444_829_63 * y_gal - 0.198_076_373_4 * z_gal;
+    let z_eq = -0.483_835_015_5 * x_gal + 0.746_982_244_5 * y_gal + 0.455_983_776_2 * z_gal;
+
+    let mut ra_deg = y_eq.atan2(x_eq).to_degrees();
+    if ra_deg < 0.0 {
+        ra_deg += 360.0;
+    }
+    let dec_deg = z_eq.clamp(-1.0, 1.0).asin().to_degrees();
+    (ra_deg, dec_deg)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -68,5 +137,27 @@ mod tests {
         assert!((parse_f64_or_zero("1.234") - 1.234).abs() < 1e-12);
         assert!((parse_f64_or_zero("") - 0.0).abs() < 1e-12);
         assert!((parse_f64_or_zero("abc") - 0.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_parse_sexagesimal_ra_to_deg() {
+        let ra_deg = parse_sexagesimal_ra_to_deg("01 46 22.407");
+        assert!((ra_deg - 26.5933625).abs() < 1e-6);
+        assert!((parse_sexagesimal_ra_to_deg("180.0") - 180.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_parse_sexagesimal_dec_to_deg() {
+        let dec_deg = parse_sexagesimal_dec_to_deg("+61 45 03.19");
+        assert!((dec_deg - 61.75088611111111).abs() < 1e-6);
+        let neg_dec = parse_sexagesimal_dec_to_deg("-72 11 33.8");
+        assert!((neg_dec + 72.19272222222222).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_galactic_to_equatorial_j2000_galactic_center() {
+        let (ra_deg, dec_deg) = galactic_to_equatorial_j2000(0.0, 0.0);
+        assert!((ra_deg - 266.40499).abs() < 0.02, "ra_deg={}", ra_deg);
+        assert!((dec_deg + 28.93617).abs() < 0.02, "dec_deg={}", dec_deg);
     }
 }

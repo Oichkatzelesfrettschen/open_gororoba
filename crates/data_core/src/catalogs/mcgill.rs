@@ -7,7 +7,10 @@
 //! Source: http://www.physics.mcgill.ca/~pulsar/magnetar/main.html
 //! Reference: Olausen & Kaspi (2014), ApJS 212, 6
 
-use crate::fetcher::FetchError;
+use crate::{
+    fetcher::FetchError,
+    parse::{parse_sexagesimal_dec_to_deg, parse_sexagesimal_ra_to_deg},
+};
 use std::path::Path;
 
 /// A magnetar from the McGill catalog.
@@ -71,27 +74,35 @@ pub fn parse_mcgill_csv(path: &Path) -> Result<Vec<Magnetar>, FetchError> {
         .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
         .clone();
 
-    let col = |name: &str| -> Option<usize> {
-        headers
-            .iter()
-            .position(|h| h.to_lowercase().contains(&name.to_lowercase()))
+    let normalize = |value: &str| -> String {
+        value
+            .trim()
+            .to_ascii_lowercase()
+            .chars()
+            .filter(|ch| ch.is_ascii_alphanumeric())
+            .collect()
+    };
+    let col = |names: &[&str]| -> Option<usize> {
+        let normalized_names = names.iter().map(|name| normalize(name)).collect::<Vec<_>>();
+        headers.iter().position(|header| {
+            let normalized_header = normalize(header);
+            normalized_names.contains(&normalized_header)
+        })
     };
 
-    let idx_name = col("name").or_else(|| col("source"));
-    let idx_ra = col("ra");
-    let idx_dec = col("dec");
-    let idx_gl = col("gl").or_else(|| col("l"));
-    let idx_gb = col("gb").or_else(|| col("b"));
-    let idx_p = col("period").or_else(|| col("p0"));
-    let idx_pdot = col("pdot").or_else(|| col("p1"));
-    let idx_b = col("dipole")
-        .or_else(|| col("bfield"))
-        .or_else(|| col("b_"));
-    let idx_age = col("age");
-    let idx_edot = col("edot").or_else(|| col("lsd"));
-    let idx_dist = col("dist");
-    let idx_dm = col("dm");
-    let idx_lx = col("lx").or_else(|| col("lumin"));
+    let idx_name = col(&["name", "source"]);
+    let idx_ra = col(&["ra"]);
+    let idx_dec = col(&["decl", "dec"]);
+    let idx_gl = col(&["gl", "l"]);
+    let idx_gb = col(&["gb"]);
+    let idx_p = col(&["period", "p0"]);
+    let idx_pdot = col(&["pdot", "p1"]);
+    let idx_b = col(&["b", "bdipole", "dipole", "bfield"]);
+    let idx_age = col(&["age"]);
+    let idx_edot = col(&["edot", "lsd"]);
+    let idx_dist = col(&["dist", "distance"]);
+    let idx_dm = col(&["dm"]);
+    let idx_lx = col(&["lx", "lumin", "luminosity"]);
 
     let get_str = |record: &csv::StringRecord, idx: Option<usize>| -> String {
         idx.and_then(|i| record.get(i))
@@ -118,10 +129,21 @@ pub fn parse_mcgill_csv(path: &Path) -> Result<Vec<Magnetar>, FetchError> {
             continue;
         }
 
+        let ra_str = get_str(&record, idx_ra);
+        let dec_str = get_str(&record, idx_dec);
+        let mut ra = parse_f64(&ra_str);
+        let mut dec = parse_f64(&dec_str);
+        if !ra.is_finite() && !ra_str.is_empty() {
+            ra = parse_sexagesimal_ra_to_deg(&ra_str);
+        }
+        if !dec.is_finite() && !dec_str.is_empty() {
+            dec = parse_sexagesimal_dec_to_deg(&dec_str);
+        }
+
         magnetars.push(Magnetar {
             name,
-            ra: get_f64(&record, idx_ra),
-            dec: get_f64(&record, idx_dec),
+            ra,
+            dec,
             gl: get_f64(&record, idx_gl),
             gb: get_f64(&record, idx_gb),
             period: get_f64(&record, idx_p),
@@ -230,5 +252,31 @@ SGR TEST,0,0,0,0,5.0,--,...,0,0,0,...,0
     #[test]
     fn test_magnetar_field_count() {
         assert_eq!(MAGNETAR_FIELD_COUNT, 13);
+    }
+
+    #[test]
+    fn test_parse_mcgill_sexagesimal_coordinates() {
+        let csv = "\
+Name,Period,RA,Decl,Dist
+4U 0142+61,8.68,01 46 22.407,+61 45 03.19,3.6
+";
+        let f = write_temp_csv(csv);
+        let magnetars = parse_mcgill_csv(f.path()).unwrap();
+        assert_eq!(magnetars.len(), 1);
+        assert!((magnetars[0].ra - 26.5933625).abs() < 1e-6);
+        assert!((magnetars[0].dec - 61.75088611111111).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_parse_mcgill_prefers_true_ra_column_over_ref_xray() {
+        let csv = "\
+Name,Ref_Xray,RA,Decl,Period,B
+SGR TEST,tem08,01 46 22.407,+61 45 03.19,8.68869249,1.34E+14
+";
+        let f = write_temp_csv(csv);
+        let magnetars = parse_mcgill_csv(f.path()).unwrap();
+        assert_eq!(magnetars.len(), 1);
+        assert!((magnetars[0].ra - 26.5933625).abs() < 1e-6);
+        assert!((magnetars[0].dec - 61.75088611111111).abs() < 1e-6);
     }
 }
