@@ -50,7 +50,7 @@ enum Commands {
     /// Verify external source SQLite invariants and generated compatibility exports.
     VerifyExternalSources(VerifyExternalSourcesArgs),
     /// Update one SQLite-authored external source contract and optionally re-export compatibility views.
-    UpdateExternalSource(UpdateExternalSourceArgs),
+    UpdateExternalSource(Box<UpdateExternalSourceArgs>),
     /// Query one artifact or document from the SQLite index.
     Query(QueryArgs),
     /// Print operator-focused health and drift summary from the SQLite index.
@@ -389,7 +389,7 @@ fn main() -> Result<()> {
             run_verify_external_sources(&repo_root, &db_path, args)
         }
         Commands::UpdateExternalSource(args) => {
-            run_update_external_source(&repo_root, &db_path, args)
+            run_update_external_source(&repo_root, &db_path, *args)
         }
         Commands::Query(args) => run_query(&db_path, args),
         Commands::Doctor(args) => run_doctor(&db_path, args),

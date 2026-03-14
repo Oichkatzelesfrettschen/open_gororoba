@@ -54,12 +54,12 @@ impl SparseBrickMap {
         let expand_bitmask_kernel = module.load_function("expand_bitmask_to_counts")?;
         let build_indirect_table_kernel = module.load_function("build_indirect_table")?;
 
-        let bx_max = (nx + 7) / 8;
-        let by_max = (ny + 7) / 8;
-        let bz_max = (nz + 7) / 8;
+        let bx_max = nx.div_ceil(8);
+        let by_max = ny.div_ceil(8);
+        let bz_max = nz.div_ceil(8);
         let n_bricks = bx_max * by_max * bz_max;
 
-        let num_words = (n_bricks + 31) / 32;
+        let num_words = n_bricks.div_ceil(32);
 
         let mut d_occupancy_words = stream.alloc_zeros::<u32>(num_words)?;
         let mut d_brick_counts = stream.alloc_zeros::<u32>(n_bricks)?;
@@ -67,9 +67,9 @@ impl SparseBrickMap {
         // 1. Generate Bitmask
         let block = (8, 8, 8);
         let grid = (
-            (nx as u32 + block.0 - 1) / block.0,
-            (ny as u32 + block.1 - 1) / block.1,
-            (nz as u32 + block.2 - 1) / block.2,
+            (nx as u32).div_ceil(block.0),
+            (ny as u32).div_ceil(block.1),
+            (nz as u32).div_ceil(block.2),
         );
         let cfg = LaunchConfig { grid_dim: grid, block_dim: block, shared_mem_bytes: 0 };
         let nx_i = nx as i32;
@@ -87,7 +87,7 @@ impl SparseBrickMap {
 
         // 2. Expand Bitmask
         let block2 = 256;
-        let grid2 = (n_bricks as u32 + block2 - 1) / block2;
+        let grid2 = (n_bricks as u32).div_ceil(block2);
         let n_bricks_i = n_bricks as i32;
         let mut b2 = stream.launch_builder(&expand_bitmask_kernel);
         b2.arg(&d_occupancy_words).arg(&mut d_brick_counts).arg(&n_bricks_i);
@@ -199,7 +199,7 @@ impl SparseLbmSolver {
 
         let n_active_cells = self.map.n_active_bricks * 512;
         let block = 512;
-        let grid = (n_active_cells as u32 + block - 1) / block;
+        let grid = (n_active_cells as u32).div_ceil(block);
         let cfg = LaunchConfig { grid_dim: (grid, 1, 1), block_dim: (block, 1, 1), shared_mem_bytes: 0 };
         
         let nx_i = self.map.nx as i32;

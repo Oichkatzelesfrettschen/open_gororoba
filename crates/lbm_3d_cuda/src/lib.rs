@@ -72,10 +72,7 @@ pub fn probe_cuda_device_props() -> Option<CudaDeviceProps> {
     let major = prop.major.max(0) as u32;
     let minor = prop.minor.max(0) as u32;
     let l2_bytes = prop.l2CacheSize.max(0) as usize;
-    let shared_mem_per_block = prop
-        .sharedMemPerBlockOptin
-        .max(prop.sharedMemPerBlock)
-        .max(0);
+    let shared_mem_per_block = prop.sharedMemPerBlockOptin.max(prop.sharedMemPerBlock);
     let bf16_native = major >= 8;
     let sparse_tile_preferred =
         major >= 8 && shared_mem_per_block >= 38_000 && l2_bytes >= 8 * 1024 * 1024;
