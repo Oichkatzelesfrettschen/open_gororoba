@@ -565,6 +565,7 @@ faer = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 cd_kernel = { workspace = true }
 wide = { workspace = true }
+rusqlite = { workspace = true }
 
 [features]
 default = ["gpu"]

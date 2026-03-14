@@ -6,7 +6,7 @@ use provenance_core::{
     InsightRecord, PantheonSeedSummary, TheoremRecord,
 };
 use provenance_ops::source_provenance;
-use provenance_store::ProvenanceStore;
+use provenance_store::{ExternalSourceContractPatch, ProvenanceStore};
 use serde_json::json;
 use std::{
     fs,
@@ -49,6 +49,8 @@ enum Commands {
     ExportExternalSources(ExportExternalSourcesArgs),
     /// Verify external source SQLite invariants and generated compatibility exports.
     VerifyExternalSources(VerifyExternalSourcesArgs),
+    /// Update one SQLite-authored external source contract and optionally re-export compatibility views.
+    UpdateExternalSource(UpdateExternalSourceArgs),
     /// Query one artifact or document from the SQLite index.
     Query(QueryArgs),
     /// Print operator-focused health and drift summary from the SQLite index.
@@ -211,6 +213,48 @@ struct VerifyExternalSourcesArgs {
 }
 
 #[derive(Parser, Debug)]
+struct UpdateExternalSourceArgs {
+    #[arg(long)]
+    id: String,
+
+    #[arg(long)]
+    path_glob: Option<String>,
+
+    #[arg(long)]
+    canonical_url: Option<String>,
+
+    #[arg(long)]
+    access_class: Option<String>,
+
+    #[arg(long)]
+    status: Option<String>,
+
+    #[arg(long)]
+    retrieval_method: Option<String>,
+
+    #[arg(long)]
+    attempt_deadline_utc: Option<String>,
+
+    #[arg(long)]
+    resolution_deadline_utc: Option<String>,
+
+    #[arg(long)]
+    blocker_note: Option<String>,
+
+    #[arg(long, default_value_t = true)]
+    export_after: bool,
+
+    #[arg(long, default_value_t = true)]
+    verify_after: bool,
+
+    #[arg(long, default_value = "data/external/SOURCES.toml")]
+    source_contracts: PathBuf,
+
+    #[arg(long, default_value = "registry/external_sources.toml")]
+    dossiers_registry: PathBuf,
+}
+
+#[derive(Parser, Debug)]
 struct QueryArgs {
     #[command(subcommand)]
     kind: QueryKind,
@@ -320,6 +364,7 @@ fn main() -> Result<()> {
         Commands::IndexExternalSources(args) => run_index_external_sources(&repo_root, &db_path, args),
         Commands::ExportExternalSources(args) => run_export_external_sources(&repo_root, &db_path, args),
         Commands::VerifyExternalSources(args) => run_verify_external_sources(&repo_root, &db_path, args),
+        Commands::UpdateExternalSource(args) => run_update_external_source(&repo_root, &db_path, args),
         Commands::Query(args) => run_query(&db_path, args),
         Commands::Doctor(args) => run_doctor(&db_path, args),
         Commands::LinkAudit(args) => run_link_audit(&db_path, args),
@@ -531,6 +576,60 @@ fn run_verify_external_sources(
         )?;
     }
     println!("Verified SQLite-backed external-source control plane.");
+    Ok(())
+}
+
+fn run_update_external_source(
+    repo_root: &Path,
+    db_path: &Path,
+    args: UpdateExternalSourceArgs,
+) -> Result<()> {
+    if args.path_glob.is_none()
+        && args.canonical_url.is_none()
+        && args.access_class.is_none()
+        && args.status.is_none()
+        && args.retrieval_method.is_none()
+        && args.attempt_deadline_utc.is_none()
+        && args.resolution_deadline_utc.is_none()
+        && args.blocker_note.is_none()
+    {
+        bail!("no external-source fields were provided to update");
+    }
+
+    let mut store = ProvenanceStore::open(db_path)?;
+    let updated = store.update_external_source_contract(
+        &args.id,
+        ExternalSourceContractPatch {
+            path_glob: args.path_glob.as_deref(),
+            canonical_url: args.canonical_url.as_deref(),
+            access_class: args.access_class.as_deref(),
+            status: args.status.as_deref(),
+            retrieval_method: args.retrieval_method.as_deref(),
+            attempt_deadline_utc: args.attempt_deadline_utc.as_deref(),
+            resolution_deadline_utc: args.resolution_deadline_utc.as_deref(),
+            blocker_note: args.blocker_note.as_deref(),
+        },
+    )?;
+    if !updated {
+        bail!("external source contract not found: {}", args.id);
+    }
+
+    if args.export_after {
+        store.export_external_sources_compat(
+            repo_root,
+            &repo_path(repo_root, &args.source_contracts),
+            &repo_path(repo_root, &args.dossiers_registry),
+        )?;
+    }
+    if args.verify_after {
+        store.verify_external_source_invariants(repo_root)?;
+        store.verify_external_sources_compat_exports(
+            repo_root,
+            &repo_path(repo_root, &args.source_contracts),
+            &repo_path(repo_root, &args.dossiers_registry),
+        )?;
+    }
+    println!("Updated SQLite-backed external source contract {}", args.id);
     Ok(())
 }
 

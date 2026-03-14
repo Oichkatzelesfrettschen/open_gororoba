@@ -612,8 +612,9 @@ impl DatasetProvider for StereoMagProvider {
         let dir = config.output_dir.join("stereo_impact");
         std::fs::create_dir_all(&dir)?;
         // MAGPLASMA CDF files at SPDF are yearly (~75 MB).
-        // For now, create directory and rely on CDAWeb REST API for text export.
-        log::info!("STEREO MAGPLASMA: use CDAWeb REST API or bin/fetch_stereo.py for text export");
+        // For now, create the governed staging directory and rely on a Rust-side
+        // CDAWeb text-export acquisition path before parsing.
+        log::info!("STEREO MAGPLASMA staging directory created; populate with governed CDAWeb text exports for parsing");
         Ok(dir)
     }
 

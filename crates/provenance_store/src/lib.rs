@@ -367,6 +367,17 @@ pub struct ProvenanceStore {
     conn: Connection,
 }
 
+pub struct ExternalSourceContractPatch<'a> {
+    pub path_glob: Option<&'a str>,
+    pub canonical_url: Option<&'a str>,
+    pub access_class: Option<&'a str>,
+    pub status: Option<&'a str>,
+    pub retrieval_method: Option<&'a str>,
+    pub attempt_deadline_utc: Option<&'a str>,
+    pub resolution_deadline_utc: Option<&'a str>,
+    pub blocker_note: Option<&'a str>,
+}
+
 struct ControlPlaneCompatOutputs {
     claims: String,
     insights: String,
@@ -1353,6 +1364,78 @@ impl ProvenanceStore {
             );
         }
         Ok(())
+    }
+
+    pub fn update_external_source_contract(
+        &self,
+        id: &str,
+        patch: ExternalSourceContractPatch<'_>,
+    ) -> Result<bool> {
+        let exists = self.conn.query_row(
+            "SELECT EXISTS(SELECT 1 FROM external_source_contracts WHERE id = ?1)",
+            [id],
+            |row| row.get::<_, i64>(0),
+        )?;
+        if exists == 0 {
+            return Ok(false);
+        }
+
+        if let Some(value) = patch.path_glob {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET path_glob = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.canonical_url {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET canonical_url = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.access_class {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET access_class = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.status {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET status = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.retrieval_method {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET retrieval_method = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.attempt_deadline_utc {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET attempt_deadline_utc = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.resolution_deadline_utc {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET resolution_deadline_utc = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+        if let Some(value) = patch.blocker_note {
+            self.conn.execute(
+                "UPDATE external_source_contracts SET blocker_note = ?2 WHERE id = ?1",
+                params![id, value],
+            )?;
+        }
+
+        self.conn.execute(
+            "UPDATE external_source_contracts_meta
+             SET updated = ?1, authoritative = 1
+             WHERE kind = 'source_contracts'",
+            [Utc::now().to_rfc3339()],
+        )?;
+        Ok(true)
     }
 
     fn render_control_plane_compat_outputs(&self) -> Result<ControlPlaneCompatOutputs> {
