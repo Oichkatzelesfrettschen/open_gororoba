@@ -37,6 +37,8 @@ pub fn choose_backend(problem_size: usize, gpu_available: bool) -> ComputeBacken
 pub struct HardwareCaps {
     /// CUDA device available with compute capability >= 8.0 (Ampere+).
     pub cuda_available: bool,
+    /// CUDA device available with compute capability >= 8.9 (Ada Lovelace).
+    pub cuda_ada_available: bool,
     /// Vulkan device available.
     pub vulkan_available: bool,
     /// CPU SIMD capabilities (granular feature detection).
@@ -231,6 +233,7 @@ mod tests {
         };
         let all_caps = HardwareCaps {
             cuda_available: true,
+            cuda_ada_available: false,
             vulkan_available: true,
             simd,
         };
@@ -239,6 +242,7 @@ mod tests {
 
         let vulkan_only = HardwareCaps {
             cuda_available: false,
+            cuda_ada_available: false,
             vulkan_available: true,
             simd,
         };
@@ -252,6 +256,7 @@ mod tests {
 
         let no_gpu = HardwareCaps {
             cuda_available: false,
+            cuda_ada_available: false,
             vulkan_available: false,
             simd,
         };

@@ -33,5 +33,13 @@ harness = false
 name = "gpu_exhaustive"
 harness = false
 
+[[bench]]
+name = "gpu_scaling_ada"
+harness = false
+
+[[bench]]
+name = "gpu_sparse_1024"
+harness = false
+
 [lints]
 workspace = true
