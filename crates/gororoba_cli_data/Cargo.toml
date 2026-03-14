@@ -135,6 +135,10 @@ name = "heliosphere-catalog-audit"
 path = "src/bin/heliosphere_catalog_audit.rs"
 
 [[bin]]
+name = "heliosphere-instrument-coverage"
+path = "src/bin/heliosphere_instrument_coverage.rs"
+
+[[bin]]
 name = "fetch-chime-frb"
 path = "src/bin/fetch_chime_frb.rs"
 

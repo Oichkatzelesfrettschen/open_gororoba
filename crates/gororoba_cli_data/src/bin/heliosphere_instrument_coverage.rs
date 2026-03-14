@@ -1,0 +1,585 @@
+use anyhow::{Context, Result};
+use chrono::Local;
+use clap::Parser;
+use provenance_core::ExternalSourceContractRecord;
+use provenance_store::ProvenanceStore;
+use serde::Serialize;
+use std::{collections::BTreeMap, fs, path::Path, path::PathBuf};
+
+#[derive(Parser, Debug)]
+#[command(
+    name = "heliosphere-instrument-coverage",
+    about = "Mission-by-instrument heliosphere source and staging coverage report"
+)]
+struct Cli {
+    #[arg(long, default_value = ".")]
+    repo_root: PathBuf,
+
+    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    db: PathBuf,
+
+    #[arg(long)]
+    out: Option<PathBuf>,
+}
+
+#[derive(Clone, Copy)]
+struct CoverageSpec {
+    mission: &'static str,
+    instrument: &'static str,
+    product_family: &'static str,
+    source_contract_id: &'static str,
+    local_glob: &'static str,
+    parser_status: &'static str,
+    overlay_3d_ready: bool,
+    overlay_4d_ready: bool,
+    cube_ready: bool,
+    lbm_ready: bool,
+    algebra_ready: bool,
+    notes: &'static str,
+}
+
+#[derive(Serialize)]
+struct CoverageRow {
+    mission: String,
+    instrument: String,
+    product_family: String,
+    source_contract_id: String,
+    source_contract_present: bool,
+    canonical_url: String,
+    mirror_urls: Vec<String>,
+    access_class: String,
+    contract_status: String,
+    retrieval_method: String,
+    local_glob: String,
+    cache_match_count: usize,
+    cache_present: bool,
+    parser_status: String,
+    overlay_3d_ready: bool,
+    overlay_4d_ready: bool,
+    cube_ready: bool,
+    lbm_ready: bool,
+    algebra_ready: bool,
+    notes: String,
+}
+
+#[derive(Serialize)]
+struct Report {
+    generated_at: String,
+    report_date: String,
+    row_count: usize,
+    rows: Vec<CoverageRow>,
+}
+
+const COVERAGE_SPECS: &[CoverageSpec] = &[
+    CoverageSpec {
+        mission: "ACE",
+        instrument: "MAG",
+        product_family: "Hourly magnetic field",
+        source_contract_id: "SRC-ACE-MAG-HOURLY",
+        local_glob: "data/external/ace_mag/*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Near-Earth L1 magnetic-field lane used in executed 4D overlays.",
+    },
+    CoverageSpec {
+        mission: "ACE",
+        instrument: "SWEPAM",
+        product_family: "Hourly plasma moments",
+        source_contract_id: "SRC-ACE-SWEPAM-HOURLY",
+        local_glob: "data/external/ace_swepam/*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Near-Earth L1 plasma lane used in executed 4D overlays.",
+    },
+    CoverageSpec {
+        mission: "WIND",
+        instrument: "MFI",
+        product_family: "Hourly magnetic field",
+        source_contract_id: "SRC-WIND-MFI-HOURLY",
+        local_glob: "data/external/wind_mfi/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Near-Earth magnetic-field cross-validation lane.",
+    },
+    CoverageSpec {
+        mission: "WIND",
+        instrument: "SWE",
+        product_family: "Hourly plasma moments",
+        source_contract_id: "SRC-WIND-SWE-KP",
+        local_glob: "data/external/wind_swe/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Near-Earth plasma cross-validation lane.",
+    },
+    CoverageSpec {
+        mission: "STEREO-A",
+        instrument: "PLASTIC",
+        product_family: "1-hour plasma",
+        source_contract_id: "SRC-STEREO-A-PLASTIC-1HR",
+        local_glob: "data/external/stereo_plastic/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Triangulation plasma lane in executed overlays.",
+    },
+    CoverageSpec {
+        mission: "STEREO-A",
+        instrument: "IMPACT/MAG",
+        product_family: "Merged magnetic/plasma support",
+        source_contract_id: "SRC-STEREO-A-IMPACT-MAG",
+        local_glob: "data/external/stereo_impact/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Merged MAG support lane paired with PLASTIC.",
+    },
+    CoverageSpec {
+        mission: "Voyager 1",
+        instrument: "Merged cruise support",
+        product_family: "Hourly merged plasma/field geometry",
+        source_contract_id: "SRC-VOYAGER1-MERGED-AMDA-DERIVED",
+        local_glob: "data/external/voyager/voyager1*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed outer-heliosphere merged hourly lane.",
+    },
+    CoverageSpec {
+        mission: "Voyager 1",
+        instrument: "CRS",
+        product_family: "Daily cosmic-ray flux",
+        source_contract_id: "SRC-VOYAGER1-JUPITER-CRS-PDS",
+        local_glob: "data/external/voyager_crs/voyager1_crs_daily_flux_*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed CRS daily flux lane.",
+    },
+    CoverageSpec {
+        mission: "Voyager 1",
+        instrument: "PWS",
+        product_family: "Plasma-wave spectra",
+        source_contract_id: "SRC-VOYAGER-IOWA-PWS",
+        local_glob: "data/external/voyager/pws/v1/**/*",
+        parser_status: "not_implemented",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official source contract exists, but this product family is not yet staged in the Rust lane.",
+    },
+    CoverageSpec {
+        mission: "Voyager 2",
+        instrument: "Merged cruise support",
+        product_family: "Hourly merged plasma/field geometry",
+        source_contract_id: "SRC-VOYAGER2-MERGED-AMDA-DERIVED",
+        local_glob: "data/external/voyager/voyager2*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed outer-heliosphere merged hourly lane.",
+    },
+    CoverageSpec {
+        mission: "Voyager 2",
+        instrument: "CRS",
+        product_family: "Daily cosmic-ray flux",
+        source_contract_id: "SRC-VOYAGER2-JUPITER-CRS-PDS",
+        local_glob: "data/external/voyager_crs/voyager2_crs_daily_flux_*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed CRS daily flux lane.",
+    },
+    CoverageSpec {
+        mission: "Voyager 2",
+        instrument: "PWS",
+        product_family: "Plasma-wave spectra",
+        source_contract_id: "SRC-VOYAGER-IOWA-PWS",
+        local_glob: "data/external/voyager/pws/v2/**/*",
+        parser_status: "not_implemented",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official source contract exists, but this product family is not yet staged in the Rust lane.",
+    },
+    CoverageSpec {
+        mission: "Ulysses",
+        instrument: "Merged mission support",
+        product_family: "Hourly merged plasma/field geometry",
+        source_contract_id: "SRC-ULYSSES-SPDF-MERGED",
+        local_glob: "data/external/ulysses/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed post-1997 high-latitude lane.",
+    },
+    CoverageSpec {
+        mission: "Helios 1",
+        instrument: "Merged mission support",
+        product_family: "Hourly merged plasma/field geometry",
+        source_contract_id: "SRC-HELIOS1-SPDF-MERGED",
+        local_glob: "data/external/helios/helios1*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Historical-only lane; parser works but no same-epoch OMNI overlap.",
+    },
+    CoverageSpec {
+        mission: "Helios 2",
+        instrument: "Merged mission support",
+        product_family: "Hourly merged plasma/field geometry",
+        source_contract_id: "SRC-HELIOS2-SPDF-MERGED",
+        local_glob: "data/external/helios/helios2*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Historical-only lane; parser works but no same-epoch OMNI overlap.",
+    },
+    CoverageSpec {
+        mission: "Cassini",
+        instrument: "Cruise hybrid",
+        product_family: "Merged plasma/trajectory support",
+        source_contract_id: "SRC-CASSINI-CRUISE-AMDA-HYBRID",
+        local_glob: "data/external/cassini/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed hybrid cruise lane.",
+    },
+    CoverageSpec {
+        mission: "Juno",
+        instrument: "Cruise support",
+        product_family: "Heliocentric hourly position/plasma support",
+        source_contract_id: "SRC-JUNO-AMDA-CRUISE-DERIVED",
+        local_glob: "data/external/juno/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed cruise support lane.",
+    },
+    CoverageSpec {
+        mission: "New Horizons",
+        instrument: "SWAP + support",
+        product_family: "Hourly plasma/position support",
+        source_contract_id: "SRC-NH-SINGLE-SOURCE-FRAGILE",
+        local_glob: "data/external/new_horizons/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed SWAP + trajectory lane; no in-situ magnetometer.",
+    },
+    CoverageSpec {
+        mission: "IBEX",
+        instrument: "IBEX-Hi/Lo",
+        product_family: "ENA sky maps",
+        source_contract_id: "SRC-IBEX-ENA-MAPS",
+        local_glob: "data/external/ibex/release17/**/*-flux.txt",
+        parser_status: "staged_parseable",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official SPDF release17 ENA sky-map lane; staged in Rust but still separate from time-series overlays.",
+    },
+    CoverageSpec {
+        mission: "IBEX",
+        instrument: "SSC orbit support",
+        product_family: "Orbit companion time series",
+        source_contract_id: "SRC-IBEX-ORBIT-SSC",
+        local_glob: "data/external/ibex/orbits/*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed same-epoch orbit companion lane.",
+    },
+    CoverageSpec {
+        mission: "SOHO",
+        instrument: "CELIAS/MTOF PM",
+        product_family: "Mission-long bundle",
+        source_contract_id: "SRC-SOHO-CELIAS-PM-5MIN-BUNDLE",
+        local_glob: "data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz",
+        parser_status: "operational",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Current parsed SOHO inner-boundary lane remains the mission bundle.",
+    },
+    CoverageSpec {
+        mission: "SOHO",
+        instrument: "CELIAS/MTOF PM",
+        product_family: "Official 5-minute daily CDFs",
+        source_contract_id: "SRC-SOHO-CELIAS-PM-5MIN-CDAWEB",
+        local_glob: "data/external/soho/celias_pm_5min/**/*.cdf",
+        parser_status: "staged_only",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official CDAWeb follow-on lane for daily CDF products; staged in Rust, parser not yet promoted.",
+    },
+    CoverageSpec {
+        mission: "SOHO",
+        instrument: "LASCO",
+        product_family: "Level-0.5 bounded day sample",
+        source_contract_id: "SRC-SOHO-LASCO-LZ-DAY-SAMPLE",
+        local_glob: "data/external/soho/lasco/level05/**/*",
+        parser_status: "not_implemented",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Governed official sample exists but is not yet staged in the Rust lane.",
+    },
+    CoverageSpec {
+        mission: "Parker Solar Probe",
+        instrument: "Merged hourly",
+        product_family: "Plasma/field support",
+        source_contract_id: "SRC-PSP-COHO1HR-MERGED",
+        local_glob: "data/external/psp/*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed modern inner-heliosphere lane.",
+    },
+    CoverageSpec {
+        mission: "Parker Solar Probe",
+        instrument: "FIELDS",
+        product_family: "Higher-cadence MAG",
+        source_contract_id: "SRC-PSP-BERKELEY-FIELDS-MAG",
+        local_glob: "data/external/psp/fields/**/*",
+        parser_status: "not_implemented",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official higher-cadence supplement is governed but not yet staged in Rust.",
+    },
+    CoverageSpec {
+        mission: "Solar Orbiter",
+        instrument: "Merged hourly",
+        product_family: "MAG/plasma support",
+        source_contract_id: "SRC-SOLO-COHO1HR-MERGED",
+        local_glob: "data/external/solar_orbiter/*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed modern inner-heliosphere lane.",
+    },
+    CoverageSpec {
+        mission: "Solar Orbiter",
+        instrument: "SWA-PAS",
+        product_family: "SOAR proton moments",
+        source_contract_id: "SRC-SOLO-SOAR-SWA-PAS-GRND-MOM",
+        local_glob: "data/external/solo/soar_swa_pas/**/*",
+        parser_status: "not_implemented",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official SOAR follow-on lane is governed but not yet staged in Rust.",
+    },
+    CoverageSpec {
+        mission: "BepiColombo",
+        instrument: "Helio1hr support",
+        product_family: "Hourly position support",
+        source_contract_id: "SRC-BEPICOLOMBO-HELIO1HR-POSITION",
+        local_glob: "data/external/bepicolombo/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Executed heliocentric support lane.",
+    },
+    CoverageSpec {
+        mission: "IMAP",
+        instrument: "Helio1hr support",
+        product_family: "Hourly position support",
+        source_contract_id: "SRC-IMAP-HELIO1HR-POSITION",
+        local_glob: "data/external/imap/helio1hr/*.cdf",
+        parser_status: "staged_only",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official CDAWeb IMAP position support is public and staged in Rust.",
+    },
+    CoverageSpec {
+        mission: "IMAP",
+        instrument: "IMAP-Hi",
+        product_family: "L2 ENA h90 maps",
+        source_contract_id: "SRC-IMAP-HI-L2-H90-ENA",
+        local_glob: "data/external/imap/hi/l2/h90/**/*.cdf",
+        parser_status: "staged_only",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official CDAWeb IMAP-Hi ENA products are public and staged in Rust.",
+    },
+];
+
+fn glob_match_count(root: &Path, rel_glob: &str) -> Result<usize> {
+    let pattern = root.join(rel_glob).to_string_lossy().into_owned();
+    let mut count = 0usize;
+    for entry in glob::glob(&pattern).with_context(|| format!("glob {}", rel_glob))? {
+        if entry.is_ok() {
+            count += 1;
+        }
+    }
+    Ok(count)
+}
+
+fn default_out_path(repo_root: &Path, report_date: &str) -> PathBuf {
+    repo_root
+        .join("reports")
+        .join(format!("heliosphere_instrument_coverage_{report_date}.toml"))
+}
+
+fn main() -> Result<()> {
+    let cli = Cli::parse();
+    let repo_root = cli.repo_root.canonicalize().context("resolve repo root")?;
+    let db_path = repo_root.join(&cli.db);
+    let store =
+        ProvenanceStore::open(&db_path).with_context(|| format!("open {}", db_path.display()))?;
+    let contract_map: BTreeMap<String, ExternalSourceContractRecord> = store
+        .list_external_source_contracts()?
+        .into_iter()
+        .map(|record| (record.id.clone(), record))
+        .collect();
+
+    let now = Local::now();
+    let report_date = now.format("%Y-%m-%d").to_string();
+    let out_path = cli
+        .out
+        .unwrap_or_else(|| default_out_path(&repo_root, &report_date));
+
+    let rows = COVERAGE_SPECS
+        .iter()
+        .map(|spec| {
+            let contract = contract_map.get(spec.source_contract_id);
+            let cache_match_count = glob_match_count(&repo_root, spec.local_glob)?;
+            Ok(CoverageRow {
+                mission: spec.mission.to_string(),
+                instrument: spec.instrument.to_string(),
+                product_family: spec.product_family.to_string(),
+                source_contract_id: spec.source_contract_id.to_string(),
+                source_contract_present: contract.is_some(),
+                canonical_url: contract
+                    .map(|record| record.canonical_url.clone())
+                    .unwrap_or_default(),
+                mirror_urls: contract
+                    .map(|record| record.mirror_urls.clone())
+                    .unwrap_or_default(),
+                access_class: contract
+                    .map(|record| record.access_class.clone())
+                    .unwrap_or_default(),
+                contract_status: contract
+                    .map(|record| record.status.clone())
+                    .unwrap_or_else(|| "missing".to_string()),
+                retrieval_method: contract
+                    .map(|record| record.retrieval_method.clone())
+                    .unwrap_or_default(),
+                local_glob: spec.local_glob.to_string(),
+                cache_match_count,
+                cache_present: cache_match_count > 0,
+                parser_status: spec.parser_status.to_string(),
+                overlay_3d_ready: spec.overlay_3d_ready,
+                overlay_4d_ready: spec.overlay_4d_ready,
+                cube_ready: spec.cube_ready,
+                lbm_ready: spec.lbm_ready,
+                algebra_ready: spec.algebra_ready,
+                notes: spec.notes.to_string(),
+            })
+        })
+        .collect::<Result<Vec<_>>>()?;
+
+    let report = Report {
+        generated_at: now.to_rfc3339(),
+        report_date,
+        row_count: rows.len(),
+        rows,
+    };
+
+    let text = toml::to_string_pretty(&report).context("serialize instrument coverage report")?;
+    if let Some(parent) = out_path.parent() {
+        fs::create_dir_all(parent).with_context(|| format!("create {}", parent.display()))?;
+    }
+    fs::write(&out_path, text).with_context(|| format!("write {}", out_path.display()))?;
+    println!("{}", out_path.display());
+    Ok(())
+}

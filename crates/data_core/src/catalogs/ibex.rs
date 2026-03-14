@@ -25,10 +25,14 @@
 //!     <https://cdaweb.gsfc.nasa.gov/hapi/info?id=IBEX_OR_SSC>
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_string},
+    fetcher::{
+        DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_file,
+        download_to_string,
+    },
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
+use regex::Regex;
 use std::{collections::BTreeMap, path::PathBuf};
 
 /// IBEX ENA sky map pixel.
@@ -138,22 +142,63 @@ pub fn parse_ibex_ena_file(
     ))
 }
 
-const IBEX_BASE: &str = "https://ibex.princeton.edu/DataAction";
+const IBEX_RELEASE17_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/";
+const IBEX_LO_HYDROGEN_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/Lo-Hydrogen/";
 const IBEX_ORBIT_HAPI_DATASET: &str = "IBEX_OR_SSC";
+
+fn directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
+    let html = download_to_string(url)?;
+    let regex = Regex::new(r#"href="([^"]+)""#)
+        .map_err(|err| FetchError::Validation(format!("invalid IBEX directory regex: {err}")))?;
+    let mut entries = Vec::new();
+    for capture in regex.captures_iter(&html) {
+        let Some(href) = capture.get(1).map(|value| value.as_str()) else {
+            continue;
+        };
+        if href.starts_with('/') || href.starts_with('?') || href == "Parent Directory" {
+            continue;
+        }
+        entries.push(href.to_string());
+    }
+    entries.sort();
+    entries.dedup();
+    Ok(entries)
+}
+
+fn has_flux_txt(root: &std::path::Path) -> bool {
+    std::fs::read_dir(root)
+        .ok()
+        .into_iter()
+        .flatten()
+        .filter_map(|entry| entry.ok())
+        .any(|entry| {
+            let file_type = match entry.file_type() {
+                Ok(file_type) => file_type,
+                Err(_) => return false,
+            };
+            if file_type.is_file() {
+                return entry.file_name().to_string_lossy().ends_with("-flux.txt");
+            }
+            if file_type.is_dir() {
+                return has_flux_txt(&entry.path());
+            }
+            false
+        })
+}
 
 /// IBEX ENA sky map dataset provider.
 pub struct IbexProvider {
-    /// Start orbit (inclusive).
-    pub orbit_start: u16,
-    /// End orbit (inclusive).
-    pub orbit_end: u16,
+    /// Start year (inclusive) from the official release17 archive.
+    pub year_start: u16,
+    /// End year (inclusive) from the official release17 archive.
+    pub year_end: u16,
 }
 
 impl Default for IbexProvider {
     fn default() -> Self {
         Self {
-            orbit_start: 1,
-            orbit_end: 10,
+            year_start: 2009,
+            year_end: 2009,
         }
     }
 }
@@ -164,23 +209,44 @@ impl DatasetProvider for IbexProvider {
     }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("ibex");
+        let dir = config.output_dir.join("ibex").join("release17");
         std::fs::create_dir_all(&dir)?;
 
-        for orbit in self.orbit_start..=self.orbit_end {
-            let fname = format!("ibex_hi_orbit{:03}.csv", orbit);
-            let output = dir.join(&fname);
-            if config.skip_existing && output.exists() {
-                continue;
+        let readme = dir.join("ibex17_readme.txt");
+        if !config.skip_existing || !readme.exists() {
+            let readme_url = format!("{IBEX_RELEASE17_ROOT}ibex17_readme.txt");
+            if let Err(err) = download_to_file(&readme_url, &readme) {
+                log::warn!("failed to download IBEX readme from {}: {}", readme_url, err);
             }
-            let url = format!("{}?id=orbit{}", IBEX_BASE, orbit);
-            match download_to_string(&url) {
-                Ok(data) => {
-                    std::fs::write(&output, data)?;
-                    log::info!("saved {}", fname);
+        }
+
+        for year in self.year_start..=self.year_end {
+            let year_slug = format!("lvset_h_cg_hb_{year}");
+            let year_url = format!("{IBEX_LO_HYDROGEN_ROOT}{year_slug}/");
+            let year_dir = dir.join(&year_slug);
+            std::fs::create_dir_all(&year_dir)?;
+            let entries = match directory_entries(&year_url) {
+                Ok(entries) => entries,
+                Err(err) => {
+                    log::warn!("failed to list IBEX year {}: {}", year, err);
+                    continue;
                 }
-                Err(e) => {
-                    log::warn!("failed to download IBEX orbit {}: {}", orbit, e);
+            };
+            for entry in entries {
+                let keep = entry.ends_with("-flux.txt")
+                    || entry.ends_with("-desc.txt")
+                    || entry.ends_with("-ener.txt");
+                if !keep {
+                    continue;
+                }
+                let output = year_dir.join(&entry);
+                if config.skip_existing && output.exists() {
+                    continue;
+                }
+                let url = format!("{year_url}{entry}");
+                match download_to_file(&url, &output) {
+                    Ok(_) => log::info!("saved {}", output.display()),
+                    Err(err) => log::warn!("failed to download {}: {}", url, err),
                 }
             }
         }
@@ -188,7 +254,14 @@ impl DatasetProvider for IbexProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("ibex").exists()
+        let release_root = config.output_dir.join("ibex").join("release17");
+        has_flux_txt(&release_root)
+            || std::fs::read_dir(config.output_dir.join("ibex"))
+                .ok()
+                .into_iter()
+                .flatten()
+                .filter_map(|entry| entry.ok())
+                .any(|entry| entry.file_name().to_string_lossy().ends_with(".csv"))
     }
 }
 

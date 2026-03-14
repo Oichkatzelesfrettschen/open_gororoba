@@ -47,6 +47,7 @@ members = [
     "crates/gororoba_cli_algebra",
     "crates/gororoba_cli_physics",
     "crates/gororoba_cli_data",
+    "crates/gororoba_cli_governance",
     "crates/gororoba_cli_provenance",
     "crates/gororoba_cli_warp",
     "crates/gororoba_cli_quantum",
@@ -166,7 +167,7 @@ wide = "0.7"                 # Portable SIMD (f64x4, f64x2, etc.)
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
 cudarc = { version = "0.19", default-features = false, features = [
-    "std", "driver", "nvrtc", "dynamic-loading", "cuda-version-from-build-system",
+    "std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system",
     "cublas", "cufft", "curand", "cusolver",
 ] }
 

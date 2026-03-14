@@ -152,23 +152,23 @@ lint-all-fix-safe: install
 	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
 
 verify-no-reports-writes: install
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- no-reports-writes
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- no-reports-writes
 
 check: lint python-smoke ansi-check terminology-gate verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
 registry-verify-markdown-governance:
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- markdown-removal-policy
 
 governance-gate-readonly:
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- schema-signatures
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin markdown-registry -- verify-inventory-toml-first
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin markdown-registry -- verify-owner-map
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- schema-signatures
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- markdown-removal-policy
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
@@ -202,7 +202,7 @@ gate-local:
 	if command -v cargo >/dev/null 2>&1; then \
 	    scope_file="$$(mktemp)"; \
 	    meta_file="$$(mktemp)"; \
-	    CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$$HOST_CARGO_JOBS RAYON_NUM_THREADS=$$HOST_RAYON_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
+	    CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$$HOST_CARGO_JOBS RAYON_NUM_THREADS=$$HOST_RAYON_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
 	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
 	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
 	    rm -f "$$scope_file" "$$meta_file"; \
@@ -266,10 +266,10 @@ profile-python-toml-inventory: install
 	@mkdir -p "$(PROFILE_ROOT)"
 	@if command -v /usr/bin/time >/dev/null 2>&1; then \
 		echo "[profile] timing Rust TOML inventory builder"; \
-		/usr/bin/time -v -o "$(PROFILE_ROOT)/toml_inventory.time.txt" $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory; \
+		/usr/bin/time -v -o "$(PROFILE_ROOT)/toml_inventory.time.txt" $(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-toml-inventory; \
 	else \
 		echo "[profile] running Rust TOML inventory builder without /usr/bin/time"; \
-		$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory; \
+		$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-toml-inventory; \
 	fi
 	@echo "OK: Rust TOML inventory profile written under $(PROFILE_ROOT)"
 
@@ -307,8 +307,8 @@ smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
 registry-control-plane-gate-readonly: install
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-corpus
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-toml-inventory
 	@echo "OK: read-only registry control-plane gate passed."
 
 integrity: install
@@ -319,7 +319,7 @@ integrity: install
 	$(MAKE) verify-pantheon-physicsforge-mapping
 	$(MAKE) verify-pantheon-physicsforge-license-headers
 	$(MAKE) verify-pantheon-physicsforge-overflow
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-embedded
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-embedded
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin verify-registry-mirror-freshness -- --out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" --emit-legacy --legacy-claims-sync true
 	@echo "OK: integrity lane passed."
 
@@ -355,7 +355,7 @@ rust-regression: rust-clippy
 # Usage: make rust-regression-scoped  (auto-detects changes vs origin/main)
 #        make rust-regression-scoped RUST_SCOPE="-p gororoba_algebra -p gr_core"
 rust-regression-scoped:
-	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
+	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
 	$(eval RUST_RUN_HEAVY ?= 1)
 	@set -e; \
 	if [ -z "$(RUST_SCOPE)" ]; then \
@@ -681,79 +681,79 @@ seed-pantheon-physicsforge-sqlite:
 	cargo run --release -p gororoba_cli_provenance --bin provenance -- --db build/pantheon_physicsforge_migration.db pantheon-seed
 
 registry-knowledge:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-knowledge-sources
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-knowledge-sources
 
 registry-governance: registry-knowledge
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-governance
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-governance
 
 registry-migrate-corpus: registry-knowledge
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- migrate-corpus --prune-stale
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- migrate-corpus --prune-stale
 
 registry-normalize-claims:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-claims-support --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-claims-support --bootstrap-from-markdown
 
 registry-bootstrap-claims-support: registry-normalize-claims
 	@echo "Claims support markdown->TOML bootstrap completed."
 
 registry-normalize-bibliography:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-bibliography --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-bibliography --bootstrap-from-markdown
 
 registry-bootstrap-bibliography: registry-normalize-bibliography
 	@echo "Bibliography markdown->TOML bootstrap completed."
 
 registry-normalize-external-sources:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-external-sources --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-external-sources --bootstrap-from-markdown
 
 registry-bootstrap-external-sources: registry-normalize-external-sources
 	@echo "External sources markdown->TOML bootstrap completed."
 
 registry-normalize-research-narratives:
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- promote-research-narratives
 
 registry-bootstrap-research-narratives: registry-normalize-research-narratives
 	@echo "Research narratives markdown->TOML bootstrap completed."
 
 registry-normalize-book-docs:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-book-docs --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-book-docs --bootstrap-from-markdown
 
 registry-bootstrap-book-docs: registry-normalize-book-docs
 	@echo "mdBook markdown->TOML bootstrap completed."
 
 registry-normalize-docs-root-narratives:
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- promote-docs-root-narratives
 
 registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
 	@echo "Root docs markdown->TOML bootstrap completed."
 
 registry-normalize-reports-narratives:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-reports-narratives --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-reports-narratives --bootstrap-from-markdown
 
 registry-bootstrap-reports-narratives: registry-normalize-reports-narratives
 	@echo "Reports markdown->TOML bootstrap completed."
 
 registry-normalize-docs-convos:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-docs-convos --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-docs-convos --bootstrap-from-markdown
 
 registry-bootstrap-docs-convos: registry-normalize-docs-convos
 	@echo "docs/convos markdown->TOML bootstrap completed."
 
 registry-normalize-data-artifact-narratives:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-data-artifact-narratives --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-data-artifact-narratives --bootstrap-from-markdown
 
 registry-bootstrap-data-artifact-narratives: registry-normalize-data-artifact-narratives
 	@echo "data/artifacts narrative markdown->TOML bootstrap completed."
 
 registry-normalize-entrypoint-docs:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-entrypoint-docs --bootstrap-from-markdown
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-entrypoint-docs --bootstrap-from-markdown
 
 registry-bootstrap-entrypoint-docs: registry-normalize-entrypoint-docs
 	@echo "Entrypoint markdown bootstrap into registry/entrypoint_docs.toml completed."
 
 registry-normalize-narratives:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-narrative-overlays
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-narrative-overlays
 
 registry-normalize-operational-narratives:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- normalize-operational-narratives
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- normalize-operational-narratives
 
 registry-ingest-legacy: registry-normalize-narratives registry-normalize-operational-narratives
 	@echo "Legacy markdown -> TOML ingest completed."
@@ -779,41 +779,41 @@ registry-verify-artifact-scrolls:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin artifact-scrolls -- verify
 
 registry-markdown-inventory:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-inventory
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-inventory
 
 registry-markdown-corpus: registry-markdown-inventory
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-corpus
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-corpus
 
 registry-toml-inventory: registry-markdown-corpus
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-toml-inventory
 
 registry-markdown-origin-audit: registry-markdown-inventory
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-origin-audit
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-origin-audit
 
 registry-markdown-owner-map: registry-markdown-origin-audit
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-owner-map
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-owner-map
 
 registry-embedded-markdown:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-embedded
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-embedded
 
 registry-verify-embedded-markdown:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-embedded
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-embedded
 
 registry-verify-markdown-inventory:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-inventory-toml-first
 
 registry-verify-markdown-origin:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-origin-audit
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-origin-audit
 
 registry-verify-markdown-owner:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-owner-map
 
 registry-verify-markdown-toml-first: registry-verify-markdown-inventory registry-verify-markdown-owner
 	@echo "OK: markdown TOML-first owner/inventory gates verified."
 
 registry-verify-control-plane: registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-corpus
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-toml-inventory
 
 registry-control-plane-gate: registry-verify-control-plane
 	@echo "OK: control-plane registry lane complete."
@@ -826,7 +826,7 @@ registry-wave4: registry-control-plane-gate
 
 registry-strict-toml-batch1-build: registry-markdown-owner-map
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-payloads
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- build-payloads
 
 registry-verify-strict-toml-batch1:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --verify --repo-root .
@@ -877,22 +877,22 @@ registry-strict-toml-batch3-build:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --repo-root .
 
 registry-verify-schema-signatures:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- schema-signatures
 
 registry-verify-crossrefs:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- crossrefs
 
 registry-verify-dataset-label-aliases:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- dataset-label-aliases
 
 registry-verify-external-source-operational-contracts:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- external-source-operational-contracts
 
 registry-verify-strict-toml-batch3:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --verify --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- external-source-operational-contracts
 
 registry-strict-toml-batch3: registry-verify-strict-toml-batch3
 	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
@@ -917,10 +917,10 @@ registry-strict-toml-batch4-build:
 
 registry-verify-strict-toml-batch4:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin execution-planning -- --verify --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-inventory-toml-first
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-owner-map
 
 registry-strict-toml-batch4: registry-verify-strict-toml-batch4
 	@echo "OK: execution-planning registry lane complete (legacy wave5-batch4 compatibility)."
@@ -1145,11 +1145,11 @@ registry-export-markdown: registry-refresh
 			cargo run -q -p gororoba_cli_data --bin registry-emit -- research-narratives-legacy; \
 		fi; \
 	fi; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-inventory; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-corpus; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-origin-audit; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-owner-map; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-payloads
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-inventory; \
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-corpus; \
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-origin-audit; \
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-owner-map; \
+	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-payloads
 
 registry-verify-mirrors:
 	legacy_flag=""; \
@@ -1160,10 +1160,10 @@ registry-verify-mirrors:
 		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag --legacy-claims-sync $$claims_value
 	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-toml-first
 	@if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
-		cargo run -q -p gororoba_cli_data --bin governance-verify -- markdown-headers; \
-		cargo run -q -p gororoba_cli_data --bin governance-verify -- markdown-parity; \
-		cargo run -q -p gororoba_cli_data --bin governance-verify -- mirror-immutability; \
-		cargo run -q -p gororoba_cli_data --bin governance-verify -- claim-ticket-mirrors; \
+		cargo run -q -p gororoba_cli_governance --bin governance-verify -- markdown-headers; \
+		cargo run -q -p gororoba_cli_governance --bin governance-verify -- markdown-parity; \
+		cargo run -q -p gororoba_cli_governance --bin governance-verify -- mirror-immutability; \
+		cargo run -q -p gororoba_cli_governance --bin governance-verify -- claim-ticket-mirrors; \
 	else \
 		echo "SKIP: legacy mirror immutability checks disabled in strict markdown-free publish profile."; \
 	fi

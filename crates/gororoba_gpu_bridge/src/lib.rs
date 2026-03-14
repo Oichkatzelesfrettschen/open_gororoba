@@ -39,6 +39,18 @@ pub struct HardwareCaps {
     pub cuda_available: bool,
     /// CUDA device available with compute capability >= 8.9 (Ada Lovelace).
     pub cuda_ada_available: bool,
+    /// CUDA compute capability major version of the selected device.
+    pub cuda_compute_major: u32,
+    /// CUDA compute capability minor version of the selected device.
+    pub cuda_compute_minor: u32,
+    /// CUDA L2 cache size in bytes.
+    pub cuda_l2_bytes: usize,
+    /// CUDA shared memory available per block in bytes.
+    pub cuda_shared_mem_per_block: usize,
+    /// CUDA device advertises native BF16 support.
+    pub cuda_bf16_native: bool,
+    /// CUDA device is a good fit for sparse shared-tile kernels.
+    pub cuda_sparse_tile_preferred: bool,
     /// Vulkan device available.
     pub vulkan_available: bool,
     /// CPU SIMD capabilities (granular feature detection).
@@ -234,6 +246,12 @@ mod tests {
         let all_caps = HardwareCaps {
             cuda_available: true,
             cuda_ada_available: false,
+            cuda_compute_major: 8,
+            cuda_compute_minor: 0,
+            cuda_l2_bytes: 0,
+            cuda_shared_mem_per_block: 0,
+            cuda_bf16_native: true,
+            cuda_sparse_tile_preferred: false,
             vulkan_available: true,
             simd,
         };
@@ -243,6 +261,12 @@ mod tests {
         let vulkan_only = HardwareCaps {
             cuda_available: false,
             cuda_ada_available: false,
+            cuda_compute_major: 0,
+            cuda_compute_minor: 0,
+            cuda_l2_bytes: 0,
+            cuda_shared_mem_per_block: 0,
+            cuda_bf16_native: false,
+            cuda_sparse_tile_preferred: false,
             vulkan_available: true,
             simd,
         };
@@ -257,6 +281,12 @@ mod tests {
         let no_gpu = HardwareCaps {
             cuda_available: false,
             cuda_ada_available: false,
+            cuda_compute_major: 0,
+            cuda_compute_minor: 0,
+            cuda_l2_bytes: 0,
+            cuda_shared_mem_per_block: 0,
+            cuda_bf16_native: false,
+            cuda_sparse_tile_preferred: false,
             vulkan_available: false,
             simd,
         };

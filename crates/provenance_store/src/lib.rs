@@ -114,12 +114,17 @@ pub struct ProvenanceStore {
 pub struct ExternalSourceContractPatch<'a> {
     pub path_glob: Option<&'a str>,
     pub canonical_url: Option<&'a str>,
+    pub mirror_urls: Option<&'a [String]>,
     pub access_class: Option<&'a str>,
     pub status: Option<&'a str>,
     pub retrieval_method: Option<&'a str>,
     pub attempt_deadline_utc: Option<&'a str>,
     pub resolution_deadline_utc: Option<&'a str>,
     pub blocker_note: Option<&'a str>,
+    pub evidence_refs: Option<&'a [String]>,
+    pub manual_manifest_refs: Option<&'a [String]>,
+    pub blocked_action_plan: Option<&'a [String]>,
+    pub scientific_validator_refs: Option<&'a [String]>,
 }
 
 struct ControlPlaneCompatOutputs {
@@ -1174,6 +1179,56 @@ impl ProvenanceStore {
                 params![id, value],
             )?;
         }
+        if let Some(values) = patch.mirror_urls {
+            replace_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "mirror_url",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.evidence_refs {
+            replace_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "evidence_ref",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.manual_manifest_refs {
+            replace_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "manual_manifest_ref",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.blocked_action_plan {
+            replace_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "blocked_action_plan",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.scientific_validator_refs {
+            replace_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "scientific_validator_ref",
+                values,
+            )?;
+        }
 
         self.conn.execute(
             "UPDATE external_source_contracts_meta
@@ -1234,6 +1289,56 @@ impl ProvenanceStore {
                 blocker_note,
             ],
         )?;
+        if let Some(values) = patch.mirror_urls {
+            insert_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "mirror_url",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.evidence_refs {
+            insert_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "evidence_ref",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.manual_manifest_refs {
+            insert_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "manual_manifest_ref",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.blocked_action_plan {
+            insert_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "blocked_action_plan",
+                values,
+            )?;
+        }
+        if let Some(values) = patch.scientific_validator_refs {
+            insert_ranked_values(
+                &self.conn,
+                "external_source_contract_values",
+                "contract_id",
+                id,
+                "scientific_validator_ref",
+                values,
+            )?;
+        }
         self.conn.execute(
             "UPDATE external_source_contracts_meta
              SET updated = ?1, authoritative = 1
@@ -2664,6 +2769,20 @@ fn insert_ranked_values(
         conn.execute(&sql, params![owner_id, relation, ord as i64, value])?;
     }
     Ok(())
+}
+
+fn replace_ranked_values(
+    conn: &Connection,
+    table: &str,
+    owner_column: &str,
+    owner_id: &str,
+    relation: &str,
+    values: &[String],
+) -> Result<()> {
+    let delete_sql =
+        format!("DELETE FROM {table} WHERE {owner_column} = ?1 AND relation = ?2");
+    conn.execute(&delete_sql, params![owner_id, relation])?;
+    insert_ranked_values(conn, table, owner_column, owner_id, relation, values)
 }
 
 fn load_ranked_values(

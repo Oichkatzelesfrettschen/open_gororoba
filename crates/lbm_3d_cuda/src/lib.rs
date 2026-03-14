@@ -10,6 +10,7 @@ use cudarc::driver::{
     CudaContext, CudaFunction, CudaGraph, CudaSlice, CudaStream, DevicePtr, LaunchConfig,
     PushKernelArg,
 };
+use cudarc::runtime::result::device as cudart_device;
 use std::sync::Arc;
 
 // CudaGraph contains raw *mut pointers that are !Send+!Sync.
@@ -26,31 +27,85 @@ pub use gororoba_gpu_bridge::{ComputeBackend, HardwareCaps};
 
 /// Probe whether CUDA is available on this machine.
 ///
-/// Attempts to create a CUDA context on device 0. Returns true on
-/// success, false on any error (no driver, no device, incompatible).
+/// Uses the CUDA runtime device-count probe and returns true when at least
+/// one device is visible to the process.
 pub fn probe_cuda_available() -> bool {
-    CudaContext::new(0).is_ok()
+    probe_cuda_device_props().is_some()
 }
 
-/// Probe whether an Ada Lovelace (SM 8.9) GPU is available via nvidia-smi.
-pub fn probe_cuda_ada_available() -> bool {
-    if !probe_cuda_available() {
-        return false;
+#[derive(Debug, Clone, Copy, Default)]
+pub struct CudaDeviceProps {
+    pub major: u32,
+    pub minor: u32,
+    pub l2_bytes: usize,
+    pub shared_mem_per_block: usize,
+    pub bf16_native: bool,
+    pub sparse_tile_preferred: bool,
+}
+
+impl CudaDeviceProps {
+    pub fn is_ada(self) -> bool {
+        self.major == 8 && self.minor == 9
     }
-    
-    // Check for RTX 40-series or L-series (Ada Lovelace) using nvidia-smi
-    let output = match std::process::Command::new("nvidia-smi")
-        .arg("--query-gpu=name")
-        .arg("--format=csv,noheader")
-        .output() 
-    {
-        Ok(out) => out,
-        Err(_) => return false,
-    };
-    
-    let stdout = String::from_utf8_lossy(&output.stdout).to_lowercase();
-    // RTX 40xx series, L40, RTX 5000 Ada, etc.
-    stdout.contains("rtx 40") || stdout.contains("ada") || stdout.contains("l40")
+
+    pub fn compile_arch(self) -> &'static str {
+        match (self.major, self.minor) {
+            (8, 9) => "sm_89",
+            (9.., _) => "sm_90",
+            (8, 6..=8) => "sm_86",
+            (8, _) => "sm_80",
+            (7, 5..) => "sm_75",
+            (7, _) => "sm_70",
+            (6, 1..) => "sm_61",
+            _ => "sm_52",
+        }
+    }
+}
+
+/// Probe CUDA runtime device properties for device 0 using the CUDA API.
+pub fn probe_cuda_device_props() -> Option<CudaDeviceProps> {
+    let count = cudart_device::get_count().ok()?;
+    if count <= 0 {
+        return None;
+    }
+    let prop = cudart_device::get_device_prop(0).ok()?;
+    let major = prop.major.max(0) as u32;
+    let minor = prop.minor.max(0) as u32;
+    let l2_bytes = prop.l2CacheSize.max(0) as usize;
+    let shared_mem_per_block = prop
+        .sharedMemPerBlockOptin
+        .max(prop.sharedMemPerBlock)
+        .max(0);
+    let bf16_native = major >= 8;
+    let sparse_tile_preferred =
+        major >= 8 && shared_mem_per_block >= 38_000 && l2_bytes >= 8 * 1024 * 1024;
+    Some(CudaDeviceProps {
+        major,
+        minor,
+        l2_bytes,
+        shared_mem_per_block,
+        bf16_native,
+        sparse_tile_preferred,
+    })
+}
+
+pub fn preferred_cuda_arch() -> &'static str {
+    probe_cuda_device_props()
+        .map(CudaDeviceProps::compile_arch)
+        .unwrap_or("sm_75")
+}
+
+pub fn prefer_cuda_float4_coarsening() -> bool {
+    probe_cuda_device_props()
+        .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
+        .unwrap_or(false)
+}
+
+/// Probe whether an Ada Lovelace (SM 8.9) GPU is available.
+pub fn probe_cuda_ada_available() -> bool {
+    probe_cuda_device_props()
+        .map(CudaDeviceProps::is_ada)
+        .unwrap_or(false)
 }
 
 /// Bit-compatible wrapper for Complex32 to satisfy CUDA traits.
@@ -232,9 +287,20 @@ impl LbmSolver3DCuda {
     ) -> Result<Self> {
         let problem_size = nx * ny * nz;
         let simd = gororoba_gpu_bridge::probe_simd();
+        let cuda_props = probe_cuda_device_props();
         let caps = HardwareCaps {
-            cuda_available: probe_cuda_available(),
-            cuda_ada_available: probe_cuda_ada_available(),
+            cuda_available: cuda_props.is_some(),
+            cuda_ada_available: cuda_props.map(|caps| caps.is_ada()).unwrap_or(false),
+            cuda_compute_major: cuda_props.map(|caps| caps.major).unwrap_or_default(),
+            cuda_compute_minor: cuda_props.map(|caps| caps.minor).unwrap_or_default(),
+            cuda_l2_bytes: cuda_props.map(|caps| caps.l2_bytes).unwrap_or_default(),
+            cuda_shared_mem_per_block: cuda_props
+                .map(|caps| caps.shared_mem_per_block)
+                .unwrap_or_default(),
+            cuda_bf16_native: cuda_props.map(|caps| caps.bf16_native).unwrap_or(false),
+            cuda_sparse_tile_preferred: cuda_props
+                .map(|caps| caps.sparse_tile_preferred)
+                .unwrap_or(false),
             vulkan_available: false,
             simd,
         };
@@ -254,6 +320,7 @@ impl LbmSolver3DCuda {
         let n_cells = nx * ny * nz;
         let ctx = CudaContext::new(0).context("CUDA Init Failed")?;
         let stream = ctx.default_stream();
+        let cuda_props = probe_cuda_device_props();
         let src = match precision {
             Precision::FP32 => KERNEL_SRC,
             Precision::BF16 => KERNEL_BF16_SRC,
@@ -261,7 +328,9 @@ impl LbmSolver3DCuda {
         };
 
         use cudarc::nvrtc::CompileOptions;
-        let arch_str = if probe_cuda_ada_available() { "sm_89" } else { "sm_75" }; // Clean fallback to Turing
+        let arch_str = cuda_props
+            .map(CudaDeviceProps::compile_arch)
+            .unwrap_or("sm_75");
         let opts = if precision == Precision::BF16 {
             CompileOptions {
                 include_paths: vec!["/opt/cuda/include".to_string()],
@@ -373,7 +442,14 @@ impl LbmSolver3DCuda {
                 Some(soa_module.load_function("lbm_step_soa_batch_kernel")?),
                 Some(soa_module.load_function("initialize_custom_soa_batch_kernel")?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_fused")?),
-                Some(soa_module.load_function(if probe_cuda_ada_available() { "lbm_step_soa_coarsened_float4" } else { "lbm_step_soa_coarsened" })?),
+                Some(soa_module.load_function(if cuda_props
+                    .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
+                    .unwrap_or(false)
+                {
+                    "lbm_step_soa_coarsened_float4"
+                } else {
+                    "lbm_step_soa_coarsened"
+                })?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_coarsened")?),
                 Some(soa_module.load_function("reduce_max_speed_f32")?),
                 Some(soa_module.load_function("lbm_step_soa_pull")?),
@@ -2054,7 +2130,7 @@ impl DarkHaloCudaSolver {
         }
         let stream = ctx.default_stream();
 
-        let arch_str = if probe_cuda_ada_available() { "sm_89" } else { "sm_75" };
+        let arch_str = preferred_cuda_arch();
         let opts = cudarc::nvrtc::CompileOptions {
             arch: Some(arch_str),
             prec_div: Some(false),

@@ -24,6 +24,7 @@ pub mod hi_cube;
 pub mod hic_raa;
 pub mod hipparcos;
 pub mod ibex;
+pub mod imap;
 pub mod jarvis;
 pub mod juno;
 pub mod landsat;
