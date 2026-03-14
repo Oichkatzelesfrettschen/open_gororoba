@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 3
-skipped_generated_count = 13
+raw_capture_count = 4
+skipped_generated_count = 15
 authoritative = false
 normalization_required = true
 
@@ -32,7 +32,7 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0003.toml"
 
 [[document]]
-id = "DOC-0011"
+id = "DOC-0013"
 source_path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "markdown_mirror"
@@ -40,7 +40,18 @@ migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0011.toml"
+document_toml = "registry/knowledge/docs/DOC-0013.toml"
+
+[[document]]
+id = "DOC-0015"
+source_path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+title = "Theorems"
+kind = "markdown_mirror"
+migration_priority = "critical"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0015.toml"
 
 [[document]]
 id = "DOC-0001"
@@ -54,7 +65,7 @@ skip_reason = "generated_markdown_or_artifact"
 [[document]]
 id = "DOC-0004"
 source_path = "README.md"
-title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
+title = "open_gororoba"
 kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
@@ -115,7 +126,25 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
+id = "DOC-0011"
+source_path = "docs/THEOREMS.md"
+title = "Theorems"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
 id = "DOC-0012"
+source_path = "docs/book/src/proofs/index.md"
+title = "Proof Inventory"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0014"
 source_path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 title = "Pioneer and Flyby Anomaly Primary Sources"
 kind = "markdown_mirror"
@@ -124,7 +153,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0013"
+id = "DOC-0016"
 source_path = "docs/research/high_dimensional_algebra_unification_2026.md"
 title = "Research Summary: High-Dimensional Cayley-Dickson Physics (2024-2026)"
 kind = "markdown_mirror"
@@ -133,7 +162,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0014"
+id = "DOC-0017"
 source_path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
 title = "Ticket: Pioneer/Flyby Fractal Bridge"
 kind = "markdown_mirror"
@@ -142,7 +171,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0015"
+id = "DOC-0018"
 source_path = "proofs/EPISTEMIC_BOUNDARIES.md"
 title = "Epistemic Boundaries"
 kind = "markdown_mirror"
@@ -151,7 +180,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0016"
+id = "DOC-0019"
 source_path = "proofs/README.md"
 title = "Living Verification Artifact -- Pipeline Architecture"
 kind = "markdown_mirror"

@@ -4,8 +4,8 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 46
-toml_generated_mirror_count = 9
+document_count = 49
+toml_generated_mirror_count = 12
 toml_manual_source_count = 37
 
 [policy]
@@ -364,8 +364,26 @@ source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources
 notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
+path = "docs/THEOREMS.md"
+id = "MDG-0099"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/canonical/control_plane.sqlite3", "registry/control_plane_compatibility_exports.toml", "registry/docs_root_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_payloads.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/book/src/proofs/index.md"
+id = "MDG-0123"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_payloads.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
 path = "docs/convos/README.md"
-id = "MDG-0141"
+id = "MDG-0146"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
@@ -374,7 +392,7 @@ notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
-id = "MDG-0166"
+id = "MDG-0175"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
@@ -382,8 +400,17 @@ source_toml_refs = ["registry/external_sources.toml", "registry/embedded_markdow
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
+path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+id = "MDG-0205"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/canonical/control_plane.sqlite3", "registry/control_plane_compatibility_exports.toml", "registry/knowledge_sources.toml", "registry/markdown_payloads.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
 path = "docs/research/high_dimensional_algebra_unification_2026.md"
-id = "MDG-0212"
+id = "MDG-0223"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
@@ -392,7 +419,7 @@ notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
-id = "MDG-0231"
+id = "MDG-0242"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
@@ -401,7 +428,7 @@ notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "proofs/EPISTEMIC_BOUNDARIES.md"
-id = "MDG-0234"
+id = "MDG-0245"
 kind = "markdown_mirror"
 mode = "toml_manual_source"
 header_required = false
@@ -410,7 +437,7 @@ notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
 path = "proofs/README.md"
-id = "MDG-0235"
+id = "MDG-0246"
 kind = "markdown_mirror"
 mode = "toml_manual_source"
 header_required = false
@@ -419,7 +446,7 @@ notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
 path = "venv/lib/python3.14/site-packages/pip-26.0.1.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
-id = "MDG-0317"
+id = "MDG-0339"
 kind = "markdown"
 mode = "toml_manual_source"
 header_required = false
@@ -428,7 +455,7 @@ notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
 path = "venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
-id = "MDG-0318"
+id = "MDG-0340"
 kind = "markdown"
 mode = "toml_manual_source"
 header_required = false

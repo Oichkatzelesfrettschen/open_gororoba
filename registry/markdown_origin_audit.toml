@@ -5,21 +5,93 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 258
-generated_verified_count = 221
-needs_consolidation_count = 37
+document_count = 273
+generated_verified_count = 195
+needs_consolidation_count = 78
 
 [scope_counts]
 data_artifacts = 10
-docs = 160
-reports = 88
+docs = 171
+reports = 92
 
 [origin_status_counts]
-generated_from_repo_process = 221
-non_generated_needs_consolidation = 37
+generated_from_repo_process = 195
+missing_origin_headers = 31
+non_generated_needs_consolidation = 47
 
 [[consolidation_queue]]
 rank = 1
+path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 1759
+
+[[consolidation_queue]]
+rank = 2
+path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 1091
+
+[[consolidation_queue]]
+rank = 3
+path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 889
+
+[[consolidation_queue]]
+rank = 4
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 674
+
+[[consolidation_queue]]
+rank = 5
+path = "docs/db/catalog.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "unbacked_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 656
+
+[[consolidation_queue]]
+rank = 6
+path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 580
+
+[[consolidation_queue]]
+rank = 7
+path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 253
+
+[[consolidation_queue]]
+rank = 8
+path = "docs/external_sources/ysu_engine_gpu_patterns.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 245
+
+[[consolidation_queue]]
+rank = 9
 path = "docs/research/sedenion_42_structure_audit_2026.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -28,7 +100,43 @@ toml_destination = "registry/research_narratives.toml"
 line_count = 165
 
 [[consolidation_queue]]
-rank = 2
+rank = 10
+path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 161
+
+[[consolidation_queue]]
+rank = 11
+path = "reports/control_plane_reader_writer_inventory_2026_03_13.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/reports_narratives.toml"
+line_count = 157
+
+[[consolidation_queue]]
+rank = 12
+path = "docs/THEOREMS.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/canonical/control_plane.sqlite3"
+line_count = 156
+
+[[consolidation_queue]]
+rank = 13
+path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/canonical/control_plane.sqlite3"
+line_count = 155
+
+[[consolidation_queue]]
+rank = 14
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -37,7 +145,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 155
 
 [[consolidation_queue]]
-rank = 3
+rank = 15
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_rotation_opt.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -46,7 +154,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 155
 
 [[consolidation_queue]]
-rank = 4
+rank = 16
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -55,7 +163,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 149
 
 [[consolidation_queue]]
-rank = 5
+rank = 17
 path = "reports/control_plane_rca_2026_03_13.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -64,7 +172,34 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 143
 
 [[consolidation_queue]]
-rank = 6
+rank = 18
+path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 133
+
+[[consolidation_queue]]
+rank = 19
+path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 130
+
+[[consolidation_queue]]
+rank = 20
+path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 129
+
+[[consolidation_queue]]
+rank = 21
 path = "reports/gates/2026-03-07/155836/summary.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -73,7 +208,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 126
 
 [[consolidation_queue]]
-rank = 7
+rank = 22
 path = "reports/benchmarks/x87_strategy_multicore_65536.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -82,7 +217,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 125
 
 [[consolidation_queue]]
-rank = 8
+rank = 23
 path = "reports/benchmarks/x87_strategy_perf_multicore_65536.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -91,7 +226,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 125
 
 [[consolidation_queue]]
-rank = 9
+rank = 24
 path = "reports/benchmarks/jacobi_backend_samply_compare.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -100,7 +235,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 116
 
 [[consolidation_queue]]
-rank = 10
+rank = 25
 path = "reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -109,7 +244,34 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 105
 
 [[consolidation_queue]]
-rank = 11
+rank = 26
+path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 104
+
+[[consolidation_queue]]
+rank = 27
+path = "docs/external_sources/DATASET_MANIFEST.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 99
+
+[[consolidation_queue]]
+rank = 28
+path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 95
+
+[[consolidation_queue]]
+rank = 29
 path = "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -118,7 +280,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 93
 
 [[consolidation_queue]]
-rank = 12
+rank = 30
 path = "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -127,7 +289,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 93
 
 [[consolidation_queue]]
-rank = 13
+rank = 31
 path = "reports/benchmarks/jacobi_backend_boundary_24_40.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -136,7 +298,16 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 89
 
 [[consolidation_queue]]
-rank = 14
+rank = 32
+path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 87
+
+[[consolidation_queue]]
+rank = 33
 path = "reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -145,7 +316,34 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 81
 
 [[consolidation_queue]]
-rank = 15
+rank = 34
+path = "reports/registry_check_timing_baseline_2026_03_13.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/reports_narratives.toml"
+line_count = 81
+
+[[consolidation_queue]]
+rank = 35
+path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 80
+
+[[consolidation_queue]]
+rank = 36
+path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 78
+
+[[consolidation_queue]]
+rank = 37
 path = "reports/benchmarks/jacobi_backend_boundary_44_56.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -154,7 +352,16 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 73
 
 [[consolidation_queue]]
-rank = 16
+rank = 38
+path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 69
+
+[[consolidation_queue]]
+rank = 39
 path = "reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -163,7 +370,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 65
 
 [[consolidation_queue]]
-rank = 17
+rank = 40
 path = "docs/research/x87_multicore_strategy_note_2026_03_12.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -172,7 +379,16 @@ toml_destination = "registry/research_narratives.toml"
 line_count = 60
 
 [[consolidation_queue]]
-rank = 18
+rank = 41
+path = "docs/book/src/architecture/migrated-lanes.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/book_docs.toml"
+line_count = 57
+
+[[consolidation_queue]]
+rank = 42
 path = "reports/benchmarks/jacobi_backend_boundary_60_68.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -181,7 +397,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 57
 
 [[consolidation_queue]]
-rank = 19
+rank = 43
 path = "reports/benchmarks/x87_givens_microbench_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -190,7 +406,25 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 57
 
 [[consolidation_queue]]
-rank = 20
+rank = 44
+path = "docs/book/src/architecture/db-authoring.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/book_docs.toml"
+line_count = 54
+
+[[consolidation_queue]]
+rank = 45
+path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 52
+
+[[consolidation_queue]]
+rank = 46
 path = "reports/theorem_claim_link_audit_2026_03_13.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -199,7 +433,34 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 49
 
 [[consolidation_queue]]
-rank = 21
+rank = 47
+path = "docs/book/src/architecture/compatibility-exports.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/book_docs.toml"
+line_count = 47
+
+[[consolidation_queue]]
+rank = 48
+path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 43
+
+[[consolidation_queue]]
+rank = 49
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 41
+
+[[consolidation_queue]]
+rank = 50
 path = "reports/benchmarks/jacobi_backend_sweep_24_64.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -208,7 +469,16 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 41
 
 [[consolidation_queue]]
-rank = 22
+rank = 51
+path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 40
+
+[[consolidation_queue]]
+rank = 52
 path = "reports/benchmarks/partial_spectrum_bench_focus.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -217,7 +487,34 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 40
 
 [[consolidation_queue]]
-rank = 23
+rank = 53
+path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 39
+
+[[consolidation_queue]]
+rank = 54
+path = "docs/book/src/architecture/execution-targets.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/book_docs.toml"
+line_count = 38
+
+[[consolidation_queue]]
+rank = 55
+path = "docs/book/src/proofs/linking.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/book_docs.toml"
+line_count = 37
+
+[[consolidation_queue]]
+rank = 56
 path = "reports/benchmarks/jacobi_backend_entrywise_pair_64_72.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -226,7 +523,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 33
 
 [[consolidation_queue]]
-rank = 24
+rank = 57
 path = "reports/benchmarks/jacobi_backend_sweep_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -235,7 +532,16 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 33
 
 [[consolidation_queue]]
-rank = 25
+rank = 58
+path = "docs/external_sources/INDEX.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 32
+
+[[consolidation_queue]]
+rank = 59
 path = "reports/benchmarks/block_jacobi_backend_sweep_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -244,7 +550,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 20
 
 [[consolidation_queue]]
-rank = 26
+rank = 60
 path = "reports/benchmarks/partial_spectrum_bench_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -253,7 +559,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 20
 
 [[consolidation_queue]]
-rank = 27
+rank = 61
 path = "reports/benchmarks/x87_givens_microbench_perf_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -262,7 +568,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 17
 
 [[consolidation_queue]]
-rank = 28
+rank = 62
 path = "reports/benchmarks/block_jacobi_backend_sweep_focus.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -271,7 +577,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 13
 
 [[consolidation_queue]]
-rank = 29
+rank = 63
 path = "reports/benchmarks/jacobi_backend_sweep_metadata_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -280,7 +586,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 13
 
 [[consolidation_queue]]
-rank = 30
+rank = 64
 path = "reports/benchmarks/structured_spectrum_bench_focus.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -289,7 +595,25 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 13
 
 [[consolidation_queue]]
-rank = 31
+rank = 65
+path = "reports/benchmarks/structured_spectrum_bench_lifted_focus.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/reports_narratives.toml"
+line_count = 13
+
+[[consolidation_queue]]
+rank = 66
+path = "reports/benchmarks/structured_spectrum_bench_projected_focus.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/reports_narratives.toml"
+line_count = 13
+
+[[consolidation_queue]]
+rank = 67
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -298,7 +622,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 11
 
 [[consolidation_queue]]
-rank = 32
+rank = 68
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -307,7 +631,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 11
 
 [[consolidation_queue]]
-rank = 33
+rank = 69
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -316,7 +640,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 11
 
 [[consolidation_queue]]
-rank = 34
+rank = 70
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -325,7 +649,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 11
 
 [[consolidation_queue]]
-rank = 35
+rank = 71
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -334,7 +658,7 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 11
 
 [[consolidation_queue]]
-rank = 36
+rank = 72
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
@@ -343,13 +667,58 @@ toml_destination = "registry/reports_narratives.toml"
 line_count = 11
 
 [[consolidation_queue]]
-rank = 37
+rank = 73
 path = "reports/benchmarks/structured_spectrum_bench_smoke.md"
 origin_status = "non_generated_needs_consolidation"
 classification = "toml_destination_exists_manual_markdown"
 consolidation_action = "migrate_to_toml_registry_and_regenerate"
 toml_destination = "registry/reports_narratives.toml"
 line_count = 10
+
+[[consolidation_queue]]
+rank = 74
+path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 8
+
+[[consolidation_queue]]
+rank = 75
+path = "docs/external_sources/LELLI_2016_SPARC.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 8
+
+[[consolidation_queue]]
+rank = 76
+path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 8
+
+[[consolidation_queue]]
+rank = 77
+path = "docs/external_sources/MOSTER_2013_SMHM.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 8
+
+[[consolidation_queue]]
+rank = 78
+path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
+origin_status = "missing_origin_headers"
+classification = "toml_published_markdown"
+consolidation_action = "regenerate_from_registry"
+toml_destination = "registry/external_sources.toml"
+line_count = 8
 
 [[document]]
 path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -915,17 +1284,16 @@ line_count = 293
 path = "docs/THEOREMS.md"
 scope = "docs"
 classification = "toml_published_markdown"
-git_status = "untracked"
-origin_status = "generated_from_repo_process"
+git_status = "tracked"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/canonical/control_plane.sqlite3"
-source_of_truth_raw = "SQLite canonical database (compatibility export)"
 source_of_truth_paths = []
-consolidation_action = "none"
-line_count = 153
+consolidation_action = "regenerate_from_registry"
+line_count = 156
 
 [[document]]
 path = "docs/THESIS_42_SUPPORT.md"
@@ -989,7 +1357,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 60
+line_count = 65
 
 [[document]]
 path = "docs/book/src/algebra/box-kites.md"
@@ -1069,7 +1437,22 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
-line_count = 84
+line_count = 100
+
+[[document]]
+path = "docs/book/src/architecture/compatibility-exports.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/book_docs.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 47
 
 [[document]]
 path = "docs/book/src/architecture/crates.md"
@@ -1088,6 +1471,36 @@ consolidation_action = "none"
 line_count = 78
 
 [[document]]
+path = "docs/book/src/architecture/db-authoring.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/book_docs.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 54
+
+[[document]]
+path = "docs/book/src/architecture/execution-targets.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/book_docs.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 38
+
+[[document]]
 path = "docs/book/src/architecture/layout.md"
 scope = "docs"
 classification = "toml_published_markdown"
@@ -1102,6 +1515,21 @@ source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
 line_count = 99
+
+[[document]]
+path = "docs/book/src/architecture/migrated-lanes.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/book_docs.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 57
 
 [[document]]
 path = "docs/book/src/architecture/verification.md"
@@ -1235,7 +1663,7 @@ line_count = 76
 path = "docs/book/src/proofs/index.md"
 scope = "docs"
 classification = "toml_published_markdown"
-git_status = "untracked"
+git_status = "tracked"
 origin_status = "generated_from_repo_process"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
@@ -1246,6 +1674,21 @@ source_of_truth_raw = "registry/book_docs.toml"
 source_of_truth_paths = ["registry/book_docs.toml"]
 consolidation_action = "none"
 line_count = 34
+
+[[document]]
+path = "docs/book/src/proofs/linking.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/book_docs.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 37
 
 [[document]]
 path = "docs/book/src/registry/claims.md"
@@ -1648,6 +2091,20 @@ consolidation_action = "none"
 line_count = 133
 
 [[document]]
+path = "docs/db/catalog.md"
+scope = "docs"
+classification = "unbacked_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = false
+header_auto_generated = false
+header_source_of_truth = false
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 656
+
+[[document]]
 path = "docs/engine_optimizations.md"
 scope = "docs"
 classification = "toml_published_markdown"
@@ -1728,388 +2185,439 @@ consolidation_action = "none"
 line_count = 58
 
 [[document]]
+path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
+scope = "docs"
+classification = "toml_published_markdown"
+git_status = "ignored"
+origin_status = "missing_origin_headers"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = true
+header_source_of_truth = false
+toml_destination = "registry/external_sources.toml"
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 8
+
+[[document]]
 path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 128
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 130
 
 [[document]]
 path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 50
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 52
 
 [[document]]
 path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 76
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 78
 
 [[document]]
 path = "docs/external_sources/DATASET_MANIFEST.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 97
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 99
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 578
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 580
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 78
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 80
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 1089
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 1091
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 672
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 674
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 39
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 41
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 1757
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 1759
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 887
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 889
 
 [[document]]
 path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 251
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 253
 
 [[document]]
 path = "docs/external_sources/INDEX.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 36
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 32
 
 [[document]]
 path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 159
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 161
+
+[[document]]
+path = "docs/external_sources/LELLI_2016_SPARC.md"
+scope = "docs"
+classification = "toml_published_markdown"
+git_status = "ignored"
+origin_status = "missing_origin_headers"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = true
+header_source_of_truth = false
+toml_destination = "registry/external_sources.toml"
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 8
+
+[[document]]
+path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
+scope = "docs"
+classification = "toml_published_markdown"
+git_status = "ignored"
+origin_status = "missing_origin_headers"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = true
+header_source_of_truth = false
+toml_destination = "registry/external_sources.toml"
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 8
+
+[[document]]
+path = "docs/external_sources/MOSTER_2013_SMHM.md"
+scope = "docs"
+classification = "toml_published_markdown"
+git_status = "ignored"
+origin_status = "missing_origin_headers"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = true
+header_source_of_truth = false
+toml_destination = "registry/external_sources.toml"
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 8
 
 [[document]]
 path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 93
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 95
 
 [[document]]
 path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 37
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 39
 
 [[document]]
 path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "tracked"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 67
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 69
 
 [[document]]
 path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 41
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 43
 
 [[document]]
 path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 102
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 104
 
 [[document]]
 path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 131
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 133
+
+[[document]]
+path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
+scope = "docs"
+classification = "toml_published_markdown"
+git_status = "ignored"
+origin_status = "missing_origin_headers"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = true
+header_source_of_truth = false
+toml_destination = "registry/external_sources.toml"
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 8
 
 [[document]]
 path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 127
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 129
 
 [[document]]
 path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 85
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 87
 
 [[document]]
 path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 38
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 40
 
 [[document]]
 path = "docs/external_sources/ysu_engine_gpu_patterns.md"
 scope = "docs"
 classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "generated_from_repo_process"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/external_sources.toml"
-source_of_truth_raw = "registry/external_sources.toml"
-source_of_truth_paths = ["registry/external_sources.toml"]
-consolidation_action = "none"
-line_count = 243
+source_of_truth_paths = []
+consolidation_action = "regenerate_from_registry"
+line_count = 245
 
 [[document]]
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
@@ -2141,7 +2649,7 @@ toml_destination = "registry/book_docs.toml"
 source_of_truth_raw = "see authoritative source line below"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 163
+line_count = 198
 
 [[document]]
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
@@ -2173,7 +2681,7 @@ toml_destination = "registry/canonical/control_plane.sqlite3"
 source_of_truth_raw = "registry/canonical/control_plane.sqlite3"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 9872
+line_count = 9888
 
 [[document]]
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
@@ -2285,7 +2793,7 @@ toml_destination = "registry/canonical/control_plane.sqlite3"
 source_of_truth_raw = "registry/canonical/control_plane.sqlite3"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 3216
+line_count = 3335
 
 [[document]]
 path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
@@ -2317,7 +2825,7 @@ toml_destination = "registry/canonical/control_plane.sqlite3"
 source_of_truth_raw = "registry/canonical/control_plane.sqlite3"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 1353
+line_count = 1398
 
 [[document]]
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
@@ -2349,7 +2857,7 @@ toml_destination = "registry/markdown_governance.toml"
 source_of_truth_raw = "see authoritative source line below"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 493
+line_count = 610
 
 [[document]]
 path = "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
@@ -2413,7 +2921,7 @@ toml_destination = "registry/requirements.toml"
 source_of_truth_raw = "see authoritative source line below"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 132
+line_count = 133
 
 [[document]]
 path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
@@ -2429,7 +2937,7 @@ toml_destination = "registry/research_narratives.toml"
 source_of_truth_raw = "see authoritative source line below"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 116
+line_count = 145
 
 [[document]]
 path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
@@ -2451,17 +2959,16 @@ line_count = 182
 path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
 scope = "docs"
 classification = "toml_published_markdown"
-git_status = "untracked"
-origin_status = "generated_from_repo_process"
+git_status = "tracked"
+origin_status = "missing_origin_headers"
 origin_process = "cargo run -p gororoba_cli_data --bin registry-emit"
 destination_exists = true
 header_auto_generated = true
-header_source_of_truth = true
+header_source_of_truth = false
 toml_destination = "registry/canonical/control_plane.sqlite3"
-source_of_truth_raw = "registry/canonical/control_plane.sqlite3"
 source_of_truth_paths = []
-consolidation_action = "none"
-line_count = 153
+consolidation_action = "regenerate_from_registry"
+line_count = 155
 
 [[document]]
 path = "docs/generated/TODO_REGISTRY_MIRROR.md"
@@ -2541,7 +3048,7 @@ toml_destination = "registry/requirements.toml"
 source_of_truth_raw = "registry/requirements.toml; registry/requirements_narrative.toml"
 source_of_truth_paths = ["registry/requirements.toml", "registry/requirements_narrative.toml"]
 consolidation_action = "none"
-line_count = 306
+line_count = 322
 
 [[document]]
 path = "docs/requirements/analysis.md"
@@ -3603,6 +4110,36 @@ consolidation_action = "migrate_to_toml_registry_and_regenerate"
 line_count = 13
 
 [[document]]
+path = "reports/benchmarks/structured_spectrum_bench_lifted_focus.md"
+scope = "reports"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/reports_narratives.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 13
+
+[[document]]
+path = "reports/benchmarks/structured_spectrum_bench_projected_focus.md"
+scope = "reports"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/reports_narratives.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 13
+
+[[document]]
 path = "reports/benchmarks/structured_spectrum_bench_smoke.md"
 scope = "reports"
 classification = "toml_destination_exists_manual_markdown"
@@ -4125,6 +4662,21 @@ consolidation_action = "migrate_to_toml_registry_and_regenerate"
 line_count = 143
 
 [[document]]
+path = "reports/control_plane_reader_writer_inventory_2026_03_13.md"
+scope = "reports"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/reports_narratives.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 157
+
+[[document]]
 path = "reports/convos_claim_candidates.md"
 scope = "reports"
 classification = "toml_published_markdown"
@@ -4314,6 +4866,21 @@ source_of_truth_raw = "registry/reports_narratives.toml"
 source_of_truth_paths = ["registry/reports_narratives.toml"]
 consolidation_action = "none"
 line_count = 121
+
+[[document]]
+path = "reports/registry_check_timing_baseline_2026_03_13.md"
+scope = "reports"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "cargo run -p gororoba_cli_data --bin markdown-registry"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/reports_narratives.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 81
 
 [[document]]
 path = "reports/repo_inventory.md"

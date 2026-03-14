@@ -5,11 +5,11 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 308
+document_count = 323
 tracked_violation_count = 0
-classification_violation_count = 0
+classification_violation_count = 1
 destination_missing_count = 0
-risk_item_count = 111
+risk_item_count = 121
 
 [policy]
 toml_first_required = true
@@ -55,8 +55,11 @@ allowed_tracked_markdown = [
   "data/artifacts/README.md",
   "data/csv/README.md",
   "data/external/README.md",
+  "docs/THEOREMS.md",
+  "docs/book/src/proofs/index.md",
   "docs/convos/README.md",
   "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md",
+  "docs/generated/THEOREMS_REGISTRY_MIRROR.md",
   "docs/research/high_dimensional_algebra_unification_2026.md",
   "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md",
   "proofs/EPISTEMIC_BOUNDARIES.md",
@@ -66,28 +69,44 @@ allowed_tracked_markdown = [
 ]
 
 [git_status_counts]
-ignored = 289
-tracked = 16
-untracked = 3
+ignored = 304
+tracked = 19
 
 [classification_counts]
 third_party_markdown = 13
-toml_destination_exists_manual_markdown = 70
-toml_published_markdown = 225
+toml_destination_exists_manual_markdown = 79
+toml_published_markdown = 230
+unbacked_manual_markdown = 1
 
 [lifecycle_counts]
 generated_artifact_report = 10
-generated_book_source = 20
+generated_book_source = 25
 generated_conversation_extract = 5
-generated_docs_tree = 112
+generated_docs_tree = 118
 generated_other = 35
 generated_publish_mirror = 23
-generated_report_output = 88
+generated_report_output = 92
 generated_root_overlay = 2
 third_party_cache = 13
 
+[[policy_violation]]
+kind = "classification_outside_safe_set"
+path = "docs/db/catalog.md"
+
 [[risk_queue]]
 rank = 1
+path = "docs/db/catalog.md"
+risk_score = 232
+classification = "unbacked_manual_markdown"
+migration_action = "migrate_to_new_registry"
+migration_priority = "critical"
+lifecycle = "generated_docs_tree"
+destination_exists = false
+line_count = 656
+rationale = "Manual markdown without TOML destination; migrate aggressively."
+
+[[risk_queue]]
+rank = 2
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_linear_logic.md"
 risk_score = 150
 classification = "toml_destination_exists_manual_markdown"
@@ -100,7 +119,7 @@ line_count = 6152
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 2
+rank = 3
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_programming.md"
 risk_score = 142
 classification = "toml_destination_exists_manual_markdown"
@@ -113,7 +132,7 @@ line_count = 3189
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 3
+rank = 4
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_haskell.md"
 risk_score = 140
 classification = "toml_destination_exists_manual_markdown"
@@ -126,7 +145,7 @@ line_count = 2673
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 4
+rank = 5
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/differential_lambda_survey.md"
 risk_score = 139
 classification = "toml_destination_exists_manual_markdown"
@@ -139,7 +158,7 @@ line_count = 2405
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 5
+rank = 6
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/graphical_linear_algebra.md"
 risk_score = 138
 classification = "toml_destination_exists_manual_markdown"
@@ -152,7 +171,7 @@ line_count = 2157
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 6
+rank = 7
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/idris2_linear_types.md"
 risk_score = 138
 classification = "toml_destination_exists_manual_markdown"
@@ -165,7 +184,7 @@ line_count = 2152
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 7
+rank = 8
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/supporting_misc/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-topos-rewriting/synthetic_topology.md"
 risk_score = 138
 classification = "toml_destination_exists_manual_markdown"
@@ -178,7 +197,7 @@ line_count = 2073
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 8
+rank = 9
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/taylor_expansion_lambda.md"
 risk_score = 137
 classification = "toml_destination_exists_manual_markdown"
@@ -191,7 +210,7 @@ line_count = 1892
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 9
+rank = 10
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/bounded_linear_logic.md"
 risk_score = 136
 classification = "toml_destination_exists_manual_markdown"
@@ -204,7 +223,7 @@ line_count = 1748
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 10
+rank = 11
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/lambda_core/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/probabilistic_lambda_intro.md"
 risk_score = 136
 classification = "toml_destination_exists_manual_markdown"
@@ -217,7 +236,7 @@ line_count = 1621
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 11
+rank = 12
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-formal-methods/linear_logic_girard.md"
 risk_score = 135
 classification = "toml_destination_exists_manual_markdown"
@@ -230,7 +249,7 @@ line_count = 1498
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 12
+rank = 13
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-game-geometry/goi_linear_logic.md"
 risk_score = 135
 classification = "toml_destination_exists_manual_markdown"
@@ -243,7 +262,7 @@ line_count = 1309
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 13
+rank = 14
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/linear_constraints.md"
 risk_score = 134
 classification = "toml_destination_exists_manual_markdown"
@@ -256,7 +275,7 @@ line_count = 1045
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 14
+rank = 15
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/linear_transport/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-semantics/linear_types_survey.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -269,7 +288,7 @@ line_count = 847
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 15
+rank = 16
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/hott_formal/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-theorem-provers/hott_agda.md"
 risk_score = 133
 classification = "toml_destination_exists_manual_markdown"
@@ -282,7 +301,7 @@ line_count = 801
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 16
+rank = 17
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/supplemental_docs/cd_hypercomplex/documents_primary/1_Analysis/data/pdf-corpus/markdown/agl-library-constraint-probabilistic/dpll_cdcl.md"
 risk_score = 131
 classification = "toml_destination_exists_manual_markdown"
@@ -295,7 +314,7 @@ line_count = 320
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 17
+rank = 18
 path = "docs/research/sedenion_42_structure_audit_2026.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -308,7 +327,20 @@ line_count = 165
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 18
+rank = 19
+path = "reports/control_plane_reader_writer_inventory_2026_03_13.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_report_output"
+destination_exists = true
+toml_destination = "registry/reports_narratives.toml"
+line_count = 157
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 20
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -321,7 +353,7 @@ line_count = 155
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 19
+rank = 21
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_rotation_opt.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -334,7 +366,7 @@ line_count = 155
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 20
+rank = 22
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -347,7 +379,7 @@ line_count = 149
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 21
+rank = 23
 path = "reports/control_plane_rca_2026_03_13.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -360,7 +392,7 @@ line_count = 143
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 22
+rank = 24
 path = "proofs/README.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -373,7 +405,7 @@ line_count = 135
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 23
+rank = 25
 path = "reports/gates/2026-03-07/155836/summary.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -386,7 +418,7 @@ line_count = 126
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 24
+rank = 26
 path = "reports/benchmarks/x87_strategy_multicore_65536.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -399,7 +431,7 @@ line_count = 125
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 25
+rank = 27
 path = "reports/benchmarks/x87_strategy_perf_multicore_65536.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -412,7 +444,7 @@ line_count = 125
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 26
+rank = 28
 path = "reports/benchmarks/jacobi_backend_samply_compare.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -425,7 +457,7 @@ line_count = 116
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 27
+rank = 29
 path = "reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -438,7 +470,7 @@ line_count = 105
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 28
+rank = 30
 path = "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -451,7 +483,7 @@ line_count = 93
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 29
+rank = 31
 path = "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -464,7 +496,7 @@ line_count = 93
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 30
+rank = 32
 path = "REQUIREMENTS.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -477,7 +509,7 @@ line_count = 92
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 31
+rank = 33
 path = "reports/benchmarks/jacobi_backend_boundary_24_40.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -490,7 +522,7 @@ line_count = 89
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 32
+rank = 34
 path = "data/external/voyager_data_access_snapshot.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -503,7 +535,7 @@ line_count = 86
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 33
+rank = 35
 path = "reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -516,7 +548,20 @@ line_count = 81
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 34
+rank = 36
+path = "reports/registry_check_timing_baseline_2026_03_13.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_report_output"
+destination_exists = true
+toml_destination = "registry/reports_narratives.toml"
+line_count = 81
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 37
 path = "NAVIGATOR.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -529,7 +574,7 @@ line_count = 75
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 35
+rank = 38
 path = "reports/benchmarks/jacobi_backend_boundary_44_56.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -542,7 +587,7 @@ line_count = 73
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 36
+rank = 39
 path = "data/external/README.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -551,11 +596,11 @@ migration_priority = "medium"
 lifecycle = "generated_other"
 destination_exists = true
 toml_destination = "registry/knowledge_sources.toml"
-line_count = 66
+line_count = 71
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 37
+rank = 40
 path = "proofs/EPISTEMIC_BOUNDARIES.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -568,7 +613,7 @@ line_count = 65
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 38
+rank = 41
 path = "reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -581,7 +626,7 @@ line_count = 65
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 39
+rank = 42
 path = "docs/research/x87_multicore_strategy_note_2026_03_12.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -594,7 +639,20 @@ line_count = 60
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 40
+rank = 43
+path = "docs/book/src/architecture/migrated-lanes.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_book_source"
+destination_exists = true
+toml_destination = "registry/book_docs.toml"
+line_count = 57
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 44
 path = "reports/benchmarks/jacobi_backend_boundary_60_68.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -607,7 +665,7 @@ line_count = 57
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 41
+rank = 45
 path = "reports/benchmarks/x87_givens_microbench_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -620,7 +678,20 @@ line_count = 57
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 42
+rank = 46
+path = "docs/book/src/architecture/db-authoring.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_book_source"
+destination_exists = true
+toml_destination = "registry/book_docs.toml"
+line_count = 54
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 47
 path = "reports/theorem_claim_link_audit_2026_03_13.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -633,7 +704,20 @@ line_count = 49
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 43
+rank = 48
+path = "docs/book/src/architecture/compatibility-exports.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_book_source"
+destination_exists = true
+toml_destination = "registry/book_docs.toml"
+line_count = 47
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 49
 path = "data/output/heliosphere/heliosphere_catalog_audit.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -646,7 +730,7 @@ line_count = 46
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 44
+rank = 50
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/theory_narrative_next25.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -659,7 +743,7 @@ line_count = 45
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 45
+rank = 51
 path = "reports/benchmarks/jacobi_backend_sweep_24_64.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -672,7 +756,7 @@ line_count = 41
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 46
+rank = 52
 path = "apps/gororoba_studio/README.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -685,7 +769,7 @@ line_count = 40
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 47
+rank = 53
 path = "reports/benchmarks/partial_spectrum_bench_focus.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -698,7 +782,33 @@ line_count = 40
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 48
+rank = 54
+path = "docs/book/src/architecture/execution-targets.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_book_source"
+destination_exists = true
+toml_destination = "registry/book_docs.toml"
+line_count = 38
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 55
+path = "docs/book/src/proofs/linking.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_book_source"
+destination_exists = true
+toml_destination = "registry/book_docs.toml"
+line_count = 37
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 56
 path = "reports/benchmarks/jacobi_backend_entrywise_pair_64_72.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -711,7 +821,7 @@ line_count = 33
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 49
+rank = 57
 path = "reports/benchmarks/jacobi_backend_sweep_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -724,7 +834,7 @@ line_count = 33
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 50
+rank = 58
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/unresolved_urls_final.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -737,7 +847,7 @@ line_count = 31
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 51
+rank = 59
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round3/README.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -750,7 +860,7 @@ line_count = 20
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 52
+rank = 60
 path = "reports/benchmarks/block_jacobi_backend_sweep_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -763,7 +873,7 @@ line_count = 20
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 53
+rank = 61
 path = "reports/benchmarks/partial_spectrum_bench_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -776,7 +886,7 @@ line_count = 20
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 54
+rank = 62
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions/tang_tang_mdpi_link_search.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -789,7 +899,7 @@ line_count = 19
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 55
+rank = 63
 path = "reports/benchmarks/x87_givens_microbench_perf_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -802,7 +912,7 @@ line_count = 17
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 56
+rank = 64
 path = "crates/lbm_3d_cuda/README.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -815,7 +925,7 @@ line_count = 14
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 57
+rank = 65
 path = "reports/benchmarks/block_jacobi_backend_sweep_focus.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -828,7 +938,7 @@ line_count = 13
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 58
+rank = 66
 path = "reports/benchmarks/jacobi_backend_sweep_metadata_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -841,7 +951,7 @@ line_count = 13
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 59
+rank = 67
 path = "reports/benchmarks/structured_spectrum_bench_focus.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -854,7 +964,33 @@ line_count = 13
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 60
+rank = 68
+path = "reports/benchmarks/structured_spectrum_bench_lifted_focus.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_report_output"
+destination_exists = true
+toml_destination = "registry/reports_narratives.toml"
+line_count = 13
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 69
+path = "reports/benchmarks/structured_spectrum_bench_projected_focus.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_report_output"
+destination_exists = true
+toml_destination = "registry/reports_narratives.toml"
+line_count = 13
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 70
 path = "CLAUDE.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -867,7 +1003,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 61
+rank = 71
 path = "GEMINI.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -880,7 +1016,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 62
+rank = 72
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -893,7 +1029,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 63
+rank = 73
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -906,7 +1042,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 64
+rank = 74
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -919,7 +1055,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 65
+rank = 75
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -932,7 +1068,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 66
+rank = 76
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -945,7 +1081,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 67
+rank = 77
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -958,7 +1094,7 @@ line_count = 11
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 68
+rank = 78
 path = "reports/benchmarks/structured_spectrum_bench_smoke.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -971,7 +1107,7 @@ line_count = 10
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 69
+rank = 79
 path = "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/sedenions_addenda/unresolved_direct_sources.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -984,7 +1120,7 @@ line_count = 8
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 70
+rank = 80
 path = "curated/01_theory_frameworks/README_ROCQ.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
@@ -997,7 +1133,7 @@ line_count = 6
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[risk_queue]]
-rank = 71
+rank = 81
 path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
 risk_score = 20
 classification = "toml_published_markdown"
@@ -1006,24 +1142,24 @@ migration_priority = "low"
 lifecycle = "generated_publish_mirror"
 destination_exists = true
 toml_destination = "registry/canonical/control_plane.sqlite3"
-line_count = 9872
+line_count = 9888
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 72
+rank = 82
 path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
-risk_score = 12
+risk_score = 13
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_publish_mirror"
 destination_exists = true
 toml_destination = "registry/canonical/control_plane.sqlite3"
-line_count = 3216
+line_count = 3335
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 73
+rank = 83
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 risk_score = 11
 classification = "toml_published_markdown"
@@ -1036,7 +1172,7 @@ line_count = 2869
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 74
+rank = 84
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 risk_score = 9
 classification = "toml_published_markdown"
@@ -1049,7 +1185,7 @@ line_count = 2417
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 75
+rank = 85
 path = "docs/INSIGHTS.md"
 risk_score = 7
 classification = "toml_published_markdown"
@@ -1062,7 +1198,7 @@ line_count = 1796
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 76
+rank = 86
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 risk_score = 7
 classification = "toml_published_markdown"
@@ -1071,11 +1207,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/external_sources.toml"
-line_count = 1757
+line_count = 1759
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 77
+rank = 87
 path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 risk_score = 5
 classification = "toml_published_markdown"
@@ -1084,11 +1220,11 @@ migration_priority = "low"
 lifecycle = "generated_publish_mirror"
 destination_exists = true
 toml_destination = "registry/canonical/control_plane.sqlite3"
-line_count = 1353
+line_count = 1398
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 78
+rank = 88
 path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
 risk_score = 4
 classification = "toml_published_markdown"
@@ -1101,7 +1237,7 @@ line_count = 1242
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 79
+rank = 89
 path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
 risk_score = 4
 classification = "toml_published_markdown"
@@ -1114,7 +1250,7 @@ line_count = 1111
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 80
+rank = 90
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 risk_score = 4
 classification = "toml_published_markdown"
@@ -1123,11 +1259,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/external_sources.toml"
-line_count = 1089
+line_count = 1091
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 81
+rank = 91
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -1136,11 +1272,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/external_sources.toml"
-line_count = 887
+line_count = 889
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 82
+rank = 92
 path = "reports/convos_claim_candidates.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -1153,7 +1289,7 @@ line_count = 862
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 83
+rank = 93
 path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -1166,7 +1302,7 @@ line_count = 841
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 84
+rank = 94
 path = "docs/ROADMAP.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -1179,7 +1315,7 @@ line_count = 768
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 85
+rank = 95
 path = "docs/BIBLIOGRAPHY.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1192,7 +1328,7 @@ line_count = 730
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 86
+rank = 96
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1201,11 +1337,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/external_sources.toml"
-line_count = 672
+line_count = 674
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 87
+rank = 97
 path = "docs/claims/by_domain/meta.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1218,7 +1354,7 @@ line_count = 648
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 88
+rank = 98
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1231,7 +1367,20 @@ line_count = 624
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 89
+rank = 99
+path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
+risk_score = 2
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_publish_mirror"
+destination_exists = true
+toml_destination = "registry/markdown_governance.toml"
+line_count = 610
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 100
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1244,7 +1393,7 @@ line_count = 604
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 90
+rank = 101
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1253,11 +1402,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/external_sources.toml"
-line_count = 578
+line_count = 580
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 91
+rank = 102
 path = "docs/PHASE1_REMAINING_ROADMAP.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1270,7 +1419,7 @@ line_count = 541
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 92
+rank = 103
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1283,7 +1432,7 @@ line_count = 536
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 93
+rank = 104
 path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1296,7 +1445,7 @@ line_count = 529
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 94
+rank = 105
 path = "docs/SYNTHESIS_PIPELINE_PROGRESS.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -1309,20 +1458,7 @@ line_count = 512
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 95
-path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_publish_mirror"
-destination_exists = true
-toml_destination = "registry/markdown_governance.toml"
-line_count = 493
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 96
+rank = 106
 path = "docs/TCMT_PHOTON_GRAVITON_SYNTHESIS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1335,7 +1471,7 @@ line_count = 453
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 97
+rank = 107
 path = "docs/theory/cayley_dickson_integrable_expanders.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1348,7 +1484,7 @@ line_count = 449
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 98
+rank = 108
 path = "docs/claims/by_domain/holography.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1361,7 +1497,7 @@ line_count = 411
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 99
+rank = 109
 path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1374,7 +1510,7 @@ line_count = 356
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 100
+rank = 110
 path = "docs/WARP_RING_N3_PHYSICS_AND_NUMERICS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1387,7 +1523,20 @@ line_count = 355
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 101
+rank = 111
+path = "docs/requirements/algebra.md"
+risk_score = 1
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/requirements.toml"
+line_count = 322
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 112
 path = "docs/REAL_MATERIALS_INTEGRATION.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1400,7 +1549,7 @@ line_count = 313
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 102
+rank = 113
 path = "reports/claims_batch_backlog_C201_C432.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1413,20 +1562,7 @@ line_count = 308
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 103
-path = "docs/requirements/algebra.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_docs_tree"
-destination_exists = true
-toml_destination = "registry/requirements.toml"
-line_count = 306
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 104
+rank = 114
 path = "reports/claims_batch_backlog_C201_C430.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1439,7 +1575,7 @@ line_count = 304
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 105
+rank = 115
 path = "docs/CLAIMS_TASKS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1452,7 +1588,7 @@ line_count = 303
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 106
+rank = 116
 path = "reports/claims_batch_backlog_C201_C427.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1465,7 +1601,7 @@ line_count = 298
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 107
+rank = 117
 path = "docs/TCMT_SYNTHESIS_INDEX.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1478,7 +1614,7 @@ line_count = 293
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 108
+rank = 118
 path = "reports/claims_batch_backlog_C001_C200.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1491,7 +1627,7 @@ line_count = 267
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 109
+rank = 119
 path = "reports/claims_batch_backlog_C201_C408.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1504,20 +1640,7 @@ line_count = 264
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 110
-path = "reports/pdf_inventory.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_report_output"
-destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
-line_count = 253
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 111
+rank = 120
 path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1526,7 +1649,7 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/external_sources.toml"
-line_count = 251
+line_count = 253
 rationale = "Published markdown generated from TOML destination."
 
 [[document]]
@@ -1595,8 +1718,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 218
-line_count = 6
+size_bytes = 2638
+line_count = 65
 toml_destination = "registry/entrypoint_docs.toml"
 
 [[document]]
@@ -1833,8 +1956,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 130
-size_bytes = 3275
-line_count = 66
+size_bytes = 3535
+line_count = 71
 toml_destination = "registry/knowledge_sources.toml"
 
 [[document]]
@@ -2281,7 +2404,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 7
-size_bytes = 94884
+size_bytes = 94890
 line_count = 1796
 toml_destination = "registry/canonical/control_plane.sqlite3"
 
@@ -2511,7 +2634,7 @@ toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
 path = "docs/THEOREMS.md"
-git_status = "untracked"
+git_status = "tracked"
 classification = "toml_published_markdown"
 lifecycle = "generated_docs_tree"
 generated = true
@@ -2519,8 +2642,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 14535
-line_count = 153
+size_bytes = 14723
+line_count = 156
 toml_destination = "registry/canonical/control_plane.sqlite3"
 
 [[document]]
@@ -2575,8 +2698,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1465
-line_count = 60
+size_bytes = 1743
+line_count = 65
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -2645,8 +2768,22 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2935
-line_count = 84
+size_bytes = 3688
+line_count = 100
+toml_destination = "registry/book_docs.toml"
+
+[[document]]
+path = "docs/book/src/architecture/compatibility-exports.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_book_source"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 1408
+line_count = 47
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -2664,6 +2801,34 @@ line_count = 78
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
+path = "docs/book/src/architecture/db-authoring.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_book_source"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 1612
+line_count = 54
+toml_destination = "registry/book_docs.toml"
+
+[[document]]
+path = "docs/book/src/architecture/execution-targets.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_book_source"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 979
+line_count = 38
+toml_destination = "registry/book_docs.toml"
+
+[[document]]
 path = "docs/book/src/architecture/layout.md"
 git_status = "ignored"
 classification = "toml_published_markdown"
@@ -2675,6 +2840,20 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3700
 line_count = 99
+toml_destination = "registry/book_docs.toml"
+
+[[document]]
+path = "docs/book/src/architecture/migrated-lanes.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_book_source"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 1591
+line_count = 57
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -2791,7 +2970,7 @@ toml_destination = "registry/book_docs.toml"
 
 [[document]]
 path = "docs/book/src/proofs/index.md"
-git_status = "untracked"
+git_status = "tracked"
 classification = "toml_published_markdown"
 lifecycle = "generated_book_source"
 generated = true
@@ -2801,6 +2980,20 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1149
 line_count = 34
+toml_destination = "registry/book_docs.toml"
+
+[[document]]
+path = "docs/book/src/proofs/linking.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_book_source"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 1041
+line_count = 37
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -3154,6 +3347,19 @@ line_count = 133
 toml_destination = "registry/docs_convos.toml"
 
 [[document]]
+path = "docs/db/catalog.md"
+git_status = "ignored"
+classification = "unbacked_manual_markdown"
+lifecycle = "generated_docs_tree"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = false
+risk_score = 232
+size_bytes = 23205
+line_count = 656
+
+[[document]]
 path = "docs/engine_optimizations.md"
 git_status = "ignored"
 classification = "toml_published_markdown"
@@ -3224,6 +3430,20 @@ line_count = 58
 toml_destination = "registry/research_narratives.toml"
 
 [[document]]
+path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 0
+size_bytes = 473
+line_count = 8
+toml_destination = "registry/external_sources.toml"
+
+[[document]]
 path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
 git_status = "ignored"
 classification = "toml_published_markdown"
@@ -3233,8 +3453,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5494
-line_count = 128
+size_bytes = 5660
+line_count = 130
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3247,8 +3467,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1746
-line_count = 50
+size_bytes = 1912
+line_count = 52
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3261,8 +3481,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2840
-line_count = 76
+size_bytes = 3006
+line_count = 78
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3275,8 +3495,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5048
-line_count = 97
+size_bytes = 5214
+line_count = 99
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3289,8 +3509,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 45348
-line_count = 578
+size_bytes = 45514
+line_count = 580
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3303,8 +3523,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3408
-line_count = 78
+size_bytes = 3574
+line_count = 80
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3317,8 +3537,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 4
-size_bytes = 77830
-line_count = 1089
+size_bytes = 77996
+line_count = 1091
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3331,8 +3551,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 49502
-line_count = 672
+size_bytes = 49668
+line_count = 674
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3345,8 +3565,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1447
-line_count = 39
+size_bytes = 1613
+line_count = 41
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3359,8 +3579,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 7
-size_bytes = 138436
-line_count = 1757
+size_bytes = 138602
+line_count = 1759
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3373,8 +3593,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 3
-size_bytes = 73754
-line_count = 887
+size_bytes = 73920
+line_count = 889
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3387,8 +3607,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 9925
-line_count = 251
+size_bytes = 10091
+line_count = 253
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3401,8 +3621,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2162
-line_count = 36
+size_bytes = 2128
+line_count = 32
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3415,8 +3635,50 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4958
-line_count = 159
+size_bytes = 5124
+line_count = 161
+toml_destination = "registry/external_sources.toml"
+
+[[document]]
+path = "docs/external_sources/LELLI_2016_SPARC.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 0
+size_bytes = 505
+line_count = 8
+toml_destination = "registry/external_sources.toml"
+
+[[document]]
+path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 0
+size_bytes = 491
+line_count = 8
+toml_destination = "registry/external_sources.toml"
+
+[[document]]
+path = "docs/external_sources/MOSTER_2013_SMHM.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 0
+size_bytes = 504
+line_count = 8
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3429,8 +3691,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5390
-line_count = 93
+size_bytes = 5556
+line_count = 95
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3443,8 +3705,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1170
-line_count = 37
+size_bytes = 1336
+line_count = 39
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3457,8 +3719,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2592
-line_count = 67
+size_bytes = 2758
+line_count = 69
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3471,8 +3733,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1653
-line_count = 41
+size_bytes = 1819
+line_count = 43
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3485,8 +3747,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4128
-line_count = 102
+size_bytes = 4294
+line_count = 104
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3499,8 +3761,22 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5334
-line_count = 131
+size_bytes = 5500
+line_count = 133
+toml_destination = "registry/external_sources.toml"
+
+[[document]]
+path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 0
+size_bytes = 433
+line_count = 8
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3513,8 +3789,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4140
-line_count = 127
+size_bytes = 4306
+line_count = 129
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3527,8 +3803,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4163
-line_count = 85
+size_bytes = 4329
+line_count = 87
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3541,8 +3817,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1642
-line_count = 38
+size_bytes = 1808
+line_count = 40
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3555,8 +3831,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 11601
-line_count = 243
+size_bytes = 11767
+line_count = 245
 toml_destination = "registry/external_sources.toml"
 
 [[document]]
@@ -3583,8 +3859,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4349
-line_count = 163
+size_bytes = 5312
+line_count = 198
 toml_destination = "registry/book_docs.toml"
 
 [[document]]
@@ -3611,8 +3887,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 20
-size_bytes = 887974
-line_count = 9872
+size_bytes = 645145
+line_count = 9888
 toml_destination = "registry/canonical/control_plane.sqlite3"
 
 [[document]]
@@ -3695,7 +3971,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 795
+size_bytes = 799
 line_count = 44
 toml_destination = "registry/entrypoint_docs.toml"
 
@@ -3708,9 +3984,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 12
-size_bytes = 127934
-line_count = 3216
+risk_score = 13
+size_bytes = 135123
+line_count = 3335
 toml_destination = "registry/canonical/control_plane.sqlite3"
 
 [[document]]
@@ -3723,7 +3999,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 21857
+size_bytes = 22084
 line_count = 529
 toml_destination = "registry/external_sources.toml"
 
@@ -3737,8 +4013,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 5
-size_bytes = 84638
-line_count = 1353
+size_bytes = 89041
+line_count = 1398
 toml_destination = "registry/canonical/control_plane.sqlite3"
 
 [[document]]
@@ -3764,9 +4040,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 1
-size_bytes = 14801
-line_count = 493
+risk_score = 2
+size_bytes = 18064
+line_count = 610
 toml_destination = "registry/markdown_governance.toml"
 
 [[document]]
@@ -3821,8 +4097,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4131
-line_count = 132
+size_bytes = 4237
+line_count = 133
 toml_destination = "registry/requirements.toml"
 
 [[document]]
@@ -3835,8 +4111,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3729
-line_count = 116
+size_bytes = 4755
+line_count = 145
 toml_destination = "registry/research_narratives.toml"
 
 [[document]]
@@ -3855,7 +4131,7 @@ toml_destination = "registry/roadmap.toml"
 
 [[document]]
 path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
-git_status = "untracked"
+git_status = "tracked"
 classification = "toml_published_markdown"
 lifecycle = "generated_publish_mirror"
 generated = true
@@ -3863,8 +4139,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 14527
-line_count = 153
+size_bytes = 14714
+line_count = 155
 toml_destination = "registry/canonical/control_plane.sqlite3"
 
 [[document]]
@@ -3933,8 +4209,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 17889
-line_count = 306
+size_bytes = 18929
+line_count = 322
 toml_destination = "registry/requirements.toml"
 
 [[document]]
@@ -4913,7 +5189,35 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 130
-size_bytes = 869
+size_bytes = 884
+line_count = 13
+toml_destination = "registry/reports_narratives.toml"
+
+[[document]]
+path = "reports/benchmarks/structured_spectrum_bench_lifted_focus.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_report_output"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 1288
+line_count = 13
+toml_destination = "registry/reports_narratives.toml"
+
+[[document]]
+path = "reports/benchmarks/structured_spectrum_bench_projected_focus.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_report_output"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 1130
 line_count = 13
 toml_destination = "registry/reports_narratives.toml"
 
@@ -5380,6 +5684,20 @@ line_count = 143
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]
+path = "reports/control_plane_reader_writer_inventory_2026_03_13.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_report_output"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 4719
+line_count = 157
+toml_destination = "registry/reports_narratives.toml"
+
+[[document]]
 path = "reports/convos_claim_candidates.md"
 git_status = "ignored"
 classification = "toml_published_markdown"
@@ -5545,6 +5863,20 @@ destination_exists = true
 risk_score = 0
 size_bytes = 8310
 line_count = 121
+toml_destination = "registry/reports_narratives.toml"
+
+[[document]]
+path = "reports/registry_check_timing_baseline_2026_03_13.md"
+git_status = "ignored"
+classification = "toml_destination_exists_manual_markdown"
+lifecycle = "generated_report_output"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 130
+size_bytes = 2573
+line_count = 81
 toml_destination = "registry/reports_narratives.toml"
 
 [[document]]

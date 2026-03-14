@@ -5,7 +5,7 @@
 updated = "deterministic"
 authoritative = true
 scope = "docs reports data_artifacts"
-document_count = 269
+document_count = 284
 
 [[owner]]
 id = "MOWN-0001"
@@ -245,19 +245,19 @@ conversion_hint = "Edit the canonical source (registry/docs_root_narratives.toml
 id = "MOWN-0027"
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 scope = "docs"
-canonical_toml = "registry/canonical/control_plane.sqlite3"
+canonical_toml = "registry/experiments_narrative.toml"
 owner_group = "general"
 requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source (registry/experiments_narrative.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0028"
 path = "docs/INSIGHTS.md"
 scope = "docs"
-canonical_toml = "registry/canonical/control_plane.sqlite3"
+canonical_toml = "registry/insights_narrative.toml"
 owner_group = "general"
 requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source (registry/insights_narrative.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0029"
@@ -409,7 +409,7 @@ path = "docs/THEOREMS.md"
 scope = "docs"
 canonical_toml = "registry/canonical/control_plane.sqlite3"
 owner_group = "general"
-requires_generated_header = false
+requires_generated_header = true
 conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
@@ -495,7 +495,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0055"
-path = "docs/book/src/architecture/crates.md"
+path = "docs/book/src/architecture/compatibility-exports.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -504,7 +504,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0056"
-path = "docs/book/src/architecture/layout.md"
+path = "docs/book/src/architecture/crates.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -513,7 +513,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0057"
-path = "docs/book/src/architecture/verification.md"
+path = "docs/book/src/architecture/db-authoring.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -522,7 +522,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0058"
-path = "docs/book/src/cli/catalog.md"
+path = "docs/book/src/architecture/execution-targets.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -531,7 +531,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0059"
-path = "docs/book/src/experiments/e001.md"
+path = "docs/book/src/architecture/layout.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -540,7 +540,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0060"
-path = "docs/book/src/experiments/e002.md"
+path = "docs/book/src/architecture/migrated-lanes.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -549,7 +549,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0061"
-path = "docs/book/src/experiments/e003.md"
+path = "docs/book/src/architecture/verification.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -558,7 +558,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0062"
-path = "docs/book/src/glossary.md"
+path = "docs/book/src/cli/catalog.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -567,7 +567,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0063"
-path = "docs/book/src/introduction.md"
+path = "docs/book/src/experiments/e001.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -576,7 +576,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0064"
-path = "docs/book/src/papers/collection.md"
+path = "docs/book/src/experiments/e002.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -585,7 +585,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0065"
-path = "docs/book/src/proofs/index.md"
+path = "docs/book/src/experiments/e003.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -594,7 +594,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0066"
-path = "docs/book/src/registry/claims.md"
+path = "docs/book/src/glossary.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -603,7 +603,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0067"
-path = "docs/book/src/registry/experiments.md"
+path = "docs/book/src/introduction.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -612,7 +612,7 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0068"
-path = "docs/book/src/registry/insights.md"
+path = "docs/book/src/papers/collection.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
 owner_group = "book_docs"
@@ -621,6 +621,51 @@ conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regen
 
 [[owner]]
 id = "MOWN-0069"
+path = "docs/book/src/proofs/index.md"
+scope = "docs"
+canonical_toml = "registry/book_docs.toml"
+owner_group = "book_docs"
+requires_generated_header = true
+conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0070"
+path = "docs/book/src/proofs/linking.md"
+scope = "docs"
+canonical_toml = "registry/book_docs.toml"
+owner_group = "book_docs"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0071"
+path = "docs/book/src/registry/claims.md"
+scope = "docs"
+canonical_toml = "registry/book_docs.toml"
+owner_group = "book_docs"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0072"
+path = "docs/book/src/registry/experiments.md"
+scope = "docs"
+canonical_toml = "registry/book_docs.toml"
+owner_group = "book_docs"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0073"
+path = "docs/book/src/registry/insights.md"
+scope = "docs"
+canonical_toml = "registry/book_docs.toml"
+owner_group = "book_docs"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0074"
 path = "docs/claims/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -629,7 +674,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0070"
+id = "MOWN-0075"
 path = "docs/claims/by_domain/algebra.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -638,7 +683,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0071"
+id = "MOWN-0076"
 path = "docs/claims/by_domain/cosmology.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -647,7 +692,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0072"
+id = "MOWN-0077"
 path = "docs/claims/by_domain/cpp.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -656,7 +701,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0073"
+id = "MOWN-0078"
 path = "docs/claims/by_domain/datasets.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -665,7 +710,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0074"
+id = "MOWN-0079"
 path = "docs/claims/by_domain/engineering.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -674,7 +719,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0075"
+id = "MOWN-0080"
 path = "docs/claims/by_domain/gravitational-waves.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -683,7 +728,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0076"
+id = "MOWN-0081"
 path = "docs/claims/by_domain/holography.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -692,7 +737,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0077"
+id = "MOWN-0082"
 path = "docs/claims/by_domain/legacy.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -701,7 +746,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0078"
+id = "MOWN-0083"
 path = "docs/claims/by_domain/materials.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -710,7 +755,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0079"
+id = "MOWN-0084"
 path = "docs/claims/by_domain/meta.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -719,7 +764,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0080"
+id = "MOWN-0085"
 path = "docs/claims/by_domain/open-systems.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -728,7 +773,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0081"
+id = "MOWN-0086"
 path = "docs/claims/by_domain/rocq.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -737,7 +782,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0082"
+id = "MOWN-0087"
 path = "docs/claims/by_domain/spectral.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -746,7 +791,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0083"
+id = "MOWN-0088"
 path = "docs/claims/by_domain/stellar-cartography.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -755,7 +800,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0084"
+id = "MOWN-0089"
 path = "docs/claims/by_domain/tensor-networks.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -764,7 +809,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0085"
+id = "MOWN-0090"
 path = "docs/claims/by_domain/visualization.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -773,7 +818,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0086"
+id = "MOWN-0091"
 path = "docs/convos/CONVOS_CLAIMS_INBOX.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -782,7 +827,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0087"
+id = "MOWN-0092"
 path = "docs/convos/README.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -791,7 +836,7 @@ requires_generated_header = true
 conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0088"
+id = "MOWN-0093"
 path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -800,7 +845,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0089"
+id = "MOWN-0094"
 path = "docs/convos/implement_next_from_1_read_nonuser_lines_cont.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -809,7 +854,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0090"
+id = "MOWN-0095"
 path = "docs/convos/keywords_1_read_nonuser_lines_cont.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -818,7 +863,16 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0091"
+id = "MOWN-0096"
+path = "docs/db/catalog.md"
+scope = "docs"
+canonical_toml = ""
+owner_group = "general"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0097"
 path = "docs/engine_optimizations.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -827,7 +881,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_root_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0092"
+id = "MOWN-0098"
 path = "docs/engineering/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -836,7 +890,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0093"
+id = "MOWN-0099"
 path = "docs/engineering/RUST_STYLE_GUIDE.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -845,7 +899,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0094"
+id = "MOWN-0100"
 path = "docs/engineering/SCOPE_ULTRA_THROUGHPUT.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -854,7 +908,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0095"
+id = "MOWN-0101"
 path = "docs/engineering/WARP_RING_SPECIFICATION.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -863,62 +917,8 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0096"
-path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "external_sources"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0097"
-path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "external_sources"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0098"
-path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "external_sources"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0099"
-path = "docs/external_sources/DATASET_MANIFEST.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "external_sources"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0100"
-path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "external_sources"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0101"
-path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
-scope = "docs"
-canonical_toml = "registry/external_sources.toml"
-owner_group = "external_sources"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
 id = "MOWN-0102"
-path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -927,7 +927,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0103"
-path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -936,7 +936,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0104"
-path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -945,7 +945,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0105"
-path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -954,7 +954,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0106"
-path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+path = "docs/external_sources/DATASET_MANIFEST.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -963,7 +963,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0107"
-path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
+path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -972,7 +972,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0108"
-path = "docs/external_sources/INDEX.md"
+path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -981,7 +981,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0109"
-path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -990,7 +990,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0110"
-path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -999,7 +999,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0111"
-path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1008,16 +1008,16 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0112"
-path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
+path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
-requires_generated_header = true
+requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0113"
-path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1026,7 +1026,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0114"
-path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1035,7 +1035,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0115"
-path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
+path = "docs/external_sources/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1044,7 +1044,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0116"
-path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1053,7 +1053,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0117"
-path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+path = "docs/external_sources/LELLI_2016_SPARC.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1062,7 +1062,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0118"
-path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1071,7 +1071,7 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0119"
-path = "docs/external_sources/ysu_engine_gpu_patterns.md"
+path = "docs/external_sources/MOSTER_2013_SMHM.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
 owner_group = "external_sources"
@@ -1080,6 +1080,105 @@ conversion_hint = "Edit the canonical source (registry/external_sources.toml) an
 
 [[owner]]
 id = "MOWN-0120"
+path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0121"
+path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0122"
+path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = true
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0123"
+path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0124"
+path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0125"
+path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0126"
+path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0127"
+path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0128"
+path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0129"
+path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0130"
+path = "docs/external_sources/ysu_engine_gpu_patterns.md"
+scope = "docs"
+canonical_toml = "registry/external_sources.toml"
+owner_group = "external_sources"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0131"
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/bibliography.toml"
@@ -1088,7 +1187,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/bibliography.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0121"
+id = "MOWN-0132"
 path = "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/book_docs.toml"
@@ -1097,7 +1196,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/book_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0122"
+id = "MOWN-0133"
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claims_domains.toml"
@@ -1106,7 +1205,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_domains.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0123"
+id = "MOWN-0134"
 path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/canonical/control_plane.sqlite3"
@@ -1115,7 +1214,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0124"
+id = "MOWN-0135"
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claims_tasks.toml"
@@ -1124,7 +1223,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claims_tasks.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0125"
+id = "MOWN-0136"
 path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1133,7 +1232,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0126"
+id = "MOWN-0137"
 path = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/artifact_scrolls.toml"
@@ -1142,7 +1241,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/artifact_scrolls.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0127"
+id = "MOWN-0138"
 path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/docs_convos.toml"
@@ -1151,7 +1250,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0128"
+id = "MOWN-0139"
 path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/docs_root_narratives.toml"
@@ -1160,7 +1259,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/docs_root_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0129"
+id = "MOWN-0140"
 path = "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/entrypoint_docs.toml"
@@ -1169,7 +1268,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/entrypoint_docs.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0130"
+id = "MOWN-0141"
 path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/canonical/control_plane.sqlite3"
@@ -1178,7 +1277,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0131"
+id = "MOWN-0142"
 path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/external_sources.toml"
@@ -1187,7 +1286,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/external_sources.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0132"
+id = "MOWN-0143"
 path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/canonical/control_plane.sqlite3"
@@ -1196,7 +1295,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0133"
+id = "MOWN-0144"
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/knowledge_migration_plan.toml"
@@ -1205,7 +1304,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/knowledge_migration_plan.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0134"
+id = "MOWN-0145"
 path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/markdown_governance.toml"
@@ -1214,7 +1313,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/markdown_governance.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0135"
+id = "MOWN-0146"
 path = "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/navigator.toml"
@@ -1223,7 +1322,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/navigator.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0136"
+id = "MOWN-0147"
 path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/next_actions.toml"
@@ -1232,7 +1331,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/next_actions.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0137"
+id = "MOWN-0148"
 path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1241,7 +1340,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0138"
+id = "MOWN-0149"
 path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1250,7 +1349,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0139"
+id = "MOWN-0150"
 path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1259,7 +1358,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0140"
+id = "MOWN-0151"
 path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/roadmap.toml"
@@ -1268,16 +1367,16 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/roadmap.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0141"
+id = "MOWN-0152"
 path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/canonical/control_plane.sqlite3"
 owner_group = "general"
-requires_generated_header = false
+requires_generated_header = true
 conversion_hint = "Edit the canonical source (registry/canonical/control_plane.sqlite3) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0142"
+id = "MOWN-0153"
 path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 scope = "docs"
 canonical_toml = "registry/todo.toml"
@@ -1286,7 +1385,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/todo.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0143"
+id = "MOWN-0154"
 path = "docs/monograph/01_foundations.md"
 scope = "docs"
 canonical_toml = "registry/monograph.toml"
@@ -1295,7 +1394,7 @@ requires_generated_header = false
 conversion_hint = "Edit registry/monograph.toml and regenerate the published markdown mirror."
 
 [[owner]]
-id = "MOWN-0144"
+id = "MOWN-0155"
 path = "docs/monograph/02_turbulence.md"
 scope = "docs"
 canonical_toml = "registry/monograph.toml"
@@ -1304,7 +1403,7 @@ requires_generated_header = false
 conversion_hint = "Edit registry/monograph.toml and regenerate the published markdown mirror."
 
 [[owner]]
-id = "MOWN-0145"
+id = "MOWN-0156"
 path = "docs/monograph/03_synthesis.md"
 scope = "docs"
 canonical_toml = "registry/monograph.toml"
@@ -1313,7 +1412,7 @@ requires_generated_header = false
 conversion_hint = "Edit registry/monograph.toml and regenerate the published markdown mirror."
 
 [[owner]]
-id = "MOWN-0146"
+id = "MOWN-0157"
 path = "docs/requirements/algebra.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1322,7 +1421,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0147"
+id = "MOWN-0158"
 path = "docs/requirements/analysis.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1331,7 +1430,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0148"
+id = "MOWN-0159"
 path = "docs/requirements/astro.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1340,7 +1439,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0149"
+id = "MOWN-0160"
 path = "docs/requirements/cpp.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1349,7 +1448,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0150"
+id = "MOWN-0161"
 path = "docs/requirements/heliosphere.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1358,7 +1457,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0151"
+id = "MOWN-0162"
 path = "docs/requirements/latex.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1367,7 +1466,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0152"
+id = "MOWN-0163"
 path = "docs/requirements/materials.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1376,7 +1475,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0153"
+id = "MOWN-0164"
 path = "docs/requirements/particle.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1385,7 +1484,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0154"
+id = "MOWN-0165"
 path = "docs/requirements/quantum-docker.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1394,7 +1493,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0155"
+id = "MOWN-0166"
 path = "docs/requirements/rocq.md"
 scope = "docs"
 canonical_toml = "registry/requirements.toml"
@@ -1403,7 +1502,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/requirements.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0156"
+id = "MOWN-0167"
 path = "docs/research/SPLIT_OCTONION_ATTractor.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1412,7 +1511,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0157"
+id = "MOWN-0168"
 path = "docs/research/THESIS_2_3_4_NARRATIVE_PACK.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1421,7 +1520,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0158"
+id = "MOWN-0169"
 path = "docs/research/high_dimensional_algebra_unification_2026.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1430,7 +1529,7 @@ requires_generated_header = true
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0159"
+id = "MOWN-0170"
 path = "docs/research/sedenion_42_structure_audit_2026.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1439,7 +1538,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0160"
+id = "MOWN-0171"
 path = "docs/research/x87_multicore_strategy_note_2026_03_12.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1448,7 +1547,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0161"
+id = "MOWN-0172"
 path = "docs/theory/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1457,7 +1556,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0162"
+id = "MOWN-0173"
 path = "docs/theory/OPTIMIZATION_BREAKTHROUGHS.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1466,7 +1565,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0163"
+id = "MOWN-0174"
 path = "docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1475,7 +1574,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0164"
+id = "MOWN-0175"
 path = "docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1484,7 +1583,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0165"
+id = "MOWN-0176"
 path = "docs/theory/WARP_RING_PHYSICS.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1493,7 +1592,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0166"
+id = "MOWN-0177"
 path = "docs/theory/cayley_dickson_integrable_expanders.md"
 scope = "docs"
 canonical_toml = "registry/research_narratives.toml"
@@ -1502,7 +1601,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/research_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0167"
+id = "MOWN-0178"
 path = "docs/tickets/C001_C050_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1511,7 +1610,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0168"
+id = "MOWN-0179"
 path = "docs/tickets/C051_C100_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1520,7 +1619,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0169"
+id = "MOWN-0180"
 path = "docs/tickets/C101_C150_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1529,7 +1628,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0170"
+id = "MOWN-0181"
 path = "docs/tickets/C151_C200_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1538,7 +1637,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0171"
+id = "MOWN-0182"
 path = "docs/tickets/C201_C250_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1547,7 +1646,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0172"
+id = "MOWN-0183"
 path = "docs/tickets/C251_C300_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1556,7 +1655,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0173"
+id = "MOWN-0184"
 path = "docs/tickets/C301_C350_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1565,7 +1664,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0174"
+id = "MOWN-0185"
 path = "docs/tickets/C351_C400_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1574,7 +1673,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0175"
+id = "MOWN-0186"
 path = "docs/tickets/C401_C427_claims_audit.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1583,7 +1682,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0176"
+id = "MOWN-0187"
 path = "docs/tickets/INDEX.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1592,7 +1691,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0177"
+id = "MOWN-0188"
 path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1601,7 +1700,7 @@ requires_generated_header = true
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0178"
+id = "MOWN-0189"
 path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1610,7 +1709,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0179"
+id = "MOWN-0190"
 path = "docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md"
 scope = "docs"
 canonical_toml = "registry/claim_tickets.toml"
@@ -1619,7 +1718,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/claim_tickets.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0180"
+id = "MOWN-0191"
 path = "proofs/EPISTEMIC_BOUNDARIES.md"
 scope = "root"
 canonical_toml = "registry/entrypoint_docs.toml"
@@ -1628,7 +1727,7 @@ requires_generated_header = false
 conversion_hint = "Assign canonical source ownership and regenerate via the Rust markdown registry pipeline."
 
 [[owner]]
-id = "MOWN-0181"
+id = "MOWN-0192"
 path = "proofs/README.md"
 scope = "root"
 canonical_toml = "registry/roadmap.toml"
@@ -1637,7 +1736,7 @@ requires_generated_header = false
 conversion_hint = "Assign canonical source ownership and regenerate via the Rust markdown registry pipeline."
 
 [[owner]]
-id = "MOWN-0182"
+id = "MOWN-0193"
 path = "reports/LHC_2025_QGP_Full_Synthesis.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1646,7 +1745,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0183"
+id = "MOWN-0194"
 path = "reports/PHASE2_STATUS.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1655,7 +1754,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0184"
+id = "MOWN-0195"
 path = "reports/artifacts_phase0_dryrun.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1664,7 +1763,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0185"
+id = "MOWN-0196"
 path = "reports/artifacts_reorg_plan.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1673,7 +1772,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0186"
+id = "MOWN-0197"
 path = "reports/audit_network_gating.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1682,7 +1781,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0187"
+id = "MOWN-0198"
 path = "reports/audit_nonpython_toolchains.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1691,7 +1790,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0188"
+id = "MOWN-0199"
 path = "reports/audit_provenance.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1700,7 +1799,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0189"
+id = "MOWN-0200"
 path = "reports/audit_pythonpath.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1709,7 +1808,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0190"
+id = "MOWN-0201"
 path = "reports/benchmarks/block_jacobi_backend_sweep_focus.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1718,7 +1817,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0191"
+id = "MOWN-0202"
 path = "reports/benchmarks/block_jacobi_backend_sweep_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1727,7 +1826,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0192"
+id = "MOWN-0203"
 path = "reports/benchmarks/jacobi_backend_boundary_24_40.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1736,7 +1835,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0193"
+id = "MOWN-0204"
 path = "reports/benchmarks/jacobi_backend_boundary_44_56.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1745,7 +1844,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0194"
+id = "MOWN-0205"
 path = "reports/benchmarks/jacobi_backend_boundary_60_68.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1754,7 +1853,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0195"
+id = "MOWN-0206"
 path = "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1763,7 +1862,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0196"
+id = "MOWN-0207"
 path = "reports/benchmarks/jacobi_backend_boundary_entrywise_64_72_fixed_dd.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1772,7 +1871,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0197"
+id = "MOWN-0208"
 path = "reports/benchmarks/jacobi_backend_boundary_obstruction_like_52_64.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1781,7 +1880,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0198"
+id = "MOWN-0209"
 path = "reports/benchmarks/jacobi_backend_boundary_obstruction_like_60_68.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1790,7 +1889,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0199"
+id = "MOWN-0210"
 path = "reports/benchmarks/jacobi_backend_entrywise_pair_64_72.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1799,7 +1898,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0200"
+id = "MOWN-0211"
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_dd.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1808,7 +1907,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0201"
+id = "MOWN-0212"
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_reference.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1817,7 +1916,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0202"
+id = "MOWN-0213"
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_68_x87.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1826,7 +1925,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0203"
+id = "MOWN-0214"
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_dd.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1835,7 +1934,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0204"
+id = "MOWN-0215"
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_reference.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1844,7 +1943,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0205"
+id = "MOWN-0216"
 path = "reports/benchmarks/jacobi_backend_perf_quantized_shell_72_x87.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1853,7 +1952,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0206"
+id = "MOWN-0217"
 path = "reports/benchmarks/jacobi_backend_samply_compare.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1862,7 +1961,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0207"
+id = "MOWN-0218"
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1871,7 +1970,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0208"
+id = "MOWN-0219"
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_fused_opt.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1880,7 +1979,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0209"
+id = "MOWN-0220"
 path = "reports/benchmarks/jacobi_backend_samply_compare_dd_noinline_rotation_opt.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1889,7 +1988,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0210"
+id = "MOWN-0221"
 path = "reports/benchmarks/jacobi_backend_sweep_24_64.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1898,7 +1997,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0211"
+id = "MOWN-0222"
 path = "reports/benchmarks/jacobi_backend_sweep_metadata_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1907,7 +2006,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0212"
+id = "MOWN-0223"
 path = "reports/benchmarks/jacobi_backend_sweep_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1916,7 +2015,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0213"
+id = "MOWN-0224"
 path = "reports/benchmarks/jacobi_backend_sweep_threshold_seed_2026_03_12.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1925,7 +2024,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0214"
+id = "MOWN-0225"
 path = "reports/benchmarks/partial_spectrum_bench_focus.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1934,7 +2033,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0215"
+id = "MOWN-0226"
 path = "reports/benchmarks/partial_spectrum_bench_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1943,7 +2042,7 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0216"
+id = "MOWN-0227"
 path = "reports/benchmarks/structured_spectrum_bench_focus.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
@@ -1952,107 +2051,8 @@ requires_generated_header = false
 conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
-id = "MOWN-0217"
-path = "reports/benchmarks/structured_spectrum_bench_smoke.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0218"
-path = "reports/benchmarks/x87_givens_microbench_perf_smoke.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0219"
-path = "reports/benchmarks/x87_givens_microbench_smoke.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0220"
-path = "reports/benchmarks/x87_strategy_bench_smoke.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0221"
-path = "reports/benchmarks/x87_strategy_multicore_65536.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0222"
-path = "reports/benchmarks/x87_strategy_perf_multicore_65536.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0223"
-path = "reports/breakthrough_shi_geodesics_2026_02_14.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0224"
-path = "reports/claims_batch_backlog_C001_C050.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0225"
-path = "reports/claims_batch_backlog_C001_C200.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0226"
-path = "reports/claims_batch_backlog_C011_C025.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
-id = "MOWN-0227"
-path = "reports/claims_batch_backlog_C027_C045.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
-requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
-
-[[owner]]
 id = "MOWN-0228"
-path = "reports/claims_batch_backlog_C046_C060.md"
+path = "reports/benchmarks/structured_spectrum_bench_lifted_focus.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2061,7 +2061,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0229"
-path = "reports/claims_batch_backlog_C046_C066.md"
+path = "reports/benchmarks/structured_spectrum_bench_projected_focus.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2070,7 +2070,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0230"
-path = "reports/claims_batch_backlog_C051_C100.md"
+path = "reports/benchmarks/structured_spectrum_bench_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2079,7 +2079,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0231"
-path = "reports/claims_batch_backlog_C101_C150.md"
+path = "reports/benchmarks/x87_givens_microbench_perf_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2088,7 +2088,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0232"
-path = "reports/claims_batch_backlog_C151_C200.md"
+path = "reports/benchmarks/x87_givens_microbench_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2097,7 +2097,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0233"
-path = "reports/claims_batch_backlog_C201_C250.md"
+path = "reports/benchmarks/x87_strategy_bench_smoke.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2106,7 +2106,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0234"
-path = "reports/claims_batch_backlog_C201_C408.md"
+path = "reports/benchmarks/x87_strategy_multicore_65536.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2115,7 +2115,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0235"
-path = "reports/claims_batch_backlog_C201_C427.md"
+path = "reports/benchmarks/x87_strategy_perf_multicore_65536.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2124,7 +2124,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0236"
-path = "reports/claims_batch_backlog_C201_C430.md"
+path = "reports/breakthrough_shi_geodesics_2026_02_14.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2133,7 +2133,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0237"
-path = "reports/claims_batch_backlog_C201_C432.md"
+path = "reports/claims_batch_backlog_C001_C050.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2142,7 +2142,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0238"
-path = "reports/claims_batch_backlog_C251_C300.md"
+path = "reports/claims_batch_backlog_C001_C200.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2151,7 +2151,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0239"
-path = "reports/claims_batch_backlog_C301_C350.md"
+path = "reports/claims_batch_backlog_C011_C025.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2160,7 +2160,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0240"
-path = "reports/claims_batch_backlog_C351_C400.md"
+path = "reports/claims_batch_backlog_C027_C045.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2169,7 +2169,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0241"
-path = "reports/claims_batch_backlog_C401_C427.md"
+path = "reports/claims_batch_backlog_C046_C060.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2178,7 +2178,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0242"
-path = "reports/claims_bold_tokens_inventory.md"
+path = "reports/claims_batch_backlog_C046_C066.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2187,7 +2187,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0243"
-path = "reports/claims_id_inventory.md"
+path = "reports/claims_batch_backlog_C051_C100.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2196,7 +2196,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0244"
-path = "reports/claims_priority_ranking.md"
+path = "reports/claims_batch_backlog_C101_C150.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2205,7 +2205,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0245"
-path = "reports/claims_staleness_report.md"
+path = "reports/claims_batch_backlog_C151_C200.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2214,7 +2214,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0246"
-path = "reports/claims_status_contradictions.md"
+path = "reports/claims_batch_backlog_C201_C250.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2223,7 +2223,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0247"
-path = "reports/claims_status_inventory.md"
+path = "reports/claims_batch_backlog_C201_C408.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2232,7 +2232,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0248"
-path = "reports/config_audit.md"
+path = "reports/claims_batch_backlog_C201_C427.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2241,7 +2241,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0249"
-path = "reports/control_plane_rca_2026_03_13.md"
+path = "reports/claims_batch_backlog_C201_C430.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2250,7 +2250,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0250"
-path = "reports/convos_claim_candidates.md"
+path = "reports/claims_batch_backlog_C201_C432.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2259,7 +2259,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0251"
-path = "reports/convos_claim_candidates_prioritized.md"
+path = "reports/claims_batch_backlog_C251_C300.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2268,7 +2268,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0252"
-path = "reports/convos_pdf_inventory.md"
+path = "reports/claims_batch_backlog_C301_C350.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2277,7 +2277,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0253"
-path = "reports/gates/2026-03-07/155836/summary.md"
+path = "reports/claims_batch_backlog_C351_C400.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2286,7 +2286,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0254"
-path = "reports/handoff_algebra_fluid_duality.md"
+path = "reports/claims_batch_backlog_C401_C427.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2295,7 +2295,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0255"
-path = "reports/manual_override_fetch_summary_2026_02_15.md"
+path = "reports/claims_bold_tokens_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2304,7 +2304,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0256"
-path = "reports/non_iso_dates_inventory.md"
+path = "reports/claims_id_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2313,7 +2313,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0257"
-path = "reports/open_claims_missing_dedicated_sources.md"
+path = "reports/claims_priority_ranking.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2322,7 +2322,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0258"
-path = "reports/open_claims_missing_test_hooks.md"
+path = "reports/claims_staleness_report.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2331,7 +2331,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0259"
-path = "reports/package_index.md"
+path = "reports/claims_status_contradictions.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2340,7 +2340,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0260"
-path = "reports/pdf_inventory.md"
+path = "reports/claims_status_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2349,7 +2349,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0261"
-path = "reports/pythonpath_refactor_plan.md"
+path = "reports/config_audit.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2358,7 +2358,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0262"
-path = "reports/repo_inventory.md"
+path = "reports/control_plane_rca_2026_03_13.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2367,7 +2367,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0263"
-path = "reports/repo_structure_audit.md"
+path = "reports/control_plane_reader_writer_inventory_2026_03_13.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2376,7 +2376,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0264"
-path = "reports/reynolds_scaling_analysis.md"
+path = "reports/convos_claim_candidates.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2385,7 +2385,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0265"
-path = "reports/script_contracts_inventory.md"
+path = "reports/convos_claim_candidates_prioritized.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2394,7 +2394,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0266"
-path = "reports/theorem_claim_link_audit_2026_03_13.md"
+path = "reports/convos_pdf_inventory.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2403,7 +2403,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0267"
-path = "reports/tickets_inventory.md"
+path = "reports/gates/2026-03-07/155836/summary.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2412,7 +2412,7 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0268"
-path = "reports/todo_fixme_scan.md"
+path = "reports/handoff_algebra_fluid_duality.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
@@ -2421,6 +2421,141 @@ conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) 
 
 [[owner]]
 id = "MOWN-0269"
+path = "reports/manual_override_fetch_summary_2026_02_15.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0270"
+path = "reports/non_iso_dates_inventory.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0271"
+path = "reports/open_claims_missing_dedicated_sources.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0272"
+path = "reports/open_claims_missing_test_hooks.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0273"
+path = "reports/package_index.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0274"
+path = "reports/pdf_inventory.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0275"
+path = "reports/pythonpath_refactor_plan.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0276"
+path = "reports/registry_check_timing_baseline_2026_03_13.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0277"
+path = "reports/repo_inventory.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0278"
+path = "reports/repo_structure_audit.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0279"
+path = "reports/reynolds_scaling_analysis.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0280"
+path = "reports/script_contracts_inventory.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0281"
+path = "reports/theorem_claim_link_audit_2026_03_13.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0282"
+path = "reports/tickets_inventory.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0283"
+path = "reports/todo_fixme_scan.md"
+scope = "reports"
+canonical_toml = "registry/reports_narratives.toml"
+owner_group = "reports_narratives"
+requires_generated_header = false
+conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0284"
 path = "reports/tscp_trial_factor_ledger.md"
 scope = "reports"
 canonical_toml = "registry/reports_narratives.toml"
