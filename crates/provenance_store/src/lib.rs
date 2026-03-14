@@ -7,8 +7,9 @@ use provenance_core::{
     ClaimRecord, ControlPlaneCounts, CountSummary, DoctorReport, DocumentQueryResult,
     DocumentRecord, DownloadAttemptRecord, DownloadCampaignQueryResult, DownloadCampaignRecord,
     DownloadJobRecord, DownloadLedgerProjectionRow, DownloadQueryResult, ExperimentRecord,
-    IndexStats, InsightRecord, LaneAssignment, MirrorKind, MirrorObservationRecord,
-    PantheonSeedSummary, TheoremRecord,
+    ExternalSourceContractRecord, ExternalSourceContractsMeta, ExternalSourceDossierRecord,
+    ExternalSourceDossiersMeta, IndexStats, InsightRecord, LaneAssignment, MirrorKind,
+    MirrorObservationRecord, PantheonSeedSummary, TheoremRecord,
 };
 use rusqlite::{Connection, OptionalExtension, params};
 use rusqlite_migration::{M, Migrations};
@@ -70,6 +71,8 @@ const JUSTIFIED_UNLINKED_THEOREM_IDS: &[&str] = &[
 const CONTROL_PLANE_DB_PATH: &str = "registry/canonical/control_plane.sqlite3";
 const CONTROL_PLANE_EXPORT_COMMAND: &str =
     "cargo run -p gororoba_cli_data --bin provenance -- export-control-plane";
+const EXTERNAL_SOURCES_EXPORT_COMMAND: &str =
+    "cargo run -p gororoba_cli_data --bin provenance -- export-external-sources";
 
 fn migrations() -> Migrations<'static> {
     Migrations::new(vec![
@@ -297,6 +300,66 @@ fn migrations() -> Migrations<'static> {
         ALTER TABLE download_attempts ADD COLUMN failure_class TEXT;
         ",
         ),
+        M::up(
+            "
+        CREATE TABLE external_source_contracts_meta (
+            kind TEXT PRIMARY KEY,
+            updated TEXT NOT NULL,
+            authoritative INTEGER NOT NULL,
+            policy_version TEXT NOT NULL
+        );
+        CREATE TABLE external_source_contracts (
+            id TEXT PRIMARY KEY,
+            path_glob TEXT NOT NULL,
+            canonical_url TEXT NOT NULL,
+            access_class TEXT NOT NULL,
+            status TEXT NOT NULL,
+            retrieval_method TEXT NOT NULL,
+            attempt_deadline_utc TEXT NOT NULL,
+            resolution_deadline_utc TEXT NOT NULL,
+            blocker_note TEXT NOT NULL
+        );
+        CREATE TABLE external_source_contract_values (
+            contract_id TEXT NOT NULL,
+            relation TEXT NOT NULL,
+            ord INTEGER NOT NULL,
+            value TEXT NOT NULL,
+            PRIMARY KEY(contract_id, relation, ord),
+            FOREIGN KEY(contract_id) REFERENCES external_source_contracts(id) ON DELETE CASCADE
+        );
+        CREATE TABLE external_source_dossiers_meta (
+            kind TEXT PRIMARY KEY,
+            updated TEXT NOT NULL,
+            authoritative INTEGER NOT NULL,
+            source_markdown_glob TEXT NOT NULL,
+            document_count INTEGER NOT NULL
+        );
+        CREATE TABLE external_source_dossiers (
+            id TEXT PRIMARY KEY,
+            source_markdown TEXT NOT NULL,
+            slug TEXT NOT NULL,
+            title TEXT NOT NULL,
+            status_token TEXT NOT NULL,
+            content_kind TEXT NOT NULL,
+            authority_level TEXT NOT NULL,
+            verification_level TEXT NOT NULL,
+            operational_role TEXT NOT NULL,
+            source_lineage_summary TEXT NOT NULL,
+            has_full_transcript INTEGER NOT NULL,
+            line_count INTEGER NOT NULL,
+            notes TEXT NOT NULL,
+            body_markdown TEXT NOT NULL
+        );
+        CREATE TABLE external_source_dossier_values (
+            dossier_id TEXT NOT NULL,
+            relation TEXT NOT NULL,
+            ord INTEGER NOT NULL,
+            value TEXT NOT NULL,
+            PRIMARY KEY(dossier_id, relation, ord),
+            FOREIGN KEY(dossier_id) REFERENCES external_source_dossiers(id) ON DELETE CASCADE
+        );
+        ",
+        ),
     ])
 }
 
@@ -311,6 +374,12 @@ struct ControlPlaneCompatOutputs {
     binaries: String,
     theorems: String,
     theorems_mirror: String,
+}
+
+struct ExternalSourcesCompatOutputs {
+    source_contracts: String,
+    dossiers_registry: String,
+    docs: Vec<(Utf8PathBuf, String)>,
 }
 
 #[derive(Clone, Debug)]
@@ -975,6 +1044,317 @@ impl ProvenanceStore {
         Ok(())
     }
 
+    pub fn reindex_external_sources_from_compat(
+        &mut self,
+        repo_root: &Path,
+        source_contracts_path: &Path,
+        dossiers_registry_path: &Path,
+    ) -> Result<(usize, usize)> {
+        let indexed_at = Utc::now().to_rfc3339();
+        let source_contracts_text = load_toml_text(source_contracts_path)?;
+        let dossiers_text = load_toml_text(dossiers_registry_path)?;
+        let (contracts_meta, contracts) =
+            load_external_source_contracts_from_registry(&source_contracts_text)?;
+        let (dossiers_meta, dossiers) =
+            load_external_source_dossiers_from_registry(&dossiers_text)?;
+
+        let tx = self.conn.transaction()?;
+        clear_external_source_tables(&tx)?;
+        write_registry_snapshot(
+            &tx,
+            repo_root,
+            "external_source_contracts",
+            source_contracts_path,
+            &source_contracts_text,
+            &indexed_at,
+        )?;
+        write_registry_snapshot(
+            &tx,
+            repo_root,
+            "external_source_dossiers",
+            dossiers_registry_path,
+            &dossiers_text,
+            &indexed_at,
+        )?;
+        tx.execute(
+            "INSERT INTO external_source_contracts_meta(kind, updated, authoritative, policy_version)
+             VALUES('source_contracts', ?1, ?2, ?3)
+             ON CONFLICT(kind) DO UPDATE SET
+                updated=excluded.updated,
+                authoritative=excluded.authoritative,
+                policy_version=excluded.policy_version",
+            params![
+                contracts_meta.updated,
+                i64::from(contracts_meta.authoritative),
+                contracts_meta.policy_version
+            ],
+        )?;
+        for contract in &contracts {
+            tx.execute(
+                "INSERT INTO external_source_contracts(
+                    id, path_glob, canonical_url, access_class, status, retrieval_method,
+                    attempt_deadline_utc, resolution_deadline_utc, blocker_note
+                ) VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
+                params![
+                    contract.id,
+                    contract.path_glob,
+                    contract.canonical_url,
+                    contract.access_class,
+                    contract.status,
+                    contract.retrieval_method,
+                    contract.attempt_deadline_utc,
+                    contract.resolution_deadline_utc,
+                    contract.blocker_note,
+                ],
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_contract_values",
+                "contract_id",
+                &contract.id,
+                "mirror_url",
+                &contract.mirror_urls,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_contract_values",
+                "contract_id",
+                &contract.id,
+                "evidence_ref",
+                &contract.evidence_refs,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_contract_values",
+                "contract_id",
+                &contract.id,
+                "manual_manifest_ref",
+                &contract.manual_manifest_refs,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_contract_values",
+                "contract_id",
+                &contract.id,
+                "blocked_action_plan",
+                &contract.blocked_action_plan,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_contract_values",
+                "contract_id",
+                &contract.id,
+                "scientific_validator_ref",
+                &contract.scientific_validator_refs,
+            )?;
+        }
+
+        tx.execute(
+            "INSERT INTO external_source_dossiers_meta(kind, updated, authoritative, source_markdown_glob, document_count)
+             VALUES('source_dossiers', ?1, ?2, ?3, ?4)
+             ON CONFLICT(kind) DO UPDATE SET
+                updated=excluded.updated,
+                authoritative=excluded.authoritative,
+                source_markdown_glob=excluded.source_markdown_glob,
+                document_count=excluded.document_count",
+            params![
+                dossiers_meta.updated,
+                i64::from(dossiers_meta.authoritative),
+                dossiers_meta.source_markdown_glob,
+                dossiers_meta.document_count as i64
+            ],
+        )?;
+        for dossier in &dossiers {
+            tx.execute(
+                "INSERT INTO external_source_dossiers(
+                    id, source_markdown, slug, title, status_token, content_kind,
+                    authority_level, verification_level, operational_role,
+                    source_lineage_summary, has_full_transcript, line_count, notes, body_markdown
+                ) VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)",
+                params![
+                    dossier.id,
+                    dossier.source_markdown,
+                    dossier.slug,
+                    dossier.title,
+                    dossier.status_token,
+                    dossier.content_kind,
+                    dossier.authority_level,
+                    dossier.verification_level,
+                    dossier.operational_role,
+                    dossier.source_lineage_summary,
+                    i64::from(dossier.has_full_transcript),
+                    dossier.line_count as i64,
+                    dossier.notes,
+                    dossier.body_markdown
+                ],
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_dossier_values",
+                "dossier_id",
+                &dossier.id,
+                "truth_surface",
+                &dossier.truth_surfaces,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_dossier_values",
+                "dossier_id",
+                &dossier.id,
+                "artifact_contract_path",
+                &dossier.artifact_contract_paths,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_dossier_values",
+                "dossier_id",
+                &dossier.id,
+                "claim_ref",
+                &dossier.claim_refs,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_dossier_values",
+                "dossier_id",
+                &dossier.id,
+                "url_ref",
+                &dossier.url_refs,
+            )?;
+            insert_ranked_values(
+                &tx,
+                "external_source_dossier_values",
+                "dossier_id",
+                &dossier.id,
+                "path_ref",
+                &dossier.path_refs,
+            )?;
+        }
+        tx.commit()?;
+
+        self.record_control_plane_run(
+            "index_external_sources",
+            &serde_json::json!({
+                "source_contracts": to_repo_rel(repo_root, source_contracts_path),
+                "dossiers_registry": to_repo_rel(repo_root, dossiers_registry_path),
+                "source_contract_count": contracts.len(),
+                "dossier_count": dossiers.len(),
+            })
+            .to_string(),
+        )?;
+        Ok((contracts.len(), dossiers.len()))
+    }
+
+    pub fn export_external_sources_compat(
+        &mut self,
+        repo_root: &Path,
+        source_contracts_path: &Path,
+        dossiers_registry_path: &Path,
+    ) -> Result<()> {
+        let outputs = self.render_external_sources_compat_outputs()?;
+        write_text(source_contracts_path, &outputs.source_contracts)?;
+        write_text(dossiers_registry_path, &outputs.dossiers_registry)?;
+        for (path, body) in &outputs.docs {
+            write_text(&repo_root.join(path.as_str()), body)?;
+        }
+        self.record_control_plane_run(
+            "export_external_sources",
+            &serde_json::json!({
+                "source_contracts": to_repo_rel(repo_root, source_contracts_path),
+                "dossiers_registry": to_repo_rel(repo_root, dossiers_registry_path),
+                "doc_count": outputs.docs.len(),
+            })
+            .to_string(),
+        )?;
+        Ok(())
+    }
+
+    pub fn verify_external_sources_compat_exports(
+        &mut self,
+        repo_root: &Path,
+        source_contracts_path: &Path,
+        dossiers_registry_path: &Path,
+    ) -> Result<()> {
+        let outputs = self.render_external_sources_compat_outputs()?;
+        let mut failures = Vec::new();
+        for (path, expected) in [
+            (source_contracts_path, outputs.source_contracts.as_str()),
+            (dossiers_registry_path, outputs.dossiers_registry.as_str()),
+        ] {
+            if !path.exists() {
+                failures.push(format!("missing compatibility export {}", path.display()));
+                continue;
+            }
+            let actual = load_text(path)?;
+            if actual != format!("{expected}\n") {
+                failures.push(format!("stale compatibility export {}", path.display()));
+            }
+        }
+        for (path, expected) in outputs.docs {
+            let full = repo_root.join(path.as_str());
+            if !full.exists() {
+                failures.push(format!("missing generated dossier {}", full.display()));
+                continue;
+            }
+            let actual = load_text(&full)?;
+            if actual != format!("{expected}\n") {
+                failures.push(format!("stale dossier export {}", full.display()));
+            }
+        }
+        if !failures.is_empty() {
+            bail!(
+                "external-source compatibility exports failed:\n- {}",
+                failures.join("\n- ")
+            );
+        }
+        Ok(())
+    }
+
+    pub fn verify_external_source_invariants(&self, repo_root: &Path) -> Result<()> {
+        let mut failures = Vec::new();
+        let contract_count = scalar_count(&self.conn, "SELECT COUNT(*) FROM external_source_contracts")?;
+        let dossier_count = scalar_count(&self.conn, "SELECT COUNT(*) FROM external_source_dossiers")?;
+        if contract_count == 0 {
+            failures.push("external-source database has zero source contracts".to_string());
+        }
+        if dossier_count == 0 {
+            failures.push("external-source database has zero dossiers".to_string());
+        }
+        let meta_doc_count = self.conn.query_row(
+            "SELECT document_count FROM external_source_dossiers_meta WHERE kind = 'source_dossiers'",
+            [],
+            |row| row.get::<_, i64>(0),
+        ).optional()?.unwrap_or_default();
+        if meta_doc_count != dossier_count as i64 {
+            failures.push(format!(
+                "dossier meta document_count mismatch: meta={} db={}",
+                meta_doc_count, dossier_count
+            ));
+        }
+        for dossier in self.list_external_source_dossiers()? {
+            if dossier.source_markdown.trim().is_empty() {
+                failures.push(format!("{} has empty source_markdown", dossier.id));
+            } else {
+                let path = repo_root.join(&dossier.source_markdown);
+                if let Some(parent) = path.parent()
+                    && !parent.exists()
+                {
+                    failures.push(format!(
+                        "{} source_markdown parent missing on disk: {}",
+                        dossier.id,
+                        parent.display()
+                    ));
+                }
+            }
+        }
+        if !failures.is_empty() {
+            bail!(
+                "external-source invariants failed:\n- {}",
+                failures.join("\n- ")
+            );
+        }
+        Ok(())
+    }
+
     fn render_control_plane_compat_outputs(&self) -> Result<ControlPlaneCompatOutputs> {
         let theorem_rows = self.list_theorems()?;
         let experiments_meta = self
@@ -993,6 +1373,27 @@ impl ProvenanceStore {
                 "registry/canonical/control_plane.sqlite3",
                 &theorem_rows,
             ),
+        })
+    }
+
+    fn render_external_sources_compat_outputs(&self) -> Result<ExternalSourcesCompatOutputs> {
+        let contracts_meta = self.external_source_contracts_meta()?;
+        let contracts = self.list_external_source_contracts()?;
+        let dossiers_meta = self.external_source_dossiers_meta()?;
+        let dossiers = self.list_external_source_dossiers()?;
+        let docs = dossiers
+            .iter()
+            .map(|dossier| {
+                (
+                    Utf8PathBuf::from(dossier.source_markdown.clone()),
+                    render_external_source_dossier_markdown(dossier),
+                )
+            })
+            .collect();
+        Ok(ExternalSourcesCompatOutputs {
+            source_contracts: render_external_source_contracts_registry(&contracts_meta, &contracts),
+            dossiers_registry: render_external_source_dossiers_registry(&dossiers_meta, &dossiers),
+            docs,
         })
     }
 
@@ -1089,6 +1490,192 @@ impl ProvenanceStore {
         collect_rows(rows)
     }
 
+    pub fn list_external_source_contracts(&self) -> Result<Vec<ExternalSourceContractRecord>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, path_glob, canonical_url, access_class, status, retrieval_method,
+                    attempt_deadline_utc, resolution_deadline_utc, blocker_note
+             FROM external_source_contracts
+             ORDER BY id",
+        )?;
+        let base_rows = stmt
+            .query_map([], |row| {
+                Ok((
+                    row.get::<_, String>(0)?,
+                    row.get::<_, String>(1)?,
+                    row.get::<_, String>(2)?,
+                    row.get::<_, String>(3)?,
+                    row.get::<_, String>(4)?,
+                    row.get::<_, String>(5)?,
+                    row.get::<_, String>(6)?,
+                    row.get::<_, String>(7)?,
+                    row.get::<_, String>(8)?,
+                ))
+            })?
+            .collect::<std::result::Result<Vec<_>, _>>()?;
+        let mut out = Vec::with_capacity(base_rows.len());
+        for (
+            id,
+            path_glob,
+            canonical_url,
+            access_class,
+            status,
+            retrieval_method,
+            attempt_deadline_utc,
+            resolution_deadline_utc,
+            blocker_note,
+        ) in base_rows
+        {
+            out.push(ExternalSourceContractRecord {
+                id: id.clone(),
+                path_glob,
+                canonical_url,
+                mirror_urls: load_ranked_values(
+                    &self.conn,
+                    "external_source_contract_values",
+                    "contract_id",
+                    &id,
+                    "mirror_url",
+                )?,
+                access_class,
+                status,
+                retrieval_method,
+                attempt_deadline_utc,
+                resolution_deadline_utc,
+                blocker_note,
+                evidence_refs: load_ranked_values(
+                    &self.conn,
+                    "external_source_contract_values",
+                    "contract_id",
+                    &id,
+                    "evidence_ref",
+                )?,
+                manual_manifest_refs: load_ranked_values(
+                    &self.conn,
+                    "external_source_contract_values",
+                    "contract_id",
+                    &id,
+                    "manual_manifest_ref",
+                )?,
+                blocked_action_plan: load_ranked_values(
+                    &self.conn,
+                    "external_source_contract_values",
+                    "contract_id",
+                    &id,
+                    "blocked_action_plan",
+                )?,
+                scientific_validator_refs: load_ranked_values(
+                    &self.conn,
+                    "external_source_contract_values",
+                    "contract_id",
+                    &id,
+                    "scientific_validator_ref",
+                )?,
+            });
+        }
+        Ok(out)
+    }
+
+    pub fn list_external_source_dossiers(&self) -> Result<Vec<ExternalSourceDossierRecord>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, source_markdown, slug, title, status_token, content_kind,
+                    authority_level, verification_level, operational_role,
+                    source_lineage_summary, has_full_transcript, line_count, notes, body_markdown
+             FROM external_source_dossiers
+             ORDER BY id",
+        )?;
+        let base_rows = stmt
+            .query_map([], |row| {
+                Ok((
+                    row.get::<_, String>(0)?,
+                    row.get::<_, String>(1)?,
+                    row.get::<_, String>(2)?,
+                    row.get::<_, String>(3)?,
+                    row.get::<_, String>(4)?,
+                    row.get::<_, String>(5)?,
+                    row.get::<_, String>(6)?,
+                    row.get::<_, String>(7)?,
+                    row.get::<_, String>(8)?,
+                    row.get::<_, String>(9)?,
+                    row.get::<_, i64>(10)?,
+                    row.get::<_, i64>(11)?,
+                    row.get::<_, String>(12)?,
+                    row.get::<_, String>(13)?,
+                ))
+            })?
+            .collect::<std::result::Result<Vec<_>, _>>()?;
+        let mut out = Vec::with_capacity(base_rows.len());
+        for (
+            id,
+            source_markdown,
+            slug,
+            title,
+            status_token,
+            content_kind,
+            authority_level,
+            verification_level,
+            operational_role,
+            source_lineage_summary,
+            has_full_transcript,
+            line_count,
+            notes,
+            body_markdown,
+        ) in base_rows
+        {
+            out.push(ExternalSourceDossierRecord {
+                id: id.clone(),
+                source_markdown,
+                slug,
+                title,
+                status_token,
+                content_kind,
+                authority_level,
+                verification_level,
+                operational_role,
+                source_lineage_summary,
+                truth_surfaces: load_ranked_values(
+                    &self.conn,
+                    "external_source_dossier_values",
+                    "dossier_id",
+                    &id,
+                    "truth_surface",
+                )?,
+                artifact_contract_paths: load_ranked_values(
+                    &self.conn,
+                    "external_source_dossier_values",
+                    "dossier_id",
+                    &id,
+                    "artifact_contract_path",
+                )?,
+                has_full_transcript: has_full_transcript != 0,
+                claim_refs: load_ranked_values(
+                    &self.conn,
+                    "external_source_dossier_values",
+                    "dossier_id",
+                    &id,
+                    "claim_ref",
+                )?,
+                url_refs: load_ranked_values(
+                    &self.conn,
+                    "external_source_dossier_values",
+                    "dossier_id",
+                    &id,
+                    "url_ref",
+                )?,
+                path_refs: load_ranked_values(
+                    &self.conn,
+                    "external_source_dossier_values",
+                    "dossier_id",
+                    &id,
+                    "path_ref",
+                )?,
+                line_count: line_count as usize,
+                notes,
+                body_markdown,
+            });
+        }
+        Ok(out)
+    }
+
     pub fn registry_snapshot(&self, kind: &str) -> Result<Option<String>> {
         self.conn
             .query_row(
@@ -1108,6 +1695,47 @@ impl ProvenanceStore {
                 |row| row.get(0),
             )
             .optional()
+            .map_err(Into::into)
+    }
+
+    fn external_source_contracts_meta(&self) -> Result<ExternalSourceContractsMeta> {
+        self.conn
+            .query_row(
+                "SELECT updated, authoritative, policy_version
+                 FROM external_source_contracts_meta
+                 WHERE kind = 'source_contracts'",
+                [],
+                |row| {
+                    Ok(ExternalSourceContractsMeta {
+                        updated: row.get(0)?,
+                        authoritative: row.get::<_, i64>(1)? != 0,
+                        policy_version: row.get(2)?,
+                    })
+                },
+            )
+            .optional()
+            .map(|row| row.unwrap_or_default())
+            .map_err(Into::into)
+    }
+
+    fn external_source_dossiers_meta(&self) -> Result<ExternalSourceDossiersMeta> {
+        self.conn
+            .query_row(
+                "SELECT updated, authoritative, source_markdown_glob, document_count
+                 FROM external_source_dossiers_meta
+                 WHERE kind = 'source_dossiers'",
+                [],
+                |row| {
+                    Ok(ExternalSourceDossiersMeta {
+                        updated: row.get(0)?,
+                        authoritative: row.get::<_, i64>(1)? != 0,
+                        source_markdown_glob: row.get(2)?,
+                        document_count: row.get::<_, i64>(3)? as usize,
+                    })
+                },
+            )
+            .optional()
+            .map(|row| row.unwrap_or_default())
             .map_err(Into::into)
     }
 
@@ -2117,6 +2745,53 @@ fn clear_control_plane_tables(conn: &Connection) -> Result<()> {
     Ok(())
 }
 
+fn clear_external_source_tables(conn: &Connection) -> Result<()> {
+    conn.execute_batch(
+        "
+        DELETE FROM external_source_contract_values;
+        DELETE FROM external_source_contracts;
+        DELETE FROM external_source_contracts_meta;
+        DELETE FROM external_source_dossier_values;
+        DELETE FROM external_source_dossiers;
+        DELETE FROM external_source_dossiers_meta;
+        ",
+    )?;
+    Ok(())
+}
+
+fn insert_ranked_values(
+    conn: &Connection,
+    table: &str,
+    owner_column: &str,
+    owner_id: &str,
+    relation: &str,
+    values: &[String],
+) -> Result<()> {
+    let sql = format!(
+        "INSERT INTO {table}({owner_column}, relation, ord, value) VALUES(?1, ?2, ?3, ?4)"
+    );
+    for (ord, value) in values.iter().enumerate() {
+        conn.execute(&sql, params![owner_id, relation, ord as i64, value])?;
+    }
+    Ok(())
+}
+
+fn load_ranked_values(
+    conn: &Connection,
+    table: &str,
+    owner_column: &str,
+    owner_id: &str,
+    relation: &str,
+) -> Result<Vec<String>> {
+    let sql = format!(
+        "SELECT value FROM {table} WHERE {owner_column} = ?1 AND relation = ?2 ORDER BY ord"
+    );
+    let mut stmt = conn.prepare(&sql)?;
+    let rows = stmt.query_map(params![owner_id, relation], |row| row.get::<_, String>(0))?;
+    rows.collect::<std::result::Result<Vec<_>, _>>()
+        .map_err(Into::into)
+}
+
 fn write_fingerprint(
     conn: &Connection,
     repo_root: &Path,
@@ -2454,6 +3129,235 @@ fn join_refs(values: &[String]) -> String {
         .filter(|value| !value.is_empty())
         .collect::<Vec<_>>()
         .join(" | ")
+}
+
+fn load_external_source_contracts_from_registry(
+    raw: &str,
+) -> Result<(ExternalSourceContractsMeta, Vec<ExternalSourceContractRecord>)> {
+    let value: Value = toml::from_str(raw).context("parse external source contracts registry")?;
+    let meta_table = value
+        .get("external_sources")
+        .and_then(Value::as_table)
+        .cloned()
+        .unwrap_or_default();
+    let meta = ExternalSourceContractsMeta {
+        updated: string_field(&meta_table, "updated"),
+        authoritative: bool_field(&meta_table, "authoritative"),
+        policy_version: string_field(&meta_table, "policy_version"),
+    };
+    let rows = value
+        .get("source")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|row| row.as_table().cloned())
+        .map(|table| ExternalSourceContractRecord {
+            id: string_field(&table, "id"),
+            path_glob: string_field(&table, "path_glob"),
+            canonical_url: string_field(&table, "canonical_url"),
+            mirror_urls: string_array_field(&table, "mirror_urls"),
+            access_class: string_field(&table, "access_class"),
+            status: string_field(&table, "status"),
+            retrieval_method: string_field(&table, "retrieval_method"),
+            attempt_deadline_utc: string_field(&table, "attempt_deadline_utc"),
+            resolution_deadline_utc: string_field(&table, "resolution_deadline_utc"),
+            blocker_note: string_field(&table, "blocker_note"),
+            evidence_refs: string_array_field(&table, "evidence_refs"),
+            manual_manifest_refs: string_array_field(&table, "manual_manifest_refs"),
+            blocked_action_plan: string_array_field(&table, "blocked_action_plan"),
+            scientific_validator_refs: string_array_field(&table, "scientific_validator_refs"),
+        })
+        .collect::<Vec<_>>();
+    Ok((meta, rows))
+}
+
+fn load_external_source_dossiers_from_registry(
+    raw: &str,
+) -> Result<(ExternalSourceDossiersMeta, Vec<ExternalSourceDossierRecord>)> {
+    let value: Value = toml::from_str(raw).context("parse external source dossiers registry")?;
+    let meta_table = value
+        .get("external_sources")
+        .and_then(Value::as_table)
+        .cloned()
+        .unwrap_or_default();
+    let rows = value
+        .get("document")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|row| row.as_table().cloned())
+        .map(|table| {
+            let id = string_field(&table, "id");
+            let slug = string_field(&table, "slug");
+            let source_markdown = optional_string_field(&table, "source_markdown")
+                .unwrap_or_else(|| default_external_source_markdown_path(&id, &slug));
+            ExternalSourceDossierRecord {
+            id,
+            source_markdown,
+            slug,
+            title: string_field(&table, "title"),
+            status_token: string_field(&table, "status_token"),
+            content_kind: string_field(&table, "content_kind"),
+            authority_level: string_field(&table, "authority_level"),
+            verification_level: string_field(&table, "verification_level"),
+            operational_role: string_field(&table, "operational_role"),
+            source_lineage_summary: string_field(&table, "source_lineage_summary"),
+            truth_surfaces: string_array_field(&table, "truth_surfaces"),
+            artifact_contract_paths: string_array_field(&table, "artifact_contract_paths"),
+            has_full_transcript: bool_field(&table, "has_full_transcript"),
+            claim_refs: string_array_field(&table, "claim_refs"),
+            url_refs: string_array_field(&table, "url_refs"),
+            path_refs: string_array_field(&table, "path_refs"),
+            line_count: optional_integer_field(&table, "line_count").unwrap_or_default() as usize,
+            notes: string_field(&table, "notes"),
+            body_markdown: string_field(&table, "body_markdown"),
+        }})
+        .collect::<Vec<_>>();
+    let meta = ExternalSourceDossiersMeta {
+        updated: string_field(&meta_table, "updated"),
+        authoritative: bool_field(&meta_table, "authoritative"),
+        source_markdown_glob: string_field(&meta_table, "source_markdown_glob"),
+        document_count: optional_integer_field(&meta_table, "document_count")
+            .unwrap_or(rows.len() as i64) as usize,
+    };
+    Ok((meta, rows))
+}
+
+fn render_external_source_contracts_registry(
+    meta: &ExternalSourceContractsMeta,
+    rows: &[ExternalSourceContractRecord],
+) -> String {
+    let mut lines = external_sources_compat_toml_export_header("source_contracts");
+    lines.push(String::new());
+    lines.push("[external_sources]".to_string());
+    lines.push(format!("updated = {:?}", meta.updated));
+    lines.push(format!("authoritative = {}", bool_toml(meta.authoritative)));
+    lines.push(format!("policy_version = {:?}", meta.policy_version));
+    lines.push(String::new());
+    for row in rows {
+        lines.push("[[source]]".to_string());
+        lines.push(format!("id = {:?}", row.id));
+        lines.push(format!("path_glob = {:?}", row.path_glob));
+        lines.push(format!("canonical_url = {:?}", row.canonical_url));
+        render_string_array_lines(&mut lines, "mirror_urls", &row.mirror_urls);
+        lines.push(format!("access_class = {:?}", row.access_class));
+        lines.push(format!("status = {:?}", row.status));
+        lines.push(format!("retrieval_method = {:?}", row.retrieval_method));
+        lines.push(format!("attempt_deadline_utc = {:?}", row.attempt_deadline_utc));
+        lines.push(format!(
+            "resolution_deadline_utc = {:?}",
+            row.resolution_deadline_utc
+        ));
+        lines.push(format!("blocker_note = {:?}", row.blocker_note));
+        render_string_array_lines(&mut lines, "evidence_refs", &row.evidence_refs);
+        render_string_array_lines(
+            &mut lines,
+            "manual_manifest_refs",
+            &row.manual_manifest_refs,
+        );
+        render_string_array_lines(
+            &mut lines,
+            "scientific_validator_refs",
+            &row.scientific_validator_refs,
+        );
+        render_string_array_lines(
+            &mut lines,
+            "blocked_action_plan",
+            &row.blocked_action_plan,
+        );
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_external_source_dossiers_registry(
+    meta: &ExternalSourceDossiersMeta,
+    rows: &[ExternalSourceDossierRecord],
+) -> String {
+    let mut lines = external_sources_compat_toml_export_header("source_dossiers");
+    lines.push(String::new());
+    lines.push("[external_sources]".to_string());
+    lines.push(format!("updated = {:?}", meta.updated));
+    lines.push(format!("authoritative = {}", bool_toml(meta.authoritative)));
+    lines.push(format!(
+        "source_markdown_glob = {:?}",
+        meta.source_markdown_glob
+    ));
+    lines.push(format!("document_count = {}", rows.len()));
+    lines.push(String::new());
+    for row in rows {
+        lines.push("[[document]]".to_string());
+        lines.push(format!("id = {:?}", row.id));
+        lines.push(format!("source_markdown = {:?}", row.source_markdown));
+        lines.push(format!("slug = {:?}", row.slug));
+        lines.push(format!("title = {:?}", row.title));
+        lines.push(format!("status_token = {:?}", row.status_token));
+        lines.push(format!("content_kind = {:?}", row.content_kind));
+        lines.push(format!("authority_level = {:?}", row.authority_level));
+        lines.push(format!("verification_level = {:?}", row.verification_level));
+        lines.push(format!("operational_role = {:?}", row.operational_role));
+        lines.push(format!(
+            "source_lineage_summary = {:?}",
+            row.source_lineage_summary
+        ));
+        render_string_array_lines(&mut lines, "truth_surfaces", &row.truth_surfaces);
+        render_string_array_lines(
+            &mut lines,
+            "artifact_contract_paths",
+            &row.artifact_contract_paths,
+        );
+        lines.push(format!(
+            "has_full_transcript = {}",
+            bool_toml(row.has_full_transcript)
+        ));
+        render_string_array_lines(&mut lines, "claim_refs", &row.claim_refs);
+        render_string_array_lines(&mut lines, "url_refs", &row.url_refs);
+        render_string_array_lines(&mut lines, "path_refs", &row.path_refs);
+        lines.push(format!("line_count = {}", row.line_count));
+        lines.push(format!("notes = {:?}", row.notes));
+        lines.push(format!(
+            "body_markdown = {}",
+            render_toml_multiline(&row.body_markdown)
+        ));
+        lines.push(String::new());
+    }
+    lines.join("\n")
+}
+
+fn render_external_source_dossier_markdown(row: &ExternalSourceDossierRecord) -> String {
+    let mut lines = external_sources_markdown_export_header(&row.id);
+    lines.push(row.body_markdown.trim_end().to_string());
+    lines.join("\n")
+}
+
+fn render_string_array_lines(lines: &mut Vec<String>, key: &str, values: &[String]) {
+    if values.is_empty() {
+        lines.push(format!("{key} = []"));
+        return;
+    }
+    lines.push(format!("{key} = ["));
+    for value in values {
+        lines.push(format!("  {:?},", value));
+    }
+    lines.push("]".to_string());
+}
+
+fn render_toml_multiline(body: &str) -> String {
+    let sanitized = body.replace("'''", "'''\"\"\"'''");
+    format!("'''\n{}\n'''", sanitized.trim_end())
+}
+
+fn default_external_source_markdown_path(id: &str, slug: &str) -> String {
+    let stem = if !slug.trim().is_empty() {
+        slug.trim().to_ascii_uppercase()
+    } else if !id.trim().is_empty() {
+        id.trim().to_ascii_uppercase()
+    } else {
+        "UNNAMED_EXTERNAL_SOURCE".to_string()
+    };
+    format!("docs/external_sources/{stem}.md")
 }
 
 fn collect_rows<T>(
@@ -3365,6 +4269,29 @@ fn compat_markdown_export_header(source_label: &str) -> Vec<String> {
         format!("<!-- Regenerate with: {CONTROL_PLANE_EXPORT_COMMAND} -->"),
         String::new(),
     ]
+}
+
+fn external_sources_compat_toml_export_header(kind: &str) -> Vec<String> {
+    vec![
+        "# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.".to_string(),
+        format!("# Canonical write path: {CONTROL_PLANE_DB_PATH}"),
+        format!("# Regenerate with: {EXTERNAL_SOURCES_EXPORT_COMMAND}"),
+        format!("# Compatibility export lane: {kind}"),
+    ]
+}
+
+fn external_sources_markdown_export_header(source_label: &str) -> Vec<String> {
+    vec![
+        "<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->".to_string(),
+        format!("<!-- Canonical write path: {CONTROL_PLANE_DB_PATH} -->"),
+        format!("<!-- Source label: {source_label} -->"),
+        format!("<!-- Regenerate with: {EXTERNAL_SOURCES_EXPORT_COMMAND} -->"),
+        String::new(),
+    ]
+}
+
+fn bool_toml(value: bool) -> &'static str {
+    if value { "true" } else { "false" }
 }
 
 fn write_text(path: &Path, body: &str) -> Result<()> {

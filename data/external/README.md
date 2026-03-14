@@ -7,8 +7,11 @@ This directory is for reproducibly fetched external datasets and source document
 - Files in this lane are treated as cacheable fetch artifacts.
 - Every file must be reproducible from a documented source URL and fetch command.
 - `data/external/PROVENANCE.local.json` is the machine-readable hash index.
-- `data/external/SOURCES.toml` is the machine-readable source-of-origin contract
-  (canonical URL, mirrors, access class, status, retrieval method, and blocker deadlines).
+- `registry/canonical/control_plane.sqlite3` is the canonical write-authoritative
+  source-control plane for external source contracts and dossiers.
+- `data/external/SOURCES.toml` is the generated machine-readable compatibility
+  export for source-of-origin contracts (canonical URL, mirrors, access class,
+  status, retrieval method, and blocker deadlines).
 - Strict governance is defined in `registry/data_governance.toml` (lane `external`).
 
 ## Rebuild
@@ -61,6 +64,8 @@ Used for ETA_WAKE downwind caustic parameter in flyby crucible.
   - Date: Sep 2014
   - Relevance: Moon's gravitational focusing creates monthly density modulation at Earth
 
-## Known Gap
+## Compatibility Note
 
-`PROVENANCE.local.json` records hashes/sizes/mtimes while `SOURCES.toml` carries source URLs and blocker workflow state.
+`PROVENANCE.local.json` remains the hash/size/mtime cache, while
+`data/external/SOURCES.toml` is now a read-only compatibility export generated
+from the canonical SQLite control plane.

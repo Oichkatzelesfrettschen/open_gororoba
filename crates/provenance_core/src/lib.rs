@@ -301,3 +301,59 @@ pub struct ControlPlaneCounts {
     pub kernel_checked_claim_count: usize,
     pub proof_file_count: usize,
 }
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ExternalSourceContractsMeta {
+    pub updated: String,
+    pub authoritative: bool,
+    pub policy_version: String,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ExternalSourceContractRecord {
+    pub id: String,
+    pub path_glob: String,
+    pub canonical_url: String,
+    pub mirror_urls: Vec<String>,
+    pub access_class: String,
+    pub status: String,
+    pub retrieval_method: String,
+    pub attempt_deadline_utc: String,
+    pub resolution_deadline_utc: String,
+    pub blocker_note: String,
+    pub evidence_refs: Vec<String>,
+    pub manual_manifest_refs: Vec<String>,
+    pub blocked_action_plan: Vec<String>,
+    pub scientific_validator_refs: Vec<String>,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ExternalSourceDossiersMeta {
+    pub updated: String,
+    pub authoritative: bool,
+    pub source_markdown_glob: String,
+    pub document_count: usize,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ExternalSourceDossierRecord {
+    pub id: String,
+    pub source_markdown: String,
+    pub slug: String,
+    pub title: String,
+    pub status_token: String,
+    pub content_kind: String,
+    pub authority_level: String,
+    pub verification_level: String,
+    pub operational_role: String,
+    pub source_lineage_summary: String,
+    pub truth_surfaces: Vec<String>,
+    pub artifact_contract_paths: Vec<String>,
+    pub has_full_transcript: bool,
+    pub claim_refs: Vec<String>,
+    pub url_refs: Vec<String>,
+    pub path_refs: Vec<String>,
+    pub line_count: usize,
+    pub notes: String,
+    pub body_markdown: String,
+}

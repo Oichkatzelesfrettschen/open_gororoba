@@ -43,6 +43,12 @@ enum Commands {
     ExportControlPlane(ExportControlPlaneArgs),
     /// Verify canonical SQLite control-plane invariants and generated compatibility exports.
     VerifyControlPlane(VerifyControlPlaneArgs),
+    /// Load external source contracts and dossiers into the canonical SQLite control plane.
+    IndexExternalSources(IndexExternalSourcesArgs),
+    /// Export external source compatibility files and markdown dossiers from the canonical SQLite control plane.
+    ExportExternalSources(ExportExternalSourcesArgs),
+    /// Verify external source SQLite invariants and generated compatibility exports.
+    VerifyExternalSources(VerifyExternalSourcesArgs),
     /// Query one artifact or document from the SQLite index.
     Query(QueryArgs),
     /// Print operator-focused health and drift summary from the SQLite index.
@@ -175,6 +181,36 @@ struct VerifyControlPlaneArgs {
 }
 
 #[derive(Parser, Debug)]
+struct IndexExternalSourcesArgs {
+    #[arg(long, default_value = "data/external/SOURCES.toml")]
+    source_contracts: PathBuf,
+
+    #[arg(long, default_value = "registry/external_sources.toml")]
+    dossiers_registry: PathBuf,
+}
+
+#[derive(Parser, Debug)]
+struct ExportExternalSourcesArgs {
+    #[arg(long, default_value = "data/external/SOURCES.toml")]
+    source_contracts: PathBuf,
+
+    #[arg(long, default_value = "registry/external_sources.toml")]
+    dossiers_registry: PathBuf,
+}
+
+#[derive(Parser, Debug)]
+struct VerifyExternalSourcesArgs {
+    #[arg(long, default_value_t = true)]
+    verify_compat_exports: bool,
+
+    #[arg(long, default_value = "data/external/SOURCES.toml")]
+    source_contracts: PathBuf,
+
+    #[arg(long, default_value = "registry/external_sources.toml")]
+    dossiers_registry: PathBuf,
+}
+
+#[derive(Parser, Debug)]
 struct QueryArgs {
     #[command(subcommand)]
     kind: QueryKind,
@@ -281,6 +317,9 @@ fn main() -> Result<()> {
         Commands::IndexControlPlane(args) => run_index_control_plane(&repo_root, &db_path, args),
         Commands::ExportControlPlane(args) => run_export_control_plane(&repo_root, &db_path, args),
         Commands::VerifyControlPlane(args) => run_verify_control_plane(&repo_root, &db_path, args),
+        Commands::IndexExternalSources(args) => run_index_external_sources(&repo_root, &db_path, args),
+        Commands::ExportExternalSources(args) => run_export_external_sources(&repo_root, &db_path, args),
+        Commands::VerifyExternalSources(args) => run_verify_external_sources(&repo_root, &db_path, args),
         Commands::Query(args) => run_query(&db_path, args),
         Commands::Doctor(args) => run_doctor(&db_path, args),
         Commands::LinkAudit(args) => run_link_audit(&db_path, args),
@@ -437,6 +476,61 @@ fn run_verify_control_plane(
         )?;
     }
     println!("{}", render_control_plane_counts(&counts));
+    Ok(())
+}
+
+fn run_index_external_sources(
+    repo_root: &Path,
+    db_path: &Path,
+    args: IndexExternalSourcesArgs,
+) -> Result<()> {
+    let mut store = ProvenanceStore::open(db_path)?;
+    let (contract_count, dossier_count) = store.reindex_external_sources_from_compat(
+        repo_root,
+        &repo_path(repo_root, &args.source_contracts),
+        &repo_path(repo_root, &args.dossiers_registry),
+    )?;
+    println!(
+        "Indexed external sources into SQLite: source_contracts={} dossiers={}",
+        contract_count, dossier_count
+    );
+    Ok(())
+}
+
+fn run_export_external_sources(
+    repo_root: &Path,
+    db_path: &Path,
+    args: ExportExternalSourcesArgs,
+) -> Result<()> {
+    let mut store = ProvenanceStore::open(db_path)?;
+    store.export_external_sources_compat(
+        repo_root,
+        &repo_path(repo_root, &args.source_contracts),
+        &repo_path(repo_root, &args.dossiers_registry),
+    )?;
+    println!(
+        "Exported external-source compatibility outputs: contracts={} dossiers={}",
+        args.source_contracts.display(),
+        args.dossiers_registry.display()
+    );
+    Ok(())
+}
+
+fn run_verify_external_sources(
+    repo_root: &Path,
+    db_path: &Path,
+    args: VerifyExternalSourcesArgs,
+) -> Result<()> {
+    let mut store = ProvenanceStore::open(db_path)?;
+    store.verify_external_source_invariants(repo_root)?;
+    if args.verify_compat_exports {
+        store.verify_external_sources_compat_exports(
+            repo_root,
+            &repo_path(repo_root, &args.source_contracts),
+            &repo_path(repo_root, &args.dossiers_registry),
+        )?;
+    }
+    println!("Verified SQLite-backed external-source control plane.");
     Ok(())
 }
 
