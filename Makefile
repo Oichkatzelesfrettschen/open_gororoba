@@ -245,7 +245,12 @@ gate-ci-rust:
 	$(MAKE) rust-regression
 	$(MAKE) integrity-rust
 	$(MAKE) cargo-deny-check
+	$(MAKE) db-schema-drift-check
 	@echo "OK: gate-ci-rust passed."
+
+db-schema-drift-check:
+	$(CARGO_ENV) cargo run -p xtask -- db-docs --check
+	@echo "OK: db-schema-drift-check passed."
 
 gate-audit: install
 	PYTHONWARNINGS=error $(PYTHON) $(GATE_AUDIT_SCRIPT)
