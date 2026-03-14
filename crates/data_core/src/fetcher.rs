@@ -105,9 +105,7 @@ fn hapi_parameter_defs(dataset_id: &str) -> Result<Vec<HapiParameterDef>, FetchE
         .get("parameters")
         .and_then(Value::as_array)
         .ok_or_else(|| {
-            FetchError::Validation(format!(
-                "HAPI info for {dataset_id} is missing parameters"
-            ))
+            FetchError::Validation(format!("HAPI info for {dataset_id} is missing parameters"))
         })?;
     let defs = parameters
         .iter()
@@ -206,9 +204,8 @@ pub fn download_hapi_csv(
     time_max: &str,
     parameters: Option<&[&str]>,
 ) -> Result<String, FetchError> {
-    let mut url = format!(
-        "{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv"
-    );
+    let mut url =
+        format!("{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv");
     if let Some(parameters) = parameters
         && !parameters.is_empty()
     {

@@ -3,11 +3,11 @@ use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
 use serde::Serialize;
 use std::{
-    env,
-    fs,
+    env, fs,
     path::{Path, PathBuf},
 };
 use tempfile::tempdir;
+use verified_core::topology::HardwareTopology;
 
 #[derive(Debug, Serialize)]
 struct SchemaSnapshot {
@@ -72,15 +72,77 @@ struct SchemaIndexColumn {
     key: bool,
 }
 
+#[derive(Debug, Serialize)]
+struct HostProfile {
+    physical_core_ids: Vec<usize>,
+    physical_core_count: usize,
+    l3_cache_bytes: usize,
+    l3_safe_working_set_bytes: usize,
+    worker_budget: usize,
+    cargo_jobs: usize,
+    rayon_threads: usize,
+    rust_test_threads: usize,
+    nextest_test_threads: usize,
+    pytest_workers: usize,
+}
+
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
-        bail!("usage: cargo run -p xtask -- db-docs [--check]");
+        bail!("usage: cargo run -p xtask -- <db-docs|host-profile> [args]");
     };
     match command.as_str() {
         "db-docs" => run_db_docs(args.any(|arg| arg == "--check")),
+        "host-profile" => {
+            let mut format = "shell".to_string();
+            let mut iter = args.peekable();
+            while let Some(arg) = iter.next() {
+                match arg.as_str() {
+                    "--format" => {
+                        let Some(value) = iter.next() else {
+                            bail!("host-profile --format requires a value");
+                        };
+                        format = value;
+                    }
+                    other => bail!("unknown host-profile argument: {other}"),
+                }
+            }
+            run_host_profile(&format)
+        }
         other => bail!("unknown xtask command: {other}"),
     }
+}
+
+fn run_host_profile(format: &str) -> Result<()> {
+    let profile = detect_host_profile();
+    match format {
+        "shell" => {
+            println!("HOST_PHYSICAL_CORES={}", profile.physical_core_count);
+            println!(
+                "HOST_PHYSICAL_CORE_IDS=\"{}\"",
+                join_usize(&profile.physical_core_ids)
+            );
+            println!("HOST_L3_CACHE_BYTES={}", profile.l3_cache_bytes);
+            println!(
+                "HOST_L3_SAFE_WORKING_SET_BYTES={}",
+                profile.l3_safe_working_set_bytes
+            );
+            println!("HOST_WORKER_BUDGET={}", profile.worker_budget);
+            println!("HOST_CARGO_JOBS={}", profile.cargo_jobs);
+            println!("HOST_RAYON_THREADS={}", profile.rayon_threads);
+            println!("HOST_RUST_TEST_THREADS={}", profile.rust_test_threads);
+            println!("HOST_NEXTEST_TEST_THREADS={}", profile.nextest_test_threads);
+            println!("HOST_PYTEST_WORKERS={}", profile.pytest_workers);
+        }
+        "json" => {
+            println!("{}", serde_json::to_string_pretty(&profile)?);
+        }
+        "budget" => {
+            println!("{}", profile.worker_budget);
+        }
+        other => bail!("unsupported host-profile format: {other}"),
+    }
+    Ok(())
 }
 
 fn run_db_docs(check_only: bool) -> Result<()> {
@@ -320,9 +382,15 @@ fn schema_index_columns(conn: &Connection, index_name: &str) -> Result<Vec<Schem
 
 fn render_catalog_markdown(snapshot: &SchemaSnapshot) -> String {
     let mut out = String::new();
+    out.push_str("<!-- AUTO-GENERATED: DO NOT EDIT -->\n");
+    out.push_str("<!-- Source of truth: db/schema.sql -->\n");
+    out.push_str(
+        "<!-- Generated from: db/migrations/*.sql via cargo run -p xtask -- db-docs -->\n\n",
+    );
     out.push_str("# Database Catalog\n\n");
     out.push_str("Generated file. Do not edit.\n\n");
-    out.push_str("- Canonical source: `db/migrations/*.sql`\n");
+    out.push_str("- Source of truth: `db/schema.sql`\n");
+    out.push_str("- Canonical migrations: `db/migrations/*.sql`\n");
     out.push_str("- Regenerate with: `cargo run -p xtask -- db-docs`\n");
     out.push_str(&format!("- Objects: `{}`\n\n", snapshot.object_count));
 
@@ -398,6 +466,31 @@ fn render_catalog_markdown(snapshot: &SchemaSnapshot) -> String {
     }
 
     out
+}
+
+fn detect_host_profile() -> HostProfile {
+    let topo = HardwareTopology::current();
+    let physical_core_count = topo.physical_core_ids.len().max(1);
+    HostProfile {
+        physical_core_ids: topo.physical_core_ids.clone(),
+        physical_core_count,
+        l3_cache_bytes: topo.l3_cache_bytes,
+        l3_safe_working_set_bytes: topo.l3_safe_working_set_bytes,
+        worker_budget: physical_core_count,
+        cargo_jobs: physical_core_count,
+        rayon_threads: physical_core_count,
+        rust_test_threads: physical_core_count,
+        nextest_test_threads: physical_core_count,
+        pytest_workers: physical_core_count,
+    }
+}
+
+fn join_usize(items: &[usize]) -> String {
+    items
+        .iter()
+        .map(|value| value.to_string())
+        .collect::<Vec<_>>()
+        .join(",")
 }
 
 fn write_or_check(path: &Path, content: &str, check_only: bool) -> Result<()> {

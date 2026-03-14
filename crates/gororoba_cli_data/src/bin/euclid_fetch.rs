@@ -296,7 +296,11 @@ fn cmd_zenodo_state(report: Option<&Path>) -> Result<()> {
                 catalog: target.name.to_string(),
                 record_id: target.record_id,
                 description: target.description.to_string(),
-                target_files: target.target_files.iter().map(|item| item.to_string()).collect(),
+                target_files: target
+                    .target_files
+                    .iter()
+                    .map(|item| item.to_string())
+                    .collect(),
             })
             .collect(),
         provisional_targets: PROVISIONAL_ZENODO_TARGETS
@@ -334,9 +338,8 @@ fn cmd_zenodo_discover(max_pages: usize, page_size: usize, manifest: Option<&Pat
     let mut records = Vec::new();
     let mut seen = std::collections::BTreeSet::new();
     for page in 1..=max_pages {
-        let url = format!(
-            "{ZENODO_API}?q=title:euclid+q1&size={page_size}&sort=bestmatch&page={page}"
-        );
+        let url =
+            format!("{ZENODO_API}?q=title:euclid+q1&size={page_size}&sort=bestmatch&page={page}");
         let response = stack
             .fetch_text(&TransferRequest::probe(url))
             .map_err(|e| anyhow!(e.to_string()))?;

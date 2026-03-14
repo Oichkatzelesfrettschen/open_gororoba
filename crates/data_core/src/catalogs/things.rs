@@ -77,7 +77,11 @@ fn parse_manifest_entry_from_filename(filename: &str) -> Option<(String, String,
         for weighting in ["RO", "NA"] {
             let suffix = format!("_{weighting}_{product}_THINGS");
             if let Some(prefix) = stem.strip_suffix(&suffix) {
-                return Some((prefix.to_string(), weighting.to_string(), product.to_string()));
+                return Some((
+                    prefix.to_string(),
+                    weighting.to_string(),
+                    product.to_string(),
+                ));
             }
         }
     }

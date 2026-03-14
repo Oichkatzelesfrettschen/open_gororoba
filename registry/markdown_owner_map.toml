@@ -866,10 +866,10 @@ conversion_hint = "Edit the canonical source (registry/docs_convos.toml) and reg
 id = "MOWN-0096"
 path = "docs/db/catalog.md"
 scope = "docs"
-canonical_toml = ""
+canonical_toml = "db/schema.sql"
 owner_group = "general"
 requires_generated_header = false
-conversion_hint = "Edit the canonical source and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source (db/schema.sql) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0097"

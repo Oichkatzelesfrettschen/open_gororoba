@@ -42,8 +42,8 @@ pub use x87_jacobi_kernels::{
 pub use x87_primitives::{x87_dot, x87_horner, x87_norm_sq, x87_norm_sq_16, x87_sum};
 #[cfg(target_arch = "x86_64")]
 pub use x87_transcendentals::{
-    X87ReductionResult, angular_separation_arcsec_ext80_deg, atan2_ext80, fprem1_ext80,
-    pi_ext80, reduce_trig_argument_ext80, sincos_ext80, sincos_reduced_ext80, two_pi_ext80,
+    X87ReductionResult, angular_separation_arcsec_ext80_deg, atan2_ext80, fprem1_ext80, pi_ext80,
+    reduce_trig_argument_ext80, sincos_ext80, sincos_reduced_ext80, two_pi_ext80,
 };
 
 pub use cayley_dickson::{

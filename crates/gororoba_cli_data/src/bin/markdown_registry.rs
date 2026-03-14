@@ -5709,6 +5709,7 @@ fn markdown_destination_override(path: &str) -> Option<String> {
             "docs/generated/CLAIMS_REGISTRY_MIRROR.md" => {
                 "registry/canonical/control_plane.sqlite3"
             }
+            "docs/db/catalog.md" => "db/schema.sql",
             "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md" => "registry/claims_tasks.toml",
             "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md" => "registry/claim_tickets.toml",
             "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md" => {
@@ -5795,9 +5796,9 @@ fn destination_by_scope(path: &str) -> String {
         "NAVIGATOR.md" => "registry/navigator.toml".to_string(),
         "REQUIREMENTS.md" | "docs/REQUIREMENTS.md" => "registry/requirements.toml".to_string(),
         "docs/CLAIMS_EVIDENCE_MATRIX.md" => "registry/canonical/control_plane.sqlite3".to_string(),
-        "docs/INSIGHTS.md" => "registry/canonical/control_plane.sqlite3".to_string(),
+        "docs/INSIGHTS.md" => "registry/insights_narrative.toml".to_string(),
         "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md" => {
-            "registry/canonical/control_plane.sqlite3".to_string()
+            "registry/experiments_narrative.toml".to_string()
         }
         "docs/THEOREMS.md" => "registry/canonical/control_plane.sqlite3".to_string(),
         "docs/ROADMAP.md" => "registry/roadmap.toml".to_string(),
@@ -6914,10 +6915,10 @@ fn knowledge_toml_backing_for_path(path: &str) -> String {
         "docs/CLAIMS_EVIDENCE_MATRIX.md" => "registry/canonical/control_plane.sqlite3".to_string(),
         "docs/book/src/registry/claims.md" => "registry/book_docs.toml".to_string(),
         "docs/BIBLIOGRAPHY.md" => "registry/bibliography.toml".to_string(),
-        "docs/INSIGHTS.md" => "registry/canonical/control_plane.sqlite3".to_string(),
+        "docs/INSIGHTS.md" => "registry/insights_narrative.toml".to_string(),
         "docs/book/src/registry/insights.md" => "registry/book_docs.toml".to_string(),
         "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md" => {
-            "registry/canonical/control_plane.sqlite3".to_string()
+            "registry/experiments_narrative.toml".to_string()
         }
         "docs/book/src/registry/experiments.md" => "registry/book_docs.toml".to_string(),
         "docs/THEOREMS.md" | "docs/generated/THEOREMS_REGISTRY_MIRROR.md" => {

@@ -206,8 +206,7 @@ mod tests {
 
     #[test]
     fn test_solo_fill_values() {
-        let data =
-            "2020 180 12 999.999 999.99 999.99 9999.99 9999.99 9999.99 9999.99 999.9 9999.9 999999.0\n";
+        let data = "2020 180 12 999.999 999.99 999.99 9999.99 9999.99 9999.99 9999.99 999.9 9999.9 999999.0\n";
         let records = parse_solar_orbiter_merged(data);
         assert_eq!(records.len(), 1);
         let r = &records[0];

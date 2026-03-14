@@ -333,7 +333,11 @@ impl DatasetProvider for UlyssesProvider {
                     log::info!("saved {}", csv_name);
                 }
                 Err(e) => {
-                    log::warn!("failed to download Ulysses {} via HAPI fallback: {}", year, e);
+                    log::warn!(
+                        "failed to download Ulysses {} via HAPI fallback: {}",
+                        year,
+                        e
+                    );
                 }
             }
         }

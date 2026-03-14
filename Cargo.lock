@@ -11322,6 +11322,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tempfile",
+ "verified_core",
 ]
 
 [[package]]

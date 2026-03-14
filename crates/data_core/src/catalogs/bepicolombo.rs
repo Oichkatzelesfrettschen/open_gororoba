@@ -84,9 +84,7 @@ pub fn parse_bepicolombo_position_hapi_csv(content: &str) -> Vec<SpdfMergedRecor
 }
 
 /// Parse a BepiColombo position file from disk.
-pub fn parse_bepicolombo_file(
-    path: &std::path::Path,
-) -> Result<Vec<SpdfMergedRecord>, FetchError> {
+pub fn parse_bepicolombo_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
     Ok(parse_bepicolombo_position_hapi_csv(&content))

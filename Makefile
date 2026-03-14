@@ -55,7 +55,7 @@
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
-.PHONY: clean clean-builds clean-artifacts clean-all
+.PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
 
 .NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
@@ -195,11 +195,14 @@ gate-local:
 	scope=""; \
 	run_rust="true"; \
 	run_governance="true"; \
+	eval "$$(cargo run -q -p xtask -- host-profile --format shell)"; \
+	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS PYTEST_WORKERS=$$HOST_PYTEST_WORKERS"; \
+	echo "[gate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
 	echo "[gate-local] determining scope..."; \
 	if command -v cargo >/dev/null 2>&1; then \
 	    scope_file="$$(mktemp)"; \
 	    meta_file="$$(mktemp)"; \
-	    $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
+	    CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$$HOST_CARGO_JOBS RAYON_NUM_THREADS=$$HOST_RAYON_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
 	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
 	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
 	    rm -f "$$scope_file" "$$meta_file"; \
@@ -210,17 +213,17 @@ gate-local:
 	    echo "[gate-local] WARNING: workspace-routing unavailable, running full workspace"; \
 	    scope="--workspace"; \
 	fi; \
-	$(MAKE) check; \
+	$(MAKE) check $$submake_env; \
 	if [ "$$run_rust" = "true" ]; then \
 	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
 	    echo "[gate-local] rust scope: $$scope"; \
 	    if [ -n "$(LOCAL_NEXTEST_TIMING_JSON)" ]; then echo "[gate-local] local nextest timing: $(LOCAL_NEXTEST_TIMING_JSON)"; fi; \
-	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0; \
+	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0 $$submake_env; \
 	else \
 	    echo "[gate-local] SKIP: no Rust-relevant changes detected."; \
 	fi; \
 	if [ "$$run_governance" = "true" ]; then \
-	    $(MAKE) governance-gate-readonly; \
+	    $(MAKE) governance-gate-readonly $$submake_env; \
 	else \
 	    echo "[gate-local] SKIP: no governance-relevant changes detected."; \
 	fi; \
@@ -251,6 +254,9 @@ gate-ci-rust:
 db-schema-drift-check:
 	$(CARGO_ENV) cargo run -p xtask -- db-docs --check
 	@echo "OK: db-schema-drift-check passed."
+
+host-profile:
+	cargo run -q -p xtask -- host-profile --format json
 
 gate-audit: install
 	PYTHONWARNINGS=error $(PYTHON) $(GATE_AUDIT_SCRIPT)

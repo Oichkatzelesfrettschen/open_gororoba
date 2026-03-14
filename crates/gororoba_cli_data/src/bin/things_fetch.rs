@@ -39,7 +39,10 @@ enum Command {
         report: Option<PathBuf>,
     },
     Manifest {
-        #[arg(long, default_value = "data/external/things/things_cube_manifest_all.csv")]
+        #[arg(
+            long,
+            default_value = "data/external/things/things_cube_manifest_all.csv"
+        )]
         output: PathBuf,
         #[arg(long, default_value_t = false)]
         preferred_only: bool,
@@ -127,8 +130,8 @@ fn main() -> Result<()> {
                 manifest_entry_count: None,
                 preferred_cube_count: None,
             };
-            let report_path =
-                report.unwrap_or_else(|| PathBuf::from("reports/things_tables_fetch_2026-03-13.toml"));
+            let report_path = report
+                .unwrap_or_else(|| PathBuf::from("reports/things_tables_fetch_2026-03-13.toml"));
             write_toml_report(&report_path, &report_model)?;
             println!("Tables: {}", tables_dir.display());
             println!("Report: {}", report_path.display());
@@ -162,7 +165,10 @@ fn main() -> Result<()> {
                 table_galaxy_count: None,
                 manifest_entry_count: Some(manifest.len()),
                 preferred_cube_count: Some(
-                    manifest.iter().filter(|entry| entry.product_kind == "CUBE").count(),
+                    manifest
+                        .iter()
+                        .filter(|entry| entry.product_kind == "CUBE")
+                        .count(),
                 ),
             };
             let report_path =
@@ -239,8 +245,8 @@ fn main() -> Result<()> {
                 manifest_entry_count: Some(preferred_cube_count),
                 preferred_cube_count: Some(preferred_cube_count),
             };
-            let report_path =
-                report.unwrap_or_else(|| PathBuf::from("reports/things_cubes_fetch_2026-03-13.toml"));
+            let report_path = report
+                .unwrap_or_else(|| PathBuf::from("reports/things_cubes_fetch_2026-03-13.toml"));
             write_toml_report(&report_path, &report_model)?;
             println!("Preferred cubes: {}", preferred_cube_count);
             println!("Cubes:           {}", cubes_dir.display());
@@ -281,8 +287,8 @@ fn main() -> Result<()> {
                 manifest_entry_count: Some(preferred_cube_count),
                 preferred_cube_count: Some(preferred_cube_count),
             };
-            let report_path =
-                report.unwrap_or_else(|| PathBuf::from("reports/things_phase2_fetch_2026-03-13.toml"));
+            let report_path = report
+                .unwrap_or_else(|| PathBuf::from("reports/things_phase2_fetch_2026-03-13.toml"));
             write_toml_report(&report_path, &report_model)?;
             println!("Tables:          {}", tables_dir.display());
             println!("Metadata rows:   {}", metadata_count);

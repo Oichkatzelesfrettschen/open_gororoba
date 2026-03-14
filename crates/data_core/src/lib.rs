@@ -63,6 +63,11 @@ pub use tabular::{
     provider_inventory_frame,
 };
 
+#[cfg(feature = "fits")]
+pub use catalogs::lotss::{
+    LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,
+    crossmatch_points_against_fits_catalog,
+};
 pub use catalogs::{
     aflow::{
         AflowMaterial, AflowProvider, fetch_aflow_dataset, parse_aflow_json, parse_aflow_records,
@@ -91,11 +96,6 @@ pub use catalogs::{
         Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
         abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
     },
-};
-#[cfg(feature = "fits")]
-pub use catalogs::lotss::{
-    LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,
-    crossmatch_points_against_fits_catalog,
 };
 
 /// All dataset provider names that should appear in the manifest.
