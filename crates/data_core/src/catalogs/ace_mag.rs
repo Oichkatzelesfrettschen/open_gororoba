@@ -13,8 +13,10 @@
 
 use crate::{
     catalogs::omni::OmniRecord,
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
 };
+use csv::ReaderBuilder;
 use std::{
     collections::HashMap,
     fs,
@@ -305,13 +307,11 @@ pub fn ace_mag_to_omni(records: &[AceMagHourly]) -> Vec<OmniRecord> {
         .collect()
 }
 
-/// Base URL for ACE MAG browse data (16-sec, daily ASCII).
-const ACE_MAG_BROWSE_BASE: &str = "https://izw1.caltech.edu/ACE/ASC/DATA/mag16_browse/";
+const ACE_MAG_HAPI_DATASET: &str = "AC_H2_MFI";
 
 /// ACE MAG dataset provider.
 ///
-/// Fetches 16-second magnetic field browse data for a specified year range.
-/// Each daily file is ~300 KB (5400 rows x 12 columns).
+/// Fetches hourly ACE magnetic-field samples through CDAWeb HAPI.
 pub struct AceMagProvider {
     /// Start year (inclusive).
     pub year_start: u16,
@@ -341,42 +341,19 @@ impl DatasetProvider for AceMagProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let days_in_year = if year.is_multiple_of(4)
-                && (!year.is_multiple_of(100) || year.is_multiple_of(400))
-            {
-                366
-            } else {
-                365
-            };
-            let (doy_start, doy_end) = self.doy_range.unwrap_or((1, days_in_year));
-
-            for doy in doy_start..=doy_end.min(days_in_year) {
-                let fname = format!("ACE_MAG16_{}-{:03}_V4-0.txt", year, doy);
-                let output = dir.join(&fname);
-                if config.skip_existing && output.exists() {
-                    continue;
-                }
-                // Browse data: YYYY/ACE_MAG16_YYYY-DOY_V4-0.zip
-                // Try unzipped .txt first (some mirrors serve raw ASCII).
-                let url = format!("{}{}/{}", ACE_MAG_BROWSE_BASE, year, fname);
-                match download_to_file(&url, &output) {
-                    Ok(bytes) if bytes > 0 => {
-                        if file_looks_like_html_error(&output)? {
-                            let _ = fs::remove_file(&output);
-                            log::warn!(
-                                "ACE MAG browse {} returned HTML error content; skipped {}",
-                                year,
-                                fname
-                            );
-                        } else {
-                            log::info!("Saved {} ({} bytes)", fname, bytes);
-                        }
-                    }
-                    _ => {
-                        log::debug!("ACE MAG browse {} not found at {}", fname, url);
-                    }
-                }
+            let fname = format!("ac_h2_mfi_{year}.csv");
+            let output = dir.join(&fname);
+            if config.skip_existing && output.exists() {
+                continue;
             }
+            let body = download_hapi_csv(
+                ACE_MAG_HAPI_DATASET,
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                Some(&["Time", "Magnitude", "BGSEc"]),
+            )?;
+            fs::write(&output, body)?;
+            log::info!("Saved {}", fname);
         }
 
         Ok(dir)
@@ -387,13 +364,41 @@ impl DatasetProvider for AceMagProvider {
     }
 }
 
-fn file_looks_like_html_error(path: &Path) -> Result<bool, FetchError> {
-    let content = fs::read(path)
-        .map_err(|e| FetchError::Validation(format!("read {}: {}", path.display(), e)))?;
-    let head = String::from_utf8_lossy(&content[..content.len().min(256)]).to_ascii_lowercase();
-    Ok(head.contains("<!doctype html")
-        || head.contains("<html")
-        || head.contains("404 not found"))
+/// Parse ACE MAG hourly HAPI CSV data.
+pub fn parse_ace_mag_hapi_csv(content: &str) -> Vec<AceMagHourly> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut rows = Vec::new();
+    for (hour_index, record) in reader.records().enumerate() {
+        let Ok(record) = record else {
+            continue;
+        };
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        rows.push(AceMagHourly {
+            hour_index,
+            year,
+            doy,
+            hour,
+            b_magnitude: parse_f64_or_nan(record.get(1).unwrap_or("")),
+            bx_gse: parse_f64_or_nan(record.get(2).unwrap_or("")),
+            by_gse: parse_f64_or_nan(record.get(3).unwrap_or("")),
+            bz_gse: parse_f64_or_nan(record.get(4).unwrap_or("")),
+            sample_count: 1,
+        });
+    }
+    rows
+}
+
+pub fn parse_ace_mag_hapi_file(path: &Path) -> Result<Vec<AceMagHourly>, FetchError> {
+    let content = fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
+    Ok(parse_ace_mag_hapi_csv(&content))
 }
 
 #[cfg(test)]

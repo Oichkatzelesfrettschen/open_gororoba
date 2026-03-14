@@ -3,7 +3,7 @@ use chrono::Datelike;
 use clap::Parser;
 use data_core::{
     catalogs::{
-        ace_mag::{AceMagHourly, average_to_hourly, parse_ace_mag_file},
+        ace_mag::{AceMagHourly, average_to_hourly, parse_ace_mag_file, parse_ace_mag_hapi_file},
         cassini::parse_cassini_cruise_file,
         helios::{HeliosSpacecraft, parse_helios_file},
         ibex::parse_ibex_ena_file,
@@ -204,7 +204,10 @@ fn main() -> Result<()> {
     let ace_mag = load_ace_mag_hourly_optional(&cli.ace_mag_dir)?;
     let ace_swepam = load_records_optional(
         &cli.ace_swepam_dir,
-        |path| file_name_starts_with(path, "swepam_h2s_") && file_name_ends_with(path, ".txt"),
+        |path| {
+            (file_name_starts_with(path, "swepam_h2s_") && file_name_ends_with(path, ".txt"))
+                || (file_name_starts_with(path, "ac_h2_swe_") && file_name_ends_with(path, ".csv"))
+        },
         |path| Ok(parse_swepam_file(path)?),
     )?;
     let wind_mfi = load_records_optional(
@@ -219,17 +222,20 @@ fn main() -> Result<()> {
     )?;
     let stereo_plastic = load_records_optional(
         &cli.stereo_plastic_dir,
-        |path| file_name_ends_with(path, ".txt"),
+        |path| file_name_ends_with(path, ".txt") || file_name_ends_with(path, ".csv"),
         |path| Ok(parse_stereo_plastic_file(path)?),
     )?;
     let stereo_mag = load_records_optional(
         &cli.stereo_impact_dir,
-        |path| file_name_ends_with(path, ".txt"),
+        |path| file_name_ends_with(path, ".txt") || file_name_ends_with(path, ".csv"),
         |path| Ok(parse_stereo_magplasma_file(path)?),
     )?;
     let ulysses = load_merged_optional(
         &cli.ulysses_dir,
-        |path| file_name_starts_with(path, "uly_") && file_name_ends_with(path, ".asc"),
+        |path| {
+            (file_name_starts_with(path, "uly_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "uy_coho1hr_") && file_name_ends_with(path, ".csv"))
+        },
         |path| Ok(parse_ulysses_file(path)?),
     )?;
     let helios1 = load_merged_optional(
@@ -249,12 +255,20 @@ fn main() -> Result<()> {
     )?;
     let juno = load_merged_optional(
         &cli.juno_dir,
-        |path| file_name_starts_with(path, "juno_") && file_name_ends_with(path, ".asc"),
+        |path| {
+            (file_name_starts_with(path, "juno_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "juno_helio1hr_position_")
+                    && file_name_ends_with(path, ".csv"))
+        },
         |path| Ok(parse_juno_cruise_file(path)?),
     )?;
     let new_horizons = load_merged_optional(
         &cli.new_horizons_dir,
-        |path| file_name_starts_with(path, "nh_swap_") && file_name_ends_with(path, ".asc"),
+        |path| {
+            (file_name_starts_with(path, "nh_swap_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "new_horizons_helio1hr_position_")
+                    && file_name_ends_with(path, ".csv"))
+        },
         |path| Ok(parse_nh_swap_file(path)?),
     )?;
     let ibex_path = first_matching_file(&cli.ibex_dir, |path| file_name_ends_with(path, ".csv"))?;
@@ -485,7 +499,7 @@ fn main() -> Result<()> {
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[2].simultaneous_day_bins > 0,
             },
-            Some("SQLite source contracts are still incomplete here because ACE MAG is not yet represented as its own external-source contract.".to_string()),
+            Some("Near-Earth HAPI lane now uses distinct SQLite-authored ACE MAG and ACE SWEPAM contracts.".to_string()),
         ),
         build_coverage_row(
             "WIND",
@@ -501,14 +515,14 @@ fn main() -> Result<()> {
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[3].simultaneous_day_bins > 0,
             },
-            Some("SQLite source contracts are still incomplete here because the current external-source inventory only covers an older AMDA-derived WIND lane.".to_string()),
+            Some("WIND now has dedicated SQLite-authored MFI and SWE source contracts alongside the executed OMNI overlap lane.".to_string()),
         ),
         build_coverage_row(
             "STEREO-A",
             &["StereoPlasticProvider", "StereoMagProvider"],
             &[&cli.stereo_plastic_dir, &cli.stereo_impact_dir],
             CoverageStatus {
-                parser_working: stereo_plastic.is_some() || stereo_mag.is_some(),
+                parser_working: stereo_plastic.is_some() && stereo_mag.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
                     &["SRC-STEREO-A-PLASTIC-1HR", "SRC-STEREO-A-IMPACT-MAG"],
@@ -517,7 +531,7 @@ fn main() -> Result<()> {
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[4].simultaneous_day_bins > 0,
             },
-            Some("Full 4D parity depends on governed MAG text exports; the current Rust provider can stage the directory but not yet bulk-acquire the MAG text export automatically.".to_string()),
+            Some("STEREO-A now uses paired HAPI-driven PLASTIC and merged MAG/plasma contracts; real parity still requires both components to parse in the same run.".to_string()),
         ),
         build_coverage_row(
             "Ulysses",
@@ -764,16 +778,21 @@ where
 
 fn load_ace_mag_hourly_optional(dir: &Path) -> Result<Option<Vec<AceMagHourly>>> {
     let paths = collect_matching_paths(dir, |path| {
-        file_name_starts_with(path, "ACE_MAG16_") && file_name_ends_with(path, ".txt")
+        (file_name_starts_with(path, "ACE_MAG16_") && file_name_ends_with(path, ".txt"))
+            || (file_name_starts_with(path, "ac_h2_mfi_") && file_name_ends_with(path, ".csv"))
     })?;
     if paths.is_empty() {
         return Ok(None);
     }
-    let mut raw = Vec::new();
+    let mut hourly = Vec::new();
     for path in paths {
-        raw.extend(parse_ace_mag_file(&path).with_context(|| format!("parse {}", path.display()))?);
+        if path.extension().and_then(|value| value.to_str()) == Some("csv") {
+            hourly.extend(parse_ace_mag_hapi_file(&path).with_context(|| format!("parse {}", path.display()))?);
+        } else {
+            let raw = parse_ace_mag_file(&path).with_context(|| format!("parse {}", path.display()))?;
+            hourly.extend(average_to_hourly(&raw));
+        }
     }
-    let hourly = average_to_hourly(&raw);
     if hourly.is_empty() {
         Ok(None)
     } else {
@@ -975,15 +994,15 @@ fn stereo_plastic_overlay_series(
 
 fn stereo_mag_overlay_series(path: &Path, records: Option<&[StereoMagRecord]>) -> OverlaySeries {
     overlay_series(
-        "STEREO-A MAG text export",
+        "STEREO-A merged MAG/plasma",
         path,
         records.map(|rows| rows.len()).unwrap_or(0),
         records.and_then(bounds_from_stereo_mag),
         records.map(stereo_mag_day_keys).unwrap_or_default(),
         if !path.exists() {
-            Some("STEREO-A MAG text exports are not staged locally.".to_string())
+            Some("STEREO-A merged MAG/plasma files are not staged locally.".to_string())
         } else {
-            Some("Current Rust provider only stages the directory; governed text exports must still be populated for parsing.".to_string())
+            Some("Current Rust lane uses the SQLite-authored HAPI contract for the merged STEREO-A MAG/plasma feed.".to_string())
         },
     )
 }

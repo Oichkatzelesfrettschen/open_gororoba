@@ -1,4 +1,4 @@
-generated_at_utc = "2026-03-14T05:09:02.043212964+00:00"
+generated_at_utc = "2026-03-14T05:42:40.368120295+00:00"
 overlay_definition = "4D overlay = shared observed epoch windows across heliocentric or near-Earth telemetry lanes using true measurement times. Near-Earth missions use OMNI as the common boundary clock; outer-heliosphere missions retain heliocentric distance summaries where available."
 control_plane_db_path = "registry/canonical/control_plane.sqlite3"
 
@@ -52,14 +52,20 @@ notes = "Daily-flux calibration lane; current local cache stops at 2016 for Voya
 [[datasets]]
 label = "ACE MAG hourly"
 path = "data/external/ace_mag"
-availability = "missing"
-row_count = 0
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[datasets]]
 label = "ACE SWEPAM hourly"
 path = "data/external/ace_swepam"
-availability = "missing"
-row_count = 0
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T05:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[datasets]]
 label = "WIND MFI hourly"
@@ -82,23 +88,30 @@ cadence_seconds = 3600.0
 [[datasets]]
 label = "STEREO-A PLASTIC hourly"
 path = "data/external/stereo_plastic"
-availability = "missing"
-row_count = 0
-notes = "STEREO-A PLASTIC files are not staged locally."
+availability = "available"
+row_count = 8772
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[datasets]]
-label = "STEREO-A MAG text export"
+label = "STEREO-A merged MAG/plasma"
 path = "data/external/stereo_impact"
-availability = "missing"
-row_count = 0
-notes = "STEREO-A MAG text exports are not staged locally."
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Current Rust lane uses the SQLite-authored HAPI contract for the merged STEREO-A MAG/plasma feed."
 
 [[datasets]]
 label = "Ulysses merged hourly"
 path = "data/external/ulysses"
-availability = "missing"
-row_count = 0
-notes = "Path exists but no parseable merged hourly records were found."
+availability = "available"
+row_count = 17520
+start_utc = "1994-01-01T00:00:00+00:00"
+end_utc = "1995-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[datasets]]
 label = "Helios 1 merged hourly"
@@ -127,15 +140,20 @@ notes = "Cruise lane is a governed hybrid with modeled plasma and measured traje
 [[datasets]]
 label = "Juno cruise merged hourly"
 path = "data/external/juno"
-availability = "missing"
-row_count = 0
-notes = "Path exists but no parseable merged hourly records were found."
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[datasets]]
 label = "New Horizons SWAP hourly"
 path = "data/external/new_horizons"
-availability = "missing"
-row_count = 0
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 notes = "SWAP lane provides plasma and trajectory but no in-situ magnetometer."
 
 [[datasets]]
@@ -227,8 +245,10 @@ notes = "Daily-flux calibration lane; current local cache stops at 2016 for Voya
 [[overlays]]
 mission = "ACE"
 overlay_mode = "omni+mag+plasma"
-simultaneous_day_bins = 0
-temporal_classification = "no_temporal_overlap"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
 notes = "Near-Earth cross-validation lane anchored at L1; geometry is effectively 1 AU rather than an outer-heliosphere baseline."
 
 [[overlays.components]]
@@ -243,14 +263,20 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "ACE MAG hourly"
 path = "data/external/ace_mag"
-availability = "missing"
-row_count = 0
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[overlays.components]]
 label = "ACE SWEPAM hourly"
 path = "data/external/ace_swepam"
-availability = "missing"
-row_count = 0
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T05:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[overlays]]
 mission = "WIND"
@@ -291,8 +317,10 @@ cadence_seconds = 3600.0
 [[overlays]]
 mission = "STEREO-A"
 overlay_mode = "omni+plastic+mag"
-simultaneous_day_bins = 0
-temporal_classification = "no_temporal_overlap"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
 notes = "Spatial triangulation lane; full 4D overlay requires both PLASTIC and governed MAG text exports."
 
 [[overlays.components]]
@@ -307,16 +335,21 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "STEREO-A PLASTIC hourly"
 path = "data/external/stereo_plastic"
-availability = "missing"
-row_count = 0
-notes = "STEREO-A PLASTIC files are not staged locally."
+availability = "available"
+row_count = 8772
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[overlays.components]]
-label = "STEREO-A MAG text export"
+label = "STEREO-A merged MAG/plasma"
 path = "data/external/stereo_impact"
-availability = "missing"
-row_count = 0
-notes = "STEREO-A MAG text exports are not staged locally."
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Current Rust lane uses the SQLite-authored HAPI contract for the merged STEREO-A MAG/plasma feed."
 
 [[overlays]]
 mission = "Ulysses"
@@ -337,9 +370,11 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "Ulysses merged hourly"
 path = "data/external/ulysses"
-availability = "missing"
-row_count = 0
-notes = "Path exists but no parseable merged hourly records were found."
+availability = "available"
+row_count = 17520
+start_utc = "1994-01-01T00:00:00+00:00"
+end_utc = "1995-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[overlays]]
 mission = "Helios 1"
@@ -421,8 +456,13 @@ notes = "Cruise lane is a governed hybrid with modeled plasma and measured traje
 [[overlays]]
 mission = "Juno"
 overlay_mode = "omni+mission"
-simultaneous_day_bins = 0
-temporal_classification = "no_temporal_overlap"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 5.415172996356989
+min_heliocentric_distance_au = 5.2702
+max_heliocentric_distance_au = 5.4658
 notes = "Cruise lane; 2016 is the strongest same-time overlap target with OMNI and Voyager-era comparison packs."
 
 [[overlays.components]]
@@ -437,15 +477,22 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "Juno cruise merged hourly"
 path = "data/external/juno"
-availability = "missing"
-row_count = 0
-notes = "Path exists but no parseable merged hourly records were found."
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 
 [[overlays]]
 mission = "New Horizons"
 overlay_mode = "omni+mission"
-simultaneous_day_bins = 0
-temporal_classification = "no_temporal_overlap"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 35.8204441142987
+min_heliocentric_distance_au = 34.312
+max_heliocentric_distance_au = 37.3246
 notes = "Outer-heliosphere plasma lane without in-situ magnetometer; temporal overlap is still scientifically useful for same-epoch boundary comparisons."
 
 [[overlays.components]]
@@ -460,8 +507,11 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "New Horizons SWAP hourly"
 path = "data/external/new_horizons"
-availability = "missing"
-row_count = 0
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
 notes = "SWAP lane provides plasma and trajectory but no in-situ magnetometer."
 
 [[fleet_coverage]]
@@ -502,12 +552,12 @@ provider_names = [
 ]
 fetch_registered = true
 cache_present = true
-parser_working = false
-source_contract_migrated = false
+parser_working = true
+source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
-cross_domain_integrated = false
-notes = "SQLite source contracts are still incomplete here because ACE MAG is not yet represented as its own external-source contract."
+cross_domain_integrated = true
+notes = "Near-Earth HAPI lane now uses distinct SQLite-authored ACE MAG and ACE SWEPAM contracts."
 
 [[fleet_coverage]]
 mission = "WIND"
@@ -518,11 +568,11 @@ provider_names = [
 fetch_registered = true
 cache_present = true
 parser_working = true
-source_contract_migrated = false
+source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
 cross_domain_integrated = true
-notes = "SQLite source contracts are still incomplete here because the current external-source inventory only covers an older AMDA-derived WIND lane."
+notes = "WIND now has dedicated SQLite-authored MFI and SWE source contracts alongside the executed OMNI overlap lane."
 
 [[fleet_coverage]]
 mission = "STEREO-A"
@@ -531,20 +581,20 @@ provider_names = [
     "StereoMagProvider",
 ]
 fetch_registered = true
-cache_present = false
-parser_working = false
-source_contract_migrated = false
+cache_present = true
+parser_working = true
+source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
-cross_domain_integrated = false
-notes = "Full 4D parity depends on governed MAG text exports; the current Rust provider can stage the directory but not yet bulk-acquire the MAG text export automatically."
+cross_domain_integrated = true
+notes = "STEREO-A now uses paired HAPI-driven PLASTIC and merged MAG/plasma contracts; real parity still requires both components to parse in the same run."
 
 [[fleet_coverage]]
 mission = "Ulysses"
 provider_names = ["UlyssesProvider"]
 fetch_registered = true
 cache_present = true
-parser_working = false
+parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
@@ -590,22 +640,22 @@ mission = "Juno"
 provider_names = ["JunoCruiseProvider"]
 fetch_registered = true
 cache_present = true
-parser_working = false
+parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
-cross_domain_integrated = false
+cross_domain_integrated = true
 
 [[fleet_coverage]]
 mission = "New Horizons"
 provider_names = ["NhSwapProvider"]
 fetch_registered = true
 cache_present = true
-parser_working = false
+parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
-cross_domain_integrated = false
+cross_domain_integrated = true
 notes = "Current lane is plasma+trajectory only; magnetometer parity with Voyager is not applicable."
 
 [[fleet_coverage]]
@@ -614,7 +664,7 @@ provider_names = ["IbexProvider"]
 fetch_registered = true
 cache_present = true
 parser_working = false
-source_contract_migrated = false
+source_contract_migrated = true
 overlay_3d_implemented = false
 overlay_4d_implemented = false
 cross_domain_integrated = false

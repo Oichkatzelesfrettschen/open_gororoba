@@ -4,6 +4,8 @@
 //! different sentinel set. This module consolidates them into two functions
 //! whose sentinel lists are the union of all per-catalog variants.
 
+use chrono::{DateTime, Datelike, Timelike, Utc};
+
 /// Sentinels that map to NAN across all catalogs.
 ///
 /// Union of: empty, "nan", "NaN", "null", "NULL", "--", "...",
@@ -101,6 +103,13 @@ pub fn galactic_to_equatorial_j2000(l_deg: f64, b_deg: f64) -> (f64, f64) {
     (ra_deg, dec_deg)
 }
 
+/// Parse an RFC 3339 / ISO-8601 timestamp into (year, day-of-year, hour).
+pub fn parse_hapi_time_to_ydh(s: &str) -> Option<(u16, u16, u8)> {
+    let dt = DateTime::parse_from_rfc3339(s).ok()?;
+    let utc = dt.with_timezone(&Utc);
+    Some((utc.year() as u16, utc.ordinal() as u16, utc.hour() as u8))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -159,5 +168,11 @@ mod tests {
         let (ra_deg, dec_deg) = galactic_to_equatorial_j2000(0.0, 0.0);
         assert!((ra_deg - 266.40499).abs() < 0.02, "ra_deg={}", ra_deg);
         assert!((dec_deg + 28.93617).abs() < 0.02, "dec_deg={}", dec_deg);
+    }
+
+    #[test]
+    fn test_parse_hapi_time_to_ydh() {
+        let parsed = parse_hapi_time_to_ydh("2016-01-02T03:04:05.000Z").expect("time");
+        assert_eq!(parsed, (2016, 2, 3));
     }
 }

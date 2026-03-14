@@ -4,6 +4,7 @@
 //! that all catalog modules share.
 
 use crate::download_stack::{DownloadStack, TransferRequest};
+use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{
     fs,
@@ -75,6 +76,152 @@ pub fn download_to_string(url: &str) -> Result<String, FetchError> {
             url: url.to_string(),
             source: Box::new(source),
         })
+}
+
+const HAPI_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/hapi/data";
+const HAPI_INFO_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/hapi/info";
+
+#[derive(Debug, Clone)]
+struct HapiParameterDef {
+    name: String,
+    size: Vec<usize>,
+}
+
+/// Return true when a HAPI response encodes "no data for time range".
+pub fn is_hapi_no_data_response(body: &str) -> bool {
+    let trimmed = body.trim_start();
+    trimmed.starts_with('{')
+        && trimmed.contains("\"code\": 1201")
+        && trimmed.to_ascii_lowercase().contains("no data")
+}
+
+fn hapi_parameter_defs(dataset_id: &str) -> Result<Vec<HapiParameterDef>, FetchError> {
+    let info_url = format!("{HAPI_INFO_ROOT}?id={dataset_id}");
+    let info = download_to_string(&info_url)?;
+    let value: Value = serde_json::from_str(&info).map_err(|err| {
+        FetchError::Validation(format!("invalid HAPI info JSON for {dataset_id}: {err}"))
+    })?;
+    let parameters = value
+        .get("parameters")
+        .and_then(Value::as_array)
+        .ok_or_else(|| {
+            FetchError::Validation(format!(
+                "HAPI info for {dataset_id} is missing parameters"
+            ))
+        })?;
+    let defs = parameters
+        .iter()
+        .filter_map(|parameter| {
+            let name = parameter.get("name").and_then(Value::as_str)?.to_string();
+            let size = parameter
+                .get("size")
+                .and_then(Value::as_array)
+                .map(|values| {
+                    values
+                        .iter()
+                        .filter_map(Value::as_u64)
+                        .map(|value| value as usize)
+                        .collect::<Vec<_>>()
+                })
+                .unwrap_or_default();
+            Some(HapiParameterDef { name, size })
+        })
+        .collect::<Vec<_>>();
+    if defs.is_empty() {
+        return Err(FetchError::Validation(format!(
+            "HAPI info for {dataset_id} exposed zero parameter names"
+        )));
+    }
+    Ok(defs)
+}
+
+fn expand_hapi_parameter_columns(def: &HapiParameterDef) -> Vec<String> {
+    let width = if def.size.is_empty() {
+        1
+    } else {
+        def.size
+            .iter()
+            .copied()
+            .fold(1_usize, |acc, value| acc.saturating_mul(value.max(1)))
+    };
+    if width <= 1 {
+        return vec![def.name.clone()];
+    }
+    (0..width)
+        .map(|index| format!("{}_{}", def.name, index))
+        .collect()
+}
+
+fn hapi_parameter_names(
+    dataset_id: &str,
+    requested: Option<&[&str]>,
+) -> Result<Vec<String>, FetchError> {
+    let defs = hapi_parameter_defs(dataset_id)?;
+    let mut names = Vec::new();
+    if let Some(requested) = requested {
+        for requested_name in requested {
+            let Some(def) = defs.iter().find(|def| def.name == *requested_name) else {
+                return Err(FetchError::Validation(format!(
+                    "HAPI info for {dataset_id} is missing requested parameter {requested_name}"
+                )));
+            };
+            names.extend(expand_hapi_parameter_columns(def));
+        }
+    } else {
+        for def in &defs {
+            names.extend(expand_hapi_parameter_columns(def));
+        }
+    }
+    Ok(names)
+}
+
+fn synthesize_hapi_header_if_missing(
+    dataset_id: &str,
+    body: &str,
+    requested: Option<&[&str]>,
+) -> Result<String, FetchError> {
+    let trimmed = body.trim_start();
+    if trimmed.starts_with('{') {
+        return Err(FetchError::Validation(format!(
+            "dataset {dataset_id} returned JSON instead of tabular CSV"
+        )));
+    }
+    let first_line = trimmed.lines().next().unwrap_or("");
+    let starts_like_data = first_line
+        .chars()
+        .next()
+        .map(|ch| ch.is_ascii_digit())
+        .unwrap_or(false);
+    if !starts_like_data {
+        return Ok(body.to_string());
+    }
+    let header = hapi_parameter_names(dataset_id, requested)?.join(",");
+    Ok(format!("{header}\n{body}"))
+}
+
+/// Download CSV rows from the CDAWeb HAPI endpoint and synthesize a header.
+pub fn download_hapi_csv(
+    dataset_id: &str,
+    time_min: &str,
+    time_max: &str,
+    parameters: Option<&[&str]>,
+) -> Result<String, FetchError> {
+    let mut url = format!(
+        "{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv"
+    );
+    if let Some(parameters) = parameters
+        && !parameters.is_empty()
+    {
+        url.push_str("&parameters=");
+        url.push_str(&parameters.join(","));
+    }
+    let body = download_to_string(&url)?;
+    if is_hapi_no_data_response(&body) {
+        return Err(FetchError::Validation(format!(
+            "dataset {dataset_id} returned no data for requested window {time_min}..{time_max}"
+        )));
+    }
+    synthesize_hapi_header_if_missing(dataset_id, &body, parameters)
 }
 
 /// Compute SHA-256 hash of a file, returning hex string.
@@ -309,5 +456,26 @@ BatchEnd\n";
         assert_eq!(lines[0], "name,ra,dec");
         assert_eq!(lines[1], "GRB080714086,12.34,56.78");
         assert_eq!(lines[2], "GRB090101,98.10,-12.3");
+    }
+
+    #[test]
+    fn test_expand_hapi_parameter_columns_scalar() {
+        let def = HapiParameterDef {
+            name: "RAD_AU".to_string(),
+            size: Vec::new(),
+        };
+        assert_eq!(expand_hapi_parameter_columns(&def), vec!["RAD_AU"]);
+    }
+
+    #[test]
+    fn test_expand_hapi_parameter_columns_vector() {
+        let def = HapiParameterDef {
+            name: "BGSEc".to_string(),
+            size: vec![3],
+        };
+        assert_eq!(
+            expand_hapi_parameter_columns(&def),
+            vec!["BGSEc_0", "BGSEc_1", "BGSEc_2"]
+        );
     }
 }

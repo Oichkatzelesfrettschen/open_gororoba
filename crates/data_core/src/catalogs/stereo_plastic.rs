@@ -19,8 +19,10 @@
 
 use crate::{
     catalogs::omni::OmniRecord,
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
 };
+use csv::ReaderBuilder;
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
@@ -247,7 +249,38 @@ pub fn parse_stereo_plastic(content: &str) -> Vec<StereoPlasticRecord> {
 pub fn parse_stereo_plastic_file(path: &Path) -> Result<Vec<StereoPlasticRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
-    Ok(parse_stereo_plastic(&content))
+    if path.extension().and_then(|value| value.to_str()) == Some("csv") {
+        Ok(parse_stereo_plastic_hapi_csv(&content))
+    } else {
+        Ok(parse_stereo_plastic(&content))
+    }
+}
+
+pub fn parse_stereo_plastic_hapi_csv(content: &str) -> Vec<StereoPlasticRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut records = Vec::new();
+    for record in reader.records().flatten() {
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        records.push(StereoPlasticRecord {
+            year,
+            doy,
+            hour,
+            proton_density: parse_f64_or_nan(record.get(1).unwrap_or("")),
+            bulk_speed: parse_f64_or_nan(record.get(2).unwrap_or("")),
+            temperature: parse_f64_or_nan(record.get(3).unwrap_or("")),
+            vr: parse_f64_or_nan(record.get(4).unwrap_or("")),
+            vt: parse_f64_or_nan(record.get(5).unwrap_or("")),
+            vn: parse_f64_or_nan(record.get(6).unwrap_or("")),
+        });
+    }
+    records
 }
 
 /// Parse STEREO-A MAGPLASMA CDAWeb text export.
@@ -330,7 +363,37 @@ pub fn parse_stereo_magplasma(content: &str) -> Vec<StereoMagRecord> {
 pub fn parse_stereo_magplasma_file(path: &Path) -> Result<Vec<StereoMagRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
-    Ok(parse_stereo_magplasma(&content))
+    if path.extension().and_then(|value| value.to_str()) == Some("csv") {
+        Ok(parse_stereo_mag_hapi_csv(&content))
+    } else {
+        Ok(parse_stereo_magplasma(&content))
+    }
+}
+
+pub fn parse_stereo_mag_hapi_csv(content: &str) -> Vec<StereoMagRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut records = Vec::new();
+    for record in reader.records().flatten() {
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        records.push(StereoMagRecord {
+            year,
+            doy,
+            hour,
+            minute: 0,
+            br: parse_f64_or_nan(record.get(4).unwrap_or("")),
+            bt: parse_f64_or_nan(record.get(5).unwrap_or("")),
+            bn: parse_f64_or_nan(record.get(6).unwrap_or("")),
+            b_magnitude: parse_f64_or_nan(record.get(7).unwrap_or("")),
+        });
+    }
+    records
 }
 
 // ---------------------------------------------------------------------------
@@ -545,39 +608,27 @@ impl DatasetProvider for StereoPlasticProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let n_days = if year.is_multiple_of(4)
-                && (!year.is_multiple_of(100) || year.is_multiple_of(400))
-            {
-                366
-            } else {
-                365
-            };
-            for doy in 1..=n_days {
-                let fname = format!(
-                    "STA_L2_PLA_1DMax_1hr_{}{:03}_{:03}_V10.txt",
-                    year,
-                    // Convert DOY to MMDD for filename
-                    doy,
-                    doy,
-                );
-                let output = dir.join(&fname);
-                if config.skip_existing && output.exists() {
-                    continue;
-                }
-                // STEREO SSC URL pattern
-                let url = format!(
-                    "https://stereo-ssc.nascom.nasa.gov/data/ins_data/plastic/level2/Protons/Derived_from_1D_Maxwellian/ASCII/1hr/A/{}/{}",
-                    year, fname,
-                );
-                match download_to_file(&url, &output) {
-                    Ok(bytes) if bytes > 0 => {
-                        log::info!("Saved {} ({} bytes)", fname, bytes);
-                    }
-                    _ => {
-                        log::debug!("STEREO PLASTIC {} not found", fname);
-                    }
-                }
+            let fname = format!("sta_l2_pla_1dmax_1hr_{year}.csv");
+            let output = dir.join(&fname);
+            if config.skip_existing && output.exists() {
+                continue;
             }
+            let body = download_hapi_csv(
+                "STA_L2_PLA_1DMAX_1HR",
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                Some(&[
+                    "Time",
+                    "proton_number_density_1hr",
+                    "proton_bulk_speed_1hr",
+                    "proton_temperature_1hr",
+                    "proton_Vr_HERTN_1hr",
+                    "proton_Vt_HERTN_1hr",
+                    "proton_Vn_HERTN_1hr",
+                ]),
+            )?;
+            std::fs::write(&output, body)?;
+            log::info!("Saved {}", fname);
         }
 
         Ok(dir)
@@ -611,10 +662,21 @@ impl DatasetProvider for StereoMagProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let dir = config.output_dir.join("stereo_impact");
         std::fs::create_dir_all(&dir)?;
-        // MAGPLASMA CDF files at SPDF are yearly (~75 MB).
-        // For now, create the governed staging directory and rely on a Rust-side
-        // CDAWeb text-export acquisition path before parsing.
-        log::info!("STEREO MAGPLASMA staging directory created; populate with governed CDAWeb text exports for parsing");
+        for year in self.year_start..=self.year_end {
+            let fname = format!("sta_coho1hr_merged_mag_plasma_{year}.csv");
+            let output = dir.join(&fname);
+            if config.skip_existing && output.exists() {
+                continue;
+            }
+            let body = download_hapi_csv(
+                "STA_COHO1HR_MERGED_MAG_PLASMA",
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                None,
+            )?;
+            std::fs::write(&output, body)?;
+            log::info!("Saved {}", fname);
+        }
         Ok(dir)
     }
 

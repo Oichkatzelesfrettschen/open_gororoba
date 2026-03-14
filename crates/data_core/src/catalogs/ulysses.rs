@@ -42,8 +42,10 @@ use crate::{
         spdf_fleet::SpdfMission,
         spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
 };
+use csv::ReaderBuilder;
 use std::{collections::BTreeMap, path::PathBuf};
 
 /// SPDF column layout for Ulysses merged hourly data.
@@ -135,7 +137,44 @@ pub fn parse_ulysses_merged(content: &str) -> Vec<SpdfMergedRecord> {
 
 /// Parse Ulysses merged hourly data from a file.
 pub fn parse_ulysses_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
-    ULYSSES_MISSION.parse_file(path)
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
+    if path.extension().and_then(|value| value.to_str()) == Some("csv") {
+        Ok(parse_ulysses_hapi_csv(&content))
+    } else {
+        Ok(parse_ulysses_merged(&content))
+    }
+}
+
+pub fn parse_ulysses_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let mut rows = Vec::new();
+    for record in reader.records().flatten() {
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+        rows.push(SpdfMergedRecord {
+            year,
+            doy,
+            hour,
+            distance_au: parse_f64_or_nan(record.get(1).unwrap_or("")),
+            lat_deg: parse_f64_or_nan(record.get(2).unwrap_or("")),
+            lon_deg: parse_f64_or_nan(record.get(3).unwrap_or("")),
+            br: parse_f64_or_nan(record.get(4).unwrap_or("")),
+            bt: parse_f64_or_nan(record.get(5).unwrap_or("")),
+            bn: parse_f64_or_nan(record.get(6).unwrap_or("")),
+            b_magnitude: parse_f64_or_nan(record.get(7).unwrap_or("")),
+            proton_density: parse_f64_or_nan(record.get(12).unwrap_or("")),
+            bulk_speed: parse_f64_or_nan(record.get(9).unwrap_or("")),
+            proton_temperature: parse_f64_or_nan(record.get(14).unwrap_or("")),
+        });
+    }
+    rows
 }
 
 /// Convert Ulysses records to OmniRecord format.
@@ -214,8 +253,7 @@ pub fn merge_ulysses_swoops_mag(
         .collect()
 }
 
-/// Base URL for Ulysses merged hourly data at SPDF.
-const ULYSSES_MERGED_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/ulysses/merged/";
+const ULYSSES_HAPI_DATASET: &str = "UY_COHO1HR_MERGED_MAG_PLASMA";
 
 /// NASA SPDF Ulysses dataset provider.
 pub struct UlyssesProvider {
@@ -244,13 +282,33 @@ impl DatasetProvider for UlyssesProvider {
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("uly_{}_merged_hourly.asc", year);
+            let fname = format!("uy_coho1hr_merged_mag_plasma_{year}.csv");
             let output = dir.join(&fname);
             if config.skip_existing && output.exists() {
                 continue;
             }
-            let url = format!("{}{}", ULYSSES_MERGED_BASE, fname);
-            match download_to_string(&url) {
+            match download_hapi_csv(
+                ULYSSES_HAPI_DATASET,
+                &format!("{year}-01-01T00:00:00Z"),
+                &format!("{}-01-01T00:00:00Z", year + 1),
+                Some(&[
+                    "Time",
+                    "heliocentricDistance",
+                    "heliographicLatitude",
+                    "heliographicLongitude",
+                    "BR",
+                    "BT",
+                    "BN",
+                    "ABS_B",
+                    "numVectorsMagFldAvg",
+                    "plasmaFlowSpeed",
+                    "elevAngle",
+                    "azimuthAngle",
+                    "protonDensity",
+                    "alphaDensity",
+                    "protonTempLarge",
+                ]),
+            ) {
                 Ok(data) => {
                     std::fs::write(&output, data)?;
                     log::info!("saved {}", fname);
