@@ -1,5 +1,7 @@
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/external_sources.toml -->
+<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+<!-- Source label: XS-017 -->
+<!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
 
 # Pioneer and Flyby Anomaly Primary Sources
 

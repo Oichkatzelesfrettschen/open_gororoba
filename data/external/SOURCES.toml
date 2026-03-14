@@ -1,9 +1,367 @@
-# Canonical external source contract for reproducible download governance.
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources
+# Compatibility export lane: source_contracts
 
 [external_sources]
 updated = "2026-02-25"
 authoritative = true
 policy_version = "v1"
+
+[[source]]
+id = "SRC-ACE-SWEPAM-HOURLY"
+path_glob = "data/external/ace_swepam/**"
+canonical_url = "https://izw1.caltech.edu/ACE/ASC/level2/"
+mirror_urls = [
+  "https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'ACE SWEPAM Solar Wind' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "McComas et al. (1998), Space Sci. Rev. 86, 563",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "solar_wind_proton_ranges",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-ALICE-PBPB-RAA"
+path_glob = "data/external/alice_pbpb_raa/**"
+canonical_url = "https://arxiv.org/abs/2509.07008"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heavy_ion_raa_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-CASSINI-CRUISE-AMDA-HYBRID"
+path_glob = "data/external/cassini/cassini_*_amda_cruise_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/info?id=cass-orb-cruise",
+  "https://amda.irap.omp.eu/service/hapi/info?id=cass-mag-rtn60",
+  "https://amda.irap.omp.eu/service/hapi/info?id=tao-cass-sw",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_cassini.py --start 1998 --end 2004 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a governed hybrid Cassini cruise lane assembled locally from AMDA HAPI sources. Trajectory comes from `cass-orb-cruise`, magnetic field from measured `cass-mag-rtn60`, and plasma from modeled `tao-cass-sw`. It is suitable for late-cruise chronology packs and long-baseline heliosphere trend work, but it should not be mislabeled as a fully measured SPDF merged cruise product. For the full `CRUISE_1997_2004` pack it must be treated as gap-tolerant before 1998-12-30T12:00:00Z, propagating missing values rather than fabricated outer-boundary samples."
+evidence_refs = [
+  "data/external/cassini/cassini_1998_2004_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-CMS-OO-RAA"
+path_glob = "data/external/cms_oo_raa/**"
+canonical_url = "https://arxiv.org/abs/2510.09864"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs cms_oo_raa"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heavy_ion_raa_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-DES-Y6-3X2PT"
+path_glob = "data/external/des_y6/**"
+canonical_url = "https://arxiv.org/abs/2601.14559"
+mirror_urls = [
+  "https://desdr-server.ncsa.illinois.edu/despublic/y6a2_files/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DES Y6 3x2pt' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Key constraints hardcoded in crates/data_core/src/catalogs/des_y6.rs."
+evidence_refs = [
+  "arXiv:2601.14559",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "des_s8_consistency",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-DESI-DR2-BAO"
+path_glob = "data/external/desi_bao/**"
+canonical_url = "https://arxiv.org/abs/2503.14738"
+mirror_urls = [
+  "https://github.com/CobayaSampler/bao_data",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DESI DR2 BAO' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "DR2 BAO values also hardcoded in crates/data_core/src/catalogs/desi_bao.rs::desi_dr2_bao()."
+evidence_refs = [
+  "arXiv:2503.14738",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "bao_distance_monotonicity",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-DM-BIBLIOGRAPHY-PDFS"
+path_glob = "papers/pdf/*_dark_*"
+canonical_url = "https://arxiv.org/"
+mirror_urls = []
+access_class = "open"
+status = "active"
+retrieval_method = "sh papers/pdf/fetch_dm_papers.sh"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "76 dark matter bibliography items; 50 downloadable PDFs (48 arXiv + 1 CDS + 1 APS)."
+evidence_refs = [
+  "papers/MANIFEST.toml",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "dm_bibliography_coverage",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-DOCUMENTS-EXTRACTED"
+path_glob = "data/papers/documents_extracted/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_sources.toml"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/artifact_source_of_truth.toml",
+]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated to data/papers/documents_extracted to remove non-dataset evidence corpora from external replay debt."
+evidence_refs = [
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "registry/external_sources.toml",
+]
+manual_manifest_refs = [
+  "registry/external_sources.toml",
+  "registry/manual_mirror_overrides_2026_02_15.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-DOCUMENTS-INGEST"
+path_glob = "data/papers/documents_ingest/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/data/papers/documents_ingest/MANIFEST.toml"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/papers_pdf.toml",
+]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated to data/papers/documents_ingest to keep manual ingest corpora outside external dataset replay debt."
+evidence_refs = [
+  "data/papers/documents_ingest/MANIFEST.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+manual_manifest_refs = [
+  "data/papers/documents_ingest/MANIFEST.toml",
+  "registry/manual_mirror_overrides_2026_02_15.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-EUCLID-Q1-ESA-TAP"
+path_glob = "data/external/euclid/tap/**"
+canonical_url = "https://eas.esac.esa.int/sas/"
+mirror_urls = [
+  "https://irsa.ipac.caltech.edu/Euclid/",
+  "s3://nasa-irsa-euclid-q1",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- tap-tables|tap-query"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 primary survey catalogs via TAP/ADQL. 21 catalog tables totaling 637M rows across MER (photometry/morphology, 30M objects), PHZ (photo-z, 7 tables, 29.6M objects), SPE (spectroscopy, 11 tables, 29.2M spec-z). SHE (shear) absent from Q1. ESA SAS (primary), IRSA (US mirror, TAP + Gator + IBE bulk), AWS S3 (no-auth, us-east-1). ~35 TB total (imaging+catalogs), 63.1 sq deg across 4 fields (EDF-N/S/Fornax, LDN1641). CC BY-NC 3.0 IGO. Catalog registry at data/external/euclid_q1_catalogs.toml. Rust-native `euclid-fetch` now covers Zenodo discovery/download plus TAP table inspection and bounded MER/PHZ/SPE ADQL queries."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-CLUSTERING"
+path_glob = "data/external/euclid/zenodo/15025557/*.parquet"
+canonical_url = "https://zenodo.org/records/15025557"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog galaxy_clustering"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Galaxy Clustering Catalog. DOI: 10.5281/zenodo.15025557. CC BY 4.0. Angular correlation function measurements and galaxy pair catalogs from Q1."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS"
+path_glob = "data/external/euclid/zenodo/15108017/*.csv"
+canonical_url = "https://zenodo.org/records/15108017"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog compact_groups"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Compact Galaxy Groups. DOI: 10.5281/zenodo.15108017. CC BY 4.0. Group membership catalog for compact galaxy groups identified in Q1 survey fields."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-GC"
+path_glob = "data/external/euclid/zenodo/14951889/*.csv"
+canonical_url = "https://zenodo.org/records/14951889"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog globular_clusters"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Globular Cluster Candidates. DOI: 10.5281/zenodo.14951889. CC BY 4.0. Point-source catalog of globular cluster candidates from Q1 survey."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-MERGERS"
+path_glob = "data/external/euclid/zenodo/17087034/*.csv"
+canonical_url = "https://zenodo.org/records/17087034"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog mergers"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Galaxy Merger Classification. DOI: 10.5281/zenodo.17087034. CC BY 4.0. Q1_merger_classification.csv (39.7 MB). Galaxy merger probability classifications from Q1 survey. Fetched and MD5-verified 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY"
+path_glob = "data/external/euclid/zenodo/15106473/*.parquet"
+canonical_url = "https://zenodo.org/records/15106473"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Visual Morphology Classification Catalogue. DOI: 10.5281/zenodo.15106473. CC BY 4.0. morphology_catalogue.parquet (97.3 MB) + useful_physical_measurements.parquet (67.7 MB). Galaxy visual morphology (Hubble type, bulge/disk/irregular, bar, merger flags) for Q1 survey fields. Fetched and MD5-verified 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP"
+path_glob = "data/external/euclid/zenodo/15027787/*.parquet"
+canonical_url = "https://zenodo.org/records/15027787"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology_supplementary"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Galaxy Morphology Supplementary Release. DOI: 10.5281/zenodo.15027787. CC BY 4.0. Additional morphology data from Q1 survey fields."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-PHOTOZ"
+path_glob = "data/external/euclid/zenodo/14935225/*.parquet"
+canonical_url = "https://zenodo.org/records/14935225"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog photo_z"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Photometric Redshift PDFs. DOI: 10.5281/zenodo.14935225. CC BY 4.0. Posterior probability distributions for photometric redshifts from Q1 survey."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING"
+path_glob = "data/external/euclid/zenodo/15025832/*.csv"
+canonical_url = "https://zenodo.org/records/15025832"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog strong_lensing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Euclid Q1 Strong Lensing Discovery Engine Candidates. DOI: 10.5281/zenodo.15025832. CC BY 4.0. q1_discovery_engine_lens_catalog.csv (422 KB). Strong gravitational lens candidates from Q1 survey. Fetched and MD5-verified 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-EXTERNAL-FETCH-ROOT"
@@ -19,400 +377,504 @@ attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
 evidence_refs = []
-scientific_validator_refs = ["replay_contract_hash"]
-
-[[source]]
-id = "SRC-SDSS-DR18-QUASARS"
-path_glob = "archive/external_nonreproducible_snapshots/sdss_dr18_quasars.csv"
-canonical_url = "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?cmd=SELECT%20TOP%2050000%20%20s.specObjID%20as%20objid%2C%20s.ra%2C%20s.dec%2C%20s.z%2C%20s.zErr%20as%20zerr%2C%20%20p.psfMag_u%20as%20u%2C%20p.psfMag_g%20as%20g%2C%20p.psfMag_r%20as%20r%2C%20%20p.psfMag_i%20as%20i%20FROM%20SpecObj%20s%20JOIN%20PhotoObj%20p%20ON%20s.bestObjID%20%3D%20p.objID%20WHERE%20s.class%20%3D%20%27QSO%27%20AND%20s.zWarning%20%3D%200%20AND%20s.z%20%3E%200.1%20ORDER%20BY%20s.z&format=csv"
-mirror_urls = [
-  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/sdss.rs",
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "replay_contract_hash",
 ]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SDSS DR18 Quasars' --output-dir data/external --skip-existing"
-attempt_deadline_utc = "2026-02-26"
-resolution_deadline_utc = "2026-03-05"
-blocker_note = "Retired mutable SDSS DR18 snapshot from data/external pending deterministic archive-grade fetch contract."
-evidence_refs = [
-  "reports/external_redownload_audit_sdss_2026-02-24.toml",
-  "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
-]
-manual_manifest_refs = [
-  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
-  "reports/external_redownload_audit_sdss_2026-02-24.toml",
-  "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
-path_glob = "archive/external_legacy_placeholders/GWTC-3*.csv"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
-attempt_deadline_utc = "2026-02-27"
-resolution_deadline_utc = "2026-03-07"
-blocker_note = "Retired legacy GWTC derivative placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
-manual_manifest_refs = [
-  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
-  "registry/source_lanes/datasets.toml",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-EXTERNAL-LEGACY-DERIVED-SDSS"
-path_glob = "archive/external_legacy_placeholders/SDSS_*.csv"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
-attempt_deadline_utc = "2026-02-27"
-resolution_deadline_utc = "2026-03-07"
-blocker_note = "Retired legacy SDSS derivative placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
-manual_manifest_refs = [
-  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
-  "registry/source_lanes/datasets.toml",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-EXTERNAL-LEGACY-DERIVED-METADATA"
-path_glob = "archive/external_legacy_placeholders/TESS_Metadata.csv"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
-attempt_deadline_utc = "2026-02-27"
-resolution_deadline_utc = "2026-03-07"
-blocker_note = "Retired legacy TESS metadata placeholder from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
-manual_manifest_refs = [
-  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
-  "registry/source_lanes/datasets.toml",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-EXTERNAL-LEGACY-DERIVED-DESI-QSO"
-path_glob = "archive/external_legacy_placeholders/DESI_QSO.csv"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
-attempt_deadline_utc = "2026-02-27"
-resolution_deadline_utc = "2026-03-07"
-blocker_note = "Retired legacy DESI-QSO placeholder from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml"]
-manual_manifest_refs = [
-  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml",
-  "registry/source_lanes/datasets.toml",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-CHIME"
 path_glob = "archive/external_legacy_placeholders/chime_frb_cat1.csv"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy CHIME placeholder from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-DESI-QSO"
+path_glob = "archive/external_legacy_placeholders/DESI_QSO.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy DESI-QSO placeholder from data/external; archived for provenance-only retention."
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml",
+]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_rerun2.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-CSV-TXT"
 path_glob = "archive/external_legacy_placeholders/eht_*_csv.tgz"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy EHT CSV tarball placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-EHT-TXT"
 path_glob = "archive/external_legacy_placeholders/eht_*_txt.tgz"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy EHT TXT tarball placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-GWTC"
+path_glob = "archive/external_legacy_placeholders/GWTC-3*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy GWTC derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-HIPPARCOS"
 path_glob = "archive/external_legacy_placeholders/hipparcos_parallax*.csv"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy Hipparcos derivative placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-JARVIS-ZIP"
 path_glob = "archive/external_legacy_placeholders/jdft_3d-8-18-2021.json.zip"
 canonical_url = "https://figshare.com/articles/dataset/JARVIS-DFT_3D_dataset/6815699"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar materials --dataset JARVIS --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy JARVIS ZIP placeholder from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-METADATA"
+path_glob = "archive/external_legacy_placeholders/TESS_Metadata.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy TESS metadata placeholder from data/external; archived for provenance-only retention."
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-NANOGRAV-KDE"
 path_glob = "archive/external_legacy_placeholders/nanograv_15yr_kde.zip"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy NANOGrav KDE placeholder from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-PANTHEON"
 path_glob = "archive/external_legacy_placeholders/pantheon_mu*.csv"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy Pantheon placeholder extracts from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-EXTERNAL-LEGACY-DERIVED-SDSS"
+path_glob = "archive/external_legacy_placeholders/SDSS_*.csv"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired legacy SDSS derivative placeholders from data/external; archived for provenance-only retention."
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
+manual_manifest_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-SORCE"
 path_glob = "archive/external_legacy_placeholders/sorce_tsi_*.csv"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SORCE TSI Daily' --output-dir data/external --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy SORCE derivative placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-EXTERNAL-LEGACY-DERIVED-SWARM"
 path_glob = "archive/external_legacy_placeholders/swarm_*.csv"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
 access_class = "public"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'Swarm L1B Magnetic Sample' --output-dir data/external --skip-existing"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy Swarm derivative placeholders from data/external; archived for provenance-only retention."
-evidence_refs = ["reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml"]
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
+]
 manual_manifest_refs = [
   "reports/external_redownload_audit_2026-02-24_continue_phase_lacunae_strict_timeout600.toml",
   "registry/source_lanes/datasets.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
-id = "SRC-SWARM-L1B-MAGNETIC-SAMPLE"
-path_glob = "archive/external_nonreproducible_snapshots/swarm_magnetic_sample.csv"
-canonical_url = "https://vires.services/hapi/data?dataset=SW_OPER_MAGA_LR_1B&parameters=Latitude,Longitude,Radius,F,B_NEC&start=2014-01-01T00:00:00Z&stop=2014-01-01T00:30:00Z&format=csv&include=header"
-mirror_urls = [
-  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/geophysical/swarm.rs",
-]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'Swarm L1B Magnetic Sample' --output-dir data/external --skip-existing"
-attempt_deadline_utc = "2026-02-27"
-resolution_deadline_utc = "2026-03-07"
-blocker_note = "Retired mutable Swarm L1B sample snapshot from data/external pending deterministic replay/freeze contract."
-evidence_refs = ["reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml"]
-manual_manifest_refs = [
-  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
-  "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml",
-  "crates/data_core/src/geophysical/swarm.rs",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-SORCE-TSI-DAILY"
-path_glob = "data/external/sorce_tsi_daily.csv"
-canonical_url = "https://lasp.colorado.edu/data/sorce/tsi_data/daily/sorce_tsi_L3_c24h_latest.txt"
-mirror_urls = [
-  "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_24hr_l3.csv",
-  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/sorce.rs",
-]
+id = "SRC-FLYBY-ANOMALY-ANDERSON-2008-BENCHMARK"
+path_glob = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
+canonical_url = "https://arxiv.org/abs/0712.1053"
+mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SORCE TSI Daily' --output-dir data/external --skip-existing"
+retrieval_method = "Repo-governed benchmark CSV transcribed from Anderson et al. 2008 with bibliography and DOI linkage"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = []
-scientific_validator_refs = ["tsi_physics_invariants"]
-
-[[source]]
-id = "SRC-JARVIS-DFT-3D-JSON"
-path_glob = "data/external/jarvis_dft_3d.json"
-canonical_url = "https://ndownloader.figshare.com/files/15475826"
-mirror_urls = [
-  "https://api.figshare.com/v2/articles/6815699",
-  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/jarvis.rs",
+blocker_note = "Governed flyby anomaly benchmark table for the six canonical Earth flybys. Observation artifact only; not a raw telemetry dump. Used by flyby-residual-audit as the source-of-truth observation table."
+evidence_refs = [
+  "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md",
 ]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'JARVIS-DFT 3D' --output-dir data/external --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = []
-scientific_validator_refs = ["materials_json_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-LHC-ALICE-CMS"
-path_glob = "archive/external_nonreproducible_snapshots/lhc_2025/**"
-canonical_url = "https://arxiv.org/abs/2509.07008"
-mirror_urls = [
-  "https://arxiv.org/abs/2510.09864",
-  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+id = "SRC-GSFC-MIGRATION-2026-03"
+path_glob = "data/external/.gsfc_migration_notice"
+canonical_url = "https://helio.data.nasa.gov/"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "N/A (temporary outage)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "ALL GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb, NSSDC) offline for server migration starting ~2026-03-09. ERR_CONNECTION_REFUSED on ports 21, 22, 443, 990 confirmed via Playwright + curl + lftp 2026-03-10. Expected to resume after migration. HelioData portal banner: 'services will be offline in March while primary servers are moved.' This is a TEMPORARY outage, not a permanent block."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-HDRL-S3-PIONEER-CDF-MIRROR"
+path_glob = "data/external/pioneer/hdrl_s3/**"
+canonical_url = "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "aws s3 ls/cp or curl direct download of CDF files from HDRL S3 bucket (no auth required)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "NASA HDRL (Heliophysics Data Resource Library) S3 bucket. CDF mirror of CDAWeb Pioneer merged hourly data. pioneer10/merged/coho1hr_magplasma_cdaweb/ and pioneer11/merged/coho1hr_magplasma_cdaweb/. Annual CDF files. Alternative to PDS-PPI .TAB format. Confirmed via helio.data.nasa.gov Playwright probe 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
 ]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-HELIOS-SPDF-BLOCKED"
+path_glob = "data/external/helios/**"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/helios/"
+mirror_urls = []
 access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis --"
-attempt_deadline_utc = "2026-02-26"
-resolution_deadline_utc = "2026-03-05"
-blocker_note = "Retired synthetic LHC fixture snapshots from data/external until canonical external download pipeline is implemented."
-evidence_refs = ["reports/LHC_2025_QGP_Full_Synthesis.md"]
-manual_manifest_refs = [
-  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
-  "reports/LHC_2025_QGP_Full_Synthesis.md",
-  "registry/source_lanes/datasets.toml",
+status = "blocked"
+retrieval_method = "N/A (connection refused from this host)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Primary SPDF source for Helios 1/2 merged magnetic field and plasma data. ERR_CONNECTION_REFUSED confirmed via Playwright browser probe 2026-03-10. Use AMDA lane instead."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-ALICE-PBPB-RAA"
-path_glob = "data/external/alice_pbpb_raa/**"
-canonical_url = "https://arxiv.org/abs/2509.07008"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+id = "SRC-HELIOS1-AMDA-COREFIT"
+path_glob = "data/external/helios/helios1/helios1_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios1-e1-all"
+mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs alice_pbpb_raa"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
+blocker_note = "AMDA HAPI-derived lane for Helios 1. Combines helios1-e1-all (proton corefit), helios1-e3-all (MAG 6-sec), helios1-orb-all (orbit) into 13-column SPDF-style merged hourly. Coverage 1974-12 to 1985-09."
 evidence_refs = []
-scientific_validator_refs = ["heavy_ion_raa_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-CMS-OO-RAA"
-path_glob = "data/external/cms_oo_raa/**"
-canonical_url = "https://arxiv.org/abs/2510.09864"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+id = "SRC-HELIOS1-AMDA-MAG"
+path_glob = "data/external/helios/helios1/helios1_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios1-e3-all"
+mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin hepdata-refresh -- --dirs cms_oo_raa"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
+blocker_note = "Helios 1 MAG E3 6-second cadence. Aggregated to hourly medians in the derived merged product."
 evidence_refs = []
-scientific_validator_refs = ["heavy_ion_raa_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-JARVIS-DFT"
-path_glob = "data/external/jarvis_dft/**"
-canonical_url = "https://figshare.com/articles/dataset/JARVIS-DFT_3D_dataset/6815699"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md"]
+id = "SRC-HELIOS2-AMDA-COREFIT"
+path_glob = "data/external/helios/helios2/helios2_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios2-e1-all"
+mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar materials --dataset JARVIS"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios2 --source amda"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
+blocker_note = "AMDA HAPI-derived lane for Helios 2. Combines helios2-e1-all (proton corefit), helios2-e3-all (MAG 6-sec), helios2-orb-all (orbit) into 13-column SPDF-style merged hourly. Coverage 1976-01 to 1980-03."
 evidence_refs = []
-scientific_validator_refs = ["materials_json_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-HELIOS2-AMDA-MAG"
+path_glob = "data/external/helios/helios2/helios2_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios2-e3-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios2 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Helios 2 MAG E3 6-second cadence. Aggregated to hourly medians in the derived merged product."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-HST-UDF-METADATA"
@@ -435,184 +897,36 @@ manual_manifest_refs = [
   "registry/data/external_csv_holding/EH-0006_hst_udf_metadata.toml",
   "registry/external_csv_holding.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-NV-ODMR"
-path_glob = "archive/external_nonreproducible_snapshots/nv_odmr/**"
-canonical_url = "https://doi.org/10.1103/PhysRevResearch.5.013087"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
-access_class = "public"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin spin-decoherence-pipeline --"
-attempt_deadline_utc = "2026-02-26"
-resolution_deadline_utc = "2026-03-05"
-blocker_note = "Retired NV ODMR manual supplement snapshot from data/external pending deterministic downloader wiring."
-evidence_refs = ["registry/source_lanes/datasets.toml"]
-manual_manifest_refs = [
-  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
-  "registry/source_lanes/datasets.toml",
+scientific_validator_refs = [
+  "blocked_manifest_only",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
-id = "SRC-RADIO-SURVEYS"
-path_glob = "data/external/radio_surveys/**"
-canonical_url = "https://sundog.stsci.edu/first/catalogs/readme.html"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml"]
+id = "SRC-IMAP-PLANNED"
+path_glob = "data/external/imap/**"
+canonical_url = "https://imap.princeton.edu/"
+mirror_urls = []
 access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar survey"
+status = "planned"
+retrieval_method = "N/A (merged hourly products not yet published)"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
+blocker_note = "IMAP (Interstellar Mapping and Acceleration Probe) launched Sept 2025. L1 heliosphere boundary mapping. Merged hourly products not yet available."
 evidence_refs = []
-scientific_validator_refs = ["radio_catalog_numeric_invariants"]
-
-[[source]]
-id = "SRC-MANGA-DR17-CATALOGS"
-path_glob = "data/external/manga/**"
-canonical_url = "https://www.sdss.org/dr17/manga/manga-data/data-access/"
-mirror_urls = ["https://data.sdss.org/sas/dr17/manga/spectro/redux/v3_1_1/"]
-access_class = "public"
-status = "active"
-retrieval_method = "Local cached MaNGA DR17 catalogs joined by `cargo run -p gororoba_cli_data --bin lotss-fetch -- manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits`"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "E-198 MaNGA sample contract: `dapall_selection.csv` defines the selected galaxies and `drpall-v3_1_1.fits` supplies `objra`/`objdec` for LoTSS overlap analysis."
-evidence_refs = [
-  "data/external/manga/dapall_selection.csv",
-  "data/external/manga/drpall-v3_1_1.fits",
-  "reports/lotss_manga_preflight_2026-03-13.toml",
-]
+manual_manifest_refs = []
 scientific_validator_refs = []
-
-[[source]]
-id = "SRC-LOTSS-DR2-FITS"
-path_glob = "data/external/radio_surveys/lotss_dr2.fits"
-canonical_url = "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits"
-mirror_urls = ["https://lofar-surveys.org/public/DR2/catalogues/"]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- download --release dr2"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "LoTSS DR2 bulk source catalog used as the wide-area radio baseline for E-198 MaNGA overlap measurements."
-evidence_refs = [
-  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
-  "reports/manga_lotss_xmatch_dr2.toml",
-]
-scientific_validator_refs = ["radio_catalog_numeric_invariants"]
-
-[[source]]
-id = "SRC-LOTSS-DR3-FITS"
-path_glob = "data/external/radio_surveys/lotss_dr3.fits"
-canonical_url = "https://lofar-surveys.org/public/DR3/catalogues/LoTSS_DR3_v1.0.srl.fits"
-mirror_urls = ["https://lofar-surveys.org/public/DR3/catalogues/"]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- download --release dr3"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "Official LoTSS DR3 bulk source catalog is the preferred E-198 path because it avoids large MaNGA-footprint cone-search sweeps while preserving full-sky overlap statistics."
-evidence_refs = [
-  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
-  "reports/lotss_lotss_dr3_summary.toml",
-  "reports/manga_lotss_xmatch_dr3.toml",
-]
-scientific_validator_refs = ["radio_catalog_numeric_invariants"]
-
-[[source]]
-id = "SRC-LOTSS-DR3-MANGA-TILES"
-path_glob = "data/external/radio_surveys/dr3_tiles/**"
-canonical_url = "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml"
-mirror_urls = ["https://lofar-surveys.org/"]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- manga-footprint --tile-dir data/external/radio_surveys/dr3_tiles --summary-out reports/lotss_dr3_manga_footprint_summary.toml"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "LoTSS DR3 cone-search tiles remain available as a bounded-footprint fallback and spot-check path when the bulk FITS path is unavailable or when partial-sky debugging is needed."
-evidence_refs = ["crates/gororoba_cli_data/src/bin/lotss_fetch.rs"]
-scientific_validator_refs = ["radio_catalog_numeric_invariants"]
-
-[[source]]
-id = "SRC-PAPERS-CORPUS"
-path_glob = "data/papers/corpus/**"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_papers_index.toml"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/papers_pdf.toml"]
-access_class = "manual_or_licensed"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
-attempt_deadline_utc = "2026-02-25"
-resolution_deadline_utc = "2026-03-03"
-blocker_note = "Migrated paper corpus from data/external to data/papers/corpus so manual/licensed literature artifacts are outside external replay debt."
-evidence_refs = [
-  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
-  "registry/source_lanes/papers_pdf.toml",
-]
-manual_manifest_refs = [
-  "data/papers/corpus/MANIFEST.toml",
-  "registry/source_lanes/papers_pdf.toml",
-  "registry/manual_mirror_overrides_2026_02_15.toml",
-  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-DOCUMENTS-EXTRACTED"
-path_glob = "data/papers/documents_extracted/**"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_sources.toml"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/artifact_source_of_truth.toml"]
-access_class = "manual_or_licensed"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
-attempt_deadline_utc = "2026-02-25"
-resolution_deadline_utc = "2026-03-03"
-blocker_note = "Migrated to data/papers/documents_extracted to remove non-dataset evidence corpora from external replay debt."
-evidence_refs = [
-  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
-  "registry/external_sources.toml",
-]
-manual_manifest_refs = [
-  "registry/external_sources.toml",
-  "registry/manual_mirror_overrides_2026_02_15.toml",
-  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
-
-[[source]]
-id = "SRC-DOCUMENTS-INGEST"
-path_glob = "data/papers/documents_ingest/**"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/data/papers/documents_ingest/MANIFEST.toml"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/papers_pdf.toml"]
-access_class = "manual_or_licensed"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
-attempt_deadline_utc = "2026-02-25"
-resolution_deadline_utc = "2026-03-03"
-blocker_note = "Migrated to data/papers/documents_ingest to keep manual ingest corpora outside external dataset replay debt."
-evidence_refs = [
-  "data/papers/documents_ingest/MANIFEST.toml",
-  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
-]
-manual_manifest_refs = [
-  "data/papers/documents_ingest/MANIFEST.toml",
-  "registry/manual_mirror_overrides_2026_02_15.toml",
-  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
-]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-INTAKE-TRACE"
 path_glob = "data/papers/intake/**"
 canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/artifact_source_of_truth.toml"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/web_references.toml"]
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/web_references.toml",
+]
 access_class = "manual_or_licensed"
 status = "migrated"
 retrieval_method = "cargo run -p gororoba_cli --bin claims-audit -- --update-source-lanes"
@@ -627,355 +941,433 @@ manual_manifest_refs = [
   "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
   "registry/artifact_source_of_truth.toml",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
-id = "SRC-MAJORANA-MICROSOFT-TGP"
-path_glob = "data/external/arxiv_2207.02472_microsoft_tgp.pdf"
-canonical_url = "https://arxiv.org/abs/2207.02472"
-mirror_urls = ["https://arxiv.org/pdf/2207.02472"]
-access_class = "open"
+id = "SRC-JARVIS-DFT"
+path_glob = "data/external/jarvis_dft/**"
+canonical_url = "https://figshare.com/articles/dataset/JARVIS-DFT_3D_dataset/6815699"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
+]
+access_class = "public"
 status = "active"
-retrieval_method = "wget -O data/external/arxiv_2207.02472_microsoft_tgp.pdf https://arxiv.org/pdf/2207.02472"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar materials --dataset JARVIS"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
-evidence_refs = ["Phys. Rev. B 107, 245423 (2023)"]
-scientific_validator_refs = ["majorana_tgp_protocol"]
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "materials_json_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-MAJORANA-NAYAK-TQC"
-path_glob = "data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf"
-canonical_url = "https://arxiv.org/abs/0707.1889"
-mirror_urls = ["https://arxiv.org/pdf/0707.1889"]
-access_class = "open"
+id = "SRC-JARVIS-DFT-3D-JSON"
+path_glob = "data/external/jarvis_dft_3d.json"
+canonical_url = "https://ndownloader.figshare.com/files/15475826"
+mirror_urls = [
+  "https://api.figshare.com/v2/articles/6815699",
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/jarvis.rs",
+]
+access_class = "public"
 status = "active"
-retrieval_method = "wget -O data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf https://arxiv.org/pdf/0707.1889"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'JARVIS-DFT 3D' --output-dir data/external --skip-existing"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
-evidence_refs = ["Rev. Mod. Phys. 80, 1083 (2008)"]
-scientific_validator_refs = ["majorana_braiding_canonical_ref"]
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "materials_json_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-MAJORANA-KITAEV-CHAIN"
-path_glob = "data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf"
-canonical_url = "https://arxiv.org/abs/cond-mat/0010440"
-mirror_urls = ["https://arxiv.org/pdf/cond-mat/0010440", "https://iopscience.iop.org/article/10.1070/1063-7869/44/10S/S29"]
-access_class = "open"
+id = "SRC-JUNO-AMDA-CRUISE-DERIVED"
+path_glob = "data/external/juno/juno_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi"
+mirror_urls = []
+access_class = "public"
 status = "active"
-retrieval_method = "curl -sL -A 'Mozilla/5.0' -o data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf https://arxiv.org/pdf/cond-mat/0010440"
+retrieval_method = "python3 bin/fetch_juno.py --source amda"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "Plan had wrong ID (quant-ph/0002130); correct arXiv ID is cond-mat/0010440."
-evidence_refs = ["Phys.-Usp. 44, 131 (2001)"]
-scientific_validator_refs = ["majorana_braiding_canonical_ref"]
+blocker_note = "JADE-L5 proton moments + FGM 1-min MAG + cruise ephemeris via AMDA HAPI. Cruise phase 2011-2016 only (1-5 AU). SE coordinate system for B-field. Verified 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-MAJORANA-NATURE-2025"
-path_glob = "data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf"
-canonical_url = "https://doi.org/10.1038/s41586-025-08617-6"
-mirror_urls = ["https://arxiv.org/abs/2502.12252", "https://arxiv.org/pdf/2502.12252"]
-access_class = "open"
+id = "SRC-LHC-ALICE-CMS"
+path_glob = "archive/external_nonreproducible_snapshots/lhc_2025/**"
+canonical_url = "https://arxiv.org/abs/2509.07008"
+mirror_urls = [
+  "https://arxiv.org/abs/2510.09864",
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin lhc-2025-qgp-synthesis --"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+blocker_note = "Retired synthetic LHC fixture snapshots from data/external until canonical external download pipeline is implemented."
+evidence_refs = [
+  "reports/LHC_2025_QGP_Full_Synthesis.md",
+]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "reports/LHC_2025_QGP_Full_Synthesis.md",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-LOTSS-DR2-FITS"
+path_glob = "data/external/radio_surveys/lotss_dr2.fits"
+canonical_url = "https://lofar-surveys.org/public/DR2/catalogues/LoTSS_DR2_v110_masked.srl.fits"
+mirror_urls = [
+  "https://lofar-surveys.org/public/DR2/catalogues/",
+]
+access_class = "public"
 status = "active"
-retrieval_method = "curl -sL -A 'Mozilla/5.0' -o data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf https://arxiv.org/pdf/2502.12252"
+retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- download --release dr2"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "arXiv preprint companion to Nature 638, 651-655 (2025). Full Nature PDF behind paywall; arXiv version has complete content."
-evidence_refs = ["Nature 638, 651-655 (2025)", "arXiv:2502.12252"]
-scientific_validator_refs = ["majorana_tgp_protocol"]
+blocker_note = "LoTSS DR2 bulk source catalog used as the wide-area radio baseline for E-198 MaNGA overlap measurements."
+evidence_refs = [
+  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
+  "reports/manga_lotss_xmatch_dr2.toml",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "radio_catalog_numeric_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-LOTSS-DR3-FITS"
+path_glob = "data/external/radio_surveys/lotss_dr3.fits"
+canonical_url = "https://lofar-surveys.org/public/DR3/catalogues/LoTSS_DR3_v1.0.srl.fits"
+mirror_urls = [
+  "https://lofar-surveys.org/public/DR3/catalogues/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- download --release dr3"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Official LoTSS DR3 bulk source catalog is the preferred E-198 path because it avoids large MaNGA-footprint cone-search sweeps while preserving full-sky overlap statistics."
+evidence_refs = [
+  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
+  "reports/lotss_lotss_dr3_summary.toml",
+  "reports/manga_lotss_xmatch_dr3.toml",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "radio_catalog_numeric_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-LOTSS-DR3-MANGA-TILES"
+path_glob = "data/external/radio_surveys/dr3_tiles/**"
+canonical_url = "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml"
+mirror_urls = [
+  "https://lofar-surveys.org/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin lotss-fetch -- manga-footprint --tile-dir data/external/radio_surveys/dr3_tiles --summary-out reports/lotss_dr3_manga_footprint_summary.toml"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "LoTSS DR3 cone-search tiles remain available as a bounded-footprint fallback and spot-check path when the bulk FITS path is unavailable or when partial-sky debugging is needed."
+evidence_refs = [
+  "crates/gororoba_cli_data/src/bin/lotss_fetch.rs",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "radio_catalog_numeric_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-MAJORANA-IVANOV-BRAIDING"
 path_glob = "data/external/arxiv_cond-mat_0005069_ivanov_braiding.pdf"
 canonical_url = "https://arxiv.org/abs/cond-mat/0005069"
-mirror_urls = ["https://arxiv.org/pdf/cond-mat/0005069"]
+mirror_urls = [
+  "https://arxiv.org/pdf/cond-mat/0005069",
+]
 access_class = "open"
 status = "active"
 retrieval_method = "wget -O data/external/arxiv_cond-mat_0005069_ivanov_braiding.pdf https://arxiv.org/pdf/cond-mat/0005069"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
-evidence_refs = ["Phys. Rev. Lett. 86, 268 (2001)"]
-scientific_validator_refs = ["majorana_braiding_matrices"]
-
-[[source]]
-id = "SRC-TRACE-LOGS"
-path_glob = "data/papers/intake/traces/**"
-canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/hypothesis_runtime_hott_sources.toml"
-mirror_urls = ["https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/web_references.toml"]
-access_class = "manual_or_licensed"
-status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin claims-audit -- --update-source-lanes"
-attempt_deadline_utc = "2026-02-25"
-resolution_deadline_utc = "2026-03-03"
-blocker_note = "Migrated trace logs from data/external to data/papers/intake/traces to keep troubleshooting artifacts outside external replay debt."
 evidence_refs = [
-  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
-  "registry/hypothesis_runtime_hott_sources.toml",
+  "Phys. Rev. Lett. 86, 268 (2001)",
 ]
-manual_manifest_refs = [
-  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
-  "registry/hypothesis_runtime_hott_sources.toml",
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "majorana_braiding_matrices",
 ]
-scientific_validator_refs = ["blocked_manifest_only"]
-blocked_action_plan = ["reports/external_blocked_retry_ledger_2026-02-24.tsv"]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-SEDENION-GEOMETRY-REGGIANI"
-path_glob = "data/external/arxiv_2411.18881_sedenion_geometry.pdf"
-canonical_url = "https://arxiv.org/abs/2411.18881"
-mirror_urls = ["https://arxiv.org/pdf/2411.18881"]
+id = "SRC-MAJORANA-KITAEV-CHAIN"
+path_glob = "data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf"
+canonical_url = "https://arxiv.org/abs/cond-mat/0010440"
+mirror_urls = [
+  "https://arxiv.org/pdf/cond-mat/0010440",
+  "https://iopscience.iop.org/article/10.1070/1063-7869/44/10S/S29",
+]
 access_class = "open"
 status = "active"
-retrieval_method = "wget -O data/external/arxiv_2411.18881_sedenion_geometry.pdf https://arxiv.org/pdf/2411.18881"
+retrieval_method = "curl -sL -A 'Mozilla/5.0' -o data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf https://arxiv.org/pdf/cond-mat/0010440"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Plan had wrong ID (quant-ph/0002130); correct arXiv ID is cond-mat/0010440."
+evidence_refs = [
+  "Phys.-Usp. 44, 131 (2001)",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "majorana_braiding_canonical_ref",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-MAJORANA-MICROSOFT-TGP"
+path_glob = "data/external/arxiv_2207.02472_microsoft_tgp.pdf"
+canonical_url = "https://arxiv.org/abs/2207.02472"
+mirror_urls = [
+  "https://arxiv.org/pdf/2207.02472",
+]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2207.02472_microsoft_tgp.pdf https://arxiv.org/pdf/2207.02472"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
-evidence_refs = ["arXiv:2411.18881"]
-scientific_validator_refs = ["zd_graph_topology"]
+evidence_refs = [
+  "Phys. Rev. B 107, 245423 (2023)",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "majorana_tgp_protocol",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-ZD-HOLONOMY-KOEBISU"
-path_glob = "data/external/arxiv_2512.13002_zd_holonomy.pdf"
-canonical_url = "https://arxiv.org/abs/2512.13002"
-mirror_urls = ["https://arxiv.org/pdf/2512.13002"]
+id = "SRC-MAJORANA-NATURE-2025"
+path_glob = "data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf"
+canonical_url = "https://doi.org/10.1038/s41586-025-08617-6"
+mirror_urls = [
+  "https://arxiv.org/abs/2502.12252",
+  "https://arxiv.org/pdf/2502.12252",
+]
 access_class = "open"
 status = "active"
-retrieval_method = "wget -O data/external/arxiv_2512.13002_zd_holonomy.pdf https://arxiv.org/pdf/2512.13002"
+retrieval_method = "curl -sL -A 'Mozilla/5.0' -o data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf https://arxiv.org/pdf/2502.12252"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "arXiv preprint companion to Nature 638, 651-655 (2025). Full Nature PDF behind paywall; arXiv version has complete content."
+evidence_refs = [
+  "Nature 638, 651-655 (2025)",
+  "arXiv:2502.12252",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "majorana_tgp_protocol",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-MAJORANA-NAYAK-TQC"
+path_glob = "data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf"
+canonical_url = "https://arxiv.org/abs/0707.1889"
+mirror_urls = [
+  "https://arxiv.org/pdf/0707.1889",
+]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf https://arxiv.org/pdf/0707.1889"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
-evidence_refs = ["arXiv:2512.13002"]
-scientific_validator_refs = ["zd_graph_topology"]
+evidence_refs = [
+  "Rev. Mod. Phys. 80, 1083 (2008)",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "majorana_braiding_canonical_ref",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-WICK-ROTATION-KONTSEVICH-SEGAL"
-path_glob = "data/external/arxiv_2105.10161_wick_rotation.pdf"
-canonical_url = "https://arxiv.org/abs/2105.10161"
-mirror_urls = ["https://arxiv.org/pdf/2105.10161"]
-access_class = "open"
+id = "SRC-MANGA-DR17-CATALOGS"
+path_glob = "data/external/manga/**"
+canonical_url = "https://www.sdss.org/dr17/manga/manga-data/data-access/"
+mirror_urls = [
+  "https://data.sdss.org/sas/dr17/manga/spectro/redux/v3_1_1/",
+]
+access_class = "public"
 status = "active"
-retrieval_method = "wget -O data/external/arxiv_2105.10161_wick_rotation.pdf https://arxiv.org/pdf/2105.10161"
+retrieval_method = "Local cached MaNGA DR17 catalogs joined by `cargo run -p gororoba_cli_data --bin lotss-fetch -- manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits`"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = ["arXiv:2105.10161"]
-scientific_validator_refs = ["wick_rotation_positivity"]
-
-[[source]]
-id = "SRC-TENSOR-CORE-ACCELERATION-CUI"
-path_glob = "data/external/arxiv_2407.09621_tensor_core_acceleration.pdf"
-canonical_url = "https://arxiv.org/abs/2407.09621"
-mirror_urls = ["https://arxiv.org/pdf/2407.09621"]
-access_class = "open"
-status = "active"
-retrieval_method = "wget -O data/external/arxiv_2407.09621_tensor_core_acceleration.pdf https://arxiv.org/pdf/2407.09621"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = ["arXiv:2407.09621"]
-scientific_validator_refs = ["tensor_core_hpc"]
+blocker_note = "E-198 MaNGA sample contract: `dapall_selection.csv` defines the selected galaxies and `drpall-v3_1_1.fits` supplies `objra`/`objdec` for LoTSS overlap analysis."
+evidence_refs = [
+  "data/external/manga/dapall_selection.csv",
+  "data/external/manga/drpall-v3_1_1.fits",
+  "reports/lotss_manga_preflight_2026-03-13.toml",
+]
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-MIXED-PRECISION-SURVEY-KASHI"
 path_glob = "data/external/arxiv_2412.19322_mixed_precision_scientific.pdf"
 canonical_url = "https://arxiv.org/abs/2412.19322"
-mirror_urls = ["https://arxiv.org/pdf/2412.19322"]
+mirror_urls = [
+  "https://arxiv.org/pdf/2412.19322",
+]
 access_class = "open"
 status = "active"
 retrieval_method = "wget -O data/external/arxiv_2412.19322_mixed_precision_scientific.pdf https://arxiv.org/pdf/2412.19322"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
-evidence_refs = ["arXiv:2412.19322"]
-scientific_validator_refs = ["mixed_precision_hpc"]
+evidence_refs = [
+  "arXiv:2412.19322",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "mixed_precision_hpc",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-DESI-DR2-BAO"
-path_glob = "data/external/desi_bao/**"
-canonical_url = "https://arxiv.org/abs/2503.14738"
-mirror_urls = ["https://github.com/CobayaSampler/bao_data"]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DESI DR2 BAO' --output-dir data/external --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "DR2 BAO values also hardcoded in crates/data_core/src/catalogs/desi_bao.rs::desi_dr2_bao()."
-evidence_refs = ["arXiv:2503.14738"]
-scientific_validator_refs = ["bao_distance_monotonicity"]
-
-[[source]]
-id = "SRC-DES-Y6-3X2PT"
-path_glob = "data/external/des_y6/**"
-canonical_url = "https://arxiv.org/abs/2601.14559"
-mirror_urls = ["https://desdr-server.ncsa.illinois.edu/despublic/y6a2_files/"]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DES Y6 3x2pt' --output-dir data/external --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "Key constraints hardcoded in crates/data_core/src/catalogs/des_y6.rs."
-evidence_refs = ["arXiv:2601.14559"]
-scientific_validator_refs = ["des_s8_consistency"]
-
-[[source]]
-id = "SRC-ACE-SWEPAM-HOURLY"
-path_glob = "data/external/ace_swepam/**"
-canonical_url = "https://izw1.caltech.edu/ACE/ASC/level2/"
-mirror_urls = ["https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/"]
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'ACE SWEPAM Solar Wind' --output-dir data/external --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = ["McComas et al. (1998), Space Sci. Rev. 86, 563"]
-scientific_validator_refs = ["solar_wind_proton_ranges"]
-
-[[source]]
-id = "SRC-DM-BIBLIOGRAPHY-PDFS"
-path_glob = "papers/pdf/*_dark_*"
-canonical_url = "https://arxiv.org/"
+id = "SRC-NAIF-PIONEER10-SPICE-BSP"
+path_glob = "data/external/pioneer/spice/p10-a.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/spk/"
 mirror_urls = []
-access_class = "open"
-status = "active"
-retrieval_method = "sh papers/pdf/fetch_dm_papers.sh"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "76 dark matter bibliography items; 50 downloadable PDFs (48 arXiv + 1 CDS + 1 APS)."
-evidence_refs = ["papers/MANIFEST.toml"]
-scientific_validator_refs = ["dm_bibliography_coverage"]
-
-[[source]]
-id = "SRC-VOYAGER1-JUPITER-CRS-PDS"
-path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager1/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/"
-mirror_urls = [
-  "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
-  "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
-]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_crs.py --spacecraft 1 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+retrieval_method = "wget/curl direct download of p10-a.bsp from NAIF/JPL"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = [
-  "data/external/heliosphere/voyager/jupiter_encounter/voyager1/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
-  "data/external/heliosphere/voyager/jupiter_encounter/voyager1/ingest_json/ingest_summary.json",
-]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-VOYAGER2-JUPITER-CRS-PDS"
-path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager2/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/"
-mirror_urls = [
-  "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
-  "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
-]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_crs.py --spacecraft 2 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = ""
-evidence_refs = [
-  "data/external/heliosphere/voyager/jupiter_encounter/voyager2/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
-  "data/external/heliosphere/voyager/jupiter_encounter/voyager2/ingest_json/ingest_summary.json",
-]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-VOYAGER1-MERGED-SPASE-METADATA"
-path_glob = "data/external/voyager/voyager1/metadata/**"
-canonical_url = "https://doi.org/10.48322/041p-cv36"
-mirror_urls = [
-  "https://spase-metadata.org/NASA/NumericalData/Voyager1/MAGandPLS/PT1H.html",
-  "https://spase-metadata.org/NASA/NumericalData/Voyager1/MAGandPLS/PT1H.xml",
-  "https://catalog.data.gov/dataset/voyager-1-hourly-merged-magnetic-field-and-plasma-data",
-]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail. Bartol archive does NOT cover V1. AMDA HAPI translation available via --source amda."
-evidence_refs = ["data/external/voyager/v1_1979_1979_manifest.json"]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-VOYAGER2-MERGED-SPASE-METADATA"
-path_glob = "data/external/voyager/voyager2/metadata/**"
-canonical_url = "https://doi.org/10.48322/ve5t-hf15"
-mirror_urls = [
-  "https://spase-metadata.org/NASA/NumericalData/Voyager2/MAGandPLS/PT1H.html",
-  "https://spase-metadata.org/NASA/NumericalData/Voyager2/MAGandPLS/PT1H.xml",
-  "https://catalog.data.gov/dataset/voyager-2-hourly-merged-magnetic-field-and-plasma-data",
-]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail. Bartol legacy archive available for V2 1977-1997 (16-col RTN format). AMDA HAPI translation available via --source amda."
-evidence_refs = ["data/external/voyager/v2_1979_1979_manifest.json"]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-VOYAGER1-MERGED-AMDA-DERIVED"
-path_glob = "data/external/voyager/voyager1/vy1_*_amda_merged_hourly.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
-mirror_urls = [
-  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-pls-full",
-  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-mag-full",
-  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-ephem-all",
-]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --source amda"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
-evidence_refs = ["data/external/voyager/v1_1979_1979_manifest.json"]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-VOYAGER2-MERGED-AMDA-DERIVED"
-path_glob = "data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
-mirror_urls = [
-  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-pls-full",
-  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-mag-full",
-  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-ephem-all",
-]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --source amda"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
-evidence_refs = ["data/external/voyager/v2_1979_1979_manifest.json"]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-OMNI2-HOURLY-SPDF-CANONICAL"
-path_glob = "data/external/omni2/omni2_20*.dat"
-canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/"
-mirror_urls = [
-  "https://omniweb.gsfc.nasa.gov/",
-  "https://omniweb.gsfc.nasa.gov/form/dx1.html",
-]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_omni.py --start 2020 --end 2025 --source spdf --skip-existing"
-attempt_deadline_utc = ""
-resolution_deadline_utc = ""
-blocker_note = "Canonical OMNI2 fixed-width yearly ASCII files staged successfully for 2020-2025. Earlier chronology-critical windows are currently governed through the AMDA fallback lane from this host."
+blocker_note = "JPL NAIF SPICE kernel for Pioneer 10 heliocentric ephemeris (1972-1995). DE-118 reference frame. Use spiceypy to extract (r_AU, lat, lon) at hourly timestamps. Solves position-column problem for PDS-PPI merged data. Confirmed reachable 2026-03-10."
 evidence_refs = []
-scientific_validator_refs = ["static_archive_https"]
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-NAIF-PIONEER11-SPICE-BSP"
+path_glob = "data/external/pioneer/spice/p11-a.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/PIONEER11/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of p11-a.bsp from NAIF/JPL"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "JPL NAIF SPICE kernel for Pioneer 11 heliocentric ephemeris (1973-1990). DE-118 reference frame. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-NAIF-VOYAGER1-SPICE-BSP"
+path_glob = "data/external/voyager/spice/Voyager_1.a54206u_V0.2_merged.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of Voyager_1.a54206u_V0.2_merged.bsp from NAIF/JPL"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "JPL NAIF SPICE kernel for Voyager 1 heliocentric ephemeris (1977-2031). J2000 reference frame. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-NAIF-VOYAGER2-SPICE-BSP"
+path_glob = "data/external/voyager/spice/Voyager_2.m05016u.merged.bsp"
+canonical_url = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl direct download of Voyager_2.m05016u.merged.bsp from NAIF/JPL"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "JPL NAIF SPICE kernel for Voyager 2 heliocentric ephemeris (1977-2031). J2000 reference frame. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-NH-SINGLE-SOURCE-FRAGILE"
+path_glob = "data/external/new_horizons/**"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/new_horizons/"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "python3 bin/fetch_new_horizons.py"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "New Horizons is the ONLY spacecraft in the pipeline with NO alternate data provider. AMDA catalog (1065 datasets, queried 2026-03-10) contains ZERO NH entries. SPDF is connection-refused from this host. NH carries SWAP plasma but NO magnetometer, so only partial plasma data exists. PDS-SBN (Small Bodies Node) is a potential but unverified alternative. Single-source-fragile: total data loss if SPDF remains blocked."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-NV-ODMR"
+path_glob = "archive/external_nonreproducible_snapshots/nv_odmr/**"
+canonical_url = "https://doi.org/10.1103/PhysRevResearch.5.013087"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin spin-decoherence-pipeline --"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+blocker_note = "Retired NV ODMR manual supplement snapshot from data/external pending deterministic downloader wiring."
+evidence_refs = [
+  "registry/source_lanes/datasets.toml",
+]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "registry/source_lanes/datasets.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
 
 [[source]]
 id = "SRC-OMNI-HOURLY-AMDA-FALLBACK"
@@ -1000,7 +1392,11 @@ evidence_refs = [
   "data/external/omni2/omni_2018_2018_manifest.json",
   "data/external/omni2/omni_2019_2019_manifest.json",
 ]
-scientific_validator_refs = ["static_archive_https"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-OMNI-HOURLY-GOVERNED-MANIFESTS"
@@ -1026,27 +1422,483 @@ evidence_refs = [
   "data/external/omni2/omni_2019_2019_manifest.json",
   "data/external/omni2/omni_2020_2025_manifest.json",
 ]
-scientific_validator_refs = ["static_archive_https"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-CASSINI-CRUISE-AMDA-HYBRID"
-path_glob = "data/external/cassini/cassini_*_amda_cruise_hourly.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+id = "SRC-OMNI2-HOURLY-SPDF-CANONICAL"
+path_glob = "data/external/omni2/omni2_20*.dat"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/"
 mirror_urls = [
-  "https://amda.irap.omp.eu/service/hapi/info?id=cass-orb-cruise",
-  "https://amda.irap.omp.eu/service/hapi/info?id=cass-mag-rtn60",
-  "https://amda.irap.omp.eu/service/hapi/info?id=tao-cass-sw",
+  "https://omniweb.gsfc.nasa.gov/",
+  "https://omniweb.gsfc.nasa.gov/form/dx1.html",
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_cassini.py --start 1998 --end 2004 --source amda"
+retrieval_method = "python3 bin/fetch_omni.py --start 2020 --end 2025 --source spdf --skip-existing"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "This is a governed hybrid Cassini cruise lane assembled locally from AMDA HAPI sources. Trajectory comes from `cass-orb-cruise`, magnetic field from measured `cass-mag-rtn60`, and plasma from modeled `tao-cass-sw`. It is suitable for late-cruise chronology packs and long-baseline heliosphere trend work, but it should not be mislabeled as a fully measured SPDF merged cruise product. For the full `CRUISE_1997_2004` pack it must be treated as gap-tolerant before 1998-12-30T12:00:00Z, propagating missing values rather than fabricated outer-boundary samples."
-evidence_refs = [
-  "data/external/cassini/cassini_1998_2004_manifest.json",
+blocker_note = "Canonical OMNI2 fixed-width yearly ASCII files staged successfully for 2020-2025. Earlier chronology-critical windows are currently governed through the AMDA fallback lane from this host."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
 ]
-scientific_validator_refs = ["static_archive_https"]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PAPERS-CORPUS"
+path_glob = "data/papers/corpus/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/external_papers_index.toml"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/papers_pdf.toml",
+]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin extract-papers -- --refresh-index"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated paper corpus from data/external to data/papers/corpus so manual/licensed literature artifacts are outside external replay debt."
+evidence_refs = [
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+  "registry/source_lanes/papers_pdf.toml",
+]
+manual_manifest_refs = [
+  "data/papers/corpus/MANIFEST.toml",
+  "registry/source_lanes/papers_pdf.toml",
+  "registry/manual_mirror_overrides_2026_02_15.toml",
+  "data/papers/intake/2026_02_15_manual_override_fetch/fetch_attempts.tsv",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-PIONEER-ANOMALY-ANDERSON-2002-BENCHMARK"
+path_glob = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
+canonical_url = "https://arxiv.org/abs/gr-qc/0104064"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "Repo-governed benchmark CSV transcribed from Anderson et al. 2002 with interval bounds and benchmark metadata"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Governed Pioneer anomaly benchmark rows for batch-1 fitting. This is a published benchmark table, not a time-resolved Doppler residual series. Used by pioneer-residual-audit and fractal-metric-fit."
+evidence_refs = [
+  "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md",
+]
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER10-1979-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer10/p10_1979_merged_hourly.asc"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer10/merged/p10_1979_merged_hourly.asc"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "manual sneakernet drop"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Direct GSFC ASCII byte access blocked from current network (ERR_CONNECTION_REFUSED confirmed via Playwright 2026-03-10); unblocks JUPITER_1979 sibling lane. AMDA provides MAG-only alternative (p10-mag-full, RTN) via --source amda, but NO plasma data."
+evidence_refs = [
+  "bin/fetch_pioneer.py network traces",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER10-AMDA-MAG-ONLY"
+path_glob = "data/external/pioneer/pioneer10/p10_*_amda_mag_only.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=p10-mag-full"
+mirror_urls = []
+access_class = "public"
+status = "planned"
+retrieval_method = "python3 bin/fetch_pioneer.py --spacecraft p10 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "AMDA provides Pioneer 10 MAG-only hourly data (p10-mag-full, RTN, 1972-1995). NO plasma parameters available via AMDA for Pioneer. Output OmniRecord has valid B-field but NaN for density/speed/temperature."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER10-JUPITER-PPI-ENCOUNTER-1HR"
+path_glob = "data/external/pioneer/pioneer10/jupiter_encounter_ppi/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P10-J-HVM_PA-4-SUMM-MERGED-1HR-V1.0/"
+mirror_urls = [
+  "https://pds-ppi.igpp.ucla.edu/mission/Pioneer10",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p10_jupiter --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 10 Jupiter. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
+evidence_refs = [
+  "data/external/pioneer/pioneer10/jupiter_encounter_ppi/p10_jupiter_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer10/pds_ppi_merged/p10_*.TAB"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/"
+mirror_urls = [
+  "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer10/merged/coho1hr_magplasma_cdaweb/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PDS-PPI at UCLA. Pioneer 10 MERGED hourly (HVM+PA+CRT calibrated). 17 columns: year, DOY, hour, r_AU, lat, lon, BR, BT, BN, |B|, speed, flow_elev, flow_azim, density, temp, CRS proton fluxes (3 channels). PDS3 .TAB fixed-width ASCII. Fill: B=999.9999, speed=9999.9, density=999.9999, temp=9999999. HDRL S3 bucket has CDF mirror. This is the FULL merged product equivalent to blocked SPDF source. UPGRADES Pioneer 10 from WEAK to GOOD. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER10-PDS-PPI-PLASMA-HOURLY"
+path_glob = "data/external/pioneer/pioneer10/pds_ppi_plasma/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p10-pa/data-avg-1hr/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PDS-PPI at UCLA. Pioneer 10 PA (plasma analyzer) hourly averages. .TAB format. UPGRADES Pioneer from WEAK (MAG-only via AMDA) to having a PLASMA lane. Must be merged with AMDA MAG. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER11-1979-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer11/p11_1979_merged_hourly.asc"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer11/merged/p11_1979_merged_hourly.asc"
+mirror_urls = []
+access_class = "public"
+status = "blocked"
+retrieval_method = "manual sneakernet drop"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Direct GSFC ASCII byte access blocked from current network (ERR_CONNECTION_REFUSED confirmed via Playwright 2026-03-10); unblocks JUPITER_1979 sibling lane. AMDA provides MAG-only alternative (p11-mag-full, RTN) via --source amda, but NO plasma data."
+evidence_refs = [
+  "bin/fetch_pioneer.py network traces",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER11-AMDA-MAG-ONLY"
+path_glob = "data/external/pioneer/pioneer11/p11_*_amda_mag_only.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=p11-mag-full"
+mirror_urls = []
+access_class = "public"
+status = "planned"
+retrieval_method = "python3 bin/fetch_pioneer.py --spacecraft p11 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "AMDA provides Pioneer 11 MAG-only hourly data (p11-mag-full, RTN, 1973-1992). NO plasma parameters available via AMDA for Pioneer. Output OmniRecord has valid B-field but NaN for density/speed/temperature."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER11-JUPITER-PPI-ENCOUNTER-1HR"
+path_glob = "data/external/pioneer/pioneer11/jupiter_encounter_ppi/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P11-J-HVM-PA-4-SUMM-MERGED-1HR-V1.0/"
+mirror_urls = [
+  "https://pds-ppi.igpp.ucla.edu/mission/Pioneer11",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_jupiter --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Jupiter. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
+evidence_refs = [
+  "data/external/pioneer/pioneer11/jupiter_encounter_ppi/p11_jupiter_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY"
+path_glob = "data/external/pioneer/pioneer11/pds_ppi_merged/p11_*.TAB"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/"
+mirror_urls = [
+  "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer11/merged/coho1hr_magplasma_cdaweb/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PDS-PPI at UCLA. Pioneer 11 MERGED hourly (HVM+PA+CRT calibrated). Same 17-column format as Pioneer 10 merged. PDS3 .TAB fixed-width ASCII. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 11 from WEAK to GOOD. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PIONEER11-SATURN-PPI-ENCOUNTER-1HR"
+path_glob = "data/external/pioneer/pioneer11/saturn_encounter_ppi/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P11-S-HVM-PA-4-MERGED-ENC-1HR-V1.0/"
+mirror_urls = [
+  "https://pds-ppi.igpp.ucla.edu/mission/Pioneer11",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_saturn --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Saturn. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
+evidence_refs = [
+  "data/external/pioneer/pioneer11/saturn_encounter_ppi/p11_saturn_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PSP-AMDA-MAG-1MIN"
+path_glob = "data/external/psp/psp_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=psp-mag-1min"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_psp.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "FIELDS/MAG 1-minute cadence in RTN. Aggregated to hourly medians in the derived merged product."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PSP-AMDA-ORBIT"
+path_glob = "data/external/psp/psp_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=psp-orb-all"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_psp.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PSP full mission orbit in HCI coordinates (r_au, lat, lon). Used for position columns in merged hourly output."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PSP-AMDA-SPC-MOMENTS"
+path_glob = "data/external/psp/psp_*_amda_merged.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/data?id=psp-spc-mom"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_psp.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "AMDA HAPI-derived lane. Combines psp-spc-mom (SWEAP/SPC proton moments), psp-mag-1min (FIELDS MAG), and psp-orb-all (orbit) into 13-column SPDF-style merged hourly. Thermal speed converted to temperature via T = m_p * v_th^2 / (2 * k_B). SPDF primary source blocked from this host."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PSP-BERKELEY-FIELDS-MAG"
+path_glob = "data/external/psp/berkeley_fields/**"
+canonical_url = "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/"
+mirror_urls = [
+  "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + CDF download (no auth)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "UC Berkeley SSL FIELDS instrument team public archive. PSP MAG L2 RTN 1-min and full cadence. 2018-2026. CDF format. No authentication required. Confirmed reachable 2026-03-10. SWEAP/SPC data at same server requires auth (HTTP 401)."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PSP-GATEWAY-JHUAPL"
+path_glob = "data/external/psp/**"
+canonical_url = "https://sppgway.jhuapl.edu/"
+mirror_urls = [
+  "https://psp-gateway.jhuapl.edu/",
+]
+access_class = "public"
+status = "reachable"
+retrieval_method = "Playwright browser automation (Vue.js SPA, redirects to psp-gateway.jhuapl.edu)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PSP Science Gateway at JHU/APL. REACHABLE and confirmed via Playwright 2026-03-10. Redirects sppgway -> psp-gateway.jhuapl.edu. Data releases through Orbit 25 (2026-03-02). FIELDS, ISOIS, WISPR, SWEAP instrument links accessible. Orbit 26+27 planned 2026-08-24. Requires Playwright for download URL extraction."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-PSP-SPDF-BLOCKED"
+path_glob = "data/external/psp/**"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/psp/"
+mirror_urls = [
+  "https://cdaweb.gsfc.nasa.gov/",
+]
+access_class = "public"
+status = "blocked"
+retrieval_method = "N/A (connection refused from this host)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Primary SPDF source for PSP SWEAP and FIELDS data. ERR_CONNECTION_REFUSED confirmed via Playwright browser probe 2026-03-10 (TCP-level block, not browser-specific). Use AMDA lane or PSP Gateway (JHU/APL) instead."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-RADIO-SURVEYS"
+path_glob = "data/external/radio_surveys/**"
+canonical_url = "https://sundog.stsci.edu/first/catalogs/readme.html"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/datasets.toml",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --pillar survey"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "radio_catalog_numeric_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-SDSS-DR18-QUASARS"
+path_glob = "archive/external_nonreproducible_snapshots/sdss_dr18_quasars.csv"
+canonical_url = "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?cmd=SELECT%20TOP%2050000%20%20s.specObjID%20as%20objid%2C%20s.ra%2C%20s.dec%2C%20s.z%2C%20s.zErr%20as%20zerr%2C%20%20p.psfMag_u%20as%20u%2C%20p.psfMag_g%20as%20g%2C%20p.psfMag_r%20as%20r%2C%20%20p.psfMag_i%20as%20i%20FROM%20SpecObj%20s%20JOIN%20PhotoObj%20p%20ON%20s.bestObjID%20%3D%20p.objID%20WHERE%20s.class%20%3D%20%27QSO%27%20AND%20s.zWarning%20%3D%200%20AND%20s.z%20%3E%200.1%20ORDER%20BY%20s.z&format=csv"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/sdss.rs",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SDSS DR18 Quasars' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-02-26"
+resolution_deadline_utc = "2026-03-05"
+blocker_note = "Retired mutable SDSS DR18 snapshot from data/external pending deterministic archive-grade fetch contract."
+evidence_refs = [
+  "reports/external_redownload_audit_sdss_2026-02-24.toml",
+  "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
+]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "reports/external_redownload_audit_sdss_2026-02-24.toml",
+  "reports/external_redownload_audit_sdss_fetch_backend_2026-02-24.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-SEDENION-GEOMETRY-REGGIANI"
+path_glob = "data/external/arxiv_2411.18881_sedenion_geometry.pdf"
+canonical_url = "https://arxiv.org/abs/2411.18881"
+mirror_urls = [
+  "https://arxiv.org/pdf/2411.18881",
+]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2411.18881_sedenion_geometry.pdf https://arxiv.org/pdf/2411.18881"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "arXiv:2411.18881",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "zd_graph_topology",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-SOHO-CELIAS-MTOF-PM-UMD"
+path_glob = "data/external/soho/celias_pm/**"
+canonical_url = "https://space.umd.edu/pm/"
+mirror_urls = [
+  "https://l1.umd.edu/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP download of ASCII data files from UMD PM site"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "University of Maryland CELIAS/MTOF Proton Monitor. L1 solar wind proton density, speed, thermal speed at 30s and 5-min cadence. Independent of GSFC. Continuous L1 coverage complementing ACE/Wind. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOHO-CELIAS-PM-5MIN-BUNDLE"
@@ -1063,8 +1915,15 @@ retrieval_method = "python3 bin/fetch_soho.py --product celias_pm_5min_bundle --
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This governs the SOHO CELIAS Proton Monitor 5-minute mission-long bundle and its staged metadata sidecars. The bundle is directly reachable from the current GSFC SOHO archive, while live ESAC archive endpoints are documented but connection-reset from this host."
-evidence_refs = ["data/external/soho/celias_pm_5min_bundle_manifest.json", "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"]
-scientific_validator_refs = ["static_archive_https"]
+evidence_refs = [
+  "data/external/soho/celias_pm_5min_bundle_manifest.json",
+  "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOHO-LASCO-LZ-DAY-SAMPLE"
@@ -1080,214 +1939,15 @@ retrieval_method = "python3 bin/fetch_soho.py --product lasco_lz_day --date 2024
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This governs a bounded SOHO LASCO level-0.5 day sample, including directory indices, `img_hdr.txt`, and a small number of FITS files per camera. NRL documents wget-friendly bulk retrieval, while the NASA GSFC mirror remains available for per-file access but not wget-style mirroring."
-evidence_refs = ["data/external/soho/lasco_lz_day_20240101_manifest.json", "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"]
-scientific_validator_refs = ["static_archive_https"]
-
-[[source]]
-id = "SRC-PIONEER10-1979-MERGED-HOURLY"
-path_glob = "data/external/pioneer/pioneer10/p10_1979_merged_hourly.asc"
-canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer10/merged/p10_1979_merged_hourly.asc"
-access_class = "public"
-status = "blocked"
-retrieval_method = "manual sneakernet drop"
-blocker_note = "Direct GSFC ASCII byte access blocked from current network (ERR_CONNECTION_REFUSED confirmed via Playwright 2026-03-10); unblocks JUPITER_1979 sibling lane. AMDA provides MAG-only alternative (p10-mag-full, RTN) via --source amda, but NO plasma data."
-evidence_refs = ["bin/fetch_pioneer.py network traces"]
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PIONEER11-1979-MERGED-HOURLY"
-path_glob = "data/external/pioneer/pioneer11/p11_1979_merged_hourly.asc"
-canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer11/merged/p11_1979_merged_hourly.asc"
-access_class = "public"
-status = "blocked"
-retrieval_method = "manual sneakernet drop"
-blocker_note = "Direct GSFC ASCII byte access blocked from current network (ERR_CONNECTION_REFUSED confirmed via Playwright 2026-03-10); unblocks JUPITER_1979 sibling lane. AMDA provides MAG-only alternative (p11-mag-full, RTN) via --source amda, but NO plasma data."
-evidence_refs = ["bin/fetch_pioneer.py network traces"]
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PIONEER10-JUPITER-PPI-ENCOUNTER-1HR"
-path_glob = "data/external/pioneer/pioneer10/jupiter_encounter_ppi/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P10-J-HVM_PA-4-SUMM-MERGED-1HR-V1.0/"
-mirror_urls = ["https://pds-ppi.igpp.ucla.edu/mission/Pioneer10"]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p10_jupiter --source pds_ppi --skip-existing"
-blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 10 Jupiter. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
-evidence_refs = ["data/external/pioneer/pioneer10/jupiter_encounter_ppi/p10_jupiter_manifest.json"]
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PIONEER11-JUPITER-PPI-ENCOUNTER-1HR"
-path_glob = "data/external/pioneer/pioneer11/jupiter_encounter_ppi/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P11-J-HVM-PA-4-SUMM-MERGED-1HR-V1.0/"
-mirror_urls = ["https://pds-ppi.igpp.ucla.edu/mission/Pioneer11"]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_jupiter --source pds_ppi --skip-existing"
-blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Jupiter. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
-evidence_refs = ["data/external/pioneer/pioneer11/jupiter_encounter_ppi/p11_jupiter_manifest.json"]
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PIONEER11-SATURN-PPI-ENCOUNTER-1HR"
-path_glob = "data/external/pioneer/pioneer11/saturn_encounter_ppi/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/P11-S-HVM-PA-4-MERGED-ENC-1HR-V1.0/"
-mirror_urls = ["https://pds-ppi.igpp.ucla.edu/mission/Pioneer11"]
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_pioneer.py --product encounter_hourly_ppi --encounter p11_saturn --source pds_ppi --skip-existing"
-blocker_note = "Reachable UCLA PDS/PPI encounter subset for Pioneer 11 Saturn. This is a governed non-GSFC byte lane, but it is encounter-window data rather than the full annual COHO/NSSDC merged product."
-evidence_refs = ["data/external/pioneer/pioneer11/saturn_encounter_ppi/p11_saturn_manifest.json"]
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# =============================================================================
-# Bartol Research Institute legacy archive (Voyager 2, 1977-1997)
-# =============================================================================
-
-[[source]]
-id = "SRC-VOYAGER2-BARTOL-LEGACY-COHO"
-path_glob = "data/external/voyager/voyager2/bartol/vy2_*.dat"
-canonical_url = "https://ftp.bartol.udel.edu/whm/Voyager/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --source bartol --start 1977 --end 1997"
-blocker_note = "Bartol Research Institute (U. Delaware) legacy NSSDC/COHO archive. Voyager 2 only, 1977-1997 coverage. 16-column RTN format (differs from current SPDF 13-column SE format). Self-signed TLS cert requires unverified SSL context. Verified reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# =============================================================================
-# Parker Solar Probe AMDA-derived merged hourly (0.05-1.0 AU)
-# =============================================================================
-
-[[source]]
-id = "SRC-PSP-AMDA-SPC-MOMENTS"
-path_glob = "data/external/psp/psp_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/data?id=psp-spc-mom"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_psp.py --source amda"
-blocker_note = "AMDA HAPI-derived lane. Combines psp-spc-mom (SWEAP/SPC proton moments), psp-mag-1min (FIELDS MAG), and psp-orb-all (orbit) into 13-column SPDF-style merged hourly. Thermal speed converted to temperature via T = m_p * v_th^2 / (2 * k_B). SPDF primary source blocked from this host."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PSP-AMDA-MAG-1MIN"
-path_glob = "data/external/psp/psp_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=psp-mag-1min"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_psp.py --source amda"
-blocker_note = "FIELDS/MAG 1-minute cadence in RTN. Aggregated to hourly medians in the derived merged product."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PSP-AMDA-ORBIT"
-path_glob = "data/external/psp/psp_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=psp-orb-all"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_psp.py --source amda"
-blocker_note = "PSP full mission orbit in HCI coordinates (r_au, lat, lon). Used for position columns in merged hourly output."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PSP-SPDF-BLOCKED"
-path_glob = "data/external/psp/**"
-canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/psp/"
-mirror_urls = ["https://cdaweb.gsfc.nasa.gov/"]
-access_class = "public"
-status = "blocked"
-retrieval_method = "N/A (connection refused from this host)"
-blocker_note = "Primary SPDF source for PSP SWEAP and FIELDS data. ERR_CONNECTION_REFUSED confirmed via Playwright browser probe 2026-03-10 (TCP-level block, not browser-specific). Use AMDA lane or PSP Gateway (JHU/APL) instead."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PSP-GATEWAY-JHUAPL"
-path_glob = "data/external/psp/**"
-canonical_url = "https://sppgway.jhuapl.edu/"
-mirror_urls = ["https://psp-gateway.jhuapl.edu/"]
-access_class = "public"
-status = "reachable"
-retrieval_method = "Playwright browser automation (Vue.js SPA, redirects to psp-gateway.jhuapl.edu)"
-blocker_note = "PSP Science Gateway at JHU/APL. REACHABLE and confirmed via Playwright 2026-03-10. Redirects sppgway -> psp-gateway.jhuapl.edu. Data releases through Orbit 25 (2026-03-02). FIELDS, ISOIS, WISPR, SWEAP instrument links accessible. Orbit 26+27 planned 2026-08-24. Requires Playwright for download URL extraction."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# =============================================================================
-# Helios 1/2 AMDA-derived merged hourly (0.29-0.98 AU, 1974-1985)
-# =============================================================================
-
-[[source]]
-id = "SRC-HELIOS1-AMDA-COREFIT"
-path_glob = "data/external/helios/helios1/helios1_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios1-e1-all"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda"
-blocker_note = "AMDA HAPI-derived lane for Helios 1. Combines helios1-e1-all (proton corefit), helios1-e3-all (MAG 6-sec), helios1-orb-all (orbit) into 13-column SPDF-style merged hourly. Coverage 1974-12 to 1985-09."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-HELIOS1-AMDA-MAG"
-path_glob = "data/external/helios/helios1/helios1_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios1-e3-all"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda"
-blocker_note = "Helios 1 MAG E3 6-second cadence. Aggregated to hourly medians in the derived merged product."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-HELIOS2-AMDA-COREFIT"
-path_glob = "data/external/helios/helios2/helios2_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios2-e1-all"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios2 --source amda"
-blocker_note = "AMDA HAPI-derived lane for Helios 2. Combines helios2-e1-all (proton corefit), helios2-e3-all (MAG 6-sec), helios2-orb-all (orbit) into 13-column SPDF-style merged hourly. Coverage 1976-01 to 1980-03."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-HELIOS2-AMDA-MAG"
-path_glob = "data/external/helios/helios2/helios2_*_amda_merged.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=helios2-e3-all"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_helios.py --spacecraft helios2 --source amda"
-blocker_note = "Helios 2 MAG E3 6-second cadence. Aggregated to hourly medians in the derived merged product."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-HELIOS-SPDF-BLOCKED"
-path_glob = "data/external/helios/**"
-canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/helios/"
-mirror_urls = []
-access_class = "public"
-status = "blocked"
-retrieval_method = "N/A (connection refused from this host)"
-blocker_note = "Primary SPDF source for Helios 1/2 merged magnetic field and plasma data. ERR_CONNECTION_REFUSED confirmed via Playwright browser probe 2026-03-10. Use AMDA lane instead."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# =============================================================================
-# Solar Orbiter AMDA partial lane (MAG + RPW electron density)
-# =============================================================================
+evidence_refs = [
+  "data/external/soho/lasco_lz_day_20240101_manifest.json",
+  "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOLO-AMDA-MAG"
@@ -1297,9 +1957,15 @@ mirror_urls = []
 access_class = "public"
 status = "active"
 retrieval_method = "python3 bin/fetch_solo.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
 blocker_note = "PARTIAL: Solar Orbiter MAG LL 8-second cadence in RTN. Aggregated to hourly medians. No SWA proton plasma moments available in AMDA as of 2026-03."
 evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOLO-AMDA-RPW-DENSITY"
@@ -1309,9 +1975,15 @@ mirror_urls = []
 access_class = "public"
 status = "active"
 retrieval_method = "python3 bin/fetch_solo.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
 blocker_note = "PARTIAL: RPW electron density 10-second cadence used as quasi-neutrality proxy for proton density. Speed and temperature columns are NaN fill."
 evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOLO-SOAR-ESA"
@@ -1321,141 +1993,15 @@ mirror_urls = []
 access_class = "public"
 status = "reachable"
 retrieval_method = "Playwright browser automation (Vue.js search interface at soar.esac.esa.int/soar/)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
 blocker_note = "ESA Solar Orbiter Archive v1.23.0. REACHABLE from this host (Playwright-confirmed 2026-03-10). Corrected URL: esac not esoc. May have SWA-PAS proton data not yet in AMDA. Requires Playwright for data discovery and download URL extraction."
 evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# =============================================================================
-# Pioneer 10/11 AMDA MAG-only lanes (no plasma in AMDA)
-# =============================================================================
-
-[[source]]
-id = "SRC-PIONEER10-AMDA-MAG-ONLY"
-path_glob = "data/external/pioneer/pioneer10/p10_*_amda_mag_only.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=p10-mag-full"
-mirror_urls = []
-access_class = "public"
-status = "planned"
-retrieval_method = "python3 bin/fetch_pioneer.py --spacecraft p10 --source amda"
-blocker_note = "AMDA provides Pioneer 10 MAG-only hourly data (p10-mag-full, RTN, 1972-1995). NO plasma parameters available via AMDA for Pioneer. Output OmniRecord has valid B-field but NaN for density/speed/temperature."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-PIONEER11-AMDA-MAG-ONLY"
-path_glob = "data/external/pioneer/pioneer11/p11_*_amda_mag_only.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=p11-mag-full"
-mirror_urls = []
-access_class = "public"
-status = "planned"
-retrieval_method = "python3 bin/fetch_pioneer.py --spacecraft p11 --source amda"
-blocker_note = "AMDA provides Pioneer 11 MAG-only hourly data (p11-mag-full, RTN, 1973-1992). NO plasma parameters available via AMDA for Pioneer. Output OmniRecord has valid B-field but NaN for density/speed/temperature."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-NH-SINGLE-SOURCE-FRAGILE"
-path_glob = "data/external/new_horizons/**"
-canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/new_horizons/"
-mirror_urls = []
-access_class = "public"
-status = "blocked"
-retrieval_method = "python3 bin/fetch_new_horizons.py"
-blocker_note = "New Horizons is the ONLY spacecraft in the pipeline with NO alternate data provider. AMDA catalog (1065 datasets, queried 2026-03-10) contains ZERO NH entries. SPDF is connection-refused from this host. NH carries SWAP plasma but NO magnetometer, so only partial plasma data exists. PDS-SBN (Small Bodies Node) is a potential but unverified alternative. Single-source-fragile: total data loss if SPDF remains blocked."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-WIND-AMDA-DERIVED"
-path_glob = "data/external/wind/wind_*_amda_merged_hourly.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_wind.py --source amda"
-blocker_note = "SWE KP (plasma) + MFI KP (MAG GSE) via AMDA HAPI. Wind at L1: position hardcoded at r=1.0 AU, lat=0.0 deg. Output is 13-col merged format in data/external/wind/ (separate from split wind_swe/ and wind_mfi/ used by SPDF lane). B-field in GSE. Verified 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-JUNO-AMDA-CRUISE-DERIVED"
-path_glob = "data/external/juno/juno_*_amda_merged_hourly.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_juno.py --source amda"
-blocker_note = "JADE-L5 proton moments + FGM 1-min MAG + cruise ephemeris via AMDA HAPI. Cruise phase 2011-2016 only (1-5 AU). SE coordinate system for B-field. Verified 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-ULYSSES-AMDA-DERIVED"
-path_glob = "data/external/ulysses/uly_*_amda_merged_hourly.asc"
-canonical_url = "https://amda.irap.omp.eu/service/hapi"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "python3 bin/fetch_ulysses.py --source amda"
-blocker_note = "Full plasma+MAG via ulys-bai-mom (SWOOPS proton moments) + ulys-fgm-rtn (VHM/FGM RTN) + ulys-orb-all (orbit). Coverage 1990-2009. 13-column SPDF-style output matching ULYSSES_LAYOUT. Only spacecraft with polar solar wind measurements (-80 to +80 deg latitude). Verified 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# =============================================================================
-# Mission metadata (blocked/planned, registered for completeness)
-# =============================================================================
-
-[[source]]
-id = "SRC-IMAP-PLANNED"
-path_glob = "data/external/imap/**"
-canonical_url = "https://imap.princeton.edu/"
-mirror_urls = []
-access_class = "public"
-status = "planned"
-retrieval_method = "N/A (merged hourly products not yet published)"
-blocker_note = "IMAP (Interstellar Mapping and Acceleration Probe) launched Sept 2025. L1 heliosphere boundary mapping. Merged hourly products not yet available."
-evidence_refs = []
-scientific_validator_refs = []
-
-# =============================================================================
-# Phase I Extended: Playwright-Discovered Non-GSFC Data Sources (2026-03-10)
-# =============================================================================
-
-# --- GSFC Migration Context ---
-# All GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb) are offline for server
-# migration starting ~2026-03-09. ERR_CONNECTION_REFUSED is TEMPORARY, not a
-# permanent block. Endpoints will resume after migration completes. All AMDA
-# and non-GSFC lanes remain operational as fallbacks during the outage.
-
-# --- MIT Voyager Plasma (FTP, non-GSFC) ---
-
-[[source]]
-id = "SRC-VOYAGER-MIT-PLS-FTP"
-path_glob = "data/external/voyager/voyager*/mit_pls/**"
-canonical_url = "ftp://space.mit.edu/pub/plasma/vgr/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "curl/lftp FTP download (no auth, anonymous FTP)"
-blocker_note = "MIT Space Plasma Group (John Richardson). Voyager PLS key parameters: V1 1977-1980, V2 1977-2018+ (including heliosheath). Fine-res (~192s): speed, density, thermal_speed, VR/VT/VN (RTN) with 1-sigma errors. Hourly and daily averages also available. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# --- Berkeley PSP FIELDS (HTTP, non-GSFC) ---
-
-[[source]]
-id = "SRC-PSP-BERKELEY-FIELDS-MAG"
-path_glob = "data/external/psp/berkeley_fields/**"
-canonical_url = "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/"
-mirror_urls = ["http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN/"]
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl HTTP directory listing + CDF download (no auth)"
-blocker_note = "UC Berkeley SSL FIELDS instrument team public archive. PSP MAG L2 RTN 1-min and full cadence. 2018-2026. CDF format. No authentication required. Confirmed reachable 2026-03-10. SWEAP/SPC data at same server requires auth (HTTP 401)."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# --- ESA SOAR SWA-PAS Proton Moments (TAP API, non-GSFC) ---
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOLO-SOAR-SWA-PAS-GRND-MOM"
@@ -1465,77 +2011,132 @@ mirror_urls = []
 access_class = "public"
 status = "active"
 retrieval_method = "SOAR TAP API + CDF download (no auth, no registration for <50 GB)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
 blocker_note = "ESA SOAR SWA-PAS L2 ground-computed proton moments (density, velocity RTN, temperature). 1624 daily CDF files, 2020-07 to 2025-11. Download URL pattern: https://soar.esac.esa.int/soar-sl-tap/data?product_type=SCIENCE&RETRIEVAL_TYPE=PRODUCT&data_item_id=solo_L2_swa-pas-grnd-mom_YYYYMMDD. FILLS Solar Orbiter partial lane gap. Confirmed 2026-03-10."
 evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# --- PDS-PPI Voyager MAG+PLS Hourly (UCLA, non-GSFC) ---
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-VOYAGER1-PDS-PPI-MAG-HOURLY"
-path_glob = "data/external/voyager/voyager1/pds_ppi_mag/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0/DATA/"
+id = "SRC-SORCE-TSI-DAILY"
+path_glob = "data/external/sorce_tsi_daily.csv"
+canonical_url = "https://lasp.colorado.edu/data/sorce/tsi_data/daily/sorce_tsi_L3_c24h_latest.txt"
+mirror_urls = [
+  "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_24hr_l3.csv",
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/catalogs/sorce.rs",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'SORCE TSI Daily' --output-dir data/external --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "tsi_physics_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-SWARM-L1B-MAGNETIC-SAMPLE"
+path_glob = "archive/external_nonreproducible_snapshots/swarm_magnetic_sample.csv"
+canonical_url = "https://vires.services/hapi/data?dataset=SW_OPER_MAGA_LR_1B&parameters=Latitude,Longitude,Radius,F,B_NEC&start=2014-01-01T00:00:00Z&stop=2014-01-01T00:30:00Z&format=csv&include=header"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/crates/data_core/src/geophysical/swarm.rs",
+]
+access_class = "public"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'Swarm L1B Magnetic Sample' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-02-27"
+resolution_deadline_utc = "2026-03-07"
+blocker_note = "Retired mutable Swarm L1B sample snapshot from data/external pending deterministic replay/freeze contract."
+evidence_refs = [
+  "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml",
+]
+manual_manifest_refs = [
+  "archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml",
+  "reports/external_redownload_audit_2026-02-25_burndown_step1_execute.toml",
+  "crates/data_core/src/geophysical/swarm.rs",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-TENSOR-CORE-ACCELERATION-CUI"
+path_glob = "data/external/arxiv_2407.09621_tensor_core_acceleration.pdf"
+canonical_url = "https://arxiv.org/abs/2407.09621"
+mirror_urls = [
+  "https://arxiv.org/pdf/2407.09621",
+]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2407.09621_tensor_core_acceleration.pdf https://arxiv.org/pdf/2407.09621"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "arXiv:2407.09621",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "tensor_core_hpc",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-TRACE-LOGS"
+path_glob = "data/papers/intake/traces/**"
+canonical_url = "https://github.com/eirikr/open_gororoba/blob/main/registry/hypothesis_runtime_hott_sources.toml"
+mirror_urls = [
+  "https://github.com/eirikr/open_gororoba/blob/main/registry/source_lanes/web_references.toml",
+]
+access_class = "manual_or_licensed"
+status = "migrated"
+retrieval_method = "cargo run -p gororoba_cli --bin claims-audit -- --update-source-lanes"
+attempt_deadline_utc = "2026-02-25"
+resolution_deadline_utc = "2026-03-03"
+blocker_note = "Migrated trace logs from data/external to data/papers/intake/traces to keep troubleshooting artifacts outside external replay debt."
+evidence_refs = [
+  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
+  "registry/hypothesis_runtime_hott_sources.toml",
+]
+manual_manifest_refs = [
+  "data/papers/intake/traces/hypothesis_runtime_hott_downloads.json",
+  "registry/hypothesis_runtime_hott_sources.toml",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "reports/external_blocked_retry_ledger_2026-02-24.tsv",
+]
+
+[[source]]
+id = "SRC-ULYSSES-AMDA-DERIVED"
+path_glob = "data/external/ulysses/uly_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi"
 mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
-blocker_note = "PDS-PPI at UCLA. VG1 solar wind MAG hourly averages, HG coords. Two .TAB files: VG1MAG_1HR_1977_1989.TAB and VG1MAG_1HR_1990_2004.TAB. Separate from PLS (must be merged by user). Confirmed reachable 2026-03-10."
+retrieval_method = "python3 bin/fetch_ulysses.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Full plasma+MAG via ulys-bai-mom (SWOOPS proton moments) + ulys-fgm-rtn (VHM/FGM RTN) + ulys-orb-all (orbit). Coverage 1990-2009. 13-column SPDF-style output matching ULYSSES_LAYOUT. Only spacecraft with polar solar wind measurements (-80 to +80 deg latitude). Verified 2026-03-10."
 evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-[[source]]
-id = "SRC-VOYAGER1-PDS-PPI-PLS-HOURLY"
-path_glob = "data/external/voyager/voyager1/pds_ppi_pls/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-SS-PLS-4-SUMM-1HR-AVG-V1.0/DATA/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
-blocker_note = "PDS-PPI at UCLA. VG1 solar system PLS hourly averages 1977-1980. Separate from MAG (must be merged by user). Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# --- PDS-PPI Pioneer Plasma Hourly (UCLA, non-GSFC) ---
-
-[[source]]
-id = "SRC-PIONEER10-PDS-PPI-PLASMA-HOURLY"
-path_glob = "data/external/pioneer/pioneer10/pds_ppi_plasma/**"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p10-pa/data-avg-1hr/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
-blocker_note = "PDS-PPI at UCLA. Pioneer 10 PA (plasma analyzer) hourly averages. .TAB format. UPGRADES Pioneer from WEAK (MAG-only via AMDA) to having a PLASMA lane. Must be merged with AMDA MAG. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# --- GSFC Migration Notice ---
-
-[[source]]
-id = "SRC-GSFC-MIGRATION-2026-03"
-path_glob = "data/external/.gsfc_migration_notice"
-canonical_url = "https://helio.data.nasa.gov/"
-mirror_urls = []
-access_class = "public"
-status = "blocked"
-retrieval_method = "N/A (temporary outage)"
-blocker_note = "ALL GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb, NSSDC) offline for server migration starting ~2026-03-09. ERR_CONNECTION_REFUSED on ports 21, 22, 443, 990 confirmed via Playwright + curl + lftp 2026-03-10. Expected to resume after migration. HelioData portal banner: 'services will be offline in March while primary servers are moved.' This is a TEMPORARY outage, not a permanent block."
-evidence_refs = []
-scientific_validator_refs = []
-
-# --- University mirrors (supplementary instrument data) ---
-
-[[source]]
-id = "SRC-VOYAGER-UMD-LECP"
-path_glob = "data/external/voyager/lecp/**"
-canonical_url = "https://voyager-mac.umd.edu/"
-mirror_urls = ["https://voyager.ftecs.com/"]
-access_class = "public"
-status = "active"
-retrieval_method = "wget HTTP download (vmaster_26day.txt.gz, vmaster_52day.txt.gz, vmaster_year.txt.gz)"
-blocker_note = "University of Maryland LECP master databases. Voyager 1+2 energetic particle data at 26-day, 52-day, and annual resolution. Supplementary -- not core plasma/MAG. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
 id = "SRC-VOYAGER-IOWA-PWS"
@@ -1545,253 +2146,307 @@ mirror_urls = []
 access_class = "public"
 status = "active"
 retrieval_method = "wget HTTP download from Iowa PWS data directory"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
 blocker_note = "University of Iowa Plasma Wave Subsystem data. Voyager 1+2 PWS spectra and electron density. VLISM electron density 2012-2025 available via PDS-PPI. Confirmed reachable 2026-03-10."
 evidence_refs = []
+manual_manifest_refs = []
 scientific_validator_refs = []
-
-# --- PDS-PPI UCLA Pioneer MERGED hourly (MAG+plasma+CRS, non-GSFC) ---
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-PIONEER10-PDS-PPI-MERGED-HOURLY"
-path_glob = "data/external/pioneer/pioneer10/pds_ppi_merged/p10_*.TAB"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p10-hvm-pa-crt-cal/data-merged-1hour/"
+id = "SRC-VOYAGER-MIT-PLS-FTP"
+path_glob = "data/external/voyager/voyager*/mit_pls/**"
+canonical_url = "ftp://space.mit.edu/pub/plasma/vgr/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "curl/lftp FTP download (no auth, anonymous FTP)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "MIT Space Plasma Group (John Richardson). Voyager PLS key parameters: V1 1977-1980, V2 1977-2018+ (including heliosheath). Fine-res (~192s): speed, density, thermal_speed, VR/VT/VN (RTN) with 1-sigma errors. Hourly and daily averages also available. Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER-UMD-LECP"
+path_glob = "data/external/voyager/lecp/**"
+canonical_url = "https://voyager-mac.umd.edu/"
 mirror_urls = [
-  "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer10/merged/coho1hr_magplasma_cdaweb/",
+  "https://voyager.ftecs.com/",
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p10_YYYY.TAB, 1972-1995)"
-blocker_note = "PDS-PPI at UCLA. Pioneer 10 MERGED hourly (HVM+PA+CRT calibrated). 17 columns: year, DOY, hour, r_AU, lat, lon, BR, BT, BN, |B|, speed, flow_elev, flow_azim, density, temp, CRS proton fluxes (3 channels). PDS3 .TAB fixed-width ASCII. Fill: B=999.9999, speed=9999.9, density=999.9999, temp=9999999. HDRL S3 bucket has CDF mirror. This is the FULL merged product equivalent to blocked SPDF source. UPGRADES Pioneer 10 from WEAK to GOOD. Confirmed reachable 2026-03-10."
+retrieval_method = "wget HTTP download (vmaster_26day.txt.gz, vmaster_52day.txt.gz, vmaster_year.txt.gz)"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "University of Maryland LECP master databases. Voyager 1+2 energetic particle data at 26-day, 52-day, and annual resolution. Supplementary -- not core plasma/MAG. Confirmed reachable 2026-03-10."
 evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-PIONEER11-PDS-PPI-MERGED-HOURLY"
-path_glob = "data/external/pioneer/pioneer11/pds_ppi_merged/p11_*.TAB"
-canonical_url = "https://pds-ppi.igpp.ucla.edu/data/p11-hvm-pa-crt-cal/data-merged-1hour/"
+id = "SRC-VOYAGER1-JUPITER-CRS-PDS"
+path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager1/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/"
 mirror_urls = [
-  "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/pioneer11/merged/coho1hr_magplasma_cdaweb/",
+  "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
+  "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "wget/curl HTTP download of annual .TAB files from UCLA PDS-PPI (p11_YYYY.TAB, 1973-1994)"
-blocker_note = "PDS-PPI at UCLA. Pioneer 11 MERGED hourly (HVM+PA+CRT calibrated). Same 17-column format as Pioneer 10 merged. PDS3 .TAB fixed-width ASCII. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 11 from WEAK to GOOD. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
+retrieval_method = "python3 bin/fetch_crs.py --spacecraft 1 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager1/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager1/ingest_json/ingest_summary.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-HDRL-S3-PIONEER-CDF-MIRROR"
-path_glob = "data/external/pioneer/hdrl_s3/**"
-canonical_url = "https://gov-nasa-hdrl-data1.s3.amazonaws.com/spdf/cdaweb/data/pioneer/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "aws s3 ls/cp or curl direct download of CDF files from HDRL S3 bucket (no auth required)"
-blocker_note = "NASA HDRL (Heliophysics Data Resource Library) S3 bucket. CDF mirror of CDAWeb Pioneer merged hourly data. pioneer10/merged/coho1hr_magplasma_cdaweb/ and pioneer11/merged/coho1hr_magplasma_cdaweb/. Annual CDF files. Alternative to PDS-PPI .TAB format. Confirmed via helio.data.nasa.gov Playwright probe 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = ["heliophysics_merged_hourly_invariants"]
-
-# --- NAIF/SPICE spacecraft ephemeris kernels (JPL, non-GSFC) ---
-
-[[source]]
-id = "SRC-NAIF-PIONEER10-SPICE-BSP"
-path_glob = "data/external/pioneer/spice/p10-a.bsp"
-canonical_url = "https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/spk/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl direct download of p10-a.bsp from NAIF/JPL"
-blocker_note = "JPL NAIF SPICE kernel for Pioneer 10 heliocentric ephemeris (1972-1995). DE-118 reference frame. Use spiceypy to extract (r_AU, lat, lon) at hourly timestamps. Solves position-column problem for PDS-PPI merged data. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-NAIF-PIONEER11-SPICE-BSP"
-path_glob = "data/external/pioneer/spice/p11-a.bsp"
-canonical_url = "https://naif.jpl.nasa.gov/pub/naif/PIONEER11/kernels/spk/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl direct download of p11-a.bsp from NAIF/JPL"
-blocker_note = "JPL NAIF SPICE kernel for Pioneer 11 heliocentric ephemeris (1973-1990). DE-118 reference frame. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-NAIF-VOYAGER1-SPICE-BSP"
-path_glob = "data/external/voyager/spice/Voyager_1.a54206u_V0.2_merged.bsp"
-canonical_url = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl direct download of Voyager_1.a54206u_V0.2_merged.bsp from NAIF/JPL"
-blocker_note = "JPL NAIF SPICE kernel for Voyager 1 heliocentric ephemeris (1977-2031). J2000 reference frame. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-NAIF-VOYAGER2-SPICE-BSP"
-path_glob = "data/external/voyager/spice/Voyager_2.m05016u.merged.bsp"
-canonical_url = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl direct download of Voyager_2.m05016u.merged.bsp from NAIF/JPL"
-blocker_note = "JPL NAIF SPICE kernel for Voyager 2 heliocentric ephemeris (1977-2031). J2000 reference frame. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-# --- SOHO CELIAS/MTOF PM solar wind (University of Maryland, non-GSFC) ---
-
-[[source]]
-id = "SRC-SOHO-CELIAS-MTOF-PM-UMD"
-path_glob = "data/external/soho/celias_pm/**"
-canonical_url = "https://space.umd.edu/pm/"
-mirror_urls = ["https://l1.umd.edu/"]
-access_class = "public"
-status = "active"
-retrieval_method = "wget/curl HTTP download of ASCII data files from UMD PM site"
-blocker_note = "University of Maryland CELIAS/MTOF Proton Monitor. L1 solar wind proton density, speed, thermal speed at 30s and 5-min cadence. Independent of GSFC. Continuous L1 coverage complementing ACE/Wind. Confirmed reachable 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-# --- Euclid Quick Release 1 supplementary catalogs (Zenodo) ---
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY"
-path_glob = "data/external/euclid/zenodo/15106473/*.parquet"
-canonical_url = "https://zenodo.org/records/15106473"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology"
-blocker_note = "Euclid Q1 Visual Morphology Classification Catalogue. DOI: 10.5281/zenodo.15106473. CC BY 4.0. morphology_catalogue.parquet (97.3 MB) + useful_physical_measurements.parquet (67.7 MB). Galaxy visual morphology (Hubble type, bulge/disk/irregular, bar, merger flags) for Q1 survey fields. Fetched and MD5-verified 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING"
-path_glob = "data/external/euclid/zenodo/15025832/*.csv"
-canonical_url = "https://zenodo.org/records/15025832"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog strong_lensing"
-blocker_note = "Euclid Q1 Strong Lensing Discovery Engine Candidates. DOI: 10.5281/zenodo.15025832. CC BY 4.0. q1_discovery_engine_lens_catalog.csv (422 KB). Strong gravitational lens candidates from Q1 survey. Fetched and MD5-verified 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-MERGERS"
-path_glob = "data/external/euclid/zenodo/17087034/*.csv"
-canonical_url = "https://zenodo.org/records/17087034"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog mergers"
-blocker_note = "Euclid Q1 Galaxy Merger Classification. DOI: 10.5281/zenodo.17087034. CC BY 4.0. Q1_merger_classification.csv (39.7 MB). Galaxy merger probability classifications from Q1 survey. Fetched and MD5-verified 2026-03-10."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP"
-path_glob = "data/external/euclid/zenodo/15027787/*.parquet"
-canonical_url = "https://zenodo.org/records/15027787"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog morphology_supplementary"
-blocker_note = "Euclid Q1 Galaxy Morphology Supplementary Release. DOI: 10.5281/zenodo.15027787. CC BY 4.0. Additional morphology data from Q1 survey fields."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-PHOTOZ"
-path_glob = "data/external/euclid/zenodo/14935225/*.parquet"
-canonical_url = "https://zenodo.org/records/14935225"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog photo_z"
-blocker_note = "Euclid Q1 Photometric Redshift PDFs. DOI: 10.5281/zenodo.14935225. CC BY 4.0. Posterior probability distributions for photometric redshifts from Q1 survey."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-CLUSTERING"
-path_glob = "data/external/euclid/zenodo/15025557/*.parquet"
-canonical_url = "https://zenodo.org/records/15025557"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog galaxy_clustering"
-blocker_note = "Euclid Q1 Galaxy Clustering Catalog. DOI: 10.5281/zenodo.15025557. CC BY 4.0. Angular correlation function measurements and galaxy pair catalogs from Q1."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS"
-path_glob = "data/external/euclid/zenodo/15108017/*.csv"
-canonical_url = "https://zenodo.org/records/15108017"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog compact_groups"
-blocker_note = "Euclid Q1 Compact Galaxy Groups. DOI: 10.5281/zenodo.15108017. CC BY 4.0. Group membership catalog for compact galaxy groups identified in Q1 survey fields."
-evidence_refs = []
-scientific_validator_refs = []
-
-[[source]]
-id = "SRC-EUCLID-Q1-ZENODO-GC"
-path_glob = "data/external/euclid/zenodo/14951889/*.csv"
-canonical_url = "https://zenodo.org/records/14951889"
-mirror_urls = []
-access_class = "public"
-status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog globular_clusters"
-blocker_note = "Euclid Q1 Globular Cluster Candidates. DOI: 10.5281/zenodo.14951889. CC BY 4.0. Point-source catalog of globular cluster candidates from Q1 survey."
-evidence_refs = []
-scientific_validator_refs = []
-
-# --- Euclid Q1 primary survey catalogs (TAP/ADQL, multi-TB) ---
-
-[[source]]
-id = "SRC-EUCLID-Q1-ESA-TAP"
-path_glob = "data/external/euclid/tap/**"
-canonical_url = "https://eas.esac.esa.int/sas/"
+id = "SRC-VOYAGER1-MERGED-AMDA-DERIVED"
+path_glob = "data/external/voyager/voyager1/vy1_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
 mirror_urls = [
-  "https://irsa.ipac.caltech.edu/Euclid/",
-  "s3://nasa-irsa-euclid-q1",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-pls-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-mag-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo1-ephem-all",
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin euclid-fetch -- tap-tables|tap-query"
-blocker_note = "Euclid Q1 primary survey catalogs via TAP/ADQL. 21 catalog tables totaling 637M rows across MER (photometry/morphology, 30M objects), PHZ (photo-z, 7 tables, 29.6M objects), SPE (spectroscopy, 11 tables, 29.2M spec-z). SHE (shear) absent from Q1. ESA SAS (primary), IRSA (US mirror, TAP + Gator + IBE bulk), AWS S3 (no-auth, us-east-1). ~35 TB total (imaging+catalogs), 63.1 sq deg across 4 fields (EDF-N/S/Fornax, LDN1641). CC BY-NC 3.0 IGO. Catalog registry at data/external/euclid_q1_catalogs.toml. Rust-native `euclid-fetch` now covers Zenodo discovery/download plus TAP table inspection and bounded MER/PHZ/SPE ADQL queries."
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
+evidence_refs = [
+  "data/external/voyager/v1_1979_1979_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER1-MERGED-SPASE-METADATA"
+path_glob = "data/external/voyager/voyager1/metadata/**"
+canonical_url = "https://doi.org/10.48322/041p-cv36"
+mirror_urls = [
+  "https://spase-metadata.org/NASA/NumericalData/Voyager1/MAGandPLS/PT1H.html",
+  "https://spase-metadata.org/NASA/NumericalData/Voyager1/MAGandPLS/PT1H.xml",
+  "https://catalog.data.gov/dataset/voyager-1-hourly-merged-magnetic-field-and-plasma-data",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail. Bartol archive does NOT cover V1. AMDA HAPI translation available via --source amda."
+evidence_refs = [
+  "data/external/voyager/v1_1979_1979_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER1-PDS-PPI-MAG-HOURLY"
+path_glob = "data/external/voyager/voyager1/pds_ppi_mag/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0/DATA/"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PDS-PPI at UCLA. VG1 solar wind MAG hourly averages, HG coords. Two .TAB files: VG1MAG_1HR_1977_1989.TAB and VG1MAG_1HR_1990_2004.TAB. Separate from PLS (must be merged by user). Confirmed reachable 2026-03-10."
 evidence_refs = []
-scientific_validator_refs = []
-
-# --- Governed anomaly benchmark artifacts ---
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-FLYBY-ANOMALY-ANDERSON-2008-BENCHMARK"
-path_glob = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
-canonical_url = "https://arxiv.org/abs/0712.1053"
+id = "SRC-VOYAGER1-PDS-PPI-PLS-HOURLY"
+path_glob = "data/external/voyager/voyager1/pds_ppi_pls/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-SS-PLS-4-SUMM-1HR-AVG-V1.0/DATA/"
 mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "Repo-governed benchmark CSV transcribed from Anderson et al. 2008 with bibliography and DOI linkage"
-blocker_note = "Governed flyby anomaly benchmark table for the six canonical Earth flybys. Observation artifact only; not a raw telemetry dump. Used by flyby-residual-audit as the source-of-truth observation table."
-evidence_refs = ["docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"]
-scientific_validator_refs = []
+retrieval_method = "wget/curl HTTP directory listing + .TAB download from UCLA PDS-PPI"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "PDS-PPI at UCLA. VG1 solar system PLS hourly averages 1977-1980. Separate from MAG (must be merged by user). Confirmed reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
 
 [[source]]
-id = "SRC-PIONEER-ANOMALY-ANDERSON-2002-BENCHMARK"
-path_glob = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
-canonical_url = "https://arxiv.org/abs/gr-qc/0104064"
+id = "SRC-VOYAGER2-BARTOL-LEGACY-COHO"
+path_glob = "data/external/voyager/voyager2/bartol/vy2_*.dat"
+canonical_url = "https://ftp.bartol.udel.edu/whm/Voyager/"
 mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "Repo-governed benchmark CSV transcribed from Anderson et al. 2002 with interval bounds and benchmark metadata"
-blocker_note = "Governed Pioneer anomaly benchmark rows for batch-1 fitting. This is a published benchmark table, not a time-resolved Doppler residual series. Used by pioneer-residual-audit and fractal-metric-fit."
-evidence_refs = ["docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"]
-scientific_validator_refs = []
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --source bartol --start 1977 --end 1997"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Bartol Research Institute (U. Delaware) legacy NSSDC/COHO archive. Voyager 2 only, 1977-1997 coverage. 16-column RTN format (differs from current SPDF 13-column SE format). Self-signed TLS cert requires unverified SSL context. Verified reachable 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER2-JUPITER-CRS-PDS"
+path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager2/**"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/"
+mirror_urls = [
+  "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
+  "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_crs.py --spacecraft 2 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager2/crs_jupiter_encounter_one_day_1979_1979_manifest.json",
+  "data/external/heliosphere/voyager/jupiter_encounter/voyager2/ingest_json/ingest_summary.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER2-MERGED-AMDA-DERIVED"
+path_glob = "data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-pls-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-mag-full",
+  "https://amda.irap.omp.eu/service/hapi/info?id=vo2-ephem-all",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
+evidence_refs = [
+  "data/external/voyager/v2_1979_1979_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER2-MERGED-SPASE-METADATA"
+path_glob = "data/external/voyager/voyager2/metadata/**"
+canonical_url = "https://doi.org/10.48322/ve5t-hf15"
+mirror_urls = [
+  "https://spase-metadata.org/NASA/NumericalData/Voyager2/MAGandPLS/PT1H.html",
+  "https://spase-metadata.org/NASA/NumericalData/Voyager2/MAGandPLS/PT1H.xml",
+  "https://catalog.data.gov/dataset/voyager-2-hourly-merged-magnetic-field-and-plasma-data",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --skip-existing"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "Actual GSFC merged-hourly bytes remain unreachable from this host; this source contract currently governs the staged DOI/SPASE metadata sidecars and metadata_only manifest trail. Bartol legacy archive available for V2 1977-1997 (16-col RTN format). AMDA HAPI translation available via --source amda."
+evidence_refs = [
+  "data/external/voyager/v2_1979_1979_manifest.json",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-WICK-ROTATION-KONTSEVICH-SEGAL"
+path_glob = "data/external/arxiv_2105.10161_wick_rotation.pdf"
+canonical_url = "https://arxiv.org/abs/2105.10161"
+mirror_urls = [
+  "https://arxiv.org/pdf/2105.10161",
+]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2105.10161_wick_rotation.pdf https://arxiv.org/pdf/2105.10161"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "arXiv:2105.10161",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "wick_rotation_positivity",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-WIND-AMDA-DERIVED"
+path_glob = "data/external/wind/wind_*_amda_merged_hourly.asc"
+canonical_url = "https://amda.irap.omp.eu/service/hapi"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "python3 bin/fetch_wind.py --source amda"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "SWE KP (plasma) + MFI KP (MAG GSE) via AMDA HAPI. Wind at L1: position hardcoded at r=1.0 AU, lat=0.0 deg. Output is 13-col merged format in data/external/wind/ (separate from split wind_swe/ and wind_mfi/ used by SPDF lane). B-field in GSE. Verified 2026-03-10."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliophysics_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-ZD-HOLONOMY-KOEBISU"
+path_glob = "data/external/arxiv_2512.13002_zd_holonomy.pdf"
+canonical_url = "https://arxiv.org/abs/2512.13002"
+mirror_urls = [
+  "https://arxiv.org/pdf/2512.13002",
+]
+access_class = "open"
+status = "active"
+retrieval_method = "wget -O data/external/arxiv_2512.13002_zd_holonomy.pdf https://arxiv.org/pdf/2512.13002"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "arXiv:2512.13002",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "zd_graph_topology",
+]
+blocked_action_plan = []
+
