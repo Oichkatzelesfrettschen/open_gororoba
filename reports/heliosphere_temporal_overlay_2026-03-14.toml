@@ -1,4 +1,4 @@
-generated_at_utc = "2026-03-14T05:42:40.368120295+00:00"
+generated_at_utc = "2026-03-14T16:11:33.107931334+00:00"
 overlay_definition = "4D overlay = shared observed epoch windows across heliocentric or near-Earth telemetry lanes using true measurement times. Near-Earth missions use OMNI as the common boundary clock; outer-heliosphere missions retain heliocentric distance summaries where available."
 control_plane_db_path = "registry/canonical/control_plane.sqlite3"
 
@@ -108,24 +108,31 @@ notes = "Current Rust lane uses the SQLite-authored HAPI contract for the merged
 label = "Ulysses merged hourly"
 path = "data/external/ulysses"
 availability = "available"
-row_count = 17520
+row_count = 131472
 start_utc = "1994-01-01T00:00:00+00:00"
-end_utc = "1995-12-31T23:00:00+00:00"
+end_utc = "2009-12-31T23:00:00+00:00"
 cadence_seconds = 3600.0
+notes = "Official SPDF merged yearly files now cover the 1997-2009 post-Jupiter era for same-epoch fleet comparisons."
 
 [[datasets]]
 label = "Helios 1 merged hourly"
 path = "data/external/helios/helios1"
-availability = "missing"
-row_count = 0
-notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+availability = "available"
+row_count = 43848
+start_utc = "1976-01-01T00:00:00+00:00"
+end_utc = "1980-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent."
 
 [[datasets]]
 label = "Helios 2 merged hourly"
 path = "data/external/helios/helios2"
-availability = "missing"
-row_count = 0
-notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+availability = "available"
+row_count = 43848
+start_utc = "1976-01-01T00:00:00+00:00"
+end_utc = "1980-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent."
 
 [[datasets]]
 label = "Cassini cruise merged hourly"
@@ -162,6 +169,45 @@ path = "data/external/ibex"
 availability = "missing"
 row_count = 0
 notes = "ENA sky maps are governed here as a sky-map lane, not a heliocentric time-series overlay."
+
+[[datasets]]
+label = "IBEX orbit support"
+path = "data/external/ibex/orbits"
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "SSC orbit series complements the ENA sky-map family for same-epoch overlay only."
+
+[[datasets]]
+label = "PSP merged hourly"
+path = "data/external/psp"
+availability = "available"
+row_count = 8784
+start_utc = "2020-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Solar Orbiter merged hourly"
+path = "data/external/solar_orbiter"
+availability = "available"
+row_count = 8784
+start_utc = "2020-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Modern ESA/NASA inner-heliosphere lane sourced from the official CDAWeb merged hourly HAPI feed."
+
+[[datasets]]
+label = "BepiColombo position hourly"
+path = "data/external/bepicolombo"
+availability = "available"
+row_count = 8784
+start_utc = "2020-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Modern ESA/JAXA cruise-position lane sourced from the official CDAWeb heliocentric hourly support feed."
 
 [[overlays]]
 mission = "Voyager 1"
@@ -354,9 +400,14 @@ notes = "Current Rust lane uses the SQLite-authored HAPI contract for the merged
 [[overlays]]
 mission = "Ulysses"
 overlay_mode = "omni+mission"
-simultaneous_day_bins = 0
-temporal_classification = "no_temporal_overlap"
-notes = "High-latitude heliosphere lane; same-time overlap depends on which yearly Ulysses files are staged."
+simultaneous_day_bins = 4748
+simultaneous_start_day = "1997-01-01"
+simultaneous_end_day = "2009-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 4.029893902696086
+min_heliocentric_distance_au = 1.34
+max_heliocentric_distance_au = 5.41
+notes = "High-latitude heliosphere lane now targets the 1997-2009 second and third polar-scan era from the official SPDF archive."
 
 [[overlays.components]]
 label = "OMNI hourly"
@@ -371,10 +422,11 @@ cadence_seconds = 3600.0
 label = "Ulysses merged hourly"
 path = "data/external/ulysses"
 availability = "available"
-row_count = 17520
+row_count = 131472
 start_utc = "1994-01-01T00:00:00+00:00"
-end_utc = "1995-12-31T23:00:00+00:00"
+end_utc = "2009-12-31T23:00:00+00:00"
 cadence_seconds = 3600.0
+notes = "Official SPDF merged yearly files now cover the 1997-2009 post-Jupiter era for same-epoch fleet comparisons."
 
 [[overlays]]
 mission = "Helios 1"
@@ -395,9 +447,12 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "Helios 1 merged hourly"
 path = "data/external/helios/helios1"
-availability = "missing"
-row_count = 0
-notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+availability = "available"
+row_count = 43848
+start_utc = "1976-01-01T00:00:00+00:00"
+end_utc = "1980-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent."
 
 [[overlays]]
 mission = "Helios 2"
@@ -418,9 +473,12 @@ cadence_seconds = 3600.0
 [[overlays.components]]
 label = "Helios 2 merged hourly"
 path = "data/external/helios/helios2"
-availability = "missing"
-row_count = 0
-notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+availability = "available"
+row_count = 43848
+start_utc = "1976-01-01T00:00:00+00:00"
+end_utc = "1980-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent."
 
 [[overlays]]
 mission = "Cassini"
@@ -514,6 +572,126 @@ end_utc = "2016-12-31T23:00:00+00:00"
 cadence_seconds = 3600.0
 notes = "SWAP lane provides plasma and trajectory but no in-situ magnetometer."
 
+[[overlays]]
+mission = "IBEX Orbit Companion"
+overlay_mode = "omni+earth_orbit_support"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
+notes = "IBEX remains a sky-map mission in the science matrix, but its SSC orbit support series now provides a real same-epoch companion lane."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "IBEX orbit support"
+path = "data/external/ibex/orbits"
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "SSC orbit series complements the ENA sky-map family for same-epoch overlay only."
+
+[[overlays]]
+mission = "Parker Solar Probe"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2020-01-01"
+simultaneous_end_day = "2020-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 0.6121391165755958
+min_heliocentric_distance_au = 0.09
+max_heliocentric_distance_au = 0.87
+notes = "Modern inner-heliosphere lane sourced from official CDAWeb HAPI instead of the old AMDA bridge."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "PSP merged hourly"
+path = "data/external/psp"
+availability = "available"
+row_count = 8784
+start_utc = "2020-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays]]
+mission = "Solar Orbiter"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2020-01-01"
+simultaneous_end_day = "2020-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 0.8177923076922882
+min_heliocentric_distance_au = 0.52
+max_heliocentric_distance_au = 0.99
+notes = "Modern ESA/NASA inner-heliosphere lane sourced from the official CDAWeb merged hourly feed."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Solar Orbiter merged hourly"
+path = "data/external/solar_orbiter"
+availability = "available"
+row_count = 8784
+start_utc = "2020-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Modern ESA/NASA inner-heliosphere lane sourced from the official CDAWeb merged hourly HAPI feed."
+
+[[overlays]]
+mission = "BepiColombo"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2020-01-01"
+simultaneous_end_day = "2020-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 0.8437350751366159
+min_heliocentric_distance_au = 0.6259
+max_heliocentric_distance_au = 1.0124
+notes = "Modern ESA/JAXA cruise-position lane sourced from the official CDAWeb heliocentric hourly support feed."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "BepiColombo position hourly"
+path = "data/external/bepicolombo"
+availability = "available"
+row_count = 8784
+start_utc = "2020-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Modern ESA/JAXA cruise-position lane sourced from the official CDAWeb heliocentric hourly support feed."
+
 [[fleet_coverage]]
 mission = "Voyager 1"
 provider_names = [
@@ -598,31 +776,32 @@ parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
-cross_domain_integrated = false
+cross_domain_integrated = true
+notes = "Second and third Ulysses polar-scan years are now sourced from the official SPDF merged archive."
 
 [[fleet_coverage]]
 mission = "Helios 1"
 provider_names = ["HeliosProvider"]
 fetch_registered = true
-cache_present = false
-parser_working = false
+cache_present = true
+parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
 cross_domain_integrated = false
-notes = "Fetch path is still source-blocked from direct SPDF on this host; governed staged exports remain the fallback."
+notes = "Official SPDF merged files are now fetchable in the Rust path, even though same-epoch OMNI overlap remains unavailable."
 
 [[fleet_coverage]]
 mission = "Helios 2"
 provider_names = ["HeliosProvider"]
 fetch_registered = true
-cache_present = false
-parser_working = false
+cache_present = true
+parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = true
 overlay_4d_implemented = true
 cross_domain_integrated = false
-notes = "Fetch path is still source-blocked from direct SPDF on this host; governed staged exports remain the fallback."
+notes = "Official SPDF merged files are now fetchable in the Rust path, even though same-epoch OMNI overlap remains unavailable."
 
 [[fleet_coverage]]
 mission = "Cassini"
@@ -660,12 +839,51 @@ notes = "Current lane is plasma+trajectory only; magnetometer parity with Voyage
 
 [[fleet_coverage]]
 mission = "IBEX"
-provider_names = ["IbexProvider"]
+provider_names = [
+    "IbexProvider",
+    "IbexOrbitProvider",
+]
 fetch_registered = true
 cache_present = true
-parser_working = false
+parser_working = true
 source_contract_migrated = true
 overlay_3d_implemented = false
-overlay_4d_implemented = false
-cross_domain_integrated = false
-notes = "IBEX is governed here as an ENA sky-map family, not as a heliocentric time-series overlay."
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "IBEX still contributes ENA sky maps, and now also has an official orbit support time-series for same-epoch overlay classification."
+
+[[fleet_coverage]]
+mission = "Parker Solar Probe"
+provider_names = ["PspProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "PSP now uses the official CDAWeb merged hourly feed in the Rust fleet lane."
+
+[[fleet_coverage]]
+mission = "Solar Orbiter"
+provider_names = ["SolarOrbiterProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "Solar Orbiter now uses the official CDAWeb merged hourly plasma+magnetic-field feed in the Rust fleet lane."
+
+[[fleet_coverage]]
+mission = "BepiColombo"
+provider_names = ["BepicolomboProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "BepiColombo now has a governed heliocentric hourly support lane for same-epoch fleet overlays."

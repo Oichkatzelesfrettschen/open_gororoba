@@ -1,15 +1,11 @@
-//! Parker Solar Probe merged hourly data parser.
+//! Solar Orbiter merged hourly plasma and magnetic-field parser.
 //!
-//! PSP provides the innermost heliospheric sampling (0.05-0.25 AU perihelion):
-//!   Launched 2018-08-12, first perihelion 2018-11-05
-//!   Instruments: SWEAP (Solar Wind Electrons Alphas and Protons),
-//!                FIELDS (electromagnetic fields and waves)
+//! Solar Orbiter provides modern inner-heliosphere coverage from 2020 onward.
+//! The official Rust fetch lane uses the CDAWeb HAPI dataset:
+//!   SOLO_COHO1HR_MERGED_MAG_PLASMA
+//!   <https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_COHO1HR_MERGED_MAG_PLASMA>
 //!
-//! Official source:
-//!   PSP_COHO1HR_MERGED_MAG_PLASMA via CDAWeb HAPI
-//!   <https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_COHO1HR_MERGED_MAG_PLASMA>
-//!
-//! B-field coordinate system: RTN (Radial-Tangential-Normal).
+//! B-field coordinates are RTN (Radial-Tangential-Normal).
 
 use crate::{
     catalogs::{
@@ -22,11 +18,8 @@ use crate::{
 use csv::ReaderBuilder;
 use std::path::PathBuf;
 
-/// Column layout for PSP AMDA-derived merged hourly data.
-///
-/// The 13-column format matches the standard SPDF merged convention
-/// used by Voyager/Pioneer, with RTN B-field coordinates from SPC/FIELDS.
-pub const PSP_LAYOUT: SpdfColumnLayout = SpdfColumnLayout {
+/// Column layout for Solar Orbiter merged hourly data.
+pub const SOLO_LAYOUT: SpdfColumnLayout = SpdfColumnLayout {
     min_columns: 13,
     col_year: 0,
     col_doy: 1,
@@ -49,41 +42,30 @@ pub const PSP_LAYOUT: SpdfColumnLayout = SpdfColumnLayout {
     b_is_se: false,
 };
 
-/// PSP B magnitude fill (nT).
-pub const PSP_FILL_B_MAG: f64 = 9999.99;
-/// PSP density fill (cm^-3).
-pub const PSP_FILL_DENSITY: f64 = 999.9;
-/// PSP speed fill (km/s).
-pub const PSP_FILL_SPEED: f64 = 9999.9;
-/// PSP temperature fill (K).
-pub const PSP_FILL_TEMP: f64 = 999999.0;
-/// PSP distance fill (AU).
-pub const PSP_FILL_DISTANCE: f64 = 999.999;
-
-/// Parse PSP merged hourly data from a string.
-pub fn parse_psp_merged(content: &str) -> Vec<SpdfMergedRecord> {
-    parse_spdf_merged(content, &PSP_LAYOUT)
+/// Parse Solar Orbiter merged hourly data from a string.
+pub fn parse_solar_orbiter_merged(content: &str) -> Vec<SpdfMergedRecord> {
+    parse_spdf_merged(content, &SOLO_LAYOUT)
 }
 
-/// Parse PSP merged hourly data from a file.
-pub fn parse_psp_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
+/// Parse Solar Orbiter merged hourly data from a file.
+pub fn parse_solar_orbiter_file(
+    path: &std::path::Path,
+) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {}", e)))?;
     if path.extension().and_then(|value| value.to_str()) == Some("csv") {
-        Ok(parse_psp_hapi_csv(&content))
+        Ok(parse_solo_hapi_csv(&content))
     } else {
-        Ok(parse_psp_merged(&content))
+        Ok(parse_solar_orbiter_merged(&content))
     }
 }
 
-/// Convert PSP records to OmniRecord format.
-///
-/// B-field is in RTN coordinates (sign flip on Bt for GSE conversion).
-pub fn psp_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
-    spdf_to_omni(records, false) // RTN coordinates
+/// Convert Solar Orbiter merged records to OmniRecord format.
+pub fn solar_orbiter_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
+    spdf_to_omni(records, false)
 }
 
-pub fn parse_psp_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
+pub fn parse_solo_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
     let mut reader = ReaderBuilder::new()
         .has_headers(true)
         .from_reader(content.as_bytes());
@@ -114,17 +96,15 @@ pub fn parse_psp_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
     rows
 }
 
-const PSP_HAPI_DATASET: &str = "PSP_COHO1HR_MERGED_MAG_PLASMA";
+const SOLO_HAPI_DATASET: &str = "SOLO_COHO1HR_MERGED_MAG_PLASMA";
 
-/// NASA PSP dataset provider.
-pub struct PspProvider {
-    /// Start year (inclusive).
+/// Solar Orbiter merged-hourly dataset provider.
+pub struct SolarOrbiterProvider {
     pub year_start: u16,
-    /// End year (inclusive).
     pub year_end: u16,
 }
 
-impl Default for PspProvider {
+impl Default for SolarOrbiterProvider {
     fn default() -> Self {
         Self {
             year_start: 2020,
@@ -133,23 +113,23 @@ impl Default for PspProvider {
     }
 }
 
-impl DatasetProvider for PspProvider {
+impl DatasetProvider for SolarOrbiterProvider {
     fn name(&self) -> &str {
-        "Parker Solar Probe Merged Hourly"
+        "Solar Orbiter Merged Hourly"
     }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("psp");
+        let dir = config.output_dir.join("solar_orbiter");
         std::fs::create_dir_all(&dir)?;
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("psp_coho1hr_merged_mag_plasma_{year}.csv");
+            let fname = format!("solo_coho1hr_merged_mag_plasma_{year}.csv");
             let output = dir.join(&fname);
             if config.skip_existing && output.exists() {
                 continue;
             }
             match download_hapi_csv(
-                PSP_HAPI_DATASET,
+                SOLO_HAPI_DATASET,
                 &format!("{year}-01-01T00:00:00Z"),
                 &format!("{}-01-01T00:00:00Z", year + 1),
                 Some(&[
@@ -176,7 +156,7 @@ impl DatasetProvider for PspProvider {
                     log::info!("saved {}", fname);
                 }
                 Err(e) => {
-                    log::warn!("failed to download PSP {} via HAPI: {}", year, e);
+                    log::warn!("failed to download Solar Orbiter {} via HAPI: {}", year, e);
                 }
             }
         }
@@ -185,7 +165,7 @@ impl DatasetProvider for PspProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        let dir = config.output_dir.join("psp");
+        let dir = config.output_dir.join("solar_orbiter");
         std::fs::read_dir(&dir)
             .ok()
             .into_iter()
@@ -194,7 +174,7 @@ impl DatasetProvider for PspProvider {
             .any(|entry| {
                 let name = entry.file_name();
                 let name = name.to_string_lossy();
-                name.starts_with("psp_coho1hr_merged_mag_plasma_") && name.ends_with(".csv")
+                name.starts_with("solo_coho1hr_merged_mag_plasma_") && name.ends_with(".csv")
             })
     }
 }
@@ -204,33 +184,31 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_psp_layout_validity() {
-        assert_eq!(PSP_LAYOUT.min_columns, 13);
-        const { assert!(!PSP_LAYOUT.b_is_se) };
-        assert_eq!(PSP_LAYOUT.col_distance_au, Some(3));
-        assert_eq!(PSP_LAYOUT.col_b_mag, Some(6));
+    fn test_solo_layout_validity() {
+        assert_eq!(SOLO_LAYOUT.min_columns, 13);
+        const { assert!(!SOLO_LAYOUT.b_is_se) };
+        assert_eq!(SOLO_LAYOUT.col_distance_au, Some(3));
+        assert_eq!(SOLO_LAYOUT.col_b_mag, Some(6));
     }
 
     #[test]
-    fn test_parse_psp_inner_heliosphere() {
-        // PSP at 0.1 AU perihelion: B ~ 100 nT, n ~ 300 cm^-3, V ~ 300 km/s
-        // B ceiling at 0.1 AU: 200/(0.01) = 20000 nT -- no practical ceiling issue
-        // Density ceiling at 0.1 AU: 500/(0.01) = 50000 cm^-3 -- no issue
-        let data = "2022 310 12 0.100 3.5 120.0 95.0 80.0 -40.0 20.0 300.0 350.0 500000.0\n";
-        let records = parse_psp_merged(data);
+    fn test_parse_solo_inner_heliosphere() {
+        let data = "2020 180 12 0.65 4.0 120.0 18.0 16.0 -6.0 4.0 35.0 360.0 250000.0\n";
+        let records = parse_solar_orbiter_merged(data);
         assert_eq!(records.len(), 1);
         let r = &records[0];
-        assert!((r.distance_au - 0.1).abs() < 0.001);
-        assert!((r.b_magnitude - 95.0).abs() < 0.1);
-        assert!((r.proton_density - 300.0).abs() < 0.1);
-        assert!((r.bulk_speed - 350.0).abs() < 0.1);
-        assert!((r.proton_temperature - 500000.0).abs() < 1.0);
+        assert!((r.distance_au - 0.65).abs() < 0.001);
+        assert!((r.b_magnitude - 18.0).abs() < 0.1);
+        assert!((r.proton_density - 35.0).abs() < 0.1);
+        assert!((r.bulk_speed - 360.0).abs() < 0.1);
+        assert!((r.proton_temperature - 250000.0).abs() < 1.0);
     }
 
     #[test]
-    fn test_psp_fill_values() {
-        let data = "2022 310 12 999.999 999.99 999.99 9999.99 9999.99 9999.99 9999.99 999.9 9999.9 999999.0\n";
-        let records = parse_psp_merged(data);
+    fn test_solo_fill_values() {
+        let data =
+            "2020 180 12 999.999 999.99 999.99 9999.99 9999.99 9999.99 9999.99 999.9 9999.9 999999.0\n";
+        let records = parse_solar_orbiter_merged(data);
         assert_eq!(records.len(), 1);
         let r = &records[0];
         assert!(r.distance_au.is_nan());
@@ -241,26 +219,28 @@ mod tests {
     }
 
     #[test]
-    fn test_psp_to_omni_rtn_conversion() {
-        let data = "2022 310 12 0.100 3.5 120.0 95.0 80.0 -40.0 20.0 300.0 350.0 500000.0\n";
-        let spdf = parse_psp_merged(data);
-        let omni = psp_to_omni(&spdf);
+    fn test_solo_to_omni_rtn_conversion() {
+        let data = "2020 180 12 0.65 4.0 120.0 18.0 16.0 -6.0 4.0 35.0 360.0 250000.0\n";
+        let spdf = parse_solar_orbiter_merged(data);
+        let omni = solar_orbiter_to_omni(&spdf);
         assert_eq!(omni.len(), 1);
         let o = &omni[0];
-        // RTN -> GSE via rotation by spacecraft longitude (120 deg)
-        assert!((o.bx_gse - (-5.359)).abs() < 0.01);
-        assert!((o.by_gse - 89.282).abs() < 0.01);
-        assert!((o.bz_gse - 20.0).abs() < 0.1);
-        assert!((o.r_au - 0.1).abs() < 0.001);
+        assert!((o.r_au - 0.65).abs() < 0.001);
+        assert!((o.bx_gse - (-2.804)).abs() < 0.02);
+        assert!((o.by_gse - 16.856).abs() < 0.02);
+        assert!((o.bz_gse - 4.0).abs() < 0.1);
     }
 
     #[test]
-    fn test_parse_psp_hapi_csv() {
-        let data = "Time,radialDistance,heliographicLatitude,heliographicLongitude,BR,BT,BN,B,VR,VT,VN,ProtonSpeed,flow_theta,flow_lon,protonDensity,protonTemp\n2020-01-01T00:00:00Z,0.17,1.5,120.0,15.0,-4.0,2.0,15.7,300.0,5.0,1.0,300.0,0.0,0.0,120.0,450000.0\n";
-        let rows = parse_psp_hapi_csv(data);
+    fn test_parse_solo_hapi_csv() {
+        let data = "Time,radialDistance,heliographicLatitude,heliographicLongitude,BR,BT,BN,B,VR,VT,VN,ProtonSpeed,flow_theta,flow_lon,protonDensity,protonTemp\n2020-06-28T12:00:00Z,0.65,4.0,120.0,16.0,-6.0,4.0,18.0,350.0,5.0,1.0,360.0,0.0,0.0,35.0,250000.0\n";
+        let rows = parse_solo_hapi_csv(data);
         assert_eq!(rows.len(), 1);
-        assert!((rows[0].distance_au - 0.17).abs() < 0.001);
-        assert!((rows[0].proton_density - 120.0).abs() < 0.01);
-        assert!((rows[0].bulk_speed - 300.0).abs() < 0.01);
+        let row = &rows[0];
+        assert_eq!(row.year, 2020);
+        assert_eq!(row.hour, 12);
+        assert!((row.distance_au - 0.65).abs() < 0.001);
+        assert!((row.br - 16.0).abs() < 0.001);
+        assert!((row.proton_density - 35.0).abs() < 0.001);
     }
 }

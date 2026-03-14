@@ -8,6 +8,7 @@
 pub mod ace_mag;
 pub mod aflow;
 pub mod atnf;
+pub mod bepicolombo;
 pub mod bl_filterbank;
 pub mod cassini;
 pub mod chime;
@@ -39,6 +40,7 @@ pub mod planck;
 pub mod psp;
 pub mod sdss;
 pub mod soho_celias;
+pub mod solar_orbiter;
 pub mod solar_wind;
 pub mod sorce;
 pub mod sparc;

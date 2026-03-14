@@ -10,7 +10,7 @@
 
 use crate::{
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
-    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
 use std::path::{Path, PathBuf};
@@ -124,9 +124,9 @@ pub fn parse_swepam_hapi_csv(content: &str) -> Vec<SwepamRecord> {
             decimal_year,
             doy,
             hour,
-            proton_density: parse_f64_or_nan(record.get(1).unwrap_or("")),
-            bulk_speed: parse_f64_or_nan(record.get(2).unwrap_or("")),
-            ion_temperature: parse_f64_or_nan(record.get(3).unwrap_or("")),
+            proton_density: parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or("")),
+            bulk_speed: parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or("")),
+            ion_temperature: parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or("")),
         });
     }
     records

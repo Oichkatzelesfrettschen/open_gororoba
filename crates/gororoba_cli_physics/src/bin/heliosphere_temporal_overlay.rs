@@ -4,12 +4,15 @@ use clap::Parser;
 use data_core::{
     catalogs::{
         ace_mag::{AceMagHourly, average_to_hourly, parse_ace_mag_file, parse_ace_mag_hapi_file},
+        bepicolombo::parse_bepicolombo_file,
         cassini::parse_cassini_cruise_file,
         helios::{HeliosSpacecraft, parse_helios_file},
-        ibex::parse_ibex_ena_file,
+        ibex::{IbexOrbitRecord, parse_ibex_ena_file, parse_ibex_orbit_file},
         juno::parse_juno_cruise_file,
         new_horizons::parse_nh_swap_file,
         omni::{OmniRecord, parse_omni_file},
+        psp::parse_psp_file,
+        solar_orbiter::parse_solar_orbiter_file,
         solar_wind::{SwepamRecord, parse_swepam_file},
         spdf_merged::SpdfMergedRecord,
         stereo_plastic::{
@@ -91,6 +94,18 @@ struct Cli {
 
     #[arg(long, default_value = "data/external/ibex")]
     ibex_dir: PathBuf,
+
+    #[arg(long, default_value = "data/external/ibex/orbits")]
+    ibex_orbit_dir: PathBuf,
+
+    #[arg(long, default_value = "data/external/psp")]
+    psp_dir: PathBuf,
+
+    #[arg(long, default_value = "data/external/solar_orbiter")]
+    solar_orbiter_dir: PathBuf,
+
+    #[arg(long, default_value = "data/external/bepicolombo")]
+    bepicolombo_dir: PathBuf,
 
     #[arg(long)]
     report: Option<PathBuf>,
@@ -240,12 +255,18 @@ fn main() -> Result<()> {
     )?;
     let helios1 = load_merged_optional(
         &cli.helios1_dir,
-        |path| file_name_starts_with(path, "helios1_") && file_name_ends_with(path, ".asc"),
+        |path| {
+            (file_name_starts_with(path, "he1_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "helios1_") && file_name_ends_with(path, ".csv"))
+        },
         |path| Ok(parse_helios_file(path, HeliosSpacecraft::H1)?),
     )?;
     let helios2 = load_merged_optional(
         &cli.helios2_dir,
-        |path| file_name_starts_with(path, "helios2_") && file_name_ends_with(path, ".asc"),
+        |path| {
+            (file_name_starts_with(path, "he2_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "helios2_") && file_name_ends_with(path, ".csv"))
+        },
         |path| Ok(parse_helios_file(path, HeliosSpacecraft::H2)?),
     )?;
     let cassini = load_merged_optional(
@@ -282,6 +303,36 @@ fn main() -> Result<()> {
     } else {
         None
     };
+    let ibex_orbit = load_records_optional(
+        &cli.ibex_orbit_dir,
+        |path| file_name_starts_with(path, "ibex_or_ssc_") && file_name_ends_with(path, ".csv"),
+        |path| Ok(parse_ibex_orbit_file(path)?),
+    )?;
+    let psp = load_merged_optional(
+        &cli.psp_dir,
+        |path| {
+            (file_name_starts_with(path, "psp_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "psp_coho1hr_") && file_name_ends_with(path, ".csv"))
+        },
+        |path| Ok(parse_psp_file(path)?),
+    )?;
+    let solar_orbiter = load_merged_optional(
+        &cli.solar_orbiter_dir,
+        |path| {
+            (file_name_starts_with(path, "solo_") && file_name_ends_with(path, ".asc"))
+                || (file_name_starts_with(path, "solo_coho1hr_")
+                    && file_name_ends_with(path, ".csv"))
+        },
+        |path| Ok(parse_solar_orbiter_file(path)?),
+    )?;
+    let bepicolombo = load_merged_optional(
+        &cli.bepicolombo_dir,
+        |path| {
+            file_name_starts_with(path, "bepicolombo_helio1hr_position_")
+                && file_name_ends_with(path, ".csv")
+        },
+        |path| Ok(parse_bepicolombo_file(path)?),
+    )?;
 
     let voyager1_series = merged_overlay_series(
         "Voyager 1 merged hourly",
@@ -316,18 +367,23 @@ fn main() -> Result<()> {
     let stereo_mag_series =
         stereo_mag_overlay_series(&cli.stereo_impact_dir, stereo_mag.as_deref());
     let ulysses_series =
-        merged_overlay_series("Ulysses merged hourly", &cli.ulysses_dir, ulysses.as_deref(), None);
+        merged_overlay_series(
+            "Ulysses merged hourly",
+            &cli.ulysses_dir,
+            ulysses.as_deref(),
+            Some("Official SPDF merged yearly files now cover the 1997-2009 post-Jupiter era for same-epoch fleet comparisons.".to_string()),
+        );
     let helios1_series = merged_overlay_series(
         "Helios 1 merged hourly",
         &cli.helios1_dir,
         helios1.as_deref(),
-        Some("Current local lane is a governed staged fallback when direct SPDF access is blocked.".to_string()),
+        Some("Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent.".to_string()),
     );
     let helios2_series = merged_overlay_series(
         "Helios 2 merged hourly",
         &cli.helios2_dir,
         helios2.as_deref(),
-        Some("Current local lane is a governed staged fallback when direct SPDF access is blocked.".to_string()),
+        Some("Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent.".to_string()),
     );
     let cassini_series = merged_overlay_series(
         "Cassini cruise merged hourly",
@@ -350,6 +406,21 @@ fn main() -> Result<()> {
         None,
         BTreeSet::new(),
         Some("ENA sky maps are governed here as a sky-map lane, not a heliocentric time-series overlay.".to_string()),
+    );
+    let ibex_orbit_series = ibex_orbit_overlay_series(&cli.ibex_orbit_dir, ibex_orbit.as_deref());
+    let psp_series =
+        merged_overlay_series("PSP merged hourly", &cli.psp_dir, psp.as_deref(), None);
+    let solar_orbiter_series = merged_overlay_series(
+        "Solar Orbiter merged hourly",
+        &cli.solar_orbiter_dir,
+        solar_orbiter.as_deref(),
+        Some("Modern ESA/NASA inner-heliosphere lane sourced from the official CDAWeb merged hourly HAPI feed.".to_string()),
+    );
+    let bepicolombo_series = merged_overlay_series(
+        "BepiColombo position hourly",
+        &cli.bepicolombo_dir,
+        bepicolombo.as_deref(),
+        Some("Modern ESA/JAXA cruise-position lane sourced from the official CDAWeb heliocentric hourly support feed.".to_string()),
     );
 
     let overlays = vec![
@@ -413,7 +484,7 @@ fn main() -> Result<()> {
             "omni+mission",
             vec![omni_series.clone(), ulysses_series.clone()],
             ulysses.as_deref(),
-            Some("High-latitude heliosphere lane; same-time overlap depends on which yearly Ulysses files are staged.".to_string()),
+            Some("High-latitude heliosphere lane now targets the 1997-2009 second and third polar-scan era from the official SPDF archive.".to_string()),
         ),
         build_overlay(
             "Helios 1",
@@ -449,6 +520,34 @@ fn main() -> Result<()> {
             vec![omni_series.clone(), new_horizons_series.clone()],
             new_horizons.as_deref(),
             Some("Outer-heliosphere plasma lane without in-situ magnetometer; temporal overlap is still scientifically useful for same-epoch boundary comparisons.".to_string()),
+        ),
+        build_overlay(
+            "IBEX Orbit Companion",
+            "omni+earth_orbit_support",
+            vec![omni_series.clone(), ibex_orbit_series.clone()],
+            None,
+            Some("IBEX remains a sky-map mission in the science matrix, but its SSC orbit support series now provides a real same-epoch companion lane.".to_string()),
+        ),
+        build_overlay(
+            "Parker Solar Probe",
+            "omni+mission",
+            vec![omni_series.clone(), psp_series.clone()],
+            psp.as_deref(),
+            Some("Modern inner-heliosphere lane sourced from official CDAWeb HAPI instead of the old AMDA bridge.".to_string()),
+        ),
+        build_overlay(
+            "Solar Orbiter",
+            "omni+mission",
+            vec![omni_series.clone(), solar_orbiter_series.clone()],
+            solar_orbiter.as_deref(),
+            Some("Modern ESA/NASA inner-heliosphere lane sourced from the official CDAWeb merged hourly feed.".to_string()),
+        ),
+        build_overlay(
+            "BepiColombo",
+            "omni+mission",
+            vec![omni_series.clone(), bepicolombo_series.clone()],
+            bepicolombo.as_deref(),
+            Some("Modern ESA/JAXA cruise-position lane sourced from the official CDAWeb heliocentric hourly support feed.".to_string()),
         ),
     ];
 
@@ -541,13 +640,13 @@ fn main() -> Result<()> {
                 parser_working: ulysses.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
-                    &["SRC-ULYSSES-AMDA-DERIVED"],
+                    &["SRC-ULYSSES-SPDF-MERGED"],
                 ),
                 overlay_3d_implemented: true,
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[5].simultaneous_day_bins > 0,
             },
-            None,
+            Some("Second and third Ulysses polar-scan years are now sourced from the official SPDF merged archive.".to_string()),
         ),
         build_coverage_row(
             "Helios 1",
@@ -557,13 +656,13 @@ fn main() -> Result<()> {
                 parser_working: helios1.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
-                    &["SRC-HELIOS1-AMDA-COREFIT", "SRC-HELIOS1-AMDA-MAG"],
+                    &["SRC-HELIOS1-SPDF-MERGED"],
                 ),
                 overlay_3d_implemented: true,
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[6].simultaneous_day_bins > 0,
             },
-            Some("Fetch path is still source-blocked from direct SPDF on this host; governed staged exports remain the fallback.".to_string()),
+            Some("Official SPDF merged files are now fetchable in the Rust path, even though same-epoch OMNI overlap remains unavailable.".to_string()),
         ),
         build_coverage_row(
             "Helios 2",
@@ -573,13 +672,13 @@ fn main() -> Result<()> {
                 parser_working: helios2.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
-                    &["SRC-HELIOS2-AMDA-COREFIT", "SRC-HELIOS2-AMDA-MAG"],
+                    &["SRC-HELIOS2-SPDF-MERGED"],
                 ),
                 overlay_3d_implemented: true,
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[7].simultaneous_day_bins > 0,
             },
-            Some("Fetch path is still source-blocked from direct SPDF on this host; governed staged exports remain the fallback.".to_string()),
+            Some("Official SPDF merged files are now fetchable in the Rust path, even though same-epoch OMNI overlap remains unavailable.".to_string()),
         ),
         build_coverage_row(
             "Cassini",
@@ -631,19 +730,67 @@ fn main() -> Result<()> {
         ),
         build_coverage_row(
             "IBEX",
-            &["IbexProvider"],
-            &[&cli.ibex_dir],
+            &["IbexProvider", "IbexOrbitProvider"],
+            &[&cli.ibex_dir, &cli.ibex_orbit_dir],
             CoverageStatus {
-                parser_working: ibex_pixel_count.is_some(),
+                parser_working: ibex_pixel_count.is_some() || ibex_orbit.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
-                    &["SRC-IBEX-ENA-MAPS"],
+                    &["SRC-IBEX-ENA-MAPS", "SRC-IBEX-ORBIT-SSC"],
                 ),
                 overlay_3d_implemented: false,
-                overlay_4d_implemented: false,
-                cross_domain_integrated: false,
+                overlay_4d_implemented: true,
+                cross_domain_integrated: overlays[11].simultaneous_day_bins > 0,
             },
-            Some("IBEX is governed here as an ENA sky-map family, not as a heliocentric time-series overlay.".to_string()),
+            Some("IBEX still contributes ENA sky maps, and now also has an official orbit support time-series for same-epoch overlay classification.".to_string()),
+        ),
+        build_coverage_row(
+            "Parker Solar Probe",
+            &["PspProvider"],
+            &[&cli.psp_dir],
+            CoverageStatus {
+                parser_working: psp.is_some(),
+                source_contract_migrated: contracts_present(
+                    &contract_ids,
+                    &["SRC-PSP-COHO1HR-MERGED"],
+                ),
+                overlay_3d_implemented: true,
+                overlay_4d_implemented: true,
+                cross_domain_integrated: overlays[12].simultaneous_day_bins > 0,
+            },
+            Some("PSP now uses the official CDAWeb merged hourly feed in the Rust fleet lane.".to_string()),
+        ),
+        build_coverage_row(
+            "Solar Orbiter",
+            &["SolarOrbiterProvider"],
+            &[&cli.solar_orbiter_dir],
+            CoverageStatus {
+                parser_working: solar_orbiter.is_some(),
+                source_contract_migrated: contracts_present(
+                    &contract_ids,
+                    &["SRC-SOLO-COHO1HR-MERGED"],
+                ),
+                overlay_3d_implemented: true,
+                overlay_4d_implemented: true,
+                cross_domain_integrated: overlays[13].simultaneous_day_bins > 0,
+            },
+            Some("Solar Orbiter now uses the official CDAWeb merged hourly plasma+magnetic-field feed in the Rust fleet lane.".to_string()),
+        ),
+        build_coverage_row(
+            "BepiColombo",
+            &["BepicolomboProvider"],
+            &[&cli.bepicolombo_dir],
+            CoverageStatus {
+                parser_working: bepicolombo.is_some(),
+                source_contract_migrated: contracts_present(
+                    &contract_ids,
+                    &["SRC-BEPICOLOMBO-HELIO1HR-POSITION"],
+                ),
+                overlay_3d_implemented: true,
+                overlay_4d_implemented: true,
+                cross_domain_integrated: overlays[14].simultaneous_day_bins > 0,
+            },
+            Some("BepiColombo now has a governed heliocentric hourly support lane for same-epoch fleet overlays.".to_string()),
         ),
     ];
 
@@ -666,6 +813,10 @@ fn main() -> Result<()> {
         dataset_window_from_series(&juno_series),
         dataset_window_from_series(&new_horizons_series),
         dataset_window_from_series(&ibex_series),
+        dataset_window_from_series(&ibex_orbit_series),
+        dataset_window_from_series(&psp_series),
+        dataset_window_from_series(&solar_orbiter_series),
+        dataset_window_from_series(&bepicolombo_series),
     ];
 
     let report = HeliosphereTemporalOverlayReport {
@@ -1007,6 +1158,21 @@ fn stereo_mag_overlay_series(path: &Path, records: Option<&[StereoMagRecord]>) -
     )
 }
 
+fn ibex_orbit_overlay_series(path: &Path, records: Option<&[IbexOrbitRecord]>) -> OverlaySeries {
+    overlay_series(
+        "IBEX orbit support",
+        path,
+        records.map(|rows| rows.len()).unwrap_or(0),
+        records.and_then(bounds_from_ibex_orbit),
+        records.map(ibex_orbit_day_keys).unwrap_or_default(),
+        if !path.exists() {
+            Some("IBEX orbit support files are not staged locally.".to_string())
+        } else {
+            Some("SSC orbit series complements the ENA sky-map family for same-epoch overlay only.".to_string())
+        },
+    )
+}
+
 fn dataset_window_from_series(series: &OverlaySeries) -> DatasetWindow {
     DatasetWindow {
         label: series.label.clone(),
@@ -1301,6 +1467,22 @@ fn bounds_from_stereo_mag(records: &[StereoMagRecord]) -> Option<TimeBounds> {
 }
 
 fn stereo_mag_day_keys(records: &[StereoMagRecord]) -> BTreeSet<i32> {
+    records
+        .iter()
+        .map(|record| record.year as i32 * 1000 + record.doy as i32)
+        .collect()
+}
+
+fn bounds_from_ibex_orbit(records: &[IbexOrbitRecord]) -> Option<TimeBounds> {
+    bounds_from_timestamps(
+        records
+            .iter()
+            .filter_map(|record| ydh_timestamp_ms(record.year as i32, record.doy as u32, record.hour as u32))
+            .collect::<Vec<_>>(),
+    )
+}
+
+fn ibex_orbit_day_keys(records: &[IbexOrbitRecord]) -> BTreeSet<i32> {
     records
         .iter()
         .map(|record| record.year as i32 * 1000 + record.doy as i32)

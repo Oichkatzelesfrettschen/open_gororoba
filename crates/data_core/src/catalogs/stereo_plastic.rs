@@ -20,7 +20,7 @@
 use crate::{
     catalogs::omni::OmniRecord,
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
-    parse::{parse_f64_or_nan, parse_hapi_time_to_ydh},
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
 use std::{
@@ -272,12 +272,12 @@ pub fn parse_stereo_plastic_hapi_csv(content: &str) -> Vec<StereoPlasticRecord> 
             year,
             doy,
             hour,
-            proton_density: parse_f64_or_nan(record.get(1).unwrap_or("")),
-            bulk_speed: parse_f64_or_nan(record.get(2).unwrap_or("")),
-            temperature: parse_f64_or_nan(record.get(3).unwrap_or("")),
-            vr: parse_f64_or_nan(record.get(4).unwrap_or("")),
-            vt: parse_f64_or_nan(record.get(5).unwrap_or("")),
-            vn: parse_f64_or_nan(record.get(6).unwrap_or("")),
+            proton_density: parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or("")),
+            bulk_speed: parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or("")),
+            temperature: parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or("")),
+            vr: parse_hapi_spacephysics_f64_or_nan(record.get(4).unwrap_or("")),
+            vt: parse_hapi_spacephysics_f64_or_nan(record.get(5).unwrap_or("")),
+            vn: parse_hapi_spacephysics_f64_or_nan(record.get(6).unwrap_or("")),
         });
     }
     records
@@ -387,10 +387,10 @@ pub fn parse_stereo_mag_hapi_csv(content: &str) -> Vec<StereoMagRecord> {
             doy,
             hour,
             minute: 0,
-            br: parse_f64_or_nan(record.get(4).unwrap_or("")),
-            bt: parse_f64_or_nan(record.get(5).unwrap_or("")),
-            bn: parse_f64_or_nan(record.get(6).unwrap_or("")),
-            b_magnitude: parse_f64_or_nan(record.get(7).unwrap_or("")),
+            br: parse_hapi_spacephysics_f64_or_nan(record.get(4).unwrap_or("")),
+            bt: parse_hapi_spacephysics_f64_or_nan(record.get(5).unwrap_or("")),
+            bn: parse_hapi_spacephysics_f64_or_nan(record.get(6).unwrap_or("")),
+            b_magnitude: parse_hapi_spacephysics_f64_or_nan(record.get(7).unwrap_or("")),
         });
     }
     records

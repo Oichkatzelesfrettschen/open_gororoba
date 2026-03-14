@@ -464,7 +464,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             provider: Box::new(helios::HeliosProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
-            size_hint: "~staged-via-governed-export",
+            size_hint: "~1 MB/year",
         },
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
@@ -477,7 +477,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             )),
             category: "geophysical",
             pillar: "geophysical",
-            size_hint: "~staged-via-governed-export",
+            size_hint: "~1 MB/year",
         },
         DatasetEntry {
             provider: Box::new(cassini::CassiniCruiseProvider::default()),
@@ -523,6 +523,66 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         DatasetEntry {
             provider: Box::new(ibex::IbexProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1-5 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(ibex::IbexOrbitProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-20 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(psp::PspProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-20 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Parker Solar Probe Merged Hourly (2020)",
+                psp::PspProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-20 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(solar_orbiter::SolarOrbiterProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-20 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Solar Orbiter Merged Hourly (2020)",
+                solar_orbiter::SolarOrbiterProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-20 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(bepicolombo::BepicolomboProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1-5 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "BepiColombo Position Hourly (2020)",
+                bepicolombo::BepicolomboProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1-5 MB",
