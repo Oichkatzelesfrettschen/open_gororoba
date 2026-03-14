@@ -401,9 +401,9 @@ rust-regression-scoped:
 	    elif [ -n "$$local_light_packages" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin local-nextest-plan -- --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
+	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
 	        else \
-	            $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin local-nextest-plan -- --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
+	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
 	        fi; \
 	    fi; \
 	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \
