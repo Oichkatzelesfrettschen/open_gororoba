@@ -3,6 +3,7 @@
 
 pub mod box_counting_gpu;
 pub mod chingon_gpu;
+pub mod sparse;
 
 use anyhow::{Context, Result, ensure};
 use cudarc::driver::{
@@ -29,6 +30,27 @@ pub use gororoba_gpu_bridge::{ComputeBackend, HardwareCaps};
 /// success, false on any error (no driver, no device, incompatible).
 pub fn probe_cuda_available() -> bool {
     CudaContext::new(0).is_ok()
+}
+
+/// Probe whether an Ada Lovelace (SM 8.9) GPU is available via nvidia-smi.
+pub fn probe_cuda_ada_available() -> bool {
+    if !probe_cuda_available() {
+        return false;
+    }
+    
+    // Check for RTX 40-series or L-series (Ada Lovelace) using nvidia-smi
+    let output = match std::process::Command::new("nvidia-smi")
+        .arg("--query-gpu=name")
+        .arg("--format=csv,noheader")
+        .output() 
+    {
+        Ok(out) => out,
+        Err(_) => return false,
+    };
+    
+    let stdout = String::from_utf8_lossy(&output.stdout).to_lowercase();
+    // RTX 40xx series, L40, RTX 5000 Ada, etc.
+    stdout.contains("rtx 40") || stdout.contains("ada") || stdout.contains("l40")
 }
 
 /// Bit-compatible wrapper for Complex32 to satisfy CUDA traits.
@@ -212,6 +234,7 @@ impl LbmSolver3DCuda {
         let simd = gororoba_gpu_bridge::probe_simd();
         let caps = HardwareCaps {
             cuda_available: probe_cuda_available(),
+            cuda_ada_available: probe_cuda_ada_available(),
             vulkan_available: false,
             simd,
         };
@@ -238,15 +261,16 @@ impl LbmSolver3DCuda {
         };
 
         use cudarc::nvrtc::CompileOptions;
+        let arch_str = if probe_cuda_ada_available() { "sm_89" } else { "sm_75" }; // Clean fallback to Turing
         let opts = if precision == Precision::BF16 {
             CompileOptions {
                 include_paths: vec!["/opt/cuda/include".to_string()],
-                arch: Some("sm_89"),
+                arch: Some(arch_str),
                 ..Default::default()
             }
         } else {
             CompileOptions {
-                arch: Some("sm_89"),
+                arch: Some(arch_str),
                 ..Default::default()
             }
         };
@@ -335,7 +359,7 @@ impl LbmSolver3DCuda {
             soa_mrt_aa_step_kernel,
         ) = if precision == Precision::FP32 {
             let soa_opts = cudarc::nvrtc::CompileOptions {
-                arch: Some("sm_89"),
+                arch: Some(arch_str),
                 ..Default::default()
             };
             let soa_ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SOA_SRC, soa_opts)?;
@@ -349,7 +373,7 @@ impl LbmSolver3DCuda {
                 Some(soa_module.load_function("lbm_step_soa_batch_kernel")?),
                 Some(soa_module.load_function("initialize_custom_soa_batch_kernel")?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_fused")?),
-                Some(soa_module.load_function("lbm_step_soa_coarsened")?),
+                Some(soa_module.load_function(if probe_cuda_ada_available() { "lbm_step_soa_coarsened_float4" } else { "lbm_step_soa_coarsened" })?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_coarsened")?),
                 Some(soa_module.load_function("reduce_max_speed_f32")?),
                 Some(soa_module.load_function("lbm_step_soa_pull")?),
@@ -2030,9 +2054,9 @@ impl DarkHaloCudaSolver {
         }
         let stream = ctx.default_stream();
 
-        // Compile dark halo kernels via NVRTC
+        let arch_str = if probe_cuda_ada_available() { "sm_89" } else { "sm_75" };
         let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some("sm_89"),
+            arch: Some(arch_str),
             prec_div: Some(false),
             prec_sqrt: Some(false),
             ftz: Some(true),

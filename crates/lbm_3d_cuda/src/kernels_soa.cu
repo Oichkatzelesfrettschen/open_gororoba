@@ -1924,3 +1924,109 @@ compute_smagorinsky_tau_tiled(
     // Phase 4: coalesced write to tau_out, clamped to stability range
     tau_out[idx] = fmaxf(0.505f, fminf(5.0f, tau_new));
 }
+
+// ---------------------------------------------------------------------------
+// Thread-coarsened BGK kernel with float4 loads (Ada Lovelace Optimized)
+// ---------------------------------------------------------------------------
+// 1D coarsening: each thread processes 4 contiguous cells (idx, idx+1, idx+2, idx+3).
+// float4 vectorized loads maximize 128-bit memory bus utilization.
+// Requires N = nx*ny*nz to be a multiple of 4.
+extern "C" __global__ void __launch_bounds__(128, 4)
+lbm_step_soa_coarsened_float4(
+    const float* __restrict__ f_in,
+    float* __restrict__ f_out,
+    float* __restrict__ rho_out,
+    float* __restrict__ u_out,
+    const float* __restrict__ tau,
+    const float* __restrict__ force,
+    int nx, int ny, int nz
+) {
+    int N = nx * ny * nz;
+    int base = (blockIdx.x * blockDim.x + threadIdx.x) * 4;
+    if (base >= N) return;
+    
+    float f0[19], f1[19], f2[19], f3[19];
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        float4 fv = __ldg(reinterpret_cast<const float4*>(&f_in[i * N + base]));
+        f0[i] = finite_check(fv.x) ? fv.x : 0.0f;
+        f1[i] = finite_check(fv.y) ? fv.y : 0.0f;
+        f2[i] = finite_check(fv.z) ? fv.z : 0.0f;
+        f3[i] = finite_check(fv.w) ? fv.w : 0.0f;
+    }
+
+    #pragma unroll
+    for (int c = 0; c < 4; c++) {
+        int idx = base + c;
+        if (idx >= N) break;
+
+        int x = idx % nx;
+        int y = (idx / nx) % ny;
+        int z = idx / (nx * ny);
+
+        float rho_local = 0.0f, mx = 0.0f, my = 0.0f, mz = 0.0f;
+        float* f_local = (c == 0) ? f0 : (c == 1) ? f1 : (c == 2) ? f2 : f3;
+
+        #pragma unroll
+        for (int i = 0; i < 19; i++) {
+            rho_local += f_local[i];
+            mx += CX[i] * f_local[i];
+            my += CY[i] * f_local[i];
+            mz += CZ[i] * f_local[i];
+        }
+
+        float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+        if (finite_check(rho_local) && rho_local > 1.0e-20f) {
+            float inv_rho = 1.0f / rho_local;
+            ux = mx * inv_rho;
+            uy = my * inv_rho;
+            uz = mz * inv_rho;
+        } else {
+            rho_local = 1.0f;
+        }
+
+        rho_out[idx] = rho_local;
+        u_out[idx]         = ux;
+        u_out[N + idx]     = uy;
+        u_out[2 * N + idx] = uz;
+
+        float tau_local = __ldg(&tau[idx]);
+        float inv_tau = 1.0f / tau_local;
+        float u_sq = ux * ux + uy * uy + uz * uz;
+        float base_eq = fmaf(-1.5f, u_sq, 1.0f);
+
+        #pragma unroll
+        for (int i = 0; i < 19; i++) {
+            float eu = fmaf((float)CX[i], ux, fmaf((float)CY[i], uy, (float)CZ[i] * uz));
+            float w_rho = W[i] * rho_local;
+            float f_eq = w_rho * fmaf(fmaf(eu, 4.5f, 3.0f), eu, base_eq);
+            f_local[i] -= (f_local[i] - f_eq) * inv_tau;
+        }
+
+        float fx = __ldg(&force[idx]);
+        float fy = __ldg(&force[N + idx]);
+        float fz = __ldg(&force[2 * N + idx]);
+        float force_mag_sq = fx * fx + fy * fy + fz * fz;
+
+        if (force_mag_sq >= 1e-40f) {
+            float prefactor = 1.0f - 0.5f * inv_tau;
+            #pragma unroll
+            for (int i = 0; i < 19; i++) {
+                float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
+                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+                float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+                float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+                f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+            }
+        }
+
+        #pragma unroll
+        for (int i = 0; i < 19; i++) {
+            int xn = (x + CX[i] + nx) % nx;
+            int yn = (y + CY[i] + ny) % ny;
+            int zn = (z + CZ[i] + nz) % nz;
+            int dst = xn + nx * (yn + ny * zn);
+            f_out[i * N + dst] = f_local[i];
+        }
+    }
+}
