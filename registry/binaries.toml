@@ -1,5 +1,6 @@
-# AUTO-GENERATED: DO NOT EDIT
-# Source of truth: registry/canonical/control_plane.sqlite3
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
 # Compatibility export lane: binaries
 
 # CLI binaries registry -- generated from the canonical SQLite control plane.
@@ -29,6 +30,11 @@ experiment = "E-022"
 name = "algebra-entropy-census"
 crate = "gororoba_cli"
 description = "Reframed T2: Shannon entropy of CD associator-norm distribution across dimensions 2..256, detecting phase transitions at dim=8 (non-associative) and dim=16 (zero divisors)"
+
+[[binary]]
+name = "algebra-theory-crosswalk"
+crate = "gororoba_cli_data"
+description = "Rust-native algebra/theory crosswalk report linking Cayley-Dickson, Jordan, exceptional Lie, Kac-Moody/moonshine, and Planck/operator scaffolds to experiments, claims, binaries, and empirical outputs."
 
 [[binary]]
 name = "algebraic-warp-sweep"
@@ -285,8 +291,8 @@ description = "Dispersion measure ultrametric analysis"
 
 [[binary]]
 name = "download-recovery"
-crate = "gororoba_cli_provenance"
-description = "Workspace binary discovered from crates/gororoba_cli_provenance/Cargo.toml; registry metadata pending."
+crate = "gororoba_cli_data"
+description = "Rust-native resilient download recovery and route inspection utility. Probes host capabilities, classifies rsync/http-range/VOTable/TAP surfaces, and prints backend decisions for future large-survey fetchers."
 
 [[binary]]
 name = "dump-assessors"
@@ -601,6 +607,11 @@ description = "Audit staged heliosphere datasets, source families, and valid chr
 name = "heliosphere-stage"
 crate = "gororoba_cli_data"
 description = "Parser-aware staging and audit pass for local Voyager merged, CRS rate, and calibrated CRS flux datasets. Emits CSV/TOML coverage reports plus a normalized observed-flux table, and fails if known fill sentinels survive as finite values."
+
+[[binary]]
+name = "heliosphere-temporal-overlay"
+crate = "gororoba_cli_physics"
+description = "Time-aligned 4D overlay report for OMNI, Voyager merged hourly, and Voyager CRS daily-flux datasets. Uses true observed epochs, reports simultaneous-day windows, and marks missing upstream products explicitly."
 
 [[binary]]
 name = "hepdata-refresh"
@@ -1088,6 +1099,11 @@ crate = "gororoba_cli_algebra"
 description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "survey-crossmatch"
+crate = "gororoba_cli_physics"
+description = "Pure-Rust survey overlap engine for Euclid, MaNGA, and LoTSS. Provides Euclid-LoTSS pair crossmatch, Euclid-MaNGA-LoTSS triple-join synthesis, and a broader exact/deferred/non-spatial catalog matrix across adjacent datasets."
+
+[[binary]]
 name = "synthesis-execution-contract"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
@@ -1181,10 +1197,22 @@ crate = "gororoba_cli"
 description = "2D Kolmogorov flow validation for non-Newtonian power-law viscosity coupling across tau and coupling sweep"
 
 [[binary]]
+name = "things-fetch"
+crate = "gororoba_cli_data"
+description = "Rust-native THINGS tables/cubes acquisition and phase-2 staging utility. Subcommands: tables, manifest, metadata, cubes, phase2. Produces governed THINGS metadata/manifests and prepares HI-cube extraction inputs for the THINGS x MaNGA/LoTSS lane."
+experiment = "E-193"
+
+[[binary]]
 name = "third-party-source-verifier"
 crate = "gororoba_cli"
 description = "Third-party source verification and ingestion infrastructure workflow"
 experiment = "E-026"
+
+[[binary]]
+name = "ultrametric-core-extract"
+crate = "gororoba_cli_data"
+description = "Pure-Rust extractor for minimal ultrametric core subsets from the multi-dataset exploration CSV. Replaces the legacy extract_ultrametric_cores.py analysis step for I-013 / C-449 support."
+experiment = "E-002"
 
 [[binary]]
 name = "validate-j1j2-kubo"

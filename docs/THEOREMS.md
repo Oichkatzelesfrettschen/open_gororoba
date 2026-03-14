@@ -1,5 +1,7 @@
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: SQLite canonical database (compatibility export) -->
+<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+<!-- Source label: SQLite canonical database (compatibility export) -->
+<!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane -->
 
 # Theorems
 

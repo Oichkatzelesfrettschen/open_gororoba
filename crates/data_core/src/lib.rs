@@ -37,21 +37,25 @@ pub mod provenance;
 pub mod quality;
 pub mod registry;
 pub mod seti;
+pub mod spatial;
 pub mod spice;
 #[cfg(feature = "dataframe")]
 pub mod tabular;
 pub mod time_bounds;
 
 pub use download_stack::{
-    DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, HostPolicyRegistry,
-    HostRoutingPolicy, RetryClass, TransferAttempt, TransferKind, TransferRequest, TransferResult,
-    TransferTrace, load_host_policy_registry,
+    DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, EndpointCapabilities,
+    EndpointSurface, HostPolicyRegistry, HostRoutingPolicy, RetryClass, TransferAttempt,
+    TransferKind, TransferRequest, TransferResult, TransferTrace, load_host_policy_registry,
 };
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
+};
+pub use spatial::{
+    CatalogModality, RadiusMatch, SkyGridIndex, SkyPoint, angular_separation_arcsec,
 };
 #[cfg(feature = "dataframe")]
 pub use tabular::{
@@ -87,6 +91,11 @@ pub use catalogs::{
         Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
         abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
     },
+};
+#[cfg(feature = "fits")]
+pub use catalogs::lotss::{
+    LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,
+    crossmatch_points_against_fits_catalog,
 };
 
 /// All dataset provider names that should appear in the manifest.

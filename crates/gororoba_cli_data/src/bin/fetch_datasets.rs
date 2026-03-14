@@ -11,7 +11,8 @@
 //!   fetch-datasets --skip-existing=false        Force refresh existing files
 
 use clap::{ArgAction, Parser};
-use data_core::fetcher::{DatasetProvider, FetchConfig};
+use data_core::fetcher::{DatasetProvider, FetchConfig, FetchError};
+use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(name = "fetch-datasets", about = "Unified dataset acquisition tool")]
@@ -67,6 +68,31 @@ struct DatasetEntry {
     size_hint: &'static str,
 }
 
+struct NamedDatasetProvider<P> {
+    name: &'static str,
+    inner: P,
+}
+
+impl<P> NamedDatasetProvider<P> {
+    fn new(name: &'static str, inner: P) -> Self {
+        Self { name, inner }
+    }
+}
+
+impl<P: DatasetProvider> DatasetProvider for NamedDatasetProvider<P> {
+    fn name(&self) -> &str {
+        self.name
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        self.inner.fetch(config)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        self.inner.is_cached(config)
+    }
+}
+
 const VALID_PILLARS: &[&str] = &[
     "candle",
     "gravitational",
@@ -118,6 +144,18 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "astro",
             pillar: "survey",
             size_hint: "~35 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(things::ThingsTablesProvider),
+            category: "astro",
+            pillar: "survey",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(things::ThingsPreferredCubesProvider),
+            category: "astro",
+            pillar: "survey",
+            size_hint: "~20-30 GB",
         },
         // -- Gravitational pillar: GW events + PTA --
         DatasetEntry {
@@ -193,6 +231,119 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "astro",
             pillar: "solar",
             size_hint: "~2 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(omni::OmniProvider {
+                year_start: 2020,
+                year_end: 2020,
+            }),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~3 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "NASA OMNI2 Solar Wind + IMF (2016)",
+                omni::OmniProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~3 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(voyager::VoyagerProvider {
+                spacecraft: voyager::VoyagerSpacecraft::V1,
+                year_start: 2020,
+                year_end: 2020,
+            }),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Voyager 1 Merged Hourly (2016)",
+                voyager::VoyagerProvider {
+                    spacecraft: voyager::VoyagerSpacecraft::V1,
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(voyager::VoyagerProvider {
+                spacecraft: voyager::VoyagerSpacecraft::V2,
+                year_start: 2020,
+                year_end: 2020,
+            }),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Voyager 2 Merged Hourly (2016)",
+                voyager::VoyagerProvider {
+                    spacecraft: voyager::VoyagerSpacecraft::V2,
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(voyager_crs_flux::VoyagerCrsFluxProvider {
+                spacecraft: 1,
+                year_start: 2020,
+                year_end: 2020,
+            }),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Voyager 1 CRS Daily Flux (2016)",
+                voyager_crs_flux::VoyagerCrsFluxProvider {
+                    spacecraft: 1,
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(voyager_crs_flux::VoyagerCrsFluxProvider {
+                spacecraft: 2,
+                year_start: 2020,
+                year_end: 2020,
+            }),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Voyager 2 CRS Daily Flux (2016)",
+                voyager_crs_flux::VoyagerCrsFluxProvider {
+                    spacecraft: 2,
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB",
         },
         // -- Candle pillar: standard candles/rulers --
         DatasetEntry {

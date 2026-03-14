@@ -1,0 +1,10 @@
+generated_at_utc = "2026-03-14T01:03:35.116294639+00:00"
+mode = "phase2"
+output_root = "data/external"
+tables_dir = "data/external/things"
+metadata_csv = "data/external/things/things_metadata.csv"
+manifest_csv = "data/external/things/things_cube_manifest.csv"
+cubes_dir = "data/external/things/cubes"
+table_galaxy_count = 34
+manifest_entry_count = 33
+preferred_cube_count = 33

@@ -194,11 +194,38 @@ pub fn sincos_reduced_ext80(angle: Ext80) -> X87ValueStatus<(Ext80, Ext80)> {
     sincos_ext80(reduction.value)
 }
 
+#[must_use]
+pub fn angular_separation_arcsec_ext80_deg(
+    ra1_deg: f64,
+    dec1_deg: f64,
+    ra2_deg: f64,
+    dec2_deg: f64,
+) -> f64 {
+    let [x1, y1, z1] = unit_vector_ext80_from_deg(ra1_deg, dec1_deg);
+    let [x2, y2, z2] = unit_vector_ext80_from_deg(ra2_deg, dec2_deg);
+    let one = Ext80::from_i32(1);
+    let mut dot = x1 * x2 + y1 * y2 + z1 * z2;
+    dot = Ext80::from_f64(dot.to_f64().clamp(-1.0, 1.0));
+    let sin_sq = Ext80::from_f64((one - dot * dot).to_f64().max(0.0));
+    let angle = atan2_ext80(sin_sq.sqrt(), dot).value.to_f64();
+    let arcsec_per_radian = (Ext80::from_i32(648000) / pi_ext80()).to_f64();
+    angle * arcsec_per_radian
+}
+
+fn unit_vector_ext80_from_deg(ra_deg: f64, dec_deg: f64) -> [Ext80; 3] {
+    let deg_to_rad = pi_ext80() / Ext80::from_i32(180);
+    let ra = Ext80::from_f64(ra_deg) * deg_to_rad;
+    let dec = Ext80::from_f64(dec_deg) * deg_to_rad;
+    let (sin_ra, cos_ra) = sincos_reduced_ext80(ra).value;
+    let (sin_dec, cos_dec) = sincos_reduced_ext80(dec).value;
+    [cos_dec * cos_ra, cos_dec * sin_ra, sin_dec]
+}
+
 #[cfg(test)]
 mod tests {
     use super::{
-        atan2_ext80, fprem1_ext80, pi_ext80, reduce_trig_argument_ext80, sincos_ext80,
-        sincos_reduced_ext80, two_pi_ext80,
+        angular_separation_arcsec_ext80_deg, atan2_ext80, fprem1_ext80, pi_ext80,
+        reduce_trig_argument_ext80, sincos_ext80, sincos_reduced_ext80, two_pi_ext80,
     };
     use crate::x87_ext80::Ext80;
 
@@ -258,5 +285,13 @@ mod tests {
 
         assert!((pi - std::f64::consts::PI).abs() < 1e-15);
         assert!((two_pi - (2.0 * std::f64::consts::PI)).abs() < 1e-15);
+    }
+
+    #[test]
+    fn angular_separation_ext80_matches_close_sky_points() {
+        let sep = angular_separation_arcsec_ext80_deg(10.0, 10.0, 10.0001, 10.0001);
+        assert!(sep.is_finite());
+        assert!(sep > 0.0);
+        assert!((sep - 0.505264).abs() < 1.0e-3);
     }
 }

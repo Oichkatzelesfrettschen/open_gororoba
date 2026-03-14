@@ -1,0 +1,6 @@
+generated_at_utc = "2026-03-13T22:09:46.227142128+00:00"
+things_table1_path = "data/external/things/table1.dat"
+things_table4_path = "data/external/things/table4.dat"
+output_csv_path = "data/external/things/things_metadata.csv"
+default_beam_fwhm_arcsec = 6.0
+galaxy_count = 34

@@ -1,0 +1,113 @@
+generated_at_utc = "2026-03-13T22:09:32.040805430+00:00"
+input_csv_path = "data/csv/c071g_exploration_gpu_10M_1000perm.csv"
+significant_row_count = 82
+dataset_count = 7
+total_core_count = 16
+
+[[datasets]]
+dataset = "ATNF Pulsars"
+significant_subset_count = 3
+core_count = 2
+core_subsets = [
+    [
+    "gb",
+    "gl",
+],
+    [
+    "gl",
+    "log_DM",
+],
+]
+
+[[datasets]]
+dataset = "CHIME/FRB Cat 2"
+significant_subset_count = 4
+core_count = 3
+core_subsets = [
+    [
+    "gb",
+    "gl",
+],
+    [
+    "gb",
+    "log_DM",
+],
+    [
+    "gl",
+    "log_DM",
+],
+]
+
+[[datasets]]
+dataset = "GWOSC GW Events"
+significant_subset_count = 2
+core_count = 1
+core_subsets = [[
+    "log_chirp_mass",
+    "q",
+]]
+
+[[datasets]]
+dataset = "Gaia DR3 Stars"
+significant_subset_count = 6
+core_count = 4
+core_subsets = [
+    [
+    "bp_rp",
+    "rv",
+],
+    [
+    "parallax",
+    "pmdec",
+],
+    [
+    "parallax",
+    "pmra",
+],
+    [
+    "pmra",
+    "rv",
+],
+]
+
+[[datasets]]
+dataset = "Hipparcos Stars"
+significant_subset_count = 24
+core_count = 4
+core_subsets = [
+    [
+    "Vmag",
+    "dec",
+],
+    [
+    "dec",
+    "ra",
+],
+    [
+    "parallax",
+    "pmra",
+],
+    [
+    "pmdec",
+    "pmra",
+],
+]
+
+[[datasets]]
+dataset = "Pantheon+ SN Ia"
+significant_subset_count = 1
+core_count = 1
+core_subsets = [[
+    "c",
+    "x1",
+]]
+
+[[datasets]]
+dataset = "SDSS DR18 Quasars"
+significant_subset_count = 1
+core_count = 1
+core_subsets = [[
+    "i_mag",
+    "r_mag",
+    "z",
+]]

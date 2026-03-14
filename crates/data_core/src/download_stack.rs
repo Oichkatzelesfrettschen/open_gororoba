@@ -11,6 +11,7 @@ use sha2::{Digest, Sha256};
 use std::{
     fmt, fs,
     io::{self, Read, Write},
+    net::{TcpStream, ToSocketAddrs},
     path::{Path, PathBuf},
     process::{Command, Stdio},
     time::{Duration, SystemTime, UNIX_EPOCH},
@@ -134,6 +135,52 @@ struct HttpDownloadProbe {
     supports_ranges: bool,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum EndpointSurface {
+    Unknown,
+    RsyncModule,
+    StaticFile,
+    StaticFileRange,
+    Votable,
+    TapSync,
+    DirectoryIndex,
+}
+
+impl EndpointSurface {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unknown => "unknown",
+            Self::RsyncModule => "rsync_module",
+            Self::StaticFile => "static_file",
+            Self::StaticFileRange => "static_file_range",
+            Self::Votable => "votable",
+            Self::TapSync => "tap_sync",
+            Self::DirectoryIndex => "directory_index",
+        }
+    }
+}
+
+impl fmt::Display for EndpointSurface {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EndpointCapabilities {
+    pub requested_url: String,
+    pub final_url: Option<String>,
+    pub scheme: String,
+    pub host: Option<String>,
+    pub surface: EndpointSurface,
+    pub content_type: Option<String>,
+    pub http_code: Option<u16>,
+    pub content_length: Option<u64>,
+    pub supports_ranges: bool,
+    pub rsync_reachable: bool,
+}
+
 impl TransferResult {
     pub fn to_ledger_row(&self, id: impl Into<String>) -> DownloadLedgerRow {
         let note = match self.final_url.as_deref() {
@@ -176,6 +223,7 @@ pub struct TransferAttempt {
 #[derive(Debug, Clone)]
 pub struct TransferTrace {
     pub route: DownloadRoute,
+    pub capabilities: Option<EndpointCapabilities>,
     pub terminal_result: Option<TransferResult>,
     pub attempts: Vec<TransferAttempt>,
     pub final_error: Option<String>,
@@ -428,6 +476,15 @@ impl DownloadStack {
     }
 
     pub fn route(&self, request: &TransferRequest, kind: TransferKind) -> DownloadRoute {
+        self.route_with_capabilities(request, kind, None)
+    }
+
+    pub fn route_with_capabilities(
+        &self,
+        request: &TransferRequest,
+        kind: TransferKind,
+        capabilities: Option<&EndpointCapabilities>,
+    ) -> DownloadRoute {
         if request.backend != DownloadBackend::Auto {
             return DownloadRoute {
                 kind,
@@ -437,6 +494,10 @@ impl DownloadStack {
                 retry_class: RetryClass::DefaultHttp,
                 policy_name: None,
             };
+        }
+
+        if let Some(capabilities) = capabilities {
+            return route_from_capabilities(capabilities, kind);
         }
 
         let scheme = parse_url_scheme(&request.url);
@@ -512,6 +573,83 @@ impl DownloadStack {
         }
     }
 
+    pub fn detect_capabilities(
+        &self,
+        request: &TransferRequest,
+    ) -> Result<EndpointCapabilities, TransferError> {
+        let scheme = parse_url_scheme(&request.url);
+        let host = parse_url_host(&request.url);
+        if scheme == "rsync" {
+            return Ok(EndpointCapabilities {
+                requested_url: request.url.clone(),
+                final_url: Some(request.url.clone()),
+                scheme,
+                host,
+                surface: EndpointSurface::RsyncModule,
+                content_type: guess_content_type_from_url(&request.url),
+                http_code: None,
+                content_length: None,
+                supports_ranges: false,
+                rsync_reachable: true,
+            });
+        }
+
+        if !matches!(scheme.as_str(), "http" | "https") {
+            return Ok(EndpointCapabilities {
+                requested_url: request.url.clone(),
+                final_url: None,
+                scheme,
+                host,
+                surface: EndpointSurface::Unknown,
+                content_type: None,
+                http_code: None,
+                content_length: None,
+                supports_ranges: false,
+                rsync_reachable: false,
+            });
+        }
+
+        let client = self.client()?;
+        let headers = self.build_headers(request, Some((0_u64, 0_u64)))?;
+        let response = self.send_reqwest_with_retry(&client, request, headers)?;
+        let status = response.status().as_u16();
+        let headers = response.headers().clone();
+        let final_url = response.url().to_string();
+        let content_type = content_type_from_headers(&headers);
+        let supports_ranges = status == 206
+            || headers
+                .get(ACCEPT_RANGES)
+                .and_then(|value| value.to_str().ok())
+                .map(|value| value.eq_ignore_ascii_case("bytes"))
+                .unwrap_or(false);
+        let content_length = parse_total_bytes(&headers, status);
+        let surface = classify_endpoint_surface(
+            request.url.as_str(),
+            final_url.as_str(),
+            content_type.as_deref(),
+            supports_ranges,
+        );
+        drop(response);
+
+        let rsync_reachable = host
+            .as_deref()
+            .map(probe_rsync_reachability)
+            .unwrap_or(false);
+
+        Ok(EndpointCapabilities {
+            requested_url: request.url.clone(),
+            final_url: Some(final_url),
+            scheme,
+            host,
+            surface,
+            content_type,
+            http_code: Some(status),
+            content_length,
+            supports_ranges,
+            rsync_reachable,
+        })
+    }
+
     pub fn probe(&self, request: &TransferRequest) -> Result<TransferResult, TransferError> {
         self.probe_with_trace(request).into_result(&request.url)
     }
@@ -555,10 +693,16 @@ impl DownloadStack {
     }
 
     fn execute_with_trace(&self, request: &TransferRequest, kind: TransferKind) -> TransferTrace {
-        let route = self.route(request, kind);
+        let capabilities = if request.backend == DownloadBackend::Auto {
+            self.detect_capabilities(request).ok()
+        } else {
+            None
+        };
+        let route = self.route_with_capabilities(request, kind, capabilities.as_ref());
         if route.backends.is_empty() {
             return TransferTrace {
                 route,
+                capabilities,
                 terminal_result: None,
                 attempts: Vec::new(),
                 final_error: Some(format!("unsupported URL scheme for {}", request.url)),
@@ -585,6 +729,7 @@ impl DownloadStack {
                     });
                     return TransferTrace {
                         route: route_clone,
+                        capabilities,
                         terminal_result: Some(result),
                         attempts,
                         final_error: None,
@@ -608,6 +753,7 @@ impl DownloadStack {
 
         TransferTrace {
             route: route_clone,
+            capabilities,
             terminal_result: None,
             attempts,
             final_error: Some(format!("all backends exhausted for {}", request.url)),
@@ -1471,20 +1617,20 @@ fn default_host_policies() -> Vec<HostRoutingPolicy> {
         HostRoutingPolicy {
             name: "lofar_surveys".to_string(),
             host_suffix: "lofar-surveys.org".to_string(),
-            retry_class: RetryClass::ProbeFirst,
+            retry_class: RetryClass::Aria2Download,
             probe_backends: vec![
                 DownloadBackend::Reqwest,
                 DownloadBackend::CurlCli,
                 DownloadBackend::Ureq,
             ],
             download_backends: vec![
-                DownloadBackend::Reqwest,
                 DownloadBackend::Aria2Cli,
+                DownloadBackend::Reqwest,
                 DownloadBackend::CurlCli,
                 DownloadBackend::WgetCli,
             ],
             note: Some(
-                "LoTSS bulk FITS downloads support HTTP byte ranges; prefer reqwest resume, then aria2 for gentle segmented fallback before curl/wget"
+                "LoTSS bulk FITS downloads support HTTP byte ranges; prefer aria2 for gentle segmented resume, then reqwest range-resume before curl/wget"
                     .to_string(),
             ),
         },
@@ -1574,6 +1720,154 @@ fn best_matching_policy<'a>(
         .iter()
         .filter(|policy| host_matches_suffix(host, &policy.host_suffix))
         .max_by_key(|policy| policy.host_suffix.len())
+}
+
+fn route_from_capabilities(
+    capabilities: &EndpointCapabilities,
+    kind: TransferKind,
+) -> DownloadRoute {
+    let backends = match (capabilities.surface, kind) {
+        (EndpointSurface::RsyncModule, _) => vec![DownloadBackend::RsyncCli],
+        (EndpointSurface::TapSync | EndpointSurface::Votable, TransferKind::Probe) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::Ureq,
+        ],
+        (EndpointSurface::TapSync | EndpointSurface::Votable, TransferKind::Download) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::WgetCli,
+        ],
+        (EndpointSurface::StaticFileRange, TransferKind::Download) => vec![
+            DownloadBackend::Aria2Cli,
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::WgetCli,
+        ],
+        (EndpointSurface::StaticFileRange, TransferKind::Probe) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::Ureq,
+        ],
+        (EndpointSurface::DirectoryIndex, TransferKind::Probe) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::Ureq,
+        ],
+        (EndpointSurface::DirectoryIndex, TransferKind::Download) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::WgetCli,
+        ],
+        (EndpointSurface::StaticFile | EndpointSurface::Unknown, TransferKind::Probe) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::Ureq,
+        ],
+        (EndpointSurface::StaticFile | EndpointSurface::Unknown, TransferKind::Download) => vec![
+            DownloadBackend::Reqwest,
+            DownloadBackend::CurlCli,
+            DownloadBackend::WgetCli,
+            DownloadBackend::Aria2Cli,
+        ],
+    };
+
+    DownloadRoute {
+        kind,
+        scheme: capabilities.scheme.clone(),
+        host: capabilities.host.clone(),
+        backends,
+        retry_class: match capabilities.surface {
+            EndpointSurface::StaticFileRange => RetryClass::Aria2Download,
+            EndpointSurface::TapSync
+            | EndpointSurface::Votable
+            | EndpointSurface::DirectoryIndex => RetryClass::ProbeFirst,
+            EndpointSurface::RsyncModule => RetryClass::FtpFamily,
+            EndpointSurface::StaticFile | EndpointSurface::Unknown => RetryClass::DefaultHttp,
+        },
+        policy_name: Some(format!("capability:{}", capabilities.surface)),
+    }
+}
+
+fn classify_endpoint_surface(
+    requested_url: &str,
+    final_url: &str,
+    content_type: Option<&str>,
+    supports_ranges: bool,
+) -> EndpointSurface {
+    let requested_lower = requested_url.to_ascii_lowercase();
+    let content_type_lower = content_type.unwrap_or_default().to_ascii_lowercase();
+    if requested_lower.starts_with("rsync://") {
+        return EndpointSurface::RsyncModule;
+    }
+
+    let Some(parsed) = Url::parse(final_url)
+        .ok()
+        .or_else(|| Url::parse(requested_url).ok())
+    else {
+        return if supports_ranges {
+            EndpointSurface::StaticFileRange
+        } else {
+            EndpointSurface::Unknown
+        };
+    };
+
+    let path = parsed.path().to_ascii_lowercase();
+    let query = parsed.query().unwrap_or_default().to_ascii_lowercase();
+    if path.contains("/tap")
+        || query.contains("request=doquery")
+        || query.contains("lang=adql")
+        || query.contains("adql=")
+    {
+        return EndpointSurface::TapSync;
+    }
+    if content_type_lower.contains("votable")
+        || path.ends_with(".vot")
+        || path.ends_with(".votable")
+        || path.ends_with(".xml")
+        || query.contains("format=votable")
+        || query.contains("format=votable/td")
+        || (query.contains("ra=") && query.contains("dec=") && query.contains("sr="))
+    {
+        return EndpointSurface::Votable;
+    }
+    if content_type_lower.contains("html") && (path.ends_with('/') || !path.contains('.')) {
+        return EndpointSurface::DirectoryIndex;
+    }
+    if supports_ranges {
+        EndpointSurface::StaticFileRange
+    } else if !content_type_lower.is_empty() {
+        EndpointSurface::StaticFile
+    } else {
+        EndpointSurface::Unknown
+    }
+}
+
+fn guess_content_type_from_url(url: &str) -> Option<String> {
+    let lower = url.to_ascii_lowercase();
+    if lower.ends_with(".pdf") {
+        Some("application/pdf".to_string())
+    } else if lower.ends_with(".xml") || lower.ends_with(".vot") || lower.ends_with(".votable") {
+        Some("application/x-votable+xml".to_string())
+    } else if lower.ends_with(".csv") {
+        Some("text/csv".to_string())
+    } else if lower.ends_with(".json") {
+        Some("application/json".to_string())
+    } else {
+        None
+    }
+}
+
+fn probe_rsync_reachability(host: &str) -> bool {
+    let address = format!("{host}:873");
+    let mut addrs = match address.to_socket_addrs() {
+        Ok(addrs) => addrs,
+        Err(_) => return false,
+    };
+    let Some(sockaddr) = addrs.next() else {
+        return false;
+    };
+    TcpStream::connect_timeout(&sockaddr, Duration::from_millis(500)).is_ok()
 }
 
 fn host_matches_suffix(host: &str, suffix: &str) -> bool {
@@ -1873,11 +2167,64 @@ mod tests {
         assert_eq!(
             route.backends,
             vec![
-                DownloadBackend::Reqwest,
                 DownloadBackend::Aria2Cli,
+                DownloadBackend::Reqwest,
                 DownloadBackend::CurlCli,
                 DownloadBackend::WgetCli,
             ]
+        );
+    }
+
+    #[test]
+    fn test_route_with_capabilities_prefers_reqwest_for_votable() {
+        let stack = DownloadStack::default();
+        let request = TransferRequest::download(
+            "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml?RA=180&DEC=30&SR=1&FORMAT=votable/td",
+            "target/lotss_dr3_tile.xml",
+        );
+        let capabilities = EndpointCapabilities {
+            requested_url: request.url.clone(),
+            final_url: Some(request.url.clone()),
+            scheme: "https".to_string(),
+            host: Some("vo.astron.nl".to_string()),
+            surface: EndpointSurface::Votable,
+            content_type: Some("application/x-votable+xml".to_string()),
+            http_code: Some(200),
+            content_length: Some(8_192),
+            supports_ranges: false,
+            rsync_reachable: false,
+        };
+        let route =
+            stack.route_with_capabilities(&request, TransferKind::Download, Some(&capabilities));
+        assert_eq!(
+            route.backends,
+            vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::CurlCli,
+                DownloadBackend::WgetCli,
+            ]
+        );
+    }
+
+    #[test]
+    fn test_classify_endpoint_surface_detects_tap_and_votable() {
+        assert_eq!(
+            classify_endpoint_surface(
+                "https://eas.esac.esa.int/tap-server/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv",
+                "https://eas.esac.esa.int/tap-server/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv",
+                Some("text/csv"),
+                false
+            ),
+            EndpointSurface::TapSync
+        );
+        assert_eq!(
+            classify_endpoint_surface(
+                "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml?RA=180&DEC=30&SR=1&FORMAT=votable/td",
+                "https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml?RA=180&DEC=30&SR=1&FORMAT=votable/td",
+                Some("application/x-votable+xml"),
+                false
+            ),
+            EndpointSurface::Votable
         );
     }
 

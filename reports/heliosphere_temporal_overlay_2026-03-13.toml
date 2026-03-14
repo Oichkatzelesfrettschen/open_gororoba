@@ -1,0 +1,80 @@
+generated_at_utc = "2026-03-14T00:49:18.563724439+00:00"
+overlay_definition = "4D overlay = shared observed epoch windows across heliocentric-point datasets, using true telemetry times rather than release dates or lookback proxies."
+omni_dir = "data/external/omni2"
+voyager1_dir = "data/external/voyager1"
+voyager2_dir = "data/external/voyager2"
+voyager1_crs_path = "data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv"
+voyager2_crs_path = "data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv"
+
+[[datasets]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Voyager 1 merged hourly"
+path = "data/external/voyager1"
+availability = "available"
+row_count = 17568
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Voyager 2 merged hourly"
+path = "data/external/voyager2"
+availability = "available"
+row_count = 17568
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Voyager 1 CRS daily flux"
+path = "data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv"
+availability = "available"
+row_count = 344
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-12T00:00:00+00:00"
+cadence_seconds = 86400.0
+
+[[datasets]]
+label = "Voyager 2 CRS daily flux"
+path = "data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv"
+availability = "available"
+row_count = 364
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T00:00:00+00:00"
+cadence_seconds = 86400.0
+
+[[overlays]]
+spacecraft = "Voyager 1"
+omni_row_count = 262992
+voyager_row_count = 17568
+crs_row_count = 344
+crs_availability = "available"
+simultaneous_day_bins = 296
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-12"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 135.26719594594545
+min_heliocentric_distance_au = 133.57
+max_heliocentric_distance_au = 136.95
+
+[[overlays]]
+spacecraft = "Voyager 2"
+omni_row_count = 262992
+voyager_row_count = 17568
+crs_row_count = 364
+crs_availability = "available"
+simultaneous_day_bins = 312
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 111.56358974359087
+min_heliocentric_distance_au = 109.98
+max_heliocentric_distance_au = 113.14

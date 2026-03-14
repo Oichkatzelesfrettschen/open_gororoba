@@ -67,6 +67,10 @@ const JUSTIFIED_UNLINKED_THEOREM_IDS: &[&str] = &[
     "C_WarpEnergyNonpositive",
 ];
 
+const CONTROL_PLANE_DB_PATH: &str = "registry/canonical/control_plane.sqlite3";
+const CONTROL_PLANE_EXPORT_COMMAND: &str =
+    "cargo run -p gororoba_cli_data --bin provenance -- export-control-plane";
+
 fn migrations() -> Migrations<'static> {
     Migrations::new(vec![
         M::up(
@@ -3136,10 +3140,8 @@ fn normalized_claim_id_from_theorem_stem(stem: &str) -> Option<String> {
 }
 
 fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRecord]) -> String {
-    let mut lines = vec![
-        "<!-- AUTO-GENERATED: DO NOT EDIT -->".to_string(),
-        format!("<!-- Source of truth: {source_label} -->"),
-        String::new(),
+    let mut lines = compat_markdown_export_header(source_label);
+    lines.extend([
         "# Theorems".to_string(),
         String::new(),
         format!(
@@ -3149,7 +3151,7 @@ fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRecord]) -> St
         String::new(),
         "| Theorem | Proof File | Status | Linked Claims |".to_string(),
         "|---|---|---|---|".to_string(),
-    ];
+    ]);
     for theorem in theorems {
         let claims = if theorem.linked_claim_ids.is_empty() {
             "-".to_string()
@@ -3178,12 +3180,7 @@ fn render_insights_registry(insights: &[InsightRecord]) -> String {
 }
 
 fn render_experiments_registry(header_toml: &str, experiments: &[ExperimentRecord]) -> String {
-    let mut lines = vec![
-        "# AUTO-GENERATED: DO NOT EDIT".to_string(),
-        "# Source of truth: registry/canonical/control_plane.sqlite3".to_string(),
-        "# Compatibility export lane: experiments".to_string(),
-        String::new(),
-    ];
+    let mut lines = compat_toml_export_header("experiments");
     let header = rebuild_experiments_header_toml(header_toml, experiments);
     if !header.trim().is_empty() {
         lines.push("[experiments]".to_string());
@@ -3266,12 +3263,7 @@ fn render_array_of_tables_registry(
     array_key: &str,
     rows: impl IntoIterator<Item = String>,
 ) -> String {
-    let mut lines = vec![
-        "# AUTO-GENERATED: DO NOT EDIT".to_string(),
-        "# Source of truth: registry/canonical/control_plane.sqlite3".to_string(),
-        format!("# Compatibility export lane: {kind}"),
-        String::new(),
-    ];
+    let mut lines = compat_toml_export_header(kind);
     for row in rows {
         lines.push(format!("[[{array_key}]]"));
         lines.push(row.trim().to_string());
@@ -3337,14 +3329,11 @@ fn render_experiment_row(row: &ExperimentRecord) -> String {
 }
 
 fn render_binaries_registry(binaries: &[BinaryRecord]) -> String {
-    let mut lines = vec![
-        "# AUTO-GENERATED: DO NOT EDIT".to_string(),
-        "# Source of truth: registry/canonical/control_plane.sqlite3".to_string(),
-        "# Compatibility export lane: binaries".to_string(),
-        String::new(),
+    let mut lines = compat_toml_export_header("binaries");
+    lines.extend([
         "# CLI binaries registry -- generated from the canonical SQLite control plane.".to_string(),
         String::new(),
-    ];
+    ]);
     for binary in binaries {
         lines.push("[[binary]]".to_string());
         lines.push(format!("name = {:?}", binary.name));
@@ -3356,6 +3345,26 @@ fn render_binaries_registry(binaries: &[BinaryRecord]) -> String {
         lines.push(String::new());
     }
     lines.join("\n")
+}
+
+fn compat_toml_export_header(kind: &str) -> Vec<String> {
+    vec![
+        "# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.".to_string(),
+        format!("# Canonical write path: {CONTROL_PLANE_DB_PATH}"),
+        format!("# Regenerate with: {CONTROL_PLANE_EXPORT_COMMAND}"),
+        format!("# Compatibility export lane: {kind}"),
+        String::new(),
+    ]
+}
+
+fn compat_markdown_export_header(source_label: &str) -> Vec<String> {
+    vec![
+        "<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->".to_string(),
+        format!("<!-- Canonical write path: {CONTROL_PLANE_DB_PATH} -->"),
+        format!("<!-- Source label: {source_label} -->"),
+        format!("<!-- Regenerate with: {CONTROL_PLANE_EXPORT_COMMAND} -->"),
+        String::new(),
+    ]
 }
 
 fn write_text(path: &Path, body: &str) -> Result<()> {

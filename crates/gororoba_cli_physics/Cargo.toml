@@ -257,6 +257,10 @@ name = "cross-validate-solar-wind"
 path = "src/bin/cross_validate_solar_wind.rs"
 
 [[bin]]
+name = "heliosphere-temporal-overlay"
+path = "src/bin/heliosphere_temporal_overlay.rs"
+
+[[bin]]
 name = "chrono-flyby-probe"
 path = "src/bin/chrono_flyby_probe.rs"
 
@@ -442,6 +446,10 @@ name = "euclid-manga-crossmatch"
 path = "src/bin/euclid_manga_crossmatch.rs"
 
 [[bin]]
+name = "survey-crossmatch"
+path = "src/bin/survey_crossmatch.rs"
+
+[[bin]]
 name = "euclid-dm-coupling"
 path = "src/bin/euclid_dm_coupling.rs"
 
@@ -555,6 +563,8 @@ arrow-schema = { workspace = true }
 kiddo = { workspace = true }
 faer = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
+cd_kernel = { workspace = true }
+wide = { workspace = true }
 
 [features]
 default = ["gpu"]

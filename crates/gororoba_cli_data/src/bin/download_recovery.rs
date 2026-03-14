@@ -285,11 +285,40 @@ fn run_route(stack: &DownloadStack, args: RouteArgs) -> Result<()> {
         TransferKindArg::Probe => data_core::download_stack::TransferKind::Probe,
         TransferKindArg::Download => data_core::download_stack::TransferKind::Download,
     };
-    let route = stack.route(&request, kind);
+    let capabilities = if request.backend == DownloadBackend::Auto {
+        stack.detect_capabilities(&request).ok()
+    } else {
+        None
+    };
+    let route = stack.route_with_capabilities(&request, kind, capabilities.as_ref());
     println!("scheme={}", route.scheme);
     println!("host={}", route.host.unwrap_or_default());
     println!("retry_class={}", route.retry_class.as_str());
     println!("policy={}", route.policy_name.unwrap_or_default());
+    if let Some(capabilities) = capabilities {
+        println!("surface={}", capabilities.surface);
+        println!(
+            "http_code={}",
+            capabilities
+                .http_code
+                .map(|code| code.to_string())
+                .unwrap_or_default()
+        );
+        println!(
+            "content_type={}",
+            capabilities.content_type.unwrap_or_default()
+        );
+        println!(
+            "content_length={}",
+            capabilities
+                .content_length
+                .map(|bytes| bytes.to_string())
+                .unwrap_or_default()
+        );
+        println!("supports_ranges={}", capabilities.supports_ranges);
+        println!("rsync_reachable={}", capabilities.rsync_reachable);
+        println!("final_url={}", capabilities.final_url.unwrap_or_default());
+    }
     println!(
         "backends={}",
         route

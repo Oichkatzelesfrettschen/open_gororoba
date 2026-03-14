@@ -1,0 +1,9 @@
+generated_at_utc = "2026-03-14T00:58:38.212851890+00:00"
+things_table1_path = "data/external/things/table1.dat"
+things_rotcurves_path = "data/external/things/things_rotcurves.csv"
+manga_selection_path = "data/external/manga/dapall_selection.csv"
+manga_drpall_path = "data/external/manga/drpall-v3_1_1.fits"
+output_csv_path = "data/external/things/things_hi_manga_xmatch.csv"
+input_things_count = 29
+matched_things_count = 0
+match_radius_arcsec = 15.0

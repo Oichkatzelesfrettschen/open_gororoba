@@ -1,0 +1,6 @@
+generated_at_utc = "2026-03-14T00:57:05.906969740+00:00"
+mode = "manifest_preferred"
+output_root = "data/external/things"
+manifest_csv = "data/external/things/things_cube_manifest.csv"
+manifest_entry_count = 33
+preferred_cube_count = 33

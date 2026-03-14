@@ -1,0 +1,8 @@
+generated_at_utc = "2026-03-13T20:49:55.218900176+00:00"
+euclid_manga_path = "data/external/euclid/euclid_manga_crossmatch_nocuts.csv"
+manga_lotss_path = "data/external/manga/manga_lotss_xmatch_dr3.csv"
+output_csv_path = "data/external/euclid/euclid_manga_lotss_triple_nocuts.csv"
+euclid_manga_row_count = 0
+manga_lotss_row_count = 10262
+shared_plateifu_count = 0
+radio_loud_triple_count = 0

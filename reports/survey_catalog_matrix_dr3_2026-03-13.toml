@@ -1,0 +1,124 @@
+generated_at_utc = "2026-03-13T23:47:21.028926205+00:00"
+release = "DR3"
+lotss_path = "data/external/radio_surveys/lotss_dr3.fits"
+match_radius_arcsec = 3.0
+
+[execution]
+mode = "pinned_physical_single_pass"
+worker_count = 6
+chunk_rows = 628736
+pinned_core_ids = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+]
+l3_cache_bytes = 100663296
+l3_safe_working_set_bytes = 90596966
+avx2_detected = true
+fma_detected = true
+simd_lane_f64 = 4
+single_pass_catalog_count = 6
+scan_wall_seconds = 153.213829013
+
+[[entries]]
+catalog = "LoTSS DR3"
+modality = "sky_point"
+path = "data/external/radio_surveys/lotss_dr3.fits"
+row_count = 13667877
+status = "reference"
+note = "Reference radio survey for overlap counts."
+
+[[entries]]
+catalog = "MaNGA selected sample"
+modality = "sky_point"
+path = "data/external/manga/dapall_selection.csv"
+row_count = 10262
+exact_overlap_with_lotss = 3752
+status = "implemented"
+note = "Exact overlap sourced from data/external/manga/manga_lotss_xmatch_dr3.csv"
+
+[[entries]]
+catalog = "ATNF Pulsars"
+modality = "sky_point"
+path = "data/external/atnf_pulsars.csv"
+row_count = 4351
+exact_overlap_with_lotss = 23
+status = "implemented"
+note = "Exact sky-point overlap computed in a single shared LoTSS scan (workers=6, chunk_rows=628736)."
+
+[[entries]]
+catalog = "McGill Magnetars"
+modality = "sky_point"
+path = "data/external/mcgill_magnetars.csv"
+row_count = 31
+exact_overlap_with_lotss = 0
+status = "implemented"
+note = "Exact sky-point overlap computed in a single shared LoTSS scan (workers=6, chunk_rows=628736)."
+
+[[entries]]
+catalog = "CHIME FRB"
+modality = "sky_point"
+path = "data/external/chime_frb_cat2.csv"
+row_count = 5008
+exact_overlap_with_lotss = 8
+status = "implemented"
+note = "Exact sky-point overlap computed in a single shared LoTSS scan (workers=6, chunk_rows=628736)."
+
+[[entries]]
+catalog = "SDSS DR18 Quasars"
+modality = "sky_point"
+path = "data/external/sdss_dr18_quasars.csv"
+row_count = 50000
+exact_overlap_with_lotss = 16317
+status = "implemented"
+note = "Exact sky-point overlap computed in a single shared LoTSS scan (workers=6, chunk_rows=628736)."
+
+[[entries]]
+catalog = "Gaia DR3 Nearby"
+modality = "sky_point"
+path = "data/external/gaia_dr3_nearby.csv"
+row_count = 50000
+exact_overlap_with_lotss = 75
+status = "implemented"
+note = "Exact sky-point overlap computed in a single shared LoTSS scan (workers=6, chunk_rows=628736)."
+
+[[entries]]
+catalog = "THINGS galaxies"
+modality = "sky_point"
+path = "data/external/things/table1.dat"
+row_count = 34
+exact_overlap_with_lotss = 8
+status = "implemented"
+note = "Exact sky-point overlap computed in a single shared LoTSS scan (workers=6, chunk_rows=628736)."
+
+[[entries]]
+catalog = "Euclid morphology"
+modality = "sky_point"
+path = "reports/euclid_lotss_xmatch_dr3_nocuts_2026-03-13.toml"
+exact_overlap_with_lotss = 0
+status = "implemented"
+note = "Exact overlap sourced from prior Euclid-LoTSS report."
+
+[[entries]]
+catalog = "Pantheon+ SH0ES"
+modality = "non_spatial"
+path = "data/external/PantheonPlusSH0ES.dat"
+status = "parallel"
+note = "No sky-position columns in the operational Pantheon+ distance table; keep in cosmology lane."
+
+[[entries]]
+catalog = "DESI BAO"
+modality = "non_spatial"
+path = "data/external/desi_dr1_bao.csv"
+status = "parallel"
+note = "BAO bins are not source-level sky points; keep in cosmology lane."
+
+[[entries]]
+catalog = "GWOSC/GWTC"
+modality = "sky_localization"
+path = "data/external/gwosc_all_events.csv"
+status = "deferred"
+note = "Operational catalog lacks per-event sky-map geometry here; probabilistic localization join deferred."

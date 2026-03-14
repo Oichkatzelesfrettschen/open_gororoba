@@ -400,58 +400,15 @@ fn load_atnf_pulsars(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> 
     if !path.exists() {
         return None;
     }
-    let content = std::fs::read_to_string(&path).ok()?;
+    let pulsars = data_core::catalogs::atnf::parse_atnf_csv(&path).ok()?;
     let mut rows = Vec::new();
-    let mut header_seen = false;
-    let mut idx_dm = None;
-    let mut idx_gl = None;
-    let mut idx_gb = None;
-
-    // Detect delimiter: semicolon (ATNF native) or comma (our CSV)
-    let first_data_line = content.lines().find(|l| {
-        let t = l.trim();
-        !t.is_empty() && !t.starts_with('#')
-    });
-    let delim = if first_data_line.is_some_and(|l| l.contains(';')) {
-        ';'
-    } else {
-        ','
-    };
-
-    for line in content.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() || trimmed.starts_with('#') {
-            continue;
-        }
-        if !header_seen {
-            let cols: Vec<&str> = trimmed.split(delim).collect();
-            for (i, c) in cols.iter().enumerate() {
-                let lc = c.trim().to_lowercase();
-                if lc == "dm" {
-                    idx_dm = Some(i);
-                } else if lc == "gl" {
-                    idx_gl = Some(i);
-                } else if lc == "gb" {
-                    idx_gb = Some(i);
-                }
-            }
-            header_seen = true;
-            continue;
-        }
-        let fields: Vec<&str> = trimmed.split(delim).collect();
-        let dm = idx_dm
-            .and_then(|i| fields.get(i))
-            .and_then(|s| s.trim().parse::<f64>().ok());
-        let gl = idx_gl
-            .and_then(|i| fields.get(i))
-            .and_then(|s| s.trim().parse::<f64>().ok());
-        let gb = idx_gb
-            .and_then(|i| fields.get(i))
-            .and_then(|s| s.trim().parse::<f64>().ok());
-        if let (Some(dm), Some(gl), Some(gb)) = (dm, gl, gb)
-            && dm > 0.0
+    for pulsar in pulsars {
+        if pulsar.dm.is_finite()
+            && pulsar.gl.is_finite()
+            && pulsar.gb.is_finite()
+            && pulsar.dm > 0.0
         {
-            rows.push(vec![dm.log10(), gl, gb]);
+            rows.push(vec![pulsar.dm.log10(), pulsar.gl, pulsar.gb]);
         }
     }
     if rows.len() < 10 {
@@ -757,62 +714,22 @@ fn load_mcgill(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     if !path.exists() {
         return None;
     }
-    // McGill RA/Dec columns are sexagesimal -- the generic parser treats them
-    // as NaN, so we parse the CSV directly with sexagesimal conversion.
-    let content = std::fs::read_to_string(&path).ok()?;
+    let magnetars = data_core::catalogs::mcgill::parse_mcgill_csv(&path).ok()?;
     let mut rows = Vec::new();
-    let mut header_seen = false;
-    let mut idx_ra = None;
-    let mut idx_dec = None;
-    let mut idx_period = None;
-    let mut idx_b = None;
-
-    for line in content.lines() {
-        let trimmed = line.trim();
-        if trimmed.is_empty() {
-            continue;
-        }
-        if !header_seen {
-            let cols: Vec<&str> = trimmed.split(',').collect();
-            for (i, c) in cols.iter().enumerate() {
-                let lc = c.trim().to_lowercase();
-                if lc == "ra" {
-                    idx_ra = Some(i);
-                }
-                if lc == "decl" || lc == "dec" {
-                    idx_dec = Some(i);
-                }
-                if lc == "period" {
-                    idx_period = Some(i);
-                }
-                if lc == "b" || lc == "b_dipole" {
-                    idx_b = Some(i);
-                }
-            }
-            header_seen = true;
-            continue;
-        }
-        let fields: Vec<&str> = trimmed.split(',').collect();
-        let ra = idx_ra
-            .and_then(|i| fields.get(i))
-            .and_then(|s| parse_ra_sexa(s));
-        let dec = idx_dec
-            .and_then(|i| fields.get(i))
-            .and_then(|s| parse_dec_sexa(s));
-        let period = idx_period.and_then(|i| fields.get(i)).and_then(|s| {
-            let s = s.trim();
-            s.parse::<f64>().ok()
-        });
-        let b = idx_b.and_then(|i| fields.get(i)).and_then(|s| {
-            let s = s.trim();
-            s.parse::<f64>().ok()
-        });
-
-        if let (Some(ra), Some(dec), Some(period), Some(b)) = (ra, dec, period, b)
-            && period > 0.0
-            && b > 0.0
+    for magnetar in magnetars {
+        if magnetar.ra.is_finite()
+            && magnetar.dec.is_finite()
+            && magnetar.period.is_finite()
+            && magnetar.b_dipole.is_finite()
+            && magnetar.period > 0.0
+            && magnetar.b_dipole > 0.0
         {
-            rows.push(vec![period.log10(), b.log10(), ra, dec]);
+            rows.push(vec![
+                magnetar.period.log10(),
+                magnetar.b_dipole.log10(),
+                magnetar.ra,
+                magnetar.dec,
+            ]);
         }
     }
     if rows.len() < 10 {

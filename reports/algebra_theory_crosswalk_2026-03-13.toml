@@ -1,0 +1,91 @@
+generated_at_utc = "2026-03-14T01:03:23.939058682+00:00"
+db_path = "registry/canonical/control_plane.sqlite3"
+
+[[rows]]
+family = "Cayley-Dickson / zero-divisors"
+status = "linked_runtime"
+bibliography_refs = [
+    "de Marrais (2000) box-kite structure of sedenion zero-divisors",
+    "Reggiani (2024) geometry of sedenion zero divisors",
+    "Wilmot (2025) structure of the Cayley-Dickson algebras",
+]
+binaries = [
+    "amplitude-imbalance-survey",
+    "cd-ultrametric-scaling",
+    "ultrametric-core-extract",
+]
+experiments = ["E-002"]
+claims = ["C-449"]
+empirical_outputs = [
+    "reports/ultrametric_core_report_2026-03-13.toml",
+    "reports/survey_catalog_matrix_dr3_2026-03-14.toml",
+]
+notes = "Crosswalks the repo's native Cayley-Dickson analysis lane to the refreshed ultrametric and survey outputs rather than pretending the algebra itself is a sky catalog."
+
+[[rows]]
+family = "Jordan / exceptional Jordan"
+status = "linked_runtime"
+bibliography_refs = [
+    "Exceptional Jordan / Albert-algebra references already surfaced in docs/INSIGHTS.md",
+    "Singh delta^2 discussion tracked in repo insight lane",
+]
+binaries = ["lie-jordan-halo-analysis"]
+experiments = ["E-198"]
+claims = []
+empirical_outputs = [
+    "reports/lotss_manga_crossmatch_dr3_2026-03-13.toml",
+    "reports/things_lotss_xmatch_dr3_2026-03-13.toml",
+]
+notes = "Links the Jordan-family analysis to the empirical radio-stratification outputs where the repo currently reuses that language."
+
+[[rows]]
+family = "Exceptional Lie / magic-square-related"
+status = "linked_runtime"
+bibliography_refs = [
+    "Damour, Henneaux, Nicolai (2002) E10 and M-theory",
+    "repo E7/E8 and magic-square references in docs and artifact narratives",
+]
+binaries = [
+    "lie-jordan-halo-analysis",
+    "algebraic-warp-sweep",
+]
+experiments = [
+    "E-193",
+    "E-198",
+]
+claims = []
+empirical_outputs = [
+    "reports/survey_catalog_matrix_dr3_2026-03-14.toml",
+    "reports/things_metadata_2026-03-13.toml",
+]
+notes = "Treats exceptional-Lie content as a theory overlay linked to current survey artifacts, not as a fake direct observation channel."
+
+[[rows]]
+family = "Kac-Moody / moonshine"
+status = "bibliography_only"
+bibliography_refs = [
+    "Kac (1990) Infinite-Dimensional Lie Algebras",
+    "repo moonshine / exceptional-structure literature pointers",
+]
+binaries = []
+experiments = []
+claims = []
+empirical_outputs = ["reports/algebra_theory_crosswalk_2026-03-13.toml"]
+notes = "This family is currently bibliography-led in the repo. The crosswalk records that state explicitly so it is not confused with an executed survey overlap."
+
+[[rows]]
+family = "Planck / action / operator / effective-law scaffold"
+status = "bibliography_only"
+bibliography_refs = [
+    "CODATA 2022 / NIST Planck-scale constants",
+    "Connes spectral-triple operator framework",
+    "variable-order effective-law references from the project theory lane",
+]
+binaries = []
+experiments = []
+claims = []
+empirical_outputs = [
+    "reports/heliosphere_temporal_overlay_2026-03-13.toml",
+    "reports/desi_dr2_bao_reference_2026-03-14.toml",
+]
+notes = "Connects the theory scaffold discussed in this thread to the executed empirical outputs without claiming that those outputs are themselves Planck-scale measurements."

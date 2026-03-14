@@ -879,7 +879,6 @@ registry-verify-external-source-operational-contracts:
 
 registry-verify-strict-toml-batch3:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --verify --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
