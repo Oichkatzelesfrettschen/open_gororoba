@@ -9,8 +9,8 @@
 //!   helios{1,2}-e3-all: MAG 6-sec average (Bx, By, Bz, |B|)
 //!   helios{1,2}-orb-all: orbit (r_au, lat, lon)
 //!
-//! The Python fetcher (bin/fetch_helios.py) translates AMDA HAPI CSV to
-//! SPDF-style merged hourly ASCII with per-hour median aggregation.
+//! Governed AMDA-derived exports can be normalized into SPDF-style merged
+//! hourly ASCII with per-hour median aggregation.
 //! E1 thermal_speed is converted to temperature via T = m_p * v_th^2 / (2*k_B).
 //!
 //! Fill values match the AMDA-derived output format.
@@ -191,9 +191,10 @@ impl DatasetProvider for HeliosProvider {
             if config.skip_existing && output.exists() {
                 continue;
             }
-            // SPDF is blocked; log and continue. Data comes via Python AMDA fetcher.
+            // SPDF is blocked from this host. The governed fallback is a staged
+            // AMDA-derived merged export under the same output directory.
             log::warn!(
-                "Helios SPDF blocked ({}). Use bin/fetch_helios.py --source amda for year {}.",
+                "Helios SPDF blocked ({}). Stage governed AMDA-derived merged exports for year {}.",
                 base,
                 year,
             );

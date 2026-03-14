@@ -1,0 +1,621 @@
+generated_at_utc = "2026-03-14T05:09:02.043212964+00:00"
+overlay_definition = "4D overlay = shared observed epoch windows across heliocentric or near-Earth telemetry lanes using true measurement times. Near-Earth missions use OMNI as the common boundary clock; outer-heliosphere missions retain heliocentric distance summaries where available."
+control_plane_db_path = "registry/canonical/control_plane.sqlite3"
+
+[[datasets]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Voyager 1 merged hourly"
+path = "data/external/voyager1"
+availability = "available"
+row_count = 17568
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Voyager 2 merged hourly"
+path = "data/external/voyager2"
+availability = "available"
+row_count = 17568
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "Voyager 1 CRS daily flux"
+path = "data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv"
+availability = "available"
+row_count = 344
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-12T00:00:00+00:00"
+cadence_seconds = 86400.0
+notes = "Daily-flux calibration lane; used as the chronology-tight third component."
+
+[[datasets]]
+label = "Voyager 2 CRS daily flux"
+path = "data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv"
+availability = "available"
+row_count = 364
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T00:00:00+00:00"
+cadence_seconds = 86400.0
+notes = "Daily-flux calibration lane; current local cache stops at 2016 for Voyager 2."
+
+[[datasets]]
+label = "ACE MAG hourly"
+path = "data/external/ace_mag"
+availability = "missing"
+row_count = 0
+
+[[datasets]]
+label = "ACE SWEPAM hourly"
+path = "data/external/ace_swepam"
+availability = "missing"
+row_count = 0
+
+[[datasets]]
+label = "WIND MFI hourly"
+path = "data/external/wind_mfi"
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "WIND SWE plasma"
+path = "data/external/wind_swe"
+availability = "available"
+row_count = 302020
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[datasets]]
+label = "STEREO-A PLASTIC hourly"
+path = "data/external/stereo_plastic"
+availability = "missing"
+row_count = 0
+notes = "STEREO-A PLASTIC files are not staged locally."
+
+[[datasets]]
+label = "STEREO-A MAG text export"
+path = "data/external/stereo_impact"
+availability = "missing"
+row_count = 0
+notes = "STEREO-A MAG text exports are not staged locally."
+
+[[datasets]]
+label = "Ulysses merged hourly"
+path = "data/external/ulysses"
+availability = "missing"
+row_count = 0
+notes = "Path exists but no parseable merged hourly records were found."
+
+[[datasets]]
+label = "Helios 1 merged hourly"
+path = "data/external/helios/helios1"
+availability = "missing"
+row_count = 0
+notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+
+[[datasets]]
+label = "Helios 2 merged hourly"
+path = "data/external/helios/helios2"
+availability = "missing"
+row_count = 0
+notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+
+[[datasets]]
+label = "Cassini cruise merged hourly"
+path = "data/external/cassini"
+availability = "available"
+row_count = 47929
+start_utc = "1998-12-30T12:00:00+00:00"
+end_utc = "2004-07-03T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Cruise lane is a governed hybrid with modeled plasma and measured trajectory/MAG."
+
+[[datasets]]
+label = "Juno cruise merged hourly"
+path = "data/external/juno"
+availability = "missing"
+row_count = 0
+notes = "Path exists but no parseable merged hourly records were found."
+
+[[datasets]]
+label = "New Horizons SWAP hourly"
+path = "data/external/new_horizons"
+availability = "missing"
+row_count = 0
+notes = "SWAP lane provides plasma and trajectory but no in-situ magnetometer."
+
+[[datasets]]
+label = "IBEX ENA sky maps"
+path = "data/external/ibex"
+availability = "missing"
+row_count = 0
+notes = "ENA sky maps are governed here as a sky-map lane, not a heliocentric time-series overlay."
+
+[[overlays]]
+mission = "Voyager 1"
+overlay_mode = "omni+voyager+crs"
+simultaneous_day_bins = 296
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-12"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 135.26719594594545
+min_heliocentric_distance_au = 133.57
+max_heliocentric_distance_au = 136.95
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Voyager 1 merged hourly"
+path = "data/external/voyager1"
+availability = "available"
+row_count = 17568
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Voyager 1 CRS daily flux"
+path = "data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv"
+availability = "available"
+row_count = 344
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-12T00:00:00+00:00"
+cadence_seconds = 86400.0
+notes = "Daily-flux calibration lane; used as the chronology-tight third component."
+
+[[overlays]]
+mission = "Voyager 2"
+overlay_mode = "omni+voyager+crs"
+simultaneous_day_bins = 312
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 111.56358974359087
+min_heliocentric_distance_au = 109.98
+max_heliocentric_distance_au = 113.14
+notes = "Voyager 2 currently has a chronology-tight triple overlay through the 2016 CRS flux lane."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Voyager 2 merged hourly"
+path = "data/external/voyager2"
+availability = "available"
+row_count = 17568
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2020-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Voyager 2 CRS daily flux"
+path = "data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv"
+availability = "available"
+row_count = 364
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T00:00:00+00:00"
+cadence_seconds = 86400.0
+notes = "Daily-flux calibration lane; current local cache stops at 2016 for Voyager 2."
+
+[[overlays]]
+mission = "ACE"
+overlay_mode = "omni+mag+plasma"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "Near-Earth cross-validation lane anchored at L1; geometry is effectively 1 AU rather than an outer-heliosphere baseline."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "ACE MAG hourly"
+path = "data/external/ace_mag"
+availability = "missing"
+row_count = 0
+
+[[overlays.components]]
+label = "ACE SWEPAM hourly"
+path = "data/external/ace_swepam"
+availability = "missing"
+row_count = 0
+
+[[overlays]]
+mission = "WIND"
+overlay_mode = "omni+mfi+swe"
+simultaneous_day_bins = 366
+simultaneous_start_day = "2016-01-01"
+simultaneous_end_day = "2016-12-31"
+temporal_classification = "simultaneous"
+notes = "Near-Earth cross-validation lane anchored at L1; geometry is effectively 1 AU rather than an outer-heliosphere baseline."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "WIND MFI hourly"
+path = "data/external/wind_mfi"
+availability = "available"
+row_count = 8784
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "WIND SWE plasma"
+path = "data/external/wind_swe"
+availability = "available"
+row_count = 302020
+start_utc = "2016-01-01T00:00:00+00:00"
+end_utc = "2016-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays]]
+mission = "STEREO-A"
+overlay_mode = "omni+plastic+mag"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "Spatial triangulation lane; full 4D overlay requires both PLASTIC and governed MAG text exports."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "STEREO-A PLASTIC hourly"
+path = "data/external/stereo_plastic"
+availability = "missing"
+row_count = 0
+notes = "STEREO-A PLASTIC files are not staged locally."
+
+[[overlays.components]]
+label = "STEREO-A MAG text export"
+path = "data/external/stereo_impact"
+availability = "missing"
+row_count = 0
+notes = "STEREO-A MAG text exports are not staged locally."
+
+[[overlays]]
+mission = "Ulysses"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "High-latitude heliosphere lane; same-time overlap depends on which yearly Ulysses files are staged."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Ulysses merged hourly"
+path = "data/external/ulysses"
+availability = "missing"
+row_count = 0
+notes = "Path exists but no parseable merged hourly records were found."
+
+[[overlays]]
+mission = "Helios 1"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "Inner-heliosphere lane; temporal overlap with OMNI is not expected because Helios predates the OMNI local windows in this repo."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Helios 1 merged hourly"
+path = "data/external/helios/helios1"
+availability = "missing"
+row_count = 0
+notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+
+[[overlays]]
+mission = "Helios 2"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "Inner-heliosphere lane; temporal overlap with OMNI is not expected because Helios predates the OMNI local windows in this repo."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Helios 2 merged hourly"
+path = "data/external/helios/helios2"
+availability = "missing"
+row_count = 0
+notes = "Current local lane is a governed staged fallback when direct SPDF access is blocked."
+
+[[overlays]]
+mission = "Cassini"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 2013
+simultaneous_start_day = "1998-12-30"
+simultaneous_end_day = "2004-07-03"
+temporal_classification = "simultaneous"
+mean_heliocentric_distance_au = 5.756107346283024
+min_heliocentric_distance_au = 0.721
+max_heliocentric_distance_au = 9.046
+notes = "Late-cruise hybrid lane; overlaps OMNI in 1998-2004 when both are staged."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Cassini cruise merged hourly"
+path = "data/external/cassini"
+availability = "available"
+row_count = 47929
+start_utc = "1998-12-30T12:00:00+00:00"
+end_utc = "2004-07-03T23:00:00+00:00"
+cadence_seconds = 3600.0
+notes = "Cruise lane is a governed hybrid with modeled plasma and measured trajectory/MAG."
+
+[[overlays]]
+mission = "Juno"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "Cruise lane; 2016 is the strongest same-time overlap target with OMNI and Voyager-era comparison packs."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "Juno cruise merged hourly"
+path = "data/external/juno"
+availability = "missing"
+row_count = 0
+notes = "Path exists but no parseable merged hourly records were found."
+
+[[overlays]]
+mission = "New Horizons"
+overlay_mode = "omni+mission"
+simultaneous_day_bins = 0
+temporal_classification = "no_temporal_overlap"
+notes = "Outer-heliosphere plasma lane without in-situ magnetometer; temporal overlap is still scientifically useful for same-epoch boundary comparisons."
+
+[[overlays.components]]
+label = "OMNI hourly"
+path = "data/external/omni2"
+availability = "available"
+row_count = 262992
+start_utc = "1997-01-01T00:00:00+00:00"
+end_utc = "2025-12-31T23:00:00+00:00"
+cadence_seconds = 3600.0
+
+[[overlays.components]]
+label = "New Horizons SWAP hourly"
+path = "data/external/new_horizons"
+availability = "missing"
+row_count = 0
+notes = "SWAP lane provides plasma and trajectory but no in-situ magnetometer."
+
+[[fleet_coverage]]
+mission = "Voyager 1"
+provider_names = [
+    "VoyagerProvider",
+    "VoyagerCrsFluxProvider",
+]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "Merged hourly + calibrated CRS daily flux are both present in the executed overlay."
+
+[[fleet_coverage]]
+mission = "Voyager 2"
+provider_names = [
+    "VoyagerProvider",
+    "VoyagerCrsFluxProvider",
+]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "Voyager 2 remains the current best full outer-heliosphere same-time overlay lane."
+
+[[fleet_coverage]]
+mission = "ACE"
+provider_names = [
+    "AceMagProvider",
+    "AceSwepamProvider",
+]
+fetch_registered = true
+cache_present = true
+parser_working = false
+source_contract_migrated = false
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+notes = "SQLite source contracts are still incomplete here because ACE MAG is not yet represented as its own external-source contract."
+
+[[fleet_coverage]]
+mission = "WIND"
+provider_names = [
+    "WindMfiProvider",
+    "WindSweProvider",
+]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = false
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+notes = "SQLite source contracts are still incomplete here because the current external-source inventory only covers an older AMDA-derived WIND lane."
+
+[[fleet_coverage]]
+mission = "STEREO-A"
+provider_names = [
+    "StereoPlasticProvider",
+    "StereoMagProvider",
+]
+fetch_registered = true
+cache_present = false
+parser_working = false
+source_contract_migrated = false
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+notes = "Full 4D parity depends on governed MAG text exports; the current Rust provider can stage the directory but not yet bulk-acquire the MAG text export automatically."
+
+[[fleet_coverage]]
+mission = "Ulysses"
+provider_names = ["UlyssesProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = false
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+
+[[fleet_coverage]]
+mission = "Helios 1"
+provider_names = ["HeliosProvider"]
+fetch_registered = true
+cache_present = false
+parser_working = false
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+notes = "Fetch path is still source-blocked from direct SPDF on this host; governed staged exports remain the fallback."
+
+[[fleet_coverage]]
+mission = "Helios 2"
+provider_names = ["HeliosProvider"]
+fetch_registered = true
+cache_present = false
+parser_working = false
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+notes = "Fetch path is still source-blocked from direct SPDF on this host; governed staged exports remain the fallback."
+
+[[fleet_coverage]]
+mission = "Cassini"
+provider_names = ["CassiniCruiseProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = true
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = true
+
+[[fleet_coverage]]
+mission = "Juno"
+provider_names = ["JunoCruiseProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = false
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+
+[[fleet_coverage]]
+mission = "New Horizons"
+provider_names = ["NhSwapProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = false
+source_contract_migrated = true
+overlay_3d_implemented = true
+overlay_4d_implemented = true
+cross_domain_integrated = false
+notes = "Current lane is plasma+trajectory only; magnetometer parity with Voyager is not applicable."
+
+[[fleet_coverage]]
+mission = "IBEX"
+provider_names = ["IbexProvider"]
+fetch_registered = true
+cache_present = true
+parser_working = false
+source_contract_migrated = false
+overlay_3d_implemented = false
+overlay_4d_implemented = false
+cross_domain_integrated = false
+notes = "IBEX is governed here as an ENA sky-map family, not as a heliocentric time-series overlay."

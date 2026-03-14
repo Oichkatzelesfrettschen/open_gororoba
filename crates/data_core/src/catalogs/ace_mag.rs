@@ -17,6 +17,7 @@ use crate::{
 };
 use std::{
     collections::HashMap,
+    fs,
     path::{Path, PathBuf},
 };
 
@@ -360,7 +361,16 @@ impl DatasetProvider for AceMagProvider {
                 let url = format!("{}{}/{}", ACE_MAG_BROWSE_BASE, year, fname);
                 match download_to_file(&url, &output) {
                     Ok(bytes) if bytes > 0 => {
-                        log::info!("Saved {} ({} bytes)", fname, bytes);
+                        if file_looks_like_html_error(&output)? {
+                            let _ = fs::remove_file(&output);
+                            log::warn!(
+                                "ACE MAG browse {} returned HTML error content; skipped {}",
+                                year,
+                                fname
+                            );
+                        } else {
+                            log::info!("Saved {} ({} bytes)", fname, bytes);
+                        }
                     }
                     _ => {
                         log::debug!("ACE MAG browse {} not found at {}", fname, url);
@@ -375,6 +385,15 @@ impl DatasetProvider for AceMagProvider {
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("ace_mag").exists()
     }
+}
+
+fn file_looks_like_html_error(path: &Path) -> Result<bool, FetchError> {
+    let content = fs::read(path)
+        .map_err(|e| FetchError::Validation(format!("read {}: {}", path.display(), e)))?;
+    let head = String::from_utf8_lossy(&content[..content.len().min(256)]).to_ascii_lowercase();
+    Ok(head.contains("<!doctype html")
+        || head.contains("<html")
+        || head.contains("404 not found"))
 }
 
 #[cfg(test)]

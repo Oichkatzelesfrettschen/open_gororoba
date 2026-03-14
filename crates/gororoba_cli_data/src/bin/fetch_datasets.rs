@@ -12,7 +12,7 @@
 
 use clap::{ArgAction, Parser};
 use data_core::fetcher::{DatasetProvider, FetchConfig, FetchError};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(name = "fetch-datasets", about = "Unified dataset acquisition tool")]
@@ -254,6 +254,115 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~3 MB",
         },
         DatasetEntry {
+            provider: Box::new(ace_mag::AceMagProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "ACE MAG L2 Browse 16-sec (2016)",
+                ace_mag::AceMagProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                    doy_range: None,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(solar_wind::AceSwepamProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~2 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "ACE SWEPAM Solar Wind (2016)",
+                solar_wind::AceSwepamProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~2 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(wind_swe::WindMfiProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~3 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "WIND MFI 1-hour Magnetic Field (2016)",
+                wind_swe::WindMfiProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~3 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(wind_swe::WindSweProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "WIND SWE KP Unspiked Plasma (2016)",
+                wind_swe::WindSweProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(stereo_plastic::StereoPlasticProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~50-100 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "STEREO-A PLASTIC 1-hour Plasma (2016)",
+                stereo_plastic::StereoPlasticProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~50-100 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(stereo_plastic::StereoMagProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~directory placeholder",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "STEREO-A IMPACT/MAG MAGPLASMA (2016)",
+                stereo_plastic::StereoMagProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~directory placeholder",
+        },
+        DatasetEntry {
             provider: Box::new(voyager::VoyagerProvider {
                 spacecraft: voyager::VoyagerSpacecraft::V1,
                 year_start: 2020,
@@ -344,6 +453,79 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(ulysses::UlyssesProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(helios::HeliosProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~staged-via-governed-export",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Helios 2 Merged Hourly",
+                helios::HeliosProvider {
+                    spacecraft: helios::HeliosSpacecraft::H2,
+                    year_start: 1976,
+                    year_end: 1980,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~staged-via-governed-export",
+        },
+        DatasetEntry {
+            provider: Box::new(cassini::CassiniCruiseProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-10 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(juno::JunoCruiseProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-10 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Juno Cruise Merged Hourly (2016)",
+                juno::JunoCruiseProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(new_horizons::NhSwapProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-10 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "New Horizons SWAP Hourly (2016)",
+                new_horizons::NhSwapProvider {
+                    year_start: 2016,
+                    year_end: 2016,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(ibex::IbexProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1-5 MB",
         },
         // -- Candle pillar: standard candles/rulers --
         DatasetEntry {
@@ -473,6 +655,31 @@ fn build_registry() -> Vec<DatasetEntry> {
     ]
 }
 
+fn staged_file_count(path: &Path) -> usize {
+    if path.is_file() {
+        return 1;
+    }
+    if !path.is_dir() {
+        return 0;
+    }
+    let mut total = 0usize;
+    let mut stack = vec![path.to_path_buf()];
+    while let Some(dir) = stack.pop() {
+        let Ok(entries) = std::fs::read_dir(dir) else {
+            continue;
+        };
+        for entry in entries.flatten() {
+            let child = entry.path();
+            if child.is_file() {
+                total += 1;
+            } else if child.is_dir() {
+                stack.push(child);
+            }
+        }
+    }
+    total
+}
+
 fn main() {
     env_logger::init();
     let args = Args::parse();
@@ -568,8 +775,17 @@ fn main() {
         );
         match entry.provider.fetch(&config) {
             Ok(path) => {
-                eprintln!("  OK: {}", path.display());
-                success += 1;
+                let staged_files = staged_file_count(&path);
+                if path.is_dir() && staged_files == 0 {
+                    eprintln!(
+                        "  FAILED: provider returned an empty staging directory {}",
+                        path.display()
+                    );
+                    failed += 1;
+                } else {
+                    eprintln!("  OK: {} ({} staged files)", path.display(), staged_files.max(1));
+                    success += 1;
+                }
             }
             Err(e) => {
                 eprintln!("  FAILED: {}", e);
