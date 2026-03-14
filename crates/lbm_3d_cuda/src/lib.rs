@@ -1990,7 +1990,6 @@ impl DarkHaloCudaSolver {
     /// Create a new CUDA dark halo solver.
     ///
     /// Compiles kernels via NVRTC and allocates SoA buffers.
-    /// FIXME: Add `--use_fast_math` and `-arch=sm_89` flags for Ada Lovelace.
     ///
     /// # VRAM budget (f32 ping-pong)
     /// - 256^3: ~2.8 GB (fits 4+ GB cards)
@@ -2029,8 +2028,15 @@ impl DarkHaloCudaSolver {
         let stream = ctx.default_stream();
 
         // Compile dark halo kernels via NVRTC
-        // TODO: Add -arch=sm_89 --use_fast_math for production
-        let ptx = cudarc::nvrtc::compile_ptx(KERNEL_DARK_HALO_SRC)
+        let opts = cudarc::nvrtc::CompileOptions {
+            arch: Some("sm_89"),
+            prec_div: Some(false),
+            prec_sqrt: Some(false),
+            ftz: Some(true),
+            fmad: Some(true),
+            ..Default::default()
+        };
+        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_DARK_HALO_SRC, opts)
             .context("NVRTC compilation of dark halo kernels")?;
         let module = ctx.load_module(ptx).context("Load dark halo CUDA module")?;
 
