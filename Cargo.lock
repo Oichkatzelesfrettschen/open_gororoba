@@ -11317,12 +11317,14 @@ name = "xtask"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "clap",
  "provenance_store",
  "rusqlite",
  "serde",
  "serde_json",
  "tempfile",
  "verified_core",
+ "walkdir",
 ]
 
 [[package]]
