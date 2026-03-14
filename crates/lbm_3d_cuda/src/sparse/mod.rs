@@ -43,7 +43,7 @@ impl SparseBrickMap {
     ) -> Result<Self> {
         // Compile kernels
         let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some("sm_89"), // Optimize for Ada
+            arch: Some(crate::preferred_cuda_arch()),
             ..Default::default()
         };
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SPARSE_MAP_SRC, opts)
@@ -170,7 +170,7 @@ impl SparseLbmSolver {
 
         // Compile kernel
         let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some("sm_89"),
+            arch: Some(crate::preferred_cuda_arch()),
             ..Default::default()
         };
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SPARSE_LBM_SRC, opts)

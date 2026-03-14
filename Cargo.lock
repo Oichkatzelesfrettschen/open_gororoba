@@ -2266,6 +2266,7 @@ dependencies = [
  "rand 0.8.5",
  "rand_distr 0.4.3",
  "rayon",
+ "regex",
  "reqwest",
  "serde",
  "serde_json",
@@ -3816,6 +3817,24 @@ dependencies = [
  "ureq",
  "url",
  "verified_core",
+ "walkdir",
+]
+
+[[package]]
+name = "gororoba_cli_governance"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "clap",
+ "csv",
+ "glob",
+ "provenance_ops",
+ "provenance_store",
+ "regex",
+ "serde_json",
+ "sha2",
+ "toml",
  "walkdir",
 ]
 

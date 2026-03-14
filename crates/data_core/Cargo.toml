@@ -24,6 +24,7 @@ nalgebra = { workspace = true }
 log = { workspace = true }
 chrono = { workspace = true }
 hifitime = { workspace = true }
+regex = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 hdf5 = { workspace = true, optional = true }
 polars = { workspace = true, optional = true }

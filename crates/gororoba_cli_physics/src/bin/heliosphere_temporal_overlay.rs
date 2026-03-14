@@ -298,7 +298,9 @@ fn main() -> Result<()> {
         },
         |path| Ok(parse_nh_swap_file(path)?),
     )?;
-    let ibex_path = first_matching_file(&cli.ibex_dir, |path| file_name_ends_with(path, ".csv"))?;
+    let ibex_path = first_matching_file(&cli.ibex_dir, |path| {
+        file_name_ends_with(path, ".csv") || file_name_ends_with(path, "-flux.txt")
+    })?;
     let ibex_pixel_count = if let Some(path) = ibex_path.as_ref() {
         Some(
             parse_ibex_ena_file(path, 1.1, 1, 2009, "Hi")

@@ -65,7 +65,7 @@ impl ChingonGpuPipeline {
         let stream = ctx.default_stream();
 
         let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some("sm_89"),
+            arch: Some(crate::preferred_cuda_arch()),
             ..Default::default()
         };
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SRC, opts)

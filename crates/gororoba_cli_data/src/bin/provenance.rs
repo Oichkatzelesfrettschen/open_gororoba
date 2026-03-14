@@ -226,6 +226,9 @@ struct UpdateExternalSourceArgs {
     #[arg(long)]
     canonical_url: Option<String>,
 
+    #[arg(long = "mirror-url")]
+    mirror_urls: Vec<String>,
+
     #[arg(long)]
     access_class: Option<String>,
 
@@ -243,6 +246,18 @@ struct UpdateExternalSourceArgs {
 
     #[arg(long)]
     blocker_note: Option<String>,
+
+    #[arg(long = "evidence-ref")]
+    evidence_refs: Vec<String>,
+
+    #[arg(long = "manual-manifest-ref")]
+    manual_manifest_refs: Vec<String>,
+
+    #[arg(long = "blocked-action")]
+    blocked_action_plan: Vec<String>,
+
+    #[arg(long = "validator-ref")]
+    scientific_validator_refs: Vec<String>,
 
     #[arg(long, default_value_t = true)]
     export_after: bool,
@@ -597,12 +612,17 @@ fn run_update_external_source(
 ) -> Result<()> {
     if args.path_glob.is_none()
         && args.canonical_url.is_none()
+        && args.mirror_urls.is_empty()
         && args.access_class.is_none()
         && args.status.is_none()
         && args.retrieval_method.is_none()
         && args.attempt_deadline_utc.is_none()
         && args.resolution_deadline_utc.is_none()
         && args.blocker_note.is_none()
+        && args.evidence_refs.is_empty()
+        && args.manual_manifest_refs.is_empty()
+        && args.blocked_action_plan.is_empty()
+        && args.scientific_validator_refs.is_empty()
     {
         bail!("no external-source fields were provided to update");
     }
@@ -611,12 +631,20 @@ fn run_update_external_source(
     let patch = ExternalSourceContractPatch {
         path_glob: args.path_glob.as_deref(),
         canonical_url: args.canonical_url.as_deref(),
+        mirror_urls: (!args.mirror_urls.is_empty()).then_some(args.mirror_urls.as_slice()),
         access_class: args.access_class.as_deref(),
         status: args.status.as_deref(),
         retrieval_method: args.retrieval_method.as_deref(),
         attempt_deadline_utc: args.attempt_deadline_utc.as_deref(),
         resolution_deadline_utc: args.resolution_deadline_utc.as_deref(),
         blocker_note: args.blocker_note.as_deref(),
+        evidence_refs: (!args.evidence_refs.is_empty()).then_some(args.evidence_refs.as_slice()),
+        manual_manifest_refs: (!args.manual_manifest_refs.is_empty())
+            .then_some(args.manual_manifest_refs.as_slice()),
+        blocked_action_plan: (!args.blocked_action_plan.is_empty())
+            .then_some(args.blocked_action_plan.as_slice()),
+        scientific_validator_refs: (!args.scientific_validator_refs.is_empty())
+            .then_some(args.scientific_validator_refs.as_slice()),
     };
     let created = if args.create_if_missing {
         store.upsert_external_source_contract(&args.id, patch)?

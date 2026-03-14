@@ -506,7 +506,7 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 
 [[binary]]
 name = "governance-verify"
-crate = "gororoba_cli_data"
+crate = "gororoba_cli_governance"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
@@ -766,7 +766,7 @@ experiment = "E-183"
 
 [[binary]]
 name = "markdown-registry"
-crate = "gororoba_cli_data"
+crate = "gororoba_cli_governance"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
@@ -1344,7 +1344,7 @@ experiment = "E-039"
 
 [[binary]]
 name = "workspace-routing"
-crate = "gororoba_cli_data"
+crate = "gororoba_cli_governance"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]

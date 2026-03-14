@@ -534,6 +534,36 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(soho_celias::SohoCeliasBundleProvider),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~250 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(soho_celias::SohoCeliasPm5MinProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~15 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(soho_celias::SohoLascoDaySampleProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~10-50 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(imap::ImapHelio1hrProvider),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~250 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(imap::ImapHiL2H90Provider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~2 MB/year",
+        },
+        DatasetEntry {
             provider: Box::new(psp::PspProvider::default()),
             category: "geophysical",
             pillar: "geophysical",

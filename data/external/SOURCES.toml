@@ -4,7 +4,7 @@
 # Compatibility export lane: source_contracts
 
 [external_sources]
-updated = "2026-03-14T16:11:18.680825920+00:00"
+updated = "2026-03-14 22:21:13"
 authoritative = true
 policy_version = "v1"
 
@@ -93,7 +93,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_cassini.py --start 1998 --end 2004 --source amda"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Cassini Cruise Merged Hourly' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This is a governed hybrid Cassini cruise lane assembled locally from AMDA HAPI sources. Trajectory comes from `cass-orb-cruise`, magnetic field from measured `cass-mag-rtn60`, and plasma from modeled `tao-cass-sw`. It is suitable for late-cruise chronology packs and long-baseline heliosphere trend work, but it should not be mislabeled as a fully measured SPDF merged cruise product. For the full `CRUISE_1997_2004` pack it must be treated as gap-tolerant before 1998-12-30T12:00:00Z, propagating missing values rather than fabricated outer-boundary samples."
@@ -996,6 +996,48 @@ attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "Orbit support time-series complements the IBEX ENA sky-map family for same-epoch overlay."
 evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-IMAP-HELIO1HR-POSITION"
+path_glob = "data/external/imap/helio1hr/*.cdf"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/helio1hr/"
+mirror_urls = [
+  "https://cdaweb.gsfc.nasa.gov/pub/data/imap/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IMAP Helio1hr Position' --output-dir data/external --skip-existing=false"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "https://cdaweb.gsfc.nasa.gov/pub/data/imap/helio1hr/",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliosphere_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-IMAP-HI-L2-H90-ENA"
+path_glob = "data/external/imap/hi/l2/h90/**/*.cdf"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/h90-ena-h-sf-nsp-full-4deg-3mo/"
+mirror_urls = [
+  "https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IMAP-Hi L2 ENA h90' --output-dir data/external --skip-existing=false"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/h90-ena-h-sf-nsp-full-4deg-3mo/",
+]
 manual_manifest_refs = []
 scientific_validator_refs = []
 blocked_action_plan = []
@@ -2014,7 +2056,7 @@ blocked_action_plan = []
 
 [[source]]
 id = "SRC-SOHO-CELIAS-PM-5MIN-BUNDLE"
-path_glob = "data/external/soho/celias/**"
+path_glob = "data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz"
 canonical_url = "https://soho.nascom.nasa.gov/data/EntireMissionBundles/CELIAS_Proton_Monitor_5min.tar.gz"
 mirror_urls = [
   "https://soho.nascom.nasa.gov/data/archive.html",
@@ -2023,7 +2065,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_soho.py --product celias_pm_5min_bundle --skip-existing"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO CELIAS PM 5min Bundle' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This governs the SOHO CELIAS Proton Monitor 5-minute mission-long bundle and its staged metadata sidecars. The bundle is directly reachable from the current GSFC SOHO archive, while live ESAC archive endpoints are documented but connection-reset from this host."
@@ -2038,6 +2080,28 @@ scientific_validator_refs = [
 blocked_action_plan = []
 
 [[source]]
+id = "SRC-SOHO-CELIAS-PM-5MIN-CDAWEB"
+path_glob = "data/external/soho/celias_pm_5min/**/*"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/soho/celias/pm_5min/"
+mirror_urls = [
+  "https://soho.nascom.nasa.gov/data/EntireMissionBundles/CELIAS_Proton_Monitor_5min.tar.gz",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO CELIAS PM 5min CDF' --output-dir data/external --skip-existing=false"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = ""
+evidence_refs = [
+  "https://cdaweb.gsfc.nasa.gov/pub/data/soho/celias/pm_5min/",
+]
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "heliosphere_merged_hourly_invariants",
+]
+blocked_action_plan = []
+
+[[source]]
 id = "SRC-SOHO-LASCO-LZ-DAY-SAMPLE"
 path_glob = "data/external/soho/lasco/level05/**"
 canonical_url = "https://lasco-www.nrl.navy.mil/index.php?p=get_data"
@@ -2047,7 +2111,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_soho.py --product lasco_lz_day --date 2024-01-01 --camera all --max-files 1 --skip-existing"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO LASCO L0.5 Day Sample' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This governs a bounded SOHO LASCO level-0.5 day sample, including directory indices, `img_hdr.txt`, and a small number of FITS files per camera. NRL documents wget-friendly bulk retrieval, while the NASA GSFC mirror remains available for per-file access but not wget-style mirroring."
@@ -2368,7 +2432,7 @@ blocked_action_plan = []
 
 [[source]]
 id = "SRC-VOYAGER1-JUPITER-CRS-PDS"
-path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager1/**"
+path_glob = "data/external/voyager_crs/voyager1_crs_daily_flux_*.csv"
 canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/"
 mirror_urls = [
   "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
@@ -2376,7 +2440,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_crs.py --spacecraft 1 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 1 CRS Daily Flux' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
@@ -2401,7 +2465,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v1 --start 1979 --end 1979 --source amda"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 1 Merged Hourly' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
@@ -2494,7 +2558,7 @@ blocked_action_plan = []
 
 [[source]]
 id = "SRC-VOYAGER2-JUPITER-CRS-PDS"
-path_glob = "data/external/heliosphere/voyager/jupiter_encounter/voyager2/**"
+path_glob = "data/external/voyager_crs/voyager2_crs_daily_flux_*.csv"
 canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/"
 mirror_urls = [
   "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
@@ -2502,7 +2566,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_crs.py --spacecraft 2 --years 1979-1979 --product jupiter_encounter --source pds_ppi --skip-existing"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 2 CRS Daily Flux' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = ""
@@ -2527,7 +2591,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "python3 bin/fetch_voyager.py --spacecraft v2 --start 1979 --end 1979 --source amda"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 2 Merged Hourly' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "This is a local translation of AMDA HAPI cruise plasma, magnetic-field, and ephemeris feeds into the repo's SPDF-style merged-hourly ASCII layout. AMDA `vo*_sol_lon` and `vo*_sol_lat` metadata currently advertise `rad` units, but sampled values align with degree-scale outputs; the translation preserves the raw numeric values and the manifest records the source datasets."
