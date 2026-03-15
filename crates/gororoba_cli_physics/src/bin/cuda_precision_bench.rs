@@ -16,8 +16,12 @@ use std::io::Write as _;
 const PEAK_BW_GBS: f64 = 504.0;
 
 // D3Q19 bandwidth model: ping-pong scalars per cell per step.
-// 19f_read + 19f_write + rho + tau + 3u + 3force = 46 scalars
-const D3Q19_SCALARS_PER_CELL: usize = 46;
+// Non-padded (FP32/BF16/FP64/DD/sparse): 19f_read + 19f_write + 8 macro = 46 scalars.
+// Padded AoS (FP16/FP8/INT8): 20f_read + 20f_write + 8 macro = 48 scalars.
+// Macroscopic fields (rho/u/tau/force = 8 scalars) are always FP32;
+// treating them as elem_bytes here is an approximation consistent across all tiers.
+const D3Q19_SCALARS_NON_PADDED: usize = 46;
+const D3Q19_SCALARS_PADDED: usize = 48;
 
 // ============================================================================
 // CLI
@@ -117,15 +121,18 @@ fn mlups(n_cells: usize, steps: usize, elapsed_ms: f64) -> f64 {
     n_cells as f64 * steps as f64 / elapsed_ms / 1e3
 }
 
-fn bandwidth_gbs(n_cells: usize, steps: usize, elapsed_ms: f64, elem_bytes: usize) -> f64 {
-    let bytes = D3Q19_SCALARS_PER_CELL as f64 * n_cells as f64 * steps as f64
-        * elem_bytes as f64;
+/// Effective bandwidth model for D3Q19 LBM.
+/// `dist_stride`: actual per-cell distribution count (19 for non-padded, 20 for AoS-padded).
+fn bandwidth_gbs(n_cells: usize, steps: usize, elapsed_ms: f64, elem_bytes: usize, dist_stride: usize) -> f64 {
+    let scalars = if dist_stride == 20 { D3Q19_SCALARS_PADDED } else { D3Q19_SCALARS_NON_PADDED };
+    let bytes = scalars as f64 * n_cells as f64 * steps as f64 * elem_bytes as f64;
     bytes / (elapsed_ms * 1e-3) / 1e9
 }
 
 /// Ping-pong distribution buffer footprint in MiB.
-fn vram_ping_pong_mb(n_cells: usize, elem_bytes: usize) -> usize {
-    n_cells * 19 * elem_bytes * 2 / (1024 * 1024)
+/// `dist_stride`: 19 for non-padded layouts, 20 for AoS-padded (FP16/FP8/INT8).
+fn vram_ping_pong_mb(n_cells: usize, elem_bytes: usize, dist_stride: usize) -> usize {
+    n_cells * dist_stride * elem_bytes * 2 / (1024 * 1024)
 }
 
 // ============================================================================
@@ -418,9 +425,9 @@ mod gpu {
                 }
                 let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
                 let ml = mlups(n_cells, n_steps, elapsed_ms);
-                let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+                let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
                 let bw_pct = bw / PEAK_BW_GBS * 100.0;
-                let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes);
+                let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes, 19);
                 eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
                 rows.push(BenchRow {
                     workload: "lbm_sweep",
@@ -457,9 +464,9 @@ mod gpu {
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
-            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
-            let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes);
+            let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes, 19);
             eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
             rows.push(BenchRow {
                 workload: "lbm_sweep",
@@ -495,9 +502,9 @@ mod gpu {
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
-            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
-            let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes);
+            let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes, 19);
             eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
             rows.push(BenchRow {
                 workload: "lbm_sweep",
@@ -545,7 +552,7 @@ mod gpu {
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
-            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 20);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
             let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
             eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
@@ -562,7 +569,7 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "FP16 AoS; half2 paired loads (9x half2 + 1 scalar); FP32 compute; 2 bytes/dist".to_string(),
+                notes: "FP16 AoS stride=20 (padded); 10x half2 vectorized loads; FP32 compute; 2 bytes/dist; 160 MB VRAM at 128^3".to_string(),
             });
         }
         Ok(rows)
@@ -594,7 +601,7 @@ mod gpu {
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
-            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 20);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
             let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
             eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
@@ -611,7 +618,7 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "FP8 e4m3 AoS; uchar4 vectorized loads; FP32 compute; SM 8.9+ only; 1 byte/dist".to_string(),
+                notes: "FP8 e4m3 AoS stride=20 (padded); 5x uchar4 vectorized loads; FP32 compute; SM 8.9+ only; 1 byte/dist; 80 MB VRAM at 128^3".to_string(),
             });
         }
         Ok(rows)
@@ -643,7 +650,7 @@ mod gpu {
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
-            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 20);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
             let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
             eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
@@ -660,7 +667,7 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "INT8 fixed-point AoS; DIST_SCALE=64; __dp4a momentum; FP32 BGK; 1 byte/dist".to_string(),
+                notes: "INT8 fixed-point AoS stride=20 (padded); DIST_SCALE=64; 5x __dp4a momentum groups; FP32 BGK; 1 byte/dist; 80 MB VRAM at 128^3".to_string(),
             });
         }
         Ok(rows)
@@ -698,9 +705,9 @@ mod gpu {
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
-            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
-            // DD uses 4 buffers, each n_cells*19*8 bytes.
+            // DD uses 4 i-major SoA buffers (hi_a, lo_a, hi_b, lo_b), each 19*n_cells*8 bytes.
             let vram_mb = solver.vram_dist_bytes() / (1024 * 1024);
             eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
             rows.push(BenchRow {
@@ -716,7 +723,7 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "Double-double FP128 emulation; Knuth 2-sum + Veltkamp/Dekker FMA; 4 bufs; 16 bytes/dist".to_string(),
+                notes: "Double-double FP128 emulation; Knuth 2-sum + Veltkamp/Dekker FMA; i-major SoA (coalesced); 4 bufs; 16 bytes/dist".to_string(),
             });
         }
         Ok(rows)

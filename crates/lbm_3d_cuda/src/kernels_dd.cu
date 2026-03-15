@@ -1,7 +1,10 @@
 // Double-Double (FP128 emulation) D3Q19 LBM kernel.
 // Storage: two double per distribution value (hi + lo), ~106-bit mantissa.
-// Layout: SoA-within-DD -- f_hi[n_cells * 19] followed by f_lo[n_cells * 19].
-//   This gives coalesced access: all threads read consecutive f_hi values, then lo.
+// Layout: i-major SoA -- f_hi[19 * n_cells], f_lo[19 * n_cells].
+//   Index: f_hi[i * n_cells + idx].  Within distribution lane i, threads
+//   (idx, idx+1, ..., idx+31) access consecutive doubles -- fully coalesced.
+//   Scatter writes f_hi_out[i * n_cells + idx_next] are coalesced for
+//   interior cells (adjacent threads stream to adjacent x-neighbors).
 // Compute: full double-double arithmetic (Knuth 2-sum, Veltkamp/Dekker FMA).
 // Element size: 16 bytes/distribution (2 * double).
 // WHY: Validates whether FP64 accumulation artifacts in long simulations are
@@ -171,12 +174,13 @@ __device__ void compute_equilibrium_dd(
 // DD LBM step kernel
 // ============================================================================
 
-// Buffer layout: f_hi[n_cells * 19] immediately followed by f_lo[n_cells * 19].
-// This is SoA-within-DD: all hi values first, all lo values second.
-// Coalescing: threads in a warp access consecutive idx values:
-//   hi load: f_hi_in[idx*19 + i], f_hi_in[(idx+1)*19 + i], ...  -- NOT coalesced.
-// True coalescing would require SoA (i-major), but AoS is simpler here.
-// The benchmark measures the DD overhead vs FP64, not optimal memory layout.
+// Buffer layout: f_hi[19 * n_cells] + f_lo[19 * n_cells].
+// i-major SoA: distribution lane i occupies f_hi[i*n_cells .. (i+1)*n_cells].
+// Coalescing: threads in a warp cover idx..idx+31 for fixed i:
+//   f_hi_in[i*n_cells + idx], f_hi_in[i*n_cells + idx+1], ... -- fully coalesced.
+// Scatter writes f_hi_out[i*n_cells + idx_next] are coalesced for
+// x-direction streaming (idx_next = idx+1 for i=1), and nearly coalesced
+// for diagonal directions (idx_next differs by nx or nx*ny).
 extern "C" __global__ void lbm_step_fused_dd_kernel(
     const double* f_hi_in,    // n_cells * 19 doubles (hi part of distributions)
     const double* f_lo_in,    // n_cells * 19 doubles (lo part)
@@ -196,12 +200,14 @@ extern "C" __global__ void lbm_step_fused_dd_kernel(
     int y = (idx / nx) % ny;
     int z = idx / (nx * ny);
 
-    // Load 19 distribution pairs
+    // Load 19 distribution pairs -- i-major SoA: lane i starts at i*n_cells.
+    // Thread idx reads f_hi_in[i*n_cells + idx]; adjacent threads in a warp
+    // read consecutive doubles (coalesced 256-byte transactions).
     double f_hi_local[19], f_lo_local[19];
     #pragma unroll
     for (int i = 0; i < 19; i++) {
-        f_hi_local[i] = f_hi_in[(long long)idx * 19 + i];
-        f_lo_local[i] = f_lo_in[(long long)idx * 19 + i];
+        f_hi_local[i] = f_hi_in[(long long)i * n_cells + idx];
+        f_lo_local[i] = f_lo_in[(long long)i * n_cells + idx];
     }
 
     // Density: DD sum over 19 distributions
@@ -280,13 +286,15 @@ extern "C" __global__ void lbm_step_fused_dd_kernel(
                    + (eix*ux_hi + eiy*uy_hi + eiz*uz_hi) * (eix*fx + eiy*fy + eiz*fz) * 9.0;
         fi_hi = fi_hi + prefactor_hi * D3Q19_WD_DD[i] * s_i;
 
-        // Streaming
+        // Streaming -- i-major SoA scatter write.
+        // f_hi_out[i*n_cells + idx_next]: coalesced when idx_next = idx +/- 1
+        // (x-direction), nearly coalesced for y/z/diagonal directions.
         int x_next = (x + D3Q19_CX_DD[i] + nx) % nx;
         int y_next = (y + D3Q19_CY_DD[i] + ny) % ny;
         int z_next = (z + D3Q19_CZ_DD[i] + nz) % nz;
         long long idx_next = (long long)x_next + nx * ((long long)y_next + ny * z_next);
-        f_hi_out[idx_next * 19 + i] = fi_hi;
-        f_lo_out[idx_next * 19 + i] = fi_lo;
+        f_hi_out[(long long)i * n_cells + idx_next] = fi_hi;
+        f_lo_out[(long long)i * n_cells + idx_next] = fi_lo;
     }
 }
 
@@ -327,7 +335,7 @@ extern "C" __global__ void initialize_uniform_dd_kernel(
                   + (double)D3Q19_CZ_DD[i]*uz;
         double w_rho = D3Q19_WD_DD[i] * rho;
         double f_eq = w_rho * fma(fma(eu, 4.5, 3.0), eu, base);
-        f_hi[idx * 19 + i] = f_eq;
-        f_lo[idx * 19 + i] = 0.0; // lo part starts at zero (exact representation)
+        f_hi[(long long)i * n_cells + idx] = f_eq;
+        f_lo[(long long)i * n_cells + idx] = 0.0; // lo part starts at zero (exact representation)
     }
 }

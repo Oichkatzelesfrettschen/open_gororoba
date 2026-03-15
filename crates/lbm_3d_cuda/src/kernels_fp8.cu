@@ -1,5 +1,5 @@
 // FP8 e4m3 D3Q19 LBM kernel.
-// Storage: __nv_fp8_e4m3 (1 byte/value, AoS).
+// Storage: __nv_fp8_e4m3 (1 byte/value, AoS, stride 20 per cell).
 // Compute: FP32 promoted immediately after load (storage-compute split).
 // Requires: CUDA 11.8+, SM 8.9 (Ada Lovelace / RTX 4xxx).
 // Bandwidth: 4x reduction vs FP32 (1 byte vs 4 bytes per distribution scalar).
@@ -7,8 +7,11 @@
 //   are O(0.01..0.33), well within e4m3 range (max ~448). However, the
 //   limited precision causes ~1% rounding error per step, limiting to
 //   short-time dynamics and qualitative flow features only.
-// YSU trick: char4/uchar4 vectorized loads (4 fp8 values = 4 bytes in one
-//   32-bit transaction), giving 5 loads for 19 distributions instead of 19.
+// YSU trick: uchar4 vectorized loads (4 fp8 values = 4 bytes in one 32-bit
+//   transaction). Stride 20 bytes per cell ensures 4-byte alignment for all idx
+//   (20 is divisible by 4); 5 uchar4 loads cover all 20 slots, indices 0-18
+//   are active, index 19 is unused padding.
+// VRAM at 128^3: 20 * 2,097,152 * 1 * 2 (ping+pong) = ~80 MB.
 
 #include <cuda_fp8.h>
 
@@ -57,17 +60,16 @@ __device__ __forceinline__ float fp8_e4m3_to_float(__nv_fp8_storage_t v) {
     return __half2float(__nv_cvt_fp8_to_halfraw(v, __NV_E4M3));
 }
 
-// Helper: float to __nv_fp8_e4m3 byte (saturate finite, clamp NaN to 0).
+// Helper: float to __nv_fp8_e4m3 byte (saturate finite, clamp NaN/Inf to 0).
 __device__ __forceinline__ __nv_fp8_storage_t float_to_fp8_e4m3(float v) {
     if (!finite_f32_fp8(v)) v = 0.0f;
     return __nv_cvt_float_to_fp8(v, __NV_SATFINITE, __NV_E4M3);
 }
 
 // Fused collision + streaming, FP8 storage, FP32 compute.
-// YSU uchar4 trick: 4-byte aligned load of 4 fp8 values in one 32-bit transaction.
-//   19 values = 4 uchar4 loads (16 values) + 1 load of remaining 3 scalars.
+// Per-cell stride: 20 bytes. 5 uchar4 loads cover all 20 bytes; index 19 is padding.
 extern "C" __global__ void lbm_step_fused_fp8_kernel(
-    const __nv_fp8_storage_t* f_in,   // n_cells * 19 fp8 bytes
+    const __nv_fp8_storage_t* f_in,   // n_cells * 20 fp8 bytes (stride 20, index 19 unused)
     __nv_fp8_storage_t* f_out,
     float* rho_out,
     float* u_out,
@@ -83,22 +85,20 @@ extern "C" __global__ void lbm_step_fused_fp8_kernel(
     int y = (idx / nx) % ny;
     int z = idx / (nx * ny);
 
-    const __nv_fp8_storage_t* f_base = f_in + (long long)idx * 19;
+    // Stride 20: f_base is at idx*20 bytes, always 4-byte aligned (20 % 4 == 0).
+    const __nv_fp8_storage_t* f_base = f_in + (long long)idx * 20;
     float f_local[19];
 
-    // Load 16 values as 4 uchar4 (4 bytes each = 16 total), then 3 scalars.
+    // 5 uchar4 loads = 20 bytes; indices 0-18 are active, index 19 is padding (ignored).
     #pragma unroll
-    for (int j = 0; j < 4; j++) {
+    for (int j = 0; j < 5; j++) {
         uchar4 q = __ldg((const uchar4*)(f_base + j * 4));
-        f_local[j*4 + 0] = fp8_e4m3_to_float(q.x);
-        f_local[j*4 + 1] = fp8_e4m3_to_float(q.y);
-        f_local[j*4 + 2] = fp8_e4m3_to_float(q.z);
-        f_local[j*4 + 3] = fp8_e4m3_to_float(q.w);
+        int base_i = j * 4;
+        if (base_i + 0 < 19) f_local[base_i + 0] = fp8_e4m3_to_float(q.x);
+        if (base_i + 1 < 19) f_local[base_i + 1] = fp8_e4m3_to_float(q.y);
+        if (base_i + 2 < 19) f_local[base_i + 2] = fp8_e4m3_to_float(q.z);
+        if (base_i + 3 < 19) f_local[base_i + 3] = fp8_e4m3_to_float(q.w);
     }
-    // Remaining 3 values: index 16, 17, 18
-    f_local[16] = fp8_e4m3_to_float(__ldg(f_base + 16));
-    f_local[17] = fp8_e4m3_to_float(__ldg(f_base + 17));
-    f_local[18] = fp8_e4m3_to_float(__ldg(f_base + 18));
 
     // Macroscopic
     float rho_local = 0.0f;
@@ -148,12 +148,12 @@ extern "C" __global__ void lbm_step_fused_fp8_kernel(
                   + (eix*ux + eiy*uy + eiz*uz) * (eix*fx + eiy*fy + eiz*fz) * 9.0f;
         fi += prefactor * D3Q19_WF_F8[i] * s_i;
 
-        // Streaming
+        // Streaming (stride 20)
         int x_next = (x + D3Q19_CX_F8[i] + nx) % nx;
         int y_next = (y + D3Q19_CY_F8[i] + ny) % ny;
         int z_next = (z + D3Q19_CZ_F8[i] + nz) % nz;
         long long idx_next = (long long)x_next + nx * ((long long)y_next + ny * z_next);
-        f_out[idx_next * 19 + i] = float_to_fp8_e4m3(fi);
+        f_out[idx_next * 20 + i] = float_to_fp8_e4m3(fi);
     }
 }
 
@@ -185,6 +185,8 @@ extern "C" __global__ void initialize_uniform_fp8_kernel(
 
     #pragma unroll
     for (int i = 0; i < 19; i++) {
-        f[idx * 19 + i] = float_to_fp8_e4m3(f_eq[i]);
+        f[idx * 20 + i] = float_to_fp8_e4m3(f_eq[i]);
     }
+    // Padding slot: write zero so reads of slot 19 are well-defined.
+    f[idx * 20 + 19] = 0;
 }
