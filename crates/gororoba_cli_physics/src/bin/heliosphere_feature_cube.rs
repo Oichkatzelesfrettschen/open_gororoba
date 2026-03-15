@@ -1,0 +1,781 @@
+use anyhow::{Context, Result, bail};
+use chrono::{NaiveDate, Utc};
+use clap::Parser;
+use csv::WriterBuilder;
+use data_core::{
+    HeliosphereFeatureCube, HeliosphereFeatureCubeManifest, HeliosphereFeatureRow,
+    catalogs::{
+        ace_mag::{ace_mag_to_omni, parse_ace_mag_hapi_file},
+        ibex::{parse_ibex_ena_file, parse_ibex_orbit_file},
+        juno::{juno_to_omni, parse_juno_cruise_file},
+        new_horizons::{nh_swap_to_omni, parse_nh_swap_file},
+        omni::{OmniRecord, parse_omni_file},
+        psp::{parse_psp_file, psp_to_omni},
+        psp_fields::parse_psp_fields_file,
+        soho_celias::{parse_soho_celias_bundle_file, soho_to_hourly_omni},
+        solar_orbiter::{parse_solar_orbiter_file, solar_orbiter_to_omni},
+        solar_orbiter_swa::parse_solar_orbiter_swa_file,
+        solar_wind::parse_swepam_file,
+        stereo_plastic::{
+            average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
+            stereo_to_omni,
+        },
+        voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni},
+        voyager_crs_flux::{VoyagerCrsFluxRecord, parse_voyager_crs_flux_csv},
+        voyager_pws::parse_voyager_pws_file,
+        wind_swe::{merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file},
+    },
+};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::{Path, PathBuf},
+};
+use walkdir::WalkDir;
+
+#[derive(Parser, Debug)]
+#[command(
+    name = "heliosphere-feature-cube",
+    about = "Build normalized heliosphere feature cubes from real mission data"
+)]
+struct Cli {
+    #[arg(long, default_value = ".")]
+    repo_root: PathBuf,
+
+    #[arg(long, default_value = "fleet2016")]
+    window: String,
+
+    #[arg(long)]
+    out_csv: Option<PathBuf>,
+
+    #[arg(long)]
+    out_manifest: Option<PathBuf>,
+}
+
+fn main() -> Result<()> {
+    let cli = Cli::parse();
+    let window = cli.window.trim().to_ascii_lowercase();
+    let date = Utc::now().date_naive();
+    let out_csv = cli.out_csv.unwrap_or_else(|| {
+        PathBuf::from("reports").join(format!("heliosphere_feature_cube_{window}_{date}.csv"))
+    });
+    let out_manifest = cli.out_manifest.unwrap_or_else(|| {
+        PathBuf::from("reports").join(format!("heliosphere_feature_cube_{window}_{date}.toml"))
+    });
+
+    let cube = build_cube(&cli.repo_root, &window)?;
+    if let Some(parent) = out_csv.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = out_manifest.parent() {
+        fs::create_dir_all(parent)?;
+    }
+
+    let mut writer = WriterBuilder::new()
+        .has_headers(true)
+        .from_path(&out_csv)
+        .with_context(|| format!("create {}", out_csv.display()))?;
+    for row in &cube.rows {
+        writer.serialize(row)?;
+    }
+    writer.flush()?;
+
+    fs::write(&out_manifest, toml::to_string_pretty(&cube.manifest)?)
+        .with_context(|| format!("write {}", out_manifest.display()))?;
+
+    println!("window = {}", cube.manifest.window_name);
+    println!("rows = {}", cube.manifest.row_count);
+    println!("missions = {}", cube.manifest.missions.join(", "));
+    println!("products = {}", cube.manifest.products.join(", "));
+    println!("csv = {}", out_csv.display());
+    println!("manifest = {}", out_manifest.display());
+    Ok(())
+}
+
+fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> {
+    let mut rows = Vec::new();
+    let mut sources = Vec::new();
+    let mut notes = Vec::new();
+    match window {
+        "fleet2016" => build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "modern2020" => build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "boundary2009" => build_boundary2009(repo_root, &mut rows, &mut sources, &mut notes)?,
+        other => bail!("unsupported window {other}; expected fleet2016, modern2020, or boundary2009"),
+    }
+
+    rows.sort_by_key(|row| {
+        (
+            row.year,
+            row.doy,
+            row.hour,
+            row.mission.clone(),
+            row.product.clone(),
+        )
+    });
+
+    let missions = collect_sorted(rows.iter().map(|row| row.mission.clone()));
+    let products = collect_sorted(
+        rows.iter()
+            .map(|row| format!("{}:{}", row.mission, row.product)),
+    );
+    let temporal_start_utc = rows.first().and_then(|row| timestamp_utc(row.year, row.doy, row.hour));
+    let temporal_end_utc = rows.last().and_then(|row| timestamp_utc(row.year, row.doy, row.hour));
+
+    Ok(HeliosphereFeatureCube {
+        manifest: HeliosphereFeatureCubeManifest {
+            window_name: window.to_string(),
+            generated_at_utc: Utc::now().to_rfc3339(),
+            temporal_start_utc,
+            temporal_end_utc,
+            row_count: rows.len(),
+            missions,
+            products,
+            channel_names: data_core::HELIOSPHERE_CHANNEL_NAMES
+                .iter()
+                .map(|value| (*value).to_string())
+                .collect(),
+            source_paths: collect_sorted(sources),
+            notes,
+        },
+        rows,
+    })
+}
+
+fn build_fleet2016(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let omni_path = repo_root.join("data/external/omni2/omni2_2016_amda_hourly.csv");
+    let omni = parse_omni_file(&omni_path)?;
+    sources.push(rel(repo_root, &omni_path));
+    push_omni_rows(rows, "fleet2016", "OMNI", "Hourly merged", &omni);
+
+    let ace_mag_path = repo_root.join("data/external/ace_mag/ac_h2_mfi_2016.csv");
+    if ace_mag_path.exists() {
+        let ace_mag = parse_ace_mag_hapi_file(&ace_mag_path)?;
+        sources.push(rel(repo_root, &ace_mag_path));
+        push_omni_rows(
+            rows,
+            "fleet2016",
+            "ACE",
+            "MAG hourly",
+            &ace_mag_to_omni(&ace_mag),
+        );
+    }
+
+    let ace_swe_path = repo_root.join("data/external/ace_swepam/ac_h2_swe_2016.csv");
+    if ace_swe_path.exists() {
+        let ace_swe = parse_swepam_file(&ace_swe_path)?;
+        sources.push(rel(repo_root, &ace_swe_path));
+        for record in ace_swe {
+            rows.push(HeliosphereFeatureRow {
+                window_name: "fleet2016".to_string(),
+                mission: "ACE".to_string(),
+                product: "SWEPAM hourly".to_string(),
+                year: record.decimal_year.floor() as u16,
+                doy: record.doy,
+                hour: record.hour,
+                r_au: 1.0,
+                lat_deg: f64::NAN,
+                lon_deg: f64::NAN,
+                density_cm3: record.proton_density,
+                speed_kms: record.bulk_speed,
+                temperature_k: record.ion_temperature,
+                bx: f64::NAN,
+                by: f64::NAN,
+                bz: f64::NAN,
+                b_mag: f64::NAN,
+                crs_flux: f64::NAN,
+                spectral_mean: f64::NAN,
+                spectral_peak: f64::NAN,
+                map_flux_mean: f64::NAN,
+                map_flux_std: f64::NAN,
+            });
+        }
+    }
+
+    let wind_swe_path = repo_root.join("data/external/wind_swe/wind_kp_unspike2016.txt");
+    let wind_mfi_paths = collect_matching_files(&repo_root.join("data/external/wind_mfi"), |path| {
+        file_name_ends_with(path, "_wind_mag_1hour.asc")
+    });
+    if wind_swe_path.exists() && !wind_mfi_paths.is_empty() {
+        let swe = parse_wind_swe_file(&wind_swe_path)?;
+        let mut mfi = Vec::new();
+        for path in &wind_mfi_paths {
+            mfi.extend(parse_wind_mfi_file(path)?);
+            sources.push(rel(repo_root, path));
+        }
+        sources.push(rel(repo_root, &wind_swe_path));
+        push_omni_rows(
+            rows,
+            "fleet2016",
+            "WIND",
+            "SWE+MFI merged",
+            &merge_wind_swe_mfi(&swe, &mfi),
+        );
+    }
+
+    let stereo_plastic_path =
+        repo_root.join("data/external/stereo_plastic/sta_l2_pla_1dmax_1hr_2016.csv");
+    let stereo_mag_path =
+        repo_root.join("data/external/stereo_impact/sta_coho1hr_merged_mag_plasma_2016.csv");
+    if stereo_plastic_path.exists() && stereo_mag_path.exists() {
+        let plastic = parse_stereo_plastic_file(&stereo_plastic_path)?;
+        let mag = average_stereo_mag_hourly(&parse_stereo_magplasma_file(&stereo_mag_path)?);
+        sources.push(rel(repo_root, &stereo_plastic_path));
+        sources.push(rel(repo_root, &stereo_mag_path));
+        push_omni_rows(
+            rows,
+            "fleet2016",
+            "STEREO-A",
+            "PLASTIC+MAG merged",
+            &stereo_to_omni(&plastic, &mag, 0.0),
+        );
+    }
+
+    let v1_path = repo_root.join("data/external/voyager1/vy1_2016.asc");
+    let v2_path = repo_root.join("data/external/voyager2/vy2_2016.asc");
+    let v1_omni = if v1_path.exists() {
+        let merged = parse_voyager_file(&v1_path, VoyagerSpacecraft::V1)?;
+        sources.push(rel(repo_root, &v1_path));
+        let omni_rows = voyager_to_omni(&merged);
+        push_omni_rows(rows, "fleet2016", "Voyager 1", "Merged support", &omni_rows);
+        Some(omni_rows)
+    } else {
+        None
+    };
+    let v2_omni = if v2_path.exists() {
+        let merged = parse_voyager_file(&v2_path, VoyagerSpacecraft::V2)?;
+        sources.push(rel(repo_root, &v2_path));
+        let omni_rows = voyager_to_omni(&merged);
+        push_omni_rows(rows, "fleet2016", "Voyager 2", "Merged support", &omni_rows);
+        Some(omni_rows)
+    } else {
+        None
+    };
+
+    let v1_support = v1_omni
+        .as_deref()
+        .map(build_support_index)
+        .unwrap_or_default();
+    let v2_support = v2_omni
+        .as_deref()
+        .map(build_support_index)
+        .unwrap_or_default();
+
+    let v1_crs_path =
+        repo_root.join("data/external/voyager_crs/voyager1_crs_daily_flux_2016_2016.csv");
+    if v1_crs_path.exists() {
+        let crs_text = fs::read_to_string(&v1_crs_path)
+            .with_context(|| format!("read {}", v1_crs_path.display()))?;
+        let (records, _skipped) = parse_voyager_crs_flux_csv(&crs_text, 1);
+        sources.push(rel(repo_root, &v1_crs_path));
+        push_crs_rows(rows, "fleet2016", "Voyager 1", &records);
+    }
+    let v2_crs_path =
+        repo_root.join("data/external/voyager_crs/voyager2_crs_daily_flux_2016_2016.csv");
+    if v2_crs_path.exists() {
+        let crs_text = fs::read_to_string(&v2_crs_path)
+            .with_context(|| format!("read {}", v2_crs_path.display()))?;
+        let (records, _skipped) = parse_voyager_crs_flux_csv(&crs_text, 2);
+        sources.push(rel(repo_root, &v2_crs_path));
+        push_crs_rows(rows, "fleet2016", "Voyager 2", &records);
+    }
+
+    let v1_pws_path = repo_root.join("data/external/voyager/pws/v1/v1_pws_lr_2016.csv");
+    if v1_pws_path.exists() {
+        let records = parse_voyager_pws_file(&v1_pws_path)?;
+        sources.push(rel(repo_root, &v1_pws_path));
+        push_pws_rows(rows, "fleet2016", "Voyager 1", &records, &v1_support);
+    } else {
+        notes.push("Voyager 1 PWS file missing; run fetch-datasets for 'Voyager PWS Low Rate' to populate it.".to_string());
+    }
+    let v2_pws_path = repo_root.join("data/external/voyager/pws/v2/v2_pws_lr_2016.csv");
+    if v2_pws_path.exists() {
+        let records = parse_voyager_pws_file(&v2_pws_path)?;
+        sources.push(rel(repo_root, &v2_pws_path));
+        push_pws_rows(rows, "fleet2016", "Voyager 2", &records, &v2_support);
+    } else {
+        notes.push("Voyager 2 PWS file missing; run fetch-datasets for 'Voyager PWS Low Rate' to populate it.".to_string());
+    }
+
+    let juno_path = repo_root.join("data/external/juno/juno_helio1hr_position_2016.csv");
+    if juno_path.exists() {
+        let records = parse_juno_cruise_file(&juno_path)?;
+        sources.push(rel(repo_root, &juno_path));
+        push_omni_rows(
+            rows,
+            "fleet2016",
+            "Juno",
+            "Cruise support",
+            &juno_to_omni(&records),
+        );
+    }
+
+    let nh_path =
+        repo_root.join("data/external/new_horizons/new_horizons_helio1hr_position_2016.csv");
+    if nh_path.exists() {
+        let records = parse_nh_swap_file(&nh_path)?;
+        sources.push(rel(repo_root, &nh_path));
+        push_omni_rows(
+            rows,
+            "fleet2016",
+            "New Horizons",
+            "SWAP+support",
+            &nh_swap_to_omni(&records),
+        );
+    }
+
+    let ibex_orbit_path = repo_root.join("data/external/ibex/orbits/ibex_or_ssc_2016.csv");
+    if ibex_orbit_path.exists() {
+        let records = parse_ibex_orbit_file(&ibex_orbit_path)?;
+        sources.push(rel(repo_root, &ibex_orbit_path));
+        for record in records {
+            rows.push(HeliosphereFeatureRow {
+                window_name: "fleet2016".to_string(),
+                mission: "IBEX".to_string(),
+                product: "Orbit support".to_string(),
+                year: record.year,
+                doy: record.doy,
+                hour: record.hour,
+                r_au: record.radius_re / 23_454.8,
+                lat_deg: f64::NAN,
+                lon_deg: f64::NAN,
+                density_cm3: f64::NAN,
+                speed_kms: f64::NAN,
+                temperature_k: f64::NAN,
+                bx: f64::NAN,
+                by: f64::NAN,
+                bz: f64::NAN,
+                b_mag: f64::NAN,
+                crs_flux: f64::NAN,
+                spectral_mean: f64::NAN,
+                spectral_peak: f64::NAN,
+                map_flux_mean: f64::NAN,
+                map_flux_std: f64::NAN,
+            });
+        }
+    }
+
+    Ok(())
+}
+
+fn build_modern2020(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let omni_path = repo_root.join("data/external/omni2/omni2_2020_amda_hourly.csv");
+    if omni_path.exists() {
+        let omni = parse_omni_file(&omni_path)?;
+        sources.push(rel(repo_root, &omni_path));
+        push_omni_rows(rows, "modern2020", "OMNI", "Hourly merged", &omni);
+    }
+
+    let soho_bundle_path =
+        repo_root.join("data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz");
+    if soho_bundle_path.exists() {
+        let soho = parse_soho_celias_bundle_file(&soho_bundle_path)?;
+        sources.push(rel(repo_root, &soho_bundle_path));
+        let hourly = soho_to_hourly_omni(
+            &soho.into_iter()
+                .filter(|row| row.year == 2020)
+                .collect::<Vec<_>>(),
+        );
+        push_omni_rows(rows, "modern2020", "SOHO", "CELIAS bundle hourly", &hourly);
+    }
+
+    let psp_path = repo_root.join("data/external/psp/psp_coho1hr_merged_mag_plasma_2020.csv");
+    let psp_omni = if psp_path.exists() {
+        let merged = parse_psp_file(&psp_path)?;
+        sources.push(rel(repo_root, &psp_path));
+        let omni_rows = psp_to_omni(&merged);
+        push_omni_rows(rows, "modern2020", "Parker Solar Probe", "Merged hourly", &omni_rows);
+        Some(omni_rows)
+    } else {
+        None
+    };
+
+    let psp_support = psp_omni
+        .as_deref()
+        .map(build_support_index)
+        .unwrap_or_default();
+    let psp_fields_paths =
+        collect_matching_files(&repo_root.join("data/external/psp/berkeley_fields"), |path| {
+            file_name_starts_with(path, "psp_fld_l2_mag_rtn_2020_")
+        });
+    if !psp_fields_paths.is_empty() {
+        for path in &psp_fields_paths {
+            let records = parse_psp_fields_file(path)?;
+            sources.push(rel(repo_root, path));
+            for record in records {
+                let support = psp_support.get(&(record.year, record.doy, record.hour));
+                rows.push(HeliosphereFeatureRow {
+                    window_name: "modern2020".to_string(),
+                    mission: "Parker Solar Probe".to_string(),
+                    product: "FIELDS MAG RTN".to_string(),
+                    year: record.year,
+                    doy: record.doy,
+                    hour: record.hour,
+                    r_au: support.map(|value| value.0).unwrap_or(f64::NAN),
+                    lat_deg: support.map(|value| value.1).unwrap_or(f64::NAN),
+                    lon_deg: support.map(|value| value.2).unwrap_or(f64::NAN),
+                    density_cm3: f64::NAN,
+                    speed_kms: f64::NAN,
+                    temperature_k: f64::NAN,
+                    bx: record.br,
+                    by: record.bt,
+                    bz: record.bn,
+                    b_mag: record.b_magnitude,
+                    crs_flux: f64::NAN,
+                    spectral_mean: f64::NAN,
+                    spectral_peak: f64::NAN,
+                    map_flux_mean: f64::NAN,
+                    map_flux_std: f64::NAN,
+                });
+            }
+        }
+    } else {
+        notes.push("PSP FIELDS files missing; run fetch-datasets for 'Parker Solar Probe FIELDS MAG RTN' to populate them.".to_string());
+    }
+
+    let solo_path =
+        repo_root.join("data/external/solar_orbiter/solo_coho1hr_merged_mag_plasma_2020.csv");
+    let solo_omni = if solo_path.exists() {
+        let merged = parse_solar_orbiter_file(&solo_path)?;
+        sources.push(rel(repo_root, &solo_path));
+        let omni_rows = solar_orbiter_to_omni(&merged);
+        push_omni_rows(rows, "modern2020", "Solar Orbiter", "Merged hourly", &omni_rows);
+        Some(omni_rows)
+    } else {
+        None
+    };
+    let solo_support = solo_omni
+        .as_deref()
+        .map(build_support_index)
+        .unwrap_or_default();
+    let solo_swa_path =
+        repo_root.join("data/external/solo/soar_swa_pas/solo_l2_swa_pas_grnd_mom_2020.csv");
+    if solo_swa_path.exists() {
+        let records = parse_solar_orbiter_swa_file(&solo_swa_path)?;
+        sources.push(rel(repo_root, &solo_swa_path));
+        for record in records {
+            let support = solo_support.get(&(record.year, record.doy, record.hour));
+            rows.push(HeliosphereFeatureRow {
+                window_name: "modern2020".to_string(),
+                mission: "Solar Orbiter".to_string(),
+                product: "SWA-PAS ground moments".to_string(),
+                year: record.year,
+                doy: record.doy,
+                hour: record.hour,
+                r_au: support.map(|value| value.0).unwrap_or(f64::NAN),
+                lat_deg: support.map(|value| value.1).unwrap_or(f64::NAN),
+                lon_deg: support.map(|value| value.2).unwrap_or(f64::NAN),
+                density_cm3: record.proton_density,
+                speed_kms: record.bulk_speed,
+                temperature_k: record.proton_temperature,
+                bx: f64::NAN,
+                by: f64::NAN,
+                bz: f64::NAN,
+                b_mag: f64::NAN,
+                crs_flux: f64::NAN,
+                spectral_mean: f64::NAN,
+                spectral_peak: f64::NAN,
+                map_flux_mean: f64::NAN,
+                map_flux_std: f64::NAN,
+            });
+        }
+    } else {
+        notes.push("Solar Orbiter SWA-PAS file missing; run fetch-datasets for 'Solar Orbiter SWA-PAS Ground Moments' to populate it.".to_string());
+    }
+
+    let bepi_path =
+        repo_root.join("data/external/bepicolombo/bepicolombo_helio1hr_position_2020.csv");
+    if bepi_path.exists() {
+        let records = data_core::catalogs::bepicolombo::parse_bepicolombo_file(&bepi_path)?;
+        sources.push(rel(repo_root, &bepi_path));
+        push_omni_rows(
+            rows,
+            "modern2020",
+            "BepiColombo",
+            "Helio1hr support",
+            &data_core::catalogs::bepicolombo::bepicolombo_to_omni(&records),
+        );
+    }
+
+    Ok(())
+}
+
+fn build_boundary2009(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let ibex_flux_path = collect_matching_files(&repo_root.join("data/external/ibex/release17"), |path| {
+        file_name_ends_with(path, "-flux.txt")
+    })
+    .into_iter()
+    .next();
+    if let Some(path) = ibex_flux_path {
+        let map = parse_ibex_ena_file(&path, 1.1, 1, 2009, "Lo")?;
+        sources.push(rel(repo_root, &path));
+        let fluxes: Vec<f64> = map
+            .pixels
+            .iter()
+            .map(|pixel| pixel.flux)
+            .filter(|value| value.is_finite())
+            .collect();
+        let mean = mean(&fluxes);
+        let std = stddev(&fluxes, mean);
+        rows.push(HeliosphereFeatureRow {
+            window_name: "boundary2009".to_string(),
+            mission: "IBEX".to_string(),
+            product: "ENA sky-map summary".to_string(),
+            year: 2009,
+            doy: 1,
+            hour: 0,
+            r_au: f64::NAN,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            density_cm3: f64::NAN,
+            speed_kms: f64::NAN,
+            temperature_k: f64::NAN,
+            bx: f64::NAN,
+            by: f64::NAN,
+            bz: f64::NAN,
+            b_mag: f64::NAN,
+            crs_flux: f64::NAN,
+            spectral_mean: f64::NAN,
+            spectral_peak: f64::NAN,
+            map_flux_mean: mean,
+            map_flux_std: std,
+        });
+    } else {
+        notes.push("IBEX release17 flux maps not found; run fetch-datasets for 'IBEX ENA Sky Maps' to populate them.".to_string());
+    }
+    Ok(())
+}
+
+fn push_omni_rows(
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    window_name: &str,
+    mission: &str,
+    product: &str,
+    records: &[OmniRecord],
+) {
+    for record in records {
+        let b_mag = if record.b_magnitude.is_finite() {
+            record.b_magnitude
+        } else if record.bx_gse.is_finite() || record.by_gse.is_finite() || record.bz_gse.is_finite() {
+            let bx = if record.bx_gse.is_finite() { record.bx_gse } else { 0.0 };
+            let by = if record.by_gse.is_finite() { record.by_gse } else { 0.0 };
+            let bz = if record.bz_gse.is_finite() { record.bz_gse } else { 0.0 };
+            (bx * bx + by * by + bz * bz).sqrt()
+        } else {
+            f64::NAN
+        };
+        rows.push(HeliosphereFeatureRow {
+            window_name: window_name.to_string(),
+            mission: mission.to_string(),
+            product: product.to_string(),
+            year: record.year,
+            doy: record.doy,
+            hour: record.hour,
+            r_au: record.r_au,
+            lat_deg: record.lat_deg,
+            lon_deg: record.lon_deg,
+            density_cm3: record.proton_density,
+            speed_kms: record.bulk_speed,
+            temperature_k: record.proton_temperature,
+            bx: record.bx_gse,
+            by: record.by_gse,
+            bz: record.bz_gse,
+            b_mag,
+            crs_flux: f64::NAN,
+            spectral_mean: f64::NAN,
+            spectral_peak: f64::NAN,
+            map_flux_mean: f64::NAN,
+            map_flux_std: f64::NAN,
+        });
+    }
+}
+
+fn push_crs_rows(
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    window_name: &str,
+    mission: &str,
+    records: &[VoyagerCrsFluxRecord],
+) {
+    for record in records {
+        let Some((year, doy, hour)) = decimal_year_to_doy_hour(record.decimal_year) else {
+            continue;
+        };
+        let flux = record
+            .proton_flux
+            .iter()
+            .copied()
+            .find(|value| value.is_finite())
+            .unwrap_or(f64::NAN);
+        rows.push(HeliosphereFeatureRow {
+            window_name: window_name.to_string(),
+            mission: mission.to_string(),
+            product: "CRS daily flux".to_string(),
+            year,
+            doy,
+            hour,
+            r_au: record.distance_au,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            density_cm3: f64::NAN,
+            speed_kms: f64::NAN,
+            temperature_k: f64::NAN,
+            bx: f64::NAN,
+            by: f64::NAN,
+            bz: f64::NAN,
+            b_mag: f64::NAN,
+            crs_flux: flux,
+            spectral_mean: f64::NAN,
+            spectral_peak: f64::NAN,
+            map_flux_mean: f64::NAN,
+            map_flux_std: f64::NAN,
+        });
+    }
+}
+
+fn push_pws_rows(
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    window_name: &str,
+    mission: &str,
+    records: &[data_core::catalogs::voyager_pws::VoyagerPwsRecord],
+    support: &BTreeMap<(u16, u16, u8), (f64, f64, f64)>,
+) {
+    for record in records {
+        let support_value = support.get(&(record.year, record.doy, record.hour));
+        rows.push(HeliosphereFeatureRow {
+            window_name: window_name.to_string(),
+            mission: mission.to_string(),
+            product: "PWS low-rate spectra".to_string(),
+            year: record.year,
+            doy: record.doy,
+            hour: record.hour,
+            r_au: support_value.map(|value| value.0).unwrap_or(f64::NAN),
+            lat_deg: support_value.map(|value| value.1).unwrap_or(f64::NAN),
+            lon_deg: support_value.map(|value| value.2).unwrap_or(f64::NAN),
+            density_cm3: f64::NAN,
+            speed_kms: f64::NAN,
+            temperature_k: f64::NAN,
+            bx: f64::NAN,
+            by: f64::NAN,
+            bz: f64::NAN,
+            b_mag: f64::NAN,
+            crs_flux: f64::NAN,
+            spectral_mean: record.spectral_mean,
+            spectral_peak: record.spectral_peak,
+            map_flux_mean: f64::NAN,
+            map_flux_std: f64::NAN,
+        });
+    }
+}
+
+fn build_support_index(records: &[OmniRecord]) -> BTreeMap<(u16, u16, u8), (f64, f64, f64)> {
+    records
+        .iter()
+        .map(|record| {
+            (
+                (record.year, record.doy, record.hour),
+                (record.r_au, record.lat_deg, record.lon_deg),
+            )
+        })
+        .collect()
+}
+
+fn collect_matching_files<F>(root: &Path, predicate: F) -> Vec<PathBuf>
+where
+    F: Fn(&Path) -> bool,
+{
+    let mut paths = Vec::new();
+    if !root.exists() {
+        return paths;
+    }
+    for entry in WalkDir::new(root).into_iter().filter_map(|entry| entry.ok()) {
+        let path = entry.path();
+        if path.is_file() && predicate(path) {
+            paths.push(path.to_path_buf());
+        }
+    }
+    paths.sort();
+    paths
+}
+
+fn file_name_ends_with(path: &Path, suffix: &str) -> bool {
+    path.file_name()
+        .and_then(|value| value.to_str())
+        .map(|value| value.ends_with(suffix))
+        .unwrap_or(false)
+}
+
+fn file_name_starts_with(path: &Path, prefix: &str) -> bool {
+    path.file_name()
+        .and_then(|value| value.to_str())
+        .map(|value| value.starts_with(prefix))
+        .unwrap_or(false)
+}
+
+fn rel(repo_root: &Path, path: &Path) -> String {
+    path.strip_prefix(repo_root)
+        .unwrap_or(path)
+        .display()
+        .to_string()
+}
+
+fn collect_sorted(values: impl IntoIterator<Item = String>) -> Vec<String> {
+    let mut set = BTreeSet::new();
+    for value in values {
+        set.insert(value);
+    }
+    set.into_iter().collect()
+}
+
+fn timestamp_utc(year: u16, doy: u16, hour: u8) -> Option<String> {
+    let date = NaiveDate::from_yo_opt(year as i32, doy as u32)?;
+    Some(format!("{}T{:02}:00:00Z", date.format("%Y-%m-%d"), hour))
+}
+
+fn decimal_year_to_doy_hour(decimal_year: f64) -> Option<(u16, u16, u8)> {
+    if !decimal_year.is_finite() {
+        return None;
+    }
+    let year = decimal_year.floor() as i32;
+    let leap = NaiveDate::from_ymd_opt(year, 2, 29).is_some();
+    let days = if leap { 366.0 } else { 365.0 };
+    let total_hours = ((decimal_year - year as f64) * days * 24.0).round() as i64;
+    let doy = total_hours.div_euclid(24) + 1;
+    let hour = total_hours.rem_euclid(24);
+    Some((year as u16, doy as u16, hour as u8))
+}
+
+fn mean(values: &[f64]) -> f64 {
+    if values.is_empty() {
+        return f64::NAN;
+    }
+    values.iter().sum::<f64>() / values.len() as f64
+}
+
+fn stddev(values: &[f64], mean: f64) -> f64 {
+    if values.len() < 2 || !mean.is_finite() {
+        return f64::NAN;
+    }
+    let var = values
+        .iter()
+        .map(|value| {
+            let delta = value - mean;
+            delta * delta
+        })
+        .sum::<f64>()
+        / values.len() as f64;
+    var.sqrt()
+}

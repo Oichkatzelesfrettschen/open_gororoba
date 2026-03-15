@@ -32,6 +32,7 @@ pub mod formats;
 pub mod geophysical;
 #[cfg(feature = "hdf5-export")]
 pub mod hdf5_export;
+pub mod heliosphere_feature_cube;
 pub mod parse;
 pub mod provenance;
 pub mod quality;
@@ -50,6 +51,11 @@ pub use download_stack::{
 };
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
+};
+pub use heliosphere_feature_cube::{
+    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_FEATURE_DIM, HeliosphereFeatureCube,
+    HeliosphereFeatureCubeManifest, HeliosphereFeatureRow, SparseMemoryPlan,
+    estimate_sparse_memory_plan,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
@@ -88,10 +94,15 @@ pub use catalogs::{
     nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum},
     pantheon::{PantheonCovProvider, Supernova, parse_pantheon_cov, parse_pantheon_dat},
     planck::bestfit as planck2018,
+    psp_fields::{PspFieldsMagRecord, PspFieldsProvider, parse_psp_fields_file},
     sdss::{SdssQuasar, parse_sdss_quasar_csv},
+    solar_orbiter_swa::{
+        SolarOrbiterSwaProvider, SolarOrbiterSwaRecord, parse_solar_orbiter_swa_file,
+    },
     sorce::{SorceMeasurement, parse_sorce_csv},
     tsi::{TsiMeasurement, parse_tsi_csv},
     union3::parse_union3_chain,
+    voyager_pws::{VoyagerPwsProvider, VoyagerPwsRecord, parse_voyager_pws_file},
     wow::{
         Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
         abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,

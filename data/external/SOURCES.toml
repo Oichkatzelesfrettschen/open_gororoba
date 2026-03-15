@@ -4,7 +4,7 @@
 # Compatibility export lane: source_contracts
 
 [external_sources]
-updated = "2026-03-14 22:21:13"
+updated = "2026-03-15T01:56:57.723130463+00:00"
 authoritative = true
 policy_version = "v1"
 
@@ -1895,13 +1895,14 @@ path_glob = "data/external/psp/berkeley_fields/**"
 canonical_url = "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/"
 mirror_urls = [
   "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN/",
+  "https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_FLD_L2_MAG_RTN",
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "wget/curl HTTP directory listing + CDF download (no auth)"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Parker Solar Probe FIELDS MAG RTN' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "UC Berkeley SSL FIELDS instrument team public archive. PSP MAG L2 RTN 1-min and full cadence. 2018-2026. CDF format. No authentication required. Confirmed reachable 2026-03-10. SWEAP/SPC data at same server requires auth (HTTP 401)."
+blocker_note = "UC Berkeley SSL FIELDS remains the canonical bulk archive for MAG RTN products. Executed Rust staging currently uses bounded CDAWeb HAPI daily chunks for January 2020 because month-scale pulls exceed the shared 120-second text transfer path. This lane is operational_bounded for the modern2020 feature-cube window, not yet a full-year mirror."
 evidence_refs = []
 manual_manifest_refs = []
 scientific_validator_refs = [
@@ -2199,13 +2200,15 @@ blocked_action_plan = []
 id = "SRC-SOLO-SOAR-SWA-PAS-GRND-MOM"
 path_glob = "data/external/solo/soar_swa_pas/**"
 canonical_url = "https://soar.esac.esa.int/soar-sl-tap/tap/sync"
-mirror_urls = []
+mirror_urls = [
+  "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L2_SWA-PAS-GRND-MOM",
+]
 access_class = "public"
 status = "active"
-retrieval_method = "SOAR TAP API + CDF download (no auth, no registration for <50 GB)"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Solar Orbiter SWA-PAS Ground Moments' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "ESA SOAR SWA-PAS L2 ground-computed proton moments (density, velocity RTN, temperature). 1624 daily CDF files, 2020-07 to 2025-11. Download URL pattern: https://soar.esac.esa.int/soar-sl-tap/data?product_type=SCIENCE&RETRIEVAL_TYPE=PRODUCT&data_item_id=solo_L2_swa-pas-grnd-mom_YYYYMMDD. FILLS Solar Orbiter partial lane gap. Confirmed 2026-03-10."
+blocker_note = "ESA SOAR remains the canonical archive surface for SWA-PAS ground moments. Executed Rust staging currently uses the public CDAWeb HAPI exposure of SOLO_L2_SWA-PAS-GRND-MOM for the bounded 2020 science window consumed by the modern2020 feature cube. Full SOAR archive mirroring and daily CDF staging remain follow-on work."
 evidence_refs = []
 manual_manifest_refs = []
 scientific_validator_refs = [
@@ -2382,13 +2385,16 @@ blocked_action_plan = []
 id = "SRC-VOYAGER-IOWA-PWS"
 path_glob = "data/external/voyager/pws/**"
 canonical_url = "https://space.physics.uiowa.edu/plasma-wave/voyager/home.html"
-mirror_urls = []
+mirror_urls = [
+  "https://cdaweb.gsfc.nasa.gov/hapi/info?id=VG1_PWS_LR",
+  "https://cdaweb.gsfc.nasa.gov/hapi/info?id=VG2_PWS_LR",
+]
 access_class = "public"
 status = "active"
-retrieval_method = "wget HTTP download from Iowa PWS data directory"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager PWS Low Rate' --output-dir data/external --skip-existing=false"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "University of Iowa Plasma Wave Subsystem data. Voyager 1+2 PWS spectra and electron density. VLISM electron density 2012-2025 available via PDS-PPI. Confirmed reachable 2026-03-10."
+blocker_note = "University of Iowa Plasma Wave Subsystem landing page remains the archival source dossier. Executed Rust staging now uses CDAWeb HAPI low-rate electric_field spectra for Voyager 1 and Voyager 2 over the bounded 2016 science window used by the fleet feature cube. VLISM electron-density products remain separate and are not yet parser-promoted."
 evidence_refs = []
 manual_manifest_refs = []
 scientific_validator_refs = []

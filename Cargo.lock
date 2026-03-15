@@ -3866,6 +3866,7 @@ dependencies = [
  "gauss-quad",
  "glob",
  "gororoba_algebra",
+ "gororoba_gpu_bridge",
  "gr_core",
  "hifitime",
  "kiddo",
@@ -3902,6 +3903,7 @@ dependencies = [
  "toml",
  "ureq",
  "verified_core",
+ "walkdir",
  "wide",
  "zip 2.4.2",
 ]

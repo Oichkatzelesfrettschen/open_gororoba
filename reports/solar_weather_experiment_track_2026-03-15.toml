@@ -1,0 +1,73 @@
+generated_on = "2026-03-15"
+lane = "solar_weather_and_noise_suppression_track"
+status = "planned_from_executed_primitives"
+claim_policy = "experiment_only_not_authoritative_claim"
+
+[goal]
+primary = "Test whether normalized heliosphere feature cubes improve solar-weather onset detection, mission communications-noise labeling, and spacecraft-environment context tagging."
+secondary = "Quantify whether ENA and imager products help distinguish heliosphere-driven noise from other anomaly or radio-analysis lanes."
+
+[[experiment]]
+id = "HX-001"
+title = "Solar-weather onset detection from multi-mission cubes"
+inputs = [
+  "OMNI",
+  "ACE MAG",
+  "ACE SWEPAM",
+  "WIND MFI",
+  "WIND SWE",
+  "STEREO-A merged MAG/plasma",
+  "SOHO CELIAS",
+  "PSP merged hourly",
+  "PSP FIELDS",
+  "Solar Orbiter merged hourly",
+  "Solar Orbiter SWA-PAS",
+]
+target_metric = "lead-time and precision-recall for disturbance onset windows"
+status = "blocked_on_feature_normalization_and_event_labels"
+next_action = "Construct event labels and a cube-normalized classifier baseline before making any predictive claim."
+
+[[experiment]]
+id = "HX-002"
+title = "Communications-noise suppression and plasma-wave discrimination"
+inputs = [
+  "Voyager PWS low rate",
+  "IBEX ENA summaries",
+  "future IMAP-Hi ENA summaries",
+  "SOHO LASCO campaign markers",
+]
+target_metric = "reduction in false positive radio-noise classifications during heliosphere disturbances"
+status = "blocked_on_richer_wave_and_map products"
+next_action = "Promote richer PWS or ENA families and add campaign-window labels."
+
+[[experiment]]
+id = "HX-003"
+title = "Sparse cube-to-LBM boundary forcing"
+inputs = [
+  "feature cubes",
+  "sparse memory plans",
+  "lbm_3d_cuda sparse A-A solver",
+]
+target_metric = "stable sparse solver runs driven by real cube active fractions and boundary channels"
+status = "partially_ready"
+next_action = "Replace memory-plan-only reporting with an executed sparse cube-to-solver path."
+
+[[experiment]]
+id = "HX-004"
+title = "Algebraic descriptor stability under channel normalization"
+inputs = [
+  "fleet2016 feature cube",
+  "modern2020 feature cube",
+]
+target_metric = "descriptor rank stability after per-channel normalization"
+status = "ready_for_execution"
+next_action = "Add channel normalization to heliosphere-algebra-decompose and compare dominant-channel rankings before and after scaling."
+
+[dependencies]
+required = [
+  "SOHO CELIAS native parser promotion",
+  "IMAP Helio1hr parser promotion",
+  "IMAP-Hi ENA parser promotion",
+  "PSP FIELDS bounded-to-broader window expansion",
+  "sparse cube-to-solver execution path",
+]
