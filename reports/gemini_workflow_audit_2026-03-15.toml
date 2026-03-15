@@ -1,0 +1,87 @@
+generated_on = "2026-03-15"
+lane = "github_gemini_workflow_audit"
+status = "classified_not_adopted"
+
+[summary]
+overall_classification = "functional_out_of_band_automation"
+adoption_recommendation = "leave_untracked_until_security_and_repo-fit review"
+deletion_recommendation = "do_not_delete_as_noise"
+notes = "The Gemini workflow files are coherent GitHub Actions plus prompt templates. They are not wired into the current Rust governance pass and they should not be committed casually, but they also are not random clutter."
+
+[[artifact]]
+path = ".github/workflows/gemini-dispatch.yml"
+classification = "viable_dispatch_router"
+keep = true
+reason = "Routes issue, review, and comment events into review, triage, invoke, or plan-execute subflows."
+
+[[artifact]]
+path = ".github/workflows/gemini-invoke.yml"
+classification = "viable_on_demand_automation"
+keep = true
+reason = "Runs Gemini CLI with constrained MCP and shell tools against issue or PR context."
+
+[[artifact]]
+path = ".github/workflows/gemini-plan-execute.yml"
+classification = "viable_but_high_privilege"
+keep = true
+reason = "Implements plan-then-execute flow with write permissions and therefore needs repository-owner review before adoption."
+
+[[artifact]]
+path = ".github/workflows/gemini-review.yml"
+classification = "viable_review_automation"
+keep = true
+reason = "Dedicated PR review automation with explicit GitHub MCP review tooling."
+
+[[artifact]]
+path = ".github/workflows/gemini-scheduled-triage.yml"
+classification = "viable_scheduled_triage"
+keep = true
+reason = "Performs scheduled unlabeled-issue triage with labels constrained by current repository labels."
+
+[[artifact]]
+path = ".github/workflows/gemini-triage.yml"
+classification = "viable_interactive_triage"
+keep = true
+reason = "Interactive issue triage workflow for single issues."
+
+[[artifact]]
+path = ".github/commands/gemini-invoke.toml"
+classification = "prompt_template"
+keep = true
+reason = "Prompt template is consistent with the dispatch and invoke flows."
+
+[[artifact]]
+path = ".github/commands/gemini-plan-execute.toml"
+classification = "prompt_template_high_privilege"
+keep = true
+reason = "Pairs with the plan-execute workflow and correctly insists on plan verification before execution."
+
+[[artifact]]
+path = ".github/commands/gemini-review.toml"
+classification = "prompt_template_review"
+keep = true
+reason = "Contains a concrete, security-aware review protocol suitable for PR automation."
+
+[[artifact]]
+path = ".github/commands/gemini-scheduled-triage.toml"
+classification = "prompt_template_scheduled_triage"
+keep = true
+reason = "Structured JSON-only issue triage prompt; coherent with the scheduled workflow."
+
+[[artifact]]
+path = ".github/commands/gemini-triage.toml"
+classification = "prompt_template_interactive_triage"
+keep = true
+reason = "Simple issue triage prompt aligned with the workflow."
+
+[adoption_blockers]
+items = [
+  "Not integrated with the current Rust-only governance gate or Makefile entrypoints.",
+  "Introduces external Gemini and GCP dependency surfaces that need explicit owner approval and threat review.",
+  "High-privilege plan-execute flow needs repository policy review before it is merged.",
+  "No current evidence that these workflows are required for the heliosphere science lane itself.",
+]
+
+[decision]
+action = "leave_untracked_and_out_of_scope_for_this_commit"
+follow_on = "If the repository wants AI GitHub automation, adopt these through a separate security and workflow-design review rather than piggybacking them onto heliosphere science commits."

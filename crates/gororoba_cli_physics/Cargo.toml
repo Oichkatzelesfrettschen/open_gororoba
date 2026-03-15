@@ -261,6 +261,18 @@ name = "heliosphere-temporal-overlay"
 path = "src/bin/heliosphere_temporal_overlay.rs"
 
 [[bin]]
+name = "heliosphere-feature-cube"
+path = "src/bin/heliosphere_feature_cube.rs"
+
+[[bin]]
+name = "heliosphere-algebra-decompose"
+path = "src/bin/heliosphere_algebra_decompose.rs"
+
+[[bin]]
+name = "heliosphere-lbm-cube-run"
+path = "src/bin/heliosphere_lbm_cube_run.rs"
+
+[[bin]]
 name = "chrono-flyby-probe"
 path = "src/bin/chrono_flyby_probe.rs"
 
@@ -526,6 +538,7 @@ spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
 qgp_scaling = { path = "../qgp_scaling" }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
+gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
 ash = { version = "0.38.0", features = ["debug"] }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
@@ -566,6 +579,7 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 cd_kernel = { workspace = true }
 wide = { workspace = true }
 rusqlite = { workspace = true }
+walkdir = { workspace = true }
 
 [features]
 default = ["gpu"]

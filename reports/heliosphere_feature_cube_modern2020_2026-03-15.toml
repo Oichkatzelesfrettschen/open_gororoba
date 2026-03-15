@@ -1,0 +1,64 @@
+window_name = "modern2020"
+generated_at_utc = "2026-03-15T01:50:13.674069345+00:00"
+temporal_start_utc = "2020-01-01T00:00:00Z"
+temporal_end_utc = "2020-12-31T23:00:00Z"
+row_count = 36423
+missions = [
+    "BepiColombo",
+    "Parker Solar Probe",
+    "SOHO",
+    "Solar Orbiter",
+]
+products = [
+    "BepiColombo:Helio1hr support",
+    "Parker Solar Probe:FIELDS MAG RTN",
+    "Parker Solar Probe:Merged hourly",
+    "SOHO:CELIAS bundle hourly",
+    "Solar Orbiter:Merged hourly",
+    "Solar Orbiter:SWA-PAS ground moments",
+]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = [
+    "data/external/bepicolombo/bepicolombo_helio1hr_position_2020.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_01.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_02.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_03.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_04.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_05.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_06.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_07.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_08.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_09.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_10.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_11.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_12.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_13.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_14.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_15.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_16.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_17.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_18.csv",
+    "data/external/psp/berkeley_fields/psp_fld_l2_mag_rtn_2020_01_19.csv",
+    "data/external/psp/psp_coho1hr_merged_mag_plasma_2020.csv",
+    "data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz",
+    "data/external/solar_orbiter/solo_coho1hr_merged_mag_plasma_2020.csv",
+    "data/external/solo/soar_swa_pas/solo_l2_swa_pas_grnd_mom_2020.csv",
+]
+notes = []

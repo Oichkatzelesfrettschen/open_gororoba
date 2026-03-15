@@ -1,0 +1,114 @@
+generated_on = "2026-03-15"
+lane = "heliosphere_feature_cube_cuda_science"
+status = "executed_partial"
+repo_policy = "rust_only_operational_lane"
+
+[scope]
+windows = ["fleet2016", "modern2020", "boundary2009"]
+executed_binaries = [
+  "heliosphere-feature-cube",
+  "heliosphere-algebra-decompose",
+  "heliosphere-lbm-cube-run",
+]
+
+[science_summary]
+feature_cube_status = "executed"
+algebra_status = "descriptive_executed"
+lbm_status = "executed_dense_with_sparse_memory_projection"
+sparse_gpu_status = "bench_executed_in_lbm_3d_cuda"
+claim_policy = "descriptive_only_until_prediction_and_null_test lanes are reproduced"
+
+[[executed_window]]
+name = "fleet2016"
+cube_rows = 94367
+missions = [
+  "ACE",
+  "IBEX",
+  "Juno",
+  "New Horizons",
+  "OMNI",
+  "STEREO-A",
+  "Voyager 1",
+  "Voyager 2",
+  "WIND",
+]
+notes = "Core same-epoch fleet cube with in-situ plasma, field, CRS, PWS, and support geometry rows."
+
+[[executed_window]]
+name = "modern2020"
+cube_rows = 36423
+missions = [
+  "BepiColombo",
+  "Parker Solar Probe",
+  "SOHO",
+  "Solar Orbiter",
+]
+notes = "Modern inner-heliosphere cube with PSP merged hourly plus bounded PSP FIELDS chunks, SOHO CELIAS bundle rows, Solar Orbiter merged hourly, and SWA-PAS moments."
+
+[[executed_window]]
+name = "boundary2009"
+cube_rows = 1
+missions = ["IBEX"]
+notes = "Boundary lane currently summarizes the staged IBEX ENA map family into one time-window summary row."
+
+[benchmark_summary]
+cuda_detected = true
+cuda_compute_capability = "8.9"
+cuda_l2_bytes = 50331648
+cuda_shared_mem_per_block = 101376
+cuda_bf16_native = true
+cuda_sparse_tile_preferred = true
+
+[[benchmark]]
+name = "fleet2016_dense_lbm"
+grid = 96
+steps = 12
+cpu_mlups = 1.6028
+gpu_mlups = 76.9620
+active_fraction_from_cube = 0.201659
+projected_sparse_bf16_aa_512_gib = 1.7645
+projected_sparse_bf16_aa_1024_gib = 14.1161
+notes = "1024^3 remains outside this 12 GiB card in dense mode but is plausibly reachable through the sparse A-A path only."
+
+[[benchmark]]
+name = "modern2020_dense_lbm"
+grid = 96
+steps = 12
+cpu_mlups = 1.7512
+gpu_mlups = 84.4628
+active_fraction_from_cube = 0.147626
+projected_sparse_bf16_aa_512_gib = 1.2917
+projected_sparse_bf16_aa_1024_gib = 10.3338
+notes = "Modern2020 is more sparse than fleet2016, which lowers the projected sparse memory budget materially."
+
+[[benchmark]]
+name = "lbm_3d_cuda_sparse_1024"
+domain = "1024^3"
+active_fraction = 0.0575
+active_vram_gib = 6.67
+active_mlups = 1826.06
+dense_equivalent_glups = 31.77
+notes = "Sparse A-A benchmark demonstrates the memory trick needed for Ada-class 12 GiB boards."
+
+[memory_design]
+active_brick_shape = "8x8x8"
+halo_tile_shape = "10x10x10"
+shared_tile_bytes_bf16 = 38000
+gpu_tile_layout = "[19][1000]"
+cpu_tile_layout = "[1000][19]"
+in_register_math = "fp32"
+global_storage = "bf16_on_ada_fp32_else_fallback"
+
+[analysis]
+dominant_risk = "temperature_scale dominates raw algebra summaries unless channels are normalized"
+next_science_step = "promote feature-cube outputs into sparse cube-to-solver runs instead of dense-only smoke runs plus memory projections"
+prediction_track = "not yet executed"
+communications_noise_track = "planned_not_claimed"
+
+next_actions = [
+  "Promote SOHO CELIAS daily CDFs from staged_only into parser-promoted rows and feed them directly into modern inner-boundary cubes.",
+  "Promote IMAP Helio1hr and IMAP-Hi h90 from staged_only into parseable time-series and map-summary rows.",
+  "Expand PSP FIELDS from bounded January 2020 chunks into reproducible multi-month windows without long single-request timeouts.",
+  "Build the first sparse cube-to-solver executed lane so cube-derived active fractions drive the sparse A-A runtime directly rather than only memory planning.",
+  "Normalize algebra channels before ranking dominant coordinates so temperature and geometry scales do not overwhelm physically interesting structure.",
+]

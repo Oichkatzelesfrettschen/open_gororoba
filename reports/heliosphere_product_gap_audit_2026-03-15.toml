@@ -1,0 +1,121 @@
+generated_on = "2026-03-15"
+lane = "heliosphere_product_gap_audit"
+status = "open_follow_on"
+
+[summary]
+executed_core = [
+  "ACE MAG",
+  "ACE SWEPAM",
+  "WIND MFI",
+  "WIND SWE",
+  "STEREO-A merged MAG/plasma",
+  "Voyager merged hourly",
+  "Voyager CRS",
+  "Voyager PWS low rate",
+  "SOHO CELIAS bundle hourly",
+  "PSP merged hourly",
+  "PSP FIELDS bounded daily chunks",
+  "Solar Orbiter merged hourly",
+  "Solar Orbiter SWA-PAS moments",
+  "IBEX orbit support",
+  "IBEX ENA summary",
+  "IMAP public staging",
+]
+missing_parser_promotions = 5
+missing_contract_promotions = 4
+blocked_or_partial = 4
+
+[[gap]]
+product_family = "SOHO CELIAS daily CDFs"
+current_state = "staged_only"
+evidence = "187 cached CDF files under data/external/soho/celias_pm_5min"
+official_source = "University of Maryland CELIAS PM and SPDF-linked mirrors"
+needed_for = "native-cadence feature cubes and better inner-boundary transition analysis"
+priority = "high"
+next_action = "Promote parser and emit native plus hourly normalized rows in the feature-cube lane."
+
+[[gap]]
+product_family = "SOHO LASCO L0.5 bounded day sample"
+current_state = "not_implemented"
+evidence = "17 staged files under data/external/soho/lasco/level05/240101"
+official_source = "LASCO public image/archive sample"
+needed_for = "campaign-window remote-imager overlay and CME-context tagging"
+priority = "medium"
+next_action = "Add parser that records timestamp, view geometry, and sample statistics instead of treating LASCO as opaque files."
+
+[[gap]]
+product_family = "PSP FIELDS MAG RTN"
+current_state = "operational_bounded"
+evidence = "19 January 2020 daily chunk files, about 1.3 GiB total"
+official_source = "CDAWeb HAPI PSP_FLD_L2_MAG_RTN plus Berkeley SSL mirror"
+needed_for = "higher-fidelity inner-heliosphere field cubes and sparse solver forcing fields"
+priority = "high"
+next_action = "Add resumable day or week chunk planning so the fetcher can expand coverage without month-scale timeout failures."
+
+[[gap]]
+product_family = "IMAP Helio1hr position support"
+current_state = "staged_only"
+evidence = "1 cached CDF file under data/external/imap/helio1hr"
+official_source = "CDAWeb HAPI public IMAP helio1hr"
+needed_for = "same-epoch support rows and mission/product coverage completeness"
+priority = "high"
+next_action = "Promote parser and integrate the support row into overlay and cube manifests."
+
+[[gap]]
+product_family = "IMAP-Hi h90 ENA"
+current_state = "staged_only"
+evidence = "1 cached CDF file under data/external/imap/hi/l2/h90"
+official_source = "CDAWeb HAPI public IMAP-Hi h90 ENA"
+needed_for = "modern ENA boundary summaries and future map-feature cubes"
+priority = "high"
+next_action = "Promote parser and add map-summary integration parallel to the current IBEX ENA summary path."
+
+[[gap]]
+product_family = "IBEX higher-order ENA HAPI families"
+current_state = "contract_missing"
+evidence = "CDAWeb HAPI catalog exposes many public IBEX_H3_ENA_HI/LO families beyond the staged release17 tree"
+official_source = "https://cdaweb.gsfc.nasa.gov/hapi/catalog"
+needed_for = "broader multi-resolution ENA map comparisons, ribbon maps, and OMNI-linked 6-month or 14-year products"
+priority = "medium"
+next_action = "Select a bounded subset of scientifically useful HI and LO map families and add SQLite-authored source contracts."
+
+[[gap]]
+product_family = "Solar Orbiter MAG and RPW follow-ons"
+current_state = "contract_missing"
+evidence = "SOAR public archive exists; current executed lane only promotes merged hourly and SWA-PAS"
+official_source = "https://soar.esac.esa.int/soar/"
+needed_for = "field and wave augmentation of the modern inner-heliosphere cube"
+priority = "medium"
+next_action = "Add explicit public-source contracts for MAG and RPW follow-ons if their public access patterns can be fetched reproducibly in Rust."
+
+[[gap]]
+product_family = "Voyager PWS higher-rate or richer spectrum products"
+current_state = "contract_missing"
+evidence = "Current executed lane promotes only low-rate HAPI rows"
+official_source = "CDAWeb HAPI VG1_PWS_LR and VG2_PWS_LR plus Iowa PWS archives"
+needed_for = "better radio-noise and plasma-wave discrimination beyond the low-rate lane"
+priority = "medium"
+next_action = "Audit official public higher-rate or spectral products and add bounded contracts only if parsers stay reproducible."
+
+[[gap]]
+product_family = "IMAP broader public families"
+current_state = "partial_contracts"
+evidence = "Current lane stages helio1hr support plus one Hi ENA product only"
+official_source = "CDAWeb HAPI and official IMAP public surfaces"
+needed_for = "post-IBEX modern boundary maps and support-row continuity"
+priority = "medium"
+next_action = "Promote the first public quicklook or science products that can be fetched without authentication and remain stable enough for SQLite-authored contracts."
+
+[follow_on_priority]
+first = [
+  "SOHO CELIAS daily CDF parser promotion",
+  "IMAP Helio1hr parser promotion",
+  "IMAP-Hi ENA parser promotion",
+  "PSP FIELDS bounded-to-broader window expansion",
+]
+second = [
+  "SOHO LASCO campaign parser",
+  "IBEX HAPI family subset promotion",
+  "Solar Orbiter MAG/RPW follow-ons",
+  "Voyager richer PWS products",
+]

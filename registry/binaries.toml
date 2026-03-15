@@ -599,9 +599,27 @@ crate = "gororoba_cli"
 description = "Helium-4 superfluid thermodynamics and Gross-Pitaevskii validation suite"
 
 [[binary]]
+name = "heliosphere-algebra-decompose"
+crate = "gororoba_cli_physics"
+description = "Compute descriptive algebraic summaries from heliosphere feature cubes without elevating speculative physical interpretations into claims."
+experiment = "E-119"
+
+[[binary]]
 name = "heliosphere-catalog-audit"
 crate = "gororoba_cli_data"
 description = "Audit staged heliosphere datasets, source families, and valid chronology-pack overlap windows"
+
+[[binary]]
+name = "heliosphere-feature-cube"
+crate = "gororoba_cli_physics"
+description = "Build normalized heliosphere feature cubes from staged and executed mission-product lanes, then emit CSV and TOML manifests plus sparse memory projections."
+experiment = "E-119"
+
+[[binary]]
+name = "heliosphere-lbm-cube-run"
+crate = "gororoba_cli_physics"
+description = "Benchmark dense CPU/GPU heliosphere LBM runs from feature cubes and report sparse Ada memory plans for 512^3 and 1024^3 follow-on execution."
+experiment = "E-119"
 
 [[binary]]
 name = "heliosphere-stage"

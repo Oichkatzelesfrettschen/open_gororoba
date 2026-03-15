@@ -570,6 +570,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(psp_fields::PspFieldsProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100-500 MB/year",
+        },
+        DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Parker Solar Probe Merged Hourly (2020)",
                 psp::PspProvider {
@@ -588,6 +594,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(solar_orbiter_swa::SolarOrbiterSwaProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB/year",
+        },
+        DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter Merged Hourly (2020)",
                 solar_orbiter::SolarOrbiterProvider {
@@ -598,6 +610,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-20 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(voyager_pws::VoyagerPwsProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB/year",
         },
         DatasetEntry {
             provider: Box::new(bepicolombo::BepicolomboProvider::default()),
