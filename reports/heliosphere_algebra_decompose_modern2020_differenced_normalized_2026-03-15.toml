@@ -1,0 +1,136 @@
+generated_at_utc = "2026-03-15T16:39:53.648673780+00:00"
+cube_csv = "reports/heliosphere_feature_transform_modern2020_differenced-normalized_2026-03-15.csv"
+feature_dim = 16
+group_count = 11
+
+[[groups]]
+window_name = "modern2020"
+mission = "BepiColombo"
+product = "Helio1hr support"
+row_count = 8784
+mean_norm_sq = 4.000000000000074
+mean_signal_energy = 1.705367552091725
+mean_associator_norm = 0.14856544027858237
+max_associator_norm = 93.24460540342346
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "FIELDS MAG RTN"
+row_count = 1164
+mean_norm_sq = 8.000000000000037
+mean_signal_energy = 2.2082996312698784
+mean_associator_norm = 18.071614114915143
+max_associator_norm = 840.6975473666682
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "Merged hourly"
+row_count = 8784
+mean_norm_sq = 10.999999999999737
+mean_signal_energy = 2.130204012672062
+mean_associator_norm = 43.34067276328879
+max_associator_norm = 14869.389305561008
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "SOHO"
+product = "CELIAS daily CDF hourly"
+row_count = 8091
+mean_norm_sq = 7.000000000000164
+mean_signal_energy = 2.134624397584745
+mean_associator_norm = 5.136465679915638
+max_associator_norm = 404.79686792915714
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "MAG RTN 1-minute"
+row_count = 3012
+mean_norm_sq = 8.00000000000011
+mean_signal_energy = 2.019183378041246
+mean_associator_norm = 10.882857632190696
+max_associator_norm = 496.915851140705
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "Merged hourly"
+row_count = 8784
+mean_norm_sq = 10.999999999999572
+mean_signal_energy = 2.0926668511671243
+mean_associator_norm = 17.75039888728654
+max_associator_norm = 14454.655731216159
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA SCPOT 10-second"
+row_count = 4100
+mean_norm_sq = 6.000000000000021
+mean_signal_energy = 1.6485197787788837
+mean_associator_norm = 0.643311805043146
+max_associator_norm = 194.1749776121249
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA density"
+row_count = 842
+mean_norm_sq = 4.9999999999999885
+mean_signal_energy = 1.475343396460519
+mean_associator_norm = 0.710484242301211
+max_associator_norm = 65.25180524530144
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW HFR survey flux"
+row_count = 1090
+mean_norm_sq = 6.000000000000032
+mean_signal_energy = 1.7604748448915424
+mean_associator_norm = 3.3658836491067357
+max_associator_norm = 171.40597787574154
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW TNR survey flux"
+row_count = 889
+mean_norm_sq = 6.000000000000001
+mean_signal_energy = 1.8230943698523492
+mean_associator_norm = 4.071983589903647
+max_associator_norm = 194.18072451176883
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "SWA-PAS ground moments"
+row_count = 1797
+mean_norm_sq = 7.000000000000019
+mean_signal_energy = 1.8420652417569612
+mean_associator_norm = 4.249984507891814
+max_associator_norm = 334.39800933495076
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0

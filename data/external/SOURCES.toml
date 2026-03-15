@@ -4,7 +4,7 @@
 # Compatibility export lane: source_contracts
 
 [external_sources]
-updated = "2026-03-15T11:40:32.573702789+00:00"
+updated = "2026-03-15T16:37:10.018125723+00:00"
 authoritative = true
 policy_version = "v1"
 
@@ -157,12 +157,12 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'DESI DR2 BAO' --output-dir data/external --skip-existing"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'DESI DR1 BAO' --output-dir data/external --skip-existing"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "DR2 BAO values also hardcoded in crates/data_core/src/catalogs/desi_bao.rs::desi_dr2_bao()."
+blocker_note = "Bounded summary lane writes exact in-repo DR1 and DR2 BAO summary CSVs and opportunistically stages Cobaya mirror text files when reachable."
 evidence_refs = [
-  "arXiv:2503.14738",
+  "crates/data_core/src/catalogs/desi_bao.rs",
 ]
 manual_manifest_refs = []
 scientific_validator_refs = [
@@ -785,6 +785,26 @@ scientific_validator_refs = []
 blocked_action_plan = []
 
 [[source]]
+id = "SRC-GAIA-DR3-NEARBY-TAP"
+path_glob = "data/external/gaia_dr3_nearby.csv"
+canonical_url = "https://gea.esac.esa.int/tap-server/tap"
+mirror_urls = [
+  "https://gea.esac.esa.int/archive/",
+]
+access_class = "public_api"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Gaia DR3 Nearby Stars' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-03-15T23:59:59Z"
+resolution_deadline_utc = "2026-04-15T23:59:59Z"
+blocker_note = ""
+evidence_refs = [
+  "crates/data_core/src/catalogs/gaia.rs",
+]
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
 id = "SRC-GSFC-MIGRATION-2026-03"
 path_glob = "data/external/.gsfc_migration_notice"
 canonical_url = "https://helio.data.nasa.gov/"
@@ -936,6 +956,26 @@ attempt_deadline_utc = ""
 resolution_deadline_utc = ""
 blocker_note = "Official SPDF merged yearly Helios 2 archive replaces the earlier blocked-source placeholder."
 evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = []
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-HST-MAST-PUBLIC-METADATA"
+path_glob = "data/external/hst_public_observations.csv"
+canonical_url = "https://mast.stsci.edu/api/v0/"
+mirror_urls = [
+  "https://mast.stsci.edu/api/v0/_services.html",
+]
+access_class = "public_api"
+status = "partial"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'HST Public Observation Metadata' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-03-15T23:59:59Z"
+resolution_deadline_utc = "2026-04-15T23:59:59Z"
+blocker_note = "Official MAST HST public metadata POST requests timed out from this host during 2026-03-15 validation, even at small page sizes; provider remains bounded and partial."
+evidence_refs = [
+  "crates/data_core/src/catalogs/hst.rs",
+]
 manual_manifest_refs = []
 scientific_validator_refs = []
 blocked_action_plan = []
@@ -1213,6 +1253,26 @@ manual_manifest_refs = []
 scientific_validator_refs = [
   "heliophysics_merged_hourly_invariants",
 ]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-JWST-MAST-PUBLIC-METADATA"
+path_glob = "data/external/jwst_public_observations.csv"
+canonical_url = "https://mast.stsci.edu/api/v0/"
+mirror_urls = [
+  "https://mast.stsci.edu/api/v0/_services.html",
+]
+access_class = "public_api"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'JWST Public Observation Metadata' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-03-15T23:59:59Z"
+resolution_deadline_utc = "2026-04-15T23:59:59Z"
+blocker_note = ""
+evidence_refs = [
+  "crates/data_core/src/catalogs/jwst.rs",
+]
+manual_manifest_refs = []
+scientific_validator_refs = []
 blocked_action_plan = []
 
 [[source]]

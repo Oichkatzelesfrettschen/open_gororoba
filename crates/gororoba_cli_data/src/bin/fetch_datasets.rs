@@ -140,6 +140,18 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~15 MB",
         },
         DatasetEntry {
+            provider: Box::new(jwst::JwstPublicMetadataProvider::default()),
+            category: "astro",
+            pillar: "survey",
+            size_hint: "~10-50 MB metadata",
+        },
+        DatasetEntry {
+            provider: Box::new(hst::HstPublicMetadataProvider::default()),
+            category: "astro",
+            pillar: "survey",
+            size_hint: "~10-50 MB metadata",
+        },
+        DatasetEntry {
             provider: Box::new(hipparcos::HipparcosProvider),
             category: "astro",
             pillar: "survey",
@@ -790,6 +802,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1-5 MB",
         },
         // -- Candle pillar: standard candles/rulers --
+        DatasetEntry {
+            provider: Box::new(desi_bao::DesiBaoProvider),
+            category: "cosmology",
+            pillar: "candle",
+            size_hint: "~100 KB",
+        },
         DatasetEntry {
             provider: Box::new(pantheon::PantheonProvider),
             category: "cosmology",

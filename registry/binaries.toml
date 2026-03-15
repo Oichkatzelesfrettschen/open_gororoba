@@ -616,6 +616,12 @@ description = "Build normalized heliosphere feature cubes from staged and execut
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-feature-transform"
+crate = "gororoba_cli_physics"
+description = "Build normalized, differenced, and differenced-normalized heliosphere event cubes without dropping rows, then emit transform manifests for downstream algebra and LBM analysis."
+experiment = "E-119"
+
+[[binary]]
 name = "heliosphere-lbm-cube-run"
 crate = "gororoba_cli_physics"
 description = "Benchmark dense CPU/GPU heliosphere LBM runs from feature cubes and report sparse Ada memory plans for 512^3 and 1024^3 follow-on execution."

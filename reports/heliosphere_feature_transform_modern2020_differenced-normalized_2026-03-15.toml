@@ -1,0 +1,14 @@
+generated_at_utc = "2026-03-15T16:38:43.176318238+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+selected_window = "modern2020"
+mode = "differenced-normalized"
+input_rows = 47337
+output_rows = 47337
+input_active_fraction_estimate = 0.12698312102583603
+output_active_fraction_estimate = 0.12111033652322707
+groups = 11
+notes = [
+    "Rows are grouped by window_name/mission/product before transformation.",
+    "Differencing keeps row count by zero-filling the first row in each group.",
+    "Differenced-normalized applies differencing first and z-score normalization second.",
+]

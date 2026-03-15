@@ -1,0 +1,40 @@
+generated_at_utc = "2026-03-15T16:37:41.485161662+00:00"
+cube_csv = "reports/heliosphere_feature_transform_inner1976_differenced-normalized_2026-03-15.csv"
+feature_dim = 16
+group_count = 3
+
+[[groups]]
+window_name = "inner1976"
+mission = "Helios 1"
+product = "Merged mission support"
+row_count = 8784
+mean_norm_sq = 10.999999999999732
+mean_signal_energy = 2.3642317262812402
+mean_associator_norm = 20.70363679163335
+max_associator_norm = 2336.3220170622026
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "inner1976"
+mission = "Helios 2"
+product = "Merged mission support"
+row_count = 8784
+mean_norm_sq = 11.000000000000211
+mean_signal_energy = 2.2423143439619566
+mean_associator_norm = 21.656375615254298
+max_associator_norm = 2211.9842920513593
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
+
+[[groups]]
+window_name = "inner1976"
+mission = "IMP 8"
+product = "Merged 1-minute hourly aggregate"
+row_count = 3409
+mean_norm_sq = 10.999999999999927
+mean_signal_energy = 2.4164775484128165
+mean_associator_norm = 19.886747975179404
+max_associator_norm = 1257.3601967154118
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
