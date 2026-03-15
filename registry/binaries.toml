@@ -225,6 +225,11 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "cuda-precision-bench"
+crate = "gororoba_cli_physics"
+description = "CUDA D3Q19 LBM precision-tier baseline benchmark: sweeps FP32/BF16/FP64/FP16/FP8/INT8/DD-FP128 and Tensor Core WMMA proxy across 32^3..256^3 grids and all SoA kernel variants. Reports MLUPS, effective bandwidth (%peak), and VRAM footprint per tier. Writes CSV to data/benchmarks/cuda_kernel_baseline.csv. Informational only; not a CI gate."
+
+[[binary]]
 name = "dark-halo-hunt"
 crate = "gororoba_cli_physics"
 description = "Search for topological dark halos in ZD-mediated LBM simulations across k values. CDG-2 consistency falsification."
