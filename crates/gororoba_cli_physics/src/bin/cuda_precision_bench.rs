@@ -406,7 +406,11 @@ mod gpu {
                         continue;
                     }
                 }
-                if let Err(e) = solver.step_n(cfg.warmup) {
+                // Use step() loop instead of step_n() to bypass CUDA Graph capture path.
+                // step_n() routes SoA variants through step_graph_pair() which calls
+                // begin_capture(GLOBAL), incompatible with the benchmark's host timing model.
+                let warmup_err = (0..cfg.warmup).try_for_each(|_| solver.step());
+                if let Err(e) = warmup_err {
                     eprintln!("SKIP warmup: {e}");
                     continue;
                 }
@@ -415,7 +419,8 @@ mod gpu {
                     continue;
                 }
                 let t0 = Instant::now();
-                if let Err(e) = solver.step_n(n_steps) {
+                let step_err = (0..n_steps).try_for_each(|_| solver.step());
+                if let Err(e) = step_err {
                     eprintln!("SKIP step: {e}");
                     continue;
                 }
