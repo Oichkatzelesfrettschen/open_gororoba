@@ -104,9 +104,7 @@ pub fn parse_voyager_pws_hapi_csv(content: &str) -> Vec<VoyagerPwsRecord> {
         .collect()
 }
 
-pub fn parse_voyager_pws_file(
-    path: &std::path::Path,
-) -> Result<Vec<VoyagerPwsRecord>, FetchError> {
+pub fn parse_voyager_pws_file(path: &std::path::Path) -> Result<Vec<VoyagerPwsRecord>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|err| FetchError::Validation(format!("read error: {err}")))?;
     Ok(parse_voyager_pws_hapi_csv(&content))
@@ -139,11 +137,7 @@ impl DatasetProvider for VoyagerPwsProvider {
             let dir = root.join(spacecraft.slug());
             std::fs::create_dir_all(&dir)?;
             for year in self.year_start..=self.year_end {
-                let output = dir.join(format!(
-                    "{}_pws_lr_{}.csv",
-                    spacecraft.slug(),
-                    year
-                ));
+                let output = dir.join(format!("{}_pws_lr_{}.csv", spacecraft.slug(), year));
                 if config.skip_existing && output.exists() {
                     continue;
                 }
@@ -189,7 +183,9 @@ impl DatasetProvider for VoyagerPwsProvider {
                     .into_iter()
                     .flatten()
                     .filter_map(|child| child.ok())
-                    .any(|child| child.path().extension().and_then(|value| value.to_str()) == Some("csv"))
+                    .any(|child| {
+                        child.path().extension().and_then(|value| value.to_str()) == Some("csv")
+                    })
             })
     }
 }

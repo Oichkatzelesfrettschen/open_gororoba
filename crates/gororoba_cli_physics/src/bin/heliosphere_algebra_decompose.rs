@@ -133,7 +133,11 @@ fn summarize_groups(rows: &[HeliosphereFeatureRow]) -> Vec<GroupSummary> {
 }
 
 fn mean(values: &[f64]) -> f64 {
-    let finite: Vec<f64> = values.iter().copied().filter(|value| value.is_finite()).collect();
+    let finite: Vec<f64> = values
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect();
     if finite.is_empty() {
         return f64::NAN;
     }

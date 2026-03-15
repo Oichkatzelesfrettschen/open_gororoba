@@ -6,8 +6,9 @@ use data_core::{
     HeliosphereFeatureCube, HeliosphereFeatureCubeManifest, HeliosphereFeatureRow,
     catalogs::{
         ace_mag::{ace_mag_to_omni, parse_ace_mag_hapi_file},
+        cassini::{cassini_to_omni, parse_cassini_cruise_file},
         ibex::{parse_ibex_ena_file, parse_ibex_orbit_file},
-        imap::{parse_imap_helio1hr_file, parse_imap_hi_h90_file},
+        imap::{parse_imap_helio1hr_file, parse_imap_hi_h90_file, parse_imap_ialirt_file},
         juno::{juno_to_omni, parse_juno_cruise_file},
         new_horizons::{nh_swap_to_omni, parse_nh_swap_file},
         omni::{OmniRecord, parse_omni_file},
@@ -18,17 +19,21 @@ use data_core::{
             parse_soho_lasco_img_hdr_file, soho_to_hourly_omni,
         },
         solar_orbiter::{parse_solar_orbiter_file, solar_orbiter_to_omni},
+        solar_orbiter_mag::parse_solar_orbiter_mag_file,
+        solar_orbiter_rpw::parse_solar_orbiter_rpw_file,
         solar_orbiter_swa::parse_solar_orbiter_swa_file,
         solar_wind::parse_swepam_file,
         stereo_plastic::{
             average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
             stereo_to_omni,
         },
+        ulysses::{parse_ulysses_file, ulysses_to_omni},
         voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni},
         voyager_crs_flux::{VoyagerCrsFluxRecord, parse_voyager_crs_flux_csv},
         voyager_pws::parse_voyager_pws_file,
         wind_swe::{merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file},
     },
+    cdf_support::filename_date_yyyymmdd,
 };
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -103,12 +108,13 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
     match window {
         "fleet2016" => build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?,
         "modern2020" => build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "outer2001" => build_outer2001(repo_root, &mut rows, &mut sources, &mut notes)?,
         "boundary2009" => build_boundary2009(repo_root, &mut rows, &mut sources, &mut notes)?,
         "remote2024" => build_remote2024(repo_root, &mut rows, &mut sources, &mut notes)?,
         "imap2025" => build_imap2025(repo_root, &mut rows, &mut sources, &mut notes)?,
         "imap2026" => build_imap2026(repo_root, &mut rows, &mut sources, &mut notes)?,
         other => bail!(
-            "unsupported window {other}; expected fleet2016, modern2020, boundary2009, remote2024, imap2025, or imap2026"
+            "unsupported window {other}; expected fleet2016, modern2020, outer2001, boundary2009, remote2024, imap2025, or imap2026"
         ),
     }
 
@@ -127,8 +133,12 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
         rows.iter()
             .map(|row| format!("{}:{}", row.mission, row.product)),
     );
-    let temporal_start_utc = rows.first().and_then(|row| timestamp_utc(row.year, row.doy, row.hour));
-    let temporal_end_utc = rows.last().and_then(|row| timestamp_utc(row.year, row.doy, row.hour));
+    let temporal_start_utc = rows
+        .first()
+        .and_then(|row| timestamp_utc(row.year, row.doy, row.hour));
+    let temporal_end_utc = rows
+        .last()
+        .and_then(|row| timestamp_utc(row.year, row.doy, row.hour));
 
     Ok(HeliosphereFeatureCube {
         manifest: HeliosphereFeatureCubeManifest {
@@ -206,9 +216,10 @@ fn build_fleet2016(
     }
 
     let wind_swe_path = repo_root.join("data/external/wind_swe/wind_kp_unspike2016.txt");
-    let wind_mfi_paths = collect_matching_files(&repo_root.join("data/external/wind_mfi"), |path| {
-        file_name_ends_with(path, "_wind_mag_1hour.asc")
-    });
+    let wind_mfi_paths =
+        collect_matching_files(&repo_root.join("data/external/wind_mfi"), |path| {
+            file_name_ends_with(path, "_wind_mag_1hour.asc")
+        });
     if wind_swe_path.exists() && !wind_mfi_paths.is_empty() {
         let swe = parse_wind_swe_file(&wind_swe_path)?;
         let mut mfi = Vec::new();
@@ -386,10 +397,10 @@ fn build_modern2020(
 
     let soho_bundle_path =
         repo_root.join("data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz");
-    let soho_cdf_paths =
-        collect_matching_files(&repo_root.join("data/external/soho/celias_pm_5min/2020"), |path| {
-            file_name_ends_with(path, ".cdf")
-        });
+    let soho_cdf_paths = collect_matching_files(
+        &repo_root.join("data/external/soho/celias_pm_5min/2020"),
+        |path| file_name_ends_with(path, ".cdf"),
+    );
     if !soho_cdf_paths.is_empty() {
         let mut soho_rows = Vec::new();
         for path in &soho_cdf_paths {
@@ -397,7 +408,13 @@ fn build_modern2020(
             sources.push(rel(repo_root, path));
         }
         let hourly = soho_to_hourly_omni(&soho_rows);
-        push_omni_rows(rows, "modern2020", "SOHO", "CELIAS daily CDF hourly", &hourly);
+        push_omni_rows(
+            rows,
+            "modern2020",
+            "SOHO",
+            "CELIAS daily CDF hourly",
+            &hourly,
+        );
         notes.push(format!(
             "SOHO modern2020 used {} native daily CELIAS CDF files.",
             soho_cdf_paths.len()
@@ -412,7 +429,8 @@ fn build_modern2020(
         let soho = parse_soho_celias_bundle_file(&soho_bundle_path)?;
         sources.push(rel(repo_root, &soho_bundle_path));
         let hourly = soho_to_hourly_omni(
-            &soho.into_iter()
+            &soho
+                .into_iter()
                 .filter(|row| row.year == 2020)
                 .collect::<Vec<_>>(),
         );
@@ -425,7 +443,13 @@ fn build_modern2020(
         let merged = parse_psp_file(&psp_path)?;
         sources.push(rel(repo_root, &psp_path));
         let omni_rows = psp_to_omni(&merged);
-        push_omni_rows(rows, "modern2020", "Parker Solar Probe", "Merged hourly", &omni_rows);
+        push_omni_rows(
+            rows,
+            "modern2020",
+            "Parker Solar Probe",
+            "Merged hourly",
+            &omni_rows,
+        );
         Some(omni_rows)
     } else {
         None
@@ -435,49 +459,95 @@ fn build_modern2020(
         .as_deref()
         .map(build_support_index)
         .unwrap_or_default();
-    let psp_fields_paths =
-        collect_matching_files(&repo_root.join("data/external/psp/berkeley_fields"), |path| {
-            file_name_starts_with(path, "psp_fld_l2_mag_rtn_2020_")
-        });
+    let mut psp_fields_paths = collect_matching_files(
+        &repo_root.join("data/external/psp/fields_l2_mag_rtn_1min"),
+        |path| {
+            path.extension().and_then(|value| value.to_str()) == Some("csv")
+                && file_name_starts_with(path, "psp_fld_l2_mag_rtn_1min_2020")
+        },
+    );
+    let modern_psp_days = psp_fields_paths
+        .iter()
+        .filter_map(|path| file_date_key(path))
+        .collect::<BTreeSet<_>>();
+    psp_fields_paths.extend(collect_matching_files(
+        &repo_root.join("data/external/psp/berkeley_fields"),
+        |path| {
+            path.extension().and_then(|value| value.to_str()) == Some("csv")
+                && file_name_starts_with(path, "psp_fld_l2_mag_rtn_2020_")
+                && file_date_key(path)
+                    .map(|date| !modern_psp_days.contains(&date))
+                    .unwrap_or(true)
+        },
+    ));
+    if psp_fields_paths.is_empty() {
+        psp_fields_paths = collect_matching_files(
+            &repo_root.join("data/external/psp/fields_l2_mag_rtn_1min"),
+            |path| {
+                path.extension().and_then(|value| value.to_str()) == Some("cdf")
+                    && file_name_starts_with(path, "psp_fld_l2_mag_rtn_1min_2020")
+            },
+        );
+    }
     if !psp_fields_paths.is_empty() {
+        let mut parsed_psp_fields = 0usize;
+        let mut skipped_psp_fields = 0usize;
         for path in &psp_fields_paths {
-            let records = parse_psp_fields_file(path)?;
-            sources.push(rel(repo_root, path));
-            for record in records {
-                let support = psp_support.get(&(record.year, record.doy, record.hour));
-                rows.push(HeliosphereFeatureRow {
-                    window_name: "modern2020".to_string(),
-                    mission: "Parker Solar Probe".to_string(),
-                    product: "FIELDS MAG RTN".to_string(),
-                    year: record.year,
-                    doy: record.doy,
-                    hour: record.hour,
-                    r_au: support.map(|value| value.0).unwrap_or(f64::NAN),
-                    lat_deg: support.map(|value| value.1).unwrap_or(f64::NAN),
-                    lon_deg: support.map(|value| value.2).unwrap_or(f64::NAN),
-                    density_cm3: f64::NAN,
-                    speed_kms: f64::NAN,
-                    temperature_k: f64::NAN,
-                    bx: record.br,
-                    by: record.bt,
-                    bz: record.bn,
-                    b_mag: record.b_magnitude,
-                    crs_flux: f64::NAN,
-                    spectral_mean: f64::NAN,
-                    spectral_peak: f64::NAN,
-                    map_flux_mean: f64::NAN,
-                    map_flux_std: f64::NAN,
-                });
+            match parse_psp_fields_file(path) {
+                Ok(records) => {
+                    parsed_psp_fields += 1;
+                    sources.push(rel(repo_root, path));
+                    for record in records {
+                        let support = psp_support.get(&(record.year, record.doy, record.hour));
+                        rows.push(HeliosphereFeatureRow {
+                            window_name: "modern2020".to_string(),
+                            mission: "Parker Solar Probe".to_string(),
+                            product: "FIELDS MAG RTN".to_string(),
+                            year: record.year,
+                            doy: record.doy,
+                            hour: record.hour,
+                            r_au: support.map(|value| value.0).unwrap_or(f64::NAN),
+                            lat_deg: support.map(|value| value.1).unwrap_or(f64::NAN),
+                            lon_deg: support.map(|value| value.2).unwrap_or(f64::NAN),
+                            density_cm3: f64::NAN,
+                            speed_kms: f64::NAN,
+                            temperature_k: f64::NAN,
+                            bx: record.br,
+                            by: record.bt,
+                            bz: record.bn,
+                            b_mag: record.b_magnitude,
+                            crs_flux: f64::NAN,
+                            spectral_mean: f64::NAN,
+                            spectral_peak: f64::NAN,
+                            map_flux_mean: f64::NAN,
+                            map_flux_std: f64::NAN,
+                        });
+                    }
+                }
+                Err(err) => {
+                    skipped_psp_fields += 1;
+                    notes.push(format!(
+                        "PSP FIELDS file {} was skipped in modern2020: {}",
+                        rel(repo_root, path),
+                        err
+                    ));
+                }
             }
         }
         notes.push(format!(
-            "PSP FIELDS modern2020 currently uses {} bounded daily files.",
-            psp_fields_paths.len()
+            "PSP FIELDS modern2020 currently uses {} bounded daily files, preferring parser-friendly daily CSV mirrors over staged direct CDFs.",
+            parsed_psp_fields
         ));
-        if psp_fields_paths.len() < 60 {
+        if skipped_psp_fields > 0 {
             notes.push(format!(
-                "PSP FIELDS modern2020 coverage is still partial for the bounded Jan-Feb 2020 target window ({} of 60 daily files cached).",
-                psp_fields_paths.len()
+                "PSP FIELDS modern2020 skipped {} daily files after parser validation.",
+                skipped_psp_fields
+            ));
+        }
+        if parsed_psp_fields < 60 {
+            notes.push(format!(
+                "PSP FIELDS modern2020 coverage is still partial for the bounded Jan-Feb 2020 target window ({} of 60 daily files executed).",
+                parsed_psp_fields
             ));
         }
     } else {
@@ -490,7 +560,13 @@ fn build_modern2020(
         let merged = parse_solar_orbiter_file(&solo_path)?;
         sources.push(rel(repo_root, &solo_path));
         let omni_rows = solar_orbiter_to_omni(&merged);
-        push_omni_rows(rows, "modern2020", "Solar Orbiter", "Merged hourly", &omni_rows);
+        push_omni_rows(
+            rows,
+            "modern2020",
+            "Solar Orbiter",
+            "Merged hourly",
+            &omni_rows,
+        );
         Some(omni_rows)
     } else {
         None
@@ -534,6 +610,115 @@ fn build_modern2020(
         notes.push("Solar Orbiter SWA-PAS file missing; run fetch-datasets for 'Solar Orbiter SWA-PAS Ground Moments' to populate it.".to_string());
     }
 
+    let solo_mag_paths = collect_matching_files(
+        &repo_root.join("data/external/solar_orbiter/mag_rtn_normal_1min"),
+        |path| file_name_starts_with(path, "solo_l2_mag_rtn_normal_1minute_2020"),
+    );
+    if !solo_mag_paths.is_empty() {
+        for path in &solo_mag_paths {
+            let records = parse_solar_orbiter_mag_file(path)?;
+            sources.push(rel(repo_root, path));
+            for record in records {
+                let support = solo_support.get(&(record.year, record.doy, record.hour));
+                rows.push(HeliosphereFeatureRow {
+                    window_name: "modern2020".to_string(),
+                    mission: "Solar Orbiter".to_string(),
+                    product: "MAG RTN 1-minute".to_string(),
+                    year: record.year,
+                    doy: record.doy,
+                    hour: record.hour,
+                    r_au: support.map(|value| value.0).unwrap_or(f64::NAN),
+                    lat_deg: support.map(|value| value.1).unwrap_or(f64::NAN),
+                    lon_deg: support.map(|value| value.2).unwrap_or(f64::NAN),
+                    density_cm3: f64::NAN,
+                    speed_kms: f64::NAN,
+                    temperature_k: f64::NAN,
+                    bx: record.br,
+                    by: record.bt,
+                    bz: record.bn,
+                    b_mag: record.b_magnitude,
+                    crs_flux: f64::NAN,
+                    spectral_mean: f64::NAN,
+                    spectral_peak: f64::NAN,
+                    map_flux_mean: f64::NAN,
+                    map_flux_std: f64::NAN,
+                });
+            }
+        }
+        notes.push(format!(
+            "Solar Orbiter modern2020 includes {} MAG RTN 1-minute daily files.",
+            solo_mag_paths.len()
+        ));
+    } else {
+        notes.push("Solar Orbiter MAG RTN 1-minute files missing; run fetch-datasets for 'Solar Orbiter MAG RTN 1-minute (2020)' to populate them.".to_string());
+    }
+
+    let solo_rpw_paths = collect_matching_files(
+        &repo_root.join("data/external/solar_orbiter/rpw_bia_scpot_10s"),
+        |path| {
+            path.extension().and_then(|value| value.to_str()) == Some("csv")
+                && file_name_starts_with(path, "solo_l3_rpw-bia-scpot-10-seconds_2020")
+        },
+    );
+    if !solo_rpw_paths.is_empty() {
+        let mut parsed_solo_rpw = 0usize;
+        let mut skipped_solo_rpw = 0usize;
+        for path in &solo_rpw_paths {
+            match parse_solar_orbiter_rpw_file(path) {
+                Ok(records) => {
+                    parsed_solo_rpw += 1;
+                    sources.push(rel(repo_root, path));
+                    for record in records {
+                        let support = solo_support.get(&(record.year, record.doy, record.hour));
+                        rows.push(HeliosphereFeatureRow {
+                            window_name: "modern2020".to_string(),
+                            mission: "Solar Orbiter".to_string(),
+                            product: "RPW BIA SCPOT 10-second".to_string(),
+                            year: record.year,
+                            doy: record.doy,
+                            hour: record.hour,
+                            r_au: support.map(|value| value.0).unwrap_or(f64::NAN),
+                            lat_deg: support.map(|value| value.1).unwrap_or(f64::NAN),
+                            lon_deg: support.map(|value| value.2).unwrap_or(f64::NAN),
+                            density_cm3: f64::NAN,
+                            speed_kms: f64::NAN,
+                            temperature_k: f64::NAN,
+                            bx: f64::NAN,
+                            by: f64::NAN,
+                            bz: f64::NAN,
+                            b_mag: f64::NAN,
+                            crs_flux: f64::NAN,
+                            spectral_mean: record.scpot,
+                            spectral_peak: record.psp,
+                            map_flux_mean: f64::NAN,
+                            map_flux_std: f64::NAN,
+                        });
+                    }
+                }
+                Err(err) => {
+                    skipped_solo_rpw += 1;
+                    notes.push(format!(
+                        "Solar Orbiter RPW file {} was skipped in modern2020: {}",
+                        rel(repo_root, path),
+                        err
+                    ));
+                }
+            }
+        }
+        notes.push(format!(
+            "Solar Orbiter modern2020 includes {} RPW BIA SCPOT daily CSV mirrors, with the official direct CDFs retained only for provenance staging.",
+            parsed_solo_rpw
+        ));
+        if skipped_solo_rpw > 0 {
+            notes.push(format!(
+                "Solar Orbiter modern2020 skipped {} RPW BIA SCPOT daily CSV mirrors after parser validation.",
+                skipped_solo_rpw
+            ));
+        }
+    } else {
+        notes.push("Solar Orbiter RPW BIA SCPOT files missing; run fetch-datasets for 'Solar Orbiter RPW BIA SCPOT 10-second (2020)' to populate them.".to_string());
+    }
+
     let bepi_path =
         repo_root.join("data/external/bepicolombo/bepicolombo_helio1hr_position_2020.csv");
     if bepi_path.exists() {
@@ -551,17 +736,69 @@ fn build_modern2020(
     Ok(())
 }
 
+fn build_outer2001(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let omni_path = repo_root.join("data/external/omni2/omni2_2001_amda_hourly.csv");
+    if omni_path.exists() {
+        let omni = parse_omni_file(&omni_path)?;
+        sources.push(rel(repo_root, &omni_path));
+        push_omni_rows(rows, "outer2001", "OMNI", "Hourly merged", &omni);
+    } else {
+        notes.push(
+            "OMNI 2001 file missing; run fetch-datasets for 'OMNI Hourly' to populate it."
+                .to_string(),
+        );
+    }
+
+    let ulysses_path = repo_root.join("data/external/ulysses/uly_2001.asc");
+    if ulysses_path.exists() {
+        let merged = parse_ulysses_file(&ulysses_path)?;
+        sources.push(rel(repo_root, &ulysses_path));
+        push_omni_rows(
+            rows,
+            "outer2001",
+            "Ulysses",
+            "Merged mission support",
+            &ulysses_to_omni(&merged),
+        );
+    } else {
+        notes.push("Ulysses 2001 merged file missing; run fetch-datasets for 'Ulysses Merged Hourly' to populate it.".to_string());
+    }
+
+    let cassini_path = repo_root.join("data/external/cassini/cassini_2001_amda_cruise_hourly.asc");
+    if cassini_path.exists() {
+        let merged = parse_cassini_cruise_file(&cassini_path)?;
+        sources.push(rel(repo_root, &cassini_path));
+        push_omni_rows(
+            rows,
+            "outer2001",
+            "Cassini",
+            "Cruise hybrid",
+            &cassini_to_omni(&merged),
+        );
+    } else {
+        notes.push("Cassini 2001 cruise file missing; run fetch-datasets for 'Cassini Cruise Merged Hourly' to populate it.".to_string());
+    }
+
+    Ok(())
+}
+
 fn build_boundary2009(
     repo_root: &Path,
     rows: &mut Vec<HeliosphereFeatureRow>,
     sources: &mut Vec<String>,
     notes: &mut Vec<String>,
 ) -> Result<()> {
-    let ibex_flux_path = collect_matching_files(&repo_root.join("data/external/ibex/release17"), |path| {
-        file_name_ends_with(path, "-flux.txt")
-    })
-    .into_iter()
-    .next();
+    let ibex_flux_path =
+        collect_matching_files(&repo_root.join("data/external/ibex/release17"), |path| {
+            file_name_ends_with(path, "-flux.txt")
+        })
+        .into_iter()
+        .next();
     if let Some(path) = ibex_flux_path {
         let map = parse_ibex_ena_file(&path, 1.1, 1, 2009, "Lo")?;
         sources.push(rel(repo_root, &path));
@@ -608,10 +845,10 @@ fn build_remote2024(
     sources: &mut Vec<String>,
     notes: &mut Vec<String>,
 ) -> Result<()> {
-    let header_paths =
-        collect_matching_files(&repo_root.join("data/external/soho/lasco/level05"), |path| {
-            file_name_ends_with(path, "img_hdr.txt")
-        });
+    let header_paths = collect_matching_files(
+        &repo_root.join("data/external/soho/lasco/level05"),
+        |path| file_name_ends_with(path, "img_hdr.txt"),
+    );
     if header_paths.is_empty() {
         notes.push(
             "SOHO LASCO sample headers not found; run fetch-datasets for 'SOHO LASCO L0.5 Day Sample' to populate them."
@@ -668,9 +905,10 @@ fn build_imap2025(
     sources: &mut Vec<String>,
     notes: &mut Vec<String>,
 ) -> Result<()> {
-    let helio_paths = collect_matching_files(&repo_root.join("data/external/imap/helio1hr"), |path| {
-        file_name_ends_with(path, ".cdf")
-    });
+    let helio_paths =
+        collect_matching_files(&repo_root.join("data/external/imap/helio1hr"), |path| {
+            file_name_ends_with(path, ".cdf")
+        });
     if helio_paths.is_empty() {
         notes.push(
             "IMAP helio1hr CDFs not found; run fetch-datasets for 'IMAP Helio1hr Position' to populate them."
@@ -717,6 +955,67 @@ fn build_imap2026(
     sources: &mut Vec<String>,
     notes: &mut Vec<String>,
 ) -> Result<()> {
+    let ialirt_paths = collect_matching_files(
+        &repo_root.join("data/external/imap/ialirt/l1/realtime"),
+        |path| file_name_ends_with(path, ".cdf"),
+    );
+    if ialirt_paths.is_empty() {
+        notes.push(
+            "IMAP I-ALiRT realtime CDFs not found; run fetch-datasets for 'IMAP I-ALiRT L1 Realtime' to populate them."
+                .to_string(),
+        );
+    } else {
+        let mut parsed_ialirt_files = 0usize;
+        let mut skipped_ialirt_files = 0usize;
+        for path in &ialirt_paths {
+            match parse_imap_ialirt_file(path) {
+                Ok(records) => {
+                    parsed_ialirt_files += 1;
+                    sources.push(rel(repo_root, path));
+                    for record in records {
+                        rows.push(HeliosphereFeatureRow {
+                            window_name: "imap2026".to_string(),
+                            mission: "IMAP".to_string(),
+                            product: "I-ALiRT realtime".to_string(),
+                            year: record.year,
+                            doy: record.doy,
+                            hour: record.hour,
+                            r_au: f64::NAN,
+                            lat_deg: f64::NAN,
+                            lon_deg: f64::NAN,
+                            density_cm3: record.pseudo_density,
+                            speed_kms: record.pseudo_speed,
+                            temperature_k: record.pseudo_temperature,
+                            bx: record.br,
+                            by: record.bt,
+                            bz: record.bn,
+                            b_mag: record.b_magnitude,
+                            crs_flux: f64::NAN,
+                            spectral_mean: f64::NAN,
+                            spectral_peak: f64::NAN,
+                            map_flux_mean: f64::NAN,
+                            map_flux_std: f64::NAN,
+                        });
+                    }
+                }
+                Err(err) => {
+                    skipped_ialirt_files += 1;
+                    notes.push(format!(
+                        "Skipping IMAP I-ALiRT file {} because {}",
+                        rel(repo_root, path),
+                        err
+                    ));
+                }
+            }
+        }
+        notes.push(format!(
+            "IMAP I-ALiRT realtime staged {} daily CDF files; {} parsed successfully and {} were skipped by the current Rust CDF reader.",
+            ialirt_paths.len(),
+            parsed_ialirt_files,
+            skipped_ialirt_files
+        ));
+    }
+
     let ena_paths =
         collect_matching_files(&repo_root.join("data/external/imap/hi/l2/h90"), |path| {
             file_name_ends_with(path, ".cdf")
@@ -769,10 +1068,25 @@ fn push_omni_rows(
     for record in records {
         let b_mag = if record.b_magnitude.is_finite() {
             record.b_magnitude
-        } else if record.bx_gse.is_finite() || record.by_gse.is_finite() || record.bz_gse.is_finite() {
-            let bx = if record.bx_gse.is_finite() { record.bx_gse } else { 0.0 };
-            let by = if record.by_gse.is_finite() { record.by_gse } else { 0.0 };
-            let bz = if record.bz_gse.is_finite() { record.bz_gse } else { 0.0 };
+        } else if record.bx_gse.is_finite()
+            || record.by_gse.is_finite()
+            || record.bz_gse.is_finite()
+        {
+            let bx = if record.bx_gse.is_finite() {
+                record.bx_gse
+            } else {
+                0.0
+            };
+            let by = if record.by_gse.is_finite() {
+                record.by_gse
+            } else {
+                0.0
+            };
+            let bz = if record.bz_gse.is_finite() {
+                record.bz_gse
+            } else {
+                0.0
+            };
             (bx * bx + by * by + bz * bz).sqrt()
         } else {
             f64::NAN
@@ -900,7 +1214,10 @@ where
     if !root.exists() {
         return paths;
     }
-    for entry in WalkDir::new(root).into_iter().filter_map(|entry| entry.ok()) {
+    for entry in WalkDir::new(root)
+        .into_iter()
+        .filter_map(|entry| entry.ok())
+    {
         let path = entry.path();
         if path.is_file() && predicate(path) {
             paths.push(path.to_path_buf());
@@ -922,6 +1239,27 @@ fn file_name_starts_with(path: &Path, prefix: &str) -> bool {
         .and_then(|value| value.to_str())
         .map(|value| value.starts_with(prefix))
         .unwrap_or(false)
+}
+
+fn file_date_key(path: &Path) -> Option<(u16, u8, u8)> {
+    if let Some(date) = filename_date_yyyymmdd(path) {
+        return Some(date);
+    }
+    let text = path.file_name()?.to_string_lossy();
+    let digits = text
+        .chars()
+        .filter(|value| value.is_ascii_digit())
+        .collect::<String>();
+    for idx in 0..digits.len().saturating_sub(7) {
+        let slice = &digits[idx..idx + 8];
+        let year = slice[0..4].parse::<u16>().ok()?;
+        let month = slice[4..6].parse::<u8>().ok()?;
+        let day = slice[6..8].parse::<u8>().ok()?;
+        if NaiveDate::from_ymd_opt(i32::from(year), u32::from(month), u32::from(day)).is_some() {
+            return Some((year, month, day));
+        }
+    }
+    None
 }
 
 fn rel(repo_root: &Path, path: &Path) -> String {

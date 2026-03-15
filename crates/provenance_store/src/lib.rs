@@ -2779,8 +2779,7 @@ fn replace_ranked_values(
     relation: &str,
     values: &[String],
 ) -> Result<()> {
-    let delete_sql =
-        format!("DELETE FROM {table} WHERE {owner_column} = ?1 AND relation = ?2");
+    let delete_sql = format!("DELETE FROM {table} WHERE {owner_column} = ?1 AND relation = ?2");
     conn.execute(&delete_sql, params![owner_id, relation])?;
     insert_ranked_values(conn, table, owner_column, owner_id, relation, values)
 }

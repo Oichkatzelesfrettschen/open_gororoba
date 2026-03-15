@@ -546,6 +546,18 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~15 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "SOHO CELIAS PM 5min CDF (2020)",
+                soho_celias::SohoCeliasPm5MinProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~15 MB",
+        },
+        DatasetEntry {
             provider: Box::new(soho_celias::SohoLascoDaySampleProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
@@ -562,6 +574,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~2 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(imap::ImapIalirtRealtimeProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~1-20 MB/year",
         },
         DatasetEntry {
             provider: Box::new(psp::PspProvider::default()),
@@ -600,6 +618,22 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~20-200 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(
+                data_core::catalogs::solar_orbiter_rpw::SolarOrbiterRpwProvider::default(),
+            ),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(
+                data_core::catalogs::solar_orbiter_mag::SolarOrbiterMagProvider::default(),
+            ),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB/year",
+        },
+        DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter Merged Hourly (2020)",
                 solar_orbiter::SolarOrbiterProvider {
@@ -610,6 +644,30 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-20 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Solar Orbiter MAG RTN 1-minute (2020)",
+                data_core::catalogs::solar_orbiter_mag::SolarOrbiterMagProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Solar Orbiter RPW BIA SCPOT 10-second (2020)",
+                data_core::catalogs::solar_orbiter_rpw::SolarOrbiterRpwProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB",
         },
         DatasetEntry {
             provider: Box::new(voyager_pws::VoyagerPwsProvider::default()),

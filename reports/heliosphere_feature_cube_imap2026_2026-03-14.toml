@@ -1,5 +1,5 @@
 window_name = "imap2026"
-generated_at_utc = "2026-03-15T03:18:55.806770328+00:00"
+generated_at_utc = "2026-03-15T06:10:33.355960365+00:00"
 temporal_start_utc = "2026-01-01T00:00:00Z"
 temporal_end_utc = "2026-01-01T00:00:00Z"
 row_count = 1
@@ -24,4 +24,31 @@ channel_names = [
     "bias",
 ]
 source_paths = ["data/external/imap/hi/l2/h90/2026/imap_hi_l2_h90-ena-h-sf-nsp-full-4deg-3mo_20260101_v001.cdf"]
-notes = []
+notes = [
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260201_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260202_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260203_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260204_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260205_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260206_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260207_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260208_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260209_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260210_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260211_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260212_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260213_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260214_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260215_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260216_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260217_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260218_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260219_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260220_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260221_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260222_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260223_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260224_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "Skipping IMAP I-ALiRT file data/external/imap/ialirt/l1/realtime/2026/imap_ialirt_l1_realtime_20260225_v001.cdf because Validation failed: CDF parse error: first and last in VXR do not have matching Some value.",
+    "IMAP I-ALiRT realtime staged 25 daily CDF files; 0 parsed successfully and 25 were skipped by the current Rust CDF reader.",
+]

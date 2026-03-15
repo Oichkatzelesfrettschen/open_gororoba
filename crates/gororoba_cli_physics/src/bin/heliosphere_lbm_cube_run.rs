@@ -102,7 +102,9 @@ fn main() -> Result<()> {
         cuda_compute_major: cuda_props.map(|value| value.major).unwrap_or(0),
         cuda_compute_minor: cuda_props.map(|value| value.minor).unwrap_or(0),
         cuda_l2_bytes: cuda_props.map(|value| value.l2_bytes).unwrap_or(0),
-        cuda_shared_mem_per_block: cuda_props.map(|value| value.shared_mem_per_block).unwrap_or(0),
+        cuda_shared_mem_per_block: cuda_props
+            .map(|value| value.shared_mem_per_block)
+            .unwrap_or(0),
         cuda_bf16_native: cuda_props.map(|value| value.bf16_native).unwrap_or(false),
         cuda_sparse_tile_preferred: cuda_props
             .map(|value| value.sparse_tile_preferred)
@@ -126,7 +128,8 @@ fn main() -> Result<()> {
             best_backend: format!("{:?}", detect_best_backend(&caps, cli.grid.pow(3))),
             simd: simd.to_string(),
             cuda_available: caps.cuda_available,
-            cuda_compute_capability: cuda_props.map(|value| format!("{}.{}", value.major, value.minor)),
+            cuda_compute_capability: cuda_props
+                .map(|value| format!("{}.{}", value.major, value.minor)),
             cuda_l2_bytes: cuda_props.map(|value| value.l2_bytes),
             cuda_shared_mem_per_block: cuda_props.map(|value| value.shared_mem_per_block),
             cuda_bf16_native: cuda_props.map(|value| value.bf16_native),
@@ -249,7 +252,11 @@ fn mean(values: impl Iterator<Item = f64>) -> f64 {
 }
 
 fn stddev(values: &[f64], mean: f64) -> f64 {
-    let finite: Vec<f64> = values.iter().copied().filter(|value| value.is_finite()).collect();
+    let finite: Vec<f64> = values
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect();
     if finite.len() < 2 || !mean.is_finite() {
         return 0.0;
     }

@@ -54,7 +54,10 @@ impl BenchConfig {
 fn bench_gpu(config: &BenchConfig) -> Result<f64, String> {
     // Check if VRAM requirement is too large (e.g., > 20GB for a typical Ada card)
     if config.memory_gb() > 20.0 {
-        return Err(format!("Skipping due to excessive VRAM requirement: {:.2} GB", config.memory_gb()));
+        return Err(format!(
+            "Skipping due to excessive VRAM requirement: {:.2} GB",
+            config.memory_gb()
+        ));
     }
 
     let mut solver = LbmSolver3DCuda::new(
@@ -84,7 +87,7 @@ fn bench_gpu(config: &BenchConfig) -> Result<f64, String> {
     solver
         .evolve(config.steps)
         .map_err(|e| format!("GPU evolution failed: {:?}", e))?;
-    
+
     let elapsed = start.elapsed();
     Ok(elapsed.as_secs_f64())
 }
@@ -102,7 +105,7 @@ fn main() {
 
     let grid_sizes = vec![8, 16, 32, 64, 128, 256, 512, 1024];
     let precisions = vec![Precision::BF16, Precision::FP32, Precision::FP64];
-    
+
     println!(
         "{:<25} {:>10} {:>10} {:>12} {:>15}",
         "Benchmark", "VRAM (GB)", "Steps", "Time (s)", "Throughput (MLUPS)"
@@ -133,7 +136,7 @@ fn main() {
 
             let name = config.name();
             let vram = config.memory_gb();
-            
+
             if vram > 20.0 {
                 println!(
                     "{:<25} {:>10.2} {:>10} {:>12} {:>15}",

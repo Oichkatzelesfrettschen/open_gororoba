@@ -4,7 +4,11 @@ use clap::Parser;
 use provenance_core::ExternalSourceContractRecord;
 use provenance_store::ProvenanceStore;
 use serde::Serialize;
-use std::{collections::BTreeMap, fs, path::Path, path::PathBuf};
+use std::{
+    collections::BTreeMap,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -248,10 +252,10 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         parser_status: "operational",
         overlay_3d_ready: true,
         overlay_4d_ready: true,
-        cube_ready: false,
-        lbm_ready: false,
-        algebra_ready: false,
-        notes: "Executed post-1997 high-latitude lane.",
+        cube_ready: true,
+        lbm_ready: true,
+        algebra_ready: true,
+        notes: "Executed post-1997 high-latitude lane and outer2001 feature-cube/algebra/LBM inputs.",
     },
     CoverageSpec {
         mission: "Helios 1",
@@ -290,10 +294,10 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         parser_status: "operational",
         overlay_3d_ready: true,
         overlay_4d_ready: true,
-        cube_ready: false,
-        lbm_ready: false,
-        algebra_ready: false,
-        notes: "Executed hybrid cruise lane.",
+        cube_ready: true,
+        lbm_ready: true,
+        algebra_ready: true,
+        notes: "Executed hybrid cruise lane and outer2001 feature-cube/algebra/LBM inputs.",
     },
     CoverageSpec {
         mission: "Juno",
@@ -363,7 +367,7 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         cube_ready: true,
         lbm_ready: true,
         algebra_ready: true,
-        notes: "Current parsed SOHO inner-boundary lane remains the mission bundle and feeds the modern2020 feature cube.",
+        notes: "Mission-long bundle remains a compatibility fallback and backfill source, but the executed modern2020 feature cube now prefers the native daily CDAWeb CDF lane when the target year is cached.",
     },
     CoverageSpec {
         mission: "SOHO",
@@ -377,7 +381,7 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         cube_ready: true,
         lbm_ready: false,
         algebra_ready: true,
-        notes: "Official CDAWeb follow-on lane for daily CDF products; parser is promoted and the feature-cube prefers native daily CDF rows when the target year is cached.",
+        notes: "Official CDAWeb follow-on lane for daily CDF products; parser is promoted and the executed modern2020 feature cube now uses the full 2020 native daily CDF set.",
     },
     CoverageSpec {
         mission: "SOHO",
@@ -411,15 +415,15 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         mission: "Parker Solar Probe",
         instrument: "FIELDS",
         product_family: "Higher-cadence MAG",
-        source_contract_id: "SRC-PSP-BERKELEY-FIELDS-MAG",
-        local_glob: "data/external/psp/berkeley_fields/**/*",
-        parser_status: "operational_bounded",
+        source_contract_id: "SRC-PSP-FIELDS-L2-MAG-RTN-1MIN",
+        local_glob: "data/external/psp/fields_l2_mag_rtn_1min/**/*",
+        parser_status: "operational",
         overlay_3d_ready: true,
         overlay_4d_ready: true,
         cube_ready: true,
         lbm_ready: false,
         algebra_ready: true,
-        notes: "Official higher-cadence supplement is staged through bounded daily HAPI chunks for January-February 2020 and integrated into the modern2020 feature cube.",
+        notes: "Official higher-cadence supplement is staged for the full January-February 2020 target window, with direct daily CDAWeb CDFs retained for provenance and parser-friendly HAPI CSV mirrors used in the executed cube lane.",
     },
     CoverageSpec {
         mission: "Solar Orbiter",
@@ -448,6 +452,34 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         lbm_ready: true,
         algebra_ready: true,
         notes: "Official SOAR follow-on lane is staged for 2020 and integrated into the modern2020 feature cube.",
+    },
+    CoverageSpec {
+        mission: "Solar Orbiter",
+        instrument: "MAG",
+        product_family: "RTN normal 1-minute",
+        source_contract_id: "SRC-SOLO-MAG-RTN-NORMAL-1MIN",
+        local_glob: "data/external/solar_orbiter/mag_rtn_normal_1min/**/*.csv",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: true,
+        lbm_ready: false,
+        algebra_ready: true,
+        notes: "Official MAG RTN 1-minute follow-on lane is staged for 2020 and integrated into the modern2020 feature cube.",
+    },
+    CoverageSpec {
+        mission: "Solar Orbiter",
+        instrument: "RPW BIA",
+        product_family: "Spacecraft potential 10-second",
+        source_contract_id: "SRC-SOLO-RPW-BIA-SCPOT-10S",
+        local_glob: "data/external/solar_orbiter/rpw_bia_scpot_10s/**/*",
+        parser_status: "operational",
+        overlay_3d_ready: true,
+        overlay_4d_ready: true,
+        cube_ready: true,
+        lbm_ready: false,
+        algebra_ready: true,
+        notes: "Official RPW BIA spacecraft-potential follow-on lane is staged for 2020 with direct CDF provenance plus parser-friendly HAPI CSV mirrors, and the executed cube lane prefers the CSV representation.",
     },
     CoverageSpec {
         mission: "BepiColombo",
@@ -491,6 +523,20 @@ const COVERAGE_SPECS: &[CoverageSpec] = &[
         algebra_ready: true,
         notes: "Official CDAWeb IMAP-Hi ENA products are public, parser-promoted, and summarized into the imap2026 feature-cube window.",
     },
+    CoverageSpec {
+        mission: "IMAP",
+        instrument: "I-ALiRT",
+        product_family: "L1 realtime multiproduct stream",
+        source_contract_id: "SRC-IMAP-IALIRT-L1-REALTIME",
+        local_glob: "data/external/imap/ialirt/l1/realtime/**/*.cdf",
+        parser_status: "staged_cdf_reader_blocked",
+        overlay_3d_ready: false,
+        overlay_4d_ready: false,
+        cube_ready: false,
+        lbm_ready: false,
+        algebra_ready: false,
+        notes: "Official IMAP I-ALiRT realtime CDFs are staged, but the current Rust CDF reader rejects this public CDF variant and the product is therefore governed-but-blocked rather than executed.",
+    },
 ];
 
 fn glob_match_count(root: &Path, rel_glob: &str) -> Result<usize> {
@@ -505,9 +551,9 @@ fn glob_match_count(root: &Path, rel_glob: &str) -> Result<usize> {
 }
 
 fn default_out_path(repo_root: &Path, report_date: &str) -> PathBuf {
-    repo_root
-        .join("reports")
-        .join(format!("heliosphere_instrument_coverage_{report_date}.toml"))
+    repo_root.join("reports").join(format!(
+        "heliosphere_instrument_coverage_{report_date}.toml"
+    ))
 }
 
 fn main() -> Result<()> {

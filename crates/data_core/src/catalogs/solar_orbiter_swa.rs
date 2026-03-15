@@ -139,7 +139,11 @@ impl DatasetProvider for SolarOrbiterSwaProvider {
                     log::info!("saved {}", output.display());
                 }
                 Err(err) => {
-                    log::warn!("failed to download Solar Orbiter SWA {} via HAPI: {}", year, err);
+                    log::warn!(
+                        "failed to download Solar Orbiter SWA {} via HAPI: {}",
+                        year,
+                        err
+                    );
                 }
             }
         }
