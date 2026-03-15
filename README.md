@@ -59,7 +59,18 @@ make rust-regression
 make doctor
 cargo test -p algebra_analysis --lib
 cargo test -p gororoba_cli_algebra --bin structured-spectrum-bench
+make docs-site
+make docs-gate
+make docs-redirect-check
+make docs-freshness
 ```
 
+`make docs-site` builds the unified docs bundle into `target/site-docs` (mdBook + rustdoc).
+`make docs-gate` is the same staged bundle used by CI for publication.
+`make docs-redirect-check` validates shortlinks and legacy path redirect artifacts.
+`make docs-freshness` runs the same docs staging checks as CI freshness verification.
+Set repository Pages source to **GitHub Actions** to have `main` pushes auto-publish the bundle from CI.
+Shortlinks are also available at `/book` and `/rustdoc`, and legacy local paths containing
+`.cache/.../doc/...` will be redirected to the `rustdoc` path by the hosted 404 fallback.
 For fuller install and reproducibility guidance, see `docs/REQUIREMENTS.md`
 and `registry/requirements_narrative.toml`.
