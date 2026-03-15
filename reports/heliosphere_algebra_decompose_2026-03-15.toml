@@ -1,7 +1,7 @@
-generated_at_utc = "2026-03-15T06:12:34.225111601+00:00"
-cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_cube_modern2020_2026-03-14.csv"
+generated_at_utc = "2026-03-15T06:34:56.062930165+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
 feature_dim = 16
-group_count = 6
+group_count = 8
 
 [[groups]]
 window_name = "modern2020"
@@ -19,13 +19,13 @@ dominant_channel_mean_abs = 179.00899772313275
 window_name = "modern2020"
 mission = "Parker Solar Probe"
 product = "FIELDS MAG RTN"
-row_count = 255
-mean_norm_sq = 97704.53157919714
-mean_signal_energy = 312.17898764470596
-mean_associator_norm = 123563.62684765848
-max_associator_norm = 1015407.435870048
+row_count = 1164
+mean_norm_sq = 57985.91755513348
+mean_signal_energy = 232.7123505812737
+mean_associator_norm = 141675.3774372869
+max_associator_norm = 2040171.6170535432
 dominant_channel = "lon_deg"
-dominant_channel_mean_abs = 311.007450980392
+dominant_channel_mean_abs = 219.80687285223365
 
 [[groups]]
 window_name = "modern2020"
@@ -43,13 +43,25 @@ dominant_channel_mean_abs = 44460.709927140255
 window_name = "modern2020"
 mission = "SOHO"
 product = "CELIAS daily CDF hourly"
-row_count = 5928
-mean_norm_sq = 2304367486.8311014
-mean_signal_energy = 38414.95912867024
-mean_associator_norm = 25490984.578315213
+row_count = 8091
+mean_norm_sq = 3131923794.525667
+mean_signal_energy = 43448.98634437257
+mean_associator_norm = 29439008.08704393
 max_associator_norm = 5714352597.491973
 dominant_channel = "temperature_k"
-dominant_channel_mean_abs = 38411.558071465646
+dominant_channel_mean_abs = 43445.693890106384
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "MAG RTN 1-minute"
+row_count = 3012
+mean_norm_sq = 32444.690581924922
+mean_signal_energy = 145.17534603864172
+mean_associator_norm = 9977.252440827315
+max_associator_norm = 224164.3675892422
+dominant_channel = "lon_deg"
+dominant_channel_mean_abs = 144.37974767596296
 
 [[groups]]
 window_name = "modern2020"
@@ -62,6 +74,18 @@ mean_associator_norm = 16374872.878701558
 max_associator_norm = 8351732842.9422865
 dominant_channel = "temperature_k"
 dominant_channel_mean_abs = 16020.662226775956
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA SCPOT 10-second"
+row_count = 4100
+mean_norm_sq = 27772.933137456996
+mean_signal_energy = 133.25236490526012
+mean_associator_norm = 327.1901854310422
+max_associator_norm = 15386.654948453046
+dominant_channel = "lon_deg"
+dominant_channel_mean_abs = 132.3528536585365
 
 [[groups]]
 window_name = "modern2020"

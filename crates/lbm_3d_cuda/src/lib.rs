@@ -6,11 +6,13 @@ pub mod chingon_gpu;
 pub mod sparse;
 
 use anyhow::{Context, Result, ensure};
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaGraph, CudaSlice, CudaStream, DevicePtr, LaunchConfig,
-    PushKernelArg,
+use cudarc::{
+    driver::{
+        CudaContext, CudaFunction, CudaGraph, CudaSlice, CudaStream, DevicePtr, LaunchConfig,
+        PushKernelArg,
+    },
+    runtime::result::device as cudart_device,
 };
-use cudarc::runtime::result::device as cudart_device;
 use std::sync::Arc;
 
 // CudaGraph contains raw *mut pointers that are !Send+!Sync.
@@ -439,14 +441,18 @@ impl LbmSolver3DCuda {
                 Some(soa_module.load_function("lbm_step_soa_batch_kernel")?),
                 Some(soa_module.load_function("initialize_custom_soa_batch_kernel")?),
                 Some(soa_module.load_function("lbm_step_soa_mrt_fused")?),
-                Some(soa_module.load_function(if cuda_props
-                    .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
-                    .unwrap_or(false)
-                {
-                    "lbm_step_soa_coarsened_float4"
-                } else {
-                    "lbm_step_soa_coarsened"
-                })?),
+                Some(
+                    soa_module.load_function(
+                        if cuda_props
+                            .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
+                            .unwrap_or(false)
+                        {
+                            "lbm_step_soa_coarsened_float4"
+                        } else {
+                            "lbm_step_soa_coarsened"
+                        },
+                    )?,
+                ),
                 Some(soa_module.load_function("lbm_step_soa_mrt_coarsened")?),
                 Some(soa_module.load_function("reduce_max_speed_f32")?),
                 Some(soa_module.load_function("lbm_step_soa_pull")?),

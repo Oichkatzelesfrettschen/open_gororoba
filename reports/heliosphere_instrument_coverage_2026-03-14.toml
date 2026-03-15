@@ -1,6 +1,6 @@
-generated_at = "2026-03-14T20:15:10.354960014-07:00"
+generated_at = "2026-03-14T23:36:20.798109310-07:00"
 report_date = "2026-03-14"
-row_count = 30
+row_count = 33
 
 [[rows]]
 mission = "ACE"
@@ -303,10 +303,10 @@ cache_present = true
 parser_status = "operational"
 overlay_3d_ready = true
 overlay_4d_ready = true
-cube_ready = false
-lbm_ready = false
-algebra_ready = false
-notes = "Executed post-1997 high-latitude lane."
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed post-1997 high-latitude lane and outer2001 feature-cube/algebra/LBM inputs."
 
 [[rows]]
 mission = "Helios 1"
@@ -373,10 +373,10 @@ cache_present = true
 parser_status = "operational"
 overlay_3d_ready = true
 overlay_4d_ready = true
-cube_ready = false
-lbm_ready = false
-algebra_ready = false
-notes = "Executed hybrid cruise lane."
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed hybrid cruise lane and outer2001 feature-cube/algebra/LBM inputs."
 
 [[rows]]
 mission = "Juno"
@@ -490,7 +490,7 @@ overlay_4d_ready = false
 cube_ready = true
 lbm_ready = true
 algebra_ready = true
-notes = "Current parsed SOHO inner-boundary lane remains the mission bundle and feeds the modern2020 feature cube."
+notes = "Mission-long bundle remains a compatibility fallback and backfill source, but the executed modern2020 feature cube now prefers the native daily CDAWeb CDF lane when the target year is cached."
 
 [[rows]]
 mission = "SOHO"
@@ -504,7 +504,7 @@ access_class = "public"
 contract_status = "active"
 retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO CELIAS PM 5min CDF' --output-dir data/external --skip-existing=false"
 local_glob = "data/external/soho/celias_pm_5min/**/*.cdf"
-cache_match_count = 455
+cache_match_count = 1243
 cache_present = true
 parser_status = "operational"
 overlay_3d_ready = false
@@ -512,7 +512,7 @@ overlay_4d_ready = false
 cube_ready = true
 lbm_ready = false
 algebra_ready = true
-notes = "Official CDAWeb follow-on lane for daily CDF products; parser is promoted and the feature-cube prefers native daily CDF rows when the target year is cached."
+notes = "Official CDAWeb follow-on lane for daily CDF products; parser is promoted and the executed modern2020 feature cube now uses the full 2020 native daily CDF set."
 
 [[rows]]
 mission = "SOHO"
@@ -565,26 +565,26 @@ notes = "Executed modern inner-heliosphere lane and modern2020 feature-cube inpu
 mission = "Parker Solar Probe"
 instrument = "FIELDS"
 product_family = "Higher-cadence MAG"
-source_contract_id = "SRC-PSP-BERKELEY-FIELDS-MAG"
+source_contract_id = "SRC-PSP-FIELDS-L2-MAG-RTN-1MIN"
 source_contract_present = true
-canonical_url = "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/psp/fields/l2/mag_rtn_1min/"
 mirror_urls = [
-    "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN/",
-    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_FLD_L2_MAG_RTN",
+    "https://cdaweb.gsfc.nasa.gov/pub/data/psp/fields/l2/mag_rtn_1min/",
+    "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/",
 ]
 access_class = "public"
 contract_status = "active"
-retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Parker Solar Probe FIELDS MAG RTN' --output-dir data/external --skip-existing=false"
-local_glob = "data/external/psp/berkeley_fields/**/*"
-cache_match_count = 22
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv"
+local_glob = "data/external/psp/fields_l2_mag_rtn_1min/**/*"
+cache_match_count = 120
 cache_present = true
-parser_status = "operational_bounded"
+parser_status = "operational"
 overlay_3d_ready = true
 overlay_4d_ready = true
 cube_ready = true
 lbm_ready = false
 algebra_ready = true
-notes = "Official higher-cadence supplement is staged through bounded daily HAPI chunks for January-February 2020 and integrated into the modern2020 feature cube."
+notes = "Official higher-cadence supplement is staged for the full January-February 2020 target window, with direct daily CDAWeb CDFs retained for provenance and parser-friendly HAPI CSV mirrors used in the executed cube lane."
 
 [[rows]]
 mission = "Solar Orbiter"
@@ -629,6 +629,50 @@ cube_ready = true
 lbm_ready = true
 algebra_ready = true
 notes = "Official SOAR follow-on lane is staged for 2020 and integrated into the modern2020 feature cube."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "MAG"
+product_family = "RTN normal 1-minute"
+source_contract_id = "SRC-SOLO-MAG-RTN-NORMAL-1MIN"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L2_MAG-RTN-NORMAL-1-MINUTE"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/mag/science/l2/rtn-normal-1-minute/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Solar Orbiter MAG RTN 1-minute (2020)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/solar_orbiter/mag_rtn_normal_1min/**/*.csv"
+cache_match_count = 188
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official MAG RTN 1-minute follow-on lane is staged for 2020 and integrated into the modern2020 feature cube."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "RPW BIA"
+product_family = "Spacecraft potential 10-second"
+source_contract_id = "SRC-SOLO-RPW-BIA-SCPOT-10S"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/rpw/science/l3/bia-scpot-10-seconds/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv"
+local_glob = "data/external/solar_orbiter/rpw_bia_scpot_10s/**/*"
+cache_match_count = 389
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official RPW BIA spacecraft-potential follow-on lane is staged for 2020 with direct CDF provenance plus parser-friendly HAPI CSV mirrors, and the executed cube lane prefers the CSV representation."
 
 [[rows]]
 mission = "BepiColombo"
@@ -695,3 +739,28 @@ cube_ready = true
 lbm_ready = false
 algebra_ready = true
 notes = "Official CDAWeb IMAP-Hi ENA products are public, parser-promoted, and summarized into the imap2026 feature-cube window."
+
+[[rows]]
+mission = "IMAP"
+instrument = "I-ALiRT"
+product_family = "L1 realtime multiproduct stream"
+source_contract_id = "SRC-IMAP-IALIRT-L1-REALTIME"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/ialirt/l1/realtime/"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/pub/data/imap/",
+    "https://imap.princeton.edu/",
+]
+access_class = "public"
+contract_status = "partial"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IMAP I-ALiRT L1 Realtime' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/imap/ialirt/l1/realtime/**/*.cdf"
+cache_match_count = 25
+cache_present = true
+parser_status = "staged_cdf_reader_blocked"
+overlay_3d_ready = false
+overlay_4d_ready = false
+cube_ready = false
+lbm_ready = false
+algebra_ready = false
+notes = "Official IMAP I-ALiRT realtime CDFs are staged, but the current Rust CDF reader rejects this public CDF variant and the product is therefore governed-but-blocked rather than executed."

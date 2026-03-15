@@ -43,6 +43,8 @@ pub mod psp_fields;
 pub mod sdss;
 pub mod soho_celias;
 pub mod solar_orbiter;
+pub mod solar_orbiter_mag;
+pub mod solar_orbiter_rpw;
 pub mod solar_orbiter_swa;
 pub mod solar_wind;
 pub mod sorce;

@@ -14,7 +14,8 @@ use std::path::Path;
 const TT2000_REF_TAI: (i32, u8, u8, u8, u8, u8, u32) = (2000, 1, 1, 11, 59, 27, 816_000_000);
 
 pub fn read_cdf_file(path: &Path) -> Result<Cdf, FetchError> {
-    Cdf::read_cdf_file(path).map_err(|err| FetchError::Validation(format!("CDF parse error: {err}")))
+    Cdf::read_cdf_file(path)
+        .map_err(|err| FetchError::Validation(format!("CDF parse error: {err}")))
 }
 
 fn zvariable_by_name<'a>(cdf: &'a Cdf, name: &str) -> Option<&'a ZVariableDescriptorRecord> {
@@ -52,9 +53,8 @@ fn collect_vxr_rows(
 }
 
 pub fn cdf_variable_rows(cdf: &Cdf, name: &str) -> Result<Vec<Vec<CdfType>>, FetchError> {
-    let zvdr = zvariable_by_name(cdf, name).ok_or_else(|| {
-        FetchError::Validation(format!("missing CDF zVariable {name}"))
-    })?;
+    let zvdr = zvariable_by_name(cdf, name)
+        .ok_or_else(|| FetchError::Validation(format!("missing CDF zVariable {name}")))?;
     let mut rows = Vec::new();
     for vxr in &zvdr.vxr_vec {
         collect_vxr_rows(vxr, &mut rows)?;
@@ -90,7 +90,9 @@ pub fn cdf_vector_f64_rows(cdf: &Cdf, name: &str) -> Result<Vec<Vec<f64>>, Fetch
             row.into_iter()
                 .map(|value| {
                     cdf_type_to_f64(&value).ok_or_else(|| {
-                        FetchError::Validation(format!("CDF zVariable {name} contains non-numeric data"))
+                        FetchError::Validation(format!(
+                            "CDF zVariable {name} contains non-numeric data"
+                        ))
                     })
                 })
                 .collect()
@@ -162,8 +164,7 @@ pub fn filename_date_yyyymmdd(path: &Path) -> Option<(u16, u8, u8)> {
             let year = text[0..4].parse::<u16>().ok()?;
             let month = text[4..6].parse::<u8>().ok()?;
             let day = text[6..8].parse::<u8>().ok()?;
-            if NaiveDate::from_ymd_opt(i32::from(year), u32::from(month), u32::from(day))
-                .is_some()
+            if NaiveDate::from_ymd_opt(i32::from(year), u32::from(month), u32::from(day)).is_some()
             {
                 return Some((year, month, day));
             }

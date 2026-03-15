@@ -1,0 +1,39 @@
+window_name = "outer2001"
+generated_at_utc = "2026-03-15T05:52:37.472399827+00:00"
+temporal_start_utc = "2001-01-01T00:00:00Z"
+temporal_end_utc = "2001-12-31T23:00:00Z"
+row_count = 26278
+missions = [
+    "Cassini",
+    "OMNI",
+    "Ulysses",
+]
+products = [
+    "Cassini:Cruise hybrid",
+    "OMNI:Hourly merged",
+    "Ulysses:Merged mission support",
+]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = [
+    "data/external/cassini/cassini_2001_amda_cruise_hourly.asc",
+    "data/external/omni2/omni2_2001_amda_hourly.csv",
+    "data/external/ulysses/uly_2001.asc",
+]
+notes = []

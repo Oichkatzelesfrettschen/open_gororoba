@@ -11,11 +11,11 @@
 //! stack, which is primarily hourly.
 
 use crate::{
+    catalogs::omni::OmniRecord,
     cdf_support::{
         cdf_scalar_f64_rows, cdf_type_to_unix_ms, cdf_variable_rows, cdf_vector_f64_rows,
         filename_date_yyyymmdd, read_cdf_file, ymd_to_doy,
     },
-    catalogs::omni::OmniRecord,
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string},
     parse::parse_f64_or_nan,
 };
@@ -42,12 +42,18 @@ const SOHO_METADATA_URLS: &[(&str, &str)] = &[
         "gsfc_index.html",
         "https://soho.nascom.nasa.gov/data/archive/index_gsfc.html",
     ),
-    ("gsfc_archive.html", "https://soho.nascom.nasa.gov/data/archive.html"),
+    (
+        "gsfc_archive.html",
+        "https://soho.nascom.nasa.gov/data/archive.html",
+    ),
     (
         "esa_cmdline.html",
         "https://www.cosmos.esa.int/web/soho/command-line",
     ),
-    ("lasco_direct.html", "https://lasco-www.nrl.navy.mil/index.php?p=get_data"),
+    (
+        "lasco_direct.html",
+        "https://lasco-www.nrl.navy.mil/index.php?p=get_data",
+    ),
 ];
 
 #[derive(Debug, Clone)]
@@ -169,7 +175,7 @@ fn cdf_row_time_components(
             dt.minute() as u8,
             dt.second() as u8,
         );
-        }
+    }
     let minute_of_day = (idx as u32) * 5;
     (
         fallback_year,
@@ -305,7 +311,11 @@ pub fn parse_soho_celias_cdf_file(path: &Path) -> Result<Vec<SohoCeliasRecord>, 
                 .unwrap_or(f64::NAN),
             thermal_speed_kms,
             proton_temperature: proton_temperature_from_vth(thermal_speed_kms),
-            r_au: infer_soho_r_au_from_gse(gse_positions.as_ref().and_then(|rows| rows.get(idx).map(Vec::as_slice))),
+            r_au: infer_soho_r_au_from_gse(
+                gse_positions
+                    .as_ref()
+                    .and_then(|rows| rows.get(idx).map(Vec::as_slice)),
+            ),
             lat_deg: latitudes
                 .get(idx)
                 .copied()
@@ -532,7 +542,11 @@ fn soho_directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
 
 fn stage_soho_metadata(meta_dir: &Path, skip_existing: bool) {
     if let Err(err) = std::fs::create_dir_all(meta_dir) {
-        log::warn!("failed to create SOHO metadata dir {}: {}", meta_dir.display(), err);
+        log::warn!(
+            "failed to create SOHO metadata dir {}: {}",
+            meta_dir.display(),
+            err
+        );
         return;
     }
     for (file_name, url) in SOHO_METADATA_URLS {
@@ -660,7 +674,10 @@ impl DatasetProvider for SohoCeliasPm5MinProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        dir_has_suffix(&config.output_dir.join("soho").join("celias_pm_5min"), ".cdf")
+        dir_has_suffix(
+            &config.output_dir.join("soho").join("celias_pm_5min"),
+            ".cdf",
+        )
     }
 }
 
@@ -720,7 +737,12 @@ impl DatasetProvider for SohoLascoDaySampleProvider {
             let entries = match soho_directory_entries(&cam_url) {
                 Ok(entries) => entries,
                 Err(err) => {
-                    log::warn!("failed to list LASCO {} day sample {}: {}", camera, yymmdd, err);
+                    log::warn!(
+                        "failed to list LASCO {} day sample {}: {}",
+                        camera,
+                        yymmdd,
+                        err
+                    );
                     continue;
                 }
             };

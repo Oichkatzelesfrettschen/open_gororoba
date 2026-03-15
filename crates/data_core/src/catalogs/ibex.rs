@@ -143,7 +143,8 @@ pub fn parse_ibex_ena_file(
 }
 
 const IBEX_RELEASE17_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/";
-const IBEX_LO_HYDROGEN_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/Lo-Hydrogen/";
+const IBEX_LO_HYDROGEN_ROOT: &str =
+    "https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/Lo-Hydrogen/";
 const IBEX_ORBIT_HAPI_DATASET: &str = "IBEX_OR_SSC";
 
 fn directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
@@ -216,7 +217,11 @@ impl DatasetProvider for IbexProvider {
         if !config.skip_existing || !readme.exists() {
             let readme_url = format!("{IBEX_RELEASE17_ROOT}ibex17_readme.txt");
             if let Err(err) = download_to_file(&readme_url, &readme) {
-                log::warn!("failed to download IBEX readme from {}: {}", readme_url, err);
+                log::warn!(
+                    "failed to download IBEX readme from {}: {}",
+                    readme_url,
+                    err
+                );
             }
         }
 

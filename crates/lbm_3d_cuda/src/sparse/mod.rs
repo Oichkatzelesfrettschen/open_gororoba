@@ -48,7 +48,9 @@ impl SparseBrickMap {
         };
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SPARSE_MAP_SRC, opts)
             .context("Failed to compile kernels_sparse_map.cu")?;
-        let module = ctx.load_module(ptx).context("Failed to load sparse map module")?;
+        let module = ctx
+            .load_module(ptx)
+            .context("Failed to load sparse map module")?;
 
         let generate_occupancy_kernel = module.load_function("generate_occupancy_bitmask")?;
         let expand_bitmask_kernel = module.load_function("expand_bitmask_to_counts")?;
@@ -71,7 +73,11 @@ impl SparseBrickMap {
             (ny as u32).div_ceil(block.1),
             (nz as u32).div_ceil(block.2),
         );
-        let cfg = LaunchConfig { grid_dim: grid, block_dim: block, shared_mem_bytes: 0 };
+        let cfg = LaunchConfig {
+            grid_dim: grid,
+            block_dim: block,
+            shared_mem_bytes: 0,
+        };
         let nx_i = nx as i32;
         let ny_i = ny as i32;
         let nz_i = nz as i32;
@@ -81,8 +87,12 @@ impl SparseBrickMap {
         let mut b1 = stream.launch_builder(&generate_occupancy_kernel);
         b1.arg(d_geometry_mask)
             .arg(&mut d_occupancy_words)
-            .arg(&nx_i).arg(&ny_i).arg(&nz_i)
-            .arg(&bx_max_i).arg(&by_max_i).arg(&bz_max_i);
+            .arg(&nx_i)
+            .arg(&ny_i)
+            .arg(&nz_i)
+            .arg(&bx_max_i)
+            .arg(&by_max_i)
+            .arg(&bz_max_i);
         unsafe { b1.launch(cfg) }?;
 
         // 2. Expand Bitmask
@@ -90,9 +100,15 @@ impl SparseBrickMap {
         let grid2 = (n_bricks as u32).div_ceil(block2);
         let n_bricks_i = n_bricks as i32;
         let mut b2 = stream.launch_builder(&expand_bitmask_kernel);
-        b2.arg(&d_occupancy_words).arg(&mut d_brick_counts).arg(&n_bricks_i);
+        b2.arg(&d_occupancy_words)
+            .arg(&mut d_brick_counts)
+            .arg(&n_bricks_i);
         unsafe {
-            b2.launch(LaunchConfig { grid_dim: (grid2, 1, 1), block_dim: (block2, 1, 1), shared_mem_bytes: 0 })
+            b2.launch(LaunchConfig {
+                grid_dim: (grid2, 1, 1),
+                block_dim: (block2, 1, 1),
+                shared_mem_bytes: 0,
+            })
         }?;
 
         // 3. Prefix Sum
@@ -104,14 +120,14 @@ impl SparseBrickMap {
             total_active += h_brick_counts[i];
         }
         let n_active_bricks = total_active as usize;
-        
+
         // Push offsets back to device
         let d_brick_offsets = stream.clone_htod(&h_brick_offsets)?;
 
         // 4. Compact Indirect Table
         let mut d_indirect_table = stream.alloc_zeros::<i32>(n_bricks)?;
         let mut d_active_brick_ids = stream.alloc_zeros::<u32>(n_active_bricks.max(1))?;
-        
+
         let mut b3 = stream.launch_builder(&build_indirect_table_kernel);
         b3.arg(&d_brick_counts)
             .arg(&d_brick_offsets)
@@ -119,14 +135,22 @@ impl SparseBrickMap {
             .arg(&mut d_active_brick_ids)
             .arg(&n_bricks_i);
         unsafe {
-            b3.launch(LaunchConfig { grid_dim: (grid2, 1, 1), block_dim: (block2, 1, 1), shared_mem_bytes: 0 })
+            b3.launch(LaunchConfig {
+                grid_dim: (grid2, 1, 1),
+                block_dim: (block2, 1, 1),
+                shared_mem_bytes: 0,
+            })
         }?;
-        
+
         // Ensure synchronization if needed (clone_dtoh/htod does it)
 
         Ok(Self {
-            nx, ny, nz,
-            bx_max, by_max, bz_max,
+            nx,
+            ny,
+            nz,
+            bx_max,
+            by_max,
+            bz_max,
             n_bricks,
             n_active_bricks,
             d_occupancy_words,
@@ -150,9 +174,9 @@ pub struct SparseLbmSolver {
     pub d_u: CudaSlice<f32>,
     pub d_tau: CudaSlice<f32>,
     pub d_force: CudaSlice<f32>,
-    
+
     pub step: usize,
-    
+
     lbm_step_kernel: CudaFunction,
 }
 
@@ -160,7 +184,7 @@ impl SparseLbmSolver {
     pub fn new(map: SparseBrickMap) -> Result<Self> {
         let n_active_cells = map.n_active_bricks * 512;
         let stream = map.stream.clone();
-        
+
         // Allocate only for active cells
         let d_f = stream.alloc_zeros::<f32>(19 * n_active_cells.max(1))?;
         let d_rho = stream.alloc_zeros::<f32>(n_active_cells.max(1))?;
@@ -175,8 +199,11 @@ impl SparseLbmSolver {
         };
         let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SPARSE_LBM_SRC, opts)
             .context("Failed to compile kernels_sparse_lbm.cu")?;
-        let module = map.ctx.load_module(ptx).context("Failed to load sparse lbm module")?;
-        
+        let module = map
+            .ctx
+            .load_module(ptx)
+            .context("Failed to load sparse lbm module")?;
+
         let lbm_step_kernel = module.load_function("lbm_step_sparse_aa")?;
 
         Ok(Self {
@@ -200,8 +227,12 @@ impl SparseLbmSolver {
         let n_active_cells = self.map.n_active_bricks * 512;
         let block = 512;
         let grid = (n_active_cells as u32).div_ceil(block);
-        let cfg = LaunchConfig { grid_dim: (grid, 1, 1), block_dim: (block, 1, 1), shared_mem_bytes: 0 };
-        
+        let cfg = LaunchConfig {
+            grid_dim: (grid, 1, 1),
+            block_dim: (block, 1, 1),
+            shared_mem_bytes: 0,
+        };
+
         let nx_i = self.map.nx as i32;
         let ny_i = self.map.ny as i32;
         let nz_i = self.map.nz as i32;
@@ -220,17 +251,19 @@ impl SparseLbmSolver {
                 .arg(&self.d_force)
                 .arg(&self.map.d_indirect_table)
                 .arg(&self.map.d_active_brick_ids)
-                .arg(&nx_i).arg(&ny_i).arg(&nz_i)
-                .arg(&bx_max_i).arg(&by_max_i).arg(&bz_max_i)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i)
+                .arg(&bx_max_i)
+                .arg(&by_max_i)
+                .arg(&bz_max_i)
                 .arg(&n_active_cells_i)
                 .arg(&parity);
-                
-            unsafe {
-                b.launch(cfg)
-            }?;
+
+            unsafe { b.launch(cfg) }?;
             self.step += 1;
         }
-        
+
         // Wait for operations to complete before returning
         // In cudarc 0.19, `CudaStream` might not have `sync()`. We'll synchronize via device context.
         self.map.ctx.synchronize()?;

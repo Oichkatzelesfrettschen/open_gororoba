@@ -1,0 +1,40 @@
+generated_at_utc = "2026-03-15T06:06:01.423205568+00:00"
+cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_cube_outer2001_2026-03-14.csv"
+feature_dim = 16
+group_count = 3
+
+[[groups]]
+window_name = "outer2001"
+mission = "Cassini"
+product = "Cruise hybrid"
+row_count = 8758
+mean_norm_sq = 22394210663.917095
+mean_signal_energy = 79202.26337942311
+mean_associator_norm = 22887686.89415007
+max_associator_norm = 72798007058.25632
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 79196.78722310909
+
+[[groups]]
+window_name = "outer2001"
+mission = "OMNI"
+product = "Hourly merged"
+row_count = 8760
+mean_norm_sq = 20124739522.13002
+mean_signal_energy = 92166.08440304699
+mean_associator_norm = 174057144.42777556
+max_associator_norm = 128285851058.99532
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 92124.48607305936
+
+[[groups]]
+window_name = "outer2001"
+mission = "Ulysses"
+product = "Merged mission support"
+row_count = 8760
+mean_norm_sq = 593661.2922126943
+mean_signal_energy = 618.1033679827495
+mean_associator_norm = 315715.4477962604
+max_associator_norm = 520678163.37442243
+dominant_channel = "speed_kms"
+dominant_channel_mean_abs = 538.0475570776256
