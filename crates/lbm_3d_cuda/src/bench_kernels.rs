@@ -79,8 +79,8 @@ fn launch_cfg_1d(n_cells: usize, threads: u32) -> LaunchConfig {
 pub struct BenchKernelRunner {
     ctx: Arc<CudaContext>,
     stream: Arc<CudaStream>,
-    d_f_a: CudaSlice<u8>,     // ping distribution buffer (n_cells * 19 * elem_bytes)
-    d_f_b: CudaSlice<u8>,     // pong distribution buffer
+    d_f_a: CudaSlice<u8>,     // ping distribution buffer (n_cells * 20 * elem_bytes, stride 20)
+    d_f_b: CudaSlice<u8>,     // pong distribution buffer (same size)
     d_rho: CudaSlice<f32>,    // n_cells
     d_u: CudaSlice<f32>,      // n_cells * 3
     d_force: CudaSlice<f32>,  // n_cells * 3 (uniform zero)
@@ -120,7 +120,9 @@ impl BenchKernelRunner {
             compile_and_load(&ctx, src, cuda_include, arch, step_kernel_name, init_kernel_name)?;
 
         let n_cells = nx * ny * nz;
-        let f_bytes = n_cells * 19 * elem_bytes;
+        // Stride 20: fp16/fp8/int8 kernels use 20-element padded AoS to guarantee
+        // 4-byte alignment for half2/uchar4/int32 vectorized loads at every idx.
+        let f_bytes = n_cells * 20 * elem_bytes;
 
         let mut d_f_a = stream.alloc_zeros::<u8>(f_bytes)?;
         let d_f_b = stream.alloc_zeros::<u8>(f_bytes)?;
@@ -258,8 +260,9 @@ impl BenchKernelRunner {
     }
 
     /// VRAM used by distribution buffers (ping + pong) in bytes.
+    /// Stride is 20 (padded from 19) for 4-byte alignment of vectorized loads.
     pub fn vram_dist_bytes(&self) -> usize {
-        self.n_cells * 19 * self.elem_bytes * 2
+        self.n_cells * 20 * self.elem_bytes * 2
     }
 }
 
@@ -269,12 +272,13 @@ impl BenchKernelRunner {
 
 /// Double-double LBM benchmark solver.
 /// Each distribution stored as (hi: f64, lo: f64) -- 16 bytes/value.
+/// Layout: i-major SoA. f_hi[i*n_cells + idx] -- coalesced reads for fixed i.
 /// Four distribution buffers: f_hi_a, f_lo_a (ping), f_hi_b, f_lo_b (pong).
 pub struct DdBenchSolver {
     ctx: Arc<CudaContext>,
     stream: Arc<CudaStream>,
-    d_f_hi_a: CudaSlice<u8>,   // n_cells * 19 * 8 bytes (FP64 hi, ping)
-    d_f_lo_a: CudaSlice<u8>,   // n_cells * 19 * 8 bytes (FP64 lo, ping)
+    d_f_hi_a: CudaSlice<u8>,   // 19 * n_cells * 8 bytes (FP64 hi, ping, i-major SoA)
+    d_f_lo_a: CudaSlice<u8>,   // 19 * n_cells * 8 bytes (FP64 lo, ping, i-major SoA)
     d_f_hi_b: CudaSlice<u8>,   // pong hi
     d_f_lo_b: CudaSlice<u8>,   // pong lo
     d_rho: CudaSlice<f32>,

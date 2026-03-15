@@ -1,5 +1,5 @@
 // INT8 fixed-point D3Q19 LBM kernel.
-// Storage: int8_t / signed char (1 byte/value, AoS).
+// Storage: int8_t / signed char (1 byte/value, AoS, stride 20 per cell).
 // Compute: FP32 promoted immediately after dequantize.
 // Scale factor: DIST_SCALE = 64.0  (f_int8 = clamp(f_float * 64, -128, 127))
 //   -- distributions are typically [0, 1/3]; w_i * rho * max = 1/3 -> int8 = 85.
@@ -8,6 +8,10 @@
 //   Applied to the momentum sum (sum_i cx[i]*f[i]) for groups of 4 distributions.
 //   D3Q19 cx has only {-1, 0, 1} -> products fit in int8 exactly -> __dp4a valid.
 // Bandwidth: 4x reduction vs FP32 (1 byte vs 4 bytes per distribution scalar).
+// Alignment: stride 20 bytes per cell ensures 4-byte alignment for all idx
+//   (20 % 4 == 0); 5 int32 loads cover all 20 bytes (indices 0-18 active,
+//   index 19 is unused padding).
+// VRAM at 128^3: 20 * 2,097,152 * 1 * 2 (ping+pong) = ~80 MB.
 
 #define DIST_SCALE 64.0f
 #define INV_DIST_SCALE (1.0f / DIST_SCALE)
@@ -76,7 +80,9 @@ __device__ void compute_equilibrium_i8(float* f_eq, float rho, const float* u) {
 }
 
 // Saturate-clamp float to INT8 range after scaling.
+// NaN and Inf map to 0 to avoid undefined cast behavior.
 __device__ __forceinline__ signed char float_to_i8(float v) {
+    if (!finite_f32_i8(v)) return (signed char)0;
     float scaled = v * DIST_SCALE;
     if (scaled > 127.0f)  scaled = 127.0f;
     if (scaled < -128.0f) scaled = -128.0f;
@@ -85,8 +91,9 @@ __device__ __forceinline__ signed char float_to_i8(float v) {
 
 // Fused collision + streaming with INT8 storage, FP32 compute.
 // dp4a applied to momentum accumulation (cx/cy/cz dot product with f values).
+// Per-cell stride: 20 bytes (index 19 is padding, never accessed after init).
 extern "C" __global__ void lbm_step_fused_int8_kernel(
-    const signed char* f_in,   // n_cells * 19 int8 values
+    const signed char* f_in,   // n_cells * 20 int8 values (stride 20, index 19 unused)
     signed char* f_out,
     float* rho_out,
     float* u_out,
@@ -102,23 +109,19 @@ extern "C" __global__ void lbm_step_fused_int8_kernel(
     int y = (idx / nx) % ny;
     int z = idx / (nx * ny);
 
-    const signed char* f_base = f_in + (long long)idx * 19;
+    // Stride 20: f_base is at idx*20 bytes, always 4-byte aligned (20 % 4 == 0).
+    const signed char* f_base = f_in + (long long)idx * 20;
 
-    // Load 19 distributions and dequantize to FP32.
-    // Use int (4-byte) aligned loads for groups of 4 (coalesced 32-bit reads).
-    signed char f_i8[20]; // 20 to allow uchar4 alignment (last slot unused)
+    // 5 int32 packed loads = 20 bytes; indices 0-18 are active, index 19 is padding.
+    signed char f_i8[20];
     #pragma unroll
-    for (int j = 0; j < 4; j++) {
+    for (int j = 0; j < 5; j++) {
         int packed = *((const int*)(f_base + j * 4));
         f_i8[j*4 + 0] = (signed char)(packed & 0xFF);
         f_i8[j*4 + 1] = (signed char)((packed >> 8) & 0xFF);
         f_i8[j*4 + 2] = (signed char)((packed >> 16) & 0xFF);
         f_i8[j*4 + 3] = (signed char)((packed >> 24) & 0xFF);
     }
-    // Remaining 3: index 16, 17, 18
-    f_i8[16] = f_base[16];
-    f_i8[17] = f_base[17];
-    f_i8[18] = f_base[18];
 
     float f_local[19];
     #pragma unroll
@@ -132,10 +135,11 @@ extern "C" __global__ void lbm_step_fused_int8_kernel(
     for (int i = 0; i < 19; i++) rho_local += f_local[i];
 
     // Momentum via __dp4a: accumulates sum(cx[i]*f_i8[i]) in integer domain.
-    // Groups of 4 (0-3, 4-7, 8-11, 12-15), then scalar for 16-18.
+    // 5 groups of 4 (indices 0-19); index 19 is padding (dp4a includes it,
+    // but DP4A_CX/CY/CZ[19] = 0, so the contribution is zero by construction).
     int mx_i32 = 0, my_i32 = 0, mz_i32 = 0;
     #pragma unroll
-    for (int j = 0; j < 4; j++) {
+    for (int j = 0; j < 5; j++) {
         int f_pack = pack_i8x4(f_i8[j*4], f_i8[j*4+1], f_i8[j*4+2], f_i8[j*4+3]);
         int cx_pack = pack_i8x4(DP4A_CX[j*4], DP4A_CX[j*4+1], DP4A_CX[j*4+2], DP4A_CX[j*4+3]);
         int cy_pack = pack_i8x4(DP4A_CY[j*4], DP4A_CY[j*4+1], DP4A_CY[j*4+2], DP4A_CY[j*4+3]);
@@ -144,14 +148,6 @@ extern "C" __global__ void lbm_step_fused_int8_kernel(
         my_i32 = __dp4a(f_pack, cy_pack, my_i32);
         mz_i32 = __dp4a(f_pack, cz_pack, mz_i32);
     }
-    // Scalar tail (index 16,17,18): cx[16..18] = {0,0,0} -> no x contribution
-    // cy[16..18] = {-1,1,-1} -> contributes; cz[16..18] = {-1,-1,1}
-    my_i32 += (int)f_i8[16] * (int)DP4A_CY[16]
-            + (int)f_i8[17] * (int)DP4A_CY[17]
-            + (int)f_i8[18] * (int)DP4A_CY[18];
-    mz_i32 += (int)f_i8[16] * (int)DP4A_CZ[16]
-            + (int)f_i8[17] * (int)DP4A_CZ[17]
-            + (int)f_i8[18] * (int)DP4A_CZ[18];
 
     float mx = (float)mx_i32 * INV_DIST_SCALE;
     float my = (float)my_i32 * INV_DIST_SCALE;
@@ -194,11 +190,12 @@ extern "C" __global__ void lbm_step_fused_int8_kernel(
                   + (eix*ux + eiy*uy + eiz*uz) * (eix*fx + eiy*fy + eiz*fz) * 9.0f;
         fi += prefactor * D3Q19_WF_I8[i] * s_i;
 
+        // Streaming (stride 20)
         int x_next = (x + D3Q19_CX_I8[i] + nx) % nx;
         int y_next = (y + D3Q19_CY_I8[i] + ny) % ny;
         int z_next = (z + D3Q19_CZ_I8[i] + nz) % nz;
         long long idx_next = (long long)x_next + nx * ((long long)y_next + ny * z_next);
-        f_out[idx_next * 19 + i] = float_to_i8(fi);
+        f_out[idx_next * 20 + i] = float_to_i8(fi);
     }
 }
 
@@ -230,6 +227,8 @@ extern "C" __global__ void initialize_uniform_int8_kernel(
 
     #pragma unroll
     for (int i = 0; i < 19; i++) {
-        f[idx * 19 + i] = float_to_i8(f_eq[i]);
+        f[idx * 20 + i] = float_to_i8(f_eq[i]);
     }
+    // Padding slot: write zero so reads of slot 19 are well-defined.
+    f[idx * 20 + 19] = 0;
 }

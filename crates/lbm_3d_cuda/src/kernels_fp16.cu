@@ -1,8 +1,10 @@
 // FP16 (half-precision) D3Q19 LBM kernel.
-// Storage: __half (2 bytes/value, f-ping-pong AoS).
+// Storage: __half (2 bytes/value, f-ping-pong AoS, stride 20 per cell).
 // Compute: FP32 promoted immediately after load.
 // YSU tricks:
 //   - half2 vectorized loads (2 halves = 4 bytes in one 32-bit transaction)
+//   - 10 half2 loads cover indices 0-19 (stride 20); index 19 is unused padding
+//   - 4-byte alignment: stride 20 halves = 40 bytes, divisible by 4 for all idx
 //   - __ldg() cache-friendly read for f_in (read-only)
 //   - Horner FMA equilibrium (fmaf, same form as FP64 kernel)
 //   - #pragma unroll on distribution loops
@@ -10,6 +12,7 @@
 // Key difference from BF16: FP16 has smaller mantissa range (10-bit vs 7-bit)
 // but narrower dynamic range than BF16 (5-bit vs 8-bit exponent).
 // For LBM: BF16 range is safer for rho spikes; FP16 is safer for small mantissa features.
+// VRAM at 128^3: 20 * 2,097,152 * 2 * 2 (ping+pong) = ~160 MB.
 
 #include <cuda_fp16.h>
 
@@ -57,11 +60,13 @@ __device__ void compute_equilibrium_fp16(float* f_eq, float rho, const float* u)
 }
 
 // Fused Collision + Streaming kernel using FP16 storage, FP32 compute.
-// YSU half2 trick: loads 18 distributions as 9 half2 values (9 coalesced 32-bit
-// loads instead of 18 individual 16-bit loads). The 19th is a scalar load.
+// Per-cell stride: 20 halves (40 bytes).  Index 19 is unused padding.
+// YSU half2 trick: 10 half2 loads cover all 20 slots in 10 coalesced 32-bit
+// transactions.  All loads are 4-byte aligned because 40 bytes per cell
+// means f_base is 4-byte aligned for every idx.
 extern "C" __global__ void lbm_step_fused_fp16_kernel(
-    const __half* f_in,   // Input distributions (read-only, n_cells * 19)
-    __half* f_out,        // Output distributions (write, n_cells * 19)
+    const __half* f_in,   // Input distributions (read-only, n_cells * 20)
+    __half* f_out,        // Output distributions (write, n_cells * 20)
     float* rho_out,       // Density field (FP32)
     float* u_out,         // Velocity field (FP32, 3 components)
     const float* force,   // Body force (FP32, 3 components)
@@ -76,25 +81,25 @@ extern "C" __global__ void lbm_step_fused_fp16_kernel(
     int y = (idx / nx) % ny;
     int z = idx / (nx * ny);
 
-    // --- Load 19 distributions via half2 vectorized reads ---
-    // Load pairs 0-1, 2-3, 4-5, 6-7, 8-9, 10-11, 12-13, 14-15, 16-17 as half2,
-    // then load 18 as a scalar half.
-    const __half* f_base = f_in + (long long)idx * 19;
+    // --- Load 19 active distributions via 10 half2 vectorized reads ---
+    // Stride is 20 halves per cell; 10 half2 loads cover slots 0-19.
+    // Slot 19 is padding -- loaded but not used.
+    const __half* f_base = f_in + (long long)idx * 20;
     float f_local[19];
 
     #pragma unroll
-    for (int j = 0; j < 9; j++) {
+    for (int j = 0; j < 10; j++) {
         half2 h2 = __ldg((const half2*)(f_base + j * 2));
         float2 f2 = __half22float2(h2);
-        float a = finite_f32_fp16(f2.x) ? f2.x : 0.0f;
-        float b = finite_f32_fp16(f2.y) ? f2.y : 0.0f;
-        f_local[j * 2]     = a;
-        f_local[j * 2 + 1] = b;
-    }
-    // 19th distribution (index 18) -- scalar
-    {
-        float v = __half2float(__ldg(f_base + 18));
-        f_local[18] = finite_f32_fp16(v) ? v : 0.0f;
+        // Only store indices 0..18; skip the padding slot at j==9, slot 1.
+        if (j * 2 < 19) {
+            float a = finite_f32_fp16(f2.x) ? f2.x : 0.0f;
+            f_local[j * 2] = a;
+        }
+        if (j * 2 + 1 < 19) {
+            float b = finite_f32_fp16(f2.y) ? f2.y : 0.0f;
+            f_local[j * 2 + 1] = b;
+        }
     }
 
     // --- Macroscopic variables ---
@@ -145,12 +150,12 @@ extern "C" __global__ void lbm_step_fused_fp16_kernel(
                   + (eix*ux + eiy*uy + eiz*uz) * (eix*fx + eiy*fy + eiz*fz) * 9.0f;
         fi += prefactor * D3Q19_WF_F16[i] * s_i;
 
-        // --- Streaming: scatter to neighbor ---
+        // --- Streaming: scatter to neighbor (stride 20) ---
         int x_next = (x + D3Q19_CX_F16[i] + nx) % nx;
         int y_next = (y + D3Q19_CY_F16[i] + ny) % ny;
         int z_next = (z + D3Q19_CZ_F16[i] + nz) % nz;
         long long idx_next = (long long)x_next + nx * ((long long)y_next + ny * z_next);
-        f_out[idx_next * 19 + i] = __float2half(fi);
+        f_out[idx_next * 20 + i] = __float2half(fi);
     }
 }
 
@@ -182,6 +187,8 @@ extern "C" __global__ void initialize_uniform_fp16_kernel(
 
     #pragma unroll
     for (int i = 0; i < 19; i++) {
-        f[idx * 19 + i] = __float2half(f_eq[i]);
+        f[idx * 20 + i] = __float2half(f_eq[i]);
     }
+    // Padding slot: write zero so reads of slot 19 are well-defined.
+    f[idx * 20 + 19] = __float2half(0.0f);
 }
