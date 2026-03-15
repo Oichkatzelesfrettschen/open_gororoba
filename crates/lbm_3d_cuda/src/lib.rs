@@ -159,7 +159,6 @@ pub struct LbmSolver3DCuda {
     apply_mask_kernel: CudaFunction,
     convert_real_to_complex_kernel: CudaFunction,
     convert_complex_to_real_kernel: CudaFunction,
-    #[allow(dead_code)]
     update_tau_from_voudon_kernel: Option<CudaFunction>,
     // SoA kernel functions (FP32 only, loaded from kernels_soa.cu)
     soa_step_kernel: Option<CudaFunction>,

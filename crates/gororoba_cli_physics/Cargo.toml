@@ -519,6 +519,11 @@ path = "src/bin/eht_pathion_separation.rs"
 name = "artifact-regen"
 path = "src/bin/artifact_regen.rs"
 
+[[bin]]
+name = "cuda-precision-bench"
+path = "src/bin/cuda_precision_bench.rs"
+required-features = ["gpu"]
+
 [dependencies]
 gororoba_algebra = { path = "../gororoba_algebra" }
 algebra_analysis = { path = "../algebra_analysis" }
@@ -588,6 +593,7 @@ walkdir = { workspace = true }
 [features]
 default = ["gpu"]
 gpu = ["lbm_3d_cuda", "sign_imbalance/gpu"]
+cufft = ["lbm_3d_cuda/cufft"]
 hdf5-export = ["data_core/hdf5-export"]
 euclid-catalog = ["cosmology_core/euclid-catalog"]
 
