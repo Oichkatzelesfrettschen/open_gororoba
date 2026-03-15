@@ -143,6 +143,7 @@ data/evidence/**
 data/sfwm_repro/
 data/bl_6equj5_ata/
 data/bl_6equj5_gbt/
+data/benchmarks/
 
 # External / Downloaded Datasets (Managed via fetch-data)
 data/external/**

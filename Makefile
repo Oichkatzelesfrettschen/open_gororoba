@@ -5,7 +5,7 @@
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
-.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare
+.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit profile-python-toml-inventory
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -512,6 +512,17 @@ x87-givens-microbench-perf:
 		$${SUMMARY:+--summary $${SUMMARY}} \
 		2> $${COUNTERS_OUT:-reports/benchmarks/x87_givens_microbench_perf.stat}
 	@echo "OK: x87 Givens perf-stat microbench completed."
+
+gpu-bench: ## Run CUDA kernel baseline benchmark (informational, not a gate)
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics \
+		--bin cuda-precision-bench --features gpu -- \
+		--output $${OUT:-data/benchmarks/cuda_kernel_baseline.csv} \
+		$${GRIDS:+--grids $${GRIDS}} \
+		$${WORKLOADS:+--workloads $${WORKLOADS}} \
+		$${STEPS_SMALL:+--steps-small $${STEPS_SMALL}} \
+		$${STEPS_MID:+--steps-mid $${STEPS_MID}} \
+		$${STEPS_LARGE:+--steps-large $${STEPS_LARGE}}
+	@echo "OK: CUDA kernel baseline benchmark complete. See data/benchmarks/cuda_kernel_baseline.csv"
 
 jacobi-backend-sweep:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin jacobi-backend-sweep -- \
