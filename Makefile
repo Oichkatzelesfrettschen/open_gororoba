@@ -6,7 +6,7 @@
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare
-.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit profile-python-toml-inventory
+.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit profile-python-toml-inventory
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -49,7 +49,7 @@
 .PHONY: registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
 .PHONY: registry-csv-scroll-pipeline registry-verify-csv-scroll-pipeline
 .PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-csv-pipeline-gate registry-wave3
-.PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
+.PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish docs-freshness docs-gate docs-site docs-rustdoc docs-book docs-redirect-check
 .PHONY: verify-python-core-algorithms
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -58,7 +58,7 @@
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
 
-.NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
+.NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
 # Non-cargo make fanout: 75% of logical CPUs, minimum 1.
 # Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
@@ -87,10 +87,15 @@ MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
 MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC ?= 1
+DOCS_SITE_DIR ?= $(CURDIR)/target/site-docs
+DOCS_BOOK_DIR ?= $(DOCS_SITE_DIR)/book
+DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
+DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
+DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+MD_BOOK ?= mdbook
 PGO_DIR ?= /tmp/pgo-data
 SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
 SYNTHESIS_CONTRACT_REPORT ?= reports/synthesis_execution_contract_$(SYNTHESIS_CONTRACT_DATE).toml
-GATE_AUDIT_SCRIPT := scripts/gate_audit.py
 PROFILE_TIMESTAMP := $(shell date +%Y-%m-%d/%H%M%S)
 PROFILE_ROOT ?= reports/gates/profiles/$(PROFILE_TIMESTAMP)
 
@@ -244,6 +249,12 @@ gate-ci-python: install
 gate-ci-python-compat: check
 	@echo "OK: gate-ci-python-compat passed."
 
+gate-ci-registry:
+	$(MAKE) governance-gate-readonly
+	$(MAKE) registry-control-plane-gate-readonly
+	$(MAKE) registry-acceptance-gate-readonly
+	@echo "OK: gate-ci-registry passed."
+
 gate-ci-rust:
 	$(MAKE) rust-regression
 	$(MAKE) integrity-rust
@@ -258,8 +269,8 @@ db-schema-drift-check:
 host-profile:
 	cargo run -q -p xtask -- host-profile --format json
 
-gate-audit: install
-	PYTHONWARNINGS=error $(PYTHON) $(GATE_AUDIT_SCRIPT)
+gate-audit:
+	$(CARGO_ENV) cargo run -p xtask -- gate-audit
 	@echo "OK: gate-audit completed."
 
 profile-python-toml-inventory: install
@@ -1183,8 +1194,151 @@ synthesis-execution-contract:
 		--report-path "$(SYNTHESIS_CONTRACT_REPORT)"
 
 docs-publish: registry-export-markdown
+	$(MAKE) docs-freshness
 	$(MAKE) registry-verify-mirrors
 	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
+
+docs-rustdoc:
+	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
+	$(DOCS_CARGO_ENV) cargo doc --workspace --all-features --no-deps --document-private-items
+	@if [ -d "$(DOCS_CARGO_TARGET_DIR)/doc" ]; then \
+		rm -rf "$(DOCS_RUSTDOC_DIR)"; \
+		mkdir -p "$(DOCS_RUSTDOC_DIR)"; \
+		cp -R "$(DOCS_CARGO_TARGET_DIR)/doc/." "$(DOCS_RUSTDOC_DIR)/"; \
+	else \
+		echo "ERROR: rustdoc output missing at $(DOCS_CARGO_TARGET_DIR)/doc"; \
+		exit 1; \
+	fi
+	@echo "OK: rustdoc staged to $(DOCS_RUSTDOC_DIR)."
+
+docs-book:
+	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
+	@rm -rf "$(DOCS_BOOK_DIR)"
+	@mkdir -p "$(DOCS_BOOK_DIR)"
+	$(MD_BOOK) build docs/book -d "$(DOCS_BOOK_DIR)"
+	@echo "OK: mdBook staged to $(DOCS_BOOK_DIR)."
+
+docs-site: docs-rustdoc docs-book
+	@rm -rf "$(DOCS_SITE_DIR)"
+	@mkdir -p "$(DOCS_SITE_DIR)"
+	@printf '%s\n' \
+		'<!doctype html>' \
+		'<html lang="en">' \
+		'  <head>' \
+		'    <meta charset="utf-8" />' \
+		'    <meta name="viewport" content="width=device-width, initial-scale=1" />' \
+		'    <title>open_gororoba documentation</title>' \
+		'    <style>' \
+		'      body{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;max-width:40rem;margin:2rem auto;padding:0 1rem;}' \
+		'      ul{padding-left:1.25rem;}' \
+		'    </style>' \
+		'  </head>' \
+		'  <body>' \
+		'    <h1>open_gororoba documentation</h1>' \
+		'    <p>Pick a documentation channel:</p>' \
+		'    <ul>' \
+		'      <li><a href="./book/">mdBook narrative documentation</a></li>' \
+		'      <li><a href="./rustdoc/">Rust API documentation</a></li>' \
+		'    </ul>' \
+		'  </body>' \
+		'</html>' \
+		> "$(DOCS_SITE_DIR)/index.html"
+	@cat > "$(DOCS_SITE_DIR)/book.html" <<-'EOF'
+	<!doctype html>
+	<html lang="en">
+	  <head>
+	    <meta charset="utf-8" />
+	    <meta http-equiv="refresh" content="0; url=./book/" />
+	    <title>open_gororoba docs</title>
+	    <meta name="robots" content="noindex" />
+	  </head>
+	  <body>
+	    <p>Redirecting to mdBook documentation.</p>
+	  </body>
+	</html>
+	EOF
+	@cat > "$(DOCS_SITE_DIR)/rustdoc.html" <<-'EOF'
+	<!doctype html>
+	<html lang="en">
+	  <head>
+	    <meta charset="utf-8" />
+	    <meta http-equiv="refresh" content="0; url=./rustdoc/" />
+	    <title>open_gororoba API docs</title>
+	    <meta name="robots" content="noindex" />
+	  </head>
+	  <body>
+	    <p>Redirecting to Rust API documentation.</p>
+	  </body>
+	</html>
+	EOF
+	@cat > "$(DOCS_SITE_DIR)/404.html" <<-'EOF'
+	<!doctype html>
+	<html lang="en">
+	  <head>
+	    <meta charset="utf-8" />
+	    <title>open_gororoba docs redirect</title>
+	  </head>
+	  <body>
+	    <script>
+	      (function () {
+	        var path = window.location.pathname || "";
+	        var query = window.location.search || "";
+	        var hash = window.location.hash || "";
+	        var suffix = "";
+	        var idx = -1;
+	        var segments = path.split("/").filter(Boolean);
+	        var first = segments.length > 0 ? segments[0] : "";
+	        var root = (segments.length > 0 && first !== "book" && first !== "rustdoc") ? "/" + first + "/" : "/";
+	        var legacyPrefixes = [
+	          "/.cache/cargo-default-target/doc",
+	          "/cache/cargo-default-target/doc",
+	          "/.cache/gate-target/doc",
+	          "/cache/gate-target/doc",
+	          "/target/docs-target/doc",
+	          "/target/doc",
+	        ];
+
+	        for (var i = 0; i < legacyPrefixes.length; i++) {
+	          idx = path.indexOf(legacyPrefixes[i]);
+	          if (idx !== -1) {
+	            suffix = path.slice(idx + legacyPrefixes[i].length);
+	            break;
+	          }
+	        }
+
+	        if (suffix) {
+	          window.location.replace(root + "rustdoc" + suffix + query + hash);
+	          return;
+	        }
+
+	        if (path === root + "book" || path === root + "book/" ) {
+	          window.location.replace(root + "book/");
+	          return;
+	        }
+
+	        if (path === root + "rustdoc" || path === root + "rustdoc/" ) {
+	          window.location.replace(root + "rustdoc/");
+	          return;
+	        }
+
+	        window.location.replace(root);
+	      })();
+	    </script>
+	    <p>Open <a href="./">open_gororoba docs</a>.</p>
+	  </body>
+	</html>
+	EOF
+	@touch "$(DOCS_SITE_DIR)/.nojekyll"
+	@echo "OK: docs site staged to $(DOCS_SITE_DIR)."
+
+docs-freshness: docs-gate docs-redirect-check
+	@echo "OK: docs-freshness checks passed."
+
+docs-gate: docs-site
+	@echo "OK: docs-gate generated unified docs bundle."
+
+docs-redirect-check:
+	./scripts/docs-redirect-check.sh $(DOCS_SITE_DIR)
 
 terminology-gate:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- terminology-gate
@@ -1456,8 +1610,9 @@ help:
 	@echo "    make rust-regression      Full Rust regression lane with heavy-crate routing"
 	@echo "    make rust-regression-scoped Scoped Rust regression lane for affected crates"
 	@echo "    make gate-local           Canonical scoped local push gate"
-	@echo "    make gate-ci-python       Full Python/read-only governance CI gate"
-	@echo "    make gate-ci-python-compat Python compatibility gate for non-authoritative versions"
+	@echo "    make gate-ci-python       Legacy Python/read-only governance CI gate"
+	@echo "    make gate-ci-python-compat Legacy Python compatibility gate for non-authoritative versions"
+	@echo "    make gate-ci-registry     Rust-native governance + registry contract CI gate"
 	@echo "    make gate-ci-rust         Full Rust CI gate"
 	@echo "    make gate-audit           Keep-going dry-run audit that writes reports/gates/*"
 	@echo "    make heavy                Ignored/GPU/research-heavy nextest lane"
@@ -1494,6 +1649,10 @@ help:
 	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
 	@echo "    make registry-verify-markdown-toml-first Verify markdown owner/inventory TOML-first hard gate"
+	@echo "    make docs-site             Build publish-ready docs bundle into $(DOCS_SITE_DIR) (mdBook + rustdoc)"
+	@echo "    make docs-gate             Build docs-gate bundle and stage for CI/CD publication"
+	@echo "    make docs-freshness        Validate docs bundle freshness and redirect artifacts"
+	@echo "    make docs-redirect-check   Validate legacy/path redirects and docs shortlink artifacts"
 	@echo "    MARKDOWN_EXPORT=1 make docs-publish Export mirrors in strict mode (out-of-tree, no legacy writes)"
 	@echo "  Deprecated legacy aliases (compatibility-only entrypoints):"
 	@echo "    make registry-wave5              DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."

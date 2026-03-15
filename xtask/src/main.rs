@@ -1,4 +1,5 @@
 use anyhow::{Context, Result, bail};
+use chrono::{Local, SecondsFormat};
 use clap::Parser;
 use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
@@ -94,6 +95,14 @@ struct HostProfile {
 }
 
 const INLINE_TEST_MARKERS: &[&str] = &["#[test]", "#[cfg(test)]", "mod tests"];
+const GATE_AUDIT_TAIL_LINE_COUNT: usize = 20;
+
+#[derive(Debug, Serialize)]
+struct GateAuditStepRecord {
+    name: String,
+    exit_code: i32,
+    log: String,
+}
 
 #[derive(Parser, Debug)]
 #[command(
@@ -196,7 +205,9 @@ impl TimingRecorder {
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
-        bail!("usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan> [args]");
+        bail!(
+            "usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit> [args]"
+        );
     };
     match command.as_str() {
         "db-docs" => run_db_docs(args.any(|arg| arg == "--check")),
@@ -219,8 +230,26 @@ fn main() -> Result<()> {
         "local-nextest-plan" => run_local_nextest_plan(LocalNextestCli::try_parse_from(
             std::iter::once("local-nextest-plan".to_string()).chain(args),
         )?),
+        "gate-audit" => run_gate_audit(parse_gate_audit_args(args)?),
         other => bail!("unknown xtask command: {other}"),
     }
+}
+
+fn parse_gate_audit_args(args: impl Iterator<Item = String>) -> Result<Option<PathBuf>> {
+    let mut output_dir = None;
+    let mut iter = args.peekable();
+    while let Some(arg) = iter.next() {
+        match arg.as_str() {
+            "--output-dir" => {
+                let Some(value) = iter.next() else {
+                    bail!("gate-audit --output-dir requires a value");
+                };
+                output_dir = Some(PathBuf::from(value));
+            }
+            other => bail!("unknown gate-audit argument: {other}"),
+        }
+    }
+    Ok(output_dir)
 }
 
 fn run_host_profile(format: &str) -> Result<()> {
@@ -277,6 +306,153 @@ fn run_db_docs(check_only: bool) -> Result<()> {
         println!("db-docs OK: generated schema artifacts match committed files");
     } else {
         println!("db-docs OK: regenerated db/schema.sql docs/db/schema.json docs/db/catalog.md");
+    }
+    Ok(())
+}
+
+fn run_gate_audit(output_dir_override: Option<PathBuf>) -> Result<()> {
+    let repo_root = repo_root()?;
+    let generated_at = Local::now();
+    let timestamp = generated_at.format("%Y-%m-%d/%H%M%S").to_string();
+    let output_dir = match output_dir_override {
+        Some(path) if path.is_absolute() => path,
+        Some(path) => repo_root.join(path),
+        None => repo_root.join("reports").join("gates").join(timestamp),
+    };
+    fs::create_dir_all(&output_dir)
+        .with_context(|| format!("create gate-audit output directory {}", output_dir.display()))?;
+
+    let commands: Vec<(&str, Vec<String>)> = vec![
+        (
+            "gate-ci-registry",
+            vec!["./makew".to_string(), "gate-ci-registry".to_string()],
+        ),
+        (
+            "gate-ci-rust",
+            vec!["./makew".to_string(), "gate-ci-rust".to_string()],
+        ),
+        (
+            "nextest-list",
+            vec![
+                "cargo".to_string(),
+                "nextest".to_string(),
+                "list".to_string(),
+                "--workspace".to_string(),
+                "--tests".to_string(),
+            ],
+        ),
+    ];
+
+    let cargo_home = repo_root.join(".cache").join("cargo-home");
+    let cargo_target_dir = repo_root.join(".cache").join("gate-target");
+
+    let mut summary_lines = vec![
+        format!(
+            "# Gate Audit ({})",
+            generated_at.to_rfc3339_opts(SecondsFormat::Secs, false)
+        ),
+        String::new(),
+        format!("Output directory: `{}`", repo_relative(&output_dir, &repo_root)),
+        String::new(),
+        "| Step | Exit Code | Log |".to_string(),
+        "| --- | ---: | --- |".to_string(),
+    ];
+
+    let mut failures = 0usize;
+    let mut step_rows = Vec::<GateAuditStepRecord>::new();
+
+    for (name, command) in commands {
+        let log_path = output_dir.join(format!("{name}.log"));
+        let output = Command::new(&command[0])
+            .args(&command[1..])
+            .current_dir(&repo_root)
+            .env("CARGO_HOME", &cargo_home)
+            .env("CARGO_TARGET_DIR", &cargo_target_dir)
+            .output()
+            .with_context(|| format!("run {}", format_command(&command)))?;
+        let exit_code = output.status.code().unwrap_or(1);
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let combined_output = format!("{stdout}{stderr}");
+
+        let log_text = format!(
+            "# Step: {name}\n# Command: {}\n# Exit Code: {exit_code}\n\n{combined_output}",
+            format_command(&command)
+        );
+        fs::write(&log_path, log_text)
+            .with_context(|| format!("write gate-audit step log {}", log_path.display()))?;
+
+        let log_rel = repo_relative(&log_path, &repo_root);
+        summary_lines.push(format!("| `{name}` | `{exit_code}` | `{log_rel}` |"));
+        step_rows.push(GateAuditStepRecord {
+            name: name.to_string(),
+            exit_code,
+            log: log_rel,
+        });
+
+        summary_lines.push(String::new());
+        summary_lines.push(format!("## {name}"));
+        summary_lines.push(String::new());
+        summary_lines.push(format!("Exit code: `{exit_code}`"));
+        summary_lines.push(String::new());
+        summary_lines.push("```text".to_string());
+        summary_lines.extend(render_tail_block(
+            &combined_output,
+            GATE_AUDIT_TAIL_LINE_COUNT,
+        ));
+        summary_lines.push("```".to_string());
+
+        if exit_code != 0 {
+            failures += 1;
+        }
+    }
+
+    summary_lines.push(String::new());
+    summary_lines.push(if failures == 0 {
+        "Gate audit passed.".to_string()
+    } else {
+        format!("Gate audit failed in {failures} step(s).")
+    });
+    summary_lines.push(String::new());
+    summary_lines.push("Review the per-step logs for full output.".to_string());
+    summary_lines.push(String::new());
+
+    let summary_path = output_dir.join("summary.md");
+    let summary_text = summary_lines.join("\n");
+    fs::write(&summary_path, format!("{summary_text}\n"))
+        .with_context(|| format!("write gate-audit summary {}", summary_path.display()))?;
+
+    let reports_gates_root = repo_root.join("reports").join("gates");
+    fs::create_dir_all(&reports_gates_root).with_context(|| {
+        format!(
+            "create reports/gates directory {}",
+            reports_gates_root.display()
+        )
+    })?;
+    let latest_summary_path = reports_gates_root.join("LATEST.md");
+    let latest_manifest_path = reports_gates_root.join("latest.json");
+    fs::write(&latest_summary_path, format!("{summary_text}\n")).with_context(|| {
+        format!(
+            "write latest gate-audit summary {}",
+            latest_summary_path.display()
+        )
+    })?;
+    let latest_manifest = serde_json::json!({
+        "generated_at": Local::now().to_rfc3339_opts(SecondsFormat::Secs, false),
+        "output_dir": repo_relative(&output_dir, &repo_root),
+        "summary": repo_relative(&summary_path, &repo_root),
+        "failure_count": failures,
+        "steps": step_rows,
+    });
+    fs::write(
+        &latest_manifest_path,
+        format!("{}\n", serde_json::to_string_pretty(&latest_manifest)?),
+    )
+    .with_context(|| format!("write gate-audit manifest {}", latest_manifest_path.display()))?;
+
+    println!("Wrote: {}", repo_relative(&summary_path, &repo_root));
+    if failures != 0 {
+        bail!("gate-audit failed in {failures} step(s)");
     }
     Ok(())
 }
@@ -862,6 +1038,31 @@ fn join_usize(items: &[usize]) -> String {
         .map(|value| value.to_string())
         .collect::<Vec<_>>()
         .join(",")
+}
+
+fn format_command(parts: &[String]) -> String {
+    parts.join(" ")
+}
+
+fn render_tail_block(text: &str, tail_line_count: usize) -> Vec<String> {
+    let lines = text.lines().collect::<Vec<_>>();
+    if lines.is_empty() {
+        return vec!["(no log output)".to_string()];
+    }
+    let start = lines.len().saturating_sub(tail_line_count);
+    let mut tail = Vec::new();
+    if start > 0 {
+        tail.push(format!("... ({} earlier line(s) omitted)", start));
+    }
+    tail.extend(lines[start..].iter().map(|line| (*line).to_string()));
+    tail
+}
+
+fn repo_relative(path: &Path, repo_root: &Path) -> String {
+    path.strip_prefix(repo_root)
+        .unwrap_or(path)
+        .to_string_lossy()
+        .replace('\\', "/")
 }
 
 fn write_or_check(path: &Path, content: &str, check_only: bool) -> Result<()> {
