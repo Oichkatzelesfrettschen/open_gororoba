@@ -1,0 +1,50 @@
+window_name = "inner1976"
+generated_at_utc = "2026-03-15T10:53:32.550456290+00:00"
+temporal_start_utc = "1976-01-01T00:00:00Z"
+temporal_end_utc = "1976-12-31T23:00:00Z"
+row_count = 20977
+missions = [
+    "Helios 1",
+    "Helios 2",
+    "IMP 8",
+]
+products = [
+    "Helios 1:Merged mission support",
+    "Helios 2:Merged mission support",
+    "IMP 8:Merged 1-minute hourly aggregate",
+]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = [
+    "data/external/helios/helios1/he1_1976.asc",
+    "data/external/helios/helios2/he2_1976.asc",
+    "data/external/imp8/imp_min_merge197601.asc",
+    "data/external/imp8/imp_min_merge197602.asc",
+    "data/external/imp8/imp_min_merge197603.asc",
+    "data/external/imp8/imp_min_merge197604.asc",
+    "data/external/imp8/imp_min_merge197605.asc",
+    "data/external/imp8/imp_min_merge197606.asc",
+    "data/external/imp8/imp_min_merge197607.asc",
+    "data/external/imp8/imp_min_merge197608.asc",
+    "data/external/imp8/imp_min_merge197609.asc",
+    "data/external/imp8/imp_min_merge197610.asc",
+    "data/external/imp8/imp_min_merge197611.asc",
+    "data/external/imp8/imp_min_merge197612.asc",
+]
+notes = ["inner1976 is the executed historical same-epoch lane for Helios 1/2, anchored to the official SPDF IMP 8 merged reference archive rather than modern OMNI windows."]

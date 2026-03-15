@@ -1,12 +1,18 @@
 //! IMAP public-product staging providers.
 //!
-//! Current public official surfaces verified from the CDAWeb/SPDF archive:
+//! Verified public official surfaces:
 //!   - IMAP helio1hr position support:
 //!     <https://cdaweb.gsfc.nasa.gov/pub/data/imap/helio1hr/>
 //!   - IMAP-Hi L2 ENA h90 product family:
 //!     <https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/h90-ena-h-sf-nsp-full-4deg-3mo/>
+//!   - IMAP I-ALiRT archive CDF lane:
+//!     <https://cdaweb.gsfc.nasa.gov/pub/data/imap/ialirt/l1/realtime/>
+//!   - IMAP I-ALiRT public live JSON API:
+//!     <https://ialirt.imap-mission.com/space-weather>
+//!     <https://ialirt.imap-mission.com/ialirt-archive-query>
 //!
-//! These providers stage the official CDF products into the Rust fetch lane.
+//! The executed Rust lane prefers the public JSON API for live I-ALiRT science
+//! rows while still staging the official archive CDFs for provenance.
 
 use crate::{
     cdf_support::{
@@ -15,15 +21,21 @@ use crate::{
     },
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string},
 };
-use chrono::{Datelike, TimeZone, Timelike, Utc};
+use chrono::{DateTime, Datelike, Duration, NaiveDateTime, TimeZone, Timelike, Utc};
 use regex::Regex;
-use std::path::PathBuf;
+use serde_json::Value;
+use std::{
+    collections::BTreeMap,
+    path::{Path, PathBuf},
+};
 
 const IMAP_HELIO1HR_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/helio1hr/";
 const IMAP_HI_L2_H90_ROOT: &str =
     "https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/h90-ena-h-sf-nsp-full-4deg-3mo/";
 const IMAP_IALIRT_L1_REALTIME_ROOT: &str =
     "https://cdaweb.gsfc.nasa.gov/pub/data/imap/ialirt/l1/realtime/";
+const IMAP_IALIRT_API_ROOT: &str = "https://ialirt.imap-mission.com/space-weather";
+const AU_KM: f64 = 149_597_870.7;
 
 #[derive(Debug, Clone)]
 pub struct ImapHelio1hrRecord {
@@ -51,6 +63,9 @@ pub struct ImapIalirtRecord {
     pub year: u16,
     pub doy: u16,
     pub hour: u8,
+    pub r_au: f64,
+    pub lat_deg: f64,
+    pub lon_deg: f64,
     pub pseudo_density: f64,
     pub pseudo_speed: f64,
     pub pseudo_temperature: f64,
@@ -58,10 +73,16 @@ pub struct ImapIalirtRecord {
     pub bt: f64,
     pub bn: f64,
     pub b_magnitude: f64,
+    pub spectral_mean: f64,
+    pub spectral_peak: f64,
 }
 
 #[derive(Default)]
 struct IalirtAccumulator {
+    r_sum: f64,
+    lat_sum: f64,
+    lon_sum: f64,
+    pos_count: usize,
     density_sum: f64,
     density_count: usize,
     speed_sum: f64,
@@ -73,6 +94,10 @@ struct IalirtAccumulator {
     bn_sum: f64,
     bmag_sum: f64,
     mag_count: usize,
+    spectral_mean_sum: f64,
+    spectral_mean_count: usize,
+    spectral_peak_sum: f64,
+    spectral_peak_count: usize,
 }
 
 fn sanitize_numeric(value: f64) -> f64 {
@@ -115,9 +140,125 @@ fn stddev(values: &[f64], mean: f64) -> f64 {
     var.sqrt()
 }
 
-pub fn parse_imap_helio1hr_file(
-    path: &std::path::Path,
-) -> Result<Vec<ImapHelio1hrRecord>, FetchError> {
+fn json_f64(value: &Value, key: &str) -> f64 {
+    value
+        .get(key)
+        .and_then(Value::as_f64)
+        .map_or(f64::NAN, sanitize_numeric)
+}
+
+fn json_vec_f64(value: &Value, key: &str) -> Vec<f64> {
+    value
+        .get(key)
+        .and_then(Value::as_array)
+        .map(|values| {
+            values
+                .iter()
+                .filter_map(Value::as_f64)
+                .map(sanitize_numeric)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default()
+}
+
+fn iso_time_to_ydh(value: &str) -> Option<(u16, u16, u8)> {
+    let dt = if let Ok(dt) = DateTime::parse_from_rfc3339(value) {
+        dt.with_timezone(&Utc)
+    } else {
+        let naive = NaiveDateTime::parse_from_str(value, "%Y-%m-%dT%H:%M:%S").ok()?;
+        Utc.from_utc_datetime(&naive)
+    };
+    Some((dt.year() as u16, dt.ordinal() as u16, dt.hour() as u8))
+}
+
+fn km_xyz_to_spherical_au(x_km: f64, y_km: f64, z_km: f64) -> (f64, f64, f64) {
+    if !x_km.is_finite() || !y_km.is_finite() || !z_km.is_finite() {
+        return (f64::NAN, f64::NAN, f64::NAN);
+    }
+    let r_km = (x_km * x_km + y_km * y_km + z_km * z_km).sqrt();
+    if r_km == 0.0 {
+        return (0.0, 0.0, 0.0);
+    }
+    let r_au = r_km / AU_KM;
+    let lat_deg = (z_km / r_km).asin().to_degrees();
+    let lon_deg = y_km.atan2(x_km).to_degrees();
+    (r_au, lat_deg, lon_deg)
+}
+
+fn rows_from_accumulator(
+    hourly: BTreeMap<(u16, u16, u8), IalirtAccumulator>,
+) -> Vec<ImapIalirtRecord> {
+    hourly
+        .into_iter()
+        .map(|((year, doy, hour), acc)| ImapIalirtRecord {
+            year,
+            doy,
+            hour,
+            r_au: if acc.pos_count > 0 {
+                acc.r_sum / acc.pos_count as f64
+            } else {
+                f64::NAN
+            },
+            lat_deg: if acc.pos_count > 0 {
+                acc.lat_sum / acc.pos_count as f64
+            } else {
+                f64::NAN
+            },
+            lon_deg: if acc.pos_count > 0 {
+                acc.lon_sum / acc.pos_count as f64
+            } else {
+                f64::NAN
+            },
+            pseudo_density: if acc.density_count > 0 {
+                acc.density_sum / acc.density_count as f64
+            } else {
+                f64::NAN
+            },
+            pseudo_speed: if acc.speed_count > 0 {
+                acc.speed_sum / acc.speed_count as f64
+            } else {
+                f64::NAN
+            },
+            pseudo_temperature: if acc.temp_count > 0 {
+                acc.temp_sum / acc.temp_count as f64
+            } else {
+                f64::NAN
+            },
+            br: if acc.mag_count > 0 {
+                acc.br_sum / acc.mag_count as f64
+            } else {
+                f64::NAN
+            },
+            bt: if acc.mag_count > 0 {
+                acc.bt_sum / acc.mag_count as f64
+            } else {
+                f64::NAN
+            },
+            bn: if acc.mag_count > 0 {
+                acc.bn_sum / acc.mag_count as f64
+            } else {
+                f64::NAN
+            },
+            b_magnitude: if acc.mag_count > 0 {
+                acc.bmag_sum / acc.mag_count as f64
+            } else {
+                f64::NAN
+            },
+            spectral_mean: if acc.spectral_mean_count > 0 {
+                acc.spectral_mean_sum / acc.spectral_mean_count as f64
+            } else {
+                f64::NAN
+            },
+            spectral_peak: if acc.spectral_peak_count > 0 {
+                acc.spectral_peak_sum / acc.spectral_peak_count as f64
+            } else {
+                f64::NAN
+            },
+        })
+        .collect()
+}
+
+pub fn parse_imap_helio1hr_file(path: &Path) -> Result<Vec<ImapHelio1hrRecord>, FetchError> {
     let cdf = read_cdf_file(path)?;
     let (file_year, file_month, file_day) = filename_date_yyyymmdd(path).ok_or_else(|| {
         FetchError::Validation(format!(
@@ -190,7 +331,7 @@ pub fn parse_imap_helio1hr_file(
     Ok(rows)
 }
 
-pub fn parse_imap_hi_h90_file(path: &std::path::Path) -> Result<ImapHiH90Summary, FetchError> {
+pub fn parse_imap_hi_h90_file(path: &Path) -> Result<ImapHiH90Summary, FetchError> {
     let cdf = read_cdf_file(path)?;
     let (year, month, day) = filename_date_yyyymmdd(path).ok_or_else(|| {
         FetchError::Validation(format!(
@@ -235,10 +376,9 @@ pub fn parse_imap_hi_h90_file(path: &std::path::Path) -> Result<ImapHiH90Summary
     })
 }
 
-pub fn parse_imap_ialirt_file(path: &std::path::Path) -> Result<Vec<ImapIalirtRecord>, FetchError> {
+pub fn parse_imap_ialirt_file(path: &Path) -> Result<Vec<ImapIalirtRecord>, FetchError> {
     let cdf = read_cdf_file(path)?;
-    let mut hourly: std::collections::BTreeMap<(u16, u16, u8), IalirtAccumulator> =
-        std::collections::BTreeMap::new();
+    let mut hourly: BTreeMap<(u16, u16, u8), IalirtAccumulator> = BTreeMap::new();
 
     let mag_epoch_rows = cdf_variable_rows(&cdf, "mag_epoch").ok();
     let mag_b_rtn_rows = cdf_vector_f64_rows(&cdf, "mag_B_RTN").ok();
@@ -330,53 +470,149 @@ pub fn parse_imap_ialirt_file(path: &std::path::Path) -> Result<Vec<ImapIalirtRe
         }
     }
 
-    let rows = hourly
-        .into_iter()
-        .map(|((year, doy, hour), acc)| ImapIalirtRecord {
-            year,
-            doy,
-            hour,
-            pseudo_density: if acc.density_count > 0 {
-                acc.density_sum / acc.density_count as f64
-            } else {
-                f64::NAN
-            },
-            pseudo_speed: if acc.speed_count > 0 {
-                acc.speed_sum / acc.speed_count as f64
-            } else {
-                f64::NAN
-            },
-            pseudo_temperature: if acc.temp_count > 0 {
-                acc.temp_sum / acc.temp_count as f64
-            } else {
-                f64::NAN
-            },
-            br: if acc.mag_count > 0 {
-                acc.br_sum / acc.mag_count as f64
-            } else {
-                f64::NAN
-            },
-            bt: if acc.mag_count > 0 {
-                acc.bt_sum / acc.mag_count as f64
-            } else {
-                f64::NAN
-            },
-            bn: if acc.mag_count > 0 {
-                acc.bn_sum / acc.mag_count as f64
-            } else {
-                f64::NAN
-            },
-            b_magnitude: if acc.mag_count > 0 {
-                acc.bmag_sum / acc.mag_count as f64
-            } else {
-                f64::NAN
-            },
-        })
-        .collect::<Vec<_>>();
+    let rows = rows_from_accumulator(hourly);
     if rows.is_empty() {
         return Err(FetchError::Validation(format!(
             "IMAP I-ALiRT {} yielded zero rows",
             path.display()
+        )));
+    }
+    Ok(rows)
+}
+
+pub fn parse_imap_ialirt_live_day(
+    science_path: &Path,
+    spacecraft_path: Option<&Path>,
+) -> Result<Vec<ImapIalirtRecord>, FetchError> {
+    let science_raw = std::fs::read_to_string(science_path)
+        .map_err(|err| FetchError::Validation(format!("read error: {err}")))?;
+    let science_value: Value = serde_json::from_str(&science_raw).map_err(|err| {
+        FetchError::Validation(format!(
+            "IMAP I-ALiRT science JSON parse error for {}: {}",
+            science_path.display(),
+            err
+        ))
+    })?;
+    let mut hourly: BTreeMap<(u16, u16, u8), IalirtAccumulator> = BTreeMap::new();
+
+    for row in science_value
+        .get("data")
+        .and_then(Value::as_array)
+        .into_iter()
+        .flatten()
+    {
+        let instrument = row
+            .get("instrument")
+            .and_then(Value::as_str)
+            .unwrap_or_default();
+        let time = row
+            .get("time_utc")
+            .and_then(Value::as_str)
+            .unwrap_or_default();
+        let Some((year, doy, hour)) = iso_time_to_ydh(time) else {
+            continue;
+        };
+        let entry = hourly.entry((year, doy, hour)).or_default();
+        match instrument {
+            "mag" => {
+                let rtn = json_vec_f64(row, "mag_B_RTN");
+                let br = rtn.first().copied().unwrap_or(f64::NAN);
+                let bt = rtn.get(1).copied().unwrap_or(f64::NAN);
+                let bn = rtn.get(2).copied().unwrap_or(f64::NAN);
+                let b_mag = json_f64(row, "mag_B_magnitude");
+                if br.is_finite() && bt.is_finite() && bn.is_finite() {
+                    entry.br_sum += br;
+                    entry.bt_sum += bt;
+                    entry.bn_sum += bn;
+                    if b_mag.is_finite() {
+                        entry.bmag_sum += b_mag;
+                    }
+                    entry.mag_count += 1;
+                }
+            }
+            "swapi" => {
+                let density = json_f64(row, "swapi_pseudo_proton_density");
+                let speed = json_f64(row, "swapi_pseudo_proton_speed");
+                let temp = json_f64(row, "swapi_pseudo_proton_temperature");
+                if density.is_finite() {
+                    entry.density_sum += density;
+                    entry.density_count += 1;
+                }
+                if speed.is_finite() {
+                    entry.speed_sum += speed;
+                    entry.speed_count += 1;
+                }
+                if temp.is_finite() {
+                    entry.temp_sum += temp;
+                    entry.temp_count += 1;
+                }
+            }
+            "swe" => {
+                let counts = json_vec_f64(row, "swe_normalized_counts");
+                if !counts.is_empty() {
+                    let filtered = counts
+                        .into_iter()
+                        .filter(|value| value.is_finite())
+                        .collect::<Vec<_>>();
+                    if !filtered.is_empty() {
+                        entry.spectral_mean_sum += mean(&filtered);
+                        entry.spectral_mean_count += 1;
+                        let peak = filtered.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+                        if peak.is_finite() {
+                            entry.spectral_peak_sum += peak;
+                            entry.spectral_peak_count += 1;
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    if let Some(spacecraft_path) = spacecraft_path {
+        let spacecraft_raw = std::fs::read_to_string(spacecraft_path)
+            .map_err(|err| FetchError::Validation(format!("read error: {err}")))?;
+        let spacecraft_value: Value = serde_json::from_str(&spacecraft_raw).map_err(|err| {
+            FetchError::Validation(format!(
+                "IMAP I-ALiRT spacecraft JSON parse error for {}: {}",
+                spacecraft_path.display(),
+                err
+            ))
+        })?;
+        for row in spacecraft_value
+            .get("data")
+            .and_then(Value::as_array)
+            .into_iter()
+            .flatten()
+        {
+            let time = row
+                .get("time_utc")
+                .and_then(Value::as_str)
+                .unwrap_or_default();
+            let Some((year, doy, hour)) = iso_time_to_ydh(time) else {
+                continue;
+            };
+            let pos = json_vec_f64(row, "sc_position_GSE");
+            if pos.len() < 3 {
+                continue;
+            }
+            let (r_au, lat_deg, lon_deg) = km_xyz_to_spherical_au(pos[0], pos[1], pos[2]);
+            if !r_au.is_finite() || !lat_deg.is_finite() || !lon_deg.is_finite() {
+                continue;
+            }
+            let entry = hourly.entry((year, doy, hour)).or_default();
+            entry.r_sum += r_au;
+            entry.lat_sum += lat_deg;
+            entry.lon_sum += lon_deg;
+            entry.pos_count += 1;
+        }
+    }
+
+    let rows = rows_from_accumulator(hourly);
+    if rows.is_empty() {
+        return Err(FetchError::Validation(format!(
+            "IMAP I-ALiRT live JSON {} yielded zero rows",
+            science_path.display()
         )));
     }
     Ok(rows)
@@ -401,7 +637,7 @@ fn directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
     Ok(entries)
 }
 
-fn has_matching_files(dir: &std::path::Path, suffix: &str) -> bool {
+fn has_matching_files(dir: &Path, suffix: &str) -> bool {
     std::fs::read_dir(dir)
         .ok()
         .into_iter()
@@ -417,6 +653,63 @@ fn has_matching_files(dir: &std::path::Path, suffix: &str) -> bool {
             }
             entry.file_name().to_string_lossy().ends_with(suffix)
         })
+}
+
+fn ialirt_live_url(instrument: Option<&str>, start: &str, end: &str) -> String {
+    let mut url = format!("{IMAP_IALIRT_API_ROOT}?time_utc_start={start}&time_utc_end={end}");
+    if let Some(instrument) = instrument {
+        url.push_str("&instrument=");
+        url.push_str(instrument);
+    }
+    url
+}
+
+fn ialirt_json_rows(body: &str) -> Result<Vec<Value>, FetchError> {
+    let value: Value = serde_json::from_str(body)
+        .map_err(|err| FetchError::Validation(format!("IMAP I-ALiRT JSON parse error: {err}")))?;
+    Ok(value
+        .get("data")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default())
+}
+
+fn ialirt_json_payload(
+    kind: &str,
+    instrument: Option<&str>,
+    rows: Vec<Value>,
+) -> Result<String, FetchError> {
+    serde_json::to_string_pretty(&serde_json::json!({
+        "meta": {
+            "count": rows.len(),
+            "type": kind,
+            "instrument": instrument.unwrap_or("combined"),
+        },
+        "data": rows,
+    }))
+    .map_err(|err| FetchError::Validation(format!("IMAP I-ALiRT JSON encode error: {err}")))
+}
+
+fn fetch_ialirt_live_rows(
+    instrument: &str,
+    start: DateTime<Utc>,
+    end: DateTime<Utc>,
+    chunk_hours: i64,
+) -> Result<Vec<Value>, FetchError> {
+    let mut rows = Vec::new();
+    let mut cursor = start;
+    while cursor < end {
+        let chunk_end = std::cmp::min(cursor + Duration::hours(chunk_hours), end);
+        let url = ialirt_live_url(
+            Some(instrument),
+            &cursor.format("%Y-%m-%dT%H:%M:%S").to_string(),
+            &chunk_end.format("%Y-%m-%dT%H:%M:%S").to_string(),
+        );
+        let body = download_to_string(&url)?;
+        rows.extend(ialirt_json_rows(&body)?);
+        cursor = chunk_end;
+    }
+    Ok(rows)
 }
 
 /// Public IMAP heliocentric hourly position support from the official archive.
@@ -526,10 +819,11 @@ impl DatasetProvider for ImapHiL2H90Provider {
     }
 }
 
-/// Public IMAP I-ALiRT realtime CDF staging provider.
+/// Public IMAP I-ALiRT archive + live JSON staging provider.
 pub struct ImapIalirtRealtimeProvider {
     pub year_start: u16,
     pub year_end: u16,
+    pub live_lookback_days: u16,
 }
 
 impl Default for ImapIalirtRealtimeProvider {
@@ -537,6 +831,7 @@ impl Default for ImapIalirtRealtimeProvider {
         Self {
             year_start: 2026,
             year_end: 2026,
+            live_lookback_days: 7,
         }
     }
 }
@@ -571,34 +866,89 @@ impl DatasetProvider for ImapIalirtRealtimeProvider {
                 log::info!("saved {}", output.display());
             }
         }
+
+        let live_root = config
+            .output_dir
+            .join("imap")
+            .join("ialirt")
+            .join("space_weather");
+        std::fs::create_dir_all(&live_root)?;
+        let today = Utc::now().date_naive();
+        for delta in 0..=self.live_lookback_days {
+            let day = today - Duration::days(i64::from(delta));
+            let next_day = day
+                .succ_opt()
+                .ok_or_else(|| FetchError::Validation(format!("advance live day {day}")))?;
+            let start = Utc.from_utc_datetime(
+                &day.and_hms_opt(0, 0, 0)
+                    .ok_or_else(|| FetchError::Validation(format!("start of day {day}")))?,
+            );
+            let end =
+                Utc.from_utc_datetime(&next_day.and_hms_opt(0, 0, 0).ok_or_else(|| {
+                    FetchError::Validation(format!("start of next day {next_day}"))
+                })?);
+            let year_dir = live_root.join(day.year().to_string());
+            std::fs::create_dir_all(&year_dir)?;
+
+            let science_output = year_dir.join(format!(
+                "imap_ialirt_space_weather_science_{}.json",
+                day.format("%Y%m%d")
+            ));
+            if !(config.skip_existing && science_output.exists()) {
+                let mut science_rows = Vec::new();
+                science_rows.extend(fetch_ialirt_live_rows("mag", start, end, 1)?);
+                science_rows.extend(fetch_ialirt_live_rows("swapi", start, end, 24)?);
+                science_rows.extend(fetch_ialirt_live_rows("swe", start, end, 24)?);
+                if !science_rows.is_empty() {
+                    let body = ialirt_json_payload("science", None, science_rows)?;
+                    std::fs::write(&science_output, body)?;
+                    log::info!("saved {}", science_output.display());
+                }
+            }
+
+            let spacecraft_output = year_dir.join(format!(
+                "imap_ialirt_space_weather_spacecraft_{}.json",
+                day.format("%Y%m%d")
+            ));
+            if !(config.skip_existing && spacecraft_output.exists()) {
+                let spacecraft_rows = fetch_ialirt_live_rows("spacecraft", start, end, 24)?;
+                if !spacecraft_rows.is_empty() {
+                    let body =
+                        ialirt_json_payload("spacecraft", Some("spacecraft"), spacecraft_rows)?;
+                    std::fs::write(&spacecraft_output, body)?;
+                    log::info!("saved {}", spacecraft_output.display());
+                }
+            }
+        }
         Ok(root)
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        let root = config
+        let archive_root = config
             .output_dir
             .join("imap")
             .join("ialirt")
             .join("l1")
             .join("realtime");
-        if has_matching_files(&root, ".cdf") {
-            return true;
-        }
-        std::fs::read_dir(&root)
-            .ok()
-            .into_iter()
-            .flatten()
-            .filter_map(|entry| entry.ok())
-            .any(|entry| {
-                let file_type = match entry.file_type() {
-                    Ok(file_type) => file_type,
-                    Err(_) => return false,
-                };
-                if !file_type.is_dir() {
-                    return false;
-                }
-                has_matching_files(&entry.path(), ".cdf")
-            })
+        let live_root = config
+            .output_dir
+            .join("imap")
+            .join("ialirt")
+            .join("space_weather");
+        has_matching_files(&archive_root, ".cdf")
+            || has_matching_files(&live_root, ".json")
+            || std::fs::read_dir(&archive_root)
+                .ok()
+                .into_iter()
+                .flatten()
+                .filter_map(|entry| entry.ok())
+                .any(|entry| entry.path().is_dir() && has_matching_files(&entry.path(), ".cdf"))
+            || std::fs::read_dir(&live_root)
+                .ok()
+                .into_iter()
+                .flatten()
+                .filter_map(|entry| entry.ok())
+                .any(|entry| entry.path().is_dir() && has_matching_files(&entry.path(), ".json"))
     }
 }
 
@@ -618,5 +968,35 @@ mod tests {
     fn test_sanitize_numeric() {
         assert!(sanitize_numeric(-1.0e31).is_nan());
         assert!((sanitize_numeric(3.5) - 3.5).abs() < 1.0e-12);
+    }
+
+    #[test]
+    fn test_parse_imap_ialirt_live_day() {
+        let dir = tempfile::tempdir().expect("tempdir");
+        let science = dir.path().join("science.json");
+        let spacecraft = dir.path().join("spacecraft.json");
+        std::fs::write(
+            &science,
+            r#"{"meta":{"count":3},"data":[
+{"instrument":"mag","time_utc":"2026-03-15T08:00:01","mag_B_RTN":[1.0,2.0,3.0],"mag_B_magnitude":3.741},
+{"instrument":"swapi","time_utc":"2026-03-15T08:00:07","swapi_pseudo_proton_density":4.0,"swapi_pseudo_proton_speed":500.0,"swapi_pseudo_proton_temperature":100000.0},
+{"instrument":"swe","time_utc":"2026-03-15T08:00:03","swe_normalized_counts":[1.0,3.0,5.0],"swe_counterstreaming_electrons":0}]}"#,
+        )
+        .expect("write science");
+        std::fs::write(
+            &spacecraft,
+            r#"{"meta":{"count":1},"data":[
+{"instrument":"spacecraft","time_utc":"2026-03-15T08:00:03","sc_position_GSE":[1495978.707,0.0,0.0]}]}"#,
+        )
+        .expect("write spacecraft");
+        let rows = parse_imap_ialirt_live_day(&science, Some(&spacecraft)).expect("parse");
+        assert_eq!(rows.len(), 1);
+        let row = &rows[0];
+        assert_eq!(row.hour, 8);
+        assert!((row.pseudo_density - 4.0).abs() < 1.0e-9);
+        assert!((row.br - 1.0).abs() < 1.0e-9);
+        assert!((row.spectral_mean - 3.0).abs() < 1.0e-9);
+        assert!((row.spectral_peak - 5.0).abs() < 1.0e-9);
+        assert!((row.r_au - 0.01).abs() < 1.0e-6);
     }
 }

@@ -582,6 +582,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1-20 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(imp8::Imp8Provider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~700-900 MB (1976-1980)",
+        },
+        DatasetEntry {
             provider: Box::new(psp::PspProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
@@ -594,11 +600,41 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~100-500 MB/year",
         },
         DatasetEntry {
+            provider: Box::new(psp_sqtn::PspSqtnProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-50 MB/month",
+        },
+        DatasetEntry {
+            provider: Box::new(psp_spi::PspSpiMomProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~50-400 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(psp_spc::PspSpcL3iProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~100 MB-2 GB/year",
+        },
+        DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Parker Solar Probe Merged Hourly (2020)",
                 psp::PspProvider {
                     year_start: 2020,
                     year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5-20 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Parker Solar Probe Merged Hourly (2025)",
+                psp::PspProvider {
+                    year_start: 2025,
+                    year_end: 2025,
                 },
             )),
             category: "geophysical",
@@ -624,6 +660,30 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~20-200 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(
+                data_core::catalogs::solar_orbiter_rpw_density::SolarOrbiterRpwDensityProvider::default(),
+            ),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(
+                data_core::catalogs::solar_orbiter_rpw_hfr::SolarOrbiterRpwHfrProvider::default(),
+            ),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~200-800 MB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(
+                data_core::catalogs::solar_orbiter_rpw_tnr::SolarOrbiterRpwTnrProvider::default(),
+            ),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~200-800 MB/year",
         },
         DatasetEntry {
             provider: Box::new(
@@ -668,6 +728,42 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~20-200 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Solar Orbiter RPW BIA Density (2020)",
+                data_core::catalogs::solar_orbiter_rpw_density::SolarOrbiterRpwDensityProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~20-200 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Solar Orbiter RPW HFR Survey Flux (2020)",
+                data_core::catalogs::solar_orbiter_rpw_hfr::SolarOrbiterRpwHfrProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~200-800 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Solar Orbiter RPW TNR Survey Flux (2020)",
+                data_core::catalogs::solar_orbiter_rpw_tnr::SolarOrbiterRpwTnrProvider {
+                    year_start: 2020,
+                    year_end: 2020,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~200-800 MB",
         },
         DatasetEntry {
             provider: Box::new(voyager_pws::VoyagerPwsProvider::default()),

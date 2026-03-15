@@ -1,0 +1,932 @@
+generated_at = "2026-03-15T04:41:37.565931541-07:00"
+report_date = "2026-03-15"
+row_count = 40
+
+[[rows]]
+mission = "ACE"
+instrument = "MAG"
+product_family = "Hourly magnetic field"
+source_contract_id = "SRC-ACE-MAG-HOURLY"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=AC_H2_MFI"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'ACE MAG L2 Browse 16-sec (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/ace_mag/*.csv"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Near-Earth L1 magnetic-field lane used in executed 4D overlays and the fleet2016 feature-cube lane."
+
+[[rows]]
+mission = "ACE"
+instrument = "SWEPAM"
+product_family = "Hourly plasma moments"
+source_contract_id = "SRC-ACE-SWEPAM-HOURLY"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=AC_H2_SWE"
+mirror_urls = ["https://izw1.caltech.edu/ACE/ASC/DATA/level2/swepam/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'ACE SWEPAM Solar Wind (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/ace_swepam/*.csv"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Near-Earth L1 plasma lane used in executed 4D overlays and the fleet2016 feature-cube lane."
+
+[[rows]]
+mission = "WIND"
+instrument = "MFI"
+product_family = "Hourly magnetic field"
+source_contract_id = "SRC-WIND-MFI-HOURLY"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/wind/mfi/ascii/1hour_ascii/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'WIND MFI 1-hour Magnetic Field (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/wind_mfi/*"
+cache_match_count = 12
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Near-Earth magnetic-field cross-validation lane that feeds the merged WIND cube rows."
+
+[[rows]]
+mission = "WIND"
+instrument = "SWE"
+product_family = "Hourly plasma moments"
+source_contract_id = "SRC-WIND-SWE-KP"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/wind/swe/ascii/swe_kp_unspike/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'WIND SWE KP Unspiked Plasma (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/wind_swe/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Near-Earth plasma cross-validation lane that feeds the merged WIND cube rows."
+
+[[rows]]
+mission = "STEREO-A"
+instrument = "PLASTIC"
+product_family = "1-hour plasma"
+source_contract_id = "SRC-STEREO-A-PLASTIC-1HR"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=STA_L2_PLA_1DMAX_1HR"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'STEREO-A PLASTIC 1-hour Plasma (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/stereo_plastic/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Triangulation plasma lane in executed overlays and the fleet2016 feature cube."
+
+[[rows]]
+mission = "STEREO-A"
+instrument = "IMPACT/MAG"
+product_family = "Merged magnetic/plasma support"
+source_contract_id = "SRC-STEREO-A-IMPACT-MAG"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=STA_COHO1HR_MERGED_MAG_PLASMA"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'STEREO-A IMPACT/MAG MAGPLASMA (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/stereo_impact/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Merged MAG/plasma support lane paired with PLASTIC and integrated into the fleet2016 feature cube."
+
+[[rows]]
+mission = "Voyager 1"
+instrument = "Merged cruise support"
+product_family = "Hourly merged plasma/field geometry"
+source_contract_id = "SRC-VOYAGER1-MERGED-AMDA-DERIVED"
+source_contract_present = true
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+    "https://amda.irap.omp.eu/service/hapi/info?id=vo1-pls-full",
+    "https://amda.irap.omp.eu/service/hapi/info?id=vo1-mag-full",
+    "https://amda.irap.omp.eu/service/hapi/info?id=vo1-ephem-all",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 1 Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/voyager/voyager1*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed outer-heliosphere merged hourly lane and fleet2016 feature-cube input."
+
+[[rows]]
+mission = "Voyager 1"
+instrument = "CRS"
+product_family = "Daily cosmic-ray flux"
+source_contract_id = "SRC-VOYAGER1-JUPITER-CRS-PDS"
+source_contract_present = true
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/"
+mirror_urls = [
+    "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
+    "https://pds-ppi.igpp.ucla.edu/data/VG1-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 1 CRS Daily Flux' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/voyager_crs/voyager1_crs_daily_flux_*.csv"
+cache_match_count = 2
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Executed CRS daily flux lane and fleet2016 feature-cube input."
+
+[[rows]]
+mission = "Voyager 1"
+instrument = "PWS"
+product_family = "Plasma-wave spectra"
+source_contract_id = "SRC-VOYAGER-IOWA-PWS"
+source_contract_present = true
+canonical_url = "https://space.physics.uiowa.edu/plasma-wave/voyager/home.html"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=VG1_PWS_LR",
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=VG2_PWS_LR",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager PWS Low Rate' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/voyager/pws/v1/**/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official CDAWeb HAPI low-rate spectra are staged for 2016 and integrated into the fleet2016 feature cube."
+
+[[rows]]
+mission = "Voyager 2"
+instrument = "Merged cruise support"
+product_family = "Hourly merged plasma/field geometry"
+source_contract_id = "SRC-VOYAGER2-MERGED-AMDA-DERIVED"
+source_contract_present = true
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+    "https://amda.irap.omp.eu/service/hapi/info?id=vo2-pls-full",
+    "https://amda.irap.omp.eu/service/hapi/info?id=vo2-mag-full",
+    "https://amda.irap.omp.eu/service/hapi/info?id=vo2-ephem-all",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 2 Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/voyager/voyager2*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed outer-heliosphere merged hourly lane and fleet2016 feature-cube input."
+
+[[rows]]
+mission = "Voyager 2"
+instrument = "CRS"
+product_family = "Daily cosmic-ray flux"
+source_contract_id = "SRC-VOYAGER2-JUPITER-CRS-PDS"
+source_contract_present = true
+canonical_url = "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/"
+mirror_urls = [
+    "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/AAREADME.TXT",
+    "https://pds-ppi.igpp.ucla.edu/data/VG2-J-CRS-5-SUMM-FLUX-V1.0/INDEX/INDEX.LBL",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 2 CRS Daily Flux' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/voyager_crs/voyager2_crs_daily_flux_*.csv"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Executed CRS daily flux lane and fleet2016 feature-cube input."
+
+[[rows]]
+mission = "Voyager 2"
+instrument = "PWS"
+product_family = "Plasma-wave spectra"
+source_contract_id = "SRC-VOYAGER-IOWA-PWS"
+source_contract_present = true
+canonical_url = "https://space.physics.uiowa.edu/plasma-wave/voyager/home.html"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=VG1_PWS_LR",
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=VG2_PWS_LR",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager PWS Low Rate' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/voyager/pws/v2/**/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official CDAWeb HAPI low-rate spectra are staged for 2016 and integrated into the fleet2016 feature cube."
+
+[[rows]]
+mission = "IMP 8"
+instrument = "Merged field/plasma reference"
+product_family = "1-minute merged hourly aggregate"
+source_contract_id = "SRC-IMP8-SPDF-MERGED-1MIN"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/imp/imp8/merged/"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_ascii_monthly"
+local_glob = "data/external/imp8/*.asc"
+cache_match_count = 60
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Historical near-Earth reference lane for Helios-era same-epoch feature cubes and overlays."
+
+[[rows]]
+mission = "Ulysses"
+instrument = "Merged mission support"
+product_family = "Hourly merged plasma/field geometry"
+source_contract_id = "SRC-ULYSSES-SPDF-MERGED"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/ulysses/merged/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Ulysses Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/ulysses/*"
+cache_match_count = 15
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed post-1997 high-latitude lane and outer2001 feature-cube/algebra/LBM inputs."
+
+[[rows]]
+mission = "Helios 1"
+instrument = "Merged mission support"
+product_family = "Hourly merged plasma/field geometry"
+source_contract_id = "SRC-HELIOS1-SPDF-MERGED"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/helios/helios1/merged/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Helios 1 Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/helios/helios1*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Historical same-epoch lane is now anchored to IMP 8 rather than modern OMNI windows."
+
+[[rows]]
+mission = "Helios 2"
+instrument = "Merged mission support"
+product_family = "Hourly merged plasma/field geometry"
+source_contract_id = "SRC-HELIOS2-SPDF-MERGED"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/helios/helios2/merged/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Helios 2 Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/helios/helios2*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Historical same-epoch lane is now anchored to IMP 8 rather than modern OMNI windows."
+
+[[rows]]
+mission = "Cassini"
+instrument = "Cruise hybrid"
+product_family = "Merged plasma/trajectory support"
+source_contract_id = "SRC-CASSINI-CRUISE-AMDA-HYBRID"
+source_contract_present = true
+canonical_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+mirror_urls = [
+    "https://amda.irap.omp.eu/service/hapi/info?id=cass-orb-cruise",
+    "https://amda.irap.omp.eu/service/hapi/info?id=cass-mag-rtn60",
+    "https://amda.irap.omp.eu/service/hapi/info?id=tao-cass-sw",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Cassini Cruise Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/cassini/*"
+cache_match_count = 9
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed hybrid cruise lane and outer2001 feature-cube/algebra/LBM inputs."
+
+[[rows]]
+mission = "Juno"
+instrument = "Cruise support"
+product_family = "Heliocentric hourly position/plasma support"
+source_contract_id = "SRC-JUNO-AMDA-CRUISE-DERIVED"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=JUNO_HELIO1HR_POSITION"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Juno Cruise Merged Hourly (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/juno/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Executed cruise support lane and fleet2016 feature-cube support row; position-only in the current Rust path."
+
+[[rows]]
+mission = "New Horizons"
+instrument = "SWAP + support"
+product_family = "Hourly plasma/position support"
+source_contract_id = "SRC-NH-SINGLE-SOURCE-FRAGILE"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=NEW_HORIZONS_HELIO1HR_POSITION"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'New Horizons SWAP Hourly (2016)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/new_horizons/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Executed SWAP + trajectory lane and fleet2016 feature-cube support row; current Rust path stages heliocentric support only."
+
+[[rows]]
+mission = "IBEX"
+instrument = "IBEX-Hi/Lo"
+product_family = "ENA sky maps"
+source_contract_id = "SRC-IBEX-ENA-MAPS"
+source_contract_present = true
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/ibex/release17/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IBEX ENA Sky Maps' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/ibex/release17/**/*-flux.txt"
+cache_match_count = 8
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = false
+overlay_4d_ready = false
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official SPDF release17 ENA sky-map lane is staged, parseable, and summarized into the boundary2009 feature-cube lane."
+
+[[rows]]
+mission = "IBEX"
+instrument = "SSC orbit support"
+product_family = "Orbit companion time series"
+source_contract_id = "SRC-IBEX-ORBIT-SSC"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=IBEX_OR_SSC"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IBEX Orbit SSC' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/ibex/orbits/*.csv"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Executed same-epoch orbit companion lane and fleet2016 feature-cube support row."
+
+[[rows]]
+mission = "SOHO"
+instrument = "CELIAS/MTOF PM"
+product_family = "Mission-long bundle"
+source_contract_id = "SRC-SOHO-CELIAS-PM-5MIN-BUNDLE"
+source_contract_present = true
+canonical_url = "https://soho.nascom.nasa.gov/data/EntireMissionBundles/CELIAS_Proton_Monitor_5min.tar.gz"
+mirror_urls = [
+    "https://soho.nascom.nasa.gov/data/archive.html",
+    "https://www.cosmos.esa.int/web/soho/mission-long-files",
+    "https://www.cosmos.esa.int/web/soho/command-line",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO CELIAS PM 5min Bundle' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = false
+overlay_4d_ready = false
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Mission-long bundle remains a compatibility fallback and backfill source, but the executed modern2020 feature cube now prefers the native daily CDAWeb CDF lane when the target year is cached."
+
+[[rows]]
+mission = "SOHO"
+instrument = "CELIAS/MTOF PM"
+product_family = "Official 5-minute daily CDFs"
+source_contract_id = "SRC-SOHO-CELIAS-PM-5MIN-CDAWEB"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/soho/celias/pm_5min/"
+mirror_urls = ["https://soho.nascom.nasa.gov/data/EntireMissionBundles/CELIAS_Proton_Monitor_5min.tar.gz"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO CELIAS PM 5min CDF' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/soho/celias_pm_5min/**/*.cdf"
+cache_match_count = 1243
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = false
+overlay_4d_ready = false
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official CDAWeb follow-on lane for daily CDF products; parser is promoted and the executed modern2020 feature cube now uses the full 2020 native daily CDF set."
+
+[[rows]]
+mission = "SOHO"
+instrument = "LASCO"
+product_family = "Level-0.5 bounded day sample"
+source_contract_id = "SRC-SOHO-LASCO-LZ-DAY-SAMPLE"
+source_contract_present = true
+canonical_url = "https://lasco-www.nrl.navy.mil/index.php?p=get_data"
+mirror_urls = [
+    "https://umbra.nascom.nasa.gov/pub/lasco_level05/",
+    "https://soho.nascom.nasa.gov/data/archive.html",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO LASCO L0.5 Day Sample' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/soho/lasco/level05/**/*"
+cache_match_count = 17
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = false
+overlay_4d_ready = false
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Governed official sample is parseable via img_hdr campaign rows and now feeds the remote2024 feature-cube window as a remote-imager summary lane."
+
+[[rows]]
+mission = "Parker Solar Probe"
+instrument = "Merged hourly"
+product_family = "Plasma/field support"
+source_contract_id = "SRC-PSP-COHO1HR-MERGED"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_COHO1HR_MERGED_MAG_PLASMA"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Parker Solar Probe Merged Hourly' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/psp/*.csv"
+cache_match_count = 2
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed modern inner-heliosphere lane and modern2020 feature-cube input."
+
+[[rows]]
+mission = "Parker Solar Probe"
+instrument = "FIELDS"
+product_family = "Higher-cadence MAG"
+source_contract_id = "SRC-PSP-FIELDS-L2-MAG-RTN-1MIN"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/psp/fields/l2/mag_rtn_1min/"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/pub/data/psp/fields/l2/mag_rtn_1min/",
+    "http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv"
+local_glob = "data/external/psp/fields_l2_mag_rtn_1min/**/*"
+cache_match_count = 120
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official higher-cadence supplement is staged for the full January-February 2020 target window, with direct daily CDAWeb CDFs retained for provenance and parser-friendly HAPI CSV mirrors used in the executed cube lane."
+
+[[rows]]
+mission = "Parker Solar Probe"
+instrument = "FIELDS SQTN"
+product_family = "Electron density/core temperature"
+source_contract_id = "SRC-PSP-FLD-SQTN-RFS-V1V2"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_FLD_L3_SQTN_RFS_V1V2"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_hapi_csv_daily"
+local_glob = "data/external/psp/sqtn_rfs_v1v2/**/*.csv"
+cache_match_count = 23
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Official HAPI SQTN density/temperature lane for later PSP windows such as psp2025."
+
+[[rows]]
+mission = "Parker Solar Probe"
+instrument = "SWEAP SPI"
+product_family = "SF00 L3 ion moments"
+source_contract_id = "SRC-PSP-SWEAP-SPI-SF00-L3-MOM"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/psp/sweap/spi/l3/spi_sf00_l3_mom/"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_SWP_SPI_SF00_L3_MOM",
+    "https://cdaweb.gsfc.nasa.gov/",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_https_manifest_plus_hapi_csv_daily"
+local_glob = "data/external/psp/sweap_spi_sf00_l3_mom/**/*.csv"
+cache_match_count = 149
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Official PSP SWEAP SPI ion-moment lane is staged from the direct daily public manifest and executed through compact HAPI CSV mirrors in psp2025."
+
+[[rows]]
+mission = "Parker Solar Probe"
+instrument = "SWEAP SPC"
+product_family = "L3 ion moments"
+source_contract_id = "SRC-PSP-SWEAP-SPC-L3I"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/psp/sweap/spc/l3/l3i/"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=PSP_SWP_SPC_L3I",
+    "https://cdaweb.gsfc.nasa.gov/",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv_daily"
+local_glob = "data/external/psp/sweap_spc_l3i/**/*.csv"
+cache_match_count = 33
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Official PSP SWEAP SPC L3 ion-moment lane is staged from the direct daily public CDF manifest and executed through compact HAPI CSV mirrors in psp2025."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "Merged hourly"
+product_family = "MAG/plasma support"
+source_contract_id = "SRC-SOLO-COHO1HR-MERGED"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_COHO1HR_MERGED_MAG_PLASMA"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "hapi_csv"
+local_glob = "data/external/solar_orbiter/*.csv"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Executed modern inner-heliosphere lane and modern2020 feature-cube input."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "SWA-PAS"
+product_family = "SOAR proton moments"
+source_contract_id = "SRC-SOLO-SOAR-SWA-PAS-GRND-MOM"
+source_contract_present = true
+canonical_url = "https://soar.esac.esa.int/soar-sl-tap/tap/sync"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L2_SWA-PAS-GRND-MOM"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Solar Orbiter SWA-PAS Ground Moments' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/solo/soar_swa_pas/**/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Official SOAR follow-on lane is staged for 2020 and integrated into the modern2020 feature cube."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "MAG"
+product_family = "RTN normal 1-minute"
+source_contract_id = "SRC-SOLO-MAG-RTN-NORMAL-1MIN"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L2_MAG-RTN-NORMAL-1-MINUTE"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/mag/science/l2/rtn-normal-1-minute/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Solar Orbiter MAG RTN 1-minute (2020)' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/solar_orbiter/mag_rtn_normal_1min/**/*.csv"
+cache_match_count = 188
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official MAG RTN 1-minute follow-on lane is staged for 2020 and integrated into the modern2020 feature cube."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "RPW BIA"
+product_family = "Spacecraft potential 10-second"
+source_contract_id = "SRC-SOLO-RPW-BIA-SCPOT-10S"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/rpw/science/l3/bia-scpot-10-seconds/"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv"
+local_glob = "data/external/solar_orbiter/rpw_bia_scpot_10s/**/*"
+cache_match_count = 389
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official RPW BIA spacecraft-potential follow-on lane is staged for 2020 with direct CDF provenance plus parser-friendly HAPI CSV mirrors, and the executed cube lane prefers the CSV representation."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "RPW BIA Density"
+product_family = "Hourly density"
+source_contract_id = "SRC-SOLO-RPW-BIA-DENSITY"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L3_RPW-BIA-DENSITY"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_hapi_csv_daily"
+local_glob = "data/external/solar_orbiter/rpw_bia_density/**/*.csv"
+cache_match_count = 46
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = true
+algebra_ready = true
+notes = "Public HAPI density lane complements merged hourly, SWA, MAG, and RPW SCPOT products in modern2020."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "RPW HFR"
+product_family = "Survey flux spectra"
+source_contract_id = "SRC-SOLO-RPW-HFR-SURV-FLUX"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/rpw/science/l3/hfr-surv-flux/"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L3_RPW-HFR-SURV-FLUX",
+    "https://cdaweb.gsfc.nasa.gov/",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv_daily"
+local_glob = "data/external/solar_orbiter/rpw_hfr_surv_flux/**/*.csv"
+cache_match_count = 48
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official Solar Orbiter RPW HFR radio-flux survey lane is staged from daily public CDF manifests with parser-friendly HAPI CSV mirrors and executed into modern2020 spectral summaries."
+
+[[rows]]
+mission = "Solar Orbiter"
+instrument = "RPW TNR"
+product_family = "Survey flux spectra"
+source_contract_id = "SRC-SOLO-RPW-TNR-SURV-FLUX"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/rpw/science/l3/tnr-surv-flux/"
+mirror_urls = [
+    "https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L3_RPW-TNR-SURV-FLUX",
+    "https://cdaweb.gsfc.nasa.gov/",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_direct_http_cdf_plus_hapi_csv_daily"
+local_glob = "data/external/solar_orbiter/rpw_tnr_surv_flux/**/*.csv"
+cache_match_count = 39
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official Solar Orbiter RPW TNR survey-flux lane is staged from daily public CDF manifests with parser-friendly HAPI CSV mirrors and executed into modern2020 spectral summaries."
+
+[[rows]]
+mission = "BepiColombo"
+instrument = "Helio1hr support"
+product_family = "Hourly position support"
+source_contract_id = "SRC-BEPICOLOMBO-HELIO1HR-POSITION"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=BEPICOLOMBO_HELIO1HR_POSITION"
+mirror_urls = []
+access_class = "public"
+contract_status = "active"
+retrieval_method = "hapi_csv"
+local_glob = "data/external/bepicolombo/*"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Executed heliocentric support lane and modern2020 feature-cube support row."
+
+[[rows]]
+mission = "IMAP"
+instrument = "Helio1hr support"
+product_family = "Hourly position support"
+source_contract_id = "SRC-IMAP-HELIO1HR-POSITION"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/helio1hr/"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/pub/data/imap/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IMAP Helio1hr Position' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/imap/helio1hr/*.cdf"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official CDAWeb IMAP position support is public, parser-promoted, and emitted into the imap2025 feature-cube window."
+
+[[rows]]
+mission = "IMAP"
+instrument = "IMAP-Hi"
+product_family = "L2 ENA h90 maps"
+source_contract_id = "SRC-IMAP-HI-L2-H90-ENA"
+source_contract_present = true
+canonical_url = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/h90-ena-h-sf-nsp-full-4deg-3mo/"
+mirror_urls = ["https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/"]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'IMAP-Hi L2 ENA h90' --output-dir data/external --skip-existing=false"
+local_glob = "data/external/imap/hi/l2/h90/**/*.cdf"
+cache_match_count = 1
+cache_present = true
+parser_status = "operational"
+overlay_3d_ready = false
+overlay_4d_ready = false
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "Official CDAWeb IMAP-Hi ENA products are public, parser-promoted, and summarized into the imap2026 feature-cube window."
+
+[[rows]]
+mission = "IMAP"
+instrument = "I-ALiRT"
+product_family = "L1 realtime multiproduct stream"
+source_contract_id = "SRC-IMAP-IALIRT-LIVE-API"
+source_contract_present = true
+canonical_url = "https://ialirt.imap-mission.com/space-weather"
+mirror_urls = [
+    "https://ialirt.imap-mission.com/ialirt-archive-query",
+    "https://cdaweb.gsfc.nasa.gov/pub/data/imap/ialirt/l1/realtime/",
+]
+access_class = "public"
+contract_status = "active"
+retrieval_method = "rust_live_json_hourly_chunks_plus_archive_cdf"
+local_glob = "data/external/imap/ialirt/**/*"
+cache_match_count = 46
+cache_present = true
+parser_status = "operational_live_json"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
+lbm_ready = false
+algebra_ready = true
+notes = "The executed lane now prefers the official public I-ALiRT live JSON API, while archive CDFs remain staged for provenance and future decoder work."

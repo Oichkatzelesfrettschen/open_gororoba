@@ -8,6 +8,7 @@ use data_core::{
         cassini::parse_cassini_cruise_file,
         helios::{HeliosSpacecraft, parse_helios_file},
         ibex::{IbexOrbitRecord, parse_ibex_ena_file, parse_ibex_orbit_file},
+        imp8::{imp8_to_omni, parse_imp8_file},
         juno::parse_juno_cruise_file,
         new_horizons::parse_nh_swap_file,
         omni::{OmniRecord, parse_omni_file},
@@ -88,6 +89,9 @@ struct Cli {
 
     #[arg(long, default_value = "data/external/helios/helios2")]
     helios2_dir: PathBuf,
+
+    #[arg(long, default_value = "data/external/imp8")]
+    imp8_dir: PathBuf,
 
     #[arg(long, default_value = "data/external/cassini")]
     cassini_dir: PathBuf,
@@ -275,6 +279,11 @@ fn main() -> Result<()> {
         },
         |path| Ok(parse_helios_file(path, HeliosSpacecraft::H2)?),
     )?;
+    let imp8 = load_records_optional(
+        &cli.imp8_dir,
+        |path| file_name_starts_with(path, "imp_min_merge") && file_name_ends_with(path, ".asc"),
+        |path| Ok(parse_imp8_file(path)?),
+    )?;
     let cassini = load_merged_optional(
         &cli.cassini_dir,
         |path| file_name_starts_with(path, "cassini_") && file_name_ends_with(path, ".asc"),
@@ -398,7 +407,21 @@ fn main() -> Result<()> {
         "Helios 2 merged hourly",
         &cli.helios2_dir,
         helios2.as_deref(),
-        Some("Official SPDF merged yearly files are now the primary Rust fetch path; temporal overlap with OMNI still remains historically absent.".to_string()),
+        Some("Official SPDF merged yearly files are now the primary Rust fetch path; same-epoch comparison now uses IMP 8 rather than modern OMNI.".to_string()),
+    );
+    let imp8_series = overlay_series(
+        "IMP 8 merged hourly aggregate",
+        &cli.imp8_dir,
+        imp8.as_ref().map(|rows| rows.len()).unwrap_or(0),
+        imp8
+            .as_ref()
+            .map(|rows| imp8_to_omni(rows))
+            .and_then(|rows| bounds_from_omni(&rows)),
+        imp8
+            .as_ref()
+            .map(|rows| omni_day_keys(&imp8_to_omni(rows)))
+            .unwrap_or_default(),
+        Some("Official SPDF IMP 8 merged 1-minute files aggregated hourly for Helios-era same-epoch reference overlays.".to_string()),
     );
     let cassini_series = merged_overlay_series(
         "Cassini cruise merged hourly",
@@ -509,17 +532,17 @@ fn main() -> Result<()> {
         ),
         build_overlay(
             "Helios 1",
-            "omni+mission",
-            vec![omni_series.clone(), helios1_series.clone()],
+            "imp8+mission",
+            vec![imp8_series.clone(), helios1_series.clone()],
             helios1.as_deref(),
-            Some("Inner-heliosphere lane; temporal overlap with OMNI is not expected because Helios predates the OMNI local windows in this repo.".to_string()),
+            Some("Historical inner-heliosphere lane; same-epoch overlap is now evaluated against IMP 8 rather than modern OMNI windows.".to_string()),
         ),
         build_overlay(
             "Helios 2",
-            "omni+mission",
-            vec![omni_series.clone(), helios2_series.clone()],
+            "imp8+mission",
+            vec![imp8_series.clone(), helios2_series.clone()],
             helios2.as_deref(),
-            Some("Inner-heliosphere lane; temporal overlap with OMNI is not expected because Helios predates the OMNI local windows in this repo.".to_string()),
+            Some("Historical inner-heliosphere lane; same-epoch overlap is now evaluated against IMP 8 rather than modern OMNI windows.".to_string()),
         ),
         build_overlay(
             "Cassini",
@@ -677,13 +700,13 @@ fn main() -> Result<()> {
                 parser_working: helios1.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
-                    &["SRC-HELIOS1-SPDF-MERGED"],
+                    &["SRC-HELIOS1-SPDF-MERGED", "SRC-IMP8-SPDF-MERGED-1MIN"],
                 ),
                 overlay_3d_implemented: true,
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[6].simultaneous_day_bins > 0,
             },
-            Some("Official SPDF merged files are now fetchable in the Rust path, even though same-epoch OMNI overlap remains unavailable.".to_string()),
+            Some("Official SPDF merged files now pair with IMP 8 for the executed historical same-epoch lane.".to_string()),
         ),
         build_coverage_row(
             "Helios 2",
@@ -693,13 +716,13 @@ fn main() -> Result<()> {
                 parser_working: helios2.is_some(),
                 source_contract_migrated: contracts_present(
                     &contract_ids,
-                    &["SRC-HELIOS2-SPDF-MERGED"],
+                    &["SRC-HELIOS2-SPDF-MERGED", "SRC-IMP8-SPDF-MERGED-1MIN"],
                 ),
                 overlay_3d_implemented: true,
                 overlay_4d_implemented: true,
                 cross_domain_integrated: overlays[7].simultaneous_day_bins > 0,
             },
-            Some("Official SPDF merged files are now fetchable in the Rust path, even though same-epoch OMNI overlap remains unavailable.".to_string()),
+            Some("Official SPDF merged files now pair with IMP 8 for the executed historical same-epoch lane.".to_string()),
         ),
         build_coverage_row(
             "Cassini",
@@ -830,6 +853,7 @@ fn main() -> Result<()> {
         dataset_window_from_series(&ulysses_series),
         dataset_window_from_series(&helios1_series),
         dataset_window_from_series(&helios2_series),
+        dataset_window_from_series(&imp8_series),
         dataset_window_from_series(&cassini_series),
         dataset_window_from_series(&juno_series),
         dataset_window_from_series(&new_horizons_series),
@@ -842,7 +866,7 @@ fn main() -> Result<()> {
 
     let report = HeliosphereTemporalOverlayReport {
         generated_at_utc: chrono::Utc::now().to_rfc3339(),
-        overlay_definition: "4D overlay = shared observed epoch windows across heliocentric or near-Earth telemetry lanes using true measurement times. Near-Earth missions use OMNI as the common boundary clock; outer-heliosphere missions retain heliocentric distance summaries where available.".to_string(),
+        overlay_definition: "4D overlay = shared observed epoch windows across heliocentric or near-Earth telemetry lanes using true measurement times. Near-Earth contemporary missions use OMNI as the common boundary clock, while Helios-era historical lanes use IMP 8 as the same-epoch near-Earth reference.".to_string(),
         control_plane_db_path: cli.control_plane_db.display().to_string(),
         datasets,
         overlays,
