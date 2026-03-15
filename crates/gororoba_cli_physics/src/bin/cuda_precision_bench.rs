@@ -1,8 +1,9 @@
 //! CUDA Kernel Baseline Benchmark
 //!
-//! Sweeps the full kernel decision space across six workload groups,
-//! computes MLUPS and effective bandwidth, and writes an ASCII summary
-//! table (stdout) plus a CSV file for agent consumption.
+//! Sweeps the full kernel decision space across six workload groups plus the
+//! full precision tier ladder (DD/FP64/FP32/BF16/FP16/FP8/INT8 + TC WMMA proxy),
+//! computes MLUPS, effective bandwidth, and VRAM footprint, then writes an ASCII
+//! summary table (stdout) plus a CSV file for agent consumption.
 //!
 //! This is NOT a CI gate. It is a reference tool for design decisions.
 //! See: plans/golden-splashing-boole.md for the full specification.
@@ -49,7 +50,7 @@ struct BenchConfig {
     #[arg(long, default_value_t = 50)]
     steps_large: usize,
 
-    /// Workloads to run (comma-separated: lbm,box,dark_halo,sparse,voudon,all).
+    /// Workloads to run (comma-separated: lbm,box,dark_halo,sparse,voudon,tc,all).
     #[arg(long, default_value = "all")]
     workloads: String,
 
@@ -104,6 +105,7 @@ struct BenchRow {
     mlups: Option<f64>,
     bandwidth_gbs: Option<f64>,
     bandwidth_pct_peak: Option<f64>,
+    vram_dist_mb: Option<usize>,
     notes: String,
 }
 
@@ -121,6 +123,11 @@ fn bandwidth_gbs(n_cells: usize, steps: usize, elapsed_ms: f64, elem_bytes: usiz
     bytes / (elapsed_ms * 1e-3) / 1e9
 }
 
+/// Ping-pong distribution buffer footprint in MiB.
+fn vram_ping_pong_mb(n_cells: usize, elem_bytes: usize) -> usize {
+    n_cells * 19 * elem_bytes * 2 / (1024 * 1024)
+}
+
 // ============================================================================
 // Output
 // ============================================================================
@@ -133,12 +140,12 @@ fn write_csv(path: &str, rows: &[BenchRow]) -> Result<()> {
     writeln!(
         f,
         "workload,precision,variant,grid_size,param2,n_steps,warmup,\
-         elapsed_ms,mlups,bandwidth_gbs,bandwidth_pct_peak,notes"
+         elapsed_ms,mlups,bandwidth_gbs,bandwidth_pct_peak,vram_dist_mb,notes"
     )?;
     for r in rows {
         writeln!(
             f,
-            "{},{},{},{},{},{},{},{:.3},{},{},{},\"{}\"",
+            "{},{},{},{},{},{},{},{:.3},{},{},{},{},\"{}\"",
             r.workload,
             r.precision,
             r.variant,
@@ -150,6 +157,7 @@ fn write_csv(path: &str, rows: &[BenchRow]) -> Result<()> {
             r.mlups.map_or(String::new(), |v| format!("{v:.2}")),
             r.bandwidth_gbs.map_or(String::new(), |v| format!("{v:.2}")),
             r.bandwidth_pct_peak.map_or(String::new(), |v| format!("{v:.1}")),
+            r.vram_dist_mb.map_or(String::new(), |v| format!("{v}")),
             r.notes,
         )?;
     }
@@ -168,75 +176,75 @@ fn print_table(rows: &[BenchRow]) {
         let subset: Vec<&BenchRow> = rows.iter().filter(|r| r.workload == group).collect();
         println!();
         println!("Workload: {group}");
-        println!("{:-<80}", "");
+        println!("{:-<88}", "");
         println!(
-            "{:<22} {:<6} {:<18} {:>8} {:>8} {:>8} {:>7}",
-            "variant", "grid", "precision", "MLUPS", "BW_GBS", "BW_PCT", "ms"
+            "{:<22} {:<6} {:<16} {:>8} {:>8} {:>7} {:>7} {:>7}",
+            "variant", "grid", "precision", "MLUPS", "BW_GBS", "BW_PCT", "VRAM_MB", "ms"
         );
-        println!("{:-<80}", "");
+        println!("{:-<88}", "");
         for r in &subset {
             println!(
-                "{:<22} {:>5}^3 {:<18} {:>8} {:>8} {:>7} {:>7.1}",
+                "{:<22} {:>5}^3 {:<16} {:>8} {:>8} {:>7} {:>7} {:>7.1}",
                 r.variant,
                 r.grid_size,
                 r.precision,
                 r.mlups.map_or("-".to_string(), |v| format!("{v:.1}")),
                 r.bandwidth_gbs.map_or("-".to_string(), |v| format!("{v:.1}")),
                 r.bandwidth_pct_peak.map_or("-".to_string(), |v| format!("{v:.1}%")),
+                r.vram_dist_mb.map_or("-".to_string(), |v| format!("{v}")),
                 r.elapsed_ms,
             );
         }
-        println!("{:-<80}", "");
+        println!("{:-<88}", "");
     }
 }
 
 fn print_precision_guide() {
     println!();
-    println!("Ada SM 8.9 precision tiers for LBM scalar workloads:");
-    println!("  FP32 : ~40 TFLOPS scalar; memory bottleneck at 128^3+. Primary production tier.");
-    println!(
-        "  BF16 : Same scalar speed as FP32 (no BF16 scalar FFMA acceleration on Ada);"
-    );
-    println!(
-        "         benefit is 2x bandwidth reduction. Risk: 8-bit mantissa -> LBM instability"
-    );
-    println!("         for tau < 0.55 or at shear boundaries.");
-    println!(
-        "  FP64 : ~0.6 TFLOPS (64:1 ratio on gaming SKU). Use only for validation, not perf."
-    );
-    println!(
-        "  TF32/FP16/FP8/INT8/INT4: Tensor Core formats; only fast via cuBLAS/cuDNN matrix"
-    );
-    println!("         paths. Not applicable to custom scalar LBM or AVT kernels.");
+    println!("Ada SM 8.9 precision tiers -- D3Q19 LBM scalar kernels (RTX 4070 Ti, 504 GB/s peak):");
+    println!();
+    println!("  Tier         Bytes/dist  Mantissa  VRAM vs FP32  Notes");
+    println!("  -----------  ----------  --------  ------------  -----------------------------------------");
+    println!("  DD_FP128           16      ~106-bit      16x     two f64 (hi+lo); Knuth 2-sum + Veltkamp FMA;");
+    println!("                                                    4 bufs (hi/lo ping/pong); research tier only");
+    println!("  FP64                8       53-bit        4x     IEEE double; ~0.6 TFLOPS on Ada gaming SKU;");
+    println!("                                                    validation only; 64:1 speed penalty vs FP32");
+    println!("  FP32                4       24-bit        1x     primary production tier; ~40 TFLOPS scalar;");
+    println!("                                                    memory bottleneck at 128^3+");
+    println!("  BF16                2        8-bit        0.5x   2x bandwidth save; same scalar speed as FP32");
+    println!("                                                    (no BF16 FFMA accel on Ada); 8-bit exponent");
+    println!("                                                    risk: instability for tau < 0.55");
+    println!("  FP16                2       10-bit        0.5x   2x bandwidth save; half2 paired loads;");
+    println!("                                                    narrower range than BF16 (5-bit exponent);");
+    println!("                                                    better mantissa (10-bit vs 7-bit)");
+    println!("  FP8_e4m3            1        4-bit        0.25x  4x bandwidth save; uchar4 vectorized loads;");
+    println!("                                                    SM 8.9+ only; significant accuracy risk");
+    println!("  INT8                1   fixed(64)         0.25x  4x bandwidth save; __dp4a momentum accel;");
+    println!("                                                    DIST_SCALE=64; overflow risk at high density");
+    println!();
+    println!("  TF32/FP16/INT8/INT4 (Tensor Core WMMA proxy -- NOT LBM kernels):");
+    println!("    TF32:  M=16 N=16 K=8   ~165 TFLOPS (Ada theoretical)  FP32 accumulator");
+    println!("    FP16:  M=16 N=16 K=16  ~330 TFLOPS                    FP32 accumulator");
+    println!("    INT8:  M=16 N=16 K=16  ~330 TOPS                      INT32 accumulator");
+    println!("    INT4:  M=8  N=8  K=32  ~660 TOPS  (experimental)      INT32 accumulator");
+    println!("    These paths only activate via cuBLAS/cuDNN matrix routes.");
+    println!("    The WMMA benchmark quantifies the headroom over bandwidth-bound LBM.");
     println!();
     println!("Kernel variant decision table (FP32 SoA):");
-    println!(
-        "  grid <= 32^3  : coarsened (instruction pressure, not bandwidth, is limit)"
-    );
-    println!(
-        "  grid = 64^3   : mrt_tiled or coarsened (test both; L2 saturation varies)"
-    );
-    println!(
-        "  grid = 128^3  : mrt_tiled (target >= 60% peak bandwidth per C-1304)"
-    );
-    println!(
-        "  grid >= 256^3 : aa (A-A halves VRAM; stays compute-bound at same MLUPS)"
-    );
-    println!("  VRAM-critical : aa + bf16 (4x reduction vs fp64 ping-pong)");
+    println!("  grid <= 32^3  : coarsened (instruction pressure, not bandwidth, is limit)");
+    println!("  grid = 64^3   : mrt_tiled or coarsened (test both; L2 saturation varies)");
+    println!("  grid = 128^3  : mrt_tiled (target >= 60% peak bandwidth per C-1304)");
+    println!("  grid >= 256^3 : aa (A-A halves VRAM; stays compute-bound at same MLUPS)");
+    println!("  VRAM-critical : aa + bf16 or fp16 (4x reduction vs fp64 ping-pong)");
     println!();
     println!("YSU lessons embedded in benchmark design:");
-    println!(
-        "  float2 widening   : measured as standard vs coarsened MLUPS delta"
-    );
-    println!(
-        "  ILP (MRT chains)  : measured as bgk vs mrt MLUPS delta (MRT should win at 128^3+)"
-    );
-    println!(
-        "  Tiling LDS vs L2  : measured as standard vs tiled delta (target 15-25%)"
-    );
-    println!(
-        "  A-A VRAM halving  : measured as aa vs standard at 256^3 (same MLUPS, half VRAM)"
-    );
+    println!("  float2/float4 widening  : standard vs coarsened MLUPS delta");
+    println!("  ILP (MRT chains)        : bgk vs mrt MLUPS delta (MRT wins at 128^3+)");
+    println!("  Tiling LDS vs L2        : standard vs tiled delta (target 15-25%)");
+    println!("  A-A VRAM halving        : aa vs standard at 256^3 (same MLUPS, half VRAM)");
+    println!("  half2 vectorized loads  : fp16 AoS vs fp32 AoS bandwidth ratio");
+    println!("  __dp4a momentum accel   : int8 AoS vs fp32 AoS at same MLUPS");
+    println!("  Knuth DD arithmetic     : dd vs fp64 MLUPS ratio (measures DD overhead)");
     println!();
 }
 
@@ -246,10 +254,11 @@ fn print_precision_guide() {
 
 #[cfg(feature = "gpu")]
 mod gpu {
-    use super::{BenchRow, BenchConfig, PEAK_BW_GBS, bandwidth_gbs, mlups};
+    use super::{BenchConfig, BenchRow, PEAK_BW_GBS, bandwidth_gbs, mlups, vram_ping_pong_mb};
     use anyhow::Result;
     use lbm_3d_cuda::{
         DarkHaloCudaSolver, LbmSolver3DCuda, Precision,
+        bench_kernels::{BenchKernelRunner, DdBenchSolver, TensorCoreProbe},
         box_counting_gpu::GpuBoxCounter,
         probe_cuda_device_props,
         sparse::{SparseBrickMap, SparseLbmSolver},
@@ -257,7 +266,7 @@ mod gpu {
     use std::time::Instant;
 
     // -------------------------------------------------------------------------
-    // Workload A: LBM sweep
+    // Workload A: LBM sweep (FP32 variants, BF16, FP64)
     // -------------------------------------------------------------------------
 
     struct Fp32Variant {
@@ -383,7 +392,6 @@ mod gpu {
                         continue;
                     }
                 };
-                // Smagorinsky: set tau field once before timing
                 if v.use_smagorinsky {
                     let dx = 1.0 / n as f64;
                     if let Err(e) = solver.update_smagorinsky_tau(0.1, dx, 0.7) {
@@ -391,7 +399,6 @@ mod gpu {
                         continue;
                     }
                 }
-                // Warmup (captures graph on first pair call)
                 if let Err(e) = solver.step_n(cfg.warmup) {
                     eprintln!("SKIP warmup: {e}");
                     continue;
@@ -400,7 +407,6 @@ mod gpu {
                     eprintln!("SKIP sync: {e}");
                     continue;
                 }
-                // Timing
                 let t0 = Instant::now();
                 if let Err(e) = solver.step_n(n_steps) {
                     eprintln!("SKIP step: {e}");
@@ -414,7 +420,8 @@ mod gpu {
                 let ml = mlups(n_cells, n_steps, elapsed_ms);
                 let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
                 let bw_pct = bw / PEAK_BW_GBS * 100.0;
-                eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)");
+                let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes);
+                eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
                 rows.push(BenchRow {
                     workload: "lbm_sweep",
                     precision: "FP32".to_string(),
@@ -427,6 +434,7 @@ mod gpu {
                     mlups: Some(ml),
                     bandwidth_gbs: Some(bw),
                     bandwidth_pct_peak: Some(bw_pct),
+                    vram_dist_mb: Some(vram_mb),
                     notes: v.notes.to_string(),
                 });
             }
@@ -436,7 +444,7 @@ mod gpu {
         for &n in &grids {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
-            let elem_bytes = 2usize; // bf16 distribution; approx (macro fields are f32)
+            let elem_bytes = 2usize;
             eprint!("  [A] BF16/standard            {}^3 ({} steps)... ", n, n_steps);
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::BF16) {
                 Ok(s) => s,
@@ -451,7 +459,8 @@ mod gpu {
             let ml = mlups(n_cells, n_steps, elapsed_ms);
             let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
-            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)");
+            let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
             rows.push(BenchRow {
                 workload: "lbm_sweep",
                 precision: "BF16".to_string(),
@@ -464,6 +473,7 @@ mod gpu {
                 mlups: Some(ml),
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
                 notes: "BF16 AoS; same MLUPS as FP32 (no scalar FFMA accel on Ada); 2x bw reduction".to_string(),
             });
         }
@@ -487,7 +497,8 @@ mod gpu {
             let ml = mlups(n_cells, n_steps, elapsed_ms);
             let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
-            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)");
+            let vram_mb = vram_ping_pong_mb(n_cells, elem_bytes);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
             rows.push(BenchRow {
                 workload: "lbm_sweep",
                 precision: "FP64".to_string(),
@@ -500,8 +511,344 @@ mod gpu {
                 mlups: Some(ml),
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
                 notes: "FP64 AoS; ~0.6 TFLOPS on Ada gaming SKU; validation tier only".to_string(),
             });
+        }
+
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload H: FP16 LBM (NVRTC runtime-compiled kernel)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp16(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!("  [H] FP16/standard            {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match BenchKernelRunner::new_fp16(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP16".to_string(),
+                variant: "standard".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP16 AoS; half2 paired loads (9x half2 + 1 scalar); FP32 compute; 2 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload I: FP8 e4m3 LBM (SM 8.9+ only)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp8(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!("  [I] FP8_e4m3/standard        {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match BenchKernelRunner::new_fp8(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP8_e4m3".to_string(),
+                variant: "standard".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP8 e4m3 AoS; uchar4 vectorized loads; FP32 compute; SM 8.9+ only; 1 byte/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload J: INT8 fixed-point LBM
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int8(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!("  [J] INT8/standard            {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match BenchKernelRunner::new_int8(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT8".to_string(),
+                variant: "standard".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "INT8 fixed-point AoS; DIST_SCALE=64; __dp4a momentum; FP32 BGK; 1 byte/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload K: Double-Double FP128 LBM (capped at 64^3)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_dd(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        // DD is FP64 compute -- extremely slow on Ada gaming SKU. Cap grid size.
+        let dd_grids: Vec<usize> = cfg.grids().into_iter().filter(|&n| n <= 64).collect();
+        for n in dd_grids {
+            // Use shorter warmup and step counts to avoid multi-minute waits.
+            let n_steps = cfg.n_steps_for(n).min(20);
+            let warmup = cfg.warmup.min(5);
+            let n_cells = n * n * n;
+            // Each distribution value is 16 bytes (8-byte hi + 8-byte lo).
+            // Ping-pong uses 4 buffers (hi_a, lo_a, hi_b, lo_b).
+            let elem_bytes = 16usize;
+            eprint!("  [K] DD_FP128/standard        {}^3 ({} steps)... ", n, n_steps);
+            let mut solver = match DdBenchSolver::new(n, n, n) {
+                Ok(s) => s,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = solver.step_n(warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = solver.context().synchronize();
+            let t0 = Instant::now();
+            if let Err(e) = solver.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = solver.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            // DD uses 4 buffers, each n_cells*19*8 bytes.
+            let vram_mb = solver.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "DD_FP128".to_string(),
+                variant: "standard".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "Double-double FP128 emulation; Knuth 2-sum + Veltkamp/Dekker FMA; 4 bufs; 16 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload TC: Tensor Core WMMA proxy (measures headroom vs LBM bandwidth)
+    // -------------------------------------------------------------------------
+
+    pub fn run_tensor_core(_cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        eprint!("  [TC] TensorCore WMMA proxy... ");
+
+        let mut probe = match TensorCoreProbe::new() {
+            Ok(p) => p,
+            Err(e) => { eprintln!("SKIP: {e}"); return Ok(rows); }
+        };
+
+        // Warmup: brief run of each available tier (not timed).
+        let _ = probe.run_tf32(100);
+        let _ = probe.run_fp16(100);
+        let _ = probe.run_int8(100);
+        let _ = probe.run_int4(100);
+        let _ = probe.context().synchronize();
+
+        let n_iters = 10_000_i32;
+
+        // TF32 (M=16, N=16, K=8)
+        if probe.has_tf32() {
+            let t0 = Instant::now();
+            if let Ok(flops) = probe.run_tf32(n_iters) {
+                let _ = probe.context().synchronize();
+                let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+                let gflops = flops / (elapsed_ms * 1e-3) / 1e9;
+                eprintln!("TF32={gflops:.0} GFLOPS");
+                rows.push(BenchRow {
+                    workload: "tensor_core",
+                    precision: "TF32".to_string(),
+                    variant: "wmma_16x16x8".to_string(),
+                    grid_size: 0,
+                    param2: format!("n_iters={n_iters}"),
+                    n_steps: n_iters as usize,
+                    warmup: 100,
+                    elapsed_ms,
+                    mlups: None,
+                    bandwidth_gbs: None,
+                    bandwidth_pct_peak: None,
+                    vram_dist_mb: None,
+                    notes: format!("{gflops:.0} GFLOPS; M=16 N=16 K=8 FP32 accum; Ada ~165 TFLOPS peak; NOT an LBM kernel"),
+                });
+            }
+        }
+
+        // FP16 (M=16, N=16, K=16)
+        if probe.has_fp16() {
+            eprint!("  [TC] FP16 ");
+            let t0 = Instant::now();
+            if let Ok(flops) = probe.run_fp16(n_iters) {
+                let _ = probe.context().synchronize();
+                let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+                let gflops = flops / (elapsed_ms * 1e-3) / 1e9;
+                eprintln!("{gflops:.0} GFLOPS");
+                rows.push(BenchRow {
+                    workload: "tensor_core",
+                    precision: "FP16".to_string(),
+                    variant: "wmma_16x16x16".to_string(),
+                    grid_size: 0,
+                    param2: format!("n_iters={n_iters}"),
+                    n_steps: n_iters as usize,
+                    warmup: 100,
+                    elapsed_ms,
+                    mlups: None,
+                    bandwidth_gbs: None,
+                    bandwidth_pct_peak: None,
+                    vram_dist_mb: None,
+                    notes: format!("{gflops:.0} GFLOPS; M=16 N=16 K=16 FP32 accum; Ada ~330 TFLOPS peak; NOT an LBM kernel"),
+                });
+            }
+        }
+
+        // INT8 (M=16, N=16, K=16)
+        if probe.has_int8() {
+            eprint!("  [TC] INT8 ");
+            let t0 = Instant::now();
+            if let Ok(ops) = probe.run_int8(n_iters) {
+                let _ = probe.context().synchronize();
+                let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+                let gops = ops / (elapsed_ms * 1e-3) / 1e9;
+                eprintln!("{gops:.0} GOPS");
+                rows.push(BenchRow {
+                    workload: "tensor_core",
+                    precision: "INT8".to_string(),
+                    variant: "wmma_16x16x16".to_string(),
+                    grid_size: 0,
+                    param2: format!("n_iters={n_iters}"),
+                    n_steps: n_iters as usize,
+                    warmup: 100,
+                    elapsed_ms,
+                    mlups: None,
+                    bandwidth_gbs: None,
+                    bandwidth_pct_peak: None,
+                    vram_dist_mb: None,
+                    notes: format!("{gops:.0} GOPS; M=16 N=16 K=16 INT32 accum; Ada ~330 TOPS peak; NOT an LBM kernel"),
+                });
+            }
+        }
+
+        // INT4 (M=8, N=8, K=32, experimental)
+        if probe.has_int4() {
+            eprint!("  [TC] INT4 ");
+            let t0 = Instant::now();
+            if let Ok(ops) = probe.run_int4(n_iters) {
+                let _ = probe.context().synchronize();
+                let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+                let gops = ops / (elapsed_ms * 1e-3) / 1e9;
+                eprintln!("{gops:.0} GOPS");
+                rows.push(BenchRow {
+                    workload: "tensor_core",
+                    precision: "INT4".to_string(),
+                    variant: "wmma_8x8x32".to_string(),
+                    grid_size: 0,
+                    param2: format!("n_iters={n_iters}"),
+                    n_steps: n_iters as usize,
+                    warmup: 100,
+                    elapsed_ms,
+                    mlups: None,
+                    bandwidth_gbs: None,
+                    bandwidth_pct_peak: None,
+                    vram_dist_mb: None,
+                    notes: format!("{gops:.0} GOPS; M=8 N=8 K=32 INT32 accum; Ada ~660 TOPS peak experimental; NOT an LBM kernel"),
+                });
+            }
         }
 
         Ok(rows)
@@ -517,13 +864,10 @@ mod gpu {
 
         for &n in &grids {
             eprint!("  [B] box_counting {}^3... ", n);
-            // Bootstrap a small solver to get a GPU context and stream,
-            // then run LBM briefly to populate a realistic rho field.
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::FP32) {
                 Ok(s) => s,
                 Err(e) => { eprintln!("SKIP (solver init): {e}"); continue; }
             };
-            // Warm up 20 LBM steps to get a non-trivial rho field.
             if let Err(e) = solver.step_n(20) {
                 eprintln!("SKIP (LBM warmup): {e}");
                 continue;
@@ -564,6 +908,7 @@ mod gpu {
                 mlups: None,
                 bandwidth_gbs: None,
                 bandwidth_pct_peak: None,
+                vram_dist_mb: None,
                 notes: format!(
                     "D_f={:.4}; R2={:.4}; warp_ballot 32x fewer atomics",
                     result.d_f, result.r_squared
@@ -575,7 +920,7 @@ mod gpu {
     }
 
     // -------------------------------------------------------------------------
-    // Workload C: Chingon AVT contraction (skip -- requires PackedAvt construction)
+    // Workload C: Chingon AVT contraction (skip -- requires PackedAvt)
     // -------------------------------------------------------------------------
 
     pub fn run_chingon_skip() -> Vec<BenchRow> {
@@ -591,6 +936,7 @@ mod gpu {
             mlups: None,
             bandwidth_gbs: None,
             bandwidth_pct_peak: None,
+            vram_dist_mb: None,
             notes: "Chingon requires PackedAvt from gororoba_algebra; not wired in this binary".to_string(),
         }]
     }
@@ -601,7 +947,6 @@ mod gpu {
 
     pub fn run_dark_halo(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
         let mut rows = Vec::new();
-        // Dark halo is memory-intensive; cap at 128^3
         let bench_grids: Vec<usize> = cfg.grids().into_iter().filter(|&n| n <= 128).collect();
 
         for n in bench_grids {
@@ -613,7 +958,6 @@ mod gpu {
                 Err(e) => { eprintln!("SKIP: {e}"); continue; }
             };
 
-            // Warmup: small run
             let warmup_steps = cfg.warmup.min(20) as u32;
             if let Err(e) = solver.run_k_value(
                 256, warmup_steps, 0.7, 0.1, 1.5, 1e-4, 0.0, 0,
@@ -632,7 +976,6 @@ mod gpu {
             }
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
 
-            // MLUPS from the LBM step portion (approximate; pipeline includes ZD setup)
             let ml = mlups(n_cells, n_steps as usize, elapsed_ms);
             eprintln!("{ml:.1} MLUPS  {elapsed_ms:.1} ms  (includes ZD setup + halo detection)");
 
@@ -648,6 +991,7 @@ mod gpu {
                 mlups: Some(ml),
                 bandwidth_gbs: None,
                 bandwidth_pct_peak: None,
+                vram_dist_mb: None,
                 notes: "fused lbm_step_soa + ZD viscosity modulation + dark_halo_detector; k=256".to_string(),
             });
         }
@@ -661,26 +1005,19 @@ mod gpu {
 
     pub fn run_sparse_lbm(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
         let mut rows = Vec::new();
-        // Only benchmark 256^3; 1024^3 requires 1 GB CPU mask -- skip by default
         let sparse_grids = [256usize];
         let occupancies = [0.10f64, 0.25, 0.50];
 
         for &n in &sparse_grids {
             let n_cells_total = n * n * n;
 
-            // Check if device has enough VRAM for 256^3 sparse
             if let Some(props) = probe_cuda_device_props() {
-                let vram_gb = props.l2_bytes as f64 / (1 << 30) as f64;
-                // l2_bytes is L2 cache size, not VRAM -- just use it as a proxy sanity check
-                // A realistic VRAM check would use cuMemGetInfo, but we keep it simple here
-                let _ = vram_gb;
+                let _ = props.l2_bytes;
             }
 
             for &occ in &occupancies {
                 eprint!("  [E] sparse_lbm {}^3 occ={:.0}%... ", n, occ * 100.0);
 
-                // Bootstrap a tiny LBM solver just to obtain Arc<CudaContext> and Arc<CudaStream>.
-                // We drop the solver after extracting the Arcs; the context stays alive via clone.
                 let bootstrap = match LbmSolver3DCuda::new(8, 8, 8, 0.7, Precision::FP32) {
                     Ok(s) => s,
                     Err(e) => { eprintln!("SKIP (bootstrap): {e}"); continue; }
@@ -689,7 +1026,6 @@ mod gpu {
                 let stream = bootstrap.stream().clone();
                 drop(bootstrap);
 
-                // Build geometry mask at cell level: mark first occ*n_cells as occupied
                 let n_occupied = (occ * n_cells_total as f64).round() as usize;
                 let mut mask_host = vec![0u8; n_cells_total];
                 for v in mask_host.iter_mut().take(n_occupied) {
@@ -700,7 +1036,7 @@ mod gpu {
                     Ok(m) => m,
                     Err(e) => { eprintln!("SKIP (mask upload): {e}"); continue; }
                 };
-                drop(mask_host); // free 16 MB CPU allocation
+                drop(mask_host);
 
                 let bm = match SparseBrickMap::new_from_geometry(
                     ctx.clone(), stream.clone(), n, n, n, &d_mask,
@@ -720,7 +1056,6 @@ mod gpu {
                     Err(e) => { eprintln!("SKIP (sparse solver): {e}"); continue; }
                 };
 
-                // Warmup
                 let warmup_steps = cfg.warmup;
                 if let Err(e) = sparse_solver.evolve(warmup_steps) {
                     eprintln!("SKIP (warmup): {e}");
@@ -733,7 +1068,6 @@ mod gpu {
                     eprintln!("SKIP (bench): {e}");
                     continue;
                 }
-                // SparseLbmSolver::evolve() includes ctx.synchronize() at end
                 let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
 
                 let ml = mlups(n_active_cells, n_steps, elapsed_ms);
@@ -755,6 +1089,7 @@ mod gpu {
                     mlups: Some(ml),
                     bandwidth_gbs: None,
                     bandwidth_pct_peak: None,
+                    vram_dist_mb: Some(vram_mb),
                     notes: format!(
                         "{n_active} active bricks; {vram_mb} MB VRAM; \
                          {sparse_overhead_pct:.0}% skipped cells; 8x8x8 bricks A-A pattern"
@@ -783,7 +1118,6 @@ mod gpu {
                 Err(e) => { eprintln!("SKIP: {e}"); continue; }
             };
 
-            // Allocate frustration field (uniform frustration = 0.5 everywhere)
             let frustration_host = vec![0.5f32; n_cells];
             let d_frustration = match solver.stream().clone_htod(&frustration_host) {
                 Ok(d) => d,
@@ -791,7 +1125,6 @@ mod gpu {
             };
             drop(frustration_host);
 
-            // Warmup calls
             for _ in 0..cfg.warmup {
                 if let Err(e) = solver.update_tau_from_voudon(&d_frustration, 0.7, 0.05) {
                     eprintln!("SKIP (warmup): {e}");
@@ -803,7 +1136,6 @@ mod gpu {
                 continue;
             }
 
-            // Timing: 200 individual kernel calls (measures launch overhead)
             let n_calls = 200usize;
             let t0 = Instant::now();
             for _ in 0..n_calls {
@@ -832,6 +1164,7 @@ mod gpu {
                 mlups: None,
                 bandwidth_gbs: None,
                 bandwidth_pct_peak: None,
+                vram_dist_mb: None,
                 notes: format!(
                     "{per_call_us:.1} us/call; {n_calls} calls; first live caller removes dead_code"
                 ),
@@ -847,7 +1180,6 @@ mod gpu {
 
     #[cfg(feature = "cufft")]
     pub fn run_cufft(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
-        use std::time::Instant;
         let mut rows = Vec::new();
         let fft_grids: Vec<usize> = cfg.grids().into_iter().filter(|&n| n <= 128).collect();
 
@@ -858,7 +1190,6 @@ mod gpu {
                 Err(e) => { eprintln!("SKIP: {e}"); continue; }
             };
 
-            // Forward FFT
             let t0 = Instant::now();
             if let Err(e) = solver.fft_forward() {
                 eprintln!("SKIP (forward): {e}");
@@ -867,7 +1198,6 @@ mod gpu {
             let _ = solver.context().synchronize();
             let forward_ms = t0.elapsed().as_secs_f64() * 1e3;
 
-            // Inverse FFT
             let t1 = Instant::now();
             if let Err(e) = solver.fft_inverse() {
                 eprintln!("SKIP (inverse): {e}");
@@ -878,7 +1208,6 @@ mod gpu {
 
             let round_trip_ms = forward_ms + inverse_ms;
             let n_cells = n * n * n;
-            // Effective bandwidth: 2 passes (forward + inverse) * n_cells * 4 bytes * 2 (complex)
             let bw = 2.0 * n_cells as f64 * 8.0 / (round_trip_ms * 1e-3) / 1e9;
             eprintln!("fwd={forward_ms:.1} ms  inv={inverse_ms:.1} ms  bw={bw:.1} GB/s");
 
@@ -894,6 +1223,7 @@ mod gpu {
                 mlups: None,
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw / super::PEAK_BW_GBS * 100.0),
+                vram_dist_mb: None,
                 notes: format!(
                     "fwd={forward_ms:.1} ms; inv={inverse_ms:.1} ms; complex f32 in-place"
                 ),
@@ -911,10 +1241,34 @@ mod gpu {
         let mut rows: Vec<BenchRow> = Vec::new();
 
         if cfg.run_workload("lbm") {
-            eprintln!("[A] LBM sweep...");
+            eprintln!("[A] LBM FP32/BF16/FP64 sweep...");
             match run_lbm_sweep(cfg) {
                 Ok(mut r) => rows.append(&mut r),
                 Err(e) => eprintln!("  Workload A failed: {e}"),
+            }
+
+            eprintln!("[H] LBM FP16 sweep...");
+            match run_lbm_fp16(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP16 workload failed: {e}"),
+            }
+
+            eprintln!("[I] LBM FP8_e4m3 sweep...");
+            match run_lbm_fp8(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP8 workload failed: {e}"),
+            }
+
+            eprintln!("[J] LBM INT8 sweep...");
+            match run_lbm_int8(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  INT8 workload failed: {e}"),
+            }
+
+            eprintln!("[K] LBM DD-FP128 sweep (capped at 64^3)...");
+            match run_lbm_dd(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  DD workload failed: {e}"),
             }
         }
 
@@ -926,7 +1280,6 @@ mod gpu {
             }
         }
 
-        // Workload C: Chingon -- skip (PackedAvt requires full algebra construction)
         if cfg.run_workload("chingon") {
             eprintln!("[C] Chingon AVT -- skipped (see notes)");
             rows.append(&mut run_chingon_skip());
@@ -962,6 +1315,14 @@ mod gpu {
             match run_cufft(cfg) {
                 Ok(mut r) => rows.append(&mut r),
                 Err(e) => eprintln!("  Workload G failed: {e}"),
+            }
+        }
+
+        if cfg.run_workload("tc") {
+            eprintln!("[TC] TensorCore WMMA proxy...");
+            match run_tensor_core(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  TC workload failed: {e}"),
             }
         }
 

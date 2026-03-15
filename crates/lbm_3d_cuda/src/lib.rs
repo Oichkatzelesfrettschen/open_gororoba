@@ -1,6 +1,7 @@
 // GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA
 // Runtime kernel compilation via cudarc NVRTC
 
+pub mod bench_kernels;
 pub mod box_counting_gpu;
 pub mod chingon_gpu;
 pub mod sparse;
@@ -125,6 +126,13 @@ const KERNEL_SRC: &str = include_str!("kernels.cu");
 const KERNEL_BF16_SRC: &str = include_str!("kernels_bf16.cu");
 const KERNEL_FP64_SRC: &str = include_str!("kernels_fp64.cu");
 const KERNEL_SOA_SRC: &str = include_str!("kernels_soa.cu");
+
+/// VRAM footprint for D3Q19 AoS ping-pong buffers (two buffers: ping + pong).
+/// elem_bytes: 1 (fp8/int8), 2 (fp16/bf16), 4 (fp32), 8 (fp64), 16 (dd).
+pub fn vram_footprint_bytes(n_cells: usize, elem_bytes: usize) -> usize {
+    // 19 distributions * n_cells * elem_bytes * 2 (ping + pong)
+    19 * n_cells * elem_bytes * 2
+}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Precision {
