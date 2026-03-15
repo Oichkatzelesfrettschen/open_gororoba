@@ -54,9 +54,10 @@ pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
 };
 pub use heliosphere_feature_cube::{
-    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_FEATURE_DIM, HeliosphereFeatureCube,
-    HeliosphereFeatureCubeManifest, HeliosphereFeatureRow, SparseMemoryPlan,
-    estimate_sparse_memory_plan,
+    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_SIGNAL_DIM,
+    HeliosphereFeatureCube, HeliosphereFeatureCubeManifest, HeliosphereFeatureRow,
+    HeliosphereTransformMode, SparseMemoryPlan, estimate_sparse_memory_plan,
+    transform_feature_rows,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
@@ -122,6 +123,8 @@ pub fn known_provider_names() -> Vec<&'static str> {
         "McGill Magnetar Catalog",
         "SDSS DR18 Quasars",
         "Gaia DR3 Nearby Stars",
+        "JWST Public Observation Metadata",
+        "HST Public Observation Metadata",
         "Hipparcos Legacy Catalog",
         "GWTC-3 confident events",
         "GWOSC combined GWTC (O1-O4a)",
@@ -129,6 +132,7 @@ pub fn known_provider_names() -> Vec<&'static str> {
         "Fermi GBM Burst Catalog",
         "EHT M87 2018 Data Bundle",
         "EHT SgrA 2022 Data Bundle",
+        "DESI DR1 BAO",
         "TSIS-1 TSI Daily",
         "SORCE TSI Daily",
         "Pantheon+ SH0ES",
@@ -155,7 +159,7 @@ pub fn known_provider_names() -> Vec<&'static str> {
 }
 
 /// Number of datasets in the canonical inventory.
-pub const DATASET_COUNT: usize = 34;
+pub const DATASET_COUNT: usize = 37;
 
 /// The 8 scientific pillars that organize datasets.
 pub const PILLARS: &[&str] = &[
@@ -186,6 +190,8 @@ pub fn provider_pillar(name: &str) -> &'static str {
         | "McGill Magnetar Catalog"
         | "SDSS DR18 Quasars"
         | "Gaia DR3 Nearby Stars"
+        | "JWST Public Observation Metadata"
+        | "HST Public Observation Metadata"
         | "Hipparcos Legacy Catalog" => "survey",
         "Planck 2018 Summary" | "WMAP 9yr MCMC Chains" | "Planck 2018 MCMC Chains" => "cmb",
         "TSIS-1 TSI Daily" | "SORCE TSI Daily" => "solar",
@@ -204,6 +210,8 @@ pub fn claims_for_provider(name: &str) -> &'static [&'static str] {
         "McGill Magnetar Catalog" => &["C-043", "C-063", "C-437"],
         "SDSS DR18 Quasars" => &["C-437"],
         "Gaia DR3 Nearby Stars" => &["C-437"],
+        "JWST Public Observation Metadata" => &[],
+        "HST Public Observation Metadata" => &[],
         "Hipparcos Legacy Catalog" => &["C-437"],
         "GWTC-3 confident events" => &["C-006", "C-007", "C-025", "C-060"],
         "GWOSC combined GWTC (O1-O4a)" => &["C-061", "C-070", "C-437", "C-439", "C-440", "C-441"],

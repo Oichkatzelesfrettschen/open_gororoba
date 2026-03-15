@@ -265,6 +265,10 @@ name = "heliosphere-feature-cube"
 path = "src/bin/heliosphere_feature_cube.rs"
 
 [[bin]]
+name = "heliosphere-feature-transform"
+path = "src/bin/heliosphere_feature_transform.rs"
+
+[[bin]]
 name = "heliosphere-algebra-decompose"
 path = "src/bin/heliosphere_algebra_decompose.rs"
 

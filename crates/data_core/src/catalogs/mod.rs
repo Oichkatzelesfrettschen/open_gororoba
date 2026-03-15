@@ -22,12 +22,14 @@ pub mod gwtc;
 pub mod helios;
 pub mod hi_cube;
 pub mod hic_raa;
+pub mod hst;
 pub mod hipparcos;
 pub mod ibex;
 pub mod imap;
 pub mod imp8;
 pub mod jarvis;
 pub mod juno;
+pub mod jwst;
 pub mod landsat;
 #[cfg(feature = "fits")]
 pub mod lotss;

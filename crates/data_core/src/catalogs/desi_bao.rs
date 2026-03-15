@@ -7,6 +7,7 @@
 //! Reference: DESI Collaboration (2024), arXiv:2404.03002
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use serde::Serialize;
 use std::path::{Path, PathBuf};
 
 /// A BAO distance measurement from DESI.
@@ -15,7 +16,7 @@ use std::path::{Path, PathBuf};
 /// - **Isotropic**: Only DV/rd (angle-averaged) is available (BGS, QSO).
 /// - **Anisotropic**: Both DM/rd (transverse) and DH/rd (radial) with
 ///   correlation coefficient (LRG, ELG, Lya).
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct BaoMeasurement {
     /// Effective redshift of the bin.
     pub z_eff: f64,
@@ -271,15 +272,18 @@ impl DatasetProvider for DesiBaoProvider {
             "desi_2024_gaussian_bao_Lya_z2.330.txt",
         ];
 
+        let mut downloaded = 0usize;
         for fname in &files {
             let output = dir.join(fname);
             if config.skip_existing && output.exists() {
+                downloaded += 1;
                 continue;
             }
             let url = format!("{}{}", DESI_BAO_BASE, fname);
             match download_to_string(&url) {
                 Ok(data) => {
                     std::fs::write(&output, data)?;
+                    downloaded += 1;
                     log::info!("Saved {}", fname);
                 }
                 Err(e) => {
@@ -288,12 +292,36 @@ impl DatasetProvider for DesiBaoProvider {
             }
         }
 
+        write_bao_csv(&dir.join("desi_dr1_bao_summary.csv"), &desi_dr1_bao())?;
+        write_bao_csv(&dir.join("desi_dr2_bao_summary.csv"), &desi_dr2_bao())?;
+        std::fs::write(
+            dir.join("README.txt"),
+            format!(
+                "DESI BAO summary lane.\nRemote Cobaya mirror files staged: {downloaded}/{}.\nBounded summary CSVs for DR1 and DR2 are always emitted from the exact in-repo table values.\n",
+                files.len()
+            ),
+        )?;
+
         Ok(dir)
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("desi_bao").exists()
     }
+}
+
+fn write_bao_csv(path: &Path, rows: &[BaoMeasurement]) -> Result<(), FetchError> {
+    let mut writer = csv::WriterBuilder::new()
+        .has_headers(true)
+        .from_path(path)
+        .map_err(|err| FetchError::Validation(format!("create CSV {}: {err}", path.display())))?;
+    for row in rows {
+        writer.serialize(row).map_err(|err| {
+            FetchError::Validation(format!("write CSV {}: {err}", path.display()))
+        })?;
+    }
+    writer.flush()?;
+    Ok(())
 }
 
 #[cfg(test)]
