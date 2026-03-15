@@ -7,12 +7,16 @@ use data_core::{
     catalogs::{
         ace_mag::{ace_mag_to_omni, parse_ace_mag_hapi_file},
         ibex::{parse_ibex_ena_file, parse_ibex_orbit_file},
+        imap::{parse_imap_helio1hr_file, parse_imap_hi_h90_file},
         juno::{juno_to_omni, parse_juno_cruise_file},
         new_horizons::{nh_swap_to_omni, parse_nh_swap_file},
         omni::{OmniRecord, parse_omni_file},
         psp::{parse_psp_file, psp_to_omni},
         psp_fields::parse_psp_fields_file,
-        soho_celias::{parse_soho_celias_bundle_file, soho_to_hourly_omni},
+        soho_celias::{
+            parse_soho_celias_bundle_file, parse_soho_celias_cdf_file,
+            parse_soho_lasco_img_hdr_file, soho_to_hourly_omni,
+        },
         solar_orbiter::{parse_solar_orbiter_file, solar_orbiter_to_omni},
         solar_orbiter_swa::parse_solar_orbiter_swa_file,
         solar_wind::parse_swepam_file,
@@ -100,7 +104,12 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
         "fleet2016" => build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?,
         "modern2020" => build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?,
         "boundary2009" => build_boundary2009(repo_root, &mut rows, &mut sources, &mut notes)?,
-        other => bail!("unsupported window {other}; expected fleet2016, modern2020, or boundary2009"),
+        "remote2024" => build_remote2024(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "imap2025" => build_imap2025(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "imap2026" => build_imap2026(repo_root, &mut rows, &mut sources, &mut notes)?,
+        other => bail!(
+            "unsupported window {other}; expected fleet2016, modern2020, boundary2009, remote2024, imap2025, or imap2026"
+        ),
     }
 
     rows.sort_by_key(|row| {
@@ -377,7 +386,29 @@ fn build_modern2020(
 
     let soho_bundle_path =
         repo_root.join("data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz");
-    if soho_bundle_path.exists() {
+    let soho_cdf_paths =
+        collect_matching_files(&repo_root.join("data/external/soho/celias_pm_5min/2020"), |path| {
+            file_name_ends_with(path, ".cdf")
+        });
+    if !soho_cdf_paths.is_empty() {
+        let mut soho_rows = Vec::new();
+        for path in &soho_cdf_paths {
+            soho_rows.extend(parse_soho_celias_cdf_file(path)?);
+            sources.push(rel(repo_root, path));
+        }
+        let hourly = soho_to_hourly_omni(&soho_rows);
+        push_omni_rows(rows, "modern2020", "SOHO", "CELIAS daily CDF hourly", &hourly);
+        notes.push(format!(
+            "SOHO modern2020 used {} native daily CELIAS CDF files.",
+            soho_cdf_paths.len()
+        ));
+        if soho_cdf_paths.len() < 366 {
+            notes.push(format!(
+                "SOHO modern2020 native daily CDF coverage is still partial for 2020 ({} of 366 daily files cached).",
+                soho_cdf_paths.len()
+            ));
+        }
+    } else if soho_bundle_path.exists() {
         let soho = parse_soho_celias_bundle_file(&soho_bundle_path)?;
         sources.push(rel(repo_root, &soho_bundle_path));
         let hourly = soho_to_hourly_omni(
@@ -386,6 +417,7 @@ fn build_modern2020(
                 .collect::<Vec<_>>(),
         );
         push_omni_rows(rows, "modern2020", "SOHO", "CELIAS bundle hourly", &hourly);
+        notes.push("SOHO modern2020 fell back to the mission-long bundle because no 2020 daily CDFs were cached.".to_string());
     }
 
     let psp_path = repo_root.join("data/external/psp/psp_coho1hr_merged_mag_plasma_2020.csv");
@@ -437,6 +469,16 @@ fn build_modern2020(
                     map_flux_std: f64::NAN,
                 });
             }
+        }
+        notes.push(format!(
+            "PSP FIELDS modern2020 currently uses {} bounded daily files.",
+            psp_fields_paths.len()
+        ));
+        if psp_fields_paths.len() < 60 {
+            notes.push(format!(
+                "PSP FIELDS modern2020 coverage is still partial for the bounded Jan-Feb 2020 target window ({} of 60 daily files cached).",
+                psp_fields_paths.len()
+            ));
         }
     } else {
         notes.push("PSP FIELDS files missing; run fetch-datasets for 'Parker Solar Probe FIELDS MAG RTN' to populate them.".to_string());
@@ -556,6 +598,163 @@ fn build_boundary2009(
         });
     } else {
         notes.push("IBEX release17 flux maps not found; run fetch-datasets for 'IBEX ENA Sky Maps' to populate them.".to_string());
+    }
+    Ok(())
+}
+
+fn build_remote2024(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let header_paths =
+        collect_matching_files(&repo_root.join("data/external/soho/lasco/level05"), |path| {
+            file_name_ends_with(path, "img_hdr.txt")
+        });
+    if header_paths.is_empty() {
+        notes.push(
+            "SOHO LASCO sample headers not found; run fetch-datasets for 'SOHO LASCO L0.5 Day Sample' to populate them."
+                .to_string(),
+        );
+        return Ok(());
+    }
+
+    let mut grouped: BTreeMap<(String, u16, u16, u8), Vec<f64>> = BTreeMap::new();
+    for path in &header_paths {
+        let records = parse_soho_lasco_img_hdr_file(path)?;
+        sources.push(rel(repo_root, path));
+        for record in records.into_iter().filter(|record| record.year == 2024) {
+            grouped
+                .entry((record.camera.clone(), record.year, record.doy, record.hour))
+                .or_default()
+                .push(record.exposure_seconds);
+        }
+    }
+
+    for ((camera, year, doy, hour), exposures) in grouped {
+        let exposure_mean = mean(&exposures);
+        rows.push(HeliosphereFeatureRow {
+            window_name: "remote2024".to_string(),
+            mission: "SOHO".to_string(),
+            product: format!("LASCO {camera} sample"),
+            year,
+            doy,
+            hour,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            density_cm3: f64::NAN,
+            speed_kms: f64::NAN,
+            temperature_k: f64::NAN,
+            bx: f64::NAN,
+            by: f64::NAN,
+            bz: f64::NAN,
+            b_mag: f64::NAN,
+            crs_flux: f64::NAN,
+            spectral_mean: f64::NAN,
+            spectral_peak: f64::NAN,
+            map_flux_mean: exposure_mean,
+            map_flux_std: stddev(&exposures, exposure_mean),
+        });
+    }
+
+    Ok(())
+}
+
+fn build_imap2025(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let helio_paths = collect_matching_files(&repo_root.join("data/external/imap/helio1hr"), |path| {
+        file_name_ends_with(path, ".cdf")
+    });
+    if helio_paths.is_empty() {
+        notes.push(
+            "IMAP helio1hr CDFs not found; run fetch-datasets for 'IMAP Helio1hr Position' to populate them."
+                .to_string(),
+        );
+        return Ok(());
+    }
+
+    for path in &helio_paths {
+        let records = parse_imap_helio1hr_file(path)?;
+        sources.push(rel(repo_root, path));
+        for record in records {
+            rows.push(HeliosphereFeatureRow {
+                window_name: "imap2025".to_string(),
+                mission: "IMAP".to_string(),
+                product: "Helio1hr support".to_string(),
+                year: record.year,
+                doy: record.doy,
+                hour: record.hour,
+                r_au: record.r_au,
+                lat_deg: record.lat_deg,
+                lon_deg: record.lon_deg,
+                density_cm3: f64::NAN,
+                speed_kms: f64::NAN,
+                temperature_k: f64::NAN,
+                bx: f64::NAN,
+                by: f64::NAN,
+                bz: f64::NAN,
+                b_mag: f64::NAN,
+                crs_flux: f64::NAN,
+                spectral_mean: f64::NAN,
+                spectral_peak: f64::NAN,
+                map_flux_mean: f64::NAN,
+                map_flux_std: f64::NAN,
+            });
+        }
+    }
+    Ok(())
+}
+
+fn build_imap2026(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let ena_paths =
+        collect_matching_files(&repo_root.join("data/external/imap/hi/l2/h90"), |path| {
+            file_name_ends_with(path, ".cdf")
+        });
+    if ena_paths.is_empty() {
+        notes.push(
+            "IMAP-Hi h90 CDFs not found; run fetch-datasets for 'IMAP-Hi L2 ENA h90' to populate them."
+                .to_string(),
+        );
+        return Ok(());
+    }
+
+    for path in &ena_paths {
+        let summary = parse_imap_hi_h90_file(path)?;
+        sources.push(rel(repo_root, path));
+        rows.push(HeliosphereFeatureRow {
+            window_name: "imap2026".to_string(),
+            mission: "IMAP".to_string(),
+            product: "IMAP-Hi h90 ENA summary".to_string(),
+            year: summary.year,
+            doy: summary.doy,
+            hour: summary.hour,
+            r_au: f64::NAN,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            density_cm3: f64::NAN,
+            speed_kms: f64::NAN,
+            temperature_k: f64::NAN,
+            bx: f64::NAN,
+            by: f64::NAN,
+            bz: f64::NAN,
+            b_mag: f64::NAN,
+            crs_flux: f64::NAN,
+            spectral_mean: f64::NAN,
+            spectral_peak: f64::NAN,
+            map_flux_mean: summary.map_flux_mean,
+            map_flux_std: summary.map_flux_std,
+        });
     }
     Ok(())
 }

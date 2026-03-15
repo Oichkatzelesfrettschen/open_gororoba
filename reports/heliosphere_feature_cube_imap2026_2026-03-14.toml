@@ -1,0 +1,27 @@
+window_name = "imap2026"
+generated_at_utc = "2026-03-15T03:18:55.806770328+00:00"
+temporal_start_utc = "2026-01-01T00:00:00Z"
+temporal_end_utc = "2026-01-01T00:00:00Z"
+row_count = 1
+missions = ["IMAP"]
+products = ["IMAP:IMAP-Hi h90 ENA summary"]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = ["data/external/imap/hi/l2/h90/2026/imap_hi_l2_h90-ena-h-sf-nsp-full-4deg-3mo_20260101_v001.cdf"]
+notes = []

@@ -25,6 +25,7 @@ mod macros;
 
 pub mod benchmarks;
 pub mod catalogs;
+pub mod cdf_support;
 pub mod doc_links;
 pub mod download_stack;
 pub mod fetcher;

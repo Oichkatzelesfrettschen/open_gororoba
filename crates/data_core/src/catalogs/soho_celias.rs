@@ -11,9 +11,15 @@
 //! stack, which is primarily hourly.
 
 use crate::{
+    cdf_support::{
+        cdf_scalar_f64_rows, cdf_type_to_unix_ms, cdf_variable_rows, cdf_vector_f64_rows,
+        filename_date_yyyymmdd, read_cdf_file, ymd_to_doy,
+    },
     catalogs::omni::OmniRecord,
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string},
+    parse::parse_f64_or_nan,
 };
+use chrono::{Datelike, NaiveDate, TimeZone, Timelike, Utc};
 use flate2::read::GzDecoder;
 use regex::Regex;
 use std::{
@@ -60,6 +66,18 @@ pub struct SohoCeliasRecord {
     pub lon_deg: f64,
 }
 
+#[derive(Debug, Clone)]
+pub struct SohoLascoSampleRecord {
+    pub file_name: String,
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub camera: String,
+    pub exposure_seconds: f64,
+    pub width: u16,
+    pub height: u16,
+}
+
 fn parse_nonnegative_or_nan(text: &str) -> f64 {
     match text.trim().parse::<f64>() {
         Ok(v) if v <= -0.5 => f64::NAN,
@@ -90,6 +108,76 @@ fn normalize_lon_deg(lon_deg: f64) -> f64 {
         return f64::NAN;
     }
     lon_deg.rem_euclid(360.0)
+}
+
+fn sanitize_nonnegative(value: f64) -> f64 {
+    if !value.is_finite() || value.abs() >= 1.0e30 || value < 0.0 {
+        f64::NAN
+    } else {
+        value
+    }
+}
+
+fn sanitize_signed(value: f64) -> f64 {
+    if !value.is_finite() || value.abs() >= 1.0e30 {
+        f64::NAN
+    } else {
+        value
+    }
+}
+
+fn infer_soho_r_au_from_gse(vector: Option<&[f64]>) -> f64 {
+    let Some(vector) = vector else {
+        return 1.0;
+    };
+    if vector.len() < 3 {
+        return 1.0;
+    }
+    let norm = vector
+        .iter()
+        .take(3)
+        .map(|value| value * value)
+        .sum::<f64>()
+        .sqrt();
+    if !norm.is_finite() || norm <= 0.0 {
+        return 1.0;
+    }
+    if norm > 1.0e5 {
+        norm / 149_597_870.7
+    } else if norm > 10.0 {
+        (norm * 6_371.0) / 149_597_870.7
+    } else {
+        norm
+    }
+}
+
+fn cdf_row_time_components(
+    epoch_rows: Option<&[Vec<cdf::types::CdfType>]>,
+    idx: usize,
+    fallback_year: u16,
+    fallback_doy: u16,
+) -> (u16, u16, u8, u8, u8) {
+    if let Some(epoch_rows) = epoch_rows
+        && let Some(value) = epoch_rows.get(idx).and_then(|row| row.first())
+        && let Some(timestamp_ms) = cdf_type_to_unix_ms(value)
+        && let Some(dt) = Utc.timestamp_millis_opt(timestamp_ms).single()
+    {
+        return (
+            dt.year() as u16,
+            dt.ordinal() as u16,
+            dt.hour() as u8,
+            dt.minute() as u8,
+            dt.second() as u8,
+        );
+        }
+    let minute_of_day = (idx as u32) * 5;
+    (
+        fallback_year,
+        fallback_doy,
+        (minute_of_day / 60) as u8,
+        (minute_of_day % 60) as u8,
+        0,
+    )
 }
 
 /// Parse a yearly CELIAS text table.
@@ -147,6 +235,132 @@ pub fn parse_soho_celias_text(content: &str) -> Vec<SohoCeliasRecord> {
         });
     }
     records
+}
+
+/// Parse an official SOHO CELIAS daily CDF into native 5-minute-like records.
+pub fn parse_soho_celias_cdf_file(path: &Path) -> Result<Vec<SohoCeliasRecord>, FetchError> {
+    let cdf = read_cdf_file(path)?;
+    let (file_year, file_month, file_day) = filename_date_yyyymmdd(path).ok_or_else(|| {
+        FetchError::Validation(format!(
+            "could not infer SOHO CELIAS date from filename {}",
+            path.display()
+        ))
+    })?;
+    let file_doy = ymd_to_doy(file_year, file_month, file_day).ok_or_else(|| {
+        FetchError::Validation(format!(
+            "invalid SOHO CELIAS file date {}-{:02}-{:02}",
+            file_year, file_month, file_day
+        ))
+    })?;
+
+    let speeds = cdf_scalar_f64_rows(&cdf, "V_p")?;
+    let densities = cdf_scalar_f64_rows(&cdf, "N_p")?;
+    let thermal = cdf_scalar_f64_rows(&cdf, "Vth_p")?;
+    let latitudes = cdf_scalar_f64_rows(&cdf, "HG_LAT")?;
+    let longitudes = cdf_scalar_f64_rows(&cdf, "HG_LONG")?;
+    let gse_positions = cdf_vector_f64_rows(&cdf, "GSE_POS").ok();
+    let epoch_rows = cdf_variable_rows(&cdf, "Epoch").ok();
+
+    let row_count = *[
+        speeds.len(),
+        densities.len(),
+        thermal.len(),
+        latitudes.len(),
+        longitudes.len(),
+    ]
+    .iter()
+    .max()
+    .unwrap_or(&0);
+    if row_count == 0 {
+        return Err(FetchError::Validation(format!(
+            "SOHO CELIAS CDF {} yielded zero rows",
+            path.display()
+        )));
+    }
+
+    let mut records = Vec::with_capacity(row_count);
+    for idx in 0..row_count {
+        let (year, doy, hour, minute, second) =
+            cdf_row_time_components(epoch_rows.as_deref(), idx, file_year, file_doy);
+        let thermal_speed_kms = thermal
+            .get(idx)
+            .copied()
+            .map(sanitize_nonnegative)
+            .unwrap_or(f64::NAN);
+        records.push(SohoCeliasRecord {
+            year,
+            doy,
+            hour,
+            minute,
+            second,
+            bulk_speed: speeds
+                .get(idx)
+                .copied()
+                .map(sanitize_nonnegative)
+                .unwrap_or(f64::NAN),
+            proton_density: densities
+                .get(idx)
+                .copied()
+                .map(sanitize_nonnegative)
+                .unwrap_or(f64::NAN),
+            thermal_speed_kms,
+            proton_temperature: proton_temperature_from_vth(thermal_speed_kms),
+            r_au: infer_soho_r_au_from_gse(gse_positions.as_ref().and_then(|rows| rows.get(idx).map(Vec::as_slice))),
+            lat_deg: latitudes
+                .get(idx)
+                .copied()
+                .map(sanitize_signed)
+                .unwrap_or(f64::NAN),
+            lon_deg: longitudes
+                .get(idx)
+                .copied()
+                .map(sanitize_signed)
+                .map(normalize_lon_deg)
+                .unwrap_or(f64::NAN),
+        });
+    }
+    records.sort_by_key(|r| (r.year, r.doy, r.hour, r.minute, r.second));
+    Ok(records)
+}
+
+pub fn parse_soho_lasco_img_hdr(content: &str) -> Vec<SohoLascoSampleRecord> {
+    let mut rows = Vec::new();
+    for line in content.lines() {
+        let line = line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        let fields: Vec<&str> = line.split_whitespace().collect();
+        if fields.len() < 7 {
+            continue;
+        }
+        let Ok(date) = NaiveDate::parse_from_str(fields[1], "%Y/%m/%d") else {
+            continue;
+        };
+        let Ok(time) = chrono::NaiveTime::parse_from_str(fields[2], "%H:%M:%S") else {
+            continue;
+        };
+        let timestamp = date.and_time(time);
+        rows.push(SohoLascoSampleRecord {
+            file_name: fields[0].to_string(),
+            year: date.year() as u16,
+            doy: date.ordinal() as u16,
+            hour: timestamp.hour() as u8,
+            camera: fields[3].to_string(),
+            exposure_seconds: parse_f64_or_nan(fields[4]),
+            width: fields[5].parse::<u16>().unwrap_or(0),
+            height: fields[6].parse::<u16>().unwrap_or(0),
+        });
+    }
+    rows
+}
+
+pub fn parse_soho_lasco_img_hdr_file(
+    path: &Path,
+) -> Result<Vec<SohoLascoSampleRecord>, FetchError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|err| FetchError::Validation(format!("read error: {err}")))?;
+    Ok(parse_soho_lasco_img_hdr(&content))
 }
 
 /// Parse the mission-long `tar.gz` bundle from disk.
@@ -391,7 +605,7 @@ pub struct SohoCeliasPm5MinProvider {
 impl Default for SohoCeliasPm5MinProvider {
     fn default() -> Self {
         Self {
-            year_start: 2023,
+            year_start: 2020,
             year_end: 2023,
         }
     }
@@ -636,5 +850,19 @@ YY MON DY DOY:HH:MM:SS   SPEED     Np     Vth    N/S   V_He      GSE_X  GSE_Y  G
         let records = parse_soho_celias_bundle_file(temp.path()).expect("parse bundle");
         assert_eq!(records.len(), 3);
         assert_eq!(records[0].year, 1996);
+    }
+
+    #[test]
+    fn test_parse_soho_lasco_img_hdr() {
+        let rows = parse_soho_lasco_img_hdr(
+            "22932721.fts    2024/01/01  00:00:05   C2    25.1   1024   1024     20      1  Orange  Clear   Normal       0.0000  4179\n",
+        );
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0].year, 2024);
+        assert_eq!(rows[0].doy, 1);
+        assert_eq!(rows[0].hour, 0);
+        assert_eq!(rows[0].camera, "C2");
+        assert!((rows[0].exposure_seconds - 25.1).abs() < 1.0e-12);
+        assert_eq!(rows[0].width, 1024);
     }
 }

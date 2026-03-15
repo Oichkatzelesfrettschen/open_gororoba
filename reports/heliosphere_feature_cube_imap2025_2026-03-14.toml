@@ -1,0 +1,27 @@
+window_name = "imap2025"
+generated_at_utc = "2026-03-15T03:18:55.721025831+00:00"
+temporal_start_utc = "0000-01-01T00:00:00Z"
+temporal_end_utc = "2026-03-19T23:00:00Z"
+row_count = 6144
+missions = ["IMAP"]
+products = ["IMAP:Helio1hr support"]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = ["data/external/imap/helio1hr/imap_helio1hr_position_20250925_v01.cdf"]
+notes = []

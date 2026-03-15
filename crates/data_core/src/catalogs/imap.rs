@@ -8,13 +8,191 @@
 //!
 //! These providers stage the official CDF products into the Rust fetch lane.
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string};
+use crate::{
+    cdf_support::{
+        cdf_scalar_f64_rows, cdf_type_to_unix_ms, cdf_variable_rows, cdf_vector_f64_rows,
+        filename_date_yyyymmdd, read_cdf_file, ymd_to_doy,
+    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string},
+};
+use chrono::{Datelike, TimeZone, Timelike, Utc};
 use regex::Regex;
 use std::path::PathBuf;
 
 const IMAP_HELIO1HR_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/pub/data/imap/helio1hr/";
 const IMAP_HI_L2_H90_ROOT: &str =
     "https://cdaweb.gsfc.nasa.gov/pub/data/imap/hi/l2/h90-ena-h-sf-nsp-full-4deg-3mo/";
+
+#[derive(Debug, Clone)]
+pub struct ImapHelio1hrRecord {
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub r_au: f64,
+    pub lat_deg: f64,
+    pub lon_deg: f64,
+}
+
+#[derive(Debug, Clone)]
+pub struct ImapHiH90Summary {
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub map_flux_mean: f64,
+    pub map_flux_std: f64,
+    pub pixel_count: usize,
+    pub energy_bin_count: usize,
+}
+
+fn sanitize_numeric(value: f64) -> f64 {
+    if !value.is_finite() || value.abs() >= 1.0e30 {
+        f64::NAN
+    } else {
+        value
+    }
+}
+
+fn mean(values: &[f64]) -> f64 {
+    let finite: Vec<f64> = values.iter().copied().filter(|value| value.is_finite()).collect();
+    if finite.is_empty() {
+        return f64::NAN;
+    }
+    finite.iter().sum::<f64>() / finite.len() as f64
+}
+
+fn stddev(values: &[f64], mean: f64) -> f64 {
+    let finite: Vec<f64> = values.iter().copied().filter(|value| value.is_finite()).collect();
+    if finite.len() < 2 || !mean.is_finite() {
+        return 0.0;
+    }
+    let var = finite
+        .iter()
+        .map(|value| {
+            let delta = value - mean;
+            delta * delta
+        })
+        .sum::<f64>()
+        / finite.len() as f64;
+    var.sqrt()
+}
+
+pub fn parse_imap_helio1hr_file(
+    path: &std::path::Path,
+) -> Result<Vec<ImapHelio1hrRecord>, FetchError> {
+    let cdf = read_cdf_file(path)?;
+    let (file_year, file_month, file_day) = filename_date_yyyymmdd(path).ok_or_else(|| {
+        FetchError::Validation(format!(
+            "could not infer IMAP helio1hr date from filename {}",
+            path.display()
+        ))
+    })?;
+    let file_doy = ymd_to_doy(file_year, file_month, file_day).ok_or_else(|| {
+        FetchError::Validation(format!(
+            "invalid IMAP helio1hr file date {}-{:02}-{:02}",
+            file_year, file_month, file_day
+        ))
+    })?;
+    let radii = cdf_scalar_f64_rows(&cdf, "RAD_AU")?;
+    let latitudes = cdf_scalar_f64_rows(&cdf, "HG_LAT")?;
+    let longitudes = cdf_scalar_f64_rows(&cdf, "HG_LON")?;
+    let epoch_rows = cdf_variable_rows(&cdf, "Epoch").ok();
+
+    let row_count = *[radii.len(), latitudes.len(), longitudes.len()]
+        .iter()
+        .max()
+        .unwrap_or(&0);
+    if row_count == 0 {
+        return Err(FetchError::Validation(format!(
+            "IMAP helio1hr {} yielded zero rows",
+            path.display()
+        )));
+    }
+
+    let mut rows = Vec::with_capacity(row_count);
+    for idx in 0..row_count {
+        let (year, doy, hour) = if let Some(epoch_rows) = epoch_rows.as_deref() {
+            if let Some(value) = epoch_rows.get(idx).and_then(|row| row.first()) {
+                if let Some(timestamp_ms) = cdf_type_to_unix_ms(value) {
+                    if let Some(dt) = Utc.timestamp_millis_opt(timestamp_ms).single() {
+                        (dt.year() as u16, dt.ordinal() as u16, dt.hour() as u8)
+                    } else {
+                        (file_year, file_doy, idx.min(23) as u8)
+                    }
+                } else {
+                    (file_year, file_doy, idx.min(23) as u8)
+                }
+            } else {
+                (file_year, file_doy, idx.min(23) as u8)
+            }
+        } else {
+            (file_year, file_doy, idx.min(23) as u8)
+        };
+        rows.push(ImapHelio1hrRecord {
+            year,
+            doy,
+            hour,
+            r_au: radii.get(idx).copied().map(sanitize_numeric).unwrap_or(f64::NAN),
+            lat_deg: latitudes
+                .get(idx)
+                .copied()
+                .map(sanitize_numeric)
+                .unwrap_or(f64::NAN),
+            lon_deg: longitudes
+                .get(idx)
+                .copied()
+                .map(sanitize_numeric)
+                .unwrap_or(f64::NAN),
+        });
+    }
+    Ok(rows)
+}
+
+pub fn parse_imap_hi_h90_file(
+    path: &std::path::Path,
+) -> Result<ImapHiH90Summary, FetchError> {
+    let cdf = read_cdf_file(path)?;
+    let (year, month, day) = filename_date_yyyymmdd(path).ok_or_else(|| {
+        FetchError::Validation(format!(
+            "could not infer IMAP-Hi date from filename {}",
+            path.display()
+        ))
+    })?;
+    let doy = ymd_to_doy(year, month, day).ok_or_else(|| {
+        FetchError::Validation(format!(
+            "invalid IMAP-Hi file date {}-{:02}-{:02}",
+            year, month, day
+        ))
+    })?;
+    let intensity_rows = cdf_vector_f64_rows(&cdf, "ena_intensity")?;
+    let energy_rows = cdf_vector_f64_rows(&cdf, "energy").ok();
+
+    let values: Vec<f64> = intensity_rows
+        .iter()
+        .flat_map(|row| row.iter().copied())
+        .map(sanitize_numeric)
+        .filter(|value| value.is_finite())
+        .collect();
+    if values.is_empty() {
+        return Err(FetchError::Validation(format!(
+            "IMAP-Hi {} contained no finite ENA intensities",
+            path.display()
+        )));
+    }
+    let flux_mean = mean(&values);
+    Ok(ImapHiH90Summary {
+        year,
+        doy,
+        hour: 0,
+        map_flux_mean: flux_mean,
+        map_flux_std: stddev(&values, flux_mean),
+        pixel_count: values.len(),
+        energy_bin_count: energy_rows
+            .as_ref()
+            .and_then(|rows| rows.first())
+            .map(|row| row.len())
+            .unwrap_or(0),
+    })
+}
 
 fn directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
     let html = download_to_string(url)?;
@@ -147,5 +325,24 @@ impl DatasetProvider for ImapHiL2H90Provider {
                 }
                 has_matching_files(&entry.path(), ".cdf")
             })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_imap_summary_stats() {
+        let values = vec![1.0, 2.0, 3.0];
+        let mean_value = mean(&values);
+        assert!((mean_value - 2.0).abs() < 1.0e-12);
+        assert!(stddev(&values, mean_value) > 0.8);
+    }
+
+    #[test]
+    fn test_sanitize_numeric() {
+        assert!(sanitize_numeric(-1.0e31).is_nan());
+        assert!((sanitize_numeric(3.5) - 3.5).abs() < 1.0e-12);
     }
 }
