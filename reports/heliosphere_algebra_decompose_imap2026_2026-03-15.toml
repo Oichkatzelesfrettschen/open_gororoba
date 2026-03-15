@@ -1,0 +1,28 @@
+generated_at_utc = "2026-03-15T10:57:52.018617830+00:00"
+cube_csv = "reports/heliosphere_feature_cube_imap2026_2026-03-15.csv"
+feature_dim = 16
+group_count = 2
+
+[[groups]]
+window_name = "imap2026"
+mission = "IMAP"
+product = "I-ALiRT live API"
+row_count = 98
+mean_norm_sq = 19990175250204880.0
+mean_signal_energy = 122886234.5994376
+mean_associator_norm = 56841302365520900000.0
+max_associator_norm = 929517472308975800000.0
+dominant_channel = "spectral_peak"
+dominant_channel_mean_abs = 117624152.09734559
+
+[[groups]]
+window_name = "imap2026"
+mission = "IMAP"
+product = "IMAP-Hi h90 ENA summary"
+row_count = 1
+mean_norm_sq = 1.2871932664692423
+mean_signal_energy = 1.1345454007968312
+mean_associator_norm = nan
+max_associator_norm = 0.0
+dominant_channel = "bias"
+dominant_channel_mean_abs = 1.0
