@@ -178,6 +178,10 @@ impl BenchKernelRunner {
     }
 
     pub fn new_fp16(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        // 128 threads/block: FP16 kernel has ~19 f32 locals + f_eq[19] = 152 bytes
+        // register state per thread; at 1024 threads/block the SM register file
+        // (65536 per SM on Ada) allows only ~64 regs/thread, causing spill.
+        // 128 threads/block allows ~512 regs/thread, comfortably within budget.
         Self::build(
             KERNEL_FP16_SRC,
             "lbm_step_fused_fp16_kernel",
@@ -188,7 +192,7 @@ impl BenchKernelRunner {
             2,
             "FP16",
             true,
-            1024,
+            128,
         )
     }
 
@@ -210,7 +214,7 @@ impl BenchKernelRunner {
             1,
             "FP8_e4m3",
             true,
-            1024,
+            128,
         )
     }
 
@@ -225,7 +229,7 @@ impl BenchKernelRunner {
             1,
             "INT8",
             false,
-            1024,
+            128,
         )
     }
 
