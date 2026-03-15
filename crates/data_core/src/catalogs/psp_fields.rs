@@ -9,11 +9,12 @@ use crate::{
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
-use chrono::{Datelike, NaiveDate};
+use chrono::{Datelike, Duration, NaiveDate};
 use csv::ReaderBuilder;
 use std::{collections::BTreeMap, path::PathBuf};
 
 const PSP_FIELDS_HAPI_DATASET: &str = "PSP_FLD_L2_MAG_RTN";
+const PSP_FIELDS_CHUNK_HOURS: i64 = 6;
 
 #[derive(Debug, Clone)]
 pub struct PspFieldsMagRecord {
@@ -99,7 +100,7 @@ impl Default for PspFieldsProvider {
             year_start: 2020,
             year_end: 2020,
             month_start: 1,
-            month_end: 1,
+            month_end: 2,
         }
     }
 }
@@ -138,12 +139,7 @@ impl DatasetProvider for PspFieldsProvider {
                         day = next_day;
                         continue;
                     }
-                    match download_hapi_csv(
-                        PSP_FIELDS_HAPI_DATASET,
-                        &format!("{}T00:00:00Z", day.format("%Y-%m-%d")),
-                        &format!("{}T00:00:00Z", next_day.format("%Y-%m-%d")),
-                        Some(&["Time", "psp_fld_l2_mag_RTN"]),
-                    ) {
+                    match download_psp_fields_day(day, next_day) {
                         Ok(body) => {
                             std::fs::write(&output, body)?;
                             log::info!("saved {}", output.display());
@@ -175,6 +171,57 @@ impl DatasetProvider for PspFieldsProvider {
             .filter_map(|entry| entry.ok())
             .any(|entry| entry.path().extension().and_then(|value| value.to_str()) == Some("csv"))
     }
+}
+
+fn download_psp_fields_day(day: NaiveDate, next_day: NaiveDate) -> Result<String, FetchError> {
+    let mut header: Option<String> = None;
+    let mut rows = Vec::new();
+    let mut chunk_start = day.and_hms_opt(0, 0, 0).ok_or_else(|| {
+        FetchError::Validation(format!("invalid PSP day start {day}"))
+    })?;
+    let chunk_end_limit = next_day.and_hms_opt(0, 0, 0).ok_or_else(|| {
+        FetchError::Validation(format!("invalid PSP day end {next_day}"))
+    })?;
+
+    while chunk_start < chunk_end_limit {
+        let chunk_end = (chunk_start + Duration::hours(PSP_FIELDS_CHUNK_HOURS)).min(chunk_end_limit);
+        let body = download_hapi_csv(
+            PSP_FIELDS_HAPI_DATASET,
+            &format!("{}Z", chunk_start.format("%Y-%m-%dT%H:%M:%S")),
+            &format!("{}Z", chunk_end.format("%Y-%m-%dT%H:%M:%S")),
+            Some(&["Time", "psp_fld_l2_mag_RTN"]),
+        )?;
+        let mut lines = body.lines();
+        if let Some(line) = lines.next()
+            && header.is_none()
+        {
+            header = Some(line.to_string());
+        }
+        rows.extend(
+            lines
+                .map(str::trim)
+                .filter(|line| !line.is_empty())
+                .map(ToOwned::to_owned),
+        );
+        chunk_start = chunk_end;
+    }
+
+    let Some(header) = header else {
+        return Err(FetchError::Validation(format!(
+            "dataset {PSP_FIELDS_HAPI_DATASET} returned no header for {day}"
+        )));
+    };
+    if rows.is_empty() {
+        return Err(FetchError::Validation(format!(
+            "dataset {PSP_FIELDS_HAPI_DATASET} returned no rows for {day}"
+        )));
+    }
+    let mut out = String::new();
+    out.push_str(&header);
+    out.push('\n');
+    out.push_str(&rows.join("\n"));
+    out.push('\n');
+    Ok(out)
 }
 
 #[cfg(test)]

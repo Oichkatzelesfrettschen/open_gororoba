@@ -1359,6 +1359,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "cdf"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7108592a9c9ae3abe21092e74837092cfdf230f86193f18f5ccb8be999267a17"
+
+[[package]]
 name = "cesu8"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2250,6 +2256,7 @@ dependencies = [
  "approx",
  "backon",
  "cd_kernel",
+ "cdf",
  "chrono",
  "core_affinity",
  "csv",

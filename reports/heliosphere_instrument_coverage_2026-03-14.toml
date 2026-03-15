@@ -1,4 +1,4 @@
-generated_at = "2026-03-14T18:57:26.173878984-07:00"
+generated_at = "2026-03-14T20:15:10.354960014-07:00"
 report_date = "2026-03-14"
 row_count = 30
 
@@ -504,15 +504,15 @@ access_class = "public"
 contract_status = "active"
 retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'SOHO CELIAS PM 5min CDF' --output-dir data/external --skip-existing=false"
 local_glob = "data/external/soho/celias_pm_5min/**/*.cdf"
-cache_match_count = 187
+cache_match_count = 455
 cache_present = true
-parser_status = "staged_only"
+parser_status = "operational"
 overlay_3d_ready = false
 overlay_4d_ready = false
-cube_ready = false
+cube_ready = true
 lbm_ready = false
-algebra_ready = false
-notes = "Official CDAWeb follow-on lane for daily CDF products; staged in Rust, parser not yet promoted."
+algebra_ready = true
+notes = "Official CDAWeb follow-on lane for daily CDF products; parser is promoted and the feature-cube prefers native daily CDF rows when the target year is cached."
 
 [[rows]]
 mission = "SOHO"
@@ -531,13 +531,13 @@ retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dat
 local_glob = "data/external/soho/lasco/level05/**/*"
 cache_match_count = 17
 cache_present = true
-parser_status = "not_implemented"
+parser_status = "operational"
 overlay_3d_ready = false
 overlay_4d_ready = false
-cube_ready = false
+cube_ready = true
 lbm_ready = false
-algebra_ready = false
-notes = "Governed official sample exists but is not yet staged in the Rust lane."
+algebra_ready = true
+notes = "Governed official sample is parseable via img_hdr campaign rows and now feeds the remote2024 feature-cube window as a remote-imager summary lane."
 
 [[rows]]
 mission = "Parker Solar Probe"
@@ -576,7 +576,7 @@ access_class = "public"
 contract_status = "active"
 retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Parker Solar Probe FIELDS MAG RTN' --output-dir data/external --skip-existing=false"
 local_glob = "data/external/psp/berkeley_fields/**/*"
-cache_match_count = 19
+cache_match_count = 22
 cache_present = true
 parser_status = "operational_bounded"
 overlay_3d_ready = true
@@ -584,7 +584,7 @@ overlay_4d_ready = true
 cube_ready = true
 lbm_ready = false
 algebra_ready = true
-notes = "Official higher-cadence supplement is staged through bounded daily HAPI chunks for January 2020 and integrated into the modern2020 feature cube."
+notes = "Official higher-cadence supplement is staged through bounded daily HAPI chunks for January-February 2020 and integrated into the modern2020 feature cube."
 
 [[rows]]
 mission = "Solar Orbiter"
@@ -666,13 +666,13 @@ retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dat
 local_glob = "data/external/imap/helio1hr/*.cdf"
 cache_match_count = 1
 cache_present = true
-parser_status = "staged_only"
-overlay_3d_ready = false
-overlay_4d_ready = false
-cube_ready = false
+parser_status = "operational"
+overlay_3d_ready = true
+overlay_4d_ready = true
+cube_ready = true
 lbm_ready = false
-algebra_ready = false
-notes = "Official CDAWeb IMAP position support is public and staged in Rust."
+algebra_ready = true
+notes = "Official CDAWeb IMAP position support is public, parser-promoted, and emitted into the imap2025 feature-cube window."
 
 [[rows]]
 mission = "IMAP"
@@ -688,10 +688,10 @@ retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dat
 local_glob = "data/external/imap/hi/l2/h90/**/*.cdf"
 cache_match_count = 1
 cache_present = true
-parser_status = "staged_only"
+parser_status = "operational"
 overlay_3d_ready = false
 overlay_4d_ready = false
-cube_ready = false
+cube_ready = true
 lbm_ready = false
-algebra_ready = false
-notes = "Official CDAWeb IMAP-Hi ENA products are public and staged in Rust."
+algebra_ready = true
+notes = "Official CDAWeb IMAP-Hi ENA products are public, parser-promoted, and summarized into the imap2026 feature-cube window."

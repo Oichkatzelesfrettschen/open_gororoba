@@ -1,0 +1,16 @@
+generated_at_utc = "2026-03-15T03:19:16.096042416+00:00"
+cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_cube_imap2025_2026-03-14.csv"
+feature_dim = 16
+group_count = 1
+
+[[groups]]
+window_name = "imap2025"
+mission = "IMAP"
+product = "Helio1hr support"
+row_count = 6144
+mean_norm_sq = 28305.004400291862
+mean_signal_energy = 119.9104533425616
+mean_associator_norm = 15.033512215001851
+max_associator_norm = 5038.986133724585
+dominant_channel = "lon_deg"
+dominant_channel_mean_abs = 119.44133919055851

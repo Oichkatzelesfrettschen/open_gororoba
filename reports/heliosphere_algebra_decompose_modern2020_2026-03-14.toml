@@ -1,0 +1,76 @@
+generated_at_utc = "2026-03-15T03:19:22.338766733+00:00"
+cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_cube_modern2020_2026-03-14.csv"
+feature_dim = 16
+group_count = 6
+
+[[groups]]
+window_name = "modern2020"
+mission = "BepiColombo"
+product = "Helio1hr support"
+row_count = 8784
+mean_norm_sq = 42928.92018655652
+mean_signal_energy = 179.16226259804372
+mean_associator_norm = 17.071356647460796
+max_associator_norm = 4668.651532
+dominant_channel = "lon_deg"
+dominant_channel_mean_abs = 179.00899772313275
+
+[[groups]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "FIELDS MAG RTN"
+row_count = 255
+mean_norm_sq = 97704.53157919714
+mean_signal_energy = 312.17898764470596
+mean_associator_norm = 123563.62684765848
+max_associator_norm = 1015407.435870048
+dominant_channel = "lon_deg"
+dominant_channel_mean_abs = 311.007450980392
+
+[[groups]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "Merged hourly"
+row_count = 8784
+mean_norm_sq = 11660057007.996283
+mean_signal_energy = 44642.2758323215
+mean_associator_norm = 804632423.9492357
+max_associator_norm = 491646399967.3739
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 44460.709927140255
+
+[[groups]]
+window_name = "modern2020"
+mission = "SOHO"
+product = "CELIAS daily CDF hourly"
+row_count = 5928
+mean_norm_sq = 2304367486.8311014
+mean_signal_energy = 38414.95912867024
+mean_associator_norm = 25490984.578315213
+max_associator_norm = 5714352597.491973
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 38411.558071465646
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "Merged hourly"
+row_count = 8784
+mean_norm_sq = 1733866962.0482526
+mean_signal_energy = 16113.933586210753
+mean_associator_norm = 16374872.878701558
+max_associator_norm = 8351732842.9422865
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 16020.662226775956
+
+[[groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "SWA-PAS ground moments"
+row_count = 1797
+mean_norm_sq = 180206.651996445
+mean_signal_energy = 419.2706969324694
+mean_associator_norm = 6066.997407700836
+max_associator_norm = 493191.326828832
+dominant_channel = "speed_kms"
+dominant_channel_mean_abs = 377.1786338674763

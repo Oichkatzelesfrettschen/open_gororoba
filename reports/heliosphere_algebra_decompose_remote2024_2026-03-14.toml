@@ -1,0 +1,28 @@
+generated_at_utc = "2026-03-15T03:19:14.669332274+00:00"
+cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_cube_remote2024_2026-03-14.csv"
+feature_dim = 16
+group_count = 2
+
+[[groups]]
+window_name = "remote2024"
+mission = "SOHO"
+product = "LASCO C2 sample"
+row_count = 24
+mean_norm_sq = 1532.0872490079366
+mean_signal_energy = 35.972257790387296
+mean_associator_norm = 104.8832576763849
+max_associator_norm = 319.45291873167025
+dominant_channel = "map_flux_mean"
+dominant_channel_mean_abs = 32.131458333333335
+
+[[groups]]
+window_name = "remote2024"
+mission = "SOHO"
+product = "LASCO C3 sample"
+row_count = 24
+mean_norm_sq = 1967.8075992063496
+mean_signal_energy = 25.351920805703376
+mean_associator_norm = 1.0193622188892035
+max_associator_norm = 18.050956579532794
+dominant_channel = "map_flux_mean"
+dominant_channel_mean_abs = 23.18323412698413

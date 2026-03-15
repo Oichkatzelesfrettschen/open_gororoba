@@ -204,6 +204,7 @@ reqwest = { version = "0.12", default-features = false, features = ["blocking", 
 backon = "1.6"                # Exponential backoff helpers for resumable HTTP range downloads
 rusqlite = { version = "0.38", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
 rusqlite_migration = "2.4"    # SQLite schema migrations for provenance_store
+cdf = "0.1.4"                 # Pure-Rust NASA CDF reader for heliosphere mission products
 chardetng = "0.1"             # Charset detection for non-UTF8 intake text
 encoding_rs = "0.8"           # Decoding support for lossy/non-UTF8 source ingest
 blake3 = "1.8"                # Fast content hashing for ingest fingerprints

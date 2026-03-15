@@ -1,0 +1,113 @@
+generated_at_utc = "2026-03-15T03:24:44.132919563+00:00"
+cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_cube_remote2024_2026-03-14.csv"
+selected_window = "remote2024"
+selected_rows = 48
+active_fraction_from_cube = 0.1875
+
+[hardware]
+best_backend = "Cuda"
+simd = "SSE2+SSE4.1+AVX+AVX2+FMA"
+cuda_available = true
+cuda_compute_capability = "8.9"
+cuda_l2_bytes = 50331648
+cuda_shared_mem_per_block = 101376
+cuda_bf16_native = true
+cuda_sparse_tile_preferred = true
+
+[dense_cpu]
+backend = "cpu_dense"
+grid = 128
+steps = 64
+elapsed_seconds = 75.0200397
+mlups = 1.7890916685292024
+rho_init = 1.0
+ux_init = 0.01
+
+[dense_gpu]
+backend = "gpu_dense_fp32"
+grid = 128
+steps = 64
+elapsed_seconds = 0.425455054
+mlups = 315.468641724021
+rho_init = 1.0
+ux_init = 0.01
+
+[[memory_plans]]
+grid_size = 128
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.1875
+total_cells = 2097152
+total_bricks = 4096
+active_bricks = 768
+active_core_cells = 393216
+dense_fp32_pingpong_gib = 0.359375
+dense_bf16_pingpong_gib = 0.2109375
+sparse_fp32_aa_gib = 0.03955078125
+sparse_bf16_aa_projected_gib = 0.025634765625
+occupancy_bitset_mib = 0.00048828125
+indirect_table_mib = 0.015625
+active_brick_id_mib = 0.0029296875
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[memory_plans]]
+grid_size = 256
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.1875
+total_cells = 16777216
+total_bricks = 32768
+active_bricks = 6144
+active_core_cells = 3145728
+dense_fp32_pingpong_gib = 2.875
+dense_bf16_pingpong_gib = 1.6875
+sparse_fp32_aa_gib = 0.31640625
+sparse_bf16_aa_projected_gib = 0.205078125
+occupancy_bitset_mib = 0.00390625
+indirect_table_mib = 0.125
+active_brick_id_mib = 0.0234375
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[memory_plans]]
+grid_size = 512
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.1875
+total_cells = 134217728
+total_bricks = 262144
+active_bricks = 49152
+active_core_cells = 25165824
+dense_fp32_pingpong_gib = 23.0
+dense_bf16_pingpong_gib = 13.5
+sparse_fp32_aa_gib = 2.53125
+sparse_bf16_aa_projected_gib = 1.640625
+occupancy_bitset_mib = 0.03125
+indirect_table_mib = 1.0
+active_brick_id_mib = 0.1875
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[memory_plans]]
+grid_size = 1024
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.1875
+total_cells = 1073741824
+total_bricks = 2097152
+active_bricks = 393216
+active_core_cells = 201326592
+dense_fp32_pingpong_gib = 184.0
+dense_bf16_pingpong_gib = 108.0
+sparse_fp32_aa_gib = 20.25
+sparse_bf16_aa_projected_gib = 13.125
+occupancy_bitset_mib = 0.25
+indirect_table_mib = 8.0
+active_brick_id_mib = 1.5
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
