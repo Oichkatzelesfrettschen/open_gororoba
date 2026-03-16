@@ -1,9 +1,36 @@
-// Benchmark kernel runners for extended precision tiers.
-// Compiled and launched entirely at runtime (NVRTC), bypassing LbmSolver3DCuda.
-// WHY: New precision kernels (FP16, FP8, INT8, DD, TensorCore) are benchmark-only;
-//   they should not pollute the production solver's kernel-loading path.
-// HOW: Each runner creates a fresh CudaContext, compiles its kernel source via
-//   NVRTC, allocates device buffers, and exposes step_n() for timed execution.
+//! Benchmark kernel runners for extended precision tiers.
+//!
+//! Each runner is compiled and launched entirely at runtime via NVRTC, bypassing
+//! [`crate::LbmSolver3DCuda`]. New precision kernels (FP16, FP8, INT8, DD,
+//! TensorCore, INT4, FP4) live here so they do not pollute the production
+//! solver's kernel-loading path.
+//!
+//! # Design
+//! Each runner owns a fresh [`cudarc::driver::CudaContext`], compiles its kernel
+//! source via NVRTC, allocates device buffers with equilibrium initialization,
+//! and exposes `step_n()` for timed execution.
+//!
+//! # Measured throughput at 128^3 on RTX 4070 Ti (Ada SM 8.9, 504 GB/s peak)
+//!
+//! | Runner              | MLUPS  | BW% peak | VRAM (MB) | Physics valid? |
+//! |---------------------|--------|----------|-----------|----------------|
+//! | INT8 SoA            | 5643   | 51.5%    | 76        | Yes (tau>0.51) |
+//! | FP8_e4m3 SoA        | 5408   | 49.4%    | 76        | Yes            |
+//! | FP8_e5m2 SoA        | 5280   | 48.2%    | 76        | Yes            |
+//! | INT4 SoA            | 6148   | 28.1%    | 38        | No (1/36->0)   |
+//! | FP4 E2M1            | 4727   | 21.6%    | 38        | No             |
+//! | FP16 SoA half2 ILP  | 3803   | 69.4%    | 152       | Yes            |
+//! | INT16 SoA           | 3569   | 65.1%    | 152       | Yes            |
+//! | FP16 SoA            | 3463   | 63.2%    | 152       | Yes            |
+//! | FP16 AoS            | 3459   | 63.1%    | 152       | Yes            |
+//! | INT16 AoS           | 3446   | 62.8%    | 152       | Yes            |
+//! | BF16 SoA            | 3204   | 58.5%    | 152       | Yes (tau>0.55) |
+//! | FP8 e5m2 AoS        | 2931   | 26.8%    | 76        | Yes            |
+//! | FP32 SoA CS         | 2062   | 75.4%    | 304       | Yes            |
+//! | FP64 SoA            | 406    | 29.7%    | 608       | Yes (reference)|
+//! | DD (FP128 emul.)    | 58     | 8.4%     | 1215      | Yes (reference)|
+//!
+//! CS = cache-streaming stores (`__stcs`, Ada only). Measured +3.1% vs baseline FP32 SoA.
 
 use crate::probe_cuda_device_props;
 use anyhow::{Context as _, Result};
@@ -190,11 +217,12 @@ impl BenchKernelRunner {
         })
     }
 
+    /// FP16 AoS stride-20 D3Q19 LBM. 2 bytes/dist. SM 5.0+.
+    ///
+    /// Measured: 3459 MLUPS at 128^3 on Ada (63.1% of 504 GB/s peak).
+    /// 128 threads/block: FP16 register pressure (~152 bytes/thread) prevents
+    /// full 1024 threads/block without spill on Ada's 65536-reg SM.
     pub fn new_fp16(nx: usize, ny: usize, nz: usize) -> Result<Self> {
-        // 128 threads/block: FP16 kernel has ~19 f32 locals + f_eq[19] = 152 bytes
-        // register state per thread; at 1024 threads/block the SM register file
-        // (65536 per SM on Ada) allows only ~64 regs/thread, causing spill.
-        // 128 threads/block allows ~512 regs/thread, comfortably within budget.
         Self::build(
             KERNEL_FP16_SRC,
             "lbm_step_fused_fp16_kernel",
@@ -209,6 +237,10 @@ impl BenchKernelRunner {
         )
     }
 
+    /// FP8 e4m3 AoS stride-20 D3Q19 LBM. 1 byte/dist. Requires SM 8.9+ (Ada).
+    ///
+    /// e4m3: 4-bit exponent, 3-bit mantissa, range [-448, 448].
+    /// Measured: 5408 MLUPS at 128^3 (SoA variant; AoS measured separately).
     pub fn new_fp8(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         // FP8 requires SM 8.9 (Ada Lovelace). Skip on older devices.
         let arch = arch_static();
@@ -231,6 +263,10 @@ impl BenchKernelRunner {
         )
     }
 
+    /// INT8 AoS stride-20 D3Q19 LBM. 1 byte/dist. All SM versions.
+    ///
+    /// DIST_SCALE=64: range [-2, 2), LSB=0.016. Stable for tau >= 0.51 with
+    /// rho near 1. Physics-valid, lowest-VRAM production candidate.
     pub fn new_int8(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         Self::build(
             KERNEL_INT8_SRC,
@@ -246,6 +282,11 @@ impl BenchKernelRunner {
         )
     }
 
+    /// FP8 e5m2 AoS stride-20 D3Q19 LBM. 1 byte/dist. Requires SM 8.9+ (Ada).
+    ///
+    /// e5m2: 5-bit exponent, 2-bit mantissa. Range ~57344 (4x e4m3 range);
+    /// 1-bit less mantissa precision. Measured 2.4% below e4m3 SoA at 128^3
+    /// (e5m2 store path marginally slower on Ada). Same VRAM as e4m3.
     pub fn new_fp8_e5m2(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         // FP8 e5m2: same SM 8.9 requirement as e4m3.
         // 5-bit exponent, 2-bit mantissa. Range: ~57344 (4x e4m3 range).
@@ -443,6 +484,9 @@ impl SoaBenchRunner {
         })
     }
 
+    /// FP16 i-major SoA D3Q19 LBM. 2 bytes/dist. Pull scheme, coalesced 128-byte reads.
+    ///
+    /// Measured: 3463 MLUPS at 128^3 on Ada (63.2% peak). Baseline SoA reference tier.
     pub fn new_fp16_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         Self::build(SoaBuildSpec {
             src: KERNEL_FP16_SOA_SRC,
@@ -455,6 +499,10 @@ impl SoaBenchRunner {
         }, nx, ny, nz)
     }
 
+    /// FP8 e4m3 i-major SoA D3Q19 LBM. 1 byte/dist. Requires SM 8.9+ (Ada).
+    ///
+    /// Measured: 5408 MLUPS at 128^3 (49.4% peak). Pareto-optimal physics-valid tier
+    /// jointly with INT8 SoA. 4x VRAM reduction vs FP32.
     pub fn new_fp8_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         let arch = arch_static();
         if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
@@ -471,6 +519,10 @@ impl SoaBenchRunner {
         }, nx, ny, nz)
     }
 
+    /// INT8 i-major SoA D3Q19 LBM. 1 byte/dist. All SM versions.
+    ///
+    /// Pareto-optimal physics-valid tier: 5643 MLUPS at 128^3 (51.5% peak, 76 MB VRAM).
+    /// DIST_SCALE=64; stable for tau >= 0.51. Preferred tier for VRAM-limited deployments.
     pub fn new_int8_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         Self::build(SoaBuildSpec {
             src: KERNEL_INT8_SOA_SRC,
@@ -483,6 +535,11 @@ impl SoaBenchRunner {
         }, nx, ny, nz)
     }
 
+    /// INT16 i-major SoA D3Q19 LBM. 2 bytes/dist. All SM versions.
+    ///
+    /// DIST_SCALE=16384: range [-2, 2), LSB=6.1e-5 (vs INT8 LSB=0.016).
+    /// Measured: 3569 MLUPS at 128^3 (+3.0% over FP16 SoA; integer load path avoids
+    /// FP16 conversion pipeline). Better numerical precision than INT8 at same VRAM cost.
     pub fn new_int16_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         Self::build(SoaBuildSpec {
             src: KERNEL_INT16_SOA_SRC,
@@ -495,6 +552,12 @@ impl SoaBenchRunner {
         }, nx, ny, nz)
     }
 
+    /// BF16 i-major SoA D3Q19 LBM. 2 bytes/dist. Requires SM 8.0+ (Ampere/Ada).
+    ///
+    /// BF16: 8-bit exponent (same as FP32), 7-bit mantissa. Larger dynamic range
+    /// than FP16 (good for density-contrast flows) but lower mantissa precision.
+    /// Measured: 3204 MLUPS at 128^3 (7.5% *below* FP16 SoA despite equal element size;
+    /// Ada SM 8.9 BF16 scalar load latency is higher than FP16 load latency).
     pub fn new_bf16_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         // BF16 requires SM 8.0+ (Ampere and later). All Ada (SM 8.9) qualifies.
         let arch = arch_static();
@@ -516,6 +579,10 @@ impl SoaBenchRunner {
         }, nx, ny, nz)
     }
 
+    /// FP8 e5m2 i-major SoA D3Q19 LBM. 1 byte/dist. Requires SM 8.9+ (Ada).
+    ///
+    /// e5m2 vs e4m3: wider exponent range (~57344 vs ~448), but 1-bit less mantissa.
+    /// Measured: 5280 MLUPS at 128^3 (2.4% below e4m3 SoA). Marginally slower store path on Ada.
     pub fn new_fp8_e5m2_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         let arch = arch_static();
         if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
@@ -546,9 +613,14 @@ impl SoaBenchRunner {
         }, nx, ny, nz)
     }
 
-    /// FP32 i-major SoA with Ada cache-streaming stores (`__stcs`).
-    /// Ping reads: `__ldg()` (read-only path). Pong writes: `__stcs()` (L2 evict-first).
-    /// Expected 5-15% improvement vs baseline FP32 SoA at 128^3+ on Ada SM 8.9.
+    /// FP32 i-major SoA with Ada cache-streaming stores (`__stcs`). 4 bytes/dist.
+    ///
+    /// Ping reads: `__ldg()` (read-only L1 path).
+    /// Pong writes: `__stcs()` (PTX `st.global.cs`, L2 evict-first bypass).
+    ///
+    /// Measured: +3.1% at 128^3 on Ada SM 8.9 vs baseline FP32 SoA.
+    /// Limited gain because 304 MB ping buffer >> 48 MB Ada L2; evict-first
+    /// only helps when the working set fits in L2 (effective at <= 64^3).
     pub fn new_fp32_cs(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         Self::build(SoaBuildSpec {
             src: KERNEL_FP32_SOA_CS_SRC,
@@ -638,6 +710,11 @@ pub struct Int4BenchRunner {
 }
 
 impl Int4BenchRunner {
+    /// Construct INT4 benchmark runner for an `nx x ny x nz` grid.
+    ///
+    /// `n_cells` must be even (power-of-2 grids always satisfy this).
+    /// Thread k handles cells `2k` and `2k+1` via nibble pair extraction.
+    /// Measured: 6148 MLUPS at 128^3 (bandwidth ceiling only; physics are broken).
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         assert!(
             (nx * ny * nz).is_multiple_of(2),
@@ -758,6 +835,12 @@ pub struct Fp4BenchRunner {
 }
 
 impl Fp4BenchRunner {
+    /// Construct FP4 E2M1 bandwidth ceiling runner for an `nx x ny x nz` grid.
+    ///
+    /// Thread k handles cells `2k` and `2k+1` via lo/hi nibble extraction.
+    /// Half-cell count: `ceil(n_cells / 2)`.
+    /// Measured: 4727 MLUPS at 128^3 (bandwidth ceiling; physics broken).
+    /// 23% slower than INT4 due to FP4_DECODE lookup table overhead per direction.
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
         let stream = ctx.default_stream();
@@ -869,6 +952,11 @@ pub struct DdBenchSolver {
 }
 
 impl DdBenchSolver {
+    /// Construct double-double benchmark solver for an `nx x ny x nz` grid.
+    ///
+    /// Each distribution is stored as `(hi: f64, lo: f64)` -- 16 bytes/value.
+    /// Layout: i-major SoA with 4 distribution buffers (hi_a, lo_a, hi_b, lo_b).
+    /// Measured: 58 MLUPS at 128^3 (8.4% peak). Use for reference validation only.
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
         let stream = ctx.default_stream();
@@ -1010,6 +1098,15 @@ pub struct TensorCoreProbe {
 }
 
 impl TensorCoreProbe {
+    /// Construct the Tensor Core throughput probe.
+    ///
+    /// Compiles `kernels_tensor_core.cu` via NVRTC; if compilation fails
+    /// (e.g. old CUDA toolkit without WMMA headers), all kernels are set to
+    /// `None` and the probe silently skips TC measurements.
+    ///
+    /// Five WMMA variants are probed: TF32, FP16, INT8, INT4, BF16.
+    /// Results are GFLOPS, not MLUPS (Tensor Core WMMA is matrix-multiply,
+    /// not LBM step throughput).
     pub fn new() -> Result<Self> {
         let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
         let stream = ctx.default_stream();
