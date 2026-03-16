@@ -1,5 +1,5 @@
-generated_at_utc = "2026-03-16T02:57:59.452800500+00:00"
-cube_csv = "reports/heliosphere_feature_transform_modern2020_robust_differenced_centered_2026-03-15.csv"
+generated_at_utc = "2026-03-16T04:37:10.155001654+00:00"
+cube_csv = "/home/eirikr/Github/open_gororoba/reports/heliosphere_feature_transform_modern2020_robust_differenced_centered_2026-03-15.csv"
 selected_window = "modern2020"
 selected_rows = 47337
 activity_mode = "event-mask"
@@ -7,6 +7,8 @@ active_fraction_from_cube = 0.0712972938716015
 activity_rows = 3375
 occupancy_rows = 3375
 occupancy_excluded_rows = 0
+event_segment_count = 345
+peak_temporal_tile_fraction = 0.0032743942370661427
 
 [hardware]
 best_backend = "Cuda"
@@ -15,15 +17,25 @@ cuda_available = true
 cuda_compute_capability = "8.9"
 cuda_l2_bytes = 50331648
 cuda_shared_mem_per_block = 101376
+cuda_total_global_mem_bytes = 12429492224
 cuda_bf16_native = true
+cuda_managed_memory = true
+cuda_concurrent_managed_access = true
 cuda_sparse_tile_preferred = true
+cpu_l3_safe_working_set_bytes = 90596966
+
+[hardware.managed_policy]
+supported = true
+attach_global = true
+prefetch_to_device = false
+recommended_tile_bytes = 6214746112
 
 [dense_cpu]
 backend = "cpu_dense"
 grid = 128
 steps = 64
-elapsed_seconds = 46.239749926
-mlups = 2.9026482239803624
+elapsed_seconds = 51.303803348
+mlups = 2.616136021916049
 rho_init = 0.9999113044262303
 ux_init = 0.002
 
@@ -31,8 +43,8 @@ ux_init = 0.002
 backend = "gpu_dense_fp32"
 grid = 128
 steps = 64
-elapsed_seconds = 0.363890016
-mlups = 368.841468846455
+elapsed_seconds = 0.330939299
+mlups = 405.5660007909789
 rho_init = 0.9999113044262303
 ux_init = 0.002
 
@@ -97,6 +109,158 @@ shared_tile_layout_gpu = "[19][1000]"
 shared_tile_layout_cpu = "[1000][19]"
 
 [[memory_plans]]
+grid_size = 1024
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.0712972938716015
+total_cells = 1073741824
+total_bricks = 2097152
+active_bricks = 149522
+active_core_cells = 76555264
+dense_fp32_pingpong_gib = 184.0
+dense_bf16_pingpong_gib = 108.0
+sparse_fp32_aa_gib = 7.700145721435547
+sparse_bf16_aa_projected_gib = 4.990835189819336
+occupancy_bitset_mib = 0.25
+indirect_table_mib = 8.0
+active_brick_id_mib = 0.5703811645507813
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[execution_plans]]
+mode = "CacheAwareTiledSparseSoA"
+fits_vram_budget = true
+metadata_fits_gpu_l2 = true
+host_tile_fits_cpu_l3 = true
+metadata_hotset_mib = 0.017230987548828125
+host_orchestration_mib = 1.0172309875488281
+recommended_temporal_tiles = 22
+peak_temporal_tile_gib = 0.0004673004150390625
+managed_prefetch_supported = true
+managed_prefetch_recommended = false
+vmm_candidate = false
+rebar_note = "BAR/ReBAR is not counted as VRAM capacity; use managed memory or temporal tiling for overflow"
+notes = [
+    "sparse metadata hotset fits GPU L2",
+    "host orchestration tile fits safe CPU L3 working set",
+]
+
+[execution_plans.memory]
+grid_size = 128
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.0712972938716015
+total_cells = 2097152
+total_bricks = 4096
+active_bricks = 293
+active_core_cells = 150016
+dense_fp32_pingpong_gib = 0.359375
+dense_bf16_pingpong_gib = 0.2109375
+sparse_fp32_aa_gib = 0.015089035034179688
+sparse_bf16_aa_projected_gib = 0.009779930114746094
+occupancy_bitset_mib = 0.00048828125
+indirect_table_mib = 0.015625
+active_brick_id_mib = 0.001117706298828125
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[execution_plans]]
+mode = "CacheAwareTiledSparseSoA"
+fits_vram_budget = true
+metadata_fits_gpu_l2 = true
+host_tile_fits_cpu_l3 = true
+metadata_hotset_mib = 0.13782119750976563
+host_orchestration_mib = 1.1378211975097656
+recommended_temporal_tiles = 22
+peak_temporal_tile_gib = 0.003604888916015625
+managed_prefetch_supported = true
+managed_prefetch_recommended = false
+vmm_candidate = false
+rebar_note = "BAR/ReBAR is not counted as VRAM capacity; use managed memory or temporal tiling for overflow"
+notes = [
+    "sparse metadata hotset fits GPU L2",
+    "host orchestration tile fits safe CPU L3 working set",
+]
+
+[execution_plans.memory]
+grid_size = 256
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.0712972938716015
+total_cells = 16777216
+total_bricks = 32768
+active_bricks = 2337
+active_core_cells = 1196544
+dense_fp32_pingpong_gib = 2.875
+dense_bf16_pingpong_gib = 1.6875
+sparse_fp32_aa_gib = 0.12035179138183594
+sparse_bf16_aa_projected_gib = 0.07800579071044922
+occupancy_bitset_mib = 0.00390625
+indirect_table_mib = 0.125
+active_brick_id_mib = 0.008914947509765625
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[execution_plans]]
+mode = "CacheAwareTiledSparseSoA"
+fits_vram_budget = true
+metadata_fits_gpu_l2 = true
+host_tile_fits_cpu_l3 = true
+metadata_hotset_mib = 1.1025505065917969
+host_orchestration_mib = 2.102550506591797
+recommended_temporal_tiles = 22
+peak_temporal_tile_gib = 0.028672218322753906
+managed_prefetch_supported = true
+managed_prefetch_recommended = false
+vmm_candidate = false
+rebar_note = "BAR/ReBAR is not counted as VRAM capacity; use managed memory or temporal tiling for overflow"
+notes = [
+    "sparse metadata hotset fits GPU L2",
+    "host orchestration tile fits safe CPU L3 working set",
+]
+
+[execution_plans.memory]
+grid_size = 512
+brick_edge = 8
+halo_edge = 10
+active_fraction = 0.0712972938716015
+total_cells = 134217728
+total_bricks = 262144
+active_bricks = 18691
+active_core_cells = 9569792
+dense_fp32_pingpong_gib = 23.0
+dense_bf16_pingpong_gib = 13.5
+sparse_fp32_aa_gib = 0.9625568389892578
+sparse_bf16_aa_projected_gib = 0.6238794326782227
+occupancy_bitset_mib = 0.03125
+indirect_table_mib = 1.0
+active_brick_id_mib = 0.07130050659179688
+shared_tile_bytes_bf16 = 38000
+shared_tile_layout_gpu = "[19][1000]"
+shared_tile_layout_cpu = "[1000][19]"
+
+[[execution_plans]]
+mode = "CacheAwareTiledSparseSoA"
+fits_vram_budget = true
+metadata_fits_gpu_l2 = true
+host_tile_fits_cpu_l3 = true
+metadata_hotset_mib = 8.820381164550781
+host_orchestration_mib = 9.820381164550781
+recommended_temporal_tiles = 22
+peak_temporal_tile_gib = 0.22921085357666016
+managed_prefetch_supported = true
+managed_prefetch_recommended = false
+vmm_candidate = false
+rebar_note = "BAR/ReBAR is not counted as VRAM capacity; use managed memory or temporal tiling for overflow"
+notes = [
+    "sparse metadata hotset fits GPU L2",
+    "host orchestration tile fits safe CPU L3 working set",
+]
+
+[execution_plans.memory]
 grid_size = 1024
 brick_edge = 8
 halo_edge = 10

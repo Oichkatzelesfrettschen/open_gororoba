@@ -734,28 +734,141 @@ pub struct HeliosphereFeatureCube {
     pub rows: Vec<HeliosphereFeatureRow>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+/// Sparse-memory sizing estimate for a brick-mapped D3Q19 LBM domain.
+///
+/// The planner assumes:
+/// - an `8^3` active brick core
+/// - a `10^3` halo-loaded shared-memory tile
+/// - GPU storage in SoA order (`[19][1000]`) for coalesced reads
+/// - CPU fallback storage in AoS order (`[1000][19]`) for cache-friendly
+///   scalar or SIMD stepping
+///
+/// These values are used by higher-level execution planning to decide whether
+/// a window should stay fully resident in VRAM, run as cache-aware temporal
+/// tiles, or fall back to managed memory / CPU execution.
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SparseMemoryPlan {
+    /// Cubic grid edge length.
     pub grid_size: usize,
+    /// Active brick edge in cells. The current sparse solver uses `8`.
     pub brick_edge: usize,
+    /// Shared-memory halo tile edge in cells. The current tiled path uses `10`.
     pub halo_edge: usize,
+    /// Occupancy fraction used to estimate active bricks.
     pub active_fraction: f64,
+    /// Total dense-cell count in the logical domain.
     pub total_cells: u64,
+    /// Total number of `8^3` bricks in the logical domain.
     pub total_bricks: u64,
+    /// Estimated number of active bricks after sparsification.
     pub active_bricks: u64,
+    /// Total active core cells (`active_bricks * 8^3`).
     pub active_core_cells: u64,
+    /// Dense FP32 ping-pong footprint in GiB.
     pub dense_fp32_pingpong_gib: f64,
+    /// Dense BF16 ping-pong footprint in GiB.
     pub dense_bf16_pingpong_gib: f64,
+    /// Sparse FP32 A-A footprint in GiB.
     pub sparse_fp32_aa_gib: f64,
+    /// Sparse BF16 A-A footprint in GiB.
     pub sparse_bf16_aa_projected_gib: f64,
+    /// Occupancy bitset footprint in MiB.
     pub occupancy_bitset_mib: f64,
+    /// Indirect brick table footprint in MiB.
     pub indirect_table_mib: f64,
+    /// Active-brick ID list footprint in MiB.
     pub active_brick_id_mib: f64,
+    /// Shared-memory tile bytes for BF16 D3Q19 halo execution.
     pub shared_tile_bytes_bf16: usize,
+    /// Preferred GPU shared-memory tile layout.
     pub shared_tile_layout_gpu: String,
+    /// Preferred CPU cache-local tile layout.
     pub shared_tile_layout_cpu: String,
 }
 
+/// Hardware envelope used to choose a sparse execution mode.
+///
+/// This struct intentionally separates:
+/// - device-local facts such as VRAM, L2, shared memory, and managed-memory
+///   support
+/// - host-local facts such as safe CPU L3 working-set size
+///
+/// The CPU L3 cache is not treated as a shared GPU cache. It only informs
+/// host-side compaction, event scoring, temporal tiling, and managed-memory
+/// orchestration.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Default)]
+pub struct SparseHardwareEnvelope {
+    /// Device-local memory budget in bytes.
+    pub cuda_vram_budget_bytes: Option<usize>,
+    /// GPU L2 cache size in bytes.
+    pub cuda_l2_bytes: Option<usize>,
+    /// Shared memory available per block in bytes.
+    pub cuda_shared_mem_per_block: Option<usize>,
+    /// Whether CUDA managed memory is available.
+    pub cuda_managed_memory: Option<bool>,
+    /// Whether CUDA concurrent managed access is available.
+    pub cuda_concurrent_managed_access: Option<bool>,
+    /// Safe host L3 working-set size in bytes.
+    pub cpu_l3_safe_working_set_bytes: Option<usize>,
+    /// Whether the GPU is a good match for sparse shared-tile kernels.
+    pub prefer_sparse_tile: bool,
+}
+
+/// Recommended sparse execution mode for a planned domain.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+pub enum SparseExecutionMode {
+    /// The full sparse domain fits in VRAM and should stay device resident.
+    VramResidentSparseSoA,
+    /// The full sparse domain fits in VRAM and the metadata/tile footprints
+    /// align well with the GPU cache and shared-memory geometry.
+    CacheAwareTiledSparseSoA,
+    /// The full logical window is too large, but per-segment temporal tiles fit
+    /// in VRAM while preserving the full cube artifact on disk.
+    TemporalTiledSparseSoA,
+    /// Managed / unified memory with explicit prefetch is the required fallback.
+    ///
+    /// This is treated as slower than a VRAM-resident path and should not be the
+    /// primary fast path on Ada-class devices.
+    ManagedPrefetchFallback,
+    /// CPU fallback using cache-friendly AoS tiles.
+    CpuAosFallback,
+}
+
+/// Fully annotated sparse execution recommendation for a domain.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SparseExecutionPlan {
+    /// Base memory-size estimate for the sparse domain.
+    pub memory: SparseMemoryPlan,
+    /// Recommended execution mode.
+    pub mode: SparseExecutionMode,
+    /// Whether the whole sparse BF16 A-A domain fits the declared VRAM budget.
+    pub fits_vram_budget: Option<bool>,
+    /// Whether the sparse metadata hotset fits in GPU L2.
+    pub metadata_fits_gpu_l2: Option<bool>,
+    /// Whether a single host orchestration tile fits in safe CPU L3.
+    pub host_tile_fits_cpu_l3: Option<bool>,
+    /// Total sparse metadata hotset size in MiB.
+    pub metadata_hotset_mib: f64,
+    /// Host-side orchestration target in MiB.
+    pub host_orchestration_mib: f64,
+    /// Recommended number of temporal tiles.
+    pub recommended_temporal_tiles: usize,
+    /// Peak BF16 A-A tile footprint in GiB when temporal tiling is used.
+    pub peak_temporal_tile_gib: f64,
+    /// Whether managed-memory fallback is supported by the device/runtime.
+    pub managed_prefetch_supported: bool,
+    /// Whether managed-memory fallback is recommended for this domain.
+    pub managed_prefetch_recommended: bool,
+    /// Whether low-level VMM is worth considering if managed-memory fallback is
+    /// still too large.
+    pub vmm_candidate: bool,
+    /// BAR/ReBAR note to make the fallback semantics explicit in reports.
+    pub rebar_note: String,
+    /// Human-readable planner notes.
+    pub notes: Vec<String>,
+}
+
+/// Estimate the raw sparse-memory footprint for a grid and active fraction.
 pub fn estimate_sparse_memory_plan(grid_size: usize, active_fraction: f64) -> SparseMemoryPlan {
     let brick_edge = 8u64;
     let halo_edge = 10u64;
@@ -791,6 +904,107 @@ pub fn estimate_sparse_memory_plan(grid_size: usize, active_fraction: f64) -> Sp
         shared_tile_bytes_bf16: (halo_edge.pow(3) * 19 * 2) as usize,
         shared_tile_layout_gpu: "[19][1000]".to_string(),
         shared_tile_layout_cpu: "[1000][19]".to_string(),
+    }
+}
+
+/// Estimate an execution strategy for a sparse heliosphere LBM window.
+///
+/// This planner is intentionally conservative:
+/// - ReBAR/BAR1 is not treated as an extension of VRAM.
+/// - GPU execution remains SoA-first.
+/// - CPU fallback remains AoS-first.
+/// - Managed memory is modeled as a slower overflow path with explicit
+///   prefetch/tiling, not a peer of VRAM-resident execution.
+///
+/// `temporal_tile_fraction` lets callers preserve the full cube artifact while
+/// estimating the peak per-tile footprint needed for sequential execution.
+pub fn estimate_sparse_execution_plan(
+    grid_size: usize,
+    active_fraction: f64,
+    temporal_tile_fraction: Option<f64>,
+    hardware: SparseHardwareEnvelope,
+) -> SparseExecutionPlan {
+    let memory = estimate_sparse_memory_plan(grid_size, active_fraction);
+    let metadata_hotset_mib =
+        memory.occupancy_bitset_mib + memory.indirect_table_mib + memory.active_brick_id_mib;
+    let host_orchestration_mib =
+        metadata_hotset_mib + (memory.shared_tile_bytes_bf16 as f64 / 1024.0_f64.powi(2)).max(1.0);
+    let metadata_fits_gpu_l2 = hardware
+        .cuda_l2_bytes
+        .map(|bytes| metadata_hotset_mib <= bytes as f64 / 1024.0_f64.powi(2));
+    let host_tile_fits_cpu_l3 = hardware
+        .cpu_l3_safe_working_set_bytes
+        .map(|bytes| host_orchestration_mib <= bytes as f64 / 1024.0_f64.powi(2));
+    let fits_vram_budget = hardware
+        .cuda_vram_budget_bytes
+        .map(|bytes| memory.sparse_bf16_aa_projected_gib <= bytes as f64 / 1024.0_f64.powi(3));
+    let temporal_tile_fraction = temporal_tile_fraction
+        .unwrap_or(active_fraction)
+        .clamp(0.000_001, 1.0);
+    let peak_temporal_tile = estimate_sparse_memory_plan(grid_size, temporal_tile_fraction);
+    let recommended_temporal_tiles = if temporal_tile_fraction >= active_fraction {
+        1
+    } else {
+        (active_fraction / temporal_tile_fraction).ceil().max(1.0) as usize
+    };
+    let managed_prefetch_supported = hardware.cuda_managed_memory.unwrap_or(false)
+        && hardware.cuda_concurrent_managed_access.unwrap_or(false);
+
+    let mode = match fits_vram_budget {
+        Some(true) if hardware.prefer_sparse_tile && metadata_fits_gpu_l2.unwrap_or(false) => {
+            SparseExecutionMode::CacheAwareTiledSparseSoA
+        }
+        Some(true) => SparseExecutionMode::VramResidentSparseSoA,
+        Some(false)
+            if hardware.cuda_vram_budget_bytes.is_some()
+                && peak_temporal_tile.sparse_bf16_aa_projected_gib
+                    <= hardware.cuda_vram_budget_bytes.unwrap_or_default() as f64
+                        / 1024.0_f64.powi(3) =>
+        {
+            SparseExecutionMode::TemporalTiledSparseSoA
+        }
+        Some(false) if managed_prefetch_supported => SparseExecutionMode::ManagedPrefetchFallback,
+        _ => SparseExecutionMode::CpuAosFallback,
+    };
+
+    let mut notes = Vec::new();
+    if metadata_fits_gpu_l2 == Some(true) {
+        notes.push("sparse metadata hotset fits GPU L2".to_string());
+    } else if metadata_fits_gpu_l2 == Some(false) {
+        notes.push("sparse metadata hotset exceeds GPU L2; favor temporal tiling".to_string());
+    }
+    if host_tile_fits_cpu_l3 == Some(true) {
+        notes.push("host orchestration tile fits safe CPU L3 working set".to_string());
+    }
+    if matches!(mode, SparseExecutionMode::ManagedPrefetchFallback) {
+        notes.push(
+            "managed-memory overflow is available, but should be treated as slower than VRAM"
+                .to_string(),
+        );
+    }
+    if matches!(mode, SparseExecutionMode::TemporalTiledSparseSoA) {
+        notes.push(format!(
+            "full window can be preserved while processing roughly {} temporal tiles",
+            recommended_temporal_tiles
+        ));
+    }
+
+    SparseExecutionPlan {
+        memory,
+        mode,
+        fits_vram_budget,
+        metadata_fits_gpu_l2,
+        host_tile_fits_cpu_l3,
+        metadata_hotset_mib,
+        host_orchestration_mib,
+        recommended_temporal_tiles,
+        peak_temporal_tile_gib: peak_temporal_tile.sparse_bf16_aa_projected_gib,
+        managed_prefetch_supported,
+        managed_prefetch_recommended: matches!(mode, SparseExecutionMode::ManagedPrefetchFallback),
+        vmm_candidate: matches!(mode, SparseExecutionMode::ManagedPrefetchFallback),
+        rebar_note:
+            "BAR/ReBAR is not counted as VRAM capacity; use managed memory or temporal tiling for overflow".to_string(),
+        notes,
     }
 }
 
@@ -874,6 +1088,50 @@ mod tests {
         assert_eq!(plan.shared_tile_bytes_bf16, 38_000);
         assert!(plan.dense_fp32_pingpong_gib > plan.sparse_fp32_aa_gib);
         assert!(plan.sparse_fp32_aa_gib > plan.sparse_bf16_aa_projected_gib);
+    }
+
+    #[test]
+    fn test_sparse_execution_plan_prefers_cache_aware_vram_path() {
+        let plan = estimate_sparse_execution_plan(
+            1024,
+            0.07,
+            Some(0.03),
+            SparseHardwareEnvelope {
+                cuda_vram_budget_bytes: Some(12 * 1024 * 1024 * 1024),
+                cuda_l2_bytes: Some(48 * 1024 * 1024),
+                cuda_shared_mem_per_block: Some(48 * 1024),
+                cuda_managed_memory: Some(true),
+                cuda_concurrent_managed_access: Some(true),
+                cpu_l3_safe_working_set_bytes: Some(96 * 1024 * 1024),
+                prefer_sparse_tile: true,
+            },
+        );
+        assert!(matches!(
+            plan.mode,
+            SparseExecutionMode::CacheAwareTiledSparseSoA
+                | SparseExecutionMode::VramResidentSparseSoA
+        ));
+        assert_eq!(plan.fits_vram_budget, Some(true));
+    }
+
+    #[test]
+    fn test_sparse_execution_plan_uses_temporal_tiling_before_managed_fallback() {
+        let plan = estimate_sparse_execution_plan(
+            1024,
+            0.20,
+            Some(0.08),
+            SparseHardwareEnvelope {
+                cuda_vram_budget_bytes: Some(12 * 1024 * 1024 * 1024),
+                cuda_l2_bytes: Some(48 * 1024 * 1024),
+                cuda_shared_mem_per_block: Some(48 * 1024),
+                cuda_managed_memory: Some(true),
+                cuda_concurrent_managed_access: Some(true),
+                cpu_l3_safe_working_set_bytes: Some(96 * 1024 * 1024),
+                prefer_sparse_tile: true,
+            },
+        );
+        assert_eq!(plan.mode, SparseExecutionMode::TemporalTiledSparseSoA);
+        assert!(plan.peak_temporal_tile_gib < plan.memory.sparse_bf16_aa_projected_gib);
     }
 
     #[test]
