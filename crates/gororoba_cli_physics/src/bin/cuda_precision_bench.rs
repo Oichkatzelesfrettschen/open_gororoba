@@ -226,12 +226,28 @@ fn print_precision_guide() {
     println!("                                                    better mantissa (10-bit vs 7-bit)");
     println!("  FP8_e4m3            1        4-bit        0.25x  4x bandwidth save; uchar4 vectorized loads;");
     println!("                                                    SM 8.9+ only; significant accuracy risk");
+    println!("  FP8_e5m2            1        3-bit        0.25x  4x bandwidth save; wider range than e4m3");
+    println!("                                                    (5-bit exp vs 4-bit); lower precision;");
+    println!("                                                    SM 8.9+ only; Ada nearest to FP4 concept");
     println!("  INT8                1   fixed(64)         0.25x  4x bandwidth save; __dp4a momentum accel;");
     println!("                                                    DIST_SCALE=64; overflow risk at high density");
+    println!("  INT4             0.5   fixed(14)         0.125x  BANDWIDTH CEILING ONLY -- NOT physics-viable;");
+    println!("                                                    edge weights (1/36*14=0) collapse to zero;");
+    println!("                                                    i-major SoA; 2 cells/thread (RMW race avoid)");
     println!();
-    println!("  TF32/FP16/INT8/INT4 (Tensor Core WMMA proxy -- NOT LBM kernels):");
+    println!("  SoA variants (i-major, pull-scheme, coalesced writes -- no AoS padding):");
+    println!("  FP16_SoA            2       10-bit       0.5x   stride=19 (vs AoS stride=20); 5% less VRAM;");
+    println!("                                                    pull gather-reads + coalesced scatter-writes;");
+    println!("                                                    expected 4x MLUPS vs FP32 baseline");
+    println!("  FP8_SoA             1        4-bit       0.25x  stride=19 non-padded; best bandwidth ratio;");
+    println!("                                                    pull-scheme eliminates AoS scatter penalty");
+    println!("  INT8_SoA            1   fixed(64)        0.25x  stride=19 non-padded; int accumulation");
+    println!("                                                    for momentum (no dp4a for scattered SoA loads)");
+    println!();
+    println!("  TF32/FP16/BF16/INT8/INT4 (Tensor Core WMMA proxy -- NOT LBM kernels):");
     println!("    TF32:  M=16 N=16 K=8   ~165 TFLOPS (Ada theoretical)  FP32 accumulator");
     println!("    FP16:  M=16 N=16 K=16  ~330 TFLOPS                    FP32 accumulator");
+    println!("    BF16:  M=16 N=16 K=16  ~330 TFLOPS  (same as FP16)   FP32 accumulator");
     println!("    INT8:  M=16 N=16 K=16  ~330 TOPS                      INT32 accumulator");
     println!("    INT4:  M=8  N=8  K=32  ~660 TOPS  (experimental)      INT32 accumulator");
     println!("    These paths only activate via cuBLAS/cuDNN matrix routes.");
@@ -265,7 +281,10 @@ mod gpu {
     use anyhow::Result;
     use lbm_3d_cuda::{
         DarkHaloCudaSolver, LbmSolver3DCuda, Precision,
-        bench_kernels::{BenchKernelRunner, DdBenchSolver, TensorCoreProbe},
+        bench_kernels::{
+            BenchKernelRunner, DdBenchSolver, Fp4BenchRunner, Int4BenchRunner,
+            SoaBenchRunner, TensorCoreProbe,
+        },
         box_counting_gpu::GpuBoxCounter,
         probe_cuda_device_props,
         sparse::{SparseBrickMap, SparseLbmSolver},
@@ -679,6 +698,672 @@ mod gpu {
     }
 
     // -------------------------------------------------------------------------
+    // Workload I-2: FP8 e5m2 LBM (SM 8.9+ only; wider range, lower precision than e4m3)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp8_e5m2(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!("  [I2] FP8_e5m2/standard       {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match BenchKernelRunner::new_fp8_e5m2(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            // AoS stride=20 (padded, same as e4m3)
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 20);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP8_e5m2".to_string(),
+                variant: "standard".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP8 e5m2 AoS stride=20; 5-bit exponent (wider range than e4m3); 2-bit mantissa (lower precision); SM 8.9+ only".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload H-2: FP16 i-major SoA pull-scheme LBM
+    // SoA layout eliminates AoS scatter-write non-coalescing for diagonal dirs.
+    // Expected: ~4x MLUPS vs FP32 baseline (2x from bandwidth, 2x from coalescing fix).
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp16_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!("  [H2] FP16_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_fp16_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            // SoA stride=19 (non-padded): no AoS padding byte
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP16_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP16 i-major SoA pull-scheme; stride=19 non-padded; coalesced gather+scatter; 2 bytes/dist; ~152 MB VRAM at 128^3".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload I-3: FP8 e4m3 i-major SoA pull-scheme LBM
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp8_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!("  [I3] FP8_SoA/pull            {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_fp8_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP8_e4m3_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP8 e4m3 i-major SoA pull-scheme; stride=19 non-padded; SM 8.9+ only; 1 byte/dist; ~76 MB VRAM at 128^3".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload J-2: INT8 i-major SoA pull-scheme LBM
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int8_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!("  [J2] INT8_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_int8_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT8_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "INT8 i-major SoA pull-scheme; stride=19 non-padded; DIST_SCALE=64; int momentum accumulation; 1 byte/dist; ~76 MB VRAM at 128^3".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload L: INT4 nibble-packed LBM -- BANDWIDTH CEILING ONLY
+    // Physics NOT viable (edge weights quantize to zero); reports max achievable
+    // MLUPS when distributions are 2x denser than INT8.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int4(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let half_cells = n_cells / 2;
+            eprint!("  [L]  INT4/bw_ceil            {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match Int4BenchRunner::new(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            // INT4 bandwidth: 19 directions * half_cells bytes/step (ping-pong each)
+            // plus 8 macro fields (rho,ux,uy,uz,tau,fx,fy,fz) * n_cells * 4 bytes
+            let bytes_per_step = (19.0 * half_cells as f64 * 2.0  // dist read + write
+                                  + 8.0 * n_cells as f64 * 4.0)   // macro FP32 fields
+                                 * n_steps as f64;
+            let bw = bytes_per_step / (elapsed_ms * 1e-3) / 1e9;
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT4".to_string(),
+                variant: "bw_ceiling".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "BANDWIDTH CEILING ONLY -- physics broken (edge weights=0); nibble-packed i-major SoA; 2 cells/thread; 0.5 bytes/dist; ~38 MB VRAM at 128^3".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload J-3: INT16 AoS stride-20 LBM
+    // 2 bytes/dist; DIST_SCALE=16384 -> LSB=6.1e-5 (vs INT8 LSB=0.016).
+    // Better precision than INT8 for moderate-Re flows; same VRAM cost as FP16.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int16(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!("  [J3] INT16/standard          {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match BenchKernelRunner::new_int16(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 20);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT16".to_string(),
+                variant: "standard".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "INT16 AoS stride=20; DIST_SCALE=16384; LSB=6.1e-5; better precision than INT8 for moderate-Re; 2 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload J-4: INT16 i-major SoA pull-scheme LBM
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int16_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!("  [J4] INT16_SoA/pull          {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_int16_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT16_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "INT16 i-major SoA pull-scheme; stride=19 non-padded; int momentum accumulation; 2 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload H-3: BF16 i-major SoA pull-scheme LBM (SM 8.0+)
+    // Same scalar speed as FP32 on Ada (no BF16 FFMA accel); 2x BW reduction.
+    // 8-bit exponent (same range as FP32) vs FP16 5-bit exponent.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_bf16_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!("  [H3] BF16_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_bf16_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "BF16_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "BF16 i-major SoA pull; stride=19; 8-bit exp (FP32 range); 7-bit mantissa; SM 8.0+; 2 bytes/dist; no BF16 FFMA accel on Ada".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload I-4: FP8 e5m2 i-major SoA pull-scheme LBM (SM 8.9+)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp8_e5m2_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!("  [I4] FP8_e5m2_SoA/pull       {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_fp8_e5m2_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP8_e5m2_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP8 e5m2 i-major SoA pull; stride=19; 5-bit exp (wider range than e4m3); 2-bit mantissa; SM 8.9+ only; 1 byte/dist; ~38 MB VRAM at 128^3".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload A-2: FP64 i-major SoA pull-scheme LBM
+    // Primary use: numerical validation. Compute-bound on Ada gaming SKU.
+    // Capped at 128^3: 128^3 ping-pong = ~636 MB; 256^3 = ~5 GB.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp64_soa(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        // 256^3 would require 5 GB just for distribution buffers; cap at 128^3.
+        let grids: Vec<usize> = cfg.grids().into_iter().filter(|&n| n <= 128).collect();
+        for n in grids {
+            let n_steps = cfg.n_steps_for(n).min(30); // FP64 is very slow on Ada
+            let n_cells = n * n * n;
+            let elem_bytes = 8usize;
+            eprint!("  [A2] FP64_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_fp64_soa(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup.min(5)) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP64_SoA".to_string(),
+                variant: "pull".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup.min(5),
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP64 i-major SoA pull; stride=19; 53-bit mantissa; ~0.6 TFLOPS on Ada gaming SKU; compute-bound; validation tier only; 8 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload A-3: FP32 i-major SoA with Ada cache-streaming stores (__stcs)
+    // Ping reads: __ldg() (read-only path). Pong writes: __stcs() (L2 evict-first).
+    // Expected 5-15% improvement vs FP32_SoA standard at 128^3 on Ada SM 8.9.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp32_cs(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 4usize;
+            eprint!("  [A3] FP32_SoA_CS/pull        {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_fp32_cs(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP32_SoA_CS".to_string(),
+                variant: "pull_cs".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP32 SoA pull + __stcs pong writes (L2 evict-first); __ldg ping reads; pong does not evict ping from L2; Ada SM 8.9 specific; expected +5-15% vs baseline".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload H-4: FP16 i-major SoA with half2 ILP (2 cells per thread)
+    // Uses __half2 for velocity moment accumulation (2 FP16 FMAs per instruction).
+    // Halves thread count; BGK collision remains in FP32 for stability.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp16_half2(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!("  [H4] FP16_SoA_H2/half2_ilp   {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match SoaBenchRunner::new_fp16_half2(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP16_SoA_H2".to_string(),
+                variant: "half2_ilp".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP16 SoA half2 ILP; 2 cells/thread; __half2 moment accum (2x FMA/insn); FP32 BGK collision; 50% thread count vs standard FP16_SoA".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // Workload L-2: FP4 E2M1 nibble-packed LBM -- BANDWIDTH CEILING ONLY
+    // FP4 hardware is Blackwell SM 10.0+ only. On Ada: emulated via nibble pack
+    // (same layout as INT4 but FP4 E2M1 decode table). Physics NOT viable.
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp4(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let half_cells = n_cells.div_ceil(2);
+            eprint!("  [L2] FP4/bw_ceil             {}^3 ({} steps)... ", n, n_steps);
+            let mut runner = match Fp4BenchRunner::new(n, n, n) {
+                Ok(r) => r,
+                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}"); continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            // FP4: same nibble model as INT4 (19 bytes per cell-pair, ping+pong)
+            let bytes_per_step = (19.0 * half_cells as f64 * 2.0
+                                  + 8.0 * n_cells as f64 * 4.0)
+                                 * n_steps as f64;
+            let bw = bytes_per_step / (elapsed_ms * 1e-3) / 1e9;
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP4_E2M1".to_string(),
+                variant: "bw_ceiling".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "BANDWIDTH CEILING ONLY -- physics broken (rest weight 1/3 -> 0.5, 50% error); FP4 E2M1 emulated on Ada (Blackwell HW only); nibble-packed i-major SoA; 2 cells/thread; ~38 MB VRAM at 128^3".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
     // Workload K: Double-Double FP128 LBM (capped at 64^3)
     // -------------------------------------------------------------------------
 
@@ -859,6 +1544,33 @@ mod gpu {
                     bandwidth_pct_peak: None,
                     vram_dist_mb: None,
                     notes: format!("{gops:.0} GOPS; M=8 N=8 K=32 INT32 accum; Ada ~660 TOPS peak experimental; NOT an LBM kernel"),
+                });
+            }
+        }
+
+        // BF16 (M=16, N=16, K=16) -- same shape as FP16; Ada parity ~330 TFLOPS
+        if probe.has_bf16() {
+            eprint!("  [TC] BF16 ");
+            let t0 = Instant::now();
+            if let Ok(flops) = probe.run_bf16(n_iters) {
+                let _ = probe.context().synchronize();
+                let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+                let gflops = flops / (elapsed_ms * 1e-3) / 1e9;
+                eprintln!("{gflops:.0} GFLOPS");
+                rows.push(BenchRow {
+                    workload: "tensor_core",
+                    precision: "BF16".to_string(),
+                    variant: "wmma_16x16x16".to_string(),
+                    grid_size: 0,
+                    param2: format!("n_iters={n_iters}"),
+                    n_steps: n_iters as usize,
+                    warmup: 100,
+                    elapsed_ms,
+                    mlups: None,
+                    bandwidth_gbs: None,
+                    bandwidth_pct_peak: None,
+                    vram_dist_mb: None,
+                    notes: format!("{gflops:.0} GFLOPS; M=16 N=16 K=16 FP32 accum; Ada ~330 TFLOPS (same as FP16 TC); NOT an LBM kernel"),
                 });
             }
         }
@@ -1259,28 +1971,106 @@ mod gpu {
                 Err(e) => eprintln!("  Workload A failed: {e}"),
             }
 
-            eprintln!("[H] LBM FP16 sweep...");
+            eprintln!("[H] LBM FP16 AoS sweep...");
             match run_lbm_fp16(cfg) {
                 Ok(mut r) => rows.append(&mut r),
                 Err(e) => eprintln!("  FP16 workload failed: {e}"),
             }
 
-            eprintln!("[I] LBM FP8_e4m3 sweep...");
+            eprintln!("[H2] LBM FP16 SoA pull-scheme sweep...");
+            match run_lbm_fp16_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP16 SoA workload failed: {e}"),
+            }
+
+            eprintln!("[I] LBM FP8_e4m3 AoS sweep...");
             match run_lbm_fp8(cfg) {
                 Ok(mut r) => rows.append(&mut r),
                 Err(e) => eprintln!("  FP8 workload failed: {e}"),
             }
 
-            eprintln!("[J] LBM INT8 sweep...");
+            eprintln!("[I2] LBM FP8_e5m2 AoS sweep (SM 8.9+ only)...");
+            match run_lbm_fp8_e5m2(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP8_e5m2 workload failed: {e}"),
+            }
+
+            eprintln!("[I3] LBM FP8_e4m3 SoA pull-scheme sweep...");
+            match run_lbm_fp8_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP8 SoA workload failed: {e}"),
+            }
+
+            eprintln!("[J] LBM INT8 AoS sweep...");
             match run_lbm_int8(cfg) {
                 Ok(mut r) => rows.append(&mut r),
                 Err(e) => eprintln!("  INT8 workload failed: {e}"),
+            }
+
+            eprintln!("[J2] LBM INT8 SoA pull-scheme sweep...");
+            match run_lbm_int8_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  INT8 SoA workload failed: {e}"),
             }
 
             eprintln!("[K] LBM DD-FP128 sweep (capped at 64^3)...");
             match run_lbm_dd(cfg) {
                 Ok(mut r) => rows.append(&mut r),
                 Err(e) => eprintln!("  DD workload failed: {e}"),
+            }
+
+            eprintln!("[L] LBM INT4 bandwidth ceiling sweep...");
+            match run_lbm_int4(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  INT4 workload failed: {e}"),
+            }
+
+            eprintln!("[J3] LBM INT16 AoS sweep...");
+            match run_lbm_int16(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  INT16 workload failed: {e}"),
+            }
+
+            eprintln!("[J4] LBM INT16 SoA pull-scheme sweep...");
+            match run_lbm_int16_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  INT16 SoA workload failed: {e}"),
+            }
+
+            eprintln!("[H3] LBM BF16 SoA pull-scheme sweep (SM 8.0+)...");
+            match run_lbm_bf16_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  BF16 SoA workload failed: {e}"),
+            }
+
+            eprintln!("[I4] LBM FP8_e5m2 SoA pull-scheme sweep (SM 8.9+)...");
+            match run_lbm_fp8_e5m2_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP8_e5m2 SoA workload failed: {e}"),
+            }
+
+            eprintln!("[A2] LBM FP64 SoA pull-scheme sweep (capped at 128^3)...");
+            match run_lbm_fp64_soa(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP64 SoA workload failed: {e}"),
+            }
+
+            eprintln!("[A3] LBM FP32 SoA cache-streaming stores (__stcs) sweep...");
+            match run_lbm_fp32_cs(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP32_CS workload failed: {e}"),
+            }
+
+            eprintln!("[H4] LBM FP16 SoA half2 ILP sweep (2 cells/thread)...");
+            match run_lbm_fp16_half2(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP16 half2 workload failed: {e}"),
+            }
+
+            eprintln!("[L2] LBM FP4_E2M1 bandwidth ceiling sweep...");
+            match run_lbm_fp4(cfg) {
+                Ok(mut r) => rows.append(&mut r),
+                Err(e) => eprintln!("  FP4 workload failed: {e}"),
             }
         }
 

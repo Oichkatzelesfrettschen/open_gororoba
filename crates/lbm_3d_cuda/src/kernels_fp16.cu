@@ -64,7 +64,12 @@ __device__ void compute_equilibrium_fp16(float* f_eq, float rho, const float* u)
 // YSU half2 trick: 10 half2 loads cover all 20 slots in 10 coalesced 32-bit
 // transactions.  All loads are 4-byte aligned because 40 bytes per cell
 // means f_base is 4-byte aligned for every idx.
-extern "C" __global__ void lbm_step_fused_fp16_kernel(
+// __launch_bounds__(128, 4): hint to compiler to target 4 blocks/SM (512 threads/SM),
+// keeping register budget to ~128 regs/thread. FP16 kernel has f_local[19]+f_eq[19]+
+// collision scalars = ~200 register-file elements; without bounds hint the allocator
+// may spill to L1 scratch at 1024 threads/block. 128 threads is already the block size
+// (set in BenchKernelRunner::new_fp16); the minBlocksPerSm=4 hint requests 4x occupancy.
+extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_fused_fp16_kernel(
     const __half* f_in,   // Input distributions (read-only, n_cells * 20)
     __half* f_out,        // Output distributions (write, n_cells * 20)
     float* rho_out,       // Density field (FP32)

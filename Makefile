@@ -5,7 +5,7 @@
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
-.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench
+.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit profile-python-toml-inventory
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -523,6 +523,42 @@ gpu-bench: ## Run CUDA kernel baseline benchmark (informational, not a gate)
 		$${STEPS_MID:+--steps-mid $${STEPS_MID}} \
 		$${STEPS_LARGE:+--steps-large $${STEPS_LARGE}}
 	@echo "OK: CUDA kernel baseline benchmark complete. See data/benchmarks/cuda_kernel_baseline.csv"
+
+gpu-bench-ncu: ## Profile CUDA kernels with Nsight Compute (ncu); requires NVIDIA driver + ncu in PATH
+	# Build the binary first so ncu can wrap the pre-built executable.
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cuda-precision-bench --features gpu
+	@mkdir -p data/benchmarks/ncu
+	# NCU_SECTIONS defaults to "MemoryWorkloadAnalysis,ComputeWorkloadAnalysis,SpeedOfLight"
+	# Override with: make gpu-bench-ncu NCU_SECTIONS="SpeedOfLight"
+	# Override workloads with: make gpu-bench-ncu WORKLOADS="lbm"
+	# Override grids with: make gpu-bench-ncu GRIDS="128"
+	ncu \
+		--set $${NCU_SECTIONS:-SpeedOfLight,MemoryWorkloadAnalysis,ComputeWorkloadAnalysis} \
+		--target-processes all \
+		--export data/benchmarks/ncu/cuda_kernels_$$(date +%Y%m%d_%H%M%S) \
+		$(REPO_CARGO_TARGET_DIR)/release/cuda-precision-bench \
+		--output data/benchmarks/cuda_kernel_baseline_ncu.csv \
+		$${GRIDS:+--grids $${GRIDS}} \
+		$${WORKLOADS:+--workloads $${WORKLOADS}} \
+		--steps-small 5 --steps-mid 5 --steps-large 5 --warmup 3
+	@echo "OK: ncu profile saved to data/benchmarks/ncu/"
+
+gpu-bench-nsys: ## Profile CUDA pipeline with Nsight Systems (nsys); requires nsys in PATH
+	# Build the binary first so nsys wraps the pre-built executable.
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cuda-precision-bench --features gpu
+	@mkdir -p data/benchmarks/nsys
+	# NSYS_TRACE defaults to "cuda,nvtx" (CPU sampling adds overhead; remove "osrt" for clean GPU-only traces)
+	# Override with: make gpu-bench-nsys NSYS_TRACE="cuda"
+	nsys profile \
+		--trace=$${NSYS_TRACE:-cuda,nvtx} \
+		--output data/benchmarks/nsys/cuda_pipeline_$$(date +%Y%m%d_%H%M%S) \
+		--force-overwrite true \
+		$(REPO_CARGO_TARGET_DIR)/release/cuda-precision-bench \
+		--output data/benchmarks/cuda_kernel_baseline_nsys.csv \
+		$${GRIDS:+--grids $${GRIDS}} \
+		$${WORKLOADS:+--workloads $${WORKLOADS}} \
+		--steps-small 20 --steps-mid 20 --steps-large 10 --warmup 5
+	@echo "OK: nsys profile saved to data/benchmarks/nsys/ -- open .nsys-rep in Nsight Systems GUI"
 
 jacobi-backend-sweep:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin jacobi-backend-sweep -- \
@@ -1644,6 +1680,8 @@ help:
 	@echo "    make jacobi-backend-flamegraph Capture a flamegraph for a focused jacobi-backend-sweep configuration (defaults to release debuginfo for readable stacks)"
 	@echo "    make jacobi-backend-samply Capture a focused samply profile for jacobi-backend-sweep (supports FEATURES=profile-dd-hotspots for less-inlined DD attribution)"
 	@echo "    make jacobi-backend-samply-compare Summarize weighted line-level hotspots across the current reference/x87/DD samply artifacts"
+	@echo "    make gpu-bench-ncu        Profile CUDA kernels with Nsight Compute (ncu); exports .ncu-rep and CSV; override GRIDS/WORKLOADS/NCU_SECTIONS"
+	@echo "    make gpu-bench-nsys       Profile CUDA pipeline with Nsight Systems (nsys); exports .nsys-rep timeline; override GRIDS/WORKLOADS/NSYS_TRACE"
 	@echo "    make registry             Validate TOML registry consistency"
 	@echo "    make registry-verify-typed-policy-error Strict registry-check typed-policy lane (--typed-policy error)"
 	@echo "    make synthesis-execution-contract Run full synthesis execution contract and emit rollup TOML"

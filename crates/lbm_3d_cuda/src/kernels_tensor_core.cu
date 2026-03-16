@@ -22,6 +22,7 @@
 // (Factor of 2 for multiply + add.)
 
 #include <cuda_fp16.h>
+#include <cuda_bf16.h>
 #include <mma.h>
 using namespace nvcuda;
 
@@ -141,4 +142,38 @@ __global__ void tensor_core_int4_proxy(
     }
 
     wmma::store_matrix_sync(C + blockIdx.x * 8 * 8, c_frag, 8, wmma::mem_row_major);
+}
+
+// ============================================================================
+// BF16 Tensor Core proxy (SM 8.0+, same throughput as FP16 on Ada)
+// ============================================================================
+// M=16, N=16, K=16  (bfloat16 operands, FP32 accumulator)
+// BF16 has 8-bit exponent (same as FP32) and 7-bit mantissa vs FP16's 10-bit.
+// On Ada SM 8.9, BF16 TC throughput is identical to FP16 TC (~330 TFLOPS).
+// Both use the same 16x16x16 WMMA shape and the same hardware datapath.
+// Including BF16 here validates this parity and completes the WMMA suite:
+//   TF32, FP16, BF16, INT8, INT4.
+// A: M x K = 16x16, row_major -> ldm = K = 16.
+// B: K x N = 16x16, col_major -> ldm = K = 16.
+
+extern "C" __launch_bounds__(32, 1)
+__global__ void tensor_core_bf16_proxy(
+    const __nv_bfloat16* A,  // M*K bfloat16 values
+    const __nv_bfloat16* B,  // K*N bfloat16 values
+    float* C,                // M*N float accumulator (input+output)
+    int n_iters
+) {
+    wmma::fragment<wmma::matrix_a, 16, 16, 16, __nv_bfloat16, wmma::row_major> a_frag;
+    wmma::fragment<wmma::matrix_b, 16, 16, 16, __nv_bfloat16, wmma::col_major> b_frag;
+    wmma::fragment<wmma::accumulator, 16, 16, 16, float> c_frag;
+
+    wmma::load_matrix_sync(a_frag, A, 16);  // A row_major: ldm = K = 16
+    wmma::load_matrix_sync(b_frag, B, 16);  // B col_major: ldm = K = 16
+    wmma::fill_fragment(c_frag, 0.0f);
+
+    for (int iter = 0; iter < n_iters; iter++) {
+        wmma::mma_sync(c_frag, a_frag, b_frag, c_frag);
+    }
+
+    wmma::store_matrix_sync(C + blockIdx.x * 16 * 16, c_frag, 16, wmma::mem_row_major);
 }

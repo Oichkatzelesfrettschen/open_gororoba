@@ -16,7 +16,20 @@ use std::sync::Arc;
 // CUDA source for each extended precision kernel tier.
 const KERNEL_FP16_SRC: &str = include_str!("kernels_fp16.cu");
 const KERNEL_FP8_SRC: &str = include_str!("kernels_fp8.cu");
+const KERNEL_FP8_E5M2_SRC: &str = include_str!("kernels_fp8_e5m2.cu");
 const KERNEL_INT8_SRC: &str = include_str!("kernels_int8.cu");
+const KERNEL_INT4_SRC: &str = include_str!("kernels_int4.cu");
+const KERNEL_INT16_SRC: &str = include_str!("kernels_int16.cu");
+const KERNEL_FP16_SOA_SRC: &str = include_str!("kernels_fp16_soa.cu");
+const KERNEL_FP8_SOA_SRC: &str = include_str!("kernels_fp8_soa.cu");
+const KERNEL_FP8_E5M2_SOA_SRC: &str = include_str!("kernels_fp8_e5m2_soa.cu");
+const KERNEL_INT8_SOA_SRC: &str = include_str!("kernels_int8_soa.cu");
+const KERNEL_INT16_SOA_SRC: &str = include_str!("kernels_int16_soa.cu");
+const KERNEL_BF16_SOA_SRC: &str = include_str!("kernels_bf16_soa.cu");
+const KERNEL_FP64_SOA_SRC: &str = include_str!("kernels_fp64_soa.cu");
+const KERNEL_FP32_SOA_CS_SRC: &str = include_str!("kernels_fp32_soa_cs.cu");
+const KERNEL_FP16_SOA_HALF2_SRC: &str = include_str!("kernels_fp16_soa_half2.cu");
+const KERNEL_FP4_SRC: &str = include_str!("kernels_fp4.cu");
 const KERNEL_DD_SRC: &str = include_str!("kernels_dd.cu");
 const KERNEL_TC_SRC: &str = include_str!("kernels_tensor_core.cu");
 
@@ -233,6 +246,46 @@ impl BenchKernelRunner {
         )
     }
 
+    pub fn new_fp8_e5m2(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        // FP8 e5m2: same SM 8.9 requirement as e4m3.
+        // 5-bit exponent, 2-bit mantissa. Range: ~57344 (4x e4m3 range).
+        // Same stride-20 AoS layout and 1-byte element size as e4m3.
+        let arch = arch_static();
+        if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
+            anyhow::bail!("FP8 e5m2 requires SM 8.9+ (Ada Lovelace). Current arch: {arch}");
+        }
+        Self::build(
+            KERNEL_FP8_E5M2_SRC,
+            "lbm_step_fused_fp8e5m2_kernel",
+            "initialize_uniform_fp8e5m2_kernel",
+            nx,
+            ny,
+            nz,
+            1,
+            "FP8_e5m2",
+            true,
+            128,
+        )
+    }
+
+    /// INT16 AoS stride-20 D3Q19 LBM.
+    /// DIST_SCALE=16384 -> range [-2, 2), LSB=6.1e-5 (vs INT8 LSB=0.016).
+    /// Better precision than INT8 for moderate-Re flows; same VRAM cost as FP16.
+    pub fn new_int16(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(
+            KERNEL_INT16_SRC,
+            "lbm_step_int16_kernel",
+            "initialize_uniform_int16_kernel",
+            nx,
+            ny,
+            nz,
+            2,
+            "INT16",
+            false,
+            128,
+        )
+    }
+
     /// Run `n` LBM steps. Alternates d_f_a/d_f_b via std::mem::swap.
     pub fn step_n(&mut self, n: usize) -> Result<()> {
         let (nx, ny, nz) = (self.nx, self.ny, self.nz);
@@ -268,6 +321,525 @@ impl BenchKernelRunner {
     pub fn vram_dist_bytes(&self) -> usize {
         self.n_cells * 20 * self.elem_bytes * 2
     }
+}
+
+// ============================================================================
+// SoaBenchRunner -- i-major SoA pull kernels (FP16/FP8/INT8)
+// ============================================================================
+
+/// Benchmark runner for i-major SoA precision tiers with pull-scheme streaming.
+/// Covers: FP16 SoA, FP8 e4m3 SoA, INT8 SoA.
+///
+/// Key difference from BenchKernelRunner (AoS):
+///   - Buffer layout: f[i * n_cells + idx] instead of f[idx * 20 + i]
+///   - No per-cell padding (stride 19, not 20)
+///   - Buffer size: n_cells * 19 * elem_bytes per buffer
+///   - Force/velocity fields are SoA (3*n_cells) matching kernels_fp16_soa.cu
+pub struct SoaBenchRunner {
+    ctx: Arc<CudaContext>,
+    stream: Arc<CudaStream>,
+    d_f_a: CudaSlice<u8>,
+    d_f_b: CudaSlice<u8>,
+    d_rho: CudaSlice<f32>,
+    d_u: CudaSlice<f32>,
+    d_force: CudaSlice<f32>,
+    d_tau: CudaSlice<f32>,
+    step_kernel: CudaFunction,
+    nx: i32,
+    ny: i32,
+    nz: i32,
+    pub n_cells: usize,
+    pub elem_bytes: usize,
+    pub precision_label: &'static str,
+    /// Cells per thread in the step kernel (1 for standard, 2 for half2 ILP).
+    cells_per_thread: usize,
+}
+
+/// Compile-time parameters for [`SoaBenchRunner::build`].
+struct SoaBuildSpec {
+    src: &'static str,
+    step_kernel_name: &'static str,
+    init_kernel_name: &'static str,
+    elem_bytes: usize,
+    precision_label: &'static str,
+    cuda_include: bool,
+    /// Cells processed per thread in the step kernel.
+    /// 1 for all standard variants; 2 for half2 ILP variant.
+    /// Only affects step_n() launch grid -- init always uses 1 thread/cell.
+    cells_per_thread: usize,
+}
+
+impl SoaBenchRunner {
+    fn build(spec: SoaBuildSpec, nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let SoaBuildSpec {
+            src,
+            step_kernel_name,
+            init_kernel_name,
+            elem_bytes,
+            precision_label,
+            cuda_include,
+            cells_per_thread,
+        } = spec;
+        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let stream = ctx.default_stream();
+        let arch = arch_static();
+
+        let (step_kernel, init_kernel) =
+            compile_and_load(&ctx, src, cuda_include, arch, step_kernel_name, init_kernel_name)?;
+
+        let n_cells = nx * ny * nz;
+        // i-major SoA: no padding, stride 19 distributions per buffer.
+        let f_bytes = n_cells * 19 * elem_bytes;
+
+        let mut d_f_a = stream.alloc_zeros::<u8>(f_bytes)?;
+        let d_f_b     = stream.alloc_zeros::<u8>(f_bytes)?;
+        let mut d_rho = stream.alloc_zeros::<f32>(n_cells)?;
+        // u_out is SoA: [3 * n_cells] for the SoA kernels.
+        let mut d_u       = stream.alloc_zeros::<f32>(n_cells * 3)?;
+        // force is SoA: [3 * n_cells], all zeros for benchmark.
+        let d_force   = stream.alloc_zeros::<f32>(n_cells * 3)?;
+        let mut d_tau = stream.clone_htod(&vec![0.7_f32; n_cells])?;
+
+        let (nx_i, ny_i, nz_i) = (nx as i32, ny as i32, nz as i32);
+        let rho_init = 1.0_f32;
+        let u_zero = 0.0_f32;
+        let tau_val = 0.7_f32;
+        let cfg = launch_cfg_1d(n_cells, 128);
+        {
+            let mut b = stream.launch_builder(&init_kernel);
+            b.arg(&mut d_f_a)
+                .arg(&mut d_rho)
+                .arg(&mut d_u)
+                .arg(&mut d_tau)
+                .arg(&rho_init)
+                .arg(&u_zero)
+                .arg(&u_zero)
+                .arg(&u_zero)
+                .arg(&tau_val)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { b.launch(cfg) }?;
+        }
+        ctx.synchronize()?;
+
+        Ok(Self {
+            ctx,
+            stream,
+            d_f_a,
+            d_f_b,
+            d_rho,
+            d_u,
+            d_force,
+            d_tau,
+            step_kernel,
+            nx: nx as i32,
+            ny: ny as i32,
+            nz: nz as i32,
+            n_cells,
+            elem_bytes,
+            precision_label,
+            cells_per_thread,
+        })
+    }
+
+    pub fn new_fp16_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(SoaBuildSpec {
+            src: KERNEL_FP16_SOA_SRC,
+            step_kernel_name: "lbm_step_fp16_soa_kernel",
+            init_kernel_name: "initialize_uniform_fp16_soa_kernel",
+            elem_bytes: 2,
+            precision_label: "FP16_SoA",
+            cuda_include: true,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    pub fn new_fp8_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let arch = arch_static();
+        if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
+            anyhow::bail!("FP8 SoA requires SM 8.9+ (Ada Lovelace). Current arch: {arch}");
+        }
+        Self::build(SoaBuildSpec {
+            src: KERNEL_FP8_SOA_SRC,
+            step_kernel_name: "lbm_step_fp8_soa_kernel",
+            init_kernel_name: "initialize_uniform_fp8_soa_kernel",
+            elem_bytes: 1,
+            precision_label: "FP8_SoA",
+            cuda_include: true,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    pub fn new_int8_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(SoaBuildSpec {
+            src: KERNEL_INT8_SOA_SRC,
+            step_kernel_name: "lbm_step_int8_soa_kernel",
+            init_kernel_name: "initialize_uniform_int8_soa_kernel",
+            elem_bytes: 1,
+            precision_label: "INT8_SoA",
+            cuda_include: false,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    pub fn new_int16_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(SoaBuildSpec {
+            src: KERNEL_INT16_SOA_SRC,
+            step_kernel_name: "lbm_step_int16_soa_kernel",
+            init_kernel_name: "initialize_uniform_int16_soa_kernel",
+            elem_bytes: 2,
+            precision_label: "INT16_SoA",
+            cuda_include: false,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    pub fn new_bf16_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        // BF16 requires SM 8.0+ (Ampere and later). All Ada (SM 8.9) qualifies.
+        let arch = arch_static();
+        if !arch.contains("sm_80")
+            && !arch.contains("sm_86")
+            && !arch.contains("sm_89")
+            && !arch.starts_with("sm_9")
+        {
+            anyhow::bail!("BF16 SoA requires SM 8.0+ (Ampere or later). Current arch: {arch}");
+        }
+        Self::build(SoaBuildSpec {
+            src: KERNEL_BF16_SOA_SRC,
+            step_kernel_name: "lbm_step_bf16_soa_kernel",
+            init_kernel_name: "initialize_uniform_bf16_soa_kernel",
+            elem_bytes: 2,
+            precision_label: "BF16_SoA",
+            cuda_include: true,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    pub fn new_fp8_e5m2_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let arch = arch_static();
+        if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
+            anyhow::bail!("FP8 e5m2 SoA requires SM 8.9+ (Ada Lovelace). Current arch: {arch}");
+        }
+        Self::build(SoaBuildSpec {
+            src: KERNEL_FP8_E5M2_SOA_SRC,
+            step_kernel_name: "lbm_step_fp8_e5m2_soa_kernel",
+            init_kernel_name: "initialize_uniform_fp8_e5m2_soa_kernel",
+            elem_bytes: 1,
+            precision_label: "FP8_e5m2_SoA",
+            cuda_include: true,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    /// FP64 i-major SoA -- primary use is numerical validation / reference.
+    /// ~8x VRAM cost vs FP32 SoA; compute-bound on gaming GPUs (~1/64 FP64 throughput).
+    pub fn new_fp64_soa(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(SoaBuildSpec {
+            src: KERNEL_FP64_SOA_SRC,
+            step_kernel_name: "lbm_step_fp64_soa_kernel",
+            init_kernel_name: "initialize_uniform_fp64_soa_kernel",
+            elem_bytes: 8,
+            precision_label: "FP64_SoA",
+            cuda_include: false,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    /// FP32 i-major SoA with Ada cache-streaming stores (`__stcs`).
+    /// Ping reads: `__ldg()` (read-only path). Pong writes: `__stcs()` (L2 evict-first).
+    /// Expected 5-15% improvement vs baseline FP32 SoA at 128^3+ on Ada SM 8.9.
+    pub fn new_fp32_cs(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(SoaBuildSpec {
+            src: KERNEL_FP32_SOA_CS_SRC,
+            step_kernel_name: "lbm_step_fp32_soa_cs_kernel",
+            init_kernel_name: "initialize_uniform_fp32_soa_cs_kernel",
+            elem_bytes: 4,
+            precision_label: "FP32_SoA_CS",
+            cuda_include: false,
+            cells_per_thread: 1,
+        }, nx, ny, nz)
+    }
+
+    /// FP16 i-major SoA with half2 ILP: 2 cells per thread.
+    /// Uses `__half2` for velocity moment accumulation (2 FP16 FMAs per instruction).
+    /// Grid: `ceil(n_cells / 2)` threads -- reflected in step_n() via cells_per_thread=2.
+    pub fn new_fp16_half2(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(SoaBuildSpec {
+            src: KERNEL_FP16_SOA_HALF2_SRC,
+            step_kernel_name: "lbm_step_fp16_soa_half2_kernel",
+            init_kernel_name: "initialize_uniform_fp16_soa_half2_kernel",
+            elem_bytes: 2,
+            precision_label: "FP16_SoA_H2",
+            cuda_include: true,
+            cells_per_thread: 2,
+        }, nx, ny, nz)
+    }
+
+    /// Run `n` LBM steps, alternating ping/pong buffers.
+    pub fn step_n(&mut self, n: usize) -> Result<()> {
+        let (nx, ny, nz) = (self.nx, self.ny, self.nz);
+        // Half2 variant: ceil(n_cells / 2) threads; standard: n_cells threads.
+        let launch_n = self.n_cells.div_ceil(self.cells_per_thread);
+        let cfg = launch_cfg_1d(launch_n, 128);
+
+        for _ in 0..n {
+            let mut b = self.stream.launch_builder(&self.step_kernel);
+            b.arg(&self.d_f_a)
+                .arg(&mut self.d_f_b)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&self.d_tau)
+                .arg(&self.d_force)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&nz);
+            unsafe { b.launch(cfg) }?;
+            std::mem::swap(&mut self.d_f_a, &mut self.d_f_b);
+        }
+        Ok(())
+    }
+
+    pub fn context(&self) -> &Arc<CudaContext> { &self.ctx }
+    pub fn stream(&self) -> &Arc<CudaStream>   { &self.stream }
+
+    /// VRAM used by distribution buffers (ping + pong) in bytes.
+    /// SoA uses stride-19 (no padding), so n_cells * 19 * elem_bytes * 2.
+    pub fn vram_dist_bytes(&self) -> usize {
+        self.n_cells * 19 * self.elem_bytes * 2
+    }
+}
+
+// ============================================================================
+// Int4BenchRunner -- INT4 nibble-packed i-major SoA kernel
+// ============================================================================
+
+/// Benchmark runner for INT4 nibble-packed LBM -- bandwidth ceiling test.
+///
+/// Physics note: INT4 storage quantizes 1/36 weight to 0, corrupting diagonal
+/// velocity populations. This runner measures bandwidth ceiling only.
+/// Buffer: [19 * half_cells] bytes where half_cells = n_cells / 2.
+/// Each thread in the kernel handles 2 cells (nibble pair per byte per direction).
+pub struct Int4BenchRunner {
+    ctx: Arc<CudaContext>,
+    stream: Arc<CudaStream>,
+    d_f_a: CudaSlice<u8>,
+    d_f_b: CudaSlice<u8>,
+    d_rho: CudaSlice<f32>,
+    d_u: CudaSlice<f32>,
+    d_force: CudaSlice<f32>,
+    d_tau: CudaSlice<f32>,
+    step_kernel: CudaFunction,
+    nx: i32,
+    ny: i32,
+    nz: i32,
+    pub n_cells: usize,
+    half_cells: usize,
+}
+
+impl Int4BenchRunner {
+    pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        assert!(
+            (nx * ny * nz).is_multiple_of(2),
+            "INT4 kernel requires even n_cells (power-of-2 grids always satisfy this)"
+        );
+        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let stream = ctx.default_stream();
+        let arch = arch_static();
+
+        let opts = CompileOptions {
+            arch: Some(arch),
+            ..Default::default()
+        };
+        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_INT4_SRC, opts)?;
+        let module = ctx.load_module(ptx)?;
+        let step_kernel = module.load_function("lbm_step_fused_int4_kernel")?;
+        let init_kernel = module.load_function("initialize_uniform_int4_kernel")?;
+
+        let n_cells = nx * ny * nz;
+        let half_cells = n_cells / 2;
+        // Buffer: 19 nibble-pair bytes per cell-pair.
+        let f_bytes = 19 * half_cells;
+
+        let mut d_f_a = stream.alloc_zeros::<u8>(f_bytes)?;
+        let d_f_b     = stream.alloc_zeros::<u8>(f_bytes)?;
+        let mut d_rho = stream.alloc_zeros::<f32>(n_cells)?;
+        let mut d_u   = stream.alloc_zeros::<f32>(n_cells * 3)?;
+        let d_force   = stream.alloc_zeros::<f32>(n_cells * 3)?;
+        let mut d_tau = stream.clone_htod(&vec![0.7_f32; n_cells])?;
+
+        let (nx_i, ny_i, nz_i) = (nx as i32, ny as i32, nz as i32);
+        let rho_init = 1.0_f32;
+        let u_zero   = 0.0_f32;
+        let tau_val  = 0.7_f32;
+        // One thread per cell-pair (half_cells threads total).
+        let cfg = launch_cfg_1d(half_cells, 128);
+        {
+            let mut b = stream.launch_builder(&init_kernel);
+            b.arg(&mut d_f_a)
+                .arg(&mut d_rho)
+                .arg(&mut d_u)
+                .arg(&mut d_tau)
+                .arg(&rho_init)
+                .arg(&u_zero)
+                .arg(&u_zero)
+                .arg(&u_zero)
+                .arg(&tau_val)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { b.launch(cfg) }?;
+        }
+        ctx.synchronize()?;
+
+        Ok(Self {
+            ctx, stream, d_f_a, d_f_b, d_rho, d_u, d_force, d_tau,
+            step_kernel, nx: nx as i32, ny: ny as i32, nz: nz as i32,
+            n_cells, half_cells,
+        })
+    }
+
+    /// Run `n` INT4 LBM steps.
+    pub fn step_n(&mut self, n: usize) -> Result<()> {
+        let (nx, ny, nz) = (self.nx, self.ny, self.nz);
+        let cfg = launch_cfg_1d(self.half_cells, 128);
+
+        for _ in 0..n {
+            let mut b = self.stream.launch_builder(&self.step_kernel);
+            b.arg(&self.d_f_a)
+                .arg(&mut self.d_f_b)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&self.d_force)
+                .arg(&self.d_tau)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&nz);
+            unsafe { b.launch(cfg) }?;
+            std::mem::swap(&mut self.d_f_a, &mut self.d_f_b);
+        }
+        Ok(())
+    }
+
+    pub fn context(&self) -> &Arc<CudaContext> { &self.ctx }
+    pub fn stream(&self) -> &Arc<CudaStream>   { &self.stream }
+
+    /// VRAM for distribution buffers (ping + pong): 19 * (n_cells/2) * 2 bytes.
+    pub fn vram_dist_bytes(&self) -> usize { 19 * self.half_cells * 2 }
+}
+
+// ============================================================================
+// Fp4BenchRunner -- FP4 E2M1 nibble-packed bandwidth ceiling benchmark
+// ============================================================================
+
+/// FP4 E2M1 nibble-packed LBM -- bandwidth ceiling test.
+///
+/// FP4 E2M1 is NOT physically viable for D3Q19 LBM (rest weight 1/3 quantizes to 0.5,
+/// 50% error). This runner measures the bandwidth ceiling assuming Blackwell-class
+/// FP4 native decoding, emulated on Ada via the same nibble packing as INT4.
+///
+/// Buffer: [19 * half_cells] bytes where half_cells = ceil(n_cells / 2).
+/// Thread k handles cells 2k and 2k+1 (lo nibble = cell 0, hi nibble = cell 1).
+pub struct Fp4BenchRunner {
+    ctx: Arc<CudaContext>,
+    stream: Arc<CudaStream>,
+    d_f_a: CudaSlice<u8>,
+    d_f_b: CudaSlice<u8>,
+    d_rho: CudaSlice<f32>,
+    d_u: CudaSlice<f32>,
+    d_force: CudaSlice<f32>,
+    d_tau: CudaSlice<f32>,
+    step_kernel: CudaFunction,
+    nx: i32,
+    ny: i32,
+    nz: i32,
+    pub n_cells: usize,
+    half_cells: usize,
+}
+
+impl Fp4BenchRunner {
+    pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let stream = ctx.default_stream();
+        let arch = arch_static();
+
+        let opts = CompileOptions {
+            arch: Some(arch),
+            ..Default::default()
+        };
+        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_FP4_SRC, opts)?;
+        let module = ctx.load_module(ptx)?;
+        let step_kernel = module.load_function("lbm_step_fp4_kernel")?;
+        let init_kernel = module.load_function("initialize_uniform_fp4_kernel")?;
+
+        let n_cells = nx * ny * nz;
+        let half_cells = n_cells.div_ceil(2);
+        let f_bytes = 19 * half_cells;
+
+        let mut d_f_a = stream.alloc_zeros::<u8>(f_bytes)?;
+        let d_f_b     = stream.alloc_zeros::<u8>(f_bytes)?;
+        let mut d_rho = stream.alloc_zeros::<f32>(n_cells)?;
+        let mut d_u   = stream.alloc_zeros::<f32>(n_cells * 3)?;
+        let d_force   = stream.alloc_zeros::<f32>(n_cells * 3)?;
+        let mut d_tau = stream.clone_htod(&vec![0.7_f32; n_cells])?;
+
+        let (nx_i, ny_i, nz_i) = (nx as i32, ny as i32, nz as i32);
+        let rho_init = 1.0_f32;
+        let u_zero   = 0.0_f32;
+        let tau_val  = 0.7_f32;
+        let cfg = launch_cfg_1d(half_cells, 128);
+        {
+            let mut b = stream.launch_builder(&init_kernel);
+            b.arg(&mut d_f_a)
+                .arg(&mut d_rho)
+                .arg(&mut d_u)
+                .arg(&mut d_tau)
+                .arg(&rho_init)
+                .arg(&u_zero)
+                .arg(&u_zero)
+                .arg(&u_zero)
+                .arg(&tau_val)
+                .arg(&nx_i)
+                .arg(&ny_i)
+                .arg(&nz_i);
+            unsafe { b.launch(cfg) }?;
+        }
+        ctx.synchronize()?;
+
+        Ok(Self {
+            ctx, stream, d_f_a, d_f_b, d_rho, d_u, d_force, d_tau,
+            step_kernel, nx: nx as i32, ny: ny as i32, nz: nz as i32,
+            n_cells, half_cells,
+        })
+    }
+
+    /// Run `n` FP4 LBM steps (bandwidth ceiling, physics broken).
+    pub fn step_n(&mut self, n: usize) -> Result<()> {
+        let (nx, ny, nz) = (self.nx, self.ny, self.nz);
+        let cfg = launch_cfg_1d(self.half_cells, 128);
+
+        for _ in 0..n {
+            let mut b = self.stream.launch_builder(&self.step_kernel);
+            b.arg(&self.d_f_a)
+                .arg(&mut self.d_f_b)
+                .arg(&mut self.d_rho)
+                .arg(&mut self.d_u)
+                .arg(&self.d_tau)
+                .arg(&self.d_force)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&nz);
+            unsafe { b.launch(cfg) }?;
+            std::mem::swap(&mut self.d_f_a, &mut self.d_f_b);
+        }
+        Ok(())
+    }
+
+    pub fn context(&self) -> &Arc<CudaContext> { &self.ctx }
+    pub fn stream(&self) -> &Arc<CudaStream>   { &self.stream }
+
+    /// VRAM for distribution buffers (ping + pong): 19 * ceil(n_cells/2) * 2 bytes.
+    pub fn vram_dist_bytes(&self) -> usize { 19 * self.half_cells * 2 }
 }
 
 // ============================================================================
@@ -426,10 +998,14 @@ pub struct TensorCoreProbe {
     d_a_int4: Option<CudaSlice<u8>>,
     d_b_int4: Option<CudaSlice<u8>>,
     d_c_int4: Option<CudaSlice<u8>>,
+    d_a_bf16: Option<CudaSlice<u8>>,
+    d_b_bf16: Option<CudaSlice<u8>>,
+    d_c_bf16: Option<CudaSlice<u8>>,
     tf32_kernel: Option<CudaFunction>,
     fp16_kernel: Option<CudaFunction>,
     int8_kernel: Option<CudaFunction>,
     int4_kernel: Option<CudaFunction>,
+    bf16_kernel: Option<CudaFunction>,
     n_warps: usize,
 }
 
@@ -449,16 +1025,17 @@ impl TensorCoreProbe {
             Ok(ctx.load_module(ptx)?)
         })();
 
-        let (tf32_kernel, fp16_kernel, int8_kernel, int4_kernel) = match module_result {
+        let (tf32_kernel, fp16_kernel, int8_kernel, int4_kernel, bf16_kernel) = match module_result {
             Ok(ref m) => (
                 m.load_function("tensor_core_tf32_proxy").ok(),
                 m.load_function("tensor_core_fp16_proxy").ok(),
                 m.load_function("tensor_core_int8_proxy").ok(),
                 m.load_function("tensor_core_int4_proxy").ok(),
+                m.load_function("tensor_core_bf16_proxy").ok(),
             ),
             Err(ref e) => {
                 eprintln!("  [TC] WMMA compile failed ({e}); TC benchmark skipped");
-                (None, None, None, None)
+                (None, None, None, None, None)
             }
         };
 
@@ -522,6 +1099,24 @@ impl TensorCoreProbe {
         } else {
             (None, None, None)
         };
+        // BF16: M=16, N=16, K=16 (same shape as FP16 WMMA).
+        // BF16 1.0 = 0x3F80 (upper 16 bits of FP32 1.0 = 0x3F800000).
+        let alloc_bf16_buf = |n: usize| -> Result<CudaSlice<u8>> {
+            let bytes: Vec<u8> = std::iter::repeat_n(0x3F80_u16, n)
+                .flat_map(|x| x.to_le_bytes())
+                .collect();
+            Ok(stream.clone_htod(&bytes)?)
+        };
+        let (d_a_bf16, d_b_bf16, d_c_bf16) = if bf16_kernel.is_some() {
+            (
+                Some(alloc_bf16_buf(16 * 16)?),
+                Some(alloc_bf16_buf(16 * 16)?),
+                // C accumulator is FP32 (4 bytes per element).
+                Some(alloc_zero_buf(n_warps * 16 * 16 * 4)?),
+            )
+        } else {
+            (None, None, None)
+        };
 
         ctx.synchronize()?;
         Ok(Self {
@@ -539,10 +1134,14 @@ impl TensorCoreProbe {
             d_a_int4,
             d_b_int4,
             d_c_int4,
+            d_a_bf16,
+            d_b_bf16,
+            d_c_bf16,
             tf32_kernel,
             fp16_kernel,
             int8_kernel,
             int4_kernel,
+            bf16_kernel,
             n_warps,
         })
     }
@@ -639,5 +1238,29 @@ impl TensorCoreProbe {
     }
     pub fn has_int4(&self) -> bool {
         self.int4_kernel.is_some()
+    }
+
+    pub fn run_bf16(&mut self, n_iters: i32) -> Result<f64> {
+        let kernel = self
+            .bf16_kernel
+            .as_ref()
+            .context("BF16 TC kernel not available")?;
+        let d_a = self.d_a_bf16.as_ref().context("BF16 A")?;
+        let d_b = self.d_b_bf16.as_ref().context("BF16 B")?;
+        let d_c = self.d_c_bf16.as_mut().context("BF16 C")?;
+        let cfg = LaunchConfig {
+            grid_dim: (self.n_warps as u32, 1, 1),
+            block_dim: (32, 1, 1),
+            shared_mem_bytes: 0,
+        };
+        let mut b = self.stream.launch_builder(kernel);
+        b.arg(d_a).arg(d_b).arg(d_c).arg(&n_iters);
+        unsafe { b.launch(cfg) }?;
+        // BF16 WMMA: M=16, N=16, K=16 -- same FMA count as FP16.
+        Ok(2.0 * (16 * 16 * 16) as f64 * n_iters as f64 * self.n_warps as f64)
+    }
+
+    pub fn has_bf16(&self) -> bool {
+        self.bf16_kernel.is_some()
     }
 }
