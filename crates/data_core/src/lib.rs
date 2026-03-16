@@ -54,10 +54,12 @@ pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
 };
 pub use heliosphere_feature_cube::{
-    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_SIGNAL_DIM,
+    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_DIM,
+    HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_SIGNAL_DIM, HELIOSPHERE_SUPPORT_DIM,
     HeliosphereFeatureCube, HeliosphereFeatureCubeManifest, HeliosphereFeatureRow,
-    HeliosphereTransformMode, SparseMemoryPlan, estimate_sparse_memory_plan,
-    transform_feature_rows,
+    HeliosphereTransformGroupStats, HeliosphereTransformMode, HeliosphereTransformResult,
+    SparseMemoryPlan, estimate_sparse_memory_plan, transform_feature_rows,
+    transform_feature_rows_with_stats,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,

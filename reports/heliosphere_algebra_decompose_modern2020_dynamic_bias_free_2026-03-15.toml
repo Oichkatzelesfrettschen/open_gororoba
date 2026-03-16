@@ -1,0 +1,139 @@
+generated_at_utc = "2026-03-16T02:23:35.451759356+00:00"
+cube_csv = "reports/heliosphere_feature_transform_modern2020_robust_differenced_centered_2026-03-15.csv"
+feature_dim = 16
+mode_count = 1
+
+[[modes]]
+descriptor_mode = "dynamic-bias-free"
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "BepiColombo"
+product = "Helio1hr support"
+row_count = 8784
+mean_norm_sq = 0.0
+mean_signal_energy = 179.16226259804372
+mean_associator_norm = 0.0
+max_associator_norm = 0.0
+dominant_channel = "density_cm3"
+dominant_channel_mean_abs = 0.0
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "FIELDS MAG RTN"
+row_count = 1164
+mean_norm_sq = 15.137306921058713
+mean_signal_energy = 219.97493023942693
+mean_associator_norm = 56.499699271469424
+max_associator_norm = 1923.414688111631
+dominant_channel = "b_mag"
+dominant_channel_mean_abs = 1.2393301259242833
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "Merged hourly"
+row_count = 8784
+mean_norm_sq = 28.021882755904848
+mean_signal_energy = 246.37915544967365
+mean_associator_norm = 181.18477301334832
+max_associator_norm = 7055.620664310034
+dominant_channel = "b_mag"
+dominant_channel_mean_abs = 1.622333242909669
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "SOHO"
+product = "CELIAS daily CDF hourly"
+row_count = 8091
+mean_norm_sq = 10.947838848462876
+mean_signal_energy = 182.52715924050145
+mean_associator_norm = 8.145495168533248
+max_associator_norm = 1045.4853101070817
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 1.3695324620197409
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "MAG RTN 1-minute"
+row_count = 3012
+mean_norm_sq = 9.792810154827228
+mean_signal_energy = 144.66115653682527
+mean_associator_norm = 22.411372999817175
+max_associator_norm = 1062.163887337478
+dominant_channel = "b_mag"
+dominant_channel_mean_abs = 1.0767904652975409
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "Merged hourly"
+row_count = 8784
+mean_norm_sq = 5.72036630216918
+mean_signal_energy = 119.095972996467
+mean_associator_norm = 9.807426319482618
+max_associator_norm = 886.1243314924953
+dominant_channel = "bz"
+dominant_channel_mean_abs = 0.4544138142075279
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA SCPOT 10-second"
+row_count = 4100
+mean_norm_sq = 5.088381771756491
+mean_signal_energy = 132.6030391492331
+mean_associator_norm = 0.0000000000000007931509119161924
+max_associator_norm = 0.00000000000011368683772161603
+dominant_channel = "spectral_mean"
+dominant_channel_mean_abs = 1.0604673840782037
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA density"
+row_count = 842
+mean_norm_sq = 2.7205739698104
+mean_signal_energy = 302.9723913832629
+mean_associator_norm = 0.00000000000000008866083634625849
+max_associator_norm = 0.000000000000003552713678800501
+dominant_channel = "density_cm3"
+dominant_channel_mean_abs = 1.074402499995261
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW HFR survey flux"
+row_count = 1090
+mean_norm_sq = 7.7281132291021235
+mean_signal_energy = 132.61011189075626
+mean_associator_norm = 0.000000000000001408659160845033
+max_associator_norm = 0.00000000000012710574864626038
+dominant_channel = "spectral_peak"
+dominant_channel_mean_abs = 1.3144536675477212
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW TNR survey flux"
+row_count = 889
+mean_norm_sq = 4.191548468539207
+mean_signal_energy = 122.97398829566873
+mean_associator_norm = 0.0000000000000007811456827666416
+max_associator_norm = 0.00000000000005695433295429594
+dominant_channel = "spectral_mean"
+dominant_channel_mean_abs = 1.0469701447541842
+
+[[modes.groups]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "SWA-PAS ground moments"
+row_count = 1797
+mean_norm_sq = 9.378276096595952
+mean_signal_energy = 128.30194408008302
+mean_associator_norm = 10.009084370962341
+max_associator_norm = 588.1454091218759
+dominant_channel = "density_cm3"
+dominant_channel_mean_abs = 1.2496928400127298

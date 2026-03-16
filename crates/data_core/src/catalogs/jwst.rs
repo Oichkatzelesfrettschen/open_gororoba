@@ -13,7 +13,11 @@ use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, validate_not_html
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
-use std::{fs, path::{Path, PathBuf}, time::Duration};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+    time::Duration,
+};
 
 const MAST_API_ROOT: &str = "https://mast.stsci.edu/api/v0/invoke";
 
@@ -58,7 +62,9 @@ pub fn parse_jwst_public_metadata_json(
     let data = parsed
         .get("data")
         .and_then(Value::as_array)
-        .ok_or_else(|| FetchError::Validation("JWST MAST response missing data array".to_string()))?;
+        .ok_or_else(|| {
+            FetchError::Validation("JWST MAST response missing data array".to_string())
+        })?;
     let rows = data
         .iter()
         .map(|row| JwstPublicObservation {
@@ -169,7 +175,9 @@ impl DatasetProvider for JwstPublicMetadataProvider {
         let mut writer = csv::WriterBuilder::new()
             .has_headers(true)
             .from_path(&output)
-            .map_err(|err| FetchError::Validation(format!("create CSV {}: {err}", output.display())))?;
+            .map_err(|err| {
+                FetchError::Validation(format!("create CSV {}: {err}", output.display()))
+            })?;
         let mut total_rows = 0usize;
         for page in 1..=self.max_pages {
             let body = fetch_mast_page(page, self.page_size)?;
@@ -195,7 +203,10 @@ impl DatasetProvider for JwstPublicMetadataProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("jwst_public_observations.csv").exists()
+        config
+            .output_dir
+            .join("jwst_public_observations.csv")
+            .exists()
     }
 }
 

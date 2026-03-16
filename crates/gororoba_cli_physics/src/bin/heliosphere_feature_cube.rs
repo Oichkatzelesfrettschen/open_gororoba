@@ -224,6 +224,9 @@ fn build_fleet2016(
                 spectral_peak: f64::NAN,
                 map_flux_mean: f64::NAN,
                 map_flux_std: f64::NAN,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             });
         }
     }
@@ -388,6 +391,9 @@ fn build_fleet2016(
                 spectral_peak: f64::NAN,
                 map_flux_mean: f64::NAN,
                 map_flux_std: f64::NAN,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             });
         }
     }
@@ -618,6 +624,9 @@ fn build_modern2020(
                             spectral_peak: f64::NAN,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -701,6 +710,9 @@ fn build_modern2020(
                 spectral_peak: f64::NAN,
                 map_flux_mean: f64::NAN,
                 map_flux_std: f64::NAN,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             });
         }
     } else {
@@ -739,6 +751,9 @@ fn build_modern2020(
                     spectral_peak: f64::NAN,
                     map_flux_mean: f64::NAN,
                     map_flux_std: f64::NAN,
+                    event_score: None,
+                    event_mask: None,
+                    event_segment_id: None,
                 });
             }
         }
@@ -789,6 +804,9 @@ fn build_modern2020(
                             spectral_peak: record.psp,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -855,6 +873,9 @@ fn build_modern2020(
                             spectral_peak: f64::NAN,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -920,6 +941,9 @@ fn build_modern2020(
                             spectral_peak: record.spectral_peak,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -985,6 +1009,9 @@ fn build_modern2020(
                             spectral_peak: record.spectral_peak,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -1125,6 +1152,9 @@ fn build_boundary2009(
             spectral_peak: f64::NAN,
             map_flux_mean: mean,
             map_flux_std: std,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         });
     } else {
         notes.push("IBEX release17 flux maps not found; run fetch-datasets for 'IBEX ENA Sky Maps' to populate them.".to_string());
@@ -1186,6 +1216,9 @@ fn build_remote2024(
             spectral_peak: f64::NAN,
             map_flux_mean: exposure_mean,
             map_flux_std: stddev(&exposures, exposure_mean),
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         });
     }
 
@@ -1236,6 +1269,9 @@ fn build_imap2025(
                 spectral_peak: f64::NAN,
                 map_flux_mean: f64::NAN,
                 map_flux_std: f64::NAN,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             });
         }
     }
@@ -1313,6 +1349,9 @@ fn build_imap2026(
                             spectral_peak: record.spectral_peak,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -1373,6 +1412,9 @@ fn build_imap2026(
                             spectral_peak: record.spectral_peak,
                             map_flux_mean: f64::NAN,
                             map_flux_std: f64::NAN,
+                            event_score: None,
+                            event_mask: None,
+                            event_segment_id: None,
                         });
                     }
                 }
@@ -1431,6 +1473,9 @@ fn build_imap2026(
             spectral_peak: f64::NAN,
             map_flux_mean: summary.map_flux_mean,
             map_flux_std: summary.map_flux_std,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         });
     }
     Ok(())
@@ -1507,6 +1552,9 @@ fn build_psp2025(
                         spectral_peak: f64::NAN,
                         map_flux_mean: f64::NAN,
                         map_flux_std: f64::NAN,
+                        event_score: None,
+                        event_mask: None,
+                        event_segment_id: None,
                     });
                 }
             }
@@ -1568,6 +1616,9 @@ fn build_psp2025(
                         spectral_peak: f64::NAN,
                         map_flux_mean: f64::NAN,
                         map_flux_std: f64::NAN,
+                        event_score: None,
+                        event_mask: None,
+                        event_segment_id: None,
                     });
                 }
             }
@@ -1624,6 +1675,9 @@ fn build_psp2025(
                         spectral_peak: f64::NAN,
                         map_flux_mean: f64::NAN,
                         map_flux_std: f64::NAN,
+                        event_score: None,
+                        event_mask: None,
+                        event_segment_id: None,
                     });
                 }
             }
@@ -1699,6 +1753,9 @@ fn push_omni_rows(
             spectral_peak: f64::NAN,
             map_flux_mean: f64::NAN,
             map_flux_std: f64::NAN,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         });
     }
 }
@@ -1741,6 +1798,9 @@ fn push_crs_rows(
             spectral_peak: f64::NAN,
             map_flux_mean: f64::NAN,
             map_flux_std: f64::NAN,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         });
     }
 }
@@ -1776,6 +1836,9 @@ fn push_pws_rows(
             spectral_peak: record.spectral_peak,
             map_flux_mean: f64::NAN,
             map_flux_std: f64::NAN,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         });
     }
 }

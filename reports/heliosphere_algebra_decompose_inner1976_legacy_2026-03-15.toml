@@ -1,0 +1,43 @@
+generated_at_utc = "2026-03-16T02:11:31.992443890+00:00"
+cube_csv = "reports/heliosphere_feature_cube_inner1976_2026-03-15.csv"
+feature_dim = 16
+mode_count = 1
+
+[[modes]]
+descriptor_mode = "legacy"
+
+[[modes.groups]]
+window_name = "inner1976"
+mission = "Helios 1"
+product = "Merged mission support"
+row_count = 8784
+mean_norm_sq = 31102542663.821228
+mean_signal_energy = 119259.5377969183
+mean_associator_norm = 990124908.7701457
+max_associator_norm = 125928264831.98872
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 119235.96880692168
+
+[[modes.groups]]
+window_name = "inner1976"
+mission = "Helios 2"
+product = "Merged mission support"
+row_count = 8784
+mean_norm_sq = 29431616189.47929
+mean_signal_energy = 103677.09605989106
+mean_associator_norm = 629427471.6099844
+max_associator_norm = 68862730294.22649
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 103670.7650273224
+
+[[modes.groups]]
+window_name = "inner1976"
+mission = "IMP 8"
+product = "Merged 1-minute hourly aggregate"
+row_count = 3409
+mean_norm_sq = 214418024710.7049
+mean_signal_energy = 255640.2086209005
+mean_associator_norm = 3447949761.2388372
+max_associator_norm = 328565525178.85846
+dominant_channel = "temperature_k"
+dominant_channel_mean_abs = 255551.3577132525

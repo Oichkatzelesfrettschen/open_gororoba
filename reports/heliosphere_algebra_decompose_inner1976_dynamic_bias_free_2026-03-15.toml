@@ -1,0 +1,43 @@
+generated_at_utc = "2026-03-16T02:25:27.572248222+00:00"
+cube_csv = "reports/heliosphere_feature_transform_inner1976_robust_differenced_centered_2026-03-15.csv"
+feature_dim = 16
+mode_count = 1
+
+[[modes]]
+descriptor_mode = "dynamic-bias-free"
+
+[[modes.groups]]
+window_name = "inner1976"
+mission = "Helios 1"
+product = "Merged mission support"
+row_count = 8784
+mean_norm_sq = 79.10141609679158
+mean_signal_energy = 169.3070855195352
+mean_associator_norm = 556.7492868098412
+max_associator_norm = 9797.521674520347
+dominant_channel = "b_mag"
+dominant_channel_mean_abs = 2.349236839188116
+
+[[modes.groups]]
+window_name = "inner1976"
+mission = "Helios 2"
+product = "Merged mission support"
+row_count = 8784
+mean_norm_sq = 40.54894370339505
+mean_signal_energy = 86.5097094865798
+mean_associator_norm = 151.82592141233908
+max_associator_norm = 7198.893643674801
+dominant_channel = "density_cm3"
+dominant_channel_mean_abs = 2.306661134777691
+
+[[modes.groups]]
+window_name = "inner1976"
+mission = "IMP 8"
+product = "Merged 1-minute hourly aggregate"
+row_count = 3409
+mean_norm_sq = 21.711883466372463
+mean_signal_energy = 147.3367092744469
+mean_associator_norm = 49.93987929143306
+max_associator_norm = 3339.4495166154156
+dominant_channel = "bz"
+dominant_channel_mean_abs = 1.3457177052860976

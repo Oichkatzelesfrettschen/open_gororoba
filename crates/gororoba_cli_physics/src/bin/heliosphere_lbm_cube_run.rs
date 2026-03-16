@@ -7,7 +7,7 @@ use gororoba_gpu_bridge::{HardwareCaps, detect_best_backend, probe_simd};
 use lbm_3d::solver::LbmSolver3D;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision, probe_cuda_available, probe_cuda_device_props};
 use serde::Serialize;
-use std::{fs, path::PathBuf, time::Instant};
+use std::{collections::BTreeMap, fs, path::PathBuf, str::FromStr, time::Instant};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -27,8 +27,31 @@ struct Cli {
     #[arg(long, default_value_t = 64)]
     steps: usize,
 
+    #[arg(long, default_value = "raw")]
+    activity_mode: String,
+
     #[arg(long)]
     out: Option<PathBuf>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ActivityMode {
+    Raw,
+    EventMask,
+}
+
+impl FromStr for ActivityMode {
+    type Err = String;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+            "raw" => Ok(Self::Raw),
+            "event-mask" => Ok(Self::EventMask),
+            other => Err(format!(
+                "unsupported activity mode '{other}'; expected raw or event-mask"
+            )),
+        }
+    }
 }
 
 #[derive(Debug, Serialize)]
@@ -48,7 +71,11 @@ struct Report {
     cube_csv: String,
     selected_window: Option<String>,
     selected_rows: usize,
+    activity_mode: String,
     active_fraction_from_cube: f64,
+    activity_rows: usize,
+    occupancy_rows: usize,
+    occupancy_excluded_rows: usize,
     hardware: HardwareSummary,
     dense_cpu: DenseBenchmarkResult,
     dense_gpu: Option<DenseBenchmarkResult>,
@@ -69,6 +96,7 @@ struct HardwareSummary {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
+    let activity_mode = ActivityMode::from_str(&cli.activity_mode).map_err(anyhow::Error::msg)?;
     let out = cli.out.unwrap_or_else(|| {
         PathBuf::from("reports").join(format!(
             "heliosphere_lbm_cube_run_{}.toml",
@@ -85,7 +113,7 @@ fn main() -> Result<()> {
                 .unwrap_or(true)
         })
         .collect();
-    let stats = benchmark_stats(&selected);
+    let stats = benchmark_stats(&selected, activity_mode);
 
     let cpu = run_cpu_dense(cli.grid, cli.steps, stats.rho_init, stats.ux_init);
     let gpu = if probe_cuda_available() {
@@ -123,7 +151,11 @@ fn main() -> Result<()> {
         cube_csv: cli.cube_csv.display().to_string(),
         selected_window: cli.window.clone(),
         selected_rows: selected.len(),
+        activity_mode: cli.activity_mode.clone(),
         active_fraction_from_cube: stats.active_fraction,
+        activity_rows: stats.activity_rows,
+        occupancy_rows: stats.occupancy_rows,
+        occupancy_excluded_rows: stats.occupancy_excluded_rows,
         hardware: HardwareSummary {
             best_backend: format!("{:?}", detect_best_backend(&caps, cli.grid.pow(3))),
             simd: simd.to_string(),
@@ -156,6 +188,9 @@ struct Stats {
     rho_init: f64,
     ux_init: f64,
     active_fraction: f64,
+    activity_rows: usize,
+    occupancy_rows: usize,
+    occupancy_excluded_rows: usize,
 }
 
 fn load_rows(path: &PathBuf) -> Result<Vec<HeliosphereFeatureRow>> {
@@ -170,21 +205,28 @@ fn load_rows(path: &PathBuf) -> Result<Vec<HeliosphereFeatureRow>> {
     Ok(rows)
 }
 
-fn benchmark_stats(rows: &[HeliosphereFeatureRow]) -> Stats {
+fn benchmark_stats(rows: &[HeliosphereFeatureRow], activity_mode: ActivityMode) -> Stats {
     let density = mean(rows.iter().map(|row| row.density_cm3));
     let speed = mean(rows.iter().map(|row| row.speed_kms));
-    let energies: Vec<f64> = rows.iter().map(|row| row.signal_energy()).collect();
-    let energy_mean = mean(energies.iter().copied());
-    let energy_std = stddev(&energies, energy_mean);
-    let active = energies
-        .iter()
-        .filter(|value| value.is_finite() && **value > energy_mean + 0.5 * energy_std)
-        .count();
-    let active_fraction = if rows.is_empty() {
-        0.05
-    } else {
-        (active as f64 / rows.len() as f64).clamp(0.02, 0.25)
-    };
+    let (active_fraction, activity_rows, occupancy_rows, occupancy_excluded_rows) =
+        match activity_mode {
+            ActivityMode::Raw => {
+                let energies: Vec<f64> = rows.iter().map(|row| row.signal_energy()).collect();
+                let energy_mean = mean(energies.iter().copied());
+                let energy_std = stddev(&energies, energy_mean);
+                let active = energies
+                    .iter()
+                    .filter(|value| value.is_finite() && **value > energy_mean + 0.5 * energy_std)
+                    .count();
+                let fraction = if rows.is_empty() {
+                    0.05
+                } else {
+                    (active as f64 / rows.len() as f64).clamp(0.02, 0.25)
+                };
+                (fraction, active, active, 0usize)
+            }
+            ActivityMode::EventMask => event_mask_sparse_stats(rows),
+        };
 
     Stats {
         rho_init: if density.is_finite() {
@@ -198,7 +240,66 @@ fn benchmark_stats(rows: &[HeliosphereFeatureRow]) -> Stats {
             0.01
         },
         active_fraction,
+        activity_rows,
+        occupancy_rows,
+        occupancy_excluded_rows,
     }
+}
+
+fn event_mask_sparse_stats(rows: &[HeliosphereFeatureRow]) -> (f64, usize, usize, usize) {
+    if rows.is_empty() {
+        return (0.05, 0, 0, 0);
+    }
+    let mut groups: BTreeMap<(String, String, String), usize> = BTreeMap::new();
+    for row in rows {
+        *groups
+            .entry((
+                row.window_name.clone(),
+                row.mission.clone(),
+                row.product.clone(),
+            ))
+            .or_insert(0) += 1;
+    }
+
+    let activity_rows = rows.iter().filter(|row| row.event_active()).count();
+    let occupancy_rows = rows
+        .iter()
+        .filter(|row| {
+            let group_len = *groups
+                .get(&(
+                    row.window_name.clone(),
+                    row.mission.clone(),
+                    row.product.clone(),
+                ))
+                .unwrap_or(&1);
+            row.event_active() && counts_for_sparse_occupancy(row, group_len)
+        })
+        .count();
+    let occupancy_excluded_rows = activity_rows.saturating_sub(occupancy_rows);
+    let active_fraction = (occupancy_rows as f64 / rows.len() as f64).clamp(0.0, 1.0);
+    (
+        active_fraction,
+        activity_rows,
+        occupancy_rows,
+        occupancy_excluded_rows,
+    )
+}
+
+fn counts_for_sparse_occupancy(row: &HeliosphereFeatureRow, group_len: usize) -> bool {
+    if group_len == 1 {
+        let product = row.product.to_ascii_lowercase();
+        if product.contains("summary") {
+            return false;
+        }
+        let dynamic_present = row
+            .dynamic_signal_channels()
+            .iter()
+            .any(|value| value.is_finite() && value.abs() > 0.0);
+        if !dynamic_present && (row.map_flux_mean.is_finite() || row.map_flux_std.is_finite()) {
+            return false;
+        }
+    }
+    true
 }
 
 fn run_cpu_dense(grid: usize, steps: usize, rho_init: f64, ux_init: f64) -> DenseBenchmarkResult {

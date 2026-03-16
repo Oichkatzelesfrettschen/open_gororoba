@@ -123,8 +123,18 @@ fn mlups(n_cells: usize, steps: usize, elapsed_ms: f64) -> f64 {
 
 /// Effective bandwidth model for D3Q19 LBM.
 /// `dist_stride`: actual per-cell distribution count (19 for non-padded, 20 for AoS-padded).
-fn bandwidth_gbs(n_cells: usize, steps: usize, elapsed_ms: f64, elem_bytes: usize, dist_stride: usize) -> f64 {
-    let scalars = if dist_stride == 20 { D3Q19_SCALARS_PADDED } else { D3Q19_SCALARS_NON_PADDED };
+fn bandwidth_gbs(
+    n_cells: usize,
+    steps: usize,
+    elapsed_ms: f64,
+    elem_bytes: usize,
+    dist_stride: usize,
+) -> f64 {
+    let scalars = if dist_stride == 20 {
+        D3Q19_SCALARS_PADDED
+    } else {
+        D3Q19_SCALARS_NON_PADDED
+    };
     let bytes = scalars as f64 * n_cells as f64 * steps as f64 * elem_bytes as f64;
     bytes / (elapsed_ms * 1e-3) / 1e9
 }
@@ -163,7 +173,8 @@ fn write_csv(path: &str, rows: &[BenchRow]) -> Result<()> {
             r.elapsed_ms,
             r.mlups.map_or(String::new(), |v| format!("{v:.2}")),
             r.bandwidth_gbs.map_or(String::new(), |v| format!("{v:.2}")),
-            r.bandwidth_pct_peak.map_or(String::new(), |v| format!("{v:.1}")),
+            r.bandwidth_pct_peak
+                .map_or(String::new(), |v| format!("{v:.1}")),
             r.vram_dist_mb.map_or(String::new(), |v| format!("{v}")),
             r.notes,
         )?;
@@ -196,8 +207,10 @@ fn print_table(rows: &[BenchRow]) {
                 r.grid_size,
                 r.precision,
                 r.mlups.map_or("-".to_string(), |v| format!("{v:.1}")),
-                r.bandwidth_gbs.map_or("-".to_string(), |v| format!("{v:.1}")),
-                r.bandwidth_pct_peak.map_or("-".to_string(), |v| format!("{v:.1}%")),
+                r.bandwidth_gbs
+                    .map_or("-".to_string(), |v| format!("{v:.1}")),
+                r.bandwidth_pct_peak
+                    .map_or("-".to_string(), |v| format!("{v:.1}%")),
                 r.vram_dist_mb.map_or("-".to_string(), |v| format!("{v}")),
                 r.elapsed_ms,
             );
@@ -208,41 +221,101 @@ fn print_table(rows: &[BenchRow]) {
 
 fn print_precision_guide() {
     println!();
-    println!("Ada SM 8.9 precision tiers -- D3Q19 LBM scalar kernels (RTX 4070 Ti, 504 GB/s peak):");
+    println!(
+        "Ada SM 8.9 precision tiers -- D3Q19 LBM scalar kernels (RTX 4070 Ti, 504 GB/s peak):"
+    );
     println!();
     println!("  Tier         Bytes/dist  Mantissa  VRAM vs FP32  Notes");
-    println!("  -----------  ----------  --------  ------------  -----------------------------------------");
-    println!("  DD_FP128           16      ~106-bit      16x     two f64 (hi+lo); Knuth 2-sum + Veltkamp FMA;");
-    println!("                                                    4 bufs (hi/lo ping/pong); research tier only");
-    println!("  FP64                8       53-bit        4x     IEEE double; ~0.6 TFLOPS on Ada gaming SKU;");
-    println!("                                                    validation only; 64:1 speed penalty vs FP32");
-    println!("  FP32                4       24-bit        1x     primary production tier; ~40 TFLOPS scalar;");
+    println!(
+        "  -----------  ----------  --------  ------------  -----------------------------------------"
+    );
+    println!(
+        "  DD_FP128           16      ~106-bit      16x     two f64 (hi+lo); Knuth 2-sum + Veltkamp FMA;"
+    );
+    println!(
+        "                                                    4 bufs (hi/lo ping/pong); research tier only"
+    );
+    println!(
+        "  FP64                8       53-bit        4x     IEEE double; ~0.6 TFLOPS on Ada gaming SKU;"
+    );
+    println!(
+        "                                                    validation only; 64:1 speed penalty vs FP32"
+    );
+    println!(
+        "  FP32                4       24-bit        1x     primary production tier; ~40 TFLOPS scalar;"
+    );
     println!("                                                    memory bottleneck at 128^3+");
-    println!("  BF16                2        8-bit        0.5x   2x bandwidth save; same scalar speed as FP32");
-    println!("                                                    (no BF16 FFMA accel on Ada); 8-bit exponent");
-    println!("                                                    risk: instability for tau < 0.55");
-    println!("  FP16                2       10-bit        0.5x   2x bandwidth save; half2 paired loads;");
-    println!("                                                    narrower range than BF16 (5-bit exponent);");
-    println!("                                                    better mantissa (10-bit vs 7-bit)");
-    println!("  FP8_e4m3            1        4-bit        0.25x  4x bandwidth save; uchar4 vectorized loads;");
-    println!("                                                    SM 8.9+ only; significant accuracy risk");
-    println!("  FP8_e5m2            1        3-bit        0.25x  4x bandwidth save; wider range than e4m3");
-    println!("                                                    (5-bit exp vs 4-bit); lower precision;");
-    println!("                                                    SM 8.9+ only; Ada nearest to FP4 concept");
-    println!("  INT8                1   fixed(64)         0.25x  4x bandwidth save; __dp4a momentum accel;");
-    println!("                                                    DIST_SCALE=64; overflow risk at high density");
-    println!("  INT4             0.5   fixed(14)         0.125x  BANDWIDTH CEILING ONLY -- NOT physics-viable;");
-    println!("                                                    edge weights (1/36*14=0) collapse to zero;");
-    println!("                                                    i-major SoA; 2 cells/thread (RMW race avoid)");
+    println!(
+        "  BF16                2        8-bit        0.5x   2x bandwidth save; same scalar speed as FP32"
+    );
+    println!(
+        "                                                    (no BF16 FFMA accel on Ada); 8-bit exponent"
+    );
+    println!(
+        "                                                    risk: instability for tau < 0.55"
+    );
+    println!(
+        "  FP16                2       10-bit        0.5x   2x bandwidth save; half2 paired loads;"
+    );
+    println!(
+        "                                                    narrower range than BF16 (5-bit exponent);"
+    );
+    println!(
+        "                                                    better mantissa (10-bit vs 7-bit)"
+    );
+    println!(
+        "  FP8_e4m3            1        4-bit        0.25x  4x bandwidth save; uchar4 vectorized loads;"
+    );
+    println!(
+        "                                                    SM 8.9+ only; significant accuracy risk"
+    );
+    println!(
+        "  FP8_e5m2            1        3-bit        0.25x  4x bandwidth save; wider range than e4m3"
+    );
+    println!(
+        "                                                    (5-bit exp vs 4-bit); lower precision;"
+    );
+    println!(
+        "                                                    SM 8.9+ only; Ada nearest to FP4 concept"
+    );
+    println!(
+        "  INT8                1   fixed(64)         0.25x  4x bandwidth save; __dp4a momentum accel;"
+    );
+    println!(
+        "                                                    DIST_SCALE=64; overflow risk at high density"
+    );
+    println!(
+        "  INT4             0.5   fixed(14)         0.125x  BANDWIDTH CEILING ONLY -- NOT physics-viable;"
+    );
+    println!(
+        "                                                    edge weights (1/36*14=0) collapse to zero;"
+    );
+    println!(
+        "                                                    i-major SoA; 2 cells/thread (RMW race avoid)"
+    );
     println!();
     println!("  SoA variants (i-major, pull-scheme, coalesced writes -- no AoS padding):");
-    println!("  FP16_SoA            2       10-bit       0.5x   stride=19 (vs AoS stride=20); 5% less VRAM;");
-    println!("                                                    pull gather-reads + coalesced scatter-writes;");
-    println!("                                                    expected 4x MLUPS vs FP32 baseline");
-    println!("  FP8_SoA             1        4-bit       0.25x  stride=19 non-padded; best bandwidth ratio;");
-    println!("                                                    pull-scheme eliminates AoS scatter penalty");
-    println!("  INT8_SoA            1   fixed(64)        0.25x  stride=19 non-padded; int accumulation");
-    println!("                                                    for momentum (no dp4a for scattered SoA loads)");
+    println!(
+        "  FP16_SoA            2       10-bit       0.5x   stride=19 (vs AoS stride=20); 5% less VRAM;"
+    );
+    println!(
+        "                                                    pull gather-reads + coalesced scatter-writes;"
+    );
+    println!(
+        "                                                    expected 4x MLUPS vs FP32 baseline"
+    );
+    println!(
+        "  FP8_SoA             1        4-bit       0.25x  stride=19 non-padded; best bandwidth ratio;"
+    );
+    println!(
+        "                                                    pull-scheme eliminates AoS scatter penalty"
+    );
+    println!(
+        "  INT8_SoA            1   fixed(64)        0.25x  stride=19 non-padded; int accumulation"
+    );
+    println!(
+        "                                                    for momentum (no dp4a for scattered SoA loads)"
+    );
     println!();
     println!("  TF32/FP16/BF16/INT8/INT4 (Tensor Core WMMA proxy -- NOT LBM kernels):");
     println!("    TF32:  M=16 N=16 K=8   ~165 TFLOPS (Ada theoretical)  FP32 accumulator");
@@ -282,8 +355,8 @@ mod gpu {
     use lbm_3d_cuda::{
         DarkHaloCudaSolver, LbmSolver3DCuda, Precision,
         bench_kernels::{
-            BenchKernelRunner, DdBenchSolver, Fp4BenchRunner, Int4BenchRunner,
-            SoaBenchRunner, TensorCoreProbe,
+            BenchKernelRunner, DdBenchSolver, Fp4BenchRunner, Int4BenchRunner, SoaBenchRunner,
+            TensorCoreProbe,
         },
         box_counting_gpu::GpuBoxCounter,
         probe_cuda_device_props,
@@ -309,68 +382,112 @@ mod gpu {
     const FP32_VARIANTS: &[Fp32Variant] = &[
         Fp32Variant {
             id: "standard",
-            use_mrt: false, use_pull: false, use_tiling: false,
-            use_coarsening: false, use_aa: false, use_smagorinsky: false,
+            use_mrt: false,
+            use_pull: false,
+            use_tiling: false,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "baseline BGK SoA ping-pong",
         },
         Fp32Variant {
             id: "mrt",
-            use_mrt: true, use_pull: false, use_tiling: false,
-            use_coarsening: false, use_aa: false, use_smagorinsky: false,
+            use_mrt: true,
+            use_pull: false,
+            use_tiling: false,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "d'Humieres MRT collision",
         },
         Fp32Variant {
             id: "pull",
-            use_mrt: false, use_pull: true, use_tiling: false,
-            use_coarsening: false, use_aa: false, use_smagorinsky: false,
+            use_mrt: false,
+            use_pull: true,
+            use_tiling: false,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "pull-scheme coalesced writes",
         },
         Fp32Variant {
             id: "mrt_pull",
-            use_mrt: true, use_pull: true, use_tiling: false,
-            use_coarsening: false, use_aa: false, use_smagorinsky: false,
+            use_mrt: true,
+            use_pull: true,
+            use_tiling: false,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "MRT + pull-scheme",
         },
         Fp32Variant {
             id: "tiled",
-            use_mrt: false, use_pull: false, use_tiling: true,
-            use_coarsening: false, use_aa: false, use_smagorinsky: false,
+            use_mrt: false,
+            use_pull: false,
+            use_tiling: true,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "8x8x4 shared-mem tile + 1-cell halo",
         },
         Fp32Variant {
             id: "mrt_tiled",
-            use_mrt: true, use_pull: false, use_tiling: true,
-            use_coarsening: false, use_aa: false, use_smagorinsky: false,
+            use_mrt: true,
+            use_pull: false,
+            use_tiling: true,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "MRT + 8x8x4 tile (target 60%+ peak bw)",
         },
         Fp32Variant {
             id: "coarsened",
-            use_mrt: false, use_pull: false, use_tiling: false,
-            use_coarsening: true, use_aa: false, use_smagorinsky: false,
+            use_mrt: false,
+            use_pull: false,
+            use_tiling: false,
+            use_coarsening: true,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "thread-coarsened float2/float4 ILP",
         },
         Fp32Variant {
             id: "mrt_coarsened",
-            use_mrt: true, use_pull: false, use_tiling: false,
-            use_coarsening: true, use_aa: false, use_smagorinsky: false,
+            use_mrt: true,
+            use_pull: false,
+            use_tiling: false,
+            use_coarsening: true,
+            use_aa: false,
+            use_smagorinsky: false,
             notes: "MRT + coarsened float2/float4",
         },
         Fp32Variant {
             id: "aa",
-            use_mrt: false, use_pull: false, use_tiling: false,
-            use_coarsening: false, use_aa: true, use_smagorinsky: false,
+            use_mrt: false,
+            use_pull: false,
+            use_tiling: false,
+            use_coarsening: false,
+            use_aa: true,
+            use_smagorinsky: false,
             notes: "A-A single-buffer half-VRAM",
         },
         Fp32Variant {
             id: "mrt_aa",
-            use_mrt: true, use_pull: false, use_tiling: false,
-            use_coarsening: false, use_aa: true, use_smagorinsky: false,
+            use_mrt: true,
+            use_pull: false,
+            use_tiling: false,
+            use_coarsening: false,
+            use_aa: true,
+            use_smagorinsky: false,
             notes: "MRT + A-A streaming",
         },
         Fp32Variant {
             id: "smagorinsky_mrt_tiled",
-            use_mrt: true, use_pull: false, use_tiling: true,
-            use_coarsening: false, use_aa: false, use_smagorinsky: true,
+            use_mrt: true,
+            use_pull: false,
+            use_tiling: true,
+            use_coarsening: false,
+            use_aa: false,
+            use_smagorinsky: true,
             notes: "LES Smagorinsky + MRT tiled; tau set once before timing",
         },
     ];
@@ -407,10 +524,7 @@ mod gpu {
             let elem_bytes = 4usize;
 
             for v in FP32_VARIANTS {
-                eprint!(
-                    "  [A] FP32/{:<22} {}^3 ({} steps)... ",
-                    v.id, n, n_steps
-                );
+                eprint!("  [A] FP32/{:<22} {}^3 ({} steps)... ", v.id, n, n_steps);
                 let mut solver = match make_fp32_solver(n, v) {
                     Ok(s) => s,
                     Err(e) => {
@@ -476,15 +590,27 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [A] BF16/standard            {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [A] BF16/standard            {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::BF16) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
-            if solver.step_n(cfg.warmup).is_err() { eprintln!("SKIP warmup"); continue; }
+            if solver.step_n(cfg.warmup).is_err() {
+                eprintln!("SKIP warmup");
+                continue;
+            }
             let _ = solver.context().synchronize();
             let t0 = Instant::now();
-            if solver.step_n(n_steps).is_err() { eprintln!("SKIP step"); continue; }
+            if solver.step_n(n_steps).is_err() {
+                eprintln!("SKIP step");
+                continue;
+            }
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
@@ -505,7 +631,9 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "BF16 AoS; same MLUPS as FP32 (no scalar FFMA accel on Ada); 2x bw reduction".to_string(),
+                notes:
+                    "BF16 AoS; same MLUPS as FP32 (no scalar FFMA accel on Ada); 2x bw reduction"
+                        .to_string(),
             });
         }
 
@@ -514,15 +642,27 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 8usize;
-            eprint!("  [A] FP64/standard            {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [A] FP64/standard            {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::FP64) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
-            if solver.step_n(cfg.warmup).is_err() { eprintln!("SKIP warmup"); continue; }
+            if solver.step_n(cfg.warmup).is_err() {
+                eprintln!("SKIP warmup");
+                continue;
+            }
             let _ = solver.context().synchronize();
             let t0 = Instant::now();
-            if solver.step_n(n_steps).is_err() { eprintln!("SKIP step"); continue; }
+            if solver.step_n(n_steps).is_err() {
+                eprintln!("SKIP step");
+                continue;
+            }
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
@@ -560,18 +700,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [H] FP16/standard            {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [H] FP16/standard            {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match BenchKernelRunner::new_fp16(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -609,18 +757,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 1usize;
-            eprint!("  [I] FP8_e4m3/standard        {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [I] FP8_e4m3/standard        {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match BenchKernelRunner::new_fp8(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -658,18 +814,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 1usize;
-            eprint!("  [J] INT8/standard            {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [J] INT8/standard            {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match BenchKernelRunner::new_int8(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -707,18 +871,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 1usize;
-            eprint!("  [I2] FP8_e5m2/standard       {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [I2] FP8_e5m2/standard       {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match BenchKernelRunner::new_fp8_e5m2(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -759,18 +931,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [H2] FP16_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [H2] FP16_SoA/pull           {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_fp16_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -809,18 +989,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 1usize;
-            eprint!("  [I3] FP8_SoA/pull            {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [I3] FP8_SoA/pull            {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_fp8_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -858,18 +1046,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 1usize;
-            eprint!("  [J2] INT8_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [J2] INT8_SoA/pull           {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_int8_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -909,18 +1105,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let half_cells = n_cells / 2;
-            eprint!("  [L]  INT4/bw_ceil            {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [L]  INT4/bw_ceil            {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match Int4BenchRunner::new(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -965,18 +1169,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [J3] INT16/standard          {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [J3] INT16/standard          {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match BenchKernelRunner::new_int16(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1014,18 +1226,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [J4] INT16_SoA/pull          {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [J4] INT16_SoA/pull          {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_int16_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1065,18 +1285,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [H3] BF16_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [H3] BF16_SoA/pull           {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_bf16_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1114,18 +1342,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 1usize;
-            eprint!("  [I4] FP8_e5m2_SoA/pull       {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [I4] FP8_e5m2_SoA/pull       {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_fp8_e5m2_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1167,18 +1403,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n).min(30); // FP64 is very slow on Ada
             let n_cells = n * n * n;
             let elem_bytes = 8usize;
-            eprint!("  [A2] FP64_SoA/pull           {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [A2] FP64_SoA/pull           {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_fp64_soa(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup.min(5)) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1218,18 +1462,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 4usize;
-            eprint!("  [A3] FP32_SoA_CS/pull        {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [A3] FP32_SoA_CS/pull        {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_fp32_cs(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1269,18 +1521,26 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let elem_bytes = 2usize;
-            eprint!("  [H4] FP16_SoA_H2/half2_ilp   {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [H4] FP16_SoA_H2/half2_ilp   {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match SoaBenchRunner::new_fp16_half2(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1320,26 +1580,33 @@ mod gpu {
             let n_steps = cfg.n_steps_for(n);
             let n_cells = n * n * n;
             let half_cells = n_cells.div_ceil(2);
-            eprint!("  [L2] FP4/bw_ceil             {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [L2] FP4/bw_ceil             {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut runner = match Fp4BenchRunner::new(n, n, n) {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = runner.step_n(cfg.warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let t0 = std::time::Instant::now();
             if let Err(e) = runner.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = runner.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
             let ml = mlups(n_cells, n_steps, elapsed_ms);
             // FP4: same nibble model as INT4 (19 bytes per cell-pair, ping+pong)
-            let bytes_per_step = (19.0 * half_cells as f64 * 2.0
-                                  + 8.0 * n_cells as f64 * 4.0)
-                                 * n_steps as f64;
+            let bytes_per_step =
+                (19.0 * half_cells as f64 * 2.0 + 8.0 * n_cells as f64 * 4.0) * n_steps as f64;
             let bw = bytes_per_step / (elapsed_ms * 1e-3) / 1e9;
             let bw_pct = bw / PEAK_BW_GBS * 100.0;
             let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
@@ -1379,18 +1646,26 @@ mod gpu {
             // Each distribution value is 16 bytes (8-byte hi + 8-byte lo).
             // Ping-pong uses 4 buffers (hi_a, lo_a, hi_b, lo_b).
             let elem_bytes = 16usize;
-            eprint!("  [K] DD_FP128/standard        {}^3 ({} steps)... ", n, n_steps);
+            eprint!(
+                "  [K] DD_FP128/standard        {}^3 ({} steps)... ",
+                n, n_steps
+            );
             let mut solver = match DdBenchSolver::new(n, n, n) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
             if let Err(e) = solver.step_n(warmup) {
-                eprintln!("SKIP warmup: {e}"); continue;
+                eprintln!("SKIP warmup: {e}");
+                continue;
             }
             let _ = solver.context().synchronize();
             let t0 = Instant::now();
             if let Err(e) = solver.step_n(n_steps) {
-                eprintln!("SKIP step: {e}"); continue;
+                eprintln!("SKIP step: {e}");
+                continue;
             }
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1429,7 +1704,10 @@ mod gpu {
 
         let mut probe = match TensorCoreProbe::new() {
             Ok(p) => p,
-            Err(e) => { eprintln!("SKIP: {e}"); return Ok(rows); }
+            Err(e) => {
+                eprintln!("SKIP: {e}");
+                return Ok(rows);
+            }
         };
 
         // Warmup: brief run of each available tier (not timed).
@@ -1590,7 +1868,10 @@ mod gpu {
             eprint!("  [B] box_counting {}^3... ", n);
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::FP32) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP (solver init): {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP (solver init): {e}");
+                    continue;
+                }
             };
             if let Err(e) = solver.step_n(20) {
                 eprintln!("SKIP (LBM warmup): {e}");
@@ -1603,15 +1884,20 @@ mod gpu {
 
             let mut counter = match GpuBoxCounter::new(solver.context()) {
                 Ok(c) => c,
-                Err(e) => { eprintln!("SKIP (counter init): {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP (counter init): {e}");
+                    continue;
+                }
             };
 
             let t0 = Instant::now();
-            let result = match counter.fractal_dimension_device_auto(
-                solver.d_rho_bytes(), n, n, n,
-            ) {
+            let result = match counter.fractal_dimension_device_auto(solver.d_rho_bytes(), n, n, n)
+            {
                 Ok(r) => r,
-                Err(e) => { eprintln!("SKIP (box-count): {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP (box-count): {e}");
+                    continue;
+                }
             };
             let _ = solver.context().synchronize();
             let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
@@ -1661,7 +1947,8 @@ mod gpu {
             bandwidth_gbs: None,
             bandwidth_pct_peak: None,
             vram_dist_mb: None,
-            notes: "Chingon requires PackedAvt from gororoba_algebra; not wired in this binary".to_string(),
+            notes: "Chingon requires PackedAvt from gororoba_algebra; not wired in this binary"
+                .to_string(),
         }]
     }
 
@@ -1679,22 +1966,21 @@ mod gpu {
 
             let mut solver = match DarkHaloCudaSolver::new(n, n, n) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
 
             let warmup_steps = cfg.warmup.min(20) as u32;
-            if let Err(e) = solver.run_k_value(
-                256, warmup_steps, 0.7, 0.1, 1.5, 1e-4, 0.0, 0,
-            ) {
+            if let Err(e) = solver.run_k_value(256, warmup_steps, 0.7, 0.1, 1.5, 1e-4, 0.0, 0) {
                 eprintln!("SKIP (warmup): {e}");
                 continue;
             }
 
             let n_steps = cfg.n_steps_for(n).min(50) as u32;
             let t0 = Instant::now();
-            if let Err(e) = solver.run_k_value(
-                256, n_steps, 0.7, 0.1, 1.5, 1e-4, 0.0, 0,
-            ) {
+            if let Err(e) = solver.run_k_value(256, n_steps, 0.7, 0.1, 1.5, 1e-4, 0.0, 0) {
                 eprintln!("SKIP (bench): {e}");
                 continue;
             }
@@ -1716,7 +2002,8 @@ mod gpu {
                 bandwidth_gbs: None,
                 bandwidth_pct_peak: None,
                 vram_dist_mb: None,
-                notes: "fused lbm_step_soa + ZD viscosity modulation + dark_halo_detector; k=256".to_string(),
+                notes: "fused lbm_step_soa + ZD viscosity modulation + dark_halo_detector; k=256"
+                    .to_string(),
             });
         }
 
@@ -1744,7 +2031,10 @@ mod gpu {
 
                 let bootstrap = match LbmSolver3DCuda::new(8, 8, 8, 0.7, Precision::FP32) {
                     Ok(s) => s,
-                    Err(e) => { eprintln!("SKIP (bootstrap): {e}"); continue; }
+                    Err(e) => {
+                        eprintln!("SKIP (bootstrap): {e}");
+                        continue;
+                    }
                 };
                 let ctx = bootstrap.context().clone();
                 let stream = bootstrap.stream().clone();
@@ -1758,26 +2048,40 @@ mod gpu {
 
                 let d_mask = match stream.clone_htod(&mask_host) {
                     Ok(m) => m,
-                    Err(e) => { eprintln!("SKIP (mask upload): {e}"); continue; }
+                    Err(e) => {
+                        eprintln!("SKIP (mask upload): {e}");
+                        continue;
+                    }
                 };
                 drop(mask_host);
 
                 let bm = match SparseBrickMap::new_from_geometry(
-                    ctx.clone(), stream.clone(), n, n, n, &d_mask,
+                    ctx.clone(),
+                    stream.clone(),
+                    n,
+                    n,
+                    n,
+                    &d_mask,
                 ) {
                     Ok(b) => b,
-                    Err(e) => { eprintln!("SKIP (brick map): {e}"); continue; }
+                    Err(e) => {
+                        eprintln!("SKIP (brick map): {e}");
+                        continue;
+                    }
                 };
                 drop(d_mask);
 
                 let n_active = bm.n_active_bricks;
                 let n_active_cells = n_active * 512;
-                let vram_mb = (n_active_cells * 19 * 4 * 2 + n_active_cells * 4 * 5)
-                    / (1024 * 1024);
+                let vram_mb =
+                    (n_active_cells * 19 * 4 * 2 + n_active_cells * 4 * 5) / (1024 * 1024);
 
                 let mut sparse_solver = match SparseLbmSolver::new(bm) {
                     Ok(s) => s,
-                    Err(e) => { eprintln!("SKIP (sparse solver): {e}"); continue; }
+                    Err(e) => {
+                        eprintln!("SKIP (sparse solver): {e}");
+                        continue;
+                    }
                 };
 
                 let warmup_steps = cfg.warmup;
@@ -1795,11 +2099,9 @@ mod gpu {
                 let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
 
                 let ml = mlups(n_active_cells, n_steps, elapsed_ms);
-                let sparse_overhead_pct = (n_cells_total as f64 - n_active_cells as f64)
-                    / n_cells_total as f64 * 100.0;
-                eprintln!(
-                    "{ml:.1} MLUPS  {n_active} active bricks  {vram_mb} MB VRAM"
-                );
+                let sparse_overhead_pct =
+                    (n_cells_total as f64 - n_active_cells as f64) / n_cells_total as f64 * 100.0;
+                eprintln!("{ml:.1} MLUPS  {n_active} active bricks  {vram_mb} MB VRAM");
 
                 rows.push(BenchRow {
                     workload: "sparse_lbm",
@@ -1839,13 +2141,19 @@ mod gpu {
 
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::FP32) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
 
             let frustration_host = vec![0.5f32; n_cells];
             let d_frustration = match solver.stream().clone_htod(&frustration_host) {
                 Ok(d) => d,
-                Err(e) => { eprintln!("SKIP (alloc): {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP (alloc): {e}");
+                    continue;
+                }
             };
             drop(frustration_host);
 
@@ -1911,7 +2219,10 @@ mod gpu {
             eprint!("  [G] cufft {}^3... ", n);
             let mut solver = match LbmSolver3DCuda::new(n, n, n, 0.7, Precision::FP32) {
                 Ok(s) => s,
-                Err(e) => { eprintln!("SKIP: {e}"); continue; }
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
             };
 
             let t0 = Instant::now();
@@ -2157,7 +2468,11 @@ fn main() -> Result<()> {
             print_table(&rows);
             write_csv(&cfg.output, &rows)?;
             eprintln!();
-            eprintln!("Benchmark complete. {} rows written to {}", rows.len(), cfg.output);
+            eprintln!(
+                "Benchmark complete. {} rows written to {}",
+                rows.len(),
+                cfg.output
+            );
         }
     }
 
