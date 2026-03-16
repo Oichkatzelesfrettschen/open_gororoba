@@ -1,5 +1,37 @@
-// GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA
-// Runtime kernel compilation via cudarc NVRTC
+//! GPU-accelerated D3Q19 Lattice Boltzmann Method (LBM) with CUDA.
+//!
+//! Runtime kernel compilation via cudarc NVRTC. Supports multiple precision
+//! tiers for distribution storage, with FP32 arithmetic for all collision
+//! and macroscopic-field computations.
+//!
+//! # Precision tiers (production solver -- [`LbmSolver3DCuda`])
+//!
+//! | Precision | Bytes/dist | Notes                                       |
+//! |-----------|------------|---------------------------------------------|
+//! | FP32      | 4          | Primary production tier; ~40 TFLOPS scalar  |
+//! | BF16      | 2          | 2x bandwidth reduction; SM 8.0+             |
+//! | FP64      | 8          | Validation only; compute-bound on Ada gaming|
+//!
+//! # Extended benchmark tiers ([`bench_kernels`])
+//!
+//! Additional precision tiers (FP16, FP8 e4m3/e5m2, INT8, INT16, INT4, FP4,
+//! BF16 SoA, DD FP128) are available in the `bench_kernels` module. These
+//! share no code with the production solver and are compiled on-demand via NVRTC.
+//!
+//! Measured throughput at 128^3 on RTX 4070 Ti (Ada SM 8.9, 504 GB/s peak):
+//!
+//! | Tier          | MLUPS | BW% of peak | VRAM (MB) |
+//! |---------------|-------|-------------|-----------|
+//! | INT8 SoA      | 5643  | 51.5%       | 76        |
+//! | FP8_e4m3 SoA  | 5408  | 49.4%       | 76        |
+//! | FP8_e5m2 SoA  | 5280  | 48.2%       | 76        |
+//! | FP16 SoA H2   | 3802  | 69.4%       | 152       |
+//! | INT16 SoA     | 3569  | 65.1%       | 152       |
+//! | FP16 SoA      | 3463  | 63.2%       | 152       |
+//! | BF16 SoA      | 3204  | 58.5%       | 152       |
+//! | FP32 (various)| ~2000 | ~74%        | 304       |
+//! | FP64 SoA      | 406   | 29.7%       | 608       |
+//! | DD FP128      | 58    | 8.4%        | 1215      |
 
 pub mod bench_kernels;
 pub mod box_counting_gpu;
@@ -36,6 +68,12 @@ pub fn probe_cuda_available() -> bool {
     probe_cuda_device_props().is_some()
 }
 
+/// CUDA device capability and memory properties for device 0.
+///
+/// Returned by [`probe_cuda_device_props`]. Used to select the correct
+/// kernel compilation target (`sm_89`, `sm_86`, etc.) and to guard
+/// precision tiers that require a minimum SM level (BF16 >= SM 8.0,
+/// FP8/FP4 >= SM 8.9).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct CudaDeviceProps {
     pub major: u32,
@@ -134,14 +172,45 @@ pub fn vram_footprint_bytes(n_cells: usize, elem_bytes: usize) -> usize {
     19 * n_cells * elem_bytes * 2
 }
 
+/// Distribution-storage precision for [`LbmSolver3DCuda`].
+///
+/// All collision arithmetic is FP32 regardless of storage precision.
+/// BF16 and FP64 require SM 8.0+ and SM 6.0+ respectively; FP32 runs on any SM.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Precision {
+    /// 4 bytes/dist. Primary production tier. Memory-bottleneck at 128^3+.
     FP32,
+    /// 2 bytes/dist. 2x bandwidth reduction vs FP32. SM 8.0+.
+    /// 8-bit exponent (same range as FP32); 7-bit mantissa. Instability risk for tau < 0.55.
     BF16,
+    /// 8 bytes/dist. Validation only. Compute-bound on Ada gaming SKU (64:1 FP64 ratio).
     FP64,
 }
 
-/// GPU-accelerated D3Q19 LBM solver with mixed-precision support (FP32/BF16)
+/// GPU-accelerated D3Q19 LBM solver with multi-precision support.
+///
+/// Supports FP32, BF16, and FP64 distribution storage (see [`Precision`]).
+/// All collision arithmetic is promoted to FP32. Uses NVRTC runtime
+/// compilation -- kernels are compiled on first construction and reused.
+///
+/// # Kernel variants (FP32 SoA)
+///
+/// Use the `use_mrt`, `use_tiling`, `use_coarsening`, `use_pull_stream`, and
+/// `use_aa` setter flags before calling [`LbmSolver3DCuda::step`] to select
+/// the FP32 SoA variant. Measured throughput at 128^3 on Ada SM 8.9:
+///
+/// | Variant           | MLUPS | Notes                               |
+/// |-------------------|-------|-------------------------------------|
+/// | standard (push)   | 1984  | Baseline; AoS scatter-write         |
+/// | coarsened         | 2107  | Best single-kernel at 128^3         |
+/// | aa                | 2062  | Halves VRAM vs ping-pong            |
+/// | mrt_aa            | 2024  | MRT + A-A; balanced MLUPS/VRAM      |
+/// | mrt_tiled         | 1254  | LDS tiling; lower MLUPS, stable MRT |
+///
+/// # Extended precision
+///
+/// For FP8, INT8, INT16, FP16 SoA, BF16 SoA, DD FP128, and bandwidth-ceiling
+/// tiers, use the runners in the [`bench_kernels`] module directly.
 pub struct LbmSolver3DCuda {
     nx: usize,
     ny: usize,
