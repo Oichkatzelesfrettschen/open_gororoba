@@ -28,6 +28,7 @@ fn main() {
         .as_str()
     {
         "managed" | "managed-prefetch" => SparseMemoryMode::ManagedUnifiedPrefetch,
+        "managed-tiled" | "managed-tile-prefetch" => SparseMemoryMode::ManagedUnifiedTilePrefetch,
         _ => SparseMemoryMode::DeviceLocal,
     };
 

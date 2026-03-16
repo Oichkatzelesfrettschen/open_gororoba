@@ -3,8 +3,10 @@
 
 use anyhow::{Context, Result};
 use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg, UnifiedSlice,
+    result, sys, CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, DeviceSlice,
+    LaunchConfig, PushKernelArg, UnifiedSlice,
 };
+use std::env;
 use std::sync::Arc;
 
 const KERNEL_SPARSE_MAP_SRC: &str = include_str!("kernels_sparse_map.cu");
@@ -175,6 +177,14 @@ pub enum SparseMemoryMode {
     /// Allocate sparse state in CUDA managed memory and prefetch toward the
     /// active device before stepping. This is a slower overflow fallback.
     ManagedUnifiedPrefetch,
+    /// Allocate sparse state in CUDA managed memory and step the sparse domain
+    /// in active-brick tiles, prefetching only the current tile to the device.
+    ///
+    /// This is the lower-headroom fallback for runs where the full sparse
+    /// working set should remain unified-memory backed, but the hot loop should
+    /// stay closer to the planner's per-tile footprint instead of migrating the
+    /// whole window at once.
+    ManagedUnifiedTilePrefetch,
 }
 
 #[derive(Debug)]
@@ -193,7 +203,8 @@ impl SparseFieldBuffer {
         let len = len.max(1);
         match mode {
             SparseMemoryMode::DeviceLocal => Ok(Self::Device(stream.alloc_zeros::<f32>(len)?)),
-            SparseMemoryMode::ManagedUnifiedPrefetch => {
+            SparseMemoryMode::ManagedUnifiedPrefetch
+            | SparseMemoryMode::ManagedUnifiedTilePrefetch => {
                 let mut buf = unsafe {
                     ctx.alloc_unified::<f32>(len, true)
                         .context("alloc unified sparse buffer")?
@@ -221,6 +232,21 @@ pub struct SparseLbmSolver {
     pub step: usize,
 
     lbm_step_kernel: CudaFunction,
+}
+
+const CELLS_PER_BRICK: usize = 512;
+const D3Q19_DIRS: usize = 19;
+const F32_BYTES: usize = std::mem::size_of::<f32>();
+
+struct SparseTilePrefetchInputs<'a> {
+    d_f: &'a UnifiedSlice<f32>,
+    d_rho: &'a UnifiedSlice<f32>,
+    d_u: &'a UnifiedSlice<f32>,
+    d_tau: &'a UnifiedSlice<f32>,
+    d_force: &'a UnifiedSlice<f32>,
+    active_cell_start: usize,
+    active_cell_count: usize,
+    total_active_cells: usize,
 }
 
 impl SparseLbmSolver {
@@ -285,28 +311,23 @@ impl SparseLbmSolver {
             return Ok(());
         }
 
-        let n_active_cells = self.map.n_active_bricks * 512;
-        let block = 512;
-        let grid = (n_active_cells as u32).div_ceil(block);
-        let cfg = LaunchConfig {
-            grid_dim: (grid, 1, 1),
-            block_dim: (block, 1, 1),
-            shared_mem_bytes: 0,
-        };
-
+        let n_active_cells = self.map.n_active_bricks * CELLS_PER_BRICK;
         let nx_i = self.map.nx as i32;
         let ny_i = self.map.ny as i32;
         let nz_i = self.map.nz as i32;
         let bx_max_i = self.map.bx_max as i32;
         let by_max_i = self.map.by_max as i32;
         let bz_max_i = self.map.bz_max as i32;
-        let n_active_cells_i = n_active_cells as i32;
+        let n_active_cells_total_i = n_active_cells as i32;
 
         for _ in 0..steps {
             let parity = (self.step % 2) as i32;
-            let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
             match self.memory_mode {
                 SparseMemoryMode::DeviceLocal => {
+                    let active_cell_start_i = 0_i32;
+                    let active_cell_count_i = n_active_cells as i32;
+                    let cfg = launch_cfg_for_cells(n_active_cells);
+                    let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
                     let SparseFieldBuffer::Device(d_f) = &mut self.d_f else {
                         unreachable!("device-local sparse solver requires device buffers")
                     };
@@ -335,10 +356,17 @@ impl SparseLbmSolver {
                         .arg(&bx_max_i)
                         .arg(&by_max_i)
                         .arg(&bz_max_i)
-                        .arg(&n_active_cells_i)
+                        .arg(&active_cell_start_i)
+                        .arg(&active_cell_count_i)
+                        .arg(&n_active_cells_total_i)
                         .arg(&parity);
+                    unsafe { b.launch(cfg) }?;
                 }
                 SparseMemoryMode::ManagedUnifiedPrefetch => {
+                    let active_cell_start_i = 0_i32;
+                    let active_cell_count_i = n_active_cells as i32;
+                    let cfg = launch_cfg_for_cells(n_active_cells);
+                    let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
                     let SparseFieldBuffer::Unified(d_f) = &mut self.d_f else {
                         unreachable!("managed sparse solver requires unified buffers")
                     };
@@ -367,12 +395,73 @@ impl SparseLbmSolver {
                         .arg(&bx_max_i)
                         .arg(&by_max_i)
                         .arg(&bz_max_i)
-                        .arg(&n_active_cells_i)
+                        .arg(&active_cell_start_i)
+                        .arg(&active_cell_count_i)
+                        .arg(&n_active_cells_total_i)
                         .arg(&parity);
+                    unsafe { b.launch(cfg) }?;
+                }
+                SparseMemoryMode::ManagedUnifiedTilePrefetch => {
+                    let tile_bricks = recommended_tile_bricks(self.map.n_active_bricks);
+                    let SparseFieldBuffer::Unified(d_f) = &mut self.d_f else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_rho) = &mut self.d_rho else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_u) = &mut self.d_u else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_tau) = &self.d_tau else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_force) = &self.d_force else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+
+                    let mut tile_start_brick = 0usize;
+                    while tile_start_brick < self.map.n_active_bricks {
+                        let tile_brick_count =
+                            (self.map.n_active_bricks - tile_start_brick).min(tile_bricks);
+                        let active_cell_start = tile_start_brick * CELLS_PER_BRICK;
+                        let active_cell_count = tile_brick_count * CELLS_PER_BRICK;
+                        prefetch_sparse_tile(SparseTilePrefetchInputs {
+                            d_f,
+                            d_rho,
+                            d_u,
+                            d_tau,
+                            d_force,
+                            active_cell_start,
+                            active_cell_count,
+                            total_active_cells: n_active_cells,
+                        })?;
+
+                        let active_cell_start_i = active_cell_start as i32;
+                        let active_cell_count_i = active_cell_count as i32;
+                        let cfg = launch_cfg_for_cells(active_cell_count);
+                        let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
+                        b.arg(&mut *d_f)
+                            .arg(&mut *d_rho)
+                            .arg(&mut *d_u)
+                            .arg(d_tau)
+                            .arg(d_force)
+                            .arg(&self.map.d_indirect_table)
+                            .arg(&self.map.d_active_brick_ids)
+                            .arg(&nx_i)
+                            .arg(&ny_i)
+                            .arg(&nz_i)
+                            .arg(&bx_max_i)
+                            .arg(&by_max_i)
+                            .arg(&bz_max_i)
+                            .arg(&active_cell_start_i)
+                            .arg(&active_cell_count_i)
+                            .arg(&n_active_cells_total_i)
+                            .arg(&parity);
+                        unsafe { b.launch(cfg) }?;
+                        tile_start_brick += tile_brick_count;
+                    }
                 }
             }
-
-            unsafe { b.launch(cfg) }?;
             self.step += 1;
         }
 
@@ -381,4 +470,125 @@ impl SparseLbmSolver {
         self.map.ctx.synchronize()?;
         Ok(())
     }
+}
+
+fn launch_cfg_for_cells(active_cell_count: usize) -> LaunchConfig {
+    let block = CELLS_PER_BRICK as u32;
+    let grid = (active_cell_count as u32).div_ceil(block);
+    LaunchConfig {
+        grid_dim: (grid, 1, 1),
+        block_dim: (block, 1, 1),
+        shared_mem_bytes: 0,
+    }
+}
+
+fn recommended_tile_bricks(total_active_bricks: usize) -> usize {
+    if let Ok(value) = env::var("GOROROBA_SPARSE_TILE_BRICKS")
+        && let Ok(parsed) = value.parse::<usize>()
+    {
+        return parsed.max(1).min(total_active_bricks.max(1));
+    }
+
+    let bytes_per_brick = sparse_bytes_per_brick();
+    let requested_bytes = bytes_per_brick.saturating_mul(total_active_bricks);
+    if let Some(props) = crate::probe_cuda_device_props() {
+        let policy = crate::plan_managed_memory_policy(props, requested_bytes);
+        let tile_bytes = env::var("GOROROBA_SPARSE_TILE_BYTES")
+            .ok()
+            .and_then(|value| value.parse::<usize>().ok())
+            .unwrap_or(policy.recommended_tile_bytes);
+        return (tile_bytes / bytes_per_brick)
+            .max(1)
+            .min(total_active_bricks.max(1));
+    }
+
+    total_active_bricks.max(1)
+}
+
+fn sparse_bytes_per_brick() -> usize {
+    let f = D3Q19_DIRS * CELLS_PER_BRICK * F32_BYTES;
+    let rho = CELLS_PER_BRICK * F32_BYTES;
+    let u = 3 * CELLS_PER_BRICK * F32_BYTES;
+    let tau = CELLS_PER_BRICK * F32_BYTES;
+    let force = 3 * CELLS_PER_BRICK * F32_BYTES;
+    f + rho + u + tau + force
+}
+
+fn prefetch_sparse_tile(inputs: SparseTilePrefetchInputs<'_>) -> Result<()> {
+    for dir in 0..D3Q19_DIRS {
+        let start = dir * inputs.total_active_cells + inputs.active_cell_start;
+        let view = inputs.d_f.slice(start..start + inputs.active_cell_count);
+        prefetch_unified_view_to_device(&view)?;
+    }
+    prefetch_unified_view_to_device(
+        &inputs
+            .d_rho
+            .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs
+            .d_u
+            .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs.d_u.slice(
+            inputs.total_active_cells + inputs.active_cell_start
+                ..inputs.total_active_cells + inputs.active_cell_start + inputs.active_cell_count,
+        ),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs.d_u.slice(
+            2 * inputs.total_active_cells + inputs.active_cell_start
+                ..2 * inputs.total_active_cells
+                    + inputs.active_cell_start
+                    + inputs.active_cell_count,
+        ),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs
+            .d_tau
+            .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs
+            .d_force
+            .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs.d_force.slice(
+            inputs.total_active_cells + inputs.active_cell_start
+                ..inputs.total_active_cells + inputs.active_cell_start + inputs.active_cell_count,
+        ),
+    )?;
+    prefetch_unified_view_to_device(
+        &inputs.d_force.slice(
+            2 * inputs.total_active_cells + inputs.active_cell_start
+                ..2 * inputs.total_active_cells
+                    + inputs.active_cell_start
+                    + inputs.active_cell_count,
+        ),
+    )?;
+    Ok(())
+}
+
+fn prefetch_unified_view_to_device<T, V>(view: &V) -> Result<()>
+where
+    V: DeviceSlice<T> + DevicePtr<T>,
+{
+    let stream = view.stream();
+    let location = sys::CUmemLocation {
+        type_: sys::CUmemLocationType::CU_MEM_LOCATION_TYPE_DEVICE,
+        id: stream.context().ordinal() as i32,
+    };
+    let (ptr, _sync) = view.device_ptr(stream.as_ref());
+    unsafe {
+        result::mem_prefetch_async(
+            ptr,
+            view.len() * std::mem::size_of::<T>(),
+            location,
+            stream.cu_stream(),
+        )
+    }
+    .context("prefetch managed sparse tile range to device")?;
+    Ok(())
 }

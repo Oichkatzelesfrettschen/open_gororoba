@@ -47,11 +47,14 @@ lbm_step_sparse_aa(
     const unsigned int* __restrict__ active_brick_ids, // [N_active_bricks]
     int nx, int ny, int nz,
     int bx_max, int by_max, int bz_max,
-    int n_active_cells,
+    int active_cell_start,
+    int active_cell_count,
+    int n_active_cells_total,
     int parity
 ) {
-    int tid = blockIdx.x * blockDim.x + threadIdx.x;
-    if (tid >= n_active_cells) return;
+    int local_tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (local_tid >= active_cell_count) return;
+    int tid = active_cell_start + local_tid;
 
     int pool_idx = tid / 512;
     int local_idx = tid % 512;
@@ -104,7 +107,7 @@ lbm_step_sparse_aa(
             }
         }
         
-        float fi = __ldg(&f[read_dir * n_active_cells + src_tid]);
+        float fi = __ldg(&f[read_dir * n_active_cells_total + src_tid]);
         if (!finite_check(fi)) fi = 0.0f;
         f_local[i] = fi;
         rho_local += fi;
@@ -126,8 +129,8 @@ lbm_step_sparse_aa(
 
     rho_out[tid] = rho_local;
     u_out[tid]                        = ux;
-    u_out[n_active_cells + tid]       = uy;
-    u_out[2 * n_active_cells + tid]   = uz;
+    u_out[n_active_cells_total + tid]       = uy;
+    u_out[2 * n_active_cells_total + tid]   = uz;
 
     // 3. BGK collision
     float tau_local = __ldg(&tau[tid]);
@@ -145,8 +148,8 @@ lbm_step_sparse_aa(
 
     // 4. Guo forcing
     float fx = __ldg(&force[tid]);
-    float fy = __ldg(&force[n_active_cells + tid]);
-    float fz = __ldg(&force[2 * n_active_cells + tid]);
+    float fy = __ldg(&force[n_active_cells_total + tid]);
+    float fz = __ldg(&force[2 * n_active_cells_total + tid]);
     float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
     if (force_mag_sq >= 1e-40f) {
@@ -179,14 +182,14 @@ lbm_step_sparse_aa(
             
             if (n_pool_idx != -1) {
                 int dst_tid = n_pool_idx * 512 + lxn + 8 * (lyn + 8 * lzn);
-                f[OPP[i] * n_active_cells + dst_tid] = f_local[i];
+                f[OPP[i] * n_active_cells_total + dst_tid] = f_local[i];
             } else {
                 // Bounce-back: neighbor is solid. Write to own OPP[i] slot.
-                f[OPP[i] * n_active_cells + tid] = f_local[i];
+                f[OPP[i] * n_active_cells_total + tid] = f_local[i];
             }
         } else {
             // Odd step: write to canonical slot at self
-            f[i * n_active_cells + tid] = f_local[i];
+            f[i * n_active_cells_total + tid] = f_local[i];
         }
     }
 }
