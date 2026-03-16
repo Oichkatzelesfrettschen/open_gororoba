@@ -3,7 +3,7 @@
 
 use anyhow::{Context, Result};
 use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg, UnifiedSlice,
 };
 use std::sync::Arc;
 
@@ -167,13 +167,56 @@ impl SparseBrickMap {
 const KERNEL_SPARSE_LBM_SRC: &str = include_str!("kernels_sparse_lbm.cu");
 
 /// Sparse LBM Solver using the Brick Map and A-A streaming pattern.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum SparseMemoryMode {
+    /// Keep sparse state in device-local VRAM. This remains the default fast path.
+    #[default]
+    DeviceLocal,
+    /// Allocate sparse state in CUDA managed memory and prefetch toward the
+    /// active device before stepping. This is a slower overflow fallback.
+    ManagedUnifiedPrefetch,
+}
+
+#[derive(Debug)]
+enum SparseFieldBuffer {
+    Device(CudaSlice<f32>),
+    Unified(UnifiedSlice<f32>),
+}
+
+impl SparseFieldBuffer {
+    fn alloc_zeroed(
+        ctx: &Arc<CudaContext>,
+        stream: &Arc<CudaStream>,
+        len: usize,
+        mode: SparseMemoryMode,
+    ) -> Result<Self> {
+        let len = len.max(1);
+        match mode {
+            SparseMemoryMode::DeviceLocal => Ok(Self::Device(stream.alloc_zeros::<f32>(len)?)),
+            SparseMemoryMode::ManagedUnifiedPrefetch => {
+                let mut buf = unsafe {
+                    ctx.alloc_unified::<f32>(len, true)
+                        .context("alloc unified sparse buffer")?
+                };
+                buf.as_mut_slice()
+                    .context("map unified sparse buffer on host")?
+                    .fill(0.0);
+                buf.prefetch()
+                    .context("prefetch unified sparse buffer to device")?;
+                Ok(Self::Unified(buf))
+            }
+        }
+    }
+}
+
 pub struct SparseLbmSolver {
     pub map: SparseBrickMap,
-    pub d_f: CudaSlice<f32>,
-    pub d_rho: CudaSlice<f32>,
-    pub d_u: CudaSlice<f32>,
-    pub d_tau: CudaSlice<f32>,
-    pub d_force: CudaSlice<f32>,
+    d_f: SparseFieldBuffer,
+    d_rho: SparseFieldBuffer,
+    d_u: SparseFieldBuffer,
+    d_tau: SparseFieldBuffer,
+    d_force: SparseFieldBuffer,
+    memory_mode: SparseMemoryMode,
 
     pub step: usize,
 
@@ -182,15 +225,27 @@ pub struct SparseLbmSolver {
 
 impl SparseLbmSolver {
     pub fn new(map: SparseBrickMap) -> Result<Self> {
+        Self::new_with_mode(map, SparseMemoryMode::DeviceLocal)
+    }
+
+    /// Create a sparse solver with an explicit memory mode.
+    ///
+    /// `DeviceLocal` keeps the sparse state fully in VRAM and remains the
+    /// primary fast path. `ManagedUnifiedPrefetch` allocates the sparse state
+    /// in CUDA managed memory and prefetched it toward the active GPU as an
+    /// overflow-safe fallback when VRAM headroom is uncertain.
+    pub fn new_with_mode(map: SparseBrickMap, memory_mode: SparseMemoryMode) -> Result<Self> {
         let n_active_cells = map.n_active_bricks * 512;
+        let ctx = map.ctx.clone();
         let stream = map.stream.clone();
 
         // Allocate only for active cells
-        let d_f = stream.alloc_zeros::<f32>(19 * n_active_cells.max(1))?;
-        let d_rho = stream.alloc_zeros::<f32>(n_active_cells.max(1))?;
-        let d_u = stream.alloc_zeros::<f32>(3 * n_active_cells.max(1))?;
-        let d_tau = stream.alloc_zeros::<f32>(n_active_cells.max(1))?;
-        let d_force = stream.alloc_zeros::<f32>(3 * n_active_cells.max(1))?;
+        let d_f = SparseFieldBuffer::alloc_zeroed(&ctx, &stream, 19 * n_active_cells, memory_mode)?;
+        let d_rho = SparseFieldBuffer::alloc_zeroed(&ctx, &stream, n_active_cells, memory_mode)?;
+        let d_u = SparseFieldBuffer::alloc_zeroed(&ctx, &stream, 3 * n_active_cells, memory_mode)?;
+        let d_tau = SparseFieldBuffer::alloc_zeroed(&ctx, &stream, n_active_cells, memory_mode)?;
+        let d_force =
+            SparseFieldBuffer::alloc_zeroed(&ctx, &stream, 3 * n_active_cells, memory_mode)?;
 
         // Compile kernel
         let opts = cudarc::nvrtc::CompileOptions {
@@ -213,9 +268,15 @@ impl SparseLbmSolver {
             d_u,
             d_tau,
             d_force,
+            memory_mode,
             step: 0,
             lbm_step_kernel,
         })
+    }
+
+    /// Return the active sparse-memory mode.
+    pub fn memory_mode(&self) -> SparseMemoryMode {
+        self.memory_mode
     }
 
     pub fn evolve(&mut self, steps: usize) -> Result<()> {
@@ -244,21 +305,72 @@ impl SparseLbmSolver {
         for _ in 0..steps {
             let parity = (self.step % 2) as i32;
             let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
-            b.arg(&mut self.d_f)
-                .arg(&mut self.d_rho)
-                .arg(&mut self.d_u)
-                .arg(&self.d_tau)
-                .arg(&self.d_force)
-                .arg(&self.map.d_indirect_table)
-                .arg(&self.map.d_active_brick_ids)
-                .arg(&nx_i)
-                .arg(&ny_i)
-                .arg(&nz_i)
-                .arg(&bx_max_i)
-                .arg(&by_max_i)
-                .arg(&bz_max_i)
-                .arg(&n_active_cells_i)
-                .arg(&parity);
+            match self.memory_mode {
+                SparseMemoryMode::DeviceLocal => {
+                    let SparseFieldBuffer::Device(d_f) = &mut self.d_f else {
+                        unreachable!("device-local sparse solver requires device buffers")
+                    };
+                    let SparseFieldBuffer::Device(d_rho) = &mut self.d_rho else {
+                        unreachable!("device-local sparse solver requires device buffers")
+                    };
+                    let SparseFieldBuffer::Device(d_u) = &mut self.d_u else {
+                        unreachable!("device-local sparse solver requires device buffers")
+                    };
+                    let SparseFieldBuffer::Device(d_tau) = &self.d_tau else {
+                        unreachable!("device-local sparse solver requires device buffers")
+                    };
+                    let SparseFieldBuffer::Device(d_force) = &self.d_force else {
+                        unreachable!("device-local sparse solver requires device buffers")
+                    };
+                    b.arg(d_f)
+                        .arg(d_rho)
+                        .arg(d_u)
+                        .arg(d_tau)
+                        .arg(d_force)
+                        .arg(&self.map.d_indirect_table)
+                        .arg(&self.map.d_active_brick_ids)
+                        .arg(&nx_i)
+                        .arg(&ny_i)
+                        .arg(&nz_i)
+                        .arg(&bx_max_i)
+                        .arg(&by_max_i)
+                        .arg(&bz_max_i)
+                        .arg(&n_active_cells_i)
+                        .arg(&parity);
+                }
+                SparseMemoryMode::ManagedUnifiedPrefetch => {
+                    let SparseFieldBuffer::Unified(d_f) = &mut self.d_f else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_rho) = &mut self.d_rho else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_u) = &mut self.d_u else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_tau) = &self.d_tau else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    let SparseFieldBuffer::Unified(d_force) = &self.d_force else {
+                        unreachable!("managed sparse solver requires unified buffers")
+                    };
+                    b.arg(d_f)
+                        .arg(d_rho)
+                        .arg(d_u)
+                        .arg(d_tau)
+                        .arg(d_force)
+                        .arg(&self.map.d_indirect_table)
+                        .arg(&self.map.d_active_brick_ids)
+                        .arg(&nx_i)
+                        .arg(&ny_i)
+                        .arg(&nz_i)
+                        .arg(&bx_max_i)
+                        .arg(&by_max_i)
+                        .arg(&bz_max_i)
+                        .arg(&n_active_cells_i)
+                        .arg(&parity);
+                }
+            }
 
             unsafe { b.launch(cfg) }?;
             self.step += 1;
