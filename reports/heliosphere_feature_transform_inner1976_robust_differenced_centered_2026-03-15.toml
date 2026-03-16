@@ -1,0 +1,51 @@
+generated_at_utc = "2026-03-16T02:27:58.256700438+00:00"
+cube_csv = "reports/heliosphere_feature_cube_inner1976_2026-03-15.csv"
+selected_window = "inner1976"
+mode = "robust-differenced-centered"
+input_rows = 20977
+output_rows = 20977
+input_active_fraction_estimate = 0.19836010869047052
+output_active_fraction_estimate = 0.0012871239929446536
+groups = 3
+notes = [
+    "Rows are grouped by window_name/mission/product before transformation.",
+    "Differencing keeps row count by zero-filling the first row in each group.",
+    "Robust modes operate on dynamic channels only and preserve support coordinates.",
+    "Event masks use robust hysteresis on median-smoothed RMS energy without dropping rows.",
+]
+
+[[group_stats]]
+window_name = "inner1976"
+mission = "Helios 1"
+product = "Merged mission support"
+row_count = 8784
+event_row_count = 0
+event_coverage_fraction = 0.0
+baseline = 1.612710887552892
+spread = 1.819450115282478
+threshold_on = 9.800236406324043
+threshold_off = 5.706473646938468
+
+[[group_stats]]
+window_name = "inner1976"
+mission = "Helios 2"
+product = "Merged mission support"
+row_count = 8784
+event_row_count = 0
+event_coverage_fraction = 0.0
+baseline = 0.9372451958613921
+spread = 1.3895597273840998
+threshold_on = 7.190263969089841
+threshold_off = 4.0637545824756165
+
+[[group_stats]]
+window_name = "inner1976"
+mission = "IMP 8"
+product = "Merged 1-minute hourly aggregate"
+row_count = 3409
+event_row_count = 27
+event_coverage_fraction = 0.00792021120563215
+baseline = 0.6859295569174025
+spread = 0.6651219268279072
+threshold_on = 3.6789782276429848
+threshold_off = 2.1824538922801935

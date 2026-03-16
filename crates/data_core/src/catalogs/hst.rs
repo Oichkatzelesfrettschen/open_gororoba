@@ -62,7 +62,9 @@ pub fn parse_hst_public_metadata_json(
     let data = parsed
         .get("data")
         .and_then(Value::as_array)
-        .ok_or_else(|| FetchError::Validation("HST MAST response missing data array".to_string()))?;
+        .ok_or_else(|| {
+            FetchError::Validation("HST MAST response missing data array".to_string())
+        })?;
     let rows = data
         .iter()
         .map(|row| HstPublicObservation {
@@ -134,9 +136,9 @@ pub fn parse_hst_public_metadata_csv(path: &Path) -> Result<Vec<HstPublicObserva
         .map_err(|err| FetchError::Validation(format!("CSV read error: {err}")))?;
     let mut rows = Vec::new();
     for row in reader.deserialize() {
-        rows.push(
-            row.map_err(|err| FetchError::Validation(format!("HST metadata CSV parse error: {err}")))?,
-        );
+        rows.push(row.map_err(|err| {
+            FetchError::Validation(format!("HST metadata CSV parse error: {err}"))
+        })?);
     }
     Ok(rows)
 }
@@ -171,7 +173,9 @@ impl DatasetProvider for HstPublicMetadataProvider {
         let mut writer = csv::WriterBuilder::new()
             .has_headers(true)
             .from_path(&output)
-            .map_err(|err| FetchError::Validation(format!("create CSV {}: {err}", output.display())))?;
+            .map_err(|err| {
+                FetchError::Validation(format!("create CSV {}: {err}", output.display()))
+            })?;
         let mut total_rows = 0usize;
         for page in 1..=self.max_pages {
             let body = fetch_mast_page(page, self.page_size)?;
@@ -197,7 +201,10 @@ impl DatasetProvider for HstPublicMetadataProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("hst_public_observations.csv").exists()
+        config
+            .output_dir
+            .join("hst_public_observations.csv")
+            .exists()
     }
 }
 

@@ -5,11 +5,14 @@
 //! along with the memory estimators for dense and sparse 3D runs.
 
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use std::str::FromStr;
+use std::{collections::BTreeMap, str::FromStr};
 
 pub const HELIOSPHERE_FEATURE_DIM: usize = 16;
 pub const HELIOSPHERE_SIGNAL_DIM: usize = HELIOSPHERE_FEATURE_DIM - 1;
+pub const HELIOSPHERE_SUPPORT_DIM: usize = 3;
+pub const HELIOSPHERE_DYNAMIC_DIM: usize = HELIOSPHERE_SIGNAL_DIM - HELIOSPHERE_SUPPORT_DIM;
+const EVENT_THRESHOLD_ON_MULTIPLIER: f64 = 4.5;
+const EVENT_THRESHOLD_OFF_MULTIPLIER: f64 = 2.25;
 pub const HELIOSPHERE_CHANNEL_NAMES: [&str; HELIOSPHERE_FEATURE_DIM] = [
     "r_au",
     "lat_deg",
@@ -27,6 +30,20 @@ pub const HELIOSPHERE_CHANNEL_NAMES: [&str; HELIOSPHERE_FEATURE_DIM] = [
     "map_flux_mean",
     "map_flux_std",
     "bias",
+];
+pub const HELIOSPHERE_DYNAMIC_CHANNEL_NAMES: [&str; HELIOSPHERE_DYNAMIC_DIM] = [
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
 ];
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -52,6 +69,12 @@ pub struct HeliosphereFeatureRow {
     pub spectral_peak: f64,
     pub map_flux_mean: f64,
     pub map_flux_std: f64,
+    #[serde(default)]
+    pub event_score: Option<f64>,
+    #[serde(default)]
+    pub event_mask: Option<bool>,
+    #[serde(default)]
+    pub event_segment_id: Option<u32>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
@@ -61,6 +84,8 @@ pub enum HeliosphereTransformMode {
     Normalized,
     Differenced,
     DifferencedNormalized,
+    RobustCentered,
+    RobustDifferencedCentered,
 }
 
 impl FromStr for HeliosphereTransformMode {
@@ -72,11 +97,33 @@ impl FromStr for HeliosphereTransformMode {
             "normalized" => Ok(Self::Normalized),
             "differenced" => Ok(Self::Differenced),
             "differenced-normalized" => Ok(Self::DifferencedNormalized),
+            "robust-centered" => Ok(Self::RobustCentered),
+            "robust-differenced-centered" => Ok(Self::RobustDifferencedCentered),
             other => Err(format!(
-                "unsupported mode '{other}'; expected raw, normalized, differenced, or differenced-normalized"
+                "unsupported mode '{other}'; expected raw, normalized, differenced, differenced-normalized, robust-centered, or robust-differenced-centered"
             )),
         }
     }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HeliosphereTransformGroupStats {
+    pub window_name: String,
+    pub mission: String,
+    pub product: String,
+    pub row_count: usize,
+    pub event_row_count: usize,
+    pub event_coverage_fraction: f64,
+    pub baseline: Option<f64>,
+    pub spread: Option<f64>,
+    pub threshold_on: Option<f64>,
+    pub threshold_off: Option<f64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HeliosphereTransformResult {
+    pub rows: Vec<HeliosphereFeatureRow>,
+    pub groups: Vec<HeliosphereTransformGroupStats>,
 }
 
 impl HeliosphereFeatureRow {
@@ -118,6 +165,38 @@ impl HeliosphereFeatureRow {
         self.map_flux_std = values[14];
     }
 
+    pub fn dynamic_signal_channels(&self) -> [f64; HELIOSPHERE_DYNAMIC_DIM] {
+        [
+            self.density_cm3,
+            self.speed_kms,
+            self.temperature_k,
+            self.bx,
+            self.by,
+            self.bz,
+            self.b_mag,
+            self.crs_flux,
+            self.spectral_mean,
+            self.spectral_peak,
+            self.map_flux_mean,
+            self.map_flux_std,
+        ]
+    }
+
+    pub fn set_dynamic_signal_channels(&mut self, values: [f64; HELIOSPHERE_DYNAMIC_DIM]) {
+        self.density_cm3 = values[0];
+        self.speed_kms = values[1];
+        self.temperature_k = values[2];
+        self.bx = values[3];
+        self.by = values[4];
+        self.bz = values[5];
+        self.b_mag = values[6];
+        self.crs_flux = values[7];
+        self.spectral_mean = values[8];
+        self.spectral_peak = values[9];
+        self.map_flux_mean = values[10];
+        self.map_flux_std = values[11];
+    }
+
     pub fn algebra_vector(&self) -> [f64; HELIOSPHERE_FEATURE_DIM] {
         fn clean(value: f64) -> f64 {
             if value.is_finite() { value } else { 0.0 }
@@ -142,9 +221,37 @@ impl HeliosphereFeatureRow {
         ]
     }
 
+    pub fn algebra_vector_dynamic_bias_free(&self) -> [f64; HELIOSPHERE_FEATURE_DIM] {
+        fn clean(value: f64) -> f64 {
+            if value.is_finite() { value } else { 0.0 }
+        }
+        [
+            0.0,
+            0.0,
+            0.0,
+            clean(self.density_cm3),
+            clean(self.speed_kms),
+            clean(self.temperature_k),
+            clean(self.bx),
+            clean(self.by),
+            clean(self.bz),
+            clean(self.b_mag),
+            clean(self.crs_flux),
+            clean(self.spectral_mean),
+            clean(self.spectral_peak),
+            clean(self.map_flux_mean),
+            clean(self.map_flux_std),
+            0.0,
+        ]
+    }
+
     pub fn signal_energy(&self) -> f64 {
         let vector = self.algebra_vector();
         vector.iter().map(|value| value * value).sum::<f64>().sqrt()
+    }
+
+    pub fn event_active(&self) -> bool {
+        self.event_mask.unwrap_or(false)
     }
 }
 
@@ -180,6 +287,34 @@ fn finite_std(values: &[f64], mean: f64) -> f64 {
     var.sqrt()
 }
 
+fn finite_median(values: &[f64]) -> f64 {
+    let mut finite: Vec<f64> = values
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect();
+    if finite.is_empty() {
+        return 0.0;
+    }
+    finite.sort_by(|a, b| a.total_cmp(b));
+    let mid = finite.len() / 2;
+    if finite.len().is_multiple_of(2) {
+        (finite[mid - 1] + finite[mid]) * 0.5
+    } else {
+        finite[mid]
+    }
+}
+
+fn finite_mad(values: &[f64], median: f64) -> f64 {
+    let deviations: Vec<f64> = values
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .map(|value| (value - median).abs())
+        .collect();
+    finite_median(&deviations)
+}
+
 fn normalize_channel(value: f64, mean: f64, std: f64) -> f64 {
     if !value.is_finite() {
         return 0.0;
@@ -198,10 +333,13 @@ pub fn transform_feature_rows(
     rows: &[HeliosphereFeatureRow],
     mode: HeliosphereTransformMode,
 ) -> Vec<HeliosphereFeatureRow> {
-    if mode == HeliosphereTransformMode::Raw {
-        return rows.to_vec();
-    }
+    transform_feature_rows_with_stats(rows, mode).rows
+}
 
+pub fn transform_feature_rows_with_stats(
+    rows: &[HeliosphereFeatureRow],
+    mode: HeliosphereTransformMode,
+) -> HeliosphereTransformResult {
     let mut grouped: BTreeMap<(String, String, String), Vec<HeliosphereFeatureRow>> =
         BTreeMap::new();
     for row in rows {
@@ -216,17 +354,28 @@ pub fn transform_feature_rows(
     }
 
     let mut output = Vec::with_capacity(rows.len());
+    let mut stats = Vec::with_capacity(grouped.len());
     for ((_window, _mission, _product), mut group) in grouped {
         group.sort_by_key(row_sort_key);
-
-        let base_rows = if mode == HeliosphereTransformMode::Differenced {
-            difference_rows(&group)
-        } else if mode == HeliosphereTransformMode::Normalized {
-            normalize_rows(&group)
-        } else {
-            normalize_rows(&difference_rows(&group))
+        let (base_rows, group_stats) = match mode {
+            HeliosphereTransformMode::Raw => (group.clone(), summarize_group_stats(&group, None)),
+            HeliosphereTransformMode::Differenced => {
+                (difference_rows(&group), summarize_group_stats(&group, None))
+            }
+            HeliosphereTransformMode::Normalized => {
+                (normalize_rows(&group), summarize_group_stats(&group, None))
+            }
+            HeliosphereTransformMode::DifferencedNormalized => (
+                normalize_rows(&difference_rows(&group)),
+                summarize_group_stats(&group, None),
+            ),
+            HeliosphereTransformMode::RobustCentered => robust_transform_rows(&group, false),
+            HeliosphereTransformMode::RobustDifferencedCentered => {
+                robust_transform_rows(&group, true)
+            }
         };
         output.extend(base_rows);
+        stats.push(group_stats);
     }
     output.sort_by(|a, b| {
         (
@@ -242,7 +391,22 @@ pub fn transform_feature_rows(
                 row_sort_key(b),
             ))
     });
-    output
+    stats.sort_by(|a, b| {
+        (
+            a.window_name.as_str(),
+            a.mission.as_str(),
+            a.product.as_str(),
+        )
+            .cmp(&(
+                b.window_name.as_str(),
+                b.mission.as_str(),
+                b.product.as_str(),
+            ))
+    });
+    HeliosphereTransformResult {
+        rows: output,
+        groups: stats,
+    }
 }
 
 fn normalize_rows(rows: &[HeliosphereFeatureRow]) -> Vec<HeliosphereFeatureRow> {
@@ -255,7 +419,10 @@ fn normalize_rows(rows: &[HeliosphereFeatureRow]) -> Vec<HeliosphereFeatureRow> 
             columns[idx].push(values[idx]);
         }
     }
-    let means = columns.iter().map(|col| finite_mean(col)).collect::<Vec<_>>();
+    let means = columns
+        .iter()
+        .map(|col| finite_mean(col))
+        .collect::<Vec<_>>();
     let stds = columns
         .iter()
         .zip(means.iter().copied())
@@ -284,8 +451,16 @@ fn difference_rows(rows: &[HeliosphereFeatureRow]) -> Vec<HeliosphereFeatureRow>
         let mut diff = [0.0_f64; HELIOSPHERE_SIGNAL_DIM];
         if let Some(prev) = previous {
             for idx in 0..HELIOSPHERE_SIGNAL_DIM {
-                let lhs = if current[idx].is_finite() { current[idx] } else { 0.0 };
-                let rhs = if prev[idx].is_finite() { prev[idx] } else { 0.0 };
+                let lhs = if current[idx].is_finite() {
+                    current[idx]
+                } else {
+                    0.0
+                };
+                let rhs = if prev[idx].is_finite() {
+                    prev[idx]
+                } else {
+                    0.0
+                };
                 diff[idx] = lhs - rhs;
             }
         }
@@ -295,6 +470,248 @@ fn difference_rows(rows: &[HeliosphereFeatureRow]) -> Vec<HeliosphereFeatureRow>
         previous = Some(current);
     }
     output
+}
+
+fn summarize_group_stats(
+    rows: &[HeliosphereFeatureRow],
+    thresholds: Option<(f64, f64, f64, f64)>,
+) -> HeliosphereTransformGroupStats {
+    let sample = rows.first().cloned().unwrap_or(HeliosphereFeatureRow {
+        window_name: String::new(),
+        mission: String::new(),
+        product: String::new(),
+        year: 0,
+        doy: 0,
+        hour: 0,
+        r_au: 0.0,
+        lat_deg: 0.0,
+        lon_deg: 0.0,
+        density_cm3: 0.0,
+        speed_kms: 0.0,
+        temperature_k: 0.0,
+        bx: 0.0,
+        by: 0.0,
+        bz: 0.0,
+        b_mag: 0.0,
+        crs_flux: 0.0,
+        spectral_mean: 0.0,
+        spectral_peak: 0.0,
+        map_flux_mean: 0.0,
+        map_flux_std: 0.0,
+        event_score: None,
+        event_mask: None,
+        event_segment_id: None,
+    });
+    let event_row_count = rows.iter().filter(|row| row.event_active()).count();
+    HeliosphereTransformGroupStats {
+        window_name: sample.window_name,
+        mission: sample.mission,
+        product: sample.product,
+        row_count: rows.len(),
+        event_row_count,
+        event_coverage_fraction: if rows.is_empty() {
+            0.0
+        } else {
+            event_row_count as f64 / rows.len() as f64
+        },
+        baseline: thresholds.map(|value| value.0),
+        spread: thresholds.map(|value| value.1),
+        threshold_on: thresholds.map(|value| value.2),
+        threshold_off: thresholds.map(|value| value.3),
+    }
+}
+
+fn robust_transform_rows(
+    rows: &[HeliosphereFeatureRow],
+    differenced: bool,
+) -> (Vec<HeliosphereFeatureRow>, HeliosphereTransformGroupStats) {
+    let mut dynamic_series = Vec::with_capacity(rows.len());
+    let mut previous: Option<[f64; HELIOSPHERE_DYNAMIC_DIM]> = None;
+    for row in rows {
+        let current = row.dynamic_signal_channels();
+        let dynamic = if differenced {
+            let mut diff = [0.0_f64; HELIOSPHERE_DYNAMIC_DIM];
+            if let Some(prev) = previous {
+                for idx in 0..HELIOSPHERE_DYNAMIC_DIM {
+                    let lhs = if current[idx].is_finite() {
+                        current[idx]
+                    } else {
+                        0.0
+                    };
+                    let rhs = if prev[idx].is_finite() {
+                        prev[idx]
+                    } else {
+                        0.0
+                    };
+                    diff[idx] = lhs - rhs;
+                }
+            }
+            diff
+        } else {
+            current.map(|value| if value.is_finite() { value } else { 0.0 })
+        };
+        dynamic_series.push(dynamic);
+        previous = Some(current);
+    }
+
+    let mut medians = [0.0_f64; HELIOSPHERE_DYNAMIC_DIM];
+    let mut scales = [1.0_f64; HELIOSPHERE_DYNAMIC_DIM];
+    for idx in 0..HELIOSPHERE_DYNAMIC_DIM {
+        let column = dynamic_series
+            .iter()
+            .map(|row| row[idx])
+            .collect::<Vec<_>>();
+        let median = finite_median(&column);
+        let mad = finite_mad(&column, median);
+        let mut scale = 1.4826 * mad;
+        if !scale.is_finite() || scale <= 0.0 {
+            scale = finite_std(&column, finite_mean(&column));
+        }
+        if !scale.is_finite() || scale <= 0.0 {
+            scale = 1.0;
+        }
+        medians[idx] = median;
+        scales[idx] = scale;
+    }
+
+    let mut transformed = rows.to_vec();
+    let mut event_scores = Vec::with_capacity(rows.len());
+    for (row, dynamic) in transformed.iter_mut().zip(dynamic_series.iter()) {
+        let mut out = [0.0_f64; HELIOSPHERE_DYNAMIC_DIM];
+        for idx in 0..HELIOSPHERE_DYNAMIC_DIM {
+            let centered = (dynamic[idx] - medians[idx]) / scales[idx];
+            out[idx] = centered.clamp(-8.0, 8.0);
+        }
+        row.set_dynamic_signal_channels(out);
+        event_scores.push(rms_energy(&out));
+    }
+
+    let smoothed_scores = median_filter3(&event_scores);
+    let thresholds = compute_event_thresholds(&smoothed_scores);
+    let event_mask = if transformed.len() < 4 {
+        vec![true; transformed.len()]
+    } else {
+        build_event_mask(&smoothed_scores, thresholds.2, thresholds.3)
+    };
+    let event_segment_ids = build_event_segment_ids(&event_mask);
+    for idx in 0..transformed.len() {
+        transformed[idx].event_score = Some(smoothed_scores[idx]);
+        transformed[idx].event_mask = Some(event_mask[idx]);
+        transformed[idx].event_segment_id = event_segment_ids[idx];
+    }
+
+    (
+        transformed.clone(),
+        summarize_group_stats(&transformed, Some(thresholds)),
+    )
+}
+
+fn rms_energy(values: &[f64; HELIOSPHERE_DYNAMIC_DIM]) -> f64 {
+    let mut sum_sq = 0.0;
+    let mut count = 0usize;
+    for value in values {
+        if value.is_finite() {
+            sum_sq += value * value;
+            count += 1;
+        }
+    }
+    if count == 0 {
+        0.0
+    } else {
+        (sum_sq / count as f64).sqrt()
+    }
+}
+
+fn median_filter3(values: &[f64]) -> Vec<f64> {
+    let mut output = Vec::with_capacity(values.len());
+    for idx in 0..values.len() {
+        let start = idx.saturating_sub(1);
+        let end = (idx + 2).min(values.len());
+        output.push(finite_median(&values[start..end]));
+    }
+    output
+}
+
+fn compute_event_thresholds(values: &[f64]) -> (f64, f64, f64, f64) {
+    let baseline = finite_median(values);
+    let mad = finite_mad(values, baseline);
+    let mut spread = 1.4826 * mad;
+    if !spread.is_finite() || spread <= 0.0 {
+        spread = finite_std(values, finite_mean(values));
+    }
+    if !spread.is_finite() || spread <= 0.0 {
+        spread = 1.0;
+    }
+    let threshold_on = baseline + EVENT_THRESHOLD_ON_MULTIPLIER * spread;
+    let threshold_off = baseline + EVENT_THRESHOLD_OFF_MULTIPLIER * spread;
+    (baseline, spread, threshold_on, threshold_off)
+}
+
+fn build_event_mask(values: &[f64], threshold_on: f64, threshold_off: f64) -> Vec<bool> {
+    let mut mask = Vec::with_capacity(values.len());
+    let mut active = false;
+    for value in values {
+        let finite = if value.is_finite() { *value } else { 0.0 };
+        if !active && finite >= threshold_on {
+            active = true;
+        } else if active && finite < threshold_off {
+            active = false;
+        }
+        mask.push(active);
+    }
+    let mut dilated = mask.clone();
+    for idx in 0..mask.len() {
+        if mask[idx] {
+            if idx > 0 {
+                dilated[idx - 1] = true;
+            }
+            dilated[idx] = true;
+            if idx + 1 < mask.len() {
+                dilated[idx + 1] = true;
+            }
+        }
+    }
+
+    let mut merged = dilated.clone();
+    let mut idx = 0usize;
+    while idx < merged.len() {
+        if merged[idx] {
+            idx += 1;
+            continue;
+        }
+        let start = idx;
+        while idx < merged.len() && !merged[idx] {
+            idx += 1;
+        }
+        let end = idx;
+        let gap = end - start;
+        let left_active = start > 0 && merged[start - 1];
+        let right_active = end < merged.len() && merged[end];
+        if gap <= 1 && left_active && right_active {
+            for value in &mut merged[start..end] {
+                *value = true;
+            }
+        }
+    }
+    merged
+}
+
+fn build_event_segment_ids(mask: &[bool]) -> Vec<Option<u32>> {
+    let mut out = vec![None; mask.len()];
+    let mut current_segment = 0u32;
+    let mut in_segment = false;
+    for (idx, active) in mask.iter().copied().enumerate() {
+        if active {
+            if !in_segment {
+                current_segment += 1;
+                in_segment = true;
+            }
+            out[idx] = Some(current_segment);
+        } else {
+            in_segment = false;
+        }
+    }
+    out
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -381,6 +798,40 @@ pub fn estimate_sparse_memory_plan(grid_size: usize, active_fraction: f64) -> Sp
 mod tests {
     use super::*;
 
+    fn sample_row(
+        hour: u8,
+        density_cm3: f64,
+        speed_kms: f64,
+        temperature_k: f64,
+    ) -> HeliosphereFeatureRow {
+        HeliosphereFeatureRow {
+            window_name: "w".to_string(),
+            mission: "m".to_string(),
+            product: "p".to_string(),
+            year: 2020,
+            doy: 1,
+            hour,
+            r_au: 1.0 + hour as f64,
+            lat_deg: 2.0,
+            lon_deg: 3.0,
+            density_cm3,
+            speed_kms,
+            temperature_k,
+            bx: 0.1 * hour as f64,
+            by: 0.0,
+            bz: 0.0,
+            b_mag: 0.1 * hour as f64,
+            crs_flux: 0.0,
+            spectral_mean: 0.0,
+            spectral_peak: 0.0,
+            map_flux_mean: 0.0,
+            map_flux_std: 0.0,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
+        }
+    }
+
     #[test]
     fn test_algebra_vector_dimension() {
         let row = HeliosphereFeatureRow {
@@ -405,6 +856,9 @@ mod tests {
             spectral_peak: 1.1,
             map_flux_mean: f64::NAN,
             map_flux_std: f64::NAN,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
         };
         let vector = row.algebra_vector();
         assert_eq!(vector.len(), HELIOSPHERE_FEATURE_DIM);
@@ -447,6 +901,9 @@ mod tests {
                 spectral_peak: 13.0,
                 map_flux_mean: 14.0,
                 map_flux_std: 15.0,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             },
             HeliosphereFeatureRow {
                 window_name: "w".to_string(),
@@ -470,6 +927,9 @@ mod tests {
                 spectral_peak: 26.0,
                 map_flux_mean: 28.0,
                 map_flux_std: 30.0,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             },
         ];
         let transformed = transform_feature_rows(&rows, HeliosphereTransformMode::Differenced);
@@ -504,6 +964,9 @@ mod tests {
                 spectral_peak: 0.0,
                 map_flux_mean: 0.0,
                 map_flux_std: 0.0,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             },
             HeliosphereFeatureRow {
                 window_name: "w".to_string(),
@@ -527,6 +990,9 @@ mod tests {
                 spectral_peak: 0.0,
                 map_flux_mean: 0.0,
                 map_flux_std: 0.0,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
             },
         ];
         let transformed = transform_feature_rows(&rows, HeliosphereTransformMode::Normalized);
@@ -534,5 +1000,52 @@ mod tests {
         assert_eq!(transformed[0].density_cm3, 0.0);
         assert_eq!(transformed[1].density_cm3, 0.0);
         assert!(transformed[0].r_au.is_finite());
+    }
+
+    #[test]
+    fn test_robust_differenced_centered_marks_small_groups_active() {
+        let rows = vec![
+            sample_row(0, 1.0, 100.0, 1000.0),
+            sample_row(1, 2.0, 110.0, 1010.0),
+            sample_row(2, 3.0, 120.0, 1020.0),
+        ];
+        let transformed = transform_feature_rows_with_stats(
+            &rows,
+            HeliosphereTransformMode::RobustDifferencedCentered,
+        );
+        assert_eq!(transformed.rows.len(), 3);
+        assert!(
+            transformed
+                .rows
+                .iter()
+                .all(HeliosphereFeatureRow::event_active)
+        );
+        assert_eq!(transformed.groups.len(), 1);
+        assert_eq!(transformed.groups[0].event_row_count, 3);
+        assert_eq!(transformed.rows[1].r_au, rows[1].r_au);
+        assert_eq!(transformed.rows[1].lat_deg, rows[1].lat_deg);
+        assert_eq!(transformed.rows[1].lon_deg, rows[1].lon_deg);
+    }
+
+    #[test]
+    fn test_robust_centered_constant_dynamic_channels_stay_finite() {
+        let rows = vec![
+            sample_row(0, 5.0, 10.0, 100.0),
+            sample_row(1, 5.0, 10.0, 100.0),
+            sample_row(2, 5.0, 10.0, 100.0),
+            sample_row(3, 5.0, 10.0, 100.0),
+        ];
+        let transformed =
+            transform_feature_rows_with_stats(&rows, HeliosphereTransformMode::RobustCentered);
+        assert!(transformed.rows.iter().all(|row| {
+            row.dynamic_signal_channels()
+                .iter()
+                .all(|value| value.is_finite())
+        }));
+        assert!(transformed.rows.iter().all(|row| {
+            row.dynamic_signal_channels()
+                .iter()
+                .all(|value| value.abs() <= 8.0)
+        }));
     }
 }

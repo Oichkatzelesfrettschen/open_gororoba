@@ -1,0 +1,147 @@
+generated_at_utc = "2026-03-16T02:29:38.871969977+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+selected_window = "modern2020"
+mode = "robust-differenced-centered"
+input_rows = 47337
+output_rows = 47337
+input_active_fraction_estimate = 0.12698312102583603
+output_active_fraction_estimate = 0.0712972938716015
+groups = 11
+notes = [
+    "Rows are grouped by window_name/mission/product before transformation.",
+    "Differencing keeps row count by zero-filling the first row in each group.",
+    "Robust modes operate on dynamic channels only and preserve support coordinates.",
+    "Event masks use robust hysteresis on median-smoothed RMS energy without dropping rows.",
+]
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "BepiColombo"
+product = "Helio1hr support"
+row_count = 8784
+event_row_count = 0
+event_coverage_fraction = 0.0
+baseline = 0.0
+spread = 1.0
+threshold_on = 4.5
+threshold_off = 2.25
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "FIELDS MAG RTN"
+row_count = 1164
+event_row_count = 95
+event_coverage_fraction = 0.08161512027491409
+baseline = 0.5732983303802218
+spread = 0.4505196324837023
+threshold_on = 2.6006366765568822
+threshold_off = 1.5869675034685522
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Parker Solar Probe"
+product = "Merged hourly"
+row_count = 8784
+event_row_count = 520
+event_coverage_fraction = 0.05919854280510018
+baseline = 0.6162100933320033
+spread = 0.7398665779209554
+threshold_on = 3.945609693976303
+threshold_off = 2.280909893654153
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "SOHO"
+product = "CELIAS daily CDF hourly"
+row_count = 8091
+event_row_count = 451
+event_coverage_fraction = 0.05574094673093561
+baseline = 0.5168317488140064
+spread = 0.35410686635772337
+threshold_on = 2.1103126474237612
+threshold_off = 1.313572198118884
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "MAG RTN 1-minute"
+row_count = 3012
+event_row_count = 85
+event_coverage_fraction = 0.028220451527224435
+baseline = 0.5561134230950491
+spread = 0.3630584023800223
+threshold_on = 2.1898762338051494
+threshold_off = 1.3729948284500992
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "Merged hourly"
+row_count = 8784
+event_row_count = 1698
+event_coverage_fraction = 0.19330601092896174
+baseline = 0.12136365761081999
+spread = 0.17993375877380172
+threshold_on = 0.9310655720929277
+threshold_off = 0.5262146148518738
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA SCPOT 10-second"
+row_count = 4100
+event_row_count = 250
+event_coverage_fraction = 0.06097560975609756
+baseline = 0.2753925142193781
+spread = 0.2214075706941826
+threshold_on = 1.2717265823431998
+threshold_off = 0.7735595482812889
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW BIA density"
+row_count = 842
+event_row_count = 32
+event_coverage_fraction = 0.03800475059382423
+baseline = 0.19766496553132404
+spread = 0.1795213041467385
+threshold_on = 1.0055108341916472
+threshold_off = 0.6015878998614856
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW HFR survey flux"
+row_count = 1090
+event_row_count = 97
+event_coverage_fraction = 0.0889908256880734
+baseline = 0.36318239498113647
+spread = 0.22971381716106895
+threshold_on = 1.3968945722059467
+threshold_off = 0.8800384835935416
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "RPW TNR survey flux"
+row_count = 889
+event_row_count = 54
+event_coverage_fraction = 0.06074240719910011
+baseline = 0.3487917843827147
+spread = 0.17803669078811393
+threshold_on = 1.1499568929292274
+threshold_off = 0.749374338655971
+
+[[group_stats]]
+window_name = "modern2020"
+mission = "Solar Orbiter"
+product = "SWA-PAS ground moments"
+row_count = 1797
+event_row_count = 93
+event_coverage_fraction = 0.05175292153589316
+baseline = 0.503012462872374
+spread = 0.31743024949946547
+threshold_on = 1.9314485856199686
+threshold_off = 1.2172305242461712
