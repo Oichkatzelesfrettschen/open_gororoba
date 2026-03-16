@@ -92,7 +92,10 @@ __device__ __forceinline__ signed char float_to_i8(float v) {
 // Fused collision + streaming with INT8 storage, FP32 compute.
 // dp4a applied to momentum accumulation (cx/cy/cz dot product with f values).
 // Per-cell stride: 20 bytes (index 19 is padding, never accessed after init).
-extern "C" __global__ void lbm_step_fused_int8_kernel(
+// __launch_bounds__(128, 4): target 4 blocks/SM; dp4a groups add to register count.
+// This hint keeps the compiler from allocating more than ~128 regs/thread, preserving
+// adequate occupancy (4 active blocks per SM = 512 threads = 50% warp capacity).
+extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_fused_int8_kernel(
     const signed char* f_in,   // n_cells * 20 int8 values (stride 20, index 19 unused)
     signed char* f_out,
     float* rho_out,

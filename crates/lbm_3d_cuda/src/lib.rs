@@ -1183,7 +1183,12 @@ impl LbmSolver3DCuda {
                         (self.nz as u32).div_ceil(4),
                     ),
                     block_dim: (8, 8, 4),
-                    shared_mem_bytes: 45_600,
+                    // 0: shared memory is statically declared in the kernel as
+                    //   __shared__ float sf[19 * PAD_VOL]  (45600 bytes, ~44.5 KB).
+                    // Setting dynamic shared_mem_bytes > 0 would double the allocation
+                    // (static + dynamic = 91200 B), exceeding the 48 KB per-block limit
+                    // and causing CUDA_ERROR_INVALID_VALUE at launch.
+                    shared_mem_bytes: 0,
                 };
                 let mut b = self.stream.launch_builder(soa_kernel);
                 b.arg(&self.d_f)

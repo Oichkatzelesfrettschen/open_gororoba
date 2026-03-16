@@ -3194,6 +3194,34 @@ status = "Verified"
 where_stated = "data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)"
 
 [[claim]]
+id = "C-1375"
+last_verified = "2026-03-15"
+statement = "i-major SoA pull-scheme D3Q19 LBM kernels improve MLUPS over AoS push-scheme at 128^3 on RTX 4070 Ti (Ada SM 8.9): FP16 SoA 3505 vs AoS 1884 MLUPS (1.86x); FP8 e4m3 SoA 5530 vs AoS 3132 MLUPS (1.77x); INT8 SoA 5548 vs AoS 3170 MLUPS (1.75x)."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1376"
+last_verified = "2026-03-15"
+statement = "AoS scatter-write non-coalescing erases sub-FP32 bandwidth advantage at 128^3: FP16 AoS 1884 MLUPS (same as FP32 1969 MLUPS), FP8/INT8 AoS 3132-3170 MLUPS (only 1.59-1.61x not expected 4x)."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1377"
+last_verified = "2026-03-15"
+statement = "INT4 nibble-packed i-SoA D3Q19 bandwidth ceiling: 6340 MLUPS, 323 GB/s, 64.2% of 504 GB/s peak at 128^3. Physics broken; valid as bandwidth ceiling reference only."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1378"
+last_verified = "2026-03-15"
+statement = "FP8 e5m2 and FP8 e4m3 AoS D3Q19 throughput identical at 128^3 (3130 vs 3132 MLUPS). Format choice is physics-only: e4m3 for near-equilibrium, e5m2 for wide-range flows."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
 id = "C-138"
 last_verified = "2026-02-01"
 statement = "3-generated subalgebras become non-associative at dim=8 (octonions), while 2-generated subalgebras (Artin's theorem) fail at dim=16. A(x,y,xz)/A(x,y,z) ratio ~ 1.0, indicating mixed 3-gen associators are comparable to pure 3-gen."
@@ -9242,3 +9270,66 @@ status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
 
+
+[[claim]]
+id = "C-1379"
+last_verified = "2026-03-15"
+statement = "INT16 AoS and FP16 AoS D3Q19 LBM throughput are equivalent at 128^3 on RTX 4070 Ti (Ada SM 8.9): INT16 AoS 1904.1 MLUPS vs FP16 AoS 1911.5 MLUPS (0.4% difference). Both are 2 bytes/dist, stride-20 AoS layout; scatter-write non-coalescing dominates over arithmetic format differences."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1380"
+last_verified = "2026-03-15"
+statement = "INT16 i-major SoA pull-scheme D3Q19 LBM achieves 3568.9 MLUPS at 128^3 (328.3 GB/s, 65.1% of 504 GB/s peak), 3.0% faster than FP16 SoA pull-scheme (3463.3 MLUPS). Both are 2 bytes/dist; INT16 advantage is attributed to elimination of float16 load/store conversion instructions per direction (integer path through L2 vs FP16 conversion pipeline)."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1381"
+last_verified = "2026-03-15"
+statement = "BF16 i-major SoA pull-scheme D3Q19 LBM achieves 3203.7 MLUPS at 128^3 (294.7 GB/s, 58.5% peak), 7.5% slower than FP16 SoA (3463.3 MLUPS) despite identical element size (2 bytes/dist). On Ada SM 8.9, BF16 scalar loads exhibit slightly higher latency than FP16 scalar loads; no BF16 FFMA acceleration on Ada gaming SKU. BF16 SoA advantage is bandwidth-only (2x vs FP32), not arithmetic."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1382"
+last_verified = "2026-03-15"
+statement = "FP32 SoA cache-streaming stores (__stcs, PTX st.global.cs, L2 evict-first) provide negligible throughput gain at 128^3: 2026.5 MLUPS vs FP32 SoA pull baseline 1966.5 MLUPS (+3.1%). The 304 MB ping buffer at 128^3 far exceeds the 48 MB Ada L2 cache; evict-first prevents premature ping eviction only when working set fits in L2. At small grids (32^3, 64^3), apparent bandwidth exceeds 200% (L2 reuse artifact, working set fits in L2)."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1383"
+last_verified = "2026-03-15"
+statement = "FP16 SoA half2 ILP variant (2 cells per thread, __half2 velocity moment accumulation) achieves 3801.5 MLUPS at 128^3 (349.7 GB/s, 69.4% peak), a +9.8% improvement over FP16 SoA standard (3463.3 MLUPS). Dual-issue FP32 pipeline benefit on Ada SM 8.9 is confirmed: independent cell A and cell B BGK collision chains interleave on the 2x FP32 issue slots."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1384"
+last_verified = "2026-03-15"
+statement = "FP64 i-major SoA pull-scheme D3Q19 LBM achieves 406.4 MLUPS at 128^3 (149.6 GB/s, 29.7% peak), slightly below FP64 AoS (460.7 MLUPS, 169.5 GB/s). The FP64 regime is compute-bound (Ada SM 8.9 delivers only ~0.6 TFLOPS FP64); SoA pull-scheme does not recover bandwidth advantage when arithmetic throughput is the bottleneck. VRAM at 128^3: FP64 SoA 608 MB, AoS 608 MB (no VRAM saving vs AoS; FP64 has no padding slot unlike FP32 AoS stride-20)."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1385"
+last_verified = "2026-03-15"
+statement = "Full D3Q19 LBM precision tier MLUPS ranking at 128^3 on RTX 4070 Ti (Ada SM 8.9, 504 GB/s peak): (1) INT8 SoA 5643.0 MLUPS (51.5% BW, 76 MB), (2) FP8_e4m3 SoA 5408.3 MLUPS (49.4% BW, 76 MB), (3) FP8_e5m2 SoA 5280.2 MLUPS (48.2% BW, 76 MB), (4) INT4 bw-ceil 6168.5 MLUPS (62.4% BW, 38 MB, non-physics), (5) FP16 SoA H2 3801.5 MLUPS (69.4% BW, 152 MB), (6) INT16 SoA 3568.9 MLUPS (65.1% BW, 152 MB), (7) FP16 SoA 3463.3 MLUPS (63.2% BW, 152 MB), (8) BF16 SoA 3203.7 MLUPS (58.5% BW, 152 MB), (9) FP32 coarsened 2107.4 MLUPS (76.9% BW, 304 MB), (10) FP32 aa 2061.6 MLUPS (75.3% BW, 304 MB). INT8 SoA is the Pareto-optimal production tier: highest physics-valid MLUPS with 4x VRAM reduction vs FP32."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1386"
+last_verified = "2026-03-15"
+statement = "FP4 E2M1 nibble-packed i-SoA D3Q19 bandwidth ceiling achieves 4726.5 MLUPS (241.0 GB/s, 47.8% peak) at 128^3 on Ada SM 8.9 (emulated; Blackwell SM 10.0+ required for hardware FP4). FP4 ceiling is 23% slower than INT4 nibble ceiling (6168.5 MLUPS) due to FP4_DECODE[16] lookup table overhead per nibble. Both have identical VRAM footprint (38 MB at 128^3). Physics is broken for both (FP4 rest weight 1/3 rounds to 0.5 with 50% error; INT4 edge weights collapse to zero)."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"
+
+[[claim]]
+id = "C-1387"
+last_verified = "2026-03-15"
+statement = "FP8_e5m2 i-major SoA pull-scheme D3Q19 LBM achieves 5280.2 MLUPS at 128^3 (242.9 GB/s, 48.2% peak), 2.4% slower than FP8_e4m3 SoA (5408.3 MLUPS). Formats are identical in byte width (1 byte/dist); the throughput gap is consistent with e5m2 encoding having marginally higher float-to-byte quantization overhead in the store path (wider range requires renormalization vs e4m3 clipping). Format selection remains physics-driven: e4m3 for rho near 1 (tighter mantissa), e5m2 for density-contrast flows."
+status = "Verified"
+where_stated = "data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)"

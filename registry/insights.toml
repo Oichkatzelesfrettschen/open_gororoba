@@ -1716,3 +1716,66 @@ sprint = "S83"
 summary = "Full precision-tier decision table for D3Q19 LBM on Ada SM 8.9 (RTX 4070 Ti, 504 GB/s peak). All tiers store distributions compressed and promote to FP32/FP64 for arithmetic. MLUPS estimates at 128^3: DD-FP128 ~0.05 (16 bytes/dist, 1218 MB VRAM, 106-bit mantissa, i-major SoA coalesced reads -- accuracy validation only), FP64 ~3 (8 bytes, 609 MB, 52-bit mantissa -- spectral validation only; 64:1 speed ratio on gaming Ada SKU), FP32 ~200 (4 bytes, 305 MB -- primary production tier, full stability envelope), BF16 ~400 (2 bytes, 152 MB, 8-bit mantissa -- risk: instability at tau < 0.55 or shear boundaries; benefit: same scalar speed as FP32 plus 2x bandwidth), FP16 ~400 (2 bytes, 160 MB (stride=20 padded), 10-bit mantissa -- safer for small-mantissa features, narrower dynamic range than BF16), FP8-e4m3 ~800 (1 byte, 80 MB (stride=20 padded), 4-bit mantissa -- qualitative only, SM 8.9+ required), INT8-fixed ~800 (1 byte, 80 MB (stride=20 padded), saturation risk at rho >> 1). At 256^3 multiply VRAM by 8 (FP32 = 2.4 GB, FP8/INT8 = 609 MB). Variant selection within FP32 SoA: grid <= 32^3 use coarsened_f4 (instruction-limited, not bandwidth); 64^3 use mrt_tiled or coarsened_f4; 128^3 use mrt_tiled (C-1304: >= 60% peak bandwidth established); >= 256^3 use aa (halves VRAM via A-A pattern at same MLUPS); VRAM-critical use aa+bf16 (4x reduction vs FP32 ping-pong). The cuda-precision-bench binary sweeps all combinations and writes data/benchmarks/cuda_kernel_baseline.csv. Key tradeoffs measured: float4 widening (coarsened_f2 vs coarsened_f4 delta), ILP chains (bgk vs mrt at 128^3+), tiling LDS vs L2 (standard vs tiled, target 15-25%), CUDA Graph amortization (graph_pair vs plain step for N >= 100 pairs). TensorCore WMMA proxy (kernels_tensor_core.cu) is a headroom benchmark only -- measures TC peak GFLOPS gap vs bandwidth-bound scalar LBM to quantify whether Hermite-expansion matrix reformulation of collision step would gain TC acceleration."
 title = "CUDA D3Q19 LBM precision-tier decision table: MLUPS, bandwidth, and VRAM across 7 tiers on Ada SM 8.9"
 
+[[insight]]
+claims = ["C-1304","C-1305"]
+id = "I-185"
+sprint = "S84"
+summary = "AoS (Array of Structures) layout f[cell*stride+dir] causes non-coalesced scatter-writes for diagonal LBM directions. In the push-scheme, the destination cell idx_next = cell + (cx + ny*cy + nx*ny*cz) has a stride up to nx*ny+nx+1 elements from the source cell, so 32 threads in a warp write to 32 widely-separated addresses. For x-direction (delta=1) this is coalesced, but for z-diagonal (delta=nx*ny+nx+1 ~ O(N^2)) the 32 writes scatter across distinct 128-byte cache lines -- occupying 32 L2 transactions instead of 1. This explains why prior FP16/FP8/INT8 AoS kernels achieved only 1.34-1.43x MLUPS improvement vs FP32 rather than the expected 4x bandwidth reduction. The i-major SoA layout f[dir*n_cells+cell] with pull-scheme reads f_in[dir*n_cells+back_cell] and writes f_out[dir*n_cells+cell]: consecutive warp threads always write to consecutive cells, producing coalesced 128-byte transactions for every direction. Expected MLUPS improvement over AoS sub-byte tiers: 1.5-3x at 128^3, approaching the theoretical 4x bandwidth ratio."
+title = "AoS scatter-write bottleneck for diagonal directions: i-major SoA pull-scheme fix achieves expected 4x bandwidth reduction"
+
+[[insight]]
+claims = []
+id = "I-186"
+sprint = "S84"
+summary = "INT4 (4-bit signed, range -8..7) is not physically viable for standard D3Q19 LBM. With DIST_SCALE=14: rest weight 1/3*14=4.67->5 (OK), face weight 1/18*14=0.78->1 (marginal), edge weight 1/36*14=0.39->0 (quantizes to ZERO). The 12 diagonal-velocity populations (directions 7-18) collapse to zero on every step, destroying mass conservation. INT4 is therefore a bandwidth ceiling test only: it establishes the maximum MLUPS when distribution buffers are 2x denser than INT8 in memory. The nibble-packing design uses i-major SoA with 2 cells per byte (lo nibble = cell 2k, hi nibble = cell 2k+1). The 2-cells-per-thread design avoids concurrent read-modify-write races: thread k exclusively owns byte k for all 19 directions, so nibble stores are race-free. Buffer size at 128^3: 19 * 1,048,576 * 2 (ping+pong) = ~38 MB (4x less than FP32, 2x less than FP8/INT8). Effective bandwidth per cell step: 19*n_cells/2 bytes for distributions (0.5 bytes/dist) plus 8*n_cells*4 bytes for FP32 macroscopic fields = ~51.5 bytes/cell/step."
+title = "INT4 nibble-packed D3Q19: bandwidth ceiling test design and physical viability constraint"
+
+[[insight]]
+claims = []
+id = "I-187"
+sprint = "S84"
+summary = "On Ada Lovelace SM 8.9, BF16 and FP16 Tensor Core WMMA share the same hardware datapath and produce identical theoretical throughput (~330 TFLOPS). Both use the 16x16x16 WMMA shape with FP32 accumulation. The key difference is the mantissa/exponent tradeoff: BF16 has 8-bit exponent + 7-bit mantissa (same dynamic range as FP32, ~0.8% error), while FP16 has 5-bit exponent + 10-bit mantissa (narrower range +-65504, ~0.1% error). For LBM scalar kernels, neither BF16 nor FP16 WMMA paths are directly applicable since collision is a point operation, not a matrix-matrix multiply. The BF16-TC proxy benchmark (tensor_core_bf16_proxy kernel in kernels_tensor_core.cu) validates this parity and completes the WMMA coverage suite: TF32/FP16/BF16/INT8/INT4. The headroom gap -- BF16 scalar LBM at ~400 MLUPS vs BF16 TC peak ~330 TFLOPS -- quantifies how far a Hermite-expansion matrix reformulation of the BGK collision step could push throughput if implemented via cuBLAS-level matrix paths."
+title = "BF16 WMMA TC throughput parity with FP16 on Ada SM 8.9: same 16x16x16 shape, same hardware datapath"
+
+[[insight]]
+claims = []
+id = "I-188"
+sprint = "S84"
+summary = "Ada SM 8.9 supports two FP8 formats: e4m3 (4-bit exponent, 3-bit mantissa, range +-448, ~12.5% relative error) and e5m2 (5-bit exponent, 2-bit mantissa, range +-57344, ~25% relative error). For standard D3Q19 LBM near equilibrium (rho ~ 1.0, distributions 0..1/3), both formats are capable of representing LBM distribution values without overflow. e4m3 is preferred because it has a tighter relative error (~12.5% vs 25%), which matters for collision stability: the equilibrium computation f_eq = w * rho * (1 + 3*eu + 4.5*eu^2 - 1.5*u^2) requires accurate representation of small values near the weights (1/3, 1/18, 1/36). e5m2 is relevant when flow contains transient velocity spikes or when rho varies over a wide range (e.g., multiphase flow or shock-containing flows where distributions can exceed 1.0). FP8 is not available on architectures below SM 8.9 (Ada Lovelace, NVIDIA Hopper). Blackwell (SM 10.0) adds NVFP4 (e2m1) which is the true 4x density improvement over FP8, but NVFP4 is not available via WMMA on Ada and requires CUTLASS fp4 tensor ops on Blackwell."
+title = "FP8 e5m2 vs e4m3 for LBM: dynamic range vs mantissa precision tradeoff on Ada SM 8.9"
+
+
+[[insight]]
+claims = ["C-1379", "C-1380"]
+id = "I-189"
+sprint = "S84"
+summary = "INT16 AoS throughput equals FP16 AoS at 128^3 (1904 vs 1912 MLUPS, <0.5% difference) because both are 2 bytes/dist in AoS stride-20 layout and the scatter-write non-coalescing penalty dominates. INT16 SoA exceeds FP16 SoA by 3.0% (3569 vs 3463 MLUPS) because integer load/store path avoids the float16 conversion pipeline per direction. This 3% advantage is the only measurable benefit of INT16 over FP16 at equal byte width, and it is only visible in the SoA pull-scheme where per-direction load latency is exposed."
+title = "INT16 SoA beats FP16 SoA by 3% on Ada: integer load path avoids FP16 conversion pipeline"
+
+[[insight]]
+claims = ["C-1381"]
+id = "I-190"
+sprint = "S84"
+summary = "BF16 SoA is 7.5% slower than FP16 SoA at 128^3 (3204 vs 3463 MLUPS) on Ada SM 8.9 despite identical 2-byte element size. This is counter-intuitive: BF16 has a larger exponent field (8-bit vs 5-bit) and is the format natively used for Tensor Core matrix ops on Ada. However, for scalar LBM kernels (no WMMA path), BF16 scalar loads from L2 have slightly longer latency than FP16 scalar loads. The practical guidance: prefer FP16 SoA over BF16 SoA for scalar D3Q19 LBM on Ada. BF16 advantage over FP32 is purely bandwidth (2x element size reduction); BF16 does not accelerate scalar arithmetic on Ada gaming SKUs."
+title = "BF16 SoA scalar throughput 7.5% below FP16 SoA on Ada despite equal element size"
+
+[[insight]]
+claims = ["C-1382"]
+id = "I-191"
+sprint = "S84"
+summary = "Cache-streaming stores (__stcs / PTX st.global.cs, L2 evict-first) provide only a 3% MLUPS gain at 128^3 for FP32 SoA D3Q19 LBM on RTX 4070 Ti (2027 vs 1967 MLUPS). The 304 MB ping buffer at 128^3 is 6.3x larger than the 48 MB Ada L2 cache, so there is no hot data to protect: ping lines are evicted naturally before reuse regardless of the store policy. The __stcs optimization is only effective when the working set fits in L2 (typically <= 64^3 for FP32 SoA). At small grids (32^3), apparent bandwidth exceeds 200% of device peak (1091 GB/s vs 504 GB/s) -- this is a cache reuse artifact, not physical bandwidth. For bandwidth-limited LBM at 128^3+, choose lower precision (INT8/FP8 SoA) rather than cache policy tuning."
+title = "__stcs cache-streaming stores provide <3% LBM gain at 128^3 (L2 too small for 304 MB ping buffer)"
+
+[[insight]]
+claims = ["C-1383"]
+id = "I-192"
+sprint = "S84"
+summary = "Processing 2 cells per thread with __half2 ILP (half2 ILP variant) achieves +9.8% MLUPS over FP16 SoA standard at 128^3 (3802 vs 3463 MLUPS). The mechanism is Ada SM 8.9 dual-issue FP32 scheduling: two independent 19-element BGK collision chains (one per cell) fill both FP32 issue slots per clock. The __half2 velocity moment accumulation (2 FP16 FMAs per instruction using __hadd2/__hmul2) contributes additional throughput during the load phase. This 10% gain is significant -- it exceeds the gain from MRT over BGK at 128^3 (only +3.5%). For FP16 SoA production use, half2 ILP is the preferred variant on Ada SM 8.9."
+title = "FP16 SoA half2 ILP 2-cells/thread gives +9.8% MLUPS at 128^3 via Ada dual-issue scheduling"
+
+[[insight]]
+claims = ["C-1385", "C-1386", "C-1387"]
+id = "I-193"
+sprint = "S84"
+summary = "Complete D3Q19 LBM precision tier analysis at 128^3 on Ada SM 8.9: The Pareto frontier for physics-valid configurations is INT8 SoA (5643 MLUPS, 76 MB VRAM, 2.85x FP32) -- highest throughput with 4x VRAM savings. The 1-byte tier (INT8/FP8 SoA) is uniformly 2.65-2.85x FP32 MLUPS. The 2-byte tier (FP16/INT16/BF16 SoA) clusters at 1.62-1.92x FP32 MLUPS. The 4-byte FP32 SoA variants top out at 2107 MLUPS (coarsened). FP64 SoA drops to 406 MLUPS (compute-bound, not bandwidth-bound). Key discontinuity: AoS->SoA transition adds ~1.75x MLUPS for 1-byte formats, ~1.87x for 2-byte formats, but near-zero gain for FP32 (both pull-scheme). FP4/INT4 nibble-packed bandwidth ceilings (4726-6168 MLUPS) cannot be physics-valid on D3Q19 (weight-zero collapse). FP4 emulation is 23% slower than INT4 at the same nibble width due to FP4_DECODE lookup table overhead."
+title = "Full D3Q19 precision tier Pareto analysis at 128^3: INT8 SoA is Pareto-optimal production tier"

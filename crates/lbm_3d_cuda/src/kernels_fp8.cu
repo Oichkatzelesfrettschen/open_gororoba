@@ -68,7 +68,9 @@ __device__ __forceinline__ __nv_fp8_storage_t float_to_fp8_e4m3(float v) {
 
 // Fused collision + streaming, FP8 storage, FP32 compute.
 // Per-cell stride: 20 bytes. 5 uchar4 loads cover all 20 bytes; index 19 is padding.
-extern "C" __global__ void lbm_step_fused_fp8_kernel(
+// __launch_bounds__(128, 4): same reasoning as kernels_fp16.cu -- target 4 blocks/SM
+// to stay within ~128 regs/thread and avoid register spill at 128 threads/block.
+extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_fused_fp8_kernel(
     const __nv_fp8_storage_t* f_in,   // n_cells * 20 fp8 bytes (stride 20, index 19 unused)
     __nv_fp8_storage_t* f_out,
     float* rho_out,
