@@ -76,11 +76,23 @@ pub fn probe_cuda_available() -> bool {
 /// FP8/FP4 >= SM 8.9).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct CudaDeviceProps {
+    /// CUDA compute capability major version.
     pub major: u32,
+    /// CUDA compute capability minor version.
     pub minor: u32,
+    /// Device-local L2 cache size in bytes.
     pub l2_bytes: usize,
+    /// Shared memory available per block in bytes.
     pub shared_mem_per_block: usize,
+    /// Total device-local global memory in bytes.
+    pub total_global_mem_bytes: usize,
+    /// Native BF16 support.
     pub bf16_native: bool,
+    /// Managed/unified memory support.
+    pub managed_memory: bool,
+    /// Concurrent managed-memory access support.
+    pub concurrent_managed_access: bool,
+    /// Whether the device is a good fit for sparse shared-tile kernels.
     pub sparse_tile_preferred: bool,
 }
 
@@ -114,7 +126,10 @@ pub fn probe_cuda_device_props() -> Option<CudaDeviceProps> {
     let minor = prop.minor.max(0) as u32;
     let l2_bytes = prop.l2CacheSize.max(0) as usize;
     let shared_mem_per_block = prop.sharedMemPerBlockOptin.max(prop.sharedMemPerBlock);
+    let total_global_mem_bytes = prop.totalGlobalMem;
     let bf16_native = major >= 8;
+    let managed_memory = prop.managedMemory != 0;
+    let concurrent_managed_access = prop.concurrentManagedAccess != 0;
     let sparse_tile_preferred =
         major >= 8 && shared_mem_per_block >= 38_000 && l2_bytes >= 8 * 1024 * 1024;
     Some(CudaDeviceProps {
@@ -122,9 +137,56 @@ pub fn probe_cuda_device_props() -> Option<CudaDeviceProps> {
         minor,
         l2_bytes,
         shared_mem_per_block,
+        total_global_mem_bytes,
         bf16_native,
+        managed_memory,
+        concurrent_managed_access,
         sparse_tile_preferred,
     })
+}
+
+/// Whether CUDA unified memory is available for the selected device.
+pub fn probe_cuda_managed_memory_available() -> bool {
+    probe_cuda_device_props()
+        .map(|props| props.managed_memory && props.concurrent_managed_access)
+        .unwrap_or(false)
+}
+
+/// Managed-memory fallback policy for overflow cases.
+///
+/// This is intentionally conservative:
+/// - VRAM-resident sparse SoA remains the primary fast path.
+/// - ReBAR/BAR1 is not treated as additional VRAM.
+/// - Managed memory is only recommended when the sparse working set exceeds
+///   device memory but the device/runtime can support prefetch-backed
+///   oversubscription.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ManagedMemoryPolicy {
+    /// Whether managed-memory fallback is supported.
+    pub supported: bool,
+    /// Whether allocations should use global attachment.
+    pub attach_global: bool,
+    /// Whether device prefetch should be attempted before stepping.
+    pub prefetch_to_device: bool,
+    /// Conservative per-tile budget for managed-memory stepping.
+    pub recommended_tile_bytes: usize,
+}
+
+/// Build a managed-memory fallback policy for a requested working-set size.
+pub fn plan_managed_memory_policy(
+    props: CudaDeviceProps,
+    requested_bytes: usize,
+) -> ManagedMemoryPolicy {
+    let supported = props.managed_memory && props.concurrent_managed_access;
+    let recommended_tile_bytes = (props.total_global_mem_bytes / 2)
+        .max(props.l2_bytes.saturating_mul(4))
+        .max(props.shared_mem_per_block.saturating_mul(256));
+    ManagedMemoryPolicy {
+        supported,
+        attach_global: supported,
+        prefetch_to_device: supported && requested_bytes > props.total_global_mem_bytes,
+        recommended_tile_bytes,
+    }
 }
 
 pub fn preferred_cuda_arch() -> &'static str {

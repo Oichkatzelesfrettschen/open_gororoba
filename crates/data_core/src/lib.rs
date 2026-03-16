@@ -58,7 +58,8 @@ pub use heliosphere_feature_cube::{
     HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_SIGNAL_DIM, HELIOSPHERE_SUPPORT_DIM,
     HeliosphereFeatureCube, HeliosphereFeatureCubeManifest, HeliosphereFeatureRow,
     HeliosphereTransformGroupStats, HeliosphereTransformMode, HeliosphereTransformResult,
-    SparseMemoryPlan, estimate_sparse_memory_plan, transform_feature_rows,
+    SparseExecutionMode, SparseExecutionPlan, SparseHardwareEnvelope, SparseMemoryPlan,
+    estimate_sparse_execution_plan, estimate_sparse_memory_plan, transform_feature_rows,
     transform_feature_rows_with_stats,
 };
 pub use quality::{
