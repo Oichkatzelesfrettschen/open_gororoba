@@ -6,9 +6,9 @@
 use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
 use lbm_3d_cuda::{
     probe_cuda_ada_available,
-    sparse::{SparseBrickMap, SparseLbmSolver},
+    sparse::{SparseBrickMap, SparseLbmSolver, SparseMemoryMode},
 };
-use std::time::Instant;
+use std::{env, time::Instant};
 
 fn main() {
     println!("\n{}", "#".repeat(80));
@@ -23,6 +23,13 @@ fn main() {
 
     let ctx = CudaContext::new(0).expect("Failed to initialize CUDA context");
     let stream = ctx.default_stream();
+    let memory_mode = match env::var("GOROROBA_SPARSE_MEMORY_MODE")
+        .unwrap_or_else(|_| "device".to_string())
+        .as_str()
+    {
+        "managed" | "managed-prefetch" => SparseMemoryMode::ManagedUnifiedPrefetch,
+        _ => SparseMemoryMode::DeviceLocal,
+    };
 
     // 1024^3 domain
     let nx = 1024;
@@ -72,7 +79,7 @@ fn main() {
     let init_mask_kernel = module.load_function("init_mask").unwrap();
 
     let threads = 256;
-    let blocks = (total_cells as u32 + threads - 1) / threads;
+    let blocks = (total_cells as u32).div_ceil(threads);
     let nx_i = nx as i32;
     let ny_i = ny as i32;
     let nz_i = nz as i32;
@@ -112,13 +119,14 @@ fn main() {
     drop(d_mask);
 
     println!("Initializing Sparse LBM Solver...");
-    let mut solver = SparseLbmSolver::new(map).unwrap();
+    let mut solver = SparseLbmSolver::new_with_mode(map, memory_mode).unwrap();
 
     let active_cells = solver.map.n_active_bricks * 512;
     let bytes_per_cell = 19 * 4 + 4 + 3 * 4 + 4 + 3 * 4; // f, rho, u, tau, force
     let active_vram_gb = (active_cells as f64 * bytes_per_cell as f64) / 1e9;
 
     println!("  Active VRAM Footprint: {:.2} GB", active_vram_gb);
+    println!("  Sparse Memory Mode: {:?}", solver.memory_mode());
 
     let steps = 100;
     println!("Running Sparse A-A LBM for {} steps...", steps);
