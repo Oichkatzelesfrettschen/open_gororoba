@@ -121,6 +121,44 @@ struct LocalNextestCli {
     packages: Vec<String>,
 }
 
+#[derive(Parser, Debug)]
+#[command(
+    name = "sparse-profile",
+    about = "Run reproducible Nsight profiling for the sparse 1024^3 CUDA benchmark"
+)]
+struct SparseProfileCli {
+    #[arg(long, default_value = "gpu_sparse_1024")]
+    bench: String,
+    #[arg(long, default_value = "both")]
+    mode: String,
+    #[arg(long, default_value = "reports/nsight")]
+    output_dir: PathBuf,
+    #[arg(long, default_value_t = false)]
+    run_ncu: bool,
+    #[arg(long, default_value_t = 5)]
+    ncu_launch_skip: u32,
+    #[arg(long, default_value_t = 3)]
+    ncu_launch_count: u32,
+}
+
+#[derive(Debug, Serialize)]
+struct SparseProfileRunRecord {
+    mode: String,
+    nsys_report: Option<PathBuf>,
+    ncu_csv: Option<PathBuf>,
+    skipped_reason: Option<String>,
+}
+
+#[derive(Debug, Serialize)]
+struct SparseProfileManifest {
+    bench: String,
+    binary: Option<PathBuf>,
+    generated_at: String,
+    nsys_available: bool,
+    ncu_available: bool,
+    runs: Vec<SparseProfileRunRecord>,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct PackagePlan {
     has_lib_tests: bool,
@@ -206,7 +244,7 @@ fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
         bail!(
-            "usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit> [args]"
+            "usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile> [args]"
         );
     };
     match command.as_str() {
@@ -231,7 +269,196 @@ fn main() -> Result<()> {
             std::iter::once("local-nextest-plan".to_string()).chain(args),
         )?),
         "gate-audit" => run_gate_audit(parse_gate_audit_args(args)?),
+        "sparse-profile" => run_sparse_profile(SparseProfileCli::try_parse_from(
+            std::iter::once("sparse-profile".to_string()).chain(args),
+        )?),
         other => bail!("unknown xtask command: {other}"),
+    }
+}
+
+fn run_sparse_profile(cli: SparseProfileCli) -> Result<()> {
+    let nsys_available = tool_available("nsys", &["--version"]);
+    let ncu_available = tool_available("ncu", &["--version"]);
+
+    fs::create_dir_all(&cli.output_dir)
+        .with_context(|| format!("create output directory {}", cli.output_dir.display()))?;
+    let mut manifest = SparseProfileManifest {
+        bench: cli.bench.clone(),
+        binary: None,
+        generated_at: Local::now().to_rfc3339_opts(SecondsFormat::Secs, true),
+        nsys_available,
+        ncu_available,
+        runs: Vec::new(),
+    };
+
+    if !nsys_available {
+        let manifest_path = cli
+            .output_dir
+            .join(format!("{}_manifest.json", cli.bench));
+        fs::write(&manifest_path, serde_json::to_string_pretty(&manifest)?).with_context(
+            || format!("write sparse profile manifest {}", manifest_path.display()),
+        )?;
+        println!(
+            "nsys not available; sparse profiling skipped without blocking the workflow"
+        );
+        println!("{}", manifest_path.display());
+        return Ok(());
+    }
+
+    run_status(
+        Command::new("cargo")
+            .arg("bench")
+            .arg("--no-run")
+            .arg("-p")
+            .arg("lbm_3d_cuda")
+            .arg("--bench")
+            .arg(&cli.bench),
+        "build sparse benchmark",
+    )?;
+
+    let binary = locate_sparse_bench_binary(&cli.bench)?;
+    manifest.binary = Some(binary.clone());
+
+    for mode in sparse_profile_modes(&cli.mode)? {
+        let label = mode_label(mode);
+        let base = cli.output_dir.join(format!("{}_{}", cli.bench, label));
+
+        let mut nsys = Command::new("nsys");
+        nsys.arg("profile")
+            .arg("--force-overwrite=true")
+            .arg("--sample=none")
+            .arg("--trace=cuda,nvtx,osrt");
+        if mode == "managed" {
+            nsys.arg("--cuda-um-cpu-page-faults=true")
+                .arg("--cuda-um-gpu-page-faults=true");
+        }
+        nsys.arg("-o").arg(&base).arg(&binary);
+        if mode == "managed" {
+            nsys.env("GOROROBA_SPARSE_MEMORY_MODE", "managed");
+        }
+        run_status(&mut nsys, &format!("nsys sparse profile ({label})"))?;
+
+        let nsys_report = base.with_extension("nsys-rep");
+        let mut record = SparseProfileRunRecord {
+            mode: label.to_string(),
+            nsys_report: Some(nsys_report),
+            ncu_csv: None,
+            skipped_reason: None,
+        };
+
+        if cli.run_ncu {
+            if ncu_available {
+                let ncu_csv = cli
+                    .output_dir
+                    .join(format!("{}_{}_ncu.csv", cli.bench, label));
+                let mut ncu = Command::new("ncu");
+                ncu.arg("--target-processes")
+                    .arg("all")
+                    .arg("--kernel-name-base")
+                    .arg("demangled")
+                    .arg("--kernel-name")
+                    .arg("lbm_step_sparse_aa")
+                    .arg("--launch-skip")
+                    .arg(cli.ncu_launch_skip.to_string())
+                    .arg("--launch-count")
+                    .arg(cli.ncu_launch_count.to_string())
+                    .arg("--section")
+                    .arg("SpeedOfLight")
+                    .arg("--section")
+                    .arg("LaunchStats")
+                    .arg("--section")
+                    .arg("Occupancy")
+                    .arg("--section")
+                    .arg("SchedulerStats")
+                    .arg("--section")
+                    .arg("InstructionStats")
+                    .arg("--section")
+                    .arg("MemoryWorkloadAnalysis")
+                    .arg("--csv")
+                    .arg("--log-file")
+                    .arg(&ncu_csv)
+                    .arg(&binary);
+                if mode == "managed" {
+                    ncu.env("GOROROBA_SPARSE_MEMORY_MODE", "managed");
+                }
+                run_status(&mut ncu, &format!("ncu sparse profile ({label})"))?;
+                record.ncu_csv = Some(ncu_csv);
+            } else {
+                record.skipped_reason =
+                    Some("ncu not available; nsys report still generated".to_string());
+            }
+        }
+
+        manifest.runs.push(record);
+    }
+
+    let manifest_path = cli
+        .output_dir
+        .join(format!("{}_manifest.json", cli.bench));
+    fs::write(&manifest_path, serde_json::to_string_pretty(&manifest)?)
+        .with_context(|| format!("write sparse profile manifest {}", manifest_path.display()))?;
+    println!("{}", manifest_path.display());
+    Ok(())
+}
+
+fn tool_available(tool: &str, version_args: &[&str]) -> bool {
+    let mut command = Command::new(tool);
+    for arg in version_args {
+        command.arg(arg);
+    }
+    command.status().map(|status| status.success()).unwrap_or(false)
+}
+
+fn run_status(command: &mut Command, context: &str) -> Result<()> {
+    let status = command
+        .status()
+        .with_context(|| format!("spawn {context}"))?;
+    if !status.success() {
+        bail!("{context} failed with status {status}");
+    }
+    Ok(())
+}
+
+fn locate_sparse_bench_binary(bench: &str) -> Result<PathBuf> {
+    let deps_dir = PathBuf::from(".cache/cargo-default-target/release/deps");
+    let prefix = format!("{bench}-");
+    let mut matches = Vec::new();
+    for entry in fs::read_dir(&deps_dir)
+        .with_context(|| format!("read benchmark directory {}", deps_dir.display()))?
+    {
+        let entry = entry?;
+        let path = entry.path();
+        if !path.is_file() {
+            continue;
+        }
+        let Some(name) = path.file_name().and_then(|s| s.to_str()) else {
+            continue;
+        };
+        if !name.starts_with(&prefix) || name.ends_with(".d") || name.ends_with(".rlib") {
+            continue;
+        }
+        matches.push(path);
+    }
+    matches.sort();
+    matches
+        .pop()
+        .with_context(|| format!("no benchmark binary found for {bench} in {}", deps_dir.display()))
+}
+
+fn sparse_profile_modes(mode: &str) -> Result<Vec<&'static str>> {
+    match mode {
+        "device" => Ok(vec!["device"]),
+        "managed" => Ok(vec!["managed"]),
+        "both" => Ok(vec!["device", "managed"]),
+        other => bail!("unsupported sparse-profile mode: {other}"),
+    }
+}
+
+fn mode_label(mode: &str) -> &'static str {
+    match mode {
+        "device" => "device",
+        "managed" => "managed",
+        _ => "unknown",
     }
 }
 
