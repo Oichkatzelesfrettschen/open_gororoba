@@ -10,8 +10,8 @@ use gororoba_gpu_bridge::{
     BufferLayout, ComputeBackend, ExecutionProfile, FrameMode, MemoryResidency, StoragePrecision,
 };
 use gororoba_view_core::{
-    FrameMetadata, GridShape3d, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource,
-    VolumeFrameF32,
+    CoordinateSpace3d, FrameMetadata, GridShape3d, ParticleFrameMetadata,
+    ParticleSemantic, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource, VolumeFrameF32,
 };
 use std::f64::consts::PI;
 use std::time::Instant;
@@ -164,6 +164,7 @@ impl ViewerFrameSource for CpuLbmVolumeAdapter {
             execution: self.execution_profile(),
             fps_hint: None,
             mlups_hint: self.mlups_hint,
+            particle_metadata: None,
         }
     }
 
@@ -266,6 +267,19 @@ impl ViewerFrameSource for OptixParticleAdapter {
             execution: self.execution_profile(),
             fps_hint: None,
             mlups_hint: None,
+            particle_metadata: Some(ParticleFrameMetadata {
+                semantic: ParticleSemantic::Tracer,
+                position_space: CoordinateSpace3d::World,
+                velocity_space: CoordinateSpace3d::World,
+                particle_count: self.orchestrator.particle_positions.len(),
+                bounds_min: Some([0.0, 0.0, 0.0]),
+                bounds_max: Some([
+                    self.grid.nx as f32,
+                    self.grid.ny as f32,
+                    self.grid.nz as f32,
+                ]),
+                snapshot_interval_steps: Some(self.orchestrator.snapshot_interval),
+            }),
         }
     }
 
@@ -390,6 +404,7 @@ impl ViewerFrameSource for CudaLbmVolumeAdapter {
             execution: self.execution_profile(),
             fps_hint: None,
             mlups_hint: self.mlups_hint,
+            particle_metadata: None,
         }
     }
 
