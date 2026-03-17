@@ -14,6 +14,7 @@
 - `done` Record the current GPU stack modularization plan and OptiX boundary in
   engineering docs.
 - `done` Add a backend-neutral viewer contract crate, `gororoba_view_core`.
+- `done` Add CPU and CUDA `ViewerFrameSource` adapters for the live viewer.
 - `done` Inventory OptiX pipeline-building logic into reusable vs solver-local
   pieces.
 - `done` Decide which Vulkan helpers belong in reusable substrate vs
@@ -30,6 +31,7 @@
   crate split continues.
 - `queued` Add rustdoc coverage to each public reusable GPU/viewer contract as
   new crates or modules appear.
+- `done` Record a concrete `lbm_*` shared-substrate audit and extraction order.
 
 ## Seam Inventory
 
@@ -175,7 +177,7 @@ The new viewer contract lives in `gororoba_view_core`.
   - status: `queued`
 - `CpuFallbackAdapter`
   - supports CPU-only stepping and inspection
-  - status: `queued`
+  - status: `done` for the first dense CPU adapter in `lbm-live-viewer`
 - `OptixParticleAdapter`
   - surfaces particle/tracer views through the same frontend contract
   - status: `queued`
@@ -225,4 +227,5 @@ The new viewer contract lives in `gororoba_view_core`.
 
 1. Add the next backend adapter, likely CPU fallback or OptiX particles.
 2. Revisit Vulkan helper extraction only when a second renderer needs it.
-3. Keep shared viewer/frame contracts rustdoc-complete as adapters are added.
+3. Evaluate `gororoba_view_raster` as the next low-dependency shared crate.
+4. Keep shared viewer/frame contracts rustdoc-complete as adapters are added.

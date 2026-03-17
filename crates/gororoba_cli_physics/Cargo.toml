@@ -531,7 +531,6 @@ path = "src/bin/cpu_lbm_bench.rs"
 [[bin]]
 name = "lbm-live-viewer"
 path = "src/bin/lbm_live_viewer.rs"
-required-features = ["gpu"]
 
 [[bin]]
 name = "lbm-slice-viewer"

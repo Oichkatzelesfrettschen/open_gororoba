@@ -22,24 +22,30 @@
 //! separate renderer-owned simulation.
 
 use anyhow::Result;
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 
-#[cfg(feature = "gpu")]
 #[path = "lbm_live_viewer/backend.rs"]
 mod backend;
-#[cfg(feature = "gpu")]
 #[path = "lbm_live_viewer/camera_input.rs"]
 mod camera_input;
-#[cfg(feature = "gpu")]
 #[path = "lbm_live_viewer/frontend.rs"]
 mod frontend;
-#[cfg(feature = "gpu")]
 #[path = "lbm_live_viewer/transport.rs"]
 mod transport;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
+enum ViewerBackend {
+    Cpu,
+    Cuda,
+}
 
 #[derive(Parser, Debug)]
 #[command(name = "lbm-live-viewer", version)]
 struct Config {
+    /// Execution backend for the viewer source.
+    #[arg(long, value_enum, default_value_t = ViewerBackend::Cuda)]
+    backend: ViewerBackend,
+
     /// Grid side length.
     #[arg(long, default_value_t = 64)]
     grid: usize,
@@ -69,11 +75,18 @@ struct Config {
     use_mrt: bool,
 }
 
-#[cfg(feature = "gpu")]
 fn run_viewer(cfg: &Config) -> Result<()> {
-    let mut source = backend::CudaLbmVolumeAdapter::new(cfg.grid, cfg.tau, cfg.use_mrt)?;
+    let mut source = backend::build_viewer_source(
+        match cfg.backend {
+            ViewerBackend::Cpu => backend::ViewerBackendKind::Cpu,
+            ViewerBackend::Cuda => backend::ViewerBackendKind::Cuda,
+        },
+        cfg.grid,
+        cfg.tau,
+        cfg.use_mrt,
+    )?;
     frontend::run_frontend(
-        &mut source,
+        source.as_mut(),
         frontend::FrontendConfig {
             width: cfg.width,
             height: cfg.height,
@@ -81,11 +94,6 @@ fn run_viewer(cfg: &Config) -> Result<()> {
             initial_steps_per_frame: cfg.steps_per_frame,
         },
     )
-}
-
-#[cfg(not(feature = "gpu"))]
-fn run_viewer(_cfg: &Config) -> Result<()> {
-    anyhow::bail!("lbm-live-viewer requires the 'gpu' feature")
 }
 
 fn main() -> Result<()> {
