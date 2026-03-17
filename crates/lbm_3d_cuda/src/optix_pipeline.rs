@@ -243,6 +243,106 @@ impl Default for OptiXCompileOptions {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Live OptiX pipeline (requires libnvoptix.so.1 at runtime)
+// ---------------------------------------------------------------------------
+
+use crate::optix_ffi::{self, OptixApi, OptixDeviceContext};
+
+/// Live OptiX pipeline with loaded API handles.
+///
+/// Wraps the configuration-only `OptiXPipeline` with actual OptiX device
+/// handles obtained via `optix_ffi::OptixApi`. Creating this struct
+/// initializes the OptiX device context and validates the API is loadable.
+///
+/// The full pipeline build (module compile, program groups, SBT, GAS) is
+/// deferred to `build()` because it requires OptiX SDK headers for NVRTC
+/// compilation of `optix_tracer.cu`. Without the headers, the context
+/// creation still validates that the driver and RT cores are accessible.
+pub struct LiveOptiXPipeline {
+    /// Loaded OptiX function table.
+    pub api: OptixApi,
+    /// OptiX device context handle.
+    pub context: OptixDeviceContext,
+    /// Configuration-side pipeline state (bricks, SBT data, etc.).
+    pub config_pipeline: OptiXPipeline,
+}
+
+impl LiveOptiXPipeline {
+    /// Initialize the OptiX API and create a device context.
+    ///
+    /// This performs steps 1-2 of the initialization sequence:
+    /// 1. Load libnvoptix.so.1 and populate function table
+    /// 2. Create OptiX device context from the current CUDA context
+    ///
+    /// # Safety
+    ///
+    /// A CUDA context must be current on the calling thread (e.g., via
+    /// `CudaContext::new(0)` or `ctx.bind_to_thread()`).
+    #[allow(unsafe_op_in_unsafe_fn)]
+    pub unsafe fn init(
+        pipeline_config: OptiXPipelineConfig,
+        tracer_config: OptiXTracerConfig,
+        velocity_device_ptr: u64,
+        density_device_ptr: u64,
+    ) -> anyhow::Result<Self> {
+        // Step 1: Load OptiX function table
+        let api = OptixApi::load()?;
+
+        // Step 2: Create device context from current CUDA context (CUcontext = 0 means current)
+        let mut context: OptixDeviceContext = std::ptr::null_mut();
+        let options = optix_ffi::OptixDeviceContextOptions {
+            log_callback_level: pipeline_config.log_level as i32,
+            ..Default::default()
+        };
+        let result = (api.table.optix_device_context_create)(
+            0, // CUcontext = 0 means use current
+            &options,
+            &mut context,
+        );
+        if result != optix_ffi::OPTIX_SUCCESS {
+            anyhow::bail!(
+                "optixDeviceContextCreate failed with code {result}"
+            );
+        }
+        if context.is_null() {
+            anyhow::bail!("optixDeviceContextCreate returned null context");
+        }
+
+        let config_pipeline = OptiXPipeline::new(
+            pipeline_config,
+            tracer_config,
+            velocity_device_ptr,
+            density_device_ptr,
+        );
+
+        Ok(Self {
+            api,
+            context,
+            config_pipeline,
+        })
+    }
+
+    /// Check if the OptiX API is available and loadable.
+    ///
+    /// Lighter than `init()` -- just probes the shared library without
+    /// creating a device context.
+    pub fn probe() -> anyhow::Result<String> {
+        optix_ffi::probe_optix().map_err(|e| anyhow::anyhow!(e))
+    }
+}
+
+impl Drop for LiveOptiXPipeline {
+    fn drop(&mut self) {
+        if !self.context.is_null() {
+            unsafe {
+                (self.api.table.optix_device_context_destroy)(self.context);
+            }
+            self.context = std::ptr::null_mut();
+        }
+    }
+}
+
 /// The OptiX tracer module source (included at compile time).
 pub const OPTIX_TRACER_CU_SRC: &str = include_str!("optix_tracer.cu");
 
@@ -312,6 +412,16 @@ mod tests {
     fn test_optix_sources_included() {
         assert!(OPTIX_TRACER_CU_SRC.contains("__raygen__trace_particles"));
         assert!(OPTIX_BRICK_SCAN_CU_SRC.contains("scan_brick_occupancy"));
+    }
+
+    #[test]
+    fn test_live_optix_probe() {
+        // Initialize CUDA context first -- OptiX requires CUDA driver init.
+        let _ctx = cudarc::driver::CudaContext::new(0);
+        match LiveOptiXPipeline::probe() {
+            Ok(msg) => eprintln!("OptiX probe: {msg}"),
+            Err(e) => eprintln!("OptiX probe: {e} (expected without GPU/CI)"),
+        }
     }
 
     #[test]
