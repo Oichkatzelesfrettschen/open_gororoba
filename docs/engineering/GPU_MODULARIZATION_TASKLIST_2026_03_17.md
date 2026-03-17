@@ -38,11 +38,11 @@
 - `done` Add backend-neutral particle metadata to `gororoba_view_core` so
   particle-producing adapters can describe semantics, coordinate spaces, and
   bounds without backend-specific UI logic.
-- `queued` Publish a viewer adapter capability matrix covering CPU, CUDA,
+- `done` Publish a viewer adapter capability matrix covering CPU, CUDA,
   OptiX, and deferred Vulkan modes.
-- `queued` Scope a lightweight `gororoba_gpu_readback` crate for reusable
+- `done` Scope a lightweight `gororoba_gpu_readback` crate for reusable
   CUDA/Vulkan host-staging and copy contracts.
-- `queued` Scope a lightweight `gororoba_sparse_grid` crate for reusable sparse
+- `done` Scope a lightweight `gororoba_sparse_grid` crate for reusable sparse
   occupancy, active-brick, and tile-window metadata.
 
 ## Seam Inventory
@@ -119,10 +119,10 @@
 ### OptiX particle view <-> viewer seam
 
 - current owner
-  - not yet implemented as an adapter
+  - split between `lbm_3d_cuda` and `lbm-live-viewer`
 - current problem
-  - particle/tracer data exists, but there is no backend-neutral frontend
-    presentation contract around it yet
+  - live launch/readback orchestration is still solver-local even though the
+    frontend contract is now backend-neutral
 - target seam
   - `ViewerFramePacket::Particles`
 - status
