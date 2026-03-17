@@ -35,6 +35,15 @@
   new crates or modules appear.
 - `done` Record a concrete `lbm_*` shared-substrate audit and extraction order.
 - `done` Extract shared slice/LUT raster logic into `gororoba_view_raster`.
+- `done` Add backend-neutral particle metadata to `gororoba_view_core` so
+  particle-producing adapters can describe semantics, coordinate spaces, and
+  bounds without backend-specific UI logic.
+- `queued` Publish a viewer adapter capability matrix covering CPU, CUDA,
+  OptiX, and deferred Vulkan modes.
+- `queued` Scope a lightweight `gororoba_gpu_readback` crate for reusable
+  CUDA/Vulkan host-staging and copy contracts.
+- `queued` Scope a lightweight `gororoba_sparse_grid` crate for reusable sparse
+  occupancy, active-brick, and tile-window metadata.
 
 ## Seam Inventory
 
@@ -89,10 +98,10 @@
 - target seam
   - CPU adapter implementing `ViewerFrameSource`
 - status
-  - `queued`
+  - `done`
 - next work
-  - define minimum CPU viewer capabilities
-  - support smaller grids and slice/volume fallback paths
+  - expand beyond dense volume if a second CPU-facing frame mode is needed
+  - keep CPU metadata aligned with the shared viewer contract
 
 ### Shared metadata/frame seam
 
@@ -104,7 +113,8 @@
 - status
   - `done`
 - next work
-  - migrate current viewer and adapters onto these shared contracts
+  - keep public rustdoc complete as new metadata fields appear
+  - add a capability matrix so frontend limits are documented, not implied
 
 ### OptiX particle view <-> viewer seam
 
@@ -116,10 +126,10 @@
 - target seam
   - `ViewerFramePacket::Particles`
 - status
-  - `queued`
+  - `done`
 - next work
-  - build an `OptixParticleAdapter`
-  - expose tracer positions/velocities through `gororoba_view_core`
+  - enrich particle metadata without leaking solver-local semantics
+  - keep live OptiX launch/readback orchestration solver-local for now
 
 ## OptiX Inventory
 
@@ -167,6 +177,9 @@ The new viewer contract lives in `gororoba_view_core`.
 - `VolumeFrameF32`
 - `SliceFrameRgba8`
 - `ParticleFrame`
+- `ParticleSemantic`
+- `CoordinateSpace3d`
+- `ParticleFrameMetadata`
 - `ViewerFramePacket`
 - `ViewerFrameSource`
 
@@ -228,8 +241,12 @@ The new viewer contract lives in `gororoba_view_core`.
 
 ## Immediate Execution Order
 
-1. Add the next backend adapter, likely CPU fallback or OptiX particles.
-2. Revisit Vulkan helper extraction only when a second renderer needs it.
-3. Keep shared viewer/frame contracts rustdoc-complete as adapters are added.
-4. Decide whether `gororoba_view_raster` should also absorb particle projection
-   policy or stay as a scalar/slice-focused helper crate.
+1. Publish the viewer adapter capability matrix for CPU, CUDA, OptiX, and
+   deferred Vulkan paths.
+2. Scope `gororoba_gpu_readback` around reusable host-staging contracts instead
+   of solver- or renderer-owned submission logic.
+3. Scope `gororoba_sparse_grid` around backend-neutral occupancy/tile metadata
+   instead of density-threshold semantics.
+4. Revisit Vulkan helper extraction only when a second renderer needs the same
+   command/readback substrate.
+5. Keep shared viewer/frame contracts rustdoc-complete as adapters evolve.

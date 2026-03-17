@@ -72,6 +72,8 @@ heavy domain dependencies.
   - `gororoba_sparse_grid`
 - dependency profile
   - should stay free of CUDA runtime bindings at the core type layer
+- scoped in
+  - `docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md`
 - caution
   - brick thresholds and density semantics remain workload-local
 
@@ -86,6 +88,8 @@ heavy domain dependencies.
   - frame/image readback descriptors
 - proposed future crate
   - `gororoba_gpu_readback`
+- scoped in
+  - `docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
 - caution
   - Vulkan command submission and CUDA solver ownership should stay local
   - only extract helper contracts and buffer copy utilities

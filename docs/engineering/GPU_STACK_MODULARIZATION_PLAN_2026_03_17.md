@@ -149,6 +149,9 @@ The concrete tracked task list for this plan now lives in:
 - `docs/engineering/GPU_MODULARIZATION_TASKLIST_2026_03_17.md`
 - `docs/engineering/OPTIX_ACCELERATION_BOUNDARY_2026_03_17.md`
 - `docs/engineering/LBM_SHARED_SUBSTRATE_AUDIT_2026_03_17.md`
+- `docs/engineering/VIEWER_ADAPTER_CAPABILITY_MATRIX_2026_03_17.md`
+- `docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
+- `docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md`
 
 That task list now includes explicit seam analysis for:
 
@@ -157,6 +160,8 @@ That task list now includes explicit seam analysis for:
 - Vulkan renderer <-> viewer
 - CPU fallback <-> viewer
 - shared metadata/frame contracts
+- host-staging/readback contracts
+- sparse occupancy and tile-window metadata
 
 ### Phase A: shared contracts
 
@@ -182,6 +187,7 @@ That task list now includes explicit seam analysis for:
    - CPU density adapter: done
    - OptiX particle adapter: done at the frame-contract layer
    - shared raster crate: done
+   - capability matrix: scoped and documented
 
 ### Phase C: rendering split
 
@@ -189,7 +195,9 @@ That task list now includes explicit seam analysis for:
    - status: decision complete, extraction deferred
 2. keep LBM-specific WGSL pipelines in `lbm_vulkan`
 3. move generic image/readback/context helpers into reusable modules
-   - only when another renderer proves the seam
+   - scope now documented in
+     `GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
+   - execution still deferred until descriptor-first extraction is justified
 
 ### Phase D: OptiX split
 
@@ -206,6 +214,16 @@ The profiling and sparse-planning work already supports the following policy:
 - CPU fallback: AoS, smaller grids, explicit downgrade
 
 That policy should remain the core default even after modularization.
+
+## Sparse Metadata Guidance
+
+Sparse grid metadata has now been scoped as its own potential reusable seam in
+`SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md`.
+
+The design rule is:
+
+- share brick geometry, occupancy stats, and active-window bookkeeping
+- keep threshold semantics, solver byte formulas, and launch policy local
 
 ## Why this plan is worth doing
 

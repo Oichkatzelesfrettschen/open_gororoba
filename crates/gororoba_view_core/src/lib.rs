@@ -51,6 +51,7 @@ pub struct FrameMetadata {
     pub execution: ExecutionProfile,
     pub fps_hint: Option<f32>,
     pub mlups_hint: Option<f64>,
+    pub particle_metadata: Option<ParticleFrameMetadata>,
 }
 
 /// Dense 3D scalar field for volume-oriented viewers.
@@ -74,6 +75,37 @@ pub struct SliceFrameRgba8 {
 pub struct ParticleFrame {
     pub positions: Vec<[f32; 3]>,
     pub velocities: Vec<[f32; 3]>,
+}
+
+/// Semantic role of a particle frame.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ParticleSemantic {
+    Tracer,
+    Seed,
+    Sample,
+    Generic,
+}
+
+/// Coordinate-space interpretation for particle positions or velocities.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CoordinateSpace3d {
+    GridIndex,
+    World,
+    NormalizedUnitCube,
+    Unknown,
+}
+
+/// Optional metadata that lets frontends and tooling interpret particle-frame
+/// payloads without backend-specific assumptions.
+#[derive(Debug, Clone, PartialEq)]
+pub struct ParticleFrameMetadata {
+    pub semantic: ParticleSemantic,
+    pub position_space: CoordinateSpace3d,
+    pub velocity_space: CoordinateSpace3d,
+    pub particle_count: usize,
+    pub bounds_min: Option<[f32; 3]>,
+    pub bounds_max: Option<[f32; 3]>,
+    pub snapshot_interval_steps: Option<u64>,
 }
 
 /// Backend-neutral frame payload returned to interactive frontends.
@@ -149,8 +181,24 @@ mod tests {
             execution: profile,
             fps_hint: Some(60.0),
             mlups_hint: Some(120.0),
+            particle_metadata: None,
         };
         assert_eq!(metadata.execution.backend, ComputeBackend::Cuda);
         assert_eq!(metadata.preferred_frame_mode, FrameMode::Volume3d);
+    }
+
+    #[test]
+    fn particle_metadata_can_describe_tracer_bounds() {
+        let metadata = ParticleFrameMetadata {
+            semantic: ParticleSemantic::Tracer,
+            position_space: CoordinateSpace3d::World,
+            velocity_space: CoordinateSpace3d::World,
+            particle_count: 1024,
+            bounds_min: Some([0.0, 0.0, 0.0]),
+            bounds_max: Some([64.0, 64.0, 64.0]),
+            snapshot_interval_steps: Some(1),
+        };
+        assert_eq!(metadata.semantic, ParticleSemantic::Tracer);
+        assert_eq!(metadata.particle_count, 1024);
     }
 }
