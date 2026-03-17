@@ -148,6 +148,7 @@ The concrete tracked task list for this plan now lives in:
 
 - `docs/engineering/GPU_MODULARIZATION_TASKLIST_2026_03_17.md`
 - `docs/engineering/OPTIX_ACCELERATION_BOUNDARY_2026_03_17.md`
+- `docs/engineering/LBM_SHARED_SUBSTRATE_AUDIT_2026_03_17.md`
 
 That task list now includes explicit seam analysis for:
 

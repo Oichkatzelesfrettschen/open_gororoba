@@ -24,7 +24,7 @@ pub struct FrontendConfig {
 /// Run the shared frontend loop against a backend adapter.
 pub fn run_frontend<S>(source: &mut S, cfg: FrontendConfig) -> Result<()>
 where
-    S: ResettableViewerSource,
+    S: ResettableViewerSource + ?Sized,
 {
     let initial_meta = source.frame_metadata();
     let mut window = Window::new(

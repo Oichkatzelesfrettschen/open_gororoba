@@ -13,9 +13,19 @@ use gororoba_view_core::{
     FrameMetadata, GridShape3d, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource,
     VolumeFrameF32,
 };
-use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::f64::consts::PI;
 use std::time::Instant;
+
+use lbm_3d::solver::LbmSolver3D;
+#[cfg(feature = "gpu")]
+use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
+
+/// Runtime backend selector for the live viewer.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ViewerBackendKind {
+    Cpu,
+    Cuda,
+}
 
 /// Viewer-local extension that adds reset semantics on top of the shared frame
 /// source contract.
@@ -24,10 +34,161 @@ pub trait ResettableViewerSource: ViewerFrameSource {
     fn reset_simulation(&mut self) -> Result<()>;
 }
 
+/// Build the requested viewer backend as a boxed trait object.
+pub fn build_viewer_source(
+    backend: ViewerBackendKind,
+    grid: usize,
+    tau: f64,
+    use_mrt: bool,
+) -> Result<Box<dyn ResettableViewerSource>> {
+    match backend {
+        ViewerBackendKind::Cpu => Ok(Box::new(CpuLbmVolumeAdapter::new(grid, tau, use_mrt))),
+        ViewerBackendKind::Cuda => build_cuda_viewer_source(grid, tau, use_mrt),
+    }
+}
+
+#[cfg(feature = "gpu")]
+fn build_cuda_viewer_source(
+    grid: usize,
+    tau: f64,
+    use_mrt: bool,
+) -> Result<Box<dyn ResettableViewerSource>> {
+    Ok(Box::new(CudaLbmVolumeAdapter::new(grid, tau, use_mrt)?))
+}
+
+#[cfg(not(feature = "gpu"))]
+fn build_cuda_viewer_source(
+    _grid: usize,
+    _tau: f64,
+    _use_mrt: bool,
+) -> Result<Box<dyn ResettableViewerSource>> {
+    anyhow::bail!("CUDA viewer backend requires the 'gpu' feature")
+}
+
+/// CPU-backed dense volume adapter for the interactive viewer.
+///
+/// This adapter exists to prove the frontend contract is not CUDA-specific and
+/// to provide a low-dependency fallback path for development and testing.
+pub struct CpuLbmVolumeAdapter {
+    solver: LbmSolver3D,
+    grid: GridShape3d,
+    use_mrt: bool,
+    init_rho: Vec<f64>,
+    init_u: Vec<[f64; 3]>,
+    step: u64,
+    sim_time: f64,
+    mlups_hint: Option<f64>,
+}
+
+impl CpuLbmVolumeAdapter {
+    /// Construct a new CPU viewer adapter using Taylor-Green initial
+    /// conditions.
+    #[must_use]
+    pub fn new(grid: usize, tau: f64, use_mrt: bool) -> Self {
+        let mut solver = if use_mrt {
+            LbmSolver3D::new_mrt(grid, grid, grid, tau)
+        } else {
+            LbmSolver3D::new(grid, grid, grid, tau)
+        };
+        let (init_rho, init_u) = taylor_green_initial_conditions(grid);
+        solver.rho.clone_from(&init_rho);
+        solver.u.clone_from(&init_u);
+        solver.reinitialize_from_macroscopic();
+        Self {
+            solver,
+            grid: GridShape3d {
+                nx: grid as u32,
+                ny: grid as u32,
+                nz: grid as u32,
+            },
+            use_mrt,
+            init_rho,
+            init_u,
+            step: 0,
+            sim_time: 0.0,
+            mlups_hint: None,
+        }
+    }
+
+    fn density_frame(&self) -> VolumeFrameF32 {
+        VolumeFrameF32 {
+            grid: self.grid,
+            field: ScalarFieldKind::Density,
+            values: self.solver.rho.iter().map(|&v| v as f32).collect(),
+        }
+    }
+}
+
+impl ViewerFrameSource for CpuLbmVolumeAdapter {
+    fn execution_profile(&self) -> ExecutionProfile {
+        ExecutionProfile {
+            backend: ComputeBackend::CpuScalar,
+            storage: StoragePrecision::Fp64,
+            layout: BufferLayout::Aos,
+            residency: MemoryResidency::HostVisible,
+            frame_mode: FrameMode::Volume3d,
+        }
+    }
+
+    fn supported_frame_modes(&self) -> Vec<FrameMode> {
+        vec![FrameMode::Volume3d]
+    }
+
+    fn frame_metadata(&self) -> FrameMetadata {
+        FrameMetadata {
+            title: format!(
+                "CPU {} density viewer",
+                if self.use_mrt { "MRT" } else { "BGK" }
+            ),
+            backend_name: "CPU LBM".to_string(),
+            grid: self.grid,
+            step: self.step,
+            sim_time: self.sim_time,
+            preferred_frame_mode: FrameMode::Volume3d,
+            execution: self.execution_profile(),
+            fps_hint: None,
+            mlups_hint: self.mlups_hint,
+        }
+    }
+
+    fn step_simulation(&mut self, n_steps: usize) -> Result<()> {
+        let start = Instant::now();
+        self.solver.evolve(n_steps);
+        let elapsed = start.elapsed().as_secs_f64();
+        self.step += n_steps as u64;
+        self.sim_time = self.step as f64;
+        if elapsed > 0.0 {
+            self.mlups_hint =
+                Some(self.grid.cell_count() as f64 * n_steps as f64 / elapsed / 1.0e6);
+        }
+        Ok(())
+    }
+
+    fn copy_frame(&mut self, requested_mode: FrameMode) -> Result<ViewerFramePacket> {
+        match requested_mode {
+            FrameMode::Volume3d => Ok(ViewerFramePacket::VolumeF32(self.density_frame())),
+            _ => anyhow::bail!("CPU viewer adapter only supports FrameMode::Volume3d"),
+        }
+    }
+}
+
+impl ResettableViewerSource for CpuLbmVolumeAdapter {
+    fn reset_simulation(&mut self) -> Result<()> {
+        self.solver.rho.clone_from(&self.init_rho);
+        self.solver.u.clone_from(&self.init_u);
+        self.solver.reinitialize_from_macroscopic();
+        self.step = 0;
+        self.sim_time = 0.0;
+        self.mlups_hint = None;
+        Ok(())
+    }
+}
+
 /// CUDA-backed density-volume adapter for the interactive viewer.
 ///
 /// The adapter uses the real `LbmSolver3DCuda` state, synchronizes the density
 /// field to host on demand, and emits a backend-neutral `VolumeFrameF32`.
+#[cfg(feature = "gpu")]
 pub struct CudaLbmVolumeAdapter {
     solver: LbmSolver3DCuda,
     grid: GridShape3d,
@@ -39,6 +200,7 @@ pub struct CudaLbmVolumeAdapter {
     mlups_hint: Option<f64>,
 }
 
+#[cfg(feature = "gpu")]
 impl CudaLbmVolumeAdapter {
     /// Construct a new CUDA viewer adapter using Taylor-Green initial
     /// conditions.
@@ -76,6 +238,7 @@ impl CudaLbmVolumeAdapter {
     }
 }
 
+#[cfg(feature = "gpu")]
 impl ViewerFrameSource for CudaLbmVolumeAdapter {
     fn execution_profile(&self) -> ExecutionProfile {
         let storage = match self.solver.precision() {
@@ -140,6 +303,7 @@ impl ViewerFrameSource for CudaLbmVolumeAdapter {
     }
 }
 
+#[cfg(feature = "gpu")]
 impl ResettableViewerSource for CudaLbmVolumeAdapter {
     fn reset_simulation(&mut self) -> Result<()> {
         self.solver

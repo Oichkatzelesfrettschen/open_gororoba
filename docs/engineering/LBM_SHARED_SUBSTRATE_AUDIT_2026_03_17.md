@@ -1,0 +1,177 @@
+# LBM Shared Substrate Audit
+
+## Purpose
+
+This audit records which `lbm_*` patterns are mature enough to extract into
+small reusable crates, which should remain solver-local, and which should only
+move once a second workload proves the seam.
+
+The goal is not to genericize LBM away. The goal is to move only the parts that
+can help non-LBM CUDA, Vulkan, OptiX, or CPU workloads without dragging in
+heavy domain dependencies.
+
+## Already Shared
+
+- `gororoba_gpu_bridge`
+  - backend capability probing
+  - memory/layout/precision vocabulary
+  - execution profile metadata
+- `gororoba_view_core`
+  - viewer frame contracts
+  - grid/frame metadata
+  - backend-neutral transport types
+- `gororoba_optix`
+  - generic OptiX runtime loading and current-context device runtime setup
+
+## Strong Extraction Candidates
+
+### 1. Viewer-side scalar volume rasterization
+
+- current locations
+  - `crates/gororoba_cli_physics/src/bin/lbm_live_viewer/transport.rs`
+  - `crates/gororoba_cli_physics/src/bin/lbm_slice_viewer.rs`
+- reusable pattern
+  - scalar min/max normalization
+  - LUT mapping
+  - 3D volume slice extraction to ARGB/RGBA
+- proposed future crate
+  - `gororoba_view_raster`
+- dependency profile
+  - no CUDA
+  - no Vulkan
+  - no LBM
+- why it is a good candidate
+  - clearly reusable for any dense scalar cube, not just LBM density
+
+### 2. Simulation initialization motifs
+
+- current locations
+  - `lbm-live-viewer` Taylor-Green initialization
+  - several CUDA/CPU benchmarks and demos reimplement similar setup patterns
+- reusable pattern
+  - standard initial conditions like Taylor-Green and simple perturbations
+- proposed future crate
+  - `gororoba_sim_init`
+- dependency profile
+  - CPU-only
+  - no backend dependence
+- caution
+  - keep LBM-specific distribution initialization in solver crates
+  - only share macroscopic initial-condition builders
+
+### 3. Sparse grid metadata and tile windows
+
+- current locations
+  - `crates/lbm_3d_cuda/src/sparse/mod.rs`
+- reusable pattern
+  - occupancy bitsets
+  - indirect active-brick tables
+  - tile-window planning over sparse active sets
+- proposed future crate
+  - `gororoba_sparse_grid`
+- dependency profile
+  - should stay free of CUDA runtime bindings at the core type layer
+- caution
+  - brick thresholds and density semantics remain workload-local
+
+### 4. Generic GPU readback helpers
+
+- current locations
+  - `crates/lbm_3d_cuda/src/lib.rs`
+  - `crates/lbm_vulkan/src/compute.rs`
+- reusable pattern
+  - pinned host readback
+  - device-to-host staging contracts
+  - frame/image readback descriptors
+- proposed future crate
+  - `gororoba_gpu_readback`
+- caution
+  - Vulkan command submission and CUDA solver ownership should stay local
+  - only extract helper contracts and buffer copy utilities
+
+### 5. Interactive viewer state
+
+- current locations
+  - `crates/gororoba_cli_physics/src/bin/lbm_live_viewer/camera_input.rs`
+- reusable pattern
+  - frontend loop
+  - input actions
+  - runtime status metadata formatting
+- proposed future crate
+  - `gororoba_view_frontend`
+- caution
+  - keep one simple frontend path first
+  - avoid creating a framework before multiple applications use it
+
+## Deferred Candidates
+
+### Vulkan helper extraction
+
+- current files
+  - `crates/lbm_vulkan/src/compute.rs`
+  - `crates/lbm_vulkan/src/lib.rs`
+  - `crates/lbm_vulkan/src/swapchain.rs`
+- what is probably reusable later
+  - capability probing
+  - generic command-pool setup
+  - generic image readback
+- why deferred now
+  - `GororobaEngine` still owns LBM-specific command sequencing
+  - there is not yet a second renderer that uses the same helpers
+
+### OptiX pipeline assembly helpers
+
+- current files
+  - `crates/lbm_3d_cuda/src/optix_pipeline.rs`
+  - `crates/lbm_3d_cuda/src/optix_orchestrator.rs`
+- what is probably reusable later
+  - compile/module/pipeline convenience wrappers
+- why deferred now
+  - current launch and SBT ownership still depend on LBM tracer semantics
+
+## Must Stay Solver-Local
+
+### CPU LBM domain logic
+
+- `crates/lbm_3d/src/solver.rs`
+- `crates/lbm_3d/src/boundary.rs`
+- `crates/lbm_3d/src/mhd.rs`
+- `crates/lbm_3d/src/dm_force.rs`
+
+These encode D3Q19 collision, streaming, boundary, and physics semantics.
+
+### CUDA LBM kernels and solver orchestration
+
+- `crates/lbm_3d_cuda/src/lib.rs`
+- `crates/lbm_3d_cuda/src/kernels*.cu`
+- `crates/lbm_3d_cuda/src/managed_memory.rs`
+- `crates/lbm_3d_cuda/src/unified_runner.rs`
+
+These are backend-specific and workload-specific, even where they use generic
+techniques like SoA or managed memory.
+
+### LBM-specific Vulkan engine
+
+- `crates/lbm_vulkan/src/compute.rs`
+- `crates/lbm_vulkan/src/besag_clifford_vulkan.rs`
+
+These own LBM shader selection, precision policy, and render sequencing.
+
+### LBM-specific OptiX tracer payloads
+
+- `crates/lbm_3d_cuda/src/optix_tracer.rs`
+- `crates/lbm_3d_cuda/src/optix_tracer.cu`
+- `crates/lbm_3d_cuda/src/optix_orchestrator.rs`
+
+These depend on density/velocity/tracer semantics and should not move into a
+generic crate unless a second particle-tracing workload appears.
+
+## Immediate Execution Order
+
+1. Keep the new CPU and CUDA `ViewerFrameSource` adapters as the reference seam.
+2. Add an `OptixParticleAdapter` only if it can present particle frames through
+   `gororoba_view_core` without dragging tracer internals into the frontend.
+3. Revisit Vulkan helper extraction only after an independent renderer needs the
+   same capability/readback helpers.
+4. Consider `gororoba_view_raster` next, because the slice/LUT logic is already
+   duplicated and clearly backend-neutral.
