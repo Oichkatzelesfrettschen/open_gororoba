@@ -159,6 +159,9 @@ rayon = "1.10"
 # Global allocator
 mimalloc = "0.1"
 
+# Framebuffer display
+minifb = "0.28"
+
 # CPU affinity
 core_affinity = "0.8"
 

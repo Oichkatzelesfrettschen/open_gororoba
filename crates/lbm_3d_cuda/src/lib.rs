@@ -33,10 +33,18 @@
 //! | FP64 SoA      | 406   | 29.7%       | 608       |
 //! | DD FP128      | 58    | 8.4%        | 1215      |
 
+pub mod aot_cubins;
 pub mod bench_kernels;
 pub mod box_counting_gpu;
 pub mod chingon_gpu;
+pub mod kernel_selector;
+pub mod managed_memory;
+pub mod optix_ffi;
+pub mod optix_orchestrator;
+pub mod optix_pipeline;
+pub mod optix_tracer;
 pub mod sparse;
+pub mod vtk_writer;
 
 use anyhow::{Context, Result, ensure};
 use cudarc::{
@@ -66,6 +74,19 @@ pub use gororoba_gpu_bridge::{ComputeBackend, HardwareCaps};
 /// one device is visible to the process.
 pub fn probe_cuda_available() -> bool {
     probe_cuda_device_props().is_some()
+}
+
+/// Query free VRAM in MB. Returns 0 if CUDA is not available.
+pub fn query_free_vram_mb() -> usize {
+    let mut free: usize = 0;
+    let mut total: usize = 0;
+    unsafe {
+        cudarc::driver::sys::cuMemGetInfo_v2(
+            &mut free as *mut usize,
+            &mut total as *mut usize,
+        );
+    }
+    free / (1024 * 1024)
 }
 
 /// CUDA device capability and memory properties for device 0.
@@ -613,6 +634,34 @@ impl LbmSolver3DCuda {
             Precision::BF16 => 2,
             Precision::FP64 => 8,
         };
+
+        // VRAM check: bail before allocating if the grid is too large.
+        // 2 * 19 * N * es (ping-pong dist) + 8 * N * es (rho/u/force/tau macro)
+        // + 1.5 GB NVRTC JIT compilation overhead (PTX optimizer workspace)
+        let required_bytes = (2 * 19 + 8) * n_cells * es + 1_500_000_000;
+        {
+            let mut free: usize = 0;
+            let mut total: usize = 0;
+            unsafe {
+                cudarc::driver::sys::cuMemGetInfo_v2(
+                    &mut free as *mut usize,
+                    &mut total as *mut usize,
+                );
+            }
+            if free > 0 && required_bytes > (free as f64 * 0.95) as usize {
+                anyhow::bail!(
+                    "VRAM insufficient for {:?} at {}x{}x{}: \
+                     need {} MB, free {} MB (90% threshold).",
+                    precision,
+                    nx,
+                    ny,
+                    nz,
+                    required_bytes / (1024 * 1024),
+                    free / (1024 * 1024),
+                );
+            }
+        }
+
         let mut d_f = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
         let d_f_tmp = stream.alloc_zeros::<u8>(19 * n_cells * es)?;
         let mut d_rho = stream.alloc_zeros::<u8>(n_cells * es)?;

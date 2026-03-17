@@ -61,6 +61,16 @@ struct BenchConfig {
     /// Output CSV path.
     #[arg(long, default_value = "data/benchmarks/cuda_kernel_baseline.csv")]
     output: String,
+
+    /// Filter by variant (comma-separated: standard,mrt,pull,mrt_pull,tiled,aa,mrt_aa,coarsened).
+    /// Empty = run all variants. Use to bypass OOM-inducing tiers at large grids.
+    #[arg(long, default_value = "")]
+    variant_filter: String,
+
+    /// Filter by precision tier (comma-separated: fp32,fp64,bf16,fp16,fp8,int8,int16,int4,dd).
+    /// Empty = run all precisions. Use to isolate low-VRAM tiers at 512^3+.
+    #[arg(long, default_value = "")]
+    precision_filter: String,
 }
 
 impl BenchConfig {
@@ -83,6 +93,27 @@ impl BenchConfig {
             return true;
         }
         self.workloads.split(',').any(|w| w.trim() == name)
+    }
+
+    /// Check if a variant passes the CLI filter. Empty filter = pass all.
+    fn pass_variant_filter(&self, variant: &str) -> bool {
+        if self.variant_filter.is_empty() {
+            return true;
+        }
+        self.variant_filter
+            .split(',')
+            .any(|v| variant.contains(v.trim()))
+    }
+
+    /// Check if a precision passes the CLI filter. Empty filter = pass all.
+    fn pass_precision_filter(&self, precision: &str) -> bool {
+        if self.precision_filter.is_empty() {
+            return true;
+        }
+        let prec_lower = precision.to_lowercase();
+        self.precision_filter
+            .split(',')
+            .any(|p| prec_lower.contains(p.trim().to_lowercase().as_str()))
     }
 }
 
@@ -156,13 +187,13 @@ fn write_csv(path: &str, rows: &[BenchRow]) -> Result<()> {
     let mut f = std::fs::File::create(path)?;
     writeln!(
         f,
-        "workload,precision,variant,grid_size,param2,n_steps,warmup,\
+        "backend,workload,precision,variant,grid_size,param2,n_steps,warmup,\
          elapsed_ms,mlups,bandwidth_gbs,bandwidth_pct_peak,vram_dist_mb,notes"
     )?;
     for r in rows {
         writeln!(
             f,
-            "{},{},{},{},{},{},{},{:.3},{},{},{},{},\"{}\"",
+            "cuda,{},{},{},{},{},{},{},{:.3},{},{},{},{},\"{}\"",
             r.workload,
             r.precision,
             r.variant,
@@ -524,6 +555,21 @@ mod gpu {
             let elem_bytes = 4usize;
 
             for v in FP32_VARIANTS {
+                if !cfg.pass_precision_filter("FP32") || !cfg.pass_variant_filter(v.id) {
+                    continue;
+                }
+                // Pre-flight VRAM check BEFORE compiling PTX (avoids JIT spike)
+                let required_mb = (n_cells * (2 * 19 + 8) * elem_bytes + 1_500_000_000) / (1024 * 1024);
+                let free_mb = lbm_3d_cuda::query_free_vram_mb();
+                if free_mb > 0 && required_mb > (free_mb as f64 * 0.95) as usize {
+                    eprint!("  [A] FP32/{:<22} {}^3 ({} steps)... ", v.id, n, n_steps);
+                    eprintln!(
+                        "SKIP: Pre-flight VRAM check: need {} MB, free {} MB",
+                        required_mb, free_mb
+                    );
+                    continue;
+                }
+
                 eprint!("  [A] FP32/{:<22} {}^3 ({} steps)... ", v.id, n, n_steps);
                 let mut solver = match make_fp32_solver(n, v) {
                     Ok(s) => s,
@@ -1568,6 +1614,471 @@ mod gpu {
         Ok(rows)
     }
 
+    // =========================================================================
+    // MRT collision variants -- same buffer layout and launch config as BGK
+    // counterparts, dispatching to the *_mrt_kernel entry points.
+    // =========================================================================
+
+    // -------------------------------------------------------------------------
+    // MRT M-1: BF16 SoA MRT (SM 8.0+)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_bf16_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!(
+                "  [M1] BF16_SoA/mrt            {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_bf16_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "BF16_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "BF16 i-major SoA MRT collision; stride=19; SM 8.0+; 2 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-2: FP16 SoA MRT
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp16_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!(
+                "  [M2] FP16_SoA/mrt            {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_fp16_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP16_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP16 i-major SoA MRT collision; stride=19; 2 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-3: FP16 SoA half2 ILP MRT (2 cells/thread)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp16_half2_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!(
+                "  [M3] FP16_SoA_H2/mrt         {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_fp16_half2_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP16_SoA_H2".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP16 SoA half2 ILP MRT collision; 2 cells/thread; __half2 moment accum".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-4: FP8 e4m3 SoA MRT (SM 8.9+)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp8_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!(
+                "  [M4] FP8_SoA/mrt             {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_fp8_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP8_e4m3_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP8 e4m3 i-major SoA MRT collision; stride=19; SM 8.9+; 1 byte/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-5: FP8 e5m2 SoA MRT (SM 8.9+)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp8_e5m2_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!(
+                "  [M5] FP8_e5m2_SoA/mrt        {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_fp8_e5m2_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP8_e5m2_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP8 e5m2 i-major SoA MRT collision; stride=19; SM 8.9+; 1 byte/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-6: INT8 SoA MRT
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int8_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 1usize;
+            eprint!(
+                "  [M6] INT8_SoA/mrt            {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_int8_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT8_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "INT8 i-major SoA MRT collision; stride=19; DIST_SCALE=64; 1 byte/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-7: INT16 SoA MRT
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_int16_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 2usize;
+            eprint!(
+                "  [M7] INT16_SoA/mrt           {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_int16_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "INT16_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "INT16 i-major SoA MRT collision; stride=19; DIST_SCALE=16384; 2 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
+    // -------------------------------------------------------------------------
+    // MRT M-8: FP64 SoA MRT (reference)
+    // -------------------------------------------------------------------------
+
+    pub fn run_lbm_fp64_soa_mrt(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
+        let mut rows = Vec::new();
+        for &n in &cfg.grids() {
+            // FP64 MRT is extremely slow on gaming GPUs. Cap at 128^3.
+            if n > 128 {
+                continue;
+            }
+            let n_steps = cfg.n_steps_for(n);
+            let n_cells = n * n * n;
+            let elem_bytes = 8usize;
+            eprint!(
+                "  [M8] FP64_SoA/mrt            {}^3 ({} steps)... ",
+                n, n_steps
+            );
+            let mut runner = match SoaBenchRunner::new_fp64_soa_mrt(n, n, n) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("SKIP: {e}");
+                    continue;
+                }
+            };
+            if let Err(e) = runner.step_n(cfg.warmup) {
+                eprintln!("SKIP warmup: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let t0 = std::time::Instant::now();
+            if let Err(e) = runner.step_n(n_steps) {
+                eprintln!("SKIP step: {e}");
+                continue;
+            }
+            let _ = runner.context().synchronize();
+            let elapsed_ms = t0.elapsed().as_secs_f64() * 1e3;
+            let ml = mlups(n_cells, n_steps, elapsed_ms);
+            let bw = bandwidth_gbs(n_cells, n_steps, elapsed_ms, elem_bytes, 19);
+            let bw_pct = bw / PEAK_BW_GBS * 100.0;
+            let vram_mb = runner.vram_dist_bytes() / (1024 * 1024);
+            eprintln!("{ml:.1} MLUPS  {bw:.1} GB/s  ({bw_pct:.1}%)  VRAM={vram_mb} MB");
+            rows.push(BenchRow {
+                workload: "lbm_sweep",
+                precision: "FP64_SoA".to_string(),
+                variant: "mrt".to_string(),
+                grid_size: n,
+                param2: String::new(),
+                n_steps,
+                warmup: cfg.warmup,
+                elapsed_ms,
+                mlups: Some(ml),
+                bandwidth_gbs: Some(bw),
+                bandwidth_pct_peak: Some(bw_pct),
+                vram_dist_mb: Some(vram_mb),
+                notes: "FP64 i-major SoA MRT collision; stride=19; reference precision; 8 bytes/dist".to_string(),
+            });
+        }
+        Ok(rows)
+    }
+
     // -------------------------------------------------------------------------
     // Workload L-2: FP4 E2M1 nibble-packed LBM -- BANDWIDTH CEILING ONLY
     // FP4 hardware is Blackwell SM 10.0+ only. On Ada: emulated via nibble pack
@@ -2275,114 +2786,61 @@ mod gpu {
     pub fn run(cfg: &BenchConfig) -> Result<Vec<BenchRow>> {
         let mut rows: Vec<BenchRow> = Vec::new();
 
+        // Helper: dispatch a workload if it passes precision filter.
+        macro_rules! dispatch {
+            ($label:expr, $prec:expr, $func:expr, $cfg:expr, $rows:expr) => {
+                if $cfg.pass_precision_filter($prec) {
+                    eprintln!("{}", $label);
+                    match $func($cfg) {
+                        Ok(mut r) => $rows.append(&mut r),
+                        Err(e) => eprintln!("  {} failed: {e}", $prec),
+                    }
+                }
+            };
+        }
+
         if cfg.run_workload("lbm") {
-            eprintln!("[A] LBM FP32/BF16/FP64 sweep...");
-            match run_lbm_sweep(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  Workload A failed: {e}"),
+            // FP32/BF16/FP64 sweep (handles variant filter internally)
+            if cfg.pass_precision_filter("FP32")
+                || cfg.pass_precision_filter("BF16")
+                || cfg.pass_precision_filter("FP64")
+            {
+                eprintln!("[A] LBM FP32/BF16/FP64 sweep...");
+                match run_lbm_sweep(cfg) {
+                    Ok(mut r) => rows.append(&mut r),
+                    Err(e) => eprintln!("  Workload A failed: {e}"),
+                }
             }
 
-            eprintln!("[H] LBM FP16 AoS sweep...");
-            match run_lbm_fp16(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP16 workload failed: {e}"),
-            }
+            dispatch!("[H] LBM FP16 AoS sweep...", "FP16", run_lbm_fp16, cfg, rows);
+            dispatch!("[H2] LBM FP16 SoA pull-scheme sweep...", "FP16", run_lbm_fp16_soa, cfg, rows);
+            dispatch!("[I] LBM FP8_e4m3 AoS sweep...", "FP8", run_lbm_fp8, cfg, rows);
+            dispatch!("[I2] LBM FP8_e5m2 AoS sweep (SM 8.9+ only)...", "FP8", run_lbm_fp8_e5m2, cfg, rows);
+            dispatch!("[I3] LBM FP8_e4m3 SoA pull-scheme sweep...", "FP8", run_lbm_fp8_soa, cfg, rows);
+            dispatch!("[J] LBM INT8 AoS sweep...", "INT8", run_lbm_int8, cfg, rows);
+            dispatch!("[J2] LBM INT8 SoA pull-scheme sweep...", "INT8", run_lbm_int8_soa, cfg, rows);
+            dispatch!("[K] LBM DD-FP128 sweep (capped at 64^3)...", "DD", run_lbm_dd, cfg, rows);
+            dispatch!("[L] LBM INT4 bandwidth ceiling sweep...", "INT4", run_lbm_int4, cfg, rows);
+            dispatch!("[J3] LBM INT16 AoS sweep...", "INT16", run_lbm_int16, cfg, rows);
+            dispatch!("[J4] LBM INT16 SoA pull-scheme sweep...", "INT16", run_lbm_int16_soa, cfg, rows);
 
-            eprintln!("[H2] LBM FP16 SoA pull-scheme sweep...");
-            match run_lbm_fp16_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP16 SoA workload failed: {e}"),
-            }
+            dispatch!("[H3] LBM BF16 SoA pull-scheme sweep (SM 8.0+)...", "BF16", run_lbm_bf16_soa, cfg, rows);
+            dispatch!("[I4] LBM FP8_e5m2 SoA pull-scheme sweep (SM 8.9+)...", "FP8", run_lbm_fp8_e5m2_soa, cfg, rows);
+            dispatch!("[A2] LBM FP64 SoA pull-scheme sweep (capped at 128^3)...", "FP64", run_lbm_fp64_soa, cfg, rows);
+            dispatch!("[A3] LBM FP32 SoA cache-streaming stores (__stcs) sweep...", "FP32", run_lbm_fp32_cs, cfg, rows);
 
-            eprintln!("[I] LBM FP8_e4m3 AoS sweep...");
-            match run_lbm_fp8(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP8 workload failed: {e}"),
-            }
+            dispatch!("[H4] LBM FP16 SoA half2 ILP sweep...", "FP16", run_lbm_fp16_half2, cfg, rows);
+            dispatch!("[L2] LBM FP4_E2M1 bandwidth ceiling sweep...", "FP4", run_lbm_fp4, cfg, rows);
 
-            eprintln!("[I2] LBM FP8_e5m2 AoS sweep (SM 8.9+ only)...");
-            match run_lbm_fp8_e5m2(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP8_e5m2 workload failed: {e}"),
-            }
-
-            eprintln!("[I3] LBM FP8_e4m3 SoA pull-scheme sweep...");
-            match run_lbm_fp8_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP8 SoA workload failed: {e}"),
-            }
-
-            eprintln!("[J] LBM INT8 AoS sweep...");
-            match run_lbm_int8(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  INT8 workload failed: {e}"),
-            }
-
-            eprintln!("[J2] LBM INT8 SoA pull-scheme sweep...");
-            match run_lbm_int8_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  INT8 SoA workload failed: {e}"),
-            }
-
-            eprintln!("[K] LBM DD-FP128 sweep (capped at 64^3)...");
-            match run_lbm_dd(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  DD workload failed: {e}"),
-            }
-
-            eprintln!("[L] LBM INT4 bandwidth ceiling sweep...");
-            match run_lbm_int4(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  INT4 workload failed: {e}"),
-            }
-
-            eprintln!("[J3] LBM INT16 AoS sweep...");
-            match run_lbm_int16(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  INT16 workload failed: {e}"),
-            }
-
-            eprintln!("[J4] LBM INT16 SoA pull-scheme sweep...");
-            match run_lbm_int16_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  INT16 SoA workload failed: {e}"),
-            }
-
-            eprintln!("[H3] LBM BF16 SoA pull-scheme sweep (SM 8.0+)...");
-            match run_lbm_bf16_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  BF16 SoA workload failed: {e}"),
-            }
-
-            eprintln!("[I4] LBM FP8_e5m2 SoA pull-scheme sweep (SM 8.9+)...");
-            match run_lbm_fp8_e5m2_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP8_e5m2 SoA workload failed: {e}"),
-            }
-
-            eprintln!("[A2] LBM FP64 SoA pull-scheme sweep (capped at 128^3)...");
-            match run_lbm_fp64_soa(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP64 SoA workload failed: {e}"),
-            }
-
-            eprintln!("[A3] LBM FP32 SoA cache-streaming stores (__stcs) sweep...");
-            match run_lbm_fp32_cs(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP32_CS workload failed: {e}"),
-            }
-
-            eprintln!("[H4] LBM FP16 SoA half2 ILP sweep (2 cells/thread)...");
-            match run_lbm_fp16_half2(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP16 half2 workload failed: {e}"),
-            }
-
-            eprintln!("[L2] LBM FP4_E2M1 bandwidth ceiling sweep...");
-            match run_lbm_fp4(cfg) {
-                Ok(mut r) => rows.append(&mut r),
-                Err(e) => eprintln!("  FP4 workload failed: {e}"),
-            }
+            // MRT collision variants
+            dispatch!("[M1] LBM BF16 SoA MRT sweep (SM 8.0+)...", "BF16", run_lbm_bf16_soa_mrt, cfg, rows);
+            dispatch!("[M2] LBM FP16 SoA MRT sweep...", "FP16", run_lbm_fp16_soa_mrt, cfg, rows);
+            dispatch!("[M3] LBM FP16 SoA half2 ILP MRT sweep...", "FP16", run_lbm_fp16_half2_mrt, cfg, rows);
+            dispatch!("[M4] LBM FP8 e4m3 SoA MRT sweep (SM 8.9+)...", "FP8", run_lbm_fp8_soa_mrt, cfg, rows);
+            dispatch!("[M5] LBM FP8 e5m2 SoA MRT sweep (SM 8.9+)...", "FP8", run_lbm_fp8_e5m2_soa_mrt, cfg, rows);
+            dispatch!("[M6] LBM INT8 SoA MRT sweep...", "INT8", run_lbm_int8_soa_mrt, cfg, rows);
+            dispatch!("[M7] LBM INT16 SoA MRT sweep...", "INT16", run_lbm_int16_soa_mrt, cfg, rows);
+            dispatch!("[M8] LBM FP64 SoA MRT sweep (capped at 128^3)...", "FP64", run_lbm_fp64_soa_mrt, cfg, rows);
         }
 
         if cfg.run_workload("box") {

@@ -24,6 +24,7 @@ cosmology_core = { path = "../cosmology_core" }
 [features]
 default = []
 cufft = ["cudarc/cufft"]
+aot-cubin = []  # AOT .cubin compilation via build.rs (reclaims ~1.5 GB VRAM)
 
 [[bench]]
 name = "gpu_performance"

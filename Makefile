@@ -6,6 +6,7 @@
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
+.PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit profile-python-toml-inventory
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -559,6 +560,60 @@ gpu-bench-nsys: ## Profile CUDA pipeline with Nsight Systems (nsys); requires ns
 		$${WORKLOADS:+--workloads $${WORKLOADS}} \
 		--steps-small 20 --steps-mid 20 --steps-large 10 --warmup 5
 	@echo "OK: nsys profile saved to data/benchmarks/nsys/ -- open .nsys-rep in Nsight Systems GUI"
+
+# ---- CPU Profiling ----
+
+cpu-bench: ## Run CPU LBM benchmark (BGK + MRT at 32/64/128)
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics \
+		--bin cpu-lbm-bench -- \
+		--output $${OUT:-data/benchmarks/cpu_lbm_baseline.csv} \
+		$${GRIDS:+--grids $${GRIDS}} \
+		$${WORKLOADS:+--workloads $${WORKLOADS}}
+	@echo "OK: CPU LBM benchmark complete. See data/benchmarks/cpu_lbm_baseline.csv"
+
+cpu-bench-perf: ## Profile CPU LBM with perf stat (cycles, instructions, cache misses)
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cpu-lbm-bench
+	@mkdir -p reports/benchmarks
+	perf stat -d \
+		$(REPO_CARGO_TARGET_DIR)/release/cpu-lbm-bench \
+		--grids $${GRIDS:-64} --workloads $${WORKLOADS:-bgk} \
+		--output /dev/null \
+		2> $${COUNTERS_OUT:-reports/benchmarks/cpu_lbm_perf.stat}
+	@echo "OK: perf stat saved to reports/benchmarks/cpu_lbm_perf.stat"
+
+cpu-bench-cachegrind: ## Profile CPU LBM with cachegrind (V-Cache analysis)
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cpu-lbm-bench
+	@mkdir -p reports/benchmarks
+	valgrind --tool=cachegrind \
+		--cachegrind-out-file=$${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm} \
+		$(REPO_CARGO_TARGET_DIR)/release/cpu-lbm-bench \
+		--grids $${GRIDS:-32} --workloads $${WORKLOADS:-bgk} --steps-small 10 \
+		--output /dev/null
+	@echo "OK: cachegrind output saved. Annotate with: cg_annotate $${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm}"
+
+cpu-bench-flamegraph: ## Capture a flamegraph for CPU LBM hotspot analysis
+	$(CARGO_ENV) cargo flamegraph --release -p gororoba_cli_physics --bin cpu-lbm-bench \
+		-o $${FGOUT:-reports/benchmarks/cpu_lbm_flamegraph.svg} \
+		-- --grids $${GRIDS:-64} --workloads $${WORKLOADS:-bgk} --output /dev/null
+	@echo "OK: flamegraph saved to $${FGOUT:-reports/benchmarks/cpu_lbm_flamegraph.svg}"
+
+# ---- Cross-backend parity ----
+
+parity-bench: ## Run all three backends (CUDA, Vulkan, CPU) at comparable grids
+	@echo "Running CPU benchmark..."
+	$(MAKE) cpu-bench GRIDS=$${GRIDS:-32,64} OUT=data/benchmarks/cpu_lbm_baseline.csv
+	@echo "Running CUDA benchmark..."
+	$(MAKE) gpu-bench GRIDS=$${GRIDS:-32,64} OUT=data/benchmarks/cuda_kernel_baseline.csv
+	@echo "All benchmarks complete."
+
+parity-report: ## Generate comparison Markdown from CUDA/Vulkan/CPU CSVs
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics \
+		--bin parity-report -- \
+		--cuda-csv $${CUDA_CSV:-data/benchmarks/cuda_kernel_baseline.csv} \
+		--vulkan-csv $${VULKAN_CSV:-data/benchmarks/vulkan_kernel_baseline.csv} \
+		--cpu-csv $${CPU_CSV:-data/benchmarks/cpu_lbm_baseline.csv} \
+		--output $${OUT:-data/benchmarks/parity_report.md}
+	@echo "OK: Parity report written to data/benchmarks/parity_report.md"
 
 jacobi-backend-sweep:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin jacobi-backend-sweep -- \
