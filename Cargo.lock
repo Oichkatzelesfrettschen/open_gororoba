@@ -5029,6 +5029,7 @@ dependencies = [
  "gr_core",
  "half",
  "lbm_3d",
+ "libloading 0.8.9",
  "rayon",
  "wide",
 ]

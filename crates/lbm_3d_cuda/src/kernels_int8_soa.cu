@@ -288,22 +288,24 @@ extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_int8_soa_mrt_kerne
     float tau_local = __ldg(&tau[idx]);
     mrt_collision_d3q19_int8(f_local, rho_local, ux, uy, uz, tau_local);
 
-    // Guo forcing (identical to BGK path)
-    float fx = __ldg(&force[idx]);
-    float fy = __ldg(&force[n_cells + idx]);
-    float fz = __ldg(&force[2 * n_cells + idx]);
-    float force_mag_sq = fx * fx + fy * fy + fz * fz;
+    // Guo forcing: guard with null-pointer check for force-free flows
+    if (force != NULL) {
+        float fx = __ldg(&force[idx]);
+        float fy = __ldg(&force[n_cells + idx]);
+        float fz = __ldg(&force[2 * n_cells + idx]);
+        float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
-    if (force_mag_sq >= 1e-40f) {
-        float inv_tau = 1.0f / tau_local;
-        float prefactor = 1.0f - 0.5f * inv_tau;
-        #pragma unroll
-        for (int i = 0; i < 19; i++) {
-            float eix = (float)CX_I8S[i], eiy = (float)CY_I8S[i], eiz = (float)CZ_I8S[i];
-            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-            float ei_dot_u   = eix * ux + eiy * uy + eiz * uz;
-            float ei_dot_f   = eix * fx + eiy * fy + eiz * fz;
-            f_local[i] += prefactor * W_I8S[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+        if (force_mag_sq >= 1e-40f) {
+            float inv_tau = 1.0f / tau_local;
+            float prefactor = 1.0f - 0.5f * inv_tau;
+            #pragma unroll
+            for (int i = 0; i < 19; i++) {
+                float eix = (float)CX_I8S[i], eiy = (float)CY_I8S[i], eiz = (float)CZ_I8S[i];
+                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+                float ei_dot_u   = eix * ux + eiy * uy + eiz * uz;
+                float ei_dot_f   = eix * fx + eiy * fy + eiz * fz;
+                f_local[i] += prefactor * W_I8S[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+            }
         }
     }
 
@@ -386,21 +388,25 @@ extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_int8_soa_mrt_aa_ke
     float tau_local = __ldg(&tau[idx]);
     mrt_collision_d3q19_int8(f_local, rho_local, ux, uy, uz, tau_local);
 
-    float fx = __ldg(&force[idx]);
-    float fy = __ldg(&force[N + idx]);
-    float fz = __ldg(&force[2 * N + idx]);
-    float force_mag_sq = fx * fx + fy * fy + fz * fz;
+    // Guo forcing: guard with null-pointer check to allow force-free flows
+    // without allocating a full n_cells*3 zeroed buffer (saves 12.9 GB at 1024^3).
+    if (force != NULL) {
+        float fx = __ldg(&force[idx]);
+        float fy = __ldg(&force[N + idx]);
+        float fz = __ldg(&force[2 * N + idx]);
+        float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
-    if (force_mag_sq >= 1e-40f) {
-        float inv_tau = 1.0f / tau_local;
-        float prefactor = 1.0f - 0.5f * inv_tau;
-        #pragma unroll
-        for (int i = 0; i < 19; i++) {
-            float eix = (float)CX_I8S[i], eiy = (float)CY_I8S[i], eiz = (float)CZ_I8S[i];
-            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-            float ei_dot_u   = eix * ux + eiy * uy + eiz * uz;
-            float ei_dot_f   = eix * fx + eiy * fy + eiz * fz;
-            f_local[i] += prefactor * W_I8S[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+        if (force_mag_sq >= 1e-40f) {
+            float inv_tau = 1.0f / tau_local;
+            float prefactor = 1.0f - 0.5f * inv_tau;
+            #pragma unroll
+            for (int i = 0; i < 19; i++) {
+                float eix = (float)CX_I8S[i], eiy = (float)CY_I8S[i], eiz = (float)CZ_I8S[i];
+                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+                float ei_dot_u   = eix * ux + eiy * uy + eiz * uz;
+                float ei_dot_f   = eix * fx + eiy * fy + eiz * fz;
+                f_local[i] += prefactor * W_I8S[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+            }
         }
     }
 
@@ -415,6 +421,128 @@ extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_int8_soa_mrt_aa_ke
         } else {
             f[(long long)i * N + idx] = float_to_i8s(f_local[i]);
         }
+    }
+}
+
+// Ephemeral macro variant: computes rho/u in registers only, skips
+// global rho_out/u_out writes. Saves 17.2 GB at 1024^3 (no macro buffers needed).
+// Signature: f (in/out), tau (read), force (nullable), nx, ny, nz, parity.
+extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_int8_soa_mrt_aa_ephemeral_kernel(
+    signed char* __restrict__ f,
+    const float* __restrict__ tau,
+    const float* __restrict__ force,
+    int nx, int ny, int nz,
+    int parity
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int N = nx * ny * nz;
+    if (idx >= N) return;
+
+    int x = idx % nx;
+    int y = (idx / nx) % ny;
+    int z = idx / (nx * ny);
+
+    float f_local[19];
+    float rho_local = 0.0f;
+    int mx_i32 = 0, my_i32 = 0, mz_i32 = 0;
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        int read_dir, src;
+        if (parity == 0) {
+            read_dir = i;
+            src = idx;
+        } else {
+            int xn = (x - CX_I8S[i] + nx) % nx;
+            int yn = (y - CY_I8S[i] + ny) % ny;
+            int zn = (z - CZ_I8S[i] + nz) % nz;
+            src = xn + nx * (yn + ny * zn);
+            read_dir = OPP_I8S[i];
+        }
+        signed char v = __ldg(&f[(long long)read_dir * N + src]);
+        f_local[i] = (float)v * INV_DIST_SCALE_I8S;
+        rho_local += f_local[i];
+        mx_i32 += CX_I8S[i] * (int)v;
+        my_i32 += CY_I8S[i] * (int)v;
+        mz_i32 += CZ_I8S[i] * (int)v;
+    }
+
+    float mx = (float)mx_i32 * INV_DIST_SCALE_I8S;
+    float my = (float)my_i32 * INV_DIST_SCALE_I8S;
+    float mz = (float)mz_i32 * INV_DIST_SCALE_I8S;
+
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    if (finite_i8s(rho_local) && rho_local > 1.0e-20f) {
+        float inv_rho = 1.0f / rho_local;
+        ux = mx * inv_rho;
+        uy = my * inv_rho;
+        uz = mz * inv_rho;
+    } else {
+        rho_local = 1.0f;
+    }
+
+    // Ephemeral: rho/u stay in registers -- no global writes
+
+    float tau_local = __ldg(&tau[idx]);
+    mrt_collision_d3q19_int8(f_local, rho_local, ux, uy, uz, tau_local);
+
+    if (force != NULL) {
+        float fx = __ldg(&force[idx]);
+        float fy = __ldg(&force[N + idx]);
+        float fz = __ldg(&force[2 * N + idx]);
+        float force_mag_sq = fx * fx + fy * fy + fz * fz;
+
+        if (force_mag_sq >= 1e-40f) {
+            float inv_tau = 1.0f / tau_local;
+            float prefactor = 1.0f - 0.5f * inv_tau;
+            #pragma unroll
+            for (int i = 0; i < 19; i++) {
+                float eix = (float)CX_I8S[i], eiy = (float)CY_I8S[i], eiz = (float)CZ_I8S[i];
+                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+                float ei_dot_u   = eix * ux + eiy * uy + eiz * uz;
+                float ei_dot_f   = eix * fx + eiy * fy + eiz * fz;
+                f_local[i] += prefactor * W_I8S[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+            }
+        }
+    }
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        if (parity == 0) {
+            int xn = (x + CX_I8S[i] + nx) % nx;
+            int yn = (y + CY_I8S[i] + ny) % ny;
+            int zn = (z + CZ_I8S[i] + nz) % nz;
+            int dst = xn + nx * (yn + ny * zn);
+            f[(long long)OPP_I8S[i] * N + dst] = float_to_i8s(f_local[i]);
+        } else {
+            f[(long long)i * N + idx] = float_to_i8s(f_local[i]);
+        }
+    }
+}
+
+// Lightweight init for 1024^3: writes only f and tau (no rho_out/u_out buffers).
+// Saves 17.2 GB of temporary GPU allocations at 1024^3.
+extern "C" __global__ void initialize_int8_soa_ephemeral_kernel(
+    signed char* f,
+    float* tau,
+    float tau_val,
+    int nx, int ny, int nz
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int n_cells = nx * ny * nz;
+    if (idx >= n_cells) return;
+
+    tau[idx] = tau_val;
+
+    // Equilibrium at rho=1, u=0: f_eq_i = w_i * 1.0
+    // INT8: round(DIST_SCALE * w_i) -> w0=21, w1-6=4, w7-18=2
+    float u_sq = 0.0f;
+    float base = fmaf(-1.5f, u_sq, 1.0f); // = 1.0
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        float f_eq = W_I8S[i] * 1.0f * base;
+        f[(long long)i * n_cells + idx] = float_to_i8s(f_eq);
     }
 }
 

@@ -46,7 +46,7 @@ use std::sync::Arc;
 pub const MRT_COLLISION_SRC: &str = include_str!("mrt_collision_d3q19.cu");
 
 // On-the-fly 2D slice extraction kernel.
-const KERNEL_SLICE_SRC: &str = include_str!("kernels_slice.cu");
+pub const KERNEL_SLICE_SRC: &str = include_str!("kernels_slice.cu");
 
 // CUDA source for each extended precision kernel tier.
 const KERNEL_FP16_SRC: &str = include_str!("kernels_fp16.cu");
