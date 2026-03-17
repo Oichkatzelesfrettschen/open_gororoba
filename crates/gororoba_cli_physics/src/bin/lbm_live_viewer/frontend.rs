@@ -5,7 +5,7 @@
 //! reset extension trait so backend adapters stay swappable.
 
 use crate::backend::ResettableViewerSource;
-use crate::camera_input::{ViewerInteractionState, apply_window_input};
+use crate::camera_input::{ViewerInteractionState, apply_window_input, slice_axis_label};
 use crate::transport::render_packet_to_argb;
 use anyhow::Result;
 use gororoba_gpu_bridge::FrameMode;
@@ -89,7 +89,7 @@ where
                 fps,
                 mlups,
                 state.steps_per_frame,
-                state.slice_axis.as_str(),
+                slice_axis_label(state.slice_axis),
                 state.slice_index
             ));
             last_report = Instant::now();

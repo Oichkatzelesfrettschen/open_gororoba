@@ -18,6 +18,10 @@ use std::time::Instant;
 
 use lbm_3d::solver::LbmSolver3D;
 #[cfg(feature = "gpu")]
+use lbm_3d_cuda::optix_orchestrator::{EulerianLagrangianOrchestrator, OrchestratorConfig};
+#[cfg(feature = "gpu")]
+use lbm_3d_cuda::optix_tracer::OptiXTracerConfig;
+#[cfg(feature = "gpu")]
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 
 /// Runtime backend selector for the live viewer.
@@ -25,6 +29,7 @@ use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 pub enum ViewerBackendKind {
     Cpu,
     Cuda,
+    OptixParticles,
 }
 
 /// Viewer-local extension that adds reset semantics on top of the shared frame
@@ -44,6 +49,7 @@ pub fn build_viewer_source(
     match backend {
         ViewerBackendKind::Cpu => Ok(Box::new(CpuLbmVolumeAdapter::new(grid, tau, use_mrt))),
         ViewerBackendKind::Cuda => build_cuda_viewer_source(grid, tau, use_mrt),
+        ViewerBackendKind::OptixParticles => build_optix_particle_source(grid),
     }
 }
 
@@ -63,6 +69,16 @@ fn build_cuda_viewer_source(
     _use_mrt: bool,
 ) -> Result<Box<dyn ResettableViewerSource>> {
     anyhow::bail!("CUDA viewer backend requires the 'gpu' feature")
+}
+
+#[cfg(feature = "gpu")]
+fn build_optix_particle_source(grid: usize) -> Result<Box<dyn ResettableViewerSource>> {
+    Ok(Box::new(OptixParticleAdapter::new(grid)))
+}
+
+#[cfg(not(feature = "gpu"))]
+fn build_optix_particle_source(_grid: usize) -> Result<Box<dyn ResettableViewerSource>> {
+    anyhow::bail!("OptiX particle viewer backend requires the 'gpu' feature")
 }
 
 /// CPU-backed dense volume adapter for the interactive viewer.
@@ -180,6 +196,103 @@ impl ResettableViewerSource for CpuLbmVolumeAdapter {
         self.step = 0;
         self.sim_time = 0.0;
         self.mlups_hint = None;
+        Ok(())
+    }
+}
+
+/// OptiX-backed particle-frame adapter.
+///
+/// This adapter surfaces the orchestrator's host-visible particle buffers
+/// through the shared `ParticleFrame` contract. It is intentionally limited to
+/// frame transport and viewer integration; live OptiX launch coupling remains in
+/// the solver/orchestrator layer.
+#[cfg(feature = "gpu")]
+pub struct OptixParticleAdapter {
+    orchestrator: EulerianLagrangianOrchestrator,
+    grid: GridShape3d,
+}
+
+#[cfg(feature = "gpu")]
+impl OptixParticleAdapter {
+    #[must_use]
+    pub fn new(grid: usize) -> Self {
+        let tracer = OptiXTracerConfig {
+            grid_dim: (grid as u32, grid as u32, grid as u32),
+            ..OptiXTracerConfig::default()
+        };
+        let orchestrator = EulerianLagrangianOrchestrator::new(OrchestratorConfig {
+            tracer,
+            n_particles: (grid * grid).max(256) as u32,
+            tracing_enabled: true,
+            snapshot_interval: 1,
+            velocity_device_ptr: 0,
+            density_device_ptr: 0,
+        });
+        Self {
+            orchestrator,
+            grid: GridShape3d {
+                nx: grid as u32,
+                ny: grid as u32,
+                nz: grid as u32,
+            },
+        }
+    }
+}
+
+#[cfg(feature = "gpu")]
+impl ViewerFrameSource for OptixParticleAdapter {
+    fn execution_profile(&self) -> ExecutionProfile {
+        ExecutionProfile {
+            backend: ComputeBackend::Cuda,
+            storage: StoragePrecision::Fp32,
+            layout: BufferLayout::Soa,
+            residency: MemoryResidency::DeviceLocal,
+            frame_mode: FrameMode::ParticleTrace,
+        }
+    }
+
+    fn supported_frame_modes(&self) -> Vec<FrameMode> {
+        vec![FrameMode::ParticleTrace]
+    }
+
+    fn frame_metadata(&self) -> FrameMetadata {
+        FrameMetadata {
+            title: "OptiX particle buffer viewer".to_string(),
+            backend_name: "OptiX tracer".to_string(),
+            grid: self.grid,
+            step: self.orchestrator.lbm_step,
+            sim_time: self.orchestrator.lbm_step as f64,
+            preferred_frame_mode: FrameMode::ParticleTrace,
+            execution: self.execution_profile(),
+            fps_hint: None,
+            mlups_hint: None,
+        }
+    }
+
+    fn step_simulation(&mut self, n_steps: usize) -> Result<()> {
+        for _ in 0..n_steps {
+            self.orchestrator.advance_step();
+        }
+        Ok(())
+    }
+
+    fn copy_frame(&mut self, requested_mode: FrameMode) -> Result<ViewerFramePacket> {
+        match requested_mode {
+            FrameMode::ParticleTrace => Ok(ViewerFramePacket::Particles(
+                gororoba_view_core::ParticleFrame {
+                    positions: self.orchestrator.particle_positions.clone(),
+                    velocities: self.orchestrator.particle_velocities.clone(),
+                },
+            )),
+            _ => anyhow::bail!("OptiX particle adapter only supports ParticleTrace frames"),
+        }
+    }
+}
+
+#[cfg(feature = "gpu")]
+impl ResettableViewerSource for OptixParticleAdapter {
+    fn reset_simulation(&mut self) -> Result<()> {
+        *self = Self::new(self.grid.nx as usize);
         Ok(())
     }
 }

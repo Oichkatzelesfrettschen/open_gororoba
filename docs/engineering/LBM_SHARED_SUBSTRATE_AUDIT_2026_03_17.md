@@ -34,14 +34,15 @@ heavy domain dependencies.
   - scalar min/max normalization
   - LUT mapping
   - 3D volume slice extraction to ARGB/RGBA
-- proposed future crate
+- extracted crate
   - `gororoba_view_raster`
 - dependency profile
   - no CUDA
   - no Vulkan
   - no LBM
-- why it is a good candidate
-  - clearly reusable for any dense scalar cube, not just LBM density
+- current status
+  - implemented and now used by `lbm-live-viewer`
+  - adopted by `lbm-slice-viewer` to remove duplicated slice/LUT code
 
 ### 2. Simulation initialization motifs
 
@@ -168,10 +169,8 @@ generic crate unless a second particle-tracing workload appears.
 
 ## Immediate Execution Order
 
-1. Keep the new CPU and CUDA `ViewerFrameSource` adapters as the reference seam.
-2. Add an `OptixParticleAdapter` only if it can present particle frames through
-   `gororoba_view_core` without dragging tracer internals into the frontend.
-3. Revisit Vulkan helper extraction only after an independent renderer needs the
+1. Keep the CPU, CUDA, and OptiX-backed viewer adapters as the reference seam.
+2. Revisit Vulkan helper extraction only after an independent renderer needs the
    same capability/readback helpers.
-4. Consider `gororoba_view_raster` next, because the slice/LUT logic is already
-   duplicated and clearly backend-neutral.
+3. Decide whether `gororoba_view_raster` should absorb more generic particle or
+   image projection helpers, or stay deliberately small.

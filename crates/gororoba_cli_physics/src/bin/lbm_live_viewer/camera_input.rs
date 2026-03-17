@@ -6,57 +6,8 @@
 //! window loop.
 
 use gororoba_view_core::GridShape3d;
+pub use gororoba_view_raster::SliceAxis;
 use minifb::{Key, KeyRepeat, Window};
-
-/// Principal slice axis through a 3D volume.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum SliceAxis {
-    X,
-    Y,
-    Z,
-}
-
-impl SliceAxis {
-    /// Cycle to the next axis.
-    #[must_use]
-    pub fn next(self) -> Self {
-        match self {
-            Self::X => Self::Y,
-            Self::Y => Self::Z,
-            Self::Z => Self::X,
-        }
-    }
-
-    /// Cycle to the previous axis.
-    #[must_use]
-    pub fn previous(self) -> Self {
-        match self {
-            Self::X => Self::Z,
-            Self::Y => Self::X,
-            Self::Z => Self::Y,
-        }
-    }
-
-    /// Maximum valid slice index along this axis.
-    #[must_use]
-    pub fn max_index(self, grid: GridShape3d) -> usize {
-        match self {
-            Self::X => grid.nx as usize - 1,
-            Self::Y => grid.ny as usize - 1,
-            Self::Z => grid.nz as usize - 1,
-        }
-    }
-
-    /// Human-readable axis label.
-    #[must_use]
-    pub fn as_str(self) -> &'static str {
-        match self {
-            Self::X => "X",
-            Self::Y => "Y",
-            Self::Z => "Z",
-        }
-    }
-}
 
 /// Mutable viewer interaction state shared by the frontend loop and transport.
 #[derive(Debug, Clone)]
@@ -81,7 +32,7 @@ impl ViewerInteractionState {
 
     /// Clamp the currently selected slice index to the chosen axis.
     pub fn clamp_slice_index(&mut self, grid: GridShape3d) {
-        self.slice_index = self.slice_index.min(self.slice_axis.max_index(grid));
+        self.slice_index = self.slice_index.min(slice_axis_max_index(self.slice_axis, grid));
     }
 }
 
@@ -117,19 +68,52 @@ pub fn apply_window_input(
         state.steps_per_frame = state.steps_per_frame.saturating_sub(1).max(1);
     }
     if window.is_key_pressed(Key::Right, KeyRepeat::No) {
-        state.slice_axis = state.slice_axis.next();
+        state.slice_axis = next_slice_axis(state.slice_axis);
         state.clamp_slice_index(grid);
     }
     if window.is_key_pressed(Key::Left, KeyRepeat::No) {
-        state.slice_axis = state.slice_axis.previous();
+        state.slice_axis = previous_slice_axis(state.slice_axis);
         state.clamp_slice_index(grid);
     }
     if window.is_key_pressed(Key::Up, KeyRepeat::Yes) {
-        state.slice_index = (state.slice_index + 1).min(state.slice_axis.max_index(grid));
+        state.slice_index =
+            (state.slice_index + 1).min(slice_axis_max_index(state.slice_axis, grid));
     }
     if window.is_key_pressed(Key::Down, KeyRepeat::Yes) {
         state.slice_index = state.slice_index.saturating_sub(1);
     }
 
     actions
+}
+
+#[must_use]
+pub fn next_slice_axis(axis: SliceAxis) -> SliceAxis {
+    match axis {
+        SliceAxis::X => SliceAxis::Y,
+        SliceAxis::Y => SliceAxis::Z,
+        SliceAxis::Z => SliceAxis::X,
+    }
+}
+
+#[must_use]
+pub fn previous_slice_axis(axis: SliceAxis) -> SliceAxis {
+    match axis {
+        SliceAxis::X => SliceAxis::Z,
+        SliceAxis::Y => SliceAxis::X,
+        SliceAxis::Z => SliceAxis::Y,
+    }
+}
+
+#[must_use]
+pub fn slice_axis_max_index(axis: SliceAxis, grid: GridShape3d) -> usize {
+    axis.max_index(grid)
+}
+
+#[must_use]
+pub fn slice_axis_label(axis: SliceAxis) -> &'static str {
+    match axis {
+        SliceAxis::X => "X",
+        SliceAxis::Y => "Y",
+        SliceAxis::Z => "Z",
+    }
 }

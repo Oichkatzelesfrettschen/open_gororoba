@@ -3875,6 +3875,7 @@ dependencies = [
  "gororoba_algebra",
  "gororoba_gpu_bridge",
  "gororoba_view_core",
+ "gororoba_view_raster",
  "gr_core",
  "hifitime",
  "kiddo",
@@ -4072,6 +4073,13 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "gororoba_gpu_bridge",
+]
+
+[[package]]
+name = "gororoba_view_raster"
+version = "0.1.0"
+dependencies = [
+ "gororoba_view_core",
 ]
 
 [[package]]
