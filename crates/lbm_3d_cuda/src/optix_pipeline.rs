@@ -247,12 +247,12 @@ impl Default for OptiXCompileOptions {
 // Live OptiX pipeline (requires libnvoptix.so.1 at runtime)
 // ---------------------------------------------------------------------------
 
-use crate::optix_ffi::{self, OptixApi, OptixDeviceContext};
+use gororoba_optix::{self, OptixRuntime};
 
 /// Live OptiX pipeline with loaded API handles.
 ///
-/// Wraps the configuration-only `OptiXPipeline` with actual OptiX device
-/// handles obtained via `optix_ffi::OptixApi`. Creating this struct
+/// Wraps the configuration-only `OptiXPipeline` with an actual OptiX runtime
+/// obtained via `gororoba_optix::OptixRuntime`. Creating this struct
 /// initializes the OptiX device context and validates the API is loadable.
 ///
 /// The full pipeline build (module compile, program groups, SBT, GAS) is
@@ -260,10 +260,8 @@ use crate::optix_ffi::{self, OptixApi, OptixDeviceContext};
 /// compilation of `optix_tracer.cu`. Without the headers, the context
 /// creation still validates that the driver and RT cores are accessible.
 pub struct LiveOptiXPipeline {
-    /// Loaded OptiX function table.
-    pub api: OptixApi,
-    /// OptiX device context handle.
-    pub context: OptixDeviceContext,
+    /// Generic OptiX runtime boundary (FFI + device context ownership).
+    pub runtime: OptixRuntime,
     /// Configuration-side pipeline state (bricks, SBT data, etc.).
     pub config_pipeline: OptiXPipeline,
 }
@@ -286,28 +284,7 @@ impl LiveOptiXPipeline {
         velocity_device_ptr: u64,
         density_device_ptr: u64,
     ) -> anyhow::Result<Self> {
-        // Step 1: Load OptiX function table
-        let api = OptixApi::load()?;
-
-        // Step 2: Create device context from current CUDA context (CUcontext = 0 means current)
-        let mut context: OptixDeviceContext = std::ptr::null_mut();
-        let options = optix_ffi::OptixDeviceContextOptions {
-            log_callback_level: pipeline_config.log_level as i32,
-            ..Default::default()
-        };
-        let result = (api.table.optix_device_context_create)(
-            0, // CUcontext = 0 means use current
-            &options,
-            &mut context,
-        );
-        if result != optix_ffi::OPTIX_SUCCESS {
-            anyhow::bail!(
-                "optixDeviceContextCreate failed with code {result}"
-            );
-        }
-        if context.is_null() {
-            anyhow::bail!("optixDeviceContextCreate returned null context");
-        }
+        let runtime = OptixRuntime::init_current_context(pipeline_config.log_level)?;
 
         let config_pipeline = OptiXPipeline::new(
             pipeline_config,
@@ -317,8 +294,7 @@ impl LiveOptiXPipeline {
         );
 
         Ok(Self {
-            api,
-            context,
+            runtime,
             config_pipeline,
         })
     }
@@ -328,18 +304,7 @@ impl LiveOptiXPipeline {
     /// Lighter than `init()` -- just probes the shared library without
     /// creating a device context.
     pub fn probe() -> anyhow::Result<String> {
-        optix_ffi::probe_optix().map_err(|e| anyhow::anyhow!(e))
-    }
-}
-
-impl Drop for LiveOptiXPipeline {
-    fn drop(&mut self) {
-        if !self.context.is_null() {
-            unsafe {
-                (self.api.table.optix_device_context_destroy)(self.context);
-            }
-            self.context = std::ptr::null_mut();
-        }
+        OptixRuntime::probe()
     }
 }
 

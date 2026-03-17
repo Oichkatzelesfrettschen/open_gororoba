@@ -39,6 +39,7 @@ members = [
     "crates/sign_imbalance",
     "crates/lbm_3d",
     "crates/lbm_3d_cuda",
+    "crates/gororoba_optix",
     "crates/lattice_filtration",
     "crates/neural_homotopy",
     "crates/gororoba_pipeline", "crates/gororoba_gpu_bridge",
@@ -83,6 +84,7 @@ cd_kernel = { path = "crates/cd_kernel" }
 algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }
 gororoba_gpu_bridge = { path = "crates/gororoba_gpu_bridge" }
+gororoba_optix = { path = "crates/gororoba_optix" }
 
 # Core numerics
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls
