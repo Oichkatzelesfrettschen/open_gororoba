@@ -575,6 +575,7 @@ cd_spin_bridge = { path = "../cd_spin_bridge" }
 qgp_scaling = { path = "../qgp_scaling" }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
+gororoba_view_core = { workspace = true }
 ash = { version = "0.38.0", features = ["debug"] }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }

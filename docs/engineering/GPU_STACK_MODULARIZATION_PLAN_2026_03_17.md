@@ -167,18 +167,23 @@ That task list now includes explicit seam analysis for:
 ### Phase B: viewer split
 
 1. extract camera/input/frame-loop logic from `lbm-live-viewer`
+   - status: done for the first `ViewerFrameSource`-driven split
 2. introduce a reusable viewer crate for:
    - frame transport
    - camera state
    - backend-neutral status panels
+   - current implementation uses local viewer modules plus
+     `gororoba_view_core`; a second phase can promote more of this into a crate
 3. keep minifb as one frontend target, but leave room for a richer Vulkan UI
    or CPU-safe fallback viewer
 
 ### Phase C: rendering split
 
 1. separate Vulkan capability probing from the LBM render engine
+   - status: decision complete, extraction deferred
 2. keep LBM-specific WGSL pipelines in `lbm_vulkan`
 3. move generic image/readback/context helpers into reusable modules
+   - only when another renderer proves the seam
 
 ### Phase D: OptiX split
 
