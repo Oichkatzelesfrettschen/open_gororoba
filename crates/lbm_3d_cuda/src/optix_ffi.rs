@@ -42,8 +42,7 @@ pub type CuDevicePtr = u64;
 /// OptiX success code.
 pub const OPTIX_SUCCESS: OptixResult = 0;
 
-/// OptiX ABI version for 9.x (header version 90100 = 9.1.0).
-const OPTIX_ABI_VERSION: u32 = 91;
+// OptiX ABI versions and table sizes are probed in OptixApi::load().
 
 // ---------------------------------------------------------------------------
 // OptiX configuration structs (minimal subset for particle tracing)
@@ -238,24 +237,63 @@ impl OptixApi {
         let query_fn: libloading::Symbol<QueryFunctionTableFn> =
             lib.get(b"optixQueryFunctionTable\0")?;
 
-        // The function table is a large C struct (~60 function pointers).
-        // We allocate a zero-filled buffer and let optixQueryFunctionTable fill it.
-        // The actual struct size depends on the ABI version.
-        const TABLE_SIZE: usize = 512; // enough for OptiX 9.x (~60 * 8 bytes)
-        let mut raw_table = vec![0u8; TABLE_SIZE];
+        // The function table has exactly N function pointers. The size must
+        // match EXACTLY or optixQueryFunctionTable returns 7801 (SIZE_MISMATCH).
+        // Table sizes per ABI version (probed empirically):
+        //   ABI 91 (OptiX 9.x): 50 ptrs = 400 bytes
+        //   ABI 55 (OptiX 7.x): ~60 ptrs = 480 bytes (estimated)
+        const ABI_TABLE_SIZES: &[(u32, usize)] = &[
+            (91, 50 * 8),  // OptiX 9.0-9.1: 50 function pointers
+            (86, 50 * 8),  // OptiX 8.1 (guess -- same era)
+            (78, 56 * 8),  // OptiX 8.0 (estimated)
+            (55, 60 * 8),  // OptiX 7.5 (estimated)
+        ];
 
-        let result = query_fn(
-            OPTIX_ABI_VERSION,
-            0,
-            std::ptr::null_mut(),
-            std::ptr::null_mut(),
-            raw_table.as_mut_ptr() as *mut c_void,
-            TABLE_SIZE,
-        );
+        let mut raw_table = vec![0u8; 512]; // max of all known sizes
+        let mut matched_abi = 0u32;
+        let mut matched_size = 0usize;
 
-        if result != OPTIX_SUCCESS {
-            anyhow::bail!("optixQueryFunctionTable failed with code {result}");
+        for &(abi, size) in ABI_TABLE_SIZES {
+            raw_table[..size].fill(0);
+            let result = query_fn(
+                abi,
+                0,
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                raw_table.as_mut_ptr() as *mut c_void,
+                size,
+            );
+            if result == OPTIX_SUCCESS {
+                matched_abi = abi;
+                matched_size = size;
+                break;
+            }
         }
+
+        if matched_abi == 0 {
+            // Brute-force: try ABI 91 with sizes 40..80 ptrs
+            for n_ptrs in 40..80 {
+                let size = n_ptrs * 8;
+                raw_table[..size].fill(0);
+                let result = query_fn(
+                    91, 0,
+                    std::ptr::null_mut(), std::ptr::null_mut(),
+                    raw_table.as_mut_ptr() as *mut c_void, size,
+                );
+                if result == OPTIX_SUCCESS {
+                    matched_abi = 91;
+                    matched_size = size;
+                    break;
+                }
+            }
+        }
+
+        if matched_abi == 0 {
+            anyhow::bail!(
+                "optixQueryFunctionTable failed for all probed ABI versions"
+            );
+        }
+        let _ = matched_size; // used for documentation
 
         // Extract function pointers from the raw table.
         // The function table layout is documented in optix_function_table_definition.h.
@@ -282,7 +320,7 @@ impl OptixApi {
         if ctx_create_ptr == 0 {
             anyhow::bail!(
                 "optixDeviceContextCreate is null -- ABI version mismatch? \
-                 Expected ABI {OPTIX_ABI_VERSION}"
+                 Expected ABI {matched_abi}"
             );
         }
 
@@ -309,9 +347,7 @@ pub fn probe_optix() -> Result<String, String> {
 
     // Try to load and query the function table
     match unsafe { OptixApi::load() } {
-        Ok(_api) => Ok(format!(
-            "OptiX available (ABI version {OPTIX_ABI_VERSION})"
-        )),
+        Ok(_api) => Ok("OptiX available (function table loaded)".to_string()),
         Err(e) => Err(format!("OptiX library found but failed to load: {e}")),
     }
 }
