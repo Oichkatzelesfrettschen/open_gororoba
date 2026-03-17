@@ -229,8 +229,8 @@ impl UnifiedInt8Runner {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_unified_runner_module_compiles() {
-        // Compile-time verification only -- actual GPU test requires device
-        assert!(true);
+    fn test_unified_runner_struct_size() {
+        // Verify the struct exists and is non-zero sized (compile-time check).
+        assert!(std::mem::size_of::<super::UnifiedInt8Runner>() > 0);
     }
 }
