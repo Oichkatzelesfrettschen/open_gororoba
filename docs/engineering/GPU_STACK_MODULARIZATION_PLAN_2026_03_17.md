@@ -1,0 +1,228 @@
+# GPU Stack Modularization and Viewer Plan
+
+## Current State
+
+The repo has real, working GPU infrastructure, but the boundaries are uneven:
+
+- `gororoba_gpu_bridge`
+  - already serves as the light reusable substrate for backend detection,
+    CPU pinning, and CUDA capability probing
+  - dependency graph is small and appropriate for reuse
+- `lbm_3d_cuda`
+  - contains production LBM CUDA solver logic
+  - also contains benchmark-only precision tiers, sparse execution modes,
+    managed-memory policy, OptiX tracer support, and profiling-oriented kernels
+  - dependency graph is much heavier than a generic CUDA substrate should be
+- `lbm_vulkan`
+  - contains Vulkan hardware discovery, compute pipelines, and rendering logic
+  - still mixes reusable rendering substrate with LBM-specific precision and
+    collision policy
+- `gororoba_cli_physics --bin lbm-live-viewer`
+  - is currently an application binary, not a reusable frontend
+  - directly couples CUDA solve -> host readback -> Vulkan render -> minifb
+  - is not yet backend-agnostic or grid-policy-agnostic
+- `lbm_3d_cuda::optix_*`
+  - is a real OptiX lane, not a stub
+  - currently lives inside the CUDA LBM crate rather than behind a reusable
+    particle-tracing or ray-acceleration boundary
+
+## Current Purpose
+
+Today the purpose of the stack is narrower than the code surface suggests:
+
+- execute LBM and related GPU-first physics kernels
+- stage sparse and mixed-precision execution on Ada-class CUDA devices
+- render and inspect selected 3D states interactively
+- support particle tracing and specialized science experiments
+
+That purpose is valid, but the stack is not yet presented as a clean set of
+reusable layers. The repo currently proves "it works", but not yet "it is
+modular, connected, and reusable with clear contracts".
+
+## Design Principles
+
+1. Keep Rust-first and rustdoc-first discipline.
+2. Keep GPU fast paths GPU-oriented:
+   - GPU storage/layout stays SoA where coalescing matters.
+   - CPU fallback stays AoS where cache locality matters.
+3. Separate substrate from domain policy.
+4. Keep interactive viewing agnostic to grid size and backend where practical.
+5. Do not force a generic abstraction that erases useful hardware-specific
+   capabilities such as Ada sparse tiling, BF16 suitability, or OptiX RT cores.
+
+## Recommended Layer Split
+
+### Layer 1: reusable hardware and execution substrate
+
+Keep or move into `gororoba_gpu_bridge`:
+
+- backend detection
+- CUDA and Vulkan capability probing
+- managed-memory planning
+- sparse-memory planning envelopes
+- execution-mode selection contracts
+- shared precision/layout descriptors
+
+This layer should remain lightweight and rustdoc-complete.
+
+### Layer 2: reusable runtime helpers
+
+Create or extract a new reusable crate family for:
+
+- GPU memory residency policy
+- buffer layout metadata
+- profiling helpers
+- backend-agnostic simulation/viewer frame contracts
+
+Suggested future crates:
+
+- `gororoba_gpu_memory`
+- `gororoba_gpu_profiles`
+- `gororoba_view_core`
+
+These should not depend on LBM or heliosphere science crates.
+
+### Layer 3: domain-specific compute engines
+
+Keep domain ownership here:
+
+- `lbm_3d_cuda`
+- `lbm_vulkan`
+- `lbm_core`
+- OptiX particle tracing tied to LBM macroscopic fields
+
+These crates should consume substrate contracts rather than defining all of
+their own overlapping policy enums.
+
+### Layer 4: applications and science entrypoints
+
+Keep end-user and experiment binaries here:
+
+- `gororoba_cli_physics --bin lbm-live-viewer`
+- heliosphere/LBM orchestration binaries
+- particle tracing and analysis bins
+
+## Viewer Architecture Direction
+
+The viewer should become a frontend application over a backend-neutral frame
+source contract.
+
+### Current viewer limitations
+
+- assumes CUDA solver backend
+- assumes Vulkan render path
+- assumes host readback between solve and render
+- mixes input, camera, solve cadence, and frontend output in one binary
+
+### Desired viewer contract
+
+The frontend should consume a trait-like frame source:
+
+- `step(n_steps)`
+- `state_metadata()`
+- `copy_volume_frame()`
+- `copy_slice_frame()`
+- `preferred_render_mode()`
+- `backend_name()`
+
+and should not care whether the producer is:
+
+- CUDA dense LBM
+- CUDA sparse LBM
+- Vulkan compute LBM
+- CPU fallback
+- OptiX-assisted particle renderer
+
+### Grid-size policy
+
+Grid size should be a runtime policy, not a frontend specialization:
+
+- 8^3, 16^3, 32^3, 64^3, 128^3, 256^3, 512^3, and 1024^3 all map to the same
+  frontend contracts
+- backend decides whether to render full volume, downsampled volume, or slices
+- frontend shows what mode is active instead of hardcoding assumptions
+
+## Immediate Next Implementation Phases
+
+The concrete tracked task list for this plan now lives in:
+
+- `docs/engineering/GPU_MODULARIZATION_TASKLIST_2026_03_17.md`
+- `docs/engineering/OPTIX_ACCELERATION_BOUNDARY_2026_03_17.md`
+
+That task list now includes explicit seam analysis for:
+
+- OptiX <-> CUDA runtime
+- CUDA solver <-> viewer
+- Vulkan renderer <-> viewer
+- CPU fallback <-> viewer
+- shared metadata/frame contracts
+
+### Phase A: shared contracts
+
+1. move shared memory/layout/precision descriptors into a reusable substrate
+2. update CUDA sparse planner and viewer code to consume those shared types
+3. keep benchmark-only precision tiers out of the stable shared API unless they
+   are actually used by applications
+
+### Phase B: viewer split
+
+1. extract camera/input/frame-loop logic from `lbm-live-viewer`
+2. introduce a reusable viewer crate for:
+   - frame transport
+   - camera state
+   - backend-neutral status panels
+3. keep minifb as one frontend target, but leave room for a richer Vulkan UI
+   or CPU-safe fallback viewer
+
+### Phase C: rendering split
+
+1. separate Vulkan capability probing from the LBM render engine
+2. keep LBM-specific WGSL pipelines in `lbm_vulkan`
+3. move generic image/readback/context helpers into reusable modules
+
+### Phase D: OptiX split
+
+1. keep LBM-specific OptiX tracer logic where it is for now
+2. later extract generic BVH/pipeline orchestration into a reusable OptiX layer
+   only if more than one science lane needs it
+
+## Managed Memory and Sparse Execution Guidance
+
+The profiling and sparse-planning work already supports the following policy:
+
+- default: VRAM-first sparse SoA
+- lower-headroom fallback: managed unified memory with tile-prefetch
+- CPU fallback: AoS, smaller grids, explicit downgrade
+
+That policy should remain the core default even after modularization.
+
+## Why this plan is worth doing
+
+It will make the stack easier to:
+
+- document
+- profile
+- reuse outside one viewer binary
+- keep warnings-as-errors clean
+- test on CPU-only systems
+- evolve across CUDA, Vulkan, and OptiX without duplicating policy code
+
+## What not to do
+
+- do not switch GPU hot paths to AoS just to chase a little memory headroom
+- do not treat ReBAR/BAR1 as extra VRAM
+- do not move every benchmark-only precision experiment into the stable shared
+  API
+- do not pretend the current viewer is already backend-agnostic
+
+## Success Criteria
+
+This modularization tranche is successful when:
+
+1. backend capability and memory-policy types live in a reusable light crate
+2. viewer frontend logic no longer depends directly on one solver type
+3. grid-size handling is runtime policy, not frontend specialization
+4. rustdoc on public GPU/viewer contracts is complete enough to onboard a new
+   contributor without reverse-engineering the binaries
+5. the current CUDA sparse fast path and managed tiled fallback keep working
+   without regression
