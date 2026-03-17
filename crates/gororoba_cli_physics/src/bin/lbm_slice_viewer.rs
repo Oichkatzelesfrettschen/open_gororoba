@@ -163,27 +163,51 @@ struct Config {
     /// Maximum frames (0 = unlimited).
     #[arg(long, default_value_t = 0)]
     max_frames: u64,
+
+    /// Use unified memory (cuMemAllocManaged) for grids > 512^3.
+    /// Automatically enabled when --grid > 512.
+    #[arg(long)]
+    unified: bool,
 }
 
 #[cfg(feature = "gpu")]
 fn run_slice_viewer(cfg: &Config) -> Result<()> {
     use lbm_3d_cuda::{LbmSolver3DCuda, Precision, bench_kernels::SoaBenchRunner};
+    use lbm_3d_cuda::unified_runner::UnifiedInt8Runner;
     use minifb::{Key, KeyRepeat, Window, WindowOptions};
 
     let n = cfg.grid;
     let n_cells = n * n * n;
-    let use_int8 = n > 352; // INT8 path for grids that exceed FP32 VRAM budget
+    // Backend selection: unified for 1024^3+, INT8 for 352-512, FP32 for <=352
+    let use_unified = cfg.unified || n > 512;
+    let use_int8 = !use_unified && n > 352;
     println!("LBM Slice Viewer (CPU SIMD render)");
     println!("  Grid: {n}^3 ({n_cells} cells)");
     println!("  Steps/frame: {}", cfg.steps_per_frame);
     println!("  tau: {}", cfg.tau);
-    println!("  Backend: {}", if use_int8 { "INT8 SoA MRT (SoaBenchRunner)" } else { "FP32 MRT (LbmSolver3DCuda)" });
+    if use_unified {
+        println!("  Backend: Unified Memory INT8 MRT (cuMemAllocManaged)");
+        println!("  Distribution buffer: {:.1} GB (pages between VRAM and system RAM)",
+            n_cells as f64 * 19.0 / (1024.0 * 1024.0 * 1024.0));
+    } else if use_int8 {
+        println!("  Backend: INT8 SoA MRT (SoaBenchRunner)");
+    } else {
+        println!("  Backend: FP32 MRT (LbmSolver3DCuda)");
+    }
 
-    // Initialize solver (FP32 for <=352^3, INT8 for larger)
+    // Initialize solver (unified for >512, INT8 for 352-512, FP32 for <=352)
     let mut solver_fp32: Option<LbmSolver3DCuda> = None;
     let mut solver_int8: Option<SoaBenchRunner> = None;
+    let mut solver_unified: Option<UnifiedInt8Runner> = None;
 
-    if use_int8 {
+    if use_unified {
+        println!("Initializing Unified Memory INT8 MRT solver...");
+        println!("  Allocating {:.1} GB managed memory...",
+            n_cells as f64 * 19.0 / (1024.0 * 1024.0 * 1024.0));
+        solver_unified = Some(UnifiedInt8Runner::new(n, n, n, cfg.tau as f32)?);
+        println!("  Unified solver initialized. Dist buffer: {:.1} GB",
+            solver_unified.as_ref().unwrap().dist_bytes() as f64 / (1024.0 * 1024.0 * 1024.0));
+    } else if use_int8 {
         println!("Initializing INT8 SoA MRT solver (low-VRAM path)...");
         solver_int8 = Some(SoaBenchRunner::new_int8_soa_mrt(n, n, n)?);
         println!("INT8 solver initialized. VRAM: {} MB (dist only)",
@@ -251,11 +275,12 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
             eprintln!("  {}", if paused { "PAUSED" } else { "RUNNING" });
         }
         if window.is_key_pressed(Key::R, KeyRepeat::No) {
-            // Reset: INT8 path recreates the runner, FP32 re-initializes custom
-            if use_int8 {
+            // Reset: recreate the runner (INT8/unified) or skip (FP32)
+            if use_unified {
+                solver_unified = Some(UnifiedInt8Runner::new(n, n, n, cfg.tau as f32)?);
+            } else if use_int8 {
                 solver_int8 = Some(SoaBenchRunner::new_int8_soa_mrt(n, n, n)?);
             }
-            // FP32 reset not supported (would need stored init data)
             total_steps = 0;
             eprintln!("  RESET");
         }
@@ -304,11 +329,36 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
                 s.step_n(steps_per_frame)?;
                 total_steps += steps_per_frame as u64;
             }
+            if let Some(ref mut s) = solver_unified {
+                s.step_n(steps_per_frame)?;
+                total_steps += steps_per_frame as u64;
+            }
         }
 
         // Render slice
         let render_t0 = Instant::now();
-        if use_int8 {
+        if use_unified {
+            // Unified memory path: extract slice on-the-fly via GPU kernel
+            let s = solver_unified.as_mut().unwrap();
+            let (rho_slice, vel_slice) = s.read_slice(slice_axis as i32, slice_idx as i32)?;
+            let slice_w = match slice_axis { 0 => n, 1 => n, _ => n };
+            let slice_h = match slice_axis { 0 => n, 1 => n, _ => n };
+            if show_velocity {
+                let vmin = vel_slice.iter().copied().fold(f32::MAX, f32::min);
+                let vmax = vel_slice.iter().copied().fold(f32::MIN, f32::max);
+                render_slice(
+                    &mut framebuffer, fb_w, fb_h, &vel_slice, slice_w, slice_h, 1,
+                    2, 0, vmin, vmax, &lut_vel,
+                );
+            } else {
+                let rmin = rho_slice.iter().copied().fold(f32::MAX, f32::min);
+                let rmax = rho_slice.iter().copied().fold(f32::MIN, f32::max);
+                render_slice(
+                    &mut framebuffer, fb_w, fb_h, &rho_slice, slice_w, slice_h, 1,
+                    2, 0, rmin, rmax, &lut_rho,
+                );
+            }
+        } else if use_int8 {
             // INT8 path: extract slice on-the-fly via GPU kernel
             let s = solver_int8.as_ref().unwrap();
             let (rho_slice, vel_slice) = s.read_slice(slice_axis as i32, slice_idx as i32)?;

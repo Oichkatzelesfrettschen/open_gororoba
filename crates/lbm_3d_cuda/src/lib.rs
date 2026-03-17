@@ -44,6 +44,7 @@ pub mod optix_orchestrator;
 pub mod optix_pipeline;
 pub mod optix_tracer;
 pub mod sparse;
+pub mod unified_runner;
 pub mod vtk_writer;
 
 use anyhow::{Context, Result, ensure};
