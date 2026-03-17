@@ -37,6 +37,7 @@ mod transport;
 enum ViewerBackend {
     Cpu,
     Cuda,
+    OptixParticles,
 }
 
 #[derive(Parser, Debug)]
@@ -80,6 +81,7 @@ fn run_viewer(cfg: &Config) -> Result<()> {
         match cfg.backend {
             ViewerBackend::Cpu => backend::ViewerBackendKind::Cpu,
             ViewerBackend::Cuda => backend::ViewerBackendKind::Cuda,
+            ViewerBackend::OptixParticles => backend::ViewerBackendKind::OptixParticles,
         },
         cfg.grid,
         cfg.tau,

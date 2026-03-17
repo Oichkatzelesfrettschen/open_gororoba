@@ -575,6 +575,7 @@ qgp_scaling = { path = "../qgp_scaling" }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
 gororoba_view_core = { workspace = true }
+gororoba_view_raster = { workspace = true }
 ash = { version = "0.38.0", features = ["debug"] }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }

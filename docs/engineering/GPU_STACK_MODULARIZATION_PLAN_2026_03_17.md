@@ -177,6 +177,11 @@ That task list now includes explicit seam analysis for:
      `gororoba_view_core`; a second phase can promote more of this into a crate
 3. keep minifb as one frontend target, but leave room for a richer Vulkan UI
    or CPU-safe fallback viewer
+4. current status
+   - CUDA density adapter: done
+   - CPU density adapter: done
+   - OptiX particle adapter: done at the frame-contract layer
+   - shared raster crate: done
 
 ### Phase C: rendering split
 

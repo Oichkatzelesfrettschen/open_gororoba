@@ -15,13 +15,15 @@
   engineering docs.
 - `done` Add a backend-neutral viewer contract crate, `gororoba_view_core`.
 - `done` Add CPU and CUDA `ViewerFrameSource` adapters for the live viewer.
+- `done` Add an OptiX particle `ViewerFrameSource` adapter at the frame-contract
+  layer.
 - `done` Inventory OptiX pipeline-building logic into reusable vs solver-local
   pieces.
 - `done` Decide which Vulkan helpers belong in reusable substrate vs
   `lbm_vulkan`.
 - `done` Split `lbm-live-viewer` responsibilities into frontend loop,
   camera/input state, frame transport, and backend adapter layers.
-- `active` Introduce backend adapters that implement
+- `done` Introduce backend adapters that implement
   `gororoba_view_core::ViewerFrameSource`.
 - `done` Rework the live viewer to consume the new viewer contract instead of
   one concrete CUDA+Vulkan path.
@@ -29,9 +31,10 @@
   lighter reusable module or crate.
 - `queued` Keep managed sparse SoA and managed tiled fallback working while the
   crate split continues.
-- `queued` Add rustdoc coverage to each public reusable GPU/viewer contract as
+- `active` Add rustdoc coverage to each public reusable GPU/viewer contract as
   new crates or modules appear.
 - `done` Record a concrete `lbm_*` shared-substrate audit and extraction order.
+- `done` Extract shared slice/LUT raster logic into `gororoba_view_raster`.
 
 ## Seam Inventory
 
@@ -180,7 +183,7 @@ The new viewer contract lives in `gororoba_view_core`.
   - status: `done` for the first dense CPU adapter in `lbm-live-viewer`
 - `OptixParticleAdapter`
   - surfaces particle/tracer views through the same frontend contract
-  - status: `queued`
+  - status: `done` at the frame-contract layer
 
 ## Vulkan Extraction Decisions
 
@@ -227,5 +230,6 @@ The new viewer contract lives in `gororoba_view_core`.
 
 1. Add the next backend adapter, likely CPU fallback or OptiX particles.
 2. Revisit Vulkan helper extraction only when a second renderer needs it.
-3. Evaluate `gororoba_view_raster` as the next low-dependency shared crate.
-4. Keep shared viewer/frame contracts rustdoc-complete as adapters are added.
+3. Keep shared viewer/frame contracts rustdoc-complete as adapters are added.
+4. Decide whether `gororoba_view_raster` should also absorb particle projection
+   policy or stay as a scalar/slice-focused helper crate.
