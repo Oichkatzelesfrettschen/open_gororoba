@@ -1783,6 +1783,187 @@ extern "C" __global__ void lbm_step_soa_mrt_aa(
 }
 
 // ---------------------------------------------------------------------------
+// A-A MRT with ephemeral macroscopic writes (production variant)
+// ---------------------------------------------------------------------------
+// Identical to lbm_step_soa_mrt_aa but conditionally skips rho/u global
+// writes when write_macroscopic == 0. This saves 32 bytes/cell of global
+// memory bandwidth per step and eliminates the 4 GB macro buffer allocation
+// at 512^3. Only writes macroscopic fields when the host explicitly requests
+// them (e.g., for OptiX particle tracing or visualization).
+//
+// In isothermal LBM, rho and u are derived quantities computed in registers
+// for the collision operator and then discarded. They carry no temporal state.
+extern "C" __global__ void lbm_step_soa_mrt_aa_ephemeral(
+    float* __restrict__ f,
+    float* __restrict__ rho_out,      // may be NULL when write_macroscopic == 0
+    float* __restrict__ u_out,        // may be NULL when write_macroscopic == 0
+    const float* __restrict__ tau,
+    const float* __restrict__ force,
+    int nx, int ny, int nz,
+    int parity,
+    int write_macroscopic              // 0 = skip macro writes, 1 = write rho/u
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int N = nx * ny * nz;
+    if (idx >= N) return;
+
+    int x = idx % nx;
+    int y = (idx / nx) % ny;
+    int z = idx / (nx * ny);
+
+    float rho_local = 0.0f;
+    float mx = 0.0f, my = 0.0f, mz = 0.0f;
+    float f_local[19];
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        int read_dir, src;
+        if (parity == 0) {
+            read_dir = i;
+            src = idx;
+        } else {
+            int xn = (x - CX[i] + nx) % nx;
+            int yn = (y - CY[i] + ny) % ny;
+            int zn = (z - CZ[i] + nz) % nz;
+            src = xn + nx * (yn + ny * zn);
+            read_dir = OPP[i];
+        }
+        float fi = __ldg(&f[read_dir * N + src]);
+        if (!finite_check(fi)) fi = 0.0f;
+        f_local[i] = fi;
+        rho_local += fi;
+        mx += CX[i] * fi;
+        my += CY[i] * fi;
+        mz += CZ[i] * fi;
+    }
+
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    if (finite_check(rho_local) && rho_local > 1.0e-20f) {
+        float inv_rho = 1.0f / rho_local;
+        ux = mx * inv_rho;
+        uy = my * inv_rho;
+        uz = mz * inv_rho;
+    } else {
+        rho_local = 1.0f;
+    }
+
+    // Conditionally write macroscopic fields (skip during standard advancement)
+    if (write_macroscopic) {
+        rho_out[idx] = rho_local;
+        u_out[idx]         = ux;
+        u_out[N + idx]     = uy;
+        u_out[2 * N + idx] = uz;
+    }
+
+    float tau_local = __ldg(&tau[idx]);
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+
+    // Guo forcing: skip entirely when force pointer is NULL (free-decay flows).
+    // Saves 12.9 GB VRAM at 1024^3 (3 * f32 * 1.07B cells).
+    if (force != NULL) {
+        float fx = __ldg(&force[idx]);
+        float fy = __ldg(&force[N + idx]);
+        float fz = __ldg(&force[2 * N + idx]);
+        float force_mag_sq = fx * fx + fy * fy + fz * fz;
+
+        if (force_mag_sq >= 1e-40f) {
+            float inv_tau_f = 1.0f / tau_local;
+            float prefactor = 1.0f - 0.5f * inv_tau_f;
+            #pragma unroll
+            for (int i = 0; i < 19; i++) {
+                float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
+                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
+                float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
+                float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
+                f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
+            }
+        }
+    }
+
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        if (parity == 0) {
+            int xn = (x + CX[i] + nx) % nx;
+            int yn = (y + CY[i] + ny) % ny;
+            int zn = (z + CZ[i] + nz) % nz;
+            int dst = xn + nx * (yn + ny * zn);
+            f[OPP[i] * N + dst] = f_local[i];
+        } else {
+            f[i * N + idx] = f_local[i];
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// On-demand FP16 velocity write-back (for OptiX particle tracing)
+// ---------------------------------------------------------------------------
+// Converts the FP32 velocity field to FP16 (half4 for alignment) on demand.
+// Only dispatched when OptiX needs the velocity field for particle tracing.
+// At 1024^3, FP32 velocity = 12.9 GB; FP16 = 6.4 GB.
+// At 30% sparsity: FP16 velocity = 1.9 GB (transient allocation).
+//
+// Input:  u_f32[3*N] (SoA FP32 velocity from LBM, may be NULL if ephemeral)
+// Output: u_f16[4*N] (half4 packed for alignment)
+//
+// If u_f32 is NULL (ephemeral mode), this kernel reads the distribution
+// function directly and computes velocity on-the-fly before FP16 store.
+// FP32-to-FP16 conversion via bitwise manipulation (no cuda_fp16.h dependency).
+// Matches IEEE 754 half-precision: 1 sign + 5 exponent + 10 mantissa.
+__device__ __forceinline__ unsigned short float_to_fp16_bits(float v) {
+    unsigned int bits = __float_as_uint(v);
+    unsigned int sign = (bits >> 16) & 0x8000u;
+    int exp = ((bits >> 23) & 0xFF) - 127 + 15; // rebias from f32 (127) to f16 (15)
+    unsigned int mant = (bits >> 13) & 0x3FFu;   // top 10 bits of f32 mantissa
+    if (exp <= 0) return (unsigned short)sign;    // underflow -> zero
+    if (exp >= 31) return (unsigned short)(sign | 0x7C00u); // overflow -> inf
+    return (unsigned short)(sign | (exp << 10) | mant);
+}
+
+extern "C" __global__ void write_velocity_fp16(
+    const float* __restrict__ u_f32,    // [3*N] FP32 velocity (SoA), or NULL
+    const float* __restrict__ f_dist,   // [19*N] distribution (for on-the-fly compute)
+    unsigned short* __restrict__ u_f16,  // [4*N] output FP16 as u16 (half4-aligned)
+    int nx, int ny, int nz
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int N = nx * ny * nz;
+    if (idx >= N) return;
+
+    float ux, uy, uz;
+
+    if (u_f32 != NULL) {
+        ux = u_f32[idx];
+        uy = u_f32[N + idx];
+        uz = u_f32[2 * N + idx];
+    } else {
+        // On-the-fly: compute velocity from distribution function
+        float rho = 0.0f, mx = 0.0f, my = 0.0f, mz = 0.0f;
+        #pragma unroll
+        for (int i = 0; i < 19; i++) {
+            float fi = f_dist[i * N + idx];
+            rho += fi;
+            mx += CX[i] * fi;
+            my += CY[i] * fi;
+            mz += CZ[i] * fi;
+        }
+        if (rho > 1e-20f) {
+            float inv_rho = 1.0f / rho;
+            ux = mx * inv_rho;
+            uy = my * inv_rho;
+            uz = mz * inv_rho;
+        } else {
+            ux = 0.0f; uy = 0.0f; uz = 0.0f;
+        }
+    }
+
+    // Write as half4 (u16 x 4, 4th component = 0 for alignment)
+    u_f16[idx * 4 + 0] = float_to_fp16_bits(ux);
+    u_f16[idx * 4 + 1] = float_to_fp16_bits(uy);
+    u_f16[idx * 4 + 2] = float_to_fp16_bits(uz);
+    u_f16[idx * 4 + 3] = 0;
+}
+
+// ---------------------------------------------------------------------------
 // GPU max-speed reduction (Phase 12: Mach number telemetry)
 // ---------------------------------------------------------------------------
 // Pass 2: per-block maxima -> single max (launch with 1 block)

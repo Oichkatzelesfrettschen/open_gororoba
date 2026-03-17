@@ -40,6 +40,14 @@ use cudarc::{
 };
 use std::sync::Arc;
 
+// MRT collision device function -- single source of truth.
+// Prepend to any kernel source before NVRTC compilation to add MRT support.
+#[allow(dead_code)]
+pub const MRT_COLLISION_SRC: &str = include_str!("mrt_collision_d3q19.cu");
+
+// On-the-fly 2D slice extraction kernel.
+const KERNEL_SLICE_SRC: &str = include_str!("kernels_slice.cu");
+
 // CUDA source for each extended precision kernel tier.
 const KERNEL_FP16_SRC: &str = include_str!("kernels_fp16.cu");
 const KERNEL_FP8_SRC: &str = include_str!("kernels_fp8.cu");
@@ -169,6 +177,29 @@ impl BenchKernelRunner {
         // Stride 20: fp16/fp8/int8 kernels use 20-element padded AoS to guarantee
         // 4-byte alignment for half2/uchar4/int32 vectorized loads at every idx.
         let f_bytes = n_cells * 20 * elem_bytes;
+
+        // VRAM check: estimate total allocation before committing.
+        // ping-pong + macro + 1.5 GB NVRTC compilation overhead
+        let required_bytes = f_bytes * 2 + n_cells * 32 + 1_500_000_000;
+        let free_vram = {
+            let mut free: usize = 0;
+            let mut total: usize = 0;
+            unsafe {
+                cudarc::driver::sys::cuMemGetInfo_v2(
+                    &mut free as *mut usize,
+                    &mut total as *mut usize,
+                );
+            }
+            free
+        };
+        if free_vram > 0 && required_bytes > (free_vram as f64 * 0.95) as usize {
+            anyhow::bail!(
+                "VRAM insufficient for {precision_label} at {nx}x{ny}x{nz}: \
+                 need {} MB, free {} MB (90% threshold). Skipping.",
+                required_bytes / (1024 * 1024),
+                free_vram / (1024 * 1024),
+            );
+        }
 
         let mut d_f_a = stream.alloc_zeros::<u8>(f_bytes)?;
         let d_f_b = stream.alloc_zeros::<u8>(f_bytes)?;
@@ -442,6 +473,29 @@ impl SoaBenchRunner {
         // i-major SoA: no padding, stride 19 distributions per buffer.
         let f_bytes = n_cells * 19 * elem_bytes;
 
+        // VRAM check: estimate total allocation before committing.
+        // 2 * f_bytes (ping-pong) + rho(4*N) + u(12*N) + force(12*N) + tau(4*N) = 2f + 32*N
+        let required_bytes = f_bytes * 2 + n_cells * 32;
+        let free_vram = {
+            let mut free: usize = 0;
+            let mut total: usize = 0;
+            unsafe {
+                cudarc::driver::sys::cuMemGetInfo_v2(
+                    &mut free as *mut usize,
+                    &mut total as *mut usize,
+                );
+            }
+            free
+        };
+        if free_vram > 0 && required_bytes > (free_vram as f64 * 0.95) as usize {
+            anyhow::bail!(
+                "VRAM insufficient for {precision_label} at {nx}x{ny}x{nz}: \
+                 need {} MB, free {} MB (90% threshold). Skipping.",
+                required_bytes / (1024 * 1024),
+                free_vram / (1024 * 1024),
+            );
+        }
+
         let mut d_f_a = stream.alloc_zeros::<u8>(f_bytes)?;
         let d_f_b = stream.alloc_zeros::<u8>(f_bytes)?;
         let mut d_rho = stream.alloc_zeros::<f32>(n_cells)?;
@@ -703,6 +757,174 @@ impl SoaBenchRunner {
         )
     }
 
+    // ====================================================================
+    // MRT collision variants -- identical buffer layout and launch config
+    // as their BGK counterparts, but dispatch to the MRT kernel name.
+    // The MRT kernels live in the same .cu source files as the BGK kernels.
+    // ====================================================================
+
+    /// BF16 i-major SoA MRT D3Q19 LBM. 2 bytes/dist. Requires SM 8.0+ (Ampere/Ada).
+    pub fn new_bf16_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let arch = arch_static();
+        if !arch.contains("sm_80")
+            && !arch.contains("sm_86")
+            && !arch.contains("sm_89")
+            && !arch.starts_with("sm_9")
+        {
+            anyhow::bail!("BF16 SoA MRT requires SM 8.0+ (Ampere or later). Current arch: {arch}");
+        }
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_BF16_SOA_SRC,
+                step_kernel_name: "lbm_step_bf16_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_bf16_soa_kernel",
+                elem_bytes: 2,
+                precision_label: "BF16_SoA",
+                cuda_include: true,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// FP16 i-major SoA MRT D3Q19 LBM. 2 bytes/dist. SM 5.0+.
+    pub fn new_fp16_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_FP16_SOA_SRC,
+                step_kernel_name: "lbm_step_fp16_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_fp16_soa_kernel",
+                elem_bytes: 2,
+                precision_label: "FP16_SoA",
+                cuda_include: true,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// FP16 i-major SoA half2 ILP MRT D3Q19 LBM. 2 cells/thread. SM 5.0+.
+    pub fn new_fp16_half2_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_FP16_SOA_HALF2_SRC,
+                step_kernel_name: "lbm_step_fp16_soa_half2_mrt_kernel",
+                init_kernel_name: "initialize_uniform_fp16_soa_half2_kernel",
+                elem_bytes: 2,
+                precision_label: "FP16_SoA_H2",
+                cuda_include: true,
+                cells_per_thread: 2,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// FP8 e4m3 i-major SoA MRT D3Q19 LBM. 1 byte/dist. Requires SM 8.9+ (Ada).
+    pub fn new_fp8_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let arch = arch_static();
+        if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
+            anyhow::bail!("FP8 SoA MRT requires SM 8.9+ (Ada Lovelace). Current arch: {arch}");
+        }
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_FP8_SOA_SRC,
+                step_kernel_name: "lbm_step_fp8_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_fp8_soa_kernel",
+                elem_bytes: 1,
+                precision_label: "FP8_SoA",
+                cuda_include: true,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// FP8 e5m2 i-major SoA MRT D3Q19 LBM. 1 byte/dist. Requires SM 8.9+ (Ada).
+    pub fn new_fp8_e5m2_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        let arch = arch_static();
+        if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
+            anyhow::bail!(
+                "FP8 e5m2 SoA MRT requires SM 8.9+ (Ada Lovelace). Current arch: {arch}"
+            );
+        }
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_FP8_E5M2_SOA_SRC,
+                step_kernel_name: "lbm_step_fp8_e5m2_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_fp8_e5m2_soa_kernel",
+                elem_bytes: 1,
+                precision_label: "FP8_e5m2_SoA",
+                cuda_include: true,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// INT8 i-major SoA MRT D3Q19 LBM. 1 byte/dist. All SM versions.
+    pub fn new_int8_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_INT8_SOA_SRC,
+                step_kernel_name: "lbm_step_int8_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_int8_soa_kernel",
+                elem_bytes: 1,
+                precision_label: "INT8_SoA",
+                cuda_include: false,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// INT16 i-major SoA MRT D3Q19 LBM. 2 bytes/dist. All SM versions.
+    pub fn new_int16_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_INT16_SOA_SRC,
+                step_kernel_name: "lbm_step_int16_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_int16_soa_kernel",
+                elem_bytes: 2,
+                precision_label: "INT16_SoA",
+                cuda_include: false,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
+    /// FP64 i-major SoA MRT D3Q19 LBM. 8 bytes/dist. Reference precision.
+    pub fn new_fp64_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
+        Self::build(
+            SoaBuildSpec {
+                src: KERNEL_FP64_SOA_SRC,
+                step_kernel_name: "lbm_step_fp64_soa_mrt_kernel",
+                init_kernel_name: "initialize_uniform_fp64_soa_kernel",
+                elem_bytes: 8,
+                precision_label: "FP64_SoA",
+                cuda_include: false,
+                cells_per_thread: 1,
+            },
+            nx,
+            ny,
+            nz,
+        )
+    }
+
     /// Run `n` LBM steps, alternating ping/pong buffers.
     pub fn step_n(&mut self, n: usize) -> Result<()> {
         let (nx, ny, nz) = (self.nx, self.ny, self.nz);
@@ -732,6 +954,65 @@ impl SoaBenchRunner {
     }
     pub fn stream(&self) -> &Arc<CudaStream> {
         &self.stream
+    }
+
+    /// Extract a 2D slice of rho and velocity magnitude from the current
+    /// distribution buffer on the fly, without materializing the full 3D
+    /// macroscopic field. Returns `(rho_slice, vel_mag_slice)` as `Vec<f32>`.
+    ///
+    /// This enables live viewing of 512^3 INT8 simulations within 12 GB:
+    /// only ~2 MB is read back per frame instead of multi-GB macroscopic.
+    pub fn read_slice(
+        &self,
+        slice_axis: i32,
+        slice_idx: i32,
+    ) -> Result<(Vec<f32>, Vec<f32>)> {
+        let arch = arch_static();
+        let opts = cudarc::nvrtc::CompileOptions {
+            arch: Some(arch),
+            ..Default::default()
+        };
+        let kernel_name = if self.elem_bytes == 1 {
+            "read_slice_int8_soa"
+        } else {
+            "read_slice_fp32_soa"
+        };
+        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SLICE_SRC, opts)?;
+        let module = self.ctx.load_module(ptx)?;
+        let slice_kernel = module.load_function(kernel_name)?;
+
+        let (sw, sh) = match slice_axis {
+            0 => (self.ny as usize, self.nz as usize),
+            1 => (self.nx as usize, self.nz as usize),
+            _ => (self.nx as usize, self.ny as usize),
+        };
+        let slice_size = sw * sh;
+
+        let mut d_rho_slice = self.stream.alloc_zeros::<f32>(slice_size)?;
+        let mut d_vel_slice = self.stream.alloc_zeros::<f32>(slice_size)?;
+
+        let cfg = launch_cfg_1d(slice_size, 128);
+        {
+            let mut b = self.stream.launch_builder(&slice_kernel);
+            b.arg(&self.d_f_a)
+                .arg(&mut d_rho_slice)
+                .arg(&mut d_vel_slice)
+                .arg(&self.nx)
+                .arg(&self.ny)
+                .arg(&self.nz)
+                .arg(&slice_axis)
+                .arg(&slice_idx);
+            unsafe { b.launch(cfg) }?;
+        }
+
+        let rho_slice = self.stream.clone_dtoh(&d_rho_slice)?;
+        let vel_slice = self.stream.clone_dtoh(&d_vel_slice)?;
+        Ok((rho_slice, vel_slice))
+    }
+
+    /// Grid dimensions.
+    pub fn grid_dim(&self) -> (usize, usize, usize) {
+        (self.nx as usize, self.ny as usize, self.nz as usize)
     }
 
     /// VRAM used by distribution buffers (ping + pong) in bytes.

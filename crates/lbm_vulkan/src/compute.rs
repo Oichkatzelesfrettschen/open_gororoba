@@ -27,11 +27,51 @@ pub enum VulkanEngineError {
 
 type Result<T> = std::result::Result<T, VulkanEngineError>;
 
+/// Collision mode for the Vulkan LBM engine.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CollisionMode {
+    /// Single-relaxation-time Bhatnagar-Gross-Krook.
+    Bgk,
+    /// Multiple-relaxation-time (d'Humieres D3Q19, 5 rates).
+    Mrt,
+}
+
 /// Unified Engine for Sedenion-LBM Simulations
+/// Camera parameters for interactive rendering.
+///
+/// Controls the volumetric ray-march camera in `render.wgsl`.
+/// All angles in radians. Distance in grid units.
+#[derive(Clone, Copy, Debug)]
+pub struct CameraParams {
+    /// Azimuthal angle (orbit around Y axis).
+    pub azimuth: f32,
+    /// Elevation angle (up/down from equator, clamped to +/- PI/2).
+    pub elevation: f32,
+    /// Distance from grid center.
+    pub distance: f32,
+    /// Field of view factor (2.0 = ~53 degrees, 1.0 = ~90 degrees).
+    pub fov: f32,
+    /// Visual effect time (color animation phase, auto-incremented).
+    pub time: f32,
+}
+
+impl Default for CameraParams {
+    fn default() -> Self {
+        Self {
+            azimuth: 0.0,
+            elevation: 0.3,
+            distance: 180.0,
+            fov: 2.0,
+            time: 0.0,
+        }
+    }
+}
+
 pub struct GororobaEngine {
     device: Arc<Device>,
     allocator: Arc<Mutex<Allocator>>,
     lbm_pipeline: ComputePipeline,
+    mrt_pipeline: ComputePipeline,
     zd_pipeline: ComputePipeline,
     render_pipeline: ComputePipeline,
     pathion_sink_pipeline: ComputePipeline,
@@ -47,6 +87,7 @@ pub struct GororobaEngine {
     screen_dim: (u32, u32),
     step_counter: u64,
     precision: Precision,
+    collision_mode: CollisionMode,
 }
 
 struct ComputePipeline {
@@ -225,6 +266,21 @@ impl GororobaEngine {
         let lbm_pipeline = Self::create_lbm_pipeline(
             &device, ctx, &f_a, &f_b, &rho, &u, &tau, &force, &entropy, precision,
         )?;
+        let mrt_pipeline = Self::create_lbm_pipeline_with_src(
+            &device,
+            ctx,
+            &f_a,
+            &f_b,
+            &rho,
+            &u,
+            &tau,
+            &force,
+            &entropy,
+            match precision {
+                Precision::FP16 => include_str!("../shaders/lbm_mrt_f16.wgsl"),
+                _ => include_str!("../shaders/lbm_mrt.wgsl"),
+            },
+        )?;
         let zd_pipeline = Self::create_zd_pipeline(&device, ctx, &tau)?;
         let pathion_sink_pipeline =
             Self::create_pathion_sink_pipeline(&device, ctx, &tau, &force, &accum_buffer)?;
@@ -235,6 +291,7 @@ impl GororobaEngine {
             device,
             allocator: ctx.allocator.clone(),
             lbm_pipeline,
+            mrt_pipeline,
             zd_pipeline,
             pathion_sink_pipeline,
             render_pipeline,
@@ -255,7 +312,18 @@ impl GororobaEngine {
             screen_dim,
             step_counter: 0,
             precision,
+            collision_mode: CollisionMode::Bgk,
         })
+    }
+
+    /// Set the collision mode. Call before `step()` to switch between BGK and MRT.
+    pub fn set_collision_mode(&mut self, mode: CollisionMode) {
+        self.collision_mode = mode;
+    }
+
+    /// Return the active collision mode.
+    pub fn collision_mode(&self) -> CollisionMode {
+        self.collision_mode
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -275,8 +343,24 @@ impl GororobaEngine {
             Precision::FP16 => include_str!("../shaders/lbm_f16.wgsl"),
             _ => include_str!("../shaders/lbm.wgsl"),
         };
+        Self::create_lbm_pipeline_with_src(device, ctx, f_a, f_b, rho, u, tau, force, entropy, lbm_src)
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn create_lbm_pipeline_with_src(
+        device: &Arc<Device>,
+        ctx: &VulkanContext,
+        f_a: &BufferSet,
+        f_b: &BufferSet,
+        rho: &BufferSet,
+        u: &BufferSet,
+        tau: &BufferSet,
+        force: &BufferSet,
+        entropy: &BufferSet,
+        shader_src: &str,
+    ) -> Result<ComputePipeline> {
         let code =
-            compile_wgsl(lbm_src).map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
+            compile_wgsl(shader_src).map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
         let module = unsafe {
             device.create_shader_module(
                 &vk::ShaderModuleCreateInfo {
@@ -1391,8 +1475,11 @@ impl GororobaEngine {
                 gy: -0.0001,
                 gz: 0.0,
             };
-            let mapped_ptr = self
-                .lbm_pipeline
+            let active_lbm = match self.collision_mode {
+                CollisionMode::Bgk => &self.lbm_pipeline,
+                CollisionMode::Mrt => &self.mrt_pipeline,
+            };
+            let mapped_ptr = active_lbm
                 .uniform_buffer
                 .allocation
                 .mapped_ptr()
@@ -1403,14 +1490,14 @@ impl GororobaEngine {
             self.device.cmd_bind_pipeline(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
-                self.lbm_pipeline.pipeline,
+                active_lbm.pipeline,
             );
             self.device.cmd_bind_descriptor_sets(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
-                self.lbm_pipeline.layout,
+                active_lbm.layout,
                 0,
-                &[self.lbm_pipeline.descriptor_sets[set_idx]],
+                &[active_lbm.descriptor_sets[set_idx]],
                 &[],
             );
             self.device.cmd_dispatch(
@@ -1427,6 +1514,10 @@ impl GororobaEngine {
                 width: self.screen_dim.0,
                 height: self.screen_dim.1,
                 time: frame as f32,
+                cam_azimuth: frame as f32 * 0.01,
+                cam_elevation: (frame as f32 * 0.005).sin() * 0.3,
+                cam_distance: 180.0,
+                cam_fov: 2.0,
             };
             let mapped_ptr = self
                 .render_pipeline
@@ -1494,6 +1585,210 @@ impl GororobaEngine {
             self.device.cmd_pipeline_barrier(
                 cmd,
                 vk::PipelineStageFlags::TOP_OF_PIPE,
+                vk::PipelineStageFlags::TRANSFER,
+                vk::DependencyFlags::empty(),
+                &[],
+                &[],
+                &[barrier2],
+            );
+            self.device.cmd_copy_image_to_buffer(
+                cmd,
+                self.render_image.image,
+                vk::ImageLayout::TRANSFER_SRC_OPTIMAL,
+                self.render_image.readback.buffer,
+                &[vk::BufferImageCopy {
+                    image_subresource: vk::ImageSubresourceLayers {
+                        aspect_mask: vk::ImageAspectFlags::COLOR,
+                        layer_count: 1,
+                        ..Default::default()
+                    },
+                    image_extent: vk::Extent3D {
+                        width: self.screen_dim.0,
+                        height: self.screen_dim.1,
+                        depth: 1,
+                    },
+                    ..Default::default()
+                }],
+            );
+        }
+        Ok(())
+    }
+
+    /// Step with explicit camera parameters for interactive rendering.
+    pub fn step_with_camera(
+        &mut self,
+        cmd: vk::CommandBuffer,
+        frame: u32,
+        camera: &CameraParams,
+    ) -> Result<()> {
+        unsafe {
+            // ZD generation (same as step())
+            let zd_pc = ZdGenConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                tau_base: 0.55,
+                tau_amp: 0.2,
+                lambda: 5.0,
+                time: frame as f32,
+            };
+            let mapped_ptr = self
+                .zd_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError(
+                        "Failed to map ZD uniform buffer".to_string(),
+                    )
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut ZdGenConstants, zd_pc);
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.zd_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.zd_pipeline.layout,
+                0,
+                &self.zd_pipeline.descriptor_sets,
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.grid_dim.0.div_ceil(8),
+                self.grid_dim.1.div_ceil(8),
+                self.grid_dim.2.div_ceil(8),
+            );
+
+            // LBM collision + streaming
+            let set_idx = (self.step_counter % 2) as usize;
+            self.step_counter += 1;
+            let lbm_pc = LbmConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                gx: 0.0,
+                gy: -0.0001,
+                gz: 0.0,
+            };
+            let active_lbm = match self.collision_mode {
+                CollisionMode::Bgk => &self.lbm_pipeline,
+                CollisionMode::Mrt => &self.mrt_pipeline,
+            };
+            let mapped_ptr = active_lbm
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError(
+                        "Failed to map LBM uniform buffer".to_string(),
+                    )
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut LbmConstants, lbm_pc);
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                active_lbm.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                active_lbm.layout,
+                0,
+                &[active_lbm.descriptor_sets[set_idx]],
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.grid_dim.0.div_ceil(8),
+                self.grid_dim.1.div_ceil(8),
+                self.grid_dim.2.div_ceil(8),
+            );
+
+            // Render with explicit camera parameters
+            let render_pc = RenderConstants {
+                nx: self.grid_dim.0,
+                ny: self.grid_dim.1,
+                nz: self.grid_dim.2,
+                width: self.screen_dim.0,
+                height: self.screen_dim.1,
+                time: camera.time,
+                cam_azimuth: camera.azimuth,
+                cam_elevation: camera.elevation,
+                cam_distance: camera.distance,
+                cam_fov: camera.fov,
+            };
+            let mapped_ptr = self
+                .render_pipeline
+                .uniform_buffer
+                .allocation
+                .mapped_ptr()
+                .ok_or_else(|| {
+                    VulkanEngineError::MappingError(
+                        "Failed to map render uniform buffer".to_string(),
+                    )
+                })?;
+            std::ptr::write(mapped_ptr.as_ptr() as *mut RenderConstants, render_pc);
+            let barrier = vk::ImageMemoryBarrier {
+                old_layout: vk::ImageLayout::UNDEFINED,
+                new_layout: vk::ImageLayout::GENERAL,
+                image: self.render_image.image,
+                subresource_range: vk::ImageSubresourceRange {
+                    aspect_mask: vk::ImageAspectFlags::COLOR,
+                    level_count: 1,
+                    layer_count: 1,
+                    ..Default::default()
+                },
+                ..Default::default()
+            };
+            self.device.cmd_pipeline_barrier(
+                cmd,
+                vk::PipelineStageFlags::TOP_OF_PIPE,
+                vk::PipelineStageFlags::COMPUTE_SHADER,
+                vk::DependencyFlags::empty(),
+                &[],
+                &[],
+                &[barrier],
+            );
+            self.device.cmd_bind_pipeline(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.render_pipeline.pipeline,
+            );
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.render_pipeline.layout,
+                0,
+                &self.render_pipeline.descriptor_sets,
+                &[],
+            );
+            self.device.cmd_dispatch(
+                cmd,
+                self.screen_dim.0.div_ceil(16),
+                self.screen_dim.1.div_ceil(16),
+                1,
+            );
+
+            // Copy render image to readback buffer
+            let barrier2 = vk::ImageMemoryBarrier {
+                old_layout: vk::ImageLayout::GENERAL,
+                new_layout: vk::ImageLayout::TRANSFER_SRC_OPTIMAL,
+                image: self.render_image.image,
+                subresource_range: vk::ImageSubresourceRange {
+                    aspect_mask: vk::ImageAspectFlags::COLOR,
+                    level_count: 1,
+                    layer_count: 1,
+                    ..Default::default()
+                },
+                ..Default::default()
+            };
+            self.device.cmd_pipeline_barrier(
+                cmd,
+                vk::PipelineStageFlags::COMPUTE_SHADER,
                 vk::PipelineStageFlags::TRANSFER,
                 vk::DependencyFlags::empty(),
                 &[],
@@ -1918,6 +2213,24 @@ impl Drop for GororobaEngine {
                 log::error!("Failed to free lbm uniform buffer: {e}");
             }
 
+            // MRT pipeline cleanup
+            self.device
+                .destroy_pipeline(self.mrt_pipeline.pipeline, None);
+            self.device
+                .destroy_pipeline_layout(self.mrt_pipeline.layout, None);
+            self.device
+                .destroy_descriptor_set_layout(self.mrt_pipeline.descriptor_layout, None);
+            self.device
+                .destroy_descriptor_pool(self.mrt_pipeline.descriptor_pool, None);
+            self.device
+                .destroy_buffer(self.mrt_pipeline.uniform_buffer.buffer, None);
+            if let Err(e) = allocator.free(std::mem::replace(
+                &mut self.mrt_pipeline.uniform_buffer.allocation,
+                std::mem::zeroed(),
+            )) {
+                log::error!("Failed to free mrt uniform buffer: {e}");
+            }
+
             self.device
                 .destroy_pipeline(self.zd_pipeline.pipeline, None);
             self.device
@@ -2066,6 +2379,10 @@ struct RenderConstants {
     width: u32,
     height: u32,
     time: f32,
+    cam_azimuth: f32,
+    cam_elevation: f32,
+    cam_distance: f32,
+    cam_fov: f32,
 }
 
 #[repr(C)]

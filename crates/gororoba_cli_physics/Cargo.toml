@@ -524,6 +524,33 @@ name = "cuda-precision-bench"
 path = "src/bin/cuda_precision_bench.rs"
 required-features = ["gpu"]
 
+[[bin]]
+name = "cpu-lbm-bench"
+path = "src/bin/cpu_lbm_bench.rs"
+
+[[bin]]
+name = "lbm-live-viewer"
+path = "src/bin/lbm_live_viewer.rs"
+required-features = ["gpu"]
+
+[[bin]]
+name = "lbm-slice-viewer"
+path = "src/bin/lbm_slice_viewer.rs"
+required-features = ["gpu"]
+
+[[bin]]
+name = "vulkan-precision-bench"
+path = "src/bin/vulkan_precision_bench.rs"
+
+[[bin]]
+name = "particle-trace"
+path = "src/bin/particle_trace.rs"
+required-features = ["gpu"]
+
+[[bin]]
+name = "parity-report"
+path = "src/bin/parity_report.rs"
+
 [dependencies]
 gororoba_algebra = { path = "../gororoba_algebra" }
 algebra_analysis = { path = "../algebra_analysis" }
@@ -589,6 +616,7 @@ cd_kernel = { workspace = true }
 wide = { workspace = true }
 rusqlite = { workspace = true }
 walkdir = { workspace = true }
+minifb = { workspace = true }
 
 [features]
 default = ["gpu"]
