@@ -1,0 +1,14 @@
+[package]
+name = "gororoba_view_core"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Backend-neutral viewer contracts for gororoba simulation frontends"
+license = "GPL-2.0-only"
+repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
+
+[dependencies]
+anyhow = { workspace = true }
+gororoba_gpu_bridge = { workspace = true }
+
+[lints]
+workspace = true

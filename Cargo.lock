@@ -4066,6 +4066,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_view_core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "gororoba_gpu_bridge",
+]
+
+[[package]]
 name = "gpu-alloc"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
