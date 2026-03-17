@@ -1891,6 +1891,26 @@ impl LbmSolver3DCuda {
         self.n_cells
     }
 
+    /// Storage precision used by the solver's main distribution and macro
+    /// buffers.
+    #[must_use]
+    pub fn precision(&self) -> Precision {
+        self.precision
+    }
+
+    /// Returns whether the solver currently uses a structure-of-arrays working
+    /// layout on device.
+    #[must_use]
+    pub fn uses_soa_layout(&self) -> bool {
+        self.use_soa
+    }
+
+    /// Returns whether MRT collision is active for this solver.
+    #[must_use]
+    pub fn uses_mrt_collision(&self) -> bool {
+        self.use_mrt
+    }
+
     pub fn sync_to_host(&mut self) -> Result<()> {
         let rho_bytes = self.stream.clone_dtoh(&self.d_rho)?;
         let u_bytes = self.stream.clone_dtoh(&self.d_u)?;
@@ -1935,6 +1955,20 @@ impl LbmSolver3DCuda {
         }
 
         Ok(())
+    }
+
+    /// Host density buffer populated by the last successful `sync_to_host()`
+    /// call.
+    #[must_use]
+    pub fn rho_host(&self) -> &[f32] {
+        &self.rho
+    }
+
+    /// Host velocity buffer populated by the last successful `sync_to_host()`
+    /// call.
+    #[must_use]
+    pub fn velocity_host(&self) -> &[[f32; 3]] {
+        &self.u
     }
 
     #[cfg(feature = "cufft")]

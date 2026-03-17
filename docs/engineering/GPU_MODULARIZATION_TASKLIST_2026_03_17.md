@@ -14,17 +14,17 @@
 - `done` Record the current GPU stack modularization plan and OptiX boundary in
   engineering docs.
 - `done` Add a backend-neutral viewer contract crate, `gororoba_view_core`.
-- `active` Inventory OptiX pipeline-building logic into reusable vs solver-local
+- `done` Inventory OptiX pipeline-building logic into reusable vs solver-local
   pieces.
-- `active` Decide which Vulkan helpers belong in reusable substrate vs
+- `done` Decide which Vulkan helpers belong in reusable substrate vs
   `lbm_vulkan`.
-- `active` Split `lbm-live-viewer` responsibilities into frontend loop,
+- `done` Split `lbm-live-viewer` responsibilities into frontend loop,
   camera/input state, frame transport, and backend adapter layers.
-- `queued` Introduce backend adapters that implement
+- `active` Introduce backend adapters that implement
   `gororoba_view_core::ViewerFrameSource`.
-- `queued` Rework the live viewer to consume the new viewer contract instead of
+- `done` Rework the live viewer to consume the new viewer contract instead of
   one concrete CUDA+Vulkan path.
-- `queued` Extract generic Vulkan capability and image/readback helpers into a
+- `defer` Extract generic Vulkan capability and image/readback helpers into a
   lighter reusable module or crate.
 - `queued` Keep managed sparse SoA and managed tiled fallback working while the
   crate split continues.
@@ -55,24 +55,25 @@
 - target seam
   - `gororoba_view_core::ViewerFrameSource`
 - status
-  - `active`
+  - `done`
 - next work
-  - add first CUDA backend adapter
-  - move readback and metadata formatting out of the binary
+  - first CUDA volume adapter is implemented
+  - follow with CPU and OptiX particle adapters
 
 ### Vulkan renderer <-> viewer seam
 
 - current owner
   - split between `lbm_vulkan` and `lbm-live-viewer`
 - current problem
-  - viewer binary owns command-pool setup and direct render/readback loop
+  - `lbm_vulkan` still owns LBM-specific command submission and render/readback
+    policy
 - target seam
   - backend adapter that yields `SliceRgba8` or `VolumeF32`
 - status
-  - `active`
+  - `done`
 - next work
-  - identify generic image/readback helpers
-  - keep LBM shader selection in `lbm_vulkan`
+  - keep `GororobaEngine`, WGSL selection, and render command submission local
+  - only extract generic Vulkan readback helpers when a second renderer exists
 
 ### CPU fallback <-> viewer seam
 
@@ -168,12 +169,16 @@ The new viewer contract lives in `gororoba_view_core`.
 
 - `CudaVolumeAdapter`
   - adapts `LbmSolver3DCuda` or sparse CUDA solver outputs
+  - status: `done` for the first dense CUDA adapter in `lbm-live-viewer`
 - `VulkanVolumeAdapter`
   - adapts `lbm_vulkan` render/slice outputs
+  - status: `queued`
 - `CpuFallbackAdapter`
   - supports CPU-only stepping and inspection
+  - status: `queued`
 - `OptixParticleAdapter`
   - surfaces particle/tracer views through the same frontend contract
+  - status: `queued`
 
 ## Vulkan Extraction Decisions
 
@@ -183,6 +188,14 @@ The new viewer contract lives in `gororoba_view_core`.
 - device-local VRAM sizing/tiering helpers
 - generic image readback helpers
 - generic command-pool / command-buffer setup helpers
+
+### Decision
+
+- `VulkanContext` capability probing stays a candidate reusable substrate seam
+- `GororobaEngine` command-pool setup, command-buffer submission, and render
+  readback stay LBM-local for now
+- the first viewer adapter now uses the real CUDA solver volume path instead of
+  a Vulkan-owned shadow simulation
 
 ### Stay in `lbm_vulkan`
 
@@ -210,7 +223,6 @@ The new viewer contract lives in `gororoba_view_core`.
 
 ## Immediate Execution Order
 
-1. Implement the first backend adapter against `gororoba_view_core`.
-2. Move reusable camera/input/frame-loop pieces out of `lbm-live-viewer`.
-3. Extract generic Vulkan capability/readback helpers only after the first
-   adapter proves the seam.
+1. Add the next backend adapter, likely CPU fallback or OptiX particles.
+2. Revisit Vulkan helper extraction only when a second renderer needs it.
+3. Keep shared viewer/frame contracts rustdoc-complete as adapters are added.
