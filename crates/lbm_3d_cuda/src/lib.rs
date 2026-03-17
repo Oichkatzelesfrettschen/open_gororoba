@@ -39,7 +39,6 @@ pub mod box_counting_gpu;
 pub mod chingon_gpu;
 pub mod kernel_selector;
 pub mod managed_memory;
-pub mod optix_ffi;
 pub mod optix_orchestrator;
 pub mod optix_pipeline;
 pub mod optix_tracer;
@@ -68,6 +67,8 @@ unsafe impl Sync for SendSyncGraph {}
 
 // Re-export GPU backend selection types for downstream consumers.
 pub use gororoba_gpu_bridge::{ComputeBackend, HardwareCaps};
+// Re-export the generic OptiX runtime boundary for downstream consumers.
+pub use gororoba_optix as optix_ffi;
 
 /// Probe whether CUDA is available on this machine.
 ///

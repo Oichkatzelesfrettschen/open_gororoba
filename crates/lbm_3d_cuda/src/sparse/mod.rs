@@ -228,6 +228,7 @@ pub struct SparseLbmSolver {
     d_tau: SparseFieldBuffer,
     d_force: SparseFieldBuffer,
     memory_mode: SparseMemoryMode,
+    prefetch_stream: Option<Arc<CudaStream>>,
 
     pub step: usize,
 
@@ -244,9 +245,16 @@ struct SparseTilePrefetchInputs<'a> {
     d_u: &'a UnifiedSlice<f32>,
     d_tau: &'a UnifiedSlice<f32>,
     d_force: &'a UnifiedSlice<f32>,
+    stream: &'a Arc<CudaStream>,
     active_cell_start: usize,
     active_cell_count: usize,
     total_active_cells: usize,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct SparseTileWindow {
+    active_cell_start: usize,
+    active_cell_count: usize,
 }
 
 impl SparseLbmSolver {
@@ -286,6 +294,12 @@ impl SparseLbmSolver {
             .context("Failed to load sparse lbm module")?;
 
         let lbm_step_kernel = module.load_function("lbm_step_sparse_aa")?;
+        let prefetch_stream = match memory_mode {
+            SparseMemoryMode::ManagedUnifiedTilePrefetch => {
+                Some(map.ctx.new_stream().context("create sparse prefetch stream")?)
+            }
+            _ => None,
+        };
 
         Ok(Self {
             map,
@@ -295,6 +309,7 @@ impl SparseLbmSolver {
             d_tau,
             d_force,
             memory_mode,
+            prefetch_stream,
             step: 0,
             lbm_step_kernel,
         })
@@ -418,47 +433,68 @@ impl SparseLbmSolver {
                     let SparseFieldBuffer::Unified(d_force) = &self.d_force else {
                         unreachable!("managed sparse solver requires unified buffers")
                     };
-
-                    let mut tile_start_brick = 0usize;
-                    while tile_start_brick < self.map.n_active_bricks {
-                        let tile_brick_count =
-                            (self.map.n_active_bricks - tile_start_brick).min(tile_bricks);
-                        let active_cell_start = tile_start_brick * CELLS_PER_BRICK;
-                        let active_cell_count = tile_brick_count * CELLS_PER_BRICK;
-                        prefetch_sparse_tile(SparseTilePrefetchInputs {
+                    let prefetch_stream = self
+                        .prefetch_stream
+                        .as_ref()
+                        .expect("managed tiled mode must own a prefetch stream");
+                    let tile_windows =
+                        build_tile_windows(self.map.n_active_bricks, tile_bricks, CELLS_PER_BRICK);
+                    if let Some((first_tile, remaining_tiles)) = tile_windows.split_first() {
+                        let mut ready_event = prefetch_sparse_tile(SparseTilePrefetchInputs {
                             d_f,
                             d_rho,
                             d_u,
                             d_tau,
                             d_force,
-                            active_cell_start,
-                            active_cell_count,
+                            stream: prefetch_stream,
+                            active_cell_start: first_tile.active_cell_start,
+                            active_cell_count: first_tile.active_cell_count,
                             total_active_cells: n_active_cells,
                         })?;
 
-                        let active_cell_start_i = active_cell_start as i32;
-                        let active_cell_count_i = active_cell_count as i32;
-                        let cfg = launch_cfg_for_cells(active_cell_count);
-                        let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
-                        b.arg(&mut *d_f)
-                            .arg(&mut *d_rho)
-                            .arg(&mut *d_u)
-                            .arg(d_tau)
-                            .arg(d_force)
-                            .arg(&self.map.d_indirect_table)
-                            .arg(&self.map.d_active_brick_ids)
-                            .arg(&nx_i)
-                            .arg(&ny_i)
-                            .arg(&nz_i)
-                            .arg(&bx_max_i)
-                            .arg(&by_max_i)
-                            .arg(&bz_max_i)
-                            .arg(&active_cell_start_i)
-                            .arg(&active_cell_count_i)
-                            .arg(&n_active_cells_total_i)
-                            .arg(&parity);
-                        unsafe { b.launch(cfg) }?;
-                        tile_start_brick += tile_brick_count;
+                        for (tile_idx, tile) in tile_windows.iter().enumerate() {
+                            self.map
+                                .stream
+                                .wait(&ready_event)
+                                .context("wait for sparse tile prefetch")?;
+
+                            if let Some(next_tile) = remaining_tiles.get(tile_idx) {
+                                ready_event = prefetch_sparse_tile(SparseTilePrefetchInputs {
+                                    d_f,
+                                    d_rho,
+                                    d_u,
+                                    d_tau,
+                                    d_force,
+                                    stream: prefetch_stream,
+                                    active_cell_start: next_tile.active_cell_start,
+                                    active_cell_count: next_tile.active_cell_count,
+                                    total_active_cells: n_active_cells,
+                                })?;
+                            }
+
+                            let active_cell_start_i = tile.active_cell_start as i32;
+                            let active_cell_count_i = tile.active_cell_count as i32;
+                            let cfg = launch_cfg_for_cells(tile.active_cell_count);
+                            let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
+                            b.arg(&mut *d_f)
+                                .arg(&mut *d_rho)
+                                .arg(&mut *d_u)
+                                .arg(d_tau)
+                                .arg(d_force)
+                                .arg(&self.map.d_indirect_table)
+                                .arg(&self.map.d_active_brick_ids)
+                                .arg(&nx_i)
+                                .arg(&ny_i)
+                                .arg(&nz_i)
+                                .arg(&bx_max_i)
+                                .arg(&by_max_i)
+                                .arg(&bz_max_i)
+                                .arg(&active_cell_start_i)
+                                .arg(&active_cell_count_i)
+                                .arg(&n_active_cells_total_i)
+                                .arg(&parity);
+                            unsafe { b.launch(cfg) }?;
+                        }
                     }
                 }
             }
@@ -514,27 +550,48 @@ fn sparse_bytes_per_brick() -> usize {
     f + rho + u + tau + force
 }
 
-fn prefetch_sparse_tile(inputs: SparseTilePrefetchInputs<'_>) -> Result<()> {
+fn build_tile_windows(
+    total_active_bricks: usize,
+    tile_bricks: usize,
+    cells_per_brick: usize,
+) -> Vec<SparseTileWindow> {
+    let mut windows = Vec::new();
+    let mut tile_start_brick = 0usize;
+    while tile_start_brick < total_active_bricks {
+        let tile_brick_count = (total_active_bricks - tile_start_brick).min(tile_bricks);
+        windows.push(SparseTileWindow {
+            active_cell_start: tile_start_brick * cells_per_brick,
+            active_cell_count: tile_brick_count * cells_per_brick,
+        });
+        tile_start_brick += tile_brick_count;
+    }
+    windows
+}
+
+fn prefetch_sparse_tile(inputs: SparseTilePrefetchInputs<'_>) -> Result<cudarc::driver::CudaEvent> {
     for dir in 0..D3Q19_DIRS {
         let start = dir * inputs.total_active_cells + inputs.active_cell_start;
         let view = inputs.d_f.slice(start..start + inputs.active_cell_count);
-        prefetch_unified_view_to_device(&view)?;
+        prefetch_unified_view_to_device(&view, inputs.stream)?;
     }
     prefetch_unified_view_to_device(
         &inputs
             .d_rho
             .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs
             .d_u
             .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs.d_u.slice(
             inputs.total_active_cells + inputs.active_cell_start
                 ..inputs.total_active_cells + inputs.active_cell_start + inputs.active_cell_count,
         ),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs.d_u.slice(
@@ -543,22 +600,26 @@ fn prefetch_sparse_tile(inputs: SparseTilePrefetchInputs<'_>) -> Result<()> {
                     + inputs.active_cell_start
                     + inputs.active_cell_count,
         ),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs
             .d_tau
             .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs
             .d_force
             .slice(inputs.active_cell_start..inputs.active_cell_start + inputs.active_cell_count),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs.d_force.slice(
             inputs.total_active_cells + inputs.active_cell_start
                 ..inputs.total_active_cells + inputs.active_cell_start + inputs.active_cell_count,
         ),
+        inputs.stream,
     )?;
     prefetch_unified_view_to_device(
         &inputs.d_force.slice(
@@ -567,15 +628,18 @@ fn prefetch_sparse_tile(inputs: SparseTilePrefetchInputs<'_>) -> Result<()> {
                     + inputs.active_cell_start
                     + inputs.active_cell_count,
         ),
+        inputs.stream,
     )?;
-    Ok(())
+    inputs
+        .stream
+        .record_event(None)
+        .context("record sparse tile prefetch event")
 }
 
-fn prefetch_unified_view_to_device<T, V>(view: &V) -> Result<()>
+fn prefetch_unified_view_to_device<T, V>(view: &V, stream: &Arc<CudaStream>) -> Result<()>
 where
     V: DeviceSlice<T> + DevicePtr<T>,
 {
-    let stream = view.stream();
     let location = sys::CUmemLocation {
         type_: sys::CUmemLocationType::CU_MEM_LOCATION_TYPE_DEVICE,
         id: stream.context().ordinal() as i32,

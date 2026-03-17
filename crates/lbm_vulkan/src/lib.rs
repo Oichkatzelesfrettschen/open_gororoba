@@ -1,3 +1,16 @@
+//! Vulkan-backed compute and rendering infrastructure for gororoba fluid and
+//! field visualizations.
+//!
+//! This crate currently mixes three roles:
+//! - hardware capability discovery for Vulkan devices,
+//! - domain-specific LBM compute pipelines,
+//! - interactive volumetric rendering support.
+//!
+//! That combination works today, but it is not yet the final modular boundary.
+//! The long-term direction is to keep generic Vulkan capability and rendering
+//! substrate reusable while leaving LBM-specific precision and collision policy
+//! in the simulation crates.
+
 use ash::{Device, Entry, Instance, vk};
 use gpu_allocator::vulkan::*;
 use std::{ffi::CStr, sync::Arc};
@@ -21,33 +34,55 @@ pub enum VulkanCollisionMode {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum GpuTier {
+    /// Low-memory device where reduced precision and smaller grids are favored.
     Constrained = 0, // < 2GB VRAM
+    /// Midrange device suited for moderate grid sizes and mixed precision.
     Standard = 1,    // 2-4GB VRAM
+    /// High-memory device suited for larger grids and more complex shaders.
     High = 2,        // 4-8GB VRAM
+    /// Large-memory device where full-resolution render targets are practical.
     Ultra = 3,       // > 8GB VRAM
 }
 
+/// Vulkan hardware capabilities used to scale solver and render policy.
 #[derive(Debug, Clone)]
 pub struct HardwareCapabilities {
+    /// Coarse memory/throughput tier derived from device-local VRAM size.
     pub tier: GpuTier,
+    /// Device-local VRAM in MiB.
     pub vram_mb: u32,
+    /// PCI vendor identifier.
     pub vendor_id: u32,
+    /// PCI device identifier.
     pub device_id: u32,
+    /// Human-readable device name.
     pub device_name: String,
+    /// Shader-side FP16 arithmetic/storage support.
     pub supports_fp16: bool,
+    /// Shader-side FP64 support.
     pub supports_fp64: bool,
+    /// Maximum compute shared memory size exposed by the Vulkan device.
     pub max_compute_shared_memory_size: u32,
 }
 
+/// Vulkan device/context bundle used by compute and rendering entrypoints.
 #[derive(Clone)]
 pub struct VulkanContext {
+    /// Vulkan loader entry.
     pub entry: Arc<Entry>,
+    /// Vulkan instance.
     pub instance: Arc<Instance>,
+    /// Logical Vulkan device.
     pub device: Arc<Device>,
+    /// Selected physical device handle.
     pub physical_device: vk::PhysicalDevice,
+    /// Primary queue used for compute and graphics work.
     pub queue: vk::Queue,
+    /// Queue family index for `queue`.
     pub queue_family_index: u32,
+    /// Shared GPU allocator.
     pub allocator: Arc<std::sync::Mutex<Allocator>>,
+    /// Device capability summary for scaling and dispatch decisions.
     pub caps: HardwareCapabilities,
 }
 
@@ -268,8 +303,11 @@ impl VulkanContext {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Precision {
+    /// Half precision storage and math where supported.
     FP16,
+    /// Single precision storage and math.
     FP32,
+    /// Double precision storage and math.
     FP64,
 }
 
@@ -287,17 +325,26 @@ impl Precision {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MathComplexity {
+    /// Newtonian approximation.
     Newtonian,
+    /// Schwarzschild corrections.
     Schwarzschild,
+    /// Kerr rotating geometry corrections.
     Kerr,
+    /// Kerr-Newman charged rotating geometry corrections.
     KerrNewman,
 }
 
+/// Derived runtime scaling policy for a selected Vulkan device.
 #[derive(Debug, Clone)]
 pub struct ScalingParameters {
+    /// Recommended simulation grid dimensions.
     pub grid_dim: (u32, u32, u32),
+    /// Recommended storage/math precision.
     pub precision: Precision,
+    /// Recommended physics complexity tier.
     pub math_complexity: MathComplexity,
+    /// Recommended render target scale relative to the requested window size.
     pub render_resolution_scale: f32,
 }
 

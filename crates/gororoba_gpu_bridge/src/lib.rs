@@ -19,6 +19,74 @@ pub enum ComputeBackend {
     Cuda,
 }
 
+/// Distribution-storage or working-field precision tier.
+///
+/// This is intentionally broader than any one backend. CUDA, Vulkan, and CPU
+/// callers can use the same vocabulary when describing storage policy even if a
+/// given backend only supports a subset of these modes in production.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum StoragePrecision {
+    Int8,
+    Int16,
+    Fp8E4m3,
+    Fp8E5m2,
+    Fp16,
+    Bf16,
+    Fp32,
+    Fp64,
+    DdFp128,
+}
+
+/// Memory layout policy for simulation buffers.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum BufferLayout {
+    /// Array-of-structures. Commonly favored on CPU fallback paths.
+    Aos,
+    /// Structure-of-arrays. Commonly favored on GPU hot paths for coalescing.
+    Soa,
+}
+
+/// Residency policy for large simulation buffers.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum MemoryResidency {
+    /// Device-local memory only.
+    DeviceLocal,
+    /// Unified/managed memory for the full working set.
+    ManagedUnified,
+    /// Unified/managed memory with tile-prefetch sequencing.
+    ManagedUnifiedTiled,
+    /// Host-resident or host-visible path.
+    HostVisible,
+}
+
+/// Frontend-visible frame mode for interactive viewers or inspection tools.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum FrameMode {
+    /// Full 3D volume rendering.
+    Volume3d,
+    /// 2D slice view through a larger volume.
+    Slice2d,
+    /// Particle or tracer visualization.
+    ParticleTrace,
+    /// Scalar or tabular dashboard view.
+    ScalarField,
+}
+
+/// Shared execution-profile descriptor for backend-facing applications.
+///
+/// This is not meant to replace domain-specific runtime configuration. It is a
+/// compact common vocabulary that lets viewers, profilers, and planners talk
+/// about backend choice, storage policy, and frontend presentation in one
+/// stable type.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ExecutionProfile {
+    pub backend: ComputeBackend,
+    pub storage: StoragePrecision,
+    pub layout: BufferLayout,
+    pub residency: MemoryResidency,
+    pub frame_mode: FrameMode,
+}
+
 /// Legacy two-tier backend selection (kept for backward compatibility).
 pub fn choose_backend(problem_size: usize, gpu_available: bool) -> ComputeBackend {
     if gpu_available && problem_size >= 10_000 {
