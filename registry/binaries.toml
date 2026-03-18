@@ -1488,6 +1488,11 @@ crate = "gororoba_cli_physics"
 description = "STFT phase-gradient chirp test for the MaNGA harmonic null result. Fits unwrapped phase slopes across STFT windows and classifies coherent, degenerate, ambiguous, or noise-like modes."
 
 [[binary]]
+name = "multifeature-shape-regression"
+crate = "gororoba_cli_physics"
+description = "Prototype multi-feature baryonic shape regression over the MaNGA null-result lane. Uses 2-mode SVD shape coefficients and 4 metadata features to test whether shape-aware baryonic correction outperforms single-feature mean subtraction."
+
+[[binary]]
 name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
@@ -1502,3 +1507,13 @@ description = "H1 hypothesis test: SVD analysis of CD-ZD modes as a baryonic fee
 name = "cross-algebra-cusp-core"
 crate = "gororoba_cli_physics"
 description = "H3 hypothesis test: cross-algebra correlation excess as a model-independent cusp-core discriminant. Predicts correlations under colored noise (NFW and DC14 spectral shapes) and compares to observed excess via chi-squared."
+
+[[binary]]
+name = "multifeature-shape-regression"
+crate = "gororoba_cli_physics"
+description = "Hypothesis A+C: Multi-feature (ha_ew, sersic_n, inclination, sigma) least-squares regression on 2-component SVD shape coefficients, with baryonic shape subtraction and restacking. Also computes red-noise spectral index (Rayleigh R vs wavenumber power-law fit)."
+
+[[binary]]
+name = "inclination-injection-calibration"
+crate = "gororoba_cli_physics"
+description = "Hypothesis B: Inclination-stratified injection recovery at 6 alpha_zd levels for 3 inclination bins (30-45, 45-60, 60-70 deg). Calibrates whether PSF smearing drives the injection recovery non-linearity."
