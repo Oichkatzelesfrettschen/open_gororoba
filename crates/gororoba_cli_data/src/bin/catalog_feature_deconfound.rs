@@ -176,7 +176,8 @@ fn residualize_cube(
             let mean_y = y_valid.iter().sum::<f64>() / y_valid.len() as f64;
             let mut sse = 0.0;
             let mut sst = 0.0;
-            for ((local_idx, observed), predicted) in valid_positions.iter().zip(predictions.iter()) {
+            for ((local_idx, observed), predicted) in valid_positions.iter().zip(predictions.iter())
+            {
                 let residual = *observed - *predicted;
                 sse += residual * residual;
                 let centered = *observed - mean_y;
@@ -307,9 +308,16 @@ fn dataset_notes(dataset: &str) -> Vec<String> {
     }
 }
 
-fn nuisance_vector(row: &data_core::CatalogFeatureRow, dataset: &str, encoders: &Encoders) -> Vec<f64> {
+fn nuisance_vector(
+    row: &data_core::CatalogFeatureRow,
+    dataset: &str,
+    encoders: &Encoders,
+) -> Vec<f64> {
     let release_year = release_year(row.time_utc.as_deref());
-    let sky_ra_cell = row.ra_deg.map(|value| (value / 15.0).floor()).unwrap_or(0.0);
+    let sky_ra_cell = row
+        .ra_deg
+        .map(|value| (value / 15.0).floor())
+        .unwrap_or(0.0);
     let sky_dec_cell = row
         .dec_deg
         .map(|value| ((value + 90.0) / 15.0).floor())
@@ -328,7 +336,11 @@ fn nuisance_vector(row: &data_core::CatalogFeatureRow, dataset: &str, encoders: 
                 .as_deref()
                 .and_then(|value| value.parse::<f64>().ok())
                 .unwrap_or(0.0),
-            code(encoders.program_codes.get(row.program_id.as_deref().unwrap_or_default())),
+            code(
+                encoders
+                    .program_codes
+                    .get(row.program_id.as_deref().unwrap_or_default()),
+            ),
             code(
                 encoders
                     .instrument_codes

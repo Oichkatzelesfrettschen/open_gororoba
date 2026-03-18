@@ -20,8 +20,8 @@
 //!   multi-dataset-ultrametric --data-dir /path    # Custom data directory
 //!   multi-dataset-ultrametric --json              # JSON output
 
-use clap::Parser;
 use chrono::{DateTime, Datelike, Duration, TimeZone, Utc};
+use clap::Parser;
 use data_core::{CatalogFeatureCube, parse_catalog_feature_cube_json};
 use rand::{SeedableRng, prelude::*};
 use rayon::prelude::*;
@@ -1071,8 +1071,8 @@ fn main() {
         std::process::exit(2);
     }
     let dir = Path::new(&args.data_dir);
-    let catalog_feature_mode =
-        CatalogCubeFeatureMode::parse(&args.catalog_feature_mode).unwrap_or_else(|err| {
+    let catalog_feature_mode = CatalogCubeFeatureMode::parse(&args.catalog_feature_mode)
+        .unwrap_or_else(|err| {
             eprintln!("{err}");
             std::process::exit(2);
         });
@@ -1424,9 +1424,10 @@ fn load_catalog_cube_datasets(
         for row in rows {
             let selected = match feature_mode {
                 CatalogCubeFeatureMode::Raw => &row.features,
-                CatalogCubeFeatureMode::Residualized => {
-                    row.residualized_features.as_deref().unwrap_or(&row.features)
-                }
+                CatalogCubeFeatureMode::Residualized => row
+                    .residualized_features
+                    .as_deref()
+                    .unwrap_or(&row.features),
             };
             if selected.is_empty() {
                 continue;

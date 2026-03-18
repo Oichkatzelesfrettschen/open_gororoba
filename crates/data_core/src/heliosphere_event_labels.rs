@@ -26,12 +26,7 @@ use chrono::{DateTime, Datelike, Duration, NaiveDate, NaiveDateTime, Utc};
 use regex::Regex;
 use reqwest::blocking::Client;
 use serde::{Deserialize, Deserializer, Serialize};
-use std::{
-    env, fs,
-    path::Path,
-    thread::sleep,
-    time::Duration as StdDuration,
-};
+use std::{env, fs, path::Path, thread::sleep, time::Duration as StdDuration};
 
 const DONKI_API_ROOT: &str = "https://api.nasa.gov/DONKI";
 const DONKI_CCMC_ROOT: &str = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get";
@@ -126,7 +121,11 @@ struct DonkiIpsRecord {
     event_time: String,
     #[serde(default, deserialize_with = "null_vec_default")]
     instruments: Vec<DonkiInstrument>,
-    #[serde(default, rename = "linkedEvents", deserialize_with = "null_vec_default")]
+    #[serde(
+        default,
+        rename = "linkedEvents",
+        deserialize_with = "null_vec_default"
+    )]
     linked_events: Vec<DonkiLinkedEvent>,
 }
 
@@ -136,7 +135,11 @@ struct DonkiGstRecord {
     gst_id: String,
     #[serde(rename = "startTime")]
     start_time: String,
-    #[serde(default, rename = "linkedEvents", deserialize_with = "null_vec_default")]
+    #[serde(
+        default,
+        rename = "linkedEvents",
+        deserialize_with = "null_vec_default"
+    )]
     linked_events: Vec<DonkiLinkedEvent>,
 }
 
@@ -148,7 +151,11 @@ struct DonkiSepRecord {
     event_time: String,
     #[serde(default, deserialize_with = "null_vec_default")]
     instruments: Vec<DonkiInstrument>,
-    #[serde(default, rename = "linkedEvents", deserialize_with = "null_vec_default")]
+    #[serde(
+        default,
+        rename = "linkedEvents",
+        deserialize_with = "null_vec_default"
+    )]
     linked_events: Vec<DonkiLinkedEvent>,
 }
 
@@ -162,7 +169,11 @@ struct DonkiFlrRecord {
     note: String,
     #[serde(default, deserialize_with = "null_vec_default")]
     instruments: Vec<DonkiInstrument>,
-    #[serde(default, rename = "linkedEvents", deserialize_with = "null_vec_default")]
+    #[serde(
+        default,
+        rename = "linkedEvents",
+        deserialize_with = "null_vec_default"
+    )]
     linked_events: Vec<DonkiLinkedEvent>,
 }
 
@@ -182,9 +193,17 @@ struct DonkiImpact {
 
 #[derive(Debug, Deserialize)]
 struct DonkiEnlilResult {
-    #[serde(default, rename = "modelCompletionTime", deserialize_with = "string_or_empty")]
+    #[serde(
+        default,
+        rename = "modelCompletionTime",
+        deserialize_with = "string_or_empty"
+    )]
     model_completion_time: String,
-    #[serde(default, rename = "estimatedShockArrivalTime", deserialize_with = "string_or_empty")]
+    #[serde(
+        default,
+        rename = "estimatedShockArrivalTime",
+        deserialize_with = "string_or_empty"
+    )]
     estimated_shock_arrival_time: String,
     #[serde(default, rename = "impactList", deserialize_with = "null_vec_default")]
     impact_list: Vec<DonkiImpact>,
@@ -205,7 +224,11 @@ struct DonkiCmeRecord {
     activity_id: String,
     #[serde(rename = "startTime")]
     start_time: String,
-    #[serde(default, rename = "sourceLocation", deserialize_with = "string_or_empty")]
+    #[serde(
+        default,
+        rename = "sourceLocation",
+        deserialize_with = "string_or_empty"
+    )]
     source_location: String,
     #[serde(default, deserialize_with = "string_or_empty")]
     note: String,
@@ -213,7 +236,11 @@ struct DonkiCmeRecord {
     instruments: Vec<DonkiInstrument>,
     #[serde(default, rename = "cmeAnalyses", deserialize_with = "null_vec_default")]
     cme_analyses: Vec<DonkiCmeAnalysis>,
-    #[serde(default, rename = "linkedEvents", deserialize_with = "null_vec_default")]
+    #[serde(
+        default,
+        rename = "linkedEvents",
+        deserialize_with = "null_vec_default"
+    )]
     linked_events: Vec<DonkiLinkedEvent>,
 }
 
@@ -263,7 +290,9 @@ pub fn fetch_donki_event_labels(
     if let Ok(cme_labels) = fetch_donki_cme_labels(start_date, end_date, cache_root) {
         labels.extend(cme_labels);
     }
-    if let Ok(scoreboard_labels) = fetch_ccmc_scoreboard_arrival_labels(start_date, end_date, cache_root) {
+    if let Ok(scoreboard_labels) =
+        fetch_ccmc_scoreboard_arrival_labels(start_date, end_date, cache_root)
+    {
         labels.extend(scoreboard_labels);
     }
     labels.sort_by(|a, b| {
@@ -541,9 +570,11 @@ fn fetch_donki_cme_labels(
                 note: source_note.clone(),
             });
         }
-        for analysis in row.cme_analyses.into_iter().filter(|analysis| {
-            analysis.is_most_accurate || !analysis.enlil_list.is_empty()
-        }) {
+        for analysis in row
+            .cme_analyses
+            .into_iter()
+            .filter(|analysis| analysis.is_most_accurate || !analysis.enlil_list.is_empty())
+        {
             for enlil in analysis.enlil_list {
                 for impact in enlil.impact_list {
                     let targets = mission_targets_from_location(&impact.location);
@@ -890,7 +921,10 @@ fn parse_scoreboard_blocks(html: &str) -> Vec<ScoreboardCmeBlock> {
             let row_html = row_caps["row"].to_string();
             let cells = td_re
                 .captures_iter(&row_html)
-                .filter_map(|caps| caps.get(1).map(|value| clean_scoreboard_cell(value.as_str())))
+                .filter_map(|caps| {
+                    caps.get(1)
+                        .map(|value| clean_scoreboard_cell(value.as_str()))
+                })
                 .collect::<Vec<_>>();
             if cells.len() < 7 {
                 continue;

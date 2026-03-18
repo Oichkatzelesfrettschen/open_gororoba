@@ -2830,8 +2830,12 @@ fn emit_body_markdown_docs(
         if rel_path.is_empty() {
             continue;
         }
-        let mut lines = generated_doc_header(source);
         let body = raw_str_field(doc, "body_markdown");
+        let mut lines = if body.starts_with("<!-- AUTO-GENERATED: DO NOT EDIT -->") {
+            Vec::new()
+        } else {
+            generated_doc_header(source)
+        };
         if body.is_empty() {
             lines.push(format!(
                 "# {}",

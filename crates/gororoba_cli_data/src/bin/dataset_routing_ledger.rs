@@ -82,17 +82,17 @@ fn main() -> Result<()> {
     let routes_path = cli.repo_root.join(&cli.routes);
     let content = fs::read_to_string(&routes_path)
         .with_context(|| format!("read {}", routes_path.display()))?;
-    let file: RouteFile = toml::from_str(&content)
-        .with_context(|| format!("parse {}", routes_path.display()))?;
+    let file: RouteFile =
+        toml::from_str(&content).with_context(|| format!("parse {}", routes_path.display()))?;
 
     let report = build_report(&cli.repo_root, file.route)?;
     let date = Utc::now().date_naive();
-    let out_toml = cli.out_toml.unwrap_or_else(|| {
-        PathBuf::from("reports").join(format!("dataset_routing_{}.toml", date))
-    });
-    let out_md = cli.out_md.unwrap_or_else(|| {
-        PathBuf::from("reports").join(format!("dataset_routing_{}.md", date))
-    });
+    let out_toml = cli
+        .out_toml
+        .unwrap_or_else(|| PathBuf::from("reports").join(format!("dataset_routing_{}.toml", date)));
+    let out_md = cli
+        .out_md
+        .unwrap_or_else(|| PathBuf::from("reports").join(format!("dataset_routing_{}.md", date)));
     if let Some(parent) = out_toml.parent() {
         fs::create_dir_all(parent)?;
     }
@@ -137,7 +137,11 @@ fn build_report(repo_root: &Path, specs: Vec<RouteSpec>) -> Result<LedgerReport>
         });
     }
     rows.sort_by(|a, b| {
-        (&a.family, &a.dataset_key, &a.provider_surface).cmp(&(&b.family, &b.dataset_key, &b.provider_surface))
+        (&a.family, &a.dataset_key, &a.provider_surface).cmp(&(
+            &b.family,
+            &b.dataset_key,
+            &b.provider_surface,
+        ))
     });
     Ok(LedgerReport {
         generated_at_utc: Utc::now().to_rfc3339(),
@@ -188,7 +192,9 @@ fn render_markdown(report: &LedgerReport) -> String {
         out.push_str(&format!("- `{status}`: {count}\n"));
     }
     out.push_str("\n## Routes\n\n");
-    out.push_str("| Family | Dataset | Provider | Parser | Analyses | Cache | Reports | Status |\n");
+    out.push_str(
+        "| Family | Dataset | Provider | Parser | Analyses | Cache | Reports | Status |\n",
+    );
     out.push_str("| --- | --- | --- | --- | --- | --- | --- | --- |\n");
     for row in &report.rows {
         out.push_str(&format!(

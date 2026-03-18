@@ -4,12 +4,12 @@
 //! schema used by the executed feature-cube, algebra, and LBM benchmark bins,
 //! along with the memory estimators for dense and sparse 3D runs.
 
-use serde::{Deserialize, Serialize};
 use chrono::{DateTime, NaiveDate, Utc};
 use gororoba_sparse_grid::{
     BrickGrid3d, BrickShape3d, IndirectBrickTableShape, LogicalGrid3d, OccupancyBitsetStats,
     estimate_metadata_footprint,
 };
+use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, str::FromStr};
 
 pub const HELIOSPHERE_FEATURE_DIM: usize = 16;
@@ -306,7 +306,9 @@ pub fn heliosphere_row_datetime(row: &HeliosphereFeatureRow) -> Option<DateTime<
 /// This keeps the executed cube schema unchanged while exposing a
 /// physics-first channel family for predictive tests and adaptive
 /// sparsification.
-pub fn compute_invariant_samples(rows: &[HeliosphereFeatureRow]) -> Vec<HeliosphereInvariantSample> {
+pub fn compute_invariant_samples(
+    rows: &[HeliosphereFeatureRow],
+) -> Vec<HeliosphereInvariantSample> {
     let mut grouped: BTreeMap<(String, String, String), Vec<HeliosphereFeatureRow>> =
         BTreeMap::new();
     for row in rows {
@@ -414,17 +416,35 @@ fn invariant_channels_for_row(
     });
     let delta_b_over_bmag = ratio(delta_b_vec.unwrap_or(0.0), current_b_mag);
     let delta_v_over_vmag = previous
-        .map(|prev| ratio((finite_or_zero(row.speed_kms) - finite_or_zero(prev.speed_kms)).abs(), row.speed_kms))
+        .map(|prev| {
+            ratio(
+                (finite_or_zero(row.speed_kms) - finite_or_zero(prev.speed_kms)).abs(),
+                row.speed_kms,
+            )
+        })
         .unwrap_or(0.0);
     let delta_n_over_n = previous
-        .map(|prev| ratio((finite_or_zero(row.density_cm3) - finite_or_zero(prev.density_cm3)).abs(), row.density_cm3))
+        .map(|prev| {
+            ratio(
+                (finite_or_zero(row.density_cm3) - finite_or_zero(prev.density_cm3)).abs(),
+                row.density_cm3,
+            )
+        })
         .unwrap_or(0.0);
     let delta_t_over_t = previous
-        .map(|prev| ratio((finite_or_zero(row.temperature_k) - finite_or_zero(prev.temperature_k)).abs(), row.temperature_k))
+        .map(|prev| {
+            ratio(
+                (finite_or_zero(row.temperature_k) - finite_or_zero(prev.temperature_k)).abs(),
+                row.temperature_k,
+            )
+        })
         .unwrap_or(0.0);
     let plasma_beta = compute_plasma_beta(row.density_cm3, row.temperature_k, current_b_mag);
     let alfven_speed = compute_alfven_speed_kms(row.density_cm3, current_b_mag);
-    let alfvenicity_residual = ratio((finite_or_zero(row.speed_kms) - alfven_speed).abs(), row.speed_kms);
+    let alfvenicity_residual = ratio(
+        (finite_or_zero(row.speed_kms) - alfven_speed).abs(),
+        row.speed_kms,
+    );
     let dynamic_pressure = compute_dynamic_pressure_npa(row.density_cm3, row.speed_kms);
     let previous_dynamic_pressure = previous
         .map(|prev| compute_dynamic_pressure_npa(prev.density_cm3, prev.speed_kms))
@@ -471,7 +491,8 @@ fn ratio(numerator: f64, denominator: f64) -> f64 {
 }
 
 fn compute_dynamic_pressure_npa(density_cm3: f64, speed_kms: f64) -> f64 {
-    if !density_cm3.is_finite() || !speed_kms.is_finite() || density_cm3 <= 0.0 || speed_kms <= 0.0 {
+    if !density_cm3.is_finite() || !speed_kms.is_finite() || density_cm3 <= 0.0 || speed_kms <= 0.0
+    {
         return 0.0;
     }
     1.6726219e-6 * density_cm3 * speed_kms * speed_kms
@@ -497,7 +518,8 @@ fn compute_plasma_beta(density_cm3: f64, temperature_k: f64, b_mag_nt: f64) -> f
     let number_density_m3 = density_cm3 * 1.0e6;
     let magnetic_field_t = b_mag_nt * 1.0e-9;
     let thermal_pressure = number_density_m3 * 1.380649e-23 * temperature_k;
-    let magnetic_pressure = magnetic_field_t * magnetic_field_t / (2.0 * std::f64::consts::PI * 4.0e-7);
+    let magnetic_pressure =
+        magnetic_field_t * magnetic_field_t / (2.0 * std::f64::consts::PI * 4.0e-7);
     if magnetic_pressure <= 0.0 {
         0.0
     } else {

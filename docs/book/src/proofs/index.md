@@ -20,7 +20,7 @@ Primary sources for this lane:
 Recommended workflow:
 
 ```sh
-cargo run -p gororoba_cli_data --bin provenance -- \
+cargo run -p gororoba_cli_provenance --bin provenance -- \
   --db registry/canonical/control_plane.sqlite3 \
   export-control-plane
 

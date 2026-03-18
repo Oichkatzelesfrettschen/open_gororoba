@@ -387,15 +387,15 @@ fn build_report(inputs: BuildInputs, evidence: &EvidenceContext) -> Report {
             for route in route_rows {
                 entry.dataset_keys.insert(route.dataset_key.clone());
                 if route.status == "fully_analyzed" {
-                    entry.fully_analyzed_dataset_keys
+                    entry
+                        .fully_analyzed_dataset_keys
                         .insert(route.dataset_key.clone());
                 }
-                if route
-                    .analysis_binaries
-                    .iter()
-                    .any(|binary| binary == "catalog-feature-cube" || binary == "catalog-feature-algebra")
-                {
-                    entry.cube_route_dataset_keys
+                if route.analysis_binaries.iter().any(|binary| {
+                    binary == "catalog-feature-cube" || binary == "catalog-feature-algebra"
+                }) {
+                    entry
+                        .cube_route_dataset_keys
                         .insert(route.dataset_key.clone());
                 }
             }
@@ -572,9 +572,10 @@ fn load_evidence_context(
         context.predictive_strengthened =
             scalar_auroc.is_finite() && best_non_scalar_auroc > scalar_auroc;
         if context.predictive_strengthened {
-            context
-                .needs_registry_linkage
-                .push("predictive evidence updated; registry claim linkage remains report-first".to_string());
+            context.needs_registry_linkage.push(
+                "predictive evidence updated; registry claim linkage remains report-first"
+                    .to_string(),
+            );
         }
     }
     if let Some(path) = invariance_report {
@@ -602,7 +603,10 @@ fn load_evidence_context(
     if let Some(path) = sparse_policy_report {
         let report: SparsePolicyReport = toml::from_str(&fs::read_to_string(path)?)
             .with_context(|| format!("parse {}", path.display()))?;
-        let baseline = report.policies.iter().find(|row| row.name == "robust_baseline");
+        let baseline = report
+            .policies
+            .iter()
+            .find(|row| row.name == "robust_baseline");
         let invariant = report
             .policies
             .iter()
@@ -663,7 +667,9 @@ fn classify_claim(
         .iter()
         .any(|dataset| evidence.archive_null_datasets.contains(dataset))
     {
-        notes.push("residualized algebra/topology classified this lane as archive structure".to_string());
+        notes.push(
+            "residualized algebra/topology classified this lane as archive structure".to_string(),
+        );
         return (RecertificationStatus::ArchiveStructureNull, notes);
     }
     if evidence.predictive_strengthened
@@ -681,7 +687,9 @@ fn classify_claim(
             .iter()
             .any(|binary| binary == "heliosphere-sparse-preservation")
     {
-        notes.push("budgeted sparse policy preserved recall under the 12 GiB constraint".to_string());
+        notes.push(
+            "budgeted sparse policy preserved recall under the 12 GiB constraint".to_string(),
+        );
         return (RecertificationStatus::CompressionPreserved, notes);
     }
     if evidence.normalized_invariance_improved
@@ -690,7 +698,9 @@ fn classify_claim(
             .iter()
             .any(|binary| binary == "heliosphere-cross-mission-invariance")
     {
-        notes.push("cross-mission normalization improved leave-one-mission-out similarity".to_string());
+        notes.push(
+            "cross-mission normalization improved leave-one-mission-out similarity".to_string(),
+        );
         return (RecertificationStatus::CrossMissionNormalized, notes);
     }
     if !acc.fully_analyzed_dataset_keys.is_empty() {
@@ -806,9 +816,13 @@ mod tests {
 
     #[test]
     fn residual_candidate_ranks_above_archive_null() {
-        assert!(status_rank(RecertificationStatus::ResidualCandidate)
-            > status_rank(RecertificationStatus::ArchiveStructureNull));
-        assert!(status_rank(RecertificationStatus::PredictivelyReexecuted)
-            > status_rank(RecertificationStatus::ScientificallyReexecuted));
+        assert!(
+            status_rank(RecertificationStatus::ResidualCandidate)
+                > status_rank(RecertificationStatus::ArchiveStructureNull)
+        );
+        assert!(
+            status_rank(RecertificationStatus::PredictivelyReexecuted)
+                > status_rank(RecertificationStatus::ScientificallyReexecuted)
+        );
     }
 }
