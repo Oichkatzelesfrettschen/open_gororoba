@@ -2,7 +2,7 @@ use anyhow::Result;
 use chrono::Utc;
 use clap::Parser;
 use data_core::{SparseExecutionPlan, SparseHardwareEnvelope, estimate_sparse_execution_plan};
-use gororoba_cli_physics::heliosphere_eval::{load_heliosphere_rows, summarize_sparse_masks};
+use gororoba_cli_physics::heliosphere_eval::{SparseMaskSummary, load_heliosphere_rows, summarize_sparse_policies};
 use gororoba_gpu_bridge::{HardwareCaps, probe_simd};
 use lbm_3d_cuda::{probe_cuda_available, probe_cuda_device_props};
 use serde::Serialize;
@@ -46,8 +46,7 @@ struct Report {
     cube_csv: String,
     horizon_hours: i64,
     grid: usize,
-    robust_event_mask: gororoba_cli_physics::heliosphere_eval::SparseMaskSummary,
-    algebra_adaptive_mask: gororoba_cli_physics::heliosphere_eval::SparseMaskSummary,
+    policies: Vec<SparseMaskSummary>,
     execution_plans: Vec<PlanSummary>,
     notes: Vec<String>,
 }
@@ -56,32 +55,28 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     let out = cli.out.unwrap_or_else(|| {
         PathBuf::from("reports").join(format!(
-            "heliosphere_sparse_preservation_{}.toml",
+            "heliosphere_sparse_policy_{}.toml",
             Utc::now().date_naive()
         ))
     });
     let rows = load_heliosphere_rows(&cli.cube_csv)?;
     let cache_root = cli.repo_root.join("data/external");
-    let (robust_event_mask, algebra_adaptive_mask) =
-        summarize_sparse_masks(&rows, &cache_root, cli.horizon_hours)?;
-    let execution_plans = vec![
-        summarize_plan("robust_event_mask", cli.grid, robust_event_mask.active_fraction),
-        summarize_plan(
-            "algebra_adaptive_mask",
-            cli.grid,
-            algebra_adaptive_mask.active_fraction,
-        ),
-    ];
+    let policies = summarize_sparse_policies(&rows, &cache_root, cli.horizon_hours, cli.grid)?;
+    let execution_plans = policies
+        .iter()
+        .map(|policy| summarize_plan(&policy.name, cli.grid, policy.active_fraction))
+        .collect::<Vec<_>>();
     let report = Report {
         generated_at_utc: Utc::now().to_rfc3339(),
         cube_csv: cli.cube_csv.display().to_string(),
         horizon_hours: cli.horizon_hours,
         grid: cli.grid,
-        robust_event_mask,
-        algebra_adaptive_mask,
+        policies,
         execution_plans,
         notes: vec![
-            "Sparse-preservation compares the current robust transform mask against an algebra-derived adaptive mask without dropping source rows."
+            "Sparse policy now compares the robust baseline against supervised budgeted policies without dropping source rows."
+                .to_string(),
+            "The invariant-only budget policy is the primary challenger; the hybrid algebra policy only matters if it wins under the same budget."
                 .to_string(),
             "Execution planning uses the current host hardware envelope and keeps managed memory as a fallback, not the primary path."
                 .to_string(),

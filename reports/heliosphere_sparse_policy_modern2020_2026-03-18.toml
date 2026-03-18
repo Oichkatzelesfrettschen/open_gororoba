@@ -1,0 +1,66 @@
+generated_at_utc = "2026-03-18T15:38:03.661734231+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+horizon_hours = 24
+grid = 1024
+notes = [
+    "Sparse policy now compares the robust baseline against supervised budgeted policies without dropping source rows.",
+    "The invariant-only budget policy is the primary challenger; the hybrid algebra policy only matters if it wins under the same budget.",
+    "Execution planning uses the current host hardware envelope and keeps managed memory as a fallback, not the primary path.",
+]
+
+[[policies]]
+name = "robust_baseline"
+active_rows = 3382
+active_fraction = 0.07144516974037222
+event_label_recall = 0.09817351598173515
+event_label_precision = 0.0127143701951508
+density_mean = 110.94621052960333
+speed_mean = 391.71438790362333
+temperature_mean = 134250.2208854745
+bmag_mean = 32.08282867633101
+median_lead_time_hours = 78.5
+
+[[policies]]
+name = "invariant_budget_policy"
+active_rows = 7771
+active_fraction = 0.16416333945961933
+event_label_recall = 0.5114155251141552
+event_label_precision = 0.028825119032299576
+density_mean = 9.173332713221098
+speed_mean = 410.03751960778646
+temperature_mean = 50501.79556835136
+bmag_mean = 14.476409523760632
+median_lead_time_hours = 6.0
+
+[[policies]]
+name = "hybrid_budget_policy"
+active_rows = 7650
+active_fraction = 0.16160719944229673
+event_label_recall = 0.5091324200913242
+event_label_precision = 0.02915032679738562
+density_mean = 8.969284057970778
+speed_mean = 407.4469738959697
+temperature_mean = 49154.757276184966
+bmag_mean = 15.130516407620847
+median_lead_time_hours = 5.0
+
+[[execution_plans]]
+mask_name = "robust_baseline"
+active_fraction = 0.07144516974037222
+sparse_bf16_aa_projected_gib = 5.001182556152344
+execution_mode = "CacheAwareTiledSparseSoA"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "invariant_budget_policy"
+active_fraction = 0.16416333945961933
+sparse_bf16_aa_projected_gib = 11.491451263427734
+execution_mode = "CacheAwareTiledSparseSoA"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "hybrid_budget_policy"
+active_fraction = 0.16160719944229673
+sparse_bf16_aa_projected_gib = 11.312508583068848
+execution_mode = "CacheAwareTiledSparseSoA"
+temporal_tile_count_hint = 1

@@ -1,0 +1,159 @@
+generated_at_utc = "2026-03-18T15:47:15.850495480+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+row_count = 47337
+labeled_sample_count = 47337
+positive_sample_count = 438
+horizon_hours = 24
+invariant_channel_names = [
+    "delta_b_over_bmag",
+    "delta_v_over_vmag",
+    "delta_n_over_n",
+    "delta_t_over_t",
+    "plasma_beta",
+    "alfven_speed_kms",
+    "alfvenicity_residual",
+    "dynamic_pressure_residual",
+    "magnetic_shear",
+    "compressibility_proxy",
+]
+descriptor_channel_names = [
+    "weighted_norm_sq",
+    "delta_weighted_norm_sq",
+    "rolling_associator_norm",
+    "mean_abs_weighted_channel",
+]
+notes = [
+    "Official labels are fetched from NASA DONKI and cached under data/external/space_weather/donki.",
+    "Prediction windows span [event_time - horizon_hours, event_time].",
+    "Models are reported for both raw and cross-mission-normalized invariant spaces.",
+    "Mission-targeted DONKI ENLIL arrivals are official forecast-target windows; CCMC Scoreboard arrivals remain the observed Earth/L1 arrival source.",
+]
+
+[[mission_splits]]
+mission = "BepiColombo"
+train_rows = 6149
+validation_rows = 1317
+test_rows = 1318
+
+[[mission_splits]]
+mission = "Parker Solar Probe"
+train_rows = 6964
+validation_rows = 1492
+test_rows = 1492
+
+[[mission_splits]]
+mission = "SOHO"
+train_rows = 5664
+validation_rows = 1213
+test_rows = 1214
+
+[[mission_splits]]
+mission = "Solar Orbiter"
+train_rows = 14360
+validation_rows = 3077
+test_rows = 3077
+
+[[models]]
+feature_mode = "raw"
+name = "scalar_event_score"
+threshold = 0.0
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 7101
+auprc = 0.026324549571108836
+auroc = 0.6023726344636883
+precision = 0.033234755668215744
+recall = 1.0
+f1 = 0.0643314706283222
+false_alert_rate = 1.0
+median_lead_time_hours = 727.0
+
+[[models]]
+feature_mode = "raw"
+name = "best_single_invariant_threshold"
+threshold = 1.1460313649198206
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1201
+auprc = 0.09934283864784992
+auroc = 0.8552322638784302
+precision = 0.13738551207327226
+recall = 0.6991525423728814
+f1 = 0.22964509394572025
+false_alert_rate = 0.15091041514930809
+median_lead_time_hours = 98.5
+
+[[models]]
+feature_mode = "raw"
+name = "invariant_logistic"
+threshold = 0.7876763461582407
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1185
+auprc = 0.10081071909689004
+auroc = 0.7682910118878615
+precision = 0.13924050632911392
+recall = 0.6991525423728814
+f1 = 0.23223082336382828
+false_alert_rate = 0.14857975236707938
+median_lead_time_hours = 97.5
+
+[[models]]
+feature_mode = "raw"
+name = "invariant_plus_algebra_logistic"
+threshold = 0.7757172848441483
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1172
+auprc = 0.09913405904568659
+auroc = 0.7666652264619107
+precision = 0.1356655290102389
+recall = 0.673728813559322
+f1 = 0.22585227272727273
+false_alert_rate = 0.14756008739985432
+median_lead_time_hours = 20.0
+
+[[models]]
+feature_mode = "normalized"
+name = "best_single_invariant_threshold"
+threshold = 0.004369876555285087
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 532
+auprc = 0.06114976066651351
+auroc = 0.5872017233078622
+precision = 0.13533834586466165
+recall = 0.3050847457627119
+f1 = 0.1875
+false_alert_rate = 0.06700655498907501
+median_lead_time_hours = 1.0
+
+[[models]]
+feature_mode = "normalized"
+name = "invariant_logistic"
+threshold = 0.52283985294997
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 975
+auprc = 0.06462064604744533
+auroc = 0.5804541582826176
+precision = 0.09641025641025641
+recall = 0.3983050847457627
+f1 = 0.15524360033030554
+false_alert_rate = 0.12833211944646758
+median_lead_time_hours = 5.0
+
+[[models]]
+feature_mode = "normalized"
+name = "invariant_plus_algebra_logistic"
+threshold = 0.5128223658341464
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1344
+auprc = 0.08687777733268359
+auroc = 0.7437486883849543
+precision = 0.109375
+recall = 0.6228813559322034
+f1 = 0.1860759493670886
+false_alert_rate = 0.17436270939548434
+median_lead_time_hours = 4.0

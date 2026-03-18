@@ -1,8 +1,8 @@
-generated_at_utc = "2026-03-18T11:07:30.277845049+00:00"
+generated_at_utc = "2026-03-18T15:39:15.025047809+00:00"
 cube_csv = "reports/heliosphere_feature_cube_fleet2016_2026-03-15.csv"
 row_count = 94367
 labeled_sample_count = 94349
-positive_sample_count = 3564
+positive_sample_count = 3830
 horizon_hours = 24
 invariant_channel_names = [
     "delta_b_over_bmag",
@@ -25,7 +25,8 @@ descriptor_channel_names = [
 notes = [
     "Official labels are fetched from NASA DONKI and cached under data/external/space_weather/donki.",
     "Prediction windows span [event_time - horizon_hours, event_time].",
-    "Algebra descriptors are used as adaptive geometry features, not as standalone physics evidence.",
+    "Models are reported for both raw and cross-mission-normalized invariant spaces.",
+    "Mission-targeted DONKI ENLIL arrivals are official forecast-target windows; CCMC Scoreboard arrivals remain the observed Earth/L1 arrival source.",
 ]
 
 [[mission_splits]]
@@ -83,6 +84,7 @@ validation_rows = 1317
 test_rows = 1318
 
 [[models]]
+feature_mode = "raw"
 name = "scalar_event_score"
 threshold = 0.0
 positive_rows = 321
@@ -97,6 +99,7 @@ false_alert_rate = 1.0
 median_lead_time_hours = 422.0
 
 [[models]]
+feature_mode = "raw"
 name = "best_single_invariant_threshold"
 threshold = 0.03775047978255725
 positive_rows = 321
@@ -111,13 +114,29 @@ false_alert_rate = 0.3528986554864826
 median_lead_time_hours = 5.0
 
 [[models]]
+feature_mode = "raw"
 name = "invariant_logistic"
-threshold = 0.45213479517924515
+threshold = 0.45799995446574976
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 5062
+auprc = 0.05454418696478425
+auroc = 0.7703936799352537
+precision = 0.04444883445278546
+recall = 0.7009345794392523
+f1 = 0.08359650752368568
+false_alert_rate = 0.3496458002023999
+median_lead_time_hours = 18.0
+
+[[models]]
+feature_mode = "raw"
+name = "invariant_plus_algebra_logistic"
+threshold = 0.4520199954939527
 positive_rows = 321
 negative_rows = 13834
 predicted_positive_rows = 5065
-auprc = 0.054282563757642725
-auroc = 0.7702022692747157
+auprc = 0.055091339112973405
+auroc = 0.7704465993531671
 precision = 0.04461994076999013
 recall = 0.7040498442367601
 f1 = 0.08392127738581508
@@ -125,15 +144,46 @@ false_alert_rate = 0.3497903715483591
 median_lead_time_hours = 4.0
 
 [[models]]
-name = "invariant_plus_algebra_logistic"
-threshold = 0.4468458510549476
+feature_mode = "normalized"
+name = "best_single_invariant_threshold"
+threshold = 0.04776027886756984
 positive_rows = 321
 negative_rows = 13834
-predicted_positive_rows = 5068
-auprc = 0.05491685889031529
-auroc = 0.770580812004556
-precision = 0.04459352801894238
-recall = 0.7040498442367601
-f1 = 0.08387455928743738
-false_alert_rate = 0.35000722856729793
-median_lead_time_hours = 4.0
+predicted_positive_rows = 2330
+auprc = 0.04798080238239959
+auroc = 0.420409871025245
+precision = 0.04377682403433476
+recall = 0.3177570093457944
+f1 = 0.07695209354960392
+false_alert_rate = 0.1610524793985832
+median_lead_time_hours = 2.0
+
+[[models]]
+feature_mode = "normalized"
+name = "invariant_logistic"
+threshold = 0.49721304944493694
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 3705
+auprc = 0.046261772462270055
+auroc = 0.5074958666556775
+precision = 0.043184885290148446
+recall = 0.4984423676012461
+f1 = 0.07948335817188276
+false_alert_rate = 0.25625271071273675
+median_lead_time_hours = 3.0
+
+[[models]]
+feature_mode = "normalized"
+name = "invariant_plus_algebra_logistic"
+threshold = 0.48392180756934805
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 4369
+auprc = 0.05449051156333839
+auroc = 0.6148567550173238
+precision = 0.04806591897459373
+recall = 0.6542056074766355
+f1 = 0.08955223880597014
+false_alert_rate = 0.3006361139222206
+median_lead_time_hours = 3.0

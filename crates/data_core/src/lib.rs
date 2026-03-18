@@ -72,7 +72,8 @@ pub use heliosphere_feature_cube::{
 };
 pub use heliosphere_event_labels::{
     ForecastResidual, HeliosphereEventKind, HeliosphereEventLabel, HeliosphereEventSource,
-    HeliosphereEventWindow, fetch_donki_event_labels, labels_to_prediction_windows,
+    HeliosphereEventWindow, fetch_donki_event_labels, fetch_official_forecast_residuals,
+    labels_to_prediction_windows,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,

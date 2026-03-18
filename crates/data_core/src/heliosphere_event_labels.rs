@@ -1,23 +1,29 @@
 //! Official heliosphere event-label ingestion and windowing helpers.
 //!
-//! This module stages bounded official event labels from NASA DONKI so the
-//! heliosphere analysis lanes can test physically anchored hypotheses instead
-//! of relying only on internal heuristics.
+//! This module stages bounded official label families from CCMC/NASA DONKI and
+//! the official CCMC CME Scoreboard so heliosphere evaluation can anchor itself
+//! to physically constrained windows instead of repo-internal heuristics.
 //!
 //! Official sources:
 //! - <https://api.nasa.gov/>
-//! - <https://api.nasa.gov/assets/html/authentication.html>
 //! - <https://ccmc.gsfc.nasa.gov/donki/>
+//! - <https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CME>
+//! - <https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CMEAnalysis>
+//! - <https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/>
 //!
-//! The first implementation uses DONKI event families that are directly usable
-//! as onset labels for near-Earth and STEREO-A heliosphere windows:
-//! - `IPS` (interplanetary shock)
-//! - `GST` (geomagnetic storm onset)
-//! - `SEP` (solar energetic particle onset)
-//! - `FLR` (flare peak time, kept as an official solar-origin label family)
+//! Current official label families:
+//! - DONKI `IPS` (interplanetary shock onset)
+//! - DONKI `GST` (geomagnetic storm onset)
+//! - DONKI `SEP` (solar energetic particle onset)
+//! - DONKI `FLR` (solar flare peak)
+//! - DONKI `CME` (official CME onset/observation records)
+//! - DONKI `WSA-ENLIL` impact targets embedded in `CME` records
+//! - CCMC CME Scoreboard observed Earth/L1 arrival windows
+//! - CCMC CME Scoreboard forecast residual rows for Earth/L1 validation
 
 use crate::fetcher::{FetchError, validate_not_html};
-use chrono::{DateTime, Duration, NaiveDate, NaiveDateTime, Utc};
+use chrono::{DateTime, Datelike, Duration, NaiveDate, NaiveDateTime, Utc};
+use regex::Regex;
 use reqwest::blocking::Client;
 use serde::{Deserialize, Deserializer, Serialize};
 use std::{
@@ -38,6 +44,10 @@ pub enum HeliosphereEventSource {
     DonkiGst,
     DonkiSep,
     DonkiFlr,
+    DonkiCme,
+    DonkiEnlilImpact,
+    CcmcScoreboardArrival,
+    CcmcScoreboardForecastResidual,
 }
 
 /// Physical event family represented by an official label.
@@ -48,6 +58,9 @@ pub enum HeliosphereEventKind {
     GeomagneticStorm,
     SolarEnergeticParticle,
     SolarFlare,
+    CoronalMassEjection,
+    PredictedCmeImpact,
+    ObservedCmeArrival,
 }
 
 /// One official event label with mission/location applicability.
@@ -80,9 +93,15 @@ pub struct HeliosphereEventWindow {
 /// Optional forecast residual placeholder for later CCMC-style comparisons.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForecastResidual {
+    pub source: HeliosphereEventSource,
     pub label_id: String,
     pub mission: String,
+    pub forecast_method: String,
+    pub predicted_arrival_utc: String,
+    pub actual_arrival_utc: String,
+    pub model_completion_utc: Option<String>,
     pub residual_hours: f64,
+    pub note: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -147,6 +166,72 @@ struct DonkiFlrRecord {
     linked_events: Vec<DonkiLinkedEvent>,
 }
 
+#[derive(Debug, Deserialize)]
+struct DonkiImpact {
+    #[serde(default, deserialize_with = "string_or_empty")]
+    location: String,
+    #[serde(default, rename = "arrivalTime", deserialize_with = "string_or_empty")]
+    arrival_time: String,
+    #[serde(default)]
+    #[serde(rename = "isGlancingBlow")]
+    is_glancing_blow: bool,
+    #[serde(default)]
+    #[serde(rename = "isMinorImpact")]
+    is_minor_impact: bool,
+}
+
+#[derive(Debug, Deserialize)]
+struct DonkiEnlilResult {
+    #[serde(default, rename = "modelCompletionTime", deserialize_with = "string_or_empty")]
+    model_completion_time: String,
+    #[serde(default, rename = "estimatedShockArrivalTime", deserialize_with = "string_or_empty")]
+    estimated_shock_arrival_time: String,
+    #[serde(default, rename = "impactList", deserialize_with = "null_vec_default")]
+    impact_list: Vec<DonkiImpact>,
+}
+
+#[derive(Debug, Deserialize)]
+struct DonkiCmeAnalysis {
+    #[serde(default)]
+    #[serde(rename = "isMostAccurate")]
+    is_most_accurate: bool,
+    #[serde(default, rename = "enlilList", deserialize_with = "null_vec_default")]
+    enlil_list: Vec<DonkiEnlilResult>,
+}
+
+#[derive(Debug, Deserialize)]
+struct DonkiCmeRecord {
+    #[serde(rename = "activityID")]
+    activity_id: String,
+    #[serde(rename = "startTime")]
+    start_time: String,
+    #[serde(default, rename = "sourceLocation", deserialize_with = "string_or_empty")]
+    source_location: String,
+    #[serde(default, deserialize_with = "string_or_empty")]
+    note: String,
+    #[serde(default, deserialize_with = "null_vec_default")]
+    instruments: Vec<DonkiInstrument>,
+    #[serde(default, rename = "cmeAnalyses", deserialize_with = "null_vec_default")]
+    cme_analyses: Vec<DonkiCmeAnalysis>,
+    #[serde(default, rename = "linkedEvents", deserialize_with = "null_vec_default")]
+    linked_events: Vec<DonkiLinkedEvent>,
+}
+
+#[derive(Debug, Clone)]
+struct ScoreboardPredictionRow {
+    predicted_arrival_utc: String,
+    method: String,
+    residual_hours: Option<f64>,
+}
+
+#[derive(Debug, Clone)]
+struct ScoreboardCmeBlock {
+    cme_id: String,
+    actual_arrival_utc: Option<String>,
+    detected_at_earth: bool,
+    predictions: Vec<ScoreboardPredictionRow>,
+}
+
 fn null_vec_default<'de, D, T>(deserializer: D) -> Result<Vec<T>, D::Error>
 where
     D: Deserializer<'de>,
@@ -175,11 +260,78 @@ pub fn fetch_donki_event_labels(
     if let Ok(flares) = fetch_donki_flr(start_date, end_date, cache_root) {
         labels.extend(flares);
     }
+    if let Ok(cme_labels) = fetch_donki_cme_labels(start_date, end_date, cache_root) {
+        labels.extend(cme_labels);
+    }
+    if let Ok(scoreboard_labels) = fetch_ccmc_scoreboard_arrival_labels(start_date, end_date, cache_root) {
+        labels.extend(scoreboard_labels);
+    }
     labels.sort_by(|a, b| {
         (a.event_time_utc.as_str(), a.label_id.as_str())
             .cmp(&(b.event_time_utc.as_str(), b.label_id.as_str()))
     });
+    labels.dedup_by(|a, b| a.label_id == b.label_id && a.event_time_utc == b.event_time_utc);
     Ok(labels)
+}
+
+/// Fetch official forecast residuals from the CCMC CME Scoreboard.
+pub fn fetch_official_forecast_residuals(
+    start_date: NaiveDate,
+    end_date: NaiveDate,
+    cache_root: &Path,
+) -> Result<Vec<ForecastResidual>, FetchError> {
+    let mut residuals = Vec::new();
+    for year in start_date.year()..=end_date.year() {
+        let page = fetch_ccmc_scoreboard_year(year, cache_root)?;
+        for block in parse_scoreboard_blocks(&page) {
+            let Some(actual_arrival_text) = block.actual_arrival_utc.as_deref() else {
+                continue;
+            };
+            let Some(actual_arrival) = parse_donki_time(actual_arrival_text) else {
+                continue;
+            };
+            if actual_arrival.date_naive() < start_date || actual_arrival.date_naive() > end_date {
+                continue;
+            }
+            for mission in mission_targets_from_location("Earth") {
+                for prediction in &block.predictions {
+                    let Some(residual_hours) = prediction.residual_hours else {
+                        continue;
+                    };
+                    residuals.push(ForecastResidual {
+                        source: HeliosphereEventSource::CcmcScoreboardForecastResidual,
+                        label_id: block.cme_id.clone(),
+                        mission: mission.clone(),
+                        forecast_method: prediction.method.clone(),
+                        predicted_arrival_utc: prediction.predicted_arrival_utc.clone(),
+                        actual_arrival_utc: actual_arrival.to_rfc3339(),
+                        model_completion_utc: None,
+                        residual_hours,
+                        note: if block.detected_at_earth {
+                            None
+                        } else {
+                            Some("scoreboard row belonged to a no-detection block".to_string())
+                        },
+                    });
+                }
+            }
+        }
+    }
+    residuals.sort_by(|a, b| {
+        (
+            a.actual_arrival_utc.as_str(),
+            a.label_id.as_str(),
+            a.mission.as_str(),
+            a.forecast_method.as_str(),
+        )
+            .cmp(&(
+                b.actual_arrival_utc.as_str(),
+                b.label_id.as_str(),
+                b.mission.as_str(),
+                b.forecast_method.as_str(),
+            ))
+    });
+    Ok(residuals)
 }
 
 /// Convert official labels into mission-specific prediction windows.
@@ -348,6 +500,141 @@ fn fetch_donki_flr(
         .collect())
 }
 
+fn fetch_donki_cme_labels(
+    start_date: NaiveDate,
+    end_date: NaiveDate,
+    cache_root: &Path,
+) -> Result<Vec<HeliosphereEventLabel>, FetchError> {
+    let body = fetch_donki_json("CME", start_date, end_date, cache_root)?;
+    let rows: Vec<DonkiCmeRecord> = serde_json::from_str(&body)
+        .map_err(|err| FetchError::Validation(format!("invalid DONKI CME JSON: {err}")))?;
+    let mut labels = Vec::new();
+    for row in rows {
+        let linked_activity_ids = row
+            .linked_events
+            .iter()
+            .map(|event| event.activity_id.clone())
+            .collect::<Vec<_>>();
+        let instrument_names = row
+            .instruments
+            .iter()
+            .map(|instrument| instrument.display_name.clone())
+            .collect::<Vec<_>>();
+        let linked_cme_ids = vec![row.activity_id.clone()];
+        let source_note = trimmed_option(&row.note);
+        let mission_targets = mission_targets_from_instruments(&row.instruments);
+        if !mission_targets.is_empty() {
+            labels.push(HeliosphereEventLabel {
+                source: HeliosphereEventSource::DonkiCme,
+                kind: HeliosphereEventKind::CoronalMassEjection,
+                label_id: row.activity_id.clone(),
+                location: if row.source_location.trim().is_empty() {
+                    "Sun".to_string()
+                } else {
+                    row.source_location.clone()
+                },
+                event_time_utc: row.start_time.clone(),
+                linked_activity_ids: linked_activity_ids.clone(),
+                linked_cme_ids: linked_cme_ids.clone(),
+                instrument_names: instrument_names.clone(),
+                mission_targets,
+                note: source_note.clone(),
+            });
+        }
+        for analysis in row.cme_analyses.into_iter().filter(|analysis| {
+            analysis.is_most_accurate || !analysis.enlil_list.is_empty()
+        }) {
+            for enlil in analysis.enlil_list {
+                for impact in enlil.impact_list {
+                    let targets = mission_targets_from_location(&impact.location);
+                    if targets.is_empty() || impact.arrival_time.trim().is_empty() {
+                        continue;
+                    }
+                    let mut note_parts = Vec::new();
+                    if !enlil.model_completion_time.trim().is_empty() {
+                        note_parts.push(format!(
+                            "model_completion_utc={}",
+                            enlil.model_completion_time.trim()
+                        ));
+                    }
+                    if !enlil.estimated_shock_arrival_time.trim().is_empty() {
+                        note_parts.push(format!(
+                            "estimated_shock_arrival_utc={}",
+                            enlil.estimated_shock_arrival_time.trim()
+                        ));
+                    }
+                    if impact.is_glancing_blow {
+                        note_parts.push("glancing_blow=true".to_string());
+                    }
+                    if impact.is_minor_impact {
+                        note_parts.push("minor_impact=true".to_string());
+                    }
+                    if let Some(note) = &source_note {
+                        note_parts.push(note.clone());
+                    }
+                    labels.push(HeliosphereEventLabel {
+                        source: HeliosphereEventSource::DonkiEnlilImpact,
+                        kind: HeliosphereEventKind::PredictedCmeImpact,
+                        label_id: format!(
+                            "{}::{}::{}",
+                            row.activity_id,
+                            normalize_mission_name(&impact.location),
+                            impact.arrival_time.trim()
+                        ),
+                        location: impact.location.clone(),
+                        event_time_utc: impact.arrival_time.clone(),
+                        linked_activity_ids: linked_activity_ids.clone(),
+                        linked_cme_ids: linked_cme_ids.clone(),
+                        instrument_names: instrument_names.clone(),
+                        mission_targets: targets,
+                        note: if note_parts.is_empty() {
+                            None
+                        } else {
+                            Some(note_parts.join("; "))
+                        },
+                    });
+                }
+            }
+        }
+    }
+    Ok(labels)
+}
+
+fn fetch_ccmc_scoreboard_arrival_labels(
+    start_date: NaiveDate,
+    end_date: NaiveDate,
+    cache_root: &Path,
+) -> Result<Vec<HeliosphereEventLabel>, FetchError> {
+    let mut labels = Vec::new();
+    for year in start_date.year()..=end_date.year() {
+        let page = fetch_ccmc_scoreboard_year(year, cache_root)?;
+        for block in parse_scoreboard_blocks(&page) {
+            let Some(actual_arrival_text) = block.actual_arrival_utc.as_deref() else {
+                continue;
+            };
+            let Some(actual_arrival) = parse_donki_time(actual_arrival_text) else {
+                continue;
+            };
+            if actual_arrival.date_naive() < start_date || actual_arrival.date_naive() > end_date {
+                continue;
+            }
+            labels.push(HeliosphereEventLabel {
+                source: HeliosphereEventSource::CcmcScoreboardArrival,
+                kind: HeliosphereEventKind::ObservedCmeArrival,
+                label_id: block.cme_id.clone(),
+                location: "Earth".to_string(),
+                event_time_utc: actual_arrival.to_rfc3339(),
+                linked_activity_ids: Vec::new(),
+                linked_cme_ids: vec![block.cme_id.clone()],
+                instrument_names: Vec::new(),
+                mission_targets: mission_targets_from_location("Earth"),
+                note: Some("official CCMC CME Scoreboard observed arrival".to_string()),
+            });
+        }
+    }
+    Ok(labels)
+}
+
 fn fetch_donki_json(
     endpoint: &str,
     start_date: NaiveDate,
@@ -395,6 +682,70 @@ fn fetch_donki_json(
     Ok(body)
 }
 
+fn fetch_ccmc_scoreboard_year(year: i32, cache_root: &Path) -> Result<String, FetchError> {
+    let current_year = Utc::now().year();
+    let url = if year == current_year {
+        "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/".to_string()
+    } else {
+        format!("https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/PreviousPredictions/{year}")
+    };
+    let cache_path = cache_root
+        .join("space_weather")
+        .join("ccmc_scoreboard")
+        .join(format!("scoreboard_{year}.html"));
+    if cache_path.exists() {
+        return fs::read_to_string(&cache_path).map_err(FetchError::Io);
+    }
+    if let Some(parent) = cache_path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    let client = Client::builder()
+        .timeout(StdDuration::from_secs(60))
+        .build()
+        .map_err(|source| FetchError::HttpError {
+            url: url.clone(),
+            source: Box::new(source),
+        })?;
+    let body = fetch_text_from_url(&client, &url)?;
+    fs::write(&cache_path, &body)?;
+    Ok(body)
+}
+
+fn fetch_text_from_url(client: &Client, url: &str) -> Result<String, FetchError> {
+    let mut last_status = None;
+    let mut body = None;
+    for attempt in 0..4 {
+        let response = client
+            .get(url)
+            .send()
+            .map_err(|source| FetchError::HttpError {
+                url: url.to_string(),
+                source: Box::new(source),
+            })?;
+        let status = response.status();
+        if status.is_success() {
+            body = Some(response.text().map_err(|source| FetchError::HttpError {
+                url: url.to_string(),
+                source: Box::new(source),
+            })?);
+            break;
+        }
+        last_status = Some(status.as_u16());
+        if (status.as_u16() == 429 || status.is_server_error()) && attempt < 3 {
+            sleep(StdDuration::from_secs(2_u64.pow(attempt)));
+            continue;
+        }
+        return Err(FetchError::HttpStatus {
+            url: url.to_string(),
+            status: status.as_u16(),
+        });
+    }
+    body.ok_or_else(|| FetchError::HttpStatus {
+        url: url.to_string(),
+        status: last_status.unwrap_or(599),
+    })
+}
+
 fn fetch_donki_json_from_url(client: &Client, url: &str) -> Result<String, FetchError> {
     let mut last_status = None;
     let mut body = None;
@@ -438,6 +789,16 @@ fn linked_cme_ids(events: &[DonkiLinkedEvent]) -> Vec<String> {
         .collect()
 }
 
+fn mission_targets_from_instruments(instruments: &[DonkiInstrument]) -> Vec<String> {
+    let mut targets = Vec::new();
+    for instrument in instruments {
+        targets.extend(mission_targets_from_location(&instrument.display_name));
+    }
+    targets.sort();
+    targets.dedup();
+    targets
+}
+
 fn infer_sep_location(instruments: &[DonkiInstrument]) -> String {
     let names = instruments
         .iter()
@@ -462,6 +823,13 @@ fn mission_targets_from_location(location: &str) -> Vec<String> {
         ],
         "stereo-a" => vec!["STEREO-A".to_string()],
         "soho" => vec!["SOHO".to_string()],
+        "solar-orbiter" => vec!["Solar Orbiter".to_string()],
+        "bepicolombo" => vec!["BepiColombo".to_string()],
+        "psp" | "parker-solar-probe" => vec!["PSP".to_string()],
+        "juno" => vec!["Juno".to_string()],
+        "new-horizons" => vec!["New Horizons".to_string()],
+        "juice" => vec!["JUICE".to_string()],
+        "osiris-apex" => vec!["OSIRIS-APEX".to_string()],
         _ => Vec::new(),
     }
 }
@@ -469,7 +837,9 @@ fn mission_targets_from_location(location: &str) -> Vec<String> {
 fn normalize_mission_name(name: &str) -> String {
     name.trim()
         .to_ascii_lowercase()
+        .replace(['(', ')', ':', '/'], " ")
         .replace([' ', '_'], "-")
+        .replace("--", "-")
 }
 
 fn parse_donki_time(value: &str) -> Option<DateTime<Utc>> {
@@ -484,6 +854,98 @@ fn parse_donki_time(value: &str) -> Option<DateTime<Utc>> {
         return Some(DateTime::<Utc>::from_naive_utc_and_offset(date, Utc));
     }
     None
+}
+
+fn parse_scoreboard_blocks(html: &str) -> Vec<ScoreboardCmeBlock> {
+    let cme_re = Regex::new(
+        r#"<a href="https://kauai\.ccmc\.gsfc\.nasa\.gov/DONKI/view/CME/[^"]*"[^>]*><b>CME:\s*([0-9T:\-]+-CME-[0-9]+)</b></a>"#,
+    )
+    .expect("valid cme block regex");
+    let row_re = Regex::new(r#"(?s)<tr>(?P<row>.*?)</tr>"#).expect("valid scoreboard row regex");
+    let td_re =
+        Regex::new(r#"(?s)<td[^>]*>(?P<cell>.*?)</td>"#).expect("valid scoreboard cell regex");
+    let actual_re = Regex::new(r#"Actual Shock Arrival Time:\s*([0-9T:\-]+Z)"#)
+        .expect("valid actual arrival regex");
+    let mut blocks = Vec::new();
+    let captures = cme_re
+        .captures_iter(html)
+        .filter_map(|capture| {
+            let whole = capture.get(0)?;
+            let cme_id = capture.get(1)?.as_str().to_string();
+            Some((whole.start(), whole.end(), cme_id))
+        })
+        .collect::<Vec<_>>();
+    for (idx, (_start, body_start, cme_id)) in captures.iter().enumerate() {
+        let body_end = captures
+            .get(idx + 1)
+            .map(|(next_start, _, _)| *next_start)
+            .unwrap_or(html.len());
+        let body = &html[*body_start..body_end];
+        let actual_arrival_utc = actual_re
+            .captures(body)
+            .and_then(|caps| caps.get(1).map(|value| value.as_str().to_string()));
+        let detected_at_earth = !body.contains("This CME was not detected at Earth!");
+        let mut predictions = Vec::new();
+        for row_caps in row_re.captures_iter(body) {
+            let row_html = row_caps["row"].to_string();
+            let cells = td_re
+                .captures_iter(&row_html)
+                .filter_map(|caps| caps.get(1).map(|value| clean_scoreboard_cell(value.as_str())))
+                .collect::<Vec<_>>();
+            if cells.len() < 7 {
+                continue;
+            }
+            let predicted_arrival_utc = cells[0].trim().to_string();
+            if parse_donki_time(&predicted_arrival_utc).is_none() {
+                continue;
+            }
+            let residual_hours = parse_scoreboard_residual(&cells[1]);
+            let method = cells
+                .get(6)
+                .map(|value| value.trim().to_string())
+                .filter(|value| !value.is_empty())
+                .unwrap_or_else(|| "unknown".to_string());
+            predictions.push(ScoreboardPredictionRow {
+                predicted_arrival_utc,
+                method,
+                residual_hours,
+            });
+        }
+        blocks.push(ScoreboardCmeBlock {
+            cme_id: cme_id.clone(),
+            actual_arrival_utc,
+            detected_at_earth,
+            predictions,
+        });
+    }
+    blocks
+}
+
+fn clean_scoreboard_cell(cell_html: &str) -> String {
+    let tag_re = Regex::new(r"(?s)<[^>]+>").expect("valid tag regex");
+    let whitespace_re = Regex::new(r"\s+").expect("valid whitespace regex");
+    let without_tags = tag_re.replace_all(cell_html, " ");
+    whitespace_re
+        .replace_all(&without_tags, " ")
+        .trim()
+        .to_string()
+}
+
+fn parse_scoreboard_residual(value: &str) -> Option<f64> {
+    let text = value.trim();
+    if text == "----" || text == "---" || text.is_empty() {
+        return None;
+    }
+    text.parse::<f64>().ok()
+}
+
+fn trimmed_option(value: &str) -> Option<String> {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        None
+    } else {
+        Some(trimmed.to_string())
+    }
 }
 
 #[cfg(test)]
@@ -530,5 +992,53 @@ mod tests {
         let windows = labels_to_prediction_windows(&labels, "ACE", 6);
         assert_eq!(windows.len(), 1);
         assert!(windows[0].window_start_utc < windows[0].event_time_utc);
+    }
+
+    #[test]
+    fn parse_scoreboard_block_extracts_arrival_and_residuals() {
+        let html = r#"
+<a href="https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/CME/43719/-1" target="_blank"><b>CME: 2026-01-01T19:36:00-CME-001</b></a>
+<td>Actual Shock Arrival Time: 2026-01-04T20:41Z</td>
+<tr>
+<td>2026-01-04T15:17Z</td>
+<td align="right">-5.40</td>
+<td align="right">----</td>
+<td>2026-01-01T22:31Z</td>
+<td>70.17</td>
+<td>Max Kp Range: 4.0 - 6.0<br></td>
+<td>WSA-ENLIL + Cone (NASA M2M)</td>
+<td>Melissa Kane (M2M SWAO)</td>
+<td><a href="/CMEscoreboard/prediction/detail/156 "> Detail</a></td>
+</tr>
+"#;
+        let blocks = parse_scoreboard_blocks(html);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].cme_id, "2026-01-01T19:36:00-CME-001");
+        assert_eq!(
+            blocks[0].actual_arrival_utc.as_deref(),
+            Some("2026-01-04T20:41Z")
+        );
+        assert_eq!(blocks[0].predictions.len(), 1);
+        assert_eq!(blocks[0].predictions[0].residual_hours, Some(-5.40));
+        assert_eq!(
+            blocks[0].predictions[0].method,
+            "WSA-ENLIL + Cone (NASA M2M)"
+        );
+    }
+
+    #[test]
+    fn donki_cme_target_mapping_covers_modern_missions() {
+        assert_eq!(
+            mission_targets_from_location("Solar Orbiter"),
+            vec!["Solar Orbiter".to_string()]
+        );
+        assert_eq!(
+            mission_targets_from_location("BepiColombo"),
+            vec!["BepiColombo".to_string()]
+        );
+        assert_eq!(
+            mission_targets_from_location("STEREO A"),
+            vec!["STEREO-A".to_string()]
+        );
     }
 }
