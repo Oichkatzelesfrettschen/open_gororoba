@@ -71,6 +71,18 @@ name = "moonshine-filterbank"
 path = "src/bin/moonshine_filterbank.rs"
 
 [[bin]]
+name = "legacy-crossval-audit"
+path = "src/bin/legacy_crossval_audit.rs"
+
+[[bin]]
+name = "cd-external-audit"
+path = "src/bin/cd_external_audit.rs"
+
+[[bin]]
+name = "algebra-refutation-audit"
+path = "src/bin/algebra_refutation_audit.rs"
+
+[[bin]]
 name = "motif-census"
 path = "src/bin/motif_census.rs"
 
