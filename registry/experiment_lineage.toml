@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 195
-edge_count = 981
+lineage_count = 197
+edge_count = 996
 
 [[lineage]]
 id = "XL-001"
@@ -3562,6 +3562,42 @@ dataset_label_refs = []
 external_source_refs = ["SRC-MANGA-DR17-CATALOGS"]
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin q3-injection-recovery -- --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --cd-dim 16 --seed 42", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-203"
+experiment_id = "E-203"
+binary = "legacy-crossval-audit"
+deterministic = true
+gpu = false
+run_command = "cargo run -p gororoba_cli_algebra --bin legacy-crossval-audit -- --output data/output/claims_falsification/legacy_crossval_audit.toml"
+run_command_sha256 = "fdfc50bb74b4ad639ee05deb6c1e58a35170212d13d56129ea6aa033957eab8e"
+claim_refs = ["C-020", "C-021", "C-543"]
+input_path_refs = ["data/csv/legacy/"]
+output_path_refs = ["data/output/claims_falsification/legacy_crossval_audit.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run -p gororoba_cli_algebra --bin legacy-crossval-audit -- --output data/output/claims_falsification/legacy_crossval_audit.toml", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-204"
+experiment_id = "E-204"
+binary = "cd-external-audit"
+deterministic = true
+gpu = false
+run_command = "cargo run -p gororoba_cli_algebra --bin cd-external-audit -- --output data/output/claims_falsification/cd_external_audit.toml"
+run_command_sha256 = "933c717251426c221fb03bd2e2483744153f51e0476b06045ff61ec0fe6d0f5c"
+claim_refs = ["C-450", "C-455", "C-456", "C-463"]
+input_path_refs = ["data/csv/cayley_dickson/64d_chingon_adjacency.csv", "data/csv/cayley_dickson/256d_basis_properties.csv", "data/csv/cayley_dickson/256d_lattice_mapping.csv"]
+output_path_refs = ["data/output/claims_falsification/cd_external_audit.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run -p gororoba_cli_algebra --bin cd-external-audit -- --output data/output/claims_falsification/cd_external_audit.toml", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -12393,3 +12429,137 @@ to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
 
+[[edge]]
+id = "XLE-00982"
+lineage_id = "XL-203"
+from_id = "E-203"
+to_ref = "legacy-crossval-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00983"
+lineage_id = "XL-203"
+from_id = "E-203"
+to_ref = "C-020"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00984"
+lineage_id = "XL-203"
+from_id = "E-203"
+to_ref = "C-021"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00985"
+lineage_id = "XL-203"
+from_id = "E-203"
+to_ref = "C-543"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00986"
+lineage_id = "XL-203"
+from_id = "E-203"
+to_ref = "data/csv/legacy/"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00987"
+lineage_id = "XL-203"
+from_id = "E-203"
+to_ref = "data/output/claims_falsification/legacy_crossval_audit.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00988"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "cd-external-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00989"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "C-450"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00990"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "C-455"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00991"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "C-456"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00992"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "C-463"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00993"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "data/csv/cayley_dickson/64d_chingon_adjacency.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00994"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "data/csv/cayley_dickson/256d_basis_properties.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00995"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00996"
+lineage_id = "XL-204"
+from_id = "E-204"
+to_ref = "data/output/claims_falsification/cd_external_audit.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
