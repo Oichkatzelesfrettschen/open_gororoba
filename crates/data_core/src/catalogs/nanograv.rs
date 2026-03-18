@@ -853,7 +853,7 @@ mod tests {
     }
 
     #[test]
-    fn test_extract_kde_zip_alternate_interpretations_remain_finite_if_available() {
+    fn test_extract_kde_zip_alternate_interpretations_remain_finite_but_do_not_match_if_available() {
         let path = repo_path("data/external/nanograv_15yr_kde.zip");
         if !path.exists() {
             eprintln!("Skipping: NANOGrav KDE ZIP not available (run fetch-datasets first)");
@@ -876,6 +876,22 @@ mod tests {
                     && point.log10_rho_lo.is_finite()
                     && point.log10_rho_hi.is_finite()
             }));
+            let exact_match_count = points
+                .iter()
+                .zip(bestfit::HD_FREE_SPECTRUM.iter())
+                .filter(|(actual, expected)| {
+                    (actual.frequency - expected.frequency).abs() < 1e-15
+                        && (actual.log10_rho - expected.log10_rho).abs() < 1e-6
+                        && (actual.log10_rho_lo - expected.log10_rho_lo).abs() < 1e-6
+                        && (actual.log10_rho_hi - expected.log10_rho_hi).abs() < 1e-6
+                })
+                .count();
+            assert_eq!(
+                exact_match_count,
+                0,
+                "{} interpretation unexpectedly reproduced the checked-in table",
+                interpretation.as_str()
+            );
         }
     }
 }
