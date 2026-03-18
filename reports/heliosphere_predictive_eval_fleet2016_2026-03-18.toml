@@ -1,0 +1,139 @@
+generated_at_utc = "2026-03-18T11:07:30.277845049+00:00"
+cube_csv = "reports/heliosphere_feature_cube_fleet2016_2026-03-15.csv"
+row_count = 94367
+labeled_sample_count = 94349
+positive_sample_count = 3564
+horizon_hours = 24
+invariant_channel_names = [
+    "delta_b_over_bmag",
+    "delta_v_over_vmag",
+    "delta_n_over_n",
+    "delta_t_over_t",
+    "plasma_beta",
+    "alfven_speed_kms",
+    "alfvenicity_residual",
+    "dynamic_pressure_residual",
+    "magnetic_shear",
+    "compressibility_proxy",
+]
+descriptor_channel_names = [
+    "weighted_norm_sq",
+    "delta_weighted_norm_sq",
+    "rolling_associator_norm",
+    "mean_abs_weighted_channel",
+]
+notes = [
+    "Official labels are fetched from NASA DONKI and cached under data/external/space_weather/donki.",
+    "Prediction windows span [event_time - horizon_hours, event_time].",
+    "Algebra descriptors are used as adaptive geometry features, not as standalone physics evidence.",
+]
+
+[[mission_splits]]
+mission = "ACE"
+train_rows = 12285
+validation_rows = 2633
+test_rows = 2632
+
+[[mission_splits]]
+mission = "IBEX"
+train_rows = 6149
+validation_rows = 1317
+test_rows = 1318
+
+[[mission_splits]]
+mission = "Juno"
+train_rows = 6149
+validation_rows = 1317
+test_rows = 1318
+
+[[mission_splits]]
+mission = "New Horizons"
+train_rows = 6149
+validation_rows = 1317
+test_rows = 1318
+
+[[mission_splits]]
+mission = "OMNI"
+train_rows = 6149
+validation_rows = 1317
+test_rows = 1318
+
+[[mission_splits]]
+mission = "STEREO-A"
+train_rows = 6144
+validation_rows = 1316
+test_rows = 1317
+
+[[mission_splits]]
+mission = "Voyager 1"
+train_rows = 8385
+validation_rows = 1796
+test_rows = 1797
+
+[[mission_splits]]
+mission = "Voyager 2"
+train_rows = 8487
+validation_rows = 1818
+test_rows = 1819
+
+[[mission_splits]]
+mission = "WIND"
+train_rows = 6149
+validation_rows = 1317
+test_rows = 1318
+
+[[models]]
+name = "scalar_event_score"
+threshold = 0.0
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 14155
+auprc = 0.07175754075725498
+auroc = 0.4102720868761195
+precision = 0.022677499116919818
+recall = 1.0
+f1 = 0.044349267753523075
+false_alert_rate = 1.0
+median_lead_time_hours = 422.0
+
+[[models]]
+name = "best_single_invariant_threshold"
+threshold = 0.03775047978255725
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 5126
+auprc = 0.0498735763001107
+auroc = 0.6476084701694367
+precision = 0.04760046820132657
+recall = 0.7601246105919003
+f1 = 0.08959060033045713
+false_alert_rate = 0.3528986554864826
+median_lead_time_hours = 5.0
+
+[[models]]
+name = "invariant_logistic"
+threshold = 0.45213479517924515
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 5065
+auprc = 0.054282563757642725
+auroc = 0.7702022692747157
+precision = 0.04461994076999013
+recall = 0.7040498442367601
+f1 = 0.08392127738581508
+false_alert_rate = 0.3497903715483591
+median_lead_time_hours = 4.0
+
+[[models]]
+name = "invariant_plus_algebra_logistic"
+threshold = 0.4468458510549476
+positive_rows = 321
+negative_rows = 13834
+predicted_positive_rows = 5068
+auprc = 0.05491685889031529
+auroc = 0.770580812004556
+precision = 0.04459352801894238
+recall = 0.7040498442367601
+f1 = 0.08387455928743738
+false_alert_rate = 0.35000722856729793
+median_lead_time_hours = 4.0
