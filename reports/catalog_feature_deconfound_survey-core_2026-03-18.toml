@@ -1,0 +1,192 @@
+generated_at_utc = "2026-03-18T11:14:18.372177526+00:00"
+cube_json = "reports/catalog_feature_cube_survey-core_2026-03-18.json"
+output_json = "reports/catalog_feature_cube_survey-core_deconfounded_2026-03-18.json"
+dataset_count = 6
+
+[[nuisance_models]]
+dataset = "CHIME FRB"
+nuisance_terms = [
+    "intercept",
+    "redshift_or_distance",
+    "sky_ra_cell",
+    "sky_dec_cell",
+    "modality_code",
+    "feature_completeness",
+]
+ridge_lambda = 1.0
+notes = ["Residualization uses lightweight nuisance proxies because the bounded lane does not yet expose a full selection-function model."]
+
+[[nuisance_models]]
+dataset = "DESI DR2 BAO"
+nuisance_terms = [
+    "intercept",
+    "redshift_or_distance",
+    "sky_ra_cell",
+    "sky_dec_cell",
+    "modality_code",
+    "feature_completeness",
+]
+ridge_lambda = 1.0
+notes = ["Residualization uses lightweight nuisance proxies because the bounded lane does not yet expose a full selection-function model."]
+
+[[nuisance_models]]
+dataset = "Gaia DR3 Nearby"
+nuisance_terms = [
+    "intercept",
+    "g_mag",
+    "distance_proxy_log1p",
+    "sky_ra_cell",
+    "sky_dec_cell",
+    "feature_completeness",
+]
+ridge_lambda = 1.0
+notes = ["Magnitude and sky-cell structure are treated as nuisance completeness proxies."]
+
+[[nuisance_models]]
+dataset = "HST Public Metadata"
+nuisance_terms = [
+    "intercept",
+    "release_year",
+    "program_numeric",
+    "program_code",
+    "instrument_code",
+    "calib_level_code",
+    "sky_ra_cell",
+    "sky_dec_cell",
+    "modality_code",
+    "feature_completeness",
+]
+ridge_lambda = 1.0
+notes = ["MAST program/instrument/release structure is treated as nuisance archive organization."]
+
+[[nuisance_models]]
+dataset = "JWST Public Metadata"
+nuisance_terms = [
+    "intercept",
+    "release_year",
+    "program_numeric",
+    "program_code",
+    "instrument_code",
+    "calib_level_code",
+    "sky_ra_cell",
+    "sky_dec_cell",
+    "modality_code",
+    "feature_completeness",
+]
+ridge_lambda = 1.0
+notes = ["MAST program/instrument/release structure is treated as nuisance archive organization."]
+
+[[nuisance_models]]
+dataset = "SDSS DR18 Quasars"
+nuisance_terms = [
+    "intercept",
+    "redshift_or_distance",
+    "sky_ra_cell",
+    "sky_dec_cell",
+    "modality_code",
+    "feature_completeness",
+]
+ridge_lambda = 1.0
+notes = ["Residualization uses lightweight nuisance proxies because the bounded lane does not yet expose a full selection-function model."]
+
+[[nuisance_reports]]
+dataset = "CHIME FRB"
+row_count = 5045
+nuisance_term_count = 6
+feature_r2 = [
+    0.7438483902561025,
+    0.005756823856792548,
+    0.013531860931087047,
+    0.012571603536791653,
+    0.0736779725007739,
+    0.03310880486539347,
+    0.0,
+    0.0,
+]
+mean_removed_energy = 54042.240751661375
+mean_retained_energy = 6582.976900584401
+
+[[nuisance_reports]]
+dataset = "DESI DR2 BAO"
+row_count = 7
+nuisance_term_count = 6
+feature_r2 = [
+    0.654350290492466,
+    0.697034383692438,
+    0.41980897029976694,
+    0.0,
+    0.0,
+    0.2770545792783956,
+    0.17439813550119831,
+    0.0,
+]
+mean_removed_energy = 81.96250448972515
+mean_retained_energy = 9.752388089012925
+
+[[nuisance_reports]]
+dataset = "Gaia DR3 Nearby"
+row_count = 50000
+nuisance_term_count = 6
+feature_r2 = [
+    0.7676506515061601,
+    0.0049921504607884915,
+    0.03146792313400393,
+    0.1253565918920596,
+    0.9999999999897832,
+    0.9477675681167765,
+    0.0,
+    0.0,
+]
+mean_removed_energy = 827.1499230658201
+mean_retained_energy = 9980.914519604656
+
+[[nuisance_reports]]
+dataset = "HST Public Metadata"
+row_count = 4000
+nuisance_term_count = 10
+feature_r2 = [
+    0.9999999999633348,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.9999686701129769,
+    0.0,
+]
+mean_removed_energy = 7798341.9639353175
+mean_retained_energy = 0.000002302153838331929
+
+[[nuisance_reports]]
+dataset = "JWST Public Metadata"
+row_count = 40000
+nuisance_term_count = 10
+feature_r2 = [
+    0.9999999999998713,
+    0.04838535667913446,
+    1.0,
+    0.9999997751248693,
+    0.0,
+    0.0,
+    0.9900662180109501,
+    0.9999999927290842,
+]
+mean_removed_energy = 4037852.3062297436
+mean_retained_energy = 0.06076726383826868
+
+[[nuisance_reports]]
+dataset = "SDSS DR18 Quasars"
+row_count = 50000
+nuisance_term_count = 6
+feature_r2 = [
+    0.9979079097085026,
+    0.0002531901028084427,
+    0.00025304627484756814,
+    0.00023523357979582382,
+    0.00022733178284817246,
+    0.0,
+    0.0,
+    0.0,
+]
+mean_removed_energy = 220.8056071649691
+mean_retained_energy = 2868.3073919002145

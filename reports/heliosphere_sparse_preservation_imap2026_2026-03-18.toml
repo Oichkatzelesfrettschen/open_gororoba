@@ -1,0 +1,44 @@
+generated_at_utc = "2026-03-18T11:08:54.191554186+00:00"
+cube_csv = "reports/heliosphere_feature_cube_imap2026_2026-03-15.csv"
+horizon_hours = 24
+grid = 1024
+notes = [
+    "Sparse-preservation compares the current robust transform mask against an algebra-derived adaptive mask without dropping source rows.",
+    "Execution planning uses the current host hardware envelope and keeps managed memory as a fallback, not the primary path.",
+]
+
+[robust_event_mask]
+name = "robust_event_mask"
+active_rows = 17
+active_fraction = 0.1717171717171717
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 7.501008547479537
+speed_mean = 524.3065803660922
+temperature_mean = 240378.0547146536
+bmag_mean = 9.74565268677452
+
+[algebra_adaptive_mask]
+name = "algebra_adaptive_mask"
+active_rows = 37
+active_fraction = 0.37373737373737376
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 5.539932133841464
+speed_mean = 498.29894176962665
+temperature_mean = 169463.9503005347
+bmag_mean = 8.085196455282345
+
+[[execution_plans]]
+mask_name = "robust_event_mask"
+active_fraction = 0.1717171717171717
+sparse_bf16_aa_projected_gib = 12.020235061645508
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "algebra_adaptive_mask"
+active_fraction = 0.37373737373737376
+sparse_bf16_aa_projected_gib = 26.161646842956543
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1

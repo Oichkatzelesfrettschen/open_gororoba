@@ -1,0 +1,108 @@
+generated_at_utc = "2026-03-18T11:07:55.482218315+00:00"
+cube_csv = "reports/heliosphere_feature_cube_fleet2016_2026-03-15.csv"
+labeled_sample_count = 94349
+positive_sample_count = 3564
+horizon_hours = 24
+invariant_channel_names = [
+    "delta_b_over_bmag",
+    "delta_v_over_vmag",
+    "delta_n_over_n",
+    "delta_t_over_t",
+    "plasma_beta",
+    "alfven_speed_kms",
+    "alfvenicity_residual",
+    "dynamic_pressure_residual",
+    "magnetic_shear",
+    "compressibility_proxy",
+]
+descriptor_channel_names = [
+    "weighted_norm_sq",
+    "delta_weighted_norm_sq",
+    "rolling_associator_norm",
+    "mean_abs_weighted_channel",
+]
+notes = [
+    "Leave-one-mission-out cosine compares each mission's positive-window descriptor mean against the positive-window mean from the remaining missions.",
+    "High stability only becomes interesting if it survives uncertainty-aware normalization and official-label filtering.",
+]
+
+[[missions]]
+mission = "ACE"
+positive_rows = 1670
+negative_rows = 15880
+positive_mean_weighted_norm = 1485970657.5290775
+negative_mean_weighted_norm = 1877989478.2711697
+positive_descriptor_mean = 1701203669147815800000.0
+leave_one_mission_out_cosine = 0.002705214591277045
+
+[[missions]]
+mission = "IBEX"
+positive_rows = 0
+negative_rows = 8784
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.0
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+
+[[missions]]
+mission = "Juno"
+positive_rows = 0
+negative_rows = 8784
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.0
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+
+[[missions]]
+mission = "New Horizons"
+positive_rows = 0
+negative_rows = 8784
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.0
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+
+[[missions]]
+mission = "OMNI"
+positive_rows = 835
+negative_rows = 7949
+positive_mean_weighted_norm = 90616.56469379966
+negative_mean_weighted_norm = 2863514165.558527
+positive_descriptor_mean = 6852555669661.001
+leave_one_mission_out_cosine = 0.0011408016240412623
+
+[[missions]]
+mission = "STEREO-A"
+positive_rows = 224
+negative_rows = 8553
+positive_mean_weighted_norm = 25.14895890405955
+negative_mean_weighted_norm = 228295336542.68726
+positive_descriptor_mean = 637.965272238314
+leave_one_mission_out_cosine = 0.776798678831895
+
+[[missions]]
+mission = "Voyager 1"
+positive_rows = 0
+negative_rows = 11978
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.37751033693094266
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+
+[[missions]]
+mission = "Voyager 2"
+positive_rows = 0
+negative_rows = 12124
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.8173911848694545
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+
+[[missions]]
+mission = "WIND"
+positive_rows = 835
+negative_rows = 7949
+positive_mean_weighted_norm = 876012162.988671
+negative_mean_weighted_norm = 570167072.1428676
+positive_descriptor_mean = 640670995363392900000.0
+leave_one_mission_out_cosine = 0.0027052146118524663
