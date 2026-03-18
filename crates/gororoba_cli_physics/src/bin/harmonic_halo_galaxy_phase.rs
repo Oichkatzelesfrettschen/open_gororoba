@@ -10,7 +10,7 @@
 //! This is inconsistent with pure random phases, but also not a selective
 //! low-mode detection signature.
 //!
-//! Reference: C-1404, E-194
+//! Reference: C-1406, E-194
 
 use clap::Parser;
 use cosmology_core::{

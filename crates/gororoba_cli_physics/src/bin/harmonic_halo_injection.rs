@@ -8,7 +8,7 @@
 //! near 0.295 for injected alpha_zd in [0, 0.016].
 //! This means the lane is not yet valid evidence for pipeline sensitivity.
 //!
-//! Reference: C-1405, E-197
+//! Reference: C-1409, E-197
 
 use clap::Parser;
 use cosmology_core::{
