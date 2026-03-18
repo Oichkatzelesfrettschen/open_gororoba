@@ -1,0 +1,590 @@
+# MaNGA ZD Null Result Retrospective Archive
+# Structured extraction from experiments/manga_zd_null/retrospective.md (742 lines)
+# Machine-parseable records for lessons, reproducibility, and future work.
+# Narrative companion: experiments/manga_zd_null/retrospective.md (gitignored)
+
+[header]
+generated_at_utc = "2026-03-18T00:00:00+00:00"
+campaign = "GHOST MaNGA ZD null result"
+experiments = ["E-183", "E-184", "E-192", "E-201", "E-202"]
+decision = "PROCEED"
+quality_rating_overall = "5/10"
+paper_framing = "non-detection + methodological contribution"
+generated_from = "experiments/manga_zd_null/retrospective.md"
+total_analyses = 660
+success_rate = 1.0
+framework_snr_range = [0.473, 0.481]
+positive_control_snr = 2.33
+separation_factor = 4.9
+
+[header.claim_ranges]
+original = ["C-1365", "C-1374"]
+robustness = ["C-1415", "C-1418"]
+synthesis = ["C-1419", "C-1429"]
+follow_up = ["C-1430", "C-1439"]
+
+[header.insight_ranges]
+original = ["I-179", "I-183"]
+robustness = ["I-194", "I-195"]
+synthesis = ["I-199", "I-204"]
+
+# ---------------------------------------------------------------------------
+# Lessons Learned (15)
+# ---------------------------------------------------------------------------
+
+[[lesson]]
+id = "L01"
+title = "Degenerate REFINE convergence is a fixed-point"
+category = "convergence"
+description = "Three REFINE iterations produced identical metrics (0.4704). Deterministic pipeline on synthetic null data has a fixed-point SNR determined by systematic model parameters."
+action = "Detect fixed-point convergence (delta < epsilon) and stop early."
+claim_refs = []
+status = "resolved"
+
+[[lesson]]
+id = "L02"
+title = "Injection recovery shows destructive interference"
+category = "calibration"
+description = "Per-seed SNR decreases with injection amplitude (anti-monotonic). Baryonic +5% bulge excess at x~0.5 interferes with exp(-x) injection envelope. Root cause reattributed after SQ-1."
+action = "Decouple harmonic subtraction from spectral search; consider simultaneous baryonic+ZD fitting."
+claim_refs = []
+status = "open"
+
+[[lesson]]
+id = "L03"
+title = "Metric aliasing: detection_snr = primary_metric"
+category = "infrastructure"
+description = "Both names report identical values for all 660 entries. Duplication exists because harness expects primary_metric while physics pipeline computes detection_snr."
+action = "Remove primary_metric or alias explicitly in results.json schema."
+claim_refs = []
+status = "open"
+
+[[lesson]]
+id = "L04"
+title = "Per-seed vs structured metric discrepancy (2.7x ratio)"
+category = "methodology"
+description = "Structured pipeline incorporates cross-seed aggregation that amplifies coherent structure. Ratio is ~1.0 for ablation conditions but 1.4-2.7x for physical-model conditions."
+action = "Document both pipelines with distinct field names. Report per-seed SNR as primary (conservative)."
+claim_refs = []
+status = "open"
+
+[[lesson]]
+id = "L05"
+title = "Radial coverage is the hard physical constraint"
+category = "scientific"
+description = "MaNGA IFU probes x=0.5-1.35 r/r_s. ZD predictions peak at x=3-5. No pipeline refinement overcomes a 4-7x radial gap."
+action = "Frame paper as inner-halo bound; defer outer-halo campaign to SKA era."
+claim_refs = ["C-1365"]
+status = "resolved"
+
+[[lesson]]
+id = "L06"
+title = "Cross-algebra quasi-degeneracy at MaNGA radii"
+category = "scientific"
+description = "Cross-algebra correlation rho>0.97 for all 6 pairs. At x=0.5-1.35, wavenumber families are quasi-degenerate: effectively one null measured through four lenses."
+action = "Disclose N_eff=6-8 honestly. Reframe as insensitivity to algebraic model choice."
+claim_refs = ["C-1372"]
+status = "resolved"
+
+[[lesson]]
+id = "L07"
+title = "Ablation coverage gap (5 of 10 classes)"
+category = "methodology"
+description = "Missing ablation classes: template choice, radial range, galaxy selection, stacking method, detection method. Present: injection, positive control, wavenumber specificity, mode count, noise model."
+action = "Add NFW template ablation (Einasto/Burkert) and radial range sweep before submission."
+claim_refs = []
+status = "open"
+
+[[lesson]]
+id = "L08"
+title = "Red-noise k^0.81 is reusable but inclination-dependent"
+category = "scientific"
+description = "Spectral index 0.81 is algebra-universal and subsample-invariant but face-on galaxies have gamma=-0.011 (flat). The 0.808 index applies only to inclination-mixed samples."
+action = "Report gamma per inclination bin. Cross-validate before claiming universality."
+claim_refs = ["C-1431"]
+status = "open"
+
+[[lesson]]
+id = "L09"
+title = "JSON string formatting failure mode"
+category = "infrastructure"
+description = "Prior run failed at code_generation stage when HEREDOC-style string with newlines and line-number prefixes was injected verbatim into JSON payload."
+action = "Validate JSON payloads programmatically before submission (json.loads preflight)."
+claim_refs = []
+status = "resolved"
+
+[[lesson]]
+id = "L10"
+title = "Subsample overlap violates independence"
+category = "methodology"
+description = "face_on (inc<45) and mass_Q3 (3rd quartile) overlap with full_sample and possibly each other. Independence assumption for multiple-comparisons correction is violated."
+action = "State explicitly in paper. Report effective N, not raw N."
+claim_refs = []
+status = "resolved"
+
+[[lesson]]
+id = "L11"
+title = "Outlier domination invalidates population-level claims"
+category = "scientific"
+description = "350 galaxies (5%) contribute 67% of stacked DFT power. Median DFT power is 0.12% of mean. Kurtosis ~284 (vs Gaussian 3). The population null is an outlier-population null."
+action = "Report trimmed-mean and median alongside arithmetic mean. Characterize outlier subpopulation."
+claim_refs = ["C-1427"]
+status = "open"
+
+[[lesson]]
+id = "L12"
+title = "Paper-code discrepancy is a P0 blocker"
+category = "methodology"
+description = "paper.md describes M=7 harmonic subtraction; models.py implements none. Invalidated the stated root cause of injection anti-monotonicity and SMART contribution #2."
+action = "Add paper-code consistency gate to pre-submission checklist. Resolve SQ-1 before other work."
+claim_refs = []
+status = "open"
+
+[[lesson]]
+id = "L13"
+title = "Red-noise spectral slope is an inclination artifact"
+category = "scientific"
+description = "Face-on (i<45) gamma=-0.011 vs full sample gamma=0.808. The universal red-noise claim in I-180 must be qualified as inclination-stratified."
+action = "Report gamma separately for inclination bins. Cross-validate on face-on subsample."
+claim_refs = ["C-1431"]
+status = "open"
+
+[[lesson]]
+id = "L14"
+title = "Extreme non-Gaussianity destroys sensitivity estimates"
+category = "calibration"
+description = "Per-galaxy Fourier power kurtosis ~284 (95x heavier tails than Gaussian). Any Gaussian-assumption sensitivity analysis underestimates variance by >100x. Bootstrap B=50 is unreliable."
+action = "Use robust variance estimators (MAD, IQR). Increase bootstrap to B>=1000."
+claim_refs = ["C-1421", "C-1438"]
+status = "open"
+
+[[lesson]]
+id = "L15"
+title = "Multi-perspective hypothesis testing finds blind spots"
+category = "methodology"
+description = "Innovator found kurtosis, pragmatist explained red-noise, contrarian found outlier domination. No single perspective would have found all three."
+action = "Use multi-perspective hypothesis testing for high-stakes null results. Budget 1-2 days for synthesis."
+claim_refs = []
+status = "resolved"
+
+# ---------------------------------------------------------------------------
+# Novel Contributions (5)
+# ---------------------------------------------------------------------------
+
+[[contribution]]
+id = 1
+title = "Baryonic spectral floor (3-component taxonomy)"
+role = "primary"
+status = "survives"
+caveat = "gamma is inclination-dependent (C-1431); 3-component taxonomy holds but spectral index must be reported per inclination bin"
+
+[[contribution]]
+id = 2
+title = "Harmonic-subtraction blind zone"
+role = "secondary"
+status = "withdrawn"
+caveat = "SQ-1: paper describes subtraction that code does not implement"
+
+[[contribution]]
+id = 3
+title = "Inclination-gradient falsification criterion"
+role = "standalone"
+status = "survives"
+caveat = "Strengthened by E-201; criterion extends from SNR gradient to spectral-index gradient"
+
+[[contribution]]
+id = 4
+title = "Universal red-noise index k^0.81"
+role = "reusable_baseline"
+status = "weakened"
+caveat = "gamma_faceon=-0.011 means universal is incorrect; must report as inclination-stratified"
+
+[[contribution]]
+id = 5
+title = "Multi-algebra quasi-degeneracy"
+role = "calibrating_case_study"
+status = "survives"
+caveat = "N_eff=6-8 disclosure is honest; reframed as insensitive to model choice"
+
+# ---------------------------------------------------------------------------
+# Unresolved Disagreements (3)
+# ---------------------------------------------------------------------------
+
+[[unresolved]]
+id = "D1"
+title = "Is the red-noise intrinsic or a leakage artifact?"
+resolution_status = "resolved"
+summary = "S2 (C-1429): leakage <0.01% of observed power at all modes. Red-noise is intrinsic baryonic floor. P1 and D3 both correct for different quantities (noise leakage vs signal recovery)."
+
+[[unresolved]]
+id = "D2"
+title = "What population does the ZD bound describe?"
+resolution_status = "partially_resolved"
+summary = "S1 (C-1428): mean alpha_zd=2.32 vs median=0.27 (8.6x divergence). Paper must decide primary estimator. Decision deferred to paper revision round 2."
+
+[[unresolved]]
+id = "D3"
+title = "Is the injection recovery failure fixable?"
+resolution_status = "reframed"
+summary = "SQ-1 invalidated harmonic-absorption root cause. True mechanism unknown but likely rms-denominator growth in SNR metric. S3 (decontaminated injection on trimmed stack) deferred."
+
+# ---------------------------------------------------------------------------
+# Reproducibility
+# ---------------------------------------------------------------------------
+
+[reproducibility]
+python_version_policy = "pin in requirements.txt (not yet pinned)"
+rust_toolchain = "nightly-2026-03-05 (pinned via rust-toolchain.toml)"
+platform = "AMD Ryzen 9 7950X, 64 GB DDR5, single CPU core, no GPU"
+seeds = [42, 123, 456, 789, 1024, 2025, 3141, 4096, 5555, 6174, 7071, 8191, 9001, 10007, 11111, 12345, 13579, 14159, 15485, 16384]
+determinism = "bitwise reproducible on same platform; cross-platform not guaranteed (FP rounding)"
+
+[reproducibility.commands]
+robustness_suite = "cd experiments/manga_zd_null && python main.py"
+e192_signal_analysis = "harmonic-halo-signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv"
+e184_multi_algebra = "lie-jordan-halo-analysis [flags]"
+
+[[reproducibility.hyperparameter]]
+name = "n_galaxies"
+value = "6992"
+rationale = "Matches E-183 MaNGA DR17 sample"
+
+[[reproducibility.hyperparameter]]
+name = "x_min"
+value = "0.5"
+rationale = "Avoids baryonic core"
+
+[[reproducibility.hyperparameter]]
+name = "x_max"
+value = "1.35"
+rationale = "Avoids IFU edge"
+
+[[reproducibility.hyperparameter]]
+name = "n_points_per_galaxy"
+value = "18"
+rationale = "MaNGA median radial sampling"
+
+[[reproducibility.hyperparameter]]
+name = "n_grid"
+value = "200"
+rationale = "Stacking grid resolution"
+
+[[reproducibility.hyperparameter]]
+name = "min_per_bin"
+value = "10"
+rationale = "Minimum galaxies per stacking bin"
+
+[[reproducibility.hyperparameter]]
+name = "cd_dim"
+value = "16"
+rationale = "Sedenion (D=16) baseline"
+
+[[reproducibility.hyperparameter]]
+name = "n_bootstrap"
+value = "50"
+rationale = "Within-run CI estimation"
+
+[[reproducibility.hyperparameter]]
+name = "gamma_prior"
+value = "0.808"
+rationale = "E-183 measured red-noise index"
+
+[[reproducibility.hyperparameter]]
+name = "inject_alpha_low"
+value = "0.004"
+rationale = "SKA 2030 design sensitivity"
+
+[[reproducibility.hyperparameter]]
+name = "inject_alpha_high"
+value = "0.01"
+rationale = "2.5x SKA threshold"
+
+[[reproducibility.hyperparameter]]
+name = "inject_alpha_positive_ctrl"
+value = "0.05"
+rationale = "12.5x SKA (positive control)"
+
+[[reproducibility.hyperparameter]]
+name = "face_on_inc_max"
+value = "45.0"
+rationale = "Face-on subsample cut"
+
+[[reproducibility.hyperparameter]]
+name = "mass_quartile_target"
+value = "3"
+rationale = "Mass Q3 subsample selection"
+
+[[reproducibility.hyperparameter]]
+name = "time_budget_seconds"
+value = "600"
+rationale = "Runtime safety bound"
+
+[[reproducibility.data_dep]]
+name = "Synthetic galaxies"
+source = "data_utils.py (from seed)"
+external = false
+
+[[reproducibility.data_dep]]
+name = "E-183 stacked data"
+source = "data/results/e183/*.csv (23 files)"
+external = false
+
+[[reproducibility.data_dep]]
+name = "MaNGA DR17 catalog"
+source = "SDSS public (DRPall, DAPall, DAP maps)"
+external = true
+
+[[reproducibility.data_dep]]
+name = "Cross-algebra correlation"
+source = "data/results/e183/cross_algebra_correlation.csv"
+external = false
+
+# ---------------------------------------------------------------------------
+# Future Work (17 items)
+# ---------------------------------------------------------------------------
+
+[[future_work]]
+id = "FW-00"
+priority = "P0"
+title = "SQ-1: Paper-code harmonic subtraction discrepancy"
+description = "paper.md describes M=7 harmonic subtraction; models.py implements none. Option A: implement and re-run 660 analyses (2-3 days). Option B: remove from paper (1 day, abandons contribution #2)."
+estimated_days = 1.0
+depends_on = []
+status = "blocked"
+blocking_reason = "P0 blocker -- upstream of FW-01, FW-06, FW-10"
+
+[[future_work]]
+id = "FW-01"
+priority = "P1"
+title = "Diagnose injection recovery anti-monotonicity"
+description = "Root cause likely rms-denominator growth in SNR metric when injected power raises residual floor. Trace compute_snr() code path."
+estimated_days = 1.5
+depends_on = ["FW-00"]
+status = "blocked"
+blocking_reason = "Depends on SQ-1 resolution"
+
+[[future_work]]
+id = "FW-02"
+priority = "P1"
+title = "Add shuffled-data null control"
+description = "Permute radial bins across galaxies to establish true noise floor. If shuffled SNR equals unshuffled, pipeline has no radial sensitivity."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-03"
+priority = "P1"
+title = "Calibrate alpha_zd to physical units"
+description = "Compute velocity deviation at r=r_s for fiducial halo (M_200=10^12 Msun, c=8). Convert upper limit from pipeline-internal number to km/s."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-04"
+priority = "P1"
+title = "Document per-seed vs structured metric discrepancy"
+description = "Add schema documentation to results.json explaining both aggregation methods. Drop redundant primary_metric field."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-05a"
+priority = "P1"
+title = "Outlier population characterization"
+description = "Identify ~350 galaxies driving 67% of DFT power. Report morphology, mass, inclination distributions. Determine exclusion/downweighting strategy."
+estimated_days = 1.0
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-05b"
+priority = "P1"
+title = "Decide primary estimator (mean vs median)"
+description = "Paper cannot quote bound without specifying estimator. Mean: disclose outlier domination. Median: 8.6x tighter but describes different population."
+estimated_days = 0.5
+depends_on = ["FW-05a"]
+status = "open"
+
+[[future_work]]
+id = "FW-06"
+priority = "P2"
+title = "NFW template ablation (Einasto/Burkert)"
+description = "Repeat with Einasto and Burkert profiles. Two 23-second runs. If null persists, constraint is template-independent."
+estimated_days = 0.5
+depends_on = ["FW-00"]
+status = "blocked"
+blocking_reason = "Depends on SQ-1 resolution"
+
+[[future_work]]
+id = "FW-07a"
+priority = "P2"
+title = "Cross-validate harmonic model (50/50 split)"
+description = "Fit on 50% of galaxies, test on 50%. Resolves whether red-noise correction sterilizes signal."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-07b"
+priority = "P2"
+title = "Inclination-stratified red-noise"
+description = "Report gamma separately for low-i (30-45), mid-i (45-60), high-i (60-70) bins. Contribution #4 depends on this."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-08"
+priority = "P2"
+title = "Pin Python dependency versions"
+description = "Add requirements.txt with exact numpy and scipy versions for cross-platform reproducibility."
+estimated_days = 0.1
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-09"
+priority = "P2"
+title = "Record git hash and platform in results.json"
+description = "Add metadata fields for provenance tracking."
+estimated_days = 0.1
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-10"
+priority = "P3"
+title = "Matched filter / profile likelihood analysis"
+description = "Complement Fourier-domain search with detection method sensitive to localized radial features."
+estimated_days = 2.0
+depends_on = ["FW-00"]
+status = "blocked"
+blocking_reason = "Depends on SQ-1 resolution"
+
+[[future_work]]
+id = "FW-11"
+priority = "P3"
+title = "SPARC pilot cross-survey validation"
+description = "Apply GHOST to N=50 SPARC galaxies with x>5 r/r_s coverage. Even tiny cross-validation strengthens paper."
+estimated_days = 1.0
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-12"
+priority = "P3"
+title = "Radial range ablation"
+description = "Inner-only (x<0.9), outer-only (x>0.9), edge-excluded (x<1.2) sub-analyses."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-13"
+priority = "P3"
+title = "Publication figures"
+description = "Two charts: ghost_snr_comparison.png and ghost_per_seed_stability.png."
+estimated_days = 0.5
+depends_on = []
+status = "open"
+
+[[future_work]]
+id = "FW-13b"
+priority = "P3"
+title = "S3: Decontaminated injection recovery"
+description = "Remove 5% highest-power galaxies, inject ZD signals into remaining 6645, check recovery scaling. If ratio in [0.5,2.0] at alpha=0.004, pipeline has genuine sensitivity after outlier removal."
+estimated_days = 0.1
+depends_on = ["FW-05a"]
+status = "open"
+
+# ---------------------------------------------------------------------------
+# Deferred to next survey generation
+# ---------------------------------------------------------------------------
+
+[[deferred]]
+id = "DEF-01"
+title = "SKA Phase 1 outer-halo campaign (x>10 r/r_s)"
+target_year = 2030
+description = "HI 21cm kinematic surveys will directly access the regime where ZD predictions peak."
+
+[[deferred]]
+id = "DEF-02"
+title = "THINGS HI high-resolution validation (N=34)"
+target_year = 2027
+description = "Small sample but deepest radial coverage available before SKA."
+
+[[deferred]]
+id = "DEF-03"
+title = "Euclid DR2+ weak lensing"
+target_year = 2028
+description = "Complementary probe of halo structure through gravitational lensing rather than kinematics."
+
+[[deferred]]
+id = "DEF-04"
+title = "Real MaNGA velocity fields (E-196)"
+target_year = 2026
+description = "Apply GHOST to actual MaNGA DAP stellar velocity maps. Pending injection recovery fix (FW-01)."
+
+# ---------------------------------------------------------------------------
+# Latest Session Events (2026-03-18)
+# ---------------------------------------------------------------------------
+
+[[latest_session]]
+event = "paper_revision"
+detail = "Revised abstract, contributions, Table 3, limitations (5->9 items L1-L9), effective independence disclosure (N_eff=6-8), discussion/conclusion tempered to non-detection framing"
+timestamp = "2026-03-18"
+
+[[latest_session]]
+event = "results_json_integrity"
+detail = "Verified: 660 cells, 0 NaN, positive control (no_harmonics_ablation) all >2.0 (range 2.22-2.59), all 240 framework cells <2.0 (max 0.49), injection anti-monotonicity confirmed (0.4908>0.4895>0.4793)"
+timestamp = "2026-03-18"
+
+[[latest_session]]
+event = "governance_gate_pass"
+detail = "Governance gate passed cleanly after all paper edits"
+timestamp = "2026-03-18"
+
+# ---------------------------------------------------------------------------
+# Quality Rating (dimension breakdown)
+# ---------------------------------------------------------------------------
+
+[quality]
+overall = "5/10"
+note = "Synthesis resolved existing questions (S2, robust bounds) but exposed new blockers (SQ-1, outlier recontextualization). Net: zero."
+
+[[quality.dimension]]
+name = "infrastructure"
+original = "9/10"
+revised = "9/10"
+change = "No change"
+
+[[quality.dimension]]
+name = "internal_consistency"
+original = "8/10"
+revised = "7/10"
+change = "D4 outlier domination; SQ-1 paper-code discrepancy"
+
+[[quality.dimension]]
+name = "scientific_validity"
+original = "3/10"
+revised = "4/10"
+change = "S2 resolved leakage; S1 quantified robust bounds; E-201 confirmed face-on null. SQ-1 and injection remain."
+
+[[quality.dimension]]
+name = "methodological_completeness"
+original = "4/10"
+revised = "5/10"
+change = "9 additional hypotheses tested (H1-H4, P1-P3, D3-D4). S1/S2 audits complete. Still missing 5 ablation classes."
+
+[[quality.dimension]]
+name = "publication_readiness"
+original = "4/10"
+revised = "4/10"
+change = "SQ-1 is new P0 blocker offsetting synthesis gains. Paper framing improved."
+
+[quality.path_to_improvement]
+to_7_of_10 = "Fix P0 (SQ-1) + P1 (items FW-01 through FW-05b)"
+to_8_of_10 = "Add P2 (items FW-06 through FW-09)"
