@@ -1,0 +1,70 @@
+[metadata]
+experiment = "E-204"
+title = "Deterministic audit for refuted external Cayley-Dickson CSV claims"
+claims = ["C-450", "C-455", "C-456", "C-463"]
+deterministic = true
+
+[c450.external_adjacency]
+rows = 64
+cols = 64
+total_nonzero_entries = 64
+is_sparse_basis_level_table = true
+cross_assessor_graph_is_not_directly_comparable = true
+
+[c455.lattice_difference_audit]
+lattice_rows_parsed = 256
+total_basis_differences = 336
+unique_difference_vectors = 105
+unique_e8_root_vectors = 0
+unique_norm_squared_values = [
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  18,
+]
+
+[c456.associativity_audit]
+checked_rows = 50
+csv_true_rows = 50
+rust_associative_rows = 46
+rust_nonassociative_rows = 4
+mismatch_examples = [
+  "row_39: e_Some(128), e_Some(64), e_Some(32)",
+  "row_44: e_Some(128), e_Some(192), e_Some(32)",
+  "row_47: e_Some(128), e_Some(32), e_Some(64)",
+  "row_48: e_Some(128), e_Some(32), e_Some(192)",
+]
+
+[[c463.parity_clique]]
+dim = 16
+n_vertices = 56
+n_edges = 84
+n_even_edges = 12
+n_odd_edges = 24
+n_cross_edges = 48
+expected_clique_edges = 772
+is_parity_biclique = false
+
+[[c463.parity_clique]]
+dim = 32
+n_vertices = 240
+n_edges = 924
+n_even_edges = 204
+n_odd_edges = 240
+n_cross_edges = 480
+expected_clique_edges = 14344
+is_parity_biclique = false
+
+[[c463.parity_clique]]
+dim = 64
+n_vertices = 992
+n_edges = 7980
+n_even_edges = 1932
+n_odd_edges = 2016
+n_cross_edges = 4032
+expected_clique_edges = 245776
+is_parity_biclique = false
+

@@ -1289,11 +1289,16 @@ fn check_nanograv_rows(
                 row.frequency
             ));
         }
-        if row.log10_rho_lo.is_finite()
-            && row.log10_rho_hi.is_finite()
-            && row.log10_rho.is_finite()
-            && !(row.log10_rho_lo <= row.log10_rho && row.log10_rho <= row.log10_rho_hi)
+        if !row.log10_rho_lo.is_finite()
+            || !row.log10_rho.is_finite()
+            || !row.log10_rho_hi.is_finite()
         {
+            return Err(format!(
+                "NANOGrav amplitude columns must be finite, got median={}, lo={}, hi={}",
+                row.log10_rho, row.log10_rho_lo, row.log10_rho_hi
+            ));
+        }
+        if !(row.log10_rho_lo <= row.log10_rho && row.log10_rho <= row.log10_rho_hi) {
             return Err("NANOGrav interval ordering violated: lo <= median <= hi".to_string());
         }
     }

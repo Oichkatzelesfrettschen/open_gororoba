@@ -1,0 +1,68 @@
+[metadata]
+experiment = "E-206"
+title = "Deterministic audit for PMNS, mass-hierarchy, and numerology refutations"
+claims = ["C-069", "C-077", "C-081", "C-084", "C-587", "C-1355"]
+deterministic = true
+
+[c069.principal_angles]
+subalgebra_count = 15
+pair_count = 105
+unique_angle_degrees = [0.000000, 90.000000]
+best_triplet_degrees = [0.000000, 0.000000, 0.000000]
+best_triplet_rms_error_deg = 31.464263856000
+
+[c077.democratic_probability]
+frobenius_distance = 0.588766541757
+mean_diagonal = 0.333333333333
+
+[c077.democratic_probability.null]
+observed_distance = 0.588766541757
+mean_null = 0.669089002911
+std_null = 0.167683968115
+p_value = 0.336914062500
+significant_at_005 = false
+
+[c081.givens_triviality]
+sample_count = 6
+max_abs_angle_error_deg = 0.000000000000
+mean_abs_angle_error_deg = 0.000000000000
+
+[c084.yukawa_perturbation]
+democratic_distance = 0.588766541757
+democratic_mean_diagonal = 0.333333333333
+best_distance = 0.495816348281
+best_mean_diagonal = 0.393939393939
+best_params = [0.300000, 0.300000, 0.300000]
+improvement = 0.092950193476
+
+[c084.yukawa_perturbation.null]
+observed_distance = 0.495816348281
+mean_null = 0.671247044182
+std_null = 0.166242054804
+p_value = 0.149414062500
+significant_at_005 = false
+
+[c587.depth_mass]
+dim16_norms = [1.600000, 1.000000, 0.870000, 2.000000]
+dim16_best_ratios = [0.543750, 0.800000, 0.435000]
+dim16_rms_deviation = 875.116968843814
+dim32_rms_deviation = 886.305042905363
+null_observed_rms = 1.000000000000
+null_mean_rms = 966.435845258155
+null_std_rms = 985.369216825126
+null_p_value = 0.211720226843
+null_significant = false
+
+[c1355.numerology]
+planck_mass_cgs = "2.176434e-5"
+planck_mass_si = "2.176434e-8"
+planck_mass_gev = "1.220902e19"
+planck_mass_planck_units = "1.000000"
+cgs_contains_1764 = true
+si_contains_1764 = true
+gev_contains_1764 = false
+planck_units_contains_1764 = false
+bcs_formula_value = 1.763876988862
+bcs_code_value = 1.764000000000
+bcs_relative_error = 0.000069739068
+unrelated_window_count = 41

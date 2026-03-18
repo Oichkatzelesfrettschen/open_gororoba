@@ -1,0 +1,43 @@
+[metadata]
+title = "PDG neutrino and NANOGrav surface audit with local NANOGrav CSV repair"
+repair_nanograv_csv = true
+repaired_nanograv_csv = false
+
+[official_sources]
+pdg_2024_highlights = "https://pdg.lbl.gov/2024/reviews/rpp2024-rev-highlights.pdf"
+nanograv_15yr_background = "https://nanograv.org/15yr/SMBHB"
+nanograv_kde_zip = "https://zenodo.org/api/records/10344086/files/NANOGrav15yr_KDE-FreeSpectra_v1.1.0.zip/content"
+
+[nanograv.local_surfaces]
+csv_path = "data/external/nanograv_15yr_freespectrum.csv"
+paper_extract_path = "data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/paper.toml"
+table_extract_path = "data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/table_1.csv"
+c070_source_doc_present = true
+paper_extract_present = true
+table_extract_present = true
+table_extract_csv_status = "parse /home/eirikr/Github/open_gororoba/crates/gororoba_cli_data/../../data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/table_1.csv: CSV error: record 1 (line: 2, byte: 116): found record with 2 fields, but the previous record has 4 fields"
+
+[nanograv.csv_before]
+row_count = 30
+invalid_value_count = 0
+interval_violation_count = 0
+matches_bestfit_count = 30
+fully_matches_bestfit = true
+
+[nanograv.csv_after]
+row_count = 30
+invalid_value_count = 0
+interval_violation_count = 0
+matches_bestfit_count = 30
+fully_matches_bestfit = true
+
+[pdg_neutrino.local_surfaces]
+legacy_fetch_script_present = false
+legacy_test_present = false
+rust_pmns_surface_path = "crates/stats_core/src/lib.rs"
+rust_pmns_surface_present = true
+rust_particle_audit_path = "crates/gororoba_cli_data/src/bin/particle_numerology_audit.rs"
+rust_particle_audit_present = true
+rust_nanograv_surface_path = "crates/data_core/src/catalogs/nanograv.rs"
+rust_nanograv_surface_present = true
+claim_surface = "registry/claims.toml"

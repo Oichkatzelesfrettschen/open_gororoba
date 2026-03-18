@@ -1,0 +1,70 @@
+[metadata]
+experiment = "E-205"
+title = "Deterministic audit for four refuted algebraic-structural claims"
+claims = ["C-445", "C-466", "C-518", "C-585"]
+deterministic = true
+
+[c445.motif_separator]
+dim = 32
+labels = [3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14, 1]
+class_sizes = [8, 7]
+linear_separator = "none"
+affine_separator = "none"
+min_degree = 3
+degree_results = [[1, false], [2, false], [3, true]]
+
+[c466.dim_16]
+dim = 16
+rank = 5
+unsigned_consistent_count = 1
+signed_consistent_count = 1
+unsigned_consistent_bases = [0]
+signed_consistent_bases = [0]
+
+[c466.dim_32]
+dim = 32
+rank = 5
+unsigned_consistent_count = 1
+signed_consistent_count = 1
+unsigned_consistent_bases = [0]
+signed_consistent_bases = [0]
+
+[c518.dim_16]
+dim = 16
+total_triangles = 56
+f_pp_pure = 0
+f_pp_mixed = 0
+f_other_pure = 14
+f_other_mixed = 42
+perfect_equivalence = false
+fiber_counts = [{ a_lo = -1, a_hi = -1, pure = 7, mixed = 21 }, { a_lo = 1, a_hi = -1, pure = 7, mixed = 21 }]
+
+[c518.dim_32]
+dim = 32
+total_triangles = 2408
+f_pp_pure = 21
+f_pp_mixed = 567
+f_other_pure = 581
+f_other_mixed = 1239
+perfect_equivalence = false
+fiber_counts = [{ a_lo = -1, a_hi = -1, pure = 336, mixed = 504 }, { a_lo = -1, a_hi = 1, pure = 84, mixed = 252 }, { a_lo = 1, a_hi = -1, pure = 161, mixed = 483 }, { a_lo = 1, a_hi = 1, pure = 21, mixed = 567 }]
+
+[c518.dim_64]
+dim = 64
+total_triangles = 48328
+f_pp_pure = 3339
+f_pp_mixed = 12201
+f_other_pure = 8743
+f_other_mixed = 24045
+perfect_equivalence = false
+fiber_counts = [{ a_lo = -1, a_hi = -1, pure = 4634, mixed = 11718 }, { a_lo = -1, a_hi = 1, pure = 1722, mixed = 5166 }, { a_lo = 1, a_hi = -1, pure = 2387, mixed = 7161 }, { a_lo = 1, a_hi = 1, pure = 3339, mixed = 12201 }]
+
+[c585.tracefree_survey]
+tracefree_diagonal_delta_squared = 1.000000000000
+sample_count = 21
+min_delta_squared = 2.505418797327
+max_delta_squared = 3.746658732489
+mean_delta_squared = 3.267887225636
+closest_to_three_eighths = 2.505418797327
+closest_absolute_error = 2.130418797327
+exact_match_count = 0

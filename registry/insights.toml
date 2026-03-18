@@ -1870,3 +1870,48 @@ sprint = "S84"
 summary = "E-201/E-202 decisive experiment yields five actionable conclusions for the GHOST paper: (1) H1 face-on reanalysis confirms null (all modes within 1.58 sigma of envelope, C-1430). (2) The red-noise slope gamma=0.808 is an INCLINATION ARTIFACT -- face-on galaxies have gamma=-0.01 (flat spectrum, C-1431). This is the most significant new finding: the baryonic spectral floor shape depends on sample inclination distribution, not intrinsic galaxy physics. (3) H2 Q3 injection recovery DECISIVELY falsifies the Q3 SNR=3.60 'detection' as a sparse-bin artifact: pipeline is blind at 6 bins, delta_SNR=0 at all injection levels (C-1432). (4) Whitened matched filter after red-noise correction gives p=0.42, confirming no periodic structure survives spectral detrending (C-1433). (5) All spectral diagnostics (bispectral Fano ratio=1.0, persistence N=1, dip D=0.46 algebra-universal, MI NMI=0.0) confirm algebra-universal null across all statistical orders (C-1436-C-1439)."
 title = "E-201/E-202 decisive experiment: inclination-dependent spectral slope, Q3 artifact falsified, algebra-universal null"
 
+[[insight]]
+claims = ["C-019", "C-020", "C-021", "C-046", "C-047", "C-543"]
+date = "2026-03-18"
+id = "I-207"
+sprint = "S84"
+status = "verified"
+summary = "Across wheels, lattice, moonshine, fractal-doping, and E-series legacy claims, renamed columns and analogical labels do not survive exact Rust reconstruction. Same-parity masks are not zero-divisor adjacency, ad hoc exceptional cuts break the idea of a clean basis-to-lattice function, trivial logarithmic columns are not spin-foam amplitudes, and categorical substitutions such as E9/E10/E11-as-lattices do not create mechanism."
+title = "Exact reconstruction beats label substitution in legacy algebra audits"
+
+[[insight]]
+claims = ["C-036", "C-037", "C-038", "C-040", "C-041"]
+date = "2026-03-18"
+id = "I-208"
+sprint = "S84"
+status = "verified"
+summary = "The exceptional-cosmology coincidence lane survives only as a negative-result laboratory: bigraph clustering and tilt values can be computed, but the alignments gamma~epsilon~1/4, w0=-5/6, and F4->26D do not upgrade to defended mechanism once observational baselines and model identifiability are enforced."
+title = "Mechanism-free exceptional coincidences collapse under baseline separation"
+
+[[insight]]
+claims = ["C-068", "C-069", "C-070", "C-077", "C-081", "C-092"]
+date = "2026-03-18"
+id = "I-209"
+sprint = "S84"
+status = "verified"
+summary = "Neutrino, mass-spectrum, associator-power, and SO(7) pattern matches fail for the same reason: the target can be approximated or reparameterized without a stable invariant. The surviving rule is to demand blind matching, unit/base invariance, and continuous-orbit or null controls before treating a pattern resemblance as physics."
+title = "Blind baselines break PMNS and spectral-pattern analogies"
+
+[[insight]]
+claims = ["C-009", "C-010", "C-025", "C-402", "C-426"]
+date = "2026-03-18"
+id = "I-210"
+sprint = "S84"
+status = "verified"
+summary = "Several refuted claims remain useful boundary markers: entropy fits and GW sky clustering do not by themselves establish algebraic structure, nonlocal absorber and metamaterial coupling sweeps identify obstruction rather than feasibility, and pathion spectral probes remain testbeds until a stable falsifier replaces coincidence language."
+title = "Negative-result observational lanes separate structure from tunability"
+
+[[insight]]
+claims = ["C-781", "C-783", "C-792", "C-793", "C-794", "C-795", "C-842", "C-844", "C-845", "C-846", "C-932", "C-1103", "C-1329"]
+date = "2026-03-18"
+id = "I-211"
+sprint = "S84"
+status = "verified"
+summary = "The later refutation wave is still informative: associator entropy shifts mark algebraic boundaries, but ghost frequencies, pulsed forcing gains, pathion sinks, eta-wake corrections, heavy-ion scaling collapses, and 0.1764 slope ratios are bounded by discretization, instability ceilings, or coincidence cancellation rather than a transported mechanism."
+title = "Late-stage falsification sweeps reveal artifact ceilings, not transported physics"
+

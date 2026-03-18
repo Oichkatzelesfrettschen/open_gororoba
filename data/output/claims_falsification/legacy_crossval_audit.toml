@@ -1,0 +1,44 @@
+[metadata]
+experiment = "E-203"
+title = "Legacy cross-validation audit for refuted algebraic CSV claims"
+claims = ["C-020", "C-021", "C-543"]
+deterministic = true
+
+[[c020.legacy_adjacency]]
+dim = 16
+comm_edges = 0
+parity_edges = 98
+mismatch_edges = 98
+
+[[c020.legacy_adjacency]]
+dim = 32
+comm_edges = 0
+parity_edges = 450
+mismatch_edges = 450
+
+[[c020.legacy_adjacency]]
+dim = 64
+comm_edges = 0
+parity_edges = 1922
+mismatch_edges = 1922
+
+[c021.lambda_filtration]
+lambda_256_count = 256
+lambda_512_count = 512
+lambda_1024_count = 1024
+lambda_2048_count = 2048
+disputed_singleton_count = 2
+disputed_singletons_in_lambda_2048 = 2
+disputed_singletons_in_lambda_1024 = 0
+disputed_singletons = [
+  [-1, 1, 1, 0, -1, 1, 0, 1],
+  [-1, 1, 1, 0, -1, 1, 1, 0],
+]
+
+[c543.moonshine]
+first_eight_coefficients_match = true
+spin_foam_column_is_trivial_log = true
+c10_relative_error = 0.036324452830
+griess_dimension = 196884
+griess_dimension_is_power_of_two = false
+monster_path_summary = "E8_to_Leech_to_Monster"

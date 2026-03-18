@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 151
-experiment_count = 198
+deterministic_count = 152
+experiment_count = 199
 gpu_count = 28
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -5204,5 +5204,31 @@ run_command_sha256 = "4ff7474198bbbfcb28c18bc6c5e4b28b25126b93247c138a7f63f96b43
 status = "active"
 status_token = "ACTIVE"
 title = "Deterministic audit for four refuted algebraic-structural claims"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "particle-numerology-audit"
+binary_experiment_declared = "E-206"
+binary_registered = true
+claim_refs = ["C-069", "C-077", "C-081", "C-084", "C-587", "C-1355"]
+claims = ["C-069", "C-077", "C-081", "C-084", "C-587", "C-1355"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-206"
+input = "in-repo PMNS, subalgebra, Tang mass, and constants surfaces"
+input_path_refs = ["crates/algebra_analysis/src/grassmannian.rs", "crates/algebra_analysis/src/subalgebra.rs", "crates/materials_core/src/tang_mass.rs", "crates/gr_core/src/constants.rs", "crates/quantum_core/src/he3_superfluid.rs", "crates/stats_core/src/lib.rs"]
+lineage_id = "XL-206"
+method = "Shared Rust audit for six particle-numerology negative claims: octonion-subalgebra principal angles collapse to {0,90} rather than PMNS values (C-069); democratic associator mixing remains far from PMNS probabilities and is not better than a random doubly-stochastic null (C-077); three-angle Givens fits are exact for arbitrary targets and therefore non-evidentiary (C-081); small Yukawa-like diagonal perturbations improve the democratic matrix only modestly and remain null-like (C-084); depth-based associator norms fail to reproduce the lepton hierarchy and are not significant against a random-assignment null (C-587); and the Planck/BCS 1764 coincidence disappears outside chosen unit systems while the BCS factor remains pi/e^gamma numerics (C-1355)."
+output = ["data/output/claims_falsification/particle_numerology_audit.toml"]
+output_path_refs = ["data/output/claims_falsification/particle_numerology_audit.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run -p gororoba_cli_data --bin particle-numerology-audit -- --output data/output/claims_falsification/particle_numerology_audit.toml"
+run_command_sha256 = "d76673f286651f9a880cd3cb62ace8005ec052078910a62d4a58d1dbf2715792"
+status = "active"
+status_token = "ACTIVE"
+title = "Deterministic audit for PMNS, mass-hierarchy, and numerology refutations"
 truth_surface_consumption = []
 
