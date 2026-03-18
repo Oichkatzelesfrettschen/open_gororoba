@@ -3,12 +3,12 @@
 
 [claims_tasks]
 authoritative = true
-updated = "2026-03-12"
+updated = "2026-03-18"
 source_markdown = "docs/CLAIMS_TASKS.md"
 table_count = 3
-task_count = 214
+task_count = 261
 section_count = 20
-canonical_status_task_count = 214
+canonical_status_task_count = 261
 noncanonical_status_task_count = 0
 canonical_status_tokens = ["TODO", "IN_PROGRESS", "PARTIAL", "DONE", "REFUTED", "DEFERRED", "BLOCKED"]
 
@@ -30,7 +30,7 @@ task_count = 33
 [[section]]
 id = "CTS-004"
 name = "Backfill (triage) tasks (auto-generated)"
-task_count = 161
+task_count = 208
 
 [[section]]
 id = "CTS-005"
@@ -674,12 +674,12 @@ section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 38
-status_token = "REFUTED"
-status_raw = "REFUTED"
+status_token = "DONE"
+status_raw = "DONE"
 status_canonical = true
-task = "REFUTED: Associator mixing matrix is near-democratic (Frobenius distance 0.611 from PMNS; mean diagonal 0.314 vs PMNS 0.54). No symmetry-breaking mechanism to generate PMNS structure."
-output_artifacts = ["data/csv/c077_associator_mixing_summary.csv", "src/scripts/analysis/c077_associator_mixing_pmns_audit.py", "tests/test_c077_associator_mixing_pmns_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`"
+task = "DONE: add shared Rust particle numerology verifier; confirm the democratic/S3 mixing surface remains far from PMNS probabilities (Frobenius 0.5888, mean diagonal 1/3, p=0.337 vs random doubly stochastic null); emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/particle_numerology_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/particle_numerology_audit.toml`, `reports/claims_falsification_campaign.toml`"
 source_line = 62
 
 [[task]]
@@ -3321,3 +3321,708 @@ task = "Harden the x87/AVX accumulation design-rule lane: add primary-source dos
 output_artifacts = ["docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md", "crates/algebra_analysis/tests/precision_tier_dispatch.rs", "data/csv/x87_avx_fma_followup_benchmark_summary.csv", "docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md"]
 output_artifacts_raw = "`docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md`, `crates/algebra_analysis/tests/precision_tier_dispatch.rs`, `data/csv/x87_avx_fma_followup_benchmark_summary.csv`, `docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md`"
 source_line = 243
+
+[[task]]
+id = "CTASK-0215"
+claim_id = "C-046"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 215
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_046_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_046_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_046_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 244
+
+[[task]]
+id = "CTASK-0216"
+claim_id = "C-069"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 216
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust particle numerology verifier; show all octonion-subalgebra principal angles collapse to {0, 90} degrees and cannot reproduce PMNS mixing angles; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/particle_numerology_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/particle_numerology_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 245
+
+[[task]]
+id = "CTASK-0217"
+claim_id = "C-071"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 217
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-002; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_071_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_071_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_071_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 246
+
+[[task]]
+id = "CTASK-0218"
+claim_id = "C-081"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 218
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust particle numerology verifier; show three-angle Givens reconstruction achieves exact zero-residual fits for PMNS and arbitrary target triplets alike, so the fit is generic rather than evidentiary; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/particle_numerology_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/particle_numerology_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 247
+
+[[task]]
+id = "CTASK-0219"
+claim_id = "C-084"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 219
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust particle numerology verifier; sweep small Yukawa-like diagonal perturbations around the democratic mixing surface and show the best doubly stochastic fit remains non-significant against the PMNS null baseline; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/particle_numerology_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/particle_numerology_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 248
+
+[[task]]
+id = "CTASK-0220"
+claim_id = "C-402"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 220
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-006; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_402_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_402_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_402_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 249
+
+[[task]]
+id = "CTASK-0221"
+claim_id = "C-430"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 221
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust baseline-model comparison or parameter-termination verifier; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_430_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_430_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_430_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 250
+
+[[task]]
+id = "CTASK-0222"
+claim_id = "C-436"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 222
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-002; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_436_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_436_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_436_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 251
+
+[[task]]
+id = "CTASK-0223"
+claim_id = "C-440"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 223
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-002; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_440_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_440_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_440_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 252
+
+[[task]]
+id = "CTASK-0224"
+claim_id = "C-442"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 224
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust null-family and ablation experiment; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_442_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_442_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_442_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 253
+
+[[task]]
+id = "CTASK-0225"
+claim_id = "C-445"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 225
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust algebra refutation verifier; show dim=32 motif classes admit no linear or affine separator and require minimum GF(2) degree 3; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/algebra_refutation_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/algebra_refutation_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 254
+
+[[task]]
+id = "CTASK-0226"
+claim_id = "C-450"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 226
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_450_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_450_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_450_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 255
+
+[[task]]
+id = "CTASK-0227"
+claim_id = "C-455"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 227
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_455_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_455_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_455_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 256
+
+[[task]]
+id = "CTASK-0228"
+claim_id = "C-456"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 228
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_456_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_456_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_456_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 257
+
+[[task]]
+id = "CTASK-0229"
+claim_id = "C-463"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 229
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_463_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_463_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_463_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 258
+
+[[task]]
+id = "CTASK-0230"
+claim_id = "C-466"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 230
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust algebra refutation verifier; show multiplication coupling is generic only for the identity basis in both dim=16 and dim=32 Lambda dictionaries; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/algebra_refutation_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/algebra_refutation_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 259
+
+[[task]]
+id = "CTASK-0231"
+claim_id = "C-518"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 231
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust algebra refutation verifier; show candidate-B associator fibers fail to classify pure triangles across dim=16, dim=32, and dim=64; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/algebra_refutation_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/algebra_refutation_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 260
+
+[[task]]
+id = "CTASK-0232"
+claim_id = "C-543"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 232
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_543_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_543_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_543_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 261
+
+[[task]]
+id = "CTASK-0233"
+claim_id = "C-585"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 233
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust algebra refutation verifier; show real trace-free J_3(O) survey values stay far from delta^2 = 3/8 and never match it exactly; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/algebra_refutation_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/algebra_refutation_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 262
+
+[[task]]
+id = "CTASK-0234"
+claim_id = "C-587"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 234
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust particle numerology verifier; confirm depth-based associator norms at dim=16 and dim=32 remain far too compressed for the observed lepton hierarchy and are not significant against the random-assignment null; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/particle_numerology_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/particle_numerology_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 263
+
+[[task]]
+id = "CTASK-0235"
+claim_id = "C-669"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 235
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-072; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_669_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_669_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_669_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 264
+
+[[task]]
+id = "CTASK-0236"
+claim_id = "C-773"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 236
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-049, E-050; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_773_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_773_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_773_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 265
+
+[[task]]
+id = "CTASK-0237"
+claim_id = "C-781"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 237
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-057; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_781_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_781_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_781_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 266
+
+[[task]]
+id = "CTASK-0238"
+claim_id = "C-782"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 238
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-058; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_782_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_782_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_782_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 267
+
+[[task]]
+id = "CTASK-0239"
+claim_id = "C-783"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 239
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-059; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_783_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_783_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_783_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 268
+
+[[task]]
+id = "CTASK-0240"
+claim_id = "C-784"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 240
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-060, E-068; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_784_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_784_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_784_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 269
+
+[[task]]
+id = "CTASK-0241"
+claim_id = "C-785"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 241
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-060, E-068; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_785_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_785_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_785_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 270
+
+[[task]]
+id = "CTASK-0242"
+claim_id = "C-786"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 242
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-060, E-068; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_786_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_786_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_786_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 271
+
+[[task]]
+id = "CTASK-0243"
+claim_id = "C-789"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 243
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-060, E-064, E-068; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_789_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_789_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_789_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 272
+
+[[task]]
+id = "CTASK-0244"
+claim_id = "C-791"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 244
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust null-family and ablation experiment; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_791_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_791_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_791_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 273
+
+[[task]]
+id = "CTASK-0245"
+claim_id = "C-792"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 245
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-051, E-055, E-063, E-064, E-065, E-066, E-067; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_792_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_792_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_792_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 274
+
+[[task]]
+id = "CTASK-0246"
+claim_id = "C-793"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 246
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-063, E-064, E-066, E-067; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_793_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_793_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_793_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 275
+
+[[task]]
+id = "CTASK-0247"
+claim_id = "C-794"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 247
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-052; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_794_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_794_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_794_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 276
+
+[[task]]
+id = "CTASK-0248"
+claim_id = "C-795"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 248
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-053; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_795_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_795_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_795_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 277
+
+[[task]]
+id = "CTASK-0249"
+claim_id = "C-796"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 249
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-054, E-055; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_796_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_796_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_796_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 278
+
+[[task]]
+id = "CTASK-0250"
+claim_id = "C-842"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 250
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-075; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_842_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_842_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_842_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 279
+
+[[task]]
+id = "CTASK-0251"
+claim_id = "C-844"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 251
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-075; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_844_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_844_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_844_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 280
+
+[[task]]
+id = "CTASK-0252"
+claim_id = "C-845"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 252
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-075; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_845_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_845_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_845_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 281
+
+[[task]]
+id = "CTASK-0253"
+claim_id = "C-846"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 253
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-075; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_846_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_846_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_846_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 282
+
+[[task]]
+id = "CTASK-0254"
+claim_id = "C-923"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 254
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-084; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_923_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_923_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_923_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 283
+
+[[task]]
+id = "CTASK-0255"
+claim_id = "C-932"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 255
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-087; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_932_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_932_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_932_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 284
+
+[[task]]
+id = "CTASK-0256"
+claim_id = "C-1103"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 256
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-096; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_1103_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_1103_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_1103_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 285
+
+[[task]]
+id = "CTASK-0257"
+claim_id = "C-1329"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 257
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-179; run blind matching baseline plus unit/base invariance; emit data/output/claims_falsification/c_1329_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_1329_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_1329_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 286
+
+[[task]]
+id = "CTASK-0258"
+claim_id = "C-1353"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 258
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-185; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_1353_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_1353_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_1353_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 287
+
+[[task]]
+id = "CTASK-0259"
+claim_id = "C-1355"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 259
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "DONE: add shared Rust particle numerology verifier; show the Planck-mass '1764' coincidence survives metric prefix changes but disappears in natural and Planck units, while the BCS 1.764 factor remains the independent pi/e^gamma weak-coupling formula; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/particle_numerology_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/particle_numerology_audit.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 288
+
+[[task]]
+id = "CTASK-0260"
+claim_id = "C-1357"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 260
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Harden registered experiment replay for E-186, E-187; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_1357_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_1357_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_1357_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 289
+
+[[task]]
+id = "CTASK-0261"
+claim_id = "C-1358"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 261
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "add Rust baseline-model comparison or parameter-termination verifier; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_1358_result.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/c_1358_result.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/c_1358_result.toml`, `reports/claims_falsification_campaign.toml`"
+source_line = 290

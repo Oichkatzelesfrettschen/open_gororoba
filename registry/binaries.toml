@@ -1091,6 +1091,12 @@ crate = "gororoba_cli_algebra"
 description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "particle-numerology-audit"
+crate = "gororoba_cli_data"
+description = "Deterministic audit for refuted PMNS, mass-hierarchy, and numerology claims"
+experiment = "E-206"
+
+[[binary]]
 name = "particle-trace"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."

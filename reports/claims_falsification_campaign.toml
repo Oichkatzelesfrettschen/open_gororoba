@@ -1,0 +1,3279 @@
+generated_at_utc = "2026-03-18T21:02:05.788509795+00:00"
+source_claims_toml = "/home/eirikr/Github/open_gororoba/registry/claims.toml"
+source_experiments_toml = "/home/eirikr/Github/open_gororoba/registry/experiments.toml"
+source_claims_tasks_toml = "/home/eirikr/Github/open_gororoba/registry/claims_tasks.toml"
+source_claim_tickets_toml = "/home/eirikr/Github/open_gororoba/registry/claim_tickets.toml"
+source_insights_toml = "/home/eirikr/Github/open_gororoba/registry/insights.toml"
+all_claim_count = 1300
+superseded_claim_ids = [
+    "C-044",
+    "C-072",
+    "C-073",
+    "C-078",
+    "C-079",
+    "C-080",
+    "C-083",
+    "C-085",
+    "C-091",
+    "C-1284",
+    "C-536",
+]
+empirical_core_statuses = [
+    "Refuted",
+    "Closed/Refuted",
+    "Closed/Negative-Result",
+    "Closed/Methodology-Insufficient",
+]
+target_claim_count = 65
+
+[all_claim_lane_counts]
+administrative_closed = 8
+empirical_falsification_core = 65
+open_investigation = 130
+positive_complete = 1086
+superseded = 11
+
+[all_claim_ids_by_lane]
+administrative_closed = [
+    "C-008",
+    "C-011",
+    "C-022",
+    "C-023",
+    "C-026",
+    "C-033",
+    "C-417",
+    "C-427",
+]
+empirical_falsification_core = [
+    "C-009",
+    "C-010",
+    "C-012",
+    "C-019",
+    "C-020",
+    "C-021",
+    "C-025",
+    "C-036",
+    "C-037",
+    "C-038",
+    "C-040",
+    "C-041",
+    "C-046",
+    "C-047",
+    "C-068",
+    "C-069",
+    "C-070",
+    "C-071",
+    "C-077",
+    "C-081",
+    "C-084",
+    "C-092",
+    "C-402",
+    "C-426",
+    "C-430",
+    "C-436",
+    "C-440",
+    "C-442",
+    "C-445",
+    "C-450",
+    "C-455",
+    "C-456",
+    "C-463",
+    "C-466",
+    "C-518",
+    "C-543",
+    "C-585",
+    "C-587",
+    "C-669",
+    "C-773",
+    "C-781",
+    "C-782",
+    "C-783",
+    "C-784",
+    "C-785",
+    "C-786",
+    "C-789",
+    "C-791",
+    "C-792",
+    "C-793",
+    "C-794",
+    "C-795",
+    "C-796",
+    "C-842",
+    "C-844",
+    "C-845",
+    "C-846",
+    "C-923",
+    "C-932",
+    "C-1103",
+    "C-1329",
+    "C-1353",
+    "C-1355",
+    "C-1357",
+    "C-1358",
+]
+open_investigation = [
+    "C-401",
+    "C-768",
+    "C-840",
+    "C-841",
+    "C-847",
+    "C-849",
+    "C-850",
+    "C-924",
+    "C-926",
+    "C-927",
+    "C-928",
+    "C-929",
+    "C-930",
+    "C-936",
+    "C-937",
+    "C-938",
+    "C-939",
+    "C-950",
+    "C-960",
+    "C-970",
+    "C-980",
+    "C-990",
+    "C-1010",
+    "C-1020",
+    "C-1030",
+    "C-1040",
+    "C-1050",
+    "C-1060",
+    "C-1070",
+    "C-1080",
+    "C-1090",
+    "C-1100",
+    "C-1101",
+    "C-1102",
+    "C-1104",
+    "C-1136",
+    "C-1139",
+    "C-1143",
+    "C-1144",
+    "C-1145",
+    "C-1147",
+    "C-1148",
+    "C-1149",
+    "C-1150",
+    "C-1151",
+    "C-1152",
+    "C-1153",
+    "C-1154",
+    "C-1155",
+    "C-1156",
+    "C-1157",
+    "C-1158",
+    "C-1159",
+    "C-1160",
+    "C-1161",
+    "C-1162",
+    "C-1163",
+    "C-1164",
+    "C-1165",
+    "C-1166",
+    "C-1167",
+    "C-1168",
+    "C-1169",
+    "C-1171",
+    "C-1172",
+    "C-1173",
+    "C-1175",
+    "C-1178",
+    "C-1182",
+    "C-1183",
+    "C-1231",
+    "C-1232",
+    "C-1235",
+    "C-1237",
+    "C-1238",
+    "C-1239",
+    "C-1240",
+    "C-1241",
+    "C-1242",
+    "C-1243",
+    "C-1244",
+    "C-1245",
+    "C-1246",
+    "C-1247",
+    "C-1248",
+    "C-1249",
+    "C-1250",
+    "C-1253",
+    "C-1267",
+    "C-1271",
+    "C-1273",
+    "C-1277",
+    "C-1278",
+    "C-1279",
+    "C-1280",
+    "C-1282",
+    "C-1283",
+    "C-1285",
+    "C-1286",
+    "C-1287",
+    "C-1288",
+    "C-1289",
+    "C-1290",
+    "C-1291",
+    "C-1292",
+    "C-1295",
+    "C-1296",
+    "C-1297",
+    "C-1298",
+    "C-1299",
+    "C-1300",
+    "C-1301",
+    "C-1302",
+    "C-1303",
+    "C-1304",
+    "C-1305",
+    "C-1306",
+    "C-1307",
+    "C-1312",
+    "C-1313",
+    "C-1314",
+    "C-1318",
+    "C-1319",
+    "C-1324",
+    "C-1331",
+    "C-1332",
+    "C-1343",
+    "C-1346",
+    "C-1348",
+    "C-1362",
+]
+positive_complete = [
+    "C-001",
+    "C-002",
+    "C-003",
+    "C-004",
+    "C-005",
+    "C-006",
+    "C-007",
+    "C-013",
+    "C-014",
+    "C-015",
+    "C-016",
+    "C-017",
+    "C-018",
+    "C-024",
+    "C-027",
+    "C-028",
+    "C-029",
+    "C-030",
+    "C-031",
+    "C-032",
+    "C-034",
+    "C-035",
+    "C-039",
+    "C-042",
+    "C-043",
+    "C-045",
+    "C-048",
+    "C-049",
+    "C-050",
+    "C-051",
+    "C-052",
+    "C-053",
+    "C-054",
+    "C-055",
+    "C-056",
+    "C-057",
+    "C-058",
+    "C-059",
+    "C-060",
+    "C-061",
+    "C-062",
+    "C-063",
+    "C-064",
+    "C-065",
+    "C-066",
+    "C-067",
+    "C-074",
+    "C-075",
+    "C-076",
+    "C-082",
+    "C-086",
+    "C-087",
+    "C-088",
+    "C-089",
+    "C-090",
+    "C-093",
+    "C-094",
+    "C-095",
+    "C-096",
+    "C-097",
+    "C-098",
+    "C-099",
+    "C-100",
+    "C-101",
+    "C-102",
+    "C-103",
+    "C-104",
+    "C-105",
+    "C-106",
+    "C-107",
+    "C-108",
+    "C-109",
+    "C-110",
+    "C-111",
+    "C-112",
+    "C-113",
+    "C-114",
+    "C-115",
+    "C-116",
+    "C-117",
+    "C-118",
+    "C-119",
+    "C-120",
+    "C-121",
+    "C-122",
+    "C-123",
+    "C-124",
+    "C-125",
+    "C-126",
+    "C-127",
+    "C-128",
+    "C-129",
+    "C-130",
+    "C-131",
+    "C-132",
+    "C-133",
+    "C-134",
+    "C-135",
+    "C-136",
+    "C-137",
+    "C-138",
+    "C-139",
+    "C-140",
+    "C-141",
+    "C-142",
+    "C-143",
+    "C-144",
+    "C-145",
+    "C-146",
+    "C-147",
+    "C-148",
+    "C-149",
+    "C-150",
+    "C-151",
+    "C-152",
+    "C-153",
+    "C-154",
+    "C-155",
+    "C-156",
+    "C-157",
+    "C-158",
+    "C-159",
+    "C-160",
+    "C-161",
+    "C-162",
+    "C-163",
+    "C-164",
+    "C-165",
+    "C-166",
+    "C-167",
+    "C-168",
+    "C-169",
+    "C-170",
+    "C-171",
+    "C-172",
+    "C-173",
+    "C-174",
+    "C-175",
+    "C-176",
+    "C-177",
+    "C-178",
+    "C-179",
+    "C-180",
+    "C-181",
+    "C-182",
+    "C-183",
+    "C-184",
+    "C-185",
+    "C-186",
+    "C-187",
+    "C-188",
+    "C-189",
+    "C-190",
+    "C-191",
+    "C-192",
+    "C-193",
+    "C-194",
+    "C-195",
+    "C-196",
+    "C-197",
+    "C-198",
+    "C-199",
+    "C-200",
+    "C-201",
+    "C-202",
+    "C-203",
+    "C-204",
+    "C-205",
+    "C-206",
+    "C-207",
+    "C-208",
+    "C-209",
+    "C-210",
+    "C-211",
+    "C-212",
+    "C-213",
+    "C-214",
+    "C-215",
+    "C-216",
+    "C-217",
+    "C-218",
+    "C-219",
+    "C-220",
+    "C-221",
+    "C-222",
+    "C-223",
+    "C-224",
+    "C-225",
+    "C-226",
+    "C-227",
+    "C-228",
+    "C-229",
+    "C-230",
+    "C-231",
+    "C-232",
+    "C-233",
+    "C-234",
+    "C-235",
+    "C-236",
+    "C-237",
+    "C-238",
+    "C-239",
+    "C-240",
+    "C-241",
+    "C-242",
+    "C-243",
+    "C-244",
+    "C-245",
+    "C-246",
+    "C-247",
+    "C-248",
+    "C-249",
+    "C-250",
+    "C-251",
+    "C-252",
+    "C-253",
+    "C-254",
+    "C-255",
+    "C-256",
+    "C-257",
+    "C-258",
+    "C-259",
+    "C-260",
+    "C-261",
+    "C-262",
+    "C-263",
+    "C-264",
+    "C-265",
+    "C-266",
+    "C-267",
+    "C-268",
+    "C-269",
+    "C-270",
+    "C-271",
+    "C-272",
+    "C-273",
+    "C-274",
+    "C-275",
+    "C-276",
+    "C-277",
+    "C-278",
+    "C-279",
+    "C-280",
+    "C-281",
+    "C-282",
+    "C-283",
+    "C-284",
+    "C-285",
+    "C-286",
+    "C-287",
+    "C-288",
+    "C-289",
+    "C-290",
+    "C-291",
+    "C-292",
+    "C-293",
+    "C-294",
+    "C-295",
+    "C-296",
+    "C-297",
+    "C-298",
+    "C-299",
+    "C-300",
+    "C-301",
+    "C-302",
+    "C-303",
+    "C-304",
+    "C-305",
+    "C-306",
+    "C-307",
+    "C-308",
+    "C-309",
+    "C-310",
+    "C-311",
+    "C-312",
+    "C-313",
+    "C-314",
+    "C-315",
+    "C-316",
+    "C-317",
+    "C-318",
+    "C-319",
+    "C-320",
+    "C-321",
+    "C-322",
+    "C-323",
+    "C-324",
+    "C-325",
+    "C-326",
+    "C-327",
+    "C-328",
+    "C-329",
+    "C-330",
+    "C-331",
+    "C-332",
+    "C-333",
+    "C-334",
+    "C-335",
+    "C-336",
+    "C-337",
+    "C-338",
+    "C-339",
+    "C-340",
+    "C-341",
+    "C-342",
+    "C-343",
+    "C-344",
+    "C-345",
+    "C-346",
+    "C-347",
+    "C-348",
+    "C-349",
+    "C-350",
+    "C-351",
+    "C-352",
+    "C-353",
+    "C-354",
+    "C-355",
+    "C-356",
+    "C-357",
+    "C-358",
+    "C-359",
+    "C-360",
+    "C-361",
+    "C-362",
+    "C-363",
+    "C-364",
+    "C-365",
+    "C-366",
+    "C-367",
+    "C-368",
+    "C-369",
+    "C-370",
+    "C-371",
+    "C-372",
+    "C-373",
+    "C-374",
+    "C-375",
+    "C-376",
+    "C-377",
+    "C-378",
+    "C-379",
+    "C-380",
+    "C-381",
+    "C-382",
+    "C-383",
+    "C-384",
+    "C-385",
+    "C-386",
+    "C-387",
+    "C-388",
+    "C-389",
+    "C-390",
+    "C-391",
+    "C-392",
+    "C-393",
+    "C-394",
+    "C-395",
+    "C-396",
+    "C-397",
+    "C-398",
+    "C-399",
+    "C-400",
+    "C-403",
+    "C-404",
+    "C-405",
+    "C-406",
+    "C-407",
+    "C-408",
+    "C-409",
+    "C-410",
+    "C-411",
+    "C-412",
+    "C-413",
+    "C-414",
+    "C-415",
+    "C-416",
+    "C-418",
+    "C-419",
+    "C-420",
+    "C-421",
+    "C-422",
+    "C-423",
+    "C-424",
+    "C-425",
+    "C-428",
+    "C-429",
+    "C-431",
+    "C-432",
+    "C-433",
+    "C-434",
+    "C-435",
+    "C-437",
+    "C-438",
+    "C-439",
+    "C-441",
+    "C-443",
+    "C-444",
+    "C-446",
+    "C-447",
+    "C-448",
+    "C-449",
+    "C-451",
+    "C-452",
+    "C-453",
+    "C-454",
+    "C-457",
+    "C-458",
+    "C-459",
+    "C-460",
+    "C-461",
+    "C-462",
+    "C-464",
+    "C-465",
+    "C-467",
+    "C-468",
+    "C-469",
+    "C-470",
+    "C-471",
+    "C-472",
+    "C-473",
+    "C-474",
+    "C-475",
+    "C-476",
+    "C-477",
+    "C-478",
+    "C-479",
+    "C-480",
+    "C-481",
+    "C-482",
+    "C-483",
+    "C-484",
+    "C-485",
+    "C-486",
+    "C-487",
+    "C-488",
+    "C-489",
+    "C-490",
+    "C-491",
+    "C-492",
+    "C-493",
+    "C-494",
+    "C-495",
+    "C-496",
+    "C-497",
+    "C-498",
+    "C-499",
+    "C-500",
+    "C-501",
+    "C-502",
+    "C-503",
+    "C-504",
+    "C-505",
+    "C-506",
+    "C-507",
+    "C-508",
+    "C-509",
+    "C-510",
+    "C-511",
+    "C-512",
+    "C-513",
+    "C-514",
+    "C-515",
+    "C-516",
+    "C-517",
+    "C-519",
+    "C-520",
+    "C-521",
+    "C-522",
+    "C-523",
+    "C-524",
+    "C-525",
+    "C-526",
+    "C-527",
+    "C-528",
+    "C-529",
+    "C-530",
+    "C-531",
+    "C-532",
+    "C-533",
+    "C-534",
+    "C-535",
+    "C-537",
+    "C-538",
+    "C-539",
+    "C-540",
+    "C-541",
+    "C-542",
+    "C-544",
+    "C-545",
+    "C-546",
+    "C-547",
+    "C-548",
+    "C-549",
+    "C-550",
+    "C-551",
+    "C-552",
+    "C-553",
+    "C-554",
+    "C-555",
+    "C-556",
+    "C-557",
+    "C-558",
+    "C-559",
+    "C-560",
+    "C-561",
+    "C-562",
+    "C-563",
+    "C-564",
+    "C-565",
+    "C-566",
+    "C-567",
+    "C-568",
+    "C-569",
+    "C-570",
+    "C-571",
+    "C-572",
+    "C-573",
+    "C-574",
+    "C-575",
+    "C-576",
+    "C-577",
+    "C-578",
+    "C-579",
+    "C-580",
+    "C-581",
+    "C-582",
+    "C-583",
+    "C-584",
+    "C-586",
+    "C-588",
+    "C-589",
+    "C-590",
+    "C-591",
+    "C-592",
+    "C-593",
+    "C-594",
+    "C-595",
+    "C-596",
+    "C-597",
+    "C-598",
+    "C-599",
+    "C-600",
+    "C-601",
+    "C-602",
+    "C-603",
+    "C-604",
+    "C-605",
+    "C-606",
+    "C-607",
+    "C-608",
+    "C-609",
+    "C-610",
+    "C-611",
+    "C-612",
+    "C-613",
+    "C-614",
+    "C-615",
+    "C-616",
+    "C-617",
+    "C-618",
+    "C-619",
+    "C-620",
+    "C-621",
+    "C-622",
+    "C-623",
+    "C-624",
+    "C-625",
+    "C-626",
+    "C-627",
+    "C-628",
+    "C-629",
+    "C-630",
+    "C-631",
+    "C-632",
+    "C-633",
+    "C-634",
+    "C-635",
+    "C-636",
+    "C-637",
+    "C-638",
+    "C-639",
+    "C-640",
+    "C-641",
+    "C-642",
+    "C-643",
+    "C-644",
+    "C-645",
+    "C-646",
+    "C-647",
+    "C-648",
+    "C-649",
+    "C-650",
+    "C-651",
+    "C-652",
+    "C-653",
+    "C-654",
+    "C-655",
+    "C-656",
+    "C-657",
+    "C-658",
+    "C-659",
+    "C-660",
+    "C-661",
+    "C-662",
+    "C-663",
+    "C-664",
+    "C-665",
+    "C-666",
+    "C-667",
+    "C-668",
+    "C-670",
+    "C-671",
+    "C-672",
+    "C-673",
+    "C-674",
+    "C-675",
+    "C-676",
+    "C-677",
+    "C-678",
+    "C-679",
+    "C-680",
+    "C-681",
+    "C-682",
+    "C-683",
+    "C-684",
+    "C-685",
+    "C-686",
+    "C-687",
+    "C-688",
+    "C-689",
+    "C-690",
+    "C-691",
+    "C-692",
+    "C-693",
+    "C-694",
+    "C-695",
+    "C-696",
+    "C-697",
+    "C-698",
+    "C-699",
+    "C-700",
+    "C-701",
+    "C-702",
+    "C-703",
+    "C-704",
+    "C-705",
+    "C-706",
+    "C-707",
+    "C-708",
+    "C-709",
+    "C-710",
+    "C-711",
+    "C-712",
+    "C-713",
+    "C-714",
+    "C-715",
+    "C-716",
+    "C-717",
+    "C-718",
+    "C-719",
+    "C-720",
+    "C-721",
+    "C-722",
+    "C-723",
+    "C-724",
+    "C-725",
+    "C-726",
+    "C-727",
+    "C-728",
+    "C-729",
+    "C-730",
+    "C-731",
+    "C-732",
+    "C-733",
+    "C-734",
+    "C-735",
+    "C-736",
+    "C-737",
+    "C-738",
+    "C-739",
+    "C-740",
+    "C-741",
+    "C-742",
+    "C-743",
+    "C-744",
+    "C-745",
+    "C-746",
+    "C-747",
+    "C-748",
+    "C-749",
+    "C-750",
+    "C-751",
+    "C-752",
+    "C-753",
+    "C-754",
+    "C-755",
+    "C-756",
+    "C-757",
+    "C-758",
+    "C-759",
+    "C-760",
+    "C-761",
+    "C-762",
+    "C-763",
+    "C-764",
+    "C-765",
+    "C-766",
+    "C-767",
+    "C-769",
+    "C-770",
+    "C-771",
+    "C-772",
+    "C-774",
+    "C-775",
+    "C-776",
+    "C-777",
+    "C-778",
+    "C-779",
+    "C-780",
+    "C-787",
+    "C-788",
+    "C-790",
+    "C-797",
+    "C-798",
+    "C-799",
+    "C-800",
+    "C-801",
+    "C-802",
+    "C-803",
+    "C-804",
+    "C-805",
+    "C-806",
+    "C-807",
+    "C-808",
+    "C-809",
+    "C-810",
+    "C-811",
+    "C-812",
+    "C-813",
+    "C-814",
+    "C-815",
+    "C-816",
+    "C-817",
+    "C-818",
+    "C-819",
+    "C-820",
+    "C-821",
+    "C-822",
+    "C-823",
+    "C-824",
+    "C-825",
+    "C-826",
+    "C-827",
+    "C-828",
+    "C-829",
+    "C-830",
+    "C-831",
+    "C-832",
+    "C-833",
+    "C-834",
+    "C-835",
+    "C-836",
+    "C-837",
+    "C-838",
+    "C-839",
+    "C-843",
+    "C-848",
+    "C-851",
+    "C-852",
+    "C-853",
+    "C-854",
+    "C-855",
+    "C-856",
+    "C-857",
+    "C-858",
+    "C-859",
+    "C-860",
+    "C-861",
+    "C-862",
+    "C-863",
+    "C-864",
+    "C-865",
+    "C-866",
+    "C-867",
+    "C-868",
+    "C-869",
+    "C-870",
+    "C-871",
+    "C-872",
+    "C-873",
+    "C-874",
+    "C-875",
+    "C-876",
+    "C-877",
+    "C-878",
+    "C-879",
+    "C-880",
+    "C-881",
+    "C-882",
+    "C-883",
+    "C-884",
+    "C-885",
+    "C-886",
+    "C-887",
+    "C-888",
+    "C-889",
+    "C-890",
+    "C-891",
+    "C-892",
+    "C-893",
+    "C-894",
+    "C-895",
+    "C-896",
+    "C-897",
+    "C-898",
+    "C-899",
+    "C-900",
+    "C-901",
+    "C-902",
+    "C-903",
+    "C-904",
+    "C-905",
+    "C-906",
+    "C-907",
+    "C-908",
+    "C-909",
+    "C-910",
+    "C-911",
+    "C-912",
+    "C-913",
+    "C-914",
+    "C-915",
+    "C-916",
+    "C-917",
+    "C-918",
+    "C-919",
+    "C-920",
+    "C-921",
+    "C-922",
+    "C-925",
+    "C-931",
+    "C-941",
+    "C-942",
+    "C-943",
+    "C-944",
+    "C-945",
+    "C-946",
+    "C-947",
+    "C-948",
+    "C-949",
+    "C-951",
+    "C-952",
+    "C-953",
+    "C-1105",
+    "C-1106",
+    "C-1107",
+    "C-1108",
+    "C-1109",
+    "C-1110",
+    "C-1111",
+    "C-1112",
+    "C-1113",
+    "C-1114",
+    "C-1115",
+    "C-1116",
+    "C-1117",
+    "C-1118",
+    "C-1119",
+    "C-1120",
+    "C-1121",
+    "C-1122",
+    "C-1123",
+    "C-1124",
+    "C-1125",
+    "C-1126",
+    "C-1127",
+    "C-1128",
+    "C-1129",
+    "C-1130",
+    "C-1131",
+    "C-1132",
+    "C-1133",
+    "C-1134",
+    "C-1135",
+    "C-1137",
+    "C-1138",
+    "C-1140",
+    "C-1141",
+    "C-1142",
+    "C-1146",
+    "C-1170",
+    "C-1174",
+    "C-1176",
+    "C-1177",
+    "C-1179",
+    "C-1180",
+    "C-1181",
+    "C-1184",
+    "C-1185",
+    "C-1186",
+    "C-1187",
+    "C-1188",
+    "C-1189",
+    "C-1190",
+    "C-1191",
+    "C-1192",
+    "C-1193",
+    "C-1194",
+    "C-1195",
+    "C-1196",
+    "C-1197",
+    "C-1198",
+    "C-1199",
+    "C-1200",
+    "C-1201",
+    "C-1202",
+    "C-1203",
+    "C-1204",
+    "C-1205",
+    "C-1206",
+    "C-1207",
+    "C-1208",
+    "C-1209",
+    "C-1210",
+    "C-1211",
+    "C-1212",
+    "C-1213",
+    "C-1214",
+    "C-1215",
+    "C-1216",
+    "C-1217",
+    "C-1218",
+    "C-1219",
+    "C-1220",
+    "C-1221",
+    "C-1222",
+    "C-1223",
+    "C-1224",
+    "C-1225",
+    "C-1226",
+    "C-1227",
+    "C-1228",
+    "C-1229",
+    "C-1230",
+    "C-1233",
+    "C-1234",
+    "C-1236",
+    "C-1251",
+    "C-1252",
+    "C-1254",
+    "C-1255",
+    "C-1256",
+    "C-1257",
+    "C-1258",
+    "C-1259",
+    "C-1260",
+    "C-1261",
+    "C-1262",
+    "C-1263",
+    "C-1264",
+    "C-1265",
+    "C-1266",
+    "C-1268",
+    "C-1269",
+    "C-1270",
+    "C-1272",
+    "C-1274",
+    "C-1275",
+    "C-1276",
+    "C-1281",
+    "C-1308",
+    "C-1309",
+    "C-1310",
+    "C-1311",
+    "C-1315",
+    "C-1316",
+    "C-1317",
+    "C-1320",
+    "C-1321",
+    "C-1322",
+    "C-1323",
+    "C-1325",
+    "C-1326",
+    "C-1327",
+    "C-1328",
+    "C-1330",
+    "C-1333",
+    "C-1334",
+    "C-1335",
+    "C-1336",
+    "C-1337",
+    "C-1338",
+    "C-1339",
+    "C-1340",
+    "C-1341",
+    "C-1342",
+    "C-1344",
+    "C-1345",
+    "C-1347",
+    "C-1349",
+    "C-1350",
+    "C-1351",
+    "C-1352",
+    "C-1354",
+    "C-1356",
+    "C-1359",
+    "C-1360",
+    "C-1361",
+    "C-1363",
+    "C-1364",
+    "C-1365",
+    "C-1366",
+    "C-1367",
+    "C-1368",
+    "C-1369",
+    "C-1370",
+    "C-1371",
+    "C-1372",
+    "C-1373",
+    "C-1374",
+    "C-1375",
+    "C-1376",
+    "C-1377",
+    "C-1378",
+    "C-1379",
+    "C-1380",
+    "C-1381",
+    "C-1382",
+    "C-1383",
+    "C-1384",
+    "C-1385",
+    "C-1386",
+    "C-1387",
+    "C-1388",
+    "C-1389",
+    "C-1390",
+    "C-1391",
+    "C-1392",
+    "C-1393",
+    "C-1394",
+    "C-1395",
+    "C-1396",
+    "C-1397",
+    "C-1398",
+    "C-1399",
+    "C-1400",
+    "C-1401",
+    "C-1402",
+    "C-1403",
+    "C-1404",
+    "C-1405",
+    "C-1406",
+    "C-1407",
+    "C-1408",
+    "C-1409",
+    "C-1410",
+    "C-1411",
+    "C-1412",
+    "C-1413",
+    "C-1414",
+    "C-1415",
+    "C-1416",
+    "C-1417",
+    "C-1418",
+    "C-1419",
+    "C-1420",
+    "C-1421",
+    "C-1422",
+    "C-1423",
+    "C-1424",
+    "C-1425",
+    "C-1426",
+    "C-1427",
+    "C-1428",
+    "C-1429",
+    "C-1430",
+    "C-1431",
+    "C-1432",
+    "C-1433",
+    "C-1434",
+    "C-1435",
+    "C-1436",
+    "C-1437",
+    "C-1438",
+    "C-1439",
+]
+superseded = [
+    "C-044",
+    "C-072",
+    "C-073",
+    "C-078",
+    "C-079",
+    "C-080",
+    "C-083",
+    "C-085",
+    "C-091",
+    "C-536",
+    "C-1284",
+]
+
+[status_counts]
+"Closed/Methodology-Insufficient" = 2
+"Closed/Negative-Result" = 4
+"Closed/Refuted" = 3
+Refuted = 56
+
+[family_counts]
+algebraic_structural = 28
+cosmology_metamaterial = 10
+particle_numerology = 9
+signal_transport = 18
+
+[wave_counts]
+wave_1_registered_experiment_hardening = 45
+wave_2_new_rust_falsifier = 20
+
+[coverage]
+with_registered_experiments = 45
+without_registered_experiments = 20
+with_gpu_experiments = 7
+with_tasks = 65
+with_open_tasks = 42
+with_ticket_coverage = 65
+with_insight_coverage = 65
+claims_needing_new_experiment = [
+    "C-009",
+    "C-010",
+    "C-012",
+    "C-019",
+    "C-025",
+    "C-036",
+    "C-037",
+    "C-038",
+    "C-040",
+    "C-041",
+    "C-046",
+    "C-047",
+    "C-068",
+    "C-070",
+    "C-092",
+    "C-426",
+    "C-430",
+    "C-442",
+    "C-791",
+    "C-1358",
+]
+claims_missing_task_coverage = []
+claims_missing_ticket_coverage = []
+claims_missing_insight_coverage = []
+claims_missing_all_linkage = []
+claims_missing_experiment_ticket_and_insight = []
+
+[[claims]]
+claim_id = "C-009"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-06"
+statement = "Tensor-network experiment exhibits entropy scaling `S ~ log(L) + L^{0.5}`."
+where_stated = "`docs/archive/RESEARCH_STATUS_FINAL.md`, `docs/external_sources/TENSOR_NETWORK_SOURCES.md`, `data/csv/tensor_entropy_scaling_fit.csv`, `docs/preregistered/TENSOR_ENTROPY_SCALING.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = [
+    "CTASK-0015",
+    "CTASK-0024",
+]
+open_task_ids = [
+    "CTASK-0015",
+    "CTASK-0024",
+]
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-210"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-009: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-010"
+status = "Closed/Negative-Result"
+family = "cosmology_metamaterial"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-03-12"
+statement = "Falsifiable thesis: a metamaterial whose unit-cell couplings follow the sedenion zero-divisor incidence graph could realize a mode-selective holographic entropy sink; the disconnected 7-clique ZD topology implies local connected absorbers are insufficient without explicit non-local coupling."
+where_stated = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `crates/algebra_analysis/src/boxkites.rs`, `crates/algebra_analysis/src/reggiani.rs`, `crates/algebra_analysis/src/crystal_bands.rs`, `crates/algebra_analysis/src/homotopy_algebra.rs`, `crates/optics_core/src/absorber_benchmark.rs`, `crates/quantum_core/src/magnonic_crystal.rs`, `crates/quantum_core/src/tight_binding.rs`, `crates/cosmology_core/src/sersic.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`, `papers/MANIFEST.toml`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = [
+    "CTASK-0016",
+    "CTASK-0025",
+]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-210"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-010: add Rust baseline-model comparison or parameter-termination verifier"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-012"
+status = "Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-01-30"
+statement = '"Dark Energy as Negative Dimension Diffusion" is a defensible physical interpretation (not just a metaphor).'
+where_stated = "`docs/NAVIGATOR.md`, `docs/PHYSICAL_INTERPRETATION.md`, `docs/external_sources/NEGATIVE_DIMENSION_SOURCES.md`, `docs/external_sources/HZ_DATASETS_SOURCES.md`, `docs/external_sources/COSMOLOGY_MULTIPROBE_SOURCES.md`, `docs/external_sources/ADDITIONAL_COSMOLOGICAL_DATASETS.md`, `docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md`, `docs/NEG_DIM_MULTIPROBE_EXPERIMENT.md`, `crates/spectral_core/src/neg_dim.rs`, `crates/spectral_core/src/neg_dim.rs`, `src/scripts/analysis/neg_dim_model_comparison.py`, `src/scripts/analysis/neg_dim_free_eta_comparison.py`, `src/scripts/data/fix_bao_observables.py`, `tests/test_neg_dim_dark_energy.py`, `tests/test_neg_dim_multidata.py`, `tests/test_neg_dim_free_eta_comparison.py`, `data/csv/neg_dim_model_comparison_results.csv`, `data/csv/neg_dim_free_eta_comparison_results.csv`, `docs/preregistered/NEG_DIM_MODEL_COMPARISON.md`, `docs/preregistered/NEG_DIM_FREE_ETA_AMENDMENT.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = [
+    "CTASK-0018",
+    "CTASK-0023",
+]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-087"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-012: add Rust baseline-model comparison or parameter-termination verifier"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-019"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-01-30"
+statement = "Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions."
+where_stated = "convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0021"]
+open_task_ids = ["CTASK-0021"]
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-207"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-019: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-020"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-01-28"
+statement = 'REFUTED: Legacy 16D "Zero-Divisor Adjacency Matrix" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices.'
+where_stated = "`data/csv/legacy/`"
+experiment_ids = ["E-203"]
+experiment_binaries = ["legacy-crossval-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0028"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-207"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-203 (legacy-crossval-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-021"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-01-28"
+statement = "REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result: This claim was empirically refuted."
+where_stated = "`data/csv/legacy/`"
+experiment_ids = ["E-203"]
+experiment_binaries = ["legacy-crossval-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0029"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-207"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-203 (legacy-crossval-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-025"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-01-31"
+statement = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection)."
+where_stated = "`docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_analysis/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = [
+    "CTASK-0003",
+    "CTASK-0004",
+]
+open_task_ids = ["CTASK-0004"]
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-210"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-025: add Rust null-family and ablation experiment"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-036"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-01-31"
+statement = "Triality-governed bigraph attachment stabilizes clustering coefficient C -> 0.25 in thermodynamic limit."
+where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0204"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-208"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-036: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-037"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-03"
+statement = "Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling."
+where_stated = "`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0205"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-208"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-037: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-038"
+status = "Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-01-31"
+statement = "Dark energy equation of state w0 = -5/6 ~ -0.8333 emerges from twist-sector distribution in the exceptional framework."
+where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0206"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-208"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-038: add Rust baseline-model comparison or parameter-termination verifier"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-040"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-03"
+statement = "Primordial tilt n_s ~ 0.965 from fractal D_eff ~ 2.8-3.0 at inflation."
+where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `crates/cosmology_core/src/spectral.rs`, `tests/test_primordial_tilt.py` (18 tests), `src/scripts/analysis/c040_primordial_tilt_deff_sweep.py`, `data/csv/c040_primordial_tilt_deff_curve.csv`, `data/csv/c040_primordial_tilt_summary.csv`, `tests/test_c040_primordial_tilt_artifacts.py`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0208"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-208"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-040: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-041"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-03"
+statement = "F4 26D representation connects to bosonic string critical dimension (D=26)."
+where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0209"]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-208"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-041: add Rust blind-matching and invariance verifier"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-046"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-01-31"
+statement = '"Fractal Doping" (sum x/n^beta) stabilizes zero divisors.'
+where_stated = "`archive/legacy_conjectures/`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0215"]
+open_task_ids = ["CTASK-0215"]
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-207"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-046: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-047"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-04"
+statement = "E9, E10, E11 are Euclidean sphere-packing lattices."
+where_stated = "`archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = [
+    "CTASK-0007",
+    "CTASK-0008",
+]
+open_task_ids = []
+ticket_ids = ["TICKET-C001-C050"]
+insight_ids = ["I-207"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-047: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-068"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-03"
+statement = "Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses."
+where_stated = "`src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0034"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-209"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-068: add Rust blind-matching and invariance verifier"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-069"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-04"
+statement = "Three octonionic subalgebra principal angles reproduce PMNS neutrino mixing angles."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments.py`, `data/csv/cd_algebraic_experiments.json`"
+experiment_ids = ["E-206"]
+experiment_binaries = ["particle-numerology-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0216"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-209"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-206 (particle-numerology-audit)"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-070"
+status = "Closed/Methodology-Insufficient"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-06"
+statement = "CD associator power spectrum shape matches NANOGrav GW background."
+where_stated = "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0035"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-209"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-070: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-071"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-06"
+statement = "FRB dispersion measures exhibit p-adic ultrametric structure."
+where_stated = "`crates/stats_core/src/ultrametric/mod.rs`, `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`, `data/csv/c071_frb_ultrametric.csv`, `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`"
+experiment_ids = ["E-002"]
+experiment_binaries = ["multi-dataset-ultrametric"]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0217"]
+open_task_ids = ["CTASK-0217"]
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = [
+    "I-001",
+    "I-002",
+]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-002 (multi-dataset-ultrametric)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-077"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-05"
+statement = "Subalgebra associator mixing matrix resembles PMNS matrix."
+where_stated = "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`, `data/csv/cd_algebraic_experiments_v3.json` (exp5v3_associator_mixing)"
+experiment_ids = ["E-206"]
+experiment_binaries = ["particle-numerology-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0038"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-209"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-206 (particle-numerology-audit)"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-081"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-04"
+statement = "Multi-parameter Givens rotation finds exact PMNS angles."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`"
+experiment_ids = ["E-206"]
+experiment_binaries = ["particle-numerology-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0218"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-209"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-206 (particle-numerology-audit)"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-084"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-04"
+statement = "Yukawa-like symmetry breaking produces PMNS-like mixing."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`"
+experiment_ids = ["E-206"]
+experiment_binaries = ["particle-numerology-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0219"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-087"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-206 (particle-numerology-audit)"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-092"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-03"
+statement = "SO(7) orbit structure of ZD spectrum is continuous, not discrete."
+where_stated = "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.P)"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0046"]
+open_task_ids = []
+ticket_ids = ["TICKET-C051-C100"]
+insight_ids = ["I-209"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-092: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-402"
+status = "Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-02"
+statement = "Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels."
+where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`"
+experiment_ids = ["E-006"]
+experiment_binaries = ["gravastar-sweep"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0220"]
+open_task_ids = ["CTASK-0220"]
+ticket_ids = ["TICKET-C401-C427"]
+insight_ids = ["I-210"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-006 (gravastar-sweep)"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-426"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-02"
+statement = "Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectrum hypotheses (logarithmic scaling)."
+where_stated = "`docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0192"]
+open_task_ids = ["CTASK-0192"]
+ticket_ids = ["TICKET-C401-C427"]
+insight_ids = ["I-210"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-426: add Rust exact-enumeration or consistency verifier"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-430"
+status = "Closed/Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-06"
+statement = "Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity distance D_L(z) deviate from standard LambdaCDM as predicted by the effective equation of state w_eff."
+where_stated = "`src/scripts/analysis/cosmology_comparison.py`, `data/artifacts/images/cosmology_comparison.png`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0221"]
+open_task_ids = ["CTASK-0221"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-087"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-430: add Rust baseline-model comparison or parameter-termination verifier"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-436"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-06"
+statement = "FRB comoving positions exhibit local ultrametric structure (C-071 follow-up, Direction 1)."
+where_stated = "`crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs`, `crates/stats_core/src/ultrametric/local.rs`, `crates/cosmology_core/src/distances.rs`, `data/csv/c071b_dm_comoving_ultrametric.csv`"
+experiment_ids = ["E-002"]
+experiment_binaries = ["multi-dataset-ultrametric"]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0222"]
+open_task_ids = ["CTASK-0222"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-011"]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-002 (multi-dataset-ultrametric)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-440"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-06"
+statement = "Cross-dataset cosmic objects (FRBs+GW events) exhibit dendrogram ultrametricity in comoving 3D space (C-071 follow-up, Direction 5)."
+where_stated = "`crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs`, `data/csv/c071f_cosmic_dendrogram.csv`"
+experiment_ids = ["E-002"]
+experiment_binaries = ["multi-dataset-ultrametric"]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0223"]
+open_task_ids = ["CTASK-0223"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-011"]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-002 (multi-dataset-ultrametric)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-442"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-06"
+statement = "Multi-attribute Euclidean ultrametricity is specific to radio transient catalogs (FRB, pulsar) parameterized by DM+sky position; not a general property of astrophysical catalogs."
+where_stated = "`crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs`, `data/csv/c071g_multi_dataset_ultrametric.csv`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`, `docs/INSIGHTS.md`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0224"]
+open_task_ids = ["CTASK-0224"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-005",
+    "I-013",
+]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-442: add Rust null-family and ablation experiment"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-445"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-07"
+statement = "Motif class assignment within a given CD dimension is determined by a GF(2)-linear predicate: a weight vector w in GF(2)^(n-1) such that the inner product <w, label> mod 2 separates classes. At dim=32 the 8/7 split corresponds to a hyperplane of PG(3,2)."
+where_stated = "`crates/algebra_analysis/src/projective_geometry.rs`"
+experiment_ids = ["E-205"]
+experiment_binaries = ["algebra-refutation-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0225"]
+open_task_ids = []
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-012"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-205 (algebra-refutation-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-450"
+status = "Closed/Methodology-Insufficient"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-19"
+statement = "The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency."
+where_stated = "`crates/algebra_experimental/src/cd_external.rs` (test_csv_64d_adjacency_vs_rust)"
+experiment_ids = ["E-204"]
+experiment_binaries = ["cd-external-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0226"]
+open_task_ids = ["CTASK-0226"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-014"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-204 (cd-external-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-455"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-07"
+statement = "Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT include any E8 root vectors (norm-squared = 2). The observed norm-squared values are {4, 6, 8, 10, 12, 14, 18}, with minimum separation |d|^2 = 4. The 105 unique difference vectors form their own combinatorial structure distinct from E8."
+where_stated = "`crates/algebra_experimental/src/cd_external.rs` (test_256d_lattice_zd_difference_structure)"
+experiment_ids = ["E-204"]
+experiment_binaries = ["cd-external-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0227"]
+open_task_ids = ["CTASK-0227"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-014",
+    "I-040",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-204 (cd-external-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-456"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-07"
+statement = "The external 256D associativity CSV (256D_Cayley-Dickson_Basis_Properties.csv) incorrectly claims all 125 tested triples are associative. Our Rust integer-exact computation finds 4 out of 50 sampled triples are non-associative, involving basis elements e_128, e_64, e_32, and e_192. The CSV is an AI-generated error."
+where_stated = "`crates/algebra_experimental/src/cd_external.rs` (test_csv_256d_basis_properties_vs_rust)"
+experiment_ids = ["E-204"]
+experiment_binaries = ["cd-external-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0228"]
+open_task_ids = ["CTASK-0228"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-014"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-204 (cd-external-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-463"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-19"
+statement = "Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K_4 union K_4 by parity of the lower basis index. At dim=32 it decomposes into K_8 union K_8. NOTE: This property is LIMITED TO dims 16 and 32. REFUTED at dim=64 (cross-partition edges exist, test_thesis_f_parity_clique_64d) and dim=128 (C-451: 32640 cross-partition edges). Not a universal property."
+where_stated = "`crates/algebra_experimental/src/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d,64d})"
+experiment_ids = ["E-204"]
+experiment_binaries = ["cd-external-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0229"]
+open_task_ids = ["CTASK-0229"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-015"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-204 (cd-external-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-466"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-09"
+statement = "REFUTED: Hypothesis tested: Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a ... Result: This claim was empirically refuted."
+where_stated = "`crates/algebra_analysis/src/codebook.rs` (compute_multiplication_coupling, test_multiplication_coupling_sedenion_characterize, test_multiplication_coupling_pathion)"
+experiment_ids = ["E-205"]
+experiment_binaries = ["algebra-refutation-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0230"]
+open_task_ids = []
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-015"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-205 (algebra-refutation-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-518"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-09"
+statement = "Associator Sign Obstruction REFUTED: The CD associator sign A(i,j,k) = s(i,j)*s(i XOR j, k)*s(j,k)*s(i, j XOR k) does NOT separate pure from mixed triangles when applied as F(triangle) = (A(lo_a,lo_b,lo_c), A(hi_a,hi_b,hi_c)). At dim=16, F=(+1,+1) never occurs. At dim=32/64, all four F-values contain both pure and mixed triangles. A cross lo/hi variant also fails. However, within each F-fiber at dim=16, the pure:mixed ratio is exactly 1:3, suggesting the 1:3 ratio is a deeper invariant than the associator."
+where_stated = "`crates/algebra_analysis/src/boxkites.rs` (test_associator_obstruction_candidate_b)"
+experiment_ids = ["E-205"]
+experiment_binaries = ["algebra-refutation-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0231"]
+open_task_ids = []
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-018"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-205 (algebra-refutation-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-543"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-09"
+statement = "Legacy Monstrous Moonshine Claims Assessment: Four legacy CSVs claim connections between Cayley-Dickson algebras and the Monster group. Findings: (1) 'Spin Foam Amplitudes vs Monster Group Coefficients' column 'Spin Foam Amplitude' is exactly ln(n+1)/1000 -- a trivial logarithmic function unrelated to spin foams (Ponzano-Regge, Turaev-Viro, or EPRL models). (2) The 'Scaled Monster Coeffs' column correctly reproduces j-function coefficients c(1)..c(9) divided by 1e9, but c(10) has a 3.6% error (23123279 vs 22312779). (3) Comparing logarithmic growth (spin foam column) to exponential growth (j-coefficients ~ exp(4*pi*sqrt(n))) is mathematically meaningless. (4) The 'Monstrous Moonshine and Infinite-Dimensional Extensions' CSV claims Moonshine structure at CD dims 16384..262144 without exhibiting any vertex operator algebra, j-function coefficient match, or Monster group representation. (5) The Griess algebra dimension 196884 = 2^2 * 3^3 * 1823 is NOT a power of 2, so is NOT a CD algebra. (6) No j-function coefficient is a power of 2. The actual CD-Monster path goes through E8 -> Leech lattice (Borcherds), not through high-dimensional CD algebras."
+where_stated = "`crates/algebra_analysis/src/legacy_crossval.rs` (test_moonshine_j_function_coefficients, test_moonshine_spin_foam_column_is_trivial, test_moonshine_cd_connection_assessment)"
+experiment_ids = ["E-203"]
+experiment_binaries = ["legacy-crossval-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0232"]
+open_task_ids = ["CTASK-0232"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-207"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-203 (legacy-crossval-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-585"
+status = "Closed/Negative-Result"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-09"
+statement = "Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements. Observed delta^2 values range from 2.5 to 3.75. The result likely requires specific normalized idempotent constructions in the complexified algebra J_3(O_C)."
+where_stated = "`CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)` (test_singh_delta_squared)"
+experiment_ids = ["E-205"]
+experiment_binaries = ["algebra-refutation-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0233"]
+open_task_ids = []
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-039"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-205 (algebra-refutation-audit)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-587"
+status = "Closed/Negative-Result"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-09"
+statement = "Depth-based generation assignment (boundary-crossing count) at dim=16: mean associator norms are 0.87, 1.0, 1.6, 2.0 for depths 2, 1, 0, 3 respectively. The norm ratio spread is insufficient to reproduce PDG lepton mass ratios (3500:1 for e/tau). Raw associator norms alone cannot explain the mass hierarchy."
+where_stated = "`crates/materials_core/src/tang_mass.rs` (test_depth_based_mass_prediction_dim16, test_depth_vs_random_comparison)"
+experiment_ids = ["E-206"]
+experiment_binaries = ["particle-numerology-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0234"]
+open_task_ids = []
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-038",
+    "I-039",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-206 (particle-numerology-audit)"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-669"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-19"
+statement = "TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with imbalance-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10)."
+where_stated = "data/thesis_lab/tx2/tx2_report.toml, crates/gororoba_cli/src/bin/thesis_cross_tx2.rs"
+experiment_ids = ["E-072"]
+experiment_binaries = ["thesis-cross-tx2"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0235"]
+open_task_ids = ["CTASK-0235"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-065"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-072 (thesis-cross-tx2)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-773"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-19"
+statement = "BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to column-shuffled null: the observed ultrametric fraction exceeds the permutation null mean with p < 0.05 after BH-FDR correction."
+where_stated = "`crates/gororoba_cli_physics/src/bin/wow_topology.rs` (ultrametric subcommand)"
+experiment_ids = [
+    "E-049",
+    "E-050",
+]
+experiment_binaries = [
+    "wow-topology",
+    "bl-doppler-search",
+]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0236"]
+open_task_ids = ["CTASK-0236"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-092"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-049 (wow-topology)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-781"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Shannon entropy of the Cayley-Dickson associator-norm distribution exhibits a phase transition at dimension 16 (octonion-to-sedenion boundary) where the loss of alternativity and emergence of zero divisors produce a sharp entropy jump exceeding 10% of H_max."
+where_stated = "`crates/algebra_analysis/src/entropy_census.rs`, `crates/gororoba_cli_algebra/src/bin/algebra_entropy_census.rs`"
+experiment_ids = ["E-057"]
+experiment_binaries = ["algebra-entropy-census"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0237"]
+open_task_ids = ["CTASK-0237"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-057 (algebra-entropy-census)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-782"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "The CHSH wavelet S parameter of LBM velocity fields correlates with Betti-1 topology (from VR persistent homology) across different flow configurations, with |Spearman rho| > 0.5 at p < 0.05 for at least one viscosity/forcing configuration."
+where_stated = "`crates/spectral_core/src/chsh_betti_bridge.rs`, `crates/gororoba_cli_physics/src/bin/chsh_betti_sweep.rs`"
+experiment_ids = ["E-058"]
+experiment_binaries = ["chsh-betti-sweep"]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0238"]
+open_task_ids = ["CTASK-0238"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-098"]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-058 (chsh-betti-sweep)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-783"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Pulsed (burst-quench) entropy injection with 50% duty cycle reduces p95 wavelet entropy by more than 10% compared to steady injection at equal total forcing energy, because quench phases allow partial relaxation."
+where_stated = "`crates/spectral_core/src/pde_surrogates.rs`, `crates/gororoba_cli_physics/src/bin/meltdown_pulsed_gate.rs`"
+experiment_ids = ["E-059"]
+experiment_binaries = ["meltdown-pulsed-gate"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0239"]
+open_task_ids = ["CTASK-0239"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-059 (meltdown-pulsed-gate)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-784"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Ghost frequency phi^{-1/2} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218 normalized, SNR=6.11, FWHM=0.0008. Strongest detection across all catalogs."
+where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+experiment_ids = [
+    "E-060",
+    "E-068",
+]
+experiment_binaries = [
+    "rho-ghost-fft",
+    "ghost-spectral-audit",
+]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0240"]
+open_task_ids = ["CTASK-0240"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-094",
+    "I-095",
+    "I-096",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-060 (rho-ghost-fft)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-785"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections."
+where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+experiment_ids = [
+    "E-060",
+    "E-068",
+]
+experiment_binaries = [
+    "rho-ghost-fft",
+    "ghost-spectral-audit",
+]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0241"]
+open_task_ids = ["CTASK-0241"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-094",
+    "I-095",
+    "I-096",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-060 (rho-ghost-fft)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-786"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection."
+where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+experiment_ids = [
+    "E-060",
+    "E-068",
+]
+experiment_binaries = [
+    "rho-ghost-fft",
+    "ghost-spectral-audit",
+]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0242"]
+open_task_ids = ["CTASK-0242"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-094",
+    "I-095",
+    "I-096",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-060 (rho-ghost-fft)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-789"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138."
+where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+experiment_ids = [
+    "E-060",
+    "E-064",
+    "E-068",
+]
+experiment_binaries = [
+    "rho-ghost-fft",
+    "zd-resonance-cuda",
+    "ghost-spectral-audit",
+]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0243"]
+open_task_ids = ["CTASK-0243"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-094",
+    "I-095",
+    "I-096",
+]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-060 (rho-ghost-fft)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-791"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-02-19"
+statement = "ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths."
+where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv`"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0244"]
+open_task_ids = ["CTASK-0244"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-095"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-791: add Rust null-family and ablation experiment"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-792"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that locks to the grid Nyquist frequency independently of the relaxation parameter tau. The peak frequency does NOT drift with Reynolds number (|slope| < 0.01 in peak_freq vs tau regression) and vanishes when ZD modulation amplitude is set to zero."
+where_stated = "`crates/gororoba_cli/src/bin/zd_resonance_cuda.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
+experiment_ids = [
+    "E-051",
+    "E-055",
+    "E-063",
+    "E-064",
+    "E-065",
+    "E-066",
+    "E-067",
+]
+experiment_binaries = [
+    "zd-resonance-sweep",
+    "wow-sedenion-synthesis",
+    "zd-resonance-cuda",
+    "zd-resonance-cuda",
+    "zd-resonance-cuda",
+    "zd-resonance-4d",
+    "zd-resonance-4d",
+]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0245"]
+open_task_ids = ["CTASK-0245"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-055 (wow-sedenion-synthesis)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-793"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "The ghost frequency at phi^{-1/2} ~ 0.786 cycles/sample is detectable at rank <= 3 with SNR > 5.0 in production warp field HDF5 snapshots without synthetic signal injection."
+where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
+experiment_ids = [
+    "E-063",
+    "E-064",
+    "E-066",
+    "E-067",
+]
+experiment_binaries = [
+    "zd-resonance-cuda",
+    "zd-resonance-cuda",
+    "zd-resonance-4d",
+    "zd-resonance-4d",
+]
+registered_gpu_experiment = true
+task_ids = ["CTASK-0246"]
+open_task_ids = ["CTASK-0246"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "cpu_smoke_plus_gpu_acceptance"
+canonical_falsifier = "registered experiment E-063 (zd-resonance-cuda)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "CPU smoke path passes",
+    "registered GPU acceptance run passes seeded tolerance checks",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+]
+
+[[claims]]
+claim_id = "C-794"
+status = "Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "A Pathionic heat sink (virtual dim-32 scalar absorber coupled to the Sedenion associator norm) stabilizes the warp ring simulation past the natural instability onset. The instability onset time increases monotonically with coupling strength."
+where_stated = "`crates/gororoba_cli_algebra/src/bin/pathion_sink_test.rs`, `crates/gororoba_engine/src/simulation/mod.rs` (PathionSink struct)"
+experiment_ids = ["E-052"]
+experiment_binaries = ["pathion-sink-test"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0247"]
+open_task_ids = ["CTASK-0247"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-052 (pathion-sink-test)"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-795"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Macroscopic vortex handedness (helicity sign) is locked to the Sedenion Cayley-Dickson multiplication table orientation. Flipping initial vorticity without conjugating the CD table produces an UNSTABLE configuration, while flipping both (double flip) recovers stability."
+where_stated = "`crates/gororoba_cli_algebra/src/bin/chirality_lock_test.rs`, `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (cd_multiply_conjugated)"
+experiment_ids = ["E-053"]
+experiment_binaries = ["chirality-lock-test"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0248"]
+open_task_ids = ["CTASK-0248"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-053 (chirality-lock-test)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-796"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-02-18"
+statement = "Signal chunks projected onto the Leech Lattice (Lambda_24) via Babai CVP show statistically different deep hole fractions between structured (ON-source) and noise-only (OFF-source) pointings at p < 0.05 in a two-proportion z-test."
+where_stated = "`crates/gororoba_cli_algebra/src/bin/moonshine_filterbank.rs`, `crates/algebra_experimental/src/leech_lattice.rs`, `crates/algebra_experimental/src/golay_code.rs`"
+experiment_ids = [
+    "E-054",
+    "E-055",
+]
+experiment_binaries = [
+    "moonshine-filterbank",
+    "wow-sedenion-synthesis",
+]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0249"]
+open_task_ids = ["CTASK-0249"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-093"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-054 (moonshine-filterbank)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-842"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = ""
+statement = "R_AA(pT) for multiple centralities collapses onto universal curve f(u = pT/epsilon_bar, n) with reduced chi2 < 2."
+where_stated = "crates/qgp_scaling/src/quenching.rs (r_aa_model, scaling_function, test_scaling_function_matches_raa)"
+experiment_ids = ["E-075"]
+experiment_binaries = ["arleo-falmagne-scaling"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0250"]
+open_task_ids = ["CTASK-0250"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-075 (arleo-falmagne-scaling)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-844"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-05"
+statement = "Multi-system density scaling fit yields beta = 1.02 +/- 0.15 (within 1-sigma of Arleo-Falmagne) from Pb-Pb + Au-Au + Xe-Xe data."
+where_stated = "crates/qgp_scaling/src/density_scaling.rs (fit_density_scaling, test_density_scaling_recovery)"
+experiment_ids = ["E-075"]
+experiment_binaries = ["arleo-falmagne-scaling"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0251"]
+open_task_ids = ["CTASK-0251"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-075 (arleo-falmagne-scaling)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-845"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-05"
+statement = "Density scaling constant K = 0.33 +/- 0.10 fm^(1-beta) from multi-system fit."
+where_stated = "crates/qgp_scaling/src/density_scaling.rs (fit_density_scaling)"
+experiment_ids = ["E-075"]
+experiment_binaries = ["arleo-falmagne-scaling"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0252"]
+open_task_ids = ["CTASK-0252"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-075 (arleo-falmagne-scaling)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-846"
+status = "Refuted"
+family = "signal_transport"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = ""
+statement = "Hadron v2/eccentricity vs d(ln R_AA)/d(ln pT) linear relation yields beta_hadrons = 0.94 +/- 0.15."
+where_stated = "crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation, test_v2_relation_recovery_origin)"
+experiment_ids = ["E-075"]
+experiment_binaries = ["arleo-falmagne-scaling"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0253"]
+open_task_ids = ["CTASK-0253"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-075 (arleo-falmagne-scaling)"
+independent_countercheck = "alternate null family plus ablation or resolution guard"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate null family plus ablation or resolution guard",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-923"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-03"
+statement = "Cross-dimensional d_s plateau flow: sequence of ZD graph plateau spectral dimensions across CD doubling construction. FALSIFIED: no plateau exists at any CD dimension (16-512). ZD graph components are near-complete graphs with uniform eigenvalue spectra; the Calcagni 2->4 flow does NOT emerge from individual cross-assessor ZD components."
+where_stated = "crates/algebra_analysis/src/spectral_dimension.rs"
+experiment_ids = ["E-084"]
+experiment_binaries = ["zd-spectral-dimension"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0254"]
+open_task_ids = ["CTASK-0254"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-102"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-084 (zd-spectral-dimension)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-932"
+status = "Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-05"
+statement = "Orthoplex diffusion dark energy with fixed beta=1.0 (w = -1 + d_s(t(z)), t = t_0/(1+z)^alpha) fitted to 1638 data points (1578 Pantheon+ SNe + 12 DESI DR1 BAO + 31 cosmic chronometers + 16 f*sigma8 RSD + CMB R shift) at k=63: chi2=749.01 (vs LCDM 767.39), delta-AIC=-14.38, delta-BIC=-3.58. Fixed-beta model (4 params: omega_m, h0, alpha, t_0) preferred over LCDM by Kass-Raftery scale. Free-beta (5 params): delta-BIC=+3.82, LCDM weakly preferred. Thawing EOS: w(0)=-0.663, w(2)=-0.9999. Pre-registered falsification: delta-BIC > +10 = disfavored. Result: delta-BIC=-3.58, orthoplex PREFERRED."
+where_stated = "crates/cosmology_core/src/orthoplex_diffusion.rs"
+experiment_ids = ["E-087"]
+experiment_binaries = ["orthoplex-cosmo-fit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0255"]
+open_task_ids = ["CTASK-0255"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-087 (orthoplex-cosmo-fit)"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-1103"
+status = "Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-06"
+statement = "ETA_WAKE gravitational focusing wake (cos(theta_wind) density modulation) reduces Rosetta-I magnitude by ~18% at ETA_WAKE=0.20 but CANNOT flip the sign. Ratio goes from -14.89 (eta=0) to -12.12 (eta=0.20). Would need ETA_WAKE~2.2 (unphysical). Density modulation alone cannot fix Rosetta-I."
+where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs (dm_wake_density_factor)"
+experiment_ids = ["E-096"]
+experiment_binaries = ["flyby-crucible"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0256"]
+open_task_ids = ["CTASK-0256"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "seeded_replay"
+canonical_falsifier = "registered experiment E-096 (flyby-crucible)"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-1329"
+status = "Closed/Negative-Result"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-12"
+statement = "FALSIFIED: The slope ratio 0.1764 at power index n=1.5 is a numerical coincidence with 42^2/10000, not an algebraic connection to sedenion zero-divisor structure. The associator norm ||m3|| cancels exactly in the slope ratio due to the multiplicative structure of the power-law viscosity model nu = nu_base * (1 + alpha * norm^beta * |gamma_dot|^(n-1)). The ratio depends ONLY on n and the strain-rate grid sampling points."
+where_stated = "crates/lbm_core/src/lib.rs (test_c1329_slope_ratio_norm_invariance, test_c1329_slope_ratio_grid_dependence, test_c1329_slope_ratio_alpha_beta_invariance), crates/gororoba_cli/src/bin/thesis_program_sweep.rs (thesis2_thickening_report)"
+experiment_ids = ["E-179"]
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0257"]
+open_task_ids = ["CTASK-0257"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-211"]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-179 ()"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-1353"
+status = "Refuted"
+family = "algebraic_structural"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-12"
+statement = "Thesis 2 (dark matter) conflates two unrelated claims: (a) sigma_chi_b exponent coincidence (1e-42 cm^2 in dm_force.rs tests), falsified as test fixture by C-1308 (default=0.0, values 1e-40/1e-42/1e-45 are sensitivity probes, not algebraic derivations -- no function in dm_force.rs derives sigma_chi_b from assessor count or CD dimension), and (b) harmonic halo 7-mode modulation, null result at SPARC (C-1338, SNR=0.61, alpha_zd < 0.016 at 95% CL), MW Fourier analysis (C-1340, monotonic Keplerian power decay), and CD dimension sweep (E-182, null at D=16..1024). Both sub-claims are falsified independently."
+where_stated = "crates/lbm_3d/src/dm_force.rs:123 (sigma_chi_b default=0.0), :323 (unit conversion), crates/cosmology_core/src/harmonic_stacking.rs, crates/gororoba_cli_physics/src/bin/harmonic_halo_stacking.rs"
+experiment_ids = ["E-185"]
+experiment_binaries = ["harmonic-halo-rotation-curve"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0258"]
+open_task_ids = ["CTASK-0258"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-173",
+    "I-174",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-185 (harmonic-halo-rotation-curve)"
+independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "exact enumeration plus external-CSV or representation consistency cross-check",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-1355"
+status = "Refuted"
+family = "particle_numerology"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-12"
+statement = "42^2=1764 appearing in the Planck mass is unit-dependent numerology. M_Planck = 2.176434e-5 g (CGS) contains '1764' only in base-10 CGS representation (gr_core/src/constants.rs). In natural units M_Planck = 1.220890e19 GeV -- no '1764'. In Planck units M_Planck = 1 exactly. The BCS gap 1.764 = pi/e^gamma (he3_superfluid.rs) is the Cooper pair binding energy derived in 1957 BCS theory with no Cayley-Dickson connection. Neither '1764' appearance has algebraic significance."
+where_stated = "crates/gr_core/src/constants.rs (M_PLANCK_CGS), crates/quantum_core/src/he3_superfluid.rs:78-89 (BCS gap = pi/exp(gamma_Euler))"
+experiment_ids = ["E-206"]
+experiment_binaries = ["particle-numerology-audit"]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0259"]
+open_task_ids = []
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-173",
+    "I-174",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-206 (particle-numerology-audit)"
+independent_countercheck = "blind matching baseline plus unit/base invariance"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "blind matching baseline plus unit/base invariance",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-1357"
+status = "Closed/Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_1_registered_experiment_hardening"
+last_verified = "2026-03-12"
+statement = "The A-infinity obstruction norm 8.725 (C-612) mapped to Bowers-Liang anisotropy (C-613) produces a stable gravastar (C-614, C-615) for coupling in [0, 0.01]. However, the claim that this 'drives dark energy' is architecturally unsupported: (a) gravastar solver outputs (mass, compactness, c_s) at r~10 km scale with no cosmological observable; (b) actual dark energy EOS (orthoplex_diffusion.rs, C-931/C-932) uses orthoplex heat kernel spectral dimension, not gravastar anisotropy; (c) DarkEnergyEOS.v proves w(z) from diffusion_time(z, alpha, t_0) with no reference to obstruction_norm or homotopy_bridge; (d) no code bridges Chain A (gravastar TOV) to Chain B (orthoplex w(z)); (e) obstruction_norm normalization (frobenius / dim^1.5) has free choice of norm type, exponent, truncation order; (f) coupling parameter in [0, 0.01] is a free parameter."
+where_stated = "crates/algebra_analysis/src/homotopy_algebra.rs:857-862 (obstruction_norm = frobenius/dim^1.5), crates/cosmology_core/src/homotopy_bridge.rs:92-147 (solve_gravastar_homotopy -> GravastarSolution), crates/cosmology_core/src/gravastar.rs, crates/cosmology_core/src/orthoplex_diffusion.rs:189-257 (w_orthoplex from diffusion_time), proofs/theories/DarkEnergyEOS.v"
+experiment_ids = [
+    "E-186",
+    "E-187",
+]
+experiment_binaries = [
+    "gravastar-sweep",
+    "gravastar-sweep",
+]
+registered_gpu_experiment = false
+task_ids = ["CTASK-0260"]
+open_task_ids = ["CTASK-0260"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = [
+    "I-173",
+    "I-174",
+    "I-175",
+]
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-186 (gravastar-sweep)"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "registered experiment replay passes",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]
+
+[[claims]]
+claim_id = "C-1358"
+status = "Closed/Refuted"
+family = "cosmology_metamaterial"
+wave = "wave_2_new_rust_falsifier"
+last_verified = "2026-03-12"
+statement = "FORMAL KILL SHOT: The A-infinity obstruction norm of 8.725 has no standing as a physical driver of dark energy. Measured normalization sensitivity at dim=16 (E-186, 2026-03-12): frobenius/dim^1.5=8.725 (current), frobenius/dim=34.900, frobenius/sqrt(d)=139.599, frobenius/dim^2=2.181, spectral_radius/dim^1.5=7.764. Relative spread = 98.4% (63x range, min 2.18 to max 139.6). A true physical constant driving a macroscopic observable (cosmological constant Lambda) must be invariant under change of basis and coordinate transformation. The 8.725 value is an artifact of choosing one of at least 5 valid matrix norm conventions; changing convention shifts the value by 2 orders of magnitude. This belongs in the same graveyard as the 0.1764 metamaterial grid artifact (C-1329). SECONDARY FINDING: spectral_radius/dim^1.5 = 7.764 is close to frobenius/dim^1.5 = 8.725, indicating the m_3 associator tensor at D=16 has energy concentrated in its dominant eigenmodes (low-rank-dominated operator), not diffusely distributed -- a genuine algebraic structural property of the sedenion m_3 operator, but not a cosmological observable."
+where_stated = "crates/algebra_analysis/src/homotopy_algebra.rs (test_c1357_obstruction_norm_normalization_sensitivity), E-186 results"
+experiment_ids = []
+experiment_binaries = []
+registered_gpu_experiment = false
+task_ids = ["CTASK-0261"]
+open_task_ids = ["CTASK-0261"]
+ticket_ids = ["TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"]
+insight_ids = ["I-175"]
+requires_new_experiment = true
+reproducibility_floor = "new_rust_offline_check_required"
+canonical_falsifier = "C-1358: add Rust baseline-model comparison or parameter-termination verifier"
+independent_countercheck = "alternate baseline model plus parameter-termination audit"
+acceptance_bar = [
+    "cached inputs and provenance recorded",
+    "new Rust offline verifier or experiment added",
+    "alternate baseline model plus parameter-termination audit",
+    "claim/task/ticket surfaces updated together",
+    "full repo gate passes after the batch",
+]

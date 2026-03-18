@@ -3,9 +3,9 @@
 
 [claim_tickets]
 authoritative = true
-updated = "2026-03-12"
+updated = "2026-03-18"
 source_markdown_glob = "docs/tickets/*.md"
-ticket_count = 13
+ticket_count = 14
 
 [[ticket]]
 id = "TICKET-C001-C050"
@@ -251,5 +251,24 @@ backlog_reports = []
 deliverable_links = ["crates/algebra_analysis/src/x87_jacobi.rs", "crates/cd_kernel/src/avx2_primitives.rs", "crates/algebra_analysis/tests/precision_tier_dispatch.rs", "data/csv/x87_avx_fma_followup_benchmark_summary.csv", "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/INSIGHTS.md"]
 acceptance_checks = ["cargo test -p cd_kernel --lib", "cargo test -p algebra_analysis --test precision_tier_dispatch", "cargo bench -p algebra_analysis -- x87"]
 goal_summary = "Keep the x87 instruction semantics and measured throughput result verified, but harden the wider dispatch guidance with primary sources, a deterministic crossover test, and a post-AVX benchmark artifact before promoting the `N=2048` heuristic back to Verified."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL"
+title = "Ticket: Refuted/closed falsification linkage backfill"
+source_markdown = "docs/tickets/TICKET_FALSIFICATION_CAMPAIGN_REFUTED_BACKFILL.md"
+ticket_kind = "CLAIMS_FALSIFICATION_CAMPAIGN"
+owner = "agent"
+created = "2026-03-18"
+status_raw = "IN PROGRESS"
+status_token = "IN_PROGRESS"
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = ["C-430", "C-436", "C-440", "C-442", "C-445", "C-450", "C-455", "C-456", "C-463", "C-466", "C-518", "C-543", "C-585", "C-587", "C-669", "C-773", "C-781", "C-782", "C-783", "C-784", "C-785", "C-786", "C-789", "C-791", "C-792", "C-793", "C-794", "C-795", "C-796", "C-842", "C-844", "C-845", "C-846", "C-923", "C-932", "C-1103", "C-1329", "C-1353", "C-1355", "C-1357", "C-1358"]
+backlog_reports = ["reports/claims_falsification_campaign.md"]
+deliverable_links = ["reports/claims_falsification_campaign.toml", "registry/claims_tasks.toml", "registry/claim_tickets.toml", "crates/gororoba_cli_algebra/src/bin/legacy_crossval_audit.rs"]
+acceptance_checks = ["cargo test -p gororoba_cli_data --bin claims-audit", "cargo run -p gororoba_cli_data --bin claims-audit -- --report falsification-campaign --campaign-manifest-out reports/claims_falsification_campaign.toml --out reports/claims_falsification_campaign.md"]
+goal_summary = "Backfill authoritative ticket/task/insight linkage for the empirical refutation campaign, starting with C-543 and the no-experiment claims, then keep the compatibility exports synchronized with the canonical worklist."
 done_checkboxes = 0
 open_checkboxes = 0
