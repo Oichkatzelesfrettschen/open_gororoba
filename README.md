@@ -76,7 +76,7 @@ cargo run -p gororoba_cli_data --bin repo-visuals
 Generated companions:
 
 - `data/artifacts/images/science_gravastar_stability_plate_3160x2820.png`
-- `data/artifacts/images/science_algebra_resonance_plate_3160x2820.png`
+- `data/artifacts/images/science_pathion_zero_divisor_interaction_graph_3160x2820.png`
 
 These science-facing plates are emitted from live generated result lanes:
 

@@ -33,7 +33,7 @@ const FAMILY_MAP_FILE: &str = "repo_crate_family_map_3160x2820.png";
 const OPERATOR_MATRIX_FILE: &str = "repo_operator_matrix_3160x2820.png";
 const E183_PHASE_PLATE_FILE: &str = "science_e183_phase_plate_3160x2820.png";
 const GRAVASTAR_PLATE_FILE: &str = "science_gravastar_stability_plate_3160x2820.png";
-const ALGEBRA_PLATE_FILE: &str = "science_algebra_resonance_plate_3160x2820.png";
+const ALGEBRA_PLATE_FILE: &str = "science_pathion_zero_divisor_interaction_graph_3160x2820.png";
 
 #[derive(Parser, Debug)]
 #[command(
@@ -2675,8 +2675,12 @@ fn build_zd_graph(
     let mut degree = BTreeMap::<usize, usize>::new();
     let mut raw_edges = Vec::with_capacity(rows.len());
     for row in rows {
-        labels.entry(row.source).or_insert_with(|| row.label_s.clone());
-        labels.entry(row.target).or_insert_with(|| row.label_t.clone());
+        labels
+            .entry(row.source)
+            .or_insert_with(|| row.label_s.clone());
+        labels
+            .entry(row.target)
+            .or_insert_with(|| row.label_t.clone());
         *degree.entry(row.source).or_default() += 1;
         *degree.entry(row.target).or_default() += 1;
         raw_edges.push((row.source, row.target));
@@ -2744,9 +2748,13 @@ fn read_zd_edge_rows(path: &Path) -> Result<Vec<ZeroDivisorEdgeRow>> {
             .trim()
             .parse::<usize>()
             .with_context(|| format!("parse target on line {} in {}", idx + 1, path.display()))?;
-        let rest = head
-            .next()
-            .with_context(|| format!("missing label payload on line {} in {}", idx + 1, path.display()))?;
+        let rest = head.next().with_context(|| {
+            format!(
+                "missing label payload on line {} in {}",
+                idx + 1,
+                path.display()
+            )
+        })?;
         let mut depth = 0_i32;
         let mut split_at = None;
         for (char_idx, ch) in rest.char_indices() {
@@ -2950,39 +2958,61 @@ fn render_e183_phase_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBl
     }
 
     chart
-        .draw_series(field_samples.iter().filter_map(|(xc, yc, total, coherence, _)| {
-            let intensity = if max_total <= 0.0 { 0.0 } else { total / max_total };
-            (intensity > 0.028).then(|| {
-                Rectangle::new(
-                    [
-                        (*xc - dx * 0.52, *yc - dy * 0.52),
-                        (*xc + dx * 0.52, *yc + dy * 0.52),
-                    ],
-                    ShapeStyle::from(&phase_manifold_color(intensity, *coherence)).filled(),
-                )
-            })
-        }))
+        .draw_series(
+            field_samples
+                .iter()
+                .filter_map(|(xc, yc, total, coherence, _)| {
+                    let intensity = if max_total <= 0.0 {
+                        0.0
+                    } else {
+                        total / max_total
+                    };
+                    (intensity > 0.028).then(|| {
+                        Rectangle::new(
+                            [
+                                (*xc - dx * 0.52, *yc - dy * 0.52),
+                                (*xc + dx * 0.52, *yc + dy * 0.52),
+                            ],
+                            ShapeStyle::from(&phase_manifold_color(intensity, *coherence)).filled(),
+                        )
+                    })
+                }),
+        )
         .map_err(plot_err)?;
 
     let contour_levels = [0.14, 0.27, 0.41, 0.58, 0.74];
     chart
-        .draw_series(field_samples.iter().filter_map(|(xc, yc, total, coherence, _)| {
-            let intensity = if max_total <= 0.0 { 0.0 } else { total / max_total };
-            (intensity > 0.12 && contour_hit(intensity, &contour_levels, 0.012)).then(|| {
-                Rectangle::new(
-                    [
-                        (*xc - dx * 0.52, *yc - dy * 0.52),
-                        (*xc + dx * 0.52, *yc + dy * 0.52),
-                    ],
-                    ShapeStyle::from(
-                        &RGBColor(246, 250, 255).mix((0.04 + 0.12 * coherence).clamp(0.04, 0.18)),
-                    ),
-                )
-            })
-        }))
+        .draw_series(
+            field_samples
+                .iter()
+                .filter_map(|(xc, yc, total, coherence, _)| {
+                    let intensity = if max_total <= 0.0 {
+                        0.0
+                    } else {
+                        total / max_total
+                    };
+                    (intensity > 0.12 && contour_hit(intensity, &contour_levels, 0.012)).then(
+                        || {
+                            Rectangle::new(
+                                [
+                                    (*xc - dx * 0.52, *yc - dy * 0.52),
+                                    (*xc + dx * 0.52, *yc + dy * 0.52),
+                                ],
+                                ShapeStyle::from(
+                                    &RGBColor(246, 250, 255)
+                                        .mix((0.04 + 0.12 * coherence).clamp(0.04, 0.18)),
+                                ),
+                            )
+                        },
+                    )
+                }),
+        )
         .map_err(plot_err)?;
 
-    let max_power = phase_rows.iter().map(|row| row.power).fold(0.0_f64, f64::max);
+    let max_power = phase_rows
+        .iter()
+        .map(|row| row.power)
+        .fold(0.0_f64, f64::max);
     let max_snr = phase_rows
         .iter()
         .map(|row| row.mode_snr)
@@ -2993,7 +3023,11 @@ fn render_e183_phase_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBl
             .partial_cmp(&a.power)
             .unwrap_or(std::cmp::Ordering::Equal)
     });
-    for row in peaks.iter().copied().filter(|row| row.power > max_power * 0.13) {
+    for row in peaks
+        .iter()
+        .copied()
+        .filter(|row| row.power > max_power * 0.13)
+    {
         let t = (row.power / max_power.max(1e-9)).clamp(0.0, 1.0);
         for (scale, alpha, width) in [(1.0, 0.16, 1), (1.55, 0.11, 1), (2.15, 0.08, 1)] {
             chart
@@ -3029,7 +3063,11 @@ fn render_e183_phase_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBl
         for gx in 0..glyph_cols {
             let x = x_lo + (gx as f64 + 0.5) * (x_hi - x_lo) / glyph_cols as f64;
             let (total, coherence, angle) = sample_phase_manifold(x, y, &phase_rows, sx, sy);
-            let intensity = if max_total <= 0.0 { 0.0 } else { total / max_total };
+            let intensity = if max_total <= 0.0 {
+                0.0
+            } else {
+                total / max_total
+            };
             if intensity < 0.20 || coherence < 0.12 {
                 continue;
             }
@@ -3072,7 +3110,12 @@ fn render_e183_phase_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBl
                 .partial_cmp(&b.rayleigh_r)
                 .unwrap_or(std::cmp::Ordering::Equal)
         })
-        .map(|row| format!("phase coherence crest | k={:.2}, R={:.3}", row.k, row.rayleigh_r))
+        .map(|row| {
+            format!(
+                "phase coherence crest | k={:.2}, R={:.3}",
+                row.k, row.rayleigh_r
+            )
+        })
         .unwrap_or_else(|| "phase coherence crest | none".to_string());
     root.draw(&PathElement::new(
         vec![(2330, 290), (3010, 290)],
@@ -3108,11 +3151,7 @@ fn render_e183_phase_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBl
     Ok(())
 }
 
-fn render_gravastar_plate_v2(
-    path: &Path,
-    repo_root: &Path,
-    project: &ProjectBlock,
-) -> Result<()> {
+fn render_gravastar_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBlock) -> Result<()> {
     let radial = read_csv_rows::<GravastarRadialRow>(
         &repo_root.join("data/csv/gravastar_radial_stability.csv"),
     )?;
@@ -3156,7 +3195,10 @@ fn render_gravastar_plate_v2(
             )
         })
         .collect::<BTreeMap<_, _>>();
-    let radius_values = ligo.iter().map(|row| row.r2.max(1e-9).log10()).collect::<Vec<_>>();
+    let radius_values = ligo
+        .iter()
+        .map(|row| row.r2.max(1e-9).log10())
+        .collect::<Vec<_>>();
     let (x_min, x_max) = finite_bounds(&mass_values);
     let (y_min, y_max) = finite_bounds(&comp_values);
     let (severity_min, severity_max) = finite_bounds(&severity_values);
@@ -3166,7 +3208,10 @@ fn render_gravastar_plate_v2(
         .margin(8)
         .x_label_area_size(72)
         .y_label_area_size(88)
-        .build_cartesian_2d((x_min - 2.0)..(x_max + 2.0), (y_min - 0.035)..(y_max + 0.035))
+        .build_cartesian_2d(
+            (x_min - 2.0)..(x_max + 2.0),
+            (y_min - 0.035)..(y_max + 0.035),
+        )
         .map_err(plot_err)?;
     chart
         .configure_mesh()
@@ -3275,7 +3320,10 @@ fn render_gravastar_plate_v2(
     }) {
         chart
             .draw_series(std::iter::once(Text::new(
-                format!("collapse wall | M {:.0}, c {:.1}", row.m_target, row.core_compactness),
+                format!(
+                    "collapse wall | M {:.0}, c {:.1}",
+                    row.m_target, row.core_compactness
+                ),
                 (row.m_target - 18.0, row.core_compactness - 0.018),
                 ("sans-serif", 19).into_font().color(&TEXT),
             )))
@@ -3314,8 +3362,7 @@ fn render_gravastar_plate_v2(
             for row in &stable_genesis {
                 let row_ratio = (row.r2 / row.r1.max(1e-12)).max(1e-12).log10();
                 let dx_n = (gamma - row.gamma) / 0.11;
-                let dy_n =
-                    (ratio - row_ratio) / ((ratio_max - ratio_min).abs().max(1e-6) * 0.08);
+                let dy_n = (ratio - row_ratio) / ((ratio_max - ratio_min).abs().max(1e-6) * 0.08);
                 let kernel = (-0.5 * (dx_n * dx_n + dy_n * dy_n)).exp();
                 let mass_log = row.m_total.abs().max(1e-18).log10();
                 total += kernel;
@@ -3334,7 +3381,10 @@ fn render_gravastar_plate_v2(
             root.draw(&Rectangle::new(
                 [
                     (x, y),
-                    ((x + strip_step).min(strip.x1), (y + strip_step).min(strip.y1)),
+                    (
+                        (x + strip_step).min(strip.x1),
+                        (y + strip_step).min(strip.y1),
+                    ),
                 ],
                 ShapeStyle::from(&color.mix(0.86)).filled(),
             ))
@@ -3361,7 +3411,11 @@ fn render_gravastar_plate_v2(
         let py = strip.y1
             - (remap_unit(ratio, ratio_min, ratio_max) * (strip.y1 - strip.y0) as f64).round()
                 as i32;
-        let mass_t = remap_unit(row.m_total.abs().max(1e-18).log10(), mass_log_min, mass_log_max);
+        let mass_t = remap_unit(
+            row.m_total.abs().max(1e-18).log10(),
+            mass_log_min,
+            mass_log_max,
+        );
         let color = lerp_color(RGBColor(164, 245, 255), RGBColor(255, 228, 154), mass_t);
         root.draw(&Circle::new(
             (px, py),
@@ -3371,7 +3425,10 @@ fn render_gravastar_plate_v2(
         .map_err(plot_err)?;
     }
 
-    let unstable_count = radial.iter().filter(|row| !row.harrison_wheeler_stable).count();
+    let unstable_count = radial
+        .iter()
+        .filter(|row| !row.harrison_wheeler_stable)
+        .count();
     draw_note(
         &root,
         192,
@@ -3395,8 +3452,12 @@ fn render_gravastar_plate_v2(
         380,
         "Stable Bridge Branches",
         &[
-            format!("{} genesis microbranches remain stable", stable_genesis.len()),
-            "gamma = 1.5 supports the widest shells; gamma = 2.5 contracts toward R2/R1 ~ 1".to_string(),
+            format!(
+                "{} genesis microbranches remain stable",
+                stable_genesis.len()
+            ),
+            "gamma = 1.5 supports the widest shells; gamma = 2.5 contracts toward R2/R1 ~ 1"
+                .to_string(),
         ],
         CYAN,
     )?;
@@ -3405,11 +3466,7 @@ fn render_gravastar_plate_v2(
     Ok(())
 }
 
-fn render_algebra_plate_v2(
-    path: &Path,
-    repo_root: &Path,
-    project: &ProjectBlock,
-) -> Result<()> {
+fn render_algebra_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBlock) -> Result<()> {
     let mass_rows =
         read_csv_rows::<SedenionMassRow>(&repo_root.join("data/csv/sedenion_mass_spectrum.csv"))?;
     let coupling_rows = read_csv_rows::<PathionCouplingRow>(
@@ -3495,7 +3552,10 @@ fn render_algebra_plate_v2(
         root.draw(&Rectangle::new(
             [
                 (*x, *y),
-                (((*x + step).min(field_rect.x1)), ((*y + step).min(field_rect.y1))),
+                (
+                    ((*x + step).min(field_rect.x1)),
+                    ((*y + step).min(field_rect.y1)),
+                ),
             ],
             ShapeStyle::from(&network_density_color(pathion_t, core_t).mix(0.84)).filled(),
         ))
@@ -3510,7 +3570,10 @@ fn render_algebra_plate_v2(
             root.draw(&Rectangle::new(
                 [
                     (*x, *y),
-                    (((*x + step).min(field_rect.x1)), ((*y + step).min(field_rect.y1))),
+                    (
+                        ((*x + step).min(field_rect.x1)),
+                        ((*y + step).min(field_rect.y1)),
+                    ),
                 ],
                 ShapeStyle::from(&RGBColor(246, 250, 255).mix(0.08)),
             ))
@@ -3630,7 +3693,13 @@ fn render_algebra_plate_v2(
         .unwrap_or(0.0);
     let field_tail = field_rows
         .last()
-        .map(|row| row.mean_energy / field_rows.first().map(|base| base.mean_energy).unwrap_or(1.0))
+        .map(|row| {
+            row.mean_energy
+                / field_rows
+                    .first()
+                    .map(|base| base.mean_energy)
+                    .unwrap_or(1.0)
+        })
         .unwrap_or(0.0);
     let mass_peak_15 = mass_rows
         .iter()
