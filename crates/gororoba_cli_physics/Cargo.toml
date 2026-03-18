@@ -451,6 +451,42 @@ path = "src/bin/slit_deproject.rs"
 name = "harmonic-halo-stacking-hi"
 path = "src/bin/harmonic_halo_stacking_hi.rs"
 
+[[bin]]
+name = "mass-binned-phase"
+path = "src/bin/mass_binned_phase.rs"
+
+[[bin]]
+name = "cross-algebra-correlation"
+path = "src/bin/cross_algebra_correlation.rs"
+
+[[bin]]
+name = "dc14-stacking"
+path = "src/bin/dc14_stacking.rs"
+
+[[bin]]
+name = "contrarian-template-sweep"
+path = "src/bin/contrarian_template_sweep.rs"
+
+[[bin]]
+name = "ml-baryonic-denoise"
+path = "src/bin/ml_baryonic_denoise.rs"
+
+[[bin]]
+name = "baryonic-eigenspectrum"
+path = "src/bin/baryonic_eigenspectrum.rs"
+
+[[bin]]
+name = "cross-algebra-cusp-core"
+path = "src/bin/cross_algebra_cusp_core.rs"
+
+[[bin]]
+name = "polynomial-detrend-closure"
+path = "src/bin/polynomial_detrend_closure.rs"
+
+[[bin]]
+name = "stft-phase-gradient"
+path = "src/bin/stft_phase_gradient.rs"
+
 # ---- Euclid / Morphology (2) ----
 
 [[bin]]

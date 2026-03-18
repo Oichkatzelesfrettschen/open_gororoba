@@ -5,9 +5,12 @@
 //! phases. Fixes the N=19 statistical limitation of the x-bin jackknife (E-192).
 //!
 //! Under H0 (incoherent phases): R ~ 1/sqrt(N_gal) ~ 0.012, p > 0.9.
-//! A signal at alpha_zd = 0.004 would produce R > 0.1 at the predicted modes.
+//! The executed MaNGA run yields modest but nonzero coherence
+//! R = 0.033..0.141 across the 7 modes, rising monotonically with k.
+//! This is inconsistent with pure random phases, but also not a selective
+//! low-mode detection signature.
 //!
-//! Reference: C-1376, E-194
+//! Reference: C-1404, E-194
 
 use clap::Parser;
 use cosmology_core::{
