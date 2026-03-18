@@ -151,6 +151,10 @@ name = "catalog-feature-cube"
 path = "src/bin/catalog_feature_cube.rs"
 
 [[bin]]
+name = "catalog-feature-deconfound"
+path = "src/bin/catalog_feature_deconfound.rs"
+
+[[bin]]
 name = "claim-route-recertify"
 path = "src/bin/claim_route_recertify.rs"
 
@@ -402,6 +406,7 @@ arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
 statrs = { workspace = true }
 tempfile = { workspace = true }
+nalgebra = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export"]

@@ -277,6 +277,18 @@ name = "catalog-feature-algebra"
 path = "src/bin/catalog_feature_algebra.rs"
 
 [[bin]]
+name = "heliosphere-predictive-eval"
+path = "src/bin/heliosphere_predictive_eval.rs"
+
+[[bin]]
+name = "heliosphere-cross-mission-invariance"
+path = "src/bin/heliosphere_cross_mission_invariance.rs"
+
+[[bin]]
+name = "heliosphere-sparse-preservation"
+path = "src/bin/heliosphere_sparse_preservation.rs"
+
+[[bin]]
 name = "heliosphere-lbm-cube-run"
 path = "src/bin/heliosphere_lbm_cube_run.rs"
 
