@@ -293,6 +293,10 @@ name = "heliosphere-sparse-preservation"
 path = "src/bin/heliosphere_sparse_preservation.rs"
 
 [[bin]]
+name = "heliosphere-sparse-policy-mainline"
+path = "src/bin/heliosphere_sparse_policy_mainline.rs"
+
+[[bin]]
 name = "heliosphere-lbm-cube-run"
 path = "src/bin/heliosphere_lbm_cube_run.rs"
 

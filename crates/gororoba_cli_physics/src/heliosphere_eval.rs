@@ -15,6 +15,7 @@ use data_core::{
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
+    hash::{DefaultHasher, Hash, Hasher},
     path::Path,
 };
 
@@ -127,6 +128,20 @@ pub struct CounterfactualSparseSummary {
     pub median_lead_time_hours: Option<f64>,
 }
 
+/// One seeded sparse-policy evaluation row.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SeededSparsePolicySummary {
+    pub split_seed: u64,
+    pub normalization_strategy: String,
+    pub descriptor_profile: String,
+    pub active_rows: usize,
+    pub active_fraction: f64,
+    pub event_label_recall: f64,
+    pub event_label_precision: f64,
+    pub sparse_bf16_aa_projected_gib: f64,
+    pub median_lead_time_hours: Option<f64>,
+}
+
 /// Label-coverage summary for one mission/product lane.
 #[derive(Debug, Clone, Serialize)]
 pub struct LabelCoverageRow {
@@ -199,6 +214,26 @@ impl DescriptorProfile {
             Self::Full => "full",
             Self::DeltaAssociator => "delta_associator",
             Self::AssociatorOnly => "associator_only",
+        }
+    }
+
+    fn from_label(value: &str) -> Option<Self> {
+        match value {
+            "full" => Some(Self::Full),
+            "delta_associator" => Some(Self::DeltaAssociator),
+            "associator_only" => Some(Self::AssociatorOnly),
+            _ => None,
+        }
+    }
+}
+
+impl NormalizationStrategy {
+    fn from_label(value: &str) -> Option<Self> {
+        match value {
+            "global_quiet" => Some(Self::Global),
+            "mission_quiet" => Some(Self::Mission),
+            "mission_product_quiet" => Some(Self::MissionProduct),
+            _ => None,
         }
     }
 }
@@ -930,6 +965,18 @@ pub fn summarize_sparse_policy_counterfactuals(
     horizon_hours: i64,
     grid: usize,
 ) -> Result<Vec<CounterfactualSparseSummary>> {
+    summarize_sparse_policy_counterfactuals_with_seed(raw_rows, cache_root, horizon_hours, grid, 0)
+}
+
+/// Challenge sparse policies with alternate normalization families and
+/// descriptor subsets using a deterministic split seed.
+pub fn summarize_sparse_policy_counterfactuals_with_seed(
+    raw_rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+    horizon_hours: i64,
+    grid: usize,
+    split_seed: u64,
+) -> Result<Vec<CounterfactualSparseSummary>> {
     let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
     let mut rows = Vec::new();
     for strategy in [
@@ -937,7 +984,7 @@ pub fn summarize_sparse_policy_counterfactuals(
         NormalizationStrategy::Mission,
         NormalizationStrategy::MissionProduct,
     ] {
-        let normalized = build_normalized_samples_with_strategy(&samples, strategy);
+        let normalized = build_normalized_samples_with_strategy_and_seed(&samples, strategy, split_seed);
         rows.push(thresholded_sparse_policy_summary(
             &samples,
             &normalized,
@@ -960,6 +1007,86 @@ pub fn summarize_sparse_policy_counterfactuals(
         }
     }
     Ok(rows)
+}
+
+/// Seeded sparse-policy rows for promoted mainline evaluation.
+pub fn summarize_seeded_sparse_policy_rows(
+    raw_rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+    horizon_hours: i64,
+    grid: usize,
+    split_seed: u64,
+) -> Result<(usize, Vec<SeededSparsePolicySummary>)> {
+    let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
+    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    let counterfactuals = summarize_sparse_policy_counterfactuals_with_seed(
+        raw_rows,
+        cache_root,
+        horizon_hours,
+        grid,
+        split_seed,
+    )?;
+    let rows = counterfactuals
+        .into_iter()
+        .map(|row| SeededSparsePolicySummary {
+            split_seed,
+            normalization_strategy: row.normalization_strategy,
+            descriptor_profile: row.descriptor_profile,
+            active_rows: row.active_rows,
+            active_fraction: row.active_fraction,
+            event_label_recall: row.event_label_recall,
+            event_label_precision: row.event_label_precision,
+            sparse_bf16_aa_projected_gib: row.sparse_bf16_aa_projected_gib,
+            median_lead_time_hours: row.median_lead_time_hours,
+        })
+        .collect::<Vec<_>>();
+    Ok((positive_sample_count, rows))
+}
+
+/// Seeded evaluation for one targeted sparse-policy configuration.
+pub fn summarize_targeted_seeded_sparse_policy(
+    raw_rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+    horizon_hours: i64,
+    grid: usize,
+    split_seed: u64,
+    normalization_strategy: &str,
+    descriptor_profile: &str,
+) -> Result<(usize, SeededSparsePolicySummary)> {
+    let strategy = NormalizationStrategy::from_label(normalization_strategy)
+        .with_context(|| format!("unknown normalization strategy '{normalization_strategy}'"))?;
+    let descriptor = if descriptor_profile == "invariants_only" {
+        None
+    } else {
+        Some(
+            DescriptorProfile::from_label(descriptor_profile)
+                .with_context(|| format!("unknown descriptor profile '{descriptor_profile}'"))?,
+        )
+    };
+    let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
+    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    let normalized = build_normalized_samples_with_strategy_and_seed(&samples, strategy, split_seed);
+    let row = thresholded_sparse_policy_summary(
+        &samples,
+        &normalized,
+        normalization_strategy,
+        descriptor,
+        grid,
+    )?;
+    Ok((
+        positive_sample_count,
+        SeededSparsePolicySummary {
+            split_seed,
+            normalization_strategy: row.normalization_strategy,
+            descriptor_profile: row.descriptor_profile,
+            active_rows: row.active_rows,
+            active_fraction: row.active_fraction,
+            event_label_recall: row.event_label_recall,
+            event_label_precision: row.event_label_precision,
+            sparse_bf16_aa_projected_gib: row.sparse_bf16_aa_projected_gib,
+            median_lead_time_hours: row.median_lead_time_hours,
+        },
+    ))
 }
 
 /// Return the algebra-derived event mask for each invariant sample.
@@ -1128,6 +1255,10 @@ fn mission_splits(samples: &[LabeledInvariantSample]) -> Vec<MissionSplitSummary
 }
 
 fn split_samples(samples: &[LabeledInvariantSample]) -> SampleSplits<'_> {
+    split_samples_with_seed(samples, 0)
+}
+
+fn split_samples_with_seed(samples: &[LabeledInvariantSample], split_seed: u64) -> SampleSplits<'_> {
     let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
     for sample in samples {
         grouped.entry(sample.mission.clone()).or_default().push(sample);
@@ -1136,7 +1267,15 @@ fn split_samples(samples: &[LabeledInvariantSample]) -> SampleSplits<'_> {
     let mut validation = Vec::new();
     let mut test = Vec::new();
     for mut group in grouped.into_values() {
-        group.sort_by_key(|sample| sample.timestamp_utc.clone());
+        if split_seed == 0 {
+            group.sort_by_key(|sample| sample.timestamp_utc.clone());
+        } else {
+            group.sort_by(|a, b| {
+                seeded_split_rank(a, split_seed)
+                    .cmp(&seeded_split_rank(b, split_seed))
+                    .then_with(|| a.timestamp_utc.cmp(&b.timestamp_utc))
+            });
+        }
         let n = group.len();
         let train_end = ((n as f64) * 0.70).round() as usize;
         let val_end = ((n as f64) * 0.85).round() as usize;
@@ -1154,6 +1293,14 @@ fn split_samples(samples: &[LabeledInvariantSample]) -> SampleSplits<'_> {
         validation,
         test,
     }
+}
+
+fn seeded_split_rank(sample: &LabeledInvariantSample, split_seed: u64) -> u64 {
+    let mut hasher = DefaultHasher::new();
+    split_seed.hash(&mut hasher);
+    sample.key.hash(&mut hasher);
+    sample.timestamp_utc.hash(&mut hasher);
+    hasher.finish()
 }
 
 fn feature_matrix(
@@ -1236,14 +1383,26 @@ fn normalize_text(value: &str) -> String {
 fn build_normalized_samples(
     samples: &[LabeledInvariantSample],
 ) -> BTreeMap<RowKey, NormalizedSample> {
-    build_normalized_samples_with_strategy(samples, NormalizationStrategy::MissionProduct)
+    build_normalized_samples_with_strategy_and_seed(
+        samples,
+        NormalizationStrategy::MissionProduct,
+        0,
+    )
 }
 
 fn build_normalized_samples_with_strategy(
     samples: &[LabeledInvariantSample],
     strategy: NormalizationStrategy,
 ) -> BTreeMap<RowKey, NormalizedSample> {
-    let splits = split_samples(samples);
+    build_normalized_samples_with_strategy_and_seed(samples, strategy, 0)
+}
+
+fn build_normalized_samples_with_strategy_and_seed(
+    samples: &[LabeledInvariantSample],
+    strategy: NormalizationStrategy,
+    split_seed: u64,
+) -> BTreeMap<RowKey, NormalizedSample> {
+    let splits = split_samples_with_seed(samples, split_seed);
     let train_keys = splits
         .train
         .iter()
@@ -1538,7 +1697,25 @@ fn fit_sparse_budget_policy_profile(
     grid: usize,
     budget_gib: f64,
 ) -> Result<ThresholdedSparsePolicy> {
-    let splits = split_samples(samples);
+    fit_sparse_budget_policy_profile_with_seed(
+        samples,
+        normalized,
+        descriptor_profile,
+        grid,
+        budget_gib,
+        0,
+    )
+}
+
+fn fit_sparse_budget_policy_profile_with_seed(
+    samples: &[LabeledInvariantSample],
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    descriptor_profile: Option<DescriptorProfile>,
+    grid: usize,
+    budget_gib: f64,
+    split_seed: u64,
+) -> Result<ThresholdedSparsePolicy> {
+    let splits = split_samples_with_seed(samples, split_seed);
     let name = match descriptor_profile {
         None => "invariant_budget_policy",
         Some(profile) => match profile {
