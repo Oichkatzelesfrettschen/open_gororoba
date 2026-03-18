@@ -83,8 +83,10 @@ struct Config {
 
 #[cfg(feature = "gpu")]
 fn run_slice_viewer(cfg: &Config) -> Result<()> {
-    use lbm_3d_cuda::{LbmSolver3DCuda, Precision, bench_kernels::SoaBenchRunner};
-    use lbm_3d_cuda::unified_runner::UnifiedInt8Runner;
+    use lbm_3d_cuda::{
+        LbmSolver3DCuda, Precision, bench_kernels::SoaBenchRunner,
+        unified_runner::UnifiedInt8Runner,
+    };
     use minifb::{Key, KeyRepeat, Window, WindowOptions};
 
     let n = cfg.grid;
@@ -98,8 +100,10 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
     println!("  tau: {}", cfg.tau);
     if use_unified {
         println!("  Backend: Unified Memory INT8 MRT (cuMemAllocManaged)");
-        println!("  Distribution buffer: {:.1} GB (pages between VRAM and system RAM)",
-            n_cells as f64 * 19.0 / (1024.0 * 1024.0 * 1024.0));
+        println!(
+            "  Distribution buffer: {:.1} GB (pages between VRAM and system RAM)",
+            n_cells as f64 * 19.0 / (1024.0 * 1024.0 * 1024.0)
+        );
     } else if use_int8 {
         println!("  Backend: INT8 SoA MRT (SoaBenchRunner)");
     } else {
@@ -113,31 +117,46 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
 
     if use_unified {
         println!("Initializing Unified Memory INT8 MRT solver...");
-        println!("  Allocating {:.1} GB managed memory...",
-            n_cells as f64 * 19.0 / (1024.0 * 1024.0 * 1024.0));
+        println!(
+            "  Allocating {:.1} GB managed memory...",
+            n_cells as f64 * 19.0 / (1024.0 * 1024.0 * 1024.0)
+        );
         solver_unified = Some(UnifiedInt8Runner::new(n, n, n, cfg.tau as f32)?);
-        println!("  Unified solver initialized. Dist buffer: {:.1} GB",
-            solver_unified.as_ref().unwrap().dist_bytes() as f64 / (1024.0 * 1024.0 * 1024.0));
+        println!(
+            "  Unified solver initialized. Dist buffer: {:.1} GB",
+            solver_unified.as_ref().unwrap().dist_bytes() as f64 / (1024.0 * 1024.0 * 1024.0)
+        );
     } else if use_int8 {
         println!("Initializing INT8 SoA MRT solver (low-VRAM path)...");
         solver_int8 = Some(SoaBenchRunner::new_int8_soa_mrt(n, n, n)?);
-        println!("INT8 solver initialized. VRAM: {} MB (dist only)",
-            solver_int8.as_ref().unwrap().vram_dist_bytes() / (1024 * 1024));
+        println!(
+            "INT8 solver initialized. VRAM: {} MB (dist only)",
+            solver_int8.as_ref().unwrap().vram_dist_bytes() / (1024 * 1024)
+        );
     } else {
         println!("Initializing FP32 MRT solver...");
         let mut s = LbmSolver3DCuda::new_mrt(n, n, n, cfg.tau, Precision::FP32)?;
         let u0 = 0.04;
         let kx = 2.0 * std::f64::consts::PI / n as f64;
         let ky = 2.0 * std::f64::consts::PI / n as f64;
-        let rho_init: Vec<f64> = (0..n_cells).map(|idx| {
-            let x = idx % n; let y = (idx / n) % n;
-            1.0 + 0.01 * (kx * x as f64).cos() * (ky * y as f64).cos()
-        }).collect();
-        let u_init: Vec<[f64; 3]> = (0..n_cells).map(|idx| {
-            let x = idx % n; let y = (idx / n) % n;
-            [u0 * (kx * x as f64).cos() * (ky * y as f64).sin(),
-             -u0 * (kx * x as f64).sin() * (ky * y as f64).cos(), 0.0]
-        }).collect();
+        let rho_init: Vec<f64> = (0..n_cells)
+            .map(|idx| {
+                let x = idx % n;
+                let y = (idx / n) % n;
+                1.0 + 0.01 * (kx * x as f64).cos() * (ky * y as f64).cos()
+            })
+            .collect();
+        let u_init: Vec<[f64; 3]> = (0..n_cells)
+            .map(|idx| {
+                let x = idx % n;
+                let y = (idx / n) % n;
+                [
+                    u0 * (kx * x as f64).cos() * (ky * y as f64).sin(),
+                    -u0 * (kx * x as f64).sin() * (ky * y as f64).cos(),
+                    0.0,
+                ]
+            })
+            .collect();
         s.initialize_custom(&rho_init, &u_init)?;
         solver_fp32 = Some(s);
         println!("FP32 solver initialized.");
@@ -194,7 +213,10 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
         }
         if window.is_key_pressed(Key::V, KeyRepeat::No) {
             show_velocity = !show_velocity;
-            eprintln!("  Show: {}", if show_velocity { "velocity" } else { "density" });
+            eprintln!(
+                "  Show: {}",
+                if show_velocity { "velocity" } else { "density" }
+            );
         }
         if window.is_key_pressed(Key::Up, KeyRepeat::Yes) {
             slice_idx = (slice_idx + 1).min(n - 1);
@@ -248,7 +270,8 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
         if use_unified {
             // Unified memory path: extract slice on-the-fly via GPU kernel
             let s = solver_unified.as_mut().unwrap();
-            let (rho_slice, vel_slice) = s.read_slice(slice_axis_i32(slice_axis), slice_idx as i32)?;
+            let (rho_slice, vel_slice) =
+                s.read_slice(slice_axis_i32(slice_axis), slice_idx as i32)?;
             let slice_grid = GridShape3d {
                 nx: n as u32,
                 ny: n as u32,
@@ -282,7 +305,8 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
         } else if use_int8 {
             // INT8 path: extract slice on-the-fly via GPU kernel
             let s = solver_int8.as_ref().unwrap();
-            let (rho_slice, vel_slice) = s.read_slice(slice_axis_i32(slice_axis), slice_idx as i32)?;
+            let (rho_slice, vel_slice) =
+                s.read_slice(slice_axis_i32(slice_axis), slice_idx as i32)?;
             let slice_grid = GridShape3d {
                 nx: n as u32,
                 ny: n as u32,
@@ -317,9 +341,10 @@ fn run_slice_viewer(cfg: &Config) -> Result<()> {
             // FP32 path: read from host-side rho/u arrays
             let s = solver_fp32.as_ref().unwrap();
             if show_velocity {
-                let vel_mag: Vec<f32> = s.u.iter()
-                    .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
-                    .collect();
+                let vel_mag: Vec<f32> =
+                    s.u.iter()
+                        .map(|v| (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt())
+                        .collect();
                 render_scalar_volume_slice_to_argb(
                     &mut framebuffer,
                     (fb_w, fb_h),

@@ -34,10 +34,7 @@ struct Cli {
     min_per_bin: usize,
 }
 
-fn load_valid_bins(
-    path: &std::path::Path,
-    min_per_bin: usize,
-) -> anyhow::Result<ValidBins> {
+fn load_valid_bins(path: &std::path::Path, min_per_bin: usize) -> anyhow::Result<ValidBins> {
     let mut rdr = csv::Reader::from_path(path)?;
     let headers = rdr.headers()?.clone();
 
@@ -77,8 +74,10 @@ fn main() -> anyhow::Result<()> {
     let x_max = x[n_bins - 1];
     let window_length = x_max - x_min;
 
-    eprintln!("Data window: x = [{:.4}, {:.4}], L = {:.4} r/r_s, {} bins",
-        x_min, x_max, window_length, n_bins);
+    eprintln!(
+        "Data window: x = [{:.4}, {:.4}], L = {:.4} r/r_s, {} bins",
+        x_min, x_max, window_length, n_bins
+    );
     eprintln!();
 
     let n_modes = 7;
@@ -93,9 +92,20 @@ fn main() -> anyhow::Result<()> {
     for (i, &k) in wavenumbers.iter().enumerate() {
         let wavelength = 2.0 * std::f64::consts::PI / k;
         let cycles = window_length / wavelength;
-        println!("{},{:.6},{:.4},{:.4},{:.4}", i + 1, k, wavelength, cycles, cycles);
-        eprintln!("  Mode {}: lambda={:.3}, {:.1}% of one cycle in window",
-            i + 1, wavelength, cycles * 100.0);
+        println!(
+            "{},{:.6},{:.4},{:.4},{:.4}",
+            i + 1,
+            k,
+            wavelength,
+            cycles,
+            cycles
+        );
+        eprintln!(
+            "  Mode {}: lambda={:.3}, {:.1}% of one cycle in window",
+            i + 1,
+            wavelength,
+            cycles * 100.0
+        );
     }
 
     // Part 2: DFT injection response.
@@ -113,13 +123,29 @@ fn main() -> anyhow::Result<()> {
         let n = n_bins as f64;
 
         // DFT of injected signal.
-        let re_inj: f64 = x.iter().map(|&xj| (k * xj).cos() * (k * xj).cos()).sum::<f64>() / n;
-        let im_inj: f64 = x.iter().map(|&xj| (k * xj).cos() * (k * xj).sin()).sum::<f64>() / n;
+        let re_inj: f64 = x
+            .iter()
+            .map(|&xj| (k * xj).cos() * (k * xj).cos())
+            .sum::<f64>()
+            / n;
+        let im_inj: f64 = x
+            .iter()
+            .map(|&xj| (k * xj).cos() * (k * xj).sin())
+            .sum::<f64>()
+            / n;
         let recovered_power = re_inj * re_inj + im_inj * im_inj;
 
         // Also inject sin(k*x) to get the full complex response.
-        let re_sin: f64 = x.iter().map(|&xj| (k * xj).sin() * (k * xj).cos()).sum::<f64>() / n;
-        let im_sin: f64 = x.iter().map(|&xj| (k * xj).sin() * (k * xj).sin()).sum::<f64>() / n;
+        let re_sin: f64 = x
+            .iter()
+            .map(|&xj| (k * xj).sin() * (k * xj).cos())
+            .sum::<f64>()
+            / n;
+        let im_sin: f64 = x
+            .iter()
+            .map(|&xj| (k * xj).sin() * (k * xj).sin())
+            .sum::<f64>()
+            / n;
         let recovered_power_sin = re_sin * re_sin + im_sin * im_sin;
 
         // Average response (phase-independent).
@@ -131,10 +157,20 @@ fn main() -> anyhow::Result<()> {
 
         recovery_fractions.push(recovery_frac);
 
-        println!("{},{:.6},{:.6e},{:.6e},{:.6}",
-            i + 1, k, 0.25_f64, avg_recovery, recovery_frac);
-        eprintln!("  Mode {}: recovery fraction = {:.4} ({:.1}%)",
-            i + 1, recovery_frac, recovery_frac * 100.0);
+        println!(
+            "{},{:.6},{:.6e},{:.6e},{:.6}",
+            i + 1,
+            k,
+            0.25_f64,
+            avg_recovery,
+            recovery_frac
+        );
+        eprintln!(
+            "  Mode {}: recovery fraction = {:.4} ({:.1}%)",
+            i + 1,
+            recovery_frac,
+            recovery_frac * 100.0
+        );
     }
 
     // Part 3: Window-corrected chi-squared test.
@@ -143,7 +179,9 @@ fn main() -> anyhow::Result<()> {
     eprintln!("--- Part 3: Window-corrected matched filter ---");
 
     // Compute whitened DFT (same as P1).
-    let d_white: Vec<f64> = delta.iter().zip(err.iter())
+    let d_white: Vec<f64> = delta
+        .iter()
+        .zip(err.iter())
         .map(|(d, e)| if *e > 1e-30 { d / e } else { 0.0 })
         .collect();
 
@@ -154,18 +192,29 @@ fn main() -> anyhow::Result<()> {
     println!("mode,k,chi2_raw,recovery_frac,chi2_corrected,weight");
 
     for (i, &k) in wavenumbers.iter().enumerate() {
-        let re_w: f64 = d_white.iter().zip(x.iter())
+        let re_w: f64 = d_white
+            .iter()
+            .zip(x.iter())
             .map(|(d, xj)| d * (k * xj).cos())
             .sum();
-        let im_w: f64 = d_white.iter().zip(x.iter())
+        let im_w: f64 = d_white
+            .iter()
+            .zip(x.iter())
             .map(|(d, xj)| d * (k * xj).sin())
             .sum();
 
         let var_re: f64 = x.iter().map(|xj| (k * xj).cos().powi(2)).sum();
         let var_im: f64 = x.iter().map(|xj| (k * xj).sin().powi(2)).sum();
 
-        let chi2_mode = if var_re > 0.0 { re_w * re_w / var_re } else { 0.0 }
-            + if var_im > 0.0 { im_w * im_w / var_im } else { 0.0 };
+        let chi2_mode = if var_re > 0.0 {
+            re_w * re_w / var_re
+        } else {
+            0.0
+        } + if var_im > 0.0 {
+            im_w * im_w / var_im
+        } else {
+            0.0
+        };
 
         total_chi2_raw += chi2_mode;
 
@@ -176,17 +225,29 @@ fn main() -> anyhow::Result<()> {
         total_chi2_corrected += chi2_corrected;
         effective_dof += 2.0 * weight; // 2 DOF per mode, weighted
 
-        println!("{},{:.6},{:.4},{:.4},{:.4},{:.4}",
-            i + 1, k, chi2_mode, rf, chi2_corrected, weight);
+        println!(
+            "{},{:.6},{:.4},{:.4},{:.4},{:.4}",
+            i + 1,
+            k,
+            chi2_mode,
+            rf,
+            chi2_corrected,
+            weight
+        );
     }
 
     eprintln!();
     eprintln!("--- Summary ---");
     eprintln!("  Raw chi^2 = {:.2} (df = 14)", total_chi2_raw);
-    eprintln!("  Window-corrected chi^2 = {:.2} (effective df = {:.2})",
-        total_chi2_corrected, effective_dof);
-    eprintln!("  Chi^2/df ratio: raw = {:.2}, corrected = {:.2}",
-        total_chi2_raw / 14.0, total_chi2_corrected / effective_dof);
+    eprintln!(
+        "  Window-corrected chi^2 = {:.2} (effective df = {:.2})",
+        total_chi2_corrected, effective_dof
+    );
+    eprintln!(
+        "  Chi^2/df ratio: raw = {:.2}, corrected = {:.2}",
+        total_chi2_raw / 14.0,
+        total_chi2_corrected / effective_dof
+    );
 
     // Part 4: Which modes are actually detectable?
     eprintln!();
@@ -206,7 +267,12 @@ fn main() -> anyhow::Result<()> {
             n_undetectable += 1;
             "UNDETECTABLE (<20% recovery)"
         };
-        eprintln!("  Mode {}: recovery={:.1}% -> {}", i + 1, rf * 100.0, classification);
+        eprintln!(
+            "  Mode {}: recovery={:.1}% -> {}",
+            i + 1,
+            rf * 100.0,
+            classification
+        );
     }
 
     eprintln!();
@@ -217,17 +283,25 @@ fn main() -> anyhow::Result<()> {
     eprintln!("  Effective DOF: {:.1} (vs nominal 14)", effective_dof);
 
     if n_undetectable > 0 {
-        eprintln!("  CHALLENGE: {} modes are undetectable in the data window.", n_undetectable);
+        eprintln!(
+            "  CHALLENGE: {} modes are undetectable in the data window.",
+            n_undetectable
+        );
         eprintln!("  The chi^2 test is diluted by insensitive modes.");
         eprintln!("  Restricting to detectable modes would change the detection threshold.");
     }
     if effective_dof < 10.0 {
-        eprintln!("  CRITICAL: effective DOF ({:.1}) is {:.0}% below nominal (14).",
-            effective_dof, (1.0 - effective_dof / 14.0) * 100.0);
+        eprintln!(
+            "  CRITICAL: effective DOF ({:.1}) is {:.0}% below nominal (14).",
+            effective_dof,
+            (1.0 - effective_dof / 14.0) * 100.0
+        );
         eprintln!("  Detection thresholds derived from chi^2(14) are INVALID.");
     } else {
-        eprintln!("  Window correction is moderate ({:.0}% DOF reduction).",
-            (1.0 - effective_dof / 14.0) * 100.0);
+        eprintln!(
+            "  Window correction is moderate ({:.0}% DOF reduction).",
+            (1.0 - effective_dof / 14.0) * 100.0
+        );
         eprintln!("  Null result remains valid but with reduced statistical power.");
     }
 

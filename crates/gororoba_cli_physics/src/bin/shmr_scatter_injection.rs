@@ -27,8 +27,7 @@ use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, LogNormal};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -36,7 +35,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(name = "shmr-scatter-injection")]
 #[command(about = "D1: SHMR scatter phase-smearing test for injection recovery")]
 struct Cli {
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     #[arg(long, default_value = "data/external/manga/dapall_selection.csv")]
@@ -101,30 +103,49 @@ fn main() -> anyhow::Result<()> {
     for galaxy in &rotcurves {
         let meta = match dapall_map.get(&galaxy.plateifu) {
             Some(m) => m,
-            None => { skipped += 1; continue; }
+            None => {
+                skipped += 1;
+                continue;
+            }
         };
 
         let log_m200 = meta.estimated_log_m200();
-        if !log_m200.is_finite() { skipped += 1; continue; }
+        if !log_m200.is_finite() {
+            skipped += 1;
+            continue;
+        }
         let m200 = 10.0_f64.powf(log_m200);
         let nfw = nfw_params_from_mass(m200, meta.z);
         let r_s = nfw.r_s_kpc;
-        if r_s <= 0.0 { skipped += 1; continue; }
+        if r_s <= 0.0 {
+            skipped += 1;
+            continue;
+        }
 
-        let points: Vec<RawPoint> = galaxy.points.iter().filter_map(|pt| {
-            if pt.r_kpc <= 0.0 { return None; }
-            let m_enc = nfw_enclosed_mass_from_params(pt.r_kpc, &nfw);
-            let v_sq = G_KPC_KMS2 * m_enc / pt.r_kpc;
-            let v_nfw = v_sq.max(0.0).sqrt();
-            if v_nfw < 1.0 { return None; }
-            if !pt.v_obs_km_s.is_finite() || !pt.v_err_km_s.is_finite() { return None; }
-            Some(RawPoint {
-                r_kpc: pt.r_kpc,
-                v_obs_km_s: pt.v_obs_km_s,
-                v_err_km_s: pt.v_err_km_s,
-                v_nfw_km_s: v_nfw,
+        let points: Vec<RawPoint> = galaxy
+            .points
+            .iter()
+            .filter_map(|pt| {
+                if pt.r_kpc <= 0.0 {
+                    return None;
+                }
+                let m_enc = nfw_enclosed_mass_from_params(pt.r_kpc, &nfw);
+                let v_sq = G_KPC_KMS2 * m_enc / pt.r_kpc;
+                let v_nfw = v_sq.max(0.0).sqrt();
+                if v_nfw < 1.0 {
+                    return None;
+                }
+                if !pt.v_obs_km_s.is_finite() || !pt.v_err_km_s.is_finite() {
+                    return None;
+                }
+                Some(RawPoint {
+                    r_kpc: pt.r_kpc,
+                    v_obs_km_s: pt.v_obs_km_s,
+                    v_err_km_s: pt.v_err_km_s,
+                    v_nfw_km_s: v_nfw,
+                })
             })
-        }).collect();
+            .collect();
 
         if points.len() >= cli.min_points {
             galaxies.push(GalaxyData {
@@ -159,7 +180,10 @@ fn main() -> anyhow::Result<()> {
     // === BASELINE: Inject signal with EXACT r_s ===
     eprintln!("\n--- Baseline: Injection with exact r_s ---");
     let baseline_power = run_injection(
-        &galaxies, &wavenumbers, &config, cli.alpha_zd,
+        &galaxies,
+        &wavenumbers,
+        &config,
+        cli.alpha_zd,
         |g| g.r_s_kpc, // Use exact r_s
     );
 
@@ -169,7 +193,10 @@ fn main() -> anyhow::Result<()> {
     }
 
     // === SCATTER: Inject signal with perturbed r_s ===
-    eprintln!("\n--- Scatter: Injection with {:.2} dex SHMR scatter ---", cli.shmr_scatter_dex);
+    eprintln!(
+        "\n--- Scatter: Injection with {:.2} dex SHMR scatter ---",
+        cli.shmr_scatter_dex
+    );
 
     // Log-normal scatter: if scatter = 0.15 dex, then sigma_ln = 0.15 * ln(10) = 0.345
     let sigma_ln = cli.shmr_scatter_dex * 10.0_f64.ln();
@@ -180,13 +207,10 @@ fn main() -> anyhow::Result<()> {
         let mut rng = ChaCha8Rng::seed_from_u64(42 + mc as u64);
         let ln_dist = LogNormal::new(0.0, sigma_ln).unwrap();
 
-        let power = run_injection(
-            &galaxies, &wavenumbers, &config, cli.alpha_zd,
-            |g| {
-                let factor: f64 = ln_dist.sample(&mut rng);
-                g.r_s_kpc * factor
-            },
-        );
+        let power = run_injection(&galaxies, &wavenumbers, &config, cli.alpha_zd, |g| {
+            let factor: f64 = ln_dist.sample(&mut rng);
+            g.r_s_kpc * factor
+        });
 
         scatter_powers.push(power);
     }
@@ -204,22 +228,31 @@ fn main() -> anyhow::Result<()> {
     for mode_idx in 0..n_modes {
         let exact_p = baseline_power[mode_idx];
 
-        let mut scatter_mode: Vec<f64> = scatter_powers.iter()
-            .map(|p| p[mode_idx])
-            .collect();
+        let mut scatter_mode: Vec<f64> = scatter_powers.iter().map(|p| p[mode_idx]).collect();
         scatter_mode.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let median_p = scatter_mode[cli.n_mc / 2];
         let p25 = scatter_mode[cli.n_mc / 4];
         let p75 = scatter_mode[3 * cli.n_mc / 4];
 
-        let ratio = if exact_p > 1e-20 { median_p / exact_p } else { f64::NAN };
+        let ratio = if exact_p > 1e-20 {
+            median_p / exact_p
+        } else {
+            f64::NAN
+        };
         let drop_pct = (1.0 - ratio) * 100.0;
 
-        if drop_pct > 50.0 { n_modes_dropped += 1; }
+        if drop_pct > 50.0 {
+            n_modes_dropped += 1;
+        }
 
         eprintln!(
             "{:>5}  {:>8.4}  {:>12.6e}  {:>12.6e}  {:>10.4}  {:>10.1}%",
-            mode_idx + 1, wavenumbers[mode_idx], exact_p, median_p, ratio, drop_pct
+            mode_idx + 1,
+            wavenumbers[mode_idx],
+            exact_p,
+            median_p,
+            ratio,
+            drop_pct
         );
 
         results.push((
@@ -240,22 +273,30 @@ fn main() -> anyhow::Result<()> {
         let delta_phi = k * 1.0 * (10.0_f64.powf(cli.shmr_scatter_dex) - 1.0);
         eprintln!(
             "  mode {}: k={:.4}, delta_phi={:.3} rad ({:.1} deg)",
-            i + 1, k, delta_phi, delta_phi.to_degrees()
+            i + 1,
+            k,
+            delta_phi,
+            delta_phi.to_degrees()
         );
     }
 
     // Verdict
     eprintln!("\n--- Contrarian D1 Verdict ---");
-    let modes_above_50pct_drop: Vec<usize> = results.iter()
-        .filter(|r| r.5 > 50.0)
-        .map(|r| r.0)
-        .collect();
+    let modes_above_50pct_drop: Vec<usize> =
+        results.iter().filter(|r| r.5 > 50.0).map(|r| r.0).collect();
 
     if modes_above_50pct_drop.len() >= 3 {
-        eprintln!("DETECTION: SHMR scatter destroys {} of 7 modes (>50% power drop)", modes_above_50pct_drop.len());
+        eprintln!(
+            "DETECTION: SHMR scatter destroys {} of 7 modes (>50% power drop)",
+            modes_above_50pct_drop.len()
+        );
         eprintln!("  Affected modes: {:?}", modes_above_50pct_drop);
-        eprintln!("  The alpha_zd upper limit is INVALID for modes {}-7", modes_above_50pct_drop[0]);
-        eprintln!("  Effective sensitivity uses only {} modes, weakening the limit by ~{:.0}%",
+        eprintln!(
+            "  The alpha_zd upper limit is INVALID for modes {}-7",
+            modes_above_50pct_drop[0]
+        );
+        eprintln!(
+            "  Effective sensitivity uses only {} modes, weakening the limit by ~{:.0}%",
             7 - modes_above_50pct_drop.len(),
             (1.0 - ((7 - modes_above_50pct_drop.len()) as f64 / 7.0).sqrt()) * 100.0
         );
@@ -263,14 +304,22 @@ fn main() -> anyhow::Result<()> {
         eprintln!("FAILURE: SHMR scatter does not significantly affect any mode");
         eprintln!("  All modes retain >50% power -- the null result is robust to r_s uncertainty");
     } else {
-        eprintln!("INCONCLUSIVE: {} modes affected, fewer than 3", n_modes_dropped);
+        eprintln!(
+            "INCONCLUSIVE: {} modes affected, fewer than 3",
+            n_modes_dropped
+        );
     }
 
     // Write CSV
     let mut wtr = csv::Writer::from_path(&cli.out_csv)?;
     wtr.write_record([
-        "mode", "k", "exact_power", "scatter_median_power",
-        "ratio", "drop_pct", "n_mc",
+        "mode",
+        "k",
+        "exact_power",
+        "scatter_median_power",
+        "ratio",
+        "drop_pct",
+        "n_mc",
     ])?;
     for r in &results {
         wtr.write_record(&[
@@ -313,28 +362,42 @@ where
 
     for g in galaxies {
         let r_s = r_s_fn(g);
-        if r_s <= 0.0 { continue; }
+        if r_s <= 0.0 {
+            continue;
+        }
 
-        let points: Vec<NormalizedPoint> = g.points_raw.iter().filter_map(|pt| {
-            let x = pt.r_kpc / r_s;
-            let v_nfw = pt.v_nfw_km_s;
-            if v_nfw < 1.0 { return None; }
-
-            // Inject ZD signal: delta_v += alpha_zd * sum_n (0.5/n) * cos(k_n * x) * exp(-x)
-            let mut injected_delta = (pt.v_obs_km_s - v_nfw) / v_nfw;
-            if alpha_zd > 0.0 {
-                for (mode_idx, &k) in wavenumbers.iter().enumerate() {
-                    let n = (mode_idx + 1) as f64;
-                    let w = 0.5 / n;
-                    injected_delta += alpha_zd * w * (k * x).cos() * (-x).exp();
+        let points: Vec<NormalizedPoint> = g
+            .points_raw
+            .iter()
+            .filter_map(|pt| {
+                let x = pt.r_kpc / r_s;
+                let v_nfw = pt.v_nfw_km_s;
+                if v_nfw < 1.0 {
+                    return None;
                 }
-            }
 
-            let delta_v_err = pt.v_err_km_s / v_nfw;
-            if !injected_delta.is_finite() || !delta_v_err.is_finite() { return None; }
+                // Inject ZD signal: delta_v += alpha_zd * sum_n (0.5/n) * cos(k_n * x) * exp(-x)
+                let mut injected_delta = (pt.v_obs_km_s - v_nfw) / v_nfw;
+                if alpha_zd > 0.0 {
+                    for (mode_idx, &k) in wavenumbers.iter().enumerate() {
+                        let n = (mode_idx + 1) as f64;
+                        let w = 0.5 / n;
+                        injected_delta += alpha_zd * w * (k * x).cos() * (-x).exp();
+                    }
+                }
 
-            Some(NormalizedPoint { x, delta_v: injected_delta, delta_v_err })
-        }).collect();
+                let delta_v_err = pt.v_err_km_s / v_nfw;
+                if !injected_delta.is_finite() || !delta_v_err.is_finite() {
+                    return None;
+                }
+
+                Some(NormalizedPoint {
+                    x,
+                    delta_v: injected_delta,
+                    delta_v_err,
+                })
+            })
+            .collect();
 
         if points.len() >= 8 {
             normalized.push(NormalizedResiduals {
@@ -347,8 +410,11 @@ where
 
     let result = stack_residuals(&normalized, config);
     let (power, _phase) = fourier_at_wavenumbers(
-        &result.x_grid, &result.delta_stack, &result.n_contributing,
-        config.min_galaxies_per_bin, wavenumbers,
+        &result.x_grid,
+        &result.delta_stack,
+        &result.n_contributing,
+        config.min_galaxies_per_bin,
+        wavenumbers,
     );
     power
 }

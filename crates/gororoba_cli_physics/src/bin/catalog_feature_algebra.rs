@@ -182,7 +182,9 @@ impl FeatureMode {
         match value {
             "raw" => Ok(Self::Raw),
             "residualized" => Ok(Self::Residualized),
-            other => anyhow::bail!("unsupported feature mode '{other}'; expected raw or residualized"),
+            other => {
+                anyhow::bail!("unsupported feature mode '{other}'; expected raw or residualized")
+            }
         }
     }
 }
@@ -397,7 +399,11 @@ fn algebra_vector(
     if matches!(vector_mode, VectorMode::Default) {
         out[8] = row.ra_deg.map(|value| value / 180.0).unwrap_or(0.0);
         out[9] = row.dec_deg.map(|value| value / 90.0).unwrap_or(0.0);
-        out[10] = row.time_utc.as_deref().map(normalized_time_year).unwrap_or(0.0);
+        out[10] = row
+            .time_utc
+            .as_deref()
+            .map(normalized_time_year)
+            .unwrap_or(0.0);
         out[11] = finite_or_zero(row.redshift.unwrap_or(0.0));
         out[12] = finite_or_zero(signed_log1p(row.distance_proxy.unwrap_or(0.0)));
         out[13] = if row.program_id.as_deref().unwrap_or("").is_empty() {
@@ -430,7 +436,10 @@ fn selected_features(row: &data_core::CatalogFeatureRow, feature_mode: FeatureMo
     }
 }
 
-fn algebra_channel_names(channels: &[CatalogFeatureChannel], feature_mode: FeatureMode) -> Vec<String> {
+fn algebra_channel_names(
+    channels: &[CatalogFeatureChannel],
+    feature_mode: FeatureMode,
+) -> Vec<String> {
     let mut out = channels
         .iter()
         .take(8)
@@ -619,8 +628,8 @@ fn empirical_upper_tail_p_value(observed: f64, null_distribution: &[f64]) -> f64
 }
 
 fn load_ultrametric_significance(path: &Path) -> Result<BTreeMap<String, bool>> {
-    let mut reader = csv::Reader::from_path(path)
-        .with_context(|| format!("open {}", path.display()))?;
+    let mut reader =
+        csv::Reader::from_path(path).with_context(|| format!("open {}", path.display()))?;
     let mut out = BTreeMap::new();
     for row in reader.records() {
         let row = row.with_context(|| format!("read {}", path.display()))?;

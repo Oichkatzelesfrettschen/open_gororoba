@@ -79,7 +79,10 @@ fn main() -> Result<()> {
     let cache_root = cli.repo_root.join("data/external");
     let coverage_rows = summarize_label_coverage(&rows, &cache_root)?;
     let (samples, split_summary) = build_labeled_samples(&rows, &cache_root, cli.horizon_hours)?;
-    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    let positive_sample_count = samples
+        .iter()
+        .filter(|sample| sample.label_positive)
+        .count();
     if positive_sample_count == 0 {
         anyhow::bail!(
             "no official positive windows overlapped {}; choose a different cube or label horizon",

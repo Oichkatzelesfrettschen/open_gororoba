@@ -2,9 +2,9 @@ use anyhow::{Context, Result};
 use chrono::Utc;
 use clap::Parser;
 use gororoba_cli_physics::heliosphere_eval::{
-    SeededSparsePolicySummary, SparseMaskSummary, SparsePolicyDatasetContext, SparsePolicyTransferSpec,
-    build_sparse_policy_dataset_context, load_heliosphere_rows, summarize_seeded_sparse_policy_rows,
-    summarize_sparse_policies,
+    SeededSparsePolicySummary, SparseMaskSummary, SparsePolicyDatasetContext,
+    SparsePolicyTransferSpec, build_sparse_policy_dataset_context, load_heliosphere_rows,
+    summarize_seeded_sparse_policy_rows, summarize_sparse_policies,
 };
 use serde::Serialize;
 use std::{collections::BTreeMap, fs, path::PathBuf};
@@ -138,7 +138,9 @@ fn main() -> Result<()> {
     }
 
     for (cube_name, rows) in &raw_rows_by_cube {
-        if let Ok(context) = build_sparse_policy_dataset_context(rows, &cache_root, cli.horizon_hours) {
+        if let Ok(context) =
+            build_sparse_policy_dataset_context(rows, &cache_root, cli.horizon_hours)
+        {
             policy_contexts.insert(cube_name.clone(), context);
         }
     }
@@ -155,7 +157,9 @@ fn main() -> Result<()> {
             cube.seeded_policies.retain(|row| {
                 let key = policy_key(row);
                 key != comparator_policy_key
-                    && promoted_policy_key.as_deref().is_none_or(|promoted| key != promoted)
+                    && promoted_policy_key
+                        .as_deref()
+                        .is_none_or(|promoted| key != promoted)
             });
             for seed in split_seeds.iter().copied() {
                 if let Ok((_positive, comparator_row)) = transferred_seed_row(
@@ -186,11 +190,8 @@ fn main() -> Result<()> {
     }
     let mut promotion_survives_all_cubes = promoted_policy_key.is_some();
     for cube in &mut cubes {
-        let (survives, blockers) = evaluate_cube_survival(
-            cube,
-            &comparator_policy_key,
-            promoted_policy_key.as_deref(),
-        );
+        let (survives, blockers) =
+            evaluate_cube_survival(cube, &comparator_policy_key, promoted_policy_key.as_deref());
         cube.promoted_survives_cube = survives;
         cube.blockers = blockers;
         promotion_survives_all_cubes &= survives;
@@ -233,7 +234,10 @@ fn main() -> Result<()> {
     fs::write(&out, toml::to_string_pretty(&report)?)
         .with_context(|| format!("write {}", out.display()))?;
     println!("reference_cube = {}", report.reference_cube);
-    println!("promoted_policy_key = {}", report.promoted_policy_key.as_deref().unwrap_or("none"));
+    println!(
+        "promoted_policy_key = {}",
+        report.promoted_policy_key.as_deref().unwrap_or("none")
+    );
     println!(
         "promotion_survives_all_cubes = {}",
         report.promotion_survives_all_cubes
@@ -250,11 +254,17 @@ fn cube_name(path: &std::path::Path) -> String {
 }
 
 fn choose_reference_cube(cubes: &[CubeEvaluation]) -> String {
-    cubes.iter()
+    cubes
+        .iter()
         .find(|cube| cube.supervised && cube.cube_name.contains("modern2020"))
         .or_else(|| cubes.iter().find(|cube| cube.supervised))
         .map(|cube| cube.cube_name.clone())
-        .unwrap_or_else(|| cubes.first().map(|cube| cube.cube_name.clone()).unwrap_or_else(|| "cube".to_string()))
+        .unwrap_or_else(|| {
+            cubes
+                .first()
+                .map(|cube| cube.cube_name.clone())
+                .unwrap_or_else(|| "cube".to_string())
+        })
 }
 
 fn aggregate_seeded_policies(rows: &[SeededSparsePolicySummary]) -> Vec<PolicyAggregate> {
@@ -267,7 +277,10 @@ fn aggregate_seeded_policies(rows: &[SeededSparsePolicySummary]) -> Vec<PolicyAg
         .map(|(key, rows)| {
             let first = rows[0];
             let mean_lead = mean_optional(
-                &rows.iter().map(|row| row.median_lead_time_hours).collect::<Vec<_>>(),
+                &rows
+                    .iter()
+                    .map(|row| row.median_lead_time_hours)
+                    .collect::<Vec<_>>(),
             );
             PolicyAggregate {
                 policy_key: key,
@@ -279,7 +292,10 @@ fn aggregate_seeded_policies(rows: &[SeededSparsePolicySummary]) -> Vec<PolicyAg
                     .filter(|row| row.sparse_bf16_aa_projected_gib <= 12.0)
                     .count(),
                 mean_active_fraction: mean(
-                    &rows.iter().map(|row| row.active_fraction).collect::<Vec<_>>(),
+                    &rows
+                        .iter()
+                        .map(|row| row.active_fraction)
+                        .collect::<Vec<_>>(),
                 ),
                 max_active_fraction: rows
                     .iter()
@@ -334,7 +350,9 @@ fn select_promoted_policy(
     reference_cube_name: &str,
     comparator_policy_key: &str,
 ) -> Option<String> {
-    let reference = cubes.iter().find(|cube| cube.cube_name == reference_cube_name)?;
+    let reference = cubes
+        .iter()
+        .find(|cube| cube.cube_name == reference_cube_name)?;
     if !reference.supervised {
         return None;
     }
@@ -452,7 +470,12 @@ fn mean(values: &[f64]) -> f64 {
 }
 
 fn mean_optional(values: &[Option<f64>]) -> Option<f64> {
-    let finite = values.iter().flatten().copied().filter(|value| value.is_finite()).collect::<Vec<_>>();
+    let finite = values
+        .iter()
+        .flatten()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect::<Vec<_>>();
     if finite.is_empty() {
         None
     } else {

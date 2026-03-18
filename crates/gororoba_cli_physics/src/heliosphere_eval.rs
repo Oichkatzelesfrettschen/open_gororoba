@@ -5,12 +5,11 @@ use anyhow::{Context, Result, bail};
 use chrono::{DateTime, Duration, Utc};
 use csv::ReaderBuilder;
 use data_core::{
-    HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM,
-    HeliosphereEventSource, HeliosphereEventWindow, HeliosphereFeatureRow,
-    HeliosphereInvariantSample, HeliosphereTransformMode, SparseHardwareEnvelope,
-    compute_invariant_samples, estimate_sparse_execution_plan, fetch_donki_event_labels,
-    fetch_official_forecast_residuals, heliosphere_row_datetime, labels_to_prediction_windows,
-    transform_feature_rows_with_stats,
+    HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM, HeliosphereEventSource,
+    HeliosphereEventWindow, HeliosphereFeatureRow, HeliosphereInvariantSample,
+    HeliosphereTransformMode, SparseHardwareEnvelope, compute_invariant_samples,
+    estimate_sparse_execution_plan, fetch_donki_event_labels, fetch_official_forecast_residuals,
+    heliosphere_row_datetime, labels_to_prediction_windows, transform_feature_rows_with_stats,
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -462,7 +461,10 @@ pub fn build_sparse_policy_dataset_context(
     horizon_hours: i64,
 ) -> Result<SparsePolicyDatasetContext> {
     let (samples, _) = build_labeled_samples(rows, cache_root, horizon_hours)?;
-    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    let positive_sample_count = samples
+        .iter()
+        .filter(|sample| sample.label_positive)
+        .count();
     Ok(SparsePolicyDatasetContext {
         positive_sample_count,
         samples,
@@ -480,8 +482,8 @@ pub fn summarize_label_coverage(
         end_date + Duration::days(2),
         cache_root,
     )?;
-    let residuals = fetch_official_forecast_residuals(start_date, end_date, cache_root)
-        .unwrap_or_default();
+    let residuals =
+        fetch_official_forecast_residuals(start_date, end_date, cache_root).unwrap_or_default();
     let mut grouped: BTreeMap<(String, String), Vec<&HeliosphereFeatureRow>> = BTreeMap::new();
     for row in rows {
         grouped
@@ -512,12 +514,10 @@ pub fn summarize_label_coverage(
                 .iter()
                 .filter(|row| normalize_text(&row.mission) == normalize_text(&mission))
                 .count();
-            let has_observed_overlap = windows_24.iter().any(|window| {
-                !matches!(
-                    window.source,
-                    HeliosphereEventSource::DonkiEnlilImpact
-                )
-            }) && positive_row_count_24h > 0;
+            let has_observed_overlap = windows_24
+                .iter()
+                .any(|window| !matches!(window.source, HeliosphereEventSource::DonkiEnlilImpact))
+                && positive_row_count_24h > 0;
             let has_forecast_only_overlap = positive_row_count_24h > 0 && !has_observed_overlap;
             let coverage_status = if has_observed_overlap {
                 "observed_label_overlap"
@@ -561,12 +561,16 @@ pub fn summarize_label_coverage(
             }
         })
         .collect::<Vec<_>>();
-    coverage.sort_by(|a, b| (a.mission.as_str(), a.product.as_str()).cmp(&(b.mission.as_str(), b.product.as_str())));
+    coverage.sort_by(|a, b| {
+        (a.mission.as_str(), a.product.as_str()).cmp(&(b.mission.as_str(), b.product.as_str()))
+    });
     Ok(coverage)
 }
 
 /// Evaluate scalar, invariant-only, and invariant-plus-descriptor predictors.
-pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<Vec<BinaryMetrics>> {
+pub fn evaluate_predictive_models(
+    samples: &[LabeledInvariantSample],
+) -> Result<Vec<BinaryMetrics>> {
     if samples.is_empty() {
         bail!("no labeled invariant samples available");
     }
@@ -590,20 +594,29 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
             .collect::<Vec<_>>(),
     );
 
-    let best_single_raw = best_single_invariant_threshold(&splits.validation, ViewMode::Raw, &normalized);
+    let best_single_raw =
+        best_single_invariant_threshold(&splits.validation, ViewMode::Raw, &normalized);
     let best_single_normalized =
         best_single_invariant_threshold(&splits.validation, ViewMode::Normalized, &normalized);
 
-    let invariant_train =
-        feature_matrix(&splits.train, ViewMode::Raw, FeatureMode::Invariants, &normalized);
+    let invariant_train = feature_matrix(
+        &splits.train,
+        ViewMode::Raw,
+        FeatureMode::Invariants,
+        &normalized,
+    );
     let invariant_validation = feature_matrix(
         &splits.validation,
         ViewMode::Raw,
         FeatureMode::Invariants,
         &normalized,
     );
-    let invariant_test =
-        feature_matrix(&splits.test, ViewMode::Raw, FeatureMode::Invariants, &normalized);
+    let invariant_test = feature_matrix(
+        &splits.test,
+        ViewMode::Raw,
+        FeatureMode::Invariants,
+        &normalized,
+    );
     let invariant_scaler = fit_scaler(&invariant_train);
     let invariant_train_scaled = apply_scaler(&invariant_scaler, &invariant_train);
     let invariant_validation_scaled = apply_scaler(&invariant_scaler, &invariant_validation);
@@ -615,7 +628,8 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
         250,
         1e-3,
     );
-    let invariant_validation_scores = predict_scores(&invariant_model, &invariant_validation_scaled);
+    let invariant_validation_scores =
+        predict_scores(&invariant_model, &invariant_validation_scaled);
     let invariant_threshold = best_threshold(
         &invariant_validation_scores,
         &splits
@@ -685,8 +699,10 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
     let normalized_invariant_scaler = fit_scaler(&normalized_invariant_train);
     let normalized_invariant_train_scaled =
         apply_scaler(&normalized_invariant_scaler, &normalized_invariant_train);
-    let normalized_invariant_validation_scaled =
-        apply_scaler(&normalized_invariant_scaler, &normalized_invariant_validation);
+    let normalized_invariant_validation_scaled = apply_scaler(
+        &normalized_invariant_scaler,
+        &normalized_invariant_validation,
+    );
     let normalized_invariant_test_scaled =
         apply_scaler(&normalized_invariant_scaler, &normalized_invariant_test);
     let normalized_invariant_model = train_logistic_model(
@@ -811,7 +827,10 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
             "normalized",
             "invariant_logistic",
             &splits.test,
-            &predict_scores(&normalized_invariant_model, &normalized_invariant_test_scaled),
+            &predict_scores(
+                &normalized_invariant_model,
+                &normalized_invariant_test_scaled,
+            ),
             normalized_invariant_threshold,
         ),
         evaluate_scores(
@@ -895,7 +914,10 @@ pub fn summarize_cross_mission_invariance(
     let normalized = build_normalized_samples(samples);
     let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
     for sample in samples {
-        grouped.entry(sample.mission.clone()).or_default().push(sample);
+        grouped
+            .entry(sample.mission.clone())
+            .or_default()
+            .push(sample);
     }
 
     let mut summaries = Vec::new();
@@ -1058,7 +1080,8 @@ pub fn summarize_sparse_policy_counterfactuals_with_seed(
         NormalizationStrategy::Mission,
         NormalizationStrategy::MissionProduct,
     ] {
-        let normalized = build_normalized_samples_with_strategy_and_seed(&samples, strategy, split_seed);
+        let normalized =
+            build_normalized_samples_with_strategy_and_seed(&samples, strategy, split_seed);
         rows.push(thresholded_sparse_policy_summary(
             &samples,
             &normalized,
@@ -1092,7 +1115,10 @@ pub fn summarize_seeded_sparse_policy_rows(
     split_seed: u64,
 ) -> Result<(usize, Vec<SeededSparsePolicySummary>)> {
     let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
-    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    let positive_sample_count = samples
+        .iter()
+        .filter(|sample| sample.label_positive)
+        .count();
     let counterfactuals = summarize_sparse_policy_counterfactuals_with_seed(
         raw_rows,
         cache_root,
@@ -1141,8 +1167,12 @@ pub fn summarize_targeted_seeded_sparse_policy(
         )
     };
     let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
-    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
-    let normalized = build_normalized_samples_with_strategy_and_seed(&samples, strategy, split_seed);
+    let positive_sample_count = samples
+        .iter()
+        .filter(|sample| sample.label_positive)
+        .count();
+    let normalized =
+        build_normalized_samples_with_strategy_and_seed(&samples, strategy, split_seed);
     let row = thresholded_sparse_policy_summary(
         &samples,
         &normalized,
@@ -1184,7 +1214,11 @@ pub fn summarize_transferred_seeded_sparse_policy(
         build_sparse_policy_dataset_context(training_rows, cache_root, spec.horizon_hours)?;
     let target_context =
         build_sparse_policy_dataset_context(target_rows, cache_root, spec.horizon_hours)?;
-    summarize_transferred_seeded_sparse_policy_from_contexts(&training_context, &target_context, spec)
+    summarize_transferred_seeded_sparse_policy_from_contexts(
+        &training_context,
+        &target_context,
+        spec,
+    )
 }
 
 /// Cached-context version of sparse-policy transfer evaluation.
@@ -1193,12 +1227,13 @@ pub fn summarize_transferred_seeded_sparse_policy_from_contexts(
     target: &SparsePolicyDatasetContext,
     spec: &SparsePolicyTransferSpec<'_>,
 ) -> Result<(usize, SeededSparsePolicySummary)> {
-    let strategy = NormalizationStrategy::from_label(spec.normalization_strategy).with_context(|| {
-        format!(
-            "unknown normalization strategy '{}'",
-            spec.normalization_strategy
-        )
-    })?;
+    let strategy =
+        NormalizationStrategy::from_label(spec.normalization_strategy).with_context(|| {
+            format!(
+                "unknown normalization strategy '{}'",
+                spec.normalization_strategy
+            )
+        })?;
     let descriptor = if spec.descriptor_profile == "invariants_only" {
         None
     } else {
@@ -1236,7 +1271,12 @@ pub fn summarize_transferred_seeded_sparse_policy_from_contexts(
         .samples
         .iter()
         .zip(target_scores)
-        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= fitted.threshold))
+        .map(|(sample, score)| {
+            (
+                sample.key.clone(),
+                score.is_finite() && score >= fitted.threshold,
+            )
+        })
         .collect::<BTreeMap<_, _>>();
     let label_index = label_index(&target.samples);
     let time_index = target
@@ -1309,7 +1349,11 @@ pub fn algebra_event_mask(samples: &[LabeledInvariantSample]) -> Vec<(RowKey, bo
                 a.mission.as_str(),
                 a.product.as_str(),
             )
-                .cmp(&(b.timestamp_utc.as_str(), b.mission.as_str(), b.product.as_str()))
+                .cmp(&(
+                    b.timestamp_utc.as_str(),
+                    b.mission.as_str(),
+                    b.product.as_str(),
+                ))
         });
         if group.len() < 4 {
             for sample in group {
@@ -1386,18 +1430,15 @@ fn parse_timestamp(value: &str) -> Result<DateTime<Utc>> {
 fn contains_time(window: &HeliosphereEventWindow, timestamp: DateTime<Utc>) -> bool {
     let start = DateTime::parse_from_rfc3339(&window.window_start_utc)
         .map(|value| value.with_timezone(&Utc));
-    let end = DateTime::parse_from_rfc3339(&window.window_end_utc)
-        .map(|value| value.with_timezone(&Utc));
+    let end =
+        DateTime::parse_from_rfc3339(&window.window_end_utc).map(|value| value.with_timezone(&Utc));
     match (start, end) {
         (Ok(start), Ok(end)) => timestamp >= start && timestamp <= end,
         _ => false,
     }
 }
 
-fn descriptor_channels(
-    group: &[HeliosphereInvariantSample],
-    idx: usize,
-) -> [f64; DESCRIPTOR_DIM] {
+fn descriptor_channels(group: &[HeliosphereInvariantSample], idx: usize) -> [f64; DESCRIPTOR_DIM] {
     let vectors = group
         .iter()
         .map(|sample| sample.weighted_channels)
@@ -1432,7 +1473,10 @@ fn descriptor_channels_from_arrays(
 fn mission_splits(samples: &[LabeledInvariantSample]) -> Vec<MissionSplitSummary> {
     let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
     for sample in samples {
-        grouped.entry(sample.mission.clone()).or_default().push(sample);
+        grouped
+            .entry(sample.mission.clone())
+            .or_default()
+            .push(sample);
     }
     grouped
         .into_iter()
@@ -1444,7 +1488,9 @@ fn mission_splits(samples: &[LabeledInvariantSample]) -> Vec<MissionSplitSummary
             MissionSplitSummary {
                 mission,
                 train_rows: train_end.min(n),
-                validation_rows: val_end.saturating_sub(train_end).min(n.saturating_sub(train_end)),
+                validation_rows: val_end
+                    .saturating_sub(train_end)
+                    .min(n.saturating_sub(train_end)),
                 test_rows: n.saturating_sub(val_end),
             }
         })
@@ -1455,10 +1501,16 @@ fn split_samples(samples: &[LabeledInvariantSample]) -> SampleSplits<'_> {
     split_samples_with_seed(samples, 0)
 }
 
-fn split_samples_with_seed(samples: &[LabeledInvariantSample], split_seed: u64) -> SampleSplits<'_> {
+fn split_samples_with_seed(
+    samples: &[LabeledInvariantSample],
+    split_seed: u64,
+) -> SampleSplits<'_> {
     let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
     for sample in samples {
-        grouped.entry(sample.mission.clone()).or_default().push(sample);
+        grouped
+            .entry(sample.mission.clone())
+            .or_default()
+            .push(sample);
     }
     let mut train = Vec::new();
     let mut validation = Vec::new();
@@ -1478,7 +1530,8 @@ fn split_samples_with_seed(samples: &[LabeledInvariantSample], split_seed: u64) 
         let val_end = ((n as f64) * 0.85).round() as usize;
         train.extend(group.iter().take(train_end).copied());
         validation.extend(
-            group.iter()
+            group
+                .iter()
                 .skip(train_end)
                 .take(val_end.saturating_sub(train_end))
                 .copied(),
@@ -1530,7 +1583,9 @@ fn feature_matrix_with_descriptor_profile(
         .map(|sample| {
             let mut row = invariant_vector(sample, view_mode, normalized).to_vec();
             if let Some(profile) = descriptor_profile {
-                row.extend(selected_descriptor_values(sample, view_mode, normalized, profile));
+                row.extend(selected_descriptor_values(
+                    sample, view_mode, normalized, profile,
+                ));
             }
             row
         })
@@ -1544,7 +1599,9 @@ fn binary_labels(samples: &[&LabeledInvariantSample]) -> Vec<f64> {
         .collect()
 }
 
-fn cube_date_bounds(rows: &[HeliosphereFeatureRow]) -> Result<(chrono::NaiveDate, chrono::NaiveDate)> {
+fn cube_date_bounds(
+    rows: &[HeliosphereFeatureRow],
+) -> Result<(chrono::NaiveDate, chrono::NaiveDate)> {
     let start_date = rows
         .iter()
         .filter_map(heliosphere_row_datetime)
@@ -1566,12 +1623,17 @@ fn positive_row_count(
 ) -> usize {
     rows.iter()
         .filter_map(|row| heliosphere_row_datetime(row))
-        .filter(|timestamp| windows.iter().any(|window| contains_time(window, *timestamp)))
+        .filter(|timestamp| {
+            windows
+                .iter()
+                .any(|window| contains_time(window, *timestamp))
+        })
         .count()
 }
 
 fn normalize_text(value: &str) -> String {
-    value.trim()
+    value
+        .trim()
         .to_ascii_lowercase()
         .replace([' ', '_', '/'], "-")
         .replace("--", "-")
@@ -1628,10 +1690,7 @@ fn build_normalized_samples_with_strategy_and_seed(
                     (sample.mission.clone(), Some(sample.product.clone()))
                 }
             };
-            grouped_train
-                .entry(group_key)
-                .or_default()
-                .push(sample);
+            grouped_train.entry(group_key).or_default().push(sample);
         }
     }
     for (group_key, group_samples) in grouped_train {
@@ -1643,8 +1702,8 @@ fn build_normalized_samples_with_strategy_and_seed(
         let params = fit_normalization_params(if quiet.is_empty() {
             &group_samples
         } else {
-                &quiet
-            });
+            &quiet
+        });
         group_params.insert(group_key, params);
     }
 
@@ -1668,7 +1727,11 @@ fn build_normalized_samples_with_strategy_and_seed(
                 a.mission.as_str(),
                 a.product.as_str(),
             )
-                .cmp(&(b.timestamp_utc.as_str(), b.mission.as_str(), b.product.as_str()))
+                .cmp(&(
+                    b.timestamp_utc.as_str(),
+                    b.mission.as_str(),
+                    b.product.as_str(),
+                ))
         });
         let params = match strategy {
             NormalizationStrategy::Global => global_params.clone(),
@@ -1843,13 +1906,23 @@ fn fit_sparse_budget_policy(
     let splits = split_samples(samples);
     let (name, feature_mode) = match kind {
         SparsePolicyKind::InvariantBudget => ("invariant_budget_policy", FeatureMode::Invariants),
-        SparsePolicyKind::HybridBudget => {
-            ("hybrid_budget_policy", FeatureMode::InvariantsAndDescriptors)
-        }
+        SparsePolicyKind::HybridBudget => (
+            "hybrid_budget_policy",
+            FeatureMode::InvariantsAndDescriptors,
+        ),
     };
-    let train = feature_matrix(&splits.train, ViewMode::Normalized, feature_mode, normalized);
-    let validation =
-        feature_matrix(&splits.validation, ViewMode::Normalized, feature_mode, normalized);
+    let train = feature_matrix(
+        &splits.train,
+        ViewMode::Normalized,
+        feature_mode,
+        normalized,
+    );
+    let validation = feature_matrix(
+        &splits.validation,
+        ViewMode::Normalized,
+        feature_mode,
+        normalized,
+    );
     let all_samples = samples.iter().collect::<Vec<_>>();
     let all_matrix = feature_matrix(&all_samples, ViewMode::Normalized, feature_mode, normalized);
     let scaler = fit_scaler(&train);
@@ -1882,10 +1955,7 @@ fn fit_sparse_budget_policy(
         .zip(all_scores)
         .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= threshold))
         .collect::<BTreeMap<_, _>>();
-    Ok(ThresholdedSparsePolicy {
-        name,
-        mask,
-    })
+    Ok(ThresholdedSparsePolicy { name, mask })
 }
 
 fn fit_sparse_budget_policy_profile(
@@ -1933,7 +2003,12 @@ fn fit_sparse_budget_policy_profile_with_seed(
     let mask = samples
         .iter()
         .zip(all_scores)
-        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= fitted.threshold))
+        .map(|(sample, score)| {
+            (
+                sample.key.clone(),
+                score.is_finite() && score >= fitted.threshold,
+            )
+        })
         .collect::<BTreeMap<_, _>>();
     Ok(ThresholdedSparsePolicy {
         name: fitted.name,
@@ -1973,7 +2048,13 @@ fn fit_sparse_budget_policy_profile_model_with_seed(
     let scaler = fit_scaler(&train);
     let train_scaled = apply_scaler(&scaler, &train);
     let validation_scaled = apply_scaler(&scaler, &validation);
-    let model = train_logistic_model(&train_scaled, &binary_labels(&splits.train), 0.02, 300, 1e-3);
+    let model = train_logistic_model(
+        &train_scaled,
+        &binary_labels(&splits.train),
+        0.02,
+        300,
+        1e-3,
+    );
     let validation_scores = predict_scores(&model, &validation_scaled);
     let validation_labels = splits
         .validation
@@ -2392,7 +2473,13 @@ fn train_counterfactual_predictive_model(
     let train_scaled = apply_scaler(&scaler, &train);
     let validation_scaled = apply_scaler(&scaler, &validation);
     let test_scaled = apply_scaler(&scaler, &test);
-    let model = train_logistic_model(&train_scaled, &binary_labels(&splits.train), 0.02, 300, 1e-3);
+    let model = train_logistic_model(
+        &train_scaled,
+        &binary_labels(&splits.train),
+        0.02,
+        300,
+        1e-3,
+    );
     let validation_scores = predict_scores(&model, &validation_scaled);
     let threshold = best_threshold(
         &validation_scores,
@@ -2520,7 +2607,10 @@ fn median_lead_time_hours(
 ) -> Option<f64> {
     let mut grouped: BTreeMap<&str, Vec<(&LabeledInvariantSample, f64)>> = BTreeMap::new();
     for (sample, score) in samples.iter().copied().zip(scores.iter().copied()) {
-        grouped.entry(sample.mission.as_str()).or_default().push((sample, score));
+        grouped
+            .entry(sample.mission.as_str())
+            .or_default()
+            .push((sample, score));
     }
     let mut leads = Vec::new();
     for rows in grouped.values_mut() {
@@ -2632,25 +2722,29 @@ fn sparse_summary(
         event_label_recall: ratio_usize(labeled_active, total_labeled),
         event_label_precision: ratio_usize(labeled_active, active_rows),
         density_mean: mean(
-            &rows.iter()
+            &rows
+                .iter()
                 .map(|row| row.density_cm3)
                 .filter(|value| value.is_finite())
                 .collect::<Vec<_>>(),
         ),
         speed_mean: mean(
-            &rows.iter()
+            &rows
+                .iter()
                 .map(|row| row.speed_kms)
                 .filter(|value| value.is_finite())
                 .collect::<Vec<_>>(),
         ),
         temperature_mean: mean(
-            &rows.iter()
+            &rows
+                .iter()
                 .map(|row| row.temperature_k)
                 .filter(|value| value.is_finite())
                 .collect::<Vec<_>>(),
         ),
         bmag_mean: mean(
-            &rows.iter()
+            &rows
+                .iter()
                 .map(|row| row.b_mag)
                 .filter(|value| value.is_finite())
                 .collect::<Vec<_>>(),

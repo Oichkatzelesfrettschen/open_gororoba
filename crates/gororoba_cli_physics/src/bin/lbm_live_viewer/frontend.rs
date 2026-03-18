@@ -4,9 +4,11 @@
 //! transport. It intentionally depends only on `ViewerFrameSource` plus a local
 //! reset extension trait so backend adapters stay swappable.
 
-use crate::backend::ResettableViewerSource;
-use crate::camera_input::{ViewerInteractionState, apply_window_input, slice_axis_label};
-use crate::transport::render_packet_to_argb;
+use crate::{
+    backend::ResettableViewerSource,
+    camera_input::{ViewerInteractionState, apply_window_input, slice_axis_label},
+    transport::render_packet_to_argb,
+};
 use anyhow::Result;
 use gororoba_gpu_bridge::FrameMode;
 use gororoba_view_core::FrameMetadata;
@@ -55,7 +57,10 @@ where
 
     let mut state = ViewerInteractionState::new(initial_meta.grid, cfg.initial_steps_per_frame);
     let mut framebuffer = vec![0u32; cfg.width as usize * cfg.height as usize];
-    let frame_mode = if source.supported_frame_modes().contains(&FrameMode::Volume3d) {
+    let frame_mode = if source
+        .supported_frame_modes()
+        .contains(&FrameMode::Volume3d)
+    {
         FrameMode::Volume3d
     } else {
         source.frame_metadata().preferred_frame_mode

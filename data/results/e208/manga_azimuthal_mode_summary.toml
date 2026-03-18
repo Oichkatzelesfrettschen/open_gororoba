@@ -1,0 +1,56 @@
+[metadata]
+title = "MaNGA 2D azimuthal ZD Fourier-mode preflight"
+method = "Deproject H-alpha IFU velocity maps to disk coordinates and measure annular Fourier modes m=0..m_max on v_circ(theta, r)."
+selection = "data/external/manga/dapall_selection.csv"
+maps_cache = "data/external/manga/maps_cache"
+n_max = 24
+m_max = 4
+ring_width_spaxels = 5.000
+min_ring_pixels = 16
+min_cos_theta = 0.350
+inclination_range_deg = [30.0, 70.0]
+
+[counts]
+requested_galaxies = 24
+processed_galaxies = 17
+skipped_missing_maps = 7
+skipped_bad_inclination = 0
+skipped_fits_error = 0
+skipped_no_valid_rings = 0
+total_rings = 89
+
+[mode_0]
+ring_count = 89
+mean_abs_km_s = 155.382545
+median_abs_km_s = 124.796517
+mean_rel_axisymmetric = 1.000000
+median_rel_axisymmetric = 1.000000
+
+[mode_1]
+ring_count = 89
+mean_abs_km_s = 108.350129
+median_abs_km_s = 61.586872
+mean_rel_axisymmetric = 1.160259
+median_rel_axisymmetric = 0.468191
+
+[mode_2]
+ring_count = 89
+mean_abs_km_s = 124.960247
+median_abs_km_s = 78.005403
+mean_rel_axisymmetric = 1.399333
+median_rel_axisymmetric = 0.644100
+
+[mode_3]
+ring_count = 89
+mean_abs_km_s = 98.556409
+median_abs_km_s = 50.335719
+mean_rel_axisymmetric = 1.187933
+median_rel_axisymmetric = 0.375549
+
+[mode_4]
+ring_count = 89
+mean_abs_km_s = 93.216208
+median_abs_km_s = 44.857851
+mean_rel_axisymmetric = 0.903168
+median_rel_axisymmetric = 0.348746
+

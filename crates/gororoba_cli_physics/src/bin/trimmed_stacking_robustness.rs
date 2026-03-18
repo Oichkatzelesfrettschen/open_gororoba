@@ -25,10 +25,7 @@ struct Cli {
     galaxies_csv: PathBuf,
 }
 
-fn trimmed_mean_complex(
-    values: &mut [(f64, f64)],
-    trim_frac: f64,
-) -> (f64, f64) {
+fn trimmed_mean_complex(values: &mut [(f64, f64)], trim_frac: f64) -> (f64, f64) {
     let n = values.len();
     let trim_count = (n as f64 * trim_frac) as usize;
     let start = trim_count;
@@ -129,13 +126,16 @@ fn main() -> anyhow::Result<()> {
         eprintln!("--- {} ---", alg_name);
 
         // Extract complex coefficients for this algebra.
-        let coeffs: Vec<(f64, f64)> = galaxies.iter().map(|g| match alg_idx {
-            0 => g.cd,
-            1 => g.g2,
-            2 => g.j3o,
-            3 => g.sl2,
-            _ => (0.0, 0.0),
-        }).collect();
+        let coeffs: Vec<(f64, f64)> = galaxies
+            .iter()
+            .map(|g| match alg_idx {
+                0 => g.cd,
+                1 => g.g2,
+                2 => g.j3o,
+                3 => g.sl2,
+                _ => (0.0, 0.0),
+            })
+            .collect();
 
         // Full (untrimmed) mean for reference.
         let full_re = coeffs.iter().map(|(r, _)| r).sum::<f64>() / n_gal as f64;
@@ -157,26 +157,46 @@ fn main() -> anyhow::Result<()> {
             let n_used = n_gal - 2 * ((n_gal as f64 * trim_frac) as usize);
 
             // SNR relative to full-stack baseline.
-            let snr = if full_power > 1e-30 { power.sqrt() / full_power.sqrt() } else { 0.0 };
+            let snr = if full_power > 1e-30 {
+                power.sqrt() / full_power.sqrt()
+            } else {
+                0.0
+            };
 
-            println!("{},{:.2},{},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
-                alg_name, trim_frac, n_used, mean_re, mean_im, power, snr, phase);
+            println!(
+                "{},{:.2},{},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
+                alg_name, trim_frac, n_used, mean_re, mean_im, power, snr, phase
+            );
 
-            eprintln!("  trim={:.0}% (n={}): power={:.6e}, SNR_ratio={:.4}, phase={:.4}",
-                trim_frac * 100.0, n_used, power, snr, phase);
+            eprintln!(
+                "  trim={:.0}% (n={}): power={:.6e}, SNR_ratio={:.4}, phase={:.4}",
+                trim_frac * 100.0,
+                n_used,
+                power,
+                snr,
+                phase
+            );
         }
 
         // Median (maximum robustness).
         let mut c = coeffs.clone();
         let (med_re, med_im) = median_complex(&mut c);
         let med_power = med_re * med_re + med_im * med_im;
-        let med_snr = if full_power > 1e-30 { med_power.sqrt() / full_power.sqrt() } else { 0.0 };
+        let med_snr = if full_power > 1e-30 {
+            med_power.sqrt() / full_power.sqrt()
+        } else {
+            0.0
+        };
         let med_phase = med_im.atan2(med_re);
 
-        println!("{},median,{},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
-            alg_name, n_gal, med_re, med_im, med_power, med_snr, med_phase);
-        eprintln!("  MEDIAN: power={:.6e}, SNR_ratio={:.4}, phase={:.4}",
-            med_power, med_snr, med_phase);
+        println!(
+            "{},median,{},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
+            alg_name, n_gal, med_re, med_im, med_power, med_snr, med_phase
+        );
+        eprintln!(
+            "  MEDIAN: power={:.6e}, SNR_ratio={:.4}, phase={:.4}",
+            med_power, med_snr, med_phase
+        );
         eprintln!();
     }
 
@@ -185,13 +205,16 @@ fn main() -> anyhow::Result<()> {
 
     // Check if trimming changes the SNR significantly.
     for (alg_idx, alg_name) in algebra_names.iter().enumerate() {
-        let coeffs: Vec<(f64, f64)> = galaxies.iter().map(|g| match alg_idx {
-            0 => g.cd,
-            1 => g.g2,
-            2 => g.j3o,
-            3 => g.sl2,
-            _ => (0.0, 0.0),
-        }).collect();
+        let coeffs: Vec<(f64, f64)> = galaxies
+            .iter()
+            .map(|g| match alg_idx {
+                0 => g.cd,
+                1 => g.g2,
+                2 => g.j3o,
+                3 => g.sl2,
+                _ => (0.0, 0.0),
+            })
+            .collect();
 
         let full_re = coeffs.iter().map(|(r, _)| r).sum::<f64>() / n_gal as f64;
         let full_im = coeffs.iter().map(|(_, i)| i).sum::<f64>() / n_gal as f64;
@@ -200,12 +223,21 @@ fn main() -> anyhow::Result<()> {
         let mut c20 = coeffs.clone();
         let (t20_re, t20_im) = trimmed_mean_complex(&mut c20, 0.20);
         let t20_power = t20_re * t20_re + t20_im * t20_im;
-        let ratio_20 = if full_power > 1e-30 { t20_power / full_power } else { 0.0 };
+        let ratio_20 = if full_power > 1e-30 {
+            t20_power / full_power
+        } else {
+            0.0
+        };
 
-        eprintln!("  {}: 20%-trimmed/full power ratio = {:.4}", alg_name, ratio_20);
+        eprintln!(
+            "  {}: 20%-trimmed/full power ratio = {:.4}",
+            alg_name, ratio_20
+        );
 
         if (ratio_20 - 1.0).abs() > 0.3 {
-            eprintln!("    INSTABILITY: >30% change with 20% trimming -- outliers drive the result!");
+            eprintln!(
+                "    INSTABILITY: >30% change with 20% trimming -- outliers drive the result!"
+            );
         } else {
             eprintln!("    ROBUST: <30% change -- null result is not outlier-driven.");
         }

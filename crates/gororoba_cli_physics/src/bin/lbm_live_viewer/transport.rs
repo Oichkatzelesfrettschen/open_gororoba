@@ -8,8 +8,8 @@ use crate::camera_input::ViewerInteractionState;
 use anyhow::Result;
 use gororoba_view_core::ViewerFramePacket;
 use gororoba_view_raster::{
-    ColorMap, SliceRasterSpec, blit_rgba_to_argb,
-    render_particles_autofit_xy_to_argb, render_scalar_volume_slice_to_argb,
+    ColorMap, SliceRasterSpec, blit_rgba_to_argb, render_particles_autofit_xy_to_argb,
+    render_scalar_volume_slice_to_argb,
 };
 
 /// Render a backend-neutral frame packet into a `minifb` ARGB framebuffer.
@@ -41,12 +41,7 @@ pub fn render_packet_to_argb(
         }
         ViewerFramePacket::Particles(_) => {
             if let ViewerFramePacket::Particles(particles) = packet {
-                render_particles_autofit_xy_to_argb(
-                    particles,
-                    framebuffer,
-                    fb_width,
-                    fb_height,
-                );
+                render_particles_autofit_xy_to_argb(particles, framebuffer, fb_width, fb_height);
                 Ok(())
             } else {
                 unreachable!()

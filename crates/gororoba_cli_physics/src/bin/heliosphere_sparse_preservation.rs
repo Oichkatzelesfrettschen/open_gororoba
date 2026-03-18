@@ -2,7 +2,9 @@ use anyhow::Result;
 use chrono::Utc;
 use clap::Parser;
 use data_core::{SparseExecutionPlan, SparseHardwareEnvelope, estimate_sparse_execution_plan};
-use gororoba_cli_physics::heliosphere_eval::{SparseMaskSummary, load_heliosphere_rows, summarize_sparse_policies};
+use gororoba_cli_physics::heliosphere_eval::{
+    SparseMaskSummary, load_heliosphere_rows, summarize_sparse_policies,
+};
 use gororoba_gpu_bridge::{HardwareCaps, probe_simd};
 use lbm_3d_cuda::{probe_cuda_available, probe_cuda_device_props};
 use serde::Serialize;

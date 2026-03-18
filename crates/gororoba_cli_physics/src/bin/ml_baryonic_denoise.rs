@@ -28,8 +28,7 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -38,7 +37,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(about = "ML baryonic denoising + Fourier anomaly detection")]
 struct Cli {
     /// Path to MaNGA rotation curves CSV.
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall selection CSV.
@@ -118,7 +120,10 @@ fn best_single_feature_regression(
     type FeatureExtractor = Box<dyn Fn(&GalaxyRecord) -> f64>;
     let features: Vec<(&str, FeatureExtractor)> = vec![
         ("log_m200", Box::new(|g: &GalaxyRecord| g.log_m200)),
-        ("inclination", Box::new(|g: &GalaxyRecord| g.inclination_deg)),
+        (
+            "inclination",
+            Box::new(|g: &GalaxyRecord| g.inclination_deg),
+        ),
         ("sersic_n", Box::new(|g: &GalaxyRecord| g.sersic_n)),
         ("log_mstar", Box::new(|g: &GalaxyRecord| g.log_stellar_mass)),
         ("sigma", Box::new(|g: &GalaxyRecord| g.stellar_sigma)),
@@ -128,8 +133,12 @@ fn best_single_feature_regression(
         ("abs_mag_r", Box::new(|g: &GalaxyRecord| g.abs_mag_r)),
     ];
 
-    let target_mean: f64 = galaxies.iter().map(|g| g.mean_delta_v).sum::<f64>() / galaxies.len() as f64;
-    let ss_tot: f64 = galaxies.iter().map(|g| (g.mean_delta_v - target_mean).powi(2)).sum();
+    let target_mean: f64 =
+        galaxies.iter().map(|g| g.mean_delta_v).sum::<f64>() / galaxies.len() as f64;
+    let ss_tot: f64 = galaxies
+        .iter()
+        .map(|g| (g.mean_delta_v - target_mean).powi(2))
+        .sum();
 
     let mut best_feat_idx = 0;
     let mut best_r2 = f64::NEG_INFINITY;
@@ -158,7 +167,11 @@ fn best_single_feature_regression(
 
         for bin in 0..n_bins {
             let start = bin * bin_size;
-            let end = if bin == n_bins - 1 { indexed.len() } else { (bin + 1) * bin_size };
+            let end = if bin == n_bins - 1 {
+                indexed.len()
+            } else {
+                (bin + 1) * bin_size
+            };
 
             let edge = indexed[start].1;
             edges.push(edge);
@@ -175,7 +188,11 @@ fn best_single_feature_regression(
             }
         }
 
-        let r2 = if ss_tot > 0.0 { 1.0 - ss_res / ss_tot } else { 0.0 };
+        let r2 = if ss_tot > 0.0 {
+            1.0 - ss_res / ss_tot
+        } else {
+            0.0
+        };
 
         eprintln!("  Feature '{}': R^2 = {:.4}", feat_name, r2);
 
@@ -262,7 +279,11 @@ fn main() -> anyhow::Result<()> {
                 if !delta_v.is_finite() || !delta_v_err.is_finite() {
                     return None;
                 }
-                Some(NormalizedPoint { x, delta_v, delta_v_err })
+                Some(NormalizedPoint {
+                    x,
+                    delta_v,
+                    delta_v_err,
+                })
             })
             .collect();
 
@@ -292,7 +313,11 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    eprintln!("Built {} galaxy records ({} skipped)", galaxies.len(), skipped);
+    eprintln!(
+        "Built {} galaxy records ({} skipped)",
+        galaxies.len(),
+        skipped
+    );
 
     // ===================================================================
     // HYPOTHESIS A: Metadata-Conditioned Baryonic Denoising
@@ -307,8 +332,15 @@ fn main() -> anyhow::Result<()> {
         best_single_feature_regression(&galaxies, cli.n_regression_bins);
 
     let feat_names = [
-        "log_m200", "inclination", "sersic_n", "log_mstar", "sigma",
-        "ha_ew", "z", "r_eff", "abs_mag_r",
+        "log_m200",
+        "inclination",
+        "sersic_n",
+        "log_mstar",
+        "sigma",
+        "ha_ew",
+        "z",
+        "r_eff",
+        "abs_mag_r",
     ];
     type FeatFn = Box<dyn Fn(&GalaxyRecord) -> f64>;
     let feat_fns: Vec<FeatFn> = vec![
@@ -380,11 +412,18 @@ fn main() -> anyhow::Result<()> {
     let denoised_result = stack_residuals(&denoised_residuals, &config);
 
     let rms_improvement = (orig_result.rms_residual - denoised_result.rms_residual)
-        / orig_result.rms_residual * 100.0;
+        / orig_result.rms_residual
+        * 100.0;
 
     eprintln!("\n--- Hypothesis A Results ---");
-    eprintln!("Original:  RMS={:.6}, SNR={:.4}", orig_result.rms_residual, orig_result.detection_snr);
-    eprintln!("Denoised:  RMS={:.6}, SNR={:.4}", denoised_result.rms_residual, denoised_result.detection_snr);
+    eprintln!(
+        "Original:  RMS={:.6}, SNR={:.4}",
+        orig_result.rms_residual, orig_result.detection_snr
+    );
+    eprintln!(
+        "Denoised:  RMS={:.6}, SNR={:.4}",
+        denoised_result.rms_residual, denoised_result.detection_snr
+    );
     eprintln!("RMS improvement: {:.2}%", rms_improvement);
     eprintln!("Best feature R^2: {:.4}", best_r2);
 
@@ -451,8 +490,14 @@ fn main() -> anyhow::Result<()> {
     }
 
     // Rayleigh test on anomalous subset phases
-    eprintln!("\nPhase coherence (Rayleigh R) in top {} galaxies:", n_anomalous);
-    eprintln!("{:>5}  {:>8}  {:>10}  {:>12}", "mode", "k", "rayleigh_r", "mean_power");
+    eprintln!(
+        "\nPhase coherence (Rayleigh R) in top {} galaxies:",
+        n_anomalous
+    );
+    eprintln!(
+        "{:>5}  {:>8}  {:>10}  {:>12}",
+        "mode", "k", "rayleigh_r", "mean_power"
+    );
 
     let mut any_coherent = false;
     let mut anomaly_mode_results: Vec<(usize, f64, f64, f64)> = Vec::new();
@@ -474,7 +519,10 @@ fn main() -> anyhow::Result<()> {
 
         eprintln!(
             "{:>5}  {:>8.4}  {:>10.4}  {:>12.6e}",
-            mode_idx + 1, k, r, mean_pow
+            mode_idx + 1,
+            k,
+            r,
+            mean_pow
         );
 
         if r > 0.5 {
@@ -535,7 +583,10 @@ fn main() -> anyhow::Result<()> {
     if any_coherent && anomaly_result.detection_snr > 2.0 {
         eprintln!("VERDICT: DETECTION -- coherent outlier sub-population found");
     } else if anomaly_result.detection_snr < 2.0 {
-        let max_r = anomaly_mode_results.iter().map(|m| m.2).fold(0.0_f64, f64::max);
+        let max_r = anomaly_mode_results
+            .iter()
+            .map(|m| m.2)
+            .fold(0.0_f64, f64::max);
         if max_r < 0.3 {
             eprintln!("VERDICT: REJECTED -- no outlier sub-population (R < 0.3, SNR < 2.0)");
         } else {
@@ -556,7 +607,12 @@ fn main() -> anyhow::Result<()> {
     let denoise_csv = format!("{}_ha.csv", cli.out_prefix);
     let mut wtr = csv::Writer::from_path(&denoise_csv)?;
     wtr.write_record([
-        "x", "delta_orig", "delta_denoised", "err_orig", "err_denoised", "n_contributing",
+        "x",
+        "delta_orig",
+        "delta_denoised",
+        "err_orig",
+        "err_denoised",
+        "n_contributing",
     ])?;
     for j in 0..config.n_grid {
         wtr.write_record(&[
@@ -574,9 +630,24 @@ fn main() -> anyhow::Result<()> {
     let anomaly_csv = format!("{}_hb.csv", cli.out_prefix);
     let mut wtr2 = csv::Writer::from_path(&anomaly_csv)?;
     wtr2.write_record([
-        "rank", "plateifu", "total_power", "is_anomalous",
-        "p1", "p2", "p3", "p4", "p5", "p6", "p7",
-        "ph1", "ph2", "ph3", "ph4", "ph5", "ph6", "ph7",
+        "rank",
+        "plateifu",
+        "total_power",
+        "is_anomalous",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "ph1",
+        "ph2",
+        "ph3",
+        "ph4",
+        "ph5",
+        "ph6",
+        "ph7",
     ])?;
     for (rank, gf) in galaxy_fourier.iter().enumerate() {
         let is_anom = if rank < n_anomalous { "1" } else { "0" };
@@ -603,13 +674,37 @@ fn main() -> anyhow::Result<()> {
     swtr.write_record(["A", "best_feature", feat_names[best_idx]])?;
     swtr.write_record(["A", "r_squared", &format!("{:.6}", best_r2)])?;
     swtr.write_record(["A", "orig_rms", &format!("{:.8}", orig_result.rms_residual)])?;
-    swtr.write_record(["A", "denoised_rms", &format!("{:.8}", denoised_result.rms_residual)])?;
-    swtr.write_record(["A", "rms_improvement_pct", &format!("{:.2}", rms_improvement)])?;
-    swtr.write_record(["A", "orig_snr", &format!("{:.6}", orig_result.detection_snr)])?;
-    swtr.write_record(["A", "denoised_snr", &format!("{:.6}", denoised_result.detection_snr)])?;
+    swtr.write_record([
+        "A",
+        "denoised_rms",
+        &format!("{:.8}", denoised_result.rms_residual),
+    ])?;
+    swtr.write_record([
+        "A",
+        "rms_improvement_pct",
+        &format!("{:.2}", rms_improvement),
+    ])?;
+    swtr.write_record([
+        "A",
+        "orig_snr",
+        &format!("{:.6}", orig_result.detection_snr),
+    ])?;
+    swtr.write_record([
+        "A",
+        "denoised_snr",
+        &format!("{:.6}", denoised_result.detection_snr),
+    ])?;
     swtr.write_record(["B", "n_anomalous", &format!("{}", n_anomalous)])?;
-    swtr.write_record(["B", "anomaly_snr", &format!("{:.6}", anomaly_result.detection_snr)])?;
-    swtr.write_record(["B", "quiet_snr", &format!("{:.6}", quiet_result.detection_snr)])?;
+    swtr.write_record([
+        "B",
+        "anomaly_snr",
+        &format!("{:.6}", anomaly_result.detection_snr),
+    ])?;
+    swtr.write_record([
+        "B",
+        "quiet_snr",
+        &format!("{:.6}", quiet_result.detection_snr),
+    ])?;
     swtr.write_record(["B", "snr_ratio", &format!("{:.4}", snr_ratio)])?;
     for (mode, _k, r, _) in &anomaly_mode_results {
         swtr.write_record([

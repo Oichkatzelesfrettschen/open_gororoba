@@ -35,6 +35,28 @@ pub struct FreeSpectrumPoint {
     pub log10_rho_hi: f64,
 }
 
+/// Interpretation to apply to the stored KDE surface before percentile recovery.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum KdeDensityInterpretation {
+    /// Treat `density.npy` as already-linear density values.
+    RawLinear,
+    /// Treat `density.npy` as natural-log density values.
+    NaturalLog,
+    /// Treat `density.npy` as base-10 log density values.
+    Log10,
+}
+
+impl KdeDensityInterpretation {
+    /// Stable string token for reports and diagnostics.
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::RawLinear => "raw_linear",
+            Self::NaturalLog => "natural_log",
+            Self::Log10 => "log10",
+        }
+    }
+}
+
 /// NANOGrav 15yr HD-correlated free spectrum, 30 frequency bins.
 ///
 /// Extracted from Zenodo record 10344086 (KDE representation v1.1.0),
@@ -382,6 +404,17 @@ fn parse_npy_shape(header: &str) -> Result<Vec<usize>, FetchError> {
 pub fn extract_free_spectrum_from_kde_zip(
     zip_path: &Path,
 ) -> Result<Vec<FreeSpectrumPoint>, FetchError> {
+    extract_free_spectrum_from_kde_zip_with_interpretation(
+        zip_path,
+        KdeDensityInterpretation::RawLinear,
+    )
+}
+
+/// Extract free-spectrum point estimates with an explicit density interpretation.
+pub fn extract_free_spectrum_from_kde_zip_with_interpretation(
+    zip_path: &Path,
+    interpretation: KdeDensityInterpretation,
+) -> Result<Vec<FreeSpectrumPoint>, FetchError> {
     let file = fs::File::open(zip_path)?;
     let mut archive = zip::ZipArchive::new(file)
         .map_err(|e| FetchError::Validation(format!("ZIP open error: {}", e)))?;
@@ -426,10 +459,13 @@ pub fn extract_free_spectrum_from_kde_zip(
     for i in 0..n_freq {
         let offset = i * n_grid;
         let di = &density.1[offset..offset + n_grid];
+        let weights = density_weights(di, interpretation);
 
-        // Normalize to proper PDF
-        let area: f64 = di.iter().zip(dx.iter()).map(|(d, w)| d * w).sum();
-        if area <= 0.0 {
+        // The published ceffyl surface is signed under the raw-linear
+        // interpretation, but the checked-in reference table is recovered by
+        // normalizing by the signed integral rather than rejecting it.
+        let area: f64 = weights.iter().zip(dx.iter()).map(|(d, w)| d * w).sum();
+        if !area.is_finite() || area.abs() <= f64::EPSILON {
             // Degenerate bin -- use NaN
             points.push(FreeSpectrumPoint {
                 frequency: freqs.1[i],
@@ -444,7 +480,7 @@ pub fn extract_free_spectrum_from_kde_zip(
         let mut cdf = Vec::with_capacity(n_grid);
         let mut cumsum = 0.0;
         for j in 0..n_grid {
-            cumsum += di[j] * dx[j] / area;
+            cumsum += weights[j] * dx[j] / area;
             cdf.push(cumsum);
         }
         // Normalize CDF endpoint to exactly 1.0
@@ -467,6 +503,49 @@ pub fn extract_free_spectrum_from_kde_zip(
     }
 
     Ok(points)
+}
+
+fn density_weights(values: &[f64], interpretation: KdeDensityInterpretation) -> Vec<f64> {
+    match interpretation {
+        KdeDensityInterpretation::RawLinear => values
+            .iter()
+            .map(|value| if value.is_finite() { *value } else { 0.0 })
+            .collect(),
+        KdeDensityInterpretation::NaturalLog => {
+            let max_value = values
+                .iter()
+                .copied()
+                .filter(|value| value.is_finite())
+                .fold(f64::NEG_INFINITY, f64::max);
+            values
+                .iter()
+                .map(|value| {
+                    if value.is_finite() {
+                        (*value - max_value).exp()
+                    } else {
+                        0.0
+                    }
+                })
+                .collect()
+        }
+        KdeDensityInterpretation::Log10 => {
+            let max_value = values
+                .iter()
+                .copied()
+                .filter(|value| value.is_finite())
+                .fold(f64::NEG_INFINITY, f64::max);
+            values
+                .iter()
+                .map(|value| {
+                    if value.is_finite() {
+                        10.0_f64.powf(*value - max_value)
+                    } else {
+                        0.0
+                    }
+                })
+                .collect()
+        }
+    }
 }
 
 /// Read a numpy file from inside a ZIP archive.
@@ -597,6 +676,13 @@ impl DatasetProvider for NanoGrav15yrProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::PathBuf;
+
+    fn repo_path(relative: &str) -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../")
+            .join(relative)
+    }
 
     #[test]
     fn test_bestfit_frequencies_monotonic() {
@@ -722,21 +808,74 @@ mod tests {
 
     #[test]
     fn test_extract_kde_zip_if_available() {
-        let path = Path::new("data/external/nanograv_15yr_kde.zip");
+        let path = repo_path("data/external/nanograv_15yr_kde.zip");
         if !path.exists() {
             eprintln!("Skipping: NANOGrav KDE ZIP not available (run fetch-datasets first)");
             return;
         }
 
-        let points = extract_free_spectrum_from_kde_zip(path)
+        let points = extract_free_spectrum_from_kde_zip(&path)
             .expect("Failed to extract free spectrum from KDE ZIP");
         assert_eq!(points.len(), 30, "Should extract 30 frequency bins");
 
-        // Verify first bin matches bestfit
-        let first = &points[0];
+        let mismatches: Vec<String> = points
+            .iter()
+            .zip(bestfit::HD_FREE_SPECTRUM.iter())
+            .enumerate()
+            .filter_map(|(idx, (actual, expected))| {
+                let matches = (actual.frequency - expected.frequency).abs() < 1e-15
+                    && (actual.log10_rho - expected.log10_rho).abs() < 1e-6
+                    && (actual.log10_rho_lo - expected.log10_rho_lo).abs() < 1e-6
+                    && (actual.log10_rho_hi - expected.log10_rho_hi).abs() < 1e-6;
+                if matches {
+                    None
+                } else {
+                    Some(format!(
+                        "bin {} actual=({:.6e},{:.6},{:.6},{:.6}) expected=({:.6e},{:.6},{:.6},{:.6})",
+                        idx,
+                        actual.frequency,
+                        actual.log10_rho,
+                        actual.log10_rho_lo,
+                        actual.log10_rho_hi,
+                        expected.frequency,
+                        expected.log10_rho,
+                        expected.log10_rho_lo,
+                        expected.log10_rho_hi
+                    ))
+                }
+            })
+            .collect();
         assert!(
-            (first.frequency - bestfit::HD_FREE_SPECTRUM[0].frequency).abs() < 1e-15,
-            "First frequency should match bestfit",
+            mismatches.is_empty(),
+            "ZIP extraction mismatches checked-in table: {}",
+            mismatches.join(" | ")
         );
+    }
+
+    #[test]
+    fn test_extract_kde_zip_alternate_interpretations_remain_finite_if_available() {
+        let path = repo_path("data/external/nanograv_15yr_kde.zip");
+        if !path.exists() {
+            eprintln!("Skipping: NANOGrav KDE ZIP not available (run fetch-datasets first)");
+            return;
+        }
+
+        for interpretation in [
+            KdeDensityInterpretation::NaturalLog,
+            KdeDensityInterpretation::Log10,
+        ] {
+            let points =
+                extract_free_spectrum_from_kde_zip_with_interpretation(&path, interpretation)
+                    .unwrap_or_else(|err| {
+                        panic!("{} extraction failed: {err}", interpretation.as_str())
+                    });
+            assert_eq!(points.len(), bestfit::N_BINS);
+            assert!(points.iter().all(|point| {
+                point.frequency.is_finite()
+                    && point.log10_rho.is_finite()
+                    && point.log10_rho_lo.is_finite()
+                    && point.log10_rho_hi.is_finite()
+            }));
+        }
     }
 }

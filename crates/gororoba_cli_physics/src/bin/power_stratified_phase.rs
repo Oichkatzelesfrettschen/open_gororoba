@@ -111,13 +111,20 @@ fn main() -> anyhow::Result<()> {
 
     let n_gal = galaxies.len();
     let n_per_stratum = n_gal / cli.n_strata;
-    eprintln!("Loaded {} galaxies, {} strata of ~{} each",
-        n_gal, cli.n_strata, n_per_stratum);
-    eprintln!("Expected R under H0 ~ 1/sqrt({}) = {:.4}",
-        n_per_stratum, 1.0 / (n_per_stratum as f64).sqrt());
+    eprintln!(
+        "Loaded {} galaxies, {} strata of ~{} each",
+        n_gal, cli.n_strata, n_per_stratum
+    );
+    eprintln!(
+        "Expected R under H0 ~ 1/sqrt({}) = {:.4}",
+        n_per_stratum,
+        1.0 / (n_per_stratum as f64).sqrt()
+    );
     eprintln!();
 
-    println!("algebra,stratum,n_galaxies,power_min,power_max,power_median,rayleigh_r,rayleigh_p,mean_phase");
+    println!(
+        "algebra,stratum,n_galaxies,power_min,power_max,power_median,rayleigh_r,rayleigh_p,mean_phase"
+    );
 
     let algebras = ["CD-ZD", "G2", "J3O", "sl2"];
 
@@ -127,21 +134,28 @@ fn main() -> anyhow::Result<()> {
         // Sort galaxies by power in this algebra.
         let mut indices: Vec<usize> = (0..n_gal).collect();
         indices.sort_by(|&a, &b| {
-            galaxies[a].power(algebra)
+            galaxies[a]
+                .power(algebra)
                 .partial_cmp(&galaxies[b].power(algebra))
                 .unwrap_or(std::cmp::Ordering::Equal)
         });
 
         for s in 0..cli.n_strata {
             let start = s * n_per_stratum;
-            let end = if s == cli.n_strata - 1 { n_gal } else { (s + 1) * n_per_stratum };
+            let end = if s == cli.n_strata - 1 {
+                n_gal
+            } else {
+                (s + 1) * n_per_stratum
+            };
             let stratum_indices = &indices[start..end];
             let n_s = stratum_indices.len();
 
-            let powers: Vec<f64> = stratum_indices.iter()
+            let powers: Vec<f64> = stratum_indices
+                .iter()
                 .map(|&i| galaxies[i].power(algebra))
                 .collect();
-            let phases: Vec<f64> = stratum_indices.iter()
+            let phases: Vec<f64> = stratum_indices
+                .iter()
                 .map(|&i| galaxies[i].phase(algebra))
                 .collect();
 
@@ -163,11 +177,23 @@ fn main() -> anyhow::Result<()> {
                 _ => "middle",
             };
 
-            println!("{},{},{},{:.6e},{:.6e},{:.6e},{:.6},{:.6e},{:.4}",
-                algebra, s + 1, n_s, power_min, power_max, power_med, r, p, mean_phase);
+            println!(
+                "{},{},{},{:.6e},{:.6e},{:.6e},{:.6},{:.6e},{:.4}",
+                algebra,
+                s + 1,
+                n_s,
+                power_min,
+                power_max,
+                power_med,
+                r,
+                p,
+                mean_phase
+            );
 
-            eprintln!("  {} (n={}): R={:.4}, p={:.4e}, power=[{:.4e}, {:.4e}]",
-                label, n_s, r, p, power_min, power_max);
+            eprintln!(
+                "  {} (n={}): R={:.4}, p={:.4e}, power=[{:.4e}, {:.4e}]",
+                label, n_s, r, p, power_min, power_max
+            );
         }
         eprintln!();
     }
@@ -179,7 +205,8 @@ fn main() -> anyhow::Result<()> {
     for algebra in &algebras {
         let mut indices: Vec<usize> = (0..n_gal).collect();
         indices.sort_by(|&a, &b| {
-            galaxies[a].power(algebra)
+            galaxies[a]
+                .power(algebra)
                 .partial_cmp(&galaxies[b].power(algebra))
                 .unwrap_or(std::cmp::Ordering::Equal)
         });
@@ -200,15 +227,22 @@ fn main() -> anyhow::Result<()> {
     let expected_r = 1.0 / (n_per_stratum as f64).sqrt();
 
     if max_top_r > 0.3 {
-        eprintln!("  Max top-quintile R = {:.4} > 0.3: strong phase coherence in outliers!", max_top_r);
+        eprintln!(
+            "  Max top-quintile R = {:.4} > 0.3: strong phase coherence in outliers!",
+            max_top_r
+        );
         eprintln!("  Possible ZD signal concentrated in high-power galaxy subset.");
     } else if max_top_r > 3.0 * expected_r {
-        eprintln!("  Max top-quintile R = {:.4} > 3x expected ({:.4}): marginal excess.",
-            max_top_r, expected_r);
+        eprintln!(
+            "  Max top-quintile R = {:.4} > 3x expected ({:.4}): marginal excess.",
+            max_top_r, expected_r
+        );
         eprintln!("  Weakly suggestive but below 0.3 threshold.");
     } else {
-        eprintln!("  Max top-quintile R = {:.4}, consistent with noise (expected {:.4}).",
-            max_top_r, expected_r);
+        eprintln!(
+            "  Max top-quintile R = {:.4}, consistent with noise (expected {:.4}).",
+            max_top_r, expected_r
+        );
         eprintln!("  FALSIFIED: no phase coherence even in high-power outlier galaxies.");
     }
 

@@ -19,16 +19,17 @@
 //!
 //! Reference: E-203
 
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 use clap::Parser;
-use cosmology_core::harmonic_stacking::{
-    CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig,
-    albert_peirce_wavenumbers, g2_angular_wavenumbers,
-    sl2_partner_graph_wavenumbers, stack_residuals,
+use cosmology_core::{
+    harmonic_stacking::{
+        CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig,
+        albert_peirce_wavenumbers, g2_angular_wavenumbers, sl2_partner_graph_wavenumbers,
+        stack_residuals,
+    },
+    nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
-use cosmology_core::nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass};
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
@@ -51,7 +52,10 @@ struct Cli {
     dc14_csv: PathBuf,
 
     /// Path to MaNGA rotation curves (for bootstrap).
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall metadata (for bootstrap).
@@ -82,7 +86,10 @@ struct Cli {
     #[arg(long, default_value_t = 8)]
     min_points: usize,
 
-    #[arg(long, default_value = "data/results/e203/cross_algebra_decomposition.csv")]
+    #[arg(
+        long,
+        default_value = "data/results/e203/cross_algebra_decomposition.csv"
+    )]
     out_csv: PathBuf,
 }
 
@@ -292,9 +299,7 @@ fn main() -> anyhow::Result<()> {
         .collect();
 
     let g2_k = g2_angular_wavenumbers();
-    let g2_w: Vec<f64> = (1..=g2_k.len())
-        .map(|n| 1.0 / (n as f64).sqrt())
-        .collect();
+    let g2_w: Vec<f64> = (1..=g2_k.len()).map(|n| 1.0 / (n as f64).sqrt()).collect();
 
     let j3o_k = albert_peirce_wavenumbers();
     let j3o_w: Vec<f64> = vec![1.0; j3o_k.len()];
@@ -335,7 +340,12 @@ fn main() -> anyhow::Result<()> {
 
         // Component 1: DC14 baryonic absorption
         let rho_dc14 = predict_colored_correlation(
-            &x_values, &delta_dc14, all_k[a], all_w[a], all_k[b], all_w[b],
+            &x_values,
+            &delta_dc14,
+            all_k[a],
+            all_w[a],
+            all_k[b],
+            all_w[b],
         );
         // DC14 excess = dc14_pred - null (the amount DC14 colored noise adds above white)
         let dc14_component = rho_dc14 - obs.rho_null;
@@ -406,14 +416,8 @@ fn main() -> anyhow::Result<()> {
 
     eprintln!("\n--- Summary ---");
     eprintln!("sigma_rho = {:.6} (N={})", sigma_rho, n_gal);
-    eprintln!(
-        "Pairs with |residual| < sigma_rho: {}/6",
-        n_below_sigma
-    );
-    eprintln!(
-        "Pairs with |residual| > 3*sigma_rho: {}/6",
-        n_above_3sigma
-    );
+    eprintln!("Pairs with |residual| < sigma_rho: {}/6", n_below_sigma);
+    eprintln!("Pairs with |residual| > 3*sigma_rho: {}/6", n_above_3sigma);
     eprintln!("Max residual: {:.2} sigma", max_residual_sigma);
 
     // ---- Bootstrap (resample galaxies, recompute cross-correlation + decomposition) ----
@@ -547,7 +551,12 @@ fn main() -> anyhow::Result<()> {
 
             // Apply same decomposition
             let dc14_comp = predict_colored_correlation(
-                &x_values, &delta_dc14, all_k[a], all_w[a], all_k[b_idx], all_w[b_idx],
+                &x_values,
+                &delta_dc14,
+                all_k[a],
+                all_w[a],
+                all_k[b_idx],
+                all_w[b_idx],
             ) - obs.rho_null;
             let geo_comp = geometric_noise_correlation(
                 all_k[a],

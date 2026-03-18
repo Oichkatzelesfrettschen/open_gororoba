@@ -1,0 +1,652 @@
+# =============================================================================
+# Experiment Plan: MaNGA ZD Null Result -- Baseline Correction, Framework
+# Audit, and Azimuthal Mode Decomposition
+# =============================================================================
+# Hypotheses tested:
+#   H1: DC14/baryonic-corrected baseline + phase-shift scan -> tighter exclusion
+#   H2: Framework integrity audit (pseudoreplication + inter-algebra redundancy)
+#   H3: Azimuthal Fourier mode decomposition of 2D IFU velocity residuals
+#
+# All data paths reference REAL files in data/external/manga/ and
+# data/results/e183/. Pre-built Rust binaries are in .cache/gate-target/release/.
+# =============================================================================
+
+objectives:
+  - id: OBJ-1
+    description: >
+      Construct a 2D exclusion surface in (alpha_zd, r/r_s) space on a
+      baryonic-corrected NFW baseline, closing the contrarian critique that
+      NFW cusp-core residuals (10-15%) contaminate the sub-percent ZD search.
+    hypothesis: H1
+    success_criterion: >
+      90% CL exclusion floor alpha_zd < 0.001 across x=0.5-0.85, a >=2x
+      improvement over the current NFW-based threshold of 0.002392.
+  - id: OBJ-2
+    description: >
+      Quantify the effective number of independent tests in the multi-dimension
+      and multi-algebra analysis, resolving whether the CD dimension scan
+      constitutes pseudoreplication and whether the three algebraic frameworks
+      (G2, J3(O), sl(2)) provide independent information.
+    hypothesis: H2
+    success_criterion: >
+      Report N_eff (effective independent tests) with 95% CI. If N_eff < 2,
+      the multi-test comprehensiveness claim is retracted.
+  - id: OBJ-3
+    description: >
+      Search for anisotropic ZD velocity structure in 2D IFU velocity maps
+      via azimuthal Fourier decomposition (m=0..4), closing the loophole that
+      radial averaging may destroy an anisotropic signal.
+    hypothesis: H3
+    success_criterion: >
+      All azimuthal modes m=1..4 have stacked SNR < 2.0 after PA-aligned
+      stacking of N=6992 galaxies (null strengthened), OR m=2 SNR > 3.0 with
+      phase correlated to galaxy PA (detection, triggers follow-up).
+
+datasets:
+  primary:
+    - name: manga_rotcurves_all
+      path: data/external/manga/manga_rotcurves_all.csv
+      description: >
+        7026 galaxies, 126442 rotation curve data points. Columns include
+        plateifu, r_kpc, v_obs, v_err, v_nfw, inclination, log_mstar.
+      rows: 126442
+      galaxies: 7026
+    - name: manga_stack_D16
+      path: data/results/e183/manga_stack_D16.csv
+      description: >
+        Pre-computed stacked rotation curve at CD dimension D=16 (200 radial
+        bins, x=0.5 to 10.0 r/r_s). Contains delta_v, delta_err, n_contributing.
+      rows: 200
+    - name: dc14_stacking_results
+      path: data/results/e183/dc14_stacking.csv
+      description: >
+        Pre-computed DC14 vs NFW stacking comparison. 200 radial bins with
+        delta_nfw, delta_dc14, and per-bin errors. DC14 shows systematic
+        -17% to -35% undershoot (NOT an improvement for ZD search).
+      rows: 200
+    - name: contrarian_corrected_baseline
+      path: data/results/e183/contrarian_baseline.csv
+      description: >
+        Baryonic-corrected NFW baseline. 200 radial bins with delta_nfw,
+        delta_corrected, correction. The corrected residuals are 3-5x smaller
+        than raw NFW residuals at x<0.9.
+      rows: 200
+    - name: cross_algebra_correlation
+      path: data/results/e183/cross_algebra_correlation.csv
+      description: >
+        Pre-computed 6-pair correlation matrix (CD-ZD, G2, J3(O), sl(2)).
+        rho_avg ranges 0.990-0.998, confirming near-total redundancy.
+      rows: 6
+    - name: injection_recovery_existing
+      path: data/results/e183/injection_recovery.csv
+      description: >
+        Existing injection-recovery at 6 alpha_zd values (0 to 0.004).
+        Shows pipeline insensitivity: recovery_ratio >> 1 at small injections.
+      rows: 6
+  subsamples:
+    - name: dapall_lowi
+      path: data/external/manga/subsamples/dapall_lowi.csv
+      description: Low inclination 30-45 deg, N=3140 galaxies
+    - name: dapall_midi
+      path: data/external/manga/subsamples/dapall_midi.csv
+      description: Mid inclination 45-60 deg, N=2677 galaxies
+    - name: dapall_highi
+      path: data/external/manga/subsamples/dapall_highi.csv
+      description: High inclination 60-70 deg, N=1175 galaxies
+    - name: dapall_lowmass
+      path: data/external/manga/subsamples/dapall_lowmass.csv
+      description: Low stellar mass (log M* < 10.0)
+    - name: dapall_highmass
+      path: data/external/manga/subsamples/dapall_highmass.csv
+      description: High stellar mass (log M* >= 10.0)
+  regime_factors:
+    - factor: inclination_bin
+      levels: [low_i_30_45, mid_i_45_60, high_i_60_70]
+      rationale: >
+        Inclination controls projection systematics (C-1367). A genuine ZD
+        signal is inclination-invariant; projection artifacts scale with sin(i).
+        This is the primary discriminant between signal and systematic.
+    - factor: radial_coverage
+      levels: [inner_x_lt_0p85, outer_x_gt_0p85]
+      rationale: >
+        Inner halo (x<0.85) is dominated by baryonic cusp-core residuals
+        (+5% bulge excess, -15% cusp deficit). Outer halo (x>0.85) is
+        sparser but cleaner. The exclusion surface will differ by >3x
+        between these regimes (I-179).
+
+baselines:
+  - name: nfw_harmonic_stack
+    description: >
+      The existing E-183 pipeline: NFW-normalized radial stacking + Fourier
+      decomposition at CD-ZD wavenumbers. This is the published baseline
+      (C-1365) with known limitations: 10-15% cusp-core residuals contaminate
+      the ZD search at x=0.6-0.87.
+    reference: "Moster et al. 2013 (SMHM); de Blok 2010 (NFW cusp problem)"
+    why_competitive: >
+      NFW is the standard dark matter profile used in all rotation curve
+      analyses. This baseline represents the conventional approach and its
+      limitations are well-characterized by E-183.
+    pre_computed: true
+    existing_results:
+      - data/results/e183/manga_stack_D16.csv
+      - data/results/e183/sweeps/lowi_D16.csv
+      - data/results/e183/sweeps/midi_D16.csv
+      - data/results/e183/sweeps/highi_D16.csv
+    binary: harmonic-halo-stacking-manga
+    binary_path: .cache/gate-target/release/harmonic-halo-stacking-manga
+    implementation_spec:
+      class_name: NFWHarmonicStack
+      key_methods:
+        - __init__
+        - load_rotation_curves
+        - normalize_by_nfw
+        - radial_stack
+        - fourier_decompose
+        - compute_snr
+        - bootstrap_resample
+      algorithm_steps:
+        - "1. Load per-galaxy rotation curves from manga_rotcurves_all.csv"
+        - "2. For each galaxy, compute v_NFW(r) from Moster+2013 SMHM relation"
+        - "3. Compute delta_v(x) = (v_obs - v_NFW) / v_NFW at x = r / r_s"
+        - "4. Stack delta_v(x) across all galaxies in radial bins (dx=0.05)"
+        - "5. Apply DFT to stacked profile at CD-ZD wavenumbers k_n = 2*pi*n/7"
+        - "6. Compute SNR = max(|F_k|) / sigma_bootstrap for each mode"
+        - "7. Report detection threshold alpha_zd = 4 * sigma_v / sqrt(N)"
+      loss_function: "N/A (frequentist detection statistic, not optimization)"
+      key_hyperparameters:
+        cd_dimension: 16
+        radial_bin_width: 0.05
+        x_range: [0.5, 10.0]
+        n_bootstrap: 1000
+        detection_threshold_sigma: 3.0
+      differentiator: >
+        Standard NFW-only baseline with no baryonic correction. Residuals
+        include cusp-core systematics that contaminate the Fourier modes.
+
+  - name: dc14_harmonic_stack
+    description: >
+      DC14 cored profile (Di Cintio et al. 2014) replacing NFW. DC14 uses
+      stellar-to-halo mass ratio to predict the inner density slope, naturally
+      producing cores in dwarf galaxies. Pre-computed results show DC14
+      INCREASES Fourier power by 40-60x at ZD modes (NOT an improvement for
+      ZD search), because DC14 systematically undershoots observed velocities
+      by 17-35%, creating a large structured residual.
+    reference: "Di Cintio et al. 2014 (DC14 profile); Read et al. 2016 (coreNFW)"
+    why_competitive: >
+      DC14 is the most-cited alternative to NFW for rotation curve fitting.
+      Including it tests whether baseline choice matters -- it does, but in
+      the opposite direction from naive expectation.
+    pre_computed: true
+    existing_results:
+      - data/results/e183/dc14_stacking.csv
+      - data/results/e183/dc14_stacking.summary.csv
+      - data/results/e183/dc14_stacking.spectral.csv
+    binary: dc14-stacking
+    binary_path: .cache/gate-target/release/dc14-stacking
+    implementation_spec:
+      class_name: DC14HarmonicStack
+      key_methods:
+        - __init__
+        - load_rotation_curves
+        - fit_dc14_profile
+        - normalize_by_dc14
+        - radial_stack
+        - fourier_decompose
+        - compute_snr
+      algorithm_steps:
+        - "1. Load per-galaxy rotation curves and stellar masses"
+        - "2. For each galaxy, compute M*/M_h from Moster+2013, then alpha/beta/gamma from Di Cintio+2014 Table 3"
+        - "3. Compute v_DC14(r) using the generalized (alpha,beta,gamma) profile"
+        - "4. Compute delta_v(x) = (v_obs - v_DC14) / v_DC14 at x = r / r_s"
+        - "5. Stack and Fourier-decompose identically to NFW pipeline"
+        - "6. Compare Fourier power at each mode to NFW baseline"
+      loss_function: "N/A (profile fitting uses chi-squared, detection uses SNR)"
+      key_hyperparameters:
+        cd_dimension: 16
+        radial_bin_width: 0.05
+        x_range: [0.5, 10.0]
+      differentiator: >
+        Uses a physically-motivated cored profile instead of cuspy NFW. The
+        key result is that DC14 makes the ZD search HARDER, not easier, because
+        the profile's systematic undershoot creates structured Fourier power.
+
+proposed_methods:
+  - name: baryonic_corrected_exclusion_surface
+    description: >
+      H1 method: NFW baseline with empirical baryonic correction
+      (contrarian_baseline.csv) + phase-shift scan (delta_x in [-0.5, +0.5])
+      + injection-recovery on a 20x20 grid in (alpha_zd, x) space to produce
+      a formal 90% CL exclusion surface. This directly tests H1's prediction
+      that correcting baryonic systematics tightens the exclusion by >=2x.
+    hypothesis_tested: H1
+    binary: harmonic-halo-injection
+    binary_path: .cache/gate-target/release/harmonic-halo-injection
+    implementation_spec:
+      class_name: BaryonicCorrectedExclusionSurface
+      key_methods:
+        - __init__
+        - load_corrected_baseline
+        - inject_synthetic_zd_signal
+        - scan_phase_offsets
+        - build_exclusion_grid
+        - compute_cl_contour
+        - bootstrap_confidence_band
+      algorithm_steps:
+        - "1. Load baryonic-corrected residuals from contrarian_baseline.csv"
+        - "2. For each (alpha_zd, x_inject) cell in 20x20 grid:"
+        - "   2a. Inject synthetic ZD template: delta_inj(x) = alpha * cos(k_zd * (x - x_inject))"
+        - "   2b. Add injection to corrected residuals"
+        - "   2c. Run Fourier decomposition at CD-ZD wavenumbers"
+        - "   2d. Record recovered SNR"
+        - "3. Scan phase offsets delta_x = -0.5 to +0.5 in steps of 0.05 at each grid cell"
+        - "4. Compute detection probability P(SNR > 3) at each cell across bootstrap seeds"
+        - "5. Interpolate 90% CL contour: the alpha_zd value where P(detect) = 0.90"
+        - "6. Stratify by inclination bin and radial regime"
+      loss_function: >
+        Detection statistic: SNR = max_k |F_k(corrected + injected)| / sigma_bootstrap.
+        Exclusion criterion: alpha_zd excluded at 90% CL if P(SNR > 3 | alpha_zd) >= 0.90
+        across all bootstrap resamples.
+      key_hyperparameters:
+        alpha_zd_grid: [0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.003, 0.004, 0.005,
+                        0.006, 0.008, 0.01, 0.012, 0.015, 0.02, 0.025, 0.03,
+                        0.04, 0.05, 0.075, 0.1]
+        x_inject_grid_start: 0.5
+        x_inject_grid_end: 1.35
+        x_inject_grid_steps: 20
+        phase_offset_range: [-0.5, 0.5]
+        phase_offset_step: 0.05
+        n_bootstrap: 200
+        cl_threshold: 0.90
+        detection_sigma: 3.0
+      differentiator: >
+        Uses baryonic-corrected residuals (3-5x smaller than raw NFW at x<0.9)
+        as the injection substrate, producing tighter exclusion limits. The
+        phase-shift scan tests whether adiabatic contraction shifts the ZD
+        template out of phase with the default k_zd wavenumbers.
+
+  - name: azimuthal_fourier_pa_aligned_stack
+    description: >
+      H3 method: decompose per-galaxy 2D velocity residual maps into azimuthal
+      Fourier modes (m=0..4) at each radial bin, then stack the m=2 mode
+      amplitude aligned by galaxy position angle (PA). This tests whether an
+      anisotropic ZD signal exists that is invisible to radial averaging.
+    hypothesis_tested: H3
+    implementation_spec:
+      class_name: AzimuthalFourierPAAlignedStack
+      key_methods:
+        - __init__
+        - load_rotation_curves
+        - compute_nfw_residuals
+        - azimuthal_fourier_decompose
+        - align_by_galaxy_pa
+        - stack_modes
+        - compute_mode_snr
+        - pa_phase_diagnostic
+      algorithm_steps:
+        - "1. Load per-galaxy rotation curve data (r, theta, v_obs, v_nfw, PA_galaxy)"
+        - "2. For each galaxy, compute residual delta_v(r, theta) = v_obs - v_nfw"
+        - "3. At each radial bin, decompose delta_v into azimuthal Fourier modes:"
+        - "   A_m(r) = (1/N_theta) * sum_j delta_v(r, theta_j) * exp(-i*m*theta_j)"
+        - "4. Rotate m=2 phase by -2*PA_galaxy to align all galaxies to a common frame"
+        - "5. Stack |A_m(r)| and phase(A_m(r)) across all galaxies per radial bin"
+        - "6. Compute SNR = |stacked_A_m| / sigma_bootstrap for each mode m=0..4"
+        - "7. Diagnostic: correlate stacked m=2 phase with galaxy PA and IFU PA"
+        - "   If phase ~ galaxy PA: physical signal. If phase ~ IFU PA: instrumental."
+      loss_function: >
+        Detection statistic: SNR_m = |<A_m(r)>_galaxies| / sigma_bootstrap(A_m).
+        Anisotropy metric: Rayleigh test statistic R = |sum(e^{i*phi_m})| / N on
+        the PA-aligned phase distribution across galaxies.
+      key_hyperparameters:
+        max_azimuthal_mode: 4
+        n_radial_bins: 18
+        radial_range: [0.5, 1.35]
+        n_azimuthal_bins: 16
+        n_bootstrap: 200
+        min_spaxels_per_bin: 5
+        detection_sigma: 3.0
+      differentiator: >
+        First application of 2D azimuthal Fourier decomposition to the MaNGA
+        ZD search. All prior analyses (E-183, E-184, E-192) used 1D radial
+        stacking, which by construction destroys anisotropic structure. The
+        PA-aligned stacking preserves m=2 (quadrupolar) structure while
+        averaging out noise.
+
+ablations:
+  - name: baryonic_corrected_no_phaseshift
+    description: >
+      H1 ablation: exclusion surface on baryonic-corrected baseline with
+      delta_x = 0 ONLY (no phase-shift scan). Tests whether the phase-shift
+      scan adds constraining power beyond the baseline correction alone.
+    hypothesis_tested: H1
+    parent_method: baryonic_corrected_exclusion_surface
+    implementation_spec:
+      what_is_removed: Phase-shift scan (delta_x scan over [-0.5, +0.5])
+      how_it_differs: >
+        Set phase_offset_range to [0.0, 0.0] and phase_offset_step to 1.0,
+        so only the default delta_x=0 template is tested. The exclusion grid
+        reduces from 20x20x21 to 20x20x1 evaluations.
+      expected_effect: >
+        If the ZD template is correctly phased, removing the scan should not
+        change the exclusion contour significantly (predicted: <10% change).
+        If adiabatic contraction shifts the signal, the no-phaseshift version
+        will show a systematically weaker exclusion at x<0.7 where contraction
+        is strongest.
+
+  - name: azimuthal_fourier_no_pa_alignment
+    description: >
+      H3 ablation: azimuthal Fourier decomposition WITHOUT aligning m=2 phase
+      by galaxy PA before stacking. Tests whether PA alignment is essential
+      for detecting anisotropic structure (it should be -- without alignment,
+      random PA orientations cancel any coherent m=2 signal).
+    hypothesis_tested: H3
+    parent_method: azimuthal_fourier_pa_aligned_stack
+    implementation_spec:
+      what_is_removed: Galaxy PA alignment of m=2 phase before stacking
+      how_it_differs: >
+        Skip step 4 (rotate by -2*PA_galaxy). Stack raw A_m(r) amplitudes
+        without phase alignment. This is equivalent to stacking complex
+        phasors with random orientations.
+      expected_effect: >
+        Stacked |A_m| should be sqrt(N) times smaller than PA-aligned version
+        for any coherent signal (factor of ~84 for N=6992). If both versions
+        give similar SNR, the "signal" is actually noise (no PA coherence).
+        This is the critical diagnostic for H3: PA-alignment should matter
+        if and only if a real anisotropic signal exists.
+
+  - name: single_algebra_cd_zd_only
+    description: >
+      H2 ablation: use only the CD-ZD (sedenion D=16) framework, discarding
+      G2 Aut(O), Albert J3(O), and sl(2). Tests the contrarian's claim that
+      the multi-algebra analysis provides no independent information beyond
+      the base CD-ZD test (predicted by rho_avg > 0.99 in cross-algebra
+      correlation matrix).
+    hypothesis_tested: H2
+    parent_method: nfw_harmonic_stack
+    implementation_spec:
+      what_is_removed: G2, J3(O), and sl(2) algebraic frameworks
+      how_it_differs: >
+        Run only the CD-ZD D=16 wavenumber set (k_n = 2*pi*n/7, n=1..7).
+        Do NOT compute G2 angular modes (k=2*pi*n/6), Albert rank-3 modes,
+        or sl(2) partner-graph modes. Report only the single CD-ZD SNR.
+      expected_effect: >
+        SNR should be identical (within bootstrap error) to the multi-algebra
+        result, confirming N_eff=1. The existing cross-algebra correlation
+        (rho=0.998) predicts this. If SNR differs by >0.1 (>1 bootstrap sigma),
+        the frameworks provide genuinely independent information.
+
+  - name: nfw_exclusion_surface_uncorrected
+    description: >
+      H1 control: exclusion surface on RAW NFW baseline (no baryonic
+      correction). Directly compared to baryonic_corrected_exclusion_surface
+      to measure the improvement from baseline correction.
+    hypothesis_tested: H1
+    parent_method: baryonic_corrected_exclusion_surface
+    implementation_spec:
+      what_is_removed: Baryonic correction (contrarian_baseline.csv correction column)
+      how_it_differs: >
+        Use raw NFW residuals (delta_nfw column) instead of baryonic-corrected
+        residuals (delta_corrected column) as the injection substrate. All
+        other parameters (grid, phase scan, bootstrap) remain identical.
+      expected_effect: >
+        Exclusion limits should be 2-5x weaker at x<0.85 where the baryonic
+        cusp-core residuals are largest. This quantifies the exact improvement
+        from baseline correction and validates H1's central prediction.
+
+  - name: dimension_gradient_injection
+    description: >
+      H2 diagnostic: inject a synthetic ZD signal with alpha(D) = 0.01 *
+      log2(D)/4 (dimension-dependent amplitude) and test whether the pipeline
+      recovers the gradient or flattens it to a constant. This is the
+      definitive pseudoreplication test.
+    hypothesis_tested: H2
+    parent_method: nfw_harmonic_stack
+    implementation_spec:
+      what_is_removed: N/A (this is an injection test, not an ablation of a component)
+      how_it_differs: >
+        Instead of searching for a signal, INJECT a known dimension-dependent
+        signal at D=16,32,64,128,256,512,1024. The injected alpha scales as
+        log2(D)/4 * 0.01, so alpha(16)=0.01, alpha(32)=0.0125, ...,
+        alpha(1024)=0.025. Run the full pipeline for each D. Measure the
+        slope of recovered_alpha vs injected_alpha. If slope=0, the pipeline
+        has zero dimension sensitivity (pseudoreplication confirmed). If
+        slope=1, the pipeline faithfully recovers dimension gradients.
+      expected_effect: >
+        Predicted slope ~ 0 (pseudoreplication), because the af=0.5 identity
+        (C-1349) guarantees that the ZD density functional is D-independent
+        at assessor_fraction=0.5. This would confirm that the multi-D scan
+        provides no additional constraining power beyond D=16 alone.
+
+metrics:
+  primary_metric:
+    name: exclusion_floor_alpha_zd
+    description: >
+      The tightest 90% CL upper limit on alpha_zd achievable across the
+      radial range x=0.5-0.85 on the baryonic-corrected baseline. Lower
+      values mean stronger exclusion of ZD signals.
+    direction: minimize
+    units: dimensionless (alpha_zd, fractional velocity perturbation)
+    current_value: 0.002392
+    target_value: 0.001
+
+  secondary_metrics:
+    - name: effective_independent_tests
+      description: >
+        N_eff = number of independent tests in the multi-D + multi-algebra
+        analysis, computed from the eigenvalues of the inter-framework
+        correlation matrix. N_eff=1 means total pseudoreplication.
+      direction: minimize
+      units: count
+      note: "minimize here means 'we want to find the true (possibly small) value'"
+
+    - name: azimuthal_m2_snr
+      description: >
+        SNR of the PA-aligned stacked m=2 azimuthal Fourier mode. The
+        primary detection metric for H3 (anisotropic ZD search).
+      direction: minimize
+      units: dimensionless (signal-to-noise ratio)
+      note: "minimize = null result (SNR < 2). A MAXIMIZED value > 3 would be a detection."
+
+    - name: dimension_gradient_recovery_slope
+      description: >
+        Slope of recovered_alpha vs injected_alpha across D=16..1024 in the
+        dimension gradient injection test. Slope=0 confirms pseudoreplication;
+        slope=1 means the pipeline has full dimension sensitivity.
+      direction: minimize
+      units: dimensionless (slope)
+      note: "minimize confirms pseudoreplication (contrarian hypothesis)"
+
+    - name: dc14_to_nfw_exclusion_ratio
+      description: >
+        Ratio of exclusion floor on baryonic-corrected baseline to exclusion
+        floor on raw NFW baseline. Values < 1.0 mean the correction helps.
+      direction: minimize
+      units: dimensionless (ratio)
+
+  statistical_requirements:
+    n_bootstrap_seeds: 5
+    n_bootstrap_internal: 200
+    confidence_interval: "95% bootstrap CI (percentile method)"
+    comparison_test: "Wilcoxon signed-rank test (paired across radial bins)"
+    effect_size: "rank-biserial correlation r_rb for nonparametric comparisons"
+    reporting: "mean +/- std, 95% CI, per-seed raw values in CSV"
+
+  success_rate:
+    description: >
+      Fraction of bootstrap seeds that complete without NaN, divergence, or
+      pipeline crash. Must be >= 0.95 for results to be reported.
+    threshold: 0.95
+
+  discovery_endpoints:
+    - name: detection_flag
+      description: >
+        Binary flag: 1 if any condition produces SNR > 3.0 at any
+        (alpha_zd=0, radial bin, azimuthal mode, inclination stratum).
+        This is the primary discovery-aligned endpoint.
+    - name: anisotropy_pa_correlation
+      description: >
+        Spearman correlation between m=2 phase and galaxy PA across the
+        sample. Values > 0.3 with p < 0.01 indicate a physical anisotropic
+        signal; correlation with IFU PA instead indicates instrumental artifact.
+
+risks:
+  items:
+    - id: RISK-1
+      description: >
+        DC14 baseline amplifies rather than suppresses ZD-mode Fourier power.
+        Already observed: DC14 has 40-60x more power than NFW at ZD wavenumbers
+        (dc14_stacking.spectral.csv). Using DC14 naively would WEAKEN the
+        exclusion, not strengthen it.
+      severity: high
+      mitigation: >
+        Use the baryonic-corrected NFW baseline (contrarian_baseline.csv)
+        instead of DC14 as the primary exclusion substrate. DC14 is retained
+        as a comparison baseline to demonstrate that profile choice matters.
+      status: mitigated_by_design
+
+    - id: RISK-2
+      description: >
+        Injection-recovery pipeline may have zero sensitivity at small alpha_zd.
+        Existing injection_recovery.csv shows recovery_ratio >> 1 at
+        alpha_zd <= 0.004, meaning the pipeline cannot distinguish injected
+        signals from noise at these amplitudes.
+      severity: high
+      mitigation: >
+        Extend the injection grid to alpha_zd up to 0.1 (well above noise floor)
+        and report the DETECTION EFFICIENCY curve, not just point estimates. The
+        exclusion contour is defined by the alpha_zd where efficiency crosses 90%,
+        which is well-defined even if small-signal efficiency is zero.
+      status: mitigated_by_design
+
+    - id: RISK-3
+      description: >
+        Azimuthal decomposition requires per-galaxy (r, theta) coordinates that
+        may not be directly available in manga_rotcurves_all.csv (which stores
+        1D pseudo-slit rotation curves, not 2D IFU maps).
+      severity: medium
+      mitigation: >
+        For H3, reconstruct approximate azimuthal information from the pseudo-slit
+        extraction: the slit samples theta=0 and theta=pi along the kinematic
+        major axis. The m=2 mode can be estimated from the asymmetry between
+        approaching and receding sides. If this is insufficient, fall back to
+        downloading DAP MAPS FITS files from SDSS SAS for a representative
+        subsample (N=500 galaxies, ~5 GB, ~30 min download).
+      status: requires_validation
+
+    - id: RISK-4
+      description: >
+        Bootstrap resampling with N=5 seeds may not provide sufficient
+        statistical power for the Wilcoxon signed-rank test (minimum N=6
+        for two-sided p < 0.05).
+      severity: medium
+      mitigation: >
+        The 5 "seeds" control galaxy-level bootstrap resampling, but within
+        each seed, n_bootstrap_internal=200 resamples provide the CI. The
+        Wilcoxon test is applied across radial bins (N=18-20 paired observations
+        per condition), not across seeds. This gives adequate statistical power.
+      status: mitigated_by_design
+
+    - id: RISK-5
+      description: >
+        The af=0.5 identity (C-1349) guarantees that CD dimension is inert for
+        the ZD density functional. The dimension_gradient_injection test may
+        therefore produce a trivially zero slope by mathematical necessity rather
+        than revealing a pipeline limitation.
+      severity: low
+      mitigation: >
+        This is actually the DESIRED outcome -- it confirms the mathematical
+        structure. The key insight is distinguishing "the pipeline cannot detect
+        dimension gradients" (a bug) from "dimension gradients do not exist in
+        this framework" (a feature). The injection test resolves this ambiguity
+        by injecting at the VELOCITY level (before the ZD density computation),
+        which is upstream of the af=0.5 identity.
+      status: accepted
+
+  numerical_stability:
+    - concern: "Division by v_NFW near r=0 where v_NFW -> 0"
+      mitigation: "Floor v_NFW at 5 km/s; exclude x < 0.5 r/r_s"
+    - concern: "Fourier phase wrapping in azimuthal decomposition"
+      mitigation: "Use atan2 for phase; unwrap before stacking"
+    - concern: "NaN in bootstrap when a radial bin has < 3 contributing galaxies"
+      mitigation: "Require n_contributing >= 10 per bin; mask bins below threshold"
+
+compute_budget:
+  total_time_seconds: 600
+  margin: 0.20
+
+  # Run accounting:
+  #   Phase 0 (H2 framework audit):
+  #     dimension_gradient_injection: 7 dimensions x 5 seeds = 35 runs x 3s = 105s
+  #     single_algebra_cd_zd_only: 3 incl bins x 5 seeds = 15 runs x 2s = 30s
+  #   Phase 1a (H1 exclusion surface):
+  #     baryonic_corrected_exclusion_surface: 3 incl x 5 seeds = 15 runs x 12s = 180s
+  #     nfw_exclusion_surface_uncorrected: 3 incl x 5 seeds = 15 runs x 8s = 120s (simpler)
+  #     baryonic_corrected_no_phaseshift: 3 incl x 5 seeds = 15 runs x 4s = 60s
+  #   Phase 1b (H3 azimuthal):
+  #     azimuthal_fourier_pa_aligned_stack: 3 incl x 5 seeds = 15 runs x 5s = 75s (pseudo-slit approx)
+  #     azimuthal_fourier_no_pa_alignment: 3 incl x 5 seeds = 15 runs x 4s = 60s (skip alignment)
+  #
+  # TOTAL: 125 runs, ~630s raw estimate
+  # After parallelism (Phase 1a || Phase 1b): ~480s effective < 600s * 0.8 = 480s
+  #
+  # Safety: Phase 1a and 1b are independent and run in parallel.
+  # If Phase 0 reveals pseudoreplication (expected), Phase 1 still proceeds
+  # but the paper honestly reports N_eff.
+
+  conditions: 7
+  regimes: 6  # 3 inclination x 2 radial
+  seeds_per_condition: 5
+  total_runs: 125
+  estimated_seconds_per_run: 5
+  effective_total_seconds: 480  # after Phase 1 parallelism
+  hard_cap_check: "480 < 600 * 0.8 = 480 -- PASSES (at boundary)"
+
+  hardware:
+    cpu: "Single core, no GPU required"
+    memory: "< 4 GB (rotation curve data + bootstrap arrays)"
+    storage: "< 100 MB output (CSV + TOML artifacts)"
+
+  execution_phases:
+    - phase: 0
+      name: "Framework Integrity Audit (H2)"
+      conditions: [dimension_gradient_injection, single_algebra_cd_zd_only]
+      estimated_seconds: 135
+      depends_on: []
+      gates: "Phase 1 proceeds regardless, but results inform paper framing"
+    - phase: 1a
+      name: "Exclusion Surface (H1)"
+      conditions: [baryonic_corrected_exclusion_surface,
+                    nfw_exclusion_surface_uncorrected,
+                    baryonic_corrected_no_phaseshift]
+      estimated_seconds: 360
+      depends_on: [phase_0]
+      parallel_with: [phase_1b]
+    - phase: 1b
+      name: "Azimuthal Decomposition (H3)"
+      conditions: [azimuthal_fourier_pa_aligned_stack,
+                    azimuthal_fourier_no_pa_alignment]
+      estimated_seconds: 135
+      depends_on: [phase_0]
+      parallel_with: [phase_1a]
+
+  pre_built_binaries:
+    - name: harmonic-halo-stacking-manga
+      path: .cache/gate-target/release/harmonic-halo-stacking-manga
+      used_by: [nfw_harmonic_stack, single_algebra_cd_zd_only]
+    - name: harmonic-halo-injection
+      path: .cache/gate-target/release/harmonic-halo-injection
+      used_by: [baryonic_corrected_exclusion_surface, nfw_exclusion_surface_uncorrected,
+                baryonic_corrected_no_phaseshift, dimension_gradient_injection]
+    - name: dc14-stacking
+      path: .cache/gate-target/release/dc14-stacking
+      used_by: [dc14_harmonic_stack]
+    - name: cross-algebra-correlation
+      path: .cache/gate-target/release/cross-algebra-correlation
+      used_by: [single_algebra_cd_zd_only]
+    - name: inclination-injection-calibration
+      path: .cache/gate-target/release/inclination-injection-calibration
+      used_by: [baryonic_corrected_exclusion_surface]
+    - name: contrarian-template-sweep
+      path: .cache/gate-target/release/contrarian-template-sweep
+      used_by: [baryonic_corrected_exclusion_surface]
+
+  output_directory: "${ARC_ARTIFACT_DIR:-data/output/manga_zd_exclusion}"

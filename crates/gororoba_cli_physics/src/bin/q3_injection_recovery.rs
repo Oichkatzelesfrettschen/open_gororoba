@@ -30,8 +30,7 @@ use cosmology_core::{
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -39,7 +38,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(name = "q3-injection-recovery")]
 #[command(about = "F2: Q3 mass-quartile injection recovery validation (E-202)")]
 struct Cli {
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     #[arg(long, default_value = "data/external/manga/dapall_selection.csv")]
@@ -222,8 +224,10 @@ fn main() -> anyhow::Result<()> {
     galaxies.sort_by(|a, b| a.log_m200.partial_cmp(&b.log_m200).unwrap());
     let q_size = n_total / 4;
 
-    let q1_galaxies: Vec<NormalizedResiduals> =
-        galaxies[..q_size].iter().map(|g| g.residuals.clone()).collect();
+    let q1_galaxies: Vec<NormalizedResiduals> = galaxies[..q_size]
+        .iter()
+        .map(|g| g.residuals.clone())
+        .collect();
     let q3_galaxies: Vec<NormalizedResiduals> = galaxies[2 * q_size..3 * q_size]
         .iter()
         .map(|g| g.residuals.clone())
@@ -262,16 +266,14 @@ fn main() -> anyhow::Result<()> {
     };
 
     // ---- Q3 baseline ----
-    let (q3_baseline_snr, q3_rms, q3_valid_bins) =
-        compute_snr(&q3_galaxies, &config, &wavenumbers);
+    let (q3_baseline_snr, q3_rms, q3_valid_bins) = compute_snr(&q3_galaxies, &config, &wavenumbers);
     eprintln!(
         "\nQ3 baseline: SNR={:.4}, RMS={:.6}, valid_bins={}",
         q3_baseline_snr, q3_rms, q3_valid_bins
     );
 
     // ---- Q1 baseline ----
-    let (q1_baseline_snr, q1_rms, q1_valid_bins) =
-        compute_snr(&q1_galaxies, &config, &wavenumbers);
+    let (q1_baseline_snr, q1_rms, q1_valid_bins) = compute_snr(&q1_galaxies, &config, &wavenumbers);
     eprintln!(
         "Q1 baseline: SNR={:.4}, RMS={:.6}, valid_bins={}",
         q1_baseline_snr, q1_rms, q1_valid_bins
@@ -331,10 +333,14 @@ fn main() -> anyhow::Result<()> {
         boot_deltas.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let (median, lo, hi) = if boot_deltas.len() >= 10 {
             let lo_idx = (boot_deltas.len() as f64 * 0.025) as usize;
-            let hi_idx = (boot_deltas.len() as f64 * 0.975).min(boot_deltas.len() as f64 - 1.0)
-                as usize;
+            let hi_idx =
+                (boot_deltas.len() as f64 * 0.975).min(boot_deltas.len() as f64 - 1.0) as usize;
             let med_idx = boot_deltas.len() / 2;
-            (boot_deltas[med_idx], boot_deltas[lo_idx], boot_deltas[hi_idx])
+            (
+                boot_deltas[med_idx],
+                boot_deltas[lo_idx],
+                boot_deltas[hi_idx],
+            )
         } else {
             (q3_delta, q3_delta, q3_delta)
         };
@@ -425,8 +431,7 @@ fn main() -> anyhow::Result<()> {
         let q1_6bin_delta = q1_6bin_inj_snr - q1_6bin_baseline_snr;
 
         let q1_6bin_mode_base = compute_per_mode_snr(&q1_galaxies, &config_6bin, &wavenumbers);
-        let q1_6bin_mode_inj =
-            compute_per_mode_snr(&q1_6bin_injected, &config_6bin, &wavenumbers);
+        let q1_6bin_mode_inj = compute_per_mode_snr(&q1_6bin_injected, &config_6bin, &wavenumbers);
 
         eprintln!(
             "Q1-6bin alpha_zd={:.3}: SNR={:.4}, delta_SNR={:.4}, bins={}",

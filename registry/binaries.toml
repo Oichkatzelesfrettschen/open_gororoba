@@ -252,6 +252,11 @@ crate = "gororoba_cli"
 description = "Cosmic-scale dendrogram hierarchy analysis"
 
 [[binary]]
+name = "cosmology-map-audit"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
 name = "cpu-lbm-bench"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
@@ -930,6 +935,11 @@ experiment = "E-142"
 name = "majorana-braid-crucible"
 crate = "gororoba_cli_algebra"
 description = "Majorana braiding operators mapped to the Cayley-Dickson tower. 6 subcommands: braid (Clifford vs CD), fusion (box-kite channels), protection (missing-edge associators), aligned-chsh (braid-aligned Bell test), complex-time (Wick rotation sweep), scaling (friction vs dimension)."
+
+[[binary]]
+name = "manga-azimuthal-zd-search"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "manga-maps-extractor"

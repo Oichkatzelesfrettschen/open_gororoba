@@ -23,8 +23,7 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -33,7 +32,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(about = "Template sensitivity + baseline robustness tests")]
 struct Cli {
     /// Path to MaNGA rotation curves CSV.
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall selection CSV.
@@ -124,27 +126,47 @@ fn main() -> anyhow::Result<()> {
     for galaxy in &rotcurves {
         let meta = match dapall_map.get(&galaxy.plateifu) {
             Some(m) => m,
-            None => { skipped += 1; continue; }
+            None => {
+                skipped += 1;
+                continue;
+            }
         };
 
         let log_m200 = meta.estimated_log_m200();
-        if !log_m200.is_finite() { skipped += 1; continue; }
+        if !log_m200.is_finite() {
+            skipped += 1;
+            continue;
+        }
         let m200 = 10.0_f64.powf(log_m200);
         let nfw = nfw_params_from_mass(m200, meta.z);
         let r_s = nfw.r_s_kpc;
 
-        let points: Vec<NormalizedPoint> = galaxy.points.iter().filter_map(|pt| {
-            if pt.r_kpc <= 0.0 || r_s <= 0.0 { return None; }
-            let x = pt.r_kpc / r_s;
-            let m_enc = nfw_enclosed_mass_from_params(pt.r_kpc, &nfw);
-            let v_sq = G_KPC_KMS2 * m_enc / pt.r_kpc;
-            let v_nfw = v_sq.max(0.0).sqrt();
-            if v_nfw < 1.0 { return None; }
-            let delta_v = (pt.v_obs_km_s - v_nfw) / v_nfw;
-            let delta_v_err = pt.v_err_km_s / v_nfw;
-            if !delta_v.is_finite() || !delta_v_err.is_finite() { return None; }
-            Some(NormalizedPoint { x, delta_v, delta_v_err })
-        }).collect();
+        let points: Vec<NormalizedPoint> = galaxy
+            .points
+            .iter()
+            .filter_map(|pt| {
+                if pt.r_kpc <= 0.0 || r_s <= 0.0 {
+                    return None;
+                }
+                let x = pt.r_kpc / r_s;
+                let m_enc = nfw_enclosed_mass_from_params(pt.r_kpc, &nfw);
+                let v_sq = G_KPC_KMS2 * m_enc / pt.r_kpc;
+                let v_nfw = v_sq.max(0.0).sqrt();
+                if v_nfw < 1.0 {
+                    return None;
+                }
+                let delta_v = (pt.v_obs_km_s - v_nfw) / v_nfw;
+                let delta_v_err = pt.v_err_km_s / v_nfw;
+                if !delta_v.is_finite() || !delta_v_err.is_finite() {
+                    return None;
+                }
+                Some(NormalizedPoint {
+                    x,
+                    delta_v,
+                    delta_v_err,
+                })
+            })
+            .collect();
 
         if points.len() >= cli.min_points {
             normalized.push(NormalizedResiduals {
@@ -157,7 +179,11 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    eprintln!("Normalized {} galaxies ({} skipped)", normalized.len(), skipped);
+    eprintln!(
+        "Normalized {} galaxies ({} skipped)",
+        normalized.len(),
+        skipped
+    );
 
     // Stack
     let cd_params = CdDimensionParams::new(cli.cd_dim);
@@ -204,12 +230,16 @@ fn main() -> anyhow::Result<()> {
     // Template 5: Optimal matched filter (inverse noise weighting)
     // Estimate noise power per wavenumber from the standard DFT
     let (baseline_power, _) = fourier_at_wavenumbers(
-        &result.x_grid, &result.delta_stack, &result.n_contributing,
-        config.min_galaxies_per_bin, &wavenumbers,
+        &result.x_grid,
+        &result.delta_stack,
+        &result.n_contributing,
+        config.min_galaxies_per_bin,
+        &wavenumbers,
     );
-    let w_optimal: Vec<f64> = baseline_power.iter().map(|&p| {
-        if p > 1e-20 { 1.0 / p.sqrt() } else { 1.0 }
-    }).collect();
+    let w_optimal: Vec<f64> = baseline_power
+        .iter()
+        .map(|&p| if p > 1e-20 { 1.0 / p.sqrt() } else { 1.0 })
+        .collect();
 
     struct TemplateResult {
         name: String,
@@ -229,13 +259,21 @@ fn main() -> anyhow::Result<()> {
 
     let mut template_results: Vec<TemplateResult> = Vec::new();
 
-    eprintln!("\n{:>20}  {:>12}  {:>10}  {:>10}", "template", "max_power", "rms", "snr");
+    eprintln!(
+        "\n{:>20}  {:>12}  {:>10}  {:>10}",
+        "template", "max_power", "rms", "snr"
+    );
     eprintln!("{}", "-".repeat(56));
 
     for (name, weights, envelope) in &templates {
         let (power, _phase) = weighted_dft(
-            &result.x_grid, &result.delta_stack, &result.n_contributing,
-            config.min_galaxies_per_bin, &wavenumbers, weights, *envelope,
+            &result.x_grid,
+            &result.delta_stack,
+            &result.n_contributing,
+            config.min_galaxies_per_bin,
+            &wavenumbers,
+            weights,
+            *envelope,
         );
 
         let max_power = power.iter().copied().fold(0.0_f64, f64::max);
@@ -257,11 +295,20 @@ fn main() -> anyhow::Result<()> {
         });
     }
 
-    let max_snr = template_results.iter().map(|t| t.snr).fold(0.0_f64, f64::max);
-    let min_snr = template_results.iter().map(|t| t.snr).fold(f64::INFINITY, f64::min);
+    let max_snr = template_results
+        .iter()
+        .map(|t| t.snr)
+        .fold(0.0_f64, f64::max);
+    let min_snr = template_results
+        .iter()
+        .map(|t| t.snr)
+        .fold(f64::INFINITY, f64::min);
 
     eprintln!("\n--- Contrarian I Verdict ---");
-    eprintln!("SNR range across 6 templates: [{:.4}, {:.4}]", min_snr, max_snr);
+    eprintln!(
+        "SNR range across 6 templates: [{:.4}, {:.4}]",
+        min_snr, max_snr
+    );
 
     if max_snr > 3.0 {
         eprintln!("RESULT: CHALLENGE SUSTAINED -- a template exceeds SNR 3.0!");
@@ -301,7 +348,9 @@ fn main() -> anyhow::Result<()> {
             continue;
         }
         let x = result.x_grid[j];
-        if x > 2.0 { continue; } // Only fit inner region
+        if x > 2.0 {
+            continue;
+        } // Only fit inner region
         let u = x - 1.0; // Center on x=1 for stability
         let d = result.delta_stack[j];
 
@@ -321,11 +370,7 @@ fn main() -> anyhow::Result<()> {
     // | sx2 sx3 sx4 | | a2 |   | sy2 |
     #[allow(clippy::needless_range_loop)]
     let (a0, a1, a2) = {
-        let m = [
-            [sx0, sx1, sx2],
-            [sx1, sx2, sx3],
-            [sx2, sx3, sx4],
-        ];
+        let m = [[sx0, sx1, sx2], [sx1, sx2, sx3], [sx2, sx3, sx4]];
         let b = [sy0, sy1, sy2];
 
         // Gaussian elimination (3x3, no pivoting needed for well-conditioned)
@@ -346,7 +391,9 @@ fn main() -> anyhow::Result<()> {
                 aug[col][j] /= pivot;
             }
             for row in 0..3 {
-                if row == col { continue; }
+                if row == col {
+                    continue;
+                }
                 let factor = aug[row][col];
                 for j in col..4 {
                     aug[row][j] -= factor * aug[col][j];
@@ -358,10 +405,16 @@ fn main() -> anyhow::Result<()> {
     };
 
     eprintln!("\nInner-slope polynomial fit (x < 2.0):");
-    eprintln!("  delta_corr(x) = {:.6} + {:.6}*(x-1) + {:.6}*(x-1)^2", a0, a1, a2);
+    eprintln!(
+        "  delta_corr(x) = {:.6} + {:.6}*(x-1) + {:.6}*(x-1)^2",
+        a0, a1, a2
+    );
 
     // Subtract polynomial correction from stacked profile
-    let corrected_delta: Vec<f64> = result.delta_stack.iter().zip(result.x_grid.iter())
+    let corrected_delta: Vec<f64> = result
+        .delta_stack
+        .iter()
+        .zip(result.x_grid.iter())
         .map(|(&d, &x)| {
             let u = x - 1.0;
             d - (a0 + a1 * u + a2 * u * u)
@@ -370,12 +423,16 @@ fn main() -> anyhow::Result<()> {
 
     // Re-compute Fourier power on corrected profile
     let (corrected_power, _corrected_phase) = fourier_at_wavenumbers(
-        &result.x_grid, &corrected_delta, &result.n_contributing,
-        config.min_galaxies_per_bin, &wavenumbers,
+        &result.x_grid,
+        &corrected_delta,
+        &result.n_contributing,
+        config.min_galaxies_per_bin,
+        &wavenumbers,
     );
 
     // Compute corrected RMS
-    let valid_corrected: Vec<f64> = corrected_delta.iter()
+    let valid_corrected: Vec<f64> = corrected_delta
+        .iter()
         .zip(&result.n_contributing)
         .filter(|(_, n)| **n >= config.min_galaxies_per_bin)
         .map(|(d, _)| *d)
@@ -385,7 +442,10 @@ fn main() -> anyhow::Result<()> {
         0.0
     } else {
         let mean = valid_corrected.iter().sum::<f64>() / valid_corrected.len() as f64;
-        let var = valid_corrected.iter().map(|d| (d - mean).powi(2)).sum::<f64>()
+        let var = valid_corrected
+            .iter()
+            .map(|d| (d - mean).powi(2))
+            .sum::<f64>()
             / valid_corrected.len() as f64;
         var.sqrt()
     };
@@ -397,11 +457,17 @@ fn main() -> anyhow::Result<()> {
         0.0
     };
 
-    eprintln!("\n{:>12}  {:>10}  {:>10}  {:>12}", "profile", "rms", "snr", "max_power");
+    eprintln!(
+        "\n{:>12}  {:>10}  {:>10}  {:>12}",
+        "profile", "rms", "snr", "max_power"
+    );
     eprintln!("{}", "-".repeat(48));
     eprintln!(
         "{:>12}  {:>10.6}  {:>10.4}  {:>12.6e}",
-        "NFW", result.rms_residual, result.detection_snr, baseline_power.iter().copied().fold(0.0_f64, f64::max)
+        "NFW",
+        result.rms_residual,
+        result.detection_snr,
+        baseline_power.iter().copied().fold(0.0_f64, f64::max)
     );
     eprintln!(
         "{:>12}  {:>10.6}  {:>10.4}  {:>12.6e}",
@@ -409,10 +475,16 @@ fn main() -> anyhow::Result<()> {
     );
 
     let rms_reduction = (result.rms_residual - corrected_rms) / result.rms_residual * 100.0;
-    eprintln!("\nRMS reduction from polynomial correction: {:.1}%", rms_reduction);
+    eprintln!(
+        "\nRMS reduction from polynomial correction: {:.1}%",
+        rms_reduction
+    );
 
     // Per-mode comparison
-    eprintln!("\n{:>5}  {:>8}  {:>12}  {:>12}  {:>10}", "mode", "k", "nfw_power", "corr_power", "ratio");
+    eprintln!(
+        "\n{:>5}  {:>8}  {:>12}  {:>12}  {:>10}",
+        "mode", "k", "nfw_power", "corr_power", "ratio"
+    );
     for (mode_idx, &k) in wavenumbers.iter().enumerate() {
         let ratio = if baseline_power[mode_idx] > 1e-20 {
             corrected_power[mode_idx] / baseline_power[mode_idx]
@@ -421,7 +493,11 @@ fn main() -> anyhow::Result<()> {
         };
         eprintln!(
             "{:>5}  {:>8.4}  {:>12.6e}  {:>12.6e}  {:>10.4}",
-            mode_idx + 1, k, baseline_power[mode_idx], corrected_power[mode_idx], ratio
+            mode_idx + 1,
+            k,
+            baseline_power[mode_idx],
+            corrected_power[mode_idx],
+            ratio
         );
     }
 
@@ -466,8 +542,17 @@ fn main() -> anyhow::Result<()> {
     // Baseline correction CSV
     let corr_csv = format!("{}_baseline.csv", cli.out_prefix);
     let mut cwtr = csv::Writer::from_path(&corr_csv)?;
-    cwtr.write_record(["x", "delta_nfw", "delta_corrected", "correction", "n_contributing"])?;
-    for ((&x, &d_nfw), (&d_corr, &n)) in result.x_grid.iter().zip(result.delta_stack.iter())
+    cwtr.write_record([
+        "x",
+        "delta_nfw",
+        "delta_corrected",
+        "correction",
+        "n_contributing",
+    ])?;
+    for ((&x, &d_nfw), (&d_corr, &n)) in result
+        .x_grid
+        .iter()
+        .zip(result.delta_stack.iter())
         .zip(corrected_delta.iter().zip(result.n_contributing.iter()))
     {
         let u = x - 1.0;

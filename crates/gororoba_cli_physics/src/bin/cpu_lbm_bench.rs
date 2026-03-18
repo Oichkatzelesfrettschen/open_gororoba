@@ -24,8 +24,7 @@
 use anyhow::Result;
 use clap::Parser;
 use lbm_3d::solver::LbmSolver3D;
-use std::io::Write as _;
-use std::time::Instant;
+use std::{io::Write as _, time::Instant};
 
 // D3Q19 bandwidth model: 19 read + 19 write + 8 macroscopic = 46 scalars per cell.
 const D3Q19_SCALARS: usize = 46;

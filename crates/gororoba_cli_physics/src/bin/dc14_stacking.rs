@@ -21,13 +21,11 @@ use cosmology_core::{
         fourier_at_wavenumbers, stack_residuals,
     },
     nfw_utils::{
-        dc14_enclosed_mass, dc14_shape_params, nfw_enclosed_mass_from_params,
-        nfw_params_from_mass,
+        dc14_enclosed_mass, dc14_shape_params, nfw_enclosed_mass_from_params, nfw_params_from_mass,
     },
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -36,7 +34,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(about = "DC14 vs NFW stacking comparison (baryonic feedback measurement)")]
 struct Cli {
     /// Path to MaNGA rotation curves CSV.
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall selection CSV.
@@ -121,12 +122,8 @@ fn main() -> anyhow::Result<()> {
             let v_nfw = v_sq_nfw.max(0.0).sqrt();
 
             // DC14 model (same r_s and rho_s, different profile shape)
-            let m_enc_dc14 = dc14_enclosed_mass(
-                pt.r_kpc,
-                nfw.r_s_kpc,
-                nfw.rho_s_solar_per_kpc3,
-                &shape,
-            );
+            let m_enc_dc14 =
+                dc14_enclosed_mass(pt.r_kpc, nfw.r_s_kpc, nfw.rho_s_solar_per_kpc3, &shape);
             let v_sq_dc14 = G_KPC_KMS2 * m_enc_dc14 / pt.r_kpc;
             let v_dc14 = v_sq_dc14.max(0.0).sqrt();
 
@@ -272,7 +269,10 @@ fn main() -> anyhow::Result<()> {
         f64::NAN
     };
 
-    eprintln!("\nChi2/dof (spectral shape difference): {:.4}", chi2_per_dof);
+    eprintln!(
+        "\nChi2/dof (spectral shape difference): {:.4}",
+        chi2_per_dof
+    );
 
     // Stacked profile comparison (bin-by-bin)
     eprintln!("\n--- Stacked profile comparison (first 20 valid bins) ---");

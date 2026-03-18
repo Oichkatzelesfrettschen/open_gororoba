@@ -65,10 +65,7 @@ fn main() -> Result<()> {
 
     // Compile all and report SPIR-V sizes
     println!("\n=== SPIR-V Compilation ===");
-    println!(
-        "{:<30} {:>10} {:>8}",
-        "Configuration", "SPIR-V_W", "KB"
-    );
+    println!("{:<30} {:>10} {:>8}", "Configuration", "SPIR-V_W", "KB");
     println!("{:-<52}", "");
 
     if let Some(parent) = std::path::Path::new(&cfg.output).parent() {
@@ -91,12 +88,7 @@ fn main() -> Result<()> {
                     writeln!(
                         csv,
                         "vulkan,{:?},{:?},{:?},{},{},{:.1}",
-                        key.collision,
-                        key.precision,
-                        key.streaming,
-                        n,
-                        compiled.word_count,
-                        kb
+                        key.collision, key.precision, key.streaming, n, compiled.word_count, kb
                     )?;
                 }
             }
@@ -150,9 +142,7 @@ fn main() -> Result<()> {
             (fp8_w as f64 / fp32_w as f64 - 1.0) * 100.0
         );
         if fp8_w < fp16_w * 12 / 10 {
-            println!(
-                "  Prediction: FP8 will be FASTER than FP16 at 128^3+ (bandwidth-dominant)."
-            );
+            println!("  Prediction: FP8 will be FASTER than FP16 at 128^3+ (bandwidth-dominant).");
         }
     }
 

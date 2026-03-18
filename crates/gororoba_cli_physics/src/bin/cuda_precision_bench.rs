@@ -559,7 +559,8 @@ mod gpu {
                     continue;
                 }
                 // Pre-flight VRAM check BEFORE compiling PTX (avoids JIT spike)
-                let required_mb = (n_cells * (2 * 19 + 8) * elem_bytes + 1_500_000_000) / (1024 * 1024);
+                let required_mb =
+                    (n_cells * (2 * 19 + 8) * elem_bytes + 1_500_000_000) / (1024 * 1024);
                 let free_mb = lbm_3d_cuda::query_free_vram_mb();
                 if free_mb > 0 && required_mb > (free_mb as f64 * 0.95) as usize {
                     eprint!("  [A] FP32/{:<22} {}^3 ({} steps)... ", v.id, n, n_steps);
@@ -1670,7 +1671,8 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "BF16 i-major SoA MRT collision; stride=19; SM 8.0+; 2 bytes/dist".to_string(),
+                notes: "BF16 i-major SoA MRT collision; stride=19; SM 8.0+; 2 bytes/dist"
+                    .to_string(),
             });
         }
         Ok(rows)
@@ -1784,7 +1786,8 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "FP16 SoA half2 ILP MRT collision; 2 cells/thread; __half2 moment accum".to_string(),
+                notes: "FP16 SoA half2 ILP MRT collision; 2 cells/thread; __half2 moment accum"
+                    .to_string(),
             });
         }
         Ok(rows)
@@ -1841,7 +1844,8 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "FP8 e4m3 i-major SoA MRT collision; stride=19; SM 8.9+; 1 byte/dist".to_string(),
+                notes: "FP8 e4m3 i-major SoA MRT collision; stride=19; SM 8.9+; 1 byte/dist"
+                    .to_string(),
             });
         }
         Ok(rows)
@@ -1898,7 +1902,8 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "FP8 e5m2 i-major SoA MRT collision; stride=19; SM 8.9+; 1 byte/dist".to_string(),
+                notes: "FP8 e5m2 i-major SoA MRT collision; stride=19; SM 8.9+; 1 byte/dist"
+                    .to_string(),
             });
         }
         Ok(rows)
@@ -1955,7 +1960,8 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "INT8 i-major SoA MRT collision; stride=19; DIST_SCALE=64; 1 byte/dist".to_string(),
+                notes: "INT8 i-major SoA MRT collision; stride=19; DIST_SCALE=64; 1 byte/dist"
+                    .to_string(),
             });
         }
         Ok(rows)
@@ -2012,7 +2018,8 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "INT16 i-major SoA MRT collision; stride=19; DIST_SCALE=16384; 2 bytes/dist".to_string(),
+                notes: "INT16 i-major SoA MRT collision; stride=19; DIST_SCALE=16384; 2 bytes/dist"
+                    .to_string(),
             });
         }
         Ok(rows)
@@ -2073,7 +2080,9 @@ mod gpu {
                 bandwidth_gbs: Some(bw),
                 bandwidth_pct_peak: Some(bw_pct),
                 vram_dist_mb: Some(vram_mb),
-                notes: "FP64 i-major SoA MRT collision; stride=19; reference precision; 8 bytes/dist".to_string(),
+                notes:
+                    "FP64 i-major SoA MRT collision; stride=19; reference precision; 8 bytes/dist"
+                        .to_string(),
             });
         }
         Ok(rows)
@@ -2813,34 +2822,172 @@ mod gpu {
             }
 
             dispatch!("[H] LBM FP16 AoS sweep...", "FP16", run_lbm_fp16, cfg, rows);
-            dispatch!("[H2] LBM FP16 SoA pull-scheme sweep...", "FP16", run_lbm_fp16_soa, cfg, rows);
-            dispatch!("[I] LBM FP8_e4m3 AoS sweep...", "FP8", run_lbm_fp8, cfg, rows);
-            dispatch!("[I2] LBM FP8_e5m2 AoS sweep (SM 8.9+ only)...", "FP8", run_lbm_fp8_e5m2, cfg, rows);
-            dispatch!("[I3] LBM FP8_e4m3 SoA pull-scheme sweep...", "FP8", run_lbm_fp8_soa, cfg, rows);
+            dispatch!(
+                "[H2] LBM FP16 SoA pull-scheme sweep...",
+                "FP16",
+                run_lbm_fp16_soa,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[I] LBM FP8_e4m3 AoS sweep...",
+                "FP8",
+                run_lbm_fp8,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[I2] LBM FP8_e5m2 AoS sweep (SM 8.9+ only)...",
+                "FP8",
+                run_lbm_fp8_e5m2,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[I3] LBM FP8_e4m3 SoA pull-scheme sweep...",
+                "FP8",
+                run_lbm_fp8_soa,
+                cfg,
+                rows
+            );
             dispatch!("[J] LBM INT8 AoS sweep...", "INT8", run_lbm_int8, cfg, rows);
-            dispatch!("[J2] LBM INT8 SoA pull-scheme sweep...", "INT8", run_lbm_int8_soa, cfg, rows);
-            dispatch!("[K] LBM DD-FP128 sweep (capped at 64^3)...", "DD", run_lbm_dd, cfg, rows);
-            dispatch!("[L] LBM INT4 bandwidth ceiling sweep...", "INT4", run_lbm_int4, cfg, rows);
-            dispatch!("[J3] LBM INT16 AoS sweep...", "INT16", run_lbm_int16, cfg, rows);
-            dispatch!("[J4] LBM INT16 SoA pull-scheme sweep...", "INT16", run_lbm_int16_soa, cfg, rows);
+            dispatch!(
+                "[J2] LBM INT8 SoA pull-scheme sweep...",
+                "INT8",
+                run_lbm_int8_soa,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[K] LBM DD-FP128 sweep (capped at 64^3)...",
+                "DD",
+                run_lbm_dd,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[L] LBM INT4 bandwidth ceiling sweep...",
+                "INT4",
+                run_lbm_int4,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[J3] LBM INT16 AoS sweep...",
+                "INT16",
+                run_lbm_int16,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[J4] LBM INT16 SoA pull-scheme sweep...",
+                "INT16",
+                run_lbm_int16_soa,
+                cfg,
+                rows
+            );
 
-            dispatch!("[H3] LBM BF16 SoA pull-scheme sweep (SM 8.0+)...", "BF16", run_lbm_bf16_soa, cfg, rows);
-            dispatch!("[I4] LBM FP8_e5m2 SoA pull-scheme sweep (SM 8.9+)...", "FP8", run_lbm_fp8_e5m2_soa, cfg, rows);
-            dispatch!("[A2] LBM FP64 SoA pull-scheme sweep (capped at 128^3)...", "FP64", run_lbm_fp64_soa, cfg, rows);
-            dispatch!("[A3] LBM FP32 SoA cache-streaming stores (__stcs) sweep...", "FP32", run_lbm_fp32_cs, cfg, rows);
+            dispatch!(
+                "[H3] LBM BF16 SoA pull-scheme sweep (SM 8.0+)...",
+                "BF16",
+                run_lbm_bf16_soa,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[I4] LBM FP8_e5m2 SoA pull-scheme sweep (SM 8.9+)...",
+                "FP8",
+                run_lbm_fp8_e5m2_soa,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[A2] LBM FP64 SoA pull-scheme sweep (capped at 128^3)...",
+                "FP64",
+                run_lbm_fp64_soa,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[A3] LBM FP32 SoA cache-streaming stores (__stcs) sweep...",
+                "FP32",
+                run_lbm_fp32_cs,
+                cfg,
+                rows
+            );
 
-            dispatch!("[H4] LBM FP16 SoA half2 ILP sweep...", "FP16", run_lbm_fp16_half2, cfg, rows);
-            dispatch!("[L2] LBM FP4_E2M1 bandwidth ceiling sweep...", "FP4", run_lbm_fp4, cfg, rows);
+            dispatch!(
+                "[H4] LBM FP16 SoA half2 ILP sweep...",
+                "FP16",
+                run_lbm_fp16_half2,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[L2] LBM FP4_E2M1 bandwidth ceiling sweep...",
+                "FP4",
+                run_lbm_fp4,
+                cfg,
+                rows
+            );
 
             // MRT collision variants
-            dispatch!("[M1] LBM BF16 SoA MRT sweep (SM 8.0+)...", "BF16", run_lbm_bf16_soa_mrt, cfg, rows);
-            dispatch!("[M2] LBM FP16 SoA MRT sweep...", "FP16", run_lbm_fp16_soa_mrt, cfg, rows);
-            dispatch!("[M3] LBM FP16 SoA half2 ILP MRT sweep...", "FP16", run_lbm_fp16_half2_mrt, cfg, rows);
-            dispatch!("[M4] LBM FP8 e4m3 SoA MRT sweep (SM 8.9+)...", "FP8", run_lbm_fp8_soa_mrt, cfg, rows);
-            dispatch!("[M5] LBM FP8 e5m2 SoA MRT sweep (SM 8.9+)...", "FP8", run_lbm_fp8_e5m2_soa_mrt, cfg, rows);
-            dispatch!("[M6] LBM INT8 SoA MRT sweep...", "INT8", run_lbm_int8_soa_mrt, cfg, rows);
-            dispatch!("[M7] LBM INT16 SoA MRT sweep...", "INT16", run_lbm_int16_soa_mrt, cfg, rows);
-            dispatch!("[M8] LBM FP64 SoA MRT sweep (capped at 128^3)...", "FP64", run_lbm_fp64_soa_mrt, cfg, rows);
+            dispatch!(
+                "[M1] LBM BF16 SoA MRT sweep (SM 8.0+)...",
+                "BF16",
+                run_lbm_bf16_soa_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M2] LBM FP16 SoA MRT sweep...",
+                "FP16",
+                run_lbm_fp16_soa_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M3] LBM FP16 SoA half2 ILP MRT sweep...",
+                "FP16",
+                run_lbm_fp16_half2_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M4] LBM FP8 e4m3 SoA MRT sweep (SM 8.9+)...",
+                "FP8",
+                run_lbm_fp8_soa_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M5] LBM FP8 e5m2 SoA MRT sweep (SM 8.9+)...",
+                "FP8",
+                run_lbm_fp8_e5m2_soa_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M6] LBM INT8 SoA MRT sweep...",
+                "INT8",
+                run_lbm_int8_soa_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M7] LBM INT16 SoA MRT sweep...",
+                "INT16",
+                run_lbm_int16_soa_mrt,
+                cfg,
+                rows
+            );
+            dispatch!(
+                "[M8] LBM FP64 SoA MRT sweep (capped at 128^3)...",
+                "FP64",
+                run_lbm_fp64_soa_mrt,
+                cfg,
+                rows
+            );
         }
 
         if cfg.run_workload("box") {

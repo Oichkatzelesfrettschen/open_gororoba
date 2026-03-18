@@ -73,7 +73,10 @@ fn main() -> Result<()> {
     let rows = load_heliosphere_rows(&cli.cube_csv)?;
     let cache_root = cli.repo_root.join("data/external");
     let (samples, _) = build_labeled_samples(&rows, &cache_root, cli.horizon_hours)?;
-    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    let positive_sample_count = samples
+        .iter()
+        .filter(|sample| sample.label_positive)
+        .count();
     if positive_sample_count == 0 {
         anyhow::bail!(
             "no official positive windows overlapped {}; choose a different cube or label horizon",
