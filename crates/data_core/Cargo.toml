@@ -27,6 +27,7 @@ hifitime = { workspace = true }
 regex = { workspace = true }
 cdf = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
+gororoba_sparse_grid = { workspace = true }
 hdf5 = { workspace = true, optional = true }
 polars = { workspace = true, optional = true }
 fitsio = { workspace = true, optional = true }

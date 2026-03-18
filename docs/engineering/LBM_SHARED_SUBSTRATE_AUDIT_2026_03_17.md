@@ -70,6 +70,9 @@ heavy domain dependencies.
   - tile-window planning over sparse active sets
 - proposed future crate
   - `gororoba_sparse_grid`
+- current status
+  - descriptor-first crate extracted
+  - first owner-side adoption started in heliosphere sparse planning
 - dependency profile
   - should stay free of CUDA runtime bindings at the core type layer
 - scoped in
@@ -88,6 +91,9 @@ heavy domain dependencies.
   - frame/image readback descriptors
 - proposed future crate
   - `gororoba_gpu_readback`
+- current status
+  - descriptor-first crate extracted
+  - first owner-side adoption started in CUDA and Vulkan descriptor methods
 - scoped in
   - `docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
 - caution

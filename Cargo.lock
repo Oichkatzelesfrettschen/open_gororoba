@@ -2263,6 +2263,7 @@ dependencies = [
  "fitsio",
  "flate2",
  "gororoba_contracts",
+ "gororoba_sparse_grid",
  "hdf5-metno",
  "hifitime",
  "log",
@@ -4034,6 +4035,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_gpu_readback"
+version = "0.1.0"
+
+[[package]]
 name = "gororoba_optix"
 version = "0.1.0"
 dependencies = [
@@ -4066,6 +4071,10 @@ dependencies = [
  "spectral_core",
  "stats_core",
 ]
+
+[[package]]
+name = "gororoba_sparse_grid"
+version = "0.1.0"
 
 [[package]]
 name = "gororoba_view_core"
@@ -5051,6 +5060,7 @@ dependencies = [
  "cudarc 0.19.3",
  "gororoba_algebra",
  "gororoba_gpu_bridge",
+ "gororoba_gpu_readback",
  "gororoba_optix",
  "gr_core",
  "half",
@@ -5075,6 +5085,7 @@ version = "0.1.0"
 dependencies = [
  "ash",
  "env_logger",
+ "gororoba_gpu_readback",
  "gpu-allocator 0.28.0",
  "half",
  "image 0.25.9",

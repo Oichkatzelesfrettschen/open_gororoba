@@ -80,6 +80,11 @@ Suggested future crates:
 - `gororoba_gpu_profiles`
 - `gororoba_view_core`
 
+Descriptor-first reusable crates now extracted:
+
+- `gororoba_gpu_readback`
+- `gororoba_sparse_grid`
+
 These should not depend on LBM or heliosphere science crates.
 
 ### Layer 3: domain-specific compute engines
@@ -197,7 +202,8 @@ That task list now includes explicit seam analysis for:
 3. move generic image/readback/context helpers into reusable modules
    - scope now documented in
      `GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
-   - execution still deferred until descriptor-first extraction is justified
+   - descriptor-first extraction now exists in `gororoba_gpu_readback`
+   - next step is owner-side adoption, not broader runtime extraction
 
 ### Phase D: OptiX split
 
@@ -219,6 +225,8 @@ That policy should remain the core default even after modularization.
 
 Sparse grid metadata has now been scoped as its own potential reusable seam in
 `SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md`.
+
+Descriptor-first extraction now exists in `gororoba_sparse_grid`.
 
 The design rule is:
 

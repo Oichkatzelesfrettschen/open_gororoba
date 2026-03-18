@@ -54,6 +54,10 @@ use cudarc::{
     },
     runtime::result::device as cudart_device,
 };
+use gororoba_gpu_readback::{
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
+    ReadbackResidency,
+};
 use std::sync::Arc;
 
 // CudaGraph contains raw *mut pointers that are !Send+!Sync.
@@ -2627,6 +2631,24 @@ impl DarkHaloCudaSolver {
             .memcpy_dtoh(&self.d_rho, &mut pinned)
             .map_err(|e| anyhow::anyhow!("DMA dtoh failed: {e}"))?;
         Ok(pinned)
+    }
+
+    /// Descriptor for the pinned host-side density readback surface.
+    #[must_use]
+    pub fn rho_readback_descriptor(&self) -> ReadbackDescriptor {
+        ReadbackDescriptor {
+            backend_name: "CUDA".to_string(),
+            label: "rho".to_string(),
+            shape: ReadbackBufferShape {
+                width: self.nx as u32,
+                height: self.ny as u32,
+                depth: self.nz as u32,
+                elements_per_point: 1,
+            },
+            element_type: ReadbackElementType::F32,
+            layout: ReadbackLayout::Packed,
+            residency: ReadbackResidency::PinnedHost,
+        }
     }
 
     /// Run dark halo hunt for a single k-value.
