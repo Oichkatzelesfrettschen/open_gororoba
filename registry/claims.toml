@@ -9368,3 +9368,107 @@ last_verified = "2026-03-16"
 statement = "Formal kernel decision table for Ada SM 8.9 D3Q19 LBM at grid <= 256^3. Three compounding optimizations: (1) A-A streaming MANDATORY -- halves VRAM, prevents register-induced occupancy starvation (C-1389/C-1390). (2) MRT collision FREE for all tiers below FP16_H2 -- 722 FMA/cell fills memory-stall pipeline bubbles (C-1391). (3) Low-precision storage: INT8_SoA MRT A-A is Pareto-optimal (predicted 5000+ MLUPS, 76 MB at 128^3, 317 MB at 256^3). Recommended configurations ranked: Tier 1 (max throughput): INT8_SoA MRT A-A -- 5142 MLUPS at MRT, half VRAM vs ping-pong. Tier 2 (max throughput, float): FP8_e4m3_SoA MRT A-A -- 5210 MLUPS, lower quantization noise than INT8. Tier 3 (balanced accuracy): FP16_SoA MRT -- 3486 MLUPS, 10-bit mantissa for moderate-Re flows. Tier 4 (high accuracy): FP32 MRT A-A -- 1979 MLUPS, full f32 precision. Tier 5 (validation): FP64 SoA MRT -- 398 MLUPS, reference precision. NEVER use tiled variants on Ada (C-1389 + __launch_bounds__(256,2) experiment proves smem demotion to local memory)."
 status = "Verified"
 where_stated = "data/benchmarks/cuda_mrt_sweep.csv + C-1389/C-1390/C-1391 evidence chain (2026-03-16)"
+
+[[claim]]
+id = "C-1393"
+last_verified = "2026-03-17"
+statement = "Mass-binned phase coherence test (H1, NMR spin-echo analogy): 10 equal-N mass bins of 6992 MaNGA galaxies show NO monotonic phase-vs-mass trend. Max Spearman |rho| = 0.462 (mode 4), all modes below the 0.7 detection threshold. Bins 7-9 (log M200 > 11.9) have zero valid stacking bins (r_s exceeds MaNGA IFU reach). Per-bin SNR > 3.0 in bins 5-6 (log M200 = 11.5-11.9) is a BARYONIC artifact: intermediate-mass halos have concentrated NFW cusp structure that produces coherent residuals in narrow mass windows. Rayleigh R decreases monotonically from 0.38 (mode 1) to 0.05 (mode 7), confirming phase scatter increases with wavenumber (noise-like). The mass-dependent phase hypothesis is REJECTED by the Spearman criterion (max |rho| < 0.5) despite triggering the per-bin SNR > 2.0 secondary criterion."
+status = "Verified"
+status_note = "mass-binned-phase binary, 6995 galaxies (30 skipped), 10 bins of ~700. Bins 5/6 SNR driven by baryonic concentration effect at M200 ~ 10^11.6."
+where_stated = "crates/gororoba_cli_physics/src/bin/mass_binned_phase.rs, data/results/e183/mass_binned_phase.csv"
+
+[[claim]]
+id = "C-1394"
+last_verified = "2026-03-17"
+statement = "Cross-algebra template projection correlation (H2, VLBI analogy): galaxy-level DFT projections onto 4 algebraic templates (CD-ZD, G2, J3(O), sl(2)) show rho > 0.96 for all 6 algebra pairs. However, the RANDOM template control (5 uniform-random wavenumbers) shows equally high correlation (rho > 0.97 with all 4 algebras). This proves the cross-correlation is entirely driven by COMMON BARYONIC STRUCTURE (NFW cusp trough + bulge excess) present in all 6992 galaxies, not by algebraic signal. The analytical null baselines (0.07-0.47) drastically underestimate the observed correlation because they assume white noise, while real galaxy residuals have coherent baryonic structure. The cross-algebra correlation hypothesis is REJECTED: the excess is baryonic, not algebraic."
+status = "Verified"
+status_note = "cross-algebra-correlation binary, 6995 galaxies. Random template control is the decisive diagnostic: rho(CD-ZD, RANDOM) = 0.992, proving baryonic origin."
+where_stated = "crates/gororoba_cli_physics/src/bin/cross_algebra_correlation.rs, data/results/e183/cross_algebra_correlation.csv"
+
+[[claim]]
+id = "C-1395"
+last_verified = "2026-03-17"
+statement = "DC14 vs NFW stacking comparison (H3, Michelson-Morley inversion): DC14 feedback-modified profiles (Di Cintio et al. 2014) reduce stacked residual RMS by 31.4% vs NFW (0.087 vs 0.126) at matched (rho_s, r_s). However, DC14 residuals are uniformly more negative (-0.14 to -0.35 vs NFW -0.05 to +0.15) because the DC14 core reduces enclosed mass relative to NFW cusp, producing systematic v_DC14 < v_NFW. The DC14 Fourier power is 1.8-61x HIGHER than NFW across all 7 modes (opposite of what a better model should produce). Chi2/dof = 0.80 (spectral shape). Result is INCONCLUSIVE: the comparison is confounded by parameter reuse (DC14 needs its own best-fit rho_s, r_s per galaxy, not the NFW-calibrated values). A proper test requires DC14-specific SMHM-to-profile fitting."
+status = "Verified"
+status_note = "dc14-stacking binary, 6994 galaxies. DC14 shape params from Moster+2013 X = log10(M*/M_halo). Parameter reuse from NFW is the primary confounder."
+where_stated = "crates/gororoba_cli_physics/src/bin/dc14_stacking.rs, data/results/e183/dc14_stacking.csv"
+
+[[claim]]
+id = "C-1396"
+last_verified = "2026-03-17"
+statement = "STFT phase gradient analysis (H4, chirp detection analogy): linear regression of phase vs x_center across 32 STFT windows shows R^2 > 0.999 for all 7 modes, but fitted slopes are near zero (-0.015 to -0.074) vs predicted wavenumber k (0.90 to 6.28). Slope/k ratios range from -0.002 to -0.055, meaning phases are essentially FLAT across the x-range. Modes 1-4 are degenerate (< 0.5 full wavelengths in the 0.72 r/r_s window). The high R^2 reflects the smooth baryonic baseline imprinting a slowly-varying phase, not coherent harmonic forcing. No chirp-like phase evolution detected. Hypothesis INCONCLUSIVE (limited by radial coverage) but strongly disfavored."
+status = "Verified"
+status_note = "stft-phase-gradient binary on data/results/e183/stft_full.csv. 0 coherent modes, 4 degenerate modes, 3 ambiguous modes."
+where_stated = "crates/gororoba_cli_physics/src/bin/stft_phase_gradient.rs, data/results/e183/stft_phase_gradient.csv"
+
+[[claim]]
+id = "C-1397"
+last_verified = "2026-03-17"
+statement = "Metadata-conditioned baryonic denoising (Hypothesis A): H-alpha equivalent width is the best single predictor of per-galaxy mean NFW residual (R^2 = 0.314, 20-bin nonparametric regression). This confirms that baryonic feedback (traced by Ha_EW as star-formation proxy) drives the dominant per-galaxy residual offset. However, subtracting the predicted mean does NOT reduce stacked RMS (RMS increases by 3.9% from 0.1264 to 0.1313) because the stacking procedure already averages out per-galaxy mean offsets. The remaining stacked residual structure is SHAPE-based (NFW cusp trough, bulge excess, IFU projection spike) which single-feature mean-subtraction cannot address. Other features: sersic_n R^2=0.080, inclination R^2=0.060, r_eff R^2=0.062, sigma R^2=0.043, z R^2=0.031, log_m200 R^2=0.016, abs_mag_r R^2=0.010."
+status = "Verified"
+status_note = "ml-baryonic-denoise binary (Hypothesis A), 6995 galaxies, 20 bins, 9 features tested."
+where_stated = "crates/gororoba_cli_physics/src/bin/ml_baryonic_denoise.rs, data/results/e183/ml_denoise_ha.csv"
+
+[[claim]]
+id = "C-1398"
+last_verified = "2026-03-17"
+statement = "Fourier anomaly detection (Hypothesis B): Top 70 galaxies ranked by total Fourier power at 7 CD-ZD wavenumbers show Rayleigh R > 0.98 at all modes, but this is an ARTIFACT of selection: galaxies with highest per-galaxy Fourier power are those with extreme rotation curves (very few data points, poor radial coverage), producing large DFT power from noise at individual radial bins. When stacked, these 70 galaxies yield zero valid bins (RMS = 0.000, SNR = 0.000) because their sparse radial coverage fails the min_galaxies_per_bin threshold. The bottom 70 galaxies (lowest Fourier power, best-behaved rotation curves) stack normally with RMS = 0.047, SNR = 0.63. Lesson: per-galaxy Fourier power at CD-ZD wavenumbers is dominated by DATA QUALITY (radial coverage, number of points), not by physical signal strength. Anomaly detection on raw Fourier power requires a data-quality correction (normalization by effective coverage)."
+status = "Verified"
+status_note = "ml-baryonic-denoise binary (Hypothesis B), 6995 galaxies, top/bottom 70 compared."
+where_stated = "crates/gororoba_cli_physics/src/bin/ml_baryonic_denoise.rs, data/results/e183/ml_denoise_hb.csv"
+
+[[claim]]
+id = "C-1399"
+last_verified = "2026-03-17"
+statement = "Contrarian I (template sensitivity): SNR is invariant to signal template parameterization. Six alternative DFT weight templates (standard 1/n*exp(-x), flat amplitude, 1/n*Gaussian, flat/flat, 1/n^2*exp(-x), optimal matched filter) all produce SNR in [0.35, 0.43] on the E-183 stacked profile. The DFT power at CD-ZD wavenumbers is a property of the DATA (baryonic red-noise spectrum), not the template weights. The null result is robust to arbitrary signal model choices including amplitude decay function, spatial envelope, and noise-adaptive weighting."
+status = "Verified"
+status_note = "contrarian-template-sweep binary, 6995 galaxies, 6 templates tested."
+where_stated = "crates/gororoba_cli_physics/src/bin/contrarian_template_sweep.rs, data/results/e183/contrarian_templates.csv"
+
+[[claim]]
+id = "C-1400"
+last_verified = "2026-03-17"
+statement = "Contrarian II (baseline robustness): A 3-parameter quadratic polynomial fit to the stacked NFW residual (x < 2.0) removes 40.2% of RMS (0.126 to 0.076) and reduces Fourier power at all 7 CD-ZD wavenumbers by 100-10000x (power ratios 0.0000 to 0.026). Corrected SNR drops to 0.12 (from 0.43), confirming the original Fourier power was entirely attributable to a smooth baryonic polynomial (cusp trough + bulge excess + IFU edge curvature). Polynomial coefficients: a0=-0.022 (mean NFW offset at x=1), a1=+0.532 (velocity gradient beyond cusp), a2=+1.399 (upward curvature from IFU edge). After removing this 3-parameter trend, NO spectral structure remains at any algebraically-motivated wavenumber. The null result is robust to NFW profile misspecification: even allowing a flexible baseline, no ZD signal emerges."
+status = "Verified"
+status_note = "contrarian-template-sweep binary, 6995 galaxies, quadratic baseline correction."
+where_stated = "crates/gororoba_cli_physics/src/bin/contrarian_template_sweep.rs, data/results/e183/contrarian_baseline.csv"
+
+[[claim]]
+id = "C-1404"
+last_verified = "2026-03-17"
+statement = "Galaxy-ensemble Rayleigh phase coherence test (E-194) on 7024 MaNGA galaxies yields modest but nonzero coherence at the 7 CD-ZD modes: R = 0.0329, 0.0497, 0.0721, 0.0960, 0.1171, 0.1327, 0.1409 for modes 1..7, compared with the incoherent null expectation 1/sqrt(N) = 0.0119. The coherence rises monotonically with wavenumber rather than peaking at the fundamental mode, so this lane is better interpreted as broad structured baryonic/systematic phase alignment than as evidence for a selective ZD harmonic signal."
+status = "Verified"
+status_note = "harmonic-halo-galaxy-phase binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
+where_stated = "crates/gororoba_cli_physics/src/bin/harmonic_halo_galaxy_phase.rs, data/results/e183/galaxy_phase_coherence.csv"
+
+[[claim]]
+id = "C-1405"
+last_verified = "2026-03-17"
+statement = "Signal injection-recovery sweep (E-197) is currently miscalibrated and cannot be used as a sensitivity validation. Across injected alpha_zd values 0, 0.001, 0.002, 0.004, 0.008, and 0.016, the detected SNR remains nearly constant at 0.429-0.430 and the recovered alpha_zd remains nearly constant at 0.294-0.296. The recovery ratio therefore scales as 1/alpha_zd instead of staying near unity. This is a pipeline calibration blocker, not evidence that the present MaNGA lane can recover alpha_zd = 0.004."
+status = "Verified"
+status_note = "harmonic-halo-injection binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
+where_stated = "crates/gororoba_cli_physics/src/bin/harmonic_halo_injection.rs, data/results/e183/injection_recovery.csv"
+
+[[claim]]
+id = "C-1401"
+last_verified = "2026-03-17"
+statement = "H1 Baryonic Eigenspectrum: CD-ZD modes are NOT a privileged baryonic basis. SVD of the 18x7 design matrix (cos(k_n*x)*w_n*exp(-x) on 18 populated radial bins) yields kappa=291780 (FAILURE, >500 threshold), R^2(NFW)=0.862 at 39.5th percentile of random wavenumber sets (median 0.863). However, ZD kappa is at 0th percentile of random (median random kappa=17.4M), meaning ZD is far better conditioned than random -- the high kappa is intrinsic to the narrow x=0.5-1.36 domain. Two SVD modes capture 98.4% of variance. The ZD basis reconstructs baryonic structure comparably to arbitrary 7-mode cosine bases, but is not uniquely suited for feedback tomography."
+status = "Verified"
+status_note = "baryonic-eigenspectrum binary on contrarian_baseline.csv + dc14_stacking.csv, 200 random control trials"
+where_stated = "crates/gororoba_cli_physics/src/bin/baryonic_eigenspectrum.rs, data/results/e183/baryonic_eigenspectrum.csv"
+
+[[claim]]
+id = "C-1402"
+last_verified = "2026-03-17"
+statement = "H2 Phase-Mass Entanglement REJECTED: Spearman rank correlation of DFT phase vs mass-bin index DECREASES with finer binning -- |rho|_max = 0.46 (N=10 bins), 0.40 (N=50), 0.26 (N=100). This confirms the N=10 value (mode 4) was a statistical fluctuation, not a real mass-dependent phase gradient. The high per-bin SNR at fine binning (up to 62.6 at N=100, bin 66 at log M200=11.81-11.84) is a small-N artifact: bins with RMS < 0.02 have only a few galaxies contributing to the stacking grid, producing SNR dominated by individual galaxy noise. Bins above log M200 ~ 11.92 have zero populated stacking bins (RMS=0.0, SNR=0.0) because these massive galaxies' rotation curves map to x < x_min in the normalized frame. No mass-dependent ZD forcing phase exists in MaNGA data."
+status = "Verified"
+status_note = "mass-binned-phase binary at N=10,50,100 bins, 6995 galaxies. Decreasing Spearman rho rules out monotonic phase winding."
+where_stated = "crates/gororoba_cli_physics/src/bin/mass_binned_phase.rs, data/results/e183/mass_binned_phase_n50.csv, data/results/e183/mass_binned_phase_n100.csv"
+
+[[claim]]
+id = "C-1403"
+last_verified = "2026-03-17"
+statement = "H3 Cross-Algebra Cusp-Core Discriminant: DC14 baryonic spectral shape partially explains but does NOT fully account for the cross-algebra correlation excess. chi^2/dof = 22.55 for DC14-colored model (FAILURE, >5.0 threshold), compared to 187.07 for NFW-colored. DC14 predicted correlations (rho_pred = 0.88-0.99) are closer to observed (0.977-0.998) than white-noise null (rho_null = -0.08 to 0.47), but residuals (0.003-0.095) exceed Fisher z uncertainty (sigma=0.012) by 3-8x for 4/6 pairs. Spectral slopes: NFW beta=0.37 (near-flat), DC14 beta=-2.21 (steep blue). The excess contains baryonic structure PLUS geometric mode-clustering contribution from all algebras sampling overlapping low-k bands (k < 7). The cross-algebra excess is a COMPOSITE diagnostic of baryonic spectral shape and wavenumber geometry, not a clean cusp-core measurement."
+status = "Verified"
+status_note = "cross-algebra-cusp-core binary on cross_algebra_correlation.csv + dc14_stacking.csv, 18 valid bins, N=6992"
+where_stated = "crates/gororoba_cli_physics/src/bin/cross_algebra_cusp_core.rs, data/results/e183/cusp_core_discriminant.csv"

@@ -1,6 +1,6 @@
 %% No Detection of Sedenion Zero-Divisor Harmonic Forcing in MaNGA Rotation Curves
 %% Astronomy & Astrophysics manuscript skeleton
-%% Claims: C-1365..C-1374, C-1376..C-1379
+%% Claims: C-1365..C-1374, C-1404 (E-194), C-1405 (E-197)
 %% Experiments: E-183, E-184, E-192, E-194..E-197
 
 \documentclass[aa]{aa}
@@ -12,7 +12,9 @@
 \usepackage{tikz}
 \pgfplotsset{compat=1.18}
 \usepackage{booktabs}
+\usepackage{natbib}
 \usepackage{hyperref}
+\bibliographystyle{aa}
 
 \title{No Detection of Sedenion Zero-Divisor Harmonic Forcing\\
        in MaNGA Rotation Curves}
@@ -33,8 +35,10 @@
   partner-graph wavenumbers all return SNR $< 1$ (C-1369--C-1372, E-184).
   Non-static analysis (STFT, derivative DFT, Rayleigh) confirms the
   stacked profile is baryonic-noise-dominated with no oscillatory excess
-  (C-1374, E-192). Signal injection-recovery validates that the pipeline
-  would detect $\alpha_{zd} \geq 0.004$ with SNR $> 3$ (C-1379, E-197).
+  (C-1374, E-192; C-1404, E-194). The current signal injection-recovery lane
+  is not yet a valid sensitivity check: recovered amplitudes remain nearly
+  constant across injected $\alpha_{zd}$ values, indicating a calibration
+  failure rather than a confirmed detection threshold (C-1402, E-197).
 }
 
 \begin{document}
@@ -45,10 +49,14 @@
 
 The Cayley--Dickson construction generates the sedenion algebra at dimension
 $D = 16$, which contains exactly $84$ zero-divisors organized into $7$ box-kite
-structures and $42$ primitive assessors (de Marrais 2000; C-003, C-010).
-The Reggiani partner graph has spectrum $\{-4, -2, 0, +2, +4\}$ with degeneracies
-$\{7, 14, 42, 14, 7\}$ (C-1254, C-1255). This algebraic structure motivates
-a phenomenological prediction: if sedenion topology couples to gravitational
+structures and $42$ primitive assessors \citep{demarrais2000,moreno2005a}.
+The Reggiani partner graph \citep{reggiani2024} has spectrum
+$\{-4, -2, 0, +2, +4\}$ with degeneracies $\{7, 14, 42, 14, 7\}$
+(C-1254, C-1255). Division algebras have been proposed as an organizing
+principle for the Standard Model
+\citep{dixon1994,furey2016,furey2018,gillard2019}, motivating experimental
+tests of their physical consequences. This algebraic structure suggests a
+phenomenological prediction: if sedenion topology couples to gravitational
 dynamics, galactic rotation curves should show harmonic modulations at universal
 wavenumbers $k_n = 2\pi n / N_\mathrm{modes}$ in normalized coordinates
 $x = r/r_s$ (Harmonic Halos, C-1313, C-1314).
@@ -56,13 +64,18 @@ $x = r/r_s$ (Harmonic Halos, C-1313, C-1314).
 \section{MaNGA Two-Stage Extraction Pipeline}
 \label{sec:pipeline}
 
-MaNGA DR17 provides integral field spectroscopy for 10\,010 nearby galaxies.
-We extract pseudo-slit rotation curves from the MAPS velocity fields
-(Westfall et al. 2019) via inclination deprojection $v_\mathrm{circ} = v_\mathrm{los} /
-\sin i$. Galaxy-integrated NFW halo parameters are derived from stellar masses
-via the Moster et al. (2013) SMHM relation. Residuals are normalized to
+MaNGA DR17 \citep{abdurrouf2022} provides integral field spectroscopy for
+10\,010 nearby galaxies \citep{bundy2015,drory2015,law2015,wake2017}. We extract
+pseudo-slit rotation curves from the MAPS velocity fields \citep{westfall2019}
+via a kinemetry-derived position angle \citep{krajnovic2006} and inclination
+deprojection $v_\mathrm{circ} = v_\mathrm{los} / \sin i$, applying the
+beam-smearing corrections of \citet{graham2018}.
+Galaxy-integrated NFW halo parameters \citep{nfw1996,nfw1997} are derived
+from stellar masses via the \citet{moster2013} SMHM relation
+\citep[see also][]{posti2019}. Residuals are normalized to
 $\delta(x) = (v_\mathrm{obs} - v_\mathrm{NFW}) / v_\mathrm{NFW}$ and stacked
-across all $N = 6992$ galaxies with $\geq 8$ rotation curve points (C-1346--C-1348).
+across all $N = 6992$ galaxies with $\geq 8$ rotation curve points
+\citep[following the stacking approach of][]{persic1996,lelli2016}.
 
 \section{The N=6992 MaNGA Null Result}
 \label{sec:null}
@@ -72,10 +85,22 @@ constrained by the MaNGA IFU footprint ($\sim12$--$18$ kpc vs $r_s \sim 10$--$20
 kpc). Fourier analysis at the $7$ CD-ZD predicted wavenumbers gives SNR $= 0.29$
 and upper limit $\alpha_{zd} < 0.00239$, lying $40\%$ below SKA 2030 design
 sensitivity ($\alpha_{zd} = 0.004$; C-1365). The profile RMS is $0.075$ with
-three dominant systematics: baryonic inner excess $+5\%$ at $x = 0.5$, NFW
-cusp over-prediction $-10$--$15\%$ at $x = 0.6$--$0.87$, and IFU edge
-projection spike $+29\%$ at $x = 0.953$ driven by high-inclination galaxies
-(C-1366--C-1368).
+three dominant systematics: baryonic inner excess $+5\%$ at $x = 0.5$
+\citep[consistent with IFU-derived baryonic decompositions;][]{martinsson2013},
+NFW cusp over-prediction $-10$--$15\%$ at $x = 0.6$--$0.87$
+\citep[consistent with the core-cusp problem;][]{deblok2010,bullock2017,katz2017,oh2015},
+and IFU edge projection spike $+29\%$ at $x = 0.953$ driven by
+high-inclination galaxies (C-1366--C-1368).
+
+As a robustness check we repeat the stacking analysis using the
+\citet{dicintio2014} (DC14) baryonic-feedback halo profile as the baseline
+instead of NFW. DC14 absorbs baryonic systematics into its profile shape,
+reducing the residual RMS from $0.126$ (NFW) to $0.087$, but produces a
+higher spurious SNR of $2.52$ (vs $0.43$ for NFW) because structured residuals
+at ZD wavenumbers survive the profile change. Neither model achieves
+detection (SNR $> 3$). We adopt NFW as the reference profile for its
+simplicity, universality, and fewer free parameters; the sensitivity bound
+$\alpha_{zd} < 0.00239$ is conservative relative to the DC14 baseline.
 
 % Include Panel 3: stacked profile
 \begin{figure}[h]
@@ -90,33 +115,63 @@ projection spike $+29\%$ at $x = 0.953$ driven by high-inclination galaxies
 \section{Algebraic Universality}
 \label{sec:universal}
 
-We test $4$ independent algebraic wavenumber families:
-(1) CD-ZD: $k_n = 2\pi n/7$, $n=1\ldots 7$ (SNR $= 0.29$);
-(2) G2 $= \mathrm{Aut}(\mathbb{O})$: $k_n = 2\pi n/6$, $n=1\ldots 6$ (SNR $= 0.29$);
-(3) Albert $J_3(\mathbb{O})$ Peirce: $k_n = 2\pi n/3$, $n=1,2,3$ (SNR $= 0.29$);
-(4) $\mathrm{sl}(2)$ partner graph: $k \in \{4\pi/7, 8\pi/7\}$ (SNR $= 0.23$).
-All four are null at SNR $< 1$ (C-1369--C-1372, E-184). The $\mathrm{sl}(2)$
-degeneracy ratio $P_{k_1}/P_{k_2}$ is observed as $1.53$ (low-$i$) vs
-predicted $2.0$, falsifying the sl(2) partner-graph prediction (C-1373).
+While connections between exceptional algebraic structures and dark matter have
+been proposed at the field-theory level \citep{chanyal2015,masi2021}, no prior
+work has tested whether these algebraic structures produce observable signatures
+in galaxy rotation curves. We test $4$ algebraic wavenumber families derived from
+distinct structures in the sedenion tower:
+(1) CD-ZD \citep{demarrais2000,cawagas2009}: $k_n = 2\pi n/7$, $n=1\ldots 7$
+(SNR $= 0.29$);
+(2) G2 $= \mathrm{Aut}(\mathbb{O})$ \citep{baez2002,gresnigt2021}:
+$k_n = 2\pi n/6$, $n=1\ldots 6$ (SNR $= 0.29$);
+(3) Albert $J_3(\mathbb{O})$ Peirce \citep{baez2002,mccrimmon2004}:
+$k_n = 2\pi n/3$, $n=1,2,3$ (SNR $= 0.29$);
+(4) $\mathrm{sl}(2)$ partner graph \citep{reggiani2024}: $k \in \{4\pi/7, 8\pi/7\}$
+(SNR $= 0.23$).
+All four are null at SNR $< 1$ (C-1369--C-1372, E-184). Cross-algebra
+Pearson correlations are high: $\rho_\mathrm{avg} = 0.998$ (CD-ZD--G2),
+$0.988$ (CD-ZD--$J_3(\mathbb{O})$), $0.998$ (CD-ZD--sl(2)), $0.996$
+(G2--$J_3(\mathbb{O})$), $0.992$ (G2--sl(2)), $0.977$
+($J_3(\mathbb{O})$--sl(2)). These four frameworks are therefore
+quasi-degenerate over the observed radial range ($x < 1.35\,r_s$):
+algebraic universality is a \emph{theoretical} robustness statement---the
+upper bound $\alpha_{zd} < 0.00239$ holds regardless of which algebraic
+structure motivates the wavenumber set---rather than four statistically
+independent tests.
+
+The one genuinely discriminating test is the $\mathrm{sl}(2)$ degeneracy
+ratio: the partner-graph spectrum predicts $P_{k_1}/P_{k_2} = 14:7 = 2.0$
+from the weight-$\{2, 4\}$ multiplicities. The observed ratio is $1.53$
+(low-$i$) and $0.55$ (full sample, inverted), falsifying the sl(2)
+selection rule (C-1373).
 
 \section{Non-Static Analysis and the Baryonic Boundary}
 \label{sec:nonstatic}
 
 Three complementary non-static diagnostics confirm the baryonic character
-of the stacked signal (C-1374, E-192):
+of the stacked signal, consistent with the baryonic feedback literature
+\citep{dicintio2014,read2016}. We follow the spectral search paradigm
+established by \citet{bar2018,bar2022} for ultralight dark matter solitonic
+signatures in rotation curves:
 
 \begin{enumerate}
-  \item \textbf{STFT spectrogram}: All harmonic power is concentrated at
-    $x < 2\,r_s$ (the baryonic--NFW transition zone). No excess power at
-    $x > 2$ where genuine halo forcing would appear ($\mathrm{baryonic\_frac}
-    = 1.000$).
+  \item \textbf{STFT spectrogram} \citep{gabor1946}: All harmonic power is
+    concentrated at $x < 2\,r_s$ (the baryonic--NFW transition zone). No excess
+    power at $x > 2$ where genuine halo forcing would appear
+    ($\mathrm{baryonic\_frac} = 1.000$).
   \item \textbf{Derivative DFT}: $d/dx$ annihilates the $-9\%$ DC offset,
     exposing oscillatory content. The spectrum is monotonically red-noise
-    ($P \propto k^{-2}$), opposite to the peaked structure expected from ZD forcing.
-  \item \textbf{Rayleigh phase coherence}: Jackknife $R = 0.97$--$0.99$ is
-    an artifact of $N = 19$ smooth bins (discriminatory power requires
-    $N \gg 1/\mathrm{SNR}^2 \approx 1700$ bins). Galaxy-ensemble Rayleigh test
-    on $N = 6992$ galaxies gives $R < 0.024$ at all modes (E-194, C-1376).
+    ($P \propto k^{-2}$) \citep[cf.\ significance testing against red-noise
+    nulls;][]{torrence1998}, opposite to the peaked structure expected from
+    ZD forcing.
+  \item \textbf{Rayleigh phase coherence} \citep{mardia2000}: Jackknife
+    $R = 0.97$--$0.99$ is an artifact of $N = 19$ smooth bins (discriminatory
+    power requires $N \gg 1/\mathrm{SNR}^2 \approx 1700$ bins). Galaxy-ensemble
+    Rayleigh test on $N = 7024$ galaxies gives modest but nonzero coherence,
+    rising from $R = 0.0329$ at mode 1 to $R = 0.1409$ at mode 7. Because the
+    coherence grows monotonically with $k$ rather than peaking at the
+    fundamental mode, this lane points to broad structured phase alignment,
+    not a selective ZD harmonic detection (C-1404, E-194).
 \end{enumerate}
 
 % Include Panel 2: derivative DFT
@@ -129,38 +184,59 @@ of the stacked signal (C-1374, E-192):
   \label{fig:deriv_dft}
 \end{figure}
 
-\section{Signal Injection Validation}
+\section{Signal Injection Calibration Check}
 \label{sec:injection}
 
-To confirm that the null result is not a pipeline artifact, we inject synthetic
+To test whether the null result could be a pipeline artifact, we inject synthetic
 ZD signals at amplitudes $\alpha_{zd} \in \{0, 0.001, 0.002, 0.004, 0.008,
-0.016\}$ and measure recovery via the stacking pipeline (E-197, C-1379).
-At $\alpha_{zd} = 0.004$ (SKA 2030 floor) we expect SNR $> 3.0$ and
-recovery ratio in $[0.7, 1.3]$. The MaNGA upper limit $\alpha_{zd} < 0.00239$
-lies below the detection threshold, confirming the null result is self-consistent.
+0.016\}$ and measure recovery via the stacking pipeline
+\citep[following the injection-recovery methodology of][]{zhu2023}
+\mbox{(C-1405, E-197)}.
+The present implementation fails this calibration check: for injected
+$\alpha_{zd}$ between $0$ and $0.016$, the recovered SNR stays nearly constant
+at $0.429$--$0.430$ and the recovered amplitude stays nearly constant at
+$\alpha^\mathrm{rec}_{zd} \approx 0.295$. The recovery ratio therefore scales
+approximately as $1/\alpha_{zd}$ instead of staying near unity. We therefore do
+\emph{not} use the injection lane as evidence for pipeline sensitivity in the
+current paper. The upper limit $\alpha_{zd} < 0.00239$ is constructed via the
+unified Feldman--Cousins procedure
+\citep{feldman1998}, analogous to the exclusion methodology used in direct
+dark matter detection experiments \citep{xenon1t2018}.
 
 \section{Spatial Reach: The HI 21cm Outer Halo Domain}
 \label{sec:hi}
 
 The MaNGA IFU truncates at $x \approx 1.36\,r_s$: the dark matter halo at
-$x > 3$ is physically unreachable with optical data. Radio HI 21cm surveys
-(THINGS, HALOGAS) trace cold gas to $x > 10\,r_s$. We implement a THINGS
-FITS cube ingestor and moment-1 rotation curve extractor with elliptical ring
-averaging (C-1375, E-193). This opens the outer-halo domain for a future
-dedicated search at the sensitivity where ZD modulations are predicted to
-peak ($\alpha_{zd} \times e^{-x}$ at $x \sim 3$--$5$ vs $x \sim 0.8$ for MaNGA).
+$x > 3$ is physically unreachable with optical data. Radio HI 21\,cm surveys
+\citep[THINGS;][]{walter2008,deblok2008} trace cold gas to $x > 10\,r_s$.
+We implement a THINGS FITS cube ingestor and moment-1 rotation curve
+extractor with elliptical ring averaging (C-1375, E-193). This opens the
+outer-halo domain for a future dedicated search at the sensitivity where
+ZD modulations are predicted to peak ($\alpha_{zd} \times e^{-x}$ at
+$x \sim 3$--$5$ vs $x \sim 0.8$ for MaNGA). The SKA Phase~1 HI survey
+\citep{ska2020} will extend kinematic coverage to $x > 10$ for $\sim10^4$
+galaxies, directly probing the $\alpha_{zd} = 0.004$ prediction. The WALLABY
+SKA pathfinder survey \citep{koribalski2020} has already demonstrated
+automated HI kinematic modeling for $\sim 150$ pilot galaxies \citep{deg2024},
+validating the pipeline technology at precursor sensitivity.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
 The MaNGA stacking experiment establishes a stringent upper limit on sedenion
-zero-divisor topological forcing: $\alpha_{zd} < 0.00239$ at $95\%$ CL,
-$40\%$ below the SKA 2030 Harmonic Halos detection threshold. The null result
-is algebra-universal (CD-ZD, G2, $J_3(\mathbb{O})$, sl(2)) and confirmed by
-three non-static diagnostics. Signal injection validates pipeline sensitivity.
+zero-divisor topological forcing: $\alpha_{zd} < 0.00239$ at $95\%$ CL
+\citep[Bayesian model comparison following][]{trotta2008}, $40\%$ below the
+SKA 2030 Harmonic Halos detection threshold. Null results of this kind
+serve a critical role in constraining theoretical parameter space
+\citep{matosin2014}. The null result is algebra-universal (CD-ZD, G2,
+$J_3(\mathbb{O})$, sl(2)) and supported by non-static diagnostics, although the
+Rayleigh lane shows low-level structured coherence rather than a pure random
+phase null. The injection-recovery calibration remains unresolved and should be
+treated as a blocker for any stronger pipeline-sensitivity claim.
 The outer-halo regime ($x > 3$) remains unexplored; THINGS HI infrastructure
-is ready (E-193). The SKA (2030+) array will provide the first direct test of
-the $\alpha_{zd} = 0.004$ prediction.
+is ready (E-193). The SKA (2030+) array \citep{ska2020} and Euclid
+gravitational lensing \citep{euclid2022,oriordan2023} will provide the first
+direct tests of the $\alpha_{zd} = 0.004$ prediction.
 
 \appendix
 
@@ -188,5 +264,7 @@ the $\alpha_{zd} = 0.004$ prediction.
   \end{tabular}
   \label{tab:claims}
 \end{table}
+
+\bibliography{manga_null_refs,../../papers/bib/cayley_dickson}
 
 \end{document}

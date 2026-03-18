@@ -3,17 +3,17 @@
 
 [bibliography]
 authoritative = true
-updated = "2026-03-12"
+updated = "2026-03-17"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 56
-entry_count = 318
+section_count = 57
+entry_count = 334
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 56
-entry_count = 318
+section_count = 57
+entry_count = 334
 
 [[section]]
 id = "BSEC-001"
@@ -3848,3 +3848,185 @@ notes = ["*Original characterization of the Leech lattice in 24 dimensions. Uniq
 urls = []
 dois = []
 source_line = 729
+
+[[section]]
+id = "BSEC-057"
+name = "MaNGA ZD Null Result Paper"
+groups = ["Primary Research & Data Sources"]
+entry_count = 16
+
+[[entry]]
+id = "BIB-0319"
+order_index = 319
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Bundy, K. et al.** (2015). *Overview of the SDSS-IV MaNGA Survey*. ApJ 798, 7."
+notes = ["*MaNGA survey design paper. Cited in manga_zd_null_result.tex Sec 2.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2015ApJ...798....7B"]
+dois = ["10.1088/0004-637X/798/1/7"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0320"
+order_index = 320
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Wake, D. A. et al.** (2017). *The SDSS-IV MaNGA Sample: Design, Optimization, and Usage Considerations*. AJ 154, 86."
+notes = ["*MaNGA sample design. Cited in manga_zd_null_result.tex Sec 2.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2017AJ....154...86W"]
+dois = ["10.3847/1538-3881/aa7ecc"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0321"
+order_index = 321
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Westfall, K. B. et al.** (2019). *The Data Analysis Pipeline for the SDSS-IV MaNGA IFU Galaxy Survey*. AJ 158, 231."
+notes = ["*MaNGA DAP emission-line modeling. Cited in manga_zd_null_result.tex Sec 2.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2019AJ....158..231W"]
+dois = ["10.3847/1538-3881/ab44a2"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0322"
+order_index = 322
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Abdurro'uf et al.** (2022). *The Seventeenth Data Release of the Sloan Digital Sky Surveys*. ApJS 259, 35."
+notes = ["*SDSS-IV DR17 release paper. Cited in manga_zd_null_result.tex Sec 2.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2022ApJS..259...35A"]
+dois = ["10.3847/1538-4365/ac4414"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0323"
+order_index = 323
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Moster, B. P., Naab, T., & White, S. D. M.** (2013). *Galactic star formation and accretion histories from matching galaxies to dark matter haloes*. MNRAS 428, 3121."
+notes = ["*Stellar-mass-to-halo-mass relation used for NFW parameter inference in E-183.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2013MNRAS.428.3121M"]
+dois = ["10.1093/mnras/sts261"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0324"
+order_index = 324
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Persic, M., Salucci, P., & Stel, F.** (1996). *The universal rotation curve of spiral galaxies*. MNRAS 281, 27."
+notes = ["*Foundational rotation curve stacking methodology. Cited in manga_zd_null_result.tex Sec 2.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/1996MNRAS.281...27P"]
+dois = ["10.1093/mnras/281.1.27"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0325"
+order_index = 325
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Lelli, F., McGaugh, S. S., & Schombert, J. M.** (2016). *SPARC: Mass Models for 175 Disk Galaxies*. AJ 152, 157."
+notes = ["*SPARC rotation curve database. Cited in manga_zd_null_result.tex Sec 2.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2016AJ....152..157L"]
+dois = ["10.3847/0004-6256/152/6/157"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0326"
+order_index = 326
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**de Blok, W. J. G.** (2010). *The Core-Cusp Problem*. Adv. Astron. 2010, 789293."
+notes = ["*Core-cusp problem review. Cited in manga_zd_null_result.tex Sec 3.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2010AdAst2010E...5D"]
+dois = ["10.1155/2010/789293"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0327"
+order_index = 327
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Bullock, J. S. & Boylan-Kolchin, M.** (2017). *Small-Scale Challenges to the LCDM Paradigm*. ARA&A 55, 343."
+notes = ["*Small-scale CDM challenges review. Cited in manga_zd_null_result.tex Sec 3.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2017ARA%26A..55..343B"]
+dois = ["10.1146/annurev-astro-091916-055313"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0328"
+order_index = 328
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Di Cintio, A. et al.** (2014). *A mass-dependent density profile for dark matter haloes*. MNRAS 437, 415."
+notes = ["*Mass-dependent DM profile from baryonic feedback. Cited in manga_zd_null_result.tex Sec 5.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2014MNRAS.437..415D"]
+dois = ["10.1093/mnras/stt1891"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0329"
+order_index = 329
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Read, J. I., Agertz, O., & Collins, M. L. M.** (2016). *Understanding the shape and diversity of dwarf galaxy rotation curves in LCDM*. MNRAS 462, 3628."
+notes = ["*CoreNFW profile from baryonic feedback. Cited in manga_zd_null_result.tex Sec 5.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2016MNRAS.462.3628R"]
+dois = ["10.1093/mnras/stw1876"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0330"
+order_index = 330
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Walter, F. et al.** (2008). *THINGS: The HI Nearby Galaxy Survey*. AJ 136, 2563."
+notes = ["*THINGS survey. Cited in manga_zd_null_result.tex Sec 7.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2008AJ....136.2563W"]
+dois = ["10.1088/0004-6256/136/6/2563"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0331"
+order_index = 331
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**de Blok, W. J. G. et al.** (2008). *High-Resolution Rotation Curves and Galaxy Mass Models from THINGS*. AJ 136, 2648."
+notes = ["*THINGS rotation curves. Cited in manga_zd_null_result.tex Sec 7.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2008AJ....136.2648D"]
+dois = ["10.1088/0004-6256/136/6/2648"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0332"
+order_index = 332
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Square Kilometre Array Cosmology Science Working Group.** (2020). *Cosmology with Phase 1 of the SKA: Red Book 2018*. PASA 37, e007."
+notes = ["*SKA Phase 1 HI survey forecasts. Cited in manga_zd_null_result.tex Sec 7 and Conclusion.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2020PASA...37....7S"]
+dois = ["10.1017/pasa.2019.51"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0333"
+order_index = 333
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Euclid Collaboration & Scaramella, R. et al.** (2022). *Euclid preparation. I. The Euclid Wide Survey*. A&A 662, A112."
+notes = ["*Euclid survey design. Cited in manga_zd_null_result.tex Conclusion.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2022A%26A...662A.112E"]
+dois = ["10.1051/0004-6361/202141938"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0334"
+order_index = 334
+group = "Primary Research & Data Sources"
+section = "MaNGA ZD Null Result Paper"
+citation_markdown = "**Trotta, R.** (2008). *Bayes in the sky: Bayesian inference and model selection in cosmology*. Contemp. Phys. 49, 71."
+notes = ["*Bayesian evidence review. Cited in manga_zd_null_result.tex Conclusion.*"]
+urls = ["https://ui.adsabs.harvard.edu/abs/2008ConPh..49...71T"]
+dois = ["10.1080/00107510802066753"]
+source_line = 0
