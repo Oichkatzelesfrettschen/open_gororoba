@@ -44,6 +44,13 @@
   CUDA/Vulkan host-staging and copy contracts.
 - `done` Scope a lightweight `gororoba_sparse_grid` crate for reusable sparse
   occupancy, active-brick, and tile-window metadata.
+- `done` Extract descriptor-first `gororoba_gpu_readback` without moving CUDA
+  streams or Vulkan submission policy.
+- `done` Extract descriptor-first `gororoba_sparse_grid` without moving solver
+  thresholds or launch policy.
+- `active` Adopt `gororoba_gpu_readback` descriptors in CUDA/Vulkan owners.
+- `active` Adopt `gororoba_sparse_grid` geometry/window types in sparse CUDA
+  and heliosphere planning owners.
 
 ## Seam Inventory
 
@@ -241,12 +248,10 @@ The new viewer contract lives in `gororoba_view_core`.
 
 ## Immediate Execution Order
 
-1. Publish the viewer adapter capability matrix for CPU, CUDA, OptiX, and
-   deferred Vulkan paths.
-2. Scope `gororoba_gpu_readback` around reusable host-staging contracts instead
-   of solver- or renderer-owned submission logic.
-3. Scope `gororoba_sparse_grid` around backend-neutral occupancy/tile metadata
-   instead of density-threshold semantics.
-4. Revisit Vulkan helper extraction only when a second renderer needs the same
+1. Extend `gororoba_gpu_readback` adoption from descriptor methods into viewer
+   and profiling/report paths where host-staging metadata is repeated.
+2. Extend `gororoba_sparse_grid` adoption from heliosphere planning into sparse
+   CUDA and OptiX occupancy/window bookkeeping.
+3. Revisit Vulkan helper extraction only when a second renderer needs the same
    command/readback substrate.
-5. Keep shared viewer/frame contracts rustdoc-complete as adapters evolve.
+4. Keep shared viewer/frame contracts rustdoc-complete as adapters evolve.

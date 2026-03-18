@@ -5,6 +5,10 @@
 //! along with the memory estimators for dense and sparse 3D runs.
 
 use serde::{Deserialize, Serialize};
+use gororoba_sparse_grid::{
+    BrickGrid3d, BrickShape3d, IndirectBrickTableShape, LogicalGrid3d, OccupancyBitsetStats,
+    estimate_metadata_footprint,
+};
 use std::{collections::BTreeMap, str::FromStr};
 
 pub const HELIOSPHERE_FEATURE_DIM: usize = 16;
@@ -870,15 +874,30 @@ pub struct SparseExecutionPlan {
 
 /// Estimate the raw sparse-memory footprint for a grid and active fraction.
 pub fn estimate_sparse_memory_plan(grid_size: usize, active_fraction: f64) -> SparseMemoryPlan {
-    let brick_edge = 8u64;
-    let halo_edge = 10u64;
-    let grid = grid_size as u64;
-    let total_cells = grid * grid * grid;
-    let bricks_per_axis = grid.div_ceil(brick_edge);
-    let total_bricks = bricks_per_axis * bricks_per_axis * bricks_per_axis;
+    let brick_shape = BrickShape3d {
+        core_edge_cells: 8,
+        halo_edge_cells: 10,
+    };
+    let logical_grid = LogicalGrid3d {
+        nx: grid_size as u32,
+        ny: grid_size as u32,
+        nz: grid_size as u32,
+    };
+    let brick_grid = BrickGrid3d::from_logical_grid(logical_grid, brick_shape);
     let active_fraction = active_fraction.clamp(0.001, 1.0);
+    let total_cells = logical_grid.cell_count();
+    let total_bricks = brick_grid.total_bricks();
     let active_bricks = ((total_bricks as f64) * active_fraction).ceil() as u64;
-    let active_core_cells = active_bricks * brick_edge.pow(3);
+    let occupancy = OccupancyBitsetStats {
+        total_bricks,
+        active_bricks,
+    };
+    let indirect_table = IndirectBrickTableShape {
+        entry_count: total_bricks,
+        bytes_per_entry: 4,
+    };
+    let metadata = estimate_metadata_footprint(occupancy, indirect_table, 4);
+    let active_core_cells = active_bricks * brick_shape.core_cell_count();
 
     let dense_fp32_pingpong_bytes = total_cells as f64 * 184.0;
     let dense_bf16_pingpong_bytes = total_cells as f64 * 108.0;
@@ -887,8 +906,8 @@ pub fn estimate_sparse_memory_plan(grid_size: usize, active_fraction: f64) -> Sp
 
     SparseMemoryPlan {
         grid_size,
-        brick_edge: brick_edge as usize,
-        halo_edge: halo_edge as usize,
+        brick_edge: brick_shape.core_edge_cells as usize,
+        halo_edge: brick_shape.halo_edge_cells as usize,
         active_fraction,
         total_cells,
         total_bricks,
@@ -898,10 +917,10 @@ pub fn estimate_sparse_memory_plan(grid_size: usize, active_fraction: f64) -> Sp
         dense_bf16_pingpong_gib: dense_bf16_pingpong_bytes / 1024.0_f64.powi(3),
         sparse_fp32_aa_gib: sparse_fp32_aa_bytes / 1024.0_f64.powi(3),
         sparse_bf16_aa_projected_gib: sparse_bf16_aa_projected_bytes / 1024.0_f64.powi(3),
-        occupancy_bitset_mib: (total_bricks as f64 / 8.0) / 1024.0_f64.powi(2),
-        indirect_table_mib: (total_bricks as f64 * 4.0) / 1024.0_f64.powi(2),
-        active_brick_id_mib: (active_bricks as f64 * 4.0) / 1024.0_f64.powi(2),
-        shared_tile_bytes_bf16: (halo_edge.pow(3) * 19 * 2) as usize,
+        occupancy_bitset_mib: metadata.occupancy_bitset_bytes as f64 / 1024.0_f64.powi(2),
+        indirect_table_mib: metadata.indirect_table_bytes as f64 / 1024.0_f64.powi(2),
+        active_brick_id_mib: metadata.active_brick_id_bytes as f64 / 1024.0_f64.powi(2),
+        shared_tile_bytes_bf16: (brick_shape.halo_cell_count() * 19 * 2) as usize,
         shared_tile_layout_gpu: "[19][1000]".to_string(),
         shared_tile_layout_cpu: "[1000][19]".to_string(),
     }

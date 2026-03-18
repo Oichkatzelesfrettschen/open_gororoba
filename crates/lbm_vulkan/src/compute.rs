@@ -1,5 +1,9 @@
 use crate::{Precision, VulkanContext};
 use ash::{Device, vk};
+use gororoba_gpu_readback::{
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
+    ReadbackResidency,
+};
 use gpu_allocator::{MemoryLocation, vulkan::*};
 use std::{
     ffi::CString,
@@ -2151,6 +2155,25 @@ impl GororobaEngine {
             std::ptr::copy_nonoverlapping(ptr, pixels.as_mut_ptr(), byte_count);
         }
         Ok(pixels)
+    }
+
+    /// Descriptor for the renderer-owned RGBA readback surface.
+    #[must_use]
+    pub fn render_readback_descriptor(&self) -> ReadbackDescriptor {
+        let (w, h) = self.screen_dim;
+        ReadbackDescriptor {
+            backend_name: "Vulkan".to_string(),
+            label: "render_rgba8".to_string(),
+            shape: ReadbackBufferShape {
+                width: w,
+                height: h,
+                depth: 1,
+                elements_per_point: 4,
+            },
+            element_type: ReadbackElementType::U8,
+            layout: ReadbackLayout::ImageRgba8,
+            residency: ReadbackResidency::RendererOwned,
+        }
     }
 
     /// Read back the velocity field from GPU memory.

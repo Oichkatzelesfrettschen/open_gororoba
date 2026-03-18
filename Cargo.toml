@@ -40,6 +40,8 @@ members = [
     "crates/lbm_3d",
     "crates/lbm_3d_cuda",
     "crates/gororoba_optix",
+    "crates/gororoba_gpu_readback",
+    "crates/gororoba_sparse_grid",
     "crates/gororoba_view_core",
     "crates/gororoba_view_raster",
     "crates/lattice_filtration",
@@ -87,6 +89,8 @@ algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }
 gororoba_gpu_bridge = { path = "crates/gororoba_gpu_bridge" }
 gororoba_optix = { path = "crates/gororoba_optix" }
+gororoba_gpu_readback = { path = "crates/gororoba_gpu_readback" }
+gororoba_sparse_grid = { path = "crates/gororoba_sparse_grid" }
 gororoba_view_core = { path = "crates/gororoba_view_core" }
 gororoba_view_raster = { path = "crates/gororoba_view_raster" }
 
