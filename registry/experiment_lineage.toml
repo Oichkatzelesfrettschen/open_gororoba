@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 197
-edge_count = 996
+lineage_count = 198
+edge_count = 1002
 
 [[lineage]]
 id = "XL-001"
@@ -3598,6 +3598,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run -p gororoba_cli_algebra --bin cd-external-audit -- --output data/output/claims_falsification/cd_external_audit.toml", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-205"
+experiment_id = "E-205"
+binary = "algebra-refutation-audit"
+deterministic = true
+gpu = false
+run_command = "cargo run -p gororoba_cli_algebra --bin algebra-refutation-audit -- --output data/output/claims_falsification/algebra_refutation_audit.toml"
+run_command_sha256 = "4ff7474198bbbfcb28c18bc6c5e4b28b25126b93247c138a7f63f96b43ccc276"
+claim_refs = ["C-445", "C-466", "C-518", "C-585"]
+input_path_refs = []
+output_path_refs = ["data/output/claims_falsification/algebra_refutation_audit.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run -p gororoba_cli_algebra --bin algebra-refutation-audit -- --output data/output/claims_falsification/algebra_refutation_audit.toml", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -12560,6 +12578,60 @@ id = "XLE-00996"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "data/output/claims_falsification/cd_external_audit.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00997"
+lineage_id = "XL-205"
+from_id = "E-205"
+to_ref = "algebra-refutation-audit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00998"
+lineage_id = "XL-205"
+from_id = "E-205"
+to_ref = "C-445"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00999"
+lineage_id = "XL-205"
+from_id = "E-205"
+to_ref = "C-466"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01000"
+lineage_id = "XL-205"
+from_id = "E-205"
+to_ref = "C-518"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01001"
+lineage_id = "XL-205"
+from_id = "E-205"
+to_ref = "C-585"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01002"
+lineage_id = "XL-205"
+from_id = "E-205"
+to_ref = "data/output/claims_falsification/algebra_refutation_audit.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

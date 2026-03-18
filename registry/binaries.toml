@@ -32,6 +32,12 @@ crate = "gororoba_cli"
 description = "Reframed T2: Shannon entropy of CD associator-norm distribution across dimensions 2..256, detecting phase transitions at dim=8 (non-associative) and dim=16 (zero divisors)"
 
 [[binary]]
+name = "algebra-refutation-audit"
+crate = "gororoba_cli_algebra"
+description = "Deterministic audit for C-445, C-466, C-518, and C-585."
+experiment = "E-205"
+
+[[binary]]
 name = "algebra-theory-crosswalk"
 crate = "gororoba_cli_data"
 description = "Rust-native algebra/theory crosswalk report linking Cayley-Dickson, Jordan, exceptional Lie, Kac-Moody/moonshine, and Planck/operator scaffolds to experiments, claims, binaries, and empirical outputs."
@@ -144,6 +150,12 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "catalog-feature-deconfound"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "cd-external-audit"
+crate = "gororoba_cli_algebra"
+description = "Deterministic audit for refuted external Cayley-Dickson CSV claims."
+experiment = "E-204"
 
 [[binary]]
 name = "cd-ladder-chaos"
@@ -492,6 +504,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "falsification-audit"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
 name = "fano-scattering"
 crate = "gororoba_cli"
 description = "Ruan & Fan (2009) Fano TCMT reproduction: Bessel function solver for complex arguments, cylindrical Lorentz-Mie transfer-matrix solver, analytical Fano lineshapes. Outputs 5 figures (12 panels): lossless/lossy analytical Fano (phi=0,pi/2,pi), single/multi-channel MDM validation."
@@ -690,6 +707,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "heliosphere-falsification-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "heliosphere-feature-cube"
 crate = "gororoba_cli_physics"
 description = "Build normalized heliosphere feature cubes from staged and executed mission-product lanes, then emit CSV and TOML manifests plus sparse memory projections."
@@ -852,6 +874,12 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "lbm_vulkan"
 crate = "lbm_vulkan"
 description = "Workspace binary discovered from cargo metadata in crate lbm_vulkan; registry metadata pending."
+
+[[binary]]
+name = "legacy-crossval-audit"
+crate = "gororoba_cli_algebra"
+description = "Deterministic audit for refuted legacy CSV claims."
+experiment = "E-203"
 
 [[binary]]
 name = "lhc-2025-qgp-synthesis"
@@ -1083,6 +1111,11 @@ experiment = "E-052"
 name = "pathion-solar-system-crucible"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "pdg-nanograv-surface-audit"
+crate = "gororoba_cli_data"
+description = "Audit local PDG/NANOGrav source surfaces and repair NANOGrav CSV drift."
 
 [[binary]]
 name = "percolation-experiment"
