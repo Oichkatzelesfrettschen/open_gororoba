@@ -503,6 +503,20 @@ path = "src/bin/polynomial_detrend_closure.rs"
 name = "stft-phase-gradient"
 path = "src/bin/stft_phase_gradient.rs"
 
+# ---- Synthesized Follow-ups E-201/E-202/E-203 (3) ----
+
+[[bin]]
+name = "face-on-red-noise-rayleigh"
+path = "src/bin/face_on_red_noise_rayleigh.rs"
+
+[[bin]]
+name = "q3-injection-recovery"
+path = "src/bin/q3_injection_recovery.rs"
+
+[[bin]]
+name = "cross-algebra-decomposition"
+path = "src/bin/cross_algebra_decomposition.rs"
+
 # ---- Euclid / Morphology (2) ----
 
 [[bin]]
