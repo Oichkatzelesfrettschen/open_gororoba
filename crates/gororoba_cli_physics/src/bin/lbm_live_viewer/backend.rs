@@ -14,8 +14,7 @@ use gororoba_view_core::{
     ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
     ReadbackResidency, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource, VolumeFrameF32,
 };
-use std::f64::consts::PI;
-use std::time::Instant;
+use std::{f64::consts::PI, time::Instant};
 
 use lbm_3d::solver::LbmSolver3D;
 #[cfg(feature = "gpu")]
@@ -484,8 +483,7 @@ fn taylor_green_initial_conditions(grid: usize) -> (Vec<f64>, Vec<[f64; 3]>) {
                 let idx = z * grid * grid + y * grid + x;
                 let ux = u0 * (kx * x as f64).cos() * (ky * y as f64).sin();
                 let uy = -u0 * (kx * x as f64).sin() * (ky * y as f64).cos();
-                rho[idx] =
-                    1.0 + 0.01 * (kx * x as f64).cos() * (ky * y as f64).cos();
+                rho[idx] = 1.0 + 0.01 * (kx * x as f64).cos() * (ky * y as f64).cos();
                 u[idx] = [ux, uy, 0.0];
             }
         }

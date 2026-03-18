@@ -27,8 +27,7 @@
 
 use anyhow::Result;
 use clap::Parser;
-use std::io::Write as _;
-use std::time::Instant;
+use std::{io::Write as _, time::Instant};
 
 #[derive(Parser, Debug)]
 #[command(name = "particle-trace", version)]
@@ -60,8 +59,10 @@ struct Config {
 
 #[cfg(feature = "gpu")]
 fn run_tracer(cfg: &Config) -> Result<()> {
-    use lbm_3d_cuda::bench_kernels::SoaBenchRunner;
-    use lbm_3d_cuda::vtk_writer::{VtpPoint, write_vtp_trajectories};
+    use lbm_3d_cuda::{
+        bench_kernels::SoaBenchRunner,
+        vtk_writer::{VtpPoint, write_vtp_trajectories},
+    };
 
     let n = cfg.grid;
     let n_cells = n * n * n;
@@ -74,7 +75,10 @@ fn run_tracer(cfg: &Config) -> Result<()> {
     // Initialize INT8 MRT solver
     println!("Initializing INT8 MRT solver...");
     let mut solver = SoaBenchRunner::new_int8_soa_mrt(n, n, n)?;
-    println!("Solver initialized. VRAM: {} MB", solver.vram_dist_bytes() / (1024 * 1024));
+    println!(
+        "Solver initialized. VRAM: {} MB",
+        solver.vram_dist_bytes() / (1024 * 1024)
+    );
 
     // Seed particles uniformly in the grid interior
     let np = cfg.particles;

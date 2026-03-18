@@ -32,8 +32,7 @@ use cosmology_core::{
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -41,7 +40,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(name = "face-on-red-noise-rayleigh")]
 #[command(about = "F1: Face-on Rayleigh test with red-noise baseline subtraction (E-201)")]
 struct Cli {
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     #[arg(long, default_value = "data/external/manga/subsamples/dapall_lowi.csv")]
@@ -74,7 +76,10 @@ struct Cli {
     #[arg(long, default_value_t = 0.808)]
     gamma_prior: f64,
 
-    #[arg(long, default_value = "data/results/e201/face_on_red_noise_rayleigh.csv")]
+    #[arg(
+        long,
+        default_value = "data/results/e201/face_on_red_noise_rayleigh.csv"
+    )]
     out_csv: PathBuf,
 }
 
@@ -208,14 +213,10 @@ fn red_noise_analysis(
 
     // Corrected alpha_zd from residual Fourier power
     let af = config.cd_params.assessor_fraction;
-    let max_resid_power = residuals
-        .iter()
-        .map(|r| r.powi(2))
-        .fold(0.0_f64, f64::max);
+    let max_resid_power = residuals.iter().map(|r| r.powi(2)).fold(0.0_f64, f64::max);
     // alpha_zd ~ sqrt(max_resid_power) * rms / (af * exp(-x_peak))
     // x_peak ~ 0.6 (where most galaxies contribute)
-    let corrected_alpha_zd =
-        max_resid_power.sqrt() * result.rms_residual / (af * (-0.6_f64).exp());
+    let corrected_alpha_zd = max_resid_power.sqrt() * result.rms_residual / (af * (-0.6_f64).exp());
 
     RedNoiseResult {
         gamma,
@@ -341,10 +342,16 @@ fn main() -> anyhow::Result<()> {
     };
 
     // ---- Main analysis (fixed gamma) ----
-    eprintln!("\n--- Red-noise analysis (gamma={:.3} prior) ---", cli.gamma_prior);
+    eprintln!(
+        "\n--- Red-noise analysis (gamma={:.3} prior) ---",
+        cli.gamma_prior
+    );
     let main_result = red_noise_analysis(&normalized, &config, &wavenumbers, cli.gamma_prior);
 
-    eprintln!("Fitted: gamma={:.4}, A={:.6}", main_result.gamma, main_result.amplitude);
+    eprintln!(
+        "Fitted: gamma={:.4}, A={:.6}",
+        main_result.gamma, main_result.amplitude
+    );
     for (i, ((&obs, &pred), &resid)) in main_result
         .rayleigh_r_obs
         .iter()
@@ -369,10 +376,7 @@ fn main() -> anyhow::Result<()> {
         "sigma_resid={:.6}, max_residual={:.2} sigma",
         main_result.sigma_resid, main_result.max_residual_sigma
     );
-    eprintln!(
-        "Corrected alpha_zd={:.6}",
-        main_result.corrected_alpha_zd
-    );
+    eprintln!("Corrected alpha_zd={:.6}", main_result.corrected_alpha_zd);
 
     // ---- Free-fit ablation ----
     eprintln!("\n--- Ablation: free gamma fit ---");
@@ -418,10 +422,7 @@ fn main() -> anyhow::Result<()> {
         boot_success, cli.n_bootstrap, alpha_median, alpha_lo, alpha_hi
     );
 
-    let detection_frac = boot_max_sigma
-        .iter()
-        .filter(|&&s| s > 3.0)
-        .count() as f64
+    let detection_frac = boot_max_sigma.iter().filter(|&&s| s > 3.0).count() as f64
         / boot_max_sigma.len().max(1) as f64;
     eprintln!(
         "Detection fraction (max_sigma > 3.0): {:.1}%",

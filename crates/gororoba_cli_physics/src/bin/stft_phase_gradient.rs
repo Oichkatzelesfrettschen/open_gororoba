@@ -12,10 +12,12 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
-use std::collections::BTreeMap;
-use std::f64::consts::PI;
-use std::fs::File;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeMap,
+    f64::consts::PI,
+    fs::File,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser)]
 #[command(name = "stft-phase-gradient")]
@@ -122,10 +124,13 @@ fn default_out_path(input: &Path) -> PathBuf {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    let out_path = cli.out.clone().unwrap_or_else(|| default_out_path(&cli.csv));
+    let out_path = cli
+        .out
+        .clone()
+        .unwrap_or_else(|| default_out_path(&cli.csv));
 
-    let file = File::open(&cli.csv)
-        .with_context(|| format!("opening STFT CSV {}", cli.csv.display()))?;
+    let file =
+        File::open(&cli.csv).with_context(|| format!("opening STFT CSV {}", cli.csv.display()))?;
     let mut reader = ReaderBuilder::new().from_reader(file);
 
     let mut modes: BTreeMap<u32, ModeSeries> = BTreeMap::new();
@@ -223,17 +228,17 @@ fn main() -> Result<()> {
     let coherent_modes = rows.iter().filter(|r| r.verdict == "COHERENT").count();
     let noise_modes = rows.iter().filter(|r| r.verdict == "NOISE").count();
     let degenerate_modes = rows.iter().filter(|r| r.verdict == "DEGENERATE").count();
-    let max_r2 = rows
-        .iter()
-        .map(|r| r.r_squared)
-        .fold(0.0_f64, f64::max);
+    let max_r2 = rows.iter().map(|r| r.r_squared).fold(0.0_f64, f64::max);
 
     println!(
         "  Coherent modes (R^2 > 0.7, slope/k in [0.8, 1.2]): {}",
         coherent_modes
     );
     println!("  Noise modes (R^2 < 0.3): {}", noise_modes);
-    println!("  Degenerate modes (< 0.5 cycles in window): {}", degenerate_modes);
+    println!(
+        "  Degenerate modes (< 0.5 cycles in window): {}",
+        degenerate_modes
+    );
     println!("  Max R^2: {:.4}", max_r2);
     println!();
 

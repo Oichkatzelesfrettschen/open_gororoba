@@ -25,8 +25,7 @@ use cosmology_core::{
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -35,7 +34,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(about = "Broadband Fourier scan after polynomial detrending")]
 struct Cli {
     /// Path to MaNGA rotation curves CSV.
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall selection CSV.
@@ -390,10 +392,7 @@ fn main() -> anyhow::Result<()> {
         "RMS reduction: {:.2}%",
         (result.rms_residual - corrected_rms) / result.rms_residual * 100.0
     );
-    eprintln!(
-        "Max broadband SNR: {:.6} at k={:.4}",
-        max_snr, k_at_max
-    );
+    eprintln!("Max broadband SNR: {:.6} at k={:.4}", max_snr, k_at_max);
 
     // CD-ZD mode comparison
     eprintln!("\n--- CD-ZD wavenumber comparison ---");
@@ -498,8 +497,10 @@ fn main() -> anyhow::Result<()> {
     let ci_hi = bootstrap_alpha[(cli.n_bootstrap as f64 * 0.975) as usize];
     let boot_median = bootstrap_alpha[cli.n_bootstrap / 2];
 
-    eprintln!("alpha_zd bootstrap: median={:.8}, 95% CI=[{:.8}, {:.8}]",
-        boot_median, ci_lo, ci_hi);
+    eprintln!(
+        "alpha_zd bootstrap: median={:.8}, 95% CI=[{:.8}, {:.8}]",
+        boot_median, ci_lo, ci_hi
+    );
 
     // Verdict
     eprintln!("\n--- Detection criteria ---");
@@ -509,9 +510,14 @@ fn main() -> anyhow::Result<()> {
             max_snr, k_at_max
         );
     } else if max_snr < 1.0 {
-        eprintln!("RESULT: NULL CONFIRMED -- all {} frequencies below SNR 1.0", scan_wavenumbers.len());
-        eprintln!("Tightened alpha_zd upper limit: {:.6} (95% CI: [{:.6}, {:.6}])",
-            alpha_zd, ci_lo, ci_hi);
+        eprintln!(
+            "RESULT: NULL CONFIRMED -- all {} frequencies below SNR 1.0",
+            scan_wavenumbers.len()
+        );
+        eprintln!(
+            "Tightened alpha_zd upper limit: {:.6} (95% CI: [{:.6}, {:.6}])",
+            alpha_zd, ci_lo, ci_hi
+        );
     } else {
         eprintln!(
             "RESULT: MODERATE -- max broadband SNR {:.2}, no detection but above noise floor",
@@ -565,7 +571,14 @@ fn main() -> anyhow::Result<()> {
     // Write CD-ZD mode detail CSV
     let cd_csv = format!("{}_cd_modes.csv", cli.out_prefix);
     let mut cwtr = csv::Writer::from_path(&cd_csv)?;
-    cwtr.write_record(["mode", "k", "nfw_power", "corr_power", "corr_phase", "ratio"])?;
+    cwtr.write_record([
+        "mode",
+        "k",
+        "nfw_power",
+        "corr_power",
+        "corr_phase",
+        "ratio",
+    ])?;
     for (mode_idx, &k) in cd_wavenumbers.iter().enumerate() {
         let ratio = if nfw_cd_power[mode_idx] > 1e-20 {
             corr_cd_power[mode_idx] / nfw_cd_power[mode_idx]

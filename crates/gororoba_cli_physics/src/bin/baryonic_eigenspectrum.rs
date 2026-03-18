@@ -15,8 +15,7 @@
 //! Cross-domain analogy: NMR spectroscopy -- Larmor frequencies set by physics,
 //! but signal content at those frequencies encodes tissue contrast (biology).
 
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 use clap::Parser;
 use nalgebra::{DMatrix, DVector};
@@ -305,23 +304,24 @@ fn main() -> anyhow::Result<()> {
     let median_r2_dc14 = random_r2_dc14[n_trials / 2];
 
     // Percentile rank of ZD kappa among random kappas
-    let kappa_percentile = random_kappas
-        .iter()
-        .filter(|&&k| k <= kappa)
-        .count() as f64
-        / n_trials as f64
-        * 100.0;
-    let r2_nfw_percentile = random_r2_nfw
-        .iter()
-        .filter(|&&r| r <= r2_nfw)
-        .count() as f64
-        / n_trials as f64
-        * 100.0;
+    let kappa_percentile =
+        random_kappas.iter().filter(|&&k| k <= kappa).count() as f64 / n_trials as f64 * 100.0;
+    let r2_nfw_percentile =
+        random_r2_nfw.iter().filter(|&&r| r <= r2_nfw).count() as f64 / n_trials as f64 * 100.0;
 
-    eprintln!("Random kappa: median={:.2}, IQR=[{:.2}, {:.2}]", median_kappa, p25_kappa, p75_kappa);
-    eprintln!("ZD kappa={:.2} is at percentile {:.1}% of random", kappa, kappa_percentile);
+    eprintln!(
+        "Random kappa: median={:.2}, IQR=[{:.2}, {:.2}]",
+        median_kappa, p25_kappa, p75_kappa
+    );
+    eprintln!(
+        "ZD kappa={:.2} is at percentile {:.1}% of random",
+        kappa, kappa_percentile
+    );
     eprintln!("Random R^2(NFW): median={:.6}", median_r2_nfw);
-    eprintln!("ZD R^2(NFW)={:.6} is at percentile {:.1}%", r2_nfw, r2_nfw_percentile);
+    eprintln!(
+        "ZD R^2(NFW)={:.6} is at percentile {:.1}%",
+        r2_nfw, r2_nfw_percentile
+    );
     eprintln!("Random R^2(DC14): median={:.6}", median_r2_dc14);
 
     // Detection verdict
@@ -349,7 +349,12 @@ fn main() -> anyhow::Result<()> {
     // Write output CSV
     let mut wtr = csv::Writer::from_path(&cli.out_csv)?;
     wtr.write_record([
-        "metric", "zd_value", "random_median", "random_p25", "random_p75", "percentile",
+        "metric",
+        "zd_value",
+        "random_median",
+        "random_p25",
+        "random_p75",
+        "percentile",
     ])?;
     wtr.write_record(&[
         "kappa".to_string(),
@@ -375,11 +380,7 @@ fn main() -> anyhow::Result<()> {
         format!("{:.6}", random_r2_dc14[3 * n_trials / 4]),
         format!(
             "{:.2}",
-            random_r2_dc14
-                .iter()
-                .filter(|&&r| r <= r2_dc14)
-                .count() as f64
-                / n_trials as f64
+            random_r2_dc14.iter().filter(|&&r| r <= r2_dc14).count() as f64 / n_trials as f64
                 * 100.0
         ),
     ])?;

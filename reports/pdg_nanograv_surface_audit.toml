@@ -41,7 +41,24 @@ interval_violation_count = 0
 matches_bestfit_count = 30
 fully_matches_bestfit = true
 
-[nanograv.zip_extract]
+[nanograv.zip_extract_raw_linear]
+interpretation = "raw_linear"
+row_count = 30
+matches_bestfit_count = 30
+matches_csv_count = 30
+fully_matches_bestfit = true
+fully_matches_csv = true
+
+[nanograv.zip_extract_natural_log]
+interpretation = "natural_log"
+row_count = 30
+matches_bestfit_count = 0
+matches_csv_count = 0
+fully_matches_bestfit = false
+fully_matches_csv = false
+
+[nanograv.zip_extract_log10]
+interpretation = "log10"
 row_count = 30
 matches_bestfit_count = 0
 matches_csv_count = 0

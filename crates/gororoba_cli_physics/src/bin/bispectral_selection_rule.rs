@@ -54,11 +54,17 @@ fn load_stacked_csv(path: &std::path::Path) -> anyhow::Result<(Vec<f64>, Vec<f64
     let mut rdr = csv::Reader::from_path(path)?;
     let headers = rdr.headers()?.clone();
 
-    let x_idx = headers.iter().position(|h| h == "x")
+    let x_idx = headers
+        .iter()
+        .position(|h| h == "x")
         .ok_or_else(|| anyhow::anyhow!("No 'x' column"))?;
-    let delta_idx = headers.iter().position(|h| h == "delta_stack")
+    let delta_idx = headers
+        .iter()
+        .position(|h| h == "delta_stack")
         .ok_or_else(|| anyhow::anyhow!("No 'delta_stack' column"))?;
-    let n_idx = headers.iter().position(|h| h == "n_contributing")
+    let n_idx = headers
+        .iter()
+        .position(|h| h == "n_contributing")
         .ok_or_else(|| anyhow::anyhow!("No 'n_contributing' column"))?;
 
     let mut x_grid = Vec::new();
@@ -68,7 +74,12 @@ fn load_stacked_csv(path: &std::path::Path) -> anyhow::Result<(Vec<f64>, Vec<f64
     for result in rdr.records() {
         let rec = result?;
         x_grid.push(rec.get(x_idx).unwrap_or("0").parse::<f64>().unwrap_or(0.0));
-        delta.push(rec.get(delta_idx).unwrap_or("0").parse::<f64>().unwrap_or(0.0));
+        delta.push(
+            rec.get(delta_idx)
+                .unwrap_or("0")
+                .parse::<f64>()
+                .unwrap_or(0.0),
+        );
         n_contrib.push(rec.get(n_idx).unwrap_or("0").parse::<usize>().unwrap_or(0));
     }
 
@@ -145,7 +156,12 @@ fn main() -> anyhow::Result<()> {
     // Load stacked profile.
     let (x_grid, delta, n_contrib) = load_stacked_csv(&cli.stacked_csv)?;
     let valid_bins = n_contrib.iter().filter(|&&n| n >= cli.min_per_bin).count();
-    eprintln!("Loaded {} bins, {} valid (n >= {})", x_grid.len(), valid_bins, cli.min_per_bin);
+    eprintln!(
+        "Loaded {} bins, {} valid (n >= {})",
+        x_grid.len(),
+        valid_bins,
+        cli.min_per_bin
+    );
 
     // CD-ZD wavenumbers: k_n = 2*pi*n/7 for n=1..7.
     let n_modes = 7;
@@ -175,16 +191,28 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    eprintln!("Evaluating DFT at {} wavenumbers ({} CD + {} sums)",
-        all_wavenumbers.len(), n_modes, all_wavenumbers.len() - n_modes);
+    eprintln!(
+        "Evaluating DFT at {} wavenumbers ({} CD + {} sums)",
+        all_wavenumbers.len(),
+        n_modes,
+        all_wavenumbers.len() - n_modes
+    );
 
     // Compute complex DFT at all needed wavenumbers.
-    let coeffs = complex_dft(&x_grid, &delta, &n_contrib, cli.min_per_bin, &all_wavenumbers);
+    let coeffs = complex_dft(
+        &x_grid,
+        &delta,
+        &n_contrib,
+        cli.min_per_bin,
+        &all_wavenumbers,
+    );
 
     // Compute bispectrum for each pair.
     eprintln!();
     eprintln!("--- Bispectral analysis (stacked profile) ---");
-    println!("mode_i,mode_j,mode_sum,k_i,k_j,k_sum,bispec_re,bispec_im,bispec_mag,bicoherence,is_fano");
+    println!(
+        "mode_i,mode_j,mode_sum,k_i,k_j,k_sum,bispec_re,bispec_im,bispec_mag,bicoherence,is_fano"
+    );
 
     let mut fano_bicoh: Vec<f64> = Vec::new();
     let mut nonfano_bicoh: Vec<f64> = Vec::new();
@@ -257,8 +285,16 @@ fn main() -> anyhow::Result<()> {
         f64::NAN
     };
 
-    eprintln!("  Fano triples ({}): mean bicoherence = {:.8e}", fano_bicoh.len(), fano_mean);
-    eprintln!("  Non-Fano pairs ({}): mean bicoherence = {:.8e}", nonfano_bicoh.len(), nonfano_mean);
+    eprintln!(
+        "  Fano triples ({}): mean bicoherence = {:.8e}",
+        fano_bicoh.len(),
+        fano_mean
+    );
+    eprintln!(
+        "  Non-Fano pairs ({}): mean bicoherence = {:.8e}",
+        nonfano_bicoh.len(),
+        nonfano_mean
+    );
     eprintln!("  Fano/non-Fano ratio = {:.4}", ratio);
 
     eprintln!();
@@ -315,9 +351,14 @@ fn main() -> anyhow::Result<()> {
             0.0
         };
 
-        eprintln!("  Ensemble bicoherence (aggregate CD mode) = {:.8e}", ensemble_bicoh);
-        eprintln!("  (For phase-incoherent noise: expected ~ 1/sqrt(N) = {:.6e})",
-            1.0 / (n_gal as f64).sqrt());
+        eprintln!(
+            "  Ensemble bicoherence (aggregate CD mode) = {:.8e}",
+            ensemble_bicoh
+        );
+        eprintln!(
+            "  (For phase-incoherent noise: expected ~ 1/sqrt(N) = {:.6e})",
+            1.0 / (n_gal as f64).sqrt()
+        );
     }
 
     Ok(())

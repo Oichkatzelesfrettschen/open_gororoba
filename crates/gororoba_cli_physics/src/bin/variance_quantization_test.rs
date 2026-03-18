@@ -81,10 +81,22 @@ fn main() -> anyhow::Result<()> {
     eprintln!("Columns: {:?}", headers.iter().collect::<Vec<_>>());
 
     let mut algebras: Vec<AlgebraPower> = vec![
-        AlgebraPower { label: "CD-ZD (sedenion)", powers: Vec::new() },
-        AlgebraPower { label: "G2 Aut(O)", powers: Vec::new() },
-        AlgebraPower { label: "Albert J3(O)", powers: Vec::new() },
-        AlgebraPower { label: "sl(2) partner", powers: Vec::new() },
+        AlgebraPower {
+            label: "CD-ZD (sedenion)",
+            powers: Vec::new(),
+        },
+        AlgebraPower {
+            label: "G2 Aut(O)",
+            powers: Vec::new(),
+        },
+        AlgebraPower {
+            label: "Albert J3(O)",
+            powers: Vec::new(),
+        },
+        AlgebraPower {
+            label: "sl(2) partner",
+            powers: Vec::new(),
+        },
     ];
 
     // Column indices: cd_re=1, cd_im=2, g2_re=3, g2_im=4, j3o_re=5, j3o_im=6, sl2_re=7, sl2_im=8.
@@ -123,8 +135,10 @@ fn main() -> anyhow::Result<()> {
             kurt
         );
 
-        eprintln!("  {}: D={:.6e}, p={:.4}, CV={:.4}, kurtosis={:.4}",
-            alg.label, dip_result.dip_statistic, dip_result.p_value, cv, kurt);
+        eprintln!(
+            "  {}: D={:.6e}, p={:.4}, CV={:.4}, kurtosis={:.4}",
+            alg.label, dip_result.dip_statistic, dip_result.p_value, cv, kurt
+        );
     }
 
     eprintln!();
@@ -152,20 +166,35 @@ fn main() -> anyhow::Result<()> {
     // Check dip test results for CD-ZD.
     let cd_dip = hartigan_dip_test(&algebras[0].powers, cli.n_perm, &mut rng);
     if cd_dip.p_value > 0.10 {
-        eprintln!("  CD-ZD dip p = {:.4} > 0.10: no multimodality detected.", cd_dip.p_value);
+        eprintln!(
+            "  CD-ZD dip p = {:.4} > 0.10: no multimodality detected.",
+            cd_dip.p_value
+        );
         eprintln!("  FALSIFICATION: unimodal power distribution -> REJECT variance quantization.");
     } else if cd_dip.p_value < 0.05 {
-        eprintln!("  CD-ZD dip p = {:.4} < 0.05: multimodality detected!", cd_dip.p_value);
+        eprintln!(
+            "  CD-ZD dip p = {:.4} < 0.05: multimodality detected!",
+            cd_dip.p_value
+        );
         eprintln!("  Check if other algebras also show multimodality (shared baryonic origin)");
         eprintln!("  or if CD-ZD is uniquely multimodal (possible ZD structure).");
     } else {
-        eprintln!("  CD-ZD dip p = {:.4}: borderline, inconclusive.", cd_dip.p_value);
+        eprintln!(
+            "  CD-ZD dip p = {:.4}: borderline, inconclusive.",
+            cd_dip.p_value
+        );
     }
 
     if cv_ratio > 1.5 {
-        eprintln!("  CV ratio = {:.4} > 1.5: CD-ZD has excess variance (consistent with ZD).", cv_ratio);
+        eprintln!(
+            "  CV ratio = {:.4} > 1.5: CD-ZD has excess variance (consistent with ZD).",
+            cv_ratio
+        );
     } else {
-        eprintln!("  CV ratio = {:.4} <= 1.5: no excess CD-ZD variance.", cv_ratio);
+        eprintln!(
+            "  CV ratio = {:.4} <= 1.5: no excess CD-ZD variance.",
+            cv_ratio
+        );
     }
 
     Ok(())

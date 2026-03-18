@@ -32,7 +32,9 @@ impl ViewerInteractionState {
 
     /// Clamp the currently selected slice index to the chosen axis.
     pub fn clamp_slice_index(&mut self, grid: GridShape3d) {
-        self.slice_index = self.slice_index.min(slice_axis_max_index(self.slice_axis, grid));
+        self.slice_index = self
+            .slice_index
+            .min(slice_axis_max_index(self.slice_axis, grid));
     }
 }
 

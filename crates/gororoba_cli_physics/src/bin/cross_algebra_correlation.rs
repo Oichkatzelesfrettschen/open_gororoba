@@ -17,15 +17,13 @@
 use clap::Parser;
 use cosmology_core::{
     harmonic_stacking::{
-        CdDimensionParams, NormalizedPoint, NormalizedResiduals,
-        g2_angular_wavenumbers, albert_peirce_wavenumbers,
-        sl2_partner_graph_wavenumbers,
+        CdDimensionParams, NormalizedPoint, NormalizedResiduals, albert_peirce_wavenumbers,
+        g2_angular_wavenumbers, sl2_partner_graph_wavenumbers,
     },
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -34,7 +32,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(about = "Cross-algebra template projection correlation (VLBI analogy)")]
 struct Cli {
     /// Path to MaNGA rotation curves CSV.
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall selection CSV.
@@ -310,8 +311,18 @@ fn main() -> anyhow::Result<()> {
     let sl2_w: Vec<f64> = vec![14.0 / 84.0, 7.0 / 84.0]; // Degeneracy-weighted: 14/84, 7/84
 
     let algebra_names = ["CD-ZD", "G2", "J3(O)", "sl(2)"];
-    let all_k = [cd_k.as_slice(), g2_k.as_slice(), j3o_k.as_slice(), sl2_k.as_slice()];
-    let all_w = [cd_w.as_slice(), g2_w.as_slice(), j3o_w.as_slice(), sl2_w.as_slice()];
+    let all_k = [
+        cd_k.as_slice(),
+        g2_k.as_slice(),
+        j3o_k.as_slice(),
+        sl2_k.as_slice(),
+    ];
+    let all_w = [
+        cd_w.as_slice(),
+        g2_w.as_slice(),
+        j3o_w.as_slice(),
+        sl2_w.as_slice(),
+    ];
 
     eprintln!("Computing per-galaxy template projections for 4 algebras...");
 
@@ -329,8 +340,7 @@ fn main() -> anyhow::Result<()> {
 
         let mut proj = [(0.0_f64, 0.0_f64); 4];
         for alg_idx in 0..4 {
-            proj[alg_idx] =
-                template_projection(&x_vals, &dv_vals, all_k[alg_idx], all_w[alg_idx]);
+            proj[alg_idx] = template_projection(&x_vals, &dv_vals, all_k[alg_idx], all_w[alg_idx]);
         }
         projections.push(proj);
     }
@@ -396,7 +406,9 @@ fn main() -> anyhow::Result<()> {
     let rand_k: Vec<f64> = (0..5)
         .map(|_| {
             // Simple LCG for reproducibility (no external crate needed)
-            rng_state = rng_state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            rng_state = rng_state
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             let u = (rng_state >> 33) as f64 / (1u64 << 31) as f64;
             0.5 + u * 6.5 // k in [0.5, 7.0]
         })
@@ -423,10 +435,7 @@ fn main() -> anyhow::Result<()> {
     }
 
     // Detection/rejection summary
-    let max_excess = results
-        .iter()
-        .map(|r| r.5.abs())
-        .fold(0.0_f64, f64::max);
+    let max_excess = results.iter().map(|r| r.5.abs()).fold(0.0_f64, f64::max);
     let any_detection = results.iter().any(|r| {
         let z = fisher_z(r.3, n_gal);
         r.5 > 0.03 && z.abs() > 3.3 // p < 0.001 (Bonferroni-adjusted ~ p < 0.000167)
@@ -445,13 +454,7 @@ fn main() -> anyhow::Result<()> {
     // Write output CSV
     let mut wtr = csv::Writer::from_path(&cli.out_csv)?;
     wtr.write_record([
-        "pair",
-        "rho_re",
-        "rho_im",
-        "rho_avg",
-        "rho_null",
-        "excess",
-        "fisher_z",
+        "pair", "rho_re", "rho_im", "rho_avg", "rho_null", "excess", "fisher_z",
     ])?;
     for r in &results {
         let z = fisher_z(r.3, n_gal);
@@ -471,15 +474,7 @@ fn main() -> anyhow::Result<()> {
     let galaxy_csv = cli.out_csv.with_extension("galaxies.csv");
     let mut gwtr = csv::Writer::from_path(&galaxy_csv)?;
     gwtr.write_record([
-        "plateifu",
-        "cd_re",
-        "cd_im",
-        "g2_re",
-        "g2_im",
-        "j3o_re",
-        "j3o_im",
-        "sl2_re",
-        "sl2_im",
+        "plateifu", "cd_re", "cd_im", "g2_re", "g2_im", "j3o_re", "j3o_im", "sl2_re", "sl2_im",
     ])?;
     for (gi, galaxy) in galaxies.iter().enumerate() {
         let p = &projections[gi];

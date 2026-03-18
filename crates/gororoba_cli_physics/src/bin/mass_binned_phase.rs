@@ -25,8 +25,7 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -35,7 +34,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(about = "Mass-binned phase coherence test for ZD harmonic stacking")]
 struct Cli {
     /// Path to MaNGA rotation curves CSV.
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     /// Path to DAPall selection CSV.
@@ -271,8 +273,7 @@ fn main() -> anyhow::Result<()> {
         let max_mass = bin_masses[bin_masses.len() - 1];
 
         // Build owned Vec for stack_residuals
-        let owned: Vec<NormalizedResiduals> =
-            bin_galaxies.iter().map(|g| (*g).clone()).collect();
+        let owned: Vec<NormalizedResiduals> = bin_galaxies.iter().map(|g| (*g).clone()).collect();
 
         let config = StackingConfig {
             x_min: cli.x_min,
@@ -364,10 +365,7 @@ fn main() -> anyhow::Result<()> {
         .iter()
         .map(|m| m.1.abs())
         .fold(0.0_f64, f64::max);
-    let max_bin_snr = bin_results
-        .iter()
-        .map(|b| b.snr)
-        .fold(0.0_f64, f64::max);
+    let max_bin_snr = bin_results.iter().map(|b| b.snr).fold(0.0_f64, f64::max);
     let modes_above_07: usize = mode_results.iter().filter(|m| m.1.abs() > 0.7).count();
 
     eprintln!("\n--- Detection criteria ---");

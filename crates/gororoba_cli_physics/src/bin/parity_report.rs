@@ -21,8 +21,7 @@
 
 use anyhow::Result;
 use clap::Parser;
-use std::collections::BTreeMap;
-use std::io::Write as _;
+use std::{collections::BTreeMap, io::Write as _};
 
 #[derive(Parser, Debug)]
 #[command(name = "parity-report", version)]
@@ -103,7 +102,11 @@ fn main() -> Result<()> {
 
     // Collect all keys
     let mut all_keys: Vec<Key> = Vec::new();
-    for k in cuda_map.keys().chain(vulkan_map.keys()).chain(cpu_map.keys()) {
+    for k in cuda_map
+        .keys()
+        .chain(vulkan_map.keys())
+        .chain(cpu_map.keys())
+    {
         if !all_keys.contains(k) {
             all_keys.push(k.clone());
         }

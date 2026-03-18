@@ -201,7 +201,12 @@ fn analyze_profile(
     let pairs = sublevel_persistence_1d(&values);
     let n_persistent = pairs.iter().filter(|p| p.lifetime() > epsilon).count();
 
-    eprintln!("  {}: {} valid bins, {} persistence pairs", label, n_bins, pairs.len());
+    eprintln!(
+        "  {}: {} valid bins, {} persistence pairs",
+        label,
+        n_bins,
+        pairs.len()
+    );
     eprintln!("    max |delta| = {:.6}, epsilon = {:.6}", max_abs, epsilon);
     eprintln!("    N_persistent (lifetime > epsilon) = {}", n_persistent);
 
@@ -253,7 +258,9 @@ fn main() -> anyhow::Result<()> {
         eprintln!("  FALSIFICATION: N_persistent <= 3 -> REJECT ZD topological signature.");
     } else if n_main >= 5 {
         eprintln!("  Excess topological features detected!");
-        eprintln!("  Requires further investigation: possible ZD structure or unmodeled systematics.");
+        eprintln!(
+            "  Requires further investigation: possible ZD structure or unmodeled systematics."
+        );
     } else {
         eprintln!("  Borderline (4 features): inconclusive.");
     }
@@ -276,14 +283,7 @@ fn main() -> anyhow::Result<()> {
                 .unwrap_or("unknown")
                 .to_string();
             let (xg, dl, nc) = load_stacked_csv(&path)?;
-            let count = analyze_profile(
-                &name,
-                &xg,
-                &dl,
-                &nc,
-                cli.min_per_bin,
-                cli.epsilon_frac,
-            );
+            let count = analyze_profile(&name, &xg, &dl, &nc, cli.min_per_bin, cli.epsilon_frac);
             counts.push((name, count));
         }
 

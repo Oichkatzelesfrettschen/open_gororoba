@@ -580,6 +580,10 @@ name = "manga-maps-extractor"
 path = "src/bin/manga_maps_extractor.rs"
 
 [[bin]]
+name = "manga-azimuthal-zd-search"
+path = "src/bin/manga_azimuthal_zd_search.rs"
+
+[[bin]]
 name = "euclid-manga-crossmatch"
 path = "src/bin/euclid_manga_crossmatch.rs"
 

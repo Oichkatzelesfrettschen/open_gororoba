@@ -11,7 +11,10 @@
 use clap::Parser;
 use csv::ReaderBuilder;
 use data_core::{
-    catalogs::nanograv::{bestfit, extract_free_spectrum_from_kde_zip, write_free_spectrum_csv},
+    catalogs::nanograv::{
+        KdeDensityInterpretation, bestfit, extract_free_spectrum_from_kde_zip_with_interpretation,
+        write_free_spectrum_csv,
+    },
     parse_nanograv_free_spectrum, parse_pdg_mass_reference_csv,
 };
 use std::{
@@ -52,6 +55,7 @@ struct NanogravCsvStatus {
 
 #[derive(Debug, Clone)]
 struct ZipExtractStatus {
+    interpretation: &'static str,
     row_count: usize,
     matches_bestfit_count: usize,
     matches_csv_count: usize,
@@ -120,11 +124,13 @@ fn summarize_nanograv_csv(path: &Path) -> NanogravCsvStatus {
 fn summarize_nanograv_zip(
     path: &Path,
     csv_rows: &[data_core::catalogs::nanograv::FreeSpectrumPoint],
+    interpretation: KdeDensityInterpretation,
 ) -> ZipExtractStatus {
-    let rows = extract_free_spectrum_from_kde_zip(path).unwrap_or_else(|err| {
-        eprintln!("ERROR: failed to extract {}: {err}", path.display());
-        process::exit(1);
-    });
+    let rows = extract_free_spectrum_from_kde_zip_with_interpretation(path, interpretation)
+        .unwrap_or_else(|err| {
+            eprintln!("ERROR: failed to extract {}: {err}", path.display());
+            process::exit(1);
+        });
 
     let matches_bestfit_count = rows
         .iter()
@@ -148,6 +154,7 @@ fn summarize_nanograv_zip(
         .count();
 
     ZipExtractStatus {
+        interpretation: interpretation.as_str(),
         row_count: rows.len(),
         matches_bestfit_count,
         matches_csv_count,
@@ -167,6 +174,29 @@ fn csv_shape_ok(path: &Path) -> Result<usize, String> {
         rows += 1;
     }
     Ok(rows)
+}
+
+fn render_zip_extract_section(out: &mut String, section: &str, status: &ZipExtractStatus) {
+    let _ = writeln!(out, "[nanograv.{section}]");
+    let _ = writeln!(out, "interpretation = \"{}\"", status.interpretation);
+    let _ = writeln!(out, "row_count = {}", status.row_count);
+    let _ = writeln!(
+        out,
+        "matches_bestfit_count = {}",
+        status.matches_bestfit_count
+    );
+    let _ = writeln!(out, "matches_csv_count = {}", status.matches_csv_count);
+    let _ = writeln!(
+        out,
+        "fully_matches_bestfit = {}",
+        render_bool(status.fully_matches_bestfit)
+    );
+    let _ = writeln!(
+        out,
+        "fully_matches_csv = {}",
+        render_bool(status.fully_matches_csv)
+    );
+    let _ = writeln!(out);
 }
 
 fn render_bool(value: bool) -> &'static str {
@@ -235,7 +265,21 @@ fn main() {
     }
     let after = summarize_nanograv_csv(&nanograv_csv_path);
     let csv_rows = parse_nanograv_or_exit(&nanograv_csv_path);
-    let zip_status = summarize_nanograv_zip(&nanograv_zip_path, &csv_rows);
+    let zip_status_raw = summarize_nanograv_zip(
+        &nanograv_zip_path,
+        &csv_rows,
+        KdeDensityInterpretation::RawLinear,
+    );
+    let zip_status_natural_log = summarize_nanograv_zip(
+        &nanograv_zip_path,
+        &csv_rows,
+        KdeDensityInterpretation::NaturalLog,
+    );
+    let zip_status_log10 = summarize_nanograv_zip(
+        &nanograv_zip_path,
+        &csv_rows,
+        KdeDensityInterpretation::Log10,
+    );
 
     let extracted_table_rows = match csv_shape_ok(&nanograv_table_path) {
         Ok(rows) => rows.to_string(),
@@ -384,25 +428,9 @@ fn main() {
     );
     let _ = writeln!(out);
 
-    let _ = writeln!(out, "[nanograv.zip_extract]");
-    let _ = writeln!(out, "row_count = {}", zip_status.row_count);
-    let _ = writeln!(
-        out,
-        "matches_bestfit_count = {}",
-        zip_status.matches_bestfit_count
-    );
-    let _ = writeln!(out, "matches_csv_count = {}", zip_status.matches_csv_count);
-    let _ = writeln!(
-        out,
-        "fully_matches_bestfit = {}",
-        render_bool(zip_status.fully_matches_bestfit)
-    );
-    let _ = writeln!(
-        out,
-        "fully_matches_csv = {}",
-        render_bool(zip_status.fully_matches_csv)
-    );
-    let _ = writeln!(out);
+    render_zip_extract_section(&mut out, "zip_extract_raw_linear", &zip_status_raw);
+    render_zip_extract_section(&mut out, "zip_extract_natural_log", &zip_status_natural_log);
+    render_zip_extract_section(&mut out, "zip_extract_log10", &zip_status_log10);
 
     let _ = writeln!(out, "[pdg_2025.local_surfaces]");
     let _ = writeln!(

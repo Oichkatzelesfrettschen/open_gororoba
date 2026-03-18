@@ -69,10 +69,7 @@ fn load_valid_bins(
     Ok((x, delta, err))
 }
 
-fn trimmed_mean_complex(
-    values: &[(f64, f64)],
-    trim_frac: f64,
-) -> (f64, f64) {
+fn trimmed_mean_complex(values: &[(f64, f64)], trim_frac: f64) -> (f64, f64) {
     let n = values.len();
     let trim_count = (n as f64 * trim_frac) as usize;
 
@@ -119,7 +116,13 @@ fn main() -> anyhow::Result<()> {
 
     // Compute mean, trimmed means, and median.
     let trim_levels = [0.0_f64, 0.01, 0.05, 0.10, 0.20];
-    let trim_labels = ["mean (full)", "1%-trimmed", "5%-trimmed", "10%-trimmed", "20%-trimmed"];
+    let trim_labels = [
+        "mean (full)",
+        "1%-trimmed",
+        "5%-trimmed",
+        "10%-trimmed",
+        "20%-trimmed",
+    ];
 
     // Alpha_zd conversion: alpha_zd = sqrt(power) / af * exp(1)
     // where af = 0.5 (assessor fraction for D=16 sedenion).
@@ -144,13 +147,21 @@ fn main() -> anyhow::Result<()> {
         let amplitude = power.sqrt();
         let alpha_zd = amplitude / af * exp1;
         let n_used = n_gal - 2 * ((n_gal as f64 * trim_frac) as usize);
-        let bound_ratio = if full_alpha > 1e-30 { alpha_zd / full_alpha } else { 0.0 };
+        let bound_ratio = if full_alpha > 1e-30 {
+            alpha_zd / full_alpha
+        } else {
+            0.0
+        };
 
-        println!("{},{},{:.8e},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
-            trim_labels[idx], n_used, re, im, power, amplitude, alpha_zd, bound_ratio);
+        println!(
+            "{},{},{:.8e},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
+            trim_labels[idx], n_used, re, im, power, amplitude, alpha_zd, bound_ratio
+        );
 
-        eprintln!("  {}: alpha_zd = {:.6}, ratio vs full = {:.4}",
-            trim_labels[idx], alpha_zd, bound_ratio);
+        eprintln!(
+            "  {}: alpha_zd = {:.6}, ratio vs full = {:.4}",
+            trim_labels[idx], alpha_zd, bound_ratio
+        );
     }
 
     // Median.
@@ -163,16 +174,34 @@ fn main() -> anyhow::Result<()> {
     let med_im = sorted_im[mid];
     let med_power = med_re * med_re + med_im * med_im;
     let med_alpha = med_power.sqrt() / af * exp1;
-    let med_ratio = if full_alpha > 1e-30 { med_alpha / full_alpha } else { 0.0 };
+    let med_ratio = if full_alpha > 1e-30 {
+        med_alpha / full_alpha
+    } else {
+        0.0
+    };
 
-    println!("median,{},{:.8e},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
-        n_gal, med_re, med_im, med_power, med_power.sqrt(), med_alpha, med_ratio);
-    eprintln!("  median: alpha_zd = {:.6}, ratio vs full = {:.4}", med_alpha, med_ratio);
+    println!(
+        "median,{},{:.8e},{:.8e},{:.8e},{:.8e},{:.6},{:.4}",
+        n_gal,
+        med_re,
+        med_im,
+        med_power,
+        med_power.sqrt(),
+        med_alpha,
+        med_ratio
+    );
+    eprintln!(
+        "  median: alpha_zd = {:.6}, ratio vs full = {:.4}",
+        med_alpha, med_ratio
+    );
 
     eprintln!();
     eprintln!("  S1 Verdict:");
     if med_ratio < 0.33 {
-        eprintln!("  DIVERGENCE: median bound is {:.0}% of mean bound.", med_ratio * 100.0);
+        eprintln!(
+            "  DIVERGENCE: median bound is {:.0}% of mean bound.",
+            med_ratio * 100.0
+        );
         eprintln!("  The mean-based bound is UNRELIABLE (outlier-dominated).");
         eprintln!("  Paper MUST report both mean and median bounds.");
     } else {
@@ -194,16 +223,22 @@ fn main() -> anyhow::Result<()> {
         .collect();
 
     // Compute observed whitened DFT power at each mode.
-    let d_white: Vec<f64> = delta.iter().zip(err.iter())
+    let d_white: Vec<f64> = delta
+        .iter()
+        .zip(err.iter())
         .map(|(d, e)| if *e > 1e-30 { d / e } else { 0.0 })
         .collect();
 
     let mut observed_power: Vec<f64> = Vec::new();
     for &k in &wavenumbers {
-        let re: f64 = d_white.iter().zip(x.iter())
+        let re: f64 = d_white
+            .iter()
+            .zip(x.iter())
             .map(|(d, xj)| d * (k * xj).cos())
             .sum();
-        let im: f64 = d_white.iter().zip(x.iter())
+        let im: f64 = d_white
+            .iter()
+            .zip(x.iter())
             .map(|(d, xj)| d * (k * xj).sin())
             .sum();
         observed_power.push(re * re + im * im);
@@ -225,10 +260,14 @@ fn main() -> anyhow::Result<()> {
         let noise: Vec<f64> = (0..n_bins).map(|_| normal.sample(&mut rng)).collect();
 
         for (mode_idx, &k) in wavenumbers.iter().enumerate() {
-            let re: f64 = noise.iter().zip(x.iter())
+            let re: f64 = noise
+                .iter()
+                .zip(x.iter())
                 .map(|(n, xj)| n * (k * xj).cos())
                 .sum();
-            let im: f64 = noise.iter().zip(x.iter())
+            let im: f64 = noise
+                .iter()
+                .zip(x.iter())
                 .map(|(n, xj)| n * (k * xj).sin())
                 .sum();
             leakage_power[mode_idx] += re * re + im * im;
@@ -244,7 +283,9 @@ fn main() -> anyhow::Result<()> {
     eprintln!("  {} white-noise simulations on {} bins", cli.n_sim, n_bins);
     eprintln!();
 
-    println!("mode,k,observed_power,leakage_power,intrinsic_power,leakage_fraction,intrinsic_normalized");
+    println!(
+        "mode,k,observed_power,leakage_power,intrinsic_power,leakage_fraction,intrinsic_normalized"
+    );
 
     let mut total_leakage_frac = 0.0_f64;
     let mut intrinsic_powers: Vec<f64> = Vec::new();
@@ -260,25 +301,40 @@ fn main() -> anyhow::Result<()> {
         intrinsic_powers.push(intrinsic);
         total_leakage_frac += leak_frac;
 
-        println!("{},{:.6},{:.4e},{:.4e},{:.4e},{:.6},{:.6}",
-            i + 1, k, obs, leak, intrinsic, leak_frac, intrinsic_norm);
+        println!(
+            "{},{:.6},{:.4e},{:.4e},{:.4e},{:.6},{:.6}",
+            i + 1,
+            k,
+            obs,
+            leak,
+            intrinsic,
+            leak_frac,
+            intrinsic_norm
+        );
 
-        eprintln!("  Mode {}: observed={:.2e}, leakage={:.2e} ({:.1}%), intrinsic={:.2e}, norm={:.2}",
-            i + 1, obs, leak, leak_frac * 100.0, intrinsic, intrinsic_norm);
+        eprintln!(
+            "  Mode {}: observed={:.2e}, leakage={:.2e} ({:.1}%), intrinsic={:.2e}, norm={:.2}",
+            i + 1,
+            obs,
+            leak,
+            leak_frac * 100.0,
+            intrinsic,
+            intrinsic_norm
+        );
     }
 
     let mean_leakage_frac = total_leakage_frac / n_modes as f64;
 
     // Fit red-noise to intrinsic spectrum.
     let log_k: Vec<f64> = wavenumbers.iter().map(|k| k.ln()).collect();
-    let log_intr: Vec<f64> = intrinsic_powers.iter()
-        .map(|p| (p + 1e-30).ln())
-        .collect();
+    let log_intr: Vec<f64> = intrinsic_powers.iter().map(|p| (p + 1e-30).ln()).collect();
 
     let n = log_k.len() as f64;
     let mean_lk = log_k.iter().sum::<f64>() / n;
     let mean_li = log_intr.iter().sum::<f64>() / n;
-    let cov = log_k.iter().zip(log_intr.iter())
+    let cov = log_k
+        .iter()
+        .zip(log_intr.iter())
         .map(|(lk, li)| (lk - mean_lk) * (li - mean_li))
         .sum::<f64>();
     let var_lk: f64 = log_k.iter().map(|lk| (lk - mean_lk).powi(2)).sum();
@@ -288,22 +344,34 @@ fn main() -> anyhow::Result<()> {
     eprintln!("--- Spectral slopes ---");
     eprintln!("  Observed red-noise gamma: ~0.78 (from P1/C-1423)");
     eprintln!("  Mean leakage fraction: {:.1}%", mean_leakage_frac * 100.0);
-    eprintln!("  Intrinsic red-noise gamma (after leakage removal): {:.4}", gamma_intrinsic);
+    eprintln!(
+        "  Intrinsic red-noise gamma (after leakage removal): {:.4}",
+        gamma_intrinsic
+    );
 
     eprintln!();
     eprintln!("  S2 Verdict:");
     if mean_leakage_frac > 0.80 {
-        eprintln!("  Leakage accounts for >{:.0}% of observed power.", mean_leakage_frac * 100.0);
+        eprintln!(
+            "  Leakage accounts for >{:.0}% of observed power.",
+            mean_leakage_frac * 100.0
+        );
         eprintln!("  The red-noise spectrum is PREDOMINANTLY a leakage artifact.");
         eprintln!("  The 'baryonic floor' spectral shape is mostly window-induced.");
     } else if gamma_intrinsic > 0.3 {
-        eprintln!("  Intrinsic gamma = {:.4} > 0.3: genuine red-noise survives leakage removal.",
-            gamma_intrinsic);
+        eprintln!(
+            "  Intrinsic gamma = {:.4} > 0.3: genuine red-noise survives leakage removal.",
+            gamma_intrinsic
+        );
         eprintln!("  The baryonic floor has REAL spectral structure beyond leakage.");
-        eprintln!("  P1's characterization (k^{{-0.78}}) is partially intrinsic, partially leakage.");
+        eprintln!(
+            "  P1's characterization (k^{{-0.78}}) is partially intrinsic, partially leakage."
+        );
     } else {
-        eprintln!("  Intrinsic gamma = {:.4} <= 0.3: red-noise is largely explained by leakage.",
-            gamma_intrinsic);
+        eprintln!(
+            "  Intrinsic gamma = {:.4} <= 0.3: red-noise is largely explained by leakage.",
+            gamma_intrinsic
+        );
         eprintln!("  Residual spectral structure is weak.");
     }
 

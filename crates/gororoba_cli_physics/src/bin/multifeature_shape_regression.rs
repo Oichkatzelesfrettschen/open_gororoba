@@ -18,15 +18,13 @@
 use clap::Parser;
 use cosmology_core::{
     harmonic_stacking::{
-        CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig,
-        stack_residuals,
+        CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig, stack_residuals,
     },
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
 use nalgebra::{DMatrix, DVector};
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
@@ -34,7 +32,10 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 #[command(name = "multifeature-shape-regression")]
 #[command(about = "Multi-feature baryonic shape regression + red-noise spectral index")]
 struct Cli {
-    #[arg(long, default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv")]
+    #[arg(
+        long,
+        default_value = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+    )]
     rotcurves: PathBuf,
 
     #[arg(long, default_value = "data/external/manga/dapall_selection.csv")]
@@ -82,27 +83,47 @@ fn main() -> anyhow::Result<()> {
     for galaxy in &rotcurves {
         let meta = match dapall_map.get(&galaxy.plateifu) {
             Some(m) => m,
-            None => { skipped += 1; continue; }
+            None => {
+                skipped += 1;
+                continue;
+            }
         };
 
         let log_m200 = meta.estimated_log_m200();
-        if !log_m200.is_finite() { skipped += 1; continue; }
+        if !log_m200.is_finite() {
+            skipped += 1;
+            continue;
+        }
         let m200 = 10.0_f64.powf(log_m200);
         let nfw = nfw_params_from_mass(m200, meta.z);
         let r_s = nfw.r_s_kpc;
 
-        let points: Vec<NormalizedPoint> = galaxy.points.iter().filter_map(|pt| {
-            if pt.r_kpc <= 0.0 || r_s <= 0.0 { return None; }
-            let x = pt.r_kpc / r_s;
-            let m_enc = nfw_enclosed_mass_from_params(pt.r_kpc, &nfw);
-            let v_sq = G_KPC_KMS2 * m_enc / pt.r_kpc;
-            let v_nfw = v_sq.max(0.0).sqrt();
-            if v_nfw < 1.0 { return None; }
-            let delta_v = (pt.v_obs_km_s - v_nfw) / v_nfw;
-            let delta_v_err = pt.v_err_km_s / v_nfw;
-            if !delta_v.is_finite() || !delta_v_err.is_finite() { return None; }
-            Some(NormalizedPoint { x, delta_v, delta_v_err })
-        }).collect();
+        let points: Vec<NormalizedPoint> = galaxy
+            .points
+            .iter()
+            .filter_map(|pt| {
+                if pt.r_kpc <= 0.0 || r_s <= 0.0 {
+                    return None;
+                }
+                let x = pt.r_kpc / r_s;
+                let m_enc = nfw_enclosed_mass_from_params(pt.r_kpc, &nfw);
+                let v_sq = G_KPC_KMS2 * m_enc / pt.r_kpc;
+                let v_nfw = v_sq.max(0.0).sqrt();
+                if v_nfw < 1.0 {
+                    return None;
+                }
+                let delta_v = (pt.v_obs_km_s - v_nfw) / v_nfw;
+                let delta_v_err = pt.v_err_km_s / v_nfw;
+                if !delta_v.is_finite() || !delta_v_err.is_finite() {
+                    return None;
+                }
+                Some(NormalizedPoint {
+                    x,
+                    delta_v,
+                    delta_v_err,
+                })
+            })
+            .collect();
 
         if points.len() >= cli.min_points {
             galaxies.push(GalaxyRecord {
@@ -145,7 +166,10 @@ fn main() -> anyhow::Result<()> {
     let original_rms = baseline_result.rms_residual;
     let original_snr = baseline_result.detection_snr;
 
-    eprintln!("Original stacked RMS: {:.6}, SNR: {:.4}", original_rms, original_snr);
+    eprintln!(
+        "Original stacked RMS: {:.6}, SNR: {:.4}",
+        original_rms, original_snr
+    );
 
     // Step 2: Build SVD basis from the stacked profile
     // Use only populated bins (n_contributing >= 3)
@@ -156,7 +180,10 @@ fn main() -> anyhow::Result<()> {
     eprintln!("Valid stacking bins: {}", n_valid);
 
     // Build per-galaxy interpolated profiles on the valid grid
-    let x_grid: Vec<f64> = valid_indices.iter().map(|&j| baseline_result.x_grid[j]).collect();
+    let x_grid: Vec<f64> = valid_indices
+        .iter()
+        .map(|&j| baseline_result.x_grid[j])
+        .collect();
 
     // Interpolate each galaxy onto the common grid
     let mut galaxy_profiles: Vec<Vec<f64>> = Vec::with_capacity(n_gal);
@@ -183,8 +210,14 @@ fn main() -> anyhow::Result<()> {
 
             if !found {
                 // Nearest neighbor extrapolation
-                val = pts.iter()
-                    .min_by(|a, b| (a.x - x_target).abs().partial_cmp(&(b.x - x_target).abs()).unwrap())
+                val = pts
+                    .iter()
+                    .min_by(|a, b| {
+                        (a.x - x_target)
+                            .abs()
+                            .partial_cmp(&(b.x - x_target).abs())
+                            .unwrap()
+                    })
                     .map(|p| p.delta_v)
                     .unwrap_or(0.0);
             }
@@ -194,17 +227,18 @@ fn main() -> anyhow::Result<()> {
     }
 
     // Build data matrix (n_gal x n_valid) and compute SVD
-    eprintln!("Computing SVD of {} x {} galaxy profile matrix...", n_gal, n_valid);
+    eprintln!(
+        "Computing SVD of {} x {} galaxy profile matrix...",
+        n_gal, n_valid
+    );
     let data_matrix = DMatrix::from_fn(n_gal, n_valid, |i, j| galaxy_profiles[i][j]);
 
     // Compute mean profile and center
-    let mean_profile: Vec<f64> = (0..n_valid).map(|j| {
-        data_matrix.column(j).iter().sum::<f64>() / n_gal as f64
-    }).collect();
+    let mean_profile: Vec<f64> = (0..n_valid)
+        .map(|j| data_matrix.column(j).iter().sum::<f64>() / n_gal as f64)
+        .collect();
 
-    let centered = DMatrix::from_fn(n_gal, n_valid, |i, j| {
-        data_matrix[(i, j)] - mean_profile[j]
-    });
+    let centered = DMatrix::from_fn(n_gal, n_valid, |i, j| data_matrix[(i, j)] - mean_profile[j]);
 
     // SVD on the centered matrix (truncated to first 2 components)
     let svd = centered.clone().svd(true, true);
@@ -215,7 +249,10 @@ fn main() -> anyhow::Result<()> {
     let total_var: f64 = sigma.iter().map(|s| s * s).sum();
     let var_2modes = sigma[0] * sigma[0] + sigma[1] * sigma[1];
     eprintln!("SVD: sigma_1={:.4e}, sigma_2={:.4e}", sigma[0], sigma[1]);
-    eprintln!("2-mode variance explained: {:.1}%", var_2modes / total_var * 100.0);
+    eprintln!(
+        "2-mode variance explained: {:.1}%",
+        var_2modes / total_var * 100.0
+    );
 
     // Extract per-galaxy 2-component SVD coefficients
     // c_i = U[i, :2] * diag(sigma[:2])
@@ -228,14 +265,22 @@ fn main() -> anyhow::Result<()> {
     let mut feat_means = [0.0_f64; 4];
     let mut feat_stds = [0.0_f64; 4];
     for f in 0..4 {
-        let vals: Vec<f64> = galaxies.iter()
+        let vals: Vec<f64> = galaxies
+            .iter()
             .map(|g| g.features[f])
             .filter(|v| v.is_finite())
             .collect();
         let n = vals.len() as f64;
         feat_means[f] = vals.iter().sum::<f64>() / n;
-        feat_stds[f] = (vals.iter().map(|v| (v - feat_means[f]).powi(2)).sum::<f64>() / n).sqrt();
-        if feat_stds[f] < 1e-10 { feat_stds[f] = 1.0; }
+        feat_stds[f] = (vals
+            .iter()
+            .map(|v| (v - feat_means[f]).powi(2))
+            .sum::<f64>()
+            / n)
+            .sqrt();
+        if feat_stds[f] < 1e-10 {
+            feat_stds[f] = 1.0;
+        }
     }
 
     // Step 4: Multi-feature least-squares regression
@@ -249,7 +294,9 @@ fn main() -> anyhow::Result<()> {
 
     for g in &galaxies {
         let all_finite = g.features.iter().all(|f| f.is_finite());
-        if !all_finite { continue; }
+        if !all_finite {
+            continue;
+        }
 
         x_mat[(valid_count, 0)] = 1.0; // intercept
         for f in 0..4 {
@@ -273,8 +320,12 @@ fn main() -> anyhow::Result<()> {
     let xty1 = x_valid.transpose() * &y1_valid;
 
     let xtx_svd = xtx.clone().svd(true, true);
-    let beta0 = xtx_svd.solve(&xty0, 1e-12).unwrap_or_else(|_| DVector::zeros(n_features));
-    let beta1 = xtx_svd.solve(&xty1, 1e-12).unwrap_or_else(|_| DVector::zeros(n_features));
+    let beta0 = xtx_svd
+        .solve(&xty0, 1e-12)
+        .unwrap_or_else(|_| DVector::zeros(n_features));
+    let beta1 = xtx_svd
+        .solve(&xty1, 1e-12)
+        .unwrap_or_else(|_| DVector::zeros(n_features));
 
     // Compute R^2 for each SVD coefficient
     let y0_pred = &x_valid * &beta0;
@@ -331,17 +382,28 @@ fn main() -> anyhow::Result<()> {
         };
 
         // Subtract predicted shape from galaxy's rotation curve points
-        let corrected_points: Vec<NormalizedPoint> = g.residuals.points.iter().map(|pt| {
-            // Find predicted correction at this x value
-            let correction = interpolate_correction(
-                pt.x, &x_grid, &mean_profile, &v0, &v1, c0_pred, c1_pred,
-            );
-            NormalizedPoint {
-                x: pt.x,
-                delta_v: pt.delta_v - correction,
-                delta_v_err: pt.delta_v_err,
-            }
-        }).collect();
+        let corrected_points: Vec<NormalizedPoint> = g
+            .residuals
+            .points
+            .iter()
+            .map(|pt| {
+                // Find predicted correction at this x value
+                let correction = interpolate_correction(
+                    pt.x,
+                    &x_grid,
+                    &mean_profile,
+                    &v0,
+                    &v1,
+                    c0_pred,
+                    c1_pred,
+                );
+                NormalizedPoint {
+                    x: pt.x,
+                    delta_v: pt.delta_v - correction,
+                    delta_v_err: pt.delta_v_err,
+                }
+            })
+            .collect();
 
         corrected_galaxies.push(NormalizedResiduals {
             name: g.residuals.name.clone(),
@@ -359,20 +421,35 @@ fn main() -> anyhow::Result<()> {
     let rms_change = (corrected_rms - original_rms) / original_rms * 100.0;
 
     eprintln!("\n--- Corrected Stacking Results ---");
-    eprintln!("Original  RMS: {:.6}, SNR: {:.4}", original_rms, original_snr);
-    eprintln!("Corrected RMS: {:.6}, SNR: {:.4}", corrected_rms, corrected_snr);
+    eprintln!(
+        "Original  RMS: {:.6}, SNR: {:.4}",
+        original_rms, original_snr
+    );
+    eprintln!(
+        "Corrected RMS: {:.6}, SNR: {:.4}",
+        corrected_rms, corrected_snr
+    );
     eprintln!("RMS change: {:+.2}%", rms_change);
 
     // Hypothesis A verdict
     eprintln!("\n--- Hypothesis A Verdict ---");
     if r2_combined > 0.45 && corrected_rms < original_rms {
         eprintln!("DETECTION: Multi-feature shape model reduces RMS");
-        eprintln!("  R^2={:.4} > 0.45, corrected RMS {:.6} < original {:.6}", r2_combined, corrected_rms, original_rms);
+        eprintln!(
+            "  R^2={:.4} > 0.45, corrected RMS {:.6} < original {:.6}",
+            r2_combined, corrected_rms, original_rms
+        );
     } else if r2_combined < 0.35 || corrected_rms >= original_rms {
         eprintln!("FAILURE: Multi-feature shape model does not improve stacking");
-        eprintln!("  R^2={:.4}, corrected RMS {:.6} vs original {:.6}", r2_combined, corrected_rms, original_rms);
+        eprintln!(
+            "  R^2={:.4}, corrected RMS {:.6} vs original {:.6}",
+            r2_combined, corrected_rms, original_rms
+        );
     } else {
-        eprintln!("INCONCLUSIVE: R^2={:.4}, RMS change {:+.2}%", r2_combined, rms_change);
+        eprintln!(
+            "INCONCLUSIVE: R^2={:.4}, RMS change {:+.2}%",
+            r2_combined, rms_change
+        );
     }
 
     // =================================================================
@@ -424,12 +501,15 @@ fn main() -> anyhow::Result<()> {
 
     // Fit log(R) = gamma * log(k) + const via least-squares
     let log_k: Vec<f64> = wavenumbers.iter().map(|k| k.ln()).collect();
-    let log_r: Vec<f64> = mode_rayleigh_r.iter().map(|r| {
-        if *r > 0.0 { r.ln() } else { f64::NEG_INFINITY }
-    }).collect();
+    let log_r: Vec<f64> = mode_rayleigh_r
+        .iter()
+        .map(|r| if *r > 0.0 { r.ln() } else { f64::NEG_INFINITY })
+        .collect();
 
     // Filter valid points
-    let valid_pairs: Vec<(f64, f64)> = log_k.iter().zip(log_r.iter())
+    let valid_pairs: Vec<(f64, f64)> = log_k
+        .iter()
+        .zip(log_r.iter())
         .filter(|(_, lr)| lr.is_finite())
         .map(|(&lk, &lr)| (lk, lr))
         .collect();
@@ -438,7 +518,10 @@ fn main() -> anyhow::Result<()> {
         let n = valid_pairs.len() as f64;
         let mean_lk = valid_pairs.iter().map(|p| p.0).sum::<f64>() / n;
         let mean_lr = valid_pairs.iter().map(|p| p.1).sum::<f64>() / n;
-        let num: f64 = valid_pairs.iter().map(|p| (p.0 - mean_lk) * (p.1 - mean_lr)).sum();
+        let num: f64 = valid_pairs
+            .iter()
+            .map(|p| (p.0 - mean_lk) * (p.1 - mean_lr))
+            .sum();
         let den: f64 = valid_pairs.iter().map(|p| (p.0 - mean_lk).powi(2)).sum();
         if den.abs() > 1e-30 { num / den } else { 0.0 }
     } else {
@@ -450,7 +533,10 @@ fn main() -> anyhow::Result<()> {
     eprintln!("  gamma = {:.4}", gamma);
     eprintln!("  Implied PSD slope beta = -2*gamma = {:.4}", implied_beta);
     eprintln!("  DC14 measured beta = -2.205 (from H3)");
-    eprintln!("  Consistency: {:.1}%", (1.0 - (implied_beta - (-2.205)).abs() / 2.205) * 100.0);
+    eprintln!(
+        "  Consistency: {:.1}%",
+        (1.0 - (implied_beta - (-2.205)).abs() / 2.205) * 100.0
+    );
 
     // Check predicted/observed R ratio
     let const_fit = if !valid_pairs.is_empty() {
@@ -466,22 +552,38 @@ fn main() -> anyhow::Result<()> {
     eprintln!("\nPredicted vs observed Rayleigh R:");
     for (i, (&k, &r_obs)) in wavenumbers.iter().zip(mode_rayleigh_r.iter()).enumerate() {
         let r_pred = (const_fit + gamma * k.ln()).exp();
-        let ratio = if r_obs > 0.0 { r_pred / r_obs } else { f64::NAN };
+        let ratio = if r_obs > 0.0 {
+            r_pred / r_obs
+        } else {
+            f64::NAN
+        };
         let ok = ratio.is_finite() && ratio > 0.5 && ratio < 2.0;
-        if ok { n_good_ratio += 1; }
-        eprintln!("  mode {}: R_obs={:.6}, R_pred={:.6}, ratio={:.4} {}",
-            i + 1, r_obs, r_pred, ratio, if ok { "OK" } else { "MISS" });
+        if ok {
+            n_good_ratio += 1;
+        }
+        eprintln!(
+            "  mode {}: R_obs={:.6}, R_pred={:.6}, ratio={:.4} {}",
+            i + 1,
+            r_obs,
+            r_pred,
+            ratio,
+            if ok { "OK" } else { "MISS" }
+        );
     }
 
     eprintln!("\n--- Hypothesis C Verdict ---");
     if (0.5..=1.5).contains(&gamma) && n_good_ratio >= 5 {
-        eprintln!("DETECTION: Red-noise scaling R(k)~k^{:.2} confirmed ({}/7 modes match)",
-            gamma, n_good_ratio);
+        eprintln!(
+            "DETECTION: Red-noise scaling R(k)~k^{:.2} confirmed ({}/7 modes match)",
+            gamma, n_good_ratio
+        );
     } else if !(0.2..=2.0).contains(&gamma) {
         eprintln!("FAILURE: gamma={:.4} outside [0.2, 2.0]", gamma);
     } else {
-        eprintln!("INCONCLUSIVE: gamma={:.4}, {}/7 modes within [0.5, 2.0] ratio",
-            gamma, n_good_ratio);
+        eprintln!(
+            "INCONCLUSIVE: gamma={:.4}, {}/7 modes within [0.5, 2.0] ratio",
+            gamma, n_good_ratio
+        );
     }
 
     // Write output CSV
@@ -499,7 +601,11 @@ fn main() -> anyhow::Result<()> {
     wtr.write_record(["A", "corrected_snr", &format!("{:.6}", corrected_snr)])?;
     wtr.write_record(["A", "n_galaxies", &format!("{}", n_gal)])?;
     wtr.write_record(["A", "n_valid_features", &format!("{}", valid_count)])?;
-    wtr.write_record(["A", "svd_var_2modes_pct", &format!("{:.2}", var_2modes / total_var * 100.0)])?;
+    wtr.write_record([
+        "A",
+        "svd_var_2modes_pct",
+        &format!("{:.2}", var_2modes / total_var * 100.0),
+    ])?;
 
     // Feature importance (absolute beta coefficients)
     for (i, name) in feat_names.iter().enumerate() {
@@ -512,9 +618,17 @@ fn main() -> anyhow::Result<()> {
     wtr.write_record(["C", "implied_beta", &format!("{:.6}", implied_beta)])?;
     wtr.write_record(["C", "n_modes_within_ratio", &format!("{}", n_good_ratio)])?;
     for (i, (&r, &k)) in mode_rayleigh_r.iter().zip(wavenumbers.iter()).enumerate() {
-        wtr.write_record(["C", &format!("rayleigh_r_mode{}", i + 1), &format!("{:.6}", r)])?;
+        wtr.write_record([
+            "C",
+            &format!("rayleigh_r_mode{}", i + 1),
+            &format!("{:.6}", r),
+        ])?;
         let r_pred = (const_fit + gamma * k.ln()).exp();
-        wtr.write_record(["C", &format!("rayleigh_r_pred_mode{}", i + 1), &format!("{:.6}", r_pred)])?;
+        wtr.write_record([
+            "C",
+            &format!("rayleigh_r_pred_mode{}", i + 1),
+            &format!("{:.6}", r_pred),
+        ])?;
     }
 
     wtr.flush()?;
@@ -527,7 +641,9 @@ fn r_squared(y_true: &DVector<f64>, y_pred: &DVector<f64>) -> f64 {
     let mean = y_true.mean();
     let ss_tot: f64 = y_true.iter().map(|yi| (yi - mean).powi(2)).sum();
     let ss_res: f64 = (y_true - y_pred).iter().map(|r| r.powi(2)).sum();
-    if ss_tot < 1e-30 { return 0.0; }
+    if ss_tot < 1e-30 {
+        return 0.0;
+    }
     1.0 - ss_res / ss_tot
 }
 
@@ -541,7 +657,9 @@ fn interpolate_correction(
     c1: f64,
 ) -> f64 {
     // Find bracketing grid indices
-    if x_grid.is_empty() { return 0.0; }
+    if x_grid.is_empty() {
+        return 0.0;
+    }
     if x <= x_grid[0] {
         return mean_profile[0] + c0 * v0[0] + c1 * v1[0];
     }

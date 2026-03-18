@@ -382,6 +382,14 @@ path = "src/bin/lotss_analysis.rs"
 name = "euclid-fetch"
 path = "src/bin/euclid_fetch.rs"
 
+[[bin]]
+name = "cosmology-map-audit"
+path = "src/bin/cosmology_map_audit.rs"
+
+[[bin]]
+name = "cosmology-dimension-ladder"
+path = "src/bin/cosmology_dimension_ladder.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }
@@ -392,6 +400,7 @@ provenance_ops = { path = "../provenance_ops" }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
 data_core = { path = "../data_core", features = ["fits"] }
+cosmology_core = { path = "../cosmology_core", features = ["euclid-catalog"] }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
 quantum_core = { path = "../quantum_core" }
@@ -433,6 +442,7 @@ statrs = { workspace = true }
 tempfile = { workspace = true }
 nalgebra = { workspace = true }
 plotters = { workspace = true }
+petgraph = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export"]

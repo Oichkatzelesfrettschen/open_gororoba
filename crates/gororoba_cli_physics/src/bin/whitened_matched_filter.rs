@@ -37,19 +37,25 @@ struct Cli {
     min_per_bin: usize,
 }
 
-fn load_stacked_csv(
-    path: &std::path::Path,
-) -> anyhow::Result<StackedBins> {
+fn load_stacked_csv(path: &std::path::Path) -> anyhow::Result<StackedBins> {
     let mut rdr = csv::Reader::from_path(path)?;
     let headers = rdr.headers()?.clone();
 
-    let x_idx = headers.iter().position(|h| h == "x")
+    let x_idx = headers
+        .iter()
+        .position(|h| h == "x")
         .ok_or_else(|| anyhow::anyhow!("No 'x' column"))?;
-    let delta_idx = headers.iter().position(|h| h == "delta_stack")
+    let delta_idx = headers
+        .iter()
+        .position(|h| h == "delta_stack")
         .ok_or_else(|| anyhow::anyhow!("No 'delta_stack' column"))?;
-    let err_idx = headers.iter().position(|h| h == "delta_stack_err")
+    let err_idx = headers
+        .iter()
+        .position(|h| h == "delta_stack_err")
         .ok_or_else(|| anyhow::anyhow!("No 'delta_stack_err' column"))?;
-    let n_idx = headers.iter().position(|h| h == "n_contributing")
+    let n_idx = headers
+        .iter()
+        .position(|h| h == "n_contributing")
         .ok_or_else(|| anyhow::anyhow!("No 'n_contributing' column"))?;
 
     let mut x = Vec::new();
@@ -60,8 +66,18 @@ fn load_stacked_csv(
     for result in rdr.records() {
         let rec = result?;
         x.push(rec.get(x_idx).unwrap_or("0").parse::<f64>().unwrap_or(0.0));
-        delta.push(rec.get(delta_idx).unwrap_or("0").parse::<f64>().unwrap_or(0.0));
-        err.push(rec.get(err_idx).unwrap_or("0").parse::<f64>().unwrap_or(0.0));
+        delta.push(
+            rec.get(delta_idx)
+                .unwrap_or("0")
+                .parse::<f64>()
+                .unwrap_or(0.0),
+        );
+        err.push(
+            rec.get(err_idx)
+                .unwrap_or("0")
+                .parse::<f64>()
+                .unwrap_or(0.0),
+        );
         n_contrib.push(rec.get(n_idx).unwrap_or("0").parse::<usize>().unwrap_or(0));
     }
 
@@ -190,16 +206,22 @@ fn main() -> anyhow::Result<()> {
     // Step 1: Show the noise variation.
     let min_err = valid.iter().map(|(_, _, e, _)| *e).fold(f64::MAX, f64::min);
     let max_err = valid.iter().map(|(_, _, e, _)| *e).fold(0.0_f64, f64::max);
-    eprintln!("Per-bin error range: {:.6e} to {:.6e} (ratio {:.1}x)",
-        min_err, max_err, max_err / min_err);
+    eprintln!(
+        "Per-bin error range: {:.6e} to {:.6e} (ratio {:.1}x)",
+        min_err,
+        max_err,
+        max_err / min_err
+    );
 
     // Step 2: Pre-whiten the data.
     let d_white: Vec<f64> = valid.iter().map(|(_, d, e, _)| d / e).collect();
     let x_valid: Vec<f64> = valid.iter().map(|(x, _, _, _)| *x).collect();
 
-    eprintln!("Whitened residual range: {:.2} to {:.2}",
+    eprintln!(
+        "Whitened residual range: {:.2} to {:.2}",
         d_white.iter().copied().fold(f64::MAX, f64::min),
-        d_white.iter().copied().fold(f64::MIN, f64::max));
+        d_white.iter().copied().fold(f64::MIN, f64::max)
+    );
 
     // Step 3: Compute whitened DFT at CD-ZD wavenumbers.
     let n_modes = 7;
@@ -212,14 +234,30 @@ fn main() -> anyhow::Result<()> {
 
     // Naive DFT for comparison.
     for (mode_idx, &k) in wavenumbers.iter().enumerate() {
-        let re: f64 = valid.iter().map(|(x, d, _, _)| d * (k * x).cos()).sum::<f64>()
+        let re: f64 = valid
+            .iter()
+            .map(|(x, d, _, _)| d * (k * x).cos())
+            .sum::<f64>()
             / n_bins as f64;
-        let im: f64 = valid.iter().map(|(x, d, _, _)| d * (k * x).sin()).sum::<f64>()
+        let im: f64 = valid
+            .iter()
+            .map(|(x, d, _, _)| d * (k * x).sin())
+            .sum::<f64>()
             / n_bins as f64;
         let power = re * re + im * im;
         let rms_sq = valid.iter().map(|(_, d, _, _)| d * d).sum::<f64>() / n_bins as f64;
-        let snr = if rms_sq > 0.0 { power.sqrt() / rms_sq.sqrt() } else { 0.0 };
-        eprintln!("  Mode {}: k={:.4}, power={:.6e}, SNR={:.4}", mode_idx + 1, k, power, snr);
+        let snr = if rms_sq > 0.0 {
+            power.sqrt() / rms_sq.sqrt()
+        } else {
+            0.0
+        };
+        eprintln!(
+            "  Mode {}: k={:.4}, power={:.6e}, SNR={:.4}",
+            mode_idx + 1,
+            k,
+            power,
+            snr
+        );
     }
 
     // Step 4: Whitened DFT.
@@ -233,10 +271,14 @@ fn main() -> anyhow::Result<()> {
 
     for (mode_idx, &k) in wavenumbers.iter().enumerate() {
         // Whitened DFT coefficients.
-        let re_w: f64 = d_white.iter().zip(x_valid.iter())
+        let re_w: f64 = d_white
+            .iter()
+            .zip(x_valid.iter())
             .map(|(d, x)| d * (k * x).cos())
             .sum();
-        let im_w: f64 = d_white.iter().zip(x_valid.iter())
+        let im_w: f64 = d_white
+            .iter()
+            .zip(x_valid.iter())
             .map(|(d, x)| d * (k * x).sin())
             .sum();
 
@@ -248,16 +290,39 @@ fn main() -> anyhow::Result<()> {
         let var_im: f64 = x_valid.iter().map(|x| (k * x).sin().powi(2)).sum();
 
         // Normalized chi^2 contribution from this mode.
-        let chi2_mode = if var_re > 0.0 { re_w * re_w / var_re } else { 0.0 }
-            + if var_im > 0.0 { im_w * im_w / var_im } else { 0.0 };
+        let chi2_mode = if var_re > 0.0 {
+            re_w * re_w / var_re
+        } else {
+            0.0
+        } + if var_im > 0.0 {
+            im_w * im_w / var_im
+        } else {
+            0.0
+        };
         let snr_mode = chi2_mode.sqrt();
 
         total_chi2 += chi2_mode;
 
-        println!("{},{:.6},{:.6e},{:.6e},{:.4},{:.4},{:.6},{:.6}",
-            mode_idx + 1, k, re_w, im_w, var_re, var_im, chi2_mode, snr_mode);
-        eprintln!("  Mode {}: k={:.4}, chi2={:.4}, SNR={:.4} (var_re={:.2}, var_im={:.2})",
-            mode_idx + 1, k, chi2_mode, snr_mode, var_re, var_im);
+        println!(
+            "{},{:.6},{:.6e},{:.6e},{:.4},{:.4},{:.6},{:.6}",
+            mode_idx + 1,
+            k,
+            re_w,
+            im_w,
+            var_re,
+            var_im,
+            chi2_mode,
+            snr_mode
+        );
+        eprintln!(
+            "  Mode {}: k={:.4}, chi2={:.4}, SNR={:.4} (var_re={:.2}, var_im={:.2})",
+            mode_idx + 1,
+            k,
+            chi2_mode,
+            snr_mode,
+            var_re,
+            var_im
+        );
 
         mode_results.push((mode_idx + 1, chi2_mode, snr_mode));
     }
@@ -270,7 +335,11 @@ fn main() -> anyhow::Result<()> {
     eprintln!("--- Chi-squared test (all modes combined) ---");
     eprintln!("  Total chi^2 = {:.4} (df = {})", total_chi2, df as usize);
     eprintln!("  p-value = {:.6}", p_value);
-    eprintln!("  Expected chi^2 under H0 = {:.1} +/- {:.1}", df, (2.0 * df).sqrt());
+    eprintln!(
+        "  Expected chi^2 under H0 = {:.1} +/- {:.1}",
+        df,
+        (2.0 * df).sqrt()
+    );
 
     // Step 6: Red-noise correction.
     // Fit log(power) = log(A) - gamma * log(k) to the whitened power spectrum.
@@ -285,14 +354,24 @@ fn main() -> anyhow::Result<()> {
     let n = log_k.len() as f64;
     let mean_lk = log_k.iter().sum::<f64>() / n;
     let mean_lp = log_p.iter().sum::<f64>() / n;
-    let cov_lk_lp: f64 = log_k.iter().zip(log_p.iter())
+    let cov_lk_lp: f64 = log_k
+        .iter()
+        .zip(log_p.iter())
         .map(|(lk, lp)| (lk - mean_lk) * (lp - mean_lp))
         .sum::<f64>();
     let var_lk: f64 = log_k.iter().map(|lk| (lk - mean_lk).powi(2)).sum();
-    let gamma = if var_lk > 1e-30 { -cov_lk_lp / var_lk } else { 0.0 };
+    let gamma = if var_lk > 1e-30 {
+        -cov_lk_lp / var_lk
+    } else {
+        0.0
+    };
     let log_a = mean_lp + gamma * mean_lk;
 
-    eprintln!("  Red-noise fit: P(k) ~ {:.4e} * k^{{-{:.4}}}", log_a.exp(), gamma);
+    eprintln!(
+        "  Red-noise fit: P(k) ~ {:.4e} * k^{{-{:.4}}}",
+        log_a.exp(),
+        gamma
+    );
 
     // Corrected chi^2: divide each mode's chi^2 by the expected red-noise level.
     let mut corrected_chi2 = 0.0_f64;
@@ -300,27 +379,44 @@ fn main() -> anyhow::Result<()> {
         let expected = (log_a - gamma * k.ln()).exp();
         let corrected = whitened_power[mode_idx] / expected;
         corrected_chi2 += corrected;
-        eprintln!("  Mode {}: raw_chi2={:.4}, expected={:.4}, corrected={:.4}",
-            mode_idx + 1, whitened_power[mode_idx], expected, corrected);
+        eprintln!(
+            "  Mode {}: raw_chi2={:.4}, expected={:.4}, corrected={:.4}",
+            mode_idx + 1,
+            whitened_power[mode_idx],
+            expected,
+            corrected
+        );
     }
 
     // Under H0 with red-noise correction, each corrected mode should be ~1,
     // so the sum should be ~n_modes (not 2*n_modes, because we're dividing
     // a chi^2(2) by its expected value, giving ~exp(1) which sums to ~Gamma(n,1)).
     let p_corrected = chi2_survival(corrected_chi2, n_modes as f64);
-    eprintln!("  Corrected total = {:.4} (expected ~{:.1})", corrected_chi2, n_modes);
+    eprintln!(
+        "  Corrected total = {:.4} (expected ~{:.1})",
+        corrected_chi2, n_modes
+    );
     eprintln!("  p-value (corrected) = {:.6}", p_corrected);
 
     // Step 7: Compare naive vs whitened SNR.
     let naive_snr = {
         let rms = valid.iter().map(|(_, d, _, _)| d * d).sum::<f64>() / n_bins as f64;
-        let max_p = wavenumbers.iter().map(|&k| {
-            let re: f64 = valid.iter().map(|(x, d, _, _)| d * (k * x).cos()).sum::<f64>()
-                / n_bins as f64;
-            let im: f64 = valid.iter().map(|(x, d, _, _)| d * (k * x).sin()).sum::<f64>()
-                / n_bins as f64;
-            re * re + im * im
-        }).fold(0.0_f64, f64::max);
+        let max_p = wavenumbers
+            .iter()
+            .map(|&k| {
+                let re: f64 = valid
+                    .iter()
+                    .map(|(x, d, _, _)| d * (k * x).cos())
+                    .sum::<f64>()
+                    / n_bins as f64;
+                let im: f64 = valid
+                    .iter()
+                    .map(|(x, d, _, _)| d * (k * x).sin())
+                    .sum::<f64>()
+                    / n_bins as f64;
+                re * re + im * im
+            })
+            .fold(0.0_f64, f64::max);
         max_p.sqrt() / rms.sqrt()
     };
 
@@ -329,8 +425,11 @@ fn main() -> anyhow::Result<()> {
     eprintln!();
     eprintln!("=== Verdict ===");
     eprintln!("  Naive SNR (peak/RMS):    {:.4}", naive_snr);
-    eprintln!("  Whitened MF-SNR:         {:.4} (chi^2/df = {:.4})",
-        whitened_snr, total_chi2 / df);
+    eprintln!(
+        "  Whitened MF-SNR:         {:.4} (chi^2/df = {:.4})",
+        whitened_snr,
+        total_chi2 / df
+    );
     eprintln!("  Chi^2 p-value:           {:.6}", p_value);
     eprintln!("  Red-noise corrected p:   {:.6}", p_corrected);
 
@@ -339,14 +438,20 @@ fn main() -> anyhow::Result<()> {
         eprintln!("  CONFIRMED: whitened matched filter agrees with naive null.");
     } else if p_value < 0.01 {
         eprintln!("  p < 0.01: significant harmonic content detected!");
-        eprintln!("  Check if this survives red-noise correction (p_corrected = {:.6}).", p_corrected);
+        eprintln!(
+            "  Check if this survives red-noise correction (p_corrected = {:.6}).",
+            p_corrected
+        );
     } else {
         eprintln!("  0.01 < p < 0.05: marginal detection, requires further investigation.");
     }
 
     // Sensitivity improvement estimate.
     let sensitivity_ratio = whitened_snr / naive_snr;
-    eprintln!("  Sensitivity ratio (whitened/naive): {:.2}x", sensitivity_ratio);
+    eprintln!(
+        "  Sensitivity ratio (whitened/naive): {:.2}x",
+        sensitivity_ratio
+    );
 
     Ok(())
 }

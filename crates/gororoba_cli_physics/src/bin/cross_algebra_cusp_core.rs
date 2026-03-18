@@ -17,8 +17,7 @@
 //! Cross-domain analogy: CMB lensing convergence -- the cross-correlation between
 //! different frequency channels is the lensing signal, not noise.
 
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 use clap::Parser;
 use cosmology_core::harmonic_stacking::{
@@ -199,10 +198,7 @@ fn main() -> anyhow::Result<()> {
     let dc14_data = parse_dc14_csv(&cli.dc14_csv)?;
 
     // Filter to populated bins
-    let valid: Vec<&Dc14Bin> = dc14_data
-        .iter()
-        .filter(|b| b.n_contributing >= 3)
-        .collect();
+    let valid: Vec<&Dc14Bin> = dc14_data.iter().filter(|b| b.n_contributing >= 3).collect();
     eprintln!("Valid DC14 bins: {}", valid.len());
 
     let x_values: Vec<f64> = valid.iter().map(|b| b.x).collect();
@@ -219,9 +215,7 @@ fn main() -> anyhow::Result<()> {
         .collect();
 
     let g2_k = g2_angular_wavenumbers();
-    let g2_w: Vec<f64> = (1..=g2_k.len())
-        .map(|n| 1.0 / (n as f64).sqrt())
-        .collect();
+    let g2_w: Vec<f64> = (1..=g2_k.len()).map(|n| 1.0 / (n as f64).sqrt()).collect();
 
     let j3o_k = albert_peirce_wavenumbers();
     let j3o_w: Vec<f64> = vec![1.0; j3o_k.len()];
@@ -264,12 +258,7 @@ fn main() -> anyhow::Result<()> {
 
         // NFW-colored prediction
         let rho_nfw = predict_colored_correlation(
-            &x_values,
-            &delta_nfw,
-            all_k[a],
-            all_w[a],
-            all_k[b],
-            all_w[b],
+            &x_values, &delta_nfw, all_k[a], all_w[a], all_k[b], all_w[b],
         );
 
         // DC14-colored prediction
@@ -329,7 +318,10 @@ fn main() -> anyhow::Result<()> {
         "DC14-colored model: chi^2/dof = {:.2} ({:.1} / {})",
         chi2_dof_dc14, chi2_dc14, dof
     );
-    eprintln!("sigma_rho = {:.6} (Fisher z uncertainty, N={})", sigma_rho, n_gal);
+    eprintln!(
+        "sigma_rho = {:.6} (Fisher z uncertainty, N={})",
+        sigma_rho, n_gal
+    );
 
     // Spectral slope analysis: fit P(k) ~ k^{-beta}
     eprintln!("\n--- Spectral slope analysis ---");
@@ -354,20 +346,33 @@ fn main() -> anyhow::Result<()> {
     eprintln!("\n--- H3 Verdict ---");
     if chi2_dof_dc14 < 2.0 {
         eprintln!("DETECTION: DC14 spectral shape explains the cross-algebra excess");
-        eprintln!("  The excess IS a cusp-core measurement (chi^2/dof={:.2})", chi2_dof_dc14);
+        eprintln!(
+            "  The excess IS a cusp-core measurement (chi^2/dof={:.2})",
+            chi2_dof_dc14
+        );
     } else if chi2_dof_dc14 > 5.0 {
         eprintln!("FAILURE: DC14 spectral shape does NOT explain the excess");
-        eprintln!("  Implies additional non-baryonic residual structure (chi^2/dof={:.2})", chi2_dof_dc14);
+        eprintln!(
+            "  Implies additional non-baryonic residual structure (chi^2/dof={:.2})",
+            chi2_dof_dc14
+        );
     } else {
-        eprintln!("INCONCLUSIVE: chi^2/dof={:.2} (between 2.0 and 5.0)", chi2_dof_dc14);
+        eprintln!(
+            "INCONCLUSIVE: chi^2/dof={:.2} (between 2.0 and 5.0)",
+            chi2_dof_dc14
+        );
     }
 
     if chi2_dof_nfw < chi2_dof_dc14 {
-        eprintln!("NOTE: NFW-colored model fits BETTER than DC14 (chi^2/dof={:.2} vs {:.2})",
-            chi2_dof_nfw, chi2_dof_dc14);
+        eprintln!(
+            "NOTE: NFW-colored model fits BETTER than DC14 (chi^2/dof={:.2} vs {:.2})",
+            chi2_dof_nfw, chi2_dof_dc14
+        );
     } else {
-        eprintln!("NOTE: DC14-colored model fits better than NFW (chi^2/dof={:.2} vs {:.2})",
-            chi2_dof_dc14, chi2_dof_nfw);
+        eprintln!(
+            "NOTE: DC14-colored model fits better than NFW (chi^2/dof={:.2} vs {:.2})",
+            chi2_dof_dc14, chi2_dof_nfw
+        );
     }
 
     // Write output CSV
