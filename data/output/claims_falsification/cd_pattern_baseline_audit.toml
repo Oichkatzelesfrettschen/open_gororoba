@@ -1,0 +1,101 @@
+[metadata]
+experiment = "E-207"
+title = "Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7) orbit refutations"
+claims = ["C-068", "C-070", "C-092"]
+deterministic = true
+
+[c068.partner_spectrum]
+pdg_source_path = "data/external/pdg_2025/mass_subset.csv"
+unique_eigenvalues = [-4.000000000000, -2.000000000000, -0.000000000000, 2.000000000000, 4.000000000000]
+degeneracies = [7, 14, 42, 14, 7]
+unique_eigenvalue_count = 5
+positive_unique_eigenvalue_count = 2
+zero_eigenvalue_degeneracy = 42
+pdg_mass_count = 11
+subset_changed_between_bases = true
+
+[c068.best_log_match]
+subset = ["electron", "muon", "d_quark", "b_quark", "W_boson"]
+transformed_values = [-3.291579992252, -2.327902142064, -0.976096070886, 0.621487864581, 1.905089645355]
+observed_distance = 0.064558569740
+p_value = 0.010742187500
+null_mean = 0.201328620063
+null_std = 0.062000420448
+
+[c068.best_linear_match]
+subset = ["muon", "tau", "d_quark", "s_quark", "c_quark"]
+transformed_values = [0.004700000000, 0.093500000000, 0.105658375500, 1.273000000000, 1.776930000000]
+observed_distance = 0.215652031621
+p_value = 0.430664062500
+null_mean = 0.219064880964
+null_std = 0.077548444969
+
+[c070.shape_match]
+nanograv_row_count = 30
+nanograv_matches_embedded_bestfit = true
+quantile_curve_count = 30
+associator_quantiles = [0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 0.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000, 2.000000000000]
+nanograv_medians = [-3.824356000000, -8.314518000000, -5.686763000000, -4.324256000000, -4.191523000000, -4.139625000000, -4.119372000000, -4.455705000000, -4.284785000000, -4.197701000000, -4.256292000000, -4.297346000000, -4.366242000000, -4.330105000000, -4.253942000000, -3.355449000000, -4.019221000000, -4.218475000000, -4.283774000000, -4.354106000000, -4.358596000000, -4.326085000000, -4.281646000000, -4.320090000000, -4.288476000000, -4.339775000000, -4.454512000000, -4.357294000000, -4.424931000000, -4.274741000000]
+observed_distance = 0.905444550177
+null_p_value = 1.000000000000
+null_mean = 0.905444550177
+null_std = 0.000000000000
+
+[c070.best_simple_template]
+name = "linear_ramp"
+frechet_distance = 0.905444550177
+
+[[c070.template_distances]]
+name = "linear_ramp"
+frechet_distance = 0.905444550177
+
+[[c070.template_distances]]
+name = "concave_sqrt"
+frechet_distance = 0.905444550177
+
+[[c070.template_distances]]
+name = "convex_square"
+frechet_distance = 0.905444550177
+
+[[c070.template_distances]]
+name = "logistic_s_curve"
+frechet_distance = 0.905444550177
+
+[c092.orbit_structure]
+partner_graph_vertices = 84
+partner_graph_directed_edges = 336
+partner_graph_is_symmetric = true
+partner_graph_orbit_count = 7
+partner_graph_orbit_sizes = [12, 12, 12, 12, 12, 12, 12]
+nonzero_scale_breaks_majority = true
+
+[[c092.drift]]
+angle_scale = 0.000000
+mean_product_norm = 0.000000000000
+max_product_norm = 0.000000000000
+fraction_broken = 0.000000000000
+
+[[c092.drift]]
+angle_scale = 0.100000
+mean_product_norm = 0.187591502310
+max_product_norm = 0.271733502408
+fraction_broken = 1.000000000000
+
+[[c092.drift]]
+angle_scale = 0.250000
+mean_product_norm = 0.552705214737
+max_product_norm = 0.792571735319
+fraction_broken = 1.000000000000
+
+[[c092.drift]]
+angle_scale = 0.500000
+mean_product_norm = 1.517290127385
+max_product_norm = 2.172620565899
+fraction_broken = 1.000000000000
+
+[[c092.drift]]
+angle_scale = 1.000000
+mean_product_norm = 2.034602676671
+max_product_norm = 2.575670019992
+fraction_broken = 1.000000000000
+

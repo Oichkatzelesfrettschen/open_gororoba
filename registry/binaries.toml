@@ -163,6 +163,12 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "cd-pattern-baseline-audit"
+crate = "gororoba_cli_data"
+description = "Deterministic audit for refuted Cayley-Dickson spectrum, shape-match, and SO(7) orbit claims"
+experiment = "E-207"
+
+[[binary]]
 name = "cd-tower-report"
 crate = "gororoba_cli"
 description = "Comprehensive CD tower analysis: property retention, psi/eta convergence, ZD geometry, face sign census, imbalance indexs, split-CD, scaling laws"
@@ -740,6 +746,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "heliosphere-sparse-policy-mainline"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "heliosphere-sparse-preservation"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
@@ -1225,6 +1236,11 @@ experiment = "E-024"
 name = "repo-utilities"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "repo-visuals"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "rho-ghost-fft"

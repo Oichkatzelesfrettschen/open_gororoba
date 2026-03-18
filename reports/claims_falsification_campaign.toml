@@ -1,4 +1,4 @@
-generated_at_utc = "2026-03-18T21:02:05.788509795+00:00"
+generated_at_utc = "2026-03-18T21:21:57.598234954+00:00"
 source_claims_toml = "/home/eirikr/Github/open_gororoba/registry/claims.toml"
 source_experiments_toml = "/home/eirikr/Github/open_gororoba/registry/experiments.toml"
 source_claims_tasks_toml = "/home/eirikr/Github/open_gororoba/registry/claims_tasks.toml"
@@ -1358,12 +1358,12 @@ particle_numerology = 9
 signal_transport = 18
 
 [wave_counts]
-wave_1_registered_experiment_hardening = 45
-wave_2_new_rust_falsifier = 20
+wave_1_registered_experiment_hardening = 48
+wave_2_new_rust_falsifier = 17
 
 [coverage]
-with_registered_experiments = 45
-without_registered_experiments = 20
+with_registered_experiments = 48
+without_registered_experiments = 17
 with_gpu_experiments = 7
 with_tasks = 65
 with_open_tasks = 42
@@ -1382,9 +1382,6 @@ claims_needing_new_experiment = [
     "C-041",
     "C-046",
     "C-047",
-    "C-068",
-    "C-070",
-    "C-092",
     "C-426",
     "C-430",
     "C-442",
@@ -1797,24 +1794,24 @@ acceptance_bar = [
 claim_id = "C-068"
 status = "Refuted"
 family = "particle_numerology"
-wave = "wave_2_new_rust_falsifier"
+wave = "wave_1_registered_experiment_hardening"
 last_verified = "2026-02-03"
 statement = "Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses."
 where_stated = "`src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`"
-experiment_ids = []
-experiment_binaries = []
+experiment_ids = ["E-207"]
+experiment_binaries = ["cd-pattern-baseline-audit"]
 registered_gpu_experiment = false
 task_ids = ["CTASK-0034"]
 open_task_ids = []
 ticket_ids = ["TICKET-C051-C100"]
 insight_ids = ["I-209"]
-requires_new_experiment = true
-reproducibility_floor = "new_rust_offline_check_required"
-canonical_falsifier = "C-068: add Rust blind-matching and invariance verifier"
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-207 (cd-pattern-baseline-audit)"
 independent_countercheck = "blind matching baseline plus unit/base invariance"
 acceptance_bar = [
     "cached inputs and provenance recorded",
-    "new Rust offline verifier or experiment added",
+    "registered experiment replay passes",
     "blind matching baseline plus unit/base invariance",
     "claim/task/ticket surfaces updated together",
     "full repo gate passes after the batch",
@@ -1851,24 +1848,24 @@ acceptance_bar = [
 claim_id = "C-070"
 status = "Closed/Methodology-Insufficient"
 family = "algebraic_structural"
-wave = "wave_2_new_rust_falsifier"
+wave = "wave_1_registered_experiment_hardening"
 last_verified = "2026-02-06"
 statement = "CD associator power spectrum shape matches NANOGrav GW background."
 where_stated = "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`"
-experiment_ids = []
-experiment_binaries = []
+experiment_ids = ["E-207"]
+experiment_binaries = ["cd-pattern-baseline-audit"]
 registered_gpu_experiment = false
 task_ids = ["CTASK-0035"]
 open_task_ids = []
 ticket_ids = ["TICKET-C051-C100"]
 insight_ids = ["I-209"]
-requires_new_experiment = true
-reproducibility_floor = "new_rust_offline_check_required"
-canonical_falsifier = "C-070: add Rust exact-enumeration or consistency verifier"
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-207 (cd-pattern-baseline-audit)"
 independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
 acceptance_bar = [
     "cached inputs and provenance recorded",
-    "new Rust offline verifier or experiment added",
+    "registered experiment replay passes",
     "exact enumeration plus external-CSV or representation consistency cross-check",
     "claim/task/ticket surfaces updated together",
     "full repo gate passes after the batch",
@@ -1989,24 +1986,24 @@ acceptance_bar = [
 claim_id = "C-092"
 status = "Refuted"
 family = "algebraic_structural"
-wave = "wave_2_new_rust_falsifier"
+wave = "wave_1_registered_experiment_hardening"
 last_verified = "2026-02-03"
 statement = "SO(7) orbit structure of ZD spectrum is continuous, not discrete."
 where_stated = "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.P)"
-experiment_ids = []
-experiment_binaries = []
+experiment_ids = ["E-207"]
+experiment_binaries = ["cd-pattern-baseline-audit"]
 registered_gpu_experiment = false
 task_ids = ["CTASK-0046"]
 open_task_ids = []
 ticket_ids = ["TICKET-C051-C100"]
 insight_ids = ["I-209"]
-requires_new_experiment = true
-reproducibility_floor = "new_rust_offline_check_required"
-canonical_falsifier = "C-092: add Rust exact-enumeration or consistency verifier"
+requires_new_experiment = false
+reproducibility_floor = "deterministic_replay"
+canonical_falsifier = "registered experiment E-207 (cd-pattern-baseline-audit)"
 independent_countercheck = "exact enumeration plus external-CSV or representation consistency cross-check"
 acceptance_bar = [
     "cached inputs and provenance recorded",
-    "new Rust offline verifier or experiment added",
+    "registered experiment replay passes",
     "exact enumeration plus external-CSV or representation consistency cross-check",
     "claim/task/ticket surfaces updated together",
     "full repo gate passes after the batch",

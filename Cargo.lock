@@ -3791,6 +3791,7 @@ dependencies = [
  "arrow-ipc",
  "arrow-schema",
  "backon",
+ "cd_kernel",
  "chrono",
  "clap",
  "core_affinity",

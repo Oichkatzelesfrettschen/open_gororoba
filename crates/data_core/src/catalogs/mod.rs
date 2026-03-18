@@ -39,6 +39,7 @@ pub mod nanograv;
 pub mod new_horizons;
 pub mod omni;
 pub mod pantheon;
+pub mod pdg;
 pub mod pioneer;
 pub mod planck;
 pub mod psp;
