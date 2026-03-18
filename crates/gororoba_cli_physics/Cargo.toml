@@ -273,6 +273,10 @@ name = "heliosphere-algebra-decompose"
 path = "src/bin/heliosphere_algebra_decompose.rs"
 
 [[bin]]
+name = "catalog-feature-algebra"
+path = "src/bin/catalog_feature_algebra.rs"
+
+[[bin]]
 name = "heliosphere-lbm-cube-run"
 path = "src/bin/heliosphere_lbm_cube_run.rs"
 

@@ -1,0 +1,112 @@
+generated_at_utc = "2026-03-18T05:09:56.329662617+00:00"
+cube_json = "reports/catalog_feature_cube_survey-core_2026-03-18.json"
+cube_name = "survey-core"
+dataset_count = 6
+channel_names = [
+    "f0",
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "instrument_code",
+    "calib_level_code",
+    "ra_deg",
+    "dec_deg",
+    "time_year",
+    "redshift",
+    "distance_proxy_log1p",
+    "program_present",
+    "instrument_present",
+    "feature_completeness",
+]
+
+[[datasets]]
+dataset = "CHIME FRB"
+row_count = 5045
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 197803.79066878758
+mean_associator_norm = 205.57249813971197
+max_associator_norm = 23440.72939611719
+covariance_trace = 197803.7906687883
+effective_rank = 1.0223631780381588
+participation_ratio = 1.0059220839135767
+centered_feature_energy = 332.19551475793963
+dominant_channel = "f0"
+dominant_channel_mean_abs = 314.33148292544297
+
+[[datasets]]
+dataset = "DESI DR2 BAO"
+row_count = 7
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 145.45737054732817
+mean_associator_norm = 30.921732974900646
+max_associator_norm = 90.92958117696173
+covariance_trace = 145.4573705473282
+effective_rank = 1.8833082442271392
+participation_ratio = 1.7814894070111666
+centered_feature_energy = 15.13277551020408
+dominant_channel = "f1"
+dominant_channel_mean_abs = 8.450326530612244
+
+[[datasets]]
+dataset = "Gaia DR3 Nearby"
+row_count = 50000
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 81421.40879162948
+mean_associator_norm = 352101.37033943273
+max_associator_norm = 562756951.9176708
+covariance_trace = 81421.40879162986
+effective_rank = 2.163320456598251
+participation_ratio = 2.0523438412809174
+centered_feature_energy = 277.15635001394855
+dominant_channel = "f1"
+dominant_channel_mean_abs = 129.1654489042725
+
+[[datasets]]
+dataset = "HST Public Metadata"
+row_count = 4000
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 119678.50851001205
+mean_associator_norm = 293.8949837574958
+max_associator_norm = 3652.3829940738233
+covariance_trace = 119678.50851001126
+effective_rank = 1.0001882612550486
+participation_ratio = 1.0000282380852372
+centered_feature_energy = 283.4574828750045
+dominant_channel = "f2"
+dominant_channel_mean_abs = 282.13290724999666
+
+[[datasets]]
+dataset = "JWST Public Metadata"
+row_count = 40000
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 10865991.93548139
+mean_associator_norm = 93043.64532533601
+max_associator_norm = 1369284.931025029
+covariance_trace = 10865991.935482025
+effective_rank = 1.1134958230089327
+participation_ratio = 1.0459285250573
+centered_feature_energy = 3251.0752887288286
+dominant_channel = "f2"
+dominant_channel_mean_abs = 2675.161214128523
+
+[[datasets]]
+dataset = "SDSS DR18 Quasars"
+row_count = 50000
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 20083.398691070102
+mean_associator_norm = 10.399237668474042
+max_associator_norm = 90013.67291227219
+covariance_trace = 20083.398691070186
+effective_rank = 1.3463450026965424
+participation_ratio = 1.1904446823124488
+centered_feature_energy = 6.663926977682641
+dominant_channel = "f1"
+dominant_channel_mean_abs = 2.00815506687369
