@@ -385,6 +385,7 @@ path = "src/bin/euclid_fetch.rs"
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }
+cd_kernel = { workspace = true }
 provenance_core = { path = "../provenance_core" }
 provenance_store = { path = "../provenance_store" }
 provenance_ops = { path = "../provenance_ops" }

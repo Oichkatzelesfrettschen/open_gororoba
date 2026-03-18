@@ -1,17 +1,27 @@
 [metadata]
-title = "PDG neutrino and NANOGrav surface audit with local NANOGrav CSV repair"
+title = "PDG 2025 and NANOGrav source audit with local NANOGrav CSV repair"
 repair_nanograv_csv = true
 repaired_nanograv_csv = false
 
 [official_sources]
-pdg_2024_highlights = "https://pdg.lbl.gov/2024/reviews/rpp2024-rev-highlights.pdf"
+pdg_2025_index = "https://pdg.lbl.gov/2025/index.html"
+pdg_2025_listings = "https://pdg.lbl.gov/2025/listings/contents_listings.html"
+pdg_2025_tables = "https://pdg.lbl.gov/2025/tables/contents_tables.html"
 nanograv_15yr_background = "https://nanograv.org/15yr/SMBHB"
 nanograv_kde_zip = "https://zenodo.org/api/records/10344086/files/NANOGrav15yr_KDE-FreeSpectra_v1.1.0.zip/content"
 
 [nanograv.local_surfaces]
+local_html_path = "data/external/nanograv_15yr/smbhb.html"
+zenodo_record_path = "data/external/nanograv_15yr/record_10344086.json"
+zip_path = "data/external/nanograv_15yr_kde.zip"
+zip_extract_readme_path = "data/external/nanograv_15yr/kde_contents/ceffyl_data/README.md"
 csv_path = "data/external/nanograv_15yr_freespectrum.csv"
 paper_extract_path = "data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/paper.toml"
 table_extract_path = "data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/table_1.csv"
+local_html_present = true
+zenodo_record_present = true
+zip_present = true
+zip_extract_readme_present = true
 c070_source_doc_present = true
 paper_extract_present = true
 table_extract_present = true
@@ -30,6 +40,30 @@ invalid_value_count = 0
 interval_violation_count = 0
 matches_bestfit_count = 30
 fully_matches_bestfit = true
+
+[nanograv.zip_extract]
+row_count = 30
+matches_bestfit_count = 0
+matches_csv_count = 0
+fully_matches_bestfit = false
+fully_matches_csv = false
+
+[pdg_2025.local_surfaces]
+index_path = "data/external/pdg_2025/index.html"
+listings_path = "data/external/pdg_2025/contents_listings.html"
+tables_path = "data/external/pdg_2025/contents_tables.html"
+leptons_pdf_path = "data/external/pdg_2025/rpp2025-sum-leptons.pdf"
+quarks_pdf_path = "data/external/pdg_2025/rpp2025-sum-quarks.pdf"
+gauge_higgs_pdf_path = "data/external/pdg_2025/rpp2025-sum-gauge-higgs-bosons.pdf"
+mass_subset_csv_path = "data/external/pdg_2025/mass_subset.csv"
+index_present = true
+listings_present = true
+tables_present = true
+leptons_pdf_present = true
+quarks_pdf_present = true
+gauge_higgs_pdf_present = true
+mass_subset_csv_present = true
+mass_subset_row_count = 11
 
 [pdg_neutrino.local_surfaces]
 legacy_fetch_script_present = false

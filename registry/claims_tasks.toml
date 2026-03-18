@@ -614,12 +614,12 @@ section = "Backfill (triage) tasks (auto-generated)"
 section_index = 4
 table_index = 2
 order_index = 34
-status_token = "REFUTED"
-status_raw = "REFUTED"
+status_token = "DONE"
+status_raw = "DONE"
 status_canonical = true
-task = "Add deterministic spectrum-degeneracy reproduction (84 diagonal ZDs) + unit test; mark PDG-spectrum-match claim refuted for the standard set."
-output_artifacts = ["data/csv/c068_zd_interaction_eigen_summary.csv", "docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md", "src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py", "tests/test_c068_zd_interaction_spectrum_degeneracy.py"]
-output_artifacts_raw = "`docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`"
+task = "DONE: add shared Rust Cayley-Dickson pattern-baseline audit; show the 84-ZD partner spectrum does not uniquely match PDG mass ladders under either log or linear transforms once random-subset nulls are enforced; emit data/output/claims_falsification/cd_pattern_baseline_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/cd_pattern_baseline_audit.toml`, `reports/claims_falsification_campaign.toml`"
 source_line = 58
 
 [[task]]
@@ -632,9 +632,9 @@ order_index = 35
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Audit legacy Spearman-based \"shape match\" and encode decision rule as offline artifacts + test."
-output_artifacts = ["data/csv/c070_nanograv_shape_match_summary.csv", "docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md", "src/scripts/analysis/c070_nanograv_shape_match_audit.py", "tests/test_c070_nanograv_shape_match_audit.py"]
-output_artifacts_raw = "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`"
+task = "DONE: add shared Rust Cayley-Dickson pattern-baseline audit; replace the legacy rank-correlation lane with exact associator-curve vs NANOGrav Frechet nulls and simple-template baselines; emit data/output/claims_falsification/cd_pattern_baseline_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml", "docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/cd_pattern_baseline_audit.toml`, `docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `reports/claims_falsification_campaign.toml`"
 source_line = 59
 
 [[task]]
@@ -797,9 +797,9 @@ order_index = 46
 status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
-task = "Extract cached v6 orbit-classification summary and record that a \"continuous orbit\" claim is not supported under the current diagnostic."
-output_artifacts = ["data/csv/c092_so7_orbit_structure_summary.csv", "src/scripts/analysis/c092_so7_orbit_structure_audit.py", "tests/test_c092_so7_orbit_structure_audit.py"]
-output_artifacts_raw = "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`"
+task = "DONE: add shared Rust Cayley-Dickson pattern-baseline audit; show generic SO(7) rotations leave the exact zero-divisor lane immediately and the surviving orbit structure is discrete/combinatorial; emit data/output/claims_falsification/cd_pattern_baseline_audit.toml; sync campaign linkage."
+output_artifacts = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml", "reports/claims_falsification_campaign.toml"]
+output_artifacts_raw = "`data/output/claims_falsification/cd_pattern_baseline_audit.toml`, `reports/claims_falsification_campaign.toml`"
 source_line = 70
 
 [[task]]

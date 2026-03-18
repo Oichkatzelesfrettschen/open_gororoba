@@ -5,12 +5,12 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 152
-experiment_count = 199
+deterministic_count = 153
+experiment_count = 200
 gpu_count = 28
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
-updated = "2026-02-10"
+updated = "2026-03-18"
 
 [[experiment]]
 binary = "motif-census"
@@ -5230,5 +5230,31 @@ run_command_sha256 = "d76673f286651f9a880cd3cb62ace8005ec052078910a62d4a58d1dbf2
 status = "active"
 status_token = "ACTIVE"
 title = "Deterministic audit for PMNS, mass-hierarchy, and numerology refutations"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cd-pattern-baseline-audit"
+binary_experiment_declared = "E-207"
+binary_registered = true
+claim_refs = ["C-068", "C-070", "C-092"]
+claims = ["C-068", "C-070", "C-092"]
+dataset_label_refs = []
+dataset_refs = ["EX-0027"]
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-207"
+input = "in-repo partner-graph spectrum, exact associator norms, checked-in NANOGrav medians, and SO(7) drift sweeps"
+input_path_refs = ["crates/algebra_analysis/src/reggiani.rs", "crates/algebra_experimental/src/so7_drift.rs", "crates/data_core/src/catalogs/nanograv.rs", "data/external/nanograv_15yr_freespectrum.csv", "crates/stats_core/src/lib.rs"]
+lineage_id = "XL-207"
+method = "Shared Rust audit for three refuted or methodology-insufficient Cayley-Dickson pattern claims: partner-graph eigenvalue ladders are compared against PDG masses under both log and linear transforms with random-subset nulls (C-068); exact associator-quantile curves are compared against checked-in NANOGrav medians with Frechet nulls and simple template families (C-070); and generic SO(7) rotations leave the exact zero-divisor lane immediately, so the surviving orbit structure is discrete rather than continuous (C-092)."
+output = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml"]
+output_path_refs = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run -p gororoba_cli_data --bin cd-pattern-baseline-audit -- --output data/output/claims_falsification/cd_pattern_baseline_audit.toml"
+run_command_sha256 = "c08ee3d517ce1b0b58c151cd1554442f874404773c902741e6a8f12db6bb2e9b"
+status = "active"
+status_token = "ACTIVE"
+title = "Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7) orbit refutations"
 truth_surface_consumption = []
 

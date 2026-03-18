@@ -218,7 +218,10 @@ fn democratic_probability_matrix() -> DMatrix<f64> {
     DMatrix::from_element(3, 3, 1.0 / 3.0)
 }
 
-fn summarize_probability_matrix(matrix: &DMatrix<f64>, pmns_probs: &DMatrix<f64>) -> ProbabilitySummary {
+fn summarize_probability_matrix(
+    matrix: &DMatrix<f64>,
+    pmns_probs: &DMatrix<f64>,
+) -> ProbabilitySummary {
     ProbabilitySummary {
         frobenius_distance: frobenius_distance_real(matrix, pmns_probs),
         mean_diagonal: mean_diagonal(matrix),
@@ -255,7 +258,12 @@ fn summarize_c069() -> C069Summary {
     let mut unique_angle_degrees = Vec::new();
     for value in angle_values {
         if unique_angle_degrees.is_empty()
-            || (value - unique_angle_degrees.last().copied().unwrap_or(f64::NEG_INFINITY)).abs()
+            || (value
+                - unique_angle_degrees
+                    .last()
+                    .copied()
+                    .unwrap_or(f64::NEG_INFINITY))
+            .abs()
                 > 1e-9
         {
             unique_angle_degrees.push(value);
@@ -635,8 +643,16 @@ fn render_report() -> String {
         "dim16_best_ratios = {}",
         render_triplet(c587.dim16_best_ratios)
     );
-    let _ = writeln!(out, "dim16_rms_deviation = {:.12}", c587.dim16_rms_deviation);
-    let _ = writeln!(out, "dim32_rms_deviation = {:.12}", c587.dim32_rms_deviation);
+    let _ = writeln!(
+        out,
+        "dim16_rms_deviation = {:.12}",
+        c587.dim16_rms_deviation
+    );
+    let _ = writeln!(
+        out,
+        "dim32_rms_deviation = {:.12}",
+        c587.dim32_rms_deviation
+    );
     let _ = writeln!(out, "null_observed_rms = {:.12}", c587.null_observed_rms);
     let _ = writeln!(out, "null_mean_rms = {:.12}", c587.null_mean_rms);
     let _ = writeln!(out, "null_std_rms = {:.12}", c587.null_std_rms);

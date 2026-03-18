@@ -47,33 +47,33 @@ pub mod spice;
 pub mod tabular;
 pub mod time_bounds;
 
-pub use download_stack::{
-    DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, EndpointCapabilities,
-    EndpointSurface, HostPolicyRegistry, HostRoutingPolicy, RetryClass, TransferAttempt,
-    TransferKind, TransferRequest, TransferResult, TransferTrace, load_host_policy_registry,
-};
 pub use catalog_feature_cube::{
     CatalogFeatureChannel, CatalogFeatureCube, CatalogFeatureCubeManifest, CatalogFeatureRow,
     CatalogNuisanceModel, NuisanceEffectReport, ResidualizedCatalogFeatureCube,
     encode_dictionary_value, parse_catalog_feature_cube_json, pipe_count, stable_dictionary,
 };
+pub use download_stack::{
+    DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, EndpointCapabilities,
+    EndpointSurface, HostPolicyRegistry, HostRoutingPolicy, RetryClass, TransferAttempt,
+    TransferKind, TransferRequest, TransferResult, TransferTrace, load_host_policy_registry,
+};
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
-};
-pub use heliosphere_feature_cube::{
-    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_DIM,
-    HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_SIGNAL_DIM, HELIOSPHERE_SUPPORT_DIM,
-    HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM, HeliosphereFeatureCube,
-    HeliosphereFeatureCubeManifest, HeliosphereFeatureRow, HeliosphereInvariantSample,
-    HeliosphereTransformGroupStats, HeliosphereTransformMode, HeliosphereTransformResult,
-    SparseExecutionMode, SparseExecutionPlan, SparseHardwareEnvelope, SparseMemoryPlan,
-    estimate_sparse_execution_plan, estimate_sparse_memory_plan, heliosphere_row_datetime,
-    compute_invariant_samples, transform_feature_rows, transform_feature_rows_with_stats,
 };
 pub use heliosphere_event_labels::{
     ForecastResidual, HeliosphereEventKind, HeliosphereEventLabel, HeliosphereEventSource,
     HeliosphereEventWindow, fetch_donki_event_labels, fetch_official_forecast_residuals,
     labels_to_prediction_windows,
+};
+pub use heliosphere_feature_cube::{
+    HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_DIM,
+    HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM,
+    HELIOSPHERE_SIGNAL_DIM, HELIOSPHERE_SUPPORT_DIM, HeliosphereFeatureCube,
+    HeliosphereFeatureCubeManifest, HeliosphereFeatureRow, HeliosphereInvariantSample,
+    HeliosphereTransformGroupStats, HeliosphereTransformMode, HeliosphereTransformResult,
+    SparseExecutionMode, SparseExecutionPlan, SparseHardwareEnvelope, SparseMemoryPlan,
+    compute_invariant_samples, estimate_sparse_execution_plan, estimate_sparse_memory_plan,
+    heliosphere_row_datetime, transform_feature_rows, transform_feature_rows_with_stats,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
@@ -111,6 +111,7 @@ pub use catalogs::{
     mcgill::{Magnetar, parse_mcgill_csv},
     nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum},
     pantheon::{PantheonCovProvider, Supernova, parse_pantheon_cov, parse_pantheon_dat},
+    pdg::{PdgMassEntry, parse_pdg_mass_reference_csv},
     planck::bestfit as planck2018,
     psp_fields::{PspFieldsMagRecord, PspFieldsProvider, parse_psp_fields_file},
     sdss::{SdssQuasar, parse_sdss_quasar_csv},
