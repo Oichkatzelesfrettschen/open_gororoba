@@ -53,7 +53,7 @@
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish docs-freshness docs-gate docs-site docs-rustdoc docs-book docs-redirect-check
 .PHONY: verify-python-core-algorithms
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
-.PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
+.PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big artifacts-repo-visuals
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
@@ -1513,7 +1513,7 @@ patch-pyfilesystem2: install
 # and data/artifacts/images/.  All generated files are reproducible from
 # source code + pinned dependencies and can be removed with make clean-artifacts.
 
-artifacts: artifacts-motifs artifacts-boxkites artifacts-reggiani artifacts-m3 artifacts-dimensional
+artifacts: artifacts-motifs artifacts-boxkites artifacts-reggiani artifacts-m3 artifacts-dimensional artifacts-repo-visuals
 	@echo "OK: all core artifacts regenerated."
 
 artifacts-dimensional: install
@@ -1540,6 +1540,9 @@ artifacts-motifs-big:
 	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 16,32,64,128 --summary-only
 	$(CARGO_ENV) cargo run -p gororoba_cli_algebra --bin motif-census --release -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- motif-summary
+
+artifacts-repo-visuals:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-visuals
 
 # ---- Data fetching ----
 #
@@ -1796,6 +1799,7 @@ help:
 	@echo "    make artifacts-m3         M3 transfer table"
 	@echo "    make artifacts-dimensional Dimensional geometry sweeps"
 	@echo "    make artifacts-materials  JARVIS subset + embeddings"
+	@echo "    make artifacts-repo-visuals Repo maps plus science-facing E183, gravastar, and algebra plates"
 	@echo ""
 	@echo "  Data:"
 	@echo "    make fetch-data           Re-download external datasets via Rust fetchers + strict governance checks"

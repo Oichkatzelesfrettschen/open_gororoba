@@ -561,6 +561,12 @@ That surface is the easiest web-viewable path into the actual APIs, module
 boundaries, and crate-level caveats. The mdBook complements it with
 cross-cutting architecture notes.
 
+![Repo crate family map](../assets/repo_crate_family_map_3160x2820.png)
+
+The crate-family map above is generated from live Cargo workspace metadata and
+shows how the current repo partitions algebra/topology, physics/simulation,
+data/provenance/control, and CLI/interface surfaces.
+
 The workspace uses 30+ external crates for numerical computation, data formats,
 and hardware acceleration.  Key adopted crates:
 
@@ -756,11 +762,16 @@ body_markdown = '''
 
 # Project Layout
 
-open\_gororoba is organized as a Rust workspace with 15 member crates under
-`crates/`, a canonical SQLite control plane under `registry/canonical/`, and a
-PDF research collection under `papers/`.
+open\_gororoba is organized as a large Rust workspace rooted in `crates/`, with
+canonical control-plane state under `registry/`, long-form docs under `docs/`,
+generated artifacts under `data/`, and a research corpus under `papers/`.
 
-## Directory structure
+![Repo operator matrix](../assets/repo_operator_matrix_3160x2820.png)
+
+The generated operator matrix above is the fastest way to answer "which surface
+should I touch first?" before you drill into the directory-level view below.
+
+## Representative directory structure
 
 ```
 crates/
@@ -778,7 +789,7 @@ crates/
   data_core/          Data loading, benchmarks, HDF5 export
   docpipe/            PDF extraction (pdfium-render)
   gororoba_py/        PyO3 bindings (thin wrappers)
-  gororoba_cli/       37 analysis binaries
+  gororoba_cli*/      Domain-specific operator surfaces
 
 registry/
   canonical/          Canonical SQLite control plane and migration ledger
@@ -812,7 +823,7 @@ cargo doc --workspace --no-deps
 # mdBook
 mdbook build docs/book
 
-# Full test suite (2063 tests)
+# Full test suite
 cargo test --workspace -j$(nproc)
 
 # Clippy with warnings-as-errors
@@ -1543,6 +1554,34 @@ The canonical documentation path is now:
 The LaTeX tree under `docs/latex/` is publication output, not the primary
 source for current repo truth.
 
+## Repo visual map
+
+![Repo scope dashboard](./assets/repo_scope_dashboard_3160x2820.png)
+
+The scope dashboard is generated from live Cargo metadata plus canonical
+registry state. The mdBook copies live under `docs/book/src/assets/`, while the
+source PNGs and CSV summaries live under `data/artifacts/images/` and `data/csv/`.
+
+## Scientific plates
+
+![E-183 mass-phase manifold](./assets/science_e183_phase_plate_3160x2820.png)
+
+Generated companions:
+
+- `data/artifacts/images/science_gravastar_stability_plate_3160x2820.png`
+- `data/artifacts/images/science_algebra_resonance_plate_3160x2820.png`
+
+These plates are driven by live generated result lanes rather than repo
+metadata:
+
+- `data/results/e183/*` for the MaNGA mass-phase field and cross-algebra correlation analysis.
+- `data/csv/gravastar_radial_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`,
+  and `data/csv/genesis_gravastar_bridge.csv` for the radial instability field and stable branch distribution.
+- `data/csv/pathion_zd_edges.csv` and `data/csv/sedenion_zd_edges.csv` for the zero-divisor interaction graphs.
+- `data/csv/sedenion_mass_spectrum.csv`, `data/csv/pathion_coupling_sweep.csv`,
+  `data/csv/pathion_sink_compare.csv`, and `data/csv/sedenion_field_metrics_3D.csv`
+  for the mass spectrum, coupling response, damping trajectory, and 3D field relaxation summaries.
+
 ## Canonical Inventory
 
 For current counts and inventory, prefer the Rust workspace and canonical
@@ -1602,7 +1641,7 @@ crates/
   data_core/        Data loading, benchmarks
   docpipe/          PDF extraction (pdfium-render primary)
   gororoba_py/      PyO3 bindings (thin wrappers)
-  gororoba_cli/     37 analysis binaries
+  gororoba_cli*/    Domain-specific operator surfaces
 registry/           SQLite control plane plus generated compatibility registries
 papers/             PDF collection + TOML extractions
 docs/               Documentation and tracking
