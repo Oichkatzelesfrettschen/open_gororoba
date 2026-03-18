@@ -9442,7 +9442,7 @@ status_note = "harmonic-halo-galaxy-phase binary rerun on MaNGA rotcurves_all + 
 where_stated = "crates/gororoba_cli_physics/src/bin/harmonic_halo_galaxy_phase.rs, data/results/e183/galaxy_phase_coherence.csv"
 
 [[claim]]
-id = "C-1407"
+id = "C-1409"
 last_verified = "2026-03-17"
 statement = "Signal injection-recovery sweep (E-197) is currently miscalibrated and cannot be used as a sensitivity validation. Across injected alpha_zd values 0, 0.001, 0.002, 0.004, 0.008, and 0.016, the detected SNR remains nearly constant at 0.429-0.430 and the recovered alpha_zd remains nearly constant at 0.294-0.296. The recovery ratio therefore scales as 1/alpha_zd instead of staying near unity. This is a pipeline calibration blocker, not evidence that the present MaNGA lane can recover alpha_zd = 0.004."
 status = "Verified"
@@ -9490,9 +9490,25 @@ status_note = "inclination-injection-calibration binary, 3 inclination bins, 6 a
 where_stated = "crates/gororoba_cli_physics/src/bin/inclination_injection_calibration.rs, data/results/e183/inclination_injection.csv"
 
 [[claim]]
-id = "C-1408"
+id = "C-1410"
 last_verified = "2026-03-17"
 statement = "Hypothesis C (red-noise spectral index) DETECTED: Galaxy-ensemble Rayleigh R follows a clean power law R(k) ~ k^{0.808} across all 7 CD-ZD modes, with predicted/observed ratios within [0.95, 1.09] for 7/7 modes. The implied PSD slope beta=-2*gamma=-1.62 is 73% consistent with the DC14 baryonic spectral slope beta=-2.21 from H3. The 27% discrepancy indicates the Rayleigh R scaling incorporates both the baryonic red-noise spectrum AND the galaxy-to-galaxy phase dispersion, which adds a k-dependent floor not captured by the colored-noise model alone. This power-law scaling is the quantitative fingerprint of baryonic systematics in the Rayleigh R diagnostic -- any genuine ZD signal would appear as a PEAK above this smooth baseline at a specific algebraic wavenumber."
 status = "Verified"
 status_note = "multifeature-shape-regression binary (Hypothesis C section), 6995 galaxies, 7 modes, log-log fit"
 where_stated = "crates/gororoba_cli_physics/src/bin/multifeature_shape_regression.rs, data/results/e183/multifeature_shape.csv"
+
+[[claim]]
+id = "C-1407"
+last_verified = "2026-03-17"
+statement = "Contrarian D1 (SHMR scatter phase-smearing) FAILED -- null result is ROBUST to r_s uncertainty. Injecting alpha_zd=0.01 with 0.15 dex lognormal r_s perturbation (20 MC realizations, Behroozi+2019 scatter) shows NO power loss at modes 5-7 (drop < 8%). Counterintuitively, scatter INCREASES power at low-k modes by 6-10x (mode 1 ratio=10.4, mode 2 ratio=6.9). Explanation: the exp(-x) damping envelope concentrates injected signal at small x where delta_phi = k*x*(delta_r_s/r_s) is small. The theoretical phase-error prediction (delta_phi > pi/2 at modes 5-7 for x=1.0) is correct in isolation but irrelevant because the signal amplitude at x=1.0 is already exponentially suppressed. SHMR scatter is NOT a blind spot of the E-183 null result. The upper limit alpha_zd < 0.00239 is actually STRENGTHENED by this test."
+status = "Verified"
+status_note = "shmr-scatter-injection binary, alpha_zd=0.01, 0.15 dex scatter, 20 MC, 6995 galaxies"
+where_stated = "crates/gororoba_cli_physics/src/bin/shmr_scatter_injection.rs, data/results/e183/shmr_scatter_injection.csv"
+
+[[claim]]
+id = "C-1408"
+last_verified = "2026-03-17"
+statement = "Contrarian D2 (mass-quartile Fourier stacking): Q3 (log M200 = 11.54-12.07, r_s_median=15.4 kpc, N=1749) shows SNR=3.60 across all 7 modes -- formally above 3.0 detection threshold. However, Q3 has only 6 valid stacking bins (x=0.50-0.74) and Q4 (log M200 > 12.07, r_s_median=42.1 kpc) has ZERO valid bins. The Q3 Fourier spectrum is monotonically decreasing (mode 1 power=0.0253, mode 7=0.0188) -- a red-noise pattern consistent with a smooth baryonic residual (NFW cusp trough) sampled over a narrow x-window, NOT a peaked ZD structure at a specific wavenumber. The low RMS (0.044 vs full-sample 0.126) inflates SNR via the denominator. The quartile decomposition reveals that ~25% of MaNGA galaxies (Q4: log M200 > 12.07) contribute NOTHING to the stacking grid because their large r_s maps all observed radii to x < 0.5. The null result is driven by Q1-Q3 only. VERDICT: spurious detection from narrow x-coverage; requires injection recovery validation on Q3 alone."
+status = "Verified"
+status_note = "mass-quartile-fourier binary, 4 quartiles, 6995 galaxies. Q4 has zero valid bins."
+where_stated = "crates/gororoba_cli_physics/src/bin/mass_quartile_fourier.rs, data/results/e183/mass_quartile_fourier.csv"
