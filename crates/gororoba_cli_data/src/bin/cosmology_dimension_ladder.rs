@@ -1011,7 +1011,7 @@ fn boxkite_summary(points: &[Vec<f64>], cd_dim: usize) -> (Option<f64>, Option<f
 }
 
 fn sampled_associator_norms(points: &[Vec<f64>]) -> Vec<f64> {
-    let n_triples = (points.len() / 3).max(1).min(16);
+    let n_triples = (points.len() / 3).clamp(1, 16);
     let mut values = Vec::with_capacity(n_triples);
     for triple in 0..n_triples {
         let base = triple * 3;
@@ -1156,7 +1156,7 @@ fn median(values: &[f64]) -> f64 {
     let mut sorted = values.to_vec();
     sorted.sort_by(|a, b| cmp_f64_asc(*a, *b));
     let mid = sorted.len() / 2;
-    if sorted.len() % 2 == 0 {
+    if sorted.len().is_multiple_of(2) {
         0.5 * (sorted[mid - 1] + sorted[mid])
     } else {
         sorted[mid]
