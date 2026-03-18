@@ -194,3 +194,4 @@ claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_holographic_entropy_trap.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
+

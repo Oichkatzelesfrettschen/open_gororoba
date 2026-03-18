@@ -1779,3 +1779,94 @@ sprint = "S84"
 summary = "Complete D3Q19 LBM precision tier analysis at 128^3 on Ada SM 8.9: The Pareto frontier for physics-valid configurations is INT8 SoA (5643 MLUPS, 76 MB VRAM, 2.85x FP32) -- highest throughput with 4x VRAM savings. The 1-byte tier (INT8/FP8 SoA) is uniformly 2.65-2.85x FP32 MLUPS. The 2-byte tier (FP16/INT16/BF16 SoA) clusters at 1.62-1.92x FP32 MLUPS. The 4-byte FP32 SoA variants top out at 2107 MLUPS (coarsened). FP64 SoA drops to 406 MLUPS (compute-bound, not bandwidth-bound). Key discontinuity: AoS->SoA transition adds ~1.75x MLUPS for 1-byte formats, ~1.87x for 2-byte formats, but near-zero gain for FP32 (both pull-scheme). FP4/INT4 nibble-packed bandwidth ceilings (4726-6168 MLUPS) cannot be physics-valid on D3Q19 (weight-zero collapse). FP4 emulation is 23% slower than INT4 at the same nibble width due to FP4_DECODE lookup table overhead."
 title = "Full D3Q19 precision tier Pareto analysis at 128^3: INT8 SoA is Pareto-optimal production tier"
 
+[[insight]]
+claims = ["C-1415", "C-1411", "C-1412"]
+id = "I-194"
+sprint = "S84"
+summary = "A deterministic analysis pipeline applied to synthetic null data with fixed baryonic systematics has an analytic fixed-point SNR determined entirely by the systematic model parameters. The E-192 MaNGA ZD robustness experiment converges to detection_snr = 0.4704 (sl2_partner/mass_Q3) and 0.4675-0.4825 (full_sample Fourier conditions) across 3 independent REFINE iterations. Each iteration fixed real issues (bug corrections, seed expansion 5->20, ablation additions) but the primary metric did not shift because the bottleneck is MaNGA's radial coverage (x=0.5-1.35 r/r_s), not pipeline quality. This is the mathematical signature of a data-limited experiment: when all pipeline improvements are exhausted, the metric converges to the noise floor set by baryonic systematics. The correct response to a degenerate REFINE cycle is PROCEED with documented caveats, not further iteration."
+title = "Degenerate REFINE cycle convergence: deterministic null pipeline has analytic fixed-point SNR"
+
+[[insight]]
+claims = ["C-1412", "C-1415"]
+id = "I-195"
+sprint = "S84"
+summary = "The injection recovery anti-correlation in E-192 (delta_snr <= 0 for alpha_zd = 0.004-0.05) has a specific root cause: the exp(-x) injection envelope concentrates signal power at x ~ 0.5 r/r_s, exactly where the +5% baryonic bulge excess dominates the stacked residual. At this radius, the injected cosine modulation adds coherently to the bulge systematic rather than creating new harmonic structure, shifting the mean residual rather than its Fourier power at ZD wavenumbers. Simultaneously, the SNR denominator (rms_residual) grows with injected amplitude, further suppressing delta_snr. The combined effect is destructive interference: the pipeline has a blind spot at the radii where the injection is strongest. This does not invalidate the null result on real data -- it means the pipeline is conservative at inner radii and the quoted sensitivity threshold (alpha_zd = 0.002392) may be optimistic for x < 0.8. Future injection protocols should use flat-envelope or resonance-weighted amplitude profiles to avoid this interference."
+title = "Injection recovery destructive interference: exp(-x) envelope collides with baryonic bulge at x~0.5"
+
+[[insight]]
+claims = ["C-1412", "C-1365"]
+id = "I-196"
+sprint = "S84"
+summary = "The GHOST paper (paper.md lines 67-71) describes a three-stage pipeline where Stage 2 fits and subtracts M=7 baryonic harmonics via least-squares before Fourier analysis. The actual code (models.py:stack_residuals() lines 62-104) performs only inverse-variance weighted stacking followed by direct Fourier projection -- no harmonic fitting or subtraction is implemented. This paper-code discrepancy has two consequences: (1) the stated root cause of injection recovery anti-monotonicity ('harmonic subtraction absorbs injected signals') cannot be correct, since no harmonic subtraction occurs; (2) the 'harmonic-subtraction blind zone discovery', claimed as one of five novel contributions, is unsupported by the codebase. Resolution requires either implementing harmonic subtraction (changing all results) or revising the manuscript to match the actual pipeline. This must be resolved before any other pre-submission experiment proceeds."
+title = "Paper-code discrepancy: M=7 harmonic subtraction described in paper but absent from pipeline code"
+
+[[insight]]
+claims = ["C-1365", "C-1372", "C-1367", "C-1368"]
+id = "I-197"
+sprint = "S84"
+summary = "Literature synthesis for the GHOST MaNGA null result identifies six topic clusters (precision cosmology, IFU methodology, algebraic predictions, baryonic noise floor, null-result standards, next-generation forecasts) and seven research gaps. The three highest-impact gaps are: (1) no theoretical calculation of alpha_zd amplitude from first principles exists -- frameworks predict wavenumbers only, leaving GHOST as an exploration rather than a decisive test; (2) Fourier spectral decomposition of stacked IFU rotation curve residuals at N>1000 scale is genuinely novel -- GHOST fills this gap with the k^0.81 baryonic red-noise index and three-component taxonomy; (3) outer-halo stacking at x>3 r/r_s does not exist in the literature -- SPARC/THINGS use individual fits, not large-N stacking, creating the primary opportunity for the SKA era. The synthesis maps 17 references across clusters and identifies three narrative threads: concordance-to-constraint, prediction-to-test, and bound-to-forecast. Full document at docs/research/manga_null_literature_synthesis_2026.md."
+title = "Literature synthesis: six clusters, seven gaps, three narrative threads for GHOST MaNGA null"
+
+[[insight]]
+claims = ["C-1372", "C-1365", "C-1412"]
+id = "I-198"
+sprint = "S84"
+summary = "Six prioritized research opportunities emerge from the GHOST literature synthesis, ranked by impact times feasibility: (1) SKA Phase 1 outer-halo stacking forecast (HIGH/HIGH) -- the sensitivity projection figure alpha_zd vs radial coverage is what survey planners will cite; (2) face-on galaxy reanalysis with k^0.81 baseline subtraction (MEDIUM-HIGH/HIGH) -- N~3140 low-i galaxies have cleanest curves but red-noise correction on full sample was neutral; (3) injection-recovery calibration via matched filter (HIGH/MEDIUM) -- blocks publication sensitivity claims, three resolution options identified; (4) SPARC/THINGS cross-validation at outer radii (MEDIUM/MEDIUM) -- proof-of-concept before SKA; (5) theoretical framework separation computation at x=3-10 (MEDIUM/HIGH) -- determines if SKA can discriminate algebras or only improve bound; (6) baryonic index validation against FIRE/NIHAO simulations (MEDIUM/LOW-MEDIUM). The quasi-degeneracy (rho>0.97) must be disclosed honestly: four algebraic frameworks are effectively one constraint at MaNGA radii, reframed as model-independence of the bound."
+title = "Six prioritized opportunities from GHOST literature synthesis: SKA forecast highest, simulation validation lowest"
+
+
+[[insight]]
+claims = ["C-1419", "C-1420", "C-1421", "C-1422"]
+id = "I-199"
+sprint = "S84"
+summary = "Four novel higher-order statistical hypotheses tested against MaNGA null result: (H3) topological persistence N=1 feature, falsified as baryonic; (H1) bispectral Fano selection rule ratio=1.0, falsified as trivial; (H2) variance quantization dip D=0.46 p=0.0002, falsified as algebra-universal; (H4) cross-algebra MI 2.8-4.5 nats, falsified as algebra-universal. All four results reinforce the E-183/E-184 conclusion: the null is comprehensive across two-point statistics (power spectrum, correlation), three-point statistics (bispectrum), distributional shape (dip test, kurtosis), topological invariants (persistence), and information-theoretic measures (MI). The baryonic floor dominates every observable at x=0.5-1.22 r/r_s."
+title = "Higher-order statistics quadruple falsification: persistence, bispectral, dip, and MI all confirm baryonic null"
+
+[[insight]]
+claims = ["C-1421"]
+id = "I-200"
+sprint = "S84"
+summary = "The per-galaxy Fourier power distribution has extreme non-Gaussianity: excess kurtosis = 280-295 across all four algebraic frameworks (6995 galaxies). This is ~100x higher than a Gaussian distribution (kurtosis=3). The Hartigan dip statistic D=0.46 (p<0.001) confirms strong multimodality. This non-Gaussianity is entirely driven by the galaxy population: high-mass spirals (v_circ > 200 km/s) and low-mass dwarfs (v_circ < 100 km/s) produce fundamentally different rotation curve shapes, creating a bimodal Fourier power distribution. The extreme kurtosis must be accounted for in any future sensitivity analysis: Gaussian noise assumptions underestimate the variance by >100x. Standard SNR thresholds derived from Gaussian theory (e.g., alpha_zd < 0.002392) may be overly optimistic."
+title = "Extreme non-Gaussianity in per-galaxy Fourier power: kurtosis ~284, bimodal population effect"
+
+[[insight]]
+claims = ["C-1423", "C-1424", "C-1425"]
+id = "I-201"
+sprint = "S84"
+summary = "Three practical signal-processing hypotheses applied to MaNGA null result using proven techniques (matched filter, GP model selection, stratified phase coherence). P1 reveals the baryonic red-noise structure is a coherent spectral floor (gamma=0.78) that fully explains all whitened harmonic content (chi^2 304k -> corrected p=0.40). P2 shows GP Matern-only kernel outperforms Matern+Periodic (Delta_LML=-0.064). P3 exposes a selection artifact: power-conditioned phase coherence (R=0.85 top quintile) is driven by nonzero population mean, not ZD signal -- all algebras show identical pattern. The three analyses demonstrate the null result is robust across optimal detection methods (Neyman-Pearson matched filter), Bayesian model selection (GP marginal likelihood), and robust statistics (power-stratified Rayleigh test)."
+title = "Practical ML engineer triple confirmation: matched filter, GP model selection, and stratified phase all null"
+
+[[insight]]
+claims = ["C-1423"]
+id = "I-202"
+sprint = "S84"
+summary = "The whitened matched filter analysis reveals a critical methodological lesson: pre-whitening by per-bin measurement errors without accounting for spectral structure of the signal creates a 500x false sensitivity improvement. The baryonic floor is not white noise -- it has a specific red-noise power-law slope (P(k) ~ k^{-0.78}) that, after per-bin whitening, generates chi^2 = 304,300 at 14 degrees of freedom. This spectral structure has been characterized (k^0.81 from C-1368, I-179) but never previously tested against a proper matched filter. The lesson for future analyses: always fit and remove the noise spectral shape BEFORE computing detection statistics. The existing naive SNR=0.29 is accidentally correct because it never pre-whitens, avoiding this trap."
+title = "Whitened matched filter trap: pre-whitening without red-noise correction creates 500x false sensitivity"
+
+[[insight]]
+claims = ["C-1426", "C-1427"]
+id = "I-203"
+sprint = "S84"
+summary = "Devil's advocate analysis reveals one refuted and one confirmed contrarian hypothesis. D3 (window function blindness) was REFUTED: the targeted DFT overrecovers at long wavelengths (185% at mode 1) via spectral leakage, meaning the data window is not a limitation -- it slightly inflates low-k sensitivity. D4 (outlier domination) was CONFIRMED: the stacked DFT is driven by ~350 galaxies (5% of sample). At 10% trimming, power drops to 8% of full; at 20% trimming, the phase reverses by pi. The median galaxy has essentially zero Fourier amplitude (0.12-0.15% of mean). This is the most consequential methodological finding of the nine hypothesis tests: the ZD bound applies to the outlier-dominated mean, not to the typical MaNGA galaxy. Future analyses should report both mean and median-based bounds."
+title = "Devil's advocate: window function refuted, outlier domination confirmed as most consequential finding"
+
+[[insight]]
+claims = ["C-1427", "C-1421"]
+id = "I-204"
+sprint = "S84"
+summary = "The extreme kurtosis (~284, C-1421) and outlier domination (C-1427) are two faces of the same phenomenon: MaNGA's galaxy population has a heavy-tailed Fourier power distribution where ~5% of galaxies contribute ~67% of the stacked DFT coefficient. These outliers are likely: (1) edge-on galaxies with large projection corrections, (2) very massive spirals with strong bulge-disk decomposition residuals, or (3) galaxies with poor NFW fits (cusp-core mismatch). Their phases are coherent (~0.17 rad) because their baryonic systematics point in the same direction. The middle 60% of galaxies have reversed phase (-2.5 rad) and near-zero amplitude, consistent with symmetric noise. This bimodal population structure explains why mean stacking gives SNR=0.29 but median stacking would give SNR near zero: the 'signal' is the baryonic signature of 350 outlier galaxies, not dark matter physics."
+title = "Outlier-dominated stacking: 5% of galaxies contribute 67% of DFT power, driving both kurtosis and null result"
+
+[[insight]]
+claims = ["C-1428", "C-1429", "C-1427", "C-1423", "C-1426"]
+id = "I-205"
+sprint = "S84"
+summary = "Three-perspective synthesis of nine hypothesis tests yields three key conclusions: (1) The null is genuine at the population level but the mean estimator is UNRELIABLE -- median alpha_zd is 12% of mean alpha_zd (8.6x divergence, C-1428). (2) The baryonic spectral floor is INTRINSIC, not a window artifact -- leakage < 0.01% of observed power (C-1429), resolving the P1/D3 disagreement. (3) The dominant remaining risk is outlier contamination (C-1427): ~350 galaxies (5%) drive 67% of the stacked DFT and 88% of the alpha_zd estimate. Future work should: (a) identify these outliers' physical properties (mass, inclination, morphology), (b) report both mean and median bounds, (c) validate injection recovery on decontaminated stacks. The null result transforms from 'no ZD signal' to 'no ZD signal detectable above the baryonic floor of 350 extreme galaxies.'"
+title = "Three-perspective synthesis: robust null, intrinsic spectral floor, outlier-dominated estimator"
+
+[[insight]]
+claims = ["C-1430", "C-1431", "C-1432", "C-1433", "C-1434", "C-1435", "C-1436", "C-1437", "C-1438", "C-1439"]
+id = "I-206"
+sprint = "S84"
+summary = "E-201/E-202 decisive experiment yields five actionable conclusions for the GHOST paper: (1) H1 face-on reanalysis confirms null (all modes within 1.58 sigma of envelope, C-1430). (2) The red-noise slope gamma=0.808 is an INCLINATION ARTIFACT -- face-on galaxies have gamma=-0.01 (flat spectrum, C-1431). This is the most significant new finding: the baryonic spectral floor shape depends on sample inclination distribution, not intrinsic galaxy physics. (3) H2 Q3 injection recovery DECISIVELY falsifies the Q3 SNR=3.60 'detection' as a sparse-bin artifact: pipeline is blind at 6 bins, delta_SNR=0 at all injection levels (C-1432). (4) Whitened matched filter after red-noise correction gives p=0.42, confirming no periodic structure survives spectral detrending (C-1433). (5) All spectral diagnostics (bispectral Fano ratio=1.0, persistence N=1, dip D=0.46 algebra-universal, MI NMI=0.0) confirm algebra-universal null across all statistical orders (C-1436-C-1439)."
+title = "E-201/E-202 decisive experiment: inclination-dependent spectral slope, Q3 artifact falsified, algebra-universal null"
