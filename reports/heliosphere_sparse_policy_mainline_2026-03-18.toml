@@ -1,4 +1,4 @@
-generated_at_utc = "2026-03-18T18:40:37.360831254+00:00"
+generated_at_utc = "2026-03-18T19:16:48.626734681+00:00"
 repo_root = "."
 horizon_hours = 24
 grid = 1024
@@ -121,17 +121,6 @@ median_lead_time_hours = 11.5
 [[cubes.seeded_policies]]
 split_seed = 0
 normalization_strategy = "mission_quiet"
-descriptor_profile = "full"
-active_rows = 7379
-active_fraction = 0.1558822908084585
-event_label_recall = 0.6164383561643836
-event_label_precision = 0.036590323892126304
-sparse_bf16_aa_projected_gib = 10.911765098571777
-median_lead_time_hours = 8.5
-
-[[cubes.seeded_policies]]
-split_seed = 0
-normalization_strategy = "mission_quiet"
 descriptor_profile = "delta_associator"
 active_rows = 5969
 active_fraction = 0.12609586581321167
@@ -150,17 +139,6 @@ event_label_recall = 0.4840182648401826
 event_label_precision = 0.029021218343600275
 sparse_bf16_aa_projected_gib = 10.802350044250488
 median_lead_time_hours = 11.5
-
-[[cubes.seeded_policies]]
-split_seed = 0
-normalization_strategy = "mission_product_quiet"
-descriptor_profile = "invariants_only"
-active_rows = 7728
-active_fraction = 0.16325495912288485
-event_label_recall = 0.5114155251141552
-event_label_precision = 0.028985507246376812
-sparse_bf16_aa_projected_gib = 11.427865028381348
-median_lead_time_hours = 6.0
 
 [[cubes.seeded_policies]]
 split_seed = 0
@@ -196,48 +174,70 @@ sparse_bf16_aa_projected_gib = 11.393852233886719
 median_lead_time_hours = 6.0
 
 [[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 7728
+active_fraction = 0.16325495912288485
+event_label_recall = 0.5114155251141552
+event_label_precision = 0.028985507246376812
+sparse_bf16_aa_projected_gib = 11.427865028381348
+median_lead_time_hours = 6.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 7379
+active_fraction = 0.1558822908084585
+event_label_recall = 0.6164383561643836
+event_label_precision = 0.036590323892126304
+sparse_bf16_aa_projected_gib = 10.911765098571777
+median_lead_time_hours = 8.5
+
+[[cubes.seeded_policies]]
 split_seed = 1
 normalization_strategy = "mission_product_quiet"
 descriptor_profile = "invariants_only"
-active_rows = 7805
-active_fraction = 0.16488159367936286
-event_label_recall = 0.4954337899543379
-event_label_precision = 0.02780269058295964
-sparse_bf16_aa_projected_gib = 11.541719436645508
-median_lead_time_hours = 5.0
+active_rows = 7315
+active_fraction = 0.15453028286541184
+event_label_recall = 0.4703196347031963
+event_label_precision = 0.02816131237183869
+sparse_bf16_aa_projected_gib = 10.817136764526367
+median_lead_time_hours = 6.0
 
 [[cubes.seeded_policies]]
 split_seed = 1
 normalization_strategy = "mission_quiet"
 descriptor_profile = "full"
-active_rows = 7301
-active_fraction = 0.1542345311278704
-event_label_recall = 0.6095890410958904
-event_label_precision = 0.036570332831119025
-sparse_bf16_aa_projected_gib = 10.796442031860352
-median_lead_time_hours = 8.0
+active_rows = 7413
+active_fraction = 0.15660054502820203
+event_label_recall = 0.5136986301369864
+event_label_precision = 0.030352084176446782
+sparse_bf16_aa_projected_gib = 10.962066650390625
+median_lead_time_hours = 11.0
 
 [[cubes.seeded_policies]]
 split_seed = 2
 normalization_strategy = "mission_product_quiet"
 descriptor_profile = "invariants_only"
-active_rows = 7821
-active_fraction = 0.16521959566512454
-event_label_recall = 0.5068493150684932
-event_label_precision = 0.02838511699271193
-sparse_bf16_aa_projected_gib = 11.565384864807129
-median_lead_time_hours = 5.0
+active_rows = 7288
+active_fraction = 0.15395990451443903
+event_label_recall = 0.4840182648401826
+event_label_precision = 0.029088913282107574
+sparse_bf16_aa_projected_gib = 10.777215957641602
+median_lead_time_hours = 6.0
 
 [[cubes.seeded_policies]]
 split_seed = 2
 normalization_strategy = "mission_quiet"
 descriptor_profile = "full"
-active_rows = 5840
-active_fraction = 0.12337072480300822
-event_label_recall = 0.6232876712328768
-event_label_precision = 0.046746575342465756
-sparse_bf16_aa_projected_gib = 8.635978698730469
-median_lead_time_hours = 8.0
+active_rows = 5156
+active_fraction = 0.10892113991169698
+event_label_recall = 0.5319634703196348
+event_label_precision = 0.045190069821567105
+sparse_bf16_aa_projected_gib = 7.624506950378418
+median_lead_time_hours = 11.0
 
 [[cubes.aggregates]]
 policy_key = "global_quiet|associator_only"
@@ -350,14 +350,14 @@ normalization_strategy = "mission_product_quiet"
 descriptor_profile = "invariants_only"
 seed_count = 3
 seeds_within_budget = 3
-mean_active_fraction = 0.1644520494891241
-max_active_fraction = 0.16521959566512454
-mean_event_label_recall = 0.5045662100456622
+mean_active_fraction = 0.15724838216757858
+max_active_fraction = 0.16325495912288485
+mean_event_label_recall = 0.4885844748858448
 max_event_label_recall = 0.5114155251141552
-mean_event_label_precision = 0.028391104940682792
-mean_projected_gib = 11.511656443277994
-max_projected_gib = 11.565384864807129
-mean_lead_time_hours = 5.333333333333333
+mean_event_label_precision = 0.028745244300107692
+mean_projected_gib = 11.007405916849772
+max_projected_gib = 11.427865028381348
+mean_lead_time_hours = 6.0
 
 [[cubes.aggregates]]
 policy_key = "mission_quiet|associator_only"
@@ -395,14 +395,14 @@ normalization_strategy = "mission_quiet"
 descriptor_profile = "full"
 seed_count = 3
 seeds_within_budget = 3
-mean_active_fraction = 0.14449584891311237
-max_active_fraction = 0.1558822908084585
-mean_event_label_recall = 0.6164383561643836
-max_event_label_recall = 0.6232876712328768
-mean_event_label_precision = 0.039969077355237026
-mean_projected_gib = 10.114728609720865
-max_projected_gib = 10.911765098571777
-mean_lead_time_hours = 8.166666666666666
+mean_active_fraction = 0.14046799191611917
+max_active_fraction = 0.15660054502820203
+mean_event_label_recall = 0.5540334855403349
+max_event_label_recall = 0.6164383561643836
+mean_event_label_precision = 0.03737749263004673
+mean_projected_gib = 9.83277956644694
+max_projected_gib = 10.962066650390625
+mean_lead_time_hours = 10.166666666666666
 
 [[cubes.aggregates]]
 policy_key = "mission_quiet|invariants_only"
@@ -426,9 +426,9 @@ positive_sample_count = 0
 supervised = false
 promoted_survives_cube = false
 blockers = [
-    "promoted_policy_exceeds_budget:max_projected_gib=70.000000",
-    "promoted_policy_not_budget_stable:0/1",
-    "unsupervised_cube_memory_regression:70.000000>68.585882",
+    "promoted_policy_exceeds_budget:max_projected_gib=37.474756",
+    "promoted_policy_not_budget_stable:0/3",
+    "unsupervised_cube_memory_regression:33.939406>31.582510",
 ]
 
 [[cubes.baseline_policies]]
@@ -517,16 +517,6 @@ sparse_bf16_aa_projected_gib = 70.0
 [[cubes.seeded_policies]]
 split_seed = 0
 normalization_strategy = "mission_quiet"
-descriptor_profile = "full"
-active_rows = 99
-active_fraction = 1.0
-event_label_recall = 0.0
-event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 70.0
-
-[[cubes.seeded_policies]]
-split_seed = 0
-normalization_strategy = "mission_quiet"
 descriptor_profile = "delta_associator"
 active_rows = 99
 active_fraction = 1.0
@@ -543,16 +533,6 @@ active_fraction = 1.0
 event_label_recall = 0.0
 event_label_precision = 0.0
 sparse_bf16_aa_projected_gib = 70.0
-
-[[cubes.seeded_policies]]
-split_seed = 0
-normalization_strategy = "mission_product_quiet"
-descriptor_profile = "invariants_only"
-active_rows = 97
-active_fraction = 0.9797979797979798
-event_label_recall = 0.0
-event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 68.58588218688965
 
 [[cubes.seeded_policies]]
 split_seed = 0
@@ -583,6 +563,66 @@ active_fraction = 0.5959595959595959
 event_label_recall = 0.0
 event_label_precision = 0.0
 sparse_bf16_aa_projected_gib = 41.71717643737793
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 37
+active_fraction = 0.37373737373737376
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 26.161646842956543
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 41
+active_fraction = 0.41414141414141414
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 28.98991584777832
+
+[[cubes.seeded_policies]]
+split_seed = 1
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 49
+active_fraction = 0.494949494949495
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 34.64648723602295
+
+[[cubes.seeded_policies]]
+split_seed = 1
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 53
+active_fraction = 0.5353535353535354
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 37.47475624084473
+
+[[cubes.seeded_policies]]
+split_seed = 2
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 48
+active_fraction = 0.48484848484848486
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 33.9393949508667
+
+[[cubes.seeded_policies]]
+split_seed = 2
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 50
+active_fraction = 0.5050505050505051
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 35.353546142578125
 
 [[cubes.aggregates]]
 policy_key = "global_quiet|associator_only"
@@ -686,15 +726,15 @@ max_projected_gib = 60.80810070037842
 policy_key = "mission_product_quiet|invariants_only"
 normalization_strategy = "mission_product_quiet"
 descriptor_profile = "invariants_only"
-seed_count = 1
+seed_count = 3
 seeds_within_budget = 0
-mean_active_fraction = 0.9797979797979798
-max_active_fraction = 0.9797979797979798
+mean_active_fraction = 0.4511784511784512
+max_active_fraction = 0.494949494949495
 mean_event_label_recall = 0.0
 max_event_label_recall = 0.0
 mean_event_label_precision = 0.0
-mean_projected_gib = 68.58588218688965
-max_projected_gib = 68.58588218688965
+mean_projected_gib = 31.5825096766154
+max_projected_gib = 34.64648723602295
 
 [[cubes.aggregates]]
 policy_key = "mission_quiet|associator_only"
@@ -728,15 +768,15 @@ max_projected_gib = 70.0
 policy_key = "mission_quiet|full"
 normalization_strategy = "mission_quiet"
 descriptor_profile = "full"
-seed_count = 1
+seed_count = 3
 seeds_within_budget = 0
-mean_active_fraction = 1.0
-max_active_fraction = 1.0
+mean_active_fraction = 0.48484848484848486
+max_active_fraction = 0.5353535353535354
 mean_event_label_recall = 0.0
 max_event_label_recall = 0.0
 mean_event_label_precision = 0.0
-mean_projected_gib = 70.0
-max_projected_gib = 70.0
+mean_projected_gib = 33.939406077067055
+max_projected_gib = 37.47475624084473
 
 [[cubes.aggregates]]
 policy_key = "mission_quiet|invariants_only"
@@ -759,9 +799,9 @@ positive_sample_count = 0
 supervised = false
 promoted_survives_cube = false
 blockers = [
-    "promoted_policy_exceeds_budget:max_projected_gib=70.000000",
-    "promoted_policy_not_budget_stable:0/1",
-    "unsupervised_cube_memory_regression:70.000000>69.986682",
+    "promoted_policy_exceeds_budget:max_projected_gib=29.175301",
+    "promoted_policy_not_budget_stable:0/3",
+    "unsupervised_cube_memory_regression:26.687015>25.437876",
 ]
 
 [[cubes.baseline_policies]]
@@ -850,16 +890,6 @@ sparse_bf16_aa_projected_gib = 69.98668193817139
 [[cubes.seeded_policies]]
 split_seed = 0
 normalization_strategy = "mission_quiet"
-descriptor_profile = "full"
-active_rows = 20977
-active_fraction = 1.0
-event_label_recall = 0.0
-event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 70.0
-
-[[cubes.seeded_policies]]
-split_seed = 0
-normalization_strategy = "mission_quiet"
 descriptor_profile = "delta_associator"
 active_rows = 20973
 active_fraction = 0.9998093149640082
@@ -870,6 +900,36 @@ sparse_bf16_aa_projected_gib = 69.98668193817139
 [[cubes.seeded_policies]]
 split_seed = 0
 normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
 descriptor_profile = "associator_only"
 active_rows = 20973
 active_fraction = 0.9998093149640082
@@ -881,41 +941,61 @@ sparse_bf16_aa_projected_gib = 69.98668193817139
 split_seed = 0
 normalization_strategy = "mission_product_quiet"
 descriptor_profile = "invariants_only"
-active_rows = 20973
-active_fraction = 0.9998093149640082
+active_rows = 6196
+active_fraction = 0.29537112075129907
 event_label_recall = 0.0
 event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 69.98668193817139
+sparse_bf16_aa_projected_gib = 20.67600727081299
 
 [[cubes.seeded_policies]]
 split_seed = 0
-normalization_strategy = "mission_product_quiet"
+normalization_strategy = "mission_quiet"
 descriptor_profile = "full"
-active_rows = 20977
-active_fraction = 1.0
+active_rows = 6706
+active_fraction = 0.3196834628402536
 event_label_recall = 0.0
 event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 70.0
+sparse_bf16_aa_projected_gib = 22.377848625183105
 
 [[cubes.seeded_policies]]
-split_seed = 0
+split_seed = 1
 normalization_strategy = "mission_product_quiet"
-descriptor_profile = "delta_associator"
-active_rows = 20973
-active_fraction = 0.9998093149640082
+descriptor_profile = "invariants_only"
+active_rows = 8165
+active_fraction = 0.38923582971826287
 event_label_recall = 0.0
 event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 69.98668193817139
+sparse_bf16_aa_projected_gib = 27.2465181350708
 
 [[cubes.seeded_policies]]
-split_seed = 0
-normalization_strategy = "mission_product_quiet"
-descriptor_profile = "associator_only"
-active_rows = 20973
-active_fraction = 0.9998093149640082
+split_seed = 1
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 8543
+active_fraction = 0.407255565619488
 event_label_recall = 0.0
 event_label_precision = 0.0
-sparse_bf16_aa_projected_gib = 69.98668193817139
+sparse_bf16_aa_projected_gib = 28.507895469665527
+
+[[cubes.seeded_policies]]
+split_seed = 2
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 8508
+active_fraction = 0.40558707155455975
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 28.391103744506836
+
+[[cubes.seeded_policies]]
+split_seed = 2
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 8743
+active_fraction = 0.41678981741907806
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 29.17530059814453
 
 [[cubes.aggregates]]
 policy_key = "global_quiet|associator_only"
@@ -1019,15 +1099,15 @@ max_projected_gib = 70.0
 policy_key = "mission_product_quiet|invariants_only"
 normalization_strategy = "mission_product_quiet"
 descriptor_profile = "invariants_only"
-seed_count = 1
+seed_count = 3
 seeds_within_budget = 0
-mean_active_fraction = 0.9998093149640082
-max_active_fraction = 0.9998093149640082
+mean_active_fraction = 0.3633980073413739
+max_active_fraction = 0.40558707155455975
 mean_event_label_recall = 0.0
 max_event_label_recall = 0.0
 mean_event_label_precision = 0.0
-mean_projected_gib = 69.98668193817139
-max_projected_gib = 69.98668193817139
+mean_projected_gib = 25.437876383463543
+max_projected_gib = 28.391103744506836
 
 [[cubes.aggregates]]
 policy_key = "mission_quiet|associator_only"
@@ -1061,15 +1141,15 @@ max_projected_gib = 69.98668193817139
 policy_key = "mission_quiet|full"
 normalization_strategy = "mission_quiet"
 descriptor_profile = "full"
-seed_count = 1
+seed_count = 3
 seeds_within_budget = 0
-mean_active_fraction = 1.0
-max_active_fraction = 1.0
+mean_active_fraction = 0.3812429486262732
+max_active_fraction = 0.41678981741907806
 mean_event_label_recall = 0.0
 max_event_label_recall = 0.0
 mean_event_label_precision = 0.0
-mean_projected_gib = 70.0
-max_projected_gib = 70.0
+mean_projected_gib = 26.687014897664387
+max_projected_gib = 29.17530059814453
 
 [[cubes.aggregates]]
 policy_key = "mission_quiet|invariants_only"

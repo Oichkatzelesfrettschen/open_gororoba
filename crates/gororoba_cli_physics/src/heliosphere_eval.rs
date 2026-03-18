@@ -142,6 +142,30 @@ pub struct SeededSparsePolicySummary {
     pub median_lead_time_hours: Option<f64>,
 }
 
+/// Configuration for one sparse-policy transfer evaluation.
+#[derive(Debug, Clone)]
+pub struct SparsePolicyTransferSpec<'a> {
+    pub horizon_hours: i64,
+    pub grid: usize,
+    pub split_seed: u64,
+    pub normalization_strategy: &'a str,
+    pub descriptor_profile: &'a str,
+}
+
+/// Cached label-joined context for sparse-policy fitting or transfer.
+#[derive(Debug, Clone)]
+pub struct SparsePolicyDatasetContext {
+    positive_sample_count: usize,
+    samples: Vec<LabeledInvariantSample>,
+}
+
+impl SparsePolicyDatasetContext {
+    /// Number of positive labeled samples available in this prepared context.
+    pub fn positive_sample_count(&self) -> usize {
+        self.positive_sample_count
+    }
+}
+
 /// Label-coverage summary for one mission/product lane.
 #[derive(Debug, Clone, Serialize)]
 pub struct LabelCoverageRow {
@@ -248,6 +272,15 @@ enum SparsePolicyKind {
 struct ThresholdedSparsePolicy {
     name: &'static str,
     mask: BTreeMap<RowKey, bool>,
+}
+
+#[derive(Debug, Clone)]
+struct FittedSparsePolicyProfile {
+    name: &'static str,
+    scaler: ScaledFeatureSet,
+    model: LogisticModel,
+    threshold: f64,
+    descriptor_profile: Option<DescriptorProfile>,
 }
 
 /// Load heliosphere feature rows from a CSV cube.
@@ -396,6 +429,21 @@ pub fn build_labeled_samples(
     });
     let split_summary = mission_splits(&output);
     Ok((output, split_summary))
+}
+
+/// Build and cache the label-joined invariant samples for repeated sparse-policy
+/// transfer evaluation.
+pub fn build_sparse_policy_dataset_context(
+    rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+    horizon_hours: i64,
+) -> Result<SparsePolicyDatasetContext> {
+    let (samples, _) = build_labeled_samples(rows, cache_root, horizon_hours)?;
+    let positive_sample_count = samples.iter().filter(|sample| sample.label_positive).count();
+    Ok(SparsePolicyDatasetContext {
+        positive_sample_count,
+        samples,
+    })
 }
 
 /// Summarize official label coverage for each mission/product lane.
@@ -1089,6 +1137,119 @@ pub fn summarize_targeted_seeded_sparse_policy(
     ))
 }
 
+/// Seeded transfer evaluation for one targeted sparse-policy configuration.
+///
+/// The policy is fit on `training_rows` and then applied unchanged to
+/// `target_rows`, which is the correct cross-cube evaluation path for unlabeled
+/// transfer cubes.
+pub fn summarize_transferred_seeded_sparse_policy(
+    training_rows: &[HeliosphereFeatureRow],
+    target_rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+    spec: &SparsePolicyTransferSpec<'_>,
+) -> Result<(usize, SeededSparsePolicySummary)> {
+    let training_context =
+        build_sparse_policy_dataset_context(training_rows, cache_root, spec.horizon_hours)?;
+    let target_context =
+        build_sparse_policy_dataset_context(target_rows, cache_root, spec.horizon_hours)?;
+    summarize_transferred_seeded_sparse_policy_from_contexts(&training_context, &target_context, spec)
+}
+
+/// Cached-context version of sparse-policy transfer evaluation.
+pub fn summarize_transferred_seeded_sparse_policy_from_contexts(
+    training: &SparsePolicyDatasetContext,
+    target: &SparsePolicyDatasetContext,
+    spec: &SparsePolicyTransferSpec<'_>,
+) -> Result<(usize, SeededSparsePolicySummary)> {
+    let strategy = NormalizationStrategy::from_label(spec.normalization_strategy).with_context(|| {
+        format!(
+            "unknown normalization strategy '{}'",
+            spec.normalization_strategy
+        )
+    })?;
+    let descriptor = if spec.descriptor_profile == "invariants_only" {
+        None
+    } else {
+        Some(
+            DescriptorProfile::from_label(spec.descriptor_profile).with_context(|| {
+                format!("unknown descriptor profile '{}'", spec.descriptor_profile)
+            })?,
+        )
+    };
+    let training_normalized = build_normalized_samples_with_strategy_and_seed(
+        &training.samples,
+        strategy,
+        spec.split_seed,
+    );
+    let fitted = fit_sparse_budget_policy_profile_model_with_seed(
+        &training.samples,
+        &training_normalized,
+        descriptor,
+        spec.grid,
+        12.0,
+        spec.split_seed,
+    )?;
+    let target_normalized =
+        build_normalized_samples_with_strategy_and_seed(&target.samples, strategy, spec.split_seed);
+    let target_refs = target.samples.iter().collect::<Vec<_>>();
+    let target_matrix = feature_matrix_with_descriptor_profile(
+        &target_refs,
+        ViewMode::Normalized,
+        &target_normalized,
+        fitted.descriptor_profile,
+    );
+    let target_scaled = apply_scaler(&fitted.scaler, &target_matrix);
+    let target_scores = predict_scores(&fitted.model, &target_scaled);
+    let active_index = target
+        .samples
+        .iter()
+        .zip(target_scores)
+        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= fitted.threshold))
+        .collect::<BTreeMap<_, _>>();
+    let label_index = label_index(&target.samples);
+    let time_index = target
+        .samples
+        .iter()
+        .map(|sample| (sample.key.clone(), sample.timestamp_utc.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let summary = sparse_summary_from_active_index(
+        &active_index,
+        target.samples.len(),
+        &label_index,
+        &time_index,
+    );
+    let projected_gib = estimate_sparse_execution_plan(
+        spec.grid,
+        summary.active_fraction,
+        None,
+        SparseHardwareEnvelope {
+            cuda_vram_budget_bytes: None,
+            cuda_l2_bytes: None,
+            cuda_shared_mem_per_block: None,
+            cuda_managed_memory: None,
+            cuda_concurrent_managed_access: None,
+            cpu_l3_safe_working_set_bytes: None,
+            prefer_sparse_tile: false,
+        },
+    )
+    .memory
+    .sparse_bf16_aa_projected_gib;
+    Ok((
+        target.positive_sample_count,
+        SeededSparsePolicySummary {
+            split_seed: spec.split_seed,
+            normalization_strategy: spec.normalization_strategy.to_string(),
+            descriptor_profile: spec.descriptor_profile.to_string(),
+            active_rows: summary.active_rows,
+            active_fraction: summary.active_fraction,
+            event_label_recall: summary.event_label_recall,
+            event_label_precision: summary.event_label_precision,
+            sparse_bf16_aa_projected_gib: projected_gib,
+            median_lead_time_hours: summary.median_lead_time_hours,
+        },
+    ))
+}
+
 /// Return the algebra-derived event mask for each invariant sample.
 pub fn algebra_event_mask(samples: &[LabeledInvariantSample]) -> Vec<(RowKey, bool)> {
     let mut grouped: BTreeMap<(String, String, String), Vec<&LabeledInvariantSample>> =
@@ -1715,6 +1876,42 @@ fn fit_sparse_budget_policy_profile_with_seed(
     budget_gib: f64,
     split_seed: u64,
 ) -> Result<ThresholdedSparsePolicy> {
+    let fitted = fit_sparse_budget_policy_profile_model_with_seed(
+        samples,
+        normalized,
+        descriptor_profile,
+        grid,
+        budget_gib,
+        split_seed,
+    )?;
+    let all_samples = samples.iter().collect::<Vec<_>>();
+    let all_matrix = feature_matrix_with_descriptor_profile(
+        &all_samples,
+        ViewMode::Normalized,
+        normalized,
+        descriptor_profile,
+    );
+    let all_scaled = apply_scaler(&fitted.scaler, &all_matrix);
+    let all_scores = predict_scores(&fitted.model, &all_scaled);
+    let mask = samples
+        .iter()
+        .zip(all_scores)
+        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= fitted.threshold))
+        .collect::<BTreeMap<_, _>>();
+    Ok(ThresholdedSparsePolicy {
+        name: fitted.name,
+        mask,
+    })
+}
+
+fn fit_sparse_budget_policy_profile_model_with_seed(
+    samples: &[LabeledInvariantSample],
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    descriptor_profile: Option<DescriptorProfile>,
+    grid: usize,
+    budget_gib: f64,
+    split_seed: u64,
+) -> Result<FittedSparsePolicyProfile> {
     let splits = split_samples_with_seed(samples, split_seed);
     let name = match descriptor_profile {
         None => "invariant_budget_policy",
@@ -1736,17 +1933,9 @@ fn fit_sparse_budget_policy_profile_with_seed(
         normalized,
         descriptor_profile,
     );
-    let all_samples = samples.iter().collect::<Vec<_>>();
-    let all_matrix = feature_matrix_with_descriptor_profile(
-        &all_samples,
-        ViewMode::Normalized,
-        normalized,
-        descriptor_profile,
-    );
     let scaler = fit_scaler(&train);
     let train_scaled = apply_scaler(&scaler, &train);
     let validation_scaled = apply_scaler(&scaler, &validation);
-    let all_scaled = apply_scaler(&scaler, &all_matrix);
     let model = train_logistic_model(&train_scaled, &binary_labels(&splits.train), 0.02, 300, 1e-3);
     let validation_scores = predict_scores(&model, &validation_scaled);
     let validation_labels = splits
@@ -1755,13 +1944,13 @@ fn fit_sparse_budget_policy_profile_with_seed(
         .map(|sample| sample.label_positive)
         .collect::<Vec<_>>();
     let threshold = best_budgeted_threshold(&validation_scores, &validation_labels, grid, budget_gib);
-    let all_scores = predict_scores(&model, &all_scaled);
-    let mask = samples
-        .iter()
-        .zip(all_scores)
-        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= threshold))
-        .collect::<BTreeMap<_, _>>();
-    Ok(ThresholdedSparsePolicy { name, mask })
+    Ok(FittedSparsePolicyProfile {
+        name,
+        scaler,
+        model,
+        threshold,
+        descriptor_profile,
+    })
 }
 
 fn thresholded_sparse_policy_summary(

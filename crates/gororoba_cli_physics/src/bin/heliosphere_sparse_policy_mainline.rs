@@ -2,8 +2,9 @@ use anyhow::{Context, Result};
 use chrono::Utc;
 use clap::Parser;
 use gororoba_cli_physics::heliosphere_eval::{
-    SeededSparsePolicySummary, SparseMaskSummary, load_heliosphere_rows, summarize_sparse_policies,
-    summarize_seeded_sparse_policy_rows, summarize_targeted_seeded_sparse_policy,
+    SeededSparsePolicySummary, SparseMaskSummary, SparsePolicyDatasetContext, SparsePolicyTransferSpec,
+    build_sparse_policy_dataset_context, load_heliosphere_rows, summarize_seeded_sparse_policy_rows,
+    summarize_sparse_policies,
 };
 use serde::Serialize;
 use std::{collections::BTreeMap, fs, path::PathBuf};
@@ -106,6 +107,7 @@ fn main() -> Result<()> {
     let cache_root = cli.repo_root.join("data/external");
     let mut cubes = Vec::new();
     let mut raw_rows_by_cube = BTreeMap::<String, Vec<data_core::HeliosphereFeatureRow>>::new();
+    let mut policy_contexts = BTreeMap::<String, SparsePolicyDatasetContext>::new();
     for cube_csv in &cube_csvs {
         let rows = load_heliosphere_rows(cube_csv)?;
         let cube_name = cube_name(cube_csv);
@@ -133,42 +135,52 @@ fn main() -> Result<()> {
         raw_rows_by_cube.insert(cube_name, rows);
     }
 
+    for (cube_name, rows) in &raw_rows_by_cube {
+        if let Ok(context) = build_sparse_policy_dataset_context(rows, &cache_root, cli.horizon_hours) {
+            policy_contexts.insert(cube_name.clone(), context);
+        }
+    }
+
     let reference_cube_name = choose_reference_cube(&cubes);
     let comparator_policy_key = "mission_product_quiet|invariants_only".to_string();
     let promoted_policy_key =
         select_promoted_policy(&cubes, &reference_cube_name, &comparator_policy_key);
-    for cube in &mut cubes {
-        if !cube.supervised || split_seeds.len() <= 1 {
-            continue;
-        }
-        let Some(rows) = raw_rows_by_cube.get(&cube.cube_name) else {
-            continue;
-        };
-        for seed in split_seeds.iter().copied().skip(1) {
-            if let Ok((_positive, comparator_row)) = targeted_seed_row(
-                rows,
-                &cache_root,
-                cli.horizon_hours,
-                cli.grid,
-                seed,
-                &comparator_policy_key,
-            ) {
-                cube.seeded_policies.push(comparator_row);
-            }
-            if let Some(promoted_key) = promoted_policy_key.as_deref()
-                && let Ok((_positive, promoted_row)) = targeted_seed_row(
-                    rows,
-                    &cache_root,
+    if let Some(reference_context) = policy_contexts.get(&reference_cube_name) {
+        for cube in &mut cubes {
+            let Some(target_context) = policy_contexts.get(&cube.cube_name) else {
+                continue;
+            };
+            cube.seeded_policies.retain(|row| {
+                let key = policy_key(row);
+                key != comparator_policy_key
+                    && promoted_policy_key.as_deref().is_none_or(|promoted| key != promoted)
+            });
+            for seed in split_seeds.iter().copied() {
+                if let Ok((_positive, comparator_row)) = transferred_seed_row(
+                    reference_context,
+                    target_context,
+                    &comparator_policy_key,
                     cli.horizon_hours,
                     cli.grid,
                     seed,
-                    promoted_key,
-                )
-            {
-                cube.seeded_policies.push(promoted_row);
+                ) {
+                    cube.seeded_policies.push(comparator_row);
+                }
+                if let Some(promoted_key) = promoted_policy_key.as_deref()
+                    && let Ok((_positive, promoted_row)) = transferred_seed_row(
+                        reference_context,
+                        target_context,
+                        promoted_key,
+                        cli.horizon_hours,
+                        cli.grid,
+                        seed,
+                    )
+                {
+                    cube.seeded_policies.push(promoted_row);
+                }
             }
+            cube.aggregates = aggregate_seeded_policies(&cube.seeded_policies);
         }
-        cube.aggregates = aggregate_seeded_policies(&cube.seeded_policies);
     }
     let mut promotion_survives_all_cubes = promoted_policy_key.is_some();
     for cube in &mut cubes {
@@ -391,25 +403,28 @@ fn evaluate_cube_survival(
     (blockers.is_empty(), blockers)
 }
 
-fn targeted_seed_row(
-    rows: &[data_core::HeliosphereFeatureRow],
-    cache_root: &std::path::Path,
+fn transferred_seed_row(
+    training_context: &SparsePolicyDatasetContext,
+    target_context: &SparsePolicyDatasetContext,
+    policy_key: &str,
     horizon_hours: i64,
     grid: usize,
     seed: u64,
-    policy_key: &str,
 ) -> Result<(usize, SeededSparsePolicySummary)> {
     let (normalization_strategy, descriptor_profile) = policy_key
         .split_once('|')
         .with_context(|| format!("invalid policy key '{policy_key}'"))?;
-    summarize_targeted_seeded_sparse_policy(
-        rows,
-        cache_root,
+    let spec = SparsePolicyTransferSpec {
         horizon_hours,
         grid,
-        seed,
+        split_seed: seed,
         normalization_strategy,
         descriptor_profile,
+    };
+    gororoba_cli_physics::heliosphere_eval::summarize_transferred_seeded_sparse_policy_from_contexts(
+        training_context,
+        target_context,
+        &spec,
     )
 }
 
