@@ -2,7 +2,7 @@
 
 [requirements_narrative]
 authoritative = true
-updated = "2026-02-25"
+updated = "2026-03-18"
 source_markdown_glob = "docs/requirements/*.md (+ selected app README overlays)"
 document_count = 12
 
@@ -97,6 +97,8 @@ Notes:
 - Use `external-redownload-audit` to distinguish reproducible active sources from explicitly blocked sources with deadlines/evidence.
 - Active source rules must use explicit scientific validator refs (no `structure_only` on active entries).
 - `data-semantic-validate` reports pass/fail/unverifiable status for schema and scientific checks (strict mode: `--fail-on-unverifiable true`), while `data-clean` is the Rust-native clean lane for reproducible outputs.
+- Active research binaries often need specific local caches in addition to the generic governance lane. Current examples: `manga-azimuthal-zd-search` expects MaNGA DAP MAPS FITS.gz files under `data/external/manga/maps_cache`, and the NANOGrav free-spectrum audit expects `data/external/nanograv_15yr_kde.zip` plus the extracted `data/external/nanograv_15yr/kde_contents/` tree when README/log cross-checks are desired.
+- The NANOGrav v1.1.0 KDE bundle remains an active semantic validation lane: the repo's current Rust extractor reproduces the checked-in 30-bin table only through its `RawLinear` path, while the Zenodo dataset description says `density.npy` stores log-pdfs. Treat that mismatch as unresolved source reconciliation, not settled upstream truth.
 - Validation snapshot (`2026-02-25`): strict semantic gate passed `29/29` validators with `failed=0` and `unverifiable=0` (`reports/data_semantic_validate_2026-02-25_burndown_step2_postretire.toml`).
 - Origin snapshot (`2026-02-25`): data-origin-audit reports `unknown_count=0`, `strict_unknown_count=0`, and `unclassified_count=0` (`reports/data_origin_audit_2026-02-25_burndown_step2_postretire.toml`).
 """
@@ -174,6 +176,8 @@ cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverif
    - `data-governance-gate` enforces fail-closed policy checks (origin, naming, gitignore, blocked deadlines, unclassified-lane zero).
    - `data-semantic-validate` reports lane-level status as pass/fail/unverifiable for structural plus scientific checks; use `--fail-on-unverifiable true` for strict governance passes.
    - `data-clean` removes reproducible build outputs so regeneration remains deterministic.
+   - Active research binaries often need specific local caches in addition to the generic governance lane. Current examples: `manga-azimuthal-zd-search` expects MaNGA DAP MAPS FITS.gz files under `data/external/manga/maps_cache`, and the NANOGrav free-spectrum audit expects `data/external/nanograv_15yr_kde.zip` plus the extracted `data/external/nanograv_15yr/kde_contents/` tree when README/log cross-checks are desired.
+   - The NANOGrav v1.1.0 KDE bundle remains an active semantic validation lane: the repo's current Rust extractor reproduces the checked-in 30-bin table only through its `RawLinear` path, while the Zenodo dataset description says `density.npy` stores log-pdfs. Treat that mismatch as unresolved source reconciliation, not settled upstream truth.
 - Cargo workflow policy: detect logical threads, divide by two for the worker budget, use that budget for Cargo build parallelism (`CARGO_JOBS`), nextest scheduling (`NEXTEST_TEST_THREADS`), libtest threads (`RUST_TEST_THREADS`), and intra-test worker pools such as Rayon unless a specific lane narrows concurrency further. Required gates also isolate Cargo state per project with `CARGO_HOME=$(pwd)/.cache/cargo-home` and `CARGO_TARGET_DIR=$(pwd)/.cache/gate-target`.
 - Python workflow policy: use `pytest-xdist` for bounded pytest parallelism at the same worker budget, but keep the registry/markdown builder scripts selective and mostly serial unless a specific script proves to be CPU-bound and safe under `concurrent.futures`.
 - Cleanup policy: `make clean` drops `.cache/gate-target/`; `make clean-all` also drops `.cache/cargo-home` for a cold-start dependency refresh.
