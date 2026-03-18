@@ -52,6 +52,10 @@ struct Args {
     #[arg(long, default_value_t = 4)]
     m_max: usize,
 
+    /// Number of normalized radial bins used for cross-galaxy stacked summaries.
+    #[arg(long, default_value_t = 18)]
+    radial_bins: usize,
+
     /// Bootstrap resamples for stacked aligned/unaligned mode amplitudes.
     #[arg(long, default_value_t = 200)]
     stack_bootstrap_resamples: usize,
@@ -59,6 +63,10 @@ struct Args {
     /// Base seed for stacked-mode bootstrap diagnostics.
     #[arg(long, default_value_t = 0xA21A_2004)]
     stack_bootstrap_seed: u64,
+
+    /// Minimum galaxies required for a normalized radial bin to enter stacked summaries.
+    #[arg(long, default_value_t = 4)]
+    min_stacked_galaxies: usize,
 
     /// Ring width in spaxels for annular aggregation.
     #[arg(long, default_value_t = 5.0)]
@@ -110,12 +118,14 @@ struct PixelSample {
     v_circ: f64,
     weight: f64,
     r_kpc: f64,
+    r_norm: f64,
 }
 
 #[derive(Debug, Clone)]
 struct RingSummary {
     ring_idx: usize,
     r_kpc: f64,
+    r_norm: f64,
     n_pixels: usize,
     mean_v_circ_km_s: f64,
     rms_residual_km_s: f64,
@@ -135,10 +145,11 @@ struct GalaxySummary {
 
 #[derive(Debug, Clone)]
 struct StackedModeSummary {
-    ring_idx: usize,
+    radial_bin: usize,
     mode: usize,
     n_galaxies: usize,
     mean_r_kpc: f64,
+    mean_r_norm: f64,
     aligned_abs_km_s: f64,
     aligned_phase_rad: f64,
     aligned_rayleigh_r: f64,
@@ -376,6 +387,7 @@ fn build_ring_samples(
                 v_circ,
                 weight,
                 r_kpc: r_spax * kpc_per_spaxel,
+                r_norm: r_spax / max_r_spax,
             });
         }
     }
@@ -400,6 +412,11 @@ fn summarize_ring(samples: &[PixelSample], ring_idx: usize, m_max: usize) -> Opt
     let r_kpc = samples
         .iter()
         .map(|sample| sample.weight * sample.r_kpc)
+        .sum::<f64>()
+        / sum_w;
+    let r_norm = samples
+        .iter()
+        .map(|sample| sample.weight * sample.r_norm)
         .sum::<f64>()
         / sum_w;
     let rms_residual_km_s = (samples
@@ -437,6 +454,7 @@ fn summarize_ring(samples: &[PixelSample], ring_idx: usize, m_max: usize) -> Opt
     Some(RingSummary {
         ring_idx,
         r_kpc,
+        r_norm,
         n_pixels: samples.len(),
         mean_v_circ_km_s,
         rms_residual_km_s,
@@ -503,6 +521,7 @@ fn write_ring_csv(path: &Path, summaries: &[GalaxySummary], m_max: usize) -> Res
         "plateifu".to_string(),
         "ring_idx".to_string(),
         "r_kpc".to_string(),
+        "r_norm".to_string(),
         "n_pixels".to_string(),
         "mean_v_circ_km_s".to_string(),
         "rms_residual_km_s".to_string(),
@@ -524,6 +543,7 @@ fn write_ring_csv(path: &Path, summaries: &[GalaxySummary], m_max: usize) -> Res
                 galaxy.plateifu.clone(),
                 ring.ring_idx.to_string(),
                 format!("{:.6}", ring.r_kpc),
+                format!("{:.6}", ring.r_norm),
                 ring.n_pixels.to_string(),
                 format!("{:.6}", ring.mean_v_circ_km_s),
                 format!("{:.6}", ring.rms_residual_km_s),
@@ -612,20 +632,31 @@ fn rayleigh_resultant(coeffs: &[Complex64]) -> f64 {
 fn summarize_stacked_modes(
     summaries: &[GalaxySummary],
     m_max: usize,
+    radial_bins: usize,
+    min_stacked_galaxies: usize,
     bootstrap_resamples: usize,
     bootstrap_seed: u64,
 ) -> Vec<StackedModeSummary> {
+    let radial_bins = radial_bins.max(1);
+    let min_stacked_galaxies = min_stacked_galaxies.max(1);
     let mut grouped: BTreeMap<usize, Vec<(&GalaxySummary, &RingSummary)>> = BTreeMap::new();
     for galaxy in summaries {
         for ring in &galaxy.rings {
-            grouped.entry(ring.ring_idx).or_default().push((galaxy, ring));
+            let radial_bin = ((ring.r_norm * radial_bins as f64).floor() as usize)
+                .min(radial_bins.saturating_sub(1));
+            grouped.entry(radial_bin).or_default().push((galaxy, ring));
         }
     }
 
     let mut rows = Vec::new();
-    for (ring_idx, entries) in grouped {
+    for (radial_bin, entries) in grouped {
+        if entries.len() < min_stacked_galaxies {
+            continue;
+        }
         let mean_r_kpc =
             entries.iter().map(|(_, ring)| ring.r_kpc).sum::<f64>() / entries.len() as f64;
+        let mean_r_norm =
+            entries.iter().map(|(_, ring)| ring.r_norm).sum::<f64>() / entries.len() as f64;
         for mode in 0..=m_max {
             let aligned_coeffs: Vec<Complex64> = entries
                 .iter()
@@ -645,21 +676,22 @@ fn summarize_stacked_modes(
             let aligned_sigma = bootstrap_mean_amplitude_sigma(
                 &aligned_coeffs,
                 bootstrap_resamples,
-                bootstrap_seed ^ ((ring_idx as u64) << 16) ^ mode as u64,
+                bootstrap_seed ^ ((radial_bin as u64) << 16) ^ mode as u64,
             );
             let unaligned_sigma = bootstrap_mean_amplitude_sigma(
                 &unaligned_coeffs,
                 bootstrap_resamples,
-                bootstrap_seed ^ (1_u64 << 48) ^ ((ring_idx as u64) << 16) ^ mode as u64,
+                bootstrap_seed ^ (1_u64 << 48) ^ ((radial_bin as u64) << 16) ^ mode as u64,
             );
             let aligned_abs = aligned_mean.norm();
             let unaligned_abs = unaligned_mean.norm();
 
             rows.push(StackedModeSummary {
-                ring_idx,
+                radial_bin,
                 mode,
                 n_galaxies: entries.len(),
                 mean_r_kpc,
+                mean_r_norm,
                 aligned_abs_km_s: aligned_abs,
                 aligned_phase_rad: aligned_mean.arg(),
                 aligned_rayleigh_r: rayleigh_resultant(&aligned_coeffs),
@@ -679,10 +711,11 @@ fn write_stacked_csv(path: &Path, rows: &[StackedModeSummary]) -> Result<()> {
     let mut writer = csv::Writer::from_path(path)
         .with_context(|| format!("create stacked CSV {}", path.display()))?;
     writer.write_record([
-        "ring_idx",
+        "radial_bin",
         "mode",
         "n_galaxies",
         "mean_r_kpc",
+        "mean_r_norm",
         "aligned_abs_km_s",
         "aligned_phase_rad",
         "aligned_rayleigh_r",
@@ -695,10 +728,11 @@ fn write_stacked_csv(path: &Path, rows: &[StackedModeSummary]) -> Result<()> {
     ])?;
     for row in rows {
         writer.write_record([
-            row.ring_idx.to_string(),
+            row.radial_bin.to_string(),
             row.mode.to_string(),
             row.n_galaxies.to_string(),
             format!("{:.6}", row.mean_r_kpc),
+            format!("{:.6}", row.mean_r_norm),
             format!("{:.6}", row.aligned_abs_km_s),
             format!("{:.6}", row.aligned_phase_rad),
             format!("{:.6}", row.aligned_rayleigh_r),
@@ -730,6 +764,11 @@ fn write_summary_toml(
     out.push_str(&format!("maps_cache = \"{}\"\n", args.maps_cache.display()));
     out.push_str(&format!("n_max = {}\n", args.n_max));
     out.push_str(&format!("m_max = {}\n", args.m_max));
+    out.push_str(&format!("radial_bins = {}\n", args.radial_bins));
+    out.push_str(&format!(
+        "min_stacked_galaxies = {}\n",
+        args.min_stacked_galaxies
+    ));
     out.push_str(&format!(
         "stack_bootstrap_resamples = {}\n",
         args.stack_bootstrap_resamples
@@ -909,6 +948,8 @@ fn main() -> Result<()> {
     let stacked_rows = summarize_stacked_modes(
         &summaries,
         args.m_max,
+        args.radial_bins,
+        args.min_stacked_galaxies,
         args.stack_bootstrap_resamples,
         args.stack_bootstrap_seed,
     );
@@ -932,8 +973,16 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::{
-        GalaxySummary, PixelSample, RingSummary, summarize_ring, summarize_stacked_modes,
+        Args, GalaxyOutcome, GalaxySummary, PixelSample, RingSummary, find_maps_path,
+        load_selection_csv, process_galaxy, summarize_ring, summarize_stacked_modes,
     };
+    use std::path::PathBuf;
+
+    fn repo_path(relative: &str) -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../")
+            .join(relative)
+    }
 
     fn sample_ring<F: Fn(f64) -> f64>(n: usize, func: F) -> Vec<PixelSample> {
         (0..n)
@@ -944,6 +993,7 @@ mod tests {
                     v_circ: func(theta),
                     weight: 1.0,
                     r_kpc: 5.0,
+                    r_norm: 0.0,
                 }
             })
             .collect()
@@ -954,6 +1004,7 @@ mod tests {
         let ring = sample_ring(64, |_| 120.0);
         let summary = summarize_ring(&ring, 0, 4).expect("ring summary");
         assert!((summary.mode_abs_km_s[0] - 120.0).abs() < 1e-9);
+        assert!((summary.r_norm - 0.0).abs() < 1e-9);
         for mode in 1..=4 {
             assert!(
                 summary.mode_abs_km_s[mode] < 1e-9,
@@ -980,6 +1031,7 @@ mod tests {
             rings: vec![RingSummary {
                 ring_idx: 0,
                 r_kpc: 5.0,
+                r_norm: 0.15 + pa_deg / 10_000.0,
                 n_pixels: 64,
                 mean_v_circ_km_s: 100.0,
                 rms_residual_km_s: 8.0,
@@ -998,15 +1050,81 @@ mod tests {
                 make_galaxy(135.0),
             ],
             2,
+            4,
+            4,
             0,
             0x55AA,
         );
         let m2 = rows
             .iter()
-            .find(|row| row.ring_idx == 0 && row.mode == 2)
+            .find(|row| row.radial_bin == 0 && row.mode == 2)
             .expect("stacked m2 row");
         assert!(m2.aligned_abs_km_s > 10.0);
         assert!(m2.unaligned_abs_km_s < 1e-9);
         assert!(m2.aligned_rayleigh_r > 0.99);
+    }
+
+    #[test]
+    fn real_cache_subset_produces_finite_stacked_rows_if_available() {
+        let selection = repo_path("data/external/manga/dapall_selection.csv");
+        let maps_cache = repo_path("data/external/manga/maps_cache");
+        if !selection.exists() || !maps_cache.exists() {
+            eprintln!("Skipping: MaNGA selection or maps cache not available locally");
+            return;
+        }
+
+        let args = Args {
+            selection: selection.clone(),
+            maps_cache: maps_cache.clone(),
+            output_dir: repo_path("data/results/e208_test"),
+            n_max: 8,
+            m_max: 4,
+            radial_bins: 18,
+            stack_bootstrap_resamples: 32,
+            stack_bootstrap_seed: 0xA21A_2004,
+            min_stacked_galaxies: 2,
+            ring_width_spaxels: 5.0,
+            min_ring_pixels: 16,
+            min_cos_theta: 0.35,
+            min_inclination_deg: 30.0,
+            max_inclination_deg: 70.0,
+            threads: 0,
+        };
+
+        let galaxies = load_selection_csv(&selection).expect("load selection");
+        let mut summaries = Vec::new();
+        for galaxy in galaxies
+            .into_iter()
+            .filter(|galaxy| find_maps_path(galaxy, &maps_cache).is_some())
+            .take(4)
+        {
+            match process_galaxy(&galaxy, &args).expect("process real-cache galaxy") {
+                GalaxyOutcome::Processed(summary) => summaries.push(summary),
+                GalaxyOutcome::MissingMaps | GalaxyOutcome::NoValidRings => {}
+            }
+        }
+
+        if summaries.len() < 2 {
+            eprintln!("Skipping: insufficient locally cached MaNGA galaxies produced valid rings");
+            return;
+        }
+
+        let stacked = summarize_stacked_modes(
+            &summaries,
+            args.m_max,
+            args.radial_bins,
+            args.min_stacked_galaxies,
+            args.stack_bootstrap_resamples,
+            args.stack_bootstrap_seed,
+        );
+        assert!(!stacked.is_empty(), "expected at least one stacked row from real cache");
+        assert!(stacked.iter().all(|row| {
+            row.mean_r_kpc.is_finite()
+                && row.mean_r_norm.is_finite()
+                && row.aligned_abs_km_s.is_finite()
+                && row.unaligned_abs_km_s.is_finite()
+                && row.aligned_snr.is_finite()
+                && row.unaligned_snr.is_finite()
+        }));
     }
 }
