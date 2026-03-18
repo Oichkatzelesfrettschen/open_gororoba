@@ -1,0 +1,1086 @@
+generated_at_utc = "2026-03-18T18:40:37.360831254+00:00"
+repo_root = "."
+horizon_hours = 24
+grid = 1024
+split_seeds = [
+    0,
+    1,
+    2,
+]
+reference_cube = "heliosphere_feature_cube_modern2020_2026-03-15"
+comparator_policy_key = "mission_product_quiet|invariants_only"
+promoted_policy_key = "mission_quiet|full"
+promotion_survives_all_cubes = false
+registry_update_performed = false
+registry_update_reason = "No registry claim/insight update performed because the promoted sparse-policy candidate did not survive all cubes/seeds under the configured criteria."
+notes = [
+    "The promoted candidate is selected on the reference supervised cube and then evaluated unchanged across all requested cubes and split seeds.",
+    "Supervised cubes use event-label recall under the 12 GiB hard budget as the primary promotion criterion.",
+    "Unsupervised cubes are treated as compression/generalization checks only; they cannot create a positive promotion by themselves.",
+]
+
+[[cubes]]
+cube_name = "heliosphere_feature_cube_modern2020_2026-03-15"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+positive_sample_count = 438
+supervised = true
+promoted_survives_cube = true
+blockers = []
+
+[[cubes.baseline_policies]]
+name = "robust_baseline"
+active_rows = 3382
+active_fraction = 0.07144516974037222
+event_label_recall = 0.09817351598173515
+event_label_precision = 0.0127143701951508
+density_mean = 110.94621052960333
+speed_mean = 391.71438790362333
+temperature_mean = 134250.2208854745
+bmag_mean = 32.08282867633101
+median_lead_time_hours = 78.5
+
+[[cubes.baseline_policies]]
+name = "invariant_budget_policy"
+active_rows = 7771
+active_fraction = 0.16416333945961933
+event_label_recall = 0.5114155251141552
+event_label_precision = 0.028825119032299576
+density_mean = 9.173332713221098
+speed_mean = 410.03751960778646
+temperature_mean = 50501.79556835136
+bmag_mean = 14.476409523760632
+median_lead_time_hours = 6.0
+
+[[cubes.baseline_policies]]
+name = "hybrid_budget_policy"
+active_rows = 7650
+active_fraction = 0.16160719944229673
+event_label_recall = 0.5091324200913242
+event_label_precision = 0.02915032679738562
+density_mean = 8.969284057970778
+speed_mean = 407.4469738959697
+temperature_mean = 49154.757276184966
+bmag_mean = 15.130516407620847
+median_lead_time_hours = 5.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 8327
+active_fraction = 0.17590890846483723
+event_label_recall = 0.7602739726027398
+event_label_precision = 0.039990392698450825
+sparse_bf16_aa_projected_gib = 12.31363296508789
+median_lead_time_hours = 36.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+active_rows = 8614
+active_fraction = 0.18197181908443713
+event_label_recall = 0.7808219178082192
+event_label_precision = 0.03970280938007894
+sparse_bf16_aa_projected_gib = 12.738041877746582
+median_lead_time_hours = 67.5
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 8633
+active_fraction = 0.1823731964425291
+event_label_recall = 0.7876712328767124
+event_label_precision = 0.03996293293177343
+sparse_bf16_aa_projected_gib = 12.766146659851074
+median_lead_time_hours = 69.5
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+active_rows = 8329
+active_fraction = 0.17595115871305744
+event_label_recall = 0.7602739726027398
+event_label_precision = 0.039980790010805616
+sparse_bf16_aa_projected_gib = 12.316603660583496
+median_lead_time_hours = 36.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 4256
+active_fraction = 0.08990852821260326
+event_label_recall = 0.4726027397260274
+event_label_precision = 0.048637218045112784
+sparse_bf16_aa_projected_gib = 6.293601989746094
+median_lead_time_hours = 11.5
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 7379
+active_fraction = 0.1558822908084585
+event_label_recall = 0.6164383561643836
+event_label_precision = 0.036590323892126304
+sparse_bf16_aa_projected_gib = 10.911765098571777
+median_lead_time_hours = 8.5
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 5969
+active_fraction = 0.12609586581321167
+event_label_recall = 0.4931506849315068
+event_label_precision = 0.03618696599095326
+sparse_bf16_aa_projected_gib = 8.826737403869629
+median_lead_time_hours = 12.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+active_rows = 7305
+active_fraction = 0.1543190316243108
+event_label_recall = 0.4840182648401826
+event_label_precision = 0.029021218343600275
+sparse_bf16_aa_projected_gib = 10.802350044250488
+median_lead_time_hours = 11.5
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 7728
+active_fraction = 0.16325495912288485
+event_label_recall = 0.5114155251141552
+event_label_precision = 0.028985507246376812
+sparse_bf16_aa_projected_gib = 11.427865028381348
+median_lead_time_hours = 6.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+active_rows = 7607
+active_fraction = 0.16069881910556225
+event_label_recall = 0.5091324200913242
+event_label_precision = 0.029315104509004864
+sparse_bf16_aa_projected_gib = 11.248922348022461
+median_lead_time_hours = 5.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 7679
+active_fraction = 0.16221982804148974
+event_label_recall = 0.502283105022831
+event_label_precision = 0.028649563745279334
+sparse_bf16_aa_projected_gib = 11.355400085449219
+median_lead_time_hours = 6.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+active_rows = 7705
+active_fraction = 0.16276908126835246
+event_label_recall = 0.5136986301369864
+event_label_precision = 0.029201817001946788
+sparse_bf16_aa_projected_gib = 11.393852233886719
+median_lead_time_hours = 6.0
+
+[[cubes.seeded_policies]]
+split_seed = 1
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 7805
+active_fraction = 0.16488159367936286
+event_label_recall = 0.4954337899543379
+event_label_precision = 0.02780269058295964
+sparse_bf16_aa_projected_gib = 11.541719436645508
+median_lead_time_hours = 5.0
+
+[[cubes.seeded_policies]]
+split_seed = 1
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 7301
+active_fraction = 0.1542345311278704
+event_label_recall = 0.6095890410958904
+event_label_precision = 0.036570332831119025
+sparse_bf16_aa_projected_gib = 10.796442031860352
+median_lead_time_hours = 8.0
+
+[[cubes.seeded_policies]]
+split_seed = 2
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 7821
+active_fraction = 0.16521959566512454
+event_label_recall = 0.5068493150684932
+event_label_precision = 0.02838511699271193
+sparse_bf16_aa_projected_gib = 11.565384864807129
+median_lead_time_hours = 5.0
+
+[[cubes.seeded_policies]]
+split_seed = 2
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 5840
+active_fraction = 0.12337072480300822
+event_label_recall = 0.6232876712328768
+event_label_precision = 0.046746575342465756
+sparse_bf16_aa_projected_gib = 8.635978698730469
+median_lead_time_hours = 8.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|associator_only"
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.17595115871305744
+max_active_fraction = 0.17595115871305744
+mean_event_label_recall = 0.7602739726027398
+max_event_label_recall = 0.7602739726027398
+mean_event_label_precision = 0.039980790010805616
+mean_projected_gib = 12.316603660583496
+max_projected_gib = 12.316603660583496
+mean_lead_time_hours = 36.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|delta_associator"
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.1823731964425291
+max_active_fraction = 0.1823731964425291
+mean_event_label_recall = 0.7876712328767124
+max_event_label_recall = 0.7876712328767124
+mean_event_label_precision = 0.03996293293177343
+mean_projected_gib = 12.766146659851074
+max_projected_gib = 12.766146659851074
+mean_lead_time_hours = 69.5
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|full"
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.18197181908443713
+max_active_fraction = 0.18197181908443713
+mean_event_label_recall = 0.7808219178082192
+max_event_label_recall = 0.7808219178082192
+mean_event_label_precision = 0.03970280938007894
+mean_projected_gib = 12.738041877746582
+max_projected_gib = 12.738041877746582
+mean_lead_time_hours = 67.5
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|invariants_only"
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.17590890846483723
+max_active_fraction = 0.17590890846483723
+mean_event_label_recall = 0.7602739726027398
+max_event_label_recall = 0.7602739726027398
+mean_event_label_precision = 0.039990392698450825
+mean_projected_gib = 12.31363296508789
+max_projected_gib = 12.31363296508789
+mean_lead_time_hours = 36.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|associator_only"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 1
+mean_active_fraction = 0.16276908126835246
+max_active_fraction = 0.16276908126835246
+mean_event_label_recall = 0.5136986301369864
+max_event_label_recall = 0.5136986301369864
+mean_event_label_precision = 0.029201817001946788
+mean_projected_gib = 11.393852233886719
+max_projected_gib = 11.393852233886719
+mean_lead_time_hours = 6.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|delta_associator"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 1
+mean_active_fraction = 0.16221982804148974
+max_active_fraction = 0.16221982804148974
+mean_event_label_recall = 0.502283105022831
+max_event_label_recall = 0.502283105022831
+mean_event_label_precision = 0.028649563745279334
+mean_projected_gib = 11.355400085449219
+max_projected_gib = 11.355400085449219
+mean_lead_time_hours = 6.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|full"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 1
+mean_active_fraction = 0.16069881910556225
+max_active_fraction = 0.16069881910556225
+mean_event_label_recall = 0.5091324200913242
+max_event_label_recall = 0.5091324200913242
+mean_event_label_precision = 0.029315104509004864
+mean_projected_gib = 11.248922348022461
+max_projected_gib = 11.248922348022461
+mean_lead_time_hours = 5.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|invariants_only"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 3
+seeds_within_budget = 3
+mean_active_fraction = 0.1644520494891241
+max_active_fraction = 0.16521959566512454
+mean_event_label_recall = 0.5045662100456622
+max_event_label_recall = 0.5114155251141552
+mean_event_label_precision = 0.028391104940682792
+mean_projected_gib = 11.511656443277994
+max_projected_gib = 11.565384864807129
+mean_lead_time_hours = 5.333333333333333
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|associator_only"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 1
+mean_active_fraction = 0.1543190316243108
+max_active_fraction = 0.1543190316243108
+mean_event_label_recall = 0.4840182648401826
+max_event_label_recall = 0.4840182648401826
+mean_event_label_precision = 0.029021218343600275
+mean_projected_gib = 10.802350044250488
+max_projected_gib = 10.802350044250488
+mean_lead_time_hours = 11.5
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|delta_associator"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 1
+mean_active_fraction = 0.12609586581321167
+max_active_fraction = 0.12609586581321167
+mean_event_label_recall = 0.4931506849315068
+max_event_label_recall = 0.4931506849315068
+mean_event_label_precision = 0.03618696599095326
+mean_projected_gib = 8.826737403869629
+max_projected_gib = 8.826737403869629
+mean_lead_time_hours = 12.0
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|full"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+seed_count = 3
+seeds_within_budget = 3
+mean_active_fraction = 0.14449584891311237
+max_active_fraction = 0.1558822908084585
+mean_event_label_recall = 0.6164383561643836
+max_event_label_recall = 0.6232876712328768
+mean_event_label_precision = 0.039969077355237026
+mean_projected_gib = 10.114728609720865
+max_projected_gib = 10.911765098571777
+mean_lead_time_hours = 8.166666666666666
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|invariants_only"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 1
+mean_active_fraction = 0.08990852821260326
+max_active_fraction = 0.08990852821260326
+mean_event_label_recall = 0.4726027397260274
+max_event_label_recall = 0.4726027397260274
+mean_event_label_precision = 0.048637218045112784
+mean_projected_gib = 6.293601989746094
+max_projected_gib = 6.293601989746094
+mean_lead_time_hours = 11.5
+
+[[cubes]]
+cube_name = "heliosphere_feature_cube_imap2026_2026-03-15"
+cube_csv = "reports/heliosphere_feature_cube_imap2026_2026-03-15.csv"
+positive_sample_count = 0
+supervised = false
+promoted_survives_cube = false
+blockers = [
+    "promoted_policy_exceeds_budget:max_projected_gib=70.000000",
+    "promoted_policy_not_budget_stable:0/1",
+    "unsupervised_cube_memory_regression:70.000000>68.585882",
+]
+
+[[cubes.baseline_policies]]
+name = "robust_baseline"
+active_rows = 17
+active_fraction = 0.1717171717171717
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 7.501008547479537
+speed_mean = 524.3065803660922
+temperature_mean = 240378.0547146536
+bmag_mean = 9.74565268677452
+
+[[cubes.baseline_policies]]
+name = "invariant_budget_policy"
+active_rows = 97
+active_fraction = 0.9797979797979798
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 4.497386896627127
+speed_mean = 489.9138195388319
+temperature_mean = 144940.47392177608
+bmag_mean = 6.953818401663336
+
+[[cubes.baseline_policies]]
+name = "hybrid_budget_policy"
+active_rows = 86
+active_fraction = 0.8686868686868687
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 4.611540859704284
+speed_mean = 492.10850971122017
+temperature_mean = 149265.74793056707
+bmag_mean = 7.025185831497991
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+active_rows = 99
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 97
+active_fraction = 0.9797979797979798
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 68.58588218688965
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+active_rows = 86
+active_fraction = 0.8686868686868687
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 60.80810070037842
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 59
+active_fraction = 0.5959595959595959
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 41.71717643737793
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+active_rows = 59
+active_fraction = 0.5959595959595959
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 41.71717643737793
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|associator_only"
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|delta_associator"
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|full"
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|invariants_only"
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|associator_only"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.5959595959595959
+max_active_fraction = 0.5959595959595959
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 41.71717643737793
+max_projected_gib = 41.71717643737793
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|delta_associator"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.5959595959595959
+max_active_fraction = 0.5959595959595959
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 41.71717643737793
+max_projected_gib = 41.71717643737793
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|full"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.8686868686868687
+max_active_fraction = 0.8686868686868687
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 60.80810070037842
+max_projected_gib = 60.80810070037842
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|invariants_only"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9797979797979798
+max_active_fraction = 0.9797979797979798
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 68.58588218688965
+max_projected_gib = 68.58588218688965
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|associator_only"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|delta_associator"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|full"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|invariants_only"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes]]
+cube_name = "heliosphere_feature_cube_inner1976_2026-03-15"
+cube_csv = "reports/heliosphere_feature_cube_inner1976_2026-03-15.csv"
+positive_sample_count = 0
+supervised = false
+promoted_survives_cube = false
+blockers = [
+    "promoted_policy_exceeds_budget:max_projected_gib=70.000000",
+    "promoted_policy_not_budget_stable:0/1",
+    "unsupervised_cube_memory_regression:70.000000>69.986682",
+]
+
+[[cubes.baseline_policies]]
+name = "robust_baseline"
+active_rows = 27
+active_fraction = 0.0012871239929446536
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 27.37860352832081
+speed_mean = 472.6601384852563
+temperature_mean = 728707.0259899321
+bmag_mean = 18.338068327732387
+
+[[cubes.baseline_policies]]
+name = "invariant_budget_policy"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 22.600920289705986
+speed_mean = 447.9461229867133
+temperature_mean = 208991.06263902478
+bmag_mean = 13.41442992198934
+
+[[cubes.baseline_policies]]
+name = "hybrid_budget_policy"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 22.59427722928513
+speed_mean = 447.87740690282385
+temperature_mean = 208934.88874119183
+bmag_mean = 13.41702136768354
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 70.0
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.seeded_policies]]
+split_seed = 0
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+sparse_bf16_aa_projected_gib = 69.98668193817139
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|associator_only"
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|delta_associator"
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|full"
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "global_quiet|invariants_only"
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|associator_only"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9998093149640082
+max_active_fraction = 0.9998093149640082
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 69.98668193817139
+max_projected_gib = 69.98668193817139
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|delta_associator"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9998093149640082
+max_active_fraction = 0.9998093149640082
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 69.98668193817139
+max_projected_gib = 69.98668193817139
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|full"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_product_quiet|invariants_only"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9998093149640082
+max_active_fraction = 0.9998093149640082
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 69.98668193817139
+max_projected_gib = 69.98668193817139
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|associator_only"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9998093149640082
+max_active_fraction = 0.9998093149640082
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 69.98668193817139
+max_projected_gib = 69.98668193817139
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|delta_associator"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9998093149640082
+max_active_fraction = 0.9998093149640082
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 69.98668193817139
+max_projected_gib = 69.98668193817139
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|full"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 1.0
+max_active_fraction = 1.0
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 70.0
+max_projected_gib = 70.0
+
+[[cubes.aggregates]]
+policy_key = "mission_quiet|invariants_only"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+seed_count = 1
+seeds_within_budget = 0
+mean_active_fraction = 0.9998093149640082
+max_active_fraction = 0.9998093149640082
+mean_event_label_recall = 0.0
+max_event_label_recall = 0.0
+mean_event_label_precision = 0.0
+mean_projected_gib = 69.98668193817139
+max_projected_gib = 69.98668193817139
