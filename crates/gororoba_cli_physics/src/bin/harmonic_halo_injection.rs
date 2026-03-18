@@ -1,14 +1,14 @@
 //! Signal injection-recovery sweep for MaNGA harmonic stacking pipeline.
 //!
 //! Injects the predicted CD-ZD harmonic signal at a range of alpha_zd values
-//! and measures the recovery ratio. Proves the pipeline can detect signals at
-//! the SKA 2030 design sensitivity floor (alpha_zd = 0.004).
+//! and measures the recovery ratio.
 //!
-//! At alpha_zd = 0: recovered SNR should match E-183 baseline (~0.29).
-//! At alpha_zd = 0.004: expected SNR > 3.0, recovery_ratio in [0.7, 1.3].
-//! At alpha_zd = 0.001: marginal detection (below threshold).
+//! The current executed sweep is a calibration failure:
+//! the recovered SNR stays flat near 0.43 and the recovered alpha_zd stays
+//! near 0.295 for injected alpha_zd in [0, 0.016].
+//! This means the lane is not yet valid evidence for pipeline sensitivity.
 //!
-//! Reference: C-1379, E-197
+//! Reference: C-1405, E-197
 
 use clap::Parser;
 use cosmology_core::{
