@@ -58,8 +58,7 @@ impl SparseBrickMap {
             .context("Failed to load sparse map module")?;
 
         let generate_occupancy_kernel = module.load_function("generate_occupancy_bitmask")?;
-        let expand_bitmask_kernel = module.load_function("expand_bitmask_to_counts")?;
-        let build_indirect_table_kernel = module.load_function("build_indirect_table")?;
+        let compact_bitmask_kernel = module.load_function("compact_bitmask_atomic")?;
 
         let brick_grid = BrickGrid3d::from_logical_grid(
             LogicalGrid3d {
@@ -81,6 +80,10 @@ impl SparseBrickMap {
 
         let mut d_occupancy_words = stream.alloc_zeros::<u32>(num_words)?;
         let mut d_brick_counts = stream.alloc_zeros::<u32>(n_bricks)?;
+        let d_brick_offsets = stream.alloc_zeros::<u32>(n_bricks)?;
+        let mut d_indirect_table = stream.alloc_zeros::<i32>(n_bricks)?;
+        let mut d_active_brick_ids = stream.alloc_zeros::<u32>(n_bricks.max(1))?;
+        let mut d_active_brick_count = stream.alloc_zeros::<u32>(1)?;
 
         // 1. Generate Bitmask
         let block = (8, 8, 8);
@@ -111,13 +114,16 @@ impl SparseBrickMap {
             .arg(&bz_max_i);
         unsafe { b1.launch(cfg) }?;
 
-        // 2. Expand Bitmask
+        // 2. Compact active bricks on the GPU.
         let block2 = 256;
         let grid2 = (n_bricks as u32).div_ceil(block2);
         let n_bricks_i = n_bricks as i32;
-        let mut b2 = stream.launch_builder(&expand_bitmask_kernel);
+        let mut b2 = stream.launch_builder(&compact_bitmask_kernel);
         b2.arg(&d_occupancy_words)
             .arg(&mut d_brick_counts)
+            .arg(&mut d_indirect_table)
+            .arg(&mut d_active_brick_ids)
+            .arg(&mut d_active_brick_count)
             .arg(&n_bricks_i);
         unsafe {
             b2.launch(LaunchConfig {
@@ -127,38 +133,9 @@ impl SparseBrickMap {
             })
         }?;
 
-        // 3. Prefix Sum
-        let h_brick_counts = stream.clone_dtoh(&d_brick_counts)?;
-        let mut h_brick_offsets = vec![0u32; n_bricks];
-        let mut total_active = 0;
-        for i in 0..n_bricks {
-            h_brick_offsets[i] = total_active;
-            total_active += h_brick_counts[i];
-        }
-        let n_active_bricks = total_active as usize;
-
-        // Push offsets back to device
-        let d_brick_offsets = stream.clone_htod(&h_brick_offsets)?;
-
-        // 4. Compact Indirect Table
-        let mut d_indirect_table = stream.alloc_zeros::<i32>(n_bricks)?;
-        let mut d_active_brick_ids = stream.alloc_zeros::<u32>(n_active_bricks.max(1))?;
-
-        let mut b3 = stream.launch_builder(&build_indirect_table_kernel);
-        b3.arg(&d_brick_counts)
-            .arg(&d_brick_offsets)
-            .arg(&mut d_indirect_table)
-            .arg(&mut d_active_brick_ids)
-            .arg(&n_bricks_i);
-        unsafe {
-            b3.launch(LaunchConfig {
-                grid_dim: (grid2, 1, 1),
-                block_dim: (block2, 1, 1),
-                shared_mem_bytes: 0,
-            })
-        }?;
-
-        // Ensure synchronization if needed (clone_dtoh/htod does it)
+        // 3. Read back only the active-brick count; compaction itself stayed on GPU.
+        let h_active_counts = stream.clone_dtoh(&d_active_brick_count)?;
+        let n_active_bricks = h_active_counts.first().copied().unwrap_or_default() as usize;
 
         Ok(Self {
             nx,
@@ -191,22 +168,41 @@ impl SparseBrickMap {
 
 const KERNEL_SPARSE_LBM_SRC: &str = include_str!("kernels_sparse_lbm.cu");
 
+/// Sparse-kernel execution variant.
+///
+/// Both variants use the same sparse brick map and A-A storage scheme. The
+/// tiled variant stages one distribution direction at a time through a `10^3`
+/// halo tile in shared memory, while the direct variant reads neighbors
+/// straight from global memory.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum SparseKernelVariant {
+    /// Direct global-memory sparse A-A kernel.
+    #[default]
+    DirectGlobal,
+    /// Shared-memory halo staging for sparse brick pulls, with brick-local
+    /// vectorized fast paths where the inner core is contiguous.
+    SharedHaloTiled,
+}
+
 /// Sparse LBM Solver using the Brick Map and A-A streaming pattern.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SparseMemoryMode {
     /// Keep sparse state in device-local VRAM. This remains the default fast path.
     #[default]
     DeviceLocal,
-    /// Allocate sparse state in CUDA managed memory and prefetch toward the
-    /// active device before stepping. This is a slower overflow fallback.
+    /// Allocate sparse state in CUDA managed/unified memory and prefetch toward
+    /// the active device before stepping. This is the CUDA Unified Memory
+    /// overflow fallback.
     ManagedUnifiedPrefetch,
-    /// Allocate sparse state in CUDA managed memory and step the sparse domain
-    /// in active-brick tiles, prefetching only the current tile to the device.
+    /// Allocate sparse state in CUDA managed/unified memory and step the sparse
+    /// domain in active-brick tiles, prefetching only the current tile to the
+    /// device.
     ///
     /// This is the lower-headroom fallback for runs where the full sparse
     /// working set should remain unified-memory backed, but the hot loop should
     /// stay closer to the planner's per-tile footprint instead of migrating the
-    /// whole window at once.
+    /// whole window at once. In NVIDIA documentation this is unified-memory
+    /// oversubscription plus explicit prefetch/tiling.
     ManagedUnifiedTilePrefetch,
 }
 
@@ -251,6 +247,7 @@ pub struct SparseLbmSolver {
     d_tau: SparseFieldBuffer,
     d_force: SparseFieldBuffer,
     memory_mode: SparseMemoryMode,
+    kernel_variant: SparseKernelVariant,
     prefetch_stream: Option<Arc<CudaStream>>,
 
     pub step: usize,
@@ -283,8 +280,10 @@ impl SparseLbmSolver {
     ///
     /// `DeviceLocal` keeps the sparse state fully in VRAM and remains the
     /// primary fast path. `ManagedUnifiedPrefetch` allocates the sparse state
-    /// in CUDA managed memory and prefetched it toward the active GPU as an
-    /// overflow-safe fallback when VRAM headroom is uncertain.
+    /// in CUDA managed/unified memory and prefetched it toward the active GPU
+    /// as an overflow-safe fallback when VRAM headroom is uncertain. In NVIDIA
+    /// terminology this is unified-memory oversubscription, not ReBAR-based
+    /// "extra VRAM".
     pub fn new_with_mode(map: SparseBrickMap, memory_mode: SparseMemoryMode) -> Result<Self> {
         let n_active_cells = map.n_active_bricks * 512;
         let ctx = map.ctx.clone();
@@ -310,7 +309,11 @@ impl SparseLbmSolver {
             .load_module(ptx)
             .context("Failed to load sparse lbm module")?;
 
-        let lbm_step_kernel = module.load_function("lbm_step_sparse_aa")?;
+        let kernel_variant = preferred_sparse_kernel_variant();
+        let lbm_step_kernel = module.load_function(match kernel_variant {
+            SparseKernelVariant::DirectGlobal => "lbm_step_sparse_aa",
+            SparseKernelVariant::SharedHaloTiled => "lbm_step_sparse_aa_tiled",
+        })?;
         let prefetch_stream = match memory_mode {
             SparseMemoryMode::ManagedUnifiedTilePrefetch => {
                 Some(map.ctx.new_stream().context("create sparse prefetch stream")?)
@@ -326,6 +329,7 @@ impl SparseLbmSolver {
             d_tau,
             d_force,
             memory_mode,
+            kernel_variant,
             prefetch_stream,
             step: 0,
             lbm_step_kernel,
@@ -335,6 +339,11 @@ impl SparseLbmSolver {
     /// Return the active sparse-memory mode.
     pub fn memory_mode(&self) -> SparseMemoryMode {
         self.memory_mode
+    }
+
+    /// Return the active sparse-kernel execution variant.
+    pub fn kernel_variant(&self) -> SparseKernelVariant {
+        self.kernel_variant
     }
 
     pub fn evolve(&mut self, steps: usize) -> Result<()> {
@@ -532,6 +541,26 @@ fn launch_cfg_for_cells(active_cell_count: usize) -> LaunchConfig {
         grid_dim: (grid, 1, 1),
         block_dim: (block, 1, 1),
         shared_mem_bytes: 0,
+    }
+}
+
+fn preferred_sparse_kernel_variant() -> SparseKernelVariant {
+    if let Ok(value) = env::var("GOROROBA_SPARSE_KERNEL") {
+        match value.as_str() {
+            "tiled" | "shared" | "shared-halo" | "shared-halo-tiled" => {
+                return SparseKernelVariant::SharedHaloTiled;
+            }
+            "direct" | "global" | "direct-global" => return SparseKernelVariant::DirectGlobal,
+            _ => {}
+        }
+    }
+    if crate::probe_cuda_device_props()
+        .map(|props| props.sparse_tile_preferred)
+        .unwrap_or(false)
+    {
+        SparseKernelVariant::SharedHaloTiled
+    } else {
+        SparseKernelVariant::DirectGlobal
     }
 }
 

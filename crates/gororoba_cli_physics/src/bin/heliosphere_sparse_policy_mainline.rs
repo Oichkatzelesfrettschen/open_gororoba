@@ -43,6 +43,8 @@ struct PolicyAggregate {
     seeds_within_budget: usize,
     mean_active_fraction: f64,
     max_active_fraction: f64,
+    mean_occupancy_tile_fraction: f64,
+    max_occupancy_tile_fraction: f64,
     mean_event_label_recall: f64,
     max_event_label_recall: f64,
     mean_event_label_precision: f64,
@@ -282,6 +284,16 @@ fn aggregate_seeded_policies(rows: &[SeededSparsePolicySummary]) -> Vec<PolicyAg
                 max_active_fraction: rows
                     .iter()
                     .map(|row| row.active_fraction)
+                    .fold(0.0, f64::max),
+                mean_occupancy_tile_fraction: mean(
+                    &rows
+                        .iter()
+                        .map(|row| row.occupancy_tile_fraction)
+                        .collect::<Vec<_>>(),
+                ),
+                max_occupancy_tile_fraction: rows
+                    .iter()
+                    .map(|row| row.occupancy_tile_fraction)
                     .fold(0.0, f64::max),
                 mean_event_label_recall: mean(
                     &rows

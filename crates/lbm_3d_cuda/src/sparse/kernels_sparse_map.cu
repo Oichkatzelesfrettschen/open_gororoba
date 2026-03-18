@@ -55,8 +55,9 @@ generate_occupancy_bitmask(
 // ---------------------------------------------------------------------------
 // 2. Expand Bitmask to Prefix-Sum Array
 // ---------------------------------------------------------------------------
-// Converts the packed bitmask into an array of 1s and 0s (1 integer per brick)
-// so we can use a standard exclusive scan (prefix sum) to build the Indirect Table.
+// Converts the packed bitmask into an array of 1s and 0s (1 integer per brick).
+// This remains useful for reporting/debugging, but the main compaction path now
+// uses GPU-side atomic packing instead of a host-side prefix-sum roundtrip.
 // Grid: ceil(N_bricks / 256)
 // Block: 256 threads
 extern "C" __global__ void
@@ -76,14 +77,45 @@ expand_bitmask_to_counts(
 }
 
 // ---------------------------------------------------------------------------
-// 3. Compact Indirect Table
+// 3. GPU-Side Atomic Compaction
+// ---------------------------------------------------------------------------
+// Packs active bricks into a dense ID list entirely on the device.
+//
+// This avoids the previous device -> host prefix-sum -> host -> device
+// roundtrip. The active-brick ordering is not semantically significant; the
+// indirect table is the source of truth for brick-local addressing.
+extern "C" __global__ void
+compact_bitmask_atomic(
+    const unsigned int* __restrict__ occupancy_words,
+    unsigned int* __restrict__ brick_counts,
+    int* __restrict__ indirect_table,
+    unsigned int* __restrict__ active_brick_ids,
+    unsigned int* __restrict__ active_brick_count,
+    int n_bricks
+) {
+    int brick_idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (brick_idx >= n_bricks) return;
+
+    int word_idx = brick_idx / 32;
+    int bit_offset = brick_idx % 32;
+    unsigned int word = occupancy_words[word_idx];
+    unsigned int active = (word & (1u << bit_offset)) ? 1u : 0u;
+
+    brick_counts[brick_idx] = active;
+    if (active) {
+        unsigned int pool_idx = atomicAdd(active_brick_count, 1u);
+        indirect_table[brick_idx] = (int)pool_idx;
+        active_brick_ids[pool_idx] = (unsigned int)brick_idx;
+    } else {
+        indirect_table[brick_idx] = -1;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 4. Compact Indirect Table From Offsets
 // ---------------------------------------------------------------------------
 // After performing an exclusive scan on `brick_counts` to get `brick_offsets`,
-// this kernel builds the dense active-brick list.
-//
-// brick_counts:  [1, 0, 1, 1, 0] (from expand_bitmask_to_counts)
-// brick_offsets: [0, 1, 1, 2, 3] (from exclusive scan)
-// indirect_table: Maps global brick_idx -> active brick pool index, or -1 if empty.
+// this kernel builds the dense active-brick list deterministically.
 extern "C" __global__ void
 build_indirect_table(
     const unsigned int* __restrict__ brick_counts,
