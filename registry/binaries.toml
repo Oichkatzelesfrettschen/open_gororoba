@@ -1512,3 +1512,23 @@ description = "Hypothesis A+C: Multi-feature (ha_ew, sersic_n, inclination, sigm
 name = "inclination-injection-calibration"
 crate = "gororoba_cli_physics"
 description = "Hypothesis B: Inclination-stratified injection recovery at 6 alpha_zd levels for 3 inclination bins (30-45, 45-60, 60-70 deg). Calibrates whether PSF smearing drives the injection recovery non-linearity."
+
+[[binary]]
+name = "shmr-scatter-injection"
+crate = "gororoba_cli_physics"
+description = "Contrarian D1: inject harmonic signals after perturbing r_s with SHMR scatter realizations to test whether halo-size uncertainty destroys Fourier recovery."
+
+[[binary]]
+name = "mass-quartile-fourier"
+crate = "gororoba_cli_physics"
+description = "Contrarian D2: stack MaNGA rotation-curve residuals in independent mass quartiles and compare quartile Fourier SNR against the full-sample null."
+
+[[binary]]
+name = "shmr-scatter-injection"
+crate = "gororoba_cli_physics"
+description = "Contrarian D1: SHMR scatter phase-smearing injection test. Injects ZD signal with and without 0.15 dex lognormal r_s perturbation (20 MC realizations) to test whether the null result is robust to stellar-mass-halo-mass relation scatter."
+
+[[binary]]
+name = "mass-quartile-fourier"
+crate = "gororoba_cli_physics"
+description = "Contrarian D2: Mass-quartile independent Fourier stacking. Splits 6995 galaxies into 4 stellar mass quartiles and computes per-quartile Fourier power at CD-ZD wavenumbers to test for mass-localized signals hidden by mass averaging."
