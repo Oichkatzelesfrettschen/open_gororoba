@@ -1,0 +1,46 @@
+generated_at_utc = "2026-03-18T16:57:25.659705900+00:00"
+heliosphere_audit_report = "reports/heliosphere_falsification_audit_modern2020_2026-03-18.toml"
+baseline_null_report = "reports/catalog_feature_null_classification_survey-core_2026-03-18.toml"
+challenge_null_report = "reports/catalog_feature_null_classification_survey-core_support_blind_2026-03-18.toml"
+
+[[heliosphere_verdicts]]
+falsification_id = "normalized_underperforms_raw"
+survives_challenge = true
+baseline_configuration = "raw:raw:delta_associator"
+challenger_configuration = "normalized:global_quiet:delta_associator"
+notes = ["best_raw_auroc=0.768766, best_normalized_auroc=0.765606"]
+
+[[heliosphere_verdicts]]
+falsification_id = "algebra_adds_no_predictive_gain"
+survives_challenge = false
+baseline_configuration = "raw:raw:invariants_only"
+challenger_configuration = "raw:raw:delta_associator"
+notes = ["best_invariant_auroc=0.768184, best_algebra_auroc=0.768766"]
+
+[[heliosphere_verdicts]]
+falsification_id = "algebra_adds_no_sparse_gain"
+survives_challenge = false
+baseline_configuration = "mission_product_quiet:invariants_only"
+challenger_configuration = "mission_quiet:full"
+notes = ["best_invariant_recall=0.511416, best_algebra_recall=0.616438, best_invariant_gib=11.427865, best_algebra_gib=10.911765"]
+
+[[catalog_verdicts]]
+dataset = "Gaia DR3 Nearby"
+baseline_classification = "archive_structure_null"
+challenge_classification = "archive_structure_null"
+survives_challenge = true
+notes = ["challenge_vector_mode=support-blind"]
+
+[[catalog_verdicts]]
+dataset = "HST Public Metadata"
+baseline_classification = "archive_structure_null"
+challenge_classification = "archive_structure_null"
+survives_challenge = true
+notes = ["challenge_vector_mode=support-blind"]
+
+[[catalog_verdicts]]
+dataset = "JWST Public Metadata"
+baseline_classification = "archive_structure_null"
+challenge_classification = "archive_structure_null"
+survives_challenge = true
+notes = ["challenge_vector_mode=support-blind"]

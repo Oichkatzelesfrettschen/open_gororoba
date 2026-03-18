@@ -12,7 +12,7 @@ use data_core::{
     fetch_official_forecast_residuals, heliosphere_row_datetime, labels_to_prediction_windows,
     transform_feature_rows_with_stats,
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
     path::Path,
@@ -95,6 +95,38 @@ pub struct SparseMaskSummary {
     pub median_lead_time_hours: Option<f64>,
 }
 
+/// Predictive robustness row used to challenge a recorded falsification.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CounterfactualPredictiveSummary {
+    pub view_mode: String,
+    pub normalization_strategy: String,
+    pub descriptor_profile: String,
+    pub threshold: f64,
+    pub positive_rows: usize,
+    pub negative_rows: usize,
+    pub predicted_positive_rows: usize,
+    pub auprc: f64,
+    pub auroc: f64,
+    pub precision: f64,
+    pub recall: f64,
+    pub f1: f64,
+    pub false_alert_rate: f64,
+    pub median_lead_time_hours: Option<f64>,
+}
+
+/// Sparse-policy robustness row used to challenge a recorded falsification.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CounterfactualSparseSummary {
+    pub normalization_strategy: String,
+    pub descriptor_profile: String,
+    pub active_rows: usize,
+    pub active_fraction: f64,
+    pub event_label_recall: f64,
+    pub event_label_precision: f64,
+    pub sparse_bf16_aa_projected_gib: f64,
+    pub median_lead_time_hours: Option<f64>,
+}
+
 /// Label-coverage summary for one mission/product lane.
 #[derive(Debug, Clone, Serialize)]
 pub struct LabelCoverageRow {
@@ -135,6 +167,40 @@ struct NormalizedSample {
 enum ViewMode {
     Raw,
     Normalized,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum NormalizationStrategy {
+    Global,
+    Mission,
+    MissionProduct,
+}
+
+impl NormalizationStrategy {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Global => "global_quiet",
+            Self::Mission => "mission_quiet",
+            Self::MissionProduct => "mission_product_quiet",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum DescriptorProfile {
+    Full,
+    DeltaAssociator,
+    AssociatorOnly,
+}
+
+impl DescriptorProfile {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Full => "full",
+            Self::DeltaAssociator => "delta_associator",
+            Self::AssociatorOnly => "associator_only",
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -652,6 +718,70 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
     ])
 }
 
+/// Challenge recorded predictive falsifications with alternate normalization
+/// families and algebra descriptor subsets.
+pub fn evaluate_predictive_counterfactuals(
+    samples: &[LabeledInvariantSample],
+) -> Result<Vec<CounterfactualPredictiveSummary>> {
+    if samples.is_empty() {
+        bail!("no labeled invariant samples available");
+    }
+    let splits = split_samples(samples);
+    if splits.train.is_empty() || splits.validation.is_empty() || splits.test.is_empty() {
+        bail!("need non-empty train/validation/test splits");
+    }
+
+    let mut rows = Vec::new();
+    rows.push(train_counterfactual_predictive_model(
+        &splits,
+        ViewMode::Raw,
+        "raw",
+        None,
+        None,
+    ));
+    for descriptor_profile in [
+        DescriptorProfile::Full,
+        DescriptorProfile::DeltaAssociator,
+        DescriptorProfile::AssociatorOnly,
+    ] {
+        rows.push(train_counterfactual_predictive_model(
+            &splits,
+            ViewMode::Raw,
+            "raw",
+            None,
+            Some(descriptor_profile),
+        ));
+    }
+    for strategy in [
+        NormalizationStrategy::Global,
+        NormalizationStrategy::Mission,
+        NormalizationStrategy::MissionProduct,
+    ] {
+        let normalized = build_normalized_samples_with_strategy(samples, strategy);
+        rows.push(train_counterfactual_predictive_model(
+            &splits,
+            ViewMode::Normalized,
+            strategy.label(),
+            Some(&normalized),
+            None,
+        ));
+        for descriptor_profile in [
+            DescriptorProfile::Full,
+            DescriptorProfile::DeltaAssociator,
+            DescriptorProfile::AssociatorOnly,
+        ] {
+            rows.push(train_counterfactual_predictive_model(
+                &splits,
+                ViewMode::Normalized,
+                strategy.label(),
+                Some(&normalized),
+                Some(descriptor_profile),
+            ));
+        }
+    }
+    Ok(rows)
+}
+
 /// Summarize leave-one-mission-out descriptor stability.
 pub fn summarize_cross_mission_invariance(
     samples: &[LabeledInvariantSample],
@@ -790,6 +920,46 @@ pub fn summarize_sparse_policies(
             &hybrid_policy.mask,
         ),
     ])
+}
+
+/// Challenge sparse-policy falsifications with alternate normalization families
+/// and descriptor subsets under the same hard memory budget.
+pub fn summarize_sparse_policy_counterfactuals(
+    raw_rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+    horizon_hours: i64,
+    grid: usize,
+) -> Result<Vec<CounterfactualSparseSummary>> {
+    let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
+    let mut rows = Vec::new();
+    for strategy in [
+        NormalizationStrategy::Global,
+        NormalizationStrategy::Mission,
+        NormalizationStrategy::MissionProduct,
+    ] {
+        let normalized = build_normalized_samples_with_strategy(&samples, strategy);
+        rows.push(thresholded_sparse_policy_summary(
+            &samples,
+            &normalized,
+            strategy.label(),
+            None,
+            grid,
+        )?);
+        for descriptor_profile in [
+            DescriptorProfile::Full,
+            DescriptorProfile::DeltaAssociator,
+            DescriptorProfile::AssociatorOnly,
+        ] {
+            rows.push(thresholded_sparse_policy_summary(
+                &samples,
+                &normalized,
+                strategy.label(),
+                Some(descriptor_profile),
+                grid,
+            )?);
+        }
+    }
+    Ok(rows)
 }
 
 /// Return the algebra-derived event mask for each invariant sample.
@@ -992,19 +1162,33 @@ fn feature_matrix(
     mode: FeatureMode,
     normalized: &BTreeMap<RowKey, NormalizedSample>,
 ) -> Vec<Vec<f64>> {
+    match mode {
+        FeatureMode::Invariants => {
+            feature_matrix_with_descriptor_profile(samples, view_mode, normalized, None)
+        }
+        FeatureMode::InvariantsAndDescriptors => feature_matrix_with_descriptor_profile(
+            samples,
+            view_mode,
+            normalized,
+            Some(DescriptorProfile::Full),
+        ),
+    }
+}
+
+fn feature_matrix_with_descriptor_profile(
+    samples: &[&LabeledInvariantSample],
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    descriptor_profile: Option<DescriptorProfile>,
+) -> Vec<Vec<f64>> {
     samples
         .iter()
-        .map(|sample| match mode {
-            FeatureMode::Invariants => invariant_vector(sample, view_mode, normalized).to_vec(),
-            FeatureMode::InvariantsAndDescriptors => invariant_vector(sample, view_mode, normalized)
-                .iter()
-                .copied()
-                .chain(
-                    descriptor_vector(sample, view_mode, normalized)
-                        .iter()
-                        .copied(),
-                )
-                .collect::<Vec<_>>(),
+        .map(|sample| {
+            let mut row = invariant_vector(sample, view_mode, normalized).to_vec();
+            if let Some(profile) = descriptor_profile {
+                row.extend(selected_descriptor_values(sample, view_mode, normalized, profile));
+            }
+            row
         })
         .collect()
 }
@@ -1052,6 +1236,13 @@ fn normalize_text(value: &str) -> String {
 fn build_normalized_samples(
     samples: &[LabeledInvariantSample],
 ) -> BTreeMap<RowKey, NormalizedSample> {
+    build_normalized_samples_with_strategy(samples, NormalizationStrategy::MissionProduct)
+}
+
+fn build_normalized_samples_with_strategy(
+    samples: &[LabeledInvariantSample],
+    strategy: NormalizationStrategy,
+) -> BTreeMap<RowKey, NormalizedSample> {
     let splits = split_samples(samples);
     let train_keys = splits
         .train
@@ -1070,11 +1261,19 @@ fn build_normalized_samples(
     });
 
     let mut group_params = BTreeMap::new();
-    let mut grouped_train: BTreeMap<(String, String), Vec<&LabeledInvariantSample>> = BTreeMap::new();
+    let mut grouped_train: BTreeMap<(String, Option<String>), Vec<&LabeledInvariantSample>> =
+        BTreeMap::new();
     for sample in samples {
         if train_keys.contains(&sample.key) {
+            let group_key = match strategy {
+                NormalizationStrategy::Global => continue,
+                NormalizationStrategy::Mission => (sample.mission.clone(), None),
+                NormalizationStrategy::MissionProduct => {
+                    (sample.mission.clone(), Some(sample.product.clone()))
+                }
+            };
             grouped_train
-                .entry((sample.mission.clone(), sample.product.clone()))
+                .entry(group_key)
                 .or_default()
                 .push(sample);
         }
@@ -1088,8 +1287,8 @@ fn build_normalized_samples(
         let params = fit_normalization_params(if quiet.is_empty() {
             &group_samples
         } else {
-            &quiet
-        });
+                &quiet
+            });
         group_params.insert(group_key, params);
     }
 
@@ -1115,10 +1314,17 @@ fn build_normalized_samples(
             )
                 .cmp(&(b.timestamp_utc.as_str(), b.mission.as_str(), b.product.as_str()))
         });
-        let params = group_params
-            .get(&(mission.clone(), product.clone()))
-            .cloned()
-            .unwrap_or_else(|| global_params.clone());
+        let params = match strategy {
+            NormalizationStrategy::Global => global_params.clone(),
+            NormalizationStrategy::Mission => group_params
+                .get(&(mission.clone(), None))
+                .cloned()
+                .unwrap_or_else(|| global_params.clone()),
+            NormalizationStrategy::MissionProduct => group_params
+                .get(&(mission.clone(), Some(product.clone())))
+                .cloned()
+                .unwrap_or_else(|| global_params.clone()),
+        };
         let channels = group
             .iter()
             .map(|sample| normalize_channels(sample, &params))
@@ -1204,6 +1410,20 @@ fn descriptor_vector(
             .get(&sample.key)
             .map(|row| row.normalized_descriptor_channels)
             .unwrap_or([0.0_f64; DESCRIPTOR_DIM]),
+    }
+}
+
+fn selected_descriptor_values(
+    sample: &LabeledInvariantSample,
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    descriptor_profile: DescriptorProfile,
+) -> Vec<f64> {
+    let descriptor = descriptor_vector(sample, view_mode, normalized);
+    match descriptor_profile {
+        DescriptorProfile::Full => descriptor.to_vec(),
+        DescriptorProfile::DeltaAssociator => vec![descriptor[1], descriptor[2]],
+        DescriptorProfile::AssociatorOnly => vec![descriptor[2]],
     }
 }
 
@@ -1308,6 +1528,108 @@ fn fit_sparse_budget_policy(
     Ok(ThresholdedSparsePolicy {
         name,
         mask,
+    })
+}
+
+fn fit_sparse_budget_policy_profile(
+    samples: &[LabeledInvariantSample],
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    descriptor_profile: Option<DescriptorProfile>,
+    grid: usize,
+    budget_gib: f64,
+) -> Result<ThresholdedSparsePolicy> {
+    let splits = split_samples(samples);
+    let name = match descriptor_profile {
+        None => "invariant_budget_policy",
+        Some(profile) => match profile {
+            DescriptorProfile::Full => "hybrid_budget_policy_full",
+            DescriptorProfile::DeltaAssociator => "hybrid_budget_policy_delta_associator",
+            DescriptorProfile::AssociatorOnly => "hybrid_budget_policy_associator_only",
+        },
+    };
+    let train = feature_matrix_with_descriptor_profile(
+        &splits.train,
+        ViewMode::Normalized,
+        normalized,
+        descriptor_profile,
+    );
+    let validation = feature_matrix_with_descriptor_profile(
+        &splits.validation,
+        ViewMode::Normalized,
+        normalized,
+        descriptor_profile,
+    );
+    let all_samples = samples.iter().collect::<Vec<_>>();
+    let all_matrix = feature_matrix_with_descriptor_profile(
+        &all_samples,
+        ViewMode::Normalized,
+        normalized,
+        descriptor_profile,
+    );
+    let scaler = fit_scaler(&train);
+    let train_scaled = apply_scaler(&scaler, &train);
+    let validation_scaled = apply_scaler(&scaler, &validation);
+    let all_scaled = apply_scaler(&scaler, &all_matrix);
+    let model = train_logistic_model(&train_scaled, &binary_labels(&splits.train), 0.02, 300, 1e-3);
+    let validation_scores = predict_scores(&model, &validation_scaled);
+    let validation_labels = splits
+        .validation
+        .iter()
+        .map(|sample| sample.label_positive)
+        .collect::<Vec<_>>();
+    let threshold = best_budgeted_threshold(&validation_scores, &validation_labels, grid, budget_gib);
+    let all_scores = predict_scores(&model, &all_scaled);
+    let mask = samples
+        .iter()
+        .zip(all_scores)
+        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= threshold))
+        .collect::<BTreeMap<_, _>>();
+    Ok(ThresholdedSparsePolicy { name, mask })
+}
+
+fn thresholded_sparse_policy_summary(
+    samples: &[LabeledInvariantSample],
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    normalization_strategy: &str,
+    descriptor_profile: Option<DescriptorProfile>,
+    grid: usize,
+) -> Result<CounterfactualSparseSummary> {
+    let policy =
+        fit_sparse_budget_policy_profile(samples, normalized, descriptor_profile, grid, 12.0)?;
+    let label_index = label_index(samples);
+    let time_index = samples
+        .iter()
+        .map(|sample| (sample.key.clone(), sample.timestamp_utc.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let summary = sparse_summary_from_active_index(&policy.mask, samples.len(), &label_index, &time_index);
+    let projected_gib = estimate_sparse_execution_plan(
+        grid,
+        summary.active_fraction,
+        None,
+        SparseHardwareEnvelope {
+            cuda_vram_budget_bytes: None,
+            cuda_l2_bytes: None,
+            cuda_shared_mem_per_block: None,
+            cuda_managed_memory: None,
+            cuda_concurrent_managed_access: None,
+            cpu_l3_safe_working_set_bytes: None,
+            prefer_sparse_tile: false,
+        },
+    )
+    .memory
+    .sparse_bf16_aa_projected_gib;
+    Ok(CounterfactualSparseSummary {
+        normalization_strategy: normalization_strategy.to_string(),
+        descriptor_profile: descriptor_profile
+            .map(DescriptorProfile::label)
+            .unwrap_or("invariants_only")
+            .to_string(),
+        active_rows: summary.active_rows,
+        active_fraction: summary.active_fraction,
+        event_label_recall: summary.event_label_recall,
+        event_label_precision: summary.event_label_precision,
+        sparse_bf16_aa_projected_gib: projected_gib,
+        median_lead_time_hours: summary.median_lead_time_hours,
     })
 }
 
@@ -1623,6 +1945,80 @@ fn evaluate_scores(
     }
 }
 
+fn train_counterfactual_predictive_model(
+    splits: &SampleSplits<'_>,
+    view_mode: ViewMode,
+    normalization_strategy: &str,
+    normalized: Option<&BTreeMap<RowKey, NormalizedSample>>,
+    descriptor_profile: Option<DescriptorProfile>,
+) -> CounterfactualPredictiveSummary {
+    let empty = BTreeMap::new();
+    let normalized = normalized.unwrap_or(&empty);
+    let train = feature_matrix_with_descriptor_profile(
+        &splits.train,
+        view_mode,
+        normalized,
+        descriptor_profile,
+    );
+    let validation = feature_matrix_with_descriptor_profile(
+        &splits.validation,
+        view_mode,
+        normalized,
+        descriptor_profile,
+    );
+    let test = feature_matrix_with_descriptor_profile(
+        &splits.test,
+        view_mode,
+        normalized,
+        descriptor_profile,
+    );
+    let scaler = fit_scaler(&train);
+    let train_scaled = apply_scaler(&scaler, &train);
+    let validation_scaled = apply_scaler(&scaler, &validation);
+    let test_scaled = apply_scaler(&scaler, &test);
+    let model = train_logistic_model(&train_scaled, &binary_labels(&splits.train), 0.02, 300, 1e-3);
+    let validation_scores = predict_scores(&model, &validation_scaled);
+    let threshold = best_threshold(
+        &validation_scores,
+        &splits
+            .validation
+            .iter()
+            .map(|sample| sample.label_positive)
+            .collect::<Vec<_>>(),
+    );
+    let metrics = evaluate_scores(
+        match view_mode {
+            ViewMode::Raw => "raw",
+            ViewMode::Normalized => "normalized",
+        },
+        descriptor_profile
+            .map(DescriptorProfile::label)
+            .unwrap_or("invariants_only"),
+        &splits.test,
+        &predict_scores(&model, &test_scaled),
+        threshold,
+    );
+    CounterfactualPredictiveSummary {
+        view_mode: metrics.feature_mode,
+        normalization_strategy: normalization_strategy.to_string(),
+        descriptor_profile: descriptor_profile
+            .map(DescriptorProfile::label)
+            .unwrap_or("invariants_only")
+            .to_string(),
+        threshold: metrics.threshold,
+        positive_rows: metrics.positive_rows,
+        negative_rows: metrics.negative_rows,
+        predicted_positive_rows: metrics.predicted_positive_rows,
+        auprc: metrics.auprc,
+        auroc: metrics.auroc,
+        precision: metrics.precision,
+        recall: metrics.recall,
+        f1: metrics.f1,
+        false_alert_rate: metrics.false_alert_rate,
+        median_lead_time_hours: metrics.median_lead_time_hours,
+    }
+}
+
 fn threshold_metrics(
     scores: &[f64],
     labels: &[bool],
@@ -1791,6 +2187,33 @@ fn sparse_summary(
                 .filter(|value| value.is_finite())
                 .collect::<Vec<_>>(),
         ),
+        median_lead_time_hours: median_mask_lead_time_hours(time_index, label_index, active_index),
+    }
+}
+
+fn sparse_summary_from_active_index(
+    active_index: &BTreeMap<RowKey, bool>,
+    total_rows: usize,
+    label_index: &BTreeMap<RowKey, bool>,
+    time_index: &BTreeMap<RowKey, String>,
+) -> SparseMaskSummary {
+    let active_rows = active_index.values().filter(|value| **value).count();
+    let labeled_active = active_index
+        .iter()
+        .filter(|(_, active)| **active)
+        .filter(|(key, _)| *label_index.get(*key).unwrap_or(&false))
+        .count();
+    let total_labeled = label_index.values().filter(|value| **value).count();
+    SparseMaskSummary {
+        name: "counterfactual".to_string(),
+        active_rows,
+        active_fraction: ratio_usize(active_rows, total_rows),
+        event_label_recall: ratio_usize(labeled_active, total_labeled),
+        event_label_precision: ratio_usize(labeled_active, active_rows),
+        density_mean: f64::NAN,
+        speed_mean: f64::NAN,
+        temperature_mean: f64::NAN,
+        bmag_mean: f64::NAN,
         median_lead_time_hours: median_mask_lead_time_hours(time_index, label_index, active_index),
     }
 }

@@ -34,6 +34,9 @@ struct Cli {
     #[arg(long, default_value_t = 32)]
     null_permutations: usize,
 
+    #[arg(long, default_value = "default")]
+    vector_mode: String,
+
     #[arg(long)]
     ultrametric_csv: Option<PathBuf>,
 
@@ -71,6 +74,7 @@ struct Report {
     cube_json: String,
     cube_name: String,
     feature_mode: String,
+    vector_mode: String,
     dataset_count: usize,
     channel_names: Vec<String>,
     datasets: Vec<DatasetSummary>,
@@ -90,6 +94,7 @@ struct NullClassificationReport {
     generated_at_utc: String,
     cube_json: String,
     feature_mode: String,
+    vector_mode: String,
     rows: Vec<NullClassificationRow>,
 }
 
@@ -111,10 +116,12 @@ fn main() -> Result<()> {
         &fs::read(&cli.cube_json).with_context(|| format!("read {}", cli.cube_json.display()))?,
     )
     .with_context(|| format!("parse {}", cli.cube_json.display()))?;
+    let vector_mode = VectorMode::parse(&cli.vector_mode)?;
     let report = summarize_cube(
         &cube,
         &cli.cube_json,
         feature_mode,
+        vector_mode,
         cli.null_permutations,
         &cli.dataset_filters,
         cli.max_rows_per_dataset,
@@ -133,6 +140,7 @@ fn main() -> Result<()> {
             ultrametric_csv,
             &cli.cube_json,
             feature_mode,
+            vector_mode,
         )?;
         fs::write(
             &null_classification_out,
@@ -151,6 +159,24 @@ enum FeatureMode {
     Residualized,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum VectorMode {
+    Default,
+    SupportBlind,
+}
+
+impl VectorMode {
+    fn parse(value: &str) -> Result<Self> {
+        match value {
+            "default" => Ok(Self::Default),
+            "support-blind" => Ok(Self::SupportBlind),
+            other => anyhow::bail!(
+                "unsupported vector mode '{other}'; expected default or support-blind"
+            ),
+        }
+    }
+}
+
 impl FeatureMode {
     fn parse(value: &str) -> Result<Self> {
         match value {
@@ -165,6 +191,7 @@ fn summarize_cube(
     cube: &CatalogFeatureCube,
     cube_json: &Path,
     feature_mode: FeatureMode,
+    vector_mode: VectorMode,
     null_permutations: usize,
     dataset_filters: &[String],
     max_rows_per_dataset: Option<usize>,
@@ -183,7 +210,14 @@ fn summarize_cube(
             if let Some(limit) = max_rows_per_dataset {
                 rows.truncate(limit);
             }
-            summarize_dataset(dataset, rows, &channel_names, feature_mode, null_permutations)
+            summarize_dataset(
+                dataset,
+                rows,
+                &channel_names,
+                feature_mode,
+                vector_mode,
+                null_permutations,
+            )
         })
         .collect::<Vec<_>>();
     datasets.sort_by(|a, b| a.dataset.cmp(&b.dataset));
@@ -194,6 +228,10 @@ fn summarize_cube(
         feature_mode: match feature_mode {
             FeatureMode::Raw => "raw".to_string(),
             FeatureMode::Residualized => "residualized".to_string(),
+        },
+        vector_mode: match vector_mode {
+            VectorMode::Default => "default".to_string(),
+            VectorMode::SupportBlind => "support-blind".to_string(),
         },
         dataset_count: datasets.len(),
         channel_names,
@@ -221,11 +259,12 @@ fn summarize_dataset(
     rows: Vec<&data_core::CatalogFeatureRow>,
     channel_names: &[String],
     feature_mode: FeatureMode,
+    vector_mode: VectorMode,
     null_permutations: usize,
 ) -> DatasetSummary {
     let raw_vectors = rows
         .iter()
-        .map(|row| algebra_vector(row, feature_mode))
+        .map(|row| algebra_vector(row, feature_mode, vector_mode))
         .collect::<Vec<_>>();
     let centered_vectors = center_vectors(&raw_vectors);
     let norms = centered_vectors
@@ -297,6 +336,7 @@ fn classify_null_results(
     ultrametric_csv: &Path,
     cube_json: &Path,
     feature_mode: FeatureMode,
+    vector_mode: VectorMode,
 ) -> Result<NullClassificationReport> {
     let ultrametric = load_ultrametric_significance(ultrametric_csv)?;
     let mut rows = report
@@ -336,37 +376,47 @@ fn classify_null_results(
             FeatureMode::Raw => "raw".to_string(),
             FeatureMode::Residualized => "residualized".to_string(),
         },
+        vector_mode: match vector_mode {
+            VectorMode::Default => "default".to_string(),
+            VectorMode::SupportBlind => "support-blind".to_string(),
+        },
         rows,
     })
 }
 
-fn algebra_vector(row: &data_core::CatalogFeatureRow, feature_mode: FeatureMode) -> [f64; ALGEBRA_DIM] {
+fn algebra_vector(
+    row: &data_core::CatalogFeatureRow,
+    feature_mode: FeatureMode,
+    vector_mode: VectorMode,
+) -> [f64; ALGEBRA_DIM] {
     let features = selected_features(row, feature_mode);
     let mut out = [0.0_f64; ALGEBRA_DIM];
     for (idx, value) in features.iter().take(8).enumerate() {
         out[idx] = finite_or_zero(*value);
     }
-    out[8] = row.ra_deg.map(|value| value / 180.0).unwrap_or(0.0);
-    out[9] = row.dec_deg.map(|value| value / 90.0).unwrap_or(0.0);
-    out[10] = row.time_utc.as_deref().map(normalized_time_year).unwrap_or(0.0);
-    out[11] = finite_or_zero(row.redshift.unwrap_or(0.0));
-    out[12] = finite_or_zero(signed_log1p(row.distance_proxy.unwrap_or(0.0)));
-    out[13] = if row.program_id.as_deref().unwrap_or("").is_empty() {
-        0.0
-    } else {
-        1.0
-    };
-    out[14] = if row.instrument.as_deref().unwrap_or("").is_empty() {
-        0.0
-    } else {
-        1.0
-    };
-    out[15] = row
-        .features
-        .iter()
-        .filter(|value| value.is_finite())
-        .count() as f64
-        / row.features.len().max(1) as f64;
+    if matches!(vector_mode, VectorMode::Default) {
+        out[8] = row.ra_deg.map(|value| value / 180.0).unwrap_or(0.0);
+        out[9] = row.dec_deg.map(|value| value / 90.0).unwrap_or(0.0);
+        out[10] = row.time_utc.as_deref().map(normalized_time_year).unwrap_or(0.0);
+        out[11] = finite_or_zero(row.redshift.unwrap_or(0.0));
+        out[12] = finite_or_zero(signed_log1p(row.distance_proxy.unwrap_or(0.0)));
+        out[13] = if row.program_id.as_deref().unwrap_or("").is_empty() {
+            0.0
+        } else {
+            1.0
+        };
+        out[14] = if row.instrument.as_deref().unwrap_or("").is_empty() {
+            0.0
+        } else {
+            1.0
+        };
+        out[15] = row
+            .features
+            .iter()
+            .filter(|value| value.is_finite())
+            .count() as f64
+            / row.features.len().max(1) as f64;
+    }
     out
 }
 

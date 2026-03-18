@@ -1,0 +1,548 @@
+generated_at_utc = "2026-03-18T16:49:58.555591695+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+horizon_hours = 24
+grid = 1024
+labeled_sample_count = 47337
+positive_sample_count = 438
+notes = [
+    "This audit does not assume the first falsification was correct; it re-challenges normalized, algebraic, and sparse-policy negatives with nearby alternatives.",
+    "A falsification only survives here if the best challenger still fails to beat the baseline on the same task.",
+]
+
+[[baseline_models]]
+feature_mode = "raw"
+name = "scalar_event_score"
+threshold = 0.0
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 7101
+auprc = 0.026324549571108836
+auroc = 0.6023726344636883
+precision = 0.033234755668215744
+recall = 1.0
+f1 = 0.0643314706283222
+false_alert_rate = 1.0
+median_lead_time_hours = 727.0
+
+[[baseline_models]]
+feature_mode = "raw"
+name = "best_single_invariant_threshold"
+threshold = 1.1460313649198206
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1201
+auprc = 0.09934283864784992
+auroc = 0.8552322638784302
+precision = 0.13738551207327226
+recall = 0.6991525423728814
+f1 = 0.22964509394572025
+false_alert_rate = 0.15091041514930809
+median_lead_time_hours = 98.5
+
+[[baseline_models]]
+feature_mode = "raw"
+name = "invariant_logistic"
+threshold = 0.7876763461582407
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1185
+auprc = 0.10081071909689004
+auroc = 0.7682910118878615
+precision = 0.13924050632911392
+recall = 0.6991525423728814
+f1 = 0.23223082336382828
+false_alert_rate = 0.14857975236707938
+median_lead_time_hours = 97.5
+
+[[baseline_models]]
+feature_mode = "raw"
+name = "invariant_plus_algebra_logistic"
+threshold = 0.7757172848441483
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1172
+auprc = 0.09913405904568659
+auroc = 0.7666652264619107
+precision = 0.1356655290102389
+recall = 0.673728813559322
+f1 = 0.22585227272727273
+false_alert_rate = 0.14756008739985432
+median_lead_time_hours = 20.0
+
+[[baseline_models]]
+feature_mode = "normalized"
+name = "best_single_invariant_threshold"
+threshold = 0.004369876555285087
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 532
+auprc = 0.06114976066651351
+auroc = 0.5872017233078622
+precision = 0.13533834586466165
+recall = 0.3050847457627119
+f1 = 0.1875
+false_alert_rate = 0.06700655498907501
+median_lead_time_hours = 1.0
+
+[[baseline_models]]
+feature_mode = "normalized"
+name = "invariant_logistic"
+threshold = 0.52283985294997
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 975
+auprc = 0.06462064604744533
+auroc = 0.5804541582826176
+precision = 0.09641025641025641
+recall = 0.3983050847457627
+f1 = 0.15524360033030554
+false_alert_rate = 0.12833211944646758
+median_lead_time_hours = 5.0
+
+[[baseline_models]]
+feature_mode = "normalized"
+name = "invariant_plus_algebra_logistic"
+threshold = 0.5128223658341464
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1344
+auprc = 0.08687777733268359
+auroc = 0.7437486883849543
+precision = 0.109375
+recall = 0.6228813559322034
+f1 = 0.1860759493670886
+false_alert_rate = 0.17436270939548434
+median_lead_time_hours = 4.0
+
+[[predictive_counterfactuals]]
+view_mode = "raw"
+normalization_strategy = "raw"
+descriptor_profile = "invariants_only"
+threshold = 0.8024120723131078
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1109
+auprc = 0.10051364678706239
+auroc = 0.7681842309923834
+precision = 0.14337240757439135
+recall = 0.673728813559322
+f1 = 0.23643122676579922
+false_alert_rate = 0.13838310269482884
+median_lead_time_hours = 56.5
+
+[[predictive_counterfactuals]]
+view_mode = "raw"
+normalization_strategy = "raw"
+descriptor_profile = "full"
+threshold = 0.7757172848441483
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1172
+auprc = 0.09913405904568659
+auroc = 0.7666652264619107
+precision = 0.1356655290102389
+recall = 0.673728813559322
+f1 = 0.22585227272727273
+false_alert_rate = 0.14756008739985432
+median_lead_time_hours = 20.0
+
+[[predictive_counterfactuals]]
+view_mode = "raw"
+normalization_strategy = "raw"
+descriptor_profile = "delta_associator"
+threshold = 0.7855834640061935
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1183
+auprc = 0.09979935192683824
+auroc = 0.7687656622267212
+precision = 0.13609467455621302
+recall = 0.6822033898305084
+f1 = 0.22692036645525018
+false_alert_rate = 0.14887108521485798
+median_lead_time_hours = 26.5
+
+[[predictive_counterfactuals]]
+view_mode = "raw"
+normalization_strategy = "raw"
+descriptor_profile = "associator_only"
+threshold = 0.8067280431614982
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1060
+auprc = 0.09966881383017162
+auroc = 0.7672355475452739
+precision = 0.14150943396226415
+recall = 0.635593220338983
+f1 = 0.23148148148148148
+false_alert_rate = 0.1325564457392571
+median_lead_time_hours = 9.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+threshold = 0.5507105132272215
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1222
+auprc = 0.10197716997169887
+auroc = 0.764847482316343
+precision = 0.13584288052373159
+recall = 0.7033898305084746
+f1 = 0.22770919067215362
+false_alert_rate = 0.15382374362709395
+median_lead_time_hours = 631.5
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+threshold = 0.5627331328480687
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1222
+auprc = 0.102019993893435
+auroc = 0.7647567494167171
+precision = 0.13584288052373159
+recall = 0.7033898305084746
+f1 = 0.22770919067215362
+false_alert_rate = 0.15382374362709395
+median_lead_time_hours = 631.5
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+threshold = 0.5444690525966764
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1222
+auprc = 0.10207065496506633
+auroc = 0.7656060587356648
+precision = 0.13584288052373159
+recall = 0.7033898305084746
+f1 = 0.22770919067215362
+false_alert_rate = 0.15382374362709395
+median_lead_time_hours = 631.5
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+threshold = 0.5504811157734698
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1222
+auprc = 0.10197720725607523
+auroc = 0.7648480995469528
+precision = 0.13584288052373159
+recall = 0.7033898305084746
+f1 = 0.22770919067215362
+false_alert_rate = 0.15382374362709395
+median_lead_time_hours = 631.5
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+threshold = 0.5296232454468249
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 629
+auprc = 0.07197196741139891
+auroc = 0.5618989716938042
+precision = 0.14626391096979333
+recall = 0.3898305084745763
+f1 = 0.21271676300578035
+false_alert_rate = 0.07822286962855061
+median_lead_time_hours = 9.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+threshold = 0.5240481257493423
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 812
+auprc = 0.08373283107698423
+auroc = 0.6341384077919192
+precision = 0.1416256157635468
+recall = 0.4872881355932203
+f1 = 0.2194656488549618
+false_alert_rate = 0.10152949745083759
+median_lead_time_hours = 6.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+threshold = 0.5305854506826547
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 627
+auprc = 0.0738032914003654
+auroc = 0.5763298233485995
+precision = 0.14035087719298245
+recall = 0.3728813559322034
+f1 = 0.20393974507531865
+false_alert_rate = 0.0785142024763292
+median_lead_time_hours = 8.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+threshold = 0.5297543032961262
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 625
+auprc = 0.07193959833118883
+auroc = 0.5618070043329588
+precision = 0.1456
+recall = 0.3855932203389831
+f1 = 0.21138211382113822
+false_alert_rate = 0.07778587035688274
+median_lead_time_hours = 8.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+threshold = 0.5228406475698182
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1001
+auprc = 0.0640025044636114
+auroc = 0.5803683632278692
+precision = 0.0989010989010989
+recall = 0.4194915254237288
+f1 = 0.16006467259498788
+false_alert_rate = 0.13139111434814274
+median_lead_time_hours = 5.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+threshold = 0.5128223658341464
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1344
+auprc = 0.08687777733268359
+auroc = 0.7437486883849543
+precision = 0.109375
+recall = 0.6228813559322034
+f1 = 0.1860759493670886
+false_alert_rate = 0.17436270939548434
+median_lead_time_hours = 4.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+threshold = 0.5210513964918931
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 1077
+auprc = 0.0668489601054864
+auroc = 0.5973428222252398
+precision = 0.10027855153203342
+recall = 0.4576271186440678
+f1 = 0.16450875856816452
+false_alert_rate = 0.14115076474872543
+median_lead_time_hours = 5.0
+
+[[predictive_counterfactuals]]
+view_mode = "normalized"
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+threshold = 0.5231712337569112
+positive_rows = 236
+negative_rows = 6865
+predicted_positive_rows = 994
+auprc = 0.06447202606739713
+auroc = 0.5834298270519832
+precision = 0.09758551307847083
+recall = 0.4110169491525424
+f1 = 0.15772357723577235
+false_alert_rate = 0.1306627822286963
+median_lead_time_hours = 5.0
+
+[[baseline_sparse_policies]]
+name = "robust_baseline"
+active_rows = 3382
+active_fraction = 0.07144516974037222
+event_label_recall = 0.09817351598173515
+event_label_precision = 0.0127143701951508
+density_mean = 110.94621052960333
+speed_mean = 391.71438790362333
+temperature_mean = 134250.2208854745
+bmag_mean = 32.08282867633101
+median_lead_time_hours = 78.5
+
+[[baseline_sparse_policies]]
+name = "invariant_budget_policy"
+active_rows = 7771
+active_fraction = 0.16416333945961933
+event_label_recall = 0.5114155251141552
+event_label_precision = 0.028825119032299576
+density_mean = 9.173332713221098
+speed_mean = 410.03751960778646
+temperature_mean = 50501.79556835136
+bmag_mean = 14.476409523760632
+median_lead_time_hours = 6.0
+
+[[baseline_sparse_policies]]
+name = "hybrid_budget_policy"
+active_rows = 7650
+active_fraction = 0.16160719944229673
+event_label_recall = 0.5091324200913242
+event_label_precision = 0.02915032679738562
+density_mean = 8.969284057970778
+speed_mean = 407.4469738959697
+temperature_mean = 49154.757276184966
+bmag_mean = 15.130516407620847
+median_lead_time_hours = 5.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "global_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 8327
+active_fraction = 0.17590890846483723
+event_label_recall = 0.7602739726027398
+event_label_precision = 0.039990392698450825
+sparse_bf16_aa_projected_gib = 12.31363296508789
+median_lead_time_hours = 36.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "global_quiet"
+descriptor_profile = "full"
+active_rows = 8614
+active_fraction = 0.18197181908443713
+event_label_recall = 0.7808219178082192
+event_label_precision = 0.03970280938007894
+sparse_bf16_aa_projected_gib = 12.738041877746582
+median_lead_time_hours = 67.5
+
+[[sparse_counterfactuals]]
+normalization_strategy = "global_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 8633
+active_fraction = 0.1823731964425291
+event_label_recall = 0.7876712328767124
+event_label_precision = 0.03996293293177343
+sparse_bf16_aa_projected_gib = 12.766146659851074
+median_lead_time_hours = 69.5
+
+[[sparse_counterfactuals]]
+normalization_strategy = "global_quiet"
+descriptor_profile = "associator_only"
+active_rows = 8329
+active_fraction = 0.17595115871305744
+event_label_recall = 0.7602739726027398
+event_label_precision = 0.039980790010805616
+sparse_bf16_aa_projected_gib = 12.316603660583496
+median_lead_time_hours = 36.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 4256
+active_fraction = 0.08990852821260326
+event_label_recall = 0.4726027397260274
+event_label_precision = 0.048637218045112784
+sparse_bf16_aa_projected_gib = 6.293601989746094
+median_lead_time_hours = 11.5
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_quiet"
+descriptor_profile = "full"
+active_rows = 7379
+active_fraction = 0.1558822908084585
+event_label_recall = 0.6164383561643836
+event_label_precision = 0.036590323892126304
+sparse_bf16_aa_projected_gib = 10.911765098571777
+median_lead_time_hours = 8.5
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 5969
+active_fraction = 0.12609586581321167
+event_label_recall = 0.4931506849315068
+event_label_precision = 0.03618696599095326
+sparse_bf16_aa_projected_gib = 8.826737403869629
+median_lead_time_hours = 12.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_quiet"
+descriptor_profile = "associator_only"
+active_rows = 7305
+active_fraction = 0.1543190316243108
+event_label_recall = 0.4840182648401826
+event_label_precision = 0.029021218343600275
+sparse_bf16_aa_projected_gib = 10.802350044250488
+median_lead_time_hours = 11.5
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "invariants_only"
+active_rows = 7728
+active_fraction = 0.16325495912288485
+event_label_recall = 0.5114155251141552
+event_label_precision = 0.028985507246376812
+sparse_bf16_aa_projected_gib = 11.427865028381348
+median_lead_time_hours = 6.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "full"
+active_rows = 7607
+active_fraction = 0.16069881910556225
+event_label_recall = 0.5091324200913242
+event_label_precision = 0.029315104509004864
+sparse_bf16_aa_projected_gib = 11.248922348022461
+median_lead_time_hours = 5.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "delta_associator"
+active_rows = 7679
+active_fraction = 0.16221982804148974
+event_label_recall = 0.502283105022831
+event_label_precision = 0.028649563745279334
+sparse_bf16_aa_projected_gib = 11.355400085449219
+median_lead_time_hours = 6.0
+
+[[sparse_counterfactuals]]
+normalization_strategy = "mission_product_quiet"
+descriptor_profile = "associator_only"
+active_rows = 7705
+active_fraction = 0.16276908126835246
+event_label_recall = 0.5136986301369864
+event_label_precision = 0.029201817001946788
+sparse_bf16_aa_projected_gib = 11.393852233886719
+median_lead_time_hours = 6.0
+
+[[verdicts]]
+falsification_id = "normalized_underperforms_raw"
+survives_challenge = true
+baseline_configuration = "raw:raw:delta_associator"
+challenger_configuration = "normalized:global_quiet:delta_associator"
+notes = ["best_raw_auroc=0.768766, best_normalized_auroc=0.765606"]
+
+[[verdicts]]
+falsification_id = "algebra_adds_no_predictive_gain"
+survives_challenge = false
+baseline_configuration = "raw:raw:invariants_only"
+challenger_configuration = "raw:raw:delta_associator"
+notes = ["best_invariant_auroc=0.768184, best_algebra_auroc=0.768766"]
+
+[[verdicts]]
+falsification_id = "algebra_adds_no_sparse_gain"
+survives_challenge = false
+baseline_configuration = "mission_product_quiet:invariants_only"
+challenger_configuration = "mission_quiet:full"
+notes = ["best_invariant_recall=0.511416, best_algebra_recall=0.616438, best_invariant_gib=11.427865, best_algebra_gib=10.911765"]
