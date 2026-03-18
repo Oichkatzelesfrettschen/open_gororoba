@@ -480,6 +480,14 @@ name = "cross-algebra-cusp-core"
 path = "src/bin/cross_algebra_cusp_core.rs"
 
 [[bin]]
+name = "multifeature-shape-regression"
+path = "src/bin/multifeature_shape_regression.rs"
+
+[[bin]]
+name = "inclination-injection-calibration"
+path = "src/bin/inclination_injection_calibration.rs"
+
+[[bin]]
 name = "polynomial-detrend-closure"
 path = "src/bin/polynomial_detrend_closure.rs"
 
