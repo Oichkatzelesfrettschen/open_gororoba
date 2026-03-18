@@ -25,6 +25,21 @@ struct Cli {
     #[arg(long, default_value = "raw")]
     feature_mode: String,
 
+    #[arg(long = "dataset-filter")]
+    dataset_filters: Vec<String>,
+
+    #[arg(long)]
+    max_rows_per_dataset: Option<usize>,
+
+    #[arg(long, default_value_t = 32)]
+    null_permutations: usize,
+
+    #[arg(long)]
+    ultrametric_csv: Option<PathBuf>,
+
+    #[arg(long)]
+    null_classification_out: Option<PathBuf>,
+
     #[arg(long)]
     out: Option<PathBuf>,
 }
@@ -38,6 +53,10 @@ struct DatasetSummary {
     mean_norm_sq: f64,
     mean_associator_norm: f64,
     max_associator_norm: f64,
+    null_mean_associator_norm: f64,
+    null_std_associator_norm: f64,
+    null_p_value: f64,
+    survives_residualized_null: bool,
     covariance_trace: f64,
     effective_rank: f64,
     participation_ratio: f64,
@@ -57,6 +76,23 @@ struct Report {
     datasets: Vec<DatasetSummary>,
 }
 
+#[derive(Debug, Serialize)]
+struct NullClassificationRow {
+    dataset: String,
+    algebra_survives_residualized_null: bool,
+    ultrametric_survives_residualized_null: bool,
+    classification: String,
+    notes: Vec<String>,
+}
+
+#[derive(Debug, Serialize)]
+struct NullClassificationReport {
+    generated_at_utc: String,
+    cube_json: String,
+    feature_mode: String,
+    rows: Vec<NullClassificationRow>,
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let feature_mode = FeatureMode::parse(&cli.feature_mode)?;
@@ -64,16 +100,46 @@ fn main() -> Result<()> {
         let date = Utc::now().date_naive();
         PathBuf::from("reports").join(format!("catalog_feature_algebra_survey-core_{}.toml", date))
     });
+    let null_classification_out = cli.null_classification_out.unwrap_or_else(|| {
+        let date = Utc::now().date_naive();
+        PathBuf::from("reports").join(format!(
+            "catalog_feature_null_classification_survey-core_{}.toml",
+            date
+        ))
+    });
     let cube: CatalogFeatureCube = parse_catalog_feature_cube_json(
         &fs::read(&cli.cube_json).with_context(|| format!("read {}", cli.cube_json.display()))?,
     )
     .with_context(|| format!("parse {}", cli.cube_json.display()))?;
-    let report = summarize_cube(&cube, &cli.cube_json, feature_mode);
+    let report = summarize_cube(
+        &cube,
+        &cli.cube_json,
+        feature_mode,
+        cli.null_permutations,
+        &cli.dataset_filters,
+        cli.max_rows_per_dataset,
+    );
     if let Some(parent) = out.parent() {
         fs::create_dir_all(parent)?;
     }
     fs::write(&out, toml::to_string_pretty(&report)?)
         .with_context(|| format!("write {}", out.display()))?;
+    if let Some(ultrametric_csv) = &cli.ultrametric_csv {
+        if let Some(parent) = null_classification_out.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        let classification = classify_null_results(
+            &report,
+            ultrametric_csv,
+            &cli.cube_json,
+            feature_mode,
+        )?;
+        fs::write(
+            &null_classification_out,
+            toml::to_string_pretty(&classification)?,
+        )
+        .with_context(|| format!("write {}", null_classification_out.display()))?;
+    }
     println!("datasets = {}", report.dataset_count);
     println!("out = {}", out.display());
     Ok(())
@@ -95,15 +161,30 @@ impl FeatureMode {
     }
 }
 
-fn summarize_cube(cube: &CatalogFeatureCube, cube_json: &Path, feature_mode: FeatureMode) -> Report {
+fn summarize_cube(
+    cube: &CatalogFeatureCube,
+    cube_json: &Path,
+    feature_mode: FeatureMode,
+    null_permutations: usize,
+    dataset_filters: &[String],
+    max_rows_per_dataset: Option<usize>,
+) -> Report {
     let channel_names = algebra_channel_names(&cube.manifest.channels, feature_mode);
     let mut grouped: BTreeMap<String, Vec<&data_core::CatalogFeatureRow>> = BTreeMap::new();
     for row in &cube.rows {
+        if !dataset_selected(&row.dataset, dataset_filters) {
+            continue;
+        }
         grouped.entry(row.dataset.clone()).or_default().push(row);
     }
     let mut datasets = grouped
         .into_iter()
-        .map(|(dataset, rows)| summarize_dataset(dataset, rows, &channel_names, feature_mode))
+        .map(|(dataset, mut rows)| {
+            if let Some(limit) = max_rows_per_dataset {
+                rows.truncate(limit);
+            }
+            summarize_dataset(dataset, rows, &channel_names, feature_mode, null_permutations)
+        })
         .collect::<Vec<_>>();
     datasets.sort_by(|a, b| a.dataset.cmp(&b.dataset));
     Report {
@@ -120,11 +201,27 @@ fn summarize_cube(cube: &CatalogFeatureCube, cube_json: &Path, feature_mode: Fea
     }
 }
 
+fn dataset_selected(dataset: &str, filters: &[String]) -> bool {
+    if filters.is_empty() {
+        return true;
+    }
+    let normalized_dataset = normalize_dataset_key(dataset);
+    filters
+        .iter()
+        .map(|value| normalize_dataset_key(value))
+        .any(|value| {
+            value == normalized_dataset
+                || normalized_dataset.contains(&value)
+                || value.contains(&normalized_dataset)
+        })
+}
+
 fn summarize_dataset(
     dataset: String,
     rows: Vec<&data_core::CatalogFeatureRow>,
     channel_names: &[String],
     feature_mode: FeatureMode,
+    null_permutations: usize,
 ) -> DatasetSummary {
     let raw_vectors = rows
         .iter()
@@ -139,6 +236,11 @@ fn summarize_dataset(
     for triple in centered_vectors.windows(3) {
         associators.push(cd_associator_norm(&triple[0], &triple[1], &triple[2]));
     }
+    let null_distribution = null_associator_distribution(&centered_vectors, null_permutations);
+    let null_mean_associator_norm = mean(&null_distribution);
+    let null_std_associator_norm = stddev(&null_distribution, null_mean_associator_norm);
+    let observed_associator = mean(&associators);
+    let null_p_value = empirical_upper_tail_p_value(observed_associator, &null_distribution);
     let covariance = covariance_matrix(&centered_vectors);
     let covariance_trace = covariance.trace();
     let eigen = SymmetricEigen::new(covariance);
@@ -172,8 +274,12 @@ fn summarize_dataset(
             .unwrap_or(0),
         modality_count,
         mean_norm_sq: mean(&norms),
-        mean_associator_norm: mean(&associators),
+        mean_associator_norm: observed_associator,
         max_associator_norm: associators.into_iter().fold(0.0, f64::max),
+        null_mean_associator_norm,
+        null_std_associator_norm,
+        null_p_value,
+        survives_residualized_null: null_p_value <= 0.05,
         covariance_trace,
         effective_rank,
         participation_ratio,
@@ -184,6 +290,54 @@ fn summarize_dataset(
             .unwrap_or_else(|| format!("v{dominant_idx}")),
         dominant_channel_mean_abs: dominant_value,
     }
+}
+
+fn classify_null_results(
+    report: &Report,
+    ultrametric_csv: &Path,
+    cube_json: &Path,
+    feature_mode: FeatureMode,
+) -> Result<NullClassificationReport> {
+    let ultrametric = load_ultrametric_significance(ultrametric_csv)?;
+    let mut rows = report
+        .datasets
+        .iter()
+        .map(|dataset| {
+            let ultrametric_survives = ultrametric
+                .get(&normalize_dataset_key(&dataset.dataset))
+                .copied()
+                .unwrap_or(false);
+            let mut notes = Vec::new();
+            if !ultrametric.contains_key(&normalize_dataset_key(&dataset.dataset)) {
+                notes.push("dataset_missing_from_ultrametric_report".to_string());
+            }
+            let classification = if dataset.survives_residualized_null && ultrametric_survives {
+                "residual_astrophysical_candidate"
+            } else if ultrametric.contains_key(&normalize_dataset_key(&dataset.dataset)) {
+                "archive_structure_null"
+            } else {
+                "inconclusive"
+            }
+            .to_string();
+            NullClassificationRow {
+                dataset: dataset.dataset.clone(),
+                algebra_survives_residualized_null: dataset.survives_residualized_null,
+                ultrametric_survives_residualized_null: ultrametric_survives,
+                classification,
+                notes,
+            }
+        })
+        .collect::<Vec<_>>();
+    rows.sort_by(|a, b| a.dataset.cmp(&b.dataset));
+    Ok(NullClassificationReport {
+        generated_at_utc: Utc::now().to_rfc3339(),
+        cube_json: cube_json.display().to_string(),
+        feature_mode: match feature_mode {
+            FeatureMode::Raw => "raw".to_string(),
+            FeatureMode::Residualized => "residualized".to_string(),
+        },
+        rows,
+    })
 }
 
 fn algebra_vector(row: &data_core::CatalogFeatureRow, feature_mode: FeatureMode) -> [f64; ALGEBRA_DIM] {
@@ -350,6 +504,97 @@ fn mean(values: &[f64]) -> f64 {
         return f64::NAN;
     }
     finite.iter().sum::<f64>() / finite.len() as f64
+}
+
+fn stddev(values: &[f64], mean_value: f64) -> f64 {
+    let finite = values
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect::<Vec<_>>();
+    if finite.is_empty() {
+        return f64::NAN;
+    }
+    let variance = finite
+        .iter()
+        .map(|value| {
+            let delta = *value - mean_value;
+            delta * delta
+        })
+        .sum::<f64>()
+        / finite.len() as f64;
+    variance.sqrt()
+}
+
+fn null_associator_distribution(vectors: &[[f64; ALGEBRA_DIM]], n_perm: usize) -> Vec<f64> {
+    if vectors.len() < 3 || n_perm == 0 {
+        return Vec::new();
+    }
+    let mut distribution = Vec::with_capacity(n_perm);
+    for perm_idx in 0..n_perm {
+        let shuffled = deterministic_column_shuffle(vectors, perm_idx);
+        let mut associators = Vec::new();
+        for triple in shuffled.windows(3) {
+            associators.push(cd_associator_norm(&triple[0], &triple[1], &triple[2]));
+        }
+        distribution.push(mean(&associators));
+    }
+    distribution
+}
+
+fn deterministic_column_shuffle(
+    vectors: &[[f64; ALGEBRA_DIM]],
+    perm_idx: usize,
+) -> Vec<[f64; ALGEBRA_DIM]> {
+    let n = vectors.len();
+    let mut shuffled = vec![[0.0_f64; ALGEBRA_DIM]; n];
+    for row_idx in 0..n {
+        for col_idx in 0..ALGEBRA_DIM {
+            let shift = ((perm_idx + 1) * (col_idx + 1)) % n;
+            shuffled[row_idx][col_idx] = vectors[(row_idx + shift) % n][col_idx];
+        }
+    }
+    shuffled
+}
+
+fn empirical_upper_tail_p_value(observed: f64, null_distribution: &[f64]) -> f64 {
+    if null_distribution.is_empty() || !observed.is_finite() {
+        return f64::NAN;
+    }
+    let exceed = null_distribution
+        .iter()
+        .filter(|value| value.is_finite() && **value >= observed)
+        .count();
+    (exceed as f64 + 1.0) / (null_distribution.len() as f64 + 1.0)
+}
+
+fn load_ultrametric_significance(path: &Path) -> Result<BTreeMap<String, bool>> {
+    let mut reader = csv::Reader::from_path(path)
+        .with_context(|| format!("open {}", path.display()))?;
+    let mut out = BTreeMap::new();
+    for row in reader.records() {
+        let row = row.with_context(|| format!("read {}", path.display()))?;
+        let dataset = row.get(0).unwrap_or("").trim();
+        let p_value = row.get(6).and_then(|value| value.parse::<f64>().ok());
+        if dataset.is_empty() {
+            continue;
+        }
+        out.insert(
+            normalize_dataset_key(dataset),
+            p_value.map(|value| value <= 0.05).unwrap_or(false),
+        );
+    }
+    Ok(out)
+}
+
+fn normalize_dataset_key(value: &str) -> String {
+    value
+        .split('[')
+        .next()
+        .unwrap_or(value)
+        .trim()
+        .to_ascii_lowercase()
+        .replace([' ', '_', '/'], "-")
 }
 
 fn mean_abs_channels(vectors: &[[f64; ALGEBRA_DIM]]) -> [f64; ALGEBRA_DIM] {
