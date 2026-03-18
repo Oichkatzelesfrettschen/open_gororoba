@@ -5,6 +5,8 @@ selection = "data/external/manga/dapall_selection.csv"
 maps_cache = "data/external/manga/maps_cache"
 n_max = 24
 m_max = 4
+radial_bins = 18
+min_stacked_galaxies = 4
 stack_bootstrap_resamples = 200
 ring_width_spaxels = 5.000
 min_ring_pixels = 16
@@ -56,37 +58,37 @@ mean_rel_axisymmetric = 0.903168
 median_rel_axisymmetric = 0.348746
 
 [stacked_mode_0]
-ring_count = 7
-mean_galaxies_per_ring = 12.714
-peak_aligned_snr = 2.094108
-peak_unaligned_snr = 1.922975
-peak_aligned_rayleigh_r = 0.529412
+ring_count = 12
+mean_galaxies_per_ring = 6.750
+peak_aligned_snr = 1.754968
+peak_unaligned_snr = 1.724645
+peak_aligned_rayleigh_r = 0.600000
 
 [stacked_mode_1]
-ring_count = 7
-mean_galaxies_per_ring = 12.714
-peak_aligned_snr = 1.608748
-peak_unaligned_snr = 1.855819
-peak_aligned_rayleigh_r = 0.242046
+ring_count = 12
+mean_galaxies_per_ring = 6.750
+peak_aligned_snr = 2.829034
+peak_unaligned_snr = 3.062066
+peak_aligned_rayleigh_r = 0.930965
 
 [stacked_mode_2]
-ring_count = 7
-mean_galaxies_per_ring = 12.714
-peak_aligned_snr = 1.687865
-peak_unaligned_snr = 1.944354
-peak_aligned_rayleigh_r = 0.339911
+ring_count = 12
+mean_galaxies_per_ring = 6.750
+peak_aligned_snr = 2.157622
+peak_unaligned_snr = 3.792342
+peak_aligned_rayleigh_r = 0.653209
 
 [stacked_mode_3]
-ring_count = 7
-mean_galaxies_per_ring = 12.714
-peak_aligned_snr = 1.801883
-peak_unaligned_snr = 2.090227
-peak_aligned_rayleigh_r = 0.359973
+ring_count = 12
+mean_galaxies_per_ring = 6.750
+peak_aligned_snr = 2.659708
+peak_unaligned_snr = 2.527755
+peak_aligned_rayleigh_r = 0.694478
 
 [stacked_mode_4]
-ring_count = 7
-mean_galaxies_per_ring = 12.714
-peak_aligned_snr = 7.839894
-peak_unaligned_snr = 1.757660
-peak_aligned_rayleigh_r = 0.911527
+ring_count = 12
+mean_galaxies_per_ring = 6.750
+peak_aligned_snr = 2.965392
+peak_unaligned_snr = 3.906009
+peak_aligned_rayleigh_r = 0.858863
 
