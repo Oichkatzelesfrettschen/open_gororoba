@@ -11555,6 +11555,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "clap",
+ "csv",
  "provenance_store",
  "rusqlite",
  "serde",

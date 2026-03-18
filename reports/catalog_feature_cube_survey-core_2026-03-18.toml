@@ -1,0 +1,100 @@
+cube_name = "survey-core"
+generated_at_utc = "2026-03-18T04:13:16.870975565+00:00"
+row_count = 149052
+dataset_names = [
+    "CHIME FRB",
+    "DESI DR2 BAO",
+    "Gaia DR3 Nearby",
+    "HST Public Metadata",
+    "JWST Public Metadata",
+    "SDSS DR18 Quasars",
+]
+source_paths = [
+    "./data/external/chime_frb_cat2.csv",
+    "./data/external/gaia_dr3_nearby.csv",
+    "./data/external/hst_public_observations.csv",
+    "./data/external/jwst_public_observations.csv",
+    "./data/external/sdss_dr18_quasars.csv",
+]
+notes = [
+    "Metadata-first generic cube spanning bounded survey and program metadata lanes.",
+    "Dataset-specific numeric features are carried in a manifest-declared vector rather than a fixed astrophysical schema.",
+]
+
+[[channels]]
+name = "f0"
+description = "Primary numeric feature 0"
+role = "dataset_specific"
+dictionary = []
+
+[[channels]]
+name = "f1"
+description = "Primary numeric feature 1"
+role = "dataset_specific"
+dictionary = []
+
+[[channels]]
+name = "f2"
+description = "Primary numeric feature 2"
+role = "dataset_specific"
+dictionary = []
+
+[[channels]]
+name = "f3"
+description = "Primary numeric feature 3"
+role = "dataset_specific"
+dictionary = []
+
+[[channels]]
+name = "f4"
+description = "Primary numeric feature 4"
+role = "dataset_specific"
+dictionary = []
+
+[[channels]]
+name = "f5"
+description = "Primary numeric feature 5"
+role = "dataset_specific"
+dictionary = []
+
+[[channels]]
+name = "instrument_code"
+description = "Stable dictionary code for instrument metadata"
+role = "categorical_encoding"
+dictionary = [
+    "FGS",
+    "FGS/FGS1",
+    "FGS/FGS2",
+    "MIRI/CORON",
+    "MIRI/IFU",
+    "MIRI/IMAGE",
+    "MIRI/SLIT",
+    "MIRI/SLITLESS",
+    "MIRI/TARGACQ",
+    "NICMOS/NIC1",
+    "NICMOS/NIC2",
+    "NICMOS/NIC3",
+    "NIRCAM/CORON",
+    "NIRCAM/GRISM",
+    "NIRCAM/IMAGE",
+    "NIRCAM/TARGACQ",
+    "NIRISS/AMI",
+    "NIRISS/IMAGE",
+    "NIRISS/SOSS",
+    "NIRISS/WFSS",
+    "NIRSPEC",
+    "NIRSPEC/IFU",
+    "NIRSPEC/IMAGE",
+    "NIRSPEC/MSA",
+    "NIRSPEC/SLIT",
+]
+
+[[channels]]
+name = "calib_level_code"
+description = "Stable dictionary code for calibration level metadata"
+role = "categorical_encoding"
+dictionary = [
+    "-1",
+    "2",
+    "3",
+]

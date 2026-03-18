@@ -21,6 +21,7 @@
 //!   multi-dataset-ultrametric --json              # JSON output
 
 use clap::Parser;
+use chrono::{DateTime, Datelike, Duration, TimeZone, Utc};
 use rand::{SeedableRng, prelude::*};
 use rayon::prelude::*;
 use std::{
@@ -599,6 +600,90 @@ fn load_gaia(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     Some((rows, specs))
 }
 
+fn parse_release_time(value: &str) -> Option<DateTime<Utc>> {
+    if let Ok(dt) = DateTime::parse_from_rfc3339(value) {
+        return Some(dt.with_timezone(&Utc));
+    }
+    let mjd = value.trim().parse::<f64>().ok()?;
+    let epoch = Utc.with_ymd_and_hms(1858, 11, 17, 0, 0, 0).single()?;
+    let millis = (mjd * 86_400_000.0).round() as i64;
+    Some(epoch + Duration::milliseconds(millis))
+}
+
+fn release_year_feature(value: &str) -> Option<f64> {
+    parse_release_time(value).map(|dt| dt.year() as f64)
+}
+
+fn load_jwst(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
+    let path = dir.join("jwst_public_observations.csv");
+    if !path.exists() {
+        return None;
+    }
+    let observations = data_core::catalogs::jwst::parse_jwst_public_metadata_csv(&path).ok()?;
+    let mut rows = Vec::new();
+    for row in &observations {
+        let release_year = release_year_feature(&row.t_obs_release).unwrap_or(0.0);
+        if !row.s_ra.is_finite() || !row.s_dec.is_finite() {
+            continue;
+        }
+        rows.push(vec![
+            row.s_ra,
+            row.s_dec,
+            release_year,
+            data_core::pipe_count(&row.filters),
+            row.proposal_id.parse::<f64>().unwrap_or(f64::NAN),
+            row.calib_level.parse::<f64>().unwrap_or(f64::NAN),
+        ]);
+    }
+    if rows.len() < 10 {
+        return None;
+    }
+    let specs = vec![
+        attr("ra", &rows, 0, false),
+        attr("dec", &rows, 1, false),
+        attr("release_year", &rows, 2, false),
+        attr("filter_count", &rows, 3, false),
+        attr("proposal_id", &rows, 4, false),
+        attr("calib_level", &rows, 5, false),
+    ];
+    Some((rows, specs))
+}
+
+fn load_hst(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
+    let path = dir.join("hst_public_observations.csv");
+    if !path.exists() {
+        return None;
+    }
+    let observations = data_core::catalogs::hst::parse_hst_public_metadata_csv(&path).ok()?;
+    let mut rows = Vec::new();
+    for row in &observations {
+        let release_year = release_year_feature(&row.t_obs_release).unwrap_or(0.0);
+        if !row.s_ra.is_finite() || !row.s_dec.is_finite() {
+            continue;
+        }
+        rows.push(vec![
+            row.s_ra,
+            row.s_dec,
+            release_year,
+            data_core::pipe_count(&row.filters),
+            row.proposal_id.parse::<f64>().unwrap_or(f64::NAN),
+            row.calib_level.parse::<f64>().unwrap_or(f64::NAN),
+        ]);
+    }
+    if rows.len() < 10 {
+        return None;
+    }
+    let specs = vec![
+        attr("ra", &rows, 0, false),
+        attr("dec", &rows, 1, false),
+        attr("release_year", &rows, 2, false),
+        attr("filter_count", &rows, 3, false),
+        attr("proposal_id", &rows, 4, false),
+        attr("calib_level", &rows, 5, false),
+    ];
+    Some((rows, specs))
+}
+
 /// Parse sexagesimal RA "HH MM SS.S" to decimal degrees.
 fn parse_ra_sexa(s: &str) -> Option<f64> {
     let parts: Vec<&str> = s.split_whitespace().collect();
@@ -958,6 +1043,8 @@ fn main() {
         ("GWOSC GW Events", Box::new(load_gwtc3)),
         ("Pantheon+ SN Ia", Box::new(load_pantheon)),
         ("Gaia DR3 Stars", Box::new(load_gaia)),
+        ("JWST Public Metadata", Box::new(load_jwst)),
+        ("HST Public Metadata", Box::new(load_hst)),
         ("SDSS DR18 Quasars", Box::new(load_sdss)),
         ("Fermi GBM GRBs", Box::new(load_fermi_gbm)),
         ("Hipparcos Stars", Box::new(load_hipparcos)),

@@ -1,0 +1,120 @@
+[[route]]
+dataset_key = "gaia_dr3_nearby"
+family = "astronomy"
+provider_surface = "Gaia DR3 Nearby Stars"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/gaia_dr3_nearby.csv"]
+parser_ref = "data_core::catalogs::gaia::parse_gaia_csv"
+analysis_binaries = ["survey-crossmatch", "multi-dataset-ultrametric", "catalog-feature-cube"]
+report_patterns = ["reports/survey_catalog_matrix_*.toml", "reports/catalog_feature_cube_*.toml"]
+notes = "Bounded nearby-star lane with spatial and topology consumers."
+
+[[route]]
+dataset_key = "jwst_public_metadata"
+family = "mast"
+provider_surface = "JWST Public Observation Metadata"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/jwst_public_observations.csv"]
+parser_ref = "data_core::catalogs::jwst::parse_jwst_public_metadata_csv"
+analysis_binaries = ["survey-crossmatch", "multi-dataset-ultrametric", "mast-program-clustering", "catalog-feature-cube"]
+report_patterns = ["reports/survey_catalog_matrix_*.toml", "reports/catalog_feature_cube_*.toml", "reports/mast_program_clustering_*.toml", "data/csv/c071g_multi_dataset_ultrametric.csv"]
+notes = "Bounded JWST metadata lane for crossmatch, clustering, and feature-cube work."
+
+[[route]]
+dataset_key = "hst_public_metadata"
+family = "mast"
+provider_surface = "HST Public Observation Metadata"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/hst_public_observations.csv"]
+parser_ref = "data_core::catalogs::hst::parse_hst_public_metadata_csv"
+analysis_binaries = ["survey-crossmatch", "multi-dataset-ultrametric", "mast-program-clustering", "catalog-feature-cube"]
+report_patterns = ["reports/survey_catalog_matrix_*.toml", "reports/catalog_feature_cube_*.toml", "reports/mast_program_clustering_*.toml", "data/csv/c071g_multi_dataset_ultrametric.csv"]
+notes = "Bounded HST metadata lane for crossmatch, clustering, and feature-cube work."
+
+[[route]]
+dataset_key = "sdss_dr18_quasars"
+family = "astronomy"
+provider_surface = "SDSS DR18 Quasars"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/sdss_dr18_quasars.csv"]
+parser_ref = "data_core::catalogs::sdss::parse_sdss_quasar_csv"
+analysis_binaries = ["survey-crossmatch", "multi-dataset-ultrametric", "catalog-feature-cube"]
+report_patterns = ["reports/survey_catalog_matrix_*.toml", "reports/catalog_feature_cube_*.toml"]
+notes = "Spatial quasar lane and generic catalog feature-cube input."
+
+[[route]]
+dataset_key = "chime_frb_cat2"
+family = "astronomy"
+provider_surface = "CHIME/FRB Catalog 2"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/chime_frb_cat2.csv"]
+parser_ref = "data_core::catalogs::chime::parse_chime_csv"
+analysis_binaries = ["survey-crossmatch", "multi-dataset-ultrametric", "dm-ultrametric", "catalog-feature-cube"]
+report_patterns = ["reports/survey_catalog_matrix_*.toml", "reports/catalog_feature_cube_*.toml", "data/csv/c071b_dm_comoving_ultrametric.csv"]
+notes = "FRB lane with spatial, ultrametric, and comoving-distance analysis consumers."
+
+[[route]]
+dataset_key = "desi_dr2_bao_summary"
+family = "cosmology"
+provider_surface = "DESI DR2 BAO summary"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/desi/desi_dr2_bao_summary.csv", "data/external/desi/desi_dr1_bao_summary.csv"]
+parser_ref = "data_core::catalogs::desi_bao::desi_dr2_bao"
+analysis_binaries = ["survey-crossmatch", "catalog-feature-cube", "algebra-theory-crosswalk"]
+report_patterns = ["reports/desi_dr2_bao_reference_*.toml", "reports/catalog_feature_cube_*.toml"]
+notes = "Non-spatial summary lane kept in cosmology rather than sky-point routing."
+
+[[route]]
+dataset_key = "lotss_bulk"
+family = "radio"
+provider_surface = "LoTSS bulk FITS releases"
+ingress_binary = "lotss-fetch"
+local_globs = ["data/external/radio_surveys/lotss_*.fits", "data/external/radio_surveys/lotss_dr3_tiles/*.fits"]
+parser_ref = "data_core::catalogs::lotss::crossmatch_points_against_fits_catalog"
+analysis_binaries = ["lotss-fetch", "survey-crossmatch"]
+report_patterns = ["reports/lotss_*_crossmatch_*.toml", "reports/survey_catalog_matrix_*.toml"]
+notes = "Reference radio survey and central astronomy routing surface."
+
+[[route]]
+dataset_key = "euclid_morphology"
+family = "astronomy"
+provider_surface = "Euclid morphology bounded Q1 lane"
+ingress_binary = "euclid-fetch"
+local_globs = ["data/external/euclid/**/*.parquet"]
+parser_ref = "cosmology_core::euclid_morphology::read_euclid_visual_morphology"
+analysis_binaries = ["survey-crossmatch"]
+report_patterns = ["reports/euclid_lotss_xmatch_*.toml"]
+notes = "Bounded Euclid morphology lane with LoTSS crossmatch consumer."
+
+[[route]]
+dataset_key = "things_tables_and_cubes"
+family = "astronomy"
+provider_surface = "THINGS tables and preferred cubes"
+ingress_binary = "things-fetch"
+local_globs = ["data/external/things/table1.dat", "data/external/things/table4.dat", "data/external/things/cubes/**/*"]
+parser_ref = "data_core::catalogs::things::*"
+analysis_binaries = ["survey-crossmatch", "hi-cube-rotcurve-extractor"]
+report_patterns = ["reports/things_*_*.toml"]
+notes = "HI galaxy lane with metadata, rotcurve, and radio overlap consumers."
+
+[[route]]
+dataset_key = "heliosphere_feature_cube"
+family = "heliosphere"
+provider_surface = "Mission product federation"
+ingress_binary = "fetch-datasets"
+local_globs = ["data/external/ace_*/*", "data/external/wind_*/*", "data/external/voyager/**/*", "data/external/soho/**/*", "data/external/imap/**/*"]
+parser_ref = "heliosphere mission parsers via data_core::catalogs::*"
+analysis_binaries = ["heliosphere-feature-cube", "heliosphere-feature-transform", "heliosphere-algebra-decompose", "heliosphere-lbm-cube-run"]
+report_patterns = ["reports/heliosphere_feature_cube_*.toml", "reports/heliosphere_feature_transform_*.toml", "reports/heliosphere_lbm_cube_run_*.toml", "reports/heliosphere_algebra_decompose_*.toml"]
+notes = "Executed cube/transform/algebra/LBM heliosphere lane."
+
+[[route]]
+dataset_key = "mast_program_clusters"
+family = "mast"
+provider_surface = "JWST/HST public metadata clustering lane"
+ingress_binary = "mast-program-clustering"
+local_globs = ["data/external/jwst_public_observations.csv", "data/external/hst_public_observations.csv"]
+parser_ref = "program clustering over parsed MAST metadata"
+analysis_binaries = ["mast-program-clustering"]
+report_patterns = ["reports/mast_program_clustering_*.toml", "reports/mast_program_clustering_*.csv"]
+notes = "Derived analysis lane over JWST/HST metadata."
