@@ -27,8 +27,12 @@ fn main() {
         .unwrap_or_else(|_| "device".to_string())
         .as_str()
     {
-        "managed" | "managed-prefetch" => SparseMemoryMode::ManagedUnifiedPrefetch,
-        "managed-tiled" | "managed-tile-prefetch" => SparseMemoryMode::ManagedUnifiedTilePrefetch,
+        "managed" | "managed-prefetch" | "unified" | "unified-prefetch" => {
+            SparseMemoryMode::ManagedUnifiedPrefetch
+        }
+        "managed-tiled" | "managed-tile-prefetch" | "unified-tiled" | "unified-oversubscribed-tiled" => {
+            SparseMemoryMode::ManagedUnifiedTilePrefetch
+        }
         _ => SparseMemoryMode::DeviceLocal,
     };
 
@@ -128,6 +132,7 @@ fn main() {
 
     println!("  Active VRAM Footprint: {:.2} GB", active_vram_gb);
     println!("  Sparse Memory Mode: {:?}", solver.memory_mode());
+    println!("  Sparse Kernel Variant: {:?}", solver.kernel_variant());
 
     let steps = 100;
     println!("Running Sparse A-A LBM for {} steps...", steps);

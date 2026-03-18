@@ -23,6 +23,7 @@ const DESCRIPTOR_DIM: usize = 4;
 
 /// Stable row key used to join raw, transformed, and invariant views.
 pub type RowKey = (String, String, String, u16, u16, u8);
+type OccupancyTileKey = (String, String, String, u16, u16, u8, Option<u32>);
 
 /// One invariant sample augmented with official-label and descriptor context.
 #[derive(Debug, Clone, Serialize)]
@@ -87,6 +88,9 @@ pub struct SparseMaskSummary {
     pub name: String,
     pub active_rows: usize,
     pub active_fraction: f64,
+    pub occupancy_tiles_active: usize,
+    pub occupancy_tiles_total: usize,
+    pub occupancy_tile_fraction: f64,
     pub event_label_recall: f64,
     pub event_label_precision: f64,
     pub density_mean: f64,
@@ -122,6 +126,9 @@ pub struct CounterfactualSparseSummary {
     pub descriptor_profile: String,
     pub active_rows: usize,
     pub active_fraction: f64,
+    pub occupancy_tiles_active: usize,
+    pub occupancy_tiles_total: usize,
+    pub occupancy_tile_fraction: f64,
     pub event_label_recall: f64,
     pub event_label_precision: f64,
     pub sparse_bf16_aa_projected_gib: f64,
@@ -136,6 +143,9 @@ pub struct SeededSparsePolicySummary {
     pub descriptor_profile: String,
     pub active_rows: usize,
     pub active_fraction: f64,
+    pub occupancy_tiles_active: usize,
+    pub occupancy_tiles_total: usize,
+    pub occupancy_tile_fraction: f64,
     pub event_label_recall: f64,
     pub event_label_precision: f64,
     pub sparse_bf16_aa_projected_gib: f64,
@@ -316,6 +326,19 @@ fn sample_key(sample: &HeliosphereInvariantSample) -> RowKey {
         sample.year,
         sample.doy,
         sample.hour,
+    )
+}
+
+fn occupancy_tile_key(sample: &LabeledInvariantSample) -> OccupancyTileKey {
+    let hour_bucket = (sample.key.5 / 6) * 6;
+    (
+        sample.window_name.clone(),
+        sample.mission.clone(),
+        sample.product.clone(),
+        sample.key.3,
+        sample.key.4,
+        hour_bucket,
+        None,
     )
 }
 
@@ -985,6 +1008,7 @@ pub fn summarize_sparse_policies(
             &labels,
             &time_index,
             &baseline_index,
+            &samples,
         ),
         sparse_summary(
             invariant_policy.name,
@@ -993,6 +1017,7 @@ pub fn summarize_sparse_policies(
             &labels,
             &time_index,
             &invariant_policy.mask,
+            &samples,
         ),
         sparse_summary(
             hybrid_policy.name,
@@ -1001,6 +1026,7 @@ pub fn summarize_sparse_policies(
             &labels,
             &time_index,
             &hybrid_policy.mask,
+            &samples,
         ),
     ])
 }
@@ -1082,6 +1108,9 @@ pub fn summarize_seeded_sparse_policy_rows(
             descriptor_profile: row.descriptor_profile,
             active_rows: row.active_rows,
             active_fraction: row.active_fraction,
+            occupancy_tiles_active: row.occupancy_tiles_active,
+            occupancy_tiles_total: row.occupancy_tiles_total,
+            occupancy_tile_fraction: row.occupancy_tile_fraction,
             event_label_recall: row.event_label_recall,
             event_label_precision: row.event_label_precision,
             sparse_bf16_aa_projected_gib: row.sparse_bf16_aa_projected_gib,
@@ -1129,6 +1158,9 @@ pub fn summarize_targeted_seeded_sparse_policy(
             descriptor_profile: row.descriptor_profile,
             active_rows: row.active_rows,
             active_fraction: row.active_fraction,
+            occupancy_tiles_active: row.occupancy_tiles_active,
+            occupancy_tiles_total: row.occupancy_tiles_total,
+            occupancy_tile_fraction: row.occupancy_tile_fraction,
             event_label_recall: row.event_label_recall,
             event_label_precision: row.event_label_precision,
             sparse_bf16_aa_projected_gib: row.sparse_bf16_aa_projected_gib,
@@ -1217,10 +1249,11 @@ pub fn summarize_transferred_seeded_sparse_policy_from_contexts(
         target.samples.len(),
         &label_index,
         &time_index,
+        &target.samples,
     );
     let projected_gib = estimate_sparse_execution_plan(
         spec.grid,
-        summary.active_fraction,
+        summary.occupancy_tile_fraction,
         None,
         SparseHardwareEnvelope {
             cuda_vram_budget_bytes: None,
@@ -1242,6 +1275,9 @@ pub fn summarize_transferred_seeded_sparse_policy_from_contexts(
             descriptor_profile: spec.descriptor_profile.to_string(),
             active_rows: summary.active_rows,
             active_fraction: summary.active_fraction,
+            occupancy_tiles_active: summary.occupancy_tiles_active,
+            occupancy_tiles_total: summary.occupancy_tiles_total,
+            occupancy_tile_fraction: summary.occupancy_tile_fraction,
             event_label_recall: summary.event_label_recall,
             event_label_precision: summary.event_label_precision,
             sparse_bf16_aa_projected_gib: projected_gib,
@@ -1834,6 +1870,7 @@ fn fit_sparse_budget_policy(
         .map(|sample| sample.label_positive)
         .collect::<Vec<_>>();
     let threshold = best_budgeted_threshold(
+        &splits.validation,
         &validation_scores,
         &validation_labels,
         grid,
@@ -1943,7 +1980,13 @@ fn fit_sparse_budget_policy_profile_model_with_seed(
         .iter()
         .map(|sample| sample.label_positive)
         .collect::<Vec<_>>();
-    let threshold = best_budgeted_threshold(&validation_scores, &validation_labels, grid, budget_gib);
+    let threshold = best_budgeted_threshold(
+        &splits.validation,
+        &validation_scores,
+        &validation_labels,
+        grid,
+        budget_gib,
+    );
     Ok(FittedSparsePolicyProfile {
         name,
         scaler,
@@ -1967,10 +2010,16 @@ fn thresholded_sparse_policy_summary(
         .iter()
         .map(|sample| (sample.key.clone(), sample.timestamp_utc.clone()))
         .collect::<BTreeMap<_, _>>();
-    let summary = sparse_summary_from_active_index(&policy.mask, samples.len(), &label_index, &time_index);
+    let summary = sparse_summary_from_active_index(
+        &policy.mask,
+        samples.len(),
+        &label_index,
+        &time_index,
+        samples,
+    );
     let projected_gib = estimate_sparse_execution_plan(
         grid,
-        summary.active_fraction,
+        summary.occupancy_tile_fraction,
         None,
         SparseHardwareEnvelope {
             cuda_vram_budget_bytes: None,
@@ -1992,6 +2041,9 @@ fn thresholded_sparse_policy_summary(
             .to_string(),
         active_rows: summary.active_rows,
         active_fraction: summary.active_fraction,
+        occupancy_tiles_active: summary.occupancy_tiles_active,
+        occupancy_tiles_total: summary.occupancy_tiles_total,
+        occupancy_tile_fraction: summary.occupancy_tile_fraction,
         event_label_recall: summary.event_label_recall,
         event_label_precision: summary.event_label_precision,
         sparse_bf16_aa_projected_gib: projected_gib,
@@ -2000,6 +2052,7 @@ fn thresholded_sparse_policy_summary(
 }
 
 fn best_budgeted_threshold(
+    samples: &[&LabeledInvariantSample],
     scores: &[f64],
     labels: &[bool],
     grid: usize,
@@ -2022,14 +2075,11 @@ fn best_budgeted_threshold(
     let mut best_under_budget = None::<(f64, f64, f64)>;
     let mut lowest_memory = None::<(f64, f64)>;
     for threshold in candidates {
-        let predicted_positive = scores
-            .iter()
-            .filter(|score| score.is_finite() && **score >= threshold)
-            .count();
-        let active_fraction = ratio_usize(predicted_positive, scores.len());
+        let occupancy_tile_fraction =
+            occupancy_tile_fraction_for_scores(samples, scores, threshold);
         let projected_gib = estimate_sparse_execution_plan(
             grid,
-            active_fraction,
+            occupancy_tile_fraction,
             None,
             SparseHardwareEnvelope {
                 cuda_vram_budget_bytes: None,
@@ -2049,8 +2099,8 @@ fn best_budgeted_threshold(
                 Some((_, best_recall, best_fraction))
                     if recall.total_cmp(&best_recall).is_lt()
                         || (recall.total_cmp(&best_recall).is_eq()
-                            && active_fraction.total_cmp(&best_fraction).is_ge()) => {}
-                _ => best_under_budget = Some((threshold, recall, active_fraction)),
+                            && occupancy_tile_fraction.total_cmp(&best_fraction).is_ge()) => {}
+                _ => best_under_budget = Some((threshold, recall, occupancy_tile_fraction)),
             }
         }
         match lowest_memory {
@@ -2509,6 +2559,52 @@ fn label_index(samples: &[LabeledInvariantSample]) -> BTreeMap<RowKey, bool> {
         .collect()
 }
 
+fn occupancy_tile_totals(samples: &[LabeledInvariantSample]) -> usize {
+    samples
+        .iter()
+        .map(occupancy_tile_key)
+        .collect::<BTreeSet<_>>()
+        .len()
+}
+
+fn occupancy_tile_stats_from_mask(
+    samples: &[LabeledInvariantSample],
+    active_index: &BTreeMap<RowKey, bool>,
+) -> (usize, usize, f64) {
+    let total_tiles = occupancy_tile_totals(samples);
+    let mut active_tiles = BTreeSet::new();
+    for sample in samples {
+        if *active_index.get(&sample.key).unwrap_or(&false) {
+            active_tiles.insert(occupancy_tile_key(sample));
+        }
+    }
+    let active_count = active_tiles.len();
+    (
+        active_count,
+        total_tiles,
+        ratio_usize(active_count, total_tiles.max(1)),
+    )
+}
+
+fn occupancy_tile_fraction_for_scores(
+    samples: &[&LabeledInvariantSample],
+    scores: &[f64],
+    threshold: f64,
+) -> f64 {
+    let total_tiles = samples
+        .iter()
+        .map(|sample| occupancy_tile_key(sample))
+        .collect::<BTreeSet<_>>()
+        .len();
+    let mut active_tiles = BTreeSet::new();
+    for (sample, score) in samples.iter().zip(scores.iter()) {
+        if score.is_finite() && *score >= threshold {
+            active_tiles.insert(occupancy_tile_key(sample));
+        }
+    }
+    ratio_usize(active_tiles.len(), total_tiles.max(1))
+}
+
 fn sparse_summary(
     name: &str,
     rows: &[&HeliosphereFeatureRow],
@@ -2516,6 +2612,7 @@ fn sparse_summary(
     label_index: &BTreeMap<RowKey, bool>,
     time_index: &BTreeMap<RowKey, String>,
     active_index: &BTreeMap<RowKey, bool>,
+    samples: &[LabeledInvariantSample],
 ) -> SparseMaskSummary {
     let active_rows = rows.len();
     let labeled_active = rows
@@ -2523,10 +2620,15 @@ fn sparse_summary(
         .filter(|row| *label_index.get(&row_key(row)).unwrap_or(&false))
         .count();
     let total_labeled = label_index.values().filter(|value| **value).count();
+    let (occupancy_tiles_active, occupancy_tiles_total, occupancy_tile_fraction) =
+        occupancy_tile_stats_from_mask(samples, active_index);
     SparseMaskSummary {
         name: name.to_string(),
         active_rows,
         active_fraction: ratio_usize(active_rows, total_rows),
+        occupancy_tiles_active,
+        occupancy_tiles_total,
+        occupancy_tile_fraction,
         event_label_recall: ratio_usize(labeled_active, total_labeled),
         event_label_precision: ratio_usize(labeled_active, active_rows),
         density_mean: mean(
@@ -2562,6 +2664,7 @@ fn sparse_summary_from_active_index(
     total_rows: usize,
     label_index: &BTreeMap<RowKey, bool>,
     time_index: &BTreeMap<RowKey, String>,
+    samples: &[LabeledInvariantSample],
 ) -> SparseMaskSummary {
     let active_rows = active_index.values().filter(|value| **value).count();
     let labeled_active = active_index
@@ -2570,10 +2673,15 @@ fn sparse_summary_from_active_index(
         .filter(|(key, _)| *label_index.get(*key).unwrap_or(&false))
         .count();
     let total_labeled = label_index.values().filter(|value| **value).count();
+    let (occupancy_tiles_active, occupancy_tiles_total, occupancy_tile_fraction) =
+        occupancy_tile_stats_from_mask(samples, active_index);
     SparseMaskSummary {
         name: "counterfactual".to_string(),
         active_rows,
         active_fraction: ratio_usize(active_rows, total_rows),
+        occupancy_tiles_active,
+        occupancy_tiles_total,
+        occupancy_tile_fraction,
         event_label_recall: ratio_usize(labeled_active, total_labeled),
         event_label_precision: ratio_usize(labeled_active, active_rows),
         density_mean: f64::NAN,
