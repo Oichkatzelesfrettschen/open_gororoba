@@ -141,6 +141,26 @@ struct SparseProfileCli {
     ncu_launch_count: u32,
 }
 
+#[derive(Parser, Debug)]
+#[command(
+    name = "gpu-profile",
+    about = "Run diffable GPU benchmark/profile sweeps for sparse CUDA workloads"
+)]
+struct GpuProfileCli {
+    #[arg(long, default_value = "gpu_sparse_1024")]
+    bench: String,
+    #[arg(long, default_value = "both")]
+    mode: String,
+    #[arg(long, default_value = "reports/gpu_profiles")]
+    output_dir: PathBuf,
+    #[arg(long, value_delimiter = ',')]
+    tile_bytes: Vec<u64>,
+    #[arg(long, default_value_t = false)]
+    run_nsys: bool,
+    #[arg(long, default_value_t = false)]
+    run_ncu: bool,
+}
+
 #[derive(Debug, Serialize)]
 struct SparseProfileRunRecord {
     mode: String,
@@ -157,6 +177,27 @@ struct SparseProfileManifest {
     nsys_available: bool,
     ncu_available: bool,
     runs: Vec<SparseProfileRunRecord>,
+}
+
+#[derive(Debug, Serialize)]
+struct GpuProfileSweepRow {
+    bench: String,
+    mode: String,
+    tile_bytes: Option<u64>,
+    elapsed_seconds: Option<f64>,
+    throughput_mlups: Option<f64>,
+    effective_glups: Option<f64>,
+    stdout_path: PathBuf,
+    nsys_report: Option<PathBuf>,
+    ncu_csv: Option<PathBuf>,
+    skipped_reason: Option<String>,
+}
+
+#[derive(Debug, Serialize)]
+struct GpuProfileSweepManifest {
+    bench: String,
+    generated_at: String,
+    rows: Vec<GpuProfileSweepRow>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -244,7 +285,7 @@ fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
         bail!(
-            "usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile> [args]"
+            "usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile|gpu-profile> [args]"
         );
     };
     match command.as_str() {
@@ -272,8 +313,231 @@ fn main() -> Result<()> {
         "sparse-profile" => run_sparse_profile(SparseProfileCli::try_parse_from(
             std::iter::once("sparse-profile".to_string()).chain(args),
         )?),
+        "gpu-profile" => run_gpu_profile(GpuProfileCli::try_parse_from(
+            std::iter::once("gpu-profile".to_string()).chain(args),
+        )?),
         other => bail!("unknown xtask command: {other}"),
     }
+}
+
+fn run_gpu_profile(cli: GpuProfileCli) -> Result<()> {
+    fs::create_dir_all(&cli.output_dir)
+        .with_context(|| format!("create output directory {}", cli.output_dir.display()))?;
+    run_status(
+        Command::new("cargo")
+            .arg("bench")
+            .arg("--no-run")
+            .arg("-p")
+            .arg("lbm_3d_cuda")
+            .arg("--bench")
+            .arg(&cli.bench),
+        "build gpu benchmark",
+    )?;
+    let binary = locate_sparse_bench_binary(&cli.bench)?;
+    let nsys_available = cli.run_nsys && tool_available("nsys", &["--version"]);
+    let ncu_available = cli.run_ncu && tool_available("ncu", &["--version"]);
+    let tile_bytes = if cli.tile_bytes.is_empty() {
+        vec![None]
+    } else {
+        cli.tile_bytes.into_iter().map(Some).collect()
+    };
+    let mut rows = Vec::new();
+    for mode in sparse_profile_modes(&cli.mode)? {
+        for tile in &tile_bytes {
+            rows.push(run_gpu_profile_case(
+                &cli.bench,
+                &binary,
+                &cli.output_dir,
+                mode,
+                *tile,
+                nsys_available,
+                ncu_available,
+            )?);
+        }
+    }
+    let manifest = GpuProfileSweepManifest {
+        bench: cli.bench.clone(),
+        generated_at: Local::now().to_rfc3339_opts(SecondsFormat::Secs, true),
+        rows,
+    };
+    let manifest_path = cli
+        .output_dir
+        .join(format!("{}_sweep_manifest.json", cli.bench));
+    fs::write(&manifest_path, serde_json::to_string_pretty(&manifest)?)
+        .with_context(|| format!("write {}", manifest_path.display()))?;
+    let summary_path = cli.output_dir.join(format!("{}_sweep_summary.csv", cli.bench));
+    write_gpu_profile_summary_csv(&summary_path, &manifest.rows)?;
+    println!("{}", manifest_path.display());
+    println!("{}", summary_path.display());
+    Ok(())
+}
+
+fn run_gpu_profile_case(
+    bench: &str,
+    binary: &Path,
+    output_dir: &Path,
+    mode: &str,
+    tile_bytes: Option<u64>,
+    nsys_available: bool,
+    ncu_available: bool,
+) -> Result<GpuProfileSweepRow> {
+    let label = match tile_bytes {
+        Some(bytes) => format!("{}_tile{}", mode_label(mode), bytes),
+        None => mode_label(mode).to_string(),
+    };
+    let stdout_path = output_dir.join(format!("{}_{}.stdout.txt", bench, label));
+    let mut run = Command::new(binary);
+    apply_sparse_profile_env(&mut run, mode, tile_bytes);
+    let output = run
+        .output()
+        .with_context(|| format!("run benchmark {} {}", bench, label))?;
+    fs::write(&stdout_path, &output.stdout)
+        .with_context(|| format!("write {}", stdout_path.display()))?;
+    let stdout_text = String::from_utf8_lossy(&output.stdout).to_string();
+    let (elapsed_seconds, throughput_mlups, effective_glups) = parse_gpu_sparse_bench_stdout(&stdout_text);
+    let mut row = GpuProfileSweepRow {
+        bench: bench.to_string(),
+        mode: mode_label(mode).to_string(),
+        tile_bytes,
+        elapsed_seconds,
+        throughput_mlups,
+        effective_glups,
+        stdout_path,
+        nsys_report: None,
+        ncu_csv: None,
+        skipped_reason: if output.status.success() {
+            None
+        } else {
+            Some(format!("benchmark exited with status {}", output.status))
+        },
+    };
+
+    if nsys_available {
+        let base = output_dir.join(format!("{}_{}", bench, label));
+        let mut nsys = Command::new("nsys");
+        nsys.arg("profile")
+            .arg("--force-overwrite=true")
+            .arg("--sample=none")
+            .arg("--trace=cuda,nvtx,osrt")
+            .arg("-o")
+            .arg(&base)
+            .arg(binary);
+        apply_sparse_profile_env(&mut nsys, mode, tile_bytes);
+        let _ = nsys.status();
+        row.nsys_report = Some(base.with_extension("nsys-rep"));
+    }
+    if ncu_available {
+        let ncu_csv = output_dir.join(format!("{}_{}_ncu.csv", bench, label));
+        let mut ncu = Command::new("ncu");
+        ncu.arg("--target-processes")
+            .arg("all")
+            .arg("--kernel-name-base")
+            .arg("demangled")
+            .arg("--kernel-name")
+            .arg("lbm_step_sparse_aa")
+            .arg("--launch-skip")
+            .arg("5")
+            .arg("--launch-count")
+            .arg("3")
+            .arg("--section")
+            .arg("SpeedOfLight")
+            .arg("--section")
+            .arg("LaunchStats")
+            .arg("--section")
+            .arg("Occupancy")
+            .arg("--csv")
+            .arg("--log-file")
+            .arg(&ncu_csv)
+            .arg(binary);
+        apply_sparse_profile_env(&mut ncu, mode, tile_bytes);
+        let _ = ncu.status();
+        row.ncu_csv = Some(ncu_csv);
+    }
+    Ok(row)
+}
+
+fn apply_sparse_profile_env(command: &mut Command, mode: &str, tile_bytes: Option<u64>) {
+    if mode == "managed" {
+        command.env("GOROROBA_SPARSE_MEMORY_MODE", "managed");
+    } else if mode == "managed-tiled" {
+        command.env("GOROROBA_SPARSE_MEMORY_MODE", "managed-tiled");
+    }
+    if let Some(bytes) = tile_bytes {
+        command.env("GOROROBA_SPARSE_TILE_BYTES", bytes.to_string());
+    }
+}
+
+fn parse_gpu_sparse_bench_stdout(stdout: &str) -> (Option<f64>, Option<f64>, Option<f64>) {
+    let elapsed_seconds = extract_last_float_after(stdout, "Time elapsed:");
+    let throughput_mlups = extract_last_float_after(stdout, "Throughput:");
+    let effective_glups = extract_last_float_after(stdout, "Effective:");
+    (elapsed_seconds, throughput_mlups, effective_glups)
+}
+
+fn extract_last_float_after(text: &str, prefix: &str) -> Option<f64> {
+    text.lines()
+        .find_map(|line| {
+            let trimmed = line.trim();
+            if !trimmed.starts_with(prefix) {
+                return None;
+            }
+            trimmed
+                .split_whitespace()
+                .find_map(|token| token.parse::<f64>().ok())
+        })
+}
+
+fn write_gpu_profile_summary_csv(path: &Path, rows: &[GpuProfileSweepRow]) -> Result<()> {
+    let mut writer = csv::Writer::from_path(path)
+        .with_context(|| format!("create {}", path.display()))?;
+    writer.write_record([
+        "bench",
+        "mode",
+        "tile_bytes",
+        "elapsed_seconds",
+        "throughput_mlups",
+        "effective_glups",
+        "stdout_path",
+        "nsys_report",
+        "ncu_csv",
+        "skipped_reason",
+    ])?;
+    for row in rows {
+        writer.write_record([
+            row.bench.as_str(),
+            row.mode.as_str(),
+            row.tile_bytes
+                .map(|value| value.to_string())
+                .unwrap_or_default()
+                .as_str(),
+            row.elapsed_seconds
+                .map(|value| format!("{value:.6}"))
+                .unwrap_or_default()
+                .as_str(),
+            row.throughput_mlups
+                .map(|value| format!("{value:.6}"))
+                .unwrap_or_default()
+                .as_str(),
+            row.effective_glups
+                .map(|value| format!("{value:.6}"))
+                .unwrap_or_default()
+                .as_str(),
+            row.stdout_path.to_string_lossy().as_ref(),
+            row.nsys_report
+                .as_ref()
+                .map(|path| path.to_string_lossy().into_owned())
+                .unwrap_or_default()
+                .as_str(),
+            row.ncu_csv
+                .as_ref()
+                .map(|path| path.to_string_lossy().into_owned())
+                .unwrap_or_default()
+                .as_str(),
+            row.skipped_reason.clone().unwrap_or_default().as_str(),
+        ])?;
+    }
+    writer.flush()?;
+    Ok(())
 }
 
 fn run_sparse_profile(cli: SparseProfileCli) -> Result<()> {
@@ -449,7 +713,9 @@ fn sparse_profile_modes(mode: &str) -> Result<Vec<&'static str>> {
     match mode {
         "device" => Ok(vec!["device"]),
         "managed" => Ok(vec!["managed"]),
+        "managed-tiled" => Ok(vec!["managed-tiled"]),
         "both" => Ok(vec!["device", "managed"]),
+        "all" => Ok(vec!["device", "managed", "managed-tiled"]),
         other => bail!("unsupported sparse-profile mode: {other}"),
     }
 }
@@ -458,6 +724,7 @@ fn mode_label(mode: &str) -> &'static str {
     match mode {
         "device" => "device",
         "managed" => "managed",
+        "managed-tiled" => "managed_tiled",
         _ => "unknown",
     }
 }

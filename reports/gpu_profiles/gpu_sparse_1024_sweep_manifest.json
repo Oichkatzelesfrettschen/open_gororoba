@@ -1,0 +1,18 @@
+{
+  "bench": "gpu_sparse_1024",
+  "generated_at": "2026-03-17T21:14:42-07:00",
+  "rows": [
+    {
+      "bench": "gpu_sparse_1024",
+      "mode": "device",
+      "tile_bytes": null,
+      "elapsed_seconds": 3.3206,
+      "throughput_mlups": 1858.63,
+      "effective_glups": 32.34,
+      "stdout_path": "reports/gpu_profiles/gpu_sparse_1024_device.stdout.txt",
+      "nsys_report": null,
+      "ncu_csv": null,
+      "skipped_reason": null
+    }
+  ]
+}
