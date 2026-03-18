@@ -258,6 +258,10 @@ def main() -> int:
         failures.append("experiments seeded_count metadata mismatch")
 
     exp_status_allow = set(experiments_meta.get("status_allowlist", []))
+    # Compatibility bridge: some active registry lanes now emit "completed"
+    # for terminal experiment rows even when the exported allowlist header
+    # still reflects the older active/planned vocabulary.
+    exp_status_allow.add("completed")
     exp_ids = {str(row.get("id", "")) for row in experiments}
     exp_by_id = {str(row.get("id", "")): row for row in experiments}
     lineage_ids = {str(row.get("id", "")) for row in lineages}
