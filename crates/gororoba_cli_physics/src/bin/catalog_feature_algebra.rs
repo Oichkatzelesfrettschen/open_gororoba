@@ -2,9 +2,8 @@ use anyhow::{Context, Result};
 use cd_kernel::{cd_associator_norm, cd_norm_sq};
 use chrono::{DateTime, Datelike, Utc};
 use clap::Parser;
-use data_core::{CatalogFeatureChannel, CatalogFeatureCube, CatalogFeatureCubeManifest};
+use data_core::{CatalogFeatureChannel, CatalogFeatureCube, parse_catalog_feature_cube_json};
 use nalgebra::{SMatrix, SymmetricEigen};
-use serde::Deserialize;
 use serde::Serialize;
 use std::{
     collections::BTreeMap,
@@ -22,6 +21,9 @@ const ALGEBRA_DIM: usize = 16;
 struct Cli {
     #[arg(long)]
     cube_json: PathBuf,
+
+    #[arg(long, default_value = "raw")]
+    feature_mode: String,
 
     #[arg(long)]
     out: Option<PathBuf>,
@@ -49,45 +51,24 @@ struct Report {
     generated_at_utc: String,
     cube_json: String,
     cube_name: String,
+    feature_mode: String,
     dataset_count: usize,
     channel_names: Vec<String>,
     datasets: Vec<DatasetSummary>,
 }
 
-#[derive(Debug, Deserialize)]
-struct JsonCatalogFeatureCube {
-    manifest: CatalogFeatureCubeManifest,
-    rows: Vec<JsonCatalogFeatureRow>,
-}
-
-#[derive(Debug, Deserialize)]
-struct JsonCatalogFeatureRow {
-    cube_name: String,
-    dataset: String,
-    record_id: String,
-    modality: String,
-    ra_deg: Option<f64>,
-    dec_deg: Option<f64>,
-    time_utc: Option<String>,
-    redshift: Option<f64>,
-    distance_proxy: Option<f64>,
-    program_id: Option<String>,
-    instrument: Option<String>,
-    features: Vec<Option<f64>>,
-}
-
 fn main() -> Result<()> {
     let cli = Cli::parse();
+    let feature_mode = FeatureMode::parse(&cli.feature_mode)?;
     let out = cli.out.unwrap_or_else(|| {
         let date = Utc::now().date_naive();
         PathBuf::from("reports").join(format!("catalog_feature_algebra_survey-core_{}.toml", date))
     });
-    let json_cube: JsonCatalogFeatureCube = serde_json::from_slice(
+    let cube: CatalogFeatureCube = parse_catalog_feature_cube_json(
         &fs::read(&cli.cube_json).with_context(|| format!("read {}", cli.cube_json.display()))?,
     )
     .with_context(|| format!("parse {}", cli.cube_json.display()))?;
-    let cube = sanitize_cube(json_cube);
-    let report = summarize_cube(&cube, &cli.cube_json);
+    let report = summarize_cube(&cube, &cli.cube_json, feature_mode);
     if let Some(parent) = out.parent() {
         fs::create_dir_all(parent)?;
     }
@@ -98,49 +79,41 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn sanitize_cube(json_cube: JsonCatalogFeatureCube) -> CatalogFeatureCube {
-    CatalogFeatureCube {
-        manifest: json_cube.manifest,
-        rows: json_cube
-            .rows
-            .into_iter()
-            .map(|row| data_core::CatalogFeatureRow {
-                cube_name: row.cube_name,
-                dataset: row.dataset,
-                record_id: row.record_id,
-                modality: row.modality,
-                ra_deg: row.ra_deg,
-                dec_deg: row.dec_deg,
-                time_utc: row.time_utc,
-                redshift: row.redshift,
-                distance_proxy: row.distance_proxy,
-                program_id: row.program_id,
-                instrument: row.instrument,
-                features: row
-                    .features
-                    .into_iter()
-                    .map(|value| value.unwrap_or(f64::NAN))
-                    .collect(),
-            })
-            .collect(),
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum FeatureMode {
+    Raw,
+    Residualized,
+}
+
+impl FeatureMode {
+    fn parse(value: &str) -> Result<Self> {
+        match value {
+            "raw" => Ok(Self::Raw),
+            "residualized" => Ok(Self::Residualized),
+            other => anyhow::bail!("unsupported feature mode '{other}'; expected raw or residualized"),
+        }
     }
 }
 
-fn summarize_cube(cube: &CatalogFeatureCube, cube_json: &Path) -> Report {
-    let channel_names = algebra_channel_names(&cube.manifest.channels);
+fn summarize_cube(cube: &CatalogFeatureCube, cube_json: &Path, feature_mode: FeatureMode) -> Report {
+    let channel_names = algebra_channel_names(&cube.manifest.channels, feature_mode);
     let mut grouped: BTreeMap<String, Vec<&data_core::CatalogFeatureRow>> = BTreeMap::new();
     for row in &cube.rows {
         grouped.entry(row.dataset.clone()).or_default().push(row);
     }
     let mut datasets = grouped
         .into_iter()
-        .map(|(dataset, rows)| summarize_dataset(dataset, rows, &channel_names))
+        .map(|(dataset, rows)| summarize_dataset(dataset, rows, &channel_names, feature_mode))
         .collect::<Vec<_>>();
     datasets.sort_by(|a, b| a.dataset.cmp(&b.dataset));
     Report {
         generated_at_utc: Utc::now().to_rfc3339(),
         cube_json: cube_json.display().to_string(),
         cube_name: cube.manifest.cube_name.clone(),
+        feature_mode: match feature_mode {
+            FeatureMode::Raw => "raw".to_string(),
+            FeatureMode::Residualized => "residualized".to_string(),
+        },
         dataset_count: datasets.len(),
         channel_names,
         datasets,
@@ -151,8 +124,12 @@ fn summarize_dataset(
     dataset: String,
     rows: Vec<&data_core::CatalogFeatureRow>,
     channel_names: &[String],
+    feature_mode: FeatureMode,
 ) -> DatasetSummary {
-    let raw_vectors = rows.iter().map(|row| algebra_vector(row)).collect::<Vec<_>>();
+    let raw_vectors = rows
+        .iter()
+        .map(|row| algebra_vector(row, feature_mode))
+        .collect::<Vec<_>>();
     let centered_vectors = center_vectors(&raw_vectors);
     let norms = centered_vectors
         .iter()
@@ -189,7 +166,10 @@ fn summarize_dataset(
     DatasetSummary {
         dataset,
         row_count: rows.len(),
-        feature_channel_count: rows.first().map(|row| row.features.len()).unwrap_or(0),
+        feature_channel_count: rows
+            .first()
+            .map(|row| selected_features(row, feature_mode).len())
+            .unwrap_or(0),
         modality_count,
         mean_norm_sq: mean(&norms),
         mean_associator_norm: mean(&associators),
@@ -206,9 +186,10 @@ fn summarize_dataset(
     }
 }
 
-fn algebra_vector(row: &data_core::CatalogFeatureRow) -> [f64; ALGEBRA_DIM] {
+fn algebra_vector(row: &data_core::CatalogFeatureRow, feature_mode: FeatureMode) -> [f64; ALGEBRA_DIM] {
+    let features = selected_features(row, feature_mode);
     let mut out = [0.0_f64; ALGEBRA_DIM];
-    for (idx, value) in row.features.iter().take(8).enumerate() {
+    for (idx, value) in features.iter().take(8).enumerate() {
         out[idx] = finite_or_zero(*value);
     }
     out[8] = row.ra_deg.map(|value| value / 180.0).unwrap_or(0.0);
@@ -235,11 +216,24 @@ fn algebra_vector(row: &data_core::CatalogFeatureRow) -> [f64; ALGEBRA_DIM] {
     out
 }
 
-fn algebra_channel_names(channels: &[CatalogFeatureChannel]) -> Vec<String> {
+fn selected_features(row: &data_core::CatalogFeatureRow, feature_mode: FeatureMode) -> &[f64] {
+    match feature_mode {
+        FeatureMode::Raw => &row.features,
+        FeatureMode::Residualized => row
+            .residualized_features
+            .as_deref()
+            .unwrap_or(&row.features),
+    }
+}
+
+fn algebra_channel_names(channels: &[CatalogFeatureChannel], feature_mode: FeatureMode) -> Vec<String> {
     let mut out = channels
         .iter()
         .take(8)
-        .map(|channel| channel.name.clone())
+        .map(|channel| match feature_mode {
+            FeatureMode::Raw => channel.name.clone(),
+            FeatureMode::Residualized => format!("residualized:{}", channel.name),
+        })
         .collect::<Vec<_>>();
     out.extend([
         "ra_deg".to_string(),

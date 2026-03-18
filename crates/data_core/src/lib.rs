@@ -34,6 +34,7 @@ pub mod formats;
 pub mod geophysical;
 #[cfg(feature = "hdf5-export")]
 pub mod hdf5_export;
+pub mod heliosphere_event_labels;
 pub mod heliosphere_feature_cube;
 pub mod parse;
 pub mod provenance;
@@ -53,7 +54,8 @@ pub use download_stack::{
 };
 pub use catalog_feature_cube::{
     CatalogFeatureChannel, CatalogFeatureCube, CatalogFeatureCubeManifest, CatalogFeatureRow,
-    encode_dictionary_value, pipe_count, stable_dictionary,
+    CatalogNuisanceModel, NuisanceEffectReport, ResidualizedCatalogFeatureCube,
+    encode_dictionary_value, parse_catalog_feature_cube_json, pipe_count, stable_dictionary,
 };
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
@@ -61,11 +63,16 @@ pub use fetcher::{
 pub use heliosphere_feature_cube::{
     HELIOSPHERE_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_CHANNEL_NAMES, HELIOSPHERE_DYNAMIC_DIM,
     HELIOSPHERE_FEATURE_DIM, HELIOSPHERE_SIGNAL_DIM, HELIOSPHERE_SUPPORT_DIM,
-    HeliosphereFeatureCube, HeliosphereFeatureCubeManifest, HeliosphereFeatureRow,
+    HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM, HeliosphereFeatureCube,
+    HeliosphereFeatureCubeManifest, HeliosphereFeatureRow, HeliosphereInvariantSample,
     HeliosphereTransformGroupStats, HeliosphereTransformMode, HeliosphereTransformResult,
     SparseExecutionMode, SparseExecutionPlan, SparseHardwareEnvelope, SparseMemoryPlan,
-    estimate_sparse_execution_plan, estimate_sparse_memory_plan, transform_feature_rows,
-    transform_feature_rows_with_stats,
+    estimate_sparse_execution_plan, estimate_sparse_memory_plan, heliosphere_row_datetime,
+    compute_invariant_samples, transform_feature_rows, transform_feature_rows_with_stats,
+};
+pub use heliosphere_event_labels::{
+    ForecastResidual, HeliosphereEventKind, HeliosphereEventLabel, HeliosphereEventSource,
+    HeliosphereEventWindow, fetch_donki_event_labels, labels_to_prediction_windows,
 };
 pub use quality::{
     RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,

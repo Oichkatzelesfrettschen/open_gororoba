@@ -3802,6 +3802,7 @@ dependencies = [
  "gororoba_cli",
  "hifitime",
  "md-5",
+ "nalgebra 0.33.2",
  "parquet",
  "provenance_core",
  "provenance_ops",

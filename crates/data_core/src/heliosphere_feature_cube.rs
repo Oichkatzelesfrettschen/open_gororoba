@@ -5,6 +5,7 @@
 //! along with the memory estimators for dense and sparse 3D runs.
 
 use serde::{Deserialize, Serialize};
+use chrono::{DateTime, NaiveDate, Utc};
 use gororoba_sparse_grid::{
     BrickGrid3d, BrickShape3d, IndirectBrickTableShape, LogicalGrid3d, OccupancyBitsetStats,
     estimate_metadata_footprint,
@@ -49,6 +50,19 @@ pub const HELIOSPHERE_DYNAMIC_CHANNEL_NAMES: [&str; HELIOSPHERE_DYNAMIC_DIM] = [
     "map_flux_mean",
     "map_flux_std",
 ];
+pub const HELIOSPHERE_INVARIANT_DIM: usize = 10;
+pub const HELIOSPHERE_INVARIANT_CHANNEL_NAMES: [&str; HELIOSPHERE_INVARIANT_DIM] = [
+    "delta_b_over_bmag",
+    "delta_v_over_vmag",
+    "delta_n_over_n",
+    "delta_t_over_t",
+    "plasma_beta",
+    "alfven_speed_kms",
+    "alfvenicity_residual",
+    "dynamic_pressure_residual",
+    "magnetic_shear",
+    "compressibility_proxy",
+];
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HeliosphereFeatureRow {
@@ -79,6 +93,27 @@ pub struct HeliosphereFeatureRow {
     pub event_mask: Option<bool>,
     #[serde(default)]
     pub event_segment_id: Option<u32>,
+}
+
+/// One invariant/residual sample derived from a heliosphere feature row.
+///
+/// These channels are intended for physically constrained downstream work:
+/// predictive evaluation, cross-mission transfer, and adaptive sparsification.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HeliosphereInvariantSample {
+    pub window_name: String,
+    pub mission: String,
+    pub product: String,
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub timestamp_utc: String,
+    pub channels: [f64; HELIOSPHERE_INVARIANT_DIM],
+    pub uncertainty_scales: [f64; HELIOSPHERE_INVARIANT_DIM],
+    pub weighted_channels: [f64; HELIOSPHERE_INVARIANT_DIM],
+    pub inherited_event_score: Option<f64>,
+    pub inherited_event_mask: Option<bool>,
+    pub inherited_event_segment_id: Option<u32>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
@@ -256,6 +291,217 @@ impl HeliosphereFeatureRow {
 
     pub fn event_active(&self) -> bool {
         self.event_mask.unwrap_or(false)
+    }
+}
+
+/// Convert a feature row timestamp into UTC.
+pub fn heliosphere_row_datetime(row: &HeliosphereFeatureRow) -> Option<DateTime<Utc>> {
+    let date = NaiveDate::from_yo_opt(row.year as i32, row.doy as u32)?;
+    let naive = date.and_hms_opt(row.hour as u32, 0, 0)?;
+    Some(DateTime::<Utc>::from_naive_utc_and_offset(naive, Utc))
+}
+
+/// Compute invariant and residual channels per mission/product time series.
+///
+/// This keeps the executed cube schema unchanged while exposing a
+/// physics-first channel family for predictive tests and adaptive
+/// sparsification.
+pub fn compute_invariant_samples(rows: &[HeliosphereFeatureRow]) -> Vec<HeliosphereInvariantSample> {
+    let mut grouped: BTreeMap<(String, String, String), Vec<HeliosphereFeatureRow>> =
+        BTreeMap::new();
+    for row in rows {
+        grouped
+            .entry((
+                row.window_name.clone(),
+                row.mission.clone(),
+                row.product.clone(),
+            ))
+            .or_default()
+            .push(row.clone());
+    }
+
+    let mut output = Vec::with_capacity(rows.len());
+    for ((_window, _mission, _product), mut group) in grouped {
+        group.sort_by_key(row_sort_key);
+        let mut current = group
+            .iter()
+            .enumerate()
+            .map(|(idx, row)| invariant_channels_for_row(&group, idx, row))
+            .collect::<Vec<_>>();
+
+        let mut scales = [1.0_f64; HELIOSPHERE_INVARIANT_DIM];
+        for channel_idx in 0..HELIOSPHERE_INVARIANT_DIM {
+            let column = current
+                .iter()
+                .map(|value| value[channel_idx])
+                .collect::<Vec<_>>();
+            let median = finite_median(&column);
+            let mad = finite_mad(&column, median);
+            let mut scale = 1.4826 * mad;
+            if !scale.is_finite() || scale <= 0.0 {
+                scale = finite_std(&column, finite_mean(&column));
+            }
+            if !scale.is_finite() || scale <= 0.0 {
+                scale = 1.0;
+            }
+            scales[channel_idx] = scale;
+        }
+
+        for (row, channels) in group.into_iter().zip(current.drain(..)) {
+            let mut weighted = [0.0_f64; HELIOSPHERE_INVARIANT_DIM];
+            for idx in 0..HELIOSPHERE_INVARIANT_DIM {
+                let value = if channels[idx].is_finite() {
+                    channels[idx]
+                } else {
+                    0.0
+                };
+                weighted[idx] = value / scales[idx];
+            }
+            let timestamp_utc = heliosphere_row_datetime(&row)
+                .map(|value| value.to_rfc3339())
+                .unwrap_or_default();
+            output.push(HeliosphereInvariantSample {
+                window_name: row.window_name,
+                mission: row.mission,
+                product: row.product,
+                year: row.year,
+                doy: row.doy,
+                hour: row.hour,
+                timestamp_utc,
+                channels,
+                uncertainty_scales: scales,
+                weighted_channels: weighted,
+                inherited_event_score: row.event_score,
+                inherited_event_mask: row.event_mask,
+                inherited_event_segment_id: row.event_segment_id,
+            });
+        }
+    }
+    output.sort_by(|a, b| {
+        (
+            a.window_name.as_str(),
+            a.mission.as_str(),
+            a.product.as_str(),
+            a.year,
+            a.doy,
+            a.hour,
+        )
+            .cmp(&(
+                b.window_name.as_str(),
+                b.mission.as_str(),
+                b.product.as_str(),
+                b.year,
+                b.doy,
+                b.hour,
+            ))
+    });
+    output
+}
+
+fn invariant_channels_for_row(
+    group: &[HeliosphereFeatureRow],
+    idx: usize,
+    row: &HeliosphereFeatureRow,
+) -> [f64; HELIOSPHERE_INVARIANT_DIM] {
+    let previous = idx.checked_sub(1).and_then(|prev_idx| group.get(prev_idx));
+    let current_b_mag = finite_b_mag(row);
+    let previous_b_mag = previous.map(finite_b_mag).unwrap_or(current_b_mag);
+    let delta_b_vec = previous.map(|prev| {
+        let dx = finite_or_zero(row.bx) - finite_or_zero(prev.bx);
+        let dy = finite_or_zero(row.by) - finite_or_zero(prev.by);
+        let dz = finite_or_zero(row.bz) - finite_or_zero(prev.bz);
+        (dx * dx + dy * dy + dz * dz).sqrt()
+    });
+    let delta_b_over_bmag = ratio(delta_b_vec.unwrap_or(0.0), current_b_mag);
+    let delta_v_over_vmag = previous
+        .map(|prev| ratio((finite_or_zero(row.speed_kms) - finite_or_zero(prev.speed_kms)).abs(), row.speed_kms))
+        .unwrap_or(0.0);
+    let delta_n_over_n = previous
+        .map(|prev| ratio((finite_or_zero(row.density_cm3) - finite_or_zero(prev.density_cm3)).abs(), row.density_cm3))
+        .unwrap_or(0.0);
+    let delta_t_over_t = previous
+        .map(|prev| ratio((finite_or_zero(row.temperature_k) - finite_or_zero(prev.temperature_k)).abs(), row.temperature_k))
+        .unwrap_or(0.0);
+    let plasma_beta = compute_plasma_beta(row.density_cm3, row.temperature_k, current_b_mag);
+    let alfven_speed = compute_alfven_speed_kms(row.density_cm3, current_b_mag);
+    let alfvenicity_residual = ratio((finite_or_zero(row.speed_kms) - alfven_speed).abs(), row.speed_kms);
+    let dynamic_pressure = compute_dynamic_pressure_npa(row.density_cm3, row.speed_kms);
+    let previous_dynamic_pressure = previous
+        .map(|prev| compute_dynamic_pressure_npa(prev.density_cm3, prev.speed_kms))
+        .unwrap_or(dynamic_pressure);
+    let dynamic_pressure_residual = ratio(
+        (dynamic_pressure - previous_dynamic_pressure).abs(),
+        dynamic_pressure,
+    );
+    let magnetic_shear = ratio(delta_b_vec.unwrap_or(0.0), previous_b_mag);
+    let compressibility_proxy = 0.5 * (delta_n_over_n + delta_t_over_t);
+    [
+        delta_b_over_bmag,
+        delta_v_over_vmag,
+        delta_n_over_n,
+        delta_t_over_t,
+        plasma_beta,
+        alfven_speed,
+        alfvenicity_residual,
+        dynamic_pressure_residual,
+        magnetic_shear,
+        compressibility_proxy,
+    ]
+}
+
+fn finite_or_zero(value: f64) -> f64 {
+    if value.is_finite() { value } else { 0.0 }
+}
+
+fn finite_b_mag(row: &HeliosphereFeatureRow) -> f64 {
+    if row.b_mag.is_finite() && row.b_mag > 0.0 {
+        row.b_mag
+    } else {
+        let bx = finite_or_zero(row.bx);
+        let by = finite_or_zero(row.by);
+        let bz = finite_or_zero(row.bz);
+        let norm = (bx * bx + by * by + bz * bz).sqrt();
+        if norm > 0.0 { norm } else { 1e-6 }
+    }
+}
+
+fn ratio(numerator: f64, denominator: f64) -> f64 {
+    let denom = denominator.abs().max(1e-6);
+    numerator / denom
+}
+
+fn compute_dynamic_pressure_npa(density_cm3: f64, speed_kms: f64) -> f64 {
+    if !density_cm3.is_finite() || !speed_kms.is_finite() || density_cm3 <= 0.0 || speed_kms <= 0.0 {
+        return 0.0;
+    }
+    1.6726219e-6 * density_cm3 * speed_kms * speed_kms
+}
+
+fn compute_alfven_speed_kms(density_cm3: f64, b_mag_nt: f64) -> f64 {
+    if !density_cm3.is_finite() || !b_mag_nt.is_finite() || density_cm3 <= 0.0 || b_mag_nt <= 0.0 {
+        return 0.0;
+    }
+    21.812 * b_mag_nt / density_cm3.sqrt()
+}
+
+fn compute_plasma_beta(density_cm3: f64, temperature_k: f64, b_mag_nt: f64) -> f64 {
+    if !density_cm3.is_finite()
+        || !temperature_k.is_finite()
+        || !b_mag_nt.is_finite()
+        || density_cm3 <= 0.0
+        || temperature_k <= 0.0
+        || b_mag_nt <= 0.0
+    {
+        return 0.0;
+    }
+    let number_density_m3 = density_cm3 * 1.0e6;
+    let magnetic_field_t = b_mag_nt * 1.0e-9;
+    let thermal_pressure = number_density_m3 * 1.380649e-23 * temperature_k;
+    let magnetic_pressure = magnetic_field_t * magnetic_field_t / (2.0 * std::f64::consts::PI * 4.0e-7);
+    if magnetic_pressure <= 0.0 {
+        0.0
+    } else {
+        thermal_pressure / magnetic_pressure
     }
 }
 

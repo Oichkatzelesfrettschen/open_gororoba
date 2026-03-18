@@ -5,6 +5,7 @@
 //! channels are declared in the manifest.
 
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 /// One declared numeric feature channel in a generic catalog cube.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -32,6 +33,8 @@ pub struct CatalogFeatureRow {
     pub program_id: Option<String>,
     pub instrument: Option<String>,
     pub features: Vec<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub residualized_features: Option<Vec<f64>>,
 }
 
 /// Manifest for a generic catalog feature cube.
@@ -51,6 +54,51 @@ pub struct CatalogFeatureCubeManifest {
 pub struct CatalogFeatureCube {
     pub manifest: CatalogFeatureCubeManifest,
     pub rows: Vec<CatalogFeatureRow>,
+}
+
+/// Declares the nuisance terms used to residualize one dataset family.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CatalogNuisanceModel {
+    pub dataset: String,
+    pub nuisance_terms: Vec<String>,
+    pub ridge_lambda: f64,
+    pub notes: Vec<String>,
+}
+
+/// Summarizes how much variance the nuisance model removed from one dataset.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NuisanceEffectReport {
+    pub dataset: String,
+    pub row_count: usize,
+    pub nuisance_term_count: usize,
+    pub feature_r2: Vec<f64>,
+    pub mean_removed_energy: f64,
+    pub mean_retained_energy: f64,
+}
+
+/// Residualized variant of a generic catalog cube with nuisance metadata.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ResidualizedCatalogFeatureCube {
+    pub cube: CatalogFeatureCube,
+    pub nuisance_models: Vec<CatalogNuisanceModel>,
+    pub nuisance_reports: Vec<NuisanceEffectReport>,
+}
+
+/// Parse a generic catalog feature cube from JSON, tolerating `null` in
+/// feature arrays that originated from non-finite floating-point values.
+pub fn parse_catalog_feature_cube_json(content: &[u8]) -> Result<CatalogFeatureCube, serde_json::Error> {
+    let value: Value = serde_json::from_slice(content)?;
+    let manifest: CatalogFeatureCubeManifest = serde_json::from_value(value["manifest"].clone())?;
+    let rows_value = value
+        .get("rows")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    let rows = rows_value
+        .into_iter()
+        .map(parse_catalog_feature_row_value)
+        .collect::<Result<Vec<_>, _>>()?;
+    Ok(CatalogFeatureCube { manifest, rows })
 }
 
 /// Build a stable sorted dictionary for a categorical metadata field.
@@ -85,3 +133,48 @@ pub fn pipe_count(value: &str) -> f64 {
     count as f64
 }
 
+fn parse_catalog_feature_row_value(value: Value) -> Result<CatalogFeatureRow, serde_json::Error> {
+    #[derive(Debug, Deserialize)]
+    struct JsonCatalogFeatureRow {
+        cube_name: String,
+        dataset: String,
+        record_id: String,
+        modality: String,
+        ra_deg: Option<f64>,
+        dec_deg: Option<f64>,
+        time_utc: Option<String>,
+        redshift: Option<f64>,
+        distance_proxy: Option<f64>,
+        program_id: Option<String>,
+        instrument: Option<String>,
+        features: Vec<Option<f64>>,
+        #[serde(default)]
+        residualized_features: Option<Vec<Option<f64>>>,
+    }
+
+    let row: JsonCatalogFeatureRow = serde_json::from_value(value)?;
+    Ok(CatalogFeatureRow {
+        cube_name: row.cube_name,
+        dataset: row.dataset,
+        record_id: row.record_id,
+        modality: row.modality,
+        ra_deg: row.ra_deg,
+        dec_deg: row.dec_deg,
+        time_utc: row.time_utc,
+        redshift: row.redshift,
+        distance_proxy: row.distance_proxy,
+        program_id: row.program_id,
+        instrument: row.instrument,
+        features: row
+            .features
+            .into_iter()
+            .map(|value| value.unwrap_or(f64::NAN))
+            .collect(),
+        residualized_features: row.residualized_features.map(|values| {
+            values
+                .into_iter()
+                .map(|value| value.unwrap_or(f64::NAN))
+                .collect()
+        }),
+    })
+}

@@ -22,9 +22,11 @@
 
 use clap::Parser;
 use chrono::{DateTime, Datelike, Duration, TimeZone, Utc};
+use data_core::{CatalogFeatureCube, parse_catalog_feature_cube_json};
 use rand::{SeedableRng, prelude::*};
 use rayon::prelude::*;
 use std::{
+    fs,
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -65,6 +67,15 @@ struct Args {
     #[arg(long)]
     json: bool,
 
+    /// Optional generic catalog feature cube JSON. When provided, its
+    /// per-dataset matrices are analyzed in addition to the direct loaders.
+    #[arg(long)]
+    catalog_cube_json: Option<PathBuf>,
+
+    /// Feature mode to use for the optional generic catalog cube.
+    #[arg(long, default_value = "raw")]
+    catalog_feature_mode: String,
+
     /// Enable exploration mode: sweep attribute subsets, multiple metrics,
     /// tolerance curves, and multi-linkage dendrogram tests. Reports
     /// BH-FDR adjusted p-values.
@@ -78,6 +89,25 @@ struct Args {
 
 /// Loader function type: returns (data rows, attribute specs) or None.
 type LoaderFn = Box<dyn Fn(&Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)>>;
+type CatalogCubeDataset = (String, Vec<Vec<f64>>, Vec<AttributeSpec>);
+
+#[derive(Debug, Clone, Copy)]
+enum CatalogCubeFeatureMode {
+    Raw,
+    Residualized,
+}
+
+impl CatalogCubeFeatureMode {
+    fn parse(value: &str) -> anyhow::Result<Self> {
+        match value {
+            "raw" => Ok(Self::Raw),
+            "residualized" => Ok(Self::Residualized),
+            other => anyhow::bail!(
+                "unsupported catalog feature mode '{other}'; expected raw or residualized"
+            ),
+        }
+    }
+}
 
 /// Result row for one dataset analysis.
 struct DatasetResult {
@@ -1011,6 +1041,11 @@ fn run_test(
 fn main() {
     let args = Args::parse();
     let dir = Path::new(&args.data_dir);
+    let catalog_feature_mode =
+        CatalogCubeFeatureMode::parse(&args.catalog_feature_mode).unwrap_or_else(|err| {
+            eprintln!("{err}");
+            std::process::exit(2);
+        });
 
     // Auto-detect GPU
     let gpu: Option<Arc<GpuUltrametricEngine>> = if args.no_gpu {
@@ -1051,13 +1086,26 @@ fn main() {
     ];
 
     if args.explore {
-        run_exploration(&args, n_triples, dir, &loaders, gpu.as_ref());
+        run_exploration(
+            &args,
+            n_triples,
+            dir,
+            &loaders,
+            gpu.as_ref(),
+            catalog_feature_mode,
+        );
     } else {
-        run_standard(&args, n_triples, dir, &loaders);
+        run_standard(&args, n_triples, dir, &loaders, catalog_feature_mode);
     }
 }
 
-fn run_standard(args: &Args, n_triples: usize, dir: &Path, loaders: &[(&str, LoaderFn)]) {
+fn run_standard(
+    args: &Args,
+    n_triples: usize,
+    dir: &Path,
+    loaders: &[(&str, LoaderFn)],
+    catalog_feature_mode: CatalogCubeFeatureMode,
+) {
     eprintln!("=== Cross-Dataset Ultrametric Analysis ===");
     eprintln!("  Direction 2: Multi-Attribute Euclidean Ultrametricity");
     eprintln!();
@@ -1072,6 +1120,23 @@ fn run_standard(args: &Args, n_triples: usize, dir: &Path, loaders: &[(&str, Loa
             }
             None => {
                 eprintln!("  {} -- data not available, skipping", name);
+            }
+        }
+    }
+
+    if let Some(cube_json) = &args.catalog_cube_json {
+        match load_catalog_cube_datasets(cube_json, catalog_feature_mode) {
+            Ok(datasets) => {
+                for (name, data, specs) in datasets {
+                    let r = run_test(&name, &data, &specs, n_triples, args.n_permutations);
+                    results.push(r);
+                }
+            }
+            Err(err) => {
+                eprintln!(
+                    "  Catalog feature cube {} -- failed to load, skipping: {err}",
+                    cube_json.display()
+                );
             }
         }
     }
@@ -1093,6 +1158,7 @@ fn run_exploration(
     dir: &Path,
     loaders: &[(&str, LoaderFn)],
     gpu: Option<&Arc<GpuUltrametricEngine>>,
+    catalog_feature_mode: CatalogCubeFeatureMode,
 ) {
     let mode = if gpu.is_some() { "GPU" } else { "CPU" };
     eprintln!("=== Ultrametric EXPLORATION Mode ({}) ===", mode);
@@ -1120,6 +1186,32 @@ fn run_exploration(
             }
             None => {
                 eprintln!("  {} -- data not available, skipping", name);
+            }
+        }
+    }
+
+    if let Some(cube_json) = &args.catalog_cube_json {
+        match load_catalog_cube_datasets(cube_json, catalog_feature_mode) {
+            Ok(datasets) => {
+                for (name, data, specs) in datasets {
+                    eprintln!(
+                        "  Exploring {} ({} objects, {} attrs -> {} subsets)...",
+                        name,
+                        data.len(),
+                        specs.len(),
+                        attribute_subsets(specs.len(), 2).len(),
+                    );
+                    let rows =
+                        explore_dataset(&name, &data, &specs, n_triples, args.n_permutations, gpu);
+                    eprintln!("    {} tests generated", rows.len());
+                    all_rows.extend(rows);
+                }
+            }
+            Err(err) => {
+                eprintln!(
+                    "  Catalog feature cube {} -- failed to load, skipping: {err}",
+                    cube_json.display()
+                );
             }
         }
     }
@@ -1267,4 +1359,85 @@ fn write_csv(path: &Path, results: &[DatasetResult]) {
         eprintln!("WARNING: Could not write CSV to {}: {}", path.display(), e);
     });
     eprintln!("Results written to {}", path.display());
+}
+
+fn load_catalog_cube_datasets(
+    cube_json: &Path,
+    feature_mode: CatalogCubeFeatureMode,
+) -> anyhow::Result<Vec<CatalogCubeDataset>> {
+    let cube: CatalogFeatureCube = parse_catalog_feature_cube_json(&fs::read(cube_json)?)?;
+    let mut grouped: std::collections::BTreeMap<String, Vec<&data_core::CatalogFeatureRow>> =
+        std::collections::BTreeMap::new();
+    for row in &cube.rows {
+        grouped.entry(row.dataset.clone()).or_default().push(row);
+    }
+
+    let mut datasets = Vec::new();
+    for (dataset, rows) in grouped {
+        let mut matrix = Vec::new();
+        for row in rows {
+            let selected = match feature_mode {
+                CatalogCubeFeatureMode::Raw => &row.features,
+                CatalogCubeFeatureMode::Residualized => {
+                    row.residualized_features.as_deref().unwrap_or(&row.features)
+                }
+            };
+            if selected.is_empty() {
+                continue;
+            }
+            let mut values = selected
+                .iter()
+                .map(|value| finite_or_zero(*value))
+                .collect::<Vec<_>>();
+            values.push(finite_or_zero(row.ra_deg.unwrap_or(0.0)));
+            values.push(finite_or_zero(row.dec_deg.unwrap_or(0.0)));
+            values.push(
+                row.time_utc
+                    .as_deref()
+                    .and_then(release_year_feature)
+                    .unwrap_or(0.0),
+            );
+            values.push(finite_or_zero(row.redshift.unwrap_or(0.0)));
+            values.push(finite_or_zero(row.distance_proxy.unwrap_or(0.0)));
+            matrix.push(values);
+        }
+        if matrix.len() < 10 {
+            continue;
+        }
+
+        let mut specs = cube
+            .manifest
+            .channels
+            .iter()
+            .enumerate()
+            .map(|(idx, channel)| {
+                let name = match feature_mode {
+                    CatalogCubeFeatureMode::Raw => format!("cube:{}", channel.name),
+                    CatalogCubeFeatureMode::Residualized => {
+                        format!("cube:residualized:{}", channel.name)
+                    }
+                };
+                attr(&name, &matrix, idx, false)
+            })
+            .collect::<Vec<_>>();
+        let base = cube.manifest.channels.len();
+        specs.push(attr("cube:ra_deg", &matrix, base, false));
+        specs.push(attr("cube:dec_deg", &matrix, base + 1, false));
+        specs.push(attr("cube:time_year", &matrix, base + 2, false));
+        specs.push(attr("cube:redshift", &matrix, base + 3, false));
+        specs.push(attr("cube:distance_proxy", &matrix, base + 4, false));
+
+        let dataset_name = match feature_mode {
+            CatalogCubeFeatureMode::Raw => format!("{dataset} [Catalog Cube Raw]"),
+            CatalogCubeFeatureMode::Residualized => {
+                format!("{dataset} [Catalog Cube Residualized]")
+            }
+        };
+        datasets.push((dataset_name, matrix, specs));
+    }
+    Ok(datasets)
+}
+
+fn finite_or_zero(value: f64) -> f64 {
+    if value.is_finite() { value } else { 0.0 }
 }

@@ -207,6 +207,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                     encode_dictionary_value(&instrument_dictionary, &row.instrument_name),
                     encode_dictionary_value(&calib_dictionary, &row.calib_level),
                 ],
+                residualized_features: None,
             });
         }
     }
@@ -236,6 +237,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                     encode_dictionary_value(&instrument_dictionary, &row.instrument_name),
                     encode_dictionary_value(&calib_dictionary, &row.calib_level),
                 ],
+                residualized_features: None,
             });
         }
     }
@@ -265,6 +267,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                     -1.0,
                     -1.0,
                 ],
+                residualized_features: None,
             });
         }
     }
@@ -294,6 +297,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                     -1.0,
                     -1.0,
                 ],
+                residualized_features: None,
             });
         }
     }
@@ -327,6 +331,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                     -1.0,
                     -1.0,
                 ],
+                residualized_features: None,
             });
         }
     }
@@ -368,6 +373,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                 if row.is_isotropic { 1.0 } else { 0.0 },
                 -1.0,
             ],
+            residualized_features: None,
         });
     }
 
