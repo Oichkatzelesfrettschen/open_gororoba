@@ -24,6 +24,7 @@
 mod macros;
 
 pub mod benchmarks;
+pub mod catalog_feature_cube;
 pub mod catalogs;
 pub mod cdf_support;
 pub mod doc_links;
@@ -49,6 +50,10 @@ pub use download_stack::{
     DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, EndpointCapabilities,
     EndpointSurface, HostPolicyRegistry, HostRoutingPolicy, RetryClass, TransferAttempt,
     TransferKind, TransferRequest, TransferResult, TransferTrace, load_host_policy_registry,
+};
+pub use catalog_feature_cube::{
+    CatalogFeatureChannel, CatalogFeatureCube, CatalogFeatureCubeManifest, CatalogFeatureRow,
+    encode_dictionary_value, pipe_count, stable_dictionary,
 };
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,

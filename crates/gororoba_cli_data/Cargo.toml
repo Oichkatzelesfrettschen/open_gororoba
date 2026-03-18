@@ -139,6 +139,18 @@ name = "heliosphere-instrument-coverage"
 path = "src/bin/heliosphere_instrument_coverage.rs"
 
 [[bin]]
+name = "dataset-routing-ledger"
+path = "src/bin/dataset_routing_ledger.rs"
+
+[[bin]]
+name = "mast-program-clustering"
+path = "src/bin/mast_program_clustering.rs"
+
+[[bin]]
+name = "catalog-feature-cube"
+path = "src/bin/catalog_feature_cube.rs"
+
+[[bin]]
 name = "fetch-chime-frb"
 path = "src/bin/fetch_chime_frb.rs"
 

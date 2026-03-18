@@ -17,6 +17,8 @@ use data_core::{
         desi_bao::desi_dr2_bao,
         gaia::parse_gaia_csv,
         hi_cube::parse_hi_rotcurves,
+        hst::parse_hst_public_metadata_csv,
+        jwst::parse_jwst_public_metadata_csv,
         lotss::{LoTSSRelease, crossmatch_points_against_fits_catalog, lotss_fits_row_count},
         mcgill::parse_mcgill_csv,
         sdss::parse_sdss_quasar_csv,
@@ -311,6 +313,12 @@ enum Command {
 
         #[arg(long, default_value = "data/external/gaia_dr3_nearby.csv")]
         gaia: PathBuf,
+
+        #[arg(long, default_value = "data/external/jwst_public_observations.csv")]
+        jwst: PathBuf,
+
+        #[arg(long, default_value = "data/external/hst_public_observations.csv")]
+        hst: PathBuf,
 
         #[arg(long, default_value = "data/external/manga/dapall_selection.csv")]
         manga_selection: PathBuf,
@@ -920,6 +928,8 @@ fn main() -> Result<()> {
             chime,
             sdss,
             gaia,
+            jwst,
+            hst,
             manga_selection,
             manga_drpall,
             manga_lotss,
@@ -938,6 +948,8 @@ fn main() -> Result<()> {
             chime,
             sdss,
             gaia,
+            jwst,
+            hst,
             manga_selection,
             manga_drpall,
             manga_lotss,
@@ -986,6 +998,8 @@ struct CatalogMatrixArgs {
     chime: PathBuf,
     sdss: PathBuf,
     gaia: PathBuf,
+    jwst: PathBuf,
+    hst: PathBuf,
     manga_selection: PathBuf,
     manga_drpall: PathBuf,
     manga_lotss: PathBuf,
@@ -1713,6 +1727,38 @@ fn cmd_catalog_matrix(args: CatalogMatrixArgs) -> Result<()> {
             dec_deg: row.dec,
         })
     })?;
+    let jwst_points = load_point_catalog(
+        &args.jwst,
+        "JWST Public Metadata",
+        parse_jwst_public_metadata_csv,
+        |row| {
+            if row.s_ra.is_finite() && row.s_dec.is_finite() {
+                Some(SkyPoint {
+                    id: row.obsid.clone(),
+                    ra_deg: row.s_ra,
+                    dec_deg: row.s_dec,
+                })
+            } else {
+                None
+            }
+        },
+    )?;
+    let hst_points = load_point_catalog(
+        &args.hst,
+        "HST Public Metadata",
+        parse_hst_public_metadata_csv,
+        |row| {
+            if row.s_ra.is_finite() && row.s_dec.is_finite() {
+                Some(SkyPoint {
+                    id: row.obsid.clone(),
+                    ra_deg: row.s_ra,
+                    dec_deg: row.s_dec,
+                })
+            } else {
+                None
+            }
+        },
+    )?;
 
     let manga_sample = load_selected_manga_targets(&args.manga_selection, &args.manga_drpall)?;
     let manga_overlap = count_detected_rows(&args.manga_lotss, "lotss_detected")?;
@@ -1752,6 +1798,16 @@ fn cmd_catalog_matrix(args: CatalogMatrixArgs) -> Result<()> {
             catalog: "Gaia DR3 Nearby".to_string(),
             path: args.gaia.clone(),
             points: gaia_points,
+        },
+        PreparedPointMatrixCatalog {
+            catalog: "JWST Public Metadata".to_string(),
+            path: args.jwst.clone(),
+            points: jwst_points,
+        },
+        PreparedPointMatrixCatalog {
+            catalog: "HST Public Metadata".to_string(),
+            path: args.hst.clone(),
+            points: hst_points,
         },
         PreparedPointMatrixCatalog {
             catalog: "THINGS galaxies".to_string(),
