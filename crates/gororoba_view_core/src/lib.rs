@@ -12,6 +12,11 @@
 use anyhow::Result;
 use gororoba_gpu_bridge::{ExecutionProfile, FrameMode};
 
+pub use gororoba_gpu_readback::{
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
+    ReadbackResidency,
+};
+
 /// Runtime grid dimensions for a 3D simulation or data volume.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct GridShape3d {
@@ -51,6 +56,7 @@ pub struct FrameMetadata {
     pub execution: ExecutionProfile,
     pub fps_hint: Option<f32>,
     pub mlups_hint: Option<f64>,
+    pub readback: Option<ReadbackDescriptor>,
     pub particle_metadata: Option<ParticleFrameMetadata>,
 }
 
@@ -181,6 +187,7 @@ mod tests {
             execution: profile,
             fps_hint: Some(60.0),
             mlups_hint: Some(120.0),
+            readback: None,
             particle_metadata: None,
         };
         assert_eq!(metadata.execution.backend, ComputeBackend::Cuda);

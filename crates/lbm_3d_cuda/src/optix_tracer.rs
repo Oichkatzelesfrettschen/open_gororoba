@@ -22,6 +22,8 @@
 //!
 //! Requires `optix` feature flag. OptiX headers must be at `/usr/include/optix/`.
 
+use gororoba_sparse_grid::{BrickGrid3d, BrickShape3d, LogicalGrid3d, OccupancyBitsetStats};
+
 /// OptiX tracer configuration.
 #[derive(Debug, Clone)]
 pub struct OptiXTracerConfig {
@@ -139,9 +141,16 @@ pub fn build_brick_aabbs(
 ) -> Vec<BrickResult> {
     let (nx, ny, nz) = config.grid_dim;
     let bs = config.brick_size;
-    let bx_count = nx / bs;
-    let by_count = ny / bs;
-    let bz_count = nz / bs;
+    let brick_grid = BrickGrid3d::from_logical_grid(
+        LogicalGrid3d { nx, ny, nz },
+        BrickShape3d {
+            core_edge_cells: bs,
+            halo_edge_cells: bs + 2,
+        },
+    );
+    let bx_count = brick_grid.bricks_x;
+    let by_count = brick_grid.bricks_y;
+    let bz_count = brick_grid.bricks_z;
 
     let mut results = Vec::new();
     for ibz in 0..bz_count {
@@ -221,9 +230,18 @@ pub fn occupancy_fraction(rho: &[f32], threshold: f32) -> f64 {
 pub fn brick_occupancy_fraction(rho: &[f32], config: &OptiXTracerConfig) -> f64 {
     let (nx, ny, nz) = config.grid_dim;
     let bs = config.brick_size;
-    let total_bricks = (nx / bs) * (ny / bs) * (nz / bs);
-    let occupied = build_brick_aabbs(rho, config).len();
-    occupied as f64 / total_bricks as f64
+    let brick_grid = BrickGrid3d::from_logical_grid(
+        LogicalGrid3d { nx, ny, nz },
+        BrickShape3d {
+            core_edge_cells: bs,
+            halo_edge_cells: bs + 2,
+        },
+    );
+    let stats = OccupancyBitsetStats {
+        total_bricks: brick_grid.total_bricks(),
+        active_bricks: build_brick_aabbs(rho, config).len() as u64,
+    };
+    stats.occupancy_fraction()
 }
 
 #[cfg(test)]

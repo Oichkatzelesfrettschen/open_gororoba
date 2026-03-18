@@ -73,6 +73,9 @@ heavy domain dependencies.
 - current status
   - descriptor-first crate extracted
   - first owner-side adoption started in heliosphere sparse planning
+  - sparse CUDA tile-window bookkeeping now shares the `ActiveBrickWindow`
+    shape
+  - OptiX brick-grid math now shares sparse-grid geometry
 - dependency profile
   - should stay free of CUDA runtime bindings at the core type layer
 - scoped in
@@ -94,6 +97,8 @@ heavy domain dependencies.
 - current status
   - descriptor-first crate extracted
   - first owner-side adoption started in CUDA and Vulkan descriptor methods
+  - viewer metadata now carries readback descriptors instead of keeping them
+    implicit
 - scoped in
   - `docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
 - caution

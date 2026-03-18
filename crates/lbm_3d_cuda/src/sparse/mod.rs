@@ -6,6 +6,9 @@ use cudarc::driver::{
     result, sys, CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, DeviceSlice,
     LaunchConfig, PushKernelArg, UnifiedSlice,
 };
+use gororoba_sparse_grid::{
+    ActiveBrickWindow, BrickGrid3d, BrickShape3d, LogicalGrid3d, OccupancyBitsetStats,
+};
 use std::env;
 use std::sync::Arc;
 
@@ -58,10 +61,21 @@ impl SparseBrickMap {
         let expand_bitmask_kernel = module.load_function("expand_bitmask_to_counts")?;
         let build_indirect_table_kernel = module.load_function("build_indirect_table")?;
 
-        let bx_max = nx.div_ceil(8);
-        let by_max = ny.div_ceil(8);
-        let bz_max = nz.div_ceil(8);
-        let n_bricks = bx_max * by_max * bz_max;
+        let brick_grid = BrickGrid3d::from_logical_grid(
+            LogicalGrid3d {
+                nx: nx as u32,
+                ny: ny as u32,
+                nz: nz as u32,
+            },
+            BrickShape3d {
+                core_edge_cells: 8,
+                halo_edge_cells: 10,
+            },
+        );
+        let bx_max = brick_grid.bricks_x as usize;
+        let by_max = brick_grid.bricks_y as usize;
+        let bz_max = brick_grid.bricks_z as usize;
+        let n_bricks = brick_grid.total_bricks() as usize;
 
         let num_words = n_bricks.div_ceil(32);
 
@@ -164,6 +178,15 @@ impl SparseBrickMap {
             stream,
         })
     }
+
+    /// Sparse occupancy stats for the current brick map.
+    #[must_use]
+    pub fn occupancy_stats(&self) -> OccupancyBitsetStats {
+        OccupancyBitsetStats {
+            total_bricks: self.n_bricks as u64,
+            active_bricks: self.n_active_bricks as u64,
+        }
+    }
 }
 
 const KERNEL_SPARSE_LBM_SRC: &str = include_str!("kernels_sparse_lbm.cu");
@@ -249,12 +272,6 @@ struct SparseTilePrefetchInputs<'a> {
     active_cell_start: usize,
     active_cell_count: usize,
     total_active_cells: usize,
-}
-
-#[derive(Debug, Clone, Copy)]
-struct SparseTileWindow {
-    active_cell_start: usize,
-    active_cell_count: usize,
 }
 
 impl SparseLbmSolver {
@@ -444,13 +461,13 @@ impl SparseLbmSolver {
                             d_f,
                             d_rho,
                             d_u,
-                            d_tau,
-                            d_force,
-                            stream: prefetch_stream,
-                            active_cell_start: first_tile.active_cell_start,
-                            active_cell_count: first_tile.active_cell_count,
-                            total_active_cells: n_active_cells,
-                        })?;
+                                    d_tau,
+                                    d_force,
+                                    stream: prefetch_stream,
+                                    active_cell_start: first_tile.active_cell_start as usize,
+                                    active_cell_count: first_tile.active_cell_count as usize,
+                                    total_active_cells: n_active_cells,
+                                })?;
 
                         for (tile_idx, tile) in tile_windows.iter().enumerate() {
                             self.map
@@ -466,15 +483,15 @@ impl SparseLbmSolver {
                                     d_tau,
                                     d_force,
                                     stream: prefetch_stream,
-                                    active_cell_start: next_tile.active_cell_start,
-                                    active_cell_count: next_tile.active_cell_count,
+                                    active_cell_start: next_tile.active_cell_start as usize,
+                                    active_cell_count: next_tile.active_cell_count as usize,
                                     total_active_cells: n_active_cells,
                                 })?;
                             }
 
                             let active_cell_start_i = tile.active_cell_start as i32;
                             let active_cell_count_i = tile.active_cell_count as i32;
-                            let cfg = launch_cfg_for_cells(tile.active_cell_count);
+                            let cfg = launch_cfg_for_cells(tile.active_cell_count as usize);
                             let mut b = self.map.stream.launch_builder(&self.lbm_step_kernel);
                             b.arg(&mut *d_f)
                                 .arg(&mut *d_rho)
@@ -554,14 +571,16 @@ fn build_tile_windows(
     total_active_bricks: usize,
     tile_bricks: usize,
     cells_per_brick: usize,
-) -> Vec<SparseTileWindow> {
+) -> Vec<ActiveBrickWindow> {
     let mut windows = Vec::new();
     let mut tile_start_brick = 0usize;
     while tile_start_brick < total_active_bricks {
         let tile_brick_count = (total_active_bricks - tile_start_brick).min(tile_bricks);
-        windows.push(SparseTileWindow {
-            active_cell_start: tile_start_brick * cells_per_brick,
-            active_cell_count: tile_brick_count * cells_per_brick,
+        windows.push(ActiveBrickWindow {
+            active_brick_start: tile_start_brick as u64,
+            active_brick_count: tile_brick_count as u64,
+            active_cell_start: (tile_start_brick * cells_per_brick) as u64,
+            active_cell_count: (tile_brick_count * cells_per_brick) as u64,
         });
         tile_start_brick += tile_brick_count;
     }

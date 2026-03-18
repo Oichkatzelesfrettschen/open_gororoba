@@ -4082,6 +4082,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "gororoba_gpu_bridge",
+ "gororoba_gpu_readback",
 ]
 
 [[package]]
@@ -5062,6 +5063,7 @@ dependencies = [
  "gororoba_gpu_bridge",
  "gororoba_gpu_readback",
  "gororoba_optix",
+ "gororoba_sparse_grid",
  "gr_core",
  "half",
  "lbm_3d",

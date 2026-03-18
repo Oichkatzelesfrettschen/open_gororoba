@@ -45,6 +45,7 @@ Volume-producing adapters should always populate:
 - `sim_time`
 - `preferred_frame_mode`
 - `execution`
+- `readback` when the backend copies from device-visible or host-visible state
 
 They should set:
 
@@ -61,6 +62,9 @@ Particle-producing adapters should populate `particle_metadata` with:
 - current particle count
 - optional bounds
 - optional snapshot interval
+
+They should also populate `readback` when the particle snapshot comes from a
+host-visible staging surface or direct host-owned buffers.
 
 This lets the frontend remain backend-neutral even when the particle source is
 OptiX-specific underneath.

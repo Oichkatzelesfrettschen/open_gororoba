@@ -22,6 +22,7 @@
 //! Requires `optix` feature flag. OptiX 9.1 SDK headers at `/usr/include/optix/`.
 
 use crate::optix_tracer::{BrickResult, LbmSbtData, OptiXTracerConfig};
+use gororoba_sparse_grid::{BrickGrid3d, BrickShape3d, LogicalGrid3d, OccupancyBitsetStats};
 
 /// OptiX pipeline configuration.
 #[derive(Debug, Clone)]
@@ -145,6 +146,23 @@ impl OptiXPipeline {
     /// Number of active bricks in the current BVH.
     pub fn active_brick_count(&self) -> usize {
         self.cached_bricks.len()
+    }
+
+    /// Occupancy stats for the current cached brick set.
+    #[must_use]
+    pub fn cached_brick_occupancy_stats(&self) -> OccupancyBitsetStats {
+        let (nx, ny, nz) = self.tracer_config.grid_dim;
+        let brick_grid = BrickGrid3d::from_logical_grid(
+            LogicalGrid3d { nx, ny, nz },
+            BrickShape3d {
+                core_edge_cells: self.tracer_config.brick_size,
+                halo_edge_cells: self.tracer_config.brick_size + 2,
+            },
+        );
+        OccupancyBitsetStats {
+            total_bricks: brick_grid.total_bricks(),
+            active_bricks: self.cached_bricks.len() as u64,
+        }
     }
 
     /// Extract AABB data as a flat array suitable for optixAccelBuild input.

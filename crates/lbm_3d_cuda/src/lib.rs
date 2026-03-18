@@ -1975,6 +1975,24 @@ impl LbmSolver3DCuda {
         &self.u
     }
 
+    /// Descriptor for the pinned host-side density readback surface.
+    #[must_use]
+    pub fn rho_readback_descriptor(&self) -> ReadbackDescriptor {
+        ReadbackDescriptor {
+            backend_name: "CUDA".to_string(),
+            label: "rho".to_string(),
+            shape: ReadbackBufferShape {
+                width: self.nx as u32,
+                height: self.ny as u32,
+                depth: self.nz as u32,
+                elements_per_point: 1,
+            },
+            element_type: ReadbackElementType::F32,
+            layout: ReadbackLayout::Packed,
+            residency: ReadbackResidency::PinnedHost,
+        }
+    }
+
     #[cfg(feature = "cufft")]
     fn ensure_fft_plan(&mut self) -> Result<cudarc::cufft::sys::cufftHandle> {
         if let Some(handle) = self.fft_plan {

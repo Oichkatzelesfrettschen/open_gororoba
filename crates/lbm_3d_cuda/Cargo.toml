@@ -11,6 +11,7 @@ lbm_3d = { path = "../lbm_3d" }
 gororoba_algebra = { path = "../gororoba_algebra" }
 gororoba_gpu_bridge = { workspace = true }
 gororoba_gpu_readback = { workspace = true }
+gororoba_sparse_grid = { workspace = true }
 gororoba_optix = { workspace = true }
 gr_core = { path = "../gr_core" }
 cudarc = { workspace = true }

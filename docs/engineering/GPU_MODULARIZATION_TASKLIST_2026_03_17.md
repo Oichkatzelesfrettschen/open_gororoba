@@ -51,6 +51,13 @@
 - `active` Adopt `gororoba_gpu_readback` descriptors in CUDA/Vulkan owners.
 - `active` Adopt `gororoba_sparse_grid` geometry/window types in sparse CUDA
   and heliosphere planning owners.
+- `done` Expose viewer-side readback metadata through `gororoba_view_core`
+  instead of keeping transfer surfaces implicit.
+- `active` Extend `gororoba_sparse_grid` adoption into OptiX brick occupancy
+  bookkeeping.
+- `done` Re-evaluate Vulkan helper extraction after descriptor-first adoption.
+- `defer` Keep Vulkan extraction at descriptor level until a second renderer
+  needs shared submission or image-readback helpers.
 
 ## Seam Inventory
 
@@ -252,6 +259,6 @@ The new viewer contract lives in `gororoba_view_core`.
    and profiling/report paths where host-staging metadata is repeated.
 2. Extend `gororoba_sparse_grid` adoption from heliosphere planning into sparse
    CUDA and OptiX occupancy/window bookkeeping.
-3. Revisit Vulkan helper extraction only when a second renderer needs the same
-   command/readback substrate.
+3. Keep Vulkan extraction at descriptor level until a second renderer proves a
+   shared command/readback substrate.
 4. Keep shared viewer/frame contracts rustdoc-complete as adapters evolve.

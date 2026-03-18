@@ -9,6 +9,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [dependencies]
 anyhow = { workspace = true }
 gororoba_gpu_bridge = { workspace = true }
+gororoba_gpu_readback = { workspace = true }
 
 [lints]
 workspace = true
