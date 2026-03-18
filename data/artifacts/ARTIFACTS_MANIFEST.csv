@@ -76,6 +76,12 @@ data/artifacts/images/projector_fhs_polar_q11_3160x2820.png,images,png,0,manual_
 data/artifacts/images/pseudospectrum_slice_3160x2820.png,images,png,0,manual_import
 data/artifacts/images/real_physics_correlation.png,images,png,0,manual_import
 data/artifacts/images/real_physics_correlation_gwtc3.png,images,png,0,manual_import
+data/artifacts/images/repo_crate_family_map_3160x2820.png,images,png,1,crates/gororoba_cli_data/src/bin/repo_visuals.rs
+data/artifacts/images/repo_operator_matrix_3160x2820.png,images,png,1,crates/gororoba_cli_data/src/bin/repo_visuals.rs
+data/artifacts/images/repo_scope_dashboard_3160x2820.png,images,png,1,crates/gororoba_cli_data/src/bin/repo_visuals.rs
+data/artifacts/images/science_algebra_resonance_plate_3160x2820.png,images,png,1,crates/gororoba_cli_data/src/bin/repo_visuals.rs
+data/artifacts/images/science_e183_phase_plate_3160x2820.png,images,png,1,crates/gororoba_cli_data/src/bin/repo_visuals.rs
+data/artifacts/images/science_gravastar_stability_plate_3160x2820.png,images,png,1,crates/gororoba_cli_data/src/bin/repo_visuals.rs
 data/artifacts/images/sedenion_mass_hypothesis.png,images,png,0,manual_import
 data/artifacts/images/sedenion_mass_ladder_log.png,images,png,0,manual_import
 data/artifacts/images/sedenion_zd_graph.png,images,png,0,manual_import
