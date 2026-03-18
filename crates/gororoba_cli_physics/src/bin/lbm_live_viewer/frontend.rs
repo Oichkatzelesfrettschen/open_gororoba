@@ -9,8 +9,19 @@ use crate::camera_input::{ViewerInteractionState, apply_window_input, slice_axis
 use crate::transport::render_packet_to_argb;
 use anyhow::Result;
 use gororoba_gpu_bridge::FrameMode;
+use gororoba_view_core::FrameMetadata;
 use minifb::{Key, Window, WindowOptions};
 use std::time::Instant;
+
+fn format_readback_status(meta: &FrameMetadata) -> String {
+    match &meta.readback {
+        Some(readback) => {
+            let mib = readback.byte_len() as f64 / 1024.0_f64.powi(2);
+            format!("{:?} {:.2} MiB", readback.residency, mib)
+        }
+        None => "n/a".to_string(),
+    }
+}
 
 /// Runtime configuration for the generic viewer frontend.
 #[derive(Debug, Clone, Copy)]
@@ -82,12 +93,14 @@ where
             let fps = frame_count as f64 / elapsed;
             let mlups = meta.mlups_hint.unwrap_or(0.0);
             let status = if state.paused { "PAUSED" } else { "LIVE" };
+            let readback = format_readback_status(&meta);
             window.set_title(&format!(
-                "{} | {} | {:.0} FPS | {:.0} MLUPS | {} steps/f | slice {}:{}",
+                "{} | {} | {:.0} FPS | {:.0} MLUPS | {} | {} steps/f | slice {}:{}",
                 meta.title,
                 status,
                 fps,
                 mlups,
+                readback,
                 state.steps_per_frame,
                 slice_axis_label(state.slice_axis),
                 state.slice_index

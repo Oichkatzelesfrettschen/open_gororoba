@@ -10,8 +10,9 @@ use gororoba_gpu_bridge::{
     BufferLayout, ComputeBackend, ExecutionProfile, FrameMode, MemoryResidency, StoragePrecision,
 };
 use gororoba_view_core::{
-    CoordinateSpace3d, FrameMetadata, GridShape3d, ParticleFrameMetadata,
-    ParticleSemantic, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource, VolumeFrameF32,
+    CoordinateSpace3d, FrameMetadata, GridShape3d, ParticleFrameMetadata, ParticleSemantic,
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
+    ReadbackResidency, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource, VolumeFrameF32,
 };
 use std::f64::consts::PI;
 use std::time::Instant;
@@ -164,6 +165,19 @@ impl ViewerFrameSource for CpuLbmVolumeAdapter {
             execution: self.execution_profile(),
             fps_hint: None,
             mlups_hint: self.mlups_hint,
+            readback: Some(ReadbackDescriptor {
+                backend_name: "CPU".to_string(),
+                label: "rho_host".to_string(),
+                shape: ReadbackBufferShape {
+                    width: self.grid.nx,
+                    height: self.grid.ny,
+                    depth: self.grid.nz,
+                    elements_per_point: 1,
+                },
+                element_type: ReadbackElementType::F64,
+                layout: ReadbackLayout::Packed,
+                residency: ReadbackResidency::DirectHost,
+            }),
             particle_metadata: None,
         }
     }
@@ -267,6 +281,19 @@ impl ViewerFrameSource for OptixParticleAdapter {
             execution: self.execution_profile(),
             fps_hint: None,
             mlups_hint: None,
+            readback: Some(ReadbackDescriptor {
+                backend_name: "OptiX".to_string(),
+                label: "particle_host_buffers".to_string(),
+                shape: ReadbackBufferShape {
+                    width: self.orchestrator.particle_positions.len() as u32,
+                    height: 1,
+                    depth: 1,
+                    elements_per_point: 6,
+                },
+                element_type: ReadbackElementType::F32,
+                layout: ReadbackLayout::Aos,
+                residency: ReadbackResidency::DirectHost,
+            }),
             particle_metadata: Some(ParticleFrameMetadata {
                 semantic: ParticleSemantic::Tracer,
                 position_space: CoordinateSpace3d::World,
@@ -404,6 +431,7 @@ impl ViewerFrameSource for CudaLbmVolumeAdapter {
             execution: self.execution_profile(),
             fps_hint: None,
             mlups_hint: self.mlups_hint,
+            readback: Some(self.solver.rho_readback_descriptor()),
             particle_metadata: None,
         }
     }

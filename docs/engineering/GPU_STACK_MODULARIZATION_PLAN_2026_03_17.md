@@ -203,7 +203,8 @@ That task list now includes explicit seam analysis for:
    - scope now documented in
      `GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
    - descriptor-first extraction now exists in `gororoba_gpu_readback`
-   - next step is owner-side adoption, not broader runtime extraction
+   - owner-side adoption has started in CUDA, Vulkan, and viewer metadata
+   - broader runtime extraction is still deferred
 
 ### Phase D: OptiX split
 
