@@ -76,6 +76,14 @@ struct Args {
     #[arg(long, default_value = "raw")]
     catalog_feature_mode: String,
 
+    /// Analyze only datasets sourced from the optional catalog cube.
+    #[arg(long)]
+    catalog_cube_only: bool,
+
+    /// Restrict the run to dataset names matching any provided filter.
+    #[arg(long)]
+    dataset_filter: Vec<String>,
+
     /// Enable exploration mode: sweep attribute subsets, multiple metrics,
     /// tolerance curves, and multi-linkage dendrogram tests. Reports
     /// BH-FDR adjusted p-values.
@@ -107,6 +115,24 @@ impl CatalogCubeFeatureMode {
             ),
         }
     }
+}
+
+fn dataset_selected(name: &str, filters: &[String]) -> bool {
+    if filters.is_empty() {
+        return true;
+    }
+    let normalized_name = normalize_dataset_label(name);
+    filters.iter().any(|filter| {
+        let normalized_filter = normalize_dataset_label(filter);
+        normalized_name.contains(&normalized_filter) || normalized_filter.contains(&normalized_name)
+    })
+}
+
+fn normalize_dataset_label(value: &str) -> String {
+    value
+        .trim()
+        .to_ascii_lowercase()
+        .replace([' ', '_', '/'], "-")
 }
 
 /// Result row for one dataset analysis.
@@ -1040,6 +1066,10 @@ fn run_test(
 
 fn main() {
     let args = Args::parse();
+    if args.catalog_cube_only && args.catalog_cube_json.is_none() {
+        eprintln!("--catalog-cube-only requires --catalog-cube-json");
+        std::process::exit(2);
+    }
     let dir = Path::new(&args.data_dir);
     let catalog_feature_mode =
         CatalogCubeFeatureMode::parse(&args.catalog_feature_mode).unwrap_or_else(|err| {
@@ -1112,14 +1142,19 @@ fn run_standard(
 
     let mut results: Vec<DatasetResult> = Vec::new();
 
-    for (name, loader) in loaders {
-        match loader(dir) {
-            Some((data, specs)) => {
-                let r = run_test(name, &data, &specs, n_triples, args.n_permutations);
-                results.push(r);
+    if !args.catalog_cube_only {
+        for (name, loader) in loaders {
+            if !dataset_selected(name, &args.dataset_filter) {
+                continue;
             }
-            None => {
-                eprintln!("  {} -- data not available, skipping", name);
+            match loader(dir) {
+                Some((data, specs)) => {
+                    let r = run_test(name, &data, &specs, n_triples, args.n_permutations);
+                    results.push(r);
+                }
+                None => {
+                    eprintln!("  {} -- data not available, skipping", name);
+                }
             }
         }
     }
@@ -1128,6 +1163,9 @@ fn run_standard(
         match load_catalog_cube_datasets(cube_json, catalog_feature_mode) {
             Ok(datasets) => {
                 for (name, data, specs) in datasets {
+                    if !dataset_selected(&name, &args.dataset_filter) {
+                        continue;
+                    }
                     let r = run_test(&name, &data, &specs, n_triples, args.n_permutations);
                     results.push(r);
                 }
@@ -1169,23 +1207,28 @@ fn run_exploration(
 
     let mut all_rows: Vec<ExploreRow> = Vec::new();
 
-    for (name, loader) in loaders {
-        match loader(dir) {
-            Some((data, specs)) => {
-                eprintln!(
-                    "  Exploring {} ({} objects, {} attrs -> {} subsets)...",
-                    name,
-                    data.len(),
-                    specs.len(),
-                    attribute_subsets(specs.len(), 2).len(),
-                );
-                let rows =
-                    explore_dataset(name, &data, &specs, n_triples, args.n_permutations, gpu);
-                eprintln!("    {} tests generated", rows.len());
-                all_rows.extend(rows);
+    if !args.catalog_cube_only {
+        for (name, loader) in loaders {
+            if !dataset_selected(name, &args.dataset_filter) {
+                continue;
             }
-            None => {
-                eprintln!("  {} -- data not available, skipping", name);
+            match loader(dir) {
+                Some((data, specs)) => {
+                    eprintln!(
+                        "  Exploring {} ({} objects, {} attrs -> {} subsets)...",
+                        name,
+                        data.len(),
+                        specs.len(),
+                        attribute_subsets(specs.len(), 2).len(),
+                    );
+                    let rows =
+                        explore_dataset(name, &data, &specs, n_triples, args.n_permutations, gpu);
+                    eprintln!("    {} tests generated", rows.len());
+                    all_rows.extend(rows);
+                }
+                None => {
+                    eprintln!("  {} -- data not available, skipping", name);
+                }
             }
         }
     }
@@ -1194,6 +1237,9 @@ fn run_exploration(
         match load_catalog_cube_datasets(cube_json, catalog_feature_mode) {
             Ok(datasets) => {
                 for (name, data, specs) in datasets {
+                    if !dataset_selected(&name, &args.dataset_filter) {
+                        continue;
+                    }
                     eprintln!(
                         "  Exploring {} ({} objects, {} attrs -> {} subsets)...",
                         name,
