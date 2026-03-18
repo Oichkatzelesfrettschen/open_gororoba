@@ -1,0 +1,25 @@
+generated_at_utc = "2026-03-18T16:46:18.219886744+00:00"
+cube_json = "reports/catalog_feature_cube_survey-core_deconfounded_2026-03-18.json"
+feature_mode = "residualized"
+vector_mode = "support-blind"
+
+[[rows]]
+dataset = "Gaia DR3 Nearby"
+algebra_survives_residualized_null = false
+ultrametric_survives_residualized_null = false
+classification = "archive_structure_null"
+notes = []
+
+[[rows]]
+dataset = "HST Public Metadata"
+algebra_survives_residualized_null = false
+ultrametric_survives_residualized_null = false
+classification = "archive_structure_null"
+notes = []
+
+[[rows]]
+dataset = "JWST Public Metadata"
+algebra_survives_residualized_null = false
+ultrametric_survives_residualized_null = false
+classification = "archive_structure_null"
+notes = []

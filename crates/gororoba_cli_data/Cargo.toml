@@ -159,6 +159,10 @@ name = "claim-route-recertify"
 path = "src/bin/claim_route_recertify.rs"
 
 [[bin]]
+name = "falsification-audit"
+path = "src/bin/falsification_audit.rs"
+
+[[bin]]
 name = "fetch-chime-frb"
 path = "src/bin/fetch_chime_frb.rs"
 

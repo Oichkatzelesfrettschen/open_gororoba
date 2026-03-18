@@ -281,6 +281,10 @@ name = "heliosphere-predictive-eval"
 path = "src/bin/heliosphere_predictive_eval.rs"
 
 [[bin]]
+name = "heliosphere-falsification-audit"
+path = "src/bin/heliosphere_falsification_audit.rs"
+
+[[bin]]
 name = "heliosphere-cross-mission-invariance"
 path = "src/bin/heliosphere_cross_mission_invariance.rs"
 

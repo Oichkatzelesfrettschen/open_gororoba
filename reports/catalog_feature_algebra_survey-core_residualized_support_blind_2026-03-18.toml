@@ -1,0 +1,81 @@
+generated_at_utc = "2026-03-18T16:46:18.218860332+00:00"
+cube_json = "reports/catalog_feature_cube_survey-core_deconfounded_2026-03-18.json"
+cube_name = "survey-core"
+feature_mode = "residualized"
+vector_mode = "support-blind"
+dataset_count = 3
+channel_names = [
+    "residualized:f0",
+    "residualized:f1",
+    "residualized:f2",
+    "residualized:f3",
+    "residualized:f4",
+    "residualized:f5",
+    "residualized:instrument_code",
+    "residualized:calib_level_code",
+    "ra_deg",
+    "dec_deg",
+    "time_year",
+    "redshift",
+    "distance_proxy_log1p",
+    "program_present",
+    "instrument_present",
+    "feature_completeness",
+]
+
+[[datasets]]
+dataset = "Gaia DR3 Nearby"
+row_count = 2048
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 742063.587753565
+mean_associator_norm = 142813.78388124373
+max_associator_norm = 15070801.287685866
+null_mean_associator_norm = 135667.51896868504
+null_std_associator_norm = 19515.098141819064
+null_p_value = 0.26153846153846155
+survives_residualized_null = false
+covariance_trace = 742063.5877535642
+effective_rank = 2.023802849882569
+participation_ratio = 1.984088934195813
+centered_feature_energy = 767.3104905809241
+dominant_channel = "residualized:f1"
+dominant_channel_mean_abs = 390.37506266845486
+
+[[datasets]]
+dataset = "HST Public Metadata"
+row_count = 2048
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 0.000020340602000197696
+mean_associator_norm = 0.0000000000009404308654141954
+max_associator_norm = 0.00000000010077031936262027
+null_mean_associator_norm = 0.000000006690629741237747
+null_std_associator_norm = 0.000000000382086713395795
+null_p_value = 1.0
+survives_residualized_null = false
+covariance_trace = 0.000020340602000197784
+effective_rank = 1.010327114124203
+participation_ratio = 1.0026992377114163
+centered_feature_energy = 0.0066088534267194935
+dominant_channel = "residualized:instrument_code"
+dominant_channel_mean_abs = 0.003514753273233868
+
+[[datasets]]
+dataset = "JWST Public Metadata"
+row_count = 2048
+feature_channel_count = 8
+modality_count = 1
+mean_norm_sq = 0.479876257492957
+mean_associator_norm = 0.000035238288731667255
+max_associator_norm = 0.002498867923532747
+null_mean_associator_norm = 0.00004128474879488141
+null_std_associator_norm = 0.0000032524612969367236
+null_p_value = 0.9538461538461539
+survives_residualized_null = false
+covariance_trace = 0.47987625749295637
+effective_rank = 1.0609539390457539
+participation_ratio = 1.0216128323287368
+centered_feature_energy = 0.5797201889183102
+dominant_channel = "residualized:instrument_code"
+dominant_channel_mean_abs = 0.5615342679822536
