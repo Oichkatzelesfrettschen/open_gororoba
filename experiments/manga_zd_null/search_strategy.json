@@ -1,0 +1,231 @@
+{
+  "search_plan_yaml": "objective: >\n  Systematically identify, retrieve, and evaluate all published and preprint\n  literature relevant to the MaNGA zero-dark density null result paper, resolving\n  22 dangling citation keys in paper.md and filling gaps in 8 topic areas not yet\n  covered by the existing 48-entry manga_null_refs.bib.\n\nscope:\n  date_range: \"1996-01-01 / 2026-03-18\"\n  priority_recency: \"2022-01-01 / 2026-03-18\"\n  languages:\n    - English\n  databases:\n    primary:\n      - NASA ADS (ui.adsabs.harvard.edu)\n      - arXiv (arxiv.org)\n      - SDSS documentation (sdss.org/dr17)\n    secondary:\n      - InspireHEP\n      - Scopus\n    journal_targets:\n      - \"The Astrophysical Journal (ApJ)\"\n      - \"Monthly Notices of the Royal Astronomical Society (MNRAS)\"\n      - \"Astronomy & Astrophysics (A&A)\"\n      - \"Physical Review D (PRD)\"\n      - \"Physical Review Letters (PRL)\"\n      - \"Journal of Mathematical Physics (JMP)\"\n      - \"Journal of Cosmology and Astroparticle Physics (JCAP)\"\n  exclusions:\n    - Ecology, pharmacology, urban studies, neuroscience, cardiovascular medicine\n    - Pure lattice QCD without dark sector constraints\n    - Gravitational wave catalogs without halo structure constraints\n    - Pulsar timing arrays without dark matter density profile implications\n\nphase_0_dangling_citations:\n  description: >\n    Resolve 22 citation keys used in paper.md that have no corresponding BibTeX\n    entry anywhere in the project (manga_null_refs.bib, refs.bib, bibliography.toml).\n    This is a compilation blocker.\n  method: ADS author+year lookup for each key\n  keys:\n    - key: adame2025desi\n      likely_paper: \"DESI 2024 VI: cosmological constraints from BAO\"\n      priority: HIGH\n    - key: addazi2022quantum\n      likely_paper: \"Addazi+ 2022, Quantum gravity phenomenology review\"\n      priority: MEDIUM\n    - key: aghanim2020iplancki\n      likely_paper: \"Planck 2018 results VI: cosmological parameters\"\n      priority: HIGH\n    - key: allen2014sami\n      likely_paper: \"Allen+ 2014, SAMI Galaxy Survey overview\"\n      priority: HIGH\n    - key: amon2022dark\n      likely_paper: \"Amon+ 2022, DES Y3 cosmic shear\"\n      priority: MEDIUM\n    - key: barausse2020prospects\n      likely_paper: \"Barausse+ 2020, GW future prospects with LISA\"\n      priority: LOW\n    - key: baudis2012direct\n      likely_paper: \"Baudis 2012, Direct dark matter detection review\"\n      priority: MEDIUM\n    - key: bauer2013dark\n      likely_paper: \"Bauer+ 2013, Dark matter and new physics\"\n      priority: MEDIUM\n    - key: baxter2021recommended\n      likely_paper: \"Baxter+ 2021, Recommended conventions for DM search reporting\"\n      priority: HIGH\n    - key: cicoli2024string\n      likely_paper: \"Cicoli+ 2024, String compactification and moduli\"\n      priority: LOW\n    - key: coogan2022measuring\n      likely_paper: \"Coogan+ 2022, Measuring DM subhalo mass function\"\n      priority: MEDIUM\n    - key: emsellem2022phangsmuse\n      likely_paper: \"Emsellem+ 2022, PHANGS-MUSE survey methodology\"\n      priority: HIGH\n    - key: fogarty2014kinematic\n      likely_paper: \"Fogarty+ 2014, SAMI kinematic morphology-density\"\n      priority: HIGH\n    - key: heymans2020kids\n      likely_paper: \"Heymans+ 2021, KiDS-1000 cosmology\"\n      priority: MEDIUM\n    - key: javier2020gammaray\n      likely_paper: \"Javier+ 2020, Gamma-ray DM search review\"\n      priority: LOW\n    - key: schirmer2024micromegas\n      likely_paper: \"Schirmer+ 2024, MicrOMEGAs dark matter tool\"\n      priority: LOW\n    - key: schoot2021bayesian\n      likely_paper: \"van de Schoot+ 2021, Bayesian statistics review\"\n      priority: MEDIUM\n    - key: vagnozzi2023seven\n      likely_paper: \"Vagnozzi 2023, Seven hints for Hubble tension\"\n      priority: MEDIUM\n    - key: valentino2021realm\n      likely_paper: \"Di Valentino+ 2021, In the realm of the Hubble tension\"\n      priority: MEDIUM\n    - key: westhuizen2025interacting\n      likely_paper: \"van der Westhuizen+ 2025, Interacting dark energy\"\n      priority: LOW\n    - key: yarkoni2020generalizability\n      likely_paper: \"Yarkoni & Westfall 2020, The generalizability crisis\"\n      priority: LOW\n    - key: yonatan2021searches\n      likely_paper: \"Yonatan+ 2021, Dark matter searches review\"\n      priority: MEDIUM\n\nclusters:\n\n  - id: CL-1\n    name: \"IFU Kinematic Surveys and Rotation Curve Systematics\"\n    priority: HIGH\n    rationale: >\n      Paper relies on MaNGA IFU rotation curve extraction with beam-smearing\n      corrections and inclination deprojection. Existing bib has Krajnovic 2006,\n      Graham 2018 but lacks Varidel 2019, recent SAMI/PHANGS methodology, and\n      post-DR17 MaNGA kinematic studies.\n    queries:\n      - id: Q-01\n        db: ADS\n        query: 'abs:\"MaNGA\" AND abs:\"rotation curve\" AND year:2022-2026'\n        expected_yield: 15-30\n      - id: Q-02\n        db: ADS\n        query: 'abs:\"beam smearing\" AND abs:\"integral field\" AND abs:\"rotation curve\" AND year:2018-2026'\n        expected_yield: 8-15\n      - id: Q-03\n        db: ADS\n        query: 'abs:\"IFU\" AND abs:\"kinematic\" AND (abs:\"inclination\" OR abs:\"deprojection\") AND abs:\"galaxy\" AND year:2020-2026'\n        expected_yield: 10-20\n      - id: Q-04\n        db: arXiv\n        query: 'cat:astro-ph.GA AND (ti:MaNGA OR ti:SAMI) AND ti:rotation AND submittedDate:[2023 TO 2026]'\n        expected_yield: 5-12\n      - id: Q-05\n        db: ADS\n        query: 'abs:\"PHANGS\" AND abs:\"kinematic\" AND year:2022-2026'\n        expected_yield: 5-10\n    key_targets:\n      - \"Varidel+ 2019 (IFU beam-smearing corrections)\"\n      - \"Emsellem+ 2022 (PHANGS-MUSE kinematic extraction)\"\n      - \"Recent MaNGA DR17 rotation curve analyses 2023-2026\"\n\n  - id: CL-2\n    name: \"Dark Matter Density Profile Constraints and Stacking Methods\"\n    priority: HIGH\n    rationale: >\n      Paper stacks 6992 rotation curves and compares NFW baselines. Need recent\n      work on stacking methodology, composite rotation curves, and Einasto/Burkert\n      comparisons. Duffy 2008 / Dutton-Maccio 2014 c-M relation used but not cited.\n    queries:\n      - id: Q-06\n        db: ADS\n        query: 'abs:\"rotation curve\" AND abs:\"stacking\" AND abs:\"dark matter\" AND year:2018-2026'\n        expected_yield: 8-15\n      - id: Q-07\n        db: ADS\n        query: 'abs:\"NFW\" AND (abs:\"Einasto\" OR abs:\"Burkert\") AND abs:\"rotation curve\" AND year:2020-2026'\n        expected_yield: 8-15\n      - id: Q-08\n        db: ADS\n        query: 'abs:\"concentration-mass relation\" AND abs:\"dark matter halo\" AND year:2022-2026'\n        expected_yield: 5-10\n    key_targets:\n      - \"Dutton-Maccio 2014 (updated c-M relation)\"\n      - \"Recent DC14 profile applications 2022-2026\"\n\n  - id: CL-3\n    name: \"Null Result Methodology in Astrophysics and Particle Physics\"\n    priority: HIGH\n    rationale: >\n      Paper is a null result with SNR=0.29 and 95% CL upper bound. Existing bib\n      has Trotta 2008, Cowan 2011, Feldman-Cousins 1998, XENON1T 2018. Need\n      multi-probe null examples, Baxter 2021 conventions, and injection-recovery\n      validation methodology.\n    queries:\n      - id: Q-09\n        db: ADS\n        query: 'abs:\"null result\" AND abs:\"dark matter\" AND (abs:\"upper limit\" OR abs:\"exclusion\") AND year:2020-2026'\n        expected_yield: 10-20\n      - id: Q-10\n        db: ADS\n        query: 'abs:\"signal injection\" AND abs:\"recovery\" AND (abs:\"dark matter\" OR abs:\"axion\") AND year:2020-2026'\n        expected_yield: 5-12\n      - id: Q-11\n        db: ADS\n        query: 'first_author:\"Baxter\" AND abs:\"recommended\" AND abs:\"dark matter\"'\n        expected_yield: 1-3\n    key_targets:\n      - \"Baxter+ 2021 (DM search reporting conventions)\"\n      - \"LZ 2022/2023 (latest direct detection null results)\"\n      - \"Multi-probe null result examples\"\n\n  - id: CL-4\n    name: \"Spectral Analysis and Red-Noise in Astrophysical Signals\"\n    priority: MEDIUM\n    rationale: >\n      Paper reports red-noise spectral index k^0.81 and uses STFT, derivative\n      DFT, Rayleigh diagnostics. Existing bib has Torrence-Compo 1998. Need\n      Vaughan 2005 (red-noise significance testing) and recent spectral noise\n      characterization.\n    queries:\n      - id: Q-12\n        db: ADS\n        query: 'first_author:\"Vaughan\" AND abs:\"red noise\" AND abs:\"periodogram\" AND year:2005-2010'\n        expected_yield: 2-4\n      - id: Q-13\n        db: ADS\n        query: 'abs:\"red noise\" AND abs:\"power spectrum\" AND (abs:\"galaxy\" OR abs:\"astrophysical\") AND year:2018-2026'\n        expected_yield: 5-10\n    key_targets:\n      - \"Vaughan 2005 (ApJ 635, simple test for periodic signals in red noise)\"\n      - \"Protassov+ 2002 (significance of spectral features)\"\n\n  - id: CL-5\n    name: \"Exceptional Algebraic Structures and Division Algebra Physics\"\n    priority: MEDIUM\n    rationale: >\n      Paper tests CD, G2, Albert J3(O), sl(2) frameworks. Existing bib covers\n      Dixon 1994, Furey 2016/2018, Reggiani 2024. Need Todorov-Dubois-Violette\n      exceptional algebra program, Boyle 2020, and testable predictions.\n    queries:\n      - id: Q-14\n        db: arXiv\n        query: 'cat:hep-th AND (abs:\"division algebra\" OR abs:\"octonion\") AND (abs:\"standard model\" OR abs:\"dark matter\") AND submittedDate:[2022 TO 2026]'\n        expected_yield: 8-15\n      - id: Q-15\n        db: ADS\n        query: '(abs:\"Todorov\" OR abs:\"Dubois-Violette\") AND abs:\"exceptional\" AND (abs:\"algebra\" OR abs:\"Jordan\") AND year:2018-2026'\n        expected_yield: 3-8\n      - id: Q-16\n        db: arXiv\n        query: 'cat:hep-th AND abs:\"exceptional Jordan\" AND abs:\"J3\" AND submittedDate:[2018 TO 2026]'\n        expected_yield: 3-6\n      - id: Q-17\n        db: arXiv\n        query: 'cat:math.RA AND abs:\"Cayley-Dickson\" AND submittedDate:[2023 TO 2026]'\n        expected_yield: 2-5\n    key_targets:\n      - \"Todorov-Dubois-Violette 2018-2021 (exceptional algebra and SM)\"\n      - \"Boyle 2020 (exceptional Jordan algebra cosmology)\"\n      - \"Dray-Manogue (octonion physics program)\"\n\n  - id: CL-6\n    name: \"Next-Generation Survey Forecasts (SKA, Euclid, WALLABY, 4MOST)\"\n    priority: MEDIUM\n    rationale: >\n      Paper projects sensitivity to SKA 2030 threshold alpha_zd=0.004. Existing\n      bib has SKA Red Book 2020, Euclid 2022, WALLABY (Koribalski 2020, Deg 2024).\n      Need post-2024 WALLABY kinematic results and Euclid early results.\n    queries:\n      - id: Q-18\n        db: ADS\n        query: 'abs:\"WALLABY\" AND abs:\"rotation curve\" AND year:2023-2026'\n        expected_yield: 3-8\n      - id: Q-19\n        db: ADS\n        query: 'abs:\"SKA\" AND abs:\"HI\" AND abs:\"rotation curve\" AND abs:\"dark matter\" AND year:2022-2026'\n        expected_yield: 5-10\n      - id: Q-20\n        db: ADS\n        query: 'abs:\"Euclid\" AND abs:\"dark matter\" AND abs:\"halo\" AND abs:\"constraint\" AND year:2023-2026'\n        expected_yield: 8-15\n    key_targets:\n      - \"WALLABY pilot kinematic results 2024-2026\"\n      - \"SKA Phase 1 HI survey design updates\"\n      - \"Euclid early results on halo profiles\"\n\n  - id: CL-7\n    name: \"Fuzzy/Ultralight Dark Matter Rotation Curve Signatures\"\n    priority: LOW\n    rationale: >\n      Paper cites Bar+ 2018/2022 for FDM soliton searches. GHOST methodology\n      is directly applicable. Need recent FDM constraints from rotation curves.\n    queries:\n      - id: Q-21\n        db: ADS\n        query: 'abs:\"fuzzy dark matter\" AND abs:\"rotation curve\" AND year:2022-2026'\n        expected_yield: 5-10\n      - id: Q-22\n        db: ADS\n        query: 'abs:\"ultralight\" AND abs:\"dark matter\" AND abs:\"soliton\" AND abs:\"galaxy\" AND year:2022-2026'\n        expected_yield: 5-10\n    key_targets:\n      - \"Schive+ 2014 (FDM soliton core, foundational)\"\n      - \"Hui+ 2017 (FDM review)\"\n\n  - id: CL-8\n    name: \"Baryonic Feedback, Core-Cusp, and Inner Halo Systematics\"\n    priority: LOW\n    rationale: >\n      Paper documents three baryonic systematics (bulge excess, cusp\n      over-prediction, IFU edge spike). Existing bib has Martinsson 2013,\n      Di Cintio 2014, Read 2016. Need FIRE/NIHAO core formation results.\n    queries:\n      - id: Q-23\n        db: ADS\n        query: 'abs:\"baryonic feedback\" AND abs:\"dark matter\" AND abs:\"rotation curve\" AND year:2022-2026'\n        expected_yield: 5-12\n      - id: Q-24\n        db: ADS\n        query: 'abs:\"core-cusp\" AND (abs:\"FIRE\" OR abs:\"NIHAO\") AND year:2022-2026'\n        expected_yield: 3-8\n    key_targets:\n      - \"Recent FIRE simulation papers on core formation\"\n      - \"NIHAO feedback profiles 2022-2026\"\n\ndeduplication_strategy:\n  method: \"Three-stage deduplication\"\n  stages:\n    - stage: 1\n      description: >\n        ADS bibcode dedup: merge results across queries by unique bibcode,\n        retaining the query that first returned each paper.\n    - stage: 2\n      description: >\n        Cross-reference against manga_null_refs.bib (48 entries) and\n        bibliography.toml (334 entries) by DOI, arXiv ID, and first-author+year.\n        Mark existing entries as 'covered' and exclude from gap-filling.\n    - stage: 3\n      description: >\n        Manual review: remove off-topic hits, duplicates from different arXiv\n        versions, and retracted papers. Prefer published versions over preprints.\n\nquality_filters:\n  citation_minimum: 5\n  citation_minimum_recent: 0\n  recency_weight: \"2023-2026 weighted 2x; 2020-2022 weighted 1x; pre-2020 only if foundational\"\n  inclusion_criteria:\n    - \"Directly relevant to MaNGA IFU kinematics or rotation curve methodology\"\n    - \"Directly relevant to dark matter density profile constraints from kinematics\"\n    - \"Directly relevant to null result reporting methodology\"\n    - \"Directly relevant to spectral analysis of astrophysical signals\"\n    - \"Directly relevant to division algebra physics predictions\"\n    - \"Directly relevant to next-generation survey forecasts for halo constraints\"\n    - \"Directly relevant to fuzzy/ultralight dark matter rotation curve signatures\"\n    - \"Directly relevant to baryonic feedback and inner halo systematics\"\n  exclusion_criteria:\n    - \"Off-topic (ecology, medicine, urban studies, neuroscience, psychology)\"\n    - \"Pure lattice QCD without dark matter implications\"\n    - \"Gravitational wave catalogs without halo structure constraints\"\n    - \"Papers already fully covered in manga_null_refs.bib or bibliography.toml\"\n\ncompletion_criteria:\n  minimum_new_references: 25\n  maximum_new_references: 60\n  cluster_coverage: \">=3 per HIGH cluster, >=2 per MEDIUM, >=1 per LOW\"\n  gap_closure:\n    - \"All 22 dangling citations in paper.md resolved to BibTeX entries\"\n    - \"CL-1: >=1 post-2022 MaNGA rotation curve paper\"\n    - \"CL-2: >=1 stacking methodology comparison paper\"\n    - \"CL-3: Baxter+ 2021 reporting conventions located\"\n    - \"CL-4: Vaughan 2005 red-noise significance paper located\"\n    - \"CL-5: >=1 Todorov-Dubois-Violette paper located\"\n    - \"CL-6: >=1 post-2024 WALLABY kinematic paper\"\n    - \"CL-7: Schive+ 2014 and Hui+ 2017 confirmed in existing bib or added\"\n  verification: >\n    All ADS queries executed, results logged with timestamps, and\n    cross-referenced against existing bibliography. Final count reported.\n",
+
+  "sources": [
+    {
+      "id": "SRC-001",
+      "name": "NASA ADS: MaNGA rotation curves 2022-2026",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"MaNGA\" AND abs:\"rotation curve\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-002",
+      "name": "NASA ADS: IFU beam-smearing corrections",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"beam smearing\" AND abs:\"integral field\" AND abs:\"rotation curve\" AND year:2018-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-003",
+      "name": "NASA ADS: IFU kinematic deprojection and inclination",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"IFU\" AND abs:\"kinematic\" AND (abs:\"inclination\" OR abs:\"deprojection\") AND abs:\"galaxy\" AND year:2020-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-004",
+      "name": "arXiv: MaNGA/SAMI rotation curve preprints 2023-2026",
+      "type": "preprint_query",
+      "url": "https://arxiv.org/search/",
+      "status": "planned",
+      "query": "cat:astro-ph.GA AND (ti:MaNGA OR ti:SAMI) AND ti:rotation AND submittedDate:[2023 TO 2026]",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-005",
+      "name": "NASA ADS: Rotation curve stacking and dark matter",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"rotation curve\" AND abs:\"stacking\" AND abs:\"dark matter\" AND year:2018-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-006",
+      "name": "NASA ADS: NFW vs Einasto vs Burkert profiles",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"NFW\" AND (abs:\"Einasto\" OR abs:\"Burkert\") AND abs:\"rotation curve\" AND year:2020-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-007",
+      "name": "NASA ADS: Concentration-mass relation updates",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"concentration-mass relation\" AND abs:\"dark matter halo\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-008",
+      "name": "NASA ADS: Dark matter null results with upper limits",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"null result\" AND abs:\"dark matter\" AND (abs:\"upper limit\" OR abs:\"exclusion\") AND year:2020-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-009",
+      "name": "NASA ADS: Signal injection recovery in DM searches",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"signal injection\" AND abs:\"recovery\" AND (abs:\"dark matter\" OR abs:\"axion\") AND year:2020-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-010",
+      "name": "NASA ADS: Baxter 2021 DM search reporting conventions",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "first_author:\"Baxter\" AND abs:\"recommended\" AND abs:\"dark matter\"",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-011",
+      "name": "NASA ADS: Vaughan 2005 red-noise periodogram test",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "first_author:\"Vaughan\" AND abs:\"red noise\" AND abs:\"periodogram\" AND year:2005-2010",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-012",
+      "name": "NASA ADS: Red-noise power spectra in astrophysics",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"red noise\" AND abs:\"power spectrum\" AND (abs:\"galaxy\" OR abs:\"astrophysical\") AND year:2018-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-013",
+      "name": "arXiv: Division algebra and standard model/dark matter",
+      "type": "preprint_query",
+      "url": "https://arxiv.org/search/",
+      "status": "planned",
+      "query": "cat:hep-th AND (abs:\"division algebra\" OR abs:\"octonion\") AND (abs:\"standard model\" OR abs:\"dark matter\") AND submittedDate:[2022 TO 2026]",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-014",
+      "name": "NASA ADS: Todorov-Dubois-Violette exceptional algebra",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "(abs:\"Todorov\" OR abs:\"Dubois-Violette\") AND abs:\"exceptional\" AND (abs:\"algebra\" OR abs:\"Jordan\") AND year:2018-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-015",
+      "name": "arXiv: Exceptional Jordan algebra J3(O) in physics",
+      "type": "preprint_query",
+      "url": "https://arxiv.org/search/",
+      "status": "planned",
+      "query": "cat:hep-th AND abs:\"exceptional Jordan\" AND abs:\"J3\" AND submittedDate:[2018 TO 2026]",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-016",
+      "name": "NASA ADS: WALLABY rotation curves 2023-2026",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"WALLABY\" AND abs:\"rotation curve\" AND year:2023-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-017",
+      "name": "NASA ADS: SKA HI rotation curves and dark matter",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"SKA\" AND abs:\"HI\" AND abs:\"rotation curve\" AND abs:\"dark matter\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-018",
+      "name": "NASA ADS: Euclid dark matter halo constraints",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"Euclid\" AND abs:\"dark matter\" AND abs:\"halo\" AND abs:\"constraint\" AND year:2023-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-019",
+      "name": "NASA ADS: Fuzzy dark matter rotation curves",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"fuzzy dark matter\" AND abs:\"rotation curve\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-020",
+      "name": "NASA ADS: Ultralight DM soliton galaxy constraints",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"ultralight\" AND abs:\"dark matter\" AND abs:\"soliton\" AND abs:\"galaxy\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-021",
+      "name": "NASA ADS: Baryonic feedback and rotation curves",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"baryonic feedback\" AND abs:\"dark matter\" AND abs:\"rotation curve\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-022",
+      "name": "SDSS DR17 MaNGA documentation and technical notes",
+      "type": "documentation",
+      "url": "https://www.sdss.org/dr17/manga/",
+      "status": "planned",
+      "query": "MaNGA DR17 DAP documentation, known issues, systematic error budgets",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-023",
+      "name": "NASA ADS: PHANGS-MUSE kinematic methodology",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"PHANGS\" AND abs:\"kinematic\" AND year:2022-2026",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-024",
+      "name": "arXiv: Cayley-Dickson algebra preprints 2023-2026",
+      "type": "preprint_query",
+      "url": "https://arxiv.org/search/",
+      "status": "planned",
+      "query": "cat:math.RA AND abs:\"Cayley-Dickson\" AND submittedDate:[2023 TO 2026]",
+      "verified_at": null
+    },
+    {
+      "id": "SRC-025",
+      "name": "NASA ADS: Core-cusp with FIRE/NIHAO simulations",
+      "type": "database_query",
+      "url": "https://ui.adsabs.harvard.edu/search/",
+      "status": "planned",
+      "query": "abs:\"core-cusp\" AND (abs:\"FIRE\" OR abs:\"NIHAO\") AND year:2022-2026",
+      "verified_at": null
+    }
+  ]
+}

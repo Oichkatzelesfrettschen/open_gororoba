@@ -456,6 +456,38 @@ name = "harmonic-halo-visualize"
 path = "src/bin/harmonic_halo_visualize.rs"
 
 [[bin]]
+name = "persistence-residual-topology"
+path = "src/bin/persistence_residual_topology.rs"
+
+[[bin]]
+name = "bispectral-selection-rule"
+path = "src/bin/bispectral_selection_rule.rs"
+
+[[bin]]
+name = "variance-quantization-test"
+path = "src/bin/variance_quantization_test.rs"
+
+[[bin]]
+name = "whitened-matched-filter"
+path = "src/bin/whitened_matched_filter.rs"
+
+[[bin]]
+name = "power-stratified-phase"
+path = "src/bin/power_stratified_phase.rs"
+
+[[bin]]
+name = "synthesis-audit"
+path = "src/bin/synthesis_audit.rs"
+
+[[bin]]
+name = "window-function-sensitivity"
+path = "src/bin/window_function_sensitivity.rs"
+
+[[bin]]
+name = "trimmed-stacking-robustness"
+path = "src/bin/trimmed_stacking_robustness.rs"
+
+[[bin]]
 name = "hi-cube-rotcurve-extractor"
 path = "src/bin/hi_cube_rotcurve_extractor.rs"
 
