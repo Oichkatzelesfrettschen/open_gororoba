@@ -1814,7 +1814,6 @@ sprint = "S84"
 summary = "Six prioritized research opportunities emerge from the GHOST literature synthesis, ranked by impact times feasibility: (1) SKA Phase 1 outer-halo stacking forecast (HIGH/HIGH) -- the sensitivity projection figure alpha_zd vs radial coverage is what survey planners will cite; (2) face-on galaxy reanalysis with k^0.81 baseline subtraction (MEDIUM-HIGH/HIGH) -- N~3140 low-i galaxies have cleanest curves but red-noise correction on full sample was neutral; (3) injection-recovery calibration via matched filter (HIGH/MEDIUM) -- blocks publication sensitivity claims, three resolution options identified; (4) SPARC/THINGS cross-validation at outer radii (MEDIUM/MEDIUM) -- proof-of-concept before SKA; (5) theoretical framework separation computation at x=3-10 (MEDIUM/HIGH) -- determines if SKA can discriminate algebras or only improve bound; (6) baryonic index validation against FIRE/NIHAO simulations (MEDIUM/LOW-MEDIUM). The quasi-degeneracy (rho>0.97) must be disclosed honestly: four algebraic frameworks are effectively one constraint at MaNGA radii, reframed as model-independence of the bound."
 title = "Six prioritized opportunities from GHOST literature synthesis: SKA forecast highest, simulation validation lowest"
 
-
 [[insight]]
 claims = ["C-1419", "C-1420", "C-1421", "C-1422"]
 id = "I-199"
@@ -1870,3 +1869,4 @@ id = "I-206"
 sprint = "S84"
 summary = "E-201/E-202 decisive experiment yields five actionable conclusions for the GHOST paper: (1) H1 face-on reanalysis confirms null (all modes within 1.58 sigma of envelope, C-1430). (2) The red-noise slope gamma=0.808 is an INCLINATION ARTIFACT -- face-on galaxies have gamma=-0.01 (flat spectrum, C-1431). This is the most significant new finding: the baryonic spectral floor shape depends on sample inclination distribution, not intrinsic galaxy physics. (3) H2 Q3 injection recovery DECISIVELY falsifies the Q3 SNR=3.60 'detection' as a sparse-bin artifact: pipeline is blind at 6 bins, delta_SNR=0 at all injection levels (C-1432). (4) Whitened matched filter after red-noise correction gives p=0.42, confirming no periodic structure survives spectral detrending (C-1433). (5) All spectral diagnostics (bispectral Fano ratio=1.0, persistence N=1, dip D=0.46 algebra-universal, MI NMI=0.0) confirm algebra-universal null across all statistical orders (C-1436-C-1439)."
 title = "E-201/E-202 decisive experiment: inclination-dependent spectral slope, Q3 artifact falsified, algebra-universal null"
+

@@ -3492,6 +3492,78 @@ status_note = "multifeature-shape-regression binary (Hypothesis C section), 6995
 where_stated = "crates/gororoba_cli_physics/src/bin/multifeature_shape_regression.rs, data/results/e183/multifeature_shape.csv"
 
 [[claim]]
+id = "C-1411"
+last_verified = "2026-03-17"
+statement = "Synthetic MaNGA pipeline validation: 11 conditions x 3 regimes x 20 seeds = 660 runs on N=6992 synthetic galaxies produce zero false positives (all SNR << 2.0, range 0.471-0.486 for algebraic conditions). The analysis pipeline used for E-183/E-184 real-data null results does not hallucinate signals on synthetic null data."
+status = "Verified"
+status_note = "E-192 canonical run. 86.9s wall-clock, 660/660 runs complete, CV < 2% across all conditions. no_harmonics_ablation (SNR=2.14) confirms 4.4x ablation separation."
+where_stated = "experiments/manga_zd_null/main.py, experiments/manga_zd_null/results.json"
+
+[[claim]]
+id = "C-1412"
+last_verified = "2026-03-17"
+statement = "Injection recovery anti-correlation: injecting ZD-wavenumber signals at alpha=0.004, 0.01, and 0.05 into synthetic MaNGA galaxies produces NEGATIVE delta_snr (mean_diff vs baseline: +0.011, +0.009, -0.001 respectively). The exp(-x) injection envelope concentrates power at x~0.5 where baryonic systematics dominate (+5% bulge excess), causing destructive interference. Even alpha=5.0 (1250x SKA threshold) yields delta_snr=+0.17, below recovery threshold of 2.0."
+status = "Verified"
+status_note = "E-192 injection sweep. Paired t-test: alpha=0.05 vs CD_ZD_D16 p=0.207 (not significant). Root cause: SNR metric denominator (rms_residual) grows with injected signal amplitude."
+where_stated = "experiments/manga_zd_null/models.py (InjectionRecovery class), experiments/manga_zd_null/results.json"
+
+[[claim]]
+id = "C-1413"
+last_verified = "2026-03-17"
+statement = "Red-noise correction is neutral on synthetic null data: red_noise_corrected condition (data-driven gamma fit) produces detection_snr identical to CD_ZD_D16 baseline (mean_diff=0.0000, std_diff=0.0000) across all 3 regimes and 20 seeds. This confirms the correction only has effect when real astrophysical red-noise structure is present (as in E-183 real MaNGA data)."
+status = "Verified"
+status_note = "E-192 canonical run. Paired analysis shows zero difference (no t-test possible with std=0). Data-driven gamma=-0.000775 (vs hardcoded 0.808 in E-183 real data)."
+where_stated = "experiments/manga_zd_null/models.py (RedNoiseCorrectedSearch class)"
+
+[[claim]]
+id = "C-1414"
+last_verified = "2026-03-17"
+statement = "Three implementation bugs discovered and fixed in E-192 synthetic validation: (1) injection_recovery reported snr_mean instead of snr_max (E-183 convention mismatch), (2) red_noise_corrected used hardcoded gamma=0.808 instead of data-driven fit, (3) MultiAlgebraCorrected applied internal face_on filter bypassing regime parameter. All fixes verified via smoke tests."
+status = "Verified"
+status_note = "Bug fixes applied to experiments/manga_zd_null/models.py. Root-level legacy codebase archived to experiments/manga_zd_null/_legacy/."
+where_stated = "experiments/manga_zd_null/models.py"
+
+[[claim]]
+id = "C-1415"
+last_verified = "2026-03-17"
+statement = "Robustness convergence: three successive REFINE iterations of the MaNGA ZD synthetic validation (E-192) produce identical primary metric values. The sl2_partner/mass_Q3 condition converges to detection_snr_mean = 0.4704 +/- 0.0070 across 20 seeds. Full_sample Fourier conditions cluster at 0.4675-0.4825 across all 3 iterations. This convergence is not a pipeline bug: it is the analytic fixed point of a deterministic analysis on synthetic null data with fixed baryonic systematics (+5% bulge, -12% cusp, +5% IFU edge). Further REFINE iterations on the same pipeline and data cannot change this value."
+status = "Verified"
+status_note = "E-192 degenerate REFINE cycle detected: metrics [0.4704, 0.4704, 0.4704] across 3 iterations. Prior iterations fixed real bugs (C-1414), expanded seeds 5->20, added ablation conditions. All easy gains exhausted."
+where_stated = "experiments/manga_zd_null/results.json, experiments/manga_zd_null/main.py"
+
+[[claim]]
+id = "C-1416"
+last_verified = "2026-03-17"
+statement = "Ablation separation: the no_harmonics_ablation condition (peak-to-RMS metric without Fourier decomposition) produces detection_snr = 2.270 +/- 0.040 (full_sample), 2.333 +/- 0.054 (face_on), 2.395 +/- 0.084 (mass_Q3). This is 4.7x higher than the CD_ZD_D16 Fourier SNR of 0.480 +/- 0.003. The separation confirms that Fourier projection at algebraic wavenumbers reduces the effective noise floor relative to broadband peak detection, and validates the no_harmonics condition as a functioning positive control."
+status = "Verified"
+status_note = "E-192 canonical run. 20 seeds, 3 regimes. Ablation ratio: 2.270/0.480 = 4.73x (full_sample). Consistent across all 3 regimes."
+where_stated = "experiments/manga_zd_null/results.json"
+
+[[claim]]
+id = "C-1417"
+last_verified = "2026-03-17"
+statement = "Cross-regime stability: all 11 conditions produce consistent detection_snr across the 3 distribution-shift regimes (full_sample, face_on, mass_Q3). For Fourier-based algebraic conditions (CD_ZD_D16, G2_Aut_O, Albert_J3O, sl2_partner), the maximum regime-to-regime spread is 0.012 (Albert_J3O: 0.479-0.483). For the no_harmonics_ablation, the spread is 0.125 (2.270-2.395), proportionally consistent at 5.5%. The null result is robust to sample composition including face-on selection and mass quartile restriction."
+status = "Verified"
+status_note = "E-192 canonical run. 20 seeds per condition per regime. face_on (~3100 galaxies), mass_Q3 (~6 valid bins). Even the sparsest regime reproduces the null."
+where_stated = "experiments/manga_zd_null/results.json"
+
+[[claim]]
+id = "C-1418"
+last_verified = "2026-03-17"
+statement = "Random wavenumber control: 7 wavenumbers drawn uniformly from [0.5, 7.0] with seed=314159 produce detection_snr = 0.482 +/- 0.003 (full_sample), statistically indistinguishable from the algebraically-motivated CD_ZD_D16 wavenumbers (0.480 +/- 0.003). Paired difference: +0.0018 +/- 0.0001. No particular set of wavenumbers in this frequency range has privileged access to the residual structure at x = 0.5-1.35 r/r_s. The null result is wavenumber-independent."
+status = "Verified"
+status_note = "E-192 canonical run. 20 seeds, full_sample regime. Paired t-test: p < 0.001 but effect size negligible (Cohen's d < 0.1)."
+where_stated = "experiments/manga_zd_null/results.json"
+
+[[claim]]
+id = "C-1419"
+last_verified = "2026-03-18"
+statement = "H3 topological persistence FALSIFIED: sublevel set persistence of the D=16 stacked residual (16 valid bins, x=0.5-1.22 r/r_s) yields N_persistent = 1 feature above epsilon = 0.1 * max|delta|. The ZD prediction of N >= 5 persistent features (from 7-mode oscillation) is rejected. The single surviving feature corresponds to the NFW cusp trough (birth=-0.102, death=+0.097, lifetime=0.199). Mass-bin stability test across 19 sweep profiles shows mean=4.16, std=1.56, with extended-coverage profiles (full/family) clustering at N=5 and restricted profiles at N=1-2 -- resolution-driven, not physics-driven."
+status = "Verified"
+status_note = "persistence-residual-topology binary on manga_stack_D16.csv + 19 sweep profiles. Falsification threshold: N_persistent <= 3."
+where_stated = "crates/gororoba_cli_physics/src/bin/persistence_residual_topology.rs"
+
+[[claim]]
 id = "C-142"
 last_verified = "2026-02-01"
 statement = "Power-associativity x^m * x^n = x^(m+n) holds exactly (machine epsilon) at ALL CD dimensions through 512, for all tested pairs (m,n) with m+n <= 8. x^1 * x^1 = x^2 has identically zero residual."
@@ -3499,11 +3571,171 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`"
 
 [[claim]]
+id = "C-1420"
+last_verified = "2026-03-18"
+statement = "H1 bispectral Fano selection rule FALSIFIED: bicoherence b^2 = 1.0 for ALL 28 mode-pair triads (7 Fano + 21 non-Fano), giving Fano/non-Fano ratio = 1.0000. The ratio falls firmly in [0.7, 1.3], rejecting the selection-rule hypothesis. The trivial b^2 = 1.0 arises because a single stacked realization has no ensemble averaging to reduce bicoherence from unity. Only 2 of 28 triads have sum wavenumbers matching CD modes (1+5=6, 2+3=5). Ensemble bicoherence from 6995 per-galaxy aggregates = 0.987, far above the noise expectation of 0.012, confirming strong baryonic phase coherence."
+status = "Verified"
+status_note = "bispectral-selection-rule binary on manga_stack_D16.csv + cross_algebra_correlation.galaxies.csv."
+where_stated = "crates/gororoba_cli_physics/src/bin/bispectral_selection_rule.rs"
+
+[[claim]]
+id = "C-1421"
+last_verified = "2026-03-18"
+statement = "H2 variance quantization FALSIFIED as ZD-specific: Hartigan dip test detects extreme multimodality in per-galaxy Fourier power distributions for ALL four algebras (D=0.46, p=0.0002, 5000 permutations). However, multimodality is algebra-universal: CD-ZD D=0.4627, G2 D=0.4630, J3O D=0.4637, sl2 D=0.4621. CV ratio (CD/others) = 0.9912, firmly below the 1.5x threshold. Excess kurtosis is extreme and algebra-universal: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. The multimodality is driven by the galaxy population mass distribution, not ZD forcing."
+status = "Verified"
+status_note = "variance-quantization-test binary on cross_algebra_correlation.galaxies.csv. 6995 galaxies, seed=42."
+where_stated = "crates/gororoba_cli_physics/src/bin/variance_quantization_test.rs"
+
+[[claim]]
+id = "C-1422"
+last_verified = "2026-03-18"
+statement = "H4 cross-algebra mutual information FALSIFIED as ZD-selective: KSG MI estimator (k=5 neighbors, unit-circle phase embedding) shows strong algebra-universal dependence across all 6 cross-algebra pairs. MI ranges from 2.82 nats (J3O vs sl2) to 4.45 nats (CD-ZD vs G2), with Pearson correlations r=0.85-0.96 confirming overwhelmingly linear coupling. No selective cross-algebraic pattern detected: all pairs show similar MI magnitude. NMI normalization fails due to negative differential entropy on compact circular domain (artifact, not physical). The quasi-degeneracy (rho > 0.97 from E-184) extends to the full non-linear dependence structure."
+status = "Verified"
+status_note = "mutual_information_phase.py on cross_algebra_correlation.galaxies.csv. 6995 galaxies, scipy cKDTree KSG estimator."
+where_stated = "src/ghost_stats/mutual_information_phase.py"
+
+[[claim]]
+id = "C-1423"
+last_verified = "2026-03-18"
+statement = "P1 whitened matched filter: variance-weighted DFT at 7 CD-ZD wavenumbers yields total chi^2 = 304,300 (df=14, p=0). After red-noise correction (gamma=0.78, consistent with k^0.81 from C-1368), corrected total = 7.26 (expected ~7.0), p=0.40. The baryonic spectral floor has a coherent red-noise structure that fully accounts for all harmonic content in the whitened spectrum. The naive SNR metric (0.29) is confirmed as a valid measure: the whitened MF-SNR of 147.4 is entirely an artifact of the unmodeled red-noise slope. Pre-whitening without red-noise correction gives a 500x false sensitivity improvement that is completely spurious."
+status = "Verified"
+status_note = "whitened-matched-filter binary on manga_stack_D16.csv. 16 valid bins, per-bin error range 33.1x. Lanczos chi^2 survival function."
+where_stated = "crates/gororoba_cli_physics/src/bin/whitened_matched_filter.rs"
+
+[[claim]]
+id = "C-1424"
+last_verified = "2026-03-18"
+statement = "P2 GP model comparison: Matern-only kernel (Model A, LML=-20.48) outperforms Matern+Periodic kernel (Model B, LML=-20.54, Delta=-0.064, Bayes factor=0.94). Adding a periodic component at CD-ZD frequency makes the fit WORSE due to complexity penalty. The optimized periodicity drifted to 4.77 (predicted 7.0), confirming no period-7 structure exists. A smooth baryonic model with Matern length_scale=0.056 (comparable to bin spacing 0.048) captures all structure in the 16-bin stacked residual."
+status = "Verified"
+status_note = "gp_model_comparison.py on manga_stack_D16.csv. scikit-learn 1.8.0, 20 optimizer restarts, Matern nu=2.5."
+where_stated = "src/ghost_stats/gp_model_comparison.py"
+
+[[claim]]
+id = "C-1425"
+last_verified = "2026-03-18"
+statement = "P3 power-stratified phase coherence: top-quintile Rayleigh R = 0.85 (CD-ZD), 0.86 (G2), 0.84 (J3O), 0.84 (sl2) -- all highly significant. However, this is a SELECTION ARTIFACT from conditioning on power when the population mean is nonzero. R increases monotonically from Q1 (0.16-0.26) to Q5 (0.84-0.86) for ALL algebras identically. The proof: if ZD forcing were enriched in high-power galaxies, CD-ZD top-quintile R would exceed the other algebras' R. It does not (0.85 vs 0.86, 0.84, 0.84 -- algebra-universal). The phase coherence is driven by shared baryonic structure, not ZD physics. Expected R under isotropic null = 0.027; the excess is the known nonzero stacked residual projecting onto high-power galaxy phases."
+status = "Verified"
+status_note = "power-stratified-phase binary on cross_algebra_correlation.galaxies.csv. 6995 galaxies, 5 quintiles of 1399 each."
+where_stated = "crates/gororoba_cli_physics/src/bin/power_stratified_phase.rs"
+
+[[claim]]
+id = "C-1426"
+last_verified = "2026-03-18"
+statement = "D3 window function sensitivity: contrarian hypothesis that the 0.72 r/r_s data window makes long-wavelength modes undetectable was REFUTED. Targeted DFT on the actual data grid shows >100% recovery at ALL 7 modes: mode 1 at 185%, mode 2 at 151%, modes 3-7 at 102-119%. The overrecovery at modes 1-2 is spectral leakage from the non-periodic window boundary, which artificially amplifies low-frequency power. Effective DOF = 14.0 (no reduction). The null result is NOT invalidated by the data window. However, the 185% overrecovery at mode 1 means smooth baryonic gradients (cusp-to-bulge transition) leak into low-k Fourier coefficients, partially explaining the red-noise spectral structure."
+status = "Verified"
+status_note = "window-function-sensitivity binary on manga_stack_D16.csv. 16 valid bins, injection recovery at 7 CD-ZD wavenumbers."
+where_stated = "crates/gororoba_cli_physics/src/bin/window_function_sensitivity.rs"
+
+[[claim]]
+id = "C-1427"
+last_verified = "2026-03-18"
+statement = "D4 trimmed stacking robustness: the stacked DFT coefficient is CATASTROPHICALLY outlier-dominated. At 5% trimming (removing 350 highest-power + 350 lowest-power galaxies), stacked power drops to 33% of full (67% of signal from 10% of galaxies). At 10% trimming, power drops to 8-12% of full. At 20% trimming (middle 60% of population), power drops to 16-20% AND the phase reverses by ~2.7 radians (nearly pi). Median DFT power is 0.12-0.15% of the full mean. This pattern is ALGEBRA-UNIVERSAL: CD-ZD 20%-trimmed/full = 0.189, G2 = 0.181, J3O = 0.161, sl2 = 0.204. The null result (SNR=0.29) is a property of ~350 outlier galaxies' baryonic structure, not a statement about the galaxy population. The ZD bound alpha_zd < 0.002392 applies to the outlier-dominated mean, not to typical MaNGA galaxies."
+status = "Verified"
+status_note = "trimmed-stacking-robustness binary on cross_algebra_correlation.galaxies.csv. 6995 galaxies, 6 trim levels + median."
+where_stated = "crates/gororoba_cli_physics/src/bin/trimmed_stacking_robustness.rs"
+
+[[claim]]
+id = "C-1428"
+last_verified = "2026-03-18"
+statement = "S1 robust-estimator ZD bound: the mean-based alpha_zd estimate (2.32) diverges by 8.6x from the median-based estimate (0.27). At 5% trimming, alpha_zd drops to 0.78 (34% of mean); at 10% trimming, to 0.18 (8%). The median DFT power is 0.12% of the mean DFT power. This confirms D4's outlier domination extends to the derived ZD parameter estimates: the ~350 highest-power galaxies drive 88% of the estimated alpha_zd. The paper's sensitivity bound (alpha_zd < 0.002392) is a property of the mean estimator; a median-based analysis would yield a different bound."
+status = "Verified"
+status_note = "synthesis-audit binary S1 section. 6995 galaxies, 5 trim levels + median."
+where_stated = "crates/gororoba_cli_physics/src/bin/synthesis_audit.rs"
+
+[[claim]]
+id = "C-1429"
+last_verified = "2026-03-18"
+statement = "S2 spectral leakage decomposition RESOLVES the P1/D3 disagreement. 10,000 white-noise simulations on the 16-bin data grid show leakage power ~16 per mode vs observed whitened power 170,000-580,000. Leakage fraction < 0.01% at all modes. The red-noise spectral structure is ENTIRELY intrinsic to the whitened baryonic floor, not a window artifact. D3's 185% overrecovery applies to SIGNAL reconstruction (how much of an injected sinusoid is recovered), not noise leakage (how much noise appears at a frequency). P1 is correct that the spectral shape is real baryonic structure. D3 is correct that signal reconstruction is biased by the window. Both findings are compatible."
+status = "Verified"
+status_note = "synthesis-audit binary S2 section. 10000 sims, seed=42, 16 valid bins."
+where_stated = "crates/gororoba_cli_physics/src/bin/synthesis_audit.rs"
+
+[[claim]]
 id = "C-143"
 last_verified = "2026-02-01"
 statement = "Left and right multiplication operators L_a, R_a have identical singular value spectra (SV overlap = 1.0) and are always full-rank for unit a, despite L != R for dim >= 4.||L-R||/||L||grows from 0 (dim=2) toward 2.0 (approaching complete operator independence)."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`"
+
+[[claim]]
+id = "C-1430"
+last_verified = "2026-03-18"
+statement = "E-201 H1 face-on red-noise Rayleigh: N=3140 face-on galaxies (i<45 deg), all 7 CD-ZD modes within 1.58 sigma of k^{0.808} red-noise envelope. No detection. Bootstrap (200x) alpha_zd median=0.357, 95% CI=[0.123, 0.647]. Detection fraction (max_sigma>3.0) = 0%. The face-on subsample confirms the full-sample null with no inclination artifact contamination."
+status = "Verified"
+status_note = "face-on-red-noise-rayleigh binary. 3140 galaxies, 200 bootstrap, seed=42."
+where_stated = "crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs"
+
+[[claim]]
+id = "C-1431"
+last_verified = "2026-03-18"
+statement = "E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis."
+status = "Verified"
+status_note = "face-on-red-noise-rayleigh binary, free-gamma ablation section."
+where_stated = "crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs"
+
+[[claim]]
+id = "C-1432"
+last_verified = "2026-03-18"
+statement = "E-202 H2 Q3 injection recovery: Q3 (log M200=11.54-12.07, N=1748, 6 valid bins) injection at alpha_zd=0.004 produces delta_SNR=-0.005, indistinguishable from zero. Pipeline is BLIND at 6 bins. Q3 baseline SNR=3.60 is confirmed as a sparse-bin ARTIFACT. Q1 control (18 bins) also shows delta_SNR near zero (-0.001), indicating the injection methodology itself does not produce measurable delta_SNR at these alpha levels in the existing pipeline."
+status = "Verified"
+status_note = "q3-injection-recovery binary. 200 bootstrap, seed=42, 3 alpha levels."
+where_stated = "crates/gororoba_cli_physics/src/bin/q3_injection_recovery.rs"
+
+[[claim]]
+id = "C-1433"
+last_verified = "2026-03-18"
+statement = "E-201 whitened matched filter (face-on): raw chi2=475655 (df=14), whitened MF-SNR=184.3. After red-noise correction (P(k)~k^{-0.576}), corrected chi2/df=1.01, p_corrected=0.42. The massive raw chi2 is entirely explained by the baryonic spectral slope. No periodic structure at CD-ZD wavenumbers survives red-noise correction. Sensitivity ratio whitened/naive = 266x."
+status = "Verified"
+status_note = "whitened-matched-filter binary on face_on_stack_D16.csv. 14 valid bins."
+where_stated = "crates/gororoba_cli_physics/src/bin/whitened_matched_filter.rs"
+
+[[claim]]
+id = "C-1434"
+last_verified = "2026-03-18"
+statement = "E-201 window function sensitivity (face-on): all 7 CD-ZD modes are DETECTABLE (>50% DFT recovery) in the face-on subsample. Recovery ranges from 188.6% (mode 1, spectral leakage) to 100.2% (mode 5). Effective DOF = 14 (no reduction from window). The face-on null result is not caused by inadequate spectral coverage."
+status = "Verified"
+status_note = "window-function-sensitivity on face_on_stack_D16.csv. 14 valid bins."
+where_stated = "crates/gororoba_cli_physics/src/bin/window_function_sensitivity.rs"
+
+[[claim]]
+id = "C-1435"
+last_verified = "2026-03-18"
+statement = "Trimmed stacking robustness (full sample reconfirmed): CD-ZD 10%-trimmed power = 7.9% of full, median = 11.6% of full. Phase reverses from +0.17 to -1.39 rad at 10% trimming. All 4 algebras show identical pattern: 20%-trimmed/full ratios are 0.189 (CD), 0.181 (G2), 0.161 (J3O), 0.204 (sl2). Outlier domination is algebra-universal and extends to all frameworks identically."
+status = "Verified"
+status_note = "trimmed-stacking-robustness binary on cross_algebra_correlation.galaxies.csv."
+where_stated = "crates/gororoba_cli_physics/src/bin/trimmed_stacking_robustness.rs"
+
+[[claim]]
+id = "C-1436"
+last_verified = "2026-03-18"
+statement = "Bispectral Fano selection rule: bicoherence = 1.0000 for ALL 28 triples (2 Fano, 26 non-Fano). Fano/non-Fano ratio = 1.0000. This is trivially expected for a single realization (bicoherence = 1 when B=F_i*F_j*conj(F_sum) computed from the same signal). FALSIFICATION: no three-wave selection rule detected."
+status = "Verified"
+status_note = "bispectral-selection-rule binary on manga_stack_D16.csv. 16 valid bins."
+where_stated = "crates/gororoba_cli_physics/src/bin/bispectral_selection_rule.rs"
+
+[[claim]]
+id = "C-1437"
+last_verified = "2026-03-18"
+statement = "Persistence topology: N_persistent=1 (one persistent H_0 feature, lifetime 0.199). All other features have lifetime < 0.008 (epsilon = 0.015). Consistent with 2-3 baryonic features (bulge excess + cusp deficit). FALSIFICATION: ZD 7-mode oscillation would produce ~7 persistent features."
+status = "Verified"
+status_note = "persistence-residual-topology binary on manga_stack_D16.csv. 16 valid bins."
+where_stated = "crates/gororoba_cli_physics/src/bin/persistence_residual_topology.rs"
+
+[[claim]]
+id = "C-1438"
+last_verified = "2026-03-18"
+statement = "Variance quantization (Hartigan dip): all 4 algebras show D~0.46, p=0.0002 (significant multimodality). Kurtosis: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. CV ratio CD/others=0.991. The extreme kurtosis and multimodality are ALGEBRA-UNIVERSAL (baryonic population bimodality from spirals vs dwarfs), not CD-ZD specific."
+status = "Verified"
+status_note = "variance-quantization-test binary. 6995 galaxies, 5000 permutations."
+where_stated = "crates/gororoba_cli_physics/src/bin/variance_quantization_test.rs"
+
+[[claim]]
+id = "C-1439"
+last_verified = "2026-03-18"
+statement = "Cross-algebra mutual information: all 6 pairwise NMI=0.000 (KSG estimator, k=5). Raw MI ranges 2.8-4.4 nats. Linear correlation (Pearson r) ranges 0.848-0.958. Despite high linear correlation (algebra degeneracy), there is zero non-linear coupling between framework DFT phases. FALSIFICATION: no hidden dependencies beyond linear correlation."
+status = "Verified"
+status_note = "mutual_information_phase.py on cross_algebra_correlation.galaxies.csv. 6995 galaxies."
+where_stated = "src/ghost_stats/mutual_information_phase.py"
 
 [[claim]]
 id = "C-144"
@@ -9512,235 +9744,3 @@ status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
 
-[[claim]]
-id = "C-1411"
-last_verified = "2026-03-17"
-statement = "Synthetic MaNGA pipeline validation: 11 conditions x 3 regimes x 20 seeds = 660 runs on N=6992 synthetic galaxies produce zero false positives (all SNR << 2.0, range 0.471-0.486 for algebraic conditions). The analysis pipeline used for E-183/E-184 real-data null results does not hallucinate signals on synthetic null data."
-status = "Verified"
-status_note = "E-192 canonical run. 86.9s wall-clock, 660/660 runs complete, CV < 2% across all conditions. no_harmonics_ablation (SNR=2.14) confirms 4.4x ablation separation."
-where_stated = "experiments/manga_zd_null/main.py, experiments/manga_zd_null/results.json"
-
-[[claim]]
-id = "C-1412"
-last_verified = "2026-03-17"
-statement = "Injection recovery anti-correlation: injecting ZD-wavenumber signals at alpha=0.004, 0.01, and 0.05 into synthetic MaNGA galaxies produces NEGATIVE delta_snr (mean_diff vs baseline: +0.011, +0.009, -0.001 respectively). The exp(-x) injection envelope concentrates power at x~0.5 where baryonic systematics dominate (+5% bulge excess), causing destructive interference. Even alpha=5.0 (1250x SKA threshold) yields delta_snr=+0.17, below recovery threshold of 2.0."
-status = "Verified"
-status_note = "E-192 injection sweep. Paired t-test: alpha=0.05 vs CD_ZD_D16 p=0.207 (not significant). Root cause: SNR metric denominator (rms_residual) grows with injected signal amplitude."
-where_stated = "experiments/manga_zd_null/models.py (InjectionRecovery class), experiments/manga_zd_null/results.json"
-
-[[claim]]
-id = "C-1413"
-last_verified = "2026-03-17"
-statement = "Red-noise correction is neutral on synthetic null data: red_noise_corrected condition (data-driven gamma fit) produces detection_snr identical to CD_ZD_D16 baseline (mean_diff=0.0000, std_diff=0.0000) across all 3 regimes and 20 seeds. This confirms the correction only has effect when real astrophysical red-noise structure is present (as in E-183 real MaNGA data)."
-status = "Verified"
-status_note = "E-192 canonical run. Paired analysis shows zero difference (no t-test possible with std=0). Data-driven gamma=-0.000775 (vs hardcoded 0.808 in E-183 real data)."
-where_stated = "experiments/manga_zd_null/models.py (RedNoiseCorrectedSearch class)"
-
-[[claim]]
-id = "C-1414"
-last_verified = "2026-03-17"
-statement = "Three implementation bugs discovered and fixed in E-192 synthetic validation: (1) injection_recovery reported snr_mean instead of snr_max (E-183 convention mismatch), (2) red_noise_corrected used hardcoded gamma=0.808 instead of data-driven fit, (3) MultiAlgebraCorrected applied internal face_on filter bypassing regime parameter. All fixes verified via smoke tests."
-status = "Verified"
-status_note = "Bug fixes applied to experiments/manga_zd_null/models.py. Root-level legacy codebase archived to experiments/manga_zd_null/_legacy/."
-where_stated = "experiments/manga_zd_null/models.py"
-
-[[claim]]
-id = "C-1415"
-last_verified = "2026-03-17"
-statement = "Robustness convergence: three successive REFINE iterations of the MaNGA ZD synthetic validation (E-192) produce identical primary metric values. The sl2_partner/mass_Q3 condition converges to detection_snr_mean = 0.4704 +/- 0.0070 across 20 seeds. Full_sample Fourier conditions cluster at 0.4675-0.4825 across all 3 iterations. This convergence is not a pipeline bug: it is the analytic fixed point of a deterministic analysis on synthetic null data with fixed baryonic systematics (+5% bulge, -12% cusp, +5% IFU edge). Further REFINE iterations on the same pipeline and data cannot change this value."
-status = "Verified"
-status_note = "E-192 degenerate REFINE cycle detected: metrics [0.4704, 0.4704, 0.4704] across 3 iterations. Prior iterations fixed real bugs (C-1414), expanded seeds 5->20, added ablation conditions. All easy gains exhausted."
-where_stated = "experiments/manga_zd_null/results.json, experiments/manga_zd_null/main.py"
-
-[[claim]]
-id = "C-1416"
-last_verified = "2026-03-17"
-statement = "Ablation separation: the no_harmonics_ablation condition (peak-to-RMS metric without Fourier decomposition) produces detection_snr = 2.270 +/- 0.040 (full_sample), 2.333 +/- 0.054 (face_on), 2.395 +/- 0.084 (mass_Q3). This is 4.7x higher than the CD_ZD_D16 Fourier SNR of 0.480 +/- 0.003. The separation confirms that Fourier projection at algebraic wavenumbers reduces the effective noise floor relative to broadband peak detection, and validates the no_harmonics condition as a functioning positive control."
-status = "Verified"
-status_note = "E-192 canonical run. 20 seeds, 3 regimes. Ablation ratio: 2.270/0.480 = 4.73x (full_sample). Consistent across all 3 regimes."
-where_stated = "experiments/manga_zd_null/results.json"
-
-[[claim]]
-id = "C-1417"
-last_verified = "2026-03-17"
-statement = "Cross-regime stability: all 11 conditions produce consistent detection_snr across the 3 distribution-shift regimes (full_sample, face_on, mass_Q3). For Fourier-based algebraic conditions (CD_ZD_D16, G2_Aut_O, Albert_J3O, sl2_partner), the maximum regime-to-regime spread is 0.012 (Albert_J3O: 0.479-0.483). For the no_harmonics_ablation, the spread is 0.125 (2.270-2.395), proportionally consistent at 5.5%. The null result is robust to sample composition including face-on selection and mass quartile restriction."
-status = "Verified"
-status_note = "E-192 canonical run. 20 seeds per condition per regime. face_on (~3100 galaxies), mass_Q3 (~6 valid bins). Even the sparsest regime reproduces the null."
-where_stated = "experiments/manga_zd_null/results.json"
-
-[[claim]]
-id = "C-1418"
-last_verified = "2026-03-17"
-statement = "Random wavenumber control: 7 wavenumbers drawn uniformly from [0.5, 7.0] with seed=314159 produce detection_snr = 0.482 +/- 0.003 (full_sample), statistically indistinguishable from the algebraically-motivated CD_ZD_D16 wavenumbers (0.480 +/- 0.003). Paired difference: +0.0018 +/- 0.0001. No particular set of wavenumbers in this frequency range has privileged access to the residual structure at x = 0.5-1.35 r/r_s. The null result is wavenumber-independent."
-status = "Verified"
-status_note = "E-192 canonical run. 20 seeds, full_sample regime. Paired t-test: p < 0.001 but effect size negligible (Cohen's d < 0.1)."
-where_stated = "experiments/manga_zd_null/results.json"
-
-
-[[claim]]
-id = "C-1419"
-last_verified = "2026-03-18"
-statement = "H3 topological persistence FALSIFIED: sublevel set persistence of the D=16 stacked residual (16 valid bins, x=0.5-1.22 r/r_s) yields N_persistent = 1 feature above epsilon = 0.1 * max|delta|. The ZD prediction of N >= 5 persistent features (from 7-mode oscillation) is rejected. The single surviving feature corresponds to the NFW cusp trough (birth=-0.102, death=+0.097, lifetime=0.199). Mass-bin stability test across 19 sweep profiles shows mean=4.16, std=1.56, with extended-coverage profiles (full/family) clustering at N=5 and restricted profiles at N=1-2 -- resolution-driven, not physics-driven."
-status = "Verified"
-status_note = "persistence-residual-topology binary on manga_stack_D16.csv + 19 sweep profiles. Falsification threshold: N_persistent <= 3."
-where_stated = "crates/gororoba_cli_physics/src/bin/persistence_residual_topology.rs"
-
-[[claim]]
-id = "C-1420"
-last_verified = "2026-03-18"
-statement = "H1 bispectral Fano selection rule FALSIFIED: bicoherence b^2 = 1.0 for ALL 28 mode-pair triads (7 Fano + 21 non-Fano), giving Fano/non-Fano ratio = 1.0000. The ratio falls firmly in [0.7, 1.3], rejecting the selection-rule hypothesis. The trivial b^2 = 1.0 arises because a single stacked realization has no ensemble averaging to reduce bicoherence from unity. Only 2 of 28 triads have sum wavenumbers matching CD modes (1+5=6, 2+3=5). Ensemble bicoherence from 6995 per-galaxy aggregates = 0.987, far above the noise expectation of 0.012, confirming strong baryonic phase coherence."
-status = "Verified"
-status_note = "bispectral-selection-rule binary on manga_stack_D16.csv + cross_algebra_correlation.galaxies.csv."
-where_stated = "crates/gororoba_cli_physics/src/bin/bispectral_selection_rule.rs"
-
-[[claim]]
-id = "C-1421"
-last_verified = "2026-03-18"
-statement = "H2 variance quantization FALSIFIED as ZD-specific: Hartigan dip test detects extreme multimodality in per-galaxy Fourier power distributions for ALL four algebras (D=0.46, p=0.0002, 5000 permutations). However, multimodality is algebra-universal: CD-ZD D=0.4627, G2 D=0.4630, J3O D=0.4637, sl2 D=0.4621. CV ratio (CD/others) = 0.9912, firmly below the 1.5x threshold. Excess kurtosis is extreme and algebra-universal: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. The multimodality is driven by the galaxy population mass distribution, not ZD forcing."
-status = "Verified"
-status_note = "variance-quantization-test binary on cross_algebra_correlation.galaxies.csv. 6995 galaxies, seed=42."
-where_stated = "crates/gororoba_cli_physics/src/bin/variance_quantization_test.rs"
-
-[[claim]]
-id = "C-1422"
-last_verified = "2026-03-18"
-statement = "H4 cross-algebra mutual information FALSIFIED as ZD-selective: KSG MI estimator (k=5 neighbors, unit-circle phase embedding) shows strong algebra-universal dependence across all 6 cross-algebra pairs. MI ranges from 2.82 nats (J3O vs sl2) to 4.45 nats (CD-ZD vs G2), with Pearson correlations r=0.85-0.96 confirming overwhelmingly linear coupling. No selective cross-algebraic pattern detected: all pairs show similar MI magnitude. NMI normalization fails due to negative differential entropy on compact circular domain (artifact, not physical). The quasi-degeneracy (rho > 0.97 from E-184) extends to the full non-linear dependence structure."
-status = "Verified"
-status_note = "mutual_information_phase.py on cross_algebra_correlation.galaxies.csv. 6995 galaxies, scipy cKDTree KSG estimator."
-where_stated = "src/ghost_stats/mutual_information_phase.py"
-
-[[claim]]
-id = "C-1423"
-last_verified = "2026-03-18"
-statement = "P1 whitened matched filter: variance-weighted DFT at 7 CD-ZD wavenumbers yields total chi^2 = 304,300 (df=14, p=0). After red-noise correction (gamma=0.78, consistent with k^0.81 from C-1368), corrected total = 7.26 (expected ~7.0), p=0.40. The baryonic spectral floor has a coherent red-noise structure that fully accounts for all harmonic content in the whitened spectrum. The naive SNR metric (0.29) is confirmed as a valid measure: the whitened MF-SNR of 147.4 is entirely an artifact of the unmodeled red-noise slope. Pre-whitening without red-noise correction gives a 500x false sensitivity improvement that is completely spurious."
-status = "Verified"
-status_note = "whitened-matched-filter binary on manga_stack_D16.csv. 16 valid bins, per-bin error range 33.1x. Lanczos chi^2 survival function."
-where_stated = "crates/gororoba_cli_physics/src/bin/whitened_matched_filter.rs"
-
-[[claim]]
-id = "C-1424"
-last_verified = "2026-03-18"
-statement = "P2 GP model comparison: Matern-only kernel (Model A, LML=-20.48) outperforms Matern+Periodic kernel (Model B, LML=-20.54, Delta=-0.064, Bayes factor=0.94). Adding a periodic component at CD-ZD frequency makes the fit WORSE due to complexity penalty. The optimized periodicity drifted to 4.77 (predicted 7.0), confirming no period-7 structure exists. A smooth baryonic model with Matern length_scale=0.056 (comparable to bin spacing 0.048) captures all structure in the 16-bin stacked residual."
-status = "Verified"
-status_note = "gp_model_comparison.py on manga_stack_D16.csv. scikit-learn 1.8.0, 20 optimizer restarts, Matern nu=2.5."
-where_stated = "src/ghost_stats/gp_model_comparison.py"
-
-[[claim]]
-id = "C-1425"
-last_verified = "2026-03-18"
-statement = "P3 power-stratified phase coherence: top-quintile Rayleigh R = 0.85 (CD-ZD), 0.86 (G2), 0.84 (J3O), 0.84 (sl2) -- all highly significant. However, this is a SELECTION ARTIFACT from conditioning on power when the population mean is nonzero. R increases monotonically from Q1 (0.16-0.26) to Q5 (0.84-0.86) for ALL algebras identically. The proof: if ZD forcing were enriched in high-power galaxies, CD-ZD top-quintile R would exceed the other algebras' R. It does not (0.85 vs 0.86, 0.84, 0.84 -- algebra-universal). The phase coherence is driven by shared baryonic structure, not ZD physics. Expected R under isotropic null = 0.027; the excess is the known nonzero stacked residual projecting onto high-power galaxy phases."
-status = "Verified"
-status_note = "power-stratified-phase binary on cross_algebra_correlation.galaxies.csv. 6995 galaxies, 5 quintiles of 1399 each."
-where_stated = "crates/gororoba_cli_physics/src/bin/power_stratified_phase.rs"
-
-[[claim]]
-id = "C-1426"
-last_verified = "2026-03-18"
-statement = "D3 window function sensitivity: contrarian hypothesis that the 0.72 r/r_s data window makes long-wavelength modes undetectable was REFUTED. Targeted DFT on the actual data grid shows >100% recovery at ALL 7 modes: mode 1 at 185%, mode 2 at 151%, modes 3-7 at 102-119%. The overrecovery at modes 1-2 is spectral leakage from the non-periodic window boundary, which artificially amplifies low-frequency power. Effective DOF = 14.0 (no reduction). The null result is NOT invalidated by the data window. However, the 185% overrecovery at mode 1 means smooth baryonic gradients (cusp-to-bulge transition) leak into low-k Fourier coefficients, partially explaining the red-noise spectral structure."
-status = "Verified"
-status_note = "window-function-sensitivity binary on manga_stack_D16.csv. 16 valid bins, injection recovery at 7 CD-ZD wavenumbers."
-where_stated = "crates/gororoba_cli_physics/src/bin/window_function_sensitivity.rs"
-
-[[claim]]
-id = "C-1427"
-last_verified = "2026-03-18"
-statement = "D4 trimmed stacking robustness: the stacked DFT coefficient is CATASTROPHICALLY outlier-dominated. At 5% trimming (removing 350 highest-power + 350 lowest-power galaxies), stacked power drops to 33% of full (67% of signal from 10% of galaxies). At 10% trimming, power drops to 8-12% of full. At 20% trimming (middle 60% of population), power drops to 16-20% AND the phase reverses by ~2.7 radians (nearly pi). Median DFT power is 0.12-0.15% of the full mean. This pattern is ALGEBRA-UNIVERSAL: CD-ZD 20%-trimmed/full = 0.189, G2 = 0.181, J3O = 0.161, sl2 = 0.204. The null result (SNR=0.29) is a property of ~350 outlier galaxies' baryonic structure, not a statement about the galaxy population. The ZD bound alpha_zd < 0.002392 applies to the outlier-dominated mean, not to typical MaNGA galaxies."
-status = "Verified"
-status_note = "trimmed-stacking-robustness binary on cross_algebra_correlation.galaxies.csv. 6995 galaxies, 6 trim levels + median."
-where_stated = "crates/gororoba_cli_physics/src/bin/trimmed_stacking_robustness.rs"
-
-[[claim]]
-id = "C-1428"
-last_verified = "2026-03-18"
-statement = "S1 robust-estimator ZD bound: the mean-based alpha_zd estimate (2.32) diverges by 8.6x from the median-based estimate (0.27). At 5% trimming, alpha_zd drops to 0.78 (34% of mean); at 10% trimming, to 0.18 (8%). The median DFT power is 0.12% of the mean DFT power. This confirms D4's outlier domination extends to the derived ZD parameter estimates: the ~350 highest-power galaxies drive 88% of the estimated alpha_zd. The paper's sensitivity bound (alpha_zd < 0.002392) is a property of the mean estimator; a median-based analysis would yield a different bound."
-status = "Verified"
-status_note = "synthesis-audit binary S1 section. 6995 galaxies, 5 trim levels + median."
-where_stated = "crates/gororoba_cli_physics/src/bin/synthesis_audit.rs"
-
-[[claim]]
-id = "C-1429"
-last_verified = "2026-03-18"
-statement = "S2 spectral leakage decomposition RESOLVES the P1/D3 disagreement. 10,000 white-noise simulations on the 16-bin data grid show leakage power ~16 per mode vs observed whitened power 170,000-580,000. Leakage fraction < 0.01% at all modes. The red-noise spectral structure is ENTIRELY intrinsic to the whitened baryonic floor, not a window artifact. D3's 185% overrecovery applies to SIGNAL reconstruction (how much of an injected sinusoid is recovered), not noise leakage (how much noise appears at a frequency). P1 is correct that the spectral shape is real baryonic structure. D3 is correct that signal reconstruction is biased by the window. Both findings are compatible."
-status = "Verified"
-status_note = "synthesis-audit binary S2 section. 10000 sims, seed=42, 16 valid bins."
-where_stated = "crates/gororoba_cli_physics/src/bin/synthesis_audit.rs"
-
-[[claim]]
-id = "C-1430"
-last_verified = "2026-03-18"
-statement = "E-201 H1 face-on red-noise Rayleigh: N=3140 face-on galaxies (i<45 deg), all 7 CD-ZD modes within 1.58 sigma of k^{0.808} red-noise envelope. No detection. Bootstrap (200x) alpha_zd median=0.357, 95% CI=[0.123, 0.647]. Detection fraction (max_sigma>3.0) = 0%. The face-on subsample confirms the full-sample null with no inclination artifact contamination."
-status = "Verified"
-status_note = "face-on-red-noise-rayleigh binary. 3140 galaxies, 200 bootstrap, seed=42."
-where_stated = "crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs"
-
-[[claim]]
-id = "C-1431"
-last_verified = "2026-03-18"
-statement = "E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis."
-status = "Verified"
-status_note = "face-on-red-noise-rayleigh binary, free-gamma ablation section."
-where_stated = "crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs"
-
-[[claim]]
-id = "C-1432"
-last_verified = "2026-03-18"
-statement = "E-202 H2 Q3 injection recovery: Q3 (log M200=11.54-12.07, N=1748, 6 valid bins) injection at alpha_zd=0.004 produces delta_SNR=-0.005, indistinguishable from zero. Pipeline is BLIND at 6 bins. Q3 baseline SNR=3.60 is confirmed as a sparse-bin ARTIFACT. Q1 control (18 bins) also shows delta_SNR near zero (-0.001), indicating the injection methodology itself does not produce measurable delta_SNR at these alpha levels in the existing pipeline."
-status = "Verified"
-status_note = "q3-injection-recovery binary. 200 bootstrap, seed=42, 3 alpha levels."
-where_stated = "crates/gororoba_cli_physics/src/bin/q3_injection_recovery.rs"
-
-[[claim]]
-id = "C-1433"
-last_verified = "2026-03-18"
-statement = "E-201 whitened matched filter (face-on): raw chi2=475655 (df=14), whitened MF-SNR=184.3. After red-noise correction (P(k)~k^{-0.576}), corrected chi2/df=1.01, p_corrected=0.42. The massive raw chi2 is entirely explained by the baryonic spectral slope. No periodic structure at CD-ZD wavenumbers survives red-noise correction. Sensitivity ratio whitened/naive = 266x."
-status = "Verified"
-status_note = "whitened-matched-filter binary on face_on_stack_D16.csv. 14 valid bins."
-where_stated = "crates/gororoba_cli_physics/src/bin/whitened_matched_filter.rs"
-
-[[claim]]
-id = "C-1434"
-last_verified = "2026-03-18"
-statement = "E-201 window function sensitivity (face-on): all 7 CD-ZD modes are DETECTABLE (>50% DFT recovery) in the face-on subsample. Recovery ranges from 188.6% (mode 1, spectral leakage) to 100.2% (mode 5). Effective DOF = 14 (no reduction from window). The face-on null result is not caused by inadequate spectral coverage."
-status = "Verified"
-status_note = "window-function-sensitivity on face_on_stack_D16.csv. 14 valid bins."
-where_stated = "crates/gororoba_cli_physics/src/bin/window_function_sensitivity.rs"
-
-[[claim]]
-id = "C-1435"
-last_verified = "2026-03-18"
-statement = "Trimmed stacking robustness (full sample reconfirmed): CD-ZD 10%-trimmed power = 7.9% of full, median = 11.6% of full. Phase reverses from +0.17 to -1.39 rad at 10% trimming. All 4 algebras show identical pattern: 20%-trimmed/full ratios are 0.189 (CD), 0.181 (G2), 0.161 (J3O), 0.204 (sl2). Outlier domination is algebra-universal and extends to all frameworks identically."
-status = "Verified"
-status_note = "trimmed-stacking-robustness binary on cross_algebra_correlation.galaxies.csv."
-where_stated = "crates/gororoba_cli_physics/src/bin/trimmed_stacking_robustness.rs"
-
-[[claim]]
-id = "C-1436"
-last_verified = "2026-03-18"
-statement = "Bispectral Fano selection rule: bicoherence = 1.0000 for ALL 28 triples (2 Fano, 26 non-Fano). Fano/non-Fano ratio = 1.0000. This is trivially expected for a single realization (bicoherence = 1 when B=F_i*F_j*conj(F_sum) computed from the same signal). FALSIFICATION: no three-wave selection rule detected."
-status = "Verified"
-status_note = "bispectral-selection-rule binary on manga_stack_D16.csv. 16 valid bins."
-where_stated = "crates/gororoba_cli_physics/src/bin/bispectral_selection_rule.rs"
-
-[[claim]]
-id = "C-1437"
-last_verified = "2026-03-18"
-statement = "Persistence topology: N_persistent=1 (one persistent H_0 feature, lifetime 0.199). All other features have lifetime < 0.008 (epsilon = 0.015). Consistent with 2-3 baryonic features (bulge excess + cusp deficit). FALSIFICATION: ZD 7-mode oscillation would produce ~7 persistent features."
-status = "Verified"
-status_note = "persistence-residual-topology binary on manga_stack_D16.csv. 16 valid bins."
-where_stated = "crates/gororoba_cli_physics/src/bin/persistence_residual_topology.rs"
-
-[[claim]]
-id = "C-1438"
-last_verified = "2026-03-18"
-statement = "Variance quantization (Hartigan dip): all 4 algebras show D~0.46, p=0.0002 (significant multimodality). Kurtosis: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. CV ratio CD/others=0.991. The extreme kurtosis and multimodality are ALGEBRA-UNIVERSAL (baryonic population bimodality from spirals vs dwarfs), not CD-ZD specific."
-status = "Verified"
-status_note = "variance-quantization-test binary. 6995 galaxies, 5000 permutations."
-where_stated = "crates/gororoba_cli_physics/src/bin/variance_quantization_test.rs"
-
-[[claim]]
-id = "C-1439"
-last_verified = "2026-03-18"
-statement = "Cross-algebra mutual information: all 6 pairwise NMI=0.000 (KSG estimator, k=5). Raw MI ranges 2.8-4.4 nats. Linear correlation (Pearson r) ranges 0.848-0.958. Despite high linear correlation (algebra degeneracy), there is zero non-linear coupling between framework DFT phases. FALSIFICATION: no hidden dependencies beyond linear correlation."
-status = "Verified"
-status_note = "mutual_information_phase.py on cross_algebra_correlation.galaxies.csv. 6995 galaxies."
-where_stated = "src/ghost_stats/mutual_information_phase.py"
