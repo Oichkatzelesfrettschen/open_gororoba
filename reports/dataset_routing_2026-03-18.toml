@@ -1,4 +1,4 @@
-generated_at_utc = "2026-03-18T04:13:28.510596714+00:00"
+generated_at_utc = "2026-03-18T05:09:31.580593789+00:00"
 route_count = 11
 
 [status_counts]
@@ -15,10 +15,12 @@ analysis_binaries = [
     "multi-dataset-ultrametric",
     "dm-ultrametric",
     "catalog-feature-cube",
+    "catalog-feature-algebra",
 ]
 report_patterns = [
     "reports/survey_catalog_matrix_*.toml",
     "reports/catalog_feature_cube_*.toml",
+    "reports/catalog_feature_algebra_*.toml",
     "data/csv/c071b_dm_comoving_ultrametric.csv",
 ]
 cache_present = true
@@ -53,10 +55,12 @@ analysis_binaries = [
     "survey-crossmatch",
     "multi-dataset-ultrametric",
     "catalog-feature-cube",
+    "catalog-feature-algebra",
 ]
 report_patterns = [
     "reports/survey_catalog_matrix_*.toml",
     "reports/catalog_feature_cube_*.toml",
+    "reports/catalog_feature_algebra_*.toml",
 ]
 cache_present = true
 cache_match_count = 1
@@ -75,10 +79,12 @@ analysis_binaries = [
     "survey-crossmatch",
     "multi-dataset-ultrametric",
     "catalog-feature-cube",
+    "catalog-feature-algebra",
 ]
 report_patterns = [
     "reports/survey_catalog_matrix_*.toml",
     "reports/catalog_feature_cube_*.toml",
+    "reports/catalog_feature_algebra_*.toml",
 ]
 cache_present = true
 cache_match_count = 1
@@ -114,11 +120,13 @@ parser_ref = "data_core::catalogs::desi_bao::desi_dr2_bao"
 analysis_binaries = [
     "survey-crossmatch",
     "catalog-feature-cube",
+    "catalog-feature-algebra",
     "algebra-theory-crosswalk",
 ]
 report_patterns = [
     "reports/desi_dr2_bao_reference_*.toml",
     "reports/catalog_feature_cube_*.toml",
+    "reports/catalog_feature_algebra_*.toml",
 ]
 cache_present = false
 cache_match_count = 0
@@ -163,10 +171,12 @@ analysis_binaries = [
     "multi-dataset-ultrametric",
     "mast-program-clustering",
     "catalog-feature-cube",
+    "catalog-feature-algebra",
 ]
 report_patterns = [
     "reports/survey_catalog_matrix_*.toml",
     "reports/catalog_feature_cube_*.toml",
+    "reports/catalog_feature_algebra_*.toml",
     "reports/mast_program_clustering_*.toml",
     "data/csv/c071g_multi_dataset_ultrametric.csv",
 ]
@@ -188,10 +198,12 @@ analysis_binaries = [
     "multi-dataset-ultrametric",
     "mast-program-clustering",
     "catalog-feature-cube",
+    "catalog-feature-algebra",
 ]
 report_patterns = [
     "reports/survey_catalog_matrix_*.toml",
     "reports/catalog_feature_cube_*.toml",
+    "reports/catalog_feature_algebra_*.toml",
     "reports/mast_program_clustering_*.toml",
     "data/csv/c071g_multi_dataset_ultrametric.csv",
 ]

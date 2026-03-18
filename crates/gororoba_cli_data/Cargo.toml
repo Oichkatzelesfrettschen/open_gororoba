@@ -151,6 +151,10 @@ name = "catalog-feature-cube"
 path = "src/bin/catalog_feature_cube.rs"
 
 [[bin]]
+name = "claim-route-recertify"
+path = "src/bin/claim_route_recertify.rs"
+
+[[bin]]
 name = "fetch-chime-frb"
 path = "src/bin/fetch_chime_frb.rs"
 
