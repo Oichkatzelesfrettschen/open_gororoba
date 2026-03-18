@@ -1593,3 +1593,43 @@ crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
 
+
+[[binary]]
+name = "persistence-residual-topology"
+crate = "gororoba_cli_physics"
+description = "H3 hypothesis: 1D sublevel set persistence of stacked rotation curve residuals. Counts topological features (peaks/valleys) above noise threshold. Includes mass-bin stability test across sweep profiles."
+
+[[binary]]
+name = "bispectral-selection-rule"
+crate = "gororoba_cli_physics"
+description = "H1 hypothesis: bispectral Fano plane selection rule test. Computes bicoherence at CD-ZD wavenumber triads and partitions into Fano vs non-Fano lines. Includes per-galaxy ensemble bicoherence."
+
+[[binary]]
+name = "variance-quantization-test"
+crate = "gororoba_cli_physics"
+description = "H2 hypothesis: Hartigan dip test on per-galaxy Fourier power distributions for variance quantization. Tests multimodality at CD-ZD vs control wavenumbers with CV ratio comparison."
+
+[[binary]]
+name = "whitened-matched-filter"
+crate = "gororoba_cli_physics"
+description = "P1 hypothesis: variance-weighted matched filter SNR with chi-squared test and red-noise correction. Pre-whitens by per-bin errors, computes properly normalized DFT, and fits baryonic spectral slope."
+
+[[binary]]
+name = "power-stratified-phase"
+crate = "gororoba_cli_physics"
+description = "P3 hypothesis: power-stratified Rayleigh phase coherence test. Splits galaxies into quintiles by Fourier power and tests phase coherence in each stratum across 4 algebraic frameworks."
+
+[[binary]]
+name = "window-function-sensitivity"
+crate = "gororoba_cli_physics"
+description = "D3 contrarian: window function injection response at CD-ZD wavenumbers. Tests whether 0.72 r/r_s data window makes modes undetectable. Shows spectral leakage overrecovery at long wavelengths."
+
+[[binary]]
+name = "trimmed-stacking-robustness"
+crate = "gororoba_cli_physics"
+description = "D4 contrarian: trimmed mean and median DFT robustness test. Quantifies outlier domination of stacked DFT coefficients across 6 trimming levels and 4 algebraic frameworks."
+
+[[binary]]
+name = "synthesis-audit"
+crate = "gororoba_cli_physics"
+description = "Synthesis S1+S2: robust-estimator ZD bound comparison (mean vs trimmed vs median) and spectral leakage decomposition (10k white-noise simulations to resolve P1/D3 disagreement)."
