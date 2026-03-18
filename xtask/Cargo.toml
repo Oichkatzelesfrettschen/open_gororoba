@@ -9,6 +9,7 @@ repository.workspace = true
 anyhow.workspace = true
 clap.workspace = true
 chrono.workspace = true
+csv.workspace = true
 provenance_store = { path = "../crates/provenance_store" }
 verified_core = { path = "../crates/verified_core" }
 rusqlite.workspace = true

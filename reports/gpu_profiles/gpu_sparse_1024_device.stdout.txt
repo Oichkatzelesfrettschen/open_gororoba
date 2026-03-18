@@ -1,0 +1,19 @@
+
+################################################################################
+# ADA LOVELACE SPARSE LBM BENCHMARK (1024^3)
+# Validating memory-budget constraints for 12GB VRAM
+################################################################################
+Domain Size: 1024^3 (1.073741824 billion cells)
+Generating Sparse Brick Map...
+  Map Generation Time: 25.21ms
+  Total Bricks: 2097152
+  Active Bricks: 120543 (5.75% Sparsity)
+Initializing Sparse LBM Solver...
+  Active VRAM Footprint: 6.67 GB
+  Sparse Memory Mode: DeviceLocal
+Running Sparse A-A LBM for 100 steps...
+Results:
+  Time elapsed: 3.3206 s
+  Throughput:   1858.63 MLUPS (Active Cells Only)
+  Effective:    32.34 GLUPS (Dense Equivalent)
+################################################################################
