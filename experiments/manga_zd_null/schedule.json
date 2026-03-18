@@ -1,0 +1,221 @@
+{
+  "tasks": [
+    {
+      "id": "precompute_face_on_stack",
+      "name": "Generate face-on (i<45 deg, N=3140) stacked profile from rotcurves + dapall_lowi.csv",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0.5,
+      "priority": 1
+    },
+    {
+      "id": "baseline_mean_stack",
+      "name": "E-183 inverse-variance mean stack (precomputed, SNR=0.29, 19 valid bins)",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0,
+      "priority": 1
+    },
+    {
+      "id": "baseline_multi_algebra",
+      "name": "E-184 cross-algebra baseline (precomputed, CD/G2/J3O/sl2 all null)",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0,
+      "priority": 1
+    },
+    {
+      "id": "baseline_nfw_chi2",
+      "name": "NFW-only chi-squared goodness of fit on stacked residuals (no ZD hypothesis)",
+      "depends_on": ["baseline_mean_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.03,
+      "priority": 1
+    },
+    {
+      "id": "baseline_relatores",
+      "name": "Relatores+2019 composite stacking with 3-sigma iterative clipping (max 5 iter)",
+      "depends_on": ["baseline_mean_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.05,
+      "priority": 1
+    },
+    {
+      "id": "h1_face_on_rednoise",
+      "name": "H1 PRIMARY: face-on Rayleigh R at 7 CD-ZD wavenumbers, red-noise envelope subtraction, 200x bootstrap",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.5,
+      "priority": 1
+    },
+    {
+      "id": "h2_q3_injection",
+      "name": "H2 PRIMARY: Q3 (N=1748, 6 bins) injection at alpha={0.001, 0.004, 0.01}, 200x bootstrap + Q1 control + Q1-6bin synthetic",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 2.0,
+      "priority": 1
+    },
+    {
+      "id": "ablation_no_rednoise",
+      "name": "H1 ablation: gamma=0 (no red-noise subtraction), isolates spectral detrending sensitivity",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.25,
+      "priority": 2
+    },
+    {
+      "id": "ablation_free_gamma",
+      "name": "H1 ablation: free gamma fit via log-log OLS on face-on data (no 0.808 prior)",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.25,
+      "priority": 2
+    },
+    {
+      "id": "ablation_median_stack",
+      "name": "H1 ablation: per-bin median replaces inverse-variance mean (addresses C-1428 8.6x divergence)",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.42,
+      "priority": 2
+    },
+    {
+      "id": "ablation_trimmed_05",
+      "name": "H1 ablation: 5%-trimmed mean DFT (remove top/bottom 5% by power per bin)",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.25,
+      "priority": 2
+    },
+    {
+      "id": "ablation_trimmed_20",
+      "name": "H1 ablation: 20%-trimmed mean DFT (remove top/bottom 20%, aggressive outlier rejection)",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.25,
+      "priority": 2
+    },
+    {
+      "id": "diag_whitened_matched_filter",
+      "name": "H1 diagnostic: variance-normalized DFT, chi2 test with red-noise correction (face-on stack)",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.17,
+      "priority": 2
+    },
+    {
+      "id": "diag_gp_model_comparison",
+      "name": "H1 diagnostic: GP Matern(nu=2.5) vs Matern+ExpSineSquared(period=7.0), Bayes factor via LML",
+      "depends_on": ["precompute_face_on_stack"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.08,
+      "priority": 2
+    },
+    {
+      "id": "diag_q1_injection_control",
+      "name": "H2 diagnostic: Q1 (19 valid bins) injection recovery control -- extracted from h2_q3_injection output",
+      "depends_on": ["h2_q3_injection"],
+      "gpu_count": 0,
+      "estimated_minutes": 0,
+      "priority": 2
+    },
+    {
+      "id": "diag_q1_synthetic_6bin",
+      "name": "H2 diagnostic: Q1 restricted to x_max=0.74 (synthetic 6-bin window) -- extracted from h2_q3_injection output",
+      "depends_on": ["h2_q3_injection"],
+      "gpu_count": 0,
+      "estimated_minutes": 0,
+      "priority": 2
+    },
+    {
+      "id": "cross_inclination_injection",
+      "name": "Cross-cutting: 3 inclination bins x 6 alpha levels injection recovery calibration",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0.5,
+      "priority": 2
+    },
+    {
+      "id": "cross_bispectral_fano",
+      "name": "Cross-cutting: Fano plane bispectral selection rule (28 triples bicoherence test)",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0.17,
+      "priority": 2
+    },
+    {
+      "id": "cross_persistence_topology",
+      "name": "Cross-cutting: sublevel-set persistence of stacked residual (H_0 feature counting)",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0.17,
+      "priority": 2
+    },
+    {
+      "id": "cross_mutual_information",
+      "name": "Cross-cutting: KSG mutual information (k=5) between cross-algebra DFT phases, circular embedding",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0.17,
+      "priority": 2
+    },
+    {
+      "id": "cross_variance_quantization",
+      "name": "Cross-cutting: Hartigan dip test (5000 permutations) on per-galaxy Fourier power distribution",
+      "depends_on": [],
+      "gpu_count": 0,
+      "estimated_minutes": 0.25,
+      "priority": 2
+    },
+    {
+      "id": "paired_analysis",
+      "name": "Paired comparison: Cohen d + Wilcoxon signed-rank across all conditions vs E-183 baseline",
+      "depends_on": [
+        "baseline_mean_stack",
+        "baseline_multi_algebra",
+        "baseline_nfw_chi2",
+        "baseline_relatores",
+        "h1_face_on_rednoise",
+        "h2_q3_injection",
+        "ablation_no_rednoise",
+        "ablation_free_gamma",
+        "ablation_median_stack",
+        "ablation_trimmed_05",
+        "ablation_trimmed_20",
+        "diag_whitened_matched_filter",
+        "diag_gp_model_comparison",
+        "diag_q1_injection_control",
+        "diag_q1_synthetic_6bin",
+        "cross_inclination_injection",
+        "cross_bispectral_fano",
+        "cross_persistence_topology",
+        "cross_mutual_information",
+        "cross_variance_quantization"
+      ],
+      "gpu_count": 0,
+      "estimated_minutes": 0.17,
+      "priority": 1
+    },
+    {
+      "id": "aggregation_claims",
+      "name": "Aggregate metrics, register C-1430..C-1439, run integrity-resolution, write results.json",
+      "depends_on": ["paired_analysis"],
+      "gpu_count": 0,
+      "estimated_minutes": 0.67,
+      "priority": 1
+    }
+  ],
+  "total_gpu_budget": 0,
+  "total_cpu_budget_seconds": 600,
+  "estimated_cpu_seconds": 400,
+  "margin_seconds": 200,
+  "critical_path": "precompute_face_on_stack (30s) -> h2_q3_injection (120s) -> paired_analysis (10s) -> aggregation_claims (40s) = 200s",
+  "condition_summary": {
+    "baselines": 4,
+    "proposed_methods": 4,
+    "ablations": 12,
+    "total_conditions": 20
+  },
+  "generated": "2026-03-18T16:00:00+00:00"
+}
