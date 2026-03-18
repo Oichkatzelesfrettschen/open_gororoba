@@ -19,6 +19,8 @@
 use clap::Parser;
 use std::path::PathBuf;
 
+type ValidBins = (Vec<f64>, Vec<f64>, Vec<f64>, Vec<usize>);
+
 #[derive(Parser)]
 #[command(name = "window-function-sensitivity")]
 #[command(about = "Window function response at CD-ZD wavenumbers")]
@@ -35,7 +37,7 @@ struct Cli {
 fn load_valid_bins(
     path: &std::path::Path,
     min_per_bin: usize,
-) -> anyhow::Result<(Vec<f64>, Vec<f64>, Vec<f64>, Vec<usize>)> {
+) -> anyhow::Result<ValidBins> {
     let mut rdr = csv::Reader::from_path(path)?;
     let headers = rdr.headers()?.clone();
 

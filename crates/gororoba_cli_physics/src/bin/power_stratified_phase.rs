@@ -82,7 +82,7 @@ fn rayleigh_r(phases: &[f64]) -> f64 {
 
 /// Rayleigh p-value: P(R > r | H0: uniform) ~ exp(-n * R^2) for large n.
 fn rayleigh_p(r: f64, n: usize) -> f64 {
-    (-1.0 * n as f64 * r * r).exp()
+    (-(n as f64) * r * r).exp()
 }
 
 fn main() -> anyhow::Result<()> {

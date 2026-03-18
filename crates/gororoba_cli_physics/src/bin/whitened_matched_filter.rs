@@ -22,6 +22,8 @@
 use clap::Parser;
 use std::path::PathBuf;
 
+type StackedBins = (Vec<f64>, Vec<f64>, Vec<f64>, Vec<usize>);
+
 #[derive(Parser)]
 #[command(name = "whitened-matched-filter")]
 #[command(about = "Variance-weighted matched filter SNR with chi-squared test")]
@@ -37,7 +39,7 @@ struct Cli {
 
 fn load_stacked_csv(
     path: &std::path::Path,
-) -> anyhow::Result<(Vec<f64>, Vec<f64>, Vec<f64>, Vec<usize>)> {
+) -> anyhow::Result<StackedBins> {
     let mut rdr = csv::Reader::from_path(path)?;
     let headers = rdr.headers()?.clone();
 
@@ -136,7 +138,7 @@ fn ln_gamma(x: f64) -> f64 {
     // Lanczos approximation (g=7, n=9).
     let g = 7.0_f64;
     let coeff = [
-        0.999_999_999_999_809_93,
+        0.999_999_999_999_809_9,
         676.520_368_121_885_1,
         -1_259.139_216_722_403,
         771.323_428_777_653_1,

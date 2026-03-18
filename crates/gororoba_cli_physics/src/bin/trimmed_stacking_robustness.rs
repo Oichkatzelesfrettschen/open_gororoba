@@ -55,10 +55,11 @@ fn median_complex(values: &mut [(f64, f64)]) -> (f64, f64) {
     // Compute component-wise median (not the geometric median).
     let n = values.len();
     let mid = n / 2;
+    let even_len = n.is_multiple_of(2);
 
     // Median of real parts.
     values.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
-    let re_med = if n % 2 == 0 {
+    let re_med = if even_len {
         (values[mid - 1].0 + values[mid].0) / 2.0
     } else {
         values[mid].0
@@ -66,7 +67,7 @@ fn median_complex(values: &mut [(f64, f64)]) -> (f64, f64) {
 
     // Median of imaginary parts.
     values.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
-    let im_med = if n % 2 == 0 {
+    let im_med = if even_len {
         (values[mid - 1].1 + values[mid].1) / 2.0
     } else {
         values[mid].1
