@@ -1,7 +1,7 @@
-generated_at_utc = "2026-03-18T11:07:55.482218315+00:00"
+generated_at_utc = "2026-03-18T15:38:29.080263544+00:00"
 cube_csv = "reports/heliosphere_feature_cube_fleet2016_2026-03-15.csv"
 labeled_sample_count = 94349
-positive_sample_count = 3564
+positive_sample_count = 3830
 horizon_hours = 24
 invariant_channel_names = [
     "delta_b_over_bmag",
@@ -23,19 +23,27 @@ descriptor_channel_names = [
 ]
 notes = [
     "Leave-one-mission-out cosine compares each mission's positive-window descriptor mean against the positive-window mean from the remaining missions.",
+    "The report now includes raw and uncertainty-aware normalized sections in the same mission table.",
     "High stability only becomes interesting if it survives uncertainty-aware normalization and official-label filtering.",
 ]
 
 [[missions]]
+feature_mode = "raw"
 mission = "ACE"
-positive_rows = 1670
-negative_rows = 15880
-positive_mean_weighted_norm = 1485970657.5290775
-negative_mean_weighted_norm = 1877989478.2711697
-positive_descriptor_mean = 1701203669147815800000.0
-leave_one_mission_out_cosine = 0.002705214591277045
+positive_rows = 1684
+negative_rows = 15866
+positive_mean_weighted_norm = 1474108757.5766208
+negative_mean_weighted_norm = 1879594400.9366395
+positive_descriptor_mean = 1687060729049228500000.0
+leave_one_mission_out_cosine = 0.00270521462409609
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "IBEX"
 positive_rows = 0
 negative_rows = 8784
@@ -43,17 +51,29 @@ positive_mean_weighted_norm = nan
 negative_mean_weighted_norm = 0.0
 positive_descriptor_mean = nan
 leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "Juno"
-positive_rows = 0
-negative_rows = 8784
-positive_mean_weighted_norm = nan
+positive_rows = 50
+negative_rows = 8734
+positive_mean_weighted_norm = 0.0
 negative_mean_weighted_norm = 0.0
-positive_descriptor_mean = nan
+positive_descriptor_mean = 0.0
 leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "New Horizons"
 positive_rows = 0
 negative_rows = 8784
@@ -61,26 +81,44 @@ positive_mean_weighted_norm = nan
 negative_mean_weighted_norm = 0.0
 positive_descriptor_mean = nan
 leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "OMNI"
-positive_rows = 835
-negative_rows = 7949
-positive_mean_weighted_norm = 90616.56469379966
-negative_mean_weighted_norm = 2863514165.558527
-positive_descriptor_mean = 6852555669661.001
-leave_one_mission_out_cosine = 0.0011408016240412623
+positive_rows = 842
+negative_rows = 7942
+positive_mean_weighted_norm = 89863.44528184018
+negative_mean_weighted_norm = 2866038038.5086026
+positive_descriptor_mean = 6795586679539.284
+leave_one_mission_out_cosine = 0.001140801657696301
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "STEREO-A"
-positive_rows = 224
-negative_rows = 8553
-positive_mean_weighted_norm = 25.14895890405955
-negative_mean_weighted_norm = 228295336542.68726
-positive_descriptor_mean = 637.965272238314
-leave_one_mission_out_cosine = 0.776798678831895
+positive_rows = 412
+negative_rows = 8365
+positive_mean_weighted_norm = 25.158904611550437
+negative_mean_weighted_norm = 233426182121.32358
+positive_descriptor_mean = 636.9561254979147
+leave_one_mission_out_cosine = 0.7527095190347264
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "Voyager 1"
 positive_rows = 0
 negative_rows = 11978
@@ -88,8 +126,14 @@ positive_mean_weighted_norm = nan
 negative_mean_weighted_norm = 0.37751033693094266
 positive_descriptor_mean = nan
 leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "Voyager 2"
 positive_rows = 0
 negative_rows = 12124
@@ -97,12 +141,158 @@ positive_mean_weighted_norm = nan
 negative_mean_weighted_norm = 0.8173911848694545
 positive_descriptor_mean = nan
 leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
 
 [[missions]]
+feature_mode = "raw"
 mission = "WIND"
-positive_rows = 835
-negative_rows = 7949
-positive_mean_weighted_norm = 876012162.988671
-negative_mean_weighted_norm = 570167072.1428676
-positive_descriptor_mean = 640670995363392900000.0
-leave_one_mission_out_cosine = 0.0027052146118524663
+positive_rows = 842
+negative_rows = 7942
+positive_mean_weighted_norm = 868729401.7789536
+negative_mean_weighted_norm = 570669611.7176172
+positive_descriptor_mean = 635344751934006000000.0
+leave_one_mission_out_cosine = 0.0027052146446715102
+blocking_channels = [
+    "rolling_associator_norm",
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "ACE"
+positive_rows = 1684
+negative_rows = 15866
+positive_mean_weighted_norm = 0.8423827045225563
+negative_mean_weighted_norm = 470.56473343574623
+positive_descriptor_mean = 5.049198883719798
+leave_one_mission_out_cosine = 0.9925440237662813
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "IBEX"
+positive_rows = 0
+negative_rows = 8784
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.0
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "Juno"
+positive_rows = 50
+negative_rows = 8734
+positive_mean_weighted_norm = 0.0
+negative_mean_weighted_norm = 0.0
+positive_descriptor_mean = 0.0
+leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "New Horizons"
+positive_rows = 0
+negative_rows = 8784
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.0
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "OMNI"
+positive_rows = 842
+negative_rows = 7942
+positive_mean_weighted_norm = 1.2041266587136024
+negative_mean_weighted_norm = 720134216.1063881
+positive_descriptor_mean = 11.857291897437333
+leave_one_mission_out_cosine = 0.9949645801526866
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "STEREO-A"
+positive_rows = 412
+negative_rows = 8365
+positive_mean_weighted_norm = 0.7834300558750238
+negative_mean_weighted_norm = 1.3661137672435666
+positive_descriptor_mean = 1.0684619537410693
+leave_one_mission_out_cosine = 0.8963077376519027
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "Voyager 1"
+positive_rows = 0
+negative_rows = 11978
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.35591754710322
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "Voyager 2"
+positive_rows = 0
+negative_rows = 12124
+positive_mean_weighted_norm = nan
+negative_mean_weighted_norm = 0.7707849795157161
+positive_descriptor_mean = nan
+leave_one_mission_out_cosine = 0.0
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]
+
+[[missions]]
+feature_mode = "normalized"
+mission = "WIND"
+positive_rows = 842
+negative_rows = 7942
+positive_mean_weighted_norm = 1.226914426414237
+negative_mean_weighted_norm = 0.9167665134511788
+positive_descriptor_mean = 15.101327824884658
+leave_one_mission_out_cosine = 0.9843497827687154
+blocking_channels = [
+    "delta_weighted_norm_sq",
+    "weighted_norm_sq",
+    "rolling_associator_norm",
+]

@@ -1,0 +1,244 @@
+generated_at_utc = "2026-03-18T15:39:15.025593479+00:00"
+cube_csv = "reports/heliosphere_feature_cube_fleet2016_2026-03-15.csv"
+horizons_hours = [
+    6,
+    12,
+    24,
+]
+notes = [
+    "Coverage is strict and official-only: DONKI onset families, DONKI CME/ENLIL target windows, and CCMC Scoreboard arrivals/residuals.",
+    "A forecast-target overlap is not the same thing as a validated observed arrival.",
+]
+
+[[rows]]
+mission = "ACE"
+product = "MAG hourly"
+row_count = 8784
+source_families = [
+    "CcmcScoreboardArrival",
+    "DonkiGst",
+    "DonkiIps",
+    "DonkiSep",
+]
+positive_window_count_6h = 51
+positive_window_count_12h = 51
+positive_window_count_24h = 51
+positive_row_count_6h = 246
+positive_row_count_12h = 452
+positive_row_count_24h = 842
+forecast_residual_count = 2
+coverage_status = "observed_label_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "ACE"
+product = "SWEPAM hourly"
+row_count = 8784
+source_families = [
+    "CcmcScoreboardArrival",
+    "DonkiGst",
+    "DonkiIps",
+    "DonkiSep",
+]
+positive_window_count_6h = 51
+positive_window_count_12h = 51
+positive_window_count_24h = 51
+positive_row_count_6h = 246
+positive_row_count_12h = 452
+positive_row_count_24h = 842
+forecast_residual_count = 2
+coverage_status = "observed_label_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "IBEX"
+product = "Orbit support"
+row_count = 8784
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Juno"
+product = "Cruise support"
+row_count = 8784
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 2
+positive_window_count_12h = 2
+positive_window_count_24h = 2
+positive_row_count_6h = 14
+positive_row_count_12h = 26
+positive_row_count_24h = 50
+forecast_residual_count = 0
+coverage_status = "forecast_target_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "New Horizons"
+product = "SWAP+support"
+row_count = 8784
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "OMNI"
+product = "Hourly merged"
+row_count = 8784
+source_families = [
+    "CcmcScoreboardArrival",
+    "DonkiGst",
+    "DonkiIps",
+    "DonkiSep",
+]
+positive_window_count_6h = 51
+positive_window_count_12h = 51
+positive_window_count_24h = 51
+positive_row_count_6h = 246
+positive_row_count_12h = 452
+positive_row_count_24h = 842
+forecast_residual_count = 2
+coverage_status = "observed_label_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "STEREO-A"
+product = "PLASTIC+MAG merged"
+row_count = 8777
+source_families = [
+    "DonkiEnlilImpact",
+    "DonkiIps",
+]
+positive_window_count_6h = 30
+positive_window_count_12h = 30
+positive_window_count_24h = 30
+positive_row_count_6h = 142
+positive_row_count_12h = 241
+positive_row_count_24h = 412
+forecast_residual_count = 0
+coverage_status = "observed_label_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "Voyager 1"
+product = "CRS daily flux"
+row_count = 344
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Voyager 1"
+product = "Merged support"
+row_count = 8784
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Voyager 1"
+product = "PWS low-rate spectra"
+row_count = 2850
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Voyager 2"
+product = "CRS daily flux"
+row_count = 364
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Voyager 2"
+product = "Merged support"
+row_count = 8784
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Voyager 2"
+product = "PWS low-rate spectra"
+row_count = 2976
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "WIND"
+product = "SWE+MFI merged"
+row_count = 8784
+source_families = [
+    "CcmcScoreboardArrival",
+    "DonkiGst",
+    "DonkiIps",
+    "DonkiSep",
+]
+positive_window_count_6h = 51
+positive_window_count_12h = 51
+positive_window_count_24h = 51
+positive_row_count_6h = 246
+positive_row_count_12h = 452
+positive_row_count_24h = 842
+forecast_residual_count = 2
+coverage_status = "observed_label_overlap"
+blocked_reasons = []

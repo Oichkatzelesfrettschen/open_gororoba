@@ -1,0 +1,63 @@
+generated_at_utc = "2026-03-18T15:48:47.665460158+00:00"
+cube_csv = "reports/heliosphere_feature_cube_imap2026_2026-03-15.csv"
+horizon_hours = 24
+grid = 1024
+notes = [
+    "Sparse policy now compares the robust baseline against supervised budgeted policies without dropping source rows.",
+    "The invariant-only budget policy is the primary challenger; the hybrid algebra policy only matters if it wins under the same budget.",
+    "Execution planning uses the current host hardware envelope and keeps managed memory as a fallback, not the primary path.",
+]
+
+[[policies]]
+name = "robust_baseline"
+active_rows = 17
+active_fraction = 0.1717171717171717
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 7.501008547479537
+speed_mean = 524.3065803660922
+temperature_mean = 240378.0547146536
+bmag_mean = 9.74565268677452
+
+[[policies]]
+name = "invariant_budget_policy"
+active_rows = 97
+active_fraction = 0.9797979797979798
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 4.497386896627127
+speed_mean = 489.9138195388319
+temperature_mean = 144940.47392177608
+bmag_mean = 6.953818401663336
+
+[[policies]]
+name = "hybrid_budget_policy"
+active_rows = 86
+active_fraction = 0.8686868686868687
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 4.611540859704284
+speed_mean = 492.10850971122017
+temperature_mean = 149265.74793056707
+bmag_mean = 7.025185831497991
+
+[[execution_plans]]
+mask_name = "robust_baseline"
+active_fraction = 0.1717171717171717
+sparse_bf16_aa_projected_gib = 12.020235061645508
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "invariant_budget_policy"
+active_fraction = 0.9797979797979798
+sparse_bf16_aa_projected_gib = 68.58588218688965
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "hybrid_budget_policy"
+active_fraction = 0.8686868686868687
+sparse_bf16_aa_projected_gib = 60.80810070037842
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1

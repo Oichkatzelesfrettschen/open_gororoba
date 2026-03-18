@@ -5,9 +5,11 @@ use anyhow::{Context, Result, bail};
 use chrono::{DateTime, Duration, Utc};
 use csv::ReaderBuilder;
 use data_core::{
-    HELIOSPHERE_INVARIANT_DIM, HeliosphereEventWindow, HeliosphereFeatureRow,
-    HeliosphereInvariantSample, HeliosphereTransformMode, compute_invariant_samples,
-    fetch_donki_event_labels, heliosphere_row_datetime, labels_to_prediction_windows,
+    HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM,
+    HeliosphereEventSource, HeliosphereEventWindow, HeliosphereFeatureRow,
+    HeliosphereInvariantSample, HeliosphereTransformMode, SparseHardwareEnvelope,
+    compute_invariant_samples, estimate_sparse_execution_plan, fetch_donki_event_labels,
+    fetch_official_forecast_residuals, heliosphere_row_datetime, labels_to_prediction_windows,
     transform_feature_rows_with_stats,
 };
 use serde::Serialize;
@@ -31,6 +33,8 @@ pub struct LabeledInvariantSample {
     pub timestamp_utc: String,
     pub label_positive: bool,
     pub scalar_event_score: f64,
+    pub channels: [f64; HELIOSPHERE_INVARIANT_DIM],
+    pub uncertainty_scales: [f64; HELIOSPHERE_INVARIANT_DIM],
     pub weighted_channels: [f64; HELIOSPHERE_INVARIANT_DIM],
     pub descriptor_channels: [f64; DESCRIPTOR_DIM],
 }
@@ -38,6 +42,7 @@ pub struct LabeledInvariantSample {
 /// Scalar evaluation metrics for one predictive lane.
 #[derive(Debug, Clone, Serialize)]
 pub struct BinaryMetrics {
+    pub feature_mode: String,
     pub name: String,
     pub threshold: f64,
     pub positive_rows: usize,
@@ -64,6 +69,7 @@ pub struct MissionSplitSummary {
 /// Cross-mission descriptor stability summary.
 #[derive(Debug, Clone, Serialize)]
 pub struct MissionInvarianceSummary {
+    pub feature_mode: String,
     pub mission: String,
     pub positive_rows: usize,
     pub negative_rows: usize,
@@ -71,6 +77,7 @@ pub struct MissionInvarianceSummary {
     pub negative_mean_weighted_norm: f64,
     pub positive_descriptor_mean: f64,
     pub leave_one_mission_out_cosine: f64,
+    pub blocking_channels: Vec<String>,
 }
 
 /// Sparse-preservation metrics comparing two event masks.
@@ -85,12 +92,61 @@ pub struct SparseMaskSummary {
     pub speed_mean: f64,
     pub temperature_mean: f64,
     pub bmag_mean: f64,
+    pub median_lead_time_hours: Option<f64>,
+}
+
+/// Label-coverage summary for one mission/product lane.
+#[derive(Debug, Clone, Serialize)]
+pub struct LabelCoverageRow {
+    pub mission: String,
+    pub product: String,
+    pub row_count: usize,
+    pub source_families: Vec<String>,
+    pub positive_window_count_6h: usize,
+    pub positive_window_count_12h: usize,
+    pub positive_window_count_24h: usize,
+    pub positive_row_count_6h: usize,
+    pub positive_row_count_12h: usize,
+    pub positive_row_count_24h: usize,
+    pub forecast_residual_count: usize,
+    pub coverage_status: String,
+    pub blocked_reasons: Vec<String>,
 }
 
 #[derive(Debug, Clone)]
 struct ScaledFeatureSet {
     means: Vec<f64>,
     scales: Vec<f64>,
+}
+
+#[derive(Debug, Clone)]
+struct NormalizationParams {
+    medians: [f64; HELIOSPHERE_INVARIANT_DIM],
+    scales: [f64; HELIOSPHERE_INVARIANT_DIM],
+}
+
+#[derive(Debug, Clone)]
+struct NormalizedSample {
+    normalized_channels: [f64; HELIOSPHERE_INVARIANT_DIM],
+    normalized_descriptor_channels: [f64; DESCRIPTOR_DIM],
+}
+
+#[derive(Debug, Clone, Copy)]
+enum ViewMode {
+    Raw,
+    Normalized,
+}
+
+#[derive(Debug, Clone, Copy)]
+enum SparsePolicyKind {
+    InvariantBudget,
+    HybridBudget,
+}
+
+#[derive(Debug, Clone)]
+struct ThresholdedSparsePolicy {
+    name: &'static str,
+    mask: BTreeMap<RowKey, bool>,
 }
 
 /// Load heliosphere feature rows from a CSV cube.
@@ -216,6 +272,8 @@ pub fn build_labeled_samples(
                     .iter()
                     .any(|window| contains_time(window, timestamp)),
                 scalar_event_score: sample.inherited_event_score.unwrap_or(0.0),
+                channels: sample.channels,
+                uncertainty_scales: sample.uncertainty_scales,
                 weighted_channels: sample.weighted_channels,
                 descriptor_channels,
             });
@@ -239,6 +297,102 @@ pub fn build_labeled_samples(
     Ok((output, split_summary))
 }
 
+/// Summarize official label coverage for each mission/product lane.
+pub fn summarize_label_coverage(
+    rows: &[HeliosphereFeatureRow],
+    cache_root: &Path,
+) -> Result<Vec<LabelCoverageRow>> {
+    let (start_date, end_date) = cube_date_bounds(rows)?;
+    let labels = fetch_donki_event_labels(
+        start_date - Duration::days(2),
+        end_date + Duration::days(2),
+        cache_root,
+    )?;
+    let residuals = fetch_official_forecast_residuals(start_date, end_date, cache_root)
+        .unwrap_or_default();
+    let mut grouped: BTreeMap<(String, String), Vec<&HeliosphereFeatureRow>> = BTreeMap::new();
+    for row in rows {
+        grouped
+            .entry((row.mission.clone(), row.product.clone()))
+            .or_default()
+            .push(row);
+    }
+    let mut coverage = grouped
+        .into_iter()
+        .map(|((mission, product), rows)| {
+            let sources = labels
+                .iter()
+                .filter(|label| {
+                    label
+                        .mission_targets
+                        .iter()
+                        .any(|target| normalize_text(target) == normalize_text(&mission))
+                })
+                .map(|label| format!("{:?}", label.source))
+                .collect::<BTreeSet<_>>();
+            let windows_6 = labels_to_prediction_windows(&labels, &mission, 6);
+            let windows_12 = labels_to_prediction_windows(&labels, &mission, 12);
+            let windows_24 = labels_to_prediction_windows(&labels, &mission, 24);
+            let positive_row_count_6h = positive_row_count(&rows, &windows_6);
+            let positive_row_count_12h = positive_row_count(&rows, &windows_12);
+            let positive_row_count_24h = positive_row_count(&rows, &windows_24);
+            let forecast_residual_count = residuals
+                .iter()
+                .filter(|row| normalize_text(&row.mission) == normalize_text(&mission))
+                .count();
+            let has_observed_overlap = windows_24.iter().any(|window| {
+                !matches!(
+                    window.source,
+                    HeliosphereEventSource::DonkiEnlilImpact
+                )
+            }) && positive_row_count_24h > 0;
+            let has_forecast_only_overlap = positive_row_count_24h > 0 && !has_observed_overlap;
+            let coverage_status = if has_observed_overlap {
+                "observed_label_overlap"
+            } else if has_forecast_only_overlap {
+                "forecast_target_overlap"
+            } else if !sources.is_empty() {
+                "official_sources_no_overlap"
+            } else {
+                "unlabeled"
+            }
+            .to_string();
+            let mut blocked_reasons = Vec::new();
+            if sources.is_empty() {
+                blocked_reasons.push("no_official_targeted_labels".to_string());
+            }
+            if !sources.is_empty() && positive_row_count_24h == 0 {
+                blocked_reasons.push("official_labels_present_but_no_cube_overlap".to_string());
+            }
+            if forecast_residual_count == 0
+                && matches!(
+                    normalize_text(&mission).as_str(),
+                    "omni" | "ace" | "wind" | "soho"
+                )
+            {
+                blocked_reasons.push("no_scoreboard_residuals_in_window".to_string());
+            }
+            LabelCoverageRow {
+                mission,
+                product,
+                row_count: rows.len(),
+                source_families: sources.into_iter().collect(),
+                positive_window_count_6h: windows_6.len(),
+                positive_window_count_12h: windows_12.len(),
+                positive_window_count_24h: windows_24.len(),
+                positive_row_count_6h,
+                positive_row_count_12h,
+                positive_row_count_24h,
+                forecast_residual_count,
+                coverage_status,
+                blocked_reasons,
+            }
+        })
+        .collect::<Vec<_>>();
+    coverage.sort_by(|a, b| (a.mission.as_str(), a.product.as_str()).cmp(&(b.mission.as_str(), b.product.as_str())));
+    Ok(coverage)
+}
+
 /// Evaluate scalar, invariant-only, and invariant-plus-descriptor predictors.
 pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<Vec<BinaryMetrics>> {
     if samples.is_empty() {
@@ -248,6 +402,7 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
     if splits.train.is_empty() || splits.validation.is_empty() || splits.test.is_empty() {
         bail!("need non-empty train/validation/test splits");
     }
+    let normalized = build_normalized_samples(samples);
 
     let scalar_validation_scores = splits
         .validation
@@ -263,11 +418,20 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
             .collect::<Vec<_>>(),
     );
 
-    let best_single = best_single_invariant_threshold(&splits.validation);
+    let best_single_raw = best_single_invariant_threshold(&splits.validation, ViewMode::Raw, &normalized);
+    let best_single_normalized =
+        best_single_invariant_threshold(&splits.validation, ViewMode::Normalized, &normalized);
 
-    let invariant_train = feature_matrix(&splits.train, FeatureMode::Invariants);
-    let invariant_validation = feature_matrix(&splits.validation, FeatureMode::Invariants);
-    let invariant_test = feature_matrix(&splits.test, FeatureMode::Invariants);
+    let invariant_train =
+        feature_matrix(&splits.train, ViewMode::Raw, FeatureMode::Invariants, &normalized);
+    let invariant_validation = feature_matrix(
+        &splits.validation,
+        ViewMode::Raw,
+        FeatureMode::Invariants,
+        &normalized,
+    );
+    let invariant_test =
+        feature_matrix(&splits.test, ViewMode::Raw, FeatureMode::Invariants, &normalized);
     let invariant_scaler = fit_scaler(&invariant_train);
     let invariant_train_scaled = apply_scaler(&invariant_scaler, &invariant_train);
     let invariant_validation_scaled = apply_scaler(&invariant_scaler, &invariant_validation);
@@ -289,10 +453,24 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
             .collect::<Vec<_>>(),
     );
 
-    let hybrid_train = feature_matrix(&splits.train, FeatureMode::InvariantsAndDescriptors);
-    let hybrid_validation =
-        feature_matrix(&splits.validation, FeatureMode::InvariantsAndDescriptors);
-    let hybrid_test = feature_matrix(&splits.test, FeatureMode::InvariantsAndDescriptors);
+    let hybrid_train = feature_matrix(
+        &splits.train,
+        ViewMode::Raw,
+        FeatureMode::InvariantsAndDescriptors,
+        &normalized,
+    );
+    let hybrid_validation = feature_matrix(
+        &splits.validation,
+        ViewMode::Raw,
+        FeatureMode::InvariantsAndDescriptors,
+        &normalized,
+    );
+    let hybrid_test = feature_matrix(
+        &splits.test,
+        ViewMode::Raw,
+        FeatureMode::InvariantsAndDescriptors,
+        &normalized,
+    );
     let hybrid_scaler = fit_scaler(&hybrid_train);
     let hybrid_train_scaled = apply_scaler(&hybrid_scaler, &hybrid_train);
     let hybrid_validation_scaled = apply_scaler(&hybrid_scaler, &hybrid_validation);
@@ -314,8 +492,99 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
             .collect::<Vec<_>>(),
     );
 
+    let normalized_invariant_train = feature_matrix(
+        &splits.train,
+        ViewMode::Normalized,
+        FeatureMode::Invariants,
+        &normalized,
+    );
+    let normalized_invariant_validation = feature_matrix(
+        &splits.validation,
+        ViewMode::Normalized,
+        FeatureMode::Invariants,
+        &normalized,
+    );
+    let normalized_invariant_test = feature_matrix(
+        &splits.test,
+        ViewMode::Normalized,
+        FeatureMode::Invariants,
+        &normalized,
+    );
+    let normalized_invariant_scaler = fit_scaler(&normalized_invariant_train);
+    let normalized_invariant_train_scaled =
+        apply_scaler(&normalized_invariant_scaler, &normalized_invariant_train);
+    let normalized_invariant_validation_scaled =
+        apply_scaler(&normalized_invariant_scaler, &normalized_invariant_validation);
+    let normalized_invariant_test_scaled =
+        apply_scaler(&normalized_invariant_scaler, &normalized_invariant_test);
+    let normalized_invariant_model = train_logistic_model(
+        &normalized_invariant_train_scaled,
+        &binary_labels(&splits.train),
+        0.02,
+        250,
+        1e-3,
+    );
+    let normalized_invariant_validation_scores = predict_scores(
+        &normalized_invariant_model,
+        &normalized_invariant_validation_scaled,
+    );
+    let normalized_invariant_threshold = best_threshold(
+        &normalized_invariant_validation_scores,
+        &splits
+            .validation
+            .iter()
+            .map(|sample| sample.label_positive)
+            .collect::<Vec<_>>(),
+    );
+
+    let normalized_hybrid_train = feature_matrix(
+        &splits.train,
+        ViewMode::Normalized,
+        FeatureMode::InvariantsAndDescriptors,
+        &normalized,
+    );
+    let normalized_hybrid_validation = feature_matrix(
+        &splits.validation,
+        ViewMode::Normalized,
+        FeatureMode::InvariantsAndDescriptors,
+        &normalized,
+    );
+    let normalized_hybrid_test = feature_matrix(
+        &splits.test,
+        ViewMode::Normalized,
+        FeatureMode::InvariantsAndDescriptors,
+        &normalized,
+    );
+    let normalized_hybrid_scaler = fit_scaler(&normalized_hybrid_train);
+    let normalized_hybrid_train_scaled =
+        apply_scaler(&normalized_hybrid_scaler, &normalized_hybrid_train);
+    let normalized_hybrid_validation_scaled =
+        apply_scaler(&normalized_hybrid_scaler, &normalized_hybrid_validation);
+    let normalized_hybrid_test_scaled =
+        apply_scaler(&normalized_hybrid_scaler, &normalized_hybrid_test);
+    let normalized_hybrid_model = train_logistic_model(
+        &normalized_hybrid_train_scaled,
+        &binary_labels(&splits.train),
+        0.02,
+        300,
+        1e-3,
+    );
+    let normalized_hybrid_validation_scores = predict_scores(
+        &normalized_hybrid_model,
+        &normalized_hybrid_validation_scaled,
+    );
+    let normalized_hybrid_threshold = best_threshold(
+        &normalized_hybrid_validation_scores,
+        &splits
+            .validation
+            .iter()
+            .map(|sample| sample.label_positive)
+            .collect::<Vec<_>>(),
+    );
+
     Ok(vec![
         evaluate_scores(
+            "raw",
             "scalar_event_score",
             &splits.test,
             &splits
@@ -326,26 +595,59 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
             scalar_threshold,
         ),
         evaluate_scores(
+            "raw",
             "best_single_invariant_threshold",
             &splits.test,
             &splits
                 .test
                 .iter()
-                .map(|sample| sample.weighted_channels[best_single.index])
+                .map(|sample| sample.weighted_channels[best_single_raw.index])
                 .collect::<Vec<_>>(),
-            best_single.threshold,
+            best_single_raw.threshold,
         ),
         evaluate_scores(
+            "raw",
             "invariant_logistic",
             &splits.test,
             &predict_scores(&invariant_model, &invariant_test_scaled),
             invariant_threshold,
         ),
         evaluate_scores(
+            "raw",
             "invariant_plus_algebra_logistic",
             &splits.test,
             &predict_scores(&hybrid_model, &hybrid_test_scaled),
             hybrid_threshold,
+        ),
+        evaluate_scores(
+            "normalized",
+            "best_single_invariant_threshold",
+            &splits.test,
+            &splits
+                .test
+                .iter()
+                .map(|sample| {
+                    normalized
+                        .get(&sample.key)
+                        .map(|row| row.normalized_channels[best_single_normalized.index])
+                        .unwrap_or(0.0)
+                })
+                .collect::<Vec<_>>(),
+            best_single_normalized.threshold,
+        ),
+        evaluate_scores(
+            "normalized",
+            "invariant_logistic",
+            &splits.test,
+            &predict_scores(&normalized_invariant_model, &normalized_invariant_test_scaled),
+            normalized_invariant_threshold,
+        ),
+        evaluate_scores(
+            "normalized",
+            "invariant_plus_algebra_logistic",
+            &splits.test,
+            &predict_scores(&normalized_hybrid_model, &normalized_hybrid_test_scaled),
+            normalized_hybrid_threshold,
         ),
     ])
 }
@@ -354,14 +656,15 @@ pub fn evaluate_predictive_models(samples: &[LabeledInvariantSample]) -> Result<
 pub fn summarize_cross_mission_invariance(
     samples: &[LabeledInvariantSample],
 ) -> Vec<MissionInvarianceSummary> {
+    let normalized = build_normalized_samples(samples);
     let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
     for sample in samples {
         grouped.entry(sample.mission.clone()).or_default().push(sample);
     }
 
-    grouped
-        .iter()
-        .map(|(mission, group)| {
+    let mut summaries = Vec::new();
+    for view_mode in [ViewMode::Raw, ViewMode::Normalized] {
+        for (mission, group) in &grouped {
             let positive = group
                 .iter()
                 .copied()
@@ -372,49 +675,55 @@ pub fn summarize_cross_mission_invariance(
                 .copied()
                 .filter(|sample| !sample.label_positive)
                 .collect::<Vec<_>>();
-            let mission_vector = mean_feature_vector(&positive);
-            let rest_vector = mean_feature_vector(
-                &grouped
-                    .iter()
-                    .filter(|(other, _)| *other != mission)
-                    .flat_map(|(_, rows)| rows.iter().copied())
-                    .filter(|sample| sample.label_positive)
-                    .collect::<Vec<_>>(),
-            );
-            MissionInvarianceSummary {
+            let mission_vector = mean_feature_vector(&positive, view_mode, &normalized);
+            let rest_positive = grouped
+                .iter()
+                .filter(|(other, _)| *other != mission)
+                .flat_map(|(_, rows)| rows.iter().copied())
+                .filter(|sample| sample.label_positive)
+                .collect::<Vec<_>>();
+            let rest_vector = mean_feature_vector(&rest_positive, view_mode, &normalized);
+            summaries.push(MissionInvarianceSummary {
+                feature_mode: match view_mode {
+                    ViewMode::Raw => "raw".to_string(),
+                    ViewMode::Normalized => "normalized".to_string(),
+                },
                 mission: mission.clone(),
                 positive_rows: positive.len(),
                 negative_rows: negative.len(),
                 positive_mean_weighted_norm: mean(
                     &positive
                         .iter()
-                        .map(|sample| l2_norm_sq(&sample.weighted_channels).sqrt())
+                        .map(|sample| sample_invariant_norm(sample, view_mode, &normalized))
                         .collect::<Vec<_>>(),
                 ),
                 negative_mean_weighted_norm: mean(
                     &negative
                         .iter()
-                        .map(|sample| l2_norm_sq(&sample.weighted_channels).sqrt())
+                        .map(|sample| sample_invariant_norm(sample, view_mode, &normalized))
                         .collect::<Vec<_>>(),
                 ),
                 positive_descriptor_mean: mean(
                     &positive
                         .iter()
-                        .map(|sample| sample.descriptor_channels[0])
+                        .map(|sample| sample_descriptor_value(sample, view_mode, &normalized, 0))
                         .collect::<Vec<_>>(),
                 ),
                 leave_one_mission_out_cosine: cosine_similarity(&mission_vector, &rest_vector),
-            }
-        })
-        .collect()
+                blocking_channels: top_blocking_channels(&mission_vector, &rest_vector, 3),
+            });
+        }
+    }
+    summaries
 }
 
-/// Compute sparse-preservation summaries for baseline and algebra-derived masks.
-pub fn summarize_sparse_masks(
+/// Compute sparse-policy summaries for the robust baseline and budgeted policies.
+pub fn summarize_sparse_policies(
     raw_rows: &[HeliosphereFeatureRow],
     cache_root: &Path,
     horizon_hours: i64,
-) -> Result<(SparseMaskSummary, SparseMaskSummary)> {
+    grid: usize,
+) -> Result<Vec<SparseMaskSummary>> {
     let transformed = transform_feature_rows_with_stats(
         raw_rows,
         HeliosphereTransformMode::RobustDifferencedCentered,
@@ -430,19 +739,57 @@ pub fn summarize_sparse_masks(
         .collect::<Vec<_>>();
 
     let (samples, _) = build_labeled_samples(raw_rows, cache_root, horizon_hours)?;
-    let algebra_index = algebra_event_mask(&samples)
-        .into_iter()
-        .collect::<BTreeMap<_, _>>();
-    let algebra_rows = raw_rows
+    let normalized = build_normalized_samples(&samples);
+    let invariant_policy = fit_sparse_budget_policy(
+        &samples,
+        &normalized,
+        SparsePolicyKind::InvariantBudget,
+        grid,
+        12.0,
+    )?;
+    let hybrid_policy = fit_sparse_budget_policy(
+        &samples,
+        &normalized,
+        SparsePolicyKind::HybridBudget,
+        grid,
+        12.0,
+    )?;
+    let invariant_rows = raw_rows
         .iter()
-        .filter(|row| *algebra_index.get(&row_key(row)).unwrap_or(&false))
+        .filter(|row| *invariant_policy.mask.get(&row_key(row)).unwrap_or(&false))
         .collect::<Vec<_>>();
-
+    let hybrid_rows = raw_rows
+        .iter()
+        .filter(|row| *hybrid_policy.mask.get(&row_key(row)).unwrap_or(&false))
+        .collect::<Vec<_>>();
     let labels = label_index(&samples);
-    Ok((
-        sparse_summary("robust_event_mask", &baseline_rows, raw_rows.len(), &labels),
-        sparse_summary("algebra_adaptive_mask", &algebra_rows, raw_rows.len(), &labels),
-    ))
+    let time_index = raw_time_index(raw_rows);
+    Ok(vec![
+        sparse_summary(
+            "robust_baseline",
+            &baseline_rows,
+            raw_rows.len(),
+            &labels,
+            &time_index,
+            &baseline_index,
+        ),
+        sparse_summary(
+            invariant_policy.name,
+            &invariant_rows,
+            raw_rows.len(),
+            &labels,
+            &time_index,
+            &invariant_policy.mask,
+        ),
+        sparse_summary(
+            hybrid_policy.name,
+            &hybrid_rows,
+            raw_rows.len(),
+            &labels,
+            &time_index,
+            &hybrid_policy.mask,
+        ),
+    ])
 }
 
 /// Return the algebra-derived event mask for each invariant sample.
@@ -557,9 +904,20 @@ fn descriptor_channels(
     group: &[HeliosphereInvariantSample],
     idx: usize,
 ) -> [f64; DESCRIPTOR_DIM] {
-    let current = &group[idx].weighted_channels;
-    let prev = idx.checked_sub(1).map(|index| &group[index].weighted_channels);
-    let prev2 = idx.checked_sub(2).map(|index| &group[index].weighted_channels);
+    let vectors = group
+        .iter()
+        .map(|sample| sample.weighted_channels)
+        .collect::<Vec<_>>();
+    descriptor_channels_from_arrays(&vectors, idx)
+}
+
+fn descriptor_channels_from_arrays(
+    vectors: &[[f64; HELIOSPHERE_INVARIANT_DIM]],
+    idx: usize,
+) -> [f64; DESCRIPTOR_DIM] {
+    let current = &vectors[idx];
+    let prev = idx.checked_sub(1).map(|index| &vectors[index]);
+    let prev2 = idx.checked_sub(2).map(|index| &vectors[index]);
     let norm_sq = l2_norm_sq(current);
     let delta_norm = prev
         .map(|value| (norm_sq - l2_norm_sq(value)).abs())
@@ -628,16 +986,24 @@ fn split_samples(samples: &[LabeledInvariantSample]) -> SampleSplits<'_> {
     }
 }
 
-fn feature_matrix(samples: &[&LabeledInvariantSample], mode: FeatureMode) -> Vec<Vec<f64>> {
+fn feature_matrix(
+    samples: &[&LabeledInvariantSample],
+    view_mode: ViewMode,
+    mode: FeatureMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+) -> Vec<Vec<f64>> {
     samples
         .iter()
         .map(|sample| match mode {
-            FeatureMode::Invariants => sample.weighted_channels.to_vec(),
-            FeatureMode::InvariantsAndDescriptors => sample
-                .weighted_channels
+            FeatureMode::Invariants => invariant_vector(sample, view_mode, normalized).to_vec(),
+            FeatureMode::InvariantsAndDescriptors => invariant_vector(sample, view_mode, normalized)
                 .iter()
                 .copied()
-                .chain(sample.descriptor_channels.iter().copied())
+                .chain(
+                    descriptor_vector(sample, view_mode, normalized)
+                        .iter()
+                        .copied(),
+                )
                 .collect::<Vec<_>>(),
         })
         .collect()
@@ -648,6 +1014,416 @@ fn binary_labels(samples: &[&LabeledInvariantSample]) -> Vec<f64> {
         .iter()
         .map(|sample| if sample.label_positive { 1.0 } else { 0.0 })
         .collect()
+}
+
+fn cube_date_bounds(rows: &[HeliosphereFeatureRow]) -> Result<(chrono::NaiveDate, chrono::NaiveDate)> {
+    let start_date = rows
+        .iter()
+        .filter_map(heliosphere_row_datetime)
+        .map(|value| value.date_naive())
+        .min()
+        .ok_or_else(|| anyhow::anyhow!("cube contains no timestamped rows"))?;
+    let end_date = rows
+        .iter()
+        .filter_map(heliosphere_row_datetime)
+        .map(|value| value.date_naive())
+        .max()
+        .ok_or_else(|| anyhow::anyhow!("cube contains no timestamped rows"))?;
+    Ok((start_date, end_date))
+}
+
+fn positive_row_count(
+    rows: &[&HeliosphereFeatureRow],
+    windows: &[HeliosphereEventWindow],
+) -> usize {
+    rows.iter()
+        .filter_map(|row| heliosphere_row_datetime(row))
+        .filter(|timestamp| windows.iter().any(|window| contains_time(window, *timestamp)))
+        .count()
+}
+
+fn normalize_text(value: &str) -> String {
+    value.trim()
+        .to_ascii_lowercase()
+        .replace([' ', '_', '/'], "-")
+        .replace("--", "-")
+}
+
+fn build_normalized_samples(
+    samples: &[LabeledInvariantSample],
+) -> BTreeMap<RowKey, NormalizedSample> {
+    let splits = split_samples(samples);
+    let train_keys = splits
+        .train
+        .iter()
+        .map(|sample| sample.key.clone())
+        .collect::<BTreeSet<_>>();
+    let train_quiet = samples
+        .iter()
+        .filter(|sample| train_keys.contains(&sample.key) && !sample.label_positive)
+        .collect::<Vec<_>>();
+    let all_sample_refs = samples.iter().collect::<Vec<_>>();
+    let global_params = fit_normalization_params(if train_quiet.is_empty() {
+        &all_sample_refs
+    } else {
+        &train_quiet
+    });
+
+    let mut group_params = BTreeMap::new();
+    let mut grouped_train: BTreeMap<(String, String), Vec<&LabeledInvariantSample>> = BTreeMap::new();
+    for sample in samples {
+        if train_keys.contains(&sample.key) {
+            grouped_train
+                .entry((sample.mission.clone(), sample.product.clone()))
+                .or_default()
+                .push(sample);
+        }
+    }
+    for (group_key, group_samples) in grouped_train {
+        let quiet = group_samples
+            .iter()
+            .copied()
+            .filter(|sample| !sample.label_positive)
+            .collect::<Vec<_>>();
+        let params = fit_normalization_params(if quiet.is_empty() {
+            &group_samples
+        } else {
+            &quiet
+        });
+        group_params.insert(group_key, params);
+    }
+
+    let mut normalized = BTreeMap::new();
+    let mut grouped_all: BTreeMap<(String, String, String), Vec<&LabeledInvariantSample>> =
+        BTreeMap::new();
+    for sample in samples {
+        grouped_all
+            .entry((
+                sample.window_name.clone(),
+                sample.mission.clone(),
+                sample.product.clone(),
+            ))
+            .or_default()
+            .push(sample);
+    }
+    for ((_window, mission, product), mut group) in grouped_all {
+        group.sort_by(|a, b| {
+            (
+                a.timestamp_utc.as_str(),
+                a.mission.as_str(),
+                a.product.as_str(),
+            )
+                .cmp(&(b.timestamp_utc.as_str(), b.mission.as_str(), b.product.as_str()))
+        });
+        let params = group_params
+            .get(&(mission.clone(), product.clone()))
+            .cloned()
+            .unwrap_or_else(|| global_params.clone());
+        let channels = group
+            .iter()
+            .map(|sample| normalize_channels(sample, &params))
+            .collect::<Vec<_>>();
+        for idx in 0..group.len() {
+            normalized.insert(
+                group[idx].key.clone(),
+                NormalizedSample {
+                    normalized_channels: channels[idx],
+                    normalized_descriptor_channels: descriptor_channels_from_arrays(&channels, idx),
+                },
+            );
+        }
+    }
+    normalized
+}
+
+fn fit_normalization_params(samples: &[&LabeledInvariantSample]) -> NormalizationParams {
+    let mut medians = [0.0_f64; HELIOSPHERE_INVARIANT_DIM];
+    let mut scales = [1.0_f64; HELIOSPHERE_INVARIANT_DIM];
+    for idx in 0..HELIOSPHERE_INVARIANT_DIM {
+        let values = samples
+            .iter()
+            .map(|sample| sample.channels[idx])
+            .filter(|value| value.is_finite())
+            .collect::<Vec<_>>();
+        let uncertainties = samples
+            .iter()
+            .map(|sample| sample.uncertainty_scales[idx])
+            .filter(|value| value.is_finite() && *value > 0.0)
+            .collect::<Vec<_>>();
+        let median = finite_median(&values);
+        let robust_sigma = 1.4826 * finite_mad(&values, median);
+        let uncertainty_sigma = finite_median_opt(&uncertainties).unwrap_or(0.0);
+        let std_sigma = finite_std(&values, median);
+        medians[idx] = if median.is_finite() { median } else { 0.0 };
+        scales[idx] = [robust_sigma, uncertainty_sigma, std_sigma, 1.0]
+            .into_iter()
+            .filter(|value| value.is_finite() && *value > 1.0e-6)
+            .fold(1.0, f64::max);
+    }
+    NormalizationParams { medians, scales }
+}
+
+fn normalize_channels(
+    sample: &LabeledInvariantSample,
+    params: &NormalizationParams,
+) -> [f64; HELIOSPHERE_INVARIANT_DIM] {
+    let mut out = [0.0_f64; HELIOSPHERE_INVARIANT_DIM];
+    for (idx, slot) in out.iter_mut().enumerate().take(HELIOSPHERE_INVARIANT_DIM) {
+        let value = sample.channels[idx];
+        *slot = if value.is_finite() {
+            (value - params.medians[idx]) / params.scales[idx]
+        } else {
+            0.0
+        };
+    }
+    out
+}
+
+fn invariant_vector(
+    sample: &LabeledInvariantSample,
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+) -> [f64; HELIOSPHERE_INVARIANT_DIM] {
+    match view_mode {
+        ViewMode::Raw => sample.weighted_channels,
+        ViewMode::Normalized => normalized
+            .get(&sample.key)
+            .map(|row| row.normalized_channels)
+            .unwrap_or([0.0_f64; HELIOSPHERE_INVARIANT_DIM]),
+    }
+}
+
+fn descriptor_vector(
+    sample: &LabeledInvariantSample,
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+) -> [f64; DESCRIPTOR_DIM] {
+    match view_mode {
+        ViewMode::Raw => sample.descriptor_channels,
+        ViewMode::Normalized => normalized
+            .get(&sample.key)
+            .map(|row| row.normalized_descriptor_channels)
+            .unwrap_or([0.0_f64; DESCRIPTOR_DIM]),
+    }
+}
+
+fn sample_invariant_value(
+    sample: &LabeledInvariantSample,
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    idx: usize,
+) -> f64 {
+    invariant_vector(sample, view_mode, normalized)[idx]
+}
+
+fn sample_descriptor_value(
+    sample: &LabeledInvariantSample,
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    idx: usize,
+) -> f64 {
+    descriptor_vector(sample, view_mode, normalized)[idx]
+}
+
+fn sample_invariant_norm(
+    sample: &LabeledInvariantSample,
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+) -> f64 {
+    l2_norm_sq(&invariant_vector(sample, view_mode, normalized)).sqrt()
+}
+
+fn top_blocking_channels(mission_vector: &[f64], rest_vector: &[f64], top_n: usize) -> Vec<String> {
+    let names = HELIOSPHERE_INVARIANT_CHANNEL_NAMES
+        .iter()
+        .map(|value| (*value).to_string())
+        .chain(
+            HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES
+                .iter()
+                .map(|value| (*value).to_string()),
+        )
+        .collect::<Vec<_>>();
+    let mut ranked = mission_vector
+        .iter()
+        .zip(rest_vector.iter())
+        .enumerate()
+        .map(|(idx, (a, b))| (idx, (a - b).abs()))
+        .collect::<Vec<_>>();
+    ranked.sort_by(|(_, a), (_, b)| b.total_cmp(a));
+    ranked
+        .into_iter()
+        .take(top_n)
+        .map(|(idx, _)| names.get(idx).cloned().unwrap_or_else(|| format!("f{idx}")))
+        .collect()
+}
+
+fn fit_sparse_budget_policy(
+    samples: &[LabeledInvariantSample],
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+    kind: SparsePolicyKind,
+    grid: usize,
+    budget_gib: f64,
+) -> Result<ThresholdedSparsePolicy> {
+    let splits = split_samples(samples);
+    let (name, feature_mode) = match kind {
+        SparsePolicyKind::InvariantBudget => ("invariant_budget_policy", FeatureMode::Invariants),
+        SparsePolicyKind::HybridBudget => {
+            ("hybrid_budget_policy", FeatureMode::InvariantsAndDescriptors)
+        }
+    };
+    let train = feature_matrix(&splits.train, ViewMode::Normalized, feature_mode, normalized);
+    let validation =
+        feature_matrix(&splits.validation, ViewMode::Normalized, feature_mode, normalized);
+    let all_samples = samples.iter().collect::<Vec<_>>();
+    let all_matrix = feature_matrix(&all_samples, ViewMode::Normalized, feature_mode, normalized);
+    let scaler = fit_scaler(&train);
+    let train_scaled = apply_scaler(&scaler, &train);
+    let validation_scaled = apply_scaler(&scaler, &validation);
+    let all_scaled = apply_scaler(&scaler, &all_matrix);
+    let model = train_logistic_model(
+        &train_scaled,
+        &binary_labels(&splits.train),
+        0.02,
+        300,
+        1e-3,
+    );
+    let validation_scores = predict_scores(&model, &validation_scaled);
+    let validation_labels = splits
+        .validation
+        .iter()
+        .map(|sample| sample.label_positive)
+        .collect::<Vec<_>>();
+    let threshold = best_budgeted_threshold(
+        &validation_scores,
+        &validation_labels,
+        grid,
+        budget_gib,
+    );
+    let all_scores = predict_scores(&model, &all_scaled);
+    let mask = samples
+        .iter()
+        .zip(all_scores)
+        .map(|(sample, score)| (sample.key.clone(), score.is_finite() && score >= threshold))
+        .collect::<BTreeMap<_, _>>();
+    Ok(ThresholdedSparsePolicy {
+        name,
+        mask,
+    })
+}
+
+fn best_budgeted_threshold(
+    scores: &[f64],
+    labels: &[bool],
+    grid: usize,
+    budget_gib: f64,
+) -> f64 {
+    if scores.is_empty() {
+        return 1.0;
+    }
+    let mut candidates = scores
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect::<Vec<_>>();
+    candidates.sort_by(|a, b| a.total_cmp(b));
+    candidates.dedup_by(|a, b| (*a - *b).abs() < 1.0e-9);
+    if candidates.len() > 96 {
+        let step = (candidates.len() / 96).max(1);
+        candidates = candidates.into_iter().step_by(step).collect();
+    }
+    let mut best_under_budget = None::<(f64, f64, f64)>;
+    let mut lowest_memory = None::<(f64, f64)>;
+    for threshold in candidates {
+        let predicted_positive = scores
+            .iter()
+            .filter(|score| score.is_finite() && **score >= threshold)
+            .count();
+        let active_fraction = ratio_usize(predicted_positive, scores.len());
+        let projected_gib = estimate_sparse_execution_plan(
+            grid,
+            active_fraction,
+            None,
+            SparseHardwareEnvelope {
+                cuda_vram_budget_bytes: None,
+                cuda_l2_bytes: None,
+                cuda_shared_mem_per_block: None,
+                cuda_managed_memory: None,
+                cuda_concurrent_managed_access: None,
+                cpu_l3_safe_working_set_bytes: None,
+                prefer_sparse_tile: false,
+            },
+        )
+        .memory
+        .sparse_bf16_aa_projected_gib;
+        let (_, recall, _, _, _) = threshold_metrics(scores, labels, threshold);
+        if projected_gib <= budget_gib {
+            match best_under_budget {
+                Some((_, best_recall, best_fraction))
+                    if recall.total_cmp(&best_recall).is_lt()
+                        || (recall.total_cmp(&best_recall).is_eq()
+                            && active_fraction.total_cmp(&best_fraction).is_ge()) => {}
+                _ => best_under_budget = Some((threshold, recall, active_fraction)),
+            }
+        }
+        match lowest_memory {
+            Some((_, best_gib)) if projected_gib.total_cmp(&best_gib).is_ge() => {}
+            _ => lowest_memory = Some((threshold, projected_gib)),
+        }
+    }
+    best_under_budget
+        .map(|(threshold, _, _)| threshold)
+        .or_else(|| lowest_memory.map(|(threshold, _)| threshold))
+        .unwrap_or(1.0)
+}
+
+fn raw_time_index(rows: &[HeliosphereFeatureRow]) -> BTreeMap<RowKey, String> {
+    rows.iter()
+        .filter_map(|row| {
+            heliosphere_row_datetime(row).map(|timestamp| (row_key(row), timestamp.to_rfc3339()))
+        })
+        .collect()
+}
+
+fn median_mask_lead_time_hours(
+    time_index: &BTreeMap<RowKey, String>,
+    label_index: &BTreeMap<RowKey, bool>,
+    active_index: &BTreeMap<RowKey, bool>,
+) -> Option<f64> {
+    let mut grouped: BTreeMap<String, Vec<(String, bool, bool)>> = BTreeMap::new();
+    for (key, timestamp) in time_index {
+        let mission = key.1.clone();
+        grouped.entry(mission).or_default().push((
+            timestamp.clone(),
+            *label_index.get(key).unwrap_or(&false),
+            *active_index.get(key).unwrap_or(&false),
+        ));
+    }
+    let mut leads = Vec::new();
+    for rows in grouped.values_mut() {
+        rows.sort_by(|a, b| a.0.cmp(&b.0));
+        for positive_idx in rows
+            .iter()
+            .enumerate()
+            .filter_map(|(idx, (_, positive, _))| (*positive).then_some(idx))
+        {
+            let event_time = parse_timestamp(&rows[positive_idx].0).ok()?;
+            let mut earliest_prediction = None;
+            for (timestamp, _positive, active) in rows[..=positive_idx].iter().rev() {
+                if *active {
+                    earliest_prediction = parse_timestamp(timestamp).ok();
+                } else if earliest_prediction.is_some() {
+                    break;
+                }
+            }
+            if let Some(start) = earliest_prediction {
+                let hours = (event_time - start).num_minutes() as f64 / 60.0;
+                if hours.is_finite() && hours >= 0.0 {
+                    leads.push(hours);
+                }
+            }
+        }
+    }
+    finite_median_opt(&leads)
 }
 
 fn fit_scaler(rows: &[Vec<f64>]) -> ScaledFeatureSet {
@@ -785,7 +1561,11 @@ fn best_threshold(scores: &[f64], labels: &[bool]) -> f64 {
     best.0
 }
 
-fn best_single_invariant_threshold(samples: &[&LabeledInvariantSample]) -> ThresholdedInvariant {
+fn best_single_invariant_threshold(
+    samples: &[&LabeledInvariantSample],
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+) -> ThresholdedInvariant {
     let labels = samples
         .iter()
         .map(|sample| sample.label_positive)
@@ -798,7 +1578,7 @@ fn best_single_invariant_threshold(samples: &[&LabeledInvariantSample]) -> Thres
     for idx in 0..HELIOSPHERE_INVARIANT_DIM {
         let scores = samples
             .iter()
-            .map(|sample| sample.weighted_channels[idx])
+            .map(|sample| sample_invariant_value(sample, view_mode, normalized, idx))
             .collect::<Vec<_>>();
         let threshold = best_threshold(&scores, &labels);
         let (_, _, f1, _, _) = threshold_metrics(&scores, &labels, threshold);
@@ -814,6 +1594,7 @@ fn best_single_invariant_threshold(samples: &[&LabeledInvariantSample]) -> Thres
 }
 
 fn evaluate_scores(
+    feature_mode: &str,
     name: &str,
     samples: &[&LabeledInvariantSample],
     scores: &[f64],
@@ -826,6 +1607,7 @@ fn evaluate_scores(
     let (precision, recall, f1, predicted_positive_rows, false_alert_rate) =
         threshold_metrics(scores, &labels, threshold);
     BinaryMetrics {
+        feature_mode: feature_mode.to_string(),
         name: name.to_string(),
         threshold,
         positive_rows: labels.iter().filter(|value| **value).count(),
@@ -970,6 +1752,8 @@ fn sparse_summary(
     rows: &[&HeliosphereFeatureRow],
     total_rows: usize,
     label_index: &BTreeMap<RowKey, bool>,
+    time_index: &BTreeMap<RowKey, String>,
+    active_index: &BTreeMap<RowKey, bool>,
 ) -> SparseMaskSummary {
     let active_rows = rows.len();
     let labeled_active = rows
@@ -1007,20 +1791,26 @@ fn sparse_summary(
                 .filter(|value| value.is_finite())
                 .collect::<Vec<_>>(),
         ),
+        median_lead_time_hours: median_mask_lead_time_hours(time_index, label_index, active_index),
     }
 }
 
-fn mean_feature_vector(samples: &[&LabeledInvariantSample]) -> Vec<f64> {
+fn mean_feature_vector(
+    samples: &[&LabeledInvariantSample],
+    view_mode: ViewMode,
+    normalized: &BTreeMap<RowKey, NormalizedSample>,
+) -> Vec<f64> {
     if samples.is_empty() {
         return vec![0.0; HELIOSPHERE_INVARIANT_DIM + DESCRIPTOR_DIM];
     }
     let mut out = vec![0.0; HELIOSPHERE_INVARIANT_DIM + DESCRIPTOR_DIM];
     for sample in samples {
         for (idx, value) in out.iter_mut().enumerate().take(HELIOSPHERE_INVARIANT_DIM) {
-            *value += sample.weighted_channels[idx];
+            *value += sample_invariant_value(sample, view_mode, normalized, idx);
         }
         for idx in 0..DESCRIPTOR_DIM {
-            out[HELIOSPHERE_INVARIANT_DIM + idx] += sample.descriptor_channels[idx];
+            out[HELIOSPHERE_INVARIANT_DIM + idx] +=
+                sample_descriptor_value(sample, view_mode, normalized, idx);
         }
     }
     for value in &mut out {
@@ -1062,6 +1852,31 @@ fn mean(values: &[f64]) -> f64 {
         return f64::NAN;
     }
     finite.iter().sum::<f64>() / finite.len() as f64
+}
+
+fn finite_std(values: &[f64], center: f64) -> f64 {
+    let finite = values
+        .iter()
+        .copied()
+        .filter(|value| value.is_finite())
+        .collect::<Vec<_>>();
+    if finite.is_empty() {
+        return 1.0;
+    }
+    let variance = finite
+        .iter()
+        .map(|value| {
+            let delta = *value - center;
+            delta * delta
+        })
+        .sum::<f64>()
+        / finite.len() as f64;
+    let std = variance.sqrt();
+    if std.is_finite() && std > 1.0e-6 {
+        std
+    } else {
+        1.0
+    }
 }
 
 fn finite_median(values: &[f64]) -> f64 {

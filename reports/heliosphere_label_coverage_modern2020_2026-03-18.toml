@@ -1,0 +1,181 @@
+generated_at_utc = "2026-03-18T15:47:15.850977481+00:00"
+cube_csv = "reports/heliosphere_feature_cube_modern2020_2026-03-15.csv"
+horizons_hours = [
+    6,
+    12,
+    24,
+]
+notes = [
+    "Coverage is strict and official-only: DONKI onset families, DONKI CME/ENLIL target windows, and CCMC Scoreboard arrivals/residuals.",
+    "A forecast-target overlap is not the same thing as a validated observed arrival.",
+]
+
+[[rows]]
+mission = "BepiColombo"
+product = "Helio1hr support"
+row_count = 8784
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Parker Solar Probe"
+product = "FIELDS MAG RTN"
+row_count = 1164
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "Parker Solar Probe"
+product = "Merged hourly"
+row_count = 8784
+source_families = []
+positive_window_count_6h = 0
+positive_window_count_12h = 0
+positive_window_count_24h = 0
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "unlabeled"
+blocked_reasons = ["no_official_targeted_labels"]
+
+[[rows]]
+mission = "SOHO"
+product = "CELIAS daily CDF hourly"
+row_count = 8091
+source_families = [
+    "CcmcScoreboardArrival",
+    "DonkiFlr",
+    "DonkiGst",
+    "DonkiIps",
+]
+positive_window_count_6h = 23
+positive_window_count_12h = 23
+positive_window_count_24h = 23
+positive_row_count_6h = 94
+positive_row_count_12h = 189
+positive_row_count_24h = 368
+forecast_residual_count = 2
+coverage_status = "observed_label_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "MAG RTN 1-minute"
+row_count = 3012
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 6
+positive_row_count_12h = 11
+positive_row_count_24h = 22
+forecast_residual_count = 0
+coverage_status = "forecast_target_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "Merged hourly"
+row_count = 8784
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 6
+positive_row_count_12h = 12
+positive_row_count_24h = 24
+forecast_residual_count = 0
+coverage_status = "forecast_target_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "RPW BIA SCPOT 10-second"
+row_count = 4100
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 6
+positive_row_count_12h = 12
+positive_row_count_24h = 24
+forecast_residual_count = 0
+coverage_status = "forecast_target_overlap"
+blocked_reasons = []
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "RPW BIA density"
+row_count = 842
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "official_sources_no_overlap"
+blocked_reasons = ["official_labels_present_but_no_cube_overlap"]
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "RPW HFR survey flux"
+row_count = 1090
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "official_sources_no_overlap"
+blocked_reasons = ["official_labels_present_but_no_cube_overlap"]
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "RPW TNR survey flux"
+row_count = 889
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "official_sources_no_overlap"
+blocked_reasons = ["official_labels_present_but_no_cube_overlap"]
+
+[[rows]]
+mission = "Solar Orbiter"
+product = "SWA-PAS ground moments"
+row_count = 1797
+source_families = ["DonkiEnlilImpact"]
+positive_window_count_6h = 1
+positive_window_count_12h = 1
+positive_window_count_24h = 1
+positive_row_count_6h = 0
+positive_row_count_12h = 0
+positive_row_count_24h = 0
+forecast_residual_count = 0
+coverage_status = "official_sources_no_overlap"
+blocked_reasons = ["official_labels_present_but_no_cube_overlap"]

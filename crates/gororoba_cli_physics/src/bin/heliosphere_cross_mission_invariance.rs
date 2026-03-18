@@ -77,6 +77,8 @@ fn main() -> Result<()> {
         notes: vec![
             "Leave-one-mission-out cosine compares each mission's positive-window descriptor mean against the positive-window mean from the remaining missions."
                 .to_string(),
+            "The report now includes raw and uncertainty-aware normalized sections in the same mission table."
+                .to_string(),
             "High stability only becomes interesting if it survives uncertainty-aware normalization and official-label filtering."
                 .to_string(),
         ],

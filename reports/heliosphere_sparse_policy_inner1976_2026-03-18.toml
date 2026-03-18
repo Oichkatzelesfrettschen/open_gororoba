@@ -1,0 +1,63 @@
+generated_at_utc = "2026-03-18T15:49:08.063825597+00:00"
+cube_csv = "reports/heliosphere_feature_cube_inner1976_2026-03-15.csv"
+horizon_hours = 24
+grid = 1024
+notes = [
+    "Sparse policy now compares the robust baseline against supervised budgeted policies without dropping source rows.",
+    "The invariant-only budget policy is the primary challenger; the hybrid algebra policy only matters if it wins under the same budget.",
+    "Execution planning uses the current host hardware envelope and keeps managed memory as a fallback, not the primary path.",
+]
+
+[[policies]]
+name = "robust_baseline"
+active_rows = 27
+active_fraction = 0.0012871239929446536
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 27.37860352832081
+speed_mean = 472.6601384852563
+temperature_mean = 728707.0259899321
+bmag_mean = 18.338068327732387
+
+[[policies]]
+name = "invariant_budget_policy"
+active_rows = 20973
+active_fraction = 0.9998093149640082
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 22.600920289705986
+speed_mean = 447.9461229867133
+temperature_mean = 208991.06263902478
+bmag_mean = 13.41442992198934
+
+[[policies]]
+name = "hybrid_budget_policy"
+active_rows = 20977
+active_fraction = 1.0
+event_label_recall = 0.0
+event_label_precision = 0.0
+density_mean = 22.59427722928513
+speed_mean = 447.87740690282385
+temperature_mean = 208934.88874119183
+bmag_mean = 13.41702136768354
+
+[[execution_plans]]
+mask_name = "robust_baseline"
+active_fraction = 0.0012871239929446536
+sparse_bf16_aa_projected_gib = 0.09012222290039063
+execution_mode = "CacheAwareTiledSparseSoA"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "invariant_budget_policy"
+active_fraction = 0.9998093149640082
+sparse_bf16_aa_projected_gib = 69.98668193817139
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1
+
+[[execution_plans]]
+mask_name = "hybrid_budget_policy"
+active_fraction = 1.0
+sparse_bf16_aa_projected_gib = 70.0
+execution_mode = "ManagedPrefetchFallback"
+temporal_tile_count_hint = 1
