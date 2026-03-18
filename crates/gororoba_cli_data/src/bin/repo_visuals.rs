@@ -1722,10 +1722,7 @@ fn render_e183_phase_plate(path: &Path, repo_root: &Path, project: &ProjectBlock
         for row in &lie_rows {
             let ks = parse_semicolon_series(&row.k_list)?;
             let powers = parse_semicolon_series(&row.power_list)?;
-            spectra.push((
-                row,
-                ks.into_iter().zip(powers.into_iter()).collect::<Vec<_>>(),
-            ));
+            spectra.push((row, ks.into_iter().zip(powers).collect::<Vec<_>>()));
         }
         let x_values = spectra
             .iter()
@@ -2817,7 +2814,7 @@ fn force_relax_zd_nodes(nodes: &mut [ZdNode], edges: &[(usize, usize)], iteratio
             disp[b].0 -= fx;
             disp[b].1 -= fy;
         }
-        for (node, (dx, dy)) in nodes.iter_mut().zip(disp.into_iter()) {
+        for (node, (dx, dy)) in nodes.iter_mut().zip(disp) {
             node.x = (node.x + dx.clamp(-temp, temp)).clamp(-1.35, 1.35);
             node.y = (node.y + dy.clamp(-temp, temp)).clamp(-1.20, 1.20);
         }
@@ -3093,7 +3090,7 @@ fn render_e183_phase_plate_v2(path: &Path, repo_root: &Path, project: &ProjectBl
         2330,
         354,
         18,
-        &vec![
+        &[
             format!(
                 "peak | log10(M200) {:.2}, k {:.2}, SNR {:.2}",
                 peaks.first().map(|row| row.log_m200_median).unwrap_or(0.0),
@@ -3381,7 +3378,7 @@ fn render_gravastar_plate_v2(
         2205,
         1050,
         "Radial Sheet",
-        &vec![
+        &[
             format!(
                 "{} / {} radial sweep samples violate the Harrison-Wheeler criterion",
                 unstable_count,
@@ -3397,7 +3394,7 @@ fn render_gravastar_plate_v2(
         300,
         380,
         "Stable Bridge Branches",
-        &vec![
+        &[
             format!("{} genesis microbranches remain stable", stable_genesis.len()),
             "gamma = 1.5 supports the widest shells; gamma = 2.5 contracts toward R2/R1 ~ 1".to_string(),
         ],
@@ -3555,7 +3552,7 @@ fn render_algebra_plate_v2(
     }
 
     let mut pathion_hubs = pathion_nodes.iter().collect::<Vec<_>>();
-    pathion_hubs.sort_by(|a, b| b.degree.cmp(&a.degree));
+    pathion_hubs.sort_by_key(|node| std::cmp::Reverse(node.degree));
     for hub in pathion_hubs.iter().take(12).copied() {
         let center = project_norm(field_rect, hub.x, hub.y);
         for (scale, alpha, width) in [(1.0, 0.14, 1), (1.55, 0.10, 1), (2.10, 0.07, 1)] {
@@ -3605,7 +3602,7 @@ fn render_algebra_plate_v2(
         .map_err(plot_err)?;
     }
     let mut core_hubs = sedenion_nodes.iter().collect::<Vec<_>>();
-    core_hubs.sort_by(|a, b| b.degree.cmp(&a.degree));
+    core_hubs.sort_by_key(|node| std::cmp::Reverse(node.degree));
     for node in core_hubs.iter().take(4).copied() {
         let point = project_norm(field_rect, node.x, node.y);
         root.draw(&Text::new(
@@ -3651,7 +3648,7 @@ fn render_algebra_plate_v2(
         276,
         760,
         "Network Summary",
-        &vec![
+        &[
             format!(
                 "pathion graph | {} vertices, {} edges",
                 pathion_nodes.len(),
@@ -3671,7 +3668,7 @@ fn render_algebra_plate_v2(
         2240,
         910,
         "Mass Spectrum / Coupling Response",
-        &vec![
+        &[
             format!(
                 "mass spectrum anchors | n=15 -> {:.1} Mo, n=25 -> {:.1} Mo",
                 mass_peak_15, mass_peak_25
@@ -3689,7 +3686,7 @@ fn render_algebra_plate_v2(
         2240,
         860,
         "Damping / Field Relaxation",
-        &vec![
+        &[
             format!("terminal damping offset | {:.2}", sink_terminal_delta),
             format!(
                 "late 3D field energy remains at {:.3} of the initial value",
