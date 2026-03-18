@@ -488,6 +488,14 @@ name = "inclination-injection-calibration"
 path = "src/bin/inclination_injection_calibration.rs"
 
 [[bin]]
+name = "shmr-scatter-injection"
+path = "src/bin/shmr_scatter_injection.rs"
+
+[[bin]]
+name = "mass-quartile-fourier"
+path = "src/bin/mass_quartile_fourier.rs"
+
+[[bin]]
 name = "polynomial-detrend-closure"
 path = "src/bin/polynomial_detrend_closure.rs"
 
