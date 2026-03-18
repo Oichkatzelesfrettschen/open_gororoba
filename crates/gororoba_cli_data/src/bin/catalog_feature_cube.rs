@@ -41,8 +41,7 @@ fn main() -> Result<()> {
         PathBuf::from("reports").join(format!("catalog_feature_cube_{}_{}.json", cli.cube, date))
     });
     let out_manifest = cli.out_manifest.unwrap_or_else(|| {
-        PathBuf::from("reports")
-            .join(format!("catalog_feature_cube_{}_{}.toml", cli.cube, date))
+        PathBuf::from("reports").join(format!("catalog_feature_cube_{}_{}.toml", cli.cube, date))
     });
 
     let cube = build_cube(&cli.repo_root, &cli.cube)?;
@@ -288,14 +287,7 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
                 program_id: None,
                 instrument: None,
                 features: vec![
-                    row.z,
-                    row.mag_u,
-                    row.mag_g,
-                    row.mag_r,
-                    row.mag_i,
-                    row.mag_z,
-                    -1.0,
-                    -1.0,
+                    row.z, row.mag_u, row.mag_g, row.mag_r, row.mag_i, row.mag_z, -1.0, -1.0,
                 ],
                 residualized_features: None,
             });
@@ -337,14 +329,18 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
     }
 
     notes.push(
-        "Metadata-first generic cube spanning bounded survey and program metadata lanes.".to_string(),
+        "Metadata-first generic cube spanning bounded survey and program metadata lanes."
+            .to_string(),
     );
     notes.push(
         "Dataset-specific numeric features are carried in a manifest-declared vector rather than a fixed astrophysical schema."
             .to_string(),
     );
 
-    let mut dataset_names = rows.iter().map(|row| row.dataset.clone()).collect::<Vec<_>>();
+    let mut dataset_names = rows
+        .iter()
+        .map(|row| row.dataset.clone())
+        .collect::<Vec<_>>();
     dataset_names.sort();
     dataset_names.dedup();
     source_paths.sort();
@@ -377,7 +373,10 @@ fn build_survey_core_cube(repo_root: &Path, cube_name: &str) -> Result<CatalogFe
         });
     }
 
-    dataset_names = rows.iter().map(|row| row.dataset.clone()).collect::<Vec<_>>();
+    dataset_names = rows
+        .iter()
+        .map(|row| row.dataset.clone())
+        .collect::<Vec<_>>();
     dataset_names.sort();
     dataset_names.dedup();
 

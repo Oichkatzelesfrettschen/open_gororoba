@@ -70,8 +70,12 @@ fn main() -> Result<()> {
         PathBuf::from("reports").join(format!("mast_program_clustering_{}.toml", date))
     });
 
-    let jwst_path = cli.repo_root.join("data/external/jwst_public_observations.csv");
-    let hst_path = cli.repo_root.join("data/external/hst_public_observations.csv");
+    let jwst_path = cli
+        .repo_root
+        .join("data/external/jwst_public_observations.csv");
+    let hst_path = cli
+        .repo_root
+        .join("data/external/hst_public_observations.csv");
     let mut source_paths = Vec::new();
     let mut observations = Vec::new();
 
@@ -106,7 +110,10 @@ fn main() -> Result<()> {
     }
     writer.flush()?;
 
-    let mut missions = clusters.iter().map(|row| row.mission.clone()).collect::<Vec<_>>();
+    let mut missions = clusters
+        .iter()
+        .map(|row| row.mission.clone())
+        .collect::<Vec<_>>();
     missions.sort();
     missions.dedup();
     let report = ClusterReport {
@@ -148,55 +155,57 @@ fn cluster_programs(observations: &[ProgramObservation]) -> Vec<ClusterRow> {
 
     groups
         .into_iter()
-        .map(|((mission, proposal_id, instrument_name, release_year), group)| {
-            let observation_count = group.len();
-            let mut targets = group
-                .iter()
-                .map(|row| row.target_name.clone())
-                .collect::<Vec<_>>();
-            targets.sort();
-            targets.dedup();
-            let filter_token_count_mean = group
-                .iter()
-                .map(|row| {
-                    row.filters
-                        .split('|')
-                        .filter(|token| !token.trim().is_empty())
-                        .count() as f64
-                })
-                .sum::<f64>()
-                / observation_count as f64;
-            let mean_ra_deg =
-                group.iter().map(|row| row.ra_deg).sum::<f64>() / observation_count as f64;
-            let mean_dec_deg =
-                group.iter().map(|row| row.dec_deg).sum::<f64>() / observation_count as f64;
-            let mut release_times = group
-                .iter()
-                .filter_map(|row| parse_release_time(&row.release_time_utc))
-                .collect::<Vec<_>>();
-            release_times.sort();
-            let release_start_utc = release_times
-                .first()
-                .map(DateTime::<Utc>::to_rfc3339)
-                .unwrap_or_default();
-            let release_end_utc = release_times
-                .last()
-                .map(DateTime::<Utc>::to_rfc3339)
-                .unwrap_or_default();
-            ClusterRow {
-                mission,
-                proposal_id,
-                instrument_name,
-                release_year,
-                observation_count,
-                target_count: targets.len(),
-                filter_token_count_mean,
-                mean_ra_deg,
-                mean_dec_deg,
-                release_start_utc,
-                release_end_utc,
-            }
-        })
+        .map(
+            |((mission, proposal_id, instrument_name, release_year), group)| {
+                let observation_count = group.len();
+                let mut targets = group
+                    .iter()
+                    .map(|row| row.target_name.clone())
+                    .collect::<Vec<_>>();
+                targets.sort();
+                targets.dedup();
+                let filter_token_count_mean = group
+                    .iter()
+                    .map(|row| {
+                        row.filters
+                            .split('|')
+                            .filter(|token| !token.trim().is_empty())
+                            .count() as f64
+                    })
+                    .sum::<f64>()
+                    / observation_count as f64;
+                let mean_ra_deg =
+                    group.iter().map(|row| row.ra_deg).sum::<f64>() / observation_count as f64;
+                let mean_dec_deg =
+                    group.iter().map(|row| row.dec_deg).sum::<f64>() / observation_count as f64;
+                let mut release_times = group
+                    .iter()
+                    .filter_map(|row| parse_release_time(&row.release_time_utc))
+                    .collect::<Vec<_>>();
+                release_times.sort();
+                let release_start_utc = release_times
+                    .first()
+                    .map(DateTime::<Utc>::to_rfc3339)
+                    .unwrap_or_default();
+                let release_end_utc = release_times
+                    .last()
+                    .map(DateTime::<Utc>::to_rfc3339)
+                    .unwrap_or_default();
+                ClusterRow {
+                    mission,
+                    proposal_id,
+                    instrument_name,
+                    release_year,
+                    observation_count,
+                    target_count: targets.len(),
+                    filter_token_count_mean,
+                    mean_ra_deg,
+                    mean_dec_deg,
+                    release_start_utc,
+                    release_end_utc,
+                }
+            },
+        )
         .collect()
 }
 

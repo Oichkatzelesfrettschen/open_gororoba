@@ -86,7 +86,9 @@ pub struct ResidualizedCatalogFeatureCube {
 
 /// Parse a generic catalog feature cube from JSON, tolerating `null` in
 /// feature arrays that originated from non-finite floating-point values.
-pub fn parse_catalog_feature_cube_json(content: &[u8]) -> Result<CatalogFeatureCube, serde_json::Error> {
+pub fn parse_catalog_feature_cube_json(
+    content: &[u8],
+) -> Result<CatalogFeatureCube, serde_json::Error> {
     let value: Value = serde_json::from_slice(content)?;
     let manifest: CatalogFeatureCubeManifest = serde_json::from_value(value["manifest"].clone())?;
     let rows_value = value

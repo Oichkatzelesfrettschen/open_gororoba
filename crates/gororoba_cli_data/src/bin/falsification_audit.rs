@@ -104,18 +104,18 @@ fn main() -> Result<()> {
         ))
     });
 
-    let heliosphere: HeliosphereAuditReport =
-        toml::from_str(&fs::read_to_string(&cli.heliosphere_audit_report).with_context(|| {
-            format!("read {}", cli.heliosphere_audit_report.display())
-        })?)?;
-    let baseline: NullClassificationReport =
-        toml::from_str(&fs::read_to_string(&cli.baseline_null_report).with_context(|| {
-            format!("read {}", cli.baseline_null_report.display())
-        })?)?;
-    let challenge: NullClassificationReport =
-        toml::from_str(&fs::read_to_string(&cli.challenge_null_report).with_context(|| {
-            format!("read {}", cli.challenge_null_report.display())
-        })?)?;
+    let heliosphere: HeliosphereAuditReport = toml::from_str(
+        &fs::read_to_string(&cli.heliosphere_audit_report)
+            .with_context(|| format!("read {}", cli.heliosphere_audit_report.display()))?,
+    )?;
+    let baseline: NullClassificationReport = toml::from_str(
+        &fs::read_to_string(&cli.baseline_null_report)
+            .with_context(|| format!("read {}", cli.baseline_null_report.display()))?,
+    )?;
+    let challenge: NullClassificationReport = toml::from_str(
+        &fs::read_to_string(&cli.challenge_null_report)
+            .with_context(|| format!("read {}", cli.challenge_null_report.display()))?,
+    )?;
 
     let challenge_rows = challenge
         .rows
