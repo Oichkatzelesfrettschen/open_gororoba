@@ -83,6 +83,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "bispectral-selection-rule"
+crate = "gororoba_cli_physics"
+description = "H1 hypothesis: bispectral Fano plane selection rule test. Computes bicoherence at CD-ZD wavenumber triads and partitions into Fano vs non-Fano lines. Includes per-galaxy ensemble bicoherence."
+
+[[binary]]
 name = "bl-data-fetch"
 crate = "gororoba_cli"
 description = "BL 6EQUJ5 data download orchestrator with manifest generation, resume, SHA-256 verification, and cleanup"
@@ -126,7 +131,17 @@ description = "Casimir force comparison for Si/Ge/SiO2 symmetric plate pairs usi
 experiment = "E-043"
 
 [[binary]]
+name = "catalog-feature-algebra"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "catalog-feature-cube"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "catalog-feature-deconfound"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
@@ -166,6 +181,11 @@ name = "chsh-wavelet-compression"
 crate = "gororoba_cli"
 description = "Thesis 4: CHSH Bell parameter preservation under Haar wavelet compression of coincidence time series (software simulation)"
 experiment = "E-042"
+
+[[binary]]
+name = "claim-route-recertify"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "claims-audit"
@@ -665,6 +685,11 @@ crate = "gororoba_cli_data"
 description = "Audit staged heliosphere datasets, source families, and valid chronology-pack overlap windows"
 
 [[binary]]
+name = "heliosphere-cross-mission-invariance"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "heliosphere-feature-cube"
 crate = "gororoba_cli_physics"
 description = "Build normalized heliosphere feature cubes from staged and executed mission-product lanes, then emit CSV and TOML manifests plus sparse memory projections."
@@ -686,6 +711,16 @@ name = "heliosphere-lbm-cube-run"
 crate = "gororoba_cli_physics"
 description = "Benchmark dense CPU/GPU heliosphere LBM runs from feature cubes and report sparse Ada memory plans for 512^3 and 1024^3 follow-on execution."
 experiment = "E-119"
+
+[[binary]]
+name = "heliosphere-predictive-eval"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-sparse-preservation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "heliosphere-stage"
@@ -1056,6 +1091,11 @@ description = "E-027: Percolation threshold vs imbalance correlation experiment 
 experiment = "E-027"
 
 [[binary]]
+name = "persistence-residual-topology"
+crate = "gororoba_cli_physics"
+description = "H3 hypothesis: 1D sublevel set persistence of stacked rotation curve residuals. Counts topological features (peaks/valleys) above noise threshold. Includes mass-bin stability test across sweep profiles."
+
+[[binary]]
 name = "phase-transition-crucible"
 crate = "gororoba_cli_algebra"
 description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
@@ -1069,6 +1109,11 @@ description = "Sample governed Pioneer annual merged environment context against
 name = "polynomial-detrend-closure"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "power-stratified-phase"
+crate = "gororoba_cli_physics"
+description = "P3 hypothesis: power-stratified Rayleigh phase coherence test. Splits galaxies into quintiles by Fourier power and tests phase coherence in each stratum across 4 algebraic frameworks."
 
 [[binary]]
 name = "ppn-bound-sweep"
@@ -1258,6 +1303,11 @@ crate = "gororoba_cli_physics"
 description = "Pure-Rust survey overlap engine for Euclid, MaNGA, and LoTSS. Provides Euclid-LoTSS pair crossmatch, Euclid-MaNGA-LoTSS triple-join synthesis, and a broader exact/deferred/non-spatial catalog matrix across adjacent datasets."
 
 [[binary]]
+name = "synthesis-audit"
+crate = "gororoba_cli_physics"
+description = "Synthesis S1+S2: robust-estimator ZD bound comparison (mean vs trimmed vs median) and spectral leakage decomposition (10k white-noise simulations to resolve P1/D3 disagreement)."
+
+[[binary]]
 name = "synthesis-execution-contract"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
@@ -1363,6 +1413,11 @@ description = "Third-party source verification and ingestion infrastructure work
 experiment = "E-026"
 
 [[binary]]
+name = "trimmed-stacking-robustness"
+crate = "gororoba_cli_physics"
+description = "D4 contrarian: trimmed mean and median DFT robustness test. Quantifies outlier domination of stacked DFT coefficients across 6 trimming levels and 4 algebraic frameworks."
+
+[[binary]]
 name = "ultrametric-core-extract"
 crate = "gororoba_cli_data"
 description = "Pure-Rust extractor for minimal ultrametric core subsets from the multi-dataset exploration CSV. Replaces the legacy extract_ultrametric_cores.py analysis step for I-013 / C-449 support."
@@ -1373,6 +1428,11 @@ name = "validate-j1j2-kubo"
 crate = "gororoba_cli"
 description = "J1-J2 spin chain transport validation: Drude ratio, ballistic fraction, C_V phase detection, and CD interpolation cross-validation diagnostics"
 experiment = "E-034"
+
+[[binary]]
+name = "variance-quantization-test"
+crate = "gororoba_cli_physics"
+description = "H2 hypothesis: Hartigan dip test on per-galaxy Fourier power distributions for variance quantization. Tests multimodality at CD-ZD vs control wavenumbers with CV ratio comparison."
 
 [[binary]]
 name = "verify-artifact-source-of-truth"
@@ -1502,6 +1562,16 @@ description = "Thesis 1: Haar DWT bridging accuracy sweep comparing plain hard-t
 experiment = "E-039"
 
 [[binary]]
+name = "whitened-matched-filter"
+crate = "gororoba_cli_physics"
+description = "P1 hypothesis: variance-weighted matched filter SNR with chi-squared test and red-noise correction. Pre-whitens by per-bin errors, computes properly normalized DFT, and fits baryonic spectral slope."
+
+[[binary]]
+name = "window-function-sensitivity"
+crate = "gororoba_cli_physics"
+description = "D3 contrarian: window function injection response at CD-ZD wavenumbers. Tests whether 0.72 r/r_s data window makes modes undetectable. Shows spectral leakage overrecovery at long wavelengths."
+
+[[binary]]
 name = "workspace-routing"
 crate = "gororoba_cli_governance"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
@@ -1593,43 +1663,3 @@ crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
 
-
-[[binary]]
-name = "persistence-residual-topology"
-crate = "gororoba_cli_physics"
-description = "H3 hypothesis: 1D sublevel set persistence of stacked rotation curve residuals. Counts topological features (peaks/valleys) above noise threshold. Includes mass-bin stability test across sweep profiles."
-
-[[binary]]
-name = "bispectral-selection-rule"
-crate = "gororoba_cli_physics"
-description = "H1 hypothesis: bispectral Fano plane selection rule test. Computes bicoherence at CD-ZD wavenumber triads and partitions into Fano vs non-Fano lines. Includes per-galaxy ensemble bicoherence."
-
-[[binary]]
-name = "variance-quantization-test"
-crate = "gororoba_cli_physics"
-description = "H2 hypothesis: Hartigan dip test on per-galaxy Fourier power distributions for variance quantization. Tests multimodality at CD-ZD vs control wavenumbers with CV ratio comparison."
-
-[[binary]]
-name = "whitened-matched-filter"
-crate = "gororoba_cli_physics"
-description = "P1 hypothesis: variance-weighted matched filter SNR with chi-squared test and red-noise correction. Pre-whitens by per-bin errors, computes properly normalized DFT, and fits baryonic spectral slope."
-
-[[binary]]
-name = "power-stratified-phase"
-crate = "gororoba_cli_physics"
-description = "P3 hypothesis: power-stratified Rayleigh phase coherence test. Splits galaxies into quintiles by Fourier power and tests phase coherence in each stratum across 4 algebraic frameworks."
-
-[[binary]]
-name = "window-function-sensitivity"
-crate = "gororoba_cli_physics"
-description = "D3 contrarian: window function injection response at CD-ZD wavenumbers. Tests whether 0.72 r/r_s data window makes modes undetectable. Shows spectral leakage overrecovery at long wavelengths."
-
-[[binary]]
-name = "trimmed-stacking-robustness"
-crate = "gororoba_cli_physics"
-description = "D4 contrarian: trimmed mean and median DFT robustness test. Quantifies outlier domination of stacked DFT coefficients across 6 trimming levels and 4 algebraic frameworks."
-
-[[binary]]
-name = "synthesis-audit"
-crate = "gororoba_cli_physics"
-description = "Synthesis S1+S2: robust-estimator ZD bound comparison (mean vs trimmed vs median) and spectral leakage decomposition (10k white-noise simulations to resolve P1/D3 disagreement)."
