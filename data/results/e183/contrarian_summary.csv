@@ -1,0 +1,16 @@
+test,metric,value
+I,snr_standard_1n_exp,0.345458
+I,snr_flat_amp_exp,0.345458
+I,snr_1n_gauss,0.345785
+I,snr_flat_amp_flat,0.430287
+I,snr_1n2_exp,0.345458
+I,snr_optimal_mf,0.345458
+I,snr_range_min,0.345458
+I,snr_range_max,0.430287
+II,poly_a0,-0.02194983
+II,poly_a1,0.53195730
+II,poly_a2,1.39901312
+II,nfw_rms,0.12635420
+II,corrected_rms,0.07557534
+II,rms_reduction_pct,40.19
+II,corrected_snr,0.116840

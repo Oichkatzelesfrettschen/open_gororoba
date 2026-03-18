@@ -1453,8 +1453,52 @@ description = "Zero-divisor graph search and invariant computation"
 experiment = "E-005"
 
 [[binary]]
+name = "mass-binned-phase"
+crate = "gororoba_cli_physics"
+description = "Mass-binned phase coherence test for ZD harmonic stacking. Splits 6992 MaNGA galaxies into 10 mass bins, stacks each independently, computes Spearman phase-vs-mass correlation and per-bin SNR at 7 CD-ZD wavenumbers."
+
+[[binary]]
+name = "cross-algebra-correlation"
+crate = "gororoba_cli_physics"
+description = "Cross-algebra template projection correlation (VLBI analogy). Computes per-galaxy DFT projections onto 4 algebraic templates (CD-ZD, G2, J3(O), sl(2)) and measures cross-correlation excess above noise baseline."
+
+[[binary]]
+name = "contrarian-template-sweep"
+crate = "gororoba_cli_physics"
+description = "Devil's advocate tests: template sensitivity sweep (6 alternative DFT weight templates) and inner-slope baseline robustness (quadratic polynomial correction). Verifies the null result is robust to signal model parameterization and NFW profile misspecification."
+
+[[binary]]
+name = "ml-baryonic-denoise"
+crate = "gororoba_cli_physics"
+description = "ML-grounded baryonic denoising and Fourier anomaly detection. Tests metadata-conditioned residual prediction (9 features, binned regression) and per-galaxy Fourier power ranking for outlier sub-population detection."
+
+[[binary]]
+name = "dc14-stacking"
+crate = "gororoba_cli_physics"
+description = "DC14 vs NFW stacking comparison for baryonic feedback efficiency measurement. Computes Di Cintio et al. (2014) feedback-modified density profiles and compares stacked residual spectra to NFW baseline."
+
+[[binary]]
+name = "polynomial-detrend-closure"
+crate = "gororoba_cli_physics"
+description = "Broadband Fourier scan after polynomial detrending. Tests whether low-order baryonic trends absorb all apparent CD-ZD spectral power and tightens the alpha_zd upper limit with bootstrap resampling."
+
+[[binary]]
+name = "stft-phase-gradient"
+crate = "gororoba_cli_physics"
+description = "STFT phase-gradient chirp test for the MaNGA harmonic null result. Fits unwrapped phase slopes across STFT windows and classifies coherent, degenerate, ambiguous, or noise-like modes."
+
+[[binary]]
 name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
 
+[[binary]]
+name = "baryonic-eigenspectrum"
+crate = "gororoba_cli_physics"
+description = "H1 hypothesis test: SVD analysis of CD-ZD modes as a baryonic feedback basis. Builds design matrix from 7 cosine modes, computes condition number, R^2 projection of NFW/DC14 residuals, and compares to 200 random wavenumber control sets."
+
+[[binary]]
+name = "cross-algebra-cusp-core"
+crate = "gororoba_cli_physics"
+description = "H3 hypothesis test: cross-algebra correlation excess as a model-independent cusp-core discriminant. Predicts correlations under colored noise (NFW and DC14 spectral shapes) and compares to observed excess via chi-squared."
