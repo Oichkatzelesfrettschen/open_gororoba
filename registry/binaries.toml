@@ -1488,11 +1488,6 @@ crate = "gororoba_cli_physics"
 description = "STFT phase-gradient chirp test for the MaNGA harmonic null result. Fits unwrapped phase slopes across STFT windows and classifies coherent, degenerate, ambiguous, or noise-like modes."
 
 [[binary]]
-name = "multifeature-shape-regression"
-crate = "gororoba_cli_physics"
-description = "Prototype multi-feature baryonic shape regression over the MaNGA null-result lane. Uses 2-mode SVD shape coefficients and 4 metadata features to test whether shape-aware baryonic correction outperforms single-feature mean subtraction."
-
-[[binary]]
 name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
