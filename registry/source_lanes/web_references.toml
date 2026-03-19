@@ -6196,7 +6196,7 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2510
 [[artifact_ref]]
 id = "ASOT-0659"
 key = "doi:10.1103/physrevlett.133.092301"
-title = "**ALICE Collaboration.** (2024). *Measurement of chemical potentials in Pb Pb collisions at the LHC*. [PRL 133, 092301](https://link.aps.org/doi/10.1103/PhysRevLett.133.092301)."
+title = "**ALICE Collaboration.** (2024). *Measurement of chemical potentials in Pb-Pb collisions at the LHC*. [PRL 133, 092301](https://link.aps.org/doi/10.1103/PhysRevLett.133.092301)."
 status = "citation_only_no_link"
 minimum_requirement_met = false
 canonical_functional_url = "https://link.aps.org/doi/10.1103/PhysRevLett.133.092301"
@@ -14356,7 +14356,7 @@ source_refs = ["BIB-0383"]
 [[artifact_ref]]
 id = "ASOT-2925"
 key = "url:https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern"
-title = "**CMS News.** (2025). *LHC's first neon-neon collisions   CMS spots an interesting pattern*. [CMS](https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern)."
+title = "**CMS News.** (2025). *LHC's first neon-neon collisions - CMS spots an interesting pattern*. [CMS](https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern)."
 status = "unverified"
 minimum_requirement_met = false
 canonical_functional_url = "https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern"
@@ -14366,7 +14366,7 @@ source_refs = ["BIB-0381"]
 [[artifact_ref]]
 id = "ASOT-2926"
 key = "url:https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma"
-title = "**CMS News.** (2025). *LHC's first oxygen collisions   CMS spots signs of small-scale quark-gluon plasma*. [CMS](https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma)."
+title = "**CMS News.** (2025). *LHC's first oxygen collisions - CMS spots signs of small-scale quark-gluon plasma*. [CMS](https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma)."
 status = "unverified"
 minimum_requirement_met = false
 canonical_functional_url = "https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma"
@@ -14936,7 +14936,7 @@ source_refs = ["BIB-0157", "registry/manual_mirror_overrides_2026_02_15.toml::mi
 [[artifact_ref]]
 id = "ASOT-3039"
 key = "url:https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128"
-title = "**MIT News.** (2026). *Study: The infant universe s  primordial soup  was actually soupy*. [MIT](https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128)."
+title = "**MIT News.** (2026). *Study: The infant universe's \"primordial soup\" was actually soupy*. [MIT](https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128)."
 status = "unverified"
 minimum_requirement_met = false
 canonical_functional_url = "https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128"
@@ -15796,7 +15796,7 @@ source_refs = ["BIB-0379"]
 [[artifact_ref]]
 id = "ASOT-3159"
 key = "url:https://www.academia.edu/23283814/optical_properties_of_transparent_and_infra_red_reflecting_ito_films_in_the_0_2_50_%ce%bcm_range"
-title = "**Gerfin, T., et al.** (1993/2016). *Optical properties of transparent and infra-red reflecting ITO films in the 0.2 - 50  m range*."
+title = "**Gerfin, T., et al.** (1993/2016). *Optical properties of transparent and infra-red reflecting ITO films in the 0.2 - 50 um range*."
 status = "unverified"
 minimum_requirement_met = false
 canonical_functional_url = "https://www.academia.edu/23283814/Optical_properties_of_transparent_and_infra_red_reflecting_ITO_films_in_the_0_2_50_%CE%BCm_range"

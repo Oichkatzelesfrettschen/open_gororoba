@@ -4094,6 +4094,25 @@ pub fn latio3_optical() -> DrudeLorentzParams {
 /// Metallic in IR, transparent in visible. Crossover near 1 eV.
 
 /// Indium Tin Oxide (ITO) - Typical degenerate TCO
+
+/// PEDOT:PSS - Disordered conducting polymer (Drude-Smith model)
+/// Values are representative for highly conductive grades in THz/IR.
+pub fn pedot_pss_optical() -> DrudeLorentzParams {
+    DrudeLorentzParams {
+        drude: None,
+        extended_drude: Some(ExtendedDrudeParams {
+            omega_p_ev: 1.2, // ~1e21 cm^-3 effective carrier density
+            scattering: ScatteringModel::DrudeSmith {
+                gamma_ev: 0.15,
+                backscatter_c: -0.85, // strong backscattering (localization)
+            },
+            eps_inf: 2.2,
+        }),
+        oscillators: vec![],
+        eps_inf: 2.2,
+    }
+}
+
 pub fn ito_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: Some(DrudeParams {
@@ -5331,6 +5350,8 @@ pub fn list_materials() -> Vec<&'static str> {
         "Titanium Nitride Low Loss (TiN)",
         "Zirconium Nitride (ZrN)",
         "Hafnium Nitride (HfN)",
+        // Disordered Conductors
+        "PEDOT:PSS",
         // Tungsten oxides
         "Tungsten Trioxide (WO3)",
         "Oxygen-deficient WO3 (WO3-x)",
@@ -6226,8 +6247,8 @@ mod tests {
         let materials = list_materials();
         assert_eq!(
             materials.len(),
-            36,
-            "Database should have exactly 36 materials, got {}",
+            37,
+            "Database should have exactly 37 materials, got {}",
             materials.len()
         );
     }
