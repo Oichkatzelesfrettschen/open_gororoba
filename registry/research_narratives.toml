@@ -1534,7 +1534,7 @@ content_kind = "synthesis"
 verification_level = "multi_scale_synthesis"
 claim_refs = ["C-035", "C-036", "C-037", "C-038", "C-039", "C-040", "C-041"]
 url_refs = []
-path_refs = ["docs/GRAND_SYNTHESIS.md", "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md", "docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md"]
+path_refs = ["docs/GRAND_SYNTHESIS.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "registry/claims.toml"]
 line_count = 160
 
 [[document]]
