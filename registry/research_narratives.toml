@@ -4,7 +4,7 @@
 [research_narratives]
 updated = "2026-03-15"
 authoritative = true
-source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md", "docs/research/*.md", "docs/*.md"]
+source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md", "docs/research/*.md"]
 document_count = 18
 
 [[document]]
