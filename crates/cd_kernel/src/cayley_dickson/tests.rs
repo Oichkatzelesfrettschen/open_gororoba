@@ -80,3 +80,101 @@ fn test_associator_stats_large_dim() {
     let stats = associator_independence_stats(16, 200, 42);
     assert!(stats.mean_assoc_sq.is_finite());
 }
+
+// T1: Quadratic identity
+#[test]
+fn test_thesis_t1_quadratic_identity() {
+    let dims = [2, 4, 8, 16, 32];
+    for dim in dims {
+        let x: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.1).sin()).collect();
+        let x2 = cd_multiply(&x, &x);
+        let t_x = 2.0 * x[0];
+        let n_x = cd_norm_sq(&x);
+        
+        // x^2 - t(x)x + n(x) = 0
+        let mut res = vec![0.0; dim];
+        for i in 0..dim {
+            res[i] = x2[i] - t_x * x[i];
+        }
+        res[0] += n_x;
+        
+        for v in res {
+            assert!(v.abs() < 1e-10, "Quadratic identity failed at dim {}", dim);
+        }
+    }
+}
+
+// T2: Power-associativity
+#[test]
+fn test_thesis_t2_power_associativity() {
+    let dim = 16;
+    let x: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.2).cos()).collect();
+    let x2 = cd_multiply(&x, &x);
+    let x2_x = cd_multiply(&x2, &x);
+    let x_x2 = cd_multiply(&x, &x2);
+    
+    for i in 0..dim {
+        assert!((x2_x[i] - x_x2[i]).abs() < 1e-10, "Power-associativity failed");
+    }
+}
+
+// T3: Flexibility
+#[test]
+fn test_thesis_t3_flexibility() {
+    let dim = 16;
+    let x: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.1).sin()).collect();
+    let y: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.2).cos()).collect();
+    
+    // (xy)x
+    let xy = cd_multiply(&x, &y);
+    let xy_x = cd_multiply(&xy, &x);
+    
+    // x(yx)
+    let yx = cd_multiply(&y, &x);
+    let x_yx = cd_multiply(&x, &yx);
+    
+    for i in 0..dim {
+        assert!((xy_x[i] - x_yx[i]).abs() < 1e-10, "Flexibility failed");
+    }
+}
+
+// T4: Alternativity breaks at n>=4
+#[test]
+fn test_thesis_t4_alternativity_breaks() {
+    let dim = 16;
+    let mut found_break = false;
+    
+    // We can search for x = e_i + e_j, y = e_k that breaks alternativity
+    for i in 1..dim {
+        for j in i+1..dim {
+            for k in 1..dim {
+                let mut x = vec![0.0; dim];
+                x[i] = 1.0;
+                x[j] = 1.0;
+                
+                let mut y = vec![0.0; dim];
+                y[k] = 1.0;
+                
+                let xx = cd_multiply(&x, &x);
+                let x_xy = cd_multiply(&x, &cd_multiply(&x, &y));
+                let xx_y = cd_multiply(&xx, &y);
+                
+                let mut diff = 0.0;
+                for idx in 0..dim {
+                    diff += (x_xy[idx] - xx_y[idx]).abs();
+                }
+                
+                if diff > 1e-5 {
+                    found_break = true;
+                    break;
+                }
+            }
+            if found_break { break; }
+        }
+        if found_break { break; }
+    }
+    
+    assert!(found_break, "Alternativity should break in 16D");
+}
+
+

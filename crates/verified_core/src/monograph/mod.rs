@@ -13,6 +13,8 @@
 //! 6. [The Quantum Error Correction Duality](qec_duality)
 //! 7. [The Project Book](book)
 //! 8. [Advanced Mathematical Formalism](mathematics)
+//! 9. [The Viscous Vacuum and Dimensional Reduction](viscous_vacuum)
+//! 10. [Falsifiable Theses](theses)
 
 pub mod foundations;
 pub mod optics;
@@ -22,3 +24,5 @@ pub mod imbalance_derivation;
 pub mod qec_duality;
 pub mod book;
 pub mod mathematics;
+pub mod viscous_vacuum;
+pub mod theses;

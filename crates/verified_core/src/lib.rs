@@ -31,4 +31,5 @@ pub mod spectral_dim;
 pub mod topology;
 pub mod x87_math;
 
+pub mod axiomatic_gates;
 pub mod monograph;
