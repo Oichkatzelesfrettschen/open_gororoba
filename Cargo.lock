@@ -4207,6 +4207,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_db"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "clap",
+ "provenance_core",
+ "provenance_store",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "toml",
+]
+
+[[package]]
 name = "gororoba_engine"
 version = "0.1.0"
 dependencies = [

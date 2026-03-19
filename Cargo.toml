@@ -60,6 +60,7 @@ members = [
     "crates/verified_core", "crates/pathion_ellip",
     "crates/cr_transport",
     "crates/manga_experiments",
+    "crates/gororoba_db",
     "xtask",
 ]
 
