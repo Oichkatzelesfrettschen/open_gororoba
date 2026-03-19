@@ -125,7 +125,7 @@ The proposed mechanism — that inflation occurs in a spacetime with spectral di
 
 **Status:** Refuted.
 
-The F4 Lie algebra has a 26-dimensional representation (the minuscule representation of the adjoint action on the exceptional Jordan algebra h3(O)). Bosonic string theory requires D=26 for Weyl anomaly cancellation. The numerical equality is coincidental: the string critical dimension 26 = 25 + 1 (25 spatial + 1 time) has nothing to do with the F4 representation count. The coincidence audit (`docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`) confirmed no dynamical link.
+The F4 Lie algebra has a 26-dimensional representation (the minuscule representation of the adjoint action on the exceptional Jordan algebra h3(O)). Bosonic string theory requires D=26 for Weyl anomaly cancellation. The numerical equality is coincidental: the string critical dimension 26 = 25 + 1 (25 spatial + 1 time) has nothing to do with the F4 representation count. A dedicated coincidence audit confirmed no dynamical link.
 
 ---
 
