@@ -96,13 +96,13 @@
 //! ## Configuration Details
 //!
 //! ### Trigger Events
-//! ```yaml
+//! ```texttext
 //! on:
 //!   push:
 //!     branches: [ main, develop, "copilot/**" ]
 //!   pull_request:
 //!     branches: [ main, develop ]
-//! ```
+//! ```texttext
 //!
 //! **Why?** 
 //! - PRs to main/develop must pass CI
@@ -111,10 +111,10 @@
 //! - Feature branches only get CI on PR creation
 //!
 //! ### Python Version Strategy
-//! ```yaml
+//! ```texttext
 //! env:
 //!   PYTHON_VERSION: '3.11'
-//! ```
+//! ```texttext
 //!
 //! **Single version (3.11)** chosen for:
 //! - ✅ Latest stable with best performance
@@ -151,7 +151,7 @@
 //! ## Comparison: Old vs New
 //!
 //! ### Old Workflow (ci-old.yml.bak)
-//! ```
+//! ```texttext
 //! ├── 5 separate jobs (all parallel)
 //! ├── 15 dependency installations (3 duplicated per job)
 //! ├── Matrix: 3 Python versions × tests = 3 test runs
@@ -159,7 +159,7 @@
 //! ├── Bandit run twice (redundant)
 //! ├── `|| true` silencing failures
 //! └── ~12-15 minutes total
-//! ```
+//! ```texttext
 //!
 //! **Issues:**
 //! - Wasteful parallelization
@@ -168,7 +168,7 @@
 //! - No clear critical path
 //!
 //! ### New Workflow (ci.yml)
-//! ```
+//! ```texttext
 //! Stage 1: quality (fast fail)          [~3 min]
 //!          ↓
 //! Stage 2: security + test (parallel)   [~3-5 min]
@@ -178,7 +178,7 @@
 //! Stage 4: ci-success (status)          [~10 sec]
 //!
 //! Total: ~8-10 minutes (20-40% faster)
-//! ```
+//! ```texttext
 //!
 //! **Benefits:**
 //! - ✅ 20-40% faster execution
@@ -193,7 +193,7 @@
 //!
 //! Match CI behavior locally with Makefile:
 //!
-//! ```bash
+//! ```texttext
 //! # Full CI validation
 //! make all
 //!
@@ -204,36 +204,36 @@
 //! make security    # Stage 2a: security
 //! make test        # Stage 2b: tests
 //! make coverage    # Stage 2b: with coverage
-//! ```
+//! ```texttext
 //!
 //! ### Debugging CI Failures
 //!
 //! 1. **Quality stage fails:**
-//!    ```bash
+//!    ```texttext
 //!    make format  # Auto-fix formatting
 //!    make lint    # Check linting issues
 //!    make type-check  # Fix type errors
-//!    ```
+//!    ```texttext
 //!
 //! 2. **Security stage fails:**
-//!    ```bash
+//!    ```texttext
 //!    make security  # Run locally
 //!    # Review bandit-report.json
 //!    # Add # nosec comments if false positive
-//!    ```
+//!    ```texttext
 //!
 //! 3. **Test stage fails:**
-//!    ```bash
+//!    ```texttext
 //!    make test  # Run all tests
 //!    pytest tests/path/to/test.py -v  # Run specific test
 //!    make coverage  # Check coverage
-//!    ```
+//!    ```texttext
 //!
 //! 4. **Build stage fails:**
-//!    ```bash
+//!    ```texttext
 //!    python -m build  # Build locally
 //!    twine check dist/*  # Validate metadata
-//!    ```
+//!    ```texttext
 //!
 //! ## Maintenance
 //!
@@ -247,23 +247,23 @@
 //! 4. Test locally first
 //!
 //! Example:
-//! ```yaml
+//! ```texttext
 //! - name: Run MyNewTool
 //!   run: |
 //!     mynew-tool src/
-//! ```
+//! ```texttext
 //!
 //! ### Expanding Python Version Matrix
 //!
 //! If multi-version support needed:
 //!
-//! ```yaml
+//! ```texttext
 //! # In test job:
 //! strategy:
 //!   fail-fast: false
 //!   matrix:
 //!     python-version: ['3.9', '3.10', '3.11']
-//! ```
+//! ```texttext
 //!
 //! **Note:** This triples test time. Only do if necessary.
 //!
@@ -314,15 +314,15 @@
 //! The old workflow is backed up as `.github/workflows/ci-old.yml.bak`.
 //!
 //! **To revert:** 
-//! ```bash
+//! ```texttext
 //! mv .github/workflows/ci.yml .github/workflows/ci-new.yml.bak
 //! mv .github/workflows/ci-old.yml.bak .github/workflows/ci.yml
-//! ```
+//! ```texttext
 //!
 //! **To remove backup:**
-//! ```bash
+//! ```texttext
 //! rm .github/workflows/ci-old.yml.bak
-//! ```
+//! ```texttext
 //!
 //! ## Future Enhancements
 //!

@@ -13,14 +13,14 @@
 //!
 //! Command:
 //!
-//! ```bash
+//! ```texttext
 //! make x87-strategy-bench \
 //!   LEN=65536 \
 //!   REPEATS=5 \
 //!   WORKER_COUNTS=1,2,4,6 \
 //!   OUT=reports/benchmarks/x87_strategy_multicore_65536.csv \
 //!   SUMMARY=reports/benchmarks/x87_strategy_multicore_65536.md
-//! ```
+//! ```texttext
 //!
 //! The generated CSV and Markdown artifacts now embed the local run context
 //! (host, CPU model, repeat count, RNG seed, detected physical workers, worker

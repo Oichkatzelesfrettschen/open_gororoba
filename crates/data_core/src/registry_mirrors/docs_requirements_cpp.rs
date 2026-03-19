@@ -26,10 +26,10 @@
 //!
 //! ## Build (example)
 //!
-//! ```bash
+//! ```texttext
 //! make cpp-build
 //! make cpp-test
-//! ```
+//! ```texttext
 //!
 //! If Conan/CMake are missing, install them via your system package manager or via
 //! pipx, then retry.

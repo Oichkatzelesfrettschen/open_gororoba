@@ -11,7 +11,7 @@
 //! These three directories are the only active source and edit paths.
 //!
 //! ## Two-level ASCII map
-//! ```text
+//! ```texttext
 //! lambda_gororoba/
 //! +-- research/
 //! |   +-- admin/
@@ -46,7 +46,7 @@
 //!     +-- singular_structure_conflicts_<TS>.tsv
 //!     +-- singular_structure_dedupe_actions_<TS>.tsv
 //!     `-- singular_structure_duplicates_<TS>.tsv
-//! ```
+//! ```texttext
 //!
 //! ## Intake lane status
 //! - `merge_in/` is retired from active synchronization.

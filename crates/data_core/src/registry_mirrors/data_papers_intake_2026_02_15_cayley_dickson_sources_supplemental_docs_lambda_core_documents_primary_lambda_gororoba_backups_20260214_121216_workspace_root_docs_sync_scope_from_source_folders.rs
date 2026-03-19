@@ -4,7 +4,7 @@
 //! Define exactly what is synchronized in the singular repository now that root modules are authoritative.
 //!
 //! ## Two-level sync map
-//! ```text
+//! ```texttext
 //! root authoritative modules/
 //! |-- research/
 //! |   |-- active: docs/, implementations/, tests/, scripts/, requirements.md, README.md
@@ -19,7 +19,7 @@
 //! intake lane status/
 //! |-- merge_in/README.md
 //! `-- archive/intake_lane_retirement/<TS>/merge_in/
-//! ```
+//! ```texttext
 //!
 //! ## Root canonical files regenerated every singular reconciliation pass
 //! - `.gitignore`

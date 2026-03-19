@@ -81,7 +81,7 @@ fn main() {
 
     for (name, tau, force_amp) in &configs {
         let mut solver =
-            LbmSolver3DCuda::new(n, n, n, *tau, Precision::FP64).expect("GPU solver init failed");
+            LbmSolver3DCuda::new(n, n, n, *tau, Precision::FP32).expect("GPU solver init failed");
 
         // Apply Kolmogorov-like sinusoidal forcing
         let force_field: Vec<[f64; 3]> = (0..n_total)

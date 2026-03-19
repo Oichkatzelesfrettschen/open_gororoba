@@ -12,7 +12,7 @@
 //!
 //! ## Full Transcript
 //!
-//! ```text
+//! ```texttext
 //!                                     BOX-KITES III:
 //!
 //!                QUIZZICAL QUATERNIONS, MOCK OCTONIONS,
@@ -578,5 +578,5 @@
 //! [14] Steve Strogatz, Sync: The Emerging Science of Spontaneous Order, Hyperion,
 //!        New York, 2003.
 //!  
-//! ```
+//! ```texttext
 //!

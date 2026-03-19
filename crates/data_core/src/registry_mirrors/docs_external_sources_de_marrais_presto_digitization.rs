@@ -85,7 +85,7 @@
 //!
 //! ## Full Transcript
 //!
-//! ```text
+//! ```texttext
 //!                             Presto! Digitization: Part I
 //!                From NKS Number Theory to "XORbitant" Semantics,
 //!                       by way of Cayley-Dickson Process and
@@ -1757,5 +1757,5 @@
 //!      which fall on the long diagonals); redoubling for the same S and keeping the screen size constant would
 //!      thereby induce a doubling of the number of such lines (as well as new subdiagonals in quadrants, etc.).
 //!  
-//! ```
+//! ```texttext
 //!

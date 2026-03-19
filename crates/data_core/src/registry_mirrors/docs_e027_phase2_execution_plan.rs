@@ -31,7 +31,7 @@
 //!
 //! **Duration**: 4-5 GPU hours
 //! **Command**:
-//! ```bash
+//! ```texttext
 //! cd /home/eirikr/Github/open_gororoba
 //!
 //! # Create output directory
@@ -55,7 +55,7 @@
 //!     --verbose \
 //!     2>&1 | tee data/e027/lambda_sweep_phase2_128/lambda_${lambda}.log
 //! done
-//! ```
+//! ```texttext
 //!
 //! **Expected Runtime**:
 //! - Per run: 30-40 minutes (128^3 LBM + GPU percolation)
@@ -72,13 +72,13 @@
 //! 1. Parse all 8 TOML output files from `data/e027/lambda_sweep_phase2_128/`
 //! 2. Extract p-values, effect sizes, channel counts
 //! 3. Create summary table:
-//!    ```
+//!    ```texttext
 //!    Lambda | p-value | effect_size | n_channels | verdict
 //!    -------+---------+-------------+------------+---------
 //!    0.1    | ...     | ...         | ...        | ...
 //!    0.5    | ...     | ...         | ...        | ...
 //!    ...
-//!    ```
+//!    ```texttext
 //!
 //! **Decision Matrix**:
 //! - **SCENARIO A**: At least 1 lambda has p < 0.05 AND effect_size > 10%
@@ -95,7 +95,7 @@
 //! ### Day 3: Contingency Actions
 //!
 //! **If SCENARIO B** (escalate to 256^3):
-//! ```bash
+//! ```texttext
 //! # Sample 2 lambda values at 256^3
 //! for lambda in 1.0 5.0; do
 //!   cargo run --release --bin percolation-experiment -- \
@@ -106,7 +106,7 @@
 //!     --output-dir data/e027/lambda_sweep_phase2_256 \
 //!     --verbose
 //! done
-//! ```
+//! ```texttext
 //! **Runtime**: ~2 hours per run, 4 hours total
 //! **VRAM**: ~11GB (close to 12GB limit, monitor carefully)
 //!

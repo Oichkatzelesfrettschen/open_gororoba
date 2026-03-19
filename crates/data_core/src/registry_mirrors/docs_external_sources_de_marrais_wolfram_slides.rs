@@ -12,7 +12,7 @@
 //!
 //! ## Full Transcript
 //!
-//! ```text
+//! ```texttext
 //! The "Something From Nothing" Insertion Point: Where NKS Research
 //!  into Physics Foundations Can Expect the "Most Bang for the Buck"
 //!                       Robert de Marrais rdemarrais@alum.mit.edu
@@ -887,5 +887,5 @@
 //!    The caption on the graphic reads: "7 small octahedra inside a large octahedron when size ratio =3."
 //! 13 Rodrigo A. Obando, "Partitioning of Cellular Automata Rule Space," Complex Systems 14 (2003), 1-14.
 //!  
-//! ```
+//! ```texttext
 //!

@@ -263,11 +263,11 @@
 //! - Dependencies: Clearly stated
 //!
 //! **Search across all documents**:
-//! ```bash
+//! ```texttext
 //! grep -r "Photon-Graviton TCMT" /home/eirikr/Github/open_gororoba/docs/
 //! grep -r "q_grav" /home/eirikr/Github/open_gororoba/docs/
 //! grep -r "C-824" /home/eirikr/Github/open_gororoba/
-//! ```
+//! ```texttext
 //!
 //! ---
 //!
@@ -275,7 +275,7 @@
 //!
 //! All synthesis documents are in the project repository:
 //!
-//! ```
+//! ```texttext
 //! /home/eirikr/Github/open_gororoba/
 //!   docs/
 //!     TCMT_PHOTON_GRAVITON_SYNTHESIS.md  (24 KB, 10-part)
@@ -283,7 +283,7 @@
 //!     TCMT_SYNTHESIS_INDEX.md             (this file, navigation)
 //!   registry/
 //!     TCMT_IMPLEMENTATION_PLAN.toml       (6.8 KB, actionable)
-//! ```
+//! ```texttext
 //!
 //! ---
 //!

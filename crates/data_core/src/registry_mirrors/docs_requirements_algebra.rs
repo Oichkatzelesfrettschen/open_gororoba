@@ -8,11 +8,11 @@
 //! exercised by Rust unit and integration tests.
 //!
 //! Install:
-//! ```bash
+//! ```texttext
 //! make install
 //! make rust-smoke
 //! make rust-regression
-//! ```
+//! ```texttext
 //!
 //! Notes:
 //! - The core algebra replication/validation code depends only on the base install extras (NumPy/SciPy/SymPy/Numba).
@@ -63,7 +63,7 @@
 //!
 //! Recommended verification commands:
 //!
-//! ```bash
+//! ```texttext
 //! cargo +nightly test -p cd_kernel --lib
 //! cargo +nightly test -p algebra_analysis --lib x87_jacobi
 //! cargo +nightly test -p algebra_analysis --lib reference_jacobi
@@ -72,7 +72,7 @@
 //! cargo +nightly clippy -p cd_kernel -p algebra_analysis -p gororoba_cli_algebra --all-targets -- -D warnings
 //! make x87-strategy-bench LEN=65536 REPEATS=7 OUT=reports/benchmarks/x87_strategy_bench_smoke.csv SUMMARY=reports/benchmarks/x87_strategy_bench_smoke.md
 //! make jacobi-backend-sweep SIZES=4,8,16 REPEATS=3 OUT=reports/benchmarks/jacobi_backend_sweep_smoke.csv SUMMARY=reports/benchmarks/jacobi_backend_sweep_smoke.md
-//! ```
+//! ```texttext
 //!
 //! Current scope boundary:
 //!

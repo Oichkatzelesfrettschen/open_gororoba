@@ -6,7 +6,7 @@
 //!
 //! Command set:
 //!
-//! ```sh
+//! ```texttext
 //! cargo run -p gororoba_cli_data --bin registry-check -- \
 //!   --canonical-db registry/canonical/control_plane.sqlite3 \
 //!   --timings --compat-export-policy off
@@ -14,7 +14,7 @@
 //! cargo run -p gororoba_cli_data --bin registry-check -- \
 //!   --canonical-db registry/canonical/control_plane.sqlite3 \
 //!   --timings
-//! ```
+//! ```texttext
 //!
 //! ## Results
 //!
@@ -59,11 +59,11 @@
 //!
 //! Warm-run command set:
 //!
-//! ```sh
+//! ```texttext
 //! /usr/bin/time -p cargo run -p gororoba_cli_data --bin execution-planning -- --verify
 //! /usr/bin/time -p cargo run -p gororoba_cli_data --bin integrity-resolution -- --verify
 //! /usr/bin/time -p cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs
-//! ```
+//! ```texttext
 //!
 //! Warm-run wall times:
 //!

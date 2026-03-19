@@ -3883,6 +3883,23 @@ pub fn alumina_optical() -> DrudeLorentzParams {
     }
 }
 
+/// Tourmaline (Pink) optical model.
+/// Simple dispersion representation for the R3m space group crystal.
+pub fn tourmaline_optical() -> DrudeLorentzParams {
+    DrudeLorentzParams {
+        drude: None,
+        oscillators: vec![
+            LorentzOscillator {
+                strength: 1.5,
+                omega_0_ev: 6.0,
+                gamma_ev: 0.5,
+            },
+        ],
+        eps_inf: 2.5,
+        extended_drude: None,
+    }
+}
+
 /// Diamond (C) optical model (Palik 1998).
 pub fn diamond_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
@@ -5049,6 +5066,18 @@ pub fn get_material(name: &str) -> Option<MaterialEntry> {
             casimir_model: CasimirModelFlag::Lorentz,
             uniaxial: None,
         }),
+        "tourmaline" => Some(MaterialEntry {
+            name: "Tourmaline",
+            formula: "NaAl9(BO3)3Si6O21OH",
+            material_type: MaterialType::Dielectric,
+            optical: tourmaline_optical(),
+            reference: "Generic R3m",
+            validity_range_ev: Some((0.5, 4.0)),
+            temperature_k: Some(300.0),
+            doping_info: None,
+            casimir_model: CasimirModelFlag::Lorentz,
+            uniaxial: None,
+        }),
         "diamond" | "c_diamond" => Some(MaterialEntry {
             name: "Diamond",
             formula: "C",
@@ -5337,6 +5366,7 @@ pub fn list_materials() -> Vec<&'static str> {
         "Diamond (C)",
         "Quartz (SiO2 crystalline)",
         "Titanium Dioxide (TiO2)",
+        "Tourmaline",
         // Titanates
         "Titanium Monoxide (TiO)",
         "Strontium Titanate (SrTiO3)",
@@ -6247,8 +6277,8 @@ mod tests {
         let materials = list_materials();
         assert_eq!(
             materials.len(),
-            37,
-            "Database should have exactly 37 materials, got {}",
+            38,
+            "Database should have exactly 38 materials, got {}",
             materials.len()
         );
     }

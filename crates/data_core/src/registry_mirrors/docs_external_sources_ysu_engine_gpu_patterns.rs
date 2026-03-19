@@ -41,9 +41,9 @@
 //!
 //! The equilibrium distribution function for D3Q19 is:
 //!
-//! ```
+//! ```texttext
 //! f_eq[i] = W[i] * rho * (1.0 + c_dot_u / cs2 + c_dot_u^2 / (2*cs4) - u_sq / (2*cs2))
-//! ```
+//! ```texttext
 //!
 //! With cs2 = 1/3, the reciprocals become constants: inv_cs2 = 3.0, inv_2cs4 = 4.5,
 //! half_inv_cs2 = 1.5. This allows an algebraic rearrangement into a Horner-like FMA
@@ -51,22 +51,22 @@
 //!
 //! Current form (separate mul+add, ~6 FP operations per direction):
 //!
-//! ```c
+//! ```texttext
 //! float term1 = c_dot_u * 3.0f;
 //! float term2 = c_dot_u * c_dot_u * 4.5f;
 //! float term3 = u_sq * 1.5f;
 //! float bracket = 1.0f + term1 + term2 - term3;
 //! f_eq[i] = W[i] * rho * bracket;
-//! ```
+//! ```texttext
 //!
 //! FMA-optimized form (Horner-like, 3 FMA + 1 MUL):
 //!
-//! ```c
+//! ```texttext
 //! float base = fmaf(-u_sq, 1.5f, 1.0f);               // 1 FMA: 1.0 - u_sq * 1.5
 //! float poly = fmaf(fmaf(c_dot_u, 4.5f, 3.0f),         // 2 nested FMA
 //!                   c_dot_u, base);
 //! f_eq[i] = (W[i] * rho) * poly;                       // 1 MUL (w_rho precomputed)
-//! ```
+//! ```texttext
 //!
 //! This collapses from ~6 FP operations to 3 FMA + 1 MUL. At 4.54 cy per FFMA, the
 //! saving is approximately 2 FFMA cycles per direction per cell, which sums to 38
@@ -131,10 +131,10 @@
 //! In the Guo forcing kernel, add an early-exit check before the 19-iteration forcing
 //! loop:
 //!
-//! ```c
+//! ```texttext
 //! float force_mag = sqrtf(fx*fx + fy*fy + fz*fz);
 //! if (force_mag < FORCE_EPSILON) return;  // skip Guo source term
-//! ```
+//! ```texttext
 //!
 //! This avoids the 19-iteration Guo forcing loop for cells with negligible DM drag,
 //! saving approximately 19 * (2 FMA + 1 MUL) = ~95 FP operations per skipped cell.
