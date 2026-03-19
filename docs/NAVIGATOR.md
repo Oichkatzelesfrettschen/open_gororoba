@@ -107,7 +107,7 @@ SPDF/PDS-PPI → data_core parsers → OMNI-merged hourly CSV
 
 | Concept | Key claims | Code | Status |
 |---------|-----------|------|--------|
-| Spectral dimension running | C-039 | `src/spectral.rs` | Verified (toy) |
+| Spectral dimension running | C-039 | `crates/cosmology_core/src/spectral.rs` | Verified (toy) |
 | Exceptional cosmology (E8/F4) | C-035–C-041 | — | See below |
 | GWTC-3 BH mass multimodality | C-025 | `src/scripts/gwtc3_*.py` | Active |
 | CMB Planck constraints | — | `crates/cosmology_core/` | Active |
