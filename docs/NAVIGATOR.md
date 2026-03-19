@@ -27,10 +27,10 @@ The entire research programme rests on Cayley-Dickson algebra. All other layers 
 | 42 assessors / 7 box-kites | C-003, C-013 | `src/boxkites.rs`, `src/reggiani.rs` |
 | PSL(2,7) symmetry | C-004 | `src/boxkites.rs` |
 | Annihilator geometry (S³) | C-014 | `src/annihilator.rs` |
-| Hurwitz theorem | C-031 | `src/hurwitz.rs` |
-| Quantised gap (dim=16,32) | C-1137, C-1140 | `src/phase_transition.rs` |
-| ZD graph structure | C-1141 | `src/phase_transition.rs` |
-| XOR scatter-gather duality | C-1142 | `src/gpu/tensor_avt/` |
+| Hurwitz theorem | C-031 | `crates/algebra_analysis/src/hurwitz.rs` |
+| Quantised gap (dim=16,32) | C-1137, C-1140 | `crates/algebra_analysis/src/phase_transition.rs` |
+| ZD graph structure | C-1141 | `crates/algebra_analysis/src/phase_transition.rs` |
+| XOR scatter-gather duality | C-1142 | `crates/gororoba_algebra/src/gpu/tensor_avt/` |
 
 **Falsification threshold:** Any claim that requires sedenions to be associative or zero-divisor-free is automatically refuted (C-001, C-002 are Rocq-verified and not revisable).
 
