@@ -113,6 +113,19 @@ The report itself is candid and already states:
 
 That is exactly the correct status.
 
+One concrete pair is especially diagnostic:
+
+- `B1937+21` versus `J1713+0747`
+- `overlap_bins = 164`
+- `separation_deg = 37.729374742367`
+- `hellings_downs = 0.119748145966`
+- `avg_residual_pearson = -0.631273141590`
+- `avg_white_residual_pearson = 0.095854671539`
+
+That raw-to-white change is large. It shows that preprocessing and whitening materially
+change the pairwise residual surface, which is another reason the present AVT overlay must
+not be read as a substitute for a true PTA-likelihood analysis.
+
 ### 2.4 Timing-refit preflight lane
 
 The new timing-model tranche consists of:
@@ -142,6 +155,24 @@ Current report summary:
 - `unique_pulsar_count = 68`
 - `multi_solution_pulsar_count = 6`
 - phase-1 subset size `6`
+
+Current wideband binary-family census:
+
+- `BT = 1`
+- `DD = 25`
+- `DDK = 3`
+- `ELL1 = 24`
+- `ELL1H = 3`
+- `isolated = 20`
+
+Current phase-1 seed solutions:
+
+- `J1713+0747_PINT_20230131.wb`
+- `J1903+0327_PINT_20230131.wb`
+- `J2214+3000_PINT_20230131.wb`
+- `J0709+0458_PINT_20230131.wb`
+- `J1312+0051_PINT_20230131.wb`
+- `J2317+1439_PINT_20230131.wb`
 
 This is a real advance because future refit work needs typed model structure, not just
 directory traversal.
