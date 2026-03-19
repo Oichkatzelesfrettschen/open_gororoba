@@ -1,0 +1,92 @@
+[metadata]
+title = "NANOGrav Phase 1 timing refit pilot"
+root = "data/external/nanograv_15yr_timing/NANOGrav15yr_PulsarTiming_v2.1.0"
+scope_note = "This is a linearized release-around-solution pilot over released residual products and wideband DM estimates. It is a real WLS/GLS stacked fit, but not yet a full TOA timing engine with clock and ephemeris propagation."
+phase1_solution_count = 6
+residual_tolerance_days = 0.000000010000
+gls_corr_length_days = 120.000000
+gls_red_noise_fraction = 0.500000
+
+[[pulsar]]
+solution_id = "J1713+0747_PINT_20230131.wb"
+pulsar_id = "J1713+0747"
+matched_observations = 1461
+channel_rows_used = 12623
+wls_toa_rms_before_us = 0.507142488338
+wls_toa_rms_after_us = 0.496395779883
+gls_toa_rms_before_us = 0.507142488338
+gls_toa_rms_after_us = 0.496809544244
+wls_dm_rms_before = 0.013584249566
+wls_dm_rms_after = 0.013442560195
+gls_dm_rms_before = 0.013584249566
+gls_dm_rms_after = 0.013365611211
+
+[[pulsar]]
+solution_id = "J1903+0327_PINT_20230131.wb"
+pulsar_id = "J1903+0327"
+matched_observations = 224
+channel_rows_used = 2649
+wls_toa_rms_before_us = 5.079104506611
+wls_toa_rms_after_us = 4.549575132314
+gls_toa_rms_before_us = 5.079104506611
+gls_toa_rms_after_us = 4.417215142342
+wls_dm_rms_before = 0.039739927265
+wls_dm_rms_after = 0.036109480406
+gls_dm_rms_before = 0.039739927265
+gls_dm_rms_after = 0.035972565520
+
+[[pulsar]]
+solution_id = "J2214+3000_PINT_20230131.wb"
+pulsar_id = "J2214+3000"
+matched_observations = 270
+channel_rows_used = 2129
+wls_toa_rms_before_us = 3.936510613334
+wls_toa_rms_after_us = 3.934537212057
+gls_toa_rms_before_us = 3.936510613334
+gls_toa_rms_after_us = 3.935593552998
+wls_dm_rms_before = 0.018161840061
+wls_dm_rms_after = 0.017621962047
+gls_dm_rms_before = 0.018161840061
+gls_dm_rms_after = 0.017386453124
+
+[[pulsar]]
+solution_id = "J0709+0458_PINT_20230131.wb"
+pulsar_id = "J0709+0458"
+matched_observations = 68
+channel_rows_used = 113
+wls_toa_rms_before_us = 15.780131443478
+wls_toa_rms_after_us = 15.703197145965
+gls_toa_rms_before_us = 15.780131443478
+gls_toa_rms_after_us = 15.554733475840
+wls_dm_rms_before = 0.031434380381
+wls_dm_rms_after = 0.013756518097
+gls_dm_rms_before = 0.031434380381
+gls_dm_rms_after = 0.013763513752
+
+[[pulsar]]
+solution_id = "J1312+0051_PINT_20230131.wb"
+pulsar_id = "J1312+0051"
+matched_observations = 70
+channel_rows_used = 375
+wls_toa_rms_before_us = 5.856085252716
+wls_toa_rms_after_us = 5.885463652593
+gls_toa_rms_before_us = 5.856085252716
+gls_toa_rms_after_us = 5.873613352660
+wls_dm_rms_before = 0.010688833138
+wls_dm_rms_after = 0.007708666971
+gls_dm_rms_before = 0.010688833138
+gls_dm_rms_after = 0.007710032978
+
+[[pulsar]]
+solution_id = "J2317+1439_PINT_20230131.wb"
+pulsar_id = "J2317+1439"
+matched_observations = 632
+channel_rows_used = 4393
+wls_toa_rms_before_us = 1.947239042489
+wls_toa_rms_after_us = 1.942270766782
+gls_toa_rms_before_us = 1.947239042489
+gls_toa_rms_after_us = 1.944326468491
+wls_dm_rms_before = 0.001337519486
+wls_dm_rms_after = 0.001292485680
+gls_dm_rms_before = 0.001337519486
+gls_dm_rms_after = 0.001250645969
