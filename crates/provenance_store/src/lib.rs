@@ -2741,11 +2741,8 @@ impl ProvenanceStore {
         for row in rows {
             let (table, cat, legacy, status) = row?;
             let count: i64 = self
-                .conn
-                .query_row(&format!("SELECT count(*) FROM [{table}]"), [], |r| {
-                    r.get(0)
-                })
-                .unwrap_or(0);
+                .table_row_count(&table)
+                .with_context(|| format!("failed to get row count for table `{table}`"))?;
             out.push((table, cat, count, format!("{legacy}|{status}")));
         }
         Ok(out)
