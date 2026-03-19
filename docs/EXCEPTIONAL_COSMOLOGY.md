@@ -70,7 +70,7 @@ Numerical study showed that the clustering coefficient does *not* converge to ex
 
 **Status:** Refuted (`proofs/verified/C037_EpsilonNotGamma.v`).
 
-The three quantities are numerically close (γ ≈ 0.2375, ε = 0.25, 4λ_GB ≈ 0.22–0.27) but the equality is not universal. A dedicated numerical coincidence audit (`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`) established that:
+The three quantities are numerically close (γ ≈ 0.2375, ε = 0.25, 4λ_GB ≈ 0.22–0.27) but the equality is not universal. A dedicated numerical coincidence audit established that:
 
 1. γ is determined by LQG area spectrum quantisation, not by exceptional algebra.
 2. The Gauss–Bonnet coupling λ_GB is a free parameter in modified gravity, not fixed by F4.
