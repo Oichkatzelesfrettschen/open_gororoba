@@ -1,0 +1,158 @@
+//! # Control Plane Reader/Writer Inventory
+//!
+//! Date: 2026-03-13
+//!
+//! ## Summary
+//!
+//! This inventory captures the remaining operational readers and writers of
+//! legacy Markdown/TOML compatibility surfaces after the SQLite-first migration
+//! of claims, insights, experiments, binaries, and theorems.
+//!
+//! Interpretation:
+//!
+//! - `DB-first`: runtime already prefers `registry/canonical/control_plane.sqlite3`
+//! - `compat-fallback`: runtime prefers SQLite but still falls back to exported
+//!   TOML/Markdown when the DB is unavailable
+//! - `legacy/bootstrap`: retained only for import, recovery, or generated-web
+//!   compatibility
+//! - `toml-first`: still operationally TOML-first and not yet migrated
+//!
+//! ## Legacy Markdown Readers
+//!
+//! ### `docs/CLAIMS_EVIDENCE_MATRIX.md`
+//!
+//! - `crates/gororoba_cli/src/claims/verify.rs`
+//!   Status: `compat-fallback`
+//!   Notes: DB-first when possible; markdown mirror retained as fallback.
+//! - `crates/gororoba_cli_data/src/bin/claims_verify.rs`
+//!   Status: `compat-fallback`
+//!   Notes: CLI flag still exposes the legacy path, but canonical DB is preferred.
+//! - `crates/gororoba_cli_data/src/bin/claims_audit.rs`
+//!   Status: `compat-fallback`
+//!   Notes: now renders live claim rows from the canonical DB when available.
+//! - `crates/gororoba_cli_data/src/bin/knowledge_atoms.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: still keeps a live-matrix fallback path and should be migrated further.
+//! - `crates/data_core/src/doc_links.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: still encodes matrix path primacy in link extraction.
+//! - `crates/gororoba_cli_data/src/bin/markdown_registry.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: bootstrap mode still reads the markdown mirror by design.
+//! - `crates/gororoba_cli_data/src/bin/migrate_claims.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: explicitly relabeled as recovery/import only.
+//!
+//! ### `docs/INSIGHTS.md`
+//!
+//! - `crates/gororoba_cli_data/src/bin/markdown_registry.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: bootstrap mode only.
+//! - `crates/gororoba_cli_data/src/bin/migrate_insights.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: explicitly relabeled as recovery/import only.
+//!
+//! ### `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md`
+//!
+//! - `crates/gororoba_cli_data/src/bin/markdown_registry.rs`
+//!   Status: `legacy/bootstrap`
+//!   Notes: bootstrap mode only.
+//!
+//! ## Compatibility TOML Readers
+//!
+//! ### `registry/claims.toml`
+//!
+//! - `integrity_resolution.rs`
+//!   Status: `toml-first`
+//! - `evidence_provenance.rs`
+//!   Status: `toml-first`
+//! - `artifact_scrolls.rs`
+//!   Status: `compat-fallback`
+//! - `semantic_atoms.rs`
+//!   Status: `compat-fallback`
+//! - `project_counter_sync.rs`
+//!   Status: `compat-fallback`
+//! - `provenance.rs`
+//!   Status: `legacy/bootstrap and export`
+//! - `registry_emit.rs`
+//!   Status: `compat-fallback`
+//!
+//! ### `registry/insights.toml`
+//!
+//! - `integrity_resolution.rs`
+//!   Status: `toml-first`
+//! - `project_counter_sync.rs`
+//!   Status: `compat-fallback`
+//! - `provenance.rs`
+//!   Status: `legacy/bootstrap and export`
+//! - `registry_emit.rs`
+//!   Status: `compat-fallback`
+//!
+//! ### `registry/experiments.toml`
+//!
+//! - `execution_planning.rs`
+//!   Status: `db-first for canonical path`
+//!   Notes: canonical path writes now sync through the DB.
+//! - `integrity_resolution.rs`
+//!   Status: `toml-first`
+//! - `governance_verify.rs`
+//!   Status: `compat-fallback`
+//! - `project_counter_sync.rs`
+//!   Status: `compat-fallback`
+//! - `provenance.rs`
+//!   Status: `legacy/bootstrap and export`
+//! - `registry_emit.rs`
+//!   Status: `compat-fallback`
+//!
+//! ### `registry/binaries.toml`
+//!
+//! - `execution_planning.rs`
+//!   Status: `compat-fallback`
+//! - `project_counter_sync.rs`
+//!   Status: `compat-fallback`
+//! - `provenance.rs`
+//!   Status: `legacy/bootstrap and export`
+//! - `registry_check.rs`
+//!   Status: `compat-fallback`
+//!   Notes: authoritative inventory is cross-checked against Cargo target discovery.
+//!
+//! ## Operational Writers To Inventory Carefully
+//!
+//! ### `registry/claims.toml`
+//!
+//! - `claims_consolidate.rs`
+//!   Status: `db-synced writer`
+//!   Notes: canonical-path writes reindex and re-export through the DB.
+//! - `provenance.rs`
+//!   Status: `export writer`
+//! - `migrate_claims.rs`
+//!   Status: `legacy/bootstrap writer`
+//!
+//! ### `registry/insights.toml`
+//!
+//! - `provenance.rs`
+//!   Status: `export writer`
+//! - `migrate_insights.rs`
+//!   Status: `legacy/bootstrap writer`
+//!
+//! ### `registry/experiments.toml`
+//!
+//! - `execution_planning.rs`
+//!   Status: `db-synced writer`
+//! - `provenance.rs`
+//!   Status: `export writer`
+//!
+//! ### `registry/binaries.toml`
+//!
+//! - `provenance.rs`
+//!   Status: `export writer`
+//!
+//! ## Recommended Next Targets
+//!
+//! 1. Migrate `knowledge_atoms.rs` live-matrix fallback to the canonical DB seam.
+//! 2. Migrate `integrity_resolution.rs` off direct TOML-first reads for the
+//!    migrated lanes.
+//! 3. Migrate `evidence_provenance.rs` off direct claim TOML reads.
+//! 4. Publish the migrated-lane and compatibility-export inventories in mdBook so
+//!    contributors can discover the canonical boundaries without source spelunking.
+//!

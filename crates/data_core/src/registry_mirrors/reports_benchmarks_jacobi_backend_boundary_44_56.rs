@@ -1,0 +1,74 @@
+//! # Jacobi Backend Sweep
+//!
+//! | family | size | default policy | fastest successful backend | lowest max abs error |
+//! | --- | ---: | --- | --- | --- |
+//! | clustered_pairs | 44 | reference_f64 | reference_f64 | x87 |
+//! | clustered_pairs | 48 | reference_f64 | reference_f64 | reference_f64 |
+//! | clustered_pairs | 52 | reference_f64 | reference_f64 | reference_f64 |
+//! | clustered_pairs | 56 | reference_f64 | reference_f64 | reference_f64 |
+//! | geometric_decay | 44 | reference_f64 | reference_f64 | x87 |
+//! | geometric_decay | 48 | reference_f64 | reference_f64 | x87 |
+//! | geometric_decay | 52 | reference_f64 | reference_f64 | reference_f64 |
+//! | geometric_decay | 56 | reference_f64 | reference_f64 | x87 |
+//! | known_spectrum | 44 | reference_f64 | reference_f64 | x87 |
+//! | known_spectrum | 48 | reference_f64 | reference_f64 | x87 |
+//! | known_spectrum | 52 | reference_f64 | reference_f64 | x87 |
+//! | known_spectrum | 56 | reference_f64 | reference_f64 | x87 |
+//! | spiked_tail | 44 | reference_f64 | reference_f64 | x87 |
+//! | spiked_tail | 48 | reference_f64 | reference_f64 | x87 |
+//! | spiked_tail | 52 | reference_f64 | reference_f64 | double_double |
+//! | spiked_tail | 56 | reference_f64 | reference_f64 | x87 |
+//!
+//! ## Rows
+//!
+//! | family | size | backend | status | selected | median ns | max abs error | rms abs error |
+//! | --- | ---: | --- | --- | --- | ---: | ---: | ---: |
+//! | known_spectrum | 44 | reference_f64 | ok | true | 2020956 | 9.237056e-14 | 2.569569e-14 |
+//! | known_spectrum | 44 | double_double | ok | false | 3129010 | 1.278977e-13 | 3.626344e-14 |
+//! | known_spectrum | 44 | x87 | ok | false | 2203707 | 5.684342e-14 | 2.285089e-14 |
+//! | known_spectrum | 48 | reference_f64 | ok | true | 2792295 | 1.278977e-13 | 3.429182e-14 |
+//! | known_spectrum | 48 | double_double | ok | false | 4162382 | 1.136868e-13 | 4.021394e-14 |
+//! | known_spectrum | 48 | x87 | ok | false | 3031988 | 7.105427e-14 | 2.752753e-14 |
+//! | known_spectrum | 52 | reference_f64 | ok | true | 3836328 | 9.947598e-14 | 3.893638e-14 |
+//! | known_spectrum | 52 | double_double | ok | false | 5464509 | 1.350031e-13 | 5.088185e-14 |
+//! | known_spectrum | 52 | x87 | ok | false | 4063371 | 8.526513e-14 | 2.776961e-14 |
+//! | known_spectrum | 56 | reference_f64 | ok | true | 5162775 | 1.136868e-13 | 3.958641e-14 |
+//! | known_spectrum | 56 | double_double | ok | false | 7138339 | 1.492140e-13 | 5.494045e-14 |
+//! | known_spectrum | 56 | x87 | ok | false | 5436108 | 9.947598e-14 | 3.060105e-14 |
+//! | clustered_pairs | 44 | reference_f64 | ok | true | 2038145 | 4.263256e-14 | 1.416220e-14 |
+//! | clustered_pairs | 44 | double_double | ok | false | 3082919 | 1.314504e-13 | 4.014251e-14 |
+//! | clustered_pairs | 44 | x87 | ok | false | 2172947 | 3.197442e-14 | 9.709966e-15 |
+//! | clustered_pairs | 48 | reference_f64 | ok | true | 2886566 | 4.973799e-14 | 1.815198e-14 |
+//! | clustered_pairs | 48 | double_double | ok | false | 4117072 | 2.451372e-13 | 5.772514e-14 |
+//! | clustered_pairs | 48 | x87 | ok | false | 2978727 | 7.105427e-14 | 1.643168e-14 |
+//! | clustered_pairs | 52 | reference_f64 | ok | true | 3936890 | 9.592327e-14 | 2.556988e-14 |
+//! | clustered_pairs | 52 | double_double | ok | false | 5424067 | 2.309264e-13 | 5.658635e-14 |
+//! | clustered_pairs | 52 | x87 | ok | false | 4028851 | 1.278977e-13 | 2.816718e-14 |
+//! | clustered_pairs | 56 | reference_f64 | ok | true | 5342526 | 6.394885e-14 | 2.055815e-14 |
+//! | clustered_pairs | 56 | double_double | ok | false | 7095889 | 1.811884e-13 | 5.055974e-14 |
+//! | clustered_pairs | 56 | x87 | ok | false | 5376017 | 1.136868e-13 | 2.422651e-14 |
+//! | geometric_decay | 44 | reference_f64 | ok | true | 2750164 | 1.443290e-15 | 2.450226e-16 |
+//! | geometric_decay | 44 | double_double | ok | false | 4475126 | 2.775558e-15 | 6.087852e-16 |
+//! | geometric_decay | 44 | x87 | ok | false | 3005907 | 1.332268e-15 | 2.231324e-16 |
+//! | geometric_decay | 48 | reference_f64 | ok | true | 3532494 | 1.110223e-15 | 2.124276e-16 |
+//! | geometric_decay | 48 | double_double | ok | false | 5577490 | 4.329870e-15 | 7.363554e-16 |
+//! | geometric_decay | 48 | x87 | ok | false | 3902759 | 5.551115e-16 | 1.194086e-16 |
+//! | geometric_decay | 52 | reference_f64 | ok | true | 4893881 | 1.110223e-15 | 1.916401e-16 |
+//! | geometric_decay | 52 | double_double | ok | false | 7323251 | 1.498801e-15 | 3.417219e-16 |
+//! | geometric_decay | 52 | x87 | ok | false | 5248046 | 1.554312e-15 | 2.278670e-16 |
+//! | geometric_decay | 56 | reference_f64 | ok | true | 6484911 | 1.387779e-15 | 2.700173e-16 |
+//! | geometric_decay | 56 | double_double | ok | false | 9278506 | 3.241540e-14 | 5.319609e-15 |
+//! | geometric_decay | 56 | x87 | ok | false | 6853906 | 8.881784e-16 | 1.676844e-16 |
+//! | spiked_tail | 44 | reference_f64 | ok | true | 1881063 | 2.842171e-14 | 4.545190e-15 |
+//! | spiked_tail | 44 | double_double | ok | false | 3077628 | 7.105427e-14 | 1.092434e-14 |
+//! | spiked_tail | 44 | x87 | ok | false | 2172487 | 7.105427e-15 | 1.340388e-15 |
+//! | spiked_tail | 48 | reference_f64 | ok | true | 2687323 | 9.237056e-14 | 1.580536e-14 |
+//! | spiked_tail | 48 | double_double | ok | false | 4162532 | 8.526513e-14 | 1.268859e-14 |
+//! | spiked_tail | 48 | x87 | ok | false | 3023548 | 2.842171e-14 | 4.734974e-15 |
+//! | spiked_tail | 52 | reference_f64 | ok | true | 3695906 | 8.526513e-14 | 1.240797e-14 |
+//! | spiked_tail | 52 | double_double | ok | false | 5446538 | 4.263256e-14 | 8.258995e-15 |
+//! | spiked_tail | 52 | x87 | ok | false | 4043251 | 4.973799e-14 | 7.006840e-15 |
+//! | spiked_tail | 56 | reference_f64 | ok | true | 4974952 | 4.973799e-14 | 8.920106e-15 |
+//! | spiked_tail | 56 | double_double | ok | false | 7073528 | 1.065814e-13 | 1.455600e-14 |
+//! | spiked_tail | 56 | x87 | ok | false | 5336267 | 3.907985e-14 | 6.880157e-15 |
+//!

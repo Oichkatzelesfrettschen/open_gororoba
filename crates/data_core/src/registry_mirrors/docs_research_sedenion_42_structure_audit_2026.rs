@@ -1,0 +1,169 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/research_narratives.toml -->
+//!
+//! # Sedenion 42-Structure: Algebraic Fact vs Physical Speculation
+//!
+//! **Date**: 2026-03-12 (Sprint 83)
+//! **Claims**: C-1308 through C-1314
+//! **Insight**: I-157
+//!
+//! ## Abstract
+//!
+//! The number 42 is genuinely structural in sedenion (16D Cayley-Dickson) algebra:
+//! 42 primitive assessors, 7 box-kites, eigenvalue degeneracy 42 in the 84x84
+//! partner graph, and a 42:14 face census in the octahedral structure. Claims
+//! extending this algebraic fact to DM cross-sections, RNG seeds, or heliosphere
+//! constants are not supported by the codebase.
+//!
+//! This document separates verified algebraic structure from overstated physical
+//! connections, registers 7 new claims (C-1308..C-1314), and describes the new
+//! `harmonic_halos` module that implements the SKA (2030) Harmonic Halos prediction.
+//!
+//! ---
+//!
+//! ## 1. Algebraic Structure (VERIFIED)
+//!
+//! ### 42 Assessors and 7 Box-Kites
+//!
+//! An **assessor** is a pair (low, high) with low in {1..7} and high in {8..15},
+//! representing a 2-plane of sedenion zero-divisors. Filtering out identity pairs
+//! and the e_8 axis gives exactly **42 primitive assessors** (de Marrais 2000).
+//!
+//! These 42 assessors partition into **7 box-kites**, each an octahedral structure
+//! with 6 vertices, 12 edges, and 3 struts. Each box-kite has a unique "missing"
+//! octonion index (strut signature 1..7).
+//!
+//! **Code**: `crates/algebra_analysis/src/boxkites.rs`
+//! **Claims**: C-003, C-010
+//!
+//! ### Partner Graph Spectrum
+//!
+//! The 84x84 Reggiani partner adjacency matrix (formed from all ZD pairs, not just
+//! primitive assessors) has spectrum {-4, -2, 0, +2, +4} with degeneracies
+//! {7, 14, 42, 14, 7}. The **degeneracy-42 at eigenvalue 0** is a flat-band
+//! analog: half of all ZD linear combinations lie in the kernel. This 42 equals
+//! |primitive assessors| by construction.
+//!
+//! **Code**: `crates/algebra_analysis/src/reggiani.rs`
+//! **Claims**: C-1254, C-1255, C-1309
+//!
+//! ### A-infinity Bridge
+//!
+//! The `SedenionAInfinity` construction (C-611) builds m_2 from the CD product
+//! and m_3 from the CD associator. This resolves non-associativity of the gravastar
+//! stress-energy tensor (C-614, C-615). However, the construction is
+//! **dimension-agnostic**: it works at any CD dimension >= 16. The 42/84 ZD count
+//! is a property of the underlying algebra, not of the A-infinity maps.
+//!
+//! **Code**: `crates/algebra_analysis/src/homotopy_algebra.rs`
+//! **Claim**: C-1310
+//!
+//! ---
+//!
+//! ## 2. Debunked or Overstated Connections
+//!
+//! ### sigma_chi_b = 1e-42 (NOT Structural)
+//!
+//! The DM-baryon cross-section `sigma_chi_b = 1e-42 cm^2` in `dm_force.rs` is a
+//! **test fixture value**. The default is 0.0 (gravity only, drag disabled). Other
+//! tests use 1e-40 and 1e-45. The appearance of "42" in the exponent is
+//! coincidental -- it has no connection to sedenion assessors.
+//!
+//! **Code**: `crates/lbm_3d/src/dm_force.rs` (lines 1036, 877, 901, default 120)
+//! **Claim**: C-1308
+//!
+//! ### seed=42 Outlier (NOT Structural)
+//!
+//! `ChaCha8Rng` with seed=42 produces a ~3-sigma low outlier in spin tomography
+//! P_rec statistics. The codebase explicitly documents this (event_gen.rs:200) and
+//! uses seed=0 instead. The number 42 has no physics or algebraic significance here.
+//!
+//! **Code**: `crates/spin_tomography_core/src/event_gen.rs` (line 200)
+//! **Claim**: C-1311
+//!
+//! ### 1764 = 42^2 (NOT Present)
+//!
+//! No occurrence of 1764 was found anywhere in the codebase. The claim that 42^2
+//! appears in physics calculations is not supported.
+//!
+//! ### Heliosphere Constants (NOT Present)
+//!
+//! No 42-based constants exist in the solar wind / heliosphere simulation code.
+//! The claim of "deep-seated structural reliance" on 42 in heliosphere simulations
+//! has no codebase support.
+//!
+//! ---
+//!
+//! ## 3. Harmonic Halos: From Proposal to Implementation
+//!
+//! ### Prior State
+//!
+//! The SKA (2030) "Harmonic Halos" prediction existed only as a text proposal in
+//! `docs/research/high_dimensional_algebra_unification_2026.md:40`. No rotation
+//! curve computation or harmonic decomposition code existed.
+//!
+//! **Claim**: C-1312
+//!
+//! ### Implementation
+//!
+//! New module: `crates/cosmology_core/src/harmonic_halos.rs`
+//!
+//! **Physics**: The 7 box-kite strut signatures (1..7) define 7 harmonic modes:
+//!
+//!     v_circ(r) = v_nfw(r) * sqrt(1 + alpha_zd * SUM_{n=1}^{7} a_n * cos(k_n*r + phi_n) * exp(-r/r_s))
+//!
+//! where:
+//! - k_n = 2*pi*n / (7 * r_s) -- box-kite wavenumber
+//! - a_n = (42/84) * (1/n) -- amplitude from assessor fraction with 1/n falloff
+//! - phi_n = 2*pi*n / 7 -- strut-derived phase offset
+//! - alpha_zd -- forcing strength (0 = standard NFW, typical 0.001-0.1)
+//!
+//! At alpha_zd = 0, standard NFW is recovered **exactly**.
+//!
+//! **Claim**: C-1313
+//!
+//! ### Galaxy Pipeline Integration
+//!
+//! The ad-hoc exponential ZD forcing in `galaxy_pipeline.rs` (former lines 321-354)
+//! has been replaced with `harmonic_halo_force_modulation()`. The `GalaxyPipelineConfig`
+//! gains a `halo_n_modes` field (default 7). At alpha_zd=0, the force field is
+//! unchanged (modulation factor = 1.0 everywhere).
+//!
+//! **Claim**: C-1314
+//!
+//! ### Falsifiability
+//!
+//! This is an entirely falsifiable prediction. If SKA 2030 observational data
+//! reveals harmonic modulations in dark matter rotation curves at the specific
+//! wavenumbers k_n = 2*pi*n / (7 * r_s), it provides evidence for D=16 zero-divisor
+//! structure at galactic scales. Conversely, absence of modulations at the predicted
+//! wavenumbers with alpha_zd > 0.001 would constrain or refute the hypothesis.
+//!
+//! ### Binary
+//!
+//! `harmonic-halo-rotation-curve` -- computes v_circ(r) with/without modulation.
+//! Outputs CSV: r_kpc, v_circ_nfw, v_circ_halo, modulation_factor, delta_v_percent.
+//!
+//! ---
+//!
+//! ## 4. Claim Registry Summary
+//!
+//! | ID | Statement (abbreviated) | Status |
+//! |----|-------------------------|--------|
+//! | C-1308 | sigma_chi_b = 1e-42 is test fixture, not structural | Verified |
+//! | C-1309 | Partner graph eigenvalue 0 has degeneracy 42 = assessor count | Verified |
+//! | C-1310 | A-infinity bridge is dimension-agnostic (not 42-specific) | Verified |
+//! | C-1311 | seed=42 is documented 3-sigma outlier, not physics | Verified |
+//! | C-1312 | Harmonic Halos was proposal-only, now implemented | Active |
+//! | C-1313 | 7-mode harmonic halo v_circ modulation formula | Active |
+//! | C-1314 | Galaxy pipeline ZD forcing uses harmonic halo modulation | Active |
+//!
+//! ---
+//!
+//! ## References
+//!
+//! - de Marrais (2000): arXiv:math/0011260 ("The 42 Assessors")
+//! - Reggiani (2024): partner graph spectrum analysis
+//! - Dutton & Maccio (2014): MNRAS 441, 3359 (NFW concentration-mass relation)
+//! - Navarro, Frenk & White (1997): ApJ 490, 493 (NFW profile)
+//!

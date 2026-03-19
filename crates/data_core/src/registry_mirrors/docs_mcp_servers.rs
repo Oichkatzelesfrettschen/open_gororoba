@@ -1,0 +1,47 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/docs_root_narratives.toml -->
+//!
+//! # MCP Servers for open_gororoba
+//!
+//! `registry/mcp_server_matrix.toml` is the canonical inventory that codifies which MCP servers we trust for deterministic repository work, and it is the file that `make mcp-smoke` target read when they validate parity across Codex, Gemini, Claude, and Copilot clients. This short reference makes it easier to remember what counts as baseline, what we only bring up on demand, and where the client-specific configs live.
+//!
+//! ## Baseline (always-on)
+//! These servers are marked as `critical` in the matrix and must be enabled everywhere we expect consistent local operations:
+//!
+//! - `filesystem`
+//! - `git`
+//! - `ripgrep`
+//! - `rust`
+//! - `rust-docs`
+//! - `github`
+//! - `time`
+//!
+//! These seven servers are the minimum footprint that `make mcp-smoke` expects (`pass` list currently has 25 servers, so the script gets exercised for the baseline plus the recommended cluster). Keep them on before running cargo/registry-only checks.
+//!
+//! ## On-demand (recommended + optional)
+//! The matrix also tracks a cluster of recommended servers that we add when the workflow benefits from them, plus optional helpers that we can enable for research-specific tooling:
+//!
+//! - Recommended: `arxiv`, `context7`, `sqlite`, `playwright`, `puppeteer`, `semgrep`, `dotfiles-orchestrator`
+//! - Optional helpers: `python`, `chrome-devtools`, `desktop-commander`, `markitdown`, `bash`, `memory`, `file-finder`, `ollama`, `math`
+//!
+//! The on-demand group is enabled when the runtime is stable in your client; the smoke verifier records a `FAIL` for servers like `containers`, `fetch`, `postgres`, `shell`, and `youtube-transcript` so we know not to rely on those until the transports are healthy.
+//!
+//! ## Client configuration files
+//! These configs are the local home files the matrix polls to build the cross-client inventory (see `clients/{codex,claude,gemini}` in the file for the exact path list).
+//!
+//! | Client  | File(s) | Notes |
+//! | Codex   | `~/.codex/config.toml`, `~/.codex/mcp-config.json` | Primary + secondary to keep Codex parity with the other clients. |
+//! | Claude  | `~/.claude/.mcp.json` | Claude CLI/Desktop both read this; the `reports/claude_dotfiles_gap_audit_2026_02_14.toml` audit flagged drift between the home tree and repo-local copies. |
+//! | Gemini  | `~/.gemini/settings.json` | The leaner Gemini runtime mirrors the same set of MCP names after the MCP skills audit. |
+//!
+//! Treat these files as home-level references only; updates should happen via the matrix or the audit process, not by random manual edits. (The audit also copies servers to `~/.codex/mcp-config.json` when cross-client sync is required.)
+//!
+//! ## Verifying and expanding
+//! - Run `make mcp-smoke`  to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`.
+//! - New servers should follow the `mcp_expansion_targets` and `candidate_servers_*` guidance sections at the bottom of the matrix file; only promote them when the smoke verifier turns `PASS` for the new name.
+//!
+//! ## Related context
+//! - `registry/agents_contract.toml` reminds us to treat MCP as a model-agnostic control plane and prefer MCP Git/GitHub over shell fallbacks.
+//! - The MCP skills audit captured in `registry/knowledge/docs/DOC-0122.toml` (source markdown: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`) explains how the MCP configs were harmonized across Codex, Gemini, Copilot, and Claude.
+//! - `reports/claude_dotfiles_gap_audit_2026_02_14.toml` suggested adding a repo-local notes file; this page satisfies that suggestion in a lightweight way that points back to the canonical data.
+//!

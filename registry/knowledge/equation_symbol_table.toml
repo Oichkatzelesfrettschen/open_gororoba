@@ -6011,8 +6011,8 @@ example_equation_ids = ["EQA2-00044"]
 
 [[symbol]]
 id = "SYM-0668"
-symbol = "python3"
-normalized_symbol = "python3"
+symbol = "cargo run --release --bin"
+normalized_symbol = "cargo run --release --bin"
 category = "identifier"
 usage_count = 1
 source_uids = ["DRN-008"]

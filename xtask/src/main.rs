@@ -1151,14 +1151,14 @@ fn run_db_docs(check_only: bool) -> Result<()> {
         check_only,
     )?;
     write_or_check(
-        &repo_root.join("docs/db/catalog.md"),
-        &outputs.catalog_md,
+        &repo_root.join("crates/data_core/src/registry_mirrors/db_catalog.rs"),
+        &outputs.catalog_rs,
         check_only,
     )?;
     if check_only {
         println!("db-docs OK: generated schema artifacts match committed files");
     } else {
-        println!("db-docs OK: regenerated db/schema.sql docs/db/schema.json docs/db/catalog.md");
+        println!("db-docs OK: regenerated db/schema.sql docs/db/schema.json crates/data_core/src/registry_mirrors/db_catalog.rs");
     }
     Ok(())
 }
@@ -1574,7 +1574,7 @@ fn run_local_nextest_command(
 struct GeneratedSchemaOutputs {
     schema_sql: String,
     schema_json: String,
-    catalog_md: String,
+    catalog_rs: String,
 }
 
 fn generate_schema_outputs(repo_root: &Path) -> Result<GeneratedSchemaOutputs> {
@@ -1589,12 +1589,12 @@ fn generate_schema_outputs(repo_root: &Path) -> Result<GeneratedSchemaOutputs> {
     let schema_sql = render_schema_sql(&conn)?;
     let snapshot = introspect_schema(&conn)?;
     let schema_json = serde_json::to_string_pretty(&snapshot)?;
-    let catalog_md = render_catalog_markdown(&snapshot);
+    let catalog_rs = render_catalog_rustdoc(&snapshot);
     let _ = repo_root;
     Ok(GeneratedSchemaOutputs {
         schema_sql,
         schema_json,
-        catalog_md,
+        catalog_rs,
     })
 }
 
@@ -1780,7 +1780,23 @@ fn schema_index_columns(conn: &Connection, index_name: &str) -> Result<Vec<Schem
     Ok(columns)
 }
 
-fn render_catalog_markdown(snapshot: &SchemaSnapshot) -> String {
+
+fn render_catalog_rustdoc(snapshot: &SchemaSnapshot) -> String {
+    let raw = render_catalog_markdown_raw(snapshot);
+    let mut rustdoc = String::new();
+    for line in raw.lines() {
+        if line.is_empty() {
+            rustdoc.push_str("//!\n");
+        } else {
+            rustdoc.push_str("//! ");
+            rustdoc.push_str(line);
+            rustdoc.push('\n');
+        }
+    }
+    rustdoc
+}
+
+fn render_catalog_markdown_raw(snapshot: &SchemaSnapshot) -> String {
     let mut out = String::new();
     out.push_str("<!-- AUTO-GENERATED: DO NOT EDIT -->\n");
     out.push_str("<!-- Source of truth: db/schema.sql -->\n");

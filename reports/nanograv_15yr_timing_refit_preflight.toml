@@ -1,0 +1,45 @@
+[metadata]
+title = "NANOGrav timing refit preflight"
+root = "data/external/nanograv_15yr_timing/NANOGrav15yr_PulsarTiming_v2.1.0"
+band = "wideband"
+scope_note = "This lane inventories typed .par timing-model structure for solver planning. It is a refit preflight, not a TOA refit or regenerated-residual solution."
+solution_count = 76
+unique_pulsar_count = 68
+multi_solution_pulsar_count = 6
+phase1_subset_count = 6
+family_bt_count = 1
+family_dd_count = 25
+family_ddk_count = 3
+family_ell1_count = 24
+family_ell1h_count = 3
+family_isolated_count = 20
+
+[[phase1_subset]]
+solution_id = "J1713+0747_PINT_20230131.wb"
+pulsar_id = "J1713+0747"
+reason = "scout_anchor_highest_toa"
+
+[[phase1_subset]]
+solution_id = "J1903+0327_PINT_20230131.wb"
+pulsar_id = "J1903+0327"
+reason = "scout_anchor_largest_dmx_scatter"
+
+[[phase1_subset]]
+solution_id = "J2214+3000_PINT_20230131.wb"
+pulsar_id = "J2214+3000"
+reason = "scout_anchor_largest_wideband_dm_scatter"
+
+[[phase1_subset]]
+solution_id = "J0709+0458_PINT_20230131.wb"
+pulsar_id = "J0709+0458"
+reason = "scout_anchor_largest_full_residual_rms"
+
+[[phase1_subset]]
+solution_id = "J1312+0051_PINT_20230131.wb"
+pulsar_id = "J1312+0051"
+reason = "family_representative_bt"
+
+[[phase1_subset]]
+solution_id = "J2317+1439_PINT_20230131.wb"
+pulsar_id = "J2317+1439"
+reason = "family_representative_ell1h"

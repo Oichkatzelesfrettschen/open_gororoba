@@ -1,0 +1,34 @@
+//! # Jacobi Backend Sweep
+//!
+//! | family | size | default policy | fastest successful backend | lowest max abs error |
+//! | --- | ---: | --- | --- | --- |
+//! | quantized_obstruction_graph | 64 | reference_f64 | reference_f64 | double_double |
+//! | quantized_obstruction_graph | 68 | x87 | reference_f64 | double_double |
+//! | quantized_obstruction_graph | 72 | x87 | reference_f64 | double_double |
+//! | quantized_shell_permutation | 64 | reference_f64 | reference_f64 | double_double |
+//! | quantized_shell_permutation | 68 | x87 | x87 | double_double |
+//! | quantized_shell_permutation | 72 | x87 | x87 | double_double |
+//!
+//! ## Rows
+//!
+//! | family | size | backend | status | selected | median ns | max abs error | rms abs error |
+//! | --- | ---: | --- | --- | --- | ---: | ---: | ---: |
+//! | quantized_obstruction_graph | 64 | reference_f64 | ok | true | 5394012 | 2.501110e-12 | 4.669548e-13 |
+//! | quantized_obstruction_graph | 64 | double_double | ok | false | 12478060 | 1.818989e-12 | 3.000480e-13 |
+//! | quantized_obstruction_graph | 64 | x87 | ok | false | 7219939 | 4.320100e-12 | 7.017269e-13 |
+//! | quantized_obstruction_graph | 68 | reference_f64 | ok | false | 6867068 | 7.275958e-12 | 1.060665e-12 |
+//! | quantized_obstruction_graph | 68 | double_double | ok | false | 15464082 | 2.273737e-12 | 3.730509e-13 |
+//! | quantized_obstruction_graph | 68 | x87 | ok | true | 9114787 | 5.456968e-12 | 7.302605e-13 |
+//! | quantized_obstruction_graph | 72 | reference_f64 | ok | false | 8379404 | 4.547474e-12 | 6.995806e-13 |
+//! | quantized_obstruction_graph | 72 | double_double | ok | false | 18457263 | 2.046363e-12 | 4.487002e-13 |
+//! | quantized_obstruction_graph | 72 | x87 | ok | true | 11001564 | 6.366463e-12 | 8.052544e-13 |
+//! | quantized_shell_permutation | 64 | reference_f64 | ok | true | 12157289 | 2.046363e-11 | 2.656281e-12 |
+//! | quantized_shell_permutation | 64 | double_double | ok | false | 27065358 | 5.911716e-12 | 9.214256e-13 |
+//! | quantized_shell_permutation | 64 | x87 | ok | false | 12158249 | 8.640200e-12 | 1.224063e-12 |
+//! | quantized_shell_permutation | 68 | reference_f64 | ok | false | 15905194 | 1.000444e-11 | 1.430133e-12 |
+//! | quantized_shell_permutation | 68 | double_double | ok | false | 34310408 | 2.501110e-12 | 4.988404e-13 |
+//! | quantized_shell_permutation | 68 | x87 | ok | true | 15410272 | 4.547474e-12 | 8.473760e-13 |
+//! | quantized_shell_permutation | 72 | reference_f64 | ok | false | 19524638 | 5.456968e-12 | 9.147254e-13 |
+//! | quantized_shell_permutation | 72 | double_double | ok | false | 42881362 | 1.591616e-12 | 3.782693e-13 |
+//! | quantized_shell_permutation | 72 | x87 | ok | true | 19099827 | 4.774847e-12 | 8.638815e-13 |
+//!

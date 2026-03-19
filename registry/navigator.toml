@@ -104,7 +104,7 @@ summary = "Unified simulation trajectory connecting vacuum and matter generation
 [[section.link]]
 label = "Genesis Simulation Command"
 path = "src/genesis_simulation.py"
-notes = "Run with PYTHONWARNINGS=error venv/bin/python3 src/genesis_simulation.py."
+notes = "Run with PYTHONWARNINGS=error venv/crates/data_core/src/catalogs."
 hypothesis = true
 
 [[section.link]]

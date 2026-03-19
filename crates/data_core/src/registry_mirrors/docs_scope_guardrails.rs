@@ -1,0 +1,215 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/docs_root_narratives.toml -->
+//!
+//! # Scope Guardrails: What open_gororoba Does and Does Not Claim
+//!
+//! This document prevents external tools (LLMs, summarizers, search engines) from
+//! generating false claims about this project's scope. Every assertion below is
+//! verified against the codebase and TOML registries as of 2026-02-17.
+//!
+//! ## Purpose
+//!
+//! An external LLM-generated answer attributed several physics claims to this
+//! repository that the repository does NOT make. This document is the
+//! authoritative reference for what the project computes, what it claims, and
+//! what it explicitly does not claim.
+//!
+//! ## 1. Vacuum Attractor F = 3/8
+//!
+//! ### What IS implemented
+//!
+//! `crates/sign_imbalance/src/bridge.rs:357`:
+//! ```rust
+//! pub const IMBALANCE_ATTRACTOR: f64 = 3.0 / 8.0;
+//! ```
+//!
+//! Six coupling models map frustration -> kinematic viscosity (m^2/s):
+//!
+//! | Model | Formula | Output |
+//! |-------|---------|--------|
+//! | Exponential | nu = nu_base * exp(-lambda*(F-3/8)^2) | m^2/s |
+//! | Linear | nu = nu_base * (1 + alpha*(F-3/8)) | m^2/s |
+//! | PowerLaw | nu = nu_base * abs(F-3/8)^n | m^2/s |
+//! | Sigmoid | nu_low + (nu_high-nu_low) / (1+exp(-k*(F-f_c))) | m^2/s |
+//! | Constant | nu = nu_base (null hypothesis) | m^2/s |
+//! | KuboResponse | nu = nu_base * g(f/f_cd) via 21-pt lookup table | m^2/s |
+//!
+//! Claims C-678..C-681 (claims_atoms.toml) record:
+//! - C-678: Drude weight onset catastrophe -- **Established**
+//! - C-679: g(3/8) = 83.4x enhancement -- **Established**
+//! - C-680: g(1.0) = 216x upper bound -- **Established**
+//! - C-681: KuboResponse 21-pt lookup table -- **Established**
+//!
+//! All outputs are kinematic viscosity or dimensionless transport ratios.
+//!
+//! ### What is NOT implemented
+//!
+//! - Vacuum energy density rho_vac (J/m^3): ABSENT
+//! - Cosmological constant Lambda (m^-2): ABSENT
+//! - Stress-energy tensor T_mu_nu from frustration: ABSENT
+//! - Any output in gravitational units: ABSENT
+//! - No connection between sign_imbalance and cosmology_core crates
+//!
+//! ### FALSE claim: "Frustration resolves the cosmological constant problem"
+//!
+//! The bridge outputs nu (m^2/s), which feeds the LBM Chapman-Enskog stress
+//! tensor for fluid simulations. This is an internal effective parameter, not
+//! a cosmological observable.
+//!
+//! ---
+//!
+//! ## 2. Yukawa Potentials
+//!
+//! ### What IS implemented
+//!
+//! Nothing. Repo-wide search for "Yukawa", "yukawa", "soft-core",
+//! "form factor", any potential of form exp(-mu*r)/r: ZERO implementations.
+//!
+//! The word "Yukawa" appears only in:
+//! - C-084 ("Yukawa-like symmetry breaking"): explicitly marked **Refuted**
+//! - docs/CLAIMS_EVIDENCE_MATRIX.md: Yukawa COUPLINGS context (SM), not potentials
+//!
+//! The word "screened" appears only in optical context:
+//! - screened_plasma_ev() in optical_database.rs (Re[eps]=0 crossing)
+//! - screening_ratio() for bare/screened plasma frequency comparison
+//!
+//! What the repo DOES have in frequency space:
+//! - Drude-Lorentz dielectric functions (omega-space)
+//! - Kramers-Kronig transforms on imaginary axis
+//! - Casimir via Matsubara summation + Gauss-Legendre quadrature
+//!
+//! None of these are r-space potentials.
+//!
+//! ### FALSE claim: "Yukawa screening cures vacuum divergences"
+//!
+//! The repo contains no spatial potentials of any kind.
+//!
+//! ---
+//!
+//! ## 3. Dark Energy Models -- Tested and Refuted
+//!
+//! The repo tested multiple dark energy alternatives and honestly recorded
+//! their failure against observational data:
+//!
+//! | Claim | Model | Result | Status |
+//! |-------|-------|--------|--------|
+//! | C-012 | Neg-dim dark energy (w=-5/6) | Lambda-CDM wins (dAIC=+11.6, dBIC=+11.6) | REFUTED |
+//! | C-430 | NegDim expansion history | Physics model rejected per C-012 | CLOSED/REFUTED |
+//! | C-441 | Bounce cosmology | Lambda-CDM simpler adequate model (dBIC=+6.37) | VERIFIED (claim that bounce IS disfavored) |
+//!
+//! Evidence:
+//! - CTASK-0018 (claims_tasks.toml): status_token = "REFUTED" for C-012
+//! - CTASK-0023 (claims_tasks.toml): status_token = "DONE" (refutation executed)
+//!
+//! ### FALSE claim: "The repo resolves the cosmological constant problem"
+//!
+//! The repo does not claim to resolve it. It tested three alternatives and
+//! recorded their failure.
+//!
+//! ---
+//!
+//! ## 4. QED Renormalization
+//!
+//! ### What IS implemented
+//!
+//! The word "renormalization" appears in:
+//! - Null geodesic constraint preservation (gr_core/null_constraint.rs)
+//! - Billiard simulation floating-point normalization (CURRENT::CRATE gororoba_algebra (LEGACY::CRATE algebra_core))
+//! - GPE/MERA wavefunction normalization (quantum_core)
+//! - Drude weight "kinetic energy renormalization" (transport context)
+//!
+//! tang_mass computations: lepton mass RATIOS from CD associator norms
+//! (algebraic structure), NOT QED loop integrals.
+//!
+//! photon_graviton.rs: one-loop photon-graviton mixing amplitude estimate
+//! (~10^-20 suppression factor), NOT electron self-energy or vacuum polarization.
+//!
+//! ### What is NOT implemented
+//!
+//! - QED loop integrals (electron self-energy, vacuum polarization)
+//! - Running couplings or RG flow
+//! - Counterterms or bare/dressed mass distinction
+//! - Any claim that renormalization is "unnecessary"
+//!
+//! ### FALSE claim: "No renormalization needed, therefore no infinite vacuum energy"
+//!
+//! The repo makes no claims about QED renormalization being unnecessary.
+//!
+//! ---
+//!
+//! ## 5. Cosmology Modules -- Actual Scope
+//!
+//! `crates/gr_core/src/cosmology_algebra_bridge.rs` (418 lines):
+//! - Standard FLRW metric (Redshift, FLRWMetric, FriedmannSolver)
+//! - Lambda-CDM / Quintessence / Phantom dark energy models
+//! - Comoving distance, luminosity distance, Hubble parameter H(z)
+//! - NO frustration coupling anywhere in this module
+//!
+//! `crates/cosmology_core/src/flrw.rs`:
+//! - Standard Friedmann equations for hypothesis testing
+//! - Joint SN Ia + BAO fitting infrastructure
+//! - NO connection to sign_imbalance crate
+//!
+//! Grep for "frustration" in both modules: ZERO matches.
+//!
+//! ---
+//!
+//! ## 6. Provenance Architecture
+//!
+//! The repo implements a three-layer truth table:
+//!
+//! | Layer | What it records | Example |
+//! |-------|----------------|---------|
+//! | Registry (TOML) | Claims with status tracking | C-012 REFUTED, C-679 Established |
+//! | Code (Rust) | Actual computations with typed I/O | bridge.rs: f64 -> f64 (m^2/s) |
+//! | Ingest (papers) | External papers as motivation | J&C 1972, Rakic 1998 |
+//!
+//! Anti-hallucination properties:
+//! 1. Pre-registered claims with explicit PASS/FAIL criteria
+//! 2. Negative results preserved (REFUTED claims not deleted)
+//! 3. Status normalization: 16 raw tokens -> 11 canonical via claims-consolidate
+//! 4. Unit discipline: bridge outputs typed (m^2/s), not ambiguous
+//! 5. Thesis scoping: Theses 1-4 address fluids/topology/algebra, NOT cosmology
+//!
+//! Source of truth hierarchy: claims_atoms.toml > claims.toml > any .md mirror
+//!
+//! ---
+//!
+//! ## 7. Summary Truth Table
+//!
+//! | Question | Answer |
+//! |----------|--------|
+//! | Does the repo resolve the cosmological constant problem? | **No.** |
+//! | Does the repo CLAIM to resolve it? | **No.** |
+//! | Does the repo implement Yukawa potentials? | **No.** |
+//! | Does the repo claim "no renormalization needed"? | **No.** |
+//! | Does the repo implement a vacuum attractor? | **Yes** -- as transport parameter (nu), not Lambda. |
+//! | Did the repo test dark energy models? | **Yes** -- C-012, C-430, C-441, all refuted/disfavored. |
+//! | Is the repo epistemically disciplined? | **Yes** -- pre-registered claims, negative results preserved. |
+//!
+//! ---
+//!
+//! ## 8. What a Real Lambda Claim Would Require
+//!
+//! If the project ever pursues a cosmological constant claim, this chain
+//! must be implemented and verified:
+//!
+//! 1. Define vacuum energy: T_mu_nu(vac) or effective action with frustration field
+//! 2. Show cancellation mechanism: how non-associativity modifies vacuum state
+//! 3. Predict rho_Lambda in physical units: target (few x 10^-3 eV)^4
+//! 4. Demonstrate radiative stability (not fine-tuning in a new costume)
+//! 5. Connect to cosmology: derive H(z), test against Pantheon+/DESI/CMB
+//!
+//! Each claim must be pre-registered with PASS/FAIL criteria before computation.
+//!
+//! ---
+//!
+//! ## Citation
+//!
+//! This document was produced by a sensor-fusion audit (2026-02-17) that
+//! cross-validated an external LLM-generated answer against three codebase
+//! layers (registry, code, ingest). The audit found that all false claims
+//! originated in the external answer, not in the repository.
+//!
+//! Registry: I-087 (Sensor-Fusion Audit: Cosmological Constant Claims)
+//!

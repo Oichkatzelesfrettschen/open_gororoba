@@ -2310,7 +2310,7 @@ experiment_id = "E-128"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 scripts/cross_validate_bartol_amda.py --start 1990 --end 1995"
+run_command = "cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995"
 run_command_sha256 = "6a5839d1ebe7a1d5f48b8649ea7a4a0d339d1028ca8545137b3522b6f52fd35f"
 claim_refs = ["C-1177", "C-1181"]
 input_path_refs = ["data/external/voyager/voyager2/bartol/vy2_90.dat", "data/external/voyager/voyager2/vy2_"]
@@ -2319,7 +2319,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 scripts/cross_validate_bartol_amda.py --start 1990 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -2328,7 +2328,7 @@ experiment_id = "E-129"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_pioneer.py --spacecraft p10 --source amda --start 1972 --end 1995"
+run_command = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --pioneer --spacecraft p10 --source amda --start 1972 --end 1995"
 run_command_sha256 = "829a7cedcb4700b144e2af5214ebe667b31d9e46356441cb46753b9a60c3f247"
 claim_refs = ["C-1178"]
 input_path_refs = ["data/external/pioneer/pioneer10/p10_"]
@@ -2337,7 +2337,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_pioneer.py --spacecraft p10 --source amda --start 1972 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --pioneer --spacecraft p10 --source amda --start 1972 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -2346,7 +2346,7 @@ experiment_id = "E-130"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_psp.py --source amda --start 2022 --end 2022"
+run_command = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --psp"
 run_command_sha256 = "f6ca790c011992255d93c53ebd978d022e94cc9dcc3625260d3c1b7cb9bf6339"
 claim_refs = ["C-1179"]
 input_path_refs = ["data/external/psp/psp_2022_amda_merged.asc"]
@@ -2355,7 +2355,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_psp.py --source amda --start 2022 --end 2022", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --psp", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -2364,7 +2364,7 @@ experiment_id = "E-131"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_helios.py --spacecraft helios1 --source amda --start 1976 --end 1980"
+run_command = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --helios --spacecraft helios1 --source amda --start 1976 --end 1980"
 run_command_sha256 = "fe9d78c8980f3cf264694f1cc6b2941adb51522132ab7d899a87e5838151f4fb"
 claim_refs = ["C-1180"]
 input_path_refs = ["data/external/helios/helios1/helios1_", "data/external/voyager/voyager2/vy2_"]
@@ -2373,7 +2373,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_helios.py --spacecraft helios1 --source amda --start 1976 --end 1980", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --helios --spacecraft helios1 --source amda --start 1976 --end 1980", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -2382,7 +2382,7 @@ experiment_id = "E-132"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_ulysses.py --source amda --start 1994 --end 1995"
+run_command = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --ulysses --source amda --start 1994 --end 1995"
 run_command_sha256 = "b2745269dd727f07b6760cfefc7fa312efd7705bc4010daae370a6ac91ebdadc"
 claim_refs = ["C-1184"]
 input_path_refs = ["data/external/ulysses/uly_1994_amda_merged_hourly.asc", "data/external/ulysses/uly_1994_merged_hourly.asc"]
@@ -2391,7 +2391,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_ulysses.py --source amda --start 1994 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --ulysses --source amda --start 1994 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -2400,7 +2400,7 @@ experiment_id = "E-133"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_juno.py --source amda --start 2013 --end 2015"
+run_command = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --juno --source amda --start 2013 --end 2015"
 run_command_sha256 = "6801dc1f594786c388d0f84b7c84ef38a5f9b8f5cc96542fe832d478fbef18cd"
 claim_refs = ["C-1185"]
 input_path_refs = ["data/external/juno/juno_2013_amda_merged_hourly.asc"]
@@ -2409,7 +2409,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_juno.py --source amda --start 2013 --end 2015", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --juno --source amda --start 2013 --end 2015", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -2418,7 +2418,7 @@ experiment_id = "E-134"
 binary = ""
 deterministic = true
 gpu = false
-run_command = "python3 bin/fetch_wind.py --source amda --start 2024 --end 2024"
+run_command = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --wind --source amda --start 2024 --end 2024"
 run_command_sha256 = "cf0f8df3ae1c2e7317fbee06dedfe8041806ef885b4a0d45f74f2b62641ac888"
 claim_refs = ["C-1186"]
 input_path_refs = ["data/external/omni2/omni2_2024.dat", "data/external/wind/wind_2024_amda_merged_hourly.asc"]
@@ -2427,7 +2427,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "python3 bin/fetch_wind.py --source amda --start 2024 --end 2024", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --wind --source amda --start 2024 --end 2024", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]

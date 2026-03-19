@@ -70,6 +70,12 @@ struct Args {
 
     #[arg(long)]
     gpu: bool,
+
+    #[arg(long)]
+    mjd_start: Option<f64>,
+
+    #[arg(long)]
+    mjd_end: Option<f64>,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, ValueEnum)]
@@ -296,7 +302,7 @@ fn prepare_pulsars(
     let mut packed_vectors = Vec::new();
 
     for (name, data) in release {
-        let residuals = residual_series(data, args.surface);
+        let residuals = residual_series(data, args);
         if residuals.is_empty() {
             continue;
         }
@@ -782,8 +788,8 @@ fn rotate_frustrations(pulsars: &[PulsarProjection], shift: usize) -> Vec<Pulsar
         .collect()
 }
 
-fn residual_series(data: &PulsarTimingData, surface: ResidualSurface) -> Vec<f64> {
-    let points = match surface {
+fn residual_series(data: &PulsarTimingData, args: &Args) -> Vec<f64> {
+    let points = match args.surface {
         ResidualSurface::Avg => &data.avg_residuals,
         ResidualSurface::Full => {
             if data.full_residuals.is_empty() {
@@ -793,7 +799,23 @@ fn residual_series(data: &PulsarTimingData, surface: ResidualSurface) -> Vec<f64
             }
         }
     };
-    points.iter().map(|p| p.residual_us).collect()
+    points
+        .iter()
+        .filter(|p| {
+            if let Some(start) = args.mjd_start {
+                if p.mjd < start {
+                    return false;
+                }
+            }
+            if let Some(end) = args.mjd_end {
+                if p.mjd > end {
+                    return false;
+                }
+            }
+            true
+        })
+        .map(|p| p.residual_us)
+        .collect()
 }
 
 fn zscore(values: &[f64]) -> Vec<f64> {

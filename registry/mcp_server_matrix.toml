@@ -297,7 +297,7 @@ youtube_transcript_get_transcript = "FAIL_LIST_TRANSCRIPTS_ATTR_MISSING"
 
 [smoke_result]
 checked_utc = "2026-02-16T01:56:18Z"
-command = "PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py"
+command = "PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py"
 pass = [
   "filesystem",
   "git",

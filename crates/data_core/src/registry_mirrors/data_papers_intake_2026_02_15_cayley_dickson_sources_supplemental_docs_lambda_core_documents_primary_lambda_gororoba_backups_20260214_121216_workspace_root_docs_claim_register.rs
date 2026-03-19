@@ -1,0 +1,24 @@
+//! # Claim Register
+//!
+//! ## Purpose
+//! Track top-level operational claims with deterministic verification commands and current evidence.
+//!
+//! Primary verifier:
+//! - `bash scripts/verify_top_level_claims.sh`
+//! - Latest report: `docs/top_level_claims_latest.md`
+//! - Latest table: `docs/top_level_claims_latest.tsv`
+//!
+//! | Claim | Evidence source | Verification command | Expected result | Status | Action |
+//! |---|---|---|---|---|---|
+//! | Intake clone lane is retired and archived for singular root operation. | `docs/top_level_claims_latest.tsv` (`C01`), `archive/intake_lane_retirement/` | `bash scripts/verify_top_level_claims.sh` | `C01=pass` | Done | Keep checked on each sync pass. |
+//! | Singular module trees (`research/`, `experiments/`, `learner/`) are populated. | `docs/top_level_claims_latest.tsv` (`C02`) | `bash scripts/verify_top_level_claims.sh` | `C02=pass` | Done | Keep checked on each sync pass. |
+//! | Legacy unified lane is retired from active `src/` and archived. | `docs/top_level_claims_latest.tsv` (`C03`), `logs/legacy_lane_retirement_20260213_220437.md` | `bash scripts/verify_top_level_claims.sh` | `C03=pass` | Done | Keep archive pointer current. |
+//! | Sync defaults are singular-first (`RUN_SYNTHESIS=0`, `RUN_SINGULAR_MERGE=1`). | `docs/top_level_claims_latest.tsv` (`C04`) | `bash scripts/verify_top_level_claims.sh` | `C04=pass` | Done | Re-check after script edits. |
+//! | Latest sync audit shows legacy synthesis disabled and singular merge active. | `docs/top_level_claims_latest.tsv` (`C05`) | `bash scripts/verify_top_level_claims.sh` | `C05=pass` | Done | Keep checked on each sync pass. |
+//! | Latest reproducibility profile completes without failures. | `docs/top_level_claims_latest.tsv` (`C06`) | `bash scripts/verify_top_level_claims.sh` | `C06=pass` | Done | Keep checked on each sync pass. |
+//! | Python threading policy has zero non-compliant files in active singular modules. | `docs/top_level_claims_latest.tsv` (`C07`), `docs/python_multithreading_policy_latest.tsv` | `bash scripts/verify_python_multithreading_policy.sh` | `non_compliant=0` | Done | Keep exemptions review active. |
+//! | Canonical root artifacts (`.gitignore`, `README.md`, `LICENSE`, `requirements.md`) exist. | `docs/top_level_claims_latest.tsv` (`C08`) | `bash scripts/verify_top_level_claims.sh` | `C08=pass` | Done | Keep checked on each sync pass. |
+//! | Sync pipeline includes claims + visual verification by default. | `docs/top_level_claims_latest.tsv` (`C09`), `scripts/sync_and_audit_workspace.sh` | `bash scripts/verify_top_level_claims.sh` | `C09=pass` | Done | Keep checked after pipeline edits. |
+//! | Dark infographic artifact set exists (`png`, `svg`, `md`). | `docs/top_level_claims_latest.tsv` (`C10`), `docs/visuals/` | `bash scripts/verify_top_level_claims.sh` | `C10=pass` | Done | Keep checked on each visual update. |
+//! | Module `LICENSE` files are symlinked to root `LICENSE` after singular merge. | `docs/top_level_claims_latest.tsv` (`C11`), `research/LICENSE`, `experiments/LICENSE`, `learner/LICENSE` | `bash scripts/verify_top_level_claims.sh` | `C11=pass` | Done | Keep checked after each merge pass. |
+//!

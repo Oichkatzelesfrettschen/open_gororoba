@@ -1,0 +1,14 @@
+//! # Jacobi Backend Sweep
+//!
+//! | family | size | workload class | default policy | fastest successful backend | lowest max abs error |
+//! | --- | ---: | --- | --- | --- | --- |
+//! | quantized_obstruction_graph | 8 | obstruction_structured | reference_f64 | x87 | double_double |
+//!
+//! ## Rows
+//!
+//! | family | size | workload | backend | status | selected | symmetric | nonnegative | zero_diag | zero_modes | quantized | equitable | median ns | max abs error | rms abs error |
+//! | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: |
+//! | quantized_obstruction_graph | 8 | obstruction_structured | double_double | ok | false | true | true | true | true | true | false | 36360 | 2.842171e-13 | 1.106486e-13 |
+//! | quantized_obstruction_graph | 8 | obstruction_structured | reference_f64 | ok | true | true | true | true | true | true | false | 15910 | 6.252776e-13 | 2.318537e-13 |
+//! | quantized_obstruction_graph | 8 | obstruction_structured | x87 | ok | false | true | true | true | true | true | false | 13230 | 3.979039e-13 | 1.492563e-13 |
+//!

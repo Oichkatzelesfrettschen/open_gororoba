@@ -1,0 +1,55 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/research_narratives.toml -->
+//!
+//! # Warp Ring Physics: Topological Viscosity & Reynolds Independence
+//!
+//! ## 1. Theoretical Framework
+//!
+//! The **Warp Ring** hypothesis posits that a 3D vortex ring can be stabilized against turbulent decay by coupling its vorticity field to a high-dimensional algebraic structure (specifically, the root system of the E7 Lie algebra). This coupling introduces a "topological viscosity" that selectively dissipates small-scale noise while preserving macroscopic coherence.
+//!
+//! ### 1.1. The Frustration Field
+//! In the `open_gororoba` simulation, the standard Navier-Stokes equations are augmented with a frustration term derived from spectral triads:
+//!
+//! $$
+//! \partial_t \mathbf{u} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{F}_{algebra}
+//! $$
+//!
+//! Where $\mathbf{F}_{algebra}$ acts as a spectral filter that preferentially dampens modes that do not align with the E7 root lattice symmetries.
+//!
+//! ### 1.2. Topological Precursors (Experiment C)
+//! Experiment C investigates the relationship between:
+//! 1.  **Enstrophy ($\Omega$):** The integral of vorticity squared, $\Omega = \int |\omega|^2 dV$. In decaying turbulence, this typically follows a power law $\Omega \sim t^{-\alpha}$.
+//! 2.  **Betti Numbers ($b_1$):** A topological invariant counting the number of 1-dimensional holes (vortex loops) in the flow.
+//!
+//! **Hypothesis:** As the flow decays, the Betti-1 number ($b_1$) will exhibit discrete "steps" or stable plateaus corresponding to persistent vortex structures (Warp Rings), deviating from the smooth statistical decay of Enstrophy.
+//!
+//! ## 2. Experimental Design (Reynolds Independence)
+//!
+//! To verify that the observed topological stabilization is a physical property of the "Warp" mechanism and not a numerical artifact, we conduct a **Reynolds Independence Study**.
+//!
+//! ### 2.1. Grid Scaling
+//! We simulate the same initial conditions (scaled appropriately) across multiple grid resolutions:
+//! - **$8^3$**: Fast, low-Re baseline (effectively high numerical viscosity).
+//! - **$16^3$**: Intermediate regime.
+//! - **$32^3$**: High-Re regime.
+//! - **$64^3$**: Production run (already verified).
+//!
+//! ### 2.2. Metric: Decay Rate Comparison
+//! If the Warp Ring physics is robust (Reynolds Independent), the **decay rate** of the dimensionless Enstrophy (normalized by initial Enstrophy) should converge to a universal curve as the grid resolution (Reynolds number) increases.
+//!
+//! $$
+//! \frac{\Omega(t)}{\Omega(0)} \sim f(t/T_{eddy})
+//! $$
+//!
+//! Divergence at low resolutions indicates numerical dissipation dominating the topological effect.
+//!
+//! ## 3. Implementation Details
+//!
+//! - **Solver:** GPU-accelerated LBM (D3Q19) via `lbm_3d_cuda`.
+//! - **Spectral Analysis:** 3D FFT (via `rustfft` on CPU fallback or host-side processing) to extract dominant triads.
+//! - **Topology:** Persistent Homology (Vietoris-Rips on spectral triads) to compute $b_1$.
+//!
+//! ## 4. Current Status
+//! - **64^3 Run:** Completed. Shows strong decay ($10^{-5} \to 10^{-11}$). 
+//! - **Scaling Sweep:** Currently running ($8^3, 16^3, 32^3$) to establish the Reynolds independence baseline.
+//!

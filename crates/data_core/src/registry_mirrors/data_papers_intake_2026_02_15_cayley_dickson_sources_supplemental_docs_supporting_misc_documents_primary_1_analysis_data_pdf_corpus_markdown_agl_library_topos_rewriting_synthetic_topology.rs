@@ -1,0 +1,2074 @@
+//! # Extracted text: synthetic_topology.pdf
+//!
+//! - source_root: `/home/eirikr/Documents/AGL_Library/Topos_Rewriting_Documentation`
+//! - source_relpath: `synthetic_topology.pdf`
+//! - source_abs: `/home/eirikr/Documents/AGL_Library/Topos_Rewriting_Documentation/synthetic_topology.pdf`
+//! - detected_kind: `pdf`
+//! - extracted_at_utc: `2026-01-02T17:31:45+00:00`
+//! - pages: `23`
+//! - title: ``
+//! - author: ``
+//! - subject: ``
+//! - keywords: ``
+//! - creation_date: `Wed Sep  8 19:55:34 2021 PDT`
+//! - mod_date: `Wed Sep  8 19:55:34 2021 PDT`
+//! - encrypted: `no`
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+//! Parallel Physics-Informed Neural Networks via Domain Decomposition
+//! Khemraj Shukla, Ameya D. Jagtap, George Em Karniadakis∗
+//! Division of Applied Mathematics, Brown University, 182 George Street, Providence, RI 02912, USA
+//!
+//! arXiv:2104.10013v3 [cs.DC] 8 Sep 2021
+//!
+//! Abstract
+//! We develop a distributed framework for the physics-informed neural networks (PINNs) based on two recent extensions, namely conservative PINNs (cPINNs) and extended PINNs (XPINNs), which employ domain decomposition
+//! in space and in time-space, respectively. This domain decomposition endows cPINNs and XPINNs with several
+//! advantages over the vanilla PINNs, such as parallelization capacity, large representation capacity, efficient hyperparameter tuning, and is particularly effective for multi-scale and multi-physics problems. Here, we present a parallel
+//! algorithm for cPINNs and XPINNs constructed with a hybrid programming model described by MPI + X, where X
+//! ∈ {CPUs, GPUs}. The main advantage of cPINN and XPINN over the more classical data and model parallel approaches is the flexibility of optimizing all hyperparameters of each neural network separately in each subdomain.
+//! We compare the performance of distributed cPINNs and XPINNs for various forward problems, using both weak and
+//! strong scalings. Our results indicate that for space domain decomposition, cPINNs are more efficient in terms of
+//! communication cost but XPINNs provide greater flexibility as they can also handle time-domain decomposition for
+//! any differential equations, and can deal with any arbitrarily shaped complex subdomains. To this end, we also present
+//! an application of the parallel XPINN method for solving an inverse diffusion problem with variable conductivity on
+//! the United States map, using ten regions as subdomains.
+//! Keywords: Scientific machine learning, Distributed machine learning, Domain decomposition, PINNs, multi-GPU
+//! computing
+//!
+//! 1. Introduction
+//! In recent years there has seen a surge of machine learning based techniques applied to many complex systems such
+//! as autonomous vehicles [1], speech recognition [2, 3], medical diagnosis [4], consumer preferences [5], etc. However,
+//! such techniques are less explored in the field of scientific computations. Physics-informed neural networks (PINNs)
+//! [6] is a recently proposed deep learning method, which bridges the gap between machine learning based methods
+//! and scientific computations. Due to their simplicity, PINNs have led to progress in many areas of computational
+//! science, see for examples [7, 8, 9, 10, 11, 12, 13, 14, 15]. PINNs can efficiently tackle both forward problems, where
+//! the solution of governing physical law is inferred, as well as ill-posed inverse problems, where the unknown physics
+//! and/or free parameters in the governing equations are identified from the available multi-modal measurements.
+//! However, one of the major limitations of PINNs is the large computational cost associated with the training
+//! of the neural networks, especially for forward multi-scale problems. To reduce the computational cost, Jagtap et
+//! al. [16] introduced a domain decomposition-based PINN for conservation laws, namely conservative PINN (cPINN),
+//! where continuity of the states as well as their fluxes across subdomain interfaces is used to stitch the subdomains
+//! together. In subsequent work, Jagtap & Karniadakis [17] applied domain decomposition to general PDEs using the
+//! so-called extended PINN (XPINN). Unlike cPINN, which offers space decomposition, XPINN offers both space-time
+//! domain decomposition for any irregular, non-convex geometry thereby reducing the computational cost effectively.
+//! By exploiting the decomposition process of the cPINN/XPINN methods and its implicit mapping on the modern
+//! ∗ Corresponding author Email: george_karniadakis@brown.edu,
+//!
+//! Published in Journal of Computational Physics, doi: https://doi.org/10.1016/j.jcp.2021.110683
+//!
+//!
+//! --- PAGE BREAK ---
+//! Allreduce
+//!
+//! Broadcast
+//!
+//! (a)
+//!
+//! (b)
+//!
+//! Figure 1: Schematic of the implementation of data and model parallel algorithms. (a) Method for the data-parallel approach,
+//! where the same neural network model, represented by NN, is loaded by each processor but works on a different chunk of input
+//! data. Synchronization of training (gradient of loss) is performed after the computation of loss on each processor via "allreduce" and
+//! "broadcast" operations represented by horizontal red and blue lines. (b) represents the model parallel approach, where each layer
+//! of the model (represented by L1 . . . L4 ) is loaded on a processor and each processor works on a batch of data (B1 . . . B4 ). Forward
+//! and backward passes are performed by using a pipeline approach.
+//!
+//! heterogeneous computing platform, the training time of the network can be reduced to a great extent. Recently,
+//! another domain decomposition method applied to the variational formulation of PINN is proposed by Kharazmi et
+//! al. [18] and named it hp-VPINN method.
+//! There are currently two existing approaches for distributed training of neural networks, namely, the data-parallel
+//! approach [19] and the model parallel approach. The data-parallel approach is based on the single instruction and
+//! multiple data (SIMD) parallel programming model, which results in a simple performance model driven by weak
+//! scaling. A block diagram showing the basic building blocks of the data-parallel approach is shown in Figure 1a for
+//! a four processors or co-processors system. The programming model used for the data-parallel approach falls into
+//! the regime of MPI+X system, where X is chosen as CPU(s) or GPU(s), depending on the size of the input data. In
+//! the data-parallel approach, the data is uniformly split into a number of chunks (D1 , . . . , D4 in Figure 1a), equal to the
+//! number of processors. The neural network (NN) model is initialized with the same parameters on all the processes
+//! as shown in Figure 1a. These neural networks are working on different chunks of the data, and therefore, work on
+//! different loss functions as shown by J1 , . . . , J4 in Figure 1a. In closely related work, NVIDIA introduced the parallel
+//! code SimNet [20], which implements the standard PINN-based multi-physics simulation framework. The underlying
+//! idea of SimNet is to solve the differential equation by modeling the mass balance condition as a hard constraint as
+//! well as a global constraint. SimNet provides the functionality for multi-GPU and multi-Node implementation based
+//! on the data-parallel approach (Figure 1a).
+//! To ensure a consistent neural network model (defined with same weights and biases) across all the processes and
+//! during each epoch or iteration of training, a distributed optimizer is used, which averages out the gradient of loss
+//! values (∇J1 , . . . , ∇J4 in Figure 1a ) on all the root processor through an "allreduce" operation. Subsequently, the
+//! averaged gradient of the loss function is sent to all the processors in the communicator world through a broadcast
+//! operation (collective communication). Then, the parameters of the model are updated through an optimizer. An
+//! additional component, which arises in the data-parallel approach, is the increase in global batch size with the number
+//! of processes. Goyal et al. [21] addressed this issue by multiplying the learning rate with the number of processes
+//! in the communicator. We note that in the data-parallel approach the model size (size of neural network parameters)
+//! remains uniform on each processor or GPU and that imposes a problem for large models to be trained on GPUs as
+//! 2
+//!
+//!
+//! --- PAGE BREAK ---
+//! they have fixed memory.
+//! To circumvent this issue, another distributed algorithm approach namely, the model parallel approach is proposed.
+//! A block diagram of the algorithm in the model parallel approach is shown in Figure 1b, which can be interpreted as
+//! a classic example of pipeline algorithm [22]. In the model parallel approach, data is first divided into small batches
+//! (B1 , . . . , B4 in Figure 1b) and each hidden layer (L1 , . . . , L4 in Figure 1b) is distributed to a processor (or GPU). During the forward pass, once the B1 is processed by L1 , the output of L1 is passed as the input to L2 and L1 will start
+//! working on B2 and so on. Once the L4 finishes working, B1 the backward pass (optimization process) will kickoff,
+//! thus, completing epochs of training in a pipeline mode. We note that the implementation of both algorithms are
+//! problem agnostic and do not incorporate any prior information on solutions to be approximated, which makes the
+//! performance of these algorithms to be dependent on the data size and model parameters. In the literature, the implementation of data and model parallel approaches are primarily carried out for problems pertaining to the classification
+//! and natural language processing [21, 23], which are based on large amounts of training data. Therefore, the efficiency
+//! of data and the model parallel approach for scientific machine learning is not explored, which is primarily dominated
+//! by the high-dimensional and sparse data set. Apart from these two classical approaches, recently Xu et al. . [24] deploy the topological concurrency on data structures of neural network parameters. In brief, this implementation could
+//! be comprehended as task-based parallelism and it is rooted in the idea of model-based parallelism. Additionally, it
+//! also provides interactivity with other discretization-based solvers such as Fenics [25].
+//! The main advantage of cPINN and XPINN over data and model parallel approaches (including the work of Xu
+//! et al. [24]) is their adaptivity for all hyperparameters of the neural network in each subdomain. In the vanilla dataparallel approach, the training across processors is synchronized by averaging the gradient of loss function across
+//! and subsequently broadcasting, enforcing the same network architectures on each processor. In scientific machine
+//! learning, the solution of the underlying physical laws is inferred based on a small amount of data, where the chosen
+//! neural network architecture depends on the complexity and regularity of the solutions to be recovered. To address
+//! this issue, the synchronization of the training process across all the processors has to be achieved by the physics of
+//! the problem, and therefore cPINNs and XPINNs come to the rescue. The convergence of the solution based on a
+//! single domain is constrained by its global approximation, which is relatively slow. On the other hand, computation
+//! of the solution based on local approximation by using the local neural networks can result in fast convergence. With
+//! regards to computational aspects, the domain decomposition-based approach requires a point-to-point communication
+//! protocol with a very small size of the buffer. However, for the data-parallel approach, it requires one allreduce
+//! operation and one broadcast operation with each having the buffer size equal to the number of parameters of the neural
+//! network, which makes communication across the processor slower. Moreover, for problems involving heterogeneous
+//! physics the data/model parallel approaches are not adequate, whereas cPINNs/XPINNs can easily handle such multiphysics problems. Therefore, domain decomposition approaches paired with physics-based synchronization help
+//! more than the vanilla data-parallel approaches.
+//! The main contributions of this paper are:
+//! • We present a detailed unified distributed algorithm for cPINNs and XPINNs and implement it on CPU and GPU
+//! nodes. We also present weak scaling for CPUs and GPUs, and strong scaling for CPUs, demonstrating good
+//! speed-up and efficiency for both the methodologies on CPUs.
+//! • We present the performance of XPINN over cPINN for various forward problems such as nonlinear conservation
+//! laws and incompressible Navier-Stokes equations. We also implemented the XPINN method for solving an
+//! inverse problem involving a complex non-convex geometry with a non-trivial space-dependent conductivity,
+//! which is represented by a separate neural network.
+//! The paper is organized as follows. Section 2 defines the basic problem setup in detail. Section 3 gives the
+//! mathematical setup for fully connected feed-forward neural networks. In section 4, the PINN algorithm, as well as
+//! cPINN and XPINN algorithms, are discussed in detail. Section 5 gives the details of the parallel implementation
+//! of cPINN and XPINN. In section 6, we discuss the optimization procedure on distributed systems. In section 7
+//! we perform various computational experiments involving forward problems and one inverse problem. Finally, we
+//! summarize our findings in section 8.
+//!
+//! 3
+//!
+//!
+//! --- PAGE BREAK ---
+//! 2. Problem setup
+//! The general form of a parametrized PDE is given by
+//!
+//! 100
+//!
+//! Lx (u; λ) = f (x),
+//!
+//! x ∈ Ω ⊂ Rd ,
+//!
+//! Bk (u) = gk (x),
+//!
+//! x ∈ Γk ⊂ ∂Ω
+//!
+//! (1)
+//!
+//! for k = 1, 2, · · · , nb , where Lx (·) is the differential operator, u is the solution, λ = {λ1 , λ2 , · · · } are the model parameters,
+//! Bk (·) can be Dirichlet, Neumann, or mixed boundary conditions and f (x) is the forcing term. Note that for transient
+//! problems we consider time t as one of the component of x, and the initial conditions can be simply treated as a
+//! particular type of boundary condition on the given spatio-temporal domain. The above setup encapsulates a wide
+//! range of problems in engineering and science. For equation (1), we define the residual F (u) as F (u) B Lx (u; λ)− f (x).
+//! In this paper, we shall solve both forward problems, where the solution of a PDE is inferred given fixed model
+//! parameters (λ) as well as inverse problems, where the unknown model parameters are learned from the observed data.
+//! The given mathematical model is converted into a surrogate model, more specifically, a given problem of solving
+//! PDE is converted into an optimization problem, where global minima of loss function correspond to the solution of
+//! the PDE. The loss function can be defined using training data points like initial and boundary conditions and the
+//! residual of the given PDE evaluated at random locations in the space-time domain.
+//! 3. Fully connected feed-forward neural networks
+//! Let N L : RDi → RDo be a feed-forward neural network of L layers and Nk neurons in kth layer (N0 = Di , and
+//! NL = Do ). The weight matrix and bias vector in the kth layer (1 ≤ k ≤ L) are denoted by W k ∈ RNk ×Nk−1 and bk ∈ RNk ,
+//! respectively. The input vector is denoted by z ∈ RDi and the output vector at kth layer is denoted by N k (z) and
+//! N 0 (z) = z. We denote the activation function by Φ, which is applied layer-wise along with the scalable parameters
+//! nak , where n is the scaling factor. Layer-wise introduction of the additional parameters ak changes the slope of
+//! activation function in each hidden layer, thereby increasing the training speed. Moreover, these activation slopes
+//! can also contribute to the loss function through the slope recovery term, see [26, 27] for more details. Such locally
+//! adaptive activation functions enhance the learning capacity of the network, especially during the early training period.
+//! Mathematically, one can prove this by comparing the gradient dynamics of the adaptive activation function method
+//! against that of the fixed activation method. The gradient dynamics of the adaptive activation modifies the standard
+//! dynamics (fixed activation) by multiplying a conditioning matrix by the gradient and by adding the approximate
+//! second-order term. In this paper, we used a scaling factor n = 10 for all hidden-layers and initialize nak = 1, ∀k,
+//! see [27] for details. The (L − 1)-hidden layer feed-forward neural network is defined by
+//! N k (z) = W k Φ(ak−1 N k−1 (z)) + bk ∈ RNk ,
+//!
+//! 2≤k≤L
+//!
+//! (2)
+//!
+//! and N 1 (z) = W 1 N 0 (z) + b1 , where in the last layer, the activation function is identity. By letting Θ̃ = {W k , bk , ak } ∈ V
+//! as the collection of all weights, biases, and slopes, and taking V as the parameter space, we can write the output of
+//! the neural network as
+//! uΘ̃ (z) = N L (z; Θ̃),
+//! where N L (z; Θ̃) emphasizes the dependence of the neural network output N L (z) on Θ̃. In general, weights and biases
+//! are initialized from known probability distributions.
+//! 4. Brief overview of the PINNs, cPINNs and XPINNs
+//! 4.1. Physics-informed neural network (PINNs)
+//! (i) NF
+//! Nu
+//! Let {x(i)
+//! u }i=1 and {xF }i=1 be the set of randomly selected training and residual points, respectively. These points are
+//! usually drawn from an unknown a priori distribution and chosen from a given input data. The PINN algorithm aims
+//! to learn a surrogate u ≈ uΘ̃ to compute the solution u for a given PDE. The loss function for the PINN is given as
+//!  
+//! 
+//! 
+//! 
+//! 
+//! Nu
+//! NF
+//! L Θ̃ = Wu MSEu Θ̃; {xu(i) }i=1
+//! + WF MSEF Θ̃; {x(i)
+//! (3)
+//! F }i=1 ,
+//! 4
+//!
+//!
+//! --- PAGE BREAK ---
+//! where Wu and WF are the weights for the data and residual losses, respectively. The mean square error is given by
+//! Nu
+//!  2
+//! 
+//! 
+//! 1 X
+//! Nu
+//! ,
+//! MSEu Θ̃; {x(i)
+//! u(i) − uΘ̃ x(i)
+//! u
+//! u }i=1 =
+//! Nu i=1
+//! NF
+//!  2
+//! 
+//! 
+//! 1 X
+//! NF
+//! ,
+//! MSEF Θ̃; {x(i)
+//! }
+//! FΘ̃ x(i)
+//! =
+//! F
+//! F i=1
+//! NF i=1
+//!
+//! where MSEu is the MSE for data mismatch term enforcing the given initial/boundary conditions as constraints, resulting in a well-posed problem. The term MSEF is the MSE for PDE residual, with FΘ̃ = F (uΘ̃ ) representing the
+//! residual of governing PDEs. The parameters of the neural networks uΘ̃ are computed by minimizing the loss function
+//! in (3).
+//! Both experimental, as well as synthetic training data, can be incorporated into the loss function. The PDE residual
+//! can be computed using automatic differentiation (AD) [28]. AD is an accurate way to calculate derivatives in a
+//! computational graph compared to numerical differentiation since they do not suffer from errors such as truncation
+//! and round-off errors. Thus, evaluation of the PDE operator is achieved with such graph-based differentiation, which
+//! can be incorporated in the loss function along with the training data. This way, PINN can be viewed as a grid-free
+//! approach, thus avoiding the tyranny of the mesh generation procedure.
+//! 4.2. Domain decomposition approaches in physics-informed neural networks
+//! In this section, we will briefly describe the two recently proposed domain decomposition approaches in the PINN
+//! framework, namely, cPINN and XPINN. The computational domain is divided into N sd number of non-overlapping
+//! regular/irregular subdomains, and in each subdomain, we deploy the separate neural networks, which communicate
+//! with each other via a common interface. In the cPINN and XPINN frameworks, the output of the neural network in
+//! the qth subdomain is given by uΘ̃q (z) = N L (z; Θ̃q ) ∈ Ωq , q = 1, 2, . . . , N sd . Then, the final solution is obtained as
+//! uΘ̃ (z) =
+//!
+//! N sd
+//! X
+//!
+//! uΘ̃q (z) · 1Ωq (z),
+//!
+//! (4)
+//!
+//! q=1
+//!
+//! where the indicator function 1Ωq (z) is defined as
+//! 
+//! 
+//! 
+//! 0 If z < Ωq ,
+//! 
+//! 
+//! 
+//! 1Ωq (z) B 1 If z ∈ Ωq \Common interface in the qth subdomain,
+//! 
+//! 
+//!  1 If z ∈ Common interface in the qth subdomain,
+//! S
+//! where S represents the total number of subdomains intersecting along the common interface.
+//! Nuq
+//! (i) NFq
+//! (i) NIq
+//! Let {x(i)
+//! uq }i=1 , {xFq }i=1 and {xIq }i=1 be the set of randomly selected training, residual, and the common interface
+//! points, respectively in the qth subdomain. Nuq , NFq , and NIq represent the number of training data points, the number
+//! of residual points, and the number of points on the common interface in the qth subdomain, respectively. Similar
+//! to PINN, the cPINN and XPINN methods aim to learn a surrogate uq ≈ uΘ̃q , q = 1, 2, · · · , N sd for predicting the
+//! solution u ≈ uΘ̃ of the given PDE over the entire computational domain using equation (4). The loss function of
+//! cPINN/XPINN is defined subdomain-wise, which has a similar structure as the PINN loss function in each subdomain
+//! but it is endowed with the interface conditions for stitching the subdomains together.
+//! 4.2.1. Conservative PINNs (cPINNs) [16]
+//! In cPINN method, the loss function in the qth subdomain is defined as
+//! Nu
+//!
+//! NI
+//!
+//! NF
+//!
+//! (i)
+//! (i) q
+//! q
+//! q
+//! J(Θ̃q ) = Wuq MSEuq (Θ̃q ; {x(i)
+//! uq }i=1 ) + WFq MSEFq (Θ̃q ; {xFq }i=1 ) + WIq MSEuavg (Θ̃q ; {xIq }i=1 )
+//! |
+//! {z
+//! }
+//! Interface condition
+//!
+//! + WIfluxq
+//!
+//! N Iq
+//! MSEflux (Θ̃q ; {x(i)
+//! Iq }i=1 ),
+//!
+//! |
+//!
+//! {z
+//!
+//! Interface condition
+//!
+//! }
+//! 5
+//!
+//! (5)
+//!
+//!
+//! --- PAGE BREAK ---
+//! where q = 1, 2, · · · , N sd . The MSE is given for each term by
+//! Nuq
+//! MSEuq (Θ̃q ; {x(i)
+//! uq }i=1 ) =
+//!
+//! Nuq
+//! 2
+//! 1 X (i)
+//! uq − uΘ̃q (x(i)
+//! uq ) ,
+//! Nuq i=1
+//!
+//! NFq
+//! 2
+//! 1 X
+//! FΘ̃q (x(i)
+//! Fq ) ,
+//! NFq i=1
+//! 
+//! 
+//! N Iq
+//! 
+//!  1 X
+//! X
+//! nn
+//! oo
+//! 2
+//! N
+//! Iq
+//! (i)
+//! (i)
+//! 
+//!  ,
+//! MSEuavg (Θ̃q ; {x(i)
+//! }
+//! )
+//! =
+//! u
+//! (x
+//! )
+//! −
+//! u
+//! (x
+//! )
+//! Θ̃q Iq
+//! Θ̃q Iq
+//!  N
+//! 
+//! Iq i=1
+//! I
+//! +
+//! q
+//! ∀q
+//! i=1
+//! 
+//! 
+//! N Iq
+//! X  1 X
+//! 
+//! 2
+//! (i)
+//! (i)
+//! (i) NIq
+//! 
+//! 
+//! fΘ̃q (xIq ) · n − fΘ̃q+ (xIq ) · n  .
+//! MSEflux (Θ̃q ; {xIq }i=1 ) =
+//! 
+//! NIq i=1
+//! ∀q+
+//! NFq
+//! MSEFq (Θ̃q ; {x(i)
+//! Fq }i=1 ) =
+//!
+//! The Wuq , WFq , WIfluxq and WIq are the data mismatch, residual, and interface (both, normal flux as well as average
+//! solution continuity along the interface) weights, respectively. The term MSEflux represents the normal flux continuity
+//! term along the interface. The terms MSEuq and MSEFq are the same as before described in the PINN algorithm,
+//! and FΘ̃q B F (uΘ̃q ) represent the residual of the governing PDEs in the qth subdomain. The average value of u
+//! nn oo
+//! uΘ̃q +uΘ̃ +
+//! q
+//! (assuming that along the common interface only
+//! along the common interface is given by uΘ̃q = uavg B
+//! 2
+//! two subdomains intersect). The interface conditions ensure that the information from the one subdomain can be
+//! propagated throughout the neighboring subdomains. These conditions also play an important role in the convergence
+//! of subdomains, where no training data are available.
+//! 4.2.2. Extended PINNs (XPINNs) [17]
+//! In XPINN method, along with the average solution continuity condition, the more general residual continuity
+//! conditions are also imposed along the interface, which allows solving any differential equations with space-time
+//! decomposition. Apart from these continuity conditions, additional continuity conditions like normal flux continuity,
+//! higher-order solution derivative continuity, integral constraints (invariants) continuity conditions, etc. can be imposed
+//! depending on the orientation of the interface and the nature of the governing differential equations. In XPINN method,
+//! the loss function in the qth subdomain is defined as
+//! Nu
+//!
+//! NF
+//!
+//! NI
+//!
+//! (i)
+//! (i) q
+//! q
+//! q
+//! J(Θ̃q ) = Wuq MSEuq (Θ̃q ; {x(i)
+//! uq }i=1 ) + WFq MSEFq (Θ̃q ; {xFq }i=1 ) + WIq MSEuavg (Θ̃q ; {xIq }i=1 )
+//! |
+//! {z
+//! }
+//! Interface condition
+//!
+//! + WIFq
+//!
+//! N Iq
+//! MSER (Θ̃q ; {x(i)
+//! Interface
+//! Iq }i=1 ) + Additional
+//! |
+//! {z Condition’s
+//! },
+//! |
+//! {z
+//! }
+//! Optional
+//! Interface condition
+//!
+//! where q = 1, 2, · · · , N sd . The WIFq is the weight for the residual continuity condition. Again, the MSE is given as
+//! Nu
+//!
+//! q
+//! MSEuq (Θ̃q ; {x(i)
+//! uq }i=1 ) =
+//!
+//! Nuq
+//! 2
+//! 1 X (i)
+//! uq − uΘ̃q (xu(i)q ) ,
+//! Nuq i=1
+//!
+//! NFq
+//! 2
+//! 1 X
+//! FΘ̃q (x(i)
+//! Fq ) ,
+//! NFq i=1
+//! 
+//! 
+//! N Iq
+//! X  1 X
+//! oo 2 
+//! nn
+//! (i) NIq
+//! (i)
+//! (i)
+//! 
+//! 
+//! MSEuavg (Θ̃q ; {xIq }i=1 ) =
+//! uΘ̃q (xIq ) − uΘ̃q (xIq )  ,
+//! 
+//! N
+//! I
+//! q i=1
+//! ∀q+
+//! 
+//! 
+//! N Iq
+//! 
+//! X  1 X
+//! 2
+//! N
+//! I
+//! (i)
+//! (i) 
+//! q
+//! 
+//!  ,
+//! MSER (Θ̃q ; {x(i)
+//! }
+//! )
+//! =
+//! F
+//! (x
+//! )
+//! −
+//! F
+//! (x
+//! )
+//! Θ̃
+//! Θ̃
+//! 
+//! +
+//! Iq i=1
+//! Iq
+//! Iq
+//! q
+//! q
+//!  NIq
+//! 
+//! +
+//! NF
+//!
+//! q
+//! MSEFq (Θ̃q ; {x(i)
+//! Fq }i=1 ) =
+//!
+//! ∀q
+//!
+//! i=1
+//!
+//! 6
+//!
+//! (6)
+//!
+//!
+//! --- PAGE BREAK ---
+//! The MSER is the residual continuity condition on the common interface given by two different neural networks on
+//! subdomains q and q+ , respectively; the superscript + over q represents the neighboring subdomain(s). Both MSER
+//! and MSEuavg terms are defined for all neighbouring subdomain(s) q+ , which is shown in their respective expressions
+//! by the summation sign over all q+ .
+//! 5. Parallel implementation of cPINN and XPINN
+//! In this section, we describe the algorithm implemented for parallelizing the cPINN and XPINN methods. Before
+//! diving into the finer level of implementation, we will first explain the primary building blocks of cPINN and XPINN
+//! on a distributed heterogeneous (CPU’s and GPU’s) computing platform in the purview of traditional data and model
+//! parallel approach. Figure 2 shows a detailed schematic of cPINN and XPINN algorithms. At first, the entire domain
+//! Ω (as shown in Figure 2) is decomposed into several subdomains (Ω1 , . . . , Ω4 ) equal to the number of processors or
+//! co-processors (GPU) and each subdomain will be assigned to a separate neural network model. Each processor will
+//! compute their local solution in the respective subdomain, which is stitched along the non-overlapping interface using
+//! the corresponding interface conditions just before the computation of loss (shown by the double-headed blue arrow in
+//! Figure 2). Thus, cPINN and XPINN inherit the advantages of both data and model parallel approaches, in addition to
+//! the imposition of prior information on the solution, which eventually determines the parameters of neural network in
+//! each subdomain.
+//! Next, we will describe the systematic implementation of cPINN and XPINN in a distributed and heterogeneous
+//! computing environment. We have split up the entire implementation into two stages, (i) pre-processing, and (ii)
+//! parallel solution stages. A detailed implementation level is given by Algorithm 1, which will be explained further in
+//! subsequent sections.
+//! 5.1. Pre-processing
+//! The pre-processing stage primarily deals with the decomposition of the computational domain Ω, shown in a blue
+//! color font in Algorithm 1, and preparing a data structure for concurrent access. The method of domain decomposition
+//! is widely used in numerical simulation for solving PDEs related to the problems of fluid flow [29], wave propagation,
+//! and heat flow [30]. The implementation of a parallel algorithm for cPINN and XPINN is partially inspired by these
+//! conventional domain decomposition methods. In these methods, we first divide the domain into non-overlapping
+//! SNsd
+//! subdomains such that Ω = q=1
+//! Ωq , with a constraint, that the total number of N sd equals the number of processors
+//! or accelerators to be used for the computation, as shown in Figure 3a. For example, in Figure 3 the domain is divided
+//! into 12 subdomains, and for ease of presentation, the subdomains are created using Cartesian topology. However, it is
+//! important to note that the implementation of cPINN/XPINN methods is not mandatory for the Cartesian topology and
+//! can be extended to any irregularly shaped geometry. In each subdomain, the training, residual and interface points
+//! are sampled by using the i.i.d approach drawn from N(0, σ2 ). To store and access the training data concurrently, we
+//! use a dictionary type data structure with key-value pairs being the subdomain number and list containing the indices
+//! of edges of the subdomains conforming with the boundary of the domain and represent it with EToV. This data
+//! structure is further utilized during the solver stage explained later. Thereafter, we prepared another dictionary data
+//! structure containing the indices of subdomains and a 2D array of (x, y) coordinates of residual points as key-value pair,
+//! respectively. Finally, we prepare another dictionary data structure to store the residual points along the edges of the
+//! subdomains. The edges corresponding to the interior subdomains are extracted by subtracting the sets corresponding
+//! to the global edge number with edges conforming with the boundary (EToV). Finally, in the pre-processing stage, we
+//! will endow each processor, corresponding to each subdomain in a one-to-one way, with physical coordinates (x, y)
+//! of the residual points in respective subdomains (blue triangles in Figure 3a), interface points along the edges of the
+//! subdomain (green square in Figure 3a), and training data mapped to respective subdomains (red color circles in Figure
+//! 3a). Although this is explained for the two-dimensional domain, the same approach can be easily extended to higherdimensional domains because, the data and residuals are represented in an arbitrary fashion unlike the conventional
+//! domain decomposition, where points have to be stored in an ordered fashion.
+//!
+//! 7
+//!
+//!
+//! --- PAGE BREAK ---
+//! Figure 2: Building blocks for distributed cPINN and XPINN methodologies deployed on a heterogeneous computing platform. The
+//! domain Ω is decomposed into several subdomains Ω1 , . . . , Ω4 equal to the number of processors, and individual neural networks
+//! (NN1 , . . . , NN4 ) are employed in each subdomain, which gives separate loss functions J(Θ̃q ), q = 1, . . . , 4 coupled through the
+//! interface conditions (shown by the double-headed blue arrow). The trainable parameters are updated by finding the gradient of loss
+//! function individually for each network and penalizing the continuity of interface conditions.
+//!
+//! 8
+//!
+//!
+//! --- PAGE BREAK ---
+//! Residual Points
+//! <latexit sha1_base64="OiEvFO/qMXDnqpmcDz7FMZCvJeg=">AAAB/3icbVDLSgNBEJyNrxhfq4IXL4NB8BR2o6DHoBePUcwDkhBmJ51kyOzsMtMrhjUHf8WLB0W8+hve/Bsnj4MmFjQUVd10dwWxFAY979vJLC2vrK5l13Mbm1vbO+7uXtVEieZQ4ZGMdD1gBqRQUEGBEuqxBhYGEmrB4Grs1+5BGxGpOxzG0ApZT4mu4Ayt1HYPmggPmN6CEZ2ESVqOhEIzart5r+BNQBeJPyN5MkO57X41OxFPQlDIJTOm4XsxtlKmUXAJo1wzMRAzPmA9aFiqWAimlU7uH9Fjq3RoN9K2FNKJ+nsiZaExwzCwnSHDvpn3xuJ/XiPB7kUrFSpOEBSfLuomkmJEx2HQjtDAUQ4tYVwLeyvlfaYZRxtZzobgz7+8SKrFgn9aKN6c5UuXsziy5JAckRPik3NSItekTCqEk0fyTF7Jm/PkvDjvzse0NePMZvbJHzifP5uplno=</latexit>
+//!
+//! Data Points
+//! <latexit sha1_base64="0L8duYMAp+WQVOSkmk4606eWoSo=">AAAB/HicbVBNS8NAEN34WeNXtEcvi0XwVJIq6LGoB48V7Ae0oWy2m3bpZhN2J2II9a948aCIV3+IN/+N2zYHbX0w8Hhvhpl5QSK4Btf9tlZW19Y3Nktb9vbO7t6+c3DY0nGqKGvSWMSqExDNBJesCRwE6ySKkSgQrB2Mr6d++4EpzWN5D1nC/IgMJQ85JWCkvlPuAXuE/IYAwY2YS9D2pO9U3Ko7A14mXkEqqECj73z1BjFNIyaBCqJ113MT8HOigFPBJnYv1SwhdEyGrGuoJBHTfj47foJPjDLAYaxMScAz9fdETiKtsygwnRGBkV70puJ/XjeF8NLPuUxSYJLOF4WpwBDjaRJ4wBWjIDJDCFXc3IrpiChCweRlmxC8xZeXSatW9c6qtbvzSv2qiKOEjtAxOkUeukB1dIsaqIkoytAzekVv1pP1Yr1bH/PWFauYKaM/sD5/AHsOlKc=</latexit>
+//!
+//! Interface Points
+//! <latexit sha1_base64="f5aUDviBRGf25MDIqgkUsXeBbfg=">AAACAXicbVDLSgNBEJyNrxhfUS+Cl8EgeAq7UdBj0IveIpgHJCHMTnqTIbOzy0yvGJZ48Ve8eFDEq3/hzb9x8jhoYkFDUdVNd5cfS2HQdb+dzNLyyupadj23sbm1vZPf3auZKNEcqjySkW74zIAUCqooUEIj1sBCX0LdH1yN/fo9aCMidYfDGNoh6ykRCM7QSp38QQvhAdMbhaADxoFWIqHQ5EadfMEtuhPQReLNSIHMUOnkv1rdiCchKOSSGdP03BjbKdMouIRRrpUYiBkfsB40LVUsBNNOJx+M6LFVujSItC2FdKL+nkhZaMww9G1nyLBv5r2x+J/XTDC4aKdCxQmC4tNFQSIpRnQcB+0KDRzl0BLGtbC3Ut5nmnGbh8nZELz5lxdJrVT0Toul27NC+XIWR5YckiNyQjxyTsrkmlRIlXDySJ7JK3lznpwX5935mLZmnNnMPvkD5/MHi/CW8A==</latexit>
+//!
+//! ⌦10
+//!
+//! ⌦11
+//!
+//! <latexit sha1_base64="PN+HOVfjlEHLzHslXYzsiyYgH7I=">AAAB8nicbVDLSgNBEJyNrxhfUY9eBoOQU9iNgh4DXrwZwTwgWcLsZDYZMo9lplcISz7DiwdFvPo13vwbJ8keNLGgoajqprsrSgS34PvfXmFjc2t7p7hb2ts/ODwqH5+0rU4NZS2qhTbdiFgmuGIt4CBYNzGMyEiwTjS5nfudJ2Ys1+oRpgkLJRkpHnNKwEm9/r1kIzLIAn82KFf8mr8AXidBTiooR3NQ/uoPNU0lU0AFsbYX+AmEGTHAqWCzUj+1LCF0Qkas56giktkwW5w8wxdOGeJYG1cK8EL9PZERae1URq5TEhjbVW8u/uf1UohvwoyrJAWm6HJRnAoMGs//x0NuGAUxdYRQw92tmI6JIRRcSiUXQrD68jpp12vBZa3+cFVpVPM4iugMnaMqCtA1aqA71EQtRJFGz+gVvXngvXjv3seyteDlM6foD7zPH7tMkM8=</latexit>
+//!
+//! ⌦12
+//!
+//! <latexit sha1_base64="ADG73ZmgXuNRzGRC+Oo0jY5s7FY=">AAAB8nicbVDLSgNBEJyNrxhfUY9eBoOQU9iNgh4DXrwZwTwgWcLsZDYZMo9lplcISz7DiwdFvPo13vwbJ8keNLGgoajqprsrSgS34PvfXmFjc2t7p7hb2ts/ODwqH5+0rU4NZS2qhTbdiFgmuGIt4CBYNzGMyEiwTjS5nfudJ2Ys1+oRpgkLJRkpHnNKwEm9/r1kIzLIgmA2KFf8mr8AXidBTiooR3NQ/uoPNU0lU0AFsbYX+AmEGTHAqWCzUj+1LCF0Qkas56giktkwW5w8wxdOGeJYG1cK8EL9PZERae1URq5TEhjbVW8u/uf1UohvwoyrJAWm6HJRnAoMGs//x0NuGAUxdYRQw92tmI6JIRRcSiUXQrD68jpp12vBZa3+cFVpVPM4iugMnaMqCtA1aqA71EQtRJFGz+gVvXngvXjv3seyteDlM6foD7zPH7zRkNA=</latexit>
+//!
+//! <latexit sha1_base64="EsF0I+HUjU3fO4JjkVHrTxJSdzs=">AAAB8nicbVDLSgNBEJyNrxhfUY9eBoOQU9iNgh4DXrwZwTwgWcLsZDYZMo9lplcISz7DiwdFvPo13vwbJ8keNLGgoajqprsrSgS34PvfXmFjc2t7p7hb2ts/ODwqH5+0rU4NZS2qhTbdiFgmuGIt4CBYNzGMyEiwTjS5nfudJ2Ys1+oRpgkLJRkpHnNKwEm9/r1kIzLIgvpsUK74NX8BvE6CnFRQjuag/NUfappKpoAKYm0v8BMIM2KAU8FmpX5qWULohIxYz1FFJLNhtjh5hi+cMsSxNq4U4IX6eyIj0tqpjFynJDC2q95c/M/rpRDfhBlXSQpM0eWiOBUYNJ7/j4fcMApi6gihhrtbMR0TQyi4lEouhGD15XXSrteCy1r94arSqOZxFNEZOkdVFKBr1EB3qIlaiCKNntErevPAe/HevY9la8HLZ07RH3ifP75WkNE=</latexit>
+//!
+//! N
+//! <latexit sha1_base64="SjZhlFyCfUmmtwTCRhEZCqKqzNs=">AAAB73icdVBNSwMxEM3Wr1q/qh69BIvgqWxqse2t4MWTVLAf0C4lm6ZtaDa7JrNiWfonvHhQxKt/x5v/xmxbQUUfDDzem2Fmnh9JYcB1P5zMyura+kZ2M7e1vbO7l98/aJkw1ow3WShD3fGp4VIo3gQBkncizWngS972Jxep377j2ohQ3cA04l5AR0oMBaNgpU4P+D0kV7N+vuAWXdclhOCUkMq5a0mtVi2RKiapZVFASzT6+ffeIGRxwBUwSY3pEjcCL6EaBJN8luvFhkeUTeiIdy1VNODGS+b3zvCJVQZ4GGpbCvBc/T6R0MCYaeDbzoDC2Pz2UvEvrxvDsOolQkUxcMUWi4axxBDi9Hk8EJozkFNLKNPC3orZmGrKwEaUsyF8fYr/J61SkZwVS9flQr28jCOLjtAxOkUEVVAdXaIGaiKGJHpAT+jZuXUenRfnddGacZYzh+gHnLdPsPiQXQ==</latexit>
+//!
+//! ⌦7
+//! <latexit sha1_base64="qTUdEb3qIYor+WwgqgN6vqDrz1w=">AAAB73icbVDLSgNBEOyNrxhfUY9eFoOQU9iNQjwGvHgzgnlAsoTZSScZMjO7zswKYclPePGgiFd/x5t/4yTZgyYWNBRV3XR3hTFn2njet5Pb2Nza3snvFvb2Dw6PiscnLR0limKTRjxSnZBo5Exi0zDDsRMrJCLk2A4nN3O//YRKs0g+mGmMgSAjyYaMEmOlTu9O4Ij0a/1iyat4C7jrxM9ICTI0+sWv3iCiiUBpKCdad30vNkFKlGGU46zQSzTGhE7ICLuWSiJQB+ni3pl7YZWBO4yULWnchfp7IiVC66kIbacgZqxXvbn4n9dNzPA6SJmME4OSLhcNE+6ayJ0/7w6YQmr41BJCFbO3unRMFKHGRlSwIfirL6+TVrXiX1aq91elejmLIw9ncA5l8KEGdbiFBjSBAodneIU359F5cd6dj2VrzslmTuEPnM8fituPjw==</latexit>
+//!
+//! W
+//!
+//! ⌦8
+//!
+//! <latexit sha1_base64="M4hA7RHwrnps9/pTIoaBVp+zzBs=">AAAB73icdVBNSwMxEM36WetX1aOXYBE8lU0ttr0VvHisYD+gXUo2zbah2eyazIpl6Z/w4kERr/4db/4bs20FFX0w8Hhvhpl5fiyFAdf9cFZW19Y3NnNb+e2d3b39wsFh20SJZrzFIhnprk8Nl0LxFgiQvBtrTkNf8o4/ucz8zh3XRkTqBqYx90I6UiIQjIKVun3g95B2ZoNC0S25rksIwRkh1QvXknq9ViY1TDLLooiWaA4K7/1hxJKQK2CSGtMjbgxeSjUIJvks308Mjymb0BHvWapoyI2Xzu+d4VOrDHEQaVsK8Fz9PpHS0Jhp6NvOkMLY/PYy8S+vl0BQ81Kh4gS4YotFQSIxRDh7Hg+F5gzk1BLKtLC3YjammjKwEeVtCF+f4v9Ju1wi56XydaXYqCzjyKFjdILOEEFV1EBXqIlaiCGJHtATenZunUfnxXldtK44y5kj9APO2ye+pZBm</latexit>
+//!
+//! E
+//!
+//! ⌦9
+//!
+//! <latexit sha1_base64="kApZAC2gte1U8R70XPwRAxCz/5A=">AAAB73icdVBNSwMxEM3Wr1q/qh69BIvgqWxqse2tIILHCvYD2qVk07QNzWbXZFYsS/+EFw+KePXvePPfmG0rqOiDgcd7M8zM8yMpDLjuh5NZWV1b38hu5ra2d3b38vsHLRPGmvEmC2WoOz41XArFmyBA8k6kOQ18ydv+5CL123dcGxGqG5hG3AvoSImhYBSs1OkBv4fkctbPF9yi67qEEJwSUjl3LanVqiVSxSS1LApoiUY//94bhCwOuAImqTFd4kbgJVSDYJLPcr3Y8IiyCR3xrqWKBtx4yfzeGT6xygAPQ21LAZ6r3ycSGhgzDXzbGVAYm99eKv7ldWMYVr1EqCgGrthi0TCWGEKcPo8HQnMGcmoJZVrYWzEbU00Z2IhyNoSvT/H/pFUqkrNi6bpcqJeXcWTRETpGp4igCqqjK9RATcSQRA/oCT07t86j8+K8LlozznLmEP2A8/YJo0uQVA==</latexit>
+//!
+//! <latexit sha1_base64="k38jXr0/UPXXKEfd9eBD02raQ7o=">AAAB73icbVDLSgNBEOyNrxhfUY9eFoOQU9iNgjkGvHgzgnlAsoTZSScZMjO7zswKYclPePGgiFd/x5t/4yTZgyYWNBRV3XR3hTFn2njet5Pb2Nza3snvFvb2Dw6PiscnLR0limKTRjxSnZBo5Exi0zDDsRMrJCLk2A4nN3O//YRKs0g+mGmMgSAjyYaMEmOlTu9O4Ij0a/1iyat4C7jrxM9ICTI0+sWv3iCiiUBpKCdad30vNkFKlGGU46zQSzTGhE7ICLuWSiJQB+ni3pl7YZWBO4yULWnchfp7IiVC66kIbacgZqxXvbn4n9dNzLAWpEzGiUFJl4uGCXdN5M6fdwdMITV8agmhitlbXTomilBjIyrYEPzVl9dJq1rxLyvV+6tSvZzFkYczOIcy+HANdbiFBjSBAodneIU359F5cd6dj2VrzslmTuEPnM8fjF+PkA==</latexit>
+//!
+//! <latexit sha1_base64="xhhJMunxqjLnpblCfYcTatuZxlk=">AAAB73icbVDLSgNBEOyNrxhfUY9eBoOQU9iNgnoLePFmBPOAZAmzk95kyMzuOjMrhJCf8OJBEa/+jjf/xkmyB00saCiquunuChLBtXHdbye3tr6xuZXfLuzs7u0fFA+PmjpOFcMGi0Ws2gHVKHiEDcONwHaikMpAYCsY3cz81hMqzePowYwT9CUdRDzkjBortbt3Ege0d90rltyKOwdZJV5GSpCh3it+dfsxSyVGhgmqdcdzE+NPqDKcCZwWuqnGhLIRHWDH0ohK1P5kfu+UnFmlT8JY2YoMmau/JyZUaj2Wge2U1Az1sjcT//M6qQmv/AmPktRgxBaLwlQQE5PZ86TPFTIjxpZQpri9lbAhVZQZG1HBhuAtv7xKmtWKd16p3l+UauUsjjycwCmUwYNLqMEt1KEBDAQ8wyu8OY/Oi/PufCxac042cwx/4Hz+AI3jj5E=</latexit>
+//!
+//! (rx , ry )
+//! <latexit sha1_base64="RvH5m2P9LWNgz9j5P64G9k3jnsM=">AAAB8HicbVBNS8NAEJ3Ur1q/qh69LBahgpSkinosePFYwX5IG8Jmu2mXbjZhdyOG0F/hxYMiXv053vw3btsctPXBwOO9GWbm+TFnStv2t1VYWV1b3yhulra2d3b3yvsHbRUlktAWiXgkuz5WlDNBW5ppTruxpDj0Oe3445up33mkUrFI3Os0pm6Ih4IFjGBtpIeq9J7OpJeeeuWKXbNnQMvEyUkFcjS98ld/EJEkpEITjpXqOXas3QxLzQink1I/UTTGZIyHtGeowCFVbjY7eIJOjDJAQSRNCY1m6u+JDIdKpaFvOkOsR2rRm4r/eb1EB9duxkScaCrIfFGQcKQjNP0eDZikRPPUEEwkM7ciMsISE20yKpkQnMWXl0m7XnPOa/W7i0rjMo+jCEdwDFVw4AoacAtNaAGBEJ7hFd4sab1Y79bHvLVg5TOH8AfW5w8GKo/c</latexit>
+//!
+//! S
+//! <latexit sha1_base64="mmV8B0etpZHOsIn2wNkZfxns6R4=">AAAB73icdVBNSwMxEM3Wr1q/qh69BIvgqWxqse2t4MVjRfsB7VKyadqGZrNrMiuWpX/CiwdFvPp3vPlvzLYVVPTBwOO9GWbm+ZEUBlz3w8msrK6tb2Q3c1vbO7t7+f2DlgljzXiThTLUHZ8aLoXiTRAgeSfSnAa+5G1/cpH67TuujQjVDUwj7gV0pMRQMApW6vSA30NyPevnC27RdV1CCE4JqZy7ltRq1RKpYpJaFgW0RKOff+8NQhYHXAGT1JgucSPwEqpBMMlnuV5seETZhI5411JFA268ZH7vDJ9YZYCHobalAM/V7xMJDYyZBr7tDCiMzW8vFf/yujEMq14iVBQDV2yxaBhLDCFOn8cDoTkDObWEMi3srZiNqaYMbEQ5G8LXp/h/0ioVyVmxdFUu1MvLOLLoCB2jU0RQBdXRJWqgJmJIogf0hJ6dW+fReXFeF60ZZzlziH7AefsEuJGQYg==</latexit>
+//!
+//! ⌦4
+//! <latexit sha1_base64="VKqWV57f7edaWLN63VSa+Fw815I=">AAAB73icbVDLSgNBEOyNrxhfUY9eFoOQU9iNAT0GvHgzgnlAsoTZSScZMjO7zswKYclPePGgiFd/x5t/4yTZgyYWNBRV3XR3hTFn2njet5Pb2Nza3snvFvb2Dw6PiscnLR0limKTRjxSnZBo5Exi0zDDsRMrJCLk2A4nN3O//YRKs0g+mGmMgSAjyYaMEmOlTu9O4Ij0a/1iyat4C7jrxM9ICTI0+sWv3iCiiUBpKCdad30vNkFKlGGU46zQSzTGhE7ICLuWSiJQB+ni3pl7YZWBO4yULWnchfp7IiVC66kIbacgZqxXvbn4n9dNzPA6SJmME4OSLhcNE+6ayJ0/7w6YQmr41BJCFbO3unRMFKHGRlSwIfirL6+TVrXiX1aq97VSvZzFkYczOIcy+HAFdbiFBjSBAodneIU359F5cd6dj2VrzslmTuEPnM8fhk+PjA==</latexit>
+//!
+//! ⌦5
+//!
+//! ⌦6
+//!
+//! ⌦2
+//!
+//! ⌦3
+//!
+//! <latexit sha1_base64="K79v0/34/WZspRueOonqDhpYoj4=">AAAB73icbVDLSgNBEOyNrxhfUY9eBoOQU9iNih4DXrwZwTwgWcLspDcZMrO7zswKIeQnvHhQxKu/482/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ch5hw3AjsJ0opDIQ2ApGNzO/9YRK8zh6MOMEfUkHEQ85o8ZK7e6dxAHtXfaKJbfizkFWiZeREmSo94pf3X7MUomRYYJq3fHcxPgTqgxnAqeFbqoxoWxEB9ixNKIStT+Z3zslZ1bpkzBWtiJD5urviQmVWo9lYDslNUO97M3E/7xOasJrf8KjJDUYscWiMBXExGT2POlzhcyIsSWUKW5vJWxIFWXGRlSwIXjLL6+SZrXinVeq9xelWjmLIw8ncApl8OAKanALdWgAAwHP8ApvzqPz4rw7H4vWnJPNHMMfOJ8/h9OPjQ==</latexit>
+//!
+//! <latexit sha1_base64="Kn5X/hx9DkIOb0J5leyDcsUkIsE=">AAAB73icbVDLSgNBEOyNrxhfUY9eBoOQU9iNoh4DXrwZwTwgWcLspDcZMrO7zswKIeQnvHhQxKu/482/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ch5hw3AjsJ0opDIQ2ApGNzO/9YRK8zh6MOMEfUkHEQ85o8ZK7e6dxAHtXfaKJbfizkFWiZeREmSo94pf3X7MUomRYYJq3fHcxPgTqgxnAqeFbqoxoWxEB9ixNKIStT+Z3zslZ1bpkzBWtiJD5urviQmVWo9lYDslNUO97M3E/7xOasJrf8KjJDUYscWiMBXExGT2POlzhcyIsSWUKW5vJWxIFWXGRlSwIXjLL6+SZrXinVeq9xelWjmLIw8ncApl8OAKanALdWgAAwHP8ApvzqPz4rw7H4vWnJPNHMMfOJ8/iVePjg==</latexit>
+//!
+//! N
+//! <latexit sha1_base64="SjZhlFyCfUmmtwTCRhEZCqKqzNs=">AAAB73icdVBNSwMxEM3Wr1q/qh69BIvgqWxqse2t4MWTVLAf0C4lm6ZtaDa7JrNiWfonvHhQxKt/x5v/xmxbQUUfDDzem2Fmnh9JYcB1P5zMyura+kZ2M7e1vbO7l98/aJkw1ow3WShD3fGp4VIo3gQBkncizWngS972Jxep377j2ohQ3cA04l5AR0oMBaNgpU4P+D0kV7N+vuAWXdclhOCUkMq5a0mtVi2RKiapZVFASzT6+ffeIGRxwBUwSY3pEjcCL6EaBJN8luvFhkeUTeiIdy1VNODGS+b3zvCJVQZ4GGpbCvBc/T6R0MCYaeDbzoDC2Pz2UvEvrxvDsOolQkUxcMUWi4axxBDi9Hk8EJozkFNLKNPC3orZmGrKwEaUsyF8fYr/J61SkZwVS9flQr28jCOLjtAxOkUEVVAdXaIGaiKGJHpAT+jZuXUenRfnddGacZYzh+gHnLdPsPiQXQ==</latexit>
+//!
+//! ⌦1
+//! <latexit sha1_base64="ggJBUPZTqqF4+JLHCs1t0f+kk6k=">AAAB73icbVBNS8NAEJ34WetX1aOXxSL0VJIq6LHgxZsV7Ae0oWy2k3bpZhN3N0IJ/RNePCji1b/jzX/jts1BWx8MPN6bYWZekAiujet+O2vrG5tb24Wd4u7e/sFh6ei4peNUMWyyWMSqE1CNgktsGm4EdhKFNAoEtoPxzcxvP6HSPJYPZpKgH9Gh5CFn1Fip07uLcEj7Xr9UdqvuHGSVeDkpQ45Gv/TVG8QsjVAaJqjWXc9NjJ9RZTgTOC32Uo0JZWM6xK6lkkao/Wx+75ScW2VAwljZkobM1d8TGY20nkSB7YyoGellbyb+53VTE177GZdJalCyxaIwFcTEZPY8GXCFzIiJJZQpbm8lbEQVZcZGVLQheMsvr5JWrepdVGv3l+V6JY+jAKdwBhXw4ArqcAsNaAIDAc/wCm/Oo/PivDsfi9Y1J585gT9wPn8AgcOPiQ==</latexit>
+//!
+//! E
+//! <latexit sha1_base64="kApZAC2gte1U8R70XPwRAxCz/5A=">AAAB73icdVBNSwMxEM3Wr1q/qh69BIvgqWxqse2tIILHCvYD2qVk07QNzWbXZFYsS/+EFw+KePXvePPfmG0rqOiDgcd7M8zM8yMpDLjuh5NZWV1b38hu5ra2d3b38vsHLRPGmvEmC2WoOz41XArFmyBA8k6kOQ18ydv+5CL123dcGxGqG5hG3AvoSImhYBSs1OkBv4fkctbPF9yi67qEEJwSUjl3LanVqiVSxSS1LApoiUY//94bhCwOuAImqTFd4kbgJVSDYJLPcr3Y8IiyCR3xrqWKBtx4yfzeGT6xygAPQ21LAZ6r3ycSGhgzDXzbGVAYm99eKv7ldWMYVr1EqCgGrthi0TCWGEKcPo8HQnMGcmoJZVrYWzEbU00Z2IhyNoSvT/H/pFUqkrNi6bpcqJeXcWTRETpGp4igCqqjK9RATcSQRA/oCT07t86j8+K8LlozznLmEP2A8/YJo0uQVA==</latexit>
+//!
+//! <latexit sha1_base64="VcQPL+5sPorBWvOCj6J0NPonnU4=">AAAB73icbVBNS8NAEJ34WetX1aOXxSL0VJIq6LHgxZsV7Ae0oWy2k3bpZhN3N0IJ/RNePCji1b/jzX/jts1BWx8MPN6bYWZekAiujet+O2vrG5tb24Wd4u7e/sFh6ei4peNUMWyyWMSqE1CNgktsGm4EdhKFNAoEtoPxzcxvP6HSPJYPZpKgH9Gh5CFn1Fip07uLcEj7tX6p7FbdOcgq8XJShhyNfumrN4hZGqE0TFCtu56bGD+jynAmcFrspRoTysZ0iF1LJY1Q+9n83ik5t8qAhLGyJQ2Zq78nMhppPYkC2xlRM9LL3kz8z+umJrz2My6T1KBki0VhKoiJyex5MuAKmRETSyhT3N5K2IgqyoyNqGhD8JZfXiWtWtW7qNbuL8v1Sh5HAU7hDCrgwRXU4RYa0AQGAp7hFd6cR+fFeXc+Fq1rTj5zAn/gfP4Ag0ePig==</latexit>
+//!
+//! <latexit sha1_base64="1vkYh0ZlvSJCLoPsVGAQYJRMolo=">AAAB73icbVDLSgNBEOyNrxhfUY9eFoOQU9hNBD0GvHgzgnlAsoTZSW8yZGZ2nZkVQshPePGgiFd/x5t/4yTZgyYWNBRV3XR3hQln2njet5Pb2Nza3snvFvb2Dw6PiscnLR2nimKTxjxWnZBo5Exi0zDDsZMoJCLk2A7HN3O//YRKs1g+mEmCgSBDySJGibFSp3cncEj6tX6x5FW8Bdx14mekBBka/eJXbxDTVKA0lBOtu76XmGBKlGGU46zQSzUmhI7JELuWSiJQB9PFvTP3wioDN4qVLWnchfp7YkqE1hMR2k5BzEivenPxP6+bmug6mDKZpAYlXS6KUu6a2J0/7w6YQmr4xBJCFbO3unREFKHGRlSwIfirL6+TVrXi1yrV+8tSvZzFkYczOIcy+HAFdbiFBjSBAodneIU359F5cd6dj2VrzslmTuEPnM8fhMuPiw==</latexit>
+//!
+//! (rx , ry )
+//! <latexit sha1_base64="RvH5m2P9LWNgz9j5P64G9k3jnsM=">AAAB8HicbVBNS8NAEJ3Ur1q/qh69LBahgpSkinosePFYwX5IG8Jmu2mXbjZhdyOG0F/hxYMiXv053vw3btsctPXBwOO9GWbm+TFnStv2t1VYWV1b3yhulra2d3b3yvsHbRUlktAWiXgkuz5WlDNBW5ppTruxpDj0Oe3445up33mkUrFI3Os0pm6Ih4IFjGBtpIeq9J7OpJeeeuWKXbNnQMvEyUkFcjS98ld/EJEkpEITjpXqOXas3QxLzQink1I/UTTGZIyHtGeowCFVbjY7eIJOjDJAQSRNCY1m6u+JDIdKpaFvOkOsR2rRm4r/eb1EB9duxkScaCrIfFGQcKQjNP0eDZikRPPUEEwkM7ciMsISE20yKpkQnMWXl0m7XnPOa/W7i0rjMo+jCEdwDFVw4AoacAtNaAGBEJ7hFd4sab1Y79bHvLVg5TOH8AfW5w8GKo/c</latexit>
+//!
+//! S=NULL
+//!
+//! (a)
+//!
+//! <latexit sha1_base64="f/QqBbfsYVdrMa2PyyhO3Boi1aA=">AAAB9HicdVBNS0JBFJ3Xp9mX1bLNkASt5I1J6iIQ2rSQMMoP0IfMG0cdnPfRzH2SPPwdbVoU0bYf065/0zw1qKgDFw7n3Mu997ihFBps+8NaWl5ZXVtPbaQ3t7Z3djN7+w0dRIrxOgtkoFou1VwKn9dBgOStUHHquZI33dFF4jfHXGkR+LcwCbnj0YEv+oJRMJLTAX4P8c35Vb1anXYzWTtn2zYhBCeEFM9sQ8rlUp6UMEksgyxaoNbNvHd6AYs87gOTVOs2sUNwYqpAMMmn6U6keUjZiA5421Cfelw78ezoKT42Sg/3A2XKBzxTv0/E1NN64rmm06Mw1L+9RPzLa0fQLzmx8MMIuM/mi/qRxBDgJAHcE4ozkBNDKFPC3IrZkCrKwOSUNiF8fYr/J418jpzm8teFbKWwiCOFDtEROkEEFVEFXaIaqiOG7tADekLP1th6tF6s13nrkrWYOUA/YL19Ar5jkgw=</latexit>
+//!
+//! (b)
+//! <latexit sha1_base64="v7uuiRIf2Bi3r9AJxgG4/Rm5ai8=">AAAB8XicbVA9TwJBEJ3DL8Qv1NJmIzHBhtyhiZZEG0tMBIxwIXvLAhv29i67c0Zy4V/YWGiMrf/Gzn/jAlco+JJJXt6bycy8IJbCoOt+O7mV1bX1jfxmYWt7Z3evuH/QNFGiGW+wSEb6PqCGS6F4AwVKfh9rTsNA8lYwup76rUeujYjUHY5j7od0oERfMIpWeuggf8K0HJxOusWSW3FnIMvEy0gJMtS7xa9OL2JJyBUySY1pe26Mfko1Cib5pNBJDI8pG9EBb1uqaMiNn84unpATq/RIP9K2FJKZ+nsipaEx4zCwnSHFoVn0puJ/XjvB/qWfChUnyBWbL+onkmBEpu+TntCcoRxbQpkW9lbChlRThjakgg3BW3x5mTSrFe+sUr09L9WusjjycATHUAYPLqAGN1CHBjBQ8Ayv8OYY58V5dz7mrTknmzmEP3A+fwBRkJCu</latexit>
+//!
+//! <latexit sha1_base64="rKD3Jvwe539CotiXgwnPe9T+GaY=">AAAB8XicbVA9TwJBEJ3DL8Qv1NJmIzHBhtyhiZZEG0tMBIxwIXvLAhv29i67c0Zy4V/YWGiMrf/Gzn/jAlco+JJJXt6bycy8IJbCoOt+O7mV1bX1jfxmYWt7Z3evuH/QNFGiGW+wSEb6PqCGS6F4AwVKfh9rTsNA8lYwup76rUeujYjUHY5j7od0oERfMIpWeuggf8K0TE8n3WLJrbgzkGXiZaQEGerd4lenF7Ek5AqZpMa0PTdGP6UaBZN8UugkhseUjeiAty1VNOTGT2cXT8iJVXqkH2lbCslM/T2R0tCYcRjYzpDi0Cx6U/E/r51g/9JPhYoT5IrNF/UTSTAi0/dJT2jOUI4toUwLeythQ6opQxtSwYbgLb68TJrVindWqd6el2pXWRx5OIJjKIMHF1CDG6hDAxgoeIZXeHOM8+K8Ox/z1pyTzRzCHzifP1AKkK0=</latexit>
+//!
+//! Figure 3: A domain decomposition approach for cPINN and XPINN. (a) 12 subdomains with locations of residual (blue triangles),
+//! data (red circles), and interface (green squares) points; (b) two-way point-to-point communication between subdomains with their
+//! neighbors. In particular, the communication for subdomains Ω1 and Ω8 involves two and four edges, respectively, as shown.
+//!
+//! 5.2. Parallel solution
+//! This stage is further divided into two stages: first, computation and second, communication stage. In the computation stage during each epoch, uΘ̃q (xIq ), FΘ̃q (xIq ) and fΘ̃q (xIq ) are computed in each subdomain concurrently as
+//! computation of these terms does not require any data from neighboring elements. This part of the algorithm is represented in red color font in Algorithm 1.
+//! During the communication stage, represented by the green-colored font in Algorithm 1, we first arrange the processors in a logical 2D layout, as shown in Figure 3b with each processor represented by there x-and y - rank expressed
+//! as
+//! (r x , ry ) = (r//N x , r%Ny ),
+//!
+//! 200
+//!
+//! (7)
+//!
+//! where (r x , ry ) represent local ranks of processor, r is the global rank of processor, and N x and Ny are the number of
+//! subdomains in x and y directions. The literals “//" and ‘%‘" represent the integer division and modulo operations,
+//! respectively. The local rank of each processor will assist in determining the local rank of neighboring subdomains,
+//! represented by South, East, North, West (S, E, N, W) edges. The local ranks of neighboring subdomains can be
+//! computed by increasing or decreasing the values of r x and ry , depending on the direction of neighbors. For example,
+//! the neighboring subdomains of Ω8 (Figure 3b) in the south, east, north, and west direction is expressed as (r x −
+//! 1, ry ), (r x , ry + 1), (r x + 1, ry ), and (r x , ry − 1), respectively. The r x and ry have to be non-negative, and negative r x
+//! and ry correspond to boundary edges and therefore the local ranks are initialized as NULL. In MPI implementation,
+//! communication is carried out by using the global rank, which is obtained by mapping the local rank to the global
+//! rank using r = r x ∗ N x + ry . Subdomains aligning with the boundary domain will have two neighbors for a 2D layout
+//! (see subdomain Ω1 in Figure 3b) and remaining non-existing subdomains are initialized as NULL with MPI construct
+//! of MPI.PROC_NULL. Now, as the preparation of the message envelope for communication is ready, uΘ̃q (xIq ) and
+//! fΘ̃q (xIq ) are sent and received by each processor by using the point-to-point send-receive protocol in a non-blocking
+//! way [31]. To receive the data from neighboring subdomains we initialize a buffer corresponding to each edge of
+//! 9
+//!
+//!
+//! --- PAGE BREAK ---
+//! subdomains. Once the communication is completed and the processors are synchronized the subdomain-wise loss is
+//! computed using (5) or (6). Thereafter, optimizations of loss functions corresponding to each subdomain are carried
+//! out concurrently and parameters for each neural network are retrieved. We note that the processors are mapped to
+//! GPUs or accelerators using the same approach as mentioned above but using CUDA-aware MPI [32].
+//! 6. Optimization on distributed systems
+//! We seek to find the optimal parameters Θ̃∗q that minimize the loss function J(Θ̃q ) in each subdomain. Although
+//! there is no theoretical guarantee that the optimization process converges to a global minimum, our computational
+//! experiments indicate that as long as the given PDE is well-posed and has a unique solution, the cPINN/XPINN
+//! formulations are capable of achieving an accurate solution provided that a sufficiently expressive network and a
+//! sufficient number of residual points are used. There are several optimization algorithms available to minimize the loss
+//! function. In general, a gradient-based optimization method is employed for the training of parameters. The stochastic
+//! gradient descent (SGD) method is the widely used optimization method. In SGD, a small set of points are randomly
+//! sampled to find the direction of the gradient in every iteration. The SGD algorithm works well to avoid bad local
+//! minima during training of DNN under one point convexity property. A brief survey on SGD is given by Ruder [33].
+//! The optimization of single loss functions on the distributed systems can be performed without significant change
+//! in the code. In the literature, for single loss function-based methodologies many distributed optimization procedures
+//! are proposed. Le et al. [34] used a distributed optimization procedure for classification problems. In [35], Dean et al. .
+//! proposed the Sandblaster framework that supports a variety of distributed batch optimization procedures, including a
+//! distributed implementation of L-BFGS [36] method. In the present work, both cPINN and XPINN methods involve
+//! multiple loss functions, which need to be optimized in parallel. In the present work, we used an ADAM optimizer for
+//! minimizing the loss functions in each subdomain.
+//! 7. Computational experiments
+//! In this section, we first define the terminology about the scaling and the performance of the distributed algorithm.
+//! Then, we present the profiling of the vanilla PINN as a pedagogical example, which establishes a computational
+//! perspective of the PINN methodology. In the rest of the section, we test and discuss the accuracy and performance
+//! of the Algorithm 1 for forward and inverse problems. To generate the performance results, we used IBM’s Watson
+//! Machine Learning package (IBM_WML), which include TensorFlow 1.15 and installed on Red Hat Enterprise Linux
+//! (RHEL) version 7.6. To code up the algorithm, we have used Python 3.6. The versions of CUDA and CUDA drivers
+//! are 10.2 and 440.33.01, respectively.
+//! 7.1. Weak scaling
+//! In the weak scaling metric, the assignment of work on each processor remains constant, and as the problem size
+//! increases the number of processing elements also increases, which results in a constant workload per processor. This
+//! type of scaling is used for a problem that does not fit in the memory of a single node and is commonly known as a
+//! memory-bound problem. The weak scaling efficiency, We , is expressed as
+//! We =
+//!
+//! T1
+//! ,
+//! T NPW
+//!
+//! (8)
+//!
+//! where T 1 is the time required to complete the work with one processor and T NPW is the time taken by NPW processor
+//! to complete the NPW unit of the same work with NPW processing elements.
+//! 7.2. Strong scaling
+//! In the strong scaling metric, the problem size is fixed and the number of processing elements is increased, which
+//! results in a reduced workload per processor. These measurements are employed for problems that are compute-bound.
+//! The strong scaling efficiency is expressed as
+//! s
+//! ,
+//! (9)
+//! Se =
+//! NP
+//! where s is the speed up defined as s = T 1 /T NP , with T NP being the time taken by NP processors to complete the same
+//! amount of work.
+//! 10
+//!
+//!
+//! --- PAGE BREAK ---
+//! Algorithm 1: Parallel algorithm for cPINN and XPINN; Textblocks in blue, red, and green colors represent
+//! the preprocessing, computation and communication stages, respectively. (For interpretation of the references
+//! to color, the reader is referred to the web version of this article.)
+//! Step 0: Initialize MPI, rank and size of processors = N sd
+//! set method = 0 for cPINN
+//! set method = 1 for XPINN
+//! comm=MPI.Init()
+//! rank=MPI.Get_rank(comm)
+//! size=MPI.Get_size(comm)
+//! if rank == 0 then
+//! Divide the computational domain into N sd number of non-overlapping regular subdomains
+//! Specify the training data, residual and interface points in all subdomains Ωq
+//! Nuq
+//! Training data : uΘ̃q network {x(i)
+//! uq }i=1 , q = 1, 2, · · · , N sd .
+//! NF
+//!
+//! q
+//! Residual training points : FΘ̃q network {x(i)
+//! Fq }i=1 , q = 1, 2, · · · , N sd .
+//!
+//! NI
+//!
+//! q
+//! Interface points : {x(i)
+//! Iq }i=1 , q = 1, 2, · · · , N sd with
+//!
+//! NI
+//!
+//! q
+//! {x(i)
+//! Iq }i=1 ∈ {S , E, N, W}, which represents South, East, North and West edges for all subdomains.
+//!
+//! for epoch in Nepochs do
+//! Nuq
+//! uΘ̃q =DNN({x(i)
+//! uq }i=1 , Wq , bq );
+//!  
+//! compute FΘ̃q xFq ,
+//! compute uΘ̃q (xIq )
+//! if method == 0 then
+//! compute flux fΘ̃q (xIq )
+//! else
+//!  
+//! compute residual FΘ̃q xIq
+//! for i in (0, size) do
+//! if i == rank then
+//! if method == 0 then
+//! MPI.Isend(uΘ̃q (xIq ), r), where r ∈ {S r , Er , Nr , Wr } with S r , Er , Nr , Wr being the neighboring
+//! processes
+//! MPI.Isend( fΘ̃q (xIq ), r)
+//! MPI.Irecv(uΘ̃q (xIq ), r)
+//! MPI.Irecv( fΘ̃q (xIq ), r)
+//! MPI.waitall()
+//!  
+//! compute J Θ̃q
+//! else
+//! MPI.Isend(uΘ̃q (xIq ), r), where r ∈ {S r , Er , Nr , Wr } with S r , Er , Nr , Wr being the neighboring
+//! processes
+//!  
+//! MPI.Isend(FΘ̃q xIq , r)
+//! MPI.Irecv(uΘ̃q (xIq ), r)
+//!  
+//! MPI.Irecv(FΘ̃q xIq , r)
+//! MPI.waitall()
+//!  
+//! compute J Θ̃q
+//! Compute the model parameters by minimizing the loss function using an optimization process in each
+//! subdomain independently
+//! Θ̃∗q = arg minΘ̃q ∈Vq J(Θ̃q ), here Vq is the parameter space in the qth subdomain.
+//! 11
+//!
+//!
+//! --- PAGE BREAK ---
+//! Runtime for 1000 iterations (sec)
+//!
+//! 150
+//!
+//! 150
+//! Data Loss
+//! Residual Loss
+//! Backward pass
+//!
+//! 600
+//! Data Loss
+//! Residual Loss
+//! Backward pass
+//!
+//! Data Loss
+//! Residual Loss
+//! Backward pass
+//!
+//! 100
+//!
+//! 100
+//!
+//! 400
+//!
+//! 50
+//!
+//! 50
+//!
+//! 200
+//!
+//! 0
+//!
+//! 2,000
+//!
+//! 4,000
+//!
+//! 6,000 8,000
+//! # Residual points
+//!
+//! 10,000
+//!
+//! 0
+//!
+//! 2
+//!
+//! 4
+//!
+//! (a)
+//!
+//! 6
+//!
+//! 8
+//!
+//! 0
+//!
+//! 40
+//!
+//! 80
+//!
+//! 120
+//!
+//! # Layers
+//!
+//! # Neurons
+//!
+//! (b)
+//!
+//! (c)
+//!
+//! 160
+//!
+//! Figure 4: Cost profile of the PINN algorithm for the one-dimensional Burgers equation: The computation time is represented for
+//! data loss, residual loss, and backward pass, separately; (a) runtime for 1000 iterations against the number of residual points with
+//! 200 data points; (b) runtime against the number of hidden-layers with fixed 200 data points and 10000 residual points, and 40
+//! neurons per layer; (c) runtime against the number of neurons in each layer with fixed 200 data points and 10000 residual points,
+//! with 8 hidden-layers.
+//!
+//! 7.3. A pedagogical example on the computational complexity of PINNs
+//! Before diving into the parallel implementation of cPINN and XPINN, we first describe the profiling of PINN
+//! and its dependence on various hyperparameters. In particular, the depth, width of the network, and the number of
+//! residual points, which can significantly affect the performance of the neural network. To this end, we consider the
+//! one-dimensional time-dependent Burgers equation given by
+//! ut + uu x − (0.01/π)u xx = 0, x ∈ [−1, 1], t > 0,
+//!
+//! (10)
+//!
+//! with initial and boundary conditions u(0, x) = − sin(πx) and u(t, −1) = u(t, 1) = 0, respectively. In all cases, we used
+//! hyperbolic tangent activation function and the learning rate is 1e-4.
+//! Figure 4 shows the plot of compute times, consisting of the data loss, residual loss, and backward pass. In
+//! particular, Figure 4a shows the computational cost for varying numbers of residual points. In this case, the computation
+//! is performed for 200 data points, 8 hidden-layers with 40 neurons in each layer. Figure 4a shows that the maximum
+//! time is consumed by the computation of residual loss, which involves the computation of partial derivatives in the
+//! governing PDEs. The partial derivative is computed by using the method of reverse mode auto-differentiation [28],
+//! which involves the traversal of the computation graph. The computational complexity of graph traversal depends on
+//! the order of underlying PDE(s), the number of hidden-layers, and the number of neurons in each layer. Figure 4a also
+//! shows that with the increase in the number of residual points the computation time for residual loss increases. Figure
+//! 4b represents the plot of computation time of PINN against the depth of the network. The computation is performed
+//! for 200 data points, 10000 residual points, and 40 neurons in each layer. As the depth of the network increases the
+//! computation time for the residual loss increases. Figure 4c represents the variation of compute times with respect to
+//! the number of neurons in each layer. The computation is performed using 200 data points and 8 hidden-layers. There
+//! is a positive correlation between compute time and width of neural network with maximum time spent on residual
+//! loss. The computation reported in Figure 4 is performed on Intel’s Cascade Lake processors with 32-bit floating
+//! points.
+//! 7.4. Two-dimensional steady-state incompressible Navier–Stokes equations
+//! The governing steady-state incompressible Navier-Stokes equation in two-dimensions are given as
+//! u · ∇u = −∇p +
+//! ∇ · u = 0,
+//!
+//! 1 2
+//! ∇ u,
+//! Re
+//! in Ω
+//!
+//! 12
+//!
+//! in Ω
+//!
+//! (11)
+//!
+//!
+//! --- PAGE BREAK ---
+//! 0.996
+//!
+//! uprediction
+//!
+//! 1.0
+//!
+//! v prediction
+//!
+//! 1.0
+//!
+//! 0.871
+//!
+//! 0.3998
+//! 0.2995
+//!
+//! 0.747
+//! 0.8
+//!
+//! 0.1992
+//!
+//! 0.8
+//! 0.623
+//!
+//! 0.0988
+//! 0.498
+//!
+//! 0.6
+//!
+//! 0.374
+//! 0.4
+//!
+//! −0.0015
+//!
+//! y
+//!
+//! y
+//!
+//! 0.6
+//!
+//! −0.1018
+//!
+//! 0.4
+//!
+//! 0.249
+//!
+//! −0.2022
+//!
+//! 0.125
+//! 0.2
+//!
+//! 0.2
+//!
+//! −0.3025
+//!
+//! 0.001
+//! 0.0
+//! 0.0
+//!
+//! 0.2
+//!
+//! 0.4
+//!
+//! 0.6
+//!
+//! 0.8
+//!
+//! 1.0
+//!
+//! −0.124
+//!
+//! 0.0
+//! 0.0
+//!
+//! −0.4028
+//! 0.2
+//!
+//! 0.4
+//!
+//! x
+//! x = 0.5
+//! 1.0
+//!
+//! 0.8
+//!
+//! 1.0
+//!
+//! −0.5032
+//!
+//! y = 0.5
+//!
+//! 0.3
+//!
+//! cPINN
+//! XPINN
+//! Ghia
+//!
+//! 0.8
+//!
+//! 0.6
+//!
+//! x
+//!
+//! cPINN
+//! XPINN
+//! Ghia
+//!
+//! 0.2
+//! 0.1
+//!
+//! y
+//!
+//! v(x)
+//!
+//! 0.6
+//! 0.0
+//!
+//! 0.4
+//! −0.1
+//! 0.2
+//! −0.2
+//! 0.0
+//! −0.4
+//!
+//! −0.2
+//!
+//! 0.0
+//!
+//! 0.2
+//!
+//! 0.4
+//! u(y)
+//!
+//! 0.6
+//!
+//! 0.8
+//!
+//! 1.0
+//!
+//! −0.3
+//! 0.0
+//!
+//! 1.2
+//!
+//! 0.2
+//!
+//! 0.4
+//!
+//! 0.6
+//!
+//! 0.8
+//!
+//! 1.0
+//!
+//! x
+//!
+//! Figure 5: Two-dimensional incompressible Navier-Stokes equations: The top row shows the velocity contour plots for cPINN and
+//! the bottom row shows the comparison of cPINN and XPINN velocities with the results obtained by Ghia et al. [37] for Re = 100.
+//!
+//! with appropriate Dirichlet boundary conditions, see [16] for more details. The u = (u, v), p and Re represents the
+//! velocity components (in x− and y− directions), pressure and Reynolds number, respectively. The neural network used
+//! in each subdomain consists of 5 hidden-layers with 80 neurons in each layer. The activation function is hyperbolic
+//! tangent and the learning rate is 6e-4.
+//! 7.4.1. Accuracy of Algorithm 1
+//! First, we test the accuracy of our parallel algorithm presented in Algorithm 1. To measure the accuracy, we
+//! solve the steady-state two-dimensional problem of incompressible Navier–Stokes equations to compute the solution
+//! for the problem of the lid-driven cavity. We compute the solution of (11) for Re = 100, with Ω = [0, 1] × [0, 1]
+//! and no-slip boundary conditions are imposed on the wall boundary. To compute the solution of (11) using cPINN
+//! and XPINN, we decomposed Ω in four subdomains with each subdomain endowed with 12000 residual points, 80
+//! boundary points, and 250 interface points. A total of 4 QuadroRTX 6000 GPUs, each with 24 GB memory is used
+//! for computation. The inter-connection between GPUs is achieved through PCI Express and communication between
+//! GPUs is employed via CUDA aware MPI. Figure 5 (top row) shows the contour plots of velocity components u and
+//! v obtained by using the parallel cPINN method. A comparison between the solutions obtained from cPINN, XPINN
+//! and the reference solutions by Ghia et al. [37] are represented in Figure 5 (bottom row). The inferred solutions show
+//! a very good agreement with the reference solution and therefore confirm the accuracy of the distributed cPINN and
+//! XPINN algorithms (Algorithm 1).
+//!
+//! 13
+//!
+//!
+//! --- PAGE BREAK ---
+//! Runtime for 10 iterations (sec)
+//!
+//! 15
+//! Computation Time
+//! Communication Time
+//!
+//! Computation Time
+//! Communication Time
+//!
+//! 10
+//!
+//! 10
+//!
+//! 5
+//!
+//! 0
+//!
+//! 5
+//!
+//! 4
+//!
+//! 8
+//!
+//! 12
+//!
+//! 16
+//! Nodes
+//!
+//! 20
+//!
+//! 0
+//!
+//! 24
+//!
+//! 4
+//!
+//! 8
+//!
+//! (a)
+//!
+//! 12
+//!
+//! 16
+//! Nodes
+//!
+//! 20
+//!
+//! 24
+//!
+//! (b)
+//!
+//! Figure 6: Two-dimensional incompressible Navier-Stokes equations: Computation and communication time using the CPU implementation for (a) cPINN and (b) XPINN, with 100 residual points and 20 interface points.
+//! Table 1: Fluxes for the steady-state two-dimensional incompressible Navier-Stokes equations.
+//!
+//! Flux
+//! x-Momentum
+//! y-Momentum
+//! Mass
+//!
+//! in x direction
+//!
+//! in y direction
+//!
+//! 1 ∂u
+//! u + p − Re
+//! ∂x
+//! 1 ∂v
+//! uv − Re ∂x
+//!
+//! 1 ∂u
+//! uv − Re
+//! ∂y
+//! 1 ∂v
+//! v2 + p − Re
+//! ∂y
+//! v
+//!
+//! 2
+//!
+//! u
+//!
+//! 7.4.2. Computation versus Communication times
+//! Now, we show runtimes for the distributed cPINN and XPINN algorithms spent during the computation and communication phases. Figures 6a and 6b represent the bar plots for computation and communication times corresponding
+//! to cPINN and XPINN, respectively. The domain is decomposed from 4 to 24 subdomains, where 200 residual and
+//! 20 interface points are sampled randomly in each subdomain. A small number of interface points is chosen so that
+//! the problem becomes more communication dominated, and performance is measured in a weak scaling fashion. The
+//! run-times in Figure 6 show the plot of computation and communication time for 10 iterations of training, measured
+//! for Intel’s cascade lake CPUs, against the number of nodes with each rank mapped on one node. Figure 6a shows
+//! that computation and communication times contribute almost equally to the total time with a perfect weak scaling.
+//! However, for XPINN in Figure 6b, the communication time is more than the computation time and more importantly
+//! than the cPINN implementation, which is explained later in the context of the problem described by (11). Further, we
+//! perform the same exercise by adding one GPU with each CPU, with 1 CPU + 1 GPU corresponding to each rank and
+//! per node, and results are presented in Figure 7. The CPU and GPUs on each node are connected with NVLink and
+//! nodes are connected with a topology of non-blocking fat-tree using Mellanox’s EDR as a fabric. Each node contains
+//! IBM POWER9 CPUs and NVIDIA’s Volta V100 GPUs. Figures 7a and 7b represent the computation and communication time for cPINN and XPINN, respectively. In Figure 7, the domain is also decomposed from 4 to 24 subdomains
+//! where 4000 residual and 200 interface points are sampled randomly in each subdomain. The interpretation of Figure
+//! 7 is similar to the results of Figure 6. Figure 7b also shows that communication in XPINN is greater than cPINN
+//! (Figure 7a) but both show a perfect weak scaling.
+//! Now, we explain the reason behind the communication time being higher in XPINN in comparison to cPINN. For
+//! the present example of the incompressible Navier-Stokes equation, Table 1 gives the mass and momentum fluxes in x
+//! and y directions. From Table 1 it can be observed that the mass flux is represented by PDE variable u, v, which first
+//! 14
+//!
+//!
+//! --- PAGE BREAK ---
+//! Runtime on Nodes, GPU Implementation
+//! Runtime for 100 iterations (sec)
+//!
+//! 4
+//!
+//! Runtime on Nodes, GPU Implementation
+//! 4
+//!
+//! Computation Time
+//! Communication Time
+//!
+//! Computation Time
+//! Communication Time
+//!
+//! 3
+//!
+//! 3
+//!
+//! 2
+//!
+//! 2
+//!
+//! 1
+//!
+//! 1
+//!
+//! 0
+//!
+//! 4
+//!
+//! 8
+//!
+//! 12
+//!
+//! 16
+//! Nodes
+//!
+//! 20
+//!
+//! 24
+//!
+//! (a)
+//!
+//! 0
+//!
+//! 4
+//!
+//! 8
+//!
+//! 12
+//!
+//! 16
+//! Nodes
+//!
+//! 20
+//!
+//! 24
+//!
+//! (b)
+//!
+//! Figure 7: Two-dimensional incompressible Navier-Stokes equations: Computation and communication time for (a) cPINN and
+//! (b) XPINN with 4000 residual points and 200 interface points.
+//!
+//! 300
+//!
+//! saves one pass of computational graph for auto-differentiation and thus, reducing the communication time as shown
+//! in Figure 6. However, the interface condition for XPINN requires the computation of residuals along the interfaces,
+//! which will require the explicit computation of the mass conservation equation, and subsequently performing the
+//! communication to pass the value in neighboring domains and therefore increasing the communication time justifying
+//! the results in Figure 6. A similar explanation for the reduction in computation cost by the cPINN method can be given
+//! for the computation of interface conditions using momentum fluxes.
+//! So the main take away points from Figures 6 and 7 are:
+//! 1. Good weak scaling of the distributed cPINN and XPINN algorithms for the communication bound problem is
+//! achieved both with CPUs and GPUs.
+//! 2. The communication time in XPINN is greater than cPINN in the case of spatial decomposition. The benefit of
+//! XPINN comes into play when spatial and temporal decompositions are performed simultaneously, as demonstrated in the example of Section 7.5.
+//! 7.4.3. Weak scaling and Strong scaling
+//! Next, we present the weak and strong scalings of distributed cPINN and XPINN algorithms. The weak scaling is
+//! performed on a heterogeneous architecture hosting CPUs and GPUs. Figures 8a and 8b represent the weak scaling
+//! for cPINN and XPINN, respectively. The weak scaling is measured by decomposing the domain from 4 to 24 subdomains with each subdomain sampled with 15000 residual points, 1000 interface points, and 80 boundary points,
+//! and the number of data points increases as the number of GPUs increases to balance the load equally. The hardware
+//! architecture is the same as that used in Figure 7. The weak scaling is computed by using the equation 8. Figures 8a
+//! and 8b represent a linear relation between the number of data points processed per second and the number of nodes,
+//! which also conforms accurately with the theoretical performance. From these figures, we note that the number of data
+//! points processed per second is more for cPINN than XPINN due to the larger communication time in XPINN.
+//! Now, we present the strong scaling for cPINN and XPINN in Figures 9 measured on Intel’s Cascade lake CPUs.
+//! The performance shown in Figure 9a is measured by fixing the problem size with total data points 249600, which
+//! includes boundary, residual, and interface data points. Similar to the earlier examples, each rank is mapped node-wise.
+//! Figure 9a represents the speedup for cPINN and XPINN, which shows a linear relationship as the number of nodes
+//! increases, which eventually reduces the work per processor. Figure 9a also describes that the speedup of XPINN is less
+//! 15
+//!
+//!
+//! --- PAGE BREAK ---
+//! ·105
+//!
+//! 1.5
+//!
+//! Data points/sec
+//!
+//! Data points/sec
+//!
+//! Observed: XPINN
+//! Theoretical: XPINN
+//!
+//! Observed: cPINN
+//! Theoretical: cPINN
+//!
+//! 2
+//!
+//! 1
+//!
+//! 0
+//!
+//! ·105
+//!
+//! 10
+//!
+//! 5
+//!
+//! 20
+//! 15
+//! # of GPUs
+//!
+//! 1
+//!
+//! 0.5
+//!
+//! 0
+//!
+//! 25
+//!
+//! 5
+//!
+//! 10
+//!
+//! 20
+//! 15
+//! # of GPUs
+//!
+//! 25
+//!
+//! Figure 8: Two-dimensional incompressible Navier-Stokes equations: Weak GPU scaling for the distributed cPINN and XPINN
+//! algorithms.
+//!
+//! cPINN
+//! XPINN
+//!
+//! cPINN
+//! XPINN
+//!
+//! 20
+//!
+//! 1
+//! Efficiency
+//!
+//! Speed up
+//!
+//! 15
+//! 10
+//!
+//! 0.5
+//!
+//! 5
+//! 0
+//!
+//! 0
+//! 4
+//!
+//! 8
+//!
+//! 12
+//! 16
+//! Nodes
+//!
+//! 20
+//!
+//! 24
+//!
+//! 4
+//!
+//! (a)
+//!
+//! 8
+//!
+//! 12
+//! 16
+//! Nodes
+//!
+//! 20
+//!
+//! 24
+//!
+//! (b)
+//!
+//! Figure 9: Two-dimensional incompressible Navier-Stokes equations: Strong scaling bar plots where the left figure gives speedup
+//! and the right figure gives efficiency, respectively for both cPINN and XPINN methods.
+//!
+//! 16
+//!
+//!
+//! --- PAGE BREAK ---
+//! Table 2: Comparison of walltimes averaged over 10 runs (mean and standard deviation) for first 200 iterations using the dataparallel vanilla PINN, cPINN and XPINN methods.
+//!
+//! # GPU’s (No. of Nodes)
+//!
+//! Data-parallel PINN
+//!
+//! cPINN
+//!
+//! XPINN
+//!
+//! 4 (1)
+//! 8 (2)
+//! 12 (3)
+//! 16 (4)
+//! 20 (5)
+//! 24 (6)
+//!
+//! 14.49 ± 0.34
+//! 15.16 ± 0.56
+//! 16.93 ± 0.74
+//! 17.63 ± 0.80
+//! 18.00 ± 0.49
+//! 18.03 ± 0.90
+//!
+//! 18.76 ± 0.12
+//! 19.22 ± 0.20
+//! 19.48 ± 0.07
+//! 19.71 ± 0.07
+//! 19.84 ± 0.02
+//! 19.74 ± 0.08
+//!
+//! 19.77 ± 0.34
+//! 20.73 ± 0.15
+//! 20.97 ± 0.15
+//! 21.34 ± 0.05
+//! 21.48 ± 0.05
+//! 21.63 ± 0.07
+//!
+//! than cPINN due to more communication in XPINN. Figure 9b shows the efficiency of cPINN and XPINN algorithms
+//! computed using equation 9. The results show that cPINN is more efficient with an average efficiency of 80%, while
+//! XPINN achieves only 70% efficiency. The issue of enhancing the efficiency of the XPINN method is addressed in
+//! Section7.5.
+//! 7.4.4. Comparison between the runtime obtained from data-parallel vanilla PINN, cPINN and XPINN
+//! We also present a comparison between runtimes obtained from vanilla PINN method using the data-parallel approach, and parallel cPINN as well as XPINN methods to solve equation (11). In Table 2, we show the runtime for
+//! 200 iterations. The hardware architecture and software stack is the same as those used in Figure 7. To perform the
+//! test, we used uniform network architecture for all the three cases with 8 hidden-layers and 64 neurons in each layer.
+//! To have a fair comparison between data-parallel PINN, cPINN and XPINN methods, we saturated the GPUs by
+//! using large number of residual points resulting into ≈ 98% volatile utilization of GPUs. These runtimes are measured
+//! in a weak scaling sense by decomposing the domain from 4 to 24 subdomains with each subdomain endowed with
+//! 50000 residual points, 500 interface points, and 80 boundary points, and the number of data points increases as the
+//! number of GPUs increases to balance the load equally. The runtimes in Table 2 is for the computations carried out
+//! with Float32 and each node consists 4 GPUs. To remove biases in runtimes, we present walltimes averaged over 10
+//! runs for data-parallel PINN, cPINN and XPINN along with their standard deviations. Table 2 shows that the runtimes
+//! for data-parallel PINN and cPINN are almost similar despite the fact that cPINN requires computations of fluxes.
+//! We also note that the data-parallel requires communication through allreduce collectives which is expensive and has
+//! incremental overhead as number of processors (GPUs) increases, as reflected in Table 2. However, in cPINN and
+//! XPINN the communication time will be fixed with respect to number of processors (GPUs) as these methods will
+//! require point-to-point communication and will have 4- and 6-way communication in 2D and 3D spaces (Cartesian
+//! grid), respectively. The runtimes for XPINN are slightly higher than cPINN but this can be significantly reduced
+//! by partitioning the domain in temporal dimension as well, which is already deliberated in Section 7.5. Moreover,
+//! as discussed earlier, data-parallel has only single network to train as opposed to multiple networks used in cPINN
+//! and XPINN methods, which are additionally endowed with local representation capacity. Furthermore, data-parallel
+//! approach is not adequate for the problems involving multi-physics data for the real world problems with heterogeneous
+//! physics.
+//! 7.5. Viscous Burgers equation with space-time domain decomposition
+//! This test case aims to show the advantage of XPINN over cPINN by decomposing the domain along the time axis.
+//! To this end, we again consider a one-dimensional viscous Burgers equation given by
+//! ut + uu x − νu xx = 0, x ∈ [−1, 1], t > 0,
+//! with initial and boundary conditions u(0, x) = − sin(πx) and u(t, −1) = u(t, 1) = 0, respectively, and ν = 0.01/π.
+//!
+//! 17
+//!
+//! (12)
+//!
+//!
+//! --- PAGE BREAK ---
+//! .
+//!
+//! # x−
+//! partitions
+//! 4
+//! 8
+//! 16
+//! 32
+//! 2
+//! 4
+//! 4
+//! 8
+//!
+//! .
+//! .
+//!
+//! . . .
+//!
+//! . . .
+//!
+//! Space
+//!
+//! . . .
+//!
+//! . . .
+//!
+//! Time
+//! Figure 10: Viscous Burgers equation: Schematic
+//! representation of space-time decomposition in
+//! XPINN methodology.
+//!
+//! cPINN vs XPINN partition
+//! #t
+//! cPINN time XPINN time
+//! partitions per iter. (s)
+//! per iter. (s)
+//! 1
+//! 0.14
+//! 1
+//! 0.12
+//! 1
+//! 0.12
+//! 1
+//! 0.125
+//! 2
+//! 0.064
+//! 2
+//! 0.060
+//! 4
+//! 0.060
+//! 4
+//! 0.060
+//!
+//! Table 3: Viscous Burgers equation: Comparison of cPINN and XPINN
+//! average wall time per iteration for different number of spatio-temporal
+//! domain divisions.
+//!
+//! In each subdomain, we used a neural network with 5 hidden-layers and 20 neurons per layer. In each network,
+//! the activation function is hyperbolic tangent and the learning rate is 8e-4. The total number of residual points is 80k
+//! in the whole domain, which is fixed for all cases. Also, the number of interface points is 20 along time as well as
+//! space directions. As the domain is subdivided into subdomains, the residual points, as well as interface points are
+//! also distributed uniformly in each subdomain. In the case of cPINN, the domain is divided only along the spatial
+//! axis whereas, in the XPINN, space-time domain decomposition can be performed as shown schematically in figure
+//! 10. Table 3 shows the weak scaling on CPUs for both cPINN and XPINN. In the case of cPINN, the domain is
+//! partitioned along the space into 4, 8, 16, and 32 subdomains whereas in the case of XPINN, both space and time axes
+//! are partitioned in such a way that the total number of subdomains remains the same in both cases. The table shows
+//! the average computational time for cPINN and XPINN per iteration, which is higher for cPINN. This is because in
+//! the cPINN implementation, the buffer size for communication is static along the time direction and results in more
+//! communication overhead. Moreover, in cPINN, the computation of interface loss requires gradient computation for all
+//! the interface points, which further increases computational cost. However, in the XPINN implementation, the buffer
+//! size for communication is divided by the number of subdomains created along the space-time axes.
+//! This example shows the efficacy of the XPINN method when the domain decomposition is performed along time
+//! direction. Thus, XPINN is a very promising deep learning approach for transient problems.
+//! 7.6. Inverse problem: Steady-state heat conduction with variable conductivity
+//! The governing equation for the steady-state heat conduction problem is written as
+//! ∂ x (K(x, y)T x ) + ∂y (K(x, y)T y ) = f (x, y)
+//!
+//! (13)
+//!
+//! with Dirichlet boundary conditions for temperature T and thermal conductivity K, obtained from the exact solution.
+//! The forcing term f (x, y) is obtained from the exact solution for variable thermal conductivity and temperature, which
+//! is assumed to be of the form
+//! T (x, y) = 20 exp(−0.1y)
+//! K(x, y) = 20 + exp(0.1y) sin(0.5x).
+//! Materials whose thermal conductivity is a function of space are the so-called functionally graded materials, which
+//! are a particular type of composite materials. The material domain is chosen to be a map of the United States divided
+//! into 10 subdomains as shown in figure 11. The interfaces between these subdomains are shown by the dashed blue
+//! line whereas the domain boundary is shown by the solid green line. The boundary and the training data is available
+//! for every subdomain. Unlike cPINN, XPINN can easily handle such complex subdomains with arbitrarily shaped
+//! interfaces, thus, providing greater flexibility in terms of domain subdivision. Figure 11(right) shows the residual,
+//! training data, and interface points in blue dot, red cross, and black asterisk, respectively, over the entire domain.
+//! 18
+//!
+//!
+//! --- PAGE BREAK ---
+//! 10
+//!
+//! 12
+//!
+//! 9
+//! 8
+//!
+//! 5
+//!
+//! 7
+//!
+//! 10
+//!
+//! y
+//!
+//! 1
+//!
+//! 6
+//!
+//! 8
+//!
+//! 2
+//!
+//! 6
+//! 3
+//!
+//! 4
+//!
+//! 1 West
+//! 2 Southwest
+//! 3 South
+//! 4 Southeast
+//! 5 Northeast
+//! 6 Central
+//! 7 Upper Midwest 1
+//! 8 Upper Midwest 2
+//! 9 West North Central
+//! 10 Northwest
+//!
+//! 14
+//! 12
+//! 10
+//!
+//! y
+//!
+//! 14
+//!
+//! 8
+//! 6
+//! 4
+//!
+//! 4
+//!
+//! Data Pts
+//! Residual Pts
+//! Interface Pts
+//!
+//! XPINN Domain Decomposition
+//! 2
+//!
+//! 2
+//! 5
+//!
+//! 10
+//!
+//! 15
+//!
+//! 20
+//!
+//! 25
+//!
+//! x
+//!
+//! 2.5
+//!
+//! 5.0
+//!
+//! 7.5
+//!
+//! 10.0
+//!
+//! 12.5
+//!
+//! 15.0
+//!
+//! 17.5
+//!
+//! x
+//!
+//! Figure 11: Steady-state heat conduction with variable conductivity: Domain decomposition of the US map into 10 regions (left)
+//! and the corresponding data, residual, and interface points in these regions (right).
+//!
+//! T (x, y) (Predicted)
+//! 17.36
+//!
+//! y
+//!
+//! 14
+//!
+//! 15.92
+//!
+//! 12
+//!
+//! 14.48
+//!
+//! 10
+//!
+//! 13.04
+//! 11.60
+//!
+//! 8
+//!
+//! 10.16
+//! 6
+//!
+//! 8.72
+//!
+//! 4
+//!
+//! 7.28
+//!
+//! 2
+//!
+//! 5.84
+//! 2.5
+//!
+//! 5.0
+//!
+//! 7.5
+//!
+//! 10.0
+//!
+//! 12.5
+//!
+//! 15.0
+//!
+//! 17.5
+//!
+//! 4.40
+//!
+//! x
+//!
+//! Figure 12: Steady-state heat conduction with variable conductivity: The first row shows the contour plots for the predicted
+//! temperature T (x, y) and thermal conductivity K(x, y) while the second row shows the corresponding absolute point-wise errors.
+//!
+//! 19
+//!
+//!
+//! --- PAGE BREAK ---
+//! 15
+//!
+//! 6
+//! Float32
+//! Float64
+//!
+//! Walltime (hours)
+//!
+//! 1x
+//!
+//! 1x
+//!
+//! 10
+//!
+//! 5
+//!
+//! Float32
+//! Float64
+//!
+//! 4
+//!
+//! 1x
+//!
+//! 1x
+//!
+//! 2
+//! 10x
+//! 9x
+//!
+//! 7x 9x
+//!
+//! 0
+//!
+//! 0
+//! 1-CPU
+//!
+//! 10-CPUs
+//! # Nodes-CPUs
+//!
+//! 1-GPU
+//! 10-GPUs
+//! # Nodes-GPUs
+//!
+//! (a)
+//!
+//! (b)
+//!
+//! Figure 13: Steady-state heat conduction with variable conductivity: Walltime and speedup of parallel XPINN algorithm on CPUs
+//! and GPUs implemented for the inverse heat conduction problem in (13); (a) speedup and wall time for the parallel XPINN code
+//! on Intel’s Xeon(R) Gold 6126 CPU. The speed and wall time is measured for computations performed with single (Float32) and
+//! double-precision numbers (Float64); (b) speedup and wall time, measured for single- and double-precision operations, on Nvidia’s
+//! V100 GPUs.
+//!
+//! In this inverse problem, the temperature is assumed to be known in the domain but the variable thermal conductivity is unknown. The aim is to infer the unknown thermal conductivity of the material from a few data points for K
+//! available along the boundary line and temperature values available inside the domain. We employed a single PINN in
+//! each subdomain, and the details about the network’s architecture are given in the table 4. In each subdomain, we used
+//! Subdomain number
+//! # Residual points
+//! Adaptive Activation function
+//!
+//! 1
+//! 3000
+//! tanh
+//!
+//! 2
+//! 4000
+//! sin
+//!
+//! 3
+//! 5000
+//! cos
+//!
+//! 4
+//! 4000
+//! tanh
+//!
+//! 5
+//! 3000
+//! sin
+//!
+//! 6
+//! 4000
+//! cos
+//!
+//! 7
+//! 800
+//! tanh
+//!
+//! 8
+//! 3000
+//! sin
+//!
+//! 9
+//! 5000
+//! cos
+//!
+//! 10
+//! 4000
+//! tanh
+//!
+//! Table 4: Steady-state heat conduction with variable conductivity: Neural network architecture in each subdomain.
+//!
+//! 3 hidden-layers with 80 neurons in each layer, and the learning rate is 6e-3, which is fixed for all networks.
+//! Figure 12 (top row) shows the predicted values of temperature and thermal conductivity. The absolute point-wise
+//! errors are given in the bottom row. The XPINN method accurately inferred the thermal conductivity, which shows
+//! that XPINN can easily handle highly irregular and non-convex interfaces. Figure 13 represents the performance of the
+//! parallel XPINN algorithm deployed for solving the inverse heat conduction problem. The performance is measured
+//! for the data points given in Table 4. Figure 13a represents the wall time and scaling of the parallel XPINN algorithm on
+//! CPUs by computing the solution in each domain using one CPUs. The continuity of solution on the shared boundaries
+//! of the subdomain is imposed by passing the solution on each domain boundary to the neighboring subdomains though
+//! MPI protocols. Here, each CPU corresponds to a rank mapped by node, and Intel’s Xeon(R) Gold 6126 CPUs are
+//! used for measurement. First, we measured the wall time of the algorithm on one CPU and considered it as baseline
+//! data (1X) for the scaling. Thereafter, we computed the wall time for 10 CPUs, leading to a (9X) and (10X) for
+//! single (32-bit float) and double-precision (64-bit float) computation, respectively. The scaling for double-precision is
+//! relatively better as the communication process is shadowed by the computation time due to more time being spent on
+//! double-precision arithmetic. However, double-precision-based computation increases wall time by a factor of 2.5 for
+//! single and multiple CPU-based implementations.
+//! Next, we report the walltime and GPU-based implementation. The algorithm is implemented on Nvidia V100
+//! GPUs with 16 GB memories. The hardware architecture is similar to that reported in the example of incompressible
+//! Navier-Stokes equations. Figure 13b represents the walltime for one and ten GPUs for single- and double-precision
+//! 20
+//!
+//!
+//! --- PAGE BREAK ---
+//! 400
+//!
+//! arithmetic. On a single GPU, considered as (1X) model the wall time for double-precision arithmetic 30% more
+//! than that received for single-precision. In the multi-GPU implementation, once GPU is used for each subdomain and
+//! here one rank mapped by the node corresponds to the combination of 1CPU + 1GPU. The walltime for 10-GPUs (10
+//! Nodes or 10 ranks) yields a scaling (7X) and (9X) for single- and double-precision arithmetic. We note that the residual
+//! points in each subdomain are not enough to saturate the GPUs and therefore more time is spent on fetching the data to
+//! memory and inter-GPU communication. To provide more intuition in the purview of the current implementation, for
+//! a typical V100 (16 GB) memory, the single-precision performance is 14 TFLOPs with a memory bandwidth of 900
+//! GB/s and therefore for each byte of transfer (memory to GPU core) 15.6 instruction (FLOPs/ Bandwidth) needs to be
+//! issued to occupy the GPUs completely. In the context of the current problem, the partition and therefore the load on
+//! GPUs (or CPUs) are static and does not change throughout the computation and thus, subdomain 7, endowed with only
+//! 800 residual points, has to wait until all the GPUs (or CPUs) complete their work for the respective subdomain. This
+//! also results in slight sub-linear performance. However, the performance presented in Figure 13 shows a very good
+//! linear scaling for CPUs on a heterogeneous (CPU + GPU) architecture. Additionally, the scaling of the presented
+//! algorithm on CPUs only architecture concurs with the idea of Daghaghi et al. [38], where the authors try to revisit the
+//! algorithms used in machine learning to make them faster on CPUs rather than getting fixated with one-dimensional
+//! development of specific hardware to run the matrix multiplication faster.
+//! In this test case, the partition of the domain is performed by manually choosing the interface points. This was done
+//! to show the efficacy of the XPINN algorithm for non-convex or irregular subdomains. In such complex subdomains,
+//! the distribution system often faces the problem of load imbalance, which can seriously degrade the performance of the
+//! system. A more efficient approach could be utilized to decompose the domain such that the subdomains are packed
+//! optimally for inter-node or inter-process communication. A suitable point cloud [39] or K-way partition [40] based
+//! approach will result in further optimizing the communication.
+//! 7.7. A note on the choice of cPINNs and XPINNs methods for practical problems
+//! Both cPINN and XPINN have distinct advantages over each other. From the computational experiments, it can be
+//! observed that cPINN has lower communication overhead than XPINN but it can only be applied to physical problems
+//! like conservation laws. On the other hand, unlike cPINN, XPINN can be used for spatio-temporal decomposition with
+//! universal applicability irrespective of the nature of physical laws. In practice, both can be employed simultaneously,
+//! for example, in case of time-dependent conservation laws, cPINN can be employed in space, whereas XPINN can be
+//! used to decompose in time direction. Such a combination can drastically reduce the computational power associated
+//! with the training of the neural networks for scientific problems. Moreover, such a combined approach efficiently
+//! balances the communication overhead for all the networks.
+//! 8. Summary
+//! We have developed a parallel framework for the domain decomposition-based conservative and extended physicsinformed neural networks abbreviated as cPINNs and XPINNs, respectively. Here, we have presented a hybrid parallel algorithm for cPINN and XPINN constructed with a programming model described by MPI + X, where X
+//! ∈ {CPUs, GPUs}. The main advantage of the parallel cPINN and XPINN over more classical data and model parallel approaches is their adaptivity for all hyperparameters of the neural network in each subdomain. We compared
+//! the performance of distributed cPINN and XPINN methodologies for both forward and inverse problems, presenting
+//! both weak scaling and strong scaling results. We have also shown the speedup and efficiency of the algorithm for
+//! both cPINN and XPINN methods. In all the computational experiments we observed that the spatial decomposition
+//! contributes to greater communication overhead for the XPINN in comparison to the cPINN, but we also showed that
+//! the efficiency of the XPINN method can be increased by decomposing the domain along the time axis, which cannot
+//! be done in the case of cPINN. Moreover, in terms of implementation of interface conditions, XPINN can be easily
+//! employed in more complex subdomains as shown by the inverse heat conduction problem over the US map.
+//! Acknowledgement
+//! The work was supported by OSD/AFOSR MURI Grant FA9550-20-1-0358, the DOE PhILMs project (DESC0019453) and the DARPA CompMods grant HR00112090062. The weak scaling and GPUs based simulations
+//! 21
+//!
+//!
+//! --- PAGE BREAK ---
+//! were primarily performed at Oak Ridge Leadership Computing Facility (OLCF) through the OLCF Director’s Discretion Program under project ENG120, which is supported by the Office of Science of the U.S. Department of Energy
+//! under Contract DE-AC05-00OR22725. This research was partially conducted using computational resources and
+//! services at the Center for Computation and Visualization (OSCAR), Brown University.
+//! References
+//!
+//! 500
+//!
+//! [1] M. Bojarski, D. Del Testa, D. Dworakowski, B. Firner, B. Flepp, P. Goyal, L. D. Jackel, M. Monfort, U. Muller, J. Zhang, et al., End to end
+//! learning for self-driving cars, arXiv preprint arXiv:1604.07316.
+//! [2] G. Hinton, L. Deng, D. Yu, G. E. Dahl, A.-r. Mohamed, N. Jaitly, A. Senior, V. Vanhoucke, P. Nguyen, T. N. Sainath, et al., Deep neural
+//! networks for acoustic modeling in speech recognition: The shared views of four research groups, IEEE Signal processing magazine 29 (6)
+//! (2012) 82–97.
+//! [3] X. Huang, J. Baker, R. Reddy, A historical perspective of speech recognition, Communications of the ACM 57 (1) (2014) 94–103.
+//! [4] G. Litjens, T. Kooi, B. E. Bejnordi, A. A. A. Setio, F. Ciompi, M. Ghafoorian, J. A. Van Der Laak, B. Van Ginneken, C. I. Sánchez, A survey
+//! on deep learning in medical image analysis, Medical image analysis 42 (2017) 60–88.
+//! [5] A. E. Khandani, A. J. Kim, A. W. Lo, Consumer credit-risk models via machine-learning algorithms, Journal of Banking & Finance 34 (11)
+//! (2010) 2767–2787.
+//! [6] M. Raissi, P. Perdikaris, G. E. Karniadakis, Physics-informed neural networks: A deep learning framework for solving forward and inverse
+//! problems involving nonlinear partial differential equations, Journal of Computational Physics 378 (2019) 686–707.
+//! [7] Z. Mao, A. D. Jagtap, G. E. Karniadakis, Physics-informed neural networks for high-speed flows, Computer Methods in Applied Mechanics
+//! and Engineering 360 (2020) 112789.
+//! [8] K. Shukla, P. C. Di Leoni, J. Blackshire, D. Sparkman, G. E. Karniadakis, Physics-informed neural network for ultrasound nondestructive
+//! quantification of surface breaking cracks, Journal of Nondestructive Evaluation 39 (3) (2020) 1–20.
+//! [9] F. Sahli Costabal, Y. Yang, P. Perdikaris, D. E. Hurtado, E. Kuhl, Physics-informed neural networks for cardiac activation mapping, Frontiers
+//! in Physics 8 (2020) 42.
+//! [10] M. Yin, X. Zheng, J. D. Humphrey, G. E. Karniadakis, Non-invasive inference of thrombus material properties with physics-informed neural
+//! networks, Computer Methods in Applied Mechanics and Engineering 375 (2021) 113603.
+//! [11] U. Waheed, E. Haghighat, T. Alkhalifah, C. Song, Q. Hao, Eikonal solution using physics-informed neural networks, in: 82nd EAGE Annual
+//! Conference & Exhibition, Vol. 2020, European Association of Geoscientists & Engineers, 2020, pp. 1–5.
+//! [12] K. Shukla, A. D. Jagtap, J. L. Blackshire, D. Sparkman, G. E. Karniadakis, A physics-informed neural network for quantifying the microstructure properties of polycrystalline nickel using ultrasound data, arXiv preprint arXiv:2103.14104 (2021).
+//! [13] E. Kharazmi, Z. Zhang, G. E. Karniadakis, Variational physics-informed neural networks for solving partial differential equations, arXiv
+//! preprint arXiv:1912.00873.
+//! [14] S. Cai, Z. Wang, F. Fuest, Y. J. Jeon, C. Gray, G. E. Karniadakis, Flow over an espresso cup: inferring 3-d velocity and pressure fields from
+//! tomographic background oriented schlieren via physics-informed neural networks, Journal of Fluid Mechanics 915.
+//! [15] S. Cai, H. Li, F. Zheng, F. Kong, M. Dao, G. E. Karniadakis, S. Suresh, Artificial intelligence velocimetry and microaneurysm-on-a-chip for
+//! three-dimensional analysis of blood flow in physiology and disease, Proceedings of the National Academy of Sciences 118 (13).
+//! [16] A. D. Jagtap, E. Kharazmi, G. E. Karniadakis, Conservative physics-informed neural networks on discrete domains for conservation laws:
+//! Applications to forward and inverse problems, Computer Methods in Applied Mechanics and Engineering 365 (2020) 113028.
+//! [17] A. D. Jagtap, G. E. Karniadakis, Extended physics-informed neural networks (xpinns): A generalized space-time domain decomposition
+//! based deep learning framework for nonlinear partial differential equations, Communications in Computational Physics 28 (5) (2020) 2002–
+//! 2041.
+//! [18] E. Kharazmi, Z. Zhang, G. E. Karniadakis, hp-vpinns: Variational physics-informed neural networks with domain decomposition, Computer
+//! Methods in Applied Mechanics and Engineering 374 (2021) 113547.
+//! [19] A. Sergeev, M. Del Balso, Horovod: fast and easy distributed deep learning in tensorflow, arXiv preprint arXiv:1802.05799.
+//! [20] O. Hennigh, S. Narasimhan, M. A. Nabian, A. Subramaniam, K. Tangsali, M. Rietmann, J. d. A. Ferrandis, W. Byeon, Z. Fang, S. Choudhry,
+//! Nvidia simnetˆ{TM}: an ai-accelerated multi-physics simulation framework, arXiv preprint arXiv:2012.07938.
+//! [21] P. Goyal, P. Dollár, R. Girshick, P. Noordhuis, L. Wesolowski, A. Kyrola, A. Tulloch, Y. Jia, K. He, Accurate, large minibatch sgd: Training
+//! imagenet in 1 hour, arXiv preprint arXiv:1706.02677.
+//! [22] DeepSpeed, https://github.com/microsoft/DeepSpeed, accessed: 2020-06-12.
+//! [23] J. Rasley, S. Rajbhandari, O. Ruwase, Y. He, Deepspeed: System optimizations enable training deep learning models with over 100 billion
+//! parameters, in: Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, 2020, pp. 3505–
+//! 3506.
+//! [24] K. Xu, W. Zhu, E. Darve, Distributed machine learning for computational engineering using mpi, arXiv preprint arXiv:2011.01349.
+//! [25] M. Alnæs, J. Blechta, J. Hake, A. Johansson, B. Kehlet, A. Logg, C. Richardson, J. Ring, M. E. Rognes, G. N. Wells, The fenics project
+//! version 1.5, Archive of Numerical Software 3 (100).
+//! [26] A. D. Jagtap, K. Kawaguchi, G. E. Karniadakis, Adaptive activation functions accelerate convergence in deep and physics-informed neural
+//! networks, Journal of Computational Physics 404 (2020) 109136.
+//! [27] A. D. Jagtap, K. Kawaguchi, G. Em Karniadakis, Locally adaptive activation functions with slope recovery for deep and physics-informed
+//! neural networks, Proceedings of the Royal Society A 476 (2239) (2020) 20200334.
+//! [28] A. G. Baydin, B. A. Pearlmutter, A. A. Radul, J. M. Siskind, Automatic differentiation in machine learning: a survey, Journal of machine
+//! learning research 18.
+//! [29] H. Tang, R. Haynes, G. Houzeaux, A review of domain decomposition methods for simulation of fluid flows: Concepts, algorithms, and
+//! applications, Archives of Computational Methods in Engineering (2020) 1–33.
+//!
+//! 22
+//!
+//!
+//! --- PAGE BREAK ---
+//! [30] V. Dolean, P. Jolivet, F. Nataf, An introduction to domain decomposition methods: algorithms, theory, and parallel implementation, SIAM,
+//! 2015.
+//! [31] W. Gropp, T. Hoefler, R. Thakur, E. Lusk, Using advanced MPI: Modern features of the message-passing interface, MIT Press, 2014.
+//! [32] V. Lončar, L. E. Young-S, S. Škrbić, P. Muruganandam, S. K. Adhikari, A. Balaž, Openmp, openmp/mpi, and cuda/mpi c programs for
+//! solving the time-dependent dipolar gross–pitaevskii equation, Computer physics communications 209 (2016) 190–196.
+//! [33] S. Ruder, An overview of gradient descent optimization algorithms, arXiv preprint arXiv:1609.04747.
+//! [34] Q. V. Le, J. Ngiam, A. Coates, A. Lahiri, B. Prochnow, A. Y. Ng, On optimization methods for deep learning, in: ICML, 2011.
+//! [35] J. Dean, G. S. Corrado, R. Monga, K. Chen, M. Devin, Q. V. Le, M. Z. Mao, M. Ranzato, A. Senior, P. Tucker, et al., Large scale distributed
+//! deep networks.
+//! [36] R. H. Byrd, P. Lu, J. Nocedal, C. Zhu, A limited memory algorithm for bound constrained optimization, SIAM Journal on scientific computing
+//! 16 (5) (1995) 1190–1208.
+//! [37] U. Ghia, K. N. Ghia, C. Shin, High-re solutions for incompressible flow using the navier-stokes equations and a multigrid method, Journal of
+//! computational physics 48 (3) (1982) 387–411.
+//! [38] S. Daghaghi, N. Meisburger, M. Zhao, A. Shrivastava, Accelerating slide deep learning on modern cpus: Vectorization, quantizations, memory
+//! optimizations, and more, Proceedings of Machine Learning and Systems 3.
+//! [39] R. B. Rusu, S. Cousins, 3D is here: Point Cloud Library (PCL), in: IEEE International Conference on Robotics and Automation (ICRA),
+//! Shanghai, China, 2011.
+//! [40] G. Karypis, V. Kumar, MeTis: Unstructured Graph Partitioning and Sparse Matrix Ordering System, Version 4.0.
+//!
+//! 23
+//!
+//!
+//! --- PAGE BREAK ---
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!

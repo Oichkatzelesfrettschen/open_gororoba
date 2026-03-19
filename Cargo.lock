@@ -1858,6 +1858,7 @@ dependencies = [
  "argmin",
  "argmin-math",
  "arrow-array",
+ "csv",
  "data_core",
  "gauss-quad 0.2.4",
  "nalgebra 0.33.2",
@@ -1867,6 +1868,7 @@ dependencies = [
  "rand 0.8.5",
  "rand_distr 0.4.3",
  "rayon",
+ "serde",
  "statrs",
  "stats_core",
  "verified_core",
@@ -3935,6 +3937,7 @@ dependencies = [
  "tempfile",
  "tokio",
  "toml",
+ "ureq",
  "walkdir",
 ]
 
@@ -4000,6 +4003,7 @@ dependencies = [
  "hifitime",
  "materials_core",
  "md-5",
+ "moyo",
  "nalgebra 0.33.2",
  "ndarray 0.17.2",
  "parquet",
@@ -4115,6 +4119,7 @@ dependencies = [
  "spin_tomography_core",
  "statrs",
  "stats_core",
+ "tensor_core",
  "toml",
  "ureq",
  "verified_core",
@@ -9818,6 +9823,15 @@ dependencies = [
  "once_cell",
  "rustix 1.1.4",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "tensor_core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "faer",
+ "ndarray 0.16.1",
 ]
 
 [[package]]

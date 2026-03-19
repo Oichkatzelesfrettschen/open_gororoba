@@ -1,0 +1,45 @@
+//! # NANOGrav Timing Refit Sources
+//!
+//! ## Scope
+//!
+//! This source index supports the Rust-native timing-refit planning lane built on the
+//! official NANOGrav 15-year pulsar timing release.
+//!
+//! The current lane is a typed `.par` preflight and solver-planning surface. It does
+//! not yet recompute TOA fits or regenerate post-fit residuals.
+//!
+//! ## Primary Sources
+//!
+//! 1. NANOGrav official data page:
+//!    - https://nanograv.org/science/data
+//! 2. NANOGrav 15-year timing release:
+//!    - https://zenodo.org/records/16051178
+//! 3. NANOGrav 15-year observations and timing paper:
+//!    - https://doi.org/10.3847/2041-8213/acda9a
+//! 4. NANOGrav 15-year GWB evidence paper:
+//!    - https://doi.org/10.3847/2041-8213/acdac6
+//! 5. PINT fitter/model guidance:
+//!    - https://nanograv-pint.readthedocs.io/en/latest/examples/understanding_fitters.html
+//!
+//! ## Local Reproducible Surfaces
+//!
+//! 1. Release parser and prior PTA scouting layers:
+//!    - `crates/gororoba_cli_data/src/nanograv_timing.rs`
+//!    - `reports/nanograv_15yr_timing_inventory.toml`
+//!    - `reports/nanograv_15yr_propagation_audit.toml`
+//! 2. Typed timing-model layer:
+//!    - `crates/gororoba_cli_data/src/nanograv_timing_model.rs`
+//! 3. Refit preflight binary and artifacts:
+//!    - `crates/gororoba_cli_data/src/bin/nanograv_timing_refit_preflight.rs`
+//!    - `data/csv/nanograv_15yr_timing_refit_preflight.csv`
+//!    - `reports/nanograv_15yr_timing_refit_preflight.toml`
+//!
+//! ## Scope Notes
+//!
+//! - The preflight lane inventories solution IDs separately from canonical pulsar IDs.
+//!   In the current wideband release this yields 76 solutions over 68 pulsars.
+//! - The generated Phase 1 subset is a solver-planning seed, not a scientific
+//!   detection claim.
+//! - Any future timing-model refit claim must be grounded in regenerated residuals,
+//!   not only in `.par` structure summaries.
+//!

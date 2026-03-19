@@ -10,6 +10,7 @@ pub mod octonion_e8_theory;
 pub mod octonion_field;
 pub mod pais_superforce;
 pub mod quat_rotation;
+pub mod quaternionic_qm;
 pub mod sedenion_field;
 pub mod speculative;
 pub mod supersymmetry;

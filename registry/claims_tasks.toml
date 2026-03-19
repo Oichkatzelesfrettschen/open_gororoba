@@ -123,8 +123,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "GWOSC snapshot fetcher + provenance (offline-testable)."
-output_artifacts = ["bin/fetch_gwtc3_confident.py", "data/external/GWTC-3_confident.*"]
-output_artifacts_raw = "`bin/fetch_gwtc3_confident.py`, `data/external/GWTC-3_confident.*`"
+output_artifacts = ["crates/data_core/src/catalogs", "data/external/GWTC-3_confident.*"]
+output_artifacts_raw = "`crates/data_core/src/catalogs`, `data/external/GWTC-3_confident.*`"
 source_line = 20
 
 [[task]]
@@ -153,8 +153,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "TSCP code migration into main package + CLI entrypoints + offline-by-default loader."
-output_artifacts = ["bin/fetch_gwtc3_skylocalizations_zenodo.py", "bin/predict_stars", "bin/predict_stars.py", "crates/stats_core/src/claims_gates.rs"]
-output_artifacts_raw = "`crates/stats_core/src/claims_gates.rs`, `bin/predict_stars.py`, `bin/predict_stars`, `bin/fetch_gwtc3_skylocalizations_zenodo.py`"
+output_artifacts = ["crates/data_core/src/catalogs", "crates/stats_core/src/claims_gates.rs"]
+output_artifacts_raw = "`crates/stats_core/src/claims_gates.rs`, `crates/data_core/src/catalogs`"
 source_line = 22
 
 [[task]]
@@ -348,8 +348,8 @@ status_token = "DONE"
 status_raw = "DONE"
 status_canonical = true
 task = "CLOSED/NEGATIVE-RESULT: lock C-010 to reproducible topology evidence and an explicit non-local coupling requirement."
-output_artifacts = ["crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "crates/materials_core/src/nonlocal_metamaterial.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/csv/sedenion_box_kites_clustered.csv", "docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c010_holographic_entropy_trap.py"]
-output_artifacts_raw = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`"
+output_artifacts = ["crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "crates/materials_core/src/nonlocal_metamaterial.rs", "data/csv/c010_nonlocal_material_calibrations.csv", "data/csv/sedenion_box_kites_clustered.csv", "docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md", "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_physics/src/bin/entropy_trap.rs"]
+output_artifacts_raw = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `crates/gororoba_cli_physics/src/bin/entropy_trap.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`"
 source_line = 35
 
 [[task]]
@@ -363,8 +363,8 @@ status_token = "BLOCKED"
 status_raw = "BLOCKED"
 status_canonical = true
 task = "CLOSED/OBSTRUCTED: keep the phenomenological bridge and cached first-source citations, but mark simulator extension as stalled pending an associative bypass model."
-output_artifacts = ["crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs", "data/csv/genesis_gravastar_bridge.csv", "data/csv/gravastar_radial_stability.csv", "docs/BIBLIOGRAPHY.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "refs.bib", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "src/verification/verify_c010_c011_theses.py", "tests/test_c010_c011_verifier_script.py", "tests/test_c011_gravastar_equivalence_obstruction.py"]
-output_artifacts_raw = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/gravastar.rs`, `crates/cosmology_core/src/tov.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_radial_stability.csv`, `tests/test_c011_gravastar_equivalence_obstruction.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`"
+output_artifacts = ["crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs", "data/csv/genesis_gravastar_bridge.csv", "data/csv/gravastar_radial_stability.csv", "docs/BIBLIOGRAPHY.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "refs.bib", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli/tests/integration_gravastar.rs"]
+output_artifacts_raw = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/gravastar.rs`, `crates/cosmology_core/src/tov.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_radial_stability.csv`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`"
 source_line = 36
 
 [[task]]

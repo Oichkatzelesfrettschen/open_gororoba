@@ -1,0 +1,160 @@
+//! # Falsification Campaign Summary
+//!
+//! Generated at: `2026-03-18T21:23:27.710346616+00:00`
+//! Sources: `/home/eirikr/Github/open_gororoba/registry/claims.toml`, `/home/eirikr/Github/open_gororoba/registry/experiments.toml`, `/home/eirikr/Github/open_gororoba/registry/claims_tasks.toml`, `/home/eirikr/Github/open_gororoba/registry/claim_tickets.toml`, `/home/eirikr/Github/open_gororoba/registry/insights.toml`
+//!
+//! ## All-Claims Snapshot
+//!
+//! - Claims in compatibility export: 1300
+//! - administrative_closed: 8
+//! - empirical_falsification_core: 65
+//! - open_investigation: 130
+//! - positive_complete: 1086
+//! - superseded: 11
+//! - administrative_closed_claim_ids: C-008, C-011, C-022, C-023, C-026, C-033, C-417, C-427
+//! - empirical_falsification_core_claim_ids: C-009, C-010, C-012, C-019, C-020, C-021, C-025, C-036, C-037, C-038, C-040, C-041, C-046, C-047, C-068, C-069, C-070, C-071, C-077, C-081, C-084, C-092, C-402, C-426, C-430, C-436, C-440, C-442, C-445, C-450, C-455, C-456, C-463, C-466, C-518, C-543, C-585, C-587, C-669, C-773, C-781, C-782, C-783, C-784, C-785, C-786, C-789, C-791, C-792, C-793, C-794, C-795, C-796, C-842, C-844, C-845, C-846, C-923, C-932, C-1103, C-1329, C-1353, C-1355, C-1357, C-1358
+//! - open_investigation_claim_ids: C-401, C-768, C-840, C-841, C-847, C-849, C-850, C-924, C-926, C-927, C-928, C-929, C-930, C-936, C-937, C-938, C-939, C-950, C-960, C-970, C-980, C-990, C-1010, C-1020, C-1030, C-1040, C-1050, C-1060, C-1070, C-1080, C-1090, C-1100, C-1101, C-1102, C-1104, C-1136, C-1139, C-1143, C-1144, C-1145, C-1147, C-1148, C-1149, C-1150, C-1151, C-1152, C-1153, C-1154, C-1155, C-1156, C-1157, C-1158, C-1159, C-1160, C-1161, C-1162, C-1163, C-1164, C-1165, C-1166, C-1167, C-1168, C-1169, C-1171, C-1172, C-1173, C-1175, C-1178, C-1182, C-1183, C-1231, C-1232, C-1235, C-1237, C-1238, C-1239, C-1240, C-1241, C-1242, C-1243, C-1244, C-1245, C-1246, C-1247, C-1248, C-1249, C-1250, C-1253, C-1267, C-1271, C-1273, C-1277, C-1278, C-1279, C-1280, C-1282, C-1283, C-1285, C-1286, C-1287, C-1288, C-1289, C-1290, C-1291, C-1292, C-1295, C-1296, C-1297, C-1298, C-1299, C-1300, C-1301, C-1302, C-1303, C-1304, C-1305, C-1306, C-1307, C-1312, C-1313, C-1314, C-1318, C-1319, C-1324, C-1331, C-1332, C-1343, C-1346, C-1348, C-1362
+//! - positive_complete_claim_ids: C-001, C-002, C-003, C-004, C-005, C-006, C-007, C-013, C-014, C-015, C-016, C-017, C-018, C-024, C-027, C-028, C-029, C-030, C-031, C-032, C-034, C-035, C-039, C-042, C-043, C-045, C-048, C-049, C-050, C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060, C-061, C-062, C-063, C-064, C-065, C-066, C-067, C-074, C-075, C-076, C-082, C-086, C-087, C-088, C-089, C-090, C-093, C-094, C-095, C-096, C-097, C-098, C-099, C-100, C-101, C-102, C-103, C-104, C-105, C-106, C-107, C-108, C-109, C-110, C-111, C-112, C-113, C-114, C-115, C-116, C-117, C-118, C-119, C-120, C-121, C-122, C-123, C-124, C-125, C-126, C-127, C-128, C-129, C-130, C-131, C-132, C-133, C-134, C-135, C-136, C-137, C-138, C-139, C-140, C-141, C-142, C-143, C-144, C-145, C-146, C-147, C-148, C-149, C-150, C-151, C-152, C-153, C-154, C-155, C-156, C-157, C-158, C-159, C-160, C-161, C-162, C-163, C-164, C-165, C-166, C-167, C-168, C-169, C-170, C-171, C-172, C-173, C-174, C-175, C-176, C-177, C-178, C-179, C-180, C-181, C-182, C-183, C-184, C-185, C-186, C-187, C-188, C-189, C-190, C-191, C-192, C-193, C-194, C-195, C-196, C-197, C-198, C-199, C-200, C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210, C-211, C-212, C-213, C-214, C-215, C-216, C-217, C-218, C-219, C-220, C-221, C-222, C-223, C-224, C-225, C-226, C-227, C-228, C-229, C-230, C-231, C-232, C-233, C-234, C-235, C-236, C-237, C-238, C-239, C-240, C-241, C-242, C-243, C-244, C-245, C-246, C-247, C-248, C-249, C-250, C-251, C-252, C-253, C-254, C-255, C-256, C-257, C-258, C-259, C-260, C-261, C-262, C-263, C-264, C-265, C-266, C-267, C-268, C-269, C-270, C-271, C-272, C-273, C-274, C-275, C-276, C-277, C-278, C-279, C-280, C-281, C-282, C-283, C-284, C-285, C-286, C-287, C-288, C-289, C-290, C-291, C-292, C-293, C-294, C-295, C-296, C-297, C-298, C-299, C-300, C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310, C-311, C-312, C-313, C-314, C-315, C-316, C-317, C-318, C-319, C-320, C-321, C-322, C-323, C-324, C-325, C-326, C-327, C-328, C-329, C-330, C-331, C-332, C-333, C-334, C-335, C-336, C-337, C-338, C-339, C-340, C-341, C-342, C-343, C-344, C-345, C-346, C-347, C-348, C-349, C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360, C-361, C-362, C-363, C-364, C-365, C-366, C-367, C-368, C-369, C-370, C-371, C-372, C-373, C-374, C-375, C-376, C-377, C-378, C-379, C-380, C-381, C-382, C-383, C-384, C-385, C-386, C-387, C-388, C-389, C-390, C-391, C-392, C-393, C-394, C-395, C-396, C-397, C-398, C-399, C-400, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410, C-411, C-412, C-413, C-414, C-415, C-416, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-428, C-429, C-431, C-432, C-433, C-434, C-435, C-437, C-438, C-439, C-441, C-443, C-444, C-446, C-447, C-448, C-449, C-451, C-452, C-453, C-454, C-457, C-458, C-459, C-460, C-461, C-462, C-464, C-465, C-467, C-468, C-469, C-470, C-471, C-472, C-473, C-474, C-475, C-476, C-477, C-478, C-479, C-480, C-481, C-482, C-483, C-484, C-485, C-486, C-487, C-488, C-489, C-490, C-491, C-492, C-493, C-494, C-495, C-496, C-497, C-498, C-499, C-500, C-501, C-502, C-503, C-504, C-505, C-506, C-507, C-508, C-509, C-510, C-511, C-512, C-513, C-514, C-515, C-516, C-517, C-519, C-520, C-521, C-522, C-523, C-524, C-525, C-526, C-527, C-528, C-529, C-530, C-531, C-532, C-533, C-534, C-535, C-537, C-538, C-539, C-540, C-541, C-542, C-544, C-545, C-546, C-547, C-548, C-549, C-550, C-551, C-552, C-553, C-554, C-555, C-556, C-557, C-558, C-559, C-560, C-561, C-562, C-563, C-564, C-565, C-566, C-567, C-568, C-569, C-570, C-571, C-572, C-573, C-574, C-575, C-576, C-577, C-578, C-579, C-580, C-581, C-582, C-583, C-584, C-586, C-588, C-589, C-590, C-591, C-592, C-593, C-594, C-595, C-596, C-597, C-598, C-599, C-600, C-601, C-602, C-603, C-604, C-605, C-606, C-607, C-608, C-609, C-610, C-611, C-612, C-613, C-614, C-615, C-616, C-617, C-618, C-619, C-620, C-621, C-622, C-623, C-624, C-625, C-626, C-627, C-628, C-629, C-630, C-631, C-632, C-633, C-634, C-635, C-636, C-637, C-638, C-639, C-640, C-641, C-642, C-643, C-644, C-645, C-646, C-647, C-648, C-649, C-650, C-651, C-652, C-653, C-654, C-655, C-656, C-657, C-658, C-659, C-660, C-661, C-662, C-663, C-664, C-665, C-666, C-667, C-668, C-670, C-671, C-672, C-673, C-674, C-675, C-676, C-677, C-678, C-679, C-680, C-681, C-682, C-683, C-684, C-685, C-686, C-687, C-688, C-689, C-690, C-691, C-692, C-693, C-694, C-695, C-696, C-697, C-698, C-699, C-700, C-701, C-702, C-703, C-704, C-705, C-706, C-707, C-708, C-709, C-710, C-711, C-712, C-713, C-714, C-715, C-716, C-717, C-718, C-719, C-720, C-721, C-722, C-723, C-724, C-725, C-726, C-727, C-728, C-729, C-730, C-731, C-732, C-733, C-734, C-735, C-736, C-737, C-738, C-739, C-740, C-741, C-742, C-743, C-744, C-745, C-746, C-747, C-748, C-749, C-750, C-751, C-752, C-753, C-754, C-755, C-756, C-757, C-758, C-759, C-760, C-761, C-762, C-763, C-764, C-765, C-766, C-767, C-769, C-770, C-771, C-772, C-774, C-775, C-776, C-777, C-778, C-779, C-780, C-787, C-788, C-790, C-797, C-798, C-799, C-800, C-801, C-802, C-803, C-804, C-805, C-806, C-807, C-808, C-809, C-810, C-811, C-812, C-813, C-814, C-815, C-816, C-817, C-818, C-819, C-820, C-821, C-822, C-823, C-824, C-825, C-826, C-827, C-828, C-829, C-830, C-831, C-832, C-833, C-834, C-835, C-836, C-837, C-838, C-839, C-843, C-848, C-851, C-852, C-853, C-854, C-855, C-856, C-857, C-858, C-859, C-860, C-861, C-862, C-863, C-864, C-865, C-866, C-867, C-868, C-869, C-870, C-871, C-872, C-873, C-874, C-875, C-876, C-877, C-878, C-879, C-880, C-881, C-882, C-883, C-884, C-885, C-886, C-887, C-888, C-889, C-890, C-891, C-892, C-893, C-894, C-895, C-896, C-897, C-898, C-899, C-900, C-901, C-902, C-903, C-904, C-905, C-906, C-907, C-908, C-909, C-910, C-911, C-912, C-913, C-914, C-915, C-916, C-917, C-918, C-919, C-920, C-921, C-922, C-925, C-931, C-941, C-942, C-943, C-944, C-945, C-946, C-947, C-948, C-949, C-951, C-952, C-953, C-1105, C-1106, C-1107, C-1108, C-1109, C-1110, C-1111, C-1112, C-1113, C-1114, C-1115, C-1116, C-1117, C-1118, C-1119, C-1120, C-1121, C-1122, C-1123, C-1124, C-1125, C-1126, C-1127, C-1128, C-1129, C-1130, C-1131, C-1132, C-1133, C-1134, C-1135, C-1137, C-1138, C-1140, C-1141, C-1142, C-1146, C-1170, C-1174, C-1176, C-1177, C-1179, C-1180, C-1181, C-1184, C-1185, C-1186, C-1187, C-1188, C-1189, C-1190, C-1191, C-1192, C-1193, C-1194, C-1195, C-1196, C-1197, C-1198, C-1199, C-1200, C-1201, C-1202, C-1203, C-1204, C-1205, C-1206, C-1207, C-1208, C-1209, C-1210, C-1211, C-1212, C-1213, C-1214, C-1215, C-1216, C-1217, C-1218, C-1219, C-1220, C-1221, C-1222, C-1223, C-1224, C-1225, C-1226, C-1227, C-1228, C-1229, C-1230, C-1233, C-1234, C-1236, C-1251, C-1252, C-1254, C-1255, C-1256, C-1257, C-1258, C-1259, C-1260, C-1261, C-1262, C-1263, C-1264, C-1265, C-1266, C-1268, C-1269, C-1270, C-1272, C-1274, C-1275, C-1276, C-1281, C-1308, C-1309, C-1310, C-1311, C-1315, C-1316, C-1317, C-1320, C-1321, C-1322, C-1323, C-1325, C-1326, C-1327, C-1328, C-1330, C-1333, C-1334, C-1335, C-1336, C-1337, C-1338, C-1339, C-1340, C-1341, C-1342, C-1344, C-1345, C-1347, C-1349, C-1350, C-1351, C-1352, C-1354, C-1356, C-1359, C-1360, C-1361, C-1363, C-1364, C-1365, C-1366, C-1367, C-1368, C-1369, C-1370, C-1371, C-1372, C-1373, C-1374, C-1375, C-1376, C-1377, C-1378, C-1379, C-1380, C-1381, C-1382, C-1383, C-1384, C-1385, C-1386, C-1387, C-1388, C-1389, C-1390, C-1391, C-1392, C-1393, C-1394, C-1395, C-1396, C-1397, C-1398, C-1399, C-1400, C-1401, C-1402, C-1403, C-1404, C-1405, C-1406, C-1407, C-1408, C-1409, C-1410, C-1411, C-1412, C-1413, C-1414, C-1415, C-1416, C-1417, C-1418, C-1419, C-1420, C-1421, C-1422, C-1423, C-1424, C-1425, C-1426, C-1427, C-1428, C-1429, C-1430, C-1431, C-1432, C-1433, C-1434, C-1435, C-1436, C-1437, C-1438, C-1439
+//! - superseded_claim_ids: C-044, C-072, C-073, C-078, C-079, C-080, C-083, C-085, C-091, C-536, C-1284
+//! - superseded_claim_ids: C-044, C-072, C-073, C-078, C-079, C-080, C-083, C-085, C-091, C-1284, C-536
+//!
+//! ## Target Set
+//!
+//! - Empirical-core target claims: 65
+//! - Target statuses: Refuted, Closed/Refuted, Closed/Negative-Result, Closed/Methodology-Insufficient
+//!
+//! ### Status counts
+//!
+//! - Closed/Methodology-Insufficient: 2
+//! - Closed/Negative-Result: 4
+//! - Closed/Refuted: 3
+//! - Refuted: 56
+//!
+//! ### Family counts
+//!
+//! - algebraic_structural: 28
+//! - cosmology_metamaterial: 10
+//! - particle_numerology: 9
+//! - signal_transport: 18
+//!
+//! ### Wave counts
+//!
+//! - wave_1_registered_experiment_hardening: 48
+//! - wave_2_new_rust_falsifier: 17
+//!
+//! ## Coverage
+//!
+//! - Claims with registered experiments: 48
+//! - Claims without registered experiments: 17
+//! - Claims with GPU-backed registered experiments: 7
+//! - Claims with task coverage: 65
+//! - Claims with open task coverage: 42
+//! - Claims with ticket coverage: 65
+//!
+//! - Claims with insight coverage: 65
+//!
+//! ### Claims needing new experiment/verifier work
+//!
+//! - C-009, C-010, C-012, C-019, C-025, C-036, C-037, C-038, C-040, C-041, C-046, C-047
+//! - C-426, C-430, C-442, C-791, C-1358
+//!
+//! ### Claims missing task coverage
+//!
+//! - None
+//!
+//! ### Claims missing ticket coverage
+//!
+//! - None
+//!
+//! ### Claims missing insight coverage
+//!
+//! - None
+//!
+//! ### Claims missing all linkage
+//!
+//! - None
+//!
+//! ### Claims missing experiment, ticket, and insight coverage
+//!
+//! - None
+//!
+//! ## Family Worklist
+//!
+//! ### algebraic_structural
+//!
+//! - C-009 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0015, CTASK-0024; tickets=TICKET-C001-C050; insights=I-210; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-019 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0021; tickets=TICKET-C001-C050; insights=I-207; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-020 (Refuted, wave_1_registered_experiment_hardening): experiments=E-203; open_tasks=none; tickets=TICKET-C001-C050; insights=I-207; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-021 (Refuted, wave_1_registered_experiment_hardening): experiments=E-203; open_tasks=none; tickets=TICKET-C001-C050; insights=I-207; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-036 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-208; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-037 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-208; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-040 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-208; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-046 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0215; tickets=TICKET-C001-C050; insights=I-207; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-047 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-207; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-070 (Closed/Methodology-Insufficient, wave_1_registered_experiment_hardening): experiments=E-207; open_tasks=none; tickets=TICKET-C051-C100; insights=I-209; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-092 (Refuted, wave_1_registered_experiment_hardening): experiments=E-207; open_tasks=none; tickets=TICKET-C051-C100; insights=I-209; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-426 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0192; tickets=TICKET-C401-C427; insights=I-210; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-445 (Refuted, wave_1_registered_experiment_hardening): experiments=E-205; open_tasks=none; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-012; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-450 (Closed/Methodology-Insufficient, wave_1_registered_experiment_hardening): experiments=E-204; open_tasks=CTASK-0226; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-014; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-455 (Refuted, wave_1_registered_experiment_hardening): experiments=E-204; open_tasks=CTASK-0227; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-014, I-040; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-456 (Refuted, wave_1_registered_experiment_hardening): experiments=E-204; open_tasks=CTASK-0228; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-014; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-463 (Refuted, wave_1_registered_experiment_hardening): experiments=E-204; open_tasks=CTASK-0229; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-015; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-466 (Refuted, wave_1_registered_experiment_hardening): experiments=E-205; open_tasks=none; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-015; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-518 (Refuted, wave_1_registered_experiment_hardening): experiments=E-205; open_tasks=none; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-018; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-543 (Refuted, wave_1_registered_experiment_hardening): experiments=E-203; open_tasks=CTASK-0232; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-207; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-585 (Closed/Negative-Result, wave_1_registered_experiment_hardening): experiments=E-205; open_tasks=none; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-039; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-781 (Refuted, wave_1_registered_experiment_hardening): experiments=E-057; open_tasks=CTASK-0237; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-789 (Refuted, wave_1_registered_experiment_hardening): experiments=E-060, E-064, E-068; open_tasks=CTASK-0243; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-094, I-095, I-096; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-796 (Refuted, wave_1_registered_experiment_hardening): experiments=E-054, E-055; open_tasks=CTASK-0249; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-093; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-844 (Refuted, wave_1_registered_experiment_hardening): experiments=E-075; open_tasks=CTASK-0251; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-845 (Refuted, wave_1_registered_experiment_hardening): experiments=E-075; open_tasks=CTASK-0252; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-923 (Refuted, wave_1_registered_experiment_hardening): experiments=E-084; open_tasks=CTASK-0254; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-102; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//! - C-1353 (Refuted, wave_1_registered_experiment_hardening): experiments=E-185; open_tasks=CTASK-0258; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-173, I-174; countercheck=exact enumeration plus external-CSV or representation consistency cross-check
+//!
+//! ### cosmology_metamaterial
+//!
+//! - C-010 (Closed/Negative-Result, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-210; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-012 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-087; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-038 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-208; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-402 (Refuted, wave_1_registered_experiment_hardening): experiments=E-006; open_tasks=CTASK-0220; tickets=TICKET-C401-C427; insights=I-210; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-430 (Closed/Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0221; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-087; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-794 (Refuted, wave_1_registered_experiment_hardening): experiments=E-052; open_tasks=CTASK-0247; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-932 (Refuted, wave_1_registered_experiment_hardening): experiments=E-087; open_tasks=CTASK-0255; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-1103 (Refuted, wave_1_registered_experiment_hardening): experiments=E-096; open_tasks=CTASK-0256; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-1357 (Closed/Refuted, wave_1_registered_experiment_hardening): experiments=E-186, E-187; open_tasks=CTASK-0260; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-173, I-174, I-175; countercheck=alternate baseline model plus parameter-termination audit
+//! - C-1358 (Closed/Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0261; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-175; countercheck=alternate baseline model plus parameter-termination audit
+//!
+//! ### particle_numerology
+//!
+//! - C-041 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=none; tickets=TICKET-C001-C050; insights=I-208; countercheck=blind matching baseline plus unit/base invariance
+//! - C-068 (Refuted, wave_1_registered_experiment_hardening): experiments=E-207; open_tasks=none; tickets=TICKET-C051-C100; insights=I-209; countercheck=blind matching baseline plus unit/base invariance
+//! - C-069 (Refuted, wave_1_registered_experiment_hardening): experiments=E-206; open_tasks=none; tickets=TICKET-C051-C100; insights=I-209; countercheck=blind matching baseline plus unit/base invariance
+//! - C-077 (Refuted, wave_1_registered_experiment_hardening): experiments=E-206; open_tasks=none; tickets=TICKET-C051-C100; insights=I-209; countercheck=blind matching baseline plus unit/base invariance
+//! - C-081 (Refuted, wave_1_registered_experiment_hardening): experiments=E-206; open_tasks=none; tickets=TICKET-C051-C100; insights=I-209; countercheck=blind matching baseline plus unit/base invariance
+//! - C-084 (Refuted, wave_1_registered_experiment_hardening): experiments=E-206; open_tasks=none; tickets=TICKET-C051-C100; insights=I-087; countercheck=blind matching baseline plus unit/base invariance
+//! - C-587 (Closed/Negative-Result, wave_1_registered_experiment_hardening): experiments=E-206; open_tasks=none; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-038, I-039; countercheck=blind matching baseline plus unit/base invariance
+//! - C-1329 (Closed/Negative-Result, wave_1_registered_experiment_hardening): experiments=E-179; open_tasks=CTASK-0257; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=blind matching baseline plus unit/base invariance
+//! - C-1355 (Refuted, wave_1_registered_experiment_hardening): experiments=E-206; open_tasks=none; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-173, I-174; countercheck=blind matching baseline plus unit/base invariance
+//!
+//! ### signal_transport
+//!
+//! - C-025 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0004; tickets=TICKET-C001-C050; insights=I-210; countercheck=alternate null family plus ablation or resolution guard
+//! - C-071 (Refuted, wave_1_registered_experiment_hardening): experiments=E-002; open_tasks=CTASK-0217; tickets=TICKET-C051-C100; insights=I-001, I-002; countercheck=alternate null family plus ablation or resolution guard
+//! - C-436 (Refuted, wave_1_registered_experiment_hardening): experiments=E-002; open_tasks=CTASK-0222; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-011; countercheck=alternate null family plus ablation or resolution guard
+//! - C-440 (Refuted, wave_1_registered_experiment_hardening): experiments=E-002; open_tasks=CTASK-0223; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-011; countercheck=alternate null family plus ablation or resolution guard
+//! - C-442 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0224; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-005, I-013; countercheck=alternate null family plus ablation or resolution guard
+//! - C-669 (Refuted, wave_1_registered_experiment_hardening): experiments=E-072; open_tasks=CTASK-0235; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-065; countercheck=alternate null family plus ablation or resolution guard
+//! - C-773 (Refuted, wave_1_registered_experiment_hardening): experiments=E-049, E-050; open_tasks=CTASK-0236; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-092; countercheck=alternate null family plus ablation or resolution guard
+//! - C-782 (Refuted, wave_1_registered_experiment_hardening): experiments=E-058; open_tasks=CTASK-0238; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-098; countercheck=alternate null family plus ablation or resolution guard
+//! - C-783 (Refuted, wave_1_registered_experiment_hardening): experiments=E-059; open_tasks=CTASK-0239; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate null family plus ablation or resolution guard
+//! - C-784 (Refuted, wave_1_registered_experiment_hardening): experiments=E-060, E-068; open_tasks=CTASK-0240; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-094, I-095, I-096; countercheck=alternate null family plus ablation or resolution guard
+//! - C-785 (Refuted, wave_1_registered_experiment_hardening): experiments=E-060, E-068; open_tasks=CTASK-0241; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-094, I-095, I-096; countercheck=alternate null family plus ablation or resolution guard
+//! - C-786 (Refuted, wave_1_registered_experiment_hardening): experiments=E-060, E-068; open_tasks=CTASK-0242; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-094, I-095, I-096; countercheck=alternate null family plus ablation or resolution guard
+//! - C-791 (Refuted, wave_2_new_rust_falsifier): experiments=none; open_tasks=CTASK-0244; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-095; countercheck=alternate null family plus ablation or resolution guard
+//! - C-792 (Refuted, wave_1_registered_experiment_hardening): experiments=E-051, E-055, E-063, E-064, E-065, E-066, E-067; open_tasks=CTASK-0245; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate null family plus ablation or resolution guard
+//! - C-793 (Refuted, wave_1_registered_experiment_hardening): experiments=E-063, E-064, E-066, E-067; open_tasks=CTASK-0246; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate null family plus ablation or resolution guard
+//! - C-795 (Refuted, wave_1_registered_experiment_hardening): experiments=E-053; open_tasks=CTASK-0248; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate null family plus ablation or resolution guard
+//! - C-842 (Refuted, wave_1_registered_experiment_hardening): experiments=E-075; open_tasks=CTASK-0250; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate null family plus ablation or resolution guard
+//! - C-846 (Refuted, wave_1_registered_experiment_hardening): experiments=E-075; open_tasks=CTASK-0253; tickets=TICKET-FALSIFICATION-CAMPAIGN-REFUTED-BACKFILL; insights=I-211; countercheck=alternate null family plus ablation or resolution guard
+//!
+//!

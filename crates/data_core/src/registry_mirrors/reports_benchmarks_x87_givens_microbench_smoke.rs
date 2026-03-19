@@ -1,0 +1,58 @@
+//! # x87 Givens Microbench
+//!
+//! Median timings for the actual composed x87 Givens/transcendental helpers used by the current backend.
+//!
+//! ## quarter_pi
+//!
+//! | kernel | median_ns | ns_per_call |
+//! | --- | ---: | ---: |
+//! | x87_atan2_sincos | 5195608 | 103.912 |
+//! | givens_sincos_f64 | 5383129 | 107.663 |
+//! | x87_givens_sincos | 5425398 | 108.508 |
+//! | atan2_ext80 | 2687219 | 53.744 |
+//! | atan2_half_sincos_ext80 | 4539065 | 90.781 |
+//! | givens_sincos_ext80 | 5241848 | 104.837 |
+//! | x87_givens_diagonal_update | 409381 | 8.188 |
+//!
+//! ## obstruction_like
+//!
+//! | kernel | median_ns | ns_per_call |
+//! | --- | ---: | ---: |
+//! | x87_atan2_sincos | 5109297 | 102.186 |
+//! | givens_sincos_f64 | 5986920 | 119.738 |
+//! | x87_givens_sincos | 5893220 | 117.864 |
+//! | atan2_ext80 | 2759040 | 55.181 |
+//! | atan2_half_sincos_ext80 | 5354468 | 107.089 |
+//! | givens_sincos_ext80 | 5696250 | 113.925 |
+//! | x87_givens_diagonal_update | 296621 | 5.932 |
+//!
+//! ## mixed_signs
+//!
+//! | kernel | median_ns | ns_per_call |
+//! | --- | ---: | ---: |
+//! | x87_atan2_sincos | 5525119 | 110.502 |
+//! | givens_sincos_f64 | 6260401 | 125.208 |
+//! | x87_givens_sincos | 6231602 | 124.632 |
+//! | atan2_ext80 | 3013770 | 60.275 |
+//! | atan2_half_sincos_ext80 | 5487979 | 109.760 |
+//! | givens_sincos_ext80 | 5659699 | 113.194 |
+//! | x87_givens_diagonal_update | 302871 | 6.057 |
+//!
+//! ## tiny_angle
+//!
+//! | kernel | median_ns | ns_per_call |
+//! | --- | ---: | ---: |
+//! | x87_atan2_sincos | 5722750 | 114.455 |
+//! | givens_sincos_f64 | 6293632 | 125.873 |
+//! | x87_givens_sincos | 6392192 | 127.844 |
+//! | atan2_ext80 | 2796749 | 55.935 |
+//! | atan2_half_sincos_ext80 | 5389989 | 107.800 |
+//! | givens_sincos_ext80 | 5878680 | 117.574 |
+//! | x87_givens_diagonal_update | 416291 | 8.326 |
+//!
+//! ## Notes
+//!
+//! - `givens_sincos_f64` and `givens_sincos_ext80` measure the composed half-angle Givens path the current Jacobi backend actually uses.
+//! - `x87_atan2_sincos` measures the older full-angle composition without the half-angle step.
+//! - `x87_givens_diagonal_update` isolates the 2x2 polynomial update so the transcendental path can be compared against the update path directly.
+//!

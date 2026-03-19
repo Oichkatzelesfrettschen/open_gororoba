@@ -1280,7 +1280,7 @@ kind = "list_item"
 line_start = 136
 line_end = 136
 heading_level = 0
-text_ascii = "`python3 src/verification/verify_pantheon_physicsforge_license_consistency.py`"
+text_ascii = "`cargo run --release --bin src/verification/verify_pantheon_physicsforge_license_consistency.py`"
 text_sha256 = "d6a7f99b13508926d8cbf9357ee3b25a7b5f49578e4cd8ccd7fb088cb1d43060"
 
 [[unit]]
@@ -1290,7 +1290,7 @@ kind = "list_item"
 line_start = 137
 line_end = 137
 heading_level = 0
-text_ascii = "`python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py`"
+text_ascii = "`cargo run --release --bin src/verification/verify_pantheon_physicsforge_provenance_gate.py`"
 text_sha256 = "835d371729936015627a9a1266afc1ad8df2b404512c53907c6508389043edd1"
 
 [[unit]]

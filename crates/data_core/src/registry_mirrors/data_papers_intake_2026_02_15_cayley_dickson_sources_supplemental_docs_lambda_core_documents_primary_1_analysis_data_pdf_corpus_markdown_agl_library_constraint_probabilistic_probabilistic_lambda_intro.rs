@@ -1,0 +1,1622 @@
+//! # Extracted text: probabilistic_lambda_intro.pdf
+//!
+//! - source_root: `/home/eirikr/Documents/AGL_Library/Constraint_Probabilistic_Documentation`
+//! - source_relpath: `probabilistic_lambda_intro.pdf`
+//! - source_abs: `/home/eirikr/Documents/AGL_Library/Constraint_Probabilistic_Documentation/probabilistic_lambda_intro.pdf`
+//! - detected_kind: `pdf`
+//! - extracted_at_utc: `2026-01-02T17:30:46+00:00`
+//! - pages: `10`
+//! - title: ``
+//! - author: ``
+//! - subject: ``
+//! - keywords: ``
+//! - creation_date: `Wed May  4 20:17:14 2016 PDT`
+//! - mod_date: `Wed May  4 20:17:14 2016 PDT`
+//! - encrypted: `no`
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+//! Semantics for probabilistic programming: higher-order
+//! functions, continuous distributions, and soft constraints
+//! Sam Staton Hongseok Yang
+//! Frank Wood
+//!
+//! Chris Heunen
+//!
+//! Ohad Kammar
+//!
+//! University of Edinburgh
+//!
+//! University of Cambridge
+//!
+//! arXiv:1601.04943v3 [cs.PL] 4 May 2016
+//!
+//! University of Oxford
+//!
+//! Abstract
+//!
+//! a distribution defined by normalizing another program. This is
+//! called a nested query, by analogy with database programming.
+//!
+//! We study the semantic foundation of expressive probabilistic programming languages, that support higher-order functions, continuous distributions, and soft constraints (such as Anglican, Church,
+//! and Venture). We define a metalanguage (an idealised version of
+//! Anglican) for probabilistic computation with the above features,
+//! develop both operational and denotational semantics, and prove
+//! soundness, adequacy, and termination. This involves measure theory, stochastic labelled transition systems, and functor categories,
+//! but admits intuitive computational readings, one of which views
+//! sampled random variables as dynamically allocated read-only variables. We apply our semantics to validate nontrivial equations underlying the correctness of certain compiler optimisations and inference algorithms such as sequential Monte Carlo simulation. The
+//! language enables defining probability distributions on higher-order
+//! functions, and we study their properties.
+//!
+//! Here is a simple example of a program. We write gauss (µ, σ)
+//! for the Gaussian probability distribution whose density function is
+//! 2
+//! density gauss(a, (µ, σ)) = σ √12π exp(− (a−µ)
+//! ).
+//! 2σ 2
+//! 1
+//! 2
+//! 3
+//! 4
+//!
+//! norm(
+//! let x = sample(gauss (0.0, 3.0)) in
+//! score(density gauss(5.0, (x, 1.0));
+//! return(x < 4.5))
+//!
+//! (1)
+//!
+//! Line 2 samples x from a prior Gaussian distribution. The soft constraint on Line 3 expresses the likelihood of the observed data, 5.0,
+//! coming from a Gaussian given the prior x. Line 4 says that what we
+//! are actually interested in is a boolean random variable over the sample space. Line 1 calculates a posterior distribution for the return
+//! value, using the prior and the likelihood. In this example we can
+//! precisely calculate that the posterior distribution on {true, false}
+//! has p(true) = 0.5.
+//! Languages like this currently lack formal exact semantics. The
+//! aim of this paper is to provide just such a foundation as a basis
+//! for formal reasoning. Most expressive probabilistic programming
+//! languages are explained in terms of their Monte Carlo simulation
+//! algorithms. The simplest such algorithm, using importance and
+//! rejection sampling, is the de facto semantics against which other
+//! algorithms are ‘proved approximately correct’. Such ‘semantics’
+//! are hard to handle and extend.
+//! We provide two styles of semantics, operational and denotational. For first-order probabilistic programs, the denotational semantics is straightforward: types are interpreted as measurable
+//! spaces, and terms are interpreted as measurable functions (§4). Operational semantics is more complicated. For discrete distributions,
+//! an operational semantics might be a probabilistic transition system,
+//! but for continuous distributions, it must be a stochastic relation (labelled Markov process). We resolve this by equipping the set of
+//! configurations with the structure of a measurable space (§5).
+//! The advantage to the operational semantics is that it is easily
+//! extended to higher-order programs (§7). Denotational semantics for
+//! higher-order programs poses a problem, because measurable spaces
+//! do not support the usual β/η theory of functions: they do not form
+//! a Cartesian closed category (indeed, RR does not exist as a measurable space [3]). Earlier work dealt with this either by excluding higher-order functions or by considering only discrete distributions. We resolve this by moving from the category of measurable
+//! spaces, where standard probability theory takes place, to a functor category based on it (§8). The former embeds in the latter, so
+//! we can still interpret first-order concepts. But the functor category
+//! does have well-behaved function spaces, so we can also interpret
+//! higher-order concepts. Moreover, by lifting the monad of probabil-
+//!
+//! 1. Introduction
+//! Probabilistic programming is the idea to use programs to specify
+//! probabilistic models; probabilistic programming languages blend
+//! programming constructs with probabilistic primitives. This helps
+//! scientists express complicated models succinctly. Moreover, such
+//! languages come with generic inference algorithms, relieving the
+//! programmers of the nontrivial task of (algorithmically) answering
+//! queries about their probabilistic models. This is useful in e.g. machine learning.
+//! Several higher-order probabilistic programming languages have
+//! recently attracted a substantial user base. Some languages (such
+//! as Infer.net [22], PyMC [27], and Stan [36]) are less expressive
+//! but provide powerful inference algorithms, while others (such as
+//! Anglican [37], Church [13], and Venture [21]) have less efficient
+//! inference algorithms but more expressive power. We consider the
+//! more expressive languages, that support higher-order functions,
+//! continuous distributions, and soft constraints. More precisely, we
+//! consider a programming language (§3) with higher-order functions
+//! (§6) as well as the following probabilistic primitives.
+//! Sampling The command sample(t) draws a sample from a distribution described by t, which may range over the real numbers.
+//! Soft constraints The command score(t) puts a score t (a positive
+//! real number) on the current execution trace. This is typically
+//! used to record that some particular datum was observed as being
+//! drawn from a particular distribution; the score describes how
+//! surprising the observation is.
+//! Normalization The command norm(u) runs a simulation algorithm over the program fragment u. This takes the scores into
+//! account and returns a new, normalized probability distribution.
+//! The argument to sample might be a primitive distribution, or
+//!
+//! 1
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! Finally, for a predicate ϕ, we use the indicator expression [ϕ] to
+//! denote 1 if ϕ holds, and 0 otherwise.
+//!
+//! ity distributions [12] to the functor category, we can also interpret
+//! continuous distributions. Finally, we can interpret observations by
+//! considering probability distributions with continuous density, irrespective of the categorical machinery (§9).
+//! The denotational semantics is sound and adequate with respect
+//! to the operational semantics (§5.3,8.3), which means one can use
+//! the denotational model to directly check program equations while
+//! respecting computational issues. For example:
+//!
+//! 3. A first-order language
+//! This section presents a first-order language for expressing Bayesian
+//! probabilistic models. The language forms a first-order core of a
+//! higher-order extension in Section 6, and provides a simpler setting
+//! to illustrate key ideas. The language includes infinitary type and
+//! term constructors, constant terms for all measurable functions between measurable spaces, and constructs for specifying Bayesian
+//! probabilistic models, namely, operations for sampling distributions,
+//! scoring samples, and normalizing distributions based on scores.
+//! This highly permissive and slightly unusual syntax is not meant
+//! to be a useful programming language itself. Rather, its purpose is
+//! to serve as a semantic metalanguage to which a practical programming language compiles, and to provide a mathematical setting for
+//! studying high-level constructs for probabilistic computation.
+//!
+//! • we demonstrate a key program equation for sequential Monte
+//!
+//! Carlo simulation (§4.1);
+//! • we show that every term of first-order type is equal to one
+//!
+//! without λ-abstractions or application, and hence is interpreted
+//! as a measurable function (Proposition 8.3).
+//!
+//! 2. Preliminaries
+//! We recall basic definitions and facts of measure theory.
+//! Definition 2.1. A σ-algebra on a set X is a family Σ of subsets
+//! of X, called measurable (sub)sets, which contains X and is closed
+//! under complements and countable unions. A measurable space is a
+//! set with a σ-algebra.
+//! A measure on a measurable space
+//! S (X, Σ) is
+//! Pa function p : Σ →
+//! [0, ∞] such that p(∅) = 0 and p( i∈N Ui ) = i∈N p(Ui ) for each
+//! sequence U1 , U2 , . . . of disjoint measurable sets. A probability
+//! measure or probability distribution is a measure p with p(X) = 1.
+//!
+//! Types
+//!
+//! The language has types
+//! A, B ::= R | P(A) | 1 | A × B |
+//!
+//! X
+//!
+//! Ai
+//!
+//! i∈I
+//!
+//! where I ranges over countable sets. A type A stands for a measurable space JAK. For example, R denotes the measurable space
+//! of reals, P(A) is the space of probability measures on A, and 1
+//! is the (discrete) measurable space on the singleton set. The other
+//! type constructors correspond to products and sums of measurable
+//! spaces. Notice that countable sums are allowed, enabling us to express usual ground types in programming languages via standard
+//! encoding. For instance,
+//! the type for booleans is 1 + 1, and that for
+//! P
+//! natural numbers i∈N 1.
+//!
+//! In the paper we use a few important constructions for measurable spaces. The first is to make a set X into a measurable space by
+//! taking the full powerset of X as Σ, yielding a discrete measurable
+//! space. When X is countable, a probability distribution on (X, Σ)
+//! is determined by its values on singleton
+//! P sets, that is, by specifying
+//! a function p : X → [0, 1] such that x∈X p(x) = 1.
+//! The second construction is to combine a collection of measurable spaces (Xi , ΣP
+//! i )i∈I by sum or product.
+//! Q The underlying sets are
+//! the disjoint union i∈I XiP
+//! and product i∈I Xi of sets. The measurable sets in the sum are i∈I Ui for Ui ∈ Σi . The σ-algebra
+//! of
+//! Q
+//! the product is the smallest one containing all the subsets i∈I Ui
+//! where Ui ∈ Σi equals Xi but for a single index i.
+//! For the third, the real numbers form a measurable space (R, ΣR )
+//! under the smallest σ-algebra that contains the open intervals; the
+//! measurable sets are called Borel sets. Restricting to any measurable
+//! subset gives a new measurable space, such as the space R≥0 of
+//! nonnegative reals and the unit interval [0, 1].
+//! The fourth construction is to make the set P (X) of all probability measures on a measurable space (X, ΣX ) into a measurable
+//! space, by letting ΣP (X) be the smallest σ-algebra containing the
+//! sets {p ∈ P (X) | p(U ) ∈ V } for all U ∈ ΣX and V ∈ Σ[0,1] .
+//!
+//! Terms We distinguish typing judgements: Γ ⊢d t : A for deterministic terms, and Γ ⊢p t : A for probabilistic terms (see also
+//! e.g. [20, 26, 31]). In both, A is a type, and Γ is a list of variable/type
+//! pairs. Variables stand for deterministic terms.
+//! Intuitively, a probabilistic term Γ ⊢p t : A may have two kinds
+//! of effects: during evaluation, t may sample from a probability
+//! distribution, and it may score the current execution trace (typically
+//! according to likelihood of data). Evaluating a deterministic term
+//! Γ ⊢d t : A does not have any effects.
+//! Sums and products The language includes variables, and standard constructors and destructors for sum and product types.
+//! Γ ⊢d t : Ai
+//! P
+//! Γ, x : A, Γ′ ⊢d x : A
+//! Γ ⊢d (i, t) :
+//! i∈I Ai
+//! P
+//! Γ ⊢d t :
+//! (Γ, x : Ai ⊢z ui : B)i∈I
+//! i∈I Ai
+//! (z ∈ {d, p})
+//! Γ ⊢z case t of {(i, x) ⇒ ui }i∈I : B
+//!
+//! Definition 2.2. Let (X, ΣX ), (Y, ΣY ) be measurable spaces. A
+//! function f : X → Y is measurable if f -1 (U ) ∈ ΣX for U ∈ ΣY .
+//! We can push forward a measure along a measurable function:
+//! if p : ΣX → [0, 1] is a probability measure on (X, ΣX ) and
+//! f : X → Y is a measurable function, then q(U ) = p(f -1 (U ))
+//! is a probability measure on (Y, ΣY ).
+//!
+//! Γ ⊢d ∗ : 1
+//!
+//! Γ ⊢d tj : Aj for all j ∈ {0, 1}
+//! Γ ⊢d (t0 , t1 ) : A0 × A1
+//!
+//! Γ ⊢d t : A0 × A1
+//! Γ ⊢d πj (t) : Aj
+//!
+//! In the rules for sums, I may be infinite. In the last rule, j is 0 or 1.
+//! We use some standard syntactic sugar, such as false and true for the
+//! injections in the type bool = 1 + 1, and if for case in that instance.
+//!
+//! Definition 2.3. A stochastic relation between measurable spaces
+//! (X, ΣX ) and (Y, ΣY ) is a function r : X × ΣY → [0, 1] such that
+//! r(x, −) : ΣY → [0, 1] is a probability distribution for all x ∈ X,
+//! and r(−, V ) : X → [0, 1] is measurable for all V ∈ ΣY .
+//!
+//! Sequencing We include the standard constructs (e.g. [20, 23]).
+//! Γ ⊢p t : A Γ, x : A ⊢p u : B
+//! Γ ⊢d t : A
+//! Γ ⊢p return(t) : A
+//! Γ ⊢p let x = t in u : B
+//!
+//! Giving a stochastic relation from (X, ΣX ) to (Y, ΣY ) is equivalent to giving a measurable function (X, ΣX ) → (P (Y ), ΣP (Y ) ).
+//! Stochastic relations r : X × ΣY → [0, 1] and s : Y × ΣZ → [0, 1]
+//! compose associatively to (s ◦ r) : X × ΣZ → [0, 1] via the formula
+//! Z
+//! (s ◦ r)(x, W ) =
+//! s(y, W ) r(x, dy).
+//!
+//! Where A = 1, we write (t; u) for let x = t in u.
+//! Language-specific constructs The language has constant terms
+//! for all measurable functions.
+//! Γ ⊢d t : A
+//! (f : JAK → JBK measurable)
+//! (2)
+//! Γ ⊢d f (t) : B
+//!
+//! Y
+//!
+//! 2
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! If the model evidence is 0 or ∞, the conversion fails, and this is
+//! tracked by the ‘+1+1’.
+//!
+//! In particular, all the usual distributions are in the language, including the Dirac distribution dirac(x) concentrated on outcome
+//! x, the Gaussian distribution gauss(µ, σ) with mean µ and standard deviation σ, the Bernoulli distribution bern(p) with success
+//! probability p, the exponential distribution exp(r) with rate r, and
+//! the Beta distribution beta(α, β) with parameters α, β.1 For example, from the measurable functions 42.0 : 1 → R, e(−) : R → R,
+//! gauss : R × R → P (R) and < : R × R → 1 + 1 we can derive:
+//! Γ ⊢d 42.0 : R
+//!
+//! 4. Denotational semantics
+//! This section discusses the natural denotational semantics of the
+//! first-order language. The basic idea can be traced back a long
+//! way (e.g. [18]) but our treatment of score and norm appear to be
+//! novel. As described, types A are interpreted as measurable spaces
+//! JAK. A context Γ = (x1Q
+//! : A1 , . . . , xn : An ) is interpreted as the
+//! def
+//! measurable space JΓK = n
+//! i=1 JAi K of its valuations.
+//!
+//! Γ ⊢d t : R
+//! Γ ⊢d et : R
+//!
+//! Γ ⊢d µ : R Γ ⊢d σ : R
+//! Γ ⊢d t : R Γ ⊢d u : R
+//! Γ ⊢d gauss (µ, σ) : P(R)
+//! Γ ⊢d t < u : bool
+//! The following terms form the core of our language.
+//! Γ ⊢d t : P(A)
+//! Γ ⊢p sample(t) : A
+//!
+//! • Deterministic terms Γ ⊢d t : A are interpreted as measurable
+//!
+//! functions JtK : JΓK → JAK, providing a result for each valuation
+//! of the context.
+//!
+//! • Probabilistic terms Γ ⊢p t : A are interpreted as measurable
+//!
+//! Γ ⊢d t : R
+//! Γ ⊢p score(t) : 1
+//!
+//! functions JtK : JΓK → P (R≥0 × JAK), providing a probability
+//! measure on (score,result) pairs for each valuation of the context.
+//!
+//! The first term samples a value from a distribution t. The second
+//! multiplies the score of the current trace with t. Since both of these
+//! terms express effects, they are typed under ⊢p instead of ⊢d .
+//! The reader may think of the score of the current execution trace
+//! as a state, but it cannot be read, nor changed arbitrarily: it can
+//! only be multiplied by another score. The argument t in score(t) is
+//! usually the density of a probability distribution at an observed data
+//! point. For instance, recall the example (1) from the Introduction:
+//!
+//! Informally, if (Ω, p : Ω→[0, 1]) is the prior sample space of the program (specified by sample), and l : Ω→R≥0 is the likelihood (specified by score), and r : Ω → JAK is the return value, then a measure
+//! in P (R≥0 × JAK) is found by pushing forward p along (l, r).
+//!
+//! Sums and products The interpretation of deterministic terms follows the usual pattern of the internal language of a distributive catdef
+//! egory (e.g. [28]). For instance, JΓ, x : A, Γ′ ⊢d x : AK(γ, a, γ ′ ) = a,
+//! def
+//! and JΓ ⊢d f (t) : AK(γ) = f (JtK(γ)) for measurable f : JAK → JBK.
+//! This interpretation is actually the same as the usual set-theoretic
+//! semantics of the calculus, as one can show by induction that the
+//! induced functions JΓK → JAK are measurable.
+//!
+//! norm(let x = sample(gauss(0.0, 3.0)) in
+//! score(density gauss(5.0, (x, 1.0)); return(x < 4.5))
+//! An execution trace is scored higher when x is closer to the datum 5.
+//! When the argument t in score(t) is 0, this is called a hard
+//! constraint, meaning ‘reject this trace’; otherwise it is called a soft
+//! constraint. In the discrete setting, hard constraints are more-or-less
+//! sufficient, but even then, soft constraints tend to be more efficient.
+//!
+//! Sequencing For probabilistic terms, we proceed as follows.
+//! def
+//!
+//! Jreturn(t)K(γ)(U ) = [(1, JtK(γ)) ∈ U ],
+//!
+//! which denotes a Dirac distribution, and Jlet x = t in uK(γ)(V ) is
+//! Z
+//! 
+//! 
+//!  
+//! 
+//! JtK(γ)(d(r, x)) .
+//! JuK(γ, x) (s, b) (r · s, b) ∈ V
+//!
+//! Normalization Two representative tasks of Bayesian inference
+//! are to calculate the so-called posterior distribution and model evidence from a prior distribution and likelihood. Programs built from
+//! sample and score can be thought of as setting up a prior and a likelihood. Consider the following program:
+//!
+//! R≥0 ×JAK
+//!
+//! As we will explain shortly, these interpretations come from treating
+//! P (R≥0 × (−)) as a commutative monad, which essentially means
+//! the following program equations hold.
+//!
+//! let x = sample(bern(0.25)) in
+//! let y = (if x then return 5.0 else return 2.0) in
+//! score(density exp(0.0, y)); return(x)
+//!
+//! Jlet x = return(x) in uK = JuK
+//! Jlet x = t in return(x)K = JtK
+//! Jlet y = (let x = t in u) in vK = Jlet x = t in let y = u in vK
+//!
+//! Here the prior y comes from the Bernoulli distribution, and the
+//! likelihood concerns datum 0.0 coming from an exponential distribution with rate y. Recall that density exp(0.0, y) = y. So there
+//! are two execution traces, returning either true, with probability
+//! 0.25 and score 5.0, or false, with probability 0.75 and score 2.0.
+//! The product of the prior and likelihood gives an unnormalized
+//! posterior distribution on the return value: (true 7→ 0.25·5=1.25,
+//! false 7→ 0.75·2=1.5). The normalizing constant is the average
+//! score: (0.25·5 + 0.75·2) = 2.75, so the posterior is (true 7→
+//! 1.5
+//! 1.25
+//! ≈0.45, false 7→ 2.75
+//! ≈0.55). The average score is called the
+//! 2.75
+//! model evidence. It is a measure of how well the model encoded by
+//! the program matches the observation.
+//! Note that the sample x = true matches the datum better, so the
+//! probability of true goes up from 0.25 to 0.45 in the posterior.
+//! In our language we have a term norm(t) that will usually convert a probabilistic term t into a deterministic value, which is its
+//! posterior distribution together with the model evidence.
+//! Γ ⊢p t : A
+//! Γ ⊢d norm(t) : (R × P(A)) + 1 + 1
+//!
+//! Jlet x = t in let y = u in (x, y)K = Jlet y = u in let x = t in (x, y)K
+//!
+//! The last equation justifies a useful program optimisation technique [37, §5.5]. (The last two equations require assumptions about
+//! free variables of u, v and t, to avoid variable capture.)
+//! Language-specific constructs We use the monad:
+//! def
+//!
+//! Jsample(t)K(γ)(U ) = JtK(γ)({a | (1, a) ∈ U })
+//! def
+//! Jscore(t)K(γ)(U ) = [(max(JtK(γ), 0), ∗) ∈ U ]
+//!
+//! Here are some program equations to illustrate the semantics so far.
+//! Jscore(7.0); score(6.1)K = Jscore(42.7)K
+//! {
+//! let x = sample(gauss (0.0, 1.0))
+//! = Jsample(bern(0.5))K
+//! in return(x > 0.0)
+//! s
+//! {
+//! let x = sample(gauss (0.0, 1.0))
+//! = Jreturn(false)K
+//! in return(x > x)
+//!
+//! s
+//!
+//! Normalization We interpret norm(t) as follows. Each probability measure p on (R≥0 × X)R induces an unnormalized posterior
+//! measure p̄ on X: let p̄(U ) = R ×U r p(d(r, x)). As long as the
+//! ≥0
+//! average score p̄(X) is not 0 or ∞, we can normalize p̄ to build
+//!
+//! 1 Usually, gauss(0.0, 0.0) is undefined, but we just let gauss(0.0, 0.0) =
+//! gauss(0.0, 1.0), and so on, to avoid worrying about this sort of error.
+//!
+//! 3
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! a posterior probability measure on X. This construction forms a
+//! natural transformation ιX : P (R≥0 × X) → (R × P (X)) + 1 + 1
+//! 
+//! if p̄(X) = 0
+//! 
+//! (1, ∗)
+//! def
+//! (2,
+//! ∗)
+//! ιX (p) =
+//!  if p̄(X) = ∞ (3)
+//! 
+//! 
+//!  0, p̄(X), λU. p̄(U ) 
+//! otherwise
+//! p̄(X)
+//!
+//! the resampled value in the continuation v. Line 3 propagates the
+//! error of 0: w is a deterministic term of the right type whose choice
+//! does not matter. Finally, line 4 detects an infinite evidence error,
+//! and undoes the transformation. This error does not arise in most
+//! applications of sequential Monte Carlo simulation.
+//!
+//! 5. Operational semantics
+//!
+//! def
+//!
+//! Let Jnorm(t)K(γ) = ι(JtK(γ)). Here are some examples:
+//! s
+//! {
+//! norm(let x = sample(gauss (0.0, 3.0)) in
+//! score(density gauss(5.0, (x, 1.0)); return(x < 4.5))
+//! 
+//! = 0, (0.949, bern (0.5))
+//! {
+//! s
+//! norm let x = sample(bern(0.25)) in
+//! 
+//! (if x then score(5.0) else score(2.0)); return(x)
+//! 
+//! 5
+//! ))
+//! = 0, (2.75, bern( 11
+//! 
+//! Jnorm let x = sample(exp(1.0)) in score(ex ) K = (2, ∗)
+//! { s
+//! s
+//! {
+//! 1
+//! norm let x = sample(beta(1,
+//!  3)) = norm score( 1+3 ); 
+//! in score(x); return(x)
+//! sample(beta(2, 3))
+//!
+//! In this section we develop an operational semantics for the firstorder language. There are several reasons to consider this, even
+//! though the denotational semantics is arguably straightforward.
+//! First, extension to higher-order functions is easier in operational
+//! semantics than in denotational semantics. Second, operational semantics conveys computational intuitions that are obscured in the
+//! denotational semantics. We expect these computational intuitions
+//! to play an important role in studying approximate techniques for
+//! performing posterior inference, such as sequential Monte Carlo, in
+//! the future.
+//! Sampling from probability distributions complicates operational semantics. Sampling from a discrete distribution can immediately affect control flow. For example, in the term
+//!
+//! The third equation shows how infinite model evidence errors can
+//! arise when working with infinite distributions. In the last equation,
+//! the parameter x of score(x) represents the probability of true
+//! under bern(x). The equation expresses the so called conjugateprior relationship between Beta and Bernoulli distributions, which
+//! has been used to optimise probabilistic programs [38].
+//!
+//! let x = sample(bern(0.5)) in if x then return(1.1) else return(8.0)
+//! the conditional depends on the result of sampling the Bernoulli
+//! distribution. The result is 1.1 with probability 0.5 (cf. [5, §2.3]).
+//! Sampling a distribution on R introduces another complication.
+//! Informally, there is a transition
+//!
+//! Monads The interpretation of letand return given above arises
+//! from the fact that P R≥0 × (−) is a commutative monad on
+//! the category of measurable spaces and measurable functions (see
+//! also [7, §2.3.1], [33, §6]). Recall that a commutative monad
+//! (T, η, µ, σ) in general comprises an endofunctor T together with
+//! natural transformations ηX : X → T (X), µX : T (T (X)) →
+//! T (X), σX,Y : X ×T (Y ) → T (X ×Y ) satisfying some laws [17].
+//! Using this structure we interpret return and let following Moggi [23]:
+//! 
+//! def
+//! JΓ ⊢p return(t) : AK(γ) = ηJAK JtK(γ)
+//! 
+//! def
+//! JΓ ⊢p let x = t in u : BK(γ) = µJBK T (JuK) σJΓK,JAK (γ, JtK(γ))
+//!
+//! sample(gauss (0.0, 1.0)) −→ return(r)
+//! for every real r, but any single transition has zero probability. We
+//! can assign non-zero probabilities to sets of transitions; informally:
+//! 
+//! 
+//! Pr sample(gauss (0.0, 1.0)) −→ {return(r) | r ≤ 0} = 0.5.
+//!
+//! To make this precise we need a σ-algebra on the set of terms, which
+//! can be done using configurations rather than individual terms.
+//! A configuration is a closure: a pair ht, γi of a term t with free
+//! variables and an environment γ giving values for those variables
+//! as elements of a measurable space. (See also [14, §3], [6, §3].)
+//! Sampling a distribution p on R+R exhibits both complications:
+//!
+//! Concretely, we make P (R≥0 × (−)) into a monad by combining
+//! the standard commutative monad structure [12] on P and the commutative monoid (R≥0 , ·, 1) with the monoid monad transformer.
+//! (We record a subtle point about ι (3). It is not a monad morphism, and we we cannot form a commutative monad of all measures because the Fubini property does not hold in general.)
+//!
+//! let x = sample(p) in case x of (0, r) ⇒ return(r + 1.0)
+//! |(1, r) ⇒ return(r − 1.0)
+//!
+//! The control flow in the case distinction depends on which summand is sampled, but there is potentially a continuous distribution
+//! over the return values. We handle this by instantiating the choice
+//! of summand in the syntax, but keeping the value of the summand
+//! in the environment, so that expression (4) can make a step to the
+//! closure
+//!
+//! 4.1 Sequential Monte Carlo simulation
+//! The program equations above justify some simple program transformations. For a more sophisticated one, consider sequential
+//! Monte Carlo simulation [8]. A key idea of its application to probabilistic programs is: ‘Whenever there is a score, it is good to
+//! renormalize and resample’. This increases efficiency by avoiding
+//! too many program executions with low scores [25, Algorithm 1].
+//! The denotational semantics justifies the soundness of this transformation. For a term with top-level score, i.e. a term of the form
+//! (let x = t in (score(u); v)) where u and v may have x free:
+//! Jnorm(let x = t in (score(u); v))K
+//! = Jnorm(case (norm(let x = t in score(u); return(x))) of
+//! (0, (e, d)) ⇒ score(e); let x = sample(d) in v
+//! | (1, ∗) ⇒ score(0); return(w)
+//! | (2, ∗) ⇒ let x = t in (score(u); v))K
+//!
+//! (4)
+//!
+//! , y 7→ 42.0i.
+//! h let x = return(0, y) in
+//! case x of (0, r) ⇒ return(r + 1.0)
+//! |(1, r) ⇒ return(r − 1.0)
+//! A type is indecomposable if it has the form R or P(A), and a
+//! context Γ is canonical if it only involves indecomposable types.
+//! Configurations Let z ∈ {d, p}. A z-configuration of type A is a
+//! triple hΓ, t, γi comprising a canonical context Γ, a term Γ ⊢z t : A,
+//! and an element γ of the measurable space JΓK. We identify contexts
+//! that merely rename variables, such as
+//!
+//! 1
+//! 2
+//! 3
+//! 4
+//!
+//! h(x : R, y : P(R)), f (x, y), (x 7→ 42.0, y 7→ gauss (0.0, 1.0))i
+//! ≈h(u : R, v : P(R)), f (u, v), (u 7→ 42.0, v 7→ gauss(0.0, 1.0))i.
+//!
+//! Let us explain the right hand side. Line 1 renormalizes the program
+//! after the score, and in non-exceptional execution returns the model
+//! evidence e and a new normalized distribution d. Line 2 immediately
+//! records the evidence e as a score, and then resamples d, using
+//!
+//! We call d-configurations deterministic configurations, and p-configurations probabilistic configurations; they differ only in typing. We
+//! will abbreviate configurations to ht, γi when Γ is obvious.
+//!
+//! 4
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! Values v in a canonical context Γ are well-typed deterministic
+//! terms of the form
+//! v, w ::= xi | ∗ | (v, w) | (i, v)
+//!
+//! parameterized by a family of measurable ‘normalization’ functions
+//! 
+//! νA : Conp (A) → R≥0 × P (JAK) + 1 + 1
+//! (8)
+//!
+//! (5)
+//!
+//! indexed by types A.
+//!
+//! where xi is a variable in Γ. Similarly, a probabilistic term t in
+//! context Γ is called probabilistic value or p-value if t ≡ return(v0 )
+//! for some value v0 . Remember from Section 4 that the denotational
+//! semantics of values is simple and straightforward.
+//! Write Cond (A) and Conp (A) for the sets of deterministic and
+//! probabilistic configurations of type A, and make them into measurable spaces by declaring U ⊆ Conz (A) to be measurable if the set
+//! {γ ∈ JΓK | ht, γi ∈ U } is measurable for all judgements Γ ⊢z t : A.
+//! X
+//! JΓK
+//! (6)
+//! Conz (A) =
+//!
+//! Reduction of deterministic terms Define a type-indexed family
+//! of relations −→ ⊆ ConNd (A) × Cond (A) as the least one that is
+//! closed under the following rules.
+//! hΓ, πj (v0 , v1 ), γi −→ hΓ, vj , γi
+//! hΓ, case (i′ , v) of {(i, x) ⇒ ti }i∈I , γi −→ hΓ, ti′ [v/x], γi
+//! hΓ, f (w), γi −→ h(Γ, Γ′ ), v, (γ, γ ′ )i
+//! (w a value ∧ Γ′ ⊢d v : A an ordered value ∧ f (JwK(γ)) = JvK(γ ′ ))
+//!
+//! (Γ,t)
+//! Γ canonical,
+//! Γ ⊢z t : A
+//!
+//! hΓ, norm(t), γi −→ h(Γ, x:R, y:P(B)), (0, (x, y)), γ[x7→r, y7→p]i
+//! (A = (R×P(B) + 1 + 1) ∧ νB (hΓ, t, γi) = (0, (r, p)) ∧ x, y 6∈ Γ)
+//!
+//! Further partition Conz (A) into ConVz (A) and ConNz (A)
+//! based on whether a term in a configuration is a value or not:
+//!
+//! hΓ, norm(t), γi −→ hΓ, (i, ∗), γi
+//! (A = (R × P(B) + 1 + 1) ∧ νB (hΓ, t, γi) = (i, ∗), i ∈ {1, 2})
+//!
+//! ConVd (A) = {hΓ, t, γi ∈ Cond (A) | t is a value}
+//! ConNd (A) = {hΓ, t, γi ∈ Cond (A) | t is not a value}
+//! ConVp (A) = {hΓ, t, γi ∈ Conp (A) | t is a p-value}
+//! ConNp (A) = {hΓ, t, γi ∈ Conp (A) | t is not a p-value}
+//!
+//! hΓ, t, γi −→ hΓ′ , t′ , γ ′ i
+//! hΓ, C[t], γi −→ hΓ′ , C[t′ ], γ ′ i
+//!
+//! (C[−] is not (−))
+//!
+//! Particularly well-behaved values are the ordered values Γ ⊢d v : A,
+//! where each variable appears exactly once, and in the same order as
+//! in Γ.
+//!
+//! The rule for f (w) keeps the original context Γ and the closure γ
+//! because they might be used in the continuation, even though they
+//! are not used in v. The rules obey the following invariant.
+//!
+//! Lemma 5.1. Consider a canonical context Γ, a type A, an ordered
+//! value Γ ⊢d v : A, and the induced measurable function
+//!
+//! Lemma 5.2. If hΓ, t, γi −→ hΓ′ , t′ , γ ′ i, then Γ′ = (Γ, Γ′′ ) and
+//! γ ′ = (γ, γ ′′ ) for some Γ′′ and γ ′′ ∈ JΓ′′ K.
+//!
+//! JvK : JΓK → JAK.
+//!
+//! Proof. By induction on the structure of derivations.
+//!
+//! The collection of all such functions for given A is countable, and
+//! forms a coproduct diagram.
+//!
+//! This lemma allows us to confirm that our specification of a relation
+//! −→ ⊆ ConNd (A) × Cond (A) is well-formed (‘type preservation’).
+//!
+//! Proof. By induction on the structure of types. The key fact is that
+//! every type is a sum of products of indecomposable ones, because
+//! the category
+//! of measurable spaces
+//! P
+//! P is distributive, i.e. the canonical
+//! map i∈I (A × Bi ) → A × i∈I Bi is an isomorphism.
+//!
+//! Proposition 5.3. The induced relation is a measurable function.
+//! Proof. There are three things to show: that the relation is entire
+//! (‘progress’); that the relation is single-valued (‘determinacy’); and
+//! that the induced function is measurable. All three are shown by
+//! induction on the structure of terms. The case of application of
+//! measurable functions crucially uses Lemma 5.1.
+//!
+//! For example, A = (R × bool) + (R × R) has 3 ordered values,
+//! first (x : R ⊢d (0, (x, true)) : A), second (x : R ⊢d (0, (x, false)) : A),
+//! and third (x : R, y : R ⊢d (1, (x, y)) : A), inducing a canonical measurable isomorphism R + R + R × R ∼
+//! = JAK.
+//! Evaluation contexts We distinguish three kinds of evaluation
+//! contexts: C[−] is a context for a deterministic term with a hole for
+//! deterministic terms; D[−] and E [−] are contexts for probabilistic
+//! terms, the former with a hole for probabilistic terms, the latter with
+//! a hole for deterministic terms.
+//! C[−] ::= (−) | πj C[−] | (C[−], t) | (v, C[−]) | (i, C[−])
+//! | case C[−] of {(i, x) ⇒ ti }i∈I | f (C[−])
+//! D[−] ::= (−) | let x = D[−] in t
+//!
+//! Reduction of probabilistic terms Next, we define the stochastic
+//! relation −→ for probabilistic terms, combining two standard approaches: for indecomposable types, which are uncountable, use
+//! labelled Markov processes, i.e. give a distribution on the measurable set of resulting configurations; for decomposable types (sums,
+//! products etc.), probabilistic branching is discrete and so a transition
+//! system labelled by probabilities suffices.
+//!
+//! (7)
+//!
+//! Proposition 5.4. Let (Xi )i∈I be an indexed family of measurable
+//! spaces. Suppose we are given:
+//!
+//! E [−] ::= D[return[−]] | D[sample[−]] | D[score[−]]
+//! | case D[−] of {(i, x) ⇒ ti }i∈I
+//!
+//! • a function q : I → [0, 1] that
+//! Pis only nonzero on a countable
+//!
+//! subset I0 ⊆ I, and such that
+//!
+//! where t, ti are general terms and v is a value.
+//!
+//! i∈I0 q(i) = 1;
+//!
+//! • a probability measure qi on Xi for each i ∈ I0 .
+//!
+//! 5.1 Reduction
+//!
+//! P
+//! This determines a probability measure p on i∈I Xi by
+//! P
+//! p(U ) = i∈I q(i) qi ({a | (i, a) ∈ U })
+//! P
+//! for U a measurable subset of i∈I Xi ,
+//!
+//! Using the tools developed so far, we will define a measurable
+//! function for describing the reduction of d-configurations, and a
+//! stochastic relation for describing reduction of p-configurations:
+//! −→ : ConNd (A) → Cond (A),
+//! −→ : ConNp (A) × ΣR≥0 ×Conp (A) → [0, 1],
+//!
+//! We will use three entities to define the desired stochastic relation
+//! −→ : ConNp (A) × ΣR≥0 ×Conp (A) → [0, 1].
+//!
+//! 5
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! (Γ′ , t′ ) and the distribution Pr(C −→(−) (−)) indexed by such
+//! pairs satisfy the conditions in Proposition 5.4. It follows that the
+//! partial evaluation Pr(C −→ (−)) of the function in the statement
+//! is a probability measure, so it suffices to establish measurability of
+//! the other partial evaluation Pr((−) −→ U ). Recall that ConNp (A)
+//! is defined in terms of the sum of measurable spaces, and that all
+//! p-configurations in each summand have the same term. Finally,
+//! use induction on the term shared by all p-configurations in the
+//! summand to see that the restriction of Pr((−) −→ U ) to each
+//! summand is measurable.
+//!
+//! 1. A countably supported probability distribution on the set
+//! {(Γ, t) | Γ ⊢p t : A} for each C ∈ ConNp (A). We write
+//! Pr(C −→ (Γ, t)) for the probability of (Γ, t).
+//! 2. A probability measure on the space JΓK for each C ∈ ConNp (A)
+//! and (Γ, t) with Pr(C −→ (Γ, t)) 6= 0. Write Pr(C −→Γ,t U )
+//! for the probability of a measurable subset U ⊆ JΓK.
+//! 3. A measurable function Sc : ConNp (A) → R≥0 , representing
+//! the score of the one-step transition relation. (For one-step transitions, the score is actually deterministic.)
+//!
+//! These three entities are defined by induction on the structure of the
+//! syntax of A-typed p-configurations in Figure 1. We combine them
+//! to define a stochastic relation as follows.
+//!
+//! 5.2 Termination
+//! To see that the reduction process terminates, we first define the
+//! transitive closure. This is subtle, as sampling can introduce countably infinite branching; although each branch will terminate, the
+//! expected number of steps to termination can be infinite.
+//! We use the deterministic transition relation to define an evaluation relation ⇓ ⊆ Cond (A) × ConV d (A), by setting C ⇓ D if
+//! ∃n. C ⇓n D, where
+//!
+//! Proposition 5.5. The map ConNp (A) × ΣR≥0 ×Conp (A) → [0, 1]
+//! that sends (C, U ) to Pr(C −→ U ), defined as
+//! X
+//! 
+//! 
+//! Pr C −→ (Γ, t) Pr C −→Γ,t {γ | (Sc(C), hΓ, t, γi) ∈ U } ,
+//!
+//! (Γ,t)
+//!
+//! is a stochastic relation.
+//!
+//! 0
+//!
+//! C⇓ C
+//!
+//! on t
+//! Proof. For each p-configuration C = h , t, i, use induction
+//! 
+//! to see that the probability distribution Pr C −→ (−) on pairs
+//!
+//! (C ∈ ConVd (A))
+//!
+//! D ⇓n E
+//! C⇓
+//!
+//! C −→ D
+//! n+1
+//!
+//! E
+//!
+//! To define evaluation for probabilistic configurations, we need substochastic relations: functions f : X × ΣY → [0, 1] that are
+//! measurable in X, satisfy f (x, Y ) ≤ S
+//! 1 for every xP∈ X, and
+//! are countably additive in Y , i.e. f (x, i∈N Ui ) =
+//! i∈N f (Ui )
+//! for a sequence U1 , U2 , . . . of disjoint measurable sets. Thus a
+//! stochastic relation (as in Definition 2.3) is a sub-stochastic relation
+//! with f (x, Y ) = 1. Define a sub-stochastic relation
+//!
+//! 
+//! def 
+//! Pr(hΓ, E [t], γi −→ (Γ′ , E [t′ ])) = hΓ, t, γi −→ hΓ′ , t′ , γ ′ i
+//! def
+//!
+//! Pr(hΓ, D[t], γi −→ (Γ′ , D[t′ ])) = Pr(hΓ, t, γi −→ (Γ′ , t′ ))
+//! def
+//!
+//! Pr(hΓ, let x = return(v) in t, γi −→ (Γ, t[v/x])) = 1
+//!
+//! Pr(− ⇓ −) : Conp (A) × ΣR≥0 ×ConVp (A) → [0, 1]
+//! def P
+//! by Pr(C ⇓ U ) = n Pr(C ⇓n U ), where Pr(C ⇓0 U ) is given
+//! by [(1, C) ∈ U ], and Pr(C ⇓n+1 U ) is
+//! Z
+//! Pr(D ⇓n {(s, E) | (r · s, E) ∈ U }) Pr(C −→ d(r, D)).
+//!
+//! def
+//!
+//! Pr(hΓ, case (j, v) of {(i, x) ⇒ ti }i∈I , γi −→ (Γ, tj [v/x])) = 1
+//! def
+//!
+//! Pr(hΓ, score(v), γi −→ (Γ, return(∗))) = 1
+//! Pr(hΓ, sample(v), γi −→ ((Γ, Γ′ ), return(v ′ )))
+//! (
+//! JvK(γ)({Jv ′ K(γ ′ ) | γ ′ ∈ JΓ′ K}) if Γ′ ⊢d v ′ : A ordered
+//! def
+//! =
+//! 0
+//! otherwise
+//!
+//! R≥0 ×Conp (A)
+//!
+//! Proposition 5.6 (Termination). Evaluation of deterministic terms
+//! is a function: ∀C. ∃D. C ⇓ D. Evaluation of probabilistic terms is
+//! a stochastic relation: ∀C. Pr(C ⇓ (R≥0 × ConV p (A))) = 1.
+//!
+//! Pr(hΓ, E [t], γi −→(Γ′ ,E[t′ ]) U )
+//! def
+//! = [hΓ, t, γi −→ hΓ′ , t′ , γ ′ i ∧ γ ′ ∈ U ]
+//!
+//! Proof. By induction on the structure of terms.
+//! Termination comes from the omission of recursion in our language. We do so for now, because our semantic model does not yet
+//! handle higher-order recursion, and probabilistic while-languages
+//! are already well-understood (e.g. [18]). (See also the discussion
+//! about domain theory in §8.)
+//!
+//! def
+//!
+//! Pr(hΓ, D[t], γi −→(Γ′ ,D[t′ ]) U ) = Pr(hΓ, t, γi −→(Γ′ ,t′ ) U )
+//! def
+//!
+//! Pr(hΓ, let x = return(v) in t, γi −→(Γ,t[v/x]) U ) = [γ ∈ U ]
+//! def
+//!
+//! Pr(hΓ, case (j, v) of {(i, x) ⇒ ti }i∈I , γi −→Γ,tj [v/x] U ) = [γ ∈ U ]
+//! def
+//!
+//! Pr(hΓ, score(v), γi −→(Γ,return(∗)) U ) = [γ ∈ U ]
+//!
+//! 5.3 Soundness
+//!
+//! Pr(hΓ, sample(v), γi −→((Γ,Γ′ ),return(v′ )) U )
+//!
+//! For soundness, extend the denotational semantics to configurations:
+//!
+//! def
+//!
+//! =
+//!
+//! ′
+//!
+//! ′
+//!
+//! ′
+//!
+//! ′
+//!
+//! • define sd : Cond (A) → JAK by hΓ, t, γi 7→ JtK(γ);
+//!
+//! ′
+//!
+//! JvK(γ)({Jv K(γ ) | γ ∈ JΓ K ∧ (γ, γ ) ∈ U })
+//! JvK(γ)({Jv ′ K(γ ′ ) | γ ′ ∈ JΓ′ K})
+//! def
+//!
+//! • define sp : Conp (A) × ΣR≥0 ×JAK → [0, 1] similarly by
+//!
+//! (hΓ, t, γi, U ) 7→ JtK(γ)(U ). We may also use this stochastic relation as a measurable function sp : Conp (A) → P (R≥0 × JAK);
+//!
+//! def
+//!
+//! Sc(hΓ, E [t], γi) = 1
+//!
+//! Sc(hΓ, D[t], γi) = Sc(hΓ, t, γi)
+//!
+//! • define sV p : ConVp (A) → JAK by hΓ, return(v), γi 7→ JvK(γ).
+//!
+//! def
+//!
+//! Sc(hΓ, sample(v), γi) = 1
+//!
+//! Note that in this first-order language, sV p is a surjection which
+//! equates two value configurations iff they are related by weakening, contraction or exchange of variables.
+//!
+//! def
+//!
+//! Sc(hΓ, score(v), γi) = max(JvK(γ), 0)
+//! def
+//!
+//! Sc(hΓ, let x = return(v) in t, γi) = 1
+//!
+//! Assumption 5.7. Throughout this section we assume that the normalization function ν on configurations (8) is perfect, i.e. it corresponds to ι, the semantic normalization function (3):
+//!
+//! def
+//!
+//! Sc(hΓ, case (j, v) of {(i, x) ⇒ ti }i∈I , γi) = 1
+//!
+//! νA (hΓ, t, γi) = ιJAK (sp (hΓ, t, γi)).
+//!
+//! Figure 1. Entities used to define reduction of probabilistic terms
+//!
+//! 6
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! Lemma 5.8 (Context extension). Let z ∈ {d, p}. Suppose that
+//! hΓ, t, γi and h(Γ, Γ′ ), t, (γ, γ ′ )i are configurations in Conz (A).
+//! Then sz (hΓ, t, γi) = sz h(Γ, Γ′ ), t, (γ, γ ′ )i.
+//!
+//! which takes a probability measure and returns a suspended program
+//! that will sample from it. On the other hand, to reify the normalization construction, we use a different calling convention.
+//!
+//! Proposition 5.9 (Soundness). The following diagrams commute
+//! (in the category of measurable functions, and stochastic relations,
+//! respectively).
+//!
+//! ⊢d λx. norm(force(x)) : T(A) ⇒ R × P(A) + 1 + 1
+//!
+//! ConNp (A)
+//!
+//! ConNd (A)
+//! one-step
+//! reduction
+//!
+//! 
+//!
+//! Cond (A)
+//!
+//! ❯❯s❯d❯*
+//! 4 JAK
+//! ✐✐✐✐✐
+//! sd
+//!
+//! one-step
+//! reduction
+//!
+//! sp
+//!
+//! This function takes a suspended probabilistic program and returns
+//! the result of normalizing it.
+//!
+//! / R≥0 × JAK
+//! O
+//!
+//! Example: higher-order expectation Higher types also allow us
+//! to consider probability distributions over programs. For an example, consider this term.
+//!
+//! / R≥0 × R≥0 × JAK
+//!
+//! Eh = λ(d, f ) : T(A) × (A ⇒ R).
+//! case (norm(let a = force(d) in score(f (a)))) of
+//! (0, (e, y)) ⇒ e
+//! | (1, ∗) ⇒ 0.0 | (2, ∗) ⇒ 0.0
+//!
+//! multiplication
+//!
+//! 
+//!
+//! R≥0 × Conp (A)
+//!
+//! def
+//!
+//! id ×sp
+//!
+//! Proof. By induction on the structure of syntax. The inductive steps
+//! with evaluation contexts use the extension Lemma 5.8, which applies by the invariant Lemma 5.2.
+//!
+//! It has type (T(A) × (A ⇒ R)) ⇒ R. Intuitively, given a thunked
+//! probabilistic term t and a function f that is nonnegative, Eh treats
+//! t as a probability distribution on A, and computes the expectation
+//! of f on this distribution. Notice that A can be a higher type, so
+//! Eh generalises the usual notion of expectation, which has not been
+//! defined for higher types because the category of measurable spaces
+//! is not Cartesian closed.
+//!
+//! Adequacy
+//!
+//! The denotational semantics is adequate, in the sense:
+//! 
+//! JtK(∗) = P (R≥0 × sV p ) Pr(h∅, t, ∗i ⇓ (−)) for all ⊢p t : A.
+//!
+//! That is, the denotation JtK(∗) is nothing but pushing forward the
+//! probability measure Pr(h∅, t, ∗i ⇓ (−)) from the operational semantics along the function sV p . This adequacy condition holds because Proposition 5.9 ensures that
+//! X
+//! 
+//! Pr(h∅, t, ∗i ⇓k {(r, C) | (r, sV p (C)) ∈ U }) ≤ JtK(∗)(U )
+//!
+//! 7. Higher-order operational semantics
+//! In this section we consider operational semantics for the higherorder extension of the language. In an operational intuition, force(t)
+//! forces a suspended computation t to run. For example,
+//!
+//! k≤n
+//!
+//! for all n and U , and Proposition 5.6 then guarantees that the lefthand side of this inequality converges to the right-hand side as n
+//! tends to infinity.
+//!
+//! ⊢d thunk(sample(gauss(0.0, 1.0))) : T(R)
+//! is a suspended computation that, when forced, will sample the
+//! normal distribution.
+//!
+//! 6. A higher-order language
+//!
+//! Assumption 7.1. From the operational perspective it is unclear
+//! how to deal with sampling from a distribution over functions. For
+//! this reason, in this section, we only allow the type P(A) when A is a
+//! measurable type. We still allow probabilistic terms to have higherorder types, and we still allow T(A) where A is higher-order.
+//!
+//! This short section extends the first-order language with functions
+//! and thunks [19], allowing variables to stand for program fragments.
+//! In other words, ‘programs are first-class citizens’.
+//! Types
+//!
+//! Extend the grammar for types with two new constructors.
+//! X
+//! A, B ::= R | P(A) | 1 | A × B |
+//! Ai | A ⇒ B | T(A)
+//!
+//! 7.1 Reduction
+//! We now extend the operational semantics from Section 5 with
+//! higher types. Values (5) are extended as follows.
+//!
+//! i∈I
+//!
+//! Informally, A ⇒ B contains deterministic functions, and T(A)
+//! contains thunked (i.e. suspended) probabilistic programs. Then
+//! A ⇒ T(B) contains probabilistic functions. A type is measurable
+//! if it does not involve ⇒ or T, i.e. if it is in the grammar of Section 3.
+//!
+//! v ::= . . . | λx.t | thunk(t)
+//! Evaluation contexts (7) are extended as follows.
+//! C[−] ::= . . . | C[−] t | v C[−]
+//!
+//! Terms Extend the term language with the following rules. First,
+//! the usual abstraction and application of deterministic functions:
+//! Γ, x : A ⊢d t : B
+//! Γ ⊢d λx. t : A ⇒ B
+//!
+//! There are two additional redexes: (λx.t) v and force(thunk(t)).
+//! The deterministic transition relation is extended with this β-rule:
+//!
+//! Γ ⊢d t : A ⇒ B Γ ⊢d u : A
+//! Γ ⊢d t u : B
+//!
+//! hΓ, (λx.t) v, γi −→ hΓ, t[v/x], γi.
+//! Extend the probabilistic transition relation with the following rules.
+//! 
+//! Pr hΓ, force(thunk(t)), γi −→ (Γ, t) = 1
+//! 
+//! Pr hΓ, force(thunk(t)), γi −→(Γ,t) U = [γ ∈ U ]
+//!
+//! Second, we have syntax for thunking and forcing (e.g. [19, 23, 26]).
+//! Γ ⊢p t : A
+//! Γ ⊢d thunk(t) : T(A)
+//!
+//! E [−] ::= . . . | D[force[−]]
+//!
+//! Γ ⊢d t : T(A)
+//! Γ ⊢p force(t) : A
+//!
+//! Sc(hΓ, force(thunk(t)), γi) = 1
+//!
+//! All the rules from Section 3 are also still in force. For rule (2) to
+//! still make sense, we only include constant terms for measurable
+//! functions f : JAK → JBK between measurable types A and B.
+//!
+//! 7.2 Termination
+//! The evaluation relations for deterministic and probabilistic configurations of the higher-order language are defined as in Subsection 5.2. The resulting rewriting system still terminates, even
+//! though configurations may now include higher-order terms.
+//!
+//! Examples One motivation for higher types is to support code
+//! structuring. The separate function types and thunk types allow us
+//! to be flexible about calling conventions. For example, sampling can
+//! be reified as the ground term
+//!
+//! Proposition 7.2 (Termination). Evaluation of deterministic terms
+//! is a function: ∀C. ∃D. C ⇓ D. Evaluation of probabilistic terms is
+//! a stochastic relation: ∀C. Pr(C ⇓ (R≥0 × ConV p (A))) = 1.
+//!
+//! ⊢d λx. thunk(sample(x)) : P(A) ⇒ T(A),
+//!
+//! 7
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! Proof. We sketch an invariant of higher-order terms that implies the
+//! termination property, formulated as unary logical relations via sets
+//!
+//! 8.1 Semantic model
+//! Fix a category Meas of measurable spaces and measurable functions that is essentially small but large enough for the purposes of
+//! Section 4. For example, Meas could be the category of standard
+//! Borel spaces [4, 35]: one can show that JAK is standard Borel by induction on A, and the class of all standard Borel spaces is countable
+//! up to measurable isomorphism.
+//! In Section 4 we interpreted first-order types A as measurable spaces JAK. We will interpret higher-order types A as functors LAM : Measop → Set. Informally, when A is a first-order
+//! type and Γ is a first-order context, we will have LAM(JΓK) ∼
+//! =
+//! Meas(JΓK, JAK) ≈ {t | Γ ⊢d t : A}. For a second order type
+//! (A ⇒ B), we will have
+//! LA ⇒ BM(JΓK) ∼
+//! = Meas(JΓK × JAK, JBK) ≈ {t | Γ, x : A ⊢d t : B}
+//!
+//! R(Γ ⊢z A) ⊆ {t | Γ ⊢z t : A},
+//! Rv (Γ ⊢z A) ⊆ {t | Γ ⊢z t : A ∧ t a z-value},
+//! for each canonical context Γ, type A, and z ∈ {d, p}, defined by:
+//! R(Γ ⊢d A) = {t | ∀γ. hΓ, t, γi ⇓ hΓ′ , t′ , γ ′ i ∧ t′ ∈ Rv (Γ′ ⊢d A)}
+//! R(Γ ⊢p A) = {t | ∀γ. Pr(hΓ, t, γi ⇓
+//! P
+//! (R≥0 × Γ′ Rv (Γ′ ⊢p A) × JΓ′ K)) = 1}
+//!
+//! Rv (Γ ⊢p A) = {return(v) | v ∈ Rv (Γ ⊢d A)}
+//! Rv (Γ ⊢d A) = {x | (x : A) ∈ Γ}
+//! for A indecomposable
+//! Rv (Γ ⊢d 1) = {∗}
+//! Rv (Γ ⊢d A1 × A2 ) = {(v1 , v2 ) | ∀j. vj ∈ Rv (Γ ⊢d Aj )}
+//! X
+//! Rv (Γ ⊢d
+//! Ai ) = {(i, v) | v ∈ Rv (Γ ⊢d Ai )}
+//!
+//! so that β/η equality is built in. To put it another way, LAM(Rn ) models terms of type A having n read-only real-valued memory cells.
+//!
+//! Lemma 8.1. For a small category C with countable sums, consider the category C of countable-product-preserving functors
+//! Cop → Set, and natural transformations between them.
+//!
+//! Rv (Γ ⊢d T (A)) = {thunk(t) | t ∈ R(Γ ⊢p A)}
+//!
+//! Rv (Γ ⊢d A ⇒ B) = {λx.t | ∀Γ′ ⊇ Γ, u ∈ Rv (Γ′ ⊢d A).
+//!
+//! • C has all colimits;
+//! • C is Cartesian closed if C has products that distribute over
+//!
+//! t[u/x] ∈ R(Γ′ ⊢d B)}
+//! Induction on the structure of a term Γ, x1 : A1 , . . . xn : An ⊢z t : B
+//! for z ∈ {d, p} now proves that vi ∈ Rv (Γ ⊢d Ai ) for i = 1, . . . , n
+//! implies t[~v /~x] ∈ R(Γ ⊢z B).
+//!
+//! • There is a full and faithful embedding y : C → C, given by
+//!
+//! 8. Higher-order denotational semantics
+//!
+//! Proof. See e.g. [30, §7], or [16, Theorems 5.56 and 6.25]. The
+//! embedding y is called the Yoneda embedding.
+//!
+//! sums;
+//! def
+//!
+//! y(c) = C(−, c), which preserves limits and countable sums.
+//!
+//! This section gives denotational semantics for the higher-order language, without using Assumption 7.1. We are to interpret the new
+//! constructs T(A), thunk, and force. We will interpret probabilistic judgements as Kleisli morphisms JΓK → T (JAK) for a certain
+//! def
+//! monad T , and set JT(A)K = T (JAK), so thunk and force embody
+//! the correspondence of maps JΓK → T (JAK) and JΓK → JT(A)K.
+//! On which category can the monad T live? Interpreting λabstraction and application needs a natural ‘currying’ bijection between morphisms JΓK × R → R and morphisms JΓK → JR ⇒ RK.
+//! But measurable functions cannot do this: it is known that no measurable space JR ⇒ RK can support such a bijection [3].
+//! We resolve the problem of function spaces by embedding the
+//! category of measurable spaces in a larger one, where currying
+//! is possible, and that still has the structure to interpret the first
+//! order language as before. As the larger category we will take a
+//! category of functors Measop → Set from a category Meas
+//! of measurable spaces and measurable functions to the category
+//! Set of sets and functions. This idea arises from two traditions.
+//! First, we can think of a variable of type R as a read-only memory
+//! cell, as in the operational semantics, and functor categories have
+//! long been used to model local memory (e.g. [24]). Second, the
+//! standard construction for building a Cartesian closed category out
+//! of a distributive one is based on functor categories (e.g. [30]).
+//!
+//! For a simple example, consider the category CSet of countable
+//! sets and functions. It has countable sums and finite products, but is
+//! not Cartesian closed. Because every countable set is a countable
+//! sum of singletons, the category CSet is equivalent to Set.
+//! Our semantics for the higher-order language will take place in
+//! the category Meas. Note that products in Meas are pointwise,
+//! e.g. (F × G)(X) = F (X) × G(X) for all F, G ∈ Meas and all
+//! X ∈ Meas, but sums are not pointwise, e.g. (1 + 1) ∈ Meas
+//! is the functor that assigns a measurable space X to the set of its
+//! measurable subsets. This is essential for y to preserve sums.
+//! Distribution types We have to interpret distribution types P(A)
+//! in our functor category Meas. How can we interpret a probability
+//! distribution on the type R ⇒ R? We can answer this pragmatically,
+//! without putting σ-algebra structure on the set of all functions. If
+//! JR ⇒ RK were a measurable space, a random variable valued
+//! in JR ⇒ RK would be given by a measurable space (X, ΣX ),
+//! a probability distribution on it, and a measurable function X →
+//! JR ⇒ RK. Despite there being no such measurable space JR ⇒ RK,
+//! we can speak of uncurried measurable functions X ×R → R. Thus
+//! we might define a probability distribution on JR ⇒ RK to be a triple
+//! 
+//! (X, ΣX ), f : X × R → R, p : ΣX → [0, 1]
+//!
+//! Other models of higher-order programs Semantics of higherorder languages with discrete probability are understood well. For
+//! terminating programs, there are set-theoretic models based on a distributions monad, and for full recursion one can use probabilistic
+//! powerdomains [15] or coherence spaces [10]. It is also plausible
+//! one could model continuous distributions in domain theory, since
+//! it supports computable real analysis (e.g. [9]); this could be interesting because computability is subtle for probabilistic programming (e.g. [1]). Nonetheless, we contend it is often helpful to abstract away computability issues when studying probabilistic programming languages, to have access to standard theorems of probability theory to justify program transformations.
+//!
+//! of a measurable space (X, ΣX ) of ‘codes’, a measurable function f
+//! where we think of f (x, r) as ‘the function coded x evaluated at r’,
+//! and a probability distribution p on the codes. These triples should
+//! be considered modulo renaming the codes. This is exactly the
+//! notion of probability distribution that arises in our functor category.
+//! Lemma 8.2. For a small category C with countable sums:
+//! • any functor F : C → C extends to a functor F : C → C
+//!
+//! satisfying F ◦ y ∼
+//! = y ◦ F , given by
+//! X
+//! 
+//! G(a) × C b, F (a) / ∼
+//! F (G)(b) =
+//! a
+//!
+//! 8
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! where the equivalence relation ∼ is the least one satisfying
+//! (a′ , x, F g ◦ f ) ∼ (a, Gg(x), f );
+//! • similarly, any functor F : C × C → C in two arguments
+//! extends to a functor F : C×C → C, with F ◦(y×y) ∼
+//! = y◦F :
+//! P
+//! 
+//! G(a)
+//! ×
+//! H(b)
+//! ×
+//! C
+//! c,
+//! F
+//! (a,
+//! b)
+//! F (G, H)(c) =
+//! /∼
+//! a,b
+//!
+//! A subtle point is that configuration spaces (6) involve uncountable sums: the set of terms of a given type is uncountable, but y
+//! only preserves countable sums. This is not really a problem because
+//! only countably many terms are reachable from a given program.
+//! Definition 8.4. For a type A, the binary reachability relation ∗d
+//! on {(Γ, t) | Γ ⊢d t : A ∧ Γ canonical} is the least reflexive and transitive relation with (Γ, t) ∗d (Γ′ , u) if hΓ, t, γi −→ hΓ′ , u, γ ′ i
+//! for γ ∈ JΓK, γ ′ ∈ JΓ′ K. Similarly, ∗p is the least reflexive
+//! and transitive relation on {(Γ, t) | Γ ⊢p t : A∧ Γ canonical} with
+//! (Γ, t) ∗p (Γ′ , u) if Pr hΓ, t, γi −→ (Γ′ , u) 6= 0 for γ ∈ JΓK.
+//!
+//! → G between functors
+//! F, G : C → C lifts to a natural transformation α : F → G,
+//! and similarly for functors C × C → C;
+//! • and this is functorial, i.e. G ◦ F ∼
+//! = G ◦ F and β ◦ α = β ◦ α.
+//!
+//! • any natural transformation α : F
+//!
+//! Proposition 8.5. Let z ∈ {d, p}. For any closed term ⊢z t : A, the
+//! set of reachable terms {(Γ, u) | (∅, t) ∗z (Γ, u)} is countable.
+//!
+//! Proof. F (G) is the left Kan extension of G along F , see e.g. [16].
+//! Direct calculation shows F (G) preserves products if G does.
+//!
+//! Proof. One-step reachability is countable by induction on terms.
+//! Since all programs terminate by Proposition 7.2, the reachable
+//! terms form a countably branching well-founded tree.
+//!
+//! Thus the commutative monads P and T = P (R≥0 × (−)) on
+//! Meas lift to commutative monads P and T ∼
+//! = P (yR≥0 × (−))
+//! on Meas. The latter monad captures the informal importancesampling semantics advocated by the designers of Anglican [37].
+//!
+//! We may thus restrict to the configurations built from a countable
+//! set U of terms that is closed under subterms and reachability.
+//! Extend the denotational semantics in Meas to configurations by
+//! defining sd : y(Cond (A)) → LAM, sp : y(Conp (A)) → T LAM, and
+//! sV p : y(ConVp (A)) → T LAM; use the isomorphisms
+//! X
+//! LΓM
+//! y(Conz (A)) ∼
+//! =
+//!
+//! 8.2 Conservativity
+//! We interpret the types of the higher order language as objects in
+//! Meas using its categorical structure.
+//! P
+//! def P
+//! def
+//! def
+//! L i∈I Ai M = i∈I LAi M
+//! LRM = yR LP(A)M = P (LAM)
+//! def
+//!
+//! LA × BM = LAM × LBM
+//! def
+//! LA ⇒ BM = LAM ⇒ LBM
+//!
+//! def
+//!
+//! (Γ⊢z t:A)∈U
+//!
+//! def
+//!
+//! LT(A)M = T (LAM)
+//!
+//! L1M = 1
+//!
+//! to define sd , sp , sV p by copairing the interpretation morphisms
+//! LΓ ⊢d t : AM : LΓM → LAM and LΓ ⊢p u : AM : LΓM → T (LAM).
+//!
+//! We extend this interpretation to contexts.
+//! def
+//!
+//! Lx1 : A1 , . . . , xn : An M =
+//!
+//! Proposition 8.6 (Soundness). The following diagrams commute.
+//! Qn
+//!
+//! i=1 LAi M
+//!
+//! y(ConNd (A))
+//!
+//! Deterministic terms Γ ⊢d t : A are interpreted as natural transformations LΓM → LAM in Meas, and probabilistic terms Γ ⊢p t : A as
+//! natural transformations LΓM → T LAM, by induction on the structure of terms as in Section 4. Application and λ-abstraction are
+//! interpreted as usual in Cartesian closed categories [28]. Thunk and
+//! force are trivial from the perspective of the denotational semantics,
+//! because LTAM = T LAM. To interpret norm(t), use Lemma 8.2 to
+//! extend the normalization functions T (X) → R≥0 × P (X) + 1 + 1
+//! between measurable spaces (3) to natural transformations T (F ) →
+//! y(R≥0 ) × P (F ) + 1 + 1.
+//! Note that all measurable types A have a natural isomorphism
+//! LAM ∼
+//! = yJAK. This interpretation conserves the first-order semantics of Section 4:
+//!
+//! y(reduction)
+//!
+//! 
+//!
+//! y(Cond (A))
+//!
+//! ❱❱s❱d❱+
+//! 3 LAM
+//! ❤❤❤s❤❤
+//!
+//! y(ConNp (A))
+//! y(reduction)
+//!
+//! d
+//!
+//! 
+//!
+//! ❱❱s❱p❱+
+//! 3 T LAM
+//! ❤❤❤❤
+//!
+//! T (Conp (A)) µ·T (sp )
+//!
+//! Adequacy It follows that the higher denotational semantics remains adequate, in the sense that for all probabilistic terms ⊢p t : A,
+//! 
+//! LtM1 (∗) = (T (sV p ))1 Pr(h∅, t, ∗i ⇓ (−)) .
+//!
+//! Adequacy is usually only stated at first-order types. At first-order
+//! types A the function sV p does very little, since global elements
+//! of LAM correspond bijectively with value configurations modulo
+//! weakening, contraction and exchange in the context. At higher
+//! types, the corollary still holds, but sV p is not so trivial because we
+//! do not reduce under thunk or λ. (See also [29].)
+//!
+//! Proposition 8.3. For z ∈ {d, p}, and first-order Γ and A:
+//!
+//! 9. Continuous densities
+//!
+//! • for first-order Γ ⊢z t, u : A, JtK = JuK if and only if LtM = LuM;
+//! • every term Γ ⊢z t : A has LtM = LuM for a first-order Γ ⊢z u : A.
+//!
+//! In most examples, the argument t to score(t) is a density function
+//! for a probability distribution. When scores are based on density
+//! functions, this makes the relationship between score and sample
+//! tighter than we have expressed so far. Our language easily extends
+//! to accommodate such distributions. We just add a collection density
+//! types to the syntax.
+//!
+//! Proof. We treat z = d; the other case is similar. By induction on the
+//! structure of terms, LtM = yJtK : LΓM → LAM. The first point follows
+//! from faithfulness of y; the second from fullness and (2).
+//! One interesting corollary is that the interpretation of a term of
+//! first-order type is always a measurable function, even if the term involves thunking, λ-abstraction and application. This corollary gives
+//! a partial answer to a question by Park et. al. on the measurability
+//! of all λ-definable ground-type terms in probabilistic programs [26]
+//! (partial because our language does not include recursion).
+//!
+//! D ::= R | bool | N | 1 | D × D
+//!
+//! A ::= · · · | D(D)
+//!
+//! The D in this grammar denotes a measurable space that: (i) carries
+//! a separable metrisable topology that generates the σ-algebra; and
+//! that (ii) comes with a chosen σ-finite measure µD . An example
+//! is R with its usual Euclidean topology and the Lebesgue measure
+//! (which maps each interval to its size).
+//! The type D(D) denotes a measurable
+//! R space JD(D)K of continuous functions f : JDK → R≥0 with X f dµD = 1. The σ-algebra
+//! of JD(D)K is the least one making {f | f (x) ≤ r} measurable for
+//! all (x, r) ∈ JDK × R≥0 .
+//!
+//! 8.3 Soundness
+//! The same recipe as in Section 5.3 will show that the higher-order
+//! denotational semantics is sound and adequate with respect to the
+//! higher-order operational semantics. This needs Assumption 7.1.
+//!
+//! 9
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//! A density type D(D) comes with two measurable functions
+//! ev : JD(D)K × JDK → R≥0
+//!
+//! dist : JD(D)K → JP(D)K
+//!
+//! [7] E.-E. Doberkat. Stochastic Relations: Foundations for Markov Transition Systems. Chapman & Hall, 2007.
+//! [8] A. Doucet, N. de Freitas, and N. Gordon. Sequential Monte Carlo
+//! Methods in Practice. Springer, 2001.
+//! [9] A. Edalat and M. H. Escardó. Integration in Real PCF. Inf. Comput. ,
+//! 160:128–166, 2000.
+//! [10] T. Ehrhard, C. Tasson, and M. Pagani. Probabilistic coherence spaces
+//! are fully abstract for probabilistic PCF. In POPL, 2014.
+//! [11] C. E. Freer and D. M. Roy. Computable de Finetti measures. Ann.
+//! Pure Appl. Logic, 163(5):530–546, 2012.
+//! [12] M. Giry. A categorical approach to probability theory. Categorical
+//! Aspects of Topology and Analysis, 915:68–85, 1982.
+//! [13] N. Goodman, V. Mansinghka, D. M. Roy, K. Bonawitz, and J. B.
+//! Tenenbaum. Church: a language for generative models. In UAI, 2008.
+//! [14] C. Hur, A. V. Nori, S. K. Rajamani, and S. Samuel. A provably correct
+//! sampler for probabilistic programs. In FSTTCS, 2015.
+//! [15] C. Jones and G. D. Plotkin. A probabilistic powerdomain of evaluations. In LiCS, 1989.
+//! [16] G. M. Kelly. Basic concepts of enriched category theory. CUP, 1982.
+//! [17] A. Kock. Monads on symmetric monoidal closed categories. Archiv
+//! der Mathematik, XXI:1–10, 1970.
+//! [18] D. Kozen. Semantics of probablistic programs. Journal of Computer
+//! and System Sciences, 22:328–350, 1981.
+//! [19] P. B. Levy. Call-by-push-value: A subsuming paradigm. In TLCA’02.
+//! [20] P. B. Levy, J. Power, and H. Thielecke. Modelling environments in
+//! call-by-value programming languages. Inf. Comput., 185(2), 2003.
+//! [21] V. K. Mansinghka, D. Selsam, and Y. N. Perov. Venture: a higher-order
+//! probabilistic programming platform with programmable inference.
+//! 2014. URL http://arxiv.org/abs/1404.0099.
+//! [22] T. Minka, J. Winn, J. Guiver, and D. Knowles. Infer.NET 2.4, Microsoft Research Cambridge, 2010.
+//! [23] E. Moggi. Notions of computation and monads. Inf. Comput., 93(1):
+//! 55–92, 1991.
+//! [24] F. J. Oles. Type algebras, functor categories and block structure. In
+//! Algebraic methods in semantics. CUP, 1984.
+//! [25] B. Paige and F. Wood. A compilation target for probabilistic programming languages. In ICML, 2014.
+//! [26] S. Park, F. Pfenning, and S. Thrun. A probabilistic language based on
+//! sampling functions. ACM TOPLAS, 31(1):171–182, 2008.
+//! [27] A. Patil, D. Huard, and C. J. Fonnesbeck. PyMC: Bayesian stochastic
+//! modelling in Python. Journal of Statistical Software, 35, 2010.
+//! [28] A. M. Pitts. Categorical logic. In Handbook of Logic in Computer
+//! Science, volume 5. OUP, 2000.
+//! [29] G. D. Plotkin and J. Power. Adequacy for algebraic effects. In
+//! FOSSACS, 2001.
+//! [30] J. Power. Generic models for computational effects. TCS, 364(2):
+//! 254–269, 2006.
+//! [31] N. Ramsey and A. Pfeffer. Stochastic lambda calculus and monads of
+//! probability distributions. In POPL, 2002.
+//! [32] D. M. Roy, V. Mansinghka, N. Goodman, and J. Tenenbaum. A
+//! stochastic programming perspective on nonparametric Bayes. In
+//! ICML Workshop on Nonparametric Bayesian, 2008.
+//! [33] Adam Scibior, Zoubin Ghahramani, Andrew D. Gordon: Practical
+//! probabilistic programming with monads. Haskell 2015.
+//! [34] C.-C. Shan and N. Ramsey. Symbolic Bayesian inference by lazy
+//! partial evaluation, 2016.
+//! [35] S. M. Srivastava. A course on Borel sets. Springer, 1998.
+//! [36] Stan Development Team. Stan: A C++ library for probability and
+//! sampling, version 2.5.0, 2014. URL http://mc-stan.org/.
+//! [37] F. Wood, J. W. van de Meent, and V. Mansinghka. A new approach to
+//! probabilistic programming inference. In AISTATS, 2014.
+//! [38] H. Yang. Program transformation for probabilistic programs, 2015.
+//! Presentation at DALI.
+//!
+//! ev (f, x) = f (x)
+//! Z
+//! dist (f )(U ) =
+//! f dµD
+//! U
+//!
+//! Note that measurability of ev relies on continuity of the densities [3]. The usual way of imposing a soft constraint based
+//! on a likelihood can be encoded in our first-order language as
+//! score(ev (f, x)), where the datum x is observed with a probability
+//! distribution with density f . Thus the categorical machinery used
+//! to interpret higher-order functions is not needed for such soft constraints.
+//! There is a limit to this use of continuity: probability measures
+//! produced by norm(t) need not have continuous density. For example, norm(return(42.0)) produces a discontinuous Dirac measure.
+//! Probability densities are often used by importance samplers.
+//! The importance sampler generates samples of f ∈ JD(R)K by first
+//! sampling from a proposal distribution g where sampling is easy,
+//! and then normalizing those samples x from g according to their
+//! importance weight f (x)/g(x). This works provided the support of
+//! g is R, e.g. g = density gauss(x, (0.0, 1.0)).
+//! Jnorm(sample(dist (f )))K =
+//! r
+//! z
+//! norm(let x = sample(dist(g)) in score( ev(f,x)
+//! ); return(x))
+//! ev(g,x)
+//!
+//! Density types can be incorporated into the higher order language straightforwardly. The only subtlety is that denotational semantics now needs the base category to contain JD(D)K.
+//!
+//! 10. Conclusion and future work
+//!
+//! We have defined a metalanguage for higher-order probabilistic programs with continuous distributions and soft constraints, and presented operational and denotational semantics, together with useful program equations justified by the semantics. One interesting next step is to use these tools to study other old or new language features and concepts (such as recursion, function memoisation [32], measure-zero conditioning [5], disintegration [2, 34], and
+//! exchangeability [11, 21, 37]) that have been experimented with in
+//! the context of probabilistic programming. Another future direction
+//! is to formulate and prove the correctness of inference algorithms,
+//! especially those based on Monte Carlo simulation, following [14].
+//!
+//! Acknowledgments
+//! We thank T. Avery, I. Garnier, T. Le, K. Sturtz, and A. Westerbaan.
+//! This work was suppoted by the EPSRC, a Royal Society University
+//! Fellowship, An Institute for Information & communications Technology Promotion (IITP) grant funded by the Korea government
+//! (MSIP, No. R0190-15-2011), DARPA PPAML, and the ERC grant
+//! ‘causality and symmetry — the next-generation semantics’.
+//!
+//! References
+//! [1] N. L. Ackerman, C. E. Freer, and D. M. Roy. Noncomputable conditional distributions. In LiCS, 2011.
+//! [2] N. L. Ackerman, C. E. Freer, and D. M. Roy. On computability and
+//! disintegration, 2015. URL http://arxiv.org/abs/1509.02992.
+//! [3] R. J. Aumann. Borel structures for function spaces. Illinois Journal of
+//! Mathematics, 5:614–630, 1961.
+//! [4] S. K. Berberian. Borel spaces. World Scientific, 1988.
+//! [5] J. Borgström, A. D. Gordon, M. Greenberg, J. Margetson, and J. van
+//! Gael. Measure transformer semantics for Bayesian machine learning.
+//! LMCS, 9(3):11, 2013.
+//! [6] J. Borgström, U. Dal Lago, A. D. Gordon, M. Szymczak. A
+//! lambda-calculus foundation for universal probabilistic programming.
+//! arxiv:1512.08990. 2015.
+//!
+//! 10
+//!
+//! 2016/5/5
+//!
+//!
+//! --- PAGE BREAK ---
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!

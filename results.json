@@ -1,0 +1,114 @@
+{
+  "hyperparameters": {
+    "n_galaxies": 6992,
+    "n_radial_bins": 20,
+    "x_min": 0.5,
+    "x_max": 1.35,
+    "cd_dimensions": [
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "default_cd_dim": 16,
+    "n_bootstrap": 200,
+    "snr_threshold": 3.0,
+    "ska_sensitivity": 0.004,
+    "rotation_curve_noise_frac": 0.075,
+    "baryonic_amplitude_frac": 0.3,
+    "seeds": [
+      42,
+      137,
+      256,
+      789,
+      1024
+    ],
+    "time_budget_seconds": 600,
+    "data_seed": 999
+  },
+  "metrics": {
+    "nfw_baseline": {
+      "SNR_mean": 128.18246632345378,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.12506190339210158,
+      "detection_threshold_mean": 0.0010027483937327913
+    },
+    "baryonic_baseline": {
+      "SNR_mean": 2.5282105051690866,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.09156798504085092,
+      "detection_threshold_mean": 0.0007345995843151009
+    },
+    "harmonic_halo_stack": {
+      "SNR_mean": 2.0331538231365287,
+      "SNR_std": 0.04996580104711124,
+      "RMS_mean": 0.09156798504085092,
+      "detection_threshold_mean": 0.0007345995843151009
+    },
+    "multi_algebra_dft": {
+      "SNR_mean": 2.5282105051690866,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.09156798504085092,
+      "detection_threshold_mean": 0.0007345995843151009
+    },
+    "no_inclination": {
+      "SNR_mean": 2.528210505169087,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.09156798504085092,
+      "detection_threshold_mean": 0.0007345995843151009
+    },
+    "single_cd_dim": {
+      "SNR_mean": 1.8569923557566632,
+      "SNR_std": 0.0826618372545474,
+      "RMS_mean": 0.09156798504085092,
+      "detection_threshold_mean": 0.0007345995843151009
+    }
+  },
+  "conditions": {
+    "nfw_baseline": {
+      "SNR_mean": 128.18246632345378,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.12506190339210158,
+      "threshold_mean": 0.0010027483937327913,
+      "success_rate": "5/5"
+    },
+    "baryonic_baseline": {
+      "SNR_mean": 2.5282105051690866,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.09156798504085092,
+      "threshold_mean": 0.0007345995843151009,
+      "success_rate": "5/5"
+    },
+    "harmonic_halo_stack": {
+      "SNR_mean": 2.0331538231365287,
+      "SNR_std": 0.04996580104711124,
+      "RMS_mean": 0.09156798504085092,
+      "threshold_mean": 0.0007345995843151009,
+      "success_rate": "5/5"
+    },
+    "multi_algebra_dft": {
+      "SNR_mean": 2.5282105051690866,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.09156798504085092,
+      "threshold_mean": 0.0007345995843151009,
+      "success_rate": "5/5"
+    },
+    "no_inclination": {
+      "SNR_mean": 2.528210505169087,
+      "SNR_std": 0.0,
+      "RMS_mean": 0.09156798504085092,
+      "threshold_mean": 0.0007345995843151009,
+      "success_rate": "5/5"
+    },
+    "single_cd_dim": {
+      "SNR_mean": 1.8569923557566632,
+      "SNR_std": 0.0826618372545474,
+      "RMS_mean": 0.09156798504085092,
+      "threshold_mean": 0.0007345995843151009,
+      "success_rate": "5/5"
+    }
+  }
+}

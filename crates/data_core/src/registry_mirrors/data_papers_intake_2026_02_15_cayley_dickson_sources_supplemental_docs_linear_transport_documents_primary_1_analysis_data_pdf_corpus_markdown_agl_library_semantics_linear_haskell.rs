@@ -1,0 +1,2674 @@
+//! # Extracted text: linear_haskell.pdf
+//!
+//! - source_root: `/home/eirikr/Documents/AGL_Library/Semantics_Documentation`
+//! - source_relpath: `linear_haskell.pdf`
+//! - source_abs: `/home/eirikr/Documents/AGL_Library/Semantics_Documentation/linear_haskell.pdf`
+//! - detected_kind: `pdf`
+//! - extracted_at_utc: `2026-01-02T17:31:18+00:00`
+//! - pages: `37`
+//! - title: `arXiv:2103.06127v3  [cs.PL]  22 Jul 2022`
+//! - author: ``
+//! - subject: ``
+//! - keywords: ``
+//! - creation_date: `Sun Jul 24 18:27:30 2022 PDT`
+//! - mod_date: `Sun Jul 24 18:27:30 2022 PDT`
+//! - encrypted: `no`
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+//! Linearly Qualified Types
+//!
+//! arXiv:2103.06127v3 [cs.PL] 22 Jul 2022
+//!
+//! Generic inference for capabilities and uniqueness
+//!
+//! ARNAUD SPIWACK, Tweag, France
+//! CSONGOR KISS, Imperial College London, United Kingdom
+//! JEAN-PHILIPPE BERNARDY, University of Gothenburg, Sweden
+//! NICOLAS WU, Imperial College London, United Kingdom
+//! RICHARD A. EISENBERG, Tweag, France
+//! A linear parameter must be consumed exactly once in the body of its function. When declaring resources
+//! such as ﬁle handles and manually managed memory as linear arguments, a linear type system can verify that
+//! these resources are used safely. However, writing code with explicit linear arguments requires bureaucracy.
+//! This paper presents linear constraints, a front-end feature for linear typing that decreases the bureaucracy of
+//! working with linear types. Linear constraints are implicit linear arguments that are ﬁlled in automatically by
+//! the compiler. We present linear constraints as a qualiﬁed type system, together with an inference algorithm
+//! which extends ghc’s existing constraint solver algorithm. Soundness of linear constraints is ensured by the
+//! fact that they desugar into Linear Haskell.
+//! CCS Concepts: • Software and its engineering → Language features; Functional languages; Formal language deﬁnitions.
+//! Additional Key Words and Phrases: GHC, Haskell, linear logic, linear types, constraints, qualiﬁed types, inference
+//! ACM Reference Format:
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg. 2022. Linearly Qualiﬁed Types: Generic inference for capabilities and uniqueness. Proc. ACM Program. Lang. 6, ICFP,
+//! Article 95 (August 2022), 37 pages. https://doi.org/10.1145/3547626
+//!
+//! ACKNOWLEDGMENTS
+//! Jean-Philippe Bernardy is supported by grant 2014-39 from the Swedish Research Council, which
+//! funds the Centre for Linguistic Theory and Studies in Probability (CLASP) in the Department of
+//! Philosophy, Linguistics, and Theory of Science at the University of Gothenburg. Nicolas Wu is
+//! supported by EPSRC Grant EP/S028129/1.
+//! 1 INTRODUCTION
+//! Linear type systems have seen a renaissance in recent years in various programming communities.
+//! Rust’s ownership system guarantees memory safety for systems programmers, Haskell’s ghc 9.0
+//! includes support for linear types, and even dependently typed programmers can now use linear
+//! types with Idris 2. All of these systems are vastly diﬀerent in ergonomics and scope. Rust uses
+//! Authors’ addresses: Arnaud Spiwack, Tweag, Paris, France, arnaud.spiwack@tweag.io; Csongor Kiss, Imperial College
+//! London, London, United Kingdom, csongor.kiss14@imperial.ac.uk; Jean-Philippe Bernardy, University of Gothenburg,
+//! Gothenburg, Sweden, jean-philippe.bernardy@gu.se; Nicolas Wu, Imperial College London, London, United Kingdom,
+//! n.wu@imperial.ac.uk; Richard A. Eisenberg, Tweag, Paris, France, rae@richarde.dev.
+//! Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee
+//! provided that copies are not made or distributed for proﬁt or commercial advantage and that copies bear this notice and
+//! the full citation on the ﬁrst page. Copyrights for third-party components of this work must be honored. For all other uses,
+//! contact the owner/author(s).
+//! © 2022 Copyright held by the owner/author(s).
+//! 2475-1421/2022/8-ART95
+//! https://doi.org/10.1145/3547626
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//! 95
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:2
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! dedicated syntax and code generation to support management of resources, while Linear Haskell
+//! is a type system change without any other impact on the compiler, such as in the code generator or
+//! runtime system. Linear Haskell is designed to be general purpose, but using its linear arguments
+//! to emulate Rust’s ownership model is a tedious exercise. It requires the programmer to carefully
+//! thread resource tokens.
+//! To get a sense of the power and the tedium of using linear types, consider the following function:
+//! read2AndDiscard :: MArray a ⊸ (Ur a, Ur a)
+//! read2AndDiscard arr0 =
+//! let (arr1, x) = read arr0 0
+//! (arr2, y) = read arr1 1
+//! ()
+//! = free arr2
+//! in (x, y)
+//! This function reads the ﬁrst two elements of an array and returns them after deallocating the
+//! array. Linearity enables the array library to ensure that there is only one reference to the array,
+//! and therefore it can be mutated in-place without violating referential transparency. Let us stress
+//! that this uniqueness property is an invariant of the array library, not an intrinsic property of linear
+//! functions.
+//! After the array has been freed, it is no longer possible to read or write to it. Notice that the
+//! read function consumes the array and returns a fresh array, to be used in future operations. Operationally, the array remains the same, but each operation assigns a new name to it, thus facilitating
+//! tracking references statically. Finally, free consumes the array without returning a new one, statically guaranteeing that it can no longer be used. The values x and y read from the array are
+//! returned; their types include elements wrapped by the Ur (pronounced “unrestricted”, and corresponding to the “!” operator of Girard [1987]) type, allowing them to be used arbitrarily many
+//! times. This works because read2AndDiscard takes a restricted-use array containing unrestricted
+//! elements. In a non-linear language, one would have to forgo referential transparency to handle
+//! mutable operations either by using a monadic interface or allowing arbitrary eﬀects. Compare the
+//! above function with what one would write in a non-linear, impure language:
+//! read2AndDiscard :: MArray a → (a, a)
+//! read2AndDiscard arr =
+//! let x = read arr 0
+//! y = read arr 1
+//! () = unsafeFree arr
+//! in (x, y)
+//! This non-linear version does not guarantee that there is a unique reference to the array, so freeing
+//! the array is a potentially unsafe operation. However, it is simpler because there is less bureaucracy
+//! to manage: we are clearly interacting with the same array throughout, and this version makes that
+//! apparent. We see here a clear tension between extra safety and clarity of code—one we wish, as
+//! language designers, to avoid. How can we get the compiler to see that the array is used safely
+//! without explicit threading?
+//! Following well-known ideas [Crary et al. 1999; Smith et al. 2000; Walker and Morrisett 2000],
+//! our approach is to let arrays be unrestricted, but associate linear capabilities (such as Read, Write)
+//! to them. In fact, we show in this paper that such linear capabilities are the natural analogue
+//! of Haskell’s type class constraints to the setting of linear types. We call these new constraints
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:3
+//!
+//! linear constraints. Like class constraints, linear constraints are propagated implicitly by the compiler. Like linear arguments, they can safely be used to track resources such as arrays or ﬁle handles. Thus, linear constraints are the combination of these two concepts, which have been studied independently elsewhere [Bernardy et al. 2017; Cervesato et al. 2000; Hodas and Miller 1994;
+//! Vytiniotis, Peyton Jones, Schrijvers, and Sulzmann 2011].
+//! With our extension, we can write a new pure version of read2AndDiscard which does not require
+//! explicit threading of the array:
+//! read2AndDiscard :: (Read n, Write n) =◦ UArray a n → (Ur a, Ur a)
+//! read2AndDiscard arr =
+//! let x = read arr 0
+//! y = read arr 1
+//!  () = free arr
+//! in (x, y)
+//! The only changes from the impure version are that this version explicitly requires having read
+//! and write access to the array, and pattern-matching against  (read “pack”) is necessary in order
+//! to access the linear constraint packed in the result of read and free. (Section 8.3 suggests how we
+//! can get rid of , too.) Crucially, the resource representing the ownership of the array is a linear
+//! constraint and is separate from the array itself, which no longer needs to be threaded manually.
+//! Our contributions are as follows:
+//! • A system of qualiﬁed types that allows a constraint assumption to be given a multiplicity
+//! (linear or unrestricted). Linear assumptions are used precisely once in the body of a deﬁnition (Section 5). This system supports examples that have motivated the design of several
+//! resource-aware systems, such as ownership à la Rust (Section 4), or capabilities in the style
+//! of Mezzo [Pottier and Protzenko 2013] or ats [Zhu and Xi 2005]; accordingly, our system
+//! points towards a possible uniﬁcation of these lines of research.
+//! • Applications of this qualiﬁed type system to allow writing
+//! – resource-aware algorithms without explicit threading (Section 4); and
+//! – functions whose result can only be used linearly (Section 3.2)
+//! • An inference algorithm that respects the multiplicity of assumptions. We prove that this
+//! algorithm is sound with respect to our type system (Section 6). It consists of
+//! – a constraint generation algorithm (Section 6.2). The language of generated constraints
+//! tracks multiplicities.
+//! – a solver (Section 6.3) for the generated constraints, which restricts proof-search algorithms
+//! for linear logic in order to be guess free [Vytiniotis, Peyton Jones, Schrijvers, and Sulzmann 2011,
+//! Section 6.4]. A guess-free algorithm ensures that constraint inference is predictable and
+//! insensitive to small changes in the source program; it is necessarily incomplete.
+//! Our language is given semantics by desugaring into a core language based on that of Bernardy et al.
+//! [2017]. Our design is intended to work well with other features of Haskell and ghc extensions.
+//! Indeed, we have a prototype implementation (Section 8.1).
+//! 2
+//!
+//! BACKGROUND: LINEAR HASKELL
+//!
+//! This section, mostly cribbed from Bernardy et al. [2017, Section 2.1], describes our baseline approach, as released in ghc 9.0. Linear Haskell adds a new type of functions, dubbed linear functions,
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:4
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! and written a ⊸ b.1 A linear function consumes its argument exactly once. Linear Haskell deﬁnes
+//! it as follows:
+//! f :: a ⊸ b guarantees that if (f u) is consumed exactly once, then the argument u is
+//! consumed exactly once.
+//! To make sense of this statement we need to know what “consumed exactly once” means. Our
+//! deﬁnition is based on the type of the value concerned:
+//! Deﬁnition 2.1 (Consume exactly once).
+//! • To consume a value of atomic base type (like Int) exactly once, just evaluate it.
+//! • To consume a function exactly once, apply it to one argument, and then consume its result
+//! exactly once.
+//! • To consume a pair exactly once, pattern-match on it, and then consume each component
+//! exactly once.
+//! • In general, to consume a value of an algebraic datatype exactly once, pattern-match on it,
+//! and then consume all its linear components exactly once.
+//! 2.1
+//!
+//! Multiplicities
+//!
+//! The usual arrow type a → b can be recovered using Ur, as Ur a ⊸ b, but Linear Haskell provides a ﬁrst-class treatment of a → b, thus ensuring backwards compatibility with Haskell. In
+//! practice, the type-checker records the multiplicity of every introduced variable: 1 for linear arguments and 𝜔 for unrestricted ones. This way, one can give a uniﬁed treatment of both arrow
+//! types [Kobayashi et al. 1999].
+//! 𝜋, 𝜌
+//!
+//! F
+//!
+//! 1|𝜔
+//!
+//! Multiplicities
+//!
+//! We stress that a multiplicity of 1 restricts how the variable can be used. It does not restrict which
+//! values can be substituted for it. In particular, a linear function cannot assume that it is given the
+//! unique pointer to its argument. For example, if f :: a ⊸ b, then the following is ﬁne:
+//! g :: a → (b, b)
+//! g x = (f x, f x)
+//! The type of g makes no guarantees about how it uses x. In particular, g can pass x to f .
+//! Pattern matching on a value of type Ur a yields a payload of multiplicity 𝜔, even when the scrutinee has multiplicity 1. In general, given a multiplicity set, the desired (sub)structural rules can be
+//! obtained by endowing multiplicities with the appropriate semiring structure [Abel and Bernardy 2020].
+//! In this paper, we use the same multiplicity structure as Linear Haskell:2,3
+//! 
+//! 
+//! 1·𝜋 = 𝜋
+//! 𝜋 +𝜌 = 𝜔
+//! 𝜔·𝜋 = 𝜔
+//! 1 The linear function type and its notation come from linear logic [Girard 1987], to which the phrase linear types refers.
+//! All the various design of linear typing in the literature amount to adding such a linear function type, but details can vary
+//! wildly. See Bernardy et al. [2017, Section 6] for an analysis of alternative approaches.
+//! 2 Even though linear Haskell additionally supports multiplicity polymorphism, we do not support multiplicity polymorphism on constraint arguments. Linear Haskell takes advantage of multiplicity polymorphism to avoid duplication of
+//! higher-order functions. The prototypical example is map :: (a →𝑚 b) → [ a ] →𝑚 [ b ], where →𝑚 is the notation for a
+//! function arrow of multiplicity m. First-order functions, on the other hand, do not need multiplicity polymorphism, because
+//! linear functions can be 𝜂-expanded into unrestricted functions as explained in Section 2. Higher-order functions whose
+//! arguments are themselves constrained functions are rare, so we do not yet see the need to extend multiplicity polymorphism to apply to constraints. Futhermore, it is not clear how to extend the constraint solver of Section 6.3 to support
+//! multiplicity-polymorphic constraints.
+//! 3 Here and in the rest of the paper we adopt the convention that equations deﬁning a function by pattern matching are
+//! marked with a { to their left.
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:5
+//!
+//! new :: Int → (MArray a ⊸ Ur r) ⊸ Ur r
+//! write :: MArray a ⊸ Int → a → MArray a
+//! read :: MArray a ⊸ Int → (MArray a, Ur a)
+//! free :: MArray a ⊸ ()
+//!
+//! type RW n = (Read n, Write n)
+//! new :: Linearly =◦ Int → ∃ n.UArray a n R RW n
+//! write :: RW n =◦ UArray a n → Int → a → () R RW n
+//! read :: Read n =◦ UArray a n → Int → Ur a R Read n
+//! free :: RW n =◦ UArray a n → ()
+//!
+//! (a) Linear Types
+//!
+//! (b) Linear Constraints
+//! Fig. 1. Interfaces for mutable arrays
+//!
+//! 2.2
+//!
+//! Shortcomings of Linear Haskell that we address
+//!
+//! The read function in Section 1 consumes the array it operates on. Therefore, the same array can
+//! no longer be used in further operations: doing so would result in a type error. To resolve this, a
+//! new name for the same array is produced by each operation.
+//! From the perspective of the programmer, this is unwanted boilerplate. Minimizing such boilerplate is the main aim of this paper. Our approach is to let the array be non-linear, and let its
+//! capabilities (i.e. having read or write access) be linear constraints. Once these capabilities are consumed, the array can no longer be read from or written to without triggering a compile time error.
+//! A further drawback of today’s Linear Haskell is that the programmer cannot restrict how a linear
+//! function is used. For example, suppose we want to use linear types to create a pure interface to
+//! arrays that supports in-place mutation; the interface is safe only if we guarantee that arrays cannot
+//! be aliased. Because the result of a hypothetical newArray function can be stored in an unrestricted
+//! variable (of multiplicity 𝜔), the linearity system cannot prevent its aliasing. Instead, Bernardy et al.
+//! [2017, Fig. 2] use a continuation-passing style to enforce non-aliasing.
+//! 3 WORKING WITH LINEAR CONSTRAINTS
+//! Consider the Haskell function show:
+//! show :: Show a ⇒ a → String
+//! In addition to the function arrow →, common to all functional programming languages, the type of
+//! this function features a constraint arrow ⇒. Everything to the left of a constraint arrow is called a
+//! constraint, and will be highlighted in blue throughout the paper. Here Show a is a class constraint.
+//! Constraints are handled implicitly by the typechecker. That is, if we want to show the integer
+//! n :: Int we would write show n, and the typechecker is responsible for proving that Show Int holds,
+//! without intervention from the programmer.
+//! For our read2AndDiscard example, the (Read n, Write n) (abbreviated as RW n) constraint represents read and write access to the array tagged with the type variable n. (The full api under
+//! consideration appears in Fig. 1b.) That is, the constraint RW n is provable if and only if the array
+//! tagged with n is readable and writable. This constraint is linear: it must be consumed (that is, used
+//! as an assumption in a function call) exactly once. In order to manage linearity implicitly, this paper
+//! introduces a linear constraint arrow (=◦), much like Linear Haskell introduces a linear function
+//! arrow (⊸). Constraints to the left of a linear constraint arrow are linear constraints. Using the
+//! linear constraint RW n, we can give the following type to free:
+//! free :: RW n =◦ UArray a n → ()
+//! There are a few things to notice:
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:6
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! • We have introduced a new type variable n. In contrast, the version in Figure 1a without
+//! linear constraints has type free :: MArray a ⊸ (). The type variable n is a type-level tag used
+//! to identify the array.
+//! • The run-time variable representing the array can now be used multiple times. Instead of
+//! restricting the use of this variable, the linear constraint RW n controls access to the array.
+//! • If we have a single, linear, RW n available, then after free there will not be any RW n left to
+//! use, thus preventing the array from being used after freeing. This is precisely what we were
+//! trying to achieve.
+//! The above deals with freeing an array and ensuring that it cannot be used afterwards. However,
+//! we still need to explain how a constraint RW n can come into scope. The type of new with linear
+//! constraints is as follows:
+//! new :: Linearly =◦ Int → ∃ n.UArray a n R RW n
+//! This type, too, illustrates several new aspects:
+//! • The Linearly constraint is a linear constraint, though it takes no type parameter. It restricts
+//! the result of new to be used linearly, meaning that any variable that stores the result of new
+//! must have multiplicity 1. Linearly is explained more fully in Section 3.2.
+//! • Because UArray is now parameterised by a type-level tag n, new must return a UArray with
+//! a fresh such n. This is achieved through returning an existentially-quantiﬁed type4 packing
+//! the type variable n. Such types are introduced with the  constructor.
+//! • Not only do we need a fresh type variable n, but we also need to introduce the linear constraint RW n for use in subsequent calls to read and free. Our existentials also allow packing
+//! a constraint, thanks to the R operator.
+//! With all these features working together, we see that new returns a non-duplicable UArray
+//! tagged with n, accessible only when the RW n constraint is available.
+//! We must also ensure that read can both promise to operate only on a readable array and that
+//! the array remains readable afterwards. That is, read must both consume a linear constraint Read n
+//! and also produce a fresh linear constraint Read n, as we see in Fig. 1b, and repeated here:
+//! read :: Read n =◦ UArray a n → Int → Ur a R Read n
+//! We have now seen all the ingredients needed to write the read2AndDiscard example as in Section 1.
+//! 3.1
+//!
+//! Minimal Examples
+//!
+//! To get a sense of how the features that we introduce should behave, we now look at some simple
+//! examples. Using constraints to represent limited resources allows the typechecker to reject certain
+//! classes of ill-behaved programs. Accordingly, the following examples show the diﬀerent reasons
+//! a program might be rejected.
+//! In what follows, we will be using a constraint C that is consumed by the useC function.
+//! useC :: C =◦ Int
+//! The type of useC indicates that it consumes the linear resource C exactly once.
+//! 4 There is a variety of ways that existential types can be worked into a language. The existentials that we use here may be
+//!
+//! understood as a generalisation of those presented by Pierce [2002, Chapter 24]. However, Eisenberg, Duboc, et al. [2021]
+//! work out an approach that makes linear constraints even easier to use, as we discuss in Section 8.3. In order to separate
+//! concerns, we do not build our formalism on Eisenberg, Duboc, et al. [2021], instead modeling our existentials on the more
+//! widely known formulation described by Pierce [2002]. We additionally freely omit the ∃ a1 ... an . or R Q parts when they
+//! are empty. The idea of using existentials to return linear capabilities can be attributed to Fluet et al. [2006].
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 3.1.1
+//!
+//! 95:7
+//!
+//! Dithering. We reject this program:
+//!
+//! dithering :: C =◦ Bool → Int
+//! dithering x = if x then useC else 10
+//! The problem with dithering is that it does not unconditionally consume C: the branch where x ≡
+//! True uses the resource C, whereas the other branch does not.
+//! 3.1.2
+//!
+//! Neglecting. Now consider the type of the linear version of const:
+//!
+//! const :: a ⊸ b → a
+//! This function uses its ﬁrst argument linearly, and ignores the second. Thus, the the second arrow
+//! is unrestricted. One way to improperly use the linear const is by neglecting a linear variable:
+//! neglecting :: C =◦ Int
+//! neglecting = const 10 useC
+//! The problem with neglecting is that, although useC is mentioned in this program, it is never consumed: const does not use its second argument. The constraint C is not consumed exactly once, and
+//! thus this program is rejected. The rule is that a linear constraint can only be consumed (linearly)
+//! in a linear context. For example,
+//! notNeglecting :: C =◦ Int
+//! notNeglecting = const useC 10
+//! is accepted, because the C constraint is passed on to useC which itself appears as an argument to
+//! a linear function (whose result is itself consumed linearly).
+//! 3.1.3
+//!
+//! Overusing. Finally, the following program is rejected because it uses C twice:
+//!
+//! overusing :: C =◦ (Int, Int)
+//! overusing = (useC, useC)
+//! 3.2
+//!
+//! Restricting to a linear context with Linearly
+//!
+//! A linear function makes a promise about how it is going to use its argument, but linearity imposes
+//! no restrictions on how a function – or its result – is going to be used. The caller may use the
+//! linear function’s result unrestrictedly. This poses a challenge for providing a type-safe interface
+//! for libraries that rely on having a unique pointer to some resource, such as safe mutable arrays,
+//! because the obvious deﬁnition of a constructor function can immediately be misused, violating
+//! the assumption of uniqueness.
+//! new :: Int → MArray a
+//! bad = let arr = new 5 in (arr, arr)
+//! badToo = Ur (new 5)
+//! However, with linear constraints, we can overcome this problem by putting the special Linearly
+//! constraint on new:
+//! new :: Linearly =◦ Int → MArray a
+//! Suppose we have assumed the Linearly constraint linearly; that is, we must use the Linearly assumption precisely once. Now, our deﬁnition for bad is rejected: either we infer arr to have multiplicity 𝜔, in which case its deﬁnition uses Linearly 𝜔 times; or we infer arr to have multiplicity 1,
+//! in which case its use (twice) violates the linearity restriction. Likewise, the use of Ur in badToo
+//! requires using the Linearly assumption 𝜔 times.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:8
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! This is promising so far, but several problems remain:
+//! Duplicating Linearly What if we want to create multiple arrays, each of which having a
+//! unique pointer? If Linearly is assumed linearly, then let arr1 = new 5; arr2 = new 6 will
+//! fail, as it uses our Linearly assumption twice. We thus stipulate that Linearly must itself be
+//! duplicable: from one assumption of Linearly, we must be able to satisfy any arbitrary ﬁxed
+//! number of demands on that constraint. By “arbitrary ﬁxed number”, we mean to say that
+//! we can duplicate Linearly a ﬁnite number of times, but we may not use an assumption of
+//! Linearly with multiplicity 1 to satisfy Linearly at multiplicity 𝜔.
+//! Discarding Linearly Similarly to allowing duplication, we must allow discarding, in case a
+//! function allocates no arrays at all. Accordingly, we allow a linear assumption of Linearly to
+//! be accepted even if the constraint is never used.
+//! Initial assumption of Linearly For this approach to work, we must have an assumption of
+//! Linearly of multiplicity 1. We can achieve this via the following primitive:
+//! linearly :: (Linearly =◦ Ur r) ⊸ Ur r
+//! The argument to linearly will be a continuation that assumes Linearly with multiplicity 1.
+//! Because linearly returns an unrestricted value, no restricted values from the continuation
+//! can escape the scope of the Linearly assumption. Thus, the continuation has exactly the
+//! condition we need: a linear assumption of Linearly.
+//! The pattern of using a continuation in linearly mirrors the use of that technique by Bernardy et al.
+//! [2017, Fig. 2]. But linearly is, now, the only place where we need a continuation: once we have our
+//! linear Linearly assumption, we can use it to produce new values that must be unique.
+//! With just these simple ingredients – a duplicable, discardable constraint that can be assumed
+//! linearly – we can write apis that require uniqueness without heavy use of continuations.
+//! 4
+//!
+//! APPLICATION: MEMORY OWNERSHIP
+//!
+//! Let us now turn back to the more substantial example introduced in Section 1: manual memory
+//! management. In functional programming languages like Haskell, memory deallocation is normally
+//! the responsibility of a garbage collector. However, garbage collection is not always desirable, either
+//! due to its (unpredictable) runtime costs, or because pointers exist between separately-managed
+//! memory spaces (for example when calling foreign functions [Domínguez 2020]). In either case,
+//! one must then resort to explicit memory allocation and deallocation. This task is error prone: one
+//! can easily forget a deallocation (causing a memory leak) or deallocate several times (corrupting
+//! data). In this section we show how to build a memory management api as a library using linear
+//! constraints. The library is a generalisation of the array library introduced in Section 1.
+//! 4.1 Capability constraints
+//! Our approach, inspired by Rust, is to represent ownership of a memory location, and more specifically, whether the reference is mutable or read-only. We use the linear constraints Read n and
+//! Write n, guarding read access and write access to a reference respectively. Because of linearity,
+//! these constraints must be consumed, so the api can guarantee that memory is deallocated correctly.
+//! In Read n, n is a type variable (of a special kind Location) which represents a memory location. Locations mediate the relationship between references and ownership constraints.
+//! class Read (n :: Location)
+//!
+//! class Write (n :: Location)
+//!
+//! To ensure referential transparency, writes can be done only when we are sure that no other part of
+//! the program has read access to the reference. Therefore, writing also requires the read capability.
+//! Thus we systematically use RW n, pairing both the read and write capabilities.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:9
+//!
+//! With these components in place, we can provide an api for mutable references.
+//! data AtomRef (a :: Type) (n :: Location)
+//! The type AtomRef is the type of references to values of a type a at location n. Allocation of a
+//! reference can be done using the following function.
+//! newRef :: Linearly =◦ ∃ n.AtomRef a n R RW n
+//! The function newRef creates a new atomic reference, initialised with ⊥; we could also pass in an
+//! initial value, but doing so in the more general case below would add complication and obscure our
+//! main goal of demonstrating linear constraints.
+//! To read a reference, a Read constraint is demanded, and then returned back. Writing is similar.
+//! readRef :: Read n =◦ AtomRef a n → Ur a R Read n
+//! writeRef :: RW n =◦ AtomRef a n → a → () R RW n
+//! Note that the above primitives do not need to explicitly declare eﬀects in terms of a monad or another higher-order eﬀect-tracking device: because the RW n constraint is linear, passing it suﬃces
+//! to ensure proper sequencing of eﬀects concerning location n.
+//! Also note that readRef returns an unrestricted copy of the element, and writeRef copies an unrestricted element into the location. This means that while AtomRef s are mutable, their contents
+//! are always immutable structures.
+//! Since there is a unique RW n constraint per reference, we can also use it to represent ownership
+//! of the reference: access to RW n represents responsibility (and obligation) to deallocate n:
+//! freeRef :: RW n =◦ AtomRef a n → ()
+//! 4.2 Arrays
+//! The above toolkit handles references to base types just ﬁne. But what about storing references
+//! in objects managed by the ownership system? In Section 1, we presented an interface for mutable arrays whose contents are themselves immutable. Our approach scales beyond that use case,
+//! supporting arrays of references, including arrays of (mutable) arrays.
+//! data PArray (a :: Location → Type) (n :: Location)
+//! newPArray :: Linearly =◦ Int → ∃ n.PArray a n R RW n
+//! For this purpose we introduce the type PArray a n, where the kind of a is Location → Type:
+//! this way we can easily enforce that each reference in the array refers to the same location n.
+//! Both types AtomRef a and PArray a have kind Location → Type, and therefore one can allocate, and manipulate arrays of arrays with this api. For example, an array of integers has type
+//! PArray (AtomRef Int) n, and indeed, the UArray type from Section 1 is a synonym for an array of
+//! atomic references. An array of arrays of integers would has type PArray (PArray (AtomRef Int)) n.
+//! Thus, the framework handles nested mutable structures without any additional diﬃculty.
+//! The actual runtime value of a PArray is a pointer to a contiguous block of memory together with
+//! the size of the memory block. This means that the length of the array can be accessed without
+//! having ownership of the array: length :: PArray a n → Int. While the PArray reference itself is
+//! managed by the garbage collector, the pointer it contains points to manually managed memory.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:10
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! swap :: RW n =◦ PArray AtomRef n → Int → Int → () R RW n
+//! swap arr i j | i ≡ j =  ()
+//! | i > j = swap arr j i
+//! | i < j = let  (Ur (l, r)) = split arr (i + 1)
+//! = lendMut l i (𝜆a𝑖 →
+//!  ()
+//! let  () = lendMut r (j − (i + 1)) (𝜆a 𝑗 →
+//! let  (Ur a𝑖 _𝑣𝑎𝑙) = readRef a𝑖
+//!  (Ur a 𝑗 _𝑣𝑎𝑙) = readRef a 𝑗
+//! = writeRef a 𝑗 a𝑖 _𝑣𝑎𝑙
+//!  ()
+//! ()
+//! = writeRef a𝑖 a 𝑗 _𝑣𝑎𝑙
+//! 
+//! in  ()) in  ())
+//! = join l r
+//!  (Ur )
+//! in  ()
+//! Fig. 2. Swapping two elements of an array
+//!
+//! 4.2.1 Borrowing. The lendMut arr i k primitive lends access to the reference at index i in arr,
+//! to a continuation function k (in Rust terminology, the function borrows an element of the array).
+//! Note that the continuation must return the read-write capability, so that the ownership transfer is
+//! indeed temporary. The type system guarantees that the borrowed reference cannot be shared or
+//! deallocated. Indeed, with this api, RW n and RW p are never simultaneously available.
+//! lendMut :: RW n =◦ PArray a n → Int → (∀ p. RW p =◦ a p → r R RW p) ⊸ r R RW n
+//! Because the elements of an array can be mutable structures (such as other arrays), reading can be
+//! done safely only if we can ensure that no one else has access to the array while the element is
+//! accessed. Otherwise, the array – including the element being read – could be mutated. Therefore,
+//! gaining simple read access to an element needs to be done using a scoped api as well:
+//! lend :: Read n =◦ PArray a n → Int → (∀ p. Read p =◦ a p → r R Read p) ⊸ r R Read n
+//! For the special case of UArrays, a more traditional reading operation can be implemented, by
+//! lending the reference to readRef which creates an unrestricted copy of the value. This copy is
+//! under control of the garbage collector, and can escape the scope of the borrowing freely.
+//! read :: Read n =◦ UArray a n → Int → Ur a R Read n
+//! read arr i = lend arr i readRef
+//! 4.2.2 Slices. It is also possible to give a safe interface to array slices. A slice represents a part of an
+//! array and allows splitting the ownership of the array into multiple parts, shared between diﬀerent
+//! consumers. The ownership system means that slicing does not require copying.
+//! Splitting consumes all capabilities of an array and returns two new arrays that represent the
+//! contiguous blocks of memory before and starting at a given index.
+//! split :: RW n =◦ PArray a n → Int → ∃ l r.Ur (PArray a l, PArray a r) R (RW l, RW r, Slices n l r)
+//! In addition to the array capabilities, the output constraints also include Slices n l r, witnessing the
+//! fact that locations l and r are components of n, so that they can be joined back together:
+//! join :: (Slices n l r, RW r, RW l) =◦ PArray a l → PArray a r → Ur (PArray a n) R RW n
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:11
+//!
+//! sort :: RW n =◦ UArray Int n → () R RW n
+//! sort arr = let len = length arr in
+//! if len ⩽ 1 then  ()
+//! else let pivotIdx = partition arr
+//!  (Ur (l, r)) = split arr pivotIdx
+//! = sort l
+//!  ()
+//! = sort r
+//!  ()
+//! )
+//! =
+//! join l r
+//! (Ur
+//! 
+//! in  ()
+//!
+//! partition :: RW n =◦ UArray Int n → Int R RW n
+//! partition arr =
+//! let last
+//! = length arr − 1
+//!  (Ur pivot) = read arr last
+//! go :: RW n =◦ Int → Int → Int R RW n
+//! go l r
+//! | l>r
+//! = let  () = swap arr last l in l
+//! | otherwise
+//! = let  (Ur lVal) = read arr l in
+//! if lVal > pivot
+//! then let  () = swap arr l r
+//! in go l (r − 1)
+//! else go (l + 1) r
+//! in go 0 (last − 1)
+//!
+//! Fig. 3. In-place quicksort
+//!
+//! With these building blocks, we can now implement various utility functions on arrays, such as
+//! swapping two elements of an array, which is shown in Figure 2. It is not so simple to implement5 ,
+//! because we need two elements of an array simultaneously, but only one element can be borrowed
+//! at a time. To solve this problem, we split the array into two slices such that the two indices fall in
+//! two diﬀerent slices. Then simply borrow the element i from the ﬁrst slice, and j from the second
+//! slice (using lendMut). Finally, we join the two slices back together.
+//! 4.2.3 In-place quicksort. As an example of using the machinery deﬁned above, we implement
+//! an in-place, pure quicksort algorithm, given in Figure 3. The partition function is responsible for
+//! picking a pivot element and reorganising the array elements such that each element preceding the
+//! pivot will be less than or equal to it, and the elements after will be greater than the pivot. Once
+//! ﬁnished, it returns the index of the pivot element; sort then splits the array at the pivot element
+//! and recursively operates on the two slices.
+//! 5
+//!
+//! A QUALIFIED TYPE SYSTEM FOR LINEAR CONSTRAINTS
+//!
+//! We now present our design for a qualiﬁed type system [Jones 1994] that supports linear constraints.
+//! Our design, based on the work of Vytiniotis, Peyton Jones, Schrijvers, and Sulzmann [2011], is
+//! compatible with Haskell and ghc.
+//! 5.1
+//!
+//! Simple Constraints and Entailment
+//!
+//! We call constraints such as Read n or Write n atomic constraints. The set of atomic constraints is a
+//! parameter of our qualiﬁed type system.
+//! Deﬁnition 5.1 (Atomic constraints). The qualiﬁed type system is parameterised by a set, whose
+//! elements are called atomic constraints. We use the variable q to denote atomic constraints.
+//! Atomic constraints are assembled into simple constraints Q, which play the hybrid role of constraint contexts and (linear) logic formulae. The following operations work with simple constraints:
+//! 5 Indeed, Rust’s implementation uses an unsafe block.
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:12
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! (1) Q Q.
+//! (2) If Q1 Q2 and Q ⊗ Q2 Q3 , then Q ⊗ Q1 Q3 .
+//! (3) If Q Q1 ⊗ Q2 , then there exist Q ′ , 𝑄 D , and Q ′′ such that:
+//! 𝑄 D ∈ D,
+//!
+//! Q = Q ′ ⊗ 𝑄 D ⊗ Q ′′,
+//!
+//! Q′ ⊗ 𝑄 D
+//!
+//! Q1 , and
+//!
+//! (4) If Q 𝜀, then Q ∈ D.
+//! (5) If Q1 Q1′ and Q2 Q2′ , then Q1 ⊗ Q2 Q1′ ⊗ Q2′ .
+//! (6) If Q 𝜌·q, then 𝜋 ·Q (𝜋 ·𝜌)·q.
+//! (7) If Q (𝜋 ·𝜌)·q, then there exists Q ′ such that Q = 𝜋 ·Q ′ and Q ′
+//! (8) If Q1 Q2 , then 𝜔·Q1 Q2 .
+//! (9) If Q1 Q2 , then for all Q ′ , it is the case that 𝜔·Q ′ ⊗ Q1 Q2 .
+//! (10) If q ∈ D, then 1·q 1·q ⊗ 1·q.
+//! (11) If q ∈ D, then 1·q 𝜀.
+//! (12) If Q ∈ D and Q ′ Q, then Q ′ ∈ D.
+//!
+//! 𝑄 D ⊗ Q ′′
+//!
+//! Q2 .
+//!
+//! 𝜌·q.
+//!
+//! Fig. 4. Requirements for the entailment relation Q1
+//!
+//! Q2
+//!
+//! Scaled atomic constraints 𝜋 ·q is a simple constraint, where 𝜋 speciﬁes whether q is to be
+//! used linearly or not.
+//! Conjunction Two simple constraints can be paired up Q1 ⊗ Q2 . Semantically, this corresponds
+//! to the multiplicative conjunction of linear logic. Tensor products represent pairs of constraints such as (Read n, Write n) from Haskell.
+//! Empty conjunction Finally we need a neutral element 𝜀 to the tensor product. The empty
+//! conjunction is used to represent functions which don’t require any constraints.
+//! However, we do not deﬁne Q inductively, because we require certain equalities to hold:
+//! Q1 ⊗ Q2 = Q2 ⊗ Q1
+//! 𝜔·q ⊗ 𝜔·q = 𝜔·q
+//! Q⊗𝜀 = Q
+//! (Q1 ⊗ Q2 ) ⊗ Q3 = Q1 ⊗(Q2 ⊗ Q3 )
+//! We thus say that a simple constraint is a pair combining a set of unrestricted constraints U
+//! and a multiset of linear constraints L. The linear constraints must be stored in a multiset, because
+//! assuming the same constraint twice is distinct from assuming it only once.
+//! Deﬁnition 5.2 (Simple constraints).
+//! U
+//! L
+//! Q
+//!
+//! F
+//! F
+//! F
+//!
+//! ...
+//! ...
+//! (U , L)
+//!
+//! set of atomic constraints q
+//! multiset of atomic constraints q
+//! simple constraints
+//!
+//! We can now straightforwardly deﬁne the operations we need on simple constraints:
+//! 
+//! 1·q = (∅, q)
+//! 𝜀 = (∅, ∅)
+//! (U1, L1 ) ⊗(U2, L2 ) = (U1 ∪ U2, L1 ⊎ L2 )
+//! 𝜔·q = (q, ∅)
+//! In practice, we do not need to concern ourselves with the concrete representation of Q as a pair
+//! of sets, instead using the operations deﬁned just above.
+//! The semantics of simple constraints (and, indeed, of atomic constraints) is given by an entailment
+//! relation. Just like the set of atomic constraints, the entailment relation is a parameter of our system.
+//! Deﬁnition 5.3 (Entailment relation). The qualiﬁed type system is parameterised by a relation
+//! Q1 Q2 between two simple constraints, as well as by a distinguished set D of duplicable atomic
+//! constraints.
+//! We write, abusing notation, Q ∈ D for a simple constraint Q = (U , L) if for all q ∈ L we have
+//! q ∈ D.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! a, b
+//!
+//! Type vars
+//! 𝜎
+//! 𝜏, 𝜐
+//! Γ, Δ
+//! e
+//!
+//! 95:13
+//!
+//! x, y Expression vars
+//! T Type constructors
+//! K Data constructors
+//! F ∀a.Q =◦ 𝜏
+//! Type schemes
+//! Types
+//! F a | ∃a.𝜏 R Q | 𝜏1 →𝜋 𝜏2 | T 𝜏
+//! F • | Γ, x:𝜋 𝜎
+//! Contexts
+//! F x | K | 𝜆x.e | e1 e2 |  e
+//! Expressions
+//! |
+//! let x = e1 in e2 | case𝜋 e of {K𝑖 x𝑖 → e𝑖 }
+//! |
+//! let𝜋 x = e1 in e2 | let𝜋 x : 𝜎 = e1 in e2
+//!
+//! Context scaling 𝜋 ·Γ and addition of contexts Γ1 + Γ2 is deﬁned as follows:
+//! 
+//! (Γ1, x:𝜋 𝜎) + Γ2 = Γ1 + Γ2′, x: (𝜋+𝜌) 𝜎 where Γ2 = {x:𝜌 𝜎} ∪ Γ2′
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 𝜋 ·• = •
+//! x ∉ Γ2′
+//! 𝜋 ·(Γ, x:𝜌 𝜎) = 𝜋 ·Γ, x: (𝜋 ·𝜌) 𝜎
+//! (Γ
+//! ,
+//! x:
+//! 𝜎)
+//! +
+//! Γ
+//! =
+//! Γ
+//! +
+//! Γ
+//! ,
+//! x:
+//! 𝜎
+//! where
+//! x
+//! ∉ Γ2
+//! 
+//! 1 𝜋
+//! 2
+//! 1
+//! 2 𝜋
+//! 
+//! 
+//! 
+//! •
+//! +
+//! Γ
+//! =
+//! Γ
+//! 2
+//! 2
+//! 
+//! Fig. 5. Grammar of the qualified type system
+//!
+//! The entailment relation must obey the laws listed in Figure 4.
+//! The set D is a set of constraints which can be duplicated and discarded (see Fig. 4). We use D to
+//! model the Linearly constraint. Crucially, it is not the case that 1·q 𝜔·q for q ∈ D; such an entailment is, in fact, prohibited (Lemma 5.5) by the rules of Fig. 4. While it may seem counter-intuitive,
+//! there is nothing in linear logic mandating that a formula that can be duplicated and discarded
+//! be (equivalent to) an unrestricted formula. This observation has been exploited, for instance, to
+//! introduce so-called subexponentials [Danos et al. 1993]. For our use case, it lets the typechecker
+//! dispatch Linearly constraints (using duplication), but prevents the result of constrained functions
+//! to be used unrestrictedly.
+//! An important feature of simple constraints is that, while scaling syntactically happens at the
+//! level of atomic constraints, these properties of scaling extend to scaling of arbitrary constraints.
+//! Deﬁne 𝜋 ·Q as:
+//! 
+//! 1·(U , L) = (U , L)
+//! 𝜔·(U , L) = (U ∪ L, ∅)
+//! Then the following properties hold
+//! Lemma 5.4 (Scaling). If Q1
+//!
+//! Q2 , then 𝜋 ·Q1
+//!
+//! Lemma 5.5 (Inversion of scaling). If Q1
+//!
+//! 𝜋 ·Q2 .
+//! 𝜋 ·Q2 , then Q1 = 𝜋 ·Q ′ and Q ′
+//!
+//! Corollary 5.6 (Linear assumptions). If Q1
+//!
+//! Q2 for some Q ′ .
+//!
+//! 𝜔·Q2 , then Q1 contains no linear assumptions.
+//!
+//! Proofs of these lemmas (and others) appear in Appendix B; they can be proved by straightforward use of the properties in Figure 4.
+//! 5.2
+//!
+//! Typing rules
+//!
+//! With this material in place, we can now present our type system. The grammar is given in Figure 5,
+//! which also includes the deﬁnitions of scaling on contexts 𝜋 ·Γ and addition of contexts Γ1 + Γ2 . Note
+//! that addition on contexts is actually a partial function, as it requires that, if a variable x is bound in
+//! both Γ1 and Γ2 , then x is assigned the same type in both (but perhaps diﬀerent multiplicities). This
+//! partiality is not a problem in practice, as the required condition for combining contexts is always
+//! satisﬁed.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:14
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Q; Γ ⊢ e : 𝜏
+//!
+//! (Expression typing)
+//! E-App
+//!
+//! E-Var
+//!
+//! Γ1 = x:1 ∀a.Q1 =◦ 𝜐
+//!
+//! Q1 [𝜏/a]; Γ1 + 𝜔·Γ2 ⊢ x : 𝜐 [𝜏/a]
+//!
+//! Q; Γ, x:𝜋 𝜏1 ⊢ e : 𝜏2
+//!
+//! Q1 ; Γ1 ⊢ e1 : 𝜏1 →𝜋 𝜏
+//! Q2 ; Γ2 ⊢ e2 : 𝜏1
+//!
+//! Q; Γ ⊢ 𝜆x.e : 𝜏1 →𝜋 𝜏2
+//!
+//! Q1 ⊗ 𝜋 ·Q2 ; Γ1 + 𝜋 ·Γ2 ⊢ e1 e2 : 𝜏
+//!
+//! E-Abs
+//!
+//! E-Unpack
+//!
+//! Q; Γ ⊢ e : 𝜏 [𝜐/a]
+//!
+//! Q1 ; Γ1 ⊢ e1 : ∃a.𝜏1 R Q
+//! a fresh
+//! Q2 ⊗ Q; Γ2, x:1𝜏1 ⊢ e2 : 𝜏
+//!
+//! Q ⊗ Q1 [𝜐/a]; Γ ⊢  e : ∃a.𝜏 R Q1
+//!
+//! Q1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏
+//!
+//! E-Pack
+//!
+//! E-LetSig
+//!
+//! Q1 ⊗ Q; Γ1 ⊢ e1 : 𝜏1
+//! Q2 ; Γ2, x:𝜋 Q =◦ 𝜏1 ⊢ e2 : 𝜏
+//!
+//! Q1 ⊗ Q; Γ1 ⊢ e1 : 𝜏1
+//! a fresh
+//! 𝜎 = ∀a.Q =◦ 𝜏1
+//! Q2 ; Γ2, x:𝜋 ∀a.Q =◦ 𝜏1 ⊢ e2 : 𝜏
+//!
+//! 𝜋 ·Q1 ⊗ Q2 ; 𝜋 ·Γ1 + Γ2 ⊢ let𝜋 x = e1 in e2 : 𝜏
+//!
+//! 𝜋 ·Q1 ⊗ Q2 ; 𝜋 ·Γ1 + Γ2 ⊢ let𝜋 x : 𝜎 = e1 in e2 : 𝜏
+//!
+//! E-Let
+//!
+//! E-Case
+//!
+//! Q1 ; Γ1 ⊢ e : T 𝜏
+//! Ki : ∀a.𝜐 i →𝜋 i T a
+//! Q2 ; Γ2, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜏/a] ⊢ ei : 𝜏
+//!
+//! E-Sub
+//!
+//! Q1 ; Γ ⊢ e : 𝜏
+//!
+//! 𝜋 ·Q1 ⊗ Q2 ; 𝜋 ·Γ1 + Γ2 ⊢ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏
+//!
+//! Q
+//!
+//! Q1
+//!
+//! Q; Γ ⊢ e : 𝜏
+//!
+//! Fig. 6. Qualified type system
+//!
+//! The typing rules are in Figure 6. A qualiﬁed type system [Jones 1994] such as ours introduces
+//! a judgement of the form Q; Γ ⊢ e : 𝜏, where Γ is a standard type context, and Q is a constraint
+//! we have assumed to be true. Q behaves much like Γ, which will be instrumental for desugaring
+//! in Section 7; the main diﬀerence is that Γ is addressed explicitly, whereas Q is used implicitly in
+//! rule E-Var.
+//! Because constraints are used implicitly, if there are several instances of the same 1·q, it is nondeterministic which one is used in which instance of E-Var. As a consequence, we must require
+//! that any two instances of 1·q in a constraint Q have the same computational content (see Section 7). How do we reconcile this non-determinism with the use of linear constraints, in Section 4.2
+//! to thread mutations? We certainly don’t want type inference to non-deterministically reorder a
+//! readRef and a writeRef ! The solution is that the api is arranged so that only a single instance of
+//! RW n is ever provided. Therefore there is a single possible threading of the reads and writes. In
+//! contrast there will often be several instances of Linearly in scope.
+//! The type system of Figure 6 is purely declarative: note, for example, that rule E-App does not
+//! describe how to break the typing assumptions into constraints Q1 /Q2 and contexts Γ1 /Γ2 . We will
+//! see how to infer constraints in Section 6. Yet, this system is our ground truth: a system with a simple
+//! enough deﬁnition that programmers can reason about typing. As is standard in the qualiﬁed-type
+//! literature (since the original paper [Jones 1994]), we do not directly give a dynamic semantics
+//! to this language; instead, we will give it meaning via desugaring to a simpler core language in
+//! Section 7.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:15
+//!
+//! We survey several distinctive features of our qualiﬁed type system below:
+//! Linear functions. The type of linear functions is written a →1 b. Despite our focus on linear constraints, we still need linearity in ordinary arguments. Indeed, the linearity of arrows interacts in
+//! interesting ways with linear constraints: If f : a →𝜔 b and x : 1·q =◦ a, then calling f x would actually use q many times. We must make sure it is impossible to derive 1·q; f :𝜔 a →𝜔 b, x:𝜔 1·q =◦ a ⊢
+//! f x : b. Otherwise we could make, for instance, the overusing function from Section 3.1.3. You can
+//! check that 1·q; f :𝜔 a →𝜔 b, x:𝜔 1·q =◦ a ⊢ f x : b indeed does not type check, because the scaling of
+//! Q2 in rule E-App ensures that the constraint would be 𝜔·q instead. On the other hand, it is perfectly
+//! ﬁne to have 1·q; f :𝜔 a →1 b, x:𝜔 1·q =◦ a ⊢ f x : b when f is a linear function.
+//! Variables. As is standard, the rule E-Var rule works in a context containing more than just the
+//! used binding for x. However, crucially, our rule allows only unrestricted variables to be discarded;
+//! linear variables must be used. We can see this in the rule by noticing that the context has an
+//! unrestricted component 𝜔·Γ2 . The Γ1 component might be restricted or might not, allowing this
+//! rule to apply both for restricted and unrestricted x.
+//! Data constructors. Data constructors K don’t have a dedicated typing rule. Instead they are typed
+//! using the rule E-Var, where they are treated as if they were unrestricted variables.
+//! Let-bindings. Bindings in a let may be for either linear or unrestricted variables. We could require all bindings to be linear and to implement unrestricted information only using Ur, but it is
+//! very easy to add a multiplicity annotation on let, and so we do.
+//! Local assumptions. Rule E-Let includes support for local assumptions. We thus have the ability to generalise a subset of the constraints needed by e1 (but not the type variables—no letgeneralisation here, though it could be added). The inference algorithm of Section 6 will not make
+//! use of this possibility.
+//! Existentials. We include ∃a.𝜏 R Q, as introduced in Section 3, together with the  constructor.
+//! See rules E-Pack and E-Unpack.
+//! 6 CONSTRAINT INFERENCE
+//! The type system of Figure 6 gives a declarative description of what programs are acceptable. We
+//! now present the algorithmic counterpart to this system. Our algorithm is structured, unsurprisingly, around generating and solving constraints, broadly following the template of Pottier and Rémy
+//! [2005]. That is, our algorithm takes a pass over the abstract syntax entered by the user, generating
+//! constraints as it goes. Then, separately, we solve those constraints (that is, try to satisfy them) in
+//! the presence of a set of assumptions, or we determine that the assumptions do not imply that the
+//! constraints hold. In the latter case, we issue an error to the programmer.
+//! The procedure is responsible for inferring both types and constraints. For our type system, type
+//! inference can be done independently from constraint inference. Indeed, we focus on the latter,
+//! and defer type inference to an external oracle (such as [Matsuda 2020]). That is, we assume an
+//! algorithm that produces typing derivations for the judgement Γ ⊢ e : 𝜏, ignoring all the constraints.
+//! Then, we describe a constraint generation algorithm that passes over these typing derivations. We
+//! can make this simpliﬁcation for two reasons:
+//! • We do not formalise type equality constraints, and our implementation in ghc (Section 8.2.2)
+//! takes care to not allow linear equality constraints to inﬂuence type inference. Indeed, a typical treatment of uniﬁcation would be unsound for linear equalities, because it reuses the
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:16
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! same equality many times (or none at all). Linear equalities make sense (Shulman [2018]
+//! puts linear equalities to great use), but they do not seem to lend themselves to automation.
+//! • We do not support, or intend to support, multiplicity polymorphism in constraint arrows.
+//! That is, the multiplicity of a constraint is always syntactically known to be either linear or
+//! unrestricted. This way, no equality constraints (which might, conceivably, relate multiplicity
+//! variables) can interfere with constraint resolution.
+//! 6.1 Wanted constraints
+//! The constraints 𝐶 generated in our system have a richer logical structure than the simple constraints Q, above. Following ghc and echoing Vytiniotis, Peyton Jones, Schrijvers, and Sulzmann
+//! [2011], we call these wanted constraints: they are constraints which the constraint solver wants to
+//! prove. An unproved wanted constraint results in a type error reported to the programmer.
+//! 𝐶
+//!
+//! F
+//!
+//! Q | 𝐶 1 ⊗ 𝐶 2 | 𝐶 1 & 𝐶 2 | 𝜋 ·(Q =◦ 𝐶)
+//!
+//! Wanted constraints
+//!
+//! A simple constraint is a valid wanted constraint, and we have two forms of conjunction for wanted
+//! constraints: the new 𝐶 1 & 𝐶 2 construction (read 𝐶 1 with 𝐶 2 ), alongside the more typical 𝐶 1 ⊗ 𝐶 2 .
+//! These are connectives from linear logic: 𝐶 1 ⊗ 𝐶 2 is the multiplicative conjunction, and 𝐶 1 & 𝐶 2 is
+//! the additive conjunction. Both connectives are conjunctions, but they diﬀer in meaning. To satisfy
+//! 𝐶 1 ⊗ 𝐶 2 one consumes the (linear) assumptions consumed by satisfying 𝐶 1 and those consumed
+//! by 𝐶 2 ; if an assumed linear constraint is needed to prove both 𝐶 1 and 𝐶 2 , then 𝐶 1 ⊗ 𝐶 2 will not
+//! be provable, because that linear assumption cannot be used twice. On the other hand, satisfying
+//! 𝐶 1 & 𝐶 2 requires that satisfying 𝐶 1 and 𝐶 2 must each consume the same assumptions, which 𝐶 1 & 𝐶 2
+//! consumes as well. Thus, if 𝐶 is assumed linearly (and we have no other assumptions), then 𝐶 ⊗ 𝐶
+//! is not provable, while 𝐶 & 𝐶 is. The intuition, here, is that in 𝐶 1 & 𝐶 2 , only one of 𝐶 1 or 𝐶 2 will be
+//! eventually used. “With” constraints arise from the branches in a case-expression.
+//! The last form of wanted constraint 𝐶 is an implication 𝜋 ·(Q =◦ 𝐶). The more interesting case is
+//! 𝜔·(Q =◦ 𝐶): to prove 𝜔·(Q =◦ 𝐶), you need to prove 𝐶 under the linear assumption Q, but without
+//! using any other linear assumptions.
+//! These implications arise when we unpack an existential package that contains a linear constraint
+//! and also when checking a let-binding. We can deﬁne scaling over wanted constraints by recursion
+//! as follows, where we use scaling over simple constraints in the simple-constraint case:
+//! 
+//! 𝜋 ·(𝐶 1 ⊗ 𝐶 2 )
+//! = 𝜋 ·𝐶 1 ⊗ 𝜋 ·𝐶 2
+//! 
+//! 
+//! 
+//!  1·(𝐶 1 & 𝐶 2 )
+//! 
+//! = 𝐶1 & 𝐶2
+//! = 𝜔·𝐶 1 ⊗ 𝜔·𝐶 2
+//! 𝜔·(𝐶
+//! &
+//! 𝐶
+//! )
+//! 
+//! 1
+//! 2
+//! 
+//! 
+//!  𝜋 ·(𝜌·(Q =◦ 𝐶)) = (𝜋 ·𝜌)·(Q =◦ 𝐶)
+//! 
+//! For the most part, scaling of wanted constraints is straightforward. The only peculiar case is when
+//! we scale the additive conjunction 𝐶 1 & 𝐶 2 by 𝜔, the result is a multiplicative conjunction. The
+//! intuition here is that when if we have both 𝜔·𝐶 1 and 𝜔·𝐶 2 , then a choice between 𝐶 1 and 𝐶 2 can
+//! be made 𝜔 times.
+//! We deﬁne an entailment relation over wanteds in Figure 7. Note that this relation uses only
+//! simple constraints Q as assumptions, as there is no way to assume the more elaborate 𝐶 6 .
+//! Before we move on to constraint generation proper, let us highlight a few technical, yet essential,
+//! lemmas about the wanted-constraint entailment relation.
+//! Lemma 6.1 (Inversion). The inference rules of Q ⊢ 𝐶 can be read bottom-up (up to the set D) as
+//! well as top-down, as is required of Q1 Q2 in Figure 4. That is:
+//! 6 Allowing the full wanted-constraint syntax in assumptions is the subject of work by Bottu et al. [2017].
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:17
+//!
+//! Q ⊢𝐶
+//!
+//! (Wanted-constraint entailment)
+//!
+//! C-Dom
+//! Q1 Q2
+//! Q2 ⊢ Q3
+//!
+//! C-Id
+//!
+//! C-Tensor
+//! Q1 ⊢ 𝐶 1
+//!
+//! Q1 ⊢ Q3
+//!
+//! Q⊢Q
+//!
+//! Q1 ⊗ Q2 ⊢ 𝐶 1 ⊗ 𝐶 2
+//!
+//! Q2 ⊢ 𝐶 2
+//!
+//! C-With
+//! Q ⊢ 𝐶1
+//!
+//! Q ⊢ 𝐶2
+//!
+//! Q ⊢ 𝐶1 & 𝐶2
+//!
+//! C-Impl
+//! Q0 ⊗ Q1 ⊢ 𝐶
+//! 𝜋 ·Q0 ⊢ 𝜋 ·(Q1 =◦ 𝐶)
+//!
+//! Fig. 7. Wanted-constraint entailment
+//!
+//! • If Q ⊢ 𝐶 1 ⊗ 𝐶 2 , then there exists Q1 , 𝑄 D and Q2 such that 𝑄 D ∈ D, Q1 ⊗ 𝑄 D ⊢ 𝐶 1 , 𝑄 D ⊗ Q2 ⊢
+//! 𝐶 2 , and Q = Q1 ⊗ 𝑄 D ⊗ Q2 .
+//! • If Q ⊢ 𝐶 1 & 𝐶 2 , then Q ⊢ 𝐶 1 and Q ⊢ 𝐶 2 .
+//! • If Q ⊢ 𝜋 ·(Q2 =◦ 𝐶), then there exists Q1 such that Q1 ⊗ Q2 ⊢ 𝐶 and Q = 𝜋 ·Q1
+//! Lemma 6.2 (Scaling). If Q ⊢ 𝐶, then 𝜋 ·Q ⊢ 𝜋 ·𝐶.
+//! Lemma 6.3 (Inversion of scaling). If Q ⊢ 𝜋 ·𝐶 then Q ′ ⊢ 𝐶 and Q = 𝜋 ·Q ′ for some Q ′ .
+//! 6.2 Constraint generation
+//! The process of inferring constraints is split into two parts: generating constraints, which we do in
+//! this section, then solving them in Section 6.3. Constraint generation is described by the judgement
+//! Γ ⊢◮ e : 𝜏 { 𝐶 (deﬁned in Figure 8) which outputs a constraint 𝐶 required to make e typecheck.
+//! The deﬁnition Γ ⊢◮ e : 𝜏 { 𝐶 is syntax directed, so it can directly be read as an algorithm, taking
+//! as input a typing derivation for Γ ⊢ e : 𝜏 (produced by an external type inference oracle as discussed
+//! above). Notably, the algorithm has access to the context splitting from the (previously computed)
+//! typing derivation, and is thus indeed syntax directed.
+//! The rules of Figure 8 constitute a mostly unsurprising translation of the rules of Figure 6, except
+//! for the following points of interest:
+//! Case expressions. Note the use of & in the conclusion of rule G-Case. We require that each branch
+//! of a case expression use the exact same (linear) assumptions; this is enforced by combining the
+//! emitted constraints with &, not ⊗. This can also be understood in terms of the array example of
+//! Section 1: if an array is freed in one branch of a case, we require it to be freed (or freezed) in the
+//! other branches too. Otherwise, the array’s state will be unknown to the type system after the case.
+//! Implications. The introduction of constraints local to a deﬁnition (rule G-LetSig) corresponds
+//! to emitting an implication constraint.
+//! Unannotated let. However, the G-Let rule does not produce an implication constraint, as we do
+//! not model let-generalisation [Vytiniotis, Peyton Jones, and Schrijvers 2010].
+//! The key property of the constraint-generation algorithm is that, if the generated constraint is
+//! solvable, then we can indeed type the term in the qualiﬁed type system of Section 5. That is, these
+//! rules are simply an implementation of our declarative qualiﬁed type system.
+//! Lemma 6.4 (Soundness of constraint generation). For all Qg , if Γ ⊢◮ e : 𝜏 { 𝐶 and Qg ⊢ 𝐶
+//! then Qg ; Γ ⊢ e : 𝜏.
+//! 6.3 Constraint solving
+//! In this section, we build a constraint solver that proves that Qg ⊢ 𝐶 holds, as required by Lemma 6.4.
+//! The constraint solver is represented by the following judgement:
+//! U ; D; Li ⊢s 𝐶 { Lo
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:18
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Γ ⊢◮ e : 𝜏 { 𝐶
+//!
+//! Γ1 = x:1 ∀a.Q =◦ 𝜐
+//!
+//! G-Abs
+//! Γ, x:𝜋 𝜏0 ⊢◮ e : 𝜏 { 𝐶
+//!
+//! (Constraint generation)
+//! G-App
+//! Γ1 ⊢◮ e1 : 𝜏2 →𝜋 𝜏 { 𝐶 1
+//! Γ2 ⊢◮ e2 : 𝜏2 { 𝐶 2
+//!
+//! Γ1 + 𝜔·Γ2 ⊢◮ x : 𝜐 [𝜏/a] { Q[𝜏/a]
+//!
+//! Γ ⊢◮ 𝜆x.e : 𝜏0 →𝜋 𝜏 { 𝐶
+//!
+//! Γ1 + 𝜋 ·Γ2 ⊢◮ e1 e2 : 𝜏 { 𝐶 1 ⊗ 𝜋 ·𝐶 2
+//!
+//! G-Var
+//!
+//! G-Unpack
+//! Γ1 ⊢◮ e1 : ∃a.𝜏1 R Q1 { 𝐶 1
+//! a fresh
+//! Γ2 , x:1𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
+//!
+//! G-Pack
+//! Γ ⊢◮ e : 𝜏 [𝜐/a] { 𝐶
+//!
+//! Γ1 + Γ2 ⊢◮ let x = e1 in e2 : 𝜏 { 𝐶 1 ⊗ 1·(Q1 =◦ 𝐶 2 )
+//!
+//! Γ ⊢◮  e : ∃a.𝜏 R Q { 𝐶 ⊗ Q[𝜐/a]
+//! G-Case
+//! Γ ⊢◮ e : T 𝜎 { 𝐶
+//! Ki : ∀a.𝜐 i →𝜋 i T a
+//! Δ, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜎/a] ⊢◮ ei : 𝜏 { 𝐶 i
+//!
+//! 𝜋 ·Γ + Δ ⊢◮ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏 { 𝜋 ·𝐶 ⊗ & 𝐶 i
+//!
+//! G-Let
+//! Γ1 ⊢◮ e1 : 𝜏1 { 𝐶 1
+//! Γ2 , x:𝜋 𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
+//! 𝜋 ·Γ1 + Γ2 ⊢◮ let𝜋 x = e1 in e2 : 𝜏 { 𝜋 ·𝐶 1 ⊗ 𝐶 2
+//!
+//! G-LetSig
+//! Γ1 ⊢◮ e1 : 𝜏1 { 𝐶 1
+//! a fresh
+//! Γ2 , x:𝜋 ∀a.Q =◦ 𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
+//! 𝜋 ·Γ1 + Γ2 ⊢◮ let𝜋 x : ∀a.Q =◦ 𝜏1 = e1 in e2 : 𝜏 { 𝐶 2 ⊗ 𝜋 ·(Q =◦ 𝐶 1 )
+//! Fig. 8. Constraint generation
+//!
+//! The judgement takes in three contexts: U , which holds all the unrestricted atomic constraint assumptions, D which holds the linear atomic assumptions which are members of D and Li , which
+//! holds the linear atomic constraint assumptions which aren’t members of D. The linear contexts
+//! D, Li , and Lo have been described as multisets (Section 5.1), but we treat them as ordered lists in
+//! the more concrete setting here; we will see soon why this treatment is necessary.
+//! Linearity requires treating constraints as consumable resources. This is what Lo is for: it contains
+//! the hypotheses of Li which are not consumed when proving 𝐶. As suggested by the notation, it
+//! is an output of the algorithm. Constraints from D are never outputted in Li : if constraints from D
+//! remain unused, we weaken them instead.
+//! If the constraint solver ﬁnds a solution, then the output linear constraints must be a subset of
+//! the input linear constraints, and the solution must indeed be entailed from the given assumptions.
+//! Lemma 6.5 (Constraint solver soundness). If U ; D; Li ⊢s 𝐶 { Lo , then:
+//! (1) Lo ⊆ Li
+//! (2) (U , D ⊎ Li ) ⊢ 𝐶 ⊗(∅, Lo )
+//! To handle simple wanted constraints, we will need a domain-speciﬁc atomic-constraint solver
+//! to be the algorithmic counterpart of the abstract entailment relation of Section 5.1. The main
+//! solver will appeal to this atomic-constraint solver when solving atomic constraints. The atomicconstraint solver is represented by the following judgement:
+//! U ; D; Li ⊢as 𝜋 ·q { Lo
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:19
+//!
+//! U ; D; Li ⊢s 𝐶 w { Lo
+//!
+//! (Constraint solving)
+//!
+//! S-Atom
+//! U ; D; Li ⊢as 𝜋 ·q { Lo
+//!
+//! S-Mult
+//! U ; D; Li ⊢s 𝐶 1 { Lo′
+//!
+//! U ; D; Li ⊢s 𝜋 ·q { Lo
+//!
+//! U ; D; Lo′ ⊢s 𝐶 2 { Lo
+//!
+//! U ; D; Li ⊢s 𝐶 1 ⊗ 𝐶 2 { Lo
+//!
+//! S-ImplOne
+//! U ∪ U0 ; D ⊎ (L0 ∩ D); Li ⊎ (L0 \ D) ⊢s 𝐶 { Lo
+//! Lo ⊆ Li
+//!
+//! S-Add
+//! U ; D; Li ⊢s 𝐶 1 { Lo
+//!
+//! U ; D; Li ⊢s 1·((U0, L0 ) =◦ 𝐶) { Lo
+//!
+//! U ; D; Li ⊢s 𝐶 2 { Lo
+//!
+//! U ; D; Li ⊢s 𝐶 1 & 𝐶 2 { Lo
+//!
+//! S-ImplMany
+//! U ∪ U0 ; L0 ∩ D; L0 \ D ⊢s 𝐶 { ∅
+//! U ; D; Li ⊢s 𝜔·((U0, L0 ) =◦ 𝐶) { Li
+//! Fig. 9. Constraint solver
+//!
+//! It has a similar structure to the main solver, but only deals with atomic constraints. Even though
+//! the main solver is parameterised by this atomic-constraint solver, we will give an instantiation in
+//! Section 6.3.2. We require the following property of the atomic-constraint solver:
+//! Property 6.6 (Atomic-constraint solver soundness). If U ; D; Li ⊢as 𝜋 ·q { Lo , then:
+//! (1) Lo ⊆ Li
+//! (2) (U , D ⊎ Li )
+//!
+//! 𝜋 ·q ⊗(∅, Lo )
+//!
+//! 6.3.1 Constraint solver algorithm. Building on this atomic-constraint solver, we use a linear proof
+//! search algorithm based on the recipe given by Cervesato et al. [2000]. Figure 9 presents the rules
+//! of the constraint solver.
+//! • The S-Mult rule proceeds by solving one side of a conjunction ﬁrst, then passing the output
+//! constraints to the other side. Both the unrestricted context and the duplicable context are
+//! shared between both sides.
+//! • The S-Add rule handles additive conjunction. The linear constraints are shared between the
+//! branches (since additive conjunction is generated from case expressions, only one of them
+//! is actually going to be executed). Both branches must consume exactly the same resources.
+//! • The S-ImplOne rules handles linear implications. The unrestricted and linear components
+//! of the assumption are unioned with their respective context when solving the conclusion.
+//! Note how the linear constraints, in particular, are classiﬁed according to whether they are
+//! members of D or not. Importantly (see Section 6.3.2), the linear assumptions are added to
+//! the front of the lists. The side condition that the output context is a subset of the input
+//! context ensures that the implication fully consumes its assumption and does not leak it to
+//! the ambient context.
+//! • The S-ImplMany rules handles unrestricted implication. The conclusion uses its own linear assumption, but none of the other linear constraints. This is because, as per C-Impl,
+//! unrestricted implications can only use an unrestricted context. In particular, crucially, the
+//! constraints from D, despite being duplicable and discardable, are not (and cannot) be used
+//! to prove an unrestricted implication, as ﬁrst discussed in Section 5.1.
+//! 6.3.2 An atomic-constraint solver. So far, the atomic-constraint domain has been an abstract parameter. In this section, though, we oﬀer a concrete domain which supports our examples.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:20
+//!
+//! Q1
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Q2
+//!
+//! (Entailment relation)
+//! Q-Prod
+//! Q1 Q1′
+//!
+//! Q-Hyp
+//! 𝜔·Q ⊗ 𝜋 ·q
+//!
+//! 𝜋 ·q
+//!
+//! Q1 ⊗ Q2
+//!
+//! Q2′
+//! ′
+//! Q1 ⊗ Q2′
+//!
+//! Q2
+//!
+//! Q-Empty
+//!
+//! Q-DiscardD
+//!
+//! Q-DupD
+//!
+//! 𝜔·Q
+//!
+//! 1·L
+//!
+//! 1·L
+//!
+//! 𝜀
+//!
+//! 𝜀
+//!
+//! 1·L ⊗ 1·L
+//!
+//! (a) Entailment relation
+//! U ; D; L ⊢as 𝜋 ·q { Lo
+//!
+//! (Atomic-constraint solver)
+//!
+//! Atom-Many
+//! q∈U
+//!
+//! Atom-OneL
+//! L = L1, q, L2
+//! q ∉ L2
+//! q∉U
+//!
+//! Atom-OneD
+//! L∉U
+//!
+//! Atom-OneU
+//! q∈U
+//! q ∉D⊎L
+//!
+//! U ; D; L ⊢as 𝜔·q { L
+//!
+//! U ; D; L ⊢as 1·q { L1, L2
+//!
+//! U ; D, L; L ⊢as 1·q { L
+//!
+//! U ; D; L ⊢as 1·q { L
+//!
+//! (b) Atomic-constraint solver
+//! Fig. 10. A stripped-down constraint domain
+//!
+//! For the sake of our examples, we need very little: linear constraints can remain abstract. It is thus
+//! suﬃcient for the entailment relation (Figure 10a) to prove q if and only if it is already assumed—
+//! while respecting linearity. That is, with the exception of a distinguished constraint L, which can
+//! be duplicated and discarded, and we use to model the Linearly constraint from 3.2. The set D is
+//! deﬁned to only contain L, therefore the D context is a sequence of 0 or more L.
+//! The corresponding atomic-constraint solver (Figure 10b) is more interesting. It is deterministic:
+//! in all circumstances, only one of the three rules can apply. This means that the algorithm does not
+//! guess, thus never needs to backtrack. Avoiding guesses is a key property of ghc’s solver [Vytiniotis, Peyton Jon
+//! Section 6.4], one we must maintain if we are to be compatible with ghc.
+//! Figure 10b is also where the fact that the L are lists comes into play. Indeed, rule Atom-OneL
+//! takes care to use the most recent occurrence of q (remember that rule S-ImplOne adds the new
+//! hypotheses on the front of the list). To understand why, consider the following example:
+//! f = linearly $
+//! let  (Ur arr) = new 10
+//! fr :: RW n =◦ ()
+//! fr = free arr
+//! () = fr
+//! in Ur ()
+//! In this example, the programmer meant for free to use the RW n constraint introduced locally
+//! in the type of fr. Yet there are actually two linear RW n constraints: this local one and the one
+//! assumed when unpacking arr. The wrong choice among the constraints will lead the algorithm to
+//! fail. Choosing the ﬁrst q linear assumption guarantees we get the most local one.
+//! Another interesting feature of the solver (Figure 10b) is that no rule solves a linear constraint if
+//! it appears both in the unrestricted and a linear context. Consider the following (contrived) api:
+//! class C
+//! giveC :: (C ⇒ Int) → Int
+//!
+//! useC :: C =◦ Int
+//!
+//! giveC gives an unrestricted copy of C to some continuation, while useC uses C linearly. Now consider two potential consumers of this api:
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:21
+//!
+//! 𝜎
+//! 𝜏, 𝜐
+//! e
+//!
+//! F
+//! F
+//! F
+//!
+//! ∀a.𝜏
+//! ... | ∃a.𝜏 ⊗ 𝜐
+//! ... |  (e1, e2 ) | let  (x, y) = e1 in e2
+//!
+//! Γ ⊢e :𝜏
+//!
+//! Type schemes
+//! Types
+//! Expressions
+//!
+//! (Core language typing)
+//! L-Unpack
+//! a fresh
+//! Γ1 ⊢ e1 : ∃a.𝜏2 ⊗ 𝜏1
+//! Γ2 , x:1𝜏1, y:1𝜏2 ⊢ e2 : 𝜏
+//!
+//! L-Pack
+//! Γ1 ⊢ e1 : 𝜏1 [𝜐/a]
+//! Γ2 ⊢ e2 : 𝜏2 [𝜐/a]
+//! Γ1 + Γ2 ⊢  (e1, e2 ) : ∃a.𝜏2 ⊗ 𝜏1
+//!
+//! Γ1 + Γ2 ⊢ let  (x, y) = e1 in e2 : 𝜏
+//!
+//! Fig. 11. Core calculus (subset)
+//!
+//! ambiguous1 :: C =◦ Int
+//! ambiguous1 = giveC useC
+//!
+//! ambiguous2 :: C =◦ (Int, Int)
+//! ambiguous2 = (giveC useC, useC)
+//!
+//! Looking at ambiguous1, the invocation of useC has both a linear C in scope, and a more local
+//! unrestricted C. The strategy to pick the more local constraint fails here, because it would leave
+//! the linear C unconsumed. A tempting reﬁnement might be to always consume the most local
+//! linear constraint. That would handle handles ambiguous1 correctly, but fail on ambiguous2. In
+//! the case of the latter, if the invocation of giveC useC consumes the linear C, then the second
+//! useC invocation will fail. It is possible to give a type derivation to ambiguous2 in the qualiﬁed
+//! type system of Section 5 by making the ﬁrst useC consume the unrestricted C and the second
+//! useC consume the linear C. This assignment, however, would require the constraint solver to
+//! guess when solving the constraint from the ﬁrst useC. Accordingly, in order to both avoid backtracking and to keep type inference independent of the order terms appear in the program text,
+//! bad is rejected. This introduces incompleteness with respect the entailment relation. We conjecture that this is the only source of incompleteness that we introduce beyond what is already in
+//! ghc [Vytiniotis, Peyton Jones, Schrijvers, and Sulzmann 2011, Section 6].
+//! 7
+//!
+//! DESUGARING
+//!
+//! The semantics of our language is given by desugaring it into a simpler core language: a variant of
+//! the 𝜆𝑞 calculus [Bernardy et al. 2017]. We deﬁne the core language’s type system here; its operational semantics is the same, mutatis mutandis, as that of Linear Haskell.
+//! 7.1
+//!
+//! The core calculus
+//!
+//! The core calculus is a variant of the type system deﬁned in Section 5, but without constraints. That
+//! is, the evidence for constraints is passed explicitly in this core calculus. Following 𝜆𝑞 , we assume
+//! the existence of the following data types:
+//! • 𝜏1 ⊗ 𝜏2 with sole constructor (,) : ∀a b.a →1 b →1 a ⊗ b. We will write (e1, e2 ) for (,) e1 e2 .
+//! • 1 with sole constructor () : 1.
+//! • Ur 𝜏 with sole constructor Ur : ∀a.a →𝜔 Ur a
+//! Figure 11 highlights the diﬀerences from the qualiﬁed system:
+//! • Type schemes 𝜎 do not support qualiﬁed types.
+//! • Existentially quantiﬁed types (∃a.𝜏 R Q) are now represented as an (existentially quantiﬁed,
+//! linear) pair of values (∃a.𝜏2 ⊗ 𝜏1 ). Accordingly,  operates on pairs.
+//! The diﬀerences between our core calculus and 𝜆𝑞 are as follows:
+//! • We do not support multiplicity polymorphism.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:22
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! • On the other hand, we do include type polymorphism.
+//! • Polymorphism is implicit rather than explicit. This is not an essential diﬀerence, but it simpliﬁes the presentation. We could, for example, include more details in the terms in order
+//! to make type-checking more obvious; this amounts essentially to an encoding of typing
+//! derivations in the terms7 .
+//! • We have existential types. These can be realised in regular Haskell as a family of datatypes.
+//! Using Lemma 6.4 together with Lemma 6.5 we know that if Γ ⊢◮ e : 𝜏 { 𝐶 and U ; D; L ⊢s 𝐶 { ∅,
+//! then (U , D ⊎ L); Γ ⊢ e : 𝜏. It only remains to desugar derivations of Q; Γ ⊢ e : 𝜏 into the core
+//! calculus.
+//! 7.2
+//!
+//! From qualified to core
+//!
+//! 7.2.1 Evidence. In order to desugar derivations of the qualiﬁed system to the core calculus, we
+//! pass evidence explicitly8 . To do so, we require some more material from constraints. Namely, we
+//! assume a type JqKev for each atomic constraint q, deﬁned in Figure 12a. The J_Kev operation extends
+//! to simple constraints as JQKev . Furthermore, we require that for every Q1 and Q2 such that Q1 Q2 ,
+//! there is a (linear) function JQ1 Q2 Kev : JQ1 Kev →1 JQ2 Kev .
+//! Let us now deﬁne a family of functions J_K to translate the type schemes, types, contexts, and
+//! typing derivations of the qualiﬁed system into the types, type schemes, contexts, and terms of the
+//! core calculus.
+//! 7.2.2 Translating types. Type schemes 𝜎 are translated by turning the implicit argument Q into
+//! an explicit one of type JQKev . Translating types 𝜏 and contexts Γ proceeds as expected.
+//! 
+//! 
+//! J∀a.Q =◦ 𝜏K = ∀a.JQKev →1 J𝜏K
+//! J•K
+//! = •
+//! 
+//! J𝜏1 →𝜋 𝜏2 K = J𝜏1 K →𝜋 J𝜏2 K
+//! JΓ, x:𝜋 𝜏K = JΓK, x:𝜋 J𝜏K
+//! J∃a.𝜏 R QK = ∃a.J𝜏K ⊗ JQKev
+//! 7.2.3 Translating terms. Given a derivation Q; Γ ⊢ e : 𝜏, we can build an expression JQ; Γ ⊢ e : 𝜏Kz ,
+//! such that JΓK, z:1 JQKev ⊢ JQ; Γ ⊢ e : 𝜏Kz : J𝜏K (for some fresh variable z). Even though we abbreviate
+//! the derivation as only its concluding judgement, the translation is deﬁned recursively on the whole
+//! typing derivation: in particular, we have access to typing rule premises in the body of the deﬁnition.
+//! We present some of the interesting cases in Figure 12b.
+//! The cases correspond to the E-Var, E-Unpack9 , and E-Sub rules, respectively. Variables are
+//! stored with qualiﬁed types in the environment, so they get translated to functions that take the evidence as argument. Accordingly, the evidence is inserted by passing z as an argument. Handling
+//! E-Unpack requires splitting the context into two: e1 is desugared as a pair, and the evidence it contains is passed to e2 . Finally, subsumption summons the function corresponding to the entailment
+//! relation Q Q1 and applies it to z : JQKev then proceeds to desugar e with the resulting evidence
+//! for Q1 . Crucially, since J_Kz is deﬁned on derivations, we can access the premises used in the rule.
+//! Namely, Q1 is available in this last case from the E-Sub rule’s premise.
+//! It is straightforward by induction, to verify that desugaring is correct:
+//! 7 See, for example, Weirich et al. [2017] and their comparison between an implicit core language D and an explicit one DC.
+//! 8 This technique is also often called dictionary-passing style [Hall et al. 1996] because, in the case of type classes, evidences
+//!
+//! are dictionaries, and because type classes were the original form of constraints in Haskell.
+//! 9 The attentive reader may note that the case for let extracts out Q and Q from the provided simple constraint. Given
+//! 
+//! 1
+//! 2
+//! that simple constraints Q have no internal ordering and allow duplicates (in the non-linear component), this splitting is
+//! not well deﬁned. To ﬁx this, an implementation would have to name individual components of Q, and then the typing
+//! derivation can indicate which constraints go with which sub-expression. Happily, ghc already names its constraints, and
+//! so this approach ﬁts easily in the implementation. We could also augment our formalism here with these details, but they
+//! add clutter with little insight.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 
+//! J1·qKev
+//! 
+//! 
+//! 
+//!  J𝜔·qKev
+//! 
+//! J𝜀Kev
+//! 
+//! 
+//! 
+//!  JQ1 ⊗ Q2 Kev
+//! 
+//!
+//! =
+//! =
+//! =
+//! =
+//!
+//! 95:23
+//!
+//! JqKev
+//! Ur (JqKev )
+//! 1
+//! JQ1 Kev ⊗ JQ2 Kev
+//!
+//! (a) Evidence passing
+//!
+//! 
+//! 
+//! JQ; Γ ⊢ x : 𝜐 [𝜏/a]Kz = x z
+//! 
+//! 
+//! 
+//! 
+//! JQ
+//! ⊗ Q1 [𝜐/a]; Γ ⊢ e : ∃ a.𝜏 R Q1 Kz =
+//! 
+//! 
+//! 
+//! 
+//! ′ ′′
+//! 
+//! case
+//! 1 z of { (z , z ) →
+//! 
+//! 
+//! 
+//! ′′
+//! 
+//!  (z , JQ; Γ ⊢ e : 𝜏 [𝜐/a]Kz′ ) }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏Kz =
+//! 
+//! 
+//! 
+//!  case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! let z ′, x = JQ1 ; Γ1 ⊢ e1 : ∃ a.𝜏1 R QKz1 in
+//! 
+//! 
+//! 
+//! 
+//! let1 z2 ′ = (z2, z ′) in
+//! 
+//! 
+//! 
+//! 
+//! JQ2 ⊗ Q; Γ2 , x :1 𝜏1 ⊢ e2 : 𝜏Kz2 ′ }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! Γ
+//! ⊢ e : 𝜏Kz = -- rule E-Sub
+//! JQ;
+//! 
+//! 
+//! 
+//! 
+//! let1 z ′ = JQ Q1 Kev z in JQ1 ; Γ ⊢ e : 𝜏Kz′
+//! 
+//! 
+//! 
+//! 
+//!  ...
+//! 
+//! (b) Desugaring (subset)
+//!
+//! Fig. 12. Evidence passing and desugaring
+//!
+//! Theorem 7.1 (Desugaring). If Q; Γ ⊢ e : 𝜏, then JΓK, z:1 JQKev ⊢ JQ; Γ ⊢ e : 𝜏Kz : J𝜏K, for any
+//! fresh variable z.
+//! Thanks to the desugaring machinery, the semantics of a language with linear constraints can be
+//! understood in terms of a simple core language with linear types, such as 𝜆𝑞 , or indeed, ghc Core.
+//! 8
+//!
+//! INTEGRATING INTO GHC
+//!
+//! One of the guiding principles behind our design was ease of integration with modern Haskell. In
+//! this section we describe some of the particulars of adding linear constraints to ghc.
+//! 8.1
+//!
+//! Implementation
+//!
+//! We have written a prototype implementation [Kiss et al. 2022] of linear constraints on top of ghc
+//! 9.1, a version that already ships with the LinearTypes extension. Function arrows (→) and context
+//! arrows (⇒) share the same internal representation in the typechecker, diﬀerentiated only by a
+//! boolean ﬂag. Thus, the LinearTypes implementation eﬀort has already laid down the bureaucratic
+//! ground work of annotating these arrows with multiplicity information.
+//! The key changes aﬀect constraint generation and constraint solving. Constraints are now annotated with a multiplicity, according to the context from which they arise. With LinearTypes, ghc
+//! already scales the usage of term variables. We simply modiﬁed the scaling function to capture all
+//! the generated constraints and re-emit a scaled version of them, which is a fairly local change.
+//! The constraint solver maintains a set of given constraints (the inert set in ghc jargon), which corresponds to the U , D, and L contexts in our solver judgements in Section 6.3. When the solver goes
+//! under an implication, the assumptions of the implication are added to set of givens. When a new
+//! given is added, we record the level of the implication (how many implications deep the constraint
+//! arises from) along with the constraint. So that in case there are multiple matching givens, the
+//! constraint solver selects the innermost one (in Section 6.3 we use an ordered list for this purpose).
+//! As constraint solving proceeds, the compiler pipeline constructs a term in a typed language
+//! known as ghc Core [Sulzmann et al. 2007]. In Core, type class constraints are turned into explicit
+//! evidence (see Section 7). Thanks to being fully annotated, Core has decidable typechecking, which
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:24
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! is used to ﬁnd and ﬁx bugs in the compiler (the Haskell type checker ﬁnds mistakes in user programs). Thus, the Core typechecker veriﬁes that the desugaring procedure produced a linearityrespecting program before code generation occurs.
+//! 8.2
+//!
+//! Interaction with other features
+//!
+//! Since constraints play an important role in ghc’s type system, we must pay close attention to the
+//! interaction of linearity with other language features related to constraints. Of these, we point out
+//! two that require some extra care.
+//! 8.2.1 Superclasses. Haskell’s type classes can have superclasses, which place constraints on all of
+//! the instances of that class. For example, the Ord class is deﬁned as
+//! class Eq a ⇒ Ord a where ...
+//! which means that every ordered type must also support equality. Such superclass declarations
+//! extend the entailment relation: if we know that a type is ordered, we also know that it supports
+//! equality. This is troublesome if we have a linear occurrence of Ord a, because then using this
+//! entailment, we could conclude that a linear constraint (Ord a) implies an unrestricted constraint
+//! (Eq a), which violates Lemma 5.5.
+//! But even linear superclass constraints cause trouble. Consider a version of Ord a that has Eq a
+//! as a linear superclass.
+//! class Eq a =◦ Ord a where ...
+//! When given a linear Ord a, should we keep it as Ord a, or rewrite to Eq a using the entailment?
+//! Short of backtracking, the constraint solver needs to make a guess, which ghc never does.
+//! To address both of these issues at once, we make the following rule: the superclasses of a linear
+//! constraint are ignored.
+//! 8.2.2 Equality constraints. In Section 6 we argued that type inference and constraint inference can
+//! be performed independently. However, this is not the case for ghc’s constraint domain, because
+//! it supports equality constraints, which allows uniﬁcation problems to be deferred, and potentially
+//! be solvable only after solving other constraints ﬁrst.
+//! To reconcile this with our presentation, we need to ensure that unrestricted constraint inference
+//! and linear constraint inference can be performed independently. That is, solving a linear constraint
+//! should never be required for solving an unrestricted constraint. This is ensured by Lemma 5.5.
+//! They key is to represent uniﬁcation problems as unrestricted equality constraints, so a given
+//! linear equality constraint cannot be used during type inference. This way, linear equalities require
+//! no special treatment, and are harmless.
+//! 8.3 Inferring packing and unpacking
+//! Recent work [Eisenberg, Duboc, et al. 2021] describes an algorithm (call it edwl, after the authors’
+//! names) that can infer the location of the pack and unpack annotations (our  and let) in a program.10 In Section 9.2 of that paper, the authors extend their system to include class constraints,
+//! much as we allow our existential packages to carry linear constraints.
+//! Accordingly, edwl would work well for us here and remove the need for these annotations.
+//! The edwl algorithm is only a small change on the way some types are treated during bidirectional
+//! type-checking. Though the presentation of linear constraints is not written using a bidirectional
+//! 10 Actually, Eisenberg, Duboc, et al. [2021] use an open construct instead of let
+//!
+//!  to access the contents of an existential
+//! package, but that distinction does not aﬀect our usage of existentials with linear constraints.
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:25
+//!
+//! algorithm, our implementation in ghc is indeed bidirectional (as ghc’s existing type inference algorithm is bidirectional, as described by Peyton Jones et al. [2007] and Eisenberg, Weirich, et al.
+//! [2016]) and produces constraints much like we have presented here, formally. None of this would
+//! change in adapting edwl. Indeed, it would seem that the two extensions are orthogonal in implementation, though avoiding the need for explicit packing and unpacking would make linear
+//! constraints easier to use.
+//! 9
+//!
+//! RELATED WORK
+//! OutsideIn. Our aim is to integrate the present work in ghc, and accordingly the qualiﬁed type
+//! system in Section 5 and the constraint inference algorithm in Section 6 follow a similar presentation to that of OutsideIn [Vytiniotis, Peyton Jones, Schrijvers, and Sulzmann 2011], ghc’s constraint solver algorithm. Even though our presentation is self-contained, we outline some of the
+//! diﬀerences from that work.
+//! The solver judgement in OutsideIn takes the following form:
+//! solv
+//!
+//! Q ; 𝑄 given ; 𝛼 tch ↦→ 𝐶 wanted { 𝑄 residual ; 𝜃
+//! The main diﬀerences from our solver judgement in Section 6.3 are:
+//! • OutsideIn’s judgement includes top-level axioms schemes separately (Q), which we have
+//! omitted for the sake of brevity and are instead included in 𝑄 given .
+//! • We present the given constraints (𝑄 given in OutsideIn) as two separate constraint sets U and
+//! L, standing for the unrestricted and linear parts respectively.
+//! • In addition to constraint inference, OutsideIn performs type inference, requiring additional
+//! bookkeeping in the solver judgment. The solver takes as input a set of touchable variables
+//! 𝛼 𝑡𝑐ℎ which record the type variables that can be uniﬁed at any given time, and produces a
+//! type substitution 𝜃 as an output. As discussed in Section 6, we do not perform type inference,
+//! only constraint inference. Therefore, our solver need not return a type assignment.
+//! • Both OutsideIn and our solver output a set of constraints, 𝑄 residual and Lo respectively. However, the meaning of these contexts is diﬀerent. OutsideIn’s residual constraints 𝑄 residual correspond to the part of 𝐶 wanted that could not be solved from the assumptions. These residuals are then quantiﬁed over in the generalisation step of the inference algorithm. We omit
+//! these residuals, which means that our algorithm cannot infer qualiﬁed types. Our output
+//! constraints Lo instead correspond to the part of the linear givens Li that were not used in
+//! the solution for 𝐶 w .
+//! • Finally, while OutsideIn has a single kind of conjunction, our constraint language requires
+//! two: Q1 ⊗ Q2 and Q1 & Q2 . This shows up when generating constraints for case expressions in
+//! the rule G-Case rule. OutsideIn accumulates constraints across branches (taking the union of
+//! each branch), whereas we need to make sure that each branch of a case-expression consumes
+//! the same constraints.
+//! Ownership. Ownership and borrowing are the key features of Rust’s safe memory management
+//! model. In Section 4 we show how linear constraints can be used to implement such an ownership
+//! model as a library. Although linear constraints do not have the convenience of Rust’s syntax, we
+//! expect that they will support a greater variety of abstractions.
+//! Clean is another language with built-in ownership typing. Like Haskell it is a lazy language. Mutation is performed by returning a new reference, like in Linear Haskell without linear constraints.
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:26
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Languages with capabilities. The idea of using capabilities to enforce high-level resource usage
+//! protocols is not new [DeLine and Fähndrich 2001], and as such has been applied in practical programming languages before. Both Mezzo [Pottier and Protzenko 2013] and ats [Zhu and Xi 2005]
+//! served as inspiration for the design of linear constraints. Of the two, Mezzo is more specialised,
+//! being entirely built around its system of capabilities. Ats is the closest to our system because it
+//! appeals explicitly to linear logic, and because the capabilities (known as stateful views) are not tied
+//! to a particular use case. However, ats does not have full inference of capabilities.
+//! Other than that, the two systems have a lot of similarities. They have a ﬁner-grained capability
+//! system than is expressible in Rust (or our encoding of it in Section 4) which makes it possible to
+//! change the type of a reference cell upon write (though linear constraints could be used to implement such type-changing references too). They also eschew scoped borrowing in favour of more
+//! traditional read and write capabilities.
+//! Linear constraints are more general than either Mezzo or ats, while maintaining a considerably
+//! simpler inference algorithm, and at the same time supporting a richer set of constraints (such
+//! as gadts). This simplicity is a beneﬁt of abstracting over the simple-constraint domain. In fact, it
+//! should be possible to see Mezzo or ats as particular instantiations of the simple-constraint domain,
+//! with linear constraints providing the general inference mechanism.
+//! Linearly typed languages. Aﬀe [Radanne et al. 2020] is a linearly typed ml-style core language
+//! with mutable references and arrays, augmented with a notion of borrowing. It has dedicated syntax
+//! for the scope of borrows. In contrast, we represent scopes as functions. Aﬀe is presented as a fully
+//! integrated solution, while linear constraints is a small layer on top of Linear Haskell.
+//! Logic programming. There are a lot of commonalities between ghc’s constraint and logic programs. Traditional type classes can be seen as Horn clause programs, much like Prolog programs.
+//! ghc puts further restrictions in order to avoid backtracking for speed and predictability.
+//! The recent addition of quantiﬁed constraints [Bottu et al. 2017] extends type class resolution
+//! to Hereditary Harrop [Miller et al. 1987] programs. A generalisation of the Hereditary Harrop
+//! fragment to linear logic, described by Hodas and Miller [1994], is the foundation of the Lolli language [Hodas 1994]. The authors also coin the notion of uniform proof. A fragment where uniform
+//! proofs are complete supports goal-oriented proof search, like Prolog does.
+//! Completeness of uniform proofs is equivalent to Lemma 6.1, which, in turn, is used in the proof
+//! of the soundness Lemma 6.4. Therefore our linear constraints are compatible with quantiﬁed constraints: we simply need to adapt Lemma 6.1.
+//! It is interesting that goal-oriented search is baked into the deﬁnition of OutsideIn. It’s not only
+//! used as the constraint solving strategy, but it seems to required for the soundness of the constraint
+//! generation algorithm. Or, if they are not required, uniform proofs are at least an eﬀective strategy
+//! to prove soundness.
+//! 10 CONCLUSION
+//! We showed how a simple linear type system like that of Linear Haskell can be extended with
+//! an inference mechanism which lets the compiler manage some of the additional complexity of
+//! linear types instead of the programmer. Linear constraints narrow the gap between linearly typed
+//! languages and dedicated linear-like typing disciplines such as Rust’s, Mezzo’s, or ats’s.
+//! REFERENCES
+//! Andreas Abel and Jean-Philippe Bernardy. 2020. “A uniﬁed view of modalities in type systems.” Proceedings of the ACM on
+//! Programming Languages, 4, ICFP.
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:27
+//!
+//! Jean-Philippe Bernardy, Mathieu Boespﬂug, Ryan R. Newton, Simon Peyton Jones, and Arnaud Spiwack. Dec. 2017. “Linear
+//! Haskell: Practical Linearity in a Higher-order Polymorphic Language.” Proc. ACM Program. Lang., 2, POPL, Article 5,
+//! (Dec. 2017), 5:1–5:29. doi: 10.1145/3158093.
+//! Gert-Jan Bottu, Georgios Karachalias, Tom Schrijvers, Bruno C. d. S. Oliveira, and Philip Wadler. 2017. “Quantiﬁed Class
+//! Constraints.” In: Proceedings of the 10th ACM SIGPLAN International Symposium on Haskell (Haskell 2017). Association
+//! for Computing Machinery, Oxford, UK, 148–161. isbn: 9781450351829. doi: 10.1145/3122955.3122967.
+//! Iliano Cervesato, Joshua S. Hodas, and Frank Pfenning. 2000. “Eﬃcient resource management for linear logic proof search.”
+//! Theoretical Computer Science, 232, 1, 133–163. doi: 10.1016/S0304-3975(99)00173-5.
+//! Karl Crary, David Walker, and J. Gregory Morrisett. 1999. “Typed Memory Management in a Calculus of Capabilities.” In:
+//! POPL ’99, Proceedings of the 26th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, San Antonio, TX, USA, January 20-22, 1999. Ed. by Andrew W. Appel and Alex Aiken. ACM, 262–275. doi: 10.1145/292540.292564.
+//! Vincent Danos, Jean -Baptiste Joinet, and Harold Schellinx. 1993. “The structure of exponentials: Uncovering the dynamics
+//! of linear logic proofs.” In: Computational Logic and Proof Theory. Ed. by Georg Gottlob, Alexander Leitsch, and Daniele
+//! Mundici. Springer Berlin Heidelberg, Berlin, Heidelberg, 159–171. isbn: 978-3-540-47943-7.
+//! Robert DeLine and Manuel Fähndrich. 2001. “Enforcing High-Level Protocols in Low-Level Software.” In: Proceedings of
+//! the 2001 ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI), Snowbird, Utah, USA,
+//! June 20-22, 2001. Ed. by Michael Burke and Mary Lou Soﬀa. ACM, 59–69. doi: 10.1145/378795.378811.
+//! Facundo Domínguez. 2020. “Safe memory management in inline-java using linear types.” Blog post. (2020). https://web.archive.org/web/20
+//! Richard A. Eisenberg, Guillaume Duboc, Stephanie Weirich, and Daniel Lee. 2021. “An Existential Crisis Resolved: Type
+//! inference for ﬁrst-class existential types.” Proc. ACM Program. Lang., 5, ICFP.
+//! Richard A. Eisenberg, Stephanie Weirich, and Hamidhasan G. Ahmed. 2016. “Visible Type Application.” In: Programming
+//! Languages and Systems. Ed. by Peter Thiemann. Springer Berlin Heidelberg, Berlin, Heidelberg, 229–254. isbn: 978-3662-49498-1.
+//! Matthew Fluet, Greg Morrisett, and Amal J. Ahmed. 2006. “Linear Regions Are All You Need.” In: Programming Languages
+//! and Systems, 15th European Symposium on Programming, ESOP 2006, Held as Part of the Joint European Conferences on
+//! Theory and Practice of Software, ETAPS 2006, Vienna, Austria, March 27-28, 2006, Proceedings (Lecture Notes in Computer
+//! Science). Ed. by Peter Sestoft. Vol. 3924. Springer, 7–21. doi: 10.1007/11693024_2.
+//! Jean-Yves Girard. 1987. “Linear logic.” Theoretical Computer Science, 50, 1, 1–101. doi: 10.1016/0304-3975(87)90045-4.
+//! Cordelia V. Hall, Kevin Hammond, Simon L. Peyton Jones, and Philip L. Wadler. Mar. 1996. “Type Classes in Haskell.” ACM
+//! Trans. Program. Lang. Syst., 18, 2, (Mar. 1996).
+//! J.S. Hodas and D. Miller. 1994. “Logic Programming in a Fragment of Intuitionistic Linear Logic.” Information and Computation, 110, 2, 327–365. doi: inco.1994.1036.
+//! Joshua Seth Hodas. 1994. “Logic programming in intuitionistic linear logic: Theory, design, and implementation.” https://repository.upenn.
+//! Mark P. Jones. 1994. “A theory of qualiﬁed types.” Science of Computer Programming, 22, 3, 231–256. doi: 10.1016/0167-6423(94)00005-0.
+//! [SW exc.] Csongor Kiss, Arnaud Spiwack, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg, Prototype implementation of linear constraints in GHC 2022. swhid: hswh:1:rev:f6fc5ba23770b42d1d6020e177787757b16a9ea0;origin=https://github.com
+//! Naoki Kobayashi, Benjamin C. Pierce, and David N. Turner. Sept. 1999. “Linearity and the Pi-Calculus.” ACM Trans. Program.
+//! Lang. Syst., 21, 5, (Sept. 1999), 914–947. doi: 10.1145/330249.330251.
+//! Kazutaka Matsuda. 2020. “Modular Inference of Linear Types for Multiplicity-Annotated Arrows.” In: Programming Languages and Systems. Ed. by Peter Müller. Springer International Publishing, Cham, 456–483. isbn: 978-3-030-44914-8.
+//! Dale A. Miller, Gopalan Nadathur, and Andre Scedrov. June 1987. “Hereditary Harrop Formulas and Uniform Proof Systems.” In: Proceedings of the Second Annual IEEE Symposium on Logic in Computer Science (LICS 1987). IEEE Computer
+//! Society Press, Ithaca, NY, USA, (June 1987), 98–105.
+//! Simon Peyton Jones, Dimitrios Vytiniotis, Stephanie Weirich, and Mark Shields. 2007. “Practical type inference for arbitraryrank types.” Journal of Functional Programming, 17, 1, 1–82. doi: 10.1017/S0956796806006034.
+//! Benjamin C. Pierce. 2002. Types and Programming Languages. MIT Press, Cambridge, MA.
+//! François Pottier and Jonathan Protzenko. 2013. “Programming with Permissions in Mezzo.” In: Proceedings of the 18th ACM
+//! SIGPLAN International Conference on Functional Programming (ICFP ’13). Association for Computing Machinery, Boston,
+//! Massachusetts, USA, 173–184. isbn: 9781450323260. doi: 10.1145/2500365.2500598.
+//! François Pottier and Didier Rémy. 2005. “The essence of ML type inference.”
+//! Gabriel Radanne, Hannes Saﬀrich, and Peter Thiemann. Aug. 2020. “Kindly Bent to Free Us.” Proc. ACM Program. Lang., 4,
+//! ICFP, Article 103, (Aug. 2020), 29 pages. doi: 10.1145/3408985.
+//! Michael Shulman. 2018. Linear logic for constructive mathematics. (2018). arXiv: 1805.07518 [math.LO].
+//! Frederick Smith, David Walker, and J. Gregory Morrisett. 2000. “Alias Types.” In: Programming Languages and Systems,
+//! 9th European Symposium on Programming, ESOP 2000, Held as Part of the European Joint Conferences on the Theory and
+//! Practice of Software, ETAPS 2000, Berlin, Germany, March 25 - April 2, 2000, Proceedings (Lecture Notes in Computer
+//! Science). Ed. by Gert Smolka. Vol. 1782. Springer, 366–381. doi: 10.1007/3-540-46425-5_24.
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:28
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Martin Sulzmann, Manuel M. T. Chakravarty, Simon Peyton Jones, and Kevin Donnelly. 2007. “System F with Type Equality Coercions.” In: Proceedings of the 2007 ACM SIGPLAN International Workshop on Types in Languages Design and
+//! Implementation (TLDI ’07). Association for Computing Machinery, Nice, Nice, France, 53–66. isbn: 159593393X. doi:
+//! 10.1145/1190315.1190324.
+//! Dimitrios Vytiniotis, Simon Peyton Jones, and Tom Schrijvers. 2010. “Let Should Not Be Generalized.” In: Proceedings of the
+//! 5th ACM SIGPLAN Workshop on Types in Language Design and Implementation (TLDI ’10). Association for Computing
+//! Machinery, Madrid, Spain, 39–50. isbn: 9781605588919. doi: 10.1145/1708016.1708023.
+//! Dimitrios Vytiniotis, Simon Peyton Jones, Tom Schrijvers, and Martin Sulzmann. 2011. “OutsideIn(X) Modular type inference with local assumptions.” Journal of Functional Programming, 21, 4-5, 333–412. doi: 10.1017/S0956796811000098.
+//! David Walker and J. Gregory Morrisett. 2000. “Alias Types for Recursive Data Structures.” In: Types in Compilation, Third
+//! International Workshop, TIC 2000, Montreal, Canada, September 21, 2000, Revised Selected Papers (Lecture Notes in Computer Science). Ed. by Robert Harper. Vol. 2071. Springer, 177–206. doi: 10.1007/3-540-45332-6_7.
+//! Stephanie Weirich, Antoine Voizard, Pedro Henrique Azevedo de Amorim, and Richard A. Eisenberg. Aug. 2017. “A Speciﬁcation for Dependent Types in Haskell.” Proc. ACM Program. Lang., 1, ICFP, Article 31, (Aug. 2017), 29 pages. doi:
+//! 10.1145/3110275.
+//! Dengping Zhu and Hongwei Xi. 2005. “Safe Programming with Pointers Through Stateful Views.” In: Practical Aspects of
+//! Declarative Languages. Ed. by Manuel V. Hermenegildo and Daniel Cabeza. Springer Berlin Heidelberg, Berlin, Heidelberg, 83–97. isbn: 978-3-540-30557-6.
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! a, b
+//! x, y
+//! K
+//! 𝜎
+//! 𝜏, 𝜐
+//! Γ, Δ
+//! e
+//!
+//! 95:29
+//!
+//! ...
+//! ...
+//! ...
+//! ∀a.𝜏
+//! a | ∃a.𝜏 ⊗ 𝜐 | 𝜏1 →𝜋 𝜏2 | T 𝜏
+//! • | Γ, x:𝜋 𝜎
+//! x | K | 𝜆x.e | e1 e2 |  (e1, e2 )
+//! let  (y, x) = e1 in e2 | case𝜋 e of {K𝑖 x𝑖 → e𝑖 }
+//! let𝜋 x = e1 in e2 | let𝜋 x : 𝜎 = e1 in e2
+//!
+//! F
+//! F
+//! F
+//! F
+//! F
+//! F
+//! F
+//! |
+//! |
+//!
+//! Type variables
+//! Expression variables
+//! Data constructors
+//! Type schemes
+//! Types
+//! Contexts
+//! Expressions
+//!
+//! Fig. 13. Grammar of the core calculus
+//!
+//! Γ ⊢e :𝜏
+//!
+//! (Core language typing)
+//!
+//! L-Var
+//! x:1 ∀a.𝜐 ∉ Γ
+//!
+//! L-Abs
+//! Γ, x:𝜋 𝜏1 ⊢ e : 𝜏2
+//!
+//! L-App
+//! Γ1 ⊢ e1 : 𝜏1 →𝜋 𝜏
+//! Γ2 ⊢ e1 : 𝜏1
+//!
+//! Γ ⊢ x : 𝜐 [𝜏/a]
+//!
+//! Γ ⊢ 𝜆x.e : 𝜏1 →𝜋 𝜏2
+//!
+//! Γ1 + 𝜋 ·Γ2 ⊢ e1 e2 : 𝜏
+//!
+//! L-Pack
+//!
+//! Γ1 + Γ2 ⊢  (e1, e2 ) : ∃a.𝜏2 ⊗ 𝜏1
+//!
+//! Γ1 ⊢ e1 : 𝜏1 [𝜐/a]
+//! Γ2 ⊢ e2 : 𝜏2 [𝜐/a]
+//!
+//! L-Unpack
+//! a fresh
+//! Γ1 ⊢ e1 : ∃a.𝜏2 ⊗ 𝜏1
+//! Γ2 , x:1𝜏1, y:1𝜏2 ⊢ e2 : 𝜏
+//!
+//! L-Let
+//! Γ1 ⊢ e1 : 𝜏1
+//!
+//! Γ1 + Γ2 ⊢ let  (x, y) = e1 in e2 : 𝜏
+//!
+//! 𝜋 ·Γ1 + Γ2 ⊢ let𝜋 x : 𝜎 = e1 in e2 : 𝜏
+//!
+//! Γ2, x:𝜋 𝜎 ⊢ e2 : 𝜏
+//!
+//! L-Case
+//! Γ1 ⊢ e : T 𝜏
+//! Ki : ∀a.𝜐 i →𝜋 i T a
+//! Γ2, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜏/a] ⊢ ei : 𝜏
+//! 𝜋 ·Γ1 + Γ2 ⊢ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏
+//! Fig. 14. Core calculus type system
+//!
+//! A FULL DESCRIPTIONS
+//! In this appendix, we give, for reference, complete descriptions of the type systems, functions, etc.
+//! that we have abbreviated in the main body of the article.
+//! A.1
+//!
+//! Core calculus
+//!
+//! This is the complete version of the core calculus described in Section 7.1. The full grammar is given
+//! by Figure 13 and the type system by Figure 14.
+//! A.2
+//!
+//! Desugaring
+//!
+//! The complete deﬁnition of the desugaring function from Section 7 can be found in Figure 15.
+//! For the sake of concision, we allow ourselves to write nested patterns in case expressions of the
+//! core language. Desugaring nested patterns into atomic case expression is routine.
+//! In the complete description, we use a device which was omitted in the main body of the article.
+//! Namely, we’ll need a way to turn every J𝜔·QKev into an Ur (JQKev ). For any e : J𝜔·QKev , we
+//! shall write eQ : Ur (J𝜔·QKev ). As a shorthand, particularly useful in nested patterns, we will write
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:30
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! case𝜋 e of {x Q → e ′ } for case𝜋 eQ of {Ur x → e ′ }.
+//! 
+//! e𝜀
+//! 
+//! 
+//! 
+//! 
+//!  e
+//! 
+//!
+//! 1·q
+//!
+//! =
+//! =
+//! =
+//! =
+//!
+//! case1 e of {() → Ur ()}
+//! e
+//! case1 e of {Ur x → Ur (Ur x)}
+//! case1 e of {(x Q1 , y ) → Ur (x, y)}
+//!
+//! e𝜔 ·q
+//! 
+//! 
+//! 
+//! 
+//!  eQ1 ⊗ Q2
+//! Q2
+//! 
+//! We will omit the Q in eQ and write e when it can be easily inferred from the context.
+//! B PROOFS
+//! B.5 Lemmas on the qualified type system
+//! Proof of Lemma 5.4. Let us prove separately the cases 𝜋 = 1 and 𝜋 = 𝜔.
+//! • When 𝜋 = 1, then 𝜋 ·Q = Q for all Q, hence Q1 Q2 implies 𝜋 ·Q1 𝜋 ·Q2 .
+//! • For the case 𝜋 = 𝜔, let us consider a few properties. First note that, for any Q, 𝜔·Q =
+//! 𝜔·Q ⊗ 𝜔·Q. From which it follows, using the laws of Deﬁnition 5.3, that 𝜔·Q
+//! Q1 ⊗ Q2 if
+//! and only if 𝜔·Q Q1 and 𝜔·Q Q2 .
+//! This means that to verify that 𝜔·Q1 𝜔·Q2 , it is equivalent to prove that 𝜔·Q1 𝜔·q2 for
+//! each q2 ∈ U (letting 𝜔·Q2 = (U , ∅)). In turn, by Deﬁnition 5.3 and observing that 𝜔·(𝜔·Q1 ) =
+//! Q1 , this is equivalent to 𝜔·Q1 1·q2 .
+//! This follows from the fact that Q1 Q2 implies 𝜔·Q1 Q2 (Deﬁnition 5.3) and the property,
+//! shown above, that 𝜔·Q1 Q2 ⊗ Q2′ if and only if 𝜔·Q1 Q2 and 𝜔·Q1 Q2′ .
+//! 
+//! Proof of Lemma 5.5. Let us prove separately the cases 𝜋 = 1 and 𝜋 = 𝜔.
+//! 1·Q2 implies that Q1 = 1·Q1 with
+//! • When 𝜋 = 1, then 𝜋 ·Q = Q for all Q, in particular Q1
+//! Q1 Q2 .
+//! • When 𝜋 = 𝜔, then let us ﬁrst remark, letting 𝜔·Q2 = (U , ∅) that, by a straightforward
+//! induction on the cardinality of U it is suﬃcient to prove that the result holds for atomic
+//! constraints.
+//! That is, we need to prove that if Q1
+//! 𝜔·q2 then there exists Q ′ such that Q1 = 𝜔·Q ′ and
+//! ′
+//! Q
+//! 𝜌·q2 (for all 𝜌).
+//! This result, in turns, holds by Deﬁnition 5.3.
+//! 
+//! Lemma B.1. The following equality holds 𝜋 ·(𝜌·Q) = (𝜋 ·𝜌)·Q
+//! Proof. Immediate by case analysis of 𝜋 and 𝜌.
+//!
+//! 
+//!
+//! B.6 Lemmas on constraint inference
+//! Lemma B.2 (D discarding). The two following, equivalent, properties hold
+//! • if 𝑄 D ∈ D, then 𝑄 D 𝜀
+//! • if Q1 Q2 and 𝑄 D ∈ D, then Q1 ⊗ 𝑄 D Q2
+//! Proof. The two properties are equivalent
+//! • using 𝐶 1 = 𝐶 2 = 𝜀, the latter implies the former
+//! • The former implies the latter by tensoring together Q1 Q2 and 𝑄 D 𝜀 following the rules
+//! of Fig. 4.
+//! Let 𝑄 D ∈ D, then for each 1·q ∈ 𝑄 D , 1·q
+//! 𝜀 (per Fig. 4), tensoring each of these entailments
+//! together and with the 𝜔·q ∈ 𝑄 D , we get 𝑄 D 𝜀.
+//! 
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:31
+//!
+//! 
+//! 
+//! JQ; Γ ⊢ x : 𝜐 [𝜏 / a]Kz =
+//! 
+//! 
+//! 
+//! 
+//! xz
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ; Γ ⊢ 𝜆x.e : 𝜏1 →𝜋 𝜏2 Kz =
+//! 
+//! 
+//! 
+//! 
+//! 𝜆x.JQ; Γ, x :𝜋 𝜏1 ⊢ e : 𝜏2 Kz
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ e1 e2 : 𝜏Kz =
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! 
+//! (JQ1 ; Γ1 ⊢ e1 : 𝜏1 →1 𝜏Kz1 ) (JQ2 ; Γ2 ⊢ e2 : 𝜏1 Kz2 ) }
+//! 
+//! 
+//! 
+//! 
+//! ⊗
+//! 𝜔 · Q2 ; Γ1 + 𝜔 · Γ2 ⊢ e1 e2 : 𝜏Kz =
+//! JQ
+//! 
+//! 1
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! (JQ1 ; Γ1 ⊢ e1 : 𝜏1 →𝜔 𝜏Kz1 ) (JQ2 ; Γ2 ⊢ e2 : 𝜏1 Kz2 ) }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ ⊗ Q1 [𝜐/a]; Γ ⊢ e : ∃ a.𝜏 R Q1 Kz =
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z ′, z ′′ ) →
+//! 
+//! 
+//! 
+//! 
+//! 
+//!  (z ′′, JQ; Γ ⊢ e : 𝜏 [𝜐/a]Kz′ ) }
+//! 
+//! 
+//! 
+//! 
+//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏Kz =
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! 
+//! let z ′, x = JQ1 ; Γ1 ⊢ e1 : ∃ a.𝜏1 R QKz1 in
+//! 
+//! 
+//! 
+//! 
+//! let1 z2 ′ = (z2, z ′ ) in
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ2 ⊗ Q; Γ2, x :1 𝜏1 ⊢ e2 : 𝜏Kz2 ′ }
+//! 
+//! 
+//! 
+//! 
+//! ⊗
+//! Q2 ; Γ1 + Γ2 ⊢ let1 x = e1 in e2 : 𝜏Kz =
+//! JQ
+//! 
+//! 1
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! let1 x : JQKev →1 𝜏1 = JQ1 ⊗ Q; Γ1 ⊢ e1 : 𝜏1 Kz1
+//! 
+//! 
+//! 
+//! in JQ2 ; Γ2 , x :1 𝜏1 ⊢ e2 : 𝜏Kz2 }
+//! 
+//! 
+//! 
+//! J𝜔
+//! ·
+//! Q
+//! 1 ⊗ Q2 ; 𝜔 · Γ1 + Γ2 ⊢ let𝜔 x = e1 in e2 : 𝜏Kz =
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! 
+//! let𝜔 x : JQKev →1 𝜏1 = JQ1 ⊗ Q; Γ1 ⊢ e1 : 𝜏1 Kz1 in
+//! 
+//! 
+//! 
+//! 
+//! JQ2 ; Γ2 , x :𝜔 𝜏1 ⊢ e2 : 𝜏Kz2 }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ
+//! ⊗
+//! Q2 ; Γ1 + Γ2 ⊢ let1 x : ∀ a.Q =◦ 𝜏1 = e1 in e2 : 𝜏Kz =
+//! 1
+//! 
+//! 
+//! 
+//! 
+//! case
+//! 
+//! 1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! let1 x : ∀ a.JQKev →1 𝜏1 = JQ1 ⊗ Q; Γ1 ⊢ e1 : 𝜏1 Kz1 in
+//! 
+//! 
+//! 
+//! 
+//! JQ2 ; Γ2 , x :1 ∀ a.Q =◦ 𝜏1 ⊢ e2 : 𝜏Kz2 }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! J𝜔 · Q1 ⊗ Q2 ; 𝜔 · Γ1 + Γ2 ⊢ let𝜔 x : ∀ a.Q =◦ 𝜏1 = e1 in e2 : 𝜏Kz =
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! 
+//! let𝜔 x : ∀ a.JQKev →1 𝜏1 = JQ1 ⊗ Q; Γ1 ⊢ e1 : 𝜏1 Kz1 in
+//! 
+//! 
+//! 
+//! 
+//! JQ2 ; Γ2 , x :𝜔 𝜏1 ⊢ e2 : 𝜏Kz2 }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! J𝜔
+//! ·
+//! Q
+//! 
+//! 1 ⊗ Q2 ; 𝜔 · Γ1 + Γ2 ⊢ case1 e of { K𝑖 x𝑖 → e𝑖 } : 𝜏Kz =
+//! 
+//! 
+//! 
+//! 
+//! case
+//! 1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! case
+//! 
+//! 1 (JQ1 ; Γ1 ⊢ e : T 𝜏Kz1 ) of
+//! 
+//! 
+//! 
+//! 
+//! 
+//! { K x i → JQ2 ; Γ2 , xi : (𝜋 ·𝜋i ) 𝜐 i [𝜏/a] ⊢ ei : 𝜏Kz2 } }
+//! 
+//! 
+//! 
+//! 
+//! 
+//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ case𝜔 e of { K𝑖 x𝑖 → e𝑖 } : 𝜏Kz =
+//! 
+//! 
+//! 
+//! 
+//! case1 z of { (z1, z2 ) →
+//! 
+//! 
+//! 
+//! 
+//! 
+//! case𝜔 (JQ1 ; Γ1 ⊢ e : T 𝜏Kz1 ) of
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! { K x i → JQ2 ; Γ2 , xi : (𝜋 ·𝜋i ) 𝜐 i [𝜏/a] ⊢ ei : 𝜏Kz2 } }
+//! 
+//! Fig. 15. Desugaring
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:32
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Lemma B.3 (D duplication). The two following, equivalent, properties hold
+//! • if 𝑄 D ∈ D, then 𝑄 D 𝑄 D ⊗ 𝑄 D
+//! • if Q1 ⊗ 𝑄 D Q2 , 𝑄 D ⊗ Q1′ Q2′ , and 𝑄 D ∈ D, then Q1 ⊗ 𝑄 D ⊗ Q1′
+//! Proof. The proof is similar to that of Lemma B.2
+//! Lemma B.4 (Transitive tensor decomposition). if 𝑄 D ∈ D and Q
+//! there exists Q1′ , 𝑄 ′D , Q2′ , such that
+//!
+//! Q2 ⊗ Q2′
+//! 
+//! Q1 ⊗ 𝑄 D ⊗ Q2 , then
+//!
+//! • Q1′ ⊗ 𝑄 ′D Q1
+//! • 𝑄 ′D ⊗ Q2′ Q2
+//! • 𝑄 ′D 𝑄 D
+//! Proof. By the inversion-of-tensor rule from Fig. 4, we get that ther exists Q ′ , 𝑄 ′D , and Q2′ , such
+//! that
+//! • Q = Q ′ ⊗ 𝑄 ′D ⊗ Q2′
+//! • 𝑄 ′D ⊗ Q2′ Q2
+//! • Q ′ ⊗ 𝑄 ′D
+//! Q1 ⊗ 𝑄 D . The inversion-of-tensor rule applies further to this case: there exists
+//! Q1′ , 𝑄 ′′D , and Q ′′ such that
+//! – Q ′ ⊗ 𝑄 ′D = Q1′ ⊗ 𝑄 ′′D ⊗ Q ′′
+//! – Q1′ ⊗ 𝑄 ′′D Q1′
+//! – 𝑄 ′′D ⊗ Q ′′ 𝑄 ′D
+//! Observe the following
+//! ′′
+//! ′′
+//! • 𝑄 ′′D ⊗ Q ′′ ∈ D (because of the requirements of Fig. 4). Let’s write 𝑄 ′′′
+//! D = 𝑄D ⊗ Q .
+//! ′
+//! ′′′
+//! ′
+//! • Q = Q1 ⊗ 𝑄 D ⊗ Q2
+//! • We have
+//! – Q1′ ⊗ 𝑄 ′′′
+//! Q1 . Because
+//! D
+//! ∗ Q1′ ⊗ 𝑄 ′′′
+//! =
+//! Q ′ ⊗ 𝑄 ′D
+//! D
+//! ∗ therefore Q1′ ⊗ 𝑄 ′′′
+//! Q1 ⊗ 𝑄 D
+//! D
+//! ∗ by Lemma B.2, and by transitivity of the entailment relation (per Fig. 4), we can drop
+//! 𝑄 D from the conclusion.
+//! 𝑄 ′D (by deﬁnition of 𝑄 ′′′
+//! – 𝑄 ′′′
+//! D
+//! D)
+//! ′
+//! – 𝑄 ′′′
+//! ⊗
+//! Q
+//! Q
+//! 2
+//! 2
+//! D
+//! ′
+//! ∗ By tensoring together, per Fig. 4, 𝑄 ′′′
+//! 𝑄 ′D and Q2′ Q2′ , we get 𝑄 ′′′
+//! 𝑄 ′D ⊗ Q2′
+//! D
+//! D ⊗ Q2
+//! ∗ then we get the desired result by transitivity of the entailment relation.
+//!
+//! This concludes the proof
+//!
+//! 
+//!
+//! Proof of Lemma 6.1. The cases Q ⊢ 𝐶 1 & 𝐶 2 and Q ⊢ 𝜋 ·(Q2 =◦ 𝐶) are straightforward by induction, so let us prove them ﬁrst
+//! • Suppose Q ⊢ 𝐶 1 & 𝐶 2 , then there are two cases
+//! – either it is the conclusion of a C-With rule, and the result is immediate.
+//! – or it is the result of a C-Dom rule, then, there exists Q ′ , such that Q Q ′ and Q ′ ⊢ 𝐶 1 & 𝐶 2 .
+//! By induction Q ′ ⊢ 𝐶 2 and Q ′ ⊢ 𝐶 2 , applying C-Dom to both gives Q ⊢ 𝐶 2 and Q ⊢ 𝐶 2 as
+//! required.
+//! • Suppose Q ⊢ 𝜋 ·(Q2 =◦ 𝐶), then there are two cases
+//! – either it is the conclusion of a C-Impl rule, and the result is immediate.
+//! – or it is the result of a C-Dom rule, then, there exists Q ′ , such that Q
+//! Q ′ and Q ′ ⊢
+//! 𝜋 ·(Q2 =◦ 𝐶).
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:33
+//!
+//! By induction, there exists Q1′ such that Q1′ ⊗ Q2 ⊢ 𝐶 and Q ′ = 𝜋 ·Q1′ , by Fig. 4, there exists
+//! Q1 such that Q = 𝜋 ·Q1 and Q1
+//! Q1′ . Hence Q1 ⊗ Q2
+//! Q1′ ⊗ Q2 , which lets us conclude
+//! with C-Dom.
+//! For Q ⊢ 𝐶 1 ⊗ 𝐶 2 we have the following cases:
+//! • either it is the conclusion of a C-Tensor rule, and the result is immediate
+//! • or it is the result of a C-Id rule, in which case Q = 𝐶 1 ⊗ 𝐶 2 , which proves the result
+//! • or it is the result of a C-Dom rule, in which case there is Q ′ such that Q Q ′ and Q ′ ⊢ 𝐶 1 ⊗ 𝐶 2 .
+//! By induction, there exist Q1′ , 𝑄 ′D , and Q2′ , such that 𝑄 ′D ∈ D, Q1′ ⊗ 𝑄 ′D ⊢ 𝐶 1 , 𝑄 ′D ⊗ Q2′ ⊢ 𝐶 2 ,
+//! and Q ′ = Q1′ ⊗ 𝑄 ′D ⊗ Q2′ .
+//! Then Lemma B.4, gives us Q1 , 𝑄 D , and Q2 such that
+//! – Q = Q1 ⊗ 𝑄 D ⊗ Q2
+//! – 𝑄D ∈ D
+//! – Q1 ⊗ 𝑄 D Q1′
+//! – 𝑄 D ⊗ Q2 Q2′
+//! – 𝑄 D 𝑄 ′D
+//! By B.3, we can further deduce that
+//! – Q1 ⊗ 𝑄 D Q1′ ⊗ 𝑄 ′D
+//! – 𝑄 D ⊗ Q2 𝑄 ′D ⊗ Q2′
+//! Which concludes the proof, by the C-Dom rule
+//! 
+//! Proof of Lemma 6.2. By induction on the syntax of 𝐶
+//! • If 𝐶 = Q ′ , then the result follows from Lemma 5.4
+//! • If 𝐶 = 𝐶 1 ⊗ 𝐶 2 , then we can prove the result like we proved the corresponding case in
+//! Lemma 5.4, using Lemma 6.1.
+//! • If 𝐶 = 𝐶 1 & 𝐶 2 , then we the case where 𝜋 = 1 is immediate, so we can assume without
+//! loss of generality that 𝜋 = 𝜔, and, therefore, that 𝜋 ·𝐶 = 𝜋 ·𝐶 1 ⊗ 𝜋 ·𝐶 2 . By Lemma 6.1, we
+//! have that Q ⊢ 𝐶 1 and Q ⊢ 𝐶 2 ; hence, by induction, 𝜔·Q ⊢ 𝜔·𝐶 1 and 𝜔·Q ⊢ 𝜔·𝐶 1 . Then, by
+//! deﬁnition of the entailment relation, we have 𝜔·Q ⊗ 𝜔·Q ⊢ 𝜔·𝐶 1 ⊗ 𝜔·𝐶 2 , which concludes,
+//! since 𝜔·Q = 𝜔·Q ⊗ 𝜔·Q.
+//! • If 𝐶 = 𝜌·(Q1 =◦ 𝐶 ′ ), then by Lemma 6.1, there is a Q ′ such that Q = 𝜋 ·Q ′ and Q ′ ⊗ Q1 ⊢ 𝐶 ′ .
+//! Applying rule C-Impl with 𝜋 ·𝜌, we get (𝜋 ·𝜌)·Q ′ ⊢ (𝜋 ·𝜌)·(Q1 =◦ 𝐶 ′ ).
+//! In other words: 𝜋 ·Q ⊢ 𝜋 ·(𝜌·(Q =◦ 𝐶)) as expected.
+//! 
+//! Proof of Lemma 6.3. By induction on the syntax of 𝐶
+//! • If 𝐶 = Q ′ , then the result follows from Lemma 5.5
+//! • If 𝐶 = 𝐶 1 ⊗ 𝐶 2 , then we can prove the result like we proved the corresponding case in
+//! Lemma 5.5 using Lemma 6.1.
+//! • If 𝐶 = 𝐶 1 & 𝐶 2 , then we the case where 𝜋 = 1 is immediate, so we can assume without
+//! loss of generality that 𝜋 = 𝜔, and, therefore, that 𝜋 ·𝐶 = 𝜋 ·𝐶 1 ⊗ 𝜋 ·𝐶 2 . By Lemma 6.1, there
+//! exist Q1 and Q2 such that Q1 ⊢ 𝜔·𝐶 1 , Q2 ⊢ 𝜔·𝐶 2 and Q = Q1 ⊗ Q2 . By induction hypothesis,
+//! we get Q1 = 𝜔·Q1′ and Q2 = 𝜔·Q2′ such that Q1′ ⊢ 𝐶 1 and Q2′ ⊢ 𝐶 2 . From which it follows
+//! that 𝜔·Q1′ ⊗ 𝜔·Q2′ ⊢ 𝐶 1 and 𝜔·Q1′ ⊗ 𝜔·Q2′ ⊢ 𝐶 1 (by Lemma B.5) and, ﬁnally, Q = 𝜔·Q (by
+//! Lemma B.6) and Q ⊢ 𝐶 1 & 𝐶 2 .
+//! • If 𝐶 = 𝜌·(Q1 =◦ 𝐶 ′ ), then 𝜋 ·𝐶 = (𝜋 ·𝜌)·(Q1 =◦ 𝐶 ′ ). The result follows immediately by Lemma 6.1.
+//! 
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:34
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! Proof of Lemma 6.4. By induction on Γ ⊢◮ e : 𝜏 { 𝐶
+//! G-Var We have
+//! • Γ1 = x:1∀a.Q =◦ 𝜐
+//! • Γ1 + 𝜔·Γ2 ⊢◮ x : 𝜐 [𝜏/a] { Q[𝜏 /a]
+//! • Qg ⊢ Q[𝜏/a]
+//! Therefore, by rules E-Var and E-Sub, it follows immediately that Qg ; Γ1 + 𝜔·Γ2 ⊢ x : 𝜐 [𝜏/a]
+//! G-Abs We have
+//! • Γ ⊢◮ 𝜆x.e : 𝜏0 →𝜋 𝜏 { 𝐶
+//! • Qg ⊢ 𝐶
+//! • Γ, x:𝜋 𝜏0 ⊢◮ e : 𝜏 { 𝐶
+//! By induction hypothesis we have
+//! • Qg ; Γ, x:𝜋 𝜏0 ⊢ e : 𝜏
+//! From which follows that Qg ; Γ ⊢ 𝜆x.e : 𝜏0 →𝜋 𝜏.
+//! G-Let We have
+//! • 𝜋 ·Γ1 + Γ2 ⊢◮ let𝜋 x = e1 in e2 : 𝜏 { 𝜋 ·𝐶 1 ⊗ 𝐶 2
+//! • Qg ⊢ 𝜋 ·𝐶 1 ⊗ 𝐶 2
+//! • Γ2, x:𝜋 𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
+//! • Γ1 ⊢◮ e1 : 𝜏1 { 𝐶 1
+//! By Lemmas 6.1 and 6.3, there exist Q1 , 𝑄 D and Q2 such that
+//! • Q1 ⊗ 𝑄 D ⊢ 𝐶 1
+//! • 𝑄 D ⊗ Q2 ⊢ 𝐶 2
+//! • Qg = 𝜋 ·Q1 ⊗ 𝑄 D ⊗ Q2
+//! • 𝑄D ∈ D
+//! • 𝜋 ·𝑄 D = 𝑄 D
+//! By induction hypothesis we have
+//! • Q1 ⊗ 𝑄 D ; Γ1 ⊢ e1 : 𝜏1
+//! • 𝑄 D ⊗ Q2 ; Γ2, x:𝜋 𝜏1 ⊢ e1 : 𝜏1
+//! From which follows that Qg ; 𝜋 ·Γ1 + Γ2 ⊢ let𝜋 x = e1 in e2 : 𝜏.
+//! G-LetSig We have
+//! • 𝜋 ·Γ1 + Γ2 ⊢◮ let𝜋 x : ∀a.Q =◦ 𝜏1 = e1 in e2 : 𝜏 { 𝐶 2 ⊗ 𝜋 ·(Q =◦ 𝐶 1 )
+//! • Qg ⊢ 𝐶 2 ⊗ 𝜋 ·(Q =◦ 𝐶 1 )
+//! • Γ1 ⊢◮ e1 : 𝜏1 { 𝐶 1
+//! • Γ2, x:𝜋 ∀a.Q =◦ 𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
+//! By Lemmas 6.1 and 6.3, there exist Q1 , 𝑄 D , Q2 such that
+//! • 𝑄 D ⊗ Q2 ⊢ 𝐶 2
+//! • Q1 ⊗ 𝑄 D ⊗ Q ⊢ 𝐶
+//! • Qg = 𝜋 ·Q1 ⊗ 𝑄 D ⊗ Q2
+//! • 𝑄D ∈ D
+//! • 𝜋 ·𝑄 D = 𝑄 D
+//! By induction hypothesis
+//! • Q1 ⊗ 𝑄 D ⊗ Q; Γ1 ⊢ e1 : 𝜏1
+//! • 𝑄 D ⊗ Q2 ; Γ2, x:𝜋 ∀a.Q =◦ 𝜏1 ⊢ e2 : 𝜏
+//! Hence Qg ; 𝜋 ·Γ1 + Γ2 ⊢ let𝜋 x : ∀a.Q =◦ 𝜏1 = e1 in e2 : 𝜏
+//! G-App We have
+//! • Γ1 + 𝜋 ·Γ2 ⊢◮ e1 e2 : 𝜏 { 𝐶 1 ⊗ 𝜋 ·𝐶 2
+//! • Qg ⊢ 𝐶 1 ⊗ 𝜋 ·𝐶 2
+//! • Γ1 ⊢◮ e1 : 𝜏2 →𝜋 𝜏 { 𝐶 1
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:35
+//!
+//! • Γ2 ⊢◮ e2 : 𝜏2 { 𝐶 2
+//! By Lemmas 6.1 and 6.3, there exist Q1 , 𝑄 D , Q2 such that
+//! • Q1 ⊗ 𝑄 D ⊢ 𝐶 1
+//! • 𝑄 D ⊗ Q2 ⊢ 𝐶 2
+//! • Qg = Q1 ⊗ 𝑄 D ⊗ 𝜋 ·Q2
+//! • 𝑄D ∈ D
+//! • 𝜋 ·𝑄 D = 𝑄 D
+//! By induction hypothesis
+//! • Q1 ⊗ 𝑄 D ; Γ1 ⊢ e1 : 𝜏2 →𝜋 𝜏
+//! • 𝑄 D ⊗ Q2 ; Γ2 ⊢ e2 : 𝜏2
+//! Hence Qg ; Γ1 + 𝜋 ·Γ2 ⊢ e1 e2 : 𝜏.
+//! G-Pack We have
+//! • Γ ⊢◮  e : ∃a.𝜏 R Q { 𝐶 ⊗ Q[𝜐/a]
+//! • Qg ⊢ 𝐶 ⊗ Q[𝜐/a]
+//! • Γ ⊢◮ e : 𝜏 [𝜐/a] { 𝐶
+//! By Lemma 6.1, there exist Q1 , 𝑄 D , Q2 such that
+//! • Q1 ⊗ 𝑄 D ⊢ 𝐶
+//! • 𝑄 D ⊗ Q2 ⊢ Q[𝜐/a]
+//! • Qg = Q1 ⊗ 𝑄 D ⊗ Q2
+//! • 𝑄D ∈ D
+//! By induction hypothesis
+//! • Q1 ⊗ 𝑄 D ; Γ ⊢ e : 𝜏 [𝜐/a]
+//! So we have Q1 ⊗ 𝑄 D ⊗ Q[𝜐/a]; Γ ⊢  e : ∃a.𝜏 R Q. By Lemma B.3 rule E-Sub, we conclude
+//! Qg ; 𝜔·Γ ⊢  e : ∃a.𝜏 R Q.
+//! G-Unpack We have
+//! • Γ1 + Γ2 ⊢◮ let x = e1 in e2 : 𝜏 { 𝐶 1 ⊗ 1·(Q ′ =◦ 𝐶 2 )
+//! • Qg ⊢ 𝐶 1 ⊗ 1·(Q ′ =◦ 𝐶 2 )
+//! • Γ1 ⊢◮ e1 : ∃a.𝜏1 R Q ′ { 𝐶 1
+//! • Γ2, x:𝜋 𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
+//! By Lemma 6.1, there exist Q1 , 𝑄 D , Q2 such that
+//! • Q1 ⊗ 𝑄 D ⊢ 𝐶 1
+//! • 𝑄 D ⊗ Q2 ⊗ Q ′ ⊢ 𝐶 2
+//! • Qg = Q1 ⊗ 𝑄 D ⊗ Q2
+//! • 𝑄D ∈ D
+//! By induction hypothesis
+//! • Q1 ⊗ 𝑄 D ; Γ1 ⊢ e1 : ∃a.𝜏1 R Q ′
+//! • 𝑄 D ⊗ Q2 ⊗ Q; Γ2 ⊢ e2 : 𝜏
+//! Therefore Qg ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏.
+//! G-Case We have
+//! • 𝜋 ·Γ + Δ ⊢◮ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏 { 𝜋 ·𝐶 ⊗ & 𝐶 i
+//! • Qg ⊢ 𝜋 ·𝐶 ⊗ & 𝐶 i
+//! • Γ ⊢◮ e : T 𝜎 { 𝐶
+//! • For each 𝑖, Δ, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜎/a] ⊢◮ ei : 𝜏 { 𝐶 i
+//! By repeated uses of Lemma 6.1 as well as Lemma 6.3, there exist Q, 𝑄 D , Q ′ such that
+//! • Q ⊗ 𝑄D ⊢ 𝐶
+//! • For each 𝑖, 𝑄 D ⊗ Q ′ ⊢ 𝐶 i
+//! • Qg = 𝜋 ·Q ⊗ 𝑄 D ⊗ Q ′
+//! • 𝑄D ∈ D
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 95:36
+//!
+//! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
+//!
+//! • 𝜋 ·𝑄 D = 𝑄 D
+//! By induction hypothesis
+//! • Q ⊗ 𝑄 D; Γ ⊢ e : T 𝜎
+//! • For each 𝑖, 𝑄 D ⊗ Q ′ ; Δ, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜎/a] ⊢ ei : 𝜏
+//! Therefore Qg ; 𝜋 ·Γ + Δ ⊢ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏.
+//! 
+//! Proof of Lemma 6.5. By induction on U ; D; Li ⊢s 𝐶 { Lo
+//! S-Atom We have
+//! • U ; D; Li ⊢s 𝜋 ·q { Lo
+//! • U ; D; Li ⊢as 𝜋 ·q { Lo
+//! By Property 6.6 we have
+//! (1) Lo ⊆ Li
+//! (2) (U , D ⊎ Li ) 𝜋 ·q ⊗(∅, Lo )
+//! Then by C-Dom we have (U , Li ) ⊢ 𝜋 ·q ⊗(∅, Lo ).
+//! S-Add We have
+//! • U ; D; Li ⊢s 𝐶 1 & 𝐶 2 { Lo
+//! • U ; D; Li ⊢s 𝐶 1 { Lo
+//! • U ; D; Li ⊢s 𝐶 2 { Lo
+//! By induction hypothesis we have
+//! • Lo ⊆ Li
+//! • (U , D ⊎ Li ) ⊢ 𝐶 1 ⊗(∅, Lo )
+//! • (U , D ⊎ Li ) ⊢ 𝐶 2 ⊗(∅, Lo )
+//! Then by C-With we have (U , D ⊎ Li ) ⊢ 𝐶 1 & 𝐶 2 ⊗(∅, Lo ).
+//! S-Mult We have
+//! • U ; D; Li ⊢s 𝐶 1 ⊗ 𝐶 2 { Lo
+//! • U ; D; Li ⊢s 𝐶 1 { Lo′
+//! • U ; D; Lo′ ⊢s 𝐶 2 { Lo
+//! By induction hypothesis we have
+//! • Lo ⊆ Lo′
+//! • Lo′ ⊆ Li
+//! • (U , D ⊎ Li ) ⊢ 𝐶 1 ⊗(∅, Lo′ )
+//! • (U , D ⊎ Lo′ ) ⊢ 𝐶 2 ⊗(∅, Lo )
+//! Then
+//! • by transitivity of ⊆ we have Lo ⊆ Li , and by C-Tensor we have (U , D ⊎ Li ) ⊗(U , D ⊎ Lo′ ) ⊢
+//! 𝐶 1 ⊗ 𝐶 2 ⊗(∅, Lo′ ) ⊗(∅, Lo )
+//! • by B.3 and the deﬁnition of tensor on unrestricted constraints, we have (U , D ⊎ Li ) ⊗(∅, Lo′ ) ⊢
+//! 𝐶 1 ⊗ 𝐶 2 ⊗(∅, Lo′ ) ⊗(∅, Lo )
+//! • by Lemma 6.1 we have (U , Li ) ⊢ 𝐶 1 ⊗ 𝐶 2 ⊗(∅, Lo ).
+//! S-ImplOne We have
+//! • U ; D; Li ⊢s 1·((U0, L0 ) =◦ 𝐶) { Lo
+//! • U ∪ U0 ; D ⊎ (L0 ∩ D); Li ⊎ (L0 \ D) ⊢s 𝐶 { Lo
+//! • Lo ⊆ Li
+//! By induction hypothesis we have
+//! • (U ∪ U0, D ⊎ Li ⊎ L0 ) ⊢ 𝐶 ⊗(∅, Lo )
+//! • Lo ⊆ Li ⊎ L0
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//! Linearly Qualified Types
+//!
+//! 95:37
+//!
+//! Then we know that (∅, Li ) = (∅, Lo ) ⊗(∅, Li′ ) for some Li′ . Then by Lemma 6.1 we know that
+//! (U ∪ U0, D ⊎ Li′ ⊎ L0 ) ⊢ 𝐶 and by C-Impl we have (U , Li′ ) ⊢ 1·((U0 , L0 ) =◦ 𝐶). Finally, by
+//! C-Tensor we conclude that (U , Li ) ⊢ 1·((U0, L0 ) =◦ 𝐶) ⊗(∅, Lo )
+//! S-ImplMany We have
+//! • U ; D; Li ⊢s 𝜔·((U0, L0 ) =◦ 𝐶) { Li
+//! • U ∪ U0 ; L0 ∩ D; L0 \ D ⊢s 𝐶 { ∅
+//! By induction hypothesis we have
+//! • (U ∪ U0, L0 ) ⊢ 𝐶
+//! Then by C-Impl (U , ∅) ⊢ 𝜔·((U0, L0 ) =◦ 𝐶) and ﬁnally by rule C-Tensor we have (U , Li ) ⊢
+//! 𝜔·((U0, L0 ) =◦ 𝐶) ⊗(∅, Li ). Li ⊆ Li holds trivially.
+//! 
+//! Lemma B.5 (Weakening of wanteds). If Q ⊢ 𝐶, then 𝜔·Q ′ ⊗ Q ⊢ 𝐶
+//! Proof. This is proved by a straightforward induction on the derivation of Q ⊢ 𝐶, using the
+//! corresponding property on the simple-constraint entailment relation from Deﬁnition 5.3, for the
+//! C-Dom case.
+//! 
+//! Lemma B.6. The following equality holds: 𝜋 ·(𝜌·𝐶) = (𝜋 ·𝜌)·𝐶.
+//! Proof. This is proved by a straightforward induction on the structure of 𝐶, using Lemma B.1
+//! for the case 𝐶 = Q.
+//! 
+//!
+//! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
+//!
+//!
+//! --- PAGE BREAK ---
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!

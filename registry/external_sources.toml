@@ -7595,7 +7595,7 @@ truth_surfaces = [
 ]
 artifact_contract_paths = [
   "data/external/sparc_nfw/",
-  "bin/fetch_sparc_nfw_fits.py",
+  "crates/data_core/src/catalogs",
 ]
 has_full_transcript = false
 claim_refs = [

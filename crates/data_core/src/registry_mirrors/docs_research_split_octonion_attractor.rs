@@ -1,0 +1,33 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/research_narratives.toml -->
+//!
+//! # The Lost Hexagon and the Split-Octonion Attractor
+//!
+//! **Date:** 2026-02-10
+//! **Status:** Unified Theory of Hyper-Structure Imbalance
+//!
+//! This document formalizes the discovery of the "Split-Octonion Attractor" and the "Lost Hexagon" mechanism, connecting statistical imbalance in high-dimensional algebras to the specific null geometry of the 8-dimensional Split-Octonions.
+//!
+//! ## 1. The 3/8 Attractor (Statistical Limit)
+//! We verified (C-590) that the Imbalance Index $\psi$ (fraction of non-associative triads) for standard Cayley-Dickson algebras converges asymptotically to **0.375 (3/8)** as $N \to \infty$.
+//! *   This limit is not random. It matches exactly the static fraction of negative structure constants in the Split-Octonion multiplication table ($24/64 = 0.375$).
+//! *   **Implication:** High-dimensional standard algebras ($N \ge 16$) statistically "relax" into a state that mimics the local sign distribution of the Split-Octonions, even though they possess a definite Euclidean metric.
+//!
+//! ## 2. The 48-Element Null Cloud (Geometric Precursor)
+//! We discovered (C-591) that the Split-Octonion algebra contains a dense 'Null Cloud' of **48 zero-dividing pairs** of the form $v \cdot w = 0$.
+//! *   **G2 Root Link:** The zero-divisor structure is governed by exactly **12 Fundamental Units** (unique sets of 4 indices). This matches 1:1 with the **12 roots of the G2 Lie Algebra** (the automorphism group of the octonions).
+//! *   **Topology:** The 48 pairs form **four disjoint hexagons** ($4 \times C_6$).
+//!
+//! ## 3. The 'Missing 6' and SU(3) Shedding
+//! Comparing the precursor interactions to the realized Sedenion units:
+//! *   **Split-Octonion Improper Pairs:** 48.
+//! *   **Sedenion Fundamental Units:** 42.
+//! *   **Difference:** Exactly **6**.
+//!
+//! **Theory:** The 6-element difference corresponds to exactly **one hexagon** of the Null Cloud, which is isomorphic to the **6 roots of SU(3)** (a maximal subgroup of G2).
+//! *   To transition from the statistical 'Attractor' (Split-Octonion) to the rigid 'Realization' (Sedenion), the system must 'shed' one SU(3) symmetry layer (6 interactions).
+//! *   The '6 struts' of the octahedron (vertices or diagonals) act as the geometric constraint that forces this shedding, resulting in the 42-element Box-Kite structure.
+//!
+//! ## 4. Unified Theory
+//! Algebraic imbalance is the 'statistical shadow' of the Split-Octonion Null Cloud. The 3/8 limit represents the system at the cusp of forming the 48-element symmetric cloud, while the Sedenion structures (42) represent the system after the SU(3) symmetry-breaking event.
+//!

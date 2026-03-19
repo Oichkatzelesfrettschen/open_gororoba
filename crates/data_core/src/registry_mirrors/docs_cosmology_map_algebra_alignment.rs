@@ -1,0 +1,61 @@
+//! # Cosmology Map Algebra Alignment
+//!
+//! This audit ties three cosmology-map families to the repository's Cayley-Dickson and survey-analysis infrastructure: Euclid weak-lensing / deep-field catalogs, JWST COSMOS-Web weak-lensing mass-map artifacts, and basin-of-attraction work on the local universe.
+//!
+//! ## Acquisition status
+//!
+//! - Euclid supplementary Q1 catalogs are already local and governed through the Rust `euclid-fetch` lane.
+//! - JWST COSMOS-Web source material is cached locally as the paper, official pages, and three supplementary FITS mass-map payloads.
+//! - Basin-of-attraction material is cached locally as the paper, official page, and supplementary movie.
+//! - The full Euclid primary survey and full COSMOS-Web raw-imaging backends are not mirrored here; the repo holds bounded subsets and authoritative pointers instead.
+//! - The algebra side is grounded by in-repo sedenion / box-kite / holonomy papers already cached locally.
+//!
+//! ## Inventory
+//!
+//! | Family | Dataset | Kind | Local path | Size | Payload |
+//! |---|---|---|---|---:|---|
+//! | euclid | euclid_q1_morphology_catalogue | parquet | `data/external/euclid/zenodo/15106473/morphology_catalogue.parquet` | 92.8 MB | 380111 rows, 74 columns |
+//! | euclid | euclid_q1_useful_physical_measurements | parquet | `data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet` | 64.6 MB | 399562 rows, 33 columns |
+//! | euclid | euclid_q1_strong_lensing_candidates | csv | `data/external/euclid/zenodo/15025832/q1_discovery_engine_lens_catalog.csv` | 412.5 KB | 2584 data rows |
+//! | euclid | euclid_q1_merger_classification | csv | `data/external/euclid/zenodo/17087034/Q1_merger_classification.csv` | 37.8 MB | 563683 data rows |
+//! | euclid | euclid_q1_tap_manifest | json | `data/external/euclid/tap/euclid_tap_manifest.json` | 1.1 KB | manifest / metadata |
+//! | euclid | euclid_official_release_pages | html_bundle | `data/external/cosmology_maps/euclid_cosmic_web` | 4.0 KB | 3 files: esa_dark_cosmic_web_2023-06.html, esa_deep_fields_release_2025-03-19.html, esa_weak_lensing_explainer_2024-09-11.html |
+//! | jwst | jwst_public_observation_metadata | csv | `data/external/jwst_public_observations.csv` | 4.4 MB | 40000 JWST rows, 1531 unique proposals |
+//! | jwst | jwst_cosmosweb_dark_matter_paper | pdf | `data/external/cosmology_maps/jwst_cosmosweb_dark_matter/arxiv_2601.17239_ultra_high_resolution_dark_matter_map.pdf` | 3.6 MB | PDF with text sidecar: 1721 lines, 9729 words |
+//! | jwst | jwst_cosmosweb_massmap_fits_1 | fits | `data/external/cosmology_maps/jwst_cosmosweb_dark_matter/supplementary_data_1_m2.fits` | 410.6 KB | FITS image Float, shape [318, 328] |
+//! | jwst | jwst_cosmosweb_massmap_fits_2 | fits | `data/external/cosmology_maps/jwst_cosmosweb_dark_matter/supplementary_data_3_m4.fits` | 410.6 KB | FITS image Float, shape [318, 328] |
+//! | jwst | jwst_cosmosweb_massmap_fits_3 | fits | `data/external/cosmology_maps/jwst_cosmosweb_dark_matter/supplementary_data_5_m6.fits` | 410.6 KB | FITS image Float, shape [318, 328] |
+//! | basin | boa_local_universe_paper | pdf | `data/external/cosmology_maps/basin_of_attraction/arxiv_2409.17261_identification_of_basins_of_attraction.pdf` | 5.0 MB | PDF with text sidecar: 904 lines, 6645 words |
+//! | basin | boa_supplementary_movie | mp4 | `data/external/cosmology_maps/basin_of_attraction/supplementary_movie_m1.mp4` | 101.1 MB | supplementary video |
+//! | algebra_reference | reggiani_sedenion_geometry | pdf | `data/external/arxiv_2411.18881_sedenion_geometry.pdf` | 220.9 KB | PDF present |
+//! | algebra_reference | koebisu_zd_holonomy | pdf | `data/external/arxiv_2512.13002_zd_holonomy.pdf` | 825.4 KB | PDF present |
+//! | algebra_reference | de_marrais_boxkites_iii | pdf | `papers/pdf/de_marrais_2004_math0403113_boxkites_III.pdf` | 201.7 KB | PDF present |
+//! | algebra_reference | tang_sedenion_su5 | pdf | `papers/pdf/tang_2023_230814768_sedenion_su5.pdf` | 574.9 KB | PDF present |
+//!
+//! ## Repo analysis lanes
+//!
+//! - **Euclid morphology / physical measurements**: `euclid-fetch`, `euclid-dm-coupling`, `euclid-df-sweep`, `survey-crossmatch`, `harmonic-halo-stacking-manga`
+//! - **JWST public metadata / COSMOS-Web context**: `fetch-datasets --dataset "JWST Public Observation Metadata"`, `mast-program-clustering`, `catalog-feature-cube`, `multi-dataset-ultrametric`
+//! - **Basin / void / graph analogues**: `cosmic-dendrogram`, `generate-topological-voids`, `repo-visuals`, `survey-crossmatch`
+//! - **Algebraic structure lanes**: `boxkite_alignment`, `subalgebra`, `graph_projections`, `projective_geometry`, `codebook`, `sedenion_lifting`
+//!
+//! ## Dimension ladder
+//!
+//! - **4D**: Quaternion baseline: associative rotation and smooth geometric control.
+//! - **8D**: Octonion baseline: first non-associative comparison with still-rigid low-dimensional structure.
+//! - **16D**: Sedenion transition: zero-divisor onset, box-kites, annihilators, and basin splitting tests.
+//! - **32D**: Pathion extension: denser interaction-graph and higher-order zero-divisor web probes.
+//! - **64D**: Chingon scale-up: large graph-projection and alternativity-violation stress lane.
+//! - **128D**: 128D extension: intermediate high-dimensional optimization and sparsity stress regime.
+//! - **256D**: 256D Voudon lane: global imbalance-density and cosmology-facing smoothing hypotheses.
+//! - **512D**: 512D filtration lane: large-scale closure and affine/coset obstruction tests.
+//! - **1024D**: 1024D filtration lane: highest bounded prefix-chain and stress-test tier currently surfaced in-repo.
+//!
+//! ## Alignment guidance
+//!
+//! - Use **4D and 8D** as sanity baselines where geometry should remain interpretable without zero divisors.
+//! - Use **16D and 32D** when testing whether basin boundaries, lensing ridges, or overdensity cores align with zero-divisor graphs or box-kite-like decompositions.
+//! - Use **64D and 128D** for interaction-web and alternativity-violation stress tests once a lower-dimensional relation is stable.
+//! - Use **256D, 512D, and 1024D** only as extrapolation and optimization lanes unless a lower-dimensional physical analogue is already established.
+//! - Treat the cosmology sources as **observational fields and labels**, and the Cayley-Dickson tower as a **family of analysis projections**; do not treat visual resemblance alone as a physical equivalence claim.
+//!

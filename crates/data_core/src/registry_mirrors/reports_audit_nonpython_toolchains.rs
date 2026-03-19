@@ -1,0 +1,57 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! # Non-Python Toolchains Audit (2026-02-06)
+//!
+//! Goal: ensure non-Python targets have minimal reproducible setup guidance.
+//!
+//! ## Documentation presence
+//!
+//! - docs/requirements/cpp.md: yes
+//! - docs/requirements/rocq.md: yes
+//! - docs/requirements/latex.md: yes
+//! - docs/requirements/quantum-docker.md: yes
+//!
+//! ## Makefile targets (manual check)
+//!
+//! - C++: `cpp-deps`, `cpp-build`, `cpp-test`, `cpp-bench`, `cpp-clean`
+//! - Rocq: `rocq` (depends on `rocq`)
+//! - LaTeX: `latex` (depends on `latexmk`)
+//! - Docker/Qiskit: `docker-quantum-build`, `docker-quantum-run`, `docker-quantum-shell`
+//!
+//! ## Checklist
+//!
+//! - [ ] Each target above has a matching requirements doc entry.
+//! - [ ] Targets are opt-in (not part of `make smoke` or `make check`).
+//! - [ ] Version/pinning guidance exists where feasible.
+//!

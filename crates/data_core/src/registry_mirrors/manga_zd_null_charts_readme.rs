@@ -1,0 +1,17 @@
+//! # GHOST Paper Figures
+//!
+//! Generate from `../results.json`.
+//!
+//! ## Required
+//!
+//! 1. `snr_by_condition.png` -- Bar chart of detection SNR across experimental
+//!    conditions (5 bootstrap seeds, 3 subsamples). Framework conditions (blue)
+//!    cluster near SNR 0.46; NFW chi-squared positive control (green) at SNR 2.62;
+//!    injection recovery (red) at SNR 0.40. Error bars: +/- 1 std across seeds.
+//!
+//! 2. `power_spectrum_loglog.png` -- Log-log comparison of stacked residual power
+//!    spectra under different noise modeling assumptions: imposed red-noise
+//!    (gamma = 0.808), free-gamma fit (gamma ~ 0), and no-red-noise. Show how
+//!    noise model choice dominates the detection landscape while ZD conditions
+//!    remain stable at SNR 0.46.
+//!

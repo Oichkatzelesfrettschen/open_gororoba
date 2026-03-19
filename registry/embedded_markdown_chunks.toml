@@ -6825,7 +6825,7 @@ kind = "list_item"
 line_start = 37
 line_end = 37
 heading_level = 0
-text_ascii = "Run `make mcp-smoke` or `PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
+text_ascii = "Run `make mcp-smoke` or `PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
 text_sha256 = "1d7ae40162b6e58f8902ef9360fb5ec03856888ac539de121b1e3cf1ef1095ac"
 
 [[chunk]]
@@ -72044,7 +72044,7 @@ kind = "list_item"
 line_start = 312
 line_end = 312
 heading_level = 0
-text_ascii = "This repo's `make` targets create an isolated venv via `python3 -m venv venv` which does NOT"
+text_ascii = "This repo's `make` targets create an isolated venv via `cargo run --release --bin -m venv venv` which does NOT"
 text_sha256 = "4dba535a8ba45dff88af0685b255e076d0968411e18ffd3e8bc9f28374eb70a0"
 
 [[chunk]]
@@ -72099,7 +72099,7 @@ kind = "paragraph"
 line_start = 317
 line_end = 317
 heading_level = 0
-text_ascii = "`python3 -m venv --system-site-packages venv`"
+text_ascii = "`cargo run --release --bin -m venv --system-site-packages venv`"
 text_sha256 = "5686b062ac1a85a8101b5264c6a5cf097d4a7130d7661bf70ce0cfe935619b53"
 
 [[chunk]]
@@ -72132,7 +72132,7 @@ kind = "paragraph"
 line_start = 325
 line_end = 325
 heading_level = 0
-text_ascii = "Sanity-check note (this machine, system `python3` = 3.14.2, verified 2026-01-28):"
+text_ascii = "Sanity-check note (this machine, system `cargo run --release --bin` = 3.14.2, verified 2026-01-28):"
 text_sha256 = "7e9326d5a4ef81d4d273ef54c2eda85e333c2ece5d23aaf613f70fb0e730c04e"
 
 [[chunk]]
@@ -72143,7 +72143,7 @@ kind = "list_item"
 line_start = 326
 line_end = 326
 heading_level = 0
-text_ascii = "Venv (`venv/bin/python3`): none of these are installed by default."
+text_ascii = "Venv (`venv/bin/cargo run --release --bin`): none of these are installed by default."
 text_sha256 = "5da202928afd1fa1fa89cccf25c56814ba501478f6e0cd8623396f0daa42acbf"
 
 [[chunk]]
@@ -72154,7 +72154,7 @@ kind = "list_item"
 line_start = 327
 line_end = 327
 heading_level = 0
-text_ascii = "System `python3` import matrix with `PYTHONWARNINGS=error`:"
+text_ascii = "System `cargo run --release --bin` import matrix with `PYTHONWARNINGS=error`:"
 text_sha256 = "f685ffb781e472a2bd167c503e70a5af76142e092659ddda3b3741bce6f9011a"
 
 [[chunk]]
@@ -124921,7 +124921,7 @@ kind = "list_item"
 line_start = 164
 line_end = 164
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/back.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/back.pdf`"
 text_sha256 = "1d3d15b31ade16f98928537f88e9fb8ebed11297027b3a7608ffe138a4cef8c5"
 
 [[chunk]]
@@ -124932,7 +124932,7 @@ kind = "list_item"
 line_start = 165
 line_end = 165
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/filesave.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/filesave.pdf`"
 text_sha256 = "c2e0ff9c6f99849e115b9914798e07df30118469cdd6b9b0df90f89bb984b94d"
 
 [[chunk]]
@@ -124943,7 +124943,7 @@ kind = "list_item"
 line_start = 166
 line_end = 166
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/forward.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/forward.pdf`"
 text_sha256 = "b2a1402fb7a4ec97e12490a62b85d36ce4977440d65fcdcd8125438b980a96d7"
 
 [[chunk]]
@@ -124954,7 +124954,7 @@ kind = "list_item"
 line_start = 167
 line_end = 167
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/hand.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/hand.pdf`"
 text_sha256 = "eb1e0023abaf7cb1abadcffbb4b82c50ee3bdce530d83dd374d0094d5ec86bd5"
 
 [[chunk]]
@@ -124965,7 +124965,7 @@ kind = "list_item"
 line_start = 168
 line_end = 168
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/help.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/help.pdf`"
 text_sha256 = "ffb50f49a9935cfe9b037f41208430b3ca10b6ef43ae3bfaacb2fa2aae3c5490"
 
 [[chunk]]
@@ -124976,7 +124976,7 @@ kind = "list_item"
 line_start = 169
 line_end = 169
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/home.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/home.pdf`"
 text_sha256 = "41e035479a4c228f72c8b1c3cdb9f411d10d121557614cab69f093a5a66b6445"
 
 [[chunk]]
@@ -124987,7 +124987,7 @@ kind = "list_item"
 line_start = 170
 line_end = 170
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/matplotlib.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/matplotlib.pdf`"
 text_sha256 = "d07a5b843681f25bfb5d30d7b78127d4da7df50525dbf7eeb4a8780d351c79e4"
 
 [[chunk]]
@@ -124998,7 +124998,7 @@ kind = "list_item"
 line_start = 171
 line_end = 171
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/move.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/move.pdf`"
 text_sha256 = "631a66f283b23403b5f19a910f883aa20dd2f460c4bae4617b5be246c86252c0"
 
 [[chunk]]
@@ -125009,7 +125009,7 @@ kind = "list_item"
 line_start = 172
 line_end = 172
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf`"
 text_sha256 = "ca1035bb5e268c01868144f921d2d10103cb9679d26133f9688977858976846d"
 
 [[chunk]]
@@ -125020,7 +125020,7 @@ kind = "list_item"
 line_start = 173
 line_end = 173
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/subplots.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/subplots.pdf`"
 text_sha256 = "397fdd9e1f94637fdefe682d69c707fa3629c1526d7e873432a8e6cedab79d7a"
 
 [[chunk]]
@@ -125031,7 +125031,7 @@ kind = "list_item"
 line_start = 174
 line_end = 174
 heading_level = 0
-text_ascii = "`.mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf`"
+text_ascii = "`.mamba/envs/qiskit_env/lib/cargo run --release --bin.11/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf`"
 text_sha256 = "eed22cb1e4d81d5cacf40885d7b25d6299b76652940c20cc4344f76631d3178b"
 
 [[chunk]]
@@ -125042,7 +125042,7 @@ kind = "list_item"
 line_start = 175
 line_end = 175
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/back.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/back.pdf`"
 text_sha256 = "488011b452d99c5d3ced6a51fc6184a573feda2888d637d81b8b7e41788ad35c"
 
 [[chunk]]
@@ -125053,7 +125053,7 @@ kind = "list_item"
 line_start = 176
 line_end = 176
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/filesave.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/filesave.pdf`"
 text_sha256 = "f119a9266db05518a82cf2e2045eae9b94eda289bd53fed49d3e9be334344a02"
 
 [[chunk]]
@@ -125064,7 +125064,7 @@ kind = "list_item"
 line_start = 177
 line_end = 177
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/forward.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/forward.pdf`"
 text_sha256 = "78ce037e7aa0a0909e5d12cdd3409a245809bdbe23e350da80efeb10e9f6b811"
 
 [[chunk]]
@@ -125075,7 +125075,7 @@ kind = "list_item"
 line_start = 178
 line_end = 178
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/hand.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/hand.pdf`"
 text_sha256 = "b0a395d5109dd7a7ae432318ef9e0dff1a51510dc6116364e239d2a04cfb29f7"
 
 [[chunk]]
@@ -125086,7 +125086,7 @@ kind = "list_item"
 line_start = 179
 line_end = 179
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/help.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/help.pdf`"
 text_sha256 = "a3b0cc5f7112b80835362728f2ceb8c466dd2dd73207e8e0f07479e51012056e"
 
 [[chunk]]
@@ -125097,7 +125097,7 @@ kind = "list_item"
 line_start = 180
 line_end = 180
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/home.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/home.pdf`"
 text_sha256 = "785d934835db4e4f494efa063d84b8c00c3183e9f923d4650fd1d300e9e8c0a5"
 
 [[chunk]]
@@ -125108,7 +125108,7 @@ kind = "list_item"
 line_start = 181
 line_end = 181
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/matplotlib.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/matplotlib.pdf`"
 text_sha256 = "915708851b8912bc78a6e8753c20022ecb8063b8d29cf69976135d5918d94ba5"
 
 [[chunk]]
@@ -125119,7 +125119,7 @@ kind = "list_item"
 line_start = 182
 line_end = 182
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/move.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/move.pdf`"
 text_sha256 = "ff5121af90831776891c742660477cd7dad0fd6101dfd6e24389a32f310251a6"
 
 [[chunk]]
@@ -125130,7 +125130,7 @@ kind = "list_item"
 line_start = 183
 line_end = 183
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf`"
 text_sha256 = "a4cf34befaac07c410822aac1f8112418df21834c04ded5d27d4a372785443e8"
 
 [[chunk]]
@@ -125141,7 +125141,7 @@ kind = "list_item"
 line_start = 184
 line_end = 184
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/subplots.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/subplots.pdf`"
 text_sha256 = "8dc11cbb65b91a69861fa28423f3e36c0dc88ff48ca65ded46b2fd2aeaed74c3"
 
 [[chunk]]
@@ -125152,7 +125152,7 @@ kind = "list_item"
 line_start = 185
 line_end = 185
 heading_level = 0
-text_ascii = "`venv/lib/python3.14/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf`"
+text_ascii = "`venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf`"
 text_sha256 = "767d368467c02af2973a9eb2569ee6de5fcda2b2c484b5c29f3b5080cf931d80"
 
 [[chunk]]

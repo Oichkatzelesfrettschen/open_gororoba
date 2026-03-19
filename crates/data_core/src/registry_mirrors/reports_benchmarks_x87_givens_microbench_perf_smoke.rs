@@ -1,0 +1,18 @@
+//! # x87 Givens Microbench
+//!
+//! Median timings for the actual composed x87 Givens/transcendental helpers used by the current backend.
+//!
+//! ## obstruction_like
+//!
+//! | kernel | median_ns | ns_per_call |
+//! | --- | ---: | ---: |
+//! | x87_atan2_sincos | 5087560 | 101.751 |
+//! | givens_sincos_ext80 | 5192690 | 103.854 |
+//! | x87_givens_diagonal_update | 291560 | 5.831 |
+//!
+//! ## Notes
+//!
+//! - `givens_sincos_f64` and `givens_sincos_ext80` measure the composed half-angle Givens path the current Jacobi backend actually uses.
+//! - `x87_atan2_sincos` measures the older full-angle composition without the half-angle step.
+//! - `x87_givens_diagonal_update` isolates the 2x2 polynomial update so the transcendental path can be compared against the update path directly.
+//!

@@ -1,0 +1,34 @@
+//! # Jacobi Backend Sweep
+//!
+//! | family | size | default policy | fastest successful backend | lowest max abs error |
+//! | --- | ---: | --- | --- | --- |
+//! | clustered_pairs | 4 | x87 | x87 | reference_f64 |
+//! | clustered_pairs | 8 | x87 | reference_f64 | x87 |
+//! | clustered_pairs | 16 | x87 | reference_f64 | x87 |
+//! | known_spectrum | 4 | x87 | double_double | x87 |
+//! | known_spectrum | 8 | x87 | x87 | x87 |
+//! | known_spectrum | 16 | x87 | reference_f64 | reference_f64 |
+//!
+//! ## Rows
+//!
+//! | family | size | backend | status | selected | median ns | max abs error | rms abs error |
+//! | --- | ---: | --- | --- | --- | ---: | ---: | ---: |
+//! | known_spectrum | 4 | reference_f64 | ok | false | 540 | 1.776357e-15 | 1.350645e-15 |
+//! | known_spectrum | 4 | double_double | ok | false | 410 | 1.776357e-15 | 1.350645e-15 |
+//! | known_spectrum | 4 | x87 | ok | true | 470 | 8.881784e-16 | 6.753223e-16 |
+//! | known_spectrum | 8 | reference_f64 | ok | false | 13910 | 4.440892e-15 | 1.892271e-15 |
+//! | known_spectrum | 8 | double_double | ok | false | 39400 | 3.552714e-15 | 2.613449e-15 |
+//! | known_spectrum | 8 | x87 | ok | true | 11870 | 2.664535e-15 | 1.378310e-15 |
+//! | known_spectrum | 16 | reference_f64 | ok | false | 54670 | 8.881784e-15 | 3.387659e-15 |
+//! | known_spectrum | 16 | double_double | ok | false | 171970 | 1.243450e-14 | 6.519489e-15 |
+//! | known_spectrum | 16 | x87 | ok | true | 76090 | 8.881784e-15 | 4.059532e-15 |
+//! | clustered_pairs | 4 | reference_f64 | ok | false | 290 | 8.881784e-16 | 8.382000e-16 |
+//! | clustered_pairs | 4 | double_double | ok | false | 310 | 8.881784e-16 | 8.382000e-16 |
+//! | clustered_pairs | 4 | x87 | ok | true | 240 | 8.881784e-16 | 7.021667e-16 |
+//! | clustered_pairs | 8 | reference_f64 | ok | false | 4180 | 1.332268e-15 | 5.495324e-16 |
+//! | clustered_pairs | 8 | double_double | ok | false | 28741 | 1.776357e-15 | 9.096040e-16 |
+//! | clustered_pairs | 8 | x87 | ok | true | 7510 | 4.440892e-16 | 1.798767e-16 |
+//! | clustered_pairs | 16 | reference_f64 | ok | false | 42170 | 6.217249e-15 | 2.488268e-15 |
+//! | clustered_pairs | 16 | double_double | ok | false | 155020 | 5.329071e-15 | 2.846266e-15 |
+//! | clustered_pairs | 16 | x87 | ok | true | 77650 | 2.664535e-15 | 1.370181e-15 |
+//!

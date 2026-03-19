@@ -1,0 +1,24 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/monograph.toml -->
+//!
+//! # Volume I: Algebraic Foundations of Flow
+//!
+//! ## 1.1 The Geometry of Interaction
+//! We posit that the nonlinear advection term $(u \cdot \nabla) u$ in the Navier-Stokes equations can be mapped to the root system of the E7 Lie algebra.
+//!
+//! ### 1.1.1 The E7 Root System
+//! The E7 root system $\Phi_{E7}$ consists of 126 vectors in $\mathbb{R}^7$. It is a subsystem of the E8 lattice, specifically the set of roots orthogonal to a fixed root $\alpha \in \Phi_{E8}$.
+//!
+//! **Definition 1.1:** Let $\Phi_{E8}$ be the set of 240 roots of E8. Let $\xi \in \Phi_{E8}$ be a fixed reference root. The E7 root system is defined as:
+//! $$ \Phi_{E7} = \{ \alpha \in \Phi_{E8} \mid (\alpha, \xi) = 0 \} $$
+//!
+//! This projection preserves the inner product structure and the crystallographic property.
+//!
+//! ## 1.2 Triad Dynamics
+//! In spectral space, turbulence is driven by triad interactions satisfying $k + p + q = 0$.
+//!
+//! **Theorem 1.2 (Conjecture):** The set of active triads in fully developed turbulence maps isomorphically to the set of structure constants $N_{\alpha,\beta}$ in the E7 Lie algebra, where $\alpha, \beta, \gamma \in \Phi_{E7}$ and $\alpha + \beta + \gamma = 0$.
+//!
+//! ### 1.2.1 The Structure Tensor
+//! The interaction strength is given by the structure tensor $T_{kpq}$. In our algebraic model, this corresponds to the projection of the E7 structure constants onto the flow manifold.
+//!

@@ -64,7 +64,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
                 canonical_db.display().to_string(),
                 "--output".into(),
                 stage_out
-                    .join("INSIGHTS_REGISTRY_MIRROR.md")
+                    .join("insights_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -76,7 +76,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
                 canonical_db.display().to_string(),
                 "--output".into(),
                 stage_out
-                    .join("CLAIMS_REGISTRY_MIRROR.md")
+                    .join("claims_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -86,7 +86,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("BIBLIOGRAPHY_REGISTRY_MIRROR.md")
+                    .join("bibliography_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -98,7 +98,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
                 canonical_db.display().to_string(),
                 "--output".into(),
                 stage_out
-                    .join("EXPERIMENTS_REGISTRY_MIRROR.md")
+                    .join("experiments_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -110,7 +110,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
                 canonical_db.display().to_string(),
                 "--output".into(),
                 stage_out
-                    .join("THEOREMS_REGISTRY_MIRROR.md")
+                    .join("theorems_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -120,7 +120,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("ROADMAP_REGISTRY_MIRROR.md")
+                    .join("roadmap_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -130,7 +130,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("TODO_REGISTRY_MIRROR.md")
+                    .join("todo_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -140,7 +140,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("NEXT_ACTIONS_REGISTRY_MIRROR.md")
+                    .join("next_actions_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -150,7 +150,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("REQUIREMENTS_REGISTRY_MIRROR.md")
+                    .join("requirements_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -160,7 +160,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md")
+                    .join("knowledge_migration_plan_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -170,7 +170,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("NAVIGATOR_REGISTRY_MIRROR.md")
+                    .join("navigator_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -180,7 +180,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("ENTRYPOINT_DOCS_REGISTRY_MIRROR.md")
+                    .join("entrypoint_docs_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -190,7 +190,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md")
+                    .join("markdown_governance_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -200,7 +200,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("CLAIMS_TASKS_REGISTRY_MIRROR.md")
+                    .join("claims_tasks_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -210,7 +210,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
+                    .join("claims_domains_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -220,7 +220,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("CLAIM_TICKETS_REGISTRY_MIRROR.md")
+                    .join("claim_tickets_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -230,7 +230,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("EXTERNAL_SOURCES_REGISTRY_MIRROR.md")
+                    .join("external_sources_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -240,7 +240,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("RESEARCH_NARRATIVES_REGISTRY_MIRROR.md")
+                    .join("research_narratives_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -250,7 +250,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("BOOK_DOCS_REGISTRY_MIRROR.md")
+                    .join("book_docs_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -260,7 +260,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md")
+                    .join("docs_root_narratives_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -270,7 +270,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md")
+                    .join("data_artifact_narratives_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -280,7 +280,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("REPORTS_NARRATIVES_REGISTRY_MIRROR.md")
+                    .join("reports_narratives_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -290,7 +290,7 @@ fn mirror_jobs(stage_root: &Path, out_dir: &Path, canonical_db: &Path) -> Vec<Jo
             args: vec![
                 "--output".into(),
                 stage_out
-                    .join("DOCS_CONVOS_REGISTRY_MIRROR.md")
+                    .join("docs_convos_registry_mirror.rs")
                     .display()
                     .to_string(),
             ],
@@ -304,7 +304,7 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             command: "insights-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("docs/INSIGHTS.md").display().to_string(),
+                stage_root.join("crates/data_core/src/registry_mirrors/insights.rs").display().to_string(),
             ],
         },
         Job {
@@ -312,7 +312,7 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             args: vec![
                 "--output".into(),
                 stage_root
-                    .join("docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md")
+                    .join("crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs")
                     .display()
                     .to_string(),
             ],
@@ -321,21 +321,21 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             command: "theorems-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("docs/THEOREMS.md").display().to_string(),
+                stage_root.join("crates/data_core/src/registry_mirrors/theorems.rs").display().to_string(),
             ],
         },
         Job {
             command: "roadmap-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("docs/ROADMAP.md").display().to_string(),
+                stage_root.join("crates/data_core/src/registry_mirrors/roadmap.rs").display().to_string(),
             ],
         },
         Job {
             command: "todo-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("docs/TODO.md").display().to_string(),
+                stage_root.join("crates/data_core/src/registry_mirrors/todo.rs").display().to_string(),
             ],
         },
         Job {
@@ -343,7 +343,7 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             args: vec![
                 "--output".into(),
                 stage_root
-                    .join("docs/NEXT_ACTIONS.md")
+                    .join("crates/data_core/src/registry_mirrors/next_actions.rs")
                     .display()
                     .to_string(),
             ],
@@ -356,7 +356,7 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             command: "navigator-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("NAVIGATOR.md").display().to_string(),
+                stage_root.join("crates/data_core/src/registry_mirrors/navigator.rs").display().to_string(),
             ],
         },
         Job {
@@ -368,7 +368,7 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             args: vec![
                 "--output".into(),
                 stage_root
-                    .join("docs/BIBLIOGRAPHY.md")
+                    .join("crates/data_core/src/registry_mirrors/bibliography.rs")
                     .display()
                     .to_string(),
             ],
@@ -383,7 +383,7 @@ fn claims_sync_legacy_jobs(stage_root: &Path, repo_root: &Path) -> Vec<Job> {
             args: vec![
                 "--output".into(),
                 stage_root
-                    .join("docs/CLAIMS_EVIDENCE_MATRIX.md")
+                    .join("crates/data_core/src/registry_mirrors/claims_evidence_matrix.rs")
                     .display()
                     .to_string(),
             ],
@@ -393,7 +393,7 @@ fn claims_sync_legacy_jobs(stage_root: &Path, repo_root: &Path) -> Vec<Job> {
             args: vec![
                 "--output".into(),
                 stage_root
-                    .join("docs/CLAIMS_TASKS.md")
+                    .join("crates/data_core/src/registry_mirrors/claims_tasks.rs")
                     .display()
                     .to_string(),
             ],

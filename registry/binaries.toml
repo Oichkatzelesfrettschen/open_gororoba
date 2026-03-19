@@ -454,7 +454,7 @@ experiment = "E-148"
 [[binary]]
 name = "euclid-fetch"
 crate = "gororoba_cli_data"
-description = "Rust-native Euclid Q1 fetcher for Zenodo supplementary catalogs and ESA/IRSA TAP queries. Subcommands: zenodo-discover, zenodo-download, tap-tables, tap-query. Replaces the fetch_euclid.py and fetch_euclid_zenodo.py bridge scripts."
+description = "Rust-native Euclid Q1 fetcher for Zenodo supplementary catalogs and ESA/IRSA TAP queries. Subcommands: zenodo-discover, zenodo-download, tap-tables, tap-query. Replaces the fetch_euclid.py and crates/data_core/src/catalogs/euclid.rs bridge scripts."
 experiment = "E-140"
 
 [[binary]]
@@ -1728,3 +1728,70 @@ crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
 
+# CLI binaries registry -- generated from the canonical SQLite control plane.
+# [ ... rest of file ... ]
+
+[[binary]]
+name = "fractional-schrodinger"
+crate = "gororoba_cli_quantum"
+description = "Fractional Schrodinger Equation Solver (Spectral/Strang)"
+
+[[binary]]
+name = "spectral-flow"
+crate = "gororoba_cli_algebra"
+description = "Spectral Flow of Sedenion Field tracking energy modes via SVD"
+
+[[binary]]
+name = "mutual-information-phase"
+crate = "gororoba_cli_algebra"
+description = "Cross-algebra mutual information analysis of per-galaxy DFT phases (KSG estimator)"
+
+[[binary]]
+name = "analyze-multiscale-ghost"
+crate = "gororoba_cli_algebra"
+description = "Multiscale CWT Analysis for Ghost Detection in S-Band and ALICE data"
+
+[[binary]]
+name = "quantile-periodogram"
+crate = "gororoba_cli_algebra"
+description = "Quantile Periodogram Spectral Analysis using Clarabel LP solver"
+
+[[binary]]
+name = "generate-synthetic-ghost"
+crate = "gororoba_cli_data"
+description = "Generate synthetic datasets for ghost spectral audit (Normal, Pareto, LogNormal, etc.)"
+
+[[binary]]
+name = "projector-fhs-polar"
+crate = "gororoba_cli_quantum"
+description = "Projector-FHS with polar link stabilization (SVD-based multiband Chern numbers)"
+
+[[binary]]
+name = "absorber-pareto"
+crate = "gororoba_cli_quantum"
+description = "Absorber Pareto sweep: edge mass vs interior distortion optimization"
+
+[[binary]]
+name = "fracton-code"
+crate = "gororoba_cli_quantum"
+description = "Fracton Stabilizer Code Visualization (Rule-90 Sierpinski Mask)"
+
+[[binary]]
+name = "fractal-css-expanded"
+crate = "gororoba_cli_quantum"
+description = "Fractal CSS Expanded Stabilizer Search and GF(2) rank computation"
+
+[[binary]]
+name = "pseudospectrum-slice"
+crate = "gororoba_cli_quantum"
+description = "Pseudospectrum slice of the Dirichlet Laplacian resolvent"
+
+[[binary]]
+name = "grover-classical-comparison"
+crate = "gororoba_cli_quantum"
+description = "Quantum vs Classical Search Benchmark verifying O(sqrt(N/M)) speedup"
+
+[[binary]]
+name = "kk-mskk2"
+crate = "gororoba_cli_physics"
+description = "Multi-Anchor Kramers-Kronig (MSKK-2) comparison tool for optical reconstruction"

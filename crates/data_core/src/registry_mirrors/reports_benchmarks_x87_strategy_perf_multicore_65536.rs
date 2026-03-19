@@ -1,0 +1,126 @@
+//! # x87 Strategy Benchmark Summary
+//!
+//! ## Run Context
+//!
+//! - Host: `x570-5600X3D`
+//! - CPU: `AMD Ryzen 5 5600X3D 6-Core Processor`
+//! - Problem size: `len=65536`
+//! - Repeats per row: `3`
+//! - RNG seed: `42`
+//! - Detected physical-core workers: `6`
+//! - Worker sweep: `1,2,4,6`
+//! - Stability heuristic: rows are marked unstable when `worst_ns > 5 * median_ns` or `best_ns * 2 < median_ns`.
+//!
+//! ## dot_ill_conditioned
+//!
+//! Recommendations:
+//!
+//! - Fastest overall: `serial_avx2` with 1 worker(s), 0.010 ms, abs_err 4.19430e6, ulp 4706261610602168320
+//! - Fastest exact: `avx2_per_chunk_x87_final` with 2 worker(s), 0.051 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest exact parallel lane: `avx2_per_chunk_x87_final` with 2 worker(s), 0.051 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest <=1 ULP parallel lane: `avx2_per_chunk_x87_final` with 2 worker(s), 0.051 ms, abs_err 0.00000e0, ulp 0
+//!
+//! | Strategy | Workers | Median ms | Speedup vs serial x87 | Abs error | ULP error | Stable |
+//! |---|---:|---:|---:|---:|---:|---|
+//! | serial_naive | 1 | 0.046 | 1.180 | 1.57286e6 | 4699506211161112576 | yes |
+//! | serial_kahan | 1 | 0.182 | 0.297 | 0.00000e0 | 0 | yes |
+//! | serial_x87 | 1 | 0.054 | 1.000 | 0.00000e0 | 0 | yes |
+//! | serial_avx2 | 1 | 0.010 | 5.684 | 4.19430e6 | 4706261610602168320 | yes |
+//! | x87_per_chunk | 1 | 0.087 | 0.622 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 1 | 0.048 | 1.135 | 4.19430e6 | 4706261610602168320 | yes |
+//! | avx2_per_chunk_x87_final | 1 | 0.041 | 1.329 | 4.19430e6 | 4706261610602168320 | yes |
+//! | x87_per_chunk | 2 | 0.085 | 0.639 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 2 | 0.052 | 1.035 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 2 | 0.051 | 1.065 | 0.00000e0 | 0 | yes |
+//! | x87_per_chunk | 4 | 0.094 | 0.577 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 4 | 0.075 | 0.723 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 4 | 0.068 | 0.795 | 0.00000e0 | 0 | yes |
+//! | x87_per_chunk | 6 | 0.094 | 0.575 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 6 | 0.082 | 0.659 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 6 | 0.083 | 0.654 | 0.00000e0 | 0 | yes |
+//!
+//! ## dot_random
+//!
+//! Recommendations:
+//!
+//! - Fastest overall: `serial_avx2` with 1 worker(s), 0.010 ms, abs_err 2.13163e-13, ulp 15
+//! - Fastest exact: `serial_x87` with 1 worker(s), 0.053 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest exact parallel lane: `x87_per_chunk` with 2 worker(s), 0.083 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest <=1 ULP parallel lane: `x87_per_chunk` with 2 worker(s), 0.083 ms, abs_err 0.00000e0, ulp 0
+//!
+//! | Strategy | Workers | Median ms | Speedup vs serial x87 | Abs error | ULP error | Stable |
+//! |---|---:|---:|---:|---:|---:|---|
+//! | serial_naive | 1 | 0.046 | 1.161 | 5.54223e-13 | 39 | yes |
+//! | serial_kahan | 1 | 0.181 | 0.293 | 0.00000e0 | 0 | yes |
+//! | serial_x87 | 1 | 0.053 | 1.000 | 0.00000e0 | 0 | yes |
+//! | serial_avx2 | 1 | 0.010 | 5.400 | 2.13163e-13 | 15 | yes |
+//! | x87_per_chunk | 1 | 0.091 | 0.585 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 1 | 0.042 | 1.275 | 2.13163e-13 | 15 | yes |
+//! | avx2_per_chunk_x87_final | 1 | 0.041 | 1.313 | 2.13163e-13 | 15 | yes |
+//! | x87_per_chunk | 2 | 0.083 | 0.641 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 2 | 0.051 | 1.039 | 3.26850e-13 | 23 | yes |
+//! | avx2_per_chunk_x87_final | 2 | 0.050 | 1.069 | 3.26850e-13 | 23 | yes |
+//! | x87_per_chunk | 4 | 0.090 | 0.591 | 1.42109e-14 | 1 | yes |
+//! | avx2_per_chunk | 4 | 0.065 | 0.822 | 1.42109e-13 | 10 | yes |
+//! | avx2_per_chunk_x87_final | 4 | 0.070 | 0.756 | 1.27898e-13 | 9 | yes |
+//! | x87_per_chunk | 6 | 0.105 | 0.505 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 6 | 0.086 | 0.621 | 1.27898e-13 | 9 | yes |
+//! | avx2_per_chunk_x87_final | 6 | 0.088 | 0.604 | 1.27898e-13 | 9 | yes |
+//!
+//! ## sum_cancellation
+//!
+//! Recommendations:
+//!
+//! - Fastest overall: `serial_avx2` with 1 worker(s), 0.006 ms, abs_err 2.68221e-4, ulp 1179648000
+//! - Fastest exact: `serial_x87` with 1 worker(s), 0.049 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest exact parallel lane: none
+//! - Fastest <=1 ULP parallel lane: none
+//!
+//! | Strategy | Workers | Median ms | Speedup vs serial x87 | Abs error | ULP error | Stable |
+//! |---|---:|---:|---:|---:|---:|---|
+//! | serial_naive | 1 | 0.045 | 1.076 | 9.52631e-5 | 418971648 | yes |
+//! | serial_kahan | 1 | 0.181 | 0.270 | 9.52631e-5 | 418971648 | yes |
+//! | serial_x87 | 1 | 0.049 | 1.000 | 0.00000e0 | 0 | yes |
+//! | serial_avx2 | 1 | 0.006 | 8.329 | 2.68221e-4 | 1179648000 | yes |
+//! | x87_per_chunk | 1 | 0.086 | 0.568 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 1 | 0.039 | 1.252 | 2.68221e-4 | 1179648000 | yes |
+//! | avx2_per_chunk_x87_final | 1 | 0.035 | 1.383 | 2.68221e-4 | 1179648000 | yes |
+//! | x87_per_chunk | 2 | 0.077 | 0.632 | 3.34978e-5 | 147324928 | yes |
+//! | avx2_per_chunk | 2 | 0.046 | 1.053 | 3.42131e-4 | 1504706560 | yes |
+//! | avx2_per_chunk_x87_final | 2 | 0.047 | 1.040 | 3.42131e-4 | 1504706560 | yes |
+//! | x87_per_chunk | 4 | 0.081 | 0.604 | 3.92795e-5 | 172752896 | yes |
+//! | avx2_per_chunk | 4 | 0.072 | 0.681 | 2.81096e-4 | 1236271104 | yes |
+//! | avx2_per_chunk_x87_final | 4 | 0.069 | 0.709 | 2.81096e-4 | 1236271104 | yes |
+//! | x87_per_chunk | 6 | 0.099 | 0.495 | 7.96914e-5 | 350486528 | yes |
+//! | avx2_per_chunk | 6 | 0.083 | 0.591 | 5.48512e-5 | 241238016 | yes |
+//! | avx2_per_chunk_x87_final | 6 | 0.077 | 0.638 | 5.48512e-5 | 241238016 | yes |
+//!
+//! ## sum_positive
+//!
+//! Recommendations:
+//!
+//! - Fastest overall: `serial_avx2` with 1 worker(s), 0.006 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest exact: `serial_avx2` with 1 worker(s), 0.006 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest exact parallel lane: `avx2_per_chunk` with 2 worker(s), 0.046 ms, abs_err 0.00000e0, ulp 0
+//! - Fastest <=1 ULP parallel lane: `avx2_per_chunk` with 2 worker(s), 0.046 ms, abs_err 0.00000e0, ulp 0
+//!
+//! | Strategy | Workers | Median ms | Speedup vs serial x87 | Abs error | ULP error | Stable |
+//! |---|---:|---:|---:|---:|---:|---|
+//! | serial_naive | 1 | 0.045 | 1.061 | 0.00000e0 | 0 | yes |
+//! | serial_kahan | 1 | 0.181 | 0.266 | 0.00000e0 | 0 | yes |
+//! | serial_x87 | 1 | 0.048 | 1.000 | 0.00000e0 | 0 | yes |
+//! | serial_avx2 | 1 | 0.006 | 8.466 | 0.00000e0 | 0 | yes |
+//! | x87_per_chunk | 1 | 0.099 | 0.489 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 1 | 0.051 | 0.942 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 1 | 0.043 | 1.117 | 0.00000e0 | 0 | yes |
+//! | x87_per_chunk | 2 | 0.076 | 0.636 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 2 | 0.046 | 1.045 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 2 | 0.047 | 1.019 | 0.00000e0 | 0 | yes |
+//! | x87_per_chunk | 4 | 0.094 | 0.513 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 4 | 0.066 | 0.728 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 4 | 0.064 | 0.747 | 0.00000e0 | 0 | yes |
+//! | x87_per_chunk | 6 | 0.114 | 0.423 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk | 6 | 0.079 | 0.612 | 0.00000e0 | 0 | yes |
+//! | avx2_per_chunk_x87_final | 6 | 0.075 | 0.645 | 0.00000e0 | 0 | yes |
+//!
+//!

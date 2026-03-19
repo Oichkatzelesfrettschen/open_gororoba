@@ -1,0 +1,104 @@
+//! # Module File Consolidation Rules
+//!
+//! ## Objective
+//! Define deterministic, file-by-file consolidation behavior for `src/lambda_unified/modules/*` with non-destructive defaults and reproducible evidence.
+//!
+//! ## Evidence and Inputs
+//! - Inventory table: `logs/module_file_inventory_20260213_160655.tsv`
+//! - Decision table: `logs/module_consolidation_decisions_20260213_160743.tsv`
+//! - Decision summary: `logs/module_consolidation_summary_20260213_160743.md`
+//! - Stable copies for current phase:
+//!   - `docs/module_file_inventory_latest.tsv`
+//!   - `docs/module_file_consolidation_decisions_latest.tsv`
+//!
+//! ## Tooling Used
+//! - Discovery and enumeration: `rg --files`, `find`
+//! - File characterization: `file`, `stat`, `wc -l`, `sha256sum`
+//! - Classification and policy derivation: `awk`
+//! - Rule generation script: `scripts/generate_module_consolidation_rules.sh`
+//! - Gate orchestrator: `scripts/run_module_consolidation_gate.sh`
+//! - Archive execution script: `scripts/archive_module_duplicate_docs.sh`
+//! - Canonical index generation: `scripts/generate_module_canonical_indices.sh`
+//! - Policy verification: `scripts/verify_module_consolidation_rules.sh`
+//! - Python threading policy verification: `scripts/verify_python_multithreading_policy.sh`
+//!
+//! ## Decision Taxonomy
+//! - `KEEP_ROOT_INDEX`: keep `src/lambda_unified/modules/README.md` as root navigation index.
+//! - `KEEP_CANONICAL_CONTRACT`: keep `contracts/seed_manifest.env` as authoritative provenance metadata for each module.
+//! - `KEEP_MODULE_CANONICAL`: keep module-root legal/install metadata in module scope; do not deduplicate across modules.
+//! - `KEEP_DOC_SNAPSHOT`: keep docs snapshot files under `seed/docs/` as module provenance baseline.
+//! - `KEEP_ADMIN_AUDIT_ARTIFACT`: keep admin reports under `seed/admin/` as traceability records.
+//! - `KEEP_SOURCE_SNAPSHOT`: keep source files under `seed/source/` as reproducible upstream snapshots.
+//! - `KEEP_DATASET_SHARD`: keep binary dataset shards (parquet) under `seed/source/data/shards/`; merge by manifest/hash, not line edits.
+//! - `KEEP_TEST_SNAPSHOT`: keep tests under `seed/tests/` for behavior parity and migration checks.
+//! - `ARCHIVE_CANDIDATE_DUPLICATE_DOC`: exact duplicate doc copy in the same module; archive only after explicit review and approval.
+//! - `KEEP_ARCHIVED_DUPLICATE_RECORD`: duplicate already moved to archive namespace; keep for traceability.
+//! - `KEEP_ROOT_DERIVED_INDEX`: root-level generated index artifacts under `src/lambda_unified/modules/indices/`.
+//!
+//! ## Role-Based Consolidation Rules
+//! - `module_root_artifact`: canonical in module root. Merge only by reference at root-level docs and indexes.
+//! - `contract`: canonical in `contracts/`. Replace on new synthesis pass; do not manually edit in place.
+//! - `docs_seed`: preserve by default. Consolidate through index pages and cross-links. Only exact duplicates become archive candidates.
+//! - `source_seed`: preserve as snapshot. Promote into unified root code only with explicit patch proposals and tests.
+//! - `tests_seed`: preserve as migration safety net. Move only when replacement tests exist and pass.
+//! - `admin_seed`: preserve for audit lineage; archive superseded reports with hash logs when approved.
+//!
+//! ## File-by-File Source of Truth
+//! For every file under `src/lambda_unified/modules`, use the row in:
+//! - `docs/module_file_consolidation_decisions_latest.tsv`
+//!
+//! Column semantics:
+//! - `decision`: required action class.
+//! - `canonical_path`: canonical equivalent when duplicates exist.
+//! - `merge_rule`: approved merge mechanism.
+//! - `archive_rule`: archive condition and destination rule.
+//! - `rationale`: evidence-backed reasoning.
+//!
+//! ## Explicit Archive Candidates (Current Pass)
+//! No pending `ARCHIVE_CANDIDATE_DUPLICATE_DOC` rows remain in `docs/module_file_consolidation_decisions_latest.tsv`.
+//! Archived duplicate records are classified as `KEEP_ARCHIVED_DUPLICATE_RECORD`.
+//!
+//! ## Archive Execution (This Pass)
+//! Archive moves were executed and hash-verified in:
+//! - `logs/module_archive_moves_20260213_160549.tsv`
+//! - `logs/module_archive_moves_20260213_160549.md`
+//! - stable pointer: `docs/module_archive_moves_latest.tsv`
+//!
+//! All three archive candidates were moved under:
+//! - `src/lambda_unified/modules/lambda_research/seed/docs/archive/duplicates/...`
+//!
+//! ## Generated Canonical Indices (This Pass)
+//! - `src/lambda_unified/modules/indices/CANONICAL_DOCS_INDEX.md`
+//! - `src/lambda_unified/modules/indices/CANONICAL_BIBLIOGRAPHY_INDEX.md`
+//! - `src/lambda_unified/modules/indices/MODULE_TOPIC_MAP.md`
+//! - generation log: `logs/module_canonical_indices_20260213_160748.md`
+//!
+//! ## Verification (This Pass)
+//! Consolidation policy verification report:
+//! - `logs/module_consolidation_verification_20260213_163120.md`
+//! - `logs/module_consolidation_verification_failures_20260213_163120.tsv`
+//!
+//! Result: `PASS` with `220` checks and `0` failures.
+//!
+//! Python threading policy verification report:
+//! - `logs/python_multithreading_policy_20260213_163120.md`
+//! - `logs/python_multithreading_policy_20260213_163120.tsv`
+//! - exemptions registry: `docs/PYTHON_THREADING_EXEMPTIONS.tsv`
+//!
+//! Result: `PASS` with `11` compliant files, `40` active exemptions, `0` non-compliant files.
+//!
+//! ## Module-Specific Notes
+//! - `lambda_research`:
+//!   - High document density and taxonomy structure.
+//!   - Prefer consolidation by index unification and duplicate pruning (exact duplicates only).
+//! - `lambda_synthesis_experiments`:
+//!   - Includes 40 parquet shards in `seed/source/data/shards/`.
+//!   - Treat data files as immutable snapshot assets with hash-based provenance.
+//!   - Empty `__init__.py` files are intentional package markers and remain in place.
+//! - `lambdalearner`:
+//!   - Minimal module snapshot (metadata and package descriptors).
+//!   - Preserve module-root descriptors as canonical.
+//!
+//! ## Non-Destructive Execution Rule
+//! No file is deleted in this phase. Archive operations are move-only with hash-verified manifests and stable references in `docs/module_archive_moves_latest.tsv`.
+//!

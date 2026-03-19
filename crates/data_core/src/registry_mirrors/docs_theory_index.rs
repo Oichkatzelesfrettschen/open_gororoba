@@ -1,0 +1,13 @@
+//! # Theory Narratives
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/research_narratives.toml -->
+//!
+//! This index and all files under `docs/theory/*.md` are generated from TOML.
+//!
+//! - `RN-032` `NARRATIVE`: `docs/theory/OPTIMIZATION_BREAKTHROUGHS.md`
+//! - `RN-033` `NARRATIVE`: `docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md`
+//! - `RN-034` `NARRATIVE`: `docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md`
+//! - `RN-035` `NARRATIVE`: `docs/theory/WARP_RING_PHYSICS.md`
+//! - `RN-036` `NARRATIVE`: `docs/theory/cayley_dickson_integrable_expanders.md`
+//!

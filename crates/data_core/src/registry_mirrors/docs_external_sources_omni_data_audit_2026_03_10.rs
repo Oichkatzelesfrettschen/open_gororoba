@@ -1,0 +1,97 @@
+//! <!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+//! <!-- Source of truth: registry/external_sources.toml -->
+//! <!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+//! <!-- Source label: XS-015 -->
+//! <!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
+//!
+//! # OMNI Data Audit (2026-03-10)
+//!
+//! This note captures the actual governed OMNI lane staged in the repo after the
+//! AMDA fallback work. The key truth is that OMNI is not one uniform byte source
+//! locally. It is a mixed-lineage lane:
+//!
+//! - Canonical SPDF OMNI2 fixed-width yearly ASCII is staged for `2020-2025`.
+//! - Governed AMDA `omni-hour-all` HAPI CSV fallback is staged continuously for
+//!   `1997-2019`.
+//! - The parser in `crates/data_core/src/catalogs/omni.rs` accepts both formats
+//!   explicitly.
+//!
+//! This is materially better than a single blocked/canonical story, but it also
+//! means the chronology packs that use OMNI today are operating on the AMDA lane,
+//! not on locally staged canonical OMNI2 yearly ASCII.
+//!
+//! ## Staged Local Coverage
+//!
+//! ### Canonical SPDF OMNI2 fixed-width yearly ASCII
+//!
+//! | Year | File | Rows | Valid |B| | Valid n | Valid V |
+//! | --- | --- | ---: | ---: | ---: | ---: |
+//! | 2020 | `data/external/omni2/omni2_2020.dat` | 8784 | 8784 | 8779 | 8783 |
+//! | 2021 | `data/external/omni2/omni2_2021.dat` | 8760 | 8543 | 8525 | 8548 |
+//! | 2022 | `data/external/omni2/omni2_2022.dat` | 8760 | 8760 | 8723 | 8723 |
+//! | 2023 | `data/external/omni2/omni2_2023.dat` | 8760 | 8712 | 8569 | 8569 |
+//! | 2024 | `data/external/omni2/omni2_2024.dat` | 8784 | 8752 | 8581 | 8581 |
+//! | 2025 | `data/external/omni2/omni2_2025.dat` | 8760 | 8712 | 8699 | 8699 |
+//!
+//! ### Governed AMDA fallback (`omni-hour-all`)
+//!
+//! | Year | File | Rows | Valid |B| | Valid n | Valid V |
+//! | --- | --- | ---: | ---: | ---: | ---: |
+//! | 1997 | `data/external/omni2/omni2_1997_amda_hourly.csv` | 8760 | 8637 | 8619 | 8619 |
+//! | 1998 | `data/external/omni2/omni2_1998_amda_hourly.csv` | 8760 | 8758 | 8462 | 8722 |
+//! | 1999 | `data/external/omni2/omni2_1999_amda_hourly.csv` | 8760 | 8736 | 8440 | 8722 |
+//! | 2000 | `data/external/omni2/omni2_2000_amda_hourly.csv` | 8784 | 8784 | 7987 | 8781 |
+//! | 2001 | `data/external/omni2/omni2_2001_amda_hourly.csv` | 8760 | 8760 | 7624 | 8738 |
+//! | 2002 | `data/external/omni2/omni2_2002_amda_hourly.csv` | 8760 | 8760 | 7578 | 8760 |
+//! | 2003 | `data/external/omni2/omni2_2003_amda_hourly.csv` | 8760 | 8760 | 8490 | 8683 |
+//! | 2004 | `data/external/omni2/omni2_2004_amda_hourly.csv` | 8784 | 8784 | 8584 | 8779 |
+//! | 2005 | `data/external/omni2/omni2_2005_amda_hourly.csv` | 8760 | 8760 | 8725 | 8735 |
+//! | 2006 | `data/external/omni2/omni2_2006_amda_hourly.csv` | 8760 | 8760 | 8706 | 8760 |
+//! | 2007 | `data/external/omni2/omni2_2007_amda_hourly.csv` | 8760 | 8760 | 8710 | 8760 |
+//! | 2008 | `data/external/omni2/omni2_2008_amda_hourly.csv` | 8784 | 8784 | 8730 | 8784 |
+//! | 2009 | `data/external/omni2/omni2_2009_amda_hourly.csv` | 8760 | 8760 | 8668 | 8760 |
+//! | 2010 | `data/external/omni2/omni2_2010_amda_hourly.csv` | 8760 | 8760 | 8622 | 8754 |
+//! | 2011 | `data/external/omni2/omni2_2011_amda_hourly.csv` | 8760 | 8760 | 8670 | 8758 |
+//! | 2012 | `data/external/omni2/omni2_2012_amda_hourly.csv` | 8784 | 8784 | 8690 | 8779 |
+//! | 2013 | `data/external/omni2/omni2_2013_amda_hourly.csv` | 8760 | 8760 | 8747 | 8760 |
+//! | 2014 | `data/external/omni2/omni2_2014_amda_hourly.csv` | 8760 | 8760 | 8471 | 8760 |
+//! | 2015 | `data/external/omni2/omni2_2015_amda_hourly.csv` | 8760 | 8760 | 8725 | 8760 |
+//! | 2016 | `data/external/omni2/omni2_2016_amda_hourly.csv` | 8784 | 8783 | 8759 | 8784 |
+//! | 2017 | `data/external/omni2/omni2_2017_amda_hourly.csv` | 8760 | 8754 | 8746 | 8753 |
+//! | 2018 | `data/external/omni2/omni2_2018_amda_hourly.csv` | 8760 | 8760 | 8756 | 8760 |
+//! | 2019 | `data/external/omni2/omni2_2019_amda_hourly.csv` | 8760 | 8760 | 8696 | 8760 |
+//!
+//! The density column is the thinnest part of the AMDA fallback in several years
+//! (`2000-2002` and `2014` are the clearest cases). That does not invalidate the
+//! lane, but it does mean the fallback is scientifically useful rather than
+//! byte-for-byte equivalent to canonical OMNI2. The repo should say that plainly.
+//!
+//! ## What The Ready Packs Actually Use
+//!
+//! - `HELIOPAUSE_2017_2018` currently depends on AMDA fallback OMNI for both years.
+//! - `CRUISE_1997_2004` and `CRUISE_1999_2004` currently depend on AMDA fallback
+//!   OMNI for the entire staged overlap.
+//! - The governed OMNI lane is now continuous from `1997-01-01T00:00:00Z` through
+//!   `2025-12-31T23:00:00Z`, with a source-origin transition from AMDA fallback
+//!   (`1997-2019`) to canonical SPDF yearly ASCII (`2020-2025`).
+//! - The canonical SPDF `.dat` files currently serve as a governed modern OMNI lane
+//!   for `2020-2025`, not as the source for the chronology-critical packs.
+//!
+//! ## Normalization Decisions
+//!
+//! - `OmniRecord` remains the compatibility struct for OMNI-shaped hourly data.
+//! - `parse_omni_hourly()` auto-detects fixed-width OMNI2 ASCII vs AMDA HAPI CSV.
+//! - The AMDA CSVs contain more than the current `OmniRecord` projection. The repo
+//!   intentionally keeps only the plasma+IMF subset needed by current heliosphere
+//!   boundary and validation code.
+//! - The governed OMNI manifests now record mixed-lineage status explicitly instead
+//!   of implying that every staged file comes from one origin.
+//!
+//! ## Remaining Gaps
+//!
+//! - The long baseline is now continuous locally, but source lineage still changes
+//!   at `2020`, so analyses that assume one byte-identical OMNI origin should not
+//!   overclaim that continuity.
+//! - Some registry experiments still need a broader chronology/path rescope before
+//!   they become runnable, even though the OMNI lane itself is now better described.
+//!

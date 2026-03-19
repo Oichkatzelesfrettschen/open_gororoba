@@ -259,7 +259,7 @@ definition = "Deterministic two-phase timing abstraction from Intel 4004. phi_1 
 reference = "crates/cosmic_scheduler/src/phase_scheduler.rs"
 status = "active"
 
-# ---- Banned terms (enforced by bin/terminology_gate.py) ----
+# ---- Banned terms (enforced by crates/data_core/src/catalogs) ----
 # Each [[banned]] entry triggers a CI failure if the pattern appears in
 # any tracked text file outside of allowlisted historical-citation contexts.
 

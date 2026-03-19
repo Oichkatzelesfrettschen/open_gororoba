@@ -26160,7 +26160,7 @@ sha256 = "28c828cc35d636d7fc51287696573cfd65d33655e2e17fe33857af06b7fc3551"
 
 [[document]]
 id = "TOML-1867"
-path = "wow_analysis_venv/lib/python3.14/site-packages/pandas/pyproject.toml"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/pandas/pyproject.toml"
 git_status = "ignored"
 role = "toml_other"
 zone = "other"

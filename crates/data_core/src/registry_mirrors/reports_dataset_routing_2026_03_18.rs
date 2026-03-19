@@ -1,0 +1,24 @@
+//! # Dataset Routing Ledger
+//!
+//! Generated at `2026-03-18T05:09:31.580593789+00:00` with 11 routes.
+//!
+//! ## Status Counts
+//!
+//! - `fully_analyzed`: 11
+//!
+//! ## Routes
+//!
+//! | Family | Dataset | Provider | Parser | Analyses | Cache | Reports | Status |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | astronomy | chime_frb_cat2 | CHIME/FRB Catalog 2 | data_core::catalogs::chime::parse_chime_csv | survey-crossmatch, multi-dataset-ultrametric, dm-ultrametric, catalog-feature-cube, catalog-feature-algebra | yes (1) | yes (5) | fully_analyzed |
+//! | astronomy | euclid_morphology | Euclid morphology bounded Q1 lane | cosmology_core::euclid_morphology::read_euclid_visual_morphology | survey-crossmatch | yes (4) | yes (1) | fully_analyzed |
+//! | astronomy | gaia_dr3_nearby | Gaia DR3 Nearby Stars | data_core::catalogs::gaia::parse_gaia_csv | survey-crossmatch, multi-dataset-ultrametric, catalog-feature-cube, catalog-feature-algebra | yes (1) | yes (4) | fully_analyzed |
+//! | astronomy | sdss_dr18_quasars | SDSS DR18 Quasars | data_core::catalogs::sdss::parse_sdss_quasar_csv | survey-crossmatch, multi-dataset-ultrametric, catalog-feature-cube, catalog-feature-algebra | yes (1) | yes (4) | fully_analyzed |
+//! | astronomy | things_tables_and_cubes | THINGS tables and preferred cubes | data_core::catalogs::things::* | survey-crossmatch, hi-cube-rotcurve-extractor | yes (35) | yes (9) | fully_analyzed |
+//! | cosmology | desi_dr2_bao_summary | DESI DR2 BAO summary | data_core::catalogs::desi_bao::desi_dr2_bao | survey-crossmatch, catalog-feature-cube, catalog-feature-algebra, algebra-theory-crosswalk | no (0) | yes (3) | fully_analyzed |
+//! | heliosphere | heliosphere_feature_cube | Mission product federation | heliosphere mission parsers via data_core::catalogs::* | heliosphere-feature-cube, heliosphere-feature-transform, heliosphere-algebra-decompose, heliosphere-lbm-cube-run | yes (1739) | yes (60) | fully_analyzed |
+//! | mast | hst_public_metadata | HST Public Observation Metadata | data_core::catalogs::hst::parse_hst_public_metadata_csv | survey-crossmatch, multi-dataset-ultrametric, mast-program-clustering, catalog-feature-cube, catalog-feature-algebra | yes (1) | yes (6) | fully_analyzed |
+//! | mast | jwst_public_metadata | JWST Public Observation Metadata | data_core::catalogs::jwst::parse_jwst_public_metadata_csv | survey-crossmatch, multi-dataset-ultrametric, mast-program-clustering, catalog-feature-cube, catalog-feature-algebra | yes (1) | yes (6) | fully_analyzed |
+//! | mast | mast_program_clusters | JWST/HST public metadata clustering lane | program clustering over parsed MAST metadata | mast-program-clustering | yes (2) | yes (2) | fully_analyzed |
+//! | radio | lotss_bulk | LoTSS bulk FITS releases | data_core::catalogs::lotss::crossmatch_points_against_fits_catalog | lotss-fetch, survey-crossmatch | yes (3) | yes (6) | fully_analyzed |
+//!

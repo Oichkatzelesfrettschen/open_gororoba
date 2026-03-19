@@ -286,7 +286,7 @@ crates = ["sign_imbalance", "lattice_filtration", "neural_homotopy", "lbm_3d", "
 order = 4
 name = "orchestration"
 description = "Execution surface and integration boundaries."
-crates = ["gororoba_pipeline", "gororoba_gpu_bridge", "gororoba_engine", "gororoba_cli", "gororoba_py", "gororoba_contracts"]
+crates = ["gororoba_pipeline", "gororoba_gpu_bridge", "gororoba_engine", "gororoba_cli", "gororoba_contracts"]
 
 [[shared.four_thesis_pipeline]]
 order = 1

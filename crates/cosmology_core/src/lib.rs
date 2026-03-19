@@ -56,6 +56,7 @@ pub mod eos;
 pub mod euclid_morphology;
 pub mod flrw;
 pub mod galaxy_pipeline;
+pub mod galactic_disk;
 pub mod gravastar;
 pub mod gravastar_potential;
 pub mod halo;

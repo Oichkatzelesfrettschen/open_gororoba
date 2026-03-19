@@ -1,0 +1,17 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Pointer stub: the canonical dossier manifest lives under docs/external_sources/ -->
+//! <!-- Source of truth: registry/external_sources.toml -->
+//!
+//! # Dataset Manifest (Pointer)
+//!
+//! Canonical dataset manifest (auto-generated):
+//! - `docs/external_sources/DATASET_MANIFEST.md`
+//!
+//! Source of truth:
+//! - `registry/external_sources.toml` (the `[[document]]` entries; provider manifest uses `authority_level = "provider_manifest"`)
+//!
+//! Notes:
+//! - Do not edit generated manifests directly.
+//! - Update the TOML registry and regenerate docs via the repo registry workflow.
+//!
+//!
