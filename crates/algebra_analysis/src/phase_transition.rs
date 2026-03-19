@@ -9,6 +9,8 @@
 //! The phase transition is algebraic, occurring at dim=16.
 
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
+use nalgebra::DVector;
+use verified_core::coupler_manifold::CouplerPoint;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
@@ -116,9 +118,42 @@ impl PhaseTransitionAnalyzer {
         (1.0 - density / saturation).max(0.0)
     }
 
+    /// Projects the current phase transition state onto the Coupler Manifold.
+    ///
+    /// g = (dimension n)
+    /// O = (defect density, order parameter)
+    pub fn to_coupler_point(&self, density: f64) -> CouplerPoint {
+        let order_param = self.calculate_order_parameter(density);
+        CouplerPoint {
+            g: DVector::from_vec(vec![self.dimension as f64]),
+            o: DVector::from_vec(vec![density + 1e-12, order_param + 1e-12]),
+        }
+    }
+
     /// ZD graph edge density at this dimension.
     pub fn edge_density(&self) -> f64 {
         zd_edge_density(self.dimension)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_algebraic_manifold_projection() {
+        // Octonions (dim=8): Coherent
+        let oct = PhaseTransitionAnalyzer::new(8);
+        let p_oct = oct.to_coupler_point(0.0);
+        assert_eq!(p_oct.g[0], 8.0);
+        assert!((p_oct.o[1] - 1.0).abs() < 1e-9); // Fully coherent
+
+        // Sedenions (dim=16): Transition
+        let sed = PhaseTransitionAnalyzer::new(16);
+        let density = sed.calculate_defect_density(1000, 42);
+        let p_sed = sed.to_coupler_point(density);
+        assert_eq!(p_sed.g[0], 16.0);
+        println!("Sedenion Density (O[0]): {:.4}, Order Param (O[1]): {:.4}", p_sed.o[0], p_sed.o[1]);
     }
 }
 

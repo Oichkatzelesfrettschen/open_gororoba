@@ -14,7 +14,7 @@
 //! See BIB-0307 (Moreno 1998) for CD zero-divisor structure and
 //! BIB-0314 (Pastawski et al. 2015) for holographic code analogies.
 
-use crate::coupler_manifold::CouplerPoint;
+use verified_core::coupler_manifold::CouplerPoint;
 use crate::stabilizer_like::{CompositeCode, StabilizerLikeCode};
 use nalgebra::DVector;
 use algebra_experimental::higher_cd::SparseApeironState;

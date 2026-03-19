@@ -89,3 +89,20 @@ domains = ["sign_imbalance", "lbm_3d", "stats_core"]
 status = "active"
 last_verified = "2026-02-11"
 sprint = 36
+
+[[cross_repository_integration]]
+id = "CRI-006"
+title = "Light-Ion QGP Scaling Reconstruction (2025-2026 Run 3)"
+statement = "Observed energy-loss scaling epsilon ~ L^beta in O-O and Ne-Ne collisions (LHC Run 3) is reconstructed using multi-system data tables and normalized R_AA models. Reconstruction includes nuclear deformation sensitivity (Ne-20 prolate shape) and medium response (Z-hadron wake correlations)."
+evidence = [
+  "crates/qgp_scaling/src/nuclear_modification.rs: R_AA normalization implementation",
+  "crates/qgp_scaling/src/flow_cumulants.rs: c_n{2}, c_n{4} extraction for deformation studies",
+  "crates/qgp_scaling/src/hydro_wake.rs: J^nu source term modeling for Z-hadron wake",
+  "registry/research_intake_2026_03_18_light_ion_qgp.toml: HEPData DOI mapping for CMS/ATLAS/STAR",
+  "docs/claims/light_ion_qgp_audit_2025_2026.md: Falsifiable thesis ledger"
+]
+repositories = ["open_gororoba"]
+domains = ["qgp_scaling", "physics", "data"]
+status = "active"
+last_verified = "2026-03-18"
+sprint = 62

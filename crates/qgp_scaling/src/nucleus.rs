@@ -53,6 +53,20 @@ impl NucleusParams {
         Self::new(129, 54, "Xe-129")
     }
 
+    /// O-16 (oxygen).
+    #[must_use]
+    pub fn o16() -> Self {
+        Self::new(16, 8, "O-16")
+    }
+
+    /// Ne-20 (neon).
+    /// Note: Ne-20 is significantly prolate ($\beta_2 \approx 0.72$).
+    /// This hard-sphere model ignores deformation; use MC Glauber for shape studies.
+    #[must_use]
+    pub fn ne20() -> Self {
+        Self::new(20, 10, "Ne-20")
+    }
+
     /// Uniform (hard-sphere) nuclear density rho_0 = 3 / (4 * pi * R_A^3).
     /// Units: fm^{-3}.
     #[must_use]
@@ -133,6 +147,13 @@ mod tests {
         let xe = NucleusParams::xe129();
         // R_A = 1.12 * 129^(1/3) = 1.12 * 5.052 = 5.658 fm
         assert!((xe.r_a - 5.66).abs() < 0.02, "Xe-129 R_A = {}", xe.r_a);
+    }
+
+    #[test]
+    fn test_o16_radius() {
+        let o16 = NucleusParams::o16();
+        assert_eq!(o16.a, 16);
+        assert!((o16.r_a - 2.82).abs() < 0.05);
     }
 
     #[test]

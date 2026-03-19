@@ -55,6 +55,15 @@ impl SigmaNN {
         }
     }
 
+    /// sigma_NN for sqrt(s) = 5.36 TeV (LHC Run 3, O-O energy).
+    #[must_use]
+    pub fn lhc_5360() -> Self {
+        Self {
+            sqrt_s_gev: 5360.0,
+            sigma_mb: 68.2,
+        }
+    }
+
     /// sigma_NN for sqrt(s) = 5.44 TeV (Xe-Xe).
     #[must_use]
     pub fn lhc_5440() -> Self {

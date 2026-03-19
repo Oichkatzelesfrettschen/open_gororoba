@@ -10,7 +10,7 @@
 //! - Ryu & Takayanagi, PRL 96 (2006) 181602 - Holographic entanglement
 //! - Swingle, PRD 86 (2012) 065007 - MERA/AdS connection
 
-use crate::coupler_manifold::CouplerPoint;
+use verified_core::coupler_manifold::CouplerPoint;
 use nalgebra::DVector;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
