@@ -15,6 +15,7 @@
 //! 8. [Advanced Mathematical Formalism](mathematics)
 //! 9. [The Viscous Vacuum and Dimensional Reduction](viscous_vacuum)
 //! 10. [Falsifiable Theses](theses)
+//! 11. [The Topology of 42: Octahedral Box-Kites](topology_42)
 
 pub mod foundations;
 pub mod optics;
@@ -26,3 +27,4 @@ pub mod book;
 pub mod mathematics;
 pub mod viscous_vacuum;
 pub mod theses;
+pub mod topology_42;

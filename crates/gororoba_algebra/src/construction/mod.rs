@@ -21,6 +21,8 @@ pub mod speculative;
 pub mod split_octonion;
 pub mod tessarines;
 pub mod wheels;
+pub mod species_audit;
+
 
 pub mod cd {
     pub use super::{cayley_dickson::*, hypercomplex::*, mult_table::*};
