@@ -17,10 +17,11 @@ fn fetch(url: &str, slug: &str) -> bool {
     }
 
     println!("FETCHING {}...", url);
-    let agent = ureq::builder()
+    let agent: ureq::Agent = ureq::Agent::config_builder()
         .user_agent(UA)
-        .timeout(Duration::from_secs(60))
-        .build();
+        .timeout_global(Some(Duration::from_secs(60)))
+        .build()
+        .into();
 
     let response = agent.get(url).call();
 
@@ -33,7 +34,7 @@ fn fetch(url: &str, slug: &str) -> bool {
                     return false;
                 }
             };
-            if let Err(e) = std::io::copy(&mut res.into_reader(), &mut file) {
+            if let Err(e) = std::io::copy(&mut res.into_body().into_reader(), &mut file) {
                 eprintln!("FAIL {} (copy body: {})", filename, e);
                 let _ = fs::remove_file(&filename);
                 return false;

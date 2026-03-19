@@ -2,7 +2,7 @@
 //! Generates a proof dependency graph in DOT format by parsing .v files.
 
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use regex::Regex;
 use std::process::Command;
 

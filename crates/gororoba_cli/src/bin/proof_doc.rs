@@ -2,7 +2,7 @@
 //! Produces browsable HTML documentation via rocq doc.
 
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::Command;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
