@@ -5,7 +5,7 @@
 **Date:** 2026-03-15  
 **Status:** Closed/Obstructed — phenomenological match established; literal interpretation obstructed  
 **Relevant claims:** C-010, C-011, C-012  
-**Related documents:** `docs/GRAND_SYNTHESIS.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`  
+**Related documents:** `docs/GRAND_SYNTHESIS.md`  
 **Code references:** `crates/cosmology_core/src/{gravastar,tov}.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`
 
 ---
