@@ -38,12 +38,13 @@
 //! The basis function encodes the doubling level:
 //!
 //! ```text
-//!   Φ_d(k) = σ_d · cos(2π · (n − 3) · k / N_bins)
+//!   Φ_d(k) = σ_d · cos(2π · (n − 3) · (k + 0.5) / N_bins)
 //! ```
 //!
 //! where σ_d is the associator density at dimension *d* and *n* = log₂(*d*).
-//! Higher doubling levels create finer spectral modulation, weighted by the
-//! degree of non-associativity.
+//! The (k + 0.5) factor evaluates the cosine at bin centers (a half-bin
+//! offset) to reduce edge artifacts. Higher doubling levels create finer
+//! spectral modulation, weighted by the degree of non-associativity.
 //!
 //! # References
 //!
