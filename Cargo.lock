@@ -3922,6 +3922,7 @@ dependencies = [
  "optics_core",
  "pgfplots",
  "plotters",
+ "provenance_ops",
  "provenance_store",
  "quantum_core",
  "rand 0.8.5",
@@ -8033,8 +8034,10 @@ dependencies = [
  "regex",
  "rusqlite",
  "toml",
+ "ureq",
  "url",
  "walkdir",
+ "zip 2.4.2",
 ]
 
 [[package]]

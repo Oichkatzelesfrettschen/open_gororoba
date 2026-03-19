@@ -14,7 +14,7 @@ use nalgebra::DVector;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use quantum_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
+use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
 
 #[derive(Debug, Clone)]
 struct ScalingObservation {

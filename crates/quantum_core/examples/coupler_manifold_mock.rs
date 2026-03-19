@@ -8,7 +8,7 @@
 //! Run with: `cargo run --example coupler_manifold_mock`
 
 use nalgebra::{DMatrix, DVector};
-use quantum_core::coupler_manifold::{
+use verified_core::coupler_manifold::{
     CouplerPoint, CouplerJacobian, IdentifiabilityAudit,
     qec::TwoSectorMixture, mipt::effective_measurement_rate
 };
@@ -94,7 +94,7 @@ fn main() {
              audit.is_identifiable, audit.condition_number);
 
     println!("\n--- Step 3: Mapping to Non-Euclidean Holography (Bruhat-Tits) ---");
-    use quantum_core::coupler_manifold::tree_geometry::BruhatTitsTree;
+    use verified_core::coupler_manifold::tree_geometry::BruhatTitsTree;
     
     let tree = BruhatTitsTree::new(2);
     let d02 = tree.p_adic_norm(0, 2);

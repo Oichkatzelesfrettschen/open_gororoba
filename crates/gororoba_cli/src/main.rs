@@ -50,10 +50,24 @@ enum Commands {
         #[command(subcommand)]
         cmd: QuantumCmd,
     },
+    /// Data: Dataset management
+    Data {
+        #[command(subcommand)]
+        cmd: DataCmd,
+    },
     /// Visualization: Generate plots from data
     Plot {
         #[command(subcommand)]
         cmd: PlotCmd,
+    },
+}
+
+#[derive(Subcommand)]
+enum DataCmd {
+    /// Download orix-data example datasets
+    Orix {
+        #[arg(short, long, default_value = "data/external/orix-data")]
+        target: String,
     },
 }
 
@@ -207,7 +221,23 @@ fn main() {
         Commands::Optics { cmd } => handle_optics(cmd),
         Commands::Cosmology { cmd } => handle_cosmology(cmd),
         Commands::Quantum { cmd } => handle_quantum(cmd),
+        Commands::Data { cmd } => handle_data(cmd),
         Commands::Plot { cmd } => handle_plot(cmd),
+    }
+}
+
+fn handle_data(cmd: DataCmd) {
+    use std::path::Path;
+    use provenance_ops::data_ingest::orix::download_orix_dataset;
+
+    match cmd {
+        DataCmd::Orix { target } => {
+            let path = Path::new(&target);
+            if let Err(e) = download_orix_dataset(path) {
+                eprintln!("❌ Failed to download orix-data: {}", e);
+                std::process::exit(1);
+            }
+        }
     }
 }
 

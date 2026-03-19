@@ -1,4 +1,3 @@
-#[allow(non_snake_case)]
 pub mod bibliography_registry_mirror;
 pub mod book_docs_registry_mirror;
 pub mod c070_nanograv_spectrum_match_sources;
@@ -313,6 +312,8 @@ pub mod reports_control_plane_reader_writer_inventory_2026_03_13;
 pub mod reports_convos_claim_candidates;
 pub mod reports_convos_claim_candidates_prioritized;
 pub mod reports_convos_pdf_inventory;
+pub mod reports_coupler_manifold_grand_synthesis;
+pub mod reports_coupler_manifold_residual_falsification;
 pub mod reports_dataset_routing_2026_03_18;
 pub mod reports_gates_2026_03_07_155836_summary;
 pub mod reports_gates_2026_03_15_095943_summary;
