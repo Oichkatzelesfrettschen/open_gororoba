@@ -330,7 +330,8 @@ pub fn fit_baseline(data: &[FreqBin]) -> BaselineFitResult {
         _ => (data[i].f_hz / f_ref).log10(),
     });
 
-    let beta = wls_solve(&design, &y, &weights).unwrap_or_else(|| DVector::zeros(2));
+    let beta = wls_solve(&design, &y, &weights)
+        .expect("fit_baseline: WLS solver failed (singular normal equations); baseline fit is undefined");
     let y_hat = &design * &beta;
     let cs = chi_squared(&y, &y_hat, &weights);
     let dof = n.saturating_sub(2);
