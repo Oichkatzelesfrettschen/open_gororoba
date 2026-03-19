@@ -59,6 +59,7 @@ members = [
     "crates/casimir_core",
     "crates/verified_core", "crates/pathion_ellip",
     "crates/cr_transport",
+    "crates/manga_experiments",
     "xtask",
 ]
 
