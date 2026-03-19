@@ -235,6 +235,13 @@ impl HigherAvt {
             })
             .count()
     }
+
+    /// Check if a specific triple (i,j,k) produces an alternativity violation.
+    pub fn check_violation(&self, i: usize, j: usize, k: usize) -> bool {
+        let (_, s1) = associator_basis(self.dim, i, j, k);
+        let (_, s2) = associator_basis(self.dim, j, i, k);
+        s1 + s2 != 0
+    }
 }
 
 /// Result of sampled AVT construction with statistics.

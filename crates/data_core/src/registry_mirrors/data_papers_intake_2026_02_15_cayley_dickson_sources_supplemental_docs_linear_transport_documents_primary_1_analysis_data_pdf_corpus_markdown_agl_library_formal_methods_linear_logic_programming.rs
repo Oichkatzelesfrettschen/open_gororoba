@@ -1,0 +1,3190 @@
+//! # Extracted text: linear_logic_programming.pdf
+//!
+//! - source_root: `/home/eirikr/Documents/AGL_Library/Formal_Methods_Documentation`
+//! - source_relpath: `linear_logic_programming.pdf`
+//! - source_abs: `/home/eirikr/Documents/AGL_Library/Formal_Methods_Documentation/linear_logic_programming.pdf`
+//! - detected_kind: `pdf`
+//! - extracted_at_utc: `2026-01-02T17:30:57+00:00`
+//! - pages: `17`
+//! - title: ``
+//! - author: ``
+//! - subject: ``
+//! - keywords: ``
+//! - creation_date: `Mon Dec 27 19:05:30 2021 PST`
+//! - mod_date: `Mon Dec 27 19:05:30 2021 PST`
+//! - encrypted: `no`
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+//! Multilayered density profile for noninteracting fermions in a rotating
+//! two-dimensional trap
+//! Manas Kulkarni,1 Satya N. Majumdar,2 and Grégory Schehr2, 3
+//!
+//! arXiv:2009.07251v2 [cond-mat.stat-mech] 24 Dec 2021
+//!
+//! 1
+//!
+//! International Centre for Theoretical Sciences, Tata Institute of Fundamental Research, Bengaluru – 560089, India
+//! 2
+//! LPTMS, CNRS, Univ. Paris-Sud, Université Paris-Saclay, 91405 Orsay, France
+//! 3
+//! Sorbonne Université, Laboratoire de Physique Théorique et Hautes Energies,
+//! CNRS UMR 7589, 4 Place Jussieu, 75252 Paris Cedex 05, France
+//! (Dated: Tuesday 28th December, 2021)
+//! We compute exactly the average spatial density for N spinless noninteracting fermions in a 2d
+//! harmonic trap rotating with a constant frequency Ω in the presence of an additional repulsive central
+//! potential γ/r2 . We find that, in the large N limit, the bulk density has a rich and nontrivial profile
+//! – with a hole at the center of the trap and surrounded by a multi-layered “wedding cake” structure.
+//! The number of layers depends on N and on the two parameters Ω and γ leading to a rich phase
+//! diagram. Zooming in on the edge of the kth layer, we find that the edge density profile exhibits
+//! k kinks located at the zeroes of the kth Hermite polynomial. Interestingly, in the large k limit,
+//! we show that the edge density profile approaches a limiting form, which resembles the shape of a
+//! propagating front, found in the unitary evolution of certain quantum spin chains. We also study
+//! how a newly formed droplet grows in size on top of the last layer as one changes the parameters.
+//!
+//! I.
+//!
+//! INTRODUCTION
+//!
+//! Noninteracting spinless fermions in a confining trap is
+//! a subject of much current theoretical and experimental
+//! interest [1–7]. On one hand, this system is realisable in
+//! cold atom experiments, and several techniques such as
+//! absorption imaging [8–10] for collective density measurements and quantum gas microscopes [11–13] for direct
+//! in situ imaging of the individual fermions with remarkably high resolutions are available. On the other hand,
+//! it is simple enough to be analytically tractable and yet
+//! exhibits rich and nontrivial spatial fluctuations, even at
+//! zero temperature, due to the Pauli exclusion principle
+//! [14–20]. While the bulk density is usually well described
+//! by the local density approximation (LDA) [8, 21], this
+//! approximation breaks down near the edges of the Fermi
+//! gas, induced by the trap. A number of recent studies
+//! have pointed out that LDA is not sufficient to capture
+//! the density fluctuations and correlations near the edges
+//! [15, 17–19, 22]. For certain one-dimensional trapping potentials, such as the harmonic trap, an exact mapping
+//! was found between the positions of the fermions in the
+//! ground state and the eigenvalues of a suitable random
+//! matrix ensemble [15, 16] – for a recent review see [23].
+//! Using results from the random matrix theory (RMT), the
+//! density correlations near the edges were computed exactly and their universal properties (with respect to the
+//! shape of the trapping potential) were elucidated [15, 17–
+//! 19, 24–28]. The connection to RMT does not hold generically in higher dimensions. However, using the determinantal properties of the noninteracting fermions, the edge
+//! properties in higher dimensions could still be computed
+//! analytically [18, 19].
+//! A particularly interesting situation corresponds to
+//! fermions in a rotating trap in two-dimensions, which has
+//! been studied recently both experimentally [29–31] and
+//! theoretically [32–34]. In this system, the single particle
+//!
+//! Hamiltonian, in the rotating frame, is given by [35, 36]
+//! p2
+//! + V (r) − ΩLz
+//! (1)
+//! 2m
+//! where V (r) is a confining central potential, Lz = xpy −
+//! ypx = −i(x∂y − y∂x ) is the z-component of the angular
+//! momentum and Ω is the rotation frequency. For the harmonic trap V (r) = (1/2)mω 2 r2 , an important parameter
+//! is the ratio ν = Ω/ω, which must satisfy 0 < ν < 1 to
+//! keep the fermions confined. The limit ν → 0 corresponds
+//! to fermions in a non-rotating harmonic trap while in the
+//! opposite limit ν → 1, this problem can be mapped to the
+//! celebrated Landau problem of noninteracting fermions in
+//! a plane in the presence of a perpendicular magnetic field
+//! [37]. Interestingly, in this ν → 1 limit, the positions of
+//! N fermions in the ground state map onto the eigenvalues of the classical complex Ginibre ensemble of RMT
+//! [34], where one considers a random N × N matrix with
+//! independent complex Gaussian entries [38]. In this mapping, one assumes that the N fermions are confined in
+//! the lowest Landau level, which can be realized by setting
+//! 1−2/N < ν < 1. With this assumption, the bulk density
+//! for large N is √
+//! rather simple: it is just uniform over the
+//! disk of radius N centred at the origin [34].
+//! This uniform bulk density emerges because, in the
+//! ground state, the fermions are all in the lowest Landau level. A natural question then is: how the density
+//! may change if the many-body ground state also contains
+//! single-particle states belonging to higher Landau levels?
+//! Indeed, this is a generic situation as one increases N ,
+//! for fixed ν. In addition, since the potential V (r) is radially symmetric, it is convenient to solve the corresponding Schrödinger equation in polar coordinates, which will
+//! automatically generate an effective repulsive interaction
+//! ∼ 1/r2 in the radial direction. Hence it is natural to
+//! consider a more generic potential from the start
+//! 1
+//! γ
+//! V (r) = mω 2 r2 + 2 , γ ≥ 0 .
+//! (2)
+//! 2
+//! 2r
+//! Ĥ =
+//!
+//!
+//! --- PAGE BREAK ---
+//! 2
+//!
+//! c
+//!
+//! c1 (M )
+//!
+//! <latexit sha1_base64="0jIMiY3Xg6FeHydWT6UzrJgEy0o=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlJuuXK27VnYOsEi8nFcjR6Je/eoOYpRFKwwTVuuu5ifEzqgxnAqelXqoxoWxMh9i1VNIItZ/ND52SM6sMSBgrW9KQufp7IqOR1pMosJ0RNSO97M3E/7xuasJrP+MySQ1KtlgUpoKYmMy+JgOukBkxsYQyxe2thI2ooszYbEo2BG/55VXSrlW9i2qteVmp3+RxFOEETuEcPLiCOtxBA1rAAOEZXuHNeXRenHfnY9FacPKZY/gD5/MHx7OM6w==</latexit>
+//!
+//! c2 (M )
+//!
+//! <latexit sha1_base64="bUelINT/B1Ba16o2IcmewrwFh4M=">AAAB7XicbVBNSwMxEJ2tX7V+VT16CRahXspuK+ix6MWLUMF+QLuUbJptY7PJkmSFsvQ/ePGgiFf/jzf/jWm7B219MPB4b4aZeUHMmTau++3k1tY3Nrfy24Wd3b39g+LhUUvLRBHaJJJL1QmwppwJ2jTMcNqJFcVRwGk7GN/M/PYTVZpJ8WAmMfUjPBQsZAQbK7VI3yvfnfeLJbfizoFWiZeREmRo9ItfvYEkSUSFIRxr3fXc2PgpVoYRTqeFXqJpjMkYD2nXUoEjqv10fu0UnVllgEKpbAmD5urviRRHWk+iwHZG2Iz0sjcT//O6iQmv/JSJODFUkMWiMOHISDR7HQ2YosTwiSWYKGZvRWSEFSbGBlSwIXjLL6+SVrXi1SrV+4tS/TqLIw8ncApl8OAS6nALDWgCgUd4hld4c6Tz4rw7H4vWnJPNHMMfOJ8/TruOSw==</latexit>
+//!
+//! 1.0
+//!
+//! are
+//!
+//! <latexit sha1_base64="yLGch4sc9vKFOZUqDK2aeUX1sw8=">AAAB7XicbVBNSwMxEJ2tX7V+VT16CRahXspuK+ix6MWLUMF+QLuUbJptY7PJkmSFsvQ/ePGgiFf/jzf/jWm7B219MPB4b4aZeUHMmTau++3k1tY3Nrfy24Wd3b39g+LhUUvLRBHaJJJL1QmwppwJ2jTMcNqJFcVRwGk7GN/M/PYTVZpJ8WAmMfUjPBQsZAQbK7VIv1q+O+8XS27FnQOtEi8jJcjQ6Be/egNJkogKQzjWuuu5sfFTrAwjnE4LvUTTGJMxHtKupQJHVPvp/NopOrPKAIVS2RIGzdXfEymOtJ5Ege2MsBnpZW8m/ud1ExNe+SkTcWKoIItFYcKRkWj2OhowRYnhE0swUczeisgIK0yMDahgQ/CWX14lrWrFq1Wq9xel+nUWRx5O4BTK4MEl1OEWGtAEAo/wDK/w5kjnxXl3PhatOSebOYY/cD5/AFBCjkw=</latexit>
+//!
+//! c=
+//!
+//! 0.8
+//! 0.6
+//! 0.4
+//! 0.2
+//!
+//! k⇤ = 1
+//!
+//! k⇤ = 0
+//! 5
+//!
+//! <latexit sha1_base64="mwt73hQO0aS6zk6ynFou0KJ1t5E=">AAAB7nicbVBNSwMxEJ2tX7V+VT16CRZBPJTdKuhFKHrxWMF+QLuWbJptwybZJckKZemP8OJBEa/+Hm/+G9N2D9r6YODx3gwz84KEM21c99sprKyurW8UN0tb2zu7e+X9g5aOU0Vok8Q8Vp0Aa8qZpE3DDKedRFEsAk7bQXQ79dtPVGkWywczTqgv8FCykBFsrNSOHrOzyXWtX664VXcGtEy8nFQgR6Nf/uoNYpIKKg3hWOuu5ybGz7AyjHA6KfVSTRNMIjykXUslFlT72ezcCTqxygCFsbIlDZqpvycyLLQei8B2CmxGetGbiv953dSEV37GZJIaKsl8UZhyZGI0/R0NmKLE8LElmChmb0VkhBUmxiZUsiF4iy8vk1at6p1Xa/cXlfpNHkcRjuAYTsGDS6jDHTSgCQQieIZXeHMS58V5dz7mrQUnnzmEP3A+fwCnuo8e</latexit>
+//!
+//! 10
+//!
+//! 15
+//!
+//! 20
+//!
+//! 25
+//!
+//! M
+//!
+//! 30
+//!
+//! <latexit sha1_base64="LYKb6VVKloxBSLpM78v6ttRQbOI=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKexGQY9BL16EBMwDkiXMTnqTMbOzy8ysEEK+wIsHRbz6Sd78GyfJHjSxoKGo6qa7K0gE18Z1v53c2vrG5lZ+u7Czu7d/UDw8auo4VQwbLBaxagdUo+ASG4Ybge1EIY0Cga1gdDvzW0+oNI/lgxkn6Ed0IHnIGTVWqt/3iiW37M5BVomXkRJkqPWKX91+zNIIpWGCat3x3MT4E6oMZwKnhW6qMaFsRAfYsVTSCLU/mR86JWdW6ZMwVrakIXP198SERlqPo8B2RtQM9bI3E//zOqkJr/0Jl0lqULLFojAVxMRk9jXpc4XMiLEllClubyVsSBVlxmZTsCF4yy+vkmal7F2UK/XLUvUmiyMPJ3AK5+DBFVThDmrQAAYIz/AKb86j8+K8Ox+L1pyTzRzDHzifP6ZbjNU=</latexit>
+//!
+//! <latexit sha1_base64="OqTOWGDo+DM8sjWCBynwy1dwG5Y=">AAACA3icbVDLSgNBEJyNrxhfq970MhiECCHsRkGPQS+eQgTzgGwIs5NJdsjsw5leIS4BL/6KFw+KePUnvPk3TpI9aGJBQ1HVTXeXGwmuwLK+jczS8srqWnY9t7G5tb1j7u41VBhLyuo0FKFsuUQxwQNWBw6CtSLJiO8K1nSHVxO/ec+k4mFwC6OIdXwyCHifUwJa6poHjvTCwgN21J2EpDouYgc8BqRYPemaeatkTYEXiZ2SPEpR65pfTi+ksc8CoIIo1batCDoJkcCpYOOcEysWETokA9bWNCA+U51k+sMYH2ulh/uh1BUAnqq/JxLiKzXyXd3pE/DUvDcR//PaMfQvOgkPohhYQGeL+rHAEOJJILjHJaMgRpoQKrm+FVOPSEJBx5bTIdjzLy+SRrlkn5bKN2f5ymUaRxYdoiNUQDY6RxV0jWqojih6RM/oFb0ZT8aL8W58zFozRjqzj/7A+PwBs0aW5w==</latexit>
+//!
+//! 0
+//!
+//! p
+//! ⇢(z N , ✓, N )
+//!
+//! a)
+//!
+//! k⇤ = 2
+//!
+//! <latexit sha1_base64="2PBwHKYWWZeG2l+4VDimz+NyLp0=">AAAB7nicbVBNSwMxEJ3Ur1q/qh69BIsgHspuFfQiFL14rGA/oF1LNs22YbPZJckKZemP8OJBEa/+Hm/+G9N2D9r6YODx3gwz8/xEcG0c5xsVVlbX1jeKm6Wt7Z3dvfL+QUvHqaKsSWMRq45PNBNcsqbhRrBOohiJfMHafng79dtPTGkeywczTpgXkaHkAafEWKkdPmZnk2u3X644VWcGvEzcnFQgR6Nf/uoNYppGTBoqiNZd10mMlxFlOBVsUuqlmiWEhmTIupZKEjHtZbNzJ/jEKgMcxMqWNHim/p7ISKT1OPJtZ0TMSC96U/E/r5ua4MrLuExSwySdLwpSgU2Mp7/jAVeMGjG2hFDF7a2Yjogi1NiESjYEd/HlZdKqVd3zau3+olK/yeMowhEcwym4cAl1uIMGNIFCCM/wCm8oQS/oHX3MWwsonzmEP0CfP6Y2jx0=</latexit>
+//!
+//! <latexit sha1_base64="zODI/5TIJnUry/ukoxDPbFUEd6A=">AAAB7nicbVBNSwMxEJ3Ur1q/qh69BIsgHspuFfQiFL14rGA/oF1LNs22YbPZJckKZemP8OJBEa/+Hm/+G9N2D9r6YODx3gwz8/xEcG0c5xsVVlbX1jeKm6Wt7Z3dvfL+QUvHqaKsSWMRq45PNBNcsqbhRrBOohiJfMHafng79dtPTGkeywczTpgXkaHkAafEWKkdPmZnk2unX644VWcGvEzcnFQgR6Nf/uoNYppGTBoqiNZd10mMlxFlOBVsUuqlmiWEhmTIupZKEjHtZbNzJ/jEKgMcxMqWNHim/p7ISKT1OPJtZ0TMSC96U/E/r5ua4MrLuExSwySdLwpSgU2Mp7/jAVeMGjG2hFDF7a2Yjogi1NiESjYEd/HlZdKqVd3zau3+olK/yeMowhEcwym4cAl1uIMGNIFCCM/wCm8oQS/oHX3MWwsonzmEP0CfP6Syjxw=</latexit>
+//!
+//! x
+//! <latexit sha1_base64="hL+FaLtOT9luwfLW3Ut08xl3Pcw=">AAAB6HicbVDLTgJBEOzFF+IL9ehlIjHxRHbRRI9ELx4hkUcCGzI79MLI7OxmZtZICF/gxYPGePWTvPk3DrAHBSvppFLVne6uIBFcG9f9dnJr6xubW/ntws7u3v5B8fCoqeNUMWywWMSqHVCNgktsGG4EthOFNAoEtoLR7cxvPaLSPJb3ZpygH9GB5CFn1Fip/tQrltyyOwdZJV5GSpCh1it+dfsxSyOUhgmqdcdzE+NPqDKcCZwWuqnGhLIRHWDHUkkj1P5kfuiUnFmlT8JY2ZKGzNXfExMaaT2OAtsZUTPUy95M/M/rpCa89idcJqlByRaLwlQQE5PZ16TPFTIjxpZQpri9lbAhVZQZm03BhuAtv7xKmpWyd1Gu1C9L1ZssjjycwCmcgwdXUIU7qEEDGCA8wyu8OQ/Oi/PufCxac042cwx/4Hz+AOeHjQA=</latexit>
+//!
+//! y
+//! <latexit sha1_base64="mEcz1FLhuG1BpP6c5hi50qAIJ0g=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOl5qRfrrhVdw6ySrycVCBHo1/+6g1ilkYoDRNU667nJsbPqDKcCZyWeqnGhLIxHWLXUkkj1H42P3RKzqwyIGGsbElD5urviYxGWk+iwHZG1Iz0sjcT//O6qQmv/YzLJDUo2WJRmApiYjL7mgy4QmbExBLKFLe3EjaiijJjsynZELzll1dJu1b1Lqq15mWlfpPHUYQTOIVz8OAK6nAHDWgBA4RneIU359F5cd6dj0VrwclnjuEPnM8f6QuNAQ==</latexit>
+//!
+//! b)
+//! fkedge (u)
+//! <latexit sha1_base64="T5/gbWRuAlBzWsrm+X1x482/S84=">AAAB/XicbVDJSgNBEO2JW4xbXG5eBoMQL2EmCnoMevEYwSyQjENPpyZp0rPQXSPGYfBXvHhQxKv/4c2/sbMcNPFBweO9KqrqebHgCi3r28gtLa+sruXXCxubW9s7xd29pooSyaDBIhHJtkcVCB5CAzkKaMcSaOAJaHnDq7HfugepeBTe4igGJ6D9kPucUdSSWzzw3eFd2kV4wBR6fciycnLiFktWxZrAXCT2jJTIDHW3+NXtRSwJIEQmqFId24rRSalEzgRkhW6iIKZsSPvQ0TSkASgnnVyfmcda6Zl+JHWFaE7U3xMpDZQaBZ7uDCgO1Lw3Fv/zOgn6F07KwzhBCNl0kZ8IEyNzHIXZ4xIYipEmlEmubzXZgErKUAdW0CHY8y8vkma1Yp9WqjdnpdrlLI48OSRHpExsck5q5JrUSYMw8kieySt5M56MF+Pd+Ji25ozZzD75A+PzB86UlXE=</latexit>
+//!
+//! 0.30
+//!
+//! 0.6
+//!
+//! 0.25
+//!
+//! 0.15
+//! 0.10
+//!
+//! 0.4
+//!
+//! 0.05
+//! -4
+//!
+//! 4
+//!
+//! u
+//! <latexit sha1_base64="wnFhQNKUlf0HWa+NJZ/ckTw+BdQ=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlZtovV9yqOwdZJV5OKpCj0S9/9QYxSyOUhgmqdddzE+NnVBnOBE5LvVRjQtmYDrFrqaQRaj+bHzolZ1YZkDBWtqQhc/X3REYjrSdRYDsjakZ62ZuJ/3nd1ITXfsZlkhqUbLEoTAUxMZl9TQZcITNiYgllittbCRtRRZmx2ZRsCN7yy6ukXat6F9Va87JSv8njKMIJnMI5eHAFdbiDBrSAAcIzvMKb8+i8OO/Ox6K14OQzx/AHzucP4vuM/Q==</latexit>
+//!
+//! 0.2
+//! 0.1
+//!
+//! (0)
+//!
+//! (1)
+//! <latexit sha1_base64="Ty9Aiqo7cTzQRniLQ8pM+CpLxZw=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCPViSKuix6MVjBdMWmlA2m027dLMJuxuhhP4NLx4U8eqf8ea/cdvmoK0DC8PMPN7bCVLOlLbtb6u0tr6xuVXeruzs7u0fVA+POirJJKEuSXgiewFWlDNBXc00p71UUhwHnHaD8d3M7z5RqVgiHvUkpX6Mh4JFjGBtJM/jJhriwUXdOR9Ua3bDngOtEqcgNSjQHlS/vDAhWUyFJhwr1XfsVPs5lpoRTqcVL1M0xWSMh7RvqMAxVX4+v3mKzowSoiiR5gmN5urviRzHSk3iwCRjrEdq2ZuJ/3n9TEc3fs5EmmkqyGJRlHGkEzQrAIVMUqL5xBBMJDO3IjLCEhNtaqqYEpzlL6+STrPhXDaaD1e11m1RRxlO4BTq4MA1tOAe2uACgRSe4RXerMx6sd6tj0W0ZBUzx/AH1ucPoGKQwQ==</latexit>
+//!
+//! <latexit sha1_base64="85eaVSPnKnfIwQAxmBHLV0l5LZ8=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCRShJFfRY9OKxgmkLTSibzaZdutmE3Y1QQv+GFw+KePXPePPfuG1z0NaBhWFmHu/tBClnStv2t1VaW9/Y3CpvV3Z29/YPqodHHZVkklCXJDyRvQArypmgrmaa014qKY4DTrvB+G7md5+oVCwRj3qSUj/GQ8EiRrA2kudxEw3x4KLunA+qNbthz4FWiVOQGhRoD6pfXpiQLKZCE46V6jt2qv0cS80Ip9OKlymaYjLGQ9o3VOCYKj+f3zxFZ0YJUZRI84RGc/X3RI5jpSZxYJIx1iO17M3E/7x+pqMbP2cizTQVZLEoyjjSCZoVgEImKdF8YggmkplbERlhiYk2NVVMCc7yl1dJp9lwLhvNh6ta67aoowwncAp1cOAaWnAPbXCBQArP8ApvVma9WO/WxyJasoqZY/gD6/MHnVSQvw==</latexit>
+//!
+//! <latexit sha1_base64="4+2ciqpq0U3/iwjHObS9N5tsZLM=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCPViSKuix6MVjBdMWmlA2m027dLMJuxuhhP4NLx4U8eqf8ea/cdvmoK0DC8PMPN7bCVLOlLbtb6u0tr6xuVXeruzs7u0fVA+POirJJKEuSXgiewFWlDNBXc00p71UUhwHnHaD8d3M7z5RqVgiHvUkpX6Mh4JFjGBtJM/jJhriwUXdPh9Ua3bDngOtEqcgNSjQHlS/vDAhWUyFJhwr1XfsVPs5lpoRTqcVL1M0xWSMh7RvqMAxVX4+v3mKzowSoiiR5gmN5urviRzHSk3iwCRjrEdq2ZuJ/3n9TEc3fs5EmmkqyGJRlHGkEzQrAIVMUqL5xBBMJDO3IjLCEhNtaqqYEpzlL6+STrPhXDaaD1e11m1RRxlO4BTq4MA1tOAe2uACgRSe4RXerMx6sd6tj0W0ZBUzx/AH1ucPnt2QwA==</latexit>
+//!
+//! c)
+//!
+//! 2
+//!
+//! -2
+//!
+//! 0.3
+//! <latexit sha1_base64="OqTOWGDo+DM8sjWCBynwy1dwG5Y=">AAACA3icbVDLSgNBEJyNrxhfq970MhiECCHsRkGPQS+eQgTzgGwIs5NJdsjsw5leIS4BL/6KFw+KePUnvPk3TpI9aGJBQ1HVTXeXGwmuwLK+jczS8srqWnY9t7G5tb1j7u41VBhLyuo0FKFsuUQxwQNWBw6CtSLJiO8K1nSHVxO/ec+k4mFwC6OIdXwyCHifUwJa6poHjvTCwgN21J2EpDouYgc8BqRYPemaeatkTYEXiZ2SPEpR65pfTi+ksc8CoIIo1batCDoJkcCpYOOcEysWETokA9bWNCA+U51k+sMYH2ulh/uh1BUAnqq/JxLiKzXyXd3pE/DUvDcR//PaMfQvOgkPohhYQGeL+rHAEOJJILjHJaMgRpoQKrm+FVOPSEJBx5bTIdjzLy+SRrlkn5bKN2f5ymUaRxYdoiNUQDY6RxV0jWqojih6RM/oFb0ZT8aL8W58zFozRjqzj/7A+PwBs0aW5w==</latexit>
+//!
+//! p
+//! ⇢(z N , ✓, N )
+//!
+//! 0.20
+//!
+//! 0.5
+//!
+//! 0.2
+//!
+//! 0.4
+//!
+//! 0.6
+//!
+//! + (1)
+//! 0.8
+//!
+//! <latexit sha1_base64="/wQhrhKBGJ+qlATqR3fAkRQ1BW4=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCRShJFfRY9OKxgmkLTSibzaZdutmE3Y1QQv+GFw+KePXPePPfuG1z0NaBhWFmHu/tBClnStv2t1VaW9/Y3CpvV3Z29/YPqodHHZVkklCXJDyRvQArypmgrmaa014qKY4DTrvB+G7md5+oVCwRj3qSUj/GQ8EiRrA2kudxEw3x4KJunw+qNbthz4FWiVOQGhRoD6pfXpiQLKZCE46V6jt2qv0cS80Ip9OKlymaYjLGQ9o3VOCYKj+f3zxFZ0YJUZRI84RGc/X3RI5jpSZxYJIx1iO17M3E/7x+pqMbP2cizTQVZLEoyjjSCZoVgEImKdF8YggmkplbERlhiYk2NVVMCc7yl1dJp9lwLhvNh6ta67aoowwncAp1cOAaWnAPbXCBQArP8ApvVma9WO/WxyJasoqZY/gD6/MHm8+Qvg==</latexit>
+//!
+//! 1.0
+//!
+//! + (0)
+//! 1.2
+//!
+//! 1.4
+//!
+//! z
+//! <latexit sha1_base64="VLEo6VgUnu2TnOxoOkqsMPXvyTo=">AAAB6HicbVDLTgJBEOzFF+IL9ehlIjHxRHbRRI9ELx4hkUcCGzI79MLI7OxmZtYECV/gxYPGePWTvPk3DrAHBSvppFLVne6uIBFcG9f9dnJr6xubW/ntws7u3v5B8fCoqeNUMWywWMSqHVCNgktsGG4EthOFNAoEtoLR7cxvPaLSPJb3ZpygH9GB5CFn1Fip/tQrltyyOwdZJV5GSpCh1it+dfsxSyOUhgmqdcdzE+NPqDKcCZwWuqnGhLIRHWDHUkkj1P5kfuiUnFmlT8JY2ZKGzNXfExMaaT2OAtsZUTPUy95M/M/rpCa89idcJqlByRaLwlQQE5PZ16TPFTIjxpZQpri9lbAhVZQZm03BhuAtv7xKmpWyd1Gu1C9L1ZssjjycwCmcgwdXUIU7qEEDGCA8wyu8OQ/Oi/PufCxac042cwx/4Hz+AOqPjQI=</latexit>
+//!
+//! FIG. 1. (a): Phase diagram in the (M, c) plane. It is divided
+//! into regions labeled by k∗ = 0, 1, 2... denoting the number of
+//! bands (n) that are below the Fermi level. The lines cn (M )
+//! separates the regions between k∗ = n − 1 and k∗ = n. In
+//! each of the regions, a typical (representative) density profile
+//! is shown (blue). We see that every new band creates a new
+//! layer in the density. (b): A 3D representation of the exact
+//! density in (6). A hole around the origin is surrounded by a
+//! multi-layered “wedding cake” structure. (c): Plot showing
+//! the comparison between the exact density in (6) (red solid)
+//! and the large N asymptotic bulk density (10) (black dashed)
+//! for c = 1, M = 10 and N = 8000 (this corresponds to k∗ = 1
+//! in the phase diagram). We zoomed in on the left edge of the
+//! k = 1 layer and the inset shows the scaling function f1edge (u)
+//! in (11) plotted vs u.
+//!
+//! We thus have two parameters 0 < ν < 1 and γ ≥ 0. In
+//! this paper we investigate the density profile in the ground
+//! state, for large N , as a function of ν and γ and find an
+//! extremely rich phase diagram in the (ν, γ) plane.
+//! Let us first summarise our main results. We find that
+//! in the large N limit the appropriate rescaled parameters
+//!
+//! γ
+//! N
+//!
+//! and M = (1 − ν 2 ) N ,
+//!
+//! (3)
+//!
+//! which are both kept of order O(1) as N → ∞. We will
+//! show later that this scaling is necessary to keep the average density of fermions of order O(1) as N → ∞. The
+//! phase diagram in the (M, c) plane is depicted in Fig. 1
+//! a). There are series of critical lines c1 (M ), c2 (M ), · · ·
+//! that separate the regions labelled by k ∗ where k ∗ + 1
+//! is the number of Landau levels included in the ground
+//! state. As one crosses these critical lines, the density profile undergoes abrupt changes, as shown in Fig.p 1 a).
+//! For a given k ∗ the bulk density vanishes for r < l− (0)
+//! thus creating a hole around the origin [see Fig. 1 b)].
+//! Outside
+//! the hole,
+//! p
+//! p the density is nonzero over an annulus
+//! l− (0) < r < l+ (0). On top of this annulus, there is
+//! a “wedding cake” structure [see Fig. 1 b)] with k ∗ layers with progressively smaller supports but with equal
+//! heights 1/π. For p
+//! example the k-th layer has support on
+//! p
+//! l− (k) < r <
+//! l+ (k) (see Fig. 1). As shown later,
+//! l± (k) = O(N ). We also investigated the change in the
+//! density profile as one crosses the critical lines in the phase
+//! diagram and found an interesting “travelling front structure” in the density. Furthermore, if we zoom in on the
+//! left boundary of the k-th layer (and
+//! p symmetrically on
+//! l− (k) (and symmetthe right boundary),
+//! i.e.,
+//! close
+//! to
+//! p
+//! rically at l+ (k)) we find a nontrivial edge-profile of the
+//! density (11) with k kinks whose locations coincide with
+//! the zeros of the k-th Hermite polynomial H
+//! pk (−u) = 0
+//! with u denoting the scaled distance from l− (k) (see
+//! inset of Fig. 1 (c)). Finally, in the limit where k  1,
+//! the edge profile approaches a nontrivial limiting form,
+//! which we compute exactly. Interestingly, the same limiting form has appeared in completely different problems,
+//! such as in a propagating one-dimensional fermionic front
+//! separating a high and low density phases and evolving
+//! unitarily in time [39–43].
+//!
+//! II.
+//!
+//! MODEL AND PROPERTIES
+//!
+//! We start with the single particle Hamiltonian in (1)
+//! with V (r) in Eq. (2). The model turns out to be
+//! integrable in the sense that the Schrödinger equation
+//! Ĥψk,l (r, θ) = Ek,l ψk,l (r, θ) is exactly solvable in the polar coordinates (see Appendix A for details). For convenience, we set m = ~ = 1. We get
+//! p
+//! 2
+//! ψk,l (r, θ) = ak,l Lλk (r2 )rλ e−r /2 eilθ , with λ = γ + l2 ,
+//! (4)
+//! where Lλk (x) are the generalised Laguerre polynomials
+//! Γ(k+1)
+//! and the normalisation gives a2k,l = πΓ(k+1+λ)
+//! . The associated eigenvalues, in units of ω, are given by (see Appendix B for details)
+//! Ek,l = 2k + 1 +
+//!
+//! p
+//!
+//! γ + l2 − νl .
+//!
+//! (5)
+//!
+//!
+//! --- PAGE BREAK ---
+//! 3
+//!
+//! EEk,l
+//! k,l
+//!
+//! sorbing it in µ) gives
+//!
+//! <latexit sha1_base64="oswLNc7gqbL4UcPxMNfZfiou7ro=">AAAB7nicbVBNS8NAEJ34WetX1aOXxSJ4kJJUQY9FETxWsB/QhrLZTtqlm03Y3Qgl9Ed48aCIV3+PN/+N2zYHbX0w8Hhvhpl5QSK4Nq777aysrq1vbBa2its7u3v7pYPDpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGt1O/9YRK81g+mnGCfkQHkoecUWOl1l0vG52LSa9UdivuDGSZeDkpQ456r/TV7ccsjVAaJqjWHc9NjJ9RZTgTOCl2U40JZSM6wI6lkkao/Wx27oScWqVPwljZkobM1N8TGY20HkeB7YyoGepFbyr+53VSE177GZdJalCy+aIwFcTEZPo76XOFzIixJZQpbm8lbEgVZcYmVLQheIsvL5NmteJdVKoPl+XaTR5HAY7hBM7AgyuowT3UoQEMRvAMr/DmJM6L8+58zFtXnHzmCP7A+fwBD86PYw==</latexit>
+//!
+//! 20
+//!
+//! <latexit sha1_base64="s+ZOPHE97z8O23PJc39EpCaKeW0=">AAAB9HicbVBNSwMxEM3Wr1q/qh69BIvgqexWQY9FLx4r2A/oLmU2zbahSXabZAtl6e/w4kERr/4Yb/4b03YP2vpg4PHeDDPzwoQzbVz32ylsbG5t7xR3S3v7B4dH5eOTlo5TRWiTxDxWnRA05UzSpmGG006iKIiQ03Y4up/77QlVmsXyyUwTGggYSBYxAsZKgT8AIQD7ko6x2ytX3Kq7AF4nXk4qKEejV/7y+zFJBZWGcNC667mJCTJQhhFOZyU/1TQBMoIB7VoqQVAdZIujZ/jCKn0cxcqWNHih/p7IQGg9FaHtFGCGetWbi/953dREt0HGZJIaKslyUZRybGI8TwD3maLE8KklQBSzt2IyBAXE2JxKNgRv9eV10qpVvatq7fG6Ur/L4yiiM3SOLpGHblAdPaAGaiKCxugZvaI3Z+K8OO/Ox7K14OQzp+gPnM8fwm+Rbw==</latexit>
+//!
+//! 15
+//!
+//! 10
+//!
+//! k= 3
+//!
+//! 6= 0
+//!
+//! l± (k) =
+//!
+//! Fermi level µ
+//! <latexit sha1_base64="YUIm7Tsc5b5P2pMGLKWRa4Nw0cU=">AAAB6nicbVBNSwMxEJ3Ur1q/qh69BIvgqexWQY9FLx4r2g9ol5JNs21okl2SrFCW/gQvHhTx6i/y5r8xbfegrQ8GHu/NMDMvTAQ31vO+UWFtfWNzq7hd2tnd2z8oHx61TJxqypo0FrHuhMQwwRVrWm4F6ySaERkK1g7HtzO//cS04bF6tJOEBZIMFY84JdZJDz2Z9ssVr+rNgVeJn5MK5Gj0y1+9QUxTyZSlghjT9b3EBhnRllPBpqVealhC6JgMWddRRSQzQTY/dYrPnDLAUaxdKYvn6u+JjEhjJjJ0nZLYkVn2ZuJ/Xje10XWQcZWklim6WBSlAtsYz/7GA64ZtWLiCKGau1sxHRFNqHXplFwI/vLLq6RVq/oX1dr9ZaV+k8dRhBM4hXPw4QrqcAcNaAKFITzDK7whgV7QO/pYtBZQPnMMf4A+fwBerI3a</latexit>
+//!
+//! k= 2
+//! k= 1
+//!
+//! 5
+//!
+//! k= 0
+//! 0
+//!
+//! 20
+//!
+//! 40
+//!
+//! 60
+//!
+//! 80
+//!
+//! ll
+//! <latexit sha1_base64="0C8sfUJYbrjC43r1LRBZ8OgM3fg=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlpuiXK27VnYOsEi8nFcjR6Je/eoOYpRFKwwTVuuu5ifEzqgxnAqelXqoxoWxMh9i1VNIItZ/ND52SM6sMSBgrW9KQufp7IqOR1pMosJ0RNSO97M3E/7xuasJrP+MySQ1KtlgUpoKYmMy+JgOukBkxsYQyxe2thI2ooszYbEo2BG/55VXSrlW9i2qteVmp3+RxFOEETuEcPLiCOtxBA1rAAOEZXuHNeXRenHfnY9FacPKZY/gD5/MH1VeM9A==</latexit>
+//!
+//! FIG. 2. Energy levels Ek,l in (5) vs l for k = 0, 1, 2, 3, for
+//! γ = 5 and ν = 0.9. The purple (dashed) horizontal line
+//! marks the Fermi level, µ = 7.5. Only the states with energy
+//! below µ can contribute to the ground state.
+//!
+//! The single particle states are labelled by a pair of integers (k, l) with k = 0, 1, 2... and l = 0, ±1, ±2, .... The
+//! energy levels (5) are shown in Fig. 2. Different values of
+//! k correspond to different bands or Landau levels.
+//! We now consider N spinless noninteracting fermions in
+//! their ground state. The many-body ground-state is thus
+//! given by a Slater determinant constructed from N single
+//! particle eigenfunctions associated to the lowest N eigenvalues. For a given N , the eigenfunctions participating
+//! in the Slater determinant may belong to multiple bands
+//! of the spectrum in Fig. 2 with k ∗ denoting the label of
+//! the highest band which is at least partially filled. We
+//! also denote by µ the Fermi energy, i.e. the energy of the
+//! highest occupied single particle energy level. The Fermi
+//! energy µ can be tuned by varying N . As µ increases, one
+//! sees from Fig. 2, where µ is indicated by a horizontal
+//! line, that more and more states with energy levels below
+//! µ contribute to the ground state since k ∗ also increases.
+//! The average number density, normalised to N , at a
+//! PN
+//! point r = (r, θ) is given by ρ(r, θ, N ) = i=1 hδ(r − ri )i
+//! where h· · · i denotes the expectation value in the ground
+//! state. For noninteracting fermions, it can be computed
+//! explicitly in terms of single particle eigenfunctions
+//! ∗
+//!
+//! ρ(r, θ, N ) =
+//!
+//! X
+//!
+//! 2
+//!
+//! |ψk,l (r, θ)| =
+//!
+//! k,l
+//!
+//! k
+//! X
+//!
+//! ρk (r, θ, N ) ,
+//!
+//! (6)
+//!
+//! k=0
+//!
+//! where ρk (r, θ, N ) denotes the density from the k th band
+//! and is given by
+//!
+//! ρk (r, θ, N ) =
+//!
+//! Γ(k + 1) e−r
+//! π
+//!
+//! 2
+//!
+//! l+ (k)
+//!
+//! X [Lλ (r2 )]2 r2λ
+//! k
+//! . (7)
+//! Γ(λ + k + 1)
+//!
+//! l=l− (k)
+//!
+//! Here, l∓ (k) are the locations where the Fermi level µ
+//! intersects the k th band, i.e. Ek,l± (k) = µ. Solving this
+//! equation using (5) (shifting energy by 1, effectively ab-
+//!
+//! ν(µ − 2k) ±
+//!
+//! p
+//!
+//! (µ − 2k)2 − γ(1 − ν 2 )
+//! .
+//! 1 − ν2
+//!
+//! (8)
+//!
+//! For a given k, Ek,l (Eq. 5) has a minimum at l = l∗
+//! √
+//! ν
+//! γ. Note that l∗ is independent of
+//! where l∗ = √1−ν
+//! 2
+//! th
+//! k and the energy of the
+//! p k band at this minimum is
+//! given by Ek,l∗ = 2k + (1 − ν 2 )γ. If the Fermi level has
+//! to intersect at leastpone band, we must have E0,l? < µ
+//! which implies µ > (1 − ν 2 )γ. For a fixed µ, the number of bands k ∗ below µ can be p
+//! obtained by simultaneously requiring Ek∗ ,l? p
+//! = 2k ∗ + (1 − ν 2 )γ < µ and
+//! ∗
+//! Ek∗ +1,l? =
+//! + 2 + (1 − ν 2 )γ > µ which yields
+//!  2k
+//! √
+//! µ− (1−ν 2 )γ
+//! k ∗ = Int
+//! where Int(x) denotes the inte2
+//! ger part of x (see Appendix B for details). The relation
+//! between the Fermi energy µ and N can be obtained by
+//! counting the total number of single particle levels with
+//! Pk∗
+//! energy below µ. This gives
+//! k=0 [l+ (k) − l− (k)] = N
+//! which fixes µ in terms of N (see Appendix B for details). For large N , it turns out that µ ∼ O(1). So
+//! far, the results are exact for arbitrary N , ν ∈ (0, 1)
+//! and γ > 0. To make further progress we now work in
+//! the large N limit and re-scale the two parameters ν and
+//! γ as in Eq. (3). Thus c and M are the new rescaled
+//! parameters. It turns out that this scaling is necessary
+//! to keep ρ(r, θ, N ) = O(1) for large N . In terms of c
+//! and M , we have√from Eq. (8), l± (k) = λ± (k)N where
+//! h √ i
+//! (µ−2k)± (µ−2k)2 −cM
+//! µ− cM
+//! ∗
+//! λ± (k) =
+//! .
+//! and
+//! k
+//! =
+//! Int
+//! M
+//! 2
+//!
+//! III.
+//!
+//! CRITICAL LINES IN THE (M, c) PLANE
+//!
+//! The (M, c) plane is divided into different regions
+//! labeled by k ∗ = 0, 1, 2, . . . separated by critical lines
+//! [see Fig. 1 √
+//! a)]. For there to be k ∗ √
+//! bands, we re∗
+//! quire, 2k + cM < µ < 2(k ∗ + 1) +√ cM . Setting
+//! the upperqbound, µ = 2(k ∗ + 1) + cM , one gets
+//! √
+//! Pk∗ +1
+//! 4
+//! q(q + cM ) = 1 (see Appendix C for
+//! q=1
+//! M
+//! details). Solving this equation for c as a function
+//! of M gives the critical line ck∗ +1 (M ).
+//! Thus, in
+//! the (M, c) plane, we get different regions labeled
+//! by k ∗ = 0, 1, 2 . . .. The region between cn (M ) and
+//! cn+1 (M ) corresponds to the region with k ∗ = n, i.e.
+//! the Fermi level includes n bands below it. For instance,
+//! c1 (M ) and c2 (M ) can be explicitly computed (see
+//! Appendix C for details) and are plotted in Fig. 1 a), e.g.,
+//! 2
+//! c1 (M ) = (1/M ) M 2 /16 − 1 Θ(M − 4) where Θ(x) is
+//! the Heaviside step function.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 4
+//! IV.
+//!
+//! N1⇡⇢
+//! (r)
+//! ⇡⇢
+//! (r,1✓,
+//! N)
+//!
+//! DENSITY IN THE LARGE-N LIMIT
+//!
+//! <latexit sha1_base64="+Bd2P73XBf6ue/M8GIhvHEhgTMg=">AAACAnicbVDLSsNAFJ34rPUVdSVuBotQoZSkCrosunElFewDmhAm00kzdPJg5kYopbjxV9y4UMStX+HOv3HaZqGtBy4czrmXe+/xU8EVWNa3sbS8srq2Xtgobm5t7+yae/stlWSSsiZNRCI7PlFM8Jg1gYNgnVQyEvmCtf3B9cRvPzCpeBLfwzBlbkT6MQ84JaAlzzzETsqxU3FkmHh2WVYcCBmQyu2pZ5asqjUFXiR2TkooR8Mzv5xeQrOIxUAFUaprWym4IyKBU8HGRSdTLCV0QPqsq2lMIqbc0fSFMT7RSg8HidQVA56qvydGJFJqGPm6MyIQqnlvIv7ndTMILt0Rj9MMWExni4JMYEjwJA/c45JREENNCJVc34ppSCShoFMr6hDs+ZcXSatWtc+qtbvzUv0qj6OAjtAxKiMbXaA6ukEN1EQUPaJn9IrejCfjxXg3PmatS0Y+c4D+wPj8Abb2lbY=</latexit>
+//!
+//! 1.0
+//!
+//! 0.8
+//!
+//! <latexit
+//!
+//! sha1_base64="GDzOto2iGtOIfD+sF9uzMphE/wM=">AAAB63icbVBNSwMxEJ2tX7V+VT16CRbBU9mtFb0IRS8eK9gPaJeSTbNtaJJdkqxQlv4FLx4U8eof8ua/Md3uQVsfDDzem2FmXhBzpo3rfjuFtfWNza3idmlnd2//oHx41NZRoghtkYhHqhtgTTmTtGWY4bQbK4pFwGknmNzN/c4TVZpF8tFMY+oLPJIsZASbTLrxLgflilt1M6BV4uWkAjmag/JXfxiRRFBpCMda9zw3Nn6KlWGE01mpn2gaYzLBI9qzVGJBtZ9mt87QmVWGKIyULWlQpv6eSLHQeioC2ymwGetlby7+5/USE177KZNxYqgki0VhwpGJ0PxxNGSKEsOnlmCimL0VkTFWmBgbT8mG4C2/vEratap3Ua091CuN2zyOIpzAKZyDB1fQgHtoQgsIjOEZXuHNEc6L8+58LFoLTj5zDH/gfP4ASVqNvQ==</latexit>
+//!
+//! <latexit
+//!
+//! sha1_base64="ysl+OwVg+26Xope7Y8qRYVv5ZPU=">AAAB63icbVBNSwMxEJ2tX7V+VT16CRbBU9mtFb0IRS8eK9gPaJeSTbNtaJJdkqxQlv4FLx4U8eof8ua/Md3uQVsfDDzem2FmXhBzpo3rfjuFtfWNza3idmlnd2//oHx41NZRoghtkYhHqhtgTTmTtGWY4bQbK4pFwGknmNzN/c4TVZpF8tFMY+oLPJIsZASbTLqpXQ7KFbfqZkCrxMtJBXI0B+Wv/jAiiaDSEI617nlubPwUK8MIp7NSP9E0xmSCR7RnqcSCaj/Nbp2hM6sMURgpW9KgTP09kWKh9VQEtlNgM9bL3lz8z+slJrz2UybjxFBJFovChCMTofnjaMgUJYZPLcFEMXsrImOsMDE2npINwVt+eZW0a1Xvolp7qFcat3kcRTiBUzgHD66gAffQhBYQGMMzvMKbI5wX5935WLQWnHzmGP7A+fwBSt+Nvg==</latexit>
+//!
+//! t=
+//!
+//! 15
+//!
+//! t = 25
+//!
+//! We start by analysing the√large N limit of ρk (r, θ, N ) in
+//! Eq. (7) upon setting r = z N . Since l± (k) = λ± (k)N ,
+//! we can replace the discrete sum over l by an integral. We
+//! show (see Appendix D and E for details) that it converges
+//! to the following form
+//!
+//! 0.6
+//!
+//! v1
+//! −k
+//!
+//! −x2
+//!
+//! dx e
+//!
+//! 2
+//!
+//! [Hk (x)]
+//!
+//! (9)
+//!
+//! a− (k)
+//!
+//! 0.4
+//!
+//! <latexit
+//!
+//! sha1_base64="VXxRfvT/2+yMjkeN54+M5NdHpYU=">AAAB63icbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoBeh6MVjBfsBbSib7aZdursJuxshhP4FLx4U8eof8ua/cZvmoK0PBh7vzTAzL4g508Z1v53S2vrG5lZ5u7Kzu7d/UD086ugoUYS2ScQj1QuwppxJ2jbMcNqLFcUi4LQbTO/mfveJKs0i+WjSmPoCjyULGcEml248d1ituXU3B1olXkFqUKA1rH4NRhFJBJWGcKx133Nj42dYGUY4nVUGiaYxJlM8pn1LJRZU+1l+6wydWWWEwkjZkgbl6u+JDAutUxHYToHNRC97c/E/r5+Y8NrPmIwTQyVZLAoTjkyE5o+jEVOUGJ5agoli9lZEJlhhYmw8FRuCt/zyKuk06t5FvfFwWWveFnGU4QRO4Rw8uIIm3EML2kBgAs/wCm+OcF6cd+dj0Vpyiplj+APn8wdBxo24</latexit>
+//!
+//! 2
+//! ρk (z N , θ, N ) ≈ 3/2
+//! π k!
+//!
+//! t=1
+//! 0
+//!
+//! √
+//!
+//! v1
+//! <latexit sha1_base64="CjmP85F9x9vbcL2ENUsPPB1Vqnk=">AAAB6nicbVBNS8NAEJ34WetX1aOXxSJ4KkkV9Fj04rGi/YA2lM120i7dbMLuplBCf4IXD4p49Rd589+4bXPQ1gcDj/dmmJkXJIJr47rfztr6xubWdmGnuLu3f3BYOjpu6jhVDBssFrFqB1Sj4BIbhhuB7UQhjQKBrWB0N/NbY1Sax/LJTBL0IzqQPOSMGis9jnter1R2K+4cZJV4OSlDjnqv9NXtxyyNUBomqNYdz02Mn1FlOBM4LXZTjQllIzrAjqWSRqj9bH7qlJxbpU/CWNmShszV3xMZjbSeRIHtjKgZ6mVvJv7ndVIT3vgZl0lqULLFojAVxMRk9jfpc4XMiIkllClubyVsSBVlxqZTtCF4yy+vkma14l1Wqg9X5dptHkcBTuEMLsCDa6jBPdShAQwG8Ayv8OYI58V5dz4WrWtOPnMCf+B8/gAJ8o2i</latexit>
+//!
+//! <latexit sha1_base64="CjmP85F9x9vbcL2ENUsPPB1Vqnk=">AAAB6nicbVBNS8NAEJ34WetX1aOXxSJ4KkkV9Fj04rGi/YA2lM120i7dbMLuplBCf4IXD4p49Rd589+4bXPQ1gcDj/dmmJkXJIJr47rfztr6xubWdmGnuLu3f3BYOjpu6jhVDBssFrFqB1Sj4BIbhhuB7UQhjQKBrWB0N/NbY1Sax/LJTBL0IzqQPOSMGis9jnter1R2K+4cZJV4OSlDjnqv9NXtxyyNUBomqNYdz02Mn1FlOBM4LXZTjQllIzrAjqWSRqj9bH7qlJxbpU/CWNmShszV3xMZjbSeRIHtjKgZ6mVvJv7ndVIT3vgZl0lqULLFojAVxMRk9jfpc4XMiIkllClubyVsSBVlxqZTtCF4yy+vkma14l1Wqg9X5dptHkcBTuEMLsCDa6jBPdShAQwG8Ayv8OYI58V5dz4WrWtOPnMCf+B8/gAJ8o2i</latexit>
+//!
+//! Z a+ (k)
+//!
+//! ρbulk
+//! (r, θ, N ) ≈
+//! k
+//!
+//! 1 √
+//! I λ (k))<z<√λ (k) ,
+//! −
+//! +
+//! π
+//!
+//! 2λ (k)
+//!
+//! −
+//! we set z 2 = λ− (k) + √N
+//! u where u ∼ O(1). In this
+//! case, the lower limit in the integral in Eq. (9) becomes
+//! a− (k) ≈ −u (with u measuring the scaled distance from
+//! the left edge), while the upper limit still approaches to
+//! +∞ as N → ∞. Hence, we get,
+//!
+//! ρedge
+//! (r, θ, N ) ≈ fkedge (u)
+//! k
+//! −k
+//!
+//! R∞
+//! −u
+//!
+//! 1
+//! t=
+//! sha1_base64="JSHUmzwPY/87ek1Z4nAk8VIIvqI=">AAAB6nicbVBNS8NAEJ34WetX1aOXxSJ4KkkV9CIUvXisaD+gDWWz3bRLN5uwOxFK6E/w4kERr/4ib/4bt20O2vpg4PHeDDPzgkQKg6777aysrq1vbBa2its7u3v7pYPDpolTzXiDxTLW7YAaLoXiDRQoeTvRnEaB5K1gdDv1W09cGxGrRxwn3I/oQIlQMIpWesBrr1cquxV3BrJMvJyUIUe9V/rq9mOWRlwhk9SYjucm6GdUo2CST4rd1PCEshEd8I6likbc+Nns1Ak5tUqfhLG2pZDM1N8TGY2MGUeB7YwoDs2iNxX/8zophld+JlSSIldsvihMJcGYTP8mfaE5Qzm2hDIt7K2EDammDG06RRuCt/jyMmlWK955pXp/Ua7d5HEU4BhO4Aw8uIQa3EEdGsBgAM/wCm+OdF6cd+dj3rri5DNH8AfO5w/TLY1+</latexit>
+//!
+//! -5
+//!
+//! 5
+//!
+//! s
+//!
+//! FIG. 3. Density profile in Eq. (14) for M = 5 plotted as a
+//! function of the scaled distance s [49] for increasing values of
+//! t = 1, 10, 15 and 25. As t increases, the scaled density approaches the constant value 1 for |s| < v1 t and decays rapidly
+//! to 0 for |s| > v1 t. For t  1, the forward and backward fronts
+//! separating the constant density 1/π and the zero-density outside move ballistically in opposite directions with a constant
+//! speed v1 .
+//!
+//! (10)
+//!
+//! where the function I takes value 1 if the inequality in
+//! the subscript is satisfied and 0 otherwise. Thus the bulk
+//! density
+//! is flat (with
+//! value 1/π) inside the k th annulus
+//! p
+//! p
+//! λ− (k) < z < λ+ (k) [see Fig. 1 b)]. We find in Fig. 1
+//! c) an excellent agreement between the results obtained
+//! from the exact evaluation of the sum in (6) and (7) for
+//! k ∗ = 1 and the large N bulk density in Eq. (10). For a
+//! fixed k ∗ ≥ 1, the sum in Eq. (6) gives a superposition of
+//! contributions of the type (10) for each k ≤ k ∗ , leading to
+//! the “wedding cake” structure in Fig. 1 b).
+//! pIf z is close to one of the two edges, say the left edge
+//! λ− (k), we can estimate the limiting form of the edge
+//! density when N → ∞√from the same Eq. (9). For this,
+//!
+//! where fkedge (u) = π23/2 k!
+//!
+//! 0.2
+//!
+//! √
+//!
+//! <latexit
+//!
+//! 2
+//!
+//! ) N
+//! √
+//! where a± (k) = (λ± (k)−z
+//! and Hk (x) is the k th Herz 2
+//! mite polynomial. For fixed z, as N → ∞,
+//! p the two
+//! λ− (k) <
+//! bounds
+//! a
+//! (k)
+//! →
+//! ∞
+//! and
+//! a
+//! (k)
+//! →
+//! −∞
+//! iff
+//! +
+//! −
+//! p
+//! z < λ+ (k). If z is outside this interval, both bounds
+//! tend to either +∞ or −∞ simultaneously. In the latter cases, the integral in (9) vanishes as N → ∞. In
+//! contrast, in Rthe former case, the integral approaches a
+//! √
+//! 2
+//! ∞
+//! finite value −∞ dx e−x [Hk (x)]2 = 2k k! π. Hence we
+//! th
+//! conclude that the density
+//! √ from the k band at a fixed
+//! rescaled distance z = r/ N converges to
+//!
+//! (11)
+//!
+//! 2
+//!
+//! dx e−x [Hk (x)]2 . Note that
+//!
+//! when u → ∞, fkedge (u) → 1/π, and the edge density
+//! matches smoothly with the bulk density. In Fig. 1 we
+//! have zoomed in on the left edge of k = 1 layer and plotted
+//! the scaling function f1edge (u) in the inset, which clearly
+//! shows a kink where df1edge /du = 0. For the k th layer,
+//! setting dfkedge (u)/du = 0 (which implies Hk (−u) = 0), it
+//! follows that there will be k kinks in fkedge (u) whose locations coincide with the k zeros of Hk (−u). The scaling
+//! function fkedge (u) is actually universal in the sense that
+//!
+//! it does not depend on c and M explicitly. In fact, in the
+//! special case γ = 0 and ν = 1, but with fixed N (the classical Landau problem) – hence not in the scaling limit
+//! discussed here –, the edge density ρk for the k th Landau
+//! level was studied in [45] and similar kinks were found for
+//! finite N , but the scaling function fkedge (u) was not computed (see also [46] in the mathematics literature in the
+//! context of polyanalytic Ginibre ensembles).
+//! Furthermore, an interesting limiting shape emerges for
+//! fkedge (u) in the scaling
+//! √ limit of k large and u large but
+//! with the ratio y = u/ 2k fixed. In this case, we find (see
+//! Appendix E for details)
+//! √
+//! 1
+//! lim fkedge ( 2k y) = 2 cos−1 (−y) I−1<y<1 , (12)
+//! k→∞
+//! π
+//! and for y > 1 it takes a value of 1/π. Interestingly, a similar shape appeared in the description of a propagating
+//! front in the quantum evolution of a spin chain (equivalent to free fermions on a lattice) [39–43]. It turns out
+//! that there is yet another interesting
+//! scaling regime close
+//! √
+//! to the√two endpoints u ≈ ± 2k. For example, setting
+//! u = − 2k + √2kw1/6 with w = O(1)
+//! 
+//! 
+//! √
+//! w
+//! lim k 1/3 π fkedge − 2k + √
+//! = F(w) (13)
+//! k→∞
+//! 2k 1/6
+//! 
+//! where F(w) = [Ai0 (−w)]2 + wAi2 (−w) where Ai(z) denotes the Airy function. Interestingly, the same scaling
+//! function describes the tail of the density of eigenvalues
+//! (centered and scaled) in the Gaussian Unitary Ensemble
+//! of RMT [47, 48].
+//!
+//!
+//! --- PAGE BREAK ---
+//! 5
+//! V.
+//!
+//! CROSSING THE CRITICAL LINE IN THE
+//! (M, c) PLANE
+//!
+//! When k ∗ changes from k ∗ = 0 to k ∗ = 1 (which
+//! means a new band is included below the Fermi level),
+//! one may wonder how the density profile changes from a
+//! one-layered structure to a two-layered structure. When
+//! one crosses this critical line c = c1 (M ) ≡ c1 , the second
+//! layer appears on top of the first layer (Fig. 1). Here,
+//! we describe the evolution of the density profile of this
+//! newly formed droplet as a function of the distance c1 − c
+//! below the critical line c1 for fixed 4 < M < 12 (see Appendix F for details). As k ∗ changes √
+//! from 0 to 1, the
+//! Fermi level µ exceeds
+//! the
+//! value
+//! µ
+//! =
+//! 2
+//! +
+//! c1 M by a small
+//! √
+//! amount δ: µ = 2 + c1 M + δ where δ  1. As k ∗ jumps
+//! from 0 to 1, we find that the additional macroscopic density in the
+//! layer appears
+//! region
+//! √
+//! √ second
+//! √ over the scaled
+//! p c1
+//! p c1
+//! 2
+//! 2
+//! < z < M +v1 δ where v1 = M (c1 M )1/4
+//! M −v1 δ
+//! √
+//! and z = r/ N . Therefore, the center of the second layer
+//! appears at zc = (c1 /M )1/4 . Here, we give a scaling description of this density in the second layer justpafter its
+//! c1
+//! appearance, i.e., in the limit δ → 0. Let z 2 = M
+//! + ,
+//! where  measures the distance from the center of the second layer. We analyse Eq. (7) with k = 1 by replacing,
+//! for large N , the sum by an integral and evaluating it by
+//! the saddle point method (see Appendix F for details).
+//! This leads to the following density profile of the droplet
+//! (for a plot see Fig. 3)
+//! √
+//! 1
+//! ρ1 (z N , θ, N ) ≈ [F1 (s + v1 t) − F1 (s − v1 t)] ,(14)
+//! π
+//! h
+//! i
+//! 2
+//! where F1 (z) = 12 erfc(z) − √2π z e−z with erfc(z) being
+//! Here s =
+//! p the complementary error function.
+//! measured
+//! from
+//!  N/2(M/c1 )1/4 is the scaled distance
+//! p
+//! √
+//! the center of the droplet, while t = N/2(M/c1 )1/4 δ
+//! is proportional to c1 − c > 0, measuring the deviation
+//! from the critical line. If we interpret s and t as space
+//! and time, the density profile in Eq. (14) has an interesting interpretation: the two edges of this profile move
+//! ballistically away from the droplet center with a constant
+//! speed v1 . At large t, the widths of these “solitonic” fronts
+//! remain of O(1) while the height of the density behind the
+//! fronts approaches a constant value 1/π (see Fig. 3). This
+//! picture can be easily generalized to other critical lines in
+//! the (M, c) plane (see Appendix F for details).
+//!
+//! VI.
+//!
+//! CONCLUSIONS
+//!
+//! To conclude, we have shown analytically that the average density profile in the ground-state of N noninteracting fermions in a rotating trap exhibits a rich multilayered “wedding cake” structure, as more and more Landau levels participate in the ground state by increasing
+//! N , leading to a highly interesting phase diagram in the
+//! parameter space. This non-trivial density profile owes
+//!
+//! its origin entirely to quantum effects, and can not be obtained from a simple Local Density/Thomas-Fermi approximation. It would be interesting to study the effect
+//! of the inclusion of more and more Landau levels on other
+//! observables, going beyond the one-point function studied
+//! in this paper, such as the number variance and the entanglement entropy (see for e.g., [34, 50–52]). We note
+//! that strongly interacting bosons and fermions have been
+//! studied experimentally in rotating traps leading in particular to the formation of vortex lattices [53, 54]. In
+//! our case, there is a hole in the density at the center of
+//! the trap, but this is due to the repulsive inverse square
+//! interaction γ/(2r2 ) and it is not related to a vortex. It
+//! will be challenging to see how interactions can change the
+//! above scenario, in particular leading to the generation of
+//! vortices.
+//!
+//! ACKNOWLEDGMENTS
+//!
+//! We thank Gautam Mandal and Takeshi Morita for
+//! very useful discussions at the initial stage of this
+//! work. MK acknowledges support from the project
+//! 6004-1 of the Indo-French Centre for the Promotion
+//! of Advanced Research (IFCPAR), Ramanujan Fellowship (SB/S2/RJN-114/2016), SERB Early Career Research Award (ECR/2018/002085) and SERB Matrics
+//! Grant (MTR/2019/001101) from the Science and Engineering Research Board (SERB), Department of Science and Technology, Government of India. MK thanks
+//! the hospitality of Laboratoire de Physique, Ecole Normale Supérieure (Paris). This research was supported by
+//! ANR grant ANR-17-CE30-0027-01 RaMaTraF. MK acknowledges support of the Department of Atomic Energy,
+//! Government of India, under project no. RTI4001.
+//!
+//! Appendix A: Model and basic properties
+//!
+//! As mentioned in the main text, our starting Hamiltonian is,
+//! Ĥ =
+//!
+//! p2
+//! 1
+//! γ
+//! + ω 2 r2 + 2 − ΩLz
+//! 2
+//! 2
+//! 2r̂
+//!
+//! (A1)
+//!
+//! where Lz = xpy − ypx = −i(x∂y − y∂x ) is the zcomponent of the angular momentum, γ characterises
+//! the repulsive-like potential at the centre (inverse-square
+//! type), ω is the trap frequency and Ω is frequency at which
+//! the trap rotates around the vertical axis. For convenience, we have set the mass m = 1 and also ~ = 1.
+//! Throughout the work, we will consider the case in which
+//! the inverse square central potential is very large, i.e.,
+//! γ = cN, c ∼ O(1), regime of interest
+//!
+//! (A2)
+//!
+//!
+//! --- PAGE BREAK ---
+//! 6
+//! In polar coordinates (r, θ), the Hamiltonian reads,
+//! 
+//! 
+//! 1
+//! γ
+//! 1
+//! p2
+//! 1
+//! ∂r2 + ∂r + θ2 + ω 2 r̂2 + 2 − ΩLz
+//! Ĥ = −
+//! 2
+//! r̂
+//! 2r̂
+//! 2
+//! 2r̂
+//! (A3)
+//! where
+//! Lz = pθ = −i∂θ
+//!
+//! (A4)
+//!
+//! The first goal is to find eigenstates and eigenvalues of
+//! Eq. A3. Let us substitute,
+//! ψ(r, θ) = ψ(r)eilθ
+//!
+//! (A5)
+//!
+//! where l = 0, ±1, ±2, ... are integers because the wave
+//! function needs to respect 2π periodicity in the angular
+//! direction. Then, we get,
+//! "
+//!
+//! #
+//! 
+//! 2
+//! γ
+//! +
+//! l
+//! 1
+//! 1
+//! Ĥψ(r) =
+//! ∂r2 + ∂r + ω 2 r2 +
+//! − lΩ ψ(r)
+//! r
+//! 2
+//! 2r2
+//! (A6)
+//! Hence, the equation we need to solve is, Ĥψ(r) = Eψ(r)
+//! which gives us,
+//! "
+//! #
+//! 
+//! 
+//! 2
+//! 1
+//! 1
+//! γ
+//! +
+//! l
+//! 1
+//! −
+//! ∂r2 + ∂r + ω 2 r2 +
+//! − lΩ ψ(r) = Eψ(r)
+//! 2
+//! r
+//! 2
+//! 2r2
+//! (A7)
+//! To reduce the above eigenvalue equation (Eq. A7) to a
+//! standard form, we make the following transformation
+//! √ 2
+//! 2
+//! ψ(r) = e−ωr /2 r γ+l G(ωr2 ) .
+//! (A8)
+//! 1
+//! −
+//! 2
+//!
+//! 
+//!
+//! It is then easy to see that G(z) satisfies the differential
+//! equation
+//! zG00 (z) + (b − z)G0 (z) − a G(z) = 0 ,
+//!
+//! where
+//!
+//! (A9)
+//!
+//! h
+//! i
+//! 
+//! p
+//! 1
+//! 2 − E+Ω l ,
+//! 
+//! 1
+//! +
+//! a
+//! =
+//! γ
+//! +
+//! l
+//! 
+//! 2
+//! ω
+//! (A10)
+//! 
+//! p
+//! 
+//! b = 1 + γ + l2 .
+//!
+//! This is a standard confluent hypergeometric differential equation whose general solution is given by the linear
+//! combination of two independent solutions as follows [55]
+//! G(z) = A1 z 1−b M (a − b + 1, 2 − b, z) + A2 M (a, b, z)
+//! (A11)
+//! where A1 and A2 are two arbitrary constants and
+//! M (a, b, z) =
+//!
+//! ∞
+//! X
+//!
+//! p
+//!
+//! is the Kummer’s confluent hypergeometric function.
+//! Here, (a)p , (b)p are Pochhammer symbols, i.e., (a)p =
+//! Γ(a+p)
+//! Γ(a) where Γ(x) is a Gamma function. Note that the
+//! arguments of the two functions in (A11) are different.
+//! The function M (a, b, z) has the following asymptotic behaviors
+//! 
+//! a
+//! 
+//! 1 + z + O(z 2 ) , z → 0
+//! 
+//! 
+//! b
+//! 
+//! M (a, b, z) ≈
+//! (A13)
+//! 
+//! 
+//! ez z a−b
+//! 
+//! 
+//! ,
+//! z→∞.
+//! Γ(a)
+//! Hence the most general solution for the eigenfunction
+//! ψ(r) in Eq. A8 reads
+//! √ 2
+//! 2
+//! ψ(r) = e−ωr /2 r γ+l ×
+//! 
+//! A1 (ω r2 )1−b M (a − b + 1, 2 − b, ω r2 )
+//! 
+//! + A2 M (a, b, ω r2 ) ,
+//! (A14)
+//! where a and b are given in Eq. A10.
+//! To fix these unknown constants A1 and A2 , we first
+//! consider the behavior of ψ(r) as r → 0. Using
+//! √ 2 Eq.
+//! √ A13
+//! 2
+//! we see that, as r → 0, ψ(r) ∼ A1 ω − γ+l r− γ+l .
+//! However,
+//! R ∞the eigenfunction must be square-integrable,
+//! i.e., 2π 0 ψ 2 (r)r dr should be finite. Substituting the
+//! small√r behavior, we see that the integral behaves as
+//! 2
+//! r2(1− γ+l ) in the lower limit r → 0. Hence, since
+//! l = 0, ±1, · · · , the integral is divergent for all γ > 1.
+//! And this is indeed the case in our problem where γ is
+//! scaled as γ = cN where c = O(1) and N → ∞ (see Eq.
+//! A2). Hence we must have A1 = 0. Therefore the solution
+//! now reads
+//! √ 2
+//! 2
+//! ψ(r) = A2 e−ωr /2 r γ+l M (a, b, ω r2 ) . (A15)
+//! We now consider the other limit r → ∞. Substituting
+//! the asymptotic behaviour given in Eq. A13 in Eq. A15,
+//! we find that
+//! A2 a−b 2a−b−1 ωr2 /2
+//! ω r
+//! e
+//! .
+//! (A16)
+//! Γ(a)
+//! R∞
+//! Clearly, the integral 2π 0 ψ 2 (r)r dr diverges at the upper limit r → ∞, provided Γ(a) is finite. Hence, to cure
+//! this divergence, we must choose |Γ(a)| = +∞, which
+//! means that a = −k where k = 0, 1, 2, · · · is a nonnegative integer. In fact, this is the quantisation condition. In fact, when a = −k the function M (a = −k, b, z)
+//! is a polynomial of degree k and the wave function is
+//! square integrable. The quantisation condition a = −k,
+//! using Eq. A10, reads
+//! ψ(r) ≈
+//!
+//! p
+//!
+//! 2
+//!
+//! (a)p z
+//! a
+//! a(a + 1) z
+//! =1+ z+
+//! + ...
+//! (b)
+//! p!
+//! b
+//! b(b + 1) 2!
+//! p
+//! p=0
+//! (A12)
+//!
+//! γ + l2
+//! lΩ
+//! E
+//! 1
+//! −
+//! −
+//! + = −k .
+//! 2
+//! 2ω 2ω 2
+//!
+//! (A17)
+//!
+//! The normalization condition fixes the constant A2 = ck,l ,
+//! which depends on both quantum numbers k and l. Hence,
+//!
+//!
+//! --- PAGE BREAK ---
+//! 7
+//! summarising, the complete set of eigenfunctions are given
+//! by
+//! 2
+//!
+//! ψk,l (r, θ) = ck,l rλ e−ωr /2 M (−k, 1 + λ, ωr2 )eilθ , (A18)
+//! p
+//! where λ = γ + l2 with the associated eigenvalues from
+//! Eq. A17
+//! p
+//! Ek,l = ω[2k + 1 + γ + l2 ] − Ωl .
+//! (A19)
+//! Without loss of generality, we will set ω = 1 (i.e.,
+//! the energies are expressed in units of ω) and introduce
+//! ν ≡ Ω/ω < 1. Note also that Kummer’s confluent hypergeometric function are related to generalized Laguerre
+//! polynomials as,
+//! M (−k, 1 + λ, r2 ) =
+//!
+//! Γ(k + 1)Γ(1 + λ) λ 2
+//! Lk (r ) .
+//! Γ(1 + k + λ)
+//!
+//! (A20)
+//!
+//! 2
+//!
+//! ψn1 ,n2 (z, z̄) = An1 ,n2 ezz̄/2 ∂z̄n1 ∂zn2 e−zz̄ ,
+//!
+//! (A22)
+//!
+//! (B1)
+//!
+//! with the associated eigenvalues (in units such that ω = 1)
+//! En1 ,n2 = 1 + (1 − ν)n1 + (1 + ν)n2 .
+//!
+//! (B2)
+//!
+//! where n1 = 0, 1, 2, · · · and similarly n2 = 0, 1, 2, · · ·
+//! where 0 < ν = Ω/ω ≤ 1. This last condition follows
+//! from the fact that for ν > 1, the system is “unstable”
+//! in the sense that the fermions can “fly away”. Another
+//! important point one can observe is that if ω = Ω, then it
+//! becomes the Landau problem (free electrons in perpendicular magnetic field) with energy levels given by,
+//! EnLandau
+//! = 1 + 2Ωn2 , Landau problem
+//! 1 ,n2
+//!
+//! Therefore, expressing Eq. A18 in terms of generalized
+//! Laguerre polynomials is preferable since these functions
+//! have an orthonormality condition that turns out to be
+//! useful
+//! Z ∞
+//! Γ(k + λ + 1)
+//! dx xλ e−x Lλk (x)Lλk0 (x)dx =
+//! δkk0 .
+//! Γ(k + 1)
+//! 0
+//! (A21)
+//! R∞
+//! The normalisation requirement 2π 0 rdr|ψk,l (r)|2 = 1
+//! finally gives,
+//! ψk,l (r, θ) = ak,l Lλk (r2 )rλ e−r /2 eilθ
+//!
+//! rather in the coordinates (z, z̄) where z = x + iy.
+//! In this representation, the eigenfunctions read (see e.g.
+//! Refs. [29, 30, 34, 50])
+//!
+//! (B3)
+//!
+//! The lowest Landau level (LLL) is given by n2 = 0. For
+//! a given n2 , there is a N −fold degeneracy. We do not want
+//! degeneracy and therefore it can be lifted by choosing Ω <
+//! ω. This problem can also be alternatively solved in the
+//! polar coordinates discussed in the previous section. To
+//! see the connection between these two representations, we
+//! put γ = 0 in Eq. A19 and get
+//! Ek,l = (2k + 1 + |l|) − νl
+//!
+//! (B4)
+//!
+//! where, k = 0, 1, 2... and l = 0, ±1, ±2.... Comparing
+//! Eq. B4 and Eq. B2, we get,
+//!
+//! with
+//! a2k,l =
+//!
+//! Γ(k + 1)
+//! πΓ(k + 1 + λ)
+//!
+//! n1 − n2 = l,
+//!
+//! n1 + n2 = 2k + |l|
+//!
+//! (B5)
+//!
+//! |l| − l
+//! .
+//! 2
+//!
+//! (B6)
+//!
+//! (A23)
+//! which implies,
+//!
+//! The associated eigenvalues are now expressed as,
+//! p
+//! (A24)
+//! Ek,l = 2k + 1 + γ + l2 − νl
+//! Eq. A22 and Eq. A24 form the complete solution of our
+//! system. In what follows, we will analyse the energy levels
+//! (Eq. A24) of the system.
+//!
+//! n1 = k +
+//!
+//! l + |l|
+//! ,
+//! 2
+//!
+//! n2 = k +
+//!
+//! Therefore the LLL n2 = 0 and n1 = 0, 1, 2... corresponds
+//! to k = 0, l = 0, 1, 2... Note that, when k = 0, we have
+//! two branches (positive and negative l),
+//! Ek=0,l = (1 + |l|) − νl
+//!
+//! Appendix B: Analysis of energy levels and the
+//! ground state
+//!
+//! In this section, we will analyse the energy levels
+//! (Eq. A19) and discuss the ground state for a system
+//! which has N fermions. To start with, let us recap the
+//! γ = 0 case.
+//!
+//! 1.
+//!
+//! γ = 0 case
+//!
+//! For γ = 0, Eq. A1 reduces to the Hamiltonian considered in Refs. [29, 30, 34]. The corresponding eigenfunctions were computed not in the polar coordinates,
+//!
+//! (B7)
+//!
+//! thus the LLL (n2 = 0 and n1 = 0, 1, 2, · · · ) corresponds
+//! to the right branch (l ≥ 0) and k = 0 in the polar representation of the eigenfunctions. The left panel of Fig. 5
+//! shows the energy levels for the case of γ = 0.
+//!
+//! 2.
+//!
+//! γ 6= 0 case assuming γ = cN where c ∼ O(1)
+//!
+//! Now, we discuss the case with γ 6= 0. This case turns
+//! out to be quite non-trivial. We recap that the energy
+//! levels are given by (Eq. A19),
+//!
+//! Ek,l = 2k + 1 +
+//!
+//! p
+//! γ + l2 − νl
+//!
+//! (B8)
+//!
+//!
+//! --- PAGE BREAK ---
+//! 8
+//!
+//! Hole
+//!
+//! FIG. 4. (Left) The external potential V (r) = 12 ω 2 r2 + 2rγ2 from Eq. A1 is plotted for visualization purposes. We took c = 100
+//! and N = 400. We see the highly repulsive central potential that eventually causes a hole/empty region. (Right) Here, we show
+//! a schematic figure (top view) showing the fermions in 2D. The formation of the central hole and multiple layers and multiple
+//! edges is the key finding and property of the underlying Hamiltonian (Eq. A1). This is certainly missed via a traditional Local
+//! Density Approximation (see also Fig. 7).
+//!
+//! EEk,l
+//! k,l
+//!
+//! EEk,l
+//! k,l
+//!
+//! <latexit sha1_base64="oswLNc7gqbL4UcPxMNfZfiou7ro=">AAAB7nicbVBNS8NAEJ34WetX1aOXxSJ4kJJUQY9FETxWsB/QhrLZTtqlm03Y3Qgl9Ed48aCIV3+PN/+N2zYHbX0w8Hhvhpl5QSK4Nq777aysrq1vbBa2its7u3v7pYPDpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGt1O/9YRK81g+mnGCfkQHkoecUWOl1l0vG52LSa9UdivuDGSZeDkpQ456r/TV7ccsjVAaJqjWHc9NjJ9RZTgTOCl2U40JZSM6wI6lkkao/Wx27oScWqVPwljZkobM1N8TGY20HkeB7YyoGepFbyr+53VSE177GZdJalCy+aIwFcTEZPo76XOFzIixJZQpbm8lbEgVZcYmVLQheIsvL5NmteJdVKoPl+XaTR5HAY7hBM7AgyuowT3UoQEMRvAMr/DmJM6L8+58zFtXnHzmCP7A+fwBD86PYw==</latexit>
+//!
+//! <latexit sha1_base64="oswLNc7gqbL4UcPxMNfZfiou7ro=">AAAB7nicbVBNS8NAEJ34WetX1aOXxSJ4kJJUQY9FETxWsB/QhrLZTtqlm03Y3Qgl9Ed48aCIV3+PN/+N2zYHbX0w8Hhvhpl5QSK4Nq777aysrq1vbBa2its7u3v7pYPDpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGt1O/9YRK81g+mnGCfkQHkoecUWOl1l0vG52LSa9UdivuDGSZeDkpQ456r/TV7ccsjVAaJqjWHc9NjJ9RZTgTOCl2U40JZSM6wI6lkkao/Wx27oScWqVPwljZkobM1N8TGY20HkeB7YyoGepFbyr+53VSE177GZdJalCy+aIwFcTEZPo76XOFzIixJZQpbm8lbEgVZcYmVLQheIsvL5NmteJdVKoPl+XaTR5HAY7hBM7AgyuowT3UoQEMRvAMr/DmJM6L8+58zFtXnHzmCP7A+fwBD86PYw==</latexit>
+//!
+//! 20
+//!
+//! 20
+//!
+//! <latexit sha1_base64="kMGG2aNfB0rEXW5IraeSpD5yzac=">AAAB8nicbVDLSgNBEOyNrxhfUY9eBoPgKexGQS9C0IvHCOYBmyXMTmaTIfNYZmaFEPIZXjwo4tWv8ebfOEn2oIkFDUVVN91dccqZsb7/7RXW1jc2t4rbpZ3dvf2D8uFRy6hME9okiivdibGhnEnatMxy2kk1xSLmtB2P7mZ++4lqw5R8tOOURgIPJEsYwdZJYXeAhcAI3SC/V674VX8OtEqCnFQgR6NX/ur2FckElZZwbEwY+KmNJlhbRjidlrqZoSkmIzygoaMSC2qiyfzkKTpzSh8lSruSFs3V3xMTLIwZi9h1CmyHZtmbif95YWaT62jCZJpZKsliUZJxZBWa/Y/6TFNi+dgRTDRztyIyxBoT61IquRCC5ZdXSatWDS6qtYfLSv02j6MIJ3AK5xDAFdThHhrQBAIKnuEV3jzrvXjv3seiteDlM8fwB97nD4UakBg=</latexit>
+//!
+//! =0
+//! <latexit sha1_base64="s+ZOPHE97z8O23PJc39EpCaKeW0=">AAAB9HicbVBNSwMxEM3Wr1q/qh69BIvgqexWQY9FLx4r2A/oLmU2zbahSXabZAtl6e/w4kERr/4Yb/4b03YP2vpg4PHeDDPzwoQzbVz32ylsbG5t7xR3S3v7B4dH5eOTlo5TRWiTxDxWnRA05UzSpmGG006iKIiQ03Y4up/77QlVmsXyyUwTGggYSBYxAsZKgT8AIQD7ko6x2ytX3Kq7AF4nXk4qKEejV/7y+zFJBZWGcNC667mJCTJQhhFOZyU/1TQBMoIB7VoqQVAdZIujZ/jCKn0cxcqWNHih/p7IQGg9FaHtFGCGetWbi/953dREt0HGZJIaKslyUZRybGI8TwD3maLE8KklQBSzt2IyBAXE2JxKNgRv9eV10qpVvatq7fG6Ur/L4yiiM3SOLpGHblAdPaAGaiKCxugZvaI3Z+K8OO/Ox7K14OQzp+gPnM8fwm+Rbw==</latexit>
+//!
+//! 15
+//!
+//! 15
+//!
+//! 10
+//!
+//! 10
+//!
+//! k=3
+//!
+//! k=3
+//!
+//! Fermi level µ
+//!
+//! <latexit sha1_base64="YUIm7Tsc5b5P2pMGLKWRa4Nw0cU=">AAAB6nicbVBNSwMxEJ3Ur1q/qh69BIvgqexWQY9FLx4r2g9ol5JNs21okl2SrFCW/gQvHhTx6i/y5r8xbfegrQ8GHu/NMDMvTAQ31vO+UWFtfWNzq7hd2tnd2z8oHx61TJxqypo0FrHuhMQwwRVrWm4F6ySaERkK1g7HtzO//cS04bF6tJOEBZIMFY84JdZJDz2Z9ssVr+rNgVeJn5MK5Gj0y1+9QUxTyZSlghjT9b3EBhnRllPBpqVealhC6JgMWddRRSQzQTY/dYrPnDLAUaxdKYvn6u+JjEhjJjJ0nZLYkVn2ZuJ/Xje10XWQcZWklim6WBSlAtsYz/7GA64ZtWLiCKGau1sxHRFNqHXplFwI/vLLq6RVq/oX1dr9ZaV+k8dRhBM4hXPw4QrqcAcNaAKFITzDK7whgV7QO/pYtBZQPnMMf4A+fwBerI3a</latexit>
+//!
+//! k=2
+//!
+//! 5
+//!
+//! k=0
+//!
+//! k=1
+//! k=0
+//! 0
+//!
+//! Fermi level µ
+//!
+//! k=2
+//! k=1
+//!
+//! <latexit sha1_base64="YUIm7Tsc5b5P2pMGLKWRa4Nw0cU=">AAAB6nicbVBNSwMxEJ3Ur1q/qh69BIvgqexWQY9FLx4r2g9ol5JNs21okl2SrFCW/gQvHhTx6i/y5r8xbfegrQ8GHu/NMDMvTAQ31vO+UWFtfWNzq7hd2tnd2z8oHx61TJxqypo0FrHuhMQwwRVrWm4F6ySaERkK1g7HtzO//cS04bF6tJOEBZIMFY84JdZJDz2Z9ssVr+rNgVeJn5MK5Gj0y1+9QUxTyZSlghjT9b3EBhnRllPBpqVealhC6JgMWddRRSQzQTY/dYrPnDLAUaxdKYvn6u+JjEhjJjJ0nZLYkVn2ZuJ/Xje10XWQcZWklim6WBSlAtsYz/7GA64ZtWLiCKGau1sxHRFNqHXplFwI/vLLq6RVq/oX1dr9ZaV+k8dRhBM4hXPw4QrqcAcNaAKFITzDK7whgV7QO/pYtBZQPnMMf4A+fwBerI3a</latexit>
+//!
+//! 5
+//!
+//! 6= 0
+//!
+//! 20
+//!
+//! 40
+//!
+//! 60
+//!
+//! 80
+//!
+//! l
+//!
+//! l
+//!
+//! <latexit sha1_base64="0C8sfUJYbrjC43r1LRBZ8OgM3fg=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlpuiXK27VnYOsEi8nFcjR6Je/eoOYpRFKwwTVuuu5ifEzqgxnAqelXqoxoWxMh9i1VNIItZ/ND52SM6sMSBgrW9KQufp7IqOR1pMosJ0RNSO97M3E/7xuasJrP+MySQ1KtlgUpoKYmMy+JgOukBkxsYQyxe2thI2ooszYbEo2BG/55VXSrlW9i2qteVmp3+RxFOEETuEcPLiCOtxBA1rAAOEZXuHNeXRenHfnY9FacPKZY/gD5/MH1VeM9A==</latexit>
+//!
+//! 0
+//!
+//! 20
+//!
+//! 40
+//!
+//! 60
+//!
+//! 80
+//!
+//! ll
+//! <latexit sha1_base64="0C8sfUJYbrjC43r1LRBZ8OgM3fg=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlpuiXK27VnYOsEi8nFcjR6Je/eoOYpRFKwwTVuuu5ifEzqgxnAqelXqoxoWxMh9i1VNIItZ/ND52SM6sMSBgrW9KQufp7IqOR1pMosJ0RNSO97M3E/7xuasJrP+MySQ1KtlgUpoKYmMy+JgOukBkxsYQyxe2thI2ooszYbEo2BG/55VXSrlW9i2qteVmp3+RxFOEETuEcPLiCOtxBA1rAAOEZXuHNeXRenHfnY9FacPKZY/gD5/MH1VeM9A==</latexit>
+//!
+//! FIG. 5. (Left) Energy levels for the case γ = 0, ν = 0.9 and µ = 6.2 (Eq. A24). (Right) Energy levels for the case γ = 5,
+//! ν = 0.9 and µ = 7.5 (Eq. A24). For both figures, the purple (dashed) line shows the Fermi level upto which we are allowed
+//! to fill fermions. The black, red, green and blue curves represent k = 0, 1, 2, 3 bands respectively. The figures shows that if one
+//! fixes the Fermi level appropriately, then only three energy bands (k = 0, 1, 2) play a role. Instead of fixing the Fermi level, one
+//! can alternatively fix the number of Fermions N . These figures demonstrate the dramatic difference between γ = 0 and γ 6= 0
+//! case.
+//!
+//! For a given k, Ek,l (Eq. B8, with energy shifted by 1 for
+//! convinience) has a minimum at l = l∗ where,
+//! l∗ = √
+//!
+//! ν
+//! √
+//! γ
+//! 2
+//! 1−ν
+//!
+//! (B9)
+//!
+//! Note that l∗ is independent of k and the energy of the
+//! th
+//! k band at this minimum is given by,
+//! p
+//! Ek,l∗ = 2k + (1 − ν 2 )γ .
+//! (B10)
+//! We fix the Fermi level at µ. By varying µ, we can intersect the energy spectrum Ek,l at different points. As µ increases, more and more k-bands of the spectrum become
+//! lower than the Fermi level and hence should be included
+//! in the construction of the many-body ground-state. The
+//!
+//! right panel of Fig. 5 shows the energy levels for the case
+//! of γ 6= 0. It intersects the k th band at two points l± (k)
+//! along the l-axis which can be easily computed by setting
+//! Ek,l = µ and we get,
+//! l± (k) =
+//!
+//! ν(µ − 2k) ±
+//!
+//! p
+//!
+//! (µ − 2k)2 − γ(1 − ν 2 )
+//! . (B11)
+//! 1 − ν2
+//!
+//! Note that if the Fermi surface has to intersect at least
+//! one band, we must have E0,l? < µ which indicates that,
+//! µ>
+//!
+//! p
+//!
+//! (1 − ν 2 )γ .
+//!
+//! (B12)
+//!
+//! For a fixed µ, the number of bands k ∗ + 1 below µ can
+//!
+//!
+//! --- PAGE BREAK ---
+//! 9
+//!
+//! c
+//!
+//! be obtained by setting,
+//!
+//! c1 (M )
+//!
+//! <latexit sha1_base64="0jIMiY3Xg6FeHydWT6UzrJgEy0o=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlJuuXK27VnYOsEi8nFcjR6Je/eoOYpRFKwwTVuuu5ifEzqgxnAqelXqoxoWxMh9i1VNIItZ/ND52SM6sMSBgrW9KQufp7IqOR1pMosJ0RNSO97M3E/7xuasJrP+MySQ1KtlgUpoKYmMy+JgOukBkxsYQyxe2thI2ooszYbEo2BG/55VXSrlW9i2qteVmp3+RxFOEETuEcPLiCOtxBA1rAAOEZXuHNeXRenHfnY9FacPKZY/gD5/MHx7OM6w==</latexit>
+//!
+//! Ek∗ ,l? = 2k ∗ +
+//!
+//! <latexit sha1_base64="yLGch4sc9vKFOZUqDK2aeUX1sw8=">AAAB7XicbVBNSwMxEJ2tX7V+VT16CRahXspuK+ix6MWLUMF+QLuUbJptY7PJkmSFsvQ/ePGgiFf/jzf/jWm7B219MPB4b4aZeUHMmTau++3k1tY3Nrfy24Wd3b39g+LhUUvLRBHaJJJL1QmwppwJ2jTMcNqJFcVRwGk7GN/M/PYTVZpJ8WAmMfUjPBQsZAQbK7VIv1q+O+8XS27FnQOtEi8jJcjQ6Be/egNJkogKQzjWuuu5sfFTrAwjnE4LvUTTGJMxHtKupQJHVPvp/NopOrPKAIVS2RIGzdXfEymOtJ5Ege2MsBnpZW8m/ud1ExNe+SkTcWKoIItFYcKRkWj2OhowRYnhE0swUczeisgIK0yMDahgQ/CWX14lrWrFq1Wq9xel+nUWRx5O4BTK4MEl1OEWGtAEAo/wDK/w5kjnxXl3PhatOSebOYY/cD5/AFBCjkw=</latexit>
+//!
+//! p
+//!
+//! (1 − ν 2 )γ < µ
+//! p
+//! Ek∗ +1,l? = 2k ∗ + 2 + (1 − ν 2 )γ > µ
+//!
+//! (B13)
+//!
+//! 0.8
+//! 0.6
+//!
+//! Hence k ∗ is given by,
+//! "
+//! ∗
+//!
+//! k = Int
+//!
+//! µ−
+//!
+//! p
+//!
+//! (1 − ν 2 )γ
+//! 2
+//!
+//! #
+//!
+//! 0.4
+//!
+//! ,
+//!
+//! (B14)
+//! 0.2
+//!
+//! k⇤ = 1
+//!
+//! k⇤ = 0
+//! 5
+//!
+//! 10
+//!
+//! <latexit sha1_base64="mwt73hQO0aS6zk6ynFou0KJ1t5E=">AAAB7nicbVBNSwMxEJ2tX7V+VT16CRZBPJTdKuhFKHrxWMF+QLuWbJptwybZJckKZemP8OJBEa/+Hm/+G9N2D9r6YODx3gwz84KEM21c99sprKyurW8UN0tb2zu7e+X9g5aOU0Vok8Q8Vp0Aa8qZpE3DDKedRFEsAk7bQXQ79dtPVGkWywczTqgv8FCykBFsrNSOHrOzyXWtX664VXcGtEy8nFQgR6Nf/uoNYpIKKg3hWOuu5ybGz7AyjHA6KfVSTRNMIjykXUslFlT72ezcCTqxygCFsbIlDZqpvycyLLQei8B2CmxGetGbiv953dSEV37GZJIaKsl8UZhyZGI0/R0NmKLE8LElmChmb0VkhBUmxiZUsiF4iy8vk1at6p1Xa/cXlfpNHkcRjuAYTsGDS6jDHTSgCQQieIZXeHMS58V5dz7mrQUnnzmEP3A+fwCnuo8e</latexit>
+//!
+//! 15
+//!
+//! 20
+//!
+//! 25
+//!
+//! 30
+//!
+//! M
+//! <latexit sha1_base64="LYKb6VVKloxBSLpM78v6ttRQbOI=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKexGQY9BL16EBMwDkiXMTnqTMbOzy8ysEEK+wIsHRbz6Sd78GyfJHjSxoKGo6qa7K0gE18Z1v53c2vrG5lZ+u7Czu7d/UDw8auo4VQwbLBaxagdUo+ASG4Ybge1EIY0Cga1gdDvzW0+oNI/lgxkn6Ed0IHnIGTVWqt/3iiW37M5BVomXkRJkqPWKX91+zNIIpWGCat3x3MT4E6oMZwKnhW6qMaFsRAfYsVTSCLU/mR86JWdW6ZMwVrakIXP198SERlqPo8B2RtQM9bI3E//zOqkJr/0Jl0lqULLFojAVxMRk9jXpc4XMiLEllClubyVsSBVlxmZTsCF4yy+vkmal7F2UK/XLUvUmiyMPJ3AK5+DBFVThDmrQAAYIz/AKb86j8+K8Ox+L1pyTzRzDHzifP6ZbjNU=</latexit>
+//!
+//! (B15)
+//!
+//! FIG. 6. Phase diagram in the (M, c) plane. It is divided
+//! into regions labeled by k∗ = 0, 1, 2... denoting the number of
+//! bands (n) that are below the Fermi level. The lines cn (M )
+//! separates the regions between k∗ = n − 1 and k∗ = n. In
+//! each of the regions, a typical (representative) density profile
+//! is shown (blue). We see that every new band creates a new
+//! layer in the density.
+//!
+//! (B16)
+//!
+//! Appendix C: (M, c) plane and critical lines
+//!
+//! ∗
+//!
+//! [l+ (k) − l− (k)] = N .
+//!
+//! 0
+//!
+//! k⇤ = 2
+//!
+//! <latexit sha1_base64="2PBwHKYWWZeG2l+4VDimz+NyLp0=">AAAB7nicbVBNSwMxEJ3Ur1q/qh69BIsgHspuFfQiFL14rGA/oF1LNs22YbPZJckKZemP8OJBEa/+Hm/+G9N2D9r6YODx3gwz8/xEcG0c5xsVVlbX1jeKm6Wt7Z3dvfL+QUvHqaKsSWMRq45PNBNcsqbhRrBOohiJfMHafng79dtPTGkeywczTpgXkaHkAafEWKkdPmZnk2u3X644VWcGvEzcnFQgR6Nf/uoNYppGTBoqiNZd10mMlxFlOBVsUuqlmiWEhmTIupZKEjHtZbNzJ/jEKgMcxMqWNHim/p7ISKT1OPJtZ0TMSC96U/E/r5ua4MrLuExSwySdLwpSgU2Mp7/jAVeMGjG2hFDF7a2Yjogi1NiESjYEd/HlZdKqVd3zau3+olK/yeMowhEcwym4cAl1uIMGNIFCCM/wCm8oQS/oHX3MWwsonzmEP0CfP6Y2jx0=</latexit>
+//!
+//! <latexit sha1_base64="zODI/5TIJnUry/ukoxDPbFUEd6A=">AAAB7nicbVBNSwMxEJ3Ur1q/qh69BIsgHspuFfQiFL14rGA/oF1LNs22YbPZJckKZemP8OJBEa/+Hm/+G9N2D9r6YODx3gwz8/xEcG0c5xsVVlbX1jeKm6Wt7Z3dvfL+QUvHqaKsSWMRq45PNBNcsqbhRrBOohiJfMHafng79dtPTGkeywczTpgXkaHkAafEWKkdPmZnk2unX644VWcGvEzcnFQgR6Nf/uoNYppGTBoqiNZd10mMlxFlOBVsUuqlmiWEhmTIupZKEjHtZbNzJ/jEKgMcxMqWNHim/p7ISKT1OPJtZ0TMSC96U/E/r5ua4MrLuExSwySdLwpSgU2Mp7/jAVeMGjG2hFDF7a2Yjogi1NiESjYEd/HlZdKqVd3zau3+olK/yeMowhEcwym4cAl1uIMGNIFCCM/wCm8oQS/oHX3MWwsonzmEP0CfP6Syjxw=</latexit>
+//!
+//! where Int(x) denotes the integer part of x. Finally, the
+//! relation between the Fermi energy µ and N can be obtained by counting the total number of single particle
+//! levels with energy below µ. This gives,
+//! k
+//! X
+//!
+//! c2 (M )
+//!
+//! <latexit sha1_base64="bUelINT/B1Ba16o2IcmewrwFh4M=">AAAB7XicbVBNSwMxEJ2tX7V+VT16CRahXspuK+ix6MWLUMF+QLuUbJptY7PJkmSFsvQ/ePGgiFf/jzf/jWm7B219MPB4b4aZeUHMmTau++3k1tY3Nrfy24Wd3b39g+LhUUvLRBHaJJJL1QmwppwJ2jTMcNqJFcVRwGk7GN/M/PYTVZpJ8WAmMfUjPBQsZAQbK7VI3yvfnfeLJbfizoFWiZeREmRo9ItfvYEkSUSFIRxr3fXc2PgpVoYRTqeFXqJpjMkYD2nXUoEjqv10fu0UnVllgEKpbAmD5urviRRHWk+iwHZG2Iz0sjcT//O6iQmv/JSJODFUkMWiMOHISDR7HQ2YosTwiSWYKGZvRWSEFSbGBlSwIXjLL6+SVrXi1SrV+4tS/TqLIw8ncApl8OAS6nALDWgCgUd4hld4c6Tz4rw7H4vWnJPNHMMfOJ8/TruOSw==</latexit>
+//!
+//! 1.0
+//!
+//! k=0
+//!
+//! Using Eq. B11, this gives,
+//! k∗
+//!
+//! 2 Xp
+//! (µ − 2k)2 − γ(1 − ν 2 ) = N .
+//! 1 − ν2
+//! k=0
+//!
+//! It is important to note that all the above results until
+//! now are valid for arbitrary N , arbitrary parameters ν ∈
+//! [0, 1] and γ > 0.
+//! We will now work in the large N limit, and set,
+//! γ = cN , (1 − ν 2 )N = M, Large-N limit
+//!
+//! (B17)
+//!
+//! Note that we are taking the limit ν → 1, N → ∞, keeping (1 − ν 2 )N = M fixed. Therefore we have just two
+//! parameters c and M left and we want to calculate the
+//! average density in the ground state in the limit of large
+//! N , for fixed c and M . We will see that in the (M, c)
+//! plane, there is a series of critical lines separating phases
+//! with different density profiles. In terms of c and M we
+//! thus have
+//! l± (k) = λ± (k)N ,
+//!
+//! (B18)
+//!
+//! where
+//! p
+//!
+//! (µ − 2k)2 − cM
+//! ,
+//! M#
+//! "
+//! √
+//! µ − cM
+//! k ∗ = Int
+//! .
+//! 2
+//!
+//! λ± (k) =
+//!
+//! (µ − 2k) ±
+//!
+//! (B19)
+//!
+//! Similarly the relation between µ and N in Eq. B16
+//! becomes
+//! 2
+//! M
+//!
+//! k∗ p
+//! X
+//!
+//! (µ − 2k)2 − cM = 1 .
+//!
+//! (B20)
+//!
+//! k=0
+//!
+//! For fixed c and M , we have µ ∼ O(1). Note that if we
+//! need λ± (k) in Eq. B18 to be O(1), then we had to choose
+//! the scaling γ = cN . This justifies a posteriori the scaling
+//! γ = cN for large N used in Eq. B17. Next, we will discuss
+//! this (M, c) plane and critical lines in this plane.
+//!
+//! The (M, c) plane gets divided in different regions, each
+//! labeled by k ∗ = 0, 1, 2, · · · . For example, if k ∗ = 0 (only
+//! the first band k = 0 is included in the ground state), we
+//! must have
+//! √
+//! √
+//! cM < µ < 2 + cM .
+//! (C1)
+//! √
+//! The upper inequality gets violated when µ = 2 + cM .
+//! Substituting this value of µ in Eq. B20 with k ∗ = 0, we
+//! get the first critical line c = c1 (M ) in the (M, c) plane
+//! [see Fig. 6],
+//! 
+//! 2
+//! 
+//! 
+//! 1 M2
+//! 
+//! 
+//! −1
+//! , M ≥4
+//! 
+//! M
+//! 16
+//! c1 (M ) =
+//! (C2)
+//! 
+//! 
+//! 
+//!  0
+//! M <4.
+//! Hence if c ≥ c1 (M ), the ground state contains only the
+//! k = 0 band (i.e. k ∗ = 0).
+//! Next, let us consider the case k ∗ = 1, i.e. two
+//! bands k = 0 and k = 1 are below the Fermi level
+//! µ. From the
+//! equation for k ∗ in Eq. B18 we see that
+//! √
+//! cM
+//! µ−
+//! k ∗ = Int( 2 ) = 1 implies
+//! √
+//! √
+//! 2 + cM < µ < 4 + cM .
+//! (C3)
+//! The lower limit corresponds to the critical line c = c1 (M )
+//! discussed before. The upper limit gives a new√critical
+//! line c = c2 (M ) obtained by substituting µ = 4 + cM in
+//! Eq. B20 with k ∗ = 1, i.e.,
+//! q
+//! 
+//! q
+//! √
+//! √
+//! 2
+//! 2
+//! 2
+//! (4 + cM ) − cM + (2 + cM ) − cM = 1
+//! M
+//! (C4)
+//! .
+//! Solving for c = c2 (M ) we get,
+//!
+//!
+//! --- PAGE BREAK ---
+//! 10
+//!
+//! c2 (M ) =
+//!
+//! 
+//! 
+//! 
+//! 
+//!
+//! √ √
+//! 17M 5 − 416M 3 − 12 2 M 10 − 48M 8 + 768M 6 − 4096M 4 + 2304M
+//! , M > 12
+//! 256M 2
+//!
+//! 
+//! 
+//! 
+//!
+//! 0,
+//!
+//! 4 < M < 12
+//!
+//! This second critical line (Eq. C5) is also plotted in Fig. 6.
+//! For higher values of k ∗ , one can obtain a similar formula
+//! for the√critical line. For general k ∗ , the condition k ∗ =
+//! Int( µ− 2 cM ) indicates that,
+//! 2k ∗ +
+//!
+//! √
+//!
+//! (C5)
+//!
+//! cM < µ < 2(k ∗ + 1) +
+//!
+//! √
+//! cM .
+//!
+//! (C6)
+//!
+//! √
+//! Setting µ = 2(k ∗ + 1) + cM in Eq. B20 and simplifying,
+//! one gets,
+//!
+//! with
+//! a2k,l =
+//!
+//! p
+//! Γ(k + 1)
+//! and λ = γ + l2 .
+//! πΓ(k + 1 + λ)
+//!
+//! (D2)
+//!
+//! Lα
+//! k (x) are the generalized Laguerre polynomials. The
+//! average density in the ground state is given by the general
+//! formula,
+//! X
+//! ρ(r, θ, N ) =
+//! |ψk,l (r, θ)|2
+//! k,l
+//! ∗
+//!
+//! ∗
+//! kX
+//! +1 q
+//!
+//! 4
+//! M q=1
+//!
+//! √
+//!
+//! q(q +
+//!
+//! cM ) = 1 .
+//!
+//! (C7)
+//!
+//! l+ (k)
+//! 2 k
+//! e−r X X Γ(k + 1) [Lλk (r2 )]2 r2λ
+//! =
+//! π
+//! Γ(λ + k + 1)
+//! k=0 l=l− (k)
+//!
+//! =
+//! Solving this equation for c as a function of M gives the
+//! critical line ck∗ +1 (M ). For k ∗ = 0 and k ∗ = 1 the explicit
+//! solutions are given respectively in Eqs. C2 and C5. However, one can easily work out the asymptotics. For example the line ck∗ +1 (M ) starts from M ∗ = 2(k ∗ +1)(k ∗ +2).
+//! For k ∗ = 0 and k ∗ = 1, this gives M ∗ = 4 and M ∗ = 12
+//! respectively. For large M , it is easy to show from Eq. C7
+//! that,
+//! ck∗ +1 (M ) ≈
+//!
+//! M3
+//! hP ∗ √ i4 .
+//! k +1
+//! 28
+//! q
+//! q=1
+//!
+//! (C8)
+//!
+//! Thus in the (M, c) plane, we get different regions labeled by k ∗ = 0, 1, · · · . The region between cn (M ) and
+//! cn+1 (M ) corresponds to the region with k ∗ = n, i.e., the
+//! Fermi level has exactly n + 1 bands below it. In Fig. 6,
+//! we show the (M, c) plane and some critical lines that demarcates various regions. In each region, we have also
+//! sketched a typical/representative density profile. Next,
+//! we will discuss the density in the ground state.
+//!
+//! Appendix D: Density as a function of space (exact
+//! expression for finite N )
+//!
+//! k∗
+//! X
+//!
+//! ρk (r, θ, N )
+//!
+//! (D3)
+//!
+//! k=0
+//!
+//! where l± (k) are given in Eq. B18 with µ determined from
+//! Eq. B20. The contribution to the density from the k th
+//! band is given by,
+//! ρk (r, θ, N ) =
+//!
+//! Γ(k + 1) e−r
+//! π
+//!
+//! 2
+//!
+//! 2
+//!
+//! ψk,l (r, θ) = ak,l Lλk (r2 )rλ e−r /2 eilθ ,
+//!
+//! (D1)
+//!
+//! X [Lλ (r2 )]2 r2λ
+//! k
+//! (D4)
+//! Γ(λ + k + 1)
+//!
+//! l=l− (k)
+//!
+//! The above expression for density (Eq. D3 and Eq. D4)
+//! is valid for any N (see Fig. 7). In what follows, we will
+//! take the large-N limit and provide further analytical insight into the form of the density.
+//!
+//! Appendix E: Density as a function of space in the
+//! large N limit
+//!
+//! In the large N limit, noting that both l± (k) scale as
+//! N , we set l = N y and replace the discrete sum over
+//! √ l
+//! by an integral over y. Furthermore, we scale r = z N .
+//! With this change of variable, we want to first express the
+//! integrand as a function of y for fixed z in theplimit of
+//! large N . Let us start with the quantity λ = γ + l2 .
+//! Recollecting that γ = cN and setting l = N y, we get for
+//! large N ,
+//! λ ≃ Ny +
+//!
+//! We recap (Eq. A22) that the single particle wave functions can be written as
+//!
+//! l+ (k)
+//!
+//! c
+//! 2y
+//!
+//! (E1)
+//!
+//! Approximating the Gamma function in Eq. D4 by the
+//! √
+//! 1
+//! Stirling formula Γ(z√+ 1) ∼ 2π e z+ 2 log(z)−z for large
+//! z and setting r = z N , we find to leading order for large
+//! N,
+//!
+//!
+//! --- PAGE BREAK ---
+//! 11
+//! √
+//! ρk (r, θ, N ) ≈
+//!
+//! N Γ(k + 1)
+//! √
+//! π 2π
+//!
+//! Z λ+ (k)
+//! λ− (k)
+//!
+//! 2
+//! 2
+//! dy
+//! Ny
+//! √ eN [y ln(z /y)+y−z ] (N y)−k [Lk (z 2 N )]2 ,
+//! y
+//!
+//! where λ± (k) has been defined in Eq. B18. In the large N
+//! limit, the integral over y is dominated by a saddle point
+//! at y = z 2 . Therefore it is natural to make the change of
+//! variable,
+//! r
+//! 2
+//! 2
+//! y=z +
+//! xz .
+//! (E3)
+//! N
+//! √
+//! Therefore N z 2 ≈ N y − x 2N y. We can now use the
+//! following remarkable limiting formula for the generalized
+//! Laguerre polynomials,
+//! lim λ−k/2 Lλk (λ −
+//!
+//! √
+//!
+//! λ→∞
+//!
+//! 2−k/2
+//! 2λx) =
+//! Hk (x) , (E4)
+//! Γ(k + 1)
+//!
+//! where Hk (x) is the Hermite polynomial of√index k. Substituting λ ≈ N y and using N z 2 ≈ N y −x 2N y we find,
+//! using Eq. E4, that,
+//! y
+//! lim (N y)−k [LN
+//! k (N y − x
+//!
+//! p
+//!
+//! N →∞
+//!
+//! 2N y)]2 =
+//!
+//! 2−k
+//! H 2 (x) .
+//! [Γ(k + 1)]2 k
+//! (E5)
+//!
+//! Thus the integral in Eq. E2 reads
+//! ρk (r, θ, N ) ≈
+//!
+//! 2−k
+//! 3/2
+//! π Γ(k + 1)
+//!
+//! Z a+ (k)
+//!
+//! 2
+//!
+//! dx e−x [Hk (x)]2 ,
+//!
+//! a− (k)
+//!
+//! (E6)
+//! where
+//! √
+//! (λ± (k) − z 2 ) N
+//! √
+//! .
+//! a± (k) =
+//! z 2
+//!
+//! (E7)
+//!
+//! th
+//! Therefore, the
+//! p density in thepk band is supported on
+//! the interval λ− (k) < z < λ+ (k). It turns out that
+//! this expression for the density has very interesting bulk
+//! and edge properties. In the subsequent subsections we
+//! analyse these properties.
+//!
+//! Let us summarise the results of above Sec E 1. The
+//! total density is obtained by summing over all the bands
+//! below the Fermi energy and is given by its large N scaling
+//! form,
+//! 
+//! 
+//! r
+//! ρ(r, θ, N ) ∼ f √
+//! ,
+//! (E9)
+//! N
+//! where the scaling function f (z) is given by,
+//! k∗
+//!
+//! 1X √
+//! f (z) =
+//! I λ (k)<z<√λ (k) ,
+//! −
+//! +
+//! π
+//!
+//! and λ± (k) is given in Eq. B18. OneR can check that
+//! ∞
+//! f (z) in Eq. E10 is normalized, i.e. 2π 0 f (z) z dz = 1
+//! upon using the definition of λ± (k) from Eq. B18 and the
+//! relation in Eq. B20.
+//! Hence the
+//! p limiting density
+//! phas a compact single support over λ− (0) < z < λ+ (0). For k ∗ = 0, it is
+//! just a simple flat density over this support. However, for
+//! k ∗ > 0, the density has a nontrivial layered shape. For
+//! example, for k ∗ = 1, the density is given by (see Fig. 7),
+//! p
+//! 
+//! 0 , z < λ− (0)
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! p
+//! 
+//! 1 p
+//! 
+//! 
+//! , λ− (0) < z < λ− (1)
+//! 
+//! 
+//! 
+//! π
+//! 
+//! 
+//! 
+//! 
+//! 
+//! p
+//! 2 p
+//! f (z) =
+//! , λ− (1) < z < λ+ (1) (E11)
+//! 
+//! π
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! p
+//! 
+//! 1 p
+//! 
+//! 
+//! , λ+ (1) < z < λ+ (0)
+//! 
+//! 
+//! π
+//! 
+//! 
+//! 
+//! 
+//! 
+//! p
+//! 
+//! 0 , z > λ+ (0) .
+//!
+//! Edges
+//!
+//! Bulk
+//!
+//! If z is in the bulk, i.e.
+//! far away from these
+//! two edges, then in the large N limit, the two limits a± (k) → ±∞. Hence the integral becomes simply
+//! R∞
+//! √
+//! 2
+//! du e−u [Hk (u)]2 = 2k Γ(k + 1) π. This gives the
+//! −∞
+//! bulk density,
+//! ρbulk
+//! (r, θ, N ) ≈
+//! k
+//!
+//! (E10)
+//!
+//! k=0
+//!
+//! 2.
+//! 1.
+//!
+//! (E2)
+//!
+//! 1 √
+//! I λ (k))<z<√λ (k) ,
+//! −
+//! +
+//! π
+//!
+//! (E8)
+//!
+//! where I√λ (k))<z<√λ (k) is an indicator function that
+//! −
+//! +
+//! takes value 1 if the inequality in the subscript is satisfied
+//! and 0 otherwise.
+//!
+//! In contrast
+//! p if z is close to one of the two edges, say the
+//! left edge λ− (k), we can estimate the limiting form of
+//! the edge density when N → ∞ from the same expression
+//! in Eq. E6. For this, we set,
+//! p
+//! 2λ− (k)
+//! 2
+//! √
+//! z = λ− (k) +
+//! u,
+//! (E12)
+//! N
+//! where u ∼ O(1). In this case, the lower limit in the integral in Eq. E6 becomes a− (k) ≈ −u (with u measuring
+//! the scaled distance from the left edge), while the upper
+//! limit still approaches to +∞ as N → ∞. Hence we get,
+//! ρedge
+//! (r, θ, N ) → fkedge (u)
+//! k
+//!
+//! (E13)
+//!
+//!
+//! --- PAGE BREAK ---
+//! 12
+//!
+//! fkedge (u)
+//! <latexit sha1_base64="T5/gbWRuAlBzWsrm+X1x482/S84=">AAAB/XicbVDJSgNBEO2JW4xbXG5eBoMQL2EmCnoMevEYwSyQjENPpyZp0rPQXSPGYfBXvHhQxKv/4c2/sbMcNPFBweO9KqrqebHgCi3r28gtLa+sruXXCxubW9s7xd29pooSyaDBIhHJtkcVCB5CAzkKaMcSaOAJaHnDq7HfugepeBTe4igGJ6D9kPucUdSSWzzw3eFd2kV4wBR6fciycnLiFktWxZrAXCT2jJTIDHW3+NXtRSwJIEQmqFId24rRSalEzgRkhW6iIKZsSPvQ0TSkASgnnVyfmcda6Zl+JHWFaE7U3xMpDZQaBZ7uDCgO1Lw3Fv/zOgn6F07KwzhBCNl0kZ8IEyNzHIXZ4xIYipEmlEmubzXZgErKUAdW0CHY8y8vkma1Yp9WqjdnpdrlLI48OSRHpExsck5q5JrUSYMw8kieySt5M56MF+Pd+Ji25ozZzD75A+PzB86UlXE=</latexit>
+//!
+//! 0.30
+//!
+//! 0.6
+//!
+//! 0.10
+//!
+//! 0.4
+//!
+//! 0.05
+//! -4
+//!
+//! 2
+//!
+//! -2
+//!
+//! 4
+//!
+//! u
+//! <latexit sha1_base64="wnFhQNKUlf0HWa+NJZ/ckTw+BdQ=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlZtovV9yqOwdZJV5OKpCj0S9/9QYxSyOUhgmqdddzE+NnVBnOBE5LvVRjQtmYDrFrqaQRaj+bHzolZ1YZkDBWtqQhc/X3REYjrSdRYDsjakZ62ZuJ/3nd1ITXfsZlkhqUbLEoTAUxMZl9TQZcITNiYgllittbCRtRRZmx2ZRsCN7yy6ukXat6F9Va87JSv8njKMIJnMI5eHAFdbiDBrSAAcIzvMKb8+i8OO/Ox6K14OQzx/AHzucP4vuM/Q==</latexit>
+//!
+//! 0.3
+//!
+//! x
+//!
+//! <latexit sha1_base64="OqTOWGDo+DM8sjWCBynwy1dwG5Y=">AAACA3icbVDLSgNBEJyNrxhfq970MhiECCHsRkGPQS+eQgTzgGwIs5NJdsjsw5leIS4BL/6KFw+KePUnvPk3TpI9aGJBQ1HVTXeXGwmuwLK+jczS8srqWnY9t7G5tb1j7u41VBhLyuo0FKFsuUQxwQNWBw6CtSLJiO8K1nSHVxO/ec+k4mFwC6OIdXwyCHifUwJa6poHjvTCwgN21J2EpDouYgc8BqRYPemaeatkTYEXiZ2SPEpR65pfTi+ksc8CoIIo1batCDoJkcCpYOOcEysWETokA9bWNCA+U51k+sMYH2ulh/uh1BUAnqq/JxLiKzXyXd3pE/DUvDcR//PaMfQvOgkPohhYQGeL+rHAEOJJILjHJaMgRpoQKrm+FVOPSEJBx5bTIdjzLy+SRrlkn5bKN2f5ymUaRxYdoiNUQDY6RxV0jWqojih6RM/oFb0ZT8aL8W58zFozRjqzj/7A+PwBs0aW5w==</latexit>
+//!
+//! p
+//! ⇢(z N , ✓, N )
+//!
+//! 0.15
+//!
+//! <latexit sha1_base64="OqTOWGDo+DM8sjWCBynwy1dwG5Y=">AAACA3icbVDLSgNBEJyNrxhfq970MhiECCHsRkGPQS+eQgTzgGwIs5NJdsjsw5leIS4BL/6KFw+KePUnvPk3TpI9aGJBQ1HVTXeXGwmuwLK+jczS8srqWnY9t7G5tb1j7u41VBhLyuo0FKFsuUQxwQNWBw6CtSLJiO8K1nSHVxO/ec+k4mFwC6OIdXwyCHifUwJa6poHjvTCwgN21J2EpDouYgc8BqRYPemaeatkTYEXiZ2SPEpR65pfTi+ksc8CoIIo1batCDoJkcCpYOOcEysWETokA9bWNCA+U51k+sMYH2ulh/uh1BUAnqq/JxLiKzXyXd3pE/DUvDcR//PaMfQvOgkPohhYQGeL+rHAEOJJILjHJaMgRpoQKrm+FVOPSEJBx5bTIdjzLy+SRrlkn5bKN2f5ymUaRxYdoiNUQDY6RxV0jWqojih6RM/oFb0ZT8aL8W58zFozRjqzj/7A+PwBs0aW5w==</latexit>
+//!
+//! 0.20
+//!
+//! 0.5
+//!
+//! p
+//! ⇢(z N , ✓, N )
+//!
+//! 0.25
+//!
+//! <latexit sha1_base64="hL+FaLtOT9luwfLW3Ut08xl3Pcw=">AAAB6HicbVDLTgJBEOzFF+IL9ehlIjHxRHbRRI9ELx4hkUcCGzI79MLI7OxmZtZICF/gxYPGePWTvPk3DrAHBSvppFLVne6uIBFcG9f9dnJr6xubW/ntws7u3v5B8fCoqeNUMWywWMSqHVCNgktsGG4EthOFNAoEtoLR7cxvPaLSPJb3ZpygH9GB5CFn1Fip/tQrltyyOwdZJV5GSpCh1it+dfsxSyOUhgmqdcdzE+NPqDKcCZwWuqnGhLIRHWDHUkkj1P5kfuiUnFmlT8JY2ZKGzNXfExMaaT2OAtsZUTPUy95M/M/rpCa89idcJqlByRaLwlQQE5PZ16TPFTIjxpZQpri9lbAhVZQZm03BhuAtv7xKmpWyd1Gu1C9L1ZssjjycwCmcgwdXUIU7qEEDGCA8wyu8OQ/Oi/PufCxac042cwx/4Hz+AOeHjQA=</latexit>
+//!
+//! 0.2
+//! 0.1
+//!
+//! (1)
+//!
+//! (0)
+//!
+//! <latexit sha1_base64="Ty9Aiqo7cTzQRniLQ8pM+CpLxZw=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCPViSKuix6MVjBdMWmlA2m027dLMJuxuhhP4NLx4U8eqf8ea/cdvmoK0DC8PMPN7bCVLOlLbtb6u0tr6xuVXeruzs7u0fVA+POirJJKEuSXgiewFWlDNBXc00p71UUhwHnHaD8d3M7z5RqVgiHvUkpX6Mh4JFjGBtJM/jJhriwUXdOR9Ua3bDngOtEqcgNSjQHlS/vDAhWUyFJhwr1XfsVPs5lpoRTqcVL1M0xWSMh7RvqMAxVX4+v3mKzowSoiiR5gmN5urviRzHSk3iwCRjrEdq2ZuJ/3n9TEc3fs5EmmkqyGJRlHGkEzQrAIVMUqL5xBBMJDO3IjLCEhNtaqqYEpzlL6+STrPhXDaaD1e11m1RRxlO4BTq4MA1tOAe2uACgRSe4RXerMx6sd6tj0W0ZBUzx/AH1ucPoGKQwQ==</latexit>
+//!
+//! <latexit sha1_base64="85eaVSPnKnfIwQAxmBHLV0l5LZ8=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCRShJFfRY9OKxgmkLTSibzaZdutmE3Y1QQv+GFw+KePXPePPfuG1z0NaBhWFmHu/tBClnStv2t1VaW9/Y3CpvV3Z29/YPqodHHZVkklCXJDyRvQArypmgrmaa014qKY4DTrvB+G7md5+oVCwRj3qSUj/GQ8EiRrA2kudxEw3x4KLunA+qNbthz4FWiVOQGhRoD6pfXpiQLKZCE46V6jt2qv0cS80Ip9OKlymaYjLGQ9o3VOCYKj+f3zxFZ0YJUZRI84RGc/X3RI5jpSZxYJIx1iO17M3E/7x+pqMbP2cizTQVZLEoyjjSCZoVgEImKdF8YggmkplbERlhiYk2NVVMCc7yl1dJp9lwLhvNh6ta67aoowwncAp1cOAaWnAPbXCBQArP8ApvVma9WO/WxyJasoqZY/gD6/MHnVSQvw==</latexit>
+//!
+//! <latexit sha1_base64="4+2ciqpq0U3/iwjHObS9N5tsZLM=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCPViSKuix6MVjBdMWmlA2m027dLMJuxuhhP4NLx4U8eqf8ea/cdvmoK0DC8PMPN7bCVLOlLbtb6u0tr6xuVXeruzs7u0fVA+POirJJKEuSXgiewFWlDNBXc00p71UUhwHnHaD8d3M7z5RqVgiHvUkpX6Mh4JFjGBtJM/jJhriwUXdPh9Ua3bDngOtEqcgNSjQHlS/vDAhWUyFJhwr1XfsVPs5lpoRTqcVL1M0xWSMh7RvqMAxVX4+v3mKzowSoiiR5gmN5urviRzHSk3iwCRjrEdq2ZuJ/3n9TEc3fs5EmmkqyGJRlHGkEzQrAIVMUqL5xBBMJDO3IjLCEhNtaqqYEpzlL6+STrPhXDaaD1e11m1RRxlO4BTq4MA1tOAe2uACgRSe4RXerMx6sd6tj0W0ZBUzx/AH1ucPnt2QwA==</latexit>
+//!
+//! + (1)
+//!
+//! <latexit sha1_base64="/wQhrhKBGJ+qlATqR3fAkRQ1BW4=">AAAB83icbVBNS8NAFHypX7V+VT16WSxCRShJFfRY9OKxgmkLTSibzaZdutmE3Y1QQv+GFw+KePXPePPfuG1z0NaBhWFmHu/tBClnStv2t1VaW9/Y3CpvV3Z29/YPqodHHZVkklCXJDyRvQArypmgrmaa014qKY4DTrvB+G7md5+oVCwRj3qSUj/GQ8EiRrA2kudxEw3x4KJunw+qNbthz4FWiVOQGhRoD6pfXpiQLKZCE46V6jt2qv0cS80Ip9OKlymaYjLGQ9o3VOCYKj+f3zxFZ0YJUZRI84RGc/X3RI5jpSZxYJIx1iO17M3E/7x+pqMbP2cizTQVZLEoyjjSCZoVgEImKdF8YggmkplbERlhiYk2NVVMCc7yl1dJp9lwLhvNh6ta67aoowwncAp1cOAaWnAPbXCBQArP8ApvVma9WO/WxyJasoqZY/gD6/MHm8+Qvg==</latexit>
+//!
+//! y
+//!
+//! + (0)
+//!
+//! <latexit sha1_base64="mEcz1FLhuG1BpP6c5hi50qAIJ0g=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOl5qRfrrhVdw6ySrycVCBHo1/+6g1ilkYoDRNU667nJsbPqDKcCZyWeqnGhLIxHWLXUkkj1H42P3RKzqwyIGGsbElD5urviYxGWk+iwHZG1Iz0sjcT//O6qQmv/YzLJDUo2WJRmApiYjL7mgy4QmbExBLKFLe3EjaiijJjsynZELzll1dJu1b1Lqq15mWlfpPHUYQTOIVz8OAK6nAHDWgBA4RneIU359F5cd6dj0VrwclnjuEPnM8f6QuNAQ==</latexit>
+//!
+//! 0.2
+//!
+//! 0.4
+//!
+//! 0.6
+//!
+//! 0.8
+//!
+//! 1.0
+//!
+//! 1.2
+//!
+//! 1.4
+//!
+//! z
+//! <latexit sha1_base64="VLEo6VgUnu2TnOxoOkqsMPXvyTo=">AAAB6HicbVDLTgJBEOzFF+IL9ehlIjHxRHbRRI9ELx4hkUcCGzI79MLI7OxmZtYECV/gxYPGePWTvPk3DrAHBSvppFLVne6uIBFcG9f9dnJr6xubW/ntws7u3v5B8fCoqeNUMWywWMSqHVCNgktsGG4EthOFNAoEtoLR7cxvPaLSPJb3ZpygH9GB5CFn1Fip/tQrltyyOwdZJV5GSpCh1it+dfsxSyOUhgmqdcdzE+NPqDKcCZwWuqnGhLIRHWDHUkkj1P5kfuiUnFmlT8JY2ZKGzNXfExMaaT2OAtsZUTPUy95M/M/rpCa89idcJqlByRaLwlQQE5PZ16TPFTIjxpZQpri9lbAhVZQZm03BhuAtv7xKmpWyd1Gu1C9L1ZssjjycwCmcgwdXUIU7qEEDGCA8wyu8OQ/Oi/PufCxac042cwx/4Hz+AOqPjQI=</latexit>
+//!
+//! FIG. 7. (Left) Plot showing the comparison between exact expression for density (Eq. D3, red solid) and the bulk density
+//! expression at large-N (Eq. E8, black dashed). We chose, c = 1, M = 10 and N = 8000 and we are in the k∗ = 1 region of
+//! Fig. 6. We also notice the two kinks (red solid) which stems from the zeros of Hermite Polynomial of degree k = 1 in our case.
+//! We have zoomed the location of the kink for the left edge and shown f1edge (u). (Right) A
+//! pthree-dimensional representation of
+//! exact expression for density (Eq. D3). We can see the non-trivial layered structure (z = x2 + y 2 ).
+//!
+//! where
+//! fkedge (u) =
+//!
+//! 2−k
+//! 3/2
+//! π Γ(k + 1)
+//!
+//! Z ∞
+//!
+//! 2
+//!
+//! dx e−x [Hk (x)]2
+//!
+//! −u
+//!
+//! (E14)
+//! and we recall that,
+//! s
+//! u=
+//!
+//! N
+//! 2λ− (k)
+//!
+//!  2
+//! 
+//! r
+//! − λ− (k) .
+//! N
+//!
+//! (E15)
+//!
+//! Note that when u → ∞, fkedge (u) → 1/π, and the edge
+//! density matches smoothly with the bulk density. In Fig.
+//! 8 we have plotted the edge density functions fkedge (u)
+//! vs u for k = 1 and k = 2. One sees from these figures
+//! that the scaling functions have kinks. For k = 1, there
+//! is only one kink at u = 0 while for k = 2 there are two
+//! kinks. In general, for the k th band, the function fk (u)
+//! will have k kinks as a function of u. The kinks occur
+//! when the derivative vanishes, i.e., dfkedge (u)/du = 0.
+//! By taking the derivative of Eq. E13, we see that this
+//!
+//! fkedge (u =
+//!
+//! √
+//!
+//! happens when Hk (−u) = 0. Thus the locations of the
+//! kinks in the edge density of the k th band coincide with
+//! the zeroes of the k th Hermite polynomial. For instance,
+//! √
+//! for k = 2,
+//! √ the kinks are located at u1 = −1/ 2 and
+//! u2 = +1/ 2. Note that the edge scaling function fk (u)
+//! is actually universal, i.e. independent of the system
+//! parameters c and M and depends only on the band
+//! label k. The above non-trivial connection between
+//! fkedge (u) and Hermite polynomials naturally points to
+//! a possible connection to RMT, which we elucidate below.
+//! 3. Edge density in the limit of high Landau levels
+//! (k  1) and connection to Random Matrix Theory
+//!
+//! It turns out that as k → ∞, the edge profile fkedge (u)
+//! given in Eq. E13, property shifted and scaled, has a nice
+//! limiting profile. This behaviour comes from the asymptotic behavior of the Hermite polynomials Hk (u) in the
+//! limit of large k (known as Plancherel-Rotach asymptotics).
+//! √ To obtain this limiting profile, we first set
+//! u = 2ky, with y ∼ O(1), and
+//! √ also perform the change
+//! of variable in Eq. E13, x = 2k(v − y). This leads to,
+//!
+//! √
+//! Z ∞
+//! h
+//! i2
+//! √
+//! 2
+//! 2−k 2k
+//! 2ky) = 3/2
+//! dv e−k(v−y) Hk ( 2k(v − y)) .
+//! π Γ(k + 1) 0
+//!
+//! We can now use the Plancherel-Rotach asymptotic formula for Hermite polynomials,
+//!  1/4
+//! √
+//! 2
+//! 2k/2
+//! −kX 2
+//! e
+//! Hk ( 2kX) =
+//! k −1/4 (k!)1/2 ×
+//! π
+//! (1 − X 2 )1/4
+//! 
+//!  
+//! 1
+//! gk (X) 1 + O
+//! , −1 < X < 1
+//! k
+//! (E17)
+//!
+//! (E16)
+//!
+//! with
+//!  p
+//! 
+//! gk (X) = cos kX 1 − X 2 + (k + 1/2) sin−1 X − kπ/2
+//! (E18)
+//!
+//!
+//! --- PAGE BREAK ---
+//! 13
+//!
+//! f2edge (u)
+//!
+//! f1edge (u)
+//!
+//! <latexit sha1_base64="ErVWZoda/kmVwA4PWB8s6Ipla3c=">AAAB/XicbVDJSgNBEO2JW4xbXG5eBoMQL2EmCnoMevEYwSyQxKGnpyZp0rPQXSPGYfBXvHhQxKv/4c2/sbMcNPFBweO9KqrqubHgCi3r28gtLa+sruXXCxubW9s7xd29pooSyaDBIhHJtksVCB5CAzkKaMcSaOAKaLnDq7HfugepeBTe4iiGXkD7Ifc5o6glp3jgO9W7tIvwgCl4fciycnLiFEtWxZrAXCT2jJTIDHWn+NX1IpYEECITVKmObcXYS6lEzgRkhW6iIKZsSPvQ0TSkAaheOrk+M4+14pl+JHWFaE7U3xMpDZQaBa7uDCgO1Lw3Fv/zOgn6F72Uh3GCELLpIj8RJkbmOArT4xIYipEmlEmubzXZgErKUAdW0CHY8y8vkma1Yp9WqjdnpdrlLI48OSRHpExsck5q5JrUSYMw8kieySt5M56MF+Pd+Ji25ozZzD75A+PzB3RnlTg=</latexit>
+//!
+//! <latexit sha1_base64="bm1yNjMWEC9yCLdfpWOQFHOHt8A=">AAAB/XicbVDJSgNBEO2JW4zbuNy8DAYhXsJMFPQY9OIxglkgGUNPpyZp0rPQXSPGYfBXvHhQxKv/4c2/sbMcNPFBweO9KqrqebHgCm3728gtLa+sruXXCxubW9s75u5eQ0WJZFBnkYhky6MKBA+hjhwFtGIJNPAENL3h1dhv3oNUPApvcRSDG9B+yH3OKGqpax74Xecu7SA8YAq9PmRZKTnpmkW7bE9gLRJnRopkhlrX/Or0IpYEECITVKm2Y8foplQiZwKyQidREFM2pH1oaxrSAJSbTq7PrGOt9Cw/krpCtCbq74mUBkqNAk93BhQHat4bi/957QT9CzflYZwghGy6yE+EhZE1jsLqcQkMxUgTyiTXt1psQCVlqAMr6BCc+ZcXSaNSdk7LlZuzYvVyFkeeHJIjUiIOOSdVck1qpE4YeSTP5JW8GU/Gi/FufExbc8ZsZp/8gfH5A3LSlTc=</latexit>
+//!
+//! 0.30
+//!
+//! 0.30
+//!
+//! 0.25
+//!
+//! 0.25
+//!
+//! 0.20
+//!
+//! 0.20
+//!
+//! 0.15
+//!
+//! 0.15
+//!
+//! -4
+//!
+//! 0.10
+//!
+//! 0.10
+//!
+//! 0.05
+//!
+//! 0.05
+//!
+//! 2
+//!
+//! -2
+//!
+//! 4
+//!
+//! u
+//! <latexit sha1_base64="wnFhQNKUlf0HWa+NJZ/ckTw+BdQ=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlZtovV9yqOwdZJV5OKpCj0S9/9QYxSyOUhgmqdddzE+NnVBnOBE5LvVRjQtmYDrFrqaQRaj+bHzolZ1YZkDBWtqQhc/X3REYjrSdRYDsjakZ62ZuJ/3nd1ITXfsZlkhqUbLEoTAUxMZl9TQZcITNiYgllittbCRtRRZmx2ZRsCN7yy6ukXat6F9Va87JSv8njKMIJnMI5eHAFdbiDBrSAAcIzvMKb8+i8OO/Ox6K14OQzx/AHzucP4vuM/Q==</latexit>
+//!
+//! -4
+//!
+//! 2
+//!
+//! -2
+//!
+//! 4
+//!
+//! u
+//! <latexit sha1_base64="wnFhQNKUlf0HWa+NJZ/ckTw+BdQ=">AAAB6HicbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoMeiF48t2FpoQ9lsJ+3azSbsboQS+gu8eFDEqz/Jm//GbZuDtj4YeLw3w8y8IBFcG9f9dgpr6xubW8Xt0s7u3v5B+fCoreNUMWyxWMSqE1CNgktsGW4EdhKFNAoEPgTj25n/8IRK81jem0mCfkSHkoecUWOlZtovV9yqOwdZJV5OKpCj0S9/9QYxSyOUhgmqdddzE+NnVBnOBE5LvVRjQtmYDrFrqaQRaj+bHzolZ1YZkDBWtqQhc/X3REYjrSdRYDsjakZ62ZuJ/3nd1ITXfsZlkhqUbLEoTAUxMZl9TQZcITNiYgllittbCRtRRZmx2ZRsCN7yy6ukXat6F9Va87JSv8njKMIJnMI5eHAFdbiDBrSAAcIzvMKb8+i8OO/Ox6K14OQzx/AHzucP4vuM/Q==</latexit>
+//!
+//! FIG. 8. The edge density scaling functions fkedge (u), i.e., Eq. E13 is plotted vs u for k = 1 (left panel) and k = 2 (right panel).
+//! We see that the location of the kinks is at Hk (u) = 0.
+//!
+//! p
+//! p
+//! fkedge
+//! fkedge
+//! (t =( 2k
+//! 2ky)y)
+//!
+//! X = v − y in Eq. E16, one finds,
+//! Z ∞
+//! √
+//! 2
+//! I−1<v−y<1 ×
+//! fkedge (u = 2k y) ≈ 2
+//! π 0
+//! 1
+//! p
+//! gk2 (v − y) dv
+//! 1 − (v − y)2
+//! (E19)
+//!
+//! <latexit sha1_base64="T/AhxLQk9kJv6/G2uHVS1A32M8k=">AAACCHicbVDLSsNAFJ3UV62vqEsXDhahgpSkCrosunFZwT6giWUyvWmHTh7OTIQSsnTjr7hxoYhbP8Gdf+O0zUKrBy4czrmXe+/xYs6ksqwvo7CwuLS8Ulwtra1vbG6Z2zstGSWCQpNGPBIdj0jgLISmYopDJxZAAo9D2xtdTvz2PQjJovBGjWNwAzIImc8oUVrqmft+Lx1lt6kjAgz9AWQVR94JldZGmXOMx0c9s2xVrSnwX2LnpIxyNHrmp9OPaBJAqCgnUnZtK1ZuSoRilENWchIJMaEjMoCupiEJQLrp9JEMH2qlj/1I6AoVnqo/J1ISSDkOPN0ZEDWU895E/M/rJso/d1MWxomCkM4W+QnHKsKTVHCfCaCKjzUhVDB9K6ZDIghVOruSDsGef/kvadWq9km1dn1arl/kcRTRHjpAFWSjM1RHV6iBmoiiB/SEXtCr8Wg8G2/G+6y1YOQzu+gXjI9vUYaZgA==</latexit>
+//!
+//! 0.30
+//!
+//! 0.25
+//!
+//! 0.20
+//!
+//! 0.15
+//!
+//! 0.10
+//!
+//! 0.05
+//!
+//! -1.5
+//!
+//! -1.0
+//!
+//! 0.5
+//!
+//! -0.5
+//!
+//! 0
+//!
+//! 1.0
+//!
+//! 1.5
+//!
+//! y
+//!
+//! √
+//! FIG. 9. Plot of fkedge ( 2k y), with fkedge (y) given in Eq. E13
+//! as a function of y for k = 20 (red solid line). The blackdashed line is the exact limiting form given in Eq. E21. It
+//! should be noted that the positions of kinks are at zeros of
+//! Hermite polynomial of degree k = 20.
+//!
+//! Inserting this expansion (Eq. E17 and Eq. E18) with
+//!
+//! where the indicator function comes from the fact that
+//! the asymptotic behavior in Eq. E17 and Eq. E18 holds
+//! only for −1 < X < 1, while it is sub-leading (in k)
+//! for X outside the region. Due to the identity cos2 x =
+//! 2
+//! 1/2 + cos (2x)/2, one can replace [gk (v − y)] , given in
+//! Eq. E18, in the integral over v in Eq. E19 by 1/2 (the
+//! remaining cosine being highly oscillating for large k and
+//! thus subleading). Therefore we get,
+//! fkedge (u =
+//!
+//! √
+//!
+//! 2k y) ≈
+//!
+//! 1
+//! π2
+//!
+//! Z max(y+1,0)
+//! max(y−1,0)
+//!
+//! 1 − (v − y)2
+//! (E20)
+//!
+//! which finally yields (see also Fig. 9),
+//!
+//! 
+//! 0,
+//! y < −1
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+//! √
+//! 1 π
+//! edge
+//! −1
+//! lim fk (u = 2k y) =
+//! +
+//! sin
+//! (y)
+//! , −1 < y < 1
+//! 
+//! k→∞
+//! π2 2
+//! 
+//! 
+//! 
+//! 
+//! 
+//!  1
+//! y>1.
+//! π ,
+//!
+//! √
+//! Close to u = ± 2k there is an interesting edge region, of
+//! width O(k −1/6 ) where the density is described by Airy
+//! functions, very similar to the well known “Tracy-Widom”
+//! regime at the edge of the Wigner semi-circle in RMT belonging to the Gaussian Unitary Ensemble (GUE). This
+//! is somehow expected√given the square-root singularity
+//! near the edges u = ± 2k of the limiting profile given in
+//!
+//! dv
+//! p
+//!
+//! (E21)
+//!
+//! Eq. E21. This edge behavior can be derived from Eq. E13
+//! by using the asymptotic
+//! √ behavior of the Hermite polynomial Hk (u) near u = 2k where the Hermite polynomial
+//! becomes an Airy function. One finds (for large k), setting
+//!
+//!
+//! --- PAGE BREAK ---
+//! 14
+//!
+//! N1⇡⇢
+//! (r)
+//! ⇡⇢
+//! (r,1✓,
+//! N)
+//!
+//! For each point in the (M, c) plane, µ is uniquely determined from Eq. B20. Therefore as we change the value
+//! of c from√c1 to c1 − ∆, the value of µ also changes from
+//! µ = 2 + c1 M to
+//! p
+//! µ = 2 + c1 M + δ ,
+//! (F2)
+//!
+//! <latexit sha1_base64="+Bd2P73XBf6ue/M8GIhvHEhgTMg=">AAACAnicbVDLSsNAFJ34rPUVdSVuBotQoZSkCrosunElFewDmhAm00kzdPJg5kYopbjxV9y4UMStX+HOv3HaZqGtBy4czrmXe+/xU8EVWNa3sbS8srq2Xtgobm5t7+yae/stlWSSsiZNRCI7PlFM8Jg1gYNgnVQyEvmCtf3B9cRvPzCpeBLfwzBlbkT6MQ84JaAlzzzETsqxU3FkmHh2WVYcCBmQyu2pZ5asqjUFXiR2TkooR8Mzv5xeQrOIxUAFUaprWym4IyKBU8HGRSdTLCV0QPqsq2lMIqbc0fSFMT7RSg8HidQVA56qvydGJFJqGPm6MyIQqnlvIv7ndTMILt0Rj9MMWExni4JMYEjwJA/c45JREENNCJVc34ppSCShoFMr6hDs+ZcXSatWtc+qtbvzUv0qj6OAjtAxKiMbXaA6ukEN1EQUPaJn9IrejCfjxXg3PmatS0Y+c4D+wPj8Abb2lbY=</latexit>
+//!
+//! 0.8
+//!
+//! where δ  1. Inserting this value of µ in Eq. B20 and
+//! expanding for small δ gives a relation between ∆ and δ
+//!
+//! <latexit
+//!
+//! sha1_base64="GDzOto2iGtOIfD+sF9uzMphE/wM=">AAAB63icbVBNSwMxEJ2tX7V+VT16CRbBU9mtFb0IRS8eK9gPaJeSTbNtaJJdkqxQlv4FLx4U8eof8ua/Md3uQVsfDDzem2FmXhBzpo3rfjuFtfWNza3idmlnd2//oHx41NZRoghtkYhHqhtgTTmTtGWY4bQbK4pFwGknmNzN/c4TVZpF8tFMY+oLPJIsZASbTLrxLgflilt1M6BV4uWkAjmag/JXfxiRRFBpCMda9zw3Nn6KlWGE01mpn2gaYzLBI9qzVGJBtZ9mt87QmVWGKIyULWlQpv6eSLHQeioC2ymwGetlby7+5/USE177KZNxYqgki0VhwpGJ0PxxNGSKEsOnlmCimL0VkTFWmBgbT8mG4C2/vEratap3Ua091CuN2zyOIpzAKZyDB1fQgHtoQgsIjOEZXuHNEc6L8+58LFoLTj5zDH/gfP4ASVqNvQ==</latexit>
+//!
+//! <latexit
+//!
+//! sha1_base64="ysl+OwVg+26Xope7Y8qRYVv5ZPU=">AAAB63icbVBNSwMxEJ2tX7V+VT16CRbBU9mtFb0IRS8eK9gPaJeSTbNtaJJdkqxQlv4FLx4U8eof8ua/Md3uQVsfDDzem2FmXhBzpo3rfjuFtfWNza3idmlnd2//oHx41NZRoghtkYhHqhtgTTmTtGWY4bQbK4pFwGknmNzN/c4TVZpF8tFMY+oLPJIsZASbTLqpXQ7KFbfqZkCrxMtJBXI0B+Wv/jAiiaDSEI617nlubPwUK8MIp7NSP9E0xmSCR7RnqcSCaj/Nbp2hM6sMURgpW9KgTP09kWKh9VQEtlNgM9bL3lz8z+slJrz2UybjxFBJFovChCMTofnjaMgUJYZPLcFEMXsrImOsMDE2npINwVt+eZW0a1Xvolp7qFcat3kcRTiBUzgHD66gAffQhBYQGMMzvMKbI5wX5935WLQWnHzmGP7A+fwBSt+Nvg==</latexit>
+//!
+//! t=
+//!
+//! 15
+//!
+//! t = 25
+//!
+//! 1.0
+//!
+//! 0.6
+//!
+//! v1
+//!
+//! v1
+//! <latexit sha1_base64="CjmP85F9x9vbcL2ENUsPPB1Vqnk=">AAAB6nicbVBNS8NAEJ34WetX1aOXxSJ4KkkV9Fj04rGi/YA2lM120i7dbMLuplBCf4IXD4p49Rd589+4bXPQ1gcDj/dmmJkXJIJr47rfztr6xubWdmGnuLu3f3BYOjpu6jhVDBssFrFqB1Sj4BIbhhuB7UQhjQKBrWB0N/NbY1Sax/LJTBL0IzqQPOSMGis9jnter1R2K+4cZJV4OSlDjnqv9NXtxyyNUBomqNYdz02Mn1FlOBM4LXZTjQllIzrAjqWSRqj9bH7qlJxbpU/CWNmShszV3xMZjbSeRIHtjKgZ6mVvJv7ndVIT3vgZl0lqULLFojAVxMRk9jfpc4XMiIkllClubyVsSBVlxqZTtCF4yy+vkma14l1Wqg9X5dptHkcBTuEMLsCDa6jBPdShAQwG8Ayv8OYI58V5dz4WrWtOPnMCf+B8/gAJ8o2i</latexit>
+//!
+//! 0.4
+//!
+//! ∆=
+//!
+//! <latexit
+//!
+//! sha1_base64="VXxRfvT/2+yMjkeN54+M5NdHpYU=">AAAB63icbVBNS8NAEJ3Ur1q/qh69LBbBU0mqoBeh6MVjBfsBbSib7aZdursJuxshhP4FLx4U8eof8ua/cZvmoK0PBh7vzTAzL4g508Z1v53S2vrG5lZ5u7Kzu7d/UD086ugoUYS2ScQj1QuwppxJ2jbMcNqLFcUi4LQbTO/mfveJKs0i+WjSmPoCjyULGcEml248d1ituXU3B1olXkFqUKA1rH4NRhFJBJWGcKx133Nj42dYGUY4nVUGiaYxJlM8pn1LJRZU+1l+6wydWWWEwkjZkgbl6u+JDAutUxHYToHNRC97c/E/r5+Y8NrPmIwTQyVZLAoTjkyE5o+jEVOUGJ5agoli9lZEJlhhYmw8FRuCt/zyKuk06t5FvfFwWWveFnGU4QRO4Rw8uIIm3EML2kBgAs/wCm+OcF6cd+dj0Vpyiplj+APn8wdBxo24</latexit>
+//!
+//! t=1
+//! 0
+//!
+//! <latexit sha1_base64="CjmP85F9x9vbcL2ENUsPPB1Vqnk=">AAAB6nicbVBNS8NAEJ34WetX1aOXxSJ4KkkV9Fj04rGi/YA2lM120i7dbMLuplBCf4IXD4p49Rd589+4bXPQ1gcDj/dmmJkXJIJr47rfztr6xubWdmGnuLu3f3BYOjpu6jhVDBssFrFqB1Sj4BIbhhuB7UQhjQKBrWB0N/NbY1Sax/LJTBL0IzqQPOSMGis9jnter1R2K+4cZJV4OSlDjnqv9NXtxyyNUBomqNYdz02Mn1FlOBM4LXZTjQllIzrAjqWSRqj9bH7qlJxbpU/CWNmShszV3xMZjbSeRIHtjKgZ6mVvJv7ndVIT3vgZl0lqULLFojAVxMRk9jfpc4XMiIkllClubyVsSBVlxqZTtCF4yy+vkma14l1Wqg9X5dptHkcBTuEMLsCDa6jBPdShAQwG8Ayv8OYI58V5dz4WrWtOPnMCf+B8/gAJ8o2i</latexit>
+//!
+//! <latexit
+//!
+//! sha1_base64="JSHUmzwPY/87ek1Z4nAk8VIIvqI=">AAAB6nicbVBNS8NAEJ34WetX1aOXxSJ4KkkV9CIUvXisaD+gDWWz3bRLN5uwOxFK6E/w4kERr/4ib/4bt20O2vpg4PHeDDPzgkQKg6777aysrq1vbBa2its7u3v7pYPDpolTzXiDxTLW7YAaLoXiDRQoeTvRnEaB5K1gdDv1W09cGxGrRxwn3I/oQIlQMIpWesBrr1cquxV3BrJMvJyUIUe9V/rq9mOWRlwhk9SYjucm6GdUo2CST4rd1PCEshEd8I6likbc+Nns1Ak5tUqfhLG2pZDM1N8TGY2MGUeB7YwoDs2iNxX/8zophld+JlSSIldsvihMJcGYTP8mfaE5Qzm2hDIt7K2EDammDG06RRuCt/jyMmlWK955pXp/Ua7d5HEU4BhO4Aw8uIQa3EEdGsBgAM/wCm+OdF6cd+dj3rri5DNH8AfO5w/TLY1+</latexit>
+//!
+//! t=
+//!
+//! 1
+//!
+//! 0.2
+//!
+//! s
+//!
+//! 5
+//!
+//! -5
+//!
+//! FIG. 10. Plot of the density profile π ρ1 (r, θ, N ) as given in
+//! Eq. F17 for M =√
+//! 5, as a √
+//! function of the scaled
+//! √ distance s – we
+//! recall that r = z N ≈ N (c1 /M )1/4 + s/ 2 – for different
+//! increasing values of t = 1, 10, 15 and 25 (from bottom to top).
+//! As t increases, the scaled density π ρ1 (r, θ, N ) approaches the
+//! constant value 1 for |s| < v1 t and decays rapidly to 0 for
+//! |s| > v1 t. The front separating the constant density 1/π and
+//! the zero-density outside “moves with a constant speed v1 ”
+//! with increasing t, reminiscent of a remarkable travelling front
+//! structure.
+//!
+//! u=−
+//!
+//! √
+//!
+//! (E22)
+//!
+//! l=l− (1)
+//!
+//! (F4)
+//! with
+//!
+//! √ 2
+//! p
+//! γ+l
+//! L1
+//! (r2 ) = 1 + γ + l2 − r2
+//!
+//! where
+//! F(w) =
+//!
+//! 1
+//! π
+//!
+//! 0
+//!
+//! 1
+//! [Ai0 (−w)]2
+//! π
+//! 
+//! + wAi2 (−w)
+//! (E23)
+//!
+//! Ai2 (v − w) dv =
+//!
+//! and Ai(z) denotes the standard Airy function. Note that
+//! a similar computation could be carried out for the kernel
+//! which would lead (on the real line at least) to the well
+//! known Airy kernel.
+//! Appendix F: Emergence of new droplet as one
+//! crosses critical lines in (M, c) plane
+//!
+//! We want to look at the phase diagram in the (M, c)
+//! plane and ask, when k ∗ changes from k ∗ = 0 to k ∗ = 1
+//! (which means a new band is included below the Fermi
+//! energy), how does the density profile change from one
+//! layered structure to two layered structure. We have already seen that just when one crosses this critical line
+//! c = c1 (M ) ≡ c1 , the second layer appears on top of
+//! the first layer. In this subsection, we describe the density profile of this emerging blob in the second layer for
+//! c slightly below c1 for fixed 4 < M < 12 (see Fig. 6),
+//! where c1 is given in Eq. C2. We therefore set
+//! c = c1 − ∆ where 0 < ∆  1 .
+//!
+//! (F1)
+//!
+//! (F5)
+//!
+//! where,
+//! l± (1) =
+//!
+//! Z ∞
+//!
+//! (F3)
+//!
+//! Therefore, one just has one single control parameter δ
+//! describing the location of the system in the phase diagram, in the vicinity of the critical line c = c1 (M ). We
+//! now want to see how the density changes as we vary δ.
+//! We start with the formula for the density in Eq. D3.
+//! When k ∗ increases from 0 to 1, the additional density in
+//! the second layer is given by,
+//! √ 2
+//!  √
+//! 2
+//! l+ (1)
+//! 2
+//! e−r X
+//! r2 γ+l
+//! γ+l2 2
+//! p
+//! ρ1 (r, θ, N ) =
+//! L1
+//! (r )
+//! π
+//! Γ( γ + l2 + 2)
+//!
+//! 2k + √2kw1/6
+//!
+//! with w = O(1)
+//! 
+//! 
+//! √
+//! w
+//! 1
+//! fk − 2k + √
+//! ∼ 1/3 F(w)
+//! 1/6
+//! k
+//! 2k
+//!
+//! (M 2 − 16)3/2 √
+//! √
+//! δ.
+//! 64 2
+//!
+//! µ−2±
+//!
+//! p
+//!
+//! (µ − 2)2 − c1 M
+//! N.
+//! M
+//!
+//! (F6)
+//!
+//! We can rewrite Eq. F6 using Eq. F2 (to leading order in
+//! δ for small δ) as,
+//! 
+//! r
+//! √
+//! c1
+//! ± v1 δ
+//! (F7)
+//! l± (1) ≈ λ± N, λ± =
+//! M
+//! with
+//!
+//! √
+//! v1 =
+//!
+//! 2
+//! (c1 M )1/4 .
+//! M
+//!
+//! (F8)
+//!
+//! In real space, the second layer of the macroscopic density
+//! appears over the scaled region,
+//! r
+//! r
+//! √
+//! √
+//! c1
+//! c1
+//! 2
+//! − v1 δ < z <
+//! + v1 δ ,
+//! (F9)
+//! M
+//! M
+//! √
+//! where z = r/ N . Therefore, the center of the second
+//! layer is located at zc = (c1 /M )1/4 and we want to provide
+//! a scaling description of this density in the second layer
+//! just after its appearance, i.e., in the limit δ → 0. Hence
+//! we set,
+//! r
+//! c1
+//! 2
+//! z =
+//! +,
+//! (F10)
+//! M
+//! where  is proportional to the distance from the center
+//! of the second layer. Thus the density is just a function
+//! of  and δ in the vicinity of the critical line c = c1 (M )
+//!
+//!
+//! --- PAGE BREAK ---
+//! 15
+//! and below we work out the dependence of the density on
+//! these two parameters in the large N limit.
+//! To analyse the density Eq. F4 in the limit of large N ,
+//!
+//! e−r
+//! ρ1 (r, θ, N ) ≈
+//! π
+//!
+//! 2
+//!
+//! √
+//!
+//! Z λ+
+//!
+//! 2
+//!
+//! we set γ = c1 N and we introduce l = x N so that the
+//! sum over l can be replaced by an integral over x leading
+//! to,
+//!
+//! 2
+//!
+//! i2
+//! h
+//! p
+//! e−r
+//! r2 cN +N x
+//! dx √
+//! 1 + cN + N 2 x2 − r2 ≈
+//! π
+//! Γ( cN + N 2 x2 + 2)
+//! λ−
+//!
+//! 2
+//!
+//! Z λ+
+//! dx
+//! λ−
+//!
+//! 2
+//! r2N x
+//! N x − r2
+//! Γ(N x + 2)
+//! (F11)
+//!
+//! where we kept the leading term in the arguments for large
+//!
+//! N . We can now approximate the Gamma function by the
+//! Stirling’s formula, leading to,
+//!
+//! Z λ+
+//! 2
+//! √
+//! dx 2N x ln(z√N )−N x ln x+N x
+//! e−N z
+//! e
+//! ρ1 (r = z N , θ, N ) ≈ √
+//! (N x − N z 2 )2 .
+//! π 2πN λ− x3/2
+//!
+//! p c1
+//! We now substitute z 2 = M
+//! +  from Eq. F10 and make
+//! p
+//! the change of variable x =
+//! c1 /M + v. Since |v| <
+//!
+//! √
+//!
+//! 1
+//! ρ1 (r = z N , θ, N ) ≈ √
+//! π 2πN
+//!
+//! 
+//!
+//! M
+//! c1
+//!
+//! √
+//! 2 1
+//! ρ1 (r = z N , θ, N ) ≈
+//! N π 3/2
+//!
+//! Z w̃+
+//!
+//! 2
+//!
+//! dw̃ w̃2 e−w̃ (F14)
+//!
+//! w̃−
+//!
+//! with
+//! r
+//! w̃± =
+//!
+//! N
+//! 2
+//!
+//! 
+//!
+//! M
+//! c1
+//!
+//! 1/4
+//!
+//! √
+//! (±v1 δ − ) .
+//!
+//! √
+//! v1 δ, we can expand the integrand for small v and retain
+//! only up to O(v 2 ) terms inside the exponential. After
+//! straightforward algebra, one obtains,
+//!
+//! 3/4 Z +v1 √δ
+//!
+//! In order that this√integral√ is of order√O(1), we see that
+//! we need to scale δ ∼ t/ N ,  ∼ s/ N where t > 0 as
+//! well as s are both of order O(1). Making the change of
+//! variable w̃ = [N /2]1/2 (M/c1 )1/4 (v − ) in Eq. F13, we
+//! get,
+//!
+//! (F15)
+//!
+//! In order that the integral remains
+//! √ of order O(1) in the
+//! large √
+//! N limit, we see that both δ and  should scale as
+//! O(1/ N ). We therefore set,
+//! r  
+//! r  
+//! √
+//! 2 c1 1/4
+//! 2 c1 1/4
+//! δ=
+//! t and  =
+//! s,
+//! N M
+//! N M
+//! (F16)
+//! where t and s are both of order O(1). Therefore, the
+//! density in the large N limit, a function of the original
+//! variables  and δ, can be re-paramaterized in terms of
+//!
+//! (F12)
+//!
+//! −v1
+//!
+//! √
+//!
+//! −N
+//!
+//! dv e
+//!
+//! pM
+//!
+//! 2
+//! 4c1 (v−)
+//!
+//! N 2 (v − )2 .
+//!
+//! (F13)
+//!
+//! δ
+//!
+//! the scaled variables s and t given in Eq. F16
+//! √
+//! 1
+//! ρ1 (r = z N , θ, N ) ≈ [F1 (s + v1 t) − F1 (s − v1 t)] ,
+//! π
+//! (F17)
+//! √
+//!
+//! where v1 = M2 (c1 M )1/4 and
+//! 
+//! 
+//! Z z
+//! 2
+//! 2
+//! 2
+//! 1
+//! 2
+//! F1 (z) = √
+//! dw̃ w̃2 e−w̃ =
+//! erf(z) − √ z e−z .
+//! 2
+//! π 0
+//! π
+//! (F18)
+//! Note that the scaled variables t and s can be expressed
+//! in terms of ∆ = c1 − c (which measures the location the
+//! distance in the phase diagram with respect to
+//! √ the critical
+//! line c = c1 (M )) and the variable z = r/ N where r
+//! measures the distance from the center of the trap. The
+//! first relation can be obtained by eliminating δ between
+//! Eqs. F3 and F16
+//! √
+//! 
+//! 1/4
+//! √
+//! M
+//! 64 2
+//! t=
+//! [c1 − c] N . (F19)
+//! 2
+//! 3/2
+//! 4c1
+//! (M − 16)
+//! Similarlyp
+//! the second relation is obtained by substituting
+//!  = z 2 − c1 /M in Eq. F16. This gives
+//! 
+//! 1/4 
+//! M
+//! c1  √
+//! s=
+//! z2 −
+//! N,
+//! (F20)
+//! 4c1
+//! M
+//!
+//!
+//! --- PAGE BREAK ---
+//! 16
+//! √
+//! where z = r/ N .
+//! Interestingly, the scaled density profile in Eq. F17 has
+//! an interesting traveling front structure. To see this, we
+//! consider the density as a function of s, for a fixed t. The
+//! density decays to 0 very rapidly as |s|  v1 t (see Fig.
+//! 10). Therefore the two edges of this profile move “ballistically” with increasing t with a “speed” given by v1 . If
+//! we interpret t as a “time”, then at late times, the density
+//! profile develops a traveling front structure with velocity
+//! v1 and the width across the front remains of O(1) as t
+//! increases. For large t, the density has a constant value
+//! ≃ 1/π for all |s| < v√1 t (see Fig. 10). Finally, the speed
+//! v1 is given by v1 = 2/M (c1 M )1/4 can be expressed in
+//! terms of M , by using the expression for c1 (M ) in Eq. C2.
+//! Note that here we analysed the density profile near the
+//! transition from k ∗ = 0 to k ∗ = 1 where the second layer
+//!
+//! [1] I. Bloch, J. Dalibard, and W. Zwerger, Rev. Mod. Phys.,
+//! 80, 885 (2008).
+//! [2] S. Nascimbene, N. Navon, F. Chevy, and C. Salomon,
+//! New J. Phys., 12, 103026 (2010).
+//! [3] L. W. Cheuk, M. A. Nichols, M. Okan, T. Gersdorf, V. V.
+//! Ramasesh, W. S. Bakr, T. Lompe, and M. W. Zwierlein,
+//! Phys. Rev. Lett., 114, 193001 (2015).
+//! [4] E. Haller, J. Hudson, A. Kelly, D. A. Cotta, B. Peaudecerf, G. D. Bruce, and S. Kuhr, Nature Physics, 11, 738
+//! (2015).
+//! [5] M. F. Parsons, F. Huber, A. Mazurenko, C. S.
+//! Chiu, W. Setiawan, K. Wooley-Brown, S. Blatt, and
+//! M. Greiner, Phys. Rev. Lett., 114, 213002 (2015).
+//! [6] B. Mukherjee, Z. Yan, P. B. Patel, Z. Hadzibabic, T. Yefsah, J. Struck, and M. W. Zwierlein, Phys. Rev. Lett.,
+//! 118, 123401 (2017).
+//! [7] K. Hueck, N. Luick, L. Sobirey, J. Siegl, T. Lompe, and
+//! H. Moritz, Phys. Rev. Lett., 120, 060402 (2018).
+//! [8] M. Inguscio, W. Ketterle, and C. Salomon, Ultra-cold
+//! Fermi gases, Vol. 164 (IOS press, 2008).
+//! [9] S. Giorgini, L. P. Pitaevskii, and S. Stringari, Rev. Mod.
+//! Phys., 80, 1215 (2008).
+//! [10] J. Joseph, J. E. Thomas, M. Kulkarni, and A. G.
+//! Abanov, Phys. Rev. Lett., 106, 150401 (2011).
+//! [11] L. W. Cheuk, M. A. Nichols, M. Okan, T. Gersdorf, V. V.
+//! Ramasesh, W. S. Bakr, T. Lompe, and M. W. Zwierlein,
+//! Phys. Rev. Lett., 114, 193001 (2015).
+//! [12] E. Haller, J. Hudson, A. Kelly, D. A. Cotta, B. Peaudecerf, G. D. Bruce, and S. Kuhr, Nature Physics, 11, 738
+//! (2015).
+//! [13] M. F. Parsons, F. Huber, A. Mazurenko, C. S.
+//! Chiu, W. Setiawan, K. Wooley-Brown, S. Blatt, and
+//! M. Greiner, Phys. Rev. Lett., 114, 213002 (2015).
+//! [14] E. Vicari, Phys. Rev. A, 85, 062104 (2012).
+//! [15] V. Eisler, Phys. Rev. Lett., 111, 080402 (2013).
+//! [16] R. Marino, S. N. Majumdar, G. Schehr, and P. Vivo,
+//! Phys. Rev. Lett., 112, 254101 (2014).
+//! [17] D. S. Dean, P. Le Doussal, S. N. Majumdar, and
+//! G. Schehr, Phys. Rev. Lett., 114, 110402 (2015).
+//! [18] D. S. Dean, P. Le Doussal, S. N. Majumdar, and
+//! G. Schehr, EPL, 112, 60001 (2015).
+//! [19] D. S. Dean, P. Le Doussal, S. N. Majumdar, and
+//!
+//! just appears over the first layer. One can do a similar
+//! analysis for the transition form k ∗ = n − 1 to k ∗ = n
+//! across the critical line c = cn (M ) for any n ≥ 1. We do
+//! not repeat the analysis here but it is easy to show that
+//! the scaled density will again be given by the difference of
+//! two functions, as in the k = 1 case in Eq. F17,
+//! √
+//! 1
+//! ρn (r = z N ) ≈ [Fn (s + vn t) − Fn (s − vn t)] (F21)
+//! ,
+//! π
+//! where the speed vn can be computed from the critical
+//! curve c = cn (M ) and the scaling function Fn (z) is given,
+//! up to an overall constant by,
+//! Z z
+//! 2
+//! 2
+//! dw̃ [Hn (w̃)] e−w̃ ,
+//! (F22)
+//! Fn (z) ∝
+//! 0
+//!
+//! where Hn (w̃) is the Hermite polynomial of degree n.
+//!
+//! G. Schehr, Phys. Rev. A, 94, 063622 (2016).
+//! [20] R. Marino, S. N. Majumdar, G. Schehr, and P. Vivo,
+//! Phys. Rev. E, 94, 032115 (2016).
+//! [21] D. Butts and D. Rokhsar, Phys. Rev. A, 55, 4346 (1997).
+//! [22] W. Kohn and A. E. Mattsson, Phys. Rev. Lett., 81, 3487
+//! (1998).
+//! [23] D. S. Dean, P. Le Doussal, S. N. Majumdar, and
+//! G. Schehr, J. Phys. A: Math. Theor., 52, 144006 (2019).
+//! [24] P. Calabrese, P. Le Doussal, and S. N. Majumdar, Phys.
+//! Rev. A, 91, 012303 (2015).
+//! [25] B. Lacroix-A-Chez-Toine, P. Le Doussal, S. N. Majumdar, and G. Schehr, EPL, 120, 10006 (2017).
+//! [26] D. S. Dean, P. Le Doussal, S. N. Majumdar, and
+//! G. Schehr, Phys. Rev. A, 97, 063614 (2018).
+//! [27] P. Le Doussal, S. N. Majumdar, and G. Schehr, Phys.
+//! Rev. Lett., 121, 030603 (2018).
+//! [28] F. D. Cunden, S. N. Majumdar, and N. O’Connell, J.
+//! Phys. A: Math. Theor., 52, 165202 (2019).
+//! [29] T.-L. Ho and C. Ciobanu, Phys. Rev. Lett., 85, 4648
+//! (2000).
+//! [30] A. Aftalion, X. Blanc, and J. Dalibard, Phys. Rev. A,
+//! 71, 023611 (2005).
+//! [31] V. Schweikhard, I. Coddington, P. Engels, V. Mogendorff, and E. A. Cornell, Phys. Rev. Lett., 92, 040404
+//! (2004).
+//! [32] A. L. Fetter, Rev. Mod. Phys., 81, 647 (2009).
+//! [33] N. R. Cooper, Adv. Phys., 57, 539 (2008).
+//! [34] B. Lacroix-A-Chez-Toine, S. N. Majumdar,
+//! and
+//! G. Schehr, Phys. Rev. A, 99, 021602 (2019).
+//! [35] L. D. Landau, E. M. Lifšic, E. M. Lifshitz, and
+//! L. Pitaevskii, Statistical physics: theory of the condensed
+//! state, Vol. 9 (Butterworth-Heinemann, 1980).
+//! [36] A. J. Leggett et al., Quantum liquids: Bose condensation
+//! and Cooper pairing in condensed-matter systems (Oxford
+//! university press, 2006).
+//! [37] N. R. Cooper, Many-Body Physics with Ultracold Gases:
+//! Lecture Notes of the Les Houches Summer School: Volume 94, July 2010, 94, 189 (2012).
+//! [38] P. J. Forrester, Log-gases and random matrices (LMS-34)
+//! (Princeton University Press, 2010).
+//! [39] T. Antal, Z. Rácz, A. Rákos, and G. M. Schütz, Physical
+//! Review E, 59, 4912 (1999).
+//!
+//!
+//! --- PAGE BREAK ---
+//! 17
+//! [40] T. Antal, P. L. Krapivsky, and A. Rákos, Phys. Rev. E,
+//! 78, 061115 (2008).
+//! [41] V. Eisler and Z. Rácz, Phys. Rev. Lett., 110, 060602
+//! (2013).
+//! [42] V. Hunyadi, Z. Rácz, and L. Sasvári, Phys. Rev. E, 69,
+//! 066103 (2004).
+//! [43] B. Mukherjee, K. Sengupta, and S. N. Majumdar, Phys.
+//! Rev. B, 98, 104309 (2018).
+//! [44] M. Kulkarni, S. N. Majumdar, and G. Schehr, Supplementary Material.
+//! [45] G. V. Dunne, Int. J. Mod. Phys. B, 8, 1625 (1994).
+//! [46] A. Haimi and H. Hedenmalm, J. Stat. Phys., 153, 10
+//! (2013).
+//! [47] M. J. Bowick and É. Brézin, Phys. Lett. B, 268, 21
+//! (1991).
+//! [48] P. J. Forrester, Nucl. Phys. B, 402, 709 (1993).
+//!
+//! [49] We
+//! √ recall that the√relation√between r and s reads r =
+//! z N ≈ (c1 /M )1/4 N + s/ 2 for large N .
+//! [50] I. D. Rodrı́guez and G. Sierra, Phys. Rev. B, 80, 153303
+//! (2009).
+//! [51] L. Charles and B. Estienne, Commun. Math. Phys.,
+//! 376,521 (2019).
+//! [52] H. Leschke, A. V. Sobolev, and W. Spitzer, arXiv
+//! preprint arXiv:2007.06316 (2020).
+//! [53] P. C. Haljan, I. Coddington, P. Engels, E. A. Cornell,
+//! Phys. Rev. Lett. 87, 210403 (2001).
+//! [54] M. W. Zwierlein, J. R. Abo-Shaeer, A. Schirotzek, C. H.
+//! Schunck, W. Ketterle, Nature 435, 1047 (2005).
+//! [55] S. Gradshteyn and I. M. Ryzhik, Table of integrals, series,
+//! and products (Academic press, 2014).
+//!
+//!
+//! --- PAGE BREAK ---
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!

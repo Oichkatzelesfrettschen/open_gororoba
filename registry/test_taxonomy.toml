@@ -55,15 +55,15 @@ nextest_profile = "heavy"
 reason = "Numerically heavy regression tests including strong-field validation."
 
 [[python_test_file]]
-path = "tests/test_c010_c011_verifier_script.py"
+path = "crates/gororoba_cli_data/src/bin/repo_utilities.rs"
 lane = "smoke"
 
 [[python_test_file]]
-path = "tests/test_c010_holographic_entropy_trap.py"
+path = "crates/gororoba_cli_physics/src/bin/entropy_trap.rs"
 lane = "regression"
 
 [[python_test_file]]
-path = "tests/test_c011_gravastar_equivalence_obstruction.py"
+path = "crates/gororoba_cli/tests/integration_gravastar.rs"
 lane = "regression"
 
 [[python_test_file]]

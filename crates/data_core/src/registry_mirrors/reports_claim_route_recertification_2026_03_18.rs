@@ -1,0 +1,36 @@
+//! # Claim Route Recertification
+//!
+//! Generated at `2026-03-18T16:00:49.891727095+00:00` from `reports/dataset_routing_2026-03-18.toml`.
+//!
+//! ## Claim Status Counts
+//!
+//! - `archive_structure_null`: 6
+//! - `structurally_indexed`: 1294
+//!
+//! ## Insight Status Counts
+//!
+//! - `archive_structure_null`: 5
+//! - `structurally_indexed`: 172
+//!
+//! ## Cube-Capable Route Datasets
+//!
+//! - `chime_frb_cat2`
+//! - `desi_dr2_bao_summary`
+//! - `gaia_dr3_nearby`
+//! - `hst_public_metadata`
+//! - `jwst_public_metadata`
+//! - `sdss_dr18_quasars`
+//!
+//! ## Scientifically Re-Executed Claims
+//!
+//! - `C-071` [archive_structure_null] via `multi-dataset-ultrametric` on `chime_frb_cat2, gaia_dr3_nearby, hst_public_metadata, jwst_public_metadata, sdss_dr18_quasars`
+//! - `C-436` [archive_structure_null] via `multi-dataset-ultrametric` on `chime_frb_cat2, gaia_dr3_nearby, hst_public_metadata, jwst_public_metadata, sdss_dr18_quasars`
+//! - `C-437` [archive_structure_null] via `multi-dataset-ultrametric` on `chime_frb_cat2, gaia_dr3_nearby, hst_public_metadata, jwst_public_metadata, sdss_dr18_quasars`
+//! - `C-438` [archive_structure_null] via `multi-dataset-ultrametric` on `chime_frb_cat2, gaia_dr3_nearby, hst_public_metadata, jwst_public_metadata, sdss_dr18_quasars`
+//! - `C-439` [archive_structure_null] via `multi-dataset-ultrametric` on `chime_frb_cat2, gaia_dr3_nearby, hst_public_metadata, jwst_public_metadata, sdss_dr18_quasars`
+//! - `C-440` [archive_structure_null] via `multi-dataset-ultrametric` on `chime_frb_cat2, gaia_dr3_nearby, hst_public_metadata, jwst_public_metadata, sdss_dr18_quasars`
+//!
+//! ## Needs Registry Linkage
+//!
+//! - predictive evidence updated; registry claim linkage remains report-first
+//!

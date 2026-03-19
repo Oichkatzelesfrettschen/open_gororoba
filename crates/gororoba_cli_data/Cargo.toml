@@ -423,6 +423,18 @@ name = "nanograv-synthetic-gen"
 path = "src/bin/nanograv_synthetic_gen.rs"
 
 [[bin]]
+name = "nanograv-gauge-resonance"
+path = "src/bin/nanograv_gauge_resonance.rs"
+
+[[bin]]
+name = "nanograv-entropy-audit"
+path = "src/bin/nanograv_entropy_audit.rs"
+
+[[bin]]
+name = "nanograv-vacuum-symmetry"
+path = "src/bin/nanograv_vacuum_symmetry.rs"
+
+[[bin]]
 name = "generate-synthetic-ghost"
 path = "src/bin/generate-synthetic-ghost.rs"
 
@@ -481,6 +493,7 @@ tempfile = { workspace = true }
 nalgebra = { workspace = true }
 plotters = { workspace = true }
 petgraph = { workspace = true }
+moyo = { workspace = true }
 hdf5 = { workspace = true }
 ndarray = "0.17"
 

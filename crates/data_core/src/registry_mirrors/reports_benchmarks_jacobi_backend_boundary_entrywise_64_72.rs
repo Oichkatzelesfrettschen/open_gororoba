@@ -1,0 +1,94 @@
+//! # Jacobi Backend Sweep
+//!
+//! | family | size | default policy | fastest successful backend | lowest max abs error |
+//! | --- | ---: | --- | --- | --- |
+//! | clustered_pairs | 64 | reference_f64 | reference_f64 | double_double |
+//! | clustered_pairs | 68 | x87 | reference_f64 | double_double |
+//! | clustered_pairs | 72 | x87 | reference_f64 | double_double |
+//! | geometric_decay | 64 | reference_f64 | reference_f64 | double_double |
+//! | geometric_decay | 68 | x87 | reference_f64 | double_double |
+//! | geometric_decay | 72 | x87 | reference_f64 | double_double |
+//! | identity_nullspace_plateau | 64 | reference_f64 | reference_f64 | double_double |
+//! | identity_nullspace_plateau | 68 | x87 | reference_f64 | reference_f64 |
+//! | identity_nullspace_plateau | 72 | x87 | reference_f64 | x87 |
+//! | known_spectrum | 64 | reference_f64 | reference_f64 | double_double |
+//! | known_spectrum | 68 | x87 | reference_f64 | double_double |
+//! | known_spectrum | 72 | x87 | reference_f64 | double_double |
+//! | obstruction_plateau | 64 | reference_f64 | reference_f64 | double_double |
+//! | obstruction_plateau | 68 | x87 | reference_f64 | x87 |
+//! | obstruction_plateau | 72 | x87 | reference_f64 | reference_f64 |
+//! | quantized_obstruction_graph | 64 | reference_f64 | reference_f64 | double_double |
+//! | quantized_obstruction_graph | 68 | x87 | reference_f64 | double_double |
+//! | quantized_obstruction_graph | 72 | x87 | reference_f64 | double_double |
+//! | spiked_tail | 64 | reference_f64 | reference_f64 | double_double |
+//! | spiked_tail | 68 | x87 | reference_f64 | double_double |
+//! | spiked_tail | 72 | x87 | reference_f64 | double_double |
+//!
+//! ## Rows
+//!
+//! | family | size | backend | status | selected | median ns | max abs error | rms abs error |
+//! | --- | ---: | --- | --- | --- | ---: | ---: | ---: |
+//! | known_spectrum | 64 | reference_f64 | ok | true | 7917563 | 1.634248e-13 | 4.144245e-14 |
+//! | known_spectrum | 64 | double_double | ok | false | 20704485 | 0.000000e0 | 0.000000e0 |
+//! | known_spectrum | 64 | x87 | ok | false | 9564509 | 1.207923e-13 | 3.020164e-14 |
+//! | known_spectrum | 68 | reference_f64 | ok | false | 10025502 | 2.629008e-13 | 6.371878e-14 |
+//! | known_spectrum | 68 | double_double | ok | false | 26333859 | 2.842171e-14 | 9.186412e-15 |
+//! | known_spectrum | 68 | x87 | ok | true | 12218930 | 1.705303e-13 | 4.436568e-14 |
+//! | known_spectrum | 72 | reference_f64 | ok | false | 12825913 | 1.421085e-13 | 5.782625e-14 |
+//! | known_spectrum | 72 | double_double | ok | false | 32675025 | 1.421085e-14 | 3.929503e-15 |
+//! | known_spectrum | 72 | x87 | ok | true | 15035982 | 1.278977e-13 | 3.803878e-14 |
+//! | clustered_pairs | 64 | reference_f64 | ok | true | 8244904 | 9.947598e-14 | 2.212287e-14 |
+//! | clustered_pairs | 64 | double_double | ok | false | 21100377 | 1.065814e-14 | 6.242784e-15 |
+//! | clustered_pairs | 64 | x87 | ok | false | 9534730 | 6.750156e-14 | 2.105763e-14 |
+//! | clustered_pairs | 68 | reference_f64 | ok | false | 10316572 | 6.750156e-14 | 2.871491e-14 |
+//! | clustered_pairs | 68 | double_double | ok | false | 26246578 | 1.421085e-14 | 2.621327e-15 |
+//! | clustered_pairs | 68 | x87 | ok | true | 11953729 | 5.684342e-14 | 1.760492e-14 |
+//! | clustered_pairs | 72 | reference_f64 | ok | false | 12909763 | 1.030287e-13 | 2.947244e-14 |
+//! | clustered_pairs | 72 | double_double | ok | false | 31861631 | 1.421085e-14 | 3.557842e-15 |
+//! | clustered_pairs | 72 | x87 | ok | true | 14830931 | 7.105427e-14 | 2.012332e-14 |
+//! | geometric_decay | 64 | reference_f64 | ok | true | 10062332 | 1.776357e-15 | 3.162526e-16 |
+//! | geometric_decay | 64 | double_double | ok | false | 26759670 | 1.110223e-16 | 1.563345e-17 |
+//! | geometric_decay | 64 | x87 | ok | false | 12475441 | 9.992007e-16 | 1.541150e-16 |
+//! | geometric_decay | 68 | reference_f64 | ok | false | 12137480 | 2.309502e-14 | 3.534293e-15 |
+//! | geometric_decay | 68 | double_double | ok | false | 32920096 | 1.110223e-16 | 1.518712e-17 |
+//! | geometric_decay | 68 | x87 | ok | true | 15311733 | 1.221245e-15 | 1.635451e-16 |
+//! | geometric_decay | 72 | reference_f64 | ok | false | 14869891 | 1.894548e-14 | 3.190144e-15 |
+//! | geometric_decay | 72 | double_double | ok | false | 39709604 | 2.220446e-16 | 3.904077e-17 |
+//! | geometric_decay | 72 | x87 | ok | true | 18988919 | 9.992007e-16 | 2.053130e-16 |
+//! | spiked_tail | 64 | reference_f64 | ok | true | 7271951 | 1.989520e-13 | 2.525956e-14 |
+//! | spiked_tail | 64 | double_double | ok | false | 19710361 | 7.105427e-15 | 1.333318e-15 |
+//! | spiked_tail | 64 | x87 | ok | false | 9114697 | 4.263256e-14 | 5.962483e-15 |
+//! | spiked_tail | 68 | reference_f64 | ok | false | 9266018 | 9.947598e-14 | 1.539586e-14 |
+//! | spiked_tail | 68 | double_double | ok | false | 24740872 | 1.421085e-14 | 1.974546e-15 |
+//! | spiked_tail | 68 | x87 | ok | true | 11453507 | 4.263256e-14 | 6.519903e-15 |
+//! | spiked_tail | 72 | reference_f64 | ok | false | 11608328 | 7.105427e-14 | 1.023068e-14 |
+//! | spiked_tail | 72 | double_double | ok | false | 30416595 | 7.632783e-17 | 3.185685e-17 |
+//! | spiked_tail | 72 | x87 | ok | true | 14218198 | 9.947598e-14 | 1.329978e-14 |
+//! | obstruction_plateau | 64 | reference_f64 | ok | true | 2648971 | 1.634248e-13 | 7.575064e-14 |
+//! | obstruction_plateau | 64 | double_double | ok | false | 7512831 | 1.421085e-13 | 7.686806e-14 |
+//! | obstruction_plateau | 64 | x87 | ok | false | 3599415 | 1.634248e-13 | 7.439358e-14 |
+//! | obstruction_plateau | 68 | reference_f64 | ok | false | 3346244 | 3.694822e-13 | 6.059675e-14 |
+//! | obstruction_plateau | 68 | double_double | ok | false | 9027308 | 1.705303e-13 | 4.443721e-14 |
+//! | obstruction_plateau | 68 | x87 | ok | true | 4460908 | 1.421085e-13 | 3.705543e-14 |
+//! | obstruction_plateau | 72 | reference_f64 | ok | false | 4203847 | 1.705303e-13 | 4.317610e-14 |
+//! | obstruction_plateau | 72 | double_double | ok | false | 10988746 | 3.410605e-13 | 4.876693e-14 |
+//! | obstruction_plateau | 72 | x87 | ok | true | 5555513 | 3.694822e-13 | 5.742066e-14 |
+//! | identity_nullspace_plateau | 64 | reference_f64 | ok | true | 2564651 | 2.842171e-13 | 5.841584e-14 |
+//! | identity_nullspace_plateau | 64 | double_double | ok | false | 6553317 | 1.989520e-13 | 4.786248e-14 |
+//! | identity_nullspace_plateau | 64 | x87 | ok | false | 3189343 | 1.989520e-13 | 4.831404e-14 |
+//! | identity_nullspace_plateau | 68 | reference_f64 | ok | false | 3215033 | 1.421085e-13 | 4.847471e-14 |
+//! | identity_nullspace_plateau | 68 | double_double | ok | false | 7942163 | 2.557954e-13 | 5.486067e-14 |
+//! | identity_nullspace_plateau | 68 | x87 | ok | true | 3874186 | 3.126388e-13 | 6.121064e-14 |
+//! | identity_nullspace_plateau | 72 | reference_f64 | ok | false | 4028096 | 9.947598e-14 | 3.982754e-14 |
+//! | identity_nullspace_plateau | 72 | double_double | ok | false | 9843611 | 1.705303e-13 | 4.311346e-14 |
+//! | identity_nullspace_plateau | 72 | x87 | ok | true | 4861810 | 9.237056e-14 | 4.756937e-14 |
+//! | quantized_obstruction_graph | 64 | reference_f64 | ok | true | 4749560 | 2.501110e-12 | 4.669548e-13 |
+//! | quantized_obstruction_graph | 64 | double_double | ok | false | 12506932 | 1.818989e-12 | 3.000480e-13 |
+//! | quantized_obstruction_graph | 64 | x87 | ok | false | 7402280 | 4.320100e-12 | 7.017269e-13 |
+//! | quantized_obstruction_graph | 68 | reference_f64 | ok | false | 5972494 | 7.275958e-12 | 1.060665e-12 |
+//! | quantized_obstruction_graph | 68 | double_double | ok | false | 15424204 | 2.273737e-12 | 3.730509e-13 |
+//! | quantized_obstruction_graph | 68 | x87 | ok | true | 9466819 | 5.456968e-12 | 7.302605e-13 |
+//! | quantized_obstruction_graph | 72 | reference_f64 | ok | false | 7435341 | 4.547474e-12 | 6.995806e-13 |
+//! | quantized_obstruction_graph | 72 | double_double | ok | false | 18615416 | 2.046363e-12 | 4.487002e-13 |
+//! | quantized_obstruction_graph | 72 | x87 | ok | true | 11473297 | 6.366463e-12 | 8.052544e-13 |
+//!

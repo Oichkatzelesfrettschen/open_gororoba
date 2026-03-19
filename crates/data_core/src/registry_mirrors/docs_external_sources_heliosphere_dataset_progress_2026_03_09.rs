@@ -1,0 +1,255 @@
+//! <!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+//! <!-- Source of truth: registry/external_sources.toml -->
+//! <!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+//! <!-- Source label: XS-012 -->
+//! <!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
+//!
+//! # Heliosphere Dataset Progress 2026-03-09
+//!
+//! This note records the current staged heliosphere dataset state, the temporal
+//! coverage of each lane, and the main date-alignment lacunae that still govern
+//! what experiments are scientifically valid.
+//!
+//! ## Staged Data State
+//!
+//! - Inner boundary:
+//!   - SOHO CELIAS Proton Monitor mission-long bundle is staged at
+//!     `data/external/soho/celias/CELIAS_Proton_Monitor_5min.tar.gz`
+//!   - Coverage from staged parser output:
+//!     - start `1996-01-20T20:18:00Z`
+//!     - stop `2023-07-06T23:57:16Z`
+//!   - Staged derivatives:
+//!     - native `data/output/heliosphere/soho/celias_pm_native_5min.csv`
+//!     - hourly `data/output/heliosphere/soho/celias_pm_hourly.csv`
+//!     - summary `data/output/heliosphere/soho/celias_pm_stage_summary.json`
+//!
+//! - Mid-point encounter:
+//!   - Voyager 1 and Voyager 2 Jupiter encounter PDS/PPI evidence is staged under
+//!     `data/external/heliosphere/voyager/jupiter_encounter/...`
+//!   - Operational Arrow artifacts are staged under
+//!     `data/output/heliosphere/voyager/jupiter_encounter/...`
+//!   - Governed fused encounter validation output:
+//!     - `data/output/heliosphere/limits/voyager_encounter_track.csv`
+//!
+//! - Outer boundary / outer heliosphere:
+//!   - Voyager 1 merged hourly AMDA translation staged for 1979:
+//!     - `data/external/voyager/voyager1/vy1_1979_amda_merged_hourly.asc`
+//!   - Voyager 2 merged hourly AMDA translation staged for 1979:
+//!     - `data/external/voyager/voyager2/vy2_1979_amda_merged_hourly.asc`
+//!   - Voyager 2 merged hourly AMDA translation staged for 2017:
+//!     - `data/external/voyager/voyager2/vy2_2017_amda_merged_hourly.asc`
+//!   - Voyager 2 merged hourly AMDA translation staged for 2018:
+//!     - `data/external/voyager/voyager2/vy2_2018_amda_merged_hourly.asc`
+//!   - Voyager 2 merged hourly AMDA translation does not extend into 2019 in the
+//!     current plasma-bearing lane because the AMDA PLS source stops at
+//!     `2018-11-30T23:00:00Z`
+//!
+//! - Radial baseline / near-Earth:
+//!   - OMNI2 is staged under `data/external/omni2/...`
+//!   - Canonical SPDF OMNI2 yearly ASCII is staged for:
+//!     - `2020-2025`
+//!   - Governed AMDA hourly fallback windows are staged for:
+//!     - `1997-1998`
+//!     - `1999-2004`
+//!     - `2005-2016`
+//!     - `2017-2018`
+//!     - `2019`
+//!   - The chronology-critical heliosphere packs currently use the governed AMDA
+//!     windows, not the staged canonical `2020-2025` yearly files
+//!   - Per-year row counts and valid B/n/V coverage are summarized in:
+//!     - `docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md`
+//!
+//! - Radiative context:
+//!   - SORCE TIM daily TSI is staged at:
+//!     - `data/external/sorce_tsi_daily.csv`
+//!   - Coverage from the staged file:
+//!     - start `2003-02-25T12:00:00Z`
+//!     - stop `2020-02-25T12:00:00Z`
+//!   - Role:
+//!     - optional thermodynamic context layer for late-cruise and heliopause packs
+//!
+//! - Late cruise / inner-to-mid heliosphere:
+//!   - Cassini governed cruise hourly hybrid staged under `data/external/cassini/...`
+//!   - Current staged yearly files:
+//!     - `cassini_1998_amda_cruise_hourly.asc` (partial late-December overlap only)
+//!     - `cassini_1999_amda_cruise_hourly.asc`
+//!     - `cassini_2000_amda_cruise_hourly.asc`
+//!     - `cassini_2001_amda_cruise_hourly.asc`
+//!     - `cassini_2002_amda_cruise_hourly.asc`
+//!     - `cassini_2003_amda_cruise_hourly.asc`
+//!     - `cassini_2004_amda_cruise_hourly.asc` (partial through `2004-07-03T23:00:00Z`)
+//!   - Lane construction:
+//!     - measured trajectory from AMDA `cass-orb-cruise`
+//!     - measured RTN magnetic field from AMDA `cass-mag-rtn60`
+//!     - modeled solar-wind plasma from AMDA `tao-cass-sw`
+//!
+//! ## Cadence Progress
+//!
+//! - SOHO CELIAS native lane:
+//!   - `2,650,532` rows
+//!   - `269,096,953` bytes
+//!
+//! - SOHO CELIAS hourly lane:
+//!   - `224,740` rows
+//!   - `21,662,042` bytes
+//!
+//! - Reduction from native to hourly:
+//!   - `11.79x` fewer rows
+//!   - `12.42x` smaller CSV output
+//!
+//! - Engine routing:
+//!   - `solar-wind-ic` now supports `--soho-celias-cadence auto|hourly|native`
+//!   - `auto` routes to native CELIAS when `--time-resolution <= 900`
+//!     seconds, otherwise to hourly medians
+//!
+//! ## Chronological Alignment Rules
+//!
+//! The repo now spans several distinct heliosphere epochs. They must not be mixed
+//! casually.
+//!
+//! - Jupiter encounter experiment:
+//!   - epoch `1979`
+//!   - valid primary lanes:
+//!     - Voyager 2 Jupiter encounter PDS/PPI CRS
+//!     - Voyager 2 1979 merged hourly position-bearing translation
+//!     - Voyager 1 1979 merged hourly translation when needed for comparison
+//!   - invalid substitution:
+//!     - SOHO CELIAS, because SOHO starts in `1996`
+//!
+//! - Modern solar-wind boundary experiment:
+//!   - epoch `1996-2023`
+//!   - valid primary lanes:
+//!     - SOHO CELIAS
+//!     - OMNI2
+//!     - other modern L1 spacecraft already supported by `solar-wind-ic`
+//!   - optional outer comparison:
+//!     - Voyager 2 where staged year overlaps, such as `2018`
+//!
+//! - Heliopause / interstellar transition experiment:
+//!   - epoch `2017-2018`
+//!   - valid primary lanes:
+//!     - Voyager 2 merged hourly `2017`
+//!     - Voyager 2 merged hourly `2018`
+//!     - SOHO CELIAS `2018`
+//!     - OMNI2 `2018`
+//!   - OMNI `2017-2018` is now staged locally through the governed AMDA HAPI
+//!     fallback lane:
+//!     - `data/external/omni2/omni2_2017_amda_hourly.csv`
+//!     - `data/external/omni2/omni2_2018_amda_hourly.csv`
+//!   - the chronology audit now marks this pack as `ready`, with overlap from
+//!     `2017-01-01T00:00:00Z` through `2018-11-30T23:00:00Z`
+//!
+//! - Late Cassini cruise alignment experiment:
+//!   - epoch `1997-2004`
+//!   - valid strict lanes:
+//!     - SOHO CELIAS mission-long bundle
+//!     - OMNI2 `1997-2004`
+//!   - gap-tolerant outer lane:
+//!     - Cassini governed cruise hybrid `1998-12-30T12:00:00Z` through
+//!       `2004-07-03T23:00:00Z`
+//!   - optional thermodynamic sibling:
+//!     - SORCE TSI daily from `2003-02-25T12:00:00Z` onward
+//!   - the chronology audit now marks:
+//!     - `CRUISE_1997_2004` as `ready_gap_tolerant`
+//!     - `CRUISE_1999_2004` as `ready`
+//!   - for `CRUISE_1997_2004`, Cassini samples before
+//!     `1998-12-30T12:00:00Z` must propagate missing values rather than invented
+//!     outer-boundary states
+//!
+//! ## Important Physical Gaps
+//!
+//! - Voyager 1 plasma does not extend into the interstellar years in the current
+//!   merged translation lane. This is physically expected and traces back to the
+//!   Voyager 1 Plasma Science instrument failure in 1980, not to a fetch bug.
+//!
+//! - The Jupiter encounter Arrow artifacts carry high-cadence instrument values but
+//!   not spacecraft position. Position is currently joined from staged merged-hourly
+//!   Voyager data by the fused encounter feeder.
+//!
+//! - SOHO CELIAS provides plasma and geometry but no real magnetic-field vector in
+//!   the current lane. `solar-wind-ic` therefore uses Parker-spiral fallback B for
+//!   SOHO-driven inner-boundary runs.
+//!
+//! - The calibrated Voyager CRS daily-flux lane still depends on GSFC/CDAWeb
+//!   reachability for direct byte acquisition. From this host, metadata discovery is
+//!   live but GSFC data serving remains blocked, so governed absolute-flux runs still
+//!   depend on staged calibrated products rather than fresh direct download.
+//!
+//! - The current Cassini cruise lane is not a fully measured merged SPDF product.
+//!   It is a governed hybrid with modeled plasma and measured trajectory/MAG, and
+//!   should be interpreted accordingly in boundary and residual analyses.
+//!
+//! ## Adjacent Datasets Already Located
+//!
+//! Reachable AMDA Voyager-adjacent datasets confirmed from this host include:
+//!
+//! - `vo1-pls-full`
+//! - `vo1-mag-full`
+//! - `vo1-crs-full`
+//! - `vo1-ephem-all`
+//! - `vo2-pls-full`
+//! - `vo2-mag-full`
+//! - `vo2-crs-full`
+//! - `vo2-ephem-all`
+//! - `vo1-ephem-jup`
+//! - `vo1-mag-juprtn`
+//! - `vo1-mag-jupsys3`
+//! - `vo1-pls-ionjup`
+//! - `vo1-pls-elejup`
+//! - `vo2-ephem-jup`
+//! - `vo2-mag-juprtn`
+//! - `vo2-mag-jupsys3`
+//! - `vo2-pls-ionjup`
+//! - `vo2-pls-elejup`
+//! - `cass-orb-cruise`
+//! - `cass-mag-rtn60`
+//! - `tao-cass-sw`
+//!
+//! These are the next best adjacent data sources for filling temporal or mission
+//! phase gaps without depending on blocked GSFC hosts.
+//!
+//! ## Chronology Audit Status
+//!
+//! - `heliosphere-catalog-audit` now writes:
+//!   - `data/output/heliosphere/heliosphere_catalog_audit.json`
+//!   - `data/output/heliosphere/heliosphere_catalog_audit.md`
+//! - Current pack state from the governed audit:
+//!   - `JUPITER_1979`: ready
+//!   - `HELIOPAUSE_2017_2018`: ready
+//!   - `CRUISE_1997_2004`: ready_gap_tolerant
+//!   - `CRUISE_1999_2004`: ready
+//!   - `INNER_BOUNDARY_1997_2023`: ready
+//!   - `RADIATIVE_2003_2020`: ready
+//!   - `TSI_CROSSCAL_2018_2020`: ready
+//!   - `SOLAR_CYCLE24_2008_2019`: ready
+//!   - `POST_HELIOPAUSE_2019_2023`: ready
+//! - The governed OMNI inner-boundary lane is now continuous locally from
+//!   `1997-01-01T00:00:00Z` through `2025-12-31T23:00:00Z`:
+//!   - AMDA fallback for `1997-2019`
+//!   - canonical SPDF yearly ASCII for `2020-2025`
+//! - `cassini_cruise_1998_2004` should now be read as a
+//!   `ready_governed_hybrid_lane`, not as a satisfied canonical merged provider
+//!   contract, because its trajectory and magnetic field are measured while the
+//!   plasma channel is modeled.
+//!
+//! ## Next Lacunae To Close
+//!
+//! - Decide whether downstream orchestration should default to the fully measured
+//!   `CRUISE_1999_2004` pack or expose `CRUISE_1997_2004` with its explicit
+//!   gap-tolerant Cassini outer boundary.
+//!
+//! - Build a like-for-like residual validator that compares solver outputs to the
+//!   fused encounter or heliopause feeders at aligned timestamps rather than only
+//!   exporting tracks.
+//!
+//! - Full Pioneer annual COHO/NSSDC merged hourly bytes remain blocked from the
+//!   canonical GSFC/NSSDC CLI acquisition path on this host, but reachable UCLA
+//!   PDS/PPI annual merged Pioneer bytes are now partially staged locally for
+//!   1987-1995. That improves Pioneer beyond metadata-only state without
+//!   satisfying the full annual provider contract.
+//! - Reachable UCLA PDS/PPI encounter subsets are now a separate governed path:
+//!   `P10-J-HVM_PA-4-SUMM-MERGED-1HR-V1.0`, `P11-J-HVM-PA-4-SUMM-MERGED-1HR-V1.0`,
+//!   and `P11-S-HVM-PA-4-MERGED-ENC-1HR-V1.0`. These are real science bytes and
+//!   preserve the original NSSDC merged record format, but they are encounter
+//!   windows rather than full annual merged products.
+//!

@@ -4097,7 +4097,7 @@ id = "BIB-0340"
 order_index = 340
 group = "Primary Research & Data Sources"
 section = "Foundational Mathematics & Category Theory"
-citation_markdown = "**Fontaine, J-M.** (1994). *p-adic Representations*. Astérisque 223, 113-184."
+citation_markdown = "**Fontaine, J-M.** (1994). *p-adic Representations*. Asterisque 223, 113-184."
 notes = ["*Foundational work on p-adic Galois representations.*"]
 urls = []
 dois = []
@@ -4145,4 +4145,49 @@ citation_markdown = "**Varadarajan, V. S.** (1984). *Lie Groups, Lie Algebras, a
 notes = ["*Foundational text for E8 theory and Lie algebra representations.*"]
 urls = []
 dois = ["10.1007/978-1-4612-1126-6"]
+source_line = 0
+# [ ... previous entries ...]
+
+[[entry]]
+id = "BIB-0341"
+order_index = 341
+group = "Primary Research & Data Sources"
+section = "Tensor Networks & Quantum Simulation"
+citation_markdown = "**Truong, D. P., Nebgen, B., DeSantis, D., Petsev, D. N., Rasmussen, K. O., & Alexandrov, B. S.** (2025). *Breaking the curse of dimensionality: Solving configurational integrals for crystalline solids by tensor networks*. [arXiv:2506.00000](https://arxiv.org/abs/2506.00000) (placeholder for actual arXiv ID)."
+notes = ["*Introduces symmetry-adapted TT-cross for configurational integrals.*"]
+urls = ["https://arxiv.org/abs/2506.00000"]
+dois = ["LA-UR-25-25040"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0342"
+order_index = 342
+group = "Primary Research & Data Sources"
+section = "Tensor Networks & Quantum Simulation"
+citation_markdown = "**Oseledets, I. V.** (2011). *Tensor-train decomposition*. SIAM Journal on Scientific Computing, 33(5), 2295-2317."
+notes = ["*Foundational paper defining the Tensor-Train (TT) format.*"]
+urls = []
+dois = ["10.1137/100792345"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0343"
+order_index = 343
+group = "Primary Research & Data Sources"
+section = "Tensor Networks & Quantum Simulation"
+citation_markdown = "**Oseledets, I. V., & Tyrtyshnikov, E. E.** (2010). *TT-cross approximation for multidimensional arrays*. Linear Algebra and its Applications, 432(1), 70-88."
+notes = ["*Introduces the TT-cross algorithm for adaptive tensor sampling.*"]
+urls = []
+dois = ["10.1016/j.laa.2009.07.024"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0344"
+order_index = 344
+group = "Primary Research & Data Sources"
+section = "Tensor Networks & Quantum Simulation"
+citation_markdown = "**Mahoney, M. W., & Drineas, P.** (2009). *CUR matrix decompositions for improved data analysis*. PNAS 106 (3), 697-714."
+notes = ["*Foundational reference for CUR/Skeleton matrix decompositions.*"]
+urls = []
+dois = ["10.1073/pnas.0803205106"]
 source_line = 0

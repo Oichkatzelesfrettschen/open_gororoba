@@ -1,0 +1,180 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/docs_root_narratives.toml -->
+//!
+//! # Provenance SQLite Architecture
+//!
+//! ## Purpose
+//!
+//! This repository needs a Rust-native provenance control plane that is:
+//!
+//! - deterministic
+//! - reviewable in git
+//! - fast enough for large registry rebuilds
+//! - strict about citations and artifact lineage
+//! - able to export compatibility TOML and Markdown mirrors without making those mirrors the operational source of truth
+//!
+//! The design target is a layered system:
+//!
+//! 1. Human-authored source inputs in TOML, Markdown, CSV/TSV, and BibLaTeX.
+//! 2. A normalized SQLite store for indexing, querying, verification, and drift detection.
+//! 3. Deterministic Rust exporters that emit compatibility registries and reports.
+//! 4. Thin CLI entrypoints in `gororoba_cli_data`.
+//!
+//! ## Recommended Crate Stack
+//!
+//! ### SQLite core
+//!
+//! - `rusqlite`
+//!   - primary embedded SQLite binding
+//!   - best fit for deterministic local indexing and export jobs
+//!   - supports bundled SQLite when local system variability is undesirable
+//! - `rusqlite_migration`
+//!   - schema migration companion for `rusqlite`
+//!   - keeps migrations explicit and testable
+//!
+//! ### Parsing and ingest
+//!
+//! - `ignore`
+//!   - repository walking with `.gitignore` semantics
+//! - `globset`
+//!   - compiled include/exclude pattern sets
+//! - `pulldown-cmark`
+//!   - Markdown parsing
+//! - `linkify`
+//!   - URL extraction from Markdown and text
+//! - `biblatex`
+//!   - BibTeX / BibLaTeX parsing
+//! - `chardetng`
+//!   - encoding detection for non-UTF8 inputs
+//! - `encoding_rs`
+//!   - decode support after detection
+//!
+//! ### Export and normalization
+//!
+//! - `toml_edit`
+//!   - stable TOML emission for compatibility exports
+//! - `blake3`
+//!   - content hashing and ingest fingerprinting
+//! - `camino`
+//!   - UTF-8 repo-relative paths after filesystem-boundary normalization
+//!
+//! ### Optional support crates
+//!
+//! - `serde_rusqlite`
+//!   - useful when row-to-struct shuttling becomes repetitive
+//! - `sea-query`
+//!   - useful if SQL construction becomes more dynamic than handwritten statements justify
+//! - `schemars`
+//!   - useful for export contracts and generated schemas
+//!
+//! ## Why This Stack
+//!
+//! ### Chosen default: `rusqlite` + `rusqlite_migration`
+//!
+//! This repo is primarily a local, deterministic build-and-verify environment. The workload is:
+//!
+//! - scan and normalize a large repo
+//! - index into SQLite
+//! - verify invariants
+//! - export stable text artifacts
+//!
+//! That is a strong fit for direct synchronous SQLite access and explicit SQL. It keeps:
+//!
+//! - fewer moving parts
+//! - easier offline reproducibility
+//! - smaller dependency and macro surface
+//! - precise control over FTS, pragma handling, and export ordering
+//!
+//! ### Alternatives considered
+//!
+//! - `sqlx`
+//!   - strong choice for async pooled applications and multi-database support
+//!   - heavier than needed for this repo's local embedded SQLite workflow
+//!   - best when the repo grows into a service or daemon
+//! - `libsql`
+//!   - useful if remote replication, Turso, or syncable remote SQLite becomes a real requirement
+//!   - not needed for the current local provenance operator model
+//! - `SeaORM`
+//!   - useful for application-style domain models with broader CRUD ergonomics
+//!   - too high-level for this repo's registry/export-heavy workflow
+//! - `refinery`
+//!   - viable migration system alternative
+//!   - `rusqlite_migration` is a more direct fit for the current embedded SQLite choice
+//!
+//! ## Data Model
+//!
+//! The SQLite layer should treat compatibility registries as exported views, not the operational center.
+//!
+//! Recommended tables:
+//!
+//! - `documents`
+//! - `record_sources`
+//! - `citations`
+//! - `links`
+//! - `artifacts`
+//! - `artifact_links`
+//! - `artifact_paths`
+//! - `mirror_observations`
+//! - `lane_assignments`
+//! - `export_runs`
+//! - `ingest_fingerprints`
+//!
+//! Recommended virtual tables:
+//!
+//! - `document_search` using FTS5
+//!
+//! ## CLI Shape
+//!
+//! The operator surface should converge on one Rust binary:
+//!
+//! `cargo run -p gororoba_cli_data --bin provenance -- <subcommand>`
+//!
+//! Core subcommands:
+//!
+//! - `index`
+//! - `export`
+//! - `verify`
+//! - `doctor`
+//! - `query artifact <needle>`
+//! - `query document <needle>`
+//! - `link-audit`
+//! - `recover`
+//! - `pantheon-seed`
+//!
+//! The older seam-specific Rust wrappers can remain as compatibility shims during migration, but the design center is the unified `provenance` CLI.
+//!
+//! ## Migration Policy
+//!
+//! ### What is canonical
+//!
+//! - curated source inputs in git
+//! - Rust parsing and normalization logic
+//! - SQLite schema and migrations
+//! - Rust export and verification logic
+//!
+//! ### What is generated
+//!
+//! - `registry/artifact_source_of_truth.toml`
+//! - `registry/source_infrastructure.toml`
+//! - `registry/source_lanes/*.toml`
+//! - compatibility reports
+//! - selected Markdown mirrors
+//!
+//! Generated outputs should not be hand-edited.
+//!
+//! ## Engineering Rules
+//!
+//! - Keep SQL explicit for stable export and verification paths.
+//! - Prefer additive schema evolution with migrations.
+//! - Keep CLI code thin; place database behavior in `provenance_store`.
+//! - Keep normalized structs in `provenance_core`.
+//! - Avoid reintroducing Python workflow drivers for this control plane.
+//! - Treat archive snapshots as archival; repair live source and live generated outputs first.
+//!
+//! ## Near-Term Follow-Through
+//!
+//! 1. Continue moving compatibility export logic from ad hoc registry scanning into SQLite-backed exporters.
+//! 2. Add focused tests for migration replay, FTS refresh, and deterministic exports.
+//! 3. Regenerate stale Markdown payload mirrors that still mention deleted Python provenance commands.
+//! 4. Fold adjacent provenance-related Python verifiers into Rust where they materially block Rust-first operation.
+//!

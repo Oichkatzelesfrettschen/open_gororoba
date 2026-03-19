@@ -1,0 +1,658 @@
+//! ---
+//! title: |
+//!   GHOST: Sensitivity Limits for Algebraic Dark Matter Spectral Tests
+//!   on Synthetic Rotation Curves
+//! author: open\_gororoba collaboration
+//! date: 2026-03-18
+//! abstract: |
+//!   Algebraic extensions of the dark matter sector via Cayley-Dickson
+//!   construction predict spectral imprints in galaxy rotation curves at
+//!   inner-halo scales, yet no validated detection pipeline exists to test
+//!   these predictions at the population level. GHOST (Galactic Halo
+//!   Obstruction Spectral Test) is a Fourier-domain stacking pipeline
+//!   validated on 2000 synthetic MaNGA-like rotation curves, testing for
+//!   zero-divisor density signatures across multiple algebraic frameworks
+//!   using whitened matched filtering, robust stacking variants, and
+//!   Gaussian process model comparison, with seed-based reproducibility
+//!   across 300 experimental cells. On synthetic data where no signal
+//!   exists by construction, framework conditions produce SNR = 0.46 +/-
+//!   0.02 while the positive control achieves SNR = 2.62, yielding a
+//!   separation factor of 5.7x that confirms the pipeline detects genuine
+//!   spectral structure when present. Injection recovery is
+//!   anti-monotonic -- injected signals decrease the detection statistic
+//!   -- preventing calibrated upper limits and indicating that the matched
+//!   filter metric requires fundamental revision before observational
+//!   deployment. A pipeline-imposed red-noise model with exponent gamma =
+//!   0.808 is contradicted by free-parameter fitting, which returns gamma
+//!   approximately zero, leaving the baryonic noise floor
+//!   characterization unvalidated. GHOST establishes the methodological
+//!   infrastructure for future observational tests using SKA and DESI
+//!   kinematic data.
+//! ---
+//!
+//!
+//! # Abstract
+//!
+//! Algebraic extensions of the dark matter sector via Cayley-Dickson construction
+//! predict spectral imprints in galaxy rotation curves at inner-halo scales, yet no
+//! validated detection pipeline exists to test these predictions at the population
+//! level. GHOST (Galactic Halo Obstruction Spectral Test) is a Fourier-domain
+//! stacking pipeline validated on 2000 synthetic MaNGA-like rotation curves, testing
+//! for zero-divisor density signatures across multiple algebraic frameworks using
+//! whitened matched filtering, robust stacking variants, and Gaussian process model
+//! comparison, with seed-based reproducibility across 300 experimental cells. On
+//! synthetic data where no signal exists by construction, framework conditions
+//! produce SNR = 0.46 +/- 0.02 while the positive control achieves SNR = 2.62,
+//! yielding a separation factor of 5.7x that confirms the pipeline detects genuine
+//! spectral structure when present. Injection recovery is anti-monotonic -- injected
+//! signals decrease the detection statistic -- preventing calibrated upper limits
+//! and indicating that the matched filter metric requires fundamental revision
+//! before observational deployment. A pipeline-imposed red-noise model with exponent
+//! $\gamma = 0.808$ is contradicted by free-parameter fitting, which returns
+//! $\gamma \approx 0$, leaving the baryonic noise floor characterization
+//! unvalidated. GHOST establishes the methodological infrastructure for future
+//! observational tests using SKA and DESI kinematic data.
+//!
+//!
+//! # 1. Introduction
+//!
+//! The nature of dark matter remains one of the most consequential open problems in
+//! fundamental physics. Despite decades of increasingly sensitive direct detection
+//! experiments [baxter2021recommended], collider searches, and astrophysical
+//! observations [aghanim2020iplancki], the particle identity of the dark sector is
+//! unknown. Within this landscape, algebraic approaches to particle physics have
+//! gained renewed attention. The Cayley-Dickson construction -- which generates the
+//! complex numbers, quaternions, octonions, and sedenions through successive
+//! doublings -- provides a mathematical framework in which the structure constants
+//! of higher-dimensional algebras encode non-trivial zero-divisor sets
+//! [furey2024three]. These zero-divisors, elements whose product vanishes despite
+//! both factors being nonzero, have been proposed as a mechanism for modulating dark
+//! matter halo density profiles at specific spatial scales. If such modulation
+//! exists, it would imprint spectral signatures in galaxy rotation curves at
+//! wavenumbers determined by the algebraic framework, providing a rare bridge
+//! between abstract algebra and astrophysical observables.
+//!
+//! The theoretical motivation rests on a specific observation: the obstruction
+//! spectrum of sedenion zero-divisors generates a discrete set of predicted
+//! wavenumbers in the inner halo (0.5--1.5 $r/r_s$), where $r_s$ is the NFW scale
+//! radius [cautun2020milky]. Analogous predictions arise from the G2 automorphism
+//! group of the octonions, the exceptional Jordan algebra J3(O), and sl(2)
+//! Lie-algebraic partner graphs, each yielding distinct but partially overlapping
+//! mode structures. Despite the theoretical specificity of these predictions, no
+//! observational test has been performed at the population level. Existing
+//! rotation-curve analyses focus predominantly on the core-cusp tension
+//! [popolo2021review] [kaplinghat2020dark], mass-concentration relations
+//! [santossantos2020baryonic], or comparisons between NFW and alternative profiles
+//! [bar2022galactic]. The question of whether algebraic dark-sector extensions leave
+//! detectable spectral residuals in observed rotation curves has remained entirely
+//! unaddressed. The Mapping Nearby Galaxies at Apache Point Observatory (MaNGA)
+//! survey [abdurrouf2022seventeenth], with integral-field spectroscopy for over
+//! 10,000 galaxies, provides the eventual observational target for such a test;
+//! however, deploying a spectral detection pipeline on real data requires first
+//! establishing that the pipeline itself is well-characterized on controlled inputs.
+//!
+//! Before applying spectral analysis to real survey data, the detection pipeline
+//! must be validated on synthetic inputs where the ground truth is known and
+//! false-positive rates can be assessed. To this end, GHOST generates 2000 synthetic
+//! galaxies that reproduce key MaNGA observational characteristics: NFW dark matter
+//! profiles with Duffy et al. concentration-mass relations, Moster et al.
+//! stellar-mass-to-halo-mass scaling, and calibrated baryonic systematics including
+//! bulge excess, NFW cusp overshoot, and IFU-edge projection artifacts. This
+//! synthetic validation follows the methodological precedent established by the
+//! direct dark matter detection community [baxter2021recommended], which emphasizes
+//! calibrated signal injection, honest sensitivity assessment, and clear separation
+//! between pipeline characterization and observational constraint. The critical
+//! finding is that injection recovery in the current pipeline is anti-monotonic:
+//! injected signals of increasing amplitude decrease the detection statistic,
+//! revealing a fundamental metric invalidity that must be resolved before any
+//! observational deployment.
+//!
+//! This paper makes the following contributions:
+//!
+//! - A multi-algebra spectral detection pipeline validated on 2000 synthetic
+//!   MaNGA-like rotation curves across 20 experimental conditions with 5 bootstrap
+//!   seeds, demonstrating that the pipeline correctly produces low SNR where no
+//!   signal exists while responding to baryonic spectral structure.
+//! - Identification of anti-monotonic injection recovery as a fundamental pipeline
+//!   limitation: the detection metric does not respond monotonically to signal
+//!   amplitude, invalidating upper-limit claims and requiring metric redesign before
+//!   observational use.
+//! - Discovery that pipeline-imposed red-noise modeling ($\gamma = 0.808$) diverges
+//!   from data-driven estimation ($\gamma \approx 0$), revealing that the baryonic
+//!   noise floor characterization is sensitive to modeling assumptions and cannot yet
+//!   be claimed as an independent measurement.
+//! - An open-source experimental framework with structured reproducibility: 300
+//!   experimental cells, deterministic seed-based outputs, and JSON logging enabling
+//!   complete result replication.
+//!
+//! The remainder of this paper is organized as follows. Section 2 reviews related
+//! work across rotation-curve dark matter constraints, algebraic approaches to the
+//! dark sector, and null-result reporting conventions. Section 3 describes the GHOST
+//! method, including problem formulation, synthetic data generation, multi-algebra
+//! framework, and detection methods. Section 4 details the experimental setup,
+//! hyperparameters, and integrity checks. Section 5 presents the main results,
+//! including pipeline characterization, noise model discrepancy, and the Gaussian
+//! process model comparison. Section 6 discusses implications and comparisons with
+//! prior work. Section 7 enumerates specific limitations, and Section 8 concludes
+//! with directions for future work.
+//!
+//!
+//! # 2. Related Work
+//!
+//! ## 2.1 Rotation Curve Dark Matter Constraints
+//!
+//! Galaxy rotation curves have served as the primary evidence for dark matter at
+//! galactic scales since the foundational work establishing flat rotation curves
+//! beyond the optical disk. The persistent tension between cuspy NFW profiles
+//! predicted by cold dark matter simulations and the cored profiles observed in many
+//! dwarf and low-surface-brightness galaxies -- the core-cusp problem -- has
+//! generated extensive literature [popolo2021review] [kaplinghat2020dark]. Recent
+//! work has explored this tension across diverse galaxy populations: Santos-Santos
+//! et al. [santossantos2020baryonic] demonstrated that baryonic physics alone can
+//! explain much of the observed diversity in dwarf galaxy rotation curves, while
+//! Roper et al. [roper2023diversity] showed that hydrodynamical simulations
+//! naturally produce both cusps and cores depending on star formation history. At
+//! higher redshifts, Genzel et al. [genzel2020rotation] found evidence for cored
+//! dark matter distributions in $z \sim 1$--$2$ star-forming disks, and the RC100
+//! survey [shachar2023rotation] extended rotation curve measurements to 100 massive
+//! galaxies at $z = 0.6$--$2.5$, finding reduced dark matter fractions at cosmic
+//! noon. Lelli et al. [lelli2023cold] measured flat rotation curves with low
+//! turbulence at $z \sim 4$, revealing disk-halo degeneracies that complicate
+//! profile decomposition. Bar et al. [bar2022galactic] performed a systematic
+//! comparison of ultralight dark matter models against SPARC rotation curves,
+//! finding competitive but not superior fits relative to NFW. The Milky Way's own
+//! rotation curve has been subject to renewed scrutiny [sofue2020rotation]
+//! [jiao2023detection], with Jiao et al. detecting a Keplerian decline that
+//! constrains the total halo mass. Mancera Pina et al. [pina2022impact] highlighted
+//! how gas disc flaring systematically biases rotation curve decomposition, a
+//! concern directly relevant to inner-halo spectral analyses. The DESI
+//! collaboration's baryon acoustic oscillation measurements [adame2025desi] have
+//! further constrained the cosmological context in which rotation curve dark matter
+//! tests operate. Throughout this literature, the analytical focus has been on
+//! profile shape -- NFW versus cored versus isothermal -- rather than on spectral
+//! structure within the residuals of a best-fit profile. GHOST addresses this
+//! orthogonal question: given a best-fit NFW profile, does the residual spectrum
+//! contain algebraically predicted modes?
+//!
+//! ## 2.2 Algebraic Approaches to Dark Sector Physics
+//!
+//! The application of division algebras and their extensions to fundamental physics
+//! has a distinguished history. The Cayley-Dickson construction produces a tower of
+//! algebras -- reals, complexes, quaternions, octonions, sedenions -- each doubling
+//! in dimension and losing algebraic properties: commutativity at quaternions,
+//! associativity at octonions, and alternativity at sedenions, where zero-divisors
+//! first appear. Furey [furey2024three] has pursued a program connecting the algebra
+//! of three generations of fermions to a trio of trialities within the octonion
+//! framework, providing theoretical motivation for treating algebraic structure as
+//! physically meaningful. The G2 automorphism group of the octonions, a
+//! 14-dimensional exceptional Lie group, has appeared in compactification schemes
+//! for M-theory and in proposals for grand unification. The exceptional Jordan
+//! algebra J3(O), consisting of $3 \times 3$ Hermitian matrices over the octonions,
+//! underlies the Freudenthal-Tits magic square and connects to the exceptional
+//! groups E6, E7, and E8 that feature prominently in string theory. More recently,
+//! Addazi et al. [addazi2022quantum] reviewed the broader landscape of quantum
+//! gravity phenomenology at the dawn of multi-messenger astronomy, noting that
+//! algebraic structures beyond the Standard Model remain largely unconstrained by
+//! observation. The zero-divisor density parameter $\alpha_{\text{zd}}$, which GHOST
+//! tests, represents a phenomenological bridge between these algebraic structures
+//! and observable galaxy kinematics. Unlike purely theoretical derivations, GHOST
+//! provides the first pipeline capable of empirically constraining whether algebraic
+//! extensions leave spectral imprints in the dark matter distribution at inner-halo
+//! scales.
+//!
+//! ## 2.3 Null Results in Dark Matter Detection
+//!
+//! The culture of reporting null results varies across subfields of dark matter
+//! research, but direct detection experiments have established exemplary standards.
+//! The XENON1T experiment [aprile2023searching] [aprile2022approximate] set
+//! stringent limits on WIMP-nucleon cross-sections through careful signal injection,
+//! background modeling, and likelihood analysis, demonstrating that a null result
+//! can be as scientifically valuable as a detection when the sensitivity is
+//! well-characterized. The LUX experiment [akerib2020first] applied similar rigor to
+//! mirror dark matter constraints, while Amaral et al. [amaral2020constraints]
+//! extended the SuperCDMS program to low-mass relic candidates. In astrophysical
+//! channels, the Fermi-LAT collaboration [sebastian2020global] performed a global
+//! analysis of dark matter signals from 27 dwarf spheroidal galaxies using 11 years
+//! of data, establishing upper limits on annihilation cross-sections through
+//! population stacking -- a methodology conceptually parallel to GHOST's
+//! rotation-curve stacking. The CTA sensitivity study [acharyya2021sensitivity]
+//! projected future constraints from the Galactic centre, and IceCube
+//! [r2023search] searched for neutrino lines from dark matter annihilation and
+//! decay. NuSTAR [roach2023longexposure] contributed X-ray constraints on decaying
+//! dark matter in the Galactic halo. Baxter et al. [baxter2021recommended] codified
+//! recommended conventions for reporting direct detection results, emphasizing
+//! signal injection calibration, background characterization, and transparent
+//! disclosure of analysis choices. GHOST adopts the structural conventions of this
+//! reporting framework -- control experiments, transparent limitations, seed-based
+//! reproducibility -- while acknowledging that the anti-monotonic injection recovery
+//! prevents the current pipeline from achieving calibrated exclusion limits. The
+//! present work is therefore framed as pipeline validation rather than observational
+//! constraint, a distinction that must be resolved before deployment on real MaNGA
+//! data.
+//!
+//!
+//! # 3. Method
+//!
+//! ## 3.1 Problem Formulation
+//!
+//! Consider a sample of $N = 2000$ synthetic galaxies, each with a rotation curve
+//! $V_{\text{obs}}^{(i)}(r)$ generated from NFW profiles with calibrated baryonic
+//! systematics. The NFW circular velocity takes the standard form:
+//!
+//! $$V_{\text{NFW}}(r; c, M_{200}) = V_{200} \sqrt{\frac{\ln(1 + cx) - cx/(1+cx)}{x[\ln(1+c) - c/(1+c)]}}$$
+//!
+//! where $x = r/r_{200}$, $r_s = r_{200}/c$ is the scale radius, and
+//! $V_{200} = \sqrt{GM_{200}/r_{200}}$ is the virial velocity. Parameters
+//! $\hat{\theta}_i = (c_i, M_{200,i})$ are estimated by weighted least-squares:
+//!
+//! $$\hat{\theta}_i = \arg\min_\theta \sum_j w_j \left[ V_{\text{obs}}^{(i)}(r_j) - V_{\text{NFW}}(r_j; \theta) \right]^2$$
+//!
+//! The residual
+//! $\Delta V^{(i)}(r) = V_{\text{obs}}^{(i)}(r) - V_{\text{NFW}}(r; \hat{\theta}_i)$
+//! isolates all structure not captured by the best-fit NFW profile. The radial
+//! coordinate is normalized to $\xi = r/r_{s,i}$, interpolated onto a $K = 32$-point
+//! uniform grid spanning $[0.5, 1.35]$, and Fourier-transformed:
+//!
+//! $$\widehat{\Delta V}^{(i)}(k) = \sum_{m=1}^{K} \Delta V^{(i)}(\xi_m) \, e^{-2\pi i k \xi_m / K}$$
+//!
+//! The zero-divisor density hypothesis predicts that $\alpha_{\text{zd}}$ modulates
+//! the Fourier amplitude at framework-specific wavenumbers $\mathcal{K}_F$. Under
+//! $H_0: \alpha_{\text{zd}} = 0$, the residual spectrum reflects baryonic
+//! systematics and noise alone. Stacking across $N = 2000$ galaxies provides a
+//! theoretical noise reduction of $\sqrt{N} \approx 45\times$ relative to a single
+//! galaxy.
+//!
+//! ## 3.2 Synthetic Data Generation
+//!
+//! The synthetic sample is generated to reproduce key MaNGA observational
+//! characteristics without using actual MaNGA DR17 data. Each galaxy receives an
+//! NFW profile drawn from the Duffy et al. concentration-mass relation, with halo
+//! masses sampled from the Moster et al. stellar-mass-to-halo-mass relation. Three
+//! calibrated baryonic systematics are injected: a +5% bulge excess at
+//! $\xi \sim 0.5$, a $-12$% NFW cusp overshoot at $\xi = 0.6$--$0.87$, and a +5%
+//! IFU-edge artifact at $\xi \sim 0.95$. Gaussian noise is added at levels
+//! consistent with MaNGA DAP velocity error maps. Inclinations are drawn uniformly
+//! from $30^\circ$--$70^\circ$, and the line-of-sight projection
+//! $V_{\text{obs}} = V_{\text{rot}} \sin i$ is applied. After quality cuts requiring
+//! at least 8 radial bins, 2000 galaxies remain. Three subsamples provide
+//! stratified analysis: the full sample ($N = 2000$), a face-on subsample
+//! ($i < 45^\circ$, $N = 858$), and a mass Q3 subsample
+//! ($\log M_\star > 10.5$, $N = 500$). These subsamples are nested: both are strict
+//! subsets of the full sample, and their results are therefore not statistically
+//! independent.
+//!
+//! ## 3.3 Multi-Algebra Framework and Detection Methods
+//!
+//! GHOST simultaneously tests four algebraic frameworks
+//! $F \in \{\text{CD}, \text{G2}, \text{J3}, \text{sl2}\}$, each predicting
+//! spectral modifications at different wavenumber sets $\mathcal{K}_F$. The
+//! Cayley-Dickson framework at $D = 16$ derives wavenumbers from the sedenion
+//! obstruction spectrum, with the assessor_fraction identity
+//! ($f_a(D) = 0.5$ for all $D \geq 16$) rendering the statistic invariant under CD
+//! dimension changes. The G2 Aut(O) framework generates seven modes from the
+//! 14-dimensional automorphism group's root system. The Albert algebra J3(O) derives
+//! modes from Jordan eigenvalues of $3 \times 3$ Hermitian octonionic matrices. The
+//! sl(2) partner graph yields eigenvalues $\{-4, -2, 0, +2, +4\}$ with
+//! degeneracies $\{7, 14, 42, 14, 7\}$.
+//!
+//! The primary detection statistic is the whitened matched filter (WMF):
+//!
+//! $$\rho_{\text{WMF}} = \frac{\sum_{k \in \mathcal{K}_F} \bar{S}(k) \cdot T_F(k) / \hat{P}_n(k)}{\sqrt{\sum_{k \in \mathcal{K}_F} T_F^2(k) / \hat{P}_n(k)}}$$
+//!
+//! where $\bar{S}(k)$ is the stacked residual spectrum, $T_F(k)$ the algebraic
+//! template, and $\hat{P}_n(k)$ the noise PSD. Detection SNR is
+//! $\rho_{\text{WMF}} / \hat{\sigma}_{\text{boot}}$, where
+//! $\hat{\sigma}_{\text{boot}}$ is the bootstrap standard deviation across 5 seeds.
+//! Robust stacking variants -- median, 5%-trimmed mean, and 20%-trimmed mean --
+//! provide complementary estimators. Gaussian process model comparison evaluates a
+//! Matern-only kernel against a Matern-plus-periodic kernel via the Bayes factor
+//! $\mathcal{B}_{10}$. A power-law model $P(k) = A \cdot k^{-\gamma}$
+//! characterizes the noise spectrum, with both an imposed $\gamma = 0.808$ and a
+//! free-parameter fit tested.
+//!
+//! **Algorithm 1: GHOST Detection Pipeline**
+//!
+//!     Input:  Synthetic rotation curves D, framework F, seed s
+//!     Output: Detection SNR, noise characterization
+//!
+//!      1. D' <- QualityCut(D)
+//!      2. for each galaxy g in D':
+//!      3.     theta_g <- FitNFW(V_obs_g)
+//!      4.     Delta_g <- V_obs_g - V_NFW(theta_g)
+//!      5.     xi_g <- Normalize(r_g, r_s_g)
+//!      6.     S_g <- |FFT(Interp(Delta_g, xi_grid))|^2
+//!      7. S_boot <- BootstrapStack(S, seed=s)
+//!      8. P_n <- EstimateNoisePSD(S_boot)
+//!      9. rho <- WhitenedMatchedFilter(S_boot, T_F, P_n)
+//!     10. sigma <- BootstrapStd(rho, n_seeds=5)
+//!     11. SNR_F <- rho / sigma
+//!     12. return SNR_F
+//!
+//!
+//! # 4. Experiments
+//!
+//! ## 4.1 Experimental Setup
+//!
+//! The experimental design follows a structured factorial layout. The synthetic
+//! dataset contains 2000 galaxies after quality cuts, divided into three subsamples:
+//! full ($N = 2000$), face-on ($N = 858$), and mass Q3 ($N = 500$). Twenty
+//! experimental conditions span four categories: primary ZD detection (mean stack,
+//! multi-algebra mean stack, composite), stacking ablations (median, 5%-trimmed,
+//! 20%-trimmed), noise modeling variants (red-noise subtracted, no-red-noise,
+//! free-gamma, whitened matched filter), controls (NFW $\chi^2$ positive control,
+//! injection control at $\alpha_{\text{zd}} = 0.004$, injection recovery at
+//! $\alpha_{\text{zd}} = 0.05$), and diagnostic conditions (GP model comparison,
+//! persistence topology, mutual information, bispectral Fano, variance
+//! quantization, synthetic 6-bin). Each condition runs with 5 bootstrap seeds per
+//! subsample, producing $20 \times 3 \times 5 = 300$ total experimental cells.
+//!
+//! **Table 1: Hyperparameters**
+//!
+//! | Parameter            | Value          | Justification                                            |
+//! |:---------------------|:---------------|:---------------------------------------------------------|
+//! | CD dim $D$           | 16             | Min. non-trivial; invariant through $D = 262{,}144$     |
+//! | NFW solver           | Levenberg-Marquardt | Bounded: $1 \leq c \leq 30$, $10^{10} \leq M_{200}/M_\odot \leq 10^{14}$ |
+//! | Bootstrap seeds      | 5              | CV $< 2\%$ for all framework conditions                  |
+//! | Radial range         | $[0.5, 1.35]\,r/r_s$ | Synthetic MaNGA IFU coverage                       |
+//! | Grid points $K$      | 32             | Nyquist: resolves modes to $k_{\max} = 16$              |
+//! | Synthetic $N$        | 2000           | Full sample; face-on: 858, mass Q3: 500                 |
+//!
+//! ## 4.2 Baselines and Controls
+//!
+//! The positive control is the NFW $\chi^2$ condition, which measures overall NFW
+//! fit quality and responds to all spectral structure in the residual including
+//! baryonic systematics. This control achieves grand-mean SNR = 2.6232 across 5
+//! seeds (per-subsample seed-42 values: full sample 2.1963, face-on 2.4125, mass Q3
+//! 2.5139), confirming that the pipeline responds to genuine spectral structure when
+//! present. The separation factor between positive control and framework grand means
+//! ($\mathcal{S} = 2.6232 / 0.4626 = 5.67$) provides the central evidence that the
+//! pipeline distinguishes baryonic structure from noise-floor-level ZD template
+//! correlations.
+//!
+//! The injection control ($\alpha_{\text{zd}} = 0.004$) yields grand-mean
+//! SNR = 0.4572, indistinguishable from the null framework conditions. The injection
+//! recovery condition ($\alpha_{\text{zd}} = 0.05$) returns grand-mean
+//! SNR = 0.4049 -- lower than the null baseline of 0.4626. This anti-monotonic
+//! behavior reveals that the noise PSD estimation absorbs injected power, rendering
+//! the matched filter insensitive to signal amplitude. The pipeline produces
+//! SNR $\approx 0.46$ regardless of whether signal is present, indicating that the
+//! metric is dominated by noise structure rather than signal content. This finding
+//! transforms the interpretation of all framework SNR values: they characterize the
+//! pipeline's noise floor rather than providing evidence for or against ZD
+//! signatures.
+//!
+//! ## 4.3 Integrity Checks and Hardware
+//!
+//! All 300 experimental cells completed with zero NaN values across all output
+//! metrics. Positive-control cells uniformly exceed SNR = 2.0, and all framework
+//! cells fall below SNR = 0.50. Cross-seed coefficient of variation is below 2% for
+//! all framework conditions. All experiments ran on a single workstation with an
+//! NVIDIA RTX 4070 Ti (12 GB); the CPU-bound pipeline completes the 300-cell matrix
+//! in approximately one hour on 8 cores. All results are deterministically
+//! reproducible given seed, subsample, and condition identifiers, stored in
+//! structured JSON with complete hyperparameter records.
+//!
+//!
+//! # 5. Results
+//!
+//! ## 5.1 Pipeline Response Characterization
+//!
+//! The central finding is that the pipeline produces uniformly low SNR for all
+//! zero-divisor conditions on synthetic data where no signal exists by construction,
+//! while clearly separating positive controls. As shown in Figure 1, framework
+//! conditions cluster near SNR $\approx 0.46$ while the positive control exceeds
+//! 2.0.
+//!
+//! **Table 2: Grand-Mean Detection Results Across 5 Seeds**
+//!
+//! | Condition       | Type        | SNR (grand mean) | Per-seed-42 (full / face-on / mass Q3)  |
+//! |:----------------|:-----------:|:----------------:|:----------------------------------------|
+//! | Mean stack      | ZD          | 0.4626           | 0.4746 / 0.4655 / 0.4641               |
+//! | Multi-algebra   | ZD          | 0.4620           | 0.4741 / 0.4652 / 0.4640               |
+//! | Composite       | ZD          | 0.4637           | 0.4736 / 0.4645 / 0.4635               |
+//! | Median stack    | Robust      | 0.4558           | 0.4695 / 0.4695 / --                    |
+//! | 5%-trimmed      | Robust      | 0.4566           | 0.4688 / 0.4688 / --                    |
+//! | 20%-trimmed     | Robust      | 0.4706           | 0.4693 / 0.4693 / --                    |
+//! | WMF             | Detection   | 0.3500           | 0.3327 / 0.3327 / 0.3621               |
+//! | Injection ctrl  | Control     | 0.4572           | 0.4821 / 0.4798 / --                    |
+//! | Injection recov | Control     | 0.4049           | 0.4679 / 0.4873 / --                    |
+//! | **NFW $\chi^2$**| **Control** | **2.6232**        | **2.1963 / 2.4125 / 2.5139**           |
+//!
+//! The framework conditions cluster within a band of 0.02 SNR units, far narrower
+//! than the 2.16-unit gap separating them from the positive control. The robust
+//! stacking variants (median at 0.4558, trimmed means at 0.4566 and 0.4706)
+//! converge to the same band, confirming estimator independence. The whitened
+//! matched filter produces a lower SNR of 0.3500, reflecting its more aggressive
+//! noise weighting.
+//!
+//! ![Figure 1: Detection SNR by experimental condition across 5 bootstrap seeds and
+//! 3 subsamples. Framework conditions (blue) cluster near SNR 0.46, while the NFW
+//! chi-squared positive control (green) achieves SNR 2.62, confirming that the
+//! pipeline detects spectral structure when present. The injection recovery
+//! condition (red) falls below the null baseline at SNR 0.40, demonstrating
+//! anti-monotonic behavior. Error bars show +/- 1 standard deviation across
+//! seeds.](charts/snr_by_condition.png)
+//!
+//! ## 5.2 Red-Noise Model Discrepancy
+//!
+//! The pipeline-imposed red-noise model fits $\gamma = 0.808$ to the stacked
+//! spectrum. The red-noise-subtracted condition yields SNR = 1.2253, and the
+//! no-red-noise condition reaches 1.5348, indicating that noise modeling
+//! substantially affects the detection statistic. The free-gamma condition, which
+//! fits $\gamma$ as a free parameter, returns grand-mean SNR = 1.3226, with the
+//! fitted exponent near zero rather than 0.808. This discrepancy indicates that the
+//! $k^{-0.808}$ characterization is a pipeline prior rather than a data-driven
+//! measurement, as shown in Figure 2. The claimed "baryonic noise floor" cannot be
+//! distinguished from a flat (white noise) spectrum on the current synthetic data,
+//! calling this contribution into question until validated on real MaNGA
+//! observations.
+//!
+//! ![Figure 2: Comparison of detection SNR under different noise modeling
+//! assumptions. The imposed red-noise model (gamma = 0.808), the free-gamma fit
+//! (gamma approximately 0), and the no-red-noise condition produce markedly
+//! different SNR values (1.23, 1.32, and 1.53 respectively), while the primary ZD
+//! conditions remain stable at 0.46. This sensitivity to noise modeling choices
+//! dominates the detection landscape and must be resolved before observational
+//! deployment.](charts/power_spectrum_loglog.png)
+//!
+//! ## 5.3 Gaussian Process Model Comparison
+//!
+//! The GP model comparison reveals regime-dependent behavior that complicates
+//! interpretation. For the full sample, the Bayes factor effectively equals zero
+//! (SNR = 0.0), indicating no preference for the periodic model. In contrast, the
+//! face-on subsample yields SNR = 0.6903, with the Bayes factor
+//! ($\mathcal{B}_{10} \approx 2.0$) marginally preferring the periodic model -- a
+//! result that contradicts the blanket null interpretation suggested by the
+//! matched-filter analysis. This subsample dependence warrants investigation: either
+//! the face-on subsample contains residual structure that mimics periodicity, or the
+//! GP comparison is sensitive to sample composition in ways that the matched filter
+//! is not. This result is reported without suppression, though the Bayes factor of
+//! 2.0 represents only "barely worth mentioning" evidence on the Jeffreys scale.
+//!
+//!
+//! # 6. Discussion
+//!
+//! ## 6.1 Pipeline Sensitivity and Metric Validity
+//!
+//! The GHOST pipeline successfully distinguishes between conditions containing
+//! genuine baryonic spectral structure (NFW $\chi^2$, SNR $> 2.6$) and conditions
+//! testing ZD templates (SNR $\approx 0.46$), validating the core detection
+//! architecture on synthetic data. The $\sqrt{N} \approx 45\times$ noise reduction
+//! from stacking 2000 galaxies is consistent with the observed separation. In the
+//! astrophysical channel, this stacking approach parallels Fermi-LAT population
+//! analyses of dwarf spheroidal galaxies [sebastian2020global], though GHOST's
+//! baryonic noise environment differs fundamentally from gamma-ray point-source
+//! backgrounds.
+//!
+//! The anti-monotonic injection recovery, however, represents more than a limitation
+//! -- it invalidates the matched-filter SNR as a detection statistic in the
+//! hypothesis-testing sense of Baxter et al. [baxter2021recommended]. When injected
+//! signals decrease the detection statistic, the metric cannot distinguish signal
+//! presence from absence at any amplitude. This behavior likely arises because the
+//! noise PSD estimation absorbs injected power as "noise," a pathology that could
+//! be addressed by estimating the noise PSD from signal-free wavenumber regions
+//! before injection. Until the metric responds monotonically to signal amplitude,
+//! all framework SNR values should be interpreted as pipeline characterization
+//! rather than evidence for or against ZD signatures.
+//!
+//! ## 6.2 Red-Noise Floor: Prior or Measurement?
+//!
+//! The divergence between the imposed red-noise exponent ($\gamma = 0.808$) and
+//! the free-parameter estimate ($\gamma \approx 0$) undermines the characterization
+//! of a $k^{-0.81}$ baryonic noise floor. If the free-gamma fit is correct, the
+//! stacked synthetic spectrum is approximately flat, and the "red-noise" structure
+//! is an artifact of the pipeline's modeling assumptions. This power-law
+//! characterization was motivated by analogy to CMB foregrounds
+//! [aghanim2020iplancki], but the synthetic data do not support it independently.
+//! Resolving this discrepancy on real MaNGA data, where baryonic systematics are
+//! emergent rather than prescribed, is essential before any noise floor claims can
+//! be made. Future surveys with extended radial coverage -- HI 21cm observations
+//! with SKA, or spectroscopic campaigns enabled by DESI [adame2025desi] and Euclid
+//! -- will provide the observational context needed to distinguish pipeline
+//! artifacts from genuine baryonic spectral structure.
+//!
+//!
+//! # 7. Limitations
+//!
+//! The most significant limitation is the use of synthetic rather than observational
+//! data. While the synthetic sample reproduces key MaNGA characteristics -- NFW
+//! profiles, baryonic systematics, noise levels, and inclination distributions --
+//! the baryonic contributions are prescribed rather than emergent, meaning the
+//! pipeline has not been tested against the full complexity of real galaxy
+//! kinematics. Any conclusions about baryonic noise floors or detection sensitivity
+//! must be validated on actual MaNGA DR17 data before they can inform observational
+//! claims. The anti-monotonic injection recovery is not merely a calibration
+//! limitation but a fundamental invalidity of the primary detection metric: the
+//! matched-filter SNR does not respond monotonically to signal amplitude, rendering
+//! it incapable of distinguishing signal presence from absence regardless of the
+//! injected strength. This must be resolved through metric redesign -- likely by
+//! fixing the noise PSD estimate from signal-free regions before injection -- before
+//! any deployment on survey data.
+//!
+//! The divergence between the imposed red-noise exponent ($\gamma = 0.808$) and the
+//! free-parameter fit ($\gamma \approx 0$) means the baryonic noise floor
+//! characterization is a pipeline assumption, not a measurement. The 5 bootstrap
+//! seeds provide coefficient of variation below 2% for framework conditions but
+//! offer limited sampling of distributional tails. The face-on ($N = 858$) and mass
+//! Q3 ($N = 500$) subsamples are strict subsets of the full sample, so their
+//! results are not statistically independent. Population stacking suppresses
+//! subpopulation signals by $1/N_{\text{total}}$; a signal present only in low-mass
+//! galaxies would be diluted by the high-mass majority. The face-on GP model
+//! comparison yields Bayes factor $\approx 2.0$ favoring the periodic model, a
+//! result that neither confirms nor refutes the null hypothesis and requires further
+//! investigation. All experiments were executed on a single workstation (8 CPU
+//! cores, NVIDIA RTX 4070 Ti 12 GB), with total runtime of approximately one hour.
+//!
+//!
+//! # 8. Conclusion
+//!
+//! GHOST demonstrates a multi-algebra spectral detection pipeline validated on 2000
+//! synthetic MaNGA-like rotation curves across 20 experimental conditions and 5
+//! bootstrap seeds. The pipeline correctly produces low SNR ($\approx 0.46$) for
+//! zero-divisor conditions where no signal exists by construction, while achieving
+//! SNR $> 2.6$ for the baryonic positive control, establishing a separation factor
+//! of 5.7. The multi-algebra design -- testing Cayley-Dickson, G2, J3(O), and sl(2)
+//! frameworks simultaneously -- provides a methodological template for constraining
+//! entire classes of algebraic dark-sector theories rather than individual models,
+//! once deployed on real data.
+//!
+//! Two critical findings require resolution before observational deployment. First,
+//! the anti-monotonic injection recovery renders the matched-filter SNR invalid as a
+//! detection statistic: the metric does not respond to injected signals, preventing
+//! any calibrated sensitivity claims. Metric redesign -- separating noise estimation
+//! from signal recovery -- is the highest-priority engineering task. Second, the
+//! divergence between imposed ($\gamma = 0.808$) and fitted ($\gamma \approx 0$)
+//! red-noise exponents reveals that baryonic noise floor characterization is
+//! model-dependent and cannot yet be claimed as an independent contribution. Three
+//! directions for future work follow naturally: resolving the injection recovery
+//! pathology through fixed-noise-PSD estimation; deploying the corrected pipeline on
+//! real MaNGA DR17 data (approximately 6992 galaxies after quality cuts); and
+//! extending to outer-halo radii (1.5--10 $r/r_s$) via HI 21cm surveys where
+//! algebraic framework predictions diverge and the baryonic floor may become
+//! subdominant. The structured experimental framework -- seed-based determinism,
+//! JSON-logged outputs, factorial condition design -- is ready for this transition.
+//!
+//!
+//! # References
+//!
+//! [abdurrouf2022seventeenth] Abdurro'uf et al. "The Seventeenth Data Release of
+//! the Sloan Digital Sky Surveys." ApJS 259, 35 (2022).
+//!
+//! [acharyya2021sensitivity] Acharyya, A. et al. "Sensitivity of the Cherenkov
+//! Telescope Array to a Dark Matter Signal from the Galactic Centre." JCAP 2021,
+//! 057 (2021).
+//!
+//! [adame2025desi] DESI Collaboration. "DESI 2024 VI: Cosmological Constraints from
+//! Baryon Acoustic Oscillations." (2025).
+//!
+//! [addazi2022quantum] Addazi, A. et al. "Quantum Gravity Phenomenology at the Dawn
+//! of the Multi-Messenger Era." Prog. Part. Nucl. Phys. 125, 103948 (2022).
+//!
+//! [aghanim2020iplancki] Planck Collaboration. "Planck 2018 Results. VI.
+//! Cosmological Parameters." A&A 641, A6 (2020).
+//!
+//! [akerib2020first] Akerib, D.S. et al. "First Searches for Axions and Axionlike
+//! Particles with the LUX Experiment." PRL 118, 261301 (2020).
+//!
+//! [amaral2020constraints] Amaral, D.W. et al. "Constraints on Low-Mass, Relic Dark
+//! Matter Candidates from a Surface-Operated SuperCDMS Single-Charge Sensitive
+//! Detector." PRD 102, 091101 (2020).
+//!
+//! [aprile2022approximate] XENON Collaboration. "Search for New Physics in
+//! Electronic Recoil Data from XENONnT." PRL 129, 161805 (2022).
+//!
+//! [aprile2023searching] XENON Collaboration. "First Dark Matter Search with Nuclear
+//! Recoils from the XENONnT Experiment." PRL 131, 041003 (2023).
+//!
+//! [bar2022galactic] Bar, N. et al. "Galactic Rotation Curves versus Ultralight
+//! Dark Matter." PRD 105, 083015 (2022).
+//!
+//! [baxter2021recommended] Baxter, D. et al. "Recommended Conventions for Reporting
+//! Results from Direct Dark Matter Searches." Eur. Phys. J. C 81, 907 (2021).
+//!
+//! [cautun2020milky] Cautun, M. et al. "The Milky Way Total Mass Profile as
+//! Inferred from Gaia DR2." MNRAS 494, 4291 (2020).
+//!
+//! [furey2024three] Furey, C. "Three Generations, Two Unbroken Gauge Symmetries,
+//! and One Eight-Dimensional Algebra." Phys. Lett. B 785, 84 (2024).
+//!
+//! [genzel2020rotation] Genzel, R. et al. "Rotation Curves in z ~ 1-2 Star-Forming
+//! Disks." ApJ 902, 98 (2020).
+//!
+//! [jiao2023detection] Jiao, Y. et al. "Detection of the Keplerian Decline in the
+//! Milky Way Rotation Curve." A&A 678, A208 (2023).
+//!
+//! [kaplinghat2020dark] Kaplinghat, M. et al. "Dark Matter Halos as Particle
+//! Colliders." JCAP 2020, 027 (2020).
+//!
+//! [lelli2023cold] Lelli, F. et al. "A Massive Disk Galaxy at z = 4 with Ordered
+//! Cold Kinematics." A&A 672, A106 (2023).
+//!
+//! [pina2022impact] Mancera Pina, P.E. et al. "The Impact of Gas Disc Flaring on
+//! Rotation Curve Decomposition." MNRAS 514, 3329 (2022).
+//!
+//! [popolo2021review] Del Popolo, A. & Le Delliou, M. "Review of Solutions to the
+//! Cusp-Core Problem." Galaxies 9, 123 (2021).
+//!
+//! [r2023search] IceCube Collaboration. "Search for Neutrino Lines from Dark Matter
+//! Annihilation and Decay." PRD 108, 102004 (2023).
+//!
+//! [roach2023longexposure] Roach, B.M. et al. "Long-Exposure NuSTAR Constraints on
+//! Decaying Dark Matter in the Galactic Halo." PRD 107, 023009 (2023).
+//!
+//! [roper2023diversity] Roper, F.A. et al. "Diversity of Rotation Curves in EAGLE
+//! Simulations." MNRAS 521, 1316 (2023).
+//!
+//! [santossantos2020baryonic] Santos-Santos, I.M. et al. "Baryonic and Dark Matter
+//! Content of Low-Mass Simulated Galaxies." MNRAS 495, 58 (2020).
+//!
+//! [sebastian2020global] Hoof, S. et al. "A Global Analysis of Dark Matter Signals
+//! from 27 Dwarf Spheroidal Galaxies using 11 Years of Fermi-LAT Observations."
+//! JCAP 2020, 012 (2020).
+//!
+//! [shachar2023rotation] Shachar, N. et al. "RC100: Rotation Curves of 100 Massive
+//! Star-Forming Galaxies at z = 0.6-2.5." ApJ 944, 78 (2023).
+//!
+//! [sofue2020rotation] Sofue, Y. "Rotation Curve of the Milky Way and the Dark
+//! Matter Density." Galaxies 8, 37 (2020).
+//!

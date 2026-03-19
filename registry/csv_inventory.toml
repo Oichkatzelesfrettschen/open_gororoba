@@ -862,7 +862,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -875,7 +875,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -888,7 +888,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -901,7 +901,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -914,7 +914,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -927,7 +927,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -940,7 +940,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -953,7 +953,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -966,7 +966,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -979,7 +979,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -992,7 +992,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1005,7 +1005,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1018,7 +1018,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1031,7 +1031,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1044,7 +1044,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1057,7 +1057,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1070,7 +1070,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1083,7 +1083,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1096,7 +1096,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1109,7 +1109,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1122,7 +1122,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1135,7 +1135,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1148,7 +1148,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1161,7 +1161,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1174,7 +1174,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1187,7 +1187,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1200,7 +1200,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1213,7 +1213,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1226,7 +1226,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -1239,7 +1239,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
+path = "crates/gororoba_py/venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17398,7 +17398,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/Stocks.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/sample_data/Stocks.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17411,7 +17411,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17424,7 +17424,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/msft.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/sample_data/msft.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17437,7 +17437,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17450,7 +17450,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17463,7 +17463,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17476,7 +17476,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17489,7 +17489,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17502,7 +17502,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17515,7 +17515,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17528,7 +17528,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17541,7 +17541,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17554,7 +17554,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17567,7 +17567,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17580,7 +17580,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17593,7 +17593,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17606,7 +17606,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17619,7 +17619,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17632,7 +17632,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17645,7 +17645,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17658,7 +17658,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17671,7 +17671,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17684,7 +17684,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17697,7 +17697,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17710,7 +17710,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17723,7 +17723,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17736,7 +17736,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17749,7 +17749,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17762,7 +17762,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17775,7 +17775,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17788,7 +17788,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17801,7 +17801,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17814,7 +17814,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
+path = "venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17827,7 +17827,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/coordinates/tests/accuracy/data/fk4_no_e_fk4.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/coordinates/tests/accuracy/data/fk4_no_e_fk4.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17840,7 +17840,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/coordinates/tests/accuracy/data/fk4_no_e_fk5.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/coordinates/tests/accuracy/data/fk4_no_e_fk5.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17853,7 +17853,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/coordinates/tests/accuracy/data/galactic_fk4.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/coordinates/tests/accuracy/data/galactic_fk4.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17866,7 +17866,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/coordinates/tests/accuracy/data/icrs_fk5.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/coordinates/tests/accuracy/data/icrs_fk5.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17879,7 +17879,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/io/ascii/tests/data/simple_csv.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/io/ascii/tests/data/simple_csv.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17892,7 +17892,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/io/ascii/tests/data/simple_csv_missing.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/io/ascii/tests/data/simple_csv_missing.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17905,7 +17905,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/timeseries/tests/data/binned.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/timeseries/tests/data/binned.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17918,7 +17918,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/astropy/timeseries/tests/data/sampled.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/astropy/timeseries/tests/data/sampled.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17931,7 +17931,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/blimpy/ephemeris/observatory_info.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/blimpy/ephemeris/observatory_info.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17944,7 +17944,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/Stocks.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/sample_data/Stocks.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17957,7 +17957,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17970,7 +17970,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/msft.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/matplotlib/mpl-data/sample_data/msft.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17983,7 +17983,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -17996,7 +17996,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18009,7 +18009,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18022,7 +18022,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18035,7 +18035,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18048,7 +18048,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18061,7 +18061,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18074,7 +18074,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18087,7 +18087,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18100,7 +18100,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18113,7 +18113,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18126,7 +18126,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18139,7 +18139,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18152,7 +18152,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18165,7 +18165,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18178,7 +18178,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18191,7 +18191,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18204,7 +18204,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18217,7 +18217,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18230,7 +18230,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18243,7 +18243,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18256,7 +18256,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18269,7 +18269,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18282,7 +18282,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18295,7 +18295,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18308,7 +18308,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18321,7 +18321,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18334,7 +18334,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18347,7 +18347,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false
@@ -18360,7 +18360,7 @@ migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
-path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
+path = "wow_analysis_venv/lib/cargo run --release --bin.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
 git_status = "ignored"
 zone = "other_csv"
 archived = false

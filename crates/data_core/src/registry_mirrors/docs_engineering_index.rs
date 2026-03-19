@@ -1,0 +1,11 @@
+//! # Engineering Narratives
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/research_narratives.toml -->
+//!
+//! This index and all files under `docs/engineering/*.md` are generated from TOML.
+//!
+//! - `RN-028` `NARRATIVE`: `docs/engineering/RUST_STYLE_GUIDE.md`
+//! - `RN-029` `NARRATIVE`: `docs/engineering/SCOPE_ULTRA_THROUGHPUT.md`
+//! - `RN-030` `SPECIFICATION`: `docs/engineering/WARP_RING_SPECIFICATION.md`
+//!

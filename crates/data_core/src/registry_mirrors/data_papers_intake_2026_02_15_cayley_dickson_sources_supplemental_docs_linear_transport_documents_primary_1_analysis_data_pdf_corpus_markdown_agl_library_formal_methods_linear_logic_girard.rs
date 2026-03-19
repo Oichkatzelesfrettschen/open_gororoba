@@ -1,0 +1,1499 @@
+//! # Extracted text: linear_logic_girard.pdf
+//!
+//! - source_root: `/home/eirikr/Documents/AGL_Library/Formal_Methods_Documentation`
+//! - source_relpath: `linear_logic_girard.pdf`
+//! - source_abs: `/home/eirikr/Documents/AGL_Library/Formal_Methods_Documentation/linear_logic_girard.pdf`
+//! - detected_kind: `pdf`
+//! - extracted_at_utc: `2026-01-02T17:30:57+00:00`
+//! - pages: `23`
+//! - title: ``
+//! - author: ``
+//! - subject: ``
+//! - keywords: ``
+//! - creation_date: `Mon Oct 29 16:22:59 2018 PDT`
+//! - mod_date: `Mon Oct 29 16:22:59 2018 PDT`
+//! - encrypted: `no`
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+//! HIGHER DIMENSIONAL DIVERGENCE FOR MAPPING CLASS
+//! GROUPS AND CAT(0) GROUPS
+//!
+//! arXiv:1305.2994v4 [math.GT] 6 Jul 2015
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! Abstract. In this paper we investigate the higher dimensional divergence
+//! functions of mapping class groups of surfaces and of CAT (0)–groups. We
+//! show that, for mapping class groups of surfaces, these functions exhibit phase
+//! transitions at the rank (as measured by 3·genus+number of punctures−3). We
+//! also provide inductive constructions of CAT (0)–spaces with co-compact group
+//! actions, for which the divergence below the rank is (exactly) a polynomial
+//! function of our choice, with degree arbitrarily large compared to the dimension.
+//!
+//! 1. Introduction
+//! In this paper we study higher dimensional divergence functions, a type of filling
+//! function which is particularly significant in spaces with an interesting geometry
+//! on the boundary at infinity, such as spaces of non-positive curvature. In some
+//! sense, these functions describe the spread of geodesics, and the filling close to the
+//! boundary at infinity. They provide a powerful quasi-isometric invariant with which
+//! to study the large-scale geometry of a space or a group.
+//! Given a fixed point x0 in a metric space X, the k–dimensional divergence function
+//! (or the k–divergence) in r, roughly speaking, measures the minimal filling of k–
+//! dimensional spheres avoiding the ball B(x0 , r), and of area at most Ark , by (k + 1)–
+//! dimensional balls that are outside the open ball B(x0 , λr). The choices of the fixed
+//! center, x0 , and of the parameters A > 0 and λ ∈ (0, 1) do not affect the order of
+//! the k–divergence. Versions of divergence functions were defined for non-positively
+//! curved manifolds in [BF] (there, spheres, and the balls filling them, are Lipschitz
+//! maps of the corresponding Euclidean spheres and balls into the given manifold,
+//! and volumes are computed using the fact that such maps are differentiable almost
+//! everywhere) and for CAT (0)–spaces and integral currents in [Wen2].
+//! In the present paper, we work in the setting of finitely generated groups, so
+//! we will use classifying spaces and a version of divergence defined using combinatorial filling functions. The k–divergence functions, for k at least 1, are also called
+//!
+//! Date: October 29, 2018.
+//! 2010 Mathematics Subject Classification. Primary 20F65; Secondary 20F69, 20F38, 20F67.
+//! Key words and phrases. mapping class group, non-positive curvature, isoperimetric function,
+//! divergence, rank.
+//! The research of the first author was supported as an Alfred P. Sloan Fellow and by NSF grant
+//! #DMS-1006219.
+//! The research of the second author was supported in part by the EPSRC grant “Geometric and
+//! analytic aspects of infinite groups”, by the project ANR Blanc ANR-10-BLAN 0116, acronym
+//! GGAA, and by the LABEX CEMPI.
+//! 1
+//!
+//!
+//! --- PAGE BREAK ---
+//! 2
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! higher dimensional divergence functions, by contrast with the 0–divergence functions which by their very nature are less of isoperimetric filling functions, and more
+//! of distortion functions of exteriors of large balls.
+//! We investigate the behavior of higher dimensional divergence functions for CAT (0)–
+//! groups (i.e., groups acting properly discontinuously cocompactly on a CAT (0)–
+//! space) and for mapping class groups MCG(S) of surfaces S (i.e., groups of isotopy
+//! classes of homeomorphisms of surfaces S). It is known that mapping class groups
+//! have a large scale geometry that is CAT (0), in the sense that all their asymptotic
+//! cones are bi-Lipschitz equivalent to CAT (0)–spaces with a uniform bi-Lipschitz
+//! constant [BDS, Bow1]; other similiarities have been exposed in [BHS]. On the
+//! other hand, they are not actual CAT (0)–groups as they cannot act geometrically
+//! on any CAT (0)–space when S has genus at least three, or genus 2 and at least one
+//! puncture [KL]; when S is a closed surface of genus g, MCG(S) does not admit any
+//! action by semisimple isometries on complete CAT (0)–metric spaces of dimension
+//! less than g [Br]. The present paper provides further similiarities between mapping
+//! class groups and CAT (0)–groups, in particular we introduce some methods to provide lower bounds for higher dimensional divergence that are common to the two
+//! types of groups.
+//! A central notion in non-positively curved geometry is that of rank which is often
+//! taken as the largest dimension at which Euclidean behavior can still be detected,
+//! the meaning of “behavior” can vary as we see below; in a sense the rank gives a
+//! dimension above which hyperbolic features are bound to appear. There are several
+//! ways to define the rank, and the connections between the different definitions are not
+//! fully understood (see for instance [Gro3, §6.B2 ], where seven possible definitions
+//! of rank are listed). To begin with, there exists the notion of (quasi-)flat rank,
+//! i.e., the maximal dimension of a Euclidean space that can be (quasi-)isometrically
+//! embedded in the given space. In the case of a locally compact complete simply
+//! connected CAT (0)–space that admits a cocompact action by isometries, the quasiflat rank equals the flat rank [AS, Gro3, Kle9]; thus this notion of rank has the twofold advantage of being consistent with the classical notion of rank in symmetric
+//! space, and of being easily transferred to groups acting properly cocompactly on
+//! CAT (0)–spaces, via its quasi-flat version. The quasi-flat rank of a mapping class
+//! group MCG(S) equals the maximal rank of a free abelian subgroup of MCG(S), i.e.,
+//! the complexity of S, as measured by ξ(S) = 3g + p − 3, where g is the genus and p is
+//! the number of boundary components of S. (We do not require that mapping classes
+//! fix the “boundary”, so formally each boundary component should be considered as
+//! a “puncture”). That the algebraic rank is equal to ξ(S) was proven by [BLM],
+//! the equality between the algebraic rank and the quasi-flat rank was proven in
+//! [BM, Ham].
+//! Another notion of rank is defined using isoperimetric functions. One considers
+//! the rank in this sense to be the maximal dimension for which these functions are
+//! of the same order as those in Euclidean spaces.
+//! Finally, a third notion of rank is obtained by considering the dimension in which
+//! there is a phase transition for the higher dimensional divergence functions.
+//! For mapping class groups, we prove that these ranks all agree. That the isoperimetric rank equals the quasi-flat rank follows from Theorems 3.1 and 3.2. A main
+//! result of this paper is on the higher dimensional divergence functions of the mapping
+//! class group; one aspect of this theorem is that of displaying a “phase transition” for
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 3
+//!
+//! these functions, when the dimension equals the quasi-flat rank, whence providing
+//! equality of the first two notions of rank with the third.
+//! Theorems 3.3 and 3.4 Let S be a compact orientable surface and let Divk be the
+//! k–dimensional divergence of MCG(S).
+//! If k < ξ(S) then Divk  xk+2 .
+//! If k ≥ ξ(S) then Divk (x) = o(xk+1 ); further, if S is either genus 0 or 1, or genus
+//! 2 with empty boundary, then Divk (x)  xk .
+//! The relation of one function being “asymptotically bounded” by another, , or
+//! two functions being asymptotically equivalent, , are made precise in Section 2.1.
+//! A special case of the above result is that it establishes that the 1-dimensional
+//! divergence is at least cubic for surfaces with ξ(S) ≥ 2, while it is proved in [ABDDY]
+//! that for such surfaces the 1–dimensional divergence is at most quartic. It would be
+//! interesting to know the exact order of the 1-dimensional divergence. Besides the
+//! estimate in [ABDDY], the only other previously known result about divergence in
+//! mapping class groups is that the 0–divergence is quadratic [Beh].
+//! In the case of CAT (0)–spaces, the known facts on divergence are that: for a
+//! symmetric space X of non-compact type, Divk grows exponentially when k =
+//! Rank(X) − 1, see [BF, Leu1], while when k ≥ Rank(X) the divergence satisfies
+//! Divk = O(xk+1 ), see [Hin]. For a cocompact CAT (0)–space X and a homological
+//! version of the divergence defined in terms of integral currents, it has been established [Wen2] that if k = Rank(X) − 1 then Divk  xk+2 , while if k ≥ Rank(X)
+//! then Divk  xk+1 .
+//! The picture becomes unexpectedly complicated when it comes to divergence
+//! below the rank. The following theorem yields surprising examples in the context of
+//! CAT (0)–spaces.
+//! Theorem 4.1 For every positive integers r and n there exist universal covers of
+//! compact CAT(0)–spaces with flat rank 2r, and such that the (r − 1)–dimensional
+//! divergence satisfies Divr−1  xr+n .
+//! In our study of divergence, we develop a method to obtain lower bounds for
+//! higher divergence from lower bounds on zero–divergence. We use this method both
+//! for mapping class groups and for CAT (0)–spaces.
+//! For the inductive construction of CAT (0)–spaces with pathological divergence
+//! behaviour described in the above theorem, the sharp estimate from above of the
+//! divergence is obtained by using results from [BD2] (see Theorem 2.8), which allow
+//! us to restrict our study to round spheres (i.e., k–dimensional spheres with diameter
+//! controlled by the k-th root of the volume), and a careful study of the structure of
+//! round spheres in the CAT (0)–spaces that we construct.
+//! The plan of the paper is as follows. In Section 2 we recall some basic notions and
+//! establish notation which we will use in the paper, in particular some combinatorial
+//! terminology and results on mapping class groups. Also, we recall background from
+//! [BD2] on combinatorial formulations of isoperimetric and divergence functions and
+//! their behavior in the presence of a combing. Section 3 contains the theorem describing the behavior of divergence functions in mapping class groups. Section 4
+//! contains the proof of Theorem 4.1.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 4
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! Acknowledgements. The authors thank Bruce Kleiner, Enrico Leuzinger and
+//! Stefan Wenger for useful comments on an earlier version of this paper. Part of the
+//! work on this paper was carried during visits of the first author to the Mathematical
+//! Institute in Oxford. We thank the institute for its hospitality.
+//! 2. Preliminaries
+//! 2.1. General terminology. Given two functions f, g which both map R+ to itself,
+//! we write f C,k g for some constant C ≥ 1 and integer k ≥ 1, if
+//! f (x) ≤ Cg(Cx + C) + Cxk + C for all x ∈ R+ .
+//! We write f C,k g if and only if f C,k g and g C,k f . Two functions R+ → R+
+//! are said to be k–asymptotically equal if there exists C ≥ 1 s.t. f C,k g. This is an
+//! equivalence relation.
+//! When at least one of the two functions f, g involved in the relations above is
+//! an n–dimensional isoperimetric or divergence function, we automatically consider
+//! only relations where k = n, therefore k will no longer appear in the subscript of the
+//! relation. When irrelevant, we do not mention the constant C either and likewise
+//! remove the corresponding subscript.
+//! We use the notations f = O(g) and f = o(g), for f and g real-valued functions
+//! of one real variable, with their standard meaning.
+//! In a metric space (X, dist), the open R–neighborhood of a subset A, i.e. {x ∈ X :
+//! dist(x, A) < R}, is denoted by NR (A). In particular, if A = {a} then NR (A) =
+//! B(a, R) is the open R–ball centered at a. We use the notation N R (A) and B̄(a, R)
+//! to designate the corresponding closed neighborhood and closed ball defined by nonstrict inequalities. We make the convention that B(a, R) and B̄(a, R) are the empty
+//! set for R < 0 and any a ∈ X.
+//! Fix two constants L ≥ 1 and C ≥ 0. A map q : Y → X is said to be
+//! • (L, C)–quasi-Lipschitz if
+//! dist(q(y), q(y 0 )) ≤ Ldist(y, y 0 ) + C, for all y, y 0 ∈ Y ;
+//! • an (L, C)–quasi-isometric embedding if moreover
+//! 1
+//! dist(q(y), q(y 0 )) ≥ (y, y 0 ) − C for all y, y 0 ∈ Y ;
+//! L
+//! • an (L, C)-quasi-isometry if it is an (L, C)–quasi-isometric embedding q : Y →
+//! X satisfying the additional assumption that X ⊂ NC (q(Y )).
+//! • an (L, C)–quasi-geodesic if it is an (L, C)–quasi-isometric embedding defined on an interval of the real line;
+//! • a bi-infinite (L, C)–quasi-geodesic when defined on the entire real line.
+//! In the last two cases the terminology is extended to the image of q. When the
+//! constants L, C are irrelevant they are not mentioned.
+//! We call (L, 0)–quasi-isometries (quasi-geodesics) L–bi-Lipschitz maps (paths). If
+//! an (L, C)–quasi-geodesic q is L–Lipschitz then q is called an (L, C)–almost geodesic.
+//! Every (L, C)-quasi-geodesic in a geodesic metric space is at bounded (in terms of
+//! L, C) distance from an (L + C, C)–almost geodesic with the same end points, see
+//! e.g. [BBI, Proposition 8.3.4]. Therefore, without loss of generality, we assume in
+//! this text that all quasi-geodesics are in fact almost geodesics, in particular that
+//! they are continuous.
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 5
+//!
+//! Given two subsets A, B ⊂ R, a map f : A → B is said to be coarsely increasing
+//! if there exists a constant D such that for each a, b in A satisfying a+D < b, we have
+//! that f (a) ≤ f (b). Similarly, we define coarsely decreasing and coarsely monotonic
+//! maps. A map between quasi-geodesics is coarsely monotonic if it defines a coarsely
+//! monotonic map between suitable nets in their domain.
+//! A metric space is called
+//! • proper if all its closed balls are compact;
+//! • cocompact if there exists a compact subset K in X such that all the translations of K by isometries of X cover X;
+//! • periodic if it is geodesic and for fixed constants L ≥ 1 and C ≥ 0 the image
+//! of some fixed ball under (L, C)–quasi-isometries of X covers X;
+//! • a Hadamard space if X is geodesic, complete, simply connected and satisfies
+//! the CAT(0) condition;
+//! • a Hadamard manifold if moreover X is a smooth Riemannian manifold.
+//! 2.2. Combinatorial terminology. We use the standard terminology related to
+//! simplicial complexes as it appears in [Hat]. When we speak of simplicial complexes
+//! in what follows, we mean their topological realisation most of the time. Throughout
+//! the paper, we assume that all simplicial complexes are connected. We consider
+//! every simplicial complex endowed with a “large scale metric structure” defined by
+//! assuming that all edges have length one and taking the shortest path metric on the
+//! 1-skeleton.
+//! We say that a simplicial complex X has a bounded (L, C)–quasi-geodesic combing,
+//! where L ≥ 1 and C ≥ 0, if for every x ∈ X (1) there exists a way to assign to every
+//! element y ∈ X (1) an (L, C)–quasi-geodesic qxy connecting y to x in X (1) , such that
+//! dist(qxy (i), qxa (i)) ≤ Ldist(y, a) + L ,
+//! for all x, y, a ∈ X (1) and i ∈ R. Here the quasi-geodesics are assumed to be extended
+//! to R by constant maps.
+//! Given an n–dimensional simplicial complex C, we call the closed simplices of
+//! dimension n the chambers of C.
+//! Given a simplicial map f : X → Y , where X, Y are simplicial complexes, X of
+//! dimension n, we call f –non-collapsed chambers in X the chambers whose images
+//! by f stay of dimension n. We denote by XVol the set of f –non-collapsed chambers.
+//! We define the volume of f to be the (possibly infinite) cardinality of XVol .
+//! Recall that a group G is of type Fk if it admits an Eilenberg-MacLane space
+//! K(G, 1) whose k-skeleton is finite.
+//! Proposition 2.1 ([AWP], Proposition 2). If a group G acts cellularly on a CWcomplex X, with finite stabilizers of points and such that X (1) /G is finite then G
+//! is finitely generated and quasi-isometric to X. Moreover, if X is n-connected and
+//! X (n+1) /G is finite then G is of type Fn+1 .
+//! Conversely, it is easily seen that for a group of type Fn+1 one can define an
+//! (n + 1)-dimensional n-connected simplicial complex X on which G acts properly
+//! discontinuously by simplicial isomorphisms, with trivial stabilizers of vertices, such
+//! that X/G has finitely many cells. Any two such complexes X, Y are quasi-isometric,
+//! and the quasi-isometry, which can initially be seen as a bi-Lipschitz map between
+//!
+//!
+//! --- PAGE BREAK ---
+//! 6
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! two subsets of vertices, can be easily extended to a simplicial map X → Y [AWP,
+//! Lemma 12].
+//! A group is of type F∞ if and only if it is of type Fk for every k ∈ N . It was
+//! proven in [ECH+ , Theorem 10.2.6] that every combable group is of type F∞ .
+//! 2.3. Higher dimensional filling functions. Since a finite (n + 1)–presentation
+//! of a group composed only of simplices can always be found, it suffices to restrict to
+//! simplicial complexes when discussing filling problems. Throughout the paper, we
+//! make use of the terminology related to the n–dimensional filling functions in the
+//! simplicial setting as described in full detail in [BD2]. We briefly recall a number of
+//! relevant notions and results.
+//! For the rest of the paper, we assume that all the simplicial complexes that we
+//! consider are universal covers of compact simplicial complexes. We also assume
+//! that, in the study of filling functions up to dimension n, the simplicial complexes
+//! considered have dimension ar least n + 1 and are n–connected.
+//! When we speak of manifolds we always mean manifolds with a simplicial-complex
+//! structure.
+//! We denote by V an arbitrary m–dimensional connected compact sub-manifold
+//! of Rm , where m ≥ 2 is an integer and V is smooth or piecewise linear, and with
+//! boundary. We denote its boundary by ∂V . Unless otherwise stated, the standing
+//! assumption is that ∂V is connected.
+//! Given V as above, a domain modelled on V in X (also called a V –domain) is
+//! a simplicial map d of D to X (m) , where D is a simplicial structure on V . When
+//! the manifold V is irrelevant we simply call d a domain of dimension m (somewhat
+//! abusively, since it might have its entire image inside X (m−1) ); we also abuse notation
+//! by using d to denote both the map and its image.
+//! A hypersurface in X modelled on ∂V (also called a ∂V –hypersurface) is a simplicial map h of M to X (m−1) , where M is a simplicial structure of the boundary
+//! ∂V . Again, we abuse notation by letting h also denote the image of the above map,
+//! and we also call both h and its image a hypersurface of dimension m − 1.
+//! According to the terminology introduced previously, DVol , respectively MVol , is
+//! the set of d–non-collapsed chambers (respectively h–non-collapsed chambers). The
+//! volume of d (respectively h) is the cardinality of DVol , respectively MVol .
+//! We sometimes say that the domain d is a V –domain, and h is a ∂V –hypersurface.
+//! When V is a closed ball in Rm , we call d an m–dimensional ball and h an (m − 1)–
+//! dimensional sphere.
+//! Definition 2.2. A k–dimensional hypersurface h is called η–round for a constant
+//! 1
+//! η > 0 if diam(h) ≤ ηVol(h) k .
+//! We say that a domain d fills a hypersurface h if this pair corresponds to a
+//! (k + 1)–dimensional connected compact smooth sub-manifold with boundary V in
+//! Rk+1 satisfying D ∩ ∂V = M and d|M = h, possibly after pre-composing h with a
+//! simplicial equivalence of M.
+//! The filling volume of the hypersurface h, FillVol(h), is the minimum of all the
+//! volumes of domains filling h. If no domain filling h exists then we set FillVol(h) = ∞.
+//! Definition 2.3. The k–th isoperimetric function, also known as the k–th filling
+//! function, of a simplicial complex X is the function Isok : R∗+ → R+ ∪ {∞} such
+//! that Isok (x) is the supremum of the filling volume FillVol(h) over all k–dimensional
+//! spheres h of volume at most Axk .
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 7
+//!
+//! In what follows the constant A > 0 from Definition 2.3 is fixed, but not made explicit. Two filling functions corresponding to two different values of A are equivalent
+//! in the sense of the relation .
+//! The isoperimetric function has a more general version, using instead of the sphere
+//! and its filling with a ball, a hypersurface and its filling with a domain, both modelled
+//! on a (k + 1)–dimensional submanifold with boundary V in Rk+1 . We then define
+//! as above the filling function, denoted IsoV .
+//! According to [AWP, Theorem 1, Corollary 3], if two simplicial complexes, X1
+//! X2
+//! 1
+//! and X2 , of dimension at least k + 1, are quasi-isometric, then IsoX
+//! for
+//! V  IsoV
+//! every domain V . Therefore the corresponding isoperimetric functions Isok and IsoV
+//! are well defined, up to the equivalence relation , for every group of type Fn+1 .
+//! In [BD2] we proved that under certain conditions, which are satisfied in the
+//! presence of a bounded quasi-geodesic combing, an arbitrary sphere has a partition
+//! into round spheres, such that the sum of the volumes of the spheres in the partition
+//! is bounded by a multiple of the volume of the initial sphere. Here a partition consists
+//! of the following: finitely many spheres (more generally, hypersurfaces) h1 , . . . , hn
+//! compose a partition of a sphere h if by filling all of them one obtains a ball filling
+//! h (see [BD2]). The hypersurfaces h1 , . . . , hn are called contours of the partition.
+//! Theorem 2.4 ([BD2]). Let X be a simplicial complex with a bounded quasi-geodesic
+//! combing, and let k ≥ 2 be an integer.
+//! Then for every ε > 0 there exists a constant η > 0 such that every k–dimensional
+//! sphere h has a partition with contours h1 , ...hn that are η–round spheres, and contours r1 , . . . , rm that are hypersurfaces of volume and filling volume zero such that
+//! Pn
+//! k+1
+//! (1)
+//! Vol(h) .
+//! i=1 Vol(hi ) ≤ 2 · 6
+//! (2) h1 , ...hn and r1 , . . . , rm are contained in the tubular neighborhood NR (h),
+//! where R = εVol(h)1/k .
+//! A consequence of the above is that isoperimetric functions are bounded by the
+//! corresponding Euclidean isoperimetric functions.
+//! Corollary 2.5 (The Federer-Fleming inequality for groups; [BD2]). Assume that
+//! the simplicial complex X has a bounded quasi-geodesic combing. Then for every
+//! k ≥ 1, Isok (x)  xk+1 . Moreover for k = 2 the supremum of IsoV (x) over all
+//! handlebodies V is  x3 .
+//! The inequality Isok (x)  xk+1 was proved by Federer–Fleming [FF] for integral
+//! currents, in Euclidean spaces, and it was later extended by S. Wenger to complete
+//! metric spaces with a cone-type inequality [Wen1]. For Lipschitz fillings we refer to
+//! [ECH+ ]. For fillings of Riemannian hypersurfaces in Banach spaces, Isok (x)  xk+1
+//! was proved by Gromov [Gro1]. We were informed by S. Wenger that the simplicial
+//! version of the inequality can also be deduced from [Wen1] and [Wh, Theorem 1, p.
+//! 435].
+//! The reduction to the subset of round spheres also applies to another type of
+//! filling function, the divergence. We briefly recall the definition of divergence, and
+//! refer to [BD2] for more details.
+//! We fix a constant 0 < δ < 1 and an integer 2 ≤ k ≤ n − 1, where n is the
+//! dimension of the simplicial complex X we work in. Given a vertex c in X, a k–
+//! dimensional hypersurface h : M → X modelled on ∂V such that k ≤ n − 1, and
+//!
+//!
+//! --- PAGE BREAK ---
+//! 8
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! a number r > 0 that is at most the distance from c to h(M(1) ), the divergence
+//! of this quadruple, denoted div(h, c; r, δ), is the infimum of all volumes of domains
+//! modelled on V filling h and disjoint from B(c, δr). If no such domain exists then
+//! we set div(h, c; r, δ) = ∞.
+//! Definition 2.6. The divergence function modelled on V of the complex X, denoted DivV (r, δ), is the supremum of all finite values of div(h, c; r, δ), where h is a
+//! hypersurface modelled on ∂V with the distance from c to h(M(1) ) at least r and
+//! Vol(h) at most Ark .
+//! When V is the (k + 1)–dimensional unit ball, DivV (r, δ) is denoted Div(k) (r, δ),
+//! and it is called the k–dimensional divergence function (or the k–th divergence function) of X.
+//! In the definition of divergence, as for the isoperimetric function, we fix the constant A > 0 once and for all, and we do not mention it anymore.
+//! Proposition 2.7 ([BD2]). Let ε and δ be small enough positive constants. Assume
+//! that IsoV (x) ≤ εxk+1 . Then DivV (x, δ) = IsoV (x) for every x large enough.
+//! Arguments similar to those used for the usual isoperimetry allow to reduce the
+//! problem of estimating the divergence to spheres that are round, when a bounded
+//! combing exists.
+//! Theorem 2.8 ([BD2]). Assume that X is a simplicial complex of dimension n
+//! endowed with a bounded quasi-geodesic combing. Let V be a (k + 1)–dimensional
+//! connected compact sub-manifold of Rk+1 with connected boundary, where 2 ≤ k ≤
+//! n − 1.
+//! For every ε > 0 there exists η > 0 such that the following holds.
+//! Consider the restricted divergence function DivrV (x, δ), obtained by taking the
+//! supremum only over hypersurfaces modelled on ∂V that are η–round, of volume at
+//! most 2Axk and situated outside balls of radius x.
+//! Assume that DivrV (x, δ) ≤ Brβ for some β ≥ k+1 and B > 0 universal constant.
+//! Then the general divergence function DivV (x, δ(1 − ε)) is at most B 0 rβ for some
+//! B 0 > 0 depending on B, ε, η and X.
+//! 2.4. Mapping class groups and marking complexes. Let S be a compact
+//! oriented surface of genus g, with p boundary components, and let MCG(S) be the
+//! mapping class group of S. We will use a quasi-isometric model of MCG(S), the
+//! marking complex, K(S), defined as follows (see [MM] for details). Its vertices, called
+//! markings, consist of the following pair of data:
+//! • base curves: a multicurve consisting of 3g+p−3 components, i.e. a maximal
+//! simplex in C(S). This collection is denoted base(µ).
+//! • transversal curves: to each curve γ ∈ base(µ) is associated
+//! S an essential
+//! curve. Letting T denote the complexity 1 component of S \ α∈base µ,α6=γ α,
+//! the transversal curve to γ is a curve t(γ) ∈ C(T ) with distC(T ) (γ, t(γ)) = 1.
+//! Two vertices µ, ν ∈ K(S) are connected by an edge if either of the two conditions
+//! hold:
+//! (1) Twist: µ and ν differ by a Dehn twist along one of the base curves:
+//! base(µ) = base(ν) and all their transversal curves agree except for tµ (γ),
+//! obtained from tν (γ) by twisting once about the curve γ.
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 9
+//!
+//! (2) Flip: The base curves and transversal curves of µ and ν agree except for
+//! one pair (γ, t(γ)) ∈ µ for which the corresponding pair consists of the same
+//! pair but with the roles of base and transversal reversed.
+//! Note that after performing one Flip the new base curve may intersect several
+//! transversal curves. Nevertheless by [MM, Lemma 2.4], there is a finite set of natural
+//! ways to resolve this issue, yielding a uniformly bounded number of flip moves which
+//! can be obtained by flipping the pair (γ, t(γ)) ∈ µ; an edge connects each of these
+//! possible flips to µ.
+//! Theorem 2.9 ([MM]). The graph K(S) is locally finite and the mapping class
+//! group acts cocompactly and properly discontinuously on it. In particular, the orbit
+//! map yields a quasi-isometry from MCG(S) to K(S).
+//! A quasi-geodesic g in K(S) is C(S)–monotonic if one can associate a geodesic t
+//! in C(S) which shadows g in the sense that if the endpoints of g are µ and ν, then
+//! the endpoints of t are vertices of πC(S) (base(µ)) and respectively πC(S) (base(ν)),
+//! moreover there is a coarsely monotonic map v : g → t such that v(ρ) is a vertex in
+//! πC(S) (base(ρ)) for every vertex ρ ∈ g.
+//! Let g be a pseudo-Anosov on S. By [MM, Proposition 7.6], there exists a quasiinvariant axis of g in C(S), that is, a bi-infinite geodesic a in C(S) such that g n a is
+//! at Hausdorff distance O(1) from a for all n ∈ Z. The set of distances distK(S) (ν, gν)
+//! with πC(S) (ν) at distance O(1) from a admits a minimum. Let µ be a point such
+//! that distK(S) (µ, gµ) is this minimum, and let h be a hierarchy path (i.e. a particular
+//! type of quasi-geodesic in K(S) as constructed in [MM]) joining µ and gµ, such that
+//! h shadows a tight geodesic
+//! t in C(S) at distance O(1) from a. We call the bi-infinite
+//! S
+//! quasi-geodesic p = n∈Z g n h a quasi-axis of g in K(S).
+//! It follows from [Beh] that there exists a constant C > 0 such that for every δ > 0
+//! small enough, if the surface S has complexity at least 2, then g −n and g n may be
+//! joined in MCG(S) by a path whose length is of order n2 which is disjoint from the
+//! δn–ball around 1. Equivalently, for every µ ∈ p, g −n µ and g n µ may be joined in
+//! K(S) by a path of length of order n2 and disjoint from the δn–ball around µ.
+//! We now recall some terminology from [BKMM, §2.1.8]. Let ∆ be an arbitrary
+//! simplex in the curve complex C(S). Sometimes its set of vertices is called a multicurve on S. The open subsurface open(∆) determined by ∆ is the union of all the
+//! components of S \ ∆ with complexity at least 1 and of all the annuli homotopic to
+//! curves in ∆. We call components of an open subsurface the list of all the components and annuli defined as above by a multicurve ∆. For ∆ = ∅ the whole surface
+//! S is the unique component of open(∆).
+//! In what follows we use the notation W1 , . . . , Wk , with 0 < k ≤ ξ(S), for the list
+//! of components of open(∆), and for every i ∈ {1, 2, . . . , k} we denote S \ Wi by Wic .
+//! Let ∆i denote the boundary ∂Wi ; note that ∆ is the union of the ∆i , after
+//! removing any duplicate curves.
+//! Define Q(∆) to be the set of elements of K(S) whose base curves contain ∆.
+//! Lemma 2.10.
+//! (1) If µ and ν are two markings in Q(∆) then there exist hierarchy paths joining them and entirely contained in Q(∆).
+//! (2) The set Q(∆) is quasi-isometric to K(W1 ) × · · · × K(Wk ).
+//! Proof. (1) follows from the construction of hierarchy paths [MM], while (2) follows
+//! from [BM, Lemma 2.1].
+//! 
+//!
+//!
+//! --- PAGE BREAK ---
+//! 10
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! Given subsets Ai ⊆ K(Wi ), for i ∈ {1, 2, . . . , k}, the product A1 × · · · × Ak can
+//! be identified with a subset of K(W1 ) × · · · × K(Wk ), and by Lemma 2.10, (2), it can
+//! also be (quasi-)identified with a subset of Q(∆). In what follows we use the same
+//! notation A1 × · · · × Ak for the subsets in K(W1 ) × · · · × K(Wk ) and in Q(∆i ).
+//! Let Z be a subsurface of S; throughout, all subsurfaces we consider are implicitly
+//! assumed to be essential subsurfaces. Following [Beh], we consider a projection
+//! πK(Z) : K(S) → 2K(Z) defined as follows. For an arbitrary µ ∈ K(S) we can build
+//! a marking on Z by first choosing an element γ1 ∈ πC(Z) (µ), and then recursively
+//! choosing γn from πC(Z\∪i<n γi ) (µ), for each n ≤ ξ(Z). Take these γi to be the base
+//! curves of a marking on Z. For each γi we define its transversal t(γi ) to be an element
+//! of πA(γi ) (µ), where A(γi ) is the annulus with core curve γi . This process yields a
+//! marking, see [Beh] for details. Arbitrary choices were made in this construction,
+//! but two choices in building πK(Z) (µ) lead to elements of K(Z) whose distance is
+//! O(1), where the bound depends only on ξ(S) [Beh].
+//! Given a marking µ and a multicurve ∆, the projection πK(S\∆) (µ) can be defined
+//! as above. This allows one to construct a point µ0 ∈ Q(∆) which, up to a uniformly
+//! bounded error, is closest to µ. See [BM] for details. The marking µ0 is obtained by
+//! taking the union of the (possibly partial collection of) base curves ∆ with transversal curves given by π∆ (µ) together with the base curves and transversals given
+//! by πK(S\∆) (µ). Note that the construction of µ0 requires, for each subsurface W
+//! determined by the multicurve ∆, the construction of a projection πK(W ) (µ). As explained previously, each πK(W ) (µ) is determined up to uniformly bounded distance
+//! in K(W ), thus µ0 is well defined up to uniformly bounded distance, depending only
+//! on the topological type of S.
+//! The following is a corollary of the distance formula in [MM].
+//! Corollary 2.11. There exist A ≥ 1 and B ≥ 0 depending only on S such that
+//! for any subsurface Z ⊂ S, the projection of K(S) onto K(Z) is an (A, B)–quasiLipschitz map, that is for any two markings µ, ν ∈ K(S) the following holds:
+//! 
+//! distK(Z) πK(Z) (µ) , πK(Z) (ν) ≤ AdistK(S) (µ, ν) + B .
+//! Consequently the nearest point projection onto Q(∆) is a quasi-Lipschitz map.
+//! Let gi be an element in MCG(S) that is pseudo-Anosov when restricted to Wi
+//! and is the identity on Wic , i ∈ {1, 2, . . . , k} (this includes the case of pseudo-Anosov,
+//! where ∆ = ∅). Let pi be a quasi-axis of gi in K(Wi ).
+//! Proposition 2.12. There exists a quasi-Lipschitz map Φi : K(S) → pi with the
+//! following properties:
+//! (1) Φi is coarsely locally-constant in the complement of pi × K(Wic ), i.e. there
+//! exists constants λ > 0 and r0 > 0 with the property that for any point µ at
+//! distance r ≥ r0 from pi × K(Wic ), the diameter of Φi (B(µ, λr)) is at most
+//! a uniform constant, c, which depends only on gi ;
+//! (2) Φi restricted to pi × K(Wic ) is at uniformly bounded distance from the projection onto the first component.
+//! Proof. Follows immediately from the proofs of Theorems 3.1 and 3.5 in [BM].
+//!
+//! 
+//!
+//! The map Φ : K(S) → p1 × · · · × pk defined by Φ(µ) = (Φ1 (µ) , . . . , Φk (µ)) is
+//! also quasi-Lipschitz.
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 11
+//!
+//! The inclusion hg1 i × · · · hgk i → MCG(S) is a quasi-isometric embedding [FLM],
+//! and one can use the orbit map to construct a quasi-isometric embedding p1 ×
+//! · · · × pk → K(S), with constants depending on the chosen elements g1 , . . . , gk . The
+//! composition of the latter inclusion with the map Φ is at uniformly bounded distance
+//! from the identity, since Φ is a sort of (quasi-)nearest point projection.
+//!
+//! 2.5. Mapping class groups and simplicial complexes. The mapping class
+//! group itself and finite index subgroups of it act properly discontinuously cocompactly on various other CW–complexes. Indeed, all finite index torsion-free subgroups of a mapping class group have classifying spaces given by finite CW-complexes, see [Iva1, Iva2]. For the mapping class groups themselves, concrete constructions of CW-complexes on which they act properly discontinuously and with
+//! compact quotient (complexes that are moreover cocompact models for classifying
+//! spaces for proper actions) are described in [JW, Mis]. Any of these CW-complexes
+//! can be used to define filling functions for the mapping class group.
+//! Another approach is to apply Theorem 10.2.6 in [ECH+ ]. The mapping class
+//! groups are automatic [Mos], hence combable, so they are F∞ . In particular, for
+//! every n ≥ 0, they act by simplicial isomorphisms, properly discontinuously, with
+//! trivial stabilizers of vertices, on a simplicial complex X of dimension n + 1 and
+//! n-connected, such that the quotient has finitely many cells.
+//! For every surface S we denote by XS a simplicial complex with properties as
+//! above. Note that we allow the case when S has several connected components.
+//! Using the previous section and [AWP, Lemma 12], the following properties can
+//! be established about these simplicial complexes, up to repeated barycentric subdivisions. We use the same generic objects defined in the previous section, with the
+//! same notation and terminology.
+//! Given a pseudo-Anosov g ∈ MCG(S), there exists a bi-infinite almost geodesic
+//! (1)
+//! b
+//! p in XS such that g acts on it with compact quotient, and the points on it quasiminimize the displacement by g. Such a path is a quasi-axis of g. Moreover, for
+//! every x ∈ b
+//! p, g −n x and g n x may be joined in XS by a curve of length of order n2
+//! which is disjoint from the δn–ball around x.
+//! For ∆, W1 , . . . , Wk defined as previously, there exists a quasi-isometric embedding which is also a simplicial map Λ∆ : XW1 × · · · × XWk → XS , with image a
+//! subcomplex such that every two points in it can be joined in it by a path that is
+//! an almost geodesic in XS .
+//! As before, given subsets Bi in XWi , i = 1, 2, . . . , k , we let B1 × · · · × Bk denote
+//! the subset in XW1 × · · · × XWk and its image in XS .
+//! There exists a bounded perturbation of the nearest point projection π
+//! b∆ : XS →
+//! XW1 × · · · × XWk which is a simplicial map, and a quasi-Lipschitz map. This
+//! allows to define a map with the same properties π
+//! bWi : XS → XWi for i = 1, . . . , k .
+//! Consider pure reducible elements gi as before, and their quasi-axes b
+//! pi in XWi .
+//! The projections Φi defined in Proposition 2.12 allow to define a simplicial map
+//! b i : XS → R that is quasi-Lipschitz and coarsely locally-constant in the compleΦ
+//! ment of b
+//! pi × XWic , while its restriction to b
+//! pi × K(Wic ) is at uniformly bounded
+//! distance from the projection
+//! onto
+//! 
+//!  the first component. We can then define the map
+//! b : XS → Rk , Φ
+//! b= Φ
+//! b 1, . . . , Φ
+//! b k which is also quasi-Lipschitz.
+//! Φ
+//!
+//!
+//! --- PAGE BREAK ---
+//! 12
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! The almost geodesics b
+//! pi : R → XWi (which can also be seen as simplicial maps)
+//! define an inclusion Υ∆ : Rk → XW1 ×· · ·×XWk which is simplicial, a quasi-isometric
+//! embedding, and equivariant with respect to the action of hg1 i × hg2 i × · · · × hgk i.
+//! Hence, we have an inclusion Υ : Rk → XS ,Υ = Λ∆ ◦ Υ∆ with the same properties;
+//! b
+//! moreover, we also have that Φ◦Υ
+//! is at uniformly bounded distance from the identity.
+//! 3. Higher dimensional filling and divergence in mapping class groups
+//! In this section we fix an arbitrary surface S with ξ(S) > 0. As in Section 2.5, we
+//! consider a simplicial complex XS on which MCG(S) acts properly discontinuously
+//! (m)
+//! and such that the quotient of each skeleton XS is composed of finitely many m–
+//! simplices. From the fact that mapping class groups are automatic [Mos] it follows
+//! that XS has a bounded (L, C)–quasi-geodesic combing.
+//! 3.1. Isoperimetry in mapping class groups. Known facts about mapping class
+//! groups imply that for each dimension k below the quasi-flat rank, the isoperimetric
+//! function in XS is asymptotically equal to the k–dimensional Euclidean isoperimetric
+//! function, and that above the rank the isoperimetric function is sub-Euclidean.
+//! Theorem 3.1. The k–th isoperimetric function in the mapping class group of a
+//! surface satisfies Isok (x)  xk+1 for k < ξ(S) and Isok (x) = o(xk+1 ) for k ≥ ξ(S).
+//! Proof. By Theorem 2.5, for every integer k ≥ 1 we have Isok (x)  xk+1 . Moreover,
+//! the presence of quasi-flats of dimension k inside the mapping class groups (see
+//! Proposition 3.5 for a construction of some such quasi-flats and Corollary 2.11 for
+//! relevant results about their geometry) and [AWP, Theorem 2] imply that for k <
+//! ξ(S) we have Isok (x)  xk+1 .
+//! For k ≥ ξ(S), the Theorem follows from [Wh, Theorem 1, p. 435], [Wen1], and
+//! the fact that the maximal dimension of locally compact subsets in an arbitrary
+//! asymptotic cone of MCG(S) is ξ(S) [BM].
+//! For the convenience of the reader, we also provide a more explicit argument.
+//! According to [BD2], it suffices to prove that the filling function is o(xk+1 ) only
+//! for spheres (respectively surfaces) that are round and unfolded. We argue for a
+//! contradiction and assume that there exists a sequence rn of k-dimensional spheres
+//! for k ≥ 3 (respectively of surfaces for k = 2) that are round and unfolded, of volume
+//!  xkn and of filling volume at least λxk+1
+//! n , where λ is a positive constant and xn →
+//! ∞ . Let dn be filling (k + 1)-dimensional balls (respectively filling handlebodies)
+//! realizing FillVol(rn ) and with a minimal number of chambers in the domain.
+//! The argument in [Wen3, pp. 263–264] with Tn = rn and Sn = dn implies that
+//! the sequence (dn ) yields a compact subset of dimension k + 1 in an asymptotic cone
+//! of XS , a contradiction.
+//! 
+//! For k ≥ ξ(S) we conjecture Isok (x)  xk . In a forthcoming paper [BD3] we prove
+//! that an asymptotic version of this holds. The sharp result holds in low genus:
+//! Theorem 3.2. Given a surface S of genus 0 or 1, or of genus 2 and without
+//! boundary, the k–th isoperimetric function in the mapping class group of S satisfies
+//! Isok (x)  xk for k ≥ ξ(S).
+//! Proof. It was recently established that the mapping class group of a surface has
+//! a cocompact classifying space for proper actions of dimension equal to the virtual
+//! cohomological dimension [HOP, AMP]. The virtual cohomological dimension for
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 13
+//!
+//! the mapping class group of S is: p − 3 if g = 0; 4g − 5 if p = 0; and 4g + p − 4 if
+//! both g and p are positive [Har].
+//! Since the surfaces in the hypothesis of the theorem thus have vcd(MCG(S)) =
+//! ξ(S), the result then follows from the fact that if a group has a cocompact classifying
+//! space for proper actions of dimension r, then Isok (x)  xk for all k ≥ r [AWP,
+//! Corollary 9].
+//! 
+//! 3.2. Divergence in mapping class groups. In the mapping class group, the
+//! value for rank analogous to that in a symmetric space is the quasi-flat rank, i.e. the
+//! maximal dimension of a quasi-flat in the Cayley graph of the group. As discussed
+//! previously, for MCG(S) this rank is given by ξ(S) = 3g + p − 3 [BM, Ham]. Below
+//! we show how, analogous to the case of symmetric spaces, this rank plays a critical
+//! role for divergence in mapping class groups as well.
+//! Theorem 3.3. Given a surface S and an arbitrary integer k ≥ ξ(S), the kdimensional divergence in MCG(S) satisfies Divk (x) = o(xk+1 ).
+//! If moreover S is of genus 0 or 1, or of genus 2 and without boundary, then
+//! Divk (x)  xk .
+//! Proof. The result follows from Proposition 2.7, and from Theorems 3.1 and 3.2.
+//!
+//! 
+//!
+//! Theorem 3.4. For any S and for any integer 0 ≤ k < ξ(S), the k-dimensional
+//! divergence in MCG(S) satisfies Divk  xk+2 .
+//! The rest of the section is devoted to the proof of Theorem 3.4. We use the
+//! terminology introduced in Sections 2.4 and 2.5. In particular we consider a compact
+//! connected orientable surface S of complexity m = ξ(S) ≥ 2, and an m-connected
+//! simplicial complex XS of dimension m + 1 on which MCG(S) acts by simplicial
+//! isomorphisms, properly discontinuously, with trivial stabilizers of vertices and such
+//! that the quotient has finitely many simplices. Theorem 3.4 is a direct consequence
+//! of Proposition 3.5 below. Indeed, in this proposition we show that for every 0 <
+//! k ≤ ξ(S) there exist naturally arising (k −1)–dimensional spheres in XS which have
+//! divergence  xk+1 .
+//! Proposition 3.5. Let ∆ be a multicurve on S and let W1 , . . . , Wk be the components of open(∆), 0 < k ≤ ξ(S). For i = 1, . . . , k, consider gi elements in MCG(S)
+//! that are pseudo-Anosov when restricted to Wi and the identity on Wic = S \ Wi .
+//! Let Υ : Rk → XS be a simplicial map defining a quasi-flat and equivariant for the
+//! action of hg1 i × hg2 i × · · · × hgk i, and let x0 = Υ(0).
+//! (k−1)
+//! Let Sn
+//! denote the boundary of the minimal simplicial subcomplex of Rk cov(k−1)
+//! ering the cube {(x1 , . . . , xk ) ∈ Rk ; |xi | ≤ n, i = 1, 2, ...k} and let sn
+//! be the
+//! (k−1)
+//! (k − 1)–dimensional sphere in XS defined by the restriction of Υ to Sn
+//! .
+//! (1) There exists a constant C1 > 0, such that for every small enough δ ∈ (0, 1),
+//! (k−1)
+//! every k–disk d filling the sphere sn
+//! in XS and disjoint from the δn–ball
+//! k+1
+//! around x0 has area at least C1 n
+//! .
+//! (2) There exists a constant C2 > 0 such that, if at least one of the surfaces
+//! Wi has complexity ≥ 2 (which implies, in particular, that k < 3g + p − 3),
+//! then for every δ > 0 small enough there exists a k–disk d filling the sphere
+//! (k−1)
+//! sn
+//! , disjoint from the δn–ball around x0 , and with area at most C2 nk+1 .
+//!
+//!
+//! --- PAGE BREAK ---
+//! 14
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! Remark 3.6. Proposition 3.5, (1), implies that the k–dimensional quasi-flats Υ(Rk )
+//! in XS and hg1 i × hg2 i × · · · × hgk i in MCG(S) are maximal in the sense that no
+//! quasi-flat of strictly larger dimension quasi-contains them. This is a subtle point,
+//! even though it is obvious when considering quasi-flats of the same type.
+//! (k−1)
+//!
+//! Proof. (1) Let d : D → XS be a k–dimensional disk which fills sn
+//! in XS and
+//! (k−1)
+//! b
+//! b
+//! is disjoint from the δn–ball around x0 . Then Φ ◦ d is a disk filling Φ ◦ sn
+//! in
+//! b ◦ Υ is at uniformly bounded distance from the identity, Φ
+//! b ◦ s(k−1)
+//! Rk . Since Φ
+//! is at
+//! n
+//! (k−1)
+//! uniformly bounded distance from Sn
+//! .
+//! b ◦ d covers the full cube in
+//! In particular, for  > 0 small enough, the image of Φ
+//! Rk centered in x0 and of edge length n. We denote the latter by Cube and the
+//! initial full cube of edge length 2n by Cube2 .
+//! For ease of notation, we explain the argument in the case k = 2 and then, after
+//! each step, how it can be modified to yield the general case, when the required
+//! modifications are not obvious.
+//! For any choice of η < n/2 we may consider a grid subdividing Cube2 into squares
+//! with edge length 2η (to simplify the discussion we will assume that both n and n are
+//! integral multiples of 2η; otherwise an additional discussion of boundary rectangles
+//! is needed, which adds only notational complications, see, e.g. [LS]) and for each of
+//! the squares composing it consider the sub-square of edge η obtained by shrinking
+//! with factor 12 around the center. Let Π be one such full square that is moreover
+//! contained in Cube . Consider the `1 –geodesic g starting in the midpoint a of the
+//! upper horizontal edge of the square, going through the center of the square and
+//! ending in the midpoint b of the right hand side vertical edge.
+//! b ◦ d : D → Rk by f .
+//! In what follows we denote the map Φ
+//! Step 1. The first step is to prove that for some constant λ  η the set f −1 (g)
+//! has a connected component C for which f (C) intersects the λ–ball around each of
+//! the two points a and b respectively. This argument is inspired from the proof of
+//! [LS, Proposition 3.2].
+//! Assume on the contrary that this is not true. Since the map f is simplicial,
+//! defined on a triangulation of D2 , there are finitely many connected components of
+//! f −1 (g). According to our hypothesis all the images of components that intersect
+//! B(a, λ) do not intersect B(b, λ). Let G be the union of the components with image
+//! by f intersecting B(a, λ) but not B(b, λ). Since both G and f −1 (g) \ G are compact
+//! there exists ε > 0 such that Uε = {x ∈ D2 ; dist(x, G) < ε} intersects f −1 (g) only
+//! in G, and f (Uε ) intersects the boundary of the square Π only in the upper horizontal
+//! edge of the square.
+//! In what follows we construct a continuous map F from the 2-dimensional disk D2
+//! to R2 , which coincides with f outside Uε and on f −1 (∂Π) (here ∂Π is the boundary
+//! of Π) and with image not containing the geodesic segment c = [g \ {a}] ∩ B(a, λ) .
+//! This will finish this step, since it will imply that ∂Π, contractible in F (D2 ), is
+//! therefore contractible in R2 \ c, a contradiction.
+//! Consider the map F : D2 → R2 defined as follows. For x 6∈ Uε let F (x) = f (x) .
+//! For x in Uε let gx be the `1 geodesic through f (x), contained in Π, composed of a
+//! vertical and a horizontal segment with common endpoint on the diagonal from the
+//! upper right corner to the lower left corner. Let ax be the intersection point of gx
+//! with the upper horizontal edge of ∂Π, and let d(x) be the `1 –distance from ax to
+//! f (x).
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 15
+//!
+//! λ a
+//! C
+//! U
+//!
+//! G
+//! g
+//!
+//! λ
+//! b
+//!
+//! Figure 1. The set-up for Step 1
+//! h
+//! i
+//! Let ` be the length of the geodesic g and let t(x) = ` 1 − dist(x,G)
+//! . We then
+//! ε
+//! define F (x) to be the point on gx with distance to the upper horizontal edge along
+//! gx equal to the maximum between 0 and d(x) − t(x) .
+//! In other words, if d(x) is at most t(x), then F (x) equals ax ; while if d(x) is larger
+//! than t(x), then F (x) equals the point on gx at distance d(x) − t(x) from ax .
+//! The map F is continuous, coincides with f outside Uε and on the boundary of
+//! Π, and its image does not contain the piece of geodesic c = [g \ {a}] ∩ B(a, λ). This
+//! provides a contradiction which, as noted above, finishes the step when k = 2.
+//! In the general case of dimension k one may consider, instead of the upper right
+//! square bounded by g and the boundary of Π, a cube of edge length half the length of
+//! the edge of Π with one vertex the center of Π and half of its faces contained in ∂Π.
+//! The geodesic g is to be replaced by the `1 geodesic joining the endpoints of a big
+//! diagonal not containing the center; denote this new geodesic also by g. It suffices to
+//! prove that f −1 (g) has one connected component C such that f (C) intersects the λ
+//! neighborhoods of both endpoints of g. This is completed as above by showing that
+//! for each cube Π there exists a connected set CΠ in f −1 (g) such that f (CΠ ) covers
+//! the `1 geodesic constructed as above, except eventually the λ–neighborhoods of its
+//! endpoints.
+//! Step 2. We denote by gΠ the subgeodesic of g covered by f (CΠ ). Let VΠ be the
+//! set of vertices of simplices in the triangulation D of D2 that intersect CΠ . Since the
+//! image by f of every simplex has diameter at most 1 it follows that the Hausdorff
+//! distance between f (VΠ ) and gΠ is at most 1.
+//! Note that since CΠ is a connected set, the set d(VΠ ) is 1–coarsely connected in
+//! the sense that: for every two vertices x, y ∈ d(VΠ ), there exists a finite sequence
+//! of vertices z1 = x, z2 , ...zn = y such that for each i we have zi ∈ d(VΠ ) and
+//! dist(zi , zi+1 ) ≤ 1.
+//! b ◦ d(xΠ ) is at distance at most 1 from
+//! In each VΠ we fix a vertex xΠ such that Φ
+//! the center of Π. Let P be the set of all shrunken squares Π that appear in the grid
+//! and are contained in Cube , and let V be the set of vertices {xΠ ; Π ∈ P} . Note
+//! 2 2
+//! that there are approximately  ηn2 elements in V. Fix a small constant β > 0.
+//! Case 1. Assume that at least half of the points in V have the property that their
+//! images by d are at distance ≥ β2 n from XW1 × · × XWk . Denote this subset of V by
+//! V 0.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 16
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! If a vertex w is at distance ≥ β2 n from XW1 × · × XWk then there exists
+//! i ∈ {1, 2, ...k} such that w is at distance ≥ αn from XWi × XWic , where α is a
+//! fixed constant depending only on β and ξ(S). This follows from the corresponding
+//! 0
+//! statement in the marking complex: if a point µ is at distance ≥ β2 n from Q(∆)
+//! then there exists i ∈ {1, 2, ...k} such that it is at distance ≥ α0 n from Q(∆i ), where
+//! α0 is a fixed constant depending only on β 0 and ξ(S). The latter statement can be
+//! proved by induction on ξ(S) and the fact that if µ is at distance ≤ αn from all
+//! Q(∆i ) then its projection on Q(∆1 ) is at distance ≤ Lαn from Q(∆1 ∪ ∆i ) and
+//! hence µ is at distance ≤ (L + 1)αn from Q(∆1 ∪ ∆i ).
+//! We may thus assume that at least k1 of the points in V 0 are such that their image
+//! by d is at distance ≥ αn from XWi × XWic for a fixed i. Note that for each of these
+//! bi
+//! vertices xΠ the corresponding set d(VΠ ) contains a point such that its image by Φ
+//! b
+//! b
+//! is at distance at least η from the Φi –image of xΠ . This, the fact that Φi is coarsely
+//! locally-constant (see Proposition 2.12) and the fact that xΠ is at distance at least
+//! αn from XWi × XWic implies that d(VΠ ) contains a point at distance at least λαn
+//! from xΠ . Since d(VΠ ) is 1–coarsely connected, it follows that d(VΠ ) contains at
+//! least λαn distinct points. Note that if Π and Π0 are two disjoint cubes, then for η
+//! large enough d(VΠ ) and d(VΠ0 ) are disjoint. We have thus obtained that the image
+//! 1  2 n2
+//! of d contains at least 2k
+//! η 2 · λαnd distinct points, images of interior vertices. We
+//! proved in [BD2] that with these hypotheses the chambers are all non-collapsed and
+//! thus the area of d is  n3 .
+//! Case 2. Now assume that at least half of the points in V have the property that
+//! their d–images are at distance ≤ β2 n from XW1 × · · · × XWk . Let V 0 be this new
+//! b ◦ d(V 0 ) is contained
+//! subset of vertices. Since d(V 0 ) avoids a δn–ball around x0 and Φ
+//! in Cube , it follows that, for β and  small enough, by post-composing d with the
+//! projection onto XW1 × · · · × XWk , we obtain a filling disk d0 = π
+//! b∆ ◦ d such that the
+//! points in V 0 are sent at distance ≥ β2 n from Υ∆ (Rk ). Then at least k1 of the points
+//! β
+//! in V 0 have image by d0 at distance ≥ 2k
+//! n from b
+//! pi for some fixed i ∈ {1, 2, ...k}.
+//! 0
+//! 00
+//! Denote this subset of V by V . For notational simplicity we assume that i = 1.
+//! For every vertex xΠ in V 00 there exists a point in VΠ such that given their
+//! respective images by d0 , the projections of their respective first coordinates onto
+//! b
+//! p1 are at distance at least η . Then with the same argument as in Case 1 we
+//! deduce that d0 (VΠ ) contains at least λαn points, hence d0 (and therefore d, up to
+//! 1  2 n2
+//! multiplication by some universal constant in (0, 1)) has area at least 6k
+//! η 2 · λαn .
+//! (2) Assume that W1 has complexity ≥ 2 . The point x0 is the image by Λ∆ of
+//! a point y0 = (y01 , . . . , y0k ) in Υ∆ (Rk ) . According to the arguments in Section 2.5,
+//! b
+//! p1 (−n) and b
+//! p1 (−n) can be joined in XW1 by a path c with length in [an2 , bn2 ], where
+//! 0 < a < b, path avoiding the ball centered in y01 and of radius δ 0 n . Let d be a disk of
+//! area whose area is an affine function of n3 filling the loop c ∪ b
+//! p1 ([−n, n]). It can be
+//! obtained by taking, for every point x on c its projection x0 on b
+//! p1 ([−n, n]), letting x
+//! vary, using the fact that the projection on b
+//! p1 is quasi-Lipschitz and coarsely locallyconstant (see Proposition 2.12) and quasi-geodesics qx0 x given by the combing with
+//! basepoint x0 .
+//! Sk
+//! Then c×b
+//! p2 ([−n, n])×· · ·×b
+//! pk ([−n, n])∪ i=2 d×b
+//! p2 ([−n, n])×· · ·×b
+//! pi−1 ([−n, n])×
+//! b
+//! pi (±n) × b
+//! pi+1 ([−n, n]) × · · · × b
+//! pk ([−n, n]) compose a filling disk for the Υ∆ –image
+//! of the boundary of the cube of edge 2n centered in 0, moreover this disk has area
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 17
+//!
+//! nk+1 and it is disjoint from the δ 00 n–ball around y0 , for an appropriate choice of δ 00
+//! and δ 0 . By applying Λ∆ we obtain a disk filling the given sphere, disjoint from the
+//! δn–ball around x0 and of area nk+1 .
+//! 
+//!
+//! 4. Higher dimensional divergence of CAT (0)–groups
+//! In this section, we show how the above technique for computing higher divergence in mapping class groups can be applied in the context of CAT (0)–groups to
+//! obtain interesting examples. In particular, in this section we obtain examples that
+//! further clarify the connection between the quasi-flat rank and the divergence rank
+//! in CAT (0)–groups, by describing the behavior of the higher dimensional divergence
+//! when the dimension is below the rank.
+//! Theorem 4.1. For every positive integers r and n there exist finitely generated
+//! CAT (0)-groups with quasi-flat rank 2r (equal to the flat rank of the CAT (0)–space
+//! they act cocompactly on) and such that the (r − 1)-dimensional divergence satisfies
+//! Divr−1  xr+n .
+//! Proof. A proof of this result in the case r = 1 can be found in [BD1, Theorem
+//! 1.1]. The study of higher rank divergence is more delicate; the main additional tool
+//! needed to extend from the r = 1 case to higher dimensions is obtained by adapting
+//! the arguments we developed above to compute higher dimensional divergence in
+//! the mapping class group.
+//! In [BD1, Proposition 5.2] we described an iterative construction of a compact
+//! CAT (0) space Mn of rank 2 which we now recall. Our construction starts with a
+//! 3-dimensional non-geometric graph manifold, M1 , with a periodic Morse geodesic,
+//! f1 has divergence of order
+//! g1 , such that any of the lifts e
+//! g1 to the universal cover M
+//! x2 . It was shown in [Ger1] that such examples exist. The space Mn+1 is obtained
+//! by taking two copies of Mn and amalgamating along their corresponding copies
+//! of gn . The key element in the proof of [BD1, Proposition 5.2] is that there exists
+//! fn , at distance
+//! ηn > 0 such that, given two points α and α0 in the universal cover M
+//! e
+//! e
+//! at least x from a lift gn of gn , and with projections on gn at distance at least ηn ,
+//! the shortest path c0 joining α and α0 outside the x–tubular neighborhood of e
+//! gn has
+//! length  xn+1 .
+//! Let r and n be arbitrary fixed integers. We fix a compact CAT (0) space Mn ,
+//! together with a Morse periodic geodesic gn , as above. Take Nn to be a cartesian
+//! product of r copies of Mn , which yields a space of rank 2r. Let gn × · · · × gn
+//! be the r–dimensional torus with factors r copies of the periodic geodesic above
+//! mentioned. We will restrict our attention to those triangulations on Mn which
+//! extend triangulations of gn and of the Seifert components of the space M1 , and we
+//! will consider triangulations on Nn that refine the product structure on this space.
+//! The argument in the proof of Theorem 3.5, Part (1), Step 2, Case 2, carries over
+//! en , the boundary of a cube of
+//! almost verbatim to give that, in the universal cover N
+//! edge length x in an r-dimensional flat e
+//! gn × · · · × e
+//! gn , where e
+//! gn is a lift of gn , has
+//! (r − 1)–dimensional divergence  xr+n with respect to its center, for any choice of
+//! δ ∈ (0, 1).
+//! en is
+//! We now prove, by induction on n, that the (r−1)–dimensional divergence in N
+//! r+n
+//! at most x
+//! . In fact, we prove the stronger statement that for every r–dimensional
+//!
+//!
+//! --- PAGE BREAK ---
+//! 18
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! connected compact sub-manifold V of Rr , V with connected boundary, the corresponding divergence function DivV is at most Bxr+n , where B is independent of
+//! V.
+//! According to Theorem 2.8, it suffices to prove the above statement for hypersurfaces that are η–round, for some fixed small η.
+//! As in [BD1], we choose M1 to be a particularly simple graph manifold, namely,
+//! we let this be the space constructed by taking a pair of hyperbolic surfaces each
+//! with at least one boundary component, crossing each with a circle, and gluing the
+//! two 3–manifolds M0 and M00 , thus obtained, along a boundary torus by flipping the
+//! base and fiber directions. This implies that N1 is obtained by gluing the product
+//! N0 of r copies of M0 with the product N00 of r copies of M00 along the product
+//! of r copies of a 2–dimensional torus, following a flip in each factor. As Mn+1 is
+//! inductively obtained by isometrically gluing two copies of Mn along gn , we have
+//! that Nn+1 is obtained from Nn by taking two copies of it, and identifying the two
+//! respective copies of the r–torus gn × · · · × gn .
+//! e0 and N
+//! e 0 of rank
+//! In the initial step of the induction, the two symmetric spaces N
+//! 0
+//! r
+//! 2r have (r − 1)-dimensional divergence ≤ Bx . The same bound holds for every
+//! DivV with V of dimension r, and the constant B independent of V .
+//! One has to deduce from the initial step that the (r−1)–dimensional divergence of
+//! e1 is  xr+1 . In the inductive step, from the fact that N
+//! en has (r − 1)–dimensional
+//! N
+//! r+n
+//! e
+//! divergence  x
+//! it must be deduced that Nn+1 has (r−1)–dimensional divergence
+//!  xr+n+1 . The two arguments are very similar, so we explain the latter only.
+//! en+1 and an (r − 1)–dimensional hypersurface h outside
+//! Consider a point c in N
+//! en+1 is composed of copies of
+//! B(c, x) and of volume at most Axr−1 . The space N
+//! en glued along flats of dimension r, and this decomposition is encoded by the
+//! N
+//! en ,
+//! Bass–Serre tree of the fundamental group: vertices correspond to copies of N
+//! e
+//! while edges correspond to gluings. In what follows we call the copies of Nn geoen+1 , following the terminology in
+//! metric components, or, simply, components of N
+//! 3-dimensional manifolds. We call separating flats the r-dimensional flats that are
+//! lifts of the r–torus along which the gluing is done. Given a vertex v in the Bass-Serre
+//! tree, we use the notation N (v) to designate the geometric component corresponding to that vertex. Likewise, given an edge e we denote by F (e) the separating flat
+//! corresponding to it.
+//! en , we denote by πC the nearest point projection
+//! For an arbitrary convex set C in N
+//! onto C.
+//! en+1 into two open convex subsets, and
+//! Note that every separating flat splits N
+//! their closures (obtained by adding the flat in question) are likewise convex. We
+//! call the latter closures half spaces. Given a point p contained in only one geometric
+//! component, a half space opposite to it is one that does not contain that point.
+//! Without loss of generality we may assume that the point c is a vertex of the
+//! triangulation and it is contained in only one component, therefore only one vertex
+//! vc in the Bass-Serre tree corresponds to it. The hypersurface h determines a finite
+//! connected sub-tree Th inside the Bass-Serre tree, the edges of which are all the
+//! separating flats crossed by h, and the vertices of which are all the components
+//! intersecting h in an (r − 1)–dimensional hypersurface with boundary.
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 19
+//!
+//! Given a separating flat F , we denote by hF the intersection of h with the half
+//! space determined by F and opposite to c. It is composed of several (r − 1)–
+//! dimensional domains whose boundaries compose the boundary ∂hF , entirely contained in F . Since we are in a CAT (0) space and F is totally geodesic, the projection
+//! πF is 1-Lipschitz. Therefore the volume needed to fill ∂hF in F is at most Vol(hF ).
+//! We denote the new domain thus obtained by b
+//! hF . The space has a bi-combing,
+//! therefore hF ∪ b
+//! hF can be filled with volume at most 2Vol(hF )RF , where RF is the
+//! minimal radius R such that the R–tubular neighborhood of F contains hF . By
+//! hypothesis h is η–round, hence RF = O(x).
+//! Assume that some of the separating flats F crossed by h are at distance at least
+//! δx from c. For every such flat we replace hF by b
+//! hF , and we fill all the hF ∪ b
+//! hF thus
+//! r+1
+//! obtained with a volume O(x ). Thus, up to an additional filling volume of order
+//! xr+1 , we may assume that all the flats crossed by h intersect B(c, δx).
+//! Without loss of generality we may also assume that the vertex vc is in Th . Indeed,
+//! if not then let w be the nearest vertex to vc in Th . The projection c0 of c onto the
+//! component N (w) is the same thing as the projection onto the r-separating flat Fw
+//! contained in N (w) and separating it from c. By the previous, we have that c0 is at
+//! distance at most δx and that consequently h is at distance at least (1 − δ)x from
+//! c0 . Any filling of h that is outside B (c0 , δx) is also outside B (c, δx): the half space
+//! determined by the flat Fw and opposite to c is convex, therefore the projection onto
+//! it diminishes the distances. We may thus replace c by c0 , at the cost of replacing the
+//! δ
+//! . Clearly a bounded perturbation of c0 allows us to assume that
+//! parameter δ by 1−δ
+//! it is contained in only one component, and that it is a vertex of the triangulation.
+//! Let F1 , . . . , Fk be the separating flats in N (vc ) that are crossed by h, and let
+//! e1 , . . . , ek be the corresponding edges. Each of the connected components of Th \{vc }
+//! is a rooted tree Ti with root vc , the first level composed of only one edge ei and with
+//! vc removed, for i ∈ {1, 2, . . . , k}. Fix an arbitrary i ∈ {1, 2, . . . , k}. For simplicity
+//! we denote hFi by hi . Let `i be such that the (r − 1)-volume of hi is A`ir−1 .
+//! Assume first that hi is an (r−1)-domain with boundary ∂hi an (r−2)-hypersurface
+//! contained in Fi . Its projection onto Fi is a domain of volume at most A`r−1
+//! filling
+//! i
+//! ∂hi . Let ci be the projection of c onto Fi . According to the previous hypothesis
+//! dist(c, ci ) ≤ δx. In order to avoid B (c, δx) when filling a hypersurface in the half
+//! opposite to c of boundary Fi , it suffices to avoid B (ci , δx). As ∂hi is an (r − 2)hypersurface in an r–dimensional flat, its divergence with respect to any point is of
+//! the same order as its filling. Hence, there exists an (r − 1)-domain h0i contained in
+//! Fi , with boundary ∂hi , with volume ≤ B`r−1
+//! , and which avoids B (ci , δx).
+//! i
+//! We prove that the hypersurface hi = hi ∪ h0i , of volume ≤ C`r−1
+//! , can be filled
+//! i
+//! outside B (ci , δx) with a domain of volume ≤ D`r+n+1
+//! .
+//! We
+//! prove
+//! this
+//! by induction
+//! i
+//! on the number of vertices in the tree Ti that are of valency at least 3. If this
+//! number is 0 then hi crosses a sequence of consecutive separating flats Fe1 , . . . , Fem .
+//! Each e
+//! hj = hFej has volume A`ejr−1 , for some `ej . We agree to denote hi by e
+//! h0
+//! and correspondingly `i by `e0 . For each e
+//! hj we can repeat
+//! above and
+//!  the argument
+//! 
+//! 0
+//! e
+//! e
+//! complete it with an hj contained in Fj and avoiding B πFej (c), δx , so that e
+//! hj ∪ e
+//! h0j
+//! is a hypersurface (or a union of hypersurfaces) of volume ≤ C `er−1
+//! . For j = m the
+//! i
+//! e
+//! inductive hypothesis on the geometric components implies that hm ∪ e
+//! h0m can be filled
+//! outside the ball of center π e (c) and of radius δx by a domain of volume ≤ D`er+n .
+//! Fm
+//!
+//! m
+//!
+//!
+//! --- PAGE BREAK ---
+//! 20
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! Indeed, if `ei ≤ εx for ε small enough then, by the relation between the filling
+//! radius and filling function established in [BD2], it follows that the ordinary filling
+//! of e
+//! hm ∪ e
+//! h0m already avoids a ball of radius δx centered in πFem (c), while if `ei ≥ εx
+//! e
+//! then one can apply the usual estimate
+//! of the
+//!  divergence in Nn and obtain that
+//! 
+//! e
+//! hm ∪ e
+//! h0 can be filled outside B π e (c), δx with a volume  xr+n  `er+n . For
+//! m
+//!
+//! m
+//!
+//! Fm
+//!
+//! j < m one considers the hypersurface composed of e
+//! h0j and e
+//! hj , with e
+//! hj+1 replaced
+//! 0
+//! e
+//! by hj+1 . Again the inductive hypothesis implies that this domain can be filled
+//! outside B (c, δx) with a volume ≤ D`ejr+n . We thus obtain a filling of hi of volume
+//! Pm er+n
+//! ≤D
+//! `
+//! .
+//! j=1 j
+//!
+//! e
+//! h01
+//!
+//! e
+//! h1
+//!
+//! F2
+//!
+//! Fe3
+//! ...
+//! c δx
+//! F100
+//!
+//! F
+//!
+//! ...
+//!
+//! 0
+//!
+//! Fe1
+//! Fe2
+//! e
+//! h0m
+//!
+//! Fem
+//! e
+//! hm
+//!
+//! F300
+//!
+//! F200
+//!
+//! en
+//! Figure 2. Set-up for the proof of the divergence upper bound in N
+//! 1
+//! .
+//! Note that `e1 , . . . , `em is a decreasing sequence of numbers that are at least A1/(r−1)
+//! e
+//! e
+//! e
+//! e
+//! If for some j we have `j = `j+1 then the part of h in between Fj and Fj+1 does not
+//! contain any k-simplex. Since this separates h, by filling this part with a domain of
+//! volume zero we can split h into two hypersurfaces h1 , h2 whose volume adds to that
+//! of h, and argue for h1 , h2 instead of h.
+//! Thus without loss of generality we may assume that A`er−1
+//! ≥ A`er−1
+//! j
+//! j+1 + 1 for every
+//! 1
+//! e
+//! e
+//! j, whence `j ≥ `j+1 +
+//! . We deduce that
+//! A(r−1)
+//! m
+//! X
+//! j=1
+//!
+//! `ejr+n ≤ 2A(r − 1)
+//!
+//! Z `e0
+//!
+//! xr+n dx ,
+//!
+//! 0
+//!
+//! .
+//! and conclude that hi can be filled with a volume  `r+n+1
+//! i
+//! Assume that the required estimate holds when Ti has at most a vertices of
+//! valence ≥ 3 and now assume that Ti has a + 1 vertices with valence ≥ 3. Let v
+//! be such a vertex that is farthest from vc , let e0 be the edge adjacent to it that
+//! is nearest vc , and e1 , . . . , er the other edges. The corresponding separating flats
+//! are F 0 , F1 , ....Fr , their intersections with h are the hypersurfaces h0 , h1 , . . . , hr , and
+//! the respective volumes of these hypersurfaces are A(`0 )r−1 , A(`1 )r−1 , . . . , A(`r )r−1 .
+//! With an argument
+//! Pr as above, we reduce to the case when hi ⊆ Fi , at the cost of
+//! some volume D i=1 `ir+n+1 . The hypersurface thus obtained can be filled in N (v)
+//! outside the required ball with a volume ≤ D(`0 )r+n . On the whole we obtain that
+//! we can assume that h0 ⊂ F 0 at the cost of some volume ≤ D(`0 )r+n+1 . With this
+//! change, we now can apply the inductive argument.
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! 21
+//!
+//! If hi is composed of several (r − 1)-domains with boundaries in Fi then a similar
+//! argument, repeated for each of these domains, implies that one can assume that
+//! hi ⊆ Fi , at the cost of a volume ≤ D(`i )r+n+1 .
+//! The inductive hypothesis applied again in N (vc ) allows us to conclude that to
+//! Pk
+//! fill h outside the required ball the necessary volume is B`r+n + i=1 D(`i )r+n+1 ,
+//! and thus, in particular, this volume is  `r+n+1 .
+//! 
+//! References
+//! [ABDDY] A. Abrams, N. Brady, P. Dani, M. Duchin, and R. Young, Pushing fillings in rightangled Artin groups, J. Lond. Math. Soc. 87 (2013), no. 3, 663–688.
+//! [ABDY] A. Abrams, N. Brady, P. Dani, and R. Young, Homological and homotopical Dehn
+//! functions are different, Proc. Natl. Acad. Sci. USA, 110 (2013), 19206–19212.
+//! [AK]
+//! L. Ambrosio and B. Kirchheim, Currents in metric spaces, Acta Math. 185 (2000),
+//! 1–80.
+//! [AMP]
+//! J. Aramayona and C. Martinez-Perez, The proper geometric dimension of the mapping
+//! class groups, preprint arXiv:1302.4238, 2013.
+//! [AS]
+//! Michael T. Anderson and Viktor Schroeder, Existence of flats in manifolds of nonpositive curvature, Invent. Math. 85 (1986), no. 2, 303–315.
+//! [AWP]
+//! J.M. Alonso, X. Wang, and S.J. Pride, Higher-dimensional isoperimetric (or dehn)
+//! functions of groups, J. Group Theory 2:1 (1999), 81–122.
+//! [BBF]
+//! M. Bestvina, K. Bromberg, and K. Fujiwara, Constructing group actions on quasi-trees
+//! and applications to mapping class groups, preprint, arXiv:1006.1939v3, 2010.
+//! [BBFS]
+//! N. Brady, M. Bridson, M. Forester, and K. Shankar, Snowflake groups, PerronFrobenius eigenvalues and isoperimetric spectra, Geom. Topol. 13 (2009), no. 1, 141–
+//! 187.
+//! [Br]
+//! M. Bridson, On the dimension of CAT(0) spaces where mapping class groups act, J.
+//! Reine Angew. Math 673 (2012), 55–68.
+//! [BBI]
+//! D. Burago, Y. Burago, and S. Ivanov, A course in metric geometry, Graduate Studies
+//! in Math. vol. 33, American Mathematical Society, Providence, RI, 2001.
+//! [Beh]
+//! J. Behrstock, Asymptotic geometry of the mapping class group and Teichmüller space,
+//! Geom. Topol. 10 (2006), 1523–1578.
+//! [BDS]
+//! J. Behrstock, C. Druţu, and M. Sapir, Median structures on asymptotic cones and
+//! homomorphisms into mapping class groups, Proc. London Math. Soc. 102 (2011),
+//! no. 3, 503–554.
+//! [BD1]
+//! J. Behrstock and C. Druţu, Divergence, thick groups, and short conjugators,
+//! arXiv:1110.5005, 2010.
+//! [BD2]
+//! J. Behrstock and C. Druţu, Combinatorial higher dimensional isoperimetry and divergence, preprint.
+//! [BD3]
+//! J. Behrstock and C. Druţu, Isoperimetry above the rank for groups with bicombings,
+//! preprint in preparation.
+//! [BEW]
+//! M. Bestvina, A. Eskin and K. Wortman Filling boundaries of coarse manifolds in
+//! semisimple and solvable arithmetic groups, arXiv:1106.0162, 2011.
+//! [BF]
+//! N. Brady and B. Farb, Filling invariants at infinity for manifolds of non-positive
+//! curvature, Trans. Amer. Math. Soc. 350 (1998), no. 8, 3393–3405.
+//! [BH]
+//! M. Bridson and A. Haefliger, Metric spaces of non-positive curvature, Springer-Verlag,
+//! Berlin, 1999.
+//! [BHS]
+//! Jason Behrstock, Mark F. Hagen, and Alessandro Sisto. Hierarchically hyperbolic
+//! spaces I: curve complexes for cubical groups. arXiv:1412.2171, 2014.
+//! [BKMM] J. Behrstock, B. Kleiner, Y. Minsky, and L. Mosher. Geometry and rigidity of mapping
+//! class groups. Geom. Topol. 16(2012), 781–888.
+//! [BM]
+//! J. Behrstock and Y. Minsky, Dimension and rank for mapping class groups, Ann. of
+//! Math. 167 (2008), 1055–1077.
+//! [BLM]
+//! J. Birman, A. Lubotzky, and J. McCarthy, Abelian and solvable subgroups of the mapping class groups, Duke Math. J. 50 (1983), no. 4, 1107–1120.
+//! [Bow1]
+//! Brian Bowditch, Coarse median spaces and groups, Pacific J. Math. 261 (2013), no. 1,
+//! 53–93.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 22
+//!
+//! [Bow1]
+//!
+//! [Bri1]
+//!
+//! [Bri2]
+//! [BT]
+//! [BV]
+//! [DMS]
+//! [ECH+ ]
+//! [FF]
+//! [FLM]
+//! [Ger1]
+//! [Ger2]
+//! [Gro1]
+//! [Gro2]
+//! [Gro3]
+//!
+//! [Gro1]
+//! [Gro2]
+//! [Gro3]
+//! [Ham]
+//! [Har]
+//! [Hat]
+//! [HV]
+//! [Hin]
+//! [HOP]
+//! [Iva1]
+//! [Iva2]
+//! [JW]
+//!
+//! [KL]
+//! [Kle9]
+//!
+//! JASON BEHRSTOCK AND CORNELIA DRUŢU
+//!
+//! Brian H. Bowditch, Some properties of median metric spaces, to appear in Groups
+//! Geom. Dyn.
+//! http://homepages.warwick.ac.uk/ masgak/preprints.html
+//! Martin R. Bridson. The geometry of the word problem. In Invitations to geometry
+//! and topology, volume 7 of Oxf. Grad. Texts Math., pages 29–91. Oxford Univ. Press,
+//! Oxford, 2002.
+//! M. Bridson, Polynomial Dehn functions and the length of asynchronously automatic
+//! structures, Proc. London Math. Soc. 85 (2002), no. 3, 441–466.
+//! J. Burillo and J. Taback, Equivalence of geometric and combinatorial Dehn functions,
+//! New York J. Math. 8 (2002), 169–179.
+//! M. Bridson and K. Vogtmann, On the geometry of the automorphism group of a free
+//! group, Bull. London Math. Soc. 27 (1995), no. 6, 544–552.
+//! C. Druţu, Shahar Mozes, and Mark Sapir, Divergence in lattices in semisimple Lie
+//! groups and graphs of groups, Trans. Amer. Math. Soc. 362 (2010), no. 5, 2451–2505.
+//! D.B.A. Epstein, J. Cannon, D.F. Holt, S. Levy, M.S. Paterson, and W.P. Thurston,
+//! Word Processing and Group Theory, Jones and Bartlett, 1992.
+//! H. Federer and W. Fleming, Normal and integral currents, Ann. Math. 72 (1960),
+//! 458–520.
+//! B. Farb, A. Lubotzky, and Y. Minsky, Rank one phenomena for mapping class groups,
+//! Duke Math. J. 106 (2001), no. 3, 581–597.
+//! S. Gersten, Divergence in 3-manifold groups, Geom. Funct. Anal. 4 (1994), no. 6,
+//! 633–647.
+//! , Quadratic divergence of geodesics in CAT(0)-spaces, Geom. Funct. Anal. 4
+//! (1994), no. 1, 37–51.
+//! M. Gromov, Filling Riemannian manifolds, Journal of Differential Geometry 18 (1983),
+//! 1–147.
+//! M. Gromov. Hyperbolic groups. In S. Gersten, editor, Essays in group theory, volume 8
+//! of MSRI Publications. Springer, 1987.
+//! , Asymptotic invariants of infinite groups, Geometric Group Theory, Vol. 2
+//! (Sussex, 1991) (G. Niblo and M. Roller, eds.), LMS Lecture Notes, vol. 182, Cambridge
+//! Univ. Press, 1993, pp. 1–295.
+//! Chad Groft, Isoperimetric functions on the universal covers of compact spaces, ProQuest LLC, Ann Arbor, MI, 2007, Thesis (Ph.D.)–Stanford University.
+//! , Generalized Dehn Functions I, preprint, arXiv:0901.2303.
+//! , Generalized Dehn Functions II, preprint, arXiv:0901.2317.
+//! U. Hamenstädt, Geometry of the mapping class groups III: Quasi-isometric rigidity,
+//! preprint arXiv:math/0512429.
+//! J. L. Harer, The virtual cohomological dimension of the mapping class group of an
+//! orientable surface, Invent. Math. 84 (1986), no. 1, 157–176.
+//! A. Hatcher, Algebraic Topology, Cambridge University Press, 2002.
+//! A. Hatcher and K. Vogtmann, Isoperimetric inequalities for automorphism groups of
+//! free groups, Pacific J. Math. 173 (1996), no. 2, 425–441.
+//! Mohamad A. Hindawi, On the filling invariants at infinity of Hadamard manifolds,
+//! Geom. Dedicata 116 (2005), 67–85.
+//! S. Hensel, D. Osajda, and P. Przytycki, Realisation and dismantlability, preprint
+//! arXiv:1205.0513, 2012.
+//! N. Ivanov, Complexes of curves and Teichmüller spaces, Math. Notes 49 (1991), no. 5–
+//! 6, 479–484.
+//! , Mapping class groups, Handbook of geometric topology, North-Holland, Amsterdam, 2002, pp. 523–633.
+//! Lizhen Ji and Scott A. Wolpert, A cofinite universal space for proper actions for
+//! mapping class groups, In the tradition of Ahlfors-Bers. V, Contemp. Math. vol. 510,
+//! Amer. Math. Soc. Providence, RI, 2010, pp. 151–163.
+//! Michael Kapovich and Bernhard Leeb. Actions of discrete groups on nonpositively
+//! curved spaces. Math. Ann. 306(1996), 341–352.
+//! Bruce Kleiner, The local structure of length spaces with curvature bounded above, Math.
+//! Z. 231 (1999), no. 3, 409–456.
+//!
+//!
+//! --- PAGE BREAK ---
+//! DIVERGENCE FOR MAPPING CLASS GROUPS AND CAT(0) GROUPS
+//!
+//! [Lan]
+//! [Leu1]
+//! [Leu2]
+//! [LS]
+//! [Mis]
+//! [MM]
+//! [Mos]
+//! [Ols]
+//! [Pap95]
+//!
+//! [Pap96]
+//! [Pap00]
+//! [Ril]
+//! [Wen1]
+//! [Wen2]
+//! [Wen3]
+//! [Wen4]
+//! [Wh]
+//! [You1]
+//! [You2]
+//!
+//! 23
+//!
+//! Urs Lang, Higher-dimensional linear isoperimetric inequalities in hyperbolic groups,
+//! Internat. Math. Res. Notices (2000), no. 13, 709–717.
+//! E. Leuzinger, Corank and asymptotic filling-invariants for symmetric spaces, Geom.
+//! Funct. Anal. 10 (2000), no. 4, 863–873.
+//! Enrico Leuzinger, Optimal higher-dimensional Dehn functions for some CAT(0) lattices, preprint, arXiv:1205.4923, 2012.
+//! Urs Lang and Viktor Schroeder, Quasiflats in Hadamard spaces, Ann. Scient. Ec. Norm.
+//! Sup. 30 (1997), 339–352.
+//! G. Mislin, Classifying spaces for proper actions for mapping class groups, preprint,
+//! arXiv:0905.0833.
+//! H. Masur and Y. Minsky, Geometry of the complex of curves II: Hierarchical structure,
+//! Geom. Funct. Anal. 10 (2000), no. 4, 902–974.
+//! L. Mosher, Mapping class groups are automatic, Ann. of Math. 142 (1995), 303–384
+//! A. Yu. Olshanskii, Hyperbolicity of groups with subquadratic isoperimetric inequalities,
+//! Intl. J. Alg. Comp. 1 (1991), 282–290.
+//! P. Papasoglu, On the subquadratic isoperimetric inequality, Geometric group theory,
+//! vol. 25, de Gruyter, Berlin-New-York, 1995, R. Charney, M. Davis, M. Shapiro (eds),
+//! pp. 193–200.
+//! P. Papasoglu, On the asymptotic cone of groups satisfying a quadratic isoperimetric
+//! inequality, Journal of Differential Geometry 44 (1996), 789–806.
+//! , Isodiametric and isoperimetric inequalities for complexes and groups, J. London Math. Soc. (2) 62 (2000), no. 1, 97–106.
+//! T. R. Riley, Higher connectedness of asymptotic cones, Topology 42 (2003), no. 6,
+//! 1289–1352.
+//! S. Wenger, Isoperimetric inequalities of Euclidean type in metric spaces, Geom. Funct.
+//! Anal. 15 (2005), 534–554.
+//! , Filling Invariants at Infinity and the Euclidean Rank of Hadamard Spaces,
+//! Int. Math. Res. Notices (2006), 1–33.
+//! , The asymptotic rank of metric spaces, Comment. Math. Helv. 86 (2011), no. 2,
+//! 247–275.
+//! , Compactness for manifolds and integral currents with bounded diameter and
+//! volume, Calc. Var. Partial Differential Equations 40 (2011), no. 3-4, 423–448.
+//! B. White, Mappings that minimize area in their homotopy class, J. Diff. Geom. 20
+//! (1984), no. 2, 433–446.
+//! R. Young, Homological and homotopical higher order filling functions, preprint,
+//! arXiv:0805.0584.
+//! R. Young, The Dehn function of SL(n;Z), Ann. of Math., to appear.
+//!
+//! Lehman College and the Graduate Center, City University of New York, U.S.A.
+//! Mathematical Institute, Radcliffe Observatory Quarter, Oxford OX2 6GG, U. K.
+//!
+//!
+//! --- PAGE BREAK ---
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!

@@ -1,0 +1,148 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/docs_root_narratives.toml -->
+//!
+//! # Engine Optimizations
+//!
+//! Summary of performance-critical implementation choices across LBM, Casimir,
+//! and Vulkan subsystems.
+//!
+//! ## LBM Pull Scheme with Cache-Aware Serial Streaming
+//!
+//! **File:** `crates/lbm_3d/src/solver.rs`
+//!
+//! The D3Q19 lattice Boltzmann streaming step uses a pull scheme: each
+//! destination site pulls distributions from source sites via `(dest - c_i)` with
+//! periodic wrapping. This creates a data-dependent scatter pattern that destroys
+//! cache locality under parallel writes.
+//!
+//! Streaming is intentionally NOT parallelized. At 128^3 grid resolution, serial
+//! streaming is ~2x faster than rayon-parallelized streaming due to cache-line
+//! contention. The macroscopic recovery step (`compute_macroscopic`) IS
+//! parallelized via `par_iter()` since it is embarrassingly parallel (read f_i,
+//! write rho/u per cell).
+//!
+//! A pre-allocated scratch buffer (`f_scratch`) avoids per-step allocation
+//! overhead.
+//!
+//! ## LBM Density-Corrected Neumann Outlet
+//!
+//! **File:** `crates/lbm_3d/src/boundary.rs`
+//!
+//! Zou-He velocity/pressure boundary conditions are declared in the `BoundaryKind`
+//! enum but implementation is deferred. Current boundary repertoire:
+//!
+//! - `BounceBackBoundary`: no-slip walls via distribution reflection (mass-conserving per node).
+//! - `PeriodicBoundary`: wrapping at domain edges.
+//!
+//! Mass conservation is verified by test (lines 452-479). Grid indexing uses
+//! row-major linearization: `index = z*(nx*ny) + y*nx + x`.
+//!
+//! ## LBM Perturbation Formulation
+//!
+//! The collision step implicitly uses the perturbation h_i = f_i - w_i concept:
+//! the equilibrium is computed from macroscopic rho/u and the relaxation
+//! `f_i_new = f_i - (f_i - f_eq_i) / tau` operates on the full distributions.
+//! This formulation preserves f32 numerical stability by keeping the relaxation
+//! centered around the equilibrium rather than working with raw distributions.
+//!
+//! ## Casimir 3D Field Computation (Rayon-Parallelized)
+//!
+//! **File:** `crates/casimir_core/src/energy.rs`
+//!
+//! Two key parallelized functions:
+//!
+//! 1. `casimir_energy_profile` (line ~156): parallelizes over spatial points along
+//!    a 1D line using `into_par_iter()`, mapping each position to energy density
+//!    via worldline path integral.
+//!
+//! 2. `casimir_energy_field_3d` (line ~209): parallelizes over all grid points in a
+//!    3D domain. Each grid cell `(ix, iy, iz)` is evaluated independently via
+//!    `casimir_energy_at_point()`. Output is a flat `Vec<f64>` in row-major order,
+//!    suitable for GPU 3D textures.
+//!
+//! Configuration via `WorldlineCasimirConfig`: 10,000 loops, 1,000 points per
+//! loop, 32 Gauss-Legendre quadrature nodes (default). Gauss-Legendre integration
+//! uses a log-transform for small-T coverage.
+//!
+//! ## Vulkan GPU Readback (Velocity Buffer)
+//!
+//! **File:** `crates/lbm_vulkan/src/compute.rs`
+//!
+//! The velocity buffer is created with dual usage flags:
+//! - `STORAGE_BUFFER`: compute shader writes velocity field.
+//! - `TRANSFER_SRC`: enables GPU-to-CPU readback.
+//!
+//! Memory location is `GpuToCpu` (host-visible, GPU-writable). Size is
+//! `n_cells * 3 * 4` bytes (3D velocity as f32, interleaved vx/vy/vz layout).
+//!
+//! Readback via `read_velocity_field()` uses `mapped_ptr()` on the allocation.
+//! Caller must ensure GPU completion via `queue_wait_idle` before reading.
+//!
+//! Complementary buffer strategy:
+//! - `rho_buffer`: density readback (same GpuToCpu pattern).
+//! - `entropy_buffer`: GPU-only (no readback needed).
+//! - `force_buffer`: CPU-to-GPU (CpuToGpu, inverse direction).
+//! - Render image: separate `TRANSFER_DST` buffer for frame capture.
+//!
+//! Double-buffering for f-distributions (`f_buffers: [BufferSet; 2]`) alternates
+//! collision/streaming reads and writes between buffers.
+//!
+//! ## Cosmology Pipeline Optimizations
+//!
+//! ### LCDM Comoving Distance Grid (Precomputed Interpolation)
+//!
+//! **File:** `crates/cosmology_core/src/observational.rs` (`LcdmComovingGrid`)
+//! and `crates/cosmology_core/src/orthoplex_diffusion.rs` (`ComovingGrid`)
+//!
+//! The comoving distance integral d_C(z) = integral_0^z dz'/E(z') is expensive
+//! when evaluated per-SN in the optimizer inner loop (1578 SNe per objective
+//! call). Instead, a 200-point cumulative Gauss-Legendre quadrature is
+//! precomputed on a redshift grid at construction time. Inner-loop lookups use
+//! O(1) linear interpolation on the precomputed grid. This eliminates redundant
+//! GL quadrature evaluations across the 1578 supernovae that share the same
+//! cosmological parameters (omega_m, h0) within each optimizer step.
+//!
+//! ### Parallel Multi-Start Nelder-Mead
+//!
+//! **File:** `crates/cosmology_core/src/orthoplex_diffusion.rs`
+//!
+//! The chi2 landscape for the orthoplex model has multiple local minima. A
+//! 9-point multi-start strategy evaluates initial guesses concurrently via
+//! `rayon::par_iter()` in `fit_orthoplex_model` and
+//! `fit_orthoplex_model_fixed_beta`. Each restart runs bounded Nelder-Mead
+//! with 2000 iterations and 1e-4 tolerance. The best solution across all
+//! restarts is selected. Relaxed tolerance (vs 10000/1e-10) reduces per-restart
+//! cost while maintaining fit quality -- the chi2 difference between 1e-4 and
+//! 1e-10 tolerance is < 0.01 on the Pantheon+ dataset.
+//!
+//! ### Batch RK4 Growth Integrator (Post-Fit Diagnostic)
+//!
+//! **File:** `crates/cosmology_core/src/observational.rs` (`compute_growth_batch`)
+//!
+//! The f*sigma8 growth rate involves solving a 2nd-order ODE for D(a) from
+//! a = 1e-3 to a = 1.0. With 16 RSD measurement redshifts, a naive approach
+//! integrates 16 separate RK4 sweeps. The batch integrator performs a single
+//! RK4 sweep and records D(a) and dD/da at all 16 target scale factors
+//! simultaneously, reducing ODE integration cost by ~16x.
+//!
+//! The f*sigma8 computation is placed in post-fit evaluation rather than the
+//! optimizer inner loop. Rationale: 16 RSD measurements with large error bars
+//! are a minor constraint compared to 1622 SN+BAO+CMB+CC data points. Including
+//! f*sigma8 in the inner loop made the optimizer ~100x slower with negligible
+//! improvement in best-fit parameters.
+//!
+//! ### Analytic M_B Marginalization
+//!
+//! **File:** `crates/cosmology_core/src/orthoplex_diffusion.rs`
+//!
+//! Supernova chi2 uses Conley+ (2011) analytic marginalization over the absolute
+//! magnitude offset M_B. For N supernovae with distance moduli mu_i and model
+//! predictions mu_model_i, the marginalized chi2 is:
+//!
+//!   chi2 = A - B^2/C + ln(C/(2*pi))
+//!
+//! where A = sum((mu_i - mu_model_i)^2 / sigma_i^2), B = sum((mu_i - mu_model_i)
+//! / sigma_i^2), C = sum(1/sigma_i^2). This eliminates M_B as a free parameter
+//! without MCMC sampling. The sums are evaluated via rayon `par_iter` over the
+//! 1578 Pantheon+ supernovae.
+//!

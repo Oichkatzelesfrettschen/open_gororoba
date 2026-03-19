@@ -1,0 +1,179 @@
+//! # Hypothesis Synthesis: MaNGA ZD Null Result
+//!
+//! ## Date: 2026-03-18
+//! ## Claims: C-1419..C-1427 (9 tested hypotheses)
+//! ## Insights: I-199..I-204 (6 insights)
+//!
+//! ---
+//!
+//! ## Executive Summary
+//!
+//! Nine hypotheses were tested across three research perspectives (innovator,
+//! pragmatist, contrarian). All nine produced informative results. Eight
+//! confirmed the null; one (D4: trimmed stacking) exposed a critical
+//! methodological weakness that recontextualizes the entire analysis.
+//!
+//! The three-perspective approach was productive precisely because each
+//! perspective found blind spots the others missed:
+//!
+//! - **Innovator** (H1-H4): Confirmed the null extends to higher-order
+//!   statistics (bispectrum, topology, MI, distributional shape). Discovered
+//!   extreme kurtosis (~284) but could not explain its source.
+//!
+//! - **Pragmatist** (P1-P3): Explained WHY the null is robust: the baryonic
+//!   floor has coherent red-noise structure (k^0.78) that accounts for all
+//!   whitened harmonic content. Identified selection artifacts in power-
+//!   stratified phase analysis.
+//!
+//! - **Contrarian** (D3-D4): Challenged foundational assumptions. Refuted
+//!   window function blindness (spectral leakage OVERRECOVERS). Confirmed
+//!   outlier domination: 5% of galaxies contribute 67% of stacked DFT power,
+//!   with phase reversal at 20% trimming.
+//!
+//! ---
+//!
+//! ## Key Findings by Rank
+//!
+//! ### 1. CRITICAL: Outlier-Dominated Stacking (D4, C-1427)
+//!
+//! The single most consequential finding. The stacked DFT coefficient is
+//! driven by ~350 galaxies (5% of 6995). Evidence:
+//! - 5% trimming drops power to 33% of full
+//! - 10% trimming drops to 8%
+//! - 20% trimming reverses phase by pi
+//! - Median power is 0.12% of mean
+//!
+//! Impact: The ZD bound (alpha_zd < 0.002392) applies to the outlier-dominated
+//! mean, not to a typical MaNGA galaxy. All baryonic floor characterization
+//! (I-179) describes these ~350 galaxies, not the population.
+//!
+//! ### 2. IMPORTANT: Red-Noise Structure (P1, C-1423)
+//!
+//! The baryonic floor is not white noise -- it has a coherent k^{-0.78}
+//! spectral slope. Pre-whitening without red-noise correction creates a 500x
+//! false sensitivity improvement (chi^2 = 304,300 vs expected 14). After
+//! correction, p = 0.40 (perfectly null).
+//!
+//! ### 3. IMPORTANT: Spectral Leakage Overrecovery (D3, C-1426)
+//!
+//! The targeted DFT overrecovers long-wavelength modes: 185% at mode 1, 151%
+//! at mode 2. This inflates low-k power and may partially CREATE the red-noise
+//! slope rather than just measuring it. This is in TENSION with finding #2.
+//!
+//! ### 4. INFORMATIVE: Extreme Kurtosis (H2, C-1421)
+//!
+//! Per-galaxy Fourier power has kurtosis ~284 (vs Gaussian kurtosis = 3).
+//! Gaussian sensitivity analyses underestimate the variance by >100x.
+//! This is the population-level explanation for D4's outlier domination.
+//!
+//! ### 5. INFORMATIVE: Algebra Universality (H2/H4/P3)
+//!
+//! Every detected pattern is identical across CD-ZD, G2, J3O, and sl2.
+//! Pearson r = 0.85-0.96 between algebra pairs. MI confirms no selective
+//! non-linear coupling. The quasi-degeneracy extends to all statistical
+//! dimensions tested.
+//!
+//! ---
+//!
+//! ## Unresolved Disagreements
+//!
+//! ### Disagreement 1: Is the red-noise intrinsic or a leakage artifact?
+//!
+//! - P1 says: The k^{-0.78} slope is intrinsic baryonic structure (the
+//!   cusp-to-bulge transition creates smooth spectral shape).
+//! - D3 says: The 185% overrecovery at mode 1 means spectral leakage
+//!   inflates low-k modes, which could CREATE a red-noise-like slope.
+//! - Resolution: Requires spectral leakage decomposition (Hypothesis S2).
+//!
+//! ### Disagreement 2: What population does the ZD bound describe?
+//!
+//! - Standard view: The bound alpha_zd < 0.002392 applies to MaNGA galaxies.
+//! - D4 says: The bound applies to the ~350 outlier galaxies that dominate
+//!   the stacked DFT. The median galaxy has essentially zero Fourier amplitude.
+//! - Resolution: Requires robust-estimator ZD bounds (Hypothesis S1).
+//!
+//! ### Disagreement 3: Is the injection recovery failure fixable?
+//!
+//! - The injection recovery shows constant recovered alpha (~0.295) regardless
+//!   of injection amplitude. This means the pipeline has zero sensitivity.
+//! - Unknown: Is this because the outliers mask the injection, or because the
+//!   pipeline is fundamentally insensitive?
+//! - Resolution: Requires injection recovery on decontaminated stack (S3).
+//!
+//! ---
+//!
+//! ## Final Synthesized Hypotheses
+//!
+//! ### S1: Robust-Estimator ZD Bound
+//!
+//! **Rationale**: D4 proved the mean-based bound is outlier-dominated. P1
+//! provided the optimal detection methodology (whitened matched filter with
+//! red-noise correction). Combining these: compute ZD bounds using median,
+//! 10%-trimmed mean, and Winsorized mean alongside the arithmetic mean.
+//!
+//! **Measurable prediction**: If the median-based bound diverges from the
+//! mean-based bound by >3x, the current sensitivity claim is unreliable and
+//! the paper must report both bounds. If they converge (within 2x), the
+//! outlier domination does not affect the sensitivity claim.
+//!
+//! **Failure condition**: If the median-based DFT has too few contributing
+//! galaxies per bin (n < 50 after trimming), the median estimator may be
+//! noisier than the mean, making the comparison uninformative.
+//!
+//! **Status**: PARTIALLY COMPLETE. D4 already computed trimmed means of
+//! per-galaxy aggregate DFT. Remaining: convert trimmed DFT power to
+//! alpha_zd bounds using the existing sensitivity formula.
+//!
+//! ### S2: Spectral Leakage Decomposition
+//!
+//! **Rationale**: P1 and D3 disagree about the origin of the red-noise
+//! spectrum. P1 treats it as intrinsic baryonic structure; D3 shows
+//! spectral leakage inflates low-k modes by up to 85%. The question: how
+//! much of the k^{-0.78} slope is leakage vs intrinsic?
+//!
+//! **Methodology**: Simulate white noise on the actual data grid (16 bins
+//! at x = 0.50 to 1.22). Compute the expected leakage spectrum (DFT power
+//! at each CD-ZD wavenumber for unit-variance white noise). Subtract the
+//! leakage spectrum from the observed whitened spectrum. The residual reveals
+//! the INTRINSIC spectral shape.
+//!
+//! **Measurable prediction**: If the leakage-corrected spectrum is flat
+//! (chi^2/df close to 1.0 across modes), the red-noise is entirely a
+//! window artifact and the baryonic floor has no intrinsic spectral
+//! structure. If the corrected spectrum still shows red-noise (gamma > 0.3),
+//! the baryonic floor has genuine spectral content beyond leakage.
+//!
+//! **Failure condition**: If the leakage spectrum accounts for >80% of the
+//! observed red-noise power at modes 1-3, but <20% at modes 5-7, the
+//! decomposition is clean. If leakage accounts for 40-60% at all modes,
+//! the decomposition is degenerate.
+//!
+//! ### S3: Injection Recovery on Decontaminated Stack (FUTURE WORK)
+//!
+//! **Rationale**: The injection recovery is broken (constant recovered alpha
+//! regardless of injection level). D4 suggests this may be because the 350
+//! outlier galaxies mask the injection. Testing: remove the 5% highest-power
+//! galaxies, inject ZD signals into the remaining 6645, and check whether
+//! the decontaminated injection recovery shows proper proportional scaling.
+//!
+//! **Measurable prediction**: If the decontaminated recovery ratio is within
+//! [0.5, 2.0] for alpha_zd = 0.004, the pipeline has genuine sensitivity
+//! after outlier removal, and the current noise floor is an artifact of
+//! outlier contamination. If recovery remains >10x at all injection levels,
+//! the pipeline is fundamentally insensitive.
+//!
+//! **Failure condition**: Requires full re-stacking from raw per-galaxy
+//! rotation curves. Estimated 1-2 hours of development on the stacking
+//! pipeline. DEFERRED to next sprint.
+//!
+//! ---
+//!
+//! ## Implementation Priority
+//!
+//! 1. **S2 (Leakage Decomposition)**: 15 min. Pure computation on existing
+//!    data grid. Resolves the P1/D3 disagreement immediately.
+//! 2. **S1 (Robust Bounds)**: 10 min. Convert D4's trimmed DFT power to
+//!    alpha_zd bounds. Mostly done.
+//! 3. **S3 (Decontaminated Injection)**: 1-2 hours. Requires pipeline
+//!    modification. Deferred.
+//!

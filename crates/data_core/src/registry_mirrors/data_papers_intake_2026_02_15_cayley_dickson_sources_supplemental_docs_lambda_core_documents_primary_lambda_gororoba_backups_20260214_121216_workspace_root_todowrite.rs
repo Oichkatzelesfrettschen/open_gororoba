@@ -1,0 +1,81 @@
+//! # TODOWRITE — Lambda Workspace Consolidation Ledger
+//!
+//! Status legend: [ ] not started, [~] in progress, [x] done
+//!
+//! ## Scope Statement
+//! Consolidate `lambda-research`, `lambda-synthesis-experiments`, and `LambdaLearner` into a single normalized workspace under `/home/eirikr/Github/lambda_gororoba`, with root module trees as source-of-truth, archived intake snapshots for provenance, auditable sync, reproducible backups, standardized requirements documentation, and harmonized documentation and claims.
+//!
+//! ## Tasks (with owner and acceptance)
+//!
+//! 1. [x] Create workspace-level inventory of repo existence, remotes, and commit state (owner: Codex; done: today).
+//! 2. [x] Verify origin pull status for every known lambda repo instance (owner: Codex; done: today).
+//! 3. [x] Ensure each target repo is addressable under `lambda_gororoba` and normalized (owner: Codex; done).
+//! 4. [x] Create workspace scaffolding directories `docs/`, `scripts/`, `logs/`, `src/` (owner: Codex; done).
+//! 5. [x] Create non-destructive documentation backups in `~/Documents/lambda_gororoba_backups/<timestamp>/` (owner: Codex; done).
+//! 6. [x] Build automated repo audit script and produce baseline audit logs (owner: Codex; done).
+//! 7. [x] Generate baseline TODO/FIXME extraction and per-module counts for source control visibility (owner: Codex; done).
+//! 8. [x] Reconcile roadmaps from child repos into `ROADMAP_SYNTHESIS.md` and preserve provenance links (owner: Codex).
+//! 9. [x] Build `MODULE_REQUIREMENTS_MATRIX.md` and keep it synced (owner: Codex).
+//! 10. [x] Standardize each module’s `requirements.md` structure and cross-link to authoritative sources (owner: Codex; done: 2026-02-13).
+//! 11. [x] Audit and harmonize license files to a common `GPL-2.0-only` target (owner: Codex; decision: final harmonization applied across all target repos).
+//! 12. [x] Define workspace quality policy where TODO/FIXME, warnings, and unverified claims are tracked as blocking risks (owner: Codex; policy in `docs/QUALITY_POLICY.md`).
+//! 13. [x] Draft unified backup + restore playbook with checksums and timestamps (owner: Codex).
+//! 14. [x] Add workspace-level sync script: origin status, pull, audit, and log outputs (owner: Codex).
+//! 15. [x] Add workspace-level backup script for docs and requirement evidence (owner: Codex).
+//! 16. [x] Create roadmap status dashboard in `docs/ROADMAP_STATUS.md` (owner: Codex).
+//! 17. [x] Map all TODO/FIXME hotspots to concrete tasks by priority and estimate effort (owner: Codex; latest hotspot scan refreshed: 2026-02-13).
+//! 18. [x] Create a workspace integration contract that defines how repos exchange data and artifacts without forcing one implementation language (owner: Codex; implemented via `docs/REPO_INTEGRATION_CONTRACT.md`).
+//! 19. [x] Define benchmark protocol: accuracy, runtime, memory, reproducibility metadata schema (owner: Codex; in `docs/BENCHMARK_PROTOCOL.md`).
+//! 20. [x] Define claim registry for assertions and falsifiable hypotheses with evidence sources (owner: Codex; in `docs/CLAIM_REGISTER.md`).
+//! 21. [x] Update `GEMINI.md` and adjacent governance docs in workspace root with consolidated mission and scope (owner: Codex).
+//! 22. [x] Run sync + audit and archive completed tasks after each consolidation pass (owner: Codex; latest pass recorded in `logs/workspace_sync_audit_20260213_210327.md` and `logs/repo_audit_2026-02-13T15:51:39-08:00.md`).
+//! 23. [x] Compare origin alignment for each workspace repository and record report (owner: Codex).
+//! 24. [x] Consolidate duplicate working copies outside workspace into canonical workspace locations (owner: Codex).
+//! 25. [x] Build a lightweight orchestration playbook for coordinating scripted workflows across the three repos (owner: Codex; scripts and evidence logs now coordinate by `scripts/*.sh` outputs).
+//! 26. [x] Verify build/test reproducibility checklist for Python and Node workflows; log command sequence and failures (owner: Codex; `scripts/verify_build_test_reproducibility.sh`, latest run `logs/build_test_reproducibility_20260213_210334.md` with wasm+python default profile).
+//! 27. [x] Add script outputs to `logs/` as build artifacts with machine-readable naming convention (owner: Codex).
+//! 28. [x] Prepare push-ready branch guidance and conflict-resolution strategy for each repo (owner: Codex).
+//! 29. [x] Publish conflict-resolution and release checklist in `docs/SEVEN_DAY_EXECUTION_NOTE.md` (owner: Codex; active checklist pending with next-pass completion matrix).
+//! 30. [x] Archive source-discovery manifests and older runs using retention policy (owner: Codex).
+//! 31. [x] Archive no-longer-relevant docs in `docs/archive/` with rationale and hash log (owner: Codex; evidence `logs/legacy_docs_archive_20260213_221719.md`, `logs/legacy_docs_archive_20260213_221719.tsv`, pointer `docs/archive/legacy_unified_docs/LATEST.md`).
+//! 32. [x] Resolve top-level false/uncertain claims in existing documentation via evidence checks (owner: Codex; evidence `docs/top_level_claims_latest.md`, `docs/top_level_claims_latest.tsv`, generated by `scripts/verify_top_level_claims.sh`).
+//! 33. [x] Establish visual documentation style guide for dark-mode static infographics (owner: Codex; guide `docs/VISUAL_DOCUMENTATION_STYLE_GUIDE.md`, template `docs/visuals/INFOGRAPHIC_SPEC_TEMPLATE.md`, evidence `docs/visual_docs_style_latest.md`, `docs/visual_docs_style_latest.tsv`, generated by `scripts/verify_visual_docs_style.sh`).
+//! 34. [x] Add reproducible original-source discovery script and manifest for external links, checksums, and retrieval commands (owner: Codex).
+//! 35. [x] Add claim review checkpoints and TODO debt triage to each consolidation pass (owner: Codex; no fixed weekly cadence).
+//! 36. [x] Publish a harmonized integration contract and ownership matrix for each functional area (owner: Codex; see `docs/REPO_INTEGRATION_CONTRACT.md`).
+//!
+//! 37. [x] Run deterministic root synthesis pass and publish conflict matrix in `logs/conflict_matrix_*` (owner: Codex; latest pass `logs/conflict_matrix_20260213_210329.tsv`, with expected shared-root conflicts explicitly classified).
+//! 38. [x] Adopt `merge_in/` staging model across core workspace scripts with clone-if-missing bootstrap from origin URLs (owner: Codex; implemented in `scripts/*.sh` integration stack).
+//! 39. [x] Capture canonical origin URLs for reproducible repository retrieval commands in source discovery workflow (owner: Codex; maintained in `scripts/discover_original_sources.sh` + `docs/ORIGINAL_SOURCE_MANIFEST.md`).
+//! 40. [x] Publish `merge_in` operational workflow and evidence map for deterministic root-led integration passes (owner: Codex; see `docs/MERGE_IN_WORKFLOW.md`).
+//! 41. [x] Produce file-by-file consolidation decision table for `src/lambda_unified/modules/*` with role, hash, duplicate scope, and action class (owner: Codex; legacy evidence archived in `docs/archive/legacy_unified_docs/LATEST.md`).
+//! 42. [x] Publish module consolidation rulebook documenting canonical/merge/archive policy by file class and explicit duplicate candidates (owner: Codex; active pointer `docs/MODULE_FILE_CONSOLIDATION_RULES.md` now archive-stubbed with legacy path recorded).
+//! 43. [x] Execute archive moves for approved duplicate doc candidates with hash-preserving manifest log (owner: Codex; legacy evidence archived in `docs/archive/legacy_unified_docs/LATEST.md`).
+//! 44. [x] Generate root-level canonical docs and bibliography indices from consolidation decisions (owner: Codex; legacy output archived with retired unified lane at `archive/legacy_unified_lane/20260213_220437/src/lambda_unified/`).
+//! 45. [x] Generate module topic map from canonical doc decisions for navigation and planning (owner: Codex; legacy output archived with retired unified lane at `archive/legacy_unified_lane/20260213_220437/src/lambda_unified/`).
+//! 46. [x] Implement and run automated consolidation policy verifier against decision table + archive manifest (owner: Codex; `logs/module_consolidation_verification_20260213_160549.md`).
+//! 47. [x] Refresh consolidation backup snapshot in `~/Documents` after archive/index/verification execution (owner: Codex; latest backup path is under `~/Documents/lambda_gororoba_backups/`).
+//! 48. [x] Add orchestrated consolidation gate script to run inventory, decisions, indices, and verifiers in one command (owner: Codex; `scripts/run_module_consolidation_gate.sh`).
+//! 49. [x] Add repository policy: Python scripts must be multithreaded or explicitly exempted, with automated verification and evidence logs (owner: Codex; `docs/PYTHON_THREADING_POLICY.md`, `scripts/verify_python_multithreading_policy.sh`).
+//! 50. [x] Wire optional consolidation gate execution into workspace sync flow for one-command pass orchestration (owner: Codex; `RUN_CONSOLIDATION_GATE=1 bash scripts/sync_and_audit_workspace.sh`).
+//! 51. [x] Refactor first high-impact Python IO scripts to real threaded execution and reduce active exemptions (owner: Codex; updated `lambda-research/*/scripts/download_papers.py`, policy now `7` compliant / `44` exempt / `0` non-compliant in `logs/python_multithreading_policy_20260213_162455.md`).
+//! 52. [x] Refactor second high-impact Python scripts (`search_papers.py`, `update_metadata.py` pairs) to threaded execution and reduce exemptions (owner: Codex; policy now `11` compliant / `40` exempt / `0` non-compliant in `logs/python_multithreading_policy_20260213_163022.md`).
+//! 53. [x] Author first-party synthesis documentation corpus to define unified project identity, interface contracts, reconciliation logic, and novel research program (owner: Codex; `docs/first_party/*`).
+//! 54. [x] Integrate reproducibility checklist execution into workspace sync flow with explicit profile flags for pytest/npm bootstrapping (owner: Codex; `scripts/sync_and_audit_workspace.sh` + `docs/MERGE_IN_WORKFLOW.md`).
+//! 55. [x] Install required wasm+python synthesis toolchain from system repositories via `paru` with askpass helper and wire default wasm bridge verification lane (owner: Codex; installed `python-pyarrow`, `wasm-pack`, `wasmtime`, `binaryen`, plus `scripts/build_wasm_bridge.sh`, `scripts/wasm_python_bridge.py`, `docs/WASM_PYTHON_SYNTHESIS.md`).
+//! 56. [x] Promote singular monorepo canonical source trees by mirroring full upstream repositories into `src/lambda_unified/modules/<module>/source_repo` and classify them in consolidation policy (owner: Codex; synthesis + gate evidence `logs/repo_integration_synthesis_20260213_210329.md`, `logs/module_consolidation_verification_20260213_210333.md`).
+//! 57. [x] Retire legacy `src/lambda_unified` lane from default workflows; archive it under `archive/legacy_unified_lane/<TS>/` and normalize `merge_in/` to real repositories (owner: Codex; evidence `logs/legacy_lane_retirement_20260213_220437.md`, `logs/workspace_sync_audit_20260213_220552.md`).
+//! 58. [x] Generate first dark-mode singular merge infographic artifact set (`png`, `svg`, `md`) from current evidence using a deterministic script (owner: Codex; `scripts/generate_singular_merge_infographic.py`, outputs `docs/visuals/20260214_singular_merge_state_v1_dark.*`).
+//! 59. [x] Wire top-level claims and visual-style verifiers into default sync pipeline with latest pointers in `docs/` (owner: Codex; `scripts/sync_and_audit_workspace.sh`, evidence `logs/workspace_sync_audit_20260214_095901.md`).
+//! 60. [x] Normalize singular merge conflict handling with canonical root `.gitignore` generation and cross-module `LICENSE` symlink reconciliation to root `LICENSE` (owner: Codex; `scripts/merge_into_singular_structure.sh`, evidence `logs/singular_structure_merge_20260214_100411.md`, `logs/singular_structure_dedupe_actions_20260214_100411.tsv`).
+//! 61. [x] Publish two-level ASCII source-folder sync scope map and re-scope roadmap focus to merge-first reconciliation backlog (owner: Codex; `docs/SYNC_SCOPE_FROM_SOURCE_FOLDERS.md`, `docs/ROADMAP_STATUS.md`, evidence `logs/workspace_sync_audit_20260214_100409.md`).
+//! 62. [x] Execute manual singularization cutover by archiving active `merge_in/` git repos into `archive/intake_lane_retirement/<TS>/merge_in/` and keeping only a retired note in `merge_in/` (owner: Codex; evidence `logs/manual_singularization_archive_20260214_120649.md`, `logs/manual_singularization_source_snapshot_20260214_120643.md`).
+//! 63. [x] Convert singular merge reconciler to root-authoritative module mode (`research/`, `experiments/`, `learner/`) without active intake dependency (owner: Codex; `scripts/merge_into_singular_structure.sh`, evidence `logs/singular_structure_merge_20260214_*.md` after manual cutover).
+//! 64. [x] Convert workspace sync/audit and claims checks to singular manual mode with intake-retired validation instead of clone/pull intake assumptions (owner: Codex; `scripts/sync_and_audit_workspace.sh`, `scripts/verify_top_level_claims.sh`).
+//! 65. [x] Reconcile workflow/architecture docs to match one-repo manual mode and archived provenance intake pattern (owner: Codex; `docs/MERGE_IN_WORKFLOW.md`, `docs/SINGULAR_REPO_LAYOUT.md`, `docs/LEGACY_LANE_RETIREMENT.md`, `docs/first_party/*` updates).
+//!
+//! ## Ownership model
+//! - Primary owner: Codex
+//! - Reviewer checkpoints: user signoff at end of each phase
+//! - Conflict resolution: prioritize origin consistency first, then legal compliance, then research coherence
+//!

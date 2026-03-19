@@ -1,0 +1,44 @@
+//! # Entrypoint Docs Registry Mirror
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: see authoritative source line below -->
+//!
+//! Authoritative source: `registry/entrypoint_docs.toml`.
+//!
+//! - Updated: 2026-03-12
+//! - Document count: 7
+//!
+//! ## `CLAUDE.md`
+//!
+//! - Title: CLAUDE Stub
+//! - Body lines: 8
+//!
+//! ## `GEMINI.md`
+//!
+//! - Title: GEMINI Stub
+//! - Body lines: 8
+//!
+//! ## `README.md`
+//!
+//! - Title: open_gororoba: Rust-First Evidence-First Scientific Workspace
+//! - Body lines: 112
+//!
+//! ## `curated/README.md`
+//!
+//! - Title: Curated Artifacts (Legacy / Mixed Provenance)
+//! - Body lines: 3
+//!
+//! ## `curated/01_theory_frameworks/README_ROCQ.md`
+//!
+//! - Title: Rocq Proofs: The Computational Substrate
+//! - Body lines: 3
+//!
+//! ## `data/csv/README.md`
+//!
+//! - Title: Data Index: CSV Datasets
+//! - Body lines: 3
+//!
+//! ## `data/artifacts/README.md`
+//!
+//! - Title: README
+//! - Body lines: 3

@@ -35,6 +35,8 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 data_core = { version = "0.1.0", path = "../data_core" }
 stats_core = { version = "0.1.0", path = "../stats_core" }
 ndarray = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+csv = { workspace = true }
 
 [features]
 default = []

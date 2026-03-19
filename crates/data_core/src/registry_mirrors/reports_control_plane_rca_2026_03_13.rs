@@ -1,0 +1,144 @@
+//! # Control Plane RCA
+//!
+//! Date: 2026-03-13
+//!
+//! ## Scope
+//!
+//! This note captures the root-cause analysis and fixes for the control-plane and workspace regressions encountered while validating the SQLite-first migration.
+//!
+//! ## Issue 1: False stale-export failures in `verify-control-plane`
+//!
+//! ### Symptom
+//!
+//! `provenance verify-control-plane` reported stale compatibility exports for:
+//!
+//! - `registry/insights.toml`
+//! - `registry/experiments.toml`
+//! - `registry/binaries.toml`
+//!
+//! This persisted even after a successful `export-control-plane`, and byte-for-byte diffs against a fresh temp export were clean.
+//!
+//! ### Root Cause
+//!
+//! `export-control-plane` called `backfill_control_plane_compat_from_snapshots()` before rendering compatibility outputs, but `verify_control_plane_compat_exports()` did not.
+//!
+//! That meant export and verify were not comparing against the same effective DB-backed render state. The verifier could render from stale control-plane compat state even when the on-disk exports were already correct.
+//!
+//! ### Fix
+//!
+//! - changed `verify_control_plane_compat_exports()` to take `&mut self`
+//! - added `backfill_control_plane_compat_from_snapshots()` before rendering expected outputs
+//! - updated the CLI verification path to open the store mutably
+//!
+//! ### Result
+//!
+//! `cargo run -p gororoba_cli_data --bin provenance -- --db registry/canonical/control_plane.sqlite3 verify-control-plane`
+//!
+//! now passes cleanly.
+//!
+//! ## Issue 2: Hidden solver modules in `algebra_analysis`
+//!
+//! ### Symptom
+//!
+//! The provenance operator path was blocked by workspace compilation failures:
+//!
+//! - `crate::spectrum_solvers` missing from `homotopy_algebra.rs`
+//! - then `crate::block_jacobi` and `crate::partial_spectrum` missing from `spectrum_solvers.rs`
+//!
+//! ### Root Cause
+//!
+//! The source files still existed, but the crate root in `crates/algebra_analysis/src/lib.rs` no longer exported the modules that downstream modules still referenced.
+//!
+//! ### Fix
+//!
+//! Restored the missing crate-root exports:
+//!
+//! - `pub mod spectrum_solvers;`
+//! - `pub mod block_jacobi;`
+//! - `pub mod partial_spectrum;`
+//!
+//! ### Result
+//!
+//! `cargo check -p algebra_analysis --lib` now passes again, and the provenance operator no longer trips over this hidden module-surface regression.
+//!
+//! ## Issue 3: `raw-cpuid` API drift in `lbm_3d`
+//!
+//! ### Symptom
+//!
+//! The provenance operator path then hit a second workspace compile blocker in `crates/lbm_3d/src/solver.rs`:
+//!
+//! - treated `raw_cpuid::CpuId::new()` as returning `Result`
+//! - used `cache.ways()` on a `CacheParameter`
+//!
+//! ### Root Cause
+//!
+//! The code had drifted behind the installed `raw-cpuid` API:
+//!
+//! - `CpuId::new()` returns `CpuId`, not `Result`
+//! - cache size calculation uses `associativity()` in `raw-cpuid 11.6.0`
+//!
+//! ### Fix
+//!
+//! - switched to direct `let cpuid = raw_cpuid::CpuId::new();`
+//! - replaced `cache.ways()` with `cache.associativity()`
+//!
+//! ### Result
+//!
+//! `cargo check -p lbm_3d --lib` now passes, and the control-plane operator path is no longer blocked by this unrelated workspace regression.
+//!
+//! ## Outcome
+//!
+//! The originally unresolved control-plane verification problem is now fully closed:
+//!
+//! - SQLite-first export and verification use the same effective render state
+//! - theorem-link verification is active with an explicit allowlist for justified unlinked proof artifacts
+//! - the workspace compile blockers uncovered along the way have been reconciled
+//! - claim `formal_proof`, theorem linking, and `kernel_checked_claims` now share a normalized proof-identity layer instead of depending on prose-only matches
+//!
+//! ## Issue 4: Proof identity drift across claims, theorem stems, and exported compat
+//!
+//! ### Symptom
+//!
+//! The repo carried several versions of the same proof identity:
+//!
+//! - claims often had empty `formal_proof`
+//! - theorem stems encoded the claim number without matching the `C-XXXX` claim format exactly
+//! - claim prose sometimes referenced stale filenames such as `C878_VacuumAttractor.v`
+//! - kernel-checked counts were partly inferred from free-text phrases rather than canonical proof linkage
+//!
+//! ### Root Cause
+//!
+//! Proof identity was distributed across three different mechanisms:
+//!
+//! - theorem stem parsing
+//! - prose references in `status_note` and `where_stated`
+//! - optional literal `formal_proof` fields
+//!
+//! There was no single normalization pass turning those into one canonical proof path per claim when such a primary proof existed.
+//!
+//! ### Fix
+//!
+//! - built a proof inventory from `_RocqProject`
+//! - normalized theorem stems like `C1313_...` and `C1140b_...` against `C-XXXX` claims
+//! - backfilled canonical `formal_proof` values for claims when a primary proof path could be inferred safely
+//! - preferred current verified proof paths over stale aliases from prose
+//! - switched `kernel_checked_claims` to derive from normalized proof identity and theorem links
+//!
+//! ### Result
+//!
+//! Representative normalized claims now export with canonical `formal_proof` entries, including:
+//!
+//! - `C-001 -> proofs/verified/C001_CDNonAssociative.v`
+//! - `C-1140 -> proofs/verified/C1140_PathionQuantizedGap.v`
+//! - `C-878 -> proofs/verified/C878_ImbalanceAttractor.v`
+//! - `C-931 -> proofs/verified/C931_OrthoplexHeatKernel.v`
+//! - `C-932 -> proofs/verified/C932_OrthoplexThawing.v`
+//!
+//! The control-plane summary now reports `kernel_checked_claims=126` from normalized proof identity instead of looser prose heuristics.
+//!
+//! ## Next Logical Tranche
+//!
+//! - make `docs/THEOREMS.md` part of the standard docs emit path (`N100-041`)
+//! - ensure theorem/proof navigation is first-class in mdBook (`N100-042`)
+//! - replace remaining "registry/*.toml is authoritative" wording in book pages (`N100-043`)
+//!

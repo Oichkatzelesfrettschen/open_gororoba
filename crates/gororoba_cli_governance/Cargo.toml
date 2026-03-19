@@ -7,15 +7,7 @@ license = "MIT"
 autobins = false
 
 [[bin]]
-name = "markdown-registry"
-path = "../gororoba_cli_data/src/bin/markdown_registry.rs"
-
-[[bin]]
-name = "governance-verify"
-path = "../gororoba_cli_data/src/bin/governance_verify.rs"
-
-[[bin]]
-name = "workspace-routing"
+name = "workspace-routing-proxy"
 path = "../gororoba_cli_data/src/bin/workspace_routing.rs"
 
 [dependencies]

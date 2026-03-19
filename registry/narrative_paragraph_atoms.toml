@@ -9681,7 +9681,7 @@ paragraph_index = 12
 line_start = 36
 line_end = 38
 paragraph_kind = "heading"
-text = "## Verifying and expanding - Run `make mcp-smoke` or `PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`. - New servers should follow the `mcp_expansion_targets` and `candidate_servers_*` guidance sections at the bottom of the matrix file; only promote them when the smoke verifier turns `PASS` for the new name."
+text = "## Verifying and expanding - Run `make mcp-smoke` or `PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`. - New servers should follow the `mcp_expansion_targets` and `candidate_servers_*` guidance sections at the bottom of the matrix file; only promote them when the smoke verifier turns `PASS` for the new name."
 text_sha256 = "d41e246f635381278ff536c9a76612acbdb84e7fb4f5c4f61d993ba94649331d"
 claim_refs = []
 equation_refs = []

@@ -1,0 +1,746 @@
+//! # GHOST Experiment Retrospective (Archive)
+//!
+//! Date: 2026-03-18
+//! Last Updated: 2026-03-18 (archive revision -- post-synthesis, post-paper-revision)
+//! Experiments: E-183 (completed 2026-03-12), E-184 (completed 2026-03-12),
+//!              E-192 (completed 2026-03-17), robustness suite (completed 2026-03-18),
+//!              hypothesis synthesis (2026-03-18), E-201 face-on (2026-03-18),
+//!              E-202 Q3 injection (2026-03-18)
+//! Status: PROCEED -- synthesis complete, SQ-1 paper-code discrepancy is P0 blocker
+//! Decision: Publish inner-halo non-detection; defer outer-halo campaign to SKA era
+//! Paper Framing: Non-detection + methodological contribution (revised from constraint paper)
+//!
+//! Archive planning artifacts: `exp_plan.yaml` is the original decisive-plan document,
+//! while `experiment_plan.yaml` and `experiment_plan_summary.yaml` capture the later
+//! post-synthesis execution framing that incorporated H1/H2/H3 follow-up lanes.
+//!
+//! ---
+//!
+//! ## Executive Summary
+//!
+//! The GHOST (Galactic Halo Obstruction Spectral Test) pipeline searched for
+//! zero-dark density (ZD) spectral signatures in stacked NFW rotation-curve
+//! residuals from 6992 synthetic MaNGA DR17 galaxies across four algebraic
+//! frameworks (Cayley-Dickson D=16, G2 Aut(O), Albert J3(O), sl(2)), three galaxy
+//! subsamples, and twenty independent seeds. All 660 analyses completed with zero
+//! numerical failures. No framework produces detection SNR approaching the 2-sigma
+//! threshold: framework SNR clusters at 0.473-0.481 (spread 1.7%), while the
+//! no-harmonics positive control reaches 2.33 (4.9x separation). Three REFINE
+//! iterations converged to identical metrics, confirming the pipeline reached a
+//! fixed-point SNR determined by baryonic systematics and MaNGA's radial coverage
+//! (x = 0.5-1.35 r/r_s), not by fixable pipeline defects.
+//!
+//! Post-robustness hypothesis synthesis (9 hypotheses across three perspectives)
+//! confirmed the null at every statistical dimension tested but exposed three
+//! consequential findings: (1) D4 outlier domination -- 350 galaxies (5% of sample)
+//! contribute 67% of stacked DFT power, with median DFT power at 0.12% of the mean
+//! (C-1427); (2) the "universal" red-noise index k^0.81 is actually an inclination
+//! artifact -- face-on galaxies have gamma=-0.011 (flat spectrum) vs gamma=0.808
+//! for the inclination-mixed full sample (C-1431); and (3) the paper describes M=7
+//! harmonic subtraction that the code does not implement (SQ-1, P0 blocker). The
+//! S1 robust-bounds audit showed median alpha_zd at 12% of the mean-based estimate
+//! (C-1428), while S2 spectral leakage decomposition confirmed red-noise is intrinsic
+//! baryonic structure, not a window artifact (C-1429). Effective independence was
+//! honestly disclosed as 6-8 genuinely independent measurements, not 660. The paper
+//! was revised from constraint framing to non-detection + methodological contribution.
+//!
+//! ---
+//!
+//! ## Timeline
+//!
+//! | Date | Event | Key Output |
+//! |------|-------|-----------|
+//! | 2026-03-12 | E-183 completed | N=6992 stacking null, SNR=0.25, C-1365..C-1368 |
+//! | 2026-03-12 | E-184 completed | Multi-algebra null (G2/Albert/sl(2)), C-1369..C-1374 |
+//! | 2026-03-17 | E-192 completed | STFT+derivative+Rayleigh non-static diagnostics |
+//! | 2026-03-17 | SMART goal doc | docs/research/manga_null_result_smart_goal_2026.md |
+//! | 2026-03-18 | Robustness suite | 660 runs (11x3x20), C-1415..C-1418, I-194..I-195 |
+//! | 2026-03-18 | Hypothesis synthesis | 9 hypotheses (C-1419..C-1429), I-199..I-204 |
+//! | 2026-03-18 | Subquestion decomp. | SQ-1..SQ-6, paper-code discrepancy (P0) |
+//! | 2026-03-18 | E-201 face-on Rayleigh | C-1430..C-1434, gamma_faceon=-0.011 |
+//! | 2026-03-18 | E-202 Q3 injection | C-1432, pipeline BLIND at 6 bins |
+//! | 2026-03-18 | Synthesis audit (S1/S2) | C-1428 robust bounds, C-1429 leakage resolution |
+//! | 2026-03-18 | Paper revision | Non-detection framing, L1-L9, N_eff=6-8 |
+//! | 2026-03-18 | PROCEED decision | This retrospective; paper writing begins |
+//!
+//! ---
+//!
+//! ## Key Results
+//!
+//! ### Per-condition grand means (across 3 regimes, 20 seeds each)
+//!
+//! | Condition | Group | SNR (mean) | alpha_zd | Notes |
+//! |-----------|-------|-----------|----------|-------|
+//! | CD_ZD_D16 | Framework | 0.4782 | 0.3518 | Baseline, 7 modes |
+//! | G2_Aut_O | Framework | 0.4785 | 0.3521 | 6 modes |
+//! | Albert_J3O | Framework | 0.4809 | 0.3538 | 3 Peirce modes |
+//! | sl2_partner | Framework | 0.4729 | 0.3479 | 2 modes, degeneracy ratio falsified |
+//! | no_harmonics | Ablation | 2.3327 | 1.7163 | **Positive control** (4.9x baseline) |
+//! | single_mode | Ablation | 0.4650 | 0.3421 | Fundamental mode only |
+//! | red_noise_corr | Control | 0.4782 | 0.3518 | Identical to CD_ZD_D16 baseline |
+//! | random_wavenum | Control | 0.4801 | 0.3533 | No spurious spectral feature |
+//! | inj_0.004 | Calibration | 0.4908 | 0.3611 | SKA threshold |
+//! | inj_0.01 | Calibration | 0.4895 | 0.3601 | 2.5x SKA |
+//! | inj_0.05 | Calibration | 0.4793 | 0.3526 | 12.5x SKA -- ANTI-MONOTONIC |
+//!
+//! ### Aggregate statistics
+//!
+//! - Total analyses: 660 (11 conditions x 3 regimes x 20 seeds)
+//! - Success rate: 100% (zero NaN, zero Inf, zero exceptions)
+//! - Elapsed time: 89.4s (within 600s budget)
+//! - Framework SNR spread: 0.0080 (1.7% of mean)
+//! - Per-seed CV: 0.5% (std=0.0025 on full_sample)
+//! - Detection threshold: 2.0 (none reached)
+//!
+//! ### Post-synthesis key findings (2026-03-18)
+//!
+//! **Outlier domination (D4, C-1427).** The stacked DFT coefficient is
+//! catastrophically outlier-dominated. At 5% trimming, stacked power drops to 33%
+//! of the full mean. At 10% trimming, power drops to 8-12%. At 20% trimming, power
+//! drops to 16-20% AND the phase reverses by ~2.7 radians (nearly pi). Median DFT
+//! power is 0.12% of the full mean. This pattern is algebra-universal: CD-ZD
+//! 20%-trimmed/full = 0.189, G2 = 0.181, J3O = 0.161, sl2 = 0.204. The null
+//! result (SNR=0.29) is a property of ~350 outlier galaxies' baryonic structure,
+//! not a statement about the galaxy population.
+//!
+//! **Robust estimator bounds (S1, C-1428).** The mean-based alpha_zd estimate
+//! (2.32) diverges by 8.6x from the median-based estimate (0.27). At 5% trimming,
+//! alpha_zd drops to 0.78 (34% of mean); at 10% trimming, to 0.18 (8%). The
+//! paper's sensitivity bound (alpha_zd < 0.002392) is a property of the mean
+//! estimator; a median-based analysis would yield a different bound.
+//!
+//! **Red-noise resolution (S2, C-1429).** 10,000 white-noise simulations on the
+//! 16-bin data grid show leakage power ~16 per mode vs observed whitened power
+//! 170,000-580,000. Leakage fraction < 0.01% at all modes. The red-noise spectral
+//! structure is entirely intrinsic to the baryonic floor, not a window artifact.
+//! This resolves the P1/D3 disagreement: P1 is correct that the spectral shape is
+//! real baryonic structure; D3 is correct that signal reconstruction is biased by
+//! the window. Both findings are compatible because they describe different
+//! quantities (noise leakage vs signal recovery).
+//!
+//! **Extreme kurtosis (H2, C-1421/C-1438).** Per-galaxy Fourier power has kurtosis
+//! ~284 (vs Gaussian kurtosis = 3). This explains D4's outlier domination at the
+//! population level: the distribution has 95x heavier tails than Gaussian.
+//! Algebra-universal: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. Any
+//! sensitivity analysis assuming Gaussian noise underestimates the variance by
+//! >100x.
+//!
+//! **Face-on subsample (E-201, C-1430/C-1431).** N=3140 face-on galaxies (i<45
+//! deg), all 7 CD-ZD modes within 1.58 sigma of the red-noise envelope. No
+//! detection. The critical finding: gamma_faceon = -0.011 (essentially flat power
+//! spectrum), vs gamma_full = 0.808. The red-noise spectral slope is predominantly
+//! an inclination artifact: high-inclination galaxies create k^{-0.78} structure
+//! via projection effects. Face-on galaxies have intrinsically flat spectral
+//! floors. This invalidates the gamma=0.808 prior for face-on analysis.
+//!
+//! **Q3 injection recovery (E-202, C-1432).** Q3 (log M200=11.54-12.07, N=1748, 6
+//! valid bins) injection at alpha_zd=0.004 produces delta_SNR=-0.005,
+//! indistinguishable from zero. Pipeline is BLIND at 6 bins. Q1 control (18 bins)
+//! also shows delta_SNR near zero, indicating the injection methodology itself does
+//! not produce measurable delta_SNR at these alpha levels in the existing pipeline.
+//!
+//! ---
+//!
+//! ## Paper Revision Decisions
+//!
+//! This section documents the deliberate framing changes made to paper.md after the
+//! hypothesis synthesis and subquestion decomposition exposed issues with the
+//! original constraint-paper framing.
+//!
+//! ### From "null result" to "non-detection"
+//!
+//! **WHY:** The word "null" implies a failed detection of a known phenomenon.
+//! "Non-detection" accurately describes testing a prediction and finding nothing,
+//! without implying the prediction was expected to succeed. The algebraic ZD
+//! predictions are theoretical proposals, not established phenomena.
+//!
+//! **WHAT:** Abstract, Introduction, Results, Discussion, and Conclusion revised.
+//! "Comprehensive null result" replaced with "non-detection." "Algebra-universal
+//! null" replaced with "non-detection is insensitive to algebraic model choice."
+//!
+//! ### Baryonic floor as lead contribution
+//!
+//! **WHY:** The SMART goal analysis identified the baryonic spectral floor
+//! (3-component taxonomy, red-noise characterization) as the most novel and reusable
+//! contribution -- applicable to fuzzy dark matter soliton searches, ultralight
+//! axion wiggle searches, and any future Fourier-domain halo substructure analysis.
+//! The algebraic null test is a calibrating case study, not the primary result.
+//!
+//! **WHAT:** Contribution list revised so baryonic floor characterization leads.
+//! The algebraic multi-framework test is demoted to a "calibrating application."
+//!
+//! ### Effective independence disclosure (N_eff=6-8)
+//!
+//! **WHY:** Cross-algebra rho > 0.97 means the four frameworks contribute N_eff ~
+//! 1.03 independent measurements. Claiming "660 analyses" without qualification is
+//! misleading. True independence comes from: (a) detection method (~3: mean-stack,
+//! whitened matched filter, GP comparison), (b) subsample (~2: full vs face-on,
+//! noting overlap), (c) algebra-insensitive, so ~6-8 total.
+//!
+//! **WHAT:** Introduction, Results, and Conclusion now explicitly state
+//! "approximately six to eight genuinely independent measurements." The 660 figure
+//! is retained as total cell count with immediate qualification.
+//!
+//! ### Injection recovery reframing
+//!
+//! **WHY:** Originally framed as a "harmonic-subtraction blind zone discovery"
+//! (SMART goal contribution #2). The subquestion decomposition (SQ-1) discovered
+//! that paper.md describes M=7 harmonic subtraction that models.py does not
+//! implement. The true root cause of injection anti-monotonicity (SQ-2) is likely
+//! rms-denominator growth in the SNR metric, not harmonic absorption.
+//!
+//! **WHAT:** Contribution #2 withdrawn pending SQ-1 resolution. Paper now frames
+//! injection recovery as "transparently documenting a calibration challenge" rather
+//! than claiming a blind-zone discovery. The "harmonic-subtraction blind zone"
+//! language removed from contributions list.
+//!
+//! ### Limitations expanded (5 to 9)
+//!
+//! **WHY:** Original paper had ~5 acknowledged limitations. The synthesis exposed 4
+//! additional ones: L4 (cross-algebra quasi-degeneracy), L5 (outlier concentration),
+//! L6 (missing ablation classes), L8 (subsample overlap), L9 (bootstrap sample
+//! size).
+//!
+//! **WHAT:** Paper now has 9 numbered limitations (L1-L9) ordered from most to
+//! least fundamental. L1 (radial coverage) and L2 (injection anti-monotonicity)
+//! remain the most severe.
+//!
+//! ---
+//!
+//! ## Lessons Learned
+//!
+//! ### 1. Degenerate REFINE convergence is a fixed-point, not a bug
+//!
+//! Three REFINE iterations produced identical metrics (sl2_partner/mass_Q3 =
+//! 0.4704 in all three). A deterministic pipeline applied to synthetic null data
+//! with fixed baryonic systematics has a fixed-point SNR determined entirely by
+//! the systematic model parameters (bulge +5%, cusp -12%, edge +5%). The 0.4704
+//! value is the analytic attractor of the pipeline on this data.
+//!
+//! **Why it matters:** Looks like a stuck pipeline, but is actually convergence.
+//! Continuing to REFINE wastes effort because the bottleneck shifted from pipeline
+//! quality to data coverage.
+//!
+//! **Action:** Detect fixed-point convergence (delta < epsilon across iterations)
+//! and stop early. The three prior iterations fixed real bugs (snr_mean vs
+//! snr_max, hardcoded gamma, regime filtering) and expanded seeds from 5 to 20 --
+//! the easy gains were exhausted.
+//!
+//! ### 2. Injection recovery shows destructive interference
+//!
+//! Per-seed SNR *decreases* with injection amplitude (anti-monotonic):
+//! - alpha=0.004: SNR=0.4908
+//! - alpha=0.01:  SNR=0.4895
+//! - alpha=0.05:  SNR=0.4793
+//!
+//! Root cause: the baryonic +5% bulge excess at x~0.5 destructively interferes
+//! with the exp(-x) injection envelope at exactly the same radial range. The
+//! harmonic subtraction stage absorbs injected signals whose spectral character
+//! overlaps with baryonic modes being removed. This is physically informative --
+//! it calibrates exactly where the pipeline has blind spots.
+//!
+//! **Action:** Decouple harmonic subtraction from spectral search. Options:
+//! (a) matched filter that accounts for the harmonic basis,
+//! (b) two-stage pipeline fitting baryonic and ZD components simultaneously,
+//! (c) inject at x > 1 where baryonic interference is weaker.
+//!
+//! ### 3. Metric aliasing: detection_snr = primary_metric
+//!
+//! Both names report the identical value for all 660 entries. The duplication
+//! exists because the experiment harness expects a field named "primary_metric"
+//! while the physics pipeline computes "detection_snr".
+//!
+//! **Action:** Remove primary_metric from the output or alias it explicitly in
+//! the results.json schema. Currently creates ambiguity for downstream consumers.
+//!
+//! ### 4. Per-seed vs structured metric discrepancy (2.7x ratio)
+//!
+//! The unified analysis assessment identified a 2.7x ratio between "structured"
+//! (cross-seed coherent stacking) and per-seed (individual) SNR for framework
+//! conditions. This is not a bug -- the structured pipeline incorporates
+//! cross-seed aggregation that amplifies coherent structure. But it is
+//! undocumented, creating ambiguity about which numbers support the claimed
+//! upper limit.
+//!
+//! Evidence: the ratio is ~1.0 for ablation conditions (no_harmonics: 0.94x,
+//! single_mode: 1.03x) which lack spectral reweighting, but 1.4-2.7x for
+//! physical-model conditions that apply it.
+//!
+//! **Action:** Document both pipelines in results.json with distinct field names.
+//! The paper should report per-seed SNR (conservative, transparent) and note the
+//! structured variant in an appendix.
+//!
+//! ### 5. Radial coverage is the hard physical constraint
+//!
+//! MaNGA IFU probes x = 0.5-1.35 r/r_s (MaNGA IFU ~12-18 kpc vs r_s ~10-20 kpc).
+//! ZD predictions peak at x = 3-5. The null result constrains ZD only in the
+//! baryon-dominated inner halo where baryonic systematics at 5-12% dwarf any
+//! sub-percent exotic signal.
+//!
+//! **Why it matters:** No pipeline refinement overcomes a 4-7x radial gap. This
+//! is the central framing device for the paper: "inner-halo bound, outer-halo
+//! campaign deferred."
+//!
+//! ### 6. Cross-algebra quasi-degeneracy at MaNGA radii
+//!
+//! Cross-algebra correlation rho > 0.97 for all 6 pairs (from E-183 real-data
+//! measurements). At x = 0.5-1.35, the wavenumber families are quasi-degenerate:
+//! effectively one null result measured through four algebraic lenses.
+//!
+//! **Why it matters:** Cannot claim four independent experiments. Must disclose
+//! honestly and reframe: "the bound is insensitive to algebraic model choice"
+//! (a strength, not a weakness).
+//!
+//! ### 7. Ablation coverage gap (5 of 10 classes)
+//!
+//! | Ablation Class | Present | Priority |
+//! |---------------|---------|----------|
+//! | Signal injection | Yes (3 amplitudes) | -- (broken, see lesson 2) |
+//! | Positive control | Yes (no_harmonics) | -- (working) |
+//! | Wavenumber specificity | Yes (random_wavenumber) | -- (working) |
+//! | Mode count | Yes (single_mode) | -- (working) |
+//! | Noise model | Yes (red_noise_corrected) | -- (needs cross-validation) |
+//! | Template choice | **NO** | HIGH (Einasto/Burkert, 2 runs) |
+//! | Radial range | **NO** | HIGH (inner/outer/edge-excl) |
+//! | Galaxy selection | **NO** | MEDIUM |
+//! | Stacking method | **NO** | MEDIUM |
+//! | Detection method | **NO** | HIGH (matched filter) |
+//!
+//! ### 8. Red-noise k^0.81 is a reusable byproduct
+//!
+//! The spectral index 0.81 is algebra-universal (identical across CD-ZD, G2,
+//! Albert, sl(2)) and subsample-invariant (7/7 modes within 9% across face_on,
+//! mass_Q3, full_sample). Characterizes the baryonic noise floor as a power-law
+//! spectrum reusable for future halo-residual analyses.
+//!
+//! **Caution:** The red-noise correction produces SNR values identical to the
+//! uncorrected baseline (both 0.4782 for CD_ZD_D16 full_sample). Requires
+//! cross-validation (fit on 50%, test on 50%) to determine whether the correction
+//! sterilizes signal or genuinely removes universal baryonic structure.
+//!
+//! **Correction (post E-201, C-1431):** gamma is inclination-dependent, not
+//! universal. Face-on subsample (i<45 deg) has gamma=-0.011 (flat spectrum); the
+//! 0.808 index applies only to the inclination-mixed full sample. The "universal"
+//! claim in I-180 must be qualified as inclination-stratified. See Lesson 13.
+//!
+//! ### 9. Stage failure from JSON string formatting
+//!
+//! Prior run failed at code_generation stage with error:
+//!   "'\n  49 |     \"n_galaxies\"'"
+//!
+//! Root cause: HEREDOC-style string embedded in a JSON payload. The newline and
+//! line-number prefix from a code snippet were injected verbatim into JSON,
+//! producing invalid syntax.
+//!
+//! **Action:** Validate JSON payloads programmatically before submission.
+//! Pre-flight check: json.loads(payload) must succeed.
+//!
+//! ### 10. Subsample overlap violates independence
+//!
+//! face_on (inc < 45 deg) and mass_Q3 (3rd mass quartile) both overlap with
+//! full_sample, and may overlap with each other when high-mass galaxies happen to
+//! be face-on. The independence assumption required for Bonferroni or
+//! Benjamini-Hochberg multiple-comparisons correction is violated.
+//!
+//! **Mitigation:** All 351 per-condition tests are null (no correction needed
+//! when all are below threshold). But the paper must state this explicitly and
+//! report effective N, not raw N.
+//!
+//! ### 11. Outlier domination invalidates population-level claims (D4)
+//!
+//! The stacked DFT coefficient is driven by ~350 galaxies (5% of 6995). Five
+//! percent trimming drops power to 33% of full; ten percent trimming drops to 8%.
+//! Median DFT power is 0.12% of the full mean. Every mean-based stacking analysis
+//! in astronomy should check trimmed statistics before claiming population-level
+//! results. The kurtosis of ~284 (vs Gaussian 3) explains the outlier domination
+//! at the distributional level.
+//!
+//! **Why it matters:** The "population null result" is actually an outlier-
+//! population null result. The ZD bound alpha_zd < 0.002392 applies to the
+//! outlier-dominated mean, not to a typical MaNGA galaxy. All baryonic floor
+//! characterization (I-179) describes these ~350 galaxies.
+//!
+//! **Action:** Always report trimmed-mean and median alongside arithmetic mean
+//! for stacked Fourier analyses. Characterize the outlier subpopulation
+//! (morphology, mass, inclination) before submission.
+//!
+//! ### 12. Paper-code discrepancy is a P0 blocker (SQ-1)
+//!
+//! paper.md describes a three-stage pipeline where Stage 2 fits and subtracts M=7
+//! baryonic harmonics via least-squares. models.py implements no harmonic
+//! subtraction at all. The discrepancy was discovered during the subquestion
+//! decomposition, not during any automated check or code review.
+//!
+//! **Why it matters:** This invalidated the stated root cause of injection
+//! anti-monotonicity (Lesson 2 attributed it to harmonic absorption, which cannot
+//! occur if no harmonics are subtracted) and one of five claimed novel
+//! contributions (SMART goal #2: harmonic-subtraction blind zone discovery).
+//!
+//! **Action:** Add a paper-code consistency gate to pre-submission checklist.
+//! Every equation in the Methods section must have a traceable code path with
+//! file:line references. Resolve SQ-1 before any other work.
+//!
+//! ### 13. Red-noise spectral slope is an inclination artifact (C-1431)
+//!
+//! Face-on galaxies (i<45 deg) have gamma=-0.011 (essentially flat power spectrum).
+//! The full sample has gamma=0.808. The "universal" red-noise index k^{0.81} is
+//! actually a projection effect from high-inclination galaxies.
+//!
+//! **Why it matters:** The k^{0.81} index was claimed as a reusable baseline for
+//! any Fourier-domain halo search (SMART goal contribution #4, I-180). If the
+//! slope is inclination-dependent, the baseline must be stratified by inclination
+//! bin, not quoted as a single number.
+//!
+//! **Action:** Report gamma separately for inclination bins. Cross-validate on
+//! face-on subsample before claiming universality. Contribution #4 status changed
+//! from SURVIVES to WEAKENED.
+//!
+//! ### 14. Extreme non-Gaussianity destroys sensitivity estimates (C-1421)
+//!
+//! Per-galaxy Fourier power has kurtosis ~284, meaning the distribution has 95x
+//! heavier tails than Gaussian. Any sensitivity analysis assuming Gaussian noise
+//! underestimates the variance by >100x. The standard bootstrap CI from B=50 is
+//! unreliable for this population.
+//!
+//! **Why it matters:** Upper limits and detection thresholds derived under
+//! Gaussian assumptions are systematically too tight. The alpha_zd bound may be
+//! optimistic by an order of magnitude.
+//!
+//! **Action:** Use robust variance estimators (MAD, IQR) instead of standard
+//! deviation. Increase bootstrap to B >= 1000 for heavy-tailed populations.
+//! Report bootstrap convergence diagnostics.
+//!
+//! ### 15. Multi-perspective hypothesis testing finds blind spots
+//!
+//! The innovator/pragmatist/contrarian structure forced systematic exploration of
+//! different failure modes. The innovator found kurtosis (~284). The pragmatist
+//! explained red-noise structure and identified selection artifacts. The contrarian
+//! challenged foundational assumptions and discovered outlier domination. No single
+//! perspective would have found all three.
+//!
+//! **Why it matters:** High-stakes null results require adversarial testing. A
+//! single analyst confirming their own result is insufficient.
+//!
+//! **Action:** Use multi-perspective hypothesis testing for any high-stakes null
+//! result. Assign adversarial roles explicitly. Budget 1-2 days for the synthesis
+//! phase after initial analysis.
+//!
+//! ---
+//!
+//! ## Unresolved Disagreements
+//!
+//! Three disagreements were identified during the hypothesis synthesis. Their
+//! current resolution status:
+//!
+//! ### D1: Is the red-noise intrinsic or a leakage artifact?
+//!
+//! - P1 says: The k^{-0.78} slope is intrinsic baryonic structure.
+//! - D3 says: The 185% overrecovery at mode 1 inflates low-k modes.
+//!
+//! **Status: RESOLVED by S2 (C-1429).** 10,000 white-noise simulations show
+//! leakage power < 0.01% of observed whitened power at all modes. The red-noise is
+//! intrinsic. D3's overrecovery applies to signal reconstruction (how much of an
+//! injected sinusoid is recovered), not noise leakage (how much noise appears at a
+//! frequency). Both P1 and D3 are correct for different quantities.
+//!
+//! ### D2: What population does the ZD bound describe?
+//!
+//! - Standard view: alpha_zd < 0.002392 applies to MaNGA galaxies.
+//! - D4 says: It applies to the ~350 outlier galaxies that dominate the stacked DFT.
+//!
+//! **Status: PARTIALLY RESOLVED by S1 (C-1428).** Mean-based alpha_zd=2.32 vs
+//! median-based=0.27 (8.6x divergence). The paper must decide which estimator to
+//! report as primary. Options: (a) report both, (b) report median as primary with
+//! mean as secondary, (c) characterize the outlier population and report separately.
+//! Decision deferred to paper revision round 2.
+//!
+//! ### D3: Is the injection recovery failure fixable?
+//!
+//! - Original view (Lesson 2): harmonic absorption causes anti-monotonicity.
+//! - SQ-1 says: no harmonics are subtracted in the code.
+//! - SQ-2 says: root cause is probably rms-denominator growth in the SNR metric.
+//!
+//! **Status: REFRAMED by SQ-1/SQ-2.** The stated root cause (harmonic absorption)
+//! is invalidated by the paper-code discrepancy. The true mechanism is unknown but
+//! likely involves the SNR metric's denominator growing when injected power raises
+//! the overall residual floor. S3 (decontaminated injection on trimmed stack) would
+//! test this but is deferred to next sprint.
+//!
+//! ---
+//!
+//! ## Five Novel Contributions Status
+//!
+//! Each contribution from the SMART goal tracked against post-synthesis scrutiny:
+//!
+//! | # | Contribution | SMART Goal Role | Post-Synthesis Status |
+//! |---|-------------|-----------------|----------------------|
+//! | 1 | Baryonic spectral floor (3-component taxonomy) | Primary | SURVIVES with caveat: gamma is inclination-dependent (C-1431). 3-component taxonomy (bulge +5%, cusp -12%, edge +5%) holds but spectral index must be reported per inclination bin. |
+//! | 2 | Harmonic-subtraction blind zone | Secondary | WITHDRAWN pending SQ-1. Paper describes subtraction that code does not implement. If SQ-1 resolved by removing from paper, contribution is abandoned. |
+//! | 3 | Inclination-gradient falsification criterion | Standalone | SURVIVES + STRENGTHENED by E-201. Face-on gamma=-0.011 confirms inclination drives spectral slope. Criterion extends from SNR gradient to spectral-index gradient. |
+//! | 4 | Universal red-noise index k^0.81 | Reusable baseline | WEAKENED. gamma_faceon=-0.011 means "universal" is incorrect. Must be reported as inclination-stratified, not universal. Cross-validation (SQ-5) still pending. |
+//! | 5 | Multi-algebra quasi-degeneracy | Calibrating case study | SURVIVES. N_eff=6-8 disclosure is honest. Reframed as "insensitive to model choice" -- a strength, not a limitation. |
+//!
+//! Scorecard: 3 survive, 1 weakened, 1 withdrawn. The paper retains 3 solid
+//! contributions (#1, #3, #5) and one qualified contribution (#4).
+//!
+//! ---
+//!
+//! ## Hypothesis Synthesis Registry
+//!
+//! All tested hypotheses from the three-perspective synthesis (2026-03-18):
+//!
+//! | ID | Hypothesis | Perspective | Claim | Result |
+//! |----|-----------|-------------|-------|--------|
+//! | H1 | Bispectral Fano selection rule | Innovator | C-1420 | FALSIFIED (bicoherence trivially 1.0 for single realization) |
+//! | H2 | Variance quantization | Innovator | C-1421 | FALSIFIED as ZD-specific (kurtosis ~284, algebra-universal) |
+//! | H3 | Topological persistence | Innovator | C-1419 | FALSIFIED (N_persistent=1, not 7) |
+//! | H4 | Cross-algebra MI | Innovator | C-1422 | FALSIFIED (zero non-linear coupling, r=0.85-0.96 linear) |
+//! | P1 | Whitened matched filter | Pragmatist | C-1423 | Corrected chi2/df=1.01; baryonic floor explains all |
+//! | P2 | GP model comparison | Pragmatist | C-1424 | Matern-only outperforms Matern+Periodic (delta=-0.064) |
+//! | P3 | Power-stratified phase | Pragmatist | C-1425 | SELECTION ARTIFACT (R monotonic with power quintile) |
+//! | D3 | Window function sensitivity | Contrarian | C-1426 | REFUTED blindness; found 185% overrecovery (leakage) |
+//! | D4 | Trimmed stacking robustness | Contrarian | C-1427 | CRITICAL: 5% galaxies = 67% DFT power |
+//! | S1 | Robust estimator bounds | Synthesis | C-1428 | Median alpha_zd = 12% of mean (8.6x divergence) |
+//! | S2 | Spectral leakage decomposition | Synthesis | C-1429 | Leakage < 0.01%; red-noise is intrinsic baryonic floor |
+//!
+//! ---
+//!
+//! ## Reproducibility Notes
+//!
+//! ### Environment
+//!
+//! | Component | Version | Pinned? |
+//! |-----------|---------|---------|
+//! | Python | 3.x | No -- pin in requirements.txt |
+//! | numpy | (system) | No -- pin |
+//! | scipy | (system) | No -- pin |
+//! | Rust toolchain | nightly-2026-03-05 | Yes (rust-toolchain.toml) |
+//! | Platform | AMD Ryzen 9 7950X, 64 GB DDR5 | N/A |
+//! | Execution | Single CPU core, no GPU | N/A |
+//!
+//! ### Seeds and determinism
+//!
+//! 20 seeds: 42, 123, 456, 789, 1024, 2025, 3141, 4096, 5555, 6174,
+//!           7071, 8191, 9001, 10007, 11111, 12345, 13579, 14159, 15485, 16384
+//!
+//! - `np.random.RandomState(seed)` per galaxy generation (data_utils.py:116)
+//! - `np.random.seed(seed)` global reset per run (main.py:80-81)
+//! - Bitwise reproducible across runs on the same platform
+//! - Cross-platform reproducibility not guaranteed (floating-point rounding)
+//!
+//! ### Data dependencies
+//!
+//! | Data | Source | External? |
+//! |------|--------|-----------|
+//! | Synthetic galaxies | data_utils.py (from seed) | No |
+//! | E-183 stacked data | data/results/e183/*.csv (23 files) | No |
+//! | MaNGA DR17 catalog | SDSS public (DRPall, DAPall, DAP maps) | Yes (public) |
+//! | Cross-algebra corr | data/results/e183/cross_algebra_correlation.csv | No |
+//!
+//! ### Exact reproduction commands
+//!
+//! Python robustness suite (produces results.json):
+//! ```
+//! cd experiments/manga_zd_null && python main.py
+//! ```
+//!
+//! Rust real-data pipeline (E-192):
+//! ```
+//! harmonic-halo-signal-analysis \
+//!   --stacked-csv data/results/e183/lie_jordan_full.csv \
+//!   --min-per-bin 10 --sigma-x 1.5 --n-windows 32 \
+//!   --stft-csv data/results/e183/stft_full.csv \
+//!   --deriv-csv data/results/e183/deriv_full.csv \
+//!   --rayleigh-csv data/results/e183/rayleigh_full.csv
+//! ```
+//!
+//! Rust multi-algebra binary (E-184):
+//! ```
+//! lie-jordan-halo-analysis [flags]
+//! ```
+//!
+//! ### Hyperparameters (frozen in main.py:49-65)
+//!
+//! | Parameter | Value | Rationale |
+//! |-----------|-------|-----------|
+//! | n_galaxies | 6992 | Matches E-183 MaNGA DR17 sample |
+//! | x_min, x_max | 0.5, 1.35 | Avoids baryonic core and IFU edge |
+//! | n_points_per_galaxy | 18 | MaNGA median radial sampling |
+//! | n_grid | 200 | Stacking grid resolution |
+//! | min_per_bin | 10 | Minimum galaxies per stacking bin |
+//! | cd_dim | 16 | Sedenion (D=16) baseline |
+//! | n_bootstrap | 50 | Within-run CI estimation |
+//! | gamma_prior | 0.808 | E-183 measured red-noise index |
+//! | inject_alpha_low | 0.004 | SKA 2030 design sensitivity |
+//! | inject_alpha_high | 0.01 | 2.5x SKA threshold |
+//! | inject_alpha_positive_ctrl | 0.05 | 12.5x SKA (positive control) |
+//! | face_on_inc_max | 45.0 | Face-on subsample cut |
+//! | mass_quartile_target | 3 | Mass Q3 subsample selection |
+//! | time_budget_seconds | 600 | Runtime safety bound |
+//!
+//! ### Registry cross-references
+//!
+//! | Registry | IDs | Description |
+//! |----------|-----|-------------|
+//! | Experiments | E-183, E-184, E-192, E-201, E-202 | All completed |
+//! | Claims (original) | C-1365..C-1374 | Primary null, CD invariance, inclination, algebras |
+//! | Claims (robustness) | C-1415..C-1418 | Convergence, ablation, cross-regime, random-wk |
+//! | Claims (synthesis) | C-1419..C-1429 | 9 hypotheses, S1/S2 audit |
+//! | Claims (follow-up) | C-1430..C-1439 | Face-on Rayleigh, Q3 injection, trimmed reconfirm |
+//! | Insights (original) | I-179..I-183 | Baryonic systematics, Fourier, inclination, SKA |
+//! | Insights (robustness) | I-194..I-195 | REFINE convergence, injection root cause |
+//! | Insights (synthesis) | I-199..I-204 | Higher-order falsification, kurtosis, whitened-MF |
+//!
+//! ### Artifact inventory
+//!
+//! | File | Description | Size |
+//! |------|-------------|------|
+//! | results.json | 660 per-seed metric records + summary | ~5000 lines |
+//! | schedule.json | Task dependency DAG (11 tasks) | 115 lines |
+//! | paper.md | Full 8-section manuscript draft | 217 lines |
+//! | main.py | Pipeline driver | 403 lines |
+//! | models.py | 11 analysis condition classes | 707 lines |
+//! | data_utils.py | Synthetic galaxy generator | 216 lines |
+//! | _legacy/ | Prior version (8 conditions, 5 seeds) | ~1750 lines |
+//!
+//! Supporting documents (outside experiment directory):
+//!
+//! | File | Description | Location |
+//! |------|-------------|----------|
+//! | hypothesis_synthesis_2026.md | 9-hypothesis synthesis | docs/research/ |
+//! | manga_null_result_smart_goal_2026.md | SMART goal, 5 contributions | docs/research/ |
+//! | manga_null_result_subquestions_2026.md | 6 research subquestions (P0-P5) | docs/research/ |
+//! | manga_null_literature_synthesis_2026.md | Literature context, 6 topic clusters | docs/research/ |
+//! | manga_zd_null_result.tex | LaTeX manuscript skeleton | docs/latex/ |
+//!
+//! ---
+//!
+//! ## Future Work
+//!
+//! ### Priority 0: Must resolve before any other work
+//!
+//! 0. **SQ-1: Paper-code harmonic subtraction discrepancy.** paper.md describes
+//!    M=7 harmonic subtraction; models.py implements none. Resolve by either:
+//!    (A) implementing harmonic subtraction in the pipeline and re-running all
+//!    660 analyses, or (B) removing harmonic subtraction from the paper and
+//!    reframing the injection recovery root cause. Option B is faster (1 day)
+//!    but abandons SMART contribution #2. Option A is correct but expensive
+//!    (2-3 days). This is upstream of items 1, 6, and 10. P0 BLOCKER.
+//!
+//! ### Priority 1: Must complete before paper submission
+//!
+//! 1. **Diagnose injection recovery anti-monotonicity.** Root cause is NOT
+//!    harmonic absorption (SQ-1 invalidated that). Likely: rms-denominator growth
+//!    in the SNR metric when injected power raises the overall residual floor
+//!    (SQ-2). Trace compute_snr() code path. (1-2 days, depends on SQ-1)
+//!
+//! 2. **Add shuffled-data null control.** Permute radial bins across galaxies to
+//!    establish the true noise floor. If shuffled SNR equals unshuffled SNR, the
+//!    pipeline has no radial sensitivity. (0.5 day)
+//!
+//! 3. **Calibrate alpha_zd to physical units.** Compute the velocity deviation
+//!    at r = r_s for a fiducial halo (M_200 = 10^12 Msun, c = 8). Convert the
+//!    upper limit from pipeline-internal number to km/s. (0.5 day)
+//!
+//! 4. **Document per-seed vs structured metric discrepancy.** Add schema
+//!    documentation to results.json explaining both aggregation methods. (0.5 day)
+//!
+//! 5. **Drop redundant primary_metric.** Remove or alias to detection_snr. (trivial)
+//!
+//! 5b. **Outlier population characterization.** Identify the ~350 galaxies driving
+//!     67% of DFT power. Report morphology, mass, inclination distributions.
+//!     Determine whether they should be excluded or downweighted. (1 day)
+//!
+//! 5c. **Decide primary estimator.** Mean vs median alpha_zd bound. The paper
+//!     cannot quote a bound without specifying which estimator produces it. If
+//!     mean, disclose outlier domination. If median, bound is 8.6x tighter but
+//!     describes a different population. (0.5 day)
+//!
+//! ### Priority 2: Strongly recommended
+//!
+//! 6. **NFW template ablation.** Repeat with Einasto and Burkert profiles. Two
+//!    23-second runs. If null persists, constraint is template-independent. (0.5 day)
+//!
+//! 7. **Cross-validate harmonic model.** Fit on 50% of galaxies, test on 50%.
+//!    Resolves whether the red-noise correction sterilizes signal. (0.5 day)
+//!
+//! 7b. **Inclination-stratified red-noise.** Report gamma separately for low-i
+//!     (30-45 deg), mid-i (45-60 deg), high-i (60-70 deg) bins. The "universal"
+//!     gamma=0.808 is invalidated by E-201 (C-1431). Contribution #4 depends on
+//!     this characterization. (0.5 day)
+//!
+//! 8. **Pin Python dependency versions.** Add requirements.txt with exact numpy
+//!    and scipy versions for cross-platform reproducibility. (trivial)
+//!
+//! 9. **Record git hash and platform in results.json.** Add metadata fields for
+//!    provenance tracking. (trivial)
+//!
+//! ### Priority 3: Desirable for publication impact
+//!
+//! 10. **Matched filter / profile likelihood analysis.** Complement Fourier-domain
+//!     search with a detection method sensitive to localized radial features. (2 days)
+//!
+//! 11. **SPARC pilot cross-survey validation.** Apply GHOST to N=50 SPARC galaxies
+//!     with x > 5 r/r_s coverage. Even a tiny cross-validation strengthens the
+//!     paper. (1 day)
+//!
+//! 12. **Radial range ablation.** Inner-only (x < 0.9), outer-only (x > 0.9),
+//!     and edge-excluded (x < 1.2) sub-analyses. (0.5 day)
+//!
+//! 13. **Generate publication figures.** Two charts referenced in paper.md:
+//!     ghost_snr_comparison.png and ghost_per_seed_stability.png. (0.5 day)
+//!
+//! 13b. **S3: Decontaminated injection recovery.** Remove 5% highest-power
+//!      galaxies, inject ZD signals into the remaining 6645, and check whether
+//!      the decontaminated injection recovery shows proper proportional scaling.
+//!      If recovery ratio is within [0.5, 2.0] for alpha_zd=0.004, the pipeline
+//!      has genuine sensitivity after outlier removal. (1-2 hours)
+//!
+//! ### Deferred to next survey generation
+//!
+//! 14. **SKA Phase 1 outer-halo campaign** (x > 10 r/r_s, ~2030). HI 21cm
+//!     kinematic surveys will directly access the regime where ZD predictions peak.
+//!
+//! 15. **THINGS HI high-resolution validation** (N=34, x > 10). Small sample but
+//!     deepest radial coverage available before SKA.
+//!
+//! 16. **Euclid DR2+ weak lensing** (~2028). Complementary probe of halo structure
+//!     through gravitational lensing rather than kinematics.
+//!
+//! 17. **Real MaNGA velocity fields** (E-196). Apply GHOST to actual MaNGA DAP
+//!     stellar velocity maps rather than synthetic calibration data. Pending
+//!     injection recovery fix (item 1 above).
+//!
+//! ---
+//!
+//! ## Quality Rating
+//!
+//! ### Original assessment (pre-synthesis)
+//!
+//! | Dimension | Score | Notes |
+//! |-----------|-------|-------|
+//! | Infrastructure | 9/10 | Fast (89s), deterministic, stable, 100% completion |
+//! | Internal consistency | 8/10 | Tight clustering, seed CV=0.5%, algebra-universal |
+//! | Scientific validity | 3/10 | Injection failure, no demonstrated sensitivity floor |
+//! | Methodological completeness | 4/10 | 5/10 ablation classes, Fourier-only detection |
+//! | Publication readiness | 4/10 | Metric discrepancy, missing calibration, overlap |
+//! | **Overall** | **5/10** | Infrastructure strong; validity questions unresolved |
+//!
+//! ### Revised assessment (post-synthesis, 2026-03-18)
+//!
+//! | Dimension | Was | Now | Change Reason |
+//! |-----------|-----|-----|---------------|
+//! | Infrastructure | 9/10 | 9/10 | No change |
+//! | Internal consistency | 8/10 | 7/10 | D4 outlier domination means consistency is among ~350 outlier galaxies, not the population. SQ-1 paper-code discrepancy is open. |
+//! | Scientific validity | 3/10 | 4/10 | S2 resolved leakage disagreement. S1 quantified robust bounds. E-201 confirmed face-on null. But SQ-1 and injection recovery remain. |
+//! | Methodological completeness | 4/10 | 5/10 | 9 additional hypotheses tested (H1-H4, P1-P3, D3-D4). S1/S2 synthesis audits complete. Still missing 5 ablation classes. |
+//! | Publication readiness | 4/10 | 4/10 | Paper-code discrepancy (SQ-1) is a new P0 blocker, offsetting synthesis gains. Paper framing improved but SQ-1 must resolve first. |
+//! | **Overall** | **5/10** | **5/10** | Synthesis simultaneously RESOLVED existing questions (S2, robust bounds) and EXPOSED new blockers (SQ-1, outlier recontextualization). Net: zero. |
+//!
+//! The overall score remains 5/10 because the synthesis exposed new problems that
+//! offset resolution of old ones. The path to 7/10 now runs through SQ-1 resolution
+//! (Priority 0), not through the original Priority 1 items alone.
+//!
+//! Fixing Priority 0 (SQ-1) + Priority 1 (items 1-5c) raises overall to ~7/10.
+//! Adding Priority 2 (items 6-9) raises to ~8/10.
+//!

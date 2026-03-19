@@ -3990,16 +3990,16 @@ source_line = 88
 
 [[atom]]
 id = "EQA2-00182"
-expression = "Run `make mcp-smoke` or `PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
-normalized_expression = "Run `make mcp-smoke` or `PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
+expression = "Run `make mcp-smoke` or `PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
+normalized_expression = "Run `make mcp-smoke` or `PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
 relation_operator = "="
 lhs_expression = "Run `make mcp-smoke` or `PYTHONWARNINGS"
-rhs_expression = "error python3 src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
+rhs_expression = "error cargo run --release --bin src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`."
 equation_kind = "algebraic_relation"
 extraction_kind = "equation_like_line"
 extraction_confidence = "high"
 quality_flags = []
-symbol_names = ["PYTHONWARNINGS", "Run", "all", "baseline", "confirm", "error", "make", "matches", "mcp", "mcp_server_matrix", "parity", "py", "python3", "respond", "servers", "set", "smoke", "src", "still", "to", "verification", "verify_mcp_smoke"]
+symbol_names = ["PYTHONWARNINGS", "Run", "all", "baseline", "confirm", "error", "make", "matches", "mcp", "mcp_server_matrix", "parity", "py", "cargo run --release --bin", "respond", "servers", "set", "smoke", "src", "still", "to", "verification", "verify_mcp_smoke"]
 numeric_constants = []
 symbol_refs = ["SYM-0669", "SYM-0701", "SYM-0178", "SYM-0182", "SYM-0393", "SYM-0466", "SYM-0578", "SYM-0583", "SYM-0588", "SYM-0589", "SYM-0640", "SYM-0281", "SYM-0668", "SYM-0693", "SYM-0715", "SYM-0716", "SYM-0726", "SYM-0289", "SYM-0293", "SYM-0004", "SYM-0797", "SYM-0800"]
 claim_refs = []

@@ -1,0 +1,409 @@
+root = "data/external/nanograv_15yr_timing/NANOGrav15yr_PulsarTiming_v2.1.0"
+inventory_csv = "data/csv/nanograv_15yr_timing_inventory.csv"
+pulsar_count = 68
+narrowband_ready_count = 68
+wideband_ready_count = 68
+dual_band_ready_count = 68
+residual_ready_count = 68
+noise_ready_count = 68
+dmx_ready_count = 68
+wideband_dm_ready_count = 68
+parallax_ready_count = 68
+whitened_full_residual_ready_count = 23
+
+[max_toa_pulsar]
+name = "J1713+0747"
+total_toa_count = 116585
+narrowband_toa_count = 113714
+wideband_toa_count = 2871
+
+[max_full_residual_rms]
+name = "J0709+0458"
+rms_us = 20.275762899448
+
+[max_dmx_std]
+name = "J1903+0327"
+dmx_std = 0.015442523051
+
+[max_wideband_dm_std]
+name = "J2214+3000"
+pp_dm_std = 0.071387003100
+
+[max_parallax_mas]
+name = "J0437-4715"
+px_mas = 10.097072404840
+
+[[top_total_toa]]
+rank = 1
+name = "J1713+0747"
+total_toa_count = 116585.000000000000
+narrowband_toa_count = 113714
+wideband_toa_count = 2871
+px_mas = 0.819897044028
+elong_deg = 256.668699198040
+elat_deg = 30.700358256007
+
+[[top_total_toa]]
+rank = 2
+name = "J1909-3744"
+total_toa_count = 68133.000000000000
+narrowband_toa_count = 66563
+wideband_toa_count = 1570
+px_mas = 0.881607039559
+elong_deg = 284.220845923265
+elat_deg = -15.155533107035
+
+[[top_total_toa]]
+rank = 3
+name = "B1937+21"
+total_toa_count = 47612.000000000000
+narrowband_toa_count = 46312
+wideband_toa_count = 1300
+px_mas = 0.221805576893
+elong_deg = 301.973244485412
+elat_deg = 42.296752095810
+
+[[top_total_toa]]
+rank = 4
+name = "J1600-3053"
+total_toa_count = 43565.000000000000
+narrowband_toa_count = 42680
+wideband_toa_count = 885
+px_mas = 0.570198822645
+elong_deg = 244.347678096678
+elat_deg = -10.071843255741
+
+[[top_total_toa]]
+rank = 5
+name = "J1643-1224"
+total_toa_count = 40962.000000000000
+narrowband_toa_count = 40076
+wideband_toa_count = 886
+px_mas = 0.203581720663
+elong_deg = 251.087223315951
+elat_deg = 9.778333911847
+
+[[top_dmx_std]]
+rank = 1
+name = "J1903+0327"
+dmx_std = 0.015442523051
+total_toa_count = 13705
+narrowband_toa_count = 13279
+wideband_toa_count = 426
+px_mas = 0.087329758568
+elong_deg = 287.562576157297
+elat_deg = 25.937981560048
+
+[[top_dmx_std]]
+rank = 2
+name = "J1747-4036"
+dmx_std = 0.006835417450
+total_toa_count = 11277
+narrowband_toa_count = 11055
+wideband_toa_count = 222
+px_mas = -1.054194993403
+elong_deg = 267.579132938910
+elat_deg = -17.201541452078
+
+[[top_dmx_std]]
+rank = 3
+name = "J0509+0856"
+dmx_std = 0.005204348022
+total_toa_count = 2235
+narrowband_toa_count = 2169
+wideband_toa_count = 66
+px_mas = 4.619976381687
+elong_deg = 77.113463417552
+elat_deg = -13.934572246296
+
+[[top_dmx_std]]
+rank = 4
+name = "J1705-1903"
+dmx_std = 0.005140994907
+total_toa_count = 10124
+narrowband_toa_count = 9871
+wideband_toa_count = 253
+px_mas = 0.909800344756
+elong_deg = 257.161324355623
+elat_deg = 3.775144927236
+
+[[top_dmx_std]]
+rank = 5
+name = "J0709+0458"
+dmx_std = 0.005103116053
+total_toa_count = 3121
+narrowband_toa_count = 3030
+wideband_toa_count = 91
+px_mas = -1.503692115511
+elong_deg = 108.068996623073
+elat_deg = -17.380650005769
+
+[[top_wideband_dm_std]]
+rank = 1
+name = "J2214+3000"
+pp_dm_std = 0.071387003100
+total_toa_count = 7699
+narrowband_toa_count = 7406
+wideband_toa_count = 293
+px_mas = 1.850085754726
+elong_deg = 348.809157401735
+elat_deg = 37.713142558634
+
+[[top_wideband_dm_std]]
+rank = 2
+name = "J0709+0458"
+pp_dm_std = 0.047907401249
+total_toa_count = 3121
+narrowband_toa_count = 3030
+wideband_toa_count = 91
+px_mas = -1.503692115511
+elong_deg = 108.068996623073
+elat_deg = -17.380650005769
+
+[[top_wideband_dm_std]]
+rank = 3
+name = "J1903+0327"
+pp_dm_std = 0.039278709986
+total_toa_count = 13705
+narrowband_toa_count = 13279
+wideband_toa_count = 426
+px_mas = 0.087329758568
+elong_deg = 287.562576157297
+elat_deg = 25.937981560048
+
+[[top_wideband_dm_std]]
+rank = 4
+name = "J1738+0333"
+pp_dm_std = 0.037687422370
+total_toa_count = 9126
+narrowband_toa_count = 8790
+wideband_toa_count = 336
+px_mas = 0.408000500308
+elong_deg = 264.094916704195
+elat_deg = 26.884240804507
+
+[[top_wideband_dm_std]]
+rank = 5
+name = "J1910+1256"
+pp_dm_std = 0.037539603666
+total_toa_count = 6702
+narrowband_toa_count = 6486
+wideband_toa_count = 216
+px_mas = 0.180240258776
+elong_deg = 291.041413495064
+elat_deg = 35.107217301076
+
+[[top_full_residual_rms]]
+rank = 1
+name = "J0709+0458"
+rms_us = 20.275762899448
+total_toa_count = 3121
+narrowband_toa_count = 3030
+wideband_toa_count = 91
+px_mas = -1.503692115511
+elong_deg = 108.068996623073
+elat_deg = -17.380650005769
+
+[[top_full_residual_rms]]
+rank = 2
+name = "J1719-1438"
+rms_us = 15.797461285927
+total_toa_count = 6819
+narrowband_toa_count = 6356
+wideband_toa_count = 463
+px_mas = -4.112548524203
+elong_deg = 260.016962455548
+elat_deg = 8.452613115632
+
+[[top_full_residual_rms]]
+rank = 3
+name = "J1745+1017"
+rms_us = 14.459022810374
+total_toa_count = 3108
+narrowband_toa_count = 3017
+wideband_toa_count = 91
+px_mas = 2.946408370468
+elong_deg = 265.731571938066
+elat_deg = 33.683724801733
+
+[[top_full_residual_rms]]
+rank = 4
+name = "J1125+7819"
+rms_us = 13.846124839044
+total_toa_count = 8929
+narrowband_toa_count = 8723
+wideband_toa_count = 206
+px_mas = 1.464856988598
+elong_deg = 115.629317175421
+elat_deg = 62.452043725986
+
+[[top_full_residual_rms]]
+rank = 5
+name = "J1455-3330"
+rms_us = 13.194728002853
+total_toa_count = 11175
+narrowband_toa_count = 10818
+wideband_toa_count = 357
+px_mas = 0.330420112440
+elong_deg = 231.347540328225
+elat_deg = -16.044798330615
+
+[[top_full_whitening_gain]]
+rank = 1
+name = "B1937+21"
+whitening_gain = 17.492406847738
+total_toa_count = 47612
+narrowband_toa_count = 46312
+wideband_toa_count = 1300
+px_mas = 0.221805576893
+elong_deg = 301.973244485412
+elat_deg = 42.296752095810
+
+[[top_full_whitening_gain]]
+rank = 2
+name = "J1745+1017"
+whitening_gain = 2.255449315491
+total_toa_count = 3108
+narrowband_toa_count = 3017
+wideband_toa_count = 91
+px_mas = 2.946408370468
+elong_deg = 265.731571938066
+elat_deg = 33.683724801733
+
+[[top_full_whitening_gain]]
+rank = 3
+name = "J1903+0327"
+whitening_gain = 1.486797031737
+total_toa_count = 13705
+narrowband_toa_count = 13279
+wideband_toa_count = 426
+px_mas = 0.087329758568
+elong_deg = 287.562576157297
+elat_deg = 25.937981560048
+
+[[top_full_whitening_gain]]
+rank = 4
+name = "J1946+3417"
+whitening_gain = 1.104270972139
+total_toa_count = 4872
+narrowband_toa_count = 4743
+wideband_toa_count = 129
+px_mas = 0.662459150168
+elong_deg = 309.198832829890
+elat_deg = 54.165574505530
+
+[[top_full_whitening_gain]]
+rank = 5
+name = "J1705-1903"
+whitening_gain = 1.064571778002
+total_toa_count = 10124
+narrowband_toa_count = 9871
+wideband_toa_count = 253
+px_mas = 0.909800344756
+elong_deg = 257.161324355623
+elat_deg = 3.775144927236
+
+[[top_red_noise_log10_a]]
+rank = 1
+name = "J1745+1017"
+log10_a_median = -11.939489095667
+total_toa_count = 3108
+narrowband_toa_count = 3017
+wideband_toa_count = 91
+px_mas = 2.946408370468
+elong_deg = 265.731571938066
+elat_deg = 33.683724801733
+
+[[top_red_noise_log10_a]]
+rank = 2
+name = "J0509+0856"
+log10_a_median = -12.187998696273
+total_toa_count = 2235
+narrowband_toa_count = 2169
+wideband_toa_count = 66
+px_mas = 4.619976381687
+elong_deg = 77.113463417552
+elat_deg = -13.934572246296
+
+[[top_red_noise_log10_a]]
+rank = 3
+name = "J1903+0327"
+log10_a_median = -12.224865599205
+total_toa_count = 13705
+narrowband_toa_count = 13279
+wideband_toa_count = 426
+px_mas = 0.087329758568
+elong_deg = 287.562576157297
+elat_deg = 25.937981560048
+
+[[top_red_noise_log10_a]]
+rank = 4
+name = "J1802-2124"
+log10_a_median = -12.255010892878
+total_toa_count = 6922
+narrowband_toa_count = 6796
+wideband_toa_count = 126
+px_mas = 1.822161963723
+elong_deg = 270.486526050219
+elat_deg = 2.037375574315
+
+[[top_red_noise_log10_a]]
+rank = 5
+name = "J1643-1224"
+log10_a_median = -12.291287946336
+total_toa_count = 40962
+narrowband_toa_count = 40076
+wideband_toa_count = 886
+px_mas = 0.203581720663
+elong_deg = 251.087223315951
+elat_deg = 9.778333911847
+
+[[top_parallax_mas]]
+rank = 1
+name = "J0437-4715"
+px_mas = 10.097072404840
+total_toa_count = 5947
+narrowband_toa_count = 5830
+wideband_toa_count = 117
+elong_deg = 50.468868525567
+elat_deg = -67.873226252839
+
+[[top_parallax_mas]]
+rank = 2
+name = "J1630+3734"
+px_mas = 6.886523246696
+total_toa_count = 1886
+narrowband_toa_count = 1815
+wideband_toa_count = 71
+elong_deg = 234.972918150829
+elat_deg = 58.330522680018
+
+[[top_parallax_mas]]
+rank = 3
+name = "J0614-3329"
+px_mas = 6.676435464289
+total_toa_count = 1770
+narrowband_toa_count = 1714
+wideband_toa_count = 56
+elong_deg = 95.410779309841
+elat_deg = -56.871119524642
+
+[[top_parallax_mas]]
+rank = 4
+name = "J0610-2100"
+px_mas = 5.347684706607
+total_toa_count = 5099
+narrowband_toa_count = 4885
+wideband_toa_count = 214
+elong_deg = 93.342333117245
+elat_deg = -44.417337979422
+
+[[top_parallax_mas]]
+rank = 5
+name = "J0509+0856"
+px_mas = 4.619976381687
+total_toa_count = 2235
+narrowband_toa_count = 2169
+wideband_toa_count = 66
+elong_deg = 77.113463417552
+elat_deg = -13.934572246296

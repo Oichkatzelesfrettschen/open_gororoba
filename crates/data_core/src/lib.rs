@@ -40,6 +40,7 @@ pub mod parse;
 pub mod provenance;
 pub mod quality;
 pub mod registry;
+pub mod registry_mirrors;
 pub mod seti;
 pub mod spatial;
 pub mod spice;

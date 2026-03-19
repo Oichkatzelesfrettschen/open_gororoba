@@ -96,6 +96,42 @@ path = "src/bin/thesis_42_support.rs"
 name = "vis-hyper-artifacts"
 path = "src/bin/vis_hyper_artifacts.rs"
 
+[[bin]]
+name = "detect-worker-budget"
+path = "src/bin/detect_worker_budget.rs"
+
+[[bin]]
+name = "docs-redirect-check"
+path = "src/bin/docs_redirect_check.rs"
+
+[[bin]]
+name = "proof-dep-graph"
+path = "src/bin/proof_dep_graph.rs"
+
+[[bin]]
+name = "proof-metrics"
+path = "src/bin/proof_metrics.rs"
+
+[[bin]]
+name = "proof-doc"
+path = "src/bin/proof_doc.rs"
+
+[[bin]]
+name = "attractor-sweep-runner"
+path = "src/bin/attractor_sweep_runner.rs"
+
+[[bin]]
+name = "paper-fetcher"
+path = "src/bin/paper_fetcher.rs"
+
+[[bin]]
+name = "pre-push-hook"
+path = "src/bin/pre_push_hook.rs"
+
+[[bin]]
+name = "makew"
+path = "src/bin/makew.rs"
+
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
@@ -143,6 +179,7 @@ env_logger = { workspace = true }
 pgfplots = { workspace = true }
 chrono = { workspace = true }
 strsim = { workspace = true }
+ureq.workspace = true
 
 [dev-dependencies]
 tempfile = { workspace = true }

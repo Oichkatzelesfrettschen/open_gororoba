@@ -1,0 +1,529 @@
+//! # External Sources Registry Mirror
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: see authoritative source line below -->
+//!
+//! Authoritative source: `registry/external_sources.toml`.
+//!
+//! - Updated: 2026-03-12
+//! - Source markdown glob: `docs/external_sources/*.md`
+//! - Document count: 29
+//!
+//! ## Documents
+//!
+//! ### XS-027: MaNGA Survey Overview (Bundy et al. 2015 ApJ 798 7)
+//!
+//! - Source markdown: `docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md`
+//! - Slug: `bundy_2015_manga_overview`
+//! - Status token: `ACTIVE`
+//! - Content kind: `observational_dataset_paper`
+//! - Authority level: `primary_paper`
+//! - Verification level: `source_reference`
+//! - Operational role: `claim_bridge`
+//! - Source lineage summary: Bundy, K. et al. (2015) ApJ 798 7. Overview of the SDSS-IV MaNGA survey: instrument, target selection, and scientific goals.
+//! - Truth surfaces: observation_benchmark
+//! - Artifact contract paths (1):
+//!   - `data/external/manga/`
+//! - Has full transcript: `false`
+//! - Line count: 0
+//! - URL refs (1):
+//!   - `https://doi.org/10.1088/0004-637X/798/1/7`
+//! - Notes: MaNGA survey overview paper. Context for E-183 MaNGA rotation curve stacking experiment.
+//!
+//! ### XS-001: C-010 Non-Local Algebraic Metamaterials Sources
+//!
+//! - Source markdown: `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`
+//! - Slug: `c010_nonlocal_algebraic_metamaterials_sources`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `primary_paper_bridge`
+//! - Verification level: `design_stage_replication`
+//! - Operational role: `claim_bridge`
+//! - Truth surfaces: environment_context
+//! - Artifact contract paths (3):
+//!   - `crates/materials_core/src/nonlocal_metamaterial.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`
+//!   - `data/csv/c010_nonlocal_material_calibrations.csv`
+//! - Has full transcript: `false`
+//! - Line count: 126
+//! - Claim refs (1): C-010
+//! - URL refs (8):
+//!   - `https://arxiv.org/abs/1710.01373`
+//!   - `https://doi.org/10.1002/adma.202209988`
+//!   - `https://doi.org/10.1021/acsphotonics.5c01385`
+//!   - `https://doi.org/10.1038/s41467-020-15940-3`
+//!   - `https://doi.org/10.1038/s41467-022-31140-7`
+//!   - `https://doi.org/10.1038/s42005-021-00719-9`
+//!   - `https://pubmed.ncbi.nlm.nih.gov/36655553/`
+//!   - `https://www.aph.kit.edu/wegener/english/21_1085.php`
+//! - Notes: Sources pack for the non-local C-010 recovery lane with explicit literature-backed LC, Floquet, graphene, and magnonic calibration anchors.
+//!
+//! ### XS-002: C-053 Pathion Metamaterial Mapping Sources
+//!
+//! - Source markdown: `docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`
+//! - Slug: `c053_pathion_metamaterial_mapping_sources`
+//! - Status token: `REFERENCE`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `project_claim_repair`
+//! - Verification level: `deterministic_toy_reproduction`
+//! - Operational role: `claim_bridge`
+//! - Truth surfaces: environment_context
+//! - Artifact contract paths (4):
+//!   - `crates/materials_core/src/pathion_toy_mapping.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`
+//!   - `data/csv/c053_pathion_tmm_summary.csv`
+//!   - `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`
+//! - Has full transcript: `false`
+//! - Line count: 48
+//! - Claim refs (1): C-053
+//! - Notes: Repair dossier for the narrow C-053 toy lane. Keeps the pathion-to-TMM mapping reproducible while making its diagonal-only degeneracy explicit.
+//!
+//! ### XS-003: C-071: FRB Ultrametric Structure -- Data Provenance
+//!
+//! - Source markdown: `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`
+//! - Slug: `c071_frb_ultrametric_sources`
+//! - Status token: `REFUTED`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `primary_dataset_index`
+//! - Verification level: `computed_refutation`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 74
+//! - Claim refs (2): C-071, C-080
+//! - URL refs (2):
+//!   - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv`
+//!   - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv`
+//! - Notes: Claim C-071 outcome is explicitly refuted with reproducible dataset hashes.
+//!
+//! ### XS-004: Dataset Manifest
+//!
+//! - Source markdown: `docs/external_sources/DATASET_MANIFEST.md`
+//! - Slug: `dataset_manifest`
+//! - Status token: `ACTIVE`
+//! - Content kind: `dataset_manifest`
+//! - Authority level: `provider_manifest`
+//! - Verification level: `operational`
+//! - Operational role: `provider_manifest`
+//! - Has full transcript: `false`
+//! - Line count: 95
+//! - Notes: Operational provider and source manifest for fetch-datasets registry alignment.
+//!
+//! ### XS-005: 2004 Math0403113 Boxkites Iii
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_BOXKITES_III.md`
+//! - Slug: `de_marrais_boxkites_iii`
+//! - Status token: `REFERENCE`
+//! - Content kind: `paper_transcript`
+//! - Authority level: `primary_cached_paper`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `true`
+//! - Line count: 576
+//! - URL refs (6):
+//!   - `http://arXiv.org/abs/hep-th/9506080`
+//!   - `http://arXiv.org/abs/math.DG/0203158`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.RA/0207003`
+//!   - `http://arXiv.org/abs/q-alg/9710013`
+//!   - `http://arxiv.org/abs/hep-th/9501007`
+//! - Notes: Cached transcript mirror for source auditability; not itself a verification result.
+//!
+//! ### XS-006: Voyage by Catamaran
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_CATAMARAN.md`
+//! - Slug: `de_marrais_catamaran`
+//! - Status token: `REFERENCE`
+//! - Content kind: `paper_summary`
+//! - Authority level: `primary_paper_summary`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 76
+//! - Notes: Structured summary of a primary paper with claims-supporting context.
+//!
+//! ### XS-007: Flying Higher Than A Box-Kite
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md`
+//! - Slug: `de_marrais_flying_higher`
+//! - Status token: `REFERENCE`
+//! - Content kind: `paper_transcript`
+//! - Authority level: `primary_cached_paper`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `true`
+//! - Line count: 1087
+//! - URL refs (4):
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.QA/9802116`
+//!   - `http://arXiv.org/abs/q-alg/9710013`
+//!   - `http://www.innerx.net/~tsmith/Ndalg.html`
+//! - Notes: Contains large transcript and summary notes for downstream claims triage.
+//!
+//! ### XS-008: Placeholder Substructures I
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md`
+//! - Slug: `de_marrais_placeholder_i`
+//! - Status token: `REFERENCE`
+//! - Content kind: `paper_transcript`
+//! - Authority level: `primary_cached_paper`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `true`
+//! - Line count: 670
+//! - URL refs (1):
+//!   - `http://www.wolframscience.com/conference/2004/presentations/materials/`
+//! - Notes: Revision-aware source capture for placeholder substructure literature.
+//!
+//! ### XS-009: Placeholder Substructures III
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md`
+//! - Slug: `de_marrais_placeholder_iii`
+//! - Status token: `REFERENCE`
+//! - Content kind: `paper_summary`
+//! - Authority level: `primary_paper_summary`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 37
+//! - Notes: Short-form summary and key-result extraction from placeholder III source.
+//!
+//! ### XS-010: Presto! Digitization: Part I
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md`
+//! - Slug: `de_marrais_presto_digitization`
+//! - Status token: `REFERENCE`
+//! - Content kind: `paper_transcript`
+//! - Authority level: `primary_cached_paper`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `true`
+//! - Line count: 1755
+//! - URL refs (6):
+//!   - `http://arXiv.org.abs/q-alg/9710013`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.RA/0207003`
+//!   - `http://arXiv.org/abs/math.RA/0403113`
+//!   - `http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Laplace.html`
+//!   - `http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf`
+//! - Notes: Primary transcript with explicit rule extraction for Cayley-Dickson references.
+//!
+//! ### XS-011: 2004 Wolfram Science Slides
+//!
+//! - Source markdown: `docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md`
+//! - Slug: `de_marrais_wolfram_slides`
+//! - Status token: `REFERENCE`
+//! - Content kind: `slides_transcript`
+//! - Authority level: `primary_cached_slides`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `true`
+//! - Line count: 885
+//! - URL refs (5):
+//!   - `http://arXiv.org/abs.math.RA/0403113`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.RA/0207003`
+//!   - `http://arXiv.org/abs/q-alg/9710013`
+//!   - `http://arxiv.org/abs/astro-ph/9801276`
+//! - Notes: Slide transcript capture; interpretation remains separate from source capture.
+//!
+//! ### XS-012: Heliosphere Dataset Progress 2026-03-09
+//!
+//! - Source markdown: `docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md`
+//! - Slug: `heliosphere_dataset_progress_2026-03-09`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claims_inbox_index`
+//! - Authority level: `project_tracking_index`
+//! - Verification level: `workflow_control`
+//! - Operational role: `chronology_pack_status`
+//! - Truth surfaces: chronology_control
+//! - Has full transcript: `false`
+//! - Line count: 249
+//! - Notes: Operational heliosphere chronology and staged-lane status note for experiment scoping.
+//!
+//! ### XS-013: External Sources
+//!
+//! - Source markdown: `docs/external_sources/INDEX.md`
+//! - Slug: `index`
+//! - Status token: `ACTIVE`
+//! - Content kind: `generated_index`
+//! - Authority level: `auto_generated`
+//! - Verification level: `operational`
+//! - Operational role: `generated_index`
+//! - Has full transcript: `false`
+//! - Line count: 28
+//! - Notes: Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml.
+//!
+//! ### XS-014: Inverse Cayley-Dickson Formalism
+//!
+//! - Source markdown: `docs/external_sources/INVERSE_CD_FORMALISM.md`
+//! - Slug: `inverse_cd_formalism`
+//! - Status token: `UNVERIFIED`
+//! - Content kind: `conversation_extraction`
+//! - Authority level: `derived_conversation_note`
+//! - Verification level: `unverified_hypothesis`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 157
+//! - Notes: Conversation-derived formalism notes flagged as unverified in-file.
+//!
+//! ### XS-024: SPARC: Mass Models for 175 Disk Galaxies (Lelli et al. 2016 AJ 152 157)
+//!
+//! - Source markdown: `docs/external_sources/LELLI_2016_SPARC.md`
+//! - Slug: `lelli_2016_sparc`
+//! - Status token: `ACTIVE`
+//! - Content kind: `observational_dataset_paper`
+//! - Authority level: `primary_paper`
+//! - Verification level: `source_reference`
+//! - Operational role: `claim_bridge`
+//! - Source lineage summary: Lelli, F., McGaugh, S.S., Schombert, J.M. (2016) AJ 152 157. SPARC database of 175 nearby disk galaxies with Spitzer photometry and HI/Halpha rotation curves.
+//! - Truth surfaces: observation_benchmark
+//! - Artifact contract paths (2):
+//!   - `data/external/sparc/`
+//!   - `crates/data_core/src/catalogs/sparc.rs`
+//! - Has full transcript: `false`
+//! - Line count: 0
+//! - Claim refs (1): C-1338
+//! - URL refs (1):
+//!   - `https://doi.org/10.3847/0004-6256/152/6/157`
+//! - Notes: Primary SPARC database paper. Source for E-179, E-180, E-182 rotation curve stacking experiments.
+//!
+//! ### XS-025: SPARC NFW Fitting Parameters (Li et al. 2020 ApJS 247 31)
+//!
+//! - Source markdown: `docs/external_sources/LI_2020_SPARC_NFW_FITS.md`
+//! - Slug: `li_2020_sparc_nfw_fits`
+//! - Status token: `ACTIVE`
+//! - Content kind: `observational_dataset_paper`
+//! - Authority level: `primary_paper`
+//! - Verification level: `source_reference`
+//! - Operational role: `claim_bridge`
+//! - Source lineage summary: Li, P., Lelli, F., McGaugh, S.S., Schombert, J.M. (2020) ApJS 247 31. Bayesian analysis of SPARC galaxy rotation curves with NFW and other halo profiles.
+//! - Truth surfaces: observation_benchmark
+//! - Artifact contract paths (2):
+//!   - `data/external/sparc_nfw/`
+//!   - `crates/data_core/src/catalogs`
+//! - Has full transcript: `false`
+//! - Line count: 0
+//! - Claim refs (1): C-1338
+//! - URL refs (1):
+//!   - `https://doi.org/10.3847/1538-4365/ab700e`
+//! - Notes: Published NFW fitting parameters for SPARC sample. Used to initialize NFW priors in E-180, E-182 stacking.
+//!
+//! ### XS-028: Stellar-to-Halo Mass Relation (Moster et al. 2013 MNRAS 428 3121)
+//!
+//! - Source markdown: `docs/external_sources/MOSTER_2013_SMHM.md`
+//! - Slug: `moster_2013_smhm`
+//! - Status token: `ACTIVE`
+//! - Content kind: `observational_dataset_paper`
+//! - Authority level: `primary_paper`
+//! - Verification level: `source_reference`
+//! - Operational role: `claim_bridge`
+//! - Source lineage summary: Moster, B.P., Naab, T., White, S.D.M. (2013) MNRAS 428 3121. Empirical stellar-to-halo mass relation used to convert observed M* to NFW halo parameters for rotation curve normalization.
+//! - Truth surfaces: observation_benchmark
+//! - Artifact contract paths (1):
+//!   - `crates/cosmology_core/src/harmonic_stacking.rs`
+//! - Has full transcript: `false`
+//! - Line count: 0
+//! - URL refs (1):
+//!   - `https://doi.org/10.1093/mnras/sts261`
+//! - Notes: Moster+2013 SMHM relation used to normalize MaNGA/SPARC rotation curves by NFW v_200 in E-180, E-182, E-183.
+//!
+//! ### XS-015: OMNI Data Audit (2026-03-10)
+//!
+//! - Source markdown: `docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md`
+//! - Slug: `omni_data_audit_2026-03-10`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `primary_dataset_index`
+//! - Verification level: `source_capture`
+//! - Operational role: `dataset_lineage_audit`
+//! - Source lineage summary: Mixed lineage: governed AMDA omni-hour-all fallback for 1997-2019; canonical SPDF OMNI2 yearly ASCII for 2020-2025.
+//! - Truth surfaces: environment_context, lineage_transition
+//! - Artifact contract paths (2):
+//!   - `crates/data_core/src/catalogs/omni.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs`
+//! - Has full transcript: `false`
+//! - Line count: 91
+//! - Notes: Documents the staged OMNI mixed-lineage lane and year-by-year local coverage.
+//!
+//! ### XS-016: Open Claims Sources (Inbox)
+//!
+//! - Source markdown: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
+//! - Slug: `open_claims_sources`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claims_inbox_index`
+//! - Authority level: `project_tracking_index`
+//! - Verification level: `workflow_control`
+//! - Operational role: `claims_inbox`
+//! - Has full transcript: `false`
+//! - Line count: 35
+//! - Claim refs (22): C-043, C-082, C-087, C-092, C-094, C-096, C-099, C-102, C-103, C-108, C-109, C-120, C-123, C-128, C-129, C-130, C-132, C-135, C-417, C-426, C-427, C-432
+//! - Notes: Inbox index for open claims pending dedicated source dossiers.
+//!
+//! ### XS-017: Pioneer and Flyby Anomaly Primary Sources
+//!
+//! - Source markdown: `docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md`
+//! - Slug: `pioneer_flyby_anomaly_sources`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `primary_dataset_index`
+//! - Verification level: `source_capture`
+//! - Operational role: `falsification_contract`
+//! - Truth surfaces: observation_benchmark, environment_context
+//! - Artifact contract paths (4):
+//!   - `crates/gororoba_cli_physics/src/anomaly_residual.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs`
+//! - Has full transcript: `false`
+//! - Line count: 65
+//! - Notes: Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs.
+//!
+//! ### XS-018: Reggiani 2024 manifold identifications (C-005)
+//!
+//! - Source markdown: `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`
+//! - Slug: `reggiani_manifold_claims`
+//! - Status token: `PARTIALLY_VERIFIED`
+//! - Content kind: `paper_claim_bridge`
+//! - Authority level: `primary_paper_bridge`
+//! - Verification level: `partial_replication`
+//! - Operational role: `claim_bridge`
+//! - Has full transcript: `false`
+//! - Line count: 39
+//! - Claim refs (1): C-005
+//! - URL refs (1):
+//!   - `https://arxiv.org/abs/2411.18881`
+//! - Notes: Distinguishes paper-asserted manifold claims from replicated algebraic checks.
+//!
+//! ### XS-019: Sedenion Zero-Divisor Experimental Connections
+//!
+//! - Source markdown: `docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md`
+//! - Slug: `sedenion_zd_experimental`
+//! - Status token: `MIXED`
+//! - Content kind: `evidence_synthesis`
+//! - Authority level: `mixed_primary_and_conversation`
+//! - Verification level: `mixed`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 100
+//! - URL refs (1):
+//!   - `https://github.com/silvioreggiani/sedenion-zero-div`
+//! - Notes: Combines primary-source statements with codebase verification references.
+//!
+//! ### XS-020: SOHO Archive Mirror Audit (2026-03-09)
+//!
+//! - Source markdown: `docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md`
+//! - Slug: `soho_archive_mirror_audit_2026-03-09`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `primary_dataset_index`
+//! - Verification level: `source_capture`
+//! - Operational role: `mirror_audit`
+//! - Has full transcript: `false`
+//! - Line count: 129
+//! - URL refs (22):
+//!   - `http://soho.esac.esa.int/data/archive/index_gsfc.html`
+//!   - `http://soho.esac.esa.int/data/archive/index_ssa.html`
+//!   - `http://solar.oato.inaf.it/`
+//!   - `http://solar.to.astro.it/`
+//!   - `https://idoc-medoc.ias.u-psud.fr/sitools/client-user/index.html?project=Medoc-Solar-Portal`
+//!   - `https://lasco-www.nrl.navy.mil/index.php?p=get_data`
+//!   - `https://sdac.virtualsolar.org/cgi/search`
+//!   - `https://seal.nascom.nasa.gov/cgi-bin/gui_seal`
+//!   - `https://soho.nascom.nasa.gov/data/.dash/sohoar-dashboard.html`
+//!   - `https://soho.nascom.nasa.gov/data/archive.html`
+//!   - ... (12 more)
+//! - Notes: Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior.
+//!
+//! ### XS-026: MaNGA Data Reduction Pipeline (Westfall et al. 2019 AJ 158 231)
+//!
+//! - Source markdown: `docs/external_sources/WESTFALL_2019_MANGA_DRP.md`
+//! - Slug: `westfall_2019_manga_drp`
+//! - Status token: `ACTIVE`
+//! - Content kind: `observational_dataset_paper`
+//! - Authority level: `primary_paper`
+//! - Verification level: `source_reference`
+//! - Operational role: `claim_bridge`
+//! - Source lineage summary: Westfall, K.B. et al. (2019) AJ 158 231. Description of the MaNGA Data Analysis Pipeline (DAP) and DRP used to produce MAPS FITS files.
+//! - Truth surfaces: observation_benchmark
+//! - Artifact contract paths (2):
+//!   - `data/external/manga/`
+//!   - `crates/data_core/src/catalogs/manga.rs`
+//! - Has full transcript: `false`
+//! - Line count: 0
+//! - URL refs (1):
+//!   - `https://doi.org/10.3847/1538-3881/ab44a2`
+//! - Notes: MaNGA DAP/DRP pipeline paper. Describes the MAPS FITS format consumed by manga-maps-extractor (E-183).
+//!
+//! ### XS-021: Wheel Algebra Taxonomy
+//!
+//! - Source markdown: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
+//! - Slug: `wheel_algebra_taxonomy`
+//! - Status token: `UNVERIFIED`
+//! - Content kind: `conversation_extraction`
+//! - Authority level: `derived_conversation_note`
+//! - Verification level: `unverified_hypothesis`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 125
+//! - Notes: Conversation-extracted taxonomy with explicit naming-collision warning.
+//!
+//! ### XS-022: Wow! Signal Source Dossier
+//!
+//! - Source markdown: `docs/external_sources/WOW_SIGNAL_SOURCES.md`
+//! - Slug: `wow_signal_sources`
+//! - Status token: `ACTIVE`
+//! - Content kind: `claim_dataset_provenance`
+//! - Authority level: `primary_dataset_index`
+//! - Verification level: `source_capture`
+//! - Operational role: `reference_capture`
+//! - Has full transcript: `false`
+//! - Line count: 83
+//! - Claim refs (2): C-769, C-773
+//! - URL refs (5):
+//!   - `https://bldata.berkeley.edu/6EQUJ5/``
+//!   - `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/full/full/0/default.jpg``
+//!   - `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/manifest.json``
+//!   - `https://seti.berkeley.edu/wow/``
+//!   - `https://www.bigear.org/6equj5.htm``
+//! - Notes: Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up.
+//!
+//! ### XS-029: x87 / AVX Accumulation Sources
+//!
+//! - Source markdown: `docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md`
+//! - Slug: `x87_avx_accumulation_sources`
+//! - Status token: `REFERENCE`
+//! - Content kind: `technical_reference`
+//! - Authority level: `primary_vendor_reference`
+//! - Verification level: `source_capture`
+//! - Operational role: `claim_bridge`
+//! - Source lineage summary: Primary-source bundle for the x87/AVX accumulation claim cluster: AMD64 instruction semantics for `FDIVR` / `FUCOMPP`, Intel FMA single-rounding reference, Rust intrinsic docs for AVX packed-double operations, and Ogita-Rump-Oishi compensated-summation error bounds.
+//! - Truth surfaces: environment_context
+//! - Artifact contract paths (3):
+//!   - `crates/algebra_analysis/src/x87_jacobi.rs`
+//!   - `crates/cd_kernel/src/x87_primitives.rs`
+//!   - `crates/cd_kernel/src/avx2_primitives.rs`
+//! - Has full transcript: `false`
+//! - Line count: 0
+//! - Claim refs (4): C-1359, C-1360, C-1361, C-1362
+//! - URL refs (5):
+//!   - `https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content`
+//!   - `https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html`
+//!   - `https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html`
+//!   - `https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html`
+//!   - `https://epubs.siam.org/doi/10.1137/030601818`
+//! - Notes: The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths.
+//!
+//! ### XS-023: YSU-engine GPU Optimization Patterns: Technique Reference
+//!
+//! - Source markdown: `docs/external_sources/ysu_engine_gpu_patterns.md`
+//! - Slug: `ysu_engine_gpu_patterns`
+//! - Status token: `REFERENCE`
+//! - Content kind: `technical_reference`
+//! - Authority level: `external_codebase_reference`
+//! - Verification level: `source_capture`
+//! - Operational role: `claim_bridge`
+//! - Has full transcript: `false`
+//! - Line count: 241
+//! - URL refs (1):
+//!   - `https://github.com/ismail0098-lang/YSU-engine`
+//! - Notes: Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work.

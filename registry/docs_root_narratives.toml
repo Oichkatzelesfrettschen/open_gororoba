@@ -456,7 +456,7 @@ title = "MCP Servers for open_gororoba"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["DOC-0122"]
-path_refs = ["PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py", "clients/{codex,claude,gemini}", "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md", "registry/agents_contract.toml", "registry/knowledge/docs/DOC-0122.toml", "registry/mcp_server_matrix.toml", "reports/claude_dotfiles_gap_audit_2026_02_14.toml", "src/verification/verify_mcp_smoke.py", "verify_mcp_smoke.py", "~/.claude/.mcp.json", "~/.codex/config.toml", "~/.codex/mcp-config.json", "~/.gemini/settings.json"]
+path_refs = ["PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py", "clients/{codex,claude,gemini}", "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md", "registry/agents_contract.toml", "registry/knowledge/docs/DOC-0122.toml", "registry/mcp_server_matrix.toml", "reports/claude_dotfiles_gap_audit_2026_02_14.toml", "src/verification/verify_mcp_smoke.py", "verify_mcp_smoke.py", "~/.claude/.mcp.json", "~/.codex/config.toml", "~/.codex/mcp-config.json", "~/.gemini/settings.json"]
 line_count = 44
 body_markdown = '''
 # MCP Servers for open_gororoba
@@ -495,7 +495,7 @@ These configs are the local home files the matrix polls to build the cross-clien
 Treat these files as home-level references only; updates should happen via the matrix or the audit process, not by random manual edits. (The audit also copies servers to `~/.codex/mcp-config.json` when cross-client sync is required.)
 
 ## Verifying and expanding
-- Run `make mcp-smoke` or `PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`.
+- Run `make mcp-smoke` or `PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py` to confirm all baseline servers respond and the parity set still matches `registry/mcp_server_matrix.toml`.
 - New servers should follow the `mcp_expansion_targets` and `candidate_servers_*` guidance sections at the bottom of the matrix file; only promote them when the smoke verifier turns `PASS` for the new name.
 
 ## Related context

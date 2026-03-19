@@ -1298,7 +1298,7 @@ target_kind = "rust_source_path"
 id = "CED-00185"
 claim_id = "C-010"
 edge_role = "where_stated"
-target_ref = "src/verification/verify_c010_c011_theses.py"
+target_ref = "crates/gororoba_cli_data/src/bin/repo_utilities.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -1319,14 +1319,14 @@ target_kind = "python_source_path"
 id = "CED-00188"
 claim_id = "C-010"
 edge_role = "where_stated"
-target_ref = "tests/test_c010_c011_verifier_script.py"
+target_ref = "crates/gororoba_cli_data/src/bin/repo_utilities.rs"
 target_kind = "python_source_path"
 
 [[edge]]
 id = "CED-00189"
 claim_id = "C-010"
 edge_role = "where_stated"
-target_ref = "tests/test_c010_holographic_entropy_trap.py"
+target_ref = "crates/gororoba_cli_physics/src/bin/entropy_trap.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -1550,7 +1550,7 @@ target_kind = "registry_path"
 id = "CED-00221"
 claim_id = "C-011"
 edge_role = "where_stated"
-target_ref = "src/verification/verify_c010_c011_theses.py"
+target_ref = "crates/gororoba_cli_data/src/bin/repo_utilities.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -1571,14 +1571,14 @@ target_kind = "python_source_path"
 id = "CED-00224"
 claim_id = "C-011"
 edge_role = "where_stated"
-target_ref = "tests/test_c010_c011_verifier_script.py"
+target_ref = "crates/gororoba_cli_data/src/bin/repo_utilities.rs"
 target_kind = "python_source_path"
 
 [[edge]]
 id = "CED-00225"
 claim_id = "C-011"
 edge_role = "where_stated"
-target_ref = "tests/test_c011_gravastar_equivalence_obstruction.py"
+target_ref = "crates/gororoba_cli/tests/integration_gravastar.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8529,7 +8529,7 @@ target_kind = "rust_source_path"
 id = "CED-01218"
 claim_id = "C-1177"
 edge_role = "where_stated"
-target_ref = "bin/fetch_voyager.py"
+target_ref = "crates/data_core/src/catalogs/voyager.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8564,7 +8564,7 @@ target_kind = "toml_registry_path"
 id = "CED-01223"
 claim_id = "C-1178"
 edge_role = "where_stated"
-target_ref = "bin/fetch_pioneer.py"
+target_ref = "crates/data_core/src/catalogs/pioneer.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8585,7 +8585,7 @@ target_kind = "python_source_path"
 id = "CED-01226"
 claim_id = "C-1179"
 edge_role = "where_stated"
-target_ref = "bin/fetch_psp.py"
+target_ref = "crates/data_core/src/catalogs/psp.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8641,7 +8641,7 @@ target_kind = "python_source_path"
 id = "CED-01234"
 claim_id = "C-1180"
 edge_role = "where_stated"
-target_ref = "bin/fetch_helios.py"
+target_ref = "crates/data_core/src/catalogs/helios.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8669,7 +8669,7 @@ target_kind = "rust_source_path"
 id = "CED-01238"
 claim_id = "C-1181"
 edge_role = "where_stated"
-target_ref = "bin/fetch_voyager.py"
+target_ref = "crates/data_core/src/catalogs/voyager.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8704,7 +8704,7 @@ target_kind = "toml_registry_path"
 id = "CED-01243"
 claim_id = "C-1182"
 edge_role = "where_stated"
-target_ref = "bin/fetch_solo.py"
+target_ref = "crates/data_core/src/catalogs/solo.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8746,7 +8746,7 @@ target_kind = "toml_registry_path"
 id = "CED-01249"
 claim_id = "C-1184"
 edge_role = "where_stated"
-target_ref = "bin/fetch_ulysses.py"
+target_ref = "crates/data_core/src/catalogs/ulysses.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8774,7 +8774,7 @@ target_kind = "toml_registry_path"
 id = "CED-01253"
 claim_id = "C-1185"
 edge_role = "where_stated"
-target_ref = "bin/fetch_juno.py"
+target_ref = "crates/data_core/src/catalogs/juno.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -8802,7 +8802,7 @@ target_kind = "toml_registry_path"
 id = "CED-01257"
 claim_id = "C-1186"
 edge_role = "where_stated"
-target_ref = "bin/fetch_wind.py"
+target_ref = "crates/data_core/src/catalogs/wind.rs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -12057,7 +12057,7 @@ target_kind = "rust_source_path"
 id = "CED-01722"
 claim_id = "C-1346"
 edge_role = "where_stated"
-target_ref = "bin/manga_maps_to_rotcurves.py"
+target_ref = "crates/data_core/src/catalogs"
 target_kind = "python_source_path"
 
 [[edge]]
@@ -12085,14 +12085,14 @@ target_kind = "python_source_path"
 id = "CED-01726"
 claim_id = "C-1347"
 edge_role = "where_stated"
-target_ref = "bin/manga_dapall_to_csv.py"
+target_ref = "crates/data_core/src/catalogs"
 target_kind = "python_source_path"
 
 [[edge]]
 id = "CED-01727"
 claim_id = "C-1347"
 edge_role = "where_stated"
-target_ref = "bin/manga_maps_to_rotcurves.py"
+target_ref = "crates/data_core/src/catalogs"
 target_kind = "python_source_path"
 
 [[edge]]

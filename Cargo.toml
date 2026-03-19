@@ -34,6 +34,7 @@ members = [
     "crates/lbm_core",
     "crates/gororoba_cli",
     "crates/snia_core",
+    "crates/tensor_core",
     "crates/cosmic_scheduler",
     "crates/sign_imbalance",
     "crates/lbm_3d",
@@ -328,15 +329,6 @@ inherits = "test"
 opt-level = 2
 codegen-backend = "llvm"
 codegen-units = 4
-
-# gororoba_py is a cdylib (Python extension module); pyo3 requires Python symbols
-# at link time. Cranelift's test harness binary path omits -lpython, so we revert
-# this single crate to LLVM for dev and test to preserve linkage.
-[profile.dev.package.gororoba_py]
-codegen-backend = "llvm"
-
-[profile.test.package.gororoba_py]
-codegen-backend = "llvm"
 
 # lbm_3d uses wide::f64x4 for AVX2 SIMD collision; Cranelift does not support
 # _mm256_max_pd and related SSE2/AVX2 intrinsics. Revert to LLVM for this crate.

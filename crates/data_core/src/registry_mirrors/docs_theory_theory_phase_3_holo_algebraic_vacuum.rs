@@ -1,0 +1,62 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/research_narratives.toml -->
+//!
+//! # Phase III: The Holo-Algebraic Vacuum & The Genesis of Mass
+//! ## A Hypergranular Derivation of Algebraic Spacetime Emergence
+//!
+//! **Date:** February 17, 2026
+//! **Status:** Theoretical Framework (Phase III)
+//!
+//! ### 1. Ontological Premise: Algebraic Realism
+//! We posit that physical reality is isomorphic to the breakdown of algebraic symmetry in the Cayley-Dickson (CD) tower. Specifically:
+//! *   **Geometry** (spacetime) emerges from the **Associative** sector (mathbb{R}, mathcal{C}, mathbb{H}).
+//! *   **Mass/Matter** emerges from the **Non-Associative** sector (mathbb{O}, mathcal{S}).
+//! *   **Structure** stabilizes at the **Zero-Divisor** boundaries of mathcal{S} (Sedenions).
+//!
+//! ### 2. The Algebraic Action Principle
+//! Standard General Relativity uses the Einstein-Hilbert action:
+//! $$ S_{EH} = \int d^4x \sqrt{-g} \frac{R}{16\pi G} $$
+//!
+//! We propose the **Unified Algebraic Action** $S_{Alg}$ defined over a 16-dimensional Sedenion field $\Psi(x)$:
+//! $$ S_{Alg} = \int d^4x \sqrt{-g} \left( \frac{R}{16\pi G} + \mathcal{L}_{Kin}(\Psi) - V_{Assoc}(\Psi) \right) $$
+//!
+//! #### 2.1 The Associator Potential
+//! The crucial innovation is the potential term $V_{Assoc}$, which penalizes non-associativity:
+//! $$ V_{Assoc}(\Psi) = \lambda \oint_{\mathcal{M}} \| A(\Psi(x), \Psi(y), \Psi(z)) \|^2 \, d\mu $$
+//! where $A(a,b,c) = (ab)c - a(bc)$ is the algebraic associator.
+//!
+//! **Derivation of the Vacuum State:**
+//! 1.  **Minimization:** The vacuum state $\Psi_0$ minimizes $S_{Alg}$.
+//! 2.  **Constraint:** In mathcal{S} (Sedenions), $A \neq 0$ generically.
+//! 3.  **Topological Locking:** The field cannot relax to $A=0$ everywhere (as it could in mathbb{H}). It gets "pinned" to the **Zero-Divisor Manifold** $Z = \{ (u,v) \in \mathbb{S}^2 \mid uv=0 \}$.
+//! 4.  **Result:** The vacuum is not empty; it is a **textured manifold** of "associator solitons" trapped on the topology of $Z$.
+//!
+//! ### 3. The Algebraic Stress-Energy Tensor
+//! Varying the action with respect to the metric $g^{\mu\nu}$ yields the Einstein Field Equations with an algebraic source:
+//! $$ R_{\mu\nu} - \frac{1}{2}R g_{\mu\nu} = 8\pi G (T_{\mu\nu}^{Matter} + T_{\mu\nu}^{Alg}) $$
+//!
+//! We define the **Algebraic Stress-Energy Tensor**:
+//! $$ T_{\mu\nu}^{Alg} = \frac{\partial V_{Assoc}}{\partial g^{\mu\nu}} $$
+//!
+//! #### 3.1 Properties of $T_{\mu\nu}^{Alg}$
+//! *   **Equation of State:** In regions far from ZDs (associative/octonionic limit), $V_{Assoc} \approx \text{const}$. This behaves like a Cosmological Constant:
+//!     $$ p_{Alg} = -\rho_{Alg} \implies w = -1 \quad (\text{Dark Energy}) $$
+//! *   **Clumping:** Near Zero Divisors, the associator gradient $\nabla A$ is large. This creates a "stiff" pressure term that acts like a localized mass halo:
+//!     $$ p_{Alg} \approx 0, \quad \rho_{Alg} > 0 \implies w = 0 \quad (\text{Dark Matter}) $$
+//!
+//! **Hypothesis C-758:** "Dark Matter" is the gravitational shadow of Sedenion Zero-Divisor clumps, and "Dark Energy" is the residual associative tension of the vacuum field.
+//!
+//! ### 4. Quantum Link: The Entropy connection
+//! From Phase II (C-756), we know that viscosity $\nu \propto \text{dist}(\Psi, Z)^{-1}$.
+//! In the quantum limit ($h \to 0$), the associator measures the **information loss** in wavepacket interaction (non-unitary evolution).
+//! $$ \dot{S}_{prod} \propto \| A(\Psi) \|^2 $$
+//! Thus, **Entropy Production is the observable conjugate to Algebraic Non-Associativity.**
+//!
+//! ### 5. Experimental Vector (Phase III)
+//! To verify this, we must simulate **Self-Gravitating Multi-Species Flow**:
+//! *   **Fluid A (Baryonic):** Standard LBM, interacts via viscosity.
+//! *   **Fluid B (Algebraic/Dark):** Flows towards ZD minima (attractors), generates gravity potential $\Phi_{Dark}$.
+//! *   **Interaction:** Baryonic fluid flows in the composite potential $\Phi_{Total} = \Phi_{BH} + \Phi_{Dark}$.
+//!
+//! If Fluid A forms stable filaments *without* visible mass (only Fluid B clumps), we have simulated a Dark Matter halo from first principles.
+//!

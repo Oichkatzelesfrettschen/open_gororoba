@@ -1,0 +1,51 @@
+root = "data/external/nanograv_15yr_timing/NANOGrav15yr_PulsarTiming_v2.1.0"
+pulsar_csv = "data/csv/nanograv_15yr_propagation_pulsars.csv"
+pair_csv = "data/csv/nanograv_15yr_pairwise_hd_audit.csv"
+pulsar_count = 68
+pair_count = 2278
+match_tolerance_days = 14.000
+pair_bin_days = 30.000
+min_pair_overlap_bins = 8
+sky_ready_count = 68
+dmx_ready_count = 65
+wideband_dm_ready_count = 68
+avg_residual_ready_count = 68
+residual_uncertainty_correlation_ready_count = 68
+residual_dmx_correlation_ready_count = 65
+residual_wb_dm_correlation_ready_count = 68
+
+[max_dmx_std]
+name = "J1903+0327"
+dmx_std = 0.015434833904
+
+[max_wideband_dm_std]
+name = "J2214+3000"
+pp_dm_std = 0.071387003100
+
+[max_avg_residual_rms]
+name = "J1745+1017"
+rms_us = 12.910679466750
+
+[max_parallax_mas]
+name = "J0437-4715"
+px_mas = 10.097072404840
+
+[top_pair_overlap]
+pulsar_a = "B1937+21"
+pulsar_b = "J1713+0747"
+overlap_bins = 164
+separation_deg = 37.729374742367
+hellings_downs = 0.119748145966
+avg_residual_pearson = -0.631273141590
+
+[top_abs_pair_correlation]
+pulsar_a = "J0613-0200"
+pulsar_b = "J1745+1017"
+overlap_bins = 33
+separation_deg = 169.156969489999
+hellings_downs = 0.238901349142
+avg_residual_pearson = -0.929164818809
+
+[timing_model_refit_scope]
+status = "scoped_only_not_recomputed_in_repo"
+note = "This audit consumes released post-fit products, DMX parses, wideband TOA DM estimates, and timing-model metadata. A true timing-model refit still needs a Rust-native timing engine that re-evaluates the timing model against TOAs with clock and solar-system ephemeris handling rather than reusing release residuals."

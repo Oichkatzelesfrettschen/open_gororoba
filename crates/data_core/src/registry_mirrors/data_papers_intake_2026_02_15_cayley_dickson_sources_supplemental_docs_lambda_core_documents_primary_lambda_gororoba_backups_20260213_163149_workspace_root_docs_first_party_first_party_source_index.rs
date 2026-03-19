@@ -1,0 +1,29 @@
+//! # First-Party Source Index
+//!
+//! ## Definition
+//! A first-party source is a document, script, or artifact authored within `lambda_gororoba` to define original architecture, policy, or synthesis logic.
+//!
+//! ## First-Party Documents
+//! - `docs/first_party/README.md`
+//! - `docs/first_party/UNIFIED_REPO_CONSTITUTION.md`
+//! - `docs/first_party/SYNTHESIS_ENGINEERING_SPEC.md`
+//! - `docs/first_party/INTEGRATION_INTERFACE_CONTRACTS.md`
+//! - `docs/first_party/CONFLICT_RECONCILIATION_LEDGER.md`
+//! - `docs/first_party/NOVEL_RESEARCH_PROGRAM.md`
+//!
+//! ## First-Party Policy and Gate Assets
+//! - `docs/PYTHON_THREADING_POLICY.md`
+//! - `docs/PYTHON_THREADING_EXEMPTIONS.tsv`
+//! - `scripts/run_module_consolidation_gate.sh`
+//! - `scripts/verify_module_consolidation_rules.sh`
+//! - `scripts/verify_python_multithreading_policy.sh`
+//!
+//! ## First-Party Evidence Tables
+//! - `docs/module_file_inventory_latest.tsv`
+//! - `docs/module_file_consolidation_decisions_latest.tsv`
+//! - `docs/module_archive_moves_latest.tsv`
+//! - `docs/python_multithreading_policy_latest.tsv`
+//!
+//! ## Update Rule
+//! Any new first-party design/policy artifact should be appended here in the same change set.
+//!

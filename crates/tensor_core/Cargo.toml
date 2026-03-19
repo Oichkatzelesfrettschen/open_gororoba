@@ -1,0 +1,14 @@
+[package]
+name = "tensor_core"
+version = "0.1.0"
+edition = "2021"
+description = "Tensor-Train (TT) and CUR decompositions for high-dimensional scientific computing"
+license = "MIT"
+
+[dependencies]
+ndarray = { workspace = true }
+faer = { workspace = true }
+anyhow = { workspace = true }
+
+[lints]
+workspace = true

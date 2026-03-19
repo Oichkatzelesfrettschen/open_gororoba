@@ -1,0 +1,48 @@
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: registry/reports_narratives.toml -->
+//!
+//! # Manual override fetch summary (2026-02-15)
+//!
+//! - Total attempts recorded: 39
+//! - PDF success rows logged: 14 (including 1 duplicate SHA row)
+//! - Unique canonical PDFs promoted: 13
+//! - SHA verification: All 13 canonical copies match the hashes recorded in pdf_success_added.tsv
+//!
+//! ## Status counts
+//!
+//! | status | count |
+//! | --- | --- |
+//! | ok_nonpdf | 2 |
+//! | pdf_ok | 14 |
+//! | http_403 | 17 |
+//! | http_404 | 3 |
+//! | http_503 | 2 |
+//! | http_405 | 1 |
+//!
+//! ## Canonical file mapping
+//!
+//! | override_id | canonical_name | canonical_path | source_url | size_bytes | sha256 | status | note |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | MCCRIMMON_1985_euclid_mirror | mccrimmon_1985_euclid_mirror_msp_org_pjm_1985_117_1_pjm_v117_n1_p10_s_pdf.pdf | data/external/papers/mccrimmon_1985_euclid_mirror_msp_org_pjm_1985_117_1_pjm_v117_n1_p10_s_pdf.pdf | https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf | 1613071 | 38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1 | pdf_ok | - |
+//! | MCCRIMMON_1985_euclid_mirror | mccrimmon_1985_euclid_mirror_projecteuclid_org_journals_pacific_journal_of_mathematics_volume_117_issue_1_derivations_and_cayley_derivations_of_generalized_cayley_dickson_algebras_pjm_11027.pdf | data/external/papers/mccrimmon_1985_euclid_mirror_projecteuclid_org_journals_pacific_journal_of_mathematics_volume_117_issue_1_derivations_and_cayley_derivations_of_generalized_cayley_dickson_algebras_pjm_11027.pdf | https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf | 1450466 | 9e7d22d52be250734329e7d42f4a9467d12697eb49fa4d085f15c9d76fa1f554 | pdf_ok | - |
+//! | BALES_2016_arxiv_withdrawn_versions | bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v1_pdf.pdf | data/external/papers/bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v1_pdf.pdf | https://arxiv.org/pdf/1602.02317v1.pdf | 191938 | d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1 | pdf_ok | - |
+//! | BALES_2016_arxiv_withdrawn_versions | bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v2_pdf.pdf | data/external/papers/bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v2_pdf.pdf | https://arxiv.org/pdf/1602.02317v2.pdf | 192196 | ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766 | pdf_ok | - |
+//! | BALES_2016_arxiv_withdrawn_versions | bales_2016_arxiv_withdrawn_versions_10_35834_mjms_1474295358_pdf.pdf | data/external/papers/bales_2016_arxiv_withdrawn_versions_10_35834_mjms_1474295358_pdf.pdf | https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf | 177030 | fd8dd77e70aafb40e353178a5faab080c87a6cd0b450b1d102bb5d24e8dc9b86 | pdf_ok | - |
+//! | BALES_2016_arxiv_withdrawn_versions | bales_2016_arxiv_withdrawn_versions_archive_org_download_arxiv_1602_02317_1602_02317_pdf.pdf | data/external/papers/bales_2016_arxiv_withdrawn_versions_archive_org_download_arxiv_1602_02317_1602_02317_pdf.pdf | https://archive.org/download/arxiv-1602.02317/1602.02317.pdf | 189748 | e9fe7bdb8f8a570c0fe04e176b9c534332a7907a7e004f0ef888d6105f6373e8 | pdf_ok | - |
+//! | ASOT_0022_large_annihilators_arxiv | asot_0022_large_annihilators_arxiv_arxiv_org_pdf_math_0511691_pdf.pdf | data/external/papers/asot_0022_large_annihilators_arxiv_arxiv_org_pdf_math_0511691_pdf.pdf | https://arxiv.org/pdf/math/0511691.pdf | 374167 | 3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5 | pdf_ok | - |
+//! | ASOT_0024_stinga_torrea_arxiv | asot_0024_stinga_torrea_arxiv_arxiv_org_pdf_0910_2569_pdf.pdf | data/external/papers/asot_0024_stinga_torrea_arxiv_arxiv_org_pdf_0910_2569_pdf.pdf | https://arxiv.org/pdf/0910.2569.pdf | 362590 | 8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029 | pdf_ok | - |
+//! | ASOT_0026_cockle_zenodo | asot_0026_cockle_zenodo_zenodo_org_record_1431095_files_article_pdf.pdf | data/external/papers/asot_0026_cockle_zenodo_zenodo_org_record_1431095_files_article_pdf.pdf | https://zenodo.org/record/1431095/files/article.pdf | 702621 | 3696e8ee35c29c74c02e31a95734a1946026acf72cc777d5b02b94eff75322e1 | pdf_ok | - |
+//! | ASOT_0030_berry_1984_mirrors | asot_0030_berry_1984_mirrors_isidore_co_misc_physics_20papers_20and_20books_modern_20papers_good_20overview_20of_20aharanov_bohm_20effect_3a_20proc_20r_20soc_20lond_20a_1984_berry_45_57.pdf | data/external/papers/asot_0030_berry_1984_mirrors_isidore_co_misc_physics_20papers_20and_20books_modern_20papers_good_20overview_20of_20aharanov_bohm_20effect_3a_20proc_20r_20soc_20lond_20a_1984_berry_45_57.pdf | https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf | 1395398 | 9cee71a56cee9675c561db43d8010b04abeb5163a8af3a38371c12ae0287f0d5 | pdf_ok | - |
+//! | ASOT_0062_cawagas_2004_bibliotekanauki | asot_0062_cawagas_2004_bibliotekanauki_bibliotekanauki_pl_articles_729117_pdf.pdf | data/external/papers/asot_0062_cawagas_2004_bibliotekanauki_bibliotekanauki_pl_articles_729117_pdf.pdf | https://bibliotekanauki.pl/articles/729117.pdf | 393173 | b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010 | pdf_ok | - |
+//! | ASOT_8219_fix_arxiv_math_0403113 | asot_8219_fix_arxiv_math_0403113_arxiv_org_pdf_math_0403113_pdf.pdf | data/external/papers/asot_8219_fix_arxiv_math_0403113_arxiv_org_pdf_math_0403113_pdf.pdf | https://arxiv.org/pdf/math/0403113.pdf | 206494 | 3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872 | pdf_ok | - |
+//! | ASOT_8374_cambridge_to_arxiv | asot_8374_cambridge_to_arxiv_arxiv_org_pdf_2311_18594_pdf.pdf | data/external/papers/asot_8374_cambridge_to_arxiv_arxiv_org_pdf_2311_18594_pdf.pdf | https://arxiv.org/pdf/2311.18594.pdf | 532709 | 678558adb12b2183f53fe06bcddd3f83f7a1e50f5a6b7765f697c21d454313fb | pdf_ok | - |
+//!

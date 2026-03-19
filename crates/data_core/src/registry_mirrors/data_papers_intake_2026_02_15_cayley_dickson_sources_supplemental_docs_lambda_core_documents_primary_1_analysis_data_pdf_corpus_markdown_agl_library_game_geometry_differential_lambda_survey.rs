@@ -1,0 +1,2406 @@
+//! # Extracted text: differential_lambda_survey.pdf
+//!
+//! - source_root: `/home/eirikr/Documents/AGL_Library/Game_Geometry_Documentation`
+//! - source_relpath: `differential_lambda_survey.pdf`
+//! - source_abs: `/home/eirikr/Documents/AGL_Library/Game_Geometry_Documentation/differential_lambda_survey.pdf`
+//! - detected_kind: `pdf`
+//! - extracted_at_utc: `2026-01-02T17:30:59+00:00`
+//! - pages: `37`
+//! - title: ``
+//! - author: ``
+//! - subject: ``
+//! - keywords: ``
+//! - creation_date: `Tue Oct  2 18:50:58 2018 PDT`
+//! - mod_date: `Tue Oct  2 18:50:58 2018 PDT`
+//! - encrypted: `no`
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+//! The Simple Essence of Automatic Differentiation
+//! Extended version ∗
+//! Conal Elliott
+//! Target
+//!
+//! arXiv:1804.00746v4 [cs.PL] 2 Oct 2018
+//!
+//! conal@conal.net
+//! March, 2018
+//!
+//! Abstract
+//! Automatic differentiation (AD) in reverse mode (RAD) is a central component of deep learning and
+//! other uses of large-scale optimization. Commonly used RAD algorithms such as backpropagation, however,
+//! are complex and stateful, hindering deep understanding, improvement, and parallel execution. This paper
+//! develops a simple, generalized AD algorithm calculated from a simple, natural specification. The general
+//! algorithm is then specialized by varying the representation of derivatives. In particular, applying well-known
+//! constructions to a naive representation yields two RAD algorithms that are far simpler than previously known.
+//! In contrast to commonly used RAD implementations, the algorithms defined here involve no graphs, tapes,
+//! variables, partial derivatives, or mutation. They are inherently parallel-friendly, correct by construction, and
+//! usable directly from an existing programming language with no need for new data types or programming
+//! style, thanks to use of an AD-agnostic compiler plugin.
+//!
+//! 1
+//!
+//! Introduction
+//!
+//! Accurate, efficient, and reliable computation of derivatives has become increasingly important over the last several
+//! years, thanks in large part to the successful use of backpropagation in machine learning, including multi-layer
+//! neural networks, also known as “deep learning” [Lecun et al., 2015; Goodfellow et al., 2016]. Backpropagation
+//! is a specialization and independent invention of the reverse mode of automatic differentiation (AD) and is
+//! used to tune a parametric model to closely match observed data, using gradient descent (or stochastic gradient
+//! descent). Machine learning and other gradient-based optimization problems typically rely on derivatives of
+//! functions with very high dimensional domains and a scalar codomain—exactly the conditions under which reversemode AD is much more efficient than forward-mode AD (by a factor proportional to the domain dimension).
+//! Unfortunately, while forward-mode AD (FAD) is easily understood and implemented, reverse-mode AD (RAD)
+//! and backpropagation have had much more complicated explanations and implementations, involving mutation,
+//! graph construction and traversal, and “tapes” (sequences of reified, interpretable assignments, also called “traces”
+//! or “Wengert lists”). Mutation, while motivated by efficiency concerns, makes parallel execution difficult and
+//! so undermines efficiency as well. Construction and interpretation (or compilation) of graphs and tapes also
+//! add execution overhead. The importance of RAD makes its current complicated and bulky implementations
+//! especially problematic. The increasingly large machine learning (and other optimization) problems being solved
+//! with RAD (usually via backpropagation) suggest the need to find more streamlined, efficient implementations,
+//! especially with the massive hardware parallelism now readily and inexpensively available in the form of graphics
+//! processors (GPUs) and FPGAs.
+//! Another difficulty in the practical application of AD in machine learning (ML) comes from the nature of many
+//! currently popular ML frameworks, including Caffe [Jia et al., 2014], TensorFlow [Abadi et al., 2016], and Keras
+//! [Chollet, 2016]. These frameworks are designed around the notion of a “graph” (or “network”) of interconnected
+//! nodes, each of which represents a mathematical operation—a sort of data flow graph. Application programs
+//! ∗ The appendices of this extended version include proofs omitted in the conference article [Elliott, 2018].
+//!
+//! 1
+//!
+//!
+//! --- PAGE BREAK ---
+//! 2
+//!
+//! Conal Elliott
+//!
+//! construct these graphs explicitly, creating nodes and connecting them to other nodes. After construction, the
+//! graphs must then be processed into a representation that is more efficient to train and to evaluate. These graphs
+//! are essentially mathematical expressions with sharing, hence directed acyclic graphs (DAGs). This paradigm of
+//! graph construction, compilation, and execution bears a striking resemblance to what programmers and compilers
+//! do all the time:
+//! • Programs are written by a human.
+//! • The compiler or interpreter front-end parses the program into a DAG representation.
+//! • The compiler back-end transforms the DAGs into a form efficient for execution.
+//! • A human runs the result of compilation.
+//! When using a typical ML framework, programmers experience this sequence of steps at two levels: working
+//! with their code and with the graphs that their code generates. Both levels have notions of operations, variables,
+//! information flow, values, types, and parametrization. Both have execution models that must be understood.
+//! A much simpler and cleaner foundation for ML would be to have just the programming language, omitting
+//! the graphs/networks altogether. Since ML is about (mathematical) functions, one would want to choose a
+//! programming language that supports functions well, i.e., a functional language, or at least a language with strong
+//! functional features. One might call this alternative “differentiable functional programming”. In this paradigm,
+//! programmers directly define their functions of interest, using the standard tools of functional programming, with
+//! the addition of a differentiation operator (a typed higher-order function, though partial since not all computable
+//! functions are differentiable). Assuming a purely functional language or language subset (with simple and precise
+//! mathematical denotation), the meaning of differentiation is exactly as defined in traditional calculus.
+//! How can we realize this vision of differentiable functional programming? One way is to create new languages,
+//! but doing so requires enormous effort to define and implement efficiently, and perhaps still more effort to
+//! evangelize. Alternatively, we might choose a suitable purely functional language like Haskell and then add
+//! differentiation. The present paper embodies the latter choice, augmenting the popular Haskell compiler GHC
+//! with a plugin that converts standard Haskell code into categorical form to be instantiated in any of a variety of
+//! categories, including differentiable functions [Elliott, 2017].
+//! This paper makes the following specific contributions:
+//! • Beginning with a simple category of derivative-augmented functions, specify AD simply and precisely by
+//! requiring this augmentation (relative to regular functions) to be homomorphic with respect to a collection
+//! of standard categorical abstractions and primitive mathematical operations.
+//! • Calculate a correct-by-construction AD implementation from the homomorphic specification.
+//! • Generalizing AD by replacing linear maps (general derivative values) with an arbitrary cartesian category
+//! [Elliott, 2017], define several AD variations, all stemming from different representations of linear maps:
+//! functions (satisfying linearity), “generalized matrices” (composed representable functors), continuation-based
+//! transformations of any linear map representation, and dualized versions of any linear map representation.
+//! The latter two variations yield correct-by-construction implementations of reverse-mode AD that are
+//! much simpler than previously known and are composed from generally useful components. The choice
+//! of dualized linear functions for gradient computations is particularly compelling in simplicity. It also
+//! appears to be quite efficient—requiring no matrix-level representations or computations—and is suitable
+//! for gradient-based optimization, e.g., for machine learning. In contrast to conventional reverse-mode
+//! AD algorithms, all algorithms in this paper are free of mutation and hence naturally parallel. A similar
+//! construction yields forward-mode AD.
+//!
+//! 2
+//!
+//! What’s a Derivative?
+//!
+//! Since automatic differentiation (AD) has to do with computing derivatives, let’s begin by considering what
+//! derivatives are. If your introductory calculus class was like mine, you learned that the derivative f 0 x of a
+//! function f :: R → R at a point x (in the domain of f ) is a number, defined as follows:
+//! f 0 x = lim
+//!
+//! ε→0
+//!
+//! f (x + ε) − f x
+//! ε
+//!
+//! (1)
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 3
+//!
+//! That is, f 0 x tells us how fast f is scaling input changes at x .
+//! How well does this definition hold up beyond functions of type R → R? It will do fine with complex numbers
+//! (C → C), where division is also defined. Extending to R → Rn also works if we interpret the ratio as dividing a
+//! vector (in Rn ) by a scalar in the usual way. When we extend to Rm → Rn (or even Rm → R), however, this
+//! definition no longer makes sense, as it would rely on dividing by a vector ε :: Rm .
+//! This difficulty of differentiation with non-scalar domains is usually addressed with the notion of “partial
+//! derivatives” with respect to the m scalar components of the domain Rm , often written “∂f /∂xj ” for j ∈ {1, . . . , m}.
+//! When the codomain Rn is also non-scalar (i.e., n > 1), we have a matrix J (the Jacobian), with Jij = ∂fi /∂xj
+//! for i ∈ {1, . . . , n}, where each fi projects out the i th scalar value from the result of f .
+//! So far, we’ve seen that the derivative of a function could be a single number (for R → R), or a vector (for
+//! R → Rn ), or a matrix (for Rm → Rn ). Moreover, each of these situations has an accompanying chain rule, which
+//! says how to differentiate the composition of two functions. Where the scalar chain rule involves multiplying two
+//! scalar derivatives, the vector chain rule involves “multiplying” two matrices A and B (the Jacobians), defined as
+//! follows:
+//! m
+//! X
+//! (A · B)ij =
+//! Aik · Bkj
+//! k=1
+//!
+//! Since one can think of scalars as a special case of vectors, and scalar multiplication as a special case of
+//! matrix multiplication, perhaps we’ve reached the needed generality. When we turn our attention to higher
+//! derivatives (which are derivatives of derivatives), however, the situation gets more complicated, and we need yet
+//! higher-dimensional representations, with correspondingly more complex chain rules.
+//! Fortunately, there is a single, elegant generalization of differentiation with a correspondingly simple chain
+//! rule. First, reword Definition 1 above as follows:
+//! lim
+//!
+//! ε→0
+//!
+//! f (x + ε) − f x
+//! −f0 x = 0
+//! ε
+//!
+//! Equivalently,
+//! f (x + ε) − (f x + ε · f 0 x )
+//! =0
+//! ε→0
+//! ε
+//! lim
+//!
+//! Notice that f 0 x is used to linearly transform ε. Next, generalize this condition to say that f 0 x is a linear map
+//! such that
+//! kf (x + ε) − (f x + f 0 x ε)k
+//! = 0.
+//! lim
+//! ε→0
+//! kεk
+//! In other words, f 0 x is a local linear approximation of f at x . When an f 0 x satisfying this condition exists, it is
+//! indeed unique [Spivak, 1965, chapter 2].
+//! The derivative of a function f :: a → b at some value in a is thus not a number, vector, matrix, or higherdimensional variant, but rather a linear map (also called “linear transformation”) from a to b, which we will
+//! write as “a ( b”. The numbers, vectors, matrices, etc mentioned above are all different representations of linear
+//! maps; and the various forms of “multiplication” appearing in their associated chain rules are all implementations
+//! of linear map composition for those representations. Here, a and b must be vector spaces that share a common
+//! underlying field. Written as a Haskell-style type signature (but omitting vector space constraints),
+//! D :: (a → b) → (a → (a ( b))
+//! From the type of D, it follows that differentiating twice has the following type:1
+//! D2 = D ◦ D :: (a → b) → (a → (a ( a ( b))
+//! The type a ( a ( b is a linear map that yields a linear map, which is the curried form of a bilinear map.
+//! Likewise, differentiating k times yields a k-linear map curried k − 1 times. For instance, the Hessian matrix H
+//! corresponds to the second derivative of a function f :: Rm → R, having m rows and m columns (and satisfying
+//! the symmetry condition Hi,j ≡ Hj,i ).
+//! 1 As with “→”, we will take “(” to associate rightward, so u ( v ( w is equivalent to u ( (v ( w ).
+//!
+//!
+//! --- PAGE BREAK ---
+//! 4
+//!
+//! Conal Elliott
+//!
+//! 3
+//!
+//! Rules for Differentiation
+//!
+//! 3.1
+//!
+//! Sequential Composition
+//!
+//! With the shift to linear maps, there is one general chain rule, having a lovely form, namely that the derivative of
+//! a composition is a composition of the derivatives [Spivak, 1965, Theorem 2-2]:
+//! Theorem 1 (compose/“chain” rule)
+//! D (g ◦ f ) a = D g (f a) ◦ D f a
+//! If f :: a → b and g :: b → c, then D f a :: a ( b, and D g (f a) :: b ( c, so both sides of this equation have type
+//! a ( c.2
+//! Strictly speaking, Theorem 1 is not a compositional recipe for differentiating sequential compositions, i.e., it
+//! is not the case D (g ◦ f ) can be constructed solely from D g and D f . Instead, it also needs f itself. Fortunately,
+//! there is a simple way to restore compositionality. Instead of constructing just the derivative of a function f ,
+//! suppose we augment f with its derivative:
+//! D0+ :: (a → b) → ((a → b) × (a → (a ( b))) -- first try
+//! D0+ f = (f , D f )
+//! As desired, this altered specification is compositional:
+//! D0+ (g ◦ f )
+//! = (g ◦ f , D (g ◦ f ))
+//! -- definition of D0+
+//! = (g ◦ f , λa → D g (f a) ◦ D f a) -- Theorem 1
+//! Note that D0+ (g ◦ f ) is assembled entirely from components of D0+ g and D0+ f , which is to say from g, D g, f ,
+//! and D f . Writing out g ◦ f as λa → g (f a) underscores that the two parts of D0+ (g ◦ f ) a both involve f a.
+//! Computing these parts independently thus requires redundant work. Moreover, the chain rule itself requires
+//! applying a function and its derivative (namely f and D f ) to the same a. Since the chain rule gets applied
+//! recursively to nested compositions, this redundant work multiplies greatly, resulting in an impractically expensive
+//! algorithm.
+//! Fortunately, this efficiency problem is easily fixed. Instead of pairing f and D f , combine them:3
+//! D+ :: (a → b) → (a → b × (a ( b)) -- better!
+//! D+ f a = (f a, D f a)
+//! Combining f and D f into a single function in this way enables us to eliminate the redundant computation of
+//! f a in D+ (g ◦ f ) a, as follows:
+//! Corollary 1.1 (Proved in Appendix C.1) D+ is (efficiently) compositional with respect to (◦). Specifically,
+//! D+ (g ◦ f ) a = let {(b, f 0 ) = D+ f a; (c, g 0 ) = D+ g b } in (c, g 0 ◦ f 0 )
+//!
+//! 3.2
+//!
+//! Parallel Composition
+//!
+//! The chain rule, telling how to differentiate sequential compositions, gets a lot of attention in calculus classes and
+//! in automatic and symbolic differentiation. There are other important ways to combine functions, however, and
+//! examining them yields additional helpful tools. Another operation (pronounced “cross”) combines two functions
+//! in parallel [Gibbons, 2002]:4
+//! (×) :: (a → c) → (b → d ) → (a × b → c × d )
+//! f × g = λ(a, b) → (f a, g b)
+//! While the derivative of a sequential composition is a sequential composition of derivatives, the derivative of a
+//! parallel composition is a parallel composition of the derivatives [Spivak, 1965, variant of Theorem 2-3 (3)]:
+//! 2 I adopt the common, if sometimes confusing, Haskell convention of sharing names between type and value variables, e.g., with
+//! a (a value variable) having type a (a type variable). Haskell value and type variable names live in different name spaces and are
+//! distinguished by syntactic context.
+//! 3 The precedence of “×” is tighter than that of “→” and “(”, so a → b × (a ( b) is equivalent to a → (b × (a ( b)).
+//! 4 By “parallel”, I mean without data dependencies. Operationally, the two functions can be applied simultaneously or not.
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 5
+//!
+//! Theorem 2 (cross rule)
+//! D (f × g) (a, b) = D f a × D g b
+//! If f :: a → c and g :: b → d , then D f a :: a ( c and D g b :: b ( d , so both sides of this equation have type
+//! a × b ( c × d.
+//! Theorem 2 gives us what we need to construct D+ (f × g) compositionally:
+//! Corollary 2.1 (Proved in Appendix C.2) D+ is compositional with respect to (×). Specifically,
+//! D+ (f × g) (a, b) = let {(c, f 0 ) = D+ f a; (d , g 0 ) = D+ g b } in ((c, d ), f 0 × g 0 )
+//! An important point left implicit in the discussion above is that sequential and parallel composition preserve
+//! linearity. This property is what makes it meaningful to use these forms to combine derivatives, i.e., linear maps,
+//! as we’ve done above.
+//!
+//! 3.3
+//!
+//! Linear Functions
+//!
+//! A function f is said to be linear when it distributes over (preserves the structure of) vector addition and scalar
+//! multiplication, i.e.,
+//! f (a + a 0 ) = f a + f a 0
+//! f (s · a) = s · f a
+//! In addition to Theorems 1 and 2, we will want one more broadly useful rule, namely that the derivative of
+//! every linear function is itself, everywhere [Spivak, 1965, Theorem 2-3 (2)]:
+//! Theorem 3 (linear rule) For all linear functions f , D f a = f .
+//! This statement may sound surprising at first, but less so when we recall that the D f a is a local linear
+//! approximation of f at a, so we’re simply saying that linear functions are their own perfect linear approximations.
+//! For example, consider the function id = λa → a. Theorem 3 says that D id a = id . When expressed via
+//! typical representations of linear maps, this property may be expressed as saying that D id a is the number
+//! one or is an identity matrix (with ones on the diagonal and zeros elsewhere). Likewise, consider the (linear)
+//! function fst (a, b) = a, for which Theorem 3 says D fst (a, b) = fst. This property, when expressed via typical
+//! representations of linear maps, would appear as saying that D fst a comprises the partial derivatives one and
+//! zero if a, b :: R. More generally, if a :: Rm and b :: Rn , then the Jacobian matrix representation has shape
+//! m × (m + n) (i.e., m rows and m + n columns) and is formed by the horizontal juxtaposition of an m × m
+//! identity matrix on the left with an m × n zero matrix on the right. This m × (m + n) matrix, however, represents
+//! fst :: Rm × Rn ( Rm . Note how much simpler it is to say D fst (a, b) = fst, and with no loss of precision!
+//! Given Theorem 3, we can construct D+ f for all linear f :
+//! Corollary 3.1 For all linear functions f , D+ f = λa → (f a, f ). (Proof: immediate from the D+ definition and
+//! Theorem 3.)
+//!
+//! 4
+//!
+//! Putting the Pieces Together
+//!
+//! The definition of D+ on page 4 is a precise specification; but it is not an implementation, since D itself is not
+//! computable [Pour-El and Richards, 1978, 1983]. Corollaries 1.1 through 3.1 provide insight into the compositional
+//! nature of D+ in exactly the form we can now assemble into a correct-by-construction implementation.
+//! Although differentiation is not computable when given just an arbitrary computable function, we can instead
+//! build up differentiable functions compositionally, using exactly the forms introduced above, (namely (◦), (×)
+//! and linear functions), together with various non-linear primitives having known derivatives. Computations
+//! expressed in this vocabulary are differentiable by construction thanks to Corollaries 1.1 through 3.1. The building
+//! blocks above are not just a random assortment, but rather a fundamental language of mathematics, logic, and
+//! computation, known as category theory [Mac Lane, 1998; Lawvere and Schanuel, 2009; Awodey, 2006]. While it
+//! would be unpleasant to program directly in such an austere language, its foundational nature enables instead an
+//! automatic conversion from programs written in more conventional functional languages [Lambek, 1980, 1986;
+//! Elliott, 2017].
+//!
+//!
+//! --- PAGE BREAK ---
+//! 6
+//!
+//! Conal Elliott
+//!
+//! 4.1
+//!
+//! Categories
+//!
+//! The central notion in category theory is that of a category, comprising objects (generalizing sets or types) and
+//! morphisms (generalizing functions between sets or types). For the purpose of this paper, we will take objects
+//! to be types in our program, and morphisms to be enhanced functions. We will introduce morphisms using
+//! Haskell-style type signatures, such as “f :: a ; b ∈ U”, where “;” refers to the morphisms for a category U,
+//! with a and b being the domain and codomain objects/types for f . In most cases, we will omit the “∈ U”, where
+//! choice of category is (hopefully) clear from context. Each category U has a distinguished identity morphism
+//! id :: a ; a ∈ U for every object/type a in the category. For any two morphisms f :: a ; b ∈ U and g :: b ; c ∈ U
+//! (note same category and matching types/objects b), there is also the composition g ◦ f :: a ; c ∈ U. The category
+//! laws state that (a) id is the left and right identity for composition, and (b) composition is associative. You are
+//! probably already familiar with at least one example of a category, namely functions, in which id and (◦) are the
+//! identity function and function composition.
+//! Although Haskell’s type system cannot capture the category laws explicitly, we can express the two required
+//! operations as a Haskell type class, along with a familiar instance:
+//! class Category k where
+//! id :: a ‘k ‘ a
+//! (◦) :: (b ‘k ‘ c) → (a ‘k ‘ b) → (a ‘k ‘ c)
+//!
+//! instance Category (→) where
+//! id = λa → a
+//! g ◦ f = λa → g (f a)
+//!
+//! Another example is linear functions, which we’ve written “a ( b” above. Still another example is differentiable
+//! functions5 , which we can see by noting three facts:
+//! • The identity function is differentiable, as witnessed by Theorem 3 and the linearity of id .
+//! • The composition of differentiable functions is differentiable, as Theorem 1 attests.
+//! • The category laws (identity and associativity) hold, because differentiable functions form a subset of all
+//! functions.
+//! Each category forms its own world, with morphisms relating objects within that category. To bridge between
+//! these worlds, there are functors, which connect a category U to a (possibly different) category V. Such a functor
+//! F maps objects in U to objects in V, and morphisms in U to morphisms in V. If f :: a ; b ∈ U is a morphism,
+//! then a functor F from U to V transforms f ∈ U to a morphism F f :: F a 99K F b ∈ V, i.e., the domain and
+//! codomain of the transformed morphism F f ∈ V must be the transformed versions of the domain and codomain
+//! of f ∈ U. In this paper, the categories use types as objects, while the functors map these types to themselves.6
+//! The functor must also preserve “categorical” structure:7
+//! F id = id
+//! F (g ◦ f ) = F g ◦ F f
+//! Crucially to the topic of this paper, Corollaries 3.1 and 1.1 say more than that differentiable functions form
+//! a category. They also point us to a new, easily implemented category, for which D+ is in fact a functor. This
+//! new category is simply the representation that D+ produces: a → b × (a ( b), considered as having domain a
+//! and codomain b. The functor nature of D+ will be exactly what we need to in order to program in a familiar
+//! and direct way in a pleasant functional language such as Haskell and have a compiler convert to differentiable
+//! functions automatically.
+//! To make the new category more explicit, package the result type of D+ in a new data type:
+//! newtype D a b = D (a → b × (a ( b))
+//! Then adapt D+ to use this new data type by simply applying the D constructor to the result of D+:
+//! D̂ :: (a → b) → D a b
+//! D̂ f = D (D+ f )
+//! 5 There are many examples of categories besides restricted forms of functions, including relations, logics, partial orders, and even
+//!
+//! matrices.
+//! 6 In contrast, Haskell’s functors stay within the same category and do change types.
+//! 7 Making the categories explicit, F (id ∈ U ) = (id ∈ V) and F (g ◦ f ∈ U ) = (F g ◦ F f ∈ V).
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 7
+//!
+//! Our goal is to discover a Category instance for D such that D̂ is a functor. This goal is essentially an algebra
+//! problem, and the desired Category instance is a solution to that problem. Saying that D̂ is a functor is equivalent
+//! to the following two conditions for all suitably typed functions f and g:8
+//! id = D̂ id
+//! D̂ g ◦ D̂ f = D̂ (g ◦ f )
+//! Equivalently, by the definition of D̂,
+//! id = D (D+ id )
+//! D (D+ g) ◦ D (D+ f ) = D (D+ (g ◦ f ))
+//! Now recall the following results from Corollaries 3.1 and 1.1:
+//! D+ id = λa → (id a, id )
+//! D+ (g ◦ f ) = λa → let {(b, f 0 ) = D+ f a; (c, g 0 ) = D+ g b } in (c, g 0 ◦ f 0 )
+//! Then use these two facts to rewrite the right-hand sides of the functor specification for D̂:
+//! id = D (λa → (a, id ))
+//! D (D+ g) ◦ D (D+ f ) = D (λa → let {(b, f 0 ) = D+ f a; (c, g 0 ) = D+ g b } in (c, g 0 ◦ f 0 ))
+//! The id equation is trivially solvable by defining id = D (λa → (a, id )). To solve the (◦) equation, generalize it
+//! to a stronger condition:9
+//! D g ◦ D f = D (λa → let {(b, f 0 ) = f a; (c, g 0 ) = g b } in (c, g 0 ◦ f 0 ))
+//! The solution of this stronger condition is immediate, leading to the following instance as a sufficient condition
+//! for D̂ being a functor:
+//! linearD :: (a → b) → D a b
+//! linearD f = D (λa → (f a, f ))
+//! instance Category D where
+//! id = linearD id
+//! D g ◦ D f = D (λa → let {(b, f 0 ) = f a; (c, g 0 ) = g b } in (c, g 0 ◦ f 0 ))
+//! Factoring out linearD will also tidy up treatment of other linear functions.
+//! Before we get too pleased with this definition, let’s remember that for D to be a category requires more than
+//! having definitions for id and (◦). These definitions must also satisfy the identity and composition laws. How
+//! might we go about proving that they do? Perhaps the most obvious route is take those laws, substitute our
+//! definitions of id and (◦), and reason equationally toward the desired conclusion. For instance, let’s prove that
+//! id ◦ D f = D f for all D f :: D a b:10
+//! id ◦ D f
+//! = D (λb → (b, id )) ◦ D f
+//! = D (λa → let {(b, f 0 ) = f a; (c, g 0 ) = (b, id )} in (c, g 0 ◦ f 0 ))
+//! = D (λa → let {(b, f 0 ) = f a } in (b, id ◦ f 0 ))
+//! = D (λa → let {(b, f 0 ) = f a } in (b, f 0 ))
+//! = D (λa → f a)
+//! =D f
+//!
+//! -- definition of id for D
+//! -- definition of (◦) for D
+//! -- substitute b for c and id for g 0
+//! -- id ◦ f 0 = f 0 (category law)
+//! -- replace (b, f 0 ) by its definition
+//! -- η-reduction
+//!
+//! We can prove the other required properties similarly. Fortunately, there is a way to bypass the need for
+//! these painstaking proofs, and instead rely only on our original specification for this Category instance, namely
+//! 8 The id and (◦) on the left-hand sides are for D, while the ones on the right are for (→).
+//! 9 The new f
+//!
+//! is the old D+ f and so has changed type from a → b to a → b × (a ( b). Likewise for g.
+//! for some f , so it suffices to consider this form.
+//!
+//! 10 Note that every morphism in D has the form D f
+//!
+//!
+//! --- PAGE BREAK ---
+//! 8
+//!
+//! Conal Elliott
+//!
+//! that D+ is a functor. To buy this proof convenience, we have to make one concession, namely that we consider
+//! only morphisms in D that arise from D̂, i.e., only fˆ :: D a b such that fˆ = D̂ f for some f :: a → b. We can
+//! ensure that indeed only such fˆ do arise by making D a b an abstract type, i.e., hiding its data constructor . The
+//! slightly more specialized requirement of our first identity property is then id ◦ D̂ f = D̂ f for any f :: a → b,
+//! which follows easily:
+//! id ◦ D̂ f
+//! = D̂ id ◦ D̂ f
+//! = D̂ (id ◦ f )
+//! = D̂ f
+//!
+//! -- functor law for id (specification of D̂)
+//! -- functor law for (◦)
+//! -- category law
+//!
+//! The other identity law is proved similarly. Associativity has a similar flavor as well:
+//! D̂ h ◦ (D̂ g ◦ D̂ f )
+//! = D̂ h ◦ D̂ (g ◦ f )
+//! = D̂ (h ◦ (g ◦ f ))
+//! = D̂ ((h ◦ g) ◦ f )
+//! = D̂ (h ◦ g) ◦ D̂ f
+//! = (D̂ h ◦ D̂ g) ◦ D̂ f
+//!
+//! -- functor law for (◦)
+//! -- functor law for (◦)
+//! -- category law
+//! -- functor law for (◦)
+//! -- functor law for (◦)
+//!
+//! Note how mechanical these proofs are. Each uses only the functor laws plus the particular category law on
+//! functions that corresponds to the one being proved for D. The proofs rely on nothing about the nature of D or
+//! D̂ beyond the functor laws. The importance of this observation is that we never need to perform these proofs
+//! when we specify category instances via a functor.
+//!
+//! 4.2
+//!
+//! Monoidal Categories
+//!
+//! Section 3.2 introduced parallel composition. This operation generalizes to play an important role in category
+//! theory as part of the notion of a monoidal category:
+//! class Category k ⇒ Monoidal k where
+//! (×) :: (a ‘k ‘ c) → (b ‘k ‘ d ) → ((a × b) ‘k ‘ (c × d ))
+//!
+//! instance Monoidal (→) where
+//! f × g = λ(a, b) → (f a, g b)
+//!
+//! More generally, a category k can be monoidal over constructions other than products, but cartesian products
+//! (ordered pairs) suffice for this paper.
+//! Two monoidal categories can be related by a monoidal functor, which is a functor that also preserves the
+//! monoidal structure. That is, a monoidal functor F from monoidal category U to monoidal category V, besides
+//! mapping objects and morphisms in U to counterparts in V while preserving the category structure (id and (◦)),
+//! also preserves the monoidal structure:
+//! F (f × g) = F f × F g
+//! Just as Corollaries 1.1 and 3.1 were key to deriving a correct-by-construction Category instance from the
+//! specification that D̂ is a functor, Corollary 2.1 leads to a correct Monoidal instance from the specification that
+//! D̂ is a monoidal functor, as we’ll now see.
+//! Let F be D̂ in the reversed form of the monoidal functor equation above, and expand D̂ to its definition as
+//! D ◦ D+:
+//! D (D+ f ) × D (D+ g) = D (D+ (f × g))
+//! By Corollary 2.1,
+//! D+ (f × g) = λ(a, b) → let {(c, f 0 ) = D+ f a; (d , g 0 ) = D+ g b } in ((c, d ), f 0 × g 0 )
+//! Now substitute the left-hand side of this equation into the right-hand side of the of the monoidal functor property
+//! for D̂, and strengthen the condition by generalizing from D+ f and D+ g:
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 9
+//!
+//! D f × D g = D (λ(a, b) → let {(c, f 0 ) = f a; (d , g 0 ) = g b } in ((c, d ), f 0 × g 0 ))
+//! This strengthened form of the specification can be converted directly to a sufficient definition:
+//! instance Monoidal D where
+//! D f × D g = D (λ(a, b) → let {(c, f 0 ) = f a; (d , g 0 ) = g b } in ((c, d ), f 0 × g 0 ))
+//!
+//! 4.3
+//!
+//! Cartesian Categories
+//!
+//! The Monoidal abstraction provides a way to combine two functions but not separate them. It also gives no way
+//! to duplicate or discard information. These additional abilities require another algebraic abstraction, namely that
+//! of cartesian category, adding operations for projection and duplication:
+//! class Monoidal k ⇒ Cartesian k where
+//! exl :: (a × b) ‘k ‘ a
+//! exr :: (a × b) ‘k ‘ b
+//! dup :: a ‘k ‘ (a × a)
+//!
+//! instance Cartesian (→) where
+//! exl = λ(a, b) → a
+//! exr = λ(a, b) → b
+//! dup = λa → (a, a)
+//!
+//! Two cartesian categories can be related by a cartesian functor, which additionally preserves the cartesian
+//! structure. That is, a cartesian functor F from cartesian category U to cartesian category V, besides mapping
+//! objects and morphisms in U to counterparts in V while preserving the category and monoidal structure (id , (◦),
+//! and (×)), also preserves the cartesian structure:
+//! F exl = exl
+//! F exr = exr
+//! F dup = dup
+//! Just as Corollaries 1.1 through 3.1 were key to deriving a correct-by-construction Category and Monoidal
+//! instances from the specification that D̂ is a functor and a monoidal functor respectively, Corollary 3.1 enables a
+//! correct-by-construction Cartesian instance from the specification that D̂ is a cartesian functor. Let F be D̂ in
+//! the reversed forms of cartesian functor equations above, and expand D̂ to its definition as D ◦ D+:
+//! exl = D (D+ exl )
+//! exr = D (D+ exr )
+//! dup = D (D+ dup)
+//! Next, by Corollary 3.1, together with the linearity of exl , exr , and dup,
+//! D+ exl = λp → (exl p, exl )
+//! D+ exr = λp → (exr p, exr )
+//! D+ dup = λa → (dup a, dup)
+//! Now substitute the left-hand sides of these three properties into the right-hand sides of the of the cartesian
+//! functor properties for D̂, and recall the definition of linearD:
+//! exl = linearD exl
+//! exr = linearD exr
+//! dup = linearD dup
+//! This form of the specification can be turned directly into a sufficient definition:
+//! instance Cartesian D where
+//! exl = linearD exl
+//! exr = linearD exr
+//! dup = linearD dup
+//!
+//!
+//! --- PAGE BREAK ---
+//! 10
+//!
+//! Conal Elliott
+//!
+//! newtype a →+ b = AddFun (a → b)
+//! instance Category (→+) where
+//! type Obj (→+) = Additive
+//! id = AddFun id
+//! AddFun g ◦ AddFun f = AddFun (g ◦ f )
+//!
+//! instance Cocartesian (→+) where
+//! inl = AddFun inlF
+//! inr = AddFun inrF
+//! jam = AddFun jamF
+//!
+//! instance Monoidal (→+) where
+//! AddFun f × AddFun g = AddFun (f × g)
+//!
+//! inlF :: Additive b ⇒ a → a × b
+//! inrF :: Additive a ⇒ b → a × b
+//! jamF :: Additive a ⇒ a × a → a
+//!
+//! instance Cartesian (→+) where
+//! exl = AddFun exl
+//! exr = AddFun exr
+//! dup = AddFun dup
+//!
+//! inlF = λa → (a, 0)
+//! inrF = λb → (0, b)
+//! jamF = λ(a, b) → a + b
+//! Figure 1: Additive functions
+//!
+//! 4.4
+//!
+//! Cocartesian Categories
+//!
+//! Cartesian categories have a dual, known as cocartesian categories, in which each cartesian operation has a mirror
+//! image with morphisms reversed (swapping domain and codomain) and coproducts replacing products. In general,
+//! each category can have its own notion of coproduct, e.g., sum (disjoint union) types for the (→) category. In
+//! this paper, however, coproducts will coincide with categorical products, i.e., we’ll be using biproduct categories
+//! [Macedo and Oliveira, 2013]:
+//! class Category k ⇒ Cocartesian k where
+//! inl :: a ‘k ‘ (a × b)
+//! inr :: b ‘k ‘ (a × b)
+//! jam :: (a × a) ‘k ‘ a
+//! Unlike the other classes, there is no Cocartesian (→) instance, and fortunately we will not need such an instance
+//! below. (There is an instance when using sums instead of cartesian products for coproducts.) Instead, we
+//! can define a category (→+) of additive functions that will have a Cocartesian instance and that we can use to
+//! represent derivatives, as shown in Figure 1. These instances rely on one more feature of the Category class not
+//! yet mentioned, namely an associated constraint [Bolingbroke, 2011] Obj k . In the actual class definitions, Obj k
+//! constrains the types involved in all categorical operations.
+//! Unsurprisingly, there is a notion of cocartesian functor, saying that the cocartesian structure is preserved,
+//! i.e.,
+//! F inl = inl
+//! F inr = inr
+//! F jam = jam
+//!
+//! 4.5
+//!
+//! Derived Operations
+//!
+//! With dup, we can define an alternative to (×) that takes two morphisms sharing a domain:
+//! (M) :: Cartesian k ⇒ (a ‘k ‘ c) → (a ‘k ‘ d ) → (a ‘k ‘ (c × d ))
+//! f M g = (f × g) ◦ dup
+//! The (M) operation is particularly useful for translating the λ-calculus to categorical form [Elliott, 2017, Section
+//! 3].
+//! Dually, jam lets us define a second alternative to (×) for two morphisms sharing a codomain:
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 11
+//!
+//! (O) :: Cocartesian k ⇒ (c ‘k ‘ a) → (d ‘k ‘ a) → ((c × d ) ‘k ‘ a)
+//! f O g = jam ◦ (f × g)
+//! The (M) and (O) operations are invertible in uncurried form [Gibbons, 2002]:
+//! fork :: Cartesian
+//! unfork :: Cartesian
+//!
+//! k ⇒ (a ‘k ‘ c) × (a ‘k ‘ d ) → (a ‘k ‘ (c × d ))
+//! k ⇒ (a ‘k ‘ (c × d )) → (a ‘k ‘ c) × (a ‘k ‘ d )
+//!
+//! join :: Cocartesian k ⇒ (c ‘k ‘ a) × (d ‘k ‘ a) → ((c × d ) ‘k ‘ a)
+//! unjoin :: Cocartesian k ⇒ ((c × d ) ‘k ‘ a) → (c ‘k ‘ a) × (d ‘k ‘ a)
+//! where
+//! fork (f , g) = f M g
+//! unfork h = (exl ◦ h, exr ◦ h)
+//!
+//! 4.6
+//!
+//! join (f , g) = f O g
+//! unjoin h = (h ◦ inl , h ◦ inr )
+//!
+//! Numeric Operations
+//!
+//! So far, the vocabulary we’ve considered comprises linear functions and combining forms ((◦) and (×)) that
+//! preserve linearity. To make differentiation interesting, we’ll need some non-linear primitives as well. Let’s now
+//! add these primitives, while continuing to derive correct implementations from simple, regular specifications
+//! in terms of homomorphisms (structure-preserving transformations). We’ll define a collection of interfaces for
+//! numeric operations, roughly imitating Haskell’s numeric type class hierarchy.
+//! Haskell provides the following basic class:
+//! class Num a where
+//! negate :: a → a
+//! (+), (∗) :: a → a → a
+//! ...
+//! Although this class can accommodate many different types of “numbers”, the class operations are all committed
+//! to being functions. A more flexible alternative allows operations to be non-functions:
+//! class NumCat k a where
+//! negateC :: a ‘k ‘ a
+//! addC :: (a × a) ‘k ‘ a
+//! mulC :: (a × a) ‘k ‘ a
+//! ...
+//!
+//! instance Num a ⇒ NumCat (→) a where
+//! negateC = negate
+//! addC = uncurry (+)
+//! mulC = uncurry (·)
+//! ...
+//!
+//! Besides generalizing from (→) to k , we’ve also uncurried the operations, so as to demand less of supporting
+//! categories k . There are similar classes for other operations, such as division, powers and roots, and transcendental
+//! functions (sin, cos, exp etc). Note that the (→) instance uses the operations from the standard numeric classes
+//! (Num etc).
+//! Differentiation rules for these operations are part of basic differential calculus:11
+//! D (negate u) = negate (D u)
+//! D (u + v ) = D u + D v
+//! D (u · v ) = u · D v + v · D u
+//! This conventional form is unnecessarily complex, as each of these rules implicitly involves not just a numeric
+//! operation, but also an application of the chain rule. This form is also imprecise about the nature of u and v .
+//! If they are functions, then one needs to explain arithmetic on functions; and if they are not functions, then
+//! differentiation of non-functions needs explanation.
+//! A precise and simpler presentation is to remove the arguments and talk about differentiating the primitive
+//! operations in isolation. We have the chain rule to account for context, so we do not need to involve it in every
+//! 11 The conventional differentiation rules shown here treat derivatives as numbers rather than linear maps.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 12
+//!
+//! Conal Elliott
+//!
+//! numeric operation. Since negation and (uncurried) addition are linear, we already know how to differentiate
+//! them. Multiplication is a little more involved [Spivak, 1965, Theorem 2-3 (2)]:
+//! D mulC (a, b) = λ(da, db) → da · b + a · db
+//! Note the linearity of the right-hand side, so that the derivative of mulC at (a, b) for real values has the expected
+//! type: R × R ( R.12 To make the linearity more apparent, and to prepare for variations later in this paper,
+//! let’s now rephrase D mulC without using lambda directly. Just as Category, Monoidal , Cartesian, NumCat,
+//! etc generalize operations beyond functions, it will also be handy to generalize scalar multiplication as well:
+//! class Scalable k a where
+//! scale :: a → (a ‘k ‘ a)
+//!
+//! instance Num a ⇒ Scalable (→+) a where
+//! scale a = AddFun (λda → a · da)
+//!
+//! Since uncurried multiplication is bilinear, its partial application as scale a (for functions) is linear for all a. Now
+//! we can rephrase the product rule in terms of more general, linear language, using the derived (O) operation
+//! defined in Section 4.5:
+//! D mulC (a, b) = scale b O scale a
+//! This product rule, along with the linearity of negation and uncurried addition, enables using the same style
+//! of derivation as with operations from Category, Monoidal , and Cartesian above. As usual, specify the NumCat
+//! instance for differentiable functions by saying that D̂ preserves (NumCat) structure, i.e., D̂ negateC = negateC ,
+//! D̂ addC = addC , and D̂ mulC = mulC . Reasoning as before, we get another correct-by-construction instance
+//! for differentiable functions:
+//! instance NumCat D where
+//! negateC = linearD negateC
+//! addC = linearD addC
+//! mulC = D (λ(a, b) → (a · b, scale b O scale a))
+//! Similar reasoning applies to other numeric operations, e.g.,
+//! instance FloatingCat D where
+//! sinC = D (λa → (sin a, scale (cos a)))
+//! cosC = D (λa → (cos a, scale (−sin a)))
+//! expC = D (λa → let e = exp a in (e, scale e))
+//! ...
+//! In what follows, the scale operation will play a more important role than merely tidying definitions.
+//!
+//! 5
+//!
+//! Examples
+//!
+//! Let’s now look at some AD examples, to which we will return later in the paper:
+//! sqr :: Num a ⇒ a → a
+//! sqr a = a · a
+//! magSqr :: Num a ⇒ a × a → a
+//! magSqr (a, b) = sqr a + sqr b
+//! cosSinProd :: Floating a ⇒ a × a → a × a
+//! cosSinProd (x , y) = (cos z , sin z ) where z = x · y
+//! A compiler plugin converts these definitions to categorical vocabulary [Elliott, 2017]:
+//! sqr = mulC ◦ (id M id )
+//! 12 The derivative of uncurried multiplication generalizes to an arbitrary bilinear function f :: a × b → c [Spivak, 1965, Problem
+//! 2-12]: D f (a, b) = λ(da, db) → f (da, b) + f (a, db).
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 13
+//!
+//! ×
+//!
+//! cos
+//!
+//! In
+//!
+//! +
+//!
+//! Out
+//!
+//! In
+//!
+//! ×
+//!
+//! Out
+//! sin
+//!
+//! ×
+//!
+//! Figure 3: cosSinProd
+//!
+//! Figure 2: magSqr
+//! ×
+//!
+//! In
+//!
+//! ×
+//!
+//! In
+//!
+//! ×
+//!
+//! In
+//!
+//! ×
+//!
+//! ×
+//! Out
+//!
+//! Out
+//! ×
+//!
+//! +
+//!
+//! ×
+//!
+//! +
+//!
+//! +
+//!
+//! +
+//!
+//! Out
+//! ×
+//!
+//! negate
+//!
+//! Out
+//! ×
+//!
+//! In
+//!
+//! cos
+//!
+//! +
+//!
+//! sin
+//!
+//! Figure 5: D̂ cosSinProd
+//! Figure 4: D̂ magSqr
+//! magSqr = addC ◦ (mulC ◦ (exl M exl ) M mulC ◦ (exr M exr ))
+//! cosSinProd = (cosC M sinC ) ◦ mulC
+//! To visualize computations before differentiation, we can interpret these categorical expressions in a category of
+//! graphs [Elliott, 2017, Section 7], with the results rendered in Figures 2 and 3. To see the differentiable versions,
+//! interpret these same expressions in the category of differentiable functions (D from Section 4.1), remove the D
+//! constructors to reveal the function representation, convert these functions to categorical form as well, and finally
+//! interpret the result in the graph category. The results are rendered in Figures 4 and 5. Some remarks:
+//! • The derivatives are (linear) functions, as depicted in boxes.
+//! • Work is shared between the function’s result (sometimes called the “primal”) and its derivative in Figure 5.
+//! • The graphs shown here are used solely for visualizing functions before and after differentiation, playing no
+//! role in the programming interface or in the implementation of differentiation.
+//!
+//! 6
+//!
+//! Programming as Defining and Solving Algebra Problems
+//!
+//! Stepping back to consider what we’ve done, a general recipe emerges:
+//! • Start with an expensive or even non-computable specification (here involving differentiation).
+//! • Build the desired result into the representation of a new data type (here as the combination of a function
+//! and its derivative).
+//! • Try to show that conversion from a simpler form (here regular functions) to the new data type—even if
+//! not computable—is compositional with respect to a well-understood collection of algebraic abstractions
+//! (here Category etc).
+//! • If compositionality fails (as with D, unadorned differentiation, in Section 3.1), examine the failure to find
+//! an augmented specification, iterating as needed until converging on a representation and corresponding
+//! specification that is compositional.
+//! • Set up an algebra problem whose solution will be an instance of the well-understood algebraic abstraction
+//! for the chosen representation. These algebra problems always have a particular stylized form, namely that
+//! the operation being solved for is a homomorphism for the chosen abstractions (here including a category
+//! homomorphism, also called a “functor”).
+//!
+//!
+//! --- PAGE BREAK ---
+//! 14
+//!
+//! Conal Elliott
+//!
+//! • Solve the algebra problem by using the compositionality properties.
+//! • Rest assured that the solution satisfies the required laws, at least when the new data type is kept abstract,
+//! thanks to the homomorphic specification.
+//! The result of this recipe is not quite an implementation of our homomorphic specification, which may after all be
+//! non-computable. Rather, it gives a computable alternative that is nearly as useful: if the input to the specified
+//! conversion is expressed in the vocabulary of the chosen algebraic abstraction, then a re-interpretation of that
+//! vocabulary in the new data type is the result of the (possibly non-computable) specification. Furthermore, if
+//! we can automatically convert conventionally written functional programs into the chosen algebraic vocabulary
+//! [Elliott, 2017], then those programs can be re-interpreted to compute the desired specification.
+//!
+//! 7
+//!
+//! Generalizing Automatic Differentiation
+//!
+//! Corollaries 1.1 through 3.1 all have the same form: an operation on D (differentiable functions) is defined
+//! entirely via the same operation on (() (linear maps). Specifically, the sequential and parallel composition of
+//! differentiable functions rely (respectively) on sequential and parallel composition of linear maps, and likewise for
+//! each other operation. These corollaries follow closely from Theorems 1 through 3, which relate derivatives for
+//! these operations to the corresponding operations on linear maps. These properties make for a pleasantly poetic
+//! theory, but they also have a powerful, tangible benefit, which is that we can replace linear maps by any of a
+//! much broader variety of underlying categories to arrive at a greatly generalized notion of AD.
+//! A few small changes to the non-generalized definitions derived in Section 4 result in the generalized AD
+//! definitions shown in Figure 6:
+//! • The new category takes as parameter a category k that replaces (() in D.
+//! • The linearD function takes two arrows, previously identified.
+//! • The functionality needed of the underlying category becomes explicit.
+//! • The constraint Obj Dk is defined to be the conjunction of Additive (needed for the Cocartesian instance)
+//! and Obj k (needed for all instances).
+//!
+//! 8
+//!
+//! Matrices
+//!
+//! As an aside, let’s consider matrices—the representation typically used in linear algebra—and especially the
+//! property of rectangularity. There are three (non-exclusive) possibilities for a nonempty matrix W :
+//! • width W = height W = 1;
+//! • W is the horizontal juxtaposition of two matrices U and V with height W = height U = height V , and
+//! width W = width U + width V ; or
+//! • W is the vertical juxtaposition of two matrices U and V with width W = width U = width V , and
+//! height W = height U + height V .
+//! These three shape constraints establish and preserve rectangularity.
+//! The vocabulary we have needed from generalized linear maps so far is exactly that of Category, Cartesian,
+//! Cocartesian, and Scalable. Let’s now extract just three operations from this vocabulary:
+//! scale :: a → (a ‘k ‘ a)
+//! (O) :: (a ‘k ‘ c) → (b ‘k ‘ c) → ((a × b) ‘k ‘ c)
+//! (M) :: (a ‘k ‘ c) → (a ‘k ‘ d ) → (a ‘k ‘ (c × d ))
+//! These operations exactly correspond to the three possibilities above for a nonempty matrix W , with the width
+//! and height constraints captured neatly by types. When matrices are used to represent linear maps, the domain
+//! and codomain types for the corresponding linear map are determined by the width and height of the matrix,
+//! respectively (assuming the convention of matrix on the left multiplied by a column vector on the right), together
+//! with the type of the matrix elements.
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! newtype Dk a b = D (a → b × (a ‘k ‘ b))
+//! linearD :: (a → b) → (a ‘k ‘ b) → Dk a b
+//! linearD f f 0 = D (λa → (f a, f 0 ))
+//! instance Category k ⇒ Category Dk where
+//! type Obj Dk = Additive ∧ Obj k
+//! id = linearD id id
+//! D g ◦ D f = D (λa → let {(b, f 0 ) = f a; (c, g 0 ) = g b } in (c, g 0 ◦ f 0 ))
+//! instance Monoidal k ⇒ Monoidal Dk where
+//! D f × D g = D (λ(a, b) → let {(c, f 0 ) = f a; (d , g 0 ) = g b } in ((c, d ), f 0 × g 0 ))
+//! instance Cartesian k ⇒ Cartesian Dk where
+//! exl = linearD exl exl
+//! exr = linearD exr exr
+//! dup = linearD dup dup
+//! instance Cocartesian k ⇒ Cocartesian Dk where
+//! inl = linearD inlF inl
+//! inr = linearD inrF inr
+//! jam = linearD jamF jam
+//! instance Scalable k s ⇒ NumCat Dk s where
+//! negateC = linearD negateC negateC
+//! addC
+//! = linearD addC
+//! addC
+//! mulC
+//! = D (λ(a, b) → (a · b, scale b O scale a))
+//! Figure 6: Generalized automatic differentiation
+//!
+//! 15
+//!
+//!
+//! --- PAGE BREAK ---
+//! 16
+//!
+//! Conal Elliott
+//!
+//! 9
+//!
+//! Extracting a Data Representation
+//!
+//! The generalized form of AD in Section 7 allows for different representations of linear maps (as well as alternatives
+//! to linear maps). One simple choice is to use functions, as in Figures 4 and 5. Although this choice is simple and
+//! reliable, sometimes we need a data representation. For instance,
+//! • Gradient-based optimization (including in machine learning) works by searching for local minima in the
+//! domain of a differentiable function f :: a → s, where a is a vector space over the scalar field s. Each step in
+//! the search is in the direction opposite of the gradient of f , which is a vector form of D f .
+//! • Computer graphics shading models rely on normal vectors. For surfaces represented in parametric form,
+//! i.e., as f :: R2 → R3 , normal vectors are calculated from the partial derivatives of f as vectors, which are
+//! the rows of the 3 × 2 Jacobian matrix that represents the derivative of f at any given point p :: R2 .
+//! Given a linear map f 0 ::U ( V represented as a function, it is possible to extract a Jacobian matrix (including
+//! the special case of a gradient vector) by applying f 0 to every vector in a basis of U . A particularly convenient
+//! basis is the sequence of column vectors of an identity matrix, where the i th such vector has a one in the i th
+//! position and zeros elsewhere. If U has dimension m (e.g., U = Rm ), this sampling requires m passes. If m is
+//! small, then this method of extracting a Jacobian is tolerably efficient, but as dimension grows, it becomes quite
+//! expensive. In particular, many useful problems involve gradient-based optimization over very high-dimensional
+//! spaces, which is the worst case for this technique.
+//!
+//! 10
+//!
+//! Generalized Matrices
+//!
+//! Rather than representing derivatives as functions and then extracting a (Jacobian) matrix, a more conventional
+//! alternative is to construct and combine matrices in the first place. These matrices are usually rectangular arrays,
+//! representing Rm ( Rn , which interferes with the composability we get from organizing around binary cartesian
+//! products, as in the Monoidal , Cartesian, and Cocartesian categorical interfaces.
+//! There is, however, an especially convenient perspective on linear algebra, known as free vector spaces. Given
+//! a scalar field s, any free vector space has the form p → s for some p, where the cardinality of p is the dimension
+//! of the vector space (and only finitely many p values can have non-zero images). Scaling a vector v :: p → s
+//! or adding two such vectors is defined in the usual way for functions. Rather than using functions directly as
+//! a representation, one can instead use any representation isomorphic to such a function. In particular, we can
+//! represent vector spaces over a given field as a representable functor, i.e., a functor F such that ∃p ∀s F s ∼
+//! =p→s
+//! (where “ ∼
+//! =” denotes isomorphism) This method is convenient in a richly typed functional language like Haskell,
+//! which comes with libraries of functor-level building blocks. Four such building blocks are functor product,
+//! functor composition, and their corresponding identities, which are the unit functor (containing no elements)
+//! and the identity functor (containing one element) [Magalhães et al., 2010; Magalhães et al., 2011]. One must
+//! then define the standard functionality for linear maps in the form of instances of Category, Monoidal , Cartesian,
+//! Cocartesian, and Scalable. Details are worked out by Elliott [2017, Section 7.4 and Appendix A]. One can use
+//! other representable functors as well, including length-typed vectors [Hermaszewski and Gamari, 2017].
+//! All of these functors give data representations of functions that save recomputation over a native function
+//! representation, as a form of functional memoization Hinze [2000]. They also provide a composable, type-safe
+//! alternative to the more commonly used multi-dimensional arrays (often called “tensors”) in machine learning
+//! libraries.
+//!
+//! 11
+//!
+//! Efficiency of Composition
+//!
+//! With the function representation of linear maps, composition is simple and efficient, but extracting a matrix can
+//! be quite expensive, as described in Section 9. The generalized matrix representation of Section 10 eliminates
+//! the need for this expensive extraction step but at the cost of more expensive construction operations used
+//! throughout.
+//! One particularly important efficiency concern is that of (generalized) matrix multiplication. Although matrix
+//! multiplication is associative (because it correctly implements composition of linear maps represented as matrices),
+//! different associations can result in very different computational cost. The problem of optimally associating a
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 17
+//!
+//! chain of matrix multiplications can be solved via dynamic programming in O(n3 ) time [Cormen et al., 2001,
+//! Section 15.2] or in O(n log n) time with a more subtle algorithm [Hu and Shing, 1981]. Solving this problem
+//! requires knowing only the sizes (heights and widths) of the matrices involved, and those sizes depend only on the
+//! types involved for a strongly typed linear map representation. One can thus choose an optimal association at
+//! compile time rather than waiting for run-time and then solving the problem repeatedly. A more sophisticated
+//! version of this question is known as the “optimal Jacobian accumulation” problem and is NP-complete [Naumann,
+//! 2008].
+//! Alternatively, for some kinds of problems we might want to choose a particular association for sequential
+//! composition. For instance, gradient-based optimization (including its use in machine learning) uses “reverse-mode”
+//! automatic differentiation (RAD), which is to say fully left-associated compositions. (Dually, “foward-mode” AD
+//! fully right-associates.) Reverse mode (including its specialization, backpropagation) is much more efficient for
+//! these problems, but is also typically given much more complicated explanations and implementations, involving
+//! mutation, graph construction, and “tapes”. One of the main purposes of this paper is to demonstrate that these
+//! complications are inessential and that RAD can instead be specified and implemented quite simply.
+//!
+//! 12
+//!
+//! Reverse-Mode Automatic Differentiation
+//!
+//! The AD algorithm derived in Section 4 and generalized in Figure 6 can be thought of as a family of algorithms.
+//! For fully right-associated compositions, it becomes forward mode AD; for fully left-associated compositions,
+//! reverse-mode AD; and for all other associations, various mixed modes.
+//! Let’s now look at how to separate the associations used in formulating a differentiable function from the
+//! associations used to compose its derivatives. A practical reason for making this separation is that we want to
+//! do gradient-based optimization (calling for left association), while modular program organization results in a
+//! mixture of compositions. Fortunately, a fairly simple technique removes the tension between efficient execution
+//! and modular program organization.
+//! Given any category k , we can represent its morphisms by the intent to left-compose with some to-be-given
+//! morphism h. That is, represent f :: a ‘k ‘ b by the function (◦ f ) :: (b ‘k ‘ r ) → (a ‘k ‘ r ), where r is any object in
+//! k .13 The morphism h will be a continuation, finishing the journey from f all the way to the codomain of the
+//! overall function being assembled. Building a category around this idea results in converting all composition
+//! patterns into fully left-associated form. This trick is akin to conversion to continuation-passing style [Reynolds,
+//! 1972; Appel, 2007; Kennedy, 2007]. Compositions in the computation become compositions in the continuation.
+//! For instance, g ◦ f with a continuation k (i.e., k ◦ (g ◦ f )) becomes f with a continuation k ◦ g (i.e., (k ◦ g) ◦ f ).
+//! The initial continuation is id (because id ◦ f = f ).
+//! Now package up the continuation representation as a transformation from category k and codomain r to a
+//! new category, Cont rk :
+//! newtype Cont rk a b = Cont ((b ‘k ‘ r ) → (a ‘k ‘ r ))
+//! cont :: Category k ⇒ (a ‘k ‘ b) → Cont rk a b
+//! cont f = Cont (◦ f )
+//! As usual, we can derive instances for our new category by homomorphic specification:
+//! Theorem 4 (Proved in Appendix C.3) Given the definitions in Figure 7, cont is a homomorphism with respect
+//! to each instantiated class.
+//! Note the pleasant symmetries in Figure 7. Each Cartesian or Cocartesian operation on Cont rk is defined via the
+//! dual Cocartesian or Cartesian operation, together with the join/unjoin isomorphism.
+//! The instances for Cont rk constitute a simple algorithm for reverse-mode AD. Figures 8 and 9 show the results
+//! of Cont rk corresponding to Figures 2 and 3 and Figures 4 and 5. The derivatives are represented as (linear)
+//! functions again, but reversed (mapping from codomain to domain).
+//! 13 Following Haskell notation for right sections, “(◦ f )” is shorthand for λh → h ◦ f .
+//!
+//!
+//! --- PAGE BREAK ---
+//! 18
+//!
+//! Conal Elliott
+//!
+//! newtype Cont rk a b = Cont ((b ‘k ‘ r ) → (a ‘k ‘ r ))
+//! instance Category k ⇒ Category Cont rk where
+//! id = Cont id
+//! Cont g ◦ Cont f = Cont (f ◦ g)
+//! instance Monoidal k ⇒ Monoidal Cont rk where
+//! Cont f × Cont g = Cont (join ◦ (f × g) ◦ unjoin)
+//! instance Cartesian k ⇒ Cartesian Cont rk where
+//! exl = Cont (join ◦ inl )
+//! exr = Cont (join ◦ inr )
+//! dup = Cont (jam ◦ unjoin)
+//! instance Cocartesian k ⇒ Cocartesian Cont rk where
+//! inl = Cont (exl ◦ unjoin)
+//! inr = Cont (exr ◦ unjoin)
+//! jam = Cont (join ◦ dup)
+//! instance Scalable k a ⇒ Scalable Cont rk a where
+//! scale s = Cont (scale s)
+//! Figure 7: Continuation category transformer (specified by functoriality of cont)
+//!
+//! sin
+//!
+//! ×
+//!
+//! In
+//!
+//! ×
+//!
+//! cos
+//!
+//! +
+//!
+//! ×
+//!
+//! +
+//!
+//! ×
+//!
+//! ×
+//!
+//! Out
+//!
+//! Out
+//!
+//! Out
+//!
+//! −
+//!
+//! In
+//!
+//! Out
+//!
+//! ×
+//!
+//! ×
+//!
+//! ×
+//!
+//! In
+//!
+//! In
+//! ×
+//!
+//! +
+//!
+//! Figure 8: magSqr in DCont R +
+//!
+//! (→ )
+//!
+//! Figure 9: cosSinProd in DCont R +
+//!
+//! (→ )
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 13
+//!
+//! 19
+//!
+//! Gradients and Duality
+//!
+//! As a special case of reverse-mode automatic differentiation, let’s consider its use to compute gradients, i.e.,
+//! derivatives of functions with a scalar codomain, as with gradient-based optimization.
+//! Given a vector space A over a scalar field s, the dual of A is A ( s, i.e., the linear maps to the underlying
+//! field [Lang, 1987].14 This dual space is also a vector space, and when A has finite dimension, it is isomorphic to
+//! its dual. In particular, every linear map in A ( s has the form dot u for some u :: A, where dot is the curried
+//! dot product:
+//! class HasDot s u where dot :: u → (u ( s)
+//! instance HasDot R R where dot = scale
+//! instance (HasDot s a, HasDot s b) ⇒ HasDot s (a × b) where dot (u, v ) = dot u O dot v
+//! The Cont rk construction from Section 12 works for any type/object r , so let’s take r to be the scalar field
+//! s. The internal representation of Cont s(() a b is (b ( s) → (a ( s), which is isomorphic to b → a. Call this
+//! representation the dual (or “opposite”) of k :
+//! newtype Dual k a b = Dual (b ‘k ‘ a)
+//! To construct dual representations of (generalized) linear maps, it suffices to convert from Cont sk to Dual k by a
+//! functor we will now derive. Composing this new functor with cont :: (a ‘k ‘ b) → Cont sk a b will give us a functor
+//! from k to Dual k . The new to-be-derived functor:
+//! asDual :: (HasDot s a, HasDot s b) ⇒ Cont sk a b → Dual k a b
+//! asDual (Cont f ) = Dual (onDot f )
+//! where onDot uses both halves of the isomorphism between a ( s and a:
+//! onDot :: (HasDot s a, HasDot s b) ⇒ ((b ( s) → (a ( s)) → (b ( a)
+//! onDot f = dot −1 ◦ f ◦ dot
+//! As usual, we can derive instances for our new category by homomorphic specification:
+//! Theorem 5 (Proved in Appendix C.4) Given the definitions in Figure 10, asDual is a homomorphism with
+//! respect to each instantiated class.
+//! Note that the instances in Figure 10 exactly dualize a computation, reversing sequential compositions and
+//! swapping corresponding Cartesian and Cocartesian operations. Likewise for the derived operations:
+//! Corollary 5.1 (Proved in Appendix C.5) The (M) and (O) operations mutually dualize:
+//! Dual f M Dual g = Dual (f O g)
+//! Dual f O Dual g = Dual (f M g)
+//! Recall from Section 8, that scale forms 1 × 1 matrices, while (O) and (M) correspond to horizontal and vertical
+//! juxtaposition, respectively. Thus, from a matrix perspective, duality is transposition, turning an m × n matrix
+//! into an n × m matrix. Note, however, that Dual k involves no actual matrix computations unless k does. In
+//! particular, we can simply use the category of linear functions (→+).
+//! Figures 11 and 12 show the results of reverse-mode AD via DDual (→+) . Compare Figure 11 with Figures 4 and
+//! 8.
+//! 14 These linear maps are variously known as “linear functionals”, “linear forms”, “one-forms”, and “covectors”.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 20
+//!
+//! Conal Elliott
+//!
+//! instance Category k ⇒ Category Dual k where
+//! id = Dual id
+//! Dual g ◦ Dual f = Dual (f ◦ g)
+//! instance Monoidal k ⇒ Monoidal Dual k where
+//! Dual f × Dual g = Dual (f × g)
+//! instance Cartesian k ⇒ Cartesian Dual k where
+//! exl = Dual inl
+//! exr = Dual inr
+//! dup = Dual jam
+//! instance Cocartesian k ⇒ Cocartesian Dual k where
+//! inl = Dual exl
+//! inr = Dual exr
+//! jam = Dual dup
+//! instance Scalable k ⇒ Scalable Dual k where
+//! scale s = Dual (scale s)
+//! Figure 10: Dual category transformer (specified by functoriality of asDual )
+//!
+//! ×
+//! cos
+//!
+//! +
+//! +
+//!
+//! ×
+//!
+//! negate
+//!
+//! Out
+//!
+//! In
+//!
+//! Out
+//! +
+//!
+//! ×
+//!
+//! In
+//!
+//! sin
+//!
+//! negate
+//!
+//! ×
+//! ×
+//!
+//! negate
+//!
+//! +
+//!
+//! Figure 11: magSqr in DDual (→+)
+//!
+//! Figure 12: λ((x , y), z ) → cos (x + y · z ) in DDual (→+)
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 14
+//!
+//! 21
+//!
+//! Forward-Mode Automatic Differentiation
+//!
+//! It may be interesting to note that we can turn the Cont and Dual techniques around to yield category transformers
+//! that perform full right- instead of left-association, converting the general, mode-independent algorithm into
+//! forward mode, thus yielding an algorithm preferable for low-dimensional domains (rather than codomains):
+//! newtype Begin rk a b = Begin ((r ‘k ‘ a) → (r ‘k ‘ b))
+//! begin :: Category k ⇒ (a ‘k ‘ b) → Begin rk a b
+//! begin f = Begin (f ◦)
+//! As usual, we can derive instances for our new category by homomorphic specification (for begin). Then choose r
+//! to be the scalar field s, as in Section 13, noting that (s ( a) ∼
+//! = a.
+//!
+//! 15
+//!
+//! Scaling Up
+//!
+//! So far, we have considered binary products. Practical applications, including machine learning and other
+//! optimization problems, often involve very high-dimensional spaces. While those spaces can be encoded as nested
+//! binary products, doing so would result in unwieldy representations and prohibitively long compilation and
+//! execution times. A practical alternative is to consider n-ary products, for which we can again use representable
+//! functors. To construct and consume these “indexed” (bi)products, we’ll need an indexed variant of Monoidal ,
+//! replacing the two arguments to (×) by a (representable) functor h of morphisms:
+//! class Category k ⇒ MonoidalI k h where
+//! crossI :: h (a ‘k ‘ b) → (h a ‘k ‘ h b)
+//!
+//! instance Zip h ⇒ MonoidalI (→) h where
+//! crossI = zipWith id
+//!
+//! Note that the collected morphisms must all agree in domain and codomain. While not required for the general
+//! categorical notion of products, this restriction accommodates Haskell’s type system and seems adequate in
+//! practice so far.
+//! Where the Cartesian class has two projection methods and a duplication method, the indexed counterpart
+//! has a collection of projections and one replication method:15
+//! class MonoidalI k h ⇒ CartesianI k h where
+//! exI :: h (h a ‘k ‘ a)
+//! replI :: a ‘k ‘ h a
+//! instance (Representable h, Zip h, Pointed h) ⇒ CartesianI (→) h where
+//! exI = tabulate (flip index )
+//! replI = point
+//! Dually, where the Cocartesian class has two injection methods and a binary combination method, the indexed
+//! counterpart has a collection of injections and one collection-combining method:
+//! class MonoidalI k h ⇒ CocartesianI k h where
+//! inI :: h (a ‘k ‘ h a)
+//! jamI :: h a ‘k ‘ a
+//! There are also indexed variants of the derived operations (M) and (O) from Section 4.5:
+//! forkI :: CartesianI k h ⇒ h (a ‘k ‘ b) → (a ‘k ‘ h b)
+//! forkI fs = crossI fs ◦ replI
+//! unforkF :: CartesianI k h ⇒ (a ‘k ‘ h b) → h (a ‘k ‘ b)
+//! unforkF f = fmap (◦ f ) exI
+//! joinI :: CartesianI k h ⇒ h (b ‘k ‘ a) → (h b ‘k ‘ a)
+//! 15 The index and tabulate functions convert from functor to function and back [Kmett, 2011].
+//!
+//!
+//! --- PAGE BREAK ---
+//! 22
+//!
+//! Conal Elliott
+//!
+//! instance (MonoidalI k h, Zip h) ⇒ MonoidalI Dk h where
+//! crossI fs = D (second crossI ◦ unzip ◦ crossI (fmap unD fs))
+//! instance (CartesianI (→) h, CartesianI k h, Zip h) ⇒ CartesianI Dk h where
+//! exI = linearD exI exI
+//! replI = zipWith linearD replI replI
+//! instance (CocartesianI k h, Zip h) ⇒ CocartesianI Dk h where
+//! inI = zipWith linearD inIF inI
+//! jamI = linearD sum jamI
+//! unD :: D a b → (a → (b × (a ( b)))
+//! unD (D f ) = f
+//! unzip :: Functor h ⇒ h (a × b) → h a × h b
+//! unzip = fmap exl M fmap exr
+//! second :: Monoidal k ⇒ (b ‘k ‘ d ) → ((a × b) ‘k ‘ (a × d ))
+//! second g = id × g
+//! inIF :: (Additive a, Foldable h) ⇒ h (a → h a)
+//! inIF = tabulate (λi a → tabulate (λj → if i = j then a else 0))
+//! class Zip h where zipWith :: (a → b → c) → h a → h b → h c
+//! Figure 13: AD for indexed biproducts
+//!
+//! joinI fs = jamI ◦ crossI fs
+//! unjoinPF :: CocartesianI k h ⇒ (h b ‘k ‘ a) → h (b ‘k ‘ a)
+//! unjoinPF f = fmap (f ◦) inI
+//! As usual, we can derive instances by homomorphic specification:
+//! Theorem 6 (Proved in Appendix C.6) Given the definitions in Figure 13, D̂ is a homomorphism with respect
+//! to each instantiated class.
+//! These indexed operations are useful in themselves but can be used to derive other operations. For instance,
+//! note the similarity between the types of crossI and fmap:
+//! crossI :: Monoidal h ⇒ h (a → b) → (h a → h b)
+//! fmap :: Functor h ⇒ (a → b) → (h a → h b)
+//! In fact, the following relationship holds: fmap = crossI ◦ replI . This equation, together with the differentiation
+//! rules for crossI , replI , and (◦) determines differentiation for fmap f .
+//! As with Figure 6, the operations defined in Figure 13 rely on corresponding operations for the category
+//! parameter k . Fortunately, all of those operations are linear or preserve linearity, so they can all be defined on the
+//! various representations of derivatives (linear maps) used for AD in this paper. Figures 14 and 15 show instances
+//! for two of the linear map representations defined in this paper, with the third left as an exercise for the reader.
+//! (The constraint Additive 1 h means that ∀a.Additive a ⇒ Additive (h a).)
+//!
+//! 16
+//!
+//! Related Work
+//!
+//! The literature on automatic differentiation is vast, beginning with forward mode [Wengert, 1964] and later
+//! reverse mode [Speelpenning, 1980; Rall, 1981], with many developments since [Griewank, 1989; Griewank and
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 23
+//!
+//! instance (Zip h, Additive 1 h) ⇒ MonoidalI (→+) h where
+//! crossI = AddFun ◦ crossI ◦ fmap unAddFun
+//! instance (Representable h, Zip h, Pointed h, Additive 1 h) ⇒ CartesianI (→+) h where
+//! exI = fmap AddFun exI
+//! replI = AddFun replI
+//! instance (Foldable h, Additive 1 h) ⇒ CocartesianI (→+) h where
+//! inI = fmap AddFun inIF
+//! jamI = AddFun sum
+//! Figure 14: Indexed instances for (→+)
+//!
+//! instance (MonoidalI k h, Functor h, Additive 1 h) ⇒ MonoidalI (Dual k ) h where
+//! crossI = Dual ◦ crossI ◦ fmap unDual
+//! instance (CocartesianI k h, Functor h, Additive 1 h) ⇒ CartesianI (Dual k ) h where
+//! exI = fmap Dual inI
+//! replI = Dual jamI
+//! instance (CartesianI k h, Functor h, Additive 1 h) ⇒ CocartesianI (Dual k ) h where
+//! inI = fmap Dual exI
+//! jamI = Dual replI
+//! Figure 15: Indexed instances for Dual k
+//!
+//! Walther, 2008]. While most techniques and uses of AD have been directed at imperative programming, there are
+//! also variations for functional programs [Karczmarczuk, 1999, 2000, 2001; Pearlmutter and Siskind, 2007, 2008;
+//! Elliott, 2009]. The work in this paper differs in being phrased at the level of functions/morphisms and specified
+//! by functoriality, without any mention or manipulation of graphs or other syntactic representations.16 Moreover,
+//! the specifications in this paper are simple enough that the various forms of AD presented can be calculated into
+//! being [Bird and de Moor, 1996; Oliveira, 2018], and so are correct by construction.
+//! Pearlmutter and Siskind [2008] make the following observation:
+//! In this context, reverse-mode AD refers to a particular construction in which the primal data-flow
+//! graph is transformed to construct an adjoint graph that computes the sensitivity values. In the
+//! adjoint, the direction of the data-flow edges are reversed; addition nodes are replaced by fanout
+//! nodes; fanout nodes are replaced by addition nodes; and other nodes are replaced by multiplication
+//! by their linearizations. The main constructions of this paper can, in this context, be viewed as a
+//! method for constructing scaffolding that supports this adjoint computation.
+//! The Cont and Dual category transformers described in Sections 12 and 13 (shown in Figures 7 and 10) above
+//! explain this “adjoint graph” construction without involving graphs. Data-flow edge reversal corresponds to the
+//! reversal of (◦) (from Category), while fanout and addition correspond to dup and jam (from Cartesian and
+//! Cocartesian respectively), which are mutually dual. Pearlmutter and Siskind [2008] further remark:
+//! The main technical difficulty to be faced is that reverse-mode AD must convert fanout (multiple use
+//! of a variable) in the untransformed code into addition in the reverse phase of the transformed code.
+//! We address this by expressing all straight-line code segments in A-normal form, which makes fanout
+//! lexically apparent.
+//! 16 Of course the Haskell compiler itself manipulates syntax trees, and the compiler plugin that converts Haskell code to categorical
+//! form helps do so, but both are entirely domain-independent, with no knowledge of or special support for differentiation or linear
+//! algebra [Elliott, 2017].
+//!
+//!
+//! --- PAGE BREAK ---
+//! 24
+//!
+//! Conal Elliott
+//!
+//! The categorical approach in this paper also makes fanout easily apparent, as occurrences of dup, which are
+//! produced during translation from Haskell to categorical form [Elliott, 2017] (via (M) as defined in Section 4.5
+//! above). This translation is specified and implemented independently of AD and so presents no additional
+//! complexity.
+//! Closely related to our choice of derivatives as linear maps and their categorical generalizations is the work
+//! of Macedo and Oliveira [2013], also based on biproducts (though not addressing differentiation). That work
+//! uses natural numbers as categorical objects to capture the dimensions of vectors and matrices, while the current
+//! paper uses vector spaces themselves. The difference is perhaps minor, however, since natural numbers can be
+//! thought of as representing finite sets (of corresponding cardinality), which are bases of finite-dimensional free
+//! vector spaces (as in Section 10). On the other hand, the duality-based gradient algorithm of Section 13 involves
+//! no matrices at all in their traditional representation (arrays of numbers) or generalized sense of Section 10
+//! (representable functors).
+//! Also sharing a categorical style is the work of Fong et al. [2017], formulating the backpropropagation
+//! algorithm as a functor. That work, which also uses biproducts (in monoidal but not cartesian form), does
+//! not appear to be separable from the application to machine learning, and so would seem to complement this
+//! paper. Backpropagation is a specialization of reverse-mode AD to the context of machine learning, discovered by
+//! Linnainmaa [1970] and popularized by Rumelhart et al. [1988].
+//! The continuation transformation of Section 12 was inspired by Mitch Wand’s work on continuation-based
+//! program transformation [Wand, 1980]. He derived a variety of algorithms based on a single elegant technique:
+//! transform a simple recursive program into continuation-passing form, examine the continuations that arise,
+//! and find a data (rather than function) representation for them. Each such representation is a monoid, with its
+//! identity and associative operation corresponding to identity and composition of the continuations. Monoids are
+//! categories with only one object, but the technique extends to general categories. Cayley’s theorem for groups (or
+//! monoids) captures this same insight and is a corollary (in retrospect) of the Yoneda lemma [Riehl, 2016, Section
+//! 2.2]. The idea of using data representations for functions (“defunctionalization”) was pioneered by Reynolds
+//! [1972] and further explored by Danvy and Nielsen [2001].
+//! The notion of derivatives as linear maps is the basis of calculus on manifolds Spivak [1965] and was also used
+//! for AD by Elliott [2009]. The latter addressed only forward-mode AD but also included all orders of derivatives.
+//! While there are many forward-mode AD libraries for Haskell, reverse mode (RAD) has been much more
+//! difficult. The most successful implementation appears to be in the ad library [Kmett et al., 2010]. One RAD
+//! implementation in that library uses stable names [Peyton Jones et al., 1999] and reification [Gill, 2009] to recover
+//! sharing information. Another maintains a Wengert list (or “tape”) with the help of a reflection library [Kiselyov
+//! and Shan, 2004]. Both implementations rely on hidden, carefully crafted use of side effects.
+//! Chris Olah [2015] shared a vision for “differentiable functional programming” similar to that in Section 1. He
+//! pointed out that most of the patterns now used in machine learning are already found in functional programming:
+//! These neural network patterns are just higher order functions—that is, functions which take
+//! functions as arguments. Things like that have been studied extensively in functional programming.
+//! In fact, many of these network patterns correspond to extremely common functions, like fold. The
+//! only unusual thing is that, instead of receiving normal functions as arguments, they receive chunks of
+//! neural network.
+//! The current paper carries this perspective further, suggesting that the essence is differentiable functions, with
+//! “networks” (graphs) being an unnecessary (and apparently unwise) operational choice.
+//! This paper builds on a compiler plugin that translates Haskell programs into categorical form to be specialized
+//! to various specific categories, including differentiable functions [Elliott, 2017]. (The plugin knows nothing about
+//! any specific category, including differentiable functions.) Another instance of generalized AD given there is
+//! automatic incremental evaluation of functional programs. Relative to that work, the new contributions are the
+//! Cont rk and Dual k categories, their use to succinctly implement reverse-mode AD (by instantiating the generalized
+//! differentiation category), the precise specification of instances for D, Cont rk , and Dual k via functoriality, and the
+//! calculation of implementations from these specifications.
+//! The implementations in this paper are quite simple and appear to be efficient as well. For instance, the dualitybased version (Section 13) involves no matrices. Moreover, typical reverse-mode AD (RAD) implementations
+//! use mutation to incrementally update derivative contributions from each use of a variable or intermediate
+//! computation, holding onto all of these accumulators until the very end of the derivative computation. For this
+//! reason, such implementations tend to use considerable memory. In contrast, the implementations in this paper
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 25
+//!
+//! (Sections 12 and 13) are free of mutation and can easily free (reuse) memory as they run, keeping memory use
+//! low. Given the prominent use of AD, particularly with large data, performance is crucial, so it will be worthwhile
+//! to examine and compare time and space use in detail. Lack of mutation also makes the algorithms in this paper
+//! naturally parallel, potentially leading to considerable speed improvement, especially when using the functor-level
+//! (bulk) vocabulary in Section 15.
+//!
+//! 17
+//!
+//! Conclusions
+//!
+//! This paper develops a simple, mode-independent algorithm for automatic differentiation (AD) (Section 4),
+//! calculated from a simple, natural specification in terms of elementary category theory (functoriality). It then
+//! generalizes the algorithm, replacing linear maps (as derivatives) by an arbitrary biproduct category (Figure
+//! 6). Specializing this general algorithm to two well-known categorical constructions (Figures 7 and 10)—also
+//! calculated—yields reverse-mode AD (RAD) for general derivatives and for gradients. These RAD implementations
+//! are far simpler than previously known. In contrast to common approaches to AD, the new algorithms involve no
+//! graphs, tapes, variables, partial derivatives, or mutation, and are usable directly from an existing programming
+//! language with no need for new data types or programming style (thanks to use of an AD-agnostic compiler
+//! plugin). Only the simple essence remains.
+//! Future work includes detailed performance analysis (compared with backpropagation and other conventional
+//! AD algorithms); efficient higher-order differentiation; and applying generalized AD to derivative-like notions,
+//! including subdifferentiation [Rockafellar, 1966] and automatic incrementalization (continuing previous work
+//! [Elliott, 2017]).
+//! AD is typically said to be about the chain rule for sequential composition (Theorem 1). This paper rounds
+//! out the story with two more rules: one for parallel composition and one for all linear operations (Theorems 2
+//! and 3). Parallel composition is usually left implicit in the special-case treatment of a collection of non-unary
+//! operations, such as addition, multiplication, division, and dot products. With explicit, general support for
+//! parallel composition, all operations come to be on equal footing, regardless of arity (as illustrated in Figure 6).
+//! AD is also typically presented in opposition to symbolic differentiation (SD), with the latter described as
+//! applying differentiation rules symbolically. The main criticism of SD is that it can blow up expressions, resulting
+//! a great deal of redundant work. Secondly, SD requires implementation of symbolic manipulation as in a computer
+//! algebra system. In contrast, AD is described as a numeric method and can retain the complexity of the original
+//! function (within a small constant factor) if carefully implemented, as in reverse mode. The approach explored in
+//! this paper suggests a different perspective: automatic differentiation is symbolic differentiation performed by
+//! a compiler. Compilers already work symbolically and already take care to preserve sharing in computations,
+//! addressing both criticisms of SD.
+//! The specification and implementation of AD in a simple, correct-by-construction, and apparently efficient
+//! manner, together with its use from a typed functional language (here via a compiler plugin), make a step toward
+//! the vision of differentiable functional programming for machine learning and other uses, as outlined in Section 1.
+//! Programmers then define their functions just as they are accustomed, differentiating where desired, without the
+//! intrusion of operational notions such as graphs with questionably defined, extralinguistic semantics.
+//! In retrospect, two key principles enable the results in this paper:
+//! 1. Focus on abstract notions (specified denotationally and/or axiomatically) rather than particular representations (here, derivatives as linear maps rather than as matrices). Then transform a correct, naive
+//! representation into subtler, more efficient representations.
+//! 2. Capture the main concepts of interest directly, as first-class values (here, differentiable functions).
+//! The second principle leads us into a quandary, because most programming languages (including Haskell) are
+//! much better suited to expressing regular computable functions than other function-like things, and yet the main
+//! AD concept is exactly a function-like thing (differentiable functions). This imbalance in suitability stems from
+//! built-in language support for functions—such as lambda, application, and variables—and would seem to explain
+//! two common strategies in AD: use of explicit graph representations (complicating use and implementation), and
+//! overloading numeric operators (abandoning the second principle, encouraging forward mode AD, and leading
+//! to incorrect nested differentiation [Siskind and Pearlmutter, 2008]). Fortunately, we can instead extend the
+//! notational convenience of functions to other function-like things by writing in a conventional functional language
+//! and automatically translating to other categories [Elliott, 2017].
+//!
+//!
+//! --- PAGE BREAK ---
+//! 26
+//!
+//! Conal Elliott
+//!
+//! 18
+//!
+//! Acknowledgments
+//!
+//! The investigation of reverse-mode AD and its specialization to scalar-valued functions (as in backpropagation)
+//! were inspired by a conversation with Wang Ruikang.
+//!
+//! A
+//!
+//! Terminal and Initial Objects
+//!
+//! In the biproduct setting of this paper, terminal and initial objects coincide and may be taken to be any singleton
+//! type. We may as well choose the unit type, having exactly one element, representing a canonical zero-dimensional
+//! vector space, and written “()” in Haskell:1718
+//! class Terminal k where it ::
+//! a ‘k ‘ ()
+//! class Initial k
+//! where ti :: Additive a ⇒ () ‘k ‘ a
+//! instance Terminal (→) where it = λ → ()
+//! instance Initial (→)
+//! where ti = λ() → 0
+//! Differentiation is trivial, since it and ti on functions are both linear.
+//!
+//! B
+//!
+//! Abelian Categories
+//!
+//! Another perspective on the operations we’ve considered is that morphisms sharing any particular domain and
+//! codomain (i.e., hom-sets) form an abelian group. The zero for a ‘k ‘ b results from the composition of initial and
+//! terminal morphisms:
+//! instance (Cartesian k , Cocartesian k , Terminal k , InitialCat k ) ⇒ Additive (a ‘k ‘ b) where
+//! 0 = ti ◦ it
+//! f + g = jam ◦ (f × g) ◦ dup -- = jam ◦ (f M g) = (f O g) ◦ dup.
+//! The following identities hold (with “◦” binding more tightly than “+”) [Macedo and Oliveira, 2013, Equations 16
+//! and 17]:
+//! u M v = u ◦ exl + v ◦ exr
+//! u O v = inl ◦ u + inr ◦ v
+//! In particular,
+//! u M 0 = u ◦ exl
+//! 0 M v = v ◦ exr
+//! u O 0 = inl ◦ u
+//! 0 O v = inr ◦ v
+//!
+//! C
+//!
+//! Proofs
+//!
+//! C.1
+//!
+//! Corollary 1.1
+//!
+//! D+ (g ◦ f ) a
+//! = ((g ◦ f ) a, D (g ◦ f ) a)
+//! = (g (f a), D (g ◦ f ) a)
+//! = (g (f a), D g (f a) ◦ D f a)
+//! = let b = f a in (g b, D g b ◦ D f a)
+//! = let {(b, f 0 ) = D+ f a; (c, g 0 ) = D+ g b } in (c, g 0 ◦ f 0 )
+//!
+//! -- definition of D+
+//! -- definition of (◦)
+//! -- Theorem 1
+//! -- refactoring to share f a
+//! -- refactoring to show compositionality
+//!
+//! 17 In a more general categorical setting, terminal and initial objects need not coincide and are defined per category.
+//! 18 As with Cocartesian, in the actual implementation, the Initial definition has no Additive constraint or Initial (→) instance,
+//! and instead has a Initial instance for additive functions.
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! C.2
+//!
+//! Corollary 2.1
+//!
+//! D+ (f × g) (a, b)
+//! = ((f × g) (a, b), D (f × g) (a, b))
+//! = ((f a, g b), D (f × g) (a, b))
+//! = ((f a, g b), D f a × D g b)
+//! = let {(c, f 0 ) = (f a, D f a); (d , g 0 ) = (g b, D g b)} in ((c, d ), f 0 × g 0 )
+//! = let {(c, f 0 ) = D+ f a; (d , g 0 ) = D+ g b } in ((c, d ), f 0 × g 0 )
+//!
+//! C.3
+//!
+//! 27
+//!
+//! -- definition of D+
+//! -- definition of (×)
+//! -- Theorem 2
+//! -- refactoring
+//! -- definition of D+
+//!
+//! Theorem 4
+//!
+//! Recall the definition of cont:
+//! cont :: Category k ⇒ (a ‘k ‘ b) → Cont rk a b
+//! cont f = Cont (◦ f )
+//! To say that cont is a functor (Category homomorphism) is equivalent to the following two equalities:
+//! cont id = id
+//! cont (g ◦ f ) = cont g ◦ cont f
+//! Simplify the first homomorphism equation:
+//! cont id
+//! = Cont (◦ id )
+//! = Cont (λh → h ◦ id )
+//! = Cont (λh → h)
+//! = Cont id
+//!
+//! -- definition of cont
+//! -- definition of right section
+//! -- category law
+//! -- definition of id for functions
+//!
+//! The first homomorphism equation is thus equivalent to id = Cont id , which is in solved form. For the second
+//! homomorphism equation, simplify both sides:
+//! cont g ◦ cont f
+//! = Cont (◦ g) ◦ Cont (◦ f )
+//!
+//! -- definition of cont
+//!
+//! cont (g ◦ f )
+//! = cont (◦ (g ◦ f ))
+//! = cont (λh → h ◦ (g ◦ f ))
+//! = cont (λh → (h ◦ g) ◦ f )
+//! = cont (λh → (◦ f ) ((◦ g) h))
+//! = Cont ((◦ f ) ◦ (◦ g))
+//!
+//! -- definition of cont
+//! -- definition of right section
+//! -- category law
+//! -- definition of right section
+//! -- definition of (◦)
+//!
+//! The simplified requirement:
+//! Cont (◦ g) ◦ Cont (◦ f ) = Cont ((◦ f ) ◦ (◦ g))
+//! Generalize to a stronger condition, replacing (◦ g) and (◦ f ) with g and f (appropriately re-typed):
+//! Cont g ◦ Cont f = Cont (f ◦ g)
+//! This strengthened condition is also in solved form. Notice the reversal of composition (and, more subtly, of id ).
+//! The monoidal functor (i.e., a Monoidal homomorphism) property:
+//! cont (f × g) = cont f × cont g
+//! Simplify both sides:
+//!
+//!
+//! --- PAGE BREAK ---
+//! 28
+//!
+//! Conal Elliott
+//!
+//! cont f × cont g
+//! = Cont (◦ f ) × Cont (◦ g)
+//!
+//! -- definition of cont
+//!
+//! cont (f × g)
+//! = Cont (◦ (f × g))
+//! = Cont (λh → h ◦ (f × g))
+//! = Cont (λh → join (unjoin h) ◦ (f × g))
+//! = Cont (λh → let (ha , hb ) = unjoin h in join (ha , hb ) ◦ (f × g))
+//! = Cont (λh → let ... in (ha O hb ) ◦ (f × g))
+//! = Cont (λh → let ... in (ha ◦ f O hb ◦ g))
+//! = Cont (λh → let ... in ((◦ f ) ha O (◦ g) hb ))
+//! = Cont (λh → let ... in join ((◦ f ) ha , (◦ g) hb ))
+//! = Cont (λh → let ... in join (((◦ f ) × (◦ g)) (ha , hb )))
+//! = Cont (λh → join (((◦ f ) × (◦ g)) (unjoin h)))
+//! = Cont (join ◦ ((◦ f ) × (◦ g)) ◦ unjoin)
+//!
+//! -- definition of cont
+//! -- definition of right section
+//! -- join ◦ unjoin = id
+//! -- refactor
+//! -- definition of join
+//! -- [Gibbons, 2002, Section 1.5.2]
+//! -- definition of right section
+//! -- definition of join
+//! -- definition of (×)
+//! -- eliminate let
+//! -- definition of (◦)
+//!
+//! The crucial trick here was to note that h :: (a × b) ‘k ‘ r can be split into two continuations ha :: a ‘k ‘ r and
+//! hb :: b ‘k ‘ r thanks to join/unjoin isomorphism from Section 4.5. Now, strengthen the massaged specification,
+//! generalizing from (◦ f ) and (◦ g) as usual, resulting in a sufficient condition in solved form:
+//! Cont f × Cont g = Cont (join ◦ (f × g) ◦ unjoin)
+//! Next, derive Cartesian and Cocartesian instances from the specification that cont is a cartesian functor and
+//! a cocartesian functor (i.e., Cartesian and Cocartesian homomorphisms), i.e.,
+//! cont exl = exl
+//! cont exr = exr
+//! cont dup = dup
+//!
+//! cont inl = inl
+//! cont inr = inr
+//! cont jam = jam
+//!
+//! Reversing each of these equations puts them in solved form, so they can be used directly as definitions. While
+//! these definitions are correct, they can be made more efficient. For instance,
+//! cont exl
+//! = Cont (λh → h ◦ exl )
+//! = Cont (λh → h O 0)
+//! = Cont (λh → join (h, 0))
+//! = Cont (λh → join (inl h))
+//! = Cont (join ◦ inl )
+//!
+//! -- definition of cont
+//! -- Appendix B
+//! -- definition of join
+//! -- definition of inl for functions
+//! -- definition of (◦) for functions
+//!
+//! Similarly, cont exr = Cont (join ◦ inr ). For dup :: a ‘k ‘ (a × a), we’ll have h :: (a × a) ; r , so we can split h
+//! with unjoin:
+//! cont dup
+//! = Cont (λh → h ◦ dup)
+//! = Cont (λh → join (unjoin h) ◦ dup)
+//! = Cont (λh → let (ha , hb ) = unjoin h in (ha O hb ) ◦ dup)
+//! = Cont (λh → let (ha , hb ) = unjoin h in ha + hb )
+//! = Cont (λh → let (ha , hb ) = unjoin h in jam (ha , hb ))
+//! = Cont (λh → jam (unjoin h))
+//! = Cont (jam ◦ unjoin)
+//!
+//! -- definition of cont
+//! -- join ◦ unjoin = id
+//! -- refactor; definition of join
+//! -- Appendix B
+//! -- definition of jam for functions
+//! -- eliminate the let
+//! -- definition of (◦) on functions
+//!
+//! For Cocartesian, we reason dually:
+//! cont inl
+//! = Cont (λh → h ◦ inl )
+//! -- definition of inl
+//! = Cont (λh → join (unjoin h) ◦ inl )
+//! -- join ◦ unjoin = id
+//! = Cont (λh → let (ha , hb ) = unjoin h in (ha O hb ) ◦ inl ) -- definition of join
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! = Cont (λh → let (ha , hb ) = unjoin h in ha )
+//! = Cont (λh → exl (unjoin h))
+//! = Cont (exl ◦ unjoin)
+//!
+//! 29
+//!
+//! -- [Gibbons, 2002, Section 1.5.2]
+//! -- definition of exl for functions
+//! -- definition of (◦) for functions
+//!
+//! Similarly, cont inr = Cont (exr ◦ unjoin). Next,
+//! cont jam
+//! = Cont (λh → h ◦ jam)
+//! = Cont (λh → h ◦ (id O id ))
+//! = Cont (λh → h ◦ id O h ◦ id )
+//! = Cont (λh → h O h)
+//! = Cont (λh → join (h, h))
+//! = Cont (join ◦ dup)
+//!
+//! -- definition of cont
+//! -- a law for jam and (O)
+//! -- [Gibbons, 2002, Section 1.5.2]
+//! -- category law
+//! -- definition of join
+//! -- definition of dup on functions
+//!
+//! The final element of our linear vocabulary is scalar multiplication:
+//! cont (scale s)
+//! = Cont (λh → h ◦ scale s)
+//! = Cont (λh → scale s ◦ h)
+//! = Cont (λh → scale s h)
+//! = Cont (scale s)
+//!
+//! -- definition of cont
+//! -- linearity of h
+//! -- definition of scale for functions/maps
+//! -- η-reduction
+//!
+//! These optimized solved forms match the definitions in Figure 7.
+//!
+//! C.4
+//!
+//! Theorem 5
+//!
+//! To derive instances for Dual k , we’ll need some properties.
+//! Lemma 7 The following properties hold:
+//! 1. dot is linear.
+//! 2. dot −1 is linear.
+//! 3. unjoin ◦ dot = dot × dot
+//! 4. dot −1 ◦ join = dot −1 × dot −1
+//! 5. dot u O dot v = dot (u, v )
+//! 6. dot 0 = 0 (zero vector vs zero morphism)
+//! Proof:
+//! 1. Follows from the bilinearity of uncurried dot product:
+//! dot (u + v )
+//! = λw → dot (u + v ) w
+//! = λw → dot u w + dot v w
+//! = dot u + dot v
+//!
+//! -- η-expansion
+//! -- bilinearity of uncurried dot product
+//! -- definition of (+) of functions
+//!
+//! dot (s · u)
+//! = λw → dot (s · u) w
+//! = λw → s · dot u w
+//! = s · dot u
+//!
+//! -- η-expansion
+//! -- bilinearity of uncurried dot product
+//! -- definition of (·) on functions
+//!
+//! 2. Invertible linear functions have linear inverses. In particular,
+//! dot −1 (u + v )
+//! = dot −1 (dot (dot −1 u) + dot (dot −1 v )) -- dot ◦ dot −1 = id
+//!
+//!
+//! --- PAGE BREAK ---
+//! 30
+//!
+//! Conal Elliott
+//!
+//! = dot −1 (dot (dot −1 u + dot −1 v ))
+//! = dot −1 u + dot −1 v
+//!
+//! -- linearity of dot
+//! -- dot −1 ◦ dot = id
+//!
+//! dot −1 (s · u)
+//! = dot −1 (s · dot (dot −1 u))
+//! = dot −1 (dot (s · dot −1 u))
+//! = s · dot −1 u
+//!
+//! -- dot ◦ dot −1 = id
+//! -- linearity of dot
+//! -- dot −1 ◦ dot = id
+//!
+//! 3. Noting that the argument of both sides is a pair,
+//! unjoin ◦ dot
+//! = λ(u, v ) → unjoin (dot (u, v ))
+//! = λ(u, v ) → (dot (u, v ) ◦ inl , dot (u, v ) ◦ inr )
+//! = λ(u, v ) → (λx → dot (u, v ) (inl x ), λy → dot (u, v ) (inr y))
+//! = λ(u, v ) → (λx → dot (u, v ) (x , 0), λy → dot (u, v ) (0, y))
+//! = λ(u, v ) → (λx → dot u x + dot v 0, λy → dot u 0 + dot v y)
+//! = λ(u, v ) → (λx → dot u x , λy → dot v y)
+//! = λ(u, v ) → (dot u, dot v )
+//! = dot × dot
+//!
+//! -- η-expansion
+//! -- definition of unjoin
+//! -- def’n of (◦) for (→)
+//! -- def’n of inl for (()
+//! -- def’n of dot for pairs
+//! -- linearity of dot
+//! -- η-reduction
+//! -- def’n of (×) for (→)
+//!
+//! 4. Follows from inverting each side of part 3.
+//! 5. Noting again that the argument of both sides is a pair,
+//! dot u O dot v
+//! = jam ◦ (dot u × dot v )
+//! = λ(x , y) → jam ((dot u × dot v ) (x , y))
+//! = λ(x , y) → jam (dot u x , dot v y)
+//! = λ(x , y) → dot u x + dot v y
+//! = λ(x , y) → dot (u, v ) (x , y)
+//! = dot (u, v )
+//!
+//! -- definition of (O)
+//! -- definition of (◦) for functions
+//! -- definition of (×) for functions
+//! -- definition of jam for functions
+//! -- definition of dot for pairs
+//! -- η-reduction
+//!
+//! 6. Immediate from linearity and the definition of 0 for functions.
+//! End of proof of Lemma 7.
+//! Recall the definition of asDual from Section 13:
+//! asDual :: (HasDot s a, HasDot s b) ⇒ Cont sk a b → Dual k a b
+//! asDual (Cont f ) = Dual (onDot f )
+//! where
+//! onDot :: (HasDot s a, HasDot s b) ⇒ ((b ( s) → (a ( s)) → (b ( a)
+//! onDot f = dot −1 ◦ f ◦ dot
+//! For the Category instance of Dual k , we’ll need that id = asDual id . Simplifying the RHS,
+//! asDual id
+//! = asDual (Cont id )
+//! = Dual (dot −1 ◦ id ◦ dot)
+//! = Dual (dot −1 ◦ dot)
+//! = Dual id
+//!
+//! -- definition of id for Cont rk (Figure 7)
+//! -- definition of asDual
+//! -- Category law for id /(◦)
+//! -- dot −1 ◦ dot = id
+//!
+//! We also need asDual (g ◦ f ) = asDual g ◦ asDual f , or (without loss of generality)
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 31
+//!
+//! asDual (Cont g ◦ Cont f ) = asDual (Cont g) ◦ asDual (Cont f )
+//! Simplifying both sides,
+//! asDual (Cont g ◦ Cont f )
+//! = asDual (Cont (f ◦ g))
+//! = Dual (dot −1 ◦ f ◦ g ◦ dot)
+//! = Dual (dot −1 ◦ f ◦ dot ◦ dot −1 ◦ g ◦ dot)
+//! = Dual (onDot f ◦ onDot g)
+//!
+//! -- definition of (◦) for Cont rk
+//! -- definition of asDual
+//! -- dot ◦ dot −1 = id
+//! -- definition of onDot
+//!
+//! asDual (Cont g) ◦ asDual (Cont f )
+//! = Dual (onDot g) ◦ asDual (onDot f )
+//!
+//! -- definition of asDual
+//!
+//! As usual, strengthen this equality by replacing onDot g and onDot f by re-typed g and f , and read off a sufficient
+//! definition:
+//! Dual (f ◦ g) = Dual g ◦ asDual f
+//! For Monoidal , the homomorphism condition is asDual (f × g) = asDual f × asDual g. Simplify both sides:
+//! asDual (Cont f ) × asDual (Cont g)
+//! = Dual (onDot f ) × Dual (onDot g)
+//!
+//! -- definition of asDual
+//!
+//! asDual (Cont f × Cont g)
+//! = asDual (Cont (join ◦ (f × g) ◦ unjoin))
+//! = Dual (onDot (join ◦ (f × g) ◦ unjoin))
+//! = Dual (dot −1 ◦ join ◦ (f × g) ◦ unjoin ◦ dot)
+//! = Dual ((dot −1 × dot −1 ) ◦ (f × g) ◦ (dot × dot))
+//! = Dual (dot −1 ◦ f ◦ dot × dot −1 ◦ g ◦ dot −1 )
+//! = Dual (onDot f × onDot g)
+//!
+//! -- definition of (×) on Cont
+//! -- definition of asDual
+//! -- definition of onDot
+//! -- Lemma 7, parts 3 & 4
+//! -- law about (×)/(◦)
+//! -- definition of onDot
+//!
+//! Strengthening from onDot f and onDot g gives a simple sufficient condition:
+//! Dual f × Dual g = Dual (f × g)
+//! For Cartesian,
+//! exl
+//! = asDual exl
+//! = asDual (Cont (join ◦ inl ))
+//! = Dual (onDot (join ◦ inl ))
+//! = Dual (dot −1 ◦ join ◦ inl ◦ dot)
+//! = Dual (λu → dot −1 (join (inl (dot u))))
+//! = Dual (λu → dot −1 (join (dot u, 0)))
+//! = Dual (λu → dot −1 (dot u O 0))
+//! = Dual (λu → dot −1 (dot u O dot 0))
+//! = Dual (λu → dot −1 (dot (u, 0)))
+//! = Dual (λu → (u, 0))
+//! = Dual (λu → inl u)
+//! = Dual inl
+//!
+//! -- specification
+//! -- definition of exl for Cont rk
+//! -- definition of asDual
+//! -- definition of onDot, and associativity of (◦)
+//! -- definition of (◦) for functions
+//! -- definition of inl for functions
+//! -- definition of join
+//! -- Lemma 7, part 6
+//! -- Lemma 7, part 5
+//! -- dot −1 ◦ dot = id
+//! -- definition of inl for functions
+//! -- η-reduction
+//!
+//! exrP
+//! = Dual inr
+//!
+//! -- as with exlP
+//!
+//! dup
+//! = asDual dup
+//! = asDual (Cont (jam ◦ unjoin))
+//!
+//! -- specification
+//! -- definition of dup for Cont rk
+//!
+//!
+//! --- PAGE BREAK ---
+//! 32
+//!
+//! Conal Elliott
+//!
+//! = Dual (onDot (jam ◦ unjoin))
+//! = Dual (dot −1 ◦ jam ◦ unjoin ◦ dot)
+//! = Dual (λ(u, v ) → dot −1 (jam (unjoin (dot (u, v )))))
+//! = Dual (λ(u, v ) → dot −1 (jam (dot u, dot v )))
+//! = Dual (λ(u, v ) → dot −1 (dot u + dot v ))
+//! = Dual (λ(u, v ) → dot −1 (dot u) + dot −1 (dot v ))
+//! = Dual (λ(u, v ) → u + v )
+//! = Dual jam
+//!
+//! -- definition of asDual
+//! -- definition of onDot
+//! -- definition of (◦) for functions
+//! -- Lemma 7, part 3
+//! -- definition of jam for functions
+//! -- Lemma 7, part 2
+//! -- dot −1 ◦ dot = id
+//! -- definition of jam for functions
+//!
+//! The Cocartesian instance comes out similarly:
+//! inl
+//! = asDual inl
+//! = asDual (Cont (exl ◦ unjoin))
+//! = Dual (onDot (exl ◦ unjoin))
+//! = Dual (dot −1 ◦ exl ◦ unjoin ◦ dot)
+//! = Dual (λ(u, v ) → dot −1 (exl (unjoin (dot (u, v )))))
+//! = Dual (λ(u, v ) → dot −1 (exl (dot u, dot v )))
+//! = Dual (λ(u, v ) → dot −1 (dot u))
+//! = Dual (λ(u, v ) → u)
+//! = Dual exl
+//!
+//! -- specification
+//! -- definition of inl for Cont rk
+//! -- definition of asDual
+//! -- definition of onDot
+//! -- definition of (◦) for functions
+//! -- Lemma 7, part 3
+//! -- definition of exl on functions
+//! -- dot −1 ◦ dot = id
+//! -- definition of exl for functions
+//!
+//! inr
+//! = Dual exr
+//!
+//! -- . . . as with inl . . .
+//!
+//! jam
+//! = asDual jam
+//! = asDual (Cont (join ◦ dup))
+//! = Dual (onDot (join ◦ dup))
+//! = Dual (dot −1 ◦ join ◦ dup ◦ dot)
+//! = Dual (λu → dot −1 (join (dup (dot u))))
+//! = Dual (λu → dot −1 (join (dot u, dot u)))
+//! = Dual (λu → dot −1 (dot u O dot u))
+//! = Dual (λu → dot −1 (dot (u, u)))
+//! = Dual (λu → (u, u))
+//! = Dual (λu → dup u)
+//! = Dual dup
+//!
+//! -- specification
+//! -- definition of jam on Cont
+//! -- definition of asDual
+//! -- definition of onDot
+//! -- definition of (◦) on functions
+//! -- definition of dup for functions
+//! -- definition of join
+//! -- Lemma 7, part 5
+//! -- dot −1 ◦ dot = id
+//! -- definition of dup on functions
+//! -- η-reduction
+//!
+//! Finally, scaling:
+//! scale s
+//! = asDual (scale s)
+//! = asDual (Cont (scale s))
+//! = Dual (onDot (scale s))
+//! = Dual (dot −1 ◦ scale s ◦ dot)
+//! = Dual (scale s ◦ dot −1 ◦ dot)
+//! = Dual (scale s)
+//!
+//! C.5
+//!
+//! -- specification
+//! -- definition of scale for Cont rk
+//! -- definition of asDual
+//! -- definition of onDot
+//! -- Lemma 7, part 2
+//! -- dot −1 ◦ dot = id
+//!
+//! Corollary 5.1
+//!
+//! Given the definitions in Figure 10,
+//! Dual f M Dual g
+//! = (Dual f × Dual g) ◦ dup
+//!
+//! -- definition of (M)
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! = Dual (f × g) ◦ dup
+//! = Dual (f × g) ◦ Dual jam
+//! = Dual (jam ◦ (f × g))
+//! = Dual (f O g)
+//!
+//! -- definition of (×) for Dual k
+//! -- definition of dup for Dual k
+//! -- definition of (◦) for Dual k
+//! -- definition of (O)
+//!
+//! Dual f O Dual g
+//! = jam ◦ (Dual f × Dual g)
+//! = jam ◦ Dual (f × g)
+//! = Dual dup ◦ Dual (f × g)
+//! = Dual ((f × g) ◦ dup)
+//! = Dual (f M g)
+//!
+//! -- definition of (O)
+//! -- definition of (×) for Dual k
+//! -- definition of jam for Dual k
+//! -- definition of (◦) for Dual k
+//! -- definition of (M)
+//!
+//! C.6
+//!
+//! 33
+//!
+//! Theorem 6
+//!
+//! We will need an indexed counterpart to Theorem 2, which says
+//! D (f × g) (a, b) = D f a × D g b
+//! Letting cross = uncurry (×), we can rephrase this theorem:
+//! D (f × g)
+//! = λ(a, b) → D f a × D g b
+//! = λ(a, b) → cross (D f a, D g b)
+//! = λ(a, b) → cross ((D f × D g) (a, b))
+//! = cross ◦ (D f × D g)
+//!
+//! -- Theorem 2
+//! -- definition of cross
+//! -- definition of (×) on functions
+//! -- definition of (◦) on functions
+//!
+//! Likewise, extend from binary to n-ary:
+//! Theorem 8 (indexed cross rule)
+//! D (crossI fs) = crossI ◦ crossI (fmap D fs)
+//! If fs :: h (a → b), then both sides of this equation have type h a → (h a ( h b). The proof is similar to Theorem
+//! 2 [Spivak, 1965, variant of Theorem 2-3 (3)].
+//! Theorem 8 gives us what we need to construct D+ (crossI fs) compositionally:
+//! Corollary 8.1 D+ is compositional with respect to crossI . Specifically,
+//! D+ (crossI fs) = second crossI ◦ unzip ◦ crossI (fmap D+ fs)
+//! The proof is analogous to that of Corollary 2.1:
+//! D+ (crossI fs) as
+//! = (crossI fs as, D (crossI fs) as)
+//! = (crossI fs as, crossI (crossI (fmap D fs) as))
+//! = second crossI (crossI fs as, crossI (fmap D fs) as)
+//! = second crossI ((crossI fs M crossI (fmap D fs)) as)
+//! = (second crossI ◦ (crossI fs M crossI (fmap D fs))) as
+//! = (second crossI ◦ unzip ◦ crossI (zipWith (M) fs (fmap D fs))) as
+//! = (second crossI ◦ unzip ◦ crossI (fmap D+ fs)) as
+//!
+//! -- definition of D+
+//! -- Theorem 8
+//! -- definition of second (Figure 13)
+//! -- definition of (M) on functions
+//! -- definition of (◦) on functions
+//! -- Lemma 9 below
+//! -- definition of D+
+//!
+//! For the second-to-last step,
+//! Lemma 9 crossI fs M crossI gs = unzip ◦ crossI (zipWith (M) fs gs).
+//! For now, let’s prove just the binary version of this lemma, namely
+//! (f × f 0 ) M (g × g 0 ) = transpose ◦ ((f M g) × (g 0 M g 0 ))
+//!
+//!
+//! --- PAGE BREAK ---
+//! 34
+//!
+//! Conal Elliott
+//!
+//! where
+//! transpose :: ((a × b) × (c × d )) → ((a × c) × (b × d ))
+//! transpose ((a, b), (c, d )) = ((a, c), (b, d ))
+//! Proof:
+//! (f × f 0 ) M (g × g 0 )
+//! = (inl ◦ f O inr ◦ f 0 ) M (inl ◦ g O inr ◦ g 0 )
+//! = (inl ◦ f M inl ◦ g) O (inr ◦ f 0 M inr ◦ g 0 )
+//! = transpose ◦ inl ◦ (f M g) O transpose ◦ inr ◦ (f 0 M g 0 )
+//! = transpose ◦ (inl ◦ (f M g) O inr ◦ (f 0 M g 0 ))
+//! = transpose ◦ ((f M g) × (f 0 M g 0 ))
+//!
+//! -- [Macedo and Oliveira, 2013, Equation (17)]
+//! -- exchange law [Gibbons, 2002, Section 1.5.4]
+//! -- Lemma 10 below
+//! -- [Gibbons, 2002, Section 1.5.2]
+//! -- [Macedo and Oliveira, 2013, Equation (17)]
+//!
+//! For the third step, we need two more properties.
+//! Lemma 10
+//! inl ◦ f M inl ◦ g = transpose ◦ inl ◦ (f M g)
+//! inr ◦ f M inr ◦ g = transpose ◦ inr ◦ (f M g)
+//! Below is a proof in the (→) category, which suffice for our purpose. (To do: does the property hold for general
+//! biproduct categories?)
+//! inl ◦ f M inl ◦ g
+//! = λa → (inl ◦ f M inl ◦ g) a
+//! = λa → (inl (f a), inl (g a))
+//! = λa → ((f a, 0), (g a, 0))
+//! = λa → transpose ((f a, g a), (0, 0))
+//! = λa → transpose ((f a, g a), 0)
+//! = λa → transpose (inl (f a, g a))
+//! = transpose ◦ inl ◦ (f M g)
+//!
+//! -- η-expand
+//! -- definition of (M) for functions
+//! -- definition of inl for functions
+//! -- definition of transpose
+//! -- definition of 0 for pairs
+//! -- definition of inl for functions
+//! -- definition of (◦) for functions
+//!
+//! Similarly for the second property (with inr ), noting that ((0, f a), (0, g a)) = transpose ((0, 0), (f a, g a)).
+//! The CartesianI and CocartesianI instances follow from linearity (Theorem 3).
+//!
+//! References
+//! Martin Abadi, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, Jeffrey Dean, Matthieu Devin, Sanjay
+//! Ghemawat, Geoffrey Irving, Michael Isard, Manjunath Kudlur, Josh Levenberg, Rajat Monga, Sherry Moore,
+//! Derek G. Murray, Benoit Steiner, Paul Tucker, Vijay Vasudevan, Pete Warden, Martin Wicke, Yuan Yu, and
+//! Xiaoqiang Zheng. TensorFlow: A system for large-scale machine learning. In 12th USENIX Symposium on
+//! Operating Systems Design and Implementation (OSDI 16), pages 265–283, 2016.
+//! Andrew W. Appel. Compiling with Continuations. Cambridge University Press, 2007.
+//! Steve Awodey. Category theory, volume 49 of Oxford Logic Guides. Oxford University Press, 2006.
+//! Richard Bird and Oege de Moor. The Algebra of Programming. Prentice-Hall, 1996.
+//! Max Bolingbroke. Constraint kinds for GHC. Blog post, September 2011. http://blog.omega-prime.co.uk/
+//! 2011/09/10/constraint-kinds-for-ghc/.
+//! François Chollet. Keras resources. GitHub repository, 2016. URL https://github.com/fchollet.
+//! Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. Introduction to Algorithms,
+//! Third Edition. The MIT Press and McGraw-Hill Book Company, 2001.
+//! Olivier Danvy and Lasse R. Nielsen. Defunctionalization at work. In Proceedings of the 3rd ACM SIGPLAN
+//! International Conference on Principles and Practice of Declarative Programming, PPDP ’01, pages 162–174,
+//! 2001.
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 35
+//!
+//! Conal Elliott. Beautiful differentiation. In International Conference on Functional Programming (ICFP), 2009.
+//! Conal Elliott. Compiling to categories. Proceedings of the ACM on Programming Languages, 1(ICFP), September
+//! 2017.
+//! Conal Elliott. The simple essence of automatic differentiation. Proceedings of the ACM on Programming
+//! Languages, 2(ICFP), September 2018.
+//! Brendan Fong, David I. Spivak, and Rémy Tuyéras. Backprop as functor: A compositional perspective on
+//! supervised learning. CoRR, abs/1711.10455, 2017.
+//! Jeremy Gibbons. Calculating functional programs. In Algebraic and Coalgebraic Methods in the Mathematics of
+//! Program Construction, volume 2297 of Lecture Notes in Computer Science. Springer-Verlag, 2002.
+//! Andy Gill. Type-safe observable sharing in Haskell. In Proceedings of the 2nd ACM SIGPLAN Symposium on
+//! Haskell, Haskell ’09, 2009.
+//! Ian Goodfellow, Yoshua Bengio, and Aaron Courville. Deep Learning. MIT Press, 2016.
+//! Andreas Griewank. On automatic differentiation. In In Mathematical Programming: Recent Developments and
+//! Applications, 1989.
+//! Andreas Griewank and Andrea Walther. Evaluating Derivatives. Principles and Techniques of Algorithmic
+//! Differentiation. Society for Industrial and Applied Mathematics, second edition, 2008.
+//! Joe Hermaszewski and Ben Gamari. vector-sized, 2017. URL http://github.com/expipiplus1/vector-sized.
+//! Haskell library.
+//! Ralf Hinze. Memo functions, polytypically! In 2nd Workshop on Generic Programming, pages 17–32, 2000.
+//! T. C. Hu and M. T. Shing. Computation of matrix chain products, part i, part ii. Technical Report STAN-CSTR-81-875, Stanford University, Department of Computer Science, 1981.
+//! Yangqing Jia, Evan Shelhamer, Jeff Donahue, Sergey Karayev, Jonathan Long, Ross B. Girshick, Sergio
+//! Guadarrama, and Trevor Darrell. Caffe: Convolutional architecture for fast feature embedding. CoRR,
+//! abs/1408.5093, 2014.
+//! Jerzy Karczmarczuk. Functional coding of differential forms. In Scottish Workshop on Functional Programming,
+//! 1999.
+//! Jerzy Karczmarczuk. Adjoint codes in functional framework, 2000.
+//! Jerzy Karczmarczuk. Functional differentiation of computer programs. Higher-Order and Symbolic Computation,
+//! 14(1), 2001.
+//! Andrew Kennedy. Compiling with continuations, continued. In ACM SIGPLAN International Conference on
+//! Functional Programming, October 2007.
+//! Oleg Kiselyov and Chung-chieh Shan. Functional pearl: Implicit configurations—or, type classes reflect the
+//! values of types. In Proceedings of the 2004 ACM SIGPLAN Workshop on Haskell, Haskell ’04, 2004.
+//! Edward Kmett. The adjunctions package. https://hackage.haskell.org/package/adjunctions, 2011.
+//! Haskell library.
+//! Edward Kmett, Barak Pearlmutter, and Jeffrey Mark Siskind. The ad package. https://hackage.haskell.
+//! org/package/ad, 2010. Haskell library.
+//! Joachim Lambek. From λ-calculus to cartesian closed categories. In J.P. Seldin and J.R. Hindley, editors, To
+//! H.B. Curry: Essays on Combinatory Logic, Lambda Calculus, and Formalism. Academic Press, 1980.
+//! Joachim Lambek. Cartesian closed categories and typed lambda-calculi. In Thirteenth Spring School of the
+//! LITP on Combinators and Functional Programming Languages, pages 136–175, 1986.
+//!
+//!
+//! --- PAGE BREAK ---
+//! 36
+//!
+//! Conal Elliott
+//!
+//! Serge Lang. Linear Algebra. Springer-Verlag, 3rd edition, 1987.
+//! F. William Lawvere and Stephen H. Schanuel. Conceptual Mathematics: A First Introduction to Categories.
+//! Cambridge University Press, 2nd edition, 2009.
+//! Yann Lecun, Yoshua Bengio, and Geoffrey Hinton. Deep learning. Nature, 521(7553):436–444, 5 2015. ISSN
+//! 0028-0836.
+//! Seppo Linnainmaa. The representation of the cumulative rounding error of an algorithm as a taylor expansion of
+//! the local rounding errors. Master’s thesis, University of Helsinki, 1970.
+//! Saunders Mac Lane. Categories for the Working Mathematician. Graduate Texts in Mathematics. Springer New
+//! York, 1998.
+//! Hugo Daniel Macedo and José Nuno Oliveira. Typing linear algebra: A biproduct-oriented approach. Science of
+//! Computer Programming, 78(11):2160–2191, 2013.
+//! José Pedro Magalhães, Atze Dijkstra, Johan Jeuring, and Andres Löh. A generic deriving mechanism for Haskell.
+//! In Haskell Symposium, pages 37–48, 2010.
+//! José Pedro Magalhães et al. GHC.Generics, 2011. URL https://wiki.haskell.org/GHC.Generics. Haskell
+//! wiki.
+//! Uwe Naumann. Optimal Jacobian accumulation is NP-complete. Mathematical Programming, 112:427–441, 2008.
+//! Chris Olah. Neural networks, types, and functional programming. Blog post, sep 2015. http://colah.github.
+//! io/posts/2015-09-NN-Types-FP/.
+//! José Nuno Oliveira. Program Design by Calculation. Draft of textbook in preparation, 2018.
+//! Barak A. Pearlmutter and Jeffrey Mark Siskind. Lazy multivariate higher-order forward-mode AD. In Proceedings
+//! of the 34th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, POPL
+//! ’07, 2007.
+//! Barak A. Pearlmutter and Jeffrey Mark Siskind. Reverse-mode AD in a functional framework: Lambda the
+//! ultimate backpropagator. ACM TOPLAS, 30(2), March 2008.
+//! Simon L. Peyton Jones, Simon Marlow, and Conal Elliott. Stretching the storage manager: Weak pointers and
+//! stable names in Haskell. In Implementation of Functional Languages, 1999.
+//! Marian Boykan Pour-El and Ian Richards. Differentiability properties of computable functions—A summary.
+//! Acta Cybernetica, 4(1):123–125, 1978.
+//! Marian Boykan Pour-El and Ian Richards. Computability and noncomputability in classical analysis. Transactions
+//! of the American Mathematical Society, 275(2):539–560, 1983.
+//! Louis B. Rall. Automatic Differentiation: Techniques and Applications. Springer-Verlag, 1981.
+//! John C. Reynolds. Definitional interpreters for higher-order programming languages. In Reprinted from the
+//! proceedings of the 25th ACM National Conference, pages 717–740. ACM, 1972.
+//! Emily Riehl. Category Theory in Context. Dover Publications, 2016.
+//! R. Tyrrell Rockafellar. Characterization of the subdifferentials of convex functions. Pacific Journal of Mathematics,
+//! 17(3):497–510, 1966.
+//! David E. Rumelhart, Geoffrey E. Hinton, and Ronald J. Williams. Learning representations by back-propagating
+//! errors. In Neurocomputing: Foundations of Research. MIT Press, 1988.
+//! Jeffrey Mark Siskind and Barak A. Pearlmutter. Nesting forward-mode AD in a functional framework. Higher
+//! Order Symbolic Computation, 21(4):361–376, 2008.
+//!
+//!
+//! --- PAGE BREAK ---
+//! The Simple Essence of Automatic Differentiation
+//!
+//! 37
+//!
+//! Bert Speelpenning. Compiling fast partial derivatives of functions given by algorithms. PhD thesis, University of
+//! Illinois at Urbana-Champaign, 1980.
+//! Michael Spivak. Calculus on Manifolds: A Modern Approach to Classical Theorems of Advanced Calculus.
+//! Addison-Wesley, 1965.
+//! Mitchell Wand. Continuation-based program transformation strategies. Journal of the ACM, 27(1):164–180,
+//! 1980.
+//! R. E. Wengert. A simple automatic derivative evaluation program. Communications of the ACM, 7(8):463–464,
+//! 1964.
+//!
+//!
+//! --- PAGE BREAK ---
+//!
+//! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!

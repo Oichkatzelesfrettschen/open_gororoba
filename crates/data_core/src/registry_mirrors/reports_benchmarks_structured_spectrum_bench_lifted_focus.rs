@@ -1,0 +1,14 @@
+//! # Structured Spectrum Bench
+//!
+//! | family | size | fastest solver | lowest max abs error | deflated zero modes | validated quotient cells | exploratory histogram cells | projected order | centered cross-cell ratio |
+//! | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |
+//! | quantized_obstruction_graph | 16 | histogram_projected_reference | reference_full | 1 | 0 | 11 | 10 | 0.000000 |
+//! | quantized_obstruction_graph | 32 | histogram_projected_reference | histogram_lifted_reference | 1 | 0 | 11 | 10 | 0.000000 |
+//! | quantized_obstruction_graph | 64 | histogram_projected_reference | histogram_lifted_reference | 1 | 0 | 11 | 10 | 0.000000 |
+//! | quantized_shell_permutation | 16 | histogram_projected_reference | reference_full | 1 | 0 | 9 | 8 | 0.039868 |
+//! | quantized_shell_permutation | 32 | histogram_projected_reference | reference_full | 1 | 0 | 9 | 8 | 0.064740 |
+//! | quantized_shell_permutation | 64 | histogram_projected_reference | reference_full | 1 | 0 | 9 | 8 | 0.073197 |
+//! | real_obstruction | 16 | histogram_projected_reference | reference_full | 1 | 0 | 3 | 2 | 0.000000 |
+//! | real_obstruction | 32 | histogram_projected_reference | reference_full | 1 | 0 | 4 | 3 | 0.044362 |
+//! | real_obstruction | 64 | histogram_projected_reference | reference_full | 1 | 0 | 5 | 4 | 0.074788 |
+//!

@@ -552,6 +552,11 @@ name = "kk-mskk2"
 path = "src/bin/kk-mskk2.rs"
 
 [[bin]]
+name = "crystal-config-integral"
+path = "src/bin/crystal-config-integral.rs"
+
+
+[[bin]]
 name = "mass-quartile-fourier"
 path = "src/bin/mass_quartile_fourier.rs"
 
@@ -748,6 +753,7 @@ wide = { workspace = true }
 rusqlite = { workspace = true }
 walkdir = { workspace = true }
 minifb = { workspace = true }
+tensor_core = { version = "0.1.0", path = "../tensor_core" }
 
 [features]
 default = ["gpu"]

@@ -1,0 +1,12 @@
+//! # Jacobi Backend Sweep
+//!
+//! | family | size | default policy | fastest successful backend | lowest max abs error |
+//! | --- | ---: | --- | --- | --- |
+//! | quantized_shell_permutation | 68 | unknown | reference_f64 | reference_f64 |
+//!
+//! ## Rows
+//!
+//! | family | size | backend | status | selected | median ns | max abs error | rms abs error |
+//! | --- | ---: | --- | --- | --- | ---: | ---: | ---: |
+//! | quantized_shell_permutation | 68 | reference_f64 | ok | false | 13433821 | 1.000444e-11 | 1.430133e-12 |
+//!

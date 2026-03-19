@@ -91,7 +91,7 @@ last_verified = "2026-03-12"
 statement = "Falsifiable thesis: a metamaterial whose unit-cell couplings follow the sedenion zero-divisor incidence graph could realize a mode-selective holographic entropy sink; the disconnected 7-clique ZD topology implies local connected absorbers are insufficient without explicit non-local coupling."
 status = "Closed/Negative-Result"
 status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C010_ZDGraphDisconnected.v"
-where_stated = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `crates/algebra_analysis/src/boxkites.rs`, `crates/algebra_analysis/src/reggiani.rs`, `crates/algebra_analysis/src/crystal_bands.rs`, `crates/algebra_analysis/src/homotopy_algebra.rs`, `crates/optics_core/src/absorber_benchmark.rs`, `crates/quantum_core/src/magnonic_crystal.rs`, `crates/quantum_core/src/tight_binding.rs`, `crates/cosmology_core/src/sersic.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`, `papers/MANIFEST.toml`"
+where_stated = "`docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `crates/algebra_analysis/src/boxkites.rs`, `crates/algebra_analysis/src/reggiani.rs`, `crates/algebra_analysis/src/crystal_bands.rs`, `crates/algebra_analysis/src/homotopy_algebra.rs`, `crates/optics_core/src/absorber_benchmark.rs`, `crates/quantum_core/src/magnonic_crystal.rs`, `crates/quantum_core/src/tight_binding.rs`, `crates/cosmology_core/src/sersic.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `crates/gororoba_cli_physics/src/bin/entropy_trap.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `papers/MANIFEST.toml`"
 
 [[claim]]
 formal_proof = "proofs/verified/C011_AssociatorObstruction.v"
@@ -100,7 +100,7 @@ last_verified = "2026-02-10"
 statement = "Falsifiable thesis: in the repo's cosmology-materials synthesis, a gravastar-like anti-diffusion core pressure can be phenomenologically matched to a sedenion non-associative coherence-failure term from a scalar field at D_eff = -1.5; interpreted literally, black-hole candidates become sedenion solitons."
 status = "Closed/Obstructed"
 status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C011_AssociatorObstruction.v"
-where_stated = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv`, `tests/test_c011_gravastar_equivalence_obstruction.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`"
+where_stated = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`"
 
 [[claim]]
 formal_proof = "proofs/verified/C012_NegDimRefuted.v"
@@ -1586,7 +1586,7 @@ id = "C-1177"
 last_verified = "2026-03-10"
 statement = "Bartol Research Institute FTP archive serves Voyager 2 hourly merged data in legacy NSSDC/COHO 16-column RTN format (1977-1997). The BARTOL_V2_LAYOUT in voyager.rs correctly parses this format including 2-digit year correction, 16-column RTN B-field, and F9.5 density fill detection."
 status = "Verified"
-where_stated = "crates/data_core/src/catalogs/voyager.rs (BARTOL_V2_LAYOUT, parse_bartol_v2), bin/fetch_voyager.py (fetch_voyager_bartol)"
+where_stated = "crates/data_core/src/catalogs/voyager.rs (BARTOL_V2_LAYOUT, parse_bartol_v2), crates/data_core/src/catalogs/voyager.rs (fetch_voyager_bartol)"
 
 [[claim]]
 id = "C-1178"
@@ -1594,14 +1594,14 @@ last_verified = ""
 statement = "AMDA HAPI provides Pioneer 10/11 MAG-only hourly data (RTN) without plasma parameters. Coverage: P10 1972-1995 (p10-mag-full), P11 1973-1992 (p11-mag-full). No proton density, speed, or temperature data exists for Pioneer in AMDA."
 status = "Provisional"
 status_note = "Legacy status token: Pending"
-where_stated = "bin/fetch_pioneer.py (fetch_pioneer_amda_mag, AMDA_PIONEER_DATASETS), data/external/SOURCES.toml (SRC-PIONEER10-AMDA-MAG-ONLY, SRC-PIONEER11-AMDA-MAG-ONLY)"
+where_stated = "crates/data_core/src/catalogs/pioneer.rs (fetch_pioneer_amda_mag, AMDA_PIONEER_DATASETS), data/external/SOURCES.toml (SRC-PIONEER10-AMDA-MAG-ONLY, SRC-PIONEER11-AMDA-MAG-ONLY)"
 
 [[claim]]
 id = "C-1179"
 last_verified = "2026-03-10"
 statement = "AMDA HAPI provides PSP SPC moments + MAG 1-min + orbit data, enabling full inner heliosphere (0.05-1.0 AU) merged hourly products without GSFC dependency. The PSP_LAYOUT in psp.rs correctly parses the AMDA-derived 13-column output."
 status = "Verified"
-where_stated = "crates/data_core/src/catalogs/psp.rs (PSP_LAYOUT, parse_psp_merged), bin/fetch_psp.py (fetch_psp_amda)"
+where_stated = "crates/data_core/src/catalogs/psp.rs (PSP_LAYOUT, parse_psp_merged), crates/data_core/src/catalogs/psp.rs (fetch_psp_amda)"
 
 [[claim]]
 id = "C-118"
@@ -1615,14 +1615,14 @@ id = "C-1180"
 last_verified = "2026-03-10"
 statement = "AMDA HAPI provides Helios 1/2 proton corefit + MAG data, enabling inner heliosphere (0.29-0.98 AU) merged hourly products for the historical 1974-1985 period. The HELIOS1_LAYOUT and HELIOS2_LAYOUT in helios.rs correctly parse the AMDA-derived 13-column output."
 status = "Verified"
-where_stated = "crates/data_core/src/catalogs/helios.rs (HELIOS1_LAYOUT, HELIOS2_LAYOUT), bin/fetch_helios.py (fetch_helios_amda)"
+where_stated = "crates/data_core/src/catalogs/helios.rs (HELIOS1_LAYOUT, HELIOS2_LAYOUT), crates/data_core/src/catalogs/helios.rs (fetch_helios_amda)"
 
 [[claim]]
 id = "C-1181"
 last_verified = "2026-03-10"
 statement = "Multi-provider fallback chain for Voyager 2 (SPDF -> Bartol -> AMDA) provides data continuity when the primary GSFC source is unreachable. The Python fetcher auto mode attempts SPDF first, falls back to Bartol for V2 1977-1997 years, then AMDA if both fail."
 status = "Verified"
-where_stated = "bin/fetch_voyager.py (fetch_voyager, auto fallback chain), crates/data_core/src/catalogs/voyager.rs (VoyagerProvider::fetch Bartol fallback)"
+where_stated = "crates/data_core/src/catalogs/voyager.rs (fetch_voyager, auto fallback chain), crates/data_core/src/catalogs/voyager.rs (VoyagerProvider::fetch Bartol fallback)"
 
 [[claim]]
 id = "C-1182"
@@ -1630,7 +1630,7 @@ last_verified = ""
 statement = "Solar Orbiter AMDA lane provides MAG + RPW electron density only (PARTIAL). SWA proton plasma moments (speed, temperature, proton density) are NOT available in AMDA as of 2026-03. RPW electron density used as quasi-neutrality proxy for proton density."
 status = "Provisional"
 status_note = "Legacy status token: Pending"
-where_stated = "bin/fetch_solo.py (BLOCKER_NOTE, fetch_solo_amda), data/external/SOURCES.toml (SRC-SOLO-AMDA-MAG, SRC-SOLO-AMDA-RPW-DENSITY)"
+where_stated = "crates/data_core/src/catalogs/solo.rs (BLOCKER_NOTE, fetch_solo_amda), data/external/SOURCES.toml (SRC-SOLO-AMDA-MAG, SRC-SOLO-AMDA-RPW-DENSITY)"
 
 [[claim]]
 id = "C-1183"
@@ -1645,21 +1645,21 @@ id = "C-1184"
 last_verified = "2026-03-10"
 statement = "AMDA HAPI provides Ulysses full plasma+MAG data via ulys-bai-mom (SWOOPS proton moments) + ulys-fgm-rtn (VHM/FGM RTN) + ulys-orb-all (orbit). Coverage 1990-2009. Output matches ULYSSES_LAYOUT 13-column RTN format."
 status = "Verified"
-where_stated = "bin/fetch_ulysses.py (fetch_ulysses_amda), data/external/SOURCES.toml (SRC-ULYSSES-AMDA-DERIVED)"
+where_stated = "crates/data_core/src/catalogs/ulysses.rs (fetch_ulysses_amda), data/external/SOURCES.toml (SRC-ULYSSES-AMDA-DERIVED)"
 
 [[claim]]
 id = "C-1185"
 last_verified = "2026-03-10"
 statement = "AMDA HAPI provides Juno cruise phase plasma+MAG via juno-jadel5-protmom (JADE-L5 proton moments) + juno-fgm-cruise60 (FGM 1-min MAG) + juno-cruise-all (ephemeris). Coverage 2011-2016 cruise only. SE coordinate system for B-field."
 status = "Verified"
-where_stated = "bin/fetch_juno.py (fetch_juno_amda), data/external/SOURCES.toml (SRC-JUNO-AMDA-CRUISE-DERIVED)"
+where_stated = "crates/data_core/src/catalogs/juno.rs (fetch_juno_amda), data/external/SOURCES.toml (SRC-JUNO-AMDA-CRUISE-DERIVED)"
 
 [[claim]]
 id = "C-1186"
 last_verified = "2026-03-10"
 statement = "AMDA HAPI provides Wind SWE+MFI merged data via wnd-swe-kp (plasma) + wnd-mfi-kp (MAG GSE). Wind at L1 with position hardcoded at r=1.0 AU, lat=0.0 deg. AMDA output is 13-col merged format in data/external/wind/ separate from SPDF split lanes."
 status = "Verified"
-where_stated = "bin/fetch_wind.py (fetch_wind_amda), data/external/SOURCES.toml (SRC-WIND-AMDA-DERIVED)"
+where_stated = "crates/data_core/src/catalogs/wind.rs (fetch_wind_amda), data/external/SOURCES.toml (SRC-WIND-AMDA-DERIVED)"
 
 [[claim]]
 id = "C-1187"
@@ -2959,14 +2959,14 @@ last_verified = ""
 statement = "MaNGA pseudo-slit rotation curve extraction: 2D H-alpha EMLINE_GVEL maps from MAPS files are sliced along the kinematic PA with 2-spaxel slit width, deprojected by sin(i), and binned radially to produce SPARC-compatible V(r) profiles. DAPall scalars (sigma_star, integrated EW) are insufficient for harmonic Fourier analysis requiring spatially resolved k_n modes."
 status = "Provisional"
 status_note = "Legacy status token: Active"
-where_stated = "bin/manga_maps_to_rotcurves.py, crates/data_core/src/catalogs/manga.rs"
+where_stated = "crates/data_core/src/catalogs, crates/data_core/src/catalogs/manga.rs"
 
 [[claim]]
 id = "C-1347"
 last_verified = ""
 statement = "MaNGA DAPall Guillotine selection cuts (Sersic n < 2.5, 30 < i < 70 deg, H-alpha EW > 2 A, log M* > 8.5) reduce 10262 DR17 galaxies to 3222 disk-dominated targets (31.4%), dominated by Sersic cut (5580 rejected). Stage 1 measured: 10,157/10,262 have DRPall stellar masses (99% cross-match), median log M* = 10.11. With N=3222 and sqrt(N)=56.8, noise floor reaches alpha_zd >= 0.003 (7x improvement over SPARC N=93)."
 status = "Verified"
-where_stated = "bin/manga_dapall_to_csv.py + bin/manga_maps_to_rotcurves.py::apply_selection_cuts(), data/external/manga/dapall_selection.csv"
+where_stated = "crates/data_core/src/catalogs::apply_selection_cuts(), data/external/manga/dapall_selection.csv"
 
 [[claim]]
 id = "C-1348"

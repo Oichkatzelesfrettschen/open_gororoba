@@ -565,12 +565,12 @@ Workarounds (prefer reproducible venv-based ones):
   This applies the small `pkgutil.extend_path(...)` replacement in venv site-packages.
 
 Important:
-- This repo's `make` targets create an isolated venv via `python3 -m venv venv` which does NOT
+- This repo's `make` targets create an isolated venv via `cargo run --release --bin -m venv venv` which does NOT
   see system site-packages by default.
 - To use these from the venv, either:
   - install the pip equivalents into `venv` (preferred for reproducibility), or
   - create the venv with system packages enabled (less reproducible):
-    `python3 -m venv --system-site-packages venv`
+    `cargo run --release --bin -m venv --system-site-packages venv`
 
 Suggested venv install (edit as needed for your environment):
 ```bash
@@ -578,9 +578,9 @@ venv/bin/pip install euclid3 numpy-quaternion pyquaternion quaternionic findiff 
 venv/bin/pip install typedunits pymultinest
 ```
 
-Sanity-check note (this machine, system `python3` = 3.14.2, verified 2026-01-28):
-- Venv (`venv/bin/python3`): none of these are installed by default.
-- System `python3` import matrix with `PYTHONWARNINGS=error`:
+Sanity-check note (this machine, system `cargo run --release --bin` = 3.14.2, verified 2026-01-28):
+- Venv (`venv/bin/cargo run --release --bin`): none of these are installed by default.
+- System `cargo run --release --bin` import matrix with `PYTHONWARNINGS=error`:
   - OK: `euclid3`, `quaternion` (numpy-quaternion), `pyquaternion`, `mutatorMath`, `ipfn`, `unicodedata2`, `fontMath`
   - Missing: `quaternionic`, `typedunits`, `findiff`
   - NOT warnings-as-errors safe: `defcon` (raises a `pkg_resources` deprecation warning at import time)
