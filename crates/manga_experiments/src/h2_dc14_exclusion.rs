@@ -204,6 +204,25 @@ pub fn run_h2(config: &H2Config) -> H2Result {
     };
 
     // Build exclusion surface.
+    // If there are no residuals (e.g., config.n_galaxies == 0), avoid computing
+    // means over an empty set, which would cause division-by-zero (NaN/inf).
+    if residuals.is_empty() {
+        let summary = format!(
+            "H2 DC14 Phase-Shift Exclusion: profile={:?}, phase_scan={}, {} galaxies, \
+             empty residual set; returning empty exclusion surface",
+            config.profile,
+            config.phase_scan,
+            config.n_galaxies,
+        );
+
+        return H2Result {
+            exclusion_surface: Vec::new(),
+            profile: config.profile,
+            phase_scan: config.phase_scan,
+            summary,
+        };
+    }
+
     let tasks: Vec<(f64, f64)> = delta_x_values
         .iter()
         .flat_map(|&dx| config.alpha_values.iter().map(move |&a| (dx, a)))
