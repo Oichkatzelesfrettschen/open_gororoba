@@ -5,62 +5,82 @@
 updated = "deterministic"
 authoritative = true
 representation = "structured_toml_units"
-document_count = 15
+document_count = 16
 tracked_count = 0
 untracked_count = 0
-ignored_count = 15
+ignored_count = 16
 filesystem_only_count = 0
-project_manual_count = 2
+project_manual_count = 3
 project_generated_count = 0
 third_party_cache_count = 13
-heading_count = 36
-paragraph_count = 121
-list_item_count = 52
+heading_count = 55
+paragraph_count = 126
+list_item_count = 97
 table_row_count = 0
 code_block_count = 0
 
 [[document]]
 id = "MPY-00001"
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
 git_status = "ignored"
 origin_class = "project_manual"
 generated = false
 third_party = false
-canonical_toml_owner = "registry/reports_narratives.toml"
-size_bytes = 3869
-line_count = 49
-content_sha256 = "5f974d886ed074359c045d6bbc5b627d2b81237e9a8b608a822607b4420cc295"
+canonical_toml_owner = "registry/docs_root_narratives.toml"
+size_bytes = 4041
+line_count = 48
+content_sha256 = "7be417e8696b5c8ddb945e098f6637b110bd849a844c6ac9855b9d15abe4ab62"
 content_encoding = "structured_toml_units"
 chunk_count = 37
-heading_count = 13
-paragraph_count = 7
-list_item_count = 17
+heading_count = 14
+paragraph_count = 3
+list_item_count = 20
 table_row_count = 0
 code_block_count = 0
 chunk_ids = ["MPY-00001-C0001", "MPY-00001-C0002", "MPY-00001-C0003", "MPY-00001-C0004", "MPY-00001-C0005", "MPY-00001-C0006", "MPY-00001-C0007", "MPY-00001-C0008", "MPY-00001-C0009", "MPY-00001-C0010", "MPY-00001-C0011", "MPY-00001-C0012", "MPY-00001-C0013", "MPY-00001-C0014", "MPY-00001-C0015", "MPY-00001-C0016", "MPY-00001-C0017", "MPY-00001-C0018", "MPY-00001-C0019", "MPY-00001-C0020", "MPY-00001-C0021", "MPY-00001-C0022", "MPY-00001-C0023", "MPY-00001-C0024", "MPY-00001-C0025", "MPY-00001-C0026", "MPY-00001-C0027", "MPY-00001-C0028", "MPY-00001-C0029", "MPY-00001-C0030", "MPY-00001-C0031", "MPY-00001-C0032", "MPY-00001-C0033", "MPY-00001-C0034", "MPY-00001-C0035", "MPY-00001-C0036", "MPY-00001-C0037"]
 
 [[document]]
 id = "MPY-00002"
-path = "reports/COUPLER_MANIFOLD_RESIDUAL_FALSIFICATION.md"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
 git_status = "ignored"
 origin_class = "project_manual"
 generated = false
 third_party = false
-canonical_toml_owner = "registry/reports_narratives.toml"
-size_bytes = 2328
-line_count = 27
-content_sha256 = "240df1de2454390de2e097dc4f3bbd1cd4e3a31e4b69daa99187a62dcdd3aa29"
+canonical_toml_owner = "registry/docs_root_narratives.toml"
+size_bytes = 4920
+line_count = 56
+content_sha256 = "62d8c2be2cd49f22ba9e915cae9011f12027f34b4bd6d3b0fd56d0bae883e1de"
 content_encoding = "structured_toml_units"
-chunk_count = 19
-heading_count = 8
-paragraph_count = 6
-list_item_count = 5
+chunk_count = 45
+heading_count = 14
+paragraph_count = 1
+list_item_count = 30
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00002-C0001", "MPY-00002-C0002", "MPY-00002-C0003", "MPY-00002-C0004", "MPY-00002-C0005", "MPY-00002-C0006", "MPY-00002-C0007", "MPY-00002-C0008", "MPY-00002-C0009", "MPY-00002-C0010", "MPY-00002-C0011", "MPY-00002-C0012", "MPY-00002-C0013", "MPY-00002-C0014", "MPY-00002-C0015", "MPY-00002-C0016", "MPY-00002-C0017", "MPY-00002-C0018", "MPY-00002-C0019"]
+chunk_ids = ["MPY-00002-C0001", "MPY-00002-C0002", "MPY-00002-C0003", "MPY-00002-C0004", "MPY-00002-C0005", "MPY-00002-C0006", "MPY-00002-C0007", "MPY-00002-C0008", "MPY-00002-C0009", "MPY-00002-C0010", "MPY-00002-C0011", "MPY-00002-C0012", "MPY-00002-C0013", "MPY-00002-C0014", "MPY-00002-C0015", "MPY-00002-C0016", "MPY-00002-C0017", "MPY-00002-C0018", "MPY-00002-C0019", "MPY-00002-C0020", "MPY-00002-C0021", "MPY-00002-C0022", "MPY-00002-C0023", "MPY-00002-C0024", "MPY-00002-C0025", "MPY-00002-C0026", "MPY-00002-C0027", "MPY-00002-C0028", "MPY-00002-C0029", "MPY-00002-C0030", "MPY-00002-C0031", "MPY-00002-C0032", "MPY-00002-C0033", "MPY-00002-C0034", "MPY-00002-C0035", "MPY-00002-C0036", "MPY-00002-C0037", "MPY-00002-C0038", "MPY-00002-C0039", "MPY-00002-C0040", "MPY-00002-C0041", "MPY-00002-C0042", "MPY-00002-C0043", "MPY-00002-C0044", "MPY-00002-C0045"]
 
 [[document]]
 id = "MPY-00003"
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
+git_status = "ignored"
+origin_class = "project_manual"
+generated = false
+third_party = false
+canonical_toml_owner = ""
+size_bytes = 5909
+line_count = 78
+content_sha256 = "93990ffe6f7e20874d01330da5e0809b5ecb0b58eb4ec73677bf4ac5f2596fc4"
+content_encoding = "structured_toml_units"
+chunk_count = 43
+heading_count = 12
+paragraph_count = 14
+list_item_count = 17
+table_row_count = 0
+code_block_count = 0
+chunk_ids = ["MPY-00003-C0001", "MPY-00003-C0002", "MPY-00003-C0003", "MPY-00003-C0004", "MPY-00003-C0005", "MPY-00003-C0006", "MPY-00003-C0007", "MPY-00003-C0008", "MPY-00003-C0009", "MPY-00003-C0010", "MPY-00003-C0011", "MPY-00003-C0012", "MPY-00003-C0013", "MPY-00003-C0014", "MPY-00003-C0015", "MPY-00003-C0016", "MPY-00003-C0017", "MPY-00003-C0018", "MPY-00003-C0019", "MPY-00003-C0020", "MPY-00003-C0021", "MPY-00003-C0022", "MPY-00003-C0023", "MPY-00003-C0024", "MPY-00003-C0025", "MPY-00003-C0026", "MPY-00003-C0027", "MPY-00003-C0028", "MPY-00003-C0029", "MPY-00003-C0030", "MPY-00003-C0031", "MPY-00003-C0032", "MPY-00003-C0033", "MPY-00003-C0034", "MPY-00003-C0035", "MPY-00003-C0036", "MPY-00003-C0037", "MPY-00003-C0038", "MPY-00003-C0039", "MPY-00003-C0040", "MPY-00003-C0041", "MPY-00003-C0042", "MPY-00003-C0043"]
+
+[[document]]
+id = "MPY-00004"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -77,10 +97,10 @@ paragraph_count = 7
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00003-C0001", "MPY-00003-C0002", "MPY-00003-C0003", "MPY-00003-C0004", "MPY-00003-C0005", "MPY-00003-C0006", "MPY-00003-C0007", "MPY-00003-C0008", "MPY-00003-C0009", "MPY-00003-C0010"]
+chunk_ids = ["MPY-00004-C0001", "MPY-00004-C0002", "MPY-00004-C0003", "MPY-00004-C0004", "MPY-00004-C0005", "MPY-00004-C0006", "MPY-00004-C0007", "MPY-00004-C0008", "MPY-00004-C0009", "MPY-00004-C0010"]
 
 [[document]]
-id = "MPY-00004"
+id = "MPY-00005"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -97,10 +117,10 @@ paragraph_count = 6
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00004-C0001", "MPY-00004-C0002", "MPY-00004-C0003", "MPY-00004-C0004", "MPY-00004-C0005", "MPY-00004-C0006", "MPY-00004-C0007", "MPY-00004-C0008", "MPY-00004-C0009"]
+chunk_ids = ["MPY-00005-C0001", "MPY-00005-C0002", "MPY-00005-C0003", "MPY-00005-C0004", "MPY-00005-C0005", "MPY-00005-C0006", "MPY-00005-C0007", "MPY-00005-C0008", "MPY-00005-C0009"]
 
 [[document]]
-id = "MPY-00005"
+id = "MPY-00006"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -117,10 +137,10 @@ paragraph_count = 15
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00005-C0001", "MPY-00005-C0002", "MPY-00005-C0003", "MPY-00005-C0004", "MPY-00005-C0005", "MPY-00005-C0006", "MPY-00005-C0007", "MPY-00005-C0008", "MPY-00005-C0009", "MPY-00005-C0010", "MPY-00005-C0011", "MPY-00005-C0012", "MPY-00005-C0013", "MPY-00005-C0014", "MPY-00005-C0015", "MPY-00005-C0016", "MPY-00005-C0017", "MPY-00005-C0018", "MPY-00005-C0019", "MPY-00005-C0020", "MPY-00005-C0021"]
+chunk_ids = ["MPY-00006-C0001", "MPY-00006-C0002", "MPY-00006-C0003", "MPY-00006-C0004", "MPY-00006-C0005", "MPY-00006-C0006", "MPY-00006-C0007", "MPY-00006-C0008", "MPY-00006-C0009", "MPY-00006-C0010", "MPY-00006-C0011", "MPY-00006-C0012", "MPY-00006-C0013", "MPY-00006-C0014", "MPY-00006-C0015", "MPY-00006-C0016", "MPY-00006-C0017", "MPY-00006-C0018", "MPY-00006-C0019", "MPY-00006-C0020", "MPY-00006-C0021"]
 
 [[document]]
-id = "MPY-00006"
+id = "MPY-00007"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/distributions/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -137,10 +157,10 @@ paragraph_count = 12
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00006-C0001", "MPY-00006-C0002", "MPY-00006-C0003", "MPY-00006-C0004", "MPY-00006-C0005", "MPY-00006-C0006", "MPY-00006-C0007", "MPY-00006-C0008", "MPY-00006-C0009", "MPY-00006-C0010", "MPY-00006-C0011", "MPY-00006-C0012", "MPY-00006-C0013", "MPY-00006-C0014", "MPY-00006-C0015", "MPY-00006-C0016", "MPY-00006-C0017"]
+chunk_ids = ["MPY-00007-C0001", "MPY-00007-C0002", "MPY-00007-C0003", "MPY-00007-C0004", "MPY-00007-C0005", "MPY-00007-C0006", "MPY-00007-C0007", "MPY-00007-C0008", "MPY-00007-C0009", "MPY-00007-C0010", "MPY-00007-C0011", "MPY-00007-C0012", "MPY-00007-C0013", "MPY-00007-C0014", "MPY-00007-C0015", "MPY-00007-C0016", "MPY-00007-C0017"]
 
 [[document]]
-id = "MPY-00007"
+id = "MPY-00008"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -157,10 +177,10 @@ paragraph_count = 13
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00007-C0001", "MPY-00007-C0002", "MPY-00007-C0003", "MPY-00007-C0004", "MPY-00007-C0005", "MPY-00007-C0006", "MPY-00007-C0007", "MPY-00007-C0008", "MPY-00007-C0009", "MPY-00007-C0010", "MPY-00007-C0011", "MPY-00007-C0012", "MPY-00007-C0013", "MPY-00007-C0014", "MPY-00007-C0015", "MPY-00007-C0016", "MPY-00007-C0017"]
+chunk_ids = ["MPY-00008-C0001", "MPY-00008-C0002", "MPY-00008-C0003", "MPY-00008-C0004", "MPY-00008-C0005", "MPY-00008-C0006", "MPY-00008-C0007", "MPY-00008-C0008", "MPY-00008-C0009", "MPY-00008-C0010", "MPY-00008-C0011", "MPY-00008-C0012", "MPY-00008-C0013", "MPY-00008-C0014", "MPY-00008-C0015", "MPY-00008-C0016", "MPY-00008-C0017"]
 
 [[document]]
-id = "MPY-00008"
+id = "MPY-00009"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -177,10 +197,10 @@ paragraph_count = 5
 list_item_count = 0
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00008-C0001", "MPY-00008-C0002", "MPY-00008-C0003", "MPY-00008-C0004", "MPY-00008-C0005", "MPY-00008-C0006", "MPY-00008-C0007"]
+chunk_ids = ["MPY-00009-C0001", "MPY-00009-C0002", "MPY-00009-C0003", "MPY-00009-C0004", "MPY-00009-C0005", "MPY-00009-C0006", "MPY-00009-C0007"]
 
 [[document]]
-id = "MPY-00009"
+id = "MPY-00010"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/philox/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -197,10 +217,10 @@ paragraph_count = 6
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00009-C0001", "MPY-00009-C0002", "MPY-00009-C0003", "MPY-00009-C0004", "MPY-00009-C0005", "MPY-00009-C0006", "MPY-00009-C0007", "MPY-00009-C0008", "MPY-00009-C0009", "MPY-00009-C0010"]
+chunk_ids = ["MPY-00010-C0001", "MPY-00010-C0002", "MPY-00010-C0003", "MPY-00010-C0004", "MPY-00010-C0005", "MPY-00010-C0006", "MPY-00010-C0007", "MPY-00010-C0008", "MPY-00010-C0009", "MPY-00010-C0010"]
 
 [[document]]
-id = "MPY-00010"
+id = "MPY-00011"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -217,10 +237,10 @@ paragraph_count = 6
 list_item_count = 0
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00010-C0001", "MPY-00010-C0002", "MPY-00010-C0003", "MPY-00010-C0004", "MPY-00010-C0005", "MPY-00010-C0006", "MPY-00010-C0007", "MPY-00010-C0008"]
+chunk_ids = ["MPY-00011-C0001", "MPY-00011-C0002", "MPY-00011-C0003", "MPY-00011-C0004", "MPY-00011-C0005", "MPY-00011-C0006", "MPY-00011-C0007", "MPY-00011-C0008"]
 
 [[document]]
-id = "MPY-00011"
+id = "MPY-00012"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -237,10 +257,10 @@ paragraph_count = 3
 list_item_count = 0
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00011-C0001", "MPY-00011-C0002", "MPY-00011-C0003", "MPY-00011-C0004"]
+chunk_ids = ["MPY-00012-C0001", "MPY-00012-C0002", "MPY-00012-C0003", "MPY-00012-C0004"]
 
 [[document]]
-id = "MPY-00012"
+id = "MPY-00013"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -257,31 +277,11 @@ paragraph_count = 15
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00012-C0001", "MPY-00012-C0002", "MPY-00012-C0003", "MPY-00012-C0004", "MPY-00012-C0005", "MPY-00012-C0006", "MPY-00012-C0007", "MPY-00012-C0008", "MPY-00012-C0009", "MPY-00012-C0010", "MPY-00012-C0011", "MPY-00012-C0012", "MPY-00012-C0013", "MPY-00012-C0014", "MPY-00012-C0015", "MPY-00012-C0016", "MPY-00012-C0017", "MPY-00012-C0018", "MPY-00012-C0019", "MPY-00012-C0020", "MPY-00012-C0021"]
-
-[[document]]
-id = "MPY-00013"
-path = "wow_analysis_venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
-git_status = "ignored"
-origin_class = "third_party_cache"
-generated = false
-third_party = true
-canonical_toml_owner = ""
-size_bytes = 1541
-line_count = 31
-content_sha256 = "a59f0b0ef3635874109a4461ca44ff7a70d50696e814767bfaf721d4c9b0db0f"
-content_encoding = "structured_toml_units"
-chunk_count = 10
-heading_count = 0
-paragraph_count = 7
-list_item_count = 3
-table_row_count = 0
-code_block_count = 0
-chunk_ids = ["MPY-00013-C0001", "MPY-00013-C0002", "MPY-00013-C0003", "MPY-00013-C0004", "MPY-00013-C0005", "MPY-00013-C0006", "MPY-00013-C0007", "MPY-00013-C0008", "MPY-00013-C0009", "MPY-00013-C0010"]
+chunk_ids = ["MPY-00013-C0001", "MPY-00013-C0002", "MPY-00013-C0003", "MPY-00013-C0004", "MPY-00013-C0005", "MPY-00013-C0006", "MPY-00013-C0007", "MPY-00013-C0008", "MPY-00013-C0009", "MPY-00013-C0010", "MPY-00013-C0011", "MPY-00013-C0012", "MPY-00013-C0013", "MPY-00013-C0014", "MPY-00013-C0015", "MPY-00013-C0016", "MPY-00013-C0017", "MPY-00013-C0018", "MPY-00013-C0019", "MPY-00013-C0020", "MPY-00013-C0021"]
 
 [[document]]
 id = "MPY-00014"
-path = "wow_analysis_venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
+path = "wow_analysis_venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
 generated = false
@@ -301,6 +301,26 @@ chunk_ids = ["MPY-00014-C0001", "MPY-00014-C0002", "MPY-00014-C0003", "MPY-00014
 
 [[document]]
 id = "MPY-00015"
+path = "wow_analysis_venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
+git_status = "ignored"
+origin_class = "third_party_cache"
+generated = false
+third_party = true
+canonical_toml_owner = ""
+size_bytes = 1541
+line_count = 31
+content_sha256 = "a59f0b0ef3635874109a4461ca44ff7a70d50696e814767bfaf721d4c9b0db0f"
+content_encoding = "structured_toml_units"
+chunk_count = 10
+heading_count = 0
+paragraph_count = 7
+list_item_count = 3
+table_row_count = 0
+code_block_count = 0
+chunk_ids = ["MPY-00015-C0001", "MPY-00015-C0002", "MPY-00015-C0003", "MPY-00015-C0004", "MPY-00015-C0005", "MPY-00015-C0006", "MPY-00015-C0007", "MPY-00015-C0008", "MPY-00015-C0009", "MPY-00015-C0010"]
+
+[[document]]
+id = "MPY-00016"
 path = "wow_analysis_venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
 git_status = "ignored"
 origin_class = "third_party_cache"
@@ -317,4 +337,4 @@ paragraph_count = 6
 list_item_count = 3
 table_row_count = 0
 code_block_count = 0
-chunk_ids = ["MPY-00015-C0001", "MPY-00015-C0002", "MPY-00015-C0003", "MPY-00015-C0004", "MPY-00015-C0005", "MPY-00015-C0006", "MPY-00015-C0007", "MPY-00015-C0008", "MPY-00015-C0009"]
+chunk_ids = ["MPY-00016-C0001", "MPY-00016-C0002", "MPY-00016-C0003", "MPY-00016-C0004", "MPY-00016-C0005", "MPY-00016-C0006", "MPY-00016-C0007", "MPY-00016-C0008", "MPY-00016-C0009"]

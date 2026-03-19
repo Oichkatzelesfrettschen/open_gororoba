@@ -61,11 +61,11 @@
 //!   - Hypothesis narrative: `true`
 //!   - Notes: Boundary-condition optimization artifact for materials workflow.
 //!
-//! ## NAV-004: Trajectory: Simulation Run
+//! ## NAV-004: Trajectory: Genesis Run
 //!
 //! Unified simulation trajectory connecting vacuum and matter generation narratives.
 //!
-//! - `Algebraic Simulation Command` -> `src/genesis_simulation.py`
+//! - `Genesis Simulation Command` -> `src/genesis_simulation.py`
 //!   - Hypothesis narrative: `true`
 //!   - Notes: Run with PYTHONWARNINGS=error venv/crates/data_core/src/catalogs.
 //! - `Genesis Output Artifact` -> `data/artifacts/images/genesis_simulation_grand.png`

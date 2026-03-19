@@ -5,11 +5,11 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 15
+document_count = 16
 tracked_violation_count = 0
-classification_violation_count = 0
+classification_violation_count = 1
 destination_missing_count = 0
-risk_item_count = 2
+risk_item_count = 3
 
 [policy]
 toml_first_required = true
@@ -17,86 +17,106 @@ allow_tracked_markdown_entrypoints_only = true
 safe_classifications = ["generated_artifact", "third_party_markdown", "toml_destination_exists_manual_markdown", "toml_published_markdown"]
 
 allowed_tracked_markdown = [
-  "data/csv/README.md",
-  "docs/engineering/GPU_MODULARIZATION_TASKLIST_2026_03_17.md",
-  "docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md",
-  "docs/engineering/GPU_STACK_MODULARIZATION_PLAN_2026_03_17.md",
-  "docs/engineering/LBM_SHARED_SUBSTRATE_AUDIT_2026_03_17.md",
-  "docs/engineering/OPTIX_ACCELERATION_BOUNDARY_2026_03_17.md",
-  "docs/engineering/PHYSICS_FIRST_FALSIFICATION_SOURCES_2026_03_18.md",
-  "docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md",
-  "docs/engineering/VIEWER_ADAPTER_CAPABILITY_MATRIX_2026_03_17.md",
-  "docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md",
+  "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md",
+  "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md",
   "docs/research/high_dimensional_algebra_unification_2026.md",
   "proofs/EPISTEMIC_BOUNDARIES.md",
-  "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md",
-  "reports/heliosphere_sparse_policy_mainline_2026-03-18.md",
 ]
 
 [git_status_counts]
-ignored = 15
+ignored = 16
 
 [classification_counts]
 third_party_markdown = 13
 toml_destination_exists_manual_markdown = 2
+unbacked_manual_markdown = 1
 
 [lifecycle_counts]
-generated_report_output = 2
+generated_docs_tree = 3
 third_party_cache = 13
+
+[[policy_violation]]
+kind = "classification_outside_safe_set"
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
 
 [[risk_queue]]
 rank = 1
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
-risk_score = 130
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "high"
-lifecycle = "generated_report_output"
-destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
-line_count = 49
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
+risk_score = 230
+classification = "unbacked_manual_markdown"
+migration_action = "migrate_to_new_registry"
+migration_priority = "critical"
+lifecycle = "generated_docs_tree"
+destination_exists = false
+line_count = 78
+rationale = "Manual markdown without TOML destination; migrate aggressively."
 
 [[risk_queue]]
 rank = 2
-path = "reports/COUPLER_MANIFOLD_RESIDUAL_FALSIFICATION.md"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
 risk_score = 130
 classification = "toml_destination_exists_manual_markdown"
 migration_action = "port_body_to_toml_and_lock_mirror"
 migration_priority = "high"
-lifecycle = "generated_report_output"
+lifecycle = "generated_docs_tree"
 destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
-line_count = 27
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 56
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[risk_queue]]
+rank = 3
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
+risk_score = 130
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 48
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[document]]
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
 git_status = "ignored"
 classification = "toml_destination_exists_manual_markdown"
-lifecycle = "generated_report_output"
+lifecycle = "generated_docs_tree"
 generated = false
 third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 130
-size_bytes = 3869
-line_count = 49
-toml_destination = "registry/reports_narratives.toml"
+size_bytes = 4041
+line_count = 48
+toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
-path = "reports/COUPLER_MANIFOLD_RESIDUAL_FALSIFICATION.md"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
 git_status = "ignored"
 classification = "toml_destination_exists_manual_markdown"
-lifecycle = "generated_report_output"
+lifecycle = "generated_docs_tree"
 generated = false
 third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 130
-size_bytes = 2328
-line_count = 27
-toml_destination = "registry/reports_narratives.toml"
+size_bytes = 4920
+line_count = 56
+toml_destination = "registry/docs_root_narratives.toml"
+
+[[document]]
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
+git_status = "ignored"
+classification = "unbacked_manual_markdown"
+lifecycle = "generated_docs_tree"
+generated = false
+third_party = false
+tracked_allowed = true
+destination_exists = false
+risk_score = 230
+size_bytes = 5909
+line_count = 78
 
 [[document]]
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"

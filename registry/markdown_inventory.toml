@@ -4,41 +4,49 @@
 [markdown_inventory]
 generated_at = "deterministic"
 authoritative = true
-document_count = 15
+document_count = 16
 tracked_count = 0
 untracked_count = 0
-ignored_count = 15
+ignored_count = 16
 filesystem_only_count = 0
 generated_count = 0
-non_generated_count = 15
+non_generated_count = 16
 archived_count = 0
 third_party_count = 13
 manual_exception_count = 0
-unbacked_manual_count = 0
+unbacked_manual_count = 1
 toml_backed_manual_count = 2
 
 [[migration_queue]]
 rank = 1
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
-migration_priority = "high"
-migration_action = "port_body_to_toml_and_lock_mirror"
-toml_destination = "registry/reports_narratives.toml"
-line_count = 49
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
+migration_priority = "critical"
+migration_action = "migrate_to_new_registry"
+line_count = 78
+rationale = "Manual markdown without TOML destination; migrate aggressively."
 
 [[migration_queue]]
 rank = 2
-path = "reports/COUPLER_MANIFOLD_RESIDUAL_FALSIFICATION.md"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
 migration_priority = "high"
 migration_action = "port_body_to_toml_and_lock_mirror"
-toml_destination = "registry/reports_narratives.toml"
-line_count = 27
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 48
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+
+[[migration_queue]]
+rank = 3
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
+migration_priority = "high"
+migration_action = "port_body_to_toml_and_lock_mirror"
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 56
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
 
 [[document]]
 id = "MDI-0001"
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
-title = "Coupler-Manifold Grand Synthesis Report"
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
+title = "Audit-grade synthesis of the chat corpus on LHC light-ion QGP results and reproducible data-mirror pathways"
 git_status = "ignored"
 archived = false
 generated_declared = false
@@ -46,22 +54,21 @@ generated_pattern = false
 generated = false
 manual_exception = false
 third_party = false
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "high"
-toml_destination = "registry/reports_narratives.toml"
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-size_bytes = 3869
-line_count = 49
-sha256 = "5f974d886ed074359c045d6bbc5b627d2b81237e9a8b608a822607b4420cc295"
+classification = "unbacked_manual_markdown"
+migration_action = "migrate_to_new_registry"
+migration_priority = "critical"
+rationale = "Manual markdown without TOML destination; migrate aggressively."
+size_bytes = 5909
+line_count = 78
+sha256 = "93990ffe6f7e20874d01330da5e0809b5ecb0b58eb4ec73677bf4ac5f2596fc4"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
 id = "MDI-0002"
-path = "reports/COUPLER_MANIFOLD_RESIDUAL_FALSIFICATION.md"
-title = "Residualized Manifold Analysis: Breaking the Universal Illusion"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
+title = "Coupler-Manifold Final Unified Synthesis Report"
 git_status = "ignored"
 archived = false
 generated_declared = false
@@ -72,17 +79,40 @@ third_party = false
 classification = "toml_destination_exists_manual_markdown"
 migration_action = "port_body_to_toml_and_lock_mirror"
 migration_priority = "high"
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/docs_root_narratives.toml"
 rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-size_bytes = 2328
-line_count = 27
-sha256 = "240df1de2454390de2e097dc4f3bbd1cd4e3a31e4b69daa99187a62dcdd3aa29"
+size_bytes = 4041
+line_count = 48
+sha256 = "7be417e8696b5c8ddb945e098f6637b110bd849a844c6ac9855b9d15abe4ab62"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
 id = "MDI-0003"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
+title = "The Final Ten Elucidations: Pushing the Coupler-Manifold to the Edges of Physics"
+git_status = "ignored"
+archived = false
+generated_declared = false
+generated_pattern = false
+generated = false
+manual_exception = false
+third_party = false
+classification = "toml_destination_exists_manual_markdown"
+migration_action = "port_body_to_toml_and_lock_mirror"
+migration_priority = "high"
+toml_destination = "registry/docs_root_narratives.toml"
+rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
+size_bytes = 4920
+line_count = 56
+sha256 = "62d8c2be2cd49f22ba9e915cae9011f12027f34b4bd6d3b0fd56d0bae883e1de"
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+
+[[document]]
+id = "MDI-0004"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -105,7 +135,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0004"
+id = "MDI-0005"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -128,7 +158,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0005"
+id = "MDI-0006"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -151,7 +181,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0006"
+id = "MDI-0007"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/distributions/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -174,7 +204,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0007"
+id = "MDI-0008"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md"
 title = "MT19937"
 git_status = "ignored"
@@ -197,7 +227,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0008"
+id = "MDI-0009"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md"
 title = "PCG64"
 git_status = "ignored"
@@ -220,7 +250,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0009"
+id = "MDI-0010"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/philox/LICENSE.md"
 title = "PHILOX"
 git_status = "ignored"
@@ -243,7 +273,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0010"
+id = "MDI-0011"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md"
 title = "SFC64"
 git_status = "ignored"
@@ -266,7 +296,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0011"
+id = "MDI-0012"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy-2.4.2.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md"
 title = "SPLITMIX64"
 git_status = "ignored"
@@ -289,7 +319,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0012"
+id = "MDI-0013"
 path = "wow_analysis_venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -312,7 +342,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0013"
+id = "MDI-0014"
 path = "wow_analysis_venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -335,7 +365,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0014"
+id = "MDI-0015"
 path = "wow_analysis_venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -358,7 +388,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0015"
+id = "MDI-0016"
 path = "wow_analysis_venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"

@@ -4,8 +4,8 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 12
-toml_generated_mirror_count = 12
+document_count = 2
+toml_generated_mirror_count = 2
 
 [policy]
 safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
@@ -21,109 +21,19 @@ skip_path_parts = [".cache", "cargo-home", ".pytest_cache", "venv", ".venv", "la
 disk_forbidden_modes = ["deleted_mirror"]
 
 [[document]]
-path = "data/csv/README.md"
-id = "MDG-0044"
-kind = "toml_published_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/GPU_MODULARIZATION_TASKLIST_2026_03_17.md"
-id = "MDG-0149"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md"
-id = "MDG-0150"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/GPU_STACK_MODULARIZATION_PLAN_2026_03_17.md"
-id = "MDG-0151"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/LBM_SHARED_SUBSTRATE_AUDIT_2026_03_17.md"
-id = "MDG-0153"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/OPTIX_ACCELERATION_BOUNDARY_2026_03_17.md"
-id = "MDG-0154"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/PHYSICS_FIRST_FALSIFICATION_SOURCES_2026_03_18.md"
-id = "MDG-0155"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md"
-id = "MDG-0158"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/engineering/VIEWER_ADAPTER_CAPABILITY_MATRIX_2026_03_17.md"
-id = "MDG-0159"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md"
-id = "MDG-0165"
-kind = "toml_destination_exists_manual_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/external_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
-id = "MDG-0266"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
+id = "MDG-0026"
 kind = "markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/reports_narratives.toml"]
+source_toml_refs = ["registry/docs_root_narratives.toml", "registry/markdown_governance.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "reports/heliosphere_sparse_policy_mainline_2026-03-18.md"
-id = "MDG-0348"
-kind = "toml_destination_exists_manual_markdown"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
+id = "MDG-0027"
+kind = "markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/reports_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/docs_root_narratives.toml", "registry/markdown_governance.toml"]
 notes = "Generated from TOML registries and overlays."
