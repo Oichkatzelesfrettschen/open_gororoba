@@ -13,7 +13,7 @@
 //!
 //! ## 2. The $\sqrt{42}$ Area Quantum
 //!
-//! In the project's **Thesis 42**, the zero-divisor manifold is composed of 42
+//! In the project's **42-Node Manifold Invariant**, the zero-divisor manifold is composed of 42
 //! fundamental basis-pair nodes.
 //!
 //! Mathematically, if a spin network edge carries a spin of **$j=6$**, the resulting

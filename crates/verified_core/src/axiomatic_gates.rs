@@ -1,4 +1,4 @@
-//! Axiomatic gates for Project Genesis constants.
+//! Axiomatic gates for Unified Algebraic Physics Framework constants.
 
 use std::f64::consts::PI;
 
@@ -16,7 +16,7 @@ pub fn binary_entropy(p: f64) -> f64 {
     -(p * p.ln() + (1.0 - p) * (1.0 - p).ln())
 }
 
-/// Genesis derivation of the Barbero-Immirzi parameter.
+/// Algebraic derivation of the Barbero-Immirzi parameter.
 pub fn derive_immirzi_parameter() -> f64 {
     binary_entropy(VACUUM_PHI) / (PI * 3.0f64.sqrt())
 }
@@ -31,7 +31,7 @@ mod tests {
         let dl_value = 0.123556531;
         let deviation = (gamma - dl_value).abs() / dl_value;
         
-        println!("Genesis Immirzi: {}", gamma);
+        println!("Algebraic Barbero-Immirzi Parameter: {}", gamma);
         println!("Domagala-Lewandowski: {}", dl_value);
         println!("Deviation: {:.2}%", deviation * 100.0);
         

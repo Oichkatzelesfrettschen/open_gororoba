@@ -54,7 +54,7 @@
 //! The Barbero-Immirzi parameter $\gamma$ fixes the quantum of area in LQG.
 //! We derive $\gamma$ from the binary entropy of the imbalance attractor:
 //!
-//! $$\gamma_{Genesis} = \frac{H(3/8)}{\pi \sqrt{3}} \approx 0.1216$$
+//! $$\gamma_{Algebraic} = \frac{H(3/8)}{\pi \sqrt{3}} \approx 0.1216$$
 //!
 //! This value aligns within 1.7% of the Domagala-Lewandowski value ($\gamma \approx 0.1236$),
 //! derived from quasinormal mode ringing. This suggests the "ringing" of black holes

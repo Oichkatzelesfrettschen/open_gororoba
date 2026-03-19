@@ -15,7 +15,7 @@
 //! ## 2. The Phase Transition
 //!
 //! In standard QCD, the transition to QGP occurs around $T_c \approx 156$ MeV.
-//! In the Genesis framework, we model this high-energy state as a phase transition
+//! In the Unified Algebraic Framework, we model this high-energy state as a phase transition
 //! in the underlying algebraic topology.
 //!
 //! **Mechanism:**

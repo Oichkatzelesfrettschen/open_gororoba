@@ -1,9 +1,9 @@
 //! # Conclusion: The Directus Maximalus Unified Field
 //!
 //! This final section synthesizes all 33 previous chapters into a single
-//! unified Field Equation for Project Genesis.
+//! unified Field Equation for Unified Algebraic Physics Framework.
 //!
-//! ## 1. The Genesis Unified Equation
+//! ## 1. The Unified Field Action
 //!
 //! We define the **Algebraic Action** $\mathcal{S}$ of the vacuum as:
 //!
@@ -26,7 +26,7 @@
 //!
 //! ## 3. Final Interpretation
 //!
-//! Project Genesis proves that the universe is not an associative geometric
+//! Unified Algebraic Physics Framework proves that the universe is not an associative geometric
 //! background, but a **Viscous Non-Associative Fluid** undergoing a continuous
 //! dimensional reduction from 1024D to 4D.
 //!

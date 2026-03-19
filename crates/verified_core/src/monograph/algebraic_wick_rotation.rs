@@ -35,6 +35,6 @@
 //! The split-octonionic Dirac equation (Koeplinger & Gogberashvili) naturally
 //! incorporates the Lorentz boost generators as algebraic automorphisms.
 //!
-//! In the project's **Thesis 2**, the "flow of time" is physically modeled as
+//! In the project's **Temporal Emergence Model**, the "flow of time" is physically modeled as
 //! the process of the non-associative degrees of freedom "associating" or
 //! decohering into the observable, 4D associative spacetime.

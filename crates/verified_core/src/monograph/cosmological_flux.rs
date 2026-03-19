@@ -31,7 +31,7 @@
 //!
 //! **Mechanism:**
 //! The vacuum expectation value (VEV) of the potential is constrained by the
-//! Thesis 42 manifold structure.
+//! 42-Node Manifold Invariant manifold structure.
 //!
 //! ## 4. Falsifiability
 //!

@@ -34,6 +34,6 @@
 //! ## 4. The 42-Node Convergence
 //!
 //! The homotopy solver reliably converges to configurations defined by exactly
-//! **42 active basis pairs** (the Thesis 42 invariant). This computational
+//! **42 active basis pairs** (the 42-Node Manifold Invariant invariant). This computational
 //! evidence proves that the 7-octahedron box-kite structure is the global
 //! minimum-energy arrangement of the Sedenion non-associative vacuum.
