@@ -4,8 +4,8 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 2
-toml_generated_mirror_count = 2
+document_count = 1
+toml_generated_mirror_count = 1
 
 [policy]
 safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
@@ -21,19 +21,10 @@ skip_path_parts = [".cache", "cargo-home", ".pytest_cache", "venv", ".venv", "la
 disk_forbidden_modes = ["deleted_mirror"]
 
 [[document]]
-path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
-id = "MDG-0026"
+path = "docs/theory/drude_plasmonics.md"
+id = "MDG-0155"
 kind = "markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/docs_root_narratives.toml", "registry/markdown_governance.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
-id = "MDG-0027"
-kind = "markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/docs_root_narratives.toml", "registry/markdown_governance.toml"]
+source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."

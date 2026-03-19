@@ -1425,7 +1425,29 @@ fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
         "reports/artifact_missing_minimum_2026_02_15.tsv",
     ];
     let mut paths = BTreeSet::new();
-    for entry in WalkDir::new(repo_root).into_iter().filter_map(|e| e.ok()) {
+    let walker = WalkDir::new(repo_root).into_iter().filter_entry(|e| {
+        let rel = e
+            .path()
+            .strip_prefix(repo_root)
+            .unwrap_or(e.path())
+            .to_string_lossy()
+            .replace('\\', "/");
+        if rel.is_empty() || rel == "." {
+            return true;
+        }
+        let rel_with_slash = format!("{rel}/");
+        !excluded_prefixes
+            .iter()
+            .any(|prefix| rel.starts_with(prefix) || rel_with_slash.starts_with(prefix))
+            && !NON_AUTHORITATIVE_REPORT_PREFIXES
+                .iter()
+                .any(|prefix| rel.starts_with(prefix) || rel_with_slash.starts_with(prefix))
+            && !NON_AUTHORITATIVE_REGISTRY_PREFIXES
+                .iter()
+                .any(|prefix| rel.starts_with(prefix) || rel_with_slash.starts_with(prefix))
+            && !rel.contains("/lambda_gororoba_backups/")
+    });
+    for entry in walker.filter_map(|e| e.ok()) {
         let path = entry.path();
         if !path.is_file() {
             continue;
@@ -1449,16 +1471,6 @@ fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
         }
         if excluded_exact.contains(&rel.as_str())
             || NON_AUTHORITATIVE_REGISTRY_EXACT.contains(&rel.as_str())
-            || excluded_prefixes
-                .iter()
-                .any(|prefix| rel.starts_with(prefix))
-            || NON_AUTHORITATIVE_REPORT_PREFIXES
-                .iter()
-                .any(|prefix| rel.starts_with(prefix))
-            || rel.contains("/lambda_gororoba_backups/")
-            || NON_AUTHORITATIVE_REGISTRY_PREFIXES
-                .iter()
-                .any(|prefix| rel.starts_with(prefix))
             || rel.contains("/files/open-pdf/")
             || rel.ends_with("_link_search.md")
             || rel.ends_with(".proxy.txt")
