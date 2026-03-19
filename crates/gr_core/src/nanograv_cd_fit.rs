@@ -211,7 +211,11 @@ pub const HD_FREE_SPECTRUM: [FreqBin; N_BINS] = [
 /// * `n_trials` — Number of random triples to sample.
 /// * `seed` — Deterministic seed for reproducibility.
 pub fn compute_cd_algebraic_props(dim: usize, n_trials: usize, seed: u64) -> CdAlgebraicProps {
-    assert!(dim.is_power_of_two() && dim >= 16);
+    assert!(
+        dim.is_power_of_two() && dim >= 16,
+        "compute_cd_algebraic_props: dim must be a power of two and at least 16, got {}",
+        dim
+    );
     let stats = associator_independence_stats(dim, n_trials, seed);
     CdAlgebraicProps {
         dim,
