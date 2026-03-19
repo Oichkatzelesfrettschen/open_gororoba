@@ -93,9 +93,9 @@ SPDF/PDS-PPI → data_core parsers → OMNI-merged hourly CSV
 
 | Concept | Key claims | Code | Status |
 |---------|-----------|------|--------|
-| Pioneer fractal metric fit | — | `src/fractal_metric.rs` | Provisional |
+| Pioneer fractal metric fit | — | `crates/gr_core/src/fractal_metric.rs` | Provisional |
 | Flyby anomaly Chingon coupling | C-952 | — | Provisional |
-| JPL DE440 ephemeris | C-953 | `src/nbody_integration.rs` | Verified |
+| JPL DE440 ephemeris | C-953 | `crates/gr_core/src/nbody_integration.rs` | Verified |
 
 **Known magnitude problem:** The D_f ~ 2.7 metric gives the correct sign for the Pioneer anomaly but is ~4 orders of magnitude too large. The thermal-recoil explanation (Turyshev et al. 2012) accounts for the observed magnitude. The fractal hypothesis is *not* presented as an alternative solution, but as a structural curiosity warranting investigation.
 
