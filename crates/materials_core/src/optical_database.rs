@@ -5325,6 +5325,12 @@ pub fn list_materials() -> Vec<&'static str> {
         "Lanthanum Titanate (LaTiO3)",
         // TCOs
         "Al-doped ZnO (AZO)",
+        "Indium Tin Oxide (ITO)",
+        // Nitrides
+        "Titanium Nitride (TiN)",
+        "Titanium Nitride Low Loss (TiN)",
+        "Zirconium Nitride (ZrN)",
+        "Hafnium Nitride (HfN)",
         // Tungsten oxides
         "Tungsten Trioxide (WO3)",
         "Oxygen-deficient WO3 (WO3-x)",
@@ -6220,8 +6226,8 @@ mod tests {
         let materials = list_materials();
         assert_eq!(
             materials.len(),
-            31,
-            "Database should have exactly 31 materials, got {}",
+            36,
+            "Database should have exactly 36 materials, got {}",
             materials.len()
         );
     }

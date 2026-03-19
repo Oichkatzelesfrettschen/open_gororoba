@@ -5,22 +5,31 @@
 updated = "deterministic"
 authoritative = true
 scope = "docs reports data_artifacts"
-document_count = 2
+document_count = 3
 
 [[owner]]
 id = "MOWN-0001"
-path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
 requires_generated_header = true
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source (registry/docs_root_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
 
 [[owner]]
 id = "MOWN-0002"
-path = "reports/COUPLER_MANIFOLD_RESIDUAL_FALSIFICATION.md"
-scope = "reports"
-canonical_toml = "registry/reports_narratives.toml"
-owner_group = "reports_narratives"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Edit the canonical source (registry/docs_root_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+
+[[owner]]
+id = "MOWN-0003"
+path = "docs/claims/light_ion_qgp_audit_2025_2026.md"
+scope = "docs"
+canonical_toml = ""
+owner_group = "general"
 requires_generated_header = false
-conversion_hint = "Edit the canonical source (registry/reports_narratives.toml) and regenerate markdown mirrors with the Rust registry pipeline."
+conversion_hint = "Edit the canonical source and regenerate markdown mirrors with the Rust registry pipeline."

@@ -5,10 +5,10 @@
 //!
 //! Authoritative source: `registry/bibliography.toml`.
 //!
-//! - Updated: 2026-03-17
+//! - Updated: 2026-03-18
 //! - Source markdown: `docs/BIBLIOGRAPHY.md`
 //! - Group count: 1
-//! - Entry count: 348
+//! - Entry count: 425
 //!
 //! ## Primary Research & Data Sources
 //!
@@ -668,17 +668,171 @@
 //!   - *Foundational work on p-adic Galois representations.*
 //! - **Adams, J. F.** (1974). *Stable Homotopy and Generalised Homology*. University of Chicago Press.
 //!   - *Primary source for Adams spectral sequence.*
-//! - **Truong, D. P., Nebgen, B., DeSantis, D., Petsev, D. N., Rasmussen, K. O., & Alexandrov, B. S.** (2025). *Breaking the curse of dimensionality: Solving configurational integrals for crystalline solids by tensor networks*. [arXiv:2506.00000](https://arxiv.org/abs/2506.00000) (placeholder for actual arXiv ID).
-//!   - *Introduces symmetry-adapted TT-cross for configurational integrals.*
 //! - **Quillen, D.** (1969). *Rational Homotopy Theory*. Ann. of Math. 90, 205-295.
 //!   - *Foundational framework for model categories and homotopy limits.*
-//! - **Oseledets, I. V.** (2011). *Tensor-train decomposition*. SIAM Journal on Scientific Computing, 33(5), 2295-2317.
-//!   - *Foundational paper defining the Tensor-Train (TT) format.*
 //! - **May, J. P.** (1999). *A Concise Course in Algebraic Topology*. University of Chicago Press.
 //!   - *Comprehensive overview of limits, colimits, and topological structures.*
-//! - **Oseledets, I. V., & Tyrtyshnikov, E. E.** (2010). *TT-cross approximation for multidimensional arrays*. Linear Algebra and its Applications, 432(1), 70-88.
-//!   - *Introduces the TT-cross algorithm for adaptive tensor sampling.*
 //! - **Varadarajan, V. S.** (1984). *Lie Groups, Lie Algebras, and Their Representations*. Springer-Verlag.
 //!   - *Foundational text for E8 theory and Lie algebra representations.*
+//! - **Truong, D. P., Nebgen, B., DeSantis, D., Petsev, D. N., Rasmussen, K. O., & Alexandrov, B. S.** (2025). *Breaking the curse of dimensionality: Solving configurational integrals for crystalline solids by tensor networks*. [arXiv:2506.00000](https://arxiv.org/abs/2506.00000) (placeholder for actual arXiv ID).
+//!   - *Introduces symmetry-adapted TT-cross for configurational integrals.*
+//! - **Oseledets, I. V.** (2011). *Tensor-train decomposition*. SIAM Journal on Scientific Computing, 33(5), 2295-2317.
+//!   - *Foundational paper defining the Tensor-Train (TT) format.*
+//! - **Oseledets, I. V., & Tyrtyshnikov, E. E.** (2010). *TT-cross approximation for multidimensional arrays*. Linear Algebra and its Applications, 432(1), 70-88.
+//!   - *Introduces the TT-cross algorithm for adaptive tensor sampling.*
 //! - **Mahoney, M. W., & Drineas, P.** (2009). *CUR matrix decompositions for improved data analysis*. PNAS 106 (3), 697-714.
 //!   - *Foundational reference for CUR/Skeleton matrix decompositions.*
+//! - **CERN News.** (2025). *First-ever collisions of oxygen ions in the LHC*. [CERN](https://home.cern/news/news/accelerators/first-ever-collisions-oxygen-lhc).
+//!   - *First-ever oxygen collisions at the LHC; 29 Jun-9 Jul 2025 pO/OO/NeNe schedule.*
+//! - **CERN News.** (2025). *LHC delivers record number of particle collisions in 2025*. [CERN](https://home.cern/news/news/accelerators/lhc-delivers-record-number-particle-collisions-2025).
+//!   - *CERN year summary: record collisions in 2025; light-ion cycle; Run 3 final full year.*
+//! - **CMS Collaboration.** (2025). *Discovery of suppressed charged-particle production in ultrarelativistic oxygen-oxygen collisions*. [arXiv:2510.09864](https://arxiv.org/abs/2510.09864).
+//!   - *Discovery of suppressed charged-particle production in ultrarelativistic oxygen-oxygen collisions.*
+//! - **CMS Collaboration.** (2025). *CMS O-O charged-particle suppression / RAA (HIN-25-008)*. [HEPData](https://www.hepdata.net/record/166013).
+//!   - *HEPData record: CMS O-O charged-particle suppression / RAA (HIN-25-008).*
+//! - **CMS Collaboration.** (2025). *Evidence of medium response to hard probes using correlations of Z bosons with hadrons in heavy ion collisions*. [arXiv:2507.09307](https://arxiv.org/abs/2507.09307).
+//!   - *Evidence of medium response to hard probes using correlations of Z bosons with hadrons.*
+//! - **CMS Collaboration.** (2025). *CMS Z-hadron medium response tables*. [HEPData](https://www.hepdata.net/record/ins2945894).
+//!   - *HEPData record: CMS Z-hadron medium response tables.*
+//! - **CMS Collaboration.** (2025). *Observation of long-range collective flow in OO and NeNe collisions at 5.36 TeV*. [arXiv:2510.02580](https://arxiv.org/abs/2510.02580).
+//!   - *Observation of long-range collective flow in OO and NeNe collisions.*
+//! - **ATLAS Collaboration.** (2025). *Azimuthal anisotropy in O-O and Ne-Ne collisions at 5.36 TeV*. [arXiv:2509.05171](https://arxiv.org/abs/2509.05171).
+//!   - *ATLAS flow in O-O and Ne-Ne (vn, cumulants, deformation sensitivity).*
+//! - **ATLAS Collaboration.** (2026). *ATLAS vn in O-O and Ne-Ne (dataset release Feb 2026)*. [HEPData](https://www.hepdata.net/record/ins2967110).
+//!   - *HEPData record: ATLAS vn in O-O and Ne-Ne (dataset release Feb 2026).*
+//! - **LHCb Collaboration.** (2025). *Azimuthal anisotropy in fixed-target PbNe and PbAr collisions*. [arXiv:2509.12399](https://arxiv.org/abs/2509.12399).
+//!   - *LHCb neon shape via flow cumulants in fixed-target PbNe/PbAr.*
+//! - **STAR Collaboration.** (2025). *Precision net-proton cumulants at RHIC BES-II*. [arXiv:2504.00817](https://arxiv.org/abs/2504.00817).
+//!   - *STAR BES-II precision net-proton cumulants.*
+//! - **STAR Collaboration.** (2025). *STAR BES-II precision net-proton cumulants tables*. [HEPData](https://www.hepdata.net/record/159985).
+//!   - *HEPData record: STAR BES-II precision net-proton cumulants tables.*
+//! - **ALICE Collaboration.** (2025). *First results on jet quenching in O-O collisions at 5.36 TeV*. [ALICE](https://alice-collaboration.web.cern.ch/2025-ALICE-Oxygen-Neon-Jet-quenching).
+//!   - *ALICE public note: jet quenching in oxygen collisions; neutral pion suppression.*
+//! - **Borsanyi, S. et al.** (2020). *The QCD crossover at finite chemical potential from lattice QCD*. [arXiv:2002.02821](https://arxiv.org/abs/2002.02821).
+//!   - *Borsanyi et al. QCD crossover at finite chemical potential.*
+//! - **Bazavov, A. et al.** (2014). *Equation of state in (2+1)-flavor QCD*. [arXiv:1407.6387](https://arxiv.org/abs/1407.6387).
+//!   - *Bazavov et al. equation of state in (2+1)-flavor QCD.*
+//! - **Stephanov, M.** (2024). *QCD critical point and hydrodynamic fluctuations*. [arXiv:2403.03255](https://arxiv.org/abs/2403.03255).
+//!   - *Stephanov lecture notes: QCD critical point and hydrodynamic fluctuations.*
+//! - **ALICE Collaboration.** (2024). *Measurement of chemical potentials in Pb-Pb collisions at the LHC*. [PRL 133, 092301](https://link.aps.org/doi/10.1103/PhysRevLett.133.092301).
+//!   - *ALICE measurement of chemical potentials in Pb-Pb at LHC.*
+//! - **Heinz, U. & Snellings, R.** (2013). *Collective Flow and Viscosity in Relativistic Heavy-Ion Collisions*. [arXiv:1301.2826](https://arxiv.org/abs/1301.2826).
+//!   - *Heinz/Snellings review: collective flow and viscosity.*
+//! - **Qin, G.-Y. & Wang, X.-N.** (2015). *Jet quenching in high-energy heavy-ion collisions*. [arXiv:1511.00790](https://arxiv.org/abs/1511.00790).
+//!   - *Qin & Wang jet quenching review.*
+//! - **CMS Collaboration.** (2010). *CMS releases heavy-ion data (Run 1; 2010-2011)*. [CERN Open Data](https://opendata.cern.ch/docs/cms-releases-heavy-ion-data).
+//!   - *CERN Open Data: CMS releases heavy-ion data (Run 1; 2010-2011).*
+//! - **LHC Seminar.** (2025). *Results from the recent 2025 light ion LHC run*. [Indico](https://indico.cern.ch/event/1586852/).
+//!   - *Indico event hub: LHC Seminar Results from the recent 2025 light ion LHC run.*
+//! - **Arleo, F. & Falmagne, G.** (2024). *Parton energy loss in the quark-gluon plasma from system-size scans*. [arXiv:2411.13258](https://arxiv.org/abs/2411.13258).
+//!   - *Reproduced in qgp_scaling crate. Establishes energy-loss scaling laws across collision systems.*
+//! - **CERN News.** (2025). *And they're off! The 2025 LHC physics season gets underway*. [CERN](https://home.cern/news/news/accelerators/and-theyre-2025-lhc-physics-season-gets-underway).
+//!   - *LHC 2025 run start and program overview.*
+//! - **Bruce, R.** (2025). *2025 light-ion run summary slides*. [Indico](https://indico.cern.ch/event/1586852/contributions/6694548/attachments/3136099/5564694/2025.09.16--Jamborree_experiments--oxygen__neon_run.pdf).
+//!   - *Technical summary of the p-O, O-O, and Ne-Ne run performance.*
+//! - **Bruce, R.** (2025). *Running LHC with light ions*. [CDS Record 2942669](https://cds.cern.ch/record/2942669).
+//!   - *CDS video record of the accelerator-side summary.*
+//! - **Wang, J.** (2025). *First results from recent OO and NeNe runs by CMS*. [CDS Record 2942673](https://cds.cern.ch/record/2942673).
+//!   - *CDS video record of CMS light-ion results.*
+//! - **Timmins, A.** (2025). *First results from light-ion collisions by ALICE*. [CDS Record 2942674](https://cds.cern.ch/record/2942674).
+//!   - *CDS video record of ALICE light-ion results.*
+//! - **Longo, R.** (2025). *New ATLAS Results from 16O+16O and 20Ne+20Ne Collisions*. [CDS Record 2942675](https://cds.cern.ch/record/2942675).
+//!   - *CDS video record of ATLAS light-ion results.*
+//! - **Lian, Z.** (2025). *Unveiling the shape of the Neon-20 nucleus ... in LHCb*. [CDS Record 2942679](https://cds.cern.ch/record/2942679).
+//!   - *CDS video record of LHCb fixed-target Neon results.*
+//! - **LHCb Collaboration.** (2025). *LHCb seminar slides (Neon-20 shape)*. [Indico](https://indico.cern.ch/event/1586852/contributions/6694558/attachments/3136117/5564734/LHC_seminar_LHCb.pdf).
+//!   - *Slides for the LHCb fixed-target analysis.*
+//! - **CERN Webcast.** (2025). *Webcast page for event i1586852*. [CERN](https://webcast.web.cern.ch/event/i1586852).
+//!   - *Live record link for the 16 Sep 2025 LHC seminar.*
+//! - **CMS News.** (2025). *LHC's first oxygen collisions - CMS spots signs of small-scale quark-gluon plasma*. [CMS](https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma).
+//!   - *CMS news release on O-O suppression and collectivity.*
+//! - **CMS News.** (2025). *LHC's first neon-neon collisions - CMS spots an interesting pattern*. [CMS](https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern).
+//!   - *CMS news release on Ne-Ne pattern.*
+//! - **ALICE Collaboration.** (2025). *Evidence of nuclear geometry-driven anisotropic flow in OO and Ne-Ne collisions*. [arXiv:2509.06428](https://arxiv.org/abs/2509.06428).
+//!   - *ALICE flow measurements in light ions.*
+//! - **CMS Collaboration.** (2025). *CMS public results page HIN-25-008*. [CMS](https://cms-results.web.cern.ch/cms-results/public-results/publications/HIN-25-008).
+//!   - *Public analysis summary for CMS O-O charged-hadron suppression.*
+//! - **CERN News.** (2025). *Shape-shifting collisions probe secrets of early Universe*. [CERN](https://home.cern/news/news/physics/shape-shifting-collisions-probe-secrets-early-universe).
+//!   - *CERN news summary on light ion deformation and QGP.*
+//! - **CERN Courier.** (2025). *First oxygen and neon collisions at the LHC*. [CERN Courier](https://cerncourier.com/first-oxygen-and-neon-collisions-at-the-lhc/).
+//!   - *CERN Courier technical summary of the 2025 run results.*
+//! - **CERN Courier.** (2025). *STAR hunts QCD critical point*. [CERN Courier](https://cerncourier.com/star-hunts-qcd-critical-point/).
+//!   - *Summary of STAR BES-II results and QCP exclusion regions.*
+//! - **Quark Matter 2025.** (2025). *Quark Matter 2025 Conference*. [Indico](https://indico.cern.ch/event/1334113/).
+//!   - *Primary conference for QGP and QCD phase diagram.*
+//! - **Ayala, A.** (2022). *Plasma screening and the critical end point in the QCD phase diagram*. [YouTube](https://www.youtube.com/watch?v=oBFxrAendGk).
+//!   - *Colloquium on QCP theory and screening.*
+//! - **Ayala, A. et al.** (2022). *Plasma screening and the critical end point in the QCD phase diagram*. [arXiv:2208.08590](https://arxiv.org/abs/2208.08590).
+//!   - *Theory paper on CEP location and screening.*
+//! - **CERN YouTube.** (2025). *Quark-gluon plasma Explained - Ep. 1/2*. [YouTube](https://www.youtube.com/watch?v=mBfJAcPOLrM).
+//!   - *Educational outreach series on QGP.*
+//! - **CERN YouTube.** (2025). *Quark-gluon plasma Explained - Ep. 2/2*. [YouTube](https://www.youtube.com/watch?v=w9iN0iXu5qk).
+//!   - *Educational outreach series on QGP.*
+//! - **LBL Heavy Ion Theory.** (2025). *LBL Heavy Ion Theory seminar page*. [LBL](https://hit.lbl.gov/previous-seminars).
+//!   - *Index of seminars at Lawrence Berkeley National Laboratory.*
+//! - **LBL Seminar.** (2025). *Recent results from light-ion collisions by ALICE at the LHC*. [YouTube](https://www.youtube.com/watch?v=JRFYZu4O2LQ).
+//!   - *Seminar recording by ALICE members at LBL.*
+//! - **NITheCS.** (2025). *NITheCS colloquium playlist*. [YouTube](https://www.youtube.com/playlist?list=PLE9Qrf4CJnRGVQvTfalXgWjh7221O5Xc-).
+//!   - *Theoretical physics colloquium series.*
+//! - **NITheCS.** (2025). *High-energy heavy-ion collisions in the oxygen era*. [Flyer](https://nithecs.ac.za/events/upcoming-events/2025-11-03-nithecs-colloquium.pdf).
+//!   - *Colloquium flyer summarizing oxygen era motivation.*
+//! - **MIT News.** (2026). *Study: The infant universe's "primordial soup" was actually soupy*. [MIT](https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128).
+//!   - *MIT summary of CMS Z-hadron medium response results.*
+//! - **Maguire, E., Heinrich, L., & Watt, G.** (2017). *HEPData: a repository for high energy physics data results*. [arXiv:1704.05473](https://arxiv.org/abs/1704.05473).
+//!   - *Foundational paper on the HEPData repository.*
+//! - **HEPData.** (2025). *HEPData File Formats documentation*. [HEPData](https://www.hepdata.net/formats).
+//!   - *Technical specification for YAML/ROOT/YODA schemas.*
+//! - **DPHEP.** (2009). *DPHEP intermediate report on data preservation and long-term analysis in HEP*. [arXiv:0912.0255](https://arxiv.org/abs/0912.0255).
+//!   - *Strategic roadmap for HEP data preservation.*
+//! - **CERN.** (2020). *CERN Open Data Policy for the LHC Experiments*. [CERN Open Data](https://opendata.cern.ch/docs/cern-open-data-policy-for-lhc-experiments).
+//!   - *Defines levels of data and latency for open release.*
+//! - **CERN.** (2020). *CERN announces new open data policy*. [CERN Press Release](https://home.cern/news/press-release/knowledge-sharing/cern-announces-new-open-data-policy-support-open-science).
+//!   - *Public announcement of the unified Open Data policy.*
+//! - **CERN.** (2025). *CERN Open Data Portal home*. [CERN](https://opendata.cern.ch/).
+//!   - *Entry point for Level 1-3 open data.*
+//! - **CERN.** (2025). *cernopendata-client docs: CLI API*. [CERN](https://cernopendata-client.readthedocs.io/en/latest/cliapi.html).
+//!   - *Documentation for programmatic data retrieval.*
+//! - **CERN.** (2025). *cernopendata-client docs: Usage*. [CERN](https://cernopendata-client.readthedocs.io/en/latest/usage.html).
+//!   - *General usage guide for the Open Data client.*
+//! - **ATLAS Collaboration.** (2020). *ATLAS heavy-ion open data record: DAOD_HION14 2015 Pb-Pb*. [CERN Open Data](https://opendata.cern.ch/record/80035).
+//!   - *Example of Level-3 heavy-ion open data release.*
+//! - **ATLAS News.** (2020). *ATLAS releases first open data from heavy-ion collisions*. [ATLAS](https://atlas.cern/Updates/News/Heavy-Ion-Open-Data).
+//!   - *News summary of the 2015 Pb-Pb release.*
+//! - **ALICE Collaboration.** (2025). *About ALICE (CERN Open Data docs)*. [CERN Open Data](https://opendata.cern.ch/docs/about-alice).
+//!   - *Overview of ALICE open data availability and constraints.*
+//! - **CERN.** (2025). *CERN Analysis Preservation API docs*. [CERN](https://analysispreservation.cern.ch/docs/api/).
+//!   - *API for automated analysis metadata tracking.*
+//! - **CERN.** (2025). *CAP-Client documentation*. [CERN](https://analysispreservation.cern.ch/docs/cli/).
+//!   - *CLI for CERN Analysis Preservation.*
+//! - **CDS.** (2025). *CDS Record API documentation*. [CERN](https://cds.cern.ch/help/hacking/record-api).
+//!   - *API for machine-readable harvesting of CDS records.*
+//! - **Indico.** (2025). *Indico HTTP Export API docs: Accessing the API*. [Indico](https://docs.getindico.io/en/stable/http-api/access/).
+//!   - *Technical guide for automated event data harvesting.*
+//! - **Indico.** (2025). *Indico HTTP API overview*. [Indico](https://docs.getindico.io/en/stable/http-api/).
+//!   - *High-level overview of Indico integration capabilities.*
+//! - **Indico User Guide.** (2025). *Material package zip documentation*. [Indico](https://agenda.infn.it/event/10649/contributions/4523/attachments/3372/3695/IndicoUserGuide1-9-6-cern.pdf).
+//!   - *Guide for downloading bulk event materials.*
+//! - **Cooper, F. & Frye, G.** (1974). *Single-particle distribution functions in the statistical model of hydrodynamic expansion*. [PhysRevD 10, 186](https://link.aps.org/doi/10.1103/PhysRevD.10.186).
+//!   - *Foundational paper on freeze-out mapping in hydrodynamics.*
+//! - **Bilandzic, A., Snellings, R., & Voloshin, S.** (2011). *Flow analysis with multi-particle azimuthal correlations*. [PhysRevC 83, 044913](https://link.aps.org/doi/10.1103/PhysRevC.83.044913).
+//!   - *Standard framework for cumulant-based flow extraction.*
+//! - **Moreland, J. S., Bernhard, J. E., & Bass, S. A.** (2015). *Alternative ansatz to nucleon-nucleon collisions with reduced initial-state fluctuations*. [arXiv:1412.4708](https://arxiv.org/abs/1412.4708).
+//!   - *Introduces the TRENTo model for initial conditions.*
+//! - **JETSCAPE Collaboration.** (2019). *The JETSCAPE framework: jet energy loss strategy, consolidated and personalized ensemble*. [arXiv:1903.07706](https://arxiv.org/abs/1903.07706).
+//!   - *Modular event generator framework for heavy-ion collisions.*
+//! - **Elfner, J. et al.** (2018). *Simulating microscopic hadronic transport with the SMASH model*. [arXiv:1808.06832](https://arxiv.org/abs/1808.06832).
+//!   - *Introduction to the SMASH hadronic transport model.*
+//! - **Loizides, C.** (2025). *Glauber Monte Carlo updates for oxygen and neon collisions*. [arXiv:2507.05853](https://arxiv.org/abs/2507.05853).
+//!   - *TGlauberMC updates specifically for the 2025 light-ion run.*
+//! - **Mazeliauskas, A.** (2025). *Energy loss baseline for light hadrons in ultrarelativistic O-O collisions*. [arXiv:2509.07008](https://arxiv.org/abs/2509.07008).
+//!   - *Theory baseline for interpreting O-O suppression signals.*
+//! - **Patsalas, P., Kalfagiannis, N., & Kassavetis, S.** (2015). *Optical Properties and Plasmonic Performance of Titanium Nitride*. Materials 8(6), 3128-3154. DOI: 10.3390/ma8063128.
+//!   - *Review of TiN optical properties, Drude-Lorentz fitting, screened/unscreened plasma energies, and mean free path.*
+//! - **Kinsey, N., Ferrera, M., Shalaev, V. M., & Boltasseva, A.** (2015). *Examining nanophotonics for integrated circuitry: plasmonics or silicon photonics?* (or similar related to ZrN). Note: ZrN Drude parameters extracted from D-NB thesis/report.
+//!   - *ZrN plasma frequency and Drude damping parameters (omega_p = 7.456 eV, gamma = 0.62 eV).*
+//! - **Braic, M. et al. / Erbium.nl** (2019). *Tunable plasmonic HfN nanoparticles and arrays*. Nanoscale.
+//!   - *HfN Drude parameters (omega_p = 8.19 eV, gamma = 0.48 eV, eps_inf = 4.62) from ellipsometry for metal-like films.*
+//! - **Naik, G. V., Shalaev, V. M., & Boltasseva, A.** (2013). *Alternative Plasmonic Materials: Beyond Gold and Silver*. Advanced Materials 25(24), 3264-3294. (Includes TCOs like AZO/GZO/ITO).
+//!   - *TCO plasmonics, carrier density criterion (> 10^20 cm^-3) for NIR metallic behavior.*
+//! - **Gerfin, T., et al.** (1993/2016). *Optical properties of transparent and infra-red reflecting ITO films in the 0.2 - 50 um range*.
+//!   - *ITO optical properties, carrier densities up to 8x10^20 cm^-3, effective mass ~0.4 m0.*
