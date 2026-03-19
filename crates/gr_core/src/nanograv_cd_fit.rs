@@ -432,7 +432,9 @@ pub fn fit_nanograv_cd_tower(n_trials: usize, seed: u64) -> CdTowerFitResult {
 
     let mut fits = Vec::with_capacity(CD_STACK.len());
     for &dim in &CD_STACK {
-        let props = compute_cd_algebraic_props(dim, n_trials, seed);
+        // Derive a per-dimension seed to avoid reusing the same random stream
+        let dim_seed = seed ^ ((dim as u64).wrapping_mul(0x9E37_79B9_7F4A_7C15));
+        let props = compute_cd_algebraic_props(dim, n_trials, dim_seed);
         let result = fit_single_dim(data, &props);
         fits.push(result);
     }
