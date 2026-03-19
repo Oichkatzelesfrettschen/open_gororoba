@@ -4,8 +4,7 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 1
-toml_generated_mirror_count = 1
+document_count = 0
 
 [policy]
 safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
@@ -19,12 +18,3 @@ generated_patterns = ["build/docs/generated/*.md", "docs/generated/*.md"]
 skip_prefixes = [".cache/", ".pytest_cache/", "venv/", ".venv/", ".venv_ingest/", ".horusec/", ".claude/", ".gemini/", ".playwright-mcp/", ".mamba/", "target/", "logs/", "build/", "dist/", "temp/", "tmp/"]
 skip_path_parts = [".cache", "cargo-home", ".pytest_cache", "venv", ".venv", "lambda_gororoba_backups", "target", "logs", "build", "dist", "temp", "tmp"]
 disk_forbidden_modes = ["deleted_mirror"]
-
-[[document]]
-path = "docs/theory/drude_plasmonics.md"
-id = "MDG-0155"
-kind = "markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml"]
-notes = "Generated from TOML registries and overlays."

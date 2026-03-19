@@ -19,6 +19,56 @@ use clap::Parser;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use spectral_core::chsh_betti_bridge::{spearman_correlation, velocity_to_betti, velocity_to_chsh};
 use std::{f64::consts::PI, fs, path::Path};
+use rayon::prelude::*;
+
+#[cfg(target_arch = "x86_64")]
+fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
+    println!("    [Screening] CPU Rayon multi-core pre-flight (FP64 / x87 FP80)");
+    let mut solver = lbm_3d::solver::LbmSolver3D::new(n, n, n, tau);
+    
+    let n_total = n * n * n;
+    let force_field: Vec<[f64; 3]> = (0..n_total)
+        .map(|idx| {
+            let y = (idx / n) % n;
+            let fx = force_amp * (2.0 * PI * y as f64 / n as f64).sin();
+            [fx, 0.0, 0.0]
+        })
+        .collect();
+    solver.set_force_field(force_field).expect("set CPU force field");
+
+    // Evolve 10 steps using Rayon parallel backend inside LbmSolver3D
+    for _ in 0..10 {
+        solver.evolve_one_step();
+    }
+
+    // Compute KE using rayon mapping and then accumulate via x87 FP80
+    let local_kes: Vec<f64> = solver.rho.par_iter().zip(solver.u.par_iter())
+        .map(|(r, u)| {
+            r * (u[0]*u[0] + u[1]*u[1] + u[2]*u[2])
+        })
+        .collect();
+
+    let mut total_ke = 0.0;
+    for chunk in local_kes.chunks(8) {
+        let mut f = [0.0; 8];
+        let c = [1.0; 8];
+        for i in 0..chunk.len() {
+            f[i] = chunk[i];
+        }
+        total_ke += verified_core::x87_math::x87_abm8_dot_product(&f, &c);
+    }
+    
+    let mean_ke = total_ke / n_total as f64;
+    println!("    [Screening] Validated mean KE (x87 FP80): {:.6e}", mean_ke);
+    
+    mean_ke.is_finite() && mean_ke < 1e5
+}
+
+#[cfg(not(target_arch = "x86_64"))]
+fn cpu_precision_screening(_n: usize, _tau: f64, _force_amp: f64) -> bool {
+    println!("    [Screening] Skipping x87 FP80 screening (not x86_64)");
+    true
+}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Reframed T3: CHSH-Betti correlation sweep")]
@@ -80,6 +130,12 @@ fn main() {
     );
 
     for (name, tau, force_amp) in &configs {
+        // Initial precision screening via CPU multiple cores + x87 FP80
+        if !cpu_precision_screening(n, *tau, *force_amp) {
+            println!("  {:>12}  {:>8}  {:>8}  {:>8}  {:>8}", name, "NaN", "NaN", 0, "SCREEN_FAIL");
+            continue;
+        }
+
         let mut solver =
             LbmSolver3DCuda::new(n, n, n, *tau, Precision::FP32).expect("GPU solver init failed");
 

@@ -7,13 +7,13 @@ updated = "2026-03-18"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
 section_count = 60
-entry_count = 425
+entry_count = 434
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
 section_count = 60
-entry_count = 425
+entry_count = 434
 
 [[section]]
 id = "BSEC-001"
@@ -5049,4 +5049,103 @@ citation_markdown = "**Gerfin, T., et al.** (1993/2016). *Optical properties of 
 notes = ["*ITO optical properties, carrier densities up to 8x10^20 cm^-3, effective mass ~0.4 m0.*"]
 urls = ["https://www.academia.edu/23283814/Optical_properties_of_transparent_and_infra_red_reflecting_ITO_films_in_the_0_2_50_%CE%BCm_range"]
 dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0426"
+order_index = 426
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Herbschleb, E. D., et al.** (2019). *Ultra-long coherence times at room temperature in isotopically engineered diamond*. Nature Communications."
+notes = ['Achieved T2 = 2.4 ms and T2* = 1.5 ms in P-doped, 12C-enriched diamond.']
+urls = []
+dois = ['10.1038/s41467-019-11776-8']
+source_line = 0
+
+[[entry]]
+id = "BIB-0427"
+order_index = 427
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Bar-Gill, N., et al.** (2013). *Solid-state electronic spin coherence time approaching one second*. Nature Communications."
+notes = ['Demonstrated T2 ~ 0.6 s at 77 K using CPMG dynamical decoupling on NV centers.']
+urls = []
+dois = ['10.1038/ncomms2771']
+source_line = 0
+
+[[entry]]
+id = "BIB-0428"
+order_index = 428
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Jarmola, A., et al.** (2012). *Temperature- and Magnetic-Field-Dependent Spin-Lattice Relaxation of Nitrogen-Vacancy Centers in Diamond*. Physical Review Letters."
+notes = ['Established the T1 temperature dependence, identifying Orbach (73 meV) and Raman two-phonon processes.']
+urls = []
+dois = ['10.1103/PhysRevLett.108.197601']
+source_line = 0
+
+[[entry]]
+id = "BIB-0429"
+order_index = 429
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Maurer, P. C., et al.** (2012). *Room-Temperature Quantum Bit Memory Exceeding One Second*. Science."
+notes = ['Achieved >1s quantum memory at room temperature using 13C nuclear spins near an NV center with QEC.']
+urls = []
+dois = ['10.1126/science.1220513']
+source_line = 0
+
+[[entry]]
+id = "BIB-0430"
+order_index = 430
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Dréau, A., et al.** (2018). *Quantum frequency conversion of single NV-center photons to the telecom C-band*. Physical Review Applied."
+notes = ['Canonical demonstration of DFG in PPLN to convert 637 nm NV photons to 1588 nm with 17% efficiency.']
+urls = []
+dois = ['10.1103/PhysRevApplied.9.064031']
+source_line = 0
+
+[[entry]]
+id = "BIB-0431"
+order_index = 431
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Kaczmarek, K. T., et al.** (2018). *High-speed noise-free optical quantum memory*. Physical Review A."
+notes = ['Introduced the ORCA protocol in warm cesium vapor, achieving GHz bandwidth and ultra-low noise.']
+urls = []
+dois = ['10.1103/PhysRevA.97.042306']
+source_line = 0
+
+[[entry]]
+id = "BIB-0432"
+order_index = 432
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Pompili, M., et al.** (2021). *Realization of a multi-node quantum network of remote solid-state qubits*. Science."
+notes = ['Demonstrated the first three-node quantum network (Alice, Bob, Charlie) with NV centers, enabling entanglement swapping.']
+urls = []
+dois = ['10.1126/science.abg1919']
+source_line = 0
+
+[[entry]]
+id = "BIB-0433"
+order_index = 433
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Hermans, S. L. J., et al.** (2022). *Qubit teleportation between non-neighbouring nodes in a quantum network*. Nature."
+notes = ['Realized qubit teleportation across the three-node Delft network, a key primitive for quantum communication.']
+urls = []
+dois = ['10.1038/s41586-022-04697-y']
+source_line = 0
+
+[[entry]]
+id = "BIB-0434"
+order_index = 434
+group = "Primary Research & Data Sources"
+section = "Quantum Information & Optics"
+citation_markdown = "**Hensen, B., et al.** (2015). *Loophole-free Bell inequality violation using electron spins separated by 1.3 kilometres*. Nature."
+notes = ['Landmark loophole-free Bell test using NV centers, measuring S = 2.42 ± 0.20.']
+urls = []
+dois = ['10.1038/nature15759']
 source_line = 0
