@@ -206,15 +206,15 @@ pub const HD_FREE_SPECTRUM: [FreqBin; N_BINS] = [
 /// Compute associator statistics at a given CD dimension via Monte Carlo.
 ///
 /// # Arguments
-/// * `dim` — Cayley-Dickson dimension (must be power of two, ≥ 4).
+/// * `dim` — Cayley-Dickson dimension (must be power of two, ≥ 16).
 /// * `n_trials` — Number of random triples to sample.
 /// * `seed` — Deterministic seed for reproducibility.
 pub fn compute_cd_algebraic_props(dim: usize, n_trials: usize, seed: u64) -> CdAlgebraicProps {
-    assert!(dim.is_power_of_two() && dim >= 4);
+    assert!(dim.is_power_of_two() && dim >= 16);
     let stats = associator_independence_stats(dim, n_trials, seed);
     CdAlgebraicProps {
         dim,
-        level: (dim as f64).log2() as u32,
+        level: dim.trailing_zeros(),
         stats,
     }
 }
