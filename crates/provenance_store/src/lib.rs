@@ -3003,65 +3003,37 @@ impl ProvenanceStore {
 
     /// List roadmap items, optionally filtered by status.
     pub fn list_roadmap_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
-        let mut out = Vec::new();
-        if let Some(s) = status_filter {
-            let mut stmt = self.conn.prepare(
-                "SELECT id, name, priority, status FROM roadmap_items WHERE status = ?1 ORDER BY id",
-            )?;
-            let rows = stmt.query_map(params![s], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-            })?;
-            for r in rows { out.push(r?); }
-        } else {
-            let mut stmt = self.conn.prepare(
-                "SELECT id, name, priority, status FROM roadmap_items ORDER BY id",
-            )?;
-            let rows = stmt.query_map([], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-            })?;
-            for r in rows { out.push(r?); }
-        }
-        Ok(out)
+        self.list_four_col_table("roadmap_items", "id, name, priority, status", status_filter)
     }
 
     /// List todo items, optionally filtered by status.
     pub fn list_todo_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
-        let mut out = Vec::new();
-        if let Some(s) = status_filter {
-            let mut stmt = self.conn.prepare(
-                "SELECT id, title, priority, status FROM todo_items WHERE status = ?1 ORDER BY id",
-            )?;
-            let rows = stmt.query_map(params![s], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-            })?;
-            for r in rows { out.push(r?); }
-        } else {
-            let mut stmt = self.conn.prepare(
-                "SELECT id, title, priority, status FROM todo_items ORDER BY id",
-            )?;
-            let rows = stmt.query_map([], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-            })?;
-            for r in rows { out.push(r?); }
-        }
-        Ok(out)
+        self.list_four_col_table("todo_items", "id, title, priority, status", status_filter)
     }
 
     /// List next-action items, optionally filtered by status.
     pub fn list_next_actions(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        self.list_four_col_table("next_action_items", "id, title, priority, status", status_filter)
+    }
+
+    /// Shared helper: query four TEXT columns from a table with optional status filter.
+    fn list_four_col_table(
+        &self,
+        table: &str,
+        cols: &str,
+        status_filter: Option<&str>,
+    ) -> Result<Vec<(String, String, String, String)>> {
         let mut out = Vec::new();
         if let Some(s) = status_filter {
-            let mut stmt = self.conn.prepare(
-                "SELECT id, title, priority, status FROM next_action_items WHERE status = ?1 ORDER BY id",
-            )?;
+            let sql = format!("SELECT {cols} FROM [{table}] WHERE status = ?1 ORDER BY id");
+            let mut stmt = self.conn.prepare(&sql)?;
             let rows = stmt.query_map(params![s], |row| {
                 Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
             })?;
             for r in rows { out.push(r?); }
         } else {
-            let mut stmt = self.conn.prepare(
-                "SELECT id, title, priority, status FROM next_action_items ORDER BY id",
-            )?;
+            let sql = format!("SELECT {cols} FROM [{table}] ORDER BY id");
+            let mut stmt = self.conn.prepare(&sql)?;
             let rows = stmt.query_map([], |row| {
                 Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
             })?;
