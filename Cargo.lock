@@ -4361,6 +4361,7 @@ name = "gr_core"
 version = "0.1.0"
 dependencies = [
  "approx",
+ "cd_kernel",
  "gauss-quad 0.2.4",
  "gororoba_algebra",
  "nalgebra 0.33.2",

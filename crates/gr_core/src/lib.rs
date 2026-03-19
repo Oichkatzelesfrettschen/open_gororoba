@@ -36,6 +36,7 @@
 //! - `area_quantization` -- LQG area spectrum, Barbero-Immirzi parameter (Barbero 1995, Immirzi 1997)
 //! - `photon_graviton_tcmt` -- Photon-graviton TCMT: maps worldline QFT amplitude to resonant scattering (Ruan-Fan 2009, Ahmadiniaz et al. 2026, Maksimov 2025)
 //! - `quantum_inequalities` -- Ford-Roman QI bounds, Pfenning-Ford warp analysis, energy conditions
+//! - `nanograv_cd_fit` -- NANOGrav 15-yr GWB spectral fitting with Cayley-Dickson tower (16D–1024D)
 //!
 //! # Literature
 //! - Bardeen (1973): Black Holes, Les Houches
@@ -105,6 +106,8 @@ pub mod spectral_bands;
 pub mod synchrotron;
 pub mod warp_metric;
 
+pub mod nanograv_cd_fit;
+
 // Re-export primary types from each module
 pub use kerr::{
     GeodesicResult, GeodesicState, Kerr, ShadowResult, geodesic_rhs, impact_parameters,
@@ -168,6 +171,11 @@ pub use fractal_metric::{
     pioneer_anomaly_prediction,
 };
 pub use warp_metric::{NacelleWarpBubble, NacelleWarpParams};
+
+pub use nanograv_cd_fit::{
+    BaselineFitResult, CdAlgebraicProps, CdDimFitResult, CdTowerFitResult, FreqBin,
+    fit_nanograv_cd_tower, fit_nanograv_cd_tower_default,
+};
 
 pub use nbody_integration::{
     AdaptiveWickResult, BodyState, NBodySystem, SingularityAvoidanceResult, WickEvolutionResult,
