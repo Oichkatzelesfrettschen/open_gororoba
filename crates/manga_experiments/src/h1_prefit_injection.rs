@@ -289,14 +289,18 @@ pub fn run_h1(config: &H1Config) -> H1Result {
 
             let absorptions: Vec<f64> = results.iter().map(|r| r.absorption).collect();
             let snrs: Vec<f64> = results.iter().map(|r| r.snr).collect();
-            let mean_abs =
-                absorptions.iter().sum::<f64>() / absorptions.len() as f64;
-            let var_abs = absorptions
-                .iter()
-                .map(|a| (a - mean_abs).powi(2))
-                .sum::<f64>()
-                / absorptions.len() as f64;
-            let mean_snr = snrs.iter().sum::<f64>() / snrs.len() as f64;
+            let (mean_abs, var_abs, mean_snr) = if absorptions.is_empty() {
+                (0.0, 0.0, 0.0)
+            } else {
+                let mean_abs = absorptions.iter().sum::<f64>() / absorptions.len() as f64;
+                let var_abs = absorptions
+                    .iter()
+                    .map(|a| (a - mean_abs).powi(2))
+                    .sum::<f64>()
+                    / absorptions.len() as f64;
+                let mean_snr = snrs.iter().sum::<f64>() / snrs.len() as f64;
+                (mean_abs, var_abs, mean_snr)
+            };
 
             CellResult {
                 alpha,
