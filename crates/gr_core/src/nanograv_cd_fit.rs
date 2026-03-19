@@ -236,7 +236,7 @@ pub fn compute_cd_algebraic_props(dim: usize, n_trials: usize, seed: u64) -> CdA
 /// σ_d is the RMS associator norm at dimension *d*, and *N* is the total
 /// number of bins. The half-bin offset avoids edge artifacts.
 pub fn cd_basis_function(dim: usize, mean_assoc_sq: f64, n_bins: usize) -> Vec<f64> {
-    let level = (dim as f64).log2() as usize;
+    let level = dim.trailing_zeros() as usize;
     let step = level.saturating_sub(3);
     let sigma = mean_assoc_sq.sqrt();
     (0..n_bins)
