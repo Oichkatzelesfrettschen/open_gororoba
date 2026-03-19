@@ -215,15 +215,23 @@ pub fn run_h2(config: &H2Config) -> H2Result {
             // Shift wavenumbers.
             let shifted_k: Vec<f64> = base_wavenumbers.iter().map(|&k| k + delta_x).collect();
 
+            // Derive a per-task base seed from the global seed and (delta_x, alpha).
+            let dx_bits = delta_x.to_bits() as u64;
+            let alpha_bits = alpha.to_bits() as u64;
+            let mut task_seed = config.seed;
+            task_seed = task_seed.wrapping_add(dx_bits.wrapping_mul(0x9E3779B185EBCA87));
+            task_seed = task_seed.wrapping_add(alpha_bits.wrapping_mul(0xC2B2AE3D27D4EB4F));
+
             let mut total_power = 0.0;
             let mut total_snr = 0.0;
             let mut n_detected = 0usize;
 
-            for (x, dv) in &residuals {
+            for (gal_idx, (x, dv)) in residuals.iter().enumerate() {
                 // Inject signal (if alpha > 0).
                 let mut dv_inj = dv.clone();
                 if alpha > 0.0 {
-                    inject_zd_signal(x, &mut dv_inj, alpha, config.seed);
+                    let galaxy_seed = task_seed.wrapping_add(gal_idx as u64);
+                    inject_zd_signal(x, &mut dv_inj, alpha, galaxy_seed);
                 }
 
                 let power = fourier_power_at_wavenumbers(x, &dv_inj, &shifted_k);
