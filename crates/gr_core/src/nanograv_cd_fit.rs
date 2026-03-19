@@ -240,6 +240,17 @@ pub fn compute_cd_algebraic_props(dim: usize, n_trials: usize, seed: u64) -> CdA
 /// σ_d is the RMS associator norm at dimension *d*, and *N* is the total
 /// number of bins. The half-bin offset avoids edge artifacts.
 pub fn cd_basis_function(dim: usize, mean_assoc_sq: f64, n_bins: usize) -> Vec<f64> {
+    // Validate inputs: CD dimension must be a power of two and at least octonionic,
+    // and the number of bins must be positive to avoid division by zero.
+    assert!(
+        dim.is_power_of_two() && dim >= 8,
+        "cd_basis_function: dim must be a power of two and at least 8 (got {dim})"
+    );
+    assert!(
+        n_bins > 0,
+        "cd_basis_function: n_bins must be greater than zero (got {n_bins})"
+    );
+
     let level = dim.trailing_zeros() as usize;
     let step = level.saturating_sub(3);
     let sigma = mean_assoc_sq.sqrt();
