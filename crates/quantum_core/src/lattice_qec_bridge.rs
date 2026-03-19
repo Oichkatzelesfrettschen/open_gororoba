@@ -14,7 +14,9 @@
 //! See BIB-0307 (Moreno 1998) for CD zero-divisor structure and
 //! BIB-0314 (Pastawski et al. 2015) for holographic code analogies.
 
+use crate::coupler_manifold::CouplerPoint;
 use crate::stabilizer_like::{CompositeCode, StabilizerLikeCode};
+use nalgebra::DVector;
 use algebra_experimental::higher_cd::SparseApeironState;
 use std::collections::HashSet;
 
@@ -173,6 +175,20 @@ impl LatticeQecSnapshot {
             strength_sum += s;
         }
         (triggered, total, strength_sum / total as f64)
+    }
+
+    /// Convert the current detection result into a CouplerPoint for manifold analysis.
+    ///
+    /// `g` should contain the control parameters (e.g., lattice Re, threshold, etc.).
+    pub fn to_coupler_point(&self, error_mask: &HashSet<usize>, g: DVector<f64>) -> CouplerPoint {
+        let (triggered, total, mean_strength) = self.detect_active_syndromes(error_mask);
+        
+        let mut o = DVector::zeros(3);
+        o[0] = (triggered as f64) + 1e-12; // Avoid log(0)
+        o[1] = (total as f64) + 1e-12;
+        o[2] = mean_strength + 1e-12;
+
+        CouplerPoint { g, o }
     }
 }
 

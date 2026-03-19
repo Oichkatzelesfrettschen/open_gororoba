@@ -14,6 +14,8 @@
 //! - Vidal, PRL 99 (2007) 220405
 //! - Swingle, PRD 86 (2012) 065007 (MERA/AdS)
 
+use crate::coupler_manifold::CouplerPoint;
+use nalgebra::DVector;
 use num_complex::Complex64;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
@@ -164,6 +166,23 @@ pub struct MeraScalingResult {
     pub intercept: f64,
     pub central_charge_estimate: f64, // c ~ 3 * slope for CFT
     pub log_scaling_confirmed: bool,
+}
+
+impl MeraScalingResult {
+    /// Convert the scaling result into a series of CouplerPoints (g=L, O=S).
+    pub fn to_coupler_manifold(&self) -> Vec<CouplerPoint> {
+        self.l_values
+            .iter()
+            .zip(self.entropies.iter())
+            .map(|(&l, &s)| {
+                let mut g = DVector::zeros(1);
+                g[0] = l as f64;
+                let mut o = DVector::zeros(1);
+                o[0] = s + 1e-12; // Avoid log(0)
+                CouplerPoint { g, o }
+            })
+            .collect()
+    }
 }
 
 /// Analyze MERA entropy scaling (C-009).

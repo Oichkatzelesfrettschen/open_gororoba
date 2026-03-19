@@ -40,13 +40,31 @@
 //! - **Axis H: Applications (`XOVER`)**
 //!   - Crystallography, EBSD, quasicrystal projections.
 //!
-//! # Zero-Divisor Emergence
-
+//! # Zero-Divisor Emergence & Ecology
 //!
 //! At dimension 16 (sedenions), zero-divisors first appear. These are non-zero
 //! pairs (a, b) where a * b = 0. The structure of these ZDs is described by:
 //! - de Marrais box-kites (7 octahedral structures in sedenions)
 //! - Reggiani's Stiefel manifold embedding V_2(R^7)
+//!
+//! ## Higher-Dimensional ZD Phenomena (Pathions and Beyond)
+//! 
+//! As defined in the Robert de Marrais corpus (e.g., *Flying Higher Than A Box-Kite*), 
+//! scaling beyond 16D introduces complex ZD network topologies:
+//! 
+//! - **Emanation Tables (ETs):** Spreadsheet-like adjacency matrices mapping Zero Divisors 
+//!   (ZDs) to each other based on shared strut constants. Empty cells indicate pairs that 
+//!   do not zero-divide.
+//! - **Carry-Bit Overflow:** In the 32D Pathions (and higher), when the strut constant `S > 8`, 
+//!   the indexing exceeds the structural capacity of standard Sedenion Box-Kites, causing 
+//!   expected zero-divisions to fail. 
+//! - **Sand Mandalas:** A direct result of carry-bit overflow. These are sparse Emanation 
+//!   Tables found in the Pathions containing only 3 Box-Kites (instead of the expected 7) 
+//!   with severe DMZ (Dyads Making Zero) sparsity.
+//! - **Muster Master (Atlas) & Pléiades:** Pathions feature higher-order ensembles like the 
+//!   7 "Pléiades" septets, and the "Muster Master" which uniquely maps Box-Kite zigzags 
+//!   to Octonion triplets, serving as a topological atlas for ZD patterns.
+
 //!
 //! # Literature
 //!
