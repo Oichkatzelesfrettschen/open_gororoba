@@ -293,6 +293,10 @@ name = "nanograv-timing-phase1-refit"
 path = "src/bin/nanograv_timing_phase1_refit.rs"
 
 [[bin]]
+name = "nanograv-timing-phase1-independent"
+path = "src/bin/nanograv_timing_phase1_independent.rs"
+
+[[bin]]
 name = "particle-numerology-audit"
 path = "src/bin/particle_numerology_audit.rs"
 
@@ -469,6 +473,7 @@ walkdir = { workspace = true }
 glob = { workspace = true }
 chrono = { workspace = true }
 hifitime = { workspace = true }
+anise = { workspace = true }
 ureq = { workspace = true }
 core_affinity = { workspace = true }
 env_logger = { workspace = true }

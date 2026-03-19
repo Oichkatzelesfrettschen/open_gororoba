@@ -3980,6 +3980,7 @@ version = "0.1.0"
 dependencies = [
  "algebra_analysis",
  "algebra_experimental",
+ "anise",
  "anstyle",
  "anyhow",
  "arrow-array",
