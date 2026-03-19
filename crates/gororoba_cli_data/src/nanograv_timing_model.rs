@@ -179,6 +179,50 @@ impl TimingModel {
                 .filter(|window| window.dmx.as_ref().is_some_and(|term| term.fit == Some(true)))
                 .count()
     }
+
+    pub fn parameter_term(&self, name: &str) -> Option<&ParameterTerm> {
+        let astrometry = [
+            self.astrometry.raj.as_ref(),
+            self.astrometry.decj.as_ref(),
+            self.astrometry.elong.as_ref(),
+            self.astrometry.elat.as_ref(),
+            self.astrometry.pmelong.as_ref(),
+            self.astrometry.pmelat.as_ref(),
+            self.astrometry.pmra.as_ref(),
+            self.astrometry.pmdec.as_ref(),
+            self.astrometry.px.as_ref(),
+            self.dispersion.dm.as_ref(),
+            self.dispersion.dmepoch.as_ref(),
+            self.dispersion.dmx_step.as_ref(),
+        ];
+        astrometry
+            .into_iter()
+            .flatten()
+            .find(|term| term.name == name)
+            .or_else(|| {
+                self.dispersion
+                    .dmx_windows
+                    .iter()
+                    .filter_map(|window| window.dmx.as_ref())
+                    .find(|term| term.name == name)
+            })
+            .or_else(|| self.spin_terms.iter().find(|term| term.name == name))
+            .or_else(|| self.fd_terms.iter().find(|term| term.name == name))
+            .or_else(|| self.other_terms.iter().find(|term| term.name == name))
+    }
+
+    pub fn parameter_value(&self, name: &str) -> Option<f64> {
+        self.parameter_term(name).and_then(|term| term.value)
+    }
+
+    pub fn parameter_bool(&self, name: &str) -> Option<bool> {
+        let term = self.parameter_term(name)?;
+        match term.raw_value.as_str() {
+            "Y" | "y" | "T" | "t" | "true" | "True" | "1" => Some(true),
+            "N" | "n" | "F" | "f" | "false" | "False" | "0" => Some(false),
+            _ => term.value.map(|value| value != 0.0),
+        }
+    }
 }
 
 pub fn load_release_timing_models(root: &Path, band: ReleaseBand) -> Result<Vec<TimingModel>> {

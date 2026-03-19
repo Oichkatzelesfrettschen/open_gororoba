@@ -1,3 +1,5 @@
+#![allow(clippy::doc_lazy_continuation)]
+
 pub mod bibliography_registry_mirror;
 pub mod book_docs_registry_mirror;
 pub mod c070_nanograv_spectrum_match_sources;

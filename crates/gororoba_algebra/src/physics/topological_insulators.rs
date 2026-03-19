@@ -38,7 +38,7 @@ pub fn anyon_braiding_phase(m: u32) -> f64 {
 pub fn is_non_abelian_anyon(_numerator: u32, denominator: u32) -> bool {
     // A heuristic: even denominators generally indicate non-Abelian states
     // in the lowest Landau level (e.g., 5/2, 12/5).
-    denominator % 2 == 0
+    denominator.is_multiple_of(2)
 }
 
 #[cfg(test)]

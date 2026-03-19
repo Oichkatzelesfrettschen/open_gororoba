@@ -4109,9 +4109,7 @@ pub fn latio3_optical() -> DrudeLorentzParams {
 /// Aluminum-doped Zinc Oxide (AZO) transparent conductor.
 ///
 /// Metallic in IR, transparent in visible. Crossover near 1 eV.
-
 /// Indium Tin Oxide (ITO) - Typical degenerate TCO
-
 /// PEDOT:PSS - Disordered conducting polymer (Drude-Smith model)
 /// Values are representative for highly conductive grades in THz/IR.
 pub fn pedot_pss_optical() -> DrudeLorentzParams {

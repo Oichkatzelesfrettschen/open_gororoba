@@ -73,10 +73,10 @@ where F: FnMut(&[usize]) -> f64 {
         
         let idx11 = j1.to_vec();
         let mut idx12 = j1.to_vec();
-        for m in k+1..d { idx12[m] = j2[m]; }
-        
+        idx12[(k + 1)..d].copy_from_slice(&j2[(k + 1)..d]);
+
         let mut idx21 = j2.to_vec();
-        for m in k+1..d { idx21[m] = j1[m]; }
+        idx21[(k + 1)..d].copy_from_slice(&j1[(k + 1)..d]);
         
         let idx22 = j2.to_vec();
 
@@ -121,9 +121,9 @@ where F: FnMut(&[usize]) -> f64 {
                     let mut idx = if alpha == 0 { j1.to_vec() } else { j2.to_vec() };
                     idx[k] = i;
                     if beta == 1 && k < d - 1 {
-                        for m in k+1..d { idx[m] = j2[m]; }
+                        idx[(k + 1)..d].copy_from_slice(&j2[(k + 1)..d]);
                     } else if beta == 0 && k < d - 1 {
-                        for m in k+1..d { idx[m] = j1[m]; }
+                        idx[(k + 1)..d].copy_from_slice(&j1[(k + 1)..d]);
                     }
                     core_data[[alpha, i, beta]] = f(&idx);
                 }

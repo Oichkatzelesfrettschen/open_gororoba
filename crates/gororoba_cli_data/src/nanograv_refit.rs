@@ -616,6 +616,7 @@ fn solve_block_generalized_least_squares(
     solve_normal_equations(&normal, &rhs)
 }
 
+#[allow(clippy::too_many_arguments)]
 fn pack_stacked_system(
     toa_matrix: &DMatrix<f64>,
     toa_response: &DVector<f64>,
@@ -701,6 +702,7 @@ fn median_sigma(values: &[f64]) -> f64 {
     sorted[sorted.len() / 2]
 }
 
+#[allow(clippy::too_many_arguments)]
 fn summarize_fit(
     parameter_names: &[String],
     coefficients: &DVector<f64>,

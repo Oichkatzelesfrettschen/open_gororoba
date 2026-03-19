@@ -22,8 +22,8 @@ pub struct QuantileRegressionResult {
 ///
 /// Decision variables z = [beta, u, v]  (p + n + n)
 pub fn solve_quantile_regression(
-    x: &Vec<Vec<f64>>, // [n][p]
-    y: &[f64],         // [n]
+    x: &[Vec<f64>], // [n][p]
+    y: &[f64],      // [n]
     tau: f64,
 ) -> QuantileRegressionResult {
     let n = y.len();
@@ -47,8 +47,8 @@ pub fn solve_quantile_regression(
 
     // beta columns
     for j in 0..p {
-        for i in 0..n {
-            a_total_data.push(x[i][j]);
+        for (i, row) in x.iter().enumerate().take(n) {
+            a_total_data.push(row[j]);
             a_total_indices.push(i);
         }
         // no entries in A_ineq for beta

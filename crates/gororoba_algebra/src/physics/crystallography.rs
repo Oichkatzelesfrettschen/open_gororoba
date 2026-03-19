@@ -10,6 +10,7 @@
 
 use crate::physics::quat_rotation::{Quaternion, quat_multiply};
 use crate::construction::cayley_dickson::cd_conjugate;
+use std::f64::consts::FRAC_1_SQRT_2;
 
 /// Misorientation between two orientations q1 and q2.
 /// Delta q = q2 * q1^{-1}.
@@ -31,18 +32,18 @@ pub const CUBIC_SYMMETRY_QUATS: [Quaternion; 24] = [
     [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0],
     [0.5, 0.5, 0.5, 0.5], [0.5, 0.5, 0.5, -0.5], [0.5, 0.5, -0.5, 0.5], [0.5, 0.5, -0.5, -0.5],
     [0.5, -0.5, 0.5, 0.5], [0.5, -0.5, 0.5, -0.5], [0.5, -0.5, -0.5, 0.5], [0.5, -0.5, -0.5, -0.5],
-    [0.70710678118, 0.70710678118, 0.0, 0.0], [0.70710678118, -0.70710678118, 0.0, 0.0],
-    [0.70710678118, 0.0, 0.70710678118, 0.0], [0.70710678118, 0.0, -0.70710678118, 0.0],
-    [0.70710678118, 0.0, 0.0, 0.70710678118], [0.70710678118, 0.0, 0.0, -0.70710678118],
-    [0.0, 0.70710678118, 0.70710678118, 0.0], [0.0, 0.70710678118, -0.70710678118, 0.0],
-    [0.0, 0.70710678118, 0.0, 0.70710678118], [0.0, 0.70710678118, 0.0, -0.70710678118],
-    [0.0, 0.0, 0.70710678118, 0.70710678118], [0.0, 0.0, 0.70710678118, -0.70710678118],
+    [FRAC_1_SQRT_2, FRAC_1_SQRT_2, 0.0, 0.0], [FRAC_1_SQRT_2, -FRAC_1_SQRT_2, 0.0, 0.0],
+    [FRAC_1_SQRT_2, 0.0, FRAC_1_SQRT_2, 0.0], [FRAC_1_SQRT_2, 0.0, -FRAC_1_SQRT_2, 0.0],
+    [FRAC_1_SQRT_2, 0.0, 0.0, FRAC_1_SQRT_2], [FRAC_1_SQRT_2, 0.0, 0.0, -FRAC_1_SQRT_2],
+    [0.0, FRAC_1_SQRT_2, FRAC_1_SQRT_2, 0.0], [0.0, FRAC_1_SQRT_2, -FRAC_1_SQRT_2, 0.0],
+    [0.0, FRAC_1_SQRT_2, 0.0, FRAC_1_SQRT_2], [0.0, FRAC_1_SQRT_2, 0.0, -FRAC_1_SQRT_2],
+    [0.0, 0.0, FRAC_1_SQRT_2, FRAC_1_SQRT_2], [0.0, 0.0, FRAC_1_SQRT_2, -FRAC_1_SQRT_2],
 ];
 
 /// Minimum misorientation angle between two orientations considering cubic symmetry.
 /// Also known as the "disorientation" angle.
 pub fn min_cubic_misorientation_angle(q1: &Quaternion, q2: &Quaternion) -> f64 {
-    let mut min_angle = std::f64::MAX;
+    let mut min_angle = f64::MAX;
     
     for s1 in &CUBIC_SYMMETRY_QUATS {
         let q1_sym = quat_multiply(s1, q1);

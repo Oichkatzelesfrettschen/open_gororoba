@@ -132,10 +132,10 @@ pub fn verify_t4_alternativity_breaks(dim: usize) -> bool {
 pub fn verify_t5_zero_divisors_exist(dim: usize) -> bool {
     if dim < 16 {
         let zds = find_zero_divisors(dim, 1e-10);
-        return zds.is_empty();
+        zds.is_empty()
     } else {
         let zds = find_zero_divisors(dim, 1e-10);
-        return !zds.is_empty();
+        !zds.is_empty()
     }
 }
 
@@ -157,8 +157,8 @@ pub fn verify_t7_xor_twist_basis(dim: usize) -> bool {
                 return false;
             }
             
-            for i in 0..dim {
-                if i != expected_idx && res[i].abs() > 1e-10 {
+            for (i, value) in res.iter().enumerate().take(dim) {
+                if i != expected_idx && value.abs() > 1e-10 {
                     return false;
                 }
             }
@@ -330,5 +330,4 @@ mod tests {
         assert!(verify_t13_triplet_scaling());
     }
 }
-
 
