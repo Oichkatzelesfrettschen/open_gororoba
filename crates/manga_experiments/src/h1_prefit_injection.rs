@@ -274,7 +274,9 @@ pub fn run_h1(config: &H1Config) -> H1Result {
             let results: Vec<GalaxyInjectionResult> = (0..config.n_galaxies)
                 .map(|i| {
                     let log_m = log_m200_min + dm * (i as f64);
-                    let gseed = seed * 100_000 + i as u64;
+                    let gseed = seed
+                        .wrapping_mul(100_000)
+                        .wrapping_add(i as u64);
                     run_single_galaxy(
                         log_m,
                         alpha,
