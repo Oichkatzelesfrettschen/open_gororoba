@@ -43,6 +43,31 @@ impl CliffordSignature {
             )
         }
     }
+
+    /// Cl(0,1) ≅ ℂ (Complex numbers)
+    pub fn complex() -> Self {
+        Self::new(0, 1)
+    }
+
+    /// Cl(0,2) ≅ ℍ (Quaternions)
+    pub fn quaternions() -> Self {
+        Self::new(0, 2)
+    }
+
+    /// Cl(3,0) ≅ ℍ ⊕ ℍ (Pauli algebra structure related)
+    pub fn split_biquaternions() -> Self {
+        Self::new(3, 0)
+    }
+
+    /// Cl(1,3) ≅ Spacetime algebra (Minkowski signature)
+    pub fn spacetime() -> Self {
+        Self::new(1, 3)
+    }
+
+    /// Cl(3,1) ≅ Majorana / Dirac structure (alternate Minkowski signature)
+    pub fn spacetime_alternate() -> Self {
+        Self::new(3, 1)
+    }
 }
 
 /// Compute the Clifford product of two basis vectors (indexed in binary).

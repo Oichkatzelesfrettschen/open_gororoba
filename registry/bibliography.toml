@@ -7,13 +7,13 @@ updated = "2026-03-17"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
 section_count = 57
-entry_count = 334
+entry_count = 344
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 57
-entry_count = 334
+section_count = 58
+entry_count = 344
 
 [[section]]
 id = "BSEC-001"
@@ -4029,4 +4029,120 @@ citation_markdown = "**Trotta, R.** (2008). *Bayes in the sky: Bayesian inferenc
 notes = ["*Bayesian evidence review. Cited in manga_zd_null_result.tex Conclusion.*"]
 urls = ["https://ui.adsabs.harvard.edu/abs/2008ConPh..49...71T"]
 dois = ["10.1080/00107510802066753"]
+source_line = 0
+
+[[section]]
+id = "BSEC-058"
+name = "Foundational Mathematics & Category Theory"
+groups = ["Primary Research & Data Sources"]
+entry_count = 10
+
+[[entry]]
+id = "BIB-0335"
+order_index = 335
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Conway, J. H.** (2001). *On Numbers and Games*. A K Peters/CRC Press."
+notes = ["*Foundational text for Surreal numbers. Referenced for SNCA(No) constructions.*"]
+urls = ["https://www.routledge.com/On-Numbers-and-Games/Conway/p/book/9781568811277"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0336"
+order_index = 336
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Baez, J. C.** (2002). *The Octonions*. Bull. Amer. Math. Soc. 39, 145-205."
+notes = ["*Comprehensive review of Cayley-Dickson construction and Octonion properties.*"]
+urls = ["https://math.ucr.edu/home/baez/octonions/"]
+dois = ["10.1090/S0273-0979-01-00934-X"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0337"
+order_index = 337
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Lurie, J.** (2009). *Higher Topos Theory*. Princeton University Press."
+notes = ["*Foundational framework for infinity-categories and homotopy limits.*"]
+urls = ["https://www.math.ias.edu/~lurie/papers/HTT.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0338"
+order_index = 338
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Connes, A. & Marcolli, M.** (2007). *Noncommutative Geometry, Quantum Fields and Motives*. American Mathematical Society."
+notes = ["*Core text for spectral triples and noncommutative physical models.*"]
+urls = ["http://www.alainconnes.org/docs/book9780821841457.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0339"
+order_index = 339
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Keller, B.** (2001). *Introduction to A-infinity algebras and modules*. Homology, Homotopy and Applications 3, 1-35."
+notes = ["*Key reference for A-infinity structures and coherence relations.*"]
+urls = ["https://projecteuclid.org/journals/homology-homotopy-and-applications/volume-3/issue-1/Introduction-to-A-infinity-algebras-and-modules/hha/1139839430.full"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0340"
+order_index = 340
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Fontaine, J-M.** (1994). *p-adic Representations*. Astérisque 223, 113-184."
+notes = ["*Foundational work on p-adic Galois representations.*"]
+urls = []
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0341"
+order_index = 341
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Adams, J. F.** (1974). *Stable Homotopy and Generalised Homology*. University of Chicago Press."
+notes = ["*Primary source for Adams spectral sequence.*"]
+urls = []
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0342"
+order_index = 342
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Quillen, D.** (1969). *Rational Homotopy Theory*. Ann. of Math. 90, 205-295."
+notes = ["*Foundational framework for model categories and homotopy limits.*"]
+urls = []
+dois = ["10.2307/1970725"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0343"
+order_index = 343
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**May, J. P.** (1999). *A Concise Course in Algebraic Topology*. University of Chicago Press."
+notes = ["*Comprehensive overview of limits, colimits, and topological structures.*"]
+urls = ["https://www.math.uchicago.edu/~may/CONCISE/ConciseRevised.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0344"
+order_index = 344
+group = "Primary Research & Data Sources"
+section = "Foundational Mathematics & Category Theory"
+citation_markdown = "**Varadarajan, V. S.** (1984). *Lie Groups, Lie Algebras, and Their Representations*. Springer-Verlag."
+notes = ["*Foundational text for E8 theory and Lie algebra representations.*"]
+urls = []
+dois = ["10.1007/978-1-4612-1126-6"]
 source_line = 0

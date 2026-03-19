@@ -216,6 +216,23 @@ pub fn feature_vector(feats: &CompositionFeatures) -> Vec<f64> {
     v
 }
 
+/// Compute a 118-dimensional elemental composition vector.
+///
+/// Each index `i` in the vector corresponds to atomic number `i+1`.
+/// The value is the stoichiometric fraction of that element in the formula.
+pub fn composition_vector_118(formula: &str) -> Result<[f64; 118], String> {
+    let fracs = composition_fractions(formula)?;
+    let mut vec = [0.0; 118];
+    for (symbol, frac) in fracs {
+        let elem = get_element(&symbol).ok_or_else(|| format!("Unknown element: {symbol}"))?;
+        let idx = (elem.atomic_number as usize).saturating_sub(1);
+        if idx < 118 {
+            vec[idx] = frac;
+        }
+    }
+    Ok(vec)
+}
+
 /// Column labels for the feature vector, matching `feature_vector` layout.
 pub fn feature_names() -> Vec<&'static str> {
     let mut names = Vec::with_capacity(54);

@@ -36,6 +36,38 @@ fn main() -> Result<()> {
     monograph.push_str("### 3.1 Warp Ring Persistence\n\n");
     monograph.push_str("Betti-1 persistence curves reveal stable topological knots in the E7-forced LBM flow...\n\n");
 
+    // 4. Theoretical Synthesis (Migrated from assemble_manuscript.py)
+    monograph.push_str("## 4. Phased Theoretical Synthesis\n\n");
+    let manifest = [
+        "docs/UNIFIED_WHITEPAPER.md",
+        "docs/THEORETICAL_SYNTHESIS_V2.md",
+        "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md",
+        "docs/PHYSICAL_INTERPRETATION.md",
+    ];
+
+    for &fpath in &manifest {
+        if Path::new(fpath).exists() {
+            let content = fs::read_to_string(fpath)?;
+            monograph.push_str(&format!("### SECTION: {}\n\n", fpath));
+            // Basic header demotion
+            monograph.push_str(&content.replace("# ", "## "));
+            monograph.push_str("\n\n");
+        }
+    }
+
+    // 5. Visual Gallery
+    monograph.push_str("## 5. Visual Gallery (Hyper-Standard)\n\n");
+    let images = [
+        "data/artifacts/images/hyper_fractal_sedenion.png",
+        "data/artifacts/images/hyper_mass_ladder_v2.png",
+        "data/artifacts/images/genesis_simulation_grand.png",
+    ];
+
+    for &img in &images {
+        let name = Path::new(img).file_name().unwrap().to_str().unwrap();
+        monograph.push_str(&format!("### {}\n![Artifact](../../{})\n\n", name, img));
+    }
+
     fs::create_dir_all("docs/monograph")?;
     fs::write(output_path, monograph)?;
 

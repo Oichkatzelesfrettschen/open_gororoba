@@ -14,7 +14,8 @@
 //! KDE method: Lamb, Taylor & van Haasteren (2023), PhysRevD 108, 103019
 
 use crate::fetcher::{
-    DatasetProvider, FetchConfig, FetchError, download_to_file, validate_not_html,
+    DatasetProvider, FetchConfig, FetchError, download_to_file, download_with_fallbacks,
+    extract_tar_gz, validate_not_html,
 };
 use std::{
     fs,
@@ -601,6 +602,15 @@ pub fn write_free_spectrum_csv(
 const NANOGRAV_KDE_URL: &str =
     "https://zenodo.org/api/records/10344086/files/NANOGrav15yr_KDE-FreeSpectra_v1.1.0.zip/content";
 
+/// NANOGrav 15yr full pulsar-timing release, Zenodo record 16051178 (CC BY 4.0).
+///
+/// This is the public v2.1.0 release described by the collaboration as the
+/// complete narrowband + wideband 15-year timing package, including TOAs,
+/// timing solutions, clock files, templates, correlations, and residuals.
+const NANOGRAV_TIMING_URLS: &[&str] = &[
+    "https://zenodo.org/api/records/16051178/files/NANOGrav15yr_PulsarTiming_v2.1.0.tar.gz/content",
+];
+
 /// NANOGrav 15-year free spectrum data provider.
 ///
 /// Downloads the KDE ZIP (5.3 MB) from Zenodo, extracts point estimates
@@ -671,6 +681,89 @@ impl DatasetProvider for NanoGrav15yrProvider {
             .join("nanograv_15yr_freespectrum.csv")
             .exists()
     }
+}
+
+/// NANOGrav 15-year full pulsar-timing data provider.
+///
+/// Downloads the official v2.1.0 public release tarball and extracts it under
+/// `data/external/nanograv_15yr_timing/`. This is the real timing-data lane,
+/// distinct from the smaller free-spectrum KDE product above.
+pub struct NanoGrav15yrTimingProvider;
+
+impl DatasetProvider for NanoGrav15yrTimingProvider {
+    fn name(&self) -> &str {
+        "NANOGrav 15yr Pulsar Timing"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let archive_path = config
+            .output_dir
+            .join("nanograv_15yr_pulsar_timing_v2.1.0.tar.gz");
+        let extract_dir = config.output_dir.join("nanograv_15yr_timing");
+        if config.skip_existing && nanograv_timing_tree_present(&extract_dir) {
+            log::info!("{} already cached at {}", self.name(), extract_dir.display());
+            return Ok(extract_dir);
+        }
+
+        download_with_fallbacks(
+            self.name(),
+            NANOGRAV_TIMING_URLS,
+            &archive_path,
+            config.skip_existing,
+        )?;
+        let extracted = extract_tar_gz(&archive_path, &extract_dir)?;
+        if extracted.is_empty() {
+            return Err(FetchError::Validation(format!(
+                "Extracted zero paths from {}",
+                archive_path.display()
+            )));
+        }
+        if !nanograv_timing_tree_present(&extract_dir) {
+            return Err(FetchError::Validation(format!(
+                "Extracted {} but did not find .par/.tim timing files under {}",
+                archive_path.display(),
+                extract_dir.display()
+            )));
+        }
+        Ok(extract_dir)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        nanograv_timing_tree_present(&config.output_dir.join("nanograv_15yr_timing"))
+    }
+}
+
+fn nanograv_timing_tree_present(root: &Path) -> bool {
+    fn walk(dir: &Path, saw_par: &mut bool, saw_tim: &mut bool) -> bool {
+        let Ok(entries) = fs::read_dir(dir) else {
+            return false;
+        };
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                if walk(&path, saw_par, saw_tim) && *saw_par && *saw_tim {
+                    return true;
+                }
+                continue;
+            }
+            match path.extension().and_then(|ext| ext.to_str()) {
+                Some("par") => *saw_par = true,
+                Some("tim") => *saw_tim = true,
+                _ => {}
+            }
+            if *saw_par && *saw_tim {
+                return true;
+            }
+        }
+        *saw_par && *saw_tim
+    }
+
+    if !root.exists() {
+        return false;
+    }
+    let mut saw_par = false;
+    let mut saw_tim = false;
+    walk(root, &mut saw_par, &mut saw_tim)
 }
 
 #[cfg(test)]

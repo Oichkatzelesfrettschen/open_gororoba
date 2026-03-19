@@ -46,12 +46,16 @@ impl<M: SpacetimeMetric> FractalMetric<M> {
     /// This is the same functional form as the Pioneer anomaly
     /// deceleration when v is the spacecraft velocity and r is the
     /// heliocentric distance.
-    pub fn anomalous_acceleration(&self, r: f64, v: f64) -> f64 {
-        if r > 1e-10 {
-            -(self.d_f - 4.0) * v * v / (2.0 * r)
-        } else {
-            0.0
-        }
+    /// Compute the effective gravitational coupling constant G_eff.
+    ///
+    /// Following the "Comprehensive Critical Audit", we implement a
+    /// dimensionally consistent scaling:
+    ///   G_eff(D_f) = G_0 * exp(-alpha * (D_f - 4))
+    ///
+    /// This ensures that the exponential correction is dimensionless and
+    /// recovers G_0 when the fractal dimension D_f = 4.0.
+    pub fn effective_gravitational_coupling(&self, g0: f64, alpha: f64) -> f64 {
+        g0 * (-alpha * (self.d_f - 4.0)).exp()
     }
 }
 

@@ -92,6 +92,10 @@ path = "src/bin/test_tda_api.rs"
 name = "thesis-42-support"
 path = "src/bin/thesis_42_support.rs"
 
+[[bin]]
+name = "vis-hyper-artifacts"
+path = "src/bin/vis_hyper_artifacts.rs"
+
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
@@ -111,6 +115,7 @@ sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
 gororoba_engine = { path = "../gororoba_engine" }
+gororoba_view_raster = { path = "../gororoba_view_raster" }
 gororoba_cli_physics = { path = "../gororoba_cli_physics" }
 provenance_store = { path = "../provenance_store" }
 tda = { workspace = true }

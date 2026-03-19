@@ -66,6 +66,168 @@ pub struct ChernResult {
     pub energies_gamma: Vec<f64>,
 }
 
+/// Compute gap Chern number using multi-band Projector-FHS with polar stabilization.
+///
+/// Computes the Chern number of the lowest `r` bands using the SVD-based polar
+/// decomposition of the overlap matrix to ensure exact unitarity on discrete meshes.
+pub fn fhs_chern_gap_polar(p: u32, q: u32, r: usize, n_grid: usize) -> i32 {
+    let q_usize = q as usize;
+    let dk = 2.0 * PI / n_grid as f64;
+
+    // Precompute all eigenvectors
+    let mut evecs: Vec<Vec<Mat<c64>>> = Vec::with_capacity(n_grid);
+    for i in 0..n_grid {
+        let kx = i as f64 * dk - PI; // Center around 0
+        let mut row = Vec::with_capacity(n_grid);
+        for j in 0..n_grid {
+            let ky = j as f64 * dk - PI;
+            let h = harper_hamiltonian(kx, ky, p, q);
+            let (_, evec) = diagonalize(&h);
+            row.push(evec);
+        }
+        evecs.push(row);
+    }
+
+    // Helper: Compute W = V0^dagger * V1 (r x r overlap matrix)
+    let overlap_matrix = |v0: &Mat<c64>, v1: &Mat<c64>| -> Mat<c64> {
+        let mut w = Mat::<c64>::zeros(r, r);
+        for i in 0..r {
+            for j in 0..r {
+                let mut sum = c64::new(0.0, 0.0);
+                for k in 0..q_usize {
+                    let a = v0.read(k, i); // conj inside loop
+                    let b = v1.read(k, j);
+                    sum = c64::new(
+                        sum.re + a.re * b.re + a.im * b.im,
+                        sum.im + a.re * b.im - a.im * b.re,
+                    );
+                }
+                w.write(i, j, sum);
+            }
+        }
+        w
+    };
+
+    // Helper: Polar unitary factor Q = U * V^dagger via SVD
+    let unitary_polar = |w: &Mat<c64>| -> Mat<c64> {
+        let svd = w.svd();
+        let u = svd.u();
+        let v = svd.v();
+        // Q = U * V^dagger
+        let mut q_mat = Mat::<c64>::zeros(r, r);
+        for i in 0..r {
+            for j in 0..r {
+                let mut sum = c64::new(0.0, 0.0);
+                for k in 0..r {
+                    let ui = u.read(i, k);
+                    let vj = v.read(j, k); // V is not adjungated yet
+                    // v^dagger is v_conj_transpose, so we want v[j,k]^* which is v^H[k,j]
+                    let vj_conj = c64::new(vj.re, -vj.im);
+                    sum = c64::new(
+                        sum.re + ui.re * vj_conj.re - ui.im * vj_conj.im,
+                        sum.im + ui.re * vj_conj.im + ui.im * vj_conj.re,
+                    );
+                }
+                q_mat.write(i, j, sum);
+            }
+        }
+        q_mat
+    };
+
+    // Helper: determinant of r x r matrix (Gaussian elimination for small matrices)
+    let determinant = |m: &Mat<c64>| -> c64 {
+        if r == 1 {
+            return m.read(0, 0);
+        }
+        let mut det = c64::new(1.0, 0.0);
+        let mut temp = m.clone();
+        for i in 0..r {
+            let pivot = temp.read(i, i);
+            det = c64::new(
+                det.re * pivot.re - det.im * pivot.im,
+                det.re * pivot.im + det.im * pivot.re,
+            );
+            if pivot.re.abs() < 1e-15 && pivot.im.abs() < 1e-15 {
+                return c64::new(0.0, 0.0);
+            }
+            let inv_pivot = c64::new(
+                pivot.re / (pivot.re * pivot.re + pivot.im * pivot.im),
+                -pivot.im / (pivot.re * pivot.re + pivot.im * pivot.im),
+            );
+            for j in i..r {
+                let val = temp.read(i, j);
+                temp.write(
+                    i,
+                    j,
+                    c64::new(
+                        val.re * inv_pivot.re - val.im * inv_pivot.im,
+                        val.re * inv_pivot.im + val.im * inv_pivot.re,
+                    ),
+                );
+            }
+            for k in (i + 1)..r {
+                let factor = temp.read(k, i);
+                for j in i..r {
+                    let val1 = temp.read(k, j);
+                    let val2 = temp.read(i, j);
+                    temp.write(
+                        k,
+                        j,
+                        c64::new(
+                            val1.re - (factor.re * val2.re - factor.im * val2.im),
+                            val1.im - (factor.re * val2.im + factor.im * val2.re),
+                        ),
+                    );
+                }
+            }
+        }
+        det
+    };
+
+    let mut phase_sum = crate::kahan::KahanSum::new();
+
+    for i in 0..n_grid {
+        let ip = (i + 1) % n_grid;
+        for j in 0..n_grid {
+            let jp = (j + 1) % n_grid;
+
+            let v00 = &evecs[i][j];
+            let v10 = &evecs[ip][j];
+            let v11 = &evecs[ip][jp];
+            let v01 = &evecs[i][jp];
+
+            let w1 = overlap_matrix(v00, v10);
+            let w2 = overlap_matrix(v10, v11);
+            let w3 = overlap_matrix(v11, v01);
+            let w4 = overlap_matrix(v01, v00);
+
+            let q1 = unitary_polar(&w1);
+            let q2 = unitary_polar(&w2);
+            let q3 = unitary_polar(&w3);
+            let q4 = unitary_polar(&w4);
+
+            let d1 = determinant(&q1);
+            let d2 = determinant(&q2);
+            let d3 = determinant(&q3);
+            let d4 = determinant(&q4);
+
+            let prod1 = c64::new(d1.re * d2.re - d1.im * d2.im, d1.re * d2.im + d1.im * d2.re);
+            let prod2 = c64::new(
+                prod1.re * d3.re - prod1.im * d3.im,
+                prod1.re * d3.im + prod1.im * d3.re,
+            );
+            let loop_det = c64::new(
+                prod2.re * d4.re - prod2.im * d4.im,
+                prod2.re * d4.im + prod2.im * d4.re,
+            );
+
+            phase_sum.add(loop_det.im.atan2(loop_det.re));
+        }
+    }
+
+    (phase_sum.total() / (2.0 * PI)).round() as i32
+}
+
 /// Result of Hofstadter butterfly calculation.
 #[derive(Clone, Debug)]
 pub struct ButterflyResult {

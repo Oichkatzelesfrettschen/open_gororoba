@@ -34,6 +34,68 @@ impl SliceAxis {
 pub enum ColorMap {
     Viridis,
     Inferno,
+    Turbo, // Neon/Cyberpunk
+}
+
+/// Rasterize a complex fractal potential into an ARGB framebuffer using domain coloring.
+///
+/// Implements the logic from src/vis_hyper_fractal.py.
+pub fn render_hyper_fractal_to_argb(
+    framebuffer: &mut [u32],
+    width: usize,
+    height: usize,
+    z_min: (f64, f64),
+    z_max: (f64, f64),
+) {
+    let (xmin, ymin) = z_min;
+    let (xmax, ymax) = z_max;
+    let dx = (xmax - xmin) / width as f64;
+    let dy = (ymax - ymin) / height as f64;
+
+    let lut = lookup_table(ColorMap::Turbo);
+
+    for row in 0..height {
+        let y = ymin + row as f64 * dy;
+        let row_base = row * width;
+        for col in 0..width {
+            let x = xmin + col as f64 * dx;
+            
+            // V(z) = sum_{n=1}^7 exp(i*n*pi/4) / (z^n + 0.1)
+            let mut v_re = 0.0;
+            let mut v_im = 0.0;
+            
+            for n in 1..=7 {
+                let phase = (n as f64) * std::f64::consts::PI / 4.0;
+                let p_re = phase.cos();
+                let p_im = phase.sin();
+                
+                // z^n (complex power)
+                let mut zn_re = 1.0;
+                let mut zn_im = 0.0;
+                for _ in 0..n {
+                    let tmp_re = zn_re * x - zn_im * y;
+                    let tmp_im = zn_re * y + zn_im * x;
+                    zn_re = tmp_re;
+                    zn_im = tmp_im;
+                }
+                
+                // Denominator: z^n + 0.1
+                let d_re = zn_re + 0.1;
+                let d_im = zn_im;
+                let d_mag_sq = d_re * d_re + d_im * d_im + 1e-12;
+                
+                // term = phase / denominator
+                v_re += (p_re * d_re + p_im * d_im) / d_mag_sq;
+                v_im += (p_im * d_re - p_re * d_im) / d_mag_sq;
+            }
+            
+            let mag = (v_re * v_re + v_im * v_im).sqrt();
+            // Log scaling for visibility
+            let t = ((mag + 1e-9).ln() + 5.0) / 10.0; // Map [-5, 5] -> [0, 1]
+            let t_clamped = t.clamp(0.0, 1.0);
+            framebuffer[row_base + col] = lut[(t_clamped * 255.0) as usize];
+        }
+    }
 }
 
 /// Configuration for rendering one scalar volume slice.
@@ -187,6 +249,26 @@ fn lookup_table(color_map: ColorMap) -> [u32; 256] {
                 ((1.97 * (1.0 - t) - 0.19) * (1.0 - t) * 255.0).clamp(0.0, 255.0)
                     as u32,
             ),
+            ColorMap::Turbo => {
+                // Neon/Cyberpunk palette approximation
+                // Dark -> Purple -> Blue -> Cyan -> Green -> White
+                if t < 0.2 {
+                    let f = t / 0.2;
+                    ( (f * 100.0) as u32, 0, (f * 200.0) as u32 )
+                } else if t < 0.4 {
+                    let f = (t - 0.2) / 0.2;
+                    ( (100.0 - f * 100.0) as u32, (f * 128.0) as u32, 200 + (f * 55.0) as u32 )
+                } else if t < 0.6 {
+                    let f = (t - 0.4) / 0.2;
+                    ( 0, 128 + (f * 127.0) as u32, 255 )
+                } else if t < 0.8 {
+                    let f = (t - 0.6) / 0.2;
+                    ( (f * 128.0) as u32, 255, 255 - (f * 200.0) as u32 )
+                } else {
+                    let f = (t - 0.8) / 0.2;
+                    ( 128 + (f * 127.0) as u32, 255, 55 + (f * 200.0) as u32 )
+                }
+            }
         };
         *item = 0xFF00_0000 | (r << 16) | (g << 8) | b;
     }

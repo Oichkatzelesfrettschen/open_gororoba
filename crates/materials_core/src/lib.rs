@@ -30,6 +30,7 @@ pub mod crystal_symmetry;
 pub mod e8_crystal_bridge;
 pub mod effective_medium;
 pub mod featurizer;
+pub mod kramers_kronig;
 pub mod landy_absorber;
 pub mod liquid_crystal;
 pub mod metamaterial;

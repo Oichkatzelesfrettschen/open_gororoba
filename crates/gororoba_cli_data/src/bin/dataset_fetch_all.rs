@@ -43,6 +43,7 @@ fn all_providers() -> Vec<Box<dyn DatasetProvider>> {
         Box::new(sdss::SdssQsoProvider),
         Box::new(desi_bao::DesiBaoProvider),
         Box::new(nanograv::NanoGrav15yrProvider),
+        Box::new(nanograv::NanoGrav15yrTimingProvider),
         Box::new(planck::PlanckChainsProvider),
         Box::new(planck::Wmap9ChainsProvider),
         Box::new(planck::PlanckSummaryProvider),

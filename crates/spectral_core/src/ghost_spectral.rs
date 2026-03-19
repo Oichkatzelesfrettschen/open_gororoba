@@ -147,6 +147,10 @@ pub struct CombinedPValueResult {
     pub stouffer_z: f64,
     /// Stouffer's combined p-value.
     pub stouffer_p: f64,
+    /// Harmonic mean p-value (Wilson 2019) - uncorrected.
+    pub harmonic_mean_p: f64,
+    /// Corrected harmonic mean p-value (Wilson 2019) - robust to dependence.
+    pub harmonic_mean_p_corrected: f64,
     /// Number of datasets combined.
     pub n_datasets: usize,
     /// Per-dataset p-values that were combined.
@@ -767,6 +771,8 @@ pub fn combine_p_values(p_values: &[f64], sample_sizes: &[f64]) -> CombinedPValu
             fisher_p: 1.0,
             stouffer_z: 0.0,
             stouffer_p: 1.0,
+            harmonic_mean_p: 1.0,
+            harmonic_mean_p_corrected: 1.0,
             n_datasets: 0,
             per_dataset_p: Vec::new(),
             weights: Vec::new(),
@@ -804,11 +810,27 @@ pub fn combine_p_values(p_values: &[f64], sample_sizes: &[f64]) -> CombinedPValu
     // Two-sided p-value for Stouffer Z
     let stouffer_p = 2.0 * normal_cdf(-stouffer_z.abs());
 
+    // Harmonic mean p-value (Wilson 2019)
+    // p_HM = sum(w_i) / sum(w_i / p_i)
+    // Using equal weights for now
+    let inv_p_sum: f64 = clamped_p.iter().map(|&p| 1.0 / p).sum();
+    let harmonic_mean_p = k as f64 / inv_p_sum;
+
+    // Asymptotically corrected p-value: p_corrected = e * ln(K) * p_HM
+    let harmonic_mean_p_corrected = if k >= 2 {
+        let correction = std::f64::consts::E * (k as f64).ln();
+        (correction * harmonic_mean_p).min(1.0)
+    } else {
+        harmonic_mean_p
+    };
+
     CombinedPValueResult {
         fisher_chi2,
         fisher_p,
         stouffer_z,
         stouffer_p,
+        harmonic_mean_p,
+        harmonic_mean_p_corrected,
         n_datasets: k,
         per_dataset_p: p_values.to_vec(),
         weights,

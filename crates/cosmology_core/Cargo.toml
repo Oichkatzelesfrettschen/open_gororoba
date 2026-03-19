@@ -32,6 +32,9 @@ argmin-math = { workspace = true, optional = true }
 parquet = { workspace = true, optional = true }
 arrow-array = { workspace = true, optional = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
+data_core = { version = "0.1.0", path = "../data_core" }
+stats_core = { version = "0.1.0", path = "../stats_core" }
+ndarray = { workspace = true }
 
 [features]
 default = []
