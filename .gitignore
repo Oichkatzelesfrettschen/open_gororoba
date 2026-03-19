@@ -199,6 +199,11 @@ credentials.*
 !docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md
 !docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md
 !docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md
+!docs/GRAND_SYNTHESIS.md
+!docs/NAVIGATOR.md
+!docs/EXCEPTIONAL_COSMOLOGY.md
+!docs/SEDENION_GRAVASTAR_EQUIVALENCE.md
+!docs/GRAND_SYNTHESIS_PLAN.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
