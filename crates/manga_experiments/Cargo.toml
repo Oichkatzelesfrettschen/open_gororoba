@@ -10,12 +10,6 @@ description = "Four dark-matter hypothesis experiments with ablations on MaNGA v
 # NFW / DC14 halo profiles, harmonic stacking, rotation-curve utilities
 cosmology_core = { path = "../cosmology_core" }
 
-# Statistical gates (pvalue_gate, bootstrap_ci_gate, GateRegistry)
-stats_core = { path = "../stats_core" }
-
-# FFT, power spectrum, spectral analysis
-spectral_core = { path = "../spectral_core" }
-
 # Bonferroni / BH / BY p-value correction
 adjustp = { workspace = true }
 
@@ -29,12 +23,6 @@ rand_distr = { workspace = true }
 
 # Data parallelism
 rayon = { workspace = true }
-
-# N-dimensional arrays
-ndarray = { workspace = true }
-
-# FFT
-rustfft = { workspace = true }
 
 [dev-dependencies]
 

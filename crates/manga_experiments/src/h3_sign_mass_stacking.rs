@@ -135,15 +135,6 @@ fn classify_galaxy(
     }
 }
 
-/// Number of cells for a given split mode and mass bins.
-fn n_cells(mode: SplitMode, n_mass_bins: usize) -> usize {
-    match mode {
-        SplitMode::SignAndMass => 2 * n_mass_bins,
-        SplitMode::SignOnly => 2,
-        SplitMode::MassOnly => n_mass_bins,
-    }
-}
-
 /// Cell label.
 fn cell_label(sign: usize, mass_bin: usize, mode: SplitMode) -> String {
     match mode {
@@ -189,7 +180,6 @@ pub fn run_h3(config: &H3Config, mode: SplitMode) -> H3Result {
     );
 
     let n_mass_bins = config.mass_bin_edges.len().saturating_sub(1);
-    let _nc = n_cells(mode, n_mass_bins);
     let wavenumbers = predicted_wavenumbers_cd16();
 
     // Compute residuals and classify.
