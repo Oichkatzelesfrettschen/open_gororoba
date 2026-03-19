@@ -2989,27 +2989,40 @@ impl ProvenanceStore {
 
     /// Full-text search across research narratives.
     pub fn search_narratives(&self, query: &str, limit: usize) -> Result<Vec<(String, String, f64)>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT rn.id, rn.title, bm25(research_narrative_search) as rank
-             FROM research_narrative_search fts
-             JOIN research_narratives rn ON fts.rowid = rn.rowid
-             WHERE research_narrative_search MATCH ?1
-             ORDER BY rank
-             LIMIT ?2",
-        )?;
-        let rows = stmt.query_map(params![query, limit as i64], |row| {
-            Ok((
-                row.get::<_, String>(0)?,
-                row.get::<_, String>(1)?,
-                row.get::<_, f64>(2)?,
-            ))
-        })?;
-        let mut out = Vec::new();
-        for r in rows {
-            out.push(r?);
-        }
-        Ok(out)
+        search_narratives_on_conn(&self.conn, query, limit)
     }
+}
+
+/// Internal helper to run narrative FTS queries against an arbitrary connection.
+///
+/// Exposed as `pub(crate)` so tests can exercise the FTS wiring with an
+/// in-memory database without needing to construct a full store instance.
+pub(crate) fn search_narratives_on_conn(
+    conn: &rusqlite::Connection,
+    query: &str,
+    limit: usize,
+) -> Result<Vec<(String, String, f64)>> {
+    let mut stmt = conn.prepare(
+        "SELECT rn.id, rn.title, bm25(research_narrative_search) as rank
+         FROM research_narrative_search fts
+         JOIN research_narratives rn ON fts.rowid = rn.rowid
+         WHERE research_narrative_search MATCH ?1
+         ORDER BY rank
+         LIMIT ?2",
+    )?;
+    let rows = stmt.query_map(params![query, limit as i64], |row| {
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, String>(1)?,
+            row.get::<_, f64>(2)?,
+        ))
+    })?;
+    let mut out = Vec::new();
+    for r in rows {
+        out.push(r?);
+    }
+    Ok(out)
+}
 
     /// List roadmap items, optionally filtered by status.
     pub fn list_roadmap_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
@@ -3025,6 +3038,72 @@ impl ProvenanceStore {
     pub fn list_next_actions(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
         self.list_four_col_table("next_action_items", "id, title, priority, status", status_filter)
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rusqlite::{params, Connection};
+
+    /// Verify that the narrative FTS wiring works end-to-end against an
+    /// in-memory SQLite database.
+    #[test]
+    fn search_narratives_fts_works_with_in_memory_db() {
+        // Set up an in-memory database with the minimal schema required by
+        // `search_narratives_on_conn`.
+        let conn = Connection::open_in_memory().expect("open in-memory db");
+
+        conn.execute(
+            "CREATE TABLE research_narratives (
+                 id    TEXT PRIMARY KEY,
+                 title TEXT NOT NULL,
+                 body  TEXT NOT NULL
+             )",
+            [],
+        )
+        .expect("create research_narratives table");
+
+        conn.execute(
+            "CREATE VIRTUAL TABLE research_narrative_search
+             USING fts5(title, body, content='research_narratives', content_rowid='rowid')",
+            [],
+        )
+        .expect("create research_narrative_search FTS table");
+
+        // Insert two narratives with different content so that a query for
+        // 'sqlite' only matches one of them.
+        conn.execute(
+            "INSERT INTO research_narratives (id, title, body)
+             VALUES (?1, ?2, ?3)",
+            params!["n1", "SQLite narrative", "This narrative talks about sqlite and databases."],
+        )
+        .expect("insert narrative n1");
+
+        conn.execute(
+            "INSERT INTO research_narratives (id, title, body)
+             VALUES (?1, ?2, ?3)",
+            params!["n2", "Unrelated narrative", "This one is about something else entirely."],
+        )
+        .expect("insert narrative n2");
+
+        // Populate the FTS index from the base table.
+        conn.execute(
+            "INSERT INTO research_narrative_search (rowid, title, body)
+             SELECT rowid, title, body FROM research_narratives",
+            [],
+        )
+        .expect("populate FTS index");
+
+        // Perform the FTS search through the same helper used by the main API.
+        let results =
+            search_narratives_on_conn(&conn, "sqlite", 10).expect("search_narratives_on_conn failed");
+
+        // We expect exactly one hit and it should be the narrative about SQLite.
+        assert_eq!(results.len(), 1, "expected exactly one FTS match");
+        assert_eq!(results[0].0, "n1");
+        assert_eq!(results[0].1, "SQLite narrative");
+    }
+}
 
     /// Shared helper: query four TEXT columns from a table with optional status filter.
     fn list_four_col_table(
