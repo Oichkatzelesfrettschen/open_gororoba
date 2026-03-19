@@ -22,6 +22,9 @@ pub mod split_octonion;
 pub mod tessarines;
 pub mod wheels;
 pub mod species_audit;
+pub mod twist;
+pub mod cd_loop;
+
 
 
 pub mod cd {

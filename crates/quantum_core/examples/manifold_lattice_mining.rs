@@ -11,8 +11,7 @@ use quantum_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = "../../data/topological_voids.csv";
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+    let _file = File::open(path)?;
 
     // We'll perform a sweep over the density threshold to define "syndromes"
     let rho_thresholds = vec![0.05, 0.1, 0.2, 0.4, 0.6, 0.8];
@@ -22,7 +21,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &thr in &rho_thresholds {
         let mut count = 0;
-        let mut total = 0;
         
         // Re-read file for each threshold (not the most efficient, but simple)
         let f = File::open(path)?;
@@ -40,7 +38,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             if rho < thr && imbalance > 0.4 {
                 count += 1;
             }
-            total += 1;
         }
         
         println!("Threshold g={:.2}: Syndrome Count O={}", thr, count);

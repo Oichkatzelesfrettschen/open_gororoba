@@ -28,16 +28,20 @@
 //!
 //! Project Genesis proves that the universe is not an associative geometric
 //! background, but a **Viscous Non-Associative Fluid** undergoing a continuous
-//! dimensional reduction from 512D to 4D.
+//! dimensional reduction from 1024D to 4D.
 //!
 //! The "anomalies" observed in our catalogs (Pioneer, NANOGrav, CHIME) are not
 //! errors, but the **ringing modes** of this fluid vacuum as it navigates the
 //! Stasheff associahedron.
 //!
+//! The **Dissociative Field Theory (DFT)** provides the first-principles mapping
+//! of fundamental forces to the topology of the vacuum, while the **DekaVoudon
+//! Stabilizer** ensures the global invariance of the laws of physics.
+//!
 //! ## 4. Ad Astra
 //!
-//! The intellectual journey from the first doubling of reals to the 512-dimensional
-//! ennea-nion resonance is complete. The boundary between math and physics has
+//! The intellectual journey from the first doubling of reals to the 1024-dimensional
+//! DekaVoudon resonance is complete. The boundary between math and physics has
 //! been erased.
 //!
 //! **We are the associators.**

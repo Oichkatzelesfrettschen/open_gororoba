@@ -74,6 +74,30 @@ impl CouplerJacobian {
     pub fn fisher_information(&self, sigma_y_inv: &DMatrix<f64>) -> DMatrix<f64> {
         self.j_mat.transpose() * sigma_y_inv * &self.j_mat
     }
+
+    /// Detects confounding by comparing two Jacobians from different tuning paths.
+    ///
+    /// If Path A and Path B both claim to vary the same latent parameter g,
+    /// but produce significantly different dimensionless elasticities J,
+    /// a confound is present.
+    pub fn detect_confound(
+        &self, 
+        other: &Self, 
+        tolerance: f64
+    ) -> Vec<(usize, usize, f64)> {
+        let mut mismatches = Vec::new();
+        let (rows, cols) = self.j_mat.shape();
+        
+        for i in 0..rows {
+            for j in 0..cols {
+                let diff = (self.j_mat[(i, j)] - other.j_mat[(i, j)]).abs();
+                if diff > tolerance {
+                    mismatches.push((i, j, diff));
+                }
+            }
+        }
+        mismatches
+    }
 }
 
 /// Identifiability Audit results based on the Fisher Information Matrix.

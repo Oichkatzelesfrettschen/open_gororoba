@@ -37,7 +37,10 @@
 //! 30. [Integral Octonions and the E8 Lattice](integral_octonions_e8)
 //! 31. [Algebraic Wick Rotation and the Emergence of Time](algebraic_wick_rotation)
 //! 32. [The Cosmological Constant as a Topological Flux](cosmological_flux)
-//! 33. [Conclusion: The Directus Maximalus Unified Field](conclusion)
+//! 33. [Dissociative Field Theory (DFT)](dissociative_field_theory)
+//! 34. [The Banach-Tarski Resonance Law](banach_tarski_resonance)
+//! 35. [Voudons and the DekaVoudon Manifold](voudon_global_stabilizer)
+//! 36. [Conclusion: The Directus Maximalus Unified Field](conclusion)
 
 pub mod foundations;
 pub mod optics;
@@ -71,4 +74,7 @@ pub mod topological_rendering;
 pub mod integral_octonions_e8;
 pub mod algebraic_wick_rotation;
 pub mod cosmological_flux;
+pub mod dissociative_field_theory;
+pub mod banach_tarski_resonance;
+pub mod voudon_global_stabilizer;
 pub mod conclusion;

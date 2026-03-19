@@ -10,6 +10,8 @@
 //! - Ryu & Takayanagi, PRL 96 (2006) 181602 - Holographic entanglement
 //! - Swingle, PRD 86 (2012) 065007 - MERA/AdS connection
 
+use crate::coupler_manifold::CouplerPoint;
+use nalgebra::DVector;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::collections::{HashMap, HashSet, VecDeque};
@@ -217,9 +219,66 @@ impl RTLattice {
         }
     }
 
-    /// Get edge weight.
-    pub fn weight(&self, from: usize, to: usize) -> f64 {
-        *self.edge_weights.get(&Edge::new(from, to)).unwrap_or(&1.0)
+    /// Build a simple p-adic hyperbolic-like Bruhat-Tits tree lattice.
+    ///
+    /// Creates a tree with `p` branching factor and `depth` levels.
+    pub fn build_bruhat_tits(p: usize, depth: usize, seed: u64) -> Self {
+        let mut rng = ChaCha8Rng::seed_from_u64(seed);
+
+        // n_total = (p^(depth+1) - 1) / (p - 1)
+        let mut n_total = 0;
+        for i in 0..=depth {
+            n_total += p.pow(i as u32);
+        }
+        
+        let n_boundary = p.pow(depth as u32);
+        let n_bulk = n_total - n_boundary;
+
+        let mut adjacency: Vec<Vec<usize>> = vec![Vec::new(); n_total];
+        let mut edge_weights = HashMap::new();
+
+        // Build p-ary tree structure
+        for i in 0..n_bulk {
+            for j in 1..=p {
+                let child = p * i + j;
+                if child < n_total {
+                    adjacency[i].push(child);
+                    adjacency[child].push(i);
+                    let weight = 1.0 + 0.1 * rng.r#gen::<f64>();
+                    edge_weights.insert(Edge::new(i, child), weight);
+                }
+            }
+        }
+
+        let boundary_sites: Vec<usize> = ((n_total - n_boundary)..n_total).collect();
+        let bulk_sites: Vec<usize> = (0..(n_total - n_boundary)).collect();
+
+        RTLattice {
+            n_boundary,
+            n_bulk,
+            n_total,
+            adjacency,
+            edge_weights,
+            boundary_sites,
+            bulk_sites,
+        }
+    }
+}
+
+impl EntropyScalingResult {
+    /// Convert RT scaling results to CouplerPoints (g=L, O=S).
+    pub fn to_coupler_manifold(&self) -> Vec<CouplerPoint> {
+        self.sizes
+            .iter()
+            .zip(self.entropies.iter())
+            .map(|(&l, &s)| {
+                let mut g = DVector::zeros(1);
+                g[0] = l as f64;
+                let mut o = DVector::zeros(1);
+                o[0] = s + 1e-12; // Avoid log(0)
+                CouplerPoint { g, o }
+            })
+            .collect()
     }
 }
 
