@@ -177,13 +177,22 @@ pub fn generate_galaxy_sample(
     n_galaxies: usize,
     log_m200_min: f64,
     log_m200_max: f64,
+    z: f64,
+    n_points: usize,
+    noise_frac: f64,
     seed: u64,
 ) -> Vec<SyntheticGalaxy> {
     let dm = (log_m200_max - log_m200_min) / (n_galaxies as f64 - 1.0).max(1.0);
     (0..n_galaxies)
         .map(|i| {
             let log_m200 = log_m200_min + dm * (i as f64);
-            generate_synthetic_galaxy(log_m200, 0.03, 30, 0.05, seed.wrapping_add(i as u64))
+            generate_synthetic_galaxy(
+                log_m200,
+                z,
+                n_points,
+                noise_frac,
+                seed.wrapping_add(i as u64),
+            )
         })
         .collect()
 }
