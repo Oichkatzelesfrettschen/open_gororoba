@@ -2791,7 +2791,7 @@ impl ProvenanceStore {
             let count: i64 = self
                 .conn
                 .query_row(&format!("SELECT count(*) FROM [{name}]"), [], |r| r.get(0))
-                .unwrap_or(0);
+                .with_context(|| format!("Failed to count rows in table '{name}'"))?;
             let mut cols_stmt =
                 self.conn.prepare(&format!("PRAGMA table_info([{name}])"))?;
             let cols: Vec<String> = cols_stmt
