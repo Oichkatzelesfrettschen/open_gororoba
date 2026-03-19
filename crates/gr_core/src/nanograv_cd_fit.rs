@@ -441,7 +441,7 @@ pub fn fit_nanograv_cd_tower(n_trials: usize, seed: u64) -> CdTowerFitResult {
 
     let best = fits
         .iter()
-        .min_by(|a, b| a.chi_sq_per_dof.partial_cmp(&b.chi_sq_per_dof).unwrap())
+        .min_by(|a, b| a.chi_sq_per_dof.total_cmp(&b.chi_sq_per_dof))
         .unwrap();
 
     CdTowerFitResult {
