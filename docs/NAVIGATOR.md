@@ -42,10 +42,10 @@ The entire research programme rests on Cayley-Dickson algebra. All other layers 
 
 | Concept | Key claims | Code | Status |
 |---------|-----------|------|--------|
-| Nonlocal metamaterial topology | C-010 | `src/nonlocal_metamaterial.rs` | Closed/Negative-Result |
+| Nonlocal metamaterial topology | C-010 | `crates/materials_core/src/nonlocal_metamaterial.rs` | Closed/Negative-Result |
 | Pathion metamaterial mapping | C-053 | — | Verified/Toy |
-| Tight-binding sedenion basis | — | `src/tight_binding.rs` | Active |
-| Magnonic crystal modes | — | `src/magnonic_crystal.rs` | Active |
+| Tight-binding sedenion basis | — | `crates/materials_core/src/tight_binding.rs` | Active |
+| Magnonic crystal modes | — | `crates/quantum_core/src/magnonic_crystal.rs` | Active |
 | AFLOW/NOMAD integration | — | `crates/data_core/src/catalogs/` | Active |
 
 **Key lesson:** The 7-clique ZD topology requires explicit non-local coupling bridges. Local lattice models alone cannot reproduce holographic mode selection.
