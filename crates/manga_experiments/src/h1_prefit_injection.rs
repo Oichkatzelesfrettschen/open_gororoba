@@ -111,9 +111,10 @@ pub struct H1Result {
 // Core logic
 // ---------------------------------------------------------------------------
 
-/// Bounded Nelder-Mead NFW fit on a rotation curve (r, v_obs).
+/// 1D bounded NFW fit on a rotation curve (r, v_obs).
 ///
-/// Optimises (log_m200) to minimise chi-squared.  Returns best-fit M_200.
+/// Performs a coarse grid search plus golden-section refinement over log_m200
+/// to minimise chi-squared. Returns best-fit M_200.
 fn fit_nfw_to_curve(r: &[f64], v_obs: &[f64], v_err: &[f64], z: f64) -> f64 {
     // 1-parameter grid search + golden-section refinement over log_m200.
     let mut best_chi2 = f64::MAX;
