@@ -1,0 +1,22 @@
+[package]
+name = "gororoba_db"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Rust-native CLI for the SQLite source-of-truth database"
+license = "MIT"
+autobins = false
+
+[[bin]]
+name = "gororoba-db"
+path = "src/bin/gororoba_db.rs"
+
+[dependencies]
+provenance_store = { path = "../provenance_store" }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+toml = { workspace = true }
+anyhow = { workspace = true }
+
+[lints]
+workspace = true
