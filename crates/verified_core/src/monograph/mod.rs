@@ -23,6 +23,8 @@
 //! 16. [The Cl(9) Vacuum and E8 Unification](cl9_unification)
 //! 17. [Pathionic Resonance and the Higgs Mechanism](pathionic_resonance)
 //! 18. [Black Hole Stability and Negative Dimensions](black_hole_stability)
+//! 19. [Homotopical Algebra and the Stasheff Polytope](stasheff_homotopy)
+//! 20. [Persistent Homology of the Sedenion Vacuum](persistent_homology)
 
 pub mod foundations;
 pub mod optics;
@@ -42,3 +44,5 @@ pub mod holographic_area;
 pub mod cl9_unification;
 pub mod pathionic_resonance;
 pub mod black_hole_stability;
+pub mod stasheff_homotopy;
+pub mod persistent_homology;

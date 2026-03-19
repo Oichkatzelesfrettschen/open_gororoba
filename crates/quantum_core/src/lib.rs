@@ -193,3 +193,15 @@ pub use hamiltonian_sparse::{build_sparse_hamiltonian, build_sparse_hamiltonian_
 pub mod lattice_qec_bridge;
 pub mod qec_boxkite;
 pub mod stabilizer_like;
+pub mod coupler_manifold;
+
+pub use coupler_manifold::{
+    CouplerPoint,
+    CouplerJacobian,
+    IdentifiabilityAudit,
+    suppression_factor,
+    suppression_elasticity,
+    qec,
+    mipt,
+    tree_geometry,
+};
