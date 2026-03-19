@@ -628,7 +628,7 @@ mod tests {
     fn algebraic_props_level_correct() {
         for &dim in &CD_STACK {
             let props = compute_cd_algebraic_props(dim, 50, 99);
-            let expected_level = (dim as f64).log2() as u32;
+            let expected_level = dim.trailing_zeros();
             assert_eq!(props.level, expected_level, "Level mismatch for dim={dim}");
         }
     }
