@@ -25,6 +25,10 @@
 //! 18. [Black Hole Stability and Negative Dimensions](black_hole_stability)
 //! 19. [Homotopical Algebra and the Stasheff Polytope](stasheff_homotopy)
 //! 20. [Persistent Homology of the Sedenion Vacuum](persistent_homology)
+//! 21. [Fast Radio Bursts and the Macquart Relation](macquart_cosmology)
+//! 22. [Warp Metrics and Algebraic Energy Conditions](warp_algebra_bridge)
+//! 23. [Tensor Holography and Entanglement Entropy](tensor_holography)
+//! 24. [Neural Homotopy and the Stasheff Landscape](neural_homotopy_surrogate)
 
 pub mod foundations;
 pub mod optics;
@@ -46,3 +50,7 @@ pub mod pathionic_resonance;
 pub mod black_hole_stability;
 pub mod stasheff_homotopy;
 pub mod persistent_homology;
+pub mod macquart_cosmology;
+pub mod warp_algebra_bridge;
+pub mod tensor_holography;
+pub mod neural_homotopy_surrogate;

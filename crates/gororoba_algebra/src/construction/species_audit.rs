@@ -310,5 +310,11 @@ mod tests {
         assert!(verify_t11_orix_reproducibility());
         assert!(verify_t12_e8_octonion_bridge());
     }
+
+    #[test]
+    fn test_audit_t13_triplet_scaling() {
+        assert!(verify_t13_triplet_scaling());
+    }
 }
+
 
