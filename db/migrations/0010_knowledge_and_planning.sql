@@ -145,7 +145,7 @@ CREATE VIRTUAL TABLE research_narrative_search USING fts5(
     title,
     body_markdown,
     content='research_narratives',
-    content_rowid='rowid'
+    content_rowid='ROWID'
 );
 
 -- ── Notebook sessions (evcxr / Jupyter integration) ─────────────────
