@@ -382,7 +382,12 @@ pub fn fit_single_dim(
         _ => phi[i],
     });
 
-    let beta = wls_solve(&design, &y, &weights).unwrap_or_else(|| DVector::zeros(3));
+    let beta = wls_solve(&design, &y, &weights).unwrap_or_else(|| {
+        panic!(
+            "Weighted least squares solver failed in fit_single_dim: singular normal equations (dim = {}, n = {})",
+            props.dim, n
+        )
+    });
     let y_hat = &design * &beta;
     let cs = chi_squared(&y, &y_hat, &weights);
     let dof = n.saturating_sub(3);
