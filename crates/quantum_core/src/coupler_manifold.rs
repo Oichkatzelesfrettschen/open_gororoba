@@ -6,8 +6,12 @@
 //! 2. MIPT scaling, effective measurement rates, and identifiability audits.
 //! 3. Two-sector mixture models (smooth vs. burst) to handle rare-event failures.
 //! 4. Fisher information to detect parameter identifiability gaps.
+//! 5. Bootstrap Resampling for uncertainty quantification in Jacobian estimations.
+//! 6. p-adic Bruhat-Tits Tree representations for hierarchical correlation lengths.
 
 use nalgebra::{DMatrix, DVector};
+use rand::seq::SliceRandom;
+use rand::thread_rng;
 
 /// Represents an observation point in the coupler manifold coordinate chart.
 #[derive(Debug, Clone)]
@@ -67,9 +71,6 @@ impl CouplerJacobian {
 
     /// Computes the Fisher Information matrix: F = J^T \Sigma_y^{-1} J
     /// where \Sigma_y is the covariance matrix of \ln O.
-    /// If F is ill-conditioned or singular, some linear combinations of \ln g 
-    /// are not identifiable from the observables used (e.g. changing T changes 
-    /// both p and noise simultaneously).
     pub fn fisher_information(&self, sigma_y_inv: &DMatrix<f64>) -> DMatrix<f64> {
         self.j_mat.transpose() * sigma_y_inv * &self.j_mat
     }
@@ -79,6 +80,7 @@ impl CouplerJacobian {
 pub struct IdentifiabilityAudit {
     pub is_identifiable: bool,
     pub condition_number: f64,
+    pub min_singular_value: f64,
 }
 
 impl IdentifiabilityAudit {
@@ -87,6 +89,10 @@ impl IdentifiabilityAudit {
         let svd = fisher_info.clone().svd(false, false);
         let singular_values = svd.singular_values;
         
+        if singular_values.len() == 0 {
+            return None;
+        }
+
         let max_sv = singular_values[0];
         let min_sv = singular_values[singular_values.len() - 1];
 
@@ -94,14 +100,64 @@ impl IdentifiabilityAudit {
             Some(Self {
                 is_identifiable: false,
                 condition_number: f64::INFINITY,
+                min_singular_value: min_sv,
             })
         } else {
             let cond = max_sv / min_sv;
             Some(Self {
                 is_identifiable: true,
                 condition_number: cond,
+                min_singular_value: min_sv,
             })
         }
+    }
+}
+
+/// Resampling framework for experimental observables (Bootstrap)
+pub struct BootstrapEstimator;
+
+impl BootstrapEstimator {
+    /// Given a dataset of measurements, resample with replacement `num_bootstraps` times
+    /// to estimate the empirical mean and covariance.
+    pub fn estimate_mean_and_cov(data: &[DVector<f64>], num_bootstraps: usize) -> (DVector<f64>, DMatrix<f64>) {
+        if data.is_empty() {
+            return (DVector::zeros(0), DMatrix::zeros(0, 0));
+        }
+
+        let n = data.len();
+        let dim = data[0].len();
+        let mut rng = thread_rng();
+
+        let mut b_means = Vec::with_capacity(num_bootstraps);
+
+        for _ in 0..num_bootstraps {
+            let mut sample_sum = DVector::zeros(dim);
+            for _ in 0..n {
+                let picked = data.choose(&mut rng).unwrap();
+                sample_sum += picked;
+            }
+            b_means.push(sample_sum / (n as f64));
+        }
+
+        // Compute mean of bootstrap means
+        let mut overall_mean = DVector::zeros(dim);
+        for m in &b_means {
+            overall_mean += m;
+        }
+        overall_mean /= num_bootstraps as f64;
+
+        // Compute covariance
+        let mut cov = DMatrix::zeros(dim, dim);
+        for m in &b_means {
+            let diff = m - &overall_mean;
+            cov += &diff * diff.transpose();
+        }
+        
+        if num_bootstraps > 1 {
+            cov /= (num_bootstraps - 1) as f64;
+        }
+
+        (overall_mean, cov)
     }
 }
 
@@ -151,6 +207,16 @@ pub mod qec {
 
 /// Theoretical scaling laws for MIPT (Measurement-Induced Phase Transitions)
 pub mod mipt {
+    /// Differentiates between transitions at the averaged-channel level
+    /// and the trajectory (purity/entanglement) level.
+    #[derive(Debug, Clone)]
+    pub struct MiptObservables {
+        /// Order parameter for the average quantum channel (e.g., absorbing state transition)
+        pub channel_absorbing: f64,
+        /// Order parameter for individual trajectories (e.g., entanglement entropy or purity proxy)
+        pub trajectory_entanglement: f64,
+    }
+
     /// Heuristic effective measurement rate from MIPT experiments:
     /// p \approx M / ((M+L)*T)
     /// Note: Changing T changes p, but also accumulates physical noise, 
@@ -185,10 +251,35 @@ pub mod tree_geometry {
     }
 
     impl HierarchicalTree {
-        /// Computes distance equivalent for popcount/Hamming vs Bruhat-Tits
-        /// A proper p-adic ultrametric uses |x - y|_p = p^{-v_p(x-y)}
-        pub fn p_adic_valuation_norm(x_y_diff_val: i32, p: f64) -> f64 {
-            p.powi(-x_y_diff_val)
+        /// Computes popcount distance which is not strictly ultrametric
+        pub fn popcount_distance(x: i32, y: i32) -> u32 {
+            (x ^ y).count_ones()
+        }
+    }
+
+    /// Bruhat-Tits Tree construction for p-adic holography
+    pub struct BruhatTitsTree {
+        pub p: usize,
+    }
+
+    impl BruhatTitsTree {
+        pub fn new(p: usize) -> Self {
+            Self { p }
+        }
+
+        /// Computes the p-adic valuation norm |x - y|_p = p^{-v_p(x-y)}
+        /// which induces a strong triangle inequality (ultrametricity).
+        pub fn p_adic_norm(&self, x: i32, y: i32) -> f64 {
+            if x == y {
+                return 0.0;
+            }
+            let mut diff = (x - y).abs();
+            let mut val = 0;
+            while diff % (self.p as i32) == 0 && diff > 0 {
+                val += 1;
+                diff /= self.p as i32;
+            }
+            (self.p as f64).powi(-val)
         }
     }
 }
@@ -223,6 +314,26 @@ mod tests {
     }
 
     #[test]
+    fn test_bruhat_tits_ultrametric() {
+        let tree = tree_geometry::BruhatTitsTree::new(2);
+        // Distance between 0 and 2: 2 is 2^1 * 1, v_2(2) = 1. Distance = 2^{-1} = 0.5
+        let d1 = tree.p_adic_norm(0, 2);
+        assert!((d1 - 0.5).abs() < 1e-9);
+
+        // Distance between 0 and 4: 4 is 2^2 * 1, v_2(4) = 2. Distance = 2^{-2} = 0.25
+        let d2 = tree.p_adic_norm(0, 4);
+        assert!((d2 - 0.25).abs() < 1e-9);
+
+        // Distance between 2 and 4: diff is 2, v_2(2) = 1. Distance = 2^{-1} = 0.5
+        let d3 = tree.p_adic_norm(2, 4);
+        assert!((d3 - 0.5).abs() < 1e-9);
+
+        // Strong triangle inequality: d(0, 4) <= max(d(0, 2), d(2, 4))
+        // 0.25 <= max(0.5, 0.5) => true
+        assert!(d2 <= d1.max(d3));
+    }
+
+    #[test]
     fn test_coupler_jacobian_estimation() {
         let mut g_base = DVector::zeros(2);
         g_base[0] = 0.5; // p/p_thr
@@ -248,5 +359,19 @@ mod tests {
         
         // Check J_{0, 0}
         assert!((jacobian.j_mat[(0, 0)] - 3.0).abs() < 0.1); 
+    }
+
+    #[test]
+    fn test_bootstrap_estimation() {
+        // Just verify it runs and dimension matches
+        let data = vec![
+            DVector::from_vec(vec![1.0, 2.0]),
+            DVector::from_vec(vec![1.1, 2.1]),
+            DVector::from_vec(vec![0.9, 1.9]),
+        ];
+        let (mean, cov) = BootstrapEstimator::estimate_mean_and_cov(&data, 100);
+        assert_eq!(mean.len(), 2);
+        assert_eq!(cov.nrows(), 2);
+        assert_eq!(cov.ncols(), 2);
     }
 }
