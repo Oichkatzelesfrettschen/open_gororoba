@@ -1,17 +1,19 @@
-use algebra_analysis::codebook::{
-    LatticeVector, enumerate_lambda_4096, is_in_lambda_256, is_in_lambda_512, is_in_lambda_1024,
+use algebra_analysis::{
+    codebook::{
+        LatticeVector, enumerate_lambda_4096, is_in_lambda_256, is_in_lambda_512, is_in_lambda_1024,
+    },
+    sky_mapping::project_sky_to_basis,
 };
-use algebra_analysis::sky_mapping::project_sky_to_basis;
 use anyhow::{Context, Result, bail};
 use clap::{Parser, ValueEnum};
 use csv::Writer;
 use data_core::spatial::equatorial_to_galactic_lat;
 use gororoba_algebra::gpu::{ComputeBackend, TensorAVT};
-use gororoba_cli_data::nanograv_timing::{
-    load_release, PairAuditRow, PulsarTimingData,
+use gororoba_cli_data::nanograv_timing::{PairAuditRow, PulsarTimingData, load_release};
+use stats_core::{
+    helpers::mean,
+    metrics::{centered_rms, pearson, percent_drop, rms},
 };
-use stats_core::helpers::mean;
-use stats_core::metrics::{centered_rms, pearson, percent_drop, rms};
 use std::{
     fmt::Write as _,
     fs,
@@ -34,6 +36,9 @@ struct Args {
 
     #[arg(long, default_value = "data/csv/nanograv_avt_whitening_sweep.csv")]
     csv_out: PathBuf,
+
+    #[arg(long, default_value = "data/csv/nanograv_pulsar_frustrations_512d.csv")]
+    frustration_csv_out: PathBuf,
 
     #[arg(long, default_value = "data/csv/nanograv_15yr_pairwise_hd_audit.csv")]
     pairwise_csv: PathBuf,
@@ -124,6 +129,8 @@ struct PerDimensionSummary {
     null_mean_drop_pct: f64,
     null_max_drop_pct: f64,
     null_pvalue: f64,
+    bonferroni_pvalue: f64,
+    bh_q_value: f64,
     static_field_centered_invariant: bool,
     per_pulsar_drop_pct: f64,
     cross_corr_drop_pct: f64,
@@ -220,27 +227,32 @@ fn main() -> Result<()> {
             &pairwise_rows,
         ));
     }
+    apply_multiple_testing_corrections(&mut summaries);
 
     write_csv(&args.csv_out, &summaries)?;
     write_report(&args.report_out, &args, &summaries)?;
-    let lattice_512 = lattice_for_dimension(512); 
-    let prepared_512 = prepare_pulsars(&release, &args, &lattice_512, 512, backend)?; 
-    let mut frust_writer = csv::Writer::from_path("data/csv/nanograv_pulsar_frustrations_512d.csv")?; 
-    frust_writer.write_record(["pulsar", "frustration_z", "ra_deg", "dec_deg"])?; 
-    for p in prepared_512 { 
-        if let Some(sky) = release.get(&p.pulsar).and_then(|d| d.sky_vector()) { 
-            let ra = sky[1].atan2(sky[0]).to_degrees(); 
-            let dec = sky[2].asin().to_degrees(); 
-            frust_writer.write_record([ 
-                p.pulsar, 
-                format!("{:.12}", p.frustration_z), 
-                format!("{:.12}", ra), 
-                format!("{:.12}", dec), 
-            ])?; 
-        } 
-    } 
-    frust_writer.flush()?; 
-    println!("Resonance data saved to data/csv/nanograv_pulsar_frustrations_512d.csv");
+    let lattice_512 = lattice_for_dimension(512);
+    let prepared_512 = prepare_pulsars(&release, &args, &lattice_512, 512, backend)?;
+    ensure_parent_dir(&args.frustration_csv_out)?;
+    let mut frust_writer = csv::Writer::from_path(&args.frustration_csv_out)?;
+    frust_writer.write_record(["pulsar", "frustration_z", "ra_deg", "dec_deg"])?;
+    for p in prepared_512 {
+        if let Some(sky) = release.get(&p.pulsar).and_then(|d| d.sky_vector()) {
+            let ra = sky[1].atan2(sky[0]).to_degrees();
+            let dec = sky[2].asin().to_degrees();
+            frust_writer.write_record([
+                p.pulsar,
+                format!("{:.12}", p.frustration_z),
+                format!("{:.12}", ra),
+                format!("{:.12}", dec),
+            ])?;
+        }
+    }
+    frust_writer.flush()?;
+    println!(
+        "Resonance data saved to {}",
+        args.frustration_csv_out.display()
+    );
 
     println!("AVT audit dimensions: {}", summaries.len());
     println!("CSV: {}", args.csv_out.display());
@@ -286,7 +298,10 @@ fn enumerate_lambda_256() -> Vec<LatticeVector> {
 }
 
 fn enumerate_lambda_generic(dimension: usize) -> Vec<LatticeVector> {
-    enumerate_lambda_4096().into_iter().take(dimension).collect()
+    enumerate_lambda_4096()
+        .into_iter()
+        .take(dimension)
+        .collect()
 }
 
 fn prepare_pulsars(
@@ -335,9 +350,17 @@ fn prepare_pulsars(
                 continue;
             }
         }
-        
-        let uncertainties: Vec<f64> = data.avg_residuals.iter().filter_map(|p| p.uncertainty_us).collect();
-        let avg_unc = if uncertainties.is_empty() { 1.0 } else { stats_core::helpers::mean(&uncertainties) };
+
+        let uncertainties: Vec<f64> = data
+            .avg_residuals
+            .iter()
+            .filter_map(|p| p.uncertainty_us)
+            .collect();
+        let avg_unc = if uncertainties.is_empty() {
+            1.0
+        } else {
+            stats_core::helpers::mean(&uncertainties)
+        };
 
         let projected = project_sky_to_basis(&sky, lattice, dimension);
         packed_vectors.extend(projected.iter().map(|value| *value as f32));
@@ -350,7 +373,8 @@ fn prepare_pulsars(
         bail!("no pulsars with usable residuals and sky metadata for AVT audit");
     }
 
-    let frustrations = compute_frustration_scores(&packed_vectors, names.len(), dimension, backend)?;
+    let frustrations =
+        compute_frustration_scores(&packed_vectors, names.len(), dimension, backend)?;
     let standardized = zscore(&frustrations);
     let mut out = Vec::new();
     for (((name, residuals), frustration_z), avg_unc) in names
@@ -418,11 +442,14 @@ fn analyze_dimension(
     let null_drops = shifted_null_drops(pulsars, args.folds, lambda_grid, args.null_shifts);
     let null_mean_drop_pct = mean(&null_drops);
     let null_max_drop_pct = null_drops.iter().copied().fold(f64::NEG_INFINITY, f64::max);
-    let null_hits = null_drops.iter().filter(|&&drop| drop >= raw_drop_pct).count();
+    let null_hits = null_drops
+        .iter()
+        .filter(|&&drop| drop >= raw_drop_pct)
+        .count();
     let null_pvalue = if null_drops.is_empty() {
         1.0
     } else {
-        null_hits as f64 / null_drops.len() as f64
+        (null_hits as f64 + 1.0) / (null_drops.len() as f64 + 1.0)
     };
 
     // --- 1. Per-Pulsar Whitening ---
@@ -445,13 +472,13 @@ fn analyze_dimension(
                 best_sum_sq_whitened = sum_sq;
             }
         }
-        
+
         let weight = if pulsar.avg_uncertainty_mean_us > 0.0 {
             1.0 / (pulsar.avg_uncertainty_mean_us * pulsar.avg_uncertainty_mean_us)
         } else {
             1.0
         };
-        
+
         total_var_raw += sum_sq_raw * weight;
         total_var_whitened += best_sum_sq_whitened * weight;
     }
@@ -478,8 +505,11 @@ fn analyze_dimension(
         for &lambda in lambda_grid {
             let mut current_cc_var = 0.0;
             for row in pairwise_rows {
-                if let (Some(&f_a), Some(&f_b)) = (frust_map.get(&row.pulsar_a), frust_map.get(&row.pulsar_b)) {
-                    let diff_whitened = (row.avg_residual_pearson - lambda * f_a * f_b) - row.hellings_downs;
+                if let (Some(&f_a), Some(&f_b)) =
+                    (frust_map.get(&row.pulsar_a), frust_map.get(&row.pulsar_b))
+                {
+                    let diff_whitened =
+                        (row.avg_residual_pearson - lambda * f_a * f_b) - row.hellings_downs;
                     let weight = row.overlap_bins as f64;
                     current_cc_var += diff_whitened * diff_whitened * weight;
                 }
@@ -513,11 +543,21 @@ fn analyze_dimension(
             let mut test_pairs = Vec::new();
 
             for row in pairwise_rows {
-                let Some(&f_a) = frust_map.get(&row.pulsar_a) else { continue; };
-                let Some(&f_b) = frust_map.get(&row.pulsar_b) else { continue; };
-                
-                let a_fold = assignments[pulsars.iter().position(|p| p.pulsar == row.pulsar_a).unwrap()];
-                let b_fold = assignments[pulsars.iter().position(|p| p.pulsar == row.pulsar_b).unwrap()];
+                let Some(&f_a) = frust_map.get(&row.pulsar_a) else {
+                    continue;
+                };
+                let Some(&f_b) = frust_map.get(&row.pulsar_b) else {
+                    continue;
+                };
+
+                let a_fold = assignments[pulsars
+                    .iter()
+                    .position(|p| p.pulsar == row.pulsar_a)
+                    .unwrap()];
+                let b_fold = assignments[pulsars
+                    .iter()
+                    .position(|p| p.pulsar == row.pulsar_b)
+                    .unwrap()];
 
                 if a_fold != fold && b_fold != fold {
                     train_pairs.push((row, f_a, f_b));
@@ -550,7 +590,8 @@ fn analyze_dimension(
             let mut test_var_whitened = 0.0;
             for (row, f_a, f_b) in &test_pairs {
                 let diff_raw = row.avg_residual_pearson - row.hellings_downs;
-                let diff_whitened = (row.avg_residual_pearson - best_lambda * f_a * f_b) - row.hellings_downs;
+                let diff_whitened =
+                    (row.avg_residual_pearson - best_lambda * f_a * f_b) - row.hellings_downs;
                 let weight = row.overlap_bins as f64;
                 test_var_raw += diff_raw * diff_raw * weight;
                 test_var_whitened += diff_whitened * diff_whitened * weight;
@@ -604,6 +645,8 @@ fn analyze_dimension(
             0.0
         },
         null_pvalue,
+        bonferroni_pvalue: 0.0,
+        bh_q_value: 0.0,
         static_field_centered_invariant: centered_drop_pct.abs() < 1.0e-12,
         per_pulsar_drop_pct,
         cross_corr_drop_pct,
@@ -852,6 +895,33 @@ fn backend_label(backend: ComputeBackend) -> &'static str {
     }
 }
 
+fn apply_multiple_testing_corrections(summaries: &mut [PerDimensionSummary]) {
+    if summaries.is_empty() {
+        return;
+    }
+    let family_size = summaries.len() as f64;
+    let mut ranked = summaries
+        .iter()
+        .enumerate()
+        .map(|(idx, row)| (idx, row.null_pvalue))
+        .collect::<Vec<_>>();
+    ranked.sort_by(|left, right| left.1.total_cmp(&right.1));
+
+    let mut bh_q_values = vec![1.0; summaries.len()];
+    let mut running_min: f64 = 1.0;
+    for (reverse_rank, (idx, pvalue)) in ranked.iter().enumerate().rev() {
+        let rank = (reverse_rank + 1) as f64;
+        let adjusted = (*pvalue * family_size / rank).min(1.0);
+        running_min = running_min.min(adjusted);
+        bh_q_values[*idx] = running_min;
+    }
+
+    for (idx, row) in summaries.iter_mut().enumerate() {
+        row.bonferroni_pvalue = (row.null_pvalue * family_size).min(1.0);
+        row.bh_q_value = bh_q_values[idx];
+    }
+}
+
 fn write_csv(path: &PathBuf, summaries: &[PerDimensionSummary]) -> Result<()> {
     ensure_parent_dir(path)?;
     let mut writer = Writer::from_path(path)?;
@@ -874,6 +944,8 @@ fn write_csv(path: &PathBuf, summaries: &[PerDimensionSummary]) -> Result<()> {
         "null_mean_drop_pct",
         "null_max_drop_pct",
         "null_pvalue",
+        "bonferroni_pvalue",
+        "bh_q_value",
         "static_field_centered_invariant",
         "per_pulsar_drop_pct",
         "cross_corr_drop_pct",
@@ -899,6 +971,8 @@ fn write_csv(path: &PathBuf, summaries: &[PerDimensionSummary]) -> Result<()> {
             format!("{:.12}", row.null_mean_drop_pct),
             format!("{:.12}", row.null_max_drop_pct),
             format!("{:.12}", row.null_pvalue),
+            format!("{:.12}", row.bonferroni_pvalue),
+            format!("{:.12}", row.bh_q_value),
             row.static_field_centered_invariant.to_string(),
             format!("{:.12}", row.per_pulsar_drop_pct),
             format!("{:.12}", row.cross_corr_drop_pct),
@@ -921,7 +995,16 @@ fn write_report(path: &PathBuf, args: &Args, summaries: &[PerDimensionSummary]) 
     let _ = writeln!(out, "lambda_min = {:.12}", args.lambda_min);
     let _ = writeln!(out, "lambda_max = {:.12}", args.lambda_max);
     let _ = writeln!(out, "lambda_steps = {}", args.lambda_steps);
-    let _ = writeln!(out, "scope_note = \"This lane applies a sightline-static scalar field per pulsar. It can adjust per-pulsar means, but it cannot whiten centered intra-pulsar scatter without introducing time- or pair-dependent structure.\"");
+    let _ = writeln!(out, "null_pvalue_method = \"plus_one_smoothed_shift_null\"");
+    let _ = writeln!(
+        out,
+        "scope_note = \"This lane applies a sightline-static scalar field per pulsar. It can adjust per-pulsar means, but it cannot whiten centered intra-pulsar scatter without introducing time- or pair-dependent structure.\""
+    );
+    let _ = writeln!(out, "multiple_testing_family_size = {}", summaries.len());
+    let _ = writeln!(
+        out,
+        "multiple_testing_method = \"bonferroni + benjamini-hochberg\""
+    );
     let _ = writeln!(out, "claims = [\"C-1113\", \"C-458\"]");
     for row in summaries {
         let _ = writeln!(out);
@@ -929,7 +1012,11 @@ fn write_report(path: &PathBuf, args: &Args, summaries: &[PerDimensionSummary]) 
         let _ = writeln!(out, "dim = {}", row.dimension);
         let _ = writeln!(out, "backend = \"{}\"", row.backend);
         let _ = writeln!(out, "pulsar_count = {}", row.pulsar_count);
-        let _ = writeln!(out, "nonzero_frustration_count = {}", row.nonzero_frustration_count);
+        let _ = writeln!(
+            out,
+            "nonzero_frustration_count = {}",
+            row.nonzero_frustration_count
+        );
         let _ = writeln!(out, "frustration_min = {:.12}", row.frustration_min);
         let _ = writeln!(out, "frustration_max = {:.12}", row.frustration_max);
         let _ = writeln!(out, "frustration_std = {:.12}", row.frustration_std);
@@ -956,6 +1043,8 @@ fn write_report(path: &PathBuf, args: &Args, summaries: &[PerDimensionSummary]) 
         let _ = writeln!(out, "null_mean_drop_pct = {:.12}", row.null_mean_drop_pct);
         let _ = writeln!(out, "null_max_drop_pct = {:.12}", row.null_max_drop_pct);
         let _ = writeln!(out, "null_pvalue = {:.12}", row.null_pvalue);
+        let _ = writeln!(out, "bonferroni_pvalue = {:.12}", row.bonferroni_pvalue);
+        let _ = writeln!(out, "bh_q_value = {:.12}", row.bh_q_value);
         let _ = writeln!(
             out,
             "static_field_centered_invariant = {}",
@@ -963,7 +1052,11 @@ fn write_report(path: &PathBuf, args: &Args, summaries: &[PerDimensionSummary]) 
         );
         let _ = writeln!(out, "per_pulsar_drop_pct = {:.12}", row.per_pulsar_drop_pct);
         let _ = writeln!(out, "cross_corr_drop_pct = {:.12}", row.cross_corr_drop_pct);
-        let _ = writeln!(out, "cv_cross_corr_drop_pct = {:.12}", row.cv_cross_corr_drop_pct);
+        let _ = writeln!(
+            out,
+            "cv_cross_corr_drop_pct = {:.12}",
+            row.cv_cross_corr_drop_pct
+        );
     }
     fs::write(path, out)?;
     Ok(())
@@ -1059,5 +1152,97 @@ mod tests {
     fn zscore_zeroes_constant_inputs() {
         let values = vec![2.0, 2.0, 2.0];
         assert_eq!(zscore(&values), vec![0.0, 0.0, 0.0]);
+    }
+
+    #[test]
+    fn multiple_testing_corrections_are_monotone() {
+        let mut summaries = vec![
+            PerDimensionSummary {
+                dimension: 16,
+                backend: "cpu_scalar",
+                pulsar_count: 1,
+                nonzero_frustration_count: 1,
+                frustration_min: 0.0,
+                frustration_max: 0.0,
+                frustration_std: 0.0,
+                mean_residual_corr: None,
+                lambda_mean: 0.0,
+                baseline_raw_rms_us: 0.0,
+                fitted_raw_rms_us: 0.0,
+                raw_drop_pct: 0.0,
+                baseline_centered_rms_us: 0.0,
+                fitted_centered_rms_us: 0.0,
+                centered_drop_pct: 0.0,
+                null_mean_drop_pct: 0.0,
+                null_max_drop_pct: 0.0,
+                null_pvalue: 0.03,
+                bonferroni_pvalue: 0.0,
+                bh_q_value: 0.0,
+                static_field_centered_invariant: true,
+                per_pulsar_drop_pct: 0.0,
+                cross_corr_drop_pct: 0.0,
+                cv_cross_corr_drop_pct: 0.0,
+            },
+            PerDimensionSummary {
+                dimension: 32,
+                backend: "cpu_scalar",
+                pulsar_count: 1,
+                nonzero_frustration_count: 1,
+                frustration_min: 0.0,
+                frustration_max: 0.0,
+                frustration_std: 0.0,
+                mean_residual_corr: None,
+                lambda_mean: 0.0,
+                baseline_raw_rms_us: 0.0,
+                fitted_raw_rms_us: 0.0,
+                raw_drop_pct: 0.0,
+                baseline_centered_rms_us: 0.0,
+                fitted_centered_rms_us: 0.0,
+                centered_drop_pct: 0.0,
+                null_mean_drop_pct: 0.0,
+                null_max_drop_pct: 0.0,
+                null_pvalue: 0.01,
+                bonferroni_pvalue: 0.0,
+                bh_q_value: 0.0,
+                static_field_centered_invariant: true,
+                per_pulsar_drop_pct: 0.0,
+                cross_corr_drop_pct: 0.0,
+                cv_cross_corr_drop_pct: 0.0,
+            },
+            PerDimensionSummary {
+                dimension: 64,
+                backend: "cpu_scalar",
+                pulsar_count: 1,
+                nonzero_frustration_count: 1,
+                frustration_min: 0.0,
+                frustration_max: 0.0,
+                frustration_std: 0.0,
+                mean_residual_corr: None,
+                lambda_mean: 0.0,
+                baseline_raw_rms_us: 0.0,
+                fitted_raw_rms_us: 0.0,
+                raw_drop_pct: 0.0,
+                baseline_centered_rms_us: 0.0,
+                fitted_centered_rms_us: 0.0,
+                centered_drop_pct: 0.0,
+                null_mean_drop_pct: 0.0,
+                null_max_drop_pct: 0.0,
+                null_pvalue: 0.02,
+                bonferroni_pvalue: 0.0,
+                bh_q_value: 0.0,
+                static_field_centered_invariant: true,
+                per_pulsar_drop_pct: 0.0,
+                cross_corr_drop_pct: 0.0,
+                cv_cross_corr_drop_pct: 0.0,
+            },
+        ];
+        apply_multiple_testing_corrections(&mut summaries);
+        assert!(summaries[0].bonferroni_pvalue > summaries[1].bonferroni_pvalue);
+        assert!(summaries[1].bh_q_value <= summaries[2].bh_q_value);
+        assert!(
+            summaries
+                .iter()
+                .all(|row| row.bh_q_value >= row.null_pvalue)
+        );
     }
 }

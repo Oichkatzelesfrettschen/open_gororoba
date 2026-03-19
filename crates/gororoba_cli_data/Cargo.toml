@@ -65,10 +65,6 @@ name = "provenance"
 path = "src/bin/provenance.rs"
 
 [[bin]]
-name = "markdown-registry"
-path = "src/bin/markdown_registry.rs"
-
-[[bin]]
 name = "data-governance-gate"
 path = "src/bin/data_governance_gate.rs"
 
@@ -291,6 +287,10 @@ path = "src/bin/nanograv_propagation_audit.rs"
 [[bin]]
 name = "nanograv-timing-refit-preflight"
 path = "src/bin/nanograv_timing_refit_preflight.rs"
+
+[[bin]]
+name = "nanograv-timing-phase1-refit"
+path = "src/bin/nanograv_timing_phase1_refit.rs"
 
 [[bin]]
 name = "particle-numerology-audit"

@@ -5,5 +5,6 @@
 
 pub mod nanograv_timing;
 pub mod nanograv_timing_model;
+pub mod nanograv_refit;
 
 pub use provenance_ops::source_provenance;
