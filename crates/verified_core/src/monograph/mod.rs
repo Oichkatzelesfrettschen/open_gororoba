@@ -34,6 +34,10 @@
 //! 27. [Casimir Architecture and the Zero-Point Energy](casimir_vacuum)
 //! 28. [Quark-Gluon Plasma and Sedenion Scaling](qgp_scaling_laws)
 //! 29. [Topological Rendering and the Event Horizon](topological_rendering)
+//! 30. [Integral Octonions and the E8 Lattice](integral_octonions_e8)
+//! 31. [Algebraic Wick Rotation and the Emergence of Time](algebraic_wick_rotation)
+//! 32. [The Cosmological Constant as a Topological Flux](cosmological_flux)
+//! 33. [Conclusion: The Directus Maximalus Unified Field](conclusion)
 
 pub mod foundations;
 pub mod optics;
@@ -64,3 +68,7 @@ pub mod nonlocal_optics;
 pub mod casimir_vacuum;
 pub mod qgp_scaling_laws;
 pub mod topological_rendering;
+pub mod integral_octonions_e8;
+pub mod algebraic_wick_rotation;
+pub mod cosmological_flux;
+pub mod conclusion;

@@ -12,7 +12,6 @@ use quantum_core::coupler_manifold::{
     CouplerPoint, CouplerJacobian, IdentifiabilityAudit,
     qec::TwoSectorMixture, mipt::effective_measurement_rate
 };
-use rand::Rng;
 
 fn main() {
     println!("--- Step 1: Decoupling Smooth vs. Burst Sectors in QEC ---");
@@ -33,12 +32,13 @@ fn main() {
     // Simulate a sweep of p/p_thr near 0.5
     let p_vals = vec![0.48, 0.49, 0.50, 0.51, 0.52];
     let d = 7.0;
-    let p_thr = 1.0; // Normalized
+    let _p_thr = 1.0; // Normalized
 
     println!("\nSweeping p/p_thr for d=7:");
     for p in p_vals {
         // Simple power law for smooth sector: eps ~ (p/p_thr)^((d+1)/2)
-        let eps_smooth = 1.43e-3 * (p / 0.5).powf((d + 1.0) / 2.0);
+        let p_ratio: f64 = p / 0.5;
+        let eps_smooth = 1.43e-3 * p_ratio.powf((d + 1.0) / 2.0);
         
         // Observed error is mixture
         let eps_obs = eps_smooth + (model.burst_rate_per_cycle * model.burst_amplitude);
