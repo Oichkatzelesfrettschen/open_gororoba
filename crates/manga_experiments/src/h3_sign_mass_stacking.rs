@@ -41,10 +41,6 @@ pub struct H3Config {
     pub correction: Procedure,
     /// Significance level before correction.
     pub alpha_significance: f64,
-    /// Number of radial points.
-    pub n_radial_points: usize,
-    /// Noise level.
-    pub noise_frac: f64,
     /// RNG seed.
     pub seed: u64,
 }
