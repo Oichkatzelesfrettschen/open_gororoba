@@ -103,6 +103,9 @@ fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0009_external_sources.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0010_knowledge_and_planning.sql"
+        )),
     ])
 }
 
@@ -176,6 +179,18 @@ impl ProvenanceStore {
         conn.pragma_update(None, "foreign_keys", "ON")?;
         migrations().to_latest(&mut conn)?;
         Ok(Self { conn })
+    }
+
+    /// Execute a parameterized SQL statement with string slice params.
+    pub fn conn_exec(&self, sql: &str, params: &[&str]) -> Result<()> {
+        let p: Vec<&dyn rusqlite::types::ToSql> = params
+            .iter()
+            .map(|s| s as &dyn rusqlite::types::ToSql)
+            .collect();
+        self.conn
+            .execute(sql, p.as_slice())
+            .with_context(|| "execute SQL statement")?;
+        Ok(())
     }
 
     pub fn reindex_from_registries(
@@ -2702,6 +2717,396 @@ impl ProvenanceStore {
         let mut out = Vec::new();
         for row in rows {
             out.push(row?);
+        }
+        Ok(out)
+    }
+
+    // ── Knowledge & planning layer ──────────────────────────────────
+
+    /// Return row counts for all tables known to the source-of-truth manifest.
+    pub fn source_of_truth_stats(&self) -> Result<Vec<(String, String, i64, String)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT table_name, category, legacy_toml_path, migration_status
+             FROM source_of_truth_manifest ORDER BY category, table_name",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+                row.get::<_, String>(3)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for row in rows {
+            let (table, cat, legacy, status) = row?;
+            let count: i64 = self
+                .conn
+                .query_row(&format!("SELECT count(*) FROM [{table}]"), [], |r| {
+                    r.get(0)
+                })
+                .unwrap_or(0);
+            out.push((table, cat, count, format!("{legacy}|{status}")));
+        }
+        Ok(out)
+    }
+
+    /// Return the full source-of-truth manifest as structured rows.
+    pub fn source_of_truth_manifest(
+        &self,
+    ) -> Result<Vec<(String, String, bool, String, String, String)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT table_name, category, authoritative, legacy_toml_path, description, migration_status
+             FROM source_of_truth_manifest ORDER BY category, table_name",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, bool>(2)?,
+                row.get::<_, String>(3)?,
+                row.get::<_, String>(4)?,
+                row.get::<_, String>(5)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
+
+    /// List all user-visible tables, their row counts, and column info.
+    pub fn schema_summary(&self) -> Result<Vec<(String, i64, Vec<String>)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT name FROM sqlite_master
+             WHERE type='table' AND name NOT LIKE 'sqlite_%'
+               AND name NOT LIKE '%_config'
+               AND name NOT LIKE '__rusqlite%'
+             ORDER BY name",
+        )?;
+        let names: Vec<String> = stmt
+            .query_map([], |r| r.get(0))?
+            .filter_map(|r| r.ok())
+            .collect();
+        let mut out = Vec::new();
+        for name in &names {
+            let count: i64 = self
+                .conn
+                .query_row(&format!("SELECT count(*) FROM [{name}]"), [], |r| r.get(0))
+                .unwrap_or(0);
+            let mut cols_stmt =
+                self.conn.prepare(&format!("PRAGMA table_info([{name}])"))?;
+            let cols: Vec<String> = cols_stmt
+                .query_map([], |r| {
+                    let col_name: String = r.get(1)?;
+                    let col_type: String = r.get(2)?;
+                    Ok(format!("{col_name} {col_type}"))
+                })?
+                .filter_map(|r| r.ok())
+                .collect();
+            out.push((name.clone(), count, cols));
+        }
+        Ok(out)
+    }
+
+    /// Insert or replace a roadmap item.
+    pub fn upsert_roadmap_item(
+        &self,
+        id: &str,
+        name: &str,
+        priority: &str,
+        status: &str,
+        status_token: &str,
+        description: &str,
+        sprint: &str,
+        dependencies_json: &str,
+        acceptance_criteria_json: &str,
+        primary_outputs_json: &str,
+        evidence_refs_json: &str,
+        lacunae_json: &str,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO roadmap_items
+             (id, name, priority, status, status_token, description, sprint,
+              dependencies_json, acceptance_criteria_json, primary_outputs_json,
+              evidence_refs_json, lacunae_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12, datetime('now'))",
+            params![
+                id,
+                name,
+                priority,
+                status,
+                status_token,
+                description,
+                sprint,
+                dependencies_json,
+                acceptance_criteria_json,
+                primary_outputs_json,
+                evidence_refs_json,
+                lacunae_json,
+            ],
+        )?;
+        Ok(())
+    }
+
+    /// Insert or replace a todo item.
+    pub fn upsert_todo_item(
+        &self,
+        id: &str,
+        area: &str,
+        title: &str,
+        description: &str,
+        priority: &str,
+        status: &str,
+        status_token: &str,
+        dependencies_json: &str,
+        acceptance_criteria_json: &str,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO todo_items
+             (id, area, title, description, priority, status, status_token,
+              dependencies_json, acceptance_criteria_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
+            params![
+                id,
+                area,
+                title,
+                description,
+                priority,
+                status,
+                status_token,
+                dependencies_json,
+                acceptance_criteria_json,
+            ],
+        )?;
+        Ok(())
+    }
+
+    /// Insert or replace a next-action item.
+    pub fn upsert_next_action(
+        &self,
+        id: &str,
+        area: &str,
+        title: &str,
+        description: &str,
+        priority: &str,
+        status: &str,
+        status_token: &str,
+        dependencies_json: &str,
+        acceptance_criteria_json: &str,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO next_action_items
+             (id, area, title, description, priority, status, status_token,
+              dependencies_json, acceptance_criteria_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
+            params![
+                id,
+                area,
+                title,
+                description,
+                priority,
+                status,
+                status_token,
+                dependencies_json,
+                acceptance_criteria_json,
+            ],
+        )?;
+        Ok(())
+    }
+
+    /// Insert or replace a research narrative.
+    pub fn upsert_research_narrative(
+        &self,
+        id: &str,
+        source_markdown: &str,
+        domain: &str,
+        slug: &str,
+        title: &str,
+        status_token: &str,
+        content_kind: &str,
+        verification_level: &str,
+        claim_refs_json: &str,
+        url_refs_json: &str,
+        path_refs_json: &str,
+        body_markdown: &str,
+        line_count: i64,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO research_narratives
+             (id, source_markdown, domain, slug, title, status_token, content_kind,
+              verification_level, claim_refs_json, url_refs_json, path_refs_json,
+              body_markdown, line_count)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13)",
+            params![
+                id,
+                source_markdown,
+                domain,
+                slug,
+                title,
+                status_token,
+                content_kind,
+                verification_level,
+                claim_refs_json,
+                url_refs_json,
+                path_refs_json,
+                body_markdown,
+                line_count,
+            ],
+        )?;
+        Ok(())
+    }
+
+    /// Count rows in a given table.
+    pub fn table_row_count(&self, table: &str) -> Result<i64> {
+        // Validate the table name exists in sqlite_master to prevent injection.
+        let exists: bool = self.conn.query_row(
+            "SELECT count(*) > 0 FROM sqlite_master WHERE type='table' AND name = ?1",
+            params![table],
+            |r| r.get(0),
+        )?;
+        if !exists {
+            bail!("table '{}' does not exist", table);
+        }
+        let count = self
+            .conn
+            .query_row(&format!("SELECT count(*) FROM [{table}]"), [], |r| {
+                r.get(0)
+            })?;
+        Ok(count)
+    }
+
+    /// Full-text search across research narratives.
+    pub fn search_narratives(&self, query: &str, limit: usize) -> Result<Vec<(String, String, f64)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT rn.id, rn.title, bm25(research_narrative_search) as rank
+             FROM research_narrative_search fts
+             JOIN research_narratives rn ON fts.rowid = rn.rowid
+             WHERE research_narrative_search MATCH ?1
+             ORDER BY rank
+             LIMIT ?2",
+        )?;
+        let rows = stmt.query_map(params![query, limit as i64], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, f64>(2)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
+
+    /// List roadmap items, optionally filtered by status.
+    pub fn list_roadmap_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        let mut out = Vec::new();
+        if let Some(s) = status_filter {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, name, priority, status FROM roadmap_items WHERE status = ?1 ORDER BY id",
+            )?;
+            let rows = stmt.query_map(params![s], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        } else {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, name, priority, status FROM roadmap_items ORDER BY id",
+            )?;
+            let rows = stmt.query_map([], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        }
+        Ok(out)
+    }
+
+    /// List todo items, optionally filtered by status.
+    pub fn list_todo_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        let mut out = Vec::new();
+        if let Some(s) = status_filter {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, title, priority, status FROM todo_items WHERE status = ?1 ORDER BY id",
+            )?;
+            let rows = stmt.query_map(params![s], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        } else {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, title, priority, status FROM todo_items ORDER BY id",
+            )?;
+            let rows = stmt.query_map([], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        }
+        Ok(out)
+    }
+
+    /// List next-action items, optionally filtered by status.
+    pub fn list_next_actions(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        let mut out = Vec::new();
+        if let Some(s) = status_filter {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, title, priority, status FROM next_action_items WHERE status = ?1 ORDER BY id",
+            )?;
+            let rows = stmt.query_map(params![s], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        } else {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, title, priority, status FROM next_action_items ORDER BY id",
+            )?;
+            let rows = stmt.query_map([], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        }
+        Ok(out)
+    }
+
+    /// Insert or replace a notebook session.
+    pub fn upsert_notebook_session(
+        &self,
+        id: &str,
+        title: &str,
+        description: &str,
+        kernel: &str,
+        status: &str,
+        cell_count: i64,
+        cells_json: &str,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO notebook_sessions
+             (id, title, description, kernel, status, cell_count, cells_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7, datetime('now'))",
+            params![id, title, description, kernel, status, cell_count, cells_json],
+        )?;
+        Ok(())
+    }
+
+    /// List notebook sessions.
+    pub fn list_notebook_sessions(&self) -> Result<Vec<(String, String, String, String, i64)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, title, kernel, status, cell_count FROM notebook_sessions ORDER BY updated_at DESC",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+                row.get::<_, String>(3)?,
+                row.get::<_, i64>(4)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
         }
         Ok(out)
     }

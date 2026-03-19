@@ -59,6 +59,7 @@ members = [
     "crates/casimir_core",
     "crates/verified_core", "crates/pathion_ellip",
     "crates/cr_transport",
+    "crates/gororoba_db",
     "xtask",
 ]
 
