@@ -6,7 +6,7 @@
 **Status:** Closed programme — strong predictions refuted; algebraic identities verified  
 **Relevant claims:** C-035, C-036, C-037, C-038, C-039, C-040, C-041  
 **Related documents:** `docs/GRAND_SYNTHESIS.md`, `docs/NAVIGATOR.md`  
-**External sources:** `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`
+**External sources:** `docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md`
 
 ---
 
