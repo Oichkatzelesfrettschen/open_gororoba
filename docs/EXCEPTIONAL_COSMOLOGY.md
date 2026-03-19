@@ -141,7 +141,7 @@ The exceptional cosmology programme generated seven specific, falsifiable predic
 
 1. **C-035 (ε = 1/4):** The exact Casimir ratio is a genuine algebraic fact that appears in multiple contexts (LQG area spectrum, Gauss–Bonnet coupling, network clustering). Understanding *why* 1/4 appears in so many physically motivated contexts may be structurally productive, even if the strong equality claims are refuted.
 
-2. **C-039 (spectral dimension running):** The D_s → 2 short-scale limit is a robust prediction of CDT and asymptotic safety that the repo's toy model correctly qualitates. This motivates further investigation of how the sedenion ZD topology (which also defines a discrete graph dimension ≈ 2 at short scales) relates to the CDT continuum limit.
+2. **C-039 (spectral dimension running):** The D_s → 2 short-scale limit is a robust prediction of CDT and asymptotic safety that the repo's toy model correctly captures the qualitative behavior of. This motivates further investigation of how the sedenion ZD topology (which also defines a discrete graph dimension ≈ 2 at short scales) relates to the CDT continuum limit.
 
 3. **G2 and octonions:** G2 = Aut(O) is a verified connection between exceptional algebras and CD algebra. The sedenion automorphism group Aut(S) = G2 × S3 is the correct exceptional symmetry for dim=16. Any further exceptional cosmology should start from this verified structural connection rather than from numerological coincidences.
 
