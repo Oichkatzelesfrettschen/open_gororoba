@@ -20,7 +20,7 @@
 //!
 //! $$N_{total} = N_{components} \times N_{nodes\_per\_component} = 7 \times 6 = 42$$
 //!
-//! This provides the first-principles derivation for the project's **Thesis 42**.
+//! This provides the first-principles derivation for the project's **42-Node Manifold Invariant**.
 //! The 42 nodes define the "boundary" of the non-associative vacuum.
 //!
 //! ## 3. Symmetry and Quantum Mapping

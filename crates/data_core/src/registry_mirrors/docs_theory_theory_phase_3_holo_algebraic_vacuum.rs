@@ -1,7 +1,7 @@
 //! <!-- AUTO-GENERATED: DO NOT EDIT -->
 //! <!-- Source of truth: registry/research_narratives.toml -->
 //!
-//! # Phase III: The Holo-Algebraic Vacuum & The Genesis of Mass
+//! # Phase III: The Holo-Algebraic Vacuum & The Emergence of Mass
 //! ## A Hypergranular Derivation of Algebraic Spacetime Emergence
 //!
 //! **Date:** February 17, 2026

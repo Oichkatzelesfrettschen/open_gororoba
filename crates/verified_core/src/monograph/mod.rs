@@ -1,4 +1,4 @@
-//! # Project Genesis: A Unified Axiomatic Monograph
+//! # Unified Algebraic Physics Framework: A Unified Axiomatic Monograph
 //!
 //! This module serves as the primary academic treatise for the `open_gororoba` project.
 //! It synthesizes the algebraic foundations of Cayley-Dickson structures with the
@@ -8,7 +8,7 @@
 //! 1. [Foundations of Non-Associative Geometry](foundations)
 //! 2. [Perfect Metamaterial Absorbers and TMM](optics)
 //! 3. [Parametrized Post-Newtonian Constraints](gr_cosmology)
-//! 4. [Axiomatic Synthesis: The Genesis Bridge](synthesis)
+//! 4. [Axiomatic Synthesis: The Algebraic Unification Bridge](synthesis)
 //! 5. [The Imbalance Attractor: Axiomatic Derivation](imbalance_derivation)
 //! 6. [The Quantum Error Correction Duality](qec_duality)
 //! 7. [The Project Book](book)

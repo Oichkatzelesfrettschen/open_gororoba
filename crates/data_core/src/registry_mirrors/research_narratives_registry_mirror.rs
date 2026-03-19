@@ -96,7 +96,7 @@
 //! - Verification level: `theoretical`
 //! - Line count: 28
 //!
-//! ### RN-033: Phase III: The Holo-Algebraic Vacuum & The Genesis of Mass
+//! ### RN-033: Phase III: The Holo-Algebraic Vacuum & The Emergence of Mass
 //!
 //! - Source markdown: `docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md`
 //! - Domain: `theory`

@@ -33,7 +33,7 @@
 //!
 //! ## 4. The Pathionic Photon
 //!
-//! In the project's **Thesis 32**, the photon is modeled as a multi-layered
+//! In the project's **Pathion Resonance Model**, the photon is modeled as a multi-layered
 //! resonance. The 32 degrees of freedom in the Pathion vacuum provide the
 //! necessary "torsion nodes" for the photon to exhibit self-coupling and
 //! intrinsic spin in non-associative spacetime.

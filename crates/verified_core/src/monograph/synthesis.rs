@@ -1,6 +1,6 @@
-//! # Axiomatic Synthesis: The Genesis Bridge
+//! # Axiomatic Synthesis: The Algebraic Unification Bridge
 //!
-//! The ultimate goal of Project Genesis is to derive a unified axiomatic bridge
+//! The ultimate goal of Unified Algebraic Physics Framework is to derive a unified axiomatic bridge
 //! between high-dimensional algebra and physical observables.
 //!
 //! ## 1. Strongly Coupled Genesis Points

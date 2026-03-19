@@ -6,14 +6,14 @@ authoritative = true
 updated = "2026-03-18"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 59
-entry_count = 370
+section_count = 60
+entry_count = 420
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 59
-entry_count = 370
+section_count = 60
+entry_count = 420
 
 [[section]]
 id = "BSEC-001"
@@ -4195,7 +4195,7 @@ source_line = 0
 id = "BSEC-059"
 name = "Quark-Gluon Plasma & Light-Ion Collisions"
 groups = ["Primary Research & Data Sources"]
-entry_count = 22
+entry_count = 48
 
 [[entry]]
 id = "BIB-0349"
@@ -4437,4 +4437,560 @@ citation_markdown = "**Arleo, F. & Falmagne, G.** (2024). *Parton energy loss in
 notes = ["*Reproduced in qgp_scaling crate. Establishes energy-loss scaling laws across collision systems.*"]
 urls = ["https://arxiv.org/abs/2411.13258"]
 dois = ["10.1103/PhysRevD.109.L051503"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0371"
+order_index = 371
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN News.** (2025). *And they're off! The 2025 LHC physics season gets underway*. [CERN](https://home.cern/news/news/accelerators/and-theyre-2025-lhc-physics-season-gets-underway)."
+notes = ["*LHC 2025 run start and program overview.*"]
+urls = ["https://home.cern/news/news/accelerators/and-theyre-2025-lhc-physics-season-gets-underway"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0372"
+order_index = 372
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Bruce, R.** (2025). *2025 light-ion run summary slides*. [Indico](https://indico.cern.ch/event/1586852/contributions/6694548/attachments/3136099/5564694/2025.09.16--Jamborree_experiments--oxygen__neon_run.pdf)."
+notes = ["*Technical summary of the p-O, O-O, and Ne-Ne run performance.*"]
+urls = ["https://indico.cern.ch/event/1586852/contributions/6694548/attachments/3136099/5564694/2025.09.16--Jamborree_experiments--oxygen__neon_run.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0373"
+order_index = 373
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Bruce, R.** (2025). *Running LHC with light ions*. [CDS Record 2942669](https://cds.cern.ch/record/2942669)."
+notes = ["*CDS video record of the accelerator-side summary.*"]
+urls = ["https://cds.cern.ch/record/2942669"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0374"
+order_index = 374
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Wang, J.** (2025). *First results from recent OO and NeNe runs by CMS*. [CDS Record 2942673](https://cds.cern.ch/record/2942673)."
+notes = ["*CDS video record of CMS light-ion results.*"]
+urls = ["https://cds.cern.ch/record/2942673"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0375"
+order_index = 375
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Timmins, A.** (2025). *First results from light-ion collisions by ALICE*. [CDS Record 2942674](https://cds.cern.ch/record/2942674)."
+notes = ["*CDS video record of ALICE light-ion results.*"]
+urls = ["https://cds.cern.ch/record/2942674"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0376"
+order_index = 376
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Longo, R.** (2025). *New ATLAS Results from 16O+16O and 20Ne+20Ne Collisions*. [CDS Record 2942675](https://cds.cern.ch/record/2942675)."
+notes = ["*CDS video record of ATLAS light-ion results.*"]
+urls = ["https://cds.cern.ch/record/2942675"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0377"
+order_index = 377
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Lian, Z.** (2025). *Unveiling the shape of the Neon-20 nucleus ... in LHCb*. [CDS Record 2942679](https://cds.cern.ch/record/2942679)."
+notes = ["*CDS video record of LHCb fixed-target Neon results.*"]
+urls = ["https://cds.cern.ch/record/2942679"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0378"
+order_index = 378
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**LHCb Collaboration.** (2025). *LHCb seminar slides (Neon-20 shape)*. [Indico](https://indico.cern.ch/event/1586852/contributions/6694558/attachments/3136117/5564734/LHC_seminar_LHCb.pdf)."
+notes = ["*Slides for the LHCb fixed-target analysis.*"]
+urls = ["https://indico.cern.ch/event/1586852/contributions/6694558/attachments/3136117/5564734/LHC_seminar_LHCb.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0379"
+order_index = 379
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN Webcast.** (2025). *Webcast page for event i1586852*. [CERN](https://webcast.web.cern.ch/event/i1586852)."
+notes = ["*Live record link for the 16 Sep 2025 LHC seminar.*"]
+urls = ["https://webcast.web.cern.ch/event/i1586852"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0380"
+order_index = 380
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS News.** (2025). *LHC's first oxygen collisions – CMS spots signs of small-scale quark-gluon plasma*. [CMS](https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma)."
+notes = ["*CMS news release on O-O suppression and collectivity.*"]
+urls = ["https://cms.cern/news/lhcs-first-oxygen-collisions-cms-spots-signs-small-scale-quark-gluon-plasma"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0381"
+order_index = 381
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS News.** (2025). *LHC's first neon-neon collisions – CMS spots an interesting pattern*. [CMS](https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern)."
+notes = ["*CMS news release on Ne-Ne pattern.*"]
+urls = ["https://cms.cern/news/lhcs-first-neon-neon-collisions-cms-spots-interesting-pattern"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0382"
+order_index = 382
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**ALICE Collaboration.** (2025). *Evidence of nuclear geometry-driven anisotropic flow in OO and Ne-Ne collisions*. [arXiv:2509.06428](https://arxiv.org/abs/2509.06428)."
+notes = ["*ALICE flow measurements in light ions.*"]
+urls = ["https://arxiv.org/abs/2509.06428"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0383"
+order_index = 383
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2025). *CMS public results page HIN-25-008*. [CMS](https://cms-results.web.cern.ch/cms-results/public-results/publications/HIN-25-008)."
+notes = ["*Public analysis summary for CMS O-O charged-hadron suppression.*"]
+urls = ["https://cms-results.web.cern.ch/cms-results/public-results/publications/HIN-25-008"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0384"
+order_index = 384
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN News.** (2025). *Shape-shifting collisions probe secrets of early Universe*. [CERN](https://home.cern/news/news/physics/shape-shifting-collisions-probe-secrets-early-universe)."
+notes = ["*CERN news summary on light ion deformation and QGP.*"]
+urls = ["https://home.cern/news/news/physics/shape-shifting-collisions-probe-secrets-early-universe"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0385"
+order_index = 385
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN Courier.** (2025). *First oxygen and neon collisions at the LHC*. [CERN Courier](https://cerncourier.com/first-oxygen-and-neon-collisions-at-the-lhc/)."
+notes = ["*CERN Courier technical summary of the 2025 run results.*"]
+urls = ["https://cerncourier.com/first-oxygen-and-neon-collisions-at-the-lhc/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0386"
+order_index = 386
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN Courier.** (2025). *STAR hunts QCD critical point*. [CERN Courier](https://cerncourier.com/star-hunts-qcd-critical-point/)."
+notes = ["*Summary of STAR BES-II results and QCP exclusion regions.*"]
+urls = ["https://cerncourier.com/star-hunts-qcd-critical-point/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0387"
+order_index = 387
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Quark Matter 2025.** (2025). *Quark Matter 2025 Conference*. [Indico](https://indico.cern.ch/event/1334113/)."
+notes = ["*Primary conference for QGP and QCD phase diagram.*"]
+urls = ["https://indico.cern.ch/event/1334113/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0388"
+order_index = 388
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Ayala, A.** (2022). *Plasma screening and the critical end point in the QCD phase diagram*. [YouTube](https://www.youtube.com/watch?v=oBFxrAendGk)."
+notes = ["*Colloquium on QCP theory and screening.*"]
+urls = ["https://www.youtube.com/watch?v=oBFxrAendGk"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0389"
+order_index = 389
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Ayala, A. et al.** (2022). *Plasma screening and the critical end point in the QCD phase diagram*. [arXiv:2208.08590](https://arxiv.org/abs/2208.08590)."
+notes = ["*Theory paper on CEP location and screening.*"]
+urls = ["https://arxiv.org/abs/2208.08590"]
+dois = ["10.1103/PhysRevD.106.096013"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0390"
+order_index = 390
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN YouTube.** (2025). *Quark-gluon plasma Explained - Ep. 1/2*. [YouTube](https://www.youtube.com/watch?v=mBfJAcPOLrM)."
+notes = ["*Educational outreach series on QGP.*"]
+urls = ["https://www.youtube.com/watch?v=mBfJAcPOLrM"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0391"
+order_index = 391
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN YouTube.** (2025). *Quark-gluon plasma Explained - Ep. 2/2*. [YouTube](https://www.youtube.com/watch?v=w9iN0iXu5qk)."
+notes = ["*Educational outreach series on QGP.*"]
+urls = ["https://www.youtube.com/watch?v=w9iN0iXu5qk"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0392"
+order_index = 392
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**LBL Heavy Ion Theory.** (2025). *LBL Heavy Ion Theory seminar page*. [LBL](https://hit.lbl.gov/previous-seminars)."
+notes = ["*Index of seminars at Lawrence Berkeley National Laboratory.*"]
+urls = ["https://hit.lbl.gov/previous-seminars"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0393"
+order_index = 393
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**LBL Seminar.** (2025). *Recent results from light-ion collisions by ALICE at the LHC*. [YouTube](https://www.youtube.com/watch?v=JRFYZu4O2LQ)."
+notes = ["*Seminar recording by ALICE members at LBL.*"]
+urls = ["https://www.youtube.com/watch?v=JRFYZu4O2LQ"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0394"
+order_index = 394
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**NITheCS.** (2025). *NITheCS colloquium playlist*. [YouTube](https://www.youtube.com/playlist?list=PLE9Qrf4CJnRGVQvTfalXgWjh7221O5Xc-)."
+notes = ["*Theoretical physics colloquium series.*"]
+urls = ["https://www.youtube.com/playlist?list=PLE9Qrf4CJnRGVQvTfalXgWjh7221O5Xc-"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0395"
+order_index = 395
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**NITheCS.** (2025). *High-energy heavy-ion collisions in the oxygen era*. [Flyer](https://nithecs.ac.za/events/upcoming-events/2025-11-03-nithecs-colloquium.pdf)."
+notes = ["*Colloquium flyer summarizing oxygen era motivation.*"]
+urls = ["https://nithecs.ac.za/events/upcoming-events/2025-11-03-nithecs-colloquium.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0396"
+order_index = 396
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**MIT News.** (2026). *Study: The infant universe’s “primordial soup” was actually soupy*. [MIT](https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128)."
+notes = ["*MIT summary of CMS Z-hadron medium response results.*"]
+urls = ["https://news.mit.edu/2026/study-infant-universes-primordial-soup-was-actually-soupy-0128"]
+dois = []
+source_line = 0
+
+[[section]]
+id = "BSEC-060"
+name = "HEP Methods, Software & Infrastructure"
+groups = ["Primary Research & Data Sources"]
+entry_count = 24
+
+[[entry]]
+id = "BIB-0397"
+order_index = 397
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Maguire, E., Heinrich, L., & Watt, G.** (2017). *HEPData: a repository for high energy physics data results*. [arXiv:1704.05473](https://arxiv.org/abs/1704.05473)."
+notes = ["*Foundational paper on the HEPData repository.*"]
+urls = ["https://arxiv.org/abs/1704.05473"]
+dois = ["10.1088/1742-6596/898/10/102006"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0398"
+order_index = 398
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**HEPData.** (2025). *HEPData File Formats documentation*. [HEPData](https://www.hepdata.net/formats)."
+notes = ["*Technical specification for YAML/ROOT/YODA schemas.*"]
+urls = ["https://www.hepdata.net/formats"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0399"
+order_index = 399
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**DPHEP.** (2009). *DPHEP intermediate report on data preservation and long-term analysis in HEP*. [arXiv:0912.0255](https://arxiv.org/abs/0912.0255)."
+notes = ["*Strategic roadmap for HEP data preservation.*"]
+urls = ["https://arxiv.org/abs/0912.0255"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0400"
+order_index = 400
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2020). *CERN Open Data Policy for the LHC Experiments*. [CERN Open Data](https://opendata.cern.ch/docs/cern-open-data-policy-for-lhc-experiments)."
+notes = ["*Defines levels of data and latency for open release.*"]
+urls = ["https://opendata.cern.ch/docs/cern-open-data-policy-for-lhc-experiments"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0401"
+order_index = 401
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2020). *CERN announces new open data policy*. [CERN Press Release](https://home.cern/news/press-release/knowledge-sharing/cern-announces-new-open-data-policy-support-open-science)."
+notes = ["*Public announcement of the unified Open Data policy.*"]
+urls = ["https://home.cern/news/press-release/knowledge-sharing/cern-announces-new-open-data-policy-support-open-science"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0402"
+order_index = 402
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2025). *CERN Open Data Portal home*. [CERN](https://opendata.cern.ch/)."
+notes = ["*Entry point for Level 1-3 open data.*"]
+urls = ["https://opendata.cern.ch/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0403"
+order_index = 403
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2025). *cernopendata-client docs: CLI API*. [CERN](https://cernopendata-client.readthedocs.io/en/latest/cliapi.html)."
+notes = ["*Documentation for programmatic data retrieval.*"]
+urls = ["https://cernopendata-client.readthedocs.io/en/latest/cliapi.html"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0404"
+order_index = 404
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2025). *cernopendata-client docs: Usage*. [CERN](https://cernopendata-client.readthedocs.io/en/latest/usage.html)."
+notes = ["*General usage guide for the Open Data client.*"]
+urls = ["https://cernopendata-client.readthedocs.io/en/latest/usage.html"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0405"
+order_index = 405
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**ATLAS Collaboration.** (2020). *ATLAS heavy-ion open data record: DAOD_HION14 2015 Pb-Pb*. [CERN Open Data](https://opendata.cern.ch/record/80035)."
+notes = ["*Example of Level-3 heavy-ion open data release.*"]
+urls = ["https://opendata.cern.ch/record/80035"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0406"
+order_index = 406
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**ATLAS News.** (2020). *ATLAS releases first open data from heavy-ion collisions*. [ATLAS](https://atlas.cern/Updates/News/Heavy-Ion-Open-Data)."
+notes = ["*News summary of the 2015 Pb-Pb release.*"]
+urls = ["https://atlas.cern/Updates/News/Heavy-Ion-Open-Data"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0407"
+order_index = 407
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**ALICE Collaboration.** (2025). *About ALICE (CERN Open Data docs)*. [CERN Open Data](https://opendata.cern.ch/docs/about-alice)."
+notes = ["*Overview of ALICE open data availability and constraints.*"]
+urls = ["https://opendata.cern.ch/docs/about-alice"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0408"
+order_index = 408
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2025). *CERN Analysis Preservation API docs*. [CERN](https://analysispreservation.cern.ch/docs/api/)."
+notes = ["*API for automated analysis metadata tracking.*"]
+urls = ["https://analysispreservation.cern.ch/docs/api/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0409"
+order_index = 409
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CERN.** (2025). *CAP-Client documentation*. [CERN](https://analysispreservation.cern.ch/docs/cli/)."
+notes = ["*CLI for CERN Analysis Preservation.*"]
+urls = ["https://analysispreservation.cern.ch/docs/cli/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0410"
+order_index = 410
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**CDS.** (2025). *CDS Record API documentation*. [CERN](https://cds.cern.ch/help/hacking/record-api)."
+notes = ["*API for machine-readable harvesting of CDS records.*"]
+urls = ["https://cds.cern.ch/help/hacking/record-api"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0411"
+order_index = 411
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Indico.** (2025). *Indico HTTP Export API docs: Accessing the API*. [Indico](https://docs.getindico.io/en/stable/http-api/access/)."
+notes = ["*Technical guide for automated event data harvesting.*"]
+urls = ["https://docs.getindico.io/en/stable/http-api/access/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0412"
+order_index = 412
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Indico.** (2025). *Indico HTTP API overview*. [Indico](https://docs.getindico.io/en/stable/http-api/)."
+notes = ["*High-level overview of Indico integration capabilities.*"]
+urls = ["https://docs.getindico.io/en/stable/http-api/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0413"
+order_index = 413
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Indico User Guide.** (2025). *Material package zip documentation*. [Indico](https://agenda.infn.it/event/10649/contributions/4523/attachments/3372/3695/IndicoUserGuide1-9-6-cern.pdf)."
+notes = ["*Guide for downloading bulk event materials.*"]
+urls = ["https://agenda.infn.it/event/10649/contributions/4523/attachments/3372/3695/IndicoUserGuide1-9-6-cern.pdf"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0414"
+order_index = 414
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Cooper, F. & Frye, G.** (1974). *Single-particle distribution functions in the statistical model of hydrodynamic expansion*. [PhysRevD 10, 186](https://link.aps.org/doi/10.1103/PhysRevD.10.186)."
+notes = ["*Foundational paper on freeze-out mapping in hydrodynamics.*"]
+urls = ["https://link.aps.org/doi/10.1103/PhysRevD.10.186"]
+dois = ["10.1103/PhysRevD.10.186"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0415"
+order_index = 415
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Bilandzic, A., Snellings, R., & Voloshin, S.** (2011). *Flow analysis with multi-particle azimuthal correlations*. [PhysRevC 83, 044913](https://link.aps.org/doi/10.1103/PhysRevC.83.044913)."
+notes = ["*Standard framework for cumulant-based flow extraction.*"]
+urls = ["https://link.aps.org/doi/10.1103/PhysRevC.83.044913"]
+dois = ["10.1103/PhysRevC.83.044913"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0416"
+order_index = 416
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Moreland, J. S., Bernhard, J. E., & Bass, S. A.** (2015). *Alternative ansatz to nucleon-nucleon collisions with reduced initial-state fluctuations*. [arXiv:1412.4708](https://arxiv.org/abs/1412.4708)."
+notes = ["*Introduces the TRENTo model for initial conditions.*"]
+urls = ["https://arxiv.org/abs/1412.4708"]
+dois = ["10.1103/PhysRevC.92.011901"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0417"
+order_index = 417
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**JETSCAPE Collaboration.** (2019). *The JETSCAPE framework: jet energy loss strategy, consolidated and personalized ensemble*. [arXiv:1903.07706](https://arxiv.org/abs/1903.07706)."
+notes = ["*Modular event generator framework for heavy-ion collisions.*"]
+urls = ["https://arxiv.org/abs/1903.07706"]
+dois = ["10.1103/PhysRevC.102.044906"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0418"
+order_index = 418
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Elfner, J. et al.** (2018). *Simulating microscopic hadronic transport with the SMASH model*. [arXiv:1808.06832](https://arxiv.org/abs/1808.06832)."
+notes = ["*Introduction to the SMASH hadronic transport model.*"]
+urls = ["https://arxiv.org/abs/1808.06832"]
+dois = ["10.1103/PhysRevC.98.034901"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0419"
+order_index = 419
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Loizides, C.** (2025). *Glauber Monte Carlo updates for oxygen and neon collisions*. [arXiv:2507.05853](https://arxiv.org/abs/2507.05853)."
+notes = ["*TGlauberMC updates specifically for the 2025 light-ion run.*"]
+urls = ["https://arxiv.org/abs/2507.05853"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0420"
+order_index = 420
+group = "Primary Research & Data Sources"
+section = "HEP Methods, Software & Infrastructure"
+citation_markdown = "**Mazeliauskas, A.** (2025). *Energy loss baseline for light hadrons in ultrarelativistic O-O collisions*. [arXiv:2509.07008](https://arxiv.org/abs/2509.07008)."
+notes = ["*Theory baseline for interpreting O-O suppression signals.*"]
+urls = ["https://arxiv.org/abs/2509.07008"]
+dois = []
 source_line = 0

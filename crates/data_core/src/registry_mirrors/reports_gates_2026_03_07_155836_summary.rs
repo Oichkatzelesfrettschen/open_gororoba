@@ -13,7 +13,7 @@
 //! ```text
 //! ... (7396 earlier line(s) omitted)
 //!    |     ^^
-//! 74 |     ax3.set_title("STRONG-COUPLING GENESIS: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
+//! 74 |     ax3.set_title("STRONG-COUPLING UNIFICATION: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
 //!    |
 //! help: Remove assignment to unused variable `im`
 //!
@@ -21,7 +21,7 @@
 //!   --> src/vis_trajectory.py:74:101
 //!    |
 //! 73 |     im = ax3.imshow(Z, cmap='magma', aspect='auto', origin='lower')
-//! 74 |     ax3.set_title("STRONG-COUPLING GENESIS: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
+//! 74 |     ax3.set_title("STRONG-COUPLING UNIFICATION: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
 //!    |                                                                                                     ^^^^
 //! 75 |
 //! 76 |     # Annotate Isomorphism points
@@ -42,7 +42,7 @@
 //! ```text
 //! ... (7391 earlier line(s) omitted)
 //!    |     ^^
-//! 74 |     ax3.set_title("STRONG-COUPLING GENESIS: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
+//! 74 |     ax3.set_title("STRONG-COUPLING UNIFICATION: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
 //!    |
 //! help: Remove assignment to unused variable `im`
 //!
@@ -50,7 +50,7 @@
 //!   --> src/vis_trajectory.py:74:101
 //!    |
 //! 73 |     im = ax3.imshow(Z, cmap='magma', aspect='auto', origin='lower')
-//! 74 |     ax3.set_title("STRONG-COUPLING GENESIS: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
+//! 74 |     ax3.set_title("STRONG-COUPLING UNIFICATION: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
 //!    |                                                                                                     ^^^^
 //! 75 |
 //! 76 |     # Annotate Isomorphism points

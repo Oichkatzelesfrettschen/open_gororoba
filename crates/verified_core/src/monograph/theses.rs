@@ -1,9 +1,9 @@
-//! # Falsifiable Theses of Project Genesis
+//! # Falsifiable Theses of Unified Algebraic Physics Framework
 //!
 //! This section formalizes the project's core claims into testable scientific theses,
 //! mapping each to an implementation-level "Axiomatic Gate".
 //!
-//! ## Thesis 1: The Immirzi-Sedenion Bridge
+//! ## Postulate: Algebraic-Immirzi Bridge: The Immirzi-Sedenion Bridge
 //!
 //! **Claim:** The Barbero-Immirzi parameter $\gamma$ is a structural constant derived
 //! from Sedenion non-associativity imbalance.
@@ -13,7 +13,7 @@
 //! **Verification Gate:** `verified_core::immirzi_selectivity_test`.
 //! Matches Domagala-Lewandowski value ($\gamma \approx 0.1236$) within 1.7%.
 //!
-//! ## Thesis 2: GUT Mixing Angle from Algebraic Twist
+//! ## Temporal Emergence Model: GUT Mixing Angle from Algebraic Twist
 //!
 //! **Claim:** The weak mixing angle $\sin^2 \theta_W$ at the unification scale is
 //! determined by the imbalance of the combined Sedenion-SU(5) operator manifold.
@@ -23,7 +23,7 @@
 //! **Verification Gate:** `verified_core::mixing_angle_unification_gate`.
 //! Matches theoretical SU(5) prediction exactly.
 //!
-//! ## Thesis 3: Spacetime as a Self-Correcting Steane Code
+//! ## Postulate: Topological QEC Stabilizers: Spacetime as a Self-Correcting Steane Code
 //!
 //! **Claim:** The topological stability of the vacuum is ensured by a [[7,1,3]] Steane
 //! code structure encoded in the 7 octahedral box-kites of Sedenion zero-divisors.
@@ -33,7 +33,7 @@
 //!
 //! **Verification Gate:** `quantum_core::qec_boxkite::BoxKiteStabilizer`.
 //!
-//! ## Thesis 4: Macquart Ultrametric Fingerprint
+//! ## Postulate: Macquart Hierarchical Scaling: Macquart Ultrametric Fingerprint
 //!
 //! **Claim:** The hierarchical distribution of matter (Macquart DM-redshift relation)
 //! is an ultrametric fingerprint of the $D \to 2$ dimensional reduction.

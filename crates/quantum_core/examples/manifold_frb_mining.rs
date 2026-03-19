@@ -14,6 +14,7 @@ use std::io::{BufRead, BufReader};
 use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
 
 #[derive(Debug)]
+#[allow(dead_code)]
 struct FrbSource {
     id: String,
     hurst: f64,
