@@ -22,3 +22,6 @@ workspace = true
 core_affinity.workspace = true
 rayon = { workspace = true }
 raw-cpuid = "11.6.0"
+nalgebra.workspace = true
+rand.workspace = true
+rand_chacha = { workspace = true }
