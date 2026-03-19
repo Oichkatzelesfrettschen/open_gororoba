@@ -14,7 +14,7 @@
 //! - Vidal, PRL 99 (2007) 220405
 //! - Swingle, PRD 86 (2012) 065007 (MERA/AdS)
 
-use crate::coupler_manifold::CouplerPoint;
+use verified_core::coupler_manifold::CouplerPoint;
 use nalgebra::DVector;
 use num_complex::Complex64;
 use rand::prelude::*;

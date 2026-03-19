@@ -8,7 +8,7 @@
 //! - Updated: 2026-03-17
 //! - Source markdown: `docs/BIBLIOGRAPHY.md`
 //! - Group count: 1
-//! - Entry count: 344
+//! - Entry count: 348
 //!
 //! ## Primary Research & Data Sources
 //!
@@ -668,9 +668,17 @@
 //!   - *Foundational work on p-adic Galois representations.*
 //! - **Adams, J. F.** (1974). *Stable Homotopy and Generalised Homology*. University of Chicago Press.
 //!   - *Primary source for Adams spectral sequence.*
+//! - **Truong, D. P., Nebgen, B., DeSantis, D., Petsev, D. N., Rasmussen, K. O., & Alexandrov, B. S.** (2025). *Breaking the curse of dimensionality: Solving configurational integrals for crystalline solids by tensor networks*. [arXiv:2506.00000](https://arxiv.org/abs/2506.00000) (placeholder for actual arXiv ID).
+//!   - *Introduces symmetry-adapted TT-cross for configurational integrals.*
 //! - **Quillen, D.** (1969). *Rational Homotopy Theory*. Ann. of Math. 90, 205-295.
 //!   - *Foundational framework for model categories and homotopy limits.*
+//! - **Oseledets, I. V.** (2011). *Tensor-train decomposition*. SIAM Journal on Scientific Computing, 33(5), 2295-2317.
+//!   - *Foundational paper defining the Tensor-Train (TT) format.*
 //! - **May, J. P.** (1999). *A Concise Course in Algebraic Topology*. University of Chicago Press.
 //!   - *Comprehensive overview of limits, colimits, and topological structures.*
+//! - **Oseledets, I. V., & Tyrtyshnikov, E. E.** (2010). *TT-cross approximation for multidimensional arrays*. Linear Algebra and its Applications, 432(1), 70-88.
+//!   - *Introduces the TT-cross algorithm for adaptive tensor sampling.*
 //! - **Varadarajan, V. S.** (1984). *Lie Groups, Lie Algebras, and Their Representations*. Springer-Verlag.
 //!   - *Foundational text for E8 theory and Lie algebra representations.*
+//! - **Mahoney, M. W., & Drineas, P.** (2009). *CUR matrix decompositions for improved data analysis*. PNAS 106 (3), 697-714.
+//!   - *Foundational reference for CUR/Skeleton matrix decompositions.*

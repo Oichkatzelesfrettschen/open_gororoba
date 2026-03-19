@@ -4,9 +4,8 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 52
-toml_generated_mirror_count = 22
-toml_manual_source_count = 30
+document_count = 12
+toml_generated_mirror_count = 12
 
 [policy]
 safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
@@ -22,469 +21,109 @@ skip_path_parts = [".cache", "cargo-home", ".pytest_cache", "venv", ".venv", "la
 disk_forbidden_modes = ["deleted_mirror"]
 
 [[document]]
-path = "AGENTS.md"
-id = "MDG-0001"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["agents.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "CLAUDE.md"
-id = "MDG-0002"
-kind = "manual_source"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
-
-[[document]]
-path = "GEMINI.md"
-id = "MDG-0003"
-kind = "manual_source"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Manual compatibility stub; TOML pipelines must not rewrite this file."
-
-[[document]]
-path = "README.md"
-id = "MDG-0005"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "apps/gororoba_studio/README.md"
-id = "MDG-0007"
-kind = "markdown_mirror"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/requirements.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml", "registry/module_requirements.toml", "registry/requirements_narrative.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
-id = "MDG-0008"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md"
-id = "MDG-0009"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
-id = "MDG-0010"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/CLAIMS_REGISTRY_MIRROR.md"
-id = "MDG-0011"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
-id = "MDG-0012"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
-id = "MDG-0013"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
-id = "MDG-0014"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
-id = "MDG-0015"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
-id = "MDG-0016"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md"
-id = "MDG-0017"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
-id = "MDG-0018"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
-id = "MDG-0019"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
-id = "MDG-0020"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
-id = "MDG-0021"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
-id = "MDG-0022"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"
-id = "MDG-0023"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
-id = "MDG-0024"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
-id = "MDG-0025"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
-id = "MDG-0026"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
-id = "MDG-0027"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/ROADMAP_REGISTRY_MIRROR.md"
-id = "MDG-0028"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "build/docs/generated/TODO_REGISTRY_MIRROR.md"
-id = "MDG-0029"
-kind = "markdown"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/markdown_governance.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "crates/lbm_3d_cuda/README.md"
-id = "MDG-0030"
-kind = "markdown_mirror"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/requirements.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml", "registry/module_requirements.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "curated/README.md"
-id = "MDG-0032"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "data/artifacts/README.md"
-id = "MDG-0037"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
 path = "data/csv/README.md"
 id = "MDG-0044"
-kind = "markdown_mirror"
+kind = "toml_published_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "data/external/README.md"
-id = "MDG-0045"
-kind = "markdown_mirror"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "docs/THEOREMS.md"
-id = "MDG-0096"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/canonical/control_plane.sqlite3", "registry/control_plane_compatibility_exports.toml", "registry/docs_root_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/book/src/proofs/index.md"
-id = "MDG-0120"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/book_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/convos/README.md"
-id = "MDG-0143"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/docs_convos.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/embedded_markdown_payloads.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/GPU_MODULARIZATION_TASKLIST_2026_03_17.md"
 id = "MDG-0149"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md"
 id = "MDG-0150"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/GPU_STACK_MODULARIZATION_PLAN_2026_03_17.md"
 id = "MDG-0151"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/LBM_SHARED_SUBSTRATE_AUDIT_2026_03_17.md"
 id = "MDG-0153"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/OPTIX_ACCELERATION_BOUNDARY_2026_03_17.md"
 id = "MDG-0154"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/PHYSICS_FIRST_FALSIFICATION_SOURCES_2026_03_18.md"
 id = "MDG-0155"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md"
 id = "MDG-0158"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/engineering/VIEWER_ADAPTER_CAPABILITY_MATRIX_2026_03_17.md"
 id = "MDG-0159"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/research_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md"
 id = "MDG-0165"
-kind = "markdown_mirror"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/external_sources.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/external_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
-id = "MDG-0185"
-kind = "markdown_mirror"
+path = "reports/COUPLER_MANIFOLD_GRAND_SYNTHESIS.md"
+id = "MDG-0266"
+kind = "markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/external_sources.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml", "registry/narrative_paragraph_atoms.toml", "registry/provenance_sources.toml"]
+source_toml_refs = ["registry/reports_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
-id = "MDG-0215"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/canonical/control_plane.sqlite3", "registry/control_plane_compatibility_exports.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/research/high_dimensional_algebra_unification_2026.md"
-id = "MDG-0233"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/research_narratives.toml", "registry/embedded_markdown_payloads.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml", "registry/narrative_paragraph_atoms.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
-id = "MDG-0257"
-kind = "markdown_mirror"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/claim_tickets.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "experiments/manga_zd_null/charts/README.md"
-id = "MDG-0261"
-kind = "manual_source"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "proofs/EPISTEMIC_BOUNDARIES.md"
-id = "MDG-0264"
-kind = "markdown_mirror"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/requirements.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Manual source consumed by TOML normalizers."
-
-[[document]]
-path = "proofs/README.md"
-id = "MDG-0265"
-kind = "markdown_mirror"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/requirements.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
-notes = "Manual source consumed by TOML normalizers."
 
 [[document]]
 path = "reports/heliosphere_sparse_policy_mainline_2026-03-18.md"
-id = "MDG-0347"
-kind = "markdown_mirror"
+id = "MDG-0348"
+kind = "toml_destination_exists_manual_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/reports_narratives.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
+source_toml_refs = ["registry/reports_narratives.toml", "registry/markdown_governance.toml", "registry/markdown_payloads.toml"]
 notes = "Generated from TOML registries and overlays."

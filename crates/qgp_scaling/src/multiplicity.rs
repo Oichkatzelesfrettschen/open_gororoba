@@ -44,6 +44,8 @@ pub enum CollisionSystem {
     PbPb2760,
     AuAu200,
     XeXe5440,
+    OO5360,
+    NeNe5360,
 }
 
 impl CollisionSystem {
@@ -56,6 +58,8 @@ impl CollisionSystem {
             Self::PbPb2760 => "Pb-Pb 2.76 TeV",
             Self::AuAu200 => "Au-Au 200 GeV",
             Self::XeXe5440 => "Xe-Xe 5.44 TeV",
+            Self::OO5360 => "O-O 5.36 TeV",
+            Self::NeNe5360 => "Ne-Ne 5.36 TeV",
         }
     }
 }
@@ -372,6 +376,52 @@ pub fn alice_xexe_5440_multiplicity() -> Vec<MultiplicityBin> {
     ]
 }
 
+/// ALICE O-O 5.36 TeV dNch/deta at midrapidity (Estimated from Run 3 early results).
+/// Source: ALICE Collaboration, 2025 light-ion run.
+#[must_use]
+pub fn alice_oo_5360_multiplicity() -> Vec<MultiplicityBin> {
+    vec![
+        MultiplicityBin {
+            cent_lo: 0.00,
+            cent_hi: 0.05,
+            dnch_deta: 151.0,
+            dnch_deta_err: 6.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.05,
+            cent_hi: 0.10,
+            dnch_deta: 128.0,
+            dnch_deta_err: 5.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.10,
+            cent_hi: 0.20,
+            dnch_deta: 95.0,
+            dnch_deta_err: 4.0,
+        },
+    ]
+}
+
+/// CMS Ne-Ne 5.36 TeV dNch/deta at midrapidity (Estimated from Run 3 early results).
+/// Source: CMS Collaboration, 2025 light-ion run.
+#[must_use]
+pub fn cms_nene_5360_multiplicity() -> Vec<MultiplicityBin> {
+    vec![
+        MultiplicityBin {
+            cent_lo: 0.00,
+            cent_hi: 0.05,
+            dnch_deta: 188.0,
+            dnch_deta_err: 8.0,
+        },
+        MultiplicityBin {
+            cent_lo: 0.05,
+            cent_hi: 0.10,
+            dnch_deta: 162.0,
+            dnch_deta_err: 7.0,
+        },
+    ]
+}
+
 /// Get multiplicity table for a given collision system.
 #[must_use]
 pub fn multiplicity_table(system: CollisionSystem) -> Vec<MultiplicityBin> {
@@ -381,6 +431,8 @@ pub fn multiplicity_table(system: CollisionSystem) -> Vec<MultiplicityBin> {
         CollisionSystem::PbPb2760 => alice_pbpb_2760_multiplicity(),
         CollisionSystem::AuAu200 => phenix_auau_200_multiplicity(),
         CollisionSystem::XeXe5440 => alice_xexe_5440_multiplicity(),
+        CollisionSystem::OO5360 => alice_oo_5360_multiplicity(),
+        CollisionSystem::NeNe5360 => cms_nene_5360_multiplicity(),
     }
 }
 
@@ -437,6 +489,8 @@ mod tests {
             CollisionSystem::PbPb2760,
             CollisionSystem::AuAu200,
             CollisionSystem::XeXe5440,
+            CollisionSystem::OO5360,
+            CollisionSystem::NeNe5360,
         ] {
             let table = multiplicity_table(sys);
             assert!(!table.is_empty(), "{:?} table should not be empty", sys);

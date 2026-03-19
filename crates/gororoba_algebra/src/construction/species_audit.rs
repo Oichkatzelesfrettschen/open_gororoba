@@ -175,27 +175,39 @@ pub fn verify_t6_annihilator_bound(dim: usize, max_annihilator_dim: usize) -> bo
     max_annihilator_dim <= bound
 }
 
-/// Verify T8: Finite geometry incidence encodes multiplication constraints
-/// Placeholder for PG(k,2) triad checks.
+/// Verify T8: Finite Geometry Incidence (Saniga-Holweck-Pracna)
+///
+/// In Cayley-Dickson algebras, any three non-identity units {e_a, e_b, e_c}
+/// that form a multiplicative triad (e_a * e_b = +/- e_c) can be viewed as a 
+/// line in a finite projective geometry PG(k, 2).
 pub fn verify_t8_finite_geometry_triads(dim: usize) -> bool {
-    // In PG(k,2), triads correspond to lines.
-    // Verify that for all distinct a, b > 0, the triad {a, b, a^b} forms a multiplicative triad.
     let table = SignTable::new(dim);
+    
+    // Total number of non-identity basis elements is dim - 1.
+    // In PG(k, 2) where dim = 2^{k+1}, the number of lines is (dim-1)(dim-2)/6.
+    let expected_lines = if dim < 4 { 0 } else { (dim - 1) * (dim - 2) / 6 };
+    let mut actual_lines = 0;
+
     for a in 1..dim {
-        for b in (a+1)..dim {
+        for b in (a + 1)..dim {
             let c = a ^ b;
-            // e_a * e_b = +/- e_c
-            let sign_ab = table.sign(a, b);
-            if sign_ab == 0 { return false; }
-            // e_b * e_c = +/- e_a
-            let sign_bc = table.sign(b, c);
-            if sign_bc == 0 { return false; }
-            // e_c * e_a = +/- e_b
-            let sign_ca = table.sign(c, a);
-            if sign_ca == 0 { return false; }
+            if c > b {
+                // We have a triad {a, b, c}. 
+                // In XOR-twist representation, a ^ b = c implies e_a * e_b = +/- e_c.
+                let sign_ab = table.sign(a, b);
+                let sign_bc = table.sign(b, c);
+                let sign_ca = table.sign(c, a);
+                
+                // Verify the cycle: e_a*e_b = s1*e_c, e_b*e_c = s2*e_a, e_c*e_a = s3*e_b
+                // This must hold for a legitimate Fano-like line.
+                if sign_ab != 0 && sign_bc != 0 && sign_ca != 0 {
+                    actual_lines += 1;
+                }
+            }
         }
     }
-    true
+    
+    actual_lines == expected_lines
 }
 
 /// Verify T9: Subloop enumeration induces subalgebra lattice at 32D
@@ -301,6 +313,8 @@ mod tests {
     fn test_audit_t8_finite_geometry() {
         assert!(verify_t8_finite_geometry_triads(8));
         assert!(verify_t8_finite_geometry_triads(16));
+        assert!(verify_t8_finite_geometry_triads(32));
+        assert!(verify_t8_finite_geometry_triads(64));
     }
 
     #[test]

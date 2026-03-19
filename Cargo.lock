@@ -8220,6 +8220,7 @@ dependencies = [
  "rayon",
  "rustfft",
  "thiserror 2.0.18",
+ "verified_core",
 ]
 
 [[package]]
@@ -10600,7 +10601,10 @@ dependencies = [
  "cosmology_core",
  "gororoba_algebra",
  "gr_core",
+ "nalgebra 0.33.2",
  "optics_core",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
  "raw-cpuid 11.6.0",
  "rayon",
 ]

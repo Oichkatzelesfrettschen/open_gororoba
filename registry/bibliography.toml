@@ -3,17 +3,17 @@
 
 [bibliography]
 authoritative = true
-updated = "2026-03-17"
+updated = "2026-03-18"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 57
-entry_count = 344
+section_count = 59
+entry_count = 370
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 58
-entry_count = 344
+section_count = 59
+entry_count = 370
 
 [[section]]
 id = "BSEC-001"
@@ -4146,11 +4146,10 @@ notes = ["*Foundational text for E8 theory and Lie algebra representations.*"]
 urls = []
 dois = ["10.1007/978-1-4612-1126-6"]
 source_line = 0
-# [ ... previous entries ...]
 
 [[entry]]
-id = "BIB-0341"
-order_index = 341
+id = "BIB-0345"
+order_index = 345
 group = "Primary Research & Data Sources"
 section = "Tensor Networks & Quantum Simulation"
 citation_markdown = "**Truong, D. P., Nebgen, B., DeSantis, D., Petsev, D. N., Rasmussen, K. O., & Alexandrov, B. S.** (2025). *Breaking the curse of dimensionality: Solving configurational integrals for crystalline solids by tensor networks*. [arXiv:2506.00000](https://arxiv.org/abs/2506.00000) (placeholder for actual arXiv ID)."
@@ -4160,8 +4159,8 @@ dois = ["LA-UR-25-25040"]
 source_line = 0
 
 [[entry]]
-id = "BIB-0342"
-order_index = 342
+id = "BIB-0346"
+order_index = 346
 group = "Primary Research & Data Sources"
 section = "Tensor Networks & Quantum Simulation"
 citation_markdown = "**Oseledets, I. V.** (2011). *Tensor-train decomposition*. SIAM Journal on Scientific Computing, 33(5), 2295-2317."
@@ -4171,8 +4170,8 @@ dois = ["10.1137/100792345"]
 source_line = 0
 
 [[entry]]
-id = "BIB-0343"
-order_index = 343
+id = "BIB-0347"
+order_index = 347
 group = "Primary Research & Data Sources"
 section = "Tensor Networks & Quantum Simulation"
 citation_markdown = "**Oseledets, I. V., & Tyrtyshnikov, E. E.** (2010). *TT-cross approximation for multidimensional arrays*. Linear Algebra and its Applications, 432(1), 70-88."
@@ -4182,12 +4181,260 @@ dois = ["10.1016/j.laa.2009.07.024"]
 source_line = 0
 
 [[entry]]
-id = "BIB-0344"
-order_index = 344
+id = "BIB-0348"
+order_index = 348
 group = "Primary Research & Data Sources"
 section = "Tensor Networks & Quantum Simulation"
 citation_markdown = "**Mahoney, M. W., & Drineas, P.** (2009). *CUR matrix decompositions for improved data analysis*. PNAS 106 (3), 697-714."
 notes = ["*Foundational reference for CUR/Skeleton matrix decompositions.*"]
 urls = []
 dois = ["10.1073/pnas.0803205106"]
+source_line = 0
+
+[[section]]
+id = "BSEC-059"
+name = "Quark-Gluon Plasma & Light-Ion Collisions"
+groups = ["Primary Research & Data Sources"]
+entry_count = 22
+
+[[entry]]
+id = "BIB-0349"
+order_index = 349
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN News.** (2025). *First-ever collisions of oxygen ions in the LHC*. [CERN](https://home.cern/news/news/accelerators/first-ever-collisions-oxygen-lhc)."
+notes = ["*First-ever oxygen collisions at the LHC; 29 Jun-9 Jul 2025 pO/OO/NeNe schedule.*"]
+urls = ["https://home.cern/news/news/accelerators/first-ever-collisions-oxygen-lhc"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0350"
+order_index = 350
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CERN News.** (2025). *LHC delivers record number of particle collisions in 2025*. [CERN](https://home.cern/news/news/accelerators/lhc-delivers-record-number-particle-collisions-2025)."
+notes = ["*CERN year summary: record collisions in 2025; light-ion cycle; Run 3 final full year.*"]
+urls = ["https://home.cern/news/news/accelerators/lhc-delivers-record-number-particle-collisions-2025"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0351"
+order_index = 351
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2025). *Discovery of suppressed charged-particle production in ultrarelativistic oxygen-oxygen collisions*. [arXiv:2510.09864](https://arxiv.org/abs/2510.09864)."
+notes = ["*Discovery of suppressed charged-particle production in ultrarelativistic oxygen-oxygen collisions.*"]
+urls = ["https://arxiv.org/abs/2510.09864"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0352"
+order_index = 352
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2025). *CMS O-O charged-particle suppression / RAA (HIN-25-008)*. [HEPData](https://www.hepdata.net/record/166013)."
+notes = ["*HEPData record: CMS O-O charged-particle suppression / RAA (HIN-25-008).*"]
+urls = ["https://www.hepdata.net/record/166013"]
+dois = ["10.17182/hepdata.166013"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0353"
+order_index = 353
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2025). *Evidence of medium response to hard probes using correlations of Z bosons with hadrons in heavy ion collisions*. [arXiv:2507.09307](https://arxiv.org/abs/2507.09307)."
+notes = ["*Evidence of medium response to hard probes using correlations of Z bosons with hadrons.*"]
+urls = ["https://arxiv.org/abs/2507.09307"]
+dois = ["10.1016/j.physletb.2025.140120"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0354"
+order_index = 354
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2025). *CMS Z-hadron medium response tables*. [HEPData](https://www.hepdata.net/record/ins2945894)."
+notes = ["*HEPData record: CMS Z-hadron medium response tables.*"]
+urls = ["https://www.hepdata.net/record/ins2945894"]
+dois = ["10.17182/hepdata.ins2945894"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0355"
+order_index = 355
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2025). *Observation of long-range collective flow in OO and NeNe collisions at 5.36 TeV*. [arXiv:2510.02580](https://arxiv.org/abs/2510.02580)."
+notes = ["*Observation of long-range collective flow in OO and NeNe collisions.*"]
+urls = ["https://arxiv.org/abs/2510.02580"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0356"
+order_index = 356
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**ATLAS Collaboration.** (2025). *Azimuthal anisotropy in O-O and Ne-Ne collisions at 5.36 TeV*. [arXiv:2509.05171](https://arxiv.org/abs/2509.05171)."
+notes = ["*ATLAS flow in O-O and Ne-Ne (vn, cumulants, deformation sensitivity).*"]
+urls = ["https://arxiv.org/abs/2509.05171"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0357"
+order_index = 357
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**ATLAS Collaboration.** (2026). *ATLAS vn in O-O and Ne-Ne (dataset release Feb 2026)*. [HEPData](https://www.hepdata.net/record/ins2967110)."
+notes = ["*HEPData record: ATLAS vn in O-O and Ne-Ne (dataset release Feb 2026).*"]
+urls = ["https://www.hepdata.net/record/ins2967110"]
+dois = ["10.17182/hepdata.ins2967110"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0358"
+order_index = 358
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**LHCb Collaboration.** (2025). *Azimuthal anisotropy in fixed-target PbNe and PbAr collisions*. [arXiv:2509.12399](https://arxiv.org/abs/2509.12399)."
+notes = ["*LHCb neon shape via flow cumulants in fixed-target PbNe/PbAr.*"]
+urls = ["https://arxiv.org/abs/2509.12399"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0359"
+order_index = 359
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**STAR Collaboration.** (2025). *Precision net-proton cumulants at RHIC BES-II*. [arXiv:2504.00817](https://arxiv.org/abs/2504.00817)."
+notes = ["*STAR BES-II precision net-proton cumulants.*"]
+urls = ["https://arxiv.org/abs/2504.00817"]
+dois = ["10.1103/PhysRevLett.134.09l69"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0360"
+order_index = 360
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**STAR Collaboration.** (2025). *STAR BES-II precision net-proton cumulants tables*. [HEPData](https://www.hepdata.net/record/159985)."
+notes = ["*HEPData record: STAR BES-II precision net-proton cumulants tables.*"]
+urls = ["https://www.hepdata.net/record/159985"]
+dois = ["10.17182/hepdata.159985"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0361"
+order_index = 361
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**ALICE Collaboration.** (2025). *First results on jet quenching in O-O collisions at 5.36 TeV*. [ALICE](https://alice-collaboration.web.cern.ch/2025-ALICE-Oxygen-Neon-Jet-quenching)."
+notes = ["*ALICE public note: jet quenching in oxygen collisions; neutral pion suppression.*"]
+urls = ["https://alice-collaboration.web.cern.ch/2025-ALICE-Oxygen-Neon-Jet-quenching"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0362"
+order_index = 362
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Borsanyi, S. et al.** (2020). *The QCD crossover at finite chemical potential from lattice QCD*. [arXiv:2002.02821](https://arxiv.org/abs/2002.02821)."
+notes = ["*Borsanyi et al. QCD crossover at finite chemical potential.*"]
+urls = ["https://arxiv.org/abs/2002.02821"]
+dois = ["10.1103/PhysRevLett.125.052001"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0363"
+order_index = 363
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Bazavov, A. et al.** (2014). *Equation of state in (2+1)-flavor QCD*. [arXiv:1407.6387](https://arxiv.org/abs/1407.6387)."
+notes = ["*Bazavov et al. equation of state in (2+1)-flavor QCD.*"]
+urls = ["https://arxiv.org/abs/1407.6387"]
+dois = ["10.1103/PhysRevD.90.094503"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0364"
+order_index = 364
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Stephanov, M.** (2024). *QCD critical point and hydrodynamic fluctuations*. [arXiv:2403.03255](https://arxiv.org/abs/2403.03255)."
+notes = ["*Stephanov lecture notes: QCD critical point and hydrodynamic fluctuations.*"]
+urls = ["https://arxiv.org/abs/2403.03255"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0365"
+order_index = 365
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**ALICE Collaboration.** (2024). *Measurement of chemical potentials in Pb–Pb collisions at the LHC*. [PRL 133, 092301](https://link.aps.org/doi/10.1103/PhysRevLett.133.092301)."
+notes = ["*ALICE measurement of chemical potentials in Pb-Pb at LHC.*"]
+urls = ["https://link.aps.org/doi/10.1103/PhysRevLett.133.092301"]
+dois = ["10.1103/PhysRevLett.133.092301"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0366"
+order_index = 366
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Heinz, U. & Snellings, R.** (2013). *Collective Flow and Viscosity in Relativistic Heavy-Ion Collisions*. [arXiv:1301.2826](https://arxiv.org/abs/1301.2826)."
+notes = ["*Heinz/Snellings review: collective flow and viscosity.*"]
+urls = ["https://arxiv.org/abs/1301.2826"]
+dois = ["10.1146/annurev-nucl-102212-170540"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0367"
+order_index = 367
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Qin, G.-Y. & Wang, X.-N.** (2015). *Jet quenching in high-energy heavy-ion collisions*. [arXiv:1511.00790](https://arxiv.org/abs/1511.00790)."
+notes = ["*Qin & Wang jet quenching review.*"]
+urls = ["https://arxiv.org/abs/1511.00790"]
+dois = ["10.1142/S021773231530016X"]
+source_line = 0
+
+[[entry]]
+id = "BIB-0368"
+order_index = 368
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**CMS Collaboration.** (2010). *CMS releases heavy-ion data (Run 1; 2010-2011)*. [CERN Open Data](https://opendata.cern.ch/docs/cms-releases-heavy-ion-data)."
+notes = ["*CERN Open Data: CMS releases heavy-ion data (Run 1; 2010-2011).*"]
+urls = ["https://opendata.cern.ch/docs/cms-releases-heavy-ion-data"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0369"
+order_index = 369
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**LHC Seminar.** (2025). *Results from the recent 2025 light ion LHC run*. [Indico](https://indico.cern.ch/event/1586852/)."
+notes = ["*Indico event hub: LHC Seminar Results from the recent 2025 light ion LHC run.*"]
+urls = ["https://indico.cern.ch/event/1586852/"]
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0370"
+order_index = 370
+group = "Primary Research & Data Sources"
+section = "Quark-Gluon Plasma & Light-Ion Collisions"
+citation_markdown = "**Arleo, F. & Falmagne, G.** (2024). *Parton energy loss in the quark-gluon plasma from system-size scans*. [arXiv:2411.13258](https://arxiv.org/abs/2411.13258)."
+notes = ["*Reproduced in qgp_scaling crate. Establishes energy-loss scaling laws across collision systems.*"]
+urls = ["https://arxiv.org/abs/2411.13258"]
+dois = ["10.1103/PhysRevD.109.L051503"]
 source_line = 0
