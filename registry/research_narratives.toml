@@ -1548,7 +1548,7 @@ content_kind = "synthesis"
 verification_level = "multi_scale_synthesis"
 claim_refs = ["C-010", "C-011", "C-012"]
 url_refs = []
-path_refs = ["docs/GRAND_SYNTHESIS.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "data/csv/genesis_gravastar_bridge.csv", "proofs/verified/C011_AssociatorObstruction.v"]
+path_refs = ["docs/GRAND_SYNTHESIS.md", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "data/csv/genesis_gravastar_bridge.csv", "proofs/verified/C011_AssociatorObstruction.v"]
 line_count = 140
 
 [[document]]
