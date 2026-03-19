@@ -10,7 +10,7 @@
 //!
 //! Exit code: `2`
 //!
-//! ```text
+//! ```texttext
 //! ... (7396 earlier line(s) omitted)
 //!    |     ^^
 //! 74 |     ax3.set_title("STRONG-COUPLING UNIFICATION: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
@@ -32,14 +32,14 @@
 //! make[1]: Leaving directory '/home/eirikr/Github/open_gororoba'
 //! make[1]: *** [Makefile:125: lint] Error 1
 //! make: *** [Makefile:175: gate-local] Error 2
-//! ```
+//! ```texttext
 //! | `gate-ci-python` | `2` | `reports/gates/2026-03-07/155836/gate-ci-python.log` |
 //!
 //! ## gate-ci-python
 //!
 //! Exit code: `2`
 //!
-//! ```text
+//! ```texttext
 //! ... (7391 earlier line(s) omitted)
 //!    |     ^^
 //! 74 |     ax3.set_title("STRONG-COUPLING UNIFICATION: THE MELTDOWN FIELD", fontsize=28, fontweight='bold', pad=30)
@@ -61,14 +61,14 @@
 //! make[1]: Leaving directory '/home/eirikr/Github/open_gororoba'
 //! make[1]: *** [Makefile:125: lint] Error 1
 //! make: *** [Makefile:213: gate-ci-python] Error 2
-//! ```
+//! ```texttext
 //! | `gate-ci-rust` | `2` | `reports/gates/2026-03-07/155836/gate-ci-rust.log` |
 //!
 //! ## gate-ci-rust
 //!
 //! Exit code: `2`
 //!
-//! ```text
+//! ```texttext
 //! ... (334 earlier line(s) omitted)
 //!       l_0=-1,l_1=-1 all : prefix=2, d=6, N=365, obs=0.2509, null=0.2154+/-0.0027, z=13.28
 //!       l_2=-1              : prefix=3, d=5, N=122, obs=0.2763, null=0.1943+/-0.0046, z=17.65
@@ -90,14 +90,14 @@
 //! error: test run failed
 //! make[1]: *** [Makefile:308: rust-regression] Error 100
 //! make: *** [Makefile:225: gate-ci-rust] Error 2
-//! ```
+//! ```texttext
 //! | `nextest-list` | `0` | `reports/gates/2026-03-07/155836/nextest-list.log` |
 //!
 //! ## nextest-list
 //!
 //! Exit code: `0`
 //!
-//! ```text
+//! ```texttext
 //! ... (5128 earlier line(s) omitted)
 //! verified_core spectral_dim::tests::range_bounds
 //! verified_core::cross_validate cross_validate_90_degree_z
@@ -119,7 +119,7 @@
 //! verified_core::cross_validate_sprint59 cross_validate_tcmt_antiresonance
 //! verified_core::cross_validate_sprint59 cross_validate_tcmt_unitarity
 //!     Finished `test` profile [optimized + debuginfo] target(s) in 0.52s
-//! ```
+//! ```texttext
 //!
 //! Gate audit failed in 3 step(s).
 //!

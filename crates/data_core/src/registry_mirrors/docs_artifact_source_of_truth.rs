@@ -27,21 +27,21 @@
 //!
 //! ## Rebuild commands
 //!
-//! ```bash
+//! ```texttext
 //! cargo run -p gororoba_cli_data --bin provenance -- export
 //! cargo run -p gororoba_cli_data --bin provenance -- index
 //! cargo run -p gororoba_cli_data --bin provenance -- verify
-//! ```
+//! ```texttext
 //!
 //! ## Optional live link audit refresh
 //!
-//! ```bash
+//! ```texttext
 //! cargo run -p gororoba_cli_data --bin provenance -- export
 //! cargo run -p gororoba_cli_data --bin provenance -- index
 //! cargo run -p gororoba_cli_data --bin provenance -- link-audit
 //! cargo run -p gororoba_cli_data --bin provenance -- recover
 //! cargo run -p gororoba_cli_data --bin provenance -- verify
-//! ```
+//! ```texttext
 //!
 //! ## Generated audit views
 //!

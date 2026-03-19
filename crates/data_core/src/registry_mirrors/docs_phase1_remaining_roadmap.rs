@@ -33,7 +33,7 @@
 //! **Range**: lambda = 0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0
 //!
 //! **Implementation**:
-//! ```bash
+//! ```texttext
 //! for lambda in 0.1 0.5 1.0 2.0 5.0 10.0 20.0 50.0; do
 //!   cargo run --release --bin percolation-experiment -- \
 //!     --grid-size 64 \
@@ -43,7 +43,7 @@
 //!     --n-permutations 1000 \
 //!     --seed 42
 //! done
-//! ```
+//! ```texttext
 //!
 //! **Expected Results**:
 //! - Low lambda (0.1-1.0): Weak coupling, correlation p-value ~0.05-0.10
@@ -80,7 +80,7 @@
 //! - 96^3-128^3: Consistent correlation (diminishing returns on resolution)
 //!
 //! **Implementation**:
-//! ```bash
+//! ```texttext
 //! for grid in 32 48 64 96 128; do
 //!   cargo run --release --bin percolation-experiment -- \
 //!     --grid-size $grid \
@@ -90,7 +90,7 @@
 //!     --n-permutations 1000 \
 //!     --seed 42
 //! done
-//! ```
+//! ```texttext
 //!
 //! **Deliverables**:
 //! - `data/e027/grid_sweep_results.csv`
@@ -145,7 +145,7 @@
 //! 4. **Fractal Dimension**: Box-counting on thresholded imbalance regions
 //!
 //! **Implementation**:
-//! ```rust
+//! ```texttext
 //! // crates/sign_imbalance/src/spatial_analysis.rs
 //! pub struct SpatialStatistics {
 //!     pub autocorrelation_length: f64,
@@ -154,7 +154,7 @@
 //! }
 //!
 //! pub fn analyze_imbalance_field(field: &[f64], grid_size: usize) -> SpatialStatistics;
-//! ```
+//! ```texttext
 //!
 //! **Deliverables**:
 //! - `crates/sign_imbalance/src/spatial_analysis.rs` (250 lines)
@@ -175,7 +175,7 @@
 //! 3. **Gradient Check**: Varying nu(x,y,z) <U+2192> verify local tau(x,y,z) correctness
 //!
 //! **Implementation**:
-//! ```rust
+//! ```texttext
 //! // crates/lbm_3d/tests/test_chapman_enskog_verification.rs
 //! #[test]
 //! fn test_chapman_enskog_exact() {
@@ -186,7 +186,7 @@
 //!         assert_relative_eq!(nu_measured, nu, epsilon = 1e-6);
 //!     }
 //! }
-//! ```
+//! ```texttext
 //!
 //! **Deliverables**:
 //! - `crates/lbm_3d/tests/test_chapman_enskog_verification.rs` (150 lines, 8 tests)
@@ -208,7 +208,7 @@
 //! 4. **Piecewise**: nu(x) = nu_1 if F < 3/8, else nu_2
 //!
 //! **Implementation**:
-//! ```rust
+//! ```texttext
 //! // crates/sign_imbalance/src/bridge.rs - extend
 //! pub enum CouplingLaw {
 //!     Exponential { lambda: f64 },
@@ -220,7 +220,7 @@
 //! impl ImbalanceViscosityBridge {
 //!     pub fn transform_with_law(&self, imbalance: &[f64], law: CouplingLaw) -> Vec<f64>;
 //! }
-//! ```
+//! ```texttext
 //!
 //! **Comparison Metrics**:
 //! - Percolation correlation strength (p-value)
@@ -325,7 +325,7 @@
 //! ### Phase 1.9.1: Create sign_imbalance_cuda crate (PENDING - Task #52)
 //!
 //! **Architecture**:
-//! ```
+//! ```texttext
 //! crates/sign_imbalance_cuda/
 //!   src/
 //!     lib.rs                - Public API
@@ -333,7 +333,7 @@
 //!     correlation_kernels.cu - GPU-accelerated Welch's t-test
 //!   tests/
 //!     test_gpu_cpu_equivalence.rs - Validate against CPU implementation
-//! ```
+//! ```texttext
 //!
 //! **Key Algorithms**:
 //! 1. **GPU BFS**: Parallel breadth-first search for connected components
@@ -358,7 +358,7 @@
 //! **Objective**: Integrate GPU percolation into percolation-experiment binary.
 //!
 //! **Implementation**:
-//! ```rust
+//! ```texttext
 //! // Modify crates/gororoba_cli/src/bin/percolation_experiment.rs
 //! use sign_imbalance_cuda::PercolationDetectorGpu;
 //!
@@ -369,7 +369,7 @@
 //! } else {
 //!     // CPU path as before
 //! }
-//! ```
+//! ```texttext
 //!
 //! **Deliverables**:
 //! - Updated binary with GPU path
@@ -406,7 +406,7 @@
 //! ### Phase 1.11.1: <U+03BB>=50 Validation (PENDING - Task #57)
 //!
 //! **Configuration**:
-//! ```bash
+//! ```texttext
 //! cargo run --release --bin percolation-experiment --use-gpu -- \
 //!   --grid-size 256 \
 //!   --lbm-steps 10000 \
@@ -414,7 +414,7 @@
 //!   --lambda 50.0 \
 //!   --n-permutations 1000 \
 //!   --seed 42
-//! ```
+//! ```texttext
 //!
 //! **Expected Runtime**: ~10 minutes (GPU-accelerated)
 //!

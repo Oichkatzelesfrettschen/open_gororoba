@@ -199,7 +199,7 @@
 //! ## Implementation Guidance for Rust
 //!
 //! ### For Photon-Graviton TCMT Module
-//! ```rust
+//! ```texttext
 //! // Expected file structure
 //! crates/gr_core/src/
 //!   photon_graviton/
@@ -209,16 +209,16 @@
 //!     fano_lineshape.rs      -- Asymmetry q calculation
 //!     cross_sections.rs      -- Absorption/scattering
 //!     tests.rs               -- E-073 validation
-//! ```
+//! ```texttext
 //!
 //! ### For Nonlinear Extensions
-//! ```rust
+//! ```texttext
 //! // Kerr-TCMT additions
 //! kerr_tcmt/
 //!   coupling_nonlinear.rs    -- Chi-3 coupling terms
 //!   power_dependent_q.rs     -- Q as function of intensity
 //!   bistability.rs           -- Bifurcation analysis
-//! ```
+//! ```texttext
 //!
 //! ---
 //!

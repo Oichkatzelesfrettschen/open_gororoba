@@ -45,7 +45,7 @@
 //!
 //! ## Full Transcript
 //!
-//! ```text
+//! ```texttext
 //! arXiv:math/0703745v3 [math.RA] 22 Nov 2007
 //! Placeholder Substructures I: The Road from
 //! NKS to Scale-Free Networks is Paved with
@@ -672,5 +672,5 @@
 //! [16] Robert P. C. de Marrais, "Placeholder Substructures III: A Bit-StringDriven 'Recipe Theory' for Infinite-Dimensional Zero-Divisor Spaces,"
 //! arXiv:0704.0112 [math.RA]
 //! 20
-//! ```
+//! ```texttext
 //!

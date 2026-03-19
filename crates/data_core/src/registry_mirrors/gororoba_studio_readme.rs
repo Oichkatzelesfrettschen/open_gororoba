@@ -8,15 +8,15 @@
 //!
 //! Run:
 //!
-//! ```bash
+//! ```texttext
 //! make studio-run
-//! ```
+//! ```texttext
 //!
 //! Verify:
 //!
-//! ```bash
+//! ```texttext
 //! make studio-check
-//! ```
+//! ```texttext
 //!
 //! Primary API endpoints:
 //! - `GET /api/health`

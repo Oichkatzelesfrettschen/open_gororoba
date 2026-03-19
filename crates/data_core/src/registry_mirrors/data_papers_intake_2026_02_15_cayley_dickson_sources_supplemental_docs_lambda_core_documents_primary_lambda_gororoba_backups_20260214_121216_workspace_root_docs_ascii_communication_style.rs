@@ -16,7 +16,7 @@
 //! - Keep prose short and avoid dense paragraphs.
 //!
 //! ## Reusable template
-//! ```text
+//! ```texttext
 //! Status: <one sentence>
 //!
 //! <ASCII diagram>
@@ -30,7 +30,7 @@
 //! Next options:
 //! 1. <option A>
 //! 2. <option B>
-//! ```
+//! ```texttext
 //!
 //! ## Singular project mapping reminder
 //! - Active sources: `research/`, `experiments/`, `learner/`

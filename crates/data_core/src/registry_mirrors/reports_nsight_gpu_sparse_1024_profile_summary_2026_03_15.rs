@@ -6,9 +6,9 @@
 //!
 //! These profiling runs are now reproducible through the Rust-native helper:
 //!
-//! ```sh
+//! ```texttext
 //! cargo run -p xtask -- sparse-profile --mode both --run-ncu
-//! ```
+//! ```texttext
 //!
 //! If `nsys` or `ncu` are not installed, the helper records a skip manifest and
 //! does not block other repo workflows.
@@ -17,24 +17,24 @@
 //!
 //! The benchmark binary was built with:
 //!
-//! ```sh
+//! ```texttext
 //! cargo bench --no-run -p lbm_3d_cuda --bench gpu_sparse_1024
-//! ```
+//! ```texttext
 //!
 //! Device-local Nsight Systems:
 //!
-//! ```sh
+//! ```texttext
 //! nsys profile \
 //!   --force-overwrite=true \
 //!   --sample=none \
 //!   --trace=cuda,nvtx,osrt \
 //!   -o reports/nsight/gpu_sparse_1024_device \
 //!   .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
-//! ```
+//! ```texttext
 //!
 //! Managed-memory Nsight Systems:
 //!
-//! ```sh
+//! ```texttext
 //! GOROROBA_SPARSE_MEMORY_MODE=managed \
 //! nsys profile \
 //!   --force-overwrite=true \
@@ -44,11 +44,11 @@
 //!   --cuda-um-gpu-page-faults=true \
 //!   -o reports/nsight/gpu_sparse_1024_managed \
 //!   .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
-//! ```
+//! ```texttext
 //!
 //! Managed-memory Nsight Compute:
 //!
-//! ```sh
+//! ```texttext
 //! GOROROBA_SPARSE_MEMORY_MODE=managed \
 //! ncu \
 //!   --target-processes all \
@@ -65,7 +65,7 @@
 //!   --csv \
 //!   --log-file reports/nsight/gpu_sparse_1024_managed_ncu.csv \
 //!   .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
-//! ```
+//! ```texttext
 //!
 //! ## High-level behavior
 //!

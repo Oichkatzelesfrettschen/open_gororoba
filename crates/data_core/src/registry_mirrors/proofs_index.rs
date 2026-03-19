@@ -19,14 +19,14 @@
 //!
 //! Recommended workflow:
 //!
-//! ```sh
+//! ```texttext
 //! cargo run -p gororoba_cli_provenance --bin provenance -- \
 //!   --db registry/canonical/control_plane.sqlite3 \
 //!   export-control-plane
 //!
 //! cargo run -p gororoba_cli_data --bin registry-emit -- \
 //!   control-plane-docs
-//! ```
+//! ```texttext
 //!
 //! After export, use `docs/THEOREMS.md` as the web-readable theorem index and
 //! the proof files under `proofs/` as the canonical source material. Use

@@ -112,7 +112,7 @@
 //!
 //! ## Full Transcript
 //!
-//! ```text
+//! ```texttext
 //!                                   Flying Higher Than A Box-Kite:
 //!
 //!                               Kite-Chain Middens, Sand Mandalas,
@@ -1089,5 +1089,5 @@
 //!
 //!                                                  Page 20
 //!  
-//! ```
+//! ```texttext
 //!

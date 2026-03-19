@@ -8,10 +8,10 @@
 //!
 //! All 29 datasets managed by `fetch-datasets` CLI. Fetch with:
 //!
-//! ```bash
+//! ```texttext
 //! cargo run --bin fetch-datasets -- --list
 //! cargo run --bin fetch-datasets -- --all --skip-existing
-//! ```
+//! ```texttext
 //!
 //! ## Astrophysical Catalogs
 //!

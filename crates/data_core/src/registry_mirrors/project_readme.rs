@@ -65,9 +65,9 @@
 //!
 //! Regenerate the repo-facing visuals with:
 //!
-//! ```bash
+//! ```texttext
 //! cargo run -p gororoba_cli_data --bin repo-visuals
-//! ```
+//! ```texttext
 //!
 //! ## Scientific plates
 //!
@@ -87,7 +87,7 @@
 //!
 //! ## Quickstart
 //!
-//! ```bash
+//! ```texttext
 //! make check
 //! make rust-regression
 //! make doctor
@@ -97,7 +97,7 @@
 //! make docs-gate
 //! make docs-redirect-check
 //! make docs-freshness
-//! ```
+//! ```texttext
 //!
 //! `make docs-site` builds the unified docs bundle into `target/site-docs`
 //! (mdBook + rustdoc).

@@ -19,9 +19,9 @@
 //! ### What IS implemented
 //!
 //! `crates/sign_imbalance/src/bridge.rs:357`:
-//! ```rust
+//! ```texttext
 //! pub const IMBALANCE_ATTRACTOR: f64 = 3.0 / 8.0;
-//! ```
+//! ```texttext
 //!
 //! Six coupling models map frustration -> kinematic viscosity (m^2/s):
 //!

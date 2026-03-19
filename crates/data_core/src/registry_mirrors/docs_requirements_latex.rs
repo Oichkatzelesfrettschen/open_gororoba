@@ -5,9 +5,9 @@
 //!
 //! To compile the LaTeX sources under `docs/latex/`, install a TeX distribution (e.g. TeX Live) and ensure `latexmk` is available.
 //!
-//! ```bash
+//! ```texttext
 //! make latex
-//! ```
+//! ```texttext
 //!
 //! Notes:
 //! - The Makefile checks for `latexmk` on PATH.

@@ -540,24 +540,24 @@
 //! ### Exact reproduction commands
 //!
 //! Python robustness suite (produces results.json):
-//! ```
+//! ```texttext
 //! cd experiments/manga_zd_null && python main.py
-//! ```
+//! ```texttext
 //!
 //! Rust real-data pipeline (E-192):
-//! ```
+//! ```texttext
 //! harmonic-halo-signal-analysis \
 //!   --stacked-csv data/results/e183/lie_jordan_full.csv \
 //!   --min-per-bin 10 --sigma-x 1.5 --n-windows 32 \
 //!   --stft-csv data/results/e183/stft_full.csv \
 //!   --deriv-csv data/results/e183/deriv_full.csv \
 //!   --rayleigh-csv data/results/e183/rayleigh_full.csv
-//! ```
+//! ```texttext
 //!
 //! Rust multi-algebra binary (E-184):
-//! ```
+//! ```texttext
 //! lie-jordan-halo-analysis [flags]
-//! ```
+//! ```texttext
 //!
 //! ### Hyperparameters (frozen in main.py:49-65)
 //!

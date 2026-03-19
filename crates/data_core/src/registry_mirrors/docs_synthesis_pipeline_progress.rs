@@ -27,7 +27,7 @@
 //!
 //! ## Timeline Overview
 //!
-//! ```
+//! ```texttext
 //! Phase 0: Foundation (COMPLETE 2026-02-06)
 //!   <U+2514><U+2500>> cosmic_scheduler crate (38 tests)
 //!
@@ -58,7 +58,7 @@
 //!   <U+2514><U+2500>> Strong lambda validation (<U+03BB>=50, <U+03BB>=100): BLOCKED by 1.9
 //!
 //! Phase 2-4: Future Theses (BLOCKED by Phase 1 completion)
-//! ```
+//! ```texttext
 //!
 //! ---
 //!
@@ -215,7 +215,7 @@
 //! **Objective**: Systematically explore <U+03BB> <U+2208> [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]
 //!
 //! **Current Results** (1/8 runs completed):
-//! ```toml
+//! ```texttext
 //! [metadata]
 //! grid_size = 32
 //! lbm_steps = 5000
@@ -228,7 +228,7 @@
 //!
 //! [null_model]
 //! p_value = 0.900990099009901  # FAILED (>> 0.05)
-//! ```
+//! ```texttext
 //!
 //! **Status**: **E-027 FAILED at <U+03BB>=5.0, 32<U+00B3> grid**
 //! - Correlation NOT significant (p=0.805 >> 0.05)

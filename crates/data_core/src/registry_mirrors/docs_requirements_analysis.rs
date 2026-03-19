@@ -5,9 +5,9 @@
 //!
 //! These scripts use optional dependencies such as `networkx`, `ripser`, and friends.
 //!
-//! ```bash
+//! ```texttext
 //! make install-analysis
-//! ```
+//! ```texttext
 //!
 //! Notes:
 //! - Common entrypoints that require these extras:
@@ -21,7 +21,7 @@
 //!
 //! Analysis outputs are treated as reproducible build artifacts and must pass Rust-native governance checks:
 //!
-//! ```bash
+//! ```texttext
 //! cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
 //! cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
 //! cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
@@ -33,7 +33,7 @@
 //! cargo run -p gororoba_cli_data --bin data-semantic-validate --
 //! cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
 //! cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
-//! ```
+//! ```texttext
 //!
 //! This sequence verifies origin contracts, replayability, semantic integrity, and clean rebuild behavior for analysis lanes.
 //!
