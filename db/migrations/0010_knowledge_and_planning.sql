@@ -103,6 +103,7 @@ CREATE TABLE todo_items (
     status_token TEXT NOT NULL DEFAULT 'OPEN',
     dependencies_json TEXT NOT NULL DEFAULT '[]',
     acceptance_criteria_json TEXT NOT NULL DEFAULT '[]',
+    evidence_refs_json TEXT NOT NULL DEFAULT '[]',
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -117,6 +118,7 @@ CREATE TABLE next_action_items (
     status_token TEXT NOT NULL DEFAULT 'OPEN',
     dependencies_json TEXT NOT NULL DEFAULT '[]',
     acceptance_criteria_json TEXT NOT NULL DEFAULT '[]',
+    evidence_refs_json TEXT NOT NULL DEFAULT '[]',
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
