@@ -16,6 +16,8 @@ pub mod speculative;
 pub mod supersymmetry;
 pub mod topological_insulators;
 pub mod tripotent_topology;
+pub mod crystallography;
+
 
 /// Golden ratio constant phi = (1 + sqrt(5))/2.
 pub const PHI: f64 = 1.618033988749895;

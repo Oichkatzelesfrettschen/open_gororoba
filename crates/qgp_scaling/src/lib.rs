@@ -16,13 +16,19 @@
 //! - [`multiplicity`]: Hardcoded dNch/dy tables per collision system and centrality
 //! - [`data_tables`]: Published Glauber Npart validation tables
 //! - [`competing_models`]: BIC comparison against CUJET3.0 and fractional Langevin
+//! - [`flow_cumulants`]: Multi-particle cumulant formulations for extracting flow harmonics (v_n)
+//! - [`hydro_wake`]: Hydrodynamic medium response and wake formation
+//! - [`nuclear_modification`]: Nuclear modification factor (R_AA) computations
 
 pub mod competing_models;
 pub mod data_tables;
 pub mod density_scaling;
 pub mod epsilon_fit;
+pub mod flow_cumulants;
 pub mod glauber;
+pub mod hydro_wake;
 pub mod multiplicity;
+pub mod nuclear_modification;
 pub mod nucleus;
 pub mod quenching;
 pub mod straggling;
