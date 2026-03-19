@@ -2934,11 +2934,24 @@ impl ProvenanceStore {
         line_count: i64,
     ) -> Result<()> {
         self.conn.execute(
-            "INSERT OR REPLACE INTO research_narratives
+            "INSERT INTO research_narratives
              (id, source_markdown, domain, slug, title, status_token, content_kind,
               verification_level, claim_refs_json, url_refs_json, path_refs_json,
               body_markdown, line_count)
-             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13)",
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13)
+             ON CONFLICT(id) DO UPDATE SET
+                 source_markdown      = excluded.source_markdown,
+                 domain               = excluded.domain,
+                 slug                 = excluded.slug,
+                 title                = excluded.title,
+                 status_token         = excluded.status_token,
+                 content_kind         = excluded.content_kind,
+                 verification_level   = excluded.verification_level,
+                 claim_refs_json      = excluded.claim_refs_json,
+                 url_refs_json        = excluded.url_refs_json,
+                 path_refs_json       = excluded.path_refs_json,
+                 body_markdown        = excluded.body_markdown,
+                 line_count           = excluded.line_count",
             params![
                 id,
                 source_markdown,
