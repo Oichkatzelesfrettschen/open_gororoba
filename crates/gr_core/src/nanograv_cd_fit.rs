@@ -632,27 +632,23 @@ mod tests {
     // -- Full tower fit -------------------------------------------------------
 
     #[test]
-    fn tower_fit_covers_all_dims() {
+    fn tower_fit_properties() {
         let result = fit_nanograv_cd_tower(50, 42);
+
+        // Covers all dims in the stack
         assert_eq!(result.fits.len(), CD_STACK.len());
         for (fit, &expected_dim) in result.fits.iter().zip(CD_STACK.iter()) {
             assert_eq!(fit.dim, expected_dim);
         }
-    }
 
-    #[test]
-    fn tower_fit_best_dim_in_stack() {
-        let result = fit_nanograv_cd_tower(50, 42);
+        // Best dimension must be one of the stack entries
         assert!(
             CD_STACK.contains(&result.best_dim),
             "Best dim {} not in stack",
             result.best_dim
         );
-    }
 
-    #[test]
-    fn tower_fit_all_chi_sq_finite() {
-        let result = fit_nanograv_cd_tower(50, 42);
+        // All chi-squared values must be finite and non-negative
         assert!(result.baseline.chi_sq.is_finite());
         for fit in &result.fits {
             assert!(
@@ -662,11 +658,7 @@ mod tests {
                 fit.chi_sq
             );
         }
-    }
 
-    #[test]
-    fn tower_fit_delta_chi_sq_non_negative() {
-        let result = fit_nanograv_cd_tower(50, 42);
         // Adding a parameter can only improve or maintain chi_sq,
         // so delta_chi_sq >= 0 (baseline_chi_sq >= best_chi_sq).
         assert!(
@@ -674,21 +666,14 @@ mod tests {
             "Adding a parameter should not worsen chi_sq, got delta={}",
             result.delta_chi_sq_best
         );
-    }
 
-    #[test]
-    fn tower_fit_bic_values_finite() {
-        let result = fit_nanograv_cd_tower(50, 42);
+        // BIC values must be finite
         assert!(result.baseline.bic.is_finite());
         for fit in &result.fits {
             assert!(fit.bic.is_finite(), "Dim {} has non-finite BIC", fit.dim);
         }
-    }
 
-    #[test]
-    fn tower_fit_residuals_sum_near_zero() {
         // For well-behaved WLS, mean of weighted residuals ≈ 0
-        let result = fit_nanograv_cd_tower(50, 42);
         for fit in &result.fits {
             let sum: f64 = fit.residuals.iter().sum();
             let mean = sum / fit.residuals.len() as f64;
