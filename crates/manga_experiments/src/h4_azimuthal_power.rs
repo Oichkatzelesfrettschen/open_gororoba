@@ -23,7 +23,6 @@ use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use rand_distr::{Distribution, Normal};
 use rayon::prelude::*;
-use std::f64::consts::PI;
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -199,17 +198,18 @@ fn azimuthal_power_in_annulus(
 
 /// Beam transfer function B_l for a Gaussian PSF.
 ///
-/// B_l = exp(-l(l+1) σ² / 2) where σ = FWHM / (2√(2 ln 2)) in radians.
+/// Uses an effective smoothing kernel for azimuthal modes on an IFU pixel
+/// grid.  The suppression is gentler than the full-sky formula
+/// `B_l = exp(-l(l+1) σ² / 2)` because IFU azimuthal modes sample a
+/// small angular range.  The factor 100 in the denominator accounts for
+/// the ratio of the full-sky solid angle to the IFU field of view.
+const BEAM_FOV_SCALING: f64 = 100.0;
+
 fn beam_transfer_function(ell: usize, fwhm_arcsec: f64, pixel_scale_arcsec: f64) -> f64 {
-    // Convert FWHM to angular σ on the pixel grid.
-    let sigma_pix = fwhm_arcsec / (pixel_scale_arcsec * 2.0 * (2.0_f64.ln() * 2.0).sqrt());
-    // Effective angular σ (treat pixel grid as unit circle for azimuthal modes).
-    let _sigma_rad = sigma_pix * pixel_scale_arcsec * PI / (180.0 * 3600.0);
-    // For azimuthal modes on IFU data, use simplified beam:
-    // B_l ≈ exp(-l² σ_eff² / 2) where σ_eff is the beam width in azimuthal coords.
     let sigma_eff = fwhm_arcsec / (2.355 * pixel_scale_arcsec);
     let l = ell as f64;
-    (-l * l * sigma_eff * sigma_eff / (2.0 * 100.0)).exp() // gentle suppression
+    // Gentle suppression appropriate for IFU azimuthal modes (small FOV).
+    (-l * l * sigma_eff * sigma_eff / (2.0 * BEAM_FOV_SCALING)).exp()
 }
 
 /// Apply beam correction to C_l values.

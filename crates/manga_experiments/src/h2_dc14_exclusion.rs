@@ -63,9 +63,17 @@ pub struct H2Config {
     pub seed: u64,
 }
 
+/// Number of phase-scan points in the default δx sweep.
+const N_PHASE_POINTS: usize = 21;
+
+/// Step size for the default phase-scan sweep (covers [-0.5, +0.5]).
+const PHASE_STEP: f64 = 0.05;
+
 impl Default for H2Config {
     fn default() -> Self {
-        let delta_x: Vec<f64> = (0..21).map(|i| -0.5 + 0.05 * i as f64).collect();
+        let delta_x: Vec<f64> = (0..N_PHASE_POINTS)
+            .map(|i| -0.5 + PHASE_STEP * i as f64)
+            .collect();
         Self {
             n_galaxies: 200,
             delta_x_values: delta_x,
