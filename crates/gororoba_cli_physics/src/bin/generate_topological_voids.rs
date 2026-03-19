@@ -230,13 +230,13 @@ fn main() -> anyhow::Result<()> {
 
     eprintln!("Data saved to {}", args.output);
 
-    // TODO(Phase 7.5 -- moyo post-analysis):
+    // Future Capability: Phase 7.5 -- moyo post-analysis
     // moyo is strictly analytical: classifies symmetry AFTER density field generation.
     // 1. classify_void_symmetry(): extract peak/void 3D positions from rho_field
     // 2. moyo::determine_spacegroup() on extracted fractional coordinates
     // This is post-processing only -- not a runtime dependency of the generator.
 
-    // TODO(Phase 7.6 -- Vulkan compute migration for dim>=256):
+    // Future Capability: Phase 7.6 -- Vulkan compute migration for dim>=256
     // For 256^3 grids, migrate AVT contraction to Vulkan compute shader.
     // Reference: lbm_vulkan/src/compute.rs for ash 0.38.0 pipeline pattern.
     // Buffer architecture:

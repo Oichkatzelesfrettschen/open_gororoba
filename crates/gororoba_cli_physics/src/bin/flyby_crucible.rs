@@ -1083,7 +1083,7 @@ fn main() -> anyhow::Result<()> {
     println!("  the coupling constant is universal.");
     println!("  Tolerance: |pred/obs - 1| < 0.25 for each flyby.");
 
-    // TODO(Sprint 73 -- Vulkan RK4 port):
+    // Future Capability: Sprint 73 -- Vulkan RK4 port
     // For 256D AVT contraction: 256^3 = ~16.7M ops/timestep * 4 RK4 stages
     // = ~67M ops/step * 150k steps = ~10T FLOPs per flyby. CPU freezes.
     // Port to GLSL compute shader: rk4_chingon.comp
