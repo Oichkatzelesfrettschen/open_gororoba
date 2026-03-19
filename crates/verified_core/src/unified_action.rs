@@ -59,11 +59,12 @@ pub fn compute_local_action(
     matter_density: f64,
     scale_factor: f64,
     avt_coupling: f64,
+    manifold_dimension: usize,
 ) -> f64 {
     let cc = AlgebraicCosmologicalConstant { scale_factor };
     let avt = TopologicalFrictionLagrangian {
         coupling_strength: avt_coupling,
-        manifold_dimension: 512, // Evaluated at the NANOGrav resonant dimension
+        manifold_dimension, 
     };
 
     let l_grav = ricci_scalar * scale_factor + cc.lagrangian_density(phi);
