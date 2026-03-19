@@ -25,44 +25,44 @@
 //! ### Core descriptors
 //!
 //! - `ReadbackBufferShape`
-//!   - width, height, depth, element count
+//! - width, height, depth, element count
 //! - `ReadbackElementType`
-//!   - `U8`, `U16`, `U32`, `F16`, `BF16`, `F32`, `F64`
+//! - `U8`, `U16`, `U32`, `F16`, `BF16`, `F32`, `F64`
 //! - `ReadbackLayout`
-//!   - `Packed`
-//!   - `Soa`
-//!   - `Aos`
-//!   - `ImageRgba8`
+//! - `Packed`
+//! - `Soa`
+//! - `Aos`
+//! - `ImageRgba8`
 //! - `ReadbackResidency`
-//!   - `PinnedHost`
-//!   - `MappedHost`
-//!   - `UnifiedManaged`
-//!   - `RendererOwned`
+//! - `PinnedHost`
+//! - `MappedHost`
+//! - `UnifiedManaged`
+//! - `RendererOwned`
 //!
 //! ### Transfer contracts
 //!
 //! - `ReadbackDescriptor`
-//!   - shape
-//!   - element type
-//!   - layout
-//!   - byte length
-//!   - residency
-//!   - backend name
+//! - shape
+//! - element type
+//! - layout
+//! - byte length
+//! - residency
+//! - backend name
 //! - `ReadbackRange`
-//!   - byte offset
-//!   - byte length
-//!   - optional logical subregion
+//! - byte offset
+//! - byte length
+//! - optional logical subregion
 //! - `ReadbackReport`
-//!   - transfer bytes
-//!   - elapsed time
-//!   - achieved GiB/s if known
+//! - transfer bytes
+//! - elapsed time
+//! - achieved GiB/s if known
 //!
 //! ### Traits
 //!
 //! - `HostReadableBuffer`
-//!   - metadata for a host-readable staging surface
+//! - metadata for a host-readable staging surface
 //! - `ReadbackPlanner`
-//!   - choose full copy vs subrange copy vs tiled copy
+//! - choose full copy vs subrange copy vs tiled copy
 //!
 //! ## Good Extraction Candidates
 //!
@@ -102,14 +102,14 @@
 //! ### Solver / viewer local
 //!
 //! - interpretation of the copied bytes as density, velocity, entropy, or tracer
-//!   semantics
+//! semantics
 //!
 //! ## Extraction Order
 //!
 //! 1. Introduce descriptor-only types first.
 //! 2. Move shared reporting utilities next.
 //! 3. Only then move tiny helper functions that do not drag backend runtimes into
-//!    the new crate.
+//! >  the new crate.
 //! 4. Leave backend execution and synchronization code in the owning crate.
 //!
 //! ## Success Criteria

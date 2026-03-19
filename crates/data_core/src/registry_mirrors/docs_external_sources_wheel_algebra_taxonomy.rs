@@ -23,8 +23,8 @@
 //!
 //! A "Wheel Algebra" W_n of dimension n over field F:
 //!
-//!     W_n = span_F {e_1, e_2, ..., e_n}
-//!     e_i * e_j = sum_k omega_{ijk} e_k
+//! >   W_n = span_F {e_1, e_2, ..., e_n}
+//! >   e_i * e_j = sum_k omega_{ijk} e_k
 //!
 //! Subject to:
 //! - Non-associativity: (e_i * e_j) * e_k != e_i * (e_j * e_k) for some triples
@@ -35,11 +35,11 @@
 //!
 //! ### 2A. Clifford-Wheel Algebras
 //!
-//!     e_i e_j + e_j e_i = g_{ij} e_k
+//! >   e_i e_j + e_j e_i = g_{ij} e_k
 //!
 //! where g_{ij} is a metric with cyclic constraints. For W_3:
 //!
-//!     e_1 e_2 = e_3,  e_2 e_3 = e_1,  e_3 e_1 = e_2
+//! >   e_1 e_2 = e_3,  e_2 e_3 = e_1,  e_3 e_1 = e_2
 //!
 //! (Isomorphic to Z/3Z action on basis elements.)
 //!
@@ -47,7 +47,7 @@
 //!
 //! Extends octonions with cyclic transformation T:
 //!
-//!     T(e_i e_j) = e_{i (+) j}  (addition mod 8)
+//! >   T(e_i e_j) = e_{i (+) j}  (addition mod 8)
 //!
 //! ### 2C. Sedenionic Wheel Algebras (W_16, W_32)
 //!
@@ -56,15 +56,15 @@
 //!
 //! ### 2D. Lattice-Embedded Wheel Algebras
 //!
-//!     e_i e_j = e_k + lambda * e_m
+//! >   e_i e_j = e_k + lambda * e_m
 //!
 //! where lambda depends on lattice structure (E8, Leech, Coxeter):
 //!
-//!     e_i e_j = sum_{k in Gamma} C_{ijk} e_k
+//! >   e_i e_j = sum_{k in Gamma} C_{ijk} e_k
 //!
 //! ### 2E. Twisted Wheel Algebras
 //!
-//!     [e_i, e_j]_theta = e_k + theta * e_m
+//! >   [e_i, e_j]_theta = e_k + theta * e_m
 //!
 //! with twisting parameter theta governing algebraic phase shifts.
 //!
@@ -82,21 +82,21 @@
 //! These are STANDARD mathematics (well-defined, well-known):
 //!
 //! ### Gaussian Integers Z[i]
-//!     Z[i] = {a + bi | a,b in Z},  i^2 = -1
-//!     Norm: N(a+bi) = a^2 + b^2
-//!     Unique factorization holds.
+//! >   Z[i] = {a + bi | a,b in Z},  i^2 = -1
+//! >   Norm: N(a+bi) = a^2 + b^2
+//! >   Unique factorization holds.
 //!
 //! ### Eisenstein Integers Z[omega]
-//!     Z[omega] = {a + b*omega | a,b in Z}
-//!     omega = e^{2*pi*i/3} = (-1 + sqrt(-3))/2
-//!     Norm: N(a+b*omega) = a^2 - ab + b^2
+//! >   Z[omega] = {a + b*omega | a,b in Z}
+//! >   omega = e^{2*pi*i/3} = (-1 + sqrt(-3))/2
+//! >   Norm: N(a+b*omega) = a^2 - ab + b^2
 //!
 //! ### Hurwitz Integers
-//!     H = {a + bi + cj + dk | a,b,c,d in Z or (1/2)Z}
-//!     (includes half-integer components, unlike Lipschitz integers)
+//! >   H = {a + bi + cj + dk | a,b,c,d in Z or (1/2)Z}
+//! >   (includes half-integer components, unlike Lipschitz integers)
 //!
 //! ### Octavian Integers
-//!     O = {a_0 + a_1*e_1 + ... + a_7*e_7 | a_i in Z or (1/2)Z}
+//! >   O = {a_0 + a_1*e_1 + ... + a_7*e_7 | a_i in Z or (1/2)Z}
 //!
 //! ## 4. What is NOT in the Codebase
 //!
@@ -111,19 +111,19 @@
 //! 7. Eisenstein integers Z[omega] -- NOT implemented
 //! 8. Octavian integers -- NOT implemented
 //! 9. Hurwitz integers -- NOT implemented (CD elements exist but not the
-//!    integer sublattice)
+//! >  integer sublattice)
 //! 10. Structure constant tensor omega_{ijk} -- NOT implemented
 //!
 //! ## 5. Critical Assessment
 //!
 //! - The W_n "cyclic wheel algebras" have genuine mathematical content
-//!   (cyclic permutation matrices, structure constants) but the connection
-//!   to Carlstrom wheels is purely nominal.
+//! (cyclic permutation matrices, structure constants) but the connection
+//! to Carlstrom wheels is purely nominal.
 //! - SNAWA definitions are speculative with no rigorous construction given.
 //! - The exotic integer families (Gaussian, Eisenstein, Hurwitz, Octavian)
-//!   are well-established standard mathematics.
+//! are well-established standard mathematics.
 //! - Computational "validations" in the conversations use random matrices,
-//!   not actual algebraic structure constants.
+//! not actual algebraic structure constants.
 //!
 //! ## Source
 //!

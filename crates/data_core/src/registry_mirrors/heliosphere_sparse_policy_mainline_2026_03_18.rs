@@ -54,11 +54,11 @@
 //!
 //! On the unsupervised stress cubes:
 //! - `imap2026`: the corrected transfer-applied `mission_quiet|full` path still failed at
-//!   `33.939406 GiB` mean projected memory and `37.474756 GiB` max projected memory,
-//!   versus the invariant comparator at `31.582510 GiB` mean and `34.645755 GiB` max
+//! `33.939406 GiB` mean projected memory and `37.474756 GiB` max projected memory,
+//! versus the invariant comparator at `31.582510 GiB` mean and `34.645755 GiB` max
 //! - `inner1976`: the corrected transfer-applied `mission_quiet|full` path failed at
-//!   `26.687015 GiB` mean projected memory and `29.175301 GiB` max, versus the invariant
-//!   comparator at `25.437876 GiB` mean and `28.391253 GiB` max
+//! `26.687015 GiB` mean projected memory and `29.175301 GiB` max, versus the invariant
+//! comparator at `25.437876 GiB` mean and `28.391253 GiB` max
 //!
 //! Because of that:
 //! - `promotion_survives_all_cubes = false`
@@ -69,10 +69,10 @@
 //! The useful result is narrower than a full promotion, but it is still real:
 //!
 //! - `mission_quiet|full` is a better sparse-policy candidate for the labeled
-//!   `modern2020` lane than the current invariant-only comparator
+//! `modern2020` lane than the current invariant-only comparator
 //! - that gain is not yet stable enough to declare a general cross-cube mainline winner
 //! - the remaining blocker is now a real transfer-budget problem, not a broken unlabeled
-//!   retraining path
+//! retraining path
 //!
 //! This means the next iteration should treat `modern2020` as a confirmed local success
 //! case and `imap2026` / `inner1976` as the blockers that still need a more robust policy

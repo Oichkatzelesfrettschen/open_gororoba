@@ -79,27 +79,27 @@
 //!
 //! Each algebraic framework predicts distinct wavenumbers at which ZD signatures should appear, derived from the mathematical structure of the underlying algebra. The Cayley-Dickson framework at $D = 16$ derives $k_{\text{ZD}}$ from the count and pairwise structure of zero divisors in the sedenion algebra. The G2 framework maps orbits of the octonion automorphism group acting on the unit sphere to characteristic angular scales that translate to radial wavenumbers via the halo geometry. The Albert algebra J3(O) generates predictions from the eigenvalue spectrum of $3 \times 3$ octonionic Hermitian matrices, whose three real eigenvalues define a triplet of characteristic scales. The sl(2) partner graph derives wavenumbers from the adjacency spectrum of the graph connecting sedenion zero-divisor pairs through sl(2) subalgebra embeddings. Despite their different algebraic origins, all four frameworks predict wavenumbers within $k \in [1, 7]$ in the scaled variable $x = r/r_s$, placing them within the MaNGA radial coverage for halos with $r_s \sim 10$--$20$ kpc. The algorithm is summarized in pseudocode form:
 //!
-//! ```texttext
+//! ```ignore
 //! Algorithm: GHOST Pipeline
 //! Input:  MaNGA DR17 velocity maps, algebraic wavenumbers {k_ZD^(alpha)}
 //! Output: SNR^(alpha), alpha_zd upper limits for each framework alpha
 //!
 //! 1. FOR each galaxy i in sample:
-//!      Extract v_obs,i(r) from DAP velocity field via deprojection
-//!      Fit NFW profile: (c_i, M200_i) <- argmin ||v_obs,i - v_NFW||^2_w
-//!      Compute baryonic harmonics: h_i(x) <- LS fit with M=7 modes
-//!      Store cleaned residual: delta_i(x) = v_obs,i - v_NFW,i - h_i
+//! >    Extract v_obs,i(r) from DAP velocity field via deprojection
+//! >    Fit NFW profile: (c_i, M200_i) <- argmin ||v_obs,i - v_NFW||^2_w
+//! >    Compute baryonic harmonics: h_i(x) <- LS fit with M=7 modes
+//! >    Store cleaned residual: delta_i(x) = v_obs,i - v_NFW,i - h_i
 //!
 //! 2. FOR each bootstrap seed b = 1..B:
-//!      Draw N galaxies with replacement -> S_b
-//!      Stack: Delta_b(x) = weighted_mean({delta_i : i in S_b})
-//!      Compute PSD: P_b(k) = |FFT(Delta_b)|^2
+//! >    Draw N galaxies with replacement -> S_b
+//! >    Stack: Delta_b(x) = weighted_mean({delta_i : i in S_b})
+//! >    Compute PSD: P_b(k) = |FFT(Delta_b)|^2
 //!
 //! 3. FOR each algebraic framework alpha:
-//!      Compute SNR_b^(alpha) at k_ZD^(alpha) for each seed b
-//!      Report: SNR^(alpha) = median(SNR_b^(alpha))
-//!      Report: alpha_zd^(alpha) = 95th percentile of bootstrap dist.
-//! ```texttext
+//! >    Compute SNR_b^(alpha) at k_ZD^(alpha) for each seed b
+//! >    Report: SNR^(alpha) = median(SNR_b^(alpha))
+//! >    Report: alpha_zd^(alpha) = 95th percentile of bootstrap dist.
+//! ```ignore
 //!
 //! The per-galaxy cost is dominated by the NFW fit ($O(n_{\text{bins}})$ for two-parameter least-squares) and the FFT ($O(n_{\text{bins}} \log n_{\text{bins}})$). Stacking and bootstrap resampling scale as $O(N \cdot B)$. The total pipeline cost is $O(N \cdot B \cdot C \cdot n_{\text{bins}} \log n_{\text{bins}})$ where $C$ is the number of experimental conditions. For the parameters of this study ($N = 6992$, $B = 13$, $C = 9$, $n_{\text{bins}} \approx 19$), the entire experimental matrix completes in under 30 seconds on a single CPU core, enabling rapid iteration over experimental configurations and making the pipeline readily extensible to larger future surveys.
 //!

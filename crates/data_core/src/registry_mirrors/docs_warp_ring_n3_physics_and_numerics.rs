@@ -43,26 +43,26 @@
 //!
 //! 1. Compute macroscopic density and velocity:
 //!
-//!    rho(x) = sum_i f_i(x)
-//!    u(x)   = (1/rho(x)) * sum_i c_i * f_i(x)
+//! >  rho(x) = sum_i f_i(x)
+//! >  u(x)   = (1/rho(x)) * sum_i c_i * f_i(x)
 //!
 //! 2. Compute equilibrium distributions `f_i_eq(rho, u)` (low-Mach expansion):
 //!
-//!    f_i_eq = w_i * rho * [ 1
-//!                           + 3 (c_i . u)
-//!                           + 4.5 (c_i . u)^2
-//!                           - 1.5 (u . u) ]
+//! >  f_i_eq = w_i * rho * [ 1
+//! >                         + 3 (c_i . u)
+//! >                         + 4.5 (c_i . u)^2
+//! >                         - 1.5 (u . u) ]
 //!
 //! 3. Relax toward equilibrium with BGK relaxation time `tau`:
 //!
-//!    f_i_post = f_i - (1/tau) * (f_i - f_i_eq)
+//! >  f_i_post = f_i - (1/tau) * (f_i - f_i_eq)
 //!
 //! 4. Apply forcing (Guo-style form), then stream distributions along `c_i` to
-//!    neighbor cells.
+//! >  neighbor cells.
 //!
 //! In lattice units, the kinematic viscosity is:
 //!
-//!   nu = (tau - 0.5) / 3
+//! nu = (tau - 0.5) / 3
 //!
 //! So stability and physical regime selection depend strongly on ensuring `tau > 0.5`
 //! (and typically not too close to 0.5 for noisy/turbulent runs).
@@ -78,35 +78,35 @@
 //! `https://arxiv.org/abs/2101.05176`,
 //! `https://arxiv.org/abs/2105.00730`):
 //!
-//!   d_t u + (u . grad)u = -(1/rho) grad p + nu laplacian(u) + f
-//!   f_x(y) = F0 * sin(k y)
-//!   u_x(y) = U0 * sin(k y)
+//! d_t u + (u . grad)u = -(1/rho) grad p + nu laplacian(u) + f
+//! f_x(y) = F0 * sin(k y)
+//! u_x(y) = U0 * sin(k y)
 //!
 //! For this unidirectional sinusoidal ansatz, the nonlinear term cancels and
 //! steady balance gives:
 //!
-//!   F0 = nu * k^2 * U0
+//! F0 = nu * k^2 * U0
 //!
 //! with forcing wave number:
 //!
-//!   k = 2*pi*m / Ny
+//! k = 2*pi*m / Ny
 //!
 //! where `m` is the forcing mode and `Ny` is the y-direction lattice size.
 //!
 //! To avoid arbitrary amplitude selection, `U0` is computed from a target forcing-
 //! scale Reynolds number and a low-Mach cap:
 //!
-//!   Re_target = U0 / (nu * k)
-//!   U0 = min(Re_target * nu * k, Ma_max * c_s)
+//! Re_target = U0 / (nu * k)
+//! U0 = min(Re_target * nu * k, Ma_max * c_s)
 //!
 //! then:
 //!
-//!   F0 = nu * k^2 * U0
+//! F0 = nu * k^2 * U0
 //!
 //! In lattice units (D3Q19 BGK):
 //!
-//!   c_s^2 = 1/3
-//!   nu = c_s^2 * (tau - 0.5)
+//! c_s^2 = 1/3
+//! nu = c_s^2 * (tau - 0.5)
 //!
 //! The default operational values in `warp_runner` are controlled by env vars:
 //!
@@ -123,24 +123,24 @@
 //! This lane's forcing model is anchored to three established pieces:
 //!
 //! 1. Kolmogorov-flow forcing shape:
-//!    sinusoidal body-force-driven shear flow (`f_x ~ sin(k y)`), widely used as a
-//!    canonical turbulence model problem in periodic domains.
-//!    (e.g. `https://arxiv.org/abs/1308.3356`, `https://arxiv.org/abs/2101.05176`)
+//! >  sinusoidal body-force-driven shear flow (`f_x ~ sin(k y)`), widely used as a
+//! >  canonical turbulence model problem in periodic domains.
+//! >  (e.g. `https://arxiv.org/abs/1308.3356`, `https://arxiv.org/abs/2101.05176`)
 //!
 //! 2. LBM forcing discretization:
-//!    the Guo forcing form with the characteristic BGK prefactor
-//!    `(1 - 1/(2*tau))` used in this repo's CUDA kernels is from:
-//!    Guo, Zheng, Shi (2002), Phys. Rev. E 65, 046308.
-//!    (`https://doi.org/10.1103/PhysRevE.65.046308`)
+//! >  the Guo forcing form with the characteristic BGK prefactor
+//! >  `(1 - 1/(2*tau))` used in this repo's CUDA kernels is from:
+//! >  Guo, Zheng, Shi (2002), Phys. Rev. E 65, 046308.
+//! >  (`https://doi.org/10.1103/PhysRevE.65.046308`)
 //!
 //! 3. Low-Mach validity regime:
-//!    weakly compressible LBM recovers Navier-Stokes in the low-Mach limit with
-//!    truncation error scaling in Mach number, so we enforce a Mach cap.
-//!    (`https://doi.org/10.1023/B:JOSS.0000015179.12689.e4`)
+//! >  weakly compressible LBM recovers Navier-Stokes in the low-Mach limit with
+//! >  truncation error scaling in Mach number, so we enforce a Mach cap.
+//! >  (`https://doi.org/10.1023/B:JOSS.0000015179.12689.e4`)
 //!
 //! In other words: the code-level force field
 //!
-//!   f_x(y) = F0 * sin(2*pi*m*y/Ny),  F0 = nu * k^2 * U0
+//! f_x(y) = F0 * sin(2*pi*m*y/Ny),  F0 = nu * k^2 * U0
 //!
 //! is not arbitrary. It is the steady Kolmogorov balance parameterized in lattice
 //! units and then discretized with a standard LBM forcing scheme.
@@ -149,9 +149,9 @@
 //!
 //! When the cap is active (`U0 = Ma_max * c_s`), and `m` is fixed:
 //!
-//!   k = 2*pi*m/Ny
-//!   Re_effective = U0 / (nu*k)  ~  Ny
-//!   F0 = nu*k^2*U0              ~  Ny^(-2)
+//! k = 2*pi*m/Ny
+//! Re_effective = U0 / (nu*k)  ~  Ny
+//! F0 = nu*k^2*U0              ~  Ny^(-2)
 //!
 //! So for the same `tau`, `m`, and `Ma_max`, moving from `128^3` to `256^3` gives:
 //!
@@ -169,19 +169,19 @@
 //!
 //! For D3Q19, a representative equilibrium magnitude is:
 //!
-//!   f_eq ~ w_axis * rho0,   w_axis = 1/18
+//! f_eq ~ w_axis * rho0,   w_axis = 1/18
 //!
 //! BF16 has 7 mantissa bits, so one-ULP scale near that magnitude is:
 //!
-//!   ulp_bf16(f_eq) ~ f_eq * 2^(-7)
+//! ulp_bf16(f_eq) ~ f_eq * 2^(-7)
 //!
 //! The Guo forcing term contributes a per-step distribution increment with scale:
 //!
-//!   Delta f ~ (1 - 1/(2*tau)) * 3 * w_axis * F0
+//! Delta f ~ (1 - 1/(2*tau)) * 3 * w_axis * F0
 //!
 //! So a useful non-dimensional detectability ratio is:
 //!
-//!   R_bf16 = Delta f / ulp_bf16(f_eq)
+//! R_bf16 = Delta f / ulp_bf16(f_eq)
 //!
 //! If `R_bf16 << 1`, forcing is physically present but can be rounded away at BF16
 //! distribution precision, making velocity-derived traces look static. The timing
@@ -197,14 +197,14 @@
 //! 3. Compute 3D FFT to frequency space: `u_hat = FFT(u)`.
 //! 4. Apply a mask in frequency space:
 //!
-//!    if mask[k] < threshold:
-//!        u_hat[k] *= damping
+//! >  if mask[k] < threshold:
+//! >      u_hat[k] *= damping
 //!
-//!    The mask is constructed from projected E7 roots and then normalized.
-//!    The damping factor is adapted from enstrophy via:
+//! >  The mask is constructed from projected E7 roots and then normalized.
+//! >  The damping factor is adapted from enstrophy via:
 //!
-//!      alpha = tanh(enstrophy / enstrophy_crit)
-//!      damping = 1 - (1 - base_damping) * alpha
+//! >    alpha = tanh(enstrophy / enstrophy_crit)
+//! >    damping = 1 - (1 - base_damping) * alpha
 //!
 //! 5. Compute inverse FFT back to real space.
 //!
@@ -212,11 +212,11 @@
 //!
 //! cuFFT (and most FFT libraries) compute *unnormalized* transforms:
 //!
-//!   IFFT(FFT(u)) = (N^3) * u
+//! IFFT(FFT(u)) = (N^3) * u
 //!
 //! So to recover the original scale after inverse FFT we multiply by:
 //!
-//!   scale = 1 / (N^3)
+//! scale = 1 / (N^3)
 //!
 //! In this repo that normalization is applied after the inverse FFT when converting
 //! complex -> real.
@@ -227,7 +227,7 @@
 //!
 //! `rho_mean` is the mean density:
 //!
-//!   rho_mean(t) = (1 / N^3) * sum_x rho(x, t)
+//! rho_mean(t) = (1 / N^3) * sum_x rho(x, t)
 //!
 //! In an ideal periodic LBM with consistent forcing, mass conservation keeps
 //! `rho_mean` near its initialization value (commonly ~1.0).
@@ -236,13 +236,13 @@
 //!
 //! * NaN/Inf means the simulation diverged numerically.
 //! * Large drift or large standard deviation often indicates instability, too small
-//!   `tau`, too aggressive forcing, or bugs in reductions / conversions.
+//! `tau`, too aggressive forcing, or bugs in reductions / conversions.
 //!
 //! ### 4.2 Enstrophy
 //!
 //! Enstrophy is a measure of vorticity magnitude. In continuum fluid dynamics:
 //!
-//!   enstrophy ~ integral |curl u|^2 dV
+//! enstrophy ~ integral |curl u|^2 dV
 //!
 //! In this repo it is approximated with finite differences on the lattice and then
 //! summed/averaged.
@@ -266,7 +266,7 @@
 //!
 //! MLUPS means "million lattice updates per second":
 //!
-//!   MLUPS = (steps_per_sec * N^3) / 1e6
+//! MLUPS = (steps_per_sec * N^3) / 1e6
 //!
 //! This is a throughput metric for the whole time-step loop. It is dominated by
 //! memory bandwidth and kernel efficiency on the GPU at larger `N`.
@@ -283,13 +283,13 @@
 //! * Cache behavior changes (CPU) and working set grows.
 //! * GPU kernels become increasingly memory-bandwidth bound.
 //! * FFT and reduction costs can scale with additional constants and synchronization
-//!   points (especially if host reads are done in the loop).
+//! points (especially if host reads are done in the loop).
 //!
 //! As a practical rule:
 //!
 //! * 128^3 often fits comfortably in GPU caches / bandwidth regimes.
 //! * 256^3 stresses memory traffic and any extra passes (reductions, FFT staging)
-//!   become more visible.
+//! become more visible.
 //!
 //! ## 6. Why Naive GPU Timers Lie (And What We Do Instead)
 //!
@@ -297,9 +297,9 @@
 //!
 //! If you measure step time like:
 //!
-//!   t0 = now()
-//!   state.step()
-//!   dt = now() - t0
+//! t0 = now()
+//! state.step()
+//! dt = now() - t0
 //!
 //! then `dt` is often just "launch overhead", not the actual GPU execution time.
 //! This produces unrealistically small p50 timing values and a confusing long tail
@@ -336,9 +336,9 @@
 //!
 //! * `*.h5`: the trace-level physics outputs (time series) and contract metadata.
 //! * `timing_*.toml`: performance and stability summary for the run (including
-//!   step timing histograms).
+//! step timing histograms).
 //! * telemetry: external measurement of GPU operating state (temperature, clocks,
-//!   power, utilization) to help explain throughput changes and throttling.
+//! power, utilization) to help explain throughput changes and throttling.
 //!
 //! ## 9. What We Optimize (And What We Gate)
 //!

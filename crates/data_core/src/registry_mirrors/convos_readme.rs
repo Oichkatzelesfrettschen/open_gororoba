@@ -25,8 +25,8 @@
 //! - Files under `convos/` are treated as immutable inputs (they may contain Unicode).
 //! - All synthesis produced under `docs/` should follow the ANSI-safe UTF-8 character policy.
 //! - Every claim extracted from `convos/` is treated as a hypothesis that must be tied to:
-//!   - a first-party source (paper/book/manual), and
-//!   - a repo test and/or a reproducible artifact.
+//! - a first-party source (paper/book/manual), and
+//! - a repo test and/or a reproducible artifact.
 //!
 //! Entry points:
 //! - Main index: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`

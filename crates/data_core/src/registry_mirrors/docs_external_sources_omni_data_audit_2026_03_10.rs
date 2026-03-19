@@ -12,9 +12,9 @@
 //!
 //! - Canonical SPDF OMNI2 fixed-width yearly ASCII is staged for `2020-2025`.
 //! - Governed AMDA `omni-hour-all` HAPI CSV fallback is staged continuously for
-//!   `1997-2019`.
+//! `1997-2019`.
 //! - The parser in `crates/data_core/src/catalogs/omni.rs` accepts both formats
-//!   explicitly.
+//! explicitly.
 //!
 //! This is materially better than a single blocked/canonical story, but it also
 //! means the chronology packs that use OMNI today are operating on the AMDA lane,
@@ -70,28 +70,28 @@
 //!
 //! - `HELIOPAUSE_2017_2018` currently depends on AMDA fallback OMNI for both years.
 //! - `CRUISE_1997_2004` and `CRUISE_1999_2004` currently depend on AMDA fallback
-//!   OMNI for the entire staged overlap.
+//! OMNI for the entire staged overlap.
 //! - The governed OMNI lane is now continuous from `1997-01-01T00:00:00Z` through
-//!   `2025-12-31T23:00:00Z`, with a source-origin transition from AMDA fallback
-//!   (`1997-2019`) to canonical SPDF yearly ASCII (`2020-2025`).
+//! `2025-12-31T23:00:00Z`, with a source-origin transition from AMDA fallback
+//! (`1997-2019`) to canonical SPDF yearly ASCII (`2020-2025`).
 //! - The canonical SPDF `.dat` files currently serve as a governed modern OMNI lane
-//!   for `2020-2025`, not as the source for the chronology-critical packs.
+//! for `2020-2025`, not as the source for the chronology-critical packs.
 //!
 //! ## Normalization Decisions
 //!
 //! - `OmniRecord` remains the compatibility struct for OMNI-shaped hourly data.
 //! - `parse_omni_hourly()` auto-detects fixed-width OMNI2 ASCII vs AMDA HAPI CSV.
 //! - The AMDA CSVs contain more than the current `OmniRecord` projection. The repo
-//!   intentionally keeps only the plasma+IMF subset needed by current heliosphere
-//!   boundary and validation code.
+//! intentionally keeps only the plasma+IMF subset needed by current heliosphere
+//! boundary and validation code.
 //! - The governed OMNI manifests now record mixed-lineage status explicitly instead
-//!   of implying that every staged file comes from one origin.
+//! of implying that every staged file comes from one origin.
 //!
 //! ## Remaining Gaps
 //!
 //! - The long baseline is now continuous locally, but source lineage still changes
-//!   at `2020`, so analyses that assume one byte-identical OMNI origin should not
-//!   overclaim that continuity.
+//! at `2020`, so analyses that assume one byte-identical OMNI origin should not
+//! overclaim that continuity.
 //! - Some registry experiments still need a broader chronology/path rescope before
-//!   they become runnable, even though the OMNI lane itself is now better described.
+//! they become runnable, even though the OMNI lane itself is now better described.
 //!

@@ -21,8 +21,8 @@
 //! - Mode: `toml_generated_mirror`
 //! - Header required: `true`
 //! - Source TOML refs:
-//!   - `registry/docs_root_narratives.toml`
-//!   - `registry/markdown_governance.toml`
+//! - `registry/docs_root_narratives.toml`
+//! - `registry/markdown_governance.toml`
 //! - Notes: Generated from TOML registries and overlays.
 //!
 //! ### MDG-0027: `docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md`
@@ -31,6 +31,6 @@
 //! - Mode: `toml_generated_mirror`
 //! - Header required: `true`
 //! - Source TOML refs:
-//!   - `registry/docs_root_narratives.toml`
-//!   - `registry/markdown_governance.toml`
+//! - `registry/docs_root_narratives.toml`
+//! - `registry/markdown_governance.toml`
 //! - Notes: Generated from TOML registries and overlays.

@@ -17,9 +17,9 @@
 //! - Partition: 7 de Marrais box-kites, each of size 6.
 //! - Connectivity: exact `7 x K6`.
 //! - Comparison objects:
-//!   - Reggiani 84-vertex partner graph and its `{7,14,42,14,7}` degeneracy table.
-//!   - ZD crystal / flat-band summary from `crates/algebra_analysis/src/crystal_bands.rs`.
-//!   - Graphene-like and magnonic flat-band comparators from `quantum_core`.
+//! - Reggiani 84-vertex partner graph and its `{7,14,42,14,7}` degeneracy table.
+//! - ZD crystal / flat-band summary from `crates/algebra_analysis/src/crystal_bands.rs`.
+//! - Graphene-like and magnonic flat-band comparators from `quantum_core`.
 //!
 //! ## Mapping law
 //!
@@ -45,80 +45,80 @@
 //! ### LC / topolectrical backend
 //!
 //! - Implemented in `crates/materials_core/src/nonlocal_metamaterial.rs`
-//!   as `LcAdmittanceModel`.
+//! as `LcAdmittanceModel`.
 //! - Interpretation:
-//!   each masked edge becomes a synthetic non-local admittance channel with
-//!   effective `L`, `C`, and `G` inferred from the calibration row.
+//! each masked edge becomes a synthetic non-local admittance channel with
+//! effective `L`, `C`, and `G` inferred from the calibration row.
 //! - Use case:
-//!   exact graph emulation, direct compatibility with circuit-topology literature,
-//!   and straightforward realization of disconnected algebraic sectors.
+//! exact graph emulation, direct compatibility with circuit-topology literature,
+//! and straightforward realization of disconnected algebraic sectors.
 //!
 //! ### Floquet backend
 //!
 //! - Implemented as `FloquetEffectiveModel`.
 //! - Interpretation:
-//!   the masked assessor weights populate off-diagonal synthetic
-//!   permittivity / permeability entries whose Hermitian reduction is then passed
-//!   into the existing TCMT benchmark machinery.
+//! the masked assessor weights populate off-diagonal synthetic
+//! permittivity / permeability entries whose Hermitian reduction is then passed
+//! into the existing TCMT benchmark machinery.
 //! - Use case:
-//!   direct re-use of the existing C-010 projection gate instead of inventing a
-//!   new score from scratch.
+//! direct re-use of the existing C-010 projection gate instead of inventing a
+//! new score from scratch.
 //!
 //! ## Calibration policy
 //!
 //! - Input file:
-//!   `data/csv/c010_nonlocal_material_calibrations.csv`
+//! `data/csv/c010_nonlocal_material_calibrations.csv`
 //! - Primary default row:
-//!   `nonlocal_cable_chen_2023` is the strongest passing thesis-bundle default
-//!   because it currently achieves the top C-010 candidate-scan score while
-//!   remaining explicitly labeled as a published-response normalized surrogate.
+//! `nonlocal_cable_chen_2023` is the strongest passing thesis-bundle default
+//! because it currently achieves the top C-010 candidate-scan score while
+//! remaining explicitly labeled as a published-response normalized surrogate.
 //! - Measured comparison row:
-//!   `yig_magnonic_kaman_2026` remains the strongest measured-table seed because
-//!   the repo already encodes the fitted 9-band YIG / kagome parameters and the
-//!   point-defect quality factor, but it is now treated as an opt-in comparison
-//!   row after the default C-010 benchmark recorded a near-miss instead of a
-//!   pass.
+//! `yig_magnonic_kaman_2026` remains the strongest measured-table seed because
+//! the repo already encodes the fitted 9-band YIG / kagome parameters and the
+//! point-defect quality factor, but it is now treated as an opt-in comparison
+//! row after the default C-010 benchmark recorded a near-miss instead of a
+//! pass.
 //! - All non-YIG surrogate rows are explicitly labeled as normalized circuit or
-//!   synthetic-space models.
+//! synthetic-space models.
 //! - These surrogate rows are permitted only for comparative ranking and scoping.
-//!   They are not treated as fabrication proof.
+//! They are not treated as fabrication proof.
 //!
 //! ## Requested comparison lanes
 //!
 //! ### ZD bands and ZD crystal
 //!
 //! - `crates/algebra_analysis/src/crystal_bands.rs` supplies the flat-band
-//!   fraction and component-spectrum summary for the ZD crystal.
+//! fraction and component-spectrum summary for the ZD crystal.
 //! - The hybrid lane uses this as a spectral target, not as a coupling backend.
 //!
 //! ### Reggiani partner graph
 //!
 //! - `crates/algebra_analysis/src/reggiani.rs` supplies the 84-vertex partner
-//!   graph, which is used as a higher-order comparison object for degeneracy and
-//!   localization structure.
+//! graph, which is used as a higher-order comparison object for degeneracy and
+//! localization structure.
 //!
 //! ### Magnons and graphene
 //!
 //! - `crates/quantum_core/src/magnonic_crystal.rs` provides the YIG
-//!   honeycomb+kagome reference with graphene-like Dirac cones and a kagome flat
-//!   band.
+//! honeycomb+kagome reference with graphene-like Dirac cones and a kagome flat
+//! band.
 //! - `crates/quantum_core/src/tight_binding.rs` provides the graphene valley
-//!   comparison used by the CLI for a small antisymmetry check.
+//! comparison used by the CLI for a small antisymmetry check.
 //! - These are comparison lanes, not the final implementation target.
 //!
 //! ### Sersic
 //!
 //! - `crates/cosmology_core/src/sersic.rs` is used only as a non-gating radial
-//!   layout-sensitivity diagnostic. It does not define the algebra-to-coupling law.
+//! layout-sensitivity diagnostic. It does not define the algebra-to-coupling law.
 //!
 //! ## CLI
 //!
 //! - Binary:
-//!   `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`
+//! `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`
 //! - Subcommands:
-//!   - `build-matrix`
-//!   - `benchmark`
-//!   - `candidate-scan`
+//! - `build-matrix`
+//! - `benchmark`
+//! - `candidate-scan`
 //!
 //! The benchmark subcommand reports:
 //!

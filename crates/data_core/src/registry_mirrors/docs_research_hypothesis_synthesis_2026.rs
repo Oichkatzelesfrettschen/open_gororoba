@@ -17,18 +17,18 @@
 //! perspective found blind spots the others missed:
 //!
 //! - **Innovator** (H1-H4): Confirmed the null extends to higher-order
-//!   statistics (bispectrum, topology, MI, distributional shape). Discovered
-//!   extreme kurtosis (~284) but could not explain its source.
+//! statistics (bispectrum, topology, MI, distributional shape). Discovered
+//! extreme kurtosis (~284) but could not explain its source.
 //!
 //! - **Pragmatist** (P1-P3): Explained WHY the null is robust: the baryonic
-//!   floor has coherent red-noise structure (k^0.78) that accounts for all
-//!   whitened harmonic content. Identified selection artifacts in power-
-//!   stratified phase analysis.
+//! floor has coherent red-noise structure (k^0.78) that accounts for all
+//! whitened harmonic content. Identified selection artifacts in power-
+//! stratified phase analysis.
 //!
 //! - **Contrarian** (D3-D4): Challenged foundational assumptions. Refuted
-//!   window function blindness (spectral leakage OVERRECOVERS). Confirmed
-//!   outlier domination: 5% of galaxies contribute 67% of stacked DFT power,
-//!   with phase reversal at 20% trimming.
+//! window function blindness (spectral leakage OVERRECOVERS). Confirmed
+//! outlier domination: 5% of galaxies contribute 67% of stacked DFT power,
+//! with phase reversal at 20% trimming.
 //!
 //! ---
 //!
@@ -80,24 +80,24 @@
 //! ### Disagreement 1: Is the red-noise intrinsic or a leakage artifact?
 //!
 //! - P1 says: The k^{-0.78} slope is intrinsic baryonic structure (the
-//!   cusp-to-bulge transition creates smooth spectral shape).
+//! cusp-to-bulge transition creates smooth spectral shape).
 //! - D3 says: The 185% overrecovery at mode 1 means spectral leakage
-//!   inflates low-k modes, which could CREATE a red-noise-like slope.
+//! inflates low-k modes, which could CREATE a red-noise-like slope.
 //! - Resolution: Requires spectral leakage decomposition (Hypothesis S2).
 //!
 //! ### Disagreement 2: What population does the ZD bound describe?
 //!
 //! - Standard view: The bound alpha_zd < 0.002392 applies to MaNGA galaxies.
 //! - D4 says: The bound applies to the ~350 outlier galaxies that dominate
-//!   the stacked DFT. The median galaxy has essentially zero Fourier amplitude.
+//! the stacked DFT. The median galaxy has essentially zero Fourier amplitude.
 //! - Resolution: Requires robust-estimator ZD bounds (Hypothesis S1).
 //!
 //! ### Disagreement 3: Is the injection recovery failure fixable?
 //!
 //! - The injection recovery shows constant recovered alpha (~0.295) regardless
-//!   of injection amplitude. This means the pipeline has zero sensitivity.
+//! of injection amplitude. This means the pipeline has zero sensitivity.
 //! - Unknown: Is this because the outliers mask the injection, or because the
-//!   pipeline is fundamentally insensitive?
+//! pipeline is fundamentally insensitive?
 //! - Resolution: Requires injection recovery on decontaminated stack (S3).
 //!
 //! ---
@@ -171,9 +171,9 @@
 //! ## Implementation Priority
 //!
 //! 1. **S2 (Leakage Decomposition)**: 15 min. Pure computation on existing
-//!    data grid. Resolves the P1/D3 disagreement immediately.
+//! >  data grid. Resolves the P1/D3 disagreement immediately.
 //! 2. **S1 (Robust Bounds)**: 10 min. Convert D4's trimmed DFT power to
-//!    alpha_zd bounds. Mostly done.
+//! >  alpha_zd bounds. Mostly done.
 //! 3. **S3 (Decontaminated Injection)**: 1-2 hours. Requires pipeline
-//!    modification. Deferred.
+//! >  modification. Deferred.
 //!

@@ -25,47 +25,47 @@
 //! ### SQLite core
 //!
 //! - `rusqlite`
-//!   - primary embedded SQLite binding
-//!   - best fit for deterministic local indexing and export jobs
-//!   - supports bundled SQLite when local system variability is undesirable
+//! - primary embedded SQLite binding
+//! - best fit for deterministic local indexing and export jobs
+//! - supports bundled SQLite when local system variability is undesirable
 //! - `rusqlite_migration`
-//!   - schema migration companion for `rusqlite`
-//!   - keeps migrations explicit and testable
+//! - schema migration companion for `rusqlite`
+//! - keeps migrations explicit and testable
 //!
 //! ### Parsing and ingest
 //!
 //! - `ignore`
-//!   - repository walking with `.gitignore` semantics
+//! - repository walking with `.gitignore` semantics
 //! - `globset`
-//!   - compiled include/exclude pattern sets
+//! - compiled include/exclude pattern sets
 //! - `pulldown-cmark`
-//!   - Markdown parsing
+//! - Markdown parsing
 //! - `linkify`
-//!   - URL extraction from Markdown and text
+//! - URL extraction from Markdown and text
 //! - `biblatex`
-//!   - BibTeX / BibLaTeX parsing
+//! - BibTeX / BibLaTeX parsing
 //! - `chardetng`
-//!   - encoding detection for non-UTF8 inputs
+//! - encoding detection for non-UTF8 inputs
 //! - `encoding_rs`
-//!   - decode support after detection
+//! - decode support after detection
 //!
 //! ### Export and normalization
 //!
 //! - `toml_edit`
-//!   - stable TOML emission for compatibility exports
+//! - stable TOML emission for compatibility exports
 //! - `blake3`
-//!   - content hashing and ingest fingerprinting
+//! - content hashing and ingest fingerprinting
 //! - `camino`
-//!   - UTF-8 repo-relative paths after filesystem-boundary normalization
+//! - UTF-8 repo-relative paths after filesystem-boundary normalization
 //!
 //! ### Optional support crates
 //!
 //! - `serde_rusqlite`
-//!   - useful when row-to-struct shuttling becomes repetitive
+//! - useful when row-to-struct shuttling becomes repetitive
 //! - `sea-query`
-//!   - useful if SQL construction becomes more dynamic than handwritten statements justify
+//! - useful if SQL construction becomes more dynamic than handwritten statements justify
 //! - `schemars`
-//!   - useful for export contracts and generated schemas
+//! - useful for export contracts and generated schemas
 //!
 //! ## Why This Stack
 //!
@@ -88,18 +88,18 @@
 //! ### Alternatives considered
 //!
 //! - `sqlx`
-//!   - strong choice for async pooled applications and multi-database support
-//!   - heavier than needed for this repo's local embedded SQLite workflow
-//!   - best when the repo grows into a service or daemon
+//! - strong choice for async pooled applications and multi-database support
+//! - heavier than needed for this repo's local embedded SQLite workflow
+//! - best when the repo grows into a service or daemon
 //! - `libsql`
-//!   - useful if remote replication, Turso, or syncable remote SQLite becomes a real requirement
-//!   - not needed for the current local provenance operator model
+//! - useful if remote replication, Turso, or syncable remote SQLite becomes a real requirement
+//! - not needed for the current local provenance operator model
 //! - `SeaORM`
-//!   - useful for application-style domain models with broader CRUD ergonomics
-//!   - too high-level for this repo's registry/export-heavy workflow
+//! - useful for application-style domain models with broader CRUD ergonomics
+//! - too high-level for this repo's registry/export-heavy workflow
 //! - `refinery`
-//!   - viable migration system alternative
-//!   - `rusqlite_migration` is a more direct fit for the current embedded SQLite choice
+//! - viable migration system alternative
+//! - `rusqlite_migration` is a more direct fit for the current embedded SQLite choice
 //!
 //! ## Data Model
 //!

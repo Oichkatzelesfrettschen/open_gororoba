@@ -2,30 +2,30 @@
 //!
 //! ## Still unresolved at direct-PDF level
 //! - Eakin and Sathaye (1990), DOI `10.1016/0021-8693(90)90221-9`
-//!   - Canonical functional landing URL: `https://doi.org/10.1016/0021-8693(90)90221-9`
-//!   - Additional functional landing URLs:
-//!     - `https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219`
-//!     - `https://www.sciencedirect.com/science/article/pii/0021869390902219`
-//!     - `https://www.sciencedirect.com/journal/journal-of-algebra/vol/129/issue/2`
-//!   - Canonical unresolved direct-PDF URL: `https://core.ac.uk/download/pdf/82141950.pdf`
-//!   - Also unresolved direct-PDF variants in this environment:
-//!     - `https://core.ac.uk/download/pdf/82141950.pdf?download=1`
-//!     - `https://core.ac.uk/download/82141950.pdf`
-//!     - `https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf`
-//!     - `https://www.sciencedirect.com/science/article/pii/0021869390902219/pdfft?isDTMRedir=true&download=true`
+//! - Canonical functional landing URL: `https://doi.org/10.1016/0021-8693(90)90221-9`
+//! - Additional functional landing URLs:
+//! >   - `https://linkinghub.elsevier.com/retrieve/pii/S0021869390902219`
+//! >   - `https://www.sciencedirect.com/science/article/pii/0021869390902219`
+//! >   - `https://www.sciencedirect.com/journal/journal-of-algebra/vol/129/issue/2`
+//! - Canonical unresolved direct-PDF URL: `https://core.ac.uk/download/pdf/82141950.pdf`
+//! - Also unresolved direct-PDF variants in this environment:
+//! >   - `https://core.ac.uk/download/pdf/82141950.pdf?download=1`
+//! >   - `https://core.ac.uk/download/82141950.pdf`
+//! >   - `https://www.sciencedirect.com/science/article/pii/0021869390902219/pdf?md5=33f3d3d19bcdcb137ceddaafe4873896&pid=1-s2.0-0021869390902219-main.pdf`
+//! >   - `https://www.sciencedirect.com/science/article/pii/0021869390902219/pdfft?isDTMRedir=true&download=true`
 //!
 //! ## Companion open substitute (not the original Eakin-Sathaye PDF)
 //! - Moreno (2005), arXiv `math/0510397`
-//!   - Cached at: `data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success/moreno_2005_companion_math0510397.pdf`
-//!   - Round-3 recheck result: duplicate hash, no new artifact copied.
+//! - Cached at: `data/external/intake/2026_02_15_cayley_dickson_sources/mirror_retries/2026_02_15_round2/pdf_success/moreno_2005_companion_math0510397.pdf`
+//! - Round-3 recheck result: duplicate hash, no new artifact copied.
 //!
 //! ## Resolved via alternate links (removed from unresolved list)
 //! - McCrimmon (1985), DOI `10.2140/pjm.1985.117.163`
-//!   - Resolved PDF: `.../mirror_retries/2026_02_15/pdf_success/mccrimmon_1985_pjm_117_1_p10.pdf`
+//! - Resolved PDF: `.../mirror_retries/2026_02_15/pdf_success/mccrimmon_1985_pjm_117_1_p10.pdf`
 //! - Bremner and Hentzel (2001), DOI `10.1081/AGB-100105036`
-//!   - Resolved PDF: `.../mirror_retries/2026_02_15/pdf_success/bremner_hentzel_2001_identities_iastate.pdf`
+//! - Resolved PDF: `.../mirror_retries/2026_02_15/pdf_success/bremner_hentzel_2001_identities_iastate.pdf`
 //! - Bales (2016), arXiv `1602.02317`
-//!   - Resolved PDFs: v1/v2 and archive mirror under `.../mirror_retries/2026_02_15/pdf_success/`
+//! - Resolved PDFs: v1/v2 and archive mirror under `.../mirror_retries/2026_02_15/pdf_success/`
 //!
 //! ## Note
 //! URL-level permutations for resolved papers are intentionally removed from unresolved tracking.

@@ -47,7 +47,7 @@
 //! ## Example: Helium-4 Normal Fluid
 //!
 //! ### Physical Properties (from NIST)
-//! ```texttext
+//! ```ignore
 //! Material: Helium-4 (Normal Fluid)
 //! Temperature: 4.2 K
 //! Pressure: 101325 Pa (1 atm)
@@ -55,7 +55,7 @@
 //! Kinematic viscosity: 2.18e-8 m^2/s
 //! Dynamic viscosity: 3.16e-6 Pa*s
 //! Reference: Donnelly & Barenghi (1998), Table 3
-//! ```texttext
+//! ```ignore
 //!
 //! ### LBM Calibration
 //!
@@ -72,32 +72,32 @@
 //! [OK] tau > 0.5: **STABLE**
 //!
 //! **Reynolds Number**:
-//! ```texttext
+//! ```ignore
 //! Characteristic velocity: 0.01 m/s (1 cm/s)
 //! Characteristic length: 32 um
 //! Re = U*L/nu = (0.01 * 32e-6) / 2.18e-8 = 14.7
-//! ```texttext
+//! ```ignore
 //! -> **LAMINAR REGIME** (Re < 2000)
 //!
 //! ### E-027 Integration
 //!
 //! Run with real He-4 properties:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin percolation-experiment -- \
-//!   --grid-size 32 \
-//!   --nu-base 2.18e-4 \
-//!   --lambda <derived from theory> \
-//!   --lbm-steps 10000 \
-//!   --forcing-mode gradient \
-//!   --seed 42
-//! ```texttext
+//! --grid-size 32 \
+//! --nu-base 2.18e-4 \
+//! --lambda <derived from theory> \
+//! --lbm-steps 10000 \
+//! --forcing-mode gradient \
+//! --seed 42
+//! ```ignore
 //!
 //! ---
 //!
 //! ## Example: Ice VII (High-Pressure Phase)
 //!
 //! ### Physical Properties (Petrenko & Whitworth 1999)
-//! ```texttext
+//! ```ignore
 //! Material: Ice VII
 //! Temperature: 300 K (room temperature!)
 //! Pressure: 3.0 GPa (30 kbar)
@@ -107,7 +107,7 @@
 //! Bulk modulus: 23.9 GPa
 //! Formation pressure: 2.1 GPa
 //! Creep viscosity: 1e16 Pa*s (estimated)
-//! ```texttext
+//! ```ignore
 //!
 //! ### Context
 //! - Found in deep Earth mantle and icy moon interiors (Europa, Ganymede)
@@ -116,13 +116,13 @@
 //!
 //! ### Application to E-027
 //! Ice VII demonstrates **grain boundary viscosity** in polycrystalline materials:
-//! ```texttext
+//! ```ignore
 //! Effective viscosity: eta_eff ~ G*d/v_slide
 //! where:
-//!   G = shear modulus (22 GPa)
-//!   d = grain size
-//!   v_slide = grain boundary sliding velocity
-//! ```texttext
+//! G = shear modulus (22 GPa)
+//! d = grain size
+//! v_slide = grain boundary sliding velocity
+//! ```ignore
 //!
 //! This provides a **physical basis** for spatially-varying viscosity from
 //! structural disorder (imbalance at grain boundaries).
@@ -132,7 +132,7 @@
 //! ## Example: Tourmaline/Elbaite
 //!
 //! ### Physical Properties (Deer et al. 2013)
-//! ```texttext
+//! ```ignore
 //! Material: Elbaite (Lithium Tourmaline)
 //! Formula: Na(Li1.5Al1.5)Al6(Si6O18)(BO3)3(OH)3(OH)
 //! Temperature: 300 K
@@ -142,7 +142,7 @@
 //! Hardness (Mohs): 7.5
 //! Elastic modulus: 160 GPa
 //! Melting point: ~1473 K
-//! ```texttext
+//! ```ignore
 //!
 //! ### Application
 //! - Crystalline solid: viscosity only relevant at grain boundaries or melt phase
@@ -154,14 +154,14 @@
 //! ## Comparison: Arbitrary vs Real Parameters
 //!
 //! ### OLD (Arbitrary):
-//! ```texttext
+//! ```ignore
 //! let nu_base = 0.333;  // WHERE DID THIS COME FROM?
 //! let lambda = 200;     // ARBITRARY TUNING
 //! let grid_size = 32;   // NO PHYSICAL SCALE
-//! ```texttext
+//! ```ignore
 //!
 //! ### NEW (Grounded):
-//! ```texttext
+//! ```ignore
 //! // Get real material
 //! let material = get_viscosity_material("He4_normal").unwrap();
 //! let nu_physical = material.kinematic_viscosity_m2_s.unwrap();
@@ -175,7 +175,7 @@
 //!
 //! // Derive lambda from theory (still needed!)
 //! let lambda = derive_lambda_from_imbalance_energy(material);
-//! ```texttext
+//! ```ignore
 //!
 //! ---
 //!
@@ -184,38 +184,38 @@
 //! **Status**: [OK] COMPLETE in `sign_imbalance/src/imbalance_energy.rs`
 //!
 //! Lambda is **coupling strength** between imbalance and viscosity:
-//! ```texttext
+//! ```ignore
 //! nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2)
-//! ```texttext
+//! ```ignore
 //!
 //! ### Statistical Mechanics Derivation
-//! ```texttext
+//! ```ignore
 //! lambda = E_imbalance / (k_B * T)
 //!
 //! where:
-//!   E_imbalance = F * C(N,3) * E_0
-//!   F = Harary-Zaslavsky imbalance index (fraction of unbalanced triangles)
-//!   C(N,3) = N*(N-1)*(N-2)/6 (number of triangles)
-//!   E_0 = associator_norm * 1 meV (bond mismatch energy from CD algebra)
-//!   k_B = Boltzmann constant (1.381e-23 J/K)
-//!   T = temperature (K)
-//! ```texttext
+//! E_imbalance = F * C(N,3) * E_0
+//! F = Harary-Zaslavsky imbalance index (fraction of unbalanced triangles)
+//! C(N,3) = N*(N-1)*(N-2)/6 (number of triangles)
+//! E_0 = associator_norm * 1 meV (bond mismatch energy from CD algebra)
+//! k_B = Boltzmann constant (1.381e-23 J/K)
+//! T = temperature (K)
+//! ```ignore
 //!
 //! ### Implementation Formula
-//! ```texttext
+//! ```ignore
 //! pub fn predict_lambda_sedenion(imbalance: f64, temperature_K: f64) -> f64 {
-//!     let e0 = estimate_e0_from_associators(16); // ~1.76e-22 J
-//!     let E_frust = imbalance * 560 * e0;      // For dim=16
-//!     E_frust / (K_BOLTZMANN * temperature_K)
+//! >   let e0 = estimate_e0_from_associators(16); // ~1.76e-22 J
+//! >   let E_frust = imbalance * 560 * e0;      // For dim=16
+//! >   E_frust / (K_BOLTZMANN * temperature_K)
 //! }
-//! ```texttext
+//! ```ignore
 //!
 //! ### Validated Results
 //!
 //! **For Sedenions (dim=16) with F=0.35**:
 //!
 //! #### He-4 at 4.2 K:
-//! ```texttext
+//! ```ignore
 //! Thermal energy: k_B * T = 5.8e-23 J
 //! Imbalance energy: E_frust = 3.5e-20 J
 //! Lambda (measured): 600
@@ -223,10 +223,10 @@
 //! Physical interpretation: HIGH coupling
 //! - Imbalance dominates at low temperature
 //! - Strong viscosity modulation from structural disorder
-//! ```texttext
+//! ```ignore
 //!
 //! #### Water at 293 K:
-//! ```texttext
+//! ```ignore
 //! Thermal energy: k_B * T = 4.1e-21 J
 //! Imbalance energy: E_frust = 3.5e-20 J (same as above)
 //! Lambda (measured): 8.5
@@ -234,7 +234,7 @@
 //! Physical interpretation: MODERATE coupling
 //! - Thermal fluctuations comparable to imbalance energy
 //! - Moderate viscosity sensitivity to disorder
-//! ```texttext
+//! ```ignore
 //!
 //! **Key Insight**: Lambda is TEMPERATURE-DEPENDENT via the k_B*T normalization.
 //! Low temperatures -> high lambda -> strong imbalance effects.
@@ -271,32 +271,32 @@
 //! All materials properties are from **authoritative sources**:
 //!
 //! 1. **NIST Chemistry WebBook**: https://webbook.nist.gov
-//!    - Water, helium gas, nitrogen
-//!    - Temperature-dependent properties
-//!    - Peer-reviewed, continuously updated
+//! >  - Water, helium gas, nitrogen
+//! >  - Temperature-dependent properties
+//! >  - Peer-reviewed, continuously updated
 //!
 //! 2. **Donnelly & Barenghi (1998)**: *J. Phys. Chem. Ref. Data* 27, 1217
-//!    - Helium-4 superfluid properties
-//!    - Lambda point transition
-//!    - Quantized circulation
+//! >  - Helium-4 superfluid properties
+//! >  - Lambda point transition
+//! >  - Quantized circulation
 //!
 //! 3. **Lemmon et al. (2023)**: NIST Standard Reference Database 23
-//!    - Helium-3 properties
-//!    - High-precision thermodynamic data
+//! >  - Helium-3 properties
+//! >  - High-precision thermodynamic data
 //!
 //! 4. **Petrenko & Whitworth (1999)**: *Physics of Ice*, Oxford University Press
-//!    - Ice phases (Ih, VII, and others)
-//!    - High-pressure phase diagram
-//!    - Creep viscosity at extreme conditions
+//! >  - Ice phases (Ih, VII, and others)
+//! >  - High-pressure phase diagram
+//! >  - Creep viscosity at extreme conditions
 //!
 //! 5. **Deer et al. (2013)**: *Rock-Forming Minerals Vol 3B*, 2nd Edition
-//!    - Tourmaline crystal structure
-//!    - Elastic properties
-//!    - Piezoelectric constants
+//! >  - Tourmaline crystal structure
+//! >  - Elastic properties
+//! >  - Piezoelectric constants
 //!
 //! 6. **Engineering ToolBox**: www.engineeringtoolbox.com
-//!    - Cross-validated with NIST
-//!    - Air properties at various conditions
+//! >  - Cross-validated with NIST
+//! >  - Air properties at various conditions
 //!
 //! ---
 //!

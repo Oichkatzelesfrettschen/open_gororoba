@@ -89,8 +89,8 @@
 //! ## Follow-on Work
 //!
 //! 1. Add a second particle-producing adapter before extracting any generic
-//!    particle-view frontend crate.
+//! >  particle-view frontend crate.
 //! 2. Revisit Vulkan extraction only if a renderer outside `lbm_vulkan` needs the
-//!    same readback and frame transport seam.
+//! >  same readback and frame transport seam.
 //! 3. Keep this matrix updated whenever a new adapter or frame mode lands.
 //!

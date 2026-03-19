@@ -3371,7 +3371,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-02-06
-//! - Statement: Metamaterial designs incorporate Rogers RT5880 carrier substrates and Gold/Silicon I-beam stacks to achieve impedance-matched high-index performance.
+//! > - Statement: Metamaterial designs incorporate Rogers RT5880 carrier substrates and Gold/Silicon I-beam stacks to achieve impedance-matched high-index performance.
 //! - Where stated: `crates/materials_core/src/effective_medium.rs`, `src/scripts/engineering/generate_bom_cad.py`
 //! - What would verify/refute it: 
 //!
@@ -3555,7 +3555,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
-//! - Statement: CD motif components at dim=2^n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7 components <-> 7 PG(2,2) points), dim=32 (15 <-> PG(3,2)), dim=64 (31 <-> PG(4,2)), dim=128 (63 <-> PG(5,2)). The XOR-key of each component encodes its GF(2) label.
+//! > - Statement: CD motif components at dim=2^n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7 components <-> 7 PG(2,2) points), dim=32 (15 <-> PG(3,2)), dim=64 (31 <-> PG(4,2)), dim=128 (63 <-> PG(5,2)). The XOR-key of each component encodes its GF(2) label.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs`, `crates/algebra_analysis/src/boxkites.rs`
 //! - What would verify/refute it: 
 //!
@@ -9555,7 +9555,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-12
-//! - Statement: x87 FP-80 Jacobi eigenvalue solver benchmarked against DD and nalgebra on 8x8 and 16x16 known-spectrum Householder-rotated matrices. Results: nalgebra 8x8=2.23us/16x16=7.89us, x87 FP-80 8x8=9.50us(4.3x)/16x16=69.98us(8.9x), DD 8x8=44.65us(20x)/16x16=183.50us(23.3x). x87 provides ~4 extra decimal digits via 64-bit mantissa (vs f64's 53-bit) at 4-9x cost. DD provides ~31 digits at 20-23x cost. The `extended` crate (MIT, crates.io) was evaluated and REJECTED: (1) same 64-bit mantissa as our inline asm (no precision gain); (2) f64<->f80 conversion overhead at every boundary; (3) no atan2() or sincos() (the critical Jacobi operations); (4) LLVM hazard: x87 values spilled to stack truncate to f64 (LLVM #44218); (5) x86 only (aliases f64 elsewhere). Our inline asm avoids all these: zero conversion overhead (stays in ST registers for full atan2+sincos chain), hardware fpatan+fsincos (~40 cycles total), options(nostack) prevents spill truncation.
+//! > - Statement: x87 FP-80 Jacobi eigenvalue solver benchmarked against DD and nalgebra on 8x8 and 16x16 known-spectrum Householder-rotated matrices. Results: nalgebra 8x8=2.23us/16x16=7.89us, x87 FP-80 8x8=9.50us(4.3x)/16x16=69.98us(8.9x), DD 8x8=44.65us(20x)/16x16=183.50us(23.3x). x87 provides ~4 extra decimal digits via 64-bit mantissa (vs f64's 53-bit) at 4-9x cost. DD provides ~31 digits at 20-23x cost. The `extended` crate (MIT, crates.io) was evaluated and REJECTED: (1) same 64-bit mantissa as our inline asm (no precision gain); (2) f64<->f80 conversion overhead at every boundary; (3) no atan2() or sincos() (the critical Jacobi operations); (4) LLVM hazard: x87 values spilled to stack truncate to f64 (LLVM #44218); (5) x86 only (aliases f64 elsewhere). Our inline asm avoids all these: zero conversion overhead (stays in ST registers for full atan2+sincos chain), hardware fpatan+fsincos (~40 cycles total), options(nostack) prevents spill truncation.
 //! - Where stated: crates/algebra_analysis/benches/x87_bench.rs, crates/algebra_analysis/src/x87_jacobi.rs, crates/algebra_analysis/src/dd_jacobi.rs
 //! - What would verify/refute it: 
 //!
@@ -9763,7 +9763,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-12
-//! - Statement: x87 FP-80 Givens rotation upgrade: two new inline-asm functions (`x87_givens_sincos`, `x87_givens_diagonal_update`) eliminate double truncation in the Jacobi eigenvalue solver. `x87_givens_sincos` carries `fpatan + fsincos +` the half-angle formulas (`fld1`, `fadd`, `fmul*0.5`, `fsqrt`, `fdivr`) entirely in 80-bit ST registers before a single f64 truncation at output, instead of storing `sin(2t)` / `cos(2t)` as f64 and finishing in SSE2. `FDIVR ST(0), ST(3)` is used in the canonical AMD-defined sense `ST(0) <- ST(3)/ST(0)`, so the quotient lands at TOS without `FXCH`. `x87_givens_diagonal_update` computes `c^2`, `s^2`, `2sc`, `new_pp`, and `new_qq` in ST registers (max depth 5) before any `fstp`. `FUCOMPP` is used as compare-plus-pop-twice stack cleanup; it is convenient, but not side-effect-free because it still performs the unordered compare and updates x87 status bits.
+//! > - Statement: x87 FP-80 Givens rotation upgrade: two new inline-asm functions (`x87_givens_sincos`, `x87_givens_diagonal_update`) eliminate double truncation in the Jacobi eigenvalue solver. `x87_givens_sincos` carries `fpatan + fsincos +` the half-angle formulas (`fld1`, `fadd`, `fmul*0.5`, `fsqrt`, `fdivr`) entirely in 80-bit ST registers before a single f64 truncation at output, instead of storing `sin(2t)` / `cos(2t)` as f64 and finishing in SSE2. `FDIVR ST(0), ST(3)` is used in the canonical AMD-defined sense `ST(0) <- ST(3)/ST(0)`, so the quotient lands at TOS without `FXCH`. `x87_givens_diagonal_update` computes `c^2`, `s^2`, `2sc`, `new_pp`, and `new_qq` in ST registers (max depth 5) before any `fstp`. `FUCOMPP` is used as compare-plus-pop-twice stack cleanup; it is convenient, but not side-effect-free because it still performs the unordered compare and updates x87 status bits.
 //! - Where stated: crates/algebra_analysis/src/x87_jacobi.rs (x87_givens_sincos lines 73-134, x87_givens_diagonal_update lines 158-246, symmetric_eigenvalues_x87 updated at lines 264-310)
 //! - What would verify/refute it: 
 //!
@@ -9827,7 +9827,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-12
-//! - Statement: MaNGA E-183 stacking Fourier residual SNR is strongly inclination-dependent: low-i (30-45 deg, N=3140) SNR=0.98, mid-i (45-60 deg, N=2677) SNR=0.59, high-i (60-70 deg, N=1175) SNR=1.30. The full sample (all inclinations, N=6992) achieves SNR=0.29, lower than any sub-sample, because inclination-dependent projection effects partially cancel. A genuine ZD harmonic velocity modulation would be inclination-INDEPENDENT; the observed inclination scaling confirms the dominant residual is a projection artifact (pseudo-slit line-of-sight integration depth varies with inclination), not a ZD signal. High-i galaxies show +40-60% velocity excess at x=0.92-0.96 r_s and mid-i galaxies show -44% excess at the same radii.
+//! > - Statement: MaNGA E-183 stacking Fourier residual SNR is strongly inclination-dependent: low-i (30-45 deg, N=3140) SNR=0.98, mid-i (45-60 deg, N=2677) SNR=0.59, high-i (60-70 deg, N=1175) SNR=1.30. The full sample (all inclinations, N=6992) achieves SNR=0.29, lower than any sub-sample, because inclination-dependent projection effects partially cancel. A genuine ZD harmonic velocity modulation would be inclination-INDEPENDENT; the observed inclination scaling confirms the dominant residual is a projection artifact (pseudo-slit line-of-sight integration depth varies with inclination), not a ZD signal. High-i galaxies show +40-60% velocity excess at x=0.92-0.96 r_s and mid-i galaxies show -44% excess at the same radii.
 //! - Where stated: data/results/e183/sweeps/lowi_D16.csv, data/results/e183/sweeps/midi_D16.csv, data/results/e183/sweeps/highi_D16.csv
 //! - What would verify/refute it: 
 //!
@@ -9884,7 +9884,7 @@
 //! - Status: `Verified`
 //! - Last verified: 
 //! - Statement: The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo-signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result.
-//! - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)
+//! > - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)
 //! - What would verify/refute it: 
 //!
 //! ## C-1375
@@ -10131,7 +10131,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-17
-//! - Statement: Hypothesis B (inclination-stratified injection recovery) DETECTED: PSF smearing is the dominant source of injection recovery non-linearity. At alpha_zd=0.004, recovery ratios differ by 2.9x across inclination bins: low-i (30-45 deg, N=3139) ratio=69.2, mid-i (45-60 deg, N=2681) ratio=153.7, high-i (60-70 deg, N=1175) ratio=197.3. The monotonic increase (low->mid->high) confirms that projection/beam-smearing artifacts suppress injection recovery in proportion to line-of-sight confusion. The high-i baseline SNR=0.886 (vs low-i 0.644) is entirely explained by PSF-injected systematic power, not by genuine dark-sector sensitivity. Low-i galaxies have 2.9x better injection sensitivity, suggesting future searches should prioritize face-on samples.
+//! > - Statement: Hypothesis B (inclination-stratified injection recovery) DETECTED: PSF smearing is the dominant source of injection recovery non-linearity. At alpha_zd=0.004, recovery ratios differ by 2.9x across inclination bins: low-i (30-45 deg, N=3139) ratio=69.2, mid-i (45-60 deg, N=2681) ratio=153.7, high-i (60-70 deg, N=1175) ratio=197.3. The monotonic increase (low->mid->high) confirms that projection/beam-smearing artifacts suppress injection recovery in proportion to line-of-sight confusion. The high-i baseline SNR=0.886 (vs low-i 0.644) is entirely explained by PSF-injected systematic power, not by genuine dark-sector sensitivity. Low-i galaxies have 2.9x better injection sensitivity, suggesting future searches should prioritize face-on samples.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/inclination_injection_calibration.rs, data/results/e183/inclination_injection.csv
 //! - What would verify/refute it: 
 //!
@@ -10203,7 +10203,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-17
-//! - Statement: Three implementation bugs discovered and fixed in E-192 synthetic validation: (1) injection_recovery reported snr_mean instead of snr_max (E-183 convention mismatch), (2) red_noise_corrected used hardcoded gamma=0.808 instead of data-driven fit, (3) MultiAlgebraCorrected applied internal face_on filter bypassing regime parameter. All fixes verified via smoke tests.
+//! > - Statement: Three implementation bugs discovered and fixed in E-192 synthetic validation: (1) injection_recovery reported snr_mean instead of snr_max (E-183 convention mismatch), (2) red_noise_corrected used hardcoded gamma=0.808 instead of data-driven fit, (3) MultiAlgebraCorrected applied internal face_on filter bypassing regime parameter. All fixes verified via smoke tests.
 //! - Where stated: experiments/manga_zd_null/models.py
 //! - What would verify/refute it: 
 //!
@@ -10211,7 +10211,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-17
-//! - Statement: Robustness convergence: three successive REFINE iterations of the MaNGA ZD synthetic validation (E-192) produce identical primary metric values. The sl2_partner/mass_Q3 condition converges to detection_snr_mean = 0.4704 +/- 0.0070 across 20 seeds. Full_sample Fourier conditions cluster at 0.4675-0.4825 across all 3 iterations. This convergence is not a pipeline bug: it is the analytic fixed point of a deterministic analysis on synthetic null data with fixed baryonic systematics (+5% bulge, -12% cusp, +5% IFU edge). Further REFINE iterations on the same pipeline and data cannot change this value.
+//! > - Statement: Robustness convergence: three successive REFINE iterations of the MaNGA ZD synthetic validation (E-192) produce identical primary metric values. The sl2_partner/mass_Q3 condition converges to detection_snr_mean = 0.4704 +/- 0.0070 across 20 seeds. Full_sample Fourier conditions cluster at 0.4675-0.4825 across all 3 iterations. This convergence is not a pipeline bug: it is the analytic fixed point of a deterministic analysis on synthetic null data with fixed baryonic systematics (+5% bulge, -12% cusp, +5% IFU edge). Further REFINE iterations on the same pipeline and data cannot change this value.
 //! - Where stated: experiments/manga_zd_null/results.json, experiments/manga_zd_null/main.py
 //! - What would verify/refute it: 
 //!
@@ -10339,7 +10339,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-18
-//! - Statement: E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis.
+//! > - Statement: E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs
 //! - What would verify/refute it: 
 //!
@@ -10347,7 +10347,7 @@
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-18
-//! - Statement: E-202 H2 Q3 injection recovery: Q3 (log M200=11.54-12.07, N=1748, 6 valid bins) injection at alpha_zd=0.004 produces delta_SNR=-0.005, indistinguishable from zero. Pipeline is BLIND at 6 bins. Q3 baseline SNR=3.60 is confirmed as a sparse-bin ARTIFACT. Q1 control (18 bins) also shows delta_SNR near zero (-0.001), indicating the injection methodology itself does not produce measurable delta_SNR at these alpha levels in the existing pipeline.
+//! > - Statement: E-202 H2 Q3 injection recovery: Q3 (log M200=11.54-12.07, N=1748, 6 valid bins) injection at alpha_zd=0.004 produces delta_SNR=-0.005, indistinguishable from zero. Pipeline is BLIND at 6 bins. Q3 baseline SNR=3.60 is confirmed as a sparse-bin ARTIFACT. Q1 control (18 bins) also shows delta_SNR near zero (-0.001), indicating the injection methodology itself does not produce measurable delta_SNR at these alpha levels in the existing pipeline.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/q3_injection_recovery.rs
 //! - What would verify/refute it: 
 //!

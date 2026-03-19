@@ -31,7 +31,7 @@
 //!
 //! **Duration**: 4-5 GPU hours
 //! **Command**:
-//! ```texttext
+//! ```ignore
 //! cd /home/eirikr/Github/open_gororoba
 //!
 //! # Create output directory
@@ -39,23 +39,23 @@
 //!
 //! # Run sweep (8 lambda values)
 //! for lambda in 0.1 0.5 1.0 2.0 5.0 10.0 20.0 50.0; do
-//!   echo "========================================="
-//!   echo "Lambda = $lambda"
-//!   echo "========================================="
+//! echo "========================================="
+//! echo "Lambda = $lambda"
+//! echo "========================================="
 //!
-//!   cargo run --release --bin percolation-experiment -- \
-//!     --grid-size 128 \
-//!     --lbm-steps 5000 \
-//!     --nu-base 0.333 \
-//!     --lambda $lambda \
-//!     --n-permutations 1000 \
-//!     --seed 42 \
-//!     --output-dir data/e027/lambda_sweep_phase2_128 \
-//!     --use-gpu \
-//!     --verbose \
-//!     2>&1 | tee data/e027/lambda_sweep_phase2_128/lambda_${lambda}.log
+//! cargo run --release --bin percolation-experiment -- \
+//! >   --grid-size 128 \
+//! >   --lbm-steps 5000 \
+//! >   --nu-base 0.333 \
+//! >   --lambda $lambda \
+//! >   --n-permutations 1000 \
+//! >   --seed 42 \
+//! >   --output-dir data/e027/lambda_sweep_phase2_128 \
+//! >   --use-gpu \
+//! >   --verbose \
+//! >   2>&1 | tee data/e027/lambda_sweep_phase2_128/lambda_${lambda}.log
 //! done
-//! ```texttext
+//! ```ignore
 //!
 //! **Expected Runtime**:
 //! - Per run: 30-40 minutes (128^3 LBM + GPU percolation)
@@ -72,41 +72,41 @@
 //! 1. Parse all 8 TOML output files from `data/e027/lambda_sweep_phase2_128/`
 //! 2. Extract p-values, effect sizes, channel counts
 //! 3. Create summary table:
-//!    ```texttext
-//!    Lambda | p-value | effect_size | n_channels | verdict
-//!    -------+---------+-------------+------------+---------
-//!    0.1    | ...     | ...         | ...        | ...
-//!    0.5    | ...     | ...         | ...        | ...
-//!    ...
-//!    ```texttext
+//! >  ```texttexttexttext
+//! >  Lambda | p-value | effect_size | n_channels | verdict
+//! >  -------+---------+-------------+------------+---------
+//! >  0.1    | ...     | ...         | ...        | ...
+//! >  0.5    | ...     | ...         | ...        | ...
+//! >  ...
+//! >  ```texttexttexttext
 //!
 //! **Decision Matrix**:
 //! - **SCENARIO A**: At least 1 lambda has p < 0.05 AND effect_size > 10%
-//!   -> **THESIS 1 VALIDATED** at 128^3, document in registry, mark C-657 "Verified"
+//! -> **THESIS 1 VALIDATED** at 128^3, document in registry, mark C-657 "Verified"
 //!
 //! - **SCENARIO B**: All lambda have p > 0.05 BUT effect_size > 10% for some
-//!   -> **Grid still insufficient**, escalate to 256^3 sample (Day 3)
+//! -> **Grid still insufficient**, escalate to 256^3 sample (Day 3)
 //!
 //! - **SCENARIO C**: All lambda have effect_size < 5%
-//!   -> **Coupling too weak or absent**, PIVOT to alternative validation:
-//!     - Option 1: Direct viscosity measurement via shear relaxation time
-//!     - Option 2: Thesis 1 remains "Provisional" with STPT-006 as PRIMARY validator
+//! -> **Coupling too weak or absent**, PIVOT to alternative validation:
+//! >   - Option 1: Direct viscosity measurement via shear relaxation time
+//! >   - Option 2: Thesis 1 remains "Provisional" with STPT-006 as PRIMARY validator
 //!
 //! ### Day 3: Contingency Actions
 //!
 //! **If SCENARIO B** (escalate to 256^3):
-//! ```texttext
+//! ```ignore
 //! # Sample 2 lambda values at 256^3
 //! for lambda in 1.0 5.0; do
-//!   cargo run --release --bin percolation-experiment -- \
-//!     --grid-size 256 \
-//!     --lbm-steps 10000 \
-//!     --lambda $lambda \
-//!     --use-gpu \
-//!     --output-dir data/e027/lambda_sweep_phase2_256 \
-//!     --verbose
+//! cargo run --release --bin percolation-experiment -- \
+//! >   --grid-size 256 \
+//! >   --lbm-steps 10000 \
+//! >   --lambda $lambda \
+//! >   --use-gpu \
+//! >   --output-dir data/e027/lambda_sweep_phase2_256 \
+//! >   --verbose
 //! done
-//! ```texttext
+//! ```ignore
 //! **Runtime**: ~2 hours per run, 4 hours total
 //! **VRAM**: ~11GB (close to 12GB limit, monitor carefully)
 //!
@@ -114,8 +114,8 @@
 //! 1. Document negative result in `reports/e027_negative_result_2026_02_16.toml`
 //! 2. Design alternative experiment (Pivot A: direct viscosity measurement)
 //! 3. Update registry:
-//!    - C-657 remains "Provisional", note "E-027 exhaustive sweep yields no coupling signal"
-//!    - STPT-006 remains PRIMARY validator
+//! >  - C-657 remains "Provisional", note "E-027 exhaustive sweep yields no coupling signal"
+//! >  - STPT-006 remains PRIMARY validator
 //!
 //! ## GPU Resource Requirements
 //!
@@ -135,14 +135,14 @@
 //!
 //! **Phase 2 Upgrade** (if BFS still insufficient at 128^3):
 //! 1. **Union-Find Spanning Cluster Detection**:
-//!    - Identify all connected components above threshold
-//!    - Count only components that span at least 50% of domain in one direction
-//!    - Filter out tiny isolated pockets (< 100 cells)
+//! >  - Identify all connected components above threshold
+//! >  - Count only components that span at least 50% of domain in one direction
+//! >  - Filter out tiny isolated pockets (< 100 cells)
 //!
 //! 2. **Hoshen-Kopelman Algorithm**:
-//!    - Label all connected regions
-//!    - Compute size distribution
-//!    - Select spanning clusters only
+//! >  - Label all connected regions
+//! >  - Compute size distribution
+//! >  - Select spanning clusters only
 //!
 //! **Implementation**: Add to `sign_imbalance/src/percolation.rs`
 //! **Effort**: 2-3 hours (if needed)

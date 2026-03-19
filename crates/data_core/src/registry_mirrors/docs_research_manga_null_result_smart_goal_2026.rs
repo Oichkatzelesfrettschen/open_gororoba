@@ -1,507 +1,507 @@
-//! # SMART Research Goal: Baryonic Noise Floor and Harmonic Search Blind Spots in 7000 MaNGA Rotation Curves
-//!
-//! **Generated:** 2026-03-17
-//! **Revised:** 2026-03-18 (reframed: detection floor lead, harmonic-subtraction blind zone as finding)
-//!
-//! ---
-//!
-//! ## Topic
-//!
-//! Quantitative characterization of the baryonic spectral noise floor in stacked
-//! IFU rotation curve residuals from the largest existing integral-field kinematic
-//! dataset (MaNGA DR17, N=6992 disk galaxies), with application to harmonic dark
-//! matter substructure searches. The characterization includes a three-component
-//! baryonic systematics taxonomy, a universal red-noise spectral index, an
-//! inclination-gradient falsification criterion for spherical-halo substructure,
-//! and the discovery of harmonic-subtraction blind zones in Fourier-domain search
-//! pipelines. A calibrating null test across four algebraic frameworks
-//! (Cayley-Dickson zero-divisor, G2 Aut(O), Albert J3(O), sl(2) partner-graph)
-//! demonstrates the floor in action and establishes the most stringent inner-halo
-//! bound on algebraically motivated harmonic dark-sector modifications from IFU
-//! spectroscopy.
-//!
-//! The broad domain sits at the intersection of observational galaxy dynamics (IFU
-//! rotation curve stacking), statistical methodology (spectral search pipeline
-//! calibration), and mathematical physics (hypercomplex algebra applied to dark
-//! matter models), with direct implications for next-generation survey design
-//! (SKA, Euclid).
-//!
-//! ---
-//!
-//! ## Novel Angle
-//!
-//! ### What is genuinely new
-//!
-//! **1. First quantitative spectral floor for stacked IFU rotation curve residuals.**
-//! No published work measures the Fourier-domain noise floor of stacked NFW
-//! rotation curve residuals at scale. Individual baryonic systematics are known --
-//! bulge excess (Martinsson+2013), cusp over-prediction (de Blok 2010, Oh+2015),
-//! IFU beam-smearing (Varidel+2019) -- but nobody has produced a unified spectral
-//! decomposition of all three in stacked residual space at N=6992. The result is
-//! a concrete detection floor that any future harmonic search must exceed,
-//! applicable to fuzzy dark matter soliton searches (Schive+2014, Bar+2022),
-//! ultralight axion wiggle searches, and algebraic predictions alike.
-//!
-//! **2. Harmonic-subtraction blind zone discovery (C-1412).**
-//! The injection recovery experiment reveals anti-monotonic behavior: detection
-//! SNR *decreases* with injection amplitude when the injected signal's radial
-//! envelope (exp(-x)) overlaps with the baryonic bulge excess at x~0.5.
-//! Root cause: harmonic subtraction absorbs injected signals whose spectral
-//! character coincides with baryonic modes being removed. This is a general
-//! result for any stacking pipeline that subtracts baryonic harmonics before
-//! searching for exotic harmonics. The blind zone can be characterized by
-//! radial-windowed injection: signals injected at x > 1.0 (away from the bulge)
-//! should recover correctly, proving the blind spot is radially localized.
-//!
-//! This finding generalizes beyond this paper's specific predictions to any
-//! Fourier-domain halo residual analysis. Framed as "harmonic-subtraction induced
-//! blind zones in spectral search pipelines," it becomes a methodological
-//! contribution relevant to the FDM, ULDM, and algebraic substructure communities.
-//!
-//! **3. Inclination-gradient falsification criterion (C-1367).**
-//! This is the paper's sharpest standalone diagnostic. The physical argument is
-//! model-independent: genuine gravitational forcing in a spherical halo is
-//! inclination-invariant after deprojection (v_circ = v_los / sin i). Any residual
-//! that scales with inclination is a projection artifact, not halo physics.
-//!
-//! Observation: SNR = 0.98 (low-i, 30-45 deg), 0.59 (mid-i, 45-60 deg), 1.30
-//! (high-i, 60-70 deg). The SNR gradient runs in the *wrong direction* for ZD
-//! forcing -- it increases with inclination, tracking IFU line-of-sight depth
-//! effects. This diagnostic requires zero algebraic knowledge to evaluate and is
-//! immediately reusable by any group testing any claim of harmonic halo substructure.
-//!
-//! **4. Universal red-noise spectral index k^0.81 (I-180).**
-//! The spectral index gamma = 0.808 is measured to be algebra-universal (identical
-//! across CD-ZD, G2, Albert, sl(2)) and subsample-invariant (7/7 modes within 9%
-//! across face-on, mass-Q3, and full-sample regimes). This provides a concrete
-//! power-law baseline for Fourier-domain searches: any claimed detection must
-//! exceed the k^0.81 red-noise envelope, not just a flat noise assumption.
-//!
-//! Note: I-180 also states the power falls "approximately as 1/k^2." These are
-//! different quantities -- gamma = 0.808 is the Rayleigh R(k) spectral index,
-//! while the k^{-2} refers to the PSD power-law slope. The paper must distinguish
-//! these clearly. Cross-validation (fit on 50% of galaxies, test on 50%) is
-//! required to confirm the index is a data property, not a pipeline artifact.
-//!
-//! **5. Cross-algebra quasi-degeneracy as bound robustness.**
-//! The four algebraic frameworks are NOT independent tests over the observed radial
-//! range. Cross-algebra correlation from `data/results/e183/cross_algebra_correlation.csv`:
-//!
-//! | Pair | rho_avg |
-//! |------|---------|
-//! | CD-ZD vs G2 | 0.998 |
-//! | CD-ZD vs J3(O) | 0.988 |
-//! | CD-ZD vs sl(2) | 0.998 |
-//! | G2 vs J3(O) | 0.996 |
-//! | G2 vs sl(2) | 0.992 |
-//! | J3(O) vs sl(2) | 0.977 |
-//!
-//! The wavenumber families are quasi-degenerate at x = 0.5-1.35: effectively one
-//! null result measured through four algebraic lenses, not four independent
-//! experiments. This is reframed as a *strength*: the sensitivity bound is
-//! insensitive to algebraic model choice. Any algebra in the exceptional tower
-//! (sl(2) < g2 < f4) that generates wavenumbers in k = 0.9-6.3 rad/r_s produces
-//! the same null result.
-//!
-//! ### What is NOT novel (honest assessment)
-//!
-//! - Individual baryonic systematics (bulge, cusp, beam-smearing) are known.
-//!   Our contribution is the *unified spectral decomposition at scale*, not the
-//!   discovery of individual effects.
-//! - Red-noise characterization in astrophysical spectra is established (Torrence
-//!   & Compo 1998, Vaughan 2005). Our contribution is measuring the specific
-//!   index in stacked halo residuals, not inventing the methodology.
-//! - The inclination dependence of rotation curve quality is known (Fogarty+2014).
-//!   Our contribution is the *falsification criterion framing*: the logical
-//!   argument that inclination-dependent residuals prove projection origin and
-//!   exclude physical halo forcing.
-//!
-//! ### Why timely NOW (2026)
-//!
-//! 1. **MaNGA DR17 is final** -- the largest 2D-spectroscopic rotation curve dataset
-//!    until DESI/4MOST kinematic surveys mature (~2028+). No future optical IFU
-//!    survey will surpass it in statistical power for this class of test.
-//!
-//! 2. **Exceptional algebra revival** -- Furey (2016-2024 octonion particle models),
-//!    Todorov & Dubois-Violette (2021 sedenion gauge theory), Reggiani (2024 sedenion
-//!    ZD geometry) have created algebraic predictions lacking empirical confrontation.
-//!    The physics community needs observational bounds, not more algebraic speculation.
-//!
-//! 3. **DESI DR2 dynamical dark energy (2025, arXiv:2503.14738)** renews interest
-//!    in exotic dark sector models. A rigorous null result with a concrete sensitivity
-//!    benchmark provides an immediate anchor for next-generation survey planning.
-//!
-//! 4. **FDM soliton search maturation** -- Bar+2022, Burkert 2020, Schive+2014 have
-//!    established Fourier-domain spectral searches for ultralight dark matter in
-//!    rotation curves. Our baryonic floor measurement and blind-spot characterization
-//!    directly serve this growing community.
-//!
-//! ### Trend validation (2024-2026 papers)
-//!
-//! 1. **Reggiani (2024) arXiv:2411.18881** -- *The geometry of sedenion zero divisors.*
-//!    Differential-geometric results on the ZD manifold (Stiefel manifold V_2(R^7),
-//!    G2 holonomy). Establishes the mathematical predictions this paper confronts
-//!    with data. No astrophysical contact in Reggiani's work.
-//!
-//! 2. **DESI Collaboration (2025) arXiv:2503.14738** -- Dynamical dark energy from
-//!    BAO (DR2). Strengthened evidence for evolving w(z) renews appetite for exotic
-//!    dark sector constraints. Our bound is complementary: constraining harmonic
-//!    substructure rather than equation of state.
-//!
-//! 3. **Matosin et al. (2014) doi:10.1242/dmm.015396** -- *Negativity towards negative
-//!    results.* Argues the systematic underreporting of null results distorts the
-//!    scientific record. Our paper is a deliberate positive contribution: a carefully
-//!    characterized detection floor with reusable diagnostics and an actionable
-//!    sensitivity envelope.
-//!
-//! ---
-//!
-//! ## Scope
-//!
-//! Single paper. Will NOT propose new dark matter models, claim to rule out all
-//! algebraic theories, present new observations, or extend to radio/HI curves
-//! (deferred to SKA era).
-//!
-//! Will present:
-//! - Quantitative baryonic spectral floor: three-component taxonomy, red-noise
-//!   index, and sensitivity threshold at the stacking-analysis level
-//! - Harmonic-subtraction blind zone characterization with radial-windowed
-//!   injection diagnosis
-//! - Inclination-gradient falsification criterion as standalone reusable tool
-//! - Multi-algebraic null test (4 algebras) as calibrating application with
-//!   honest quasi-degeneracy disclosure
-//! - Sensitivity projection for SKA, THINGS, and Euclid
-//! - Open-source analysis code (Rust + Python) and stacked data products
-//!
-//! **Target venue:** MNRAS (primary). Rotation curve stacking tradition (Persic+1996,
-//! Posti+2019), established MaNGA kinematic publication record, good track record
-//! for well-characterized null results. A&A viable (LaTeX already uses `aa` class).
-//!
-//! ---
-//!
-//! ## SMART Goal
-//!
-//! **Specific:** Write and submit a publication-quality paper characterizing the
-//! baryonic spectral noise floor of stacked MaNGA DR17 rotation curve residuals,
-//! with the primary contributions being: (1) a three-component baryonic systematics
-//! taxonomy with quantified amplitudes, (2) a universal red-noise spectral index
-//! k^0.81 cross-validated on independent galaxy splits, (3) an inclination-gradient
-//! falsification criterion for halo substructure claims, (4) the discovery and
-//! characterization of harmonic-subtraction blind zones in Fourier-domain search
-//! pipelines, and (5) a multi-algebraic null test (alpha_zd < 0.00239 at 95% CL)
-//! as calibrating case study with sensitivity projections for SKA/THINGS/Euclid.
-//!
-//! **Measurable:** The paper is complete when it contains:
-//! - 8 sections: Introduction, Data & Pipeline, Baryonic Spectral Floor, Harmonic
-//!   Search Sensitivity & Blind Spots, Application: Null Test, Cross-Survey
-//!   Sensitivity Projection, Discussion, Conclusion
-//! - 5 publication-quality figures:
-//!   (1) Stacked residual profile with three baryonic systematics annotated,
-//!       error bands, and NFW zero line
-//!   (2) Fourier power spectrum with k^0.81 fit, 95% red-noise confidence
-//!       envelope, and ZD/G2/Albert/sl(2) mode markers
-//!   (3) Injection recovery diagnosis (2-panel: SNR vs injection amplitude
-//!       showing anti-monotonic trend + recovery fraction vs radial window
-//!       center showing x~0.5 blind spot vs x>1.0 recovery)
-//!   (4) Sensitivity projection: alpha_zd threshold vs radial coverage (x_max)
-//!       for MaNGA / THINGS / SKA -- the figure survey planners will cite
-//!   (5) Inclination-gradient criterion: SNR vs inclination bin (low-i/mid-i/
-//!       high-i/full) with physical-forcing reference line (flat)
-//! - 3 tables:
-//!   (1) Sample statistics (N=6992, selection cuts, completeness, subsamples)
-//!   (2) Multi-algebra SNR summary (CD-ZD, G2, J3(O), sl(2) x full/low-i/mid-i/high-i)
-//!   (3) Cross-algebra correlation matrix (rho_avg for all 6 pairs)
-//! - Formal sensitivity bound: alpha_zd >= 0.002392 at 95% confidence
-//! - Reproducibility appendix: binary commands, input checksums, Rocq proof citation
-//! - arXiv preprint posted and MNRAS submission completed
-//!
-//! **Achievable:** Core computational work is complete (E-183, E-184, E-192, 660-run
-//! robustness suite all finished). All 20 key claims verified (C-1365 through C-1374,
-//! C-1411 through C-1418). Rocq proof (C-1363) kernel-checked. Data products in
-//! `data/results/e183/` (36 CSV files). Six pre-submission ablation experiments
-//! remain (estimated 5 days total), plus manuscript preparation. No new
-//! observations, simulations, or major code development required.
-//!
-//! **Relevant:** Serves four communities:
-//! - *Spectral search methodology:* First characterized baryonic detection floor
-//!   and blind-spot analysis for Fourier-domain halo residual analyses. Directly
-//!   reusable by FDM soliton, ULDM, and algebraic substructure searches.
-//! - *Survey planning:* Actionable sensitivity benchmark for SKA HI and Euclid
-//!   weak lensing. alpha_zd < 0.0024 bound and radial coverage limitation
-//!   (x < 1.35) directly inform next-generation observing strategies.
-//! - *Galaxy dynamics:* Tightest existing bound on harmonic dark matter
-//!   substructure in IFU rotation curves, with well-characterized baryonic
-//!   systematics taxonomy.
-//! - *Mathematical physics:* First observational confrontation of CD zero-divisor
-//!   predictions, closing an empirical gap open since de Marrais (2000).
-//!
-//! **Time-bound:** 8 weeks (target: 2026-05-13)
-//! - Weeks 1-2: Execute 6 pre-submission ablations. Draft Introduction, Data &
-//!   Pipeline, Baryonic Spectral Floor. Generate Figures 1-2.
-//! - Weeks 3-4: Draft Harmonic Search Sensitivity & Blind Spots, Application:
-//!   Null Test. Generate Figures 3-5. Compile Tables 1-3.
-//! - Weeks 5-6: Draft Sensitivity Projection, Discussion, Conclusion. Write
-//!   reproducibility appendix. Real MaNGA pilot validation (N>=500).
-//! - Week 7: Internal review. Address any ablation surprises. Run final lint.
-//! - Week 8: Final polish, arXiv formatting, MNRAS submission.
-//!
-//! ---
-//!
-//! ## Pre-Submission Experiments (6 ablations, ~5 days)
-//!
-//! These are NOT new research. They are validation experiments required to raise
-//! scientific validity from 3/10 to 7/10 (retrospective assessment):
-//!
-//! | # | Experiment | Purpose | Duration | Registry |
-//! |---|-----------|---------|----------|----------|
-//! | 1 | Radial-windowed injection | Prove blind spot is radially localized (x~0.5 fails, x>1 recovers). Transforms injection limitation into published finding. | 1 day | New claims |
-//! | 2 | Shuffled-data null control | Permute radial bins across galaxies to establish true noise floor. If shuffled SNR = unshuffled, pipeline has no radial sensitivity. | 0.5 day | New claim |
-//! | 3 | Red-noise index cross-validation | Fit gamma on 50% of galaxies, test on 50%. Confirms k^0.81 is data property, not pipeline artifact. | 0.5 day | Update I-180 |
-//! | 4 | NFW template ablation | Repeat with Einasto + Burkert profiles. If null persists, constraint is template-independent. | 0.5 day | New claims |
-//! | 5 | alpha_zd physical unit calibration | Compute velocity deviation at r=r_s for fiducial halo (M_200=10^12 Msun, c=8). Convert upper limit to km/s. Makes bound tangible for observers. | 0.5 day | Update C-1365 |
-//! | 6 | Real MaNGA pilot (N>=500) | Run GHOST on real MaNGA DR17 galaxies. Validate three-component taxonomy is not a generator artifact. | 2 days | New claims |
-//!
-//! **Experiment 6 is the most critical.** The current paper uses synthetic data
-//! calibrated to match E-183 real-data results. If the baryonic floor paper's
-//! primary contribution is characterizing the noise floor, that characterization
-//! must come from real data, not a synthetic generator. Even a pilot of N=500 real
-//! galaxies showing consistent three-component systematics transforms the paper
-//! from "we calibrated the expected noise floor" to "we measured the noise floor."
-//!
-//! ---
-//!
-//! ## Constraints
-//!
-//! | Constraint | Detail |
-//! |---|---|
-//! | **Compute** | Single-GPU workstation. Pre-submission ablations ~5 days CPU. Figure generation <1 hr. |
-//! | **Tools** | Rust (open_gororoba, nightly-2026-03-05), Rocq 9.1.1, PGFPlots/LaTeX, Python. |
-//! | **Data** | MaNGA DR17 public (6992 galaxies, 126,442 rotation curve points). All in-repo. Real MaNGA pilot uses SDSS public data (DR17 DAPall + MAPS, no proprietary access needed). |
-//! | **Licensing** | Open-source code, SDSS-IV public data policy. |
-//! | **Ablation budget** | 6 experiments, 5 person-days, within Weeks 1-2 of timeline. Must complete before manuscript sections that reference their results (Sections 3-4). |
-//!
-//! ---
-//!
-//! ## Success Criteria
-//!
-//! All must be met for the paper to be publishable:
-//!
-//! 1. **Baryonic floor as primary contribution:** Three-component taxonomy
-//!    (bulge +5%, cusp -15%, projection +29%) quantified in both real-space
-//!    amplitudes and Fourier-domain power, with the floor prominently stated
-//!    in abstract and conclusion.
-//! 2. **Blind-spot characterization complete:** Radial-windowed injection
-//!    (experiment 1) demonstrates that injection at x > 1.0 recovers correctly
-//!    while x~0.5 shows destructive interference. The mechanism is explained
-//!    physically and the blind zone is quantified.
-//! 3. **Inclination-gradient diagnostic:** C-1367 presented as standalone
-//!    falsification criterion with clear physical argument (gravitational forcing
-//!    is inclination-invariant). Named explicitly for reuse by other groups.
-//! 4. **Red-noise index cross-validated:** gamma = 0.808 confirmed on independent
-//!    50/50 galaxy split. If the index differs significantly between splits,
-//!    report both values and discuss implications.
-//! 5. **Quasi-degeneracy disclosed:** Cross-algebra rho_avg table presented
-//!    honestly. Framed as bound robustness, not as four independent experiments.
-//! 6. **Real-data validation:** At least N=500 real MaNGA galaxies processed
-//!    through GHOST pipeline, showing three-component baryonic taxonomy
-//!    consistent with synthetic calibration to within stated uncertainties.
-//! 7. **Sensitivity projection actionable:** alpha_zd threshold vs radial
-//!    reach figure includes MaNGA, THINGS, and SKA curves with quantitative
-//!    thresholds that survey planners can cite directly.
-//! 8. **Reproducibility:** Exact binary commands, input file checksums, Rocq
-//!    proof reference (C-1363), and Python environment spec (requirements.txt
-//!    with pinned versions) provided. Another researcher with MaNGA DR17 and
-//!    open_gororoba can reproduce every number.
-//!
-//! ---
-//!
-//! ## Benchmark
-//!
-//! ### Primary dataset
-//!
-//! | Attribute | Value |
-//! |---|---|
-//! | **Dataset** | MaNGA DR17, N=6992 disk galaxies, 126,442 rotation curve points |
-//! | **Selection** | Sersic n < 2.5, 30 < i < 70 deg, DAPDONE=True, Ha EW > 2 A |
-//! | **Radial coverage** | x = 0.5 to ~1.35 r/r_s (inner halo; MaNGA IFU 12-18 kpc vs r_s ~10-20 kpc) |
-//! | **Primary metric** | SNR of harmonic power at predicted wavenumbers |
-//! | **Result** | SNR = 0.25-0.29 (E-183 real data), 0.47-0.48 (synthetic robustness) across all frameworks |
-//! | **Detection threshold** | alpha_zd >= 0.002392 at 95% CL |
-//! | **RMS residual** | 0.075 (full sample), 0.092 (inner halo 0.5-1.25 r/r_s) |
-//! | **Red-noise index** | gamma = 0.808 (Rayleigh R spectral index, cross-validation pending) |
-//! | **CD invariance** | Identical SNR across D=16 through D=262,144 (af=0.5 identity, C-1366) |
-//! | **Current SOTA** | No prior spectral floor characterization for stacked IFU rotation curve residuals exists |
-//!
-//! ### Comparison targets
-//!
-//! | Survey | N_galaxies | Radial reach (r/r_s) | Tracer | Status |
-//! |--------|-----------|---------------------|--------|--------|
-//! | **MaNGA DR17** (this work) | 6992 | ~1.35 | Optical IFU (H-alpha) | Complete |
-//! | **SPARC** (Lelli+2016) | 175 | ~5-10 | HI 21cm + photometry | Public; deeper but 40x smaller N |
-//! | **THINGS** (Walter+2008) | 34 | >10 | HI 21cm (high-res) | Public; outer halo reach, tiny N |
-//! | **SKA Phase 1** (SKA 2020) | ~10,000 | >10 | HI 21cm (z<0.1) | Forecast ~2030; alpha_zd=0.004 design |
-//! | **Euclid Wide** (Scaramella+2022) | ~10^9 | N/A (lensing) | Weak lensing shear | DR2+ (~2028); complementary probe |
-//!
-//! ### DC14 robustness check
-//!
-//! | Model | RMS | ZD SNR | alpha_zd est. |
-//! |-------|-----|--------|---------------|
-//! | NFW | 0.126 | 0.43 | 0.296 |
-//! | DC14 | 0.087 | 2.52 | 1.185 |
-//!
-//! DC14 absorbs baryonic systematics into profile shape, reducing RMS but producing
-//! a spurious ZD SNR = 2.52 (below detection threshold of 3, but notably higher than
-//! NFW). This demonstrates that profile model choice affects the bound. The NFW-based
-//! bound (alpha_zd < 0.00239) is conservative; DC14-based analysis would yield a
-//! weaker constraint. Presented as a robustness check, not a DC14 critique.
-//!
-//! ---
-//!
-//! ## Reviewer Risk Mitigations
-//!
-//! | Risk | Mitigation |
-//! |------|-----------|
-//! | "Who asked for this test?" | Lead with baryonic floor and blind-spot methodology (useful to FDM/ULDM community). Algebraic prediction is the calibrating case study, not the sole motivation. Cite Furey (2016-2024), Todorov & Dubois-Violette (2021), Reggiani (2024). |
-//! | "The baryonic systematics are well-known" | Individual effects are known; the unified spectral decomposition at N=6992 stacking scale with cross-validated spectral index is new. Distinguish our contribution (stacking-analysis-level floor) from survey-instrument-level characterization (Westfall+2019, Belfiore+2019). |
-//! | "Four algebras are not independent" | Disclose cross-algebra rho > 0.97 proactively. Reframe as bound robustness to algebraic model choice. |
-//! | "Injection recovery is broken" | Reframe as discovered blind zone. Present radial-windowed injection diagnosis showing recovery at x>1.0 and failure at x~0.5. Generalize to any harmonic-subtraction pipeline. |
-//! | "Inner halo only" | Explicit scoping. Quantify what x > 3 would change. Point to SKA/THINGS as natural follow-up. The sensitivity projection figure makes this actionable. |
-//! | "DC14 gives different SNR" | Include DC14 comparison table. Show NFW bound is conservative. |
-//! | "Null result is boring" | Cite Matosin+2014. The paper is not just a null -- it characterizes a detection floor, discovers a pipeline blind spot, and provides three reusable diagnostic tools. |
-//! | "Synthetic data only" | Real MaNGA pilot (N>=500) validates three-component taxonomy. State synthetic-to-real consistency in Methods. If pilot shows deviations, report honestly and discuss implications. |
-//! | "Rocq proof is trivial" | Present in 2-3 sentences as methodological aside. Do not headline it. |
-//!
-//! ---
-//!
-//! ## Key Claims
-//!
-//! ### Primary null result (E-183 real data, all verified)
-//!
-//! | Claim | Statement |
-//! |---|---|
-//! | C-1365 | Primary null: SNR=0.29, N=6992, threshold 0.002392 (40% below SKA 2030) |
-//! | C-1366 | CD dimension invariance (af=0.5 identity, D=16 to 262,144) |
-//! | C-1367 | Inclination dependence falsifies ZD physics (SNR increases with i) |
-//! | C-1368 | DC-peaked red-noise Fourier spectrum, no ZD resonance |
-//! | C-1369 | G2 angular modes: SNR=0.29 (algebra-independent null) |
-//! | C-1370 | Albert J3(O) Peirce modes: SNR=0.29 |
-//! | C-1371 | sl(2) partner graph: SNR=0.23 (2-mode subset) |
-//! | C-1372 | Algebraic universality of null across {CD, G2, J3(O), sl(2)} |
-//! | C-1373 | sl(2) degeneracy ratio FALSIFIED (observed 0.55-1.53, predicted 2.0) |
-//! | C-1374 | STFT+derivative+Rayleigh triple diagnostic confirms baryonic origin |
-//!
-//! ### Synthetic robustness suite (E-192, all verified 2026-03-17)
-//!
-//! | Claim | Statement |
-//! |---|---|
-//! | C-1411 | 660 synthetic runs, zero false positives |
-//! | C-1412 | Injection recovery anti-correlation (destructive interference at x~0.5) |
-//! | C-1413 | Red-noise correction neutral on synthetic null data |
-//! | C-1414 | Three implementation bugs discovered and fixed |
-//! | C-1415 | REFINE convergence to fixed-point SNR (data-limited, not pipeline-limited) |
-//! | C-1416 | Ablation separation: no_harmonics 4.9x baseline (positive control) |
-//! | C-1417 | Cross-regime stability: <0.125 SNR spread across subsamples |
-//! | C-1418 | Random wavenumber control: null is wavenumber-independent |
-//!
-//! ### Pending (from pre-submission experiments)
-//!
-//! | Experiment | Expected claims |
-//! |---|---|
-//! | Radial-windowed injection | Blind zone localized to x < 0.8; recovery at x > 1.0 |
-//! | Shuffled-data null | Shuffled SNR matches unshuffled (pipeline has no radial sensitivity for sub-percent signals) |
-//! | Red-noise cross-validation | gamma consistent between 50/50 splits to within bootstrap CI |
-//! | NFW template ablation | Null persists under Einasto and Burkert (template-independent) |
-//! | Real MaNGA pilot | Three-component taxonomy matches synthetic calibration |
-//!
-//! ---
-//!
-//! ## Recommended Paper Section Structure (MNRAS)
-//!
-//! **Title:** Baryonic noise floor and harmonic search blind spots in 7000 MaNGA
-//! rotation curves
-//!
-//! **Abstract:** ~250 words. Lead with: "We measure the spectral noise floor of
-//! stacked rotation curve residuals from 6992 MaNGA DR17 disk galaxies..."
-//!
-//! 1. **Introduction** (1.5 pages)
-//!    - IFU rotation curve residuals encode baryonic systematics and potential
-//!      exotic substructure. Fourier-domain searches need characterized floors.
-//!    - Harmonic DM substructure predictions exist (FDM solitons, algebraic
-//!      frameworks). These require calibrated sensitivity envelopes.
-//!    - We measure three quantities: baryonic floor, blind zones, inclination
-//!      criterion. Demonstrated via null test across four algebraic frameworks.
-//!
-//! 2. **Data and Pipeline** (2 pages)
-//!    - MaNGA DR17 sample selection (N=6992, cuts)
-//!    - Pseudo-slit extraction, NFW fitting, residual computation
-//!    - Stacking procedure (inverse-variance, x-grid)
-//!    - Fourier analysis and SNR definition
-//!    - Algebraic wavenumber derivations (CD-ZD, G2, Albert, sl(2))
-//!
-//! 3. **The Baryonic Spectral Floor** (2.5 pages) -- PRIMARY CONTRIBUTION
-//!    - 3.1: Three-component taxonomy with physical origins and quantified
-//!      amplitudes (bulge +5% at x<0.56, cusp -15% at x~0.83, projection
-//!      +29% at x~0.95)
-//!    - 3.2: Red-noise spectral index (gamma=0.808, cross-validated)
-//!    - 3.3: Inclination-gradient falsification criterion
-//!    - FIGURE 1: Stacked residual profile with three systematics annotated
-//!    - FIGURE 2: Fourier power spectrum with k^0.81 fit and mode markers
-//!
-//! 4. **Harmonic Search Sensitivity and Blind Spots** (2 pages)
-//!    - 4.1: Signal injection at multiple amplitudes
-//!    - 4.2: Anti-monotonic recovery diagnosis (radial-dependent: fails at
-//!      x~0.5, recovers at x>1.0)
-//!    - 4.3: Generalization to other harmonic search pipelines
-//!    - FIGURE 3: Injection diagnosis (2-panel)
-//!
-//! 5. **Application: Null Test Across Four Algebraic Frameworks** (1.5 pages)
-//!    - CD-ZD, G2, Albert, sl(2) -- all null at SNR < 1
-//!    - Cross-algebra quasi-degeneracy disclosure
-//!    - sl(2) degeneracy ratio falsification
-//!    - Dimension invariance (assessor fraction identity)
-//!    - TABLE 1: Multi-algebra SNR with cross-correlation matrix
-//!
-//! 6. **Cross-Survey Sensitivity Projection** (1.5 pages)
-//!    - What MaNGA constrains (x < 1.35)
-//!    - THINGS: deeper but N=34
-//!    - SKA Phase 1: x > 10, N ~ 10^4
-//!    - Euclid: complementary (lensing, not kinematics)
-//!    - FIGURE 4: alpha_zd threshold vs radial reach
-//!
-//! 7. **Discussion** (1.5 pages)
-//!    - Comparison to FDM soliton searches (Schive+2014, Bar+2022)
-//!    - Implications for DC14 and cored-halo models
-//!    - Null results and the scientific record (Matosin+2014)
-//!
-//! 8. **Conclusion** (0.5 pages)
-//!
-//! **Appendices:**
-//! - A: Algebraic wavenumber derivations for each framework
-//! - B: Synthetic data generator specification and real-data pilot comparison
-//! - C: Reproducibility manifest (binary commands, checksums, Rocq proof)
-//!
-//! ---
-//!
-//! ## Critical Files
-//!
-//! | File | Role |
-//! |---|---|
-//! | `docs/latex/manga_zd_null_result.tex` | Manuscript skeleton (`aa` class, needs restructuring) |
-//! | `docs/latex/manga_null_refs.bib` | Bibliography (29+ entries) |
-//! | `crates/cosmology_core/src/harmonic_halos.rs` | Core model: HarmonicHaloConfig, wavenumber definitions |
-//! | `crates/cosmology_core/src/harmonic_stacking.rs` | Stacking algorithm, af=0.5 identity, STFT/derivative/Rayleigh |
-//! | `proofs/verified/C1363_HarmonicHaloExactRecovery.v` | Rocq proof of exact NFW recovery at alpha_zd=0 |
-//! | `registry/claims.toml` | C-1365..C-1374, C-1411..C-1418 |
-//! | `registry/insights.toml` | I-179..I-183, I-194..I-195 |
-//! | `crates/gororoba_cli_physics/src/bin/harmonic_halo_stacking_manga.rs` | E-183 real-data binary |
-//! | `crates/gororoba_cli_physics/src/bin/lie_jordan_halo_analysis.rs` | Multi-algebra binary (E-184) |
-//! | `crates/gororoba_cli_physics/src/bin/harmonic_halo_signal_analysis.rs` | STFT/derivative/Rayleigh binary (E-192) |
-//! | `experiments/manga_zd_null/models.py` | 11 analysis conditions (Python robustness suite) |
-//! | `experiments/manga_zd_null/main.py` | Pipeline driver (Python robustness suite) |
-//! | `experiments/manga_zd_null/results.json` | 660 per-seed metric records + summary |
-//! | `experiments/manga_zd_null/retrospective.md` | Lessons learned, quality ratings, priority list |
-//! | `data/results/e183/` | All stacked data products and result CSVs (36 files) |
-//! | `data/results/e183/cross_algebra_correlation.csv` | Cross-algebra quasi-degeneracy data |
-//! | `data/results/e183/injection_recovery.csv` | Injection recovery results |
-//! | `data/results/e183/inclination_injection.csv` | Inclination-stratified injection data |
-//!
+// > # SMART Research Goal: Baryonic Noise Floor and Harmonic Search Blind Spots in 7000 MaNGA Rotation Curves
+//
+// > **Generated:** 2026-03-17
+// > **Revised:** 2026-03-18 (reframed: detection floor lead, harmonic-subtraction blind zone as finding)
+//
+// > ---
+//
+// > ## Topic
+//
+// > Quantitative characterization of the baryonic spectral noise floor in stacked
+// > IFU rotation curve residuals from the largest existing integral-field kinematic
+// > dataset (MaNGA DR17, N=6992 disk galaxies), with application to harmonic dark
+// > matter substructure searches. The characterization includes a three-component
+// > baryonic systematics taxonomy, a universal red-noise spectral index, an
+// > inclination-gradient falsification criterion for spherical-halo substructure,
+// > and the discovery of harmonic-subtraction blind zones in Fourier-domain search
+// > pipelines. A calibrating null test across four algebraic frameworks
+// > (Cayley-Dickson zero-divisor, G2 Aut(O), Albert J3(O), sl(2) partner-graph)
+// > demonstrates the floor in action and establishes the most stringent inner-halo
+// > bound on algebraically motivated harmonic dark-sector modifications from IFU
+// > spectroscopy.
+//
+// > The broad domain sits at the intersection of observational galaxy dynamics (IFU
+// > rotation curve stacking), statistical methodology (spectral search pipeline
+// > calibration), and mathematical physics (hypercomplex algebra applied to dark
+// > matter models), with direct implications for next-generation survey design
+// > (SKA, Euclid).
+//
+// > ---
+//
+// > ## Novel Angle
+//
+// > ### What is genuinely new
+//
+// > **1. First quantitative spectral floor for stacked IFU rotation curve residuals.**
+// > No published work measures the Fourier-domain noise floor of stacked NFW
+// > rotation curve residuals at scale. Individual baryonic systematics are known --
+// > bulge excess (Martinsson+2013), cusp over-prediction (de Blok 2010, Oh+2015),
+// > IFU beam-smearing (Varidel+2019) -- but nobody has produced a unified spectral
+// > decomposition of all three in stacked residual space at N=6992. The result is
+// > a concrete detection floor that any future harmonic search must exceed,
+// > applicable to fuzzy dark matter soliton searches (Schive+2014, Bar+2022),
+// > ultralight axion wiggle searches, and algebraic predictions alike.
+//
+// > **2. Harmonic-subtraction blind zone discovery (C-1412).**
+// > The injection recovery experiment reveals anti-monotonic behavior: detection
+// > SNR *decreases* with injection amplitude when the injected signal's radial
+// > envelope (exp(-x)) overlaps with the baryonic bulge excess at x~0.5.
+// > Root cause: harmonic subtraction absorbs injected signals whose spectral
+// > character coincides with baryonic modes being removed. This is a general
+// > result for any stacking pipeline that subtracts baryonic harmonics before
+// > searching for exotic harmonics. The blind zone can be characterized by
+// > radial-windowed injection: signals injected at x > 1.0 (away from the bulge)
+// > should recover correctly, proving the blind spot is radially localized.
+//
+// > This finding generalizes beyond this paper's specific predictions to any
+// > Fourier-domain halo residual analysis. Framed as "harmonic-subtraction induced
+// > blind zones in spectral search pipelines," it becomes a methodological
+// > contribution relevant to the FDM, ULDM, and algebraic substructure communities.
+//
+// > **3. Inclination-gradient falsification criterion (C-1367).**
+// > This is the paper's sharpest standalone diagnostic. The physical argument is
+// > model-independent: genuine gravitational forcing in a spherical halo is
+// > inclination-invariant after deprojection (v_circ = v_los / sin i). Any residual
+// > that scales with inclination is a projection artifact, not halo physics.
+//
+// > Observation: SNR = 0.98 (low-i, 30-45 deg), 0.59 (mid-i, 45-60 deg), 1.30
+// > (high-i, 60-70 deg). The SNR gradient runs in the *wrong direction* for ZD
+// > forcing -- it increases with inclination, tracking IFU line-of-sight depth
+// > effects. This diagnostic requires zero algebraic knowledge to evaluate and is
+// > immediately reusable by any group testing any claim of harmonic halo substructure.
+//
+// > **4. Universal red-noise spectral index k^0.81 (I-180).**
+// > The spectral index gamma = 0.808 is measured to be algebra-universal (identical
+// > across CD-ZD, G2, Albert, sl(2)) and subsample-invariant (7/7 modes within 9%
+// > across face-on, mass-Q3, and full-sample regimes). This provides a concrete
+// > power-law baseline for Fourier-domain searches: any claimed detection must
+// > exceed the k^0.81 red-noise envelope, not just a flat noise assumption.
+//
+// > Note: I-180 also states the power falls "approximately as 1/k^2." These are
+// > different quantities -- gamma = 0.808 is the Rayleigh R(k) spectral index,
+// > while the k^{-2} refers to the PSD power-law slope. The paper must distinguish
+// > these clearly. Cross-validation (fit on 50% of galaxies, test on 50%) is
+// > required to confirm the index is a data property, not a pipeline artifact.
+//
+// > **5. Cross-algebra quasi-degeneracy as bound robustness.**
+// > The four algebraic frameworks are NOT independent tests over the observed radial
+// > range. Cross-algebra correlation from `data/results/e183/cross_algebra_correlation.csv`:
+//
+// > | Pair | rho_avg |
+// > |------|---------|
+// > | CD-ZD vs G2 | 0.998 |
+// > | CD-ZD vs J3(O) | 0.988 |
+// > | CD-ZD vs sl(2) | 0.998 |
+// > | G2 vs J3(O) | 0.996 |
+// > | G2 vs sl(2) | 0.992 |
+// > | J3(O) vs sl(2) | 0.977 |
+//
+// > The wavenumber families are quasi-degenerate at x = 0.5-1.35: effectively one
+// > null result measured through four algebraic lenses, not four independent
+// > experiments. This is reframed as a *strength*: the sensitivity bound is
+// > insensitive to algebraic model choice. Any algebra in the exceptional tower
+// > (sl(2) < g2 < f4) that generates wavenumbers in k = 0.9-6.3 rad/r_s produces
+// > the same null result.
+//
+// > ### What is NOT novel (honest assessment)
+//
+// > - Individual baryonic systematics (bulge, cusp, beam-smearing) are known.
+// > Our contribution is the *unified spectral decomposition at scale*, not the
+// > discovery of individual effects.
+// > - Red-noise characterization in astrophysical spectra is established (Torrence
+// > & Compo 1998, Vaughan 2005). Our contribution is measuring the specific
+// > index in stacked halo residuals, not inventing the methodology.
+// > - The inclination dependence of rotation curve quality is known (Fogarty+2014).
+// > Our contribution is the *falsification criterion framing*: the logical
+// > argument that inclination-dependent residuals prove projection origin and
+// > exclude physical halo forcing.
+//
+// > ### Why timely NOW (2026)
+//
+// > 1. **MaNGA DR17 is final** -- the largest 2D-spectroscopic rotation curve dataset
+// >  until DESI/4MOST kinematic surveys mature (~2028+). No future optical IFU
+// >  survey will surpass it in statistical power for this class of test.
+//
+// > 2. **Exceptional algebra revival** -- Furey (2016-2024 octonion particle models),
+// >  Todorov & Dubois-Violette (2021 sedenion gauge theory), Reggiani (2024 sedenion
+// >  ZD geometry) have created algebraic predictions lacking empirical confrontation.
+// >  The physics community needs observational bounds, not more algebraic speculation.
+//
+// > 3. **DESI DR2 dynamical dark energy (2025, arXiv:2503.14738)** renews interest
+// >  in exotic dark sector models. A rigorous null result with a concrete sensitivity
+// >  benchmark provides an immediate anchor for next-generation survey planning.
+//
+// > 4. **FDM soliton search maturation** -- Bar+2022, Burkert 2020, Schive+2014 have
+// >  established Fourier-domain spectral searches for ultralight dark matter in
+// >  rotation curves. Our baryonic floor measurement and blind-spot characterization
+// >  directly serve this growing community.
+//
+// > ### Trend validation (2024-2026 papers)
+//
+// > 1. **Reggiani (2024) arXiv:2411.18881** -- *The geometry of sedenion zero divisors.*
+// >  Differential-geometric results on the ZD manifold (Stiefel manifold V_2(R^7),
+// >  G2 holonomy). Establishes the mathematical predictions this paper confronts
+// >  with data. No astrophysical contact in Reggiani's work.
+//
+// > 2. **DESI Collaboration (2025) arXiv:2503.14738** -- Dynamical dark energy from
+// >  BAO (DR2). Strengthened evidence for evolving w(z) renews appetite for exotic
+// >  dark sector constraints. Our bound is complementary: constraining harmonic
+// >  substructure rather than equation of state.
+//
+// > 3. **Matosin et al. (2014) doi:10.1242/dmm.015396** -- *Negativity towards negative
+// >  results.* Argues the systematic underreporting of null results distorts the
+// >  scientific record. Our paper is a deliberate positive contribution: a carefully
+// >  characterized detection floor with reusable diagnostics and an actionable
+// >  sensitivity envelope.
+//
+// > ---
+//
+// > ## Scope
+//
+// > Single paper. Will NOT propose new dark matter models, claim to rule out all
+// > algebraic theories, present new observations, or extend to radio/HI curves
+// > (deferred to SKA era).
+//
+// > Will present:
+// > - Quantitative baryonic spectral floor: three-component taxonomy, red-noise
+// > index, and sensitivity threshold at the stacking-analysis level
+// > - Harmonic-subtraction blind zone characterization with radial-windowed
+// > injection diagnosis
+// > - Inclination-gradient falsification criterion as standalone reusable tool
+// > - Multi-algebraic null test (4 algebras) as calibrating application with
+// > honest quasi-degeneracy disclosure
+// > - Sensitivity projection for SKA, THINGS, and Euclid
+// > - Open-source analysis code (Rust + Python) and stacked data products
+//
+// > **Target venue:** MNRAS (primary). Rotation curve stacking tradition (Persic+1996,
+// > Posti+2019), established MaNGA kinematic publication record, good track record
+// > for well-characterized null results. A&A viable (LaTeX already uses `aa` class).
+//
+// > ---
+//
+// > ## SMART Goal
+//
+// > **Specific:** Write and submit a publication-quality paper characterizing the
+// > baryonic spectral noise floor of stacked MaNGA DR17 rotation curve residuals,
+// > with the primary contributions being: (1) a three-component baryonic systematics
+// > taxonomy with quantified amplitudes, (2) a universal red-noise spectral index
+// > k^0.81 cross-validated on independent galaxy splits, (3) an inclination-gradient
+// > falsification criterion for halo substructure claims, (4) the discovery and
+// > characterization of harmonic-subtraction blind zones in Fourier-domain search
+// > pipelines, and (5) a multi-algebraic null test (alpha_zd < 0.00239 at 95% CL)
+// > as calibrating case study with sensitivity projections for SKA/THINGS/Euclid.
+//
+// > **Measurable:** The paper is complete when it contains:
+// > - 8 sections: Introduction, Data & Pipeline, Baryonic Spectral Floor, Harmonic
+// > Search Sensitivity & Blind Spots, Application: Null Test, Cross-Survey
+// > Sensitivity Projection, Discussion, Conclusion
+// > - 5 publication-quality figures:
+// > (1) Stacked residual profile with three baryonic systematics annotated,
+// > > > > >     error bands, and NFW zero line
+// > (2) Fourier power spectrum with k^0.81 fit, 95% red-noise confidence
+// > > > > >     envelope, and ZD/G2/Albert/sl(2) mode markers
+// > (3) Injection recovery diagnosis (2-panel: SNR vs injection amplitude
+// > > > >     showing anti-monotonic trend + recovery fraction vs radial window
+// > > > > >     center showing x~0.5 blind spot vs x>1.0 recovery)
+// > (4) Sensitivity projection: alpha_zd threshold vs radial coverage (x_max)
+// > > > > >     for MaNGA / THINGS / SKA -- the figure survey planners will cite
+// > (5) Inclination-gradient criterion: SNR vs inclination bin (low-i/mid-i/
+// > > > > >     high-i/full) with physical-forcing reference line (flat)
+// > - 3 tables:
+// > (1) Sample statistics (N=6992, selection cuts, completeness, subsamples)
+// > (2) Multi-algebra SNR summary (CD-ZD, G2, J3(O), sl(2) x full/low-i/mid-i/high-i)
+// > (3) Cross-algebra correlation matrix (rho_avg for all 6 pairs)
+// > - Formal sensitivity bound: alpha_zd >= 0.002392 at 95% confidence
+// > - Reproducibility appendix: binary commands, input checksums, Rocq proof citation
+// > - arXiv preprint posted and MNRAS submission completed
+//
+// > **Achievable:** Core computational work is complete (E-183, E-184, E-192, 660-run
+// > robustness suite all finished). All 20 key claims verified (C-1365 through C-1374,
+// > C-1411 through C-1418). Rocq proof (C-1363) kernel-checked. Data products in
+// > `data/results/e183/` (36 CSV files). Six pre-submission ablation experiments
+// > remain (estimated 5 days total), plus manuscript preparation. No new
+// > observations, simulations, or major code development required.
+//
+// > **Relevant:** Serves four communities:
+// > - *Spectral search methodology:* First characterized baryonic detection floor
+// > and blind-spot analysis for Fourier-domain halo residual analyses. Directly
+// > reusable by FDM soliton, ULDM, and algebraic substructure searches.
+// > - *Survey planning:* Actionable sensitivity benchmark for SKA HI and Euclid
+// > weak lensing. alpha_zd < 0.0024 bound and radial coverage limitation
+// > (x < 1.35) directly inform next-generation observing strategies.
+// > - *Galaxy dynamics:* Tightest existing bound on harmonic dark matter
+// > substructure in IFU rotation curves, with well-characterized baryonic
+// > systematics taxonomy.
+// > - *Mathematical physics:* First observational confrontation of CD zero-divisor
+// > predictions, closing an empirical gap open since de Marrais (2000).
+//
+// > **Time-bound:** 8 weeks (target: 2026-05-13)
+// > - Weeks 1-2: Execute 6 pre-submission ablations. Draft Introduction, Data &
+// > Pipeline, Baryonic Spectral Floor. Generate Figures 1-2.
+// > - Weeks 3-4: Draft Harmonic Search Sensitivity & Blind Spots, Application:
+// > Null Test. Generate Figures 3-5. Compile Tables 1-3.
+// > - Weeks 5-6: Draft Sensitivity Projection, Discussion, Conclusion. Write
+// > reproducibility appendix. Real MaNGA pilot validation (N>=500).
+// > - Week 7: Internal review. Address any ablation surprises. Run final lint.
+// > - Week 8: Final polish, arXiv formatting, MNRAS submission.
+//
+// > ---
+//
+// > ## Pre-Submission Experiments (6 ablations, ~5 days)
+//
+// > These are NOT new research. They are validation experiments required to raise
+// > scientific validity from 3/10 to 7/10 (retrospective assessment):
+//
+// > | # | Experiment | Purpose | Duration | Registry |
+// > |---|-----------|---------|----------|----------|
+// > | 1 | Radial-windowed injection | Prove blind spot is radially localized (x~0.5 fails, x>1 recovers). Transforms injection limitation into published finding. | 1 day | New claims |
+// > | 2 | Shuffled-data null control | Permute radial bins across galaxies to establish true noise floor. If shuffled SNR = unshuffled, pipeline has no radial sensitivity. | 0.5 day | New claim |
+// > | 3 | Red-noise index cross-validation | Fit gamma on 50% of galaxies, test on 50%. Confirms k^0.81 is data property, not pipeline artifact. | 0.5 day | Update I-180 |
+// > | 4 | NFW template ablation | Repeat with Einasto + Burkert profiles. If null persists, constraint is template-independent. | 0.5 day | New claims |
+// > | 5 | alpha_zd physical unit calibration | Compute velocity deviation at r=r_s for fiducial halo (M_200=10^12 Msun, c=8). Convert upper limit to km/s. Makes bound tangible for observers. | 0.5 day | Update C-1365 |
+// > | 6 | Real MaNGA pilot (N>=500) | Run GHOST on real MaNGA DR17 galaxies. Validate three-component taxonomy is not a generator artifact. | 2 days | New claims |
+//
+// > **Experiment 6 is the most critical.** The current paper uses synthetic data
+// > calibrated to match E-183 real-data results. If the baryonic floor paper's
+// > primary contribution is characterizing the noise floor, that characterization
+// > must come from real data, not a synthetic generator. Even a pilot of N=500 real
+// > galaxies showing consistent three-component systematics transforms the paper
+// > from "we calibrated the expected noise floor" to "we measured the noise floor."
+//
+// > ---
+//
+// > ## Constraints
+//
+// > | Constraint | Detail |
+// > |---|---|
+// > | **Compute** | Single-GPU workstation. Pre-submission ablations ~5 days CPU. Figure generation <1 hr. |
+// > | **Tools** | Rust (open_gororoba, nightly-2026-03-05), Rocq 9.1.1, PGFPlots/LaTeX, Python. |
+// > | **Data** | MaNGA DR17 public (6992 galaxies, 126,442 rotation curve points). All in-repo. Real MaNGA pilot uses SDSS public data (DR17 DAPall + MAPS, no proprietary access needed). |
+// > | **Licensing** | Open-source code, SDSS-IV public data policy. |
+// > | **Ablation budget** | 6 experiments, 5 person-days, within Weeks 1-2 of timeline. Must complete before manuscript sections that reference their results (Sections 3-4). |
+//
+// > ---
+//
+// > ## Success Criteria
+//
+// > All must be met for the paper to be publishable:
+//
+// > 1. **Baryonic floor as primary contribution:** Three-component taxonomy
+// >  (bulge +5%, cusp -15%, projection +29%) quantified in both real-space
+// >  amplitudes and Fourier-domain power, with the floor prominently stated
+// >  in abstract and conclusion.
+// > 2. **Blind-spot characterization complete:** Radial-windowed injection
+// >  (experiment 1) demonstrates that injection at x > 1.0 recovers correctly
+// >  while x~0.5 shows destructive interference. The mechanism is explained
+// >  physically and the blind zone is quantified.
+// > 3. **Inclination-gradient diagnostic:** C-1367 presented as standalone
+// >  falsification criterion with clear physical argument (gravitational forcing
+// >  is inclination-invariant). Named explicitly for reuse by other groups.
+// > 4. **Red-noise index cross-validated:** gamma = 0.808 confirmed on independent
+// >  50/50 galaxy split. If the index differs significantly between splits,
+// >  report both values and discuss implications.
+// > 5. **Quasi-degeneracy disclosed:** Cross-algebra rho_avg table presented
+// >  honestly. Framed as bound robustness, not as four independent experiments.
+// > 6. **Real-data validation:** At least N=500 real MaNGA galaxies processed
+// >  through GHOST pipeline, showing three-component baryonic taxonomy
+// >  consistent with synthetic calibration to within stated uncertainties.
+// > 7. **Sensitivity projection actionable:** alpha_zd threshold vs radial
+// >  reach figure includes MaNGA, THINGS, and SKA curves with quantitative
+// >  thresholds that survey planners can cite directly.
+// > 8. **Reproducibility:** Exact binary commands, input file checksums, Rocq
+// >  proof reference (C-1363), and Python environment spec (requirements.txt
+// >  with pinned versions) provided. Another researcher with MaNGA DR17 and
+// >  open_gororoba can reproduce every number.
+//
+// > ---
+//
+// > ## Benchmark
+//
+// > ### Primary dataset
+//
+// > | Attribute | Value |
+// > |---|---|
+// > | **Dataset** | MaNGA DR17, N=6992 disk galaxies, 126,442 rotation curve points |
+// > | **Selection** | Sersic n < 2.5, 30 < i < 70 deg, DAPDONE=True, Ha EW > 2 A |
+// > | **Radial coverage** | x = 0.5 to ~1.35 r/r_s (inner halo; MaNGA IFU 12-18 kpc vs r_s ~10-20 kpc) |
+// > | **Primary metric** | SNR of harmonic power at predicted wavenumbers |
+// > | **Result** | SNR = 0.25-0.29 (E-183 real data), 0.47-0.48 (synthetic robustness) across all frameworks |
+// > | **Detection threshold** | alpha_zd >= 0.002392 at 95% CL |
+// > | **RMS residual** | 0.075 (full sample), 0.092 (inner halo 0.5-1.25 r/r_s) |
+// > | **Red-noise index** | gamma = 0.808 (Rayleigh R spectral index, cross-validation pending) |
+// > | **CD invariance** | Identical SNR across D=16 through D=262,144 (af=0.5 identity, C-1366) |
+// > | **Current SOTA** | No prior spectral floor characterization for stacked IFU rotation curve residuals exists |
+//
+// > ### Comparison targets
+//
+// > | Survey | N_galaxies | Radial reach (r/r_s) | Tracer | Status |
+// > |--------|-----------|---------------------|--------|--------|
+// > | **MaNGA DR17** (this work) | 6992 | ~1.35 | Optical IFU (H-alpha) | Complete |
+// > | **SPARC** (Lelli+2016) | 175 | ~5-10 | HI 21cm + photometry | Public; deeper but 40x smaller N |
+// > | **THINGS** (Walter+2008) | 34 | >10 | HI 21cm (high-res) | Public; outer halo reach, tiny N |
+// > | **SKA Phase 1** (SKA 2020) | ~10,000 | >10 | HI 21cm (z<0.1) | Forecast ~2030; alpha_zd=0.004 design |
+// > | **Euclid Wide** (Scaramella+2022) | ~10^9 | N/A (lensing) | Weak lensing shear | DR2+ (~2028); complementary probe |
+//
+// > ### DC14 robustness check
+//
+// > | Model | RMS | ZD SNR | alpha_zd est. |
+// > |-------|-----|--------|---------------|
+// > | NFW | 0.126 | 0.43 | 0.296 |
+// > | DC14 | 0.087 | 2.52 | 1.185 |
+//
+// > DC14 absorbs baryonic systematics into profile shape, reducing RMS but producing
+// > a spurious ZD SNR = 2.52 (below detection threshold of 3, but notably higher than
+// > NFW). This demonstrates that profile model choice affects the bound. The NFW-based
+// > bound (alpha_zd < 0.00239) is conservative; DC14-based analysis would yield a
+// > weaker constraint. Presented as a robustness check, not a DC14 critique.
+//
+// > ---
+//
+// > ## Reviewer Risk Mitigations
+//
+// > | Risk | Mitigation |
+// > |------|-----------|
+// > | "Who asked for this test?" | Lead with baryonic floor and blind-spot methodology (useful to FDM/ULDM community). Algebraic prediction is the calibrating case study, not the sole motivation. Cite Furey (2016-2024), Todorov & Dubois-Violette (2021), Reggiani (2024). |
+// > | "The baryonic systematics are well-known" | Individual effects are known; the unified spectral decomposition at N=6992 stacking scale with cross-validated spectral index is new. Distinguish our contribution (stacking-analysis-level floor) from survey-instrument-level characterization (Westfall+2019, Belfiore+2019). |
+// > | "Four algebras are not independent" | Disclose cross-algebra rho > 0.97 proactively. Reframe as bound robustness to algebraic model choice. |
+// > | "Injection recovery is broken" | Reframe as discovered blind zone. Present radial-windowed injection diagnosis showing recovery at x>1.0 and failure at x~0.5. Generalize to any harmonic-subtraction pipeline. |
+// > | "Inner halo only" | Explicit scoping. Quantify what x > 3 would change. Point to SKA/THINGS as natural follow-up. The sensitivity projection figure makes this actionable. |
+// > | "DC14 gives different SNR" | Include DC14 comparison table. Show NFW bound is conservative. |
+// > | "Null result is boring" | Cite Matosin+2014. The paper is not just a null -- it characterizes a detection floor, discovers a pipeline blind spot, and provides three reusable diagnostic tools. |
+// > | "Synthetic data only" | Real MaNGA pilot (N>=500) validates three-component taxonomy. State synthetic-to-real consistency in Methods. If pilot shows deviations, report honestly and discuss implications. |
+// > | "Rocq proof is trivial" | Present in 2-3 sentences as methodological aside. Do not headline it. |
+//
+// > ---
+//
+// > ## Key Claims
+//
+// > ### Primary null result (E-183 real data, all verified)
+//
+// > | Claim | Statement |
+// > |---|---|
+// > | C-1365 | Primary null: SNR=0.29, N=6992, threshold 0.002392 (40% below SKA 2030) |
+// > | C-1366 | CD dimension invariance (af=0.5 identity, D=16 to 262,144) |
+// > | C-1367 | Inclination dependence falsifies ZD physics (SNR increases with i) |
+// > | C-1368 | DC-peaked red-noise Fourier spectrum, no ZD resonance |
+// > | C-1369 | G2 angular modes: SNR=0.29 (algebra-independent null) |
+// > | C-1370 | Albert J3(O) Peirce modes: SNR=0.29 |
+// > | C-1371 | sl(2) partner graph: SNR=0.23 (2-mode subset) |
+// > | C-1372 | Algebraic universality of null across {CD, G2, J3(O), sl(2)} |
+// > | C-1373 | sl(2) degeneracy ratio FALSIFIED (observed 0.55-1.53, predicted 2.0) |
+// > | C-1374 | STFT+derivative+Rayleigh triple diagnostic confirms baryonic origin |
+//
+// > ### Synthetic robustness suite (E-192, all verified 2026-03-17)
+//
+// > | Claim | Statement |
+// > |---|---|
+// > | C-1411 | 660 synthetic runs, zero false positives |
+// > | C-1412 | Injection recovery anti-correlation (destructive interference at x~0.5) |
+// > | C-1413 | Red-noise correction neutral on synthetic null data |
+// > | C-1414 | Three implementation bugs discovered and fixed |
+// > | C-1415 | REFINE convergence to fixed-point SNR (data-limited, not pipeline-limited) |
+// > | C-1416 | Ablation separation: no_harmonics 4.9x baseline (positive control) |
+// > | C-1417 | Cross-regime stability: <0.125 SNR spread across subsamples |
+// > | C-1418 | Random wavenumber control: null is wavenumber-independent |
+//
+// > ### Pending (from pre-submission experiments)
+//
+// > | Experiment | Expected claims |
+// > |---|---|
+// > | Radial-windowed injection | Blind zone localized to x < 0.8; recovery at x > 1.0 |
+// > | Shuffled-data null | Shuffled SNR matches unshuffled (pipeline has no radial sensitivity for sub-percent signals) |
+// > | Red-noise cross-validation | gamma consistent between 50/50 splits to within bootstrap CI |
+// > | NFW template ablation | Null persists under Einasto and Burkert (template-independent) |
+// > | Real MaNGA pilot | Three-component taxonomy matches synthetic calibration |
+//
+// > ---
+//
+// > ## Recommended Paper Section Structure (MNRAS)
+//
+// > **Title:** Baryonic noise floor and harmonic search blind spots in 7000 MaNGA
+// > rotation curves
+//
+// > **Abstract:** ~250 words. Lead with: "We measure the spectral noise floor of
+// > stacked rotation curve residuals from 6992 MaNGA DR17 disk galaxies..."
+//
+// > 1. **Introduction** (1.5 pages)
+// >  - IFU rotation curve residuals encode baryonic systematics and potential
+// >    exotic substructure. Fourier-domain searches need characterized floors.
+// >  - Harmonic DM substructure predictions exist (FDM solitons, algebraic
+// >    frameworks). These require calibrated sensitivity envelopes.
+// >  - We measure three quantities: baryonic floor, blind zones, inclination
+// >    criterion. Demonstrated via null test across four algebraic frameworks.
+//
+// > 2. **Data and Pipeline** (2 pages)
+// >  - MaNGA DR17 sample selection (N=6992, cuts)
+// >  - Pseudo-slit extraction, NFW fitting, residual computation
+// >  - Stacking procedure (inverse-variance, x-grid)
+// >  - Fourier analysis and SNR definition
+// >  - Algebraic wavenumber derivations (CD-ZD, G2, Albert, sl(2))
+//
+// > 3. **The Baryonic Spectral Floor** (2.5 pages) -- PRIMARY CONTRIBUTION
+// >  - 3.1: Three-component taxonomy with physical origins and quantified
+// >    amplitudes (bulge +5% at x<0.56, cusp -15% at x~0.83, projection
+// >    +29% at x~0.95)
+// >  - 3.2: Red-noise spectral index (gamma=0.808, cross-validated)
+// >  - 3.3: Inclination-gradient falsification criterion
+// >  - FIGURE 1: Stacked residual profile with three systematics annotated
+// >  - FIGURE 2: Fourier power spectrum with k^0.81 fit and mode markers
+//
+// > 4. **Harmonic Search Sensitivity and Blind Spots** (2 pages)
+// >  - 4.1: Signal injection at multiple amplitudes
+// >  - 4.2: Anti-monotonic recovery diagnosis (radial-dependent: fails at
+// >    x~0.5, recovers at x>1.0)
+// >  - 4.3: Generalization to other harmonic search pipelines
+// >  - FIGURE 3: Injection diagnosis (2-panel)
+//
+// > 5. **Application: Null Test Across Four Algebraic Frameworks** (1.5 pages)
+// >  - CD-ZD, G2, Albert, sl(2) -- all null at SNR < 1
+// >  - Cross-algebra quasi-degeneracy disclosure
+// >  - sl(2) degeneracy ratio falsification
+// >  - Dimension invariance (assessor fraction identity)
+// >  - TABLE 1: Multi-algebra SNR with cross-correlation matrix
+//
+// > 6. **Cross-Survey Sensitivity Projection** (1.5 pages)
+// >  - What MaNGA constrains (x < 1.35)
+// >  - THINGS: deeper but N=34
+// >  - SKA Phase 1: x > 10, N ~ 10^4
+// >  - Euclid: complementary (lensing, not kinematics)
+// >  - FIGURE 4: alpha_zd threshold vs radial reach
+//
+// > 7. **Discussion** (1.5 pages)
+// >  - Comparison to FDM soliton searches (Schive+2014, Bar+2022)
+// >  - Implications for DC14 and cored-halo models
+// >  - Null results and the scientific record (Matosin+2014)
+//
+// > 8. **Conclusion** (0.5 pages)
+//
+// > **Appendices:**
+// > - A: Algebraic wavenumber derivations for each framework
+// > - B: Synthetic data generator specification and real-data pilot comparison
+// > - C: Reproducibility manifest (binary commands, checksums, Rocq proof)
+//
+// > ---
+//
+// > ## Critical Files
+//
+// > | File | Role |
+// > |---|---|
+// > | `docs/latex/manga_zd_null_result.tex` | Manuscript skeleton (`aa` class, needs restructuring) |
+// > | `docs/latex/manga_null_refs.bib` | Bibliography (29+ entries) |
+// > | `crates/cosmology_core/src/harmonic_halos.rs` | Core model: HarmonicHaloConfig, wavenumber definitions |
+// > | `crates/cosmology_core/src/harmonic_stacking.rs` | Stacking algorithm, af=0.5 identity, STFT/derivative/Rayleigh |
+// > | `proofs/verified/C1363_HarmonicHaloExactRecovery.v` | Rocq proof of exact NFW recovery at alpha_zd=0 |
+// > | `registry/claims.toml` | C-1365..C-1374, C-1411..C-1418 |
+// > | `registry/insights.toml` | I-179..I-183, I-194..I-195 |
+// > | `crates/gororoba_cli_physics/src/bin/harmonic_halo_stacking_manga.rs` | E-183 real-data binary |
+// > | `crates/gororoba_cli_physics/src/bin/lie_jordan_halo_analysis.rs` | Multi-algebra binary (E-184) |
+// > | `crates/gororoba_cli_physics/src/bin/harmonic_halo_signal_analysis.rs` | STFT/derivative/Rayleigh binary (E-192) |
+// > | `experiments/manga_zd_null/models.py` | 11 analysis conditions (Python robustness suite) |
+// > | `experiments/manga_zd_null/main.py` | Pipeline driver (Python robustness suite) |
+// > | `experiments/manga_zd_null/results.json` | 660 per-seed metric records + summary |
+// > | `experiments/manga_zd_null/retrospective.md` | Lessons learned, quality ratings, priority list |
+// > | `data/results/e183/` | All stacked data products and result CSVs (36 files) |
+// > | `data/results/e183/cross_algebra_correlation.csv` | Cross-algebra quasi-degeneracy data |
+// > | `data/results/e183/injection_recovery.csv` | Injection recovery results |
+// > | `data/results/e183/inclination_injection.csv` | Inclination-stratified injection data |
+//

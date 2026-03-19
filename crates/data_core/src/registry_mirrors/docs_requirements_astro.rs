@@ -5,16 +5,16 @@
 //!
 //! Astro scripts depend on `astroquery` and (for some workflows) `gwpy`.
 //!
-//! ```texttext
+//! ```ignore
 //! make install-astro
-//! ```texttext
+//! ```ignore
 //!
 //! Rust-based unified fetcher for cosmology/astro/geophysical pillars:
 //!
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin fetch-datasets -- --list
 //! cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
-//! ```texttext
+//! ```ignore
 //!
 //! If a dataset is missing, fetch it explicitly and record provenance in:
 //! - `data/external/PROVENANCE.local.json` (`make provenance`)
@@ -23,7 +23,7 @@
 //!
 //! ## Provenance governance checklist
 //!
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
 //! cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
 //! cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
@@ -34,7 +34,7 @@
 //! cargo run -p gororoba_cli_data --bin data-governance-gate --
 //! cargo run -p gororoba_cli_data --bin data-semantic-validate --
 //! cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
-//! ```texttext
+//! ```ignore
 //!
 //! Run this checklist whenever astro datasets are refreshed so provenance and semantic contracts remain reproducible.
 //!

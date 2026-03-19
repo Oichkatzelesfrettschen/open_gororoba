@@ -13,19 +13,19 @@
 //!
 //! ## Data Inputs
 //! - source_paths:
-//!   - `path/to/source_1`
-//!   - `path/to/source_2`
+//! - `path/to/source_1`
+//! - `path/to/source_2`
 //! - evidence_links:
-//!   - `logs/example.md`
-//!   - `docs/example.md`
+//! - `logs/example.md`
+//! - `docs/example.md`
 //!
 //! ## Layout Plan
 //! - canvas: `1920x1080`
 //! - zones:
-//!   1. header
-//!   2. main flow
-//!   3. evidence panel
-//!   4. action footer
+//! 1. header
+//! 2. main flow
+//! 3. evidence panel
+//! 4. action footer
 //!
 //! ## Visual Tokens
 //! - background: `#0D1117`
@@ -38,8 +38,8 @@
 //!
 //! ## Export
 //! - output files:
-//!   - `docs/visuals/<YYYYMMDD>_<topic>_<variant>_dark.png`
-//!   - `docs/visuals/<YYYYMMDD>_<topic>_<variant>_dark.svg`
+//! - `docs/visuals/<YYYYMMDD>_<topic>_<variant>_dark.png`
+//! - `docs/visuals/<YYYYMMDD>_<topic>_<variant>_dark.svg`
 //!
 //! ## Validation
 //! - [ ] paths verified

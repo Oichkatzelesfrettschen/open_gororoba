@@ -27,18 +27,18 @@
 //! Three cross-cutting narrative threads connect the clusters:
 //!
 //! - **Concordance to constraint** (1 -> 4 -> 5): Lambda-CDM precision at the
-//!   percent level motivates spectral tests beyond bulk amplitude constraints;
-//!   the baryonic stacking methodology defines the noise floor; null-result
-//!   reporting standards ensure the constraint is transparent and reusable.
+//! percent level motivates spectral tests beyond bulk amplitude constraints;
+//! the baryonic stacking methodology defines the noise floor; null-result
+//! reporting standards ensure the constraint is transparent and reusable.
 //!
 //! - **Prediction to test** (3 -> 2 -> 4): Algebraic theory generates
-//!   wavenumber predictions; IFU surveys provide spatially resolved kinematics;
-//!   inner-halo baryonic systematics define the detection threshold.
+//! wavenumber predictions; IFU surveys provide spatially resolved kinematics;
+//! inner-halo baryonic systematics define the detection threshold.
 //!
 //! - **Bound to forecast** (4 -> 6): The inner-halo null (x < 1.35 r/r_s)
-//!   combined with next-generation survey capabilities generates concrete
-//!   sensitivity projections for the outer-halo regime (x = 3-5 r/r_s) where
-//!   ZD predictions peak.
+//! combined with next-generation survey capabilities generates concrete
+//! sensitivity projections for the outer-halo regime (x = 3-5 r/r_s) where
+//! ZD predictions peak.
 //!
 //! **Critical framing constraints**: (a) The cross-algebra quasi-degeneracy
 //! (rho > 0.97 for all 6 framework pairs) means the four algebraic tests are
@@ -81,10 +81,10 @@
 //!
 //! **Open questions**:
 //! - Can the S_8 tension be re-framed as a constraint on halo-scale spectral
-//!   modifications? Requires modeling ZD effects on weak lensing convergence.
+//! modifications? Requires modeling ZD effects on weak lensing convergence.
 //! - Does DESI DR2's strengthened w0-wa preference change the theoretical
-//!   landscape for ZD-type modifications? Probably not directly (ZD modifies
-//!   potential shape, not w(z)), but the connection should be explored.
+//! landscape for ZD-type modifications? Probably not directly (ZD modifies
+//! potential shape, not w(z)), but the connection should be explored.
 //!
 //! ---
 //!
@@ -112,9 +112,9 @@
 //!
 //! **Open questions**:
 //! - Has any IFU survey performed Fourier spectral decomposition of stacked
-//!   rotation curve residuals? This appears to be genuinely novel (Gap 2).
+//! rotation curve residuals? This appears to be genuinely novel (Gap 2).
 //! - Are there post-2022 MaNGA kinematic analyses characterizing the specific
-//!   baryonic systematics GHOST observes (bulge +5%, cusp -15%, IFU edge +29%)?
+//! baryonic systematics GHOST observes (bulge +5%, cusp -15%, IFU edge +29%)?
 //!
 //! ---
 //!
@@ -147,11 +147,11 @@
 //!
 //! **Open questions**:
 //! - Has any division-algebra paper (2022-2026) made quantitative predictions
-//!   for alpha_zd *amplitude* from first principles? This would convert GHOST
-//!   from model-independent exploration to model-dependent decisive test (Gap 1).
+//! for alpha_zd *amplitude* from first principles? This would convert GHOST
+//! from model-independent exploration to model-dependent decisive test (Gap 1).
 //! - Are there competing testable predictions from the division algebra program
-//!   that do not involve rotation curves (weak lensing convergence, CMB spectral
-//!   distortions)?
+//! that do not involve rotation curves (weak lensing convergence, CMB spectral
+//! distortions)?
 //!
 //! ---
 //!
@@ -191,9 +191,9 @@
 //!
 //! **Open questions**:
 //! - Is k^0.81 consistent with cosmological hydrodynamic simulation predictions
-//!   (FIRE/NIHAO) for stacked rotation curve residuals? (Gap 5)
+//! (FIRE/NIHAO) for stacked rotation curve residuals? (Gap 5)
 //! - Has any stacking analysis reached N > 5000 with NFW subtraction? GHOST's
-//!   N=6992 appears among the largest.
+//! N=6992 appears among the largest.
 //!
 //! ---
 //!
@@ -233,10 +233,10 @@
 //!
 //! **Open questions**:
 //! - How does GHOST's injection anti-monotonicity compare to calibration
-//!   challenges in direct detection experiments? Harmonic absorption appears
-//!   specific to Fourier-domain stacking searches (Gap 4).
+//! challenges in direct detection experiments? Harmonic absorption appears
+//! specific to Fourier-domain stacking searches (Gap 4).
 //! - What is the standard for reporting sensitivity when injection recovery
-//!   is known uncalibrated? Baxter+2021 may address this directly.
+//! is known uncalibrated? Baxter+2021 may address this directly.
 //!
 //! ---
 //!
@@ -273,10 +273,10 @@
 //!
 //! **Open questions**:
 //! - What is SKA's projected sensitivity to alpha_zd at x = 3-5 r/r_s? This
-//!   is the key forecast number for the paper (Gap 3).
+//! is the key forecast number for the paper (Gap 3).
 //! - Can WALLABY pilot data provide cross-validation at outer radii before SKA?
 //! - Does the quasi-degeneracy (rho > 0.97) persist at outer radii, or do the
-//!   algebraic frameworks separate? (Gap 7)
+//! algebraic frameworks separate? (Gap 7)
 //!
 //! ---
 //!

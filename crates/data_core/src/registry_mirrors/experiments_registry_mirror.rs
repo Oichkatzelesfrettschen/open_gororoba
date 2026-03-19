@@ -20,9 +20,9 @@
 //! Exact enumeration of connected-component structure of diagonal zero-product graph for cross-assessor pairs at each CD doubling (dim=16,32,64,128,256).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-002: Multi-Dataset GPU Ultrametric Sweep
 //!
@@ -38,9 +38,9 @@
 //! For 9 catalogs: normalize, compute Euclidean distances, ultrametric fraction test with column-shuffled null. 10M triples x 1000 permutations. BH-FDR correction.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin multi-dataset-ultrametric -- --explore --n-triples 10000000 --n-permutations 1000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)
 //!
@@ -55,9 +55,9 @@
 //! Joint chi-square over 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Analytic M_B marginalization. Nelder-Mead. Lambda-CDM vs w0-CDM via delta-BIC.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin real-cosmo-fit
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-004: Kerr Shadow Boundaries
 //!
@@ -72,9 +72,9 @@
 //! Bardeen shadow boundary (alpha, beta) for Kerr BH at given spin and inclination.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclination 17
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-005: Zero-Divisor Graph Invariants
 //!
@@ -89,9 +89,9 @@
 //! Build sedenion ZD interaction graph, compute graph-theoretic invariants. Extend to dim=32.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-006: Gravastar TOV Parameter Sweep
 //!
@@ -106,9 +106,9 @@
 //! Solve TOV for three-layer gravastar across polytropic indices and target masses.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin gravastar-sweep -- --n-gamma 32 --n-mass 32 --output data/csv/gravastar_sweep.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-007: Tensor Network / PEPS Entropy
 //!
@@ -124,9 +124,9 @@
 //! Classical tensor network simulator: Bell/GHZ states, random circuits, SVD entropy, PEPS boundary MPS.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin tensor-network -- scaling --n-min 2 --n-max 12 --output data/csv/entropy_scaling.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-008: GWTC-3 Mass Clumping (Dip Test)
 //!
@@ -142,9 +142,9 @@
 //! Hartigan dip test for multimodality of BBH mass distribution. Permutation-based p-value.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-009: Negative-Dimension Eigenvalue Convergence
 //!
@@ -159,9 +159,9 @@
 //! Eigenvalues of H = T(k) + V(x) with fractional kinetic operator, imaginary-time evolution, epsilon->0 sweep.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin neg-dim-eigen -- sweep --alpha -1.5 --eps-start 0.5 --eps-end 0.01 --eps-steps 20 --output data/csv/neg_dim_convergence.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-010: Materials Science Baselines (JARVIS + AFLOW)
 //!
@@ -177,9 +177,9 @@
 //! JARVIS-DFT and AFLOW datasets, Magpie-style featurization, OLS regression for formation energy and band gap.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin materials-baseline -- --data-dir data/external --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-011: Cross-Stack Locality Comparison (Experiment A)
 //!
@@ -195,9 +195,9 @@
 //! Compare adjacency-locality metrics across three independent constraint systems: Stack 1 (E10 Billiard): Wall-transition sequence from HyperbolicBilliard, E10 Dynkin graph. Metric: r_e8 = fraction of consecutive pairs that are E8-adjacent. Null: ColumnIndependentNull (uniform random generator selection). Stack 2 (ET DMZ Walk): Navigation sequences through de Marrais Emanation Table. Metric: r_dmz = fraction of consecutive ET cells that share a DMZ edge. Null: uniform random cell selection in the ET grid. Stack 3 (CD ZD Catamaran/Twist): Twist-product navigation across zero-divisor graph. Metric: r_zd = fraction of consecutive basis-pair transitions that are ZD-adjacent. Null: uniform random basis-pair selection. All three use the common abstract model: generator-driven piecewise geodesic dynamics (generator set G, constraint graph Gamma subset G x G, sequence s_1..s_n, locality ratio r = |{i : (s_i, s_{i+1}) in Gamma}| / (n-1)). Prediction (ALP, C-476): all three r values significantly exceed their nulls. Falsifier: one or more shows r consistent with uniform/random.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutations 1000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-012: ET Discrete Billiard (Experiment B)
 //!
@@ -213,9 +213,9 @@
 //! Treat the Emanation Table as a discrete billiard wall set. Walls: ET constraints define forbidden/allowed transitions in (S, row, col) space. Reflections: when a trajectory hits an ET "wall" (DMZ boundary), apply the ET rule update (fill/hide involution or strut-constant increment). Symbolic dynamics: record the sequence of wall types hit (DMZ, label-line, empty). Phase structure: compute Lyapunov exponent (or mixing time) as a function of strut constant S. Compare against spectroscopy band classification (Dense/Sparse/Mixed from spectroscopy_bands()). Prediction: spectroscopy band transitions correspond to qualitative phase changes in the toy billiard (e.g., Dense bands -> low Lyapunov, Sparse -> high Lyapunov). Falsifier: no correlation between spectroscopy classification and billiard dynamics.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-013: Sky-Limit-Set Correspondence (Experiment C)
 //!
@@ -230,9 +230,9 @@
 //! Compare ET skybox pattern invariants to Coxeter group limit set invariants. Step 1: For each CD level N=4,5,6, compute the skybox (G x G grid) and extract: - box-kite count (= N-1) - emptiness clustering exponent (connected-component size distribution) - DMZ density (fraction of cells that are DMZ) - fill/hide period-doubling structure (from Four Corners rule) Step 2: For candidate Coxeter groups (A_{N-1}, B_{N-1}, D_{N-1}), compute limit set invariants from the Coxeter matrix: - rank - fractal dimension of limit set - invariant measure density Step 3: Compare skybox invariants (Step 1) to limit set invariants (Step 2) via correlation and matching tests. Prediction (C-477): systematic correspondence between skybox pattern invariants and Coxeter limit set invariants at matching rank. Falsifier: no Coxeter group at any rank produces invariants matching the ET skybox.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-014: Dimensional Ladder APT Census (4D-4096D)
 //!
@@ -247,9 +247,9 @@
 //! Exhaustive and Monte Carlo Anti-Diagonal Parity Theorem verification across the full Cayley-Dickson dimensional ladder from dim=4 to dim=4096. Exhaustive mode: Enumerate ALL graph triangles in each zero-divisor component. For each triangle (a,b,c), compute eta via anti-diagonal parity formula: eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b). Classify as pure (eta constant across 3 edges) or mixed (eta non-constant). Verify 1:3 pure:mixed ratio (Quarter Rule: pure*4 = total exactly). Verify Klein-four fiber symmetry: F(0,0) = F(0,1) = F(1,0) = F(1,1). Monte Carlo mode: Rejection-sample random node triples within components, accept only graph triangles (all 3 edges present), classify via APT. Deterministic with seed=42. Tier classification: dims 4-32 (TIER 0-1, <15s), dims 64-256 (TIER 2, ~5s release), dims 512-1024 (TIER 3, minutes-hours CPU), dims 2048-4096 (TIER 4, GPU Monte Carlo).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin dimensional-census -- --slow --details
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-015: GF(2) Separating Degree Formula Verification (dim 32-256)
 //!
@@ -264,9 +264,9 @@
 //! For each Cayley-Dickson dimension d in {32, 64, 128, 256}, compute the minimum-degree GF(2) polynomial that separates all motif classes in PG(log2(d)-2, 2). Uses greedy partition refinement for d=256 where brute-force is infeasible (16 classes, C(127,6) candidate tuples). Verifies the formula min_degree = log2(d) - 2 at each step.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p gororoba_algebra --release --lib -- test_separating_degree_formula_universality --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-016: A-infinity Homotopy Gravastar Obstruction Sweep
 //!
@@ -281,9 +281,9 @@
 //! Construct a SedenionAInfinity algebra (m_2=CD product, m_3=associator) and compute the obstruction norm (Frobenius / dim^{3/2}). Map obstruction to Bowers-Liang anisotropy parameter lambda via linear coupling. Sweep coupling from 0 to 0.5 and solve the anisotropic gravastar TOV equation at each point to find the stability window.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p cosmology_core --release --lib -- homotopy_bridge --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-017: 7-Clique Multi-Resonator Entropy Trap Simulation
 //!
@@ -298,9 +298,9 @@
 //! Build a 7-channel TCMT multi-resonator system from sedenion box-kite components. Each channel is an independent KerrCavity with resonance frequency offset by the component index. Verify zero crosstalk for uncoupled channels, compute per-channel Shannon entropy and pairwise mutual information via 2D histogram binning, and sweep absorption spectrum across all 7 resonance frequencies.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p optics_core --release --lib -- entropy_trap --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-018: He-4 BEC Thermodynamics and Two-Fluid Dynamics
 //!
@@ -315,9 +315,9 @@
 //! Compute ideal BEC critical temperature via zeta(3/2) formula, verify condensate fraction law 1-(T/T_c)^(3/2), validate Landau superfluid density fraction with exponent 5.6, and simulate 0D two-fluid relaxation dynamics using RK4 with relaxation timescales tau_rho = 1 us, tau_t = 100 us. Verify mass conservation, equilibrium relaxation, and thermal relaxation through the lambda transition.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p quantum_core --release --lib -- superfluid --nocapture && cargo test -p quantum_core --release --lib -- two_fluid --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-019: Gross-Pitaevskii Ground State and Vortex Calculation
 //!
@@ -332,9 +332,9 @@
 //! Solve the Gross-Pitaevskii equation using Strang split-operator method with FFT-based kinetic evolution. Compute ground states via imaginary-time propagation in a harmonic trap (omega=1), verifying energy recovery E=omega/2 for the linear case (g=0). Test that repulsive interactions (g=50) raise the energy above the linear value. Verify norm preservation during real-time evolution and density centering on the trap.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p quantum_core --release --lib -- gross_pitaevskii --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-021: Tessarines vs. Mixed-Quaternions Categorical Distinction Census
 //!
@@ -349,9 +349,9 @@
 //!
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //!
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-022: Albert Algebra Commutativity and Exceptional Structure Census
 //!
@@ -366,9 +366,9 @@
 //!
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //!
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-023: Composition Algebra Taxonomy: Two-Axis Classification Framework
 //!
@@ -383,9 +383,9 @@
 //!
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //!
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-024: Registry Event Tracking Infrastructure
 //!
@@ -400,9 +400,9 @@
 //!
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //!
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-026: Third-Party Source Verification Infrastructure
 //!
@@ -417,9 +417,9 @@
 //!
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //!
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-027: Topology-Imbalance Correlation via Persistent Homology (Thesis 1)
 //!
@@ -435,9 +435,9 @@
 //! VR persistent homology on velocity point cloud, CD psi-weighted triangle imbalance, Pearson correlation + Fisher-Yates permutation test
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-028: Lepton Mass Ratio Filtration via Patricia Trie (Thesis 2 Validation)
 //!
@@ -453,9 +453,9 @@
 //! Patricia trie survival depth spectrum for 256 sedenion pairs, k-means depth clustering, lepton mass ratio prediction vs PDG values, Fibonacci and sedenion collision storms with power-law latency classification
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin lattice-filtration-analyzer -- --n-steps 5000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-029: A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Validation)
 //!
@@ -471,9 +471,9 @@
 //! Sedenion associator tensor m_3 construction, Burn MLP training (Autodiff+NdArray+Adam, 256->128->64->16), pentagon-constrained batch coordinate descent, perturbation robustness testing
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --batch-size 8 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-030: TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)
 //!
@@ -489,9 +489,9 @@
 //! 3D toroidal random walk with CD product noise, imbalance density modulates local noise amplitude via alpha parameter, return-time shell binning, power-law gamma fitting
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin thesis-cross-tx1 -- --grid_size 16 --n_steps 50000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-031: TX-2: Viscosity-to-Filtration Loop (T2 x T4)
 //!
@@ -507,9 +507,9 @@
 //! Imbalance -> viscosity -> LBM evolution -> velocity field -> lattice filtration -> latency law classification, lambda sweep for coupling strength
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-032: Thesis 2: 3D Associator-Coupled Shear Thickening
 //!
@@ -525,9 +525,9 @@
 //! SedenionField local associator norm -> coupling field, LBM evolve_non_newtonian with Kolmogorov forcing, sweep over alpha and power-law index, compare Newtonian vs non-Newtonian max velocity
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin thesis2-3d-thickening -- --grid_size 16 --lbm_steps 500
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-033: Grand Synthesis: All Four Theses Pass Gate Simultaneously
 //!
@@ -543,9 +543,9 @@
 //! Orchestrated execution of T1 (spatial correlation), T2 (power-law viscosity), T3 (plateau detection + pentagon optimization), T4 (shell return-time power law). Each thesis evaluated independently with falsification gate.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis_final
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-034: Kubo Linear-Response Imbalance-Viscosity Coupling Derivation
 //!
@@ -561,9 +561,9 @@
 //! GPU-accelerated exact diagonalization of dim=8 Heisenberg chain with CD interpolation. Fine lambda sweep (100 points) at T=0.5: compute spin Drude weight D_S, thermal Drude weight K_th, integrated spectral weight I0_S, and ballistic fraction B=D_S/I0_S. Temperature dependence at 6 probe lambdas. Analytical fits (power law, exponential) and recommended coupling parameters.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --features gpu --bin kubo-coupling-analysis
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-035: Reynolds Independence: Decaying Turbulence Scaling (Experiment C)
 //!
@@ -579,9 +579,9 @@
 //! Direct Numerical Simulation of decaying turbulence on cubic grids (8^3, 16^3, 32^3, 64^3) using GPU LBM (D3Q19). Measures enstrophy decay exponent alpha and Betti-1 topological persistence. Compares decay normalized by initial enstrophy and eddy turnover time to establish resolution-independence threshold.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! bash run_reynolds_sweep.sh
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-036: STAR Spin Correlation Decoherence Analysis
 //!
@@ -597,9 +597,9 @@
 //! Mapping of STAR 2026 spin correlation data to CD imbalance density. Verifies monotonic decay of entanglement and sudden death threshold in the algebraic vacuum limit.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin spin-decoherence-pipeline
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-037: Single-Minus Amplitude Imbalance Survey
 //!
@@ -615,9 +615,9 @@
 //! Exhaustive search of the single-minus gluon amplitude support region R1. Maps support region to the global minima of the algebraic imbalance landscape (zero-imbalance chambers).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin amplitude-imbalance-survey
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-038: LHC 2025 QGP Spin Synthesis
 //!
@@ -633,9 +633,9 @@
 //! Integration of Run 3 ALICE (Pb-Pb 5.36 TeV) and CMS (pPb 8.16 TeV) results. Predictive modeling using QGPImbalanceBridge to map vorticity and temperature to CD imbalance. Validates algebraic twist correction against CMS azimuthal sign challenge.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin lhc-2025-qgp-synthesis
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-039: Wavelet Bridging Accuracy Sweep
 //!
@@ -651,9 +651,9 @@
 //! Haar DWT hard-threshold compression vs negative-d reservoir bridging on forced-diffusion surrogate. Sweeps rho in {0.2, 0.5, 1.0, 1.5, 2.0} and eps in {1e-3, 3e-3, 1e-2, 3e-2}. Reports median RelErr improvement and concurrency.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wavelet-bridging-sweep
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-040: Meltdown Gating Concurrency
 //!
@@ -669,9 +669,9 @@
 //! Adaptive epsilon meltdown gating on forced-diffusion surrogate. Sweeps rho in {0.5, 1.0, 1.5, 2.0}. Compares fixed-eps p95 concurrency vs adaptive gating. Reports p95 reduction and RelErr.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin meltdown-gating-sweep
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-041: Wavelet ACF Exponential Calibration
 //!
@@ -687,9 +687,9 @@
 //! Measures autocorrelation function of unresolved wavelet energy on forced-diffusion surrogate. Sweeps eps in {1e-3, 3e-3, 1e-2, 3e-2}. Fits log(R(tau)) ~ -kappa*tau*dt via OLS. Reports R2 and kappa.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wavelet-acf-calibration
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-042: CHSH Wavelet Compression
 //!
@@ -705,9 +705,9 @@
 //! Software simulation of CHSH Bell-inequality experiment. Generates Binomial-sampled coincidence time series for 4 angle settings. Applies Haar wavelet compression retaining coarsest coefficient. Computes S_compressed and verifies S > 2.0.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin chsh-wavelet-compression
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-043: Casimir Plate Force Comparison
 //!
@@ -723,9 +723,9 @@
 //! Computes Casimir force for Si/Ge/SiO2 symmetric plate pairs using corrected Lifshitz formula with Gauss-Legendre quadrature over transverse momentum. Verifies Si > Ge > SiO2 force ordering and eta < 1 at T=0.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin casimir-plate-compare
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-044: Casimir Drude vs Plasma Model Discrepancy
 //!
@@ -741,9 +741,9 @@
 //! Computes Drude-plasma discrepancy for Au/Ag/Cu metallic plates at separations 100nm-5um. Tests n=0 TE contribution controversy: Drude gives r_TE=0, plasma gives finite r_TE from omega_p. Measures percentage discrepancy growth with distance.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin casimir-drude-plasma
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-045: Wow! Signal Transcription Integrity
 //!
@@ -759,9 +759,9 @@
 //! Validates wow1977_transcription.csv by SHA-256 checksum and character-to-intensity mapping. Verifies all 6 characters of 6EQUJ5 decode to [6, 14, 26, 30, 19, 5] via base-36. Checks background intensity levels.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wow-signal-analysis -- transcribe
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-046: Wow! Signal Drift Rate Kinematics
 //!
@@ -777,9 +777,9 @@
 //! Computes analytical Earth-motion drift rate bounds at the Wow! signal locale. Uses orbital velocity (29783 m/s) and Big Ear rotational velocity (355 m/s at lat 40.2N) to derive worst-case |drift| < 0.37 Hz/s at 1420.405 MHz.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wow-signal-analysis -- drift-rate
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-047: BL 6EQUJ5 ABACAD Cadence Falsification
 //!
@@ -795,9 +795,9 @@
 //! Parses BL 6EQUJ5 GBT manifest, applies ABACAD cadence filter (ON-OFF-ON-OFF-ON-OFF), and verifies zero candidates survive discrimination. Requires filterbank data download for full execution.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wow-signal-analysis -- summary
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-048: BL 6EQUJ5 Persistent Homology Comparison
 //!
@@ -813,9 +813,9 @@
 //! Computes persistent homology of ON and OFF cadence point clouds from BL 6EQUJ5 candidate features. Compares via Wasserstein-2 and bottleneck distances. Permutation test with 100 shuffles for topological indistinguishability.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wow-topology -- morphology
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-049: BL 6EQUJ5 Ultrametric Ecology
 //!
@@ -831,9 +831,9 @@
 //! Ultrametric fraction test on BL 6EQUJ5 candidate feature vectors. 10000 triples, 1000 permutations for null distribution. Tests whether RFI candidate structure shows non-trivial ultrametric organization vs column-shuffled null.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wow-topology -- ultrametric
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-050: Rust-Native BL 6EQUJ5 Doppler Drift Search and ABACAD Pipeline
 //!
@@ -848,9 +848,9 @@
 //! Pure Rust de-Doppler shift-and-add narrowband signal search on BL 6EQUJ5 GBT filterbank HDF5 files (medium-res 0002). Per-coarse-channel SNR detection with MAD normalization, followed by ABACAD cadence discrimination (signal in ALL ON, NONE of OFF). Replaces turboSETI Python dependency.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin bl-doppler-search --features hdf5-export -- scan --res 0002 && cargo run --release --bin bl-doppler-search -- cadence && cargo run --release --bin bl-doppler-search -- export
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-051: ZD Resonance Tau Sweep with Control
 //!
@@ -865,9 +865,9 @@
 //! GPU LBM tau sweep at 10 values [0.55..1.00] with ZD modulation amplitude 0.2 (sweep) and 0.0 (control). Each run: 500 steps on 64^3 grid, rho_mean extraction, Hann-windowed FFT, top-5 peak detection with ghost frequency check. Seeding sweep varies pc.lambda at fixed tau. Linear regression of peak_freq vs tau tests Re-dependence.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-052: Pathion Sink Stability Comparison and Coupling Sweep
 //!
@@ -882,9 +882,9 @@
 //! Sedenion field on 32^3 grid with toroidal vortex IC. Compare stability (instability onset step) with and without PathionSink (coupling=0.1, damping=0.01). Sweep coupling [0.01, 0.05, 0.1, 0.5, 1.0] to test monotonic stabilization.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin pathion-sink-test -- compare && cargo run --release --bin pathion-sink-test -- sweep
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-053: Chirality-Algebra Lock 2x2 Matrix Test
 //!
@@ -899,9 +899,9 @@
 //! Run 4 configurations on 32^3 sedenion grid: (A) Standard CD + Standard vorticity, (B) Standard CD + Flipped, (C) Conjugated CD + Standard, (D) Conjugated CD + Flipped. 300 steps each. Measure helicity sign, enstrophy, energy, associator norm, stability.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin chirality-lock-test -- matrix
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-054: Moonshine Filterbank ON/OFF Discrimination
 //!
@@ -916,9 +916,9 @@
 //! Project 1000 synthetic ON-source chunks (Gaussian noise + harmonic signal at SNR=0.1) and 1000 OFF-source chunks (pure noise) onto Leech Lattice via Babai CVP. Classify hole types, compute deep hole fractions. Two-proportion z-test for statistical significance.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin moonshine-filterbank -- synth
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-055: Integrated Wow! + Sedenion Synthesis Pipeline
 //!
@@ -933,9 +933,9 @@
 //! End-to-end pipeline: synthetic signal generation (4096 samples with ghost frequency injection), FFT spectral analysis, Leech Lattice projection with deep hole classification, ultrametric fraction test on peak frequencies. Consolidated report with all metrics.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin wow-sedenion-synthesis -- synth
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-056: Lattice-Hawking Spectrum Sweep
 //!
@@ -950,9 +950,9 @@
 //! Sweep grid resolutions N=16,32,64,128 with radial inflow analog black hole. For each N: find acoustic horizon, compute surface gravity and Hawking temperature, compare ideal/lattice-cutoff/viscosity-cutoff spectra, fit effective temperatures.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin lattice-hawking-sweep
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-057: CD Associator Entropy Phase Census
 //!
@@ -967,9 +967,9 @@
 //! Sweep Cayley-Dickson dimensions 2,4,8,16,32,64,128,256. For each: sample 10000 random unit triples, compute associator norms, histogram into 100 bins, compute Shannon entropy H. Report delta_H at each transition, zero divisor density.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin algebra-entropy-census
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-058: CHSH-Betti Correlation Sweep
 //!
@@ -984,9 +984,9 @@
 //! Run GPU FP64 LBM at 4 configurations (varying tau and forcing amplitude). For each: 500 steps at 32^3, snapshot every 10 steps. Extract y-profile (flow variation direction) for CHSH wavelet S. Adaptive p75 threshold for VR Betti-1. Spearman correlation between S and B1 across snapshots.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin chsh-betti-sweep
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-059: Pulsed vs Steady Entropy Injection
 //!
@@ -1001,9 +1001,9 @@
 //! Compare 3 protocols at equal total forcing energy: (A) steady rho=5.0, (B) pulsed 50% duty cycle (rho=10.0), (C) pulsed 25% duty cycle (rho=20.0). Measure p95 wavelet concurrency AND Shannon entropy at each level after 1000 steps with nu=0.001, dt=1e-3, Haar hard-threshold gating at eps=0.01,0.1,1.0.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin meltdown-pulsed-gate
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-060: Cross-Catalog rho-ghost-fft Spectral Analysis
 //!
@@ -1018,9 +1018,9 @@
 //! Apply rho-ghost-fft power spectrum analysis to 10+ catalogs across 5 messengers (FRB, pulsar, SNIa, SETI, null controls). Detect phi^{-1/2} ghost frequency at 0.2138 normalized. Compare peak frequency, SNR, and FWHM across catalog sizes and wavebands.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin rho-ghost-fft -- <catalog>
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-061: Wow! GBT S-Band Deep Spectral Stack
 //!
@@ -1035,9 +1035,9 @@
 //! Deep spectral analysis of 12 Breakthrough Listen GBT S-band (2.25 GHz) filterbank files from 6EQUJ5 follow-up observations. Stacked power spectrum after Doppler correction. Test for phi^{-1/2} ghost at S-band frequencies.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin rho-ghost-fft -- --catalog wow-gbt
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-062: Multiscale CWT Ricker Wavelet Ghost Analysis
 //!
@@ -1052,9 +1052,9 @@
 //! Apply Continuous Wavelet Transform with Ricker wavelet to null-control datasets (Wow! S-band stacked, Swarm magnetic field). Test whether phi^{-1/2} ghost is a delocalized scale-invariant feature hidden from standard FFT. Compute ghost-band power fraction at width~24 (f~0.214).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! python src/scripts/analysis/cwt_ghost_analysis.py
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-063: CUDA BF16 ZD Resonance 128^3 Tau Sweep
 //!
@@ -1069,9 +1069,9 @@
 //! D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion imbalance viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi^{-1/2}).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-064: CUDA BF16 ZD Resonance 256^3 Tau Sweep
 //!
@@ -1086,9 +1086,9 @@
 //! D3Q19 LBM at 256^3 with BF16 precision. Same tau sweep protocol as E-063 but at 4x higher resolution (16.7M cells). Tests whether ghost peak narrows and converges toward 0.2138 with increasing resolution, paralleling real-data Cat1->Cat2 convergence (C-789).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-065: CUDA BF16 Reynolds Number Threshold Sweep 128^3
 //!
@@ -1103,9 +1103,9 @@
 //! Fix Sedenion coupling, sweep Reynolds number from laminar to turbulent by varying both tau (0.501-0.70) and forcing amplitude (0.001-0.5). Kolmogorov sinusoidal forcing F_x = A*sin(2*pi*k*z/N). Motivated by real-data finding: Re_eff=0.16 (laminar) did not produce sharp Ghost resonance. Tests whether Ghost onset requires specific turbulence intensity (L-787).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-066: 4D ZD Resonance 32^3 x 32 Batch Sweep
 //!
@@ -1120,9 +1120,9 @@
 //! D3Q19 batch LBM at 32^3 x 32 (1.05M cells) with BF16 precision. 4th dimension (w) parametrizes Sedenion field phase offsets. Tests whether 4D spatial embedding (16 = 4^2) reveals coupling symmetries invisible in 3D. Control run with constant tau for null hypothesis.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-067: 4D ZD Resonance 64^3 x 16 Batch Sweep
 //!
@@ -1137,9 +1137,9 @@
 //! D3Q19 batch LBM at 64^3 x 16 (4.2M cells, ~1.4 GB GPU) with BF16 precision. Higher per-slice resolution than E-066, fewer w-slices. Tests resolution dependence of 4D ghost signatures.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-resonance-4d -- sweep-64
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-068: Ghost Frequency Multidimensional Statistical Hardening
 //!
@@ -1154,9 +1154,9 @@
 //! 7-method falsification sweep: (1) MAD robust noise floor with peak exclusion, (2) BH-FDR across all frequency bins, (3) Bonferroni correction for multiple testing, (4) permutation test (10000 shuffles), (5) sorted-distribution bootstrap null (5000 resamples, sorted data only), (6) Lomb-Scargle periodogram with Baluev analytic FAP, (7) multitaper Thomson PSD with F-test. Applied to 17 synthetic datasets (4 null controls, 5 sorted distributions, 4 signal injections, 4 mock catalogs). Combined meta-analysis via Fisher and Stouffer weighted Z.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin rho-ghost-fft -- batch --datasets data/csv/ghost_audit/ --column value --permutations 1000 --bootstrap 5000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-069: LBM Multi-Precision Comparison (BF16/FP32/FP64-GPU/FP64-CPU)
 //!
@@ -1171,9 +1171,9 @@
 //! D3Q19 LBM with Kolmogorov sinusoidal forcing at identical ICs across four precision modes (GPU BF16, GPU FP32, GPU FP64, CPU FP64). Kinetic energy trace sampled periodically. FP64 GPU is reference. Tested at 16^3 and 32^3 grids.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --bin lbm-precision-sampler -- sample --res 32 --steps 200
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-070: Evidence Artifact Packaging and Checksum Verification
 //!
@@ -1188,9 +1188,9 @@
 //! Walk data/evidence/ directory, compute SHA-256 checksums for all TOML/CSV/JSON artifacts, produce MANIFEST.toml with checksums and file sizes for reproducibility appendix.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin evidence-package -- bundle --skip-missing
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-071: Real-Data Ghost Frequency Re-Verification (Phase 5)
 //!
@@ -1205,9 +1205,9 @@
 //! 5-method falsification audit (Rigorous+Bonferroni MAD, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on 4 real astronomical catalog datasets: CHIME FRB Cat2 bonsai_dm (N=5045), ATNF pulsar DM (N=4233), ATNF pulsar period (N=4286), Pantheon+ MU_SH0ES (N=1701). Tests whether phi^{-1/2} ghost frequency is detectable under rigorous statistical framework.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-072: TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)
 //!
@@ -1222,9 +1222,9 @@
 //! TX-2 cross-experiment at 128^3 (2M cells) CPU FP64, 500 LBM steps, lambda sweep [0.5, 1.0, 2.0, 5.0, 10.0]. Tests whether turbulent regime at higher resolution resolves Undetermined classification from original 16^3 (E-031).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-073: Numerical Photon-Graviton Mixing Amplitude: Convergence and Ward Identity Verification
 //!
@@ -1239,9 +1239,9 @@
 //! Full numerical one-loop photon-graviton amplitude via worldline formalism (Bastianelli-Schubert 2005-2026). Three diagrams: irreducible (GL double integral over proper-time T and worldline modulus u), tadpole (3-way cross-validation: proper-time, Hurwitz zeta, Bernoulli series), external (vacuum polarization insertion). Pure magnetic field, spinor QED. Verification: gauge Ward identity, gravitational Ward identity, weak-field dichroism ratio 4:7.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p gr_core -- photon_graviton
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-074: Son & Chekhova (2026) SFWM Full Figure Reproduction
 //!
@@ -1256,9 +1256,9 @@
 //! Complete reproduction of all 4 figures from Son & Chekhova (2026) arXiv:2601.23137v1. Phase-matching analysis using Sellmeier dispersion (Zelmon 1997) and paper-calibrated wavevector mismatches. Figures 2a-d: SFWM phenomenology (P^2 scaling, cos^2 polarization, coincidences, g(2)=1+a/P^2). Figures 3a-b: SPDC comparison (linear P, g(2)=1+a/P). Figures 4a-b: Maker fringes and rate dominance sweep.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin sfwm-figure-repro -- --output-dir data/sfwm_repro
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-075: Arleo-Falmagne QGP Path-Length Scaling Reproduction
 //!
@@ -1273,9 +1273,9 @@
 //! Reproduce Arleo & Falmagne (arXiv:2411.13258) QGP parton energy-loss scaling analysis. Optical Glauber model (hard-sphere nuclear density, Gauss-Legendre 2D quadrature) for Pb-Pb/Au-Au/Xe-Xe geometry. R_AA fitting via Brent minimization to extract epsilon_bar per centrality. Multi-system density scaling fit: epsilon_bar = K * (dNch/dy / A_perp) * L^beta with grid search over beta. v2/eccentricity vs d(ln R_AA)/d(ln pT) linear relation for independent beta extraction.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin arleo-falmagne-scaling -- full --data-dir data/external
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-076: Ruan-Fan (2009) Fano TCMT Reproduction
 //!
@@ -1290,9 +1290,9 @@
 //! Reproduce Ruan & Fan (2009, arXiv:0909.3323v2) TCMT Fano lineshape analysis for cylindrical scattering. Bessel function solver (complex argument, integer order) for J_n, Y_n, H^(1,2)_n. Transfer-matrix Mie solver for concentric cylinders (TM polarization). Single/multi-channel TCMT with Drude permittivity. Lossless and lossy geometries. 4 figures: (1) lossless Fano phi=0,pi/2,pi; (2) lossy Fano same phases; (4) single-channel MDM (Mie vs TCMT); (5) multi-channel MDM with |l|<=2.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin fano-scattering -- --figure all --output-dir data/fano_scattering
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-077: Landy 2008 TMM Absorption Spectrum Reproduction
 //!
@@ -1307,9 +1307,9 @@
 //! Reproduce Landy et al. (PRL 100, 207402, 2008) near-unity absorption at 11.48 GHz. Lorentz effective-medium model with independently tunable permittivity and permeability. Byrnes amplitude transfer matrix for multilayer stack. Sweep 9-14 GHz, 500 points. Single-layer and two-layer absorption spectra.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin landy-absorber-tmm
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-078: Immirzi Bridge Imbalance-Entropy Mapping
 //!
@@ -1324,9 +1324,9 @@
 //! Evaluate 6 candidate mappings from imbalance density phi to Immirzi parameter gamma. Key finding: imbalance-entropy bridge H(phi)/(pi*sqrt(3)) maps phi=3/8 to gamma ~ 0.122, within 2% of gamma_NZJ. Binary entropy at phi=1/2 recovers gamma_BG exactly.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p sign_imbalance --lib immirzi_bridge
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-079: Sterile-Neutrino Null-Result Audit (Seven-Stream)
 //!
@@ -1342,9 +1342,9 @@
 //! Seven-stream null-result audit across the Sprint 43-44 spectral and materials sensor campaign. Streams C-703..C-706 cover spectral/wavelet processing sensors; C-707..C-709 cover materials optical sensors. Emits null_confirmed for the experiment only when all seven streams carry a verified null result, preventing false confirmation when any stream remains open/theoretical.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin sterile-neutrino-audit -- --output reports/sterile_neutrino_audit.toml
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-080: Nacelle warp bubble parameter sweep (n=1..16)
 //!
@@ -1360,9 +1360,9 @@
 //! 2D energy density integration on y-z cross-section at x=0 for each nacelle count. Paper mode restricts to n=2,3,4 matching White 2025.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin nacelle-warp-sweep -- --paper-mode --velocity 0.1 --radius 100.0 --n-points 80
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-081: Worldline Casimir numerics: parallel plate validation
 //!
@@ -1378,9 +1378,9 @@
 //! Monte Carlo worldline path integral with Gauss-Legendre quadrature for proper-time integration. 10k loops per T-sample, 500 points per loop.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin worldline-casimir -- --geometry plates --separation 1.0 --n-loops 10000 --n-profile 20
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-082: Algebraic warp sweep: CD tower vs standard GR energy comparison
 //!
@@ -1396,9 +1396,9 @@
 //! 2D energy integration with algebraic York time correction and sedenion stress-energy source. Coupling alpha=0.01, imbalance at imbalance attractor 3/8.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.01 --velocity 0.1 --radius 100.0
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-083: Sedenion foliation imbalance-York time correlation analysis
 //!
@@ -1414,9 +1414,9 @@
 //! Construct SedenionFoliation on ADM hypersurfaces, compute imbalance at each grid point, pair with York time from extrinsic curvature. Pearson correlation analysis.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin algebraic-warp-sweep -- --mode tower --coupling-alpha 0.1
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-084: ZD graph spectral dimension census
 //!
@@ -1432,9 +1432,9 @@
 //! For each CD dim: build cross-assessor ZD graph, compute Laplacian, eigendecompose, compute P(t) on geometric t-grid, SG-smooth ln P vs ln t, extract d_s plateau via central differences.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-spectral-dimension -- --min-dim 16 --max-dim 512 --t-points 300
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-085: Associator entropy mechanism decomposition
 //!
@@ -1450,9 +1450,9 @@
 //! Sample random unit triples via Muller's method, compute associator norms, partition by ZD proximity threshold, compare conditional entropies.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p algebra_analysis -- associator_entropy
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-086: ZD Quantum Chaos NNSD Census
 //!
@@ -1468,9 +1468,9 @@
 //! Compute Laplacian eigenvalues per ZD graph component, Gaussian KDE unfold (sigma = 0.1*range), build normalized spacing histogram, fit Brody parameter via method-of-moments bisection, compute KS statistics vs Poisson and GOE CDFs.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-quantum-chaos -- --min-dim 64 --max-dim 256 --by-motif
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-087: Orthoplex Diffusion Dark Energy Fit
 //!
@@ -1486,9 +1486,9 @@
 //! Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (full 1578x1578 STAT+SYS precision matrix via Cholesky, analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance) + chi2_CC + chi2_fsig8 + chi2_CMB.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin orthoplex-cosmo-fit -- --k 63
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-088: Besag-Clifford Clustering Test at 256^3
 //!
@@ -1504,9 +1504,9 @@
 //! Besag-Clifford permutation test for ZD-imbalance clustering at 256^3 grid resolution. GPU-accelerated via Vulkan compute (besag_clifford.wgsl). Adaptive stopping with Wilson CI.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin clustering-256 -- --grid 256 --max-perms 1000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-089: Dark Halo Hunt: CDG-2 Consistency Across k Values
 //!
@@ -1522,9 +1522,9 @@
 //! Sweep k values [4,8,16,32,63], run LBM + dark halo detector at each k. CUDA path: SoA layout, L2 pinning, fused collision+streaming. Detect overdense low-velocity cells as halo candidates. Threshold: rho > density_factor * rho_mean AND |u| < velocity_epsilon.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin dark-halo-hunt -- --cuda --grid 256 --steps 2000 --k-values 4,8,16,32,63
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-090: BIC Model Comparison: Arleo-Falmagne vs CUJET3.0 vs Fractional Langevin
 //!
@@ -1540,9 +1540,9 @@
 //! Compare R_AA predictions from three QGP energy-loss models via Bayesian Information Criterion. Arleo-Falmagne (2 params: beta, K) vs CUJET3.0 (5 params: alpha_s, mu_M/T, c_M, f_E, f_M) vs fractional Langevin (3 params: alpha, D_s, T_c). BIC = chi2 + k*ln(n). CUJET3.0 digitized from JHEP02(2016)169 Fig. 4. Langevin digitized from arXiv:2401.03757 Fig. 3. Evaluated against ALICE Pb-Pb 5.02 TeV 0-5% R_AA.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin arleo-falmagne-scaling -- bic-compare --data-dir data/external --pt-min 5.0
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-091: Flyby Crucible with Bivector-Embedded Chingon Drag
 //!
@@ -1558,9 +1558,9 @@
 //! Integrate 6 spacecraft trajectories through Earth SOI with bivector-embedded 64D Chingon drag force. Unit-norm embedding with 3 blocks: angular momentum (axes 1-21), velocity (axes 22-42), cross-coupling (axes 43-63). Sign sensitivity via sign(h . v_wind) where h = r x v. Compare predicted delta-V signs with observed flyby anomaly (Anderson 2008).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin flyby-crucible
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-092: EHT Pathion Shadow Angular Size for M87*
 //!
@@ -1576,9 +1576,9 @@
 //! Compute Schwarzschild photon sphere shadow angular size and sub-ring demagnification for M87* (mass 6.5e9 M_sun, distance 16.8 Mpc). Shadow radius = 3*sqrt(3)/2 * r_s. Sub-ring separation via exp(-pi) demagnification factor. Compare with EHT 2019 observation of ~42 uas.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin pathion-shadow-cli
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-093: Riemann Resonance Sweep: Brody Parameter for Orthoplex Laplacians
 //!
@@ -1594,9 +1594,9 @@
 //! Compute Laplacian eigenvalue spacing statistics for orthoplex K_{2,...,2} graphs at CD dimensions 4,8,16,32,64,128,256. Classify via Brody parameter q (q=0 Poisson/integrable, q=1 GOE/chaotic). All orthoplex Laplacians have only 3 distinct eigenvalues (0, 2(k-1), 2k) so spacing statistics are degenerate.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin riemann-resonance-sweep
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-094: Zero-Divisor Graph Topology Census (Sedenion + Pathion)
 //!
@@ -1612,9 +1612,9 @@
 //! Construct basis participation graphs from exact 4-index zero-divisor detection via cd_kernel::find_zero_divisors_parallel. Vertices = basis elements, edges connect co-occurring indices in ZD pairs (e_i+e_j)(e_k+/-e_l)=0. Measure connected components, edge counts, and component sizes at dim=16 (sedenion) and dim=32 (pathion).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo nextest run -p materials_core -- test_zd_graph
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-095: Three-body 64D flyby integration with body-specific triads
 //!
@@ -1629,9 +1629,9 @@
 //! RK4 integration of 6 spacecraft flybys with 3-body (Earth/Moon/Sun) 64D Chingon bivector drag. Body-specific triads: Earth triad for angular momentum block, Lunar triad for velocity block, Solar triad for cross-coupling block. JPL DE440 ephemeris for Moon/Sun positions.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin flyby-crucible -- --trace-h
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-096: ETA_WAKE gravitational focusing wake parameter sweep
 //!
@@ -1646,9 +1646,9 @@
 //! Sweep ETA_WAKE=[0.0,0.05,0.10,0.15,0.20] with 3-body 64D Chingon drag. Measures effect of asymmetric (cos theta_wind) density modulation on 6 flyby delta-V predictions. Tests whether gravitational focusing wake can flip Rosetta-I sign.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! for eta in 0.00 0.05 0.10 0.15 0.20; do cargo run --release --bin flyby-crucible -- --eta-wake $eta; done
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-097: CUDA GPU vs CPU validation at 64D for flyby crucible
 //!
@@ -1663,9 +1663,9 @@
 //! Run flyby crucible with --gpu flag vs without. Compare all 6 flyby delta-V values. Tolerance: f32 precision (~1e-4 relative error).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin flyby-crucible -- --gpu --no-threebody --dt 2.0
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-098: Dimensional scaling: 128D + 256D GPU flyby crucible
 //!
@@ -1680,9 +1680,9 @@
 //! Run flyby crucible with --dim 128 --gpu and --dim 256 --gpu. Compare sign patterns and magnitudes against 64D CPU baseline.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin flyby-crucible --features gpu -- --dim 256 --gpu
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-099: 512D Bell inequality (CHSH) via associator torque correlations
 //!
@@ -1697,9 +1697,9 @@
 //! chsh_violation_test(dim, n_samples=1000, seed=42) at dims 16,32,64,512.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p algebra_experimental -- bell_inequality --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-100: 1024D DekaVoudon gauge sector analysis via sampled AVT
 //!
@@ -1714,9 +1714,9 @@
 //! analyze_1024d_gauge_sectors(n_samples=1_000_000, seed=42). HigherAvt::sampled(1024, n, seed) with dedup via HashSet.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p algebra_experimental -- particle_physics --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-101: Complex-time Wick rotation + WKB tunneling + Pathion shadow boundary
 //!
@@ -1731,9 +1731,9 @@
 //! Unit tests: wick_evolve at theta=0/pi/4/pi/2, wkb_tunneling_amplitude vs analytical, singularity_avoidance_test with/without Pathion, pathion_shadow_radius, adaptive_wick_evolve, pathion_variance_max_eigenvalue.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p gr_core -- nbody_integration --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-102: 128D Routon non-associative entropy filter on LBM grid
 //!
@@ -1748,9 +1748,9 @@
 //! Unit tests: measure_routon_chaos (uniform vs sparse), apply_to_lbm bias field, entropy_filter_solve convergence and damping, grid_average_entropy, avt_entropy_baseline_connection.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p quantum_core -- intention_operator --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-103: Fractal spacetime D_f=2.7 with Q-tensor metric: flyby + Pioneer test
 //!
@@ -1765,9 +1765,9 @@
 //! Unit tests: scaling_factor at r_0, D_f<4 monotonicity, anomalous acceleration sign, Q-tensor order parameter profile, radial/angular factors, disclination peak, metric positive-definiteness, Pioneer magnitude, flyby sign.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p gr_core -- fractal_metric --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-104: CMB Quadrupole-Octupole Alignment reconciliation via 1024D DekaVoudon cosmic web seeding
 //!
@@ -1782,9 +1782,9 @@
 //! Unit tests: project_axis_is_unit, galactic_coords_finite, isotropic_seeding_coverage, extract_multipoles_isotropic, anisotropic_has_larger_quadrupole, angular_separation, planck_alignment_direction.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p cosmology_core -- deka_voudon_cmb --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-105: Unified Cayley-Dickson simulation engine end-to-end integration test
 //!
@@ -1799,9 +1799,9 @@
 //! Unit tests: test_engine_new, test_hawking_temperature_positive, test_hawking_spectrum_planckian_shape, test_hawking_sgr_a_temperature_magnitude, test_initialize_subsystems, test_cmb_planck_separation_finite, test_voudon_hubble, test_fractal_flyby_nonzero_sign, test_pioneer_anomaly_positive, test_evidence_matrix, test_unified_run_all_finite.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p gororoba_engine --lib -- singularitarian --nocapture
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-106: Majorana braid through CD tower at dims 16-128
 //!
@@ -1816,9 +1816,9 @@
 //! Clifford braid via gamma_matrices_cl8(), CD braid via SignTableCache + rotate_sparse(), friction = cumulative associator norm.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin majorana-braid-crucible -- braid --dim 16
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-107: Box-kite fusion statistics at dim=16
 //!
@@ -1833,9 +1833,9 @@
 //! cd_basis_mul_sign_iter(dim, lo, hi) for each assessor pair. Partition by sign, count distinct values.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin majorana-braid-crucible -- fusion --dim 16
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-108: Braid-aligned CHSH test at dim=16
 //!
@@ -1850,9 +1850,9 @@
 //! chsh_braid_aligned: rotate in ZD subplanes, measure correlators via associator_measurement_fast.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin majorana-braid-crucible -- aligned-chsh --dim 16 --n-samples 10000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-109: Complex-time Majorana braid Wick rotation sweep
 //!
@@ -1867,9 +1867,9 @@
 //! complex_time_braid: SO(2) rotation with damping factor cos(theta)*sin(theta).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin majorana-braid-crucible -- complex-time --dim 16 --theta-steps 10
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-110: ADM decomposition verification against exact solutions
 //!
@@ -1885,9 +1885,9 @@
 //! Numerical ADM decomposition with finite-difference extrinsic curvature. Compare against PG exact: alpha=1, beta^r=sqrt(2M/r), gamma=delta. Hamiltonian constraint residual for vacuum.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin adm-decompose -- --spacetime schwarzschild --mass 1.0 --radius 10.0 --n-points 20
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-111: Solar wind MHD simulation with Parker spiral B-field
 //!
@@ -1902,9 +1902,9 @@
 //! lbm_mhd: D3Q19 LBM coupled with induction equation B-field evolution. Parker spiral initialization, Zou-He velocity inlet, Guo forcing from Lorentz force J x B.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-mhd-sim -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-112: Solar wind MHD + dark matter halo gravitational coupling
 //!
@@ -1919,9 +1919,9 @@
 //! lbm_dm_mhd: D3Q19 LBM + MHD (E-111 base) coupled with static NFW DM halo gravitational force field. DM force precomputed from NFW enclosed mass M(<r), combined with Lorentz force via Guo scheme. Quantifies max|F_DM|/max|F_Lorentz| ratio as null test.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-113: Multi-spacecraft solar wind MHD + DM null test replication
 //!
@@ -1936,9 +1936,9 @@
 //! Multi-spacecraft replication of E-112 DM null test using independent data sources (ACE MAG L2, WIND SWE+MFI, STEREO-A PLASTIC+IMPACT/MAG). Each dataset flows through spacecraft-specific parser -> *_to_omni() adapter -> OmniRecord -> generate_ic_from_omni() -> LBM/MHD grid. RTN->GSE coordinate transform applied to STEREO-A data. Cross-validation via Pearson correlation, RMSE, and bias between overlapping hourly measurements. Confirms instrument independence of |F_DM|/|F_Lorentz| ~ O(10^-12) null result. DM-baryon drag force (sigma_chi_b) sweep identifies detection threshold.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-dm-mhd -- --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-114: Voyager radial profile reconstruction (1-157 AU)
 //!
@@ -1953,9 +1953,9 @@
 //! Multi-spacecraft radial profile reconstruction using Voyager 1/2, Pioneer 10/11, Ulysses, New Horizons, Juno, Cassini, and L1 (OMNI2) data. Each spacecraft's parser feeds through *_to_omni() adapter with heliocentric coordinates (r_au, lat_deg, lon_deg). build_radial_profile() groups records by distance, computes median plasma parameters per distance bin. interpolate_radial() uses log-linear interpolation for density (r^-2 scaling) and log-spaced x-grid for distance mapping. Validates Parker spiral B-field scaling: B_r ~ r^-2, B_phi ~ r^-1.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-115: Ulysses latitudinal gradient characterization
 //!
@@ -1970,9 +1970,9 @@
 //! Ulysses SWOOPS + VHM/FGM data from the 1994-1995 fast latitude scan (1.3-5.4 AU, -80 to +80 deg heliographic latitude). ulysses_latitudinal_fit() extracts tanh transition parameters (fast_speed, slow_speed, transition_lat, width). latitude_modulation() applies the fitted profile to the LBM z-axis. Validates McComas et al. (2000) fast/slow bimodality: v_polar > 1.5 * v_equatorial.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-116: Multi-distance DM null sweep: r = {1, 5, 10, 50, 100} AU
 //!
@@ -1987,9 +1987,9 @@
 //! Radial IC generated by E-114 passed to solar-wind-dm-mhd with per-cell kappa(R) spatial drag coefficient. For each distance bin [r-dr, r+dr], extract the force ratio |F_DM|/|F_Lorentz| and report max. kappa_field varies with NFW enclosed mass M(<r) and local DM number density n_chi(r). Validates C-1156 (DM null invariance across full heliosphere).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --dm-r-min 1 --dm-r-max 100 --snap-interval 500
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-117: Pioneer-Voyager radial cross-validation
 //!
@@ -2004,9 +2004,9 @@
 //! Cross-validate proton density, speed, and B-field between Pioneer 10/11 and Voyager 1/2 at overlapping heliocentric distances (5-80 AU). Group by distance bins (5 AU width), compute median and IQR for each spacecraft pair. Report Pearson correlation and RMSE. Solar cycle correction via OMNI2 sunspot number proxy.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-ic -- --voyager1-file <v1> --voyager2-file <v2> --pioneer10-file <p10> --pioneer11-file <p11> --radial-mode --nx 128
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-118: Outer heliosphere LBM validity assessment (Kn regime mapping)
 //!
@@ -2021,9 +2021,9 @@
 //! Compute Knudsen number Kn = lambda_mfp / L_cell at each radial distance from 1 to 157 AU using multi-spacecraft density and temperature profiles. Identify the Kn=1 transition radius (LBM -> kinetic boundary). Map Kn regime (Fluid/Transitional/Kinetic) across the heliosphere using classify_knudsen().
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-ic -- --radial-mode --voyager1-file <v1> --nx 256 --ny 32 --nz 32
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-119: Full heliosphere radial IC -> MHD+DM end-to-end pipeline
 //!
@@ -2038,9 +2038,9 @@
 //! End-to-end pipeline: multi-spacecraft data -> radial IC (E-114) -> MHD+DM simulation with distance-parametrized NFW and spatial kappa(R). Validates the complete tomography engine from 1 to 100 AU. Reports force ratios, mass conservation, and stability diagnostics at each distance.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 256 --ny 32 --nz 32 --steps 10000 --tau 0.7 --eta 0.01 --dm-r-min 1 --dm-r-max 100
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-120: Termination shock MHD simulation with Voyager IC
 //!
@@ -2055,9 +2055,9 @@
 //! MHD simulation of the solar wind at the termination shock region (80-100 AU) using Voyager 1/2 pre-shock data as IC. Radial IC with fine resolution around the shock region. Look for density jump (compression ratio 2-4x), deceleration, and magnetic field amplification consistent with Voyager 1 (2004) and Voyager 2 (2007) observations.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/ts_ic.csv --nx 256 --ny 64 --nz 64 --steps 20000 --tau 0.7 --eta 0.01 --dm-r-min 80 --dm-r-max 100
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-121: Force-field phi validation: FGA vs 1D numerical PTE
 //!
@@ -2072,9 +2072,9 @@
 //! Run cr-modulation-sweep with nx=64 ny=1 nz=1 (1D radial), steps=5000 to reach quasi-steady state. Compare PteSolver flux at 1 AU to ForceFieldProxy FGA prediction. Also validate phi(r) is monotonically decreasing. Uses Bess-Pamela LIS power law as outer boundary condition.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 5000 --n-p 40 --r-min-gv 0.1 --r-max-gv 1000 --r-min-au 1.0 --r-max-au 157.0
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-122: Proton spectrum modulation: 1 AU vs 50 AU vs 100 AU
 //!
@@ -2089,9 +2089,9 @@
 //! Run cr-modulation-sweep with r_min=1 AU, r_max=157 AU. Extract differential flux J(R) from PTE snapshots at x-cells corresponding to 1, 50, 100 AU. Compare suppression ratios J(50)/J(1) and J(100)/J(1) vs FGA prediction. Validates spatial modulation gradient across heliosphere.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 8 --nz 8 --steps 10000 --n-p 40 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 2000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-123: Adiabatic deceleration rate vs solar wind divergence
 //!
@@ -2106,9 +2106,9 @@
 //! Initialize PteSolver with Gaussian f centered at 10 GV. Run with purely radial expanding solar wind (div(u) = const = 2*v_sw/r). Measure peak rigidity bin shift per 100 steps. Compare to analytic prediction: delta(ln R) = (1/3)*div(u)*dt*N_steps. Tests C-1173.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 1000 --n-p 40 --r-min-gv 1.0 --r-max-gv 100.0 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 100
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-124: Voyager CRS cross-calibration: V1 vs V2 spatial gradient
 //!
@@ -2123,9 +2123,9 @@
 //! Load Voyager CRS ASCII files for both spacecraft. Compare proton count rates at overlapping heliocentric distances (80-100 AU). Compute intensity gradient dJ/dr and compare to PteSolver modulation gradient. This validates the PTE prediction against in-situ cosmic ray data at the termination shock.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 4 --nz 4 --steps 5000 --n-p 40 --r-min-au 80.0 --r-max-au 157.0
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-125: DM null sweep: m_chi in {10, 30, 100, 300} GeV, bb-bar channel
 //!
@@ -2140,9 +2140,9 @@
 //! For each DM mass, run cr-modulation-sweep with DM source injection enabled at bb-bar channel peak rigidity. Compare the injected flux excess at the source bin vs. the solar modulation amplitude. A null result (excess < 10% of modulation amplitude) constrains the annihilation cross section for that mass. Four independent runs.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 64 --ny 4 --nz 4 --steps 5000 --n-p 40 --dm-mass-gev 100 --dm-channel bb --dm-sigma-v 3e-26
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-126: DM injection at termination shock: Q_DM profile sensitivity
 //!
@@ -2157,9 +2157,9 @@
 //! Inject DM source at the termination shock boundary (r ~ 90 AU, x ~ 0.57*nx for r_max=157 AU). Compare uniform vs NFW^2-weighted spatial profiles. Measure how the injected flux propagates inward from 90 AU to 1 AU under solar modulation. Sensitivity to Q_DM amplitude and spatial extent.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 128 --ny 4 --nz 4 --steps 10000 --n-p 40 --dm-mass-gev 100 --dm-channel bb --r-min-au 1.0 --r-max-au 157.0
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-127: Full end-to-end: real IC + CRS data -> modulation potential chi^2
 //!
@@ -2174,9 +2174,9 @@
 //! Full pipeline: load solar wind IC from E-119 (multi-spacecraft radial profile), run LBM+MHD+PTE coupled simulation for 10000 steps, extract phi(r) at 1/50/100/157 AU, compare to Voyager CRS-derived modulation potential. Compute chi^2 goodness of fit. Tests the full Phase 17 one-way coupling pipeline end-to-end.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin cr-modulation-sweep -- --nx 256 --ny 8 --nz 8 --steps 10000 --n-p 40 --r-min-au 1.0 --r-max-au 157.0 --snapshot-interval 2000
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-128: Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)
 //!
@@ -2191,9 +2191,9 @@
 //! Compare hourly BR/BT/BN from Bartol 16-col RTN format against AMDA-derived Voyager 2 B-field for the 1990-1995 overlap window. Normalize coordinates (both are RTN). Compute Pearson correlation, RMSE, and systematic offset per component.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-129: Pioneer AMDA MAG-only radial B-field profile (5-80 AU)
 //!
@@ -2208,9 +2208,9 @@
 //! Fetch Pioneer 10 MAG-only data from AMDA for 1972-1995. Compute annual median |B| per year. Compare against Parker spiral 1/r^2 scaling using Pioneer trajectory positions. Verify consistency without plasma contamination.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --pioneer --spacecraft p10 --source amda --start 1972 --end 1995
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-130: PSP AMDA inner heliosphere perihelion pass validation
 //!
@@ -2225,9 +2225,9 @@
 //! Fetch PSP AMDA data for 2022. Identify perihelion passes (r_au < 0.15). Verify B-field magnitude follows r^-2 scaling between perihelion and 0.5 AU. Validate density scaling n ~ r^-2. Compare against published PSP encounter papers.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --psp
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-131: Helios corefit radial gradient (0.3-1.0 AU) vs Voyager at matched distances
 //!
@@ -2242,9 +2242,9 @@
 //! Fetch Helios 1 AMDA data for 1976-1980. Bin by distance (0.3-1.0 AU in 0.1 AU bins). Compute median B, n, V per bin. Compare against Voyager 2 data at matched distances (1977-1978, ~1 AU). Verify B ~ 1/r^2 and n ~ 1/r^2 scaling consistency.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --helios --spacecraft helios1 --source amda --start 1976 --end 1980
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-132: Ulysses AMDA vs SPDF cross-validation for polar wind data
 //!
@@ -2259,9 +2259,9 @@
 //! Fetch Ulysses AMDA data for 1994-1995 (first fast latitude scan). When SPDF becomes available, compare hourly B-field, density, speed between AMDA-derived and SPDF-original files. Verify agreement within measurement uncertainty.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --ulysses --source amda --start 1994 --end 1995
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-133: Juno cruise AMDA B-field validation against Connerney et al. published values
 //!
@@ -2276,9 +2276,9 @@
 //! Fetch Juno cruise AMDA data for 2013-2015. Compare mean B-field magnitude at 2-4 AU against published Connerney et al. (2017) FGM calibration values. Verify Parker spiral r^-2 scaling between 2 AU and Jupiter approach.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --juno --source amda --start 2013 --end 2015
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-134: Wind AMDA vs OMNI2 L1 cross-check for 2024
 //!
@@ -2293,9 +2293,9 @@
 //! Fetch Wind AMDA merged data for 2024. Compare hourly B-field and plasma against OMNI2 hourly dataset for the same period (OMNI2 uses Wind as primary L1 source). Agreement should be within resampling noise.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --wind --source amda --start 2024 --end 2024
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-135: Pioneer/Flyby governed benchmark staging and verification
 //!
@@ -2310,9 +2310,9 @@
 //! Stage Anderson 2008 flyby anomaly events and Anderson 2002 Pioneer anomaly benchmark values as governed external CSV artifacts with explicit bibliography and source contracts. This experiment verifies artifact schema, value drift, and provenance registration only.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin registry-check
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-136: Governed anomaly benchmark vs environment artifact generation
 //!
@@ -2327,9 +2327,9 @@
 //! Generate governed anomaly comparison artifacts from staged observational benchmarks. flyby-residual-audit validates the external Anderson flyby table against internal config values and emits flyby_observed_vs_modeled.csv. pioneer-residual-audit samples governed Pioneer annual merged environment context at benchmark intervals and emits pioneer_benchmark_vs_environment.csv with explicit provider-contract coverage flags.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_physics --bin flyby-residual-audit && cargo run --release -p gororoba_cli_physics --bin pioneer-residual-audit
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-137: Fractal/Q-tensor fit against governed anomaly benchmarks
 //!
@@ -2344,9 +2344,9 @@
 //! Sweep plain and Q-tensor fractal-metric parameter grids against the governed flyby and Pioneer benchmark artifacts. Emit fit_grid.csv and best_fit.json with an explicit support-or-refute verdict rather than narrative interpretation.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_physics --bin fractal-metric-fit
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-138: Sprint 79 physics correctness verification gate
 //!
@@ -2361,9 +2361,9 @@
 //! Full workspace verification of 37 physics bug fixes across 7 batches: (1) data catalog value corrections (DESI DR2, DES Y6), (2) data_core structural fixes (B-field ceiling 1/r, RTN rotation, ACE timestamps), (3) solar wind IC fixes (MAG-only, x-column mapping, B interpolation, Parker fallback), (4) MHD IC loading (x=0 inflow, bounds check), (5) CR transport physics (radial div_u, LIS boundary, DmYieldSpectrum endpoints, LBM-to-AU/s, phi units, CFL check), (6) NFW/DM force path (z-clamp, rho_crit(z), c(M,z) wiring, galactocentric centering, density scaling, force_scale), (7) flyby/misc (gravity sign, wake accumulation, chi2 clamping). Verification: clippy clean, 5392 tests pass, governance gate green.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo clippy --workspace -- -D warnings && cargo test --workspace && make governance-gate
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-139: High-dimensional Cayley-Dickson algebra analysis (dim 16..4096)
 //!
@@ -2378,9 +2378,9 @@
 //! cd_tower_sweep: Random element sampling for associator norms, zero-divisor density, and norm multiplicativity deviation across CD dims 16..4096. AVT timing via TensorAVT auto-backend.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin dm-cd-4096-analysis -- --dims 16,32,64,128,256,512,1024,2048,4096 --samples 1000 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-140: Euclid Q1 Zenodo catalog discovery and ingestion
 //!
@@ -2395,9 +2395,9 @@
 //! Query Zenodo REST API for all Euclid Q1 supplementary science records. Discover, classify (catalog vs image, size thresholds), and ingest parquet/CSV catalogs for morphology, strong lensing, mergers, photo-z, clustering, compact groups, and globular clusters. MD5 verification against Zenodo checksums. Total footprint capped at 200 GB.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-141: YSU-engine GPU technique distillation into lbm_3d_cuda
 //!
@@ -2412,9 +2412,9 @@
 //! Extract transferable GPU optimization patterns from YSU-engine (C11/Vulkan renderer, MIT license) and apply to lbm_3d_cuda D3Q19 kernels. Changes: (1) FMA chain optimization in compute_equilibrium_f/d using Horner evaluation (2 FMA ops vs 6 separate ops), (2) __ldg() cached reads for read-only fields (tau, force, f_in), (3) #pragma unroll on all 19-direction loops, (4) occupancy culling via force-magnitude early-exit in Guo forcing kernels (skip cells with |F|^2 < 1e-40), (5) gororoba_gpu_bridge wiring with detect_and_select() runtime CUDA probe.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo clippy -p lbm_3d_cuda -- -D warnings && cargo test -p lbm_3d_cuda
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-142: Magnonic 9-band dispersion reproduction (Kaman et al. 2026)
 //!
@@ -2429,9 +2429,9 @@
 //! Compute 9-band magnonic crystal band structure along hexagonal BZ high-symmetry path Gamma-M-K-Gamma using Kaman default parameters (eps_s=1.50, eps_p=1.80, eps_k=2.08, t_sk=0.25, t_pk=0.15 GHz). Verify Dirac cone at K near 1.5 GHz and kagome flat band near 2.08 GHz. CSV output with k-distance and 9 band energies.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin magnonic-band-structure -- bands --n-k 200 --output /tmp/magnonic_bands.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-143: Magnonic Chern number sweep (all 9 bands, 51x51 grid)
 //!
@@ -2446,9 +2446,9 @@
 //! Compute FHS Berry curvature and Chern numbers for all 9 magnonic bands on a 51x51 BZ grid. Verify C_total=0 for each band (TRS). Report valley Chern numbers at K and K' valleys. Verify VCN(K) = -VCN(K') antisymmetry.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin magnonic-band-structure -- chern --n-grid 51
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-144: Magnonic valley Chern vs inversion breaking strength
 //!
@@ -2463,9 +2463,9 @@
 //! Sweep inversion breaking parameter delta_eps_s from 0 to 1.0 GHz in 20 steps. At each step compute valley Chern numbers for the Dirac bands. Verify gap opens monotonically and VCN approaches +/-0.5 for small breaking.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin magnonic-band-structure -- sweep --param delta-eps --min 0.0 --max 1.0 --steps 20 --n-grid 31
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-145: Magnonic flat band detection and DOS enhancement
 //!
@@ -2480,9 +2480,9 @@
 //! Run flat band detection on 9-band model with bandwidth threshold 0.1 GHz. Identify flat band indices and compute DOS enhancement ratio (dispersive bandwidth / flat bandwidth). Verify kagome flat band near 2.08 GHz with enhancement > 100x.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin magnonic-band-structure -- flat-band --threshold 0.1 --n-k 200
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-146: Domain wall boundary modes and point defect localized modes
 //!
@@ -2497,9 +2497,9 @@
 //! Two-part experiment: (1) Build 20-cell domain wall supercell with Kaman default inversion breaking, compute ribbon band structure along edge BZ, verify in-gap boundary modes. (2) Build point defect supercell (radius=3), find localized mode eigenvalues inside bulk gap, estimate Q factor.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin magnonic-band-structure -- domain-wall --n-cells 20 --n-k 100 && cargo run --release --bin magnonic-band-structure -- defect --radius 3
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-147: ZD crystal band spectra D=16,32,64
 //!
@@ -2514,9 +2514,9 @@
 //! Compute ZD motif graph adjacency spectra at D=16,32,64 via block-diagonal component eigendecomposition. Verify integer spectrum, flat band fraction, and degeneracy pattern at each dimension.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-148: Flat band fraction scaling D=16..256
 //!
@@ -2531,9 +2531,9 @@
 //! Compute flat band fraction across D=16,32,64,128,256 to test dimension-independence of the 0.5 localization strength. Fit scaling law (constant vs linear vs log).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-149: Reggiani factorization verification
 //!
@@ -2548,9 +2548,9 @@
 //! Verify that the D=16 partner graph degeneracy pattern {7,14,42,14,7} factors as 7 * {1,2,6,2,1} by computing GCD of degeneracies and confirming reduced pattern.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-150: Euclid Sersic to LBM density, n=4 test galaxy
 //!
@@ -2565,9 +2565,9 @@
 //! Generate LBM initial condition from Sersic n=4 de Vaucouleurs profile with R_e=5 kpc on 32^3 grid. Verify positive-definite deprojected density and azimuthal symmetry for circular (e=0) profile. Run 100 LBM steps to confirm stability.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-dm-coupling -- --grid 32 --steps 100 --sersic-n 4 --r-e-kpc 5
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-151: NFW + Sersic combined density, D_f measurement
 //!
@@ -2582,9 +2582,9 @@
 //! Combined NFW dark matter halo (M200=1e12 Msun) and Sersic baryonic density on 64^3 grid. Run 500 LBM steps with DM-baryon coupling. Measure fractal dimension D_f of resulting density field.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-dm-coupling -- --grid 64 --steps 500 --m200 1e12
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-152: GPU D_f sweep: 100 Euclid Q1 galaxies, 64^3, 200 steps
 //!
@@ -2599,9 +2599,9 @@
 //! Read 100 galaxies from Euclid Q1 useful_physical_measurements.parquet, prepare Sersic+NFW density for each, initialize CUDA LBM solver at 64^3, evolve 200 steps, measure D_f via box-counting on host-synced density. Output per-galaxy CSV with full provenance and bootstrap CI summary.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-153: GPU D_f sweep: 1000 Euclid Q1 galaxies (extended run)
 //!
@@ -2616,9 +2616,9 @@
 //! Extended version of E-152 with 1000 galaxies for tighter bootstrap CI and morphological type statistics.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 1000 --cuda
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-154: GPU vs CPU cross-validation: 10 galaxies
 //!
@@ -2633,9 +2633,9 @@
 //! Run 10 galaxies through both CPU (LbmSolver3D) and GPU (LbmSolver3DCuda FP32) paths. Compare per-galaxy D_f values. Assert |D_f_gpu - D_f_cpu| < 0.05 for all galaxies.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu -o /tmp/cpu.csv && cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cuda -o /tmp/gpu.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-155: M/L systematic: morphological vs fixed M/L=3.0
 //!
@@ -2650,9 +2650,9 @@
 //! Run 100 galaxies with catalog M/L (--morphological-ml false) and compare against morphological M/L baseline (E-152). Quantify systematic D_f shift.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --morphological-ml false --cuda
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-156: Grid resolution study: 32 vs 64 vs 128 at N=20 galaxies
 //!
@@ -2667,9 +2667,9 @@
 //! Run 20 galaxies at three grid resolutions (32^3, 64^3, 128^3) to quantify D_f convergence with grid refinement.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! for G in 32 64 128; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid $G --steps 200 --max-galaxies 20 --cpu; done
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-157: Otsu vs median threshold: 10 galaxies, compare D_f distributions
 //!
@@ -2684,9 +2684,9 @@
 //! Run 10 galaxies with Otsu threshold (current) and compare df_initial distribution variance vs Sprint 82 median baseline.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-158: Smagorinsky vs static tau: 10 concentrated galaxies, D_f trajectories
 //!
@@ -2701,9 +2701,9 @@
 //! Compare D_f before/after LBM with Smagorinsky C_s=0.1 vs static tau=1.5 for 10 galaxies. Expect Smagorinsky preserves concentrated galaxy structure.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-159: SoA vs AoS GPU performance: 100 galaxies at 64^3
 //!
@@ -2718,9 +2718,9 @@
 //! Benchmark 100 galaxies at 64^3 with SoA kernel (S83) vs AoS (S82 baseline). Measure wall-clock time and per-galaxy latency.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --cuda
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-160: 128^3 sweep: 100 galaxies with Otsu + Smagorinsky
 //!
@@ -2735,9 +2735,9 @@
 //! Scale to 128^3 grid with Smagorinsky LES and Otsu threshold. Verify D_f convergence with grid refinement.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --cuda --smagorinsky-cs 0.1
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-161: ZD coupling sweep: alpha_zd = {0.01, 0.05, 0.1, 0.5}
 //!
@@ -2752,9 +2752,9 @@
 //! Sweep ZD algebraic forcing strength on 10 galaxies. Compare D_f with and without ZD coupling to quantify topological confinement effect.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! for A in 0.01 0.1 0.5; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 10 --cpu --smagorinsky-cs 0.1 --alpha-zd $A; done
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-162: MRT + Plummer softening: density floor calibration sweep
 //!
@@ -2769,9 +2769,9 @@
 //! Systematic sweep of density_floor (0.01-0.2) with MRT collision, Plummer softening eps=0.5*dx, tau=0.7 on 10 Euclid galaxies. Identifies stability boundary and optimal production parameters for 64^3.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! for FLOOR in 0.03 0.04 0.042 0.045 0.05 0.1; do cargo run --release --bin euclid-df-sweep --features euclid-catalog -- --catalog ... --grid 64 --steps 200 --max-galaxies 10 --cpu --mrt --tau 0.7 --softening-eps 0.5 --density-floor $FLOOR; done
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-163: GPU MRT 100-galaxy D_f sweep at 64^3 with zero-copy box-counting
 //!
@@ -2786,9 +2786,9 @@
 //! 100-galaxy sweep with GPU MRT collision (d'Humieres D3Q19 SoA), Plummer softening eps=0.5*dx, density floor 0.045, tau=0.7. D_f measured entirely on GPU via Otsu threshold + box-counting (no density readback).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 64 --steps 200 --max-galaxies 100 --mrt
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-164: GPU MRT 10-galaxy D_f sweep at 128^3: resolution convergence
 //!
@@ -2803,9 +2803,9 @@
 //! 10-galaxy sweep at 128^3 with GPU MRT collision, zero-copy GPU box-counting. Tests resolution convergence toward CD D=16 topological prediction D_f=2.7268.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-165: GPU zero-copy box-counting validation: PCIe elimination
 //!
@@ -2820,9 +2820,9 @@
 //! Validate GPU-resident Otsu threshold + GPU box-counting against readback path. GPU min/max reduction (shared memory tree) -> GPU 256-bin histogram -> 1 KB readback -> CPU Otsu -> GPU box-counting. Measures PCIe savings and D_f agreement.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 10 --mrt
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-166: GPU MRT 100-galaxy D_f sweep at 128^3: definitive CD topology validation
 //!
@@ -2837,9 +2837,9 @@
 //! 100-galaxy sweep at 128^3 with GPU MRT collision (d'Humieres D3Q19 SoA), Plummer softening eps=0.5*dx, density floor 0.045, tau=0.7. Uses readback-path box-counting (pre-zero-copy build). Definitive test of CD D=16 flat band topology prediction D_f=2.7268.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt -o /tmp/euclid_df_gpu_mrt_128_100.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-167: MRT vs BGK stability envelope: density contrast sweep at tau=0.7
 //!
@@ -2854,9 +2854,9 @@
 //! Systematic BGK vs MRT stability comparison at increasing density contrast (2x-100x) using Gaussian density perturbation on n^3 grid. Reports max Mach number, mass conservation error, and crash threshold per collision mode. Uses LbmBackend dispatcher for unified CPU/GPU access.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin mrt-stability-audit -- --n 16 --tau 0.7 --steps 200 --contrast-min 2.0 --contrast-max 100.0 --n-levels 20 --csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-168: D=64 flat band fraction verification via block-diagonal eigensolver
 //!
@@ -2871,9 +2871,9 @@
 //! Block-diagonal eigendecomposition of D=64 ZD partner graph (16384 vertices, 31 motif components). Verifies that exactly 50% of eigenvalues are zero, extending the flat_band_fraction = 1/2 invariance from D=16 and D=32.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test --release -p algebra_analysis -- --ignored flat_band_fraction_d64
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-169: Thread coarsening benchmark: 1T=2C vs 1T=1C at 128^3
 //!
@@ -2888,9 +2888,9 @@
 //! Compare GPU MRT performance with thread coarsening (1 thread = 2 cells, __launch_bounds__(128, 9)) vs baseline (1 thread = 1 cell). Measure ms/galaxy at 128^3 with 100 galaxies. Both paths use identical collision physics.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt --coarsened
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-172: Roofline benchmark: per-kernel nsight-compute at 128^3
 //!
@@ -2905,9 +2905,9 @@
 //! Profile MRT collision, streaming, Smagorinsky, and box-counting kernels at 128^3 using nsight-compute. Measure achieved bandwidth, SM utilization, register count, and occupancy per kernel. Validate GPU-side max-Ma reduction kernel timing (< 10us target).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! ncu --set full cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 1 --mrt
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-174: Null hypothesis control: 6 conditions x N trials to exclude D_f=2.73 pipeline artifact
 //!
@@ -2922,9 +2922,9 @@
 //! Six control conditions test whether D_f=2.73 is a pipeline artifact: C0 (uniform+zero force), C1 (uniform+ZD), C2 (white noise+zero), C3 (white noise+ZD), C4 (Sersic+zero), C5 (Sersic+full force, positive control). All use identical MRT 128^3 pipeline. Null hypothesis rejected iff C0-C4 produce D_f statistically distinguishable from 2.73 and C5 reproduces E-166.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --null-hypothesis --null-n-trials 10 --grid 128 --steps 200 --mrt --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-175: CPU AoSoA + AVX2 benchmark: AoS vs AoSoA at 64^3 and 128^3 MRT f64 on Zen 3
 //!
@@ -2939,9 +2939,9 @@
 //! Benchmark CPU LBM solver with AoSoA layout + wide::f64x4 SIMD collision vs previous AoS scalar. Test at 64^3 (V-Cache resident, compute-bound) and 128^3 (DDR4-limited). Use RUSTFLAGS=-C target-cpu=znver3 for optimal Zen 3 code generation.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! RUSTFLAGS="-C target-cpu=znver3" cargo run --release --no-default-features --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 200 --n-levels 1
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-176: CPU/GPU cross-validation: AoSoA/SoA layout parity D_f agreement
 //!
@@ -2956,9 +2956,9 @@
 //! Run identical physical problem (Gaussian density contrast, MRT collision, tau=0.7) on both CPU (AoSoA f64) and GPU (SoA f32) backends via LbmBackend dispatcher. Compare D_f, max Mach, and mass conservation to validate structural parity between the two memory layouts.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin mrt-stability-audit -- --n 64 --tau 0.7 --steps 100 --n-levels 5 --csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-177: YSU-Inspired CUDA Optimization Suite: MRT ILP + CUDA Graph + Tiled Pull-Scheme + Multi-Stream Pipeline
 //!
@@ -2973,9 +2973,9 @@
 //! 4-item GPU optimization suite targeting compound 15-50% speedup at 128^3 on Ada Lovelace SM 8.9. Item 1: MRT forward/inverse transform ILP restructure (balanced fmaf trees). Item 2: Multi-stream galaxy pipeline (2-stream event-based overlap). Item 3: CUDA Graph 2-step capture fixing double-buffer bug + step_n() bulk stepping. Item 4: Shared-memory tiled pull-scheme kernels (8x8x4 tile, 45.6 KB shared, cooperative striped load). Verification: clippy clean, Taylor-Green 6/6 pass, GPU debug init 3/3 pass.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin euclid-df-sweep -- --n-galaxies 100 --resolution 128 --gpu --tiling
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-178: Harmonic Halo Rotation Curve: 7-mode box-kite modulation sweep
 //!
@@ -2990,9 +2990,9 @@
 //! Compute NFW rotation curves with harmonic halo modulation at alpha_zd = {0.0, 0.01, 0.05, 0.1} for MW-mass (1e12 Msun) and UDG-mass (1e9 Msun) halos. Compare v_circ profiles, measure max |delta_v|, verify alpha_zd=0 recovery of standard NFW. 7-mode box-kite wavenumbers from strut signatures.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin harmonic-halo-rotation-curve -- --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-179: Falsification of slope_ratio = 42^2/10000 claim (C-1329)
 //!
@@ -3007,9 +3007,9 @@
 //! Three unit tests in lbm_core: (1) vary associator norm over {0.1..10.0} with fixed grid, confirm slope_ratio is identical to 14 digits (norm cancellation); (2) vary strain-rate grid, confirm 0.1764 value is destroyed (grid dependence); (3) vary alpha and beta, confirm slope_ratio unchanged (parameter invariance). Analytical proof: norm^beta is multiplicative in nu, cancels in ratio.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p lbm_core test_c1329
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-180: Harmonic Halo Stacking: SPARC + Gaia MW rotation curve falsification test
 //!
@@ -3024,9 +3024,9 @@
 //! Download SPARC (175 galaxies) and Gaia DR3 MW rotation curve. For each galaxy: (1) fit NFW to get r_s, (2) subtract smooth NFW to get residuals delta_v(r), (3) rescale to r/r_s coordinates. Stack all residuals. Compute Fourier power at 7 predicted wavenumbers k_n' = 2*pi*n/7. Compare to null hypothesis (1000 random phase shuffles). Separately analyze MW curve via Gaia DR3 (Jiao et al. 2023). Report alpha_zd upper limit or detection significance.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin harmonic-halo-stacking -- --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-181: x87 FP-80 vs DD vs nalgebra eigenvalue solver benchmark
 //!
@@ -3041,9 +3041,9 @@
 //! Criterion benchmarks on 8x8 and 16x16 known-spectrum symmetric matrices (Householder-rotated diagonal with eigenvalues 1..n). Three solvers: (1) nalgebra symmetric_eigenvalues (LAPACK-style Jacobi, pure f64), (2) x87 FP-80 inline asm Jacobi (hardware 64-bit mantissa via fpatan+fsincos chain), (3) DD software Jacobi (~31 decimal digits via Knuth TwoSum + Dekker TwoProduct). Precision audit: all solvers recover known spectrum to machine epsilon. Additionally evaluated `extended` crate (MIT, crates.io) and rejected: same 64-bit mantissa, conversion overhead, no atan2/sincos, LLVM spill hazard.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo bench -p algebra_analysis -- x87
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-182: Harmonic Halo stacking: multi-CD-dimension sweep (D=16,32,64,128,256)
 //!
@@ -3058,9 +3058,9 @@
 //! Extend E-180 stacking to higher Cayley-Dickson dimensions. For each D in {16,32,64,128,256}: (1) compute ZD count, assessor count, and box-kite equivalent via algebra_analysis, (2) derive mode count and assessor fraction, (3) run stacking with dimension-specific wavenumbers k_n = 2*pi*n/(N_modes * r_s), (4) compare detection SNR across dimensions. Tests whether the harmonic signature is better described by pathion (D=32), vouton (D=64), or higher structures.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin harmonic-halo-stacking -- --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-183: MaNGA N=6992 harmonic halo stacking null result with pseudo-slit rotation curves (D=16,64,256,1024)
 //!
@@ -3075,9 +3075,9 @@
 //! Two-stage pipeline: (1) DAPall Guillotine -- morphological + quality cuts on MaNGA DR17 DAPall catalog (Sersic n<2.5, 30<i<70 deg, Ha EW>2A, log M*>8.5) to select ~3000 disk galaxies. (2) MAPS pseudo-slit extraction -- download per-galaxy MAPS FITS files via HTTP from data.sdss.org (6 parallel threads), extract 1D rotation curves from 2D H-alpha EMLINE_GVEL maps along kinematic PA, deproject by sin(i). Normalize by SMHM-derived NFW (Moster+2013), stack, Fourier-analyze at CD dimensions D=16..1024. NOTE: future reruns should use rsync://data.sdss.org instead of HTTP to avoid Apache QoS token-bucket exhaustion (cwnd=10 per thread at N>2000). The per-galaxy delta_v(x) = (v_obs - v_NFW) / v_NFW projection at x = r/r_s is novel: MaNGA DAP provides only 2D EMLINE_GVEL maps; no pre-existing 1D NFW-normalized rotation curve catalog exists for this dataset.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-184: Braid fidelity audit: confirm fidelity < 1.0 at all dim >= 16 (C-1350, C-1351)
 //!
@@ -3092,9 +3092,9 @@
 //! Run braid paths at dim=16 and dim=32 via the cd_braid() function. Confirm topological_friction > 0 for all paths (C-1134 bound >= 4). Confirm BraidResult.fidelity = 0.0 for all dim >= 16 (threshold < 1e-12 never met). Confirm friction increases monotonically from dim=16 to dim=32 (friction_dimensional_scaling). New test: test_c1350_braid_fidelity_always_below_unity in majorana_braiding.rs.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p algebra_experimental --lib -- majorana
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-185: Harmonic halo falsification replication: alpha_zd=0 NFW recovery + DM cross-section independence (C-1353, C-1354)
 //!
@@ -3109,9 +3109,9 @@
 //! Run cargo test -p cosmology_core --lib -- harmonic (25 unit tests). Verify alpha_zd=0 recovers NFW exactly (C-1314 replication). Verify modulation < 1% at alpha_zd=0.01 (C-1313 bound). Verify detection_threshold(175) > alpha_zd_limit from C-1338. New test: test_c1353_dm_cross_section_not_algebraic in dm_force.rs asserting sigma_chi_b default=0.0 and no algebraic derivation from CD.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p cosmology_core --lib -- harmonic && cargo test -p lbm_3d --lib -- dm_force
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-186: Obstruction norm normalization sensitivity: 5 convention variants at dim=16 (C-1357)
 //!
@@ -3126,9 +3126,9 @@
 //! Compute obstruction spectrum for dim=16 sedenion A-infinity algebra. Test 5 normalization conventions: (1) frobenius/dim^1.5 (current, 8.725), (2) frobenius/dim (~34.9), (3) frobenius/sqrt(dim) (~139.6), (4) frobenius/dim^2 (~2.18), (5) spectral_radius/dim^1.5 (~7.76). If values differ >10% across conventions, normalization dependence is confirmed. New test: test_c1357_obstruction_norm_normalization_sensitivity in homotopy_algebra.rs.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p algebra_analysis --lib -- test_c1357
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-187: Gravastar-to-dark-energy chain termination audit (C-1357)
 //!
@@ -3143,9 +3143,9 @@
 //! Code audit: verify solve_gravastar_homotopy() output is GravastarSolution {mass, r2, compactness, is_causal} with no cosmological fields. Verify orthoplex_diffusion.rs w_orthoplex() has no reference to obstruction_norm or homotopy_bridge. Verify DarkEnergyEOS.v imports no gravastar module. New test: test_c1357_gravastar_chain_terminates_at_tov in homotopy_bridge.rs.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo test -p cosmology_core --lib -- homotopy_bridge
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-188: x87 FP-80 vs Kahan vs naive f64 accumulation benchmark suite (Criterion 100-sample, n=4..512)
 //!
@@ -3160,9 +3160,9 @@
 //! cargo bench -p algebra_analysis -- x87 (Criterion, 100 samples, 3s warmup). Five benchmark families: (1) sum_throughput n=4..512 three variants, (2) dot_throughput n=4..512, (3) norm_sq_throughput n=4..512 + x87_norm_sq_16_fixed, (4) horner_throughput n=4..32, (5) precision near-cancellation and ill-conditioned dot. Six Jacobi benchmarks: nalgebra/x87/DD at 8x8 and 16x16. All on x86_64 nightly-2026-03-05, --release, algebra_analysis crate.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo bench -p algebra_analysis -- x87
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-189: AVX/FMA follow-on slice for x87 accumulation benchmarks at n=512
 //!
@@ -3177,9 +3177,9 @@
 //! Criterion follow-on run after the AVX packed-double + FMA path landed in `cd_kernel`. Filter the existing benchmark suite to the `n=512` slice so the naive, Kahan, x87, and `avx2_fma` variants can be compared on the same array length without rerunning the entire matrix. Command used: `cargo bench -p algebra_analysis --bench x87_bench -- 512`. The summary CSV records the midpoint of Criterion's reported confidence interval for each median timing.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo bench -p algebra_analysis --bench x87_bench -- 512
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-190: Evidence-first thesis 42 support bundle
 //!
@@ -3194,9 +3194,9 @@
 //! Build one repo-consistent support bundle from three existing lanes: (1) the C-010 non-local metamaterial design-stage benchmark, (2) the algebraic Majorana complex-time friction sweep with inverse-bound residual checks, and (3) harmonic-halo/NFW observable summaries with exact alpha_zd=0 recovery. Emit one TOML summary plus CSV sidecars.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin thesis-42-support -- --output-dir data/evidence/thesis_42_support
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-191: CD dimension sweep: harmonic halo stacking at D=16,32,64,128,256,512,1024
 //!
@@ -3211,11 +3211,11 @@
 //! Run harmonic-halo-stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0
-//! ```texttext
+//! ```ignore
 //!
-//! ## E-192: Non-static MaNGA signal analysis: STFT spectrogram + derivative + Rayleigh phase coherence
+//! > ## E-192: Non-static MaNGA signal analysis: STFT spectrogram + derivative + Rayleigh phase coherence
 //!
 //! - Binary: `harmonic-halo-signal-analysis`
 //! - Input: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv
@@ -3228,9 +3228,9 @@
 //! Apply non-static signal analysis (STFT spectrogram, derivative stacking, jackknife Rayleigh phase coherence) to MaNGA E-183 stacked profiles. STFT uses Gaussian window sigma_x=1.5 r/r_s at 32 window centers. Derivative stacking kills the DC baryonic baseline. Rayleigh R test on jackknife drop-one-bin phases at CD-ZD wavenumbers. Expected: STFT power concentrated x<2, derivative DFT red-noise, Rayleigh R<0.3 p>0.3 at all modes. Synthetic pipeline validation: 11 conditions x 3 regimes x 20 seeds = 660 runs on N=6992 galaxies confirm zero false positives and injection anti-correlation.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-193: THINGS HI 21cm Rotation Curve Extraction
 //!
@@ -3245,9 +3245,9 @@
 //! Extract rotation curves from THINGS FITS HI cubes to x > 10 r_s with hi-cube-rotcurve-extractor. Target the 34 THINGS galaxies with usable inclination control so the lane can test whether HI kinematics extend the outer-halo reach beyond the MaNGA IFU truncation limit near x~1.36 r_s.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! hi-cube-rotcurve-extractor --input-glob "data/external/things/*.fits" --output data/external/things/hi_rotcurves.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-194: Galaxy-Ensemble Rayleigh Phase Coherence
 //!
@@ -3259,12 +3259,12 @@
 //! - Claims: (none)
 //!
 //! Method:
-//! Run the galaxy-ensemble Rayleigh phase-coherence test on all 6992 MaNGA galaxies at the seven CD-ZD wavenumbers. The goal is to confirm that ensemble phases stay incoherent (target R < 0.024 and p > 0.5 at every mode) and to remove the N=19 jackknife limitation from E-192.
+//! > Run the galaxy-ensemble Rayleigh phase-coherence test on all 6992 MaNGA galaxies at the seven CD-ZD wavenumbers. The goal is to confirm that ensemble phases stay incoherent (target R < 0.024 and p > 0.5 at every mode) and to remove the N=19 jackknife limitation from E-192.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-195: Multi-Panel Null Result Visualization
 //!
@@ -3276,12 +3276,12 @@
 //! - Claims: (none)
 //!
 //! Method:
-//! Generate the publication-ready PGFPlots panels for the E-183/E-192 null-result lane: the stacked spatial residual profile with systematics, the derivative DFT, and the STFT spectrogram. Emit three .tex fragments that can be dropped directly into the MaNGA manuscript build.
+//! > Generate the publication-ready PGFPlots panels for the E-183/E-192 null-result lane: the stacked spatial residual profile with systematics, the derivative DFT, and the STFT spectrogram. Emit three .tex fragments that can be dropped directly into the MaNGA manuscript build.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-196: MaNGA Stacking with PSF Beam-Smearing Correction
 //!
@@ -3296,9 +3296,9 @@
 //! Re-run the MaNGA stacking lane from E-183 with PSF-flagged inner bins excluded (r < PSF_FWHM ~= 2.5 arcsec). The expected outcome is a smaller inner-bin spike near x~0.95, a lower RMS residual, and a clean side-by-side SNR comparison with and without the beam-smearing mask.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-197: Signal Injection-Recovery Validation
 //!
@@ -3313,9 +3313,9 @@
 //! Inject synthetic ZD harmonic signals with alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} into the MaNGA rotation-curve lane, then measure SNR and recovery ratio. The planned acceptance target is SNR > 3 with recovery_ratio in [0.7, 1.3] for alpha_zd >= 0.004.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! harmonic-halo-injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-198: LoTSS DR2/DR3 MaNGA overlap audit and radio-quiet split
 //!
@@ -3330,9 +3330,9 @@
 //! Join the selected MaNGA DR17 sample to DRPall sky coordinates, measure declination-band coverage ceilings, then crossmatch each target against LoTSS DR2 and DR3 source catalogs at 3 arcsec. Compare overall and declination-banded detection fractions to test whether the low-overlap conjecture is a DR2 coverage effect and preserve the LoTSS-undetected Radio-Quiet subset for downstream MaNGA kinematic analyses.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! lotss-fetch manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --report reports/lotss_manga_preflight_2026-03-13.toml && lotss-fetch crossmatch-manga --release dr2 --input-format fits --input data/external/radio_surveys/lotss_dr2.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr2.csv --report reports/manga_lotss_xmatch_dr2.toml && lotss-fetch crossmatch-manga --release dr3 --input-format fits --input data/external/radio_surveys/lotss_dr3.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr3.csv --report reports/manga_lotss_xmatch_dr3.toml
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-201: H1 face-on galaxy reanalysis with red-noise baseline subtraction (E-201)
 //!
@@ -3347,11 +3347,11 @@
 //! H1 face-on reanalysis: restrict to i<45 deg (N=3140), stack, compute Rayleigh R at 7 CD-ZD wavenumbers, fit k^gamma red-noise envelope (gamma=0.808 prior + free-gamma ablation), compute residuals, bootstrap 200x for alpha_zd CI. Also runs whitened matched filter and window function sensitivity on face-on stacked profile.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_physics --bin face-on-red-noise-rayleigh -- --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/subsamples/dapall_lowi.csv --cd-dim 16 --seed 42
-//! ```texttext
+//! ```ignore
 //!
-//! ## E-202: H2 Q3 mass-quartile injection recovery validation (E-202)
+//! > ## E-202: H2 Q3 mass-quartile injection recovery validation (E-202)
 //!
 //! - Binary: `q3-injection-recovery`
 //! - Input: data/external/manga/rotcurves/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv
@@ -3364,9 +3364,9 @@
 //! H2 Q3 injection recovery validation: sort galaxies by log(M200), extract Q3 (50th-75th percentile, N=1748, 6 valid bins). Inject alpha_zd at {0.001, 0.004, 0.01}, measure delta_SNR. Compare with Q1 control (18 bins) and synthetic-6-bin Q1 (window isolation). Bootstrap 200x.
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run --release -p gororoba_cli_physics --bin q3-injection-recovery -- --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --cd-dim 16 --seed 42
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-203: Legacy cross-validation audit for refuted algebraic CSV claims
 //!
@@ -3381,9 +3381,9 @@
 //! Exact Rust cross-validation of legacy CSV claims: parity-mask vs commutativity mismatch (C-020), explicit Lambda_1024 exceptional exclusions (C-021), and moonshine coefficient/log-column sanity checks (C-543).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_algebra --bin legacy-crossval-audit -- --output data/output/claims_falsification/legacy_crossval_audit.toml
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-204: Deterministic audit for refuted external Cayley-Dickson CSV claims
 //!
@@ -3398,9 +3398,9 @@
 //! Exact Rust audit of refuted external Cayley-Dickson CSV claims: sparse 64D adjacency methodology mismatch (C-450), lattice-difference norm census excluding E8 roots (C-455), direct associativity mismatches in the 256D basis-properties CSV (C-456), and parity-clique failure across 16D/32D/64D (C-463).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_algebra --bin cd-external-audit -- --output data/output/claims_falsification/cd_external_audit.toml
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-205: Deterministic audit for four refuted algebraic-structural claims
 //!
@@ -3415,9 +3415,9 @@
 //! Exact Rust audit for four algebraic-structural negative claims: dim=32 motif classes require cubic GF(2) separation rather than a linear xor mask (C-445), multiplication coupling survives only for the identity basis in dim=16 and dim=32 Lambda dictionaries (C-466), candidate-B associator fibers fail to classify pure triangles across 16D/32D/64D (C-518), and real trace-free J_3(O) surveys stay far from Singh's delta^2 = 3/8 target (C-585).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_algebra --bin algebra-refutation-audit -- --output data/output/claims_falsification/algebra_refutation_audit.toml
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-206: Deterministic audit for PMNS, mass-hierarchy, and numerology refutations
 //!
@@ -3432,9 +3432,9 @@
 //! Shared Rust audit for six particle-numerology negative claims: octonion-subalgebra principal angles collapse to {0,90} rather than PMNS values (C-069); democratic associator mixing remains far from PMNS probabilities and is not better than a random doubly-stochastic null (C-077); three-angle Givens fits are exact for arbitrary targets and therefore non-evidentiary (C-081); small Yukawa-like diagonal perturbations improve the democratic matrix only modestly and remain null-like (C-084); depth-based associator norms fail to reproduce the lepton hierarchy and are not significant against a random-assignment null (C-587); and the Planck/BCS 1764 coincidence disappears outside chosen unit systems while the BCS factor remains pi/e^gamma numerics (C-1355).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin particle-numerology-audit -- --output data/output/claims_falsification/particle_numerology_audit.toml
-//! ```texttext
+//! ```ignore
 //!
 //! ## E-207: Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7) orbit refutations
 //!
@@ -3449,6 +3449,6 @@
 //! Shared Rust audit for three refuted or methodology-insufficient Cayley-Dickson pattern claims: partner-graph eigenvalue ladders are compared against PDG masses under both log and linear transforms with random-subset nulls (C-068); exact associator-quantile curves are compared against checked-in NANOGrav medians with Frechet nulls and simple template families (C-070); and generic SO(7) rotations leave the exact zero-divisor lane immediately, so the surviving orbit structure is discrete rather than continuous (C-092).
 //!
 //! Run command:
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin cd-pattern-baseline-audit -- --output data/output/claims_falsification/cd_pattern_baseline_audit.toml
-//! ```texttext
+//! ```ignore

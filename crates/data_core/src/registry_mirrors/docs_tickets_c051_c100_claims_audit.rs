@@ -35,5 +35,5 @@
 //! - Completed checkboxes: 0
 //! - Open checkboxes: 0
 //! - Backlog reports:
-//!   - `reports/claims_batch_backlog_C051_C100.md`
+//! - `reports/claims_batch_backlog_C051_C100.md`
 //!

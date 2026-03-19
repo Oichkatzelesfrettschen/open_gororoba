@@ -171,22 +171,22 @@
 //! ### Algebraic significance (verified)
 //!
 //! - The 8/7 split is NOT a hyperplane (linear subspace) of PG(3,2). This refutes
-//!   the naive AG(3,2) / hyperplane-at-infinity interpretation (C-445 refuted).
+//! the naive AG(3,2) / hyperplane-at-infinity interpretation (C-445 refuted).
 //! - The split IS a cubic hypersurface. Point 8 (binary 1000) has bit 3 set but
-//!   belongs to the heptacross class (along with points 1-7), breaking any
-//!   linear or quadratic classifier.
+//! belongs to the heptacross class (along with points 1-7), breaking any
+//! linear or quadratic classifier.
 //! - At dim=16 (sedenions), the 7 box-kite components are structurally uniform
-//!   (all octahedral K_{2,2,2}), so no class separation question arises.
-//!   The cubic obstruction is specific to the first post-sedenion doubling.
+//! (all octahedral K_{2,2,2}), so no class separation question arises.
+//! The cubic obstruction is specific to the first post-sedenion doubling.
 //!
 //! ### Open questions
 //!
 //! 1. What is the minimum separating degree at dim=64 (4 motif classes, PG(4,2))?
-//!    Does the degree grow with the doubling level?
+//! >  Does the degree grow with the doubling level?
 //! 2. Is the cubic polynomial unique (up to GF(2) equivalence), or are there
-//!    multiple independent cubics that separate the classes?
+//! >  multiple independent cubics that separate the classes?
 //! 3. Does the cubic structure persist at dim=128 and dim=256 for the analogous
-//!    binary partition (most-edges class vs rest)?
+//! >  binary partition (most-edges class vs rest)?
 //!
 //! ### Physical interpretation (speculative)
 //!
@@ -225,44 +225,44 @@
 //! (McGill Magnetars, Fermi GBM GRBs) had zero significant subsets and are omitted.
 //!
 //! *   **CHIME/FRB Cat 2** (3 cores):
-//!     `gl + log_DM`, `gb + log_DM`, `gb + gl`
+//! >   `gl + log_DM`, `gb + log_DM`, `gb + gl`
 //!
 //! *   **ATNF Pulsars** (2 cores):
-//!     `gl + log_DM`, `gb + gl`
+//! >   `gl + log_DM`, `gb + gl`
 //!
 //! *   **GWOSC GW Events** (1 core):
-//!     `log_chirp_mass + q`
+//! >   `log_chirp_mass + q`
 //!
 //! *   **Gaia DR3 Stars** (4 cores):
-//!     `parallax + pmra`, `parallax + pmdec`, `pmra + rv`, `bp_rp + rv`
+//! >   `parallax + pmra`, `parallax + pmdec`, `pmra + rv`, `bp_rp + rv`
 //!
 //! *   **Hipparcos Stars** (4 cores):
-//!     `parallax + pmra`, `pmdec + pmra`, `Vmag + dec`, `dec + ra`
+//! >   `parallax + pmra`, `pmdec + pmra`, `Vmag + dec`, `dec + ra`
 //!
 //! *   **SDSS DR18 Quasars** (1 core):
-//!     `i_mag + r_mag + z`
+//! >   `i_mag + r_mag + z`
 //!
 //! *   **Pantheon+ SN Ia** (1 core):
-//!     `c + x1`
+//! >   `c + x1`
 //!
 //! ### Interpretation by Physical Mechanism
 //!
 //! *   **ISM / Column Density:** CHIME and ATNF share `log_DM + gl`. The `gb + gl`
-//!     core (galactic coordinates alone, no DM) is also significant, indicating
-//!     that sky-position hierarchy in the Galactic plane contributes independently.
+//! >   core (galactic coordinates alone, no DM) is also significant, indicating
+//! >   that sky-position hierarchy in the Galactic plane contributes independently.
 //!
 //! *   **Galactic Kinematics:** Gaia and Hipparcos share `parallax + pmra`.
-//!     Additional cores involving `bp_rp` (color), `Vmag` (magnitude), and `dec`
-//!     reflect photometric subpopulations and declination-dependent survey depth.
+//! >   Additional cores involving `bp_rp` (color), `Vmag` (magnitude), and `dec`
+//! >   reflect photometric subpopulations and declination-dependent survey depth.
 //!
 //! *   **Compact Binary Formation:** GWOSC's sole core `log_chirp_mass + q`
-//!     reflects formation-channel segregation in the mass-ratio plane.
+//! >   reflects formation-channel segregation in the mass-ratio plane.
 //!
 //! *   **Standard Candle Standardization:** Pantheon+'s sole core `c + x1` is
-//!     the Phillips relation (stretch vs color).
+//! >   the Phillips relation (stretch vs color).
 //!
 //! *   **Quasar Photometric Hierarchy:** SDSS's core `i_mag + r_mag + z` is a
-//!     color-redshift combination reflecting the photometric redshift ladder.
+//! >   color-redshift combination reflecting the photometric redshift ladder.
 //!
 //! ### Implications
 //! This confirms the **Ultrametric Core Mining Hypothesis (UCMH)**. We can now use the "Hierarchy Fingerprint" (the set of cores) as:
@@ -286,31 +286,31 @@
 //! ### Verified
 //!
 //! 1. **Strut table (C-454):** De Marrais's published strut table for all 7
-//!    sedenion box-kites matches our `canonical_strut_table()` output exactly.
-//!    All 42 assessor pairs, all 21 strut pairings, and the inner XOR property
-//!    confirmed.
+//! >  sedenion box-kites matches our `canonical_strut_table()` output exactly.
+//! >  All 42 assessor pairs, all 21 strut pairings, and the inner XOR property
+//! >  confirmed.
 //!
 //! 2. **8D lattice embedding (C-452, C-453):** Cayley-Dickson basis elements at
-//!    dims 256, 512, 1024, and 2048 all embed into the same 8-dimensional
-//!    integer lattice with coordinates in {-1, 0, 1}. The lattice dimension does
-//!    NOT grow with log2(dim) as originally hypothesized. This is consistent with
-//!    the octonion sub-algebra (8D) providing the fundamental lattice structure.
+//! >  dims 256, 512, 1024, and 2048 all embed into the same 8-dimensional
+//! >  integer lattice with coordinates in {-1, 0, 1}. The lattice dimension does
+//! >  NOT grow with log2(dim) as originally hypothesized. This is consistent with
+//! >  the octonion sub-algebra (8D) providing the fundamental lattice structure.
 //!
 //! 3. **Nested-tuple parser (C-457):** A tree-based parser correctly handles the
-//!    Cayley-Dickson doubling-tree representation across 4476 rows spanning 5
-//!    dimensions.
+//! >  Cayley-Dickson doubling-tree representation across 4476 rows spanning 5
+//! >  dimensions.
 //!
 //! ### Refuted
 //!
 //! 1. **E8 lattice-ZD connection (C-455):** Lattice differences between
-//!    ZD-adjacent pairs at dim=16 have norm-squared values {4, 6, 8, 10, 12,
-//!    14, 18} but never 2. E8 roots (norm^2 = 2) are completely absent. The
-//!    minimum ZD separation in the 8D lattice is |d|^2 = 4.
+//! >  ZD-adjacent pairs at dim=16 have norm-squared values {4, 6, 8, 10, 12,
+//! >  14, 18} but never 2. E8 roots (norm^2 = 2) are completely absent. The
+//! >  minimum ZD separation in the 8D lattice is |d|^2 = 4.
 //!
 //! 2. **256D associativity CSV (C-456):** The external CSV incorrectly claims all
-//!    125 tested triples are associative. Our Rust computation identifies 4/50
-//!    non-associative triples involving high-index basis elements (e_128 * e_64 *
-//!    e_32, etc.). This confirms the CSV is AI-generated with errors.
+//! >  125 tested triples are associative. Our Rust computation identifies 4/50
+//! >  non-associative triples involving high-index basis elements (e_128 * e_64 *
+//! >  e_32, etc.). This confirms the CSV is AI-generated with errors.
 //!
 //! ### Structural Finding
 //!
@@ -346,47 +346,47 @@
 //! ### Verified Theses
 //!
 //! 1. **Thesis A (Codebook Parity, C-458):** All lattice points at dims
-//!    256/512/1024/2048 satisfy: coords in {-1,0,1}, even sum, even nonzero
-//!    count, coord[0] never +1. Total 3840 rows verified.
+//! >  256/512/1024/2048 satisfy: coords in {-1,0,1}, even sum, even nonzero
+//! >  count, coord[0] never +1. Total 3840 rows verified.
 //!
 //! 2. **Thesis B (Filtration Nesting, C-459):** Strict subset chain
-//!    Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 confirmed.
+//! >  Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 confirmed.
 //!
 //! 3. **Thesis C (Prefix-Cut, C-460):** ALL filtration transitions are
-//!    lexicographic prefix cuts -- the child is the lex-sorted first N points
-//!    of the parent. This is simpler than the monograph anticipated (which
-//!    expected decision-trie rules).
+//! >  lexicographic prefix cuts -- the child is the lex-sorted first N points
+//! >  of the parent. This is simpler than the monograph anticipated (which
+//! >  expected decision-trie rules).
 //!
 //! 4. **Thesis D (Scalar Shadow, C-465):** pi(b) = signum(sum(coords))
-//!    maps to {-1,0,1}; addition-mode action verified. Multiplication
-//!    coupling rho(b) remains open (C-466).
+//! >  maps to {-1,0,1}; addition-mode action verified. Multiplication
+//! >  coupling rho(b) remains open (C-466).
 //!
 //! 5. **Thesis E (XOR Partner Law, C-462):** Each cross-pair has unique
-//!    XOR partner at dim=64. General law: partner(i) = i XOR (N/16).
+//! >  XOR partner at dim=64. General law: partner(i) = i XOR (N/16).
 //!
 //! 6. **Thesis F (Parity-Clique, C-463):** ZD adjacency = K_m union K_m
-//!    by parity of low basis index, verified at dims 16 and 32 ONLY.
-//!    **REFUTED at dim=64+** (cross-partition edges exist at dim=64;
-//!    C-451 shows 32640 cross-edges at dim=128). Small-dimension
-//!    coincidence, not a universal property. Status: Partial.
+//! >  by parity of low basis index, verified at dims 16 and 32 ONLY.
+//! >  **REFUTED at dim=64+** (cross-partition edges exist at dim=64;
+//! >  C-451 shows 32640 cross-edges at dim=128). Small-dimension
+//! >  coincidence, not a universal property. Status: Partial.
 //!
 //! 7. **Thesis G (Spectral Fingerprints, C-464):** Eigenvalue multisets
-//!    distinguish all observed motif classes (K_m, K_m union K_m, r*K_2).
+//! >  distinguish all observed motif classes (K_m, K_m union K_m, r*K_2).
 //!
 //! 8. **Thesis H (Null-Model Identity, C-467):** RandomRotation is identity
-//!    for Euclidean ultrametric tests; ColumnIndependent is informative.
-//!    Baire fraction is tautologically 1.0 (ultrametric by construction).
+//! >  for Euclidean ultrametric tests; ColumnIndependent is informative.
+//! >  Baire fraction is tautologically 1.0 (ultrametric by construction).
 //!
 //! ### Novel Discoveries
 //!
 //! - **Lex prefix cuts** (Thesis C): The filtration structure is purely
-//!   lexicographic, not a general decision trie. This constrains the lattice
-//!   embedding to respect coordinate ordering.
+//! lexicographic, not a general decision trie. This constrains the lattice
+//! embedding to respect coordinate ordering.
 //! - **S_base = 2187 = 3^7:** The base universe (coord[0] in {-1,0},
-//!   even sum, even nonzero count) has exactly 2187 points, with 139
-//!   excluded from Lambda_2048.
+//! even sum, even nonzero count) has exactly 2187 points, with 139
+//! excluded from Lambda_2048.
 //! - **Lambda_32 pinned corner:** First 4 coords = (-1,-1,-1,-1) for all
-//!   32 points (C-461).
+//! 32 points (C-461).
 //!
 //! ### Open Questions
 //!
@@ -413,32 +413,32 @@
 //! ### Key Findings
 //!
 //! - **Emanation tables are fully determined by XOR**: The product index at
-//!   cell (i,j) is always i XOR j, and the sign comes from the Cayley-Dickson
-//!   multiplication recursion. Zero-divisor marking is exact (42 assessor pairs
-//!   at dim=16 = 84 symmetric ET cells).
+//! cell (i,j) is always i XOR j, and the sign comes from the Cayley-Dickson
+//! multiplication recursion. Zero-divisor marking is exact (42 assessor pairs
+//! at dim=16 = 84 symmetric ET cells).
 //!
 //! - **DMZ geometry is sign-concordance, not octahedral adjacency**: A cell
-//!   is DMZ when its 4 quadrant products have concordant diagonal signs
-//!   (UL*LR sign = UR*LL sign). This produces 12 DMZ edges per BK (not 9
-//!   as naive octahedral counting suggests).
+//! is DMZ when its 4 quadrant products have concordant diagonal signs
+//! (UL*LR sign = UR*LL sign). This produces 12 DMZ edges per BK (not 9
+//! as naive octahedral counting suggests).
 //!
 //! - **Sail-loop duality is combinatorial, not dynamical**: The 28 O-trip
-//!   sails partition into 7 automorphemes (Cawagas loops) by Fano plane
-//!   incidence, not by twist-orbit BFS. Each BK contributes 4 sails to 4
-//!   distinct automorphemes. This is the correct BK-automorpheme duality.
+//! sails partition into 7 automorphemes (Cawagas loops) by Fano plane
+//! incidence, not by twist-orbit BFS. Each BK contributes 4 sails to 4
+//! distinct automorphemes. This is the correct BK-automorpheme duality.
 //!
 //! - **Oriented Trip Sync is universal at dim=16**: All 7 box-kites admit
-//!   at least one PSL(2,7) embedding where the shorthand pattern
-//!   (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable.
+//! at least one PSL(2,7) embedding where the shorthand pattern
+//! (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable.
 //!
 //! - **Delta transition structure**: Each S0 has exactly 3 XOR strut pairs
-//!   covering {1..7}\{S0}. The delta reachability matches twist reachability
-//!   but the detailed pair-level correspondence is more nuanced than simple
-//!   containment.
+//! covering {1..7}\{S0}. The delta reachability matches twist reachability
+//! but the detailed pair-level correspondence is more nuanced than simple
+//! containment.
 //!
 //! - **Brocade normalization yields 4 relabelings per BK**: Any of the 4
-//!   O-trips in a BK's L-set can serve as the Rule-0 central circle. CPO
-//!   preservation (outer indices also forming an O-trip) is uniform across BKs.
+//! O-trips in a BK's L-set can serve as the Rule-0 central circle. CPO
+//! preservation (outer indices also forming an O-trip) is uniform across BKs.
 //!
 //! ### Architecture
 //!
@@ -453,15 +453,15 @@
 //! ### Open Questions from Sprint 10
 //!
 //! - **Twist-delta pair correspondence**: The twist navigation targets do not
-//!   always match delta strut pairs at the individual pair level. The XOR of
-//!   twist targets (h XOR v) is not always = source_strut. Need to understand
-//!   which Fano-plane quantity governs each twist transition.
+//! always match delta strut pairs at the individual pair level. The XOR of
+//! twist targets (h XOR v) is not always = source_strut. Need to understand
+//! which Fano-plane quantity governs each twist transition.
 //! - **Full lanyard classification from signed graph**: The infrastructure for
-//!   signed-graph -> lanyard extraction is in place (L16), but systematic
-//!   classification of all cycle types across all 7 BKs is not yet done.
+//! signed-graph -> lanyard extraction is in place (L16), but systematic
+//! classification of all cycle types across all 7 BKs is not yet done.
 //! - **Brocade CPO preservation**: The CPO count is uniform across BKs but
-//!   the actual count (0 or >0) needs algebraic explanation from Fano plane
-//!   complementation properties.
+//! the actual count (0 or >0) needs algebraic explanation from Fano plane
+//! complementation properties.
 //!
 //! ---
 //!
@@ -1771,7 +1771,7 @@
 //! Status: 
 //! Claims: C-1359, C-1349
 //!
-//! Two key x87 idioms for high-precision Jacobi rotation: (1) `FDIVR ST(0), ST(i)` means `ST(0) <- ST(i)/ST(0)`, so after computing `2*cos(t)` in `ST(0)` and keeping `sin(2t)` in `ST(3)`, a single `FDIVR ST(0), ST(3)` gives `sin(t)` at TOS without `FXCH`. (2) `FUCOMPP` is the convenient compare-plus-pop-twice form for restoring stack balance after holding intermediate quadratic factors. It is a good cleanup idiom, but not side-effect-free: it still performs the unordered compare, updates x87 condition codes, and keeps the usual invalid-operation nuance for signaling NaNs. The broader win is unchanged: the half-angle and quadratic-update algebra stays in x87 until the final `fstp`, cutting the truncation count from 2 to 1 versus the store-then-SSE2 path.
+//! > Two key x87 idioms for high-precision Jacobi rotation: (1) `FDIVR ST(0), ST(i)` means `ST(0) <- ST(i)/ST(0)`, so after computing `2*cos(t)` in `ST(0)` and keeping `sin(2t)` in `ST(3)`, a single `FDIVR ST(0), ST(3)` gives `sin(t)` at TOS without `FXCH`. (2) `FUCOMPP` is the convenient compare-plus-pop-twice form for restoring stack balance after holding intermediate quadratic factors. It is a good cleanup idiom, but not side-effect-free: it still performs the unordered compare, updates x87 condition codes, and keeps the usual invalid-operation nuance for signaling NaNs. The broader win is unchanged: the half-angle and quadratic-update algebra stays in x87 until the final `fstp`, cutting the truncation count from 2 to 1 versus the store-then-SSE2 path.
 //!
 //! ---
 //!

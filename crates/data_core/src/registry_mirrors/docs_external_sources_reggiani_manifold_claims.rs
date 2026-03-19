@@ -24,22 +24,22 @@
 //! The paper states (paraphrase, see PDF for full proofs):
 //!
 //! 1) Z(S) is (homeomorphic / diffeomorphic) to G2, and the induced metric makes it
-//!    isometric to G2 with a particular left-invariant metric.
+//! >  isometric to G2 with a particular left-invariant metric.
 //!
 //! 2) ZD(S) is isometric to the Stiefel manifold V2(R7) (also presented as G2/SU(2))
-//!    with a specific G2-invariant metric family.
+//! >  with a specific G2-invariant metric family.
 //!
 //! ## Upstream references cited by Reggiani (not cached here)
 //!
 //! - [Mor98] G. Moreno (1998), "The zero divisors of the Cayley-Dickson algebras over
-//!   the real numbers", Bol. Soc. Mat. Mex., III Ser. 4(1), 13-28.
+//! the real numbers", Bol. Soc. Mat. Mex., III Ser. 4(1), 13-28.
 //! - [Biss08] Biss, Dugger, Isaksen (2008), "Large annihilators in Cayley-Dickson
-//!   algebras", Communications in Algebra 36(2), 632-664.
+//! algebras", Communications in Algebra 36(2), 632-664.
 //!
 //! ## Repo status
 //!
 //! - Definitions aligned: `docs/SEDENION_ATLAS.md`
 //! - Algebraic checks: `tests/test_reggiani_alignment.py`, `tests/test_reggiani_standard_zero_divisors.py`
 //! - Manifold/isometry claims: not replicated; treat as paper claims unless a
-//!   dedicated geometric computation or independent verification is added.
+//! dedicated geometric computation or independent verification is added.
 //!

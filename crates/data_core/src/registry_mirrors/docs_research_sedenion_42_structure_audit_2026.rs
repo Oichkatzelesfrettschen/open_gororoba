@@ -110,7 +110,7 @@
 //!
 //! **Physics**: The 7 box-kite strut signatures (1..7) define 7 harmonic modes:
 //!
-//!     v_circ(r) = v_nfw(r) * sqrt(1 + alpha_zd * SUM_{n=1}^{7} a_n * cos(k_n*r + phi_n) * exp(-r/r_s))
+//! >   v_circ(r) = v_nfw(r) * sqrt(1 + alpha_zd * SUM_{n=1}^{7} a_n * cos(k_n*r + phi_n) * exp(-r/r_s))
 //!
 //! where:
 //! - k_n = 2*pi*n / (7 * r_s) -- box-kite wavenumber

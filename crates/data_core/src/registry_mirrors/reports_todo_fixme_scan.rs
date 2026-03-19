@@ -42,15 +42,15 @@
 //! - Claims pipeline backlog: `docs/CLAIMS_TASKS.md` (many rows still `TODO`)
 //! - Global tracker: `docs/TODO.md`
 //! - Open ticket stubs:
-//!   - `docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md`
-//!   - `reports/tickets_inventory.md`
+//! - `docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md`
+//! - `reports/tickets_inventory.md`
 //! - Code-level implementation TODOs:
-//!   - `crates/quantum_core/src/tensor_networks.rs`
-//!   - `crates/quantum_core/src/casimir.rs`
+//! - `crates/quantum_core/src/tensor_networks.rs`
+//! - `crates/quantum_core/src/casimir.rs`
 //!
 //! ## Notes
 //!
 //! - This scan is a navigation aid only. Treat each TODO as a scoped
-//!   hypothesis-to-check task.
+//! hypothesis-to-check task.
 //! - TODO entries in docs are expected and intentionally retained for provenance.
 //!

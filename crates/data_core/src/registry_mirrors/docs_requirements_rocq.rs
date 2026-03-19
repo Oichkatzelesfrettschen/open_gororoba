@@ -6,14 +6,14 @@
 //! This repo contains `.v` files under `curated/01_theory_frameworks/`.
 //!
 //! Install Rocq (example using `opam`):
-//! ```texttext
+//! ```ignore
 //! opam install rocq
-//! ```texttext
+//! ```ignore
 //!
 //! Then run:
-//! ```texttext
+//! ```ignore
 //! make rocq
-//! ```texttext
+//! ```ignore
 //!
 //! Notes:
 //! - The Makefile checks for `coqc` on PATH (Rocq compiler).

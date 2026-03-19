@@ -11,7 +11,7 @@
 //! These three directories are the only active source and edit paths.
 //!
 //! ## Two-level ASCII map
-//! ```texttext
+//! ```ignore
 //! lambda_gororoba/
 //! +-- research/
 //! |   +-- admin/
@@ -41,12 +41,12 @@
 //! +-- LICENSE
 //! +-- requirements.md
 //! `-- logs/
-//!     +-- singular_structure_merge_<TS>.md
-//!     +-- singular_structure_manifest_<TS>.tsv
-//!     +-- singular_structure_conflicts_<TS>.tsv
-//!     +-- singular_structure_dedupe_actions_<TS>.tsv
-//!     `-- singular_structure_duplicates_<TS>.tsv
-//! ```texttext
+//! >   +-- singular_structure_merge_<TS>.md
+//! >   +-- singular_structure_manifest_<TS>.tsv
+//! >   +-- singular_structure_conflicts_<TS>.tsv
+//! >   +-- singular_structure_dedupe_actions_<TS>.tsv
+//! >   `-- singular_structure_duplicates_<TS>.tsv
+//! ```ignore
 //!
 //! ## Intake lane status
 //! - `merge_in/` is retired from active synchronization.
@@ -55,10 +55,10 @@
 //!
 //! ## Orchestration
 //! - `bash scripts/sync_and_audit_workspace.sh`
-//!   - audits singular root modules
-//!   - keeps legacy root synthesis disabled (`RUN_SYNTHESIS=0` default)
-//!   - runs singular reconciliation (`RUN_SINGULAR_MERGE=1` default)
-//!   - runs reproducibility checks (wasm+python default profile)
+//! - audits singular root modules
+//! - keeps legacy root synthesis disabled (`RUN_SYNTHESIS=0` default)
+//! - runs singular reconciliation (`RUN_SINGULAR_MERGE=1` default)
+//! - runs reproducibility checks (wasm+python default profile)
 //!
 //! ## Conflict policy
 //! - Shared root filenames (`.gitignore`, `README.md`, `LICENSE`, `requirements.md`) are canonical at workspace root.

@@ -9,26 +9,26 @@
 //! ## Current disposition
 //!
 //! - Non-local metamaterials:
-//!   design-stage only. C-010 remains a closed local negative result, and the
-//!   repo only supports the non-local recovery lane built from the 42-assessor
-//!   masked topology and the `m3` lift.
-//!   The default thesis bundle now points at `nonlocal_cable_chen_2023` because
-//!   it is the strongest current C-010 passing surrogate in the candidate scan.
-//!   `yig_magnonic_kaman_2026` remains available as an opt-in measured-table
-//!   comparison row.
+//! design-stage only. C-010 remains a closed local negative result, and the
+//! repo only supports the non-local recovery lane built from the 42-assessor
+//! masked topology and the `m3` lift.
+//! The default thesis bundle now points at `nonlocal_cable_chen_2023` because
+//! it is the strongest current C-010 passing surrogate in the candidate scan.
+//! `yig_magnonic_kaman_2026` remains available as an opt-in measured-table
+//! comparison row.
 //! - Majorana braid friction:
-//!   algebraic, not physical. The sweep reports Cayley-Dickson associator
-//!   invariants and complex-time damping, but it does not claim a Hamiltonian
-//!   Majorana or antimatter simulation.
+//! algebraic, not physical. The sweep reports Cayley-Dickson associator
+//! invariants and complex-time damping, but it does not claim a Hamiltonian
+//! Majorana or antimatter simulation.
 //! - Dark matter:
-//!   falsifiable observable lane. The supported bridge is harmonic-halo/NFW
-//!   observables with exact `alpha_zd = 0` recovery, not a derived `10^-42`
-//!   coupling constant.
+//! falsifiable observable lane. The supported bridge is harmonic-halo/NFW
+//! observables with exact `alpha_zd = 0` recovery, not a derived `10^-42`
+//! coupling constant.
 //! - Gravastar stability:
-//!   physical bridge unsupported. Gravastar solvers remain in `cosmology_core`,
-//!   and the thesis bundle now reports the current linear bridge-law sweep only as
-//!   a model-under-assumptions lane. C-011 stays obstructed even when the internal
-//!   linear law has stable or causal windows.
+//! physical bridge unsupported. Gravastar solvers remain in `cosmology_core`,
+//! and the thesis bundle now reports the current linear bridge-law sweep only as
+//! a model-under-assumptions lane. C-011 stays obstructed even when the internal
+//! linear law has stable or causal windows.
 //!
 //! ## Artifacts
 //!
@@ -76,7 +76,7 @@
 //! - exact arithmetic identities used by the thesis bundle,
 //! - exact `alpha_zd = 0` recovery of the harmonic-halo model law,
 //! - explicit consequences of the linear homotopy bridge law under stated
-//!   positivity assumptions.
+//! positivity assumptions.
 //!
 //! ## Intended use
 //!

@@ -4,7 +4,7 @@
 //! Define exactly what is synchronized in the singular repository now that root modules are authoritative.
 //!
 //! ## Two-level sync map
-//! ```texttext
+//! ```ignore
 //! root authoritative modules/
 //! |-- research/
 //! |   |-- active: docs/, implementations/, tests/, scripts/, requirements.md, README.md
@@ -13,13 +13,13 @@
 //! |   |-- active: src/, tests/, pyproject.toml, requirements.md, README.md
 //! |   `-- excluded from reconciler: .git/, .github/, node_modules/, venv/, .venv/, build/, dist/, caches
 //! `-- learner/
-//!     |-- active: components/, logic/, services/, package.json, requirements.md, README.md
-//!     `-- excluded from reconciler: .git/, .github/, node_modules/, build/, dist/, caches
+//! >   |-- active: components/, logic/, services/, package.json, requirements.md, README.md
+//! >   `-- excluded from reconciler: .git/, .github/, node_modules/, build/, dist/, caches
 //!
 //! intake lane status/
 //! |-- merge_in/README.md
 //! `-- archive/intake_lane_retirement/<TS>/merge_in/
-//! ```texttext
+//! ```ignore
 //!
 //! ## Root canonical files regenerated every singular reconciliation pass
 //! - `.gitignore`

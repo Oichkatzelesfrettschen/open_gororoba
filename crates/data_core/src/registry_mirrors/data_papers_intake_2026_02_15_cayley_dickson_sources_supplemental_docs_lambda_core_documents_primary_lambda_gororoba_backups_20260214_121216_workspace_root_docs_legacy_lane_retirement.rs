@@ -5,15 +5,15 @@
 //!
 //! ## Active paths
 //! - Edit and source lane:
-//!   - `research/`
-//!   - `experiments/`
-//!   - `learner/`
+//! - `research/`
+//! - `experiments/`
+//! - `learner/`
 //!
 //! ## Retired paths
 //! - Legacy unified lane:
-//!   - `src/lambda_unified` (archived)
+//! - `src/lambda_unified` (archived)
 //! - Intake clone lane:
-//!   - `merge_in/*` (retired; replaced with note file)
+//! - `merge_in/*` (retired; replaced with note file)
 //!
 //! ## Archive paths
 //! - `archive/legacy_unified_lane/<TS>/src/lambda_unified/`
@@ -23,7 +23,7 @@
 //! - `RUN_SYNTHESIS=0` by default in `scripts/sync_and_audit_workspace.sh`
 //! - `RUN_CONSOLIDATION_GATE=0` by default in `scripts/sync_and_audit_workspace.sh`
 //! - singular reconciliation remains enabled by default:
-//!   - `RUN_SINGULAR_MERGE=1`
+//! - `RUN_SINGULAR_MERGE=1`
 //!
 //! ## Evidence files
 //! - `logs/legacy_lane_retirement_<TS>.md`

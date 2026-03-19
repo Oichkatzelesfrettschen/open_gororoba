@@ -27,21 +27,21 @@
 //!
 //! ## Rebuild commands
 //!
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin provenance -- export
 //! cargo run -p gororoba_cli_data --bin provenance -- index
 //! cargo run -p gororoba_cli_data --bin provenance -- verify
-//! ```texttext
+//! ```ignore
 //!
 //! ## Optional live link audit refresh
 //!
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin provenance -- export
 //! cargo run -p gororoba_cli_data --bin provenance -- index
 //! cargo run -p gororoba_cli_data --bin provenance -- link-audit
 //! cargo run -p gororoba_cli_data --bin provenance -- recover
 //! cargo run -p gororoba_cli_data --bin provenance -- verify
-//! ```texttext
+//! ```ignore
 //!
 //! ## Generated audit views
 //!
@@ -62,15 +62,15 @@
 //! - `cargo run -p gororoba_cli_data --bin provenance -- doctor`
 //!
 //! - Source files are discovered repo-wide under:
-//!   - `registry/`
-//!   - `reports/`
-//!   - `docs/`
-//!   - `papers/`
-//!   - `data/papers/`
-//!   - root `refs.bib`
+//! - `registry/`
+//! - `reports/`
+//! - `docs/`
+//! - `papers/`
+//! - `data/papers/`
+//! - root `refs.bib`
 //! - File types scanned:
-//!   - `.toml`, `.bib`, `.bibtex`
-//!   - `.md`, `.txt`, `.rst` (filename/path must include one of: `source`, `bibli`, `reconcil`, `artifact`, `intake`, `cayley`, `sedenion`, `octonion`, `quaternion`, `mirror`, `provenance`)
+//! - `.toml`, `.bib`, `.bibtex`
+//! - `.md`, `.txt`, `.rst` (filename/path must include one of: `source`, `bibli`, `reconcil`, `artifact`, `intake`, `cayley`, `sedenion`, `octonion`, `quaternion`, `mirror`, `provenance`)
 //! - Only citation-like links are promoted into artifact candidates (DOI/arXiv/scispace/PDF/reference-host matches).
 //! - `data/external/intake/**/fetch_results*_normalized.tsv`
 //! - `data/external/intake/**/mirror_retry_results*.tsv`
@@ -80,11 +80,11 @@
 //! ## Exclusions
 //!
 //! - Raw-capture registries under `registry/knowledge/` are non-authoritative and
-//!   must not be used to seed artifact ownership or source-lane identity.
+//! must not be used to seed artifact ownership or source-lane identity.
 //! - Generated projections such as `registry/source_lanes/*.toml`,
-//!   `registry/embedded_markdown_*.toml`, and `registry/markdown_payload*.toml`
-//!   are downstream views, not candidate-source inputs for the artifact master.
+//! `registry/embedded_markdown_*.toml`, and `registry/markdown_payload*.toml`
+//! are downstream views, not candidate-source inputs for the artifact master.
 //! - Repo-local contract/code paths are not promoted as artifacts unless they live
-//!   under artifact-bearing prefixes such as `data/`, `papers/`, `archive/`, or
-//!   `registry/knowledge/artifacts/`.
+//! under artifact-bearing prefixes such as `data/`, `papers/`, `archive/`, or
+//! `registry/knowledge/artifacts/`.
 //!

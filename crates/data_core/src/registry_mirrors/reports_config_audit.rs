@@ -40,9 +40,9 @@
 //! ## Pytest import path
 //!
 //! - `pytest.ini` uses `pythonpath` entries for `src/scripts/*` so tests can import script modules by bare name
-//!   (e.g., `fetch_planck_2018_spectra`, `measure_tensor_network_entropy`).
+//! (e.g., `fetch_planck_2018_spectra`, `measure_tensor_network_entropy`).
 //! - Name-collision fix applied: `src/scripts/analysis/spectral_triple_toy.py` was renamed to
-//!   `src/scripts/analysis/spectral_triple_toy_report.py` so it no longer shadows `src/spectral_triple_toy.py`.
+//! `src/scripts/analysis/spectral_triple_toy_report.py` so it no longer shadows `src/spectral_triple_toy.py`.
 //!
 //! ## Docker entrypoint
 //!
@@ -51,5 +51,5 @@
 //! ## Hygiene
 //!
 //! - `__pycache__/` directories under `src/` and `tests/` are expected after running the suite; they should remain
-//!   untracked/ignored and can be removed via `make clean` (or manual deletion) if desired.
+//! untracked/ignored and can be removed via `make clean` (or manual deletion) if desired.
 //!

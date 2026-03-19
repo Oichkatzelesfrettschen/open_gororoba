@@ -11,9 +11,9 @@
 //!
 //! Policy:
 //! - Open claims (Status contains Unverified/Speculative/Partially) should reference at least one
-//!   `docs/external_sources/*.md` index in their "Where stated" cell of `docs/CLAIMS_EVIDENCE_MATRIX.md`.
+//! `docs/external_sources/*.md` index in their "Where stated" cell of `docs/CLAIMS_EVIDENCE_MATRIX.md`.
 //! - This file is an inbox-style placeholder. As a claim matures, replace this reference with a
-//!   claim-specific or topic-specific sources index (and keep this file as a historical pointer).
+//! claim-specific or topic-specific sources index (and keep this file as a historical pointer).
 //!
 //! Claims currently routed here (2026-02-03):
 //! - C-043

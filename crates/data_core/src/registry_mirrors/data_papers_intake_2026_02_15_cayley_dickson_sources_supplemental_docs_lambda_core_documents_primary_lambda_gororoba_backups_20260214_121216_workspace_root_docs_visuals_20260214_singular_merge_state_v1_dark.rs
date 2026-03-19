@@ -13,24 +13,24 @@
 //!
 //! ## Data Inputs
 //! - source_paths:
-//!   - `research/`
-//!   - `experiments/`
-//!   - `learner/`
+//! - `research/`
+//! - `experiments/`
+//! - `learner/`
 //! - evidence_links:
-//!   - `logs/singular_structure_merge_20260214_121132.md`
-//!   - `logs/singular_structure_manifest_20260214_121132.tsv`
-//!   - `logs/singular_structure_conflicts_20260214_121132.tsv`
-//!   - `logs/singular_structure_dedupe_actions_20260214_121132.tsv`
-//!   - `logs/top_level_claims_verification_20260214_121135.md`
-//!   - `logs/visual_docs_style_verification_20260214_121135.md`
+//! - `logs/singular_structure_merge_20260214_121132.md`
+//! - `logs/singular_structure_manifest_20260214_121132.tsv`
+//! - `logs/singular_structure_conflicts_20260214_121132.tsv`
+//! - `logs/singular_structure_dedupe_actions_20260214_121132.tsv`
+//! - `logs/top_level_claims_verification_20260214_121135.md`
+//! - `logs/visual_docs_style_verification_20260214_121135.md`
 //!
 //! ## Layout Plan
 //! - canvas: `1920x1080`
 //! - zones:
-//!   1. header
-//!   2. merge flow snapshot
-//!   3. evidence and checks
-//!   4. metadata footer
+//! 1. header
+//! 2. merge flow snapshot
+//! 3. evidence and checks
+//! 4. metadata footer
 //!
 //! ## Visual Tokens
 //! - background: `#0D1117`
@@ -43,9 +43,9 @@
 //!
 //! ## Export
 //! - output files:
-//!   - `docs/visuals/20260214_singular_merge_state_v1_dark.png`
-//!   - `docs/visuals/20260214_singular_merge_state_v1_dark.svg`
-//!   - `docs/visuals/20260214_singular_merge_state_v1_dark.md`
+//! - `docs/visuals/20260214_singular_merge_state_v1_dark.png`
+//! - `docs/visuals/20260214_singular_merge_state_v1_dark.svg`
+//! - `docs/visuals/20260214_singular_merge_state_v1_dark.md`
 //!
 //! ## Validation
 //! - [x] paths verified

@@ -1351,7 +1351,7 @@
 //! component-based language, which uses message passing between active components.
 //! Sequences of statements are identified as either exclusive or shared to provide synchronization between concurrent activities. Composita has the notion of empty and
 //! installed components, analogous to the notion of optional values in ParaSail.
-//! The SPARK language, a high-integrity subset of Ada with added proof annotations,
+//! > The SPARK language, a high-integrity subset of Ada with added proof annotations,
 //! omits pointers from the subset [9]. No particular attempt was made to soften the
 //! effect of losing pointers, so designing semi-dynamic data structures such as trees and
 //! linked-lists in SPARK requires heavy use of arrays [36, 37].
@@ -1878,7 +1878,7 @@
 //! S. Tucker Taft is VP and Director of Language Research at AdaCore, in Lexington, MA, USA. From 1990 to 1995 Tucker led the
 //! Ada 9X language design team, culminating in the February 1995 approval of Ada 95 as the first ISO standardized object-oriented programming language. Tucker is also a member of the ISO Rapporteur Group that developed Ada 2005 and Ada 2012. His specialties
 //! include programming language design, compiler implementation,
-//! high-integrity software, real-time systems, parallel programming,
+//! > high-integrity software, real-time systems, parallel programming,
 //! and model-based development. More recently Tucker has been
 //! designing and implementing the parallel programming language
 //! ParaSail, and defining parallel programming extensions for the

@@ -1,8 +1,8 @@
 //! # GHOST: No Spectral Signature of Zero-Dark Density in 6992 MaNGA Rotation Curves
 //!
 //! <!-- Figures needed (generate from results.json):
-//!   1. charts/ghost_snr_comparison.png -- bar chart of detection SNR across 11 conditions
-//!   2. charts/ghost_per_seed_stability.png -- scatter of per-seed SNR for CD-16 full sample
+//! 1. charts/ghost_snr_comparison.png -- bar chart of detection SNR across 11 conditions
+//! 2. charts/ghost_per_seed_stability.png -- scatter of per-seed SNR for CD-16 full sample
 //! -->
 //!
 //! # Abstract

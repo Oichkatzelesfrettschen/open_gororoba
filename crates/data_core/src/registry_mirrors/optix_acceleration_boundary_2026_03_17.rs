@@ -30,13 +30,13 @@
 //! The new split is:
 //!
 //! - `gororoba_optix`
-//!   - reusable runtime and FFI boundary
+//! - reusable runtime and FFI boundary
 //! - `lbm_3d_cuda::optix_pipeline`
-//!   - LBM-aware pipeline assembly and source management
+//! - LBM-aware pipeline assembly and source management
 //! - `lbm_3d_cuda::optix_tracer`
-//!   - LBM-specific SBT payloads, density thresholds, and brick semantics
+//! - LBM-specific SBT payloads, density thresholds, and brick semantics
 //! - `lbm_3d_cuda::optix_orchestrator`
-//!   - LBM/OptiX stream choreography for Eulerian-Lagrangian workflows
+//! - LBM/OptiX stream choreography for Eulerian-Lagrangian workflows
 //!
 //! ## What Is Generic vs LBM-Specific
 //!
@@ -61,11 +61,11 @@
 //! This boundary makes the next GPU-stack work cleaner:
 //!
 //! 1. viewer or particle tools can depend on `gororoba_optix` without pulling in
-//!    the whole LBM science stack
+//! >  the whole LBM science stack
 //! 2. a future generic ray-acceleration crate can layer on top of
-//!    `gororoba_optix`
+//! >  `gororoba_optix`
 //! 3. `lbm_3d_cuda` can keep evolving domain-specific OptiX science without also
-//!    owning the loader/runtime substrate
+//! >  owning the loader/runtime substrate
 //!
 //! ## What Is Still Not Done
 //!
@@ -74,11 +74,11 @@
 //! Still to do:
 //!
 //! - extract generic OptiX pipeline-building helpers only if another workload
-//!   beyond LBM actually needs them
+//! beyond LBM actually needs them
 //! - define a backend-neutral viewer frame contract that can surface OptiX-backed
-//!   particle views alongside CUDA or Vulkan volume views
+//! particle views alongside CUDA or Vulkan volume views
 //! - decide whether any of the current OptiX launch/build orchestration should move
-//!   to a second reusable crate or remain solver-local
+//! to a second reusable crate or remain solver-local
 //!
 //! ## Design Rule Going Forward
 //!

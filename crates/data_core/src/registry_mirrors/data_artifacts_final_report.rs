@@ -29,9 +29,9 @@
 //! *   **Nodes:** 148 (Active zero-divisors in sample)
 //! *   **Edges:** 360
 //! *   **Betti Numbers ($\epsilon approx 1.1$):**
-//!     *   $\beta_0 = 7$: Indicates 7 distinct connected components (Clusters).
-//!     *   $\beta_1 = 219$: A massive number of 1-cycles (loops). This confirms the "Box-Kite" structure is highly reticulated and hole-ridden, typical of $G_2$ geometry projections.
-//!     *   $\beta_2 = 0$: No enclosed voids at this scale (mesh-like, not shell-like).
+//! >   *   $\beta_0 = 7$: Indicates 7 distinct connected components (Clusters).
+//! >   *   $\beta_1 = 219$: A massive number of 1-cycles (loops). This confirms the "Box-Kite" structure is highly reticulated and hole-ridden, typical of $G_2$ geometry projections.
+//! >   *   $\beta_2 = 0$: No enclosed voids at this scale (mesh-like, not shell-like).
 //!
 //! ### B. Pathion (32D)
 //!

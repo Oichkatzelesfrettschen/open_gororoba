@@ -36,7 +36,7 @@
 //! - **Content**: Jerry Ehman's annotated explanation of the 6EQUJ5 sequence
 //! - **Key fact**: The peak intensity U=30 corresponds to ~30 sigma above noise
 //! - **Note**: Fan-maintained site, not an institutional source. Cross-reference with
-//!   Ehman (1997) for authoritative details.
+//! Ehman (1997) for authoritative details.
 //!
 //! ### 3. Breakthrough Listen 6EQUJ5 Campaign Hub
 //!
@@ -52,7 +52,7 @@
 //! - **Structure**: `di_YYYYMMDD/spliced_blcNN_guppi_MJDTTTTT_TARGET_OBSNUM/`
 //! - **Products**: Filterbank files (.fil), high-resolution spectrograms
 //! - **CAUTION**: Directory listings return HTML -- never use as provider URL.
-//!   Only explicit file paths (ending in .fil or .h5) are valid download targets.
+//! Only explicit file paths (ending in .fil or .h5) are valid download targets.
 //!
 //! ## Key Bibliography
 //!

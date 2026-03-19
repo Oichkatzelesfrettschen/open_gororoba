@@ -25,27 +25,27 @@
 //!
 //! ### A. Core Algebra (`CURRENT::PATH crates/gororoba_algebra (LEGACY::PATH crates/algebra_core)`)
 //! *   **New Module:** `src/lie/e7_geometry.rs`
-//!     *   Generates the 126 roots of E7 as a subsystem of E8.
-//!     *   Implements `find_e7_triads` to identify resonant triplets ($k+p+q=0$).
-//!     *   Adds `project_to_plane` for Coxeter plane visualization.
+//! >   *   Generates the 126 roots of E7 as a subsystem of E8.
+//! >   *   Implements `find_e7_triads` to identify resonant triplets ($k+p+q=0$).
+//! >   *   Adds `project_to_plane` for Coxeter plane visualization.
 //! *   **New Module:** `src/lie/e7_structure.rs`
-//!     *   Implements `structure_constant` ($N_{\alpha,\beta}$) for E7, providing weights for the interaction graph.
+//! >   *   Implements `structure_constant` ($N_{\alpha,\beta}$) for E7, providing weights for the interaction graph.
 //!
 //! ### B. Fluid Dynamics (`crates/lbm_core`)
 //! *   **New Module:** `src/turbulence.rs`
-//!     *   Implements `SpectralTriad` struct.
-//!     *   Added placeholders for 2D FFT power spectrum and triad extraction (mock logic ready for `rustfft` hookup).
+//! >   *   Implements `SpectralTriad` struct.
+//! >   *   Added placeholders for 2D FFT power spectrum and triad extraction (mock logic ready for `rustfft` hookup).
 //! *   **Dependencies:** Added `rustfft` and `num-complex` to `Cargo.toml`.
 //!
 //! ### C. Statistics & Topology (`crates/stats_core`)
 //! *   **New Module:** `src/hypergraph.rs`
-//!     *   Implements `TriadHypergraph` struct.
-//!     *   Computes **Clustering Coefficient** for 3-uniform hypergraphs (triad networks).
+//! >   *   Implements `TriadHypergraph` struct.
+//! >   *   Computes **Clustering Coefficient** for 3-uniform hypergraphs (triad networks).
 //!
 //! ### D. Visualization & CLI (`crates/gororoba_cli`)
 //! *   **New Binary:** `src/bin/warp_ring_integration.rs`
-//!     *   Full pipeline driver: Simulate Flow -> Extract Triads -> Map to E7 -> Visualize.
-//!     *   Outputs `warp_ring_integration.png` (using `plotters`).
+//! >   *   Full pipeline driver: Simulate Flow -> Extract Triads -> Map to E7 -> Visualize.
+//! >   *   Outputs `warp_ring_integration.png` (using `plotters`).
 //! *   **Registry:** Registered binary in `Cargo.toml`.
 //!
 //! ### E. Documentation (`docs/monograph/`)

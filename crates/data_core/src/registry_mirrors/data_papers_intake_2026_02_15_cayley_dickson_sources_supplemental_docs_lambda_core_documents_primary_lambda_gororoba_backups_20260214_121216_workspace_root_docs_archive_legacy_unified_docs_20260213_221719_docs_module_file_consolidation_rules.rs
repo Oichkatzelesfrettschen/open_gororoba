@@ -8,8 +8,8 @@
 //! - Decision table: `logs/module_consolidation_decisions_20260213_160743.tsv`
 //! - Decision summary: `logs/module_consolidation_summary_20260213_160743.md`
 //! - Stable copies for current phase:
-//!   - `docs/module_file_inventory_latest.tsv`
-//!   - `docs/module_file_consolidation_decisions_latest.tsv`
+//! - `docs/module_file_inventory_latest.tsv`
+//! - `docs/module_file_consolidation_decisions_latest.tsv`
 //!
 //! ## Tooling Used
 //! - Discovery and enumeration: `rg --files`, `find`
@@ -89,15 +89,15 @@
 //!
 //! ## Module-Specific Notes
 //! - `lambda_research`:
-//!   - High document density and taxonomy structure.
-//!   - Prefer consolidation by index unification and duplicate pruning (exact duplicates only).
+//! - High document density and taxonomy structure.
+//! - Prefer consolidation by index unification and duplicate pruning (exact duplicates only).
 //! - `lambda_synthesis_experiments`:
-//!   - Includes 40 parquet shards in `seed/source/data/shards/`.
-//!   - Treat data files as immutable snapshot assets with hash-based provenance.
-//!   - Empty `__init__.py` files are intentional package markers and remain in place.
+//! - Includes 40 parquet shards in `seed/source/data/shards/`.
+//! - Treat data files as immutable snapshot assets with hash-based provenance.
+//! - Empty `__init__.py` files are intentional package markers and remain in place.
 //! - `lambdalearner`:
-//!   - Minimal module snapshot (metadata and package descriptors).
-//!   - Preserve module-root descriptors as canonical.
+//! - Minimal module snapshot (metadata and package descriptors).
+//! - Preserve module-root descriptors as canonical.
 //!
 //! ## Non-Destructive Execution Rule
 //! No file is deleted in this phase. Archive operations are move-only with hash-verified manifests and stable references in `docs/module_archive_moves_latest.tsv`.

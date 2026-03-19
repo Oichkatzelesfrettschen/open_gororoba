@@ -13,137 +13,137 @@
 //! ## Already Shared
 //!
 //! - `gororoba_gpu_bridge`
-//!   - backend capability probing
-//!   - memory/layout/precision vocabulary
-//!   - execution profile metadata
+//! - backend capability probing
+//! - memory/layout/precision vocabulary
+//! - execution profile metadata
 //! - `gororoba_view_core`
-//!   - viewer frame contracts
-//!   - grid/frame metadata
-//!   - backend-neutral transport types
+//! - viewer frame contracts
+//! - grid/frame metadata
+//! - backend-neutral transport types
 //! - `gororoba_optix`
-//!   - generic OptiX runtime loading and current-context device runtime setup
+//! - generic OptiX runtime loading and current-context device runtime setup
 //!
 //! ## Strong Extraction Candidates
 //!
 //! ### 1. Viewer-side scalar volume rasterization
 //!
 //! - current locations
-//!   - `crates/gororoba_cli_physics/src/bin/lbm_live_viewer/transport.rs`
-//!   - `crates/gororoba_cli_physics/src/bin/lbm_slice_viewer.rs`
+//! - `crates/gororoba_cli_physics/src/bin/lbm_live_viewer/transport.rs`
+//! - `crates/gororoba_cli_physics/src/bin/lbm_slice_viewer.rs`
 //! - reusable pattern
-//!   - scalar min/max normalization
-//!   - LUT mapping
-//!   - 3D volume slice extraction to ARGB/RGBA
+//! - scalar min/max normalization
+//! - LUT mapping
+//! - 3D volume slice extraction to ARGB/RGBA
 //! - extracted crate
-//!   - `gororoba_view_raster`
+//! - `gororoba_view_raster`
 //! - dependency profile
-//!   - no CUDA
-//!   - no Vulkan
-//!   - no LBM
+//! - no CUDA
+//! - no Vulkan
+//! - no LBM
 //! - current status
-//!   - implemented and now used by `lbm-live-viewer`
-//!   - adopted by `lbm-slice-viewer` to remove duplicated slice/LUT code
+//! - implemented and now used by `lbm-live-viewer`
+//! - adopted by `lbm-slice-viewer` to remove duplicated slice/LUT code
 //!
 //! ### 2. Simulation initialization motifs
 //!
 //! - current locations
-//!   - `lbm-live-viewer` Taylor-Green initialization
-//!   - several CUDA/CPU benchmarks and demos reimplement similar setup patterns
+//! - `lbm-live-viewer` Taylor-Green initialization
+//! - several CUDA/CPU benchmarks and demos reimplement similar setup patterns
 //! - reusable pattern
-//!   - standard initial conditions like Taylor-Green and simple perturbations
+//! - standard initial conditions like Taylor-Green and simple perturbations
 //! - proposed future crate
-//!   - `gororoba_sim_init`
+//! - `gororoba_sim_init`
 //! - dependency profile
-//!   - CPU-only
-//!   - no backend dependence
+//! - CPU-only
+//! - no backend dependence
 //! - caution
-//!   - keep LBM-specific distribution initialization in solver crates
-//!   - only share macroscopic initial-condition builders
+//! - keep LBM-specific distribution initialization in solver crates
+//! - only share macroscopic initial-condition builders
 //!
 //! ### 3. Sparse grid metadata and tile windows
 //!
 //! - current locations
-//!   - `crates/lbm_3d_cuda/src/sparse/mod.rs`
+//! - `crates/lbm_3d_cuda/src/sparse/mod.rs`
 //! - reusable pattern
-//!   - occupancy bitsets
-//!   - indirect active-brick tables
-//!   - tile-window planning over sparse active sets
+//! - occupancy bitsets
+//! - indirect active-brick tables
+//! - tile-window planning over sparse active sets
 //! - proposed future crate
-//!   - `gororoba_sparse_grid`
+//! - `gororoba_sparse_grid`
 //! - current status
-//!   - descriptor-first crate extracted
-//!   - first owner-side adoption started in heliosphere sparse planning
-//!   - sparse CUDA tile-window bookkeeping now shares the `ActiveBrickWindow`
-//!     shape
-//!   - OptiX brick-grid math now shares sparse-grid geometry
+//! - descriptor-first crate extracted
+//! - first owner-side adoption started in heliosphere sparse planning
+//! - sparse CUDA tile-window bookkeeping now shares the `ActiveBrickWindow`
+//! >   shape
+//! - OptiX brick-grid math now shares sparse-grid geometry
 //! - dependency profile
-//!   - should stay free of CUDA runtime bindings at the core type layer
+//! - should stay free of CUDA runtime bindings at the core type layer
 //! - scoped in
-//!   - `docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md`
+//! - `docs/engineering/SPARSE_GRID_EXTRACTION_SCOPE_2026_03_17.md`
 //! - caution
-//!   - brick thresholds and density semantics remain workload-local
+//! - brick thresholds and density semantics remain workload-local
 //!
 //! ### 4. Generic GPU readback helpers
 //!
 //! - current locations
-//!   - `crates/lbm_3d_cuda/src/lib.rs`
-//!   - `crates/lbm_vulkan/src/compute.rs`
+//! - `crates/lbm_3d_cuda/src/lib.rs`
+//! - `crates/lbm_vulkan/src/compute.rs`
 //! - reusable pattern
-//!   - pinned host readback
-//!   - device-to-host staging contracts
-//!   - frame/image readback descriptors
+//! - pinned host readback
+//! - device-to-host staging contracts
+//! - frame/image readback descriptors
 //! - proposed future crate
-//!   - `gororoba_gpu_readback`
+//! - `gororoba_gpu_readback`
 //! - current status
-//!   - descriptor-first crate extracted
-//!   - first owner-side adoption started in CUDA and Vulkan descriptor methods
-//!   - viewer metadata now carries readback descriptors instead of keeping them
-//!     implicit
+//! - descriptor-first crate extracted
+//! - first owner-side adoption started in CUDA and Vulkan descriptor methods
+//! - viewer metadata now carries readback descriptors instead of keeping them
+//! >   implicit
 //! - scoped in
-//!   - `docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
+//! - `docs/engineering/GPU_READBACK_EXTRACTION_SCOPE_2026_03_17.md`
 //! - caution
-//!   - Vulkan command submission and CUDA solver ownership should stay local
-//!   - only extract helper contracts and buffer copy utilities
+//! - Vulkan command submission and CUDA solver ownership should stay local
+//! - only extract helper contracts and buffer copy utilities
 //!
 //! ### 5. Interactive viewer state
 //!
 //! - current locations
-//!   - `crates/gororoba_cli_physics/src/bin/lbm_live_viewer/camera_input.rs`
+//! - `crates/gororoba_cli_physics/src/bin/lbm_live_viewer/camera_input.rs`
 //! - reusable pattern
-//!   - frontend loop
-//!   - input actions
-//!   - runtime status metadata formatting
+//! - frontend loop
+//! - input actions
+//! - runtime status metadata formatting
 //! - proposed future crate
-//!   - `gororoba_view_frontend`
+//! - `gororoba_view_frontend`
 //! - caution
-//!   - keep one simple frontend path first
-//!   - avoid creating a framework before multiple applications use it
+//! - keep one simple frontend path first
+//! - avoid creating a framework before multiple applications use it
 //!
 //! ## Deferred Candidates
 //!
 //! ### Vulkan helper extraction
 //!
 //! - current files
-//!   - `crates/lbm_vulkan/src/compute.rs`
-//!   - `crates/lbm_vulkan/src/lib.rs`
-//!   - `crates/lbm_vulkan/src/swapchain.rs`
+//! - `crates/lbm_vulkan/src/compute.rs`
+//! - `crates/lbm_vulkan/src/lib.rs`
+//! - `crates/lbm_vulkan/src/swapchain.rs`
 //! - what is probably reusable later
-//!   - capability probing
-//!   - generic command-pool setup
-//!   - generic image readback
+//! - capability probing
+//! - generic command-pool setup
+//! - generic image readback
 //! - why deferred now
-//!   - `GororobaEngine` still owns LBM-specific command sequencing
-//!   - there is not yet a second renderer that uses the same helpers
+//! - `GororobaEngine` still owns LBM-specific command sequencing
+//! - there is not yet a second renderer that uses the same helpers
 //!
 //! ### OptiX pipeline assembly helpers
 //!
 //! - current files
-//!   - `crates/lbm_3d_cuda/src/optix_pipeline.rs`
-//!   - `crates/lbm_3d_cuda/src/optix_orchestrator.rs`
+//! - `crates/lbm_3d_cuda/src/optix_pipeline.rs`
+//! - `crates/lbm_3d_cuda/src/optix_orchestrator.rs`
 //! - what is probably reusable later
-//!   - compile/module/pipeline convenience wrappers
+//! - compile/module/pipeline convenience wrappers
 //! - why deferred now
-//!   - current launch and SBT ownership still depend on LBM tracer semantics
+//! - current launch and SBT ownership still depend on LBM tracer semantics
 //!
 //! ## Must Stay Solver-Local
 //!
@@ -186,7 +186,7 @@
 //!
 //! 1. Keep the CPU, CUDA, and OptiX-backed viewer adapters as the reference seam.
 //! 2. Revisit Vulkan helper extraction only after an independent renderer needs the
-//!    same capability/readback helpers.
+//! >  same capability/readback helpers.
 //! 3. Decide whether `gororoba_view_raster` should absorb more generic particle or
-//!    image projection helpers, or stay deliberately small.
+//! >  image projection helpers, or stay deliberately small.
 //!

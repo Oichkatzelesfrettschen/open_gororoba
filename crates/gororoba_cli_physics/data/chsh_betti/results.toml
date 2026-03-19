@@ -1,5 +1,5 @@
 # CHSH-Betti Correlation Sweep (GPU FP64)
-# grid=16^3 steps=500 threshold=0
+# grid=64^3 steps=200 threshold=0
 # verdict = INCONCLUSIVE
 
 [[config]]

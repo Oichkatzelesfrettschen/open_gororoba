@@ -52,13 +52,13 @@
 //! Two key parallelized functions:
 //!
 //! 1. `casimir_energy_profile` (line ~156): parallelizes over spatial points along
-//!    a 1D line using `into_par_iter()`, mapping each position to energy density
-//!    via worldline path integral.
+//! >  a 1D line using `into_par_iter()`, mapping each position to energy density
+//! >  via worldline path integral.
 //!
 //! 2. `casimir_energy_field_3d` (line ~209): parallelizes over all grid points in a
-//!    3D domain. Each grid cell `(ix, iy, iz)` is evaluated independently via
-//!    `casimir_energy_at_point()`. Output is a flat `Vec<f64>` in row-major order,
-//!    suitable for GPU 3D textures.
+//! >  3D domain. Each grid cell `(ix, iy, iz)` is evaluated independently via
+//! >  `casimir_energy_at_point()`. Output is a flat `Vec<f64>` in row-major order,
+//! >  suitable for GPU 3D textures.
 //!
 //! Configuration via `WorldlineCasimirConfig`: 10,000 loops, 1,000 points per
 //! loop, 32 Gauss-Legendre quadrature nodes (default). Gauss-Legendre integration
@@ -139,7 +139,7 @@
 //! magnitude offset M_B. For N supernovae with distance moduli mu_i and model
 //! predictions mu_model_i, the marginalized chi2 is:
 //!
-//!   chi2 = A - B^2/C + ln(C/(2*pi))
+//! chi2 = A - B^2/C + ln(C/(2*pi))
 //!
 //! where A = sum((mu_i - mu_model_i)^2 / sigma_i^2), B = sum((mu_i - mu_model_i)
 //! / sigma_i^2), C = sum(1/sigma_i^2). This eliminates M_B as a free parameter

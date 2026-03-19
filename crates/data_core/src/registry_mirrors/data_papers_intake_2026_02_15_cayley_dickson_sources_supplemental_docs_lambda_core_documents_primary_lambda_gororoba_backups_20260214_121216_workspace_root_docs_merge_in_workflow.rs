@@ -12,23 +12,23 @@
 //! ## Intake status
 //! - `merge_in/` is retired from active syncing.
 //! - Historical intake repositories are preserved under:
-//!   - `archive/intake_lane_retirement/<TS>/merge_in/`
+//! - `archive/intake_lane_retirement/<TS>/merge_in/`
 //!
 //! ## Operational commands
 //! - Run singular sync + audit:
-//!   - `bash scripts/sync_and_audit_workspace.sh`
+//! - `bash scripts/sync_and_audit_workspace.sh`
 //! - Run singular reconciliation directly:
-//!   - `bash scripts/merge_into_singular_structure.sh`
+//! - `bash scripts/merge_into_singular_structure.sh`
 //! - Run reproducibility checklist:
-//!   - `bash scripts/verify_build_test_reproducibility.sh`
+//! - `bash scripts/verify_build_test_reproducibility.sh`
 //! - Run top-level claims verification:
-//!   - `bash scripts/verify_top_level_claims.sh`
+//! - `bash scripts/verify_top_level_claims.sh`
 //! - Run visual docs style verification:
-//!   - `bash scripts/verify_visual_docs_style.sh`
+//! - `bash scripts/verify_visual_docs_style.sh`
 //! - Generate dark-mode singular merge infographic artifact:
-//!   - `python3 scripts/generate_singular_merge_infographic.py`
+//! - `python3 scripts/generate_singular_merge_infographic.py`
 //! - Backup all workspace docs to `~/Documents`:
-//!   - `bash scripts/backup_documents_workspace.sh`
+//! - `bash scripts/backup_documents_workspace.sh`
 //!
 //! ## Evidence outputs
 //! - Sync audit: `logs/workspace_sync_audit_<TS>.md`

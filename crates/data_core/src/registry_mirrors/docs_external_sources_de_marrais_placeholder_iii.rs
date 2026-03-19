@@ -35,9 +35,9 @@
 //! ### Key Results
 //!
 //! - The bit-string recipe reproduces all known ZD structures for sedenions (16D)
-//!   and pathions (32D) and predicts the structure for chingons (64D) and beyond.
+//! and pathions (32D) and predicts the structure for chingons (64D) and beyond.
 //! - The construction is inherently recursive: ZDs in 2^{N+1}-ions are built
-//!   from those in 2^N-ions by applying generator-based index transformations.
+//! from those in 2^N-ions by applying generator-based index transformations.
 //! - The "carry-bit overflow" phenomenon (the source of ZDs beyond the octonions)
-//!   is traceable through bit-string patterns, connecting to cellular automata.
+//! is traceable through bit-string patterns, connecting to cellular automata.
 //!

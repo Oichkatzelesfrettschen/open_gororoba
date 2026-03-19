@@ -10,7 +10,7 @@
 //!
 //! Exit code: `2`
 //!
-//! ```texttext
+//! ```ignore
 //! ... (70 earlier line(s) omitted)
 //! - registry/data/curated_csv/CU-0216_universal_algebra_s_predictive_mathematical_structures_for_experimental_verification_in_high_energy_physics_quantum_computing_and_cosmology_2.toml: file missing on disk
 //! - registry/data/curated_csv/CU-0277_fractal_surreal_tensor_network_evolution_in_quantum_computing_2.toml: file missing on disk
@@ -32,14 +32,14 @@
 //! - markdown destination missing from TOML inventory: registry/canonical/control_plane.sqlite3
 //! make[1]: *** [Makefile:322: registry-control-plane-gate-readonly] Error 1
 //! make: *** [Makefile:254: gate-ci-registry] Error 2
-//! ```texttext
+//! ```ignore
 //! | `gate-ci-rust` | `2` | `reports/gates/2026-03-15/095943/gate-ci-rust.log` |
 //!
 //! ## gate-ci-rust
 //!
 //! Exit code: `2`
 //!
-//! ```texttext
+//! ```ignore
 //! ... (1709 earlier line(s) omitted)
 //! WARN [dataset_providers]: Provider GwoscCombinedProvider in Rust fetch registry but not documented in provider manifest
 //! WARN [dataset_providers]: Provider ImapHelio1hrProvider in Rust fetch registry but not documented in provider manifest
@@ -49,9 +49,9 @@
 //! WARN [dataset_providers]: Provider ThingsTablesProvider in Rust fetch registry but not documented in provider manifest
 //! WARN [dataset_providers]: Provider WowPrintoutProvider in Rust fetch registry but not documented in provider manifest
 //! OK: dataset_providers
-//!    Compiling gororoba_cli_data v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_data)
-//!     Finished `dev` profile [optimized + debuginfo] target(s) in 1.06s
-//!      Running `.cache/gate-target/debug/test-inventory --check`
+//! >  Compiling gororoba_cli_data v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_data)
+//! >   Finished `dev` profile [optimized + debuginfo] target(s) in 1.06s
+//! >    Running `.cache/gate-target/debug/test-inventory --check`
 //! ERROR: unclassified pytest file `tests/test_dataset_label_alias_verifier.py` is missing from registry/test_taxonomy.toml
 //! ERROR: unclassified pytest file `tests/test_execution_planning_registry_contracts.py` is missing from registry/test_taxonomy.toml
 //! ERROR: unclassified pytest file `tests/test_execution_planning_verifier_script.py` is missing from registry/test_taxonomy.toml
@@ -61,14 +61,14 @@
 //! make[2]: *** [Makefile:344: test-inventory] Error 1
 //! make[1]: *** [Makefile:339: integrity-rust] Error 2
 //! make: *** [Makefile:260: gate-ci-rust] Error 2
-//! ```texttext
+//! ```ignore
 //! | `nextest-list` | `0` | `reports/gates/2026-03-15/095943/nextest-list.log` |
 //!
 //! ## nextest-list
 //!
 //! Exit code: `0`
 //!
-//! ```texttext
+//! ```ignore
 //! ... (5805 earlier line(s) omitted)
 //! verified_core::cross_validate cross_validate_arbitrary_rotation
 //! verified_core::cross_validate cross_validate_identity
@@ -87,10 +87,10 @@
 //! verified_core::cross_validate_sprint59 cross_validate_quat_norm_multiplicative
 //! verified_core::cross_validate_sprint59 cross_validate_tcmt_antiresonance
 //! verified_core::cross_validate_sprint59 cross_validate_tcmt_unitarity
-//!    Compiling algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis)
-//!    Compiling gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core)
-//!     Finished `test` profile [optimized + debuginfo] target(s) in 14.43s
-//! ```texttext
+//! >  Compiling algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis)
+//! >  Compiling gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core)
+//! >   Finished `test` profile [optimized + debuginfo] target(s) in 14.43s
+//! ```ignore
 //!
 //! Gate audit failed in 2 step(s).
 //!

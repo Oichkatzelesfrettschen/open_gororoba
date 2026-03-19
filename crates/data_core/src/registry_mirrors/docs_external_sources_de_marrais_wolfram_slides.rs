@@ -12,13 +12,13 @@
 //!
 //! ## Full Transcript
 //!
-//! ```texttext
+//! ```ignore
 //! The "Something From Nothing" Insertion Point: Where NKS Research
-//!  into Physics Foundations Can Expect the "Most Bang for the Buck"
-//!                       Robert de Marrais rdemarrais@alum.mit.edu
+//! into Physics Foundations Can Expect the "Most Bang for the Buck"
+//! >                     Robert de Marrais rdemarrais@alum.mit.edu
 //!
 //! 1: Introducing the "Box-Kite Papers" and Zero-Divisors Generally
-//!          The focus of this presentation is the largely unexplored subject of "zero-divisors,"
+//! >        The focus of this presentation is the largely unexplored subject of "zero-divisors,"
 //! (henceforth, "ZD's") which are forms of (hypercomplex) imaginary numbers with the
 //! peculiar property that two such, if chosen properly, are both substantial quantities - yet
 //! they have, as their product, nothing. Like the gnarly "coastline curves" classical analysis
@@ -32,7 +32,7 @@
 //! extensions of imaginaries. This led immediately to my own research, and a series of three
 //! monographs and counting which I call, for visually intuitive reasons I'll get to in short
 //! order, the "box-kite papers," shorthanded herein as BK1, BK2, and BK3 respectively.3)
-//!          What Hurwitz showed in 1896 marked the end, in one key sense, of the revolution
+//! >        What Hurwitz showed in 1896 marked the end, in one key sense, of the revolution
 //! begun in the 1810's by taking those entities Descartes had derisively deemed "imaginary"
 //! seriously. The stupendously deep rethinking of all mathematics they facilitated in the
 //! hands of Gauss, Galois, Fourier, Reimann, et al., led some people to suspect a general
@@ -42,7 +42,7 @@
 //! formula "i2 = j2 = k2 = ijk = -1" with a penknife on the bridge he was crossing. What
 //! made finding this easy equation so difficult is this codicil: ij = -ji, and ditto for jk (and
 //! -kj) and ki (and -ik), which is to say Quaternion multiplication is anti-commutative.
-//!          Those familiar with the Feynman lectures will know, though, that this is precisely
+//! >        Those familiar with the Feynman lectures will know, though, that this is precisely
 //! what's required for a basis of vectors describing the way real forces work (which the great
 //! Brooklyn physicist was wont to demonstrate by rotating books and other objects in two
 //! different senses, in differing sequence, in class). If losing the commutative law of mul-
@@ -59,14 +59,14 @@
 //!
 //!
 //! R. de Marrais                              Page 1               "Something From Nothing"
-//!          Algebraically, the number fields of Imaginaries, Quaternions, and Octonions (usu-
+//! >        Algebraically, the number fields of Imaginaries, Quaternions, and Octonions (usu-
 //! ally indicated by C for complex, H for Hamilton, and O) all conform to a "squares rule":
 //! expressing, say, an arbitrary complex number as z = a + bi, and another as z' = c + di, we
 //! take for granted that the absolute value of their product is equal to the product of their ab-
 //! solute values (i.e., it "has a norm"); alternatively, writing things out in terms of compo-
 //! nents, we get a relationship between squares (i.e., "the product of one sum of two squares
 //! by another is a sum of two squares as well"): (ac - bd)2 + (ad + bc)2 = (a2 + b2)(c2 + d2)
-//!         This generalizes to sums of 4 and 8 squares, for Quaternions and Octonions in that
+//! >       This generalizes to sums of 4 and 8 squares, for Quaternions and Octonions in that
 //! order, and the formulas, while excruciatingly tedious to calculate in the pre-computer
 //! days when Cayley and company were investigating all this, are conceptually, at least,
 //! rather easy to grasp. People naturally wanted to keep doubling dimensions, to find even
@@ -75,7 +75,7 @@
 //! very notion of a norm (and hence possibility of a straightforward "squares rule"5) goes out
 //! the window. That is, defining a metric (and hence, standard "field" structure) becomes
 //! problematic; corollarily, you get zero-divisors (i.e., number-theoretic "black holes").
-//!         That last parenthetical remark, though, suggests a context wherein Sedenions, and
+//! >       That last parenthetical remark, though, suggests a context wherein Sedenions, and
 //! even higher 2N-ions, might prove of real use: studying quantum gravity. Of the many
 //! aspects of the latter that make it hard to integrate with standard QM, one in particular
 //! makes the breakdown of norms spring to mind: the index of what we might call an
@@ -86,14 +86,14 @@
 //! "hypercomplexity"required to study their limit-case phenomena (linked in turn to certain
 //! limit-case constants, such as Einstein's c and Planck's h, for C and H respectively):
 //!
-//!        Complex numbers seem to have a fundamental connection with the special
-//!        theory of relativity allowing to introduce the light cone and a
-//!        nondetermined interval for events. The noncommutativity of QM is
-//!        related to the uncertainty relations and the complementarity principle, and
-//!        is characteristically represented by the quaternion units satisfying the same
-//!        commutation relations as do the angular momentum operators.6
+//! >      Complex numbers seem to have a fundamental connection with the special
+//! >      theory of relativity allowing to introduce the light cone and a
+//! >      nondetermined interval for events. The noncommutativity of QM is
+//! >      related to the uncertainty relations and the complementarity principle, and
+//! >      is characteristically represented by the quaternion units satisfying the same
+//! >      commutation relations as do the angular momentum operators.6
 //!
-//!          The authors also discuss Octonionic arguments advanced since the 1970's to
+//! >        The authors also discuss Octonionic arguments advanced since the 1970's to
 //! model a third infobarrier, associated with the strong force: quark confinement. And
 //! clearly, Octonionic modeling has been running rampant since the advent of superstrings
 //! and M-Theory, where a stress that sometimes verges on "negative theology" is placed
@@ -106,7 +106,7 @@
 //! own thoughts (with progressively emerging links to NKS modeling) begin . . .
 //!
 //! R. de Marrais                              Page 2               "Something From Nothing"
-//!           The Estonians play with various preparations of Sedenions which serve to mute or
+//! >         The Estonians play with various preparations of Sedenions which serve to mute or
 //! suppress their distinctive zero-divisor features: "binary" and "ternary" Sedenion schemes
 //! which can be almost tamed by matrix methods, etc. This is understandable, as they were
 //! thinking about "infobarriers" at a time when ZD's still seemed "pathological." But the
@@ -120,7 +120,7 @@
 //! ternions' "i, j, k" , which interpenetrate in a manner at once remarkably simple, yet ex-
 //! ceedingly rich from a modeler's vantage), in cloistered algebraic "safe-houses" whose
 //! building blocks are the octahedral lattices of ZD's I call "box-kites."
-//!          From here on out, I will have much less to say about physics per se, and much
+//! >        From here on out, I will have much less to say about physics per se, and much
 //! more about mustering as a general NKS phenomenon. Indeed, the title of this presenta-
 //! tion was submitted while I was still framing BK3 - but, much to my surprise, the physics
 //! focus of the results presented therein took shape much more quickly than anticipated,
@@ -138,7 +138,7 @@
 //! such), with the same multiplication tables as Quaternions and Octonions, but with their
 //! probabilistic nature implicit in (not superimposed upon) their workings . . . if such ideas
 //! are of interest to you, please go to BK3. For I'll have no more to say about them here.
-//!          What I do want from physics, to start with, is what one philosopher of science has
+//! >        What I do want from physics, to start with, is what one philosopher of science has
 //! called a "remote analogy"9: one which, if not taken too literally, can help guide our
 //! thoughts into the strange terrain we're entering. I refer to the cosmological notion which
 //! has only been taken seriously for about 4 years now, known as "co-evolution." Since
@@ -153,9 +153,9 @@
 //! massive black holes" which center and structure the galaxies of number.
 //!
 //! R. de Marrais                              Page 3               "Something From Nothing"
-//!                          No
+//! >                        No
 //! 2: The Theory of Everything: Starter-Kit Concepts
-//!         BK3 ends with two pages presenting and generalizing from a "synchronization
+//! >       BK3 ends with two pages presenting and generalizing from a "synchronization
 //! table" displaying a fundamental property I call "trip-sync," for short for synchronization
 //! of associative triplets (a.k.a., systems of mutually interpenetrating Quaternion copies).
 //! Other phenomena (in particular, the "sand mandalas" in the 32-D "Pathions," whose
@@ -169,13 +169,13 @@
 //! much more than the defining properties of Box-Kite lattices themselves. So Trip-Sync's
 //! deployment will mark the end-point of the presentation here of the "starter-kit concepts"
 //! - after which, the "work in progress" of "mustering theory" proper can be broached.
-//!         To get to a point where "trip-sync" will seem a natural thing to contemplate, we
+//! >       To get to a point where "trip-sync" will seem a natural thing to contemplate, we
 //! need to consider, first, notation; next, the Cayley-Dixon Process (or CDP), the algorithm
 //! which allows us to build 2N+1-ions from 2N-ions for N arbitrarily large; then, Box-Kites
 //! themselves, which the right notation will make easy to explain, and ensembles of which,
 //! in higher-than-16 dimensions, CDP machinery will let us investigate and navigate with
 //! minimal pain.
-//!         While the Quaternions have but two distinct representations, hence two labeling
+//! >       While the Quaternions have but two distinct representations, hence two labeling
 //! schemes (ij = k, or ik = j), the Octonions have no fewer than 480, and the Sedenions a
 //! few hundred billion. Nor are all the Octonionic schemes simply "equivalent" in all situa-
 //! tions; nor are arbitrary labeling schemes for the Sedenions necessarily useful or even
@@ -186,7 +186,7 @@
 //! axes with subscripts running from 0 (for the reals) to 2N-1, so that products of two such
 //! units will have indices equal to the XOR of the indices of their factors. This is not only
 //! do-able for all N, but simple to work with to boot.
-//!         For the Quaternions, the rule is trivial: instead of i, j, k, write i1 , i2 , i3; and, since
+//! >       For the Quaternions, the rule is trivial: instead of i, j, k, write i1 , i2 , i3; and, since
 //! 1 xor 2 = 3, the product of any pair of axes yields the third. What's not so trivial is the
 //! sign, though, of the resultant unit. And since, with the Octonions, multiple labeling
 //! schemes conforming to our XOR rule are possible (and actually in use), we choose that
@@ -200,15 +200,15 @@
 //!
 //!
 //! R. de Marrais                                 Page 4                 "Something From Nothing"
-//!         As composing strings of subscripted "i"'s is quite tedious, let's just write the
+//! >       As composing strings of subscripted "i"'s is quite tedious, let's just write the
 //! indices in comma-delimited, parenthesized lists of 3, in cyclical order. Put the lowest
 //! index number first, then the index whose product with it yields the positive value of the
 //! third. The Quaternions' "i, j, k" hence gets signified this way: (1, 2, 3). The seven
 //! associative triplets (henceforth, "O-trips") found in the Octonions are written thus:
 //!
-//!               (1, 2, 3); (1, 4, 5); (1, 7, 6); (2, 4, 6); (2, 5, 7); (3, 4, 7); (3, 6, 5)
+//! >             (1, 2, 3); (1, 4, 5); (1, 7, 6); (2, 4, 6); (2, 5, 7); (3, 4, 7); (3, 6, 5)
 //!
-//!          Note two things: first, each such triplet is clearly "XOR compliant" per my ear-
+//! >        Note two things: first, each such triplet is clearly "XOR compliant" per my ear-
 //! lier remarks - scanning the list right to left, 3 xor 6 ( = 011 xor 110 = 101) = 5; 3 xor 4
 //! ( = 011 xor 100 = 111) = 7; ... Second, this particular mode of XOR compliance displays
 //! 2 triplets (bolded in red) where counting and cyclical orders differ: (1, 7, 6) and (3, 6, 5)
@@ -216,18 +216,18 @@
 //! 5, 6). Labelings are possible (and actually in use among some physicists) where only one
 //! triplet is written "out of order"; it is not possible, however, to come up with a labeling
 //! where counting order and product signing are in accord in all 7 instances.
-//!          The Sedenions include the 7 O-trips, but also contain 28 other associative triplets
+//! >        The Sedenions include the 7 O-trips, but also contain 28 other associative triplets
 //! (henceforth, "S-trips") which I now list (again red-bolding those "out of order"):
 //!
-//!        (1, 8, 9)                 (1, 11, 10)               (1, 13, 12)               (1, 14, 15)
-//!        (2, 8, 10)                (2, 9, 11)                (2, 14, 12)               (2, 15, 13)
-//!        (3, 8, 11)                (3, 10, 9)                (3, 15, 12)               (3, 13, 14)
-//!        (4, 8, 12)                (4, 9, 13)                (4, 10, 14)               (4, 11, 15)
-//!        (5, 8, 13)                (5, 12, 9)                (5, 10, 15)               (5, 14, 11)
-//!        (6, 8, 14)                (6, 15, 9)                (6, 12, 10)               (6, 11, 13)
-//!        (7, 8, 15)                (7, 9, 14)                (7, 13, 10)               (7, 12, 11)
+//! >      (1, 8, 9)                 (1, 11, 10)               (1, 13, 12)               (1, 14, 15)
+//! >      (2, 8, 10)                (2, 9, 11)                (2, 14, 12)               (2, 15, 13)
+//! >      (3, 8, 11)                (3, 10, 9)                (3, 15, 12)               (3, 13, 14)
+//! >      (4, 8, 12)                (4, 9, 13)                (4, 10, 14)               (4, 11, 15)
+//! >      (5, 8, 13)                (5, 12, 9)                (5, 10, 15)               (5, 14, 11)
+//! >      (6, 8, 14)                (6, 15, 9)                (6, 12, 10)               (6, 11, 13)
+//! >      (7, 8, 15)                (7, 9, 14)                (7, 13, 10)               (7, 12, 11)
 //!
-//!          For the first column only, all triplets display both counting and signing order, so
+//! >        For the first column only, all triplets display both counting and signing order, so
 //! that the xor of the smaller pair of indices is identical to their sum. This is directly related
 //! to the workings of CDP: for the key is the middle term in each, namely 8 = 23. The unit
 //! corresponding to this index is the CDP generator: in general, to get 2N+1-ions from their
@@ -237,7 +237,7 @@
 //! divisors: take any arbitrary Octonion of index o (7 choices); then take any Sedenion of
 //! index S, such that S is neither 8 nor the xor of o with 8 (6 choices); the diagonal lines in
 //! the ( o, S ) plane (one of the 7<U+00B7>6 = "42 Assessors") will have all their points be ZD's.
-//!          The tricky part is figuring out which diagonals zero-divide with which. This is
+//! >        The tricky part is figuring out which diagonals zero-divide with which. This is
 //! quite different from the situation found in standard QM, where a special (and, from our
 //! purview, degenerate) case of ZD's has a crucial role to play. If we de-reify the usual
 //! operator formalism to reveal the "inner number theory" trying to get out, we can see that
@@ -247,7 +247,7 @@
 //! of one zero-dividing each point of the other. Now let's say this again, in simpler English.
 //!
 //! R. de Marrais                                  Page 5                    "Something From Nothing"
-//!          We know that a Complex "line" is really a plane; the product of two such lines,
+//! >        We know that a Complex "line" is really a plane; the product of two such lines,
 //! then, is really a 4-space. This space is not navigated by the Quaternions, since it's pro-
 //! duced by 2 real axes and 2 imaginaries; but: in one of the great magic acts of modern
 //! mathematics, this "bicomplex" 4-space (as navigated by the "unitary rotation group"
@@ -261,25 +261,25 @@
 //! unit) have been represented by the trio of 2 x 2 "Pauli spin matrices." (All 3 of these, plus
 //! the Quaternions, plus the "commutative imaginaries," together span the 8-D space called
 //! "Cl3"; we won't be needing to know about this here, though, fortunately!)
-//!         If we signify "mirror numbers" by the letter m, then the standard projection opera-
+//! >       If we signify "mirror numbers" by the letter m, then the standard projection opera-
 //! tors can be written thus: <U+00BD>(1 + m). It's easy to show that, for each of these quantities,
 //! raising it to any arbitrary power leaves it unchanged; hence, each operates along its diago-
 //! nal in the (1, m) plane like the '1' on the real axis - which is to say, it's idempotent. It's
 //! also easy to see that their product (and hence that of any point on the one diagonal times
 //! any on the other) displays nilpotency as well, since (1 + m)(1 - m) = 1 + m - m - 1 = 0.
-//!         The diagonals of the 42 planes I've called "Assessors" in the Sedenions are like-
+//! >       The diagonals of the 42 planes I've called "Assessors" in the Sedenions are like-
 //! wise ZD's, but with a difference: they never mutually zero-divide, and they only zero-
 //! divide with points on one or the other (but never both) diagonals in some other Assessors.
 //! And we can narrow this down further: they only zero-divide with four other Assessors, in
 //! such a manner that points on the "\" diagonal in one will zero-divide with points on one
 //! of another Assessor's diagonals, while the "/" diagonal will zero-divide with the other.
-//!         More specific yet: unlike "projection operators," which always come in pairs,
+//! >       More specific yet: unlike "projection operators," which always come in pairs,
 //! Assessor planes containing mutually zero-dividing diagonals come in threes. And, since
 //! each Assessor participates in two such (otherwise unconnected) trios, it turns out that the
 //! simplest layout is actually the one followed: i.e., the ZD activity of each Assessor is con-
 //! strained within an octahedral arrangement of four "Co-Assessor trios," where each vertex
 //! represents an Assessor plane, and the trios only share vertices, not edges, with each other.
-//!         Note, too, the "edge signs," indicating which diagonals form ZD's with which,
+//! >       Note, too, the "edge signs," indicating which diagonals form ZD's with which,
 //! when two Assessors joined by an edge are considered: if diagonals must have the same
 //! orientation (" \ <U+00B7> \ " or " / <U+00B7> / "), mark the edge "+"; otherwise, write "- ". Then color in
 //! the 4 triangles whose edges form "closed cycles" (for vertices A, B, C, each Assessor
@@ -287,19 +287,19 @@
 //! call them "Sails." Call the other 4 "Vents," and you get an octahedral "Box-Kite" which
 //! can fly in Sedenion winds. 7 such, all isomorphic, partition the 42 Assessors, each taking
 //! 6; from these simple structures, the entire "pathology" of Sedenion ZD's can be grasped.
-//!         The monicker "Box-Kite" is further justified by the fact that while the real-world
+//! >       The monicker "Box-Kite" is further justified by the fact that while the real-world
 //! variety have wooden struts separating opposite vertices, thereby creating support and sta-
 //! bility sufficient to let them fly, "struts" provide the crucial ingredient in our ethereal Box-
 //! Kites as well: the 3 pairs of Assessors joined by "struts" do not mutually zero-divide!
 //!
 //! R. de Marrais                                 Page 6                 "Something From Nothing"
-//!         SEDENION "STRUT TABLE"
+//! >       SEDENION "STRUT TABLE"
 //!
 //! Read off struts in "nested parentheses" fashion:
 //!
-//!         AF, BE, CD = the 3 Struts
-//!     ABC, ADE, FCE, FDB = the 4 Sails
-//!       (with ABC the "Zigzag" Sail)
+//! >       AF, BE, CD = the 3 Struts
+//! >   ABC, ADE, FCE, FDB = the 4 Sails
+//! >     (with ABC the "Zigzag" Sail)
 //!
 //! Box- Goto11
 //! Kite #'s      A       B        C     D     E              F .
@@ -311,28 +311,28 @@
 //! VI 6,1,2,5 3, 13 4, 10       7, 9 1, 15 2, 12           5, 11
 //! VII 2,1,4,7 1, 14 4, 11     5, 10 2, 13 3, 12           6, 9
 //!
-//!          Struts have another major property: products of all 3 "strut pairs" in a Box-Kite
+//! >        Struts have another major property: products of all 3 "strut pairs" in a Box-Kite
 //! obey the same pattern; the (o, S) multiplications always yield the generator (the index-8
 //! unit in the Sedenions); the (o, o) and (S, S) pairings, though, always result in the "missing
 //! Octonion" (since an Octonion index resides at each vertex, of which there are 6, one must
 //! be absent!) which serves as the signature, or "strut constant," of the Box-Kite in question.
 //! To differentiate it from an index proper, I write it with a Roman numeral, as shown in the
 //! left-most column in the "Strut Table" above.
-//!          The 12 "edge-signs," drawn above right on the Box-Kite, evenly divide between
+//! >        The 12 "edge-signs," drawn above right on the Box-Kite, evenly divide between
 //! "+" and "- "; but "- "'s cluster in such a manner as to form the edges of two opposite
 //! faces of the octahedron, one of which is a Vent, the other a Sail. The convention here is
 //! to assume this Sail is ABC (making its corresponding Vent DEF). This special Sail I call
 //! the "Zigzag," since traversing the edges so that one always "makes zero" creates a 6-cycle
 //! of flipflopped traversals: multiply mutual ZD's from A and B, then B and C, then C and
 //! A, and begin, say, with the "\"; the lines picked will keep switching like this: "\ / \ / \ /".
-//!          Let's make this concrete: consider the Zigzag of Box-Kite I. Start with the "/"
+//! >        Let's make this concrete: consider the Zigzag of Box-Kite I. Start with the "/"
 //! diagonal in A's plane (which the table tells us is spanned by i3 and i10 ), and proceed as just
 //! indicated. Here's the actual 6-cycle of ZD products (ignoring constants, since any points
 //! on the indicated lines will serve as well as any others):
-//!                            (i3 + i10)(i6 - i15) = (i6 - i15)(i5 + i12) = (i5 + i12)(i3 - i10) =
-//!                         (i3 - i10)(i6 + i15) = (i6 + i15)(i5 - i12) = (i5 - i12)(i3 + i10) = 0.
+//! >                          (i3 + i10)(i6 - i15) = (i6 - i15)(i5 + i12) = (i5 + i12)(i3 - i10) =
+//! >                       (i3 - i10)(i6 + i15) = (i6 + i15)(i5 - i12) = (i5 - i12)(i3 + i10) = 0.
 //!
-//!         The other 3 Sails (ADE, FCE and FDB) all have 2 "+"'s and just one "- " for
+//! >       The other 3 Sails (ADE, FCE and FDB) all have 2 "+"'s and just one "- " for
 //! edge-signs. Their 6-cycle patterns - "\ \ \ / / /" or "/ / / \ \ \" - suggest the knots they're
 //! named for: Trefoils. This Zigzag/Trefoil difference is the basis of the Trip-Sync property;
 //! all we need do now is consider the O-trips and S-trips which Sails are made of, and "blow
@@ -341,14 +341,14 @@
 //! "Zigzag" role, and the 3 (o, S) pairs which span Assessor planes bounding the "struts."
 //!
 //! R. de Marrais                                           Page 7                         "Something From Nothing"
-//!          This is much easier to follow by seeing it than hearing it described. So let's take
+//! >        This is much easier to follow by seeing it than hearing it described. So let's take
 //! as for-instance the Zigzag of Box-Kite I. Its 3 Assessors' ( o, S ) pairs have the indices
 //! given in the prior page's "Strut Table": (3, 10); (6,15); and (5, 12). The 3 o's comprise
 //! one of the standard O-trips; but the "recursive Box-Kite" described last paragraph (or
 //! "Rbox" for short) shows that each of these 3 o's forms an S-trip with the other two trio
 //! members' Sedenions. Hence (3, 15, 12); (10, 6, 12); (10, 15, 5) - written in A, B, C order
 //! with the Octonions in bold - are all S-trips we can find in the listings given above.
-//!         Two differences should be noted between a Sedenion Box-Kite ("Sbox") and the
+//! >       Two differences should be noted between a Sedenion Box-Kite ("Sbox") and the
 //! Rboxes one can build on its Sails. First, "double covering": the Sbox "Sails" are 6-
 //! cycles, those of an Rbox are 3-cycles. Second, "mutual mirroring": the orientation of the
 //! cycling (as indicated by the arrows inscribed along the diagram's edges) is reversed when
@@ -357,7 +357,7 @@
 //! with an extra bit when we XOR them, so that the XOR of two S's is always an o); and,
 //! diagonal skewing (the Sbox places S-terms, which flow with the o-term's cycle in the
 //! Sbox, on the other end of the strut the o and S terms span in the Rbox).
-//!         The "mutual mirroring," then, is an artefact of the Rbox representation. But it
+//! >       The "mutual mirroring," then, is an artefact of the Rbox representation. But it
 //! serves to indicate the nature of the property we're after: for orientation-reversal is what
 //! Trip-Sync is all about. Reverting to the Sbox we started with, the o's at each vertex of a
 //! Sail belong to 2 different triplets; in the Zigzag's case, irregardless of the added "weight"
@@ -367,7 +367,7 @@
 //! ABC, wherein the extra bit is "added" or "dropped" without our being cognizant of that
 //! fact. If the two orientations be thought akin to QM-like "spin up" vs. "spin down," we
 //! could even claim there was an "infobarrier" forbidding us to detect which case obtained.
-//!         We cannot say the same, though, in the general case: for, with Trefoils, S-trip to
+//! >       We cannot say the same, though, in the general case: for, with Trefoils, S-trip to
 //! O-trip "slippage" causes a reversal of orientation, whenever the o shared between them is
 //! not one of the Zigzag's trio (i.e., 2 times out of 3). Consider, for instance, the ADE Sail
 //! in Box-Kite I. Writing the S-trips per above (with O-trip components in bold), we get
@@ -377,7 +377,7 @@
 //! ing it. This is the ground floor, then, of observability (and, as such, bears a deep relation-
 //! ship to Penrose's "spin networks: a topic for another time). What is more, it holds true
 //! for all Box-Kites, in all 2N-ions. This is the Trip-Sync property. Proving it is easy.
-//!         Let's write any S index using uppercase, and any o in lowercase; let's further write
+//! >       Let's write any S index using uppercase, and any o in lowercase; let's further write
 //! "sg" to designate a binary variable equal to +1. Then any Assessors (K, k) and (L, l), if
 //! joined by an edge-sign marked "-", will have product (K + sg<U+00B7>k) <U+00B7> (L - sg<U+00B7>l) = (KL - sg<U+00B7>Kl
 //! + sg<U+00B7>kL - kl) = 0. Since KL and kl = o's, and Kl and kL = S's, then KL = kl = m, and Kl =
@@ -388,7 +388,7 @@
 //! this Trefoil which includes a Zigzag o will "let things slide." (QED - no kidding!)
 //!
 //! R. de Marrais                              Page 8               "Something From Nothing"
-//!          This may not seem like such a big deal: at least, not within the Sedenions. But as
+//! >        This may not seem like such a big deal: at least, not within the Sedenions. But as
 //! early as the 32-D Pathions, larger ensembles present themselves - seven Box-Kite septets
 //! I call "Pl<U+00E9>iades" emerge, which interconnect 14 Assessors, each of which belongs to 3
 //! Box-Kites and 6 Sails. Sharing these properties but not others is the "middleman" be-
@@ -396,20 +396,20 @@
 //! Box-Kite Zigzags is exclusively mapped to an O-trip - which means, if we treat "spin-
 //! flips" as units of attractive or repulsive force, the Muster Master can round up (or chase
 //! off) any and all Sedenion Box-Kites by an extension of Trip-Sync slippage.
-//!         Given its unique holding capacity (harboring 1 copy each of every O- and S-trip
+//! >       Given its unique holding capacity (harboring 1 copy each of every O- and S-trip
 //! appearing in any Sedenion Box-Kite), the Muster Master effectively serves, then, as a
 //! Pathion "Atlas" for all ZD patterns on the other side of the 24-ion/25-ion divide. Given,
 //! further, that the word derives from the name of the Titan in Greek myth who kept the
 //! earth and heavens separated by brute strength - and who also fathered the seven sisters
 //! called the "Pl<U+00E9>iades" - we could even say "Atlas" is the "Muster Master"'s proper name!
-//!         If we assume, as well, that Box-Kites are free-floating, each with its own copy of
+//! >       If we assume, as well, that Box-Kites are free-floating, each with its own copy of
 //! (or window on) Zero, and its own clones of appropriate 2N-ion units acting as "internal
 //! coordinates," wild "population dynamics," with all sorts of "clumpings" and "schisms" in
 //! evidence, suggest themselves. Further, given the simplicity of the latticework connecting
 //! Assessors and their composites, and the binary nature of the "spin control" we can put in
 //! play among them, the simplest approach to their study seems to mandate NKS setups.
 //! The final pages will provide broad and sharp-edged guidelines for pursuing them.
-//!         The remainder of this presentation will be focused on three tasks. First, if we
+//! >       The remainder of this presentation will be focused on three tasks. First, if we
 //! must (rather literally) "redouble" our efforts by moving from Sedenions to higher reaches
 //! (to the 32-D Pathions at least, where "Sand Mandalas," "Pl<U+00E9>iades," and the "Muster Mas-
 //! ter" live), we'll need to redeem an earlier promissory note, and provide some "pseudo-
@@ -418,7 +418,7 @@
 //! NKS tactics seem most clearly motivated. Then we'll hone in on a surprisingly deep con-
 //! nection between ZD's and Boolean logic, which I'm only beginning to grasp myself -
 //! which will lead me to rough-sketch a promising possibility for fusion of methods.
-//!         At April's conference, my own poster was situated a few feet away from Rodrigo
+//! >       At April's conference, my own poster was situated a few feet away from Rodrigo
 //! Obando's in the presentation gallery, and what I gathered of his work from discussions
 //! there and later surprised and excited me. Certain "magic numbers" were common to both
 //! our approaches, for reasons neither of us clearly understands yet. The order of the second
@@ -435,15 +435,15 @@
 //! What better theme, then, could present itself for bringing these pages to a close?
 //!
 //! R. de Marrais                              Page 9               "Something From Nothing"
-//!  3: Revisiting the CDP Algorithm; Invading the 32-D of the Pathions
-//!          Let's return to the scene of the crime: the triplet listings on page 5. Recall that the
+//! 3: Revisiting the CDP Algorithm; Invading the 32-D of the Pathions
+//! >        Let's return to the scene of the crime: the triplet listings on page 5. Recall that the
 //! first of the 4 columns of S-trips has all its length-3 lists in counting and signing order (be-
 //! cause the '8' in the middle is the generator). What to make of the apparently random way
 //! disordered lists display in the columns to the right? Reading from the left, there are 4, 5,
 //! and 3 in successive columns: half the 28 "8-less" O- and S- trips. Where is the pattern in
 //! this? The answer is found in the relation of the rows (one per o) to the 3 O-trips implicit,
 //! via "slippage," in the o-harboring S-trips listed across each row's "8-less" columns.
-//!          If you left-multiply i8 by any io, you get + i(8+o) - which is an S. Likewise, multi-
+//! >        If you left-multiply i8 by any io, you get + i(8+o) - which is an S. Likewise, multi-
 //! plying i8 on the left by any S will yield a negative o - of index (S - 8). Apply this obvious
 //! logic to the triplets on the left, operating on those in the rows whose leading o's form an
 //! O-trip. In the cycle (1, 2, 3), two consecutive terms have xor equal to the third, with pos-
@@ -455,7 +455,7 @@
 //! column, and rows 4 and 5 of the 1st, get filled in, while working with (1, 7, 6) completes
 //! the 1st row and 1st column. Conducting the same sort of business with the next two O-
 //! trips - (2, 4, 6) and (2, 5, 7) - suffices to finish the tabulation.
-//!          This procedure can be extended to 2N-ions, N any integer: just replace 8 with the
+//! >        This procedure can be extended to 2N-ions, N any integer: just replace 8 with the
 //! appropriate generator, g = 2N-1, and create a first column with g - 1 triplets, one per row.
 //! The number of columns will correspond to the number of L- (no longer just O-) trips,
 //! where L indicates indices lower than g (with U indicating those we'd now signify with
@@ -463,36 +463,36 @@
 //! U-trips). For the Pathions, this means 7 columns to the right - the number of Octonion
 //! units. For 2N-ions generally, the number of columns to the right of the g-containing one
 //! equals the count of imaginary units in the 2N-2-ions: 0 for H, 1 for O; 3 for S; 7 for P...
-//!          This table-building strategy is not only easy to implement, but it's a lot simpler
+//! >        This table-building strategy is not only easy to implement, but it's a lot simpler
 //! than the way the CDP algorithm is typically explained - which means, perhaps, it should
 //! be dubbed the "Fast CDP." And it also suggests a table-free method for calculating the
 //! products of any two imaginaries of arbitrary indices. It can be summarized in 3 rules:
-//!          Triple Negatives Rule: For the general product of two units whose indices are r
+//! >        Triple Negatives Rule: For the general product of two units whose indices are r
 //! and c (for row and column, where we read off the left- and right-hand terms to the multi-
 //! plication in an imagined table of product indices, ranging from 0 to 2N+1 - 1), if both are
 //! less than the generator g = 2N, the value in cell (r, c) of the table = r<U+00B7>c. If one term > g (it
 //! doesn't matter which), the index and sign of their product is just [-(2N + r<U+00B7>c)]. If both
 //! terms > g, XOR-ing kills the 2N, leaving just [-r<U+00B7>c].
-//!          Trident Rule: Multiplying g on the left (right) by any unit whose index > g re-
+//! >        Trident Rule: Multiplying g on the left (right) by any unit whose index > g re-
 //! sults in a unit whose index is their sum, with same (opposite) sign. Diagonal entries in
 //! quadrants of the table (the result of products where r = c) are + g below the main diagonal
 //! (whose "index 0" entries, all squares of imaginaries, evaluate to -1), and - g above it (but
 //! for the 1st row, which is just the trivial, all-positive, products with the real unit).
-//!          Recursive Bottoming: Successive use of these two rules resolves all products.
+//! >        Recursive Bottoming: Successive use of these two rules resolves all products.
 //!
 //! R. de Marrais                              Page 10                "Something From Nothing"
-//!           The reader is encouraged to pore over the Sedenion multiplication table, the better
+//! >         The reader is encouraged to pore over the Sedenion multiplication table, the better
 //! to see how it conforms to these rules, taking g variously as 1, 2 or 3. A version with
 //! checkerboard shading, to make two levels of "quadrants" easier to see, can be reached by
 //! clicking the "BK1" URL in the 3rd endnote and going to page 6. As a way to gain rapid
 //! entry into higher dimensions, however, the reader is invited to consider another rule,
 //! which can generate properly signed triplets in arbitrarily high dimension.
-//!          Zero-Stuffing: Insert 0's in the same position in the binary representation of a
+//! >        Zero-Stuffing: Insert 0's in the same position in the binary representation of a
 //! triplet, and you'll get another, similarly signed. Taking the H-spanning triplet (1, 2, 3)
 //! and stuffing 0's to the right, then the middle, yields the O-trips (2, 4, 6) and (1, 4, 5). This
 //! plus the sign-flipping effect of adding 1-bits to the left of, then xoring, doublets - (1, 2);
 //! (2, 3); (3, 1) giving (3, 6, 5); (1, 7, 6); (2, 5, 7) - yields up all the O-trips save (3, 4, 7).
-//!          Zero-stuffing can generate an infinite series of "harmonics" of any given triplet;
+//! >        Zero-stuffing can generate an infinite series of "harmonics" of any given triplet;
 //! and, by extension, it can give us a similarly infinite "overtone series" of Box-Kites. This
 //! fact, plus a simple generalization of the "strut constant" notion, makes generating and
 //! classifying Box-Kites in the Pathions fairly straightforward (up to a point, as I'll shortly
@@ -500,14 +500,14 @@
 //! the L-trips for a "base-line" Pathion Box-Kite by stuffing a zero to the right of the left-
 //! most 1-bit in each Assessor's S term: the strut constant remains unchanged, but the S
 //! terms become U terms, with indices increased by 8.
-//!          In the Sedenions, though, each strut constant, by dint of being a "missing Octon-
+//! >        In the Sedenions, though, each strut constant, by dint of being a "missing Octon-
 //! ion," implicated 3 pairs of strut-opposite Assessors (one per each O-trip containing it).
 //! But 7 S-trips contain the Octonion, and each of these must be accommodated when we set
 //! about constructing Box-Kites in the Pathions. The upshot is that each strut constant now
 //! collects 7 Box-Kites, as there are now 24-2 Assessors to choose from: each of these will
 //! zero-divide all but itself and its strut-opposite, for 168 ZD products - and, as the 4 Sails
 //! of a Box-Kite each mandate 6 such products, we get 168 / 24 = 7 Box-Kites in all.
-//!          Consider the 4 Pathion L-trips which are S-trips, associated with strut constant s =
+//! >        Consider the 4 Pathion L-trips which are S-trips, associated with strut constant s =
 //! 1: (1, 8, 9); (1, 11, 10); (1, 13, 12); (1, 14, 15). We get 8 Assessors out of them by first
 //! throwing away the 1's, then taking one of the remaining terms as given, and adding a 1-bit
 //! to the left of the other: (8, 25) and (9, 24) form a pair of strut-opposites, as do (11, 26)
@@ -515,7 +515,7 @@
 //! keeping one O-strut, moving it into the A, F slots if not there to start with, and picking
 //! two S-trip Assessors among the four pair just listed which form L-trips at (A, B, C) and
 //! (A, D, E). Zero-stuffing and 1-bit appending make picking and arranging fairly easy.
-//!          For instance, keeping with the ongoing example, the L-terms at the vertices for the
+//! >        For instance, keeping with the ongoing example, the L-terms at the vertices for the
 //! base-line Box-Kite with s = 1 are (3, 6, 5, 4, 7, 2). Keep 3 and 2 at A and F: appending
 //! 8's to the left of the (B, C), then (D, E), terms reverses their order, giving us this new
 //! Box-Kite: (3, 13, 14, 15, 12, 2). Stuffing zeros to the left of the 21 bit, meanwhile, keeps
@@ -528,12 +528,12 @@
 //! required to send (3, 2) to (15, 14), the last available S-trip Assessors.
 //!
 //! R. de Marrais                               Page 11               "Something From Nothing"
-//!           This last example suggests a problem: with the Sedenions, s ranges from 1 to 7 -
+//! >         This last example suggests a problem: with the Sedenions, s ranges from 1 to 7 -
 //! this last being one less than the generator, g. For the Pathions, g = 16, so there are 15
 //! values possible for s. But one of these = the Sedenions' g (which we might call the Path-
 //! ions' "subgenerator," g-1), and 7 exceed it. If multiple "L-bit trick" applications are need-
 //! ed frequently, might we not risk "carry-bit overflow" as s grows? The answer is yes.
-//!          The reference four paragraphs back to a 14 x 14 multiplication table is not quite
+//! >        The reference four paragraphs back to a 14 x 14 multiplication table is not quite
 //! exact, since the product of mutual ZD's, strictly speaking, is zero by definition. To be
 //! informative, the table's cells show emanations: per the earlier definition, diagonals of
 //! Assessors which mutually act as ZD's in fact engage in "pair production" of two opposite-
@@ -544,29 +544,29 @@
 //! own diagonals, or with those of their strut-opposite), hence 142 - 2<U+00B7>14 = 168 filled-in
 //! cells. When s = g-1, though, the edge-signs cluster so that all cells in the upper left and
 //! lower right quadrants are "-", while those in the opposite quadrants are all "+".
-//!          When s > g-1, however, the ZD population suddenly collapses: only 72 cells are
+//! >        When s > g-1, however, the ZD population suddenly collapses: only 72 cells are
 //! filled in in each, meaning 3, not 7, Box-Kites. Consider the first such case (s = 9):
 //!
-//!                                   A      B       C       D      E        F
+//! >                                 A      B       C       D      E        F
 //! Base-Line Box-Kite:            (2, 27) (8, 17) (10,19) (3, 26)(1, 24) (11, 18)
 //! "First Harmonic":              (4, 29) (8, 17) (12,21) (5, 28)(1, 24) (13, 20)
 //! "Second Harmonic":             (7, 30) (8, 17) (15,22) (6, 31)(1, 24) (14, 23)
 //!
-//!         It is tempting to assume the 6 Assessors arrayed in the columns D and A, after
+//! >       It is tempting to assume the 6 Assessors arrayed in the columns D and A, after
 //! minor rearrangement, form another in the "overtone series" of our s = 1 "baseline Box-
 //! Kite": but "carrybit overflow" is at work, so that left-appending 1-bits to all U-terms -
 //! converting (3, 10) into (3, 10+16 = 26) and so on, thereby reversing signs on all 3 mem-
 //! bers (an odd number) of each triplet - suffices, in this case, to kill off all the ZD's we'd
 //! expect to see. Just as surprising, the triplet (1, 8, 9), "sterile" in the Sedenion context,
 //! provides the doublet from which the Assessors that triply repeat at B and E are fabricated.
-//!         A mystery, finally, is placed before us when the 7 (s > g-1 ) tables, collectively
+//! >       A mystery, finally, is placed before us when the 7 (s > g-1 ) tables, collectively
 //! dubbed "Sand Mandalas" after the Tibetan meditative drawings they resemble, are view-
 //! ed in "flip-book" style: while the (o, 8, o+s) repeaters cluster inside the array, all other
 //! emanations are confined to the perimeter, with this square's edges pulling back in unison
 //! from the table's boundaries by one cell with each increment to s (while the "repeaters"
 //! reconfigure), until we're left in the last still-shot with a 2-cell-thick cross whose ends are
 //! joined up by the "repeaters" - which have rearranged themselves into diagonals.
-//!         It was this behavior (whose necessity was proven, after the fact of stumbling on it,
+//! >       It was this behavior (whose necessity was proven, after the fact of stumbling on it,
 //! explicitly via elaborate bit-twiddling in "BK2" on p. 16) which first suggested something
 //! like cellular automata at work. More peculiar still, if one folds the table over like a hand-
 //! kerchief, along both horizontal and vertical midlines, the L-terms in the "shrinking box"
@@ -575,12 +575,12 @@
 //! meanwhile, coalesce to form the "forbidden doublet" of the Sedenion Box-Kite's s and g!
 //!
 //! R. de Marrais                               Page 12                "Something From Nothing"
-//!      "Muster Master" and "Sand Mandala" Emanation Tables (s = 8 through 15)
+//! >    "Muster Master" and "Sand Mandala" Emanation Tables (s = 8 through 15)
 //!
 //!
 //!
 //!
-//!          The above graphics are reproduced from p. 15 of "BK2," and should be read from
+//! >        The above graphics are reproduced from p. 15 of "BK2," and should be read from
 //! left to right, top to bottom: the first "emanation table" is for s = 8; the last, for s = 15.
 //! Rows, columns, and cell contents show L-index numbers of the associated Assessors in
 //! hex (since values range from 1 to 15). Rows and columns are further arranged so that
@@ -589,7 +589,7 @@
 //! they are simply left blank; in all but the first table, the majority of non-diagonal cells are
 //! also unfilled, and these are left empty, but with light gray background. Cells which form
 //! into the 3 Box-Kites' (o, 8, 8+o) "repeaters" are daubed green; the others are painted red.
-//!          As one might expect, as the N in 2N-ion increases, "carry-bit overflow" becomes
+//! >        As one might expect, as the N in 2N-ion increases, "carry-bit overflow" becomes
 //! even more pronounced, with patterns that look progressively more "fractal" than those
 //! shown: at high s, as cells become more numerous, boundaries become crenelated, and
 //! box-kites even break up into pieces. It is unclear what happens for very large N: does the
@@ -597,7 +597,7 @@
 //! high-s , high-N spaces become "tame," perhaps with something like a Hilbert space as a
 //! limit; or, do they instead "merely" become unwieldy and chaotic? Abolutely nothing is
 //! know at present - including whether or not these are good questions!
-//!          The heading for the graphics indicates that the "Muster Master" is also on display.
+//! >        The heading for the graphics indicates that the "Muster Master" is also on display.
 //! Clearly, it's the upper leftmost, s = 8, table: ironically, the same index plagued with ZD-
 //! sterility when it's the generator becomes the most "omnivoyant" of all configurations
 //! when it is "demoted" to subgenerator status in the next round of CDP expansionism. Pre-
@@ -609,7 +609,7 @@
 //!
 //!
 //! R. de Marrais                             Page 13               "Something From Nothing"
-//!          We could, in fact, describe the situation, using the argot of object-oriented pro-
+//! >        We could, in fact, describe the situation, using the argot of object-oriented pro-
 //! gramming, as perfect "design-hiding": for while the o's in the ABC positions (and hence,
 //! the Zigzag) of each Sedenion Box-Kite exactly match the Zigzag L-trip of exactly one of
 //! the 7 component Box-Kites of the Muster Master, it is the S's in the former's DEF posi-
@@ -617,7 +617,7 @@
 //! with the U-trips of the lower-order Box-Kites - but only with those that share their sing-
 //! leton o with the Zigzag! The Muster Master Box-Kite which shares Zigzag L-trips with a
 //! given Sedenion Box-Kite cannot have its actions observed at all from the latter's purview.
-//!         This is not the whole story, though: in Sedenion Box-Kite IV, for instance, the S-
+//! >       This is not the whole story, though: in Sedenion Box-Kite IV, for instance, the S-
 //! trip (13, 11, 6) - which we'll write (A, D, e) to obey our casing convention - "resonates"
 //! with (f, d, b) of the Muster Master's Zigzag-match to Sedenion Box-Kite I, and this inter-
 //! action is a Trip-Sync "observable." Below is a synthesis of data from the "Synchroniza-
@@ -627,42 +627,42 @@
 //! 7 Muster Master components: this affects labeling (e.g., Trefoils might switch places and
 //! their cyclings shift in phase), but not triplet orientation, and so can be ignored.
 //!
-//!                          Trip-Sync Observables in
-//!                 Muster Master / Sedenion Box-Kite Interactions
-//!                                   MM L-trips Observable (or not) in BK#... As ...
+//! >                        Trip-Sync Observables in
+//! >               Muster Master / Sedenion Box-Kite Interactions
+//! >                                 MM L-trips Observable (or not) in BK#... As ...
 //! ZM#    A B C D E F               (ade)           (fce)             (fdb)          _
 //! I      3 6 5 13 14 11            (3,13,14)       (11,5,14)        (11,13, 6)
-//!                                  II:fDB;VII:ADe II:ADe; IV:fDB IV:ADe;VII:fDB
-//!                                  (IV:ABc)        (VII:ABc)        (II:ABc)
+//! >                                II:fDB;VII:ADe II:ADe; IV:fDB IV:ADe;VII:fDB
+//! >                                (IV:ABc)        (VII:ABc)        (II:ABc)
 //! II <U+00AE> 6      1   7   15   9 14     (6, 15, 9)     (14, 7, 9)       (14,15, 1)
-//!                                  III:ADe; IV:FCe IV:FdB;V:fDB III:FDb; V:ADe
-//!                                  (V:ABc)         (III:ABc)       (IV:aBC)
+//! >                                III:ADe; IV:FCe IV:FdB;V:fDB III:FDb; V:ADe
+//! >                                (V:ABc)         (III:ABc)       (IV:aBC)
 //! III <U+00AE> 7     2   5   13 10 15     (7,13,10)       (15,5,10)        (15,13, 2)
-//!                                  I:ADe; IV:AdE IV:fCE; VI:fDB I:fDB;VI:ADe
-//!                                  (VI:ABc)        (I:ABc)          (IV:AbC)
+//! >                                I:ADe; IV:AdE IV:fCE; VI:fDB I:fDB;VI:ADe
+//! >                                (VI:ABc)        (I:ABc)          (IV:AbC)
 //! IV      1   2   3   11 10    9   (1,11,10)       (9, 3, 10)       ( 9, 11, 2)
-//!                                  V:FCe; VI:FdB V:FdB;VII:FCe VI:FCe; VII:FdB
-//!                                  (VII:aBC)       (VI:aBC)        (V:aBC)
+//! >                                V:FCe; VI:FdB V:FdB;VII:FCe VI:FCe; VII:FdB
+//! >                                (VII:aBC)       (VI:aBC)        (V:aBC)
 //! V       2   4   6   14 12 10     (2,14,12)       (10,6,12)        (10,14, 4)
-//!                                   I:fCE; VII:AdE III:FCe; VII:fCE I:AdE; III:FdB
-//!                                  (III:aBC)       (I:AbC)          (VII:AbC)
+//! >                                 I:fCE; VII:AdE III:FCe; VII:fCE I:AdE; III:FdB
+//! >                                (III:aBC)       (I:AbC)          (VII:AbC)
 //! VI <U+00AE> 4      7   3   11 15 12     (4,11,15)       (12,3,15)        (12,11, 7)
-//!                                   I:FdB; II:AdE II:fCE; V:AdE I:FCe; V:fCE
-//!                                   (V:AbC)        (I:aBC)          (II:AbC)
+//! >                                 I:FdB; II:AdE II:fCE; V:AdE I:FCe; V:fCE
+//! >                                 (V:AbC)        (I:aBC)          (II:AbC)
 //! VII <U+00AE> 5     1   4   12   9 13     (5, 12, 9)     (13, 4, 9)       (13, 12, 1)
-//!                                   II:FCe; VI:fCE II:FdB; III:AdE III:fCE; VI:AdE
-//!                                   (III:aBC)       (VI:AbC)         (II:aBC)
+//! >                                 II:FCe; VI:fCE II:FdB; III:AdE III:fCE; VI:AdE
+//! >                                 (III:aBC)       (VI:AbC)         (II:aBC)
 //!
 //! R. de Marrais                            Page 14              "Something From Nothing"
-//!         Before analyzing the results of the table above, some backgrounding concerning
+//! >       Before analyzing the results of the table above, some backgrounding concerning
 //! the Muster Master is in order, the better to make the results we'll be discussing seem all
 //! the sharper. For completeness' sake, here's a listing of the full set of the Muster Master's
 //! 14 Assessors, showing both L- and U- indices, with strut-pairs arrayed vertically:
 //!
-//!        (1, 25)   ( 2, 26)    ( 3, 27)   ( 4, 28)    ( 5, 29)   ( 6, 30)    ( 7, 31)
-//!        (9, 17)   (10, 18)    (11, 19)   (12, 20)    (13, 21)   (14, 22)    (15, 23)
+//! >      (1, 25)   ( 2, 26)    ( 3, 27)   ( 4, 28)    ( 5, 29)   ( 6, 30)    ( 7, 31)
+//! >      (9, 17)   (10, 18)    (11, 19)   (12, 20)    (13, 21)   (14, 22)    (15, 23)
 //!
-//!         The utter simplicity of this deployment belies the complexities implied in the
+//! >       The utter simplicity of this deployment belies the complexities implied in the
 //! table. It would greatly aid intuition to have some way to picture the synergy between the
 //! 7 component Box-Kites of this highly symmetric "father" to the Pathion "Pl<U+00E9>iades,"
 //! whose 7 "nymph" Assessors with o's for L-terms nicely echo the 7 "stars" with L-term S's
@@ -672,7 +672,7 @@
 //! mean, no edges are shared between them), appearing thereby in twice 3 = 6 Sails. The
 //! following is lifted from a paper describing "octahedral fractal" models12 - a topic which
 //! has no direct bearing here, although the graphic fits our themes perfectly.
-//!         We can scan this as 7 stacks of 3 Box-Kites- 3 trios including the central one, and
+//! >       We can scan this as 7 stacks of 3 Box-Kites- 3 trios including the central one, and
 //! 4 more joined by the dashed lines. Assume stacking suggestive of a voltaic pile for the
 //! centrally coordinated sets: if the Assessor at the top of the vertical stack, for instance, is
 //! "A," it would be replaced in its position in the next-lower Box-Kite by its strut-opposite,
@@ -680,37 +680,37 @@
 //! similarly for the perpendicular lines of Box-Kites in the central horizontal plane. For the
 //! other 4 trios, assume vertices joined by dotted lines from the central squares are strut-op-
 //! posites as well. There's a lot of rotating and translating you have to deal with to make a
-//!                                           consistent labeling scheme; putting in indices, too,
-//!                                 putt p would induce a truly noxious degree of cluttering,
-//!                                           so I won't even try. The idea, I hope, will suffice!
-//!                                                   While this graphic, then, serves to present
-//!                                           an image of the interconnectedness of Assessors
-//!                                           in the Pl<U+00E9>iades scheme, it gives no clear feeling
-//!                                           for Assessor-level detail: a way to picture the
-//!                                           indices without the distraction of 3-D would be
-//!                                           a useful thing. Here, we can adapt the tactic,
-//!                                           mentioned in passing at the end of the last section,
-//!                                           of representing triplets as intersecting lines, via
-//!                                           finite projective groups: a "stereo" version of
-//!                                           of the PSL(2,7) layout of labeling schemes for
-//!                                           the Octonions which was championed by the late
-//!                                           great Canadian geometer Harry Coxeter. The
-//!                                           interrelations among indices for Atlas and his
-//!                                           Pl<U+00E9>iades can be cleanly displayed in this manner,
-//!                                           and "loop algebra" subtleties framed naturally, in
-//!                                           their turn, by referencing these diagram-pairings.
+//! >                                         consistent labeling scheme; putting in indices, too,
+//! >                               putt p would induce a truly noxious degree of cluttering,
+//! >                                         so I won't even try. The idea, I hope, will suffice!
+//! >                                                 While this graphic, then, serves to present
+//! >                                         an image of the interconnectedness of Assessors
+//! >                                         in the Pl<U+00E9>iades scheme, it gives no clear feeling
+//! >                                         for Assessor-level detail: a way to picture the
+//! >                                         indices without the distraction of 3-D would be
+//! >                                         a useful thing. Here, we can adapt the tactic,
+//! >                                         mentioned in passing at the end of the last section,
+//! >                                         of representing triplets as intersecting lines, via
+//! >                                         finite projective groups: a "stereo" version of
+//! >                                         of the PSL(2,7) layout of labeling schemes for
+//! >                                         the Octonions which was championed by the late
+//! >                                         great Canadian geometer Harry Coxeter. The
+//! >                                         interrelations among indices for Atlas and his
+//! >                                         Pl<U+00E9>iades can be cleanly displayed in this manner,
+//! >                                         and "loop algebra" subtleties framed naturally, in
+//! >                                         their turn, by referencing these diagram-pairings.
 //!
 //! R. de Marrais                             Page 15               "Something From Nothing"
-//!                                        PSL(2,7) expresses the symmetries of the simplest non-
-//!                                   trivial finite projective plane, known by Fano's name. In
-//!                                   projective geometry, lines and circles are equivalent, so
-//!                                   this diagram should be interpreted as comprising 7 lines,
-//!                                   including the apparent "circle" in the middle. The lines
-//!                                   intersect in 7 points, the Octonion units: the cross-overs
-//!                                   with no nodes or labels are illusions of the projection
-//!                                   process. In this elegant rendering (from Ref. 1, p. 46),
-//!                                   Quaternion units are in lower case (the standard "i,j,k")
-//!                                   and make the central cycle. The (index-4) generator is at
+//! >                                      PSL(2,7) expresses the symmetries of the simplest non-
+//! >                                 trivial finite projective plane, known by Fano's name. In
+//! >                                 projective geometry, lines and circles are equivalent, so
+//! >                                 this diagram should be interpreted as comprising 7 lines,
+//! >                                 including the apparent "circle" in the middle. The lines
+//! >                                 intersect in 7 points, the Octonion units: the cross-overs
+//! >                                 with no nodes or labels are illusions of the projection
+//! >                                 process. In this elegant rendering (from Ref. 1, p. 46),
+//! >                                 Quaternion units are in lower case (the standard "i,j,k")
+//! >                                 and make the central cycle. The (index-4) generator is at
 //! their circle's center, E. The triangle's vertices are just the products of their lower-case
 //! equivalents with E, so that lines through E are oriented from lower to upper case letters.
 //! Similarly, all three edges on the perimeter flow clockwise, while the central "i,j,k" flows
@@ -728,7 +728,7 @@
 //!
 //!
 //!
-//!         What I have in mind here is another sort of "stereo," with the 14 Assessors in any
+//! >       What I have in mind here is another sort of "stereo," with the 14 Assessors in any
 //! given Pl<U+00E9>iade being partitioned across two such layouts. Just as the PSL(2,7) triangle
 //! above can have its letters removed and relabeled by myriad different indexing schemes,
 //! with the arrows also having their orientations switched accordingly, so too with our
@@ -737,21 +737,21 @@
 //! figure out the O- trip and S-trip orientations without my help at this point.
 //!
 //! R. de Marrais                            Page 16               "Something From Nothing"
-//!           "Stereo Fano" Synergies on Display (7 Pl<U+00E9>iades + "Atlas")
+//! >         "Stereo Fano" Synergies on Display (7 Pl<U+00E9>iades + "Atlas")
 //! Pathion         "7 Nymphs"        ... turned into ...    "7 Stars"
 //! Strut   (3-cycles = mostly "Zigzags")            (Strut Opposites of Nymphs)
 //! Const. i    j    k   E     I   J     K          i     j  k   E     I   J  K
 //!
-//!   I       8     14   6   13    5     3    11           9 15 7         12 4       2     10
-//!  II       8     15   7   14    6     1     9          10 13 5         12 4       3     11
+//! I       8     14   6   13    5     3    11           9 15 7         12 4       2     10
+//! II       8     15   7   14    6     1     9          10 13 5         12 4       3     11
 //! III       8     13   5   15    7     2    10          11 14 6         12 4       1      9
 //! IV        8     10   2   11    3     1     9          12 14 6         15 7       1      9
-//!  V        8     12   4   14    6     2    10          13 9   1        11 3       7     15
+//! V        8     12   4   14    6     2    10          13 9   1        11 3       7     15
 //! VI        8     12   4   15    7     3    11          14 10 2          9  1      5     13
 //! VII       8     12   4   13    5     1     9          15 11 3         10 2       6     14
 //! VIII      6      4   2    5    3     1     7          14 12 10        13 11      9     15
 //!
-//!         For all but "Atlas," the 7 L-trips in each line of the lefthand listing split up so that
+//! >       For all but "Atlas," the 7 L-trips in each line of the lefthand listing split up so that
 //! 4 of the component Box-Kites are represented by their Zigzags, and 3 (all and only those
 //! containing an "8," always situated at "D") by their ADE Trefoils. This is the Pathions'
 //! equivalent of the "Strut Table" provided for Sedenions. The fact that a fully functional
@@ -760,7 +760,7 @@
 //! terms' strut opposites) gives striking proof of the Pleiades' fundamental synergies as en-
 //! sembles: they are by no means loose affilations of independent entities, "cat-herded" op-
 //! portunistically. (Exercise: draw all 7 Kites for each line, properly orienting the edges!)
-//!         Now it is time to turn our attention, at last, to the "Trip-Sync Observables Table"
+//! >       Now it is time to turn our attention, at last, to the "Trip-Sync Observables Table"
 //! on Page 14. The first thing to stress is that there is an exact, one-to-one correspondence
 //! between Sails on the Sedenion "receiving end" and the Pathion "sending end" of any
 //! transactions between them: tautologically, each ZM# indicates a Zigzag-to-Zigzag
@@ -770,7 +770,7 @@
 //! Trefoil-based Muster Master L-trips to specific Sedenion Trefoil S-trips. Such extreme
 //! orderliness and specialization of connection indicates we're dealing with a very stable,
 //! well-articulated platform for doing something.
-//!         But doing what, exactly? Here is where I see the next line of research, which will,
+//! >       But doing what, exactly? Here is where I see the next line of research, which will,
 //! I hope, be ripe for presenting at NKS 2005. Viewed in full generality, we have this for a
 //! setup: a latticework of connected Assessors, where Sedenion Box-Kites can "channel" a
 //! quartet of independent inputs from the Pathions' "higher plane"; these inputs are effect-
@@ -783,7 +783,7 @@
 //! tactic (and its clear "resonance" with ZD setups) goes like this.
 //!
 //! R. de Marrais                              Page 17                "Something From Nothing"
-//!           Split the bit representation of a rule into two "primitives." One string contains bits
+//! >         Split the bit representation of a rule into two "primitives." One string contains bits
 //! indicative of an initial input combination that has the central cell's value = 0. The other
 //! contains those telling what happens if said cell value = 1. For the (r=2) situation that
 //! clearly obtains with the Trip-Sync linkup of Pathions to Sedenions, the possible rules
@@ -792,7 +792,7 @@
 //! (boringly homogenous outcomes), which are Class 2 (evolving into simply separated peri-
 //! odic structures), which yield up chaotic aperiodic patterns (Class 3), and which - the real
 //! "money shot" here - generate truly complex "Class 4" patterns of localized structures.
-//!          But Obando's work strongly suggests (with some specific examples to buttress his
+//! >        But Obando's work strongly suggests (with some specific examples to buttress his
 //! claims) that we can, indeed, predict what sort of behavior a rule will display, and even say
 //! which will be Class 4. First, partition a rule into "primitives," then see if their bit repre-
 //! sentations are Boolean monotones. Because the "primitives" have half the string each,
@@ -800,7 +800,7 @@
 //! ions, or 65,536 possibilities, that each "half-rule" can display. If the primitives are pro-
 //! perly chosen from the two "monotonous" sets of 168 - each created recursively, by bit-
 //! string and-ing and or-ing, out of Oneness and Nothing - we'll get Class 4 complexity.
-//!          But meanwhile, we have two sets of 168 ZD "primitives," on opposite sides of the
+//! >        But meanwhile, we have two sets of 168 ZD "primitives," on opposite sides of the
 //! Sedenion/Pathion "infobarrier": one, then, from each party to our "channeling." And
 //! each Box-Kite "edge current," if encoded as a string of 0's and 1's, can be uniquely speci-
 //! fied by precisely 16 bits. Consider it this way (and there are other ways as well): any
@@ -809,7 +809,7 @@
 //! for each o, and 2 extra bits "left over." Suppose we say these latter determine the diago-
 //! nals - "\ or /?" - as specified at the two ends of the connecting edge. (N.B.: the edge
 //! sign's value itself is not an independent variable, so can't be counted!)
-//!          Now we need to tweak this (or is it "kludge things up"?) a bit. The problem is,
+//! >        Now we need to tweak this (or is it "kludge things up"?) a bit. The problem is,
 //! stating just this much means we get two distinct strings for each "edge-current," depend-
 //! ing upon which Assessor we write out first. But rather than get worked up about this
 //! double-count of strings, let's make use of this implicit positional information, in this way:
@@ -820,7 +820,7 @@
 //! switch the diagonal used by the second in sequence, not size. Which leaves us with one
 //! last "extra" to interpret: I call this bit the "spigot," since I envision it as turning the
 //! "edge-current" on or off - something I have trouble imagining not playing a role!
-//!          And while the "168" in the ZD universe are most definitely not Boolean mono-
+//! >        And while the "168" in the ZD universe are most definitely not Boolean mono-
 //! tone functions by any stretch of the imagination - their fundamental workings, after all,
 //! are defined by XORing, which is not an allowable operation in monotone string-building
 //! - there most definitely is very good reason to expect a rich harvest of transformations
@@ -830,62 +830,62 @@
 //! ence, I hope to make the case that the problem with that notion is, it's just too tame.
 //!
 //! R. de Marrais                              Page 18                "Something From Nothing"
-//!  1 I. L. Kantor and A. S. Solodovnikov, Hypercomplex Numbers: An Elementary Introduction to Algebras (Springer-
-//!    Verlag: New York, 1989) provides an elegant introduction (aimed at "smart high school students" as these were
-//!    understood in Soviet-era Moscow) to the whole theme of hypercomplex numbers, all building up to the formulation, in
-//!    Chapter 17, of Hurwitz's 1896 proof that "Every normed algebra with an identity is isomorphic to one of following four
-//!    algebras: the real numbers, the complex numbers, the quaternions, and the Cayley numbers."
+//! 1 I. L. Kantor and A. S. Solodovnikov, Hypercomplex Numbers: An Elementary Introduction to Algebras (Springer-
+//! >  Verlag: New York, 1989) provides an elegant introduction (aimed at "smart high school students" as these were
+//! >  understood in Soviet-era Moscow) to the whole theme of hypercomplex numbers, all building up to the formulation, in
+//! >  Chapter 17, of Hurwitz's 1896 proof that "Every normed algebra with an identity is isomorphic to one of following four
+//! >  algebras: the real numbers, the complex numbers, the quaternions, and the Cayley numbers."
 //! 2 R. Guillermo Moreno, "The zero divisors of the Cayley-Dickson algebras over the real numbers," Bol. Soc. Mat. Mex.
-//!    (3) 4:1 (1998), 13-28; http://arXiv.org/abs/q-alg/9710013. The key result was his finding that ZD's in the Sedenions
-//!    obey a structure homomorphic to the Lie algebra indicated by the Dynkin Diagram "G2"; but homo- is not iso- morphic,
-//!    and only a single concrete instance of a pair of ZD's was given . . . which led to my own radically constructivist, almost
-//!    "punk-rock"-like simplicity of 3 production rules and one octahedral-lattice-based "box-kite" graphic to summarize the
-//!    workings of the entirety of 16-D ZD's. (Moreno notes, too, that "G2" also implies a powerful scaling of results into
-//!    higher 2N-D number forms, since "G2" - the automorphism group of the Octonions - is the "derivation algebra" of each
-//!    2N+1-ion number system from the 2N-ions which generate it by the "Cayley-Dickson process."
+//! >  (3) 4:1 (1998), 13-28; http://arXiv.org/abs/q-alg/9710013. The key result was his finding that ZD's in the Sedenions
+//! >  obey a structure homomorphic to the Lie algebra indicated by the Dynkin Diagram "G2"; but homo- is not iso- morphic,
+//! >  and only a single concrete instance of a pair of ZD's was given . . . which led to my own radically constructivist, almost
+//! >  "punk-rock"-like simplicity of 3 production rules and one octahedral-lattice-based "box-kite" graphic to summarize the
+//! >  workings of the entirety of 16-D ZD's. (Moreno notes, too, that "G2" also implies a powerful scaling of results into
+//! >  higher 2N-D number forms, since "G2" - the automorphism group of the Octonions - is the "derivation algebra" of each
+//! >  2N+1-ion number system from the 2N-ions which generate it by the "Cayley-Dickson process."
 //! 3 Robert P. C. de Marrais, "The 42 Assessors and the Box-Kites they fly: Diagonal Axis-Pair Systems of Zero-Divisors in
-//!    the Sedenions' 16 Dimenions" ("BK1"), http://arXiv.org/abs/math.GM/0011260 ; "Flying Higher Than a Box-Kite:
-//!    Kite-Chain Middens, Sand Mandalas, and Zero-Divisor Patterns in 2N-ions Beyond the Sedenions" ("BK2"),
-//!    http://arXiv.org/abs/math.RA/0207003; and, "Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-
-//!    Suppressing 'Sleeper Cell' Structures in the Sedenions and 2N-ions" ("BK3"), http://arXiv.org/abs.math.RA/0403113.
+//! >  the Sedenions' 16 Dimenions" ("BK1"), http://arXiv.org/abs/math.GM/0011260 ; "Flying Higher Than a Box-Kite:
+//! >  Kite-Chain Middens, Sand Mandalas, and Zero-Divisor Patterns in 2N-ions Beyond the Sedenions" ("BK2"),
+//! >  http://arXiv.org/abs/math.RA/0207003; and, "Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-
+//! >  Suppressing 'Sleeper Cell' Structures in the Sedenions and 2N-ions" ("BK3"), http://arXiv.org/abs.math.RA/0403113.
 //! 4 R. E. Cawagas, "Loops Embedded in Generalized Cayley Algebras of Dimension 2r, r > 2," Int. J. Math. Math. Sci. 28:3
-//!    (2001), 181-187. Prof. Cawagas' "Finitas" software, which he makes freely available, lets one calculate loops and other
-//!    nonassociative structures rather easily in higher-dimensional contexts; he in fact found an equivalent manner of express-
-//!    ing my tabulations from BK1 in "loop language," which he presented in a paper of this year to the National Research
-//!    Council of the Philippines, "On the Structure and Zero Divisors of the Sedenion Algebra"; the correspondence which
-//!    ensued after he communicated this to me proved delightfully engaging, and was the direct trigger for "BK3."
+//! >  (2001), 181-187. Prof. Cawagas' "Finitas" software, which he makes freely available, lets one calculate loops and other
+//! >  nonassociative structures rather easily in higher-dimensional contexts; he in fact found an equivalent manner of express-
+//! >  ing my tabulations from BK1 in "loop language," which he presented in a paper of this year to the National Research
+//! >  Council of the Philippines, "On the Structure and Zero Divisors of the Sedenion Algebra"; the correspondence which
+//! >  ensued after he communicated this to me proved delightfully engaging, and was the direct trigger for "BK3."
 //! 5 Trickier "squares rules," though, abound, as do esoteric algebras concerned with them, such as "Pfister forms"; A. R.
-//!    Rajwade, in fact, has devoted a whole book to them: Squares (Cambridge U. P.: Cambridge UK, 1993). Using his
-//!    convenient shorthand, the standard rules have form (2n, 2n, 2n) where n < 4; for 16-D, though, two 16-D numbers, com-
-//!    prising 16 squares each, generally have a product representable by 32 squares (16, 16, 32). But stranger results are also
-//!    possible: (9, 16, 16) and (10, 10, 16) also work - which may "mean something very significant" as far as Sedenions are
-//!    concerned (except, whatever it is, no one's discovered it is yet!).
+//! >  Rajwade, in fact, has devoted a whole book to them: Squares (Cambridge U. P.: Cambridge UK, 1993). Using his
+//! >  convenient shorthand, the standard rules have form (2n, 2n, 2n) where n < 4; for 16-D, though, two 16-D numbers, com-
+//! >  prising 16 squares each, generally have a product representable by 32 squares (16, 16, 32). But stranger results are also
+//! >  possible: (9, 16, 16) and (10, 10, 16) also work - which may "mean something very significant" as far as Sedenions are
+//! >  concerned (except, whatever it is, no one's discovered it is yet!).
 //! 6 Jaak L<U+00F5>hmus, Eugene Paal, Leo Sorgsepp, Nonassociative Algebras in Physics (Hadronic Press: Palm Harbor FL,
-//!    1994), p. 242.
+//! >  1994), p. 242.
 //! 7 The clearest exposition I've found of this "unobservability principle" - which the authors actually relate to St. Augus-
-//!    tine's views on the origins of Space and Time! - is contained in the string-theoretic (but not yet M-theory aware) text by
-//!    Q. Ho-Kim, N. Kumar, and C. S. Lam, Invitation to Contemporary Physics (World Scientific: River Edge NJ, 1991),
-//!    442-446. (Their discussion also indicates why 1-D "strings" - but not yet why "p-branes," p > 1 - in the first place!)
+//! >  tine's views on the origins of Space and Time! - is contained in the string-theoretic (but not yet M-theory aware) text by
+//! >  Q. Ho-Kim, N. Kumar, and C. S. Lam, Invitation to Contemporary Physics (World Scientific: River Edge NJ, 1991),
+//! >  442-446. (Their discussion also indicates why 1-D "strings" - but not yet why "p-branes," p > 1 - in the first place!)
 //! 8 A. D. Sakharov, "Vacuum quantum fluctuations in curved space and the theory of gravitation." Dokl. Akad. Nauk SSSR,
-//!    177:1 (1967), 70-71 (Russian); English translation in Sov. Phys. Dokl. 11:3 (1968), 381.
+//! >  177:1 (1967), 70-71 (Russian); English translation in Sov. Phys. Dokl. 11:3 (1968), 381.
 //! 9 Agnes Arber, The Mind and the Eye (Cambridge U.P.: Cambridge UK, 1964), 41: "Every grade can be traced between
-//!    remote analogies, and analogies which are so close that they pass into identities, and - paradoxically enough - it is often
-//!    the remote analogies which have the greatest value, while it is the close analogies of which we have to beware. The
-//!    misuse of an analogy by pressing it to the point at which it is confused with an identity, is one to which biological
-//!    thought is peculiarly liable." Where Ms. Arber says "biological," though, we can just as well speak of any heavily
-//!    qualitative and/or speculative area of science (viz., cosmology) where metrics are hard to come by.
+//! >  remote analogies, and analogies which are so close that they pass into identities, and - paradoxically enough - it is often
+//! >  the remote analogies which have the greatest value, while it is the close analogies of which we have to beware. The
+//! >  misuse of an analogy by pressing it to the point at which it is confused with an identity, is one to which biological
+//! >  thought is peculiarly liable." Where Ms. Arber says "biological," though, we can just as well speak of any heavily
+//! >  qualitative and/or speculative area of science (viz., cosmology) where metrics are hard to come by.
 //! 10 Robert Ray Britt, "The New History of Black Holes: 'Co-Evolution' Dramatically Alters Dark Reputation,"
-//!    www.space.com/scienceastronomy/blackhole_history_030128_1.html (January 28, 2003)
+//! >  www.space.com/scienceastronomy/blackhole_history_030128_1.html (January 28, 2003)
 //! 11 For completeness, I list in the "Strut Table"'s second column a set of indices I call "Goto numbers" in BK1, 4 per Box-
-//!    Kite (and 1 per Sail). These refer to the 7 "deformed" Octonion copies the Sedenions contain, which I variously called
-//!    "Moreno counterfeits" and "automorphemes" (the latter being a name only someone overly fond of L<U+00E9>vi-Strauss's struc-
-//!    turalism could love). It was these which, by other means, Cawagas showed corresponded to instances of a hitherto unre-
-//!    cognized variety of ZD-harboring "loop." Each of these 7 loops contains 4 "Co-Assessor trio" 6-cycles, each of which
-//!    appears in exactly one Box-Kite as a "Sail." (Making a "remote analogy," think of a Box-Kite, then, as a tetrad of
-//!    parental chromosomes, with the "Zigzag" as the father's "Y" and the "Trefoils" as the 3 "X's.")
+//! >  Kite (and 1 per Sail). These refer to the 7 "deformed" Octonion copies the Sedenions contain, which I variously called
+//! >  "Moreno counterfeits" and "automorphemes" (the latter being a name only someone overly fond of L<U+00E9>vi-Strauss's struc-
+//! >  turalism could love). It was these which, by other means, Cawagas showed corresponded to instances of a hitherto unre-
+//! >  cognized variety of ZD-harboring "loop." Each of these 7 loops contains 4 "Co-Assessor trio" 6-cycles, each of which
+//! >  appears in exactly one Box-Kite as a "Sail." (Making a "remote analogy," think of a Box-Kite, then, as a tetrad of
+//! >  parental chromosomes, with the "Zigzag" as the father's "Y" and the "Trefoils" as the 3 "X's.")
 //! 12 E. Battamer, "The fractal octahedral network of the large scale structure," http://arxiv.org/abs/astro-ph/9801276, p. 2.
-//!    The caption on the graphic reads: "7 small octahedra inside a large octahedron when size ratio =3."
+//! >  The caption on the graphic reads: "7 small octahedra inside a large octahedron when size ratio =3."
 //! 13 Rodrigo A. Obando, "Partitioning of Cellular Automata Rule Space," Complex Systems 14 (2003), 1-14.
-//!  
-//! ```texttext
+//! 
+//! ```ignore
 //!

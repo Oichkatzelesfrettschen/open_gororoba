@@ -13,7 +13,7 @@
 //! 1. Run: `/home/eirikr/Github/lambda_gororoba/scripts/backup_documents_workspace.sh`
 //! 2. Capture printed `path=` and `manifest=` values.
 //! 3. Verify manifest integrity for one or more files:
-//!    - `sha256sum -c <manifest>` in backup root.
+//! >  - `sha256sum -c <manifest>` in backup root.
 //! 4. Archive workspace log that triggered the backup in `logs/`.
 //!
 //! ## Non-goal

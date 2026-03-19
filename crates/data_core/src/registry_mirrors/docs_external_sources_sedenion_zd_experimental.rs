@@ -19,7 +19,7 @@
 //!
 //! ### Moreno (1998)
 //! - Guillermo Moreno, "The zero divisors of the Cayley-Dickson algebras
-//!   over the real numbers"
+//! over the real numbers"
 //! - Bol. Soc. Mat. Mex. III Ser. 4(1): 13-28 (1998)
 //! - arXiv:q-alg/9710013
 //!
@@ -27,7 +27,7 @@
 //!
 //! ### ZD(S) isometric to V_2(R^7) [Reggiani 2024]
 //!
-//!     ZD(S) = { u in S : ||u||^2 = 2, exists v with uv = 0 }
+//! >   ZD(S) = { u in S : ||u||^2 = 2, exists v with uv = 0 }
 //!
 //! ZD(S) is isometric (not just homeomorphic) to the Stiefel manifold
 //! V_2(R^7), equivalently G_2 / SU(2), with a specific G_2-invariant metric.
@@ -37,7 +37,7 @@
 //!
 //! ### Z(S) homeomorphic to G_2 [Moreno 1998]
 //!
-//!     Z(S) = { (u,v) in S x S : ||u|| = ||v|| = sqrt(2), uv = 0 }
+//! >   Z(S) = { (u,v) in S x S : ||u|| = ||v|| = sqrt(2), uv = 0 }
 //!
 //! | Set   | Elements       | dim | Topology   |
 //! |-------|----------------|-----|------------|
@@ -95,9 +95,9 @@
 //!
 //! - FT-3.1 (ZD(S) ~ V_2(R^7)): requires fiber bundle transition functions
 //! - PSL(2,7) action: |PSL(2,7)| = 168 verified; explicit group action on
-//!   box-kites not yet replicated in code
+//! box-kites not yet replicated in code
 //! - Moreno (2005) higher-dim generalization (math/0512517): V_{2^{n-1}, 2}
-//!   relationship to Reggiani's V_2(R^7) needs investigation
+//! relationship to Reggiani's V_2(R^7) needs investigation
 //!
 //! ## Source
 //!

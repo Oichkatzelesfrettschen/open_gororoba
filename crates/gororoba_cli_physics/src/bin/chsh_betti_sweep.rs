@@ -24,10 +24,15 @@ use rayon::prelude::*;
 #[cfg(target_arch = "x86_64")]
 fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
     println!("    [Screening] CPU Rayon multi-core pre-flight (FP64 / x87 FP80)");
+    
+    // Ensure Rayon is pinned to physical cores
+    let _ = verified_core::topology::HardwareTopology::init_pinned_rayon_pool();
+
     let mut solver = lbm_3d::solver::LbmSolver3D::new(n, n, n, tau);
     
     let n_total = n * n * n;
     let force_field: Vec<[f64; 3]> = (0..n_total)
+        .into_par_iter()
         .map(|idx| {
             let y = (idx / n) % n;
             let fx = force_amp * (2.0 * PI * y as f64 / n as f64).sin();

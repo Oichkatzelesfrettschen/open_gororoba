@@ -33,17 +33,17 @@
 //! **Range**: lambda = 0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0
 //!
 //! **Implementation**:
-//! ```texttext
+//! ```ignore
 //! for lambda in 0.1 0.5 1.0 2.0 5.0 10.0 20.0 50.0; do
-//!   cargo run --release --bin percolation-experiment -- \
-//!     --grid-size 64 \
-//!     --lbm-steps 2500 \
-//!     --nu-base 0.333 \
-//!     --lambda $lambda \
-//!     --n-permutations 1000 \
-//!     --seed 42
+//! cargo run --release --bin percolation-experiment -- \
+//! >   --grid-size 64 \
+//! >   --lbm-steps 2500 \
+//! >   --nu-base 0.333 \
+//! >   --lambda $lambda \
+//! >   --n-permutations 1000 \
+//! >   --seed 42
 //! done
-//! ```texttext
+//! ```ignore
 //!
 //! **Expected Results**:
 //! - Low lambda (0.1-1.0): Weak coupling, correlation p-value ~0.05-0.10
@@ -80,17 +80,17 @@
 //! - 96^3-128^3: Consistent correlation (diminishing returns on resolution)
 //!
 //! **Implementation**:
-//! ```texttext
+//! ```ignore
 //! for grid in 32 48 64 96 128; do
-//!   cargo run --release --bin percolation-experiment -- \
-//!     --grid-size $grid \
-//!     --lbm-steps 2500 \
-//!     --nu-base 0.333 \
-//!     --lambda 1.0 \
-//!     --n-permutations 1000 \
-//!     --seed 42
+//! cargo run --release --bin percolation-experiment -- \
+//! >   --grid-size $grid \
+//! >   --lbm-steps 2500 \
+//! >   --nu-base 0.333 \
+//! >   --lambda 1.0 \
+//! >   --n-permutations 1000 \
+//! >   --seed 42
 //! done
-//! ```texttext
+//! ```ignore
 //!
 //! **Deliverables**:
 //! - `data/e027/grid_sweep_results.csv`
@@ -113,16 +113,16 @@
 //!
 //! **Approach**:
 //! 1. **Imbalance Energy Scale**: <U+0394>E_F = characteristic energy per imbalanced edge
-//!    - Use Harary-Zaslavsky balance index thermodynamics
-//!    - Reference: Phase 1 Week 1 imbalance solver results
+//! >  - Use Harary-Zaslavsky balance index thermodynamics
+//! >  - Reference: Phase 1 Week 1 imbalance solver results
 //!
 //! 2. **Thermal Energy Normalization**: kT_effective for Sedenion field dynamics
-//!    - Relate to APT evolution temperature
-//!    - Calibrate against E-027 empirical results
+//! >  - Relate to APT evolution temperature
+//! >  - Calibrate against E-027 empirical results
 //!
 //! 3. **Derivation**: lambda = <U+0394>E_F / (kT_effective)
-//!    - Expected range: 0.5-5.0 for typical material parameters
-//!    - Compare to Phase 1.4.1 optimal lambda from sweeps
+//! >  - Expected range: 0.5-5.0 for typical material parameters
+//! >  - Compare to Phase 1.4.1 optimal lambda from sweeps
 //!
 //! **Deliverables**:
 //! - `docs/LAMBDA_DERIVATION.md` - Complete mathematical derivation
@@ -145,16 +145,16 @@
 //! 4. **Fractal Dimension**: Box-counting on thresholded imbalance regions
 //!
 //! **Implementation**:
-//! ```texttext
+//! ```ignore
 //! // crates/sign_imbalance/src/spatial_analysis.rs
 //! pub struct SpatialStatistics {
-//!     pub autocorrelation_length: f64,
-//!     pub power_spectrum: Vec<f64>,
-//!     pub fractal_dimension: f64,
+//! >   pub autocorrelation_length: f64,
+//! >   pub power_spectrum: Vec<f64>,
+//! >   pub fractal_dimension: f64,
 //! }
 //!
 //! pub fn analyze_imbalance_field(field: &[f64], grid_size: usize) -> SpatialStatistics;
-//! ```texttext
+//! ```ignore
 //!
 //! **Deliverables**:
 //! - `crates/sign_imbalance/src/spatial_analysis.rs` (250 lines)
@@ -175,18 +175,18 @@
 //! 3. **Gradient Check**: Varying nu(x,y,z) <U+2192> verify local tau(x,y,z) correctness
 //!
 //! **Implementation**:
-//! ```texttext
+//! ```ignore
 //! // crates/lbm_3d/tests/test_chapman_enskog_verification.rs
 //! #[test]
 //! fn test_chapman_enskog_exact() {
-//!     let nu_values = vec![0.05, 0.1, 0.333, 1.0, 5.0];
-//!     for &nu in &nu_values {
-//!         let tau = 3.0 * nu + 0.5;
-//!         // Run LBM, measure effective viscosity from Poiseuille flow
-//!         assert_relative_eq!(nu_measured, nu, epsilon = 1e-6);
-//!     }
+//! >   let nu_values = vec![0.05, 0.1, 0.333, 1.0, 5.0];
+//! >   for &nu in &nu_values {
+//! >       let tau = 3.0 * nu + 0.5;
+//! >       // Run LBM, measure effective viscosity from Poiseuille flow
+//! >       assert_relative_eq!(nu_measured, nu, epsilon = 1e-6);
+//! >   }
 //! }
-//! ```texttext
+//! ```ignore
 //!
 //! **Deliverables**:
 //! - `crates/lbm_3d/tests/test_chapman_enskog_verification.rs` (150 lines, 8 tests)
@@ -208,19 +208,19 @@
 //! 4. **Piecewise**: nu(x) = nu_1 if F < 3/8, else nu_2
 //!
 //! **Implementation**:
-//! ```texttext
+//! ```ignore
 //! // crates/sign_imbalance/src/bridge.rs - extend
 //! pub enum CouplingLaw {
-//!     Exponential { lambda: f64 },
-//!     Linear { lambda: f64 },
-//!     PowerLaw { alpha: f64 },
-//!     Sigmoid { lambda: f64, f_c: f64 },
+//! >   Exponential { lambda: f64 },
+//! >   Linear { lambda: f64 },
+//! >   PowerLaw { alpha: f64 },
+//! >   Sigmoid { lambda: f64, f_c: f64 },
 //! }
 //!
 //! impl ImbalanceViscosityBridge {
-//!     pub fn transform_with_law(&self, imbalance: &[f64], law: CouplingLaw) -> Vec<f64>;
+//! >   pub fn transform_with_law(&self, imbalance: &[f64], law: CouplingLaw) -> Vec<f64>;
 //! }
-//! ```texttext
+//! ```ignore
 //!
 //! **Comparison Metrics**:
 //! - Percolation correlation strength (p-value)
@@ -279,28 +279,28 @@
 //!
 //! **Gate Criteria**:
 //! 1. **Phase 1 Completeness**:
-//!    - <U+2713> Phase 1.1-1.3: Infrastructure (COMPLETE)
-//!    - <U+2713> Phase 1.8: GPU LBM (COMPLETE)
-//!    - <U+2610> Phase 1.4-1.6: Parameter sweeps + analysis (PENDING)
-//!    - <U+2610> Phase 1.9: GPU percolation (PENDING)
-//!    - <U+2610> Phase 1.11: Strong lambda validation (PENDING)
+//! >  - <U+2713> Phase 1.1-1.3: Infrastructure (COMPLETE)
+//! >  - <U+2713> Phase 1.8: GPU LBM (COMPLETE)
+//! >  - <U+2610> Phase 1.4-1.6: Parameter sweeps + analysis (PENDING)
+//! >  - <U+2610> Phase 1.9: GPU percolation (PENDING)
+//! >  - <U+2610> Phase 1.11: Strong lambda validation (PENDING)
 //!
 //! 2. **Test Coverage**: <U+2265>166 Phase 1 tests passing (target: 200+)
 //!
 //! 3. **Registry Completeness**:
-//!    - All E-027 experiments registered
-//!    - Claims C-657..C-670 verified
-//!    - Insights I-064..I-067 documented
+//! >  - All E-027 experiments registered
+//! >  - Claims C-657..C-670 verified
+//! >  - Insights I-064..I-067 documented
 //!
 //! 4. **Performance Validated**:
-//!    - GPU throughput ~280 Mcells/s
-//!    - 256^3 production runs feasible (<10 min)
+//! >  - GPU throughput ~280 Mcells/s
+//! >  - 256^3 production runs feasible (<10 min)
 //!
 //! 5. **Documentation Complete**:
-//!    - PHASE1_WEEK4_RESULTS.md
-//!    - GPU_BENCHMARK_RESULTS.md
-//!    - PARAMETER_SWEEP_SYNTHESIS.md
-//!    - ANALYTICAL_SYNTHESIS.md
+//! >  - PHASE1_WEEK4_RESULTS.md
+//! >  - GPU_BENCHMARK_RESULTS.md
+//! >  - PARAMETER_SWEEP_SYNTHESIS.md
+//! >  - ANALYTICAL_SYNTHESIS.md
 //!
 //! **Gate Review Process**:
 //! 1. Run `make phase1-gate` - regression test suite
@@ -325,24 +325,24 @@
 //! ### Phase 1.9.1: Create sign_imbalance_cuda crate (PENDING - Task #52)
 //!
 //! **Architecture**:
-//! ```texttext
+//! ```ignore
 //! crates/sign_imbalance_cuda/
-//!   src/
-//!     lib.rs                - Public API
-//!     percolation_kernels.cu - CUDA BFS implementation
-//!     correlation_kernels.cu - GPU-accelerated Welch's t-test
-//!   tests/
-//!     test_gpu_cpu_equivalence.rs - Validate against CPU implementation
-//! ```texttext
+//! src/
+//! >   lib.rs                - Public API
+//! >   percolation_kernels.cu - CUDA BFS implementation
+//! >   correlation_kernels.cu - GPU-accelerated Welch's t-test
+//! tests/
+//! >   test_gpu_cpu_equivalence.rs - Validate against CPU implementation
+//! ```ignore
 //!
 //! **Key Algorithms**:
 //! 1. **GPU BFS**: Parallel breadth-first search for connected components
-//!    - Challenge: CUDA BFS is non-trivial (requires atomics + synchronization)
-//!    - Solution: Use level-synchronous BFS with frontier queues
+//! >  - Challenge: CUDA BFS is non-trivial (requires atomics + synchronization)
+//! >  - Solution: Use level-synchronous BFS with frontier queues
 //!
 //! 2. **GPU Correlation**: Parallel Welch's t-test on channel imbalance values
-//!    - Parallel reduction for mean, variance computation
-//!    - Atomic operations for global statistics
+//! >  - Parallel reduction for mean, variance computation
+//! >  - Atomic operations for global statistics
 //!
 //! **Deliverables**:
 //! - sign_imbalance_cuda crate (400 lines)
@@ -358,18 +358,18 @@
 //! **Objective**: Integrate GPU percolation into percolation-experiment binary.
 //!
 //! **Implementation**:
-//! ```texttext
+//! ```ignore
 //! // Modify crates/gororoba_cli/src/bin/percolation_experiment.rs
 //! use sign_imbalance_cuda::PercolationDetectorGpu;
 //!
 //! // Add --use-gpu flag
 //! if args.use_gpu {
-//!     let detector = PercolationDetectorGpu::new(grid_size)?;
-//!     let channels = detector.detect_channels_gpu(&velocity_field, threshold)?;
+//! >   let detector = PercolationDetectorGpu::new(grid_size)?;
+//! >   let channels = detector.detect_channels_gpu(&velocity_field, threshold)?;
 //! } else {
-//!     // CPU path as before
+//! >   // CPU path as before
 //! }
-//! ```texttext
+//! ```ignore
 //!
 //! **Deliverables**:
 //! - Updated binary with GPU path
@@ -406,15 +406,15 @@
 //! ### Phase 1.11.1: <U+03BB>=50 Validation (PENDING - Task #57)
 //!
 //! **Configuration**:
-//! ```texttext
+//! ```ignore
 //! cargo run --release --bin percolation-experiment --use-gpu -- \
-//!   --grid-size 256 \
-//!   --lbm-steps 10000 \
-//!   --nu-base 0.333 \
-//!   --lambda 50.0 \
-//!   --n-permutations 1000 \
-//!   --seed 42
-//! ```texttext
+//! --grid-size 256 \
+//! --lbm-steps 10000 \
+//! --nu-base 0.333 \
+//! --lambda 50.0 \
+//! --n-permutations 1000 \
+//! --seed 42
+//! ```ignore
 //!
 //! **Expected Runtime**: ~10 minutes (GPU-accelerated)
 //!

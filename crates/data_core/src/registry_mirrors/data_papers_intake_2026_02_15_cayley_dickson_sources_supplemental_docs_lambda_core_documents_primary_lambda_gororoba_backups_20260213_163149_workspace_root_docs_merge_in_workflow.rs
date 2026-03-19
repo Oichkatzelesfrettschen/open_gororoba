@@ -16,17 +16,17 @@
 //!
 //! ## Operational commands
 //! - Sync and pull:
-//!   - `bash scripts/sync_and_audit_workspace.sh`
+//! - `bash scripts/sync_and_audit_workspace.sh`
 //! - Optional sync + full consolidation quality gate:
-//!   - `RUN_CONSOLIDATION_GATE=1 bash scripts/sync_and_audit_workspace.sh`
+//! - `RUN_CONSOLIDATION_GATE=1 bash scripts/sync_and_audit_workspace.sh`
 //! - Run full consolidation gate directly:
-//!   - `bash scripts/run_module_consolidation_gate.sh`
+//! - `bash scripts/run_module_consolidation_gate.sh`
 //! - Run source discovery:
-//!   - `bash scripts/discover_original_sources.sh`
+//! - `bash scripts/discover_original_sources.sh`
 //! - Run integration synthesis:
-//!   - `bash scripts/synthesize_root_layout.sh`
+//! - `bash scripts/synthesize_root_layout.sh`
 //! - Backup all workspace docs to `~/Documents`:
-//!   - `bash scripts/backup_documents_workspace.sh`
+//! - `bash scripts/backup_documents_workspace.sh`
 //!
 //! ## Evidence outputs
 //! - Sync audit: `logs/workspace_sync_audit_<TS>.md`

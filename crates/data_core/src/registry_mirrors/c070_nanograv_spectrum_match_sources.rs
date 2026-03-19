@@ -7,29 +7,29 @@
 //! ## Official Sources
 //!
 //! 1. NANOGrav 15-year SMBHB background program page:
-//!    - https://nanograv.org/15yr/SMBHB
+//! >  - https://nanograv.org/15yr/SMBHB
 //! 2. NANOGrav 15-year free-spectrum paper extract tracked in-repo:
-//!    - `data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/paper.toml`
+//! >  - `data/papers/documents_extracted/arxiv-2306-16213-agazie-et-al-2023-nanograv-15yr-gwb/paper.toml`
 //! 3. KDE free-spectrum archive URL tracked by the repo:
-//!    - https://zenodo.org/api/records/10344086/files/NANOGrav15yr_KDE-FreeSpectra_v1.1.0.zip/content
+//! >  - https://zenodo.org/api/records/10344086/files/NANOGrav15yr_KDE-FreeSpectra_v1.1.0.zip/content
 //!
 //! ## Local Reproducible Sources
 //!
 //! 1. Cached official surfaces and KDE archive:
-//!    - `data/external/nanograv_15yr/smbhb.html`
-//!    - `data/external/nanograv_15yr/record_10344086.json`
-//!    - `data/external/nanograv_15yr_kde.zip`
-//!    - `data/external/nanograv_15yr/kde_contents/ceffyl_data/README.md`
+//! >  - `data/external/nanograv_15yr/smbhb.html`
+//! >  - `data/external/nanograv_15yr/record_10344086.json`
+//! >  - `data/external/nanograv_15yr_kde.zip`
+//! >  - `data/external/nanograv_15yr/kde_contents/ceffyl_data/README.md`
 //! 2. Checked-in free-spectrum CSV:
-//!    - `data/external/nanograv_15yr_freespectrum.csv`
+//! >  - `data/external/nanograv_15yr_freespectrum.csv`
 //! 3. Rust provider/extractor surface:
-//!    - `crates/data_core/src/catalogs/nanograv.rs`
+//! >  - `crates/data_core/src/catalogs/nanograv.rs`
 //! 4. Surface audit and CSV repair lane:
-//!    - `crates/gororoba_cli_data/src/bin/pdg_nanograv_surface_audit.rs`
-//!    - `reports/pdg_nanograv_surface_audit.toml`
+//! >  - `crates/gororoba_cli_data/src/bin/pdg_nanograv_surface_audit.rs`
+//! >  - `reports/pdg_nanograv_surface_audit.toml`
 //! 5. Deterministic shape-baseline audit:
-//!    - `crates/gororoba_cli_data/src/bin/cd_pattern_baseline_audit.rs`
-//!    - `data/output/claims_falsification/cd_pattern_baseline_audit.toml`
+//! >  - `crates/gororoba_cli_data/src/bin/cd_pattern_baseline_audit.rs`
+//! >  - `data/output/claims_falsification/cd_pattern_baseline_audit.toml`
 //!
 //! ## Scope Note
 //!

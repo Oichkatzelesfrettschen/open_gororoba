@@ -22,9 +22,9 @@
 //!
 //! *   **Consensus:** The mathematical study of Sedenion (16D) zero divisors is an active, rigorous field.
 //! *   **Evidence:**
-//!     *   *Koebisu (2025)*: "Singular structures and geometric holonomy in the zero divisor set of the sedenions" - explicitly maps zero divisors to Stiefel manifolds ($V_2(\mathbb{R}^8)$) and geometric holonomy.
-//!     *   *Reggiani (2024)*: "The geometry of sedenion zero divisors" - links them to the exceptional Lie group $G_2$ and Einstein metrics.
-//!     *   *Wilmot (2025)*: "Structure of the Cayley-Dickson algebras" - analyzes zero divisor patterns (reducing 84 ZDs to 7 modes).
+//! >   *   *Koebisu (2025)*: "Singular structures and geometric holonomy in the zero divisor set of the sedenions" - explicitly maps zero divisors to Stiefel manifolds ($V_2(\mathbb{R}^8)$) and geometric holonomy.
+//! >   *   *Reggiani (2024)*: "The geometry of sedenion zero divisors" - links them to the exceptional Lie group $G_2$ and Einstein metrics.
+//! >   *   *Wilmot (2025)*: "Structure of the Cayley-Dickson algebras" - analyzes zero divisor patterns (reducing 84 ZDs to 7 modes).
 //! *   **Alignment:** Our "Zero Divisor Mining" (Module 2/3) finding "Box-Kite" structures and G2 links aligns perfectly with contemporary differential geometry research. The "Hyper-Web" in 64D is a logical extension of these known low-dimensional manifolds.
 //!
 //! ### B. Modular Entropy in Gravity (Verified: High)
@@ -32,8 +32,8 @@
 //!
 //! *   **Consensus:** "Modular Entropy" is a standard term in high-energy physics, specifically regarding Holography/AdS/CFT.
 //! *   **Evidence:**
-//!     *   *Yu et al. (2025)*: "Replica Wormholes, Modular Entropy..." - uses modular entropy to study black hole information paradoxes (Island models).
-//!     *   *Ren & Sun (2024)*: "Holographic supersymmetric Renyi entropies" - connects modular entropy to thermodynamic quantities in hyperbolic black holes.
+//! >   *   *Yu et al. (2025)*: "Replica Wormholes, Modular Entropy..." - uses modular entropy to study black hole information paradoxes (Island models).
+//! >   *   *Ren & Sun (2024)*: "Holographic supersymmetric Renyi entropies" - connects modular entropy to thermodynamic quantities in hyperbolic black holes.
 //! *   **Alignment:** The "Recursion PDE" simulation (Step 2) generating entropy profiles matches the qualitative behavior of these "Island model" entropy curves (linear growth then saturation). The use of modular forms (Siegel/Paramodular) is a known tool in this domain (e.g., D1-D5 system counting).
 //!
 //! ### C. "Inverse Cayley-Dickson" (Status: Novel Neologism)
@@ -57,10 +57,10 @@
 //! **"A Noncommutative Holographic Tensor Network based on Cayley-Dickson Zero-Divisor Geometry."**
 //!
 //! *   **Logic:**
-//!     1.  **Bulk:** The bulk spacetime is discretized not just by spatial tensors, but by *algebraic* complexity ($O \to S \to P...$).
-//!     2.  **Dynamics:** "Time" or "RG flow" corresponds to the Cayley-Dickson recursion index.
-//!     3.  **Entropy:** Emerges from the loss of information (associativity) when projecting from higher dimensions ($S$) to lower observable dimensions ($O$). This "associator anomaly" ($m_3$) acts as the entropy source term.
-//!     4.  **Verification:** The "Box-Kite" zero-divisor structures act as "wormholes" or "entanglement bridges" in the bulk geometry.
+//! >   1.  **Bulk:** The bulk spacetime is discretized not just by spatial tensors, but by *algebraic* complexity ($O \to S \to P...$).
+//! >   2.  **Dynamics:** "Time" or "RG flow" corresponds to the Cayley-Dickson recursion index.
+//! >   3.  **Entropy:** Emerges from the loss of information (associativity) when projecting from higher dimensions ($S$) to lower observable dimensions ($O$). This "associator anomaly" ($m_3$) acts as the entropy source term.
+//! >   4.  **Verification:** The "Box-Kite" zero-divisor structures act as "wormholes" or "entanglement bridges" in the bulk geometry.
 //!
 //! ## 3. Conclusion
 //!

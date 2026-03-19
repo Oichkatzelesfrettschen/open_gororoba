@@ -106,16 +106,16 @@
 //!
 //! **What exists**:
 //! - QFT side: Complete one-loop worldline photon-graviton amplitude (2601.23279, Ahmadiniaz et al., 2026)
-//!   - 3 diagrams (irreducible, tadpole, external)
-//!   - Ward identity validated
-//!   - Magnetic dichroism behavior established
-//!   - But: Only one-loop; no higher-loop calculations
+//! - 3 diagrams (irreducible, tadpole, external)
+//! - Ward identity validated
+//! - Magnetic dichroism behavior established
+//! - But: Only one-loop; no higher-loop calculations
 //!
 //! - TCMT side: Generic temporal coupled-mode framework for photonic systems (0909.3323, Ruan-Fan, 2009)
-//!   - Asymmetry parameter q well-defined
-//!   - Scattering and absorption cross-sections derived
-//!   - Fano lineshape formulas established
-//!   - Recently constrained by symmetry (2505.00396, Maksimov, 2025)
+//! - Asymmetry parameter q well-defined
+//! - Scattering and absorption cross-sections derived
+//! - Fano lineshape formulas established
+//! - Recently constrained by symmetry (2505.00396, Maksimov, 2025)
 //!
 //! **What's missing**:
 //! - Unified TCMT for photon-graviton mixing with gravitational asymmetry parameter q_grav
@@ -263,11 +263,11 @@
 //! - Dependencies: Clearly stated
 //!
 //! **Search across all documents**:
-//! ```texttext
+//! ```ignore
 //! grep -r "Photon-Graviton TCMT" /home/eirikr/Github/open_gororoba/docs/
 //! grep -r "q_grav" /home/eirikr/Github/open_gororoba/docs/
 //! grep -r "C-824" /home/eirikr/Github/open_gororoba/
-//! ```texttext
+//! ```ignore
 //!
 //! ---
 //!
@@ -275,15 +275,15 @@
 //!
 //! All synthesis documents are in the project repository:
 //!
-//! ```texttext
+//! ```ignore
 //! /home/eirikr/Github/open_gororoba/
-//!   docs/
-//!     TCMT_PHOTON_GRAVITON_SYNTHESIS.md  (24 KB, 10-part)
-//!     TCMT_QUICK_REFERENCE.md             (9.5 KB, executive)
-//!     TCMT_SYNTHESIS_INDEX.md             (this file, navigation)
-//!   registry/
-//!     TCMT_IMPLEMENTATION_PLAN.toml       (6.8 KB, actionable)
-//! ```texttext
+//! docs/
+//! >   TCMT_PHOTON_GRAVITON_SYNTHESIS.md  (24 KB, 10-part)
+//! >   TCMT_QUICK_REFERENCE.md             (9.5 KB, executive)
+//! >   TCMT_SYNTHESIS_INDEX.md             (this file, navigation)
+//! registry/
+//! >   TCMT_IMPLEMENTATION_PLAN.toml       (6.8 KB, actionable)
+//! ```ignore
 //!
 //! ---
 //!

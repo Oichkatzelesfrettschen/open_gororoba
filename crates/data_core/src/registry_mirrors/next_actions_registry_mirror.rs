@@ -15,7 +15,7 @@
 //! - Status: `done`
 //! - Description: Connect `crates/optics_core` (GRIN raytracing, Kerr nonlinearity) to `warp_ring_integration.rs`. DONE: EngineGrinMedium in warp_ring.rs, ray trace integrated into WarpRingPipeline::execute(), ray_deviation recorded. Sprint 51.
 //! - References:
-//!   - `crates/optics_core`
+//! - `crates/optics_core`
 //!
 //! ### NA-002 (medium): Implement Betti Numbers
 //!
@@ -94,15 +94,15 @@
 //! - Status: `done`
 //! - Description: Add a targeted check that `registry/binaries.toml` stays synchronized with `crates/gororoba_cli/Cargo.toml` bin declarations. DONE: Cargo bin parity reconciled and registry-check no longer reports binary drift.
 //! - References:
-//!   - `crates/gororoba_cli/Cargo.toml`
-//!   - `registry/binaries.toml`
+//! - `crates/gororoba_cli/Cargo.toml`
+//! - `registry/binaries.toml`
 //!
 //! ### NA-015 (medium): Project Counter Auto-Sync
 //!
 //! - Status: `done`
 //! - Description: Automate project metadata counters in `registry/project.toml` to avoid manual drift for claims, insights, experiments, and binaries. DONE: project-counter-sync reconciles counters and check mode confirms zero drift.
 //! - References:
-//!   - `registry/project.toml`
+//! - `registry/project.toml`
 //!
 //! ### NA-016 (high): Thesis 2-3-4 Narrative Pack
 //!

@@ -8,10 +8,10 @@
 //!
 //! ## Method
 //! 1. Measure each file class:
-//!    - count,
-//!    - total lines,
-//!    - TODO/FIXME density,
-//!    - duplicate basenames.
+//! >  - count,
+//! >  - total lines,
+//! >  - TODO/FIXME density,
+//! >  - duplicate basenames.
 //! 2. Identify collision clusters by basename and path role.
 //! 3. Apply class-specific synthesis rules.
 //! 4. Re-run policy gate and publish updated evidence.
@@ -26,7 +26,7 @@
 //!
 //! ### Python (`.py`)
 //! - Enforce multithreading/parallel policy or explicit exemptions.
-//! - Prioritize high-impact IO/tooling scripts for concurrency refactors.
+//! > - Prioritize high-impact IO/tooling scripts for concurrency refactors.
 //! - Keep tests and package markers exempt only when justified.
 //!
 //! ### Shell (`.sh`)
@@ -37,10 +37,10 @@
 //! ## Automated Evidence
 //! - Analyzer script: `scripts/analyze_filetype_harmonization.sh`
 //! - Legacy summary/duplicate snapshots are archived under:
-//!   - `docs/archive/legacy_unified_docs/LATEST.md`
+//! - `docs/archive/legacy_unified_docs/LATEST.md`
 //! - Current singular duplicate evidence is emitted per run:
-//!   - `logs/singular_structure_duplicates_<TS>.tsv`
-//!   - `logs/singular_structure_dedupe_actions_<TS>.tsv`
+//! - `logs/singular_structure_duplicates_<TS>.tsv`
+//! - `logs/singular_structure_dedupe_actions_<TS>.tsv`
 //!
 //! ## Outcome Objective
 //! Transform file-class chaos into a governed synthesis system where each class has:
