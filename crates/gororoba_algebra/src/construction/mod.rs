@@ -49,3 +49,4 @@ pub mod auxiliary {
     };
 }
 pub mod complex_octonion;
+pub mod icosians;

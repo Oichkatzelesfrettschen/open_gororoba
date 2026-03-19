@@ -32,8 +32,8 @@ pub fn kk_standard_from_im(
             let denom = w * w - we2;
             if denom.abs() < 1e-15 {
                 if i > 0 && i < omega.len() - 1 {
-                    let prev = omega[i-1] * im_eps[i-1] / (omega[i-1] * omega[i-1] - we2);
-                    let next = omega[i+1] * im_eps[i+1] / (omega[i+1] * omega[i+1] - we2);
+                    let prev = omega[i - 1] * im_eps[i - 1] / (omega[i - 1] * omega[i - 1] - we2);
+                    let next = omega[i + 1] * im_eps[i + 1] / (omega[i + 1] * omega[i + 1] - we2);
                     integrand.push((prev + next) * 0.5);
                 } else {
                     integrand.push(0.0);
@@ -68,10 +68,10 @@ pub fn kk_sskk_from_im(
             let denom = (w2 - we2) * (w2 - w02);
             if denom.abs() < 1e-15 {
                 if i > 0 && i < omega.len() - 1 {
-                    let prev_w2 = omega[i-1] * omega[i-1];
-                    let next_w2 = omega[i+1] * omega[i+1];
-                    let prev = omega[i-1] * im_eps[i-1] / ((prev_w2 - we2) * (prev_w2 - w02));
-                    let next = omega[i+1] * im_eps[i+1] / ((next_w2 - we2) * (next_w2 - w02));
+                    let prev_w2 = omega[i - 1] * omega[i - 1];
+                    let next_w2 = omega[i + 1] * omega[i + 1];
+                    let prev = omega[i - 1] * im_eps[i - 1] / ((prev_w2 - we2) * (prev_w2 - w02));
+                    let next = omega[i + 1] * im_eps[i + 1] / ((next_w2 - we2) * (next_w2 - w02));
                     integrand.push((prev + next) * 0.5);
                 } else {
                     integrand.push(0.0);
@@ -104,9 +104,9 @@ pub fn kk_mskk2_from_im(
 
     for &we in omega_eval {
         let we2 = we * we;
-        
-        let l_we = eps1_omega0 * (we2 - w12) / (w02 - w12) 
-                 + eps1_omega1 * (we2 - w02) / (w12 - w02);
+
+        let l_we =
+            eps1_omega0 * (we2 - w12) / (w02 - w12) + eps1_omega1 * (we2 - w02) / (w12 - w02);
 
         let mut integrand = Vec::with_capacity(omega.len());
         for (i, &w) in omega.iter().enumerate() {
@@ -114,10 +114,12 @@ pub fn kk_mskk2_from_im(
             let denom = (w2 - we2) * (w2 - w02) * (w2 - w12);
             if denom.abs() < 1e-15 {
                 if i > 0 && i < omega.len() - 1 {
-                    let prev_w2 = omega[i-1] * omega[i-1];
-                    let next_w2 = omega[i+1] * omega[i+1];
-                    let prev = omega[i-1] * im_eps[i-1] / ((prev_w2 - we2) * (prev_w2 - w02) * (prev_w2 - w12));
-                    let next = omega[i+1] * im_eps[i+1] / ((next_w2 - we2) * (next_w2 - w02) * (next_w2 - w12));
+                    let prev_w2 = omega[i - 1] * omega[i - 1];
+                    let next_w2 = omega[i + 1] * omega[i + 1];
+                    let prev = omega[i - 1] * im_eps[i - 1]
+                        / ((prev_w2 - we2) * (prev_w2 - w02) * (prev_w2 - w12));
+                    let next = omega[i + 1] * im_eps[i + 1]
+                        / ((next_w2 - we2) * (next_w2 - w02) * (next_w2 - w12));
                     integrand.push((prev + next) * 0.5);
                 } else {
                     integrand.push(0.0);
