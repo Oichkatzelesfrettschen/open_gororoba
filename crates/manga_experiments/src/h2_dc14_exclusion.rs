@@ -184,6 +184,9 @@ pub fn run_h2(config: &H2Config) -> H2Result {
         config.n_galaxies,
         11.0,
         13.0,
+        0.03,
+        config.n_radial_points,
+        config.noise_frac,
         config.seed,
     );
 

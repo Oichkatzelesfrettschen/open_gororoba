@@ -41,6 +41,10 @@ pub struct H3Config {
     pub correction: Procedure,
     /// Significance level before correction.
     pub alpha_significance: f64,
+    /// Number of radial points per synthetic rotation curve.
+    pub n_radial_points: usize,
+    /// Fractional Gaussian noise on velocities.
+    pub noise_frac: f64,
     /// RNG seed.
     pub seed: u64,
 }
@@ -172,6 +176,9 @@ pub fn run_h3(config: &H3Config, mode: SplitMode) -> H3Result {
         config.n_galaxies,
         11.0,
         13.0,
+        0.03,
+        config.n_radial_points,
+        config.noise_frac,
         config.seed,
     );
 
