@@ -5,7 +5,7 @@ use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
 use serde::Serialize;
 use std::{
-    collections::{BTreeMap, HashSet},
+    collections::BTreeMap,
     env, fs,
     fs::OpenOptions,
     io::Write,
@@ -619,7 +619,6 @@ struct CiRouteCli {
 }
 
 fn run_ci_route(cli: CiRouteCli) -> Result<()> {
-    let repo_root = env::current_dir()?;
     let base = cli.base.unwrap_or_else(|| "HEAD~1".to_string());
     
     // Get changed files via git

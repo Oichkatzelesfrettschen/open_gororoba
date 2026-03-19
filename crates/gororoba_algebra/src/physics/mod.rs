@@ -13,6 +13,7 @@ pub mod quat_rotation;
 pub mod sedenion_field;
 pub mod speculative;
 pub mod supersymmetry;
+pub mod topological_insulators;
 pub mod tripotent_topology;
 
 /// Golden ratio constant phi = (1 + sqrt(5))/2.
