@@ -29,6 +29,9 @@
 //! 22. [Warp Metrics and Algebraic Energy Conditions](warp_algebra_bridge)
 //! 23. [Tensor Holography and Entanglement Entropy](tensor_holography)
 //! 24. [Neural Homotopy and the Stasheff Landscape](neural_homotopy_surrogate)
+//! 25. [The Algebraic LBM Substrate](algebraic_lbm_substrate)
+//! 26. [Nonlocal Optics and the Entropy Trap](nonlocal_optics)
+//! 27. [Casimir Architecture and the Zero-Point Energy](casimir_vacuum)
 
 pub mod foundations;
 pub mod optics;
@@ -54,3 +57,6 @@ pub mod macquart_cosmology;
 pub mod warp_algebra_bridge;
 pub mod tensor_holography;
 pub mod neural_homotopy_surrogate;
+pub mod algebraic_lbm_substrate;
+pub mod nonlocal_optics;
+pub mod casimir_vacuum;
