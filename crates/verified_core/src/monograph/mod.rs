@@ -19,6 +19,8 @@
 //! 12. [The 512D Resonance and Algebraic Unification](nanograv_resonance)
 //! 13. [The Pioneer Anomaly and the Conformal Boundary](pioneer_transition)
 //! 14. [Grand Synthesis of Experimental Evidence](experimental_synthesis)
+//! 15. [Holographic Area Quantization and the 42 Eigenvalue](holographic_area)
+//! 16. [The Cl(9) Vacuum and E8 Unification](cl9_unification)
 
 pub mod foundations;
 pub mod optics;
@@ -34,3 +36,5 @@ pub mod topology_42;
 pub mod nanograv_resonance;
 pub mod pioneer_transition;
 pub mod experimental_synthesis;
+pub mod holographic_area;
+pub mod cl9_unification;
