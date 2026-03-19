@@ -4,18 +4,44 @@
 //! harmonizing the scattered implementations across the crate into a single
 //! well-organized interface.
 //!
-//! # Architecture
+//! # Architecture & Unified Taxonomy of Hypercomplex "Species Axes"
 //!
-//! The hypercomplex number tower follows the Cayley-Dickson construction:
-//! - Dim 1: Reals (R) - associative, commutative, no zero-divisors
-//! - Dim 2: Complex (C) - associative, commutative, no zero-divisors
-//! - Dim 4: Quaternions (H) - associative, non-commutative, no zero-divisors
-//! - Dim 8: Octonions (O) - non-associative, alternative, no zero-divisors
-//! - Dim 16: Sedenions (S) - non-associative, non-alternative, HAS zero-divisors
-//! - Dim 32: Pathions (P) - more zero-divisors than sedenions
-//! - Dim 64+: Higher CD algebras with increasing ZD density
+//! The hypercomplex number tower follows the Cayley-Dickson construction,
+//! but "species" is defined as a product of orthogonal axes:
+//! 
+//! - **Axis A: Stage / Rung (`STAGE:n`)**
+//!   - Dim 1: Reals (R) - associative, commutative, no zero-divisors
+//!   - Dim 2: Complex (C) - associative, commutative, no zero-divisors
+//!   - Dim 4: Quaternions (H) - associative, non-commutative, no zero-divisors
+//!   - Dim 8: Octonions (O) - non-associative, alternative, no zero-divisors
+//!   - Dim 16: Sedenions (S) - non-associative, non-alternative, HAS zero-divisors
+//!   - Dim 32: Pathions (P) - more zero-divisors than sedenions
+//!   - Dim 64+: Higher CD algebras (Chingons, Routons, etc.)
+//!
+//! - **Axis B: Doubling Parameter (`PARAM:gamma`)**
+//!   - Gamma controls the signature (e.g., standard division chain vs split chain).
+//! 
+//! - **Axis C: Base Scalar (`SCALAR:F`)**
+//!   - Typically real numbers, but generalizes to complex, p-adic, or finite fields.
+//! 
+//! - **Axis D: Property Regime (`REGIME`)**
+//!   - Division / Composition / Alternative / Flexible / Quadratic / Power-Associative.
+//!   - (n >= 4 algebras are flexible, quadratic, and power-associative).
+//! 
+//! - **Axis E: Representation (`REPR`)**
+//!   - Pair doubling, XOR-basis with twist function, finite geometry (PG(k,2)).
+//! 
+//! - **Axis F: Arithmetic (`ARITH`)**
+//!   - Orders, lattices (e.g., E8 octavians).
+//! 
+//! - **Axis G: Loop Species (`LOOP`)**
+//!   - Cayley-Dickson unit loops (Q_n) and their subloop/subalgebra structures.
+//!
+//! - **Axis H: Applications (`XOVER`)**
+//!   - Crystallography, EBSD, quasicrystal projections.
 //!
 //! # Zero-Divisor Emergence
+
 //!
 //! At dimension 16 (sedenions), zero-divisors first appear. These are non-zero
 //! pairs (a, b) where a * b = 0. The structure of these ZDs is described by:

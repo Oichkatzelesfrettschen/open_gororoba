@@ -16,6 +16,9 @@
 //! 9. [The Viscous Vacuum and Dimensional Reduction](viscous_vacuum)
 //! 10. [Falsifiable Theses](theses)
 //! 11. [The Topology of 42: Octahedral Box-Kites](topology_42)
+//! 12. [The 512D Resonance and Algebraic Unification](nanograv_resonance)
+//! 13. [The Pioneer Anomaly and the Conformal Boundary](pioneer_transition)
+//! 14. [Grand Synthesis of Experimental Evidence](experimental_synthesis)
 
 pub mod foundations;
 pub mod optics;
@@ -28,3 +31,6 @@ pub mod mathematics;
 pub mod viscous_vacuum;
 pub mod theses;
 pub mod topology_42;
+pub mod nanograv_resonance;
+pub mod pioneer_transition;
+pub mod experimental_synthesis;
