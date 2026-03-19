@@ -148,6 +148,29 @@ CREATE VIRTUAL TABLE research_narrative_search USING fts5(
     content_rowid='ROWID'
 );
 
+-- Keep the FTS5 index synchronized with the research_narratives table.
+
+CREATE TRIGGER research_narratives_ai
+AFTER INSERT ON research_narratives BEGIN
+    INSERT INTO research_narrative_search(rowid, id, title, body_markdown)
+    VALUES (new.rowid, new.id, new.title, new.body_markdown);
+END;
+
+CREATE TRIGGER research_narratives_ad
+AFTER DELETE ON research_narratives BEGIN
+    DELETE FROM research_narrative_search WHERE rowid = old.rowid;
+END;
+
+CREATE TRIGGER research_narratives_au
+AFTER UPDATE ON research_narratives BEGIN
+    DELETE FROM research_narrative_search WHERE rowid = old.rowid;
+    INSERT INTO research_narrative_search(rowid, id, title, body_markdown)
+    VALUES (new.rowid, new.id, new.title, new.body_markdown);
+END;
+
+-- Ensure the FTS index is populated for any existing rows.
+INSERT INTO research_narrative_search(research_narrative_search) VALUES('rebuild');
+
 -- ── Notebook sessions (evcxr / Jupyter integration) ─────────────────
 
 CREATE TABLE notebook_sessions (
