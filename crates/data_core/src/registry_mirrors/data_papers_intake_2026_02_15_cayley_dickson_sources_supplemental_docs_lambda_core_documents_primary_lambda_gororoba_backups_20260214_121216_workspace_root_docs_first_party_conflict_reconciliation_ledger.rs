@@ -7,37 +7,37 @@
 //!
 //! ### Duplicate docs in `lambda_research`
 //! - Conflict:
-//!   - exact duplicate documents appeared in multiple paths.
+//! - exact duplicate documents appeared in multiple paths.
 //! - Reconciliation:
-//!   - preserve one canonical in-place source,
-//!   - move duplicate to archive namespace,
-//!   - record hash-equality manifest.
+//! - preserve one canonical in-place source,
+//! - move duplicate to archive namespace,
+//! - record hash-equality manifest.
 //! - Evidence:
-//!   - `docs/archive/legacy_unified_docs/LATEST.md`,
-//!   - `logs/legacy_docs_archive_20260213_221719.tsv`.
+//! - `docs/archive/legacy_unified_docs/LATEST.md`,
+//! - `logs/legacy_docs_archive_20260213_221719.tsv`.
 //!
 //! ### Multi-module root collisions (`README.md`, `LICENSE`, `requirements.md`)
 //! - Conflict:
-//!   - same filenames across modules.
+//! - same filenames across modules.
 //! - Reconciliation:
-//!   - preserve module-level canonical artifacts,
-//!   - avoid cross-module overwrite,
-//!   - harmonize via first-party index and matrix docs.
+//! - preserve module-level canonical artifacts,
+//! - avoid cross-module overwrite,
+//! - harmonize via first-party index and matrix docs.
 //! - Evidence:
-//!   - `docs/archive/legacy_unified_docs/LATEST.md`,
-//!   - `docs/LICENSES_MATRIX.md`.
+//! - `docs/archive/legacy_unified_docs/LATEST.md`,
+//! - `docs/LICENSES_MATRIX.md`.
 //!
 //! ### Python threading policy vs legacy scripts
 //! - Conflict:
-//!   - policy requires parallelization, legacy scripts were single-threaded.
+//! - policy requires parallelization, legacy scripts were single-threaded.
 //! - Reconciliation:
-//!   - introduce explicit exemptions registry,
-//!   - refactor highest-impact scripts first,
-//!   - enforce with automated verifier and iterative burn-down.
+//! - introduce explicit exemptions registry,
+//! - refactor highest-impact scripts first,
+//! - enforce with automated verifier and iterative burn-down.
 //! - Evidence:
-//!   - `docs/PYTHON_THREADING_POLICY.md`,
-//!   - `docs/PYTHON_THREADING_EXEMPTIONS.tsv`,
-//!   - `docs/python_multithreading_policy_latest.tsv`.
+//! - `docs/PYTHON_THREADING_POLICY.md`,
+//! - `docs/PYTHON_THREADING_EXEMPTIONS.tsv`,
+//! - `docs/python_multithreading_policy_latest.tsv`.
 //!
 //! ## Active Resolution Loop
 //! 1. detect issue,

@@ -20,11 +20,11 @@
 //! physical consequences are:
 //!
 //! 1. CD zero-divisors do NOT form chaotic random networks; they form crystalline
-//!    hyper-octahedra.
+//! >  hyper-octahedra.
 //! 2. The Calcagni spectral dimension flow (2 -> 4) does NOT emerge from individual
-//!    ZD graph components.
+//! >  ZD graph components.
 //! 3. The binary entropy bridge from sign imbalance to the Immirzi parameter has an
-//!    absolute ceiling that structurally excludes the Barbero-Giulini branch.
+//! >  absolute ceiling that structurally excludes the Barbero-Giulini branch.
 //! 4. Associator entropy concentrates as 1/sqrt(N) under CD doubling.
 //!
 //! ## 1. Spectral Dimension: No Plateau (C-922, C-923)
@@ -67,7 +67,7 @@
 //!
 //! The associator entropy H(dim) is bounded above by:
 //!
-//!     H(dim) <= H(8) - k * ln(n_ZD_components + 1)
+//! >   H(dim) <= H(8) - k * ln(n_ZD_components + 1)
 //!
 //! where k is fit from the dim=16 data point. Zero divisors constrain the
 //! associator-norm distribution, reducing entropy.
@@ -78,7 +78,7 @@
 //! threshold (1.3 rad) to saturate (near_frac = 1.0 at dim=32). The adaptive
 //! threshold:
 //!
-//!     epsilon(N) = 1.3 * sqrt(16/N)
+//! >   epsilon(N) = 1.3 * sqrt(16/N)
 //!
 //! scales with the inverse square root of dimension, preventing saturation while
 //! preserving the entropy decomposition.
@@ -97,11 +97,11 @@
 //! The binary entropy bridge maps the sign imbalance density phi to the Immirzi
 //! parameter gamma via:
 //!
-//!     gamma(phi) = -[phi*ln(phi) + (1-phi)*ln(1-phi)] / (pi*sqrt(3))
+//! >   gamma(phi) = -[phi*ln(phi) + (1-phi)*ln(1-phi)] / (pi*sqrt(3))
 //!
 //! This function has an absolute maximum:
 //!
-//!     gamma_max = ln(2) / (pi*sqrt(3)) = 0.12738...
+//! >   gamma_max = ln(2) / (pi*sqrt(3)) = 0.12738...
 //!
 //! achieved at phi = 1/2.
 //!
@@ -133,7 +133,7 @@
 //! All ZD graph components are expanders at every measured CD dimension (16-512).
 //! The spectral gap ratio:
 //!
-//!     gap_ratio = lambda_2 / lambda_max > 0.6
+//! >   gap_ratio = lambda_2 / lambda_max > 0.6
 //!
 //! universally, where lambda_2 is the second-smallest eigenvalue of the graph
 //! Laplacian (the Fiedler value) and lambda_max is the maximum eigenvalue.
@@ -156,15 +156,15 @@
 //! Matrix Theory to the graph Laplacian eigenvalue spectra:
 //!
 //! 1. **Unfolding**: Gaussian KDE maps the empirical CDF to normalize mean
-//!    spacing to 1.0. Bandwidth sigma = 0.1 * (lambda_max - lambda_min).
+//! >  spacing to 1.0. Bandwidth sigma = 0.1 * (lambda_max - lambda_min).
 //! 2. **Brody fitting**: Method-of-moments via bisection on the spacing variance.
-//!    The Brody parameter q interpolates:
-//!    - q = 0: Poisson P(s) = exp(-s) (integrable, no level repulsion)
-//!    - q = 1: GOE Wigner P(s) = (pi*s/2)*exp(-pi*s^2/4) (chaotic, level repulsion)
+//! >  The Brody parameter q interpolates:
+//! >  - q = 0: Poisson P(s) = exp(-s) (integrable, no level repulsion)
+//! >  - q = 1: GOE Wigner P(s) = (pi*s/2)*exp(-pi*s^2/4) (chaotic, level repulsion)
 //! 3. **Kolmogorov-Smirnov tests**: Against both Poisson and GOE reference CDFs.
 //! 4. **Variance diagnostic**: Spacing variance >> 1.0 indicates super-Poisson
-//!    statistics from exact algebraic degeneracies, distinct from generic Poisson
-//!    (variance = 1.0).
+//! >  statistics from exact algebraic degeneracies, distinct from generic Poisson
+//! >  (variance = 1.0).
 //!
 //! ### Results
 //!
@@ -205,7 +205,7 @@
 //!
 //! The K_{2,2,...,2} spectrum has exactly three distinct eigenvalues:
 //!
-//!     {n-2, 0 (multiplicity n/2-1), -2 (multiplicity n/2)}
+//! >   {n-2, 0 (multiplicity n/2-1), -2 (multiplicity n/2)}
 //!
 //! For dim=128 (n=62): {60.0, 0.0 x15, -0.0 x16, -2.0 x30}
 //! For dim=256 (n=126): {124.0, 0.0 x31, -0.0 x32, -2.0 x62}
@@ -243,9 +243,9 @@
 //!
 //! An **integrable expander** is a graph that simultaneously satisfies:
 //! 1. **Expander property**: gap_ratio = lambda_2/lambda_max > c for some
-//!    constant c > 0. (Here c > 0.6.)
+//! >  constant c > 0. (Here c > 0.6.)
 //! 2. **Integrable statistics**: NNSD Brody parameter q near 0, indicating
-//!    Poisson or super-Poisson level spacing statistics.
+//! >  Poisson or super-Poisson level spacing statistics.
 //!
 //! ### The CD Integrable Expander Family
 //!
@@ -333,27 +333,27 @@
 //! The following theorems are candidates for kernel-checked Rocq proofs:
 //!
 //! 1. **K_{2,2,...,2} spectrum theorem**: The Laplacian of K_{2,...,2} with k
-//!    parts has exactly eigenvalues {2k-2 (mult 1), 0 (mult k-1), -2 (mult k)}.
-//!    Proof: direct computation on the Laplacian matrix L = D - A.
+//! >  parts has exactly eigenvalues {2k-2 (mult 1), 0 (mult k-1), -2 (mult k)}.
+//! >  Proof: direct computation on the Laplacian matrix L = D - A.
 //!
 //! 2. **Orthoplex diameter theorem**: diam(K_{2,...,2}) = 2 for k >= 2.
-//!    Proof: any two non-antipodal vertices share a common neighbor.
+//! >  Proof: any two non-antipodal vertices share a common neighbor.
 //!
 //! 3. **Expander gap bound**: For K_{2,...,2} with k parts, gap_ratio =
-//!    (2k-2)/(2k-2) = 1 (trivially maximal for the connected Laplacian).
-//!    Note: the actual gap_ratio uses the non-trivial second eigenvalue.
+//! >  (2k-2)/(2k-2) = 1 (trivially maximal for the connected Laplacian).
+//! >  Note: the actual gap_ratio uses the non-trivial second eigenvalue.
 //!
 //! 4. **Immirzi ceiling**: gamma_max = ln(2)/(pi*sqrt(3)). Proof: calculus
-//!    maximum of -[p*ln(p)+(1-p)*ln(1-p)]/(pi*sqrt(3)) at p=1/2.
+//! >  maximum of -[p*ln(p)+(1-p)*ln(1-p)]/(pi*sqrt(3)) at p=1/2.
 //!
 //! 5. **BG exclusion**: gamma_BG > gamma_max. Proof: numerical bound on the
-//!    known Barbero-Giulini value 0.2375 vs ceiling 0.12738.
+//! >  known Barbero-Giulini value 0.2375 vs ceiling 0.12738.
 //!
 //! 6. **Heat kernel properties (COMPLETED)**: C-931, kernel-checked in
-//!    `proofs/verified/C931_OrthoplexHeatKernel.v`. See Section 11.
+//! >  `proofs/verified/C931_OrthoplexHeatKernel.v`. See Section 11.
 //!
 //! 7. **Thawing EOS properties (COMPLETED)**: C-932, kernel-checked in
-//!    `proofs/verified/C932_OrthoplexThawing.v`. See Section 11.
+//! >  `proofs/verified/C932_OrthoplexThawing.v`. See Section 11.
 //!
 //! ## 11. Formal Verification of Heat Kernel and Thawing EOS
 //!
@@ -365,12 +365,12 @@
 //! with zero Admitted:
 //!
 //! - **P(0) = 1** (initial normalization): the return probability starts at unity,
-//!   confirming that the random walker begins at its origin.
+//! confirming that the random walker begins at its origin.
 //! - **P(t) > 0 for all t >= 0** (positivity): the heat kernel remains strictly
-//!   positive, guaranteeing a well-defined probability distribution at all times.
+//! positive, guaranteeing a well-defined probability distribution at all times.
 //! - **d_s(t) >= 0** (non-negative spectral dimension): the spectral dimension
-//!   derived from -2*t*P'(t)/P(t) is non-negative, ensuring physically meaningful
-//!   dimensional flow.
+//! derived from -2*t*P'(t)/P(t) is non-negative, ensuring physically meaningful
+//! dimensional flow.
 //!
 //! ### 11.2 Thawing EOS Verification (C-932)
 //!
@@ -379,16 +379,16 @@
 //! (theory: `proofs/theories/DarkEnergyEOS.v`). Five theorems are kernel-checked:
 //!
 //! - **LCDM limit (beta = 0)**: when beta = 0, w = -1 identically, recovering the
-//!   cosmological constant.
+//! cosmological constant.
 //! - **LCDM limit (d_s = 0)**: when the spectral dimension vanishes, w = -1,
-//!   recovering LCDM regardless of beta.
+//! recovering LCDM regardless of beta.
 //! - **Thawing direction**: w >= -1 for all beta >= 0 and d_s >= 0, guaranteeing
-//!   that the model respects the null energy condition.
+//! that the model respects the null energy condition.
 //! - **Boundedness**: w is bounded in [-1, beta * d_s_max - 1], preventing
-//!   unphysical divergences.
+//! unphysical divergences.
 //! - **Monotonicity in beta**: w is monotonically non-decreasing in beta at fixed
-//!   d_s, meaning stronger coupling to spectral dimension always drives w further
-//!   from -1.
+//! d_s, meaning stronger coupling to spectral dimension always drives w further
+//! from -1.
 //!
 //! ### 11.3 Observational Result
 //!
@@ -424,7 +424,7 @@
 //! - **P(t) > 0** ensures d_s(t) is well-defined (no division by zero).
 //! - **d_s(t) >= 0** ensures w(z) >= -1 (null energy condition).
 //! - **d_s(0) = 0 and d_s(inf) = 0** ensure w approaches -1 at both early and
-//!   late times, recovering LCDM asymptotically.
+//! late times, recovering LCDM asymptotically.
 //!
 //! The heat kernel on K_{2,2,...,2} drives the spectral dimension that enters
 //! the thawing EOS. This chain -- from graph spectrum to heat kernel to spectral
@@ -435,7 +435,7 @@
 //! ## References
 //!
 //! - Moreno (2000), arXiv:math/0011260: "The zero divisors of the Cayley-Dickson
-//!   algebras over the real numbers"
+//! algebras over the real numbers"
 //! - Mehta (2004): "Random Matrices" (NNSD, Wigner surmise, Brody distribution)
 //! - Brody (1973): "A statistical measure for the repulsion of energy levels"
 //! - Hoory, Linial, Wigderson (2006): "Expander graphs and their applications"
@@ -443,8 +443,8 @@
 //! - Maldacena, Shenker, Stanford (2016): "A bound on chaos"
 //! - Calcagni (2012): "Geometry and field theory in multi-fractional spacetime"
 //! - Scolnic+ (2022), arXiv:2112.03863: "The Pantheon+ Analysis: The Full Dataset
-//!   and Light-Curve Release"
+//! and Light-Curve Release"
 //! - DESI Collaboration (2024), arXiv:2404.03002: "DESI 2024 VI: Cosmological
-//!   Constraints from the Measurements of BAO"
+//! Constraints from the Measurements of BAO"
 //! - Kass, Raftery (1995): "Bayes Factors", JASA 90(430), 773-795
 //!

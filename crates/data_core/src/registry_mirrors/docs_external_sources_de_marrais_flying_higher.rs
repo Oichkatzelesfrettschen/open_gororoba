@@ -61,9 +61,9 @@
 //! ### 3. Pathion (32D) Structure
 //!
 //! - Pathions have 15 x 7 = 105 "16-less" triplets of form (O, S, P')
-//!   yielding 210 Assessors in 15 ensembles (sand mandalas).
+//! yielding 210 Assessors in 15 ensembles (sand mandalas).
 //! - In addition, 42 of the (P, P') pairings are ZDs, giving 504 "irreducible" ZDs
-//!   specific to Pathions. With 84 from Sedenions, total is **588** = 3.5x Moreno's count.
+//! specific to Pathions. With 84 from Sedenions, total is **588** = 3.5x Moreno's count.
 //! - Each sand mandala has 14 Assessors, all sharing the same inner XOR.
 //! - They house 168 fillable cells each (= |PSL(2,7)|).
 //!
@@ -72,19 +72,19 @@
 //! - Box-kite "harmonics" extend indefinitely into higher 2^n-ions.
 //! - For Sedenion box-kites, harmonics are obtained by adding 16n to assessor indices.
 //! - Two "Assessor harmonics" with indices (o + 16n, S + 16n) and
-//!   (o' + 16n, S' + 16n) will emanate some (o xor o' = S xor S') in the base box-kite.
+//! (o' + 16n, S' + 16n) will emanate some (o xor o' = S xor S') in the base box-kite.
 //! - The first harmonic (Pathions only) gives 2x the ZD-diagonals of a base box-kite.
 //!
 //! ### 5. Emanation Tables
 //!
 //! - 15 spreadsheet-like layouts (14 x 14) for the Pathion sand mandalas.
 //! - Cell (row, col) = O or S index of the ZD "emanated" by multiplying row-head's
-//!   Assessor times column-head's Assessor, with appropriate edge-sign prefix.
+//! Assessor times column-head's Assessor, with appropriate edge-sign prefix.
 //! - Both long diagonals are always empty (self-products and strut-opposites).
 //! - Remaining 14^2 - 2*14 = 168 cells fillable.
 //! - For strut constants > 8: only 72 of 168 cells contain emanations.
 //! - For strut constant = 8: "edge polarization" -- peculiar alignment of edge-signs
-//!   by quadrant (all same in upper-left and lower-right, all opposite elsewhere).
+//! by quadrant (all same in upper-left and lower-right, all opposite elsewhere).
 //!
 //! ### 6. Sand Mandala Patterns (Page 15)
 //!
@@ -112,14 +112,14 @@
 //!
 //! ## Full Transcript
 //!
-//! ```texttext
-//!                                   Flying Higher Than A Box-Kite:
+//! ```ignore
+//! >                                 Flying Higher Than A Box-Kite:
 //!
-//!                               Kite-Chain Middens, Sand Mandalas,
-//!                                 and Zero-Divisor Patterns in the
-//!                                   2n-ions Beyond the Sedenions
+//! >                             Kite-Chain Middens, Sand Mandalas,
+//! >                               and Zero-Divisor Patterns in the
+//! >                                 2n-ions Beyond the Sedenions
 //!
-//!                                              Robert P. C. de Marrais
+//! >                                            Robert P. C. de Marrais
 //!
 //!
 //!
@@ -143,14 +143,14 @@
 //!
 //!
 //!
-//!     If, upon reading this paper, you wish to be included in a mailing list I'm contemplating on the subject, then
-//!     send e-mail to: rdemarrais@alum.mit.edu and include "[42]" in the subject line.
+//! >   If, upon reading this paper, you wish to be included in a mailing list I'm contemplating on the subject, then
+//! >   send e-mail to: rdemarrais@alum.mit.edu and include "[42]" in the subject line.
 //!
 //!
 //!
 //!
-//!                                                        Page 1
-//!  {0} Review of Prior Results, Motivations for Future Work: Zero divisors (ZD's), like
+//! >                                                      Page 1
+//! {0} Review of Prior Results, Motivations for Future Work: Zero divisors (ZD's), like
 //! the "monsters" of analysis before Mandelbrot tamed them into fractals, have been largely
 //! avoided as pathological by number theorists. In the last handful of years, however, there
 //! has been a shift (largely driven by the needs of physics) toward taking them more seri-
@@ -162,7 +162,7 @@
 //! actual pair of mutually zero-dividing numbers in the Sedenions was given. K. and Mari
 //! Imaeda, meanwhile, focused on manipulating arbitrary (hence complicated) Sedenion ex-
 //! pressions, uncovering the ZD's within them, eliciting their general function theory, etc.2
-//!           Simultaneous with the Imaedas' "top-down" tactics, R. de Marrais took a comple-
+//! >         Simultaneous with the Imaedas' "top-down" tactics, R. de Marrais took a comple-
 //! mentary "bottom-up" approach, isolating underlying structures from which all complicat-
 //! ed ZD expressions and spaces in the Sedenions must be composed - structures which "fly
 //! under the radar" of classical techniques, requiring an initial calculation-heavy "dirtying of
@@ -175,7 +175,7 @@
 //! product was equal to it), any combination of a pure Octonion (index < 8), and a pure Se-
 //! denion (index > 8) which was not the XOR of the Octonion with 8, yielded one of 7 x 6
 //! = 42 possible axis-pairs to span Assessor planes.
-//!           Representing each such plane by a unique vertex, on one of 7 isomorphic octahed-
+//! >         Representing each such plane by a unique vertex, on one of 7 isomorphic octahed-
 //! ral lattices, resulted in a set of "box-kites" whose 8 triangular faces represented either 4
 //! "sails" sharing vertices with each other but no edges, or 4 empty "vents" in the remaining
 //! 4 faces. Tracing an edge along a "sail" connected two mutually zero-dividing diagonals
@@ -183,7 +183,7 @@
 //! never zero-dividing each other). The orthogonal diagonals "/" and "\" of an Assessor's
 //! "X," spanned, say, by imaginary axes iA and iB , would be shorthanded (A+B) and (A-B)
 //! respectively, with the Assessor pair as such simply indicated as (A, B).
-//!           The multiplication indicated by a box-kite edge would connect two mutually zero-
+//! >         The multiplication indicated by a box-kite edge would connect two mutually zero-
 //! dividing numbers of either same ("/ /" or "\ \") or different ("/ \" or "\ /") orientation,
 //! respectively indicated by a "+" or "- " drawn on the joining path. By continuing to trace
 //! along a sail's edges, a sequence of mutually zero-dividing pairs (henceforth, "DMZ's,"
@@ -199,8 +199,8 @@
 //!
 //!
 //!
-//!                                                Page 2
-//!           One more simple property of box-kites must be indicated in this overview: each
+//! >                                              Page 2
+//! >         One more simple property of box-kites must be indicated in this overview: each
 //! of the 7 is uniquely associated with the one Octonion which does not appear among its 6
 //! vertices. The vertex pairs on opposite ends of any of the 3 orthogonal "struts" stabilizing
 //! the framework (like the wooden sticks of a "real-world" box-kite) do not form DMZ's -
@@ -211,7 +211,7 @@
 //! henceforth dubbed the given box-kite's "strut constant." And, as is easily checked, the
 //! "inner XOR" of the Octonion and Sedenion pairs defining the Assessors at each box-kite
 //! vertex will always equal '8' plus this strut constant.
-//!          In the table below, the strut constant for each box-kite is listed in the first cell of
+//! >        In the table below, the strut constant for each box-kite is listed in the first cell of
 //! each row, with each vertex's Assessor index-pair listed in the 6 columns that follow. The
 //! Octonion indices of the vertices A, B, C are in bold-face: their Assessors form a box-
 //! kite's sole triple-zigzag (orange in the diagram, with trefoils red, blue, green). They also
@@ -227,27 +227,27 @@
 //!
 //!
 //!
-//!                 Strut   Assessors at Box-Kite Vertices
-//!                 Const A    B       C     D      E      F .
+//! >               Strut   Assessors at Box-Kite Vertices
+//! >               Const A    B       C     D      E      F .
 //!
-//!                 1        3, 10   6, 15    5, 12      4, 13   7, 14   2, 11
+//! >               1        3, 10   6, 15    5, 12      4, 13   7, 14   2, 11
 //!
-//!                 2        1, 11   7, 13    6, 12      4, 14   5, 15   3, 9
+//! >               2        1, 11   7, 13    6, 12      4, 14   5, 15   3, 9
 //!
-//!                 3        2, 9    5, 14    7, 12      4, 15   6, 13   1, 10
+//! >               3        2, 9    5, 14    7, 12      4, 15   6, 13   1, 10
 //!
-//!                 4        1, 13   2, 14    3, 15      7, 11   6, 10   5, 9
+//! >               4        1, 13   2, 14    3, 15      7, 11   6, 10   5, 9
 //!
-//!                 5        2, 15   4, 9     6, 11      3, 14   1, 12   7, 10
+//! >               5        2, 15   4, 9     6, 11      3, 14   1, 12   7, 10
 //!
-//!                 6        3, 13   4, 10    7, 9       1, 15   2, 12   5, 11
+//! >               6        3, 13   4, 10    7, 9       1, 15   2, 12   5, 11
 //!
-//!                 7        1, 14   4, 11    5, 10      2, 13   3, 12   6, 9
+//! >               7        1, 14   4, 11    5, 10      2, 13   3, 12   6, 9
 //!
 //!
 //!
-//!                                                   Page 3
-//!           Before offering more pictures and describing further properties, let's consider just
+//! >                                                 Page 3
+//! >         Before offering more pictures and describing further properties, let's consider just
 //! how peculiar (and hence, perhaps useful) the results just described truly are. Specifically,
 //! let's see how radically they differ from the only zero-dividing entities familiar (indeed,
 //! indispensable) in fundamental physics. Though their couching in operator or Clifford
@@ -255,7 +255,7 @@
 //! "projection" operators of quantum mechanics are, in fact, hybrid units in a toroidal
 //! number space. (Imaginary, Quaternion, Octonion, and higher 2n -ion units, by contrast,
 //! run through their paces in 2-, 4-, 8-, and 2n - dimensional spherical spaces.)
-//!          The simplest such number-form torus is just the Cartesian product of two imagi-
+//! >        The simplest such number-form torus is just the Cartesian product of two imagi-
 //! nary orbits: the study of the 4-D result of two 2-D spaces containing the unit circles of
 //! the Argand diagram. The Italian geometer Corrado Segr<U+00E8> first studied these "bicomplex"
 //! numbers in the 1890's4 ; G. Baley Price wrote the first full-length text studying them as
@@ -270,7 +270,7 @@
 //! scores, a "normal" imaginary (or quaternion) unit doesn't commute with any such "mir-
 //! ror units" - but Segr<U+00E8>'s second imaginary (represented by the 2 x 2 identity matrix, but
 //! with the usual i replacing each real unit on the main diagonal) commutes with both sorts.
-//!          If we call the mirror unit m, the two diagonals in the (1,m) plane each have a
+//! >        If we call the mirror unit m, the two diagonals in the (1,m) plane each have a
 //! point which is idempotent: [<U+00BD>(1+m)]2 = <U+00BC> (1 + 2m + 1) = <U+00BD> (1+m); moreover, the
 //! bracketed quantities, raised to arbitrary powers, remain unchanged, allowing for expo-
 //! nential and other functions to be defined along the diagonals which have these points as
@@ -281,7 +281,7 @@
 //! containing them; and, 2) the product of these mutually orthogonal idempotents, as is
 //! readily checked, is zero - making them nilpotent as well. In this latter aspect, they are
 //! easily recognized as the number-form basis for "projection" operators.
-//!          Such toroidal numbers, far from being "artificial," are forced upon us by nature's
+//! >        Such toroidal numbers, far from being "artificial," are forced upon us by nature's
 //! penchant for balanced bookkeeping: they're what you get when you contemplate the
 //! phase curves defined by linear equations with purely imaginary eigenvalues (e.g., in the
 //! theory of oscillations of conservative systems). But perhaps it's artificial to consider
@@ -296,8 +296,8 @@
 //!
 //!
 //!
-//!                                               Page 4
-//!            Among other possibilities, this just indicated difference has a bearing on how one
+//! >                                             Page 4
+//! >          Among other possibilities, this just indicated difference has a bearing on how one
 //! interprets the well-known "zero-point fluctuations" (ZPF) of the vacuum - as manifest in
 //! the experimentally well-attested "Casimir force," which allows actual extraction of ener-
 //! gy (admittedly in minuscule quantities!) from the Void. And this, in turn, soon involves
@@ -305,7 +305,7 @@
 //! relativistic realms. Standard quantum field theory represents ZPF via standard creation
 //! and annihilation operators acting on the vacuum; and, as part of the same gesture, gravity
 //! is treated as an exchange of so-called "gravitons" in flat [sic] spacetime.
-//!           Alternative approaches are numerous; we note but two, which point back indepen-
+//! >         Alternative approaches are numerous; we note but two, which point back indepen-
 //! dently to a 1968 "blue sky" piece by Andrei Sakharov9 . First is the deep investigation
 //! initiated by Haisch, Rueda and Putoff,10 of a non-Machian, zero-point basis for inertia,
 //! developed using the classical, Poynting-vector-based tools of stochastic electrodynamics.
@@ -319,7 +319,7 @@
 //! waves" in Doppler shifts of the ZPF spectrum. They further suggest expanding their
 //! approach to peel back, in a manner first suggested by Sakharov, the formalism of general
 //! relativity itself. Which segu<U+00E9>s into the second alternative approach.
-//!           In a book-length investigation of Nonassociative Algebras in Physics, Jaak L<U+00F5>h-
+//! >         In a book-length investigation of Nonassociative Algebras in Physics, Jaak L<U+00F5>h-
 //! mus, Eugene Paal and Leo Sorgsepp note two patterns they assume are interconnected.11
 //! On the one hand, they observe that modern physics has built itself upon the recognition of
 //! a sequence of "infobarriers" associated with ever less regular notions of number: with
@@ -327,13 +327,13 @@
 //! Heisenberg uncertainty relations depend upon the Quaternions' noncommutativity; argu-
 //! ments are made for such phenomena as "exact color symmetry" and its concomitant
 //! quark confinement being side-effects of the Octonions' nonassociativity.
-//!           On the other hand, they note that attempts to quantize gravity largely fail due to
+//! >         On the other hand, they note that attempts to quantize gravity largely fail due to
 //! the unique nature of the gravitational force: the analog of the "fine-structure constant" is
 //! in fact a variable. Phenomena at the ultra-small scale of the Planck length require a sec-
 //! ond kind of quantization - not of action, but of distance itself, leading to a notion of a
 //! spacetime "crystalline" structure. But it is almost tautological that this latticework is
 //! volatile: below the Planck length, it decays, and "multiplicands" are somehow "elastic."
-//!           Putting these two threads together, it seems hardly outrageous to suggest that
+//! >         Putting these two threads together, it seems hardly outrageous to suggest that
 //! Sakharov's "metrical elasticity" underwriting gravity is directly connected to the next
 //! breakdown of properties - the loss of a field-theoretic notion of norm by which ZD's are
 //! spawned. Since all points of a ZD diagonal make DMZ's with any points of any other
@@ -346,8 +346,8 @@
 //!
 //!
 //!
-//!                                              Page 5
-//!            The following diagram of a box-kite doesn't have signed edges, and has peculiar
+//! >                                            Page 5
+//! >          The following diagram of a box-kite doesn't have signed edges, and has peculiar
 //! symbols on its vertices, and its "sails" lack coloring; it is otherwise, however, indistin-
 //! guishable from that provided above. This was hardly the intent of its creator, though: for
 //! it is an aid in visualizing a key proof concerning the symmetries of the curvature tensor
@@ -360,17 +360,17 @@
 //! = <R(Z,W)X,Y>). The fourth property is the most difficult, its proof requiring use of the
 //! other three - and leading to the diagram as an aid to its following. Says Milnor:
 //!
-//!         Formula (2) asserts that the sum of the quantities at the vertices of shaded
-//!         triangle W is zero. Similarly (making use of (1) and (3)) the sum of the
-//!         vertices of each of the other shaded triangles is zero. Adding these
-//!         identities for the top two shaded triangles, and subtracting the identities for
-//!         the bottom ones, this means that twice the top vertex minus twice the
-//!         bottom vertex is zero. This proves (4), and completes the proof.
+//! >       Formula (2) asserts that the sum of the quantities at the vertices of shaded
+//! >       triangle W is zero. Similarly (making use of (1) and (3)) the sum of the
+//! >       vertices of each of the other shaded triangles is zero. Adding these
+//! >       identities for the top two shaded triangles, and subtracting the identities for
+//! >       the bottom ones, this means that twice the top vertex minus twice the
+//! >       bottom vertex is zero. This proves (4), and completes the proof.
 //!
 //!
 //!
 //!
-//!          With Sedenion-based box-kites, of course, the shaded triangles comprise the sails,
+//! >        With Sedenion-based box-kites, of course, the shaded triangles comprise the sails,
 //! and the products along each of their edges are zero; the terms at opposed ends of struts,
 //! meanwhile, obey a different relation from those connected to each other in a sail - not
 //! their sums, but their differences, must be attended to. Can a small number of "symmetry
@@ -387,8 +387,8 @@
 //! ginaries' (2, 2, 2), they permit, among other relations of interest, a (9, 16, 16) variant.15
 //!
 //!
-//!                                              Page 6
-//!            Only the general context of that fifth and last consideration will be dealt with
+//! >                                            Page 6
+//! >          Only the general context of that fifth and last consideration will be dealt with
 //! herein. For, properly appreciated, it suggests a "metalevel" from which to view quantum
 //! phenomena comparable to that provided for viewing general relativity and the relation of
 //! mass to inertia in the above discussion. The problem of "n-squares laws" generalizes the
@@ -397,7 +397,7 @@
 //! a point on a circle, hence at a distance of a "radius" from the origin, so that the radius'
 //! square is the sum of the squares of the abscissa and ordinate values of the same point;
 //! and, secondly, that the product of two such points can itself be understood the same way.
-//!           More elaborate extensions of the same Pythagorean logic lead to the (4, 4, 4) rule
+//! >         More elaborate extensions of the same Pythagorean logic lead to the (4, 4, 4) rule
 //! for Quaternions (the product of one sum of four squares times another is yet another sum
 //! of four squares), and, more elaborate still, to the (8, 8, 8) rule for Octonions. Hurwitz's
 //! classic proof, though, of the breakdown of the norm (and hence field structure) beyond 8
@@ -412,7 +412,7 @@
 //! superstring style, 8D + 8D-chunked) side effect of a "Bizarro World" mutation of Hilbert
 //! space thinking, where a proliferation of ever more multiply connected ZD-nets of 2n -ions,
 //! n approaching infinity, provides (at least the "cover story" for) the "hidden agenda."
-//!           We will return to the general architectural issues implied here at the end of this
+//! >         We will return to the general architectural issues implied here at the end of this
 //! monograph, when we consider the Artificial-Life- or neural-net- like simulation-work
 //! suggested by such blue-sky "Creation Pressure" thematics. What is clear here, though, is
 //! that even broaching such topics makes adherence to the tried and true (and badly aging)
@@ -423,7 +423,7 @@
 //! of all 2n -ions derived from the Cayley-Dickson process, from the Sedenions on up, obey a
 //! simple pattern: for n > 4, this group has the form G2 x (n-3) x S3 (this last being the stan-
 //! dard order-6 permutation group on 3 elements).17
-//!           This says the automorphism group of the Sedenions' ZD's has order 14 x 1 x 6 =
+//! >         This says the automorphism group of the Sedenions' ZD's has order 14 x 1 x 6 =
 //! 84: the number of diagonal line elements, all of whose points form DMZ's only with
 //! other such line elements, contained in the 42 Assessors. Let's expand our horizons to the
 //! 32-D and 64-D cases and give them names (since they currently don't have any!). Fol-
@@ -437,9 +437,9 @@
 //!
 //!
 //!
-//!                                              Page 7
-//!  {1} Using "Table-Driven" Cayley-Dickson to Excavate the Kite-Chain Midden:
-//!          What is meant by "table-driven": in the early days of the PC Revolution (the one
+//! >                                            Page 7
+//! {1} Using "Table-Driven" Cayley-Dickson to Excavate the Kite-Chain Midden:
+//! >        What is meant by "table-driven": in the early days of the PC Revolution (the one
 //! focused on computing, not "correctness"), dBase II allowed you to do easy database pro-
 //! gramming, but largely confined you to handling data at the record level. When the next
 //! wave of tools emerged, Paradox (the precursor of the networked, SQL-based juggernaut
@@ -452,7 +452,7 @@
 //! large, we must follow the example of Paradox. (And, of course, we must also drop our
 //! pencils at some not so far off point and write programs!) We will soon see that the
 //! "table-driven" approach to the CDP is ridiculously easy to employ and explain.
-//!          What the "Kite-Chain" (pronounced "kitchen") "Midden" is: the PC Revolution
+//! >        What the "Kite-Chain" (pronounced "kitchen") "Midden" is: the PC Revolution
 //! was roughly contemporary with the spread of the "object-oriented programming," or
 //! "OOP" paradigm. Its way of viewing things provides a handy (and deep-running) meta-
 //! phor for thinking about zero divisors. Two key notions in OOP lore are design-hiding
@@ -466,13 +466,13 @@
 //! "garbage collection" algorithm, in Nature or in software. Indeed, one way of looking at
 //! archaeology (and in this sense, cosmologists studying the faint traces of the Big Bang's
 //! aftershocks are engaged in it) is that this imperfection makes it possible.
-//!          A midden, in Old English, comes from the word for "dung heap," and has come to
+//! >        A midden, in Old English, comes from the word for "dung heap," and has come to
 //! mean, to archaeologists, a specific thing: the heaps of broken dishes, worn-out cutlery,
 //! sabre-tooth tiger bones, and other refuse tossed into deep recesses of inhabited caves or
 //! other primitive dwelling sites over the millennia: such kitchen middens provide a trea-
 //! sure trove of information on our ancestors' digestive tracts, sophistication of toolcraft,
 //! and countless other matters that students of the past crave to (literally) unearth.
-//!          Divisors of zero are likewise a "dung heap" of number-theory leavings which no
+//! >        Divisors of zero are likewise a "dung heap" of number-theory leavings which no
 //! one's had much use for; yet it is possible to excavate their layers and find some surprising
 //! patterns which extend indefinitely into remote reaches not of antiquity, but of "2n -ionity"
 //! (which indeed might signify the ultimate antiquity of things leading up to and immediate-
@@ -487,15 +487,15 @@
 //!
 //!
 //!
-//!                                              Page 8
-//!            How the CDP works: like the route to Chaos we think the CDP resembles, there
+//! >                                            Page 8
+//! >          How the CDP works: like the route to Chaos we think the CDP resembles, there
 //! is a "period-doubling" (here, doubling of dimension) which the CDP algorithm captures
 //! by partitioning the numeric entities of its next level up in two parts: units whose indices
 //! are contained in the starting-point 2n -ions go to the left of the comma, and those whose
 //! indices range from 2n to 2n+1 -1, go to its right - but with 2n subtracted from them. The
 //! complex numbers, to start (as the CDP does) with the simplest case, have n = 0, and are
 //! inscribed (a,b), with a and b scalars multiplying the units i0 and i1 - reals and imaginaries.
-//!           The product of two complex numbers, written (a,b) and (c,d), expands and recon-
+//! >         The product of two complex numbers, written (a,b) and (c,d), expands and recon-
 //! tracts as follows: (ai0 + bi1 )(ci0 + di1 ) = (ac - bd)i0 + (ad + bc)i1 = (ac - bd, ad + bc).
 //! CDP doubling yields the Quaternions, which obey much the same pattern. But since their
 //! units don't commute, order matters. And since there's more than one imaginary unit to
@@ -505,7 +505,7 @@
 //! conjugate Q* is likewise (ai0 - bi1 - ci2 - di3 ), and Q<U+00B7>Q* = a2 + b2 + c2 + d2 . In CDP
 //! notation, we get (a + bi1, c + di1 ) and (a - bi1, -c -di1 ) respectively. For general 2n -ions,
 //! the M and M* always have equal components, of opposite sign for non-real terms only.
-//!           Here, we see that the i2 term (and, more generally, the term whose index is the
+//! >         Here, we see that the i2 term (and, more generally, the term whose index is the
 //! next-higher power of 2) acts as the generator of the new units appearing at the next level
 //! (hence, has the same index - 0 - on the right of the comma that the real unit has on the
 //! left); as such, a generator always produces same-signed resultants when applied on the
@@ -515,7 +515,7 @@
 //! that no imaginary unit except the generator will always produce a same-signed resultant
 //! with arbitrary other units multiplied from the same side. This special feature of genera-
 //! tors has far from trivial ramifications with higher 2n -ions, as we'll see soon enough.
-//!           We need note one more general feature before giving the standard iterative CDP
+//! >         We need note one more general feature before giving the standard iterative CDP
 //! algorithm, for it's more general than we need. We can generate higher-order systems of
 //! mirror, imaginary, or "dual" numbers (which square to 0), by setting a parameter to +1 or
 //! - 1 or 0 respectively, and create mixes of such systems by varying the parameter at each
@@ -527,35 +527,35 @@
 //! won't concern us.) For our purposes, all parameters will be -1's; for completeness, we
 //! give the general expression, with the most recently iterated parameter written p:
 //!
-//!                      X <U+00B7> Y = (A,B) <U+00B7> (C,D) = (AC + p(D*)B, B(C*) + DA)
+//! >                    X <U+00B7> Y = (A,B) <U+00B7> (C,D) = (AC + p(D*)B, B(C*) + DA)
 //!
-//!         If the component parts are not complicated admixtures, but simple sets of non-0-
+//! >       If the component parts are not complicated admixtures, but simple sets of non-0-
 //! indexed imaginary units with unit coefficients, we can treat conjugation as just negation,
 //! and write only indices and signs (M - N, instead a<U+00B7>iM + b*<U+00B7>iN). Which gives us this:
 //!
-//!                          X <U+00B7> Y = (A,B) <U+00B7> (C,D) = (AC + DB, DA - BC )
+//! >                        X <U+00B7> Y = (A,B) <U+00B7> (C,D) = (AC + DB, DA - BC )
 //!
 //!
 //!
-//!                                                Page 9
-//!          Before we go into "table-drive," let's make this real with a worked example.
+//! >                                              Page 9
+//! >        Before we go into "table-drive," let's make this real with a worked example.
 //! Going back to the Box-Kite diagram and its associated table, let's take a random path
 //! between vertices - BC, say, on the triple zigzag ABC. Now, let's pick a random strut
 //! constant: 6, for instance. The table says B then equates to the Assessor (4,10), and C to
 //! (7,9). The sign on the edge is minus, so let's flip a coin and pick the "+" diagonal to be
 //! B, the "-" to be C: this means multiply (i4 + i10 ) by (i7 - i9 ). By the formula, we get:
 //!
-//!                      (4, 2) <U+00B7> (7, -1) = ( [(4)(7) - (1)(2)], [- (1)(4) - (2)(7)] )
+//! >                    (4, 2) <U+00B7> (7, -1) = ( [(4)(7) - (1)(2)], [- (1)(4) - (2)(7)] )
 //!
-//!          Refer to the relevant "NATO triplets": (3, 4, 7); (1, 2, 3); (1, 4, 5); (2, 5, 7). The
+//! >        Refer to the relevant "NATO triplets": (3, 4, 7); (1, 2, 3); (1, 4, 5); (2, 5, 7). The
 //! CDP comma separates O's from S's, the latter generated from the former by the unit in-
 //! dexed 23 = 8, so we get (3 - 3, -5 - (-5)) = (+i3 - i13 ) + (- i3 + i13 ). For "hard" parenthe-
 //! ses, "pair creation from the Quantum Void" is suggested; for "soft," we just have 0.
-//!          Note that 3 xor 13 = 6, the strut constant, as required. Furthermore, (3, 13) has
+//! >        Note that 3 xor 13 = 6, the strut constant, as required. Furthermore, (3, 13) has
 //! edge sign "-", so we can continue edge-multiplying and get further zeros in a DMZ 6-
 //! cycle, and say that the Assessor (3, 13) at vertex A is "emanated" by Assessors (4, 10)
 //! and (7, 9), with (4 + 10)<U+00B7>(3 - 13) = (3 - 13)<U+00B7>(7 + 9) = [pair creation or] 0, and so on.
-//!          It's easy to find multiplication tables for the Octonions, and also easy to build one
+//! >        It's easy to find multiplication tables for the Octonions, and also easy to build one
 //! for the Sedenions; no higher tables have been published that we know of, but we don't
 //! need them. All we need do is realize that the table for 2n+1 -ions is comprised of 4 tables
 //! of the same size as that for the 2n -ions, with the latter table constituting the upper left
@@ -563,9 +563,9 @@
 //! Calling this quadrant "I," and continuing to designate the other 3 by successive Roman
 //! numerals in clockwise order, we can fill in all values of each of these by a simple trans-
 //! formation of the ensemble of 2n -ion values in I.
-//!          Quadrant II: Row values same as I ; column values of nth column of II = those
+//! >        Quadrant II: Row values same as I ; column values of nth column of II = those
 //! for n column of I + 2n . Hence if product of row-unit r and column-unit c in I is written
-//!      th
+//! >    th
 //!
 //! (r, 0)(c, 0) = (rc + 0, 0<U+00B7>r - 0<U+00B7>c) = rc = entry in cell (r, c), then cell (r, 2n + c) in II will be
 //! (r, 0)(0, c) = (r<U+00B7>0 + c<U+00B7>0, c<U+00B7>r - 0) = (0, -rc) = -(2n + rc), with "special handling" for r or c
@@ -575,22 +575,22 @@
 //! signed unit whose index is 2n + u - means that the corresponding long diagonal in II will
 //! show (- 2n ) for all entries save the first row's. Corollarily, all entries in the first row and
 //! column will be positive, with content 2n greater than the corresponding cell in I.
-//!          To simplify, collectively refer to the extension of the top row, the first new (2nth )
+//! >        To simplify, collectively refer to the extension of the top row, the first new (2nth )
 //! column, and the main diagonal of II the "trident"of II (with tridents in all quadrants de-
 //! fined analogously). Then we can sum up this way: the index-values in cells (r, 2n +c) =
 //! 2n + (r, c); sign of cells (r, 2n +c) = same as for (r, c) if in trident, opposite otherwise.
-//!          Quadrant III: by similar arguments, cell entries in trident of III are identical in
+//! >        Quadrant III: by similar arguments, cell entries in trident of III are identical in
 //! content to corresponding entries in trident of I, and same in sign except for the leftmost
 //! (2nth ) column, where signs are reversed; for all other cells, (2n + r, 2n + c) = same in
 //! content and opposite in sign as (r, c).
-//!          Quadrant IV: for each entry (2n + r, c) content is identical to that in correspond-
+//! >        Quadrant IV: for each entry (2n + r, c) content is identical to that in correspond-
 //! ing cell (r, 2n + c) of II, with signs reversed in the trident (except for the extension of 0th
 //! column), but the same everywhere else.
 //!
 //!
 //!
-//!                                                Page 10
-//!           Naturally, the best way to grasp the iterative workings of this process is to exam-
+//! >                                              Page 10
+//! >         Naturally, the best way to grasp the iterative workings of this process is to exam-
 //! ine a concrete for-instance where it's been applied multiple times. On the next page, we
 //! give the multiplication table for the Sedenions (the Pathions' 32 x 32 array won't fit), us-
 //! ing a checkerboard scheme of shading alternate Quaternion-sized blocks of cell entries, to
@@ -601,7 +601,7 @@
 //! manageable, as there are (26 -1)(26 -2)/3! = 651 of them for the Chingons alone, so readers
 //! interested in checking calculations involving them later in this argument will need to feed
 //! Pathion triplets into the CDP formula (or write code!).
-//!          One crucial matter the "table-driven" approach makes obvious: since no box-kite
+//! >        One crucial matter the "table-driven" approach makes obvious: since no box-kite
 //! vertices have "trident" entries, one gets box-kite "harmonics" simply by adding 16 (or 32,
 //! or 48 ... ) to their indices. These entities are not "stand-alone," however: for o, o', o"
 //! Octonions; S, S', S" Sedenions; n an integer; two "Assessor harmonics" with indices (o +
@@ -609,7 +609,7 @@
 //! [ = o xor S' = S xor o' ] ) contained in the basic box-kite. Each of the 12 paths in such a
 //! harmonic, then, will have its "sail" completed by the Assessor in the "base-line" box-kite
 //! whose harmonic, by visual logic, "ought to" complete its sail, but doesn't.
-//!          Stranger still, if we consider all 3 harmonics allowed when we double domains up
+//! >        Stranger still, if we consider all 3 harmonics allowed when we double domains up
 //! to the 64-D Chingons, not only will the base-line box-kite complete sails in each, but the
 //! first harmonic will form an "overtone series" with the second and third: "sails," that is,
 //! will have one "Assessor harmonic" from each! For example, if the base-line is the box-
@@ -617,18 +617,18 @@
 //! and (7, 12) and (4, 15) - the first-listed in these pairings forming the box-kite's triple-zig-
 //! zag. The "Assessor harmonics" for n = 1, 2, 3 respectively are therefore, in same order:
 //!
-//!      (18, 25) and (17, 26)            (21, 30) and (22, 29)             (23, 28) and (20, 31)
-//!      (34, 41) and (33, 42)            (37, 46) and (38, 45)             (39, 44) and (36, 47)
-//!      (50, 57) and (49, 58)            (53, 62) and (54, 61)             (55, 60) and (52, 63)
+//! >    (18, 25) and (17, 26)            (21, 30) and (22, 29)             (23, 28) and (20, 31)
+//! >    (34, 41) and (33, 42)            (37, 46) and (38, 45)             (39, 44) and (36, 47)
+//! >    (50, 57) and (49, 58)            (53, 62) and (54, 61)             (55, 60) and (52, 63)
 //!
-//!         "Sails" involving all 3 of these harmonics can be constructed in sets of four, each
+//! >       "Sails" involving all 3 of these harmonics can be constructed in sets of four, each
 //! set completed by one of the 6 Assessors in the first harmonic. For the lowest-index
 //! instance, the four sails are these:
 //!
-//!              (17, 26) - (36, 47) - (53, 62)             (17, 26) - (37, 47) - (52, 63)
-//!              (17, 26) - (38, 45) - (55, 60)             (17, 26) - (39, 44) - (54, 61)
+//! >            (17, 26) - (36, 47) - (53, 62)             (17, 26) - (37, 47) - (52, 63)
+//! >            (17, 26) - (38, 45) - (55, 60)             (17, 26) - (39, 44) - (54, 61)
 //!
-//!          If we only consider the first harmonic - all we get with just the Pathions - we
+//! >        If we only consider the first harmonic - all we get with just the Pathions - we
 //! have a system of twice the number of ZD-diagonals in a base-line box-kite, all inter-
 //! related in the manner just described. This fits quite nicely with Moreno's assessment of
 //! the total count of "irreducible" zero-divisors we should have: per his formula, 25 -ions
@@ -639,8 +639,8 @@
 //!
 //!
 //!
-//!                                               Page 11
-//!       0    1       2     3     4     5       6       7       8    9     10    11    12    13    14    15
+//! >                                             Page 11
+//! >     0    1       2     3     4     5       6       7       8    9     10    11    12    13    14    15
 //!
 //! 0    0    1       2     3     4     5       6        7      8    9     10    11    12    13    14    15
 //!
@@ -697,8 +697,8 @@
 //! (15 16 31) (15 18 29) (15 19 28) (15 22 25) (15 24 23) (15 26 21) (15 27 20) (15 30 17)
 //!
 //!
-//!                                                     Page 12
-//!  {2} The Pathions' "Sand Mandalas" (Surprises in Symmetry and Degeneracy): In
+//! >                                                   Page 12
+//! {2} The Pathions' "Sand Mandalas" (Surprises in Symmetry and Degeneracy): In
 //! the listing of triplets just given, those none of whose 3 pairings can act as Assessors (i.e.,
 //! contribute ZD's) are rendered in italics. These include all the Octonions, all Sedenions
 //! with an '8,' and all Pathions with a '16.' And, just as each of the 7 x 3 "8-less" Sedenion
@@ -709,7 +709,7 @@
 //! dens, 42 of the (P, P') pairings are ZD's as well, which makes 252 x 2 diagonals in each
 //! = 504 "irreducible" ZD's specific to the Pathions. Add in the 84 first showing in the Se-
 //! denions, and we have 588 in all: 3<U+00BD> times the count Moreno's formula would allow.
-//!           The 15 Pathion ensembles of Assessors have many features we've already seen in
+//! >         The 15 Pathion ensembles of Assessors have many features we've already seen in
 //! box-kites: Assessors at all 14 vertices of the analogous lattice have the same inner xor,
 //! its value - one of 15 possible (O or) S indices - acting as the ensemble's signature. This
 //! signature plays the role of "strut constant" as well, so that the Assessors at the 14 vertices
@@ -717,7 +717,7 @@
 //! non-canceling pairs of strut-constant-indexed and index-16 imaginaries. And, as with
 //! box-kites, not just the (here, index- 16 instead of 8) generator, but the Assessor whose
 //! Pathion is the xor of the strut constant with it, is also excluded from the lattice.
-//!           While this much is easy to see, visualizing the connectedness of these ensembles
+//! >         While this much is easy to see, visualizing the connectedness of these ensembles
 //! is hard: with each having 14 vertices, possibly forming DMZ's with all but 1 of the
 //! others, we have 84 edges, forming (14 x 12)/3! = 28 "sails," divvied out among 7 Box-
 //! Kites, each of which shares each of its 3 strut with 2 of the others. We say "possibly
@@ -728,7 +728,7 @@
 //! sort of visualizing strategy is called for. In a partial generalization of the table appended
 //! to the box-kite diagram toward the start of this paper, we'll display the behaviors of the
 //! sand mandalas in 14 x 14 spreadsheet-like layouts we'll call emanation tables.
-//!           As with the column headings there, indices will be arranged to best satisfy two
+//! >         As with the column headings there, indices will be arranged to best satisfy two
 //! sometimes conflicting constraints. First, Assessors on opposite ends of a strut are given
 //! symmetrically opposite placement, so that indices have "nested parentheses" ordering
 //! (just as columns A and F, B and E, and C and D formed strut-opposed pairings in the
@@ -736,7 +736,7 @@
 //! column heads for all sand mandalas with strut constants of 8 or greater), the lower-
 //! indexed Assessors from all strut-pairs should have their O or S terms placed atop the
 //! columns in ascending left-to-right order (and top-to-bottom order on the rows).
-//!           When arranged in this manner, all cells of both long diagonals of the table will
+//! >         When arranged in this manner, all cells of both long diagonals of the table will
 //! always be empty: those running from the upper left toward the bottom right represent
 //! products of an Assessor's diagonals with themselves, and these can never form DMZ's;
 //! those running downward from the upper right, meanwhile, represent products of "strut
@@ -747,43 +747,43 @@
 //!
 //!
 //!
-//!                                              Page 13
-//!          We'll construct the first "emanation table," for strut constant = 1, now. All the
+//! >                                            Page 13
+//! >        We'll construct the first "emanation table," for strut constant = 1, now. All the
 //! Assessors have inner xor 17, units indexed 1 and 16 are excluded, and "nested parenthe-
 //! ses" plus left-right (top-bottom) ordering give us the Sedenions listed in the first line as
 //! column and row headings, associated with the Pathions of index > 16 listed below them:
 //!
-//!            2    4        6    8       10       12   14       15   13    11    9     7    5     3
-//!           19   21       23   25       27       29   31       30   28    26   24    22   20    18
+//! >          2    4        6    8       10       12   14       15   13    11    9     7    5     3
+//! >         19   21       23   25       27       29   31       30   28    26   24    22   20    18
 //!
-//!       2    4   6    8    A   C    E   F    D    B   9    7    5   3
+//! >     2    4   6    8    A   C    E   F    D    B   9    7    5   3
 //!
-//!   2        6   4    A    8   E    C   D    F    9   B    5    7
-//!                                                                                 For compactness of presenta-
-//!   4                                                                    tion, edge signs associated with ema-
-//!       6        2    C    E   8    A   B    9    F   D    3        7
-//!                                                                        nating the Assessors in the cell entries
-//!   6   4    2        E    C   A    8   9    B    D   F         3   5
-//!                                                                        are indicated by putting their Sedeni-
-//!   8   A    C   E         2   4    6   7    5    3        F    D   B    on indices in underscored italics, with
-//!   A   8    E   C    2        6    4   5    7        3    D    F   9    hex notation used for indices > 9: Se-
-//!   C   E    8   A    4    6        2   3         7   5    B    9   F    denions 10 through 15 display as let-
-//!   E   C    A   8    6    4   2             3    5   7    9    B   D    ters A through F. Our table will then
-//!   F   D    B   9    7    5   3             2    4   6    8    A   C    look as shown at left.
-//!   D   F    9   B    5    7        3   2         6   4    A    8   E
-//!                                                                                 Cell-entry values are deployed
-//!   B                                                                    with mirror symmetry about the void
-//!       9    F   D    3        7    5   4    6        2    C    E   8
-//!   9
-//!                                                                        diagonals; they also show reverse-or-
-//!       B    D   F         3   5    7   6    4    2        E    C   A
-//!                                                                        der symmetry in opposite rows: e.g.,
-//!   7   5    3        F    D   B    9   8    A    C   E         2   4
-//!                                                                        entries for the leftmost 2nd - 7th cells
-//!   5   7        3    D    F   9    B   A    8    E   C    2        6    of the top row echo those for the 14th
-//!   3        7   5    B    9   F    D   C    E    8   A    4    6        - 8th on the bottom-most row.
+//! 2        6   4    A    8   E    C   D    F    9   B    5    7
+//! >                                                                               For compactness of presenta-
+//! 4                                                                    tion, edge signs associated with ema-
+//! >     6        2    C    E   8    A   B    9    F   D    3        7
+//! >                                                                      nating the Assessors in the cell entries
+//! 6   4    2        E    C   A    8   9    B    D   F         3   5
+//! >                                                                      are indicated by putting their Sedeni-
+//! 8   A    C   E         2   4    6   7    5    3        F    D   B    on indices in underscored italics, with
+//! A   8    E   C    2        6    4   5    7        3    D    F   9    hex notation used for indices > 9: Se-
+//! C   E    8   A    4    6        2   3         7   5    B    9   F    denions 10 through 15 display as let-
+//! E   C    A   8    6    4   2             3    5   7    9    B   D    ters A through F. Our table will then
+//! F   D    B   9    7    5   3             2    4   6    8    A   C    look as shown at left.
+//! D   F    9   B    5    7        3   2         6   4    A    8   E
+//! >                                                                               Cell-entry values are deployed
+//! B                                                                    with mirror symmetry about the void
+//! >     9    F   D    3        7    5   4    6        2    C    E   8
+//! 9
+//! >                                                                      diagonals; they also show reverse-or-
+//! >     B    D   F         3   5    7   6    4    2        E    C   A
+//! >                                                                      der symmetry in opposite rows: e.g.,
+//! 7   5    3        F    D   B    9   8    A    C   E         2   4
+//! >                                                                      entries for the leftmost 2nd - 7th cells
+//! 5   7        3    D    F   9    B   A    8    E   C    2        6    of the top row echo those for the 14th
+//! 3        7   5    B    9   F    D   C    E    8   A    4    6        - 8th on the bottom-most row.
 //!
-//!          Note that all 168 available cell-entries are filled with emanations: save for the
+//! >        Note that all 168 available cell-entries are filled with emanations: save for the
 //! diagonals, all row-listed ZD's form DMZ's with all column-listed ZD's. As a harbinger
 //! of things to come, however, the eighth such table (strut constant indexing the Sedenions'
 //! generator) shows a peculiar alignment: in each quadrant, all edge-signs are identical. In
@@ -791,7 +791,7 @@
 //! by writing products in CDP form and recalling that all inner xor's will equal 16 + 8, this
 //! is a side-effect of the peculiar characteristic of generators mentioned earlier: namely, all
 //! their products with lower-indexed units, if taken on the same side, have the same sign.
-//!          More subtle, and far more surprising, is an effect ultimately attributable to the
+//! >        More subtle, and far more surprising, is an effect ultimately attributable to the
 //! same root cause, but by a less transparent route: when the strut constant gets bigger than
 //! the generator's index, only 72 of the available cell-entries contain emanations. Even
 //! more mysterious, if we subtract 8 from the strut constant and call this the "excess," then
@@ -806,8 +806,8 @@
 //!
 //!
 //!
-//!                                                          Page 14
-//!           Viewed in sequence, these tables suggest the patterns made by cellular automata;
+//! >                                                        Page 14
+//! >         Viewed in sequence, these tables suggest the patterns made by cellular automata;
 //! seen individually, they suggest nothing so much as the short-shelf-life "sand mandalas"
 //! of Tibetan Buddhist ritual, made by monks on large flat surfaces with colored sands or
 //! powdered flowers, minerals, or even gemstones. To best convey this sensibility, all 7 of
@@ -825,7 +825,7 @@
 //!
 //!
 //!
-//!           We're not yet done with surprises: for just as Kite-Chain Middens indicate a way
+//! >         We're not yet done with surprises: for just as Kite-Chain Middens indicate a way
 //! in which low-level structure can be echoed higher up the endless 2n -ion ladder, the seven
 //! 72-cell sand mandalas show us the way to collapse from one level of form to that native
 //! to a level lower down. If we fold any of their tables along their row and column mid-
@@ -834,7 +834,7 @@
 //! "excess." The cells painted green, on the other hand, will adjoin the Sedenions' index-8
 //! generators and the Box Kite's own strut constant in a trio of ensembles, one per strut - or,
 //! said another way, one for each "forbidden" O-triplet containing the strut constant.
-//!           We can imagine the Pathion units associated uniquely with each emanation-table
+//! >         We can imagine the Pathion units associated uniquely with each emanation-table
 //! entry being "boiled off" by some reductive process, the possible nature of which must be
 //! left for future contemplation. We can also, of course, imagine "Sand-Mandala-Chain
 //! Middens," echoing their basic structure in a modulo-32 rhythm. And we can imagine
@@ -842,8 +842,8 @@
 //! "restless triplet" cyclings connecting all such systems . . . and so on.
 //!
 //!
-//!                                             Page 15
-//!          To reach an understanding of the happenings in higher reaches, a more formal
+//! >                                           Page 15
+//! >        To reach an understanding of the happenings in higher reaches, a more formal
 //! grasp of the simplicities underlying the surprises in the Pathions would stand us well. We
 //! know that units indexed g = 2n - hence, any generators of the next (2n -1) units via CDP -
 //! operate in a uniquely uniform way. For all units iu , u < g, iu <U+00B7> ig = + i(u+g) . In the upper
@@ -851,7 +851,7 @@
 //! can be written (r, R) and (c, C) respectively, where lower-case indices all are O's, and
 //! upper-case are P's (all > 16). Specifically, for all 72-celled sand mandalas, each Asses-
 //! sor's inner xor ("ix") = 24 + <U+039E> , where <U+039E> ("xi") is the "excess" in the range of 1 to 7.
-//!         But 24 is the sum of the first two generators which yield ZD behavior. Multiplied
+//! >       But 24 is the sum of the first two generators which yield ZD behavior. Multiplied
 //! with O's, the combined effect of the unilateral signing behavior of each taken separately
 //! is reversed: i24 <U+00B7> iu = + i(24+u) . Further, if iu <U+00B7> iv = + iw makes an O triplet, i(24 + u) <U+00B7> i(24 + v) =
 //! + iw also. (By CDP, we get (- i(8 + u) <U+00B7> i(8 + v) ); this gives + iw by the "Quadrant III" rule
@@ -859,24 +859,24 @@
 //! by-term signing of the two pairs of units in the product (r, 24 + r*) <U+00B7> (c, 24 + c*) will be
 //! the same as for (r, r*) <U+00B7> (c, c*). But this latter just involves O's, and so lacks the sign-
 //! canceling among like-indexed terms DMZ's require - and so, therefore, must the former!
-//!         The only way around this null result is for one of the indices of R, C, or R xor C
+//! >       The only way around this null result is for one of the indices of R, C, or R xor C
 //! to be precisely 24, with corresponding index r, c, or r xor c precisely the excess <U+039E> . Say r
 //! = <U+039E> , left-multiply (c, C) by (r, R), and leave a sign-variable sg(..) = <U+00B1> (..) undetermined:
 //!
-//!          (<U+039E> , 24) <U+00B7> (c, 24 + c*), where c <U+00B7> c* = sg( <U+039E> ), and hence <U+039E> <U+00B7> c = sg( c* )
+//! >        (<U+039E> , 24) <U+00B7> (c, 24 + c*), where c <U+00B7> c* = sg( <U+039E> ), and hence <U+039E> <U+00B7> c = sg( c* )
 //!
-//!          Left-multiplying by <U+039E> , then 24, we get these indices in successive output lines:
+//! >        Left-multiplying by <U+039E> , then 24, we get these indices in successive output lines:
 //!
-//!          <U+039E> <U+00B7> c <U+00E0> sg( c* ),          <U+039E> <U+00B7> (24 + c*) <U+00E0> 24 + (<U+039E> <U+00B7> c*) = ( - sg(24 + c) )
-//!          24 <U+00B7> c <U+00E0> (24 + c),         24 <U+00B7> (24 + c*) <U+00E0> (- c* )
+//! >        <U+039E> <U+00B7> c <U+00E0> sg( c* ),          <U+039E> <U+00B7> (24 + c*) <U+00E0> 24 + (<U+039E> <U+00B7> c*) = ( - sg(24 + c) )
+//! >        24 <U+00B7> c <U+00E0> (24 + c),         24 <U+00B7> (24 + c*) <U+00E0> (- c* )
 //!
-//!           Comparing cross-terms in the two lines, it's clear we have a zero product, with the
+//! >         Comparing cross-terms in the two lines, it's clear we have a zero product, with the
 //! edge between (r, R) and (c, C) being signed the same as sg. Supposing c is <U+039E> instead
 //! leads to the same result with a change of labels; slightly more work is called for if <U+039E> is in
 //! the product instead of either multiplier. By symmetry, the same ZD criteria just demon-
 //! strated can be appropriately interpreted in all quadrants. The 72-count (not just of non-
 //! void cell entries, but of distinct DMZ pairings of ZD diagonals) follows trivially.
-//!           That last parenthetical remark is a signal one: in Sedenion Box-Kites, the 12 ZD
+//! >         That last parenthetical remark is a signal one: in Sedenion Box-Kites, the 12 ZD
 //! diagonals in each, each belong to 2 Sails, making 24 DMZ's in all. In this, they conform
 //! to the same formula we can generalize from the sand mandalas with <U+039E> > 0: for 2n -ions,
 //! n>3, the ZD-pairings formula, up to Voudons, gives 6 <U+00B7> (2n-1 -4) = 24, 72, 168, 360, 744.
@@ -891,8 +891,8 @@
 //! triple-zigzag to 3 trefoil Sails, was explored in our prior paper. How deep does it go?
 //!
 //!
-//!                                                  Page 16
-//!            In Catastrophe Theory, the D4 singularity takes on two forms when projected
+//! >                                                Page 16
+//! >          In Catastrophe Theory, the D4 singularity takes on two forms when projected
 //! from the complex to the real domains, and these are the two Umbilics just named. More,
 //! it is also well-known, thanks to the "A-D-E Problem,"20 that the D4 pattern relates to
 //! close-packing in 4-D, yielding the "Feynman checkerboard" of 24 unit hyperspheres in
@@ -911,7 +911,7 @@
 //! contained as simple factors of the Routons' "Babylonian" 360 mean anything special? In
 //! this domain, so little is known, and so much computation will be required to learn more,
 //! that we can truly deem this brand of mathematics an "experimental" discipline.)
-//!           Let's wind down with something more concrete to mull on: the emanation table
+//! >         Let's wind down with something more concrete to mull on: the emanation table
 //! shown as the last on the right of the top row in the prior illustration (with <U+039E> = 3) will be
 //! exemplified. Its "green cell" units of 3 and 8 indicate a "folding over" into the Sedenion
 //! Box-Kite with strut constant 3; the low-end indices shown in the emanation table do in-
@@ -925,15 +925,15 @@
 //! "mule-trains" of "sterile" triplets which can never form ZD's in their own right). This
 //! emanation table partitions into 3 Box-Kites with strut constant 11 as follows:
 //!
-//!                            A      B       C       D       E        F .
+//! >                          A      B       C       D       E        F .
 //!
-//!                         1, 26   8, 19    9, 18   2, 25   3, 24   10, 17
+//! >                       1, 26   8, 19    9, 18   2, 25   3, 24   10, 17
 //!
-//!                         4, 31   8, 19   12, 23   7, 28   3, 24   15, 20
+//! >                       4, 31   8, 19   12, 23   7, 28   3, 24   15, 20
 //!
-//!                         6, 29   8, 19   14, 21   5, 30   3, 24   13, 22
+//! >                       6, 29   8, 19   14, 21   5, 30   3, 24   13, 22
 //!
-//!         Note that the common appearance of the (8, 19) and (3, 24) Assessors in each of
+//! >       Note that the common appearance of the (8, 19) and (3, 24) Assessors in each of
 //! these 3 Box-Kites would seem to belie the assertion that they partition the 72 DMZ cells
 //! cleanly: but this shared pair of Assessors are strut-opposites, and we are now viewing
 //! these Box-Kites not as collections of 12 ZD diagonals, but of 24 DMZ-pairings; so, as
@@ -942,8 +942,8 @@
 //!
 //!
 //!
-//!                                               Page 17
-//!            But this suggests the 7 interconnected Box-Kites of the 168-cell emanation tables
+//! >                                             Page 17
+//! >          But this suggests the 7 interconnected Box-Kites of the 168-cell emanation tables
 //! may be viewed in a similar manner, making their interconnectedness not hard to deal
 //! with, but simple. Consider the first table's Assessor list given atop page 14: take the
 //! lower-index items in the first of its two lines as given, and pick the leftmost value (2).
@@ -953,7 +953,7 @@
 //! and form 2 new triples with it from the left of the line; including opposites from the right
 //! gives 2 more Box-Kites: (4, 8, 12, 13, 9, 5); (4, 10, 14, 15, 11, 5). Shift again, pick the
 //! (6), perform the same trick: (6, 8, 14, 15, 9, 7); (6, 10, 12, 13, 11, 7).
-//!           Parting thought anent "Mule-Trains": the attentive reader may already have fig-
+//! >         Parting thought anent "Mule-Trains": the attentive reader may already have fig-
 //! ured out that if each <U+039E> -high (henceforth, "Sky-High") emanation table splits into 3 Box-
 //! Kites, each with 2 sails based on one of the 7 overworked "Mule-Train" triplets, 7 x 3 x 2
 //! = 42. The MT-Sails, then, play a role in Sky-Highs akin to the Sedenions' 42 Assessors
@@ -977,13 +977,13 @@
 //! sessor, in any Sail, its lower-order (O, say) index will form a triplet with the other lower-
 //! order indices in the same Sail; but it will also form a triplet with its adjacent Assessors'
 //! higher-order (S or P, say) indices.
-//!           Meanwhile, collapsing a Sky-High onto a Sedenion box-kite leaves all Assessors
+//! >         Meanwhile, collapsing a Sky-High onto a Sedenion box-kite leaves all Assessors
 //! properly indexed, but since the strut-opposite cell contents from which they were engen-
 //! dered in the Pathions always have opposite edge-signs, their own edge-signs are left inde-
 //! finite, and hence any interrupted cyclings may perhaps be left hanging (and vulnerable,
 //! thereby, to "digression pressure") . . . at least for the moment of symmetry-breaking when
 //! Pathions are "boiled off."
-//!           Then too, kite-chain midden harmonics allow for ever greater "switching yard"
+//! >         Then too, kite-chain midden harmonics allow for ever greater "switching yard"
 //! complexities as the n in 2n -ion gets bigger. What underlying restlessness of triplets, or
 //! overarching "gantry-work" for growing n, might lead all these systems to "cross-pollin-
 //! ate"? To what effect? By induction, and in conclusion, one can easily imagine things in
@@ -992,72 +992,72 @@
 //!
 //!
 //!
-//!                                              Page 18
-//!  1
-//!   R. Guillermo Moreno, "The zero divisors of the Cayley-Dickson algebras over the real numbers," Bol.
+//! >                                            Page 18
+//! 1
+//! R. Guillermo Moreno, "The zero divisors of the Cayley-Dickson algebras over the real numbers," Bol.
 //! Soc. Mat. Mexicana (3), 4 , 1 (1998), 13-28; preprint available as http://arXiv.org/abs/q-alg/9710013 .
 //! 2
-//!   K. and Mari Imaeda, "Sedenions: Algebra and analysis," Appl. Math. Comput., 115, 2/3 (October 2000),
+//! K. and Mari Imaeda, "Sedenions: Algebra and analysis," Appl. Math. Comput., 115, 2/3 (October 2000),
 //! 77-88.
 //! 3
-//!   Robert de Marrais, "The 42 Assessors and the Box-Kites they fly: Diagonal axis -pair systems of zero-
+//! Robert de Marrais, "The 42 Assessors and the Box-Kites they fly: Diagonal axis -pair systems of zero-
 //! divisors in the Sedenions' 16 dimensions," preprint available as http://arXiv.org/abs/math.GM/0011260 .
 //! (November, 2000)
 //! 4
-//!   Corrado Segr<U+00E8>, in Math. Ann., 40 (1892), 413-167, and in Segr<U+00E8>'s Opere, I, Edizione cremonese, 1957.
+//! Corrado Segr<U+00E8>, in Math. Ann., 40 (1892), 413-167, and in Segr<U+00E8>'s Opere, I, Edizione cremonese, 1957.
 //! 5
-//!   G. Baley Price,Introduction to Multicomplex Spaces and Functions, Marcel Dekker, New York, 1991.
+//! G. Baley Price,Introduction to Multicomplex Spaces and Functions, Marcel Dekker, New York, 1991.
 //! 6
-//!   R. Penrose and W. Rindler, Spinors and Space-Time, Vol. 1: Two-Spinor Calculus and Relativistic
+//! R. Penrose and W. Rindler, Spinors and Space-Time, Vol. 1: Two-Spinor Calculus and Relativistic
 //! Fields, Cambridge University Press, Cambridge - London - New York, 1984.
 //! 7
-//!   Charles Mus<U+00E8>s, "Applied Hypernumbers: Computational Concepts," Appl. Math. Comput., 3 (1976),
+//! Charles Mus<U+00E8>s, "Applied Hypernumbers: Computational Concepts," Appl. Math. Comput., 3 (1976),
 //! 211-226; "Hypernumbers - II. Further Concepts and Computational Applications," Appl. Math. Comput.,
 //! 4 (1978), 45-66; "Hypernumbers and Quantum Field Theory with a Summary of Physically Applicable
 //! Hypernumber Arithmetics and their Geometries," Appl. Math. Comput., 6 (1980), 63-94.
 //! 8
-//!   Pertti Lounesto, Clifford Algebras and Spinors, Cambridge University Press, Cambridge - New York -
+//! Pertti Lounesto, Clifford Algebras and Spinors, Cambridge University Press, Cambridge - New York -
 //! Melbourne, 1997, 207-8.
 //! 9
-//!   Andrei Sakharov, "Vacuum quantum fluctuations in curved space and the theory of gravitation," Dokl.
+//! Andrei Sakharov, "Vacuum quantum fluctuations in curved space and the theory of gravitation," Dokl.
 //! Acad. Nauk. SSSR 177 (1967), 70-71; translated in Sov. Phys. Dokl. 12 (1968), 1040-1041.
 //! 10
-//!    H. E. Putoff, Phys. Review A, 39 (1989), 2223; B. Haisch, A. Rueda, H. E. Putoff, Phys. Review A, 49
+//! >  H. E. Putoff, Phys. Review A, 39 (1989), 2223; B. Haisch, A. Rueda, H. E. Putoff, Phys. Review A, 49
 //! (1994), 678; B. Haisch, A. Rueda, Phys. Review A, 268 (2000), 224; Y. Dobyns, A. Rueda, B. Haisch,
 //! xxx.lanl.gov/gr_qc/0002069 (February, 2000), to appear in Foundations of Physics.
 //! 11
-//!     Jaak L<U+00F5>hmus, Eugene Paal, Leo Sorgsepp, Nonassociative Algebras in Physics, Hadronic Press, Palm
+//! >   Jaak L<U+00F5>hmus, Eugene Paal, Leo Sorgsepp, Nonassociative Algebras in Physics, Hadronic Press, Palm
 //! Harbor FL, 1994. Geoffrey Dixon's extension of the Standard Model based on the tensor product of the
 //! Complex, Quaternion and Octonion algebras, where electric, weak, and strong forces naturally arise from
 //! these 3 factors respectively, suggests the next "big break" - allowing zero-divisors - would point toward
 //! including gravity (and that nothing less than this could hope to). See Dixon's Division Algebras: Octo-
 //! nions, Quaternions, Complex Numbers and the Algebraic Design of Physics, Kluwer, Dordrecht, 1994.
 //! 12
-//!     John Milnor, Morse Theory, based on lecture notes by M. Spivak and R. Wells, Princeton University
+//! >   John Milnor, Morse Theory, based on lecture notes by M. Spivak and R. Wells, Princeton University
 //! Press, Princeton NJ, 1969. Diagram and quote from p. 54, at the end of "<U+00A7>9. The Curvature Tensor."
 //! 13
-//!    J. J. Sylvester, "On quaternions, nonions, sedenions etc.", Johns Hopkins Univer. Circular, 3:7-9, 1889;
+//! >  J. J. Sylvester, "On quaternions, nonions, sedenions etc.", Johns Hopkins Univer. Circular, 3:7-9, 1889;
 //! this and earlier pieces on Nonions are in his Collected Works, III, 647-650; and IV, 122-132.
 //! 14
-//!     D. Siersma, "Singularities of C8 functions of right-codimension smaller or equal than eight," Indag.
+//! >   D. Siersma, "Singularities of C8 functions of right-codimension smaller or equal than eight," Indag.
 //! Math. 74 (1973), 31-37; simply explained and motivated in Tim Poston and Ian Stewart, Catastrophe
 //! Theory and its Applications, Pitman Publishing, Boston - London - Melbourne, 1978, pp. 162-170.
 //! 15
-//!     A. R. Rajwade, Squares, Cambridge University Press, Cambridge - New York - Melbourne, 1993.
+//! >   A. R. Rajwade, Squares, Cambridge University Press, Cambridge - New York - Melbourne, 1993.
 //! 16
-//!     T. Kirkman, "On pluquaternions and homoid products of sums of n squares," Philos. Mag. (Ser. 3) 33
+//! >   T. Kirkman, "On pluquaternions and homoid products of sums of n squares," Philos. Mag. (Ser. 3) 33
 //! (1848), 447-459; 494-509.
 //! 17
-//!     I've yet to find the actual paper, "The algebraic set of the zero divisors in the Cayley-Dickson algebras,"
+//! >   I've yet to find the actual paper, "The algebraic set of the zero divisors in the Cayley-Dickson algebras,"
 //! but its results are cited at http://www.innerx.net/~tsmith/Ndalg.html -- Tony Smith's well-traveled math
 //! and physics website. A brief abstract of Moreno's talk, in which he presents the results cited above as "up-
 //! per bounds" on the number of "irreducible components" (a point of much interest to us) can be found at
 //! www.matmor.unam.mx/events/ams -smm/EN/SESIONES/sessionR1/sesionR1.pdf .
 //! 18
-//!     Helena Albuquerque and Shahn Majid, "Quasialgebra structure of the octonions," preprint available as
+//! >   Helena Albuquerque and Shahn Majid, "Quasialgebra structure of the octonions," preprint available as
 //! http://arXiv.org/abs/math.QA/9802116 . (February, 1998)
 //! 19
-//!     Moreno's formula is identical to that derived by Hurwitz in a superficially unrelated context: the
+//! >   Moreno's formula is identical to that derived by Hurwitz in a superficially unrelated context: the
 //! classification of compact Riemann surfaces of genus g > 2 have automorphism groups of size 84(g-1).
 //! And, as the smallest order such group is a simple group, there is no Hurwitz group of order 84 - so the first
 //! instance is analogous to the Pathion harmonic just described, while higher instances are no longer general!
@@ -1065,29 +1065,29 @@
 //! Jones and David Singerman, Complex Functions: An Algebraic and Geometric Viewpoint, Cambridge
 //! University Press, Cambridge - New York - Melbourne, 1987, Chapters 5 and 6.
 //! 20
-//!     M. Hazewinkel, W. Hesselink, D. Siersma, F. D. Veldkamp, "The ubiquity of Coxeter-Dynkin diagrams
+//! >   M. Hazewinkel, W. Hesselink, D. Siersma, F. D. Veldkamp, "The ubiquity of Coxeter-Dynkin diagrams
 //! (an introduction to the A-D-E problem), Nieuw Arch. Wisk. 25 (1977), 255-307. The A-D-E problem
 //! arose in the work of V. I. Arnol'd as a result of his sensing the connection between singularity theory and
 //!
 //!
-//!                                                   Page 19
-//!  the classic "A, D, E" of Dynkin diagrams. See his Catastrophe Theory (3nd revised and expanded edi-
+//! >                                                 Page 19
+//! the classic "A, D, E" of Dynkin diagrams. See his Catastrophe Theory (3nd revised and expanded edi-
 //! tion),Springer-Verlag, Berlin Heidelberg New York Toronto, 1992, especially the concluding chapter. An
 //! updated roster of links on the subject is maintained by Tony Smith at the website cited earlier.
 //! 21
-//!    James Callahan, "A Geometric Model of Anorexia and Its Treatment," Behavioral Science, 27, 1982,
+//! >  James Callahan, "A Geometric Model of Anorexia and Its Treatment," Behavioral Science, 27, 1982,
 //! 140-154, is where the E6 dynamics of the "trance tunnel" were first reported; these were embedded in the
 //! full dimensionality of the Double Cusp in a pair of papers written with psychoanalyst Jerome I. Sashin,
 //! "Models of Affect-Response and Anorexia Nervosa," in S. H. Koslow, A. J. Mandell, M. F. Shlesinger,
 //! eds., Conference on Perspectives in Biological Dynamics and Theoretical Medicine. Annals N. Y. Acad.
 //! Sci., 504, 1986, 241-259; "Predictive Models in Psychoanalysis," Behavioral Science, 35, 1990, 60-76.
 //! 22
-//!    Steve Wolfram, A New Kind of Science, Wolfram Media Inc., www.stevewolfram.com , 2002.
+//! >  Steve Wolfram, A New Kind of Science, Wolfram Media Inc., www.stevewolfram.com , 2002.
 //!
 //!
 //!
 //!
-//!                                                  Page 20
-//!  
-//! ```texttext
+//! >                                                Page 20
+//! 
+//! ```ignore
 //!

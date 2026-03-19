@@ -25,40 +25,40 @@
 //! ### Core geometry
 //!
 //! - `BrickShape3d`
-//!   - edge length in cells
-//!   - halo edge length in cells
+//! - edge length in cells
+//! - halo edge length in cells
 //! - `LogicalGrid3d`
-//!   - `nx`, `ny`, `nz`
+//! - `nx`, `ny`, `nz`
 //! - `BrickGrid3d`
-//!   - bricks per axis
-//!   - total brick count
+//! - bricks per axis
+//! - total brick count
 //!
 //! ### Occupancy metadata
 //!
 //! - `OccupancyBitsetStats`
-//!   - total bricks
-//!   - active bricks
-//!   - occupancy fraction
+//! - total bricks
+//! - active bricks
+//! - occupancy fraction
 //! - `IndirectBrickTableShape`
-//!   - entry count
-//!   - bytes per entry
+//! - entry count
+//! - bytes per entry
 //! - `ActiveBrickWindow`
-//!   - active-brick start
-//!   - active-brick count
-//!   - active-cell start
-//!   - active-cell count
+//! - active-brick start
+//! - active-brick count
+//! - active-cell start
+//! - active-cell count
 //!
 //! ### Planning metadata
 //!
 //! - `SparseTilePlan`
-//!   - number of windows
-//!   - peak active bricks per window
-//!   - recommended tile bytes
-//!   - whether metadata hotset fits L2
+//! - number of windows
+//! - peak active bricks per window
+//! - recommended tile bytes
+//! - whether metadata hotset fits L2
 //! - `SparseMetadataFootprint`
-//!   - occupancy-bitset MiB
-//!   - indirect-table MiB
-//!   - active-brick-ID MiB
+//! - occupancy-bitset MiB
+//! - indirect-table MiB
+//! - active-brick-ID MiB
 //!
 //! ## Good Extraction Candidates
 //!
@@ -102,7 +102,7 @@
 //! 1. Move geometry and occupancy-footprint types first.
 //! 2. Move active-brick window bookkeeping next.
 //! 3. Keep solver-specific byte formulas behind adapters until a second workload
-//!    proves they belong in the shared crate.
+//! >  proves they belong in the shared crate.
 //!
 //! ## Success Criteria
 //!
@@ -112,7 +112,7 @@
 //! - free of Vulkan runtime bindings
 //! - free of solver-specific physical semantics
 //! - useful to at least two owners, such as CUDA sparse LBM and heliosphere sparse
-//!   planning
+//! planning
 //!
 //! If it starts absorbing threshold policy or kernel launch logic, it has gone too
 //! far.

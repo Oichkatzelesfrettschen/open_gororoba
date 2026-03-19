@@ -5,21 +5,21 @@
 //!
 //! Host Python may be too new for Qiskit wheels. Use Docker.
 //!
-//! ```texttext
+//! ```ignore
 //! docker build -t qiskit-env -f docker/Dockerfile .
 //! ./run_quantum_container.sh src/quantum/local_test.py
-//! ```texttext
+//! ```ignore
 //!
 //! Makefile equivalents:
-//! ```texttext
+//! ```ignore
 //! make docker-quantum-build
 //! make docker-quantum-run ARGS="src/quantum/local_test.py"
-//! ```texttext
+//! ```ignore
 //!
 //! Optional local install (Python 3.11/3.12 only; markers skip installs on >=3.13):
-//! ```texttext
+//! ```ignore
 //! make install-quantum
-//! ```texttext
+//! ```ignore
 //!
 //! See also: `docs/QISKIT_SETUP.md`.
 //!

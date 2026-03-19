@@ -8,15 +8,15 @@
 //!
 //! Run:
 //!
-//! ```texttext
+//! ```ignore
 //! make studio-run
-//! ```texttext
+//! ```ignore
 //!
 //! Verify:
 //!
-//! ```texttext
+//! ```ignore
 //! make studio-check
-//! ```texttext
+//! ```ignore
 //!
 //! Primary API endpoints:
 //! - `GET /api/health`

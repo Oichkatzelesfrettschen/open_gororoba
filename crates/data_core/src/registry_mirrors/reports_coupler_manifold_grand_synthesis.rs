@@ -12,11 +12,11 @@
 //!
 //! ### 3. Key Implementations
 //! - **`verified_core::coupler_manifold`**: The core statistical engine, providing:
-//!     - Log-Jacobian estimation via finite differences.
-//!     - **Identifiability Audits** via Fisher Information SVD to detect confounded parameters.
-//!     - **Bootstrap Resampling** for uncertainty quantification.
-//!     - **Two-Sector Mixture Models** to decouple smooth scaling from rare-event floors.
-//!     - **Bruhat-Tits Tree** geometry for p-adic holographic mapping.
+//! >   - Log-Jacobian estimation via finite differences.
+//! >   - **Identifiability Audits** via Fisher Information SVD to detect confounded parameters.
+//! >   - **Bootstrap Resampling** for uncertainty quantification.
+//! >   - **Two-Sector Mixture Models** to decouple smooth scaling from rare-event floors.
+//! >   - **Bruhat-Tits Tree** geometry for p-adic holographic mapping.
 //!
 //! ### 4. Breakthrough Discoveries
 //!

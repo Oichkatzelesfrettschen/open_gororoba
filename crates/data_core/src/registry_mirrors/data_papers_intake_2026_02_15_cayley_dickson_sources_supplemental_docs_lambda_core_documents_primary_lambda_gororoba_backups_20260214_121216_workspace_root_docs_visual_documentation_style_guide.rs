@@ -12,9 +12,9 @@
 //! - Dense dashboard canvas: `2560x1440`.
 //! - Print-friendly fallback: `A4 landscape` at `300 DPI`.
 //! - Export formats:
-//!   - primary: `PNG`
-//!   - source-preserving: `SVG`
-//!   - publication bundle: `PDF` (optional)
+//! - primary: `PNG`
+//! - source-preserving: `SVG`
+//! - publication bundle: `PDF` (optional)
 //!
 //! ## Color System (Dark)
 //! - `--bg-main: #0D1117`
@@ -30,33 +30,33 @@
 //!
 //! ## Typography
 //! - Preferred families:
-//!   - headings: `IBM Plex Sans`
-//!   - body: `Source Sans 3`
-//!   - code/paths: `JetBrains Mono`
+//! - headings: `IBM Plex Sans`
+//! - body: `Source Sans 3`
+//! - code/paths: `JetBrains Mono`
 //! - Minimum sizes:
-//!   - title: `44px`
-//!   - section heading: `28px`
-//!   - body: `20px`
-//!   - annotation/caption: `16px`
+//! - title: `44px`
+//! - section heading: `28px`
+//! - body: `20px`
+//! - annotation/caption: `16px`
 //!
 //! ## Layout Rules
 //! - Use a clear 12-column grid or equivalent alignment system.
 //! - Keep one dominant message per visual.
 //! - Group content as:
-//!   1. state snapshot,
-//!   2. evidence links,
-//!   3. next actions.
+//! 1. state snapshot,
+//! 2. evidence links,
+//! 3. next actions.
 //! - Keep whitespace intentional; avoid dense edge-to-edge blocks.
 //!
 //! ## Diagram Conventions
 //! - Arrows:
-//!   - solid: active data/workflow
-//!   - dashed: archived/legacy path
+//! - solid: active data/workflow
+//! - dashed: archived/legacy path
 //! - Node colors:
-//!   - active lane: `accent-info`
-//!   - verified/completed: `accent-success`
-//!   - warning/open: `accent-warn`
-//!   - blocked/failure: `accent-critical`
+//! - active lane: `accent-info`
+//! - verified/completed: `accent-success`
+//! - warning/open: `accent-warn`
+//! - blocked/failure: `accent-critical`
 //! - Every lane diagram must include absolute or repo-relative paths.
 //!
 //! ## Accessibility
@@ -75,16 +75,16 @@
 //! ## Naming Convention
 //! - Store under: `docs/visuals/`
 //! - File name pattern:
-//!   - `<YYYYMMDD>_<topic>_<variant>_dark.<ext>`
+//! - `<YYYYMMDD>_<topic>_<variant>_dark.<ext>`
 //! - Example:
-//!   - `20260214_singular_merge_state_v1_dark.png`
-//!   - `20260214_singular_merge_state_v1_dark.svg`
+//! - `20260214_singular_merge_state_v1_dark.png`
+//! - `20260214_singular_merge_state_v1_dark.svg`
 //!
 //! ## Current Artifact
 //! - Generated dark-mode singular merge state visual:
-//!   - `docs/visuals/20260214_singular_merge_state_v1_dark.png`
-//!   - `docs/visuals/20260214_singular_merge_state_v1_dark.svg`
-//!   - `docs/visuals/20260214_singular_merge_state_v1_dark.md`
+//! - `docs/visuals/20260214_singular_merge_state_v1_dark.png`
+//! - `docs/visuals/20260214_singular_merge_state_v1_dark.svg`
+//! - `docs/visuals/20260214_singular_merge_state_v1_dark.md`
 //!
 //! ## Review Checklist
 //! - Message is clear in 5 seconds.

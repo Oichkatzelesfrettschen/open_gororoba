@@ -45,8 +45,8 @@
 //! ## 3. Data Contract & Interpretation
 //! *   **Schema:** `WarpRingExperiment` (in `gororoba_contracts`).
 //! *   **Artifacts:** 
-//!     *   `warp_ring_trace.h5`: Time-series scalars (Enstrophy, Density).
-//!     *   `warp_field_step_N.h5`: Full 3D velocity field [nx, ny, nz, 3] for topological verification.
+//! >   *   `warp_ring_trace.h5`: Time-series scalars (Enstrophy, Density).
+//! >   *   `warp_field_step_N.h5`: Full 3D velocity field [nx, ny, nz, 3] for topological verification.
 //! *   **Goal:** Provide a "Gold Standard" dataset for lambda-gororoba cross-validation.
 //!
 //! ## 4. Execution Plan
@@ -60,14 +60,14 @@
 //!
 //! ### 6.1 Tensor Core & Precision Strategy (Knowledge Interpretation)
 //! *   **FP8 (E4M3/E5M2):** **REJECTED** for LBM state.
-//!     *   *Reason:* LBM relies on the non-equilibrium part $f^{neq} = f - f_{eq}$, which is often $O(10^{-3})$. FP8-E4M3 has a machine epsilon of $2^{-3} = 0.125$. The entire signal would be lost to quantization noise.
-//!     *   *Verdict:* FP8 is "Not Detailed Enough".
+//! >   *   *Reason:* LBM relies on the non-equilibrium part $f^{neq} = f - f_{eq}$, which is often $O(10^{-3})$. FP8-E4M3 has a machine epsilon of $2^{-3} = 0.125$. The entire signal would be lost to quantization noise.
+//! >   *   *Verdict:* FP8 is "Not Detailed Enough".
 //! *   **BFloat16 (BF16):** **ACCEPTED** for High-Performance State.
-//!     *   *Reason:* BF16 preserves the 8-bit exponent of FP32, maintaining the dynamic range required for density variations. The 7-bit mantissa is low precision, but sufficient for "visual" or "topological" LBM where exact conservation to $10^{-15}$ is not required (unlike engineering CFD).
-//!     *   *Benefit:* **50% Bandwidth Reduction** (20 GB/s vs 40 GB/s). Fits $256^3$ in same VRAM.
+//! >   *   *Reason:* BF16 preserves the 8-bit exponent of FP32, maintaining the dynamic range required for density variations. The 7-bit mantissa is low precision, but sufficient for "visual" or "topological" LBM where exact conservation to $10^{-15}$ is not required (unlike engineering CFD).
+//! >   *   *Benefit:* **50% Bandwidth Reduction** (20 GB/s vs 40 GB/s). Fits $256^3$ in same VRAM.
 //! *   **Tensor Cores:**
-//!     *   *Usage:* Use `mma.m16n8k16` instructions if re-writing in raw PTX, but for CUDA C++, standard `hmma` is complex for stencil.
-//!     *   *Pivot:* Focus on **BF16 Memory + FP32 Compute** (Mixed Precision). This uses the Tensor Core's accumulators implicitly in modern CUDA compilers.
+//! >   *   *Usage:* Use `mma.m16n8k16` instructions if re-writing in raw PTX, but for CUDA C++, standard `hmma` is complex for stencil.
+//! >   *   *Pivot:* Focus on **BF16 Memory + FP32 Compute** (Mixed Precision). This uses the Tensor Core's accumulators implicitly in modern CUDA compilers.
 //!
 //! ## 7. Performance Baseline ($128^3$)
 //! *   **FP32 (Fused):** ~20-30 steps/s (Projected).

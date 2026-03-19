@@ -6,15 +6,15 @@
 //!
 //! Command set:
 //!
-//! ```texttext
+//! ```ignore
 //! cargo run -p gororoba_cli_data --bin registry-check -- \
-//!   --canonical-db registry/canonical/control_plane.sqlite3 \
-//!   --timings --compat-export-policy off
+//! --canonical-db registry/canonical/control_plane.sqlite3 \
+//! --timings --compat-export-policy off
 //!
 //! cargo run -p gororoba_cli_data --bin registry-check -- \
-//!   --canonical-db registry/canonical/control_plane.sqlite3 \
-//!   --timings
-//! ```texttext
+//! --canonical-db registry/canonical/control_plane.sqlite3 \
+//! --timings
+//! ```ignore
 //!
 //! ## Results
 //!
@@ -44,26 +44,26 @@
 //!
 //! - The SQLite control-plane setup cost is small relative to the claims lane.
 //! - The difference between source-only mode and full freshness mode is currently
-//!   concentrated in `canonical_setup` and is roughly `0.006s` in this snapshot.
+//! concentrated in `canonical_setup` and is roughly `0.006s` in this snapshot.
 //! - The dominant remaining noise is not runtime failure but policy warnings:
-//!   identity-gap drift and legacy status vocabulary in claims/insights.
+//! identity-gap drift and legacy status vocabulary in claims/insights.
 //!
 //! ## Immediate follow-up
 //!
 //! - Expand this timing baseline to the other heavy governance binaries:
-//!   `execution-planning`, `integrity-resolution`, and `governance-verify`.
+//! `execution-planning`, `integrity-resolution`, and `governance-verify`.
 //! - Separate warning-volume reduction from timing work so performance numbers stay
-//!   interpretable.
+//! interpretable.
 //!
 //! ## Heavy governance binaries
 //!
 //! Warm-run command set:
 //!
-//! ```texttext
+//! ```ignore
 //! /usr/bin/time -p cargo run -p gororoba_cli_data --bin execution-planning -- --verify
 //! /usr/bin/time -p cargo run -p gororoba_cli_data --bin integrity-resolution -- --verify
 //! /usr/bin/time -p cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs
-//! ```texttext
+//! ```ignore
 //!
 //! Warm-run wall times:
 //!
@@ -74,9 +74,9 @@
 //! Notes:
 //!
 //! - `execution-planning --verify` initially failed until the planning lane was
-//!   regenerated after the control-plane refresh. After regeneration it passed.
+//! regenerated after the control-plane refresh. After regeneration it passed.
 //! - The widened timing pass also exposed two missing dependency declarations that
-//!   were fixed before the final timings were taken:
-//!   - `verified_core` needed `rayon`
-//!   - `cd_kernel` needed `verified_core`
+//! were fixed before the final timings were taken:
+//! - `verified_core` needed `rayon`
+//! - `cd_kernel` needed `verified_core`
 //!

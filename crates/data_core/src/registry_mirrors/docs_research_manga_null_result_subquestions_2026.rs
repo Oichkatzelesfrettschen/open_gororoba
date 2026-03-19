@@ -17,7 +17,7 @@
 //! |------------|-------------|------------|
 //! | E-183 | N=6992 MaNGA DR17 stacking null (D=16,64,256,1024) | C-1365..C-1368 |
 //! | E-184 | Multi-algebra extension: G2, Albert J3(O), sl(2) | C-1369..C-1374 |
-//! | E-192 | Non-static diagnostics: STFT, derivative, Rayleigh | I-183 |
+//! > | E-192 | Non-static diagnostics: STFT, derivative, Rayleigh | I-183 |
 //! | Python suite | 660 robustness runs (11 cond x 3 regimes x 20 seeds) | C-1411..C-1418 |
 //!
 //! **Key files**:
@@ -56,7 +56,7 @@
 //! **Question**: The paper (`paper.md` lines 67-71) describes a three-stage pipeline where
 //! Stage 2 fits and subtracts M=7 baryonic harmonics via least-squares:
 //!
-//!     h_i(x) = sum_{m=1}^{M} [a_m cos(2*pi*m*x/L) + b_m sin(2*pi*m*x/L)]
+//! >   h_i(x) = sum_{m=1}^{M} [a_m cos(2*pi*m*x/L) + b_m sin(2*pi*m*x/L)]
 //!
 //! The actual code (`models.py:stack_residuals()` lines 62-104) performs only
 //! inverse-variance weighted stacking followed by direct Fourier projection.
@@ -68,12 +68,12 @@
 //!
 //! **Measurable outcome**: Resolve one of three ways:
 //! - (A) **Implement**: Add harmonic subtraction to the pipeline, re-run all 660 analyses.
-//!   All numerical results change. Estimated 3-5 days.
+//! All numerical results change. Estimated 3-5 days.
 //! - (B) **Remove from paper**: Revise manuscript to describe the actual pipeline (direct
-//!   Fourier projection without harmonic cleaning). The "blind zone" finding must be
-//!   abandoned or reframed. Estimated 1 day.
+//! Fourier projection without harmonic cleaning). The "blind zone" finding must be
+//! abandoned or reframed. Estimated 1 day.
 //! - (C) **Document as tested-unnecessary**: If evidence exists that harmonic subtraction
-//!   was tested and found to not change results, document this as an ablation. Estimated 0.5 day.
+//! was tested and found to not change results, document this as an ablation. Estimated 0.5 day.
 //!
 //! **Impact on novel contributions**: If (B), one of five claimed novel contributions
 //! ("harmonic-subtraction blind zone discovery") is unsupported. The paper must either
@@ -104,9 +104,9 @@
 //! 1. Trace exact code path in `InjectionRecovery.compute_metrics()` (lines 546-591)
 //! 2. Decompose SNR into numerator and denominator trends vs alpha_inj
 //! 3. Implement radial-windowed injection (inject only at x > 1.0 vs only at x < 0.7)
-//!    to test whether the effect is localized to the baryonic overlap region
+//! >  to test whether the effect is localized to the baryonic overlap region
 //! 4. If confirmed as metric artifact: either fix the metric (e.g., normalize by
-//!    injection-free baseline) or document the limitation with corrected interpretation
+//! >  injection-free baseline) or document the limitation with corrected interpretation
 //!
 //! **Dependencies**: Depends on SQ-1 (if harmonic subtraction is implemented, injection
 //! dynamics change). Must be resolved before the upper bound can be stated with confidence.
@@ -135,11 +135,11 @@
 //!
 //! **Measurable outcome**:
 //! 1. Run the pipeline on N >= 500 real MaNGA DR17 galaxies through the full
-//!    stacking -> Fourier -> Rayleigh chain
+//! >  stacking -> Fourier -> Rayleigh chain
 //! 2. Fit the three-component Gaussian model to the real stacked residual
 //! 3. Report amplitudes and compare to generator values
 //! 4. If amplitudes differ significantly: update the generator calibration and
-//!    re-run the synthetic suite; report both synthetic and real-data SNR
+//! >  re-run the synthetic suite; report both synthetic and real-data SNR
 //!
 //! **Dependencies**: Depends on SQ-1 (must know whether harmonic subtraction applies).
 //! Uses existing E-183 binary + data in `data/external/manga/rotcurves/`.
@@ -157,23 +157,23 @@
 //! **Question**: Two interconnected calibration gaps:
 //!
 //! 1. **Physical units**: alpha_zd < 0.00239 is in pipeline-internal units
-//!    (SNR / (0.5*e)). Observers need delta_v in km/s at a fiducial radius.
+//! >  (SNR / (0.5*e)). Observers need delta_v in km/s at a fiducial radius.
 //!
 //! 2. **Effective N_eff**: Cross-algebra correlations rho > 0.97 mean the four
-//!    "independent" framework tests are effectively one test:
-//!    - CD-ZD vs G2: rho = 0.998
-//!    - CD-ZD vs sl(2): rho = 0.998
-//!    - J3(O) vs sl(2): rho = 0.977
-//!    - N_eff ~ 1/(1 - mean(rho^2)) ~ 1.03
+//! >  "independent" framework tests are effectively one test:
+//! >  - CD-ZD vs G2: rho = 0.998
+//! >  - CD-ZD vs sl(2): rho = 0.998
+//! >  - J3(O) vs sl(2): rho = 0.977
+//! >  - N_eff ~ 1/(1 - mean(rho^2)) ~ 1.03
 //!
 //! **Measurable outcome**:
 //! 1. Compute delta_v (km/s) = alpha_zd * v_NFW(r_s) for fiducial halo
-//!    (M_200 = 10^12 Msun, c = 8, z = 0.03)
+//! >  (M_200 = 10^12 Msun, c = 8, z = 0.03)
 //! 2. Express bound as: "excludes harmonic velocity perturbations > X km/s at r_s"
 //! 3. Compute N_eff from correlation matrix using standard formula
 //! 4. State trial-factor-corrected significance threshold (negligible correction)
 //! 5. Reframe "four independent tests" as "one test with robustness to algebraic
-//!    model choice" (honest framing, already in SMART goal)
+//! >  model choice" (honest framing, already in SMART goal)
 //!
 //! **Dependencies**: Independent of SQ-1 through SQ-3. Pure computation.
 //!
@@ -190,11 +190,11 @@
 //! and subsample-invariant. Two validations are missing:
 //!
 //! 1. **Cross-validation**: No 50/50 galaxy split has been performed. If gamma is
-//!    unstable across splits, it is a generator artifact rather than a data property.
+//! >  unstable across splits, it is a generator artifact rather than a data property.
 //!
 //! 2. **Template ablation**: All results use NFW profiles. Repeating with Einasto
-//!    (alpha=0.18) and Burkert (core) profiles tests whether the null result and
-//!    spectral index are template-dependent.
+//! >  (alpha=0.18) and Burkert (core) profiles tests whether the null result and
+//! >  spectral index are template-dependent.
 //!
 //! Additionally, the red-noise correction condition produces SNR identical to the
 //! uncorrected baseline (both 0.4782 for CD_ZD_D16 full_sample), suggesting either
@@ -203,7 +203,7 @@
 //!
 //! **Measurable outcome**:
 //! 1. Split galaxy sample 50/50 (by plateifu hash), fit gamma on each half,
-//!    report consistency within bootstrap CI
+//! >  report consistency within bootstrap CI
 //! 2. Implement Einasto and Burkert profile fitting; repeat stacking analysis
 //! 3. Report whether null result and gamma persist under alternative templates
 //! 4. Clarify Rayleigh R spectral index vs PSD power-law slope in manuscript
@@ -223,7 +223,7 @@
 //! **Measurable outcome**:
 //! 1. Trace code paths producing structured vs per-seed metrics in `main.py`
 //! 2. Determine whether spectral reweighting in the structured pipeline is
-//!    physically motivated or an analysis artifact
+//! >  physically motivated or an analysis artifact
 //! 3. Report per-seed SNR in main text (conservative, transparent)
 //! 4. Report structured variant in appendix with documented discrepancy mechanism
 //!
@@ -249,11 +249,11 @@
 //!
 //! **Execution diagram**:
 //!
-//!     SQ-1 (P0) -----> SQ-2 (P1) -----> SQ-3 (P2) -----> manuscript
-//!                                                            ^
-//!     SQ-4 (P3) -------------------------------------------|
-//!     SQ-5 (P4) -------------------------------------------|
-//!     SQ-6 (P5) -------------------------------------------|
+//! >   SQ-1 (P0) -----> SQ-2 (P1) -----> SQ-3 (P2) -----> manuscript
+//! >                                                          ^
+//! >   SQ-4 (P3) -------------------------------------------|
+//! >   SQ-5 (P4) -------------------------------------------|
+//! >   SQ-6 (P5) -------------------------------------------|
 //!
 //! ---
 //!
@@ -278,20 +278,20 @@
 //! from all previous runs:
 //!
 //! 1. **Paper-code harmonic subtraction discrepancy** (SQ-1): No prior run detected
-//!    that `paper.md` describes M=7 harmonic subtraction while `models.py` implements none.
-//!    This is the single highest-impact finding -- it invalidates one of five claimed
-//!    novel contributions and the stated injection recovery root cause.
+//! >  that `paper.md` describes M=7 harmonic subtraction while `models.py` implements none.
+//! >  This is the single highest-impact finding -- it invalidates one of five claimed
+//! >  novel contributions and the stated injection recovery root cause.
 //!
 //! 2. **Correct injection root cause attribution** (SQ-2): rms-denominator growth in
-//!    the SNR metric, not harmonic absorption (which cannot occur without harmonic
-//!    subtraction).
+//! >  the SNR metric, not harmonic absorption (which cannot occur without harmonic
+//! >  subtraction).
 //!
 //! 3. **Generator calibration gap quantified** (SQ-3): 5% vs 29% IFU edge spike --
-//!    a 5.8x discrepancy between `data_utils.py` line 86 and real E-183 data.
+//! >  a 5.8x discrepancy between `data_utils.py` line 86 and real E-183 data.
 //!
 //! 4. **Effective N_eff computed** (SQ-4): rho > 0.97 yields N_eff ~ 1.03 -- the
-//!    "four independent experiments" framing requires honest revision.
+//! >  "four independent experiments" framing requires honest revision.
 //!
 //! 5. **Critical path with effort estimates** (Priority Ranking): Concrete 7-10 day
-//!    timeline with parallel tracks, vs the prior run's 8-week plan without sequencing.
+//! >  timeline with parallel tracks, vs the prior run's 8-week plan without sequencing.
 //!

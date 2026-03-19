@@ -38,13 +38,13 @@
 //! ## Current state (pytest.ini)
 //!
 //! - pythonpath entries:
-//!   - `src`
-//!   - `src/scripts/analysis`
-//!   - `src/scripts/data`
-//!   - `src/scripts/export`
-//!   - `src/scripts/measure`
-//!   - `src/scripts/simulation`
-//!   - `src/scripts/visualization`
+//! - `src`
+//! - `src/scripts/analysis`
+//! - `src/scripts/data`
+//! - `src/scripts/export`
+//! - `src/scripts/measure`
+//! - `src/scripts/simulation`
+//! - `src/scripts/visualization`
 //!
 //! - injected script categories: analysis, data, export, measure, simulation, visualization
 //!
@@ -109,7 +109,7 @@
 //!
 //! Phase B: update tests to use namespaced imports
 //! - Replace imports like `from fetch_pdg_particle_data import ...` with
-//!   `from scripts.data.fetch_pdg_particle_data import ...`.
+//! `from scripts.data.fetch_pdg_particle_data import ...`.
 //! - Update any script-to-script imports that break under module import context.
 //!
 //! Phase C: remove pytest.ini script pythonpath injections

@@ -22,9 +22,9 @@
 //!
 //! *   **$\Phi_{E7}$**: The set of 126 root vectors of the E7 Lie algebra, projected from 7D to 3D spectral space.
 //! *   **$\lambda$ (Coupling Constant)**:
-//!     *   $\lambda < 0$: **Frustration (Damping)**. Damps modes aligned with E7 symmetries.
-//!     *   $\lambda > 0$: **Resonance (Injection)**. Pumps energy into E7-symmetric modes.
-//!     *   **Active Parameter:** `coupling_fluid_algebra` in `SimulationConfig3D`.
+//! >   *   $\lambda < 0$: **Frustration (Damping)**. Damps modes aligned with E7 symmetries.
+//! >   *   $\lambda > 0$: **Resonance (Injection)**. Pumps energy into E7-symmetric modes.
+//! >   *   **Active Parameter:** `coupling_fluid_algebra` in `SimulationConfig3D`.
 //! *   **$\sigma$ (Resonance Width)**: Defines the "fuzziness" of the spectral sieve.
 //!
 //! ## 3. Simulation Parameters (Validated)

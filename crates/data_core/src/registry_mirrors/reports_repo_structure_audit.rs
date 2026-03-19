@@ -69,12 +69,12 @@
 //! ## Notes: what is `gemini_physics`?
 //!
 //! - `src/gemini_physics/` is the primary Python package for domain code (algebra, cosmology,
-//!   materials, etc.). It exists to keep reusable library code separate from runnable scripts.
+//! materials, etc.). It exists to keep reusable library code separate from runnable scripts.
 //! - `src/scripts/**` holds entrypoints and one-off pipelines; scripts import from `gemini_physics`
-//!   (and other packages) rather than duplicating logic.
+//! (and other packages) rather than duplicating logic.
 //! - Keeping domain code inside a package (instead of flat files under `src/`) improves testability,
-//!   import hygiene, and reproducibility (e.g., network gating and determinism policies can be
-//!   enforced centrally).
+//! import hygiene, and reproducibility (e.g., network gating and determinism policies can be
+//! enforced centrally).
 //!
 //! ## Notes: current `src/` layout (high level)
 //!
@@ -82,12 +82,12 @@
 //! - `src/scripts/`: runnable scripts with contract headers (inputs/outputs/network).
 //! - `src/verification/`: verifiers for repo contracts and reproducibility gates.
 //! - Other packages under `src/` (for now) may represent legacy or domain-specific modules that
-//!   are candidates for consolidation into `gemini_physics/` once import paths and tests are
-//!   updated safely (phase-gated refactor).
+//! are candidates for consolidation into `gemini_physics/` once import paths and tests are
+//! updated safely (phase-gated refactor).
 //!
 //! ## Suggested repo type classification
 //!
 //! - This is a reproducible research monorepo: code + tests + docs + datasets + generated artifacts
-//!   with strict provenance and offline-default behavior. Best practice is to keep generation
-//!   explicit (artifact targets) and keep smoke/check verification-only.
+//! with strict provenance and offline-default behavior. Best practice is to keep generation
+//! explicit (artifact targets) and keep smoke/check verification-only.
 //!

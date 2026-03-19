@@ -36,7 +36,7 @@
 //! 2. Publish migration guide for module-boundary legal structure and review remaining GPL issues.
 //! 3. Resolve top remaining TODO/FIXME high-priority items with owners and evidence-backed acceptance criteria.
 //! 4. Convert roadmap completion conditions into executable checks in `scripts/sync_and_audit_workspace.sh` and companion scripts.
-//! 5. Reduce active Python threading exemptions by refactoring next high-impact scripts (`verify_access.py`, `generate_index.py`, `orchestrator.py`) with measurable compliance deltas.
+//! > 5. Reduce active Python threading exemptions by refactoring next high-impact scripts (`verify_access.py`, `generate_index.py`, `orchestrator.py`) with measurable compliance deltas.
 //!
 //! ## Exit Gates
 //! - All sync/audit scripts run successfully and emit logs.

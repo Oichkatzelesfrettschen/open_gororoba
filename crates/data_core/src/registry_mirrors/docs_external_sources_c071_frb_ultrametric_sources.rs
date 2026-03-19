@@ -21,7 +21,7 @@
 //! ### CHIME/FRB Catalog 1
 //!
 //! - **Citation**: Amiri, M. et al. (2021). "The First CHIME/FRB Fast Radio
-//!   Burst Catalog." ApJS 257, 59. arXiv:2106.04352
+//! Burst Catalog." ApJS 257, 59. arXiv:2106.04352
 //! - **Download URL**: https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv
 //! - **SHA256**: `affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5`
 //! - **Events**: 600 rows (536 unique FRBs including repeat bursts)
@@ -31,7 +31,7 @@
 //! ### CHIME/FRB Catalog 2
 //!
 //! - **Citation**: CHIME/FRB Collaboration (2025). "The Second CHIME/FRB
-//!   Fast Radio Burst Catalog." arXiv:2601.09399
+//! Fast Radio Burst Catalog." arXiv:2601.09399
 //! - **Download URL**: https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv
 //! - **SHA256**: `5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48`
 //! - **Events**: 5045 rows
@@ -56,8 +56,8 @@
 //! - **Code**: `crates/stats_core/src/ultrametric.rs` (analysis engine)
 //! - **CLI**: `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`
 //! - **Results**: `data/csv/c071_frb_ultrametric.csv` (combined),
-//!   `data/csv/c071_frb_ultrametric_cat1.csv`,
-//!   `data/csv/c071_frb_ultrametric_cat2.csv`
+//! `data/csv/c071_frb_ultrametric_cat1.csv`,
+//! `data/csv/c071_frb_ultrametric_cat2.csv`
 //!
 //! ## Test Battery (per DM column)
 //!
@@ -75,6 +75,6 @@
 //! ## Cross-references
 //!
 //! - C-080: Same hypothesis tested in Python with Cat 1 only (536 events).
-//!   Also refuted (ultrametric fraction 19.8% vs null 20.2%). Python code
-//!   since removed; Rust pipeline is the definitive replacement.
+//! Also refuted (ultrametric fraction 19.8% vs null 20.2%). Python code
+//! since removed; Rust pipeline is the definitive replacement.
 //!

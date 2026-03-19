@@ -38,9 +38,9 @@
 //! ## Execution Outcome
 //!
 //! - 25 claims distilled and linked to 25 experiments in:
-//!   - `data/external/cd_synthesis_axes/claims_experiments.toml`
+//! - `data/external/cd_synthesis_axes/claims_experiments.toml`
 //! - TOML parse check: pass.
 //! - Duplicate ID check: pass.
 //! - Carry-forward unresolved URL retained:
-//!   - `https://core.ac.uk/download/pdf/82141950.pdf`
+//! - `https://core.ac.uk/download/pdf/82141950.pdf`
 //!

@@ -40,9 +40,9 @@
 //!
 //! #### 3.1 Properties of $T_{\mu\nu}^{Alg}$
 //! *   **Equation of State:** In regions far from ZDs (associative/octonionic limit), $V_{Assoc} \approx \text{const}$. This behaves like a Cosmological Constant:
-//!     $$ p_{Alg} = -\rho_{Alg} \implies w = -1 \quad (\text{Dark Energy}) $$
+//! >   $$ p_{Alg} = -\rho_{Alg} \implies w = -1 \quad (\text{Dark Energy}) $$
 //! *   **Clumping:** Near Zero Divisors, the associator gradient $\nabla A$ is large. This creates a "stiff" pressure term that acts like a localized mass halo:
-//!     $$ p_{Alg} \approx 0, \quad \rho_{Alg} > 0 \implies w = 0 \quad (\text{Dark Matter}) $$
+//! >   $$ p_{Alg} \approx 0, \quad \rho_{Alg} > 0 \implies w = 0 \quad (\text{Dark Matter}) $$
 //!
 //! **Hypothesis C-758:** "Dark Matter" is the gravitational shadow of Sedenion Zero-Divisor clumps, and "Dark Energy" is the residual associative tension of the vacuum field.
 //!

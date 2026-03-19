@@ -54,7 +54,7 @@
 //! - [ ] Every script with network clients declares `# network: gated`.
 //! - [ ] Every network script calls `require_network()` (directly or via a gated helper).
 //! - [ ] Every package module that can fetch remote data uses `gemini_physics.network`
-//!   gating.
+//! gating.
 //! - [ ] Make targets that use the network are gated behind
-//!   `GEMINI_ALLOW_NETWORK=1`.
+//! `GEMINI_ALLOW_NETWORK=1`.
 //!

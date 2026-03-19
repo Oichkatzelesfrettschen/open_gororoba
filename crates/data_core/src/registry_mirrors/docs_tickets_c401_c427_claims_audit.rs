@@ -35,7 +35,7 @@
 //! - Completed checkboxes: 0
 //! - Open checkboxes: 0
 //! - Backlog reports:
-//!   - `reports/claims_batch_backlog_C401_C427.md`
-//!   - `reports/convos_pdf_inventory.md`
-//!   - `reports/tscp_trial_factor_ledger.md`
+//! - `reports/claims_batch_backlog_C401_C427.md`
+//! - `reports/convos_pdf_inventory.md`
+//! - `reports/tscp_trial_factor_ledger.md`
 //!

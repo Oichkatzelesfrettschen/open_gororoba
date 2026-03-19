@@ -15,7 +15,7 @@
 //! - Date extracted: 2026-03-10
 //! - Purpose: Transferable GPU optimization patterns for LBM CUDA kernels (lbm_3d_cuda crate)
 //! - Note: YSU-engine is NOT CUDA-based. We extract general GPU optimization principles
-//!   that apply to our NVRTC-compiled D3Q19 LBM kernels targeting Ada Lovelace SM 8.9.
+//! that apply to our NVRTC-compiled D3Q19 LBM kernels targeting Ada Lovelace SM 8.9.
 //!
 //! ## SASS Instruction Latency Table (Ada Lovelace SM 8.9)
 //!
@@ -41,9 +41,9 @@
 //!
 //! The equilibrium distribution function for D3Q19 is:
 //!
-//! ```texttext
+//! ```ignore
 //! f_eq[i] = W[i] * rho * (1.0 + c_dot_u / cs2 + c_dot_u^2 / (2*cs4) - u_sq / (2*cs2))
-//! ```texttext
+//! ```ignore
 //!
 //! With cs2 = 1/3, the reciprocals become constants: inv_cs2 = 3.0, inv_2cs4 = 4.5,
 //! half_inv_cs2 = 1.5. This allows an algebraic rearrangement into a Horner-like FMA
@@ -51,22 +51,22 @@
 //!
 //! Current form (separate mul+add, ~6 FP operations per direction):
 //!
-//! ```texttext
+//! ```ignore
 //! float term1 = c_dot_u * 3.0f;
 //! float term2 = c_dot_u * c_dot_u * 4.5f;
 //! float term3 = u_sq * 1.5f;
 //! float bracket = 1.0f + term1 + term2 - term3;
 //! f_eq[i] = W[i] * rho * bracket;
-//! ```texttext
+//! ```ignore
 //!
 //! FMA-optimized form (Horner-like, 3 FMA + 1 MUL):
 //!
-//! ```texttext
+//! ```ignore
 //! float base = fmaf(-u_sq, 1.5f, 1.0f);               // 1 FMA: 1.0 - u_sq * 1.5
 //! float poly = fmaf(fmaf(c_dot_u, 4.5f, 3.0f),         // 2 nested FMA
-//!                   c_dot_u, base);
+//! >                 c_dot_u, base);
 //! f_eq[i] = (W[i] * rho) * poly;                       // 1 MUL (w_rho precomputed)
-//! ```texttext
+//! ```ignore
 //!
 //! This collapses from ~6 FP operations to 3 FMA + 1 MUL. At 4.54 cy per FFMA, the
 //! saving is approximately 2 FFMA cycles per direction per cell, which sums to 38
@@ -116,8 +116,8 @@
 //! - Capacity: 48K / (4 bytes * 19 directions) = ~631 cells per block
 //! - At 128 threads/block: each thread has ~5 cells of shared memory buffer
 //! - This is sufficient for a 3D tile with halo, provided block dimensions are
-//!   chosen to minimize the surface-to-volume ratio of the tile (e.g., 8x4x4
-//!   rather than 128x1x1)
+//! chosen to minimize the surface-to-volume ratio of the tile (e.g., 8x4x4
+//! rather than 128x1x1)
 //!
 //! ## Occupancy Culling for Sparse DM Density Regions
 //!
@@ -131,10 +131,10 @@
 //! In the Guo forcing kernel, add an early-exit check before the 19-iteration forcing
 //! loop:
 //!
-//! ```texttext
+//! ```ignore
 //! float force_mag = sqrtf(fx*fx + fy*fy + fz*fz);
 //! if (force_mag < FORCE_EPSILON) return;  // skip Guo source term
-//! ```texttext
+//! ```ignore
 //!
 //! This avoids the 19-iteration Guo forcing loop for cells with negligible DM drag,
 //! saving approximately 19 * (2 FMA + 1 MUL) = ~95 FP operations per skipped cell.
@@ -179,9 +179,9 @@
 //! **Polynomial replacement options:**
 //!
 //! - Degree-4 Chebyshev polynomial for exp(x) on [-2, 2]: ~1e-5 relative error,
-//!   cost = 4 FMA = ~18.2 cy (comparable to MUFU.EX2 at 17.56 cy -- marginal gain)
+//! cost = 4 FMA = ~18.2 cy (comparable to MUFU.EX2 at 17.56 cy -- marginal gain)
 //! - Degree-5 minimax polynomial for sin(x): ~1e-6 accuracy, cost = 4 FMA + 1 MUL
-//!   = ~23 cy (worse than MUFU.SIN at ~17 cy)
+//! = ~23 cy (worse than MUFU.SIN at ~17 cy)
 //!
 //! **Recommendation:** Only apply polynomial transcendental approximation when
 //! profiling shows that transcendentals consume more than 10% of total kernel time.
@@ -197,9 +197,9 @@
 //! complements high-level profiling. Two key tools:
 //!
 //! - `cuobjdump --dump-sass <file>.cubin` -- extracts SASS assembly from compiled
-//!   kernels
+//! kernels
 //! - `nvdisasm <file>.cubin` -- provides control flow graph visualization and
-//!   register allocation details
+//! register allocation details
 //!
 //! **Register pressure analysis for D3Q19:**
 //!

@@ -11,9 +11,9 @@
 //! - Module name: `heliosphere`
 //! - Status: `active`
 //! - Install targets:
-//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 1 Merged Hourly" --skip-existing`
-//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 2 Merged Hourly" --skip-existing`
-//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 Merged Hourly (2016)" --skip-existing`
-//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 CRS Daily Flux (2016)" --skip-existing`
-//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "NASA OMNI2 Solar Wind + IMF (2016)" --skip-existing`
+//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 1 Merged Hourly" --skip-existing`
+//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 2 Merged Hourly" --skip-existing`
+//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 Merged Hourly (2016)" --skip-existing`
+//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 CRS Daily Flux (2016)" --skip-existing`
+//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "NASA OMNI2 Solar Wind + IMF (2016)" --skip-existing`
 //!

@@ -12,138 +12,138 @@
 //! - `done` Extract generic OptiX runtime/FFI boundary into `gororoba_optix`.
 //! - `done` Add lightweight shared execution vocabulary in `gororoba_gpu_bridge`.
 //! - `done` Record the current GPU stack modularization plan and OptiX boundary in
-//!   engineering docs.
+//! engineering docs.
 //! - `done` Add a backend-neutral viewer contract crate, `gororoba_view_core`.
 //! - `done` Add CPU and CUDA `ViewerFrameSource` adapters for the live viewer.
 //! - `done` Add an OptiX particle `ViewerFrameSource` adapter at the frame-contract
-//!   layer.
+//! layer.
 //! - `done` Inventory OptiX pipeline-building logic into reusable vs solver-local
-//!   pieces.
+//! pieces.
 //! - `done` Decide which Vulkan helpers belong in reusable substrate vs
-//!   `lbm_vulkan`.
+//! `lbm_vulkan`.
 //! - `done` Split `lbm-live-viewer` responsibilities into frontend loop,
-//!   camera/input state, frame transport, and backend adapter layers.
+//! camera/input state, frame transport, and backend adapter layers.
 //! - `done` Introduce backend adapters that implement
-//!   `gororoba_view_core::ViewerFrameSource`.
+//! `gororoba_view_core::ViewerFrameSource`.
 //! - `done` Rework the live viewer to consume the new viewer contract instead of
-//!   one concrete CUDA+Vulkan path.
+//! one concrete CUDA+Vulkan path.
 //! - `defer` Extract generic Vulkan capability and image/readback helpers into a
-//!   lighter reusable module or crate.
+//! lighter reusable module or crate.
 //! - `queued` Keep managed sparse SoA and managed tiled fallback working while the
-//!   crate split continues.
+//! crate split continues.
 //! - `active` Add rustdoc coverage to each public reusable GPU/viewer contract as
-//!   new crates or modules appear.
+//! new crates or modules appear.
 //! - `done` Record a concrete `lbm_*` shared-substrate audit and extraction order.
 //! - `done` Extract shared slice/LUT raster logic into `gororoba_view_raster`.
 //! - `done` Add backend-neutral particle metadata to `gororoba_view_core` so
-//!   particle-producing adapters can describe semantics, coordinate spaces, and
-//!   bounds without backend-specific UI logic.
+//! particle-producing adapters can describe semantics, coordinate spaces, and
+//! bounds without backend-specific UI logic.
 //! - `done` Publish a viewer adapter capability matrix covering CPU, CUDA,
-//!   OptiX, and deferred Vulkan modes.
+//! OptiX, and deferred Vulkan modes.
 //! - `done` Scope a lightweight `gororoba_gpu_readback` crate for reusable
-//!   CUDA/Vulkan host-staging and copy contracts.
+//! CUDA/Vulkan host-staging and copy contracts.
 //! - `done` Scope a lightweight `gororoba_sparse_grid` crate for reusable sparse
-//!   occupancy, active-brick, and tile-window metadata.
+//! occupancy, active-brick, and tile-window metadata.
 //! - `done` Extract descriptor-first `gororoba_gpu_readback` without moving CUDA
-//!   streams or Vulkan submission policy.
+//! streams or Vulkan submission policy.
 //! - `done` Extract descriptor-first `gororoba_sparse_grid` without moving solver
-//!   thresholds or launch policy.
+//! thresholds or launch policy.
 //! - `active` Adopt `gororoba_gpu_readback` descriptors in CUDA/Vulkan owners.
 //! - `active` Adopt `gororoba_sparse_grid` geometry/window types in sparse CUDA
-//!   and heliosphere planning owners.
+//! and heliosphere planning owners.
 //! - `done` Expose viewer-side readback metadata through `gororoba_view_core`
-//!   instead of keeping transfer surfaces implicit.
+//! instead of keeping transfer surfaces implicit.
 //! - `active` Extend `gororoba_sparse_grid` adoption into OptiX brick occupancy
-//!   bookkeeping.
+//! bookkeeping.
 //! - `done` Re-evaluate Vulkan helper extraction after descriptor-first adoption.
 //! - `defer` Keep Vulkan extraction at descriptor level until a second renderer
-//!   needs shared submission or image-readback helpers.
+//! needs shared submission or image-readback helpers.
 //!
 //! ## Seam Inventory
 //!
-//! ### OptiX <-> CUDA runtime seam
+//! > ### OptiX <-> CUDA runtime seam
 //!
 //! - current owner
-//!   - `gororoba_optix`
+//! - `gororoba_optix`
 //! - seam purpose
-//!   - load OptiX, query function table, create/destroy current-context device
-//!     runtime
+//! - load OptiX, query function table, create/destroy current-context device
+//! >   runtime
 //! - status
-//!   - `done`
+//! - `done`
 //! - next work
-//!   - keep generic runtime ownership here
-//!   - only extract more if another workload needs generic pipeline building
+//! - keep generic runtime ownership here
+//! - only extract more if another workload needs generic pipeline building
 //!
-//! ### CUDA solver <-> viewer seam
+//! > ### CUDA solver <-> viewer seam
 //!
 //! - current owner
-//!   - split between `lbm_3d_cuda` and `lbm-live-viewer`
+//! - split between `lbm_3d_cuda` and `lbm-live-viewer`
 //! - current problem
-//!   - viewer binary knows too much about one concrete solver
+//! - viewer binary knows too much about one concrete solver
 //! - target seam
-//!   - `gororoba_view_core::ViewerFrameSource`
+//! - `gororoba_view_core::ViewerFrameSource`
 //! - status
-//!   - `done`
+//! - `done`
 //! - next work
-//!   - first CUDA volume adapter is implemented
-//!   - follow with CPU and OptiX particle adapters
+//! - first CUDA volume adapter is implemented
+//! - follow with CPU and OptiX particle adapters
 //!
-//! ### Vulkan renderer <-> viewer seam
+//! > ### Vulkan renderer <-> viewer seam
 //!
 //! - current owner
-//!   - split between `lbm_vulkan` and `lbm-live-viewer`
+//! - split between `lbm_vulkan` and `lbm-live-viewer`
 //! - current problem
-//!   - `lbm_vulkan` still owns LBM-specific command submission and render/readback
-//!     policy
+//! - `lbm_vulkan` still owns LBM-specific command submission and render/readback
+//! >   policy
 //! - target seam
-//!   - backend adapter that yields `SliceRgba8` or `VolumeF32`
+//! - backend adapter that yields `SliceRgba8` or `VolumeF32`
 //! - status
-//!   - `done`
+//! - `done`
 //! - next work
-//!   - keep `GororobaEngine`, WGSL selection, and render command submission local
-//!   - only extract generic Vulkan readback helpers when a second renderer exists
+//! - keep `GororobaEngine`, WGSL selection, and render command submission local
+//! - only extract generic Vulkan readback helpers when a second renderer exists
 //!
-//! ### CPU fallback <-> viewer seam
+//! > ### CPU fallback <-> viewer seam
 //!
 //! - current owner
-//!   - mostly implicit, not yet formalized
+//! - mostly implicit, not yet formalized
 //! - current problem
-//!   - no first-class adapter contract for CPU-only interactive viewing
+//! - no first-class adapter contract for CPU-only interactive viewing
 //! - target seam
-//!   - CPU adapter implementing `ViewerFrameSource`
+//! - CPU adapter implementing `ViewerFrameSource`
 //! - status
-//!   - `done`
+//! - `done`
 //! - next work
-//!   - expand beyond dense volume if a second CPU-facing frame mode is needed
-//!   - keep CPU metadata aligned with the shared viewer contract
+//! - expand beyond dense volume if a second CPU-facing frame mode is needed
+//! - keep CPU metadata aligned with the shared viewer contract
 //!
 //! ### Shared metadata/frame seam
 //!
 //! - current owner
-//!   - `gororoba_view_core` plus `gororoba_gpu_bridge`
+//! - `gororoba_view_core` plus `gororoba_gpu_bridge`
 //! - seam purpose
-//!   - unify backend name, precision, layout, residency, frame mode, grid shape,
-//!     and frame payload vocabulary
+//! - unify backend name, precision, layout, residency, frame mode, grid shape,
+//! >   and frame payload vocabulary
 //! - status
-//!   - `done`
+//! - `done`
 //! - next work
-//!   - keep public rustdoc complete as new metadata fields appear
-//!   - add a capability matrix so frontend limits are documented, not implied
+//! - keep public rustdoc complete as new metadata fields appear
+//! - add a capability matrix so frontend limits are documented, not implied
 //!
-//! ### OptiX particle view <-> viewer seam
+//! > ### OptiX particle view <-> viewer seam
 //!
 //! - current owner
-//!   - split between `lbm_3d_cuda` and `lbm-live-viewer`
+//! - split between `lbm_3d_cuda` and `lbm-live-viewer`
 //! - current problem
-//!   - live launch/readback orchestration is still solver-local even though the
-//!     frontend contract is now backend-neutral
+//! - live launch/readback orchestration is still solver-local even though the
+//! >   frontend contract is now backend-neutral
 //! - target seam
-//!   - `ViewerFramePacket::Particles`
+//! - `ViewerFramePacket::Particles`
 //! - status
-//!   - `done`
+//! - `done`
 //! - next work
-//!   - enrich particle metadata without leaking solver-local semantics
-//!   - keep live OptiX launch/readback orchestration solver-local for now
+//! - enrich particle metadata without leaking solver-local semantics
+//! - keep live OptiX launch/readback orchestration solver-local for now
 //!
 //! ## OptiX Inventory
 //!
@@ -170,14 +170,14 @@
 //! ### Candidate future extraction
 //!
 //! - `OptiXCompileOptions`
-//!   - `defer`
-//!   - generic in shape, but still only used for `optix_tracer.cu`
+//! - `defer`
+//! - generic in shape, but still only used for `optix_tracer.cu`
 //! - live pipeline assembly helpers
-//!   - `defer`
-//!   - only extract if a second non-LBM OptiX workload appears
+//! - `defer`
+//! - only extract if a second non-LBM OptiX workload appears
 //! - BVH build utility helpers
-//!   - `defer`
-//!   - current implementation is tightly coupled to LBM density-driven brick sets
+//! - `defer`
+//! - current implementation is tightly coupled to LBM density-driven brick sets
 //!
 //! ## Viewer Frame Contract
 //!
@@ -200,17 +200,17 @@
 //! ### Required backend adapters
 //!
 //! - `CudaVolumeAdapter`
-//!   - adapts `LbmSolver3DCuda` or sparse CUDA solver outputs
-//!   - status: `done` for the first dense CUDA adapter in `lbm-live-viewer`
+//! - adapts `LbmSolver3DCuda` or sparse CUDA solver outputs
+//! - status: `done` for the first dense CUDA adapter in `lbm-live-viewer`
 //! - `VulkanVolumeAdapter`
-//!   - adapts `lbm_vulkan` render/slice outputs
-//!   - status: `queued`
+//! - adapts `lbm_vulkan` render/slice outputs
+//! - status: `queued`
 //! - `CpuFallbackAdapter`
-//!   - supports CPU-only stepping and inspection
-//!   - status: `done` for the first dense CPU adapter in `lbm-live-viewer`
+//! - supports CPU-only stepping and inspection
+//! - status: `done` for the first dense CPU adapter in `lbm-live-viewer`
 //! - `OptixParticleAdapter`
-//!   - surfaces particle/tracer views through the same frontend contract
-//!   - status: `done` at the frame-contract layer
+//! - surfaces particle/tracer views through the same frontend contract
+//! - status: `done` at the frame-contract layer
 //!
 //! ## Vulkan Extraction Decisions
 //!
@@ -225,9 +225,9 @@
 //!
 //! - `VulkanContext` capability probing stays a candidate reusable substrate seam
 //! - `GororobaEngine` command-pool setup, command-buffer submission, and render
-//!   readback stay LBM-local for now
+//! readback stay LBM-local for now
 //! - the first viewer adapter now uses the real CUDA solver volume path instead of
-//!   a Vulkan-owned shadow simulation
+//! a Vulkan-owned shadow simulation
 //!
 //! ### Stay in `lbm_vulkan`
 //!
@@ -256,10 +256,10 @@
 //! ## Immediate Execution Order
 //!
 //! 1. Extend `gororoba_gpu_readback` adoption from descriptor methods into viewer
-//!    and profiling/report paths where host-staging metadata is repeated.
+//! >  and profiling/report paths where host-staging metadata is repeated.
 //! 2. Extend `gororoba_sparse_grid` adoption from heliosphere planning into sparse
-//!    CUDA and OptiX occupancy/window bookkeeping.
+//! >  CUDA and OptiX occupancy/window bookkeeping.
 //! 3. Keep Vulkan extraction at descriptor level until a second renderer proves a
-//!    shared command/readback substrate.
+//! >  shared command/readback substrate.
 //! 4. Keep shared viewer/frame contracts rustdoc-complete as adapters evolve.
 //!

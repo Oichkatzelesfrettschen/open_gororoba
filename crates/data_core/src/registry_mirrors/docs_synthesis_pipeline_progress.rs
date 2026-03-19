@@ -27,38 +27,38 @@
 //!
 //! ## Timeline Overview
 //!
-//! ```texttext
+//! ```ignore
 //! Phase 0: Foundation (COMPLETE 2026-02-06)
-//!   <U+2514><U+2500>> cosmic_scheduler crate (38 tests)
+//! <U+2514><U+2500>> cosmic_scheduler crate (38 tests)
 //!
 //! Phase 1 Week 1: Imbalance Solver (COMPLETE 2026-02-10)
-//!   <U+2514><U+2500>> sign_imbalance signed_graph + balance (14 tests)
+//! <U+2514><U+2500>> sign_imbalance signed_graph + balance (14 tests)
 //!
 //! Phase 1 Week 2: LBM Refactoring (COMPLETE 2026-02-11)
-//!   <U+2514><U+2500>> lbm_3d two-phase system (61 tests)
+//! <U+2514><U+2500>> lbm_3d two-phase system (61 tests)
 //!
 //! Phase 1 Week 3: Imbalance-Viscosity Bridge (COMPLETE 2026-02-11)
-//!   <U+2514><U+2500>> ImbalanceViscosityBridge + SedenionField (22 tests)
+//! <U+2514><U+2500>> ImbalanceViscosityBridge + SedenionField (22 tests)
 //!
 //! Phase 1 Week 4: E-027 Experiment (IN PROGRESS 2026-02-11..present)
-//!   <U+251C><U+2500>> E-027 baseline run: FAILED (p=0.805 at 32^3, <U+03BB>=5.0)
-//!   <U+251C><U+2500>> Phase 1.4.1 lambda sweep: IN PROGRESS
-//!   <U+251C><U+2500>> Phase 1.4.3 grid sweep: PENDING
-//!   <U+2514><U+2500>> Phase 1.5-1.6 analytical work: PENDING
+//! <U+251C><U+2500>> E-027 baseline run: FAILED (p=0.805 at 32^3, <U+03BB>=5.0)
+//! <U+251C><U+2500>> Phase 1.4.1 lambda sweep: IN PROGRESS
+//! <U+251C><U+2500>> Phase 1.4.3 grid sweep: PENDING
+//! <U+2514><U+2500>> Phase 1.5-1.6 analytical work: PENDING
 //!
 //! Phase 1.8: GPU LBM (COMPLETE 2026-02-12)
-//!   <U+251C><U+2500>> lbm_3d_cuda crate (4 GPU tests, 424 equivalence tests)
-//!   <U+251C><U+2500>> GPU-CPU equivalence: VERIFIED (tolerance 1e-3)
-//!   <U+251C><U+2500>> Performance: 16x speedup, 280-285 Mcells/s plateau
-//!   <U+2514><U+2500>> Commit 305ac498 (1845 lines added)
+//! <U+251C><U+2500>> lbm_3d_cuda crate (4 GPU tests, 424 equivalence tests)
+//! <U+251C><U+2500>> GPU-CPU equivalence: VERIFIED (tolerance 1e-3)
+//! <U+251C><U+2500>> Performance: 16x speedup, 280-285 Mcells/s plateau
+//! <U+2514><U+2500>> Commit 305ac498 (1845 lines added)
 //!
 //! Phase 1.9-1.11: GPU Percolation + Strong Lambda (PENDING)
-//!   <U+251C><U+2500>> sign_imbalance_cuda crate: NOT STARTED
-//!   <U+251C><U+2500>> GPU percolation detection: NOT STARTED
-//!   <U+2514><U+2500>> Strong lambda validation (<U+03BB>=50, <U+03BB>=100): BLOCKED by 1.9
+//! <U+251C><U+2500>> sign_imbalance_cuda crate: NOT STARTED
+//! <U+251C><U+2500>> GPU percolation detection: NOT STARTED
+//! <U+2514><U+2500>> Strong lambda validation (<U+03BB>=50, <U+03BB>=100): BLOCKED by 1.9
 //!
 //! Phase 2-4: Future Theses (BLOCKED by Phase 1 completion)
-//! ```texttext
+//! ```ignore
 //!
 //! ---
 //!
@@ -215,7 +215,7 @@
 //! **Objective**: Systematically explore <U+03BB> <U+2208> [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]
 //!
 //! **Current Results** (1/8 runs completed):
-//! ```texttext
+//! ```ignore
 //! [metadata]
 //! grid_size = 32
 //! lbm_steps = 5000
@@ -228,7 +228,7 @@
 //!
 //! [null_model]
 //! p_value = 0.900990099009901  # FAILED (>> 0.05)
-//! ```texttext
+//! ```ignore
 //!
 //! **Status**: **E-027 FAILED at <U+03BB>=5.0, 32<U+00B3> grid**
 //! - Correlation NOT significant (p=0.805 >> 0.05)
@@ -376,10 +376,10 @@
 //! ### Claims
 //! - **C-001..C-632**: Legacy claims (632 total, dedup complete)
 //! - **C-657..C-670**: Thesis 1 claims (14 planned, registration PENDING)
-//!   - C-657: Imbalance-Viscosity Coupling Principle
-//!   - C-658: Percolation Threshold Imbalance Dependence
-//!   - C-659: Besag-Clifford Null Model Rejection
-//!   - C-660..C-664: Parameter sweep + strong lambda claims (PENDING)
+//! - C-657: Imbalance-Viscosity Coupling Principle
+//! - C-658: Percolation Threshold Imbalance Dependence
+//! - C-659: Besag-Clifford Null Model Rejection
+//! - C-660..C-664: Parameter sweep + strong lambda claims (PENDING)
 //!
 //! ### Cross-Repository Integration (CRI)
 //! - **CRI-001**: Ancient Compute 4-bit ISA extraction (verified)
@@ -389,9 +389,9 @@
 //! ### Experiments
 //! - **E-001..E-026**: Legacy experiments
 //! - **E-027**: Percolation Threshold vs Imbalance (ACTIVE, partial validation)
-//!   - Baseline run: FAILED (p=0.805)
-//!   - Lambda sweep: IN PROGRESS
-//!   - Grid sweep: PENDING
+//! - Baseline run: FAILED (p=0.805)
+//! - Lambda sweep: IN PROGRESS
+//! - Grid sweep: PENDING
 //! - **E-028**: Lepton Mass Ratio Filtration (Thesis 2, Phase 2)
 //! - **E-029**: Pentagon Unitarity Restoration (Thesis 3, Phase 3)
 //!
@@ -442,27 +442,27 @@
 //! ## Next Immediate Actions (Priority Order)
 //!
 //! 1. **Complete Lambda Sweep** (Task #39):
-//!    - Run 7 remaining <U+03BB> values at 64<U+00B3> resolution
-//!    - Analyze results, identify optimal <U+03BB>
-//!    - Update E-027 registry entries
+//! >  - Run 7 remaining <U+03BB> values at 64<U+00B3> resolution
+//! >  - Analyze results, identify optimal <U+03BB>
+//! >  - Update E-027 registry entries
 //!
 //! 2. **Start Grid Resolution Sweep** (Task #41):
-//!    - 32<U+00B3>, 48<U+00B3>, 64<U+00B3>, 96<U+00B3>, 128<U+00B3> with optimal <U+03BB> from step 1
-//!    - Validate correlation robustness across resolutions
+//! >  - 32<U+00B3>, 48<U+00B3>, 64<U+00B3>, 96<U+00B3>, 128<U+00B3> with optimal <U+03BB> from step 1
+//! >  - Validate correlation robustness across resolutions
 //!
 //! 3. **Begin Analytical Lambda Derivation** (Task #42):
-//!    - Parallel to parameter sweeps
-//!    - Theory work can proceed independently
+//! >  - Parallel to parameter sweeps
+//! >  - Theory work can proceed independently
 //!
 //! 4. **Design GPU BFS Architecture** (Task #52 prep):
-//!    - Research parallel BFS algorithms
-//!    - Design sign_imbalance_cuda crate structure
-//!    - Can start in parallel with Phase 1.4-1.6
+//! >  - Research parallel BFS algorithms
+//! >  - Design sign_imbalance_cuda crate structure
+//! >  - Can start in parallel with Phase 1.4-1.6
 //!
 //! 5. **Update Task Tracking**:
-//!    - Mark completed tasks
-//!    - Rescope pending tasks based on sweep results
-//!    - Update timeline estimates
+//! >  - Mark completed tasks
+//! >  - Rescope pending tasks based on sweep results
+//! >  - Update timeline estimates
 //!
 //! ---
 //!

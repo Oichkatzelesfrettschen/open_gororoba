@@ -31,10 +31,10 @@
 //! Context references used for this tranche:
 //!
 //! - CCMC CME Scoreboard family and operational comparison context via CCMC:
-//!   <https://ccmc.gsfc.nasa.gov/>
+//! <https://ccmc.gsfc.nasa.gov/>
 //! - Example recent operational forecast evaluation paper:
-//!   "The ap Prediction Tool Implemented by the A.Ne.Mo.S./NKUA Group"
-//!   <https://www.mdpi.com/2073-4433/15/9/1073>
+//! "The ap Prediction Tool Implemented by the A.Ne.Mo.S./NKUA Group"
+//! <https://www.mdpi.com/2073-4433/15/9/1073>
 //!
 //! ## Higher-algebra geometry context
 //!
@@ -42,11 +42,11 @@
 //! occupancy structure, not as evidence that the plasma "is" sedenionic.
 //!
 //! - Robert de Marrais, "The 42 Assessors and the Box-Kites they fly"
-//!   <https://arxiv.org/abs/math/0011260>
+//! <https://arxiv.org/abs/math/0011260>
 //! - Robert de Marrais, "Placeholder Substructures III"
-//!   <https://arxiv.org/abs/0704.0112>
+//! <https://arxiv.org/abs/0704.0112>
 //! - "The geometry of sedenion zero divisors"
-//!   <https://arxiv.org/abs/2411.18881>
+//! <https://arxiv.org/abs/2411.18881>
 //!
 //! ## Working rule
 //!

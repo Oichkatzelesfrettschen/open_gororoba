@@ -8,25 +8,25 @@
 //! - Every file must be reproducible from a documented source URL and fetch command.
 //! - `data/external/PROVENANCE.local.json` is the machine-readable hash index.
 //! - `registry/canonical/control_plane.sqlite3` is the canonical write-authoritative
-//!   source-control plane for external source contracts and dossiers.
+//! source-control plane for external source contracts and dossiers.
 //! - `data/external/SOURCES.toml` is the generated machine-readable compatibility
-//!   export for source-of-origin contracts (canonical URL, mirrors, access class,
-//!   status, retrieval method, and blocker deadlines).
+//! export for source-of-origin contracts (canonical URL, mirrors, access class,
+//! status, retrieval method, and blocker deadlines).
 //! - Strict governance is defined in `registry/data_governance.toml` (lane `external`).
 //!
 //! ## Rebuild
 //!
 //! 1. Fetch data with Rust entrypoints (preferred):
-//!    - `cargo run -p gororoba_cli --bin fetch-datasets -- --output-dir data/external`
+//! >  - `cargo run -p gororoba_cli --bin fetch-datasets -- --output-dir data/external`
 //! 2. Refresh hash provenance:
-//!    - `cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json`
+//! >  - `cargo run -p gororoba_cli --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json`
 //! 3. Audit source coverage and blocked-policy deadlines:
-//!    - `cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch`
+//! >  - `cargo run -p gororoba_cli --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch`
 //! 4. Audit origin coverage:
-//!    - `cargo run -p gororoba_cli --bin data-origin-audit -- --out reports/data_origin_audit_YYYY-MM-DD.toml`
+//! >  - `cargo run -p gororoba_cli --bin data-origin-audit -- --out reports/data_origin_audit_YYYY-MM-DD.toml`
 //! 5. Run fail-closed governance + semantic lane validators:
-//!    - `cargo run -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true`
-//!    - `cargo run -p gororoba_cli --bin data-semantic-validate --`
+//! >  - `cargo run -p gororoba_cli --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true`
+//! >  - `cargo run -p gororoba_cli --bin data-semantic-validate --`
 //!
 //! ## JPL Ephemeris (DE440)
 //!
@@ -47,22 +47,22 @@
 //! Used for ETA_WAKE downwind caustic parameter in flyby crucible.
 //!
 //! - **arxiv_2502.04456_earth_dm_wind.pdf**
-//!   - Title: Enhanced Axion-wind near Earth's Surface
-//!   - Source: `https://arxiv.org/pdf/2502.04456`
-//!   - Date: Feb 2025
-//!   - Relevance: Earth's gravitational potential modifies local DM wind velocity and density
+//! - Title: Enhanced Axion-wind near Earth's Surface
+//! - Source: `https://arxiv.org/pdf/2502.04456`
+//! - Date: Feb 2025
+//! - Relevance: Earth's gravitational potential modifies local DM wind velocity and density
 //!
 //! - **arxiv_2112.05718_gravitational_focusing.pdf**
-//!   - Title: Gravitational focusing of light bosonic dark matter
-//!   - Source: `https://arxiv.org/pdf/2112.05718`
-//!   - Date: Dec 2021
-//!   - Relevance: Quantifies density enhancement downstream of Earth in DM wind (caustic wake)
+//! - Title: Gravitational focusing of light bosonic dark matter
+//! - Source: `https://arxiv.org/pdf/2112.05718`
+//! - Date: Dec 2021
+//! - Relevance: Quantifies density enhancement downstream of Earth in DM wind (caustic wake)
 //!
 //! - **arxiv_1409.2858_earth_moon_modulation.pdf**
-//!   - Title: Monthly Modulation in Dark Matter Direct-Detection Experiments
-//!   - Source: `https://arxiv.org/pdf/1409.2858`
-//!   - Date: Sep 2014
-//!   - Relevance: Moon's gravitational focusing creates monthly density modulation at Earth
+//! - Title: Monthly Modulation in Dark Matter Direct-Detection Experiments
+//! - Source: `https://arxiv.org/pdf/1409.2858`
+//! - Date: Sep 2014
+//! - Relevance: Moon's gravitational focusing creates monthly density modulation at Earth
 //!
 //! ## Compatibility Note
 //!

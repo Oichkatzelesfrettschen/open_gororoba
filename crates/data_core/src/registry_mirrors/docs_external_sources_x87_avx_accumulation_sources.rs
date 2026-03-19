@@ -18,20 +18,20 @@
 //! ## Primary instruction-set references
 //!
 //! - AMD64 Architecture Programmer's Manual, Volume 5:
-//!   instruction semantics for `FDIVR` and `FUCOMPP`
+//! instruction semantics for `FDIVR` and `FUCOMPP`
 //! - AMD64 Architecture Programmer's Manual, Volume 4:
-//!   SIMD / AVX / F16C / FMA-family opcode tables adjacent to the packed-double path
+//! SIMD / AVX / F16C / FMA-family opcode tables adjacent to the packed-double path
 //! - Intel intrinsic reference for `_mm256_fmadd_pd`:
-//!   explicit statement that the fused multiply-add forms the product and sum with
-//!   an infinite-precision intermediate and rounds once to `float64`
+//! explicit statement that the fused multiply-add forms the product and sum with
+//! an infinite-precision intermediate and rounds once to `float64`
 //! - Rust intrinsic docs for `_mm256_extractf128_pd` and `_mm256_hadd_pd`:
-//!   confirms the AVX packed-double reduction path used by `hsum256`
+//! confirms the AVX packed-double reduction path used by `hsum256`
 //!
 //! ## Numerical-analysis reference
 //!
 //! - Ogita, Rump, Oishi (2005), "Accurate Sum and Dot Product":
-//!   provides the compensated-summation error bounds used for the `N = 2048`
-//!   crossover arithmetic (`2^-53 / 2^-64`)
+//! provides the compensated-summation error bounds used for the `N = 2048`
+//! crossover arithmetic (`2^-53 / 2^-64`)
 //!
 //! ## Provenance note
 //!

@@ -183,7 +183,7 @@
 //!
 //! ### Direct Extensions (Citing 0909.3323)
 //! 1. **Gallinet & Martin (1105.2503)**: Extends TCMT to plasmonic systems via Feshbach formalism; validates Ruan-Fan on arbitrary geometries
-//! 2. **Bogdanov et al. (1805.09265)**: Applies TCMT to high-index dielectrics; links Fano parameters to BIC physics
+//! > 2. **Bogdanov et al. (1805.09265)**: Applies TCMT to high-index dielectrics; links Fano parameters to BIC physics
 //! 3. **Maksimov et al. (2505.00396)**: Derives generic symmetry constraints on TCMT parameters from first principles
 //!
 //! ### Indirect Extensions (Same Conceptual Domain)

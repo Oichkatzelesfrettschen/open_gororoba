@@ -20,16 +20,16 @@
 //!
 //! Notes:
 //! - Conan profiles are machine-specific. Prefer keeping profiles local and avoid
-//!   committing machine-specific paths.
+//! committing machine-specific paths.
 //! - This is an optional acceleration layer; core correctness should remain covered
-//!   by Python tests and verifiers.
+//! by Python tests and verifiers.
 //!
 //! ## Build (example)
 //!
-//! ```texttext
+//! ```ignore
 //! make cpp-build
 //! make cpp-test
-//! ```texttext
+//! ```ignore
 //!
 //! If Conan/CMake are missing, install them via your system package manager or via
 //! pipx, then retry.

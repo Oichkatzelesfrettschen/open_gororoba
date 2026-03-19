@@ -6,9 +6,9 @@
 //!
 //! These profiling runs are now reproducible through the Rust-native helper:
 //!
-//! ```texttext
+//! ```ignore
 //! cargo run -p xtask -- sparse-profile --mode both --run-ncu
-//! ```texttext
+//! ```ignore
 //!
 //! If `nsys` or `ncu` are not installed, the helper records a skip manifest and
 //! does not block other repo workflows.
@@ -17,55 +17,55 @@
 //!
 //! The benchmark binary was built with:
 //!
-//! ```texttext
+//! ```ignore
 //! cargo bench --no-run -p lbm_3d_cuda --bench gpu_sparse_1024
-//! ```texttext
+//! ```ignore
 //!
 //! Device-local Nsight Systems:
 //!
-//! ```texttext
+//! ```ignore
 //! nsys profile \
-//!   --force-overwrite=true \
-//!   --sample=none \
-//!   --trace=cuda,nvtx,osrt \
-//!   -o reports/nsight/gpu_sparse_1024_device \
-//!   .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
-//! ```texttext
+//! --force-overwrite=true \
+//! --sample=none \
+//! --trace=cuda,nvtx,osrt \
+//! -o reports/nsight/gpu_sparse_1024_device \
+//! .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
+//! ```ignore
 //!
 //! Managed-memory Nsight Systems:
 //!
-//! ```texttext
+//! ```ignore
 //! GOROROBA_SPARSE_MEMORY_MODE=managed \
 //! nsys profile \
-//!   --force-overwrite=true \
-//!   --sample=none \
-//!   --trace=cuda,nvtx,osrt \
-//!   --cuda-um-cpu-page-faults=true \
-//!   --cuda-um-gpu-page-faults=true \
-//!   -o reports/nsight/gpu_sparse_1024_managed \
-//!   .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
-//! ```texttext
+//! --force-overwrite=true \
+//! --sample=none \
+//! --trace=cuda,nvtx,osrt \
+//! --cuda-um-cpu-page-faults=true \
+//! --cuda-um-gpu-page-faults=true \
+//! -o reports/nsight/gpu_sparse_1024_managed \
+//! .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
+//! ```ignore
 //!
 //! Managed-memory Nsight Compute:
 //!
-//! ```texttext
+//! ```ignore
 //! GOROROBA_SPARSE_MEMORY_MODE=managed \
 //! ncu \
-//!   --target-processes all \
-//!   --kernel-name-base demangled \
-//!   --kernel-name lbm_step_sparse_aa \
-//!   --launch-skip 5 \
-//!   --launch-count 3 \
-//!   --section SpeedOfLight \
-//!   --section LaunchStats \
-//!   --section Occupancy \
-//!   --section SchedulerStats \
-//!   --section InstructionStats \
-//!   --section MemoryWorkloadAnalysis \
-//!   --csv \
-//!   --log-file reports/nsight/gpu_sparse_1024_managed_ncu.csv \
-//!   .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
-//! ```texttext
+//! --target-processes all \
+//! --kernel-name-base demangled \
+//! --kernel-name lbm_step_sparse_aa \
+//! --launch-skip 5 \
+//! --launch-count 3 \
+//! --section SpeedOfLight \
+//! --section LaunchStats \
+//! --section Occupancy \
+//! --section SchedulerStats \
+//! --section InstructionStats \
+//! --section MemoryWorkloadAnalysis \
+//! --csv \
+//! --log-file reports/nsight/gpu_sparse_1024_managed_ncu.csv \
+//! .cache/cargo-default-target/release/deps/gpu_sparse_1024-32f6a2758b8dee11
+//! ```ignore
 //!
 //! ## High-level behavior
 //!
@@ -73,41 +73,41 @@
 //! - `ManagedUnifiedPrefetch` benchmark runtime under `nsys`: `3.3059 s`
 //! - Managed mode stayed within noise of the device-local run for this workload.
 //! - The sparse kernel itself did not materially change behavior between the two
-//!   modes. The main managed-memory overhead is in migration and prefetch around
-//!   the kernel, not inside the kernel.
+//! modes. The main managed-memory overhead is in migration and prefetch around
+//! the kernel, not inside the kernel.
 //!
 //! ## Nsight Systems findings
 //!
 //! Device-local:
 //!
 //! - `lbm_step_sparse_aa` total kernel time across `105` launches:
-//!   `3465664501 ns`
+//! `3465664501 ns`
 //! - Average kernel time:
-//!   `33006328.6 ns`
+//! `33006328.6 ns`
 //!
 //! Managed:
 //!
 //! - `lbm_step_sparse_aa` total kernel time across `105` launches:
-//!   `3515697567 ns`
+//! `3515697567 ns`
 //! - Average kernel time:
-//!   `33482834.0 ns`
+//! `33482834.0 ns`
 //! - `cuMemPrefetchAsync_v2` total across `5` calls:
-//!   `292029010 ns`
+//! `292029010 ns`
 //! - Unified Host-to-Device memcpy total across `3181` copies:
-//!   `256919818 ns`
+//! `256919818 ns`
 //! - `cuMemAllocManaged` total across `5` calls:
-//!   `370962 ns`
+//! `370962 ns`
 //! - Unified-memory GPU page-fault summary did not appear in the generated
-//!   `nsys stats` reports, which is consistent with explicit prefetch keeping
-//!   migration ahead of the hot loop.
+//! `nsys stats` reports, which is consistent with explicit prefetch keeping
+//! migration ahead of the hot loop.
 //!
 //! Interpretation:
 //!
 //! - Managed-memory fallback is viable for this benchmark when explicit prefetch is
-//!   used.
+//! used.
 //! - The current overflow lane is not free, but it is not catastrophically slow.
 //! - If larger windows later exceed available VRAM, the next best optimization
-//!   remains tile-prefetch sequencing, not a layout change to AoS on the GPU.
+//! remains tile-prefetch sequencing, not a layout change to AoS on the GPU.
 //!
 //! ## Nsight Compute findings
 //!
@@ -139,13 +139,13 @@
 //! - The kernel is memory-bound, not compute-bound.
 //! - There is no register spill problem in the current kernel.
 //! - Occupancy is constrained by register pressure, but the larger immediate
-//!   limiter is low warp eligibility during memory-heavy execution.
+//! limiter is low warp eligibility during memory-heavy execution.
 //! - The right optimization targets are:
-//!   - keep sparse metadata hot in L2
-//!   - improve warp eligibility and reduce long-latency memory waits
-//!   - sequence tiles/prefetch when managed overflow is needed
+//! - keep sparse metadata hot in L2
+//! - improve warp eligibility and reduce long-latency memory waits
+//! - sequence tiles/prefetch when managed overflow is needed
 //! - The wrong optimization target is changing the GPU data layout from SoA to
-//!   AoS.
+//! AoS.
 //!
 //! ## Design implications
 //!
@@ -154,9 +154,9 @@
 //! - Sparse SoA remains the correct GPU layout.
 //! - CPU AoS remains appropriate for host-side preprocessing and fallback.
 //! - The 48 MiB GPU L2 should continue to be treated as the home for sparse
-//!   metadata such as occupancy words, indirect tables, and active-brick IDs.
+//! metadata such as occupancy words, indirect tables, and active-brick IDs.
 //! - The 96 MiB CPU L3 helps host-side compaction and scheduling, but it is not a
-//!   shared GPU cache.
+//! shared GPU cache.
 //!
 //! ## Next action
 //!

@@ -17,15 +17,15 @@
 //!
 //! Standard doubling: A_{2^n} = A_{2^{n-1}} (+) A_{2^{n-1}} with
 //!
-//!     (a,b)(c,d) = (ac - d*b, da + bc*)
-//!     (a,b)* = (a*, -b)
+//! >   (a,b)(c,d) = (ac - d*b, da + bc*)
+//! >   (a,b)* = (a*, -b)
 //!
 //! Quadratic form N(a,b) = aa* + bb* is multiplicative only through n=3
 //! (octonions), by Hurwitz's theorem.
 //!
 //! ### 1.2 Inverse Recursion (Informal)
 //!
-//!     A_{n-1} = (1/2) A_n,    A_n = A_{2^n}
+//! >   A_{n-1} = (1/2) A_n,    A_n = A_{2^n}
 //!
 //! Flow diagram: ... -> (1/8)A_8 -> (1/4)A_4 -> (1/2)A_2 -> A_1
 //!
@@ -33,7 +33,7 @@
 //!
 //! Formalized as a homotopy limit in a derived category:
 //!
-//!     A~ = holim_{k -> infinity} (1/2^k) A_{2^{n+k}}
+//! >   A~ = holim_{k -> infinity} (1/2^k) A_{2^{n+k}}
 //!
 //! Convergence conditions: filtered colimit presentations, spectral sequence
 //! stabilization (Adams or Atiyah-Hirzebruch). References cited: Weibel
@@ -43,22 +43,22 @@
 //!
 //! Let A_n be the 2^n-dimensional CD algebra. Define:
 //!
-//!     rho_n : A_{n+1} -> A_n,  rho_n(a,b) = a  (forgetful retraction)
+//! >   rho_n : A_{n+1} -> A_n,  rho_n(a,b) = a  (forgetful retraction)
 //!
 //! Parametric product on A_n:
 //!
-//!     a o_theta c := pi_{A_n}( (a,0) *_{CD,theta} (c,0) ),  theta in {+/-1}
+//! >   a o_theta c := pi_{A_n}( (a,0) *_{CD,theta} (c,0) ),  theta in {+/-1}
 //!
 //! Lemma (Closure): (A_n, o_theta) is closed since (a,0)(c,0) = (ac, 0).
 //!
 //! ### 1.5 Inverse Conjugation Operator
 //!
-//!     C^{-1}(a,b) = (a, b*)  where ||b*||^2 = -||b||^2
-//!     C^{-1}(C^{-1}(a,b)) = (a, -b)
+//! >   C^{-1}(a,b) = (a, b*)  where ||b*||^2 = -||b||^2
+//! >   C^{-1}(C^{-1}(a,b)) = (a, -b)
 //!
 //! ### 1.6 Inverse Multiplication
 //!
-//!     (a,b) o (c,d) = (ac + Psi(b,d), F(a,d,b,c))
+//! >   (a,b) o (c,d) = (ac + Psi(b,d), F(a,d,b,c))
 //!
 //! where Psi depends on context:
 //! - p-Adic: Psi(b,d) = bd mod p
@@ -100,11 +100,11 @@
 //!
 //! First nontrivial homotopy:
 //!
-//!     m_3(a, b, c) = epsilon * (abc - a(bc))
+//! >   m_3(a, b, c) = epsilon * (abc - a(bc))
 //!
 //! ### A-infinity Functor to Exceptional Lie Algebras
 //!
-//!     F : SNAF(D) -> E_8
+//! >   F : SNAF(D) -> E_8
 //!
 //! Lie bracket error bound: ||[F(T_x), F(T_y)] - F(T(x*y))|| = O(10^{-5})
 //!
@@ -113,7 +113,7 @@
 //!
 //! ### Negative Categories
 //!
-//!     Cat_{-n} = Hom(Cat_n, Cat_{-n})
+//! >   Cat_{-n} = Hom(Cat_n, Cat_{-n})
 //!
 //! with morphism reversal: Hom_{C^{-1}}(X,Y) = Hom_C(Y,X).
 //!
@@ -121,11 +121,11 @@
 //!
 //! ### Continuous Dimension
 //!
-//!     dim(A_x) = 2^x,   d/dx dim(A_x) = ln(2) * dim(A_x)
+//! >   dim(A_x) = 2^x,   d/dx dim(A_x) = ln(2) * dim(A_x)
 //!
 //! ### K-Theoretic Interpretation
 //!
-//!     dim(A_n) = sum_{i=0}^{infty} (-1)^i rank(K_i(A_n))
+//! >   dim(A_n) = sum_{i=0}^{infty} (-1)^i rank(K_i(A_n))
 //!
 //! Via Bott periodicity: dim(A_n) = -dim(A_{n-1}).
 //!
@@ -148,11 +148,11 @@
 //! ## Critical Assessment
 //!
 //! - "Negative-dimensional division algebras" are NOT a standard notion.
-//!   Hurwitz constrains real normed division algebras to R, C, H, O.
+//! Hurwitz constrains real normed division algebras to R, C, H, O.
 //! - Negative homotopy groups pi_{-n}(X) live in spectra (stable homotopy),
-//!   not ordinary topological spaces.
+//! not ordinary topological spaces.
 //! - "Negative dimension" in physics is analytic continuation or
-//!   effective/spectral (CDT), not literal geometry.
+//! effective/spectral (CDT), not literal geometry.
 //! - The error bound O(10^{-5}) and Dixmier trace values are from toy models.
 //! - The entire framework is SPECULATIVE and not peer-reviewed.
 //!
