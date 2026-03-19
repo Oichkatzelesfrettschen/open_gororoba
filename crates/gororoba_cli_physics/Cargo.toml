@@ -764,3 +764,7 @@ euclid-catalog = ["cosmology_core/euclid-catalog"]
 
 [lints]
 workspace = true
+
+[[bin]]
+name = "unified-action-sweep"
+path = "src/bin/unified_action_sweep.rs"

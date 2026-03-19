@@ -113,7 +113,7 @@ impl IdentifiabilityAudit {
         let svd = fisher_info.clone().svd(false, false);
         let singular_values = svd.singular_values;
         
-        if singular_values.len() == 0 {
+        if singular_values.is_empty() {
             return None;
         }
 

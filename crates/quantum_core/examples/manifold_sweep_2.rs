@@ -6,7 +6,7 @@
 //! 3. Quantum Transport (Kubo): Frustration -> Drude Weight.
 //! 4. Topological Quantum Correlations (CHSH-Betti).
 
-use nalgebra::{DMatrix, DVector};
+use nalgebra::DVector;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
@@ -98,7 +98,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("3. CHSH-Betti Correlation (data/chsh_betti/results.toml)");
     // Manual extraction from TOML snippet
     // Spearman rho = 0.0, n_snapshots = 10
-    let p_chsh = CouplerPoint { g: DVector::from_vec(vec![10.0]), o: DVector::from_vec(vec![1e-12]) }; // Saturated floor
+    let _p_chsh = CouplerPoint { g: DVector::from_vec(vec![10.0]), o: DVector::from_vec(vec![1e-12]) }; // Saturated floor
     println!("   Status: Spearman Rho = 0.000 | P-value = 1.000");
     println!("   Insight: The zero-correlation result proves that quantum Bell violations are topologically decoupled from Betti-number invariants in this viscosity regime. They inhabit orthogonal sectors of the manifold.\n");
 
