@@ -69,6 +69,54 @@ implement_higher_cd!(Voudon, 256, 64);
 implement_higher_cd!(Eriston, 512, 128);
 implement_higher_cd!(DekaVoudon, 1024, 256);
 
+/// Universal properties of Cayley-Dickson algebras for n >= 4.
+pub struct UniversalCDProperties;
+
+impl UniversalCDProperties {
+    /// All CD algebras are power-associative: x^n is well-defined.
+    pub fn is_power_associative() -> bool { true }
+
+    /// All CD algebras are flexible: x(yx) = (xy)x.
+    pub fn is_flexible() -> bool { true }
+
+    /// CD algebras for dim >= 16 contain zero divisors.
+    pub fn has_zero_divisors(dim: usize) -> bool { dim >= 16 }
+}
+
+/// Systematic naming for higher Cayley-Dickson algebras.
+pub fn cd_name(dim: usize) -> &'static str {
+    match dim {
+        1 => "Real",
+        2 => "Complex",
+        4 => "Quaternion",
+        8 => "Octonion",
+        16 => "Sedenion",
+        32 => "Trigintaduonion",
+        64 => "Sexagintaquatronion",
+        128 => "Routon",
+        256 => "Voudon",
+        512 => "Eriston",
+        1024 => "DekaVoudon",
+        _ => "Higher 2^n-ion",
+    }
+}
+
+/// Theoretical derivation dimensions for CD algebras.
+/// - Der(C) = 0
+/// - Der(H) = su(2) (3D)
+/// - Der(O) = g2 (14D)
+/// - Der(S) = ? (Identified as G2-related in synthesis)
+pub fn derivation_dim(dim: usize) -> Option<usize> {
+    match dim {
+        2 => Some(0),
+        4 => Some(3),
+        8 => Some(14),
+        16 => None, // Open problem
+        32 => None, // Under investigation
+        _ => None,
+    }
+}
+
 /// Higher-dimensional Alternativity Violation Tensor (AVT)
 pub struct HigherAvt {
     pub dim: usize,

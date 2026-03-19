@@ -10,6 +10,7 @@ pub mod lepton_ratio;
 pub mod mass_spectrum;
 pub mod patricia_trie;
 pub mod survival_spectrum;
+pub mod topology;
 pub mod zero_divisor_census;
 
 pub use basis_index::{BasisIndexCodec, project_to_lattice};

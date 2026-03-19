@@ -47,6 +47,33 @@ pub fn median(values: &mut [f64]) -> f64 {
     }
 }
 
+/// Compute a histogram of values.
+///
+/// Returns (bin_centers, counts).
+pub fn histogram(values: &[f64], n_bins: usize, min: f64, max: f64) -> (Vec<f64>, Vec<usize>) {
+    if values.is_empty() || n_bins == 0 || max <= min {
+        return (vec![], vec![]);
+    }
+
+    let mut counts = vec![0; n_bins];
+    let bin_width = (max - min) / n_bins as f64;
+    let bin_centers: Vec<f64> = (0..n_bins)
+        .map(|i| min + (i as f64 + 0.5) * bin_width)
+        .collect();
+
+    for &v in values {
+        if v >= min && v <= max {
+            let mut bin = ((v - min) / bin_width).floor() as usize;
+            if bin >= n_bins {
+                bin = n_bins - 1;
+            }
+            counts[bin] += 1;
+        }
+    }
+
+    (bin_centers, counts)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -20,9 +20,12 @@
 
 pub mod claims_gates;
 pub mod dip;
+pub mod error_analysis;
 pub mod helpers;
 pub mod homology;
 pub mod hypergraph;
+pub mod mutual_information;
+pub mod quantile_regression;
 pub mod tda_bridge;
 pub mod ultrametric;
 
@@ -1914,3 +1917,6 @@ mod tests {
         );
     }
 }
+
+pub mod astrophysics;
+pub mod metrics;

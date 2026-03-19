@@ -63,6 +63,8 @@ pub mod halo_profile;
 pub mod harmonic_halos;
 pub mod harmonic_stacking;
 pub mod homotopy_bridge;
+pub mod manga_sim;
+pub mod mass_ladder;
 pub mod nfw_utils;
 pub mod observational;
 pub mod optimizer;

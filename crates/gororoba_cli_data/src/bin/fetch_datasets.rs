@@ -188,6 +188,12 @@ fn build_registry() -> Vec<DatasetEntry> {
             pillar: "gravitational",
             size_hint: "~10 KB",
         },
+        DatasetEntry {
+            provider: Box::new(nanograv::NanoGrav15yrTimingProvider),
+            category: "astro",
+            pillar: "gravitational",
+            size_hint: "~639 MB",
+        },
         // -- Electromagnetic pillar: EM transients + imaging --
         DatasetEntry {
             provider: Box::new(fermi_gbm::FermiGbmProvider),

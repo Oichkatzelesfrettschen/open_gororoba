@@ -12,13 +12,26 @@
 //! - Caffarelli & Silvestre (2007): Extension problem for fractional Laplacian
 
 pub mod chsh_betti_bridge;
+pub mod coherence;
+pub mod entropy_pde;
+pub mod genesis;
 pub mod ghost_spectral;
+pub mod lomb_scargle;
+pub mod modular_chaos;
+pub mod multitaper;
 pub mod ndfft;
 pub mod neg_dim;
 pub mod pde_surrogates;
+pub mod spectral_flow;
+pub mod surrogates;
 pub mod warp_physics;
 pub mod wavelet;
 
+pub use coherence::{magnitude_squared_coherence, welch_cpsd};
+pub use lomb_scargle::{compute_lomb_scargle, false_alarm_probability_baluev, LombScargleResult};
+pub use multitaper::{dpss_tapers, multitaper_psd, thomson_f_test, MultitaperResult};
+pub use surrogates::{empirical_p_value, iaaft_surrogate, phase_randomize};
+pub use wavelet::{continuous_wavelet_transform, ricker_wavelet};
 pub use neg_dim::{
     ConvergenceResult, EigenResult, build_kinetic_operator, caffarelli_silvestre_eigenvalues,
     eigenvalues_imaginary_time, epsilon_convergence_sweep,

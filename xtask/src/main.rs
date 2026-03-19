@@ -5,7 +5,7 @@ use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
 use serde::Serialize;
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashSet},
     env, fs,
     fs::OpenOptions,
     io::Write,
@@ -16,6 +16,14 @@ use std::{
 use tempfile::tempdir;
 use verified_core::topology::HardwareTopology;
 use walkdir::WalkDir;
+use anstyle::{AnsiColor, Color, Style};
+
+const HEADER_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Cyan))).bold();
+const OK_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Green))).bold();
+const FAIL_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Red))).bold();
+const WARN_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Yellow)));
+const INFO_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Blue)));
+const RESET: &str = "\x1b[0m";
 
 #[derive(Debug, Serialize)]
 struct SchemaSnapshot {
@@ -284,9 +292,8 @@ impl TimingRecorder {
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
-        bail!(
-            "usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile|gpu-profile> [args]"
-        );
+        println!("{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate> [args]{RESET}");
+        return Ok(());
     };
     match command.as_str() {
         "db-docs" => run_db_docs(args.any(|arg| arg == "--check")),
@@ -316,8 +323,361 @@ fn main() -> Result<()> {
         "gpu-profile" => run_gpu_profile(GpuProfileCli::try_parse_from(
             std::iter::once("gpu-profile".to_string()).chain(args),
         )?),
+        "ci-route" => run_ci_route(CiRouteCli::try_parse_from(
+            std::iter::once("ci-route".to_string()).chain(args),
+        )?),
+        "ascii-check" => run_ascii_check(args.any(|arg| arg == "--fix")),
+        "ascii-cleanup" => run_ascii_cleanup(args.any(|arg| arg == "--fix")),
+        "coq-stub" => {
+            let src = args.next().expect("coq-stub requires src path");
+            let dst = args.next().expect("coq-stub requires dst path");
+            run_coq_stub(Path::new(&src), Path::new(&dst))
+        }
+        "convos-chunk" => {
+            let path = args.next().expect("convos-chunk requires path");
+            let lines = args.next().and_then(|s| s.parse().ok()).unwrap_or(800);
+            let prefix = args.next().unwrap_or_else(|| "C1".to_string());
+            run_convos_chunk(Path::new(&path), lines, &prefix)
+        }
+        "terminology-gate" => run_terminology_gate(args.any(|arg| arg == "--quiet")),
         other => bail!("unknown xtask command: {other}"),
     }
+}
+
+#[derive(serde::Deserialize)]
+struct BannedTerm {
+    pattern: String,
+    replacement: String,
+    reason: String,
+}
+
+#[derive(serde::Deserialize)]
+struct TerminologyStandards {
+    banned: Vec<BannedTerm>,
+}
+
+fn run_terminology_gate(quiet: bool) -> Result<()> {
+    let repo_root = env::current_dir()?;
+    let toml_path = repo_root.join("registry/terminology_standards.toml");
+    if !toml_path.exists() {
+        return Ok(());
+    }
+
+    let toml_text = fs::read_to_string(toml_path)?;
+    let standards: TerminologyStandards = toml::from_str(&toml_text)?;
+    
+    let mut compiled = Vec::new();
+    for entry in &standards.banned {
+        let re = if entry.pattern == entry.pattern.to_uppercase() && entry.pattern.contains('_') {
+            regex::Regex::new(&regex::escape(&entry.pattern))?
+        } else {
+            regex::RegexBuilder::new(&regex::escape(&entry.pattern))
+                .case_insensitive(true)
+                .build()?
+        };
+        compiled.push((re, entry));
+    }
+
+    let mut violations = 0;
+    let skip_dirs = [".git", "target", "venv", "convos", "data", "reports"];
+    let skip_exts = ["png", "jpg", "pdf", "zip", "so", "o", "h5", "npy"];
+
+    for entry in WalkDir::new(&repo_root) {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_dir() {
+            let name = path.file_name().unwrap_or_default().to_string_lossy();
+            if skip_dirs.iter().any(|&d| name == d) {
+                continue;
+            }
+        }
+        if !path.is_file() { continue; }
+        let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
+        if skip_exts.contains(&ext) { continue; }
+
+        let text = match fs::read_to_string(path) {
+            Ok(t) => t,
+            Err(_) => continue,
+        };
+
+        for (lineno, line) in text.lines().enumerate() {
+            for (re, entry) in &compiled {
+                if re.is_match(line) {
+                    violations += 1;
+                    if !quiet {
+                        println!("  {FAIL_STYLE}[FAIL]{RESET} {}:{}: violation of pattern '{}'", 
+                                 path.strip_prefix(&repo_root)?.display(), 
+                                 lineno + 1, entry.pattern);
+                        println!("    {INFO_STYLE}reason:{RESET}    {}", entry.reason);
+                        println!("    {INFO_STYLE}suggested:{RESET} {}", entry.replacement);
+                    }
+                }
+            }
+        }
+    }
+
+    if violations > 0 {
+        println!("{FAIL_STYLE}Terminology gate failed with {} violations.{RESET}", violations);
+        bail!("Terminology gate failed.");
+    }
+    
+    if !quiet {
+        println!("{OK_STYLE}--- Terminology Gate Passed ---{RESET}");
+    }
+    Ok(())
+}
+
+fn run_convos_chunk(path: &Path, chunk_lines: usize, prefix: &str) -> Result<()> {
+    let content = fs::read_to_string(path)?;
+    let total_lines = content.lines().count();
+    let n_chunks = (total_lines + chunk_lines - 1) / chunk_lines;
+
+    println!("{INFO_STYLE}path:{RESET}        {}", path.display());
+    println!("{INFO_STYLE}lines:{RESET}       {}", total_lines);
+    println!("{INFO_STYLE}chunk_lines:{RESET} {}", chunk_lines);
+    println!("{INFO_STYLE}chunks:{RESET}      {}", n_chunks);
+    println!();
+
+    for i in 0..n_chunks {
+        let start = i * chunk_lines + 1;
+        let end = ((i + 1) * chunk_lines).min(total_lines);
+        let chunk_id = format!("{}-{:04}", prefix, i + 1);
+        println!("{HEADER_STYLE}{}:{RESET} L{}-L{}", chunk_id, start, end);
+    }
+    Ok(())
+}
+
+fn run_coq_stub(src: &Path, dst: &Path) -> Result<()> {
+    let header = "From Stdlib Require Import String.\nRequire Import ConfineModel.\n\nOpen Scope string_scope.\n\n";
+    let text = fs::read_to_string(src)?;
+    let mut out = String::from(header);
+    for line in text.lines() {
+        if line.starts_with("Theorem ") {
+            out.push_str("Axiom ");
+            out.push_str(&line["Theorem ".len()..]);
+        } else {
+            out.push_str(line);
+        }
+        out.push('\n');
+    }
+    if let Some(parent) = dst.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    fs::write(dst, out)?;
+    println!("  [OK]   Wrote {}", dst.display());
+    Ok(())
+}
+
+fn run_ascii_check(fix: bool) -> Result<()> {
+    println!("{HEADER_STYLE}--- Repo ANSI-safe UTF-8 Gate ---{RESET}");
+    let repo_root = env::current_dir()?;
+    let mut failures = Vec::new();
+
+    let skip_dirs = [".git", "target", "venv", "convos", "data", "reports"];
+    
+    for entry in WalkDir::new(&repo_root) {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_dir() {
+            let name = path.file_name().unwrap_or_default().to_string_lossy();
+            if skip_dirs.iter().any(|&d| name == d) {
+                continue;
+            }
+        }
+        if !path.is_file() { continue; }
+        
+        // Skip binaries by extension
+        let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
+        if ["png", "jpg", "pdf", "xlsx", "zip", "so", "o"].contains(&ext) {
+            continue;
+        }
+
+        let content = fs::read(path)?;
+        let mut non_ascii = false;
+        for &b in &content {
+            if b > 127 {
+                non_ascii = true;
+                break;
+            }
+        }
+
+        if non_ascii {
+            failures.push(path.to_owned());
+            let rel_path = path.strip_prefix(&repo_root)?.display();
+            if !fix {
+                println!("  {FAIL_STYLE}[FAIL]{RESET} {}", rel_path);
+            } else {
+                let mut fixed = Vec::with_capacity(content.len());
+                for &b in &content {
+                    if b <= 127 { fixed.push(b); }
+                    else { fixed.push(b'?'); }
+                }
+                fs::write(path, fixed)?;
+                println!("  {OK_STYLE}[FIXED]{RESET} {}", rel_path);
+            }
+        }
+    }
+
+    if !failures.is_empty() && !fix {
+        println!("{FAIL_STYLE}Found {} files with non-ASCII characters.{RESET}", failures.len());
+        bail!("ASCII check failed.");
+    }
+    
+    println!("{OK_STYLE}ASCII check passed.{RESET}");
+    Ok(())
+}
+
+fn run_ascii_cleanup(fix: bool) -> Result<()> {
+    println!("{HEADER_STYLE}--- ASCII Placeholder Cleanup ---{RESET}");
+    let repo_root = env::current_dir()?;
+    let mut token_map = BTreeMap::new();
+    token_map.insert("<U+00B1>", "+/-");
+    token_map.insert("<U+00B7>", "*");
+    token_map.insert("<U+039B>", "Lambda");
+    token_map.insert("<U+0393>", "Gamma");
+    token_map.insert("<U+03A3>", "Sigma");
+    token_map.insert("<U+03A8>", "\\Psi");
+    token_map.insert("<U+03A6>", "\\Phi");
+    token_map.insert("<U+03B7>", "eta");
+    token_map.insert("<U+03BD>", "\\nu");
+    token_map.insert("<U+03C1>", "\\rho");
+    token_map.insert("<U+03C4>", "\\tau");
+    token_map.insert("<U+03C6>", "\\phi");
+    token_map.insert("<U+03C9>", "omega");
+    token_map.insert("<U+2020>", "dagger");
+    token_map.insert("<U+2194>", "<->");
+    token_map.insert("<U+2193>", "down");
+    token_map.insert("<U+21A6>", "|->");
+    token_map.insert("<U+2202>", "\\partial");
+    token_map.insert("<U+2203>", "exists");
+    token_map.insert("<U+2207>", "\\nabla");
+    token_map.insert("<U+2208>", "in");
+    token_map.insert("<U+2218>", "circ");
+    token_map.insert("<U+221A>", "sqrt");
+    token_map.insert("<U+2212>", "-");
+    token_map.insert("<U+222B>", "int");
+    token_map.insert("<U+223C>", "~");
+    token_map.insert("<U+2248>", "approx");
+    token_map.insert("<U+2243>", "approx");
+    token_map.insert("<U+2264>", "<=");
+    token_map.insert("<U+2265>", ">=");
+    token_map.insert("<U+2282>", "subseteq");
+    token_map.insert("<U+2295>", "\\oplus");
+    token_map.insert("<U+2297>", "\\otimes");
+    token_map.insert("<U+22C6>", "\\star");
+    token_map.insert("<U+22A5>", "bot");
+    token_map.insert("<U+2609>", "_sun");
+
+    let skip_dirs = [".git", "target", "venv", "convos"];
+    
+    for entry in WalkDir::new(&repo_root) {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_dir() {
+            let name = path.file_name().unwrap_or_default().to_string_lossy();
+            if skip_dirs.iter().any(|&d| name == d) {
+                continue;
+            }
+        }
+        if !path.is_file() { continue; }
+        
+        let mut text = match fs::read_to_string(path) {
+            Ok(t) => t,
+            Err(_) => continue,
+        };
+
+        if !text.contains("<U+") { continue; }
+
+        let original = text.clone();
+        for (token, replacement) in &token_map {
+            text = text.replace(token, replacement);
+        }
+
+        if text != original {
+            let rel_path = path.strip_prefix(&repo_root)?.display();
+            if fix {
+                fs::write(path, &text)?;
+                println!("  {OK_STYLE}[FIXED]{RESET}   {}", rel_path);
+            } else {
+                println!("  {WARN_STYLE}[PENDING]{RESET} {}", rel_path);
+            }
+        }
+    }
+    println!("{OK_STYLE}Cleanup complete.{RESET}");
+    Ok(())
+}
+
+#[derive(Parser, Debug)]
+#[command(name = "ci-route", about = "Map changed files to affected Rust crates")]
+struct CiRouteCli {
+    #[arg(long)]
+    local: bool,
+    #[arg(long)]
+    base: Option<String>,
+    #[arg(long)]
+    verbose: bool,
+}
+
+fn run_ci_route(cli: CiRouteCli) -> Result<()> {
+    let repo_root = env::current_dir()?;
+    let base = cli.base.unwrap_or_else(|| "HEAD~1".to_string());
+    
+    // Get changed files via git
+    let output = Command::new("git")
+        .args(&["diff", "--name-only", &base, "HEAD"])
+        .output()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let files: Vec<String> = stdout.lines().map(|s| s.to_string()).collect();
+
+    if cli.verbose {
+        eprintln!("[ci-route] Changed files: {}", files.len());
+    }
+
+    // 1. Force workspace triggers
+    let workspace_triggers = [
+        "Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "Makefile", "agents.toml"
+    ];
+    let mut force_workspace = false;
+    for f in &files {
+        if workspace_triggers.iter().any(|&t| f == t) {
+            force_workspace = true;
+            break;
+        }
+    }
+
+    if force_workspace {
+        if cli.local { println!("--workspace"); }
+        else { println!("::set-output name=rust_scope::--workspace"); }
+        return Ok(());
+    }
+
+    // 2. Identify affected crates
+    let mut affected = std::collections::HashSet::new();
+    for f in &files {
+        if f.starts_with("crates/") {
+            let parts: Vec<&str> = f.split('/').collect();
+            if parts.len() >= 2 {
+                affected.insert(parts[1].to_string());
+            }
+        }
+    }
+
+    if affected.is_empty() {
+        if !cli.local { println!("::set-output name=rust_scope::"); }
+        return Ok(());
+    }
+
+    // 3. TODO: Transitive closure (requires parsing Cargo.tomls)
+    // For now, emit direct affected crates
+    let mut scope = String::new();
+    for c in affected {
+        scope.push_str(&format!("-p {} ", c));
+    }
+    
+    if cli.local { println!("{}", scope.trim()); }
+    else { println!("::set-output name=rust_scope::{}", scope.trim()); }
+
+    Ok(())
 }
 
 fn run_gpu_profile(cli: GpuProfileCli) -> Result<()> {

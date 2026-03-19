@@ -12,13 +12,15 @@ gpu = ["cudarc"]
 [dependencies]
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
-statrs = { workspace = true }
+statrs.workspace = true
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rand_distr = { workspace = true }
 kodama = { workspace = true }
-kiddo = { workspace = true }
+kiddo.workspace = true
 gororoba_algebra = { path = "../gororoba_algebra" }
 cudarc = { workspace = true, optional = true }
+clarabel = "0.11.1"
 
 [dev-dependencies]
 approx = { workspace = true }

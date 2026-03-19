@@ -11,6 +11,22 @@ name = "zd-search"
 path = "src/bin/zd_search.rs"
 
 [[bin]]
+name = "spectral-flow"
+path = "src/bin/spectral-flow.rs"
+
+[[bin]]
+name = "mutual-information-phase"
+path = "src/bin/mutual-information-phase.rs"
+
+[[bin]]
+name = "analyze-multiscale-ghost"
+path = "src/bin/analyze-multiscale-ghost.rs"
+
+[[bin]]
+name = "quantile-periodogram"
+path = "src/bin/quantile-periodogram.rs"
+
+[[bin]]
 name = "albert-algebra-structure-census"
 path = "src/bin/albert_algebra_structure_census.rs"
 
@@ -168,7 +184,7 @@ path = "src/bin/structured_spectrum_bench.rs"
 
 [dependencies]
 algebra_analysis = { workspace = true }
-cd_kernel = { workspace = true }
+cd_kernel.workspace = true
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 algebra_experimental = { workspace = true }
 gororoba_engine = { path = "../gororoba_engine" }
@@ -180,14 +196,19 @@ env_logger = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 tracing-tracy = { workspace = true, optional = true }
-rand = { workspace = true }
-rand_chacha = { workspace = true }
+rand.workspace = true
+rand_chacha.workspace = true
 rustfft = { workspace = true }
 anyhow.workspace = true
 nalgebra = { workspace = true }
 flate2 = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+faer.workspace = true
+ndarray.workspace = true
+hdf5-metno = "0.12.3"
+glob.workspace = true
+statrs.workspace = true
 
 [features]
 default = []

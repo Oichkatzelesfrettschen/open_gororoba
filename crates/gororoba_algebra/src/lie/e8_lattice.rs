@@ -231,6 +231,84 @@ impl E8Lattice {
             .filter(|r| (r.inner_product(ref_root).round() as i32) == target_ip)
             .collect()
     }
+
+    /// Compute the E8 theta function Θ_E8(τ) = Σ q^(||λ||^2) up to a max norm squared.
+    ///
+    /// The theta function for E8 is a modular form of weight 4 for SL(2, Z).
+    pub fn compute_theta_function(&self, q: f64, max_norm_sq: usize) -> f64 {
+        if q.abs() >= 1.0 {
+            return f64::INFINITY;
+        }
+
+        let mut theta = 1.0; // Contribution from origin (norm 0)
+
+        // Sum over lattice points by norm squared (only even norms in E8)
+        for n_sq in (2..=max_norm_sq).step_by(2) {
+            let count = self.count_vectors_with_norm_sq(n_sq);
+            theta += count as f64 * q.powi(n_sq as i32);
+        }
+
+        theta
+    }
+
+    /// Count lattice vectors with a given squared norm.
+    ///
+    /// For E8, these are 240 * sigma_3(n) where sigma_3(n) is the sum of
+    /// cubes of divisors of n, and n = norm_sq / 2.
+    pub fn count_vectors_with_norm_sq(&self, norm_sq: usize) -> usize {
+        if !norm_sq.is_multiple_of(2) {
+            return 0;
+        }
+        let n = norm_sq / 2;
+        if n == 0 {
+            return 1;
+        }
+
+        // sigma_3(n) = sum_{d|n} d^3
+        let mut sigma3 = 0;
+        for d in 1..=n {
+            if n.is_multiple_of(d) {
+                sigma3 += d * d * d;
+            }
+        }
+
+        240 * sigma3
+    }
+
+    /// Compute the sphere packing density for E8.
+    ///
+    /// The E8 lattice achieves the optimal sphere packing in 8 dimensions.
+    /// Density Δ = V_8(r) / det(L), where r = 1 (half of min distance sqrt(2)).
+    /// Wait, min distance is sqrt(2), so r = sqrt(2)/2 = 1/sqrt(2).
+    /// V_8(r) = (pi^4 / 24) * r^8.
+    /// det(E8) = 1.
+    pub fn sphere_packing_density(&self) -> f64 {
+        let r = 1.0 / 2.0_f64.sqrt();
+        let vol_8d_sphere = (std::f64::consts::PI.powi(4) / 24.0) * r.powi(8);
+        let lattice_vol = 1.0; // E8 is unimodular
+        vol_8d_sphere / lattice_vol // Should be pi^4 / 384 approx 0.25367
+    }
+}
+
+/// Fundamental weights for E8.
+///
+/// These are the dual basis to the simple roots.
+pub fn e8_fundamental_weights() -> [[f64; 8]; 8] {
+    [
+        [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], // ω_1
+        [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.0, 0.0], // ω_2
+        [3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.0, 0.0], // ω_3
+        [4.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 0.0], // ω_4
+        [5.0, 4.0, 3.0, 2.0, 2.0, 1.0, 1.0, 0.0], // ω_5
+        [4.0, 3.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0], // ω_6
+        [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0], // ω_7
+        [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // ω_8
+    ].map(|mut w| {
+        for val in &mut w {
+            *val *= 0.5;
+        }
+        w
+    })
 }
 
 impl Default for E8Lattice {

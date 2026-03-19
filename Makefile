@@ -1,13 +1,13 @@
 # ---- Phony targets ----
-.PHONY: help install install-analysis install-astro install-particle install-quantum bootstrap-dev
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe lint-advisory check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
-.PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance patch-pyfilesystem2
+.PHONY: help bootstrap-dev
+.PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
+.PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
-.PHONY: python-smoke python-regression heavy test-inventory verify-no-reports-writes
-.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped rust-smoke-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
+.PHONY: heavy test-inventory verify-no-reports-writes
+.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit profile-python-toml-inventory
+.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -50,8 +50,7 @@
 .PHONY: registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
 .PHONY: registry-csv-scroll-pipeline registry-verify-csv-scroll-pipeline
 .PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-csv-pipeline-gate registry-wave3
-.PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish docs-freshness docs-gate docs-site docs-rustdoc docs-book docs-redirect-check
-.PHONY: verify-python-core-algorithms
+.PHONY: registry-refresh registry-export-markdown registry-verify-mirrors docs-publish docs-freshness docs-gate docs-site docs-rustdoc docs-book docs-redirect-check
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big artifacts-repo-visuals
 .PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex
@@ -59,7 +58,7 @@
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
 
-.NOTPARALLEL: install bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-python gate-ci-python-compat gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
+.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
 # Non-cargo make fanout: 75% of logical CPUs, minimum 1.
 # Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
@@ -76,13 +75,7 @@ RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::ba
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
 CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
-PYTEST_WORKERS ?= $(WORKER_BUDGET)
-PYTEST_XDIST_ARGS = -p xdist.plugin -n $(PYTEST_WORKERS) --dist worksteal
 
-VENV ?= venv
-PYTHON := $(VENV)/bin/python3
-PIP := $(VENV)/bin/pip
-DEV_STAMP := $(VENV)/.installed-dev
 HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= docs/generated
@@ -102,65 +95,16 @@ PROFILE_ROOT ?= reports/gates/profiles/$(PROFILE_TIMESTAMP)
 
 # ---- Environment setup ----
 
-$(VENV)/bin/python3:
-	python3 -m venv $(VENV)
-	$(PIP) install -U pip
-
-venv: $(VENV)/bin/python3
-
-$(DEV_STAMP): $(VENV)/bin/python3 pyproject.toml
-	$(PIP) install -e ".[dev]"
-	@touch "$(DEV_STAMP)"
-
-install: $(DEV_STAMP)
-
-bootstrap-dev: install
-	@echo "OK: dev bootstrap is current."
-
-install-analysis: install
-	$(PIP) install -e ".[analysis]"
-
-install-astro: install
-	$(PIP) install -e ".[astro]"
-
-install-particle: install
-	$(PIP) install -e ".[particle]"
-
-install-quantum: install
-	$(PIP) install -e ".[quantum]"
+bootstrap-dev:
+	@echo "OK: Rust-first dev bootstrap is current."
 
 # ---- Quality gates ----
 
-python-smoke: install
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest $(PYTEST_XDIST_ARGS) -m "smoke and not requires_ext" tests/ -x -q --tb=short
+lint: rust-clippy
 
-python-regression: install
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest $(PYTEST_XDIST_ARGS) -m "regression and not requires_ext" tests/ -x -q --tb=short
+test: rust-regression
 
-python-requires-ext: install
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONWARNINGS=error $(PYTHON) -m pytest $(PYTEST_XDIST_ARGS) -m "requires_ext" tests/ -x -q --tb=short
-
-test: python-regression
-
-lint: install
-	$(PYTHON) scripts/run_ruff_changed.py
-
-lint-all: install
-	$(PYTHON) -m ruff check src tests bin scripts
-
-lint-all-stats: install
-	$(PYTHON) -m ruff check src tests bin scripts --statistics --exit-zero
-
-lint-advisory: lint-all-stats
-	@echo "OK: advisory lint statistics collected."
-
-lint-all-fix-safe: install
-	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
-
-verify-no-reports-writes: install
-	$(CARGO_ENV) cargo run -p gororoba_cli_governance --bin governance-verify -- no-reports-writes
-
-check: lint python-smoke ansi-check terminology-gate verify-no-reports-writes
+check: ansi-check terminology-gate verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
@@ -202,7 +146,7 @@ gate-local:
 	run_rust="true"; \
 	run_governance="true"; \
 	eval "$$(cargo run -q -p xtask -- host-profile --format shell)"; \
-	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS PYTEST_WORKERS=$$HOST_PYTEST_WORKERS"; \
+	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS"; \
 	echo "[gate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
 	echo "[gate-local] determining scope..."; \
 	if command -v cargo >/dev/null 2>&1; then \
@@ -238,18 +182,6 @@ gate-local:
 pre-push-gate: gate-local
 	@echo "OK: pre-push-gate is a compatibility alias for gate-local."
 
-gate-ci-python: install
-	$(MAKE) check
-	$(MAKE) python-regression
-	$(MAKE) integrity
-	$(MAKE) governance-gate-readonly
-	$(MAKE) registry-control-plane-gate-readonly
-	$(MAKE) registry-acceptance-gate-readonly
-	@echo "OK: gate-ci-python passed."
-
-gate-ci-python-compat: check
-	@echo "OK: gate-ci-python-compat passed."
-
 gate-ci-registry:
 	$(MAKE) governance-gate-readonly
 	$(MAKE) registry-control-plane-gate-readonly
@@ -274,7 +206,7 @@ gate-audit:
 	$(CARGO_ENV) cargo run -p xtask -- gate-audit
 	@echo "OK: gate-audit completed."
 
-profile-python-toml-inventory: install
+profile-python-toml-inventory:
 	@mkdir -p "$(PROFILE_ROOT)"
 	@if command -v /usr/bin/time >/dev/null 2>&1; then \
 		echo "[profile] timing Rust TOML inventory builder"; \
@@ -318,16 +250,12 @@ hooks-status:
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
-registry-control-plane-gate-readonly: install
+registry-control-plane-gate-readonly:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-corpus
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_governance --bin markdown-registry -- verify-toml-inventory
 	@echo "OK: read-only registry control-plane gate passed."
 
-integrity: install
-	PYTHONWARNINGS=error $(PYTHON) -m compileall -q src
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_python_core_algorithms_pyo3.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
+integrity:
 	$(MAKE) verify-pantheon-physicsforge-mapping
 	$(MAKE) verify-pantheon-physicsforge-license-headers
 	$(MAKE) verify-pantheon-physicsforge-overflow
@@ -344,7 +272,7 @@ integrity-rust:
 test-inventory:
 	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin test-inventory -- --check
 
-math-verify: test lint
+math-verify: rust-regression
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
 
 rust-test: rust-regression
@@ -363,9 +291,6 @@ rust-regression: rust-clippy
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --cargo-profile test-heavy -P heavy -p algebra_analysis -p gr_core
 	@echo "OK: Rust regression lane passed."
 
-# Scoped Rust regression gate: only affected crates (via workspace-routing).
-# Usage: make rust-regression-scoped  (auto-detects changes vs origin/main)
-#        make rust-regression-scoped RUST_SCOPE="-p gororoba_algebra -p gr_core"
 rust-regression-scoped:
 	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
 	$(eval RUST_RUN_HEAVY ?= 1)
@@ -425,14 +350,6 @@ rust-regression-scoped:
 	    fi; \
 	    echo "OK: Rust regression gate passed (scoped: clippy + nextest)."; \
 	fi
-
-rust-smoke-scoped: rust-regression-scoped
-	@echo "DEPRECATED: make rust-smoke-scoped is a legacy alias. Use make rust-regression-scoped."
-
-# Scoped pre-push: routes Rust/governance to affected scope only.
-pre-push-gate-scoped:
-	$(MAKE) gate-local
-	@echo "OK: scoped pre-push gate passed via gate-local."
 
 heavy:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core --run-ignored only -P heavy
@@ -514,7 +431,7 @@ x87-givens-microbench-perf:
 		2> $${COUNTERS_OUT:-reports/benchmarks/x87_givens_microbench_perf.stat}
 	@echo "OK: x87 Givens perf-stat microbench completed."
 
-gpu-bench: ## Run CUDA kernel baseline benchmark (informational, not a gate)
+gpu-bench:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics \
 		--bin cuda-precision-bench --features gpu -- \
 		--output $${OUT:-data/benchmarks/cuda_kernel_baseline.csv} \
@@ -525,14 +442,9 @@ gpu-bench: ## Run CUDA kernel baseline benchmark (informational, not a gate)
 		$${STEPS_LARGE:+--steps-large $${STEPS_LARGE}}
 	@echo "OK: CUDA kernel baseline benchmark complete. See data/benchmarks/cuda_kernel_baseline.csv"
 
-gpu-bench-ncu: ## Profile CUDA kernels with Nsight Compute (ncu); requires NVIDIA driver + ncu in PATH
-	# Build the binary first so ncu can wrap the pre-built executable.
+gpu-bench-ncu:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cuda-precision-bench --features gpu
 	@mkdir -p data/benchmarks/ncu
-	# NCU_SECTIONS defaults to "MemoryWorkloadAnalysis,ComputeWorkloadAnalysis,SpeedOfLight"
-	# Override with: make gpu-bench-ncu NCU_SECTIONS="SpeedOfLight"
-	# Override workloads with: make gpu-bench-ncu WORKLOADS="lbm"
-	# Override grids with: make gpu-bench-ncu GRIDS="128"
 	ncu \
 		--set $${NCU_SECTIONS:-SpeedOfLight,MemoryWorkloadAnalysis,ComputeWorkloadAnalysis} \
 		--target-processes all \
@@ -544,12 +456,9 @@ gpu-bench-ncu: ## Profile CUDA kernels with Nsight Compute (ncu); requires NVIDI
 		--steps-small 5 --steps-mid 5 --steps-large 5 --warmup 3
 	@echo "OK: ncu profile saved to data/benchmarks/ncu/"
 
-gpu-bench-nsys: ## Profile CUDA pipeline with Nsight Systems (nsys); requires nsys in PATH
-	# Build the binary first so nsys wraps the pre-built executable.
+gpu-bench-nsys:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cuda-precision-bench --features gpu
 	@mkdir -p data/benchmarks/nsys
-	# NSYS_TRACE defaults to "cuda,nvtx" (CPU sampling adds overhead; remove "osrt" for clean GPU-only traces)
-	# Override with: make gpu-bench-nsys NSYS_TRACE="cuda"
 	nsys profile \
 		--trace=$${NSYS_TRACE:-cuda,nvtx} \
 		--output data/benchmarks/nsys/cuda_pipeline_$$(date +%Y%m%d_%H%M%S) \
@@ -561,9 +470,7 @@ gpu-bench-nsys: ## Profile CUDA pipeline with Nsight Systems (nsys); requires ns
 		--steps-small 20 --steps-mid 20 --steps-large 10 --warmup 5
 	@echo "OK: nsys profile saved to data/benchmarks/nsys/ -- open .nsys-rep in Nsight Systems GUI"
 
-# ---- CPU Profiling ----
-
-cpu-bench: ## Run CPU LBM benchmark (BGK + MRT at 32/64/128)
+cpu-bench:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics \
 		--bin cpu-lbm-bench -- \
 		--output $${OUT:-data/benchmarks/cpu_lbm_baseline.csv} \
@@ -571,7 +478,7 @@ cpu-bench: ## Run CPU LBM benchmark (BGK + MRT at 32/64/128)
 		$${WORKLOADS:+--workloads $${WORKLOADS}}
 	@echo "OK: CPU LBM benchmark complete. See data/benchmarks/cpu_lbm_baseline.csv"
 
-cpu-bench-perf: ## Profile CPU LBM with perf stat (cycles, instructions, cache misses)
+cpu-bench-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cpu-lbm-bench
 	@mkdir -p reports/benchmarks
 	perf stat -d \
@@ -581,7 +488,7 @@ cpu-bench-perf: ## Profile CPU LBM with perf stat (cycles, instructions, cache m
 		2> $${COUNTERS_OUT:-reports/benchmarks/cpu_lbm_perf.stat}
 	@echo "OK: perf stat saved to reports/benchmarks/cpu_lbm_perf.stat"
 
-cpu-bench-cachegrind: ## Profile CPU LBM with cachegrind (V-Cache analysis)
+cpu-bench-cachegrind:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cpu-lbm-bench
 	@mkdir -p reports/benchmarks
 	valgrind --tool=cachegrind \
@@ -591,22 +498,20 @@ cpu-bench-cachegrind: ## Profile CPU LBM with cachegrind (V-Cache analysis)
 		--output /dev/null
 	@echo "OK: cachegrind output saved. Annotate with: cg_annotate $${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm}"
 
-cpu-bench-flamegraph: ## Capture a flamegraph for CPU LBM hotspot analysis
+cpu-bench-flamegraph:
 	$(CARGO_ENV) cargo flamegraph --release -p gororoba_cli_physics --bin cpu-lbm-bench \
 		-o $${FGOUT:-reports/benchmarks/cpu_lbm_flamegraph.svg} \
 		-- --grids $${GRIDS:-64} --workloads $${WORKLOADS:-bgk} --output /dev/null
 	@echo "OK: flamegraph saved to $${FGOUT:-reports/benchmarks/cpu_lbm_flamegraph.svg}"
 
-# ---- Cross-backend parity ----
-
-parity-bench: ## Run all three backends (CUDA, Vulkan, CPU) at comparable grids
+parity-bench:
 	@echo "Running CPU benchmark..."
 	$(MAKE) cpu-bench GRIDS=$${GRIDS:-32,64} OUT=data/benchmarks/cpu_lbm_baseline.csv
 	@echo "Running CUDA benchmark..."
 	$(MAKE) gpu-bench GRIDS=$${GRIDS:-32,64} OUT=data/benchmarks/cuda_kernel_baseline.csv
 	@echo "All benchmarks complete."
 
-parity-report: ## Generate comparison Markdown from CUDA/Vulkan/CPU CSVs
+parity-report:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics \
 		--bin parity-report -- \
 		--cuda-csv $${CUDA_CSV:-data/benchmarks/cuda_kernel_baseline.csv} \
@@ -726,7 +631,7 @@ cargo-deny-check:
 	@echo "OK: cargo-deny policy gate passed."
 
 mcp-smoke:
-	PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- mcp-smoke
 
 e027-validate:
 	@echo "Validating E-027 Percolation Experiment (Thesis 1 binary)..."
@@ -743,9 +648,7 @@ e027-validate:
 	  2>&1 | grep -E "\[|Found|OK|FAIL" || true
 	@echo "Verifying TOML artifact generation..."
 	@test -f data/e027/e027_results.toml || (echo "ERROR: results TOML not generated"; exit 1)
-	@python3 -c "import tomli; tomli.loads(open('data/e027/e027_results.toml').read()); print('TOML structure valid')" || (echo "ERROR: results TOML is malformed"; exit 1)
 	@echo "OK: E-027 validation passed (binary operational, TOML pipeline functional)."
-	@echo "NOTE: Small grid validation may refute Thesis 1 (expected with mock data). Full validation requires 32x32x32 grid."
 
 rust-parity:
 	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo test --workspace
@@ -872,12 +775,6 @@ registry-ingest-legacy: registry-normalize-narratives registry-normalize-operati
 	@echo "Legacy markdown -> TOML ingest completed."
 
 registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-governance
-
-python-retention-sync:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin python-retention -- sync
-
-python-retention-verify:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin python-retention -- verify
 
 registry-knowledge-atoms:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin knowledge-atoms -- build
@@ -1048,7 +945,7 @@ registry-wave5-batch4-build: registry-strict-toml-batch4-build
 	@echo "DEPRECATED: make registry-wave5-batch4-build is a legacy alias. Use make registry-build-execution-planning."
 
 registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
-	@echo "DEPRECATED: make registry-verify-wave5-batch4 is a legacy alias. Use make registry-verify-execution-planning."
+	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-verify-execution-planning."
 
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
@@ -1232,32 +1129,6 @@ registry-export-markdown: registry-refresh
 		--output "$(MARKDOWN_EXPORT_OUT_DIR)/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"; \
 	cargo run -q -p gororoba_cli_data --bin registry-emit -- research-narratives-mirror \
 		--output "$(MARKDOWN_EXPORT_OUT_DIR)/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"; \
-	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- insights-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- experiments-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- theorems-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- roadmap-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- todo-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- next-actions-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- bibliography-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- navigator-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- entrypoint-docs-legacy; \
-		cargo run -q -p gororoba_cli_data --bin registry-emit -- requirements-legacy; \
-		if [ "$$legacy_claims_sync" = "1" ]; then \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-matrix-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-tasks-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-domains-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- claim-tickets-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- external-sources-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- book-docs-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- data-artifact-narratives-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- reports-narratives-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-convos-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- monograph-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-root-narratives-legacy; \
-			cargo run -q -p gororoba_cli_data --bin registry-emit -- research-narratives-legacy; \
-		fi; \
-	fi; \
 	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-inventory; \
 	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-corpus; \
 	cargo run -q -p gororoba_cli_governance --bin markdown-registry -- build-origin-audit; \
@@ -1266,20 +1137,15 @@ registry-export-markdown: registry-refresh
 
 registry-verify-mirrors:
 	legacy_flag=""; \
-	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then legacy_flag="--emit-legacy"; fi; \
 	claims_value="true"; \
 	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_value="false"; fi; \
 	cargo run -q -p gororoba_cli_data --bin verify-registry-mirror-freshness -- \
 		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag --legacy-claims-sync $$claims_value
-	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-toml-first
-	@if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
-		cargo run -q -p gororoba_cli_governance --bin governance-verify -- markdown-headers; \
-		cargo run -q -p gororoba_cli_governance --bin governance-verify -- markdown-parity; \
-		cargo run -q -p gororoba_cli_governance --bin governance-verify -- mirror-immutability; \
-		cargo run -q -p gororoba_cli_governance --bin governance-verify -- claim-ticket-mirrors; \
-	else \
-		echo "SKIP: legacy mirror immutability checks disabled in strict markdown-free publish profile."; \
-	fi
+	$(MAKE) registry-verify-markdown-toml-first
+	cargo run -q -p gororoba_cli_governance --bin governance-verify -- markdown-headers; \
+	cargo run -q -p gororoba_cli_governance --bin governance-verify -- markdown-parity; \
+	cargo run -q -p gororoba_cli_governance --bin governance-verify -- mirror-immutability; \
+	cargo run -q -p gororoba_cli_governance --bin governance-verify -- claim-ticket-mirrors;
 
 registry-sync-project-counters:
 	$(CARGO_ENV) cargo run --release --bin project-counter-sync
@@ -1345,91 +1211,6 @@ docs-site: docs-rustdoc docs-book
 		'  </body>' \
 		'</html>' \
 		> "$(DOCS_SITE_DIR)/index.html"
-	@cat > "$(DOCS_SITE_DIR)/book.html" <<-'EOF'
-	<!doctype html>
-	<html lang="en">
-	  <head>
-	    <meta charset="utf-8" />
-	    <meta http-equiv="refresh" content="0; url=./book/" />
-	    <title>open_gororoba docs</title>
-	    <meta name="robots" content="noindex" />
-	  </head>
-	  <body>
-	    <p>Redirecting to mdBook documentation.</p>
-	  </body>
-	</html>
-	EOF
-	@cat > "$(DOCS_SITE_DIR)/rustdoc.html" <<-'EOF'
-	<!doctype html>
-	<html lang="en">
-	  <head>
-	    <meta charset="utf-8" />
-	    <meta http-equiv="refresh" content="0; url=./rustdoc/" />
-	    <title>open_gororoba API docs</title>
-	    <meta name="robots" content="noindex" />
-	  </head>
-	  <body>
-	    <p>Redirecting to Rust API documentation.</p>
-	  </body>
-	</html>
-	EOF
-	@cat > "$(DOCS_SITE_DIR)/404.html" <<-'EOF'
-	<!doctype html>
-	<html lang="en">
-	  <head>
-	    <meta charset="utf-8" />
-	    <title>open_gororoba docs redirect</title>
-	  </head>
-	  <body>
-	    <script>
-	      (function () {
-	        var path = window.location.pathname || "";
-	        var query = window.location.search || "";
-	        var hash = window.location.hash || "";
-	        var suffix = "";
-	        var idx = -1;
-	        var segments = path.split("/").filter(Boolean);
-	        var first = segments.length > 0 ? segments[0] : "";
-	        var root = (segments.length > 0 && first !== "book" && first !== "rustdoc") ? "/" + first + "/" : "/";
-	        var legacyPrefixes = [
-	          "/.cache/cargo-default-target/doc",
-	          "/cache/cargo-default-target/doc",
-	          "/.cache/gate-target/doc",
-	          "/cache/gate-target/doc",
-	          "/target/docs-target/doc",
-	          "/target/doc",
-	        ];
-
-	        for (var i = 0; i < legacyPrefixes.length; i++) {
-	          idx = path.indexOf(legacyPrefixes[i]);
-	          if (idx !== -1) {
-	            suffix = path.slice(idx + legacyPrefixes[i].length);
-	            break;
-	          }
-	        }
-
-	        if (suffix) {
-	          window.location.replace(root + "rustdoc" + suffix + query + hash);
-	          return;
-	        }
-
-	        if (path === root + "book" || path === root + "book/" ) {
-	          window.location.replace(root + "book/");
-	          return;
-	        }
-
-	        if (path === root + "rustdoc" || path === root + "rustdoc/" ) {
-	          window.location.replace(root + "rustdoc/");
-	          return;
-	        }
-
-	        window.location.replace(root);
-	      })();
-	    </script>
-	    <p>Open <a href="./">open_gororoba docs</a>.</p>
-	  </body>
-	</html>
-	EOF
 	@touch "$(DOCS_SITE_DIR)/.nojekyll"
 	@echo "OK: docs site staged to $(DOCS_SITE_DIR)."
 
@@ -1451,30 +1232,30 @@ ansi-check:
 ansi-check-strict:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- ansi-check --check --strict-placeholders --placeholder-scope-prefix crates/ --placeholder-scope-prefix tests/
 
-verify: install
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
+verify:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-artifacts
 
-verify-grand: install
-	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
+verify-grand:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-grand-images
 
 verify-c010-c011-theses:
-	PYTHONWARNINGS=error python3 src/verification/verify_c010_c011_theses.py
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-c010-c011-theses
 
 verify-python-core-algorithms:
-	PYTHONWARNINGS=error python3 src/verification/verify_python_core_algorithms_pyo3.py
+	@echo "SKIP: legacy Python core algorithms verification removed."
 
-doctor: install
+doctor:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- doctor
 	sh scripts/detect_native_blas.sh
 
 doctor-blas:
 	sh scripts/detect_native_blas.sh
 
-provenance: install
+provenance:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-origin-audit -- --out reports/data_origin_audit_$$(date +%F).toml --fail-on-strict-unknown
 
-provenance-audit: install
+provenance-audit:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true
 
 provenance-registry-index:
@@ -1495,41 +1276,37 @@ provenance-registry-link-audit:
 provenance-registry-recover:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- recover
 
-external-redownload-audit: install
+external-redownload-audit:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_$$(date +%F).toml --backend-order wget,curl,fetch
 
-semantic-data-validate: install
+semantic-data-validate:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
 
-semantic-data-validate-strict: install
+semantic-data-validate-strict:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
 
-patch-pyfilesystem2: install
-	$(PYTHON) bin/patch_pyfilesystem_pkg_resources.py
+patch-pyfilesystem2:
+	@echo "SKIP: patch-pyfilesystem2 removed (no Python runtime dependency)."
 
 # ---- Artifact generation ----
-#
-# Each artifacts-* target produces deterministic output under data/csv/
-# and data/artifacts/images/.  All generated files are reproducible from
-# source code + pinned dependencies and can be removed with make clean-artifacts.
 
 artifacts: artifacts-motifs artifacts-boxkites artifacts-reggiani artifacts-m3 artifacts-dimensional artifacts-repo-visuals
 	@echo "OK: all core artifacts regenerated."
 
-artifacts-dimensional: install
+artifacts-dimensional:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- dimensional-geometry
 
-artifacts-materials: install
+artifacts-materials:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- materials-subset --n 200 --seed 0
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- materials-embedding
 
-artifacts-boxkites: install
+artifacts-boxkites:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- de-marrais-boxkites
 
-artifacts-reggiani: install
+artifacts-reggiani:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- reggiani-annihilator-stats
 
-artifacts-m3: install
+artifacts-m3:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin artifact-regen -- m3-table
 
 artifacts-motifs:
@@ -1545,18 +1322,15 @@ artifacts-repo-visuals:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-visuals
 
 # ---- Data fetching ----
-#
-# External datasets are NOT committed to the repo.  These targets download
-# them into the locations expected by analysis scripts.
 
-fetch-data: install
+fetch-data:
 	@echo "Fetching external datasets..."
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
 	@echo "Refreshing external provenance and source governance..."
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-governance-gate -- --enforce-origin true --enforce-semantic true --enforce-blocked-deadlines true --enforce-gitignore true --enforce-naming true
 
-fetch-data-redownload: install
+fetch-data-redownload:
 	@echo "Force re-downloading external datasets from origin fetchers..."
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing false --output-dir data/external
 	@echo "Refreshing external provenance and source governance..."
@@ -1571,11 +1345,6 @@ run: rust-smoke
 	$(CARGO_ENV) cargo run --release --bin entropy_pde -- --depth 50
 	@echo "OK: All core Rust simulations completed and artifacts generated."
 
-# E-183: MaNGA N~2500 harmonic halo stacking sweep (D=16,64,256,1024).
-# WHY: Full-sample N>=2500 stack reaches alpha_zd threshold ~0.004,
-#      7x improvement over SPARC N=93. Each CD dimension is an independent run.
-# HOW: Run after manga-maps-extractor finishes (check: wc -l data/external/manga/rotcurves/manga_rotcurves_all.csv)
-# OUTPUT: data/results/e183/manga_stack_D{16,64,256,1024}.csv
 run-e183:
 	@mkdir -p data/results/e183
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
@@ -1626,7 +1395,6 @@ rocq-proofs-check:
 	    echo "SKIP: proofs/ not present (submodule not initialized? run: make submodule-sync)"; \
 	fi
 
-# Build proofs, generate paper artifacts, then compile LaTeX
 lva-paper: rocq-proofs rocq-proofs-check
 	@command -v just >/dev/null 2>&1 || { echo "ERROR: just not found (install via cargo install just)"; exit 1; }
 	cd proofs && just paper-artifacts
@@ -1663,9 +1431,6 @@ clean-artifacts:
 	@echo "Done. Regenerate and verify with cargo-native data governance commands."
 
 clean:
-	rm -rf $(VENV)
-	find . -type f -name "*.pyc" -delete
-	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	rm -rf .pytest_cache .ruff_cache
 	rm -rf src/*.egg-info
 	rm -rf $(REPO_CARGO_TARGET_DIR)
@@ -1688,107 +1453,24 @@ help:
 	@echo "Targets:"
 	@echo ""
 	@echo "  Setup:"
-	@echo "    make install              Create venv and install (editable, dev deps)"
-	@echo "    make bootstrap-dev        Ensure the dev venv/install stamp is current"
-	@echo "    make install-analysis     Add analysis extras (networkx, ripser, sklearn)"
-	@echo "    make install-astro        Add astronomy extras (gwpy, astroquery)"
-	@echo "    make install-particle     Add particle-analysis extras (uproot, awkward, vector)"
-	@echo "    make install-quantum      Add quantum extras (qiskit, Docker recommended)"
+	@echo "    make bootstrap-dev        Ensure the dev environment is current"
 	@echo ""
 	@echo "  Quality:"
-	@echo "    make python-smoke         Run smoke-marked pytest coverage"
-	@echo "    make python-regression    Run regression-marked pytest coverage without optional-extension tests"
-	@echo "    make python-requires-ext  Run opt-in pytest coverage that needs optional vendor/extensions"
-	@echo "    make test                 Alias for python-regression"
-	@echo "    make lint                 Changed-file Ruff ratchet on src + tests + bin + scripts"
+	@echo "    make lint                 Run workspace-wide clippy -- -D warnings"
+	@echo "    make test                 Run workspace-wide nextest"
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
-	@echo "    make integrity            Python-only integrity lane (artifacts, mirrors, markdown)"
 	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
-	@echo "    make check                Fast local check (lint + python-smoke + ascii + terminology + no-reports)"
+	@echo "    make check                Fast local check (ansi + terminology + no-reports)"
 	@echo "    make ansi-check           Verify ANSI-safe UTF-8 character policy"
-	@echo "    make ansi-check-strict    Verify ANSI-safe UTF-8 policy + fail on <U+....> placeholders in crates/tests"
-	@echo "    make verify-pantheon-physicsforge-mapping Verify migration matrix/todo mapping completeness"
-	@echo "    make verify-pantheon-physicsforge-license-headers Verify GPL-2.0-only header consistency in migrated files"
-	@echo "    make verify-pantheon-physicsforge-overflow Verify overflow tracker max-5-active policy"
-	@echo "    make seed-pantheon-physicsforge-sqlite Seed sqlite memoization for migration findings/risks"
+	@echo "    make ansi-check-strict    Verify ANSI-safe UTF-8 policy + fail on <U+....> placeholders"
+	@echo "    make verify-pantheon-physicsforge-mapping Verify migration completeness"
+	@echo "    make verify-pantheon-physicsforge-license-headers Verify license headers"
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
-	@echo "    make rust-regression      Full Rust regression lane with heavy-crate routing"
-	@echo "    make rust-regression-scoped Scoped Rust regression lane for affected crates"
+	@echo "    make rust-regression      Full Rust regression lane"
+	@echo "    make rust-regression-scoped Scoped Rust regression lane"
 	@echo "    make gate-local           Canonical scoped local push gate"
-	@echo "    make gate-ci-python       Legacy Python/read-only governance CI gate"
-	@echo "    make gate-ci-python-compat Legacy Python compatibility gate for non-authoritative versions"
 	@echo "    make gate-ci-registry     Rust-native governance + registry contract CI gate"
 	@echo "    make gate-ci-rust         Full Rust CI gate"
-	@echo "    make gate-audit           Keep-going dry-run audit that writes reports/gates/*"
-	@echo "    make heavy                Ignored/GPU/research-heavy nextest lane"
-	@echo "    make test-inventory       Enforce taxonomy coverage and stale-doc checks"
-	@echo "    make mcp-smoke            Re-test configured MCP server parity and startup health"
-	@echo "    make cargo-deny-check     Enforce deny.toml (advisories, bans, licenses, sources)"
-	@echo "    make x87-strategy-bench   Run pinned-core x87/AVX2 worker sweep and write CSV+Markdown reports"
-	@echo "    make x87-strategy-perf    Run perf stat around the pinned-core x87/AVX2 benchmark binary"
-	@echo "    make x87-strategy-hyperfine Compare 1/2/4/6-worker strategy runs with hyperfine"
-	@echo "    make x87-strategy-flamegraph Capture a flamegraph for a focused x87-strategy-bench run"
-	@echo "    make x87-givens-microbench Measure the actual composed x87 Givens/transcendental helper costs"
-	@echo "    make x87-givens-microbench-perf Run perf stat around focused x87 Givens/transcendental microbench cases/kernels"
-	@echo "    make jacobi-backend-sweep Run solver-shaped x87/DD/f64 Jacobi backend sweep across matrix sizes (optional FAMILIES=a,b and BACKENDS=x,y subsets)"
-	@echo "    make block-jacobi-backend-sweep Run the block-Jacobi prototype sweep with block sizes 2 and 4 against current dense backends"
-	@echo "    make partial-spectrum-bench Benchmark k=1,2,4 largest/smallest-magnitude partial-spectrum lanes against full-spectrum Jacobi baselines"
-	@echo "    make structured-spectrum-bench Benchmark exact structured zero-mode deflation on quantized and real obstruction-like matrices"
-	@echo "    make jacobi-backend-perf   Run perf stat around a focused jacobi-backend-sweep configuration"
-	@echo "    make jacobi-backend-flamegraph Capture a flamegraph for a focused jacobi-backend-sweep configuration (defaults to release debuginfo for readable stacks)"
-	@echo "    make jacobi-backend-samply Capture a focused samply profile for jacobi-backend-sweep (supports FEATURES=profile-dd-hotspots for less-inlined DD attribution)"
-	@echo "    make jacobi-backend-samply-compare Summarize weighted line-level hotspots across the current reference/x87/DD samply artifacts"
-	@echo "    make gpu-bench-ncu        Profile CUDA kernels with Nsight Compute (ncu); exports .ncu-rep and CSV; override GRIDS/WORKLOADS/NCU_SECTIONS"
-	@echo "    make gpu-bench-nsys       Profile CUDA pipeline with Nsight Systems (nsys); exports .nsys-rep timeline; override GRIDS/WORKLOADS/NSYS_TRACE"
-	@echo "    make registry             Validate TOML registry consistency"
-	@echo "    make registry-verify-typed-policy-error Strict registry-check typed-policy lane (--typed-policy error)"
-	@echo "    make synthesis-execution-contract Run full synthesis execution contract and emit rollup TOML"
-	@echo "    make governance-gate-readonly Read-only TOML registry governance gate"
-	@echo "    make registry-control-plane-gate-readonly Read-only markdown/TOML control-plane gate"
-	@echo "    make registry-csv-pipeline-gate  Validate project/external/archive CSV scroll pipeline lanes"
-	@echo "    make registry-semantic-atoms-gate      Rust semantic-atoms build+verify lane"
-	@echo "    make registry-evidence-provenance-gate Legacy build+verify evidence-provenance lane"
-	@echo "    make registry-integrity-resolution-gate Legacy build+verify integrity-resolution lane"
-	@echo "    make registry-execution-planning-gate  Legacy build+verify execution-planning lane"
-	@echo "    make registry-acceptance-gate-readonly Read-only semantic/evidence/integrity/execution gate"
-	@echo "    make registry-acceptance-gate    Compatibility alias for registry-acceptance-gate-readonly"
-	@echo "    make registry-verify-schema-signatures Verify critical registry schema signatures"
-	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
-	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
-	@echo "    make registry-verify-markdown-toml-first Verify markdown owner/inventory TOML-first hard gate"
-	@echo "    make docs-site             Build publish-ready docs bundle into $(DOCS_SITE_DIR) (mdBook + rustdoc)"
-	@echo "    make docs-gate             Build docs-gate bundle and stage for CI/CD publication"
-	@echo "    make docs-freshness        Validate docs bundle freshness and redirect artifacts"
-	@echo "    make docs-redirect-check   Validate legacy/path redirects and docs shortlink artifacts"
-	@echo "    MARKDOWN_EXPORT=1 make docs-publish Export mirrors in strict mode (out-of-tree, no legacy writes)"
-	@echo "  Deprecated legacy aliases (compatibility-only entrypoints):"
-	@echo "    make registry-wave5              DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."
-	@echo "    make registry-wave5-batch1-build DEPRECATED: make registry-wave5-batch1-build is a legacy alias. Use make registry-build-semantic-atoms."
-	@echo "    make registry-verify-wave5-batch1 DEPRECATED: make registry-verify-wave5-batch1 is a legacy alias. Use make registry-verify-semantic-atoms."
-	@echo "    make registry-wave5-batch1       DEPRECATED: make registry-wave5-batch1 is a legacy alias. Use make registry-semantic-atoms-gate."
-	@echo "    make registry-wave5-batch2-build DEPRECATED: make registry-wave5-batch2-build is a legacy alias. Use make registry-build-evidence-provenance."
-	@echo "    make registry-verify-wave5-batch2 DEPRECATED: make registry-verify-wave5-batch2 is a legacy alias. Use make registry-verify-evidence-provenance."
-	@echo "    make registry-wave5-batch2       DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
-	@echo "    make registry-wave5-batch3-build DEPRECATED: make registry-wave5-batch3-build is a legacy alias. Use make registry-build-integrity-resolution."
-	@echo "    make registry-verify-wave5-batch3 DEPRECATED: make registry-verify-wave5-batch3 is a legacy alias. Use make registry-verify-integrity-resolution."
-	@echo "    make registry-wave5-batch3       DEPRECATED: make registry-wave5-batch3 is a legacy alias. Use make registry-integrity-resolution-gate."
-	@echo "    make registry-wave5-batch4-build DEPRECATED: make registry-wave5-batch4-build is a legacy alias. Use make registry-build-execution-planning."
-	@echo "    make registry-verify-wave5-batch4 DEPRECATED: make registry-verify-wave5-batch4 is a legacy alias. Use make registry-verify-execution-planning."
-	@echo "    make registry-wave5-batch4       DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
-	@echo "    make registry-wave4              DEPRECATED: make registry-wave4 is a legacy alias. Use make registry-control-plane-gate."
-	@echo "    make registry-verify-wave4       DEPRECATED: make registry-verify-wave4 is a legacy alias. Use make registry-verify-control-plane."
-	@echo "    make registry-wave3              DEPRECATED: make registry-wave3 is a legacy alias. Use make registry-csv-pipeline-gate."
-	@echo "    make wave6-gate                  DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
-	@echo ""
-	@echo "  Gates (tiered):"
-	@echo "    make governance-gate      Compatibility alias for governance-gate-readonly"
-	@echo "    make registry-control-plane-gate-readonly Read-only control-plane registry gate"
-	@echo "    make registry-acceptance-gate-readonly Read-only semantic/evidence/integrity/execution gate"
-	@echo "    make registry-verify-typed-policy-error Supplemental strict typed-policy contract lane"
-	@echo "    make synthesis-execution-contract governance-gate + registry-acceptance-gate + strict typed-policy + project-counter-sync --check"
-	@echo "    make terminology-gate     enforce banned-term policy from terminology_standards.toml"
-	@echo "    make pre-push-gate        Compatibility alias for gate-local"
-	@echo "    make pre-push-gate-strict Compatibility alias for gate-audit"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"
@@ -1798,38 +1480,21 @@ help:
 	@echo "    make artifacts-reggiani   Reggiani annihilator statistics"
 	@echo "    make artifacts-m3         M3 transfer table"
 	@echo "    make artifacts-dimensional Dimensional geometry sweeps"
-	@echo "    make artifacts-materials  JARVIS subset + embeddings"
-	@echo "    make artifacts-repo-visuals Repo maps plus science-facing E183, gravastar, and algebra plates"
+	@echo "    make artifacts-repo-visuals Repo maps plus science-facing plates"
 	@echo ""
 	@echo "  Data:"
-	@echo "    make fetch-data           Re-download external datasets via Rust fetchers + strict governance checks"
-	@echo "    make fetch-data-redownload Force re-download all fetch-datasets providers (skip-existing=false)"
-	@echo "    make provenance           Hash data/external/* + emit data-origin audit report"
-	@echo "    make provenance-audit     Enforce strict origin + semantic + blocked-deadline governance gate"
-	@echo "    make external-redownload-audit  Run external source coverage/re-download audit (wget->curl->fetch)"
-	@echo "    make semantic-data-validate Run lane semantic validators from registry/data_semantic_validators.toml"
-	@echo "    make semantic-data-validate-strict Fail on any semantic unverifiable status"
-	@echo "    cargo run -p gororoba_cli_data --bin data-governance-gate --     Run fail-closed data governance gate"
-	@echo "    cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply  Rust-native reproducible-data cleanup"
-	@echo ""
-	@echo "  Verification:"
-	@echo "    make verify               Verify artifact schemas"
-	@echo "    make verify-grand         Verify grand images"
-	@echo "    make math-verify          Full math validation suite"
+	@echo "    make fetch-data           Re-download external datasets via Rust fetchers"
+	@echo "    make provenance           Hash data/external/* + emit audit report"
+	@echo "    make provenance-audit     Enforce strict governance gate"
+	@echo "    make semantic-data-validate Run lane semantic validators"
 	@echo ""
 	@echo "  Cleanup:"
-	@echo "    make clean                Remove venv, caches, bytecode"
-	@echo "    make clean-builds         Remove all Rust build artifacts (target/, .cache/*-target/)"
-	@echo "    make clean-artifacts      Remove generated CSV/images/HDF5 (keep source data)"
+	@echo "    make clean                Remove caches and bytecode"
+	@echo "    make clean-builds         Remove all Rust build artifacts"
+	@echo "    make clean-artifacts      Remove generated CSV/images/HDF5"
 	@echo "    make clean-all            clean + clean-builds + clean-artifacts"
 	@echo ""
 	@echo "  Other:"
 	@echo "    make run                  Run simulations (sedenion, modular, entropy)"
 	@echo "    make rocq                Compile Rocq proofs"
 	@echo "    make latex                Build MASTER_SYNTHESIS.pdf"
-	@echo "    make docker-quantum-build Build qiskit-env Docker image"
-	@echo "    make docker-quantum-run   Run quantum script in Docker (ARGS=...)"
-	@echo "    make docker-quantum-shell Open interactive shell in qiskit-env"
-	@echo "    make doctor               Environment diagnostics"
-	@echo "    make doctor-blas          Detect native BLAS/LAPACK candidates and Cargo feature mapping"
-	@echo "    ./makew <target>          Run make with inherited jobserver env stripped (useful when shells/tools export MAKEFLAGS)"

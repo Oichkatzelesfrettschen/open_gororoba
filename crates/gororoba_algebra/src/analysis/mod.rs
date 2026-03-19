@@ -14,4 +14,6 @@ pub use algebra_analysis::{
 
 // These modules stay in gororoba_algebra (cross-module deps on construction/experimental).
 pub mod legacy_crossval;
+pub mod motif_summary;
+pub mod numerical_stability;
 pub mod test_wedged_validation;

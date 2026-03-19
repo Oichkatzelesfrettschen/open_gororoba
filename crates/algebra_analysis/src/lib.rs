@@ -51,3 +51,4 @@ pub mod stochastic;
 pub mod subalgebra;
 pub mod test_support;
 pub mod zd_graphs;
+pub mod sky_mapping;

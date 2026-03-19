@@ -212,7 +212,7 @@ pub fn ifft_nd(input: &ArrayD<Complex64>) -> ArrayD<Complex64> {
 ///
 /// Returns signed frequency: 0, 1, ..., n/2, -(n/2-1), ..., -1
 #[inline]
-fn freq_index(i: usize, n: usize) -> f64 {
+pub(crate) fn freq_index(i: usize, n: usize) -> f64 {
     if i <= n / 2 {
         i as f64
     } else {

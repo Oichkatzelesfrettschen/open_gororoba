@@ -547,3 +547,29 @@ mod tests {
         assert!(eigs[1] < eigs[2]);
     }
 }
+
+/// Predicted black hole mass spectrum based on the negative-dimension hypothesis.
+///
+/// M_BH(n) ~ n^(-alpha) for n-th mode and fractional exponent alpha < 0.
+/// For alpha = -1.5, M ~ n^1.5.
+pub fn predict_bh_mass_spectrum(alpha: f64, n_modes: usize) -> Vec<f64> {
+    (1..=n_modes)
+        .map(|n| (n as f64).powf(-alpha))
+        .collect()
+}
+
+/// Correlation metric between predicted mass peaks and observed LIGO events.
+///
+/// Returns mean squared error relative to a set of target masses (e.g., [35.0, 65.0]).
+pub fn correlate_with_ligo_peaks(alpha: f64, targets: &[f64]) -> f64 {
+    let spectrum = predict_bh_mass_spectrum(alpha, 20);
+    let mut total_error = 0.0;
+    for &target in targets {
+        // Find nearest predicted mass
+        let min_err = spectrum.iter()
+            .map(|&m| (m - target).powi(2))
+            .fold(f64::INFINITY, f64::min);
+        total_error += min_err;
+    }
+    total_error / targets.len() as f64
+}

@@ -335,3 +335,56 @@ mod tests {
         assert_eq!(seen, vec![0, 1]);
     }
 }
+
+pub fn ecliptic_to_equatorial_vector(longitude_rad: f64, latitude_rad: f64) -> [f64; 3] {
+    let epsilon = 23.4392911_f64.to_radians();
+    let x_ecl = latitude_rad.cos() * longitude_rad.cos();
+    let y_ecl = latitude_rad.cos() * longitude_rad.sin();
+    let z_ecl = latitude_rad.sin();
+    [
+        x_ecl,
+        y_ecl * epsilon.cos() - z_ecl * epsilon.sin(),
+        y_ecl * epsilon.sin() + z_ecl * epsilon.cos(),
+    ]
+}
+
+pub fn parse_hms_radians(value: &str) -> Option<f64> {
+    let fields = value.split(':').collect::<Vec<_>>();
+    if fields.len() != 3 {
+        return None;
+    }
+    let hours = fields[0].parse::<f64>().ok()?;
+    let minutes = fields[1].parse::<f64>().ok()?;
+    let seconds = fields[2].parse::<f64>().ok()?;
+    let hours_total = hours + minutes / 60.0 + seconds / 3600.0;
+    Some((hours_total * 15.0).to_radians())
+}
+
+pub fn parse_dms_radians(value: &str) -> Option<f64> {
+    let fields = value.split(':').collect::<Vec<_>>();
+    if fields.len() != 3 {
+        return None;
+    }
+    let deg = fields[0].parse::<f64>().ok()?;
+    let min = fields[1].parse::<f64>().ok()?;
+    let sec = fields[2].parse::<f64>().ok()?;
+    let sign = if deg < 0.0 || value.starts_with('-') {
+        -1.0
+    } else {
+        1.0
+    };
+    let deg_abs = deg.abs();
+    let deg_total = deg_abs + min / 60.0 + sec / 3600.0;
+    Some(sign * deg_total.to_radians())
+}
+
+/// Converts equatorial (RA, Dec) in degrees to Galactic latitude (b) in degrees.
+pub fn equatorial_to_galactic_lat(ra_deg: f64, dec_deg: f64) -> f64 {
+    let ra = ra_deg.to_radians();
+    let dec = dec_deg.to_radians();
+    let ra_ngp = 192.85948_f64.to_radians();
+    let dec_ngp = 27.12825_f64.to_radians();
+
+    let sin_b = dec.sin() * dec_ngp.sin() + dec.cos() * dec_ngp.cos() * (ra - ra_ngp).cos();
+    sin_b.clamp(-1.0, 1.0).asin().to_degrees()
+}

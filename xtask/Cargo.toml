@@ -17,3 +17,6 @@ serde.workspace = true
 serde_json.workspace = true
 tempfile.workspace = true
 walkdir.workspace = true
+toml.workspace = true
+regex.workspace = true
+anstyle.workspace = true

@@ -18,6 +18,52 @@ pub mod table;
 pub mod text;
 pub mod toml_out;
 
+use regex::Regex;
+use std::collections::HashMap;
+
+/// Result of analyzing a conversation log.
+#[derive(Debug, Clone)]
+pub struct ChatAnalysis {
+    pub concept_frequency: HashMap<String, usize>,
+    pub action_items: Vec<String>,
+    pub equations: Vec<String>,
+    pub code_blocks: usize,
+}
+
+/// Analyze a chat log for key concepts and action items.
+pub fn analyze_chat_log(content: &str) -> ChatAnalysis {
+    let mut keywords = HashMap::new();
+    let concepts = vec![
+        "Sedenion", "Gravastar", "Fractal", "Negative Dimension", 
+        "Zero Divisor", "LIGO", "Chern", "Hamiltonian",
+    ];
+    for concept in concepts {
+        let re = Regex::new(&format!(r"(?i){}", concept)).unwrap();
+        keywords.insert(concept.to_string(), re.find_iter(content).count());
+    }
+
+    let re_action = Regex::new(r"(?i)(?:Next steps|Future work|To do|We should|explore)(.*)").unwrap();
+    let action_items = re_action.captures_iter(content)
+        .map(|cap| cap[1].trim().to_string())
+        .filter(|s| s.len() > 10)
+        .collect();
+
+    let re_eq = Regex::new(r"(?s)\$\$(.*?)\$\$").unwrap();
+    let equations = re_eq.captures_iter(content)
+        .map(|cap| cap[1].trim().to_string())
+        .collect();
+
+    let re_code = Regex::new(r"(?s)```(.*?)```").unwrap();
+    let code_blocks = re_code.find_iter(content).count();
+
+    ChatAnalysis {
+        concept_frequency: keywords,
+        action_items,
+        equations,
+        code_blocks,
+    }
+}
+
 use serde::{Deserialize, Serialize};
 
 /// Errors that can occur during document processing.

@@ -548,6 +548,10 @@ name = "shmr-scatter-injection"
 path = "src/bin/shmr_scatter_injection.rs"
 
 [[bin]]
+name = "kk-mskk2"
+path = "src/bin/kk-mskk2.rs"
+
+[[bin]]
 name = "mass-quartile-fourier"
 path = "src/bin/mass_quartile_fourier.rs"
 

@@ -217,3 +217,189 @@ mod tests {
         }
     }
 }
+
+/// Fractal kernel using wavelet transforms for multi-scale analysis.
+pub struct WaveletFractalKernel {
+    /// Fractal scaling parameter (typically alpha ~ 0.618)
+    pub alpha: f64,
+    /// Number of decomposition levels
+    pub levels: usize,
+}
+
+impl WaveletFractalKernel {
+    /// Create a new fractal kernel.
+    pub fn new(levels: usize, alpha: f64) -> Self {
+        Self { levels, alpha }
+    }
+
+    /// Perform multi-scale decomposition and apply fractal transformation.
+    ///
+    /// Currently uses Haar DWT as the base transform.
+    pub fn multi_scale_transform(&self, signal: &[f64]) -> Vec<f64> {
+        let mut coeffs = haar_dwt(signal);
+        let n = coeffs.len();
+        
+        // Apply fractal map at each scale: detail_coeff = scale * tanh(coeff / scale)
+        // Coeffs layout: [scaling | detail_level_0 | detail_level_1 | ... | detail_level_L]
+        // where L = log2(n) - 1.
+        let mut current_len = 1;
+        let mut level = 0;
+        
+        while current_len < n {
+            let scale_factor = self.alpha.powi(level);
+            for coeff in coeffs.iter_mut().take(current_len * 2).skip(current_len) {
+                if level == 0 {
+                    *coeff *= scale_factor;
+                } else {
+                    *coeff = scale_factor * (*coeff / scale_factor).tanh();
+                }
+            }
+            current_len *= 2;
+            level += 1;
+        }
+        
+        haar_idwt(&coeffs)
+    }
+}
+
+/// Estimate fractal dimension using box counting on a 1D signal.
+pub fn compute_fractal_dimension(signal: &[f64]) -> f64 {
+    if signal.is_empty() {
+        return 0.0;
+    }
+
+    let n = signal.len();
+    let min = signal.iter().fold(f64::INFINITY, |a, &b| a.min(b));
+    let max = signal.iter().fold(f64::NEG_INFINITY, |a, &b| a.max(b));
+    let range = max - min;
+    if range == 0.0 {
+        return 0.0;
+    }
+
+    let normalized: Vec<f64> = signal.iter().map(|&x| (x - min) / range).collect();
+
+    // Box sizes: powers of 2 from 1 to n/4
+    let mut box_sizes = Vec::new();
+    let mut s = 1;
+    while s <= n / 4 && s < 1024 {
+        box_sizes.push(s);
+        s *= 2;
+    }
+
+    if box_sizes.len() < 2 {
+        return 1.0; // Minimal dimension
+    }
+
+    let mut log_sizes = Vec::new();
+    let mut log_counts = Vec::new();
+
+    for &size in &box_sizes {
+        let n_boxes = n / size;
+        let mut count = 0.0;
+        for i in 0..n_boxes {
+            let start = i * size;
+            let end = (i + 1) * size;
+            let segment = &normalized[start..end];
+            let s_min = segment.iter().fold(f64::INFINITY, |a, &b| a.min(b));
+            let s_max = segment.iter().fold(f64::NEG_INFINITY, |a, &b| a.max(b));
+            let s_range = s_max - s_min;
+            count += (s_range * size as f64).ceil().max(1.0);
+        }
+        log_sizes.push((size as f64).ln());
+        log_counts.push(count.ln());
+    }
+
+    // Linear regression: log(count) = -D * log(size) + C
+    // D = (N * sum(xy) - sum(x)*sum(y)) / (N * sum(x^2) - (sum(x))^2)
+    let m = log_sizes.len() as f64;
+    let sum_x: f64 = log_sizes.iter().sum();
+    let sum_y: f64 = log_counts.iter().sum();
+    let sum_xx: f64 = log_sizes.iter().map(|x| x * x).sum();
+    let sum_xy: f64 = log_sizes.iter().zip(log_counts.iter()).map(|(x, y)| x * y).sum();
+
+    let denom = m * sum_xx - sum_x * sum_x;
+    if denom.abs() < 1e-12 {
+        return 1.0;
+    }
+
+    let slope = (m * sum_xy - sum_x * sum_y) / denom;
+    -slope
+}
+
+/// Ricker wavelet (Mexican Hat).
+///
+/// Returns the values of the Ricker wavelet at `points` positions for scale `a`.
+/// A = 2 / (sqrt(3 * a) * pi^0.25)
+/// w(x) = A * (1 - (x/a)^2) * exp(-x^2 / (2*a^2))
+pub fn ricker_wavelet(points: usize, a: f64) -> Vec<f64> {
+    if points == 0 {
+        return vec![];
+    }
+    let n_f = points as f64;
+    let a2 = a * a;
+    let pi_pow_025 = std::f64::consts::PI.powf(0.25);
+    let norm = 2.0 / ((3.0 * a).sqrt() * pi_pow_025);
+
+    (0..points)
+        .map(|i| {
+            let x = i as f64 - (n_f - 1.0) / 2.0;
+            let x2 = x * x;
+            let x_a_2 = x2 / a2;
+            norm * (1.0 - x_a_2) * (-x2 / (2.0 * a2)).exp()
+        })
+        .collect()
+}
+
+/// Simple Continuous Wavelet Transform (CWT) using Ricker wavelet.
+///
+/// Computes the CWT for a signal at given widths (scales).
+/// Result is a matrix of size `widths.len() x signal.len()`.
+pub fn continuous_wavelet_transform(signal: &[f64], widths: &[f64]) -> Vec<Vec<f64>> {
+    let n = signal.len();
+    let mut result = Vec::with_capacity(widths.len());
+
+    for &a in widths {
+        // Kernel length: typically 10 * width
+        let points = ((10.0 * a).ceil() as usize).min(n).max(3);
+        let kernel = ricker_wavelet(points, a);
+        
+        // Convolution (mode='same')
+        let mut conv = vec![0.0; n];
+        let half_k = points / 2;
+        
+        for (i, conv_value) in conv.iter_mut().enumerate().take(n) {
+            let mut sum = 0.0;
+            for (j, kernel_value) in kernel.iter().enumerate().take(points) {
+                let sig_idx = i as i64 + j as i64 - half_k as i64;
+                if sig_idx >= 0 && sig_idx < n as i64 {
+                    sum += signal[sig_idx as usize] * kernel_value;
+                }
+            }
+            *conv_value = sum;
+        }
+        result.push(conv);
+    }
+    result
+}
+
+#[cfg(test)]
+mod cwt_tests {
+    use super::*;
+
+    #[test]
+    fn test_ricker_wavelet_symmetry() {
+        let w = ricker_wavelet(101, 5.0);
+        for i in 0..50 {
+            assert!((w[i] - w[100 - i]).abs() < 1e-12);
+        }
+    }
+
+    #[test]
+    fn test_cwt_dimensions() {
+        let signal = vec![0.0; 100];
+        let widths = vec![1.0, 2.0, 5.0];
+        let result = continuous_wavelet_transform(&signal, &widths);
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0].len(), 100);
+    }
+}
