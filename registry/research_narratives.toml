@@ -1507,6 +1507,7 @@ claim_refs = ["C-001", "C-002", "C-003", "C-004", "C-010", "C-011", "C-012", "C-
 url_refs = []
 path_refs = ["docs/NAVIGATOR.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "registry/claims.toml", "registry/experiments.toml"]
 line_count = 220
+body_markdown = ""
 
 [[document]]
 id = "RN-041"
