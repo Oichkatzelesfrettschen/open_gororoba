@@ -1,29 +1,29 @@
-//! # Falsifiable Theses of Unified Algebraic Physics Framework
+//! # Falsifiable Postulates of the Unified Algebraic Physics Framework
 //!
-//! This section formalizes the project's core claims into testable scientific theses,
+//! This section formalizes the project's core claims into testable scientific postulates,
 //! mapping each to an implementation-level "Axiomatic Gate".
 //!
-//! ## Postulate: Algebraic-Immirzi Bridge: The Immirzi-Sedenion Bridge
+//! ## Postulate 1: The Algebraic-Immirzi Bridge
 //!
 //! **Claim:** The Barbero-Immirzi parameter $\gamma$ is a structural constant derived
 //! from Sedenion non-associativity imbalance.
 //!
 //! **Prediction:** $\gamma = H(3/8) / (\pi \sqrt{3}) \approx 0.1216$.
 //!
-//! **Verification Gate:** `verified_core::immirzi_selectivity_test`.
+//! **Verification Gate:** `verified_core::axiomatic_gates::tests::test_immirzi_derivation`.
 //! Matches Domagala-Lewandowski value ($\gamma \approx 0.1236$) within 1.7%.
 //!
-//! ## Temporal Emergence Model: GUT Mixing Angle from Algebraic Twist
+//! ## Postulate 2: GUT Mixing Angle from Algebraic Twist
 //!
 //! **Claim:** The weak mixing angle $\sin^2 \theta_W$ at the unification scale is
 //! determined by the imbalance of the combined Sedenion-SU(5) operator manifold.
 //!
 //! **Prediction:** $\sin^2 \theta_W = 15/40 = 0.375$.
 //!
-//! **Verification Gate:** `verified_core::mixing_angle_unification_gate`.
+//! **Verification Gate:** `verified_core::axiomatic_gates::tests::test_mixing_angle_unification`.
 //! Matches theoretical SU(5) prediction exactly.
 //!
-//! ## Postulate: Topological QEC Stabilizers: Spacetime as a Self-Correcting Steane Code
+//! ## Postulate 3: Topological QEC Stabilizers
 //!
 //! **Claim:** The topological stability of the vacuum is ensured by a [[7,1,3]] Steane
 //! code structure encoded in the 7 octahedral box-kites of Sedenion zero-divisors.
@@ -33,7 +33,7 @@
 //!
 //! **Verification Gate:** `quantum_core::qec_boxkite::BoxKiteStabilizer`.
 //!
-//! ## Postulate: Macquart Hierarchical Scaling: Macquart Ultrametric Fingerprint
+//! ## Postulate 4: Macquart Hierarchical Scaling
 //!
 //! **Claim:** The hierarchical distribution of matter (Macquart DM-redshift relation)
 //! is an ultrametric fingerprint of the $D \to 2$ dimensional reduction.
@@ -41,4 +41,4 @@
 //! **Prediction:** Fast Radio Burst (FRB) distribution shows statistically higher
 //! ultrametricity than Poisson random baselines.
 //!
-//! **Verification Gate:** `gororoba_cli_data::zd_spectral_dimension`.
+//! **Verification Gate:** `gororoba_cli_data::bin::zd_spectral_dimension`.
