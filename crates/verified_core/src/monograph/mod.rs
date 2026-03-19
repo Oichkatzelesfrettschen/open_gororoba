@@ -32,6 +32,8 @@
 //! 25. [The Algebraic LBM Substrate](algebraic_lbm_substrate)
 //! 26. [Nonlocal Optics and the Entropy Trap](nonlocal_optics)
 //! 27. [Casimir Architecture and the Zero-Point Energy](casimir_vacuum)
+//! 28. [Quark-Gluon Plasma and Sedenion Scaling](qgp_scaling_laws)
+//! 29. [Topological Rendering and the Event Horizon](topological_rendering)
 
 pub mod foundations;
 pub mod optics;
@@ -60,3 +62,5 @@ pub mod neural_homotopy_surrogate;
 pub mod algebraic_lbm_substrate;
 pub mod nonlocal_optics;
 pub mod casimir_vacuum;
+pub mod qgp_scaling_laws;
+pub mod topological_rendering;
