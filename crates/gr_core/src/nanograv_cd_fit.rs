@@ -484,6 +484,15 @@ pub fn fit_nanograv_cd_tower_default() -> CdTowerFitResult {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::OnceLock;
+
+    /// Cached tower fit result shared across all tower tests.
+    /// Computed once on first access (50 trials, seed 42), avoiding
+    /// repeated expensive Monte Carlo associator sampling up to 1024D.
+    fn cached_tower_fit() -> &'static CdTowerFitResult {
+        static TOWER: OnceLock<CdTowerFitResult> = OnceLock::new();
+        TOWER.get_or_init(|| fit_nanograv_cd_tower(50, 42))
+    }
 
     // -- Data integrity -------------------------------------------------------
 
@@ -645,25 +654,32 @@ mod tests {
     }
 
     // -- Full tower fit -------------------------------------------------------
+    // These tests share a single `OnceLock`-cached tower fit (via
+    // `cached_tower_fit()`) so the expensive 16D→1024D Monte Carlo
+    // sweep is computed only once for the entire test module.
 
     #[test]
-    fn tower_fit_properties() {
-        let result = fit_nanograv_cd_tower(50, 42);
-
-        // Covers all dims in the stack
+    fn tower_fit_covers_all_dims() {
+        let result = cached_tower_fit();
         assert_eq!(result.fits.len(), CD_STACK.len());
         for (fit, &expected_dim) in result.fits.iter().zip(CD_STACK.iter()) {
             assert_eq!(fit.dim, expected_dim);
         }
+    }
 
-        // Best dimension must be one of the stack entries
+    #[test]
+    fn tower_fit_best_dim_in_stack() {
+        let result = cached_tower_fit();
         assert!(
             CD_STACK.contains(&result.best_dim),
             "Best dim {} not in stack",
             result.best_dim
         );
+    }
 
-        // All chi-squared values must be finite and non-negative
+    #[test]
+    fn tower_fit_all_chi_sq_finite() {
+        let result = cached_tower_fit();
         assert!(result.baseline.chi_sq.is_finite());
         for fit in &result.fits {
             assert!(
@@ -673,22 +689,30 @@ mod tests {
                 fit.chi_sq
             );
         }
+    }
 
-        // Adding a parameter can only improve or maintain chi_sq,
-        // so delta_chi_sq >= 0 (baseline_chi_sq >= best_chi_sq).
+    #[test]
+    fn tower_fit_delta_chi_sq_non_negative() {
+        let result = cached_tower_fit();
         assert!(
             result.delta_chi_sq_best >= -1e-10,
             "Adding a parameter should not worsen chi_sq, got delta={}",
             result.delta_chi_sq_best
         );
+    }
 
-        // BIC values must be finite
+    #[test]
+    fn tower_fit_bic_values_finite() {
+        let result = cached_tower_fit();
         assert!(result.baseline.bic.is_finite());
         for fit in &result.fits {
             assert!(fit.bic.is_finite(), "Dim {} has non-finite BIC", fit.dim);
         }
+    }
 
-        // For well-behaved WLS, mean of weighted residuals ≈ 0
+    #[test]
+    fn tower_fit_residuals_sum_near_zero() {
+        let result = cached_tower_fit();
         for fit in &result.fits {
             let sum: f64 = fit.residuals.iter().sum();
             let mean = sum / fit.residuals.len() as f64;
