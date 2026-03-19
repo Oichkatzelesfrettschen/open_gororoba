@@ -222,9 +222,34 @@ pub fn verify_t12_e8_octonion_bridge() -> bool {
     true
 }
 
+/// Verify T13: Associative Triplet (Trip) Count Scaling
+/// Based on de Marrais' "Pathions" analysis, the number of basic associative triplets
+/// scaling follows: Trip_N = (2^N - 1)(2^N - 2) / 6.
+pub fn verify_t13_triplet_scaling() -> bool {
+    use crate::construction::hypercomplex::AlgebraDim;
+    
+    let tests = vec![
+        (AlgebraDim::Quaternion, 1),
+        (AlgebraDim::Octonion, 7),
+        (AlgebraDim::Sedenion, 35),
+        (AlgebraDim::Pathion, 155),
+        (AlgebraDim::Chingon, 651),
+        (AlgebraDim::Routon, 2667),
+        (AlgebraDim::Voudon, 10795),
+    ];
+    
+    for (dim_enum, expected) in tests {
+        if dim_enum.associative_triplet_count() != expected {
+            return false;
+        }
+    }
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
 
     #[test]
     fn test_audit_t1_quadratic() {

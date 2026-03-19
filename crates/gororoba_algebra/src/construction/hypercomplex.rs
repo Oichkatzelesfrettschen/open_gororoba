@@ -132,22 +132,33 @@ impl AlgebraDim {
         self.dim() <= 2
     }
 
-    /// Returns the name of the algebra.
-    pub fn name(&self) -> &'static str {
+    /// Get the type name from the de Marrais / Smith extended taxonomy.
+    pub fn taxonomy_name(&self) -> &'static str {
         match self {
-            AlgebraDim::Real => "Real",
+            AlgebraDim::Real => "Reals",
             AlgebraDim::Complex => "Complex",
-            AlgebraDim::Quaternion => "Quaternion",
-            AlgebraDim::Octonion => "Octonion",
-            AlgebraDim::Sedenion => "Sedenion",
-            AlgebraDim::Pathion => "Pathion",
-            AlgebraDim::Chingon => "Chingon",
-            AlgebraDim::Routon => "Routon",
-            AlgebraDim::Voudon => "Voudon",
-            AlgebraDim::Eriston => "Eriston",
-            AlgebraDim::DekaVoudon => "DekaVoudon",
+            AlgebraDim::Quaternion => "Quaternions",
+            AlgebraDim::Octonion => "Octonions",
+            AlgebraDim::Sedenion => "Sedenions",
+            AlgebraDim::Pathion => "Pathions (32 Paths of Kabbalah)",
+            AlgebraDim::Chingon => "Chingons (64 Hexagrams of I Ching)",
+            AlgebraDim::Routon => "Routons (Route 128)",
+            AlgebraDim::Voudon => "Voudons (256 deities of Ifa/Voodoo)",
+            AlgebraDim::Eriston => "Eristons",
+            AlgebraDim::DekaVoudon => "DekaVoudons",
         }
     }
+
+    /// Calculate the number of basic associative triplets (Trips).
+    /// Formula from de Marrais: Trip_N = (dim - 1)(dim - 2) / 6
+    pub fn associative_triplet_count(&self) -> usize {
+        let d = self.dim();
+        if d < 4 {
+            return 0; // Reals and Complex don't have non-trivial basic 3-cycles
+        }
+        ((d - 1) * (d - 2)) / 6
+    }
+
 
     /// Create from dimension, returns None if not a valid CD dimension.
     pub fn from_dim(dim: usize) -> Option<Self> {
