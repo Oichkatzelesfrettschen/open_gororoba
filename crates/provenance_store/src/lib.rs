@@ -181,14 +181,15 @@ impl ProvenanceStore {
         Ok(Self { conn })
     }
 
-    /// Execute a parameterized SQL statement with string slice params.
-    pub fn conn_exec(&self, sql: &str, params: &[&str]) -> Result<()> {
-        let p: Vec<&dyn rusqlite::types::ToSql> = params
-            .iter()
-            .map(|s| s as &dyn rusqlite::types::ToSql)
-            .collect();
+    /// Execute a parameterized SQL statement with typed params.
+    pub fn conn_exec<I, T>(&self, sql: &str, params: I) -> Result<()>
+    where
+        I: IntoIterator<Item = T>,
+        T: rusqlite::types::ToSql,
+    {
+        let p = rusqlite::params_from_iter(params);
         self.conn
-            .execute(sql, p.as_slice())
+            .execute(sql, p)
             .with_context(|| "execute SQL statement")?;
         Ok(())
     }
