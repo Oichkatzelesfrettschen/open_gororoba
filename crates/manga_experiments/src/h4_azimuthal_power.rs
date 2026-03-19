@@ -312,7 +312,12 @@ pub fn run_h4(config: &H4Config) -> H4Result {
             count += 1;
         }
 
-        let cl_mean: Vec<f64> = cl_sum.iter().map(|s| s / count as f64).collect();
+        let cl_mean: Vec<f64> = if count == 0 {
+            // No maps contributed to this annulus: return a zeroed spectrum.
+            vec![0.0; config.ell_values.len()]
+        } else {
+            cl_sum.iter().map(|s| s / count as f64).collect()
+        };
 
         let cl_corrected = if config.beam_correction {
             apply_beam_correction(
