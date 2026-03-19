@@ -7,6 +7,7 @@ license = "MIT"
 
 [dependencies]
 gororoba_algebra = { path = "../gororoba_algebra" }
+cd_kernel = { path = "../cd_kernel" }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 rayon = { workspace = true }
 nalgebra = { workspace = true }
