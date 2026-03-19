@@ -18,3 +18,4 @@ pub mod motif_summary;
 pub mod numerical_stability;
 pub mod zd_ecology;
 pub mod test_wedged_validation;
+pub mod annihilators;

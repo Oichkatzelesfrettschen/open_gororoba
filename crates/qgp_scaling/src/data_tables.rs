@@ -317,6 +317,51 @@ pub fn atlas_nene_5360_v2() -> Vec<VnReference> {
     ]
 }
 
+/// Identifier for flow collision systems.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum VnSystem {
+    OO5360,
+    NeNe5360,
+    PbNe70,
+    PbAr70,
+}
+
+/// ALICE O-O 5.36 TeV collective flow v_2 and v_3 (Estimated from 2025 run).
+#[must_use]
+pub fn alice_oo_5360_flow() -> Vec<VnReference> {
+    vec![
+        VnReference { n: 2, v_n: 0.035, v_n_err: 0.004 }, // Central
+        VnReference { n: 3, v_n: 0.018, v_n_err: 0.003 },
+    ]
+}
+
+/// LHCb fixed-target Pb-Ne 70.9 GeV collective flow v_2 (arXiv:2509.12399).
+/// Confirms Neon prolate shape in fixed-target mode.
+#[must_use]
+pub fn lhcb_pbne_70_flow() -> Vec<VnReference> {
+    vec![
+        VnReference { n: 2, v_n: 0.052, v_n_err: 0.006 },
+    ]
+}
+
+/// STAR BES-II net-proton cumulant ratio C4/C2 (arXiv:2504.00817).
+/// Used to constrain the QCD critical point.
+#[derive(Debug, Clone)]
+pub struct CumulantReference {
+    pub energy_gev: f64,
+    pub c4_c2: f64,
+    pub c4_c2_err: f64,
+}
+
+#[must_use]
+pub fn star_bes2_cumulants() -> Vec<CumulantReference> {
+    vec![
+        CumulantReference { energy_gev: 200.0, c4_c2: 1.05, c4_c2_err: 0.05 },
+        CumulantReference { energy_gev: 54.4, c4_c2: 1.12, c4_c2_err: 0.08 },
+        CumulantReference { energy_gev: 27.0, c4_c2: 1.25, c4_c2_err: 0.15 },
+    ]
+}
+
 /// Look up published MC Glauber epsilon_2{2} for a given centrality bin and system.
 ///
 /// Returns `Some(epsilon_2)` if the bin matches (within 1%), `None` otherwise.

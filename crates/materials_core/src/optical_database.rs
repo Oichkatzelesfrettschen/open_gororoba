@@ -4092,6 +4092,22 @@ pub fn latio3_optical() -> DrudeLorentzParams {
 /// Aluminum-doped Zinc Oxide (AZO) transparent conductor.
 ///
 /// Metallic in IR, transparent in visible. Crossover near 1 eV.
+
+/// Indium Tin Oxide (ITO) - Typical degenerate TCO
+pub fn ito_optical() -> DrudeLorentzParams {
+    DrudeLorentzParams {
+        drude: Some(DrudeParams {
+            // approx for n = 4e20 cm^-3, m* = 0.4
+            omega_p_ev: 1.17,
+            gamma_ev: 0.10,
+            eps_inf: 4.0,
+        }),
+        extended_drude: None,
+        oscillators: vec![],
+        eps_inf: 4.0,
+    }
+}
+
 pub fn azo_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: Some(DrudeParams {

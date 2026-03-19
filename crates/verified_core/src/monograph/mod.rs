@@ -40,7 +40,13 @@
 //! 33. [Dissociative Field Theory (DFT)](dissociative_field_theory)
 //! 34. [The Banach-Tarski Resonance Law](banach_tarski_resonance)
 //! 35. [Voudons and the DekaVoudon Manifold](voudon_global_stabilizer)
-//! 36. [Conclusion: The Directus Maximalus Unified Field](conclusion)
+//! 36. [Detailed Derivation of the Algebraic Barbero-Immirzi Parameter](immirzi_derivation_deep)
+//! 37. [The Icosian Projection and Quasicrystalline Space](icosian_projection)
+//! 38. [Annihilator Dynamics and the Biss-Dugger-Isaksen Bound](annihilator_dynamics)
+//! 39. [Universal Coupler Manifolds: A Data-Driven Synthesis](coupler_manifold_synthesis)
+//! 40. [Non-Associative Ricci Flow and the Cosmological Constant](ricci_flow_synthesis)
+//! 41. [The Symmetry Hierarchy of Doubling](symmetry_hierarchy)
+//! 42. [Conclusion: The Directus Maximalus Unified Field](conclusion)
 
 pub mod foundations;
 pub mod optics;
@@ -77,4 +83,10 @@ pub mod cosmological_flux;
 pub mod dissociative_field_theory;
 pub mod banach_tarski_resonance;
 pub mod voudon_global_stabilizer;
+pub mod immirzi_derivation_deep;
+pub mod icosian_projection;
+pub mod annihilator_dynamics;
+pub mod coupler_manifold_synthesis;
+pub mod ricci_flow_synthesis;
+pub mod symmetry_hierarchy;
 pub mod conclusion;
