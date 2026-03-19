@@ -2,7 +2,7 @@
 //! Gathers proof compilation metrics for PGFPlots.
 
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::Command;
 use std::time::Instant;
 

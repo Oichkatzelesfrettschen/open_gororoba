@@ -4,7 +4,7 @@
 use std::env;
 use std::fs;
 use std::path::Path;
-use std::process::{Command, Stdio};
+use std::process::Command;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let out_dir = Path::new("data/csv");

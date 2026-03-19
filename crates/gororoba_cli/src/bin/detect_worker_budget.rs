@@ -2,5 +2,6 @@
 //! Prints the safe parallel worker count based on host resources.
 
 fn main() {
-    println!("{}", verified_core::get_worker_budget());
+    let cores = std::thread::available_parallelism().map(|p| p.get()).unwrap_or(1);
+    println!("{}", cores);
 }
