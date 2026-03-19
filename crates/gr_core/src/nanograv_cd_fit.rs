@@ -13,7 +13,7 @@
 //! | 6         | 64        | Sexagintaquattuornion | —                     |
 //! | 7         | 128       | 128-nion           | —                       |
 //! | 8         | 256       | 256-nion           | —                       |
-//! | 9         | 512       | Ennea-nion (E₈)    | —                       |
+//! | 9         | 512       | 512-nion           | —                       |
 //! | 10        | 1024      | Deca-nion          | —                       |
 //!
 //! # Spectral Model
@@ -294,8 +294,8 @@ fn bic(chi_sq: f64, k: usize, n: usize) -> f64 {
     chi_sq + k as f64 * (n as f64).ln()
 }
 
-/// Compute standardised residuals: (y_k − ŷ_k) / σ_k .
-fn standardised_residuals(y: &DVector<f64>, y_hat: &DVector<f64>, sigma: &[f64]) -> Vec<f64> {
+/// Compute standardized residuals: (y_k − ŷ_k) / σ_k .
+fn standardized_residuals(y: &DVector<f64>, y_hat: &DVector<f64>, sigma: &[f64]) -> Vec<f64> {
     y.iter()
         .zip(y_hat.iter())
         .zip(sigma.iter())
@@ -335,7 +335,7 @@ pub fn fit_baseline(data: &[FreqBin]) -> BaselineFitResult {
     let cs = chi_squared(&y, &y_hat, &weights);
     let dof = n.saturating_sub(2);
     let cs_dof = if dof > 0 { cs / dof as f64 } else { cs };
-    let residuals = standardised_residuals(&y, &y_hat, &sigma_vec);
+    let residuals = standardized_residuals(&y, &y_hat, &sigma_vec);
 
     BaselineFitResult {
         amplitude: beta[0],
@@ -386,7 +386,7 @@ pub fn fit_single_dim(
     let cs = chi_squared(&y, &y_hat, &weights);
     let dof = n.saturating_sub(3);
     let cs_dof = if dof > 0 { cs / dof as f64 } else { cs };
-    let residuals = standardised_residuals(&y, &y_hat, &sigma_vec);
+    let residuals = standardized_residuals(&y, &y_hat, &sigma_vec);
 
     CdDimFitResult {
         dim: props.dim,
@@ -433,7 +433,7 @@ pub fn fit_nanograv_cd_tower(n_trials: usize, seed: u64) -> CdTowerFitResult {
 
     let best = fits
         .iter()
-        .min_by(|a, b| a.chi_sq.partial_cmp(&b.chi_sq).unwrap())
+        .min_by(|a, b| a.chi_sq_per_dof.partial_cmp(&b.chi_sq_per_dof).unwrap())
         .unwrap();
 
     CdTowerFitResult {
