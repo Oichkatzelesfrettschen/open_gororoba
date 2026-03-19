@@ -66,6 +66,9 @@ struct Args {
     lat_max: Option<f64>,
 
     #[arg(long)]
+    lat_exclude: bool,
+
+    #[arg(long)]
     gpu: bool,
 }
 
@@ -305,13 +308,24 @@ fn prepare_pulsars(
         let dec_deg = sky[2].asin().to_degrees();
         let b = equatorial_to_galactic_lat(ra_deg, dec_deg);
 
+        let mut inside = true;
         if let Some(min) = args.lat_min {
             if b < min {
-                continue;
+                inside = false;
             }
         }
         if let Some(max) = args.lat_max {
             if b > max {
+                inside = false;
+            }
+        }
+
+        if args.lat_exclude {
+            if inside {
+                continue;
+            }
+        } else {
+            if !inside {
                 continue;
             }
         }

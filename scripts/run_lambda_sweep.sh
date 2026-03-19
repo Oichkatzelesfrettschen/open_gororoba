@@ -72,42 +72,26 @@ echo ""
 
 # Summary
 echo "Generating summary..."
-python3 - <<'EOF'
-import os
-import glob
+echo ""
+echo "Lambda Sweep Summary:"
+echo "============================================================"
+printf "%-10s %-15s %-10s %-s\n" "Lambda" "P-Value" "Channels" "Status"
+echo "------------------------------------------------------------"
 
-output_dir = "data/e027/lambda_sweep"
-results = []
-
-for file in sorted(glob.glob(f"{output_dir}/e027_lambda_*.toml")):
-    with open(file, 'r') as f:
-        content = f.read()
-        # Simple TOML parsing
-        lambda_val = None
-        p_value = None
-        n_channels = None
-        for line in content.split('\n'):
-            if 'lambda = ' in line:
-                lambda_val = line.split('=')[1].strip()
-            if 'p_value = ' in line and p_value is None:  # First p_value is correlation
-                p_value = line.split('=')[1].strip()
-            if 'n_channels_detected = ' in line:
-                n_channels = line.split('=')[1].strip()
-        if lambda_val and p_value:
-            results.append((lambda_val, p_value, n_channels))
-
-if results:
-    print("\nLambda Sweep Summary:")
-    print("=" * 60)
-    print(f"{'Lambda':<10} {'P-Value':<15} {'Channels':<10} {'Status'}")
-    print("-" * 60)
-    for lambda_val, p_value, n_channels in results:
-        status = "PASS" if float(p_value) < 0.05 else "FAIL"
-        print(f"{lambda_val:<10} {p_value:<15} {n_channels:<10} {status}")
-    print("=" * 60)
-else:
-    print("No results found")
-EOF
+for file in $(ls "$OUTPUT_DIR"/e027_lambda_*.toml | sort -V); do
+    l_val=$(grep "lambda =" "$file" | head -n 1 | awk -F'=' '{print $2}' | xargs)
+    p_val=$(grep "p_value =" "$file" | head -n 1 | awk -F'=' '{print $2}' | xargs)
+    n_chan=$(grep "n_channels_detected =" "$file" | head -n 1 | awk -F'=' '{print $2}' | xargs)
+    
+    if [[ -n "$l_val" && -n "$p_val" ]]; then
+        status="FAIL"
+        if (( $(echo "$p_val < 0.05" | bc -l) )); then
+            status="PASS"
+        fi
+        printf "%-10s %-15s %-10s %-s\n" "$l_val" "$p_val" "$n_chan" "$status"
+    fi
+done
+echo "============================================================"
 
 echo ""
 echo "Next steps:"

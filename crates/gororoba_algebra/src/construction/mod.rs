@@ -1,4 +1,5 @@
 pub mod albert;
+pub mod category;
 pub mod cayley_dickson;
 pub mod chingon;
 pub mod clifford;
