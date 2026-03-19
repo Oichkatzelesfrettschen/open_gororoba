@@ -9,10 +9,10 @@
 
 use nalgebra::{DMatrix, DVector};
 use quantum_core::{
-    coupler_manifold::{CouplerPoint, CouplerJacobian, qec::TwoSectorMixture},
     mera::mera_entropy_scaling_analysis,
     holographic::{RTLattice, analyze_entropy_scaling},
 };
+use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian, qec::TwoSectorMixture};
 
 fn main() {
     println!("--- Monograph Step 1: MERA Hierarchy as Manifold ---");

@@ -11,7 +11,7 @@
 use nalgebra::DVector;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use quantum_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
+use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
 
 #[derive(Debug)]
 struct FrbSource {

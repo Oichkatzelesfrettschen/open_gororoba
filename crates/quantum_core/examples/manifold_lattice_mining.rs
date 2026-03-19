@@ -7,7 +7,7 @@
 use nalgebra::DVector;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use quantum_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
+use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = "../../data/topological_voids.csv";

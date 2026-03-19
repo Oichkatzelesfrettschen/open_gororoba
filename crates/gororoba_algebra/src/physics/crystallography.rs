@@ -76,4 +76,21 @@ mod tests {
         let min_angle = min_cubic_misorientation_angle(&q1, &q2);
         assert!(min_angle < 1e-10);
     }
+
+    #[test]
+    fn test_t11_ebsd_reproducibility_synthetic() {
+        // T11: EBSD Software Reproducibility (orix)
+        // Replicating a known misorientation from orix/MTEX:
+        // Sigma 3 Twin boundary (60 deg about [111])
+        let angle = 60.0 * PI / 180.0;
+        let axis = [1.0 / 3.0f64.sqrt(), 1.0 / 3.0f64.sqrt(), 1.0 / 3.0f64.sqrt()];
+        let s = (angle / 2.0).sin();
+        let q_sigma3 = [(angle / 2.0).cos(), axis[0] * s, axis[1] * s, axis[2] * s];
+        
+        let q_id = [1.0, 0.0, 0.0, 0.0];
+        let min_angle = min_cubic_misorientation_angle(&q_id, &q_sigma3);
+        
+        // Expected min angle is 60 degrees (1.0471975512 radians)
+        assert!((min_angle - angle).abs() < 1e-10);
+    }
 }

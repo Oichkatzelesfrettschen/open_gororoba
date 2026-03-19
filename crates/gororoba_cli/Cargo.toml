@@ -153,6 +153,7 @@ lattice_filtration = { path = "../lattice_filtration" }
 gororoba_engine = { path = "../gororoba_engine" }
 gororoba_view_raster = { path = "../gororoba_view_raster" }
 gororoba_cli_physics = { path = "../gororoba_cli_physics" }
+provenance_ops = { path = "../provenance_ops" }
 provenance_store = { path = "../provenance_store" }
 tda = { workspace = true }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }

@@ -13,8 +13,10 @@ csv = { workspace = true }
 regex = { workspace = true }
 rusqlite = { workspace = true }
 toml = { workspace = true }
+ureq.workspace = true
 url = { workspace = true }
 walkdir = { workspace = true }
+zip.workspace = true
 
 [lints]
 workspace = true
