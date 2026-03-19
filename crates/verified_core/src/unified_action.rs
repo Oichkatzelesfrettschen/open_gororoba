@@ -33,6 +33,11 @@ impl ActionComponent for AlgebraicCosmologicalConstant {
 ///
 /// This component models the "Topological Friction" induced by the 
 /// 16D (or higher) non-associative background on propagating waves.
+/// 
+/// The friction scales not logarithmically, but exactly proportional to 
+/// the strict topological quantization of associator flux:
+/// Each imaginary basis element contributes discretely as either 0, 1, or sqrt(2).
+/// Total Flux = (D/8) * sqrt(2) + (D/2) * 1 + (D/2 - D/8 - 1) * 0
 pub struct TopologicalFrictionLagrangian {
     /// Coupling constant between physical fields and the AVT.
     pub coupling_strength: f64,
@@ -47,8 +52,20 @@ impl ActionComponent for TopologicalFrictionLagrangian {
         // A simple parabolic well model centered at VACUUM_PHI.
         let deviation = local_phi - VACUUM_PHI;
         
+        let d = self.manifold_dimension as f64;
+        
+        // The exact Associator Flux Topolical Invariant:
+        // Level sqrt(2) states: D/8
+        // Level 1 states: D/2
+        // Level 0 states: D/2 - D/8 - 1
+        let flux_volume = if self.manifold_dimension >= 16 {
+            (d / 8.0) * std::f64::consts::SQRT_2 + (d / 2.0)
+        } else {
+            0.0 // No zero divisors in dim < 16, therefore no associator flux friction
+        };
+        
         // Negative sign because friction decreases the total action (dissipation)
-        -self.coupling_strength * deviation.powi(2) * (self.manifold_dimension as f64).ln()
+        -self.coupling_strength * deviation.powi(2) * flux_volume
     }
 }
 

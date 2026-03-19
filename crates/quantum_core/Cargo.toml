@@ -6,7 +6,7 @@ description = "Quantum physics: MERA tensor networks, holographic entropy, Ryu-T
 license = "MIT"
 
 [dependencies]
-algebra_experimental = { path = "../algebra_experimental" }
+algebra_experimental = { version = "0.1.0", path = "../algebra_experimental" }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
 num-complex = { workspace = true }
@@ -24,6 +24,7 @@ lbm_core = { path = "../lbm_core" }
 # GPU acceleration (optional)
 cudarc = { workspace = true, optional = true }
 nalgebra-sparse = { workspace = true, optional = true }
+gr_core = { version = "0.1.0", path = "../gr_core" }
 
 [features]
 default = []

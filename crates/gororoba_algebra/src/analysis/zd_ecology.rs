@@ -31,8 +31,8 @@ impl EmanationTable {
         // Iterate through basis units to find pairs that zero-divide
         // we use a simplified model of the "Assessor" pairs (e_L, e_U)
         // described in the corpus.
-        for i in 0..d {
-            for j in 0..d {
+        for (i, row) in table.iter_mut().enumerate().take(d) {
+            for (j, cell) in row.iter_mut().enumerate().take(d) {
                 let x = vec_unit(i, d);
                 let y = vec_unit(j, d);
                 let res = cd_multiply(&x, &y);
@@ -41,7 +41,7 @@ impl EmanationTable {
                 // (Note: pure basis units don't zero-divide in standard CD, 
                 // but the ETs track "emanations" of ZD dyads).
                 if res.iter().all(|&v| v.abs() < 1e-10) {
-                    table[i][j] = true;
+                    *cell = true;
                     count += 1;
                 }
             }

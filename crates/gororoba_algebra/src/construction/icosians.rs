@@ -35,8 +35,8 @@ pub fn generate_icosians() -> Vec<Quaternion> {
     // 2) 16 elements: (+/-0.5, +/-0.5, +/-0.5, +/-0.5)
     for bits in 0..16 {
         let mut q = [0.0; 4];
-        for i in 0..4 {
-            q[i] = if (bits >> i) & 1 == 1 { 0.5 } else { -0.5 };
+        for (i, component) in q.iter_mut().enumerate() {
+            *component = if (bits >> i) & 1 == 1 { 0.5 } else { -0.5 };
         }
         icosians.push(q);
     }
@@ -110,10 +110,10 @@ pub fn verify_icosian_group_closure() -> bool {
             
             // Check if p is in the set of icosians
             let mut found = false;
-            for k in 0..120 {
+            for candidate in icosians.iter().take(120) {
                 let mut diff = 0.0;
                 for idx in 0..4 {
-                    diff += (p[idx] - icosians[k][idx]).powi(2);
+                    diff += (p[idx] - candidate[idx]).powi(2);
                 }
                 if diff.sqrt() < 1e-10 {
                     found = true;

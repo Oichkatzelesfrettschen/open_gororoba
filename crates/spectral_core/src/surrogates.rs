@@ -40,7 +40,7 @@ pub fn phase_randomize<R: Rng>(signal: &[f64], rng: &mut R) -> Vec<f64> {
     
     // DC and Nyquist (if even) must be real
     spectrum[0] = Complex64::new(spectrum[0].re, 0.0);
-    if n % 2 == 0 {
+    if n.is_multiple_of(2) {
         spectrum[n_half] = Complex64::new(spectrum[n_half].re, 0.0);
     }
 

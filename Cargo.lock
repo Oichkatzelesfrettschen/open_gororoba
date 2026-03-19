@@ -3996,6 +3996,7 @@ dependencies = [
  "data_core",
  "docpipe",
  "env_logger",
+ "faer",
  "fitsio",
  "glob",
  "gororoba_algebra",
@@ -4036,6 +4037,7 @@ dependencies = [
  "url",
  "verified_core",
  "walkdir",
+ "wide",
 ]
 
 [[package]]
@@ -8242,6 +8244,7 @@ dependencies = [
  "criterion",
  "cudarc 0.19.3",
  "faer",
+ "gr_core",
  "lbm_core",
  "nalgebra 0.33.2",
  "nalgebra-sparse",

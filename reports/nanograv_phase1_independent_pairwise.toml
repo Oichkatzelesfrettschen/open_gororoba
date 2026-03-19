@@ -1,0 +1,186 @@
+[metadata]
+title = "NANOGrav Phase 1 independent pairwise regenerated-residual audit"
+pairwise_csv = "data/csv/nanograv_phase1_independent_pairwise.csv"
+pair_count = 15
+pair_bin_days = 30.000000000000
+min_pair_overlap_bins = 8
+
+[[pair]]
+pulsar_a = "J1713+0747"
+pulsar_b = "J2317+1439"
+separation_deg = 88.831250971727
+hellings_downs = -0.146847841676
+overlap_bins_wls = 141
+overlap_bins_gls = 141
+overlap_bins_policy = 141
+wls_residual_pearson = 0.071496601927
+gls_residual_pearson = 0.087676663221
+policy_residual_pearson = 0.071496601927
+
+[[pair]]
+pulsar_a = "J1713+0747"
+pulsar_b = "J1903+0327"
+separation_deg = 27.521082173329
+hellings_downs = 0.242101229469
+overlap_bins_wls = 101
+overlap_bins_gls = 101
+overlap_bins_policy = 101
+wls_residual_pearson = 0.021708605788
+gls_residual_pearson = 0.032125017586
+policy_residual_pearson = 0.029001703096
+
+[[pair]]
+pulsar_a = "J1713+0747"
+pulsar_b = "J2214+3000"
+separation_deg = 73.327470831688
+hellings_downs = -0.140692066022
+overlap_bins_wls = 98
+overlap_bins_gls = 98
+overlap_bins_policy = 98
+wls_residual_pearson = 0.095529405928
+gls_residual_pearson = 0.052564620962
+policy_residual_pearson = 0.059687135296
+
+[[pair]]
+pulsar_a = "J2214+3000"
+pulsar_b = "J2317+1439"
+separation_deg = 21.036357939091
+hellings_downs = 0.321644349321
+overlap_bins_wls = 95
+overlap_bins_gls = 95
+overlap_bins_policy = 95
+wls_residual_pearson = -0.061446030041
+gls_residual_pearson = -0.112202177057
+policy_residual_pearson = -0.127815619919
+
+[[pair]]
+pulsar_a = "J1903+0327"
+pulsar_b = "J2317+1439"
+separation_deg = 63.517459412244
+hellings_downs = -0.102668347599
+overlap_bins_wls = 94
+overlap_bins_gls = 94
+overlap_bins_policy = 94
+wls_residual_pearson = -0.062966742062
+gls_residual_pearson = -0.092179479677
+policy_residual_pearson = -0.091812162610
+
+[[pair]]
+pulsar_a = "J1903+0327"
+pulsar_b = "J2214+3000"
+separation_deg = 52.427073400790
+hellings_downs = -0.027053808410
+overlap_bins_wls = 86
+overlap_bins_gls = 86
+overlap_bins_policy = 86
+wls_residual_pearson = 0.006277956498
+gls_residual_pearson = -0.013283458088
+policy_residual_pearson = -0.013283458088
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J1713+0747"
+separation_deg = 148.531005885120
+hellings_downs = 0.162235937955
+overlap_bins_wls = 53
+overlap_bins_gls = 53
+overlap_bins_policy = 53
+wls_residual_pearson = 0.035386822426
+gls_residual_pearson = 0.103291226426
+policy_residual_pearson = 0.035386822426
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J2317+1439"
+separation_deg = 115.496085910493
+hellings_downs = -0.038376639042
+overlap_bins_wls = 53
+overlap_bins_gls = 53
+overlap_bins_policy = 53
+wls_residual_pearson = 0.121453320831
+gls_residual_pearson = 0.107494194917
+policy_residual_pearson = 0.121453320831
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J1713+0747"
+separation_deg = 60.435115945506
+hellings_downs = -0.085061423888
+overlap_bins_wls = 53
+overlap_bins_gls = 53
+overlap_bins_policy = 53
+wls_residual_pearson = 0.084360619670
+gls_residual_pearson = 0.049366322966
+policy_residual_pearson = 0.084360619670
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J2317+1439"
+separation_deg = 147.466140862889
+hellings_downs = 0.156664193850
+overlap_bins_wls = 53
+overlap_bins_gls = 53
+overlap_bins_policy = 53
+wls_residual_pearson = 0.129152577246
+gls_residual_pearson = 0.171132343974
+policy_residual_pearson = 0.129152577246
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J1312+0051"
+separation_deg = 90.832102555130
+hellings_downs = -0.143254796255
+overlap_bins_wls = 51
+overlap_bins_gls = 51
+overlap_bins_policy = 51
+wls_residual_pearson = -0.291852794338
+gls_residual_pearson = -0.262265738999
+policy_residual_pearson = -0.291852794338
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J2214+3000"
+separation_deg = 123.485979315704
+hellings_downs = 0.010690276253
+overlap_bins_wls = 50
+overlap_bins_gls = 50
+overlap_bins_policy = 50
+wls_residual_pearson = -0.063968098921
+gls_residual_pearson = -0.102585973567
+policy_residual_pearson = -0.035958647665
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J2214+3000"
+separation_deg = 127.574746191147
+hellings_downs = 0.036733198717
+overlap_bins_wls = 50
+overlap_bins_gls = 50
+overlap_bins_policy = 50
+wls_residual_pearson = 0.089093622379
+gls_residual_pearson = 0.115265914914
+policy_residual_pearson = 0.106263128006
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J1903+0327"
+separation_deg = 87.533226688528
+hellings_downs = -0.148680743741
+overlap_bins_wls = 47
+overlap_bins_gls = 47
+overlap_bins_policy = 47
+wls_residual_pearson = 0.250784634893
+gls_residual_pearson = 0.264569246080
+policy_residual_pearson = 0.286310925177
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J1903+0327"
+separation_deg = 171.429770063917
+hellings_downs = 0.243044636275
+overlap_bins_wls = 46
+overlap_bins_gls = 46
+overlap_bins_policy = 46
+wls_residual_pearson = -0.141075166317
+gls_residual_pearson = -0.163340844628
+policy_residual_pearson = -0.155469087500

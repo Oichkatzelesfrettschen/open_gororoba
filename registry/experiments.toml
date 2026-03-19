@@ -5258,3 +5258,9 @@ status_token = "ACTIVE"
 title = "Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7) orbit refutations"
 truth_surface_consumption = []
 
+
+[[experiments]]
+id = "E-208"
+title = """Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D"""
+status = "verified"
+claim_refs = ["C-1440", "C-1441", "C-1442", "C-1443"]

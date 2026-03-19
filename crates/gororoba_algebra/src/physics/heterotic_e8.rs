@@ -38,7 +38,7 @@ impl E8SymmetryBreaking {
 /// dim(G) must be 496.
 pub fn verify_anomaly_cancellation(group: HeteroticGaugeGroup) -> bool {
     match group {
-        HeteroticGaugeGroup::E8xE8 => 248 * 2 == 496,
-        HeteroticGaugeGroup::SO32 => (32 * 31) / 2 == 496,
+        HeteroticGaugeGroup::E8xE8 => true,
+        HeteroticGaugeGroup::SO32 => true,
     }
 }
