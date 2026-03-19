@@ -1,0 +1,30 @@
+[package]
+name = "manga_experiments"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Four dark-matter hypothesis experiments with ablations on MaNGA velocity-residual data"
+
+[dependencies]
+# NFW / DC14 halo profiles, harmonic stacking, rotation-curve utilities
+cosmology_core = { path = "../cosmology_core" }
+
+# Bonferroni / BH / BY p-value correction
+adjustp = { workspace = true }
+
+# Distributions (chi-squared, normal)
+statrs = { workspace = true }
+
+# Deterministic RNG
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+rand_distr = { workspace = true }
+
+# Data parallelism
+rayon = { workspace = true }
+
+[dev-dependencies]
+
+[features]
+default = []

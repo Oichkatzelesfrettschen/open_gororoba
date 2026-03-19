@@ -5621,6 +5621,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "manga_experiments"
+version = "0.1.0"
+dependencies = [
+ "adjustp",
+ "cosmology_core",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr 0.4.3",
+ "rayon",
+ "statrs",
+]
+
+[[package]]
 name = "matchers"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
