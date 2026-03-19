@@ -56,6 +56,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             matter_density,
             scale_factor,
             avt_coupling,
+            512,
         );
 
         if action > max_action {
