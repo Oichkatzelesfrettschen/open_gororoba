@@ -1,0 +1,243 @@
+[metadata]
+title = "Focused SPARC Pathion-vs-DC14 subset diagnostics"
+scope_note = "This artifact promotes the strongest galaxy-level high-k wins and strongest counterexamples from the per-galaxy DC14 comparison into a compact subset for targeted follow-up refits."
+
+[[top_k234_win]]
+name = "NGC3741"
+nfw_chi2_red = 0.410000000000
+baseline_chi2_red = 37779.656397818828
+baseline_upsilon_star = 0.800000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 1.750000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = true
+k234_delta = 2.015161278654e0
+kgt1_delta = 8.885457450584e0
+
+[[top_k234_win]]
+name = "F561-1"
+nfw_chi2_red = 1.330000000000
+baseline_chi2_red = 50.733261009738
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 3.302817411902e-1
+kgt1_delta = 9.095732268099e-1
+
+[[top_k234_win]]
+name = "F567-2"
+nfw_chi2_red = NaN
+baseline_chi2_red = 24.373637583174
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 2.216200274375e-1
+kgt1_delta = 3.857266774611e-1
+
+[[top_k234_win]]
+name = "UGC09037"
+nfw_chi2_red = 2.030000000000
+baseline_chi2_red = 99.756264973778
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.037500000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 2.116752869450e-1
+kgt1_delta = 4.664977774188e-1
+
+[[top_k234_win]]
+name = "F568-3"
+nfw_chi2_red = 3.890000000000
+baseline_chi2_red = 9.366060501598
+baseline_upsilon_star = 0.450000000000
+baseline_log_m_offset = 0.375000000000
+baseline_c_scale = 0.700000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = 1.873676510187e-1
+kgt1_delta = 2.751511584694e-1
+
+[[top_k234_win]]
+name = "NGC2955"
+nfw_chi2_red = 4.030000000000
+baseline_chi2_red = 137.492721741870
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.281250000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 1.442371733646e-1
+kgt1_delta = 1.691203021179e-1
+
+[[top_k234_win]]
+name = "UGC05750"
+nfw_chi2_red = 1.440000000000
+baseline_chi2_red = 1.610336049678
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = 0.500000000000
+baseline_c_scale = 0.425000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 9.561636213945e-2
+kgt1_delta = 3.902635940718e-1
+
+[[top_k234_win]]
+name = "UGC06973"
+nfw_chi2_red = 1.680000000000
+baseline_chi2_red = 333.730184615938
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 9.368763030634e-2
+kgt1_delta = -1.302503347492e-1
+
+[[top_k234_win]]
+name = "UGC06628"
+nfw_chi2_red = 0.250000000000
+baseline_chi2_red = 12.791984937675
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.550000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 8.978594895692e-2
+kgt1_delta = 1.120509596421e-1
+
+[[top_k234_win]]
+name = "F574-1"
+nfw_chi2_red = 2.190000000000
+baseline_chi2_red = 34.390663993916
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = 8.789598866406e-2
+kgt1_delta = 1.205131095780e-1
+
+[[top_k234_counterexample]]
+name = "UGC02455"
+nfw_chi2_red = 3.500000000000
+baseline_chi2_red = 624.677344889536
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = -1.840045795290e0
+kgt1_delta = -1.093170473879e1
+
+[[top_k234_counterexample]]
+name = "NGC4214"
+nfw_chi2_red = 0.640000000000
+baseline_chi2_red = 0.572731772302
+baseline_upsilon_star = 0.693750000000
+baseline_log_m_offset = -0.450000000000
+baseline_c_scale = 0.600000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -3.035522600483e-1
+kgt1_delta = -3.666123580140e-1
+
+[[top_k234_counterexample]]
+name = "NGC5585"
+nfw_chi2_red = 6.650000000000
+baseline_chi2_red = 9.872849443595
+baseline_upsilon_star = 0.306250000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -5.173347049516e-2
+kgt1_delta = -1.979518691231e-1
+
+[[top_k234_counterexample]]
+name = "NGC7793"
+nfw_chi2_red = 0.900000000000
+baseline_chi2_red = 1.082021176332
+baseline_upsilon_star = 0.587500000000
+baseline_log_m_offset = -0.225000000000
+baseline_c_scale = 0.425000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -4.465283916678e-2
+kgt1_delta = -2.021387200444e-1
+
+[[top_k234_counterexample]]
+name = "F583-1"
+nfw_chi2_red = 1.790000000000
+baseline_chi2_red = 1.138827703490
+baseline_upsilon_star = 0.306250000000
+baseline_log_m_offset = 0.281250000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -3.093599135875e-2
+kgt1_delta = -1.443399248145e-1
+
+[[top_k234_counterexample]]
+name = "UGC03580"
+nfw_chi2_red = 2.340000000000
+baseline_chi2_red = 90.082522763622
+baseline_upsilon_star = 0.300000000000
+baseline_log_m_offset = -0.500000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = true
+baseline_hits_upsilon_upper = false
+k234_delta = -1.735376637451e-2
+kgt1_delta = -2.617881028370e-2
+
+[[top_k234_counterexample]]
+name = "UGC02487"
+nfw_chi2_red = 5.240000000000
+baseline_chi2_red = 4.649916900934
+baseline_upsilon_star = 0.387500000000
+baseline_log_m_offset = -0.487500000000
+baseline_c_scale = 0.825000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -1.320504493063e-2
+kgt1_delta = -1.467232721917e-2
+
+[[top_k234_counterexample]]
+name = "UGC11820"
+nfw_chi2_red = 1.820000000000
+baseline_chi2_red = 1.971390346424
+baseline_upsilon_star = 0.425000000000
+baseline_log_m_offset = 0.412500000000
+baseline_c_scale = 1.750000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -1.223320680386e-2
+kgt1_delta = -5.387062239090e-2
+
+[[top_k234_counterexample]]
+name = "UGC05716"
+nfw_chi2_red = 2.490000000000
+baseline_chi2_red = 1.349218521441
+baseline_upsilon_star = 0.637500000000
+baseline_log_m_offset = -0.468750000000
+baseline_c_scale = 0.600000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -7.371909641903e-3
+kgt1_delta = -1.933052990105e-2
+
+[[top_k234_counterexample]]
+name = "NGC6946"
+nfw_chi2_red = 1.690000000000
+baseline_chi2_red = 3.241334720534
+baseline_upsilon_star = 0.537500000000
+baseline_log_m_offset = 0.225000000000
+baseline_c_scale = 0.400000000000
+baseline_hits_upsilon_lower = false
+baseline_hits_upsilon_upper = false
+k234_delta = -7.229242419580e-3
+kgt1_delta = -1.603396140347e-2

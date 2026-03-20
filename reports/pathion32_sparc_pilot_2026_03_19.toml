@@ -1,0 +1,58 @@
+[metadata]
+title = "Pathion 32D SPARC pilot versus sedenion baseline"
+date = "2026-03-19"
+dataset = "SPARC VizieR table2.dat with Li et al. 2020 NFW fits"
+sparc_path = "data/external/sparc/table2_rotcurves.dat"
+nfw_fit_path = "data/external/sparc_nfw/table1.dat"
+binary = "harmonic-halo-stacking"
+quality_cuts = "x in [0.5, 8.0], min_per_bin=5, max_chi2=10.0, min_c200=0.5"
+normalized_galaxy_count = 148
+skipped_galaxy_count = 27
+
+[d16]
+cd_dim = 16
+modes = 7
+assessor_fraction = 0.5
+rms_residual = 0.037695
+detection_snr = 0.61
+alpha_zd_estimate = 0.124728
+detection_threshold = 0.0164
+csv = "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d16_rerun_2026_03_19.csv"
+mode1_k = 0.8976
+mode1_power = 5.26e-4
+mode7_k = 6.2832
+mode7_power = 1.03e-4
+
+[d32]
+cd_dim = 32
+modes = 15
+assessor_fraction = 0.5
+rms_residual = 0.037695
+detection_snr = 2.08
+alpha_zd_estimate = 0.426620
+detection_threshold = 0.0164
+csv = "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d32_rerun_2026_03_19.csv"
+mode1_k = 0.4189
+mode1_power = 6.16e-3
+mode2_k = 0.8378
+mode2_power = 2.22e-4
+mode15_k = 6.2832
+mode15_power = 1.03e-4
+mode1_to_mode2_power_ratio = 27.747747747748
+
+[comparison]
+rms_equal = true
+d32_minus_d16_snr = 1.47
+d32_to_d16_alpha_ratio = 3.420403310542
+dominant_difference = "The 32D stack gains significance almost entirely through the extra very-low-k mode near 0.4189, not through a broad elevation across all predicted modes."
+
+[interpretation]
+status = "interesting_but_not_yet_falsification_grade"
+verdict = "The 32D Pathion lane outperforms the 16D sedenion control on this SPARC cut, but the gain is dominated by a single lowest-frequency mode and therefore is not yet specific evidence for a Pathion harmonic structure."
+epistemic_note = "This is competition evidence, not confirmation. A single low-k excess can arise from residual large-scale NFW or baryonic profile mismatch."
+
+[next_steps]
+step_1 = "Run a phase-shuffle or sign-shuffle null on the same 148-galaxy stack so the D=32 SNR is compared to an internal null rather than only to the rough threshold heuristic."
+step_2 = "Recompute the D=32 score with the first mode removed or downweighted; if the apparent advantage collapses, the signal is likely generic low-frequency mismatch rather than Pathion structure."
+step_3 = "Compare the same 148-galaxy cut against DC14 or other baryonic-feedback baselines before attributing the low-k excess to any algebraic forcing."
+step_4 = "Map the 32D halo toy delta-v profile against individual SPARC residuals rather than only stacked Fourier power."

@@ -157,7 +157,7 @@ hellings_downs = 0.036733198717
 overlap_bins_wls = 50
 overlap_bins_gls = 50
 overlap_bins_policy = 50
-wls_residual_pearson = 0.089093622379
+wls_residual_pearson = 0.089093622378
 gls_residual_pearson = 0.115265914914
 policy_residual_pearson = 0.106263128006
 
