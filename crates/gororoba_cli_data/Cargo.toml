@@ -456,7 +456,6 @@ data_core = { path = "../data_core", features = ["fits"] }
 cosmology_core = { path = "../cosmology_core", features = ["euclid-catalog"] }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
-quantum_core = { path = "../quantum_core" }
 fitsio = { workspace = true }
 verified_core = { path = "../verified_core" }
 scrolls_core = { path = "../scrolls_core" }
@@ -479,7 +478,6 @@ core_affinity = { workspace = true }
 env_logger = { workspace = true }
 anyhow = { workspace = true }
 reqwest = { workspace = true }
-backon = { workspace = true }
 md5 = { workspace = true }
 rayon = { workspace = true }
 rand = { workspace = true }
@@ -499,7 +497,6 @@ nalgebra = { workspace = true }
 faer = { workspace = true }
 plotters = { workspace = true }
 petgraph = { workspace = true }
-moyo = { workspace = true }
 hdf5 = { workspace = true }
 wide = { workspace = true }
 ndarray = "0.17"

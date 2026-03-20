@@ -205,7 +205,6 @@ flate2 = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 faer.workspace = true
-ndarray.workspace = true
 hdf5-metno = "0.12.3"
 glob.workspace = true
 statrs.workspace = true

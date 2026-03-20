@@ -6,9 +6,6 @@ license.workspace = true
 
 [dependencies]
 gauss-quad = { workspace = true }
-csv = { workspace = true }
-serde = { workspace = true }
-thiserror = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }
