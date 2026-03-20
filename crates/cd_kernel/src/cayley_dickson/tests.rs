@@ -281,3 +281,37 @@ fn test_sedenion_multiply_flat_non_associative() {
     assert!(diff > 1e-6,
         "Sedenion (ab)c should differ from a(bc) -- non-associativity. diff={}", diff);
 }
+
+#[test]
+fn test_cd_multiply_flat_into_matches_scalar_all_dims() {
+    for dim in [1, 2, 4, 8, 16, 32] {
+        let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.123).sin()).collect();
+        let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.456).cos()).collect();
+        let scalar = cd_multiply(&a, &b);
+        let mut flat_out = vec![0.0; dim];
+        cd_multiply_flat_into(&a, &b, &mut flat_out, dim);
+        for i in 0..dim {
+            assert!(
+                (flat_out[i] - scalar[i]).abs() < 1e-10,
+                "dim={} flat_into[{}] = {}, scalar = {}, diff = {}",
+                dim, i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+            );
+        }
+    }
+}
+
+#[test]
+fn test_pathion_32d_flat_into_matches_scalar() {
+    let a: Vec<f64> = (0..32).map(|i| (i as f64 * 0.0789).sin()).collect();
+    let b: Vec<f64> = (0..32).map(|i| (i as f64 * 0.1234).cos()).collect();
+    let scalar = cd_multiply(&a, &b);
+    let mut flat_out = vec![0.0; 32];
+    cd_multiply_flat_into(&a, &b, &mut flat_out, 32);
+    for i in 0..32 {
+        assert!(
+            (flat_out[i] - scalar[i]).abs() < 1e-9,
+            "pathion flat_into[{}] = {}, scalar = {}, diff = {}",
+            i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+        );
+    }
+}
