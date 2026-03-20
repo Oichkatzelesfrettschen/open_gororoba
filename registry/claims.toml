@@ -1,7 +1,5 @@
-# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
-# Canonical write path: registry/canonical/control_plane.sqlite3
-# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
-# Compatibility export lane: claims
+# SOURCE OF TRUTH: claims registry.
+# Edit this file directly. Rebuild derived DB with: make registry-build
 
 [[claim]]
 formal_proof = "proofs/verified/C001_CDNonAssociative.v"

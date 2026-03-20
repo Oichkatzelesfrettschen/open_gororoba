@@ -1,6 +1,6 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
-use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
+use provenance_store::ControlPlaneCompatKind;
 use regex::Regex;
 use sha2::{Digest, Sha256};
 use std::{
@@ -137,12 +137,6 @@ const STOPWORDS: &[&str] = &[
     "without",
 ];
 
-const DB_BACKED_COMPAT_SIGNATURE_PATHS: &[&str] = &[
-    "registry/claims.toml",
-    "registry/insights.toml",
-    "registry/experiments.toml",
-    "registry/binaries.toml",
-];
 
 fn main() -> Result<()> {
     let args = Args::parse();
@@ -235,29 +229,21 @@ fn build_integrity_resolution(repo_root: &Path, args: &Args) -> Result<()> {
     )?;
 
     let registry_paths = vec![
-        "registry/artifact_experiment_links.toml",
+        "registry/claims.toml",
+        "registry/insights.toml",
+        "registry/experiments.toml",
+        "registry/binaries.toml",
         "registry/external_sources.toml",
-        "registry/project_csv_canonical_datasets.toml",
         "registry/dataset_label_aliases.toml",
-        "registry/project_csv_canonical.toml",
-        "registry/claims_atoms.toml",
         "registry/claims_evidence_edges.toml",
+        "registry/bibliography.toml",
+        "registry/lacunae.toml",
         "registry/knowledge/equation_atoms_v2.toml",
         "registry/knowledge/equation_symbol_table.toml",
         "registry/knowledge/proof_skeletons.toml",
         "registry/knowledge/derivation_steps.toml",
-        "registry/bibliography.toml",
-        "registry/bibliography_normalized.toml",
-        "registry/provenance_sources.toml",
-        "registry/narrative_paragraph_atoms.toml",
-        "registry/conflict_markers.toml",
-        "registry/lacunae.toml",
-        "registry/registry_events.toml",
-        "registry/third_party_markdown_cache.toml",
-        "registry/third_party_source_verification.toml",
     ]
     .into_iter()
-    .filter(|path| !DB_BACKED_COMPAT_SIGNATURE_PATHS.contains(path))
     .map(ToOwned::to_owned)
     .collect::<Vec<_>>();
     let (signature_rows, signature_meta) = build_schema_signatures(repo_root, &registry_paths)?;
@@ -1231,24 +1217,12 @@ fn load_toml(path: &Path) -> Result<Value> {
 
 fn load_control_plane_registry(
     repo_root: &Path,
-    db_rel_path: &Path,
-    kind: ControlPlaneCompatKind,
+    _db_rel_path: &Path,
+    _kind: ControlPlaneCompatKind,
     fallback_rel_path: &str,
 ) -> Result<Value> {
-    let db_path = repo_root.join(db_rel_path);
-    if db_path.exists() {
-        let mut store = ProvenanceStore::open(&db_path)
-            .with_context(|| format!("open canonical control-plane DB {}", db_path.display()))?;
-        let text = store.control_plane_compat_text(kind).with_context(|| {
-            format!(
-                "render {:?} compatibility text from {}",
-                kind,
-                db_path.display()
-            )
-        })?;
-        return toml::from_str(&text)
-            .with_context(|| format!("parse {:?} compatibility TOML", kind));
-    }
+    // Three-layer architecture: TOML files are the source of truth.
+    // Read directly from the TOML file rather than exporting from SQLite.
     load_toml(&repo_root.join(fallback_rel_path))
 }
 

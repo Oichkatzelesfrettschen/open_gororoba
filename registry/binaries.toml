@@ -1,9 +1,7 @@
-# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
-# Canonical write path: registry/canonical/control_plane.sqlite3
-# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
-# Compatibility export lane: binaries
+# SOURCE OF TRUTH: binaries registry.
+# Edit this file directly. Rebuild derived DB with: make registry-build
 
-# CLI binaries registry -- generated from the canonical SQLite control plane.
+# CLI binaries registry.
 
 [[binary]]
 name = "absorber-topology-benchmark"
@@ -1728,7 +1726,7 @@ crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
 
-# CLI binaries registry -- generated from the canonical SQLite control plane.
+# CLI binaries registry.
 # [ ... rest of file ... ]
 
 [[binary]]

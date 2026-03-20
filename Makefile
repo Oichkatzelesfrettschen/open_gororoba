@@ -1,5 +1,5 @@
 # ---- Phony targets ----
-.PHONY: help bootstrap-dev
+.PHONY: help bootstrap-dev fmt fmt-check
 .PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
@@ -93,6 +93,29 @@ SYNTHESIS_CONTRACT_REPORT ?= reports/synthesis_execution_contract_$(SYNTHESIS_CO
 PROFILE_TIMESTAMP := $(shell date +%Y-%m-%d/%H%M%S)
 PROFILE_ROOT ?= reports/gates/profiles/$(PROFILE_TIMESTAMP)
 
+# ---- Three-layer registry build ----
+# Layer 1 (Source): TOML files in registry/ (human-edited, git-tracked).
+# Layer 2 (Build):  .cache/registry.sqlite3 (derived, .gitignore'd).
+# Layer 3 (Query):  gororoba-db CLI.
+
+REGISTRY_SOURCES := $(wildcard registry/claims.toml registry/insights.toml \
+    registry/experiments.toml registry/binaries.toml registry/project.toml \
+    registry/external_sources.toml registry/bibliography.toml \
+    registry/claims_evidence_edges.toml registry/experiment_lineage.toml \
+    registry/lacunae.toml registry/roadmap.toml registry/todo.toml \
+    registry/next_actions.toml registry/requirements.toml \
+    registry/artifact_source_of_truth.toml registry/research_narratives.toml \
+    registry/source_manifest.toml)
+
+.cache/registry.sqlite3: $(REGISTRY_SOURCES)
+	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --repo-root .
+
+.PHONY: registry-build registry-build-verify
+registry-build: .cache/registry.sqlite3
+
+registry-build-verify: .cache/registry.sqlite3
+	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --verify --repo-root .
+
 # ---- Environment setup ----
 
 bootstrap-dev:
@@ -101,6 +124,72 @@ bootstrap-dev:
 # ---- Quality gates ----
 
 lint: rust-clippy
+
+# ---- Formatting (dprint) ----
+# Unified formatting for Rust (.rs via rustfmt), TOML, JSON, and Markdown.
+# Install: cargo install dprint
+fmt:
+	dprint fmt
+
+fmt-check:
+	dprint check
+
+# ---- Parallelized lint gates ----
+# Tier 1: lightweight checks (no cargo compilation, safe to parallelize).
+# Tier 2: cargo-heavy checks (require compilation, serialize).
+#
+# gate-fast: Tier 1 only (<10s). Use for pre-push and rapid feedback.
+# gate-deep: Tier 1 + Tier 2 (minutes). Use for CI and thorough audits.
+
+.PHONY: gate-fast gate-warm gate-deep typos machete audit geiger
+
+# Tier 1 targets (no cargo lock contention, run in parallel)
+typos:
+	typos
+
+machete:
+	cargo machete --workspace
+
+audit:
+	cargo audit
+
+geiger:
+	cargo geiger --all-features --all-targets 2>&1 | tail -5
+
+# gate-fast: parallel Tier 1 checks (no cargo compilation required).
+# Runs dprint, typos, and machete concurrently. ~5s on warm cache.
+# WHY: Catches formatting, spelling, and dead-dep issues before expensive compilation.
+# NOTE: ansi-check and terminology-gate use `cargo run` so they belong in Tier 2
+# on a cold cache but are fast (~0s) on a warm cache. They run in gate-warm.
+gate-fast:
+	@echo "=== gate-fast: parallel zero-compile checks ==="
+	@set -e; \
+	dprint check & pid_fmt=$$!; \
+	typos & pid_typos=$$!; \
+	cargo machete --workspace & pid_machete=$$!; \
+	wait $$pid_fmt || { echo "FAIL: dprint check"; exit 1; }; \
+	wait $$pid_typos || { echo "FAIL: typos"; exit 1; }; \
+	wait $$pid_machete || { echo "FAIL: cargo-machete"; exit 1; }
+	@echo "=== gate-fast: PASSED ==="
+
+# gate-warm: gate-fast + governance checks that reuse cached cargo binaries.
+# ~10s if binaries are cached, ~2min on cold cache (first compilation).
+gate-warm: gate-fast
+	@echo "=== gate-warm: governance checks (cached binaries) ==="
+	$(MAKE) ansi-check
+	$(MAKE) terminology-gate
+	$(MAKE) governance-gate-readonly
+	@echo "=== gate-warm: PASSED ==="
+
+# gate-deep: gate-warm + full cargo-heavy checks (clippy, tests, audits).
+# WHY: Full CI-grade audit. Catches everything including API compat and advisories.
+gate-deep: gate-warm
+	@echo "=== gate-deep: cargo-heavy checks (serialized) ==="
+	$(MAKE) rust-clippy
+	$(MAKE) rust-regression
+	cargo audit
+	$(MAKE) cargo-deny-check
+	@echo "=== gate-deep: PASSED ==="
 
 test: rust-regression
 
@@ -283,8 +372,17 @@ rust-clippy:
 
 rust-semver-check:
 	@echo "[semver-check] Checking public API SemVer compliance..."
-	$(CARGO_ENV) cargo semver-checks check-release --workspace 2>&1 || true
-	@echo "[semver-check] Done. Review any breaking changes above."
+	$(CARGO_ENV) cargo semver-checks check-release --workspace \
+		--exclude gororoba_cli \
+		--exclude gororoba_cli_algebra \
+		--exclude gororoba_cli_data \
+		--exclude gororoba_cli_governance \
+		--exclude gororoba_cli_physics \
+		--exclude gororoba_cli_provenance \
+		--exclude gororoba_cli_quantum \
+		--exclude gororoba_cli_warp \
+		--exclude gororoba_db
+	@echo "[semver-check] Done. All checked crates pass SemVer compliance."
 
 rust-smoke:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) -P smoke -p gororoba_algebra --test smoke_gororoba_algebra -p lbm_3d --test smoke_lbm_3d -p gororoba_engine --test smoke_gororoba_engine

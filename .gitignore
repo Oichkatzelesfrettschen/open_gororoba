@@ -164,11 +164,9 @@ archive/external_nonreproducible_snapshots/**
 !archive/external_nonreproducible_snapshots/
 !archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml
 
-# SQLite databases
+# SQLite databases (all derived; source of truth is TOML)
 *.db
 *.sqlite3
-!registry/canonical/control_plane.sqlite3
-!registry/canonical/csv_holding_payloads.sqlite3
 
 # ------------------------------------------------------------------------------
 # 5. Secrets & Credentials (NEVER COMMIT)

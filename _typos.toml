@@ -1,0 +1,38 @@
+# typos-cli configuration
+# WHY: Catch spelling errors in code, docs, and registry files before they land.
+# WHAT: Runs on all text files except data/external, .cache, target.
+# HOW: `make typos` or `typos` from repo root.
+
+[files]
+extend-exclude = [
+    ".cache/",
+    "target/",
+    "data/external/",
+    "proofs/**/*.vo",
+    "proofs/**/*.glob",
+    "*.sqlite3",
+    "*.h5",
+    "Cargo.lock",
+    "registry/artifact_source_of_truth.toml",
+    "registry/claims_evidence_edges.toml",
+]
+
+[default]
+# Physics/math domain terms that are not typos.
+extend-ignore-re = [
+    # Common abbreviations in physics code
+    "(?i)\\b(nfw|udg|cmr|lbm|mrt|qgp|hott|fhs|psl|smhm)\\b",
+]
+
+[default.extend-words]
+# Domain-specific terms that look like typos but are not.
+# Cayley-Dickson algebra terms
+octonion = "octonion"
+sedenion = "sedenion"
+trigintaduonion = "trigintaduonion"
+associator = "associator"
+# Physics terms
+gravastar = "gravastar"
+# Code identifiers
+rng = "rng"
+idx = "idx"

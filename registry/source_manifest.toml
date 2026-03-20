@@ -1,0 +1,236 @@
+# Source Manifest: Three-Layer Registry Architecture
+#
+# This file declares which TOML files are SOURCE OF TRUTH (Layer 1).
+# Everything else in registry/ is either DERIVED (rebuilt by `make registry-build`)
+# or DEAD (pending deletion).
+#
+# The `gororoba-db build` command reads this manifest to discover which files
+# to ingest into .cache/registry.sqlite3 (Layer 2).
+
+[manifest]
+version = 1
+description = "Authoritative list of source-of-truth TOML files"
+
+# ── Core research registries ─────────────────────────────────────────
+
+[[source]]
+path = "registry/claims.toml"
+role = "core"
+table = "claims"
+description = "1300+ formal research claims with verification status"
+
+[[source]]
+path = "registry/insights.toml"
+role = "core"
+table = "insights"
+description = "Cross-domain research insights"
+
+[[source]]
+path = "registry/experiments.toml"
+role = "core"
+table = "experiments"
+description = "Reproducible experiment definitions"
+
+[[source]]
+path = "registry/binaries.toml"
+role = "core"
+table = "binaries"
+description = "Binary entrypoint to experiment mapping"
+
+[[source]]
+path = "registry/project.toml"
+role = "core"
+table = "project_metadata"
+description = "Project metadata and sprint history"
+
+[[source]]
+path = "registry/external_sources.toml"
+role = "core"
+table = "external_source_contracts"
+description = "External data source contracts"
+
+# ── Evidence and knowledge graph ─────────────────────────────────────
+
+[[source]]
+path = "registry/bibliography.toml"
+role = "evidence"
+table = "bibliography"
+description = "434 reference entries"
+
+[[source]]
+path = "registry/claims_evidence_edges.toml"
+role = "evidence"
+table = "claims_evidence_edges"
+description = "Evidence chain edges linking claims"
+
+[[source]]
+path = "registry/experiment_lineage.toml"
+role = "evidence"
+table = "experiment_lineage"
+description = "Experiment dependency DAG"
+
+[[source]]
+path = "registry/experiment_lineage_edges.toml"
+role = "evidence"
+table = "experiment_lineage_edges"
+description = "Edge type definitions for experiment DAG"
+
+[[source]]
+path = "registry/lacunae.toml"
+role = "evidence"
+table = "lacunae"
+description = "Open questions and gaps"
+
+[[source]]
+path = "registry/claim_tickets.toml"
+role = "evidence"
+table = "claim_tickets"
+description = "Claim verification tickets"
+
+# ── Data governance and provenance ───────────────────────────────────
+
+[[source]]
+path = "registry/artifact_source_of_truth.toml"
+role = "governance"
+table = "artifacts"
+description = "Master artifact catalog (3236 entries)"
+
+[[source]]
+path = "registry/source_infrastructure.toml"
+role = "governance"
+table = "source_infrastructure"
+description = "Lane definitions"
+
+[[source]]
+path = "registry/dataset_label_aliases.toml"
+role = "governance"
+table = "dataset_label_aliases"
+description = "Canonical dataset name mapping"
+
+[[source]]
+path = "registry/data_governance.toml"
+role = "governance"
+table = "data_governance"
+description = "Governance policies"
+
+[[source]]
+path = "registry/data_semantic_validators.toml"
+role = "governance"
+table = "data_semantic_validators"
+description = "Validation rules"
+
+[[source]]
+path = "registry/download_host_policies.toml"
+role = "governance"
+table = "download_host_policies"
+description = "Host access policies"
+
+[[source]]
+path = "registry/materials_viscosity.toml"
+role = "governance"
+table = "materials_viscosity"
+description = "Domain reference data"
+
+# ── Narrative content ────────────────────────────────────────────────
+
+[[source]]
+path = "registry/research_narratives.toml"
+role = "narrative"
+table = "research_narratives"
+description = "Full research documents"
+
+[[source]]
+path = "registry/docs_root_narratives.toml"
+role = "narrative"
+table = "docs_root_narratives"
+description = "Published docs content"
+
+[[source]]
+path = "registry/reports_narratives.toml"
+role = "narrative"
+table = "reports_narratives"
+description = "Report content"
+
+[[source]]
+path = "registry/book_docs.toml"
+role = "narrative"
+table = "book_docs"
+description = "Book and chapter structure"
+
+[[source]]
+path = "registry/docs_convos.toml"
+role = "narrative"
+table = "docs_convos"
+description = "Documentation conversations"
+
+[[source]]
+path = "registry/data_artifact_narratives.toml"
+role = "narrative"
+table = "data_artifact_narratives"
+description = "Artifact descriptions"
+
+# ── Project config and standards ─────────────────────────────────────
+
+[[source]]
+path = "registry/roadmap.toml"
+role = "config"
+table = "roadmap_items"
+description = "Project roadmap"
+
+[[source]]
+path = "registry/todo.toml"
+role = "config"
+table = "todo_items"
+description = "Action items"
+
+[[source]]
+path = "registry/next_actions.toml"
+role = "config"
+table = "next_action_items"
+description = "Near-term priorities"
+
+[[source]]
+path = "registry/requirements.toml"
+role = "config"
+table = "requirements"
+description = "Module requirements"
+
+[[source]]
+path = "registry/terminology_standards.toml"
+role = "config"
+table = "terminology_standards"
+description = "Banned terms, canonical names"
+
+[[source]]
+path = "registry/engineering_standards.toml"
+role = "config"
+table = "engineering_standards"
+description = "Engineering standards"
+
+[[source]]
+path = "registry/test_taxonomy.toml"
+role = "config"
+table = "test_taxonomy"
+description = "Test taxonomy"
+
+# ── Active infrastructure config ─────────────────────────────────────
+
+[[source]]
+path = "registry/agents_contract.toml"
+role = "config"
+table = "agents_contract"
+description = "Agent role definitions"
+
+[[source]]
+path = "registry/mcp_server_matrix.toml"
+role = "config"
+table = "mcp_server_matrix"
+description = "MCP server configuration"
+
+# ── Governance lock file (derived but git-tracked) ───────────────────
+
+[[source]]
+path = "registry/schema_signatures.toml"
+role = "lockfile"
+table = ""
+description = "Schema/content hash lock file for governance gate"
