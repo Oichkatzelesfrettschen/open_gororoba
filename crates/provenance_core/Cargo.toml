@@ -9,7 +9,6 @@ description = "Typed provenance and citation models for open_gororoba"
 [dependencies]
 serde = { workspace = true }
 camino = { workspace = true, features = ["serde1"] }
-chrono = { workspace = true }
 
 [lints]
 workspace = true

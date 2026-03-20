@@ -623,6 +623,9 @@ parity-report:
 		--output $${OUT:-data/benchmarks/parity_report.md}
 	@echo "OK: Parity report written to data/benchmarks/parity_report.md"
 
+su5-gut:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin su5-gut
+
 jacobi-backend-sweep:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_algebra --bin jacobi-backend-sweep -- \
 		--sizes $${SIZES:-4,8,16,24,32} \

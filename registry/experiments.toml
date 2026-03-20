@@ -4,10 +4,10 @@
 [experiments]
 authoritative = true
 deterministic_count = 153
-experiment_count = 200
+experiment_count = 201
 gpu_count = 28
 seeded_count = 46
-status_allowlist = ["active", "deprecated", "planned", "blocked"]
+status_allowlist = ["active", "blocked", "completed", "deprecated", "planned"]
 updated = "2026-03-18"
 
 [[experiment]]
@@ -4679,8 +4679,8 @@ output_path_refs = ["manga_harmonic_stacking.csv"]
 reproducibility_class = "deterministic_replay"
 run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv"
 run_command_sha256 = "ecd714db2846646bd0695ad9ebbc1762d6123c6eacf0adf623d4569800c8c1d4"
-status = "active"
-status_token = "ACTIVE"
+status = "completed"
+status_token = "COMPLETED"
 title = "MaNGA N=6992 harmonic halo stacking null result with pseudo-slit rotation curves (D=16,64,256,1024)"
 truth_surface_consumption = []
 
@@ -4705,8 +4705,8 @@ output_path_refs = ["braid_fidelity_audit.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo test -p algebra_experimental --lib -- majorana"
 run_command_sha256 = "994cb5f53d8b700851da87a8dfc73e8f25bbc22ceb9b6e8c5338fbb7c949a9b1"
-status = "active"
-status_token = "ACTIVE"
+status = "completed"
+status_token = "COMPLETED"
 title = "Braid fidelity audit: confirm fidelity < 1.0 at all dim >= 16 (C-1350, C-1351)"
 truth_surface_consumption = []
 

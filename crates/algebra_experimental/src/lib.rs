@@ -47,8 +47,13 @@ pub mod matrix_representation;
 pub mod cayley_dickson_structs;
 pub mod quantum_state;
 pub mod neutrino_sector;
-pub mod invariance_tests;
+#[cfg(test)]
+mod invariance_tests;
 pub mod renormalization_group;
 pub mod quark_sector;
 pub mod cd_graph_imbalance;
 pub mod dark_sector_quantum_numbers;
+pub mod sieve_scan;
+pub mod dark_inflaton;
+pub mod cd_black_hole;
+pub mod su5_gut;
