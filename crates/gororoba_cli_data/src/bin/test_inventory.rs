@@ -134,6 +134,10 @@ fn validate_python_files(
     registry: &TaxonomyRegistry,
     failures: &mut Vec<String>,
 ) -> usize {
+    // If no Python test files are configured this is a pure-Rust repo -- skip all Python checks.
+    if registry.python_test_file.is_empty() {
+        return 0;
+    }
     let discovered = match discover_python_tests(repo_root) {
         Ok(files) => files,
         Err(err) => {

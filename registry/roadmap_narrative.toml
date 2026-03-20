@@ -1,0 +1,10 @@
+# Roadmap narrative overlay (TOML-first).
+# WHY: Provides prose context that annotates the structured registry/roadmap.toml.
+#      Describes architectural direction and policy, not test counts.
+# HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.
+
+[roadmap_narrative]
+body_markdown = """
+See registry/roadmap.toml for the authoritative workstream definitions.
+This narrative overlay provides qualitative direction for each sprint and workstream.
+"""

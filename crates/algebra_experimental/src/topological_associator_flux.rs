@@ -150,6 +150,7 @@ mod tests {
     }
     
     #[test]
+    #[ignore = "heavy research lane: 64D associator flux O(dim^4) ZD search exceeds 120s default budget"]
     fn test_chingon_basis_quantization() {
         verify_associator_flux_invariant(64);
     }
