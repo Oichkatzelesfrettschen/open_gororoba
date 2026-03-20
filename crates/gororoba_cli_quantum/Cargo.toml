@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 quantum_core = { path = "../quantum_core" }
 anyhow = "1.0"
-clap = { version = "4.4", features = ["derive"] }
+clap = { workspace = true }
 num-complex.workspace = true
 image.workspace = true
 plotters.workspace = true

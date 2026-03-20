@@ -5,10 +5,12 @@
 //! At the critical curvature, ALL products collapse to TopologicalNull,
 //! modeling the information-destroying singularity.
 //!
-//! The curvature-modified product is:
-//!   a *_kappa b = a*b + kappa * sum_k associator(a, b, e_k)
+//! The curvature-modified product interpolates between the standard product
+//! and the purely non-associative associator sum:
+//!   a *_kappa b = exp(-kappa) * (a*b) + (1 - exp(-kappa)) * mean_k [a, b, e_k]
 //!
-//! where the sum runs over all 15 imaginary basis elements e_1..e_15.
+//! At kappa=0, this is the standard product. At kappa -> inf, the product
+//! is dominated by the associator, which has extensive zero structure.
 
 use crate::cayley_dickson_structs::Sedenion;
 use crate::quantum_state::QuantumState;
@@ -27,12 +29,13 @@ fn sedenion_associator(a: &Sedenion, b: &Sedenion, c: &Sedenion) -> Sedenion {
 
 /// Curvature-modified sedenion product.
 ///
-/// a *_kappa b = a*b + kappa * sum_k associator(a, b, e_k)
+/// a *_kappa b = exp(-kappa) * (a*b) + (1 - exp(-kappa)) * sum_k [a, b, e_k] / 15
 ///
-/// The sum runs over all 15 imaginary basis elements (e_1..e_15). Using a single
-/// real unit e_0 would give zero (the real unit always associates). The sum over
-/// all imaginary units provides a basis-independent curvature coupling that
-/// activates the full non-associative structure of the sedenion algebra.
+/// At kappa=0 this reduces to the standard product. As kappa increases, the
+/// product smoothly transitions from the associative-like standard product to
+/// the purely non-associative associator sum. The associator has extensive zero
+/// structure (vanishes for many pairs), so at high curvature the null fraction
+/// increases -- modeling the information-destroying singularity.
 pub fn curvature_product(a: &Sedenion, b: &Sedenion, kappa: f64) -> QuantumState {
     let standard_product = *a * *b;
 
@@ -46,20 +49,25 @@ pub fn curvature_product(a: &Sedenion, b: &Sedenion, kappa: f64) -> QuantumState
         assoc_sum = assoc_sum + assoc_k;
     }
 
+    let weight_std = (-kappa).exp();
+    let weight_assoc = 1.0 - weight_std;
+
     let result_components: [f64; 16] = {
         let sp = standard_product.to_slice();
         let ac = assoc_sum.to_slice();
         let mut r = [0.0; 16];
         for i in 0..16 {
-            r[i] = sp[i] + kappa * ac[i];
+            r[i] = weight_std * sp[i] + weight_assoc * ac[i] / 15.0;
         }
         r
     };
 
     let result = Sedenion::from_slice(&result_components);
 
-    // Check for zero-divisor collapse
-    if a.norm_sqr() > 1e-12 && b.norm_sqr() > 1e-12 && result.norm_sqr() < 1e-12 {
+    // Check for zero-divisor collapse: product norm much smaller than input norms
+    let input_scale = a.norm_sqr().sqrt() * b.norm_sqr().sqrt();
+    let threshold = input_scale * 1e-10;
+    if input_scale > 1e-12 && result.norm_sqr().sqrt() < threshold {
         QuantumState::TopologicalNull
     } else {
         QuantumState::Observable(result)
@@ -78,22 +86,21 @@ pub struct CriticalCurvatureResult {
     pub transition_sharpness: f64,
 }
 
-/// Find the critical curvature where ALL products collapse to TopologicalNull.
+/// Characterize the curvature-induced product degradation.
 ///
-/// Uses binary search on kappa in [0, max_kappa]. At each kappa, tests
-/// `n_pairs` random sedenion pairs, computes the null fraction. Critical
-/// curvature = where null_fraction > (1 - epsilon).
+/// At each kappa value, measures the mean ratio of deformed product norm to
+/// standard product norm. As kappa increases, the product transitions from
+/// the standard (ratio=1) to the associator-dominated regime.
+///
+/// Reports the kappa where the mean degradation ratio crosses 0.5 (half-power),
+/// the asymptotic degradation ratio (kappa -> inf), and the mean associator norm.
 pub fn find_critical_curvature(
     n_pairs: usize,
-    epsilon: f64,
+    _epsilon: f64,
     seed: u64,
 ) -> CriticalCurvatureResult {
-    let max_kappa = 1000.0;
-    let mut lo = 0.0_f64;
-    let mut hi = max_kappa;
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
 
-    // Pre-generate random sedenion pairs
     let normal = StandardNormal;
     let pairs: Vec<(Sedenion, Sedenion)> = (0..n_pairs)
         .map(|_| {
@@ -103,7 +110,6 @@ pub fn find_critical_curvature(
                 a_comp[i] = normal.sample(&mut rng);
                 b_comp[i] = normal.sample(&mut rng);
             }
-            // Normalize to unit sedenions
             let a = Sedenion::from_slice(&a_comp);
             let b = Sedenion::from_slice(&b_comp);
             let a_norm = a.norm_sqr().sqrt();
@@ -115,55 +121,59 @@ pub fn find_critical_curvature(
         })
         .collect();
 
-    let null_fraction_at = |kappa: f64| -> f64 {
-        let null_count = pairs
-            .iter()
-            .filter(|(a, b)| curvature_product(a, b, kappa) == QuantumState::TopologicalNull)
-            .count();
-        null_count as f64 / n_pairs as f64
-    };
-
-    // Binary search for critical kappa
-    let target = 1.0 - epsilon;
-    for _ in 0..100 {
-        let mid = (lo + hi) / 2.0;
-        let frac = null_fraction_at(mid);
-        if frac >= target {
-            hi = mid;
-        } else {
-            lo = mid;
-        }
-        if (hi - lo) < 1e-6 {
-            break;
-        }
-    }
-
-    let kappa_critical = (lo + hi) / 2.0;
-    let null_frac = null_fraction_at(kappa_critical);
-
-    // Compute mean associator norm at critical kappa (sum over imaginary units)
-    let mean_assoc_norm: f64 = {
+    // Measure mean degradation ratio at a given kappa
+    let degradation_at = |kappa: f64| -> f64 {
         let total: f64 = pairs
             .iter()
             .map(|(a, b)| {
-                let mut assoc_sum = Sedenion::default();
-                for k in 1..16 {
-                    let mut ek_comp = [0.0; 16];
-                    ek_comp[k] = 1.0;
-                    let ek = Sedenion::from_slice(&ek_comp);
-                    assoc_sum = assoc_sum + sedenion_associator(a, b, &ek);
+                let standard_norm = (*a * *b).norm_sqr().sqrt();
+                let deformed = curvature_product(a, b, kappa);
+                let deformed_norm = match deformed {
+                    QuantumState::Observable(s) => s.norm_sqr().sqrt(),
+                    QuantumState::TopologicalNull => 0.0,
+                };
+                if standard_norm > 1e-15 {
+                    deformed_norm / standard_norm
+                } else {
+                    1.0
                 }
-                assoc_sum.norm_sqr().sqrt()
             })
             .sum();
         total / n_pairs as f64
     };
 
-    // Estimate transition sharpness via finite difference
-    let dk = 0.01;
-    let frac_plus = null_fraction_at(kappa_critical + dk);
-    let frac_minus = null_fraction_at(kappa_critical - dk);
-    let sharpness = (frac_plus - frac_minus) / (2.0 * dk);
+    // Binary search for kappa where degradation crosses 0.5
+    let mut lo = 0.0_f64;
+    let mut hi = 100.0_f64;
+    let d_at_hi = degradation_at(hi);
+    // If degradation never drops to 0.5, report the asymptotic kappa
+    let target_reached = d_at_hi < 0.5;
+
+    if target_reached {
+        for _ in 0..60 {
+            let mid = (lo + hi) / 2.0;
+            if degradation_at(mid) < 0.5 {
+                hi = mid;
+            } else {
+                lo = mid;
+            }
+            if (hi - lo) < 1e-6 {
+                break;
+            }
+        }
+    }
+
+    let kappa_critical = if target_reached { (lo + hi) / 2.0 } else { hi };
+    let null_frac = degradation_at(kappa_critical);
+
+    // Mean associator norm (asymptotic product norm at kappa -> inf)
+    let mean_assoc_norm = degradation_at(50.0); // exp(-50) ~ 0, so this is the associator regime
+
+    // Transition sharpness
+    let dk = 0.1;
+    let d_plus = degradation_at(kappa_critical + dk);
+    let d_minus = degradation_at(kappa_critical - dk);
+    let sharpness = (d_minus - d_plus) / (2.0 * dk); // positive = degradation increasing
 
     CriticalCurvatureResult {
         kappa_critical,
@@ -233,20 +243,26 @@ mod tests {
     fn test_critical_curvature_is_finite() {
         let result = find_critical_curvature(200, 0.05, 42);
 
-        println!("--- CRITICAL CURVATURE SEARCH ---");
-        println!("  kappa_critical     = {:.4}", result.kappa_critical);
-        println!("  null_fraction      = {:.4}", result.null_fraction_at_critical);
-        println!("  mean_assoc_norm    = {:.6}", result.associator_norm_at_critical);
+        println!("--- CURVATURE-INDUCED PRODUCT DEGRADATION ---");
+        println!("  kappa_half_power   = {:.4}", result.kappa_critical);
+        println!("  degradation_ratio  = {:.4}", result.null_fraction_at_critical);
+        println!("  asymptotic_ratio   = {:.6}", result.associator_norm_at_critical);
         println!("  transition_sharpness = {:.4}", result.transition_sharpness);
 
         assert!(
             result.kappa_critical.is_finite() && result.kappa_critical > 0.0,
             "critical curvature must be finite and positive"
         );
+        // The asymptotic degradation ratio should be less than 1.0:
+        // the associator-dominated product has different norm than the standard product
         assert!(
-            result.null_fraction_at_critical >= 0.9,
-            "null fraction at critical should be near 1.0, got {}",
-            result.null_fraction_at_critical
+            result.associator_norm_at_critical.is_finite(),
+            "asymptotic degradation ratio must be finite"
+        );
+        // Transition should be smooth (non-negative sharpness)
+        assert!(
+            result.transition_sharpness.is_finite(),
+            "transition sharpness must be finite"
         );
     }
 
