@@ -116,4 +116,58 @@ mod tests {
             "Expected equal friction (null result); got f1={friction1}, f2={friction2}, f3={friction3}"
         );
     }
+
+    /// S3 orbit scan: test ALL braid-axis pairs (e_i, e_j) for i < j in 1..16
+    /// and classify by whether the friction triple (f1, f2, f3) breaks S3.
+    ///
+    /// If ANY orbit gives f1 != f2 != f3, we have a candidate for mass hierarchy.
+    #[test]
+    fn test_s3_orbit_scan_all_braid_axes() {
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let modes = map_majoranas_to_cd(4, 16);
+        let sign_table = SignTableCache::new(16);
+
+        let mut degenerate_count = 0;
+        let mut breaking_count = 0;
+        let mut best_spread = 0.0_f64;
+        let mut best_pair = (0, 0);
+        let mut best_frictions = (0.0, 0.0, 0.0);
+
+        // Scan all C(15,2) = 105 braid-axis pairs
+        for i in 0..modes.len() {
+            for j in (i + 1)..modes.len() {
+                let f1 = cd_braid_in_subalgebra(&modes[i], &modes[j], &o1, &sign_table).topological_friction;
+                let f2 = cd_braid_in_subalgebra(&modes[i], &modes[j], &o2, &sign_table).topological_friction;
+                let f3 = cd_braid_in_subalgebra(&modes[i], &modes[j], &o3, &sign_table).topological_friction;
+
+                let spread = (f1 - f2).abs().max((f2 - f3).abs()).max((f1 - f3).abs());
+                if spread < 1e-9 {
+                    degenerate_count += 1;
+                } else {
+                    breaking_count += 1;
+                    if spread > best_spread {
+                        best_spread = spread;
+                        best_pair = (modes[i].cd_basis_index, modes[j].cd_basis_index);
+                        best_frictions = (f1, f2, f3);
+                    }
+                }
+            }
+        }
+
+        println!("--- S3 ORBIT SCAN ---");
+        println!("Total pairs tested: {}", degenerate_count + breaking_count);
+        println!("S3-degenerate: {}", degenerate_count);
+        println!("S3-BREAKING:   {}", breaking_count);
+        if breaking_count > 0 {
+            println!("Best S3-breaking pair: (e_{}, e_{})", best_pair.0, best_pair.1);
+            println!("  Frictions: f1={:.6}, f2={:.6}, f3={:.6}", best_frictions.0, best_frictions.1, best_frictions.2);
+            println!("  Max spread: {:.6}", best_spread);
+        } else {
+            println!("NO S3-breaking pairs found -- all braid axes are flavor-universal");
+        }
+
+        // This test documents the finding, not asserts a specific outcome
+        println!("Scan complete: {} degenerate + {} breaking = {} total",
+            degenerate_count, breaking_count, degenerate_count + breaking_count);
+    }
 }
