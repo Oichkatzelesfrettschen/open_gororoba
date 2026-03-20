@@ -22,7 +22,6 @@ nalgebra = { workspace = true }
 
 # Parallel chi2 evaluation across SN data points
 rayon = { workspace = true }
-algebra_experimental = { path = "../algebra_experimental" }
 algebra_analysis = { path = "../algebra_analysis" }
 quantum_core = { path = "../quantum_core" }
 argmin = { workspace = true, optional = true }
@@ -31,7 +30,6 @@ argmin-math = { workspace = true, optional = true }
 # Euclid catalog reader: Apache Arrow parquet (pure Rust, zero-copy columnar)
 parquet = { workspace = true, optional = true }
 arrow-array = { workspace = true, optional = true }
-verified_core = { version = "0.1.0", path = "../verified_core" }
 data_core = { version = "0.1.0", path = "../data_core" }
 stats_core = { version = "0.1.0", path = "../stats_core" }
 ndarray = { workspace = true }
@@ -46,6 +44,9 @@ euclid-catalog = ["dep:parquet", "dep:arrow-array"]
 
 [dev-dependencies]
 approx = { workspace = true }
+
+[package.metadata.cargo-machete]
+ignored = ["argmin-math"]
 
 [lints]
 workspace = true

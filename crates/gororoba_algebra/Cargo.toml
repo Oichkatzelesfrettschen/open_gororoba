@@ -12,15 +12,12 @@ gororoba_gpu_bridge = { workspace = true }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
 num-traits = { workspace = true }
-petgraph = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
-rayon = { workspace = true }
 sha2 = { workspace = true }
 wide = { workspace = true }
 rustfft = { workspace = true }
-thiserror = { workspace = true }
 serde = { workspace = true }
 csv = { workspace = true }
 
@@ -28,7 +25,6 @@ csv = { workspace = true }
 wheel = { workspace = true }
 padic = { workspace = true }
 atlas-embeddings = { workspace = true }
-num-bigint = { workspace = true }
 
 # Stochastic processes and fractal analysis (workspace)
 diffusionx = { workspace = true }

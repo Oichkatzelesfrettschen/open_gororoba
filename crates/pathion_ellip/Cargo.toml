@@ -6,10 +6,8 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-gororoba_algebra = { version = "0.1.0", path = "../gororoba_algebra" }
 cd_kernel = { workspace = true }
 anyhow.workspace = true
-ellip = "1.1.0"
 nalgebra.workspace = true
 num-complex.workspace = true
 rayon.workspace = true

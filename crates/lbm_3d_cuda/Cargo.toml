@@ -16,7 +16,6 @@ gororoba_optix = { workspace = true }
 gr_core = { path = "../gr_core" }
 cudarc = { workspace = true }
 half = { workspace = true }
-libloading = { workspace = true }
 anyhow = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }

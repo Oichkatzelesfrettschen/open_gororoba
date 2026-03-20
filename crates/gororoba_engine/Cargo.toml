@@ -34,7 +34,6 @@ lbm_3d_cuda = { path = "../lbm_3d_cuda" }
 cudarc = { workspace = true, optional = true }
 nalgebra = { workspace = true }
 rand = { workspace = true }
-pyo3 = { workspace = true, features = ["anyhow"] }
 chrono.workspace = true
 sha2.workspace = true
 serde.workspace = true
