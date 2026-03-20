@@ -18,7 +18,12 @@ verified_core = { path = "../verified_core" }
 
 [dev-dependencies]
 approx = { workspace = true }
+criterion = { workspace = true }
 proptest = { workspace = true }
+
+[[bench]]
+name = "flat_multiply_bench"
+harness = false
 
 [lints]
 workspace = true
