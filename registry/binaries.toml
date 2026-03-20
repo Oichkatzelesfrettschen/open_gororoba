@@ -1793,3 +1793,8 @@ description = "Quantum vs Classical Search Benchmark verifying O(sqrt(N/M)) spee
 name = "kk-mskk2"
 crate = "gororoba_cli_physics"
 description = "Multi-Anchor Kramers-Kronig (MSKK-2) comparison tool for optical reconstruction"
+
+[[binary]]
+name = "su5-gut"
+crate = "gororoba_cli_physics"
+description = "SU(5) GUT generator decomposition, quark sector, and 11-check verification suite"

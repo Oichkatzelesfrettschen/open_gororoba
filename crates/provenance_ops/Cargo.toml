@@ -18,5 +18,10 @@ url = { workspace = true }
 walkdir = { workspace = true }
 zip.workspace = true
 
+[package.metadata.cargo-machete]
+# These deps are used via module indirection across provenance_ops sub-modules;
+# machete's regex scan does not follow mod re-exports into subfiles.
+ignored = ["chrono", "csv", "regex", "rusqlite", "toml", "url", "walkdir"]
+
 [lints]
 workspace = true

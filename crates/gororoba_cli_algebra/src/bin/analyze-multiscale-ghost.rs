@@ -91,51 +91,41 @@ fn analyze_cwt(data: &[f64], fs: f64, title: &str) -> bool {
 fn load_wow_sband() -> Result<Option<Vec<f64>>> {
     let pattern = "data/bl_6equj5_gbt/*.h5";
     let paths: Vec<_> = glob(pattern)?.filter_map(|x| x.ok()).collect();
-    println!("DEBUG: Found {} H5 files matching {}", paths.len(), pattern);
     if paths.is_empty() { return Ok(None); }
 
     let mut stacked_ts: Option<Vec<f64>> = None;
     let mut count = 0;
 
     for path in paths {
-        println!("DEBUG: Processing {:?}", path);
         match hdf5::File::open(&path) {
             Ok(file) => {
-                println!("DEBUG: Successfully opened {:?}", path);
-                if let Ok(dset) = file.dataset("data") {
-                    println!("DEBUG: Found dataset 'data', type={:?}, shape={:?}", dset.dtype(), dset.shape());
-                    match dset.read_dyn::<f32>() {
-                        Ok(data) => {
-                            println!("DEBUG: Successfully read data with shape {:?}", data.shape());
-                            let shape = data.shape();
-                            let nt = shape[0];
-                            let mut ts = vec![0.0; nt];
-                            
-                            // Average across some channels
-                            let n_ch_limit = 1000.min(shape[2]);
-                            for t in 0..nt {
-                                let mut sum = 0.0;
-                                for c in 0..n_ch_limit {
-                                    sum += data[[t, 0, c]] as f64;
-                                }
-                                ts[t] = sum / n_ch_limit as f64;
-                            }
+                if let Ok(dset) = file.dataset("data")
+                    && let Ok(data) = dset.read_dyn::<f32>()
+                {
+                    let shape = data.shape();
+                    let nt = shape[0];
+                    let mut ts = vec![0.0; nt];
 
-                            if let Some(ref mut s) = stacked_ts {
-                                if s.len() == ts.len() {
-                                    for (i, val) in ts.into_iter().enumerate() {
-                                        s[i] += val;
-                                    }
-                                    count += 1;
-                                }
-                            } else {
-                                stacked_ts = Some(ts);
-                                count = 1;
+                    // Average across some channels
+                    let n_ch_limit = 1000.min(shape[2]);
+                    for t in 0..nt {
+                        let mut sum = 0.0;
+                        for c in 0..n_ch_limit {
+                            sum += data[[t, 0, c]] as f64;
+                        }
+                        ts[t] = sum / n_ch_limit as f64;
+                    }
+
+                    if let Some(ref mut s) = stacked_ts {
+                        if s.len() == ts.len() {
+                            for (i, val) in ts.into_iter().enumerate() {
+                                s[i] += val;
                             }
+                            count += 1;
                         }
-                        Err(e) => {
-                            println!("DEBUG: Failed to read data as f32: {:?}", e);
-                        }
+                    } else {
+                        stacked_ts = Some(ts);
+                        count = 1;
                     }
                 }
             }

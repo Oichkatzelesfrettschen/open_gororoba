@@ -9,3 +9,7 @@ crate-type = ["dylib", "lib"]
 [dependencies]
 spirv-std = { git = "https://github.com/EmbarkStudios/rust-gpu", branch = "main" }
 glam = { version = "0.29", default-features = false }
+
+[package.metadata.cargo-machete]
+# glam is accessed via spirv_std::glam re-export; machete cannot see through the indirection
+ignored = ["glam"]

@@ -1856,7 +1856,6 @@ name = "cosmology_core"
 version = "0.1.0"
 dependencies = [
  "algebra_analysis",
- "algebra_experimental",
  "approx",
  "argmin",
  "argmin-math",
@@ -1875,7 +1874,6 @@ dependencies = [
  "serde",
  "statrs",
  "stats_core",
- "verified_core",
 ]
 
 [[package]]
@@ -1900,11 +1898,8 @@ dependencies = [
 name = "cr_transport"
 version = "0.1.0"
 dependencies = [
- "csv",
  "gauss-quad 0.2.4",
- "serde",
  "tempfile",
- "thiserror 2.0.18",
 ]
 
 [[package]]
@@ -2769,17 +2764,6 @@ name = "either"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
-
-[[package]]
-name = "ellip"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c398315af820159155f5161699396ac1277b82f3c44052816b098a0de28a14d0"
-dependencies = [
- "num-lazy",
- "num-traits",
- "numeric_literals",
-]
 
 [[package]]
 name = "embassy-futures"
@@ -3875,19 +3859,15 @@ dependencies = [
  "gororoba_gpu_bridge",
  "iai-callgrind",
  "nalgebra 0.33.2",
- "num-bigint",
  "num-complex",
  "num-traits",
  "padic",
- "petgraph 0.7.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
- "rayon",
  "rustfft",
  "serde",
  "sha2",
- "thiserror 2.0.18",
  "verified_core",
  "wheel",
  "wide",
@@ -3964,7 +3944,6 @@ dependencies = [
  "gororoba_engine",
  "hdf5-metno",
  "nalgebra 0.33.2",
- "ndarray 0.16.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rustfft",
@@ -3990,7 +3969,6 @@ dependencies = [
  "arrow-array",
  "arrow-ipc",
  "arrow-schema",
- "backon",
  "cd_kernel",
  "chrono",
  "clap",
@@ -4010,7 +3988,6 @@ dependencies = [
  "hifitime",
  "materials_core",
  "md-5",
- "moyo",
  "nalgebra 0.33.2",
  "ndarray 0.17.2",
  "parquet",
@@ -4019,7 +3996,6 @@ dependencies = [
  "provenance_core",
  "provenance_ops",
  "provenance_store",
- "quantum_core",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
@@ -4160,11 +4136,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
- "csv",
  "faer",
- "hdf5-metno",
  "image 0.25.10",
- "ndarray 0.15.6",
  "num-complex",
  "plotters",
  "quantum_core",
@@ -4252,7 +4225,6 @@ dependencies = [
  "num-complex",
  "optics_core",
  "proptest",
- "pyo3",
  "quantum_core",
  "rand 0.8.5",
  "serde",
@@ -4380,7 +4352,6 @@ dependencies = [
 name = "gr_core"
 version = "0.1.0"
 dependencies = [
- "algebra_experimental",
  "approx",
  "cd_kernel",
  "gauss-quad 0.2.4",
@@ -4953,15 +4924,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "indoc"
-version = "2.0.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79cf5c93f93228cf8efb3ba362535fb11199ac548a09ce117c9b1adc3030d706"
-dependencies = [
- "rustversion",
-]
-
-[[package]]
 name = "inout"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5273,7 +5235,6 @@ dependencies = [
  "cosmic_scheduler",
  "cosmology_core",
  "criterion",
- "raw-cpuid 11.6.0",
  "rayon",
  "thiserror 2.0.18",
  "verified_core",
@@ -5296,7 +5257,6 @@ dependencies = [
  "gr_core",
  "half",
  "lbm_3d",
- "libloading 0.8.9",
  "rayon",
  "wide",
 ]
@@ -5318,7 +5278,6 @@ dependencies = [
  "env_logger",
  "gororoba_gpu_readback",
  "gpu-allocator 0.28.0",
- "half",
  "image 0.25.10",
  "log",
  "naga 27.0.3",
@@ -5670,7 +5629,6 @@ dependencies = [
  "num-complex",
  "optics_core",
  "periodic-table-on-an-enum",
- "petgraph 0.7.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rayon",
@@ -5762,15 +5720,6 @@ name = "memoffset"
 version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
-dependencies = [
- "autocfg",
-]
-
-[[package]]
-name = "memoffset"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "488016bfae457b036d996092f6cb448677611ce4449e970ceaf42695203f218a"
 dependencies = [
  "autocfg",
 ]
@@ -6104,19 +6053,6 @@ dependencies = [
 
 [[package]]
 name = "ndarray"
-version = "0.15.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adb12d4e967ec485a5f71c6311fe28158e9d6f4bc4a447b474184d0f91a8fa32"
-dependencies = [
- "matrixmultiply",
- "num-complex",
- "num-integer",
- "num-traits",
- "rawpointer",
-]
-
-[[package]]
-name = "ndarray"
 version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "882ed72dce9365842bf196bdeedf5055305f11fc8c03dee7bb0194a6cad34841"
@@ -6244,7 +6180,7 @@ dependencies = [
  "bitflags 1.3.2",
  "cfg-if",
  "libc",
- "memoffset 0.6.5",
+ "memoffset",
 ]
 
 [[package]]
@@ -6376,12 +6312,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "num-lazy"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ca66a13db1c179f8414c75ebad0351f1597ef0b291aa6e58f7af129321f0f58"
-
-[[package]]
 name = "num-rational"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6432,16 +6362,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.117",
-]
-
-[[package]]
-name = "numeric_literals"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "095aa67b0b9f2081746998f4f17106bdb51d56dc8c211afca5531b92b83bf98a"
-dependencies = [
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -7029,8 +6949,6 @@ dependencies = [
  "anyhow",
  "approx",
  "cd_kernel",
- "ellip",
- "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-complex",
  "rayon",
@@ -8055,7 +7973,6 @@ name = "provenance_core"
 version = "0.1.0"
 dependencies = [
  "camino",
- "chrono",
  "serde",
 ]
 
@@ -8145,69 +8062,6 @@ dependencies = [
  "num-traits",
  "pest",
  "pest_derive",
-]
-
-[[package]]
-name = "pyo3"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8970a78afe0628a3e3430376fc5fd76b6b45c4d43360ffd6cdd40bdde72b682a"
-dependencies = [
- "anyhow",
- "indoc",
- "libc",
- "memoffset 0.9.1",
- "once_cell",
- "portable-atomic",
- "pyo3-build-config",
- "pyo3-ffi",
- "pyo3-macros",
- "unindent",
-]
-
-[[package]]
-name = "pyo3-build-config"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "458eb0c55e7ece017adeba38f2248ff3ac615e53660d7c71a238d7d2a01c7598"
-dependencies = [
- "once_cell",
- "target-lexicon",
-]
-
-[[package]]
-name = "pyo3-ffi"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7114fe5457c61b276ab77c5055f206295b812608083644a5c5b2640c3102565c"
-dependencies = [
- "libc",
- "pyo3-build-config",
-]
-
-[[package]]
-name = "pyo3-macros"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a8725c0a622b374d6cb051d11a0983786448f7785336139c3c94f5aa6bef7e50"
-dependencies = [
- "proc-macro2",
- "pyo3-macros-backend",
- "quote",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "pyo3-macros-backend"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4109984c22491085343c05b0dbc54ddc405c3cf7b4374fc533f5c3313a572ccc"
-dependencies = [
- "heck",
- "proc-macro2",
- "pyo3-build-config",
- "quote",
- "syn 2.0.117",
 ]
 
 [[package]]
@@ -9515,7 +9369,6 @@ dependencies = [
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
- "rayon",
  "rustfft",
  "sign_imbalance",
  "statrs",
@@ -9835,12 +9688,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "target-lexicon"
-version = "0.13.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca"
-
-[[package]]
 name = "tda"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9871,7 +9718,6 @@ dependencies = [
 name = "tensor_core"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "faer",
  "ndarray 0.16.1",
 ]
@@ -10496,12 +10342,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853"
 
 [[package]]
-name = "unindent"
-version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7264e107f553ccae879d21fbea1d6724ac785e8c3bfc762137959b5802826ef3"
-
-[[package]]
 name = "union-find"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -10645,7 +10485,6 @@ dependencies = [
  "nalgebra 0.33.2",
  "optics_core",
  "rand 0.8.5",
- "rand_chacha 0.3.1",
  "raw-cpuid 11.6.0",
  "rayon",
 ]

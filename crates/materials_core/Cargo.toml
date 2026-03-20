@@ -14,7 +14,6 @@ gauss-quad = { workspace = true }
 moyo = { workspace = true }
 nalgebra = { workspace = true }
 optics_core = { path = "../optics_core" }
-petgraph = { workspace = true }
 fixedbitset = { workspace = true }
 rayon = { workspace = true }
 num-complex = { workspace = true }

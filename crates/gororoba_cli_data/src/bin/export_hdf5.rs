@@ -24,12 +24,16 @@ fn main() {
 
     #[cfg(feature = "hdf5-export")]
     {
-        run_export();
+        if let Err(e) = run_export() {
+            eprintln!("ERROR: {e:#}");
+            std::process::exit(1);
+        }
     }
 }
 
 #[cfg(feature = "hdf5-export")]
-fn run_export() {
+fn run_export() -> anyhow::Result<()> {
+    use anyhow::Context;
     use clap::Parser;
     use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
     use std::path::PathBuf;
@@ -66,17 +70,16 @@ fn run_export() {
     // --- Export claims ---
     let claims_path = args.registry_dir.join("claims.toml");
     let claims_text = if args.canonical_db.exists() {
-        let mut store = ProvenanceStore::open(&args.canonical_db).unwrap_or_else(|err| {
-            panic!("open canonical db {}: {err}", args.canonical_db.display())
-        });
+        let mut store = ProvenanceStore::open(&args.canonical_db)
+            .with_context(|| format!("open canonical db {}", args.canonical_db.display()))?;
         store
             .control_plane_compat_text(ControlPlaneCompatKind::Claims)
-            .unwrap_or_else(|err| {
-                panic!(
-                    "render claims compatibility text from canonical db {}: {err}",
+            .with_context(|| {
+                format!(
+                    "render claims compatibility text from canonical db {}",
                     args.canonical_db.display()
                 )
-            })
+            })?
     } else if claims_path.exists() {
         std::fs::read_to_string(&claims_path).unwrap()
     } else {
@@ -109,4 +112,5 @@ fn run_export() {
     }
 
     println!("HDF5 export complete: {}", args.output.display());
+    Ok(())
 }
