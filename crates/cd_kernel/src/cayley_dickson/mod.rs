@@ -30,8 +30,8 @@ pub use signature::{
 };
 pub use signs::{SignTable, cd_basis_mul_sign, cd_basis_mul_sign_iter};
 pub use simd::{
-    cd_multiply_simd, cd_norm_sq_simd, octonion_multiply_flat, quaternion_multiply_flat,
-    sedenion_multiply_flat,
+    cd_multiply_flat_into, cd_multiply_simd, cd_norm_sq_simd, octonion_multiply_flat,
+    quaternion_multiply_flat, sedenion_multiply_flat,
 };
 pub use zero_divisors::{
     GeneralFormZD, count_pathion_zero_divisors, find_zero_divisors, find_zero_divisors_3blade,

@@ -280,6 +280,100 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
     ]
 }
 
+// ---------------------------------------------------------------------------
+// Slice-based flat multiply API (zero-copy from sub-slices)
+// ---------------------------------------------------------------------------
+
+/// CD multiply on sub-slices: `out[..dim] = a[..dim] * b[..dim]`.
+///
+/// Dispatches to the appropriate flat multiply based on `dim`.
+/// For dim > 16, uses the recursive CD doubling formula with flat sub-products.
+///
+/// # Panics
+/// Panics if slices are shorter than `dim` or `dim` is not a supported
+/// power of two (1, 2, 4, 8, 16, 32).
+pub fn cd_multiply_flat_into(a: &[f64], b: &[f64], out: &mut [f64], dim: usize) {
+    debug_assert!(a.len() >= dim && b.len() >= dim && out.len() >= dim);
+    match dim {
+        1 => out[0] = a[0] * b[0],
+        2 => {
+            out[0] = a[0] * b[0] - a[1] * b[1];
+            out[1] = a[0] * b[1] + a[1] * b[0];
+        }
+        4 => {
+            let qa: [f64; 4] = [a[0], a[1], a[2], a[3]];
+            let qb: [f64; 4] = [b[0], b[1], b[2], b[3]];
+            let r = quaternion_multiply_flat(&qa, &qb);
+            out[..4].copy_from_slice(&r);
+        }
+        8 => {
+            let oa: [f64; 8] = [a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]];
+            let ob: [f64; 8] = [b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]];
+            let r = octonion_multiply_flat(&oa, &ob);
+            out[..8].copy_from_slice(&r);
+        }
+        16 => {
+            let sa: [f64; 16] = core::array::from_fn(|i| a[i]);
+            let sb: [f64; 16] = core::array::from_fn(|i| b[i]);
+            let r = sedenion_multiply_flat(&sa, &sb);
+            out[..16].copy_from_slice(&r);
+        }
+        32 => {
+            // Pathion: blocked CD doubling using 16D sub-products.
+            // (a_l, a_r)(c_l, c_r) = (a_l*c_l - conj(c_r)*a_r, c_r*a_l + a_r*conj(c_l))
+            // Each sub-product is a sedenion_multiply_flat (12 regs, no spill).
+            let half = 16;
+            let mut conj_cr = [0.0_f64; 16];
+            let mut conj_cl = [0.0_f64; 16];
+            cd_conjugate_into(&b[half..], &mut conj_cr, half);
+            cd_conjugate_into(&b[..half], &mut conj_cl, half);
+
+            let mut t1 = [0.0_f64; 16]; // a_l * c_l
+            let mut t2 = [0.0_f64; 16]; // conj(c_r) * a_r
+            let mut t3 = [0.0_f64; 16]; // c_r * a_l
+            let mut t4 = [0.0_f64; 16]; // a_r * conj(c_l)
+            cd_multiply_flat_into(&a[..half], &b[..half], &mut t1, half);
+            cd_multiply_flat_into(&conj_cr, &a[half..], &mut t2, half);
+            cd_multiply_flat_into(&b[half..], &a[..half], &mut t3, half);
+            cd_multiply_flat_into(&a[half..], &conj_cl, &mut t4, half);
+
+            // left = t1 - t2, right = t3 + t4
+            for i in 0..half {
+                out[i] = t1[i] - t2[i];
+                out[half + i] = t3[i] + t4[i];
+            }
+        }
+        _ => panic!("cd_multiply_flat_into: unsupported dim {dim}"),
+    }
+}
+
+/// CD conjugation into a pre-allocated buffer.
+#[inline]
+fn cd_conjugate_into(src: &[f64], dst: &mut [f64], dim: usize) {
+    debug_assert!(src.len() >= dim && dst.len() >= dim);
+    dst[0] = src[0];
+    let conj_mask = f64x4::from([1.0, -1.0, -1.0, -1.0]);
+    let neg_mask = f64x4::from([-1.0, -1.0, -1.0, -1.0]);
+    // First 4 elements: keep real, negate imaginary
+    if dim >= 4 {
+        let v = f64x4::from([src[0], src[1], src[2], src[3]]) * conj_mask;
+        let a = v.to_array();
+        dst[0] = a[0]; dst[1] = a[1]; dst[2] = a[2]; dst[3] = a[3];
+    }
+    // Remaining elements: negate all (they are all imaginary)
+    let mut i = 4;
+    while i + 4 <= dim {
+        let v = f64x4::from([src[i], src[i+1], src[i+2], src[i+3]]) * neg_mask;
+        let a = v.to_array();
+        dst[i] = a[0]; dst[i+1] = a[1]; dst[i+2] = a[2]; dst[i+3] = a[3];
+        i += 4;
+    }
+    while i < dim {
+        dst[i] = -src[i];
+        i += 1;
+    }
+}
+
 /// SIMD-accelerated squared norm.
 #[inline]
 pub fn cd_norm_sq_simd(a: &[f64]) -> f64 {
