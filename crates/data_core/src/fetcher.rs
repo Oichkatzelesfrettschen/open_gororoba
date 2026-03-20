@@ -221,6 +221,47 @@ pub fn download_hapi_csv(
     synthesize_hapi_header_if_missing(dataset_id, &body, parameters)
 }
 
+/// AMDA/CDPP HAPI service root (European mirror, same protocol as CDAWeb HAPI).
+///
+/// WHY a separate constant: AMDA uses a different origin and its CSV responses
+/// always include a header row, so we skip the CDAWeb info-endpoint round-trip
+/// that `download_hapi_csv` uses for header synthesis.
+const AMDA_HAPI_ROOT: &str = "https://amda.irap.omp.eu/service/hapi/data";
+
+/// Download CSV rows from the AMDA HAPI endpoint.
+///
+/// AMDA's HAPI v2 CSV responses include a header row by default, so no
+/// info-endpoint query or header synthesis is required.  The caller receives
+/// the raw CSV string (including the header line) and is responsible for
+/// parsing column positions from the header.
+///
+/// Use this as a second fallback when both the SPDF direct download and the
+/// CDAWeb HAPI mirror are unavailable.  AMDA dataset IDs differ from CDAWeb
+/// IDs; consult <https://amda.irap.omp.eu/> for the dataset catalogue.
+pub fn download_amda_hapi_csv(
+    dataset_id: &str,
+    time_min: &str,
+    time_max: &str,
+    parameters: Option<&[&str]>,
+) -> Result<String, FetchError> {
+    let mut url = format!(
+        "{AMDA_HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv"
+    );
+    if let Some(parameters) = parameters
+        && !parameters.is_empty()
+    {
+        url.push_str("&parameters=");
+        url.push_str(&parameters.join(","));
+    }
+    let body = download_to_string(&url)?;
+    if is_hapi_no_data_response(&body) {
+        return Err(FetchError::Validation(format!(
+            "AMDA dataset {dataset_id} returned no data for {time_min}..{time_max}"
+        )));
+    }
+    Ok(body)
+}
+
 /// Compute SHA-256 hash of a file, returning hex string.
 pub fn compute_sha256(path: &Path) -> Result<String, io::Error> {
     let mut hasher = Sha256::new();
