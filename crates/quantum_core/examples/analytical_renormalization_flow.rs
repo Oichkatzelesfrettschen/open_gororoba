@@ -1,3 +1,43 @@
+//! # Analytical Renormalization Flow
+//!
+//! This executable replaces the discrete, stepped numerical sweep with an exact,
+//! continuous analytical solver for the thermodynamic renormalization flow of the
+//! effective weak mixing angle (`phi`).
+//!
+//! ## Physics
+//!
+//! The simulation finds the equilibrium `phi` where the forces from two components
+//! of the Unified Action balance out:
+//! 1.  **Cosmological Entropy:** Modeled as `-2 * H(phi)`, where `H(phi)` is the binary
+//!     entropy. This term drives `phi` towards 0 or 1 to minimize entropy.
+//! 2.  **Topological Friction:** Modeled as `-K * (phi - 3/8)^2`, where `K` is a
+//!     massive coupling constant derived from the algebraic structure of the
+//!     Cayley-Dickson manifold. This term creates a potential well that pulls
+//!     `phi` towards the `3/8` attractor.
+//!
+//! The equilibrium point is where the derivative of the total action, `S'(phi)`, is zero.
+//! This leads to the transcendental equation:
+//! `K * (0.375 - phi) = ln((1-phi)/phi)`
+//!
+//! ## Simulation
+//!
+//! This executable implements a high-precision Newton-Raphson root-finding
+//! algorithm to solve for `phi` analytically across a vast range of dimensions
+//! (up to `2^40`) and effective temperatures.
+//!
+//! The results precisely map out the phase transition:
+//! -   At low temperatures and high dimensions, `K` is enormous, and the solution
+//!     is tightly locked near `phi = 0.375`.
+//! -   As temperature increases, `K` decreases, and `phi` begins to "flow" down
+//!     the entropy well towards `0.0`.
+//! -   A critical threshold is identified where the topological friction well
+//!     collapses entirely, causing a "Total Melt" where `phi -> 0`.
+//!
+//! ## Output
+//!
+//! A CSV file `analytical_renormalization_flow.csv` is generated, containing the
+//! exact, analytically-derived values of `phi` for each dimension and temperature.
+
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;

@@ -1,3 +1,36 @@
+//! # Hyperdimensional Thermal Phase Diagram Sweep
+//!
+//! This executable explores the structural integrity of the algebraic vacuum state
+//! under thermal disruption. It generates a 2D phase diagram by sweeping across
+//! both algebraic dimension and effective temperature, revealing how topological
+//! stiffness scales.
+//!
+//! ## Physics
+//!
+//! The simulation models the effect of thermal energy on the "Topological Friction"
+//! term in the Unified Action. The effective coupling constant `K` of the friction
+//! term is modeled as being inversely proportional to the temperature `T`:
+//! `K_eff = K_base / (1 + T)`
+//!
+//! This simulates how thermal noise can disrupt the rigid algebraic structure,
+//! "melting" the potential well that locks `phi` to the `3/8` attractor.
+//!
+//! ## Simulation
+//!
+//! The sweep calculates the optimal `phi` that maximizes the action for each
+//! `(Dimension, Temperature)` pair. The results demonstrate that:
+//! -   Low-dimensional manifolds (e.g., 16D) are fragile. Their topological
+//!     structure "melts" at very low temperatures, causing `phi` to drift away
+//!     from the `3/8` attractor.
+//! -   High-dimensional manifolds (e.g., `2^30`D) are incredibly robust. They
+//!     exhibit extreme "topological stiffness," remaining locked at `phi = 3/8`
+//!     even at extremely high temperatures characteristic of the early universe.
+//!
+//! ## Output
+//!
+//! A CSV file `thermal_hyperdimensional_phase_diagram.csv` is generated, mapping
+//! out the full phase space of the algebraic vacuum's response to thermal energy.
+
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
