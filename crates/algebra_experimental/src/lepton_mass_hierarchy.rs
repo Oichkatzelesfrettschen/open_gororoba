@@ -124,7 +124,7 @@ mod tests {
     #[test]
     fn test_s3_orbit_scan_all_braid_axes() {
         let (o1, o2, o3) = get_sedenion_subalgebras();
-        let modes = map_majoranas_to_cd(4, 16);
+        let _modes = map_majoranas_to_cd(4, 16); // kept for reference
         let sign_table = SignTableCache::new(16);
 
         let mut degenerate_count = 0;
@@ -133,21 +133,35 @@ mod tests {
         let mut best_pair = (0, 0);
         let mut best_frictions = (0.0, 0.0, 0.0);
 
-        // Scan all C(15,2) = 105 braid-axis pairs
-        for i in 0..modes.len() {
-            for j in (i + 1)..modes.len() {
-                let f1 = cd_braid_in_subalgebra(&modes[i], &modes[j], &o1, &sign_table).topological_friction;
-                let f2 = cd_braid_in_subalgebra(&modes[i], &modes[j], &o2, &sign_table).topological_friction;
-                let f3 = cd_braid_in_subalgebra(&modes[i], &modes[j], &o3, &sign_table).topological_friction;
+        // Scan all C(15,2) = 105 braid-axis pairs using direct basis indices
+        let all_modes: Vec<MajoranaMode> = (1..16_usize).map(|idx| MajoranaMode {
+            gamma_index: idx - 1,
+            cd_basis_index: idx,
+            cd_dim: 16,
+        }).collect();
+
+        for i in 0..all_modes.len() {
+            for j in (i + 1)..all_modes.len() {
+                let f1 = cd_braid_in_subalgebra(&all_modes[i], &all_modes[j], &o1, &sign_table).topological_friction;
+                let f2 = cd_braid_in_subalgebra(&all_modes[i], &all_modes[j], &o2, &sign_table).topological_friction;
+                let f3 = cd_braid_in_subalgebra(&all_modes[i], &all_modes[j], &o3, &sign_table).topological_friction;
 
                 let spread = (f1 - f2).abs().max((f2 - f3).abs()).max((f1 - f3).abs());
                 if spread < 1e-9 {
                     degenerate_count += 1;
                 } else {
                     breaking_count += 1;
+                    // Check if this is a 1+1+1 split (all three different)
+                    let is_full_split = (f1 - f2).abs() > 1e-9
+                        && (f2 - f3).abs() > 1e-9
+                        && (f1 - f3).abs() > 1e-9;
+                    if is_full_split {
+                        println!("  1+1+1 SPLIT: (e_{}, e_{}) -> f1={:.4}, f2={:.4}, f3={:.4}",
+                            all_modes[i].cd_basis_index, all_modes[j].cd_basis_index, f1, f2, f3);
+                    }
                     if spread > best_spread {
                         best_spread = spread;
-                        best_pair = (modes[i].cd_basis_index, modes[j].cd_basis_index);
+                        best_pair = (all_modes[i].cd_basis_index, all_modes[j].cd_basis_index);
                         best_frictions = (f1, f2, f3);
                     }
                 }
