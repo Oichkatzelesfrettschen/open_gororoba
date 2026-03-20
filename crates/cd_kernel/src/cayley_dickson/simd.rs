@@ -281,6 +281,44 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
 }
 
 // ---------------------------------------------------------------------------
+// Flat scalar baselines (no SIMD, no Vec -- pure unrolled arithmetic)
+// ---------------------------------------------------------------------------
+
+/// Flat scalar quaternion multiply -- no SIMD, no Vec, fully unrolled.
+///
+/// This is the fair baseline for isolating the pure SIMD contribution:
+/// the gap between this and `quaternion_multiply_flat` is the ISA-level gain;
+/// the gap between recursive `cd_multiply` and this is the representation gain.
+#[inline]
+pub fn quaternion_multiply_scalar_flat(q: &[f64; 4], r: &[f64; 4]) -> [f64; 4] {
+    [
+        q[0]*r[0] - q[1]*r[1] - q[2]*r[2] - q[3]*r[3],
+        q[0]*r[1] + q[1]*r[0] - q[3]*r[2] + q[2]*r[3],
+        q[0]*r[2] + q[2]*r[0] + q[3]*r[1] - q[1]*r[3],
+        q[0]*r[3] + q[3]*r[0] + q[1]*r[2] - q[2]*r[1],
+    ]
+}
+
+/// Flat scalar octonion multiply -- no SIMD, fixed arrays, CD doubling.
+#[inline]
+pub fn octonion_multiply_scalar_flat(a: &[f64; 8], b: &[f64; 8]) -> [f64; 8] {
+    let a_l = [a[0], a[1], a[2], a[3]];
+    let a_r = [a[4], a[5], a[6], a[7]];
+    let c_l = [b[0], b[1], b[2], b[3]];
+    let c_r = [b[4], b[5], b[6], b[7]];
+    let conj_c_r = [c_r[0], -c_r[1], -c_r[2], -c_r[3]];
+    let conj_c_l = [c_l[0], -c_l[1], -c_l[2], -c_l[3]];
+    let ac = quaternion_multiply_scalar_flat(&a_l, &c_l);
+    let dcb = quaternion_multiply_scalar_flat(&conj_c_r, &a_r);
+    let da = quaternion_multiply_scalar_flat(&c_r, &a_l);
+    let bcc = quaternion_multiply_scalar_flat(&a_r, &conj_c_l);
+    [
+        ac[0]-dcb[0], ac[1]-dcb[1], ac[2]-dcb[2], ac[3]-dcb[3],
+        da[0]+bcc[0], da[1]+bcc[1], da[2]+bcc[2], da[3]+bcc[3],
+    ]
+}
+
+// ---------------------------------------------------------------------------
 // Slice-based flat multiply API (zero-copy from sub-slices)
 // ---------------------------------------------------------------------------
 
