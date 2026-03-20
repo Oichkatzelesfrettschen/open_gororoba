@@ -295,6 +295,23 @@ all = { level = "warn", priority = -1 }
 [workspace.lints.rust]
 warnings = "deny"
 
+# cargo-semver-checks 0.47.0: API SemVer compliance gate.
+# Run: `make rust-semver-check` or `cargo semver-checks check-release --workspace`
+# All library crates must maintain backward-compatible public APIs within
+# the same major version. Breaking changes require a version bump.
+[workspace.metadata.semver-checks]
+# Crates that are internal-only or binary-only (no public API to check).
+excluded = [
+    "gororoba_cli",
+    "gororoba_cli_algebra",
+    "gororoba_cli_data",
+    "gororoba_cli_governance",
+    "gororoba_cli_physics",
+    "gororoba_cli_provenance",
+    "gororoba_cli_quantum",
+    "gororoba_cli_warp",
+]
+
 # Development: fast iteration. Cranelift backend skips LLVM passes for sub-minute
 # cold builds. Use 'cargo build --profile parity' for release-level numerical parity.
 # NOTE: Cranelift does not emit FMA/auto-vectorized code; IEEE 754 results may differ

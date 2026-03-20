@@ -50,4 +50,5 @@ pub mod neutrino_sector;
 pub mod invariance_tests;
 pub mod renormalization_group;
 pub mod quark_sector;
+pub mod cd_graph_imbalance;
 pub mod dark_sector_quantum_numbers;
