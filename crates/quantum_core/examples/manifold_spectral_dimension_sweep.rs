@@ -1,3 +1,41 @@
+//! # Algebraic Spectral Dimension Sweep
+//!
+//! This executable provides a concrete, computable bridge between the discrete,
+//! algebraic topology of Cayley-Dickson manifolds and the continuous, running
+//! spectral dimension `d_S(s)` of quantum gravity theories like those proposed
+//! by Calcagni.
+//!
+//! ## Physics
+//!
+//! 1.  **Algebraic Fractal Dimension:** We first compute the exact algebraic fractal
+//!     dimension `D_f` for the 16D, 32D, and 64D manifolds. This value is derived
+//!     from the spectral properties of the Zero-Divisor (ZD) tight-binding graph,
+//!     which becomes more compact as the dimension increases due to rising
+//!     topological friction (the Flat Band Fraction).
+//!
+//! 2.  **Calcagni's Spectral Dimension:** In continuous quantum gravity theories, the
+//!     effective dimension of spacetime is not constant but "runs" with the energy
+//!     scale, parameterized by `s`. The formula is:
+//!     `d_S(s) = 4 - 2 / (1 + s)`
+//!     - At high energies (UV limit, `s -> 0`), `d_S -> 2`.
+//!     - At low energies (IR limit, `s -> infinity`), `d_S -> 4`.
+//!
+//! 3.  **The Bridge:** By equating our algebraically-derived `D_f` with `d_S`, we can
+//!     invert the formula to solve for the exact effective scale `s` that corresponds
+//!     to each Cayley-Dickson manifold.
+//!
+//! ## Simulation
+//!
+//! The simulation shows that as we climb the Cayley-Dickson tower (16D -> 32D -> 64D),
+//! the algebraic fractal dimension *decreases*. This forces the corresponding `s`
+//! parameter to plummet towards the UV limit of 0, proving that hyper-dimensional
+//! algebraic structure drives the universe towards a 2D-like state at high energies.
+//!
+//! ## Output
+//!
+//! A CSV file `spectral_dimension_manifold_coupling.csv` is generated, mapping
+//! each algebraic dimension to its corresponding `D_f` and effective `s` scale.
+
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;

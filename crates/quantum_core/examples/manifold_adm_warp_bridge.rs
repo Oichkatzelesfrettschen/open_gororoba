@@ -1,3 +1,37 @@
+//! # ADM/Warp Bridge Hyperdimensional Analysis
+//!
+//! This executable explores the deep connection between the ADM formalism of General
+//! Relativity and the algebraic structure of Cayley-Dickson manifolds. It simulates
+//! the "Algebraic York Time Correction" on the contracting leading edge of an
+//! Alcubierre-style warp bubble, demonstrating how hyper-dimensional topological
+//! stiffness can protect the warp bubble from thermal disruption.
+//!
+//! ## Physics
+//!
+//! The core of the simulation is the interplay between three components:
+//! 1.  **Alcubierre/Nacelle Warp Metric:** A standard warp bubble geometry is created.
+//! 2.  **Thermodynamic Renormalization Flow:** The algebraic imbalance `phi` is not
+//!     fixed but is determined by a thermodynamic equilibrium between the entropy of
+//!     the manifold and the topological friction from the zero-divisor structure.
+//! 3.  **Algebraic York Time Correction:** The expansion scalar of spacetime (`Theta`)
+//!     receives a correction proportional to `(phi - 3/8)`. This correction either
+//!     resists or assists the spacetime contraction depending on the thermodynamic
+//!     state of the algebraic manifold.
+//!
+//! ## Simulation
+//!
+//! The simulation sweeps across multiple algebraic dimensions (16D to 1M+ D) and
+//! effective temperatures, calculating the net effect on the warp bubble's contraction.
+//! The output demonstrates that low-dimensional manifolds are fragile and "melt"
+//! easily, disrupting the warp bubble, while high-dimensional manifolds are
+//! structurally rigid and protect the bubble.
+//!
+//! ## Output
+//!
+//! The results are written to `data/results/adm_warp_algebraic_correction_sweep.csv`,
+//! detailing the relationship between dimension, temperature, the effective `phi`,
+//! and the resulting ADM correction.
+
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;

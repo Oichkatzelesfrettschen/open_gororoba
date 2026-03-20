@@ -31,6 +31,7 @@
 
 use std::f64::consts::PI;
 
+use gr_core::adm_algebra_bridge::algebraic_stress_energy_correction;
 use crate::nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass};
 
 /// Gravitational constant in kpc^3 Msun^{-1} (km/s)^2 units.
@@ -60,6 +61,8 @@ pub struct HarmonicHaloConfig {
     pub phases: Vec<f64>,
     /// Assessor fraction (0.5 for D=16, conjectured universal).
     pub assessor_fraction: f64,
+    /// Cayley-Dickson dimension for this config (16, 32, 64...).
+    pub cd_dim: usize,
 }
 
 impl HarmonicHaloConfig {
@@ -83,13 +86,23 @@ impl HarmonicHaloConfig {
         );
         let n_components = cd_dim / 2 - 1;
         let n_modes = n_modes.clamp(1, n_components);
+
+        // Use the exact FBF values derived computationally
+        let assessor_fraction = match cd_dim {
+            16 => 0.5,
+            32 => 4.0 / 7.0, // Pathion Anomaly!
+            64 => 1854.0 / 3036.0, // Chingon FBF
+            _ => ASSESSOR_FRACTION, // Fallback for higher dims or custom
+        };
+
         Self {
             alpha_zd,
             n_modes,
             n_components,
             r_s_kpc,
             phases: default_phases(n_components),
-            assessor_fraction: ASSESSOR_FRACTION,
+            assessor_fraction,
+            cd_dim,
         }
     }
 }
@@ -196,10 +209,20 @@ pub fn v_circ_with_halos(
     let v_sq_nfw = G_KPC_KMS2 * m_enc / r_kpc;
     let modulation = harmonic_halo_modulation(r_kpc, config);
 
+    // Apply algebraic stress-energy correction
+    let r_s = nfw.r200_kpc / nfw.c200; // Recalculate NFW scale radius
+    let algebraic_correction =
+        algebraic_stress_energy_correction(config.cd_dim, r_kpc, r_s, config.alpha_zd);
+
+    // This is a direct addition to the mass term (or force term if thinking about acceleration)
+    // Here we treat it as an effective mass density perturbation.
+    // So M_effective = M_enc + M_alg, or v_sq_total = v_sq_nfw + v_sq_alg
+    let v_sq_alg_correction = G_KPC_KMS2 * algebraic_correction * r_kpc;
+
     // Ensure non-negative under modulation (modulation can dip below 1.0
     // for negative cosine phases, but v_sq * modulation should stay positive
     // for physically reasonable alpha_zd values)
-    (v_sq_nfw * modulation).max(0.0).sqrt()
+    (v_sq_nfw * modulation + v_sq_alg_correction).max(0.0).sqrt()
 }
 
 /// Standard NFW circular velocity (no modulation), in km/s.

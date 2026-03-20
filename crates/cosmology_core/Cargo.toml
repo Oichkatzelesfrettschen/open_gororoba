@@ -37,6 +37,7 @@ stats_core = { version = "0.1.0", path = "../stats_core" }
 ndarray = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 csv = { workspace = true }
+gr_core = { version = "0.1.0", path = "../gr_core" }
 
 [features]
 default = []
