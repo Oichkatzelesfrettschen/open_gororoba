@@ -80,6 +80,29 @@ pub fn cd_braid_in_subalgebra(
     }
 }
 
+/// Signed friction: sum of associator values WITHOUT taking abs().
+/// This preserves orientation information that the norm-based friction discards.
+pub fn cd_braid_signed_friction(
+    mode_i: &MajoranaMode,
+    mode_j: &MajoranaMode,
+    subalgebra: &[usize],
+    sign_table: &SignTableCache,
+) -> f64 {
+    let i = mode_i.cd_basis_index;
+    let j = mode_j.cd_basis_index;
+    let a_sparse = vec![(i, 1.0)];
+    let theta = std::f64::consts::FRAC_PI_4;
+    let a_rotated = rotate_sparse(&a_sparse, i, j, theta);
+    let mut signed_sum = 0.0;
+    for &k in subalgebra {
+        if k == 0 || k == i || k == j { continue; }
+        let x_sparse = [(k, 1.0)];
+        let b_sparse = vec![(j, 1.0)];
+        signed_sum += sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+    }
+    signed_sum
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -183,5 +206,58 @@ mod tests {
         // This test documents the finding, not asserts a specific outcome
         println!("Scan complete: {} degenerate + {} breaking = {} total",
             degenerate_count, breaking_count, degenerate_count + breaking_count);
+    }
+
+    /// Signed friction scan: does the orientation-sensitive observable break S2?
+    #[test]
+    fn test_signed_friction_scan_for_s2_breaking() {
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let sign_table = SignTableCache::new(16);
+        let all_modes: Vec<MajoranaMode> = (1..16_usize).map(|idx| MajoranaMode {
+            gamma_index: idx - 1,
+            cd_basis_index: idx,
+            cd_dim: 16,
+        }).collect();
+
+        let mut full_split_count = 0;
+        let mut best_ratio = 0.0_f64;
+        let mut best_pair_signed = (0, 0);
+        let mut best_signed = (0.0, 0.0, 0.0);
+
+        for i in 0..all_modes.len() {
+            for j in (i + 1)..all_modes.len() {
+                let s1 = cd_braid_signed_friction(&all_modes[i], &all_modes[j], &o1, &sign_table);
+                let s2 = cd_braid_signed_friction(&all_modes[i], &all_modes[j], &o2, &sign_table);
+                let s3 = cd_braid_signed_friction(&all_modes[i], &all_modes[j], &o3, &sign_table);
+
+                // Check for 1+1+1 split (all three different)
+                let is_full = (s1 - s2).abs() > 1e-9
+                    && (s2 - s3).abs() > 1e-9
+                    && (s1 - s3).abs() > 1e-9;
+                if is_full {
+                    full_split_count += 1;
+                    let spread = (s1 - s2).abs().max((s2 - s3).abs()).max((s1 - s3).abs());
+                    println!("  1+1+1: (e_{}, e_{}) -> s1={:.4}, s2={:.4}, s3={:.4} spread={:.4}",
+                        all_modes[i].cd_basis_index, all_modes[j].cd_basis_index,
+                        s1, s2, s3, spread);
+                    if spread > best_ratio {
+                        best_ratio = spread;
+                        best_pair_signed = (all_modes[i].cd_basis_index, all_modes[j].cd_basis_index);
+                        best_signed = (s1, s2, s3);
+                    }
+                }
+            }
+        }
+
+        println!("--- SIGNED FRICTION SCAN ---");
+        println!("1+1+1 full splits (signed): {}", full_split_count);
+        if full_split_count > 0 {
+            println!("Best 1+1+1 pair: (e_{}, e_{})", best_pair_signed.0, best_pair_signed.1);
+            println!("  Signed frictions: s1={:.6}, s2={:.6}, s3={:.6}",
+                best_signed.0, best_signed.1, best_signed.2);
+            println!("  Max/min ratio: {:.4}", best_ratio);
+        } else {
+            println!("NO 1+1+1 splits found with signed friction either");
+        }
     }
 }
