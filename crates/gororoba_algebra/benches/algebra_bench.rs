@@ -8,7 +8,8 @@
 //! - Fractal analysis (Hurst exponent, fBm generation)
 //! - fBm algorithm comparison (Hosking vs diffusionx)
 
-use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
+use std::hint::black_box;
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use diffusionx::simulation::{continuous::FBm, prelude::*};
 use gororoba_algebra::{
     FieldParams, batch_associator_norms, batch_associator_norms_parallel, calculate_hurst,

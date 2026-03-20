@@ -1,10 +1,10 @@
 //! Embedding of Moonshine coefficients into Cayley-Dickson tower dimensions.
 //!
 //! Tests whether the CD algebraic structure has natural "slots" for Monster
-//! irreducible representations. The CD tower dimensions span 2^4 through 2^12:
+//! irreducible representations. The CD tower dimensions span 2^4 through 2^13:
 //!   16 (Sedenion), 32 (Pathion), 64 (Chingon), 128 (Routon),
 //!   256 (Voudon), 512 (Eriston), 1024 (DekaVoudon),
-//!   2048 (Icosikaivoudon), 4096 (CD-4096)
+//!   2048 (Endekavoudon), 4096 (Dodekvoudon), 8192 (Dekatrisvoudon)
 //!
 //! The AVT (Alternativity Violation Tensor) at each dimension has a
 //! characteristic number of violations. If Monster irrep dimensions
@@ -168,10 +168,10 @@ mod tests {
         for &(dim, _) in &CD_TOWER {
             assert!(dim.is_power_of_two(), "{} is not a power of 2", dim);
         }
-        // Verify full 2^4..2^12 coverage
-        assert_eq!(CD_TOWER.first().unwrap().0, 16);
-        assert_eq!(CD_TOWER.last().unwrap().0, 4096);
-        assert_eq!(CD_TOWER.len(), 9);
+        // Verify full 2^2..2^14 coverage (Quaternion through Tessareskaidekavoudon).
+        assert_eq!(CD_TOWER.first().unwrap().0, 4);
+        assert_eq!(CD_TOWER.last().unwrap().0, 16384);
+        assert_eq!(CD_TOWER.len(), 13);
     }
 
     #[test]

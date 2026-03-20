@@ -10,7 +10,6 @@
 mod arith;
 mod associator;
 pub mod sedenion;
-pub mod trigintaduonion;
 mod signature;
 mod signs;
 mod simd;

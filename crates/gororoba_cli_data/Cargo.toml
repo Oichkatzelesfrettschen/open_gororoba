@@ -357,6 +357,10 @@ name = "governance-verify"
 path = "src/bin/governance_verify.rs"
 
 [[bin]]
+name = "markdown-registry"
+path = "src/bin/markdown_registry.rs"
+
+[[bin]]
 name = "knowledge-atoms"
 path = "src/bin/knowledge_atoms.rs"
 

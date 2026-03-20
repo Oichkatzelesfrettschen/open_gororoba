@@ -1,5 +1,5 @@
 use cudarc::driver::CudaContext;
-use gororoba_algebra::gpu::voudon::VoudonFrustrationGpu;
+use gororoba_algebra::gpu::voudon::Cd256FrustrationKernel;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::sync::Arc;
 
@@ -22,7 +22,7 @@ fn main() -> anyhow::Result<()> {
         n_cells
     );
     let frustration_host =
-        VoudonFrustrationGpu::compute_field(nx, ny, nz, 42).map_err(|e| anyhow::anyhow!(e))?;
+        Cd256FrustrationKernel::compute_field(nx, ny, nz, 42).map_err(|e| anyhow::anyhow!(e))?;
 
     // 2. Initialize CUDA LBM Solver
     println!("Initializing CUDA LBM solver (FP32)...");

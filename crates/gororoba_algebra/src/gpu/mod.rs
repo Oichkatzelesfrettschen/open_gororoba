@@ -12,6 +12,7 @@
 //! All GPU operations have CPU fallback implementations.
 
 // dimensional module is always available (has CPU fallback + wide-index API)
+pub mod avt_pack;
 pub mod dimensional;
 #[cfg(feature = "gpu")]
 mod eta_matrix;
@@ -22,6 +23,7 @@ mod imbalance;
 pub mod tensor_avt;
 pub mod voudon;
 
+pub use avt_pack::GpuPackableAvt;
 pub use dimensional::{GpuAptResult, GpuAptResultWide, GpuDimensionalEngine};
 #[cfg(feature = "gpu")]
 pub use eta_matrix::EtaMatrixGpu;

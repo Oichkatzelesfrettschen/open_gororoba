@@ -63,9 +63,9 @@ extern "C" __global__ void find_stable_cycles_kernel(
 }
 "#;
 
-pub struct VoudonStabilizerGpu;
+pub struct Cd256StabilizerKernel;
 
-impl VoudonStabilizerGpu {
+impl Cd256StabilizerKernel {
     #[cfg(feature = "gpu")]
     pub fn find_stable_cycles(max_triples: usize) -> Result<Vec<(usize, usize, usize)>, String> {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);

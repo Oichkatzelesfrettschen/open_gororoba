@@ -22,17 +22,21 @@ use cd_kernel::cayley_dickson::SignTable;
 use rayon::prelude::*;
 
 /// CD tower dimensions and their algebraic properties.
-/// Covers 2^4 (Sedenion) through 2^12 (CD-4096).
-pub const CD_TOWER: [(usize, &str); 9] = [
-    (16, "Sedenion"),
-    (32, "Pathion"),
-    (64, "Chingon"),
-    (128, "Routon"),
-    (256, "Voudon"),
-    (512, "Eriston"),
-    (1024, "DekaVoudon"),
-    (2048, "Icosikaivoudon"),
-    (4096, "CD-4096"),
+/// Covers 2^2 (Quaternion) through 2^14 (Tessareskaidekavoudon).
+pub const CD_TOWER: [(usize, &str); 13] = [
+    (4,     "Quaternion"),
+    (8,     "Octonion"),
+    (16,    "Sedenion"),
+    (32,    "Pathion"),
+    (64,    "Chingon"),
+    (128,   "Routon"),
+    (256,   "Voudon"),
+    (512,   "Eriston"),
+    (1024,  "DekaVoudon"),
+    (2048,  "Endekavoudon"),          // was "Icosikaivoudon" (deprecated)
+    (4096,  "Dodekvoudon"),           // was "CD-4096"
+    (8192,  "Dekatrisvoudon"),        // new
+    (16384, "Tessareskaidekavoudon"), // 2^14 placeholder
 ];
 
 /// Box-kite zero-divisor violation counts (literature convention).
@@ -87,8 +91,8 @@ pub const EXACT_ALTERNATOR_COUNTS: [(usize, u64); 11] = [
     (256, 3_968_496),           // Voudon
     (512, 32_644_080),          // Eriston
     (1024, 264_779_760),        // DekaVoudon
-    (2048, 2_132_832_240),      // Icosikaivoudon
-    (4096, 17_121_206_256),     // CD-4096
+    (2048, 2_132_832_240),      // Endekavoudon
+    (4096, 17_121_206_256),     // Dodekvoudon
     (8192, 137_204_187_120),    // CD-8192 (V/V_prev = 8.0145)
     (16384, 1_098_572_333_040), // CD-16384 (V/V_prev = 8.0068)
 ];
@@ -581,9 +585,9 @@ mod tests {
         for &(dim, _) in &CD_TOWER {
             assert!(dim.is_power_of_two(), "{} is not a power of 2", dim);
         }
-        assert_eq!(CD_TOWER.first().unwrap().0, 16);
-        assert_eq!(CD_TOWER.last().unwrap().0, 4096);
-        assert_eq!(CD_TOWER.len(), 9);
+        assert_eq!(CD_TOWER.first().unwrap().0, 4);
+        assert_eq!(CD_TOWER.last().unwrap().0, 16384);
+        assert_eq!(CD_TOWER.len(), 13);
     }
 
     #[test]
@@ -617,10 +621,23 @@ mod tests {
     }
 
     #[test]
-    fn test_cd_tower_includes_4096() {
+    fn test_cd_tower_full_range() {
         let dims: Vec<usize> = CD_TOWER.iter().map(|&(d, _)| d).collect();
-        assert!(dims.contains(&2048), "Tower should include 2048D");
-        assert!(dims.contains(&4096), "Tower should include 4096D");
+        // Lower tower
+        assert!(dims.contains(&4),     "Tower should include 4D (Quaternion)");
+        assert!(dims.contains(&8),     "Tower should include 8D (Octonion)");
+        assert!(dims.contains(&16),    "Tower should include 16D (Sedenion)");
+        // Upper tower
+        assert!(dims.contains(&2048),  "Tower should include 2048D (Endekavoudon)");
+        assert!(dims.contains(&4096),  "Tower should include 4096D (Dodekvoudon)");
+        assert!(dims.contains(&8192),  "Tower should include 8192D (Dekatrisvoudon)");
+        assert!(dims.contains(&16384), "Tower should include 16384D (Tessareskaidekavoudon)");
+        // Verify deprecated/placeholder names are gone
+        for &(_, name) in &CD_TOWER {
+            assert_ne!(name, "Icosikaivoudon", "Deprecated name must not appear in CD_TOWER");
+            assert_ne!(name, "CD-4096",        "Placeholder name must not appear in CD_TOWER");
+            assert_ne!(name, "CD-8192",        "Placeholder name must not appear in CD_TOWER");
+        }
     }
 
     #[test]

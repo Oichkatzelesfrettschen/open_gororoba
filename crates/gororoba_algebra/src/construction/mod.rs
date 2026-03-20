@@ -1,5 +1,6 @@
 pub mod albert;
 pub mod category;
+pub mod cd_tower;
 pub mod cayley_dickson;
 pub mod chingon;
 pub mod clifford;
@@ -24,6 +25,11 @@ pub mod wheels;
 pub mod species_audit;
 pub mod twist;
 pub mod cd_loop;
+
+#[cfg(feature = "lie")]
+pub mod golay_code;
+#[cfg(feature = "lie")]
+pub mod leech_lattice;
 
 
 

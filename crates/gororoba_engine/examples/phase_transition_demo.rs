@@ -1,6 +1,6 @@
 use algebra_analysis::phase_transition::{AlgebraicPhase, PhaseTransitionAnalyzer};
 use cudarc::driver::CudaContext;
-use gororoba_algebra::gpu::voudon::VoudonFrustrationGpu;
+use gororoba_algebra::gpu::voudon::Cd256FrustrationKernel;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::sync::Arc;
 
@@ -24,7 +24,7 @@ fn main() -> anyhow::Result<()> {
     // 2. Compute 256D Non-Associativity Density Field on GPU
     println!("Computing 256D non-associativity density (frustration) field...");
     let frustration_host =
-        VoudonFrustrationGpu::compute_field(nx, ny, nz, 42).map_err(|e| anyhow::anyhow!(e))?;
+        Cd256FrustrationKernel::compute_field(nx, ny, nz, 42).map_err(|e| anyhow::anyhow!(e))?;
 
     // 3. Statistical Analysis of Phases
     let mut coherent_cells = 0;

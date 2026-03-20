@@ -50,6 +50,13 @@ lie = []
 # GPU acceleration (CUDA via cudarc).
 gpu = ["cudarc"]
 wedged = []
+# CD tower feature gates: each level enables the one below.
+cd-512  = []
+cd-1024 = ["cd-512"]
+# Meta-feature: full upper tower (32D through 1024D with all SIMD types).
+higher-cd = ["cd-1024"]
+# SU(5), three generations, lepton masses, Leech lattice (Phase 7 graduation).
+physics-sm = []
 
 [dev-dependencies]
 approx = { workspace = true }

@@ -21,6 +21,8 @@ pub mod reference_jacobi;
 #[cfg(target_arch = "x86_64")]
 pub mod x87_jacobi;
 
+pub mod avt;
+pub mod sparse;
 pub mod annihilator;
 pub mod associator_entropy;
 pub mod avt_entropy;

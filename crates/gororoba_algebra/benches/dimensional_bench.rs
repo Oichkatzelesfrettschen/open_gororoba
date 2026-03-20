@@ -8,7 +8,8 @@
 //! Run with: cargo bench --bench dimensional_bench -p gororoba_algebra
 //! GPU benchmarks: cargo bench --bench dimensional_bench -p gororoba_algebra --features gpu
 
-use criterion::{BenchmarkId, Criterion, black_box, criterion_group, criterion_main};
+use std::hint::black_box;
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use gororoba_algebra::{
     analysis::boxkites::{cross_assessors, motif_components_for_cross_assessors},
     cd_basis_mul_sign,

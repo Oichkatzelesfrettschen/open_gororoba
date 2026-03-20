@@ -122,6 +122,14 @@ pub enum AlgebraDim {
     Eriston = 512,
     /// DekaVoudons (dim 1024)
     DekaVoudon = 1024,
+    /// Endekavoudons (dim 2048) -- level 11
+    Endekavoudon = 2048,
+    /// Dodekvoudons (dim 4096) -- level 12
+    Dodekvoudon = 4096,
+    /// Dekatrisvoudons (dim 8192) -- level 13
+    Dekatrisvoudon = 8192,
+    /// Tessareskaidekavoudons (dim 16384) -- level 14 (placeholder)
+    Tessareskaidekavoudon = 16384,
 }
 
 impl AlgebraDim {
@@ -164,6 +172,10 @@ impl AlgebraDim {
             AlgebraDim::Voudon => "Voudons (256 deities of Ifa/Voodoo)",
             AlgebraDim::Eriston => "Eristons",
             AlgebraDim::DekaVoudon => "DekaVoudons",
+            AlgebraDim::Endekavoudon => "Endekavoudons (dim 2048, sparse)",
+            AlgebraDim::Dodekvoudon => "Dodekvoudons (dim 4096, sparse)",
+            AlgebraDim::Dekatrisvoudon => "Dekatrisvoudons (dim 8192, sparse)",
+            AlgebraDim::Tessareskaidekavoudon => "Tessareskaidekavoudons (dim 16384, placeholder)",
         }
     }
 
@@ -192,8 +204,36 @@ impl AlgebraDim {
             256 => Some(AlgebraDim::Voudon),
             512 => Some(AlgebraDim::Eriston),
             1024 => Some(AlgebraDim::DekaVoudon),
+            2048 => Some(AlgebraDim::Endekavoudon),
+            4096 => Some(AlgebraDim::Dodekvoudon),
+            8192  => Some(AlgebraDim::Dekatrisvoudon),
+            16384 => Some(AlgebraDim::Tessareskaidekavoudon),
             _ => None,
         }
+    }
+
+    /// Latin academic name for the algebra (used in formal cross-references).
+    ///
+    /// Returns "(no Latin name established)" for dimensions where only Greek
+    /// ordinal names exist (upper tower and small algebras).
+    pub fn latin_name(&self) -> &'static str {
+        match self {
+            AlgebraDim::Pathion    => "Trigintaduonion",
+            AlgebraDim::Chingon    => "Sexagintaquatronion",
+            AlgebraDim::Routon     => "Centumduodetrigintanion",
+            AlgebraDim::Voudon     => "Ducentiquinquagintasexion",
+            AlgebraDim::Eriston    => "Quingentoduodecimnion",
+            AlgebraDim::DekaVoudon => "Millevigintiquattuornion",
+            _                      => "(no Latin name established)",
+        }
+    }
+
+    /// Cayley-Dickson tower level: log2(dim).
+    ///
+    /// Real=0, Complex=1, Quaternion=2, Octonion=3, Sedenion=4, ...,
+    /// DekaVoudon=10, Endekavoudon=11, Dodekvoudon=12, Dekatrisvoudon=13.
+    pub fn level(&self) -> u32 {
+        self.dim().trailing_zeros()
     }
 }
 

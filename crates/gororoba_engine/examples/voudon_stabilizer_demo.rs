@@ -1,4 +1,4 @@
-use algebra_experimental::voudon_stabilizer::VoudonStabilizerGpu;
+use algebra_experimental::voudon_stabilizer::Cd256StabilizerKernel;
 use cudarc::driver::CudaContext;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
 use std::sync::Arc;
@@ -18,7 +18,7 @@ fn main() -> anyhow::Result<()> {
         max_triples
     );
     let stable_cycles =
-        VoudonStabilizerGpu::find_stable_cycles(max_triples).map_err(|e| anyhow::anyhow!(e))?;
+        Cd256StabilizerKernel::find_stable_cycles(max_triples).map_err(|e| anyhow::anyhow!(e))?;
 
     println!("Found {} stable cycles.", stable_cycles.len());
     if !stable_cycles.is_empty() {
