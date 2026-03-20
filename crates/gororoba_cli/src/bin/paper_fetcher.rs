@@ -5,7 +5,6 @@ use std::fs;
 use std::path::Path;
 use std::thread::sleep;
 use std::time::Duration;
-use ureq;
 
 const UA: &str = "gororoba-fetch/0.1 (research; https://github.com/eirikr/open_gororoba)";
 

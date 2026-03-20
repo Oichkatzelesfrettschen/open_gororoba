@@ -24,11 +24,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for entry in fs::read_dir(&theories_dir)? {
             let entry = entry?;
             let path = entry.path();
-            if path.extension().and_then(|s| s.to_str()) == Some("v") {
-                if let Some(base) = path.file_stem().and_then(|s| s.to_str()) {
+            if path.extension().and_then(|s| s.to_str()) == Some("v")
+                && let Some(base) = path.file_stem().and_then(|s| s.to_str()) {
                     dot_content.push_str(&format!("  \"{}\";\n", base));
                 }
-            }
         }
     }
 
@@ -39,11 +38,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for entry in fs::read_dir(&verified_dir)? {
             let entry = entry?;
             let path = entry.path();
-            if path.extension().and_then(|s| s.to_str()) == Some("v") {
-                if let Some(base) = path.file_stem().and_then(|s| s.to_str()) {
+            if path.extension().and_then(|s| s.to_str()) == Some("v")
+                && let Some(base) = path.file_stem().and_then(|s| s.to_str()) {
                     dot_content.push_str(&format!("  \"{}\";\n", base));
                 }
-            }
         }
     }
 
@@ -91,14 +89,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Render if graphviz is available
     if Command::new("dot").arg("-V").output().is_ok() {
         if Command::new("dot")
-            .args(&["-Tpdf", dot_file.to_str().unwrap(), "-o", out_dir.join("dep_graph.pdf").to_str().unwrap()])
+            .args(["-Tpdf", dot_file.to_str().unwrap(), "-o", out_dir.join("dep_graph.pdf").to_str().unwrap()])
             .output()
             .is_ok()
         {
             println!("Generated: {}", out_dir.join("dep_graph.pdf").display());
         }
         if Command::new("dot")
-            .args(&["-Tsvg", dot_file.to_str().unwrap(), "-o", out_dir.join("dep_graph.svg").to_str().unwrap()])
+            .args(["-Tsvg", dot_file.to_str().unwrap(), "-o", out_dir.join("dep_graph.svg").to_str().unwrap()])
             .output()
             .is_ok()
         {
@@ -110,7 +108,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if Command::new("dot2tex").arg("--version").output().is_ok() {
         let tikz_output = out_dir.join("dep_graph.tikz");
         let output = Command::new("dot2tex")
-            .args(&["-f", "tikz", "--figonly", dot_file.to_str().unwrap()])
+            .args(["-f", "tikz", "--figonly", dot_file.to_str().unwrap()])
             .output()?;
         fs::write(&tikz_output, output.stdout)?;
         println!("Generated: {}", tikz_output.display());

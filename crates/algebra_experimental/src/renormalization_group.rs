@@ -42,12 +42,15 @@ pub fn rk4_step(
     }
 }
 
+/// Per-gauge-group trajectory: pairs of (log10_scale, alpha_inv).
+pub type CouplingTrajectory = Vec<(f64, f64)>;
+
 /// Run gauge coupling RGE from M_Z to `end_scale` with threshold correction
 /// at `sterile_mass`. Returns trajectories for (alpha_1^{-1}, alpha_2^{-1}, alpha_3^{-1}).
 pub fn run_rges(
     end_scale: f64,
     sterile_mass: f64,
-) -> (Vec<(f64, f64)>, Vec<(f64, f64)>, Vec<(f64, f64)>) {
+) -> (CouplingTrajectory, CouplingTrajectory, CouplingTrajectory) {
     let mut alpha_vals = (Vec::new(), Vec::new(), Vec::new());
     let mut alpha_inv = [ALPHA_INV_MZ.0, ALPHA_INV_MZ.1, ALPHA_INV_MZ.2];
 

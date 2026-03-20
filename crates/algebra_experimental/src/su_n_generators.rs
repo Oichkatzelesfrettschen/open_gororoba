@@ -28,10 +28,10 @@ pub fn construct_su5_generators_algebraic(basis: &[Sedenion; 16], complex_struct
 
     let mut generators = Vec::new();
 
-    for i in 0..5 {
-        for j in 0..5 {
+    for (i, ad) in ad_ops.iter().enumerate() {
+        for (j, a) in a_ops.iter().enumerate() {
             if i == j { continue; }
-            generators.push(ad_ops[i] * a_ops[j]);
+            generators.push(*ad * *a);
         }
     }
 

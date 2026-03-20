@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let proofs_dir = repo_root.join("proofs");
     let out_dir = proofs_dir.join("html");
 
-    if !Command::new("rocq").arg("--version").output().is_ok() {
+    if Command::new("rocq").arg("--version").output().is_err() {
         println!("SKIP: rocq not found");
         return Ok(());
     }

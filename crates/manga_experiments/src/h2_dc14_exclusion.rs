@@ -238,8 +238,8 @@ pub fn run_h2(config: &H2Config) -> H2Result {
             let shifted_k: Vec<f64> = base_wavenumbers.iter().map(|&k| k + delta_x).collect();
 
             // Derive a per-task base seed from the global seed and (delta_x, alpha).
-            let dx_bits = delta_x.to_bits() as u64;
-            let alpha_bits = alpha.to_bits() as u64;
+            let dx_bits = delta_x.to_bits();
+            let alpha_bits = alpha.to_bits();
             let mut task_seed = config.seed;
             task_seed = task_seed.wrapping_add(dx_bits.wrapping_mul(0x9E3779B185EBCA87));
             task_seed = task_seed.wrapping_add(alpha_bits.wrapping_mul(0xC2B2AE3D27D4EB4F));

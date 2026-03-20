@@ -30,6 +30,7 @@ struct Args {
 fn potential(q: &[f64]) -> f64 {
     let mut energy = 0.0;
     // Harmonic trap around equilibrium
+    #[allow(clippy::needless_range_loop)]
     for i in 0..q.len() {
         energy += 0.5 * (q[i] - i as f64).powi(2);
     }

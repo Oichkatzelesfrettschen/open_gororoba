@@ -84,13 +84,11 @@ fn main() -> Result<()> {
             record.get(1) // fallback
         };
 
-        if let Some(v_str) = val {
-            if let Ok(v) = v_str.parse::<f64>() {
-                if v.is_finite() {
+        if let Some(v_str) = val
+            && let Ok(v) = v_str.parse::<f64>()
+                && v.is_finite() {
                     signal.push(v);
                 }
-            }
-        }
     }
 
     if signal.is_empty() {

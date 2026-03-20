@@ -22,8 +22,8 @@ fn main() -> Result<()> {
     println!("=== Analysis of {} ===", file_path);
 
     // 1. Structural inspection (Simplified: check for key groups)
-    if let Ok(sim_group) = file.group("simulation") {
-        if let Ok(trace_group) = sim_group.group("trace") {
+    if let Ok(sim_group) = file.group("simulation")
+        && let Ok(trace_group) = sim_group.group("trace") {
             println!("\nTime-Series Summary:");
             
             if let Ok(time_ds) = trace_group.dataset("time") {
@@ -58,7 +58,6 @@ fn main() -> Result<()> {
                 }
             }
         }
-    }
 
     Ok(())
 }

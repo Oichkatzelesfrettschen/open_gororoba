@@ -430,7 +430,7 @@ fn run_terminology_gate(quiet: bool) -> Result<()> {
 fn run_convos_chunk(path: &Path, chunk_lines: usize, prefix: &str) -> Result<()> {
     let content = fs::read_to_string(path)?;
     let total_lines = content.lines().count();
-    let n_chunks = (total_lines + chunk_lines - 1) / chunk_lines;
+    let n_chunks = total_lines.div_ceil(chunk_lines);
 
     println!("{INFO_STYLE}path:{RESET}        {}", path.display());
     println!("{INFO_STYLE}lines:{RESET}       {}", total_lines);
@@ -454,7 +454,7 @@ fn run_coq_stub(src: &Path, dst: &Path) -> Result<()> {
     for line in text.lines() {
         if line.starts_with("Theorem ") {
             out.push_str("Axiom ");
-            out.push_str(&line["Theorem ".len()..]);
+            out.push_str(line.strip_prefix("Theorem ").unwrap_or(line));
         } else {
             out.push_str(line);
         }
@@ -623,7 +623,7 @@ fn run_ci_route(cli: CiRouteCli) -> Result<()> {
     
     // Get changed files via git
     let output = Command::new("git")
-        .args(&["diff", "--name-only", &base, "HEAD"])
+        .args(["diff", "--name-only", &base, "HEAD"])
         .output()?;
     let stdout = String::from_utf8_lossy(&output.stdout);
     let files: Vec<String> = stdout.lines().map(|s| s.to_string()).collect();
