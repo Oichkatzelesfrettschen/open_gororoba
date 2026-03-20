@@ -15,3 +15,4 @@ pub mod h1_prefit_injection;
 pub mod h2_dc14_exclusion;
 pub mod h3_sign_mass_stacking;
 pub mod h4_azimuthal_power;
+pub mod zd_null_experiment;
