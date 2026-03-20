@@ -1,0 +1,10 @@
+# Todo narrative overlay (TOML-first).
+# WHY: Provides prose context that annotates the structured registry/todo.toml.
+#      The body_markdown field is rendered alongside the machine-readable todo table.
+# HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.
+
+[todo_narrative]
+body_markdown = """
+See registry/todo.toml for the full authoritative task list.
+Items are tracked by ID (T-NNN) with explicit status, priority, dependencies, and acceptance criteria.
+"""
