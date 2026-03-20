@@ -40,12 +40,6 @@ target/
 target_codex_hve/
 target_codex_hve2/
 .cache/
-.cache/cargo-default-target/
-.cache/cargo-home/
-.cache/gate-target/
-.cache/profiles/
-.cache/tensor_avt_eval/
-.cache/tensor_avt_profile/
 rustc-ice-*.txt
 
 # Coq / Rocq

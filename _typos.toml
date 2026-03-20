@@ -1,6 +1,6 @@
 # typos-cli configuration
 # WHY: Catch spelling errors in code, docs, and registry files before they land.
-# WHAT: Runs on all text files except data/external, .cache, target.
+# WHAT: Runs on all text files except data/external, .cache, target, extracted papers.
 # HOW: `make typos` or `typos` from repo root.
 
 [files]
@@ -13,8 +13,29 @@ extend-exclude = [
     "*.sqlite3",
     "*.h5",
     "Cargo.lock",
+    # Large registry files with machine-generated content or wrapped text
     "registry/artifact_source_of_truth.toml",
     "registry/claims_evidence_edges.toml",
+    "registry/external_sources.toml",
+    "registry/knowledge/",
+    "registry/source_lanes/",
+    # Extracted papers contain OCR artifacts -- not our code
+    "papers/extracted/",
+    # Curated benchmark CSVs contain x86 instruction mnemonics and LLVM IR
+    "curated/",
+    # LaTeX bibliographies contain author name fragments
+    "docs/latex/refs.bib",
+    "docs/latex/arxiv/refs.bib",
+    # Data manifests from external ingestion
+    "data/papers/",
+    # Docker images reference external package names
+    "docker/",
+    # Generated registry mirrors contain embedded text from external sources
+    "crates/data_core/src/registry_mirrors/",
+    # Archive CSVs contain x86 instruction mnemonics
+    "archive/",
+    # Generated materials/project CSV datasets contain element symbols
+    "registry/data/",
 ]
 
 [default]
@@ -22,6 +43,8 @@ extend-exclude = [
 extend-ignore-re = [
     # Common abbreviations in physics code
     "(?i)\\b(nfw|udg|cmr|lbm|mrt|qgp|hott|fhs|psl|smhm)\\b",
+    # LaTeX theorem/proof environment commands
+    "\\\\(thm|lem|prop|cor|defn|rmk)\\b",
 ]
 
 [default.extend-words]
@@ -33,6 +56,71 @@ trigintaduonion = "trigintaduonion"
 associator = "associator"
 # Physics terms
 gravastar = "gravastar"
+fracton = "fracton"
+# Satellite/instrument names
+SORCE = "SORCE"
+sorce = "sorce"
+# Color variants (both are valid English)
+vermillion = "vermillion"
+# Author names that look like typos
+Redner = "Redner"
 # Code identifiers
 rng = "rng"
 idx = "idx"
+# LaTeX abbreviations
+thm = "thm"
+ba = "ba"
+hax = "hax"
+# Mathematician/physicist names
+Strang = "Strang"
+# Physics terms
+brane = "brane"
+# BibTeX author name fragments
+Ned = "Ned"
+Lov = "Lov"
+# Rocq proof hypothesis names (Heps, Hge, etc.)
+Heps = "Heps"
+Hge = "Hge"
+# Math: Algebraic Normal Form
+ANF = "ANF"
+# Journal abbreviation: Commun. Math. Phys.
+Commun = "Commun"
+# Penrose-Newman formalism
+PN = "PN"
+# LBM distribution function arrays (fo = f_old, fi = f_in)
+fo = "fo"
+# Grid index variables (ix, iy, iz -- standard physics notation)
+iy = "iy"
+iz = "iz"
+# Number of dimensions (SPICE DAF, also generic physics)
+nd = "nd"
+Nd = "Nd"
+# Angle/parameter shorthands in GR code
+thi = "thi"
+# Quantum simulator
+Aer = "Aer"
+# x86 instruction mnemonics
+AAS = "AAS"
+DAA = "DAA"
+# Journal abbreviations and author names
+Lond = "Lond"
+lond = "lond"
+Blok = "Blok"
+Comput = "Comput"
+Ser = "Ser"
+Querry = "Querry"
+# Math/physics terms
+Relativ = "Relativ"
+Quater = "Quater"
+Flate = "Flate"
+UE = "UE"
+GOE = "GOE"
+goe = "goe"
+# Suh (author name in photonics references)
+Suh = "Suh"
+# "algebraical" is a valid (archaic) English word
+algebraical = "algebraical"
+# "unparseable" is a valid variant
+unparseable = "unparseable"
+# ASO = Artifact Source Of truth (internal abbreviation)
+ASO = "ASO"

@@ -595,8 +595,8 @@ source_refs = ["registry/experiments.toml::experiment/49::E-052"]
 
 [[artifact_ref]]
 id = "ASOT-1112"
-key = "title:physical_derivation_compressing_an_uncompressible_fluid_via_spectral_forcing"
-title = "Physical Derivation: Compressing an Uncompressible Fluid via Spectral Forcing"
+key = "title:physical_derivation_compressing_an_incompressible_fluid_via_spectral_forcing"
+title = "Physical Derivation: Compressing an Incompressible Fluid via Spectral Forcing"
 status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = ""
