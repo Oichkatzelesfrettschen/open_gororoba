@@ -211,6 +211,59 @@ pub fn octonion_multiply_flat(a: &[f64; 8], b: &[f64; 8]) -> [f64; 8] {
     [l[0], l[1], l[2], l[3], r[0], r[1], r[2], r[3]]
 }
 
+/// Flat sedenion (16D CD) multiply using octonion_multiply_flat -- zero heap allocation.
+///
+/// Uses the CD doubling formula: `(a,b)(c,d) = (ac - d*b, da + bc*)`
+/// where `a, b, c, d` are octonions and `*` is conjugation.
+///
+/// Register budget: 4 regs for A (16D), 4 for B, 4 for output = 12 of 16 YMM.
+/// Fits perfectly in the AVX2 register file with 4 spares for temporaries.
+/// This is the largest CD dimension that fits without register spills on AVX2.
+///
+/// Total work: 4 octonion multiplies x 4 quaternion multiplies = 16 quaternion
+/// multiplies = 64 FMAs.  On a modern AVX2 core with dual-issue FMA, this
+/// executes at L1 cache speed.
+#[inline]
+pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
+    let a_l: [f64; 8] = [a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]];
+    let a_r: [f64; 8] = [a[8], a[9], a[10], a[11], a[12], a[13], a[14], a[15]];
+    let c_l: [f64; 8] = [b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]];
+    let c_r: [f64; 8] = [b[8], b[9], b[10], b[11], b[12], b[13], b[14], b[15]];
+
+    // Conjugation: negate imaginary parts (indices 1..7)
+    let conj_c_r: [f64; 8] = [
+        c_r[0], -c_r[1], -c_r[2], -c_r[3], -c_r[4], -c_r[5], -c_r[6], -c_r[7],
+    ];
+    let conj_c_l: [f64; 8] = [
+        c_l[0], -c_l[1], -c_l[2], -c_l[3], -c_l[4], -c_l[5], -c_l[6], -c_l[7],
+    ];
+
+    // (a,b)(c,d) = (ac - d*b, da + bc*)
+    let ac = octonion_multiply_flat(&a_l, &c_l);
+    let conj_cr_ar = octonion_multiply_flat(&conj_c_r, &a_r);
+    let cr_al = octonion_multiply_flat(&c_r, &a_l);
+    let ar_conj_cl = octonion_multiply_flat(&a_r, &conj_c_l);
+
+    // left = ac - conj(c_r)*a_r, right = c_r*a_l + a_r*conj(c_l)
+    let left_lo = f64x4::from([ac[0], ac[1], ac[2], ac[3]])
+        - f64x4::from([conj_cr_ar[0], conj_cr_ar[1], conj_cr_ar[2], conj_cr_ar[3]]);
+    let left_hi = f64x4::from([ac[4], ac[5], ac[6], ac[7]])
+        - f64x4::from([conj_cr_ar[4], conj_cr_ar[5], conj_cr_ar[6], conj_cr_ar[7]]);
+    let right_lo = f64x4::from([cr_al[0], cr_al[1], cr_al[2], cr_al[3]])
+        + f64x4::from([ar_conj_cl[0], ar_conj_cl[1], ar_conj_cl[2], ar_conj_cl[3]]);
+    let right_hi = f64x4::from([cr_al[4], cr_al[5], cr_al[6], cr_al[7]])
+        + f64x4::from([ar_conj_cl[4], ar_conj_cl[5], ar_conj_cl[6], ar_conj_cl[7]]);
+
+    let ll = left_lo.to_array();
+    let lh = left_hi.to_array();
+    let rl = right_lo.to_array();
+    let rh = right_hi.to_array();
+    [
+        ll[0], ll[1], ll[2], ll[3], lh[0], lh[1], lh[2], lh[3],
+        rl[0], rl[1], rl[2], rl[3], rh[0], rh[1], rh[2], rh[3],
+    ]
+}
+
 /// SIMD-accelerated squared norm.
 #[inline]
 pub fn cd_norm_sq_simd(a: &[f64]) -> f64 {

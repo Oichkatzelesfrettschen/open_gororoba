@@ -227,3 +227,57 @@ fn test_quaternion_multiply_flat_associativity_fails_at_octonion() {
         );
     }
 }
+
+#[test]
+fn test_sedenion_multiply_flat_matches_scalar() {
+    let a: [f64; 16] = [
+        1.0, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6, 0.7,
+        -0.8, 0.9, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6,
+    ];
+    let b: [f64; 16] = [
+        0.5, -0.1, 0.2, -0.3, 0.4, 0.5, -0.6, 0.7,
+        0.8, -0.9, 0.1, 0.2, -0.3, 0.4, 0.5, -0.6,
+    ];
+    let flat = sedenion_multiply_flat(&a, &b);
+    let scalar = cd_multiply(&a, &b);
+    for i in 0..16 {
+        assert!(
+            (flat[i] - scalar[i]).abs() < 1e-10,
+            "sedenion_multiply_flat[{}] = {}, scalar = {}, diff = {}",
+            i, flat[i], scalar[i], (flat[i] - scalar[i]).abs()
+        );
+    }
+}
+
+#[test]
+fn test_sedenion_multiply_flat_non_associative() {
+    // Sedenions are NOT associative: (ab)c != a(bc) in general
+    let a: [f64; 16] = {
+        let mut v = [0.0; 16];
+        v[1] = 1.0;
+        v[10] = 1.0;
+        v
+    };
+    let b: [f64; 16] = {
+        let mut v = [0.0; 16];
+        v[3] = 1.0;
+        v[12] = 1.0;
+        v
+    };
+    let c: [f64; 16] = {
+        let mut v = [0.0; 16];
+        v[5] = 1.0;
+        v[14] = 1.0;
+        v
+    };
+    let ab = sedenion_multiply_flat(&a, &b);
+    let bc = sedenion_multiply_flat(&b, &c);
+    let ab_c = sedenion_multiply_flat(&ab, &c);
+    let a_bc = sedenion_multiply_flat(&a, &bc);
+    let diff: f64 = ab_c.iter().zip(a_bc.iter())
+        .map(|(x, y)| (x - y).powi(2))
+        .sum::<f64>()
+        .sqrt();
+    assert!(diff > 1e-6,
+        "Sedenion (ab)c should differ from a(bc) -- non-associativity. diff={}", diff);
+}
