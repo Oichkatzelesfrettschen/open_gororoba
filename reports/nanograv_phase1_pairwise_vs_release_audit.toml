@@ -1,0 +1,186 @@
+[metadata]
+title = "NANOGrav Phase 1 regenerated pairwise surface versus older release-product audit"
+release_pairwise_csv = "data/csv/nanograv_15yr_pairwise_hd_audit.csv"
+phase1_pair_count = 15
+matched_pair_count = 15
+
+[[pair]]
+pulsar_a = "J1713+0747"
+pulsar_b = "J2317+1439"
+release_separation_deg = 88.831250928789
+release_hellings_downs = -0.146847841743
+independent_policy_pearson = 0.087253576232
+release_avg_pearson = 0.094139673465
+policy_minus_release_avg = -0.006886097233
+hellings_downs = -0.146847841676
+release_overlap_bins = 113
+independent_overlap_bins = 141
+
+[[pair]]
+pulsar_a = "J1713+0747"
+pulsar_b = "J1903+0327"
+release_separation_deg = 27.521082115446
+release_hellings_downs = 0.242101230183
+independent_policy_pearson = 0.013768741004
+release_avg_pearson = -0.074051492200
+release_avg_white_pearson = 0.048276198075
+policy_minus_release_avg = 0.087820233204
+hellings_downs = 0.242101229469
+release_overlap_bins = 86
+independent_overlap_bins = 101
+
+[[pair]]
+pulsar_a = "J1713+0747"
+pulsar_b = "J2214+3000"
+release_separation_deg = 73.327470802082
+release_hellings_downs = -0.140692065948
+independent_policy_pearson = 0.055919220935
+release_avg_pearson = -0.127536895820
+policy_minus_release_avg = 0.183456116755
+hellings_downs = -0.140692066022
+release_overlap_bins = 74
+independent_overlap_bins = 98
+
+[[pair]]
+pulsar_a = "J2214+3000"
+pulsar_b = "J2317+1439"
+release_separation_deg = 21.036357939091
+release_hellings_downs = 0.321644349321
+independent_policy_pearson = -0.124868008924
+release_avg_pearson = 0.007822746504
+policy_minus_release_avg = -0.132690755428
+hellings_downs = 0.321644349321
+release_overlap_bins = 69
+independent_overlap_bins = 95
+
+[[pair]]
+pulsar_a = "J1903+0327"
+pulsar_b = "J2317+1439"
+release_separation_deg = 63.517459412244
+release_hellings_downs = -0.102668347599
+independent_policy_pearson = -0.099173889632
+release_avg_pearson = 0.046114038890
+policy_minus_release_avg = -0.145287928522
+hellings_downs = -0.102668347599
+release_overlap_bins = 75
+independent_overlap_bins = 94
+
+[[pair]]
+pulsar_a = "J1903+0327"
+pulsar_b = "J2214+3000"
+release_separation_deg = 52.427073400790
+release_hellings_downs = -0.027053808410
+independent_policy_pearson = -0.016516148852
+release_avg_pearson = -0.017639762918
+policy_minus_release_avg = 0.001123614066
+hellings_downs = -0.027053808410
+release_overlap_bins = 66
+independent_overlap_bins = 86
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J1713+0747"
+release_separation_deg = 148.531005948457
+release_hellings_downs = 0.162235938282
+independent_policy_pearson = 0.077854860559
+release_avg_pearson = -0.050162064647
+policy_minus_release_avg = 0.128016925206
+hellings_downs = 0.162235937955
+release_overlap_bins = 37
+independent_overlap_bins = 53
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J2317+1439"
+release_separation_deg = 115.496085910493
+release_hellings_downs = -0.038376639042
+independent_policy_pearson = 0.132382564070
+release_avg_pearson = -0.088298149411
+policy_minus_release_avg = 0.220680713481
+hellings_downs = -0.038376639042
+release_overlap_bins = 37
+independent_overlap_bins = 53
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J1713+0747"
+release_separation_deg = 60.435115996935
+release_hellings_downs = -0.085061424204
+independent_policy_pearson = 0.115534174761
+release_avg_pearson = 0.018589787898
+policy_minus_release_avg = 0.096944386863
+hellings_downs = -0.085061423888
+release_overlap_bins = 37
+independent_overlap_bins = 53
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J2317+1439"
+release_separation_deg = 147.466140862889
+release_hellings_downs = 0.156664193850
+independent_policy_pearson = 0.131718733625
+release_avg_pearson = 0.015040029331
+policy_minus_release_avg = 0.116678704294
+hellings_downs = 0.156664193850
+release_overlap_bins = 37
+independent_overlap_bins = 53
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J1312+0051"
+release_separation_deg = 90.832102555130
+release_hellings_downs = -0.143254796255
+independent_policy_pearson = -0.285816396363
+release_avg_pearson = -0.159473335134
+policy_minus_release_avg = -0.126343061229
+hellings_downs = -0.143254796255
+release_overlap_bins = 33
+independent_overlap_bins = 51
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J2214+3000"
+release_separation_deg = 123.485979315704
+release_hellings_downs = 0.010690276253
+independent_policy_pearson = -0.002798087798
+release_avg_pearson = 0.131140205365
+policy_minus_release_avg = -0.133938293163
+hellings_downs = 0.010690276253
+release_overlap_bins = 32
+independent_overlap_bins = 50
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J2214+3000"
+release_separation_deg = 127.574746191147
+release_hellings_downs = 0.036733198717
+independent_policy_pearson = 0.076478004641
+release_avg_pearson = 0.064542579638
+policy_minus_release_avg = 0.011935425003
+hellings_downs = 0.036733198717
+release_overlap_bins = 34
+independent_overlap_bins = 50
+
+[[pair]]
+pulsar_a = "J1312+0051"
+pulsar_b = "J1903+0327"
+release_separation_deg = 87.533226688528
+release_hellings_downs = -0.148680743741
+independent_policy_pearson = 0.295087288003
+release_avg_pearson = 0.127221366397
+policy_minus_release_avg = 0.167865921606
+hellings_downs = -0.148680743741
+release_overlap_bins = 33
+independent_overlap_bins = 47
+
+[[pair]]
+pulsar_a = "J0709+0458"
+pulsar_b = "J1903+0327"
+release_separation_deg = 171.429770063917
+release_hellings_downs = 0.243044636275
+independent_policy_pearson = -0.167032166878
+release_avg_pearson = 0.156466109129
+policy_minus_release_avg = -0.323498276007
+hellings_downs = 0.243044636275
+release_overlap_bins = 33
+independent_overlap_bins = 46

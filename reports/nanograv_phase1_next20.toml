@@ -1,0 +1,163 @@
+[metadata]
+title = "NANOGrav Phase 1 next-20 execution roadmap"
+step_count = 20
+
+[[step]]
+rank = 1
+title = "Freeze current Phase 1 baseline"
+status = "completed"
+dependency = "none"
+rationale = "Reference artifacts are now snapshotted for stable before/after comparison."
+target_surface = "reports/nanograv_phase1_independent_refit_reference_2026_03_19.toml"
+
+[[step]]
+rank = 2
+title = "Keep tactical lanes explicit"
+status = "completed"
+dependency = "step_1"
+rationale = "GLS-first: J1903+0327, J2214+3000; WLS-first: J0709+0458, J1312+0051, J1713+0747, J2317+1439."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 3
+title = "Use per-pulsar covariance presets instead of one generic GLS rule"
+status = "completed"
+dependency = "step_2"
+rationale = "Each Phase 1 pulsar now carries a tactical preset name, correlation length, and red-noise fraction."
+target_surface = "crates/gororoba_cli_data/src/nanograv_timing_engine.rs"
+
+[[step]]
+rank = 4
+title = "Audit ECORR absence and record the result"
+status = "completed"
+dependency = "step_3"
+rationale = "The current six-system Phase 1 set exposes no active release ECORR terms, so ecorr_basis_count=0 is expected here."
+target_surface = "docs/external_sources/NANOGRAV_TIMING_ENGINE_SOURCES.md"
+
+[[step]]
+rank = 5
+title = "Promote comparison and plausibility surfaces to first-class artifacts"
+status = "completed"
+dependency = "step_4"
+rationale = "Current reject/advisory focus systems: ."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 6
+title = "Close J1903 DD numeric crosscheck"
+status = "completed_with_advisory"
+dependency = "step_5"
+rationale = "J1903 DD sigma-ranked crosschecks are now emitted directly. GLS crosscheck status = accept, operational solver = gls, and the remaining blocker is wideband hardening quality rather than the old PX plausibility veto."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 7
+title = "Close J2214 ELL1 numeric crosscheck"
+status = "completed"
+dependency = "step_5"
+rationale = "J2214 is now the cleanest GLS-first acceptance anchor: GLS crosscheck status = accept, operational solver = gls."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 8
+title = "Resolve J2317 ELL1H orthometric companion closure"
+status = "completed"
+dependency = "step_5"
+rationale = "J2317 now reports surface_complete_h3_only_branch_pending_numeric_crosscheck: the H3-only branch is treated as a valid explicit closure surface instead of a missing orthometric companion."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 9
+title = "Tighten J1713 DDK closure and KOM wrapping"
+status = "completed"
+dependency = "step_5"
+rationale = "J1713 DDK closure now includes wrapped KOM handling, anchored KIN/M2/SINI in the current closure slice, and sigma-ranked DDK crosschecks; GLS crosscheck status = accept."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 10
+title = "Constrain runaway DMX deltas"
+status = "completed_with_advisory"
+dependency = "steps_6_9"
+rationale = "DMX priors were tightened and the Phase 1 refit rerun, but a smaller set of DMX advisories still remains in the comparison artifact."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 11
+title = "Add parameter-delta sigma ranking for critical family parameters"
+status = "completed"
+dependency = "steps_6_10"
+rationale = "We now have plausibility flags, but not yet a systematic sigma-ranked delta table for OMDOT, PBDOT, PX, M2, SINI, KIN, KOM, and DMX."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 12
+title = "Promote plausibility veto into an operational solver policy"
+status = "completed"
+dependency = "steps_10_11"
+rationale = "The comparison artifact now carries both recommended_solver and operational_solver, with explicit fallback/veto reasons."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 13
+title = "Refit GLS-first lane after DD and ELL1 crosschecks"
+status = "completed_with_advisory"
+dependency = "steps_6_7_10_12"
+rationale = "The GLS-first lane was rerun after the family-aware crosscheck and covariance-targeting changes; both GLS-first systems now have crosscheck-accepted surfaces, but WLS still wins operationally until one GLS branch is cleanly superior."
+target_surface = "reports/nanograv_phase1_independent_refit.toml"
+
+[[step]]
+rank = 14
+title = "Refit WLS-first lane after DDK and ELL1H closure"
+status = "completed_with_advisory"
+dependency = "steps_8_9_10_12"
+rationale = "The WLS-first lane was rerun after DDK/ELL1H closure work; J1713 and J2317 now retain WLS operational surfaces, and the remaining WLS-first hard problems are concentrated in J0709 and J1312."
+target_surface = "reports/nanograv_phase1_independent_refit.toml"
+
+[[step]]
+rank = 15
+title = "Recompute regenerated pairwise residual surface"
+status = "completed"
+dependency = "steps_13_14"
+rationale = "Current top policy-vs-HD mismatch candidates: J2214+3000-J2317+1439: |policy-HD|=0.446512, J1312+0051-J1903+0327: |policy-HD|=0.443768, J0709+0458-J1903+0327: |policy-HD|=0.410077."
+target_surface = "reports/nanograv_phase1_independent_pairwise.toml"
+
+[[step]]
+rank = 16
+title = "Rank pairwise mismatches against Hellings-Downs and inspect top outliers"
+status = "completed"
+dependency = "step_15"
+rationale = "The pairwise surface is now independent-residual driven, so the next pass should focus on the largest discrepancy pairs rather than all 15 at once."
+target_surface = "reports/nanograv_phase1_independent_pairwise.toml"
+
+[[step]]
+rank = 17
+title = "Define formal acceptance policy by family/class"
+status = "completed"
+dependency = "steps_13_16"
+rationale = "Family-class policy strings are now emitted per pulsar and enforced through operational_solver selection."
+target_surface = "reports/nanograv_phase1_independent_comparison.toml"
+
+[[step]]
+rank = 18
+title = "Compare regenerated pairwise results against the older release-product audit"
+status = "completed"
+dependency = "steps_15_17"
+rationale = "The new pairwise-vs-release artifact directly compares the independent policy surface to the older release-product audit for all 15 Phase 1 pairs."
+target_surface = "reports/nanograv_phase1_pairwise_vs_release_audit.toml"
+
+[[step]]
+rank = 19
+title = "Re-run AVT and Cayley-Dickson overlays on independent residuals"
+status = "completed"
+dependency = "steps_15_18"
+rationale = "The AVT mean-shift audit now accepts independent residual CSV input and has been rerun on the Phase 1 policy residual surface."
+target_surface = "reports/nanograv_phase1_independent_avt_filter.toml"
+
+[[step]]
+rank = 20
+title = "Harden the wideband likelihood toward publication-grade independence"
+status = "completed_with_advisory"
+dependency = "steps_17_19"
+rationale = "The joint phase-plus-DM lane now includes calibrated paired white blocks, structured long-timescale covariance, reduced-chi2 diagnostics, and a dedicated hardening audit. Operational GLS candidates = 3, operational vetoes still remaining = 0, so publication-grade closure remains advisory rather than complete."
+target_surface = "reports/nanograv_phase1_wideband_hardening.toml"

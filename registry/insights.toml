@@ -1939,3 +1939,9 @@ id = "I-215"
 title = """Hyper-Dimensional Topological Compaction drives UV-Limit of Quantum Gravity"""
 status = "verified"
 claim_refs = ["C-1450"]
+
+[[insights]]
+id = "I-216"
+title = """Cayley-Dickson ZD Algebra Directly Sources Topological Valley Chern Numbers"""
+status = "verified"
+claim_refs = ["C-1452"]
