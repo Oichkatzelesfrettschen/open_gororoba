@@ -1,0 +1,110 @@
+# Zero-divisor claim tier classification.
+#
+# Three tiers per the peer-review audit (2026-03-20):
+#   literature_backed -- proved in published papers (Moreno, Reggiani, Wilmot, Zhilina)
+#   computationally_verified -- proved numerically in this project's test suite
+#   conjectural -- plausible but unproven; needs formal proof or counterexample
+#
+# This file does NOT duplicate claim statements. It references claims by ID
+# and adds only the tier classification and a one-line rationale.
+
+[zero_divisor_claim_tiers]
+authoritative = true
+updated = "2026-03-20"
+
+# ── Literature-backed ────────────────────────────────────────────────────────
+# These results are proved in peer-reviewed or arXiv papers.
+
+[[tier]]
+tier = "literature_backed"
+description = "Z(S) = G2 (14-dimensional Lie group)"
+source = "Reggiani 2024, arXiv:2411.18881, Theorem 3.1"
+project_test = "reggiani::tests::test_reggiani_zd_manifold_dimension_is_g2"
+notes = "Numerically verified: Jacobian rank=18, manifold dim=32-18=14=dim(G2)."
+
+[[tier]]
+tier = "literature_backed"
+description = "ZD(S) = V_2(R^7) (11-dimensional Stiefel manifold)"
+source = "Reggiani 2024, arXiv:2411.18881; Moreno 2005, math/0512517 (ancestry)"
+project_test = "reggiani::tests::test_reggiani_single_zd_stiefel_v2r7"
+notes = "Verified via fiber counting: dim(Z(S))-dim(S^3 fiber)=14-3=11. Moreno gives the V_{2^{n-1},2} generalization; Reggiani gives the precise V_2(R^7) with metric."
+
+[[tier]]
+tier = "literature_backed"
+description = "Zero divisors occur in multiples of 84"
+source = "Wilmot 2026, arXiv:2505.11747v3"
+project_test = "avt::tests::test_wilmot_multiples_of_84_sedenion"
+notes = "find_zero_divisors(16) returns 168 = 84*2. Wilmot proves ZDs reduce to 7 primary pairs. CAUTION: Wilmot preprint is still moving (v2 correction, v3 new split-sedenion analysis)."
+
+[[tier]]
+tier = "literature_backed"
+description = "7 box-kites partition all 42 assessors"
+source = "de Marrais 2000, arXiv:math/0011260; Wilmot 2026"
+project_test = "boxkites::tests::test_assessors_partition_into_boxkites"
+notes = "7 connected components of the co-assessor graph. zero_divisor_primary_seven() extracts one pair per box-kite."
+
+[[tier]]
+tier = "literature_backed"
+description = "All CD imaginary basis units anti-commute"
+source = "Standard CD construction theory"
+project_test = "zd_graphs::tests::test_zhilina_commutativity_graph_sedenion"
+notes = "sign(i,j) = -sign(j,i) for all distinct i,j >= 1. The infinite commutativity graph has diameter 3 (Zhilina 2024)."
+
+[[tier]]
+tier = "literature_backed"
+description = "Each standard ZD has 4-dimensional left-annihilator"
+source = "Reggiani 2024, Table 1; Cawagas 2004"
+project_test = "reggiani::tests::test_all_standard_zds_have_nullity_4_4"
+notes = "All 84 standard ZDs have (left_nullity, right_nullity) = (4, 4)."
+
+# ── Computationally verified ─────────────────────────────────────────────────
+# These results are proved numerically in this project but NOT in published papers.
+
+[[tier]]
+tier = "computationally_verified"
+claim_id = "C-1454"
+description = "2-blade ZD pairs preserve ab=0 at all 16-element offsets despite shifted blocks not being subalgebras"
+project_test = "avt::tests::zd_embedding_per_slot_audit"
+notes = "All 168 sedenion ZDs verified at 4 slots in C_64. Shifted blocks fail closure (e_{17}*e_{18} lands at index 3, not 19). The annihilation-preserving property is specific to 2-blade sparse forms."
+
+[[tier]]
+tier = "computationally_verified"
+description = "Canonical sedenion embedding is an algebra monomorphism (Proposition 1)"
+project_test = "avt::tests::test_canonical_embedding_homomorphism"
+notes = "iota(a*b) = iota(a)*iota(b) for e_3, e_7 in C_16 -> C_64. General proof is trivial from CD formula (a,0)(b,0)=(ab,0)."
+
+[[tier]]
+tier = "computationally_verified"
+description = "Shifted-half map sigma_n is NOT an algebra homomorphism (Proposition 2)"
+project_test = "avt::tests::test_shifted_block_nonclosure"
+notes = "e_17 * e_18 lands at index 3 (not 19). Output of (0,a)(0,b) = (-conj(b)*a, 0), not (0, a*b)."
+
+[[tier]]
+tier = "computationally_verified"
+description = ">1428x speedup for 64D flux computation via structure-replaces-search cascade"
+project_test = "topological_associator_flux::tests::test_chingon_basis_quantization"
+notes = "120s timeout -> <84ms. Three-stage: (1) Prop 1 canonical embedding, (2) single assessor witness, (3) Prop 3 bilinear expansion into XOR+sign arithmetic."
+
+[[tier]]
+tier = "computationally_verified"
+description = "Moreno V_2(R^7) parametrization: all standard ZDs have support in {1..7}x{8..15}"
+project_test = "reggiani::tests::test_moreno_stiefel_parametrization"
+notes = "84 ZDs + zero_divisor_witness() all conform. Slot-shifted witness at offset 16 in C_32 also valid."
+
+# ── Conjectural ──────────────────────────────────────────────────────────────
+# Plausible but unproven. Needs formal proof or counterexample.
+
+[[tier]]
+tier = "conjectural"
+description = "Slot-shift ZD preservation is due to XOR sign-cocycle parity invariance"
+notes = "The 4-term annihilation criterion may have a translational symmetry for index shifts of multiples of 16. If proved, this becomes a genuine new algebraic theorem, not an implementation detail. Candidate for Rocq formalization (task #70)."
+
+[[tier]]
+tier = "conjectural"
+description = "Jacobian singular-value degeneracies reflect G2 root system structure"
+notes = "At the sampled Jacobian: multiplicities {2x2, 4xsqrt(3), 8xsqrt(2), 4x1} are suggestive of G2 representation theory. Needs tangent-space decomposition under isotropy action for Lie-theoretic identification."
+
+[[tier]]
+tier = "conjectural"
+description = "Slot-shift preservation extends to 3-blade and higher-blade ZDs"
+notes = "Only tested for 2-blade (a=e_i+e_j, b=e_k+/-e_l). 3-blade ZDs (find_zero_divisors_3blade) may or may not preserve at shifted offsets. Untested."

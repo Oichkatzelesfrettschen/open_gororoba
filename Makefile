@@ -75,6 +75,9 @@ RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::ba
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
 CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+# CI variant: disable incremental so sccache can cache all compiled artifacts
+# cross-session. With incremental=true, sccache passes through without caching.
+CARGO_ENV_CI = $(CARGO_ENV) CARGO_INCREMENTAL=0
 
 HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
@@ -278,10 +281,10 @@ gate-ci-registry:
 	@echo "OK: gate-ci-registry passed."
 
 gate-ci-rust:
-	$(MAKE) rust-regression
-	$(MAKE) integrity-rust
-	$(MAKE) cargo-deny-check
-	$(MAKE) db-schema-drift-check
+	$(MAKE) rust-regression CARGO_ENV="$(CARGO_ENV_CI)"
+	$(MAKE) integrity-rust CARGO_ENV="$(CARGO_ENV_CI)"
+	$(MAKE) cargo-deny-check CARGO_ENV="$(CARGO_ENV_CI)"
+	$(MAKE) db-schema-drift-check CARGO_ENV="$(CARGO_ENV_CI)"
 	@echo "OK: gate-ci-rust passed."
 
 db-schema-drift-check:

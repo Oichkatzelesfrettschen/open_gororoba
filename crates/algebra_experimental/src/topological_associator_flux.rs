@@ -1,50 +1,28 @@
-use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq};
+use algebra_analysis::avt::zero_divisor_witness;
+use cd_kernel::cayley_dickson::{cd_basis_mul_sign_iter, cd_multiply, cd_norm_sq};
+// cd_multiply/cd_norm_sq: used for ZD verification in compute_basis_associator_flux.
+// cd_basis_mul_sign_iter: used for Proposition 3 bilinear associator expansion.
 
 /// A novel breakthrough experiment: Associator Spectral Gap / Flux Quantization
-/// 
+///
 /// It has long been theorized that in higher-dimensional Cayley-Dickson algebras (dim >= 16),
 /// the zero-divisors form topological defects where the associator [A, B, C] does not vanish.
-/// 
+///
 /// This experiment computes the "Associator Flux" for a fixed zero-divisor pair (A, B)
 /// as C sweeps the uniform unit sphere S^(N-1).
-/// 
-/// Breakthrough Hypothesis: The distribution of the associator norm ||[A, B, C]|| is NOT 
-/// continuous, but is strictly quantized into discrete "energy levels" corresponding to 
+///
+/// Breakthrough Hypothesis: The distribution of the associator norm ||[A, B, C]|| is NOT
+/// continuous, but is strictly quantized into discrete "energy levels" corresponding to
 /// specific representations of the exceptional Lie groups or Clifford bundle structures.
 pub fn compute_basis_associator_flux(dim: usize) -> Vec<f64> {
     assert!(dim >= 16, "Associator flux requires zero divisors, which exist only in dim >= 16");
 
-    // 1. Find a single true zero divisor pair (A, B) efficiently
-    let mut zd_pair = None;
-    'search: for i in 0..dim {
-        for j in (i + 1)..dim {
-            let mut a = vec![0.0; dim];
-            a[i] = 1.0;
-            a[j] = 1.0;
-
-            for k in 0..dim {
-                for l in (k + 1)..dim {
-                    let mut b = vec![0.0; dim];
-                    b[k] = 1.0;
-                    b[l] = 1.0;
-                    
-                    if cd_norm_sq(&cd_multiply(&a, &b)) < 1e-9 {
-                        zd_pair = Some((a.clone(), b.clone()));
-                        break 'search;
-                    }
-
-                    b[l] = -1.0;
-                    if cd_norm_sq(&cd_multiply(&a, &b)) < 1e-9 {
-                        zd_pair = Some((a.clone(), b.clone()));
-                        break 'search;
-                    }
-                }
-            }
-        }
-    }
-    
-    assert!(zd_pair.is_some(), "No zero divisors found!");
-    let (mut a, mut b) = zd_pair.unwrap();
+    // 1. Obtain a zero-divisor pair (A, B) via canonical sedenion embedding.
+    // The canonical embedding iota: A_4 -> A_n is an algebra monomorphism
+    // (Proposition 1), so any sedenion ZD pair embeds as a valid ZD in C_dim.
+    // This replaces the former O(dim^4) brute-force search.  We only need
+    // ONE witness pair for the flux computation.
+    let (mut a, mut b) = zero_divisor_witness(dim);
     
     // Normalize A and B
     let norm_a = cd_norm_sq(&a).sqrt();
@@ -57,25 +35,57 @@ pub fn compute_basis_associator_flux(dim: usize) -> Vec<f64> {
     let ab_norm = cd_norm_sq(&ab).sqrt();
     assert!(ab_norm < 1e-9, "A*B must be zero, got {}", ab_norm);
 
-    // 2. Sample C over all purely imaginary basis elements e_1 to e_{dim-1}
-    let mut spectrum = Vec::new();
-    
-    for c_idx in 1..dim {
-        let mut c = vec![0.0; dim];
-        c[c_idx] = 1.0;
-        
-        let bc = cd_multiply(&b, &c);
-        let a_bc = cd_multiply(&a, &bc);
-        
-        let mut associator = vec![0.0; dim];
-        for idx in 0..dim {
-            associator[idx] = -a_bc[idx]; // (A*B)*C is zero
+    // 2. Extract the sparse support of A and B for bilinear expansion.
+    //
+    // Proposition 3: for 2-blade x = sum_i alpha_i * e_{a_i},
+    // y = sum_j beta_j * e_{b_j}, the associator [x, y, e_k] expands as:
+    //   [x, y, e_k] = sum_{i,j} alpha_i * beta_j * [e_{a_i}, e_{b_j}, e_k]
+    //
+    // Each basis associator [e_a, e_b, e_k] is a single signed basis element
+    // computed via XOR + sign table -- zero allocation, O(log dim) per call.
+    //
+    // Since A*B = 0, the associator simplifies to [A, B, e_k] = -A*(B*e_k).
+    // The bilinear expansion is equivalent and avoids generic cd_multiply.
+    let a_terms: Vec<(usize, f64)> = a.iter().copied().enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
+    let b_terms: Vec<(usize, f64)> = b.iter().copied().enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
+
+    let mut spectrum = Vec::with_capacity(dim - 1);
+    // Pre-allocate workspace outside the loop: O(1) heap allocation
+    // instead of O(dim) allocations (one per basis vector).
+    let mut accum = vec![0.0_f64; dim];
+
+    for k in 1..dim {
+        // Accumulate the associator [A, B, e_k] into a sparse result.
+        // Each basis associator [e_a, e_b, e_k] lands on axis (a ^ b ^ k)
+        // with coefficient sign1 - sign2 (0 or +/-2).
+        accum.fill(0.0);
+        for &(ai, av) in &a_terms {
+            for &(bj, bv) in &b_terms {
+                let coeff = av * bv;
+                // [e_ai, e_bj, e_k] = (e_ai * e_bj) * e_k - e_ai * (e_bj * e_k)
+                let ij = ai ^ bj;
+                let s_ij = cd_basis_mul_sign_iter(dim, ai, bj);
+                let ijk = ij ^ k;
+                let s_ijk_left = s_ij * cd_basis_mul_sign_iter(dim, ij, k);
+
+                let jk = bj ^ k;
+                let s_jk = cd_basis_mul_sign_iter(dim, bj, k);
+                let s_ijk_right = s_jk * cd_basis_mul_sign_iter(dim, ai, jk);
+
+                let delta = s_ijk_left - s_ijk_right;
+                if delta != 0 {
+                    accum[ijk] += coeff * delta as f64;
+                }
+            }
         }
-        
-        let assoc_norm = cd_norm_sq(&associator).sqrt();
-        spectrum.push(assoc_norm);
+        let norm_sq: f64 = accum.iter().map(|x| x * x).sum();
+        spectrum.push(norm_sq.sqrt());
     }
-    
+
     spectrum
 }
 
@@ -150,8 +160,9 @@ mod tests {
     }
     
     #[test]
-    #[ignore = "heavy research lane: 64D associator flux O(dim^4) ZD search exceeds 120s default budget"]
     fn test_chingon_basis_quantization() {
+        // Previously O(dim^4) brute-force ZD search -- now O(1) via
+        // zero_divisor_witness (canonical sedenion assessor embedding).
         verify_associator_flux_invariant(64);
     }
 }

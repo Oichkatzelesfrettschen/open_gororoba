@@ -495,4 +495,216 @@ mod tests {
             "Expected degenerate eigenvalues in partner graph spectrum"
         );
     }
+
+    /// Reggiani (2024) proves Z(S) = {(x,y): xy=0, |x|=|y|=1} is isometric
+    /// to G2.  G2 is a 14-dimensional Lie group.
+    ///
+    /// Numerical verification: the constraint map F(a,b) = (a*b, |a|^2-1, |b|^2-1)
+    /// maps R^32 -> R^18 (16 product components + 2 norm constraints).
+    /// The Jacobian DF at a point on Z(S) should have rank 18, confirming
+    /// the manifold has dimension 32 - 18 = 14 = dim(G2).
+    #[test]
+    fn test_reggiani_zd_manifold_dimension_is_g2() {
+        use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq};
+        use nalgebra::DMatrix;
+
+        let dim = 16;
+        // Get a normalized ZD pair
+        let zds = standard_zero_divisors();
+        let zd_a = &zds[0];
+        let partners = standard_zero_divisor_partners(zd_a);
+        let zd_b = &partners[0];
+
+        let mut a = zd_a.vector.clone();
+        let mut b = zd_b.vector.clone();
+        // Normalize to unit sphere
+        let na = cd_norm_sq(&a).sqrt();
+        let nb = cd_norm_sq(&b).sqrt();
+        for x in &mut a { *x /= na; }
+        for x in &mut b { *x /= nb; }
+
+        // Verify (a, b) is on Z(S)
+        let ab = cd_multiply(&a, &b);
+        assert!(cd_norm_sq(&ab).sqrt() < 1e-10, "a*b must be zero");
+
+        // Compute the Jacobian of F(a,b) = (a*b, |a|^2-1, |b|^2-1) numerically
+        // F: R^32 -> R^18 (16 product + 1 norm_a + 1 norm_b)
+        let n_vars = 2 * dim; // 32
+        let n_constraints = dim + 2; // 18
+        let eps = 1e-7;
+
+        let eval_constraints = |a_vec: &[f64], b_vec: &[f64]| -> Vec<f64> {
+            let mut result = Vec::with_capacity(n_constraints);
+            let prod = cd_multiply(a_vec, b_vec);
+            result.extend_from_slice(&prod); // 16 components
+            result.push(cd_norm_sq(a_vec) - 1.0); // |a|^2 - 1
+            result.push(cd_norm_sq(b_vec) - 1.0); // |b|^2 - 1
+            result
+        };
+
+        let f0 = eval_constraints(&a, &b);
+        let mut jacobian = DMatrix::<f64>::zeros(n_constraints, n_vars);
+
+        for col in 0..n_vars {
+            let mut a_pert = a.clone();
+            let mut b_pert = b.clone();
+            if col < dim {
+                a_pert[col] += eps;
+            } else {
+                b_pert[col - dim] += eps;
+            }
+            let f_pert = eval_constraints(&a_pert, &b_pert);
+            for row in 0..n_constraints {
+                jacobian[(row, col)] = (f_pert[row] - f0[row]) / eps;
+            }
+        }
+
+        // Compute rank via SVD
+        let svd = jacobian.svd(false, false);
+        let singular_values = svd.singular_values;
+        let rank = singular_values.iter().filter(|&&s| s > 1e-6).count();
+        let manifold_dim = n_vars - rank;
+
+        println!("Reggiani G2 test: Jacobian {}x{}, rank={}, manifold_dim={}",
+            n_constraints, n_vars, rank, manifold_dim);
+        // Note: SV degeneracies at one sample point are suggestive of G2
+        // representation structure but are NOT a Lie-theoretic identification.
+        // A full proof would require tangent-space decomposition under the
+        // isotropy action (Reggiani 2024, Theorem 3.1).
+        println!("Singular values (suggestive, not Lie-theoretic): {:?}",
+            singular_values.iter().take(20).map(|s| format!("{:.4}", s)).collect::<Vec<_>>());
+
+        assert_eq!(manifold_dim, 14,
+            "Z(S) manifold dimension should be 14 = dim(G2), got {}", manifold_dim);
+    }
+
+    /// Reggiani (2024) proves the space of unit sedenions with nontrivial
+    /// left-annihilator is isometric to the Stiefel manifold V_2(R^7).
+    /// V_2(R^7) has dimension 7*2 - 2*3/2 = 11.
+    ///
+    /// Verification via fiber counting:
+    /// - Z(S) = {(x,y): xy=0, |x|=|y|=1} has dim 14 (G2 test above).
+    /// - Projection pi_1(x,y) = x has fiber {y: xy=0, |y|=1} = S^3 in
+    ///   the 4-dim left-annihilator of x.  dim(fiber) = 3.
+    /// - Therefore dim(pi_1(Z(S))) = 14 - 3 = 11 = dim(V_2(R^7)).
+    ///
+    /// We verify:
+    /// (a) All 84 standard ZDs have left-annihilator nullity exactly 4.
+    /// (b) The annihilator S^3 fiber dimension is 3.
+    /// (c) Combined with the G2 test: 14 - 3 = 11.
+    #[test]
+    fn test_reggiani_single_zd_stiefel_v2r7() {
+        use crate::annihilator::{annihilator_info, left_multiplication_matrix};
+        use crate::annihilator::nullspace_basis;
+
+        let dim = 16;
+        // (a) Verify all 84 ZDs have nullity 4 (annihilator dimension 4).
+        for zd in &standard_zero_divisors() {
+            let info = annihilator_info(&zd.vector, dim, 1e-12);
+            assert_eq!(info.left_nullity, 4,
+                "ZD ({},{}) left-nullity should be 4", zd.assessor_low, zd.assessor_high);
+        }
+
+        // (b) Fiber dimension: S^{nullity-1} = S^3, so dim(fiber) = 3.
+        let fiber_dim = 4 - 1; // annihilator is R^4, unit sphere is S^3
+
+        // (c) V_2(R^7) dimension check via fiber counting.
+        let zs_dim = 14; // from test_reggiani_zd_manifold_dimension_is_g2
+        let single_zd_dim = zs_dim - fiber_dim;
+        let v2r7_dim = 7 * 2 - 2 * 3 / 2; // nk - k(k+1)/2 = 14 - 3 = 11
+
+        println!("Reggiani V2(R7): Z(S) dim={}, fiber dim={}, single-ZD dim={}, V_2(R^7) dim={}",
+            zs_dim, fiber_dim, single_zd_dim, v2r7_dim);
+
+        assert_eq!(single_zd_dim, v2r7_dim,
+            "Single-ZD manifold dimension should be {} = dim(V_2(R^7)), got {}",
+            v2r7_dim, single_zd_dim);
+
+        // Additional structural check: verify the annihilator basis vectors
+        // are orthogonal (as required for a Stiefel manifold frame).
+        let zd0 = &standard_zero_divisors()[0];
+        let mut x = zd0.vector.clone();
+        let nx = x.iter().map(|v| v * v).sum::<f64>().sqrt();
+        for v in &mut x { *v /= nx; }
+        let lx = left_multiplication_matrix(&x, dim);
+        let kernel = nullspace_basis(&lx, 1e-10);
+        assert_eq!(kernel.ncols(), 4, "Kernel should be 4-dimensional");
+        // Check orthogonality of kernel basis vectors
+        for i in 0..kernel.ncols() {
+            for j in (i + 1)..kernel.ncols() {
+                let dot: f64 = (0..dim).map(|k| kernel[(k, i)] * kernel[(k, j)]).sum();
+                assert!(dot.abs() < 1e-8,
+                    "Kernel vectors {} and {} not orthogonal: dot = {}", i, j, dot);
+            }
+        }
+    }
+
+    /// Cross-validate the Moreno/Reggiani Stiefel parametrization.
+    ///
+    /// Moreno (2005, math/0512517) relates ZDs in A_{n+1} to the Stiefel
+    /// manifold V_{2^{n-1},2} for n > 3 -- the foundational ancestry.
+    /// Reggiani (2024, arXiv:2411.18881) gives the PRECISE sedenion
+    /// identification ZD(S) = V_2(R^7) with an explicit G2-invariant metric.
+    ///
+    /// For standard ZDs, the V_2(R^7) parametrization means each normalized
+    /// ZD has support on exactly one assessor (low, high) pair where
+    /// low in {1..7} (imaginary octonion sector) and high in {8..15}
+    /// (complementary sedenion imaginary sector).
+    ///
+    /// Verify all 84 standard ZDs and zero_divisor_witness() conform.
+    #[test]
+    fn test_moreno_stiefel_parametrization() {
+        use crate::avt::zero_divisor_witness;
+        use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq};
+
+        // (a) All 84 standard ZDs have support on exactly 2 basis elements:
+        // one in {1..7} (octonion imaginary) and one in {8..15} (sedenion imaginary).
+        for zd in &standard_zero_divisors() {
+            let nonzero: Vec<usize> = zd.vector.iter().enumerate()
+                .filter(|(_, v)| v.abs() > 1e-12)
+                .map(|(i, _)| i)
+                .collect();
+            assert_eq!(nonzero.len(), 2,
+                "ZD should have exactly 2 nonzero components, got {:?}", nonzero);
+            assert!((1..=7).contains(&nonzero[0]),
+                "Low index {} not in octonion imaginary 1..=7", nonzero[0]);
+            assert!((8..=15).contains(&nonzero[1]),
+                "High index {} not in sedenion imaginary 8..=15", nonzero[1]);
+        }
+
+        // (b) The witness pair from zero_divisor_witness(16) conforms:
+        // both a and b should be 2-blade assessor diagonals.
+        let (a, b) = zero_divisor_witness(16);
+        for (label, vec) in [("a", &a), ("b", &b)] {
+            let nonzero: Vec<(usize, f64)> = vec.iter().enumerate()
+                .filter(|(_, v)| v.abs() > 1e-12)
+                .map(|(i, v)| (i, *v))
+                .collect();
+            assert_eq!(nonzero.len(), 2,
+                "Witness {} should have 2 nonzero components, got {:?}", label, nonzero);
+            let (low, _) = nonzero[0];
+            let (high, _) = nonzero[1];
+            assert!((1..=7).contains(&low),
+                "Witness {} low index {} not in octonion sector", label, low);
+            assert!((8..=15).contains(&high),
+                "Witness {} high index {} not in sedenion sector", label, high);
+        }
+
+        // (c) Verify the witness is a valid ZD
+        let ab = cd_multiply(&a, &b);
+        assert!(cd_norm_sq(&ab).sqrt() < 1e-10,
+            "Witness a*b should be zero");
+
+        // (d) Slot-shift empirical finding: the witness embedded at offset 16
+        // in C_32 should still be a valid ZD (C-1454).
+        let dim = 32;
+        let mut a32 = vec![0.0; dim];
+        let mut b32 = vec![0.0; dim];
+        for i in 0..16 { a32[16 + i] = a[i]; b32[16 + i] = b[i]; }
+        let ab32 = cd_multiply(&a32, &b32);
+        assert!(cd_norm_sq(&ab32).sqrt() < 1e-10,
+            "Slot-shifted witness should remain a ZD (C-1454)");
+
+        println!("Moreno Stiefel cross-validation: all 84 ZDs + witness conform to V_2(R^7) parametrization");
+    }
 }

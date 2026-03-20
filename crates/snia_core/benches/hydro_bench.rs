@@ -1,4 +1,5 @@
-use criterion::{Criterion, black_box, criterion_group, criterion_main};
+use criterion::{Criterion, criterion_group, criterion_main};
+use std::hint::black_box;
 use snia_core::{BoundaryCondition, HllcFlux1D, HydroState1D, LimiterKind};
 
 fn bench_hydro_rk2_update(c: &mut Criterion) {
