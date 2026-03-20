@@ -8,6 +8,13 @@
 # off the gate runner's dedicated target dir. Gate commands override this via
 # CARGO_TARGET_DIR=.cache/gate-target so they still land in the isolated gate tree.
 target-dir = ".cache/cargo-default-target"
+# sccache caches compiled crate artifacts cross-session via ~/.cache/sccache.
+# IMPORTANT: sccache only caches when CARGO_INCREMENTAL=0. For incremental
+# profiles (test/dev with incremental=true), it passes through harmlessly with
+# ~5ms overhead per crate. Maximum benefit comes from --release builds or when
+# running with CARGO_INCREMENTAL=0 (e.g., add to gate-ci-rust for cold-build
+# speedup after profile changes). Stats: sccache --show-stats
+rustc-wrapper = "sccache"
 
 [target.'cfg(target_arch = "x86_64")']
 # Enable native CPU instruction set (AVX2, BMI2, FMA, POPCNT, etc.)

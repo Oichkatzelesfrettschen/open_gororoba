@@ -9838,3 +9838,10 @@ statement = """The three canonical octonionic subalgebras of the Sedenions are c
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/three_fermion_generations.rs"
 last_verified = "2026-03-19"
+
+[[claim]]
+id = "C-1454"
+statement = """All 168 sedenion 2-blade zero-divisor pairs (84 unique index tuples x 2 sign variants from find_zero_divisors(16, 1e-9)) produce ab=0 when embedded at ANY 16-element offset in C_32 (2 slots) and C_64 (4 slots), despite the shifted coordinate blocks NOT being subalgebras under Cayley-Dickson multiplication. Specifically, e_{16+r} * e_{16+s} has output index (16+r) XOR (16+s) = r XOR s, which falls OUTSIDE the shifted block {16..31} (Proposition 2: sigma_n is not an algebra homomorphism). The zero-product property is preserved at all offsets likely due to XOR sign-table symmetries that make the cancellation pattern offset-invariant for 2-blade sparse forms. Each of the 4 slots in C_64 produces exactly 168 verified ZD pairs (168 * 4 = 672 total)."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/avt.rs::zd_embedding_per_slot_audit"
+last_verified = "2026-03-20"

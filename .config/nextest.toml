@@ -56,11 +56,6 @@ test-group = "heavy-research"
 slow-timeout = { period = "600s", terminate-after = 2 }
 
 [[profile.heavy.overrides]]
-filter = 'package(algebra_experimental) and test(test_chingon_basis_quantization)'
-test-group = "heavy-research"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
 filter = 'package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)'
 test-group = "heavy-research"
 slow-timeout = { period = "600s", terminate-after = 2 }
