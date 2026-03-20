@@ -149,7 +149,7 @@ fn generate_mass_ladder() -> Result<()> {
         root.draw_text(
             &format!("n={:.0}: {:.1} M_sun\n{}", n, m, label),
             &("sans-serif", 35).into_font().color(&MAGENTA),
-            chart.plotting_area().map_coordinate(&(n + 0.6, m)).into(),
+            chart.plotting_area().map_coordinate(&(n + 0.6, m)),
         )?;
     }
 
@@ -174,8 +174,8 @@ fn generate_mera_network() -> Result<()> {
     let root = BitMapBackend::new(output_path, (width as u32, height as u32)).into_drawing_area();
     root.fill(&RGBColor(13, 15, 20))?;
 
-    let center_x = width as i32 / 2;
-    let center_y = height as i32 / 2;
+    let center_x = width / 2;
+    let center_y = height / 2;
     let scale = 110.0;
 
     let depth = 7;
@@ -324,7 +324,7 @@ fn generate_trajectory() -> Result<()> {
     chart1.draw_series(LineSeries::new(dims.iter().zip(retention.iter()).map(|(&d, &r)| (d, r)), CYAN.stroke_width(4)))?;
     for i in 0..dims.len() {
         top_half[0].draw_text(labels[i], &("sans-serif", 40).into_font().color(&CYAN), 
-            chart1.plotting_area().map_coordinate(&(dims[i], retention[i])).into())?;
+            chart1.plotting_area().map_coordinate(&(dims[i], retention[i])))?;
     }
 
     let mut chart2 = ChartBuilder::on(&top_half[1])
@@ -338,7 +338,7 @@ fn generate_trajectory() -> Result<()> {
     chart2.draw_series(LineSeries::new(years.iter().zip(widths.iter()).map(|(&y, &w)| (y, w)), MAGENTA.stroke_width(4)))?;
     for i in 0..years.len() {
         top_half[1].draw_text(isa[i], &("sans-serif", 35).into_font().color(&MAGENTA), 
-            chart2.plotting_area().map_coordinate(&(years[i], widths[i])).into())?;
+            chart2.plotting_area().map_coordinate(&(years[i], widths[i])))?;
     }
 
     let bottom_area = &areas[1];
@@ -352,7 +352,7 @@ fn generate_trajectory() -> Result<()> {
             let fy = y as f64 / 10.0;
             let val = (fx.sin() * fy.cos() * (-(fx - 5.0).powi(2)/5.0).exp() + (fy-5.0).sin().abs()).clamp(0.0, 1.0);
             let color = RGBColor((val * 200.0) as u8, (val * 100.0) as u8, (val * 50.0) as u8);
-            bottom_area.draw(&Rectangle::new([(x as i32 * 31, y as i32 * 14 + 1410), ((x+1) as i32 * 31, (y+1) as i32 * 14 + 1410)], color.filled()))?;
+            bottom_area.draw(&Rectangle::new([(x * 31, y * 14 + 1410), ((x+1) * 31, (y+1) * 14 + 1410)], color.filled()))?;
         }
     }
 
@@ -398,8 +398,8 @@ fn generate_4d_mosaic() -> Result<()> {
 
     let w_tiles = 6;
     let z_tiles = 6;
-    let chart_w = width as i32 / z_tiles;
-    let chart_h = height as i32 / w_tiles;
+    let chart_w = width / z_tiles;
+    let chart_h = height / w_tiles;
 
     for w in 0..w_tiles {
         for z in 0..z_tiles {

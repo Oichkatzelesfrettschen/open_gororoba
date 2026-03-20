@@ -209,9 +209,9 @@ impl Sedenion {
 
     pub fn project_to_subalgebra(&self, subalgebra_indices: &[usize]) -> Self {
         let mut components = self.to_slice();
-        for i in 0..16 {
+        for (i, c) in components.iter_mut().enumerate() {
             if !subalgebra_indices.contains(&i) {
-                components[i] = 0.0;
+                *c = 0.0;
             }
         }
         Sedenion::from_slice(&components)

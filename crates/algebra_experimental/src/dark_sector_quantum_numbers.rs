@@ -29,13 +29,11 @@ pub fn extract_dark_quantum_numbers() -> Vec<[f64; 4]> {
         let mut dark_charges = [0.0; 4];
         for (i, cartan) in sm_cartans.iter().enumerate() {
             let commutator = *cartan * dark_generator - dark_generator * *cartan;
-            if let QuantumState::Observable(s) = commutator {
-                if let QuantumState::Observable(d) = dark_generator {
-                    let norm_sq = d.norm_sqr();
-                    if norm_sq > 1e-9 {
-                        let dot_product = (s * d.conj()).to_slice()[0];
-                        dark_charges[i] = dot_product / norm_sq;
-                    }
+            if let (QuantumState::Observable(s), QuantumState::Observable(d)) = (commutator, dark_generator) {
+                let norm_sq = d.norm_sqr();
+                if norm_sq > 1e-9 {
+                    let dot_product = (s * d.conj()).to_slice()[0];
+                    dark_charges[i] = dot_product / norm_sq;
                 }
             }
         }

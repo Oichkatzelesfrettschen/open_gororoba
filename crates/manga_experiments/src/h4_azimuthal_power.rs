@@ -103,6 +103,7 @@ fn generate_velocity_map(
     let mut data = vec![vec![0.0; size]; size];
     let center = half_size as f64;
 
+    #[allow(clippy::needless_range_loop)]
     for iy in 0..size {
         for ix in 0..size {
             let dx = ix as f64 - center;

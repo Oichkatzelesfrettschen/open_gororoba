@@ -63,6 +63,7 @@ fn main() -> Result<()> {
         for i in 0..n {
             for j in 0..n {
                 let mut sum = 0.0;
+                #[allow(clippy::needless_range_loop)]
                 for k in 0..n {
                     // V * diag(w^s) * V^T
                     sum += u.read(i, k) * w_vals[k].powf(power) * u.read(j, k);
@@ -108,6 +109,7 @@ fn main() -> Result<()> {
     let mut min_val = f64::INFINITY;
     let mut max_val = f64::NEG_INFINITY;
 
+    #[allow(clippy::needless_range_loop)]
     for i in 0..n_im {
         let im_z = im_min + (im_max - im_min) * (i as f64) / (n_im as f64 - 1.0);
         for j in 0..n_re {
@@ -149,6 +151,7 @@ fn main() -> Result<()> {
     let img_h = (n_im * cell_size) as u32;
     let mut img = ImageBuffer::new(img_w, img_h);
 
+    #[allow(clippy::needless_range_loop)]
     for i in 0..n_im {
         for j in 0..n_re {
             let color = coolwarm(smin[i][j], min_val, max_val);

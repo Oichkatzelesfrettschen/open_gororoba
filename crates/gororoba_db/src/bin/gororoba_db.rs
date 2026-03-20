@@ -307,7 +307,7 @@ fn cmd_import_knowledge(
                           section_title, assumptions_json, parameter_sweep_json,
                           derivation_links_json, depends_on_json)
                          VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14)",
-                        &[id, expression, normalized, relation, kind, confidence,
+                        [id, expression, normalized, relation, kind, confidence,
                           domain, source_uid, source_path, section,
                           &assumptions, &sweep, &derivation_links, &depends_on],
                     )?;
@@ -346,7 +346,7 @@ fn cmd_import_knowledge(
                          (id, skeleton_kind, source_path, source_uid, claim_id,
                           claim_refs_json, title, status, step_count)
                          VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)",
-                        &[id, kind, source_path, source_uid, claim_id,
+                        [id, kind, source_path, source_uid, claim_id,
                           &claim_refs, title, status, &step_count.to_string()],
                     )?;
                     count += 1;
@@ -395,7 +395,7 @@ fn cmd_import_knowledge(
                           equation_refs_json, symbol_refs_json, numeric_constants_json,
                           key_tokens_json, depends_on_step_ids_json, line_start, line_end)
                          VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18)",
-                        &[id, skeleton_id, skeleton_kind, source_path, source_uid, claim_id,
+                        [id, skeleton_id, skeleton_kind, source_path, source_uid, claim_id,
                           &claim_refs, &step_index.to_string(), step_kind, text_val,
                           text_sha256, &equation_refs, &symbol_refs, &numeric_constants,
                           &key_tokens, &depends_on, &line_start.to_string(), &line_end.to_string()],
@@ -434,20 +434,25 @@ fn cmd_import_planning(
             for item in items {
                 let id = item.get("id").and_then(|v| v.as_str()).unwrap_or("");
                 if !id.is_empty() {
-                    store.upsert_roadmap_item(
+                    let deps = json_array_field(item, "dependencies");
+                    let ac = json_array_field(item, "acceptance_criteria");
+                    let po = json_array_field(item, "primary_outputs");
+                    let er = json_array_field(item, "evidence_refs");
+                    let lac = json_array_field(item, "lacunae");
+                    store.upsert_roadmap_item(&provenance_store::RoadmapItem {
                         id,
-                        item.get("name").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
-                        item.get("status").and_then(|v| v.as_str()).unwrap_or("planned"),
-                        item.get("status_token").and_then(|v| v.as_str()).unwrap_or("PLANNED"),
-                        item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("sprint").and_then(|v| v.as_str()).unwrap_or(""),
-                        &json_array_field(item, "dependencies"),
-                        &json_array_field(item, "acceptance_criteria"),
-                        &json_array_field(item, "primary_outputs"),
-                        &json_array_field(item, "evidence_refs"),
-                        &json_array_field(item, "lacunae"),
-                    )?;
+                        name: item.get("name").and_then(|v| v.as_str()).unwrap_or(""),
+                        priority: item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
+                        status: item.get("status").and_then(|v| v.as_str()).unwrap_or("planned"),
+                        status_token: item.get("status_token").and_then(|v| v.as_str()).unwrap_or("PLANNED"),
+                        description: item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
+                        sprint: item.get("sprint").and_then(|v| v.as_str()).unwrap_or(""),
+                        dependencies_json: &deps,
+                        acceptance_criteria_json: &ac,
+                        primary_outputs_json: &po,
+                        evidence_refs_json: &er,
+                        lacunae_json: &lac,
+                    })?;
                     count += 1;
                 }
             }
@@ -469,17 +474,19 @@ fn cmd_import_planning(
             for item in items {
                 let id = item.get("id").and_then(|v| v.as_str()).unwrap_or("");
                 if !id.is_empty() {
-                    store.upsert_todo_item(
+                    let deps = json_array_field(item, "dependencies");
+                    let ac = json_array_field(item, "acceptance_criteria");
+                    store.upsert_todo_item(&provenance_store::ActionItem {
                         id,
-                        item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
-                        item.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
-                        item.get("status_token").and_then(|v| v.as_str()).unwrap_or("OPEN"),
-                        &json_array_field(item, "dependencies"),
-                        &json_array_field(item, "acceptance_criteria"),
-                    )?;
+                        area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
+                        title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
+                        description: item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
+                        priority: item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
+                        status: item.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
+                        status_token: item.get("status_token").and_then(|v| v.as_str()).unwrap_or("OPEN"),
+                        dependencies_json: &deps,
+                        acceptance_criteria_json: &ac,
+                    })?;
                     count += 1;
                 }
             }
@@ -501,17 +508,19 @@ fn cmd_import_planning(
             for item in items {
                 let id = item.get("id").and_then(|v| v.as_str()).unwrap_or("");
                 if !id.is_empty() {
-                    store.upsert_next_action(
+                    let deps = json_array_field(item, "dependencies");
+                    let ac = json_array_field(item, "acceptance_criteria");
+                    store.upsert_next_action(&provenance_store::ActionItem {
                         id,
-                        item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
-                        item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
-                        item.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
-                        item.get("status_token").and_then(|v| v.as_str()).unwrap_or("OPEN"),
-                        &json_array_field(item, "dependencies"),
-                        &json_array_field(item, "acceptance_criteria"),
-                    )?;
+                        area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
+                        title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
+                        description: item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
+                        priority: item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
+                        status: item.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
+                        status_token: item.get("status_token").and_then(|v| v.as_str()).unwrap_or("OPEN"),
+                        dependencies_json: &deps,
+                        acceptance_criteria_json: &ac,
+                    })?;
                     count += 1;
                 }
             }
@@ -550,21 +559,24 @@ fn cmd_import_narratives(
         for doc in docs {
             let id = doc.get("id").and_then(|v| v.as_str()).unwrap_or("");
             if !id.is_empty() {
-                store.upsert_research_narrative(
+                let cr = json_array_field(doc, "claim_refs");
+                let ur = json_array_field(doc, "url_refs");
+                let pr = json_array_field(doc, "path_refs");
+                store.upsert_research_narrative(&provenance_store::ResearchNarrativeRow {
                     id,
-                    doc.get("source_markdown").and_then(|v| v.as_str()).unwrap_or(""),
-                    doc.get("domain").and_then(|v| v.as_str()).unwrap_or(""),
-                    doc.get("slug").and_then(|v| v.as_str()).unwrap_or(""),
-                    doc.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                    doc.get("status_token").and_then(|v| v.as_str()).unwrap_or("NARRATIVE"),
-                    doc.get("content_kind").and_then(|v| v.as_str()).unwrap_or("research_note"),
-                    doc.get("verification_level").and_then(|v| v.as_str()).unwrap_or(""),
-                    &json_array_field(doc, "claim_refs"),
-                    &json_array_field(doc, "url_refs"),
-                    &json_array_field(doc, "path_refs"),
-                    doc.get("body_markdown").and_then(|v| v.as_str()).unwrap_or(""),
-                    doc.get("line_count").and_then(|v| v.as_integer()).unwrap_or(0),
-                )?;
+                    source_markdown: doc.get("source_markdown").and_then(|v| v.as_str()).unwrap_or(""),
+                    domain: doc.get("domain").and_then(|v| v.as_str()).unwrap_or(""),
+                    slug: doc.get("slug").and_then(|v| v.as_str()).unwrap_or(""),
+                    title: doc.get("title").and_then(|v| v.as_str()).unwrap_or(""),
+                    status_token: doc.get("status_token").and_then(|v| v.as_str()).unwrap_or("NARRATIVE"),
+                    content_kind: doc.get("content_kind").and_then(|v| v.as_str()).unwrap_or("research_note"),
+                    verification_level: doc.get("verification_level").and_then(|v| v.as_str()).unwrap_or(""),
+                    claim_refs_json: &cr,
+                    url_refs_json: &ur,
+                    path_refs_json: &pr,
+                    body_markdown: doc.get("body_markdown").and_then(|v| v.as_str()).unwrap_or(""),
+                    line_count: doc.get("line_count").and_then(|v| v.as_integer()).unwrap_or(0),
+                })?;
                 count += 1;
             }
         }
@@ -613,7 +625,7 @@ fn cmd_export_planning(store: &ProvenanceStore, args: &ExportPlanningArgs) -> Re
             lines.push(format!("# Item count: {}", items.len()));
             lines.push(String::new());
             for (id, name, priority, status) in &items {
-                lines.push(format!("[[item]]"));
+                lines.push("[[item]]".to_string());
                 lines.push(format!("id = {}", toml_quote(id)));
                 lines.push(format!("name = {}", toml_quote(name)));
                 lines.push(format!("priority = {}", toml_quote(priority)));
@@ -685,8 +697,8 @@ fn cmd_query(store: &ProvenanceStore, args: &QueryArgs) -> Result<()> {
         "notebook_sessions" | "notebooks" => {
             let items = store.list_notebook_sessions()?;
             println!("notebook_sessions ({} rows):", items.len());
-            for (id, title, kernel, status, cells) in items.iter().take(args.limit) {
-                println!("  {id:<20} [{kernel}] {status:<10} cells={cells}  {title}");
+            for s in items.iter().take(args.limit) {
+                println!("  {:<20} [{}] {:<10} cells={}  {}", s.id, s.kernel, s.status, s.cell_count, s.title);
             }
         }
         other => {
@@ -712,8 +724,9 @@ fn cmd_audit(store: &ProvenanceStore, repo_root: &Path) -> Result<()> {
 
     println!("  ── AUTHORITATIVE (database is source of truth) ──");
     println!();
-    for (table, category, authoritative, legacy, _desc, migration_status) in &manifest {
-        if *authoritative {
+    for row in &manifest {
+        if row.authoritative {
+            let (table, category, legacy, migration_status) = (&row.table_name, &row.category, &row.legacy_toml_path, &row.migration_status);
             let toml_exists = if legacy.is_empty() {
                 "n/a".to_string()
             } else {
@@ -896,8 +909,8 @@ fn cmd_notebooks(store: &ProvenanceStore, args: &NotebookArgs) -> Result<()> {
                 return Ok(());
             }
             println!("Notebook sessions ({}):", sessions.len());
-            for (id, title, kernel, status, cells) in &sessions {
-                println!("  {id:<20} [{kernel}] {status:<10} cells={cells}  {title}");
+            for s in &sessions {
+                println!("  {:<20} [{}] {:<10} cells={}  {}", s.id, s.kernel, s.status, s.cell_count, s.title);
             }
         }
         NotebookAction::Create { title, description } => {
@@ -905,7 +918,15 @@ fn cmd_notebooks(store: &ProvenanceStore, args: &NotebookArgs) -> Result<()> {
                 "NB-{:04}",
                 store.table_row_count("notebook_sessions").unwrap_or(0) + 1
             );
-            store.upsert_notebook_session(&id, title, description, "evcxr", "draft", 0, "[]")?;
+            store.upsert_notebook_session(&provenance_store::NotebookSessionRow {
+                id: &id,
+                title,
+                description,
+                kernel: "evcxr",
+                status: "draft",
+                cell_count: 0,
+                cells_json: "[]",
+            })?;
             println!("Created notebook session: {id} — \"{title}\"");
         }
     }

@@ -46,6 +46,7 @@ fn main() -> Result<()> {
     let img_size = (l * cell_size) as u32;
     let mut img = ImageBuffer::new(img_size, img_size);
 
+    #[allow(clippy::needless_range_loop)]
     for r in 0..l {
         for c in 0..l {
             let color = if grid[r][c] == 1 { fg_color } else { bg_color };

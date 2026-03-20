@@ -168,7 +168,7 @@ fn main() -> Result<()> {
     chart.configure_mesh()
         .x_desc("Edge mass M_edge (down better)")
         .y_desc("Interior distortion E_int (down better)")
-        .axis_style(&RGBColor(31, 41, 55))
+        .axis_style(RGBColor(31, 41, 55))
         .label_style(("sans-serif", 30).into_font().color(&WHITE))
         .draw()?;
 
@@ -176,7 +176,7 @@ fn main() -> Result<()> {
         chart.draw_series(std::iter::once(Circle::new(
             (pt.m_edge, pt.e_int),
             15,
-            &RGBColor(100, 150, 255).mix(0.8),
+            RGBColor(100, 150, 255).mix(0.8),
         )))?;
 
         let label = format!("m={},eta={:.0e},xc={}", pt.m, pt.eta, pt.xc as i32);

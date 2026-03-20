@@ -168,6 +168,82 @@ pub enum ControlPlaneCompatKind {
     TheoremsMirror,
 }
 
+/// Row struct for roadmap item upserts.
+pub struct RoadmapItem<'a> {
+    pub id: &'a str,
+    pub name: &'a str,
+    pub priority: &'a str,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub description: &'a str,
+    pub sprint: &'a str,
+    pub dependencies_json: &'a str,
+    pub acceptance_criteria_json: &'a str,
+    pub primary_outputs_json: &'a str,
+    pub evidence_refs_json: &'a str,
+    pub lacunae_json: &'a str,
+}
+
+/// Row struct for todo / next-action item upserts.
+pub struct ActionItem<'a> {
+    pub id: &'a str,
+    pub area: &'a str,
+    pub title: &'a str,
+    pub description: &'a str,
+    pub priority: &'a str,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub dependencies_json: &'a str,
+    pub acceptance_criteria_json: &'a str,
+}
+
+/// Row struct for research narrative upserts.
+pub struct ResearchNarrativeRow<'a> {
+    pub id: &'a str,
+    pub source_markdown: &'a str,
+    pub domain: &'a str,
+    pub slug: &'a str,
+    pub title: &'a str,
+    pub status_token: &'a str,
+    pub content_kind: &'a str,
+    pub verification_level: &'a str,
+    pub claim_refs_json: &'a str,
+    pub url_refs_json: &'a str,
+    pub path_refs_json: &'a str,
+    pub body_markdown: &'a str,
+    pub line_count: i64,
+}
+
+/// Row struct for notebook session upserts.
+pub struct NotebookSessionRow<'a> {
+    pub id: &'a str,
+    pub title: &'a str,
+    pub description: &'a str,
+    pub kernel: &'a str,
+    pub status: &'a str,
+    pub cell_count: i64,
+    pub cells_json: &'a str,
+}
+
+/// Row returned from `source_of_truth_manifest`.
+pub struct ManifestRow {
+    pub table_name: String,
+    pub category: String,
+    pub authoritative: bool,
+    pub legacy_toml_path: String,
+    pub description: String,
+    pub migration_status: String,
+}
+
+/// Row returned from `list_notebook_sessions`.
+pub struct NotebookSessionSummary {
+    pub id: String,
+    pub title: String,
+    pub kernel: String,
+    pub status: String,
+    pub cell_count: i64,
+}
+
 impl ProvenanceStore {
     pub fn open(db_path: &Path) -> Result<Self> {
         if let Some(parent) = db_path.parent() {
@@ -2750,22 +2826,20 @@ impl ProvenanceStore {
     }
 
     /// Return the full source-of-truth manifest as structured rows.
-    pub fn source_of_truth_manifest(
-        &self,
-    ) -> Result<Vec<(String, String, bool, String, String, String)>> {
+    pub fn source_of_truth_manifest(&self) -> Result<Vec<ManifestRow>> {
         let mut stmt = self.conn.prepare(
             "SELECT table_name, category, authoritative, legacy_toml_path, description, migration_status
              FROM source_of_truth_manifest ORDER BY category, table_name",
         )?;
         let rows = stmt.query_map([], |row| {
-            Ok((
-                row.get::<_, String>(0)?,
-                row.get::<_, String>(1)?,
-                row.get::<_, bool>(2)?,
-                row.get::<_, String>(3)?,
-                row.get::<_, String>(4)?,
-                row.get::<_, String>(5)?,
-            ))
+            Ok(ManifestRow {
+                table_name: row.get(0)?,
+                category: row.get(1)?,
+                authoritative: row.get(2)?,
+                legacy_toml_path: row.get(3)?,
+                description: row.get(4)?,
+                migration_status: row.get(5)?,
+            })
         })?;
         let mut out = Vec::new();
         for r in rows {
@@ -2809,21 +2883,7 @@ impl ProvenanceStore {
     }
 
     /// Insert or replace a roadmap item.
-    pub fn upsert_roadmap_item(
-        &self,
-        id: &str,
-        name: &str,
-        priority: &str,
-        status: &str,
-        status_token: &str,
-        description: &str,
-        sprint: &str,
-        dependencies_json: &str,
-        acceptance_criteria_json: &str,
-        primary_outputs_json: &str,
-        evidence_refs_json: &str,
-        lacunae_json: &str,
-    ) -> Result<()> {
+    pub fn upsert_roadmap_item(&self, item: &RoadmapItem<'_>) -> Result<()> {
         self.conn.execute(
             "INSERT OR REPLACE INTO roadmap_items
              (id, name, priority, status, status_token, description, sprint,
@@ -2831,106 +2891,57 @@ impl ProvenanceStore {
               evidence_refs_json, lacunae_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12, datetime('now'))",
             params![
-                id,
-                name,
-                priority,
-                status,
-                status_token,
-                description,
-                sprint,
-                dependencies_json,
-                acceptance_criteria_json,
-                primary_outputs_json,
-                evidence_refs_json,
-                lacunae_json,
+                item.id,
+                item.name,
+                item.priority,
+                item.status,
+                item.status_token,
+                item.description,
+                item.sprint,
+                item.dependencies_json,
+                item.acceptance_criteria_json,
+                item.primary_outputs_json,
+                item.evidence_refs_json,
+                item.lacunae_json,
             ],
         )?;
         Ok(())
     }
 
     /// Insert or replace a todo item.
-    pub fn upsert_todo_item(
-        &self,
-        id: &str,
-        area: &str,
-        title: &str,
-        description: &str,
-        priority: &str,
-        status: &str,
-        status_token: &str,
-        dependencies_json: &str,
-        acceptance_criteria_json: &str,
-    ) -> Result<()> {
+    pub fn upsert_todo_item(&self, item: &ActionItem<'_>) -> Result<()> {
         self.conn.execute(
             "INSERT OR REPLACE INTO todo_items
              (id, area, title, description, priority, status, status_token,
               dependencies_json, acceptance_criteria_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
             params![
-                id,
-                area,
-                title,
-                description,
-                priority,
-                status,
-                status_token,
-                dependencies_json,
-                acceptance_criteria_json,
+                item.id, item.area, item.title, item.description, item.priority,
+                item.status, item.status_token, item.dependencies_json,
+                item.acceptance_criteria_json,
             ],
         )?;
         Ok(())
     }
 
     /// Insert or replace a next-action item.
-    pub fn upsert_next_action(
-        &self,
-        id: &str,
-        area: &str,
-        title: &str,
-        description: &str,
-        priority: &str,
-        status: &str,
-        status_token: &str,
-        dependencies_json: &str,
-        acceptance_criteria_json: &str,
-    ) -> Result<()> {
+    pub fn upsert_next_action(&self, item: &ActionItem<'_>) -> Result<()> {
         self.conn.execute(
             "INSERT OR REPLACE INTO next_action_items
              (id, area, title, description, priority, status, status_token,
               dependencies_json, acceptance_criteria_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
             params![
-                id,
-                area,
-                title,
-                description,
-                priority,
-                status,
-                status_token,
-                dependencies_json,
-                acceptance_criteria_json,
+                item.id, item.area, item.title, item.description, item.priority,
+                item.status, item.status_token, item.dependencies_json,
+                item.acceptance_criteria_json,
             ],
         )?;
         Ok(())
     }
 
     /// Insert or replace a research narrative.
-    pub fn upsert_research_narrative(
-        &self,
-        id: &str,
-        source_markdown: &str,
-        domain: &str,
-        slug: &str,
-        title: &str,
-        status_token: &str,
-        content_kind: &str,
-        verification_level: &str,
-        claim_refs_json: &str,
-        url_refs_json: &str,
-        path_refs_json: &str,
-        body_markdown: &str,
-        line_count: i64,
-    ) -> Result<()> {
+    pub fn upsert_research_narrative(&self, row: &ResearchNarrativeRow<'_>) -> Result<()> {
         self.conn.execute(
             "INSERT INTO research_narratives
              (id, source_markdown, domain, slug, title, status_token, content_kind,
@@ -2951,19 +2962,10 @@ impl ProvenanceStore {
                  body_markdown        = excluded.body_markdown,
                  line_count           = excluded.line_count",
             params![
-                id,
-                source_markdown,
-                domain,
-                slug,
-                title,
-                status_token,
-                content_kind,
-                verification_level,
-                claim_refs_json,
-                url_refs_json,
-                path_refs_json,
-                body_markdown,
-                line_count,
+                row.id, row.source_markdown, row.domain, row.slug, row.title,
+                row.status_token, row.content_kind, row.verification_level,
+                row.claim_refs_json, row.url_refs_json, row.path_refs_json,
+                row.body_markdown, row.line_count,
             ],
         )?;
         Ok(())
@@ -3035,38 +3037,29 @@ impl ProvenanceStore {
     }
 
     /// Insert or replace a notebook session.
-    pub fn upsert_notebook_session(
-        &self,
-        id: &str,
-        title: &str,
-        description: &str,
-        kernel: &str,
-        status: &str,
-        cell_count: i64,
-        cells_json: &str,
-    ) -> Result<()> {
+    pub fn upsert_notebook_session(&self, row: &NotebookSessionRow<'_>) -> Result<()> {
         self.conn.execute(
             "INSERT OR REPLACE INTO notebook_sessions
              (id, title, description, kernel, status, cell_count, cells_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7, datetime('now'))",
-            params![id, title, description, kernel, status, cell_count, cells_json],
+            params![row.id, row.title, row.description, row.kernel, row.status, row.cell_count, row.cells_json],
         )?;
         Ok(())
     }
 
     /// List notebook sessions.
-    pub fn list_notebook_sessions(&self) -> Result<Vec<(String, String, String, String, i64)>> {
+    pub fn list_notebook_sessions(&self) -> Result<Vec<NotebookSessionSummary>> {
         let mut stmt = self.conn.prepare(
             "SELECT id, title, kernel, status, cell_count FROM notebook_sessions ORDER BY updated_at DESC",
         )?;
         let rows = stmt.query_map([], |row| {
-            Ok((
-                row.get::<_, String>(0)?,
-                row.get::<_, String>(1)?,
-                row.get::<_, String>(2)?,
-                row.get::<_, String>(3)?,
-                row.get::<_, i64>(4)?,
-            ))
+            Ok(NotebookSessionSummary {
+                id: row.get(0)?,
+                title: row.get(1)?,
+                kernel: row.get(2)?,
+                status: row.get(3)?,
+                cell_count: row.get(4)?,
+            })
         })?;
         let mut out = Vec::new();
         for r in rows {
@@ -3105,71 +3098,6 @@ pub(crate) fn search_narratives_on_conn(
         out.push(r?);
     }
     Ok(out)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use rusqlite::{params, Connection};
-
-    /// Verify that the narrative FTS wiring works end-to-end against an
-    /// in-memory SQLite database.
-    #[test]
-    fn search_narratives_fts_works_with_in_memory_db() {
-        // Set up an in-memory database with the minimal schema required by
-        // `search_narratives_on_conn`.
-        let conn = Connection::open_in_memory().expect("open in-memory db");
-
-        conn.execute(
-            "CREATE TABLE research_narratives (
-                 id    TEXT PRIMARY KEY,
-                 title TEXT NOT NULL,
-                 body  TEXT NOT NULL
-             )",
-            [],
-        )
-        .expect("create research_narratives table");
-
-        conn.execute(
-            "CREATE VIRTUAL TABLE research_narrative_search
-             USING fts5(title, body, content='research_narratives', content_rowid='rowid')",
-            [],
-        )
-        .expect("create research_narrative_search FTS table");
-
-        // Insert two narratives with different content so that a query for
-        // 'sqlite' only matches one of them.
-        conn.execute(
-            "INSERT INTO research_narratives (id, title, body)
-             VALUES (?1, ?2, ?3)",
-            params!["n1", "SQLite narrative", "This narrative talks about sqlite and databases."],
-        )
-        .expect("insert narrative n1");
-
-        conn.execute(
-            "INSERT INTO research_narratives (id, title, body)
-             VALUES (?1, ?2, ?3)",
-            params!["n2", "Unrelated narrative", "This one is about something else entirely."],
-        )
-        .expect("insert narrative n2");
-
-        // Populate the FTS index from the base table.
-        conn.execute(
-            "INSERT INTO research_narrative_search (rowid, title, body)
-             SELECT rowid, title, body FROM research_narratives",
-            [],
-        )
-        .expect("populate FTS index");
-
-        // Perform the FTS search through the same helper used by the main API.
-        let results =
-            search_narratives_on_conn(&conn, "sqlite", 10).expect("search_narratives_on_conn failed");
-
-        // We expect exactly one hit and it should be the narrative about SQLite.
-        assert_eq!(results.len(), 1, "expected exactly one FTS match");
-        assert_eq!(results[0].0, "n1");
-        assert_eq!(results[0].1, "SQLite narrative");
-    }
 }
 
 fn clear_tables(conn: &Connection) -> Result<()> {
@@ -4784,7 +4712,49 @@ fn write_text(path: &Path, body: &str) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rusqlite::{params, Connection};
     use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn search_narratives_fts_works_with_in_memory_db() {
+        let conn = Connection::open_in_memory().expect("open in-memory db");
+        conn.execute(
+            "CREATE TABLE research_narratives (
+                 id    TEXT PRIMARY KEY,
+                 title TEXT NOT NULL,
+                 body  TEXT NOT NULL
+             )",
+            [],
+        )
+        .expect("create research_narratives table");
+        conn.execute(
+            "CREATE VIRTUAL TABLE research_narrative_search
+             USING fts5(title, body, content='research_narratives', content_rowid='rowid')",
+            [],
+        )
+        .expect("create research_narrative_search FTS table");
+        conn.execute(
+            "INSERT INTO research_narratives (id, title, body) VALUES (?1, ?2, ?3)",
+            params!["n1", "SQLite narrative", "This narrative talks about sqlite and databases."],
+        )
+        .expect("insert narrative n1");
+        conn.execute(
+            "INSERT INTO research_narratives (id, title, body) VALUES (?1, ?2, ?3)",
+            params!["n2", "Unrelated narrative", "This one is about something else entirely."],
+        )
+        .expect("insert narrative n2");
+        conn.execute(
+            "INSERT INTO research_narrative_search (rowid, title, body)
+             SELECT rowid, title, body FROM research_narratives",
+            [],
+        )
+        .expect("populate FTS index");
+        let results =
+            search_narratives_on_conn(&conn, "sqlite", 10).expect("search_narratives_on_conn failed");
+        assert_eq!(results.len(), 1, "expected exactly one FTS match");
+        assert_eq!(results[0].0, "n1");
+        assert_eq!(results[0].1, "SQLite narrative");
+    }
 
     struct TestWorkspace {
         root: PathBuf,

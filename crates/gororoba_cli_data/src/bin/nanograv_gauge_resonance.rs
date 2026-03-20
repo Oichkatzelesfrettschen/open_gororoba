@@ -48,7 +48,7 @@ fn main() -> Result<()> {
     let lattice_1024 = enumerate_lambda_4096().into_iter().filter(is_in_lambda_1024).collect::<Vec<_>>();
     
     let mut writer = Writer::from_path(&args.csv_out)?;
-    writer.write_record(&["pulsar", "rms_us", "gauge_frustration", "su3_su2_cross_coupling"])?;
+    writer.write_record(["pulsar", "rms_us", "gauge_frustration", "su3_su2_cross_coupling"])?;
 
     for (name, data) in &release {
         let Some(sky) = data.sky_vector() else { continue; };
@@ -85,7 +85,7 @@ fn main() -> Result<()> {
 
         let gauge_frustration = cross_coupling_count as f64 / (args.n_samples as f64);
 
-        writer.write_record(&[
+        writer.write_record([
             name,
             &format!("{:.12}", rms_us),
             &format!("{:.12}", gauge_frustration),

@@ -221,6 +221,7 @@ fn wls_baryonic(bundle: &DataBundle) -> Vec<Vec<f64>> {
             }
         }
         // Add regularization
+        #[allow(clippy::needless_range_loop)]
         for k in 0..3 {
             a[k][k] += 1e-8;
         }

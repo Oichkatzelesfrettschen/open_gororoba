@@ -49,7 +49,7 @@ fn main() -> Result<()> {
 
     println!("Computing holographic entropy saturation for each pulsar...");
     let mut writer = Writer::from_path(&args.csv_out)?;
-    writer.write_record(&["pulsar", "dist_pc", "rms_us", "shannon_entropy", "bekenstein_bound", "saturation_ratio"])?;
+    writer.write_record(["pulsar", "dist_pc", "rms_us", "shannon_entropy", "bekenstein_bound", "saturation_ratio"])?;
 
     // Planck length in parsecs (approx)
     let l_p_pc = 5.23e-52; 
@@ -71,7 +71,7 @@ fn main() -> Result<()> {
 
         // 2. Bekenstein Bound (Entropy proportional to area)
         // Area of a circle at distance d with radius of pulsar beam (approx)
-        let area = 3.14159 * dist_pc * dist_pc;
+        let area = std::f64::consts::PI * dist_pc * dist_pc;
         let bekenstein_bound = area / (4.0 * l_p_pc * l_p_pc);
 
         // 3. Project sky to 1024D basis
@@ -93,7 +93,7 @@ fn main() -> Result<()> {
         // We need to scale h_avt (nats) to bits or a comparable dimensionless number.
         let saturation_ratio = h_avt / bekenstein_bound.ln();
 
-        writer.write_record(&[
+        writer.write_record([
             name,
             &format!("{:.2}", dist_pc),
             &format!("{:.12}", rms_us),

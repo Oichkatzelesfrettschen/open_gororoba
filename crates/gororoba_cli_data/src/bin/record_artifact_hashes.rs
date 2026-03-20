@@ -46,11 +46,10 @@ fn main() -> Result<()> {
     let mut artifact_paths = Vec::new();
     for result in reader.records() {
         let record = result?;
-        if let Some(p) = record.get(0) {
-            if !p.is_empty() {
+        if let Some(p) = record.get(0)
+            && !p.is_empty() {
                 artifact_paths.push(p.to_string());
             }
-        }
     }
 
     let mut entries = Vec::new();

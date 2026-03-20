@@ -21,6 +21,7 @@ fn gf2_rank(matrix: &mut [Vec<u8>]) -> usize {
 
     for c in 0..n {
         let mut piv = None;
+        #[allow(clippy::needless_range_loop)]
         for i in r..m {
             if matrix[i][c] == 1 {
                 piv = Some(i);
@@ -32,6 +33,7 @@ fn gf2_rank(matrix: &mut [Vec<u8>]) -> usize {
             if pivot_row != r {
                 matrix.swap(r, pivot_row);
             }
+            #[allow(clippy::needless_range_loop)]
             for i in 0..m {
                 if i != r && matrix[i][c] == 1 {
                     for col in 0..n {
@@ -82,6 +84,7 @@ fn main() -> Result<()> {
 
     let translate = |mask: &[Vec<u8>], tx: usize, ty: usize| -> Vec<Vec<u8>> {
         let mut out = vec![vec![0u8; l]; l];
+        #[allow(clippy::needless_range_loop)]
         for r in 0..l {
             for c in 0..l {
                 let src_r = (r + l - ty % l) % l;
@@ -97,6 +100,7 @@ fn main() -> Result<()> {
 
     let flat = |mask: &[Vec<u8>]| -> Vec<u8> {
         let mut out = Vec::with_capacity(n_qubits);
+        #[allow(clippy::needless_range_loop)]
         for r in 0..l {
             for c in 0..l {
                 out.push(mask[r][c] % 2);
@@ -180,7 +184,7 @@ fn main() -> Result<()> {
 
     if let Some((w_best, tx_best, ty_best, xlog)) = best {
         println!("Found X-Logical: w={}, shift=({},{})", w_best, tx_best, ty_best);
-        
+
         let cell_size = 20;
         let img_size = (l * cell_size) as u32;
         let mut img = ImageBuffer::new(img_size, img_size);
@@ -188,6 +192,7 @@ fn main() -> Result<()> {
         let bg_color = Rgb([13u8, 15u8, 20u8]);
         let blue = Rgb([97u8, 166u8, 245u8]);
 
+        #[allow(clippy::needless_range_loop)]
         for r in 0..l {
             for c in 0..l {
                 let color = if xlog[r][c] == 1 { blue } else { bg_color };

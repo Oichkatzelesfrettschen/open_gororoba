@@ -57,9 +57,7 @@ fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
     for chunk in local_kes.chunks(8) {
         let mut f = [0.0; 8];
         let c = [1.0; 8];
-        for i in 0..chunk.len() {
-            f[i] = chunk[i];
-        }
+        f[..chunk.len()].copy_from_slice(&chunk[..chunk.len()]);
         total_ke += verified_core::x87_math::x87_abm8_dot_product(&f, &c);
     }
     
