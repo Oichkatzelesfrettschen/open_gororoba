@@ -10,11 +10,13 @@ use csv::Writer;
 use data_core::spatial::equatorial_to_galactic_lat;
 use gororoba_algebra::gpu::{ComputeBackend, TensorAVT};
 use gororoba_cli_data::nanograv_timing::{PairAuditRow, PulsarTimingData, load_release};
+use serde::Deserialize;
 use stats_core::{
     helpers::mean,
     metrics::{centered_rms, pearson, percent_drop, rms},
 };
 use std::{
+    collections::BTreeMap,
     fmt::Write as _,
     fs,
     path::{Path, PathBuf},
@@ -46,8 +48,14 @@ struct Args {
     #[arg(long, default_value = "reports/nanograv_avt_filter.toml")]
     report_out: PathBuf,
 
+    #[arg(long)]
+    independent_residual_csv: Option<PathBuf>,
+
     #[arg(long, value_enum, default_value_t = ResidualSurface::Avg)]
     surface: ResidualSurface,
+
+    #[arg(long, value_enum, default_value_t = IndependentResidualSurface::Policy)]
+    independent_surface: IndependentResidualSurface,
 
     #[arg(long, default_value_t = 4)]
     folds: usize,
@@ -98,6 +106,14 @@ impl ResidualSurface {
     }
 }
 
+#[derive(Copy, Clone, Debug, Eq, PartialEq, ValueEnum)]
+enum IndependentResidualSurface {
+    Before,
+    Wls,
+    Gls,
+    Policy,
+}
+
 #[derive(Debug, Clone)]
 struct PulsarProjection {
     pulsar: String,
@@ -107,6 +123,32 @@ struct PulsarProjection {
     centered_rms_us: f64,
     frustration_z: f64,
     avg_uncertainty_mean_us: f64,
+}
+
+#[derive(Debug, Deserialize)]
+struct IndependentResidualRow {
+    pulsar_id: String,
+    mjd_utc: f64,
+    uncertainty_us: f64,
+    residual_before_us: f64,
+    residual_after_wls_us: f64,
+    residual_after_gls_us: f64,
+    residual_after_policy_us: f64,
+}
+
+#[derive(Debug, Deserialize)]
+struct PairwiseInputRow {
+    pulsar_a: String,
+    pulsar_b: String,
+    hellings_downs: f64,
+    #[serde(default)]
+    overlap_bins: Option<usize>,
+    #[serde(default)]
+    avg_residual_pearson: Option<f64>,
+    #[serde(default)]
+    overlap_bins_policy: Option<usize>,
+    #[serde(default)]
+    policy_residual_pearson: Option<f64>,
 }
 
 #[derive(Debug, Clone)]
@@ -194,8 +236,20 @@ fn main() -> Result<()> {
     if args.pairwise_csv.exists() {
         let mut rdr = csv::Reader::from_path(&args.pairwise_csv)?;
         for result in rdr.deserialize() {
-            let record: PairAuditRow = result?;
-            pairwise_rows.push(record);
+            let record: PairwiseInputRow = result?;
+            pairwise_rows.push(PairAuditRow {
+                pulsar_a: record.pulsar_a,
+                pulsar_b: record.pulsar_b,
+                hellings_downs: record.hellings_downs,
+                overlap_bins: record
+                    .overlap_bins_policy
+                    .or(record.overlap_bins)
+                    .unwrap_or(0),
+                avg_residual_pearson: record
+                    .policy_residual_pearson
+                    .or(record.avg_residual_pearson)
+                    .unwrap_or(0.0),
+            });
         }
     }
 
@@ -311,6 +365,9 @@ fn prepare_pulsars(
     dimension: usize,
     backend: ComputeBackend,
 ) -> Result<Vec<PulsarProjection>> {
+    if let Some(path) = &args.independent_residual_csv {
+        return prepare_pulsars_from_independent_csv(release, path, args, lattice, dimension, backend);
+    }
     let mut names = Vec::new();
     let mut residual_sets = Vec::new();
     let mut uncertainty_sets = Vec::new();
@@ -330,15 +387,11 @@ fn prepare_pulsars(
         let b = equatorial_to_galactic_lat(ra_deg, dec_deg);
 
         let mut inside = true;
-        if let Some(min) = args.lat_min {
-            if b < min {
-                inside = false;
-            }
+        if let Some(min) = args.lat_min && b < min {
+            inside = false;
         }
-        if let Some(max) = args.lat_max {
-            if b > max {
-                inside = false;
-            }
+        if let Some(max) = args.lat_max && b > max {
+            inside = false;
         }
 
         if args.lat_exclude {
@@ -371,6 +424,114 @@ fn prepare_pulsars(
 
     if names.is_empty() {
         bail!("no pulsars with usable residuals and sky metadata for AVT audit");
+    }
+
+    let frustrations =
+        compute_frustration_scores(&packed_vectors, names.len(), dimension, backend)?;
+    let standardized = zscore(&frustrations);
+    let mut out = Vec::new();
+    for (((name, residuals), frustration_z), avg_unc) in names
+        .into_iter()
+        .zip(residual_sets)
+        .zip(standardized)
+        .zip(uncertainty_sets)
+    {
+        let raw_mean_us = mean(&residuals);
+        let raw_rms_us = rms(&residuals);
+        let centered_rms_us = centered_rms(&residuals, raw_mean_us);
+        out.push(PulsarProjection {
+            pulsar: name,
+            residuals,
+            raw_mean_us,
+            raw_rms_us,
+            centered_rms_us,
+            frustration_z,
+            avg_uncertainty_mean_us: avg_unc,
+        });
+    }
+    out.sort_by(|left, right| left.pulsar.cmp(&right.pulsar));
+    Ok(out)
+}
+
+fn prepare_pulsars_from_independent_csv(
+    release: &std::collections::BTreeMap<String, PulsarTimingData>,
+    csv_path: &Path,
+    args: &Args,
+    lattice: &[LatticeVector],
+    dimension: usize,
+    backend: ComputeBackend,
+) -> Result<Vec<PulsarProjection>> {
+    let mut grouped: BTreeMap<String, Vec<IndependentResidualRow>> = BTreeMap::new();
+    let mut reader = csv::Reader::from_path(csv_path)?;
+    for result in reader.deserialize() {
+        let row: IndependentResidualRow = result?;
+        if let Some(start) = args.mjd_start && row.mjd_utc < start {
+            continue;
+        }
+        if let Some(end) = args.mjd_end && row.mjd_utc > end {
+            continue;
+        }
+        grouped.entry(row.pulsar_id.clone()).or_default().push(row);
+    }
+
+    let mut names = Vec::new();
+    let mut residual_sets = Vec::new();
+    let mut uncertainty_sets = Vec::new();
+    let mut packed_vectors = Vec::new();
+    for (name, rows) in grouped {
+        let Some(data) = release.get(&name) else {
+            continue;
+        };
+        let Some(sky) = data.sky_vector() else {
+            continue;
+        };
+        let residuals = rows
+            .iter()
+            .map(|row| match args.independent_surface {
+                IndependentResidualSurface::Before => row.residual_before_us,
+                IndependentResidualSurface::Wls => row.residual_after_wls_us,
+                IndependentResidualSurface::Gls => row.residual_after_gls_us,
+                IndependentResidualSurface::Policy => row.residual_after_policy_us,
+            })
+            .collect::<Vec<_>>();
+        if residuals.is_empty() {
+            continue;
+        }
+
+        let ra_deg = sky[1].atan2(sky[0]).to_degrees();
+        let dec_deg = sky[2].asin().to_degrees();
+        let b = equatorial_to_galactic_lat(ra_deg, dec_deg);
+        let mut inside = true;
+        if let Some(min) = args.lat_min && b < min {
+            inside = false;
+        }
+        if let Some(max) = args.lat_max && b > max {
+            inside = false;
+        }
+        if args.lat_exclude {
+            if inside {
+                continue;
+            }
+        } else if !inside {
+            continue;
+        }
+
+        let avg_unc = mean(
+            &rows.iter()
+                .map(|row| row.uncertainty_us.max(1.0e-6))
+                .collect::<Vec<_>>(),
+        );
+        let projected = project_sky_to_basis(&sky, lattice, dimension);
+        packed_vectors.extend(projected.iter().map(|value| *value as f32));
+        names.push(name);
+        residual_sets.push(residuals);
+        uncertainty_sets.push(avg_unc);
+    }
+
+    if names.is_empty() {
+        bail!(
+            "no pulsars with usable independent residuals and sky metadata for AVT audit"
+        );
     }
 
     let frustrations =
@@ -845,15 +1006,11 @@ fn residual_series(data: &PulsarTimingData, args: &Args) -> Vec<f64> {
     points
         .iter()
         .filter(|p| {
-            if let Some(start) = args.mjd_start {
-                if p.mjd < start {
-                    return false;
-                }
+            if let Some(start) = args.mjd_start && p.mjd < start {
+                return false;
             }
-            if let Some(end) = args.mjd_end {
-                if p.mjd > end {
-                    return false;
-                }
+            if let Some(end) = args.mjd_end && p.mjd > end {
+                return false;
             }
             true
         })
@@ -990,6 +1147,18 @@ fn write_report(path: &PathBuf, args: &Args, summaries: &[PerDimensionSummary]) 
     let _ = writeln!(out, "title = \"NANOGrav AVT mean-shift audit\"");
     let _ = writeln!(out, "root = \"{}\"", args.root.display());
     let _ = writeln!(out, "surface = \"{}\"", args.surface.as_str());
+    if let Some(path) = &args.independent_residual_csv {
+        let _ = writeln!(
+            out,
+            "independent_residual_csv = \"{}\"",
+            path.display()
+        );
+        let _ = writeln!(
+            out,
+            "independent_surface = \"{:?}\"",
+            args.independent_surface
+        );
+    }
     let _ = writeln!(out, "folds = {}", args.folds);
     let _ = writeln!(out, "null_shifts = {}", args.null_shifts);
     let _ = writeln!(out, "lambda_min = {:.12}", args.lambda_min);

@@ -213,6 +213,34 @@ pub fn cd_dimension_nacelle_map(cd_dim: usize) -> Option<usize> {
     }
 }
 
+/// Computes the effective stress-energy tensor correction from ZD harmonic forcing.
+/// T_munu^ZD = alpha_zd * Potential(r) * g_munu
+pub fn algebraic_stress_energy_correction(dim: usize, r: f64, r_s: f64, alpha_zd_coupling: f64) -> f64 {
+    let x = r / r_s;
+
+    let (n_modes, fbf) = match dim {
+        16 => (7, 0.5),
+        32 => (15, 4.0/7.0),
+        64 => (31, 1854.0 / 3036.0), // FBF for 64D
+        _ => (0, 0.0),
+    };
+
+    if n_modes == 0 {
+        return 0.0;
+    }
+
+    let base_k = 2.0 * std::f64::consts::PI / (n_modes as f64);
+    let mut potential = 0.0;
+    let spatial_envelope = if x > 1.0 { (x - 1.0).ln() } else { 0.0 };
+
+    for n in 1..=n_modes {
+        let k_n = base_k * (n as f64);
+        let c_n = 1.0 / (n as f64) * fbf;
+        potential += c_n * (k_n * x).cos(); // Use cos for potential
+    }
+    alpha_zd_coupling * potential * spatial_envelope
+}
+
 /// Compute the full algebraic ADM state at a point.
 ///
 /// Combines standard ADM decomposition with algebraic data.
@@ -357,5 +385,11 @@ mod tests {
             delta_under < 0.0,
             "under-frustrated should suppress: {delta_under}"
         );
+    }
+
+    #[test]
+    fn test_algebraic_stress_energy_correction() {
+        let correction = algebraic_stress_energy_correction(16, 20.0, 10.0, 15.0);
+        assert!(correction.is_finite());
     }
 }
