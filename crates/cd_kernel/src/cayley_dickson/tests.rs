@@ -315,3 +315,35 @@ fn test_pathion_32d_flat_into_matches_scalar() {
         );
     }
 }
+
+#[test]
+fn test_chingon_64d_flat_into_matches_scalar() {
+    let a: Vec<f64> = (0..64).map(|i| (i as f64 * 0.0456).sin()).collect();
+    let b: Vec<f64> = (0..64).map(|i| (i as f64 * 0.0789).cos()).collect();
+    let scalar = cd_multiply(&a, &b);
+    let mut flat_out = vec![0.0; 64];
+    cd_multiply_flat_into(&a, &b, &mut flat_out, 64);
+    for i in 0..64 {
+        assert!(
+            (flat_out[i] - scalar[i]).abs() < 1e-8,
+            "chingon flat_into[{}] = {}, scalar = {}, diff = {}",
+            i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+        );
+    }
+}
+
+#[test]
+fn test_cd_flat_into_256d_matches_scalar() {
+    let a: Vec<f64> = (0..256).map(|i| (i as f64 * 0.0123).sin()).collect();
+    let b: Vec<f64> = (0..256).map(|i| (i as f64 * 0.0456).cos()).collect();
+    let scalar = cd_multiply(&a, &b);
+    let mut flat_out = vec![0.0; 256];
+    cd_multiply_flat_into(&a, &b, &mut flat_out, 256);
+    for i in 0..256 {
+        assert!(
+            (flat_out[i] - scalar[i]).abs() < 1e-6,
+            "256d flat_into[{}] = {}, scalar = {}, diff = {}",
+            i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+        );
+    }
+}

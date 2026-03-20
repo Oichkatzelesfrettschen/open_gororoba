@@ -70,12 +70,20 @@ fn bench_sedenion_multiply(c: &mut Criterion) {
 }
 
 fn bench_dimension_scaling(c: &mut Criterion) {
+    use cd_kernel::cayley_dickson::cd_multiply_flat_into;
+
     let mut group = c.benchmark_group("cd_multiply_scaling");
-    for dim in [4, 8, 16, 32, 64] {
+    for dim in [4, 8, 16, 32, 64, 128, 256] {
         let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.123).sin()).collect();
         let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.456).cos()).collect();
         group.bench_with_input(BenchmarkId::new("scalar", dim), &dim, |bench, _| {
             bench.iter(|| black_box(cd_multiply(black_box(&a), black_box(&b))))
+        });
+        group.bench_with_input(BenchmarkId::new("flat_into", dim), &dim, |bench, &d| {
+            let mut out = vec![0.0_f64; d];
+            bench.iter(|| {
+                cd_multiply_flat_into(black_box(&a), black_box(&b), black_box(&mut out), d);
+            })
         });
     }
     group.finish();
