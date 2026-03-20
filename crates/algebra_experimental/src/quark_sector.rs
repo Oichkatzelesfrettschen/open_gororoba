@@ -220,6 +220,63 @@ pub fn construct_quark_mass_matrices(
     (m_up, m_down)
 }
 
+/// Build quark mass matrices using signed topological friction.
+///
+/// Replaces the flavor-blind Casimir projection with generation-dependent
+/// signed friction from oriented braiding.  Uses DIFFERENT braid-axis pairs
+/// for up-type vs down-type sectors to ensure [H_u, H_d] != 0.
+///
+/// Up-type: braid axes (e_1, e_4) -> frictions {0, 2.83, -8.49}
+/// Down-type: braid axes (e_5, e_8) -> frictions {0, -8.49, 2.83} (permuted)
+///
+/// Mass matrix: M_f = M_f^(0) + diag(exp(alpha * |signed_friction_i|))
+/// where M_f^(0) is the Casimir baseline and alpha controls hierarchy steepness.
+pub fn construct_quark_mass_matrices_with_friction(
+    basis: &[Sedenion; 16],
+    complex_structure: &Sedenion,
+    scheme: SubalgebraScheme,
+    alpha: f64,
+) -> (Mat<f64>, Mat<f64>) {
+    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+    use crate::majorana_braiding::MajoranaMode;
+    use crate::bell_inequality::SignTableCache;
+    use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+    // Get the Casimir baseline (rank 1, flavor-blind)
+    let (m_up_0, m_down_0) = construct_quark_mass_matrices(basis, complex_structure, scheme);
+
+    // Compute signed frictions for each generation
+    let (o1, o2, o3) = get_sedenion_subalgebras();
+    let subalgebras = [o1, o2, o3];
+    let sign_table = SignTableCache::new(16);
+
+    // Up-type: braid axes (e_1, e_4)
+    let up_mode_a = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+    let up_mode_b = MajoranaMode { gamma_index: 3, cd_basis_index: 4, cd_dim: 16 };
+    let up_frictions: Vec<f64> = subalgebras.iter()
+        .map(|sub| cd_braid_signed_friction(&up_mode_a, &up_mode_b, sub, &sign_table))
+        .collect();
+
+    // Down-type: braid axes (e_5, e_8) -- DIFFERENT pair for sector asymmetry
+    let down_mode_a = MajoranaMode { gamma_index: 4, cd_basis_index: 5, cd_dim: 16 };
+    let down_mode_b = MajoranaMode { gamma_index: 7, cd_basis_index: 8, cd_dim: 16 };
+    let down_frictions: Vec<f64> = subalgebras.iter()
+        .map(|sub| cd_braid_signed_friction(&down_mode_a, &down_mode_b, sub, &sign_table))
+        .collect();
+
+    // Perturb: M_f = M_f^(0) + diag(exp(alpha * |friction_i|))
+    let mut m_up = m_up_0;
+    let mut m_down = m_down_0;
+    for i in 0..3 {
+        let up_pert = (alpha * up_frictions[i].abs()).exp();
+        let down_pert = (alpha * down_frictions[i].abs()).exp();
+        m_up.write(i, i, m_up.read(i, i) + up_pert);
+        m_down.write(i, i, m_down.read(i, i) + down_pert);
+    }
+
+    (m_up, m_down)
+}
+
 /// CKM matrix derivation result.
 pub struct CkmResult {
     /// The 3x3 CKM matrix.
@@ -636,6 +693,82 @@ mod tests {
             if min_sv_up < 1e-10 {
                 println!("  ** UP-TYPE ZERO MODE CONFIRMED (structural symmetry) **");
             }
+        }
+    }
+
+    /// Inject signed friction into quark mass matrices and check all diagnostics.
+    #[test]
+    fn test_quark_mass_with_signed_friction() {
+        let (basis, cs) = standard_basis_and_cs();
+        let alpha = 1.0; // Start with alpha=1.0 (exp(|friction|))
+
+        let (m_up, m_down) = construct_quark_mass_matrices_with_friction(
+            &basis, &cs, SubalgebraScheme::InterleavedStride, alpha,
+        );
+
+        let m_up_sym = (&m_up + m_up.transpose()) * faer::scale(0.5);
+        let m_down_sym = (&m_down + m_down.transpose()) * faer::scale(0.5);
+
+        let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
+        let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
+
+        let mut up_evals = [0.0_f64; 3];
+        let mut down_evals = [0.0_f64; 3];
+        for i in 0..3 {
+            up_evals[i] = eig_up.s().column_vector().read(i);
+            down_evals[i] = eig_down.s().column_vector().read(i);
+        }
+
+        let det_up: f64 = up_evals.iter().product();
+        let det_down: f64 = down_evals.iter().product();
+
+        println!("--- QUARK MASS WITH SIGNED FRICTION (alpha={}) ---", alpha);
+        println!("  M_up eigenvalues: {:?}", up_evals);
+        println!("  M_down eigenvalues: {:?}", down_evals);
+        println!("  det(M_up) = {:.6e}", det_up);
+        println!("  det(M_down) = {:.6e}", det_down);
+
+        // Check rank: are all eigenvalues nonzero?
+        let up_rank = up_evals.iter().filter(|x| x.abs() > 1e-6).count();
+        let down_rank = down_evals.iter().filter(|x| x.abs() > 1e-6).count();
+        println!("  rank(M_up) = {}, rank(M_down) = {}", up_rank, down_rank);
+
+        // Commutator [H_u, H_d]
+        let h_u = &m_up_sym * m_up_sym.transpose();
+        let h_d = &m_down_sym * m_down_sym.transpose();
+        let comm = &h_u * &h_d - &h_d * &h_u;
+        let mut comm_frob = 0.0_f64;
+        for i in 0..3 { for j in 0..3 { comm_frob += comm.read(i, j).powi(2); } }
+        comm_frob = comm_frob.sqrt();
+        println!("  ||[H_u, H_d]||_F = {:.6e}", comm_frob);
+
+        // CKM
+        let u_up = eig_up.u();
+        let u_down = eig_down.u();
+        let v_ckm = u_up.transpose() * u_down;
+        let v_us = v_ckm.read(0, 1).abs();
+        let v_ub = v_ckm.read(0, 2).abs();
+        let v_cb = v_ckm.read(1, 2).abs();
+        let theta_13 = v_ub.asin();
+        let cos_13 = theta_13.cos();
+        let theta_12 = if cos_13 > 1e-15 { (v_us / cos_13).min(1.0).asin() } else { 0.0 };
+        let theta_23 = if cos_13 > 1e-15 { (v_cb / cos_13).min(1.0).asin() } else { 0.0 };
+
+        println!("  CKM angles: theta_12={:.2} deg, theta_13={:.4} deg, theta_23={:.2} deg",
+            theta_12.to_degrees(), theta_13.to_degrees(), theta_23.to_degrees());
+        println!("  PDG target: theta_12=12.99, theta_13=0.214, theta_23=2.40");
+
+        // Mass ratios
+        up_evals.sort_by(|a, b| a.abs().partial_cmp(&b.abs()).unwrap());
+        down_evals.sort_by(|a, b| a.abs().partial_cmp(&b.abs()).unwrap());
+        if down_evals[0].abs() > 1e-10 {
+            println!("  m_u/m_d = {:.4} (PDG: {PDG_MU_MD})", up_evals[0].abs() / down_evals[0].abs());
+        }
+        if down_evals[1].abs() > 1e-10 {
+            println!("  m_c/m_s = {:.4} (PDG: {PDG_MC_MS})", up_evals[1].abs() / down_evals[1].abs());
+        }
+        if down_evals[2].abs() > 1e-10 {
+            println!("  m_t/m_b = {:.4} (PDG: {PDG_MT_MB})", up_evals[2].abs() / down_evals[2].abs());
         }
     }
 }
