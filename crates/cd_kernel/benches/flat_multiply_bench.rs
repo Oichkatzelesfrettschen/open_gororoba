@@ -72,6 +72,7 @@ fn bench_sedenion_multiply(c: &mut Criterion) {
 fn bench_dimension_scaling(c: &mut Criterion) {
     use cd_kernel::cayley_dickson::cd_multiply_flat_into;
 
+    // Scalar baseline: only up to 256D (higher dims take seconds per call)
     let mut group = c.benchmark_group("cd_multiply_scaling");
     for dim in [4, 8, 16, 32, 64, 128, 256] {
         let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.123).sin()).collect();
@@ -89,11 +90,33 @@ fn bench_dimension_scaling(c: &mut Criterion) {
     group.finish();
 }
 
+fn bench_full_cd_tower(c: &mut Criterion) {
+    use cd_kernel::cayley_dickson::cd_multiply_flat_into;
+
+    // Full CD tower: flat_into only (scalar is too slow above 256D)
+    let mut group = c.benchmark_group("cd_tower_flat_into");
+    group.sample_size(10); // fewer samples for large dims
+    group.measurement_time(std::time::Duration::from_secs(5));
+
+    for dim in [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096] {
+        let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.123).sin()).collect();
+        let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.456).cos()).collect();
+        group.bench_with_input(BenchmarkId::new("flat", dim), &dim, |bench, &d| {
+            let mut out = vec![0.0_f64; d];
+            bench.iter(|| {
+                cd_multiply_flat_into(black_box(&a), black_box(&b), black_box(&mut out), d);
+            })
+        });
+    }
+    group.finish();
+}
+
 criterion_group!(
     benches,
     bench_quaternion_multiply,
     bench_octonion_multiply,
     bench_sedenion_multiply,
     bench_dimension_scaling,
+    bench_full_cd_tower,
 );
 criterion_main!(benches);

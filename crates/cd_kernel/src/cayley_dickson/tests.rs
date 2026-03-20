@@ -347,3 +347,50 @@ fn test_cd_flat_into_256d_matches_scalar() {
         );
     }
 }
+
+#[test]
+fn test_cd_flat_into_512d_matches_scalar() {
+    let a: Vec<f64> = (0..512).map(|i| (i as f64 * 0.007).sin()).collect();
+    let b: Vec<f64> = (0..512).map(|i| (i as f64 * 0.013).cos()).collect();
+    let scalar = cd_multiply(&a, &b);
+    let mut flat_out = vec![0.0; 512];
+    cd_multiply_flat_into(&a, &b, &mut flat_out, 512);
+    let max_diff: f64 = flat_out.iter().zip(scalar.iter())
+        .map(|(f, s)| (f - s).abs()).fold(0.0_f64, f64::max);
+    assert!(max_diff < 1e-5,
+        "512d max diff = {} (threshold 1e-5)", max_diff);
+}
+
+#[test]
+fn test_cd_flat_into_1024d_matches_scalar() {
+    let a: Vec<f64> = (0..1024).map(|i| (i as f64 * 0.003).sin()).collect();
+    let b: Vec<f64> = (0..1024).map(|i| (i as f64 * 0.005).cos()).collect();
+    let scalar = cd_multiply(&a, &b);
+    let mut flat_out = vec![0.0; 1024];
+    cd_multiply_flat_into(&a, &b, &mut flat_out, 1024);
+    let max_diff: f64 = flat_out.iter().zip(scalar.iter())
+        .map(|(f, s)| (f - s).abs()).fold(0.0_f64, f64::max);
+    assert!(max_diff < 1e-4,
+        "1024d max diff = {} (threshold 1e-4)", max_diff);
+}
+
+/// Time the full CD tower from 4D through 16384D (Tessareskaidekavoudon).
+/// This is a timing test, not a correctness test (scalar is too slow above 4096D).
+#[test]
+fn test_cd_tower_timing_4d_to_16384d() {
+    use std::time::Instant;
+    for exp in 2..=14 {
+        let dim = 1 << exp;
+        let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.007).sin()).collect();
+        let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.013).cos()).collect();
+        let mut out = vec![0.0; dim];
+        let t0 = Instant::now();
+        cd_multiply_flat_into(&a, &b, &mut out, dim);
+        let elapsed = t0.elapsed();
+        // Verify output is not all zeros (not a degenerate case)
+        let norm_sq: f64 = out.iter().map(|x| x * x).sum();
+        assert!(norm_sq > 0.0, "dim={} produced zero output", dim);
+        println!("cd_multiply_flat_into dim={:>5} time={:>12.3?} norm_sq={:.6e}",
+            dim, elapsed, norm_sq);
+    }
+}
