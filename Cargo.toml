@@ -378,3 +378,4 @@ lto = "fat"                # full cross-crate LTO for exact release parity
 codegen-units = 1          # single codegen unit for deterministic output
 incremental = false        # do not pollute cache with LTO artifacts
 codegen-backend = "llvm"   # override dev cranelift; LTO requires LLVM
+# No new string, just remove the old one

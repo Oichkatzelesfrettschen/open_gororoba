@@ -14,6 +14,7 @@ nalgebra = { workspace = true }
 ode_solvers = { workspace = true }
 num-complex = { workspace = true }
 gauss-quad = { workspace = true }
+algebra_experimental = { version = "0.1.0", path = "../algebra_experimental" }
 
 [dev-dependencies]
 approx = { workspace = true }

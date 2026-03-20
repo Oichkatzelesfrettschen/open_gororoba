@@ -33,6 +33,10 @@ struct Args {
     #[arg(long, default_value = "0.0")]
     z: f64,
 
+    /// Cayley-Dickson dimension (16, 32, 64) for algebraic corrections.
+    #[arg(long, default_value = "16")]
+    cd_dim: usize,
+
     /// ZD forcing strength (0.0 = disabled).
     #[arg(long, default_value = "0.0")]
     alpha_zd: f64,
@@ -71,9 +75,9 @@ fn main() -> anyhow::Result<()> {
         args.m200, c200, r_s
     );
     eprintln!("r_200 = {:.2} kpc, z = {:.4}", nfw.r200_kpc, args.z);
-    eprintln!("alpha_zd = {}, n_modes = {}", args.alpha_zd, args.n_modes);
+    eprintln!("alpha_zd = {}, n_modes = {}, cd_dim = {}", args.alpha_zd, args.n_modes, args.cd_dim);
 
-    let config = HarmonicHaloConfig::new(args.alpha_zd, args.n_modes, r_s);
+    let config = HarmonicHaloConfig::new_cd(args.alpha_zd, args.n_modes, r_s, args.cd_dim);
 
     let mut file = std::fs::File::create(&args.csv)?;
     writeln!(

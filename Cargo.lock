@@ -110,12 +110,15 @@ dependencies = [
  "algebra_analysis",
  "approx",
  "cd_kernel",
+ "criterion",
  "cudarc 0.19.3",
+ "faer",
  "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-bigint",
  "num-complex",
  "petgraph 0.7.1",
+ "plotters",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
@@ -1861,6 +1864,7 @@ dependencies = [
  "csv",
  "data_core",
  "gauss-quad 0.2.4",
+ "gr_core",
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "parquet",
@@ -4214,11 +4218,8 @@ name = "gororoba_db"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "chrono",
  "clap",
- "provenance_core",
  "provenance_store",
- "rusqlite",
  "serde",
  "serde_json",
  "toml",
@@ -4378,6 +4379,7 @@ dependencies = [
 name = "gr_core"
 version = "0.1.0"
 dependencies = [
+ "algebra_experimental",
  "approx",
  "cd_kernel",
  "gauss-quad 0.2.4",
