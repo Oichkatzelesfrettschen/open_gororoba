@@ -177,4 +177,53 @@ fn test_thesis_t4_alternativity_breaks() {
     assert!(found_break, "Alternativity should break in 16D");
 }
 
+#[test]
+fn test_quaternion_multiply_flat_matches_scalar() {
+    let a: [f64; 4] = [1.0, 2.0, 3.0, 4.0];
+    let b: [f64; 4] = [5.0, 6.0, 7.0, 8.0];
+    let flat = quaternion_multiply_flat(&a, &b);
+    let scalar = cd_multiply(&a, &b);
+    for i in 0..4 {
+        assert!(
+            (flat[i] - scalar[i]).abs() < 1e-12,
+            "quaternion_multiply_flat[{}] = {}, scalar = {}",
+            i, flat[i], scalar[i]
+        );
+    }
+}
 
+#[test]
+fn test_octonion_multiply_flat_matches_scalar() {
+    let a: [f64; 8] = [1.0, 0.2, -0.3, 0.4, 0.5, -0.6, 0.7, 0.8];
+    let b: [f64; 8] = [0.1, -0.2, 0.3, 0.4, -0.5, 0.6, -0.7, 0.8];
+    let flat = octonion_multiply_flat(&a, &b);
+    let scalar = cd_multiply(&a, &b);
+    for i in 0..8 {
+        assert!(
+            (flat[i] - scalar[i]).abs() < 1e-12,
+            "octonion_multiply_flat[{}] = {}, scalar = {}",
+            i, flat[i], scalar[i]
+        );
+    }
+}
+
+#[test]
+fn test_quaternion_multiply_flat_associativity_fails_at_octonion() {
+    // Quaternions are associative: (ab)c = a(bc).
+    // Octonions are NOT. Verify the flat multiply respects this.
+    let a: [f64; 4] = [1.0, 2.0, 0.0, 0.0];
+    let b: [f64; 4] = [0.0, 1.0, 1.0, 0.0];
+    let c: [f64; 4] = [0.0, 0.0, 1.0, 1.0];
+    let ab = quaternion_multiply_flat(&a, &b);
+    let bc = quaternion_multiply_flat(&b, &c);
+    let ab_c = quaternion_multiply_flat(&ab, &c);
+    let a_bc = quaternion_multiply_flat(&a, &bc);
+    // Quaternions ARE associative, so these should match
+    for i in 0..4 {
+        assert!(
+            (ab_c[i] - a_bc[i]).abs() < 1e-12,
+            "Quaternion associativity failed at [{}]: (ab)c={}, a(bc)={}",
+            i, ab_c[i], a_bc[i]
+        );
+    }
+}

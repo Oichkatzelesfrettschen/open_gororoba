@@ -137,6 +137,80 @@ pub fn cd_multiply_simd(a: &[f64], b: &[f64]) -> Vec<f64> {
     result
 }
 
+/// Flat quaternion (4D CD) multiply using f64x4 -- zero heap allocation.
+///
+/// The CD quaternion product `p = q * r` can be expressed as the matrix-vector
+/// product `p = M(q) * r` where:
+/// ```text
+/// M(q) = [[q0, -q1, -q2, -q3],
+///          [q1,  q0, -q3,  q2],
+///          [q2,  q3,  q0, -q1],
+///          [q3, -q2,  q1,  q0]]
+/// ```
+/// This decomposes into 4 broadcast-scale-accumulate operations on shuffled
+/// copies of `r`, fitting naturally into 256-bit SIMD (f64x4 = one quaternion).
+///
+/// # Why this matters for the CD tower
+/// An AVX2 `__m256d` register holds exactly 4 f64 = one quaternion.  Two
+/// registers = one octonion.  Four = one sedenion.  The CD doubling formula
+/// `(a,b)(c,d) = (ac - d*b, da + bc*)` then chains these flat multiplies
+/// without recursive Vec allocation.
+#[inline]
+pub fn quaternion_multiply_flat(q: &[f64; 4], r: &[f64; 4]) -> [f64; 4] {
+    // Column 0: q0 * [r0, r1, r2, r3]
+    // Column 1: q1 * [-r1, r0, r3, -r2]
+    // Column 2: q2 * [-r2, -r3, r0, r1]
+    // Column 3: q3 * [-r3, r2, -r1, r0]
+    let vr = f64x4::from(*r);
+
+    // Broadcast each quaternion component
+    let q0 = f64x4::from([q[0]; 4]);
+    let q1 = f64x4::from([q[1]; 4]);
+    let q2 = f64x4::from([q[2]; 4]);
+    let q3 = f64x4::from([q[3]; 4]);
+
+    // Shuffled/negated copies of r for column decomposition of M(q).
+    // Derived from: p = q0*[r0,r1,r2,r3] + q1*[-r1,r0,-r3,r2]
+    //                  + q2*[-r2,r3,r0,-r1] + q3*[-r3,-r2,r1,r0]
+    let r_col0 = vr; // [r0, r1, r2, r3]
+    let r_col1 = f64x4::from([-r[1], r[0], -r[3], r[2]]);
+    let r_col2 = f64x4::from([-r[2], r[3], r[0], -r[1]]);
+    let r_col3 = f64x4::from([-r[3], -r[2], r[1], r[0]]);
+
+    // Accumulate: p = q0*col0 + q1*col1 + q2*col2 + q3*col3
+    let result = q0 * r_col0 + q1 * r_col1 + q2 * r_col2 + q3 * r_col3;
+    result.to_array()
+}
+
+/// Flat octonion (8D CD) multiply using quaternion_multiply_flat -- zero heap allocation.
+///
+/// Uses the CD doubling formula: `(a,b)(c,d) = (ac - d*b, da + bc*)`
+/// where `a, b, c, d` are quaternions and `*` is conjugation.
+#[inline]
+pub fn octonion_multiply_flat(a: &[f64; 8], b: &[f64; 8]) -> [f64; 8] {
+    let a_l: [f64; 4] = [a[0], a[1], a[2], a[3]];
+    let a_r: [f64; 4] = [a[4], a[5], a[6], a[7]];
+    let c_l: [f64; 4] = [b[0], b[1], b[2], b[3]];
+    let c_r: [f64; 4] = [b[4], b[5], b[6], b[7]];
+
+    // Conjugate: negate imaginary parts (indices 1..3)
+    let conj_c_r: [f64; 4] = [c_r[0], -c_r[1], -c_r[2], -c_r[3]];
+    let conj_c_l: [f64; 4] = [c_l[0], -c_l[1], -c_l[2], -c_l[3]];
+
+    // (a,b)(c,d) = (ac - d*b, da + bc*)
+    let ac = quaternion_multiply_flat(&a_l, &c_l);
+    let conj_cr_ar = quaternion_multiply_flat(&conj_c_r, &a_r);
+    let cr_al = quaternion_multiply_flat(&c_r, &a_l);
+    let ar_conj_cl = quaternion_multiply_flat(&a_r, &conj_c_l);
+
+    let left = f64x4::from(ac) - f64x4::from(conj_cr_ar);
+    let right = f64x4::from(cr_al) + f64x4::from(ar_conj_cl);
+
+    let l = left.to_array();
+    let r = right.to_array();
+    [l[0], l[1], l[2], l[3], r[0], r[1], r[2], r[3]]
+}
+
 /// SIMD-accelerated squared norm.
 #[inline]
 pub fn cd_norm_sq_simd(a: &[f64]) -> f64 {
