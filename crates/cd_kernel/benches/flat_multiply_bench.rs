@@ -104,7 +104,7 @@ fn bench_full_cd_tower(c: &mut Criterion) {
     group.sample_size(10); // fewer samples for large dims
     group.measurement_time(std::time::Duration::from_secs(5));
 
-    for dim in [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096] {
+    for dim in [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384] {
         let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.123).sin()).collect();
         let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.456).cos()).collect();
         group.bench_with_input(BenchmarkId::new("flat", dim), &dim, |bench, &d| {
