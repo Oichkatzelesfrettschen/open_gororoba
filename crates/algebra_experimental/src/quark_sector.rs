@@ -351,10 +351,31 @@ fn mass_ratios_from_ckm(ckm: &CkmResult, scheme: SubalgebraScheme) -> QuarkMassR
     }
 }
 
-/// PDG mass ratio targets at M_Z scale.
-const PDG_MU_MD: f64 = 0.47;
-const PDG_MC_MS: f64 = 11.7;
-const PDG_MT_MB: f64 = 40.8;
+/// PDG 2025 quark mass ratio targets.
+///
+/// Ratios are scheme- and scale-dependent; only ratios evaluated in a common
+/// scheme/scale have clean cancellation properties (PDG Review 2025).
+///
+/// - m_u/m_d: 0.473 +/- 0.025 at mu = 2 GeV in MSbar
+/// - m_c/m_s: 11.77 +/- 0.25 at mu = 2 GeV in MSbar
+/// - m_t/m_b: ~41.3 (naive m_t^pole/m_b^MSbar; mixed scheme, use with caution)
+///
+/// CKM global fit (PDG 2025):
+///   sin(theta_12) = 0.22501, sin(theta_23) = 0.04183, sin(theta_13) = 0.003732
+///   delta_CP ~ 1.147 rad, J_Jarlskog ~ 3.1e-5
+const PDG_MU_MD: f64 = 0.473;
+const PDG_MC_MS: f64 = 11.77;
+const PDG_MT_MB: f64 = 41.3;
+
+// CKM target angles (degrees) for comparison
+#[allow(dead_code)]
+const PDG_CKM_THETA12_DEG: f64 = 12.99;
+#[allow(dead_code)]
+const PDG_CKM_THETA23_DEG: f64 = 2.40;
+#[allow(dead_code)]
+const PDG_CKM_THETA13_DEG: f64 = 0.214;
+#[allow(dead_code)]
+const PDG_CKM_JARLSKOG: f64 = 3.1e-5;
 
 /// Distance metric from PDG targets (sum of log-ratio deviations).
 fn pdg_distance(ratios: &QuarkMassRatios) -> f64 {
