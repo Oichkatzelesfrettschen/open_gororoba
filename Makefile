@@ -5,7 +5,7 @@
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: heavy test-inventory verify-no-reports-writes
-.PHONY: rust-test rust-clippy rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
+.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
@@ -280,6 +280,11 @@ rust-test: rust-regression
 
 rust-clippy:
 	$(CARGO_ENV) cargo clippy --workspace -- -D warnings
+
+rust-semver-check:
+	@echo "[semver-check] Checking public API SemVer compliance..."
+	$(CARGO_ENV) cargo semver-checks check-release --workspace 2>&1 || true
+	@echo "[semver-check] Done. Review any breaking changes above."
 
 rust-smoke:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) -P smoke -p gororoba_algebra --test smoke_gororoba_algebra -p lbm_3d --test smoke_lbm_3d -p gororoba_engine --test smoke_gororoba_engine
