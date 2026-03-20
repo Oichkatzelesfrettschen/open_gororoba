@@ -193,9 +193,12 @@ pub fn octonion_multiply_flat(a: &[f64; 8], b: &[f64; 8]) -> [f64; 8] {
     let c_l: [f64; 4] = [b[0], b[1], b[2], b[3]];
     let c_r: [f64; 4] = [b[4], b[5], b[6], b[7]];
 
-    // Conjugate: negate imaginary parts (indices 1..3)
-    let conj_c_r: [f64; 4] = [c_r[0], -c_r[1], -c_r[2], -c_r[3]];
-    let conj_c_l: [f64; 4] = [c_l[0], -c_l[1], -c_l[2], -c_l[3]];
+    // CD conjugation: keep real, negate imaginary.  LLVM compiles the
+    // multiplication by [1,-1,-1,-1] into a single XOR with the sign-bit
+    // mask (vxorpd), which is 1-cycle zero-latency.
+    let conj_mask = f64x4::from([1.0, -1.0, -1.0, -1.0]);
+    let conj_c_r = (f64x4::from(c_r) * conj_mask).to_array();
+    let conj_c_l = (f64x4::from(c_l) * conj_mask).to_array();
 
     // (a,b)(c,d) = (ac - d*b, da + bc*)
     let ac = quaternion_multiply_flat(&a_l, &c_l);
@@ -230,12 +233,25 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
     let c_l: [f64; 8] = [b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]];
     let c_r: [f64; 8] = [b[8], b[9], b[10], b[11], b[12], b[13], b[14], b[15]];
 
-    // Conjugation: negate imaginary parts (indices 1..7)
+    // CD conjugation via SIMD multiply: LLVM lowers [1,-1,-1,-1] multiply
+    // to vxorpd (sign-bit flip), 1-cycle zero-latency per register.
+    let conj_lo = f64x4::from([1.0, -1.0, -1.0, -1.0]);
+    let conj_hi = f64x4::from([-1.0, -1.0, -1.0, -1.0]);
+    let cr_lo = f64x4::from([c_r[0], c_r[1], c_r[2], c_r[3]]);
+    let cr_hi = f64x4::from([c_r[4], c_r[5], c_r[6], c_r[7]]);
+    let cl_lo = f64x4::from([c_l[0], c_l[1], c_l[2], c_l[3]]);
+    let cl_hi = f64x4::from([c_l[4], c_l[5], c_l[6], c_l[7]]);
+    let conj_cr_lo = (cr_lo * conj_lo).to_array();
+    let conj_cr_hi = (cr_hi * conj_hi).to_array();
+    let conj_cl_lo = (cl_lo * conj_lo).to_array();
+    let conj_cl_hi = (cl_hi * conj_hi).to_array();
     let conj_c_r: [f64; 8] = [
-        c_r[0], -c_r[1], -c_r[2], -c_r[3], -c_r[4], -c_r[5], -c_r[6], -c_r[7],
+        conj_cr_lo[0], conj_cr_lo[1], conj_cr_lo[2], conj_cr_lo[3],
+        conj_cr_hi[0], conj_cr_hi[1], conj_cr_hi[2], conj_cr_hi[3],
     ];
     let conj_c_l: [f64; 8] = [
-        c_l[0], -c_l[1], -c_l[2], -c_l[3], -c_l[4], -c_l[5], -c_l[6], -c_l[7],
+        conj_cl_lo[0], conj_cl_lo[1], conj_cl_lo[2], conj_cl_lo[3],
+        conj_cl_hi[0], conj_cl_hi[1], conj_cl_hi[2], conj_cl_hi[3],
     ];
 
     // (a,b)(c,d) = (ac - d*b, da + bc*)
