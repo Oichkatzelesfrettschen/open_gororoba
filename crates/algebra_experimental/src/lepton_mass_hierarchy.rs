@@ -252,12 +252,89 @@ mod tests {
         println!("--- SIGNED FRICTION SCAN ---");
         println!("1+1+1 full splits (signed): {}", full_split_count);
         if full_split_count > 0 {
-            println!("Best 1+1+1 pair: (e_{}, e_{})", best_pair_signed.0, best_pair_signed.1);
+            println!("Best 1+1+1 pair: (e_{}, e_{}) spread={:.4}",
+                best_pair_signed.0, best_pair_signed.1, best_ratio);
+            println!("  Signed frictions: s1={:.6}, s2={:.6}, s3={:.6}",
+                best_signed.0, best_signed.1, best_signed.2);
             println!("  Signed frictions: s1={:.6}, s2={:.6}, s3={:.6}",
                 best_signed.0, best_signed.1, best_signed.2);
             println!("  Max/min ratio: {:.4}", best_ratio);
         } else {
             println!("NO 1+1+1 splits found with signed friction either");
         }
+    }
+
+    /// Wire signed friction into a lepton mass matrix and compare to experiment.
+    ///
+    /// Experimental: m_e : m_mu : m_tau = 0.511 : 105.7 : 1776.9 MeV = 1 : 207 : 3477
+    ///
+    /// Hypothesis: mass ~ exp(|signed_friction|) gives exponential amplification
+    /// of topological friction, converting small algebraic ratios (0:1:3) into
+    /// the steep hierarchy observed in Nature.
+    #[test]
+    fn test_lepton_mass_from_signed_friction() {
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let sign_table = SignTableCache::new(16);
+
+        // Use the best 1+1+1 pair: (e_1, e_4)
+        let mode_1 = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+        let mode_4 = MajoranaMode { gamma_index: 3, cd_basis_index: 4, cd_dim: 16 };
+
+        let s1 = cd_braid_signed_friction(&mode_1, &mode_4, &o1, &sign_table);
+        let s2 = cd_braid_signed_friction(&mode_1, &mode_4, &o2, &sign_table);
+        let s3 = cd_braid_signed_friction(&mode_1, &mode_4, &o3, &sign_table);
+
+        println!("--- LEPTON MASS FROM SIGNED FRICTION ---");
+        println!("Pair: (e_1, e_4)");
+        println!("Signed frictions: s1={:.4}, s2={:.4}, s3={:.4}", s1, s2, s3);
+
+        // Sort by absolute value to assign to generations (lightest first)
+        let mut frictions = [(s1.abs(), "O1"), (s2.abs(), "O2"), (s3.abs(), "O3")];
+        frictions.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("\nSorted |friction|: {:.4} ({}) < {:.4} ({}) < {:.4} ({})",
+            frictions[0].0, frictions[0].1,
+            frictions[1].0, frictions[1].1,
+            frictions[2].0, frictions[2].1);
+
+        // Model A: mass ~ |friction| (linear)
+        let linear_ratios = if frictions[0].0 > 1e-15 {
+            [1.0, frictions[1].0 / frictions[0].0, frictions[2].0 / frictions[0].0]
+        } else {
+            [0.0, frictions[1].0, frictions[2].0]
+        };
+        println!("\nModel A (linear): m ~ |friction|");
+        println!("  Ratios: {:.1} : {:.1} : {:.1}", linear_ratios[0], linear_ratios[1], linear_ratios[2]);
+        println!("  PDG:    1.0 : 207 : 3477");
+
+        // Model B: mass ~ exp(|friction|) (exponential amplification)
+        let exp_masses: Vec<f64> = frictions.iter().map(|(f, _)| f.exp()).collect();
+        let exp_min = exp_masses[0];
+        let exp_ratios: Vec<f64> = exp_masses.iter().map(|m| m / exp_min).collect();
+        println!("\nModel B (exponential): m ~ exp(|friction|)");
+        println!("  exp values: {:.2}, {:.2}, {:.2}", exp_masses[0], exp_masses[1], exp_masses[2]);
+        println!("  Ratios: {:.1} : {:.1} : {:.1}", exp_ratios[0], exp_ratios[1], exp_ratios[2]);
+        println!("  PDG:    1.0 : 207 : 3477");
+
+        // Model C: mass ~ exp(alpha * |friction|) with fitted alpha
+        // Target: exp(alpha * f2) / exp(alpha * f1) = 207
+        // If f1 = 0, f2 = 2.83: exp(alpha * 2.83) = 207 -> alpha = ln(207)/2.83 = 1.88
+        let alpha = if frictions[1].0 > 1e-15 && frictions[0].0 < 1e-15 {
+            (207.0_f64).ln() / frictions[1].0
+        } else if frictions[0].0 > 1e-15 {
+            (207.0_f64).ln() / (frictions[1].0 - frictions[0].0)
+        } else {
+            1.0
+        };
+        let fitted_masses: Vec<f64> = frictions.iter().map(|(f, _)| (alpha * f).exp()).collect();
+        let fitted_min = fitted_masses[0];
+        let fitted_ratios: Vec<f64> = fitted_masses.iter().map(|m| m / fitted_min).collect();
+        let predicted_tau_ratio = fitted_ratios[2];
+        println!("\nModel C (fitted exponential): m ~ exp({:.4} * |friction|)", alpha);
+        println!("  Ratios: {:.1} : {:.1} : {:.1}", fitted_ratios[0], fitted_ratios[1], fitted_ratios[2]);
+        println!("  PDG:    1.0 : 207 : 3477");
+        println!("  Tau prediction: {:.1} (PDG: 3477, error: {:.1}%)",
+            predicted_tau_ratio,
+            ((predicted_tau_ratio - 3477.0) / 3477.0 * 100.0).abs());
     }
 }
