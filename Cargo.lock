@@ -1564,9 +1564,9 @@ dependencies = [
 
 [[package]]
 name = "cmov"
-version = "0.4.6"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6d5ce5728ecb5285a5dd35f02a6a8e34e0828e0b38e8e632e249a3fe3f320211"
+checksum = "de0758edba32d61d1fd9f4d69491b47604b91ee2f7e6b33de7e54ca4ebe55dc3"
 
 [[package]]
 name = "codespan-reporting"
@@ -5162,9 +5162,9 @@ checksum = "e2db585e1d738fc771bf08a151420d3ed193d9d895a36df7f6f8a9456b911ddc"
 
 [[package]]
 name = "kiddo"
-version = "5.2.4"
+version = "5.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "07ab03cc75e18eb1eec59f4037e2e17ce9d13920f0013b0719dea613d9414e4e"
+checksum = "ea504edb9bee0c3f348e54aa2ce2c10a5fe10de221f39b745c654f3b51220992"
 dependencies = [
  "aligned-vec",
  "array-init",
@@ -7981,14 +7981,7 @@ name = "provenance_ops"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "chrono",
- "csv",
- "regex",
- "rusqlite",
- "toml",
  "ureq",
- "url",
- "walkdir",
  "zip 2.4.2",
 ]
 
