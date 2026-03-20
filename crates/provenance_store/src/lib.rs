@@ -2992,6 +2992,88 @@ impl ProvenanceStore {
     pub fn search_narratives(&self, query: &str, limit: usize) -> Result<Vec<(String, String, f64)>> {
         search_narratives_on_conn(&self.conn, query, limit)
     }
+
+    /// Shared helper: query four TEXT columns from a table with optional status filter.
+    fn list_four_col_table(
+        &self,
+        table: &str,
+        cols: &str,
+        status_filter: Option<&str>,
+    ) -> Result<Vec<(String, String, String, String)>> {
+        let mut out = Vec::new();
+        if let Some(s) = status_filter {
+            let sql = format!("SELECT {cols} FROM [{table}] WHERE status = ?1 ORDER BY id");
+            let mut stmt = self.conn.prepare(&sql)?;
+            let rows = stmt.query_map(params![s], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        } else {
+            let sql = format!("SELECT {cols} FROM [{table}] ORDER BY id");
+            let mut stmt = self.conn.prepare(&sql)?;
+            let rows = stmt.query_map([], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
+            })?;
+            for r in rows { out.push(r?); }
+        }
+        Ok(out)
+    }
+
+    /// List roadmap items, optionally filtered by status.
+    pub fn list_roadmap_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        self.list_four_col_table("roadmap_items", "id, name, priority, status", status_filter)
+    }
+
+    /// List todo items, optionally filtered by status.
+    pub fn list_todo_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        self.list_four_col_table("todo_items", "id, title, priority, status", status_filter)
+    }
+
+    /// List next-action items, optionally filtered by status.
+    pub fn list_next_actions(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+        self.list_four_col_table("next_action_items", "id, title, priority, status", status_filter)
+    }
+
+    /// Insert or replace a notebook session.
+    pub fn upsert_notebook_session(
+        &self,
+        id: &str,
+        title: &str,
+        description: &str,
+        kernel: &str,
+        status: &str,
+        cell_count: i64,
+        cells_json: &str,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO notebook_sessions
+             (id, title, description, kernel, status, cell_count, cells_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7, datetime('now'))",
+            params![id, title, description, kernel, status, cell_count, cells_json],
+        )?;
+        Ok(())
+    }
+
+    /// List notebook sessions.
+    pub fn list_notebook_sessions(&self) -> Result<Vec<(String, String, String, String, i64)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, title, kernel, status, cell_count FROM notebook_sessions ORDER BY updated_at DESC",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+                row.get::<_, String>(3)?,
+                row.get::<_, i64>(4)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
 }
 
 /// Internal helper to run narrative FTS queries against an arbitrary connection.
@@ -3023,22 +3105,6 @@ pub(crate) fn search_narratives_on_conn(
         out.push(r?);
     }
     Ok(out)
-}
-
-    /// List roadmap items, optionally filtered by status.
-    pub fn list_roadmap_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
-        self.list_four_col_table("roadmap_items", "id, name, priority, status", status_filter)
-    }
-
-    /// List todo items, optionally filtered by status.
-    pub fn list_todo_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
-        self.list_four_col_table("todo_items", "id, title, priority, status", status_filter)
-    }
-
-    /// List next-action items, optionally filtered by status.
-    pub fn list_next_actions(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
-        self.list_four_col_table("next_action_items", "id, title, priority, status", status_filter)
-    }
 }
 
 #[cfg(test)]
@@ -3103,74 +3169,6 @@ mod tests {
         assert_eq!(results.len(), 1, "expected exactly one FTS match");
         assert_eq!(results[0].0, "n1");
         assert_eq!(results[0].1, "SQLite narrative");
-    }
-}
-
-    /// Shared helper: query four TEXT columns from a table with optional status filter.
-    fn list_four_col_table(
-        &self,
-        table: &str,
-        cols: &str,
-        status_filter: Option<&str>,
-    ) -> Result<Vec<(String, String, String, String)>> {
-        let mut out = Vec::new();
-        if let Some(s) = status_filter {
-            let sql = format!("SELECT {cols} FROM [{table}] WHERE status = ?1 ORDER BY id");
-            let mut stmt = self.conn.prepare(&sql)?;
-            let rows = stmt.query_map(params![s], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-            })?;
-            for r in rows { out.push(r?); }
-        } else {
-            let sql = format!("SELECT {cols} FROM [{table}] ORDER BY id");
-            let mut stmt = self.conn.prepare(&sql)?;
-            let rows = stmt.query_map([], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-            })?;
-            for r in rows { out.push(r?); }
-        }
-        Ok(out)
-    }
-
-    /// Insert or replace a notebook session.
-    pub fn upsert_notebook_session(
-        &self,
-        id: &str,
-        title: &str,
-        description: &str,
-        kernel: &str,
-        status: &str,
-        cell_count: i64,
-        cells_json: &str,
-    ) -> Result<()> {
-        self.conn.execute(
-            "INSERT OR REPLACE INTO notebook_sessions
-             (id, title, description, kernel, status, cell_count, cells_json, updated_at)
-             VALUES (?1,?2,?3,?4,?5,?6,?7, datetime('now'))",
-            params![id, title, description, kernel, status, cell_count, cells_json],
-        )?;
-        Ok(())
-    }
-
-    /// List notebook sessions.
-    pub fn list_notebook_sessions(&self) -> Result<Vec<(String, String, String, String, i64)>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, title, kernel, status, cell_count FROM notebook_sessions ORDER BY updated_at DESC",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            Ok((
-                row.get::<_, String>(0)?,
-                row.get::<_, String>(1)?,
-                row.get::<_, String>(2)?,
-                row.get::<_, String>(3)?,
-                row.get::<_, i64>(4)?,
-            ))
-        })?;
-        let mut out = Vec::new();
-        for r in rows {
-            out.push(r?);
-        }
-        Ok(out)
     }
 }
 
