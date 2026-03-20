@@ -343,6 +343,31 @@ pub fn cd_multiply_flat_into(a: &[f64], b: &[f64], out: &mut [f64], dim: usize) 
                 out[half + i] = t3[i] + t4[i];
             }
         }
+        d if d >= 64 && d.is_power_of_two() => {
+            // Generic blocked CD doubling: chains half-dim sub-products.
+            // Each level doubles stack temporaries but the base case (16D)
+            // stays register-resident.  For 64D: 4 pathion sub-products.
+            // For 128D+: recursive blocking through this same path.
+            let half = d / 2;
+            let mut conj_cr = vec![0.0_f64; half];
+            let mut conj_cl = vec![0.0_f64; half];
+            cd_conjugate_into(&b[half..], &mut conj_cr, half);
+            cd_conjugate_into(&b[..half], &mut conj_cl, half);
+
+            let mut t1 = vec![0.0_f64; half];
+            let mut t2 = vec![0.0_f64; half];
+            let mut t3 = vec![0.0_f64; half];
+            let mut t4 = vec![0.0_f64; half];
+            cd_multiply_flat_into(&a[..half], &b[..half], &mut t1, half);
+            cd_multiply_flat_into(&conj_cr, &a[half..], &mut t2, half);
+            cd_multiply_flat_into(&b[half..], &a[..half], &mut t3, half);
+            cd_multiply_flat_into(&a[half..], &conj_cl, &mut t4, half);
+
+            for i in 0..half {
+                out[i] = t1[i] - t2[i];
+                out[half + i] = t3[i] + t4[i];
+            }
+        }
         _ => panic!("cd_multiply_flat_into: unsupported dim {dim}"),
     }
 }
