@@ -106,6 +106,9 @@ fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0010_knowledge_and_planning.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0011_fts5_crossrefs.sql"
+        )),
     ])
 }
 
@@ -3067,6 +3070,436 @@ impl ProvenanceStore {
         }
         Ok(out)
     }
+
+    // ── Three-layer registry: build methods ─────────────────────────
+
+    /// Create a fresh derived database at the given path.
+    /// Deletes any existing file, runs all migrations, and sets WAL mode.
+    pub fn build_fresh(db_path: &Path) -> Result<Self> {
+        if db_path.exists() {
+            fs::remove_file(db_path)
+                .with_context(|| format!("remove stale DB {}", db_path.display()))?;
+        }
+        let store = Self::open(db_path)?;
+        store
+            .conn
+            .pragma_update(None, "journal_mode", "WAL")
+            .with_context(|| "set WAL journal mode")?;
+        Ok(store)
+    }
+
+    /// Record build metadata (builder version, timestamp, source count).
+    pub fn record_build_metadata(&self, key: &str, value: &str) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO build_metadata (key, value, updated_at)
+             VALUES (?1, ?2, datetime('now'))",
+            params![key, value],
+        )?;
+        Ok(())
+    }
+
+    /// Ingest bibliography entries from bibliography.toml.
+    pub fn ingest_bibliography(&self, toml_text: &str) -> Result<u64> {
+        let val: Value = toml::from_str(toml_text)?;
+        let mut count = 0u64;
+        if let Some(entries) = val.get("entry").and_then(|v| v.as_array()) {
+            for entry in entries {
+                let id = entry.get("id").and_then(|v| v.as_str()).unwrap_or("");
+                if id.is_empty() {
+                    continue;
+                }
+                let title = entry.get("title").and_then(|v| v.as_str()).unwrap_or("");
+                let authors = entry
+                    .get("authors")
+                    .and_then(|v| v.as_str())
+                    .or_else(|| entry.get("author").and_then(|v| v.as_str()))
+                    .unwrap_or("");
+                let year = entry.get("year").and_then(|v| v.as_str()).unwrap_or("");
+                let doi = entry.get("doi").and_then(|v| v.as_str()).unwrap_or("");
+                let url = entry.get("url").and_then(|v| v.as_str()).unwrap_or("");
+                let bib_type = entry
+                    .get("bibtex_type")
+                    .and_then(|v| v.as_str())
+                    .or_else(|| entry.get("type").and_then(|v| v.as_str()))
+                    .unwrap_or("");
+                let tags = toml_array_to_json_string(entry, "tags");
+
+                self.conn.execute(
+                    "INSERT OR REPLACE INTO bibliography
+                     (id, title, authors, year, doi, url, bibtex_type, tags_json)
+                     VALUES (?1,?2,?3,?4,?5,?6,?7,?8)",
+                    params![id, title, authors, year, doi, url, bib_type, tags],
+                )?;
+                count += 1;
+            }
+        }
+        Ok(count)
+    }
+
+    /// Ingest evidence edges from claims_evidence_edges.toml.
+    pub fn ingest_evidence_edges(&self, toml_text: &str) -> Result<u64> {
+        let val: Value = toml::from_str(toml_text)?;
+        let mut count = 0u64;
+        if let Some(edges) = val.get("edge").and_then(|v| v.as_array()) {
+            for edge in edges {
+                let source = edge.get("source").and_then(|v| v.as_str()).unwrap_or("");
+                let target = edge.get("target").and_then(|v| v.as_str()).unwrap_or("");
+                if source.is_empty() || target.is_empty() {
+                    continue;
+                }
+                let edge_type = edge
+                    .get("edge_type")
+                    .or_else(|| edge.get("type"))
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("supports");
+                let weight = edge
+                    .get("weight")
+                    .and_then(|v| v.as_float())
+                    .unwrap_or(1.0);
+                let notes = edge.get("notes").and_then(|v| v.as_str()).unwrap_or("");
+
+                self.conn.execute(
+                    "INSERT INTO evidence_edges (source_id, target_id, edge_type, weight, notes)
+                     VALUES (?1,?2,?3,?4,?5)",
+                    params![source, target, edge_type, weight, notes],
+                )?;
+                count += 1;
+            }
+        }
+        Ok(count)
+    }
+
+    /// Ingest lacunae from lacunae.toml.
+    pub fn ingest_lacunae(&self, toml_text: &str) -> Result<u64> {
+        let val: Value = toml::from_str(toml_text)?;
+        let mut count = 0u64;
+        if let Some(items) = val.get("lacuna").and_then(|v| v.as_array()) {
+            for item in items {
+                let id = item.get("id").and_then(|v| v.as_str()).unwrap_or("");
+                if id.is_empty() {
+                    continue;
+                }
+                let title = item.get("title").and_then(|v| v.as_str()).unwrap_or("");
+                let status = item.get("status").and_then(|v| v.as_str()).unwrap_or("open");
+                let domain = item.get("domain").and_then(|v| v.as_str()).unwrap_or("");
+                let description = item
+                    .get("description")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("");
+                let claim_refs = toml_array_to_json_string(item, "claim_refs");
+
+                self.conn.execute(
+                    "INSERT OR REPLACE INTO lacunae
+                     (id, title, status, domain, description, claim_refs_json)
+                     VALUES (?1,?2,?3,?4,?5,?6)",
+                    params![id, title, status, domain, description, claim_refs],
+                )?;
+                count += 1;
+            }
+        }
+        Ok(count)
+    }
+
+    /// Build crossref join tables by parsing claim_refs from insights and experiments.
+    pub fn build_crossrefs(&self) -> Result<(u64, u64)> {
+        // claim <-> experiment refs
+        let mut ce_count = 0u64;
+        {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, claim_refs_json FROM experiments_cp WHERE claim_refs_json != '[]'",
+            )?;
+            let rows: Vec<(String, String)> = stmt
+                .query_map([], |row| {
+                    Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+                })?
+                .filter_map(|r| r.ok())
+                .collect();
+            for (exp_id, refs_json) in &rows {
+                if let Ok(refs) = serde_json::from_str::<Vec<String>>(refs_json) {
+                    for claim_id in &refs {
+                        self.conn.execute(
+                            "INSERT OR IGNORE INTO claim_experiment_refs (claim_id, experiment_id)
+                             VALUES (?1, ?2)",
+                            params![claim_id, exp_id],
+                        )?;
+                        ce_count += 1;
+                    }
+                }
+            }
+        }
+
+        // claim <-> insight refs
+        let mut ci_count = 0u64;
+        {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, claim_refs_json FROM insights WHERE claim_refs_json != '[]'",
+            )?;
+            let rows: Vec<(String, String)> = stmt
+                .query_map([], |row| {
+                    Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+                })?
+                .filter_map(|r| r.ok())
+                .collect();
+            for (insight_id, refs_json) in &rows {
+                if let Ok(refs) = serde_json::from_str::<Vec<String>>(refs_json) {
+                    for claim_id in &refs {
+                        self.conn.execute(
+                            "INSERT OR IGNORE INTO claim_insight_refs (claim_id, insight_id)
+                             VALUES (?1, ?2)",
+                            params![claim_id, insight_id],
+                        )?;
+                        ci_count += 1;
+                    }
+                }
+            }
+        }
+
+        Ok((ce_count, ci_count))
+    }
+
+    /// Search claims via FTS5.
+    pub fn search_claims(&self, query: &str, limit: usize) -> Result<Vec<(String, String, String, f64)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT c.id, c.statement, c.status, bm25(claims_fts) as rank
+             FROM claims_fts fts
+             JOIN claims c ON fts.rowid = c.rowid
+             WHERE claims_fts MATCH ?1
+             ORDER BY rank
+             LIMIT ?2",
+        )?;
+        let rows = stmt.query_map(params![query, limit as i64], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+                row.get::<_, f64>(3)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
+
+    /// Search insights via FTS5.
+    pub fn search_insights(&self, query: &str, limit: usize) -> Result<Vec<(String, String, String, f64)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT i.id, i.title, i.status, bm25(insights_fts) as rank
+             FROM insights_fts fts
+             JOIN insights i ON fts.rowid = i.rowid
+             WHERE insights_fts MATCH ?1
+             ORDER BY rank
+             LIMIT ?2",
+        )?;
+        let rows = stmt.query_map(params![query, limit as i64], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+                row.get::<_, f64>(3)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
+
+    /// Search bibliography via FTS5.
+    pub fn search_bibliography(&self, query: &str, limit: usize) -> Result<Vec<(String, String, String, f64)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT b.id, b.title, b.authors, bm25(bibliography_fts) as rank
+             FROM bibliography_fts fts
+             JOIN bibliography b ON fts.rowid = b.rowid
+             WHERE bibliography_fts MATCH ?1
+             ORDER BY rank
+             LIMIT ?2",
+        )?;
+        let rows = stmt.query_map(params![query, limit as i64], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+                row.get::<_, f64>(3)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
+
+    /// Get a single claim by ID.
+    pub fn claim_by_id(&self, id: &str) -> Result<Option<ClaimRecord>> {
+        self.conn
+            .query_row(
+                "SELECT id, statement, status, where_stated, last_verified, formal_proof, status_note, compat_toml_text
+                 FROM claims WHERE id = ?1",
+                params![id],
+                |row| {
+                    Ok(ClaimRecord {
+                        id: row.get(0)?,
+                        statement: row.get(1)?,
+                        status: row.get(2)?,
+                        where_stated: row.get(3)?,
+                        last_verified: row.get(4)?,
+                        formal_proof: row.get(5)?,
+                        status_note: row.get(6)?,
+                        compat_toml_text: row.get::<_, String>(7).unwrap_or_default(),
+                    })
+                },
+            )
+            .optional()
+            .map_err(|e| anyhow!(e))
+    }
+
+    /// List claims with optional status filter.
+    pub fn list_claims_filtered(&self, status: Option<&str>, limit: usize) -> Result<Vec<ClaimRecord>> {
+        let mut out = Vec::new();
+        if let Some(s) = status {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, statement, status, where_stated, last_verified, formal_proof, status_note, compat_toml_text
+                 FROM claims WHERE status = ?1 ORDER BY id LIMIT ?2",
+            )?;
+            let rows = stmt.query_map(params![s, limit as i64], |row| {
+                Ok(ClaimRecord {
+                    id: row.get(0)?,
+                    statement: row.get(1)?,
+                    status: row.get(2)?,
+                    where_stated: row.get(3)?,
+                    last_verified: row.get(4)?,
+                    formal_proof: row.get(5)?,
+                    status_note: row.get(6)?,
+                    compat_toml_text: row.get::<_, String>(7).unwrap_or_default(),
+                })
+            })?;
+            for r in rows {
+                out.push(r?);
+            }
+        } else {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, statement, status, where_stated, last_verified, formal_proof, status_note, compat_toml_text
+                 FROM claims ORDER BY id LIMIT ?1",
+            )?;
+            let rows = stmt.query_map(params![limit as i64], |row| {
+                Ok(ClaimRecord {
+                    id: row.get(0)?,
+                    statement: row.get(1)?,
+                    status: row.get(2)?,
+                    where_stated: row.get(3)?,
+                    last_verified: row.get(4)?,
+                    formal_proof: row.get(5)?,
+                    status_note: row.get(6)?,
+                    compat_toml_text: row.get::<_, String>(7).unwrap_or_default(),
+                })
+            })?;
+            for r in rows {
+                out.push(r?);
+            }
+        }
+        Ok(out)
+    }
+
+    /// List experiments with optional status filter.
+    pub fn list_experiments_filtered(&self, status: Option<&str>, limit: usize) -> Result<Vec<ExperimentRecord>> {
+        let map_row = |row: &rusqlite::Row<'_>| -> rusqlite::Result<ExperimentRecord> {
+            Ok(ExperimentRecord {
+                id: row.get(0)?,
+                title: row.get(1)?,
+                status: row.get(2)?,
+                binary: row.get(3)?,
+                claim_refs: serde_json::from_str(
+                    &row.get::<_, String>(4)?,
+                )
+                .unwrap_or_default(),
+                compat_toml_text: row.get::<_, String>(5).unwrap_or_default(),
+            })
+        };
+        let mut out = Vec::new();
+        if let Some(s) = status {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
+                 FROM experiments_cp WHERE status = ?1 ORDER BY id LIMIT ?2",
+            )?;
+            let rows = stmt.query_map(params![s, limit as i64], map_row)?;
+            for r in rows {
+                out.push(r?);
+            }
+        } else {
+            let mut stmt = self.conn.prepare(
+                "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
+                 FROM experiments_cp ORDER BY id LIMIT ?1",
+            )?;
+            let rows = stmt.query_map(params![limit as i64], map_row)?;
+            for r in rows {
+                out.push(r?);
+            }
+        }
+        Ok(out)
+    }
+
+    /// Find claims that have no linked experiments or insights.
+    pub fn unlinked_claims(&self) -> Result<Vec<(String, String)>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT c.id, c.statement FROM claims c
+             WHERE c.id NOT IN (SELECT claim_id FROM claim_experiment_refs)
+               AND c.id NOT IN (SELECT claim_id FROM claim_insight_refs)
+             ORDER BY c.id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    }
+
+    /// Find dangling crossrefs (references to non-existent claims).
+    pub fn dangling_crossrefs(&self) -> Result<Vec<(String, String, String)>> {
+        let mut out = Vec::new();
+        // Experiment refs to non-existent claims
+        {
+            let mut stmt = self.conn.prepare(
+                "SELECT cer.experiment_id, cer.claim_id, 'experiment'
+                 FROM claim_experiment_refs cer
+                 WHERE cer.claim_id NOT IN (SELECT id FROM claims)",
+            )?;
+            let rows = stmt.query_map([], |row| {
+                Ok((
+                    row.get::<_, String>(0)?,
+                    row.get::<_, String>(1)?,
+                    row.get::<_, String>(2)?,
+                ))
+            })?;
+            for r in rows {
+                out.push(r?);
+            }
+        }
+        // Insight refs to non-existent claims
+        {
+            let mut stmt = self.conn.prepare(
+                "SELECT cir.insight_id, cir.claim_id, 'insight'
+                 FROM claim_insight_refs cir
+                 WHERE cir.claim_id NOT IN (SELECT id FROM claims)",
+            )?;
+            let rows = stmt.query_map([], |row| {
+                Ok((
+                    row.get::<_, String>(0)?,
+                    row.get::<_, String>(1)?,
+                    row.get::<_, String>(2)?,
+                ))
+            })?;
+            for r in rows {
+                out.push(r?);
+            }
+        }
+        Ok(out)
+    }
 }
 
 /// Internal helper to run narrative FTS queries against an arbitrary connection.
@@ -3530,6 +3963,21 @@ fn join_refs(values: &[String]) -> String {
         .filter(|value| !value.is_empty())
         .collect::<Vec<_>>()
         .join(" | ")
+}
+
+/// Extract an array field from a toml::Value and serialize it as a JSON string.
+/// Works with Value (not just Map) so it can be used in the ingest methods.
+fn toml_array_to_json_string(val: &Value, key: &str) -> String {
+    val.get(key)
+        .and_then(Value::as_array)
+        .map(|items| {
+            let strs: Vec<&str> = items
+                .iter()
+                .filter_map(Value::as_str)
+                .collect();
+            serde_json::to_string(&strs).unwrap_or_else(|_| "[]".to_string())
+        })
+        .unwrap_or_else(|| "[]".to_string())
 }
 
 fn load_external_source_contracts_from_registry(

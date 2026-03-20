@@ -9,6 +9,7 @@
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand, ValueEnum};
 use provenance_store::ProvenanceStore;
+use serde::Deserialize;
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -20,10 +21,11 @@ use toml::Value;
 #[derive(Parser, Debug)]
 #[command(
     name = "gororoba-db",
-    about = "Rust-native CLI for the SQLite source-of-truth database",
-    long_about = "Unified entrypoint for querying, importing, exporting, auditing, \
-                  and managing the canonical SQLite control-plane database. \
-                  Replaces scattered TOML-file projections with direct database interaction."
+    about = "Three-layer registry CLI: TOML source -> SQLite build -> query",
+    long_about = "Unified entrypoint for building, querying, and auditing the registry.\n\n\
+                  Layer 1 (Source): TOML files in registry/ (human-edited, git-tracked).\n\
+                  Layer 2 (Build):  .cache/registry.sqlite3 (derived, .gitignore'd).\n\
+                  Layer 3 (Query):  This CLI."
 )]
 struct Cli {
     /// Repository root.
@@ -31,7 +33,7 @@ struct Cli {
     repo_root: PathBuf,
 
     /// SQLite database path.
-    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
+    #[arg(long, default_value = ".cache/registry.sqlite3")]
     db: PathBuf,
 
     #[command(subcommand)]
@@ -40,11 +42,32 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
+    /// Build .cache/registry.sqlite3 from source TOML files (deterministic, idempotent).
+    Build(BuildArgs),
+
     /// Show database statistics: table row counts, migration status, and source-of-truth manifest.
     Stats,
 
     /// Print full schema introspection (tables, columns, row counts).
     Schema,
+
+    /// List, show, or search claims.
+    Claims(ClaimsArgs),
+
+    /// List or search insights.
+    Insights(InsightsArgs),
+
+    /// List experiments.
+    Experiments(ExperimentsArgs),
+
+    /// Full-text search across claims, insights, narratives, and bibliography.
+    Search(SearchArgs),
+
+    /// Cross-reference queries (dangling refs, unlinked claims, coverage).
+    Xref(XrefArgs),
+
+    /// Audit: verify signatures, crossrefs, and labels.
+    AuditCmd(AuditArgs),
 
     /// Import knowledge-base TOML files (equation atoms, proofs, derivations) into SQLite.
     ImportKnowledge(ImportKnowledgeArgs),
@@ -58,14 +81,8 @@ enum Commands {
     /// Export planning tables to TOML-compatible output (stdout or file).
     ExportPlanning(ExportPlanningArgs),
 
-    /// Full-text search across research narratives.
-    Search(SearchArgs),
-
     /// Query rows from any table by name with optional status filter.
     Query(QueryArgs),
-
-    /// Audit: compare database source-of-truth against legacy TOML files.
-    Audit,
 
     /// Show legacy TOML files that should be archived.
     ArchiveLegacy,
@@ -75,6 +92,108 @@ enum Commands {
 
     /// List or manage notebook sessions stored in the database.
     Notebooks(NotebookArgs),
+}
+
+#[derive(Parser, Debug)]
+struct BuildArgs {
+    /// Verify crossrefs and signatures after building (exit non-zero on errors).
+    #[arg(long)]
+    verify: bool,
+}
+
+#[derive(Parser, Debug)]
+struct ClaimsArgs {
+    #[command(subcommand)]
+    action: ClaimsAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum ClaimsAction {
+    /// List claims with optional status filter.
+    List {
+        #[arg(long)]
+        status: Option<String>,
+        #[arg(long, default_value_t = 50)]
+        limit: usize,
+    },
+    /// Show a single claim by ID.
+    Show { id: String },
+    /// Full-text search claims.
+    Search {
+        query: String,
+        #[arg(long, default_value_t = 20)]
+        limit: usize,
+    },
+    /// List claims with no linked experiments or insights.
+    Unlinked,
+}
+
+#[derive(Parser, Debug)]
+struct InsightsArgs {
+    #[command(subcommand)]
+    action: InsightsAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum InsightsAction {
+    /// List insights.
+    List {
+        #[arg(long, default_value_t = 50)]
+        limit: usize,
+    },
+    /// Full-text search insights.
+    Search {
+        query: String,
+        #[arg(long, default_value_t = 20)]
+        limit: usize,
+    },
+}
+
+#[derive(Parser, Debug)]
+struct ExperimentsArgs {
+    #[command(subcommand)]
+    action: ExperimentsAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum ExperimentsAction {
+    /// List experiments with optional status filter.
+    List {
+        #[arg(long)]
+        status: Option<String>,
+        #[arg(long, default_value_t = 50)]
+        limit: usize,
+    },
+}
+
+#[derive(Parser, Debug)]
+struct XrefArgs {
+    #[command(subcommand)]
+    action: XrefAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum XrefAction {
+    /// Find dangling crossrefs (references to non-existent claims).
+    Dangling,
+    /// Find claims with no linked experiments or insights.
+    Unlinked,
+    /// Show crossref coverage summary.
+    Coverage,
+}
+
+#[derive(Parser, Debug)]
+struct AuditArgs {
+    #[command(subcommand)]
+    action: AuditAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum AuditAction {
+    /// Verify schema signatures match TOML content hashes.
+    Signatures,
+    /// Check for dangling crossrefs.
+    Crossrefs,
 }
 
 #[derive(Parser, Debug)]
@@ -193,19 +312,30 @@ enum NotebookAction {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let db_path = cli.repo_root.join(&cli.db);
+
+    // Build command creates DB from scratch; all others open existing.
+    if let Commands::Build(ref args) = cli.command {
+        return cmd_build(&cli.repo_root, &db_path, args);
+    }
+
     let store =
         ProvenanceStore::open(&db_path).with_context(|| format!("open database {}", db_path.display()))?;
 
     match cli.command {
+        Commands::Build(_) => unreachable!(),
         Commands::Stats => cmd_stats(&store),
         Commands::Schema => cmd_schema(&store),
+        Commands::Claims(args) => cmd_claims(&store, &args),
+        Commands::Insights(args) => cmd_insights(&store, &args),
+        Commands::Experiments(args) => cmd_experiments(&store, &args),
+        Commands::Search(args) => cmd_search(&store, &args),
+        Commands::Xref(args) => cmd_xref(&store, &args),
+        Commands::AuditCmd(args) => cmd_audit_cmd(&store, &cli.repo_root, &args),
         Commands::ImportKnowledge(args) => cmd_import_knowledge(&store, &cli.repo_root, &args),
         Commands::ImportPlanning(args) => cmd_import_planning(&store, &cli.repo_root, &args),
         Commands::ImportNarratives(args) => cmd_import_narratives(&store, &cli.repo_root, &args),
         Commands::ExportPlanning(args) => cmd_export_planning(&store, &args),
-        Commands::Search(args) => cmd_search(&store, &args),
         Commands::Query(args) => cmd_query(&store, &args),
-        Commands::Audit => cmd_audit(&store, &cli.repo_root),
         Commands::ArchiveLegacy => cmd_archive_legacy(&cli.repo_root),
         Commands::NotebookInfo => cmd_notebook_info(),
         Commands::Notebooks(args) => cmd_notebooks(&store, &args),
@@ -714,66 +844,6 @@ fn cmd_query(store: &ProvenanceStore, args: &QueryArgs) -> Result<()> {
 
 // ─── Audit ─────────────────────────────────────────────────────────
 
-fn cmd_audit(store: &ProvenanceStore, repo_root: &Path) -> Result<()> {
-    println!("╔══════════════════════════════════════════════════════════════╗");
-    println!("║        gororoba-db  •  Source-of-Truth Audit               ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
-    println!();
-
-    let manifest = store.source_of_truth_manifest()?;
-
-    println!("  ── AUTHORITATIVE (database is source of truth) ──");
-    println!();
-    for row in &manifest {
-        if row.authoritative {
-            let (table, category, legacy, migration_status) = (&row.table_name, &row.category, &row.legacy_toml_path, &row.migration_status);
-            let toml_exists = if legacy.is_empty() {
-                "n/a".to_string()
-            } else {
-                let p = repo_root.join(legacy);
-                if p.exists() { "✓ exists".to_string() } else { "✗ missing".to_string() }
-            };
-            let count = store.table_row_count(table).unwrap_or(0);
-            println!(
-                "    {table:<35} [{category}] {count:>6} rows  legacy={toml_exists:<12} status={migration_status}"
-            );
-        }
-    }
-
-    println!();
-    println!("  ── ANALYSIS ──");
-    println!();
-    println!("  Items that MUST be in the database (authoritative source of truth):");
-    println!("    • claims, insights, experiments, binaries, theorems (control plane)");
-    println!("    • artifacts, documents, citations (provenance index)");
-    println!("    • download_jobs, download_attempts, download_campaigns (pipeline)");
-    println!("    • external_source_contracts, external_source_dossiers (governance)");
-    println!("    • equation_atoms, proof_skeletons, derivation_steps (knowledge)");
-    println!("    • roadmap_items, todo_items, next_action_items (planning)");
-    println!("    • research_narratives (narrative documents)");
-    println!("    • notebook_sessions (interactive analysis)");
-    println!();
-    println!("  Items that MUST NOT be in the database:");
-    println!("    • Raw data files (CSV, HDF5, FITS) → remain on filesystem under data/");
-    println!("    • Compiled artifacts (target/, *.vo) → build outputs, never versioned");
-    println!("    • Credentials, secrets, API keys → .env files, never committed");
-    println!("    • Binary executables → compiled from source, not stored");
-    println!();
-    println!("  Legacy items for archive/:");
-    println!("    • Wave 4-6 phase plans → already in archive/registry/wave_phase_plans/");
-    println!("    • Pantheon/PhysicsForge migration → already in archive/registry/pantheon_physicsforge/");
-    println!("    • 8086 legacy CSVs → already in archive/8086_legacy/");
-    println!("    • Superseded registry TOMLs → candidates for archive once DB migration complete");
-    println!();
-    println!("  Legitimate items handled differently:");
-    println!("    • Formal proofs (*.v, *.lean) → remain in proofs/ with DB references");
-    println!("    • LaTeX sources → remain in docs/latex/ with DB cross-references");
-    println!("    • Makefile targets → orchestration layer, references DB commands");
-    println!("    • Python scripts → legacy generators, being replaced by Rust binaries");
-    println!();
-    Ok(())
-}
-
 // ─── Archive legacy ────────────────────────────────────────────────
 
 fn cmd_archive_legacy(repo_root: &Path) -> Result<()> {
@@ -952,4 +1022,291 @@ fn json_array_field(val: &Value, key: &str) -> String {
 /// Quote a string for TOML output.
 fn toml_quote(s: &str) -> String {
     format!("\"{}\"", s.replace('\\', "\\\\").replace('"', "\\\""))
+}
+
+// ── Build (Layer 2) ─────────────────────────────────────────────
+
+#[derive(Deserialize)]
+struct SourceManifest {
+    source: Vec<SourceEntry>,
+}
+
+#[derive(Deserialize)]
+#[allow(dead_code)]
+struct SourceEntry {
+    path: String,
+    role: String,
+    table: String,
+    description: String,
+}
+
+fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
+    println!("Building derived registry database...");
+    println!("  DB path: {}", db_path.display());
+
+    // Read source manifest.
+    let manifest_path = repo_root.join("registry/source_manifest.toml");
+    let manifest_text = fs::read_to_string(&manifest_path)
+        .with_context(|| format!("read {}", manifest_path.display()))?;
+    let manifest: SourceManifest = toml::from_str(&manifest_text)
+        .with_context(|| format!("parse {}", manifest_path.display()))?;
+
+    println!("  {} source files declared in manifest", manifest.source.len());
+
+    // Create fresh DB (deletes any existing file).
+    let mut store = ProvenanceStore::build_fresh(db_path)?;
+    store.record_build_metadata("builder", "gororoba-db build")?;
+    store.record_build_metadata("built_at", &chrono::Utc::now().to_rfc3339())?;
+    store.record_build_metadata(
+        "source_count",
+        &manifest.source.len().to_string(),
+    )?;
+
+    // Ingest core registries via existing reindex methods.
+    let claims_path = repo_root.join("registry/claims.toml");
+    let insights_path = repo_root.join("registry/insights.toml");
+    let experiments_path = repo_root.join("registry/experiments.toml");
+    let binaries_path = repo_root.join("registry/binaries.toml");
+    let proofs_project_path = repo_root.join("proofs/_CoqProject");
+
+    if claims_path.exists()
+        && insights_path.exists()
+        && experiments_path.exists()
+        && binaries_path.exists()
+    {
+        let stats = store.reindex_control_plane_from_registries(
+            repo_root,
+            &claims_path,
+            &insights_path,
+            &experiments_path,
+            &binaries_path,
+            &proofs_project_path,
+        )?;
+        println!(
+            "  Control plane: {} claims, {} insights, {} experiments, {} binaries, {} theorems",
+            stats.claim_count, stats.insight_count, stats.experiment_count, stats.binary_count, stats.theorem_count
+        );
+    }
+
+    // Ingest artifacts and documents.
+    let artifact_path = repo_root.join("registry/artifact_source_of_truth.toml");
+    let knowledge_docs_path = repo_root.join("registry/knowledge/documents.toml");
+    let lane_dir = repo_root.join("registry/source_lanes");
+    if artifact_path.exists() {
+        let stats = store.reindex_from_registries(
+            repo_root,
+            &artifact_path,
+            &knowledge_docs_path,
+            &lane_dir,
+        )?;
+        println!(
+            "  Provenance: {} artifacts, {} documents, {} lanes",
+            stats.artifact_count, stats.document_count, stats.lane_assignment_count
+        );
+    }
+
+    // Ingest bibliography.
+    let bib_path = repo_root.join("registry/bibliography.toml");
+    if bib_path.exists() {
+        let text = fs::read_to_string(&bib_path)?;
+        let count = store.ingest_bibliography(&text)?;
+        println!("  Bibliography: {count} entries");
+    }
+
+    // Ingest evidence edges.
+    let edges_path = repo_root.join("registry/claims_evidence_edges.toml");
+    if edges_path.exists() {
+        let text = fs::read_to_string(&edges_path)?;
+        let count = store.ingest_evidence_edges(&text)?;
+        println!("  Evidence edges: {count}");
+    }
+
+    // Ingest lacunae.
+    let lacunae_path = repo_root.join("registry/lacunae.toml");
+    if lacunae_path.exists() {
+        let text = fs::read_to_string(&lacunae_path)?;
+        let count = store.ingest_lacunae(&text)?;
+        println!("  Lacunae: {count}");
+    }
+
+    // Build crossref join tables.
+    let (ce, ci) = store.build_crossrefs()?;
+    println!("  Crossrefs: {ce} claim-experiment, {ci} claim-insight");
+
+    println!("  Build complete.");
+
+    if args.verify {
+        println!();
+        println!("Verifying...");
+        let dangling = store.dangling_crossrefs()?;
+        if dangling.is_empty() {
+            println!("  Crossrefs: OK (no dangling references)");
+        } else {
+            println!("  Crossrefs: {} dangling references:", dangling.len());
+            for (source, target, kind) in &dangling {
+                println!("    {kind} {source} -> {target} (missing)");
+            }
+        }
+        println!("  Verify complete.");
+    }
+
+    Ok(())
+}
+
+// ── Claims (Layer 3) ────────────────────────────────────────────
+
+fn cmd_claims(store: &ProvenanceStore, args: &ClaimsArgs) -> Result<()> {
+    match &args.action {
+        ClaimsAction::List { status, limit } => {
+            let claims = store.list_claims_filtered(status.as_deref(), *limit)?;
+            for c in &claims {
+                let proof_marker = if c.formal_proof.is_some() { " [proved]" } else { "" };
+                println!("{:<8} [{:<12}] {}{}", c.id, c.status, c.statement, proof_marker);
+            }
+            println!("\n{} claims shown.", claims.len());
+        }
+        ClaimsAction::Show { id } => {
+            match store.claim_by_id(id)? {
+                Some(c) => {
+                    println!("ID:            {}", c.id);
+                    println!("Status:        {}", c.status);
+                    println!("Statement:     {}", c.statement);
+                    println!("Where stated:  {}", c.where_stated);
+                    println!("Last verified: {}", c.last_verified);
+                    if let Some(ref proof) = c.formal_proof {
+                        println!("Formal proof:  {proof}");
+                    }
+                    if let Some(ref note) = c.status_note {
+                        println!("Status note:   {note}");
+                    }
+                }
+                None => {
+                    println!("Claim {id} not found.");
+                }
+            }
+        }
+        ClaimsAction::Search { query, limit } => {
+            let results = store.search_claims(query, *limit)?;
+            for (id, statement, status, _rank) in &results {
+                println!("{:<8} [{:<12}] {}", id, status, statement);
+            }
+            println!("\n{} results.", results.len());
+        }
+        ClaimsAction::Unlinked => {
+            let unlinked = store.unlinked_claims()?;
+            for (id, statement) in &unlinked {
+                println!("{:<8} {}", id, statement);
+            }
+            println!("\n{} unlinked claims.", unlinked.len());
+        }
+    }
+    Ok(())
+}
+
+// ── Insights (Layer 3) ──────────────────────────────────────────
+
+fn cmd_insights(store: &ProvenanceStore, args: &InsightsArgs) -> Result<()> {
+    match &args.action {
+        InsightsAction::List { limit } => {
+            let insights = store.list_insights()?;
+            for (i, ins) in insights.iter().enumerate() {
+                if i >= *limit {
+                    break;
+                }
+                println!("{:<8} [{:<12}] {}", ins.id, ins.status, ins.title);
+            }
+            println!("\n{} insights shown.", insights.len().min(*limit));
+        }
+        InsightsAction::Search { query, limit } => {
+            let results = store.search_insights(query, *limit)?;
+            for (id, title, status, _rank) in &results {
+                println!("{:<8} [{:<12}] {}", id, status, title);
+            }
+            println!("\n{} results.", results.len());
+        }
+    }
+    Ok(())
+}
+
+// ── Experiments (Layer 3) ───────────────────────────────────────
+
+fn cmd_experiments(store: &ProvenanceStore, args: &ExperimentsArgs) -> Result<()> {
+    match &args.action {
+        ExperimentsAction::List { status, limit } => {
+            let experiments = store.list_experiments_filtered(status.as_deref(), *limit)?;
+            for e in &experiments {
+                let bin = if e.binary.is_some() {
+                    format!(" ({})", e.binary.as_deref().unwrap_or(""))
+                } else {
+                    String::new()
+                };
+                println!("{:<8} [{:<12}] {}{}", e.id, e.status, e.title, bin);
+            }
+            println!("\n{} experiments shown.", experiments.len());
+        }
+    }
+    Ok(())
+}
+
+// ── Xref (Layer 3) ─────────────────────────────────────────────
+
+fn cmd_xref(store: &ProvenanceStore, args: &XrefArgs) -> Result<()> {
+    match &args.action {
+        XrefAction::Dangling => {
+            let dangling = store.dangling_crossrefs()?;
+            if dangling.is_empty() {
+                println!("No dangling crossrefs found.");
+            } else {
+                for (source, target, kind) in &dangling {
+                    println!("{kind}: {source} -> {target} (missing)");
+                }
+                println!("\n{} dangling crossrefs.", dangling.len());
+            }
+        }
+        XrefAction::Unlinked => {
+            let unlinked = store.unlinked_claims()?;
+            for (id, statement) in &unlinked {
+                println!("{:<8} {}", id, statement);
+            }
+            println!("\n{} unlinked claims.", unlinked.len());
+        }
+        XrefAction::Coverage => {
+            let total_claims = store.table_row_count("claims")?;
+            let unlinked = store.unlinked_claims()?;
+            let linked = total_claims - unlinked.len() as i64;
+            let pct = if total_claims > 0 {
+                (linked as f64 / total_claims as f64) * 100.0
+            } else {
+                0.0
+            };
+            println!("Claims:   {total_claims} total");
+            println!("Linked:   {linked} ({pct:.1}%)");
+            println!("Unlinked: {}", unlinked.len());
+        }
+    }
+    Ok(())
+}
+
+// ── Audit (Layer 3) ─────────────────────────────────────────────
+
+fn cmd_audit_cmd(store: &ProvenanceStore, repo_root: &Path, args: &AuditArgs) -> Result<()> {
+    match &args.action {
+        AuditAction::Signatures => {
+            println!("Verifying schema signatures...");
+            store.verify_invariants(repo_root)?;
+            println!("OK: all signatures valid.");
+        }
+        AuditAction::Crossrefs => {
+            let dangling = store.dangling_crossrefs()?;
+            if dangling.is_empty() {
+                println!("OK: no dangling crossrefs.");
+            } else {
+                for (source, target, kind) in &dangling {
+                    println!("DANGLING: {kind} {source} -> {target}");
+                }
+                anyhow::bail!("{} dangling crossrefs found", dangling.len());
+            }
+        }
+    }
+    Ok(())
 }

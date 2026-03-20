@@ -83,6 +83,14 @@ tda_scope = "validation_only"
 tda_note = "tda 0.1.0 used solely by test-tda-api binary for Betti-number cross-validation. Consider feature-gating behind tda-validation if compile time becomes a concern."
 ndarray_duplication_note = "burn pulls its own ndarray version; accept transitive duplication until burn aligns."
 
+# cargo-machete: fast unused dependency detection (regex+AST, no compilation).
+# WHY: Detect dead deps before they accumulate. Runs in <2s vs cargo-udeps' minutes.
+# NOTE: If machete flags a dep you think is unused, investigate what SHOULD be wired
+# in before deleting. False positives are rare but possible for proc-macro deps
+# and deps used only via feature gates.
+[workspace.metadata.cargo-machete]
+ignored = ["wide"]
+
 # Shared dependencies across workspace
 [workspace.dependencies]
 # Workspace-internal crates (extracted from gororoba_algebra)
@@ -295,22 +303,32 @@ all = { level = "warn", priority = -1 }
 [workspace.lints.rust]
 warnings = "deny"
 
-# cargo-semver-checks 0.47.0: API SemVer compliance gate.
-# Run: `make rust-semver-check` or `cargo semver-checks check-release --workspace`
-# All library crates must maintain backward-compatible public APIs within
+# cargo-semver-checks: API SemVer compliance gate.
+# Run: `make rust-semver-check`
+# WHY: All library crates must maintain backward-compatible public APIs within
 # the same major version. Breaking changes require a version bump.
-[workspace.metadata.semver-checks]
-# Crates that are internal-only or binary-only (no public API to check).
-excluded = [
-    "gororoba_cli",
-    "gororoba_cli_algebra",
-    "gororoba_cli_data",
-    "gororoba_cli_governance",
-    "gororoba_cli_physics",
-    "gororoba_cli_provenance",
-    "gororoba_cli_quantum",
-    "gororoba_cli_warp",
-]
+# WHAT: Only core library crates are checked. CLI/binary crates are excluded
+# via --exclude flags in the Makefile target (no public API surface).
+# HOW: `cargo semver-checks check-release` compares public API against
+# the last published version (or baseline rev).
+
+# Lint severities for cargo-semver-checks (read by the tool since v0.35+).
+# Package-level opt-in: add `[package.metadata.cargo-semver-checks.lints]`
+# with `workspace = true` to inherit these defaults.
+[workspace.metadata.cargo-semver-checks.lints]
+# Deny: hard errors on removed/changed public items.
+struct_missing = "deny"
+enum_missing = "deny"
+function_missing = "deny"
+trait_missing = "deny"
+# Warn: flag but don't fail CI on additive changes that technically break semver.
+function_must_use_added = "warn"
+inherent_method_must_use_added = "warn"
+struct_must_use_added = "warn"
+enum_must_use_added = "warn"
+trait_must_use_added = "warn"
+# Warn: new trait methods with defaults are minor but worth flagging.
+trait_method_added = "warn"
 
 # Development: fast iteration. Cranelift backend skips LLVM passes for sub-minute
 # cold builds. Use 'cargo build --profile parity' for release-level numerical parity.

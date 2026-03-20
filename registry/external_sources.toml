@@ -1,7 +1,5 @@
-# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
-# Canonical write path: registry/canonical/control_plane.sqlite3
-# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources
-# Compatibility export lane: source_dossiers
+# SOURCE OF TRUTH: external sources registry.
+# Edit this file directly. Rebuild derived DB with: make registry-build
 
 [external_sources]
 updated = "2026-03-12"

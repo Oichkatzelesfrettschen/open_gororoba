@@ -1,7 +1,5 @@
-# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
-# Canonical write path: registry/canonical/control_plane.sqlite3
-# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
-# Compatibility export lane: experiments
+# SOURCE OF TRUTH: experiments registry.
+# Edit this file directly. Rebuild derived DB with: make registry-build
 
 [experiments]
 authoritative = true
@@ -5259,7 +5257,7 @@ title = "Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7)
 truth_surface_consumption = []
 
 
-[[experiments]]
+[[experiment]]
 id = "E-208"
 title = """Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D"""
 status = "verified"

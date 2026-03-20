@@ -1,0 +1,46 @@
+{
+  "$schema": "https://dprint.dev/schemas/v0.json",
+  "lineWidth": 100,
+  "indentWidth": 4,
+  "useTabs": false,
+  "exec": {
+    "cwd": "${configDir}",
+    "commands": [{
+      "command": "rustfmt --edition 2024",
+      "exts": ["rs"],
+      "cacheKeyFiles": [
+        "rustfmt.toml",
+        "rust-toolchain.toml"
+      ]
+    }]
+  },
+  "toml": {},
+  "json": {
+    "indentWidth": 2
+  },
+  "markdown": {},
+  "includes": [
+    "**/*.rs",
+    "**/*.toml",
+    "**/*.json",
+    "**/*.md"
+  ],
+  "excludes": [
+    ".cache/**",
+    "target/**",
+    "proofs/**/*.vo",
+    "proofs/**/*.glob",
+    "**/node_modules/**",
+    "**/*-lock.json",
+    "Cargo.lock",
+    "registry/artifact_source_of_truth.toml",
+    "registry/claims_evidence_edges.toml",
+    "registry/claims.toml"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/exec-0.6.0.json@a054130d458f124f9b5c91484833828950723a5af3f8ff2bd1523bd47b83b364",
+    "https://plugins.dprint.dev/toml-0.7.0.wasm",
+    "https://plugins.dprint.dev/json-0.21.2.wasm",
+    "https://plugins.dprint.dev/markdown-0.21.1.wasm"
+  ]
+}

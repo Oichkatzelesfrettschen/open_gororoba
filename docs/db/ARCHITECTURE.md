@@ -1,197 +1,156 @@
-# SQLite Source-of-Truth Architecture
+# Three-Layer Registry Architecture
 
-> Canonical reference for the database-first design of open\_gororoba.
+> Canonical reference for the TOML-source, SQLite-build, CLI-query architecture.
 
 ## Overview
 
-The `registry/canonical/control_plane.sqlite3` database is the **single
-authoritative source of truth** for all structured metadata in the project.
-TOML files in `registry/` are **read-only compatibility exports** that can be
-regenerated at any time from the database.  The `gororoba-db` CLI provides a
-unified Rust-native entrypoint for querying, importing, exporting, auditing,
-and managing the database.
+The registry uses a three-layer architecture where **TOML files are the single
+source of truth**, SQLite is a derived build artifact, and the `gororoba-db` CLI
+provides fast querying and auditing.
 
 ```
-┌────────────────────────────────────────────────────────────┐
-│          registry/canonical/control_plane.sqlite3           │
-│                     SOURCE OF TRUTH                        │
-│  10 migrations · 35+ tables · FTS5 full-text search        │
-└────────────────────┬───────────────────────────────────────┘
-                     │
-      ┌──────────────┼──────────────┐
-      ▼              ▼              ▼
- TOML exports   gororoba-db CLI  provenance CLI
- (read-only)    (query/import)   (index/export)
+LAYER 1: SOURCE (36 TOML files, human-edited, git-tracked)
+    |
+    v  `make registry-build`
+LAYER 2: BUILD (.cache/registry.sqlite3, .gitignore'd, deterministic)
+    |
+    v  `gororoba-db` CLI
+LAYER 3: QUERY (claims, insights, experiments, xref, audit, search)
 ```
 
-## Database Layers
+## Layer 1: Source TOML Files
 
-| Layer | Tables | Migration | Status |
-|-------|--------|-----------|--------|
-| **Provenance** | `artifacts`, `documents`, `citations`, `links`, `artifact_links`, `artifact_paths`, `mirror_observations`, `lane_assignments`, `export_runs`, `ingest_fingerprints` | 0001 | Migrated |
-| **Control Plane** | `claims`, `insights`, `experiments_cp`, `binaries_cp`, `theorems`, `control_plane_runs`, `control_plane_meta`, `registry_snapshots` | 0002–0004 | Migrated |
-| **Downloads** | `download_jobs`, `download_attempts`, `download_campaigns`, `download_campaign_jobs` | 0005–0008 | Migrated |
-| **External Sources** | `external_source_contracts`, `external_source_dossiers` (+ meta/values) | 0009 | Migrated |
-| **Knowledge** | `equation_atoms`, `proof_atoms`, `proof_skeletons`, `derivation_steps` | 0010 | Pending import |
-| **Planning** | `roadmap_items`, `todo_items`, `next_action_items` | 0010 | Pending import |
-| **Narratives** | `research_narratives`, `research_narrative_search` (FTS5) | 0010 | Pending import |
-| **Notebooks** | `notebook_sessions` | 0010 | New |
-| **Manifest** | `source_of_truth_manifest` | 0010 | Bootstrapped |
+All 36 source files are listed in `registry/source_manifest.toml` with their
+roles and target tables. Edit these files directly; they are the authoritative
+record.
 
-## What Belongs in the Database
+| Category | Files | Examples |
+|----------|-------|---------|
+| Core research | 6 | claims.toml, insights.toml, experiments.toml, binaries.toml |
+| Evidence graph | 6 | bibliography.toml, claims_evidence_edges.toml, lacunae.toml |
+| Data governance | 7 | artifact_source_of_truth.toml, data_governance.toml |
+| Narrative content | 6 | research_narratives.toml, book_docs.toml |
+| Project config | 7 | roadmap.toml, terminology_standards.toml |
+| Infrastructure | 2 | agents_contract.toml, mcp_server_matrix.toml |
+| Governance lock | 1 | schema_signatures.toml (derived but committed) |
 
-### ✅ MUST be in the database (authoritative)
+## Layer 2: Build
 
-| Data | Reason |
-|------|--------|
-| Claims (C-001 … C-1300) | Formal verification status, proof links, evidence chains |
-| Insights (I-001 … I-182) | Cross-domain research discoveries, claim references |
-| Experiments (E-001 … E-200) | Reproducibility metadata, run commands, SHA256 hashes |
-| Binaries (364 entries) | Binary-to-experiment mapping, crate sourcing |
-| Theorems (144 entries) | Formal proofs, Rocq verification status |
-| Artifacts (3236 entries) | Provenance index, mirror tracking, canonical URLs |
-| External source contracts | Data governance, retrieval policies, deadlines |
-| Download jobs/campaigns | Pipeline state, attempt tracking, failure classification |
-| Equation atoms | Mathematical knowledge graph, derivation links |
-| Proof skeletons / derivation steps | Formal proof structure, step dependencies |
-| Roadmap / todo / next actions | Project planning with dependency graphs |
-| Research narratives | Full-text searchable research documents |
-| Notebook sessions | Interactive analysis session metadata |
-
-### ❌ MUST NOT be in the database
-
-| Data | Location | Reason |
-|------|----------|--------|
-| Raw data files (CSV, HDF5, FITS) | `data/` | Binary blobs, too large, filesystem-native |
-| Compiled artifacts (`target/`, `*.vo`) | Build output | Ephemeral, reproducible from source |
-| Credentials, secrets, API keys | `.env` files | Security, never committed |
-| Binary executables | Build output | Compiled from source code |
-| Git history | `.git/` | Version control is its own database |
-| LaTeX build outputs | `docs/latex/out/` | Generated, ephemeral |
-
-### 🗄️ Legacy items (already in `archive/`)
-
-| Data | Archive Location |
-|------|-----------------|
-| Pantheon/PhysicsForge migration | `archive/registry/pantheon_physicsforge/` |
-| Wave 4–6 phase plans | `archive/registry/wave_phase_plans/` |
-| 8086 instruction cycle CSVs | `archive/8086_legacy/` |
-| Retired external placeholders | `archive/external_legacy_placeholders/` |
-| Non-reproducible snapshots | `archive/external_nonreproducible_snapshots/` |
-
-### 🔄 Legitimate items handled differently
-
-| Data | Location | Approach |
-|------|----------|----------|
-| Formal proofs (`.v`, `.lean`) | `proofs/` | Filesystem + DB cross-references (`theorems.proof_path`) |
-| LaTeX sources | `docs/latex/` | Filesystem + DB claim/experiment references |
-| Makefile targets | `Makefile` | Orchestration layer referencing `gororoba-db` and `provenance` |
-| Python scripts | `src/scripts/` | Legacy generators being replaced by Rust binaries |
-
-## CLI Entrypoints
-
-### `gororoba-db` (new, lightweight)
-
-The primary user-facing tool for database interaction:
+The derived SQLite database is created deterministically from Layer 1 sources:
 
 ```bash
-# Database overview
-gororoba-db stats
-gororoba-db schema
-gororoba-db audit
+make registry-build          # Prerequisite-guarded (no-op if sources unchanged)
+make registry-build-verify   # Build + verify crossrefs
+```
 
-# Import data from TOML into SQLite
-gororoba-db import-planning
-gororoba-db import-knowledge
-gororoba-db import-narratives
+The build step:
+1. Reads `registry/source_manifest.toml` for the file list
+2. Deletes any existing `.cache/registry.sqlite3`
+3. Creates a fresh DB with all 11 migrations
+4. Sets `PRAGMA journal_mode=WAL` for concurrent read safety
+5. Ingests all 36 source TOML files into normalized tables
+6. Builds FTS5 full-text indexes on claims, insights, bibliography
+7. Builds crossref join tables (claim-experiment, claim-insight)
+8. Records build metadata (timestamp, source count)
 
-# Export from SQLite
-gororoba-db export-planning --table roadmap --format json
+The Makefile uses proper prerequisites so the DB only rebuilds when a source
+TOML file changes. Agents running queries hit the cached DB without triggering
+rebuilds.
 
-# Query
-gororoba-db query roadmap --status active
-gororoba-db query todo --status open --limit 10
+## Layer 3: Query CLI
+
+```bash
+# Build
+gororoba-db build              # Create .cache/registry.sqlite3
+gororoba-db build --verify     # Build + verify integrity
+
+# Claims
+gororoba-db claims list --status Verified
+gororoba-db claims show C-1234
+gororoba-db claims search "ultrametric"
+gororoba-db claims unlinked
+
+# Insights
+gororoba-db insights list
+gororoba-db insights search "Fourier"
+
+# Experiments
+gororoba-db experiments list --status active
+
+# Cross-references
+gororoba-db xref dangling      # Find broken references
+gororoba-db xref unlinked      # Claims with no links
+gororoba-db xref coverage      # Coverage summary
 
 # Full-text search
 gororoba-db search "algebraic structure"
 
-# Legacy analysis
-gororoba-db archive-legacy
+# Audit
+gororoba-db audit signatures   # Verify schema hashes
+gororoba-db audit crossrefs    # Check referential integrity
 
-# Notebook integration
-gororoba-db notebook-info
-gororoba-db notebooks list
-gororoba-db notebooks create --title "Analysis Session"
-```
-
-### `provenance` (existing, operator-focused)
-
-Heavy-duty operator CLI for bulk index/export/verify cycles:
-
-```bash
-provenance index-control-plane     # Import from TOML → SQLite
-provenance export-control-plane    # Export SQLite → TOML compatibility
-provenance verify-control-plane    # Validate invariants
-provenance query claim C-001       # Query individual entities
-provenance doctor                  # Health report
-```
-
-## Jupyter / evcxr Integration
-
-The `evcxr_jupyter` crate provides a Rust kernel for Jupyter notebooks.
-Within a notebook, workspace crates can be loaded interactively:
-
-```rust
-:dep provenance_store = { path = "crates/provenance_store" }
-:dep cd_kernel = { path = "crates/cd_kernel" }
-
-use provenance_store::ProvenanceStore;
-let store = ProvenanceStore::open(
-    std::path::Path::new("registry/canonical/control_plane.sqlite3")
-).unwrap();
-
-// Query the source of truth directly
-let stats = store.source_of_truth_stats().unwrap();
-for (table, cat, count, meta) in &stats {
-    println!("{table}: {count} rows [{cat}]");
-}
-```
-
-Install with:
-```bash
-cargo install --locked evcxr_jupyter
-evcxr_jupyter --install
-jupyter notebook  # Select "Rust" kernel
-```
-
-## Migration Workflow
-
-To bring knowledge and planning data into SQLite:
-
-```bash
-# 1. Import planning data (roadmap, todo, next-actions)
-gororoba-db import-planning
-
-# 2. Import knowledge base (equations, proofs, derivations)
-gororoba-db import-knowledge
-
-# 3. Import research narratives
-gororoba-db import-narratives
-
-# 4. Verify
+# Statistics
 gororoba-db stats
-gororoba-db audit
+gororoba-db schema
 ```
+
+## Database Schema
+
+11 migrations in `db/migrations/`:
+
+| Layer | Tables | Migration |
+|-------|--------|-----------|
+| Provenance | artifacts, documents, lanes, mirrors | 0001 |
+| Control Plane | claims, insights, experiments_cp, binaries_cp, theorems | 0002-0004 |
+| Downloads | download_jobs, download_attempts, download_campaigns | 0005-0008 |
+| External Sources | external_source_contracts, external_source_dossiers | 0009 |
+| Knowledge | equation_atoms, proof_skeletons, derivation_steps | 0010 |
+| Planning | roadmap_items, todo_items, next_action_items | 0010 |
+| Narratives | research_narratives (+ FTS5 search) | 0010 |
+| FTS5 + Crossrefs | claims_fts, insights_fts, bibliography_fts, evidence_edges, crossref tables | 0011 |
+
+## Governance Gate
+
+The governance gate validates source TOML files directly (no SQLite required):
+
+```bash
+make governance-gate    # Schema signatures, crossrefs, labels, etc.
+```
+
+The `schema_signatures.toml` file is the one derived file committed to git.
+It contains content and schema hashes for governance validation. Regenerate
+with `make integrity-resolution`.
 
 ## Technology Stack
 
 | Component | Choice | Rationale |
 |-----------|--------|-----------|
-| Database | SQLite 3 (bundled) | Zero-config, single-file, embedded, cross-platform |
-| Rust bindings | `rusqlite` 0.38 | Thin ergonomic wrapper, sync, bundled SQLite |
-| Migrations | `rusqlite_migration` 2.4 | Sequential numbered SQL files in `db/migrations/` |
-| CLI framework | `clap` 4.5 (derive) | Standard Rust CLI with subcommands |
-| Serialization | `serde` + `toml` + `serde_json` | Multi-format import/export |
-| Hashing | `blake3` | Fast cryptographic hashing for ingest fingerprints |
-| Full-text search | SQLite FTS5 | Built-in, no external dependencies |
-| Notebooks | `evcxr_jupyter` | Rust REPL + Jupyter kernel for interactive analysis |
+| Source format | TOML | Human-readable, git-mergeable, diffable |
+| Build artifact | SQLite 3 (WAL mode) | Fast queries, FTS5, concurrent reads |
+| Rust bindings | rusqlite 0.38 | Embedded SQLite, zero external deps |
+| Migrations | rusqlite_migration 2.4 | Sequential SQL files |
+| CLI | clap 4 (derive) | Subcommand dispatch |
+| Full-text search | SQLite FTS5 | Built-in, BM25 ranking |
+| Hashing | blake3 | Fast content fingerprinting |
+
+## Workflow
+
+To modify the registry:
+
+```bash
+# 1. Edit source TOML files directly
+vim registry/claims.toml
+
+# 2. Regenerate schema signatures (if governance gate requires it)
+make integrity-resolution
+
+# 3. Rebuild derived DB (automatic via Make prerequisites)
+make registry-build
+
+# 4. Query to verify
+gororoba-db claims show C-1375
+gororoba-db xref dangling
+
+# 5. Run governance gate before push
+make governance-gate
+```
