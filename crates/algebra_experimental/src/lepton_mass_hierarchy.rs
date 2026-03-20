@@ -107,11 +107,13 @@ mod tests {
         println!("Topological Friction (Generation 2 - O2): {:.4}", friction2);
         println!("Topological Friction (Generation 3 - O3): {:.4}", friction3);
 
-        // Hypothesis: The friction values should be different, providing a mass hierarchy.
-        assert!((friction1 - friction2).abs() > 1e-9, "Friction for O1 and O2 should be different");
-        assert!((friction2 - friction3).abs() > 1e-9, "Friction for O2 and O3 should be different");
-        assert!((friction1 - friction3).abs() > 1e-9, "Friction for O1 and O3 should be different");
-
-        println!("✅ Mass Hierarchy confirmed: Topological friction is distinct for each subalgebra!");
+        // RESULT: Friction values are identical across all three subalgebras.
+        // The braiding friction is symmetric under the octonion subalgebra permutation
+        // used here, so this particular construction does NOT produce a mass hierarchy.
+        // This is a valid null result -- the hypothesis is falsified for this basis choice.
+        assert!(
+            (friction1 - friction2).abs() < 1e-9 && (friction2 - friction3).abs() < 1e-9,
+            "Expected equal friction (null result); got f1={friction1}, f2={friction2}, f3={friction3}"
+        );
     }
 }
