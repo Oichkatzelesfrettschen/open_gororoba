@@ -64,7 +64,7 @@
 //! and `Dekatrisvoudon` are therefore type aliases for
 //! `algebra_analysis::sparse::SparseState` (requires the `analysis` feature).
 
-use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
+use cd_kernel::cayley_dickson::cd_multiply_flat_into;
 use wide::f64x4;
 
 /// Generate a SIMD-backed Cayley-Dickson algebra type.
@@ -128,29 +128,18 @@ macro_rules! implement_cd_algebra {
                 res
             }
 
-            /// Multiply via Cayley-Dickson XOR-sign basis rules.
+            /// Multiply via flat recursive CD doubling.
             ///
-            /// Z_k = sum_i sign(e_i * e_{k^i}) * X_i * Y_{k^i}
-            ///
-            /// This is O(dim^2) in real multiplications and O(dim^2 * log dim)
-            /// for the sign lookups.  The SIMD layout is used for the
-            /// from_slice/to_slice boundary; the inner loop is scalar because
-            /// the XOR-sign computation is not easily vectorisable.
+            /// Uses `cd_multiply_flat_into` which recurses down to the
+            /// register-resident sedenion base case (64 FMAs, zero heap
+            /// allocation at the base level).  This replaces the former
+            /// O(dim^2 * log dim) XOR-sign basis loop with the recursive
+            /// CD formula that has better constant factors.
             pub fn mul(&self, other: &Self) -> Self {
-                let mut res = [0.0f64; $dim];
                 let self_slice = self.to_slice();
                 let other_slice = other.to_slice();
-
-                for (k, res_k) in res.iter_mut().enumerate() {
-                    let mut sum = 0.0f64;
-                    for (i, &si) in self_slice.iter().enumerate() {
-                        let j = k ^ i;
-                        let sign = cd_basis_mul_sign_iter($dim, i, j);
-                        sum += (sign as f64) * si * other_slice[j];
-                    }
-                    *res_k = sum;
-                }
-
+                let mut res = [0.0f64; $dim];
+                cd_multiply_flat_into(&self_slice, &other_slice, &mut res, $dim);
                 Self::from_slice(&res)
             }
         }
