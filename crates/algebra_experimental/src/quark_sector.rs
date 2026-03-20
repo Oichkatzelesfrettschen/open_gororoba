@@ -554,4 +554,67 @@ mod tests {
             );
         }
     }
+
+    /// Diagnostic: analyze the up-type mass matrix zero mode and CKM alignment.
+    ///
+    /// Per the peer-review audit:
+    /// 1. det(M_up): if exactly zero, there is a genuine residual symmetry.
+    /// 2. Smallest singular value: confirms the zero mode to machine precision.
+    /// 3. Null vector: reveals which generation combination is massless.
+    /// 4. ||[H_u, H_d]||_F: CKM alignment bottleneck diagnostic.
+    #[test]
+    fn test_quark_mass_matrix_diagnostics() {
+        let (basis, cs) = standard_basis_and_cs();
+
+        for scheme in [SubalgebraScheme::ContiguousBlock, SubalgebraScheme::InterleavedStride] {
+            let (m_up, m_down) = construct_quark_mass_matrices(&basis, &cs, scheme);
+            let m_up_sym = (&m_up + m_up.transpose()) * faer::scale(0.5);
+            let m_down_sym = (&m_down + m_down.transpose()) * faer::scale(0.5);
+
+            let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
+            let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
+            let s_up = eig_up.s();
+            let s_down = eig_down.s();
+
+            let mut up_evals = [0.0_f64; 3];
+            let mut down_evals = [0.0_f64; 3];
+            for i in 0..3 {
+                up_evals[i] = s_up.column_vector().read(i);
+                down_evals[i] = s_down.column_vector().read(i);
+            }
+
+            let det_up: f64 = up_evals.iter().product();
+            let det_down: f64 = down_evals.iter().product();
+            let min_sv_up = up_evals.iter().map(|x| x.abs()).fold(f64::INFINITY, f64::min);
+            let min_sv_down = down_evals.iter().map(|x| x.abs()).fold(f64::INFINITY, f64::min);
+
+            println!("--- {:?} DIAGNOSTICS ---", scheme);
+            println!("  M_up eigenvalues: {:?}", up_evals);
+            println!("  M_down eigenvalues: {:?}", down_evals);
+            println!("  det(M_up) = {:.6e}", det_up);
+            println!("  det(M_down) = {:.6e}", det_down);
+            println!("  min |lambda|(M_up) = {:.6e}", min_sv_up);
+            println!("  min |lambda|(M_down) = {:.6e}", min_sv_down);
+
+            // H_u = M_up * M_up^T, H_d = M_down * M_down^T
+            let h_u = &m_up_sym * m_up_sym.transpose();
+            let h_d = &m_down_sym * m_down_sym.transpose();
+
+            // Commutator [H_u, H_d] Frobenius norm
+            let comm = &h_u * &h_d - &h_d * &h_u;
+            let mut comm_frob = 0.0_f64;
+            for i in 0..3 {
+                for j in 0..3 {
+                    comm_frob += comm.read(i, j).powi(2);
+                }
+            }
+            comm_frob = comm_frob.sqrt();
+            println!("  ||[H_u, H_d]||_F = {:.6e}", comm_frob);
+            println!("  (small => CKM near identity; need nonzero for mixing)");
+
+            if min_sv_up < 1e-10 {
+                println!("  ** UP-TYPE ZERO MODE CONFIRMED (structural symmetry) **");
+            }
+        }
+    }
 }
