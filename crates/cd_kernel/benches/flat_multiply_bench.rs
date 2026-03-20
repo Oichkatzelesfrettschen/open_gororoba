@@ -2,8 +2,8 @@ use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use std::hint::black_box;
 
 use cd_kernel::cayley_dickson::{
-    cd_multiply, cd_multiply_simd, octonion_multiply_flat, quaternion_multiply_flat,
-    sedenion_multiply_flat,
+    cd_multiply, cd_multiply_simd, octonion_multiply_flat, octonion_multiply_scalar_flat,
+    quaternion_multiply_flat, quaternion_multiply_scalar_flat, sedenion_multiply_flat,
 };
 
 fn bench_quaternion_multiply(c: &mut Criterion) {
@@ -18,6 +18,9 @@ fn bench_quaternion_multiply(c: &mut Criterion) {
     });
     group.bench_function("cd_multiply_simd", |bench| {
         bench.iter(|| black_box(cd_multiply_simd(black_box(&a_slice), black_box(&b_slice))))
+    });
+    group.bench_function("flat_scalar", |bench| {
+        bench.iter(|| black_box(quaternion_multiply_scalar_flat(black_box(&a), black_box(&b))))
     });
     group.bench_function("flat_avx2", |bench| {
         bench.iter(|| black_box(quaternion_multiply_flat(black_box(&a), black_box(&b))))
@@ -37,6 +40,9 @@ fn bench_octonion_multiply(c: &mut Criterion) {
     });
     group.bench_function("cd_multiply_simd", |bench| {
         bench.iter(|| black_box(cd_multiply_simd(black_box(&a_slice), black_box(&b_slice))))
+    });
+    group.bench_function("flat_scalar", |bench| {
+        bench.iter(|| black_box(octonion_multiply_scalar_flat(black_box(&a), black_box(&b))))
     });
     group.bench_function("flat_avx2", |bench| {
         bench.iter(|| black_box(octonion_multiply_flat(black_box(&a), black_box(&b))))
