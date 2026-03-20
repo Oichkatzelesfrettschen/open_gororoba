@@ -1,5 +1,7 @@
 #[cfg(test)]
 use crate::construction::chingon::AlternativityViolationTensor;
+#[cfg(test)]
+use crate::gpu::avt_pack::GpuPackableAvt;
 
 #[cfg(test)]
 #[test]

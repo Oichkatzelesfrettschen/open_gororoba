@@ -1,0 +1,129 @@
+# Markdown document ownership registry.
+# Each [[owner]] entry maps a markdown file to its owner group and removal status.
+# Required by the governance gate markdown-removal-policy check.
+# Valid removal_status values: active, candidate_for_removal, deprecated, archived, locked.
+# Rules:
+#   - active documents must NOT have a removal_reason.
+#   - non-active documents MUST have a removal_reason.
+#   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
+
+[markdown_owner_map]
+updated = "2026-03-20"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+document_count = 19
+
+[[owner]]
+path = "README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/NAVIGATOR.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/GRAND_SYNTHESIS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/GRAND_SYNTHESIS_PLAN.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/db/ARCHITECTURE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "MERGED_MONOGRAPH.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/COUPLER_MANIFOLD_CLOSING_LACUNAE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/COUPLER_MANIFOLD_COMPLETENESS_REPORT.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/COUPLER_MANIFOLD_EXTREME_SWEEP.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/COUPLER_MANIFOLD_LEGACY_SWEEP.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/COUPLER_MANIFOLD_MONOGRAPH.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/external_sources/NANOGRAV_TIMING_ENGINE_SOURCES.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/research/manga_zd_null_retrospective_2026.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/research/nanograv_phase1_next20_2026_03_19.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "papers/ghost_paper_final.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""

@@ -1,0 +1,64 @@
+# External CSV dataset registry.
+# Each [[dataset]] entry declares an externally-sourced dataset used by one or more experiments.
+# ID format: EX-XXXX. Managed by the governance gate (crossrefs + dataset-label-aliases checks).
+
+[external_csv_datasets]
+updated = "2026-03-20"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+dataset_count = 9
+
+[[dataset]]
+id = "EX-0001"
+description = "SPARC rotation curve database (Lelli et al. 2016 AJ 152 157). 175 late-type spiral and irregular galaxies with resolved HI/H-alpha rotation curves and 3.6 micron photometry."
+source = "VizieR J/AJ/152/157"
+status = "active"
+
+[[dataset]]
+id = "EX-0002"
+description = "Li et al. 2020 Bayesian NFW fitting parameters for SPARC galaxies (ApJS 247 31). Provides halo mass, concentration, and upsilon_star posteriors for the SPARC sample."
+source = "VizieR J/ApJS/247/31"
+status = "active"
+
+[[dataset]]
+id = "EX-0003"
+description = "MaNGA DR17 IFU kinematic maps (SDSS-IV MaNGA survey). MAPS FITS files with EMLINE_GVEL extensions providing spatially resolved emission-line velocities for ~10000 nearby galaxies."
+source = "data/external/manga/"
+status = "active"
+
+[[dataset]]
+id = "EX-0004"
+description = "THINGS HI rotation curves (The HI Nearby Galaxy Survey; Walter et al. 2008 AJ 136 2563). High-resolution 21-cm velocity fields for 34 nearby spiral and dwarf galaxies."
+source = "VizieR J/AJ/136/2563"
+status = "active"
+
+[[dataset]]
+id = "EX-0005"
+description = "Milky Way rotation curve from Gaia DR3 proper motions (Jiao et al. 2023; Ou et al. 2024). Circular velocity measurements out to ~25 kpc derived from Gaia astrometry."
+source = "data/external/gaia_mw/"
+status = "active"
+
+[[dataset]]
+id = "EX-0015"
+description = "ATNF pulsar catalog (Manchester et al. 2005 AJ 129 1993; v2.x). Period, dispersion measure, and derived distance columns used for ghost-spectral-audit baseline tests."
+source = "data/external/atnf_pulsars.csv"
+status = "active"
+
+[[dataset]]
+id = "EX-0017"
+description = "CHIME FRB catalog 2 (CHIME/FRB Collaboration 2023). Fast radio burst dispersion measures and fluences; used as non-standard-candle baseline in ghost-spectral-audit."
+source = "data/external/chime_frb_cat2.csv"
+status = "active"
+
+[[dataset]]
+id = "EX-0024"
+description = "GWOSC all-events catalog (GWTC-3; Abbott et al. 2023 PRX 13 041039). Compact binary merger parameters including component masses used for mass-clumping analysis (C-007)."
+source = "data/external/gwosc_all_events.csv"
+status = "active"
+
+[[dataset]]
+id = "EX-0027"
+description = "NANOGrav 15yr free-spectrum data (NG15 Collaboration 2023 ApJL 951 L8). Per-frequency Bayesian posteriors on the gravitational-wave background amplitude used in cd-pattern-baseline-audit."
+source = "data/external/nanograv_15yr_freespectrum.csv"
+status = "active"

@@ -1,0 +1,263 @@
+# Project canonical CSV dataset registry.
+# Each [[dataset]] entry declares a project-generated canonical CSV that serves as
+# a reproducible artifact consumed by downstream experiments or claims verification.
+# ID format: PC-XXXX. Managed by the governance gate (crossrefs check).
+
+[project_csv_canonical_datasets]
+updated = "2026-03-20"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+dataset_count = 42
+
+[[dataset]]
+id = "PC-0002"
+description = "APT dimensional census details. Output of dimensional-census binary: associator pattern taxonomy across CD tower dimensions 16-1024."
+source = "data/csv/apt_dimensional_census_details.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0003"
+description = "Breakthrough Listen GBT 6EQUJ5 observation manifest. Input catalog for wow-signal-analysis, wow-topology, and rho-ghost-fft experiments."
+source = "data/csv/bl_6equj5_gbt_manifest.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0006"
+description = "Harmonic halo reference CSV for thesis-42-support. Output used in E-190 evidence chain for the 42-dimensional resonance claim."
+source = "data/evidence/thesis_42_support/harmonic_halo_reference.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0017"
+description = "Multi-dataset ultrametric output (primary variant). Output of multi-dataset-ultrametric binary: ultrametric triangle inequality test results across multiple rotation curve datasets."
+source = "data/csv/c071g_multi_dataset_ultrametric.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0020"
+description = "Multi-dataset ultrametric output (secondary variant). Second dataset reference for multi-dataset-ultrametric experiment E-002."
+source = "data/csv/c071g_multi_dataset_ultrametric.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0033"
+description = "Cross-stack locality comparison CSV. Output of cross-stack-locality binary testing locality preservation across Cayley-Dickson tower stacking operations."
+source = "data/csv/cross_stack_locality_comparison.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0034"
+description = "ET billiard phase structure CSV (primary). Output of et-billiard binary: phase portrait structure of the embedding tensor billiard dynamics."
+source = "data/csv/et_billiard_phase_structure.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0039"
+description = "Chirality matrix CSV. Output of chirality-lock-test binary: chirality locking matrix for Sedenion subalgebra rotations."
+source = "data/csv/chirality_matrix.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0040"
+description = "Cross-stack locality comparison CSV (second reference). Used alongside PC-0033 in E-015 cross-stack locality analysis."
+source = "data/csv/cross_stack_locality_comparison.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0043"
+description = "ET billiard phase structure CSV (secondary reference). Second dataset reference for et-billiard experiment."
+source = "data/csv/et_billiard_phase_structure.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0044"
+description = "GWTC-3 mass clumping dip analysis CSV. Output of mass-clumping binary using GWOSC all-events catalog; documents the binary black hole mass gap (C-007)."
+source = "data/csv/gwtc3_mass_clumping_dip.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0058"
+description = "Sky limit set comparison CSV (first variant). Output of sky-limit-set binary: comparison of observational sky coverage limit sets."
+source = "data/csv/sky_limit_set_comparison.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0065"
+description = "Ghost spectral audit real ATNF DM CSV. Output of ghost-spectral-audit on ATNF pulsar dispersion measures; used as one of four baseline audit datasets (C-805)."
+source = "data/csv/ghost_audit/real_atnf_dm.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0066"
+description = "Ghost spectral audit real ATNF period CSV. Output of ghost-spectral-audit on ATNF pulsar periods; baseline audit (C-805)."
+source = "data/csv/ghost_audit/real_atnf_period.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0067"
+description = "Ghost spectral audit real CHIME DM CSV. Output of ghost-spectral-audit on CHIME FRB dispersion measures; baseline audit (C-805)."
+source = "data/csv/ghost_audit/real_chime_dm.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0068"
+description = "Ghost spectral audit real Pantheon+ distance modulus CSV. Output of ghost-spectral-audit on Pantheon+SH0ES mu values; baseline audit (C-805)."
+source = "data/csv/ghost_audit/real_pantheon_mu.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0083"
+description = "GWTC-3 mass clumping dip CSV (secondary reference). Second dataset reference in mass-clumping experiment alongside EX-0024 and PC-0044."
+source = "data/csv/gwtc3_mass_clumping_dip.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0087"
+description = "Moonshine filterbank synthetic output CSV. Output of moonshine-filterbank binary generating Monster group coefficient filtered sequences (BIB-0311, BIB-0312)."
+source = "data/csv/moonshine_synth.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0093"
+description = "Orthoplex cosmological fit w(z) CSV. Output of orthoplex-cosmo-fit binary: dark energy equation of state w(z) fitted to Pantheon+SH0ES data."
+source = "data/csv/orthoplex_w_of_z.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0094"
+description = "Pathion sink test coupling sweep CSV (primary). Output of pathion-sink-test binary: 32D Pathion algebra coupling sweep for zero-divisor sink detection."
+source = "data/csv/pathion_coupling_sweep.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0095"
+description = "Pathion sink test coupling sweep CSV (secondary). Second dataset reference for pathion-sink-test experiment."
+source = "data/csv/pathion_coupling_sweep.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0099"
+description = "LBM precision sampler combined output (primary). Output of lbm-precision-sampler binary: f64/f32 numerical precision comparison for lattice Boltzmann solver at D3Q19."
+source = "data/csv/precision_combined_16.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0100"
+description = "LBM precision sampler combined output (secondary). Second dataset reference for lbm-precision-sampler experiment."
+source = "data/csv/precision_combined_16.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0111"
+description = "Sky limit set comparison CSV (second variant). Second dataset reference in sky-limit-set experiment alongside PC-0058."
+source = "data/csv/sky_limit_set_comparison.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0118"
+description = "Wow 1977 signal transcription CSV. Input dataset for wow-signal-analysis: digitized Big Ear 1977 radio signal intensity time series."
+source = "data/csv/wow1977_transcription.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0119"
+description = "Wow signal drift rate bounds CSV. Output of wow-signal-analysis: inferred Doppler drift rate bounds from Big Ear 1977 observation."
+source = "data/csv/wow_drift_rate_bounds.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0120"
+description = "Wow follow-up SNR CSV from rho-ghost-fft. Output of rho-ghost-fft applied to Breakthrough Listen 6EQUJ5 follow-up observations: signal-to-noise ratio spectrum."
+source = "data/csv/wow_followup_snr.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0121"
+description = "Wow-Sedenion synthesis report CSV. Output of wow-sedenion-synthesis binary: Sedenion algebraic decomposition of the Big Ear Wow signal structure."
+source = "data/csv/wow_sedenion_report.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0122"
+description = "x87/AVX/FMA follow-up benchmark summary CSV. Output of x87_bench binary: extended precision benchmark comparison across x87, AVX2, and FMA instruction paths."
+source = "data/csv/x87_avx_fma_followup_benchmark_summary.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0127"
+description = "ZD Laplacian eigenvalue spectrum CSV (primary). Output of zd-spectral-dimension binary: Laplacian eigenvalue spectrum of the sign-imbalance (ZD) graph."
+source = "data/csv/zd_laplacian_eigenvalues.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0129"
+description = "ZD quantum chaos nearest-neighbor spacing CSV (primary). Output of zd-quantum-chaos binary: nearest-neighbor spacing distribution for ZD energy level statistics."
+source = "data/csv/zd_nnsd.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0130"
+description = "ZD quantum chaos nearest-neighbor spacing CSV (secondary). Second dataset reference for zd-quantum-chaos experiment."
+source = "data/csv/zd_nnsd.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0131"
+description = "ZD quantum chaos nearest-neighbor spacing CSV (tertiary). Third dataset reference for zd-quantum-chaos experiment."
+source = "data/csv/zd_nnsd.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0132"
+description = "ZD resonance 4D 32x32 grid CSV (primary). Output of zd-resonance-4d binary: resonance mode spectrum on a 32x32 spatial grid."
+source = "data/csv/zd_resonance_4d_32x32.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0133"
+description = "ZD resonance 4D 64x16 grid CSV. Output of zd-resonance-4d binary: resonance mode spectrum on a 64x16 spatial grid."
+source = "data/csv/zd_resonance_4d_64x16.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0134"
+description = "ZD resonance 4D 32x32 grid CSV (secondary reference). Second reference for zd-resonance-4d experiment."
+source = "data/csv/zd_resonance_4d_32x32.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0135"
+description = "ZD resonance CUDA 128 BF16 CSV (primary). Output of zd-resonance-cuda binary: GPU BF16 resonance mode spectrum at 128^3 resolution."
+source = "data/csv/zd_resonance_cuda_128_bf16.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0136"
+description = "ZD resonance CUDA 128 BF16 CSV (secondary). Second dataset reference for zd-resonance-cuda experiment."
+source = "data/csv/zd_resonance_cuda_128_bf16.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0138"
+description = "ZD resonance CUDA Reynolds 128 CSV. Output of zd-resonance-cuda binary: resonance spectrum at varying Reynolds numbers at 128^3 resolution."
+source = "data/csv/zd_resonance_cuda_reynolds_128.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0139"
+description = "ZD resonance real distribution CSV from rho-ghost-fft. Output of rho-ghost-fft binary: real-valued ZD resonance mode probability distribution."
+source = "data/csv/zd_resonance_real_distribution.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0140"
+description = "ZD Laplacian eigenvalue spectrum CSV (secondary). Second dataset reference for zd-spectral-dimension experiment."
+source = "data/csv/zd_laplacian_eigenvalues.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0141"
+description = "ZD Laplacian eigenvalue spectrum CSV (tertiary). Third dataset reference for zd-spectral-dimension experiment."
+source = "data/csv/zd_laplacian_eigenvalues.csv"
+status = "active"

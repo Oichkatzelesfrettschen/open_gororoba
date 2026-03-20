@@ -1,4 +1,5 @@
-use criterion::{Criterion, black_box, criterion_group, criterion_main};
+use std::hint::black_box;
+use criterion::{Criterion, criterion_group, criterion_main};
 use snia_core::{EosComposition, WhiteDwarfEos};
 
 fn bench_eos_from_rho_t(c: &mut Criterion) {

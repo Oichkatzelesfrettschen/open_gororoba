@@ -85,9 +85,9 @@ extern "C" __global__ void voudon_frustration_kernel(
 }
 "#;
 
-pub struct VoudonFrustrationGpu;
+pub struct Cd256FrustrationKernel;
 
-impl VoudonFrustrationGpu {
+impl Cd256FrustrationKernel {
     #[cfg(feature = "gpu")]
     pub fn compute_field(nx: usize, ny: usize, nz: usize, seed: u32) -> Result<Vec<f32>, String> {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);

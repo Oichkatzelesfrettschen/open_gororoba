@@ -2,12 +2,12 @@ use std::ops::{Add, Mul, Neg, Sub};
 use num_complex::Complex;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Quaternion {
+pub struct CdPairH {
     pub c0: Complex<f64>,
     pub c1: Complex<f64>,
 }
 
-impl Default for Quaternion {
+impl Default for CdPairH {
     fn default() -> Self {
         Self {
             c0: Complex::new(0.0, 0.0),
@@ -16,7 +16,7 @@ impl Default for Quaternion {
     }
 }
 
-impl Quaternion {
+impl CdPairH {
     pub fn new(a: f64, b: f64, c: f64, d: f64) -> Self {
         Self {
             c0: Complex::new(a, b),
@@ -44,7 +44,7 @@ impl Quaternion {
     }
 }
 
-impl Mul for Quaternion {
+impl Mul for CdPairH {
     type Output = Self;
     fn mul(self, rhs: Self) -> Self {
         let a = self.c0;
@@ -58,7 +58,7 @@ impl Mul for Quaternion {
     }
 }
 
-impl Mul<f64> for Quaternion {
+impl Mul<f64> for CdPairH {
     type Output = Self;
     fn mul(self, rhs: f64) -> Self {
         Self {
@@ -68,21 +68,21 @@ impl Mul<f64> for Quaternion {
     }
 }
 
-impl Add for Quaternion {
+impl Add for CdPairH {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
         Self { c0: self.c0 + rhs.c0, c1: self.c1 + rhs.c1 }
     }
 }
 
-impl Sub for Quaternion {
+impl Sub for CdPairH {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self {
         Self { c0: self.c0 - rhs.c0, c1: self.c1 - rhs.c1 }
     }
 }
 
-impl Neg for Quaternion {
+impl Neg for CdPairH {
     type Output = Self;
     fn neg(self) -> Self {
         Self { c0: -self.c0, c1: -self.c1 }
@@ -91,12 +91,12 @@ impl Neg for Quaternion {
 
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Octonion {
-    pub q0: Quaternion,
-    pub q1: Quaternion,
+    pub q0: CdPairH,
+    pub q1: CdPairH,
 }
 
 impl Octonion {
-    pub fn new(q0: Quaternion, q1: Quaternion) -> Self {
+    pub fn new(q0: CdPairH, q1: CdPairH) -> Self {
         Self { q0, q1 }
     }
 
@@ -113,8 +113,8 @@ impl Octonion {
 
     pub fn from_slice(slice: &[f64]) -> Self {
         Self::new(
-            Quaternion::from_slice(&slice[0..4]),
-            Quaternion::from_slice(&slice[4..8]),
+            CdPairH::from_slice(&slice[0..4]),
+            CdPairH::from_slice(&slice[4..8]),
         )
     }
 

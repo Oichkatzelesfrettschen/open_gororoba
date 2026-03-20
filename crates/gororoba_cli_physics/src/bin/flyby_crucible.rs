@@ -9,6 +9,8 @@
 
 use clap::Parser;
 use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
+#[cfg(feature = "gpu")]
+use gororoba_algebra::gpu::GpuPackableAvt;
 use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
 #[cfg(feature = "gpu")]
 use gr_core::forces::chingon_bivector_drag::ThreeBodyOrbitalParams;

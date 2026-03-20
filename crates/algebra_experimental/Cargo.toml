@@ -10,7 +10,7 @@ cd_kernel = { workspace = true }
 algebra_analysis = { workspace = true }
 # Needed for e10_octonion (lie::e8_lattice, physics::octonion_field)
 # and billiard_stats (SedenionZdSystem uses gororoba_algebra types).
-gororoba_algebra = { path = "../gororoba_algebra", features = ["lie", "physics"] }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie", "physics", "physics-sm", "analysis"] }
 num-complex = { workspace = true }
 wide = { workspace = true }
 nalgebra = { workspace = true }

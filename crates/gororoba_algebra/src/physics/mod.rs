@@ -17,6 +17,8 @@ pub mod supersymmetry;
 pub mod topological_insulators;
 pub mod tripotent_topology;
 pub mod crystallography;
+#[cfg(all(feature = "physics-sm", feature = "analysis"))]
+pub mod particle_physics;
 
 
 /// Golden ratio constant phi = (1 + sqrt(5))/2.
