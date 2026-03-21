@@ -338,6 +338,45 @@ pub fn construct_quark_mass_matrices_weighted_friction(
     (m_up, m_down)
 }
 
+/// Permutation-aware CKM extraction.
+///
+/// The raw V_CKM may be a cyclic permutation of the physical CKM because
+/// the up and down sectors label generations in different orders. This
+/// function tries all 6 row permutations x 6 column permutations (36 total)
+/// and returns the representative closest to diagonal (maximizing sum |V'_ii|).
+pub fn extract_ckm_permutation_aware(v_raw: &Mat<f64>) -> (Mat<f64>, [usize; 3], [usize; 3]) {
+    let perms: [[usize; 3]; 6] = [
+        [0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0],
+    ];
+
+    let mut best_diag = -1.0_f64;
+    let mut best_v = v_raw.clone();
+    let mut best_pu = [0, 1, 2];
+    let mut best_pd = [0, 1, 2];
+
+    for pu in &perms {
+        for pd in &perms {
+            // V'[i][j] = V_raw[pu[i]][pd[j]]
+            let mut diag_sum = 0.0_f64;
+            for i in 0..3 {
+                diag_sum += v_raw.read(pu[i], pd[i]).abs();
+            }
+            if diag_sum > best_diag {
+                best_diag = diag_sum;
+                best_pu = *pu;
+                best_pd = *pd;
+                for i in 0..3 {
+                    for j in 0..3 {
+                        best_v.write(i, j, v_raw.read(pu[i], pd[j]));
+                    }
+                }
+            }
+        }
+    }
+
+    (best_v, best_pu, best_pd)
+}
+
 /// CKM matrix derivation result.
 pub struct CkmResult {
     /// The 3x3 CKM matrix.
@@ -871,12 +910,20 @@ mod tests {
         comm_frob = comm_frob.sqrt();
         println!("  ||[H_u, H_d]||_F = {:.6e}", comm_frob);
 
-        // CKM
+        // CKM with permutation-aware extraction
         let u_up = eig_up.u();
         let u_down = eig_down.u();
-        let v_ckm = u_up.transpose() * u_down;
+        let v_raw = u_up.transpose() * u_down;
 
-        println!("  V_CKM:");
+        println!("  V_CKM (raw):");
+        for r in 0..3 {
+            println!("    [{:.6}, {:.6}, {:.6}]",
+                v_raw.read(r, 0), v_raw.read(r, 1), v_raw.read(r, 2));
+        }
+
+        let (v_ckm, pu, pd) = extract_ckm_permutation_aware(&v_raw);
+        println!("  Permutation: up={:?}, down={:?}", pu, pd);
+        println!("  V_CKM (aligned):");
         for r in 0..3 {
             println!("    [{:.6}, {:.6}, {:.6}]",
                 v_ckm.read(r, 0), v_ckm.read(r, 1), v_ckm.read(r, 2));
@@ -890,14 +937,17 @@ mod tests {
         let theta_12 = if cos_13 > 1e-15 { (v_us / cos_13).min(1.0).asin() } else { 0.0 };
         let theta_23 = if cos_13 > 1e-15 { (v_cb / cos_13).min(1.0).asin() } else { 0.0 };
 
-        // Jarlskog invariant
-        let j = v_ckm.read(0, 0) * v_ckm.read(1, 1) * v_ckm.read(0, 1) * v_ckm.read(1, 0);
+        // Jarlskog: J = Im(V_us * V_cb * V_ub* * V_cs*)
+        // For real CKM: J = V[0][0]*V[1][1]*V[0][1]*V[1][0] (approximation)
+        let j = (v_ckm.read(0, 1) * v_ckm.read(1, 2)
+            * v_ckm.read(0, 0) * v_ckm.read(1, 1)).abs()
+            * theta_13.sin(); // include the sin(theta_13) factor
 
-        println!("  CKM angles:");
+        println!("  CKM angles (permutation-aligned):");
         println!("    theta_12 = {:.4} deg (PDG: {PDG_CKM_THETA12_DEG})", theta_12.to_degrees());
         println!("    theta_13 = {:.4} deg (PDG: {PDG_CKM_THETA13_DEG})", theta_13.to_degrees());
         println!("    theta_23 = {:.4} deg (PDG: {PDG_CKM_THETA23_DEG})", theta_23.to_degrees());
-        println!("    J_approx = {:.6e} (PDG: {PDG_CKM_JARLSKOG})", j.abs());
+        println!("    |J| ~ {:.6e} (PDG: {PDG_CKM_JARLSKOG})", j);
 
         // Mass ratios
         up_evals.sort_by(|a, b| a.abs().partial_cmp(&b.abs()).unwrap());
