@@ -711,6 +711,12 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Sedenion field equations for gravitoelectromagnetism. Cross-check multiplication.
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf
 
+**Zero divisor theory (adjacent):**
+- Carlstrom (2001): "Wheels -- On Division by Zero" [KTH Report]
+  Extends division algebras to handle division by zero via wheel structure.
+  Tangential to ZD analysis: if v is a ZD (v*w=0), wheels formalize "dividing by v."
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/carlstrom_2001_wheels_report.pdf
+
 ### TIER 2: Architectural Precedent
 
 - Connes (1996): "Gravity coupled with matter" [arXiv:hep-th/9603053]
