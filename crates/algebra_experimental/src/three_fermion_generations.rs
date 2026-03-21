@@ -259,125 +259,131 @@ mod tests {
 
         let i = C::new(0.0, 1.0);
         let s3 = 3.0_f64.sqrt();
+        let zero = C::new(0.0, 0.0);
 
-        // psi_3 action on the 4D complex subspace, basis order:
-        // [E_{1,1}, E_{14,14}, E_{14,1}, E_{1,14}]
-        //
-        // From Eq 48: psi_3(E_{1,1}) = (1/4)E_{1,1} + (3/4)E_{14,14}
-        //                              + (i*sqrt(3)/4)E_{14,1} - (i*sqrt(3)/4)E_{1,14}
-        // From Eq 51: psi_3(E_{14,14}) = (3/4)E_{1,1} + (1/4)E_{14,14}
-        //                                + (i*sqrt(3)/4)E_{1,14} + (i*sqrt(3)/4)E_{14,1}
-        //   (Note: Eq 51 gives psi_3(E_{14,14}), deduced by symmetry from Eq 48-52)
-        //
-        // For E_{14,1} and E_{1,14}, we infer from psi_3^3 = Id constraint.
-        // The full 4x4 matrix must have eigenvalues {1, omega, omega^2} (cube roots of unity).
-        //
-        // By the S3 structure, the 4D space decomposes into:
-        //   2D symmetric (E_{1,1}+E_{14,14}, E_{14,1}+E_{1,14}) -- psi_3 eigenvalue 1
-        //   2D antisymmetric (E_{1,1}-E_{14,14}, E_{14,1}-E_{1,14}) -- psi_3 eigenvalues omega, omega^2
-        //
-        // The psi_3 matrix on the symmetric/antisymmetric basis is block diagonal.
+        println!("--- GRESNIGT psi_3 VIA U-CONJUGATION ---");
 
-        // Rather than guess the full 4x4, let's verify the claims we CAN verify
-        // from the explicit formulas in Eq 48-52:
+        // The 2x2 unitary U on the {|1>, |14>} subspace:
+        //   U = [[1/2, i*sqrt(3)/2], [i*sqrt(3)/2, 1/2]]
+        let u = [[C::new(0.5, 0.0), i * s3 / 2.0],
+                  [i * s3 / 2.0, C::new(0.5, 0.0)]];
+        let u_dag = [[u[0][0].conj(), u[1][0].conj()],
+                      [u[0][1].conj(), u[1][1].conj()]];
 
-        // Verify orbit sum on diagonal subspace
-        // psi_3(E_{1,1}) has diagonal components (1/4, 3/4)
-        // psi_3^2(E_{1,1}) has diagonal components (1/4, 3/4)
-        // Sum: (1 + 1/4 + 1/4, 0 + 3/4 + 3/4) = (3/2, 3/2)
+        // Helper: 2x2 complex matrix multiply
+        let mul = |a: [[C; 2]; 2], b: [[C; 2]; 2]| -> [[C; 2]; 2] {
+            [[a[0][0]*b[0][0]+a[0][1]*b[1][0], a[0][0]*b[0][1]+a[0][1]*b[1][1]],
+             [a[1][0]*b[0][0]+a[1][1]*b[1][0], a[1][0]*b[0][1]+a[1][1]*b[1][1]]]
+        };
 
-        let psi3_e11 = [C::new(0.25, 0.0), C::new(0.75, 0.0),
-                         i * s3 / 4.0, -i * s3 / 4.0];
-        let psi3sq_e11 = [C::new(0.25, 0.0), C::new(0.75, 0.0),
-                           -i * s3 / 4.0, i * s3 / 4.0];
+        // Helper: conjugate X -> U X U^dagger
+        let conj_action = |x: [[C; 2]; 2]| -> [[C; 2]; 2] {
+            mul(mul(u, x), u_dag)
+        };
 
-        // Orbit sum
-        let e11 = [C::new(1.0, 0.0), C::new(0.0, 0.0),
-                    C::new(0.0, 0.0), C::new(0.0, 0.0)];
-        let mut orbit_sum = [C::new(0.0, 0.0); 4];
-        for k in 0..4 {
-            orbit_sum[k] = e11[k] + psi3_e11[k] + psi3sq_e11[k];
+        // === Check (1): U^3 = -I ===
+        let u2 = mul(u, u);
+        let u3 = mul(u2, u);
+        println!("  U^3 = [[{:.4}, {:.4}], [{:.4}, {:.4}]]",
+            u3[0][0], u3[0][1], u3[1][0], u3[1][1]);
+
+        assert!((u3[0][0] - C::new(-1.0, 0.0)).norm() < 1e-12, "U^3[0][0] should be -1");
+        assert!((u3[1][1] - C::new(-1.0, 0.0)).norm() < 1e-12, "U^3[1][1] should be -1");
+        assert!(u3[0][1].norm() < 1e-12, "U^3[0][1] should be 0");
+        assert!(u3[1][0].norm() < 1e-12, "U^3[1][0] should be 0");
+        println!("  [PASS] U^3 = -I (spinor-level cubic relation)");
+
+        // === Check (2): psi_3^3(X) = (-I)X(-I) = X for all X ===
+        // This is trivially true since (-I)X(-I) = I*X*I = X.
+        println!("  [PASS] psi_3^3(X) = (-I)X(-I) = X for all X (automatic)");
+
+        // === Check (3): U eigenvalues = exp(+/- i*pi/3) ===
+        let tr_u = u[0][0] + u[1][1]; // = 1
+        let det_u = u[0][0]*u[1][1] - u[0][1]*u[1][0]; // = 1/4 - (-3/4) = 1
+        let disc = (tr_u * tr_u - C::new(4.0, 0.0) * det_u).sqrt();
+        let lam1 = (tr_u + disc) / 2.0;
+        let lam2 = (tr_u - disc) / 2.0;
+        println!("  U eigenvalues: {:.4}, {:.4}", lam1, lam2);
+
+        let eip3 = C::new((std::f64::consts::PI / 3.0).cos(),
+                            (std::f64::consts::PI / 3.0).sin());
+        let eim3 = eip3.conj();
+        let match1 = (lam1 - eip3).norm() < 1e-10 || (lam1 - eim3).norm() < 1e-10;
+        let match2 = (lam2 - eip3).norm() < 1e-10 || (lam2 - eim3).norm() < 1e-10;
+        assert!(match1, "Eigenvalue 1 should be exp(+/- i*pi/3)");
+        assert!(match2, "Eigenvalue 2 should be exp(+/- i*pi/3)");
+        println!("  [PASS] Eigenvalues = exp(+/- i*pi/3)");
+
+        // === Check (4): psi_3(E_{1,1}) matches Eq 48 ===
+        let e11 = [[C::new(1.0, 0.0), zero], [zero, zero]];
+        let e1414 = [[zero, zero], [zero, C::new(1.0, 0.0)]];
+        let e141 = [[zero, zero], [C::new(1.0, 0.0), zero]];
+        let e114 = [[zero, C::new(1.0, 0.0)], [zero, zero]];
+
+        let psi3_e11 = conj_action(e11);
+        println!("  psi_3(E_{{1,1}}) = [[{:.4}, {:.4}], [{:.4}, {:.4}]]",
+            psi3_e11[0][0], psi3_e11[0][1], psi3_e11[1][0], psi3_e11[1][1]);
+
+        // Expected from Eq 48:
+        // (1/4)E_{1,1} + (3/4)E_{14,14} + (i*s3/4)E_{14,1} - (i*s3/4)E_{1,14}
+        assert!((psi3_e11[0][0] - C::new(0.25, 0.0)).norm() < 1e-12,
+            "E_{{1,1}} coeff should be 1/4");
+        assert!((psi3_e11[1][1] - C::new(0.75, 0.0)).norm() < 1e-12,
+            "E_{{14,14}} coeff should be 3/4");
+        assert!((psi3_e11[1][0] - i * s3 / 4.0).norm() < 1e-12,
+            "E_{{14,1}} coeff should be i*sqrt(3)/4");
+        assert!((psi3_e11[0][1] + i * s3 / 4.0).norm() < 1e-12,
+            "E_{{1,14}} coeff should be -i*sqrt(3)/4");
+        println!("  [PASS] psi_3(E_{{1,1}}) matches Gresnigt Eq 48 EXACTLY");
+
+        // === Check (5): orbit sum = (3/2)(E_{1,1} + E_{14,14}) ===
+        let psi3sq_e11 = conj_action(psi3_e11); // psi_3^2 = U^2 * E * (U^dagger)^2
+        let mut orbit = [[zero; 2]; 2];
+        for r in 0..2 {
+            for c in 0..2 {
+                orbit[r][c] = e11[r][c] + psi3_e11[r][c] + psi3sq_e11[r][c];
+            }
         }
+        println!("  Orbit sum = [[{:.4}, {:.4}], [{:.4}, {:.4}]]",
+            orbit[0][0], orbit[0][1], orbit[1][0], orbit[1][1]);
 
-        println!("--- GRESNIGT FULL COMPLEX psi_3 BLOCK ---");
-        println!("  psi_3(E_{{1,1}}) = [{:.4}, {:.4}, {:.4}, {:.4}]",
-            psi3_e11[0], psi3_e11[1], psi3_e11[2], psi3_e11[3]);
-        println!("  psi_3^2(E_{{1,1}}) = [{:.4}, {:.4}, {:.4}, {:.4}]",
-            psi3sq_e11[0], psi3sq_e11[1], psi3sq_e11[2], psi3sq_e11[3]);
-        println!("  Orbit sum = [{:.4}, {:.4}, {:.4}, {:.4}]",
-            orbit_sum[0], orbit_sum[1], orbit_sum[2], orbit_sum[3]);
+        assert!((orbit[0][0] - C::new(1.5, 0.0)).norm() < 1e-12, "Should be 3/2");
+        assert!((orbit[1][1] - C::new(1.5, 0.0)).norm() < 1e-12, "Should be 3/2");
+        assert!(orbit[0][1].norm() < 1e-12, "Off-diagonal should vanish");
+        assert!(orbit[1][0].norm() < 1e-12, "Off-diagonal should vanish");
+        println!("  [PASS] E + psi_3(E) + psi_3^2(E) = (3/2)(E_{{1,1}} + E_{{14,14}})");
 
-        // Check (1): orbit sum = (3/2)(E_{1,1} + E_{14,14})
-        assert!((orbit_sum[0] - C::new(1.5, 0.0)).norm() < 1e-12,
-            "Orbit sum E_{{1,1}} component should be 3/2");
-        assert!((orbit_sum[1] - C::new(1.5, 0.0)).norm() < 1e-12,
-            "Orbit sum E_{{14,14}} component should be 3/2");
-        assert!(orbit_sum[2].norm() < 1e-12,
-            "Orbit sum E_{{14,1}} component should vanish");
-        assert!(orbit_sum[3].norm() < 1e-12,
-            "Orbit sum E_{{1,14}} component should vanish");
+        // === Check (6): psi_3 action on all four basis matrices ===
+        let psi3_e1414 = conj_action(e1414);
+        let psi3_e141 = conj_action(e141);
+        let psi3_e114 = conj_action(e114);
 
-        println!("  [PASS] Orbit sum = (3/2)(E_{{1,1}} + E_{{14,14}})");
+        println!("\n  Full 4x4 psi_3 block (columns = psi_3 acting on basis):");
+        println!("  psi_3(E_{{1,1}})  = [{:.3}, {:.3}, {:.3}, {:.3}]",
+            psi3_e11[0][0], psi3_e11[1][1], psi3_e11[1][0], psi3_e11[0][1]);
+        println!("  psi_3(E_{{14,14}})= [{:.3}, {:.3}, {:.3}, {:.3}]",
+            psi3_e1414[0][0], psi3_e1414[1][1], psi3_e1414[1][0], psi3_e1414[0][1]);
+        println!("  psi_3(E_{{14,1}}) = [{:.3}, {:.3}, {:.3}, {:.3}]",
+            psi3_e141[0][0], psi3_e141[1][1], psi3_e141[1][0], psi3_e141[0][1]);
+        println!("  psi_3(E_{{1,14}}) = [{:.3}, {:.3}, {:.3}, {:.3}]",
+            psi3_e114[0][0], psi3_e114[1][1], psi3_e114[1][0], psi3_e114[0][1]);
 
-        // Check (2): verify psi_3 preserves the trace
-        // Tr(psi_3(E_{1,1})) = 1/4 + 3/4 = 1 = Tr(E_{1,1})
-        let tr_psi3 = psi3_e11[0] + psi3_e11[1];
-        assert!((tr_psi3 - C::new(1.0, 0.0)).norm() < 1e-12,
-            "psi_3 must preserve trace");
-        println!("  [PASS] Tr(psi_3(E_{{1,1}})) = 1 (trace preserved)");
-
-        // Check (3): verify psi_3(E_{1,1}) is Hermitian
-        // E_{14,1}^* = E_{1,14}, so (i*s3/4)E_{14,1} + (-i*s3/4)E_{1,14}
-        // is anti-Hermitian in the off-diagonal, making the full matrix Hermitian
-        // iff the off-diagonal terms have the conjugate-transpose relationship.
-        // Hermiticity: coeff of E_{14,1} should be conjugate of coeff of E_{1,14}
-        // i.e. psi3_e11[2] = psi3_e11[3].conj()
-        assert!((psi3_e11[2] - psi3_e11[3].conj()).norm() < 1e-12,
-            "Off-diagonal terms must be conjugate-transpose related");
-        println!("  [PASS] psi_3(E_{{1,1}}) has Hermitian off-diagonal structure");
-
-        // Check (4): verify the psi_3 action on E_{14,14} (from Eq 51-52)
-        // psi_3(E_{14,14}) = (3/4)E_{1,1} + (1/4)E_{14,14} + (i*s3/4)(E_{1,14} + E_{14,1})
-        let psi3_e1414 = [C::new(0.75, 0.0), C::new(0.25, 0.0),
-                           i * s3 / 4.0, i * s3 / 4.0];
-        let psi3sq_e1414 = [C::new(0.75, 0.0), C::new(0.25, 0.0),
-                             -i * s3 / 4.0, -i * s3 / 4.0];
-
-        // Orbit sum for E_{14,14}
-        let e1414 = [C::new(0.0, 0.0), C::new(1.0, 0.0),
-                      C::new(0.0, 0.0), C::new(0.0, 0.0)];
-        let mut orbit_sum_14 = [C::new(0.0, 0.0); 4];
-        for k in 0..4 {
-            orbit_sum_14[k] = e1414[k] + psi3_e1414[k] + psi3sq_e1414[k];
+        // === Check (7): trace preservation for all basis matrices ===
+        for (label, mat) in [("E_{{1,1}}", &psi3_e11), ("E_{{14,14}}", &psi3_e1414),
+                             ("E_{{14,1}}", &psi3_e141), ("E_{{1,14}}", &psi3_e114)] {
+            let tr_orig = if label == "E_{{1,1}}" { C::new(1.0, 0.0) }
+                else if label == "E_{{14,14}}" { C::new(1.0, 0.0) }
+                else { zero };
+            let tr_psi3 = mat[0][0] + mat[1][1];
+            assert!((tr_psi3 - tr_orig).norm() < 1e-12,
+                "Trace of psi_3({}) should equal trace of {}", label, label);
         }
+        println!("  [PASS] Trace preserved for all four basis matrices");
 
-        assert!((orbit_sum_14[0] - C::new(1.5, 0.0)).norm() < 1e-12);
-        assert!((orbit_sum_14[1] - C::new(1.5, 0.0)).norm() < 1e-12);
-        assert!(orbit_sum_14[2].norm() < 1e-12);
-        assert!(orbit_sum_14[3].norm() < 1e-12);
-        println!("  [PASS] Orbit sum of E_{{14,14}} also = (3/2)(E_{{1,1}} + E_{{14,14}})");
-
-        // NOTE: The psi_3 action on E_{i,j} is NOT a simple |i><j| projective
-        // transformation. Attempting to extract a 2x2 unitary M such that
-        // psi_3(E_{i,j}) = M_ik * M*_jl * E_{k,l} gives M^2 = I (involution),
-        // not M^3 = I. This is because psi_3 acts on the FULL Cl(8) algebra
-        // (256-dimensional), and its restriction to the 4D subspace
-        // {E_{1,1}, E_{14,14}, E_{14,1}, E_{1,14}} is NOT a simple projective action.
-        //
-        // The psi_3^3 = Id property holds on the FULL Cl(8), not on any 2x2 block.
-        // To verify psi_3^3 = Id computationally, one would need to implement the
-        // full 16x16 matrix representation of psi_3 (Eq 41-42 of Gresnigt).
-        //
-        // What IS verified from the explicit formulas (Eq 48-52):
-        // (1) Orbit sum = (3/2)(E_{1,1} + E_{14,14}) -- PASSED
-        // (2) Trace preservation -- PASSED
-        // (3) Hermitian off-diagonal structure -- PASSED
-        // (4) Orbit sum for E_{14,14} also = (3/2)(E_{1,1} + E_{14,14}) -- PASSED
-        //
-        // The psi_3^3 = Id check requires the full 16x16 Cl(8) representation.
-
-        println!("\n  NOTE: psi_3^3 = Id holds on full Cl(8) (256D), not on 2x2 blocks.");
-        println!("  Full 16x16 verification requires implementing Gresnigt's Eq 41-42.");
-        println!("  This is deferred to a dedicated Cl(8) implementation module.");
+        // === Summary ===
+        println!("\n  U = [[1/2, i*sqrt(3)/2], [i*sqrt(3)/2, 1/2]]");
+        println!("  U^3 = -I, eigenvalues exp(+/-i*pi/3)");
+        println!("  psi_3(X) = U X U^dagger, psi_3^3 = Id via (-I)X(-I) = X");
+        println!("  Orbit factor 3/2 confirmed from exact U-conjugation");
     }
 }
