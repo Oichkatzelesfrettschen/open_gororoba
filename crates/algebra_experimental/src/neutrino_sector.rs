@@ -844,6 +844,51 @@ pub fn compute_constrained_solar_direction(
     optimal
 }
 
+/// Compute a constrained atmospheric direction orthogonal to the solar direction.
+///
+/// Projects g_23 orthogonal to {g_13, u_solar} using Gram-Schmidt.
+/// The result maximizes atmospheric sensitivity while:
+///   g_13 . u = 0  (zero reactor leakage)
+///   u_solar . u = 0  (orthogonal to solar direction)
+pub fn compute_constrained_atmospheric_direction(
+    g_23: &[f64; 6],
+    g_13: &[f64; 6],
+    u_solar: &[f64; 6],
+) -> [f64; 6] {
+    let dot = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
+        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+    };
+
+    // Build orthonormal constraint basis {g_13_hat, u_solar}
+    let mut u1 = *g_13;
+    let norm_u1 = dot(&u1, &u1).sqrt();
+    if norm_u1 < 1e-15 { return [0.0; 6]; }
+    for x in &mut u1 { *x /= norm_u1; }
+
+    // u_solar should already be orthogonal to g_13 (from solar construction)
+    // but orthogonalize again for safety
+    let proj = dot(u_solar, &u1);
+    let mut u2 = *u_solar;
+    for i in 0..6 { u2[i] -= proj * u1[i]; }
+    let norm_u2 = dot(&u2, &u2).sqrt();
+    if norm_u2 < 1e-15 { return [0.0; 6]; }
+    for x in &mut u2 { *x /= norm_u2; }
+
+    // Project g_23 away from {u1, u2}
+    let proj_1 = dot(g_23, &u1);
+    let proj_2 = dot(g_23, &u2);
+    let mut optimal = [0.0_f64; 6];
+    for i in 0..6 {
+        optimal[i] = g_23[i] - proj_1 * u1[i] - proj_2 * u2[i];
+    }
+
+    let norm = dot(&optimal, &optimal).sqrt();
+    if norm < 1e-15 { return [0.0; 6]; }
+    for x in &mut optimal { *x /= norm; }
+
+    optimal
+}
+
 /// Trait for mapping a 42D assessor-space vector to a mass matrix perturbation.
 ///
 /// Different implementations encode different physical hypotheses about how
@@ -4467,5 +4512,184 @@ mod tests {
         } else {
             println!("  No intertwiner exists: V_6 and Sym_3(R) carry incompatible S_3 representations.");
         }
+    }
+
+    /// 2D constrained scan: optimize theta_12 AND theta_23 simultaneously.
+    ///
+    /// Finds two orthogonal constrained directions in V_6:
+    ///   u_solar: max g_12.u subject to g_13.u = 0, g_23.u = 0
+    ///   u_atmo:  max g_23.u subject to g_13.u = 0, u_solar.u = 0
+    /// Then scans over (t1, t2) to push both angles toward PDG.
+    #[test]
+    fn test_v6_2d_constrained_scan() {
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let alpha_ch = 3.75;
+        let alpha_nu = 1.30;
+        let pdg_t12 = 33.41_f64;
+        let pdg_t13 = 8.54_f64;
+        let pdg_t23 = 49.0_f64;
+        let eps = 0.05_f64;
+
+        let (v6_basis, _sv, _assessors) = extract_v6_basis();
+        let lift = TensorElementLift;
+        let n_basis = v6_basis.nrows().min(6);
+
+        // Lock baseline permutation
+        let (m_ch_0, m_nu_0) = construct_pmns_matrices_two_param(
+            ch_pair, nu_pair, alpha_ch, alpha_nu,
+        );
+        let eig_ch_0 = m_ch_0.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig_nu_0 = m_nu_0.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_raw_0 = eig_ch_0.u().transpose() * eig_nu_0.u();
+        let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+        let compute_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
+            let (m_ch, mut m_nu) = construct_pmns_matrices_two_param(
+                ch_pair, nu_pair, alpha_ch, alpha_nu,
+            );
+            apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+            let eig_ch = m_ch.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
+            for i in 0..3 { for j in 0..3 {
+                u_pmns.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+            }}
+            extract_pmns_angles(&u_pmns)
+        };
+
+        // Compute gradients at beta=0
+        let mut g_12 = [0.0_f64; 6];
+        let mut g_13 = [0.0_f64; 6];
+        let mut g_23 = [0.0_f64; 6];
+        for mu in 0..n_basis {
+            let mut bp = [0.0_f64; 6]; bp[mu] = eps;
+            let mut bm = [0.0_f64; 6]; bm[mu] = -eps;
+            let (t12_p, t13_p, t23_p) = compute_angles(&bp);
+            let (t12_m, t13_m, t23_m) = compute_angles(&bm);
+            g_12[mu] = (t12_p - t12_m) / (2.0 * eps);
+            g_13[mu] = (t13_p - t13_m) / (2.0 * eps);
+            g_23[mu] = (t23_p - t23_m) / (2.0 * eps);
+        }
+
+        let dot = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        // Solar direction: max g_12 subject to g_13 = 0, g_23 = 0
+        let u_solar = compute_constrained_solar_direction(&g_12, &g_13, &g_23);
+        // Atmospheric direction: max g_23 subject to g_13 = 0, u_solar = 0
+        let u_atmo = compute_constrained_atmospheric_direction(&g_23, &g_13, &u_solar);
+
+        let g12_solar = dot(&g_12, &u_solar);
+        let g13_solar = dot(&g_13, &u_solar);
+        let g23_solar = dot(&g_23, &u_solar);
+
+        let g12_atmo = dot(&g_12, &u_atmo);
+        let g13_atmo = dot(&g_13, &u_atmo);
+        let g23_atmo = dot(&g_23, &u_atmo);
+
+        println!("--- V_6 2D CONSTRAINED SCAN ---");
+        println!("  u_solar = [{}]",
+            u_solar.iter().map(|x| format!("{:.4}", x)).collect::<Vec<_>>().join(", "));
+        println!("  u_atmo  = [{}]",
+            u_atmo.iter().map(|x| format!("{:.4}", x)).collect::<Vec<_>>().join(", "));
+        println!("\n  Solar direction sensitivity:");
+        println!("    g_12.u = {:.6} (solar)", g12_solar);
+        println!("    g_13.u = {:.6e} (reactor)", g13_solar);
+        println!("    g_23.u = {:.6e} (atmospheric)", g23_solar);
+        println!("  Atmospheric direction sensitivity:");
+        println!("    g_12.u = {:.6} (solar cross-talk)", g12_atmo);
+        println!("    g_13.u = {:.6e} (reactor)", g13_atmo);
+        println!("    g_23.u = {:.6} (atmospheric)", g23_atmo);
+        println!("  u_solar . u_atmo = {:.6e} (orthogonality)", dot(&u_solar, &u_atmo));
+
+        // 2D scan: beta = t1 * u_solar + t2 * u_atmo
+        println!("\n  2D scan (t1=solar, t2=atmo):");
+        println!("  {:>6} {:>6} {:>10} {:>10} {:>10} {:>10}",
+            "t1", "t2", "theta_12", "theta_13", "theta_23", "score");
+
+        let mut best_t1 = 0.0_f64;
+        let mut best_t2 = 0.0_f64;
+        let mut best_score = f64::MAX;
+        let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+        // Coarse grid: t1 in [0, 5], t2 in [-5, 5]
+        for step1 in 0..=100_i32 {
+            let t1 = step1 as f64 * 0.05;
+            for step2 in -100..=100_i32 {
+                let t2 = step2 as f64 * 0.05;
+
+                let mut beta = [0.0_f64; 6];
+                for k in 0..6 {
+                    beta[k] = t1 * u_solar[k] + t2 * u_atmo[k];
+                }
+
+                let (t12, t13, t23) = compute_angles(&beta);
+
+                // Hard constraint: theta_13 within 0.5 deg
+                if (t13 - pdg_t13).abs() > 0.5 { continue; }
+
+                let score = ((t12 - pdg_t12) / pdg_t12).powi(2)
+                          + ((t23 - pdg_t23) / pdg_t23).powi(2)
+                          + 5.0 * ((t13 - pdg_t13) / pdg_t13).powi(2);
+
+                if score < best_score {
+                    best_score = score;
+                    best_t1 = t1;
+                    best_t2 = t2;
+                    best_angles = (t12, t13, t23);
+                }
+            }
+        }
+
+        // Fine grid around the best point
+        let t1_center = best_t1;
+        let t2_center = best_t2;
+        for step1 in -50..=50_i32 {
+            let t1 = t1_center + step1 as f64 * 0.01;
+            if t1 < 0.0 { continue; }
+            for step2 in -50..=50_i32 {
+                let t2 = t2_center + step2 as f64 * 0.01;
+
+                let mut beta = [0.0_f64; 6];
+                for k in 0..6 {
+                    beta[k] = t1 * u_solar[k] + t2 * u_atmo[k];
+                }
+
+                let (t12, t13, t23) = compute_angles(&beta);
+                if (t13 - pdg_t13).abs() > 0.5 { continue; }
+
+                let score = ((t12 - pdg_t12) / pdg_t12).powi(2)
+                          + ((t23 - pdg_t23) / pdg_t23).powi(2)
+                          + 5.0 * ((t13 - pdg_t13) / pdg_t13).powi(2);
+
+                if score < best_score {
+                    best_score = score;
+                    best_t1 = t1;
+                    best_t2 = t2;
+                    best_angles = (t12, t13, t23);
+                }
+            }
+        }
+
+        println!("\n  === 2D CONSTRAINED OPTIMUM ===");
+        println!("  t1_solar = {:.4}, t2_atmo = {:.4}", best_t1, best_t2);
+        println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
+            best_angles.0, pdg_t12, ((best_angles.0 - pdg_t12) / pdg_t12 * 100.0).abs());
+        println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
+            best_angles.1, pdg_t13, ((best_angles.1 - pdg_t13) / pdg_t13 * 100.0).abs());
+        println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
+            best_angles.2, pdg_t23, ((best_angles.2 - pdg_t23) / pdg_t23 * 100.0).abs());
+        println!("  Combined score: {:.6}", best_score);
+
+        // Report the 4-parameter model
+        println!("\n  Full 4-parameter model:");
+        println!("    alpha_ch = {:.2}", alpha_ch);
+        println!("    alpha_nu = {:.2}", alpha_nu);
+        println!("    t_solar  = {:.4}", best_t1);
+        println!("    t_atmo   = {:.4}", best_t2);
     }
 }
