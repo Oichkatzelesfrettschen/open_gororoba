@@ -5971,4 +5971,147 @@ mod tests {
             println!("  (psi is symmetric on the friction profiles).");
         }
     }
+
+    /// CP violation from cross-sector psi asymmetry.
+    ///
+    /// The psi-eigenspace decomposition gives Im = 0 within a single sector
+    /// because <v_i, psi(v_j)> = <v_i, psi^2(v_j)>. But the PMNS matrix is
+    /// U = U_ch^dagger * U_nu -- a PRODUCT of two diagonalizations. The CP phase
+    /// emerges from the RELATIVE orientation of the charged and neutrino friction
+    /// tensors under psi.
+    ///
+    /// Key idea: build a 6x6 "cross-sector" complex Gram matrix
+    ///   G_ij = sum_k omega^k * <ch_profile_i, psi^k(nu_profile_j)>
+    /// The off-diagonal elements of G mix charged and neutrino sectors, and
+    /// the psi asymmetry between sectors (different selectors) can produce
+    /// nonzero imaginary parts.
+    #[test]
+    fn test_cross_sector_cp_phase() {
+        use cd_kernel::{gourlay_psi, gourlay_psi_n};
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let ch_a = MajoranaMode { gamma_index: ch_pair.0 - 1, cd_basis_index: ch_pair.0, cd_dim: 16 };
+        let ch_b = MajoranaMode { gamma_index: ch_pair.1 - 1, cd_basis_index: ch_pair.1, cd_dim: 16 };
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&ch_a, &ch_b, s))
+            .collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&nu_a, &nu_b, s))
+            .collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        println!("  === Cross-Sector CP Phase ===\n");
+
+        // Cross-sector Gram matrix: G_ij = sum_k omega^k <ch_i, psi^k(nu_j)>
+        let mut g_cross = [[(0.0_f64, 0.0_f64); 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                let c0 = dot16(&ch_profiles[i], &nu_profiles[j]);
+                let psi1_j = gourlay_psi(&nu_profiles[j]);
+                let c1 = dot16(&ch_profiles[i], &psi1_j);
+                let psi2_j = gourlay_psi_n(&nu_profiles[j], 2);
+                let c2 = dot16(&ch_profiles[i], &psi2_j);
+
+                let re = c0 + c1 * omega_re + c2 * omega_re;
+                let im = c1 * omega_im - c2 * omega_im;
+                g_cross[i][j] = (re, im);
+            }
+        }
+
+        println!("  Cross-sector Gram matrix G = <ch_i, psi^k(nu_j)>:");
+        for i in 0..3 {
+            let row: Vec<String> = (0..3).map(|j| {
+                let (re, im) = g_cross[i][j];
+                if im.abs() < 1e-15 {
+                    format!("{:>10.4}", re)
+                } else {
+                    format!("{:>7.4}{:+.4}i", re, im)
+                }
+            }).collect();
+            println!("    [{}]", row.join("  "));
+        }
+
+        let mut max_im = 0.0_f64;
+        for i in 0..3 {
+            for j in 0..3 {
+                max_im = max_im.max(g_cross[i][j].1.abs());
+            }
+        }
+        println!("\n  Max |Im(G_ij)|: {:.6e}", max_im);
+
+        if max_im > 1e-15 {
+            println!("  NONZERO cross-sector imaginary part -- CP violation from selector asymmetry!");
+
+            // The cross-sector phase is the source of delta_CP.
+            // The dominant phase comes from the largest off-diagonal element.
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i == j { continue; }
+                    let (re, im) = g_cross[i][j];
+                    if (re * re + im * im).sqrt() > 1e-10 {
+                        let phase = im.atan2(re).to_degrees();
+                        println!("  arg(G[{},{}]) = {:.2} deg  (|G| = {:.4})",
+                            i, j, phase, (re * re + im * im).sqrt());
+                    }
+                }
+            }
+        } else {
+            println!("  Cross-sector Gram matrix is also real.");
+            println!("  psi acts symmetrically on BOTH sectors for these selectors.");
+
+            // Check: are the intra-sector psi overlaps symmetric too?
+            // <ch_i, psi(ch_j)> vs <ch_i, psi^2(ch_j)>
+            println!("\n  Checking psi symmetry breakdown:");
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i == j { continue; }
+                    let c1_ch = dot16(&ch_profiles[i], &gourlay_psi(&ch_profiles[j]));
+                    let c2_ch = dot16(&ch_profiles[i], &gourlay_psi_n(&ch_profiles[j], 2));
+                    let c1_nu = dot16(&nu_profiles[i], &gourlay_psi(&nu_profiles[j]));
+                    let c2_nu = dot16(&nu_profiles[i], &gourlay_psi_n(&nu_profiles[j], 2));
+                    let c1_cross = dot16(&ch_profiles[i], &gourlay_psi(&nu_profiles[j]));
+                    let c2_cross = dot16(&ch_profiles[i], &gourlay_psi_n(&nu_profiles[j], 2));
+
+                    println!("  ({},{}): ch: c1={:.6} c2={:.6} diff={:.2e}  nu: c1={:.6} c2={:.6} diff={:.2e}  cross: c1={:.6} c2={:.6} diff={:.2e}",
+                        i, j,
+                        c1_ch, c2_ch, (c1_ch - c2_ch).abs(),
+                        c1_nu, c2_nu, (c1_nu - c2_nu).abs(),
+                        c1_cross, c2_cross, (c1_cross - c2_cross).abs());
+                }
+            }
+        }
+    }
 }
