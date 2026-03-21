@@ -499,4 +499,134 @@ mod tests {
         assert_eq!(h_15, 35, "H_15 = 15*14/6 = 35");
         println!("  H_15 = N_4*(N_4-1)/6 = 15*14/6 = {}", h_15);
     }
+
+    /// ZD-triad incidence matrix (Task #40).
+    ///
+    /// For each of the 420 non-associative triads and 84 standard ZD pairs,
+    /// determine the structural relationship. Tests whether the 84:84:252
+    /// decomposition (Type B : Type C : Type X) maps to ZD pairs via
+    /// pairwise product support matching.
+    #[test]
+    fn test_zd_triad_incidence_matrix() {
+        use cd_kernel::cayley_dickson::cd_multiply;
+
+        let dim = 16_usize;
+
+        // Build all 84 standard ZD index pairs: (low, high) with
+        // low in 1..7, high in 9..15, excluding high = low+8
+        let mut zd_index_pairs: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                zd_index_pairs.push((low, high));
+            }
+        }
+        // 42 assessor pairs, each generates 2 ZDs (sign +/-), but we track
+        // by index pair (sign doesn't affect the incidence)
+        assert_eq!(zd_index_pairs.len(), 42);
+
+        // Build all 420 non-associative triads with type classification
+        let mut triads: Vec<(usize, usize, usize, char)> = Vec::new();
+        for b in 1..dim {
+            for c in (b + 1)..dim {
+                for d in (c + 1)..dim {
+                    let t1 = assoc_strict(dim, b, c, d);
+                    let t2 = assoc_strict(dim, b, d, c);
+                    let t3 = assoc_strict(dim, c, b, d);
+                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
+                    let na_type = match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
+                        (true, false, false) => 'A',
+                        (false, true, false) => 'B',
+                        (false, false, true) => 'C',
+                        _ => 'X',
+                    };
+                    triads.push((b, c, d, na_type));
+                }
+            }
+        }
+        assert_eq!(triads.len(), 420);
+
+        // For each triad, compute pairwise products bc, bd, cd
+        // and check if any has support on a ZD assessor pair (low, high)
+        let mut zd_hits_by_type: std::collections::HashMap<char, Vec<usize>> =
+            [('A', vec![0; 42]), ('B', vec![0; 42]),
+             ('C', vec![0; 42]), ('X', vec![0; 42])].into();
+
+        let mut triads_hitting_zd: std::collections::HashMap<char, usize> =
+            [('A', 0), ('B', 0), ('C', 0), ('X', 0)].into();
+
+        for &(b, c, d, na_type) in &triads {
+            let mut eb = vec![0.0; dim]; eb[b] = 1.0;
+            let mut ec = vec![0.0; dim]; ec[c] = 1.0;
+            let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+
+            let products = [
+                cd_multiply(&eb, &ec), // bc
+                cd_multiply(&eb, &ed), // bd
+                cd_multiply(&ec, &ed), // cd
+            ];
+
+            let mut any_hit = false;
+            for prod in &products {
+                // Check if product is a 2-blade with support on a ZD pair
+                let nonzero: Vec<usize> = prod.iter().enumerate()
+                    .filter(|(_, v)| v.abs() > 1e-12)
+                    .map(|(i, _)| i)
+                    .collect();
+
+                if nonzero.len() == 1 {
+                    // Single basis element product -- this IS a ZD pair component
+                    let idx = nonzero[0];
+                    if (1..=7).contains(&idx) || (9..=15).contains(&idx) {
+                        // Check against ZD index pairs
+                        for (zd_idx, &(low, high)) in zd_index_pairs.iter().enumerate() {
+                            if idx == low || idx == high {
+                                any_hit = true;
+                                zd_hits_by_type.get_mut(&na_type).unwrap()[zd_idx] += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if any_hit {
+                *triads_hitting_zd.get_mut(&na_type).unwrap() += 1;
+            }
+        }
+
+        println!("--- ZD-TRIAD INCIDENCE MATRIX ---");
+        println!("  Type counts: A=0, B=84, C=84, X=252");
+
+        for typ in ['A', 'B', 'C', 'X'] {
+            let total = triads.iter().filter(|t| t.3 == typ).count();
+            let hits = triads_hitting_zd[&typ];
+            let covered = zd_hits_by_type[&typ].iter().filter(|&&x| x > 0).count();
+            let min_hits = zd_hits_by_type[&typ].iter().copied().min().unwrap_or(0);
+            let max_hits = zd_hits_by_type[&typ].iter().copied().max().unwrap_or(0);
+            let total_hits: usize = zd_hits_by_type[&typ].iter().sum();
+
+            println!("\n  Type {}: {} triads, {} hit ZD pairs", typ, total, hits);
+            println!("    ZD pair coverage: {} / 42 assessors", covered);
+            println!("    Hits per assessor: min={}, max={}, total={}", min_hits, max_hits, total_hits);
+        }
+
+        // The key structural question: does the mapping reveal
+        // a bijection, double cover, or coincidence?
+        let b_covered = zd_hits_by_type[&'B'].iter().filter(|&&x| x > 0).count();
+        let c_covered = zd_hits_by_type[&'C'].iter().filter(|&&x| x > 0).count();
+        let x_covered = zd_hits_by_type[&'X'].iter().filter(|&&x| x > 0).count();
+
+        println!("\n  Summary:");
+        println!("    B covers {} / 42 assessors", b_covered);
+        println!("    C covers {} / 42 assessors", c_covered);
+        println!("    X covers {} / 42 assessors", x_covered);
+
+        if b_covered == 42 && c_covered == 42 && x_covered == 42 {
+            println!("    All three types cover all assessors -- UNIVERSAL COVERAGE");
+        } else if b_covered == 42 && c_covered == 0 {
+            println!("    B covers all, C covers none -- CHIRAL SPLIT");
+        } else {
+            println!("    Partial coverage -- the 84:84:252 is not a simple bijection");
+        }
+    }
 }
