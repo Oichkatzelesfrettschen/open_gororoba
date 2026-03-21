@@ -379,11 +379,11 @@ pub fn construct_quark_mass_matrices_scan(
     use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
     use crate::majorana_braiding::MajoranaMode;
     use crate::bell_inequality::SignTableCache;
-    use crate::three_fermion_generations::get_sedenion_subalgebras;
 
     let (m_up_0, m_down_0) = construct_quark_mass_matrices(basis, complex_structure, scheme);
-    let (o1, o2, o3) = get_sedenion_subalgebras();
-    let subs = [&o1, &o2, &o3];
+    // Use the scheme-appropriate subalgebras for friction computation
+    let subalgebras = get_subalgebras(scheme);
+    let subs: Vec<&Vec<usize>> = subalgebras.iter().collect();
     let sign_table = SignTableCache::new(16);
 
     // Corrected lepton-sector weights (difference-normalized)
@@ -1190,6 +1190,114 @@ mod tests {
 
         // Print top-5
         println!("\n--- TOP-5 SELECTOR PAIRS ---");
+        for (rank, (score, up, down, (v_us, v_ub, v_cb))) in all_results.iter().take(5).enumerate() {
+            println!("  #{}: up=(e_{},e_{}), down=(e_{},e_{}) | V_us={:.4}, V_ub={:.6}, V_cb={:.4} | score={:.4}",
+                rank + 1, up.0, up.1, down.0, down.1, v_us, v_ub, v_cb, score);
+        }
+    }
+
+    /// CKM selector pair scan using TANG CONTIGUOUS-BLOCK subalgebras.
+    ///
+    /// Tang's scheme: O1={0..7}, O2={0..3,8..11}, O3={0..3,12..15}.
+    /// Shared quaternion = {e_1,e_2,e_3}, so pairs within {1,2,3} are
+    /// S3-degenerate and cannot contribute to flavor breaking.
+    #[test]
+    fn test_ckm_selector_pair_scan_tang_contiguous() {
+        use rayon::prelude::*;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::sedenion_subalgebras::get_octonion_subalgebras;
+
+        let (basis, cs) = standard_basis_and_cs();
+
+        // Enumerate splitting pairs under contiguous-block scheme
+        let (o1, o2, o3) = get_octonion_subalgebras();
+        let sign_table = SignTableCache::new(16);
+        let mut splitting_pairs: Vec<(usize, usize)> = Vec::new();
+
+        for i in 1..16_usize {
+            for j in (i + 1)..16 {
+                let mi = MajoranaMode { gamma_index: i - 1, cd_basis_index: i, cd_dim: 16 };
+                let mj = MajoranaMode { gamma_index: j - 1, cd_basis_index: j, cd_dim: 16 };
+                let s1 = cd_braid_signed_friction(&mi, &mj, &o1, &sign_table);
+                let s2 = cd_braid_signed_friction(&mi, &mj, &o2, &sign_table);
+                let s3 = cd_braid_signed_friction(&mi, &mj, &o3, &sign_table);
+                if (s1 - s2).abs() > 1e-9 && (s2 - s3).abs() > 1e-9 && (s1 - s3).abs() > 1e-9 {
+                    splitting_pairs.push((i, j));
+                }
+            }
+        }
+
+        println!("--- CKM SELECTOR PAIR SCAN (TANG CONTIGUOUS-BLOCK) ---");
+        println!("Splitting pairs found: {} (vs 21 interleaved)", splitting_pairs.len());
+
+        if splitting_pairs.is_empty() {
+            println!("  NO splitting pairs under contiguous-block scheme!");
+            println!("  All friction triples are S3-degenerate.");
+            println!("  This means the contiguous-block scheme does NOT break S3.");
+            return;
+        }
+
+        let pdg_v_us: f64 = 0.2250;
+        let pdg_v_ub: f64 = 0.00373;
+        let pdg_v_cb: f64 = 0.0418;
+        let ln_v_us = pdg_v_us.ln();
+        let ln_v_ub = pdg_v_ub.ln();
+        let ln_v_cb = pdg_v_cb.ln();
+
+        let combos: Vec<((usize, usize), (usize, usize))> = splitting_pairs.iter()
+            .flat_map(|&up| splitting_pairs.iter()
+                .filter(move |&&down| down != up)
+                .map(move |&down| (up, down)))
+            .collect();
+
+        println!("Total combos: {}", combos.len());
+
+        let mut all_results: Vec<(f64, (usize, usize), (usize, usize), (f64, f64, f64))> =
+            combos.par_iter().map(|&(up_pair, down_pair)| {
+                let (m_up, m_down) = construct_quark_mass_matrices_scan(
+                    &basis, &cs, SubalgebraScheme::ContiguousBlock,
+                    up_pair, down_pair,
+                );
+                let m_up_sym = (&m_up + m_up.transpose()) * faer::scale(0.5);
+                let m_down_sym = (&m_down + m_down.transpose()) * faer::scale(0.5);
+                let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
+                let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
+                let v_raw = eig_up.u().transpose() * eig_down.u();
+                let (v_ckm, _, _) = extract_ckm_permutation_aware(&v_raw);
+                let v_us = v_ckm.read(0, 1).abs();
+                let v_ub = v_ckm.read(0, 2).abs();
+                let v_cb = v_ckm.read(1, 2).abs();
+                let score = if v_us > 1e-15 && v_ub > 1e-15 && v_cb > 1e-15 {
+                    (v_us.ln() - ln_v_us).powi(2)
+                        + (v_ub.ln() - ln_v_ub).powi(2)
+                        + (v_cb.ln() - ln_v_cb).powi(2)
+                } else { f64::INFINITY };
+                (score, up_pair, down_pair, (v_us, v_ub, v_cb))
+            }).collect();
+
+        all_results.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        if let Some(&(score, best_up, best_down, (v_us, v_ub, v_cb))) = all_results.first() {
+            let theta_13 = v_ub.asin();
+            let cos_13 = theta_13.cos();
+            let theta_12 = if cos_13 > 1e-15 { (v_us / cos_13).min(1.0).asin() } else { 0.0 };
+            let theta_23 = if cos_13 > 1e-15 { (v_cb / cos_13).min(1.0).asin() } else { 0.0 };
+
+            println!("\nBest Tang contiguous-block CKM:");
+            println!("  Up-type:   (e_{}, e_{})", best_up.0, best_up.1);
+            println!("  Down-type: (e_{}, e_{})", best_down.0, best_down.1);
+            println!("  |V_us| = {:.4} (PDG: {:.4})", v_us, pdg_v_us);
+            println!("  |V_ub| = {:.6} (PDG: {:.6})", v_ub, pdg_v_ub);
+            println!("  |V_cb| = {:.4} (PDG: {:.4})", v_cb, pdg_v_cb);
+            println!("  theta_12 = {:.4} deg (PDG: 12.99)", theta_12.to_degrees());
+            println!("  theta_13 = {:.4} deg (PDG: 0.214)", theta_13.to_degrees());
+            println!("  theta_23 = {:.4} deg (PDG: 2.40)", theta_23.to_degrees());
+            println!("  Score: {:.4} (interleaved best: 0.0102)", score);
+        }
+
+        println!("\n--- TOP-5 TANG CONTIGUOUS PAIRS ---");
         for (rank, (score, up, down, (v_us, v_ub, v_cb))) in all_results.iter().take(5).enumerate() {
             println!("  #{}: up=(e_{},e_{}), down=(e_{},e_{}) | V_us={:.4}, V_ub={:.6}, V_cb={:.4} | score={:.4}",
                 rank + 1, up.0, up.1, down.0, down.1, v_us, v_ub, v_cb, score);
