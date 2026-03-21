@@ -4692,4 +4692,176 @@ mod tests {
         println!("    t_solar  = {:.4}", best_t1);
         println!("    t_atmo   = {:.4}", best_t2);
     }
+
+    /// Joint 4D optimization: (alpha_ch, alpha_nu, t_solar, t_atmo).
+    ///
+    /// Re-optimizes the psi coupling parameters jointly with V_6 corrections.
+    /// The constrained directions are recomputed at each (alpha_ch, alpha_nu)
+    /// for correctness.
+    #[test]
+    fn test_v6_joint_4d_optimization() {
+        use rayon::prelude::*;
+
+        let pdg_t12 = 33.41_f64;
+        let pdg_t13 = 8.54_f64;
+        let pdg_t23 = 49.0_f64;
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let eps = 0.05_f64;
+
+        let (v6_basis, _sv, _assessors) = extract_v6_basis();
+        let lift = TensorElementLift;
+        let n_basis = v6_basis.nrows().min(6);
+
+        // Helper: for given (alpha_ch, alpha_nu), compute constrained directions
+        // and scan (t_solar, t_atmo) to find best angles.
+        // OPTIMIZED: precompute baseline matrices once, only perturb M_nu in inner loop.
+        let evaluate = |alpha_ch: f64, alpha_nu: f64| -> (f64, (f64, f64, f64), f64, f64) {
+            // Build baseline ONCE for this (alpha_ch, alpha_nu)
+            let (m_ch_base, m_nu_base) = construct_pmns_matrices_two_param(
+                ch_pair, nu_pair, alpha_ch, alpha_nu,
+            );
+            let eig_ch = m_ch_base.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw_0 = {
+                let eig_nu_0 = m_nu_base.selfadjoint_eigendecomposition(faer::Side::Lower);
+                eig_ch.u().transpose() * eig_nu_0.u()
+            };
+            let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+            // Fast angle computation: only perturb m_nu, reuse m_ch eigenvectors
+            let fast_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
+                let mut m_nu = m_nu_base.clone();
+                apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
+                for i in 0..3 { for j in 0..3 {
+                    u_pmns.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+                }}
+                extract_pmns_angles(&u_pmns)
+            };
+
+            // Compute gradients (12 evaluations)
+            let mut g_12 = [0.0_f64; 6];
+            let mut g_13 = [0.0_f64; 6];
+            let mut g_23 = [0.0_f64; 6];
+            for mu in 0..n_basis {
+                let mut bp = [0.0_f64; 6]; bp[mu] = eps;
+                let mut bm = [0.0_f64; 6]; bm[mu] = -eps;
+                let (t12_p, t13_p, t23_p) = fast_angles(&bp);
+                let (t12_m, t13_m, t23_m) = fast_angles(&bm);
+                g_12[mu] = (t12_p - t12_m) / (2.0 * eps);
+                g_13[mu] = (t13_p - t13_m) / (2.0 * eps);
+                g_23[mu] = (t23_p - t23_m) / (2.0 * eps);
+            }
+
+            let u_solar = compute_constrained_solar_direction(&g_12, &g_13, &g_23);
+            let u_atmo = compute_constrained_atmospheric_direction(&g_23, &g_13, &u_solar);
+
+            // Gradient-guided t1 estimate, then narrow scan
+            let dot6 = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
+                a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+            };
+            let g12_u = dot6(&g_12, &u_solar);
+            let t1_est = if g12_u.abs() > 0.01 { (pdg_t12 - 28.5) / g12_u } else { 2.5 };
+            let t1_est = t1_est.clamp(0.0, 5.0);
+
+            let mut best_score = f64::MAX;
+            let mut best_t1 = 0.0_f64;
+            let mut best_t2 = 0.0_f64;
+            let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+            // Scan around gradient-predicted t1, narrow t2 range
+            let t1_lo = (t1_est - 1.5).max(0.0);
+            let t1_hi = t1_est + 1.5;
+            for s1 in 0..=30_i32 {
+                let t1 = t1_lo + s1 as f64 * (t1_hi - t1_lo) / 30.0;
+                for s2 in -10..=10_i32 {
+                    let t2 = s2 as f64 * 0.2;
+                    let mut beta = [0.0_f64; 6];
+                    for k in 0..6 { beta[k] = t1 * u_solar[k] + t2 * u_atmo[k]; }
+                    let (t12, t13, t23) = fast_angles(&beta);
+                    if (t13 - pdg_t13).abs() > 1.0 { continue; }
+                    let score = ((t12 - pdg_t12) / pdg_t12).powi(2)
+                              + ((t23 - pdg_t23) / pdg_t23).powi(2)
+                              + 5.0 * ((t13 - pdg_t13) / pdg_t13).powi(2);
+                    if score < best_score {
+                        best_score = score;
+                        best_t1 = t1;
+                        best_t2 = t2;
+                        best_angles = (t12, t13, t23);
+                    }
+                }
+            }
+
+            (best_score, best_angles, best_t1, best_t2)
+        };
+
+        println!("--- JOINT 4D OPTIMIZATION ---");
+
+        // Coarse grid over (alpha_ch, alpha_nu)
+        // Previous optimum: (3.75, 1.30). Scan a neighborhood.
+        let grid: Vec<(f64, f64)> = (20..=60_i32).flat_map(|i|
+            (5..=25_i32).map(move |j| (i as f64 * 0.1, j as f64 * 0.1))
+        ).collect();
+
+        let results: Vec<(f64, f64, f64, (f64, f64, f64), f64, f64)> = grid.par_iter()
+            .map(|&(a_ch, a_nu)| {
+                let (score, angles, t1, t2) = evaluate(a_ch, a_nu);
+                (score, a_ch, a_nu, angles, t1, t2)
+            })
+            .collect();
+
+        let best = results.iter().min_by(|a, b| a.0.partial_cmp(&b.0).unwrap()).unwrap();
+
+        println!("  Coarse grid: {} points evaluated", results.len());
+        println!("  Best coarse: alpha_ch={:.2}, alpha_nu={:.2}, t1={:.2}, t2={:.2}",
+            best.1, best.2, best.4, best.5);
+        println!("    theta_12 = {:.4} (error {:.2}%)", (best.3).0,
+            (((best.3).0 - pdg_t12) / pdg_t12 * 100.0).abs());
+        println!("    theta_13 = {:.4} (error {:.2}%)", (best.3).1,
+            (((best.3).1 - pdg_t13) / pdg_t13 * 100.0).abs());
+        println!("    theta_23 = {:.4} (error {:.2}%)", (best.3).2,
+            (((best.3).2 - pdg_t23) / pdg_t23 * 100.0).abs());
+        println!("    Score = {:.6}", best.0);
+
+        // Fine refinement around the coarse best
+        let a_ch_center = best.1;
+        let a_nu_center = best.2;
+
+        let fine_grid: Vec<(f64, f64)> = (-10..=10_i32).flat_map(|i|
+            (-10..=10_i32).map(move |j| (a_ch_center + i as f64 * 0.05, a_nu_center + j as f64 * 0.05))
+        ).filter(|&(a, b)| a > 0.0 && b > 0.0).collect();
+
+        let fine_results: Vec<(f64, f64, f64, (f64, f64, f64), f64, f64)> = fine_grid.par_iter()
+            .map(|&(a_ch, a_nu)| {
+                let (score, angles, t1, t2) = evaluate(a_ch, a_nu);
+                (score, a_ch, a_nu, angles, t1, t2)
+            })
+            .collect();
+
+        let fine_best = fine_results.iter().min_by(|a, b| a.0.partial_cmp(&b.0).unwrap()).unwrap();
+
+        println!("\n  Fine grid: {} points evaluated", fine_results.len());
+        println!("\n  === JOINT 4D OPTIMUM ===");
+        println!("  alpha_ch = {:.2}", fine_best.1);
+        println!("  alpha_nu = {:.2}", fine_best.2);
+        println!("  t_solar  = {:.2}", fine_best.4);
+        println!("  t_atmo   = {:.2}", fine_best.5);
+        println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
+            (fine_best.3).0, pdg_t12, (((fine_best.3).0 - pdg_t12) / pdg_t12 * 100.0).abs());
+        println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
+            (fine_best.3).1, pdg_t13, (((fine_best.3).1 - pdg_t13) / pdg_t13 * 100.0).abs());
+        println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
+            (fine_best.3).2, pdg_t23, (((fine_best.3).2 - pdg_t23) / pdg_t23 * 100.0).abs());
+        println!("  Combined score: {:.6}", fine_best.0);
+
+        // Compare with previous best
+        let prev_score = ((33.37 - pdg_t12) / pdg_t12).powi(2)
+                       + ((47.40 - pdg_t23) / pdg_t23).powi(2)
+                       + 5.0 * ((8.52 - pdg_t13) / pdg_t13).powi(2);
+        println!("\n  Previous 4-param score (3.75, 1.30, 2.49, 0.11): {:.6}", prev_score);
+        println!("  Improvement: {:.1}x", prev_score / fine_best.0);
+    }
 }
