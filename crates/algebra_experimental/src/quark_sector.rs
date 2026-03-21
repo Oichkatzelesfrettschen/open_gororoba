@@ -277,6 +277,67 @@ pub fn construct_quark_mass_matrices_with_friction(
     (m_up, m_down)
 }
 
+/// Build quark mass matrices using the fitted weighted signed friction composite.
+///
+/// Uses the lepton-sector fitted weights (w1=-0.9488, w2=-0.9609) but with
+/// DIFFERENT selector pairs for up-type vs down-type to ensure [H_u, H_d] != 0.
+///
+/// Up-type:   F_up   = w1 * Sel(e_1,e_4) + w2 * Sel(e_2,e_4)
+/// Down-type: F_down = w1 * Sel(e_1,e_4) + w2 * Sel(e_3,e_4)
+///
+/// The shared first selector aligns the sectors partially (theta_12 ~ Cabibbo),
+/// while the different second selectors misalign them (nonzero theta_13, theta_23).
+pub fn construct_quark_mass_matrices_weighted_friction(
+    basis: &[Sedenion; 16],
+    complex_structure: &Sedenion,
+    scheme: SubalgebraScheme,
+) -> (Mat<f64>, Mat<f64>) {
+    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+    use crate::majorana_braiding::MajoranaMode;
+    use crate::bell_inequality::SignTableCache;
+    use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+    let (m_up_0, m_down_0) = construct_quark_mass_matrices(basis, complex_structure, scheme);
+    let (o1, o2, o3) = get_sedenion_subalgebras();
+    let subs = [&o1, &o2, &o3];
+    let sign_table = SignTableCache::new(16);
+
+    // Fitted weights from the lepton mass hierarchy
+    let w1 = -0.9488;
+    let w2 = -0.9609;
+
+    // Shared selector: Sel(e_1, e_4)
+    let sel_shared_a = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+    let sel_shared_b = MajoranaMode { gamma_index: 3, cd_basis_index: 4, cd_dim: 16 };
+    let sel_shared: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&sel_shared_a, &sel_shared_b, s, &sign_table))
+        .collect();
+
+    // Up-type second selector: Sel(e_2, e_4)
+    let sel_up_a = MajoranaMode { gamma_index: 1, cd_basis_index: 2, cd_dim: 16 };
+    let sel_up: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&sel_up_a, &sel_shared_b, s, &sign_table))
+        .collect();
+
+    // Down-type second selector: Sel(e_3, e_4) -- DIFFERENT from up
+    let sel_down_a = MajoranaMode { gamma_index: 2, cd_basis_index: 3, cd_dim: 16 };
+    let sel_down: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&sel_down_a, &sel_shared_b, s, &sign_table))
+        .collect();
+
+    // Composite friction per generation
+    let mut m_up = m_up_0;
+    let mut m_down = m_down_0;
+    for i in 0..3 {
+        let f_up = w1 * sel_shared[i] + w2 * sel_up[i];
+        let f_down = w1 * sel_shared[i] + w2 * sel_down[i];
+        m_up.write(i, i, m_up.read(i, i) + f_up.exp());
+        m_down.write(i, i, m_down.read(i, i) + f_down.exp());
+    }
+
+    (m_up, m_down)
+}
+
 /// CKM matrix derivation result.
 pub struct CkmResult {
     /// The 3x3 CKM matrix.
@@ -757,6 +818,86 @@ mod tests {
         println!("  CKM angles: theta_12={:.2} deg, theta_13={:.4} deg, theta_23={:.2} deg",
             theta_12.to_degrees(), theta_13.to_degrees(), theta_23.to_degrees());
         println!("  PDG target: theta_12=12.99, theta_13=0.214, theta_23=2.40");
+
+        // Mass ratios
+        up_evals.sort_by(|a, b| a.abs().partial_cmp(&b.abs()).unwrap());
+        down_evals.sort_by(|a, b| a.abs().partial_cmp(&b.abs()).unwrap());
+        if down_evals[0].abs() > 1e-10 {
+            println!("  m_u/m_d = {:.4} (PDG: {PDG_MU_MD})", up_evals[0].abs() / down_evals[0].abs());
+        }
+        if down_evals[1].abs() > 1e-10 {
+            println!("  m_c/m_s = {:.4} (PDG: {PDG_MC_MS})", up_evals[1].abs() / down_evals[1].abs());
+        }
+        if down_evals[2].abs() > 1e-10 {
+            println!("  m_t/m_b = {:.4} (PDG: {PDG_MT_MB})", up_evals[2].abs() / down_evals[2].abs());
+        }
+    }
+
+    /// Full quark sector with weighted signed friction composite.
+    #[test]
+    fn test_quark_mass_weighted_composite() {
+        let (basis, cs) = standard_basis_and_cs();
+        let (m_up, m_down) = construct_quark_mass_matrices_weighted_friction(
+            &basis, &cs, SubalgebraScheme::InterleavedStride,
+        );
+
+        let m_up_sym = (&m_up + m_up.transpose()) * faer::scale(0.5);
+        let m_down_sym = (&m_down + m_down.transpose()) * faer::scale(0.5);
+
+        let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
+        let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
+
+        let mut up_evals = [0.0_f64; 3];
+        let mut down_evals = [0.0_f64; 3];
+        for i in 0..3 {
+            up_evals[i] = eig_up.s().column_vector().read(i);
+            down_evals[i] = eig_down.s().column_vector().read(i);
+        }
+
+        println!("--- QUARK MASS WITH WEIGHTED COMPOSITE ---");
+        println!("  M_up eigenvalues: {:?}", up_evals);
+        println!("  M_down eigenvalues: {:?}", down_evals);
+
+        let up_rank = up_evals.iter().filter(|x| x.abs() > 1e-6).count();
+        let down_rank = down_evals.iter().filter(|x| x.abs() > 1e-6).count();
+        println!("  rank(M_up) = {}, rank(M_down) = {}", up_rank, down_rank);
+
+        // Commutator
+        let h_u = &m_up_sym * m_up_sym.transpose();
+        let h_d = &m_down_sym * m_down_sym.transpose();
+        let comm = &h_u * &h_d - &h_d * &h_u;
+        let mut comm_frob = 0.0_f64;
+        for i in 0..3 { for j in 0..3 { comm_frob += comm.read(i, j).powi(2); } }
+        comm_frob = comm_frob.sqrt();
+        println!("  ||[H_u, H_d]||_F = {:.6e}", comm_frob);
+
+        // CKM
+        let u_up = eig_up.u();
+        let u_down = eig_down.u();
+        let v_ckm = u_up.transpose() * u_down;
+
+        println!("  V_CKM:");
+        for r in 0..3 {
+            println!("    [{:.6}, {:.6}, {:.6}]",
+                v_ckm.read(r, 0), v_ckm.read(r, 1), v_ckm.read(r, 2));
+        }
+
+        let v_us = v_ckm.read(0, 1).abs();
+        let v_ub = v_ckm.read(0, 2).abs();
+        let v_cb = v_ckm.read(1, 2).abs();
+        let theta_13 = v_ub.asin();
+        let cos_13 = theta_13.cos();
+        let theta_12 = if cos_13 > 1e-15 { (v_us / cos_13).min(1.0).asin() } else { 0.0 };
+        let theta_23 = if cos_13 > 1e-15 { (v_cb / cos_13).min(1.0).asin() } else { 0.0 };
+
+        // Jarlskog invariant
+        let j = v_ckm.read(0, 0) * v_ckm.read(1, 1) * v_ckm.read(0, 1) * v_ckm.read(1, 0);
+
+        println!("  CKM angles:");
+        println!("    theta_12 = {:.4} deg (PDG: {PDG_CKM_THETA12_DEG})", theta_12.to_degrees());
+        println!("    theta_13 = {:.4} deg (PDG: {PDG_CKM_THETA13_DEG})", theta_13.to_degrees());
+        println!("    theta_23 = {:.4} deg (PDG: {PDG_CKM_THETA23_DEG})", theta_23.to_degrees());
+        println!("    J_approx = {:.6e} (PDG: {PDG_CKM_JARLSKOG})", j.abs());
 
         // Mass ratios
         up_evals.sort_by(|a, b| a.abs().partial_cmp(&b.abs()).unwrap());
