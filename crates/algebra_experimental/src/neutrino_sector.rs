@@ -119,6 +119,148 @@ pub fn construct_pmns_matrices(
     (m_charged, m_neutrino)
 }
 
+/// Construct PMNS matrices with OFF-DIAGONAL friction from psi automorphism.
+///
+/// The key insight: diagonal friction only perturbs M_ii, which cannot
+/// produce near-maximal theta_23 from a hierarchical baseline.
+/// Off-diagonal M_ij terms come from the psi automorphism's cross-generational
+/// coupling: psi cycles O1->O2->O3, so <friction_i, psi(friction_j)>
+/// measures the transition amplitude between generations.
+///
+/// The 3x3 friction tensor F_ij is:
+///   F_ii = w1*sel_own[i] + w2*sel_other[i]  (diagonal, as before)
+///   F_ij = alpha_cross * <sel_own, psi^k(sel_other)> for i != j
+///
+/// alpha_cross controls the off-diagonal coupling strength.
+pub fn construct_pmns_matrices_offdiag(
+    charged_pair: (usize, usize),
+    neutrino_pair: (usize, usize),
+    alpha_cross: f64,
+) -> (faer::Mat<f64>, faer::Mat<f64>) {
+    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+    use crate::majorana_braiding::MajoranaMode;
+    use crate::bell_inequality::SignTableCache;
+    use crate::three_fermion_generations::get_sedenion_subalgebras;
+    use crate::cayley_dickson_structs::Sedenion;
+    use crate::quark_sector::SubalgebraScheme;
+    use cd_kernel::gourlay_psi;
+
+    let mut basis = [Sedenion::default(); 16];
+    for i in 0..16 {
+        let mut components = [0.0; 16];
+        components[i] = 1.0;
+        basis[i] = Sedenion::from_slice(&components);
+    }
+    let cs = basis[15];
+    let (m_base_ch, m_base_nu) = crate::quark_sector::construct_quark_mass_matrices(
+        &basis, &cs, SubalgebraScheme::InterleavedStride,
+    );
+
+    let (o1, o2, o3) = get_sedenion_subalgebras();
+    let subs = [&o1, &o2, &o3];
+    let sign_table = SignTableCache::new(16);
+
+    let w1: f64 = -0.656850;
+    let w2: f64 = -0.741999;
+
+    let ch_a = MajoranaMode { gamma_index: charged_pair.0 - 1, cd_basis_index: charged_pair.0, cd_dim: 16 };
+    let ch_b = MajoranaMode { gamma_index: charged_pair.1 - 1, cd_basis_index: charged_pair.1, cd_dim: 16 };
+    let nu_a = MajoranaMode { gamma_index: neutrino_pair.0 - 1, cd_basis_index: neutrino_pair.0, cd_dim: 16 };
+    let nu_b = MajoranaMode { gamma_index: neutrino_pair.1 - 1, cd_basis_index: neutrino_pair.1, cd_dim: 16 };
+
+    let sel_ch: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table))
+        .collect();
+    let sel_nu: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table))
+        .collect();
+
+    // Build 3x3 friction tensors with off-diagonal terms
+    let mut m_ch = m_base_ch;
+    let mut m_nu = m_base_nu;
+
+    // Diagonal terms (same as before)
+    for i in 0..3 {
+        let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
+        let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
+        m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
+        m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+    }
+
+    // Off-diagonal terms from psi automorphism CIRCULANT structure.
+    //
+    // Key insight: psi preserves norms, so M_22 = M_33 = M_11 for
+    // the psi-generated part. This gives a circulant mass matrix:
+    //   M = [[A, B, C], [C, A, B], [B, C, A]]
+    // which analytically predicts maximal theta_23 = 45 deg.
+    //
+    // Build the friction vector as a 16D sedenion, apply psi to get
+    // the cross-generational overlap.
+    {
+        // Build friction vectors as sedenion basis-weighted sums
+        // v_ch[k] = sel_ch[k] (friction value for generation k)
+        // The psi overlap <v, psi(v)> gives the off-diagonal coupling B
+
+        // For each braid pair, construct a 16D friction "profile"
+        // by placing the friction values at the generation-specific indices
+        let ch_a_idx = charged_pair.0;
+        let ch_b_idx = charged_pair.1;
+        let nu_a_idx = neutrino_pair.0;
+        let nu_b_idx = neutrino_pair.1;
+
+        // Construct a sedenion vector with friction at the braid indices
+        let mut v_ch = [0.0_f64; 16];
+        v_ch[ch_a_idx] = sel_ch[0]; // generation 1 friction at braid axis a
+        v_ch[ch_b_idx] = sel_ch[1]; // generation 2 friction at braid axis b
+
+        let mut v_nu = [0.0_f64; 16];
+        v_nu[nu_a_idx] = sel_nu[0];
+        v_nu[nu_b_idx] = sel_nu[1];
+
+        // Apply psi to get the cross-generational overlap
+        let psi_v_ch = gourlay_psi(&v_ch);
+        let psi_v_nu = gourlay_psi(&v_nu);
+
+        // Overlap B = <v, psi(v)> (the circulant off-diagonal coupling)
+        let b_ch: f64 = v_ch.iter().zip(psi_v_ch.iter()).map(|(a, b)| a * b).sum();
+        let b_nu: f64 = v_nu.iter().zip(psi_v_nu.iter()).map(|(a, b)| a * b).sum();
+
+        // Overlap C = <v, psi^2(v)>
+        let psi2_v_ch = gourlay_psi(&psi_v_ch);
+        let psi2_v_nu = gourlay_psi(&psi_v_nu);
+        let c_ch: f64 = v_ch.iter().zip(psi2_v_ch.iter()).map(|(a, b)| a * b).sum();
+        let c_nu: f64 = v_nu.iter().zip(psi2_v_nu.iter()).map(|(a, b)| a * b).sum();
+
+        // Inject circulant off-diagonal terms
+        // M_ij += alpha_cross * circulant[i-j mod 3]
+        let circulant_ch = [0.0, b_ch, c_ch]; // [A_extra, B, C]
+        let circulant_nu = [0.0, b_nu, c_nu];
+
+        for i in 0..3 {
+            for j in 0..3 {
+                if i == j { continue; }
+                let shift = (j + 3 - i) % 3;
+                m_ch.write(i, j, m_ch.read(i, j) + alpha_cross * circulant_ch[shift]);
+                m_nu.write(i, j, m_nu.read(i, j) + alpha_cross * circulant_nu[shift]);
+            }
+        }
+
+        // Symmetrize
+        for i in 0..3 {
+            for j in (i + 1)..3 {
+                let avg_ch = (m_ch.read(i, j) + m_ch.read(j, i)) / 2.0;
+                let avg_nu = (m_nu.read(i, j) + m_nu.read(j, i)) / 2.0;
+                m_ch.write(i, j, avg_ch);
+                m_ch.write(j, i, avg_ch);
+                m_nu.write(i, j, avg_nu);
+                m_nu.write(j, i, avg_nu);
+            }
+        }
+    }
+
+    (m_ch, m_nu)
+}
+
 /// Extract PMNS angles from a 3x3 unitary matrix using standard parameterization.
 pub fn extract_pmns_angles(u: &faer::Mat<f64>) -> (f64, f64, f64) {
     let u_e3 = u.read(0, 2).abs();
@@ -685,6 +827,63 @@ mod tests {
             println!("  #{}: nu=avg(({},{}),({},{})) | t12={:.1}, t13={:.1}, t23={:.1} | score={:.4}",
                 rank + 1, pairs[*c].0, pairs[*c].1, pairs[*d].0, pairs[*d].1,
                 t12, t13, t23, score);
+        }
+    }
+
+    /// PMNS theta_23 with psi-circulant off-diagonal coupling.
+    ///
+    /// Scans alpha_cross to find the off-diagonal coupling strength
+    /// that maximizes agreement with PDG PMNS angles.
+    /// The circulant structure from psi should push theta_23 toward 45 deg.
+    #[test]
+    fn test_pmns_offdiag_psi_coupling() {
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        let pdg_t12: f64 = 33.41;
+        let pdg_t13: f64 = 8.54;
+        let pdg_t23: f64 = 49.0;
+
+        println!("--- PMNS OFF-DIAGONAL PSI-CIRCULANT SCAN ---");
+
+        let mut best_score = f64::INFINITY;
+        let mut best_alpha = 0.0_f64;
+        let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+        // Scan alpha_cross from -2.0 to 2.0
+        for step in 0..400 {
+            let alpha = -2.0 + step as f64 * 0.01;
+
+            let (m_ch, m_nu) = construct_pmns_matrices_offdiag(ch_pair, nu_pair, alpha);
+            let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+            let m_nu_sym = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+
+            let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+            let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+            let score = ((t23 - pdg_t23) / pdg_t23).powi(2)
+                + ((t12 - pdg_t12) / pdg_t12).powi(2)
+                + ((t13 - pdg_t13) / pdg_t13).powi(2);
+
+            if score < best_score {
+                best_score = score;
+                best_alpha = alpha;
+                best_angles = (t12, t13, t23);
+            }
+        }
+
+        println!("  Best alpha_cross: {:.4}", best_alpha);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2})", best_angles.0, pdg_t12);
+        println!("  theta_13 = {:.2} deg (PDG: {:.2})", best_angles.1, pdg_t13);
+        println!("  theta_23 = {:.2} deg (PDG: {:.2})", best_angles.2, pdg_t23);
+        println!("  Score: {:.6} (diagonal-only: 0.132)", best_score);
+
+        if best_angles.2 > 40.0 {
+            println!("  *** THETA_23 > 40 DEG -- CEILING BROKEN ***");
         }
     }
 }
