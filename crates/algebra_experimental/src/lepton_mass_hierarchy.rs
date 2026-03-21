@@ -497,19 +497,19 @@ mod tests {
                 m_tau_pred, ((m_tau_pred - 3477.0) / 3477.0 * 100.0).abs());
         }
 
-        // --- 2-parameter weighted fit using RAW signed frictions ---
-        // The sorted frictions are identical across all 21 pairs (all {0, 2.83, 8.49}).
-        // The raw SIGNED values differ: pair (e_1,e_4) -> (0, 2.83, -8.49)
-        //                               pair (e_2,e_4) -> (-8.49, 0, 2.83)
-        // These are linearly independent in R^3 family space.
-        // Use two pairs with different generation assignments as a basis.
+        // --- 2-PARAMETER WEIGHTED FIT (DIFFERENCE-NORMALIZED) ---
         //
-        // The fit objective: find w1, w2 such that
-        //   exp(w1*s1_g + w2*s2_g) ~ m_g for each generation g.
+        // CRITICAL FIX: The physical observable is the mass RATIO, not absolute mass.
+        // We fit DIFFERENCES of friction values:
+        //   F_mu - F_e = ln(m_mu/m_e) = ln(207)
+        //   F_tau - F_e = ln(m_tau/m_e) = ln(3477)
+        //
+        // where F_g = w1*sel1_g + w2*sel2_g for each generation g.
+        //
+        // This yields a 2x2 system in (w1, w2) without assuming F_e = 0.
+        // Previous bug: fitting F_mu = ln(207) directly assumes F_e = 0,
+        // which biases weights when the electron generation has nonzero friction.
         {
-            // Use pair (e_1,e_4): raw signed = (0, 2.83, -8.49) for (O1, O2, O3)
-            // and pair (e_2,e_4): raw signed = (-8.49, 0, 2.83)
-            // These are linearly independent.
             let mode_1 = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
             let mode_2 = MajoranaMode { gamma_index: 1, cd_basis_index: 2, cd_dim: 16 };
             let mode_4 = MajoranaMode { gamma_index: 3, cd_basis_index: 4, cd_dim: 16 };
@@ -520,56 +520,118 @@ mod tests {
             let sel2: Vec<f64> = subs.iter().map(|s|
                 cd_braid_signed_friction(&mode_2, &mode_4, s, &sign_table)).collect();
 
-            println!("\n--- 2-PARAMETER WEIGHTED FIT (raw signed) ---");
+            println!("\n--- 2-PARAMETER WEIGHTED FIT (difference-normalized) ---");
             println!("Selector 1 (e_1,e_4): [{:.4}, {:.4}, {:.4}]", sel1[0], sel1[1], sel1[2]);
             println!("Selector 2 (e_2,e_4): [{:.4}, {:.4}, {:.4}]", sel2[0], sel2[1], sel2[2]);
 
-            // Target: F_g = w1*sel1_g + w2*sel2_g
-            // where exp(F_e) ~ 0.511, exp(F_mu) ~ 105.7, exp(F_tau) ~ 1776.9
-            // Normalize: F_e = 0, F_mu = ln(207), F_tau = ln(3477)
-            let log_mu = (207.0_f64).ln();
-            let log_tau = (3477.0_f64).ln();
+            // Target DIFFERENCES:
+            let log_mu_e = (207.0_f64).ln();   // ln(m_mu / m_e)
+            let log_tau_e = (3477.0_f64).ln();  // ln(m_tau / m_e)
 
-            // We need to assign generations: which O_i is electron, muon, tau?
-            // Try all 6 permutations and find the best fit.
             let perms: [(usize, usize, usize); 6] = [
                 (0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)
             ];
             let mut best_perm_error = f64::INFINITY;
             let mut best_perm_result = String::new();
+            let mut best_w = (0.0_f64, 0.0_f64);
 
             for (e_gen, mu_gen, tau_gen) in &perms {
-                // F_electron = 0 (lightest), F_mu = log_mu, F_tau = log_tau
-                // w1*sel1[mu_gen] + w2*sel2[mu_gen] = log_mu
-                // w1*sel1[tau_gen] + w2*sel2[tau_gen] = log_tau
-                let a11 = sel1[*mu_gen]; let a12 = sel2[*mu_gen];
-                let a21 = sel1[*tau_gen]; let a22 = sel2[*tau_gen];
-                let det = a11 * a22 - a12 * a21;
+                // System (DIFFERENCES):
+                //   w1*(sel1[mu] - sel1[e]) + w2*(sel2[mu] - sel2[e]) = ln(207)
+                //   w1*(sel1[tau] - sel1[e]) + w2*(sel2[tau] - sel2[e]) = ln(3477)
+                let d_sel1_mu = sel1[*mu_gen] - sel1[*e_gen];
+                let d_sel2_mu = sel2[*mu_gen] - sel2[*e_gen];
+                let d_sel1_tau = sel1[*tau_gen] - sel1[*e_gen];
+                let d_sel2_tau = sel2[*tau_gen] - sel2[*e_gen];
+
+                let det = d_sel1_mu * d_sel2_tau - d_sel2_mu * d_sel1_tau;
                 if det.abs() < 1e-10 { continue; }
 
-                let w1 = (log_mu * a22 - log_tau * a12) / det;
-                let w2 = (a11 * log_tau - a21 * log_mu) / det;
+                let w1 = (log_mu_e * d_sel2_tau - log_tau_e * d_sel2_mu) / det;
+                let w2 = (d_sel1_mu * log_tau_e - d_sel1_tau * log_mu_e) / det;
 
-                // Check electron constraint: w1*sel1[e_gen] + w2*sel2[e_gen] should be ~0
+                // Verify: compute predicted mass ratios
                 let f_e = w1 * sel1[*e_gen] + w2 * sel2[*e_gen];
-                let error = f_e.abs(); // closer to 0 = better
+                let f_mu = w1 * sel1[*mu_gen] + w2 * sel2[*mu_gen];
+                let f_tau = w1 * sel1[*tau_gen] + w2 * sel2[*tau_gen];
+
+                let pred_mu_ratio = (f_mu - f_e).exp();
+                let pred_tau_ratio = (f_tau - f_e).exp();
+
+                // Error: deviation from exact mass ratios
+                let error = ((pred_mu_ratio - 207.0) / 207.0).abs()
+                    + ((pred_tau_ratio - 3477.0) / 3477.0).abs();
 
                 if error < best_perm_error {
                     best_perm_error = error;
-                    let f_mu = w1 * sel1[*mu_gen] + w2 * sel2[*mu_gen];
-                    let f_tau = w1 * sel1[*tau_gen] + w2 * sel2[*tau_gen];
+                    best_w = (w1, w2);
                     best_perm_result = format!(
-                        "e=O{}, mu=O{}, tau=O{}: w1={:.4}, w2={:.4}\n\
-                         \t  F_e={:.4} (target 0), F_mu={:.4} (target {:.4}), F_tau={:.4} (target {:.4})\n\
-                         \t  Masses: {:.1} : {:.1} : {:.1} (PDG: 1 : 207 : 3477)",
+                        "e=O{}, mu=O{}, tau=O{}: w1={:.6}, w2={:.6}\n\
+                         \t  F_e={:.4}, F_mu={:.4}, F_tau={:.4}\n\
+                         \t  Ratios: 1 : {:.1} : {:.1} (PDG: 1 : 207 : 3477)\n\
+                         \t  Relative error: mu={:.2e}, tau={:.2e}",
                         e_gen+1, mu_gen+1, tau_gen+1, w1, w2,
-                        f_e, f_mu, log_mu, f_tau, log_tau,
-                        f_e.exp(), f_mu.exp(), f_tau.exp()
+                        f_e, f_mu, f_tau,
+                        pred_mu_ratio, pred_tau_ratio,
+                        ((pred_mu_ratio - 207.0) / 207.0).abs(),
+                        ((pred_tau_ratio - 3477.0) / 3477.0).abs()
                     );
                 }
             }
             println!("Best permutation: {}", best_perm_result);
-            println!("Electron residual (should be 0): {:.6}", best_perm_error);
+            println!("Total relative error: {:.6e}", best_perm_error);
+
+            // --- Naturality analysis of weights ---
+            let (w1, w2) = best_w;
+            let w_sym = (w1 + w2) / 2.0;
+            let w_asym = (w1 - w2) / 2.0;
+            println!("\n--- WEIGHT NATURALITY ANALYSIS ---");
+            println!("  w1 = {:.6}, w2 = {:.6}", w1, w2);
+            println!("  w_sym  = (w1+w2)/2 = {:.6}", w_sym);
+            println!("  w_asym = (w1-w2)/2 = {:.6}", w_asym);
+            println!("  |w_asym/w_sym| = {:.4} (small => near-symmetric coupling)",
+                (w_asym / w_sym).abs());
+
+            // Test proximity to fundamental values
+            let fundamentals = [
+                (1.0, "1"),
+                (1.0 / 2.0_f64.sqrt(), "1/sqrt(2)"),
+                (1.0 / 3.0_f64.sqrt(), "1/sqrt(3)"),
+                (2.0 / 3.0, "2/3"),
+                (std::f64::consts::FRAC_1_PI, "1/pi"),
+                (0.5, "1/2"),
+            ];
+            println!("  Proximity to fundamental values:");
+            for (val, name) in &fundamentals {
+                println!("    |w_sym| vs {}: diff = {:.4}", name, (w_sym.abs() - val).abs());
+            }
+
+            // Stability: scan nearby selector pairs to check weight convergence
+            println!("\n--- SELECTOR PAIR STABILITY SCAN ---");
+            let mode_3 = MajoranaMode { gamma_index: 2, cd_basis_index: 3, cd_dim: 16 };
+            let alt_sel2: Vec<f64> = subs.iter().map(|s|
+                cd_braid_signed_friction(&mode_3, &mode_4, s, &sign_table)).collect();
+            println!("Alt Selector 2 (e_3,e_4): [{:.4}, {:.4}, {:.4}]",
+                alt_sel2[0], alt_sel2[1], alt_sel2[2]);
+
+            // Solve same system with alt selector
+            for (e_gen, mu_gen, tau_gen) in &perms {
+                let d1_mu = sel1[*mu_gen] - sel1[*e_gen];
+                let d2_mu = alt_sel2[*mu_gen] - alt_sel2[*e_gen];
+                let d1_tau = sel1[*tau_gen] - sel1[*e_gen];
+                let d2_tau = alt_sel2[*tau_gen] - alt_sel2[*e_gen];
+                let det = d1_mu * d2_tau - d2_mu * d1_tau;
+                if det.abs() < 1e-10 { continue; }
+                let alt_w1 = (log_mu_e * d2_tau - log_tau_e * d2_mu) / det;
+                let alt_w2 = (d1_mu * log_tau_e - d1_tau * log_mu_e) / det;
+                let f_e = alt_w1 * sel1[*e_gen] + alt_w2 * alt_sel2[*e_gen];
+                let f_mu = alt_w1 * sel1[*mu_gen] + alt_w2 * alt_sel2[*mu_gen];
+                let pred_mu = (f_mu - f_e).exp();
+                if (pred_mu - 207.0).abs() / 207.0 < 0.01 {
+                    println!("  Alt(e_3,e_4) e=O{}: w1={:.6}, w2={:.6}, w_sym={:.6}",
+                        e_gen+1, alt_w1, alt_w2, (alt_w1 + alt_w2) / 2.0);
+                }
+            }
         }
 
         } else if best_frictions_composite[0] > 1e-9 {
@@ -579,6 +641,135 @@ mod tests {
             let m_mu_pred = (alpha_fit * best_frictions_composite[1]).exp();
             println!("  Implied masses: {:.1} : {:.1} : {:.1}",
                 m_e_pred / m_e_pred, m_mu_pred / m_e_pred, m_tau_pred / m_e_pred);
+        }
+    }
+
+    /// 3-blade zero divisor friction scan.
+    ///
+    /// Tests whether 3-blade (sum of 3 basis elements) zero divisors give
+    /// friction quantized in sqrt(3) or sqrt(6), potentially producing the
+    /// lepton mass ratio ln(3477)/ln(207) = 1.529 without free parameters.
+    ///
+    /// A 3-blade ZD is a = e_i + e_j + e_k such that a*b = 0 for some b != 0.
+    /// This requires that the pairwise products cancel: the three terms in
+    /// (e_i + e_j + e_k) * b must sum to zero.
+    #[test]
+    fn test_3_blade_zero_divisor_friction() {
+        use rayon::prelude::*;
+
+        let sign_table = SignTableCache::new(16);
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+
+        println!("--- 3-BLADE ZERO DIVISOR FRICTION SCAN ---");
+
+        // Target ratio for parameter-free mass hierarchy
+        let target_ratio: f64 = (3477.0_f64).ln() / (207.0_f64).ln();
+        println!("Target f_heavy/f_mid ratio: {:.6}", target_ratio);
+
+        // Generate all 3-blade combinations: C(15,3) = 455 triples
+        let mut triples: Vec<(usize, usize, usize)> = Vec::new();
+        for i in 1..16_usize {
+            for j in (i + 1)..16 {
+                for k in (j + 1)..16 {
+                    triples.push((i, j, k));
+                }
+            }
+        }
+        println!("Total 3-blade triples: {}", triples.len());
+
+        // For each triple (e_i, e_j, e_k), compute braid friction in each
+        // subalgebra using the SUM of the three pairwise braid frictions.
+        // This is the 3-blade analogue of the 2-blade signed friction.
+        let results: Vec<_> = triples.par_iter().map(|&(i, j, k)| {
+            let mi = MajoranaMode { gamma_index: i - 1, cd_basis_index: i, cd_dim: 16 };
+            let mj = MajoranaMode { gamma_index: j - 1, cd_basis_index: j, cd_dim: 16 };
+            let mk = MajoranaMode { gamma_index: k - 1, cd_basis_index: k, cd_dim: 16 };
+
+            let mut frictions = [0.0_f64; 3];
+            for (g, sub) in [&o1, &o2, &o3].iter().enumerate() {
+                // 3-blade friction: sum of all three pairwise signed frictions
+                let f_ij = cd_braid_signed_friction(&mi, &mj, sub, &sign_table);
+                let f_ik = cd_braid_signed_friction(&mi, &mk, sub, &sign_table);
+                let f_jk = cd_braid_signed_friction(&mj, &mk, sub, &sign_table);
+                frictions[g] = f_ij + f_ik + f_jk;
+            }
+
+            // Check for 1+1+1 split
+            let mut abs_f = [frictions[0].abs(), frictions[1].abs(), frictions[2].abs()];
+            abs_f.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+            let is_split = (frictions[0] - frictions[1]).abs() > 1e-9
+                && (frictions[1] - frictions[2]).abs() > 1e-9
+                && (frictions[0] - frictions[2]).abs() > 1e-9;
+
+            let ratio = if abs_f[1] > 1e-9 { abs_f[2] / abs_f[1] } else { f64::INFINITY };
+            let error = (ratio - target_ratio).abs();
+
+            ((i, j, k), frictions, abs_f, is_split, ratio, error)
+        }).collect();
+
+        // Count splits and find best ratio
+        let split_count = results.iter().filter(|r| r.3).count();
+        println!("3-blade 1+1+1 splits: {} / {}", split_count, triples.len());
+
+        // Find best ratio match
+        let best = results.iter()
+            .filter(|r| r.3 && r.2[1] > 1e-9)
+            .min_by(|a, b| a.5.partial_cmp(&b.5).unwrap());
+
+        if let Some(((i, j, k), frictions, abs_f, _, ratio, error)) = best {
+            println!("\nBest 3-blade triple: (e_{}, e_{}, e_{})", i, j, k);
+            println!("  Signed frictions: [{:.4}, {:.4}, {:.4}]",
+                frictions[0], frictions[1], frictions[2]);
+            println!("  |Frictions|: [{:.4}, {:.4}, {:.4}]", abs_f[0], abs_f[1], abs_f[2]);
+            println!("  Ratio f_heavy/f_mid = {:.6} (target: {:.6})", ratio, target_ratio);
+            println!("  Error: {:.6}", error);
+
+            // Check for sqrt(3) or sqrt(6) quantization
+            let sqrt2: f64 = 2.0_f64.sqrt();
+            let sqrt3: f64 = 3.0_f64.sqrt();
+            let sqrt6: f64 = 6.0_f64.sqrt();
+            println!("\n  Friction value analysis:");
+            for (g, f) in abs_f.iter().enumerate() {
+                if *f > 1e-9 {
+                    println!("    f[{}] = {:.6}, f/sqrt(2) = {:.4}, f/sqrt(3) = {:.4}, f/sqrt(6) = {:.4}",
+                        g, f, f / sqrt2, f / sqrt3, f / sqrt6);
+                }
+            }
+
+            // Compute implied mass hierarchy
+            if abs_f[0] < 1e-9 && abs_f[1] > 1e-9 {
+                let alpha_fit = (207.0_f64).ln() / abs_f[1];
+                let m_tau_pred = (alpha_fit * abs_f[2]).exp();
+                println!("\n  3-blade mass hierarchy: 1 : 207 : {:.1} (PDG: 3477, error: {:.1}%)",
+                    m_tau_pred, ((m_tau_pred - 3477.0) / 3477.0 * 100.0).abs());
+            }
+        } else {
+            println!("No 3-blade triples with 1+1+1 split found.");
+        }
+
+        // Print top-5
+        let mut sorted: Vec<_> = results.iter()
+            .filter(|r| r.3 && r.2[1] > 1e-9)
+            .collect();
+        sorted.sort_by(|a, b| a.5.partial_cmp(&b.5).unwrap());
+        println!("\n--- TOP-5 3-BLADE TRIPLES ---");
+        for (rank, ((i, j, k), _, abs_f, _, ratio, _)) in sorted.iter().take(5).enumerate() {
+            println!("  #{}: (e_{},e_{},e_{}) | |f|=[{:.2},{:.2},{:.2}] | ratio={:.4}",
+                rank + 1, i, j, k, abs_f[0], abs_f[1], abs_f[2], ratio);
+        }
+
+        // Unique friction values: check for sqrt quantization
+        let mut unique_vals: Vec<f64> = results.iter()
+            .flat_map(|r| r.2.iter().copied())
+            .filter(|&v| v > 1e-9)
+            .collect();
+        unique_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        unique_vals.dedup_by(|a, b| (*a - *b).abs() < 1e-6);
+        println!("\n  Unique nonzero |friction| values ({}):", unique_vals.len());
+        for v in &unique_vals {
+            println!("    {:.6} = {:.4}*sqrt(2) = {:.4}*sqrt(3) = {:.4}*sqrt(6)",
+                v, v / 2.0_f64.sqrt(), v / 3.0_f64.sqrt(), v / 6.0_f64.sqrt());
         }
     }
 }
