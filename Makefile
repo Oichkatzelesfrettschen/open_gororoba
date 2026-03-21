@@ -204,13 +204,11 @@ registry-verify-markdown-governance:
 	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
 
 governance-gate-readonly:
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- schema-signatures
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
+	@# Build both gate binaries once, then run directly from cache.
+	@# This avoids 7x cargo freshness-check overhead (~4.5s each).
+	$(CARGO_ENV) cargo build -p gororoba_cli_data --bin markdown-registry --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/debug/markdown-registry verify-gate-all
+	$(REPO_CARGO_TARGET_DIR)/debug/governance-verify gate-all
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"

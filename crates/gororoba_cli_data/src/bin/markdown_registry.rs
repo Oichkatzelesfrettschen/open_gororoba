@@ -44,6 +44,8 @@ enum Command {
     VerifyInventoryTomlFirst,
     /// Verify that all owner map entries have valid fields and all paths exist on disk
     VerifyOwnerMap,
+    /// Run both gate checks (inventory + owner map) in a single process invocation.
+    VerifyGateAll,
     /// Build a TOML inventory of all .md files (used by non-gate Makefile targets)
     BuildTomlInventory,
     /// Verify an existing TOML inventory matches the current disk state
@@ -113,6 +115,13 @@ fn main() -> Result<()> {
     match cli.command {
         Command::VerifyInventoryTomlFirst => verify_inventory_toml_first(&repo_root),
         Command::VerifyOwnerMap => verify_owner_map(&repo_root),
+        Command::VerifyGateAll => {
+            verify_inventory_toml_first(&repo_root)?;
+            eprintln!("[done] verify-inventory-toml-first");
+            verify_owner_map(&repo_root)?;
+            eprintln!("[done] verify-owner-map");
+            Ok(())
+        }
         // Non-gate subcommands: print a clear message rather than silently succeeding.
         // They are wired in the Makefile but not exercised by governance-gate-readonly.
         // Implement them as stubs that succeed rather than fail, so full Makefile pipelines
