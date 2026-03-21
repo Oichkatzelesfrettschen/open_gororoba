@@ -1182,4 +1182,68 @@ mod tests {
         println!("  theta_23 = {:.2} deg (PDG: {:.2})", (best.3).2, pdg_t23);
         println!("  Weighted score: {:.6}", best.0);
     }
+
+    /// Type X triad defect vector as off-diagonal coupling source.
+    ///
+    /// For each Type X triad (b,c,d), the 16D associator defect is:
+    ///   v = (e_b * e_c) * e_d - e_b * (e_c * e_d) = +/- 2 * e_{b^c^d}
+    ///
+    /// The psi overlap on these defect vectors gives the cross-generational
+    /// coupling from the fully non-associative sector.
+    #[test]
+    fn test_pmns_type_x_defect_coupling() {
+        use cd_kernel::{cd_multiply, gourlay_psi};
+
+        let dim = 16_usize;
+
+        // Find a representative Type X triad and compute its defect vector
+        let mut best_defect_norm = 0.0_f64;
+        let mut best_defect = [0.0_f64; 16];
+        let mut best_triad = (0, 0, 0);
+
+        for b in 1..dim {
+            for c in (b + 1)..dim {
+                for d in (c + 1)..dim {
+                    let t1 = crate::sedenion_subalgebras::assoc_strict(dim, b, c, d);
+                    let t2 = crate::sedenion_subalgebras::assoc_strict(dim, b, d, c);
+                    let t3 = crate::sedenion_subalgebras::assoc_strict(dim, c, b, d);
+                    // Type X: all three nonzero
+                    if t1 < 1e-10 || t2 < 1e-10 || t3 < 1e-10 { continue; }
+
+                    // Compute 16D defect vector
+                    let mut eb = vec![0.0; dim]; eb[b] = 1.0;
+                    let mut ec = vec![0.0; dim]; ec[c] = 1.0;
+                    let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+                    let bc = cd_multiply(&eb, &ec);
+                    let bcd = cd_multiply(&bc, &ed);
+                    let cd_prod = cd_multiply(&ec, &ed);
+                    let b_cd = cd_multiply(&eb, &cd_prod);
+
+                    let mut defect = [0.0_f64; 16];
+                    for k in 0..16 { defect[k] = bcd[k] - b_cd[k]; }
+                    let _norm: f64 = defect.iter().map(|x| x * x).sum::<f64>().sqrt();
+
+                    // Check psi overlap magnitude
+                    let psi_d = gourlay_psi(&defect);
+                    let overlap: f64 = defect.iter().zip(psi_d.iter()).map(|(a, b)| a * b).sum();
+
+                    if overlap.abs() > best_defect_norm {
+                        best_defect_norm = overlap.abs();
+                        best_defect = defect;
+                        best_triad = (b, c, d);
+                    }
+                }
+            }
+        }
+
+        println!("--- TYPE X DEFECT VECTOR PSI COUPLING ---");
+        println!("  Best triad: (e_{}, e_{}, e_{})", best_triad.0, best_triad.1, best_triad.2);
+        println!("  Defect norm: {:.4}", best_defect.iter().map(|x| x*x).sum::<f64>().sqrt());
+        println!("  |<defect, psi(defect)>| = {:.4}", best_defect_norm);
+
+        let psi_d = gourlay_psi(&best_defect);
+        let self_norm: f64 = best_defect.iter().map(|x| x*x).sum();
+        let overlap: f64 = best_defect.iter().zip(psi_d.iter()).map(|(a, b)| a * b).sum();
+        println!("  Overlap/norm ratio = {:.4} (cos(120) = -0.5)", overlap / self_norm);
+    }
 }
