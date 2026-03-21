@@ -195,10 +195,13 @@ Wilmot (AACA 2026, arXiv:2505.06011) derives sedenions from a 14-simplex
 calibration on Pin(15).  The 14-dimensional calibration space matches
 dim(G_2) = 14, providing a calibration-theoretic origin for the G_2 isometry.
 
-**Note on Aut(S)**: The automorphism group of the sedenions is under active
-investigation.  Gresnigt's framework uses Aut(S) = G_2 x S_3; Wilmot's
-calibration analysis supports Schafer's Aut(S) = G_2.  This document does
-not take a position on this mathematical question.
+**Note on Aut(S)**: Wilmot (arXiv:2512.07210) resolves the Schafer/Brown
+discrepancy in favor of Schafer: Aut(S) = G_2.  Brown's sigma'
+transformation (eq. 11) changes the e_{1234567} term of Phi_O, so it is
+not an automorphism.  Only Phi_O^{C(1)} (cyclic sign variations) embeds
+as a 15-dimensional G_2 representation.  Gresnigt's S_3 from Cl(8) acts
+on generation labels (a DIFFERENT structure), not as algebra automorphisms,
+and is compatible with Aut(S) = G_2.
 
 ## VI. Non-Associativity Structure and ZD Incidence
 
@@ -272,3 +275,10 @@ C-1459: 3-blade ZD ratio = 3/2, friction quantized in 2*sqrt(2)
 C-1460: Gresnigt Cl(8) S_3 correspondence
 C-1461: Koebisu V_2(R^8) holonomy verification
 C-1462: SU(5) lepton-quark selector identity
+C-1467: Wilmot Fano 3-form: 7 associative + 28 non-associative octonion triples
+C-1468: Wilmot 14-simplex: 35 terms, 105 edges, 252 non-associative
+C-1469: Wilmot algebra stacking: H_n formula, T_4=15
+C-1470: Wilmot 252 = 8*28 + 7*4 decomposition
+C-1471: Wilmot Aut(S) = G_2 (Schafer confirmed)
+C-1472: Wilmot Fano volume: 35 quaternions, 15 planes
+C-1473: Dou ZD kernel: 4-dim ker(e_1-e_10)

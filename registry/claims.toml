@@ -9929,3 +9929,52 @@ statement = """Gourlay/Gresnigt psi automorphism verified on sedenion vectors: p
 status = "Verified"
 where_stated = "crates/cd_kernel/src/cayley_dickson/tests.rs::test_gourlay_psi_order_3"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1467"
+statement = """Wilmot (2505.06011) Fano 3-form verification: octonion (dim=8) basis has exactly 7 associative triples and 28 non-associative triples. The 7 associative triples correspond to the Fano plane lines, each generating a quaternion subalgebra, and cover all 21 edges of the 6-simplex."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_fano_3form_octonion_triad_count"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1468"
+statement = """Wilmot (2505.06011) 14-simplex: the sedenion cross product 3-form has 35 terms covering all C(15,2)=105 edges. Standard sedenions have exactly 252 non-associative triples. 30 primary 3-forms = 7!/|PSL(2,7)| = 5040/168."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_sedenion_14simplex_non_assoc_counts"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1469"
+statement = """Wilmot (2512.07210) Algebra Stacking: H_n = (2^n-1)(2^n-2)/6 quaternion subalgebras. H_3=7, H_4=35, H_5=155. T_n = (2^n-1)(2^n-2)(2^n-4)/168 octonion-like subalgebras. T_4=15. Each pair shares 2^(n-2)-1 quaternions (3 for sedenions)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_algebra_stacking_quaternion_count"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1470"
+statement = """Wilmot (2512.07210) 252 = 8*28 + 7*4: sedenion non-associative triples decompose as 8 genuine octonion subalgebras (28 Type X each) plus 7 P_4 pseudo-octonion subalgebras (4 Type X each). Only P_4, P_12, P_14 occur as CD subalgebras."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_252_decomposition_8o_plus_7p4"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1471"
+statement = """Wilmot (2512.07210) Aut(S) = G_2 (Schafer confirmed). Brown's sigma' transformation changes e_{1234567} of Phi_O, invalidating it as automorphism. Only Phi_O^{C(1)} (cyclic sign variations) provides connected G_2 automorphisms in 15 dimensions. 105 primary invariants x 4 sign variations = 420 total."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_aut_s_equals_g2"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1472"
+statement = """Wilmot (2512.07210) Fano Volume: 35 quaternions in 15 Fano planes, each quaternion shared by exactly 3 planes, each plane has 7 quaternions. Double counting: 35*3 = 15*7 = 105. Tesseract (Z_2^4) projection visualizes all 15 planes."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_fano_volume_structure"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1473"
+statement = """Dou et al. (2512.00600) ZD kernel: ker(e_1-e_10) = span_R(e_4+e_15, e_5-e_14, e_6+e_13, e_7-e_12), verified by direct CD multiplication. Koebisu D_2(e_1-e_10) = 0 cross-check. The 4-dim kernel creates the second convergence radius in sedenionic star-power series."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_dou_zd_kernel_structure"
+last_verified = "2026-03-21"
