@@ -128,19 +128,41 @@ macro_rules! implement_cd_algebra {
                 res
             }
 
-            /// Multiply via flat recursive CD doubling.
+            /// Zero-copy view of internal SIMD data as a flat f64 slice.
+            ///
+            /// SAFETY: `f64x4` is `#[repr(C, align(32))]` containing exactly
+            /// 4 contiguous f64 values. An `[f64x4; N]` is therefore layout-
+            /// compatible with `[f64; N*4]`. The pointer cast reinterprets
+            /// without copying any data.
+            #[inline(always)]
+            fn as_flat(&self) -> &[f64; $dim] {
+                // SAFETY: [f64x4; N] and [f64; N*4] have identical layout
+                unsafe { &*(self.data.as_ptr() as *const [f64; $dim]) }
+            }
+
+            /// Zero-copy mutable view of internal SIMD data as a flat f64 slice.
+            #[inline(always)]
+            fn as_flat_mut(&mut self) -> &mut [f64; $dim] {
+                // SAFETY: same layout guarantee as as_flat
+                unsafe { &mut *(self.data.as_mut_ptr() as *mut [f64; $dim]) }
+            }
+
+            /// Multiply via flat recursive CD doubling (zero-copy).
             ///
             /// Uses `cd_multiply_flat_into` which recurses down to the
             /// register-resident sedenion base case (64 FMAs, zero heap
-            /// allocation at the base level).  This replaces the former
-            /// O(dim^2 * log dim) XOR-sign basis loop with the recursive
-            /// CD formula that has better constant factors.
+            /// allocation at the base level).  The SIMD data is accessed
+            /// directly via zero-cost pointer reinterpretation -- no
+            /// intermediate to_slice()/from_slice() copies.
             pub fn mul(&self, other: &Self) -> Self {
-                let self_slice = self.to_slice();
-                let other_slice = other.to_slice();
-                let mut res = [0.0f64; $dim];
-                cd_multiply_flat_into(&self_slice, &other_slice, &mut res, $dim);
-                Self::from_slice(&res)
+                let mut result = Self::zero();
+                cd_multiply_flat_into(
+                    self.as_flat(),
+                    other.as_flat(),
+                    result.as_flat_mut(),
+                    $dim,
+                );
+                result
             }
         }
     };

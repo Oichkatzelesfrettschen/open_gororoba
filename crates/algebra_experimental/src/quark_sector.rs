@@ -445,6 +445,33 @@ pub struct CkmResult {
     pub down_masses: [f64; 3],
 }
 
+/// Sort eigenvalues by absolute mass and reorder eigenvector columns.
+///
+/// Enforces the Generation 1 < 2 < 3 mass hierarchy before CKM/PMNS
+/// extraction, eliminating 90-degree permutation artifacts from
+/// eigendecomposition ordering ambiguity.
+pub fn sort_mass_eigenstates(
+    evals: &faer::diag::DiagRef<'_, f64>,
+    evecs: &faer::MatRef<'_, f64>,
+) -> ([f64; 3], Mat<f64>) {
+    let mut pairs: [(usize, f64); 3] = [
+        (0, evals.column_vector().read(0).abs()),
+        (1, evals.column_vector().read(1).abs()),
+        (2, evals.column_vector().read(2).abs()),
+    ];
+    pairs.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+
+    let mut sorted_masses = [0.0_f64; 3];
+    let mut sorted_evecs = Mat::<f64>::zeros(3, 3);
+    for (new_idx, &(old_idx, mass)) in pairs.iter().enumerate() {
+        sorted_masses[new_idx] = mass;
+        for row in 0..3 {
+            sorted_evecs.write(row, new_idx, evecs.read(row, old_idx));
+        }
+    }
+    (sorted_masses, sorted_evecs)
+}
+
 /// Derive CKM matrix: V_CKM = U_up^T * U_down.
 pub fn derive_ckm_matrix(
     basis: &[Sedenion; 16],
@@ -460,21 +487,12 @@ pub fn derive_ckm_matrix(
     let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
     let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
 
-    let s_up = eig_up.s();
-    let u_up = eig_up.u();
-    let s_down = eig_down.s();
-    let u_down = eig_down.u();
-
-    // Extract eigenvalues
-    let mut up_masses = [0.0; 3];
-    let mut down_masses = [0.0; 3];
-    for i in 0..3 {
-        up_masses[i] = s_up.column_vector().read(i).abs();
-        down_masses[i] = s_down.column_vector().read(i).abs();
-    }
+    // Sort by ascending absolute mass BEFORE extracting CKM
+    let (up_masses, u_up) = sort_mass_eigenstates(&eig_up.s(), &eig_up.u());
+    let (down_masses, u_down) = sort_mass_eigenstates(&eig_down.s(), &eig_down.u());
 
     // V_CKM = U_up^T * U_down
-    let v_ckm = u_up.transpose() * u_down;
+    let v_ckm = u_up.transpose() * &u_down;
 
     // Extract angles from the standard parameterization:
     //   V_us = sin(theta_12)*cos(theta_13)
@@ -509,10 +527,7 @@ pub fn derive_ckm_matrix(
         0.0
     };
 
-    // Sort masses ascending
-    up_masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    down_masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
-
+    // Masses already sorted ascending by sort_mass_eigenstates
     CkmResult {
         matrix: v_ckm,
         angles_deg: (
