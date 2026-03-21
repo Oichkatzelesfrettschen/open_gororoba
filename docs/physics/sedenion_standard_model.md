@@ -624,17 +624,94 @@ release-gate profile: thin LTO + 6 codegen-units + line-tables debug info.
 Fat LTO was the root cause of 2-9 minute recompile times (confirmed via
 perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 
-## References
+## References and Bibliography
 
-- Reggiani (2024): Geometry of sedenion zero divisors [arXiv:2411.18881]
-- Koebisu (2025): Singular structures + holonomy [arXiv:2512.13002]
-- Wilmot (2026): G_2 from Clifford calibrations [arXiv:2505.06011]
-- Wilmot (2026): Structure of CD algebras [arXiv:2505.11747]
-- Wilmot (2025): Automorphisms of sedenions [arXiv:2512.07210]
-- Gresnigt (2025): Electroweak + S_3 from Cl(8) [arXiv:2601.07857]
-- Gourlay & Gresnigt (2024): Three gens from Cl(8) [arXiv:2407.01580]
-- Tang & Tang (2024): Sedenion SU(5) model [MDPI Symmetry 16-00626]
-- Dou et al. (2024): Sedenionic star-power series [arXiv:2512.00600]
+### TIER 1: Directly Integrated (Layer A backbone + Layer C foundations)
+
+**Zero-divisor geometry and G2 structure:**
+- Reggiani (2024): "Geometry of sedenion zero divisors" [arXiv:2411.18881]
+  Z(S) homeomorphic to G2. Principal bundle SU(2)->G2->V_2(R^7). 84 standard ZDs.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/reggiani_2024_2411.18881.pdf
+  Integration: g2_stabilizer.rs, sedenion_subalgebras.rs
+
+- Reggiani (2025): "CD algebras -- full study" [arXiv:2512.13002]
+  Isometry group G2 x S^1. Curvature polynomial (285 coefficients).
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/reggiani_2025_251213002_cd_algebras.pdf
+
+- Koebisu (2025): "Singular structures + holonomy" [arXiv:2512.13002]
+  det(L_v) = D_1(v)^4 D_2(v)^2. Local singular model. V_2(R^8) holonomy.
+
+- Moreno (2005): "Zero divisors of 2^n-ions" [arXiv:math/0512517]
+  ZD counting formula for general CD algebras. Stiefel manifold identification.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512517_zero_divisors_2n_ions.pdf
+
+- Moreno (2005): "Companion" [arXiv:math/0512516]
+  Monomorphisms between CD algebras. Subalgebra embeddings. Doubly-pure elements.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512516_companion.pdf
+
+**CD tower structure and non-associativity:**
+- Wilmot (2026): "G_2 from Clifford calibrations" [arXiv:2505.06011]
+- Wilmot (2026): "Structure of CD algebras" [arXiv:2505.11747]
+  Graded CD construction. 35+60+360=455 triad count (U_1). A/B/C/X stratification.
+- Wilmot (2025): "Automorphisms of sedenions" [arXiv:2512.07210]
+  Aut(S) = G2 (Schafer confirmed). Fano volume. Power-associative subalgebras.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/ (3 Wilmot PDFs)
+  Integration: sedenion_subalgebras.rs claims C-1467..C-1473
+
+- de Marrais (2000-2007): "Pathions" (7 papers)
+  Box-kite ZD structure. 42 assessors. Sand mandala emanation tables.
+  Property cascade: alternativity (16D), power-assoc (32D), flexibility (64D).
+  ZD counts: 84 (sedenions), 252 (pathions).
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/de_marrais_*.pdf
+  Integration: cd_tower.rs naming conventions, AlgebraDim enum
+
+**Canonical mathematical reference:**
+- Baez (2002): "The Octonions" [arXiv:math/0105155]
+  Division algebra tower R->C->H->O. Fano plane. G2=Aut(O). Triality.
+  Exceptional groups E6/E7/E8/F4. Hurwitz theorem. Freudenthal-Tits magic square.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.pdf
+
+**Interleaved generation framework (Layer B):**
+- Gresnigt (2019): "Intersecting octonion subalgebras" [arXiv:1904.03186]
+- Gresnigt (2025): "Electroweak + S_3 from Cl(8)" [arXiv:2601.07857]
+- Gourlay & Gresnigt (2024): "Three generations from Cl(8)" [arXiv:2407.01580]
+  Interleaved O_i, psi automorphism, S_3 family symmetry, gauge S_3-invariance.
+  Integration: neutrino_sector.rs psi coupling, quark_sector.rs
+
+- Tang & Tang (2024): "Sedenion SU(5) model" [MDPI Symmetry 16-00626]
+  Contiguous-block U/V/W generations. Different framework from interleaved.
+  Integration: su5_gut.rs
+
+- Tang (2025): "Sedenionic QED" [Preprints 2025, 11.0427]
+  Fermion mapping e_1-3 (1st gen quarks), e_10-12 (1st gen leptons).
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt
+
+- Dou et al. (2024): "Sedenionic star-power series" [arXiv:2512.00600]
+  ZD kernel structure. Second convergence radius.
+
+**G2/SU(3) stabilizer validation:**
+- AACA (2025): "G2 via CD doubling" [Adv. Appl. Clifford Algebras 35:14]
+  Explicit G2 construction. SU(3) = Stab_G2(1-form). Validates PR1/PR2.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/s00006-025-01423-5.pdf
+
+- Southampton (2025): "PSL(2,7) structure" [PhD thesis, U. Southampton]
+  PSL(2,7) = Aut(Fano plane). Dessin d'enfant. Klein quartic embedding.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/soton_2025_psl2_7_structure_957754.pdf
+
+- Mironov (2014): "Sedeonic equations" [SCIRP]
+  Sedenion field equations for gravitoelectromagnetism. Cross-check multiplication.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf
+
+### TIER 2: Architectural Precedent
+
+- Connes (1996): "Gravity coupled with matter" [arXiv:hep-th/9603053]
+  Spectral triple (A, H, D) with A = C + H + M_3(C). Gauge/fermion emergence.
+- Chamseddine & Connes (1996): "Spectral action principle" [arXiv:hep-th/9606001]
+  Tr(phi(D/Lambda)) reproduces Einstein + SM action.
+- van den Dungen (2017): "Lorentz twisted spectral triples" [arXiv:1710.04965]
+  Twisted commutator, Krein space. Future CP/Majorana packaging.
+- West (2001): "E11 and M-theory" [arXiv:hep-th/0104081]
+  Exceptional group chain. G2 at root of E-series.
 
 ## Claims Index
 
