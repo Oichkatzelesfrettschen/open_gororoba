@@ -20,12 +20,35 @@ use crate::three_fermion_generations::get_sedenion_subalgebras;
 use faer::{Mat, Side};
 
 /// Configuration for which subalgebra definition to use.
+///
+/// Three distinct schemes appear in the literature. They are NOT interchangeable:
+///
+/// - **TangContiguous** (Tang & Tang 2024): O1={e_0..e_7}, O2={e_0..e_3,e_8..e_11},
+///   O3={e_0..e_3,e_12..e_15}. Shared quaternion = {e_0,e_1,e_2,e_3} (spacetime Gamma).
+///   Mass-energy formulas and creation/annihilation operators written in this basis.
+///
+/// - **InterleavedStride** (de Marrais 2007, Gillard & Gresnigt 2019):
+///   O1={0,1,4,5,8,9,12,13}, O2={0,2,4,6,8,10,12,14}, O3={0,3,4,7,8,11,12,15}.
+///   Related by cyclic permutation sigma: k -> k+1 on generation-specific indices.
+///   Common intersection = {e_0, e_4, e_8, e_12} (Theta quaternion).
+///
+/// - **GresnigtIntersecting** (Gresnigt 2019, arXiv:1904.03186):
+///   Same index sets as InterleavedStride, but the S3 family symmetry is
+///   implemented via Cl(8) automorphisms (psi_3, epsilon), NOT cyclic permutation
+///   of basis indices. Gauge generators required to commute with S3 action.
+///   Common quaternionic subalgebra = {1, e_1, e_14, e_15} in Gresnigt's basis.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SubalgebraScheme {
-    /// Contiguous CD-doubling blocks: O1=[0..7], O2=[0,1,2,3,8..11], O3=[0,1,2,3,12..15]
+    /// Tang's contiguous CD-doubling blocks (U/V/W type).
+    /// Shared quaternion = {e_0, e_1, e_2, e_3}.
     ContiguousBlock,
-    /// Interleaved stride: O1=[0,1,4,5,8,9,12,13], etc.
+    /// Interleaved stride with cyclic S3 structure.
+    /// Shared quaternion = {e_0, e_4, e_8, e_12} (Theta).
     InterleavedStride,
+    /// Gresnigt's Cl(8) intersecting scheme.
+    /// Uses same index sets as InterleavedStride but S3 action is via
+    /// Cl(8) automorphisms, not basis permutation.
+    GresnigtIntersecting,
 }
 
 /// Get the three octonionic subalgebra index sets for a given scheme.
@@ -35,7 +58,8 @@ pub fn get_subalgebras(scheme: SubalgebraScheme) -> [Vec<usize>; 3] {
             let (o1, o2, o3) = get_octonion_subalgebras();
             [o1, o2, o3]
         }
-        SubalgebraScheme::InterleavedStride => {
+        SubalgebraScheme::InterleavedStride | SubalgebraScheme::GresnigtIntersecting => {
+            // Same index sets; the difference is the S3 action mechanism
             let (o1, o2, o3) = get_sedenion_subalgebras();
             [o1, o2, o3]
         }
