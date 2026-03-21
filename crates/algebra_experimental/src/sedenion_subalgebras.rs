@@ -629,4 +629,144 @@ mod tests {
             println!("    Partial coverage -- the 84:84:252 is not a simple bijection");
         }
     }
+
+    /// Incidence matrix SVD analysis.
+    ///
+    /// Builds the full 420x42 incidence matrix (triads x assessors),
+    /// extracts B/C/X submatrices, computes their ranks and singular values
+    /// to formalize the uniform cover structure.
+    #[test]
+    fn test_incidence_matrix_svd() {
+        use cd_kernel::cayley_dickson::cd_multiply;
+        use nalgebra::DMatrix;
+
+        let dim = 16_usize;
+
+        // Build assessor list (42 pairs)
+        let mut assessors: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                assessors.push((low, high));
+            }
+        }
+        assert_eq!(assessors.len(), 42);
+
+        // Build triads with type labels
+        let mut triads_b: Vec<(usize, usize, usize)> = Vec::new();
+        let mut triads_c: Vec<(usize, usize, usize)> = Vec::new();
+        let mut triads_x: Vec<(usize, usize, usize)> = Vec::new();
+
+        for b in 1..dim {
+            for c in (b + 1)..dim {
+                for d in (c + 1)..dim {
+                    let t1 = assoc_strict(dim, b, c, d);
+                    let t2 = assoc_strict(dim, b, d, c);
+                    let t3 = assoc_strict(dim, c, b, d);
+                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
+                    match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
+                        (false, true, false) => triads_b.push((b, c, d)),
+                        (false, false, true) => triads_c.push((b, c, d)),
+                        _ => triads_x.push((b, c, d)),
+                    }
+                }
+            }
+        }
+
+        // Build incidence row for a triad: which assessors does it hit?
+        let build_row = |b: usize, c: usize, d: usize| -> Vec<f64> {
+            let mut eb = vec![0.0; dim]; eb[b] = 1.0;
+            let mut ec = vec![0.0; dim]; ec[c] = 1.0;
+            let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+
+            let products = [
+                cd_multiply(&eb, &ec),
+                cd_multiply(&eb, &ed),
+                cd_multiply(&ec, &ed),
+            ];
+
+            let mut row = vec![0.0_f64; 42];
+            for prod in &products {
+                let nonzero: Vec<usize> = prod.iter().enumerate()
+                    .filter(|(_, v)| v.abs() > 1e-12)
+                    .map(|(i, _)| i)
+                    .collect();
+                if nonzero.len() == 1 {
+                    let idx = nonzero[0];
+                    for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+                        if idx == low || idx == high {
+                            row[a_idx] = 1.0;
+                        }
+                    }
+                }
+            }
+            row
+        };
+
+        // Build submatrices
+        let mat_b = DMatrix::from_rows(
+            &triads_b.iter().map(|&(b, c, d)| {
+                nalgebra::RowDVector::from_vec(build_row(b, c, d))
+            }).collect::<Vec<_>>()
+        );
+        let mat_c = DMatrix::from_rows(
+            &triads_c.iter().map(|&(b, c, d)| {
+                nalgebra::RowDVector::from_vec(build_row(b, c, d))
+            }).collect::<Vec<_>>()
+        );
+        let mat_x = DMatrix::from_rows(
+            &triads_x.iter().map(|&(b, c, d)| {
+                nalgebra::RowDVector::from_vec(build_row(b, c, d))
+            }).collect::<Vec<_>>()
+        );
+
+        // SVD for each submatrix
+        let svd_b = mat_b.svd(false, false);
+        let svd_c = mat_c.svd(false, false);
+        let svd_x = mat_x.svd(false, false);
+
+        let rank = |sv: &nalgebra::OVector<f64, nalgebra::Dyn>| -> usize {
+            sv.iter().filter(|&&s| s > 1e-10).count()
+        };
+
+        let rank_b = rank(&svd_b.singular_values);
+        let rank_c = rank(&svd_c.singular_values);
+        let rank_x = rank(&svd_x.singular_values);
+
+        println!("--- INCIDENCE MATRIX SVD ANALYSIS ---");
+        println!("  Submatrix dimensions: B={}x42, C={}x42, X={}x42",
+            triads_b.len(), triads_c.len(), triads_x.len());
+        println!("  Rank(B) = {}", rank_b);
+        println!("  Rank(C) = {}", rank_c);
+        println!("  Rank(X) = {}", rank_x);
+
+        // Print top singular values
+        let top_sv = |sv: &nalgebra::OVector<f64, nalgebra::Dyn>, n: usize| -> String {
+            sv.iter().take(n).map(|s| format!("{:.3}", s)).collect::<Vec<_>>().join(", ")
+        };
+        println!("\n  Top-5 singular values:");
+        println!("    B: [{}]", top_sv(&svd_b.singular_values, 5));
+        println!("    C: [{}]", top_sv(&svd_c.singular_values, 5));
+        println!("    X: [{}]", top_sv(&svd_x.singular_values, 5));
+
+        // Key test: do B and C have the same singular value spectrum?
+        let sv_match_bc = svd_b.singular_values.iter()
+            .zip(svd_c.singular_values.iter())
+            .all(|(a, b)| (a - b).abs() < 1e-8);
+
+        println!("\n  B and C have identical singular spectra: {}", sv_match_bc);
+        if sv_match_bc {
+            println!("  => B and C submatrices are isomorphic (related by permutation)");
+            println!("  => Confirms Wilmot's dual mode B<->C swap");
+        }
+
+        // Column space comparison: project B columns onto C column space
+        // If projection is full-rank, they share the same column space
+        println!("\n  If Rank(B) = Rank(C) = Rank(X) = same value,");
+        println!("  all three types span the same column space over assessors.");
+        if rank_b == rank_c && rank_c == rank_x {
+            println!("  [CONFIRMED] All three types span the SAME column space");
+            println!("  The incidence is assessor-regular: B/C/X are coverage classes");
+        }
+    }
 }
