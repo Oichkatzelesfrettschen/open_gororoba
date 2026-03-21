@@ -1002,6 +1002,107 @@ pub fn compute_constrained_atmospheric_direction(
     optimal
 }
 
+/// Gauss-Newton solver for 2D (t_solar, t_atmo) optimization.
+///
+/// Minimizes the weighted residual ||r(t)||^2 where
+///   r = [(theta_12 - pdg_12)/pdg_12, (theta_13 - pdg_13)/pdg_13, (theta_23 - pdg_23)/pdg_23]
+/// using the affine structure M_nu(t1,t2) = M_nu_base + t1*A + t2*B.
+///
+/// The `angles_fn` takes (t1, t2) and returns (theta_12, theta_13, theta_23).
+/// Returns (best_t1, best_t2, best_angles, score).
+pub fn gauss_newton_2d<F>(
+    angles_fn: &F,
+    t1_init: f64,
+    t2_init: f64,
+    pdg: (f64, f64, f64),
+    weights: (f64, f64, f64),
+    max_iter: usize,
+) -> (f64, f64, (f64, f64, f64), f64)
+where
+    F: Fn(f64, f64) -> (f64, f64, f64),
+{
+    let eps = 0.01_f64;
+    let mut t1 = t1_init;
+    let mut t2 = t2_init;
+
+    for _iter in 0..max_iter {
+        let (a12, a13, a23) = angles_fn(t1, t2);
+        let r = [
+            weights.0 * (a12 - pdg.0) / pdg.0,
+            weights.1 * (a13 - pdg.1) / pdg.1,
+            weights.2 * (a23 - pdg.2) / pdg.2,
+        ];
+
+        // 3x2 Jacobian via finite differences
+        let (a12_p1, a13_p1, a23_p1) = angles_fn(t1 + eps, t2);
+        let (a12_m1, a13_m1, a23_m1) = angles_fn(t1 - eps, t2);
+        let (a12_p2, a13_p2, a23_p2) = angles_fn(t1, t2 + eps);
+        let (a12_m2, a13_m2, a23_m2) = angles_fn(t1, t2 - eps);
+
+        let j = [
+            [weights.0 * (a12_p1 - a12_m1) / (2.0 * eps * pdg.0),
+             weights.0 * (a12_p2 - a12_m2) / (2.0 * eps * pdg.0)],
+            [weights.1 * (a13_p1 - a13_m1) / (2.0 * eps * pdg.1),
+             weights.1 * (a13_p2 - a13_m2) / (2.0 * eps * pdg.1)],
+            [weights.2 * (a23_p1 - a23_m1) / (2.0 * eps * pdg.2),
+             weights.2 * (a23_p2 - a23_m2) / (2.0 * eps * pdg.2)],
+        ];
+
+        // Normal equations: J^T J * delta = -J^T r
+        let jtj = [
+            [j[0][0]*j[0][0] + j[1][0]*j[1][0] + j[2][0]*j[2][0],
+             j[0][0]*j[0][1] + j[1][0]*j[1][1] + j[2][0]*j[2][1]],
+            [j[0][1]*j[0][0] + j[1][1]*j[1][0] + j[2][1]*j[2][0],
+             j[0][1]*j[0][1] + j[1][1]*j[1][1] + j[2][1]*j[2][1]],
+        ];
+        let jtr = [
+            j[0][0]*r[0] + j[1][0]*r[1] + j[2][0]*r[2],
+            j[0][1]*r[0] + j[1][1]*r[1] + j[2][1]*r[2],
+        ];
+
+        // Solve 2x2 system: Cramer's rule with Levenberg-Marquardt damping
+        let lambda = 0.01; // damping factor
+        let a11 = jtj[0][0] + lambda;
+        let a12_m = jtj[0][1];
+        let a22 = jtj[1][1] + lambda;
+        let det = a11 * a22 - a12_m * a12_m;
+        if det.abs() < 1e-30 { break; }
+
+        let dt1 = -(a22 * jtr[0] - a12_m * jtr[1]) / det;
+        let dt2 = -(a11 * jtr[1] - a12_m * jtr[0]) / det;
+
+        // Line search with backtracking
+        let mut alpha = 1.0_f64;
+        let current_cost: f64 = r.iter().map(|x| x * x).sum();
+        for _ in 0..10 {
+            let new_t1 = t1 + alpha * dt1;
+            let new_t2 = t2 + alpha * dt2;
+            let (na12, na13, na23) = angles_fn(new_t1, new_t2);
+            let nr = [
+                weights.0 * (na12 - pdg.0) / pdg.0,
+                weights.1 * (na13 - pdg.1) / pdg.1,
+                weights.2 * (na23 - pdg.2) / pdg.2,
+            ];
+            let new_cost: f64 = nr.iter().map(|x| x * x).sum();
+            if new_cost < current_cost {
+                t1 = new_t1;
+                t2 = new_t2;
+                break;
+            }
+            alpha *= 0.5;
+        }
+
+        // Convergence check
+        if dt1.abs() < 1e-6 && dt2.abs() < 1e-6 { break; }
+    }
+
+    let (a12, a13, a23) = angles_fn(t1, t2);
+    let score = ((a12 - pdg.0) / pdg.0).powi(2)
+              + ((a13 - pdg.1) / pdg.1).powi(2)
+              + ((a23 - pdg.2) / pdg.2).powi(2);
+    (t1, t2, (a12, a13, a23), score)
+}
+
 /// Trait for mapping a 42D assessor-space vector to a mass matrix perturbation.
 ///
 /// Different implementations encode different physical hypotheses about how
@@ -4357,46 +4458,86 @@ mod tests {
         // on V_6 directly -- that's what we really need for S_3 intertwining.
 
         // ===== PART 2: Build psi action on 42-assessor space =====
-        // psi is a linear automorphism on R^16. We need its action on the
-        // 42-dimensional assessor space. The correct approach:
         //
-        // Each assessor column in the incidence matrix is defined by the
-        // indicator function "does basis index low or high appear in a
-        // CD product of a triad?" The psi transformation changes which
-        // indices appear in which products.
+        // CORRECTED approach: psi is a sedenion automorphism, so
+        // psi(e_b * e_c) = psi(e_b) * psi(e_c). We compute the psi
+        // action on assessor space by transforming the INCIDENCE MATRIX.
         //
-        // For a linear map on the basis, psi(e_k) = sum_j P_{jk} e_j,
-        // the 16x16 matrix P transforms the indicator: if product
-        // e_b * e_c -> e_m, then psi(e_b) * psi(e_c) -> psi(e_m).
+        // For each Type X triad (b,c,d), compute:
+        //   1. Original incidence row (which assessors are touched)
+        //   2. Psi-transformed incidence row (apply psi to basis elements,
+        //      recompute CD products, find which assessors are touched)
+        //   3. The 42x42 transformation is: (X_psi^T * X_original) * pinv(X_original^T * X_original)
+        //      where X_original and X_psi have the same rows in corresponding order.
         //
-        // The assessor activation at (low, high) transforms as:
-        // assessor'(low', high') gets weight from assessor(low, high) via P.
+        // Simpler: since both X_original and X_psi have the same column space
+        // structure (42 assessors), we can directly compute the column
+        // transformation by comparing how each assessor column changes when
+        // all triads are psi-transformed.
+
+        // Build the psi-transformed incidence for each assessor:
+        // For each assessor (low, high), count how many Type X triad products
+        // touch index `low` or `high` BEFORE and AFTER psi transformation.
         //
-        // Build the 16x16 psi matrix first:
-        let mut psi_16x16 = [[0.0_f64; 16]; 16];
+        // The assessor column vector is: for each triad row, does the triad's
+        // CD products touch this assessor's indices?
+        //
+        // Under psi: triad (b,c,d) -> (b',c',d') where psi(e_b) is a linear
+        // combination. For unit basis elements in sedenions, psi maps
+        // e_k -> a specific 16D vector.
+
+        // Build 16x16 psi matrix
+        let mut psi_mat = [[0.0_f64; 16]; 16];
         for k in 0..16 {
             let mut ek = [0.0_f64; 16];
             ek[k] = 1.0;
             let psi_ek = gourlay_psi(&ek);
             for j in 0..16 {
-                psi_16x16[j][k] = psi_ek[j];
+                psi_mat[j][k] = psi_ek[j];
             }
         }
 
-        // Now build the 42x42 psi action matrix.
-        // Each assessor (low, high) tests for the presence of basis indices
-        // low (in 1..7) and high (in 9..15). Under psi, index low transforms
-        // to a 16D vector. The assessor contribution maps via:
-        //   assessor(low, high) -> sum over (l', h') of P[l'][low] * P[h'][high]
-        //   restricted to valid assessor pairs.
+        // For each assessor pair, compute how psi transforms the indicator.
+        // An assessor (low, high) is activated when a CD product output
+        // has index = low or index = high.
         //
-        // This is the outer-product form of the psi action:
+        // Under psi, basis index m maps to psi(e_m) = sum_j P[j][m] * e_j.
+        // So if a CD product outputs e_m, the psi-transformed product outputs
+        // sum_j P[j][m] * e_j, which activates assessors containing index j
+        // with weight P[j][m].
+        //
+        // The 42x42 psi action: assessor(low, high) gets weight from
+        // assessor(low', high') via the SINGLE-INDEX psi transformation:
+        //   T[dst, src] += P[dst_low][src_low]  (if dst_high == src_high)
+        //                + P[dst_high][src_high] (if dst_low == src_low)
+        //
+        // Wait -- that's still wrong. The assessor tests for low OR high
+        // independently. The correct single-index action:
+        //
+        // Under psi, "test for index m" becomes "test for index j with weight P[j][m]".
+        // Assessor (low, high) = "test for low" + "test for high" (union).
+        // The psi-transformed assessor tests for:
+        //   sum_j P[j][low] * (test for j) + sum_j P[j][high] * (test for j)
+        // = sum_j (P[j][low] + P[j][high]) * (test for j)
+        //
+        // Each "test for j" activates ALL assessors whose pair contains j.
+        //
+        // So T[dst, src] = sum over j in {dst_low, dst_high} of
+        //                  (P[j][src_low] + P[j][src_high])
+        //
+        // But this DOUBLE COUNTS when j appears in both src_low and src_high
+        // positions. For distinct indices (which is always the case since
+        // low < high and they're in different ranges), this is fine.
+
         let mut psi_42 = DMatrix::<f64>::zeros(n_assess, n_assess);
 
-        for (src, &(low, high)) in assessors.iter().enumerate() {
-            for (dst, &(tgt_low, tgt_high)) in assessors.iter().enumerate() {
-                // Weight = P[tgt_low][low] * P[tgt_high][high]
-                let w = psi_16x16[tgt_low][low] * psi_16x16[tgt_high][high];
+        for (src, &(src_low, src_high)) in assessors.iter().enumerate() {
+            for (dst, &(dst_low, dst_high)) in assessors.iter().enumerate() {
+                // Weight = how much psi maps src's indicator into dst's indicator
+                let w = psi_mat[dst_low][src_low]
+                      + psi_mat[dst_low][src_high]
+                      + psi_mat[dst_high][src_low]
+                      + psi_mat[dst_high][src_high];
                 if w.abs() > 1e-15 {
                     psi_42[(dst, src)] += w;
                 }
@@ -4930,45 +5071,34 @@ mod tests {
             let a_mat = precompute_perturbation(&u_solar);
             let b_mat = precompute_perturbation(&u_atmo);
 
-            // Inner scan: M_nu = M_nu_base + t1*A + t2*B (no V_6 recompute!)
+            // Inner optimization via Gauss-Newton (replaces 651-point grid scan)
+            // Closure: (t1, t2) -> (theta_12, theta_13, theta_23) using affine M_nu
+            let inner_angles = |t1: f64, t2: f64| -> (f64, f64, f64) {
+                let mut m_nu = m_nu_base.clone();
+                for i in 0..3 { for j in 0..3 {
+                    m_nu.write(i, j, m_nu.read(i, j)
+                        + t1 * a_mat.read(i, j)
+                        + t2 * b_mat.read(i, j));
+                }}
+                angles_from_mnu(&m_nu)
+            };
+
+            // Gradient-guided initial guess for t1
             let dot6 = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
                 a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
             };
             let g12_u = dot6(&g_12, &u_solar);
-            let t1_est = if g12_u.abs() > 0.01 { (pdg_t12 - 28.5) / g12_u } else { 2.5 };
-            let t1_est = t1_est.clamp(0.0, 5.0);
+            let t1_init = if g12_u.abs() > 0.01 { (pdg_t12 - 28.5) / g12_u } else { 2.5 };
+            let t1_init = t1_init.clamp(0.0, 5.0);
 
-            let mut best_score = f64::MAX;
-            let mut best_t1 = 0.0_f64;
-            let mut best_t2 = 0.0_f64;
-            let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
-
-            let t1_lo = (t1_est - 1.5).max(0.0);
-            let t1_hi = t1_est + 1.5;
-            for s1 in 0..=30_i32 {
-                let t1 = t1_lo + s1 as f64 * (t1_hi - t1_lo) / 30.0;
-                for s2 in -10..=10_i32 {
-                    let t2 = s2 as f64 * 0.2;
-                    // M_nu = M_nu_base + t1*A + t2*B
-                    let mut m_nu = m_nu_base.clone();
-                    for i in 0..3 { for j in 0..3 {
-                        m_nu.write(i, j, m_nu.read(i, j)
-                            + t1 * a_mat.read(i, j)
-                            + t2 * b_mat.read(i, j));
-                    }}
-                    let (t12, t13, t23) = angles_from_mnu(&m_nu);
-                    if (t13 - pdg_t13).abs() > 1.0 { continue; }
-                    let score = ((t12 - pdg_t12) / pdg_t12).powi(2)
-                              + ((t23 - pdg_t23) / pdg_t23).powi(2)
-                              + 5.0 * ((t13 - pdg_t13) / pdg_t13).powi(2);
-                    if score < best_score {
-                        best_score = score;
-                        best_t1 = t1;
-                        best_t2 = t2;
-                        best_angles = (t12, t13, t23);
-                    }
-                }
-            }
+            let (best_t1, best_t2, best_angles, best_score) = gauss_newton_2d(
+                &inner_angles,
+                t1_init,
+                0.0, // initial t2 guess
+                (pdg_t12, pdg_t13, pdg_t23),
+                (1.0, 2.24, 1.0), // sqrt(5) weight on theta_13
+                15, // max iterations
+            );
 
             (best_score, best_angles, best_t1, best_t2)
         };
