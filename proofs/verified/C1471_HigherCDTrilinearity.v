@@ -433,3 +433,116 @@ Proof.
   rewrite dekavoudon_mul_scale_left. rewrite <- dekavoudon_scale_sub.
   reflexivity.
 Qed.
+
+(** ========== GENERIC TOWER TACTIC ========== *)
+(** At each new level N, we need: mul_scale_left, mul_scale_right,
+    scale_sub, scale_add, conj_scale, neg_scale, then assoc_trilinear.
+    Each uses ONLY level N-1 lemmas. *)
+
+(** ========== CD-2048 ========== *)
+
+Lemma dekavoudon_scale_add : forall r a b,
+  dekavoudon_add (dekavoudon_scale r a) (dekavoudon_scale r b) =
+  dekavoudon_scale r (dekavoudon_add a b).
+Proof. intros r [? ?] [? ?]. unfold dekavoudon_scale, dekavoudon_add. simpl. f_equal; apply eriston_scale_add. Qed.
+
+Lemma dekavoudon_conj_scale : forall r x,
+  dekavoudon_conj (dekavoudon_scale r x) = dekavoudon_scale r (dekavoudon_conj x).
+Proof. intros r [? ?]. unfold dekavoudon_conj, dekavoudon_scale. simpl. f_equal. apply eriston_conj_scale. apply eriston_neg_scale. Qed.
+
+Theorem dekavoudon_mul_scale_right : forall r x y,
+  dekavoudon_mul x (dekavoudon_scale r y) = dekavoudon_scale r (dekavoudon_mul x y).
+Proof.
+  intros r [? ?] [? ?]. unfold dekavoudon_mul, dekavoudon_scale. simpl. f_equal.
+  - rewrite eriston_mul_scale_right. rewrite eriston_conj_scale. rewrite eriston_mul_scale_left. rewrite <- eriston_scale_sub. reflexivity.
+  - rewrite eriston_mul_scale_left. rewrite eriston_conj_scale. rewrite eriston_mul_scale_right. rewrite <- eriston_scale_add. reflexivity.
+Qed.
+
+Lemma dekavoudon_neg_scale : forall r x,
+  dekavoudon_neg (dekavoudon_scale r x) = dekavoudon_scale r (dekavoudon_neg x).
+Proof. intros r [? ?]. unfold dekavoudon_neg, dekavoudon_scale. simpl. f_equal; apply eriston_neg_scale. Qed.
+
+Theorem cd2048_mul_scale_left : forall r x y, cd2048_mul (cd2048_scale r x) y = cd2048_scale r (cd2048_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd2048_mul, cd2048_scale. simpl. f_equal.
+  - rewrite dekavoudon_mul_scale_left. rewrite dekavoudon_mul_scale_right. rewrite <- dekavoudon_scale_sub. reflexivity.
+  - rewrite dekavoudon_mul_scale_right. rewrite dekavoudon_mul_scale_left. rewrite <- dekavoudon_scale_add. reflexivity. Qed.
+
+Lemma cd2048_scale_sub : forall r a b, cd2048_scale r (cd2048_sub a b) = cd2048_sub (cd2048_scale r a) (cd2048_scale r b).
+Proof. intros r [? ?] [? ?]. unfold cd2048_scale, cd2048_sub, cd2048_add, cd2048_neg. simpl. f_equal; apply dekavoudon_scale_sub. Qed.
+
+Theorem cd2048_assoc_trilinear : forall r a b c, cd2048_assoc (cd2048_scale r a) b c = cd2048_scale r (cd2048_assoc a b c).
+Proof. intros. unfold cd2048_assoc. repeat rewrite cd2048_mul_scale_left. rewrite <- cd2048_scale_sub. reflexivity. Qed.
+
+(** ========== CD-4096 ========== *)
+
+Lemma cd2048_scale_add : forall r a b, cd2048_add (cd2048_scale r a) (cd2048_scale r b) = cd2048_scale r (cd2048_add a b).
+Proof. intros r [? ?] [? ?]. unfold cd2048_scale, cd2048_add. simpl. f_equal; apply dekavoudon_scale_add. Qed.
+Lemma cd2048_conj_scale : forall r x, cd2048_conj (cd2048_scale r x) = cd2048_scale r (cd2048_conj x).
+Proof. intros r [? ?]. unfold cd2048_conj, cd2048_scale. simpl. f_equal. apply dekavoudon_conj_scale. apply dekavoudon_neg_scale. Qed.
+Theorem cd2048_mul_scale_right : forall r x y, cd2048_mul x (cd2048_scale r y) = cd2048_scale r (cd2048_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd2048_mul, cd2048_scale. simpl. f_equal.
+  - rewrite dekavoudon_mul_scale_right. rewrite dekavoudon_conj_scale. rewrite dekavoudon_mul_scale_left. rewrite <- dekavoudon_scale_sub. reflexivity.
+  - rewrite dekavoudon_mul_scale_left. rewrite dekavoudon_conj_scale. rewrite dekavoudon_mul_scale_right. rewrite <- dekavoudon_scale_add. reflexivity. Qed.
+Lemma cd2048_neg_scale : forall r x, cd2048_neg (cd2048_scale r x) = cd2048_scale r (cd2048_neg x).
+Proof. intros r [? ?]. unfold cd2048_neg, cd2048_scale. simpl. f_equal; apply dekavoudon_neg_scale. Qed.
+
+Theorem cd4096_mul_scale_left : forall r x y, cd4096_mul (cd4096_scale r x) y = cd4096_scale r (cd4096_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd4096_mul, cd4096_scale. simpl. f_equal.
+  - rewrite cd2048_mul_scale_left. rewrite cd2048_mul_scale_right. rewrite <- cd2048_scale_sub. reflexivity.
+  - rewrite cd2048_mul_scale_right. rewrite cd2048_mul_scale_left. rewrite <- cd2048_scale_add. reflexivity. Qed.
+Lemma cd4096_scale_sub : forall r a b, cd4096_scale r (cd4096_sub a b) = cd4096_sub (cd4096_scale r a) (cd4096_scale r b).
+Proof. intros r [? ?] [? ?]. unfold cd4096_scale, cd4096_sub, cd4096_add, cd4096_neg. simpl. f_equal; apply cd2048_scale_sub. Qed.
+Theorem cd4096_assoc_trilinear : forall r a b c, cd4096_assoc (cd4096_scale r a) b c = cd4096_scale r (cd4096_assoc a b c).
+Proof. intros. unfold cd4096_assoc. repeat rewrite cd4096_mul_scale_left. rewrite <- cd4096_scale_sub. reflexivity. Qed.
+
+(** ========== CD-8192 ========== *)
+
+Lemma cd4096_scale_add : forall r a b, cd4096_add (cd4096_scale r a) (cd4096_scale r b) = cd4096_scale r (cd4096_add a b).
+Proof. intros r [? ?] [? ?]. unfold cd4096_scale, cd4096_add. simpl. f_equal; apply cd2048_scale_add. Qed.
+Lemma cd4096_conj_scale : forall r x, cd4096_conj (cd4096_scale r x) = cd4096_scale r (cd4096_conj x).
+Proof. intros r [? ?]. unfold cd4096_conj, cd4096_scale. simpl. f_equal. apply cd2048_conj_scale. apply cd2048_neg_scale. Qed.
+Theorem cd4096_mul_scale_right : forall r x y, cd4096_mul x (cd4096_scale r y) = cd4096_scale r (cd4096_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd4096_mul, cd4096_scale. simpl. f_equal.
+  - rewrite cd2048_mul_scale_right. rewrite cd2048_conj_scale. rewrite cd2048_mul_scale_left. rewrite <- cd2048_scale_sub. reflexivity.
+  - rewrite cd2048_mul_scale_left. rewrite cd2048_conj_scale. rewrite cd2048_mul_scale_right. rewrite <- cd2048_scale_add. reflexivity. Qed.
+Lemma cd4096_neg_scale : forall r x, cd4096_neg (cd4096_scale r x) = cd4096_scale r (cd4096_neg x).
+Proof. intros r [? ?]. unfold cd4096_neg, cd4096_scale. simpl. f_equal; apply cd2048_neg_scale. Qed.
+
+Theorem cd8192_mul_scale_left : forall r x y, cd8192_mul (cd8192_scale r x) y = cd8192_scale r (cd8192_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd8192_mul, cd8192_scale. simpl. f_equal.
+  - rewrite cd4096_mul_scale_left. rewrite cd4096_mul_scale_right. rewrite <- cd4096_scale_sub. reflexivity.
+  - rewrite cd4096_mul_scale_right. rewrite cd4096_mul_scale_left. rewrite <- cd4096_scale_add. reflexivity. Qed.
+Lemma cd8192_scale_sub : forall r a b, cd8192_scale r (cd8192_sub a b) = cd8192_sub (cd8192_scale r a) (cd8192_scale r b).
+Proof. intros r [? ?] [? ?]. unfold cd8192_scale, cd8192_sub, cd8192_add, cd8192_neg. simpl. f_equal; apply cd4096_scale_sub. Qed.
+Theorem cd8192_assoc_trilinear : forall r a b c, cd8192_assoc (cd8192_scale r a) b c = cd8192_scale r (cd8192_assoc a b c).
+Proof. intros. unfold cd8192_assoc. repeat rewrite cd8192_mul_scale_left. rewrite <- cd8192_scale_sub. reflexivity. Qed.
+
+(** ========== CD-16384 (Tessareskaidekavoudon) ========== *)
+
+Lemma cd8192_scale_add : forall r a b, cd8192_add (cd8192_scale r a) (cd8192_scale r b) = cd8192_scale r (cd8192_add a b).
+Proof. intros r [? ?] [? ?]. unfold cd8192_scale, cd8192_add. simpl. f_equal; apply cd4096_scale_add. Qed.
+Lemma cd8192_conj_scale : forall r x, cd8192_conj (cd8192_scale r x) = cd8192_scale r (cd8192_conj x).
+Proof. intros r [? ?]. unfold cd8192_conj, cd8192_scale. simpl. f_equal. apply cd4096_conj_scale. apply cd4096_neg_scale. Qed.
+Theorem cd8192_mul_scale_right : forall r x y, cd8192_mul x (cd8192_scale r y) = cd8192_scale r (cd8192_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd8192_mul, cd8192_scale. simpl. f_equal.
+  - rewrite cd4096_mul_scale_right. rewrite cd4096_conj_scale. rewrite cd4096_mul_scale_left. rewrite <- cd4096_scale_sub. reflexivity.
+  - rewrite cd4096_mul_scale_left. rewrite cd4096_conj_scale. rewrite cd4096_mul_scale_right. rewrite <- cd4096_scale_add. reflexivity. Qed.
+Lemma cd8192_neg_scale : forall r x, cd8192_neg (cd8192_scale r x) = cd8192_scale r (cd8192_neg x).
+Proof. intros r [? ?]. unfold cd8192_neg, cd8192_scale. simpl. f_equal; apply cd4096_neg_scale. Qed.
+
+Theorem cd16384_mul_scale_left : forall r x y, cd16384_mul (cd16384_scale r x) y = cd16384_scale r (cd16384_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd16384_mul, cd16384_scale. simpl. f_equal.
+  - rewrite cd8192_mul_scale_left. rewrite cd8192_mul_scale_right. rewrite <- cd8192_scale_sub. reflexivity.
+  - rewrite cd8192_mul_scale_right. rewrite cd8192_mul_scale_left. rewrite <- cd8192_scale_add. reflexivity. Qed.
+Lemma cd16384_scale_sub : forall r a b, cd16384_scale r (cd16384_sub a b) = cd16384_sub (cd16384_scale r a) (cd16384_scale r b).
+Proof. intros r [? ?] [? ?]. unfold cd16384_scale, cd16384_sub, cd16384_add, cd16384_neg. simpl. f_equal; apply cd8192_scale_sub. Qed.
+
+(** THE SUMMIT: Associator trilinearity at dim=16384. *)
+Theorem cd16384_assoc_trilinear : forall r a b c,
+  cd16384_assoc (cd16384_scale r a) b c = cd16384_scale r (cd16384_assoc a b c).
+Proof.
+  intros. unfold cd16384_assoc.
+  repeat rewrite cd16384_mul_scale_left.
+  rewrite <- cd16384_scale_sub.
+  reflexivity.
+Qed.
