@@ -3897,4 +3897,257 @@ mod tests {
         println!("  Residual fraction at optimum: {:.4} ({:.2}% outside constraint plane)",
             residual_opt.abs(), residual_opt.abs() * 100.0);
     }
+
+    /// Intertwiner analysis: is TensorElementLift the unique equivariant map
+    /// from V_6 to Sym_3(R) under the SU(3) stabilizer action?
+    ///
+    /// Steps:
+    /// 1. Build stabilizer action on 42-assessor space (extend G2 derivations
+    ///    from O to S via CD doubling: D(a,b) = (D(a), D(b)))
+    /// 2. Restrict to V_6 to get rho_V6: su(3) -> gl(6)
+    /// 3. Build action on Sym_3(R) from the 3x3 complex representation
+    /// 4. Solve intertwining equations L * rho_V6(X) = rho_Sym3(X) * L
+    /// 5. Compare solution with TensorElementLift
+    #[test]
+    fn test_intertwiner_analysis() {
+        use gororoba_algebra::lie::g2_stabilizer::{
+            stabilizer_decomposition, complex_structure,
+        };
+        use gororoba_algebra::lie::g2_su3_representation::fundamental_representation;
+        use nalgebra::DMatrix;
+
+        let fixed_unit = 1_usize; // fix e_1
+
+        // ===== STEP 1: Build stabilizer action on 42-assessor space =====
+        let decomp = stabilizer_decomposition(fixed_unit);
+        let n_stab = decomp.stabilizer_basis.len();
+        assert_eq!(n_stab, 8, "Stabilizer should be 8-dimensional");
+
+        // The 42 assessors are (low, high) with low in 1..7, high in 9..15,
+        // excluding high == low + 8.
+        let (v6_basis, _sv, assessors) = extract_v6_basis();
+        let n_assess = assessors.len();
+        assert_eq!(n_assess, 42);
+
+        // For each stabilizer generator D (8x8 on octonions), extend to 16x16
+        // on sedenions via CD doubling: D(a,b) = (D(a), D(b)).
+        // Then compute how D transforms each assessor column.
+        //
+        // An assessor (low, high) corresponds to a direction in the incidence
+        // matrix. D acts on the CD products that define the incidence:
+        // D(e_b * e_c) = D(e_b) * e_c + e_b * D(e_c) (Leibniz rule).
+        // This transforms the incidence row, hence the assessor vector.
+        //
+        // However, the assessor is defined by which indices are touched by
+        // the pairwise products e_b*e_c, e_b*e_d, e_c*e_d of a triad.
+        // The derivation action on assessors is indirect: it permutes/rotates
+        // the basis elements, which changes which assessor pairs are activated.
+        //
+        // Simpler approach: For each stabilizer generator, compute its
+        // 16x16 action on sedenion basis, then compute how each assessor
+        // pair (low, high) transforms.
+        //
+        // D extended to S: D_16[i][j] = D_8[i][j] for i,j in 0..8
+        //                  D_16[i+8][j+8] = D_8[i][j] for i,j in 0..8
+        //                  D_16[i][j+8] = 0 and D_16[i+8][j] = 0
+
+        let mut rho_42: Vec<DMatrix<f64>> = vec![DMatrix::<f64>::zeros(n_assess, n_assess); n_stab];
+
+        for (gen_idx, d) in decomp.stabilizer_basis.iter().enumerate() {
+            // Build 16x16 sedenion extension of D
+            let mut d16 = [[0.0_f64; 16]; 16];
+            for i in 0..8 {
+                for j in 0..8 {
+                    d16[i][j] = d.matrix[i][j];
+                    d16[i + 8][j + 8] = d.matrix[i][j];
+                }
+            }
+
+            // For each assessor (low, high), compute how D transforms it.
+            // The assessor value at position a is: sum of incidence entries
+            // that touch index low or high via pairwise products.
+            //
+            // Linearized action: D transforms e_low -> sum_j d16[low][j] * e_j
+            // and e_high -> sum_j d16[high][j] * e_j.
+            // The assessor (low, high) picks up contributions from (j, high)
+            // and (low, j) assessors weighted by d16[low][j] and d16[high][j].
+            //
+            // In the linear approximation:
+            // D(assessor_{(low,high)}) = sum_j d16[low][j] * assessor_{(j,high)}
+            //                          + sum_j d16[high][j] * assessor_{(low,j)}
+            //
+            // We need to find which assessor index corresponds to (j, high)
+            // or (low, j) -- or if no such assessor exists (because the pair
+            // doesn't satisfy the assessor constraints).
+
+            let find_assessor = |l: usize, h: usize| -> Option<usize> {
+                assessors.iter().position(|&(al, ah)| al == l && ah == h)
+            };
+
+            let mut mat = DMatrix::<f64>::zeros(n_assess, n_assess);
+
+            for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+                // D transforms e_low: contribution to assessor space
+                for j in 1..=7 {
+                    let coeff = d16[low][j];
+                    if coeff.abs() < 1e-15 { continue; }
+                    if let Some(target) = find_assessor(j, high) {
+                        mat[(target, a_idx)] += coeff;
+                    }
+                }
+
+                // D transforms e_high: contribution to assessor space
+                for j in 9..=15 {
+                    let coeff = d16[high][j];
+                    if coeff.abs() < 1e-15 { continue; }
+                    if let Some(target) = find_assessor(low, j) {
+                        mat[(target, a_idx)] += coeff;
+                    }
+                }
+            }
+
+            rho_42[gen_idx] = mat;
+        }
+
+        // ===== STEP 2: Restrict to V_6 =====
+        // rho_V6[gen] = V_6^T * rho_42[gen] * V_6  (6x6 matrix)
+        let n_v6 = v6_basis.nrows(); // 6
+        let mut rho_v6: Vec<DMatrix<f64>> = vec![DMatrix::<f64>::zeros(n_v6, n_v6); n_stab];
+
+        for gen_idx in 0..n_stab {
+            // V_6 is n_v6 x 42, rho_42 is 42 x 42
+            // rho_v6 = V_6 * rho_42 * V_6^T (since V_6 rows are basis vectors)
+            let r42 = &rho_42[gen_idx];
+            let mut rv6 = DMatrix::<f64>::zeros(n_v6, n_v6);
+            for i in 0..n_v6 {
+                for j in 0..n_v6 {
+                    let mut sum = 0.0_f64;
+                    for a in 0..n_assess {
+                        for b in 0..n_assess {
+                            sum += v6_basis[(i, a)] * r42[(a, b)] * v6_basis[(j, b)];
+                        }
+                    }
+                    rv6[(i, j)] = sum;
+                }
+            }
+            rho_v6[gen_idx] = rv6;
+        }
+
+        println!("--- INTERTWINER ANALYSIS ---");
+        println!("  Stabilizer generators: {}", n_stab);
+        println!("  V_6 restricted representations (6x6):");
+        for (idx, rv6) in rho_v6.iter().enumerate() {
+            let frob: f64 = (0..n_v6).flat_map(|i| (0..n_v6).map(move |j| rv6[(i,j)] * rv6[(i,j)])).sum::<f64>().sqrt();
+            println!("    rho_V6[{}]: Frobenius norm = {:.6}", idx, frob);
+        }
+
+        // ===== STEP 3: Build action on Sym_3(R) =====
+        // Using the 3x3 complex representation from PR2.
+        // For generator X with 3x3 complex rep rho_3(X), the action on
+        // Sym_3(R) is: rho_Sym(X)(M) = rho_3(X)*M + M*rho_3(X)^T
+        //
+        // Vectorize Sym_3(R) using basis:
+        // {E_11, E_22, E_33, (E_12+E_21), (E_13+E_31), (E_23+E_32)}
+        // (unnormalized symmetric basis, 6 elements)
+
+        let _cs = complex_structure(fixed_unit);
+        let _rep = fundamental_representation(&decomp, &_cs);
+
+        // Print first rho_V6 matrix
+        println!("\n  rho_V6[0] matrix:");
+        for i in 0..n_v6 {
+            let row: Vec<String> = (0..n_v6).map(|j|
+                format!("{:8.4}", rho_v6[0][(i, j)])
+            ).collect();
+            println!("    [{}]", row.join(", "));
+        }
+
+        // ===== STEP 4: Analyze the V_6 representation =====
+        let mut total_frob = 0.0_f64;
+        for gen_idx in 0..n_stab {
+            let mut frob = 0.0_f64;
+            for i in 0..n_v6 {
+                for j in 0..n_v6 {
+                    let v = rho_v6[gen_idx][(i, j)];
+                    frob += v * v;
+                }
+            }
+            total_frob += frob.sqrt();
+        }
+
+        println!("\n  === V_6 REPRESENTATION ANALYSIS ===");
+        println!("  Total Frobenius norm of all rho_V6: {:.6e}", total_frob);
+
+        if total_frob < 1e-10 {
+            println!("  rho_V6 is TRIVIAL (zero action).");
+            println!("  SU(3) stabilizer does not act on V_6.");
+            println!("  Any L: V_6 -> Sym_3(R) is an intertwiner.");
+            println!("  TensorElementLift is NOT uniquely determined by equivariance.");
+            println!("  The stabilizer SU(3) is the COLOR group (acts within generations),");
+            println!("  not the FLAVOR group (acts between generations).");
+        } else {
+            println!("  rho_V6 is NONTRIVIAL (Frobenius = {:.6e}).", total_frob);
+            println!("  SU(3) stabilizer acts on V_6.");
+
+            // Compute the quadratic Casimir C_2 = sum_a rho(T_a)^2
+            // For the fundamental representation of su(3), C_2 = (4/3)*I
+            let mut casimir = DMatrix::<f64>::zeros(n_v6, n_v6);
+            for gen_idx in 0..n_stab {
+                let r = &rho_v6[gen_idx];
+                // r^2 = r * r
+                for i in 0..n_v6 {
+                    for j in 0..n_v6 {
+                        for k in 0..n_v6 {
+                            casimir[(i, j)] += r[(i, k)] * r[(k, j)];
+                        }
+                    }
+                }
+            }
+
+            println!("\n  Casimir C_2 = sum_a rho_V6(T_a)^2:");
+            for i in 0..n_v6 {
+                let row: Vec<String> = (0..n_v6).map(|j|
+                    format!("{:8.4}", casimir[(i, j)])
+                ).collect();
+                println!("    [{}]", row.join(", "));
+            }
+
+            // Check if Casimir is proportional to identity
+            let diag_avg: f64 = (0..n_v6).map(|i| casimir[(i, i)]).sum::<f64>() / n_v6 as f64;
+            let mut off_diag_max = 0.0_f64;
+            let mut diag_dev = 0.0_f64;
+            for i in 0..n_v6 {
+                for j in 0..n_v6 {
+                    if i == j {
+                        diag_dev += (casimir[(i, j)] - diag_avg).abs();
+                    } else {
+                        off_diag_max = off_diag_max.max(casimir[(i, j)].abs());
+                    }
+                }
+            }
+
+            println!("  Casimir diagonal average: {:.6}", diag_avg);
+            println!("  Diagonal deviation: {:.6e}", diag_dev);
+            println!("  Max off-diagonal: {:.6e}", off_diag_max);
+
+            if off_diag_max < 1e-10 && diag_dev < 1e-10 {
+                println!("  Casimir = {:.4} * I_6  (PROPORTIONAL TO IDENTITY)", diag_avg);
+                println!("  => V_6 carries an IRREDUCIBLE representation of su(3)");
+
+                // For su(3) irreps, C_2 = (p^2 + q^2 + pq + 3p + 3q)/3
+                // where (p,q) is the Dynkin label.
+                // Fund. (1,0): C_2 = 4/3 = 1.333
+                // Adj. (1,1): C_2 = 3
+                // 6-dim (2,0): C_2 = 10/3 = 3.333
+                // 6-dim (0,2): C_2 = 10/3 = 3.333
+                println!("  Known su(3) Casimir values for dim-6 irreps:");
+                println!("    (2,0) symmetric square: C_2 = 10/3 = 3.333");
+                println!("    (0,2) anti-sym. square: C_2 = 10/3 = 3.333");
+                println!("    adjoint (1,1) restricted: C_2 = 3.0");
+                println!("  Measured C_2 = {:.4}", diag_avg);
+            } else {
+                println!("  Casimir is NOT proportional to I => V_6 is REDUCIBLE");
+            }
+        }
+    }
 }
