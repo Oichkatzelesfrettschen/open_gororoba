@@ -201,3 +201,4 @@ verified/C1465_KoebisuEqualNorm.v
 verified/C1466_SubalgebraClosure.v
 verified/C1467_XORSignCocycle.v
 verified/C1468_SlotShiftEquivariance.v
+verified/C1469_TowerTrilinearity.v
