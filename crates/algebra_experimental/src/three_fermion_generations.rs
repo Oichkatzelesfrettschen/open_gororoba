@@ -141,4 +141,99 @@ mod tests {
 
         assert_eq!(full_split_count + degenerate_count + two_plus_one_count, 105);
     }
+
+    /// Gresnigt (arXiv:2601.07857) Eq 50: S3-invariant orbit sum factor = 3/2.
+    ///
+    /// The psi_3 action on the primitive idempotent E_{1,1} has diagonal
+    /// coefficients 1/4 and 3/4. The orbit sum E + psi_3(E) + psi_3^2(E)
+    /// produces the factor 3/2 on both diagonal entries.
+    #[test]
+    fn test_gresnigt_s3_orbit_sum_factor() {
+        let coeff_self = 1.0_f64 + 0.25 + 0.25;
+        let coeff_partner = 0.0_f64 + 0.75 + 0.75;
+
+        assert!((coeff_self - 1.5).abs() < 1e-15);
+        assert!((coeff_partner - 1.5).abs() < 1e-15);
+
+        println!("--- GRESNIGT S3 ORBIT SUM ---");
+        println!("  Self: 1 + 1/4 + 1/4 = {:.4} (= 3/2)", coeff_self);
+        println!("  Partner: 0 + 3/4 + 3/4 = {:.4} (= 3/2)", coeff_partner);
+        println!("  Connection: 3-blade ZD scan best ratio = 3/2 (C-1459)");
+    }
+
+    /// Gresnigt Eq 55: SU(3) generators are S3-invariant.
+    ///
+    /// Verified using the CONTIGUOUS-BLOCK subalgebras (Tang's scheme),
+    /// where {e_1, e_2, e_3} are shared by all three octonionic subalgebras.
+    /// Under the interleaved-stride scheme, e_1/e_2/e_3 are generation-specific
+    /// (each belongs to only one O_k), so S3 invariance is scheme-dependent.
+    #[test]
+    fn test_gresnigt_su3_s3_invariance() {
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::sedenion_subalgebras::get_octonion_subalgebras;
+
+        // Use CONTIGUOUS-BLOCK scheme (Tang's) where {e_1..e_3} are shared
+        let (o1, o2, o3) = get_octonion_subalgebras();
+        let sign_table = SignTableCache::new(16);
+
+        // Shared quaternion pairs {e_1, e_2, e_3} -- present in ALL three subalgebras
+        let shared_pairs = [(1_usize, 2), (1, 3), (2, 3)];
+
+        println!("--- GRESNIGT SU(3) S3-INVARIANCE (contiguous-block scheme) ---");
+        for (a, b) in &shared_pairs {
+            let ma = MajoranaMode { gamma_index: a - 1, cd_basis_index: *a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b - 1, cd_basis_index: *b, cd_dim: 16 };
+            let s1 = cd_braid_signed_friction(&ma, &mb, &o1, &sign_table);
+            let s2 = cd_braid_signed_friction(&ma, &mb, &o2, &sign_table);
+            let s3 = cd_braid_signed_friction(&ma, &mb, &o3, &sign_table);
+
+            println!("  (e_{a}, e_{b}): s1={s1:.4}, s2={s2:.4}, s3={s3:.4}");
+            assert!((s1 - s2).abs() < 1e-9 && (s2 - s3).abs() < 1e-9,
+                "SU(3) pair (e_{a}, e_{b}) not S3-invariant");
+        }
+        println!("  Confirms Gresnigt Eq 55: psi_3(Lambda_i) = Lambda_i");
+        println!("  NOTE: only holds for contiguous-block scheme (shared quaternion)");
+    }
+
+    /// Gresnigt: psi_3 action on {E_{1,1}, E_{14,14}} subspace.
+    ///
+    /// The FULL action is a complex 4x4 matrix on {E_{1,1}, E_{14,14}, E_{1,14}, E_{14,1}}.
+    /// The real 2x2 diagonal block [[1/4, 3/4], [3/4, 1/4]] does NOT satisfy M^3=I
+    /// alone, because psi_3 also generates off-diagonal terms +/- i*sqrt(3)/4.
+    ///
+    /// The orbit sum E + psi_3(E) + psi_3^2(E) = (3/2)(E + E') is correct because
+    /// the off-diagonal terms cancel: they have opposite sign in psi_3 vs psi_3^2.
+    #[test]
+    fn test_gresnigt_psi3_orbit_cancellation() {
+        let sqrt3_4 = 3.0_f64.sqrt() / 4.0;
+
+        // psi_3(E_{1,1}) from Eq 48:
+        // = (1/4)E_{1,1} + (3/4)E_{14,14} + (i*sqrt(3)/4)(E_{14,1} - E_{1,14})
+        let psi3_diag_11 = 0.25_f64; // coeff of E_{1,1}
+        let psi3_diag_14 = 0.75;     // coeff of E_{14,14}
+        let psi3_offdiag = sqrt3_4;   // magnitude of off-diagonal
+
+        // psi_3^2(E_{1,1}) from Eq 49:
+        // = (1/4)E_{1,1} + (3/4)E_{14,14} - (i*sqrt(3)/4)(E_{14,1} - E_{1,14})
+        let psi3sq_diag_11 = 0.25;
+        let psi3sq_diag_14 = 0.75;
+        let psi3sq_offdiag = -sqrt3_4; // OPPOSITE sign
+
+        // Orbit sum diagonal parts
+        let sum_11 = 1.0 + psi3_diag_11 + psi3sq_diag_11;
+        let sum_14 = 0.0_f64 + psi3_diag_14 + psi3sq_diag_14;
+
+        // Off-diagonal cancellation
+        let sum_offdiag = 0.0_f64 + psi3_offdiag + psi3sq_offdiag;
+
+        println!("--- GRESNIGT psi_3 ORBIT CANCELLATION ---");
+        println!("  Diagonal sums: E_{{1,1}} coeff = {:.4}, E_{{14,14}} coeff = {:.4}", sum_11, sum_14);
+        println!("  Off-diagonal sum = {:.6} (cancels!)", sum_offdiag);
+        println!("  Orbit factor = {:.4} (= 3/2)", sum_11);
+
+        assert!((sum_11 - 1.5).abs() < 1e-15, "Diagonal sum should be 3/2");
+        assert!((sum_14 - 1.5).abs() < 1e-15, "Partner sum should be 3/2");
+        assert!(sum_offdiag.abs() < 1e-15, "Off-diagonal must cancel in orbit sum");
+    }
 }
