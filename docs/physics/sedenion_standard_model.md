@@ -15,29 +15,36 @@ the sedenion subalgebras and extracts:
 - Exact two-weight fit of charged-lepton log-ratios within the selector basis
 - Best interleaved-scheme selector scan, after permutation-aware extraction,
   yields all three CKM angles within 10% of PDG (C-1456)
-- PMNS neutrino mixing angle theta_13 within 1.2% of PDG (C-1457)
+- PMNS angle-sector fit: all three angles within 0.15% of PDG 2025 (C-1492)
+  via Gauss-Newton optimized 4-parameter model (alpha_ch, alpha_nu, t_solar, t_atmo)
 - Electroweak mixing angle sin^2(theta_W) within 14% (C-1458)
 - Discrete 2*sqrt(2) quantization of the friction spectrum (C-1459)
 
-**Scope distinction (peer-reviewed)**:
+**Three-layer truth classification (peer-reviewed)**:
 
-**(A) Literature-backed**: Interleaved sedenion subalgebras and the psi
-automorphism exist and are explicit (Gresnigt/Gourlay 2019/2023). Overlap
-and linear dependence across generations may underlie CKM/PMNS mixing
-(speculative in the papers). Z(S) isometric to G_2 (Reggiani 2024), ZD(S)
-isometric to V_2(R^7) (Reggiani 2024), V_2(R^8) frame decomposition
-(Koebisu 2025). Aut(S) = G_2 (Schafer, confirmed by Wilmot 2025); the S_3
-family symmetry is specific to the Gresnigt/Gourlay/Brown framework.
+**(A) Literature-backed backbone**: Z(S) isometric to G_2 (Reggiani 2024),
+ZD(S) isometric to V_2(R^7) (Reggiani 2024, also Koebisu 2025
+determinant-side via D_2(v)=0). Graded CD construction, 35+60+360=455
+triad count for U_1, A/B/C/X non-associativity stratification (Wilmot
+2025/2026). Interleaved sedenion subalgebras, psi automorphism, S_3 family
+symmetry, gauge-sector S_3-invariance (Gresnigt/Gourlay 2019/2023/2026).
+Aut(S) = G_2 (Schafer, confirmed by Wilmot); the S_3 family symmetry
+is specific to the Gresnigt/Gourlay/Brown framework.
 
-**(B) Project-specific computational results**: CKM/PMNS angles from
-friction/psi coupling, V_6 SVD geometry, TensorElementLift solar correction
-(C-1478). For the current selector/friction observable class, the
-interleaved scheme is the strongest CKM/PMNS phenomenology platform.
+**(B) Framework-conditional physics**: The interleaved CD-generated scheme
+is the phenomenologically superior CKM/PMNS platform (vs Tang contiguous).
+The 2023 interleaved paper uses all three O_i for one generation, psi
+generates the other two, and explicitly says overlap/non-independence
+may underlie CKM/PMNS mixing. Tang's contiguous-block model is a
+different object with different intended phenomenology.
 
-**(C) Heuristic / provisional**: The specific 7-assessor block assignment in
-TensorElementLift (moderate block alignment 44%, psi orbits cross blocks).
-The (12/12/6) assessor partition (falsified, C-1474). Block assignment is
-the minimal successful project lift, not yet derived from the algebra.
+**(C) Project-specific constructions**: CKM/PMNS angle-sector fits via
+selector/friction/psi coupling, V_6 SVD extraction, rank-2 no-go for
+42D->3D lift families (C-1476/77), TensorElementLift (42D->6D) solar
+correction (C-1478), Gauss-Newton 4D optimization (C-1492, all angles
+within 0.15% of PDG). The specific 7-assessor block assignment is
+heuristic (44% alignment, psi orbits cross blocks). TensorElementLift
+is the minimal successful project lift, not yet derived from the algebra.
 
 ## II. The Flavor Hierarchy Mechanism
 
@@ -376,6 +383,46 @@ explicitly project-specific, not literature-dictated.
 - PR1: largely algebra/geometry extraction and verification
 - PR2: representation-theoretic cross-validation, convention-sensitive
 - PR3: bridge/lift construction, project-specific until intertwiners solved
+
+## VIII. Reconciled Findings and Roadmap
+
+### Reconciled structural results
+
+1. **Wilmot Table 2**: U_1 = 35 + 60 + 360 = 455. The "155" belongs to U_2.
+2. **Chirality falsified**: B and C are spectrally identical (rank 21 each).
+   C_X = C_B + V_6 (strict 6D extension). Coverage classes, not flavor labels.
+3. **No-go scoped**: the rank-2 lock is specific to 42D->3D lift families, not
+   all V_6 couplings. TensorElementLift is the counterexample.
+4. **Symmetry clarified**: flavor is S_3-driven (psi, epsilon), color SU(3) is
+   common across generations. SU(3)-equivariant lift to flavor-only target is
+   impossible (no trivial SU(3) summand in V_6 Casimir spectrum). The lift
+   derivation problem is fundamentally an S_3-family question.
+5. **V_6 is generation-invariant**: psi acts as a scalar on V_6 by construction
+   (V_6 = complement of B/C where generation structure lives).
+
+### One-sentence synthesis
+
+> The interleaved S_3-sedenion framework provides genuine algebraic backbone,
+> naive low-dimensional flavor lifts fail, but a minimal 42->6 lift on the V_6
+> complement breaks the PMNS lock and yields near-PDG angle-sector fits; the
+> next decisive step is to derive that lift from the algebra and complexify
+> it for CP violation.
+
+### Roadmap
+
+**Theory track**:
+1. Fix psi/epsilon action at triad/incidence level (not assessor-endpoint outer product)
+2. Compute S_3 character of V_6 on conjugacy classes {e, transpositions, 3-cycles}
+3. Decompose V_6 into real S_3 irreps {1, sgn, 2}
+4. Compare with Sym_3(R) under row/column permutation conjugation
+5. Derive TensorElementLift as S_3-equivariant map or conclude it is response-fitted
+
+**Physics track**:
+1. Freeze current CKM/PMNS optima as hard regressions
+2. Build complex mass matrices using J_k complex structure from PR1
+3. Scan all 7 k-embeddings for robustness
+4. Extract delta_CP and Jarlskog invariant
+5. Only then: absolute neutrino masses and full chi^2 global fit
 
 ## References
 
