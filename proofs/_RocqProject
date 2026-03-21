@@ -195,3 +195,5 @@ verified/C016_ParityFlips.v
 verified/C010_ConnectivityObstruction.v
 theories/CDLinearLemmas.v
 verified/C1455_AssociatorTrilinear.v
+verified/C1463_ArithmeticInventory.v
+verified/C1464_SedenionAnticommutation.v
