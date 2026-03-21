@@ -442,57 +442,61 @@ mod tests {
         assert_eq!(type_c, 84, "Type C count should be 84 (= ZD pair count)");
         assert_eq!(type_x, 252, "Type X count should be 252 (= 3 * 84)");
         assert_eq!(type_a, 0, "Type A should be 0 for sedenions");
-        println!("\n  Structure: 84 = ZD pair count, 252 = 3*84, 35 = C(7,3)");
-        println!("  NOTE: 84:84:252 mapping to ZD pairs is a project conjecture,");
-        println!("  not yet established from Wilmot. Type 3 associativity can occur");
-        println!("  in Type C cases that do NOT define zero divisors (Wilmot Sec 4).");
+        println!("\n  Structure: 84 appears in B and C, 252 = 3*84 in X, 35 = C(7,3)");
+        println!("  CAUTION: The 84:84:252 decomposition is a project-specific finding.");
+        println!("  Wilmot's ZD theorem ties ZDs to Type-3 associativity in A/B triads.");
+        println!("  Type C can mimic Type-3 associativity WITHOUT yielding ZD pairs.");
+        println!("  So 'Type B = left-handed ZDs' is a conjecture, not established.");
     }
 
     /// Wilmot triple associator T(b,c,d) count verification.
     ///
-    /// Wilmot's Table 2 for U_1 (sedenions) gives 155 associative triads
-    /// using his triple associator criterion T(b,c,d) = 0.
-    /// This is weaker than strict associativity (all [x,y,z] = 0).
+    /// Wilmot's Table 2 (arXiv:2505.11747v3) gives for U_1 (sedenions):
+    ///   35 associative, 60 non-cycles, 360 3-triad cycles, 455 total.
+    ///
+    /// The 155 in Table 2 belongs to U_2 (trigintaduonions), NOT sedenions.
+    /// Both T(b,c,d) = 0 and strict [x,y,z] = 0 give exactly 35 = C(7,3)
+    /// for sedenion basis triads.
     #[test]
-    fn test_wilmot_triple_associator_count() {
+    fn test_wilmot_triple_associator_count_u1() {
         let dim = 16_usize;
-        let mut wilmot_assoc = 0_usize;
-        let mut wilmot_nonassoc = 0_usize;
+        let mut wilmot_t_assoc_u1 = 0_usize;
+        let mut strict_assoc_all_orderings_u1 = 0_usize;
 
         for b in 1..dim {
             for c in (b + 1)..dim {
                 for d in (c + 1)..dim {
                     let t = assoc_wilmot(dim, b, c, d);
                     if t < 1e-10 {
-                        wilmot_assoc += 1;
-                    } else {
-                        wilmot_nonassoc += 1;
+                        wilmot_t_assoc_u1 += 1;
+                    }
+
+                    let s1 = assoc_strict(dim, b, c, d);
+                    let s2 = assoc_strict(dim, b, d, c);
+                    let s3 = assoc_strict(dim, c, b, d);
+                    if s1 < 1e-10 && s2 < 1e-10 && s3 < 1e-10 {
+                        strict_assoc_all_orderings_u1 += 1;
                     }
                 }
             }
         }
 
-        let total = wilmot_assoc + wilmot_nonassoc;
-        println!("--- WILMOT TRIPLE ASSOCIATOR T(b,c,d) COUNT ---");
-        println!("  Total triads: {} (C(15,3) = 455)", total);
-        println!("  Wilmot-associative (T=0): {} (Table 2: 155)", wilmot_assoc);
-        println!("  Wilmot-non-associative (T!=0): {} (Table 2: 300)", wilmot_nonassoc);
+        println!("--- WILMOT TABLE 2 VERIFICATION (U_1 = sedenions) ---");
+        println!("  strict_assoc_all_orderings_u1 = {} (expected 35)", strict_assoc_all_orderings_u1);
+        println!("  wilmot_T_assoc_u1 = {} (expected 35)", wilmot_t_assoc_u1);
+        println!("  Both agree: 35 = C(7,3) = H_15 quaternion subalgebra count");
 
-        assert_eq!(total, 455);
-        // Both T(b,c,d) and strict [x,y,z] give 35 associative triads for
-        // sedenion basis elements. Wilmot's Table 2 count of 155 "Associative"
-        // uses a different criterion (quaternion-cycle based, includes degenerate
-        // triads that contain a shared quaternion pair). This is a definition
-        // difference, not a computational error.
-        assert_eq!(wilmot_assoc, 35,
-            "Both T(b,c,d)=0 and strict [x,y,z]=0 give 35 = C(7,3)");
-        assert_eq!(wilmot_nonassoc, 420,
-            "420 triads have T(b,c,d) != 0");
+        assert_eq!(strict_assoc_all_orderings_u1, 35,
+            "Strict associativity: 35 = C(7,3) for U_1");
+        assert_eq!(wilmot_t_assoc_u1, 35,
+            "Wilmot T(b,c,d) = 0: 35 for U_1 (Table 2 row U_1)");
 
-        // T(b,c,d) and strict associativity agree: both give exactly 35.
-        // Wilmot's Table 2 "155 Associative" for U_1 uses a broader classification
-        // that includes quaternion-cycle-degenerate triads.
-        println!("  NOTE: T(b,c,d) and strict [x,y,z] give identical counts for basis triads");
-        println!("  Wilmot's 155 count uses a quaternion-cycle-based definition");
+        // Verify Wilmot's quaternion-count formula H_n = N_n(N_n-1)/6
+        // where N_n = 2^n - 1 is the number of pure basis elements.
+        // At level 4 (sedenions): N_4 = 15, H_15 = 15*14/6 = 35.
+        let n4 = 15_usize;
+        let h_15 = n4 * (n4 - 1) / 6;
+        assert_eq!(h_15, 35, "H_15 = 15*14/6 = 35");
+        println!("  H_15 = N_4*(N_4-1)/6 = 15*14/6 = {}", h_15);
     }
 }
