@@ -199,3 +199,4 @@ verified/C1463_ArithmeticInventory.v
 verified/C1464_SedenionAnticommutation.v
 verified/C1465_KoebisuEqualNorm.v
 verified/C1466_SubalgebraClosure.v
+verified/C1467_XORSignCocycle.v
