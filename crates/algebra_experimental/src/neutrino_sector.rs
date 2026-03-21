@@ -4150,4 +4150,322 @@ mod tests {
             }
         }
     }
+
+    /// Casimir eigenvalue decomposition + S_3 intertwiner analysis.
+    ///
+    /// (1) Diagonalize the su(3) Casimir on V_6 to find irrep decomposition
+    /// (2) Build the psi (S_3 generator) action on V_6
+    /// (3) Build the natural S_3 action on Sym_3(R) (generation permutation)
+    /// (4) Solve the intertwining equation L * rho_V6(psi) = rho_Sym3(psi) * L
+    /// (5) Compare solution with TensorElementLift
+    #[test]
+    fn test_s3_intertwiner_analysis() {
+        use cd_kernel::gourlay_psi;
+        use nalgebra::DMatrix;
+
+        let (v6_basis, _sv, assessors) = extract_v6_basis();
+        let n_v6 = v6_basis.nrows(); // 6
+        let n_assess = assessors.len(); // 42
+
+        // ===== PART 1: Casimir eigenvalue decomposition =====
+        // Recompute rho_V6 for the stabilizer (same as test_intertwiner_analysis)
+        // but here we just need the Casimir matrix.
+        // Instead of recomputing everything, we can use the Casimir from the
+        // previous test. But for self-containment, let's compute the psi action
+        // on V_6 directly -- that's what we really need for S_3 intertwining.
+
+        // ===== PART 2: Build psi action on 42-assessor space =====
+        // psi is a linear automorphism on R^16. We need its action on the
+        // 42-dimensional assessor space. The correct approach:
+        //
+        // Each assessor column in the incidence matrix is defined by the
+        // indicator function "does basis index low or high appear in a
+        // CD product of a triad?" The psi transformation changes which
+        // indices appear in which products.
+        //
+        // For a linear map on the basis, psi(e_k) = sum_j P_{jk} e_j,
+        // the 16x16 matrix P transforms the indicator: if product
+        // e_b * e_c -> e_m, then psi(e_b) * psi(e_c) -> psi(e_m).
+        //
+        // The assessor activation at (low, high) transforms as:
+        // assessor'(low', high') gets weight from assessor(low, high) via P.
+        //
+        // Build the 16x16 psi matrix first:
+        let mut psi_16x16 = [[0.0_f64; 16]; 16];
+        for k in 0..16 {
+            let mut ek = [0.0_f64; 16];
+            ek[k] = 1.0;
+            let psi_ek = gourlay_psi(&ek);
+            for j in 0..16 {
+                psi_16x16[j][k] = psi_ek[j];
+            }
+        }
+
+        // Now build the 42x42 psi action matrix.
+        // Each assessor (low, high) tests for the presence of basis indices
+        // low (in 1..7) and high (in 9..15). Under psi, index low transforms
+        // to a 16D vector. The assessor contribution maps via:
+        //   assessor(low, high) -> sum over (l', h') of P[l'][low] * P[h'][high]
+        //   restricted to valid assessor pairs.
+        //
+        // This is the outer-product form of the psi action:
+        let mut psi_42 = DMatrix::<f64>::zeros(n_assess, n_assess);
+
+        for (src, &(low, high)) in assessors.iter().enumerate() {
+            for (dst, &(tgt_low, tgt_high)) in assessors.iter().enumerate() {
+                // Weight = P[tgt_low][low] * P[tgt_high][high]
+                let w = psi_16x16[tgt_low][low] * psi_16x16[tgt_high][high];
+                if w.abs() > 1e-15 {
+                    psi_42[(dst, src)] += w;
+                }
+            }
+        }
+
+        // Restrict psi to V_6: rho_V6(psi) = V_6 * psi_42 * V_6^T
+        let mut rho_v6_psi = DMatrix::<f64>::zeros(n_v6, n_v6);
+        for i in 0..n_v6 {
+            for j in 0..n_v6 {
+                let mut sum = 0.0_f64;
+                for a in 0..n_assess {
+                    for b in 0..n_assess {
+                        sum += v6_basis[(i, a)] * psi_42[(a, b)] * v6_basis[(j, b)];
+                    }
+                }
+                rho_v6_psi[(i, j)] = sum;
+            }
+        }
+
+        println!("--- S_3 INTERTWINER ANALYSIS ---");
+        println!("\n  rho_V6(psi) matrix (6x6):");
+        for i in 0..n_v6 {
+            let row: Vec<String> = (0..n_v6).map(|j|
+                format!("{:8.4}", rho_v6_psi[(i, j)])
+            ).collect();
+            println!("    [{}]", row.join(", "));
+        }
+
+        // Check if rho_V6(psi) is nontrivial
+        let mut psi_frob = 0.0_f64;
+        for i in 0..n_v6 {
+            for j in 0..n_v6 {
+                psi_frob += rho_v6_psi[(i, j)] * rho_v6_psi[(i, j)];
+            }
+        }
+        psi_frob = psi_frob.sqrt();
+        println!("  |rho_V6(psi)| = {:.6}", psi_frob);
+
+        // Check psi^3 = I on V_6
+        let psi2 = &rho_v6_psi * &rho_v6_psi;
+        let psi3 = &psi2 * &rho_v6_psi;
+        let identity = DMatrix::<f64>::identity(n_v6, n_v6);
+        let psi3_error: f64 = (&psi3 - &identity).iter().map(|x| x * x).sum::<f64>().sqrt();
+        println!("  |psi^3 - I| = {:.6e} (should be ~0 for order-3)", psi3_error);
+
+        // ===== PART 3: Build S_3 action on Sym_3(R) =====
+        // The natural S_3 action on symmetric 3x3 matrices is by simultaneous
+        // row and column permutation. For the order-3 generator psi:
+        // psi acts as the cyclic permutation (1 2 3) on generations.
+        //
+        // On Sym_3(R) vectorized as {M_11, M_22, M_33, M_12, M_13, M_23}:
+        // psi(1->2, 2->3, 3->1) maps:
+        //   M_11 -> M_22, M_22 -> M_33, M_33 -> M_11  (diagonal cycle)
+        //   M_12 -> M_23, M_13 -> M_12, M_23 -> M_13  (off-diagonal cycle... wait)
+        //
+        // Actually: if psi sends gen i -> gen (i mod 3) + 1, then
+        //   M_{ij} -> M_{psi(i), psi(j)}
+        // With psi = (1->2, 2->3, 3->1):
+        //   M_11 -> M_22, M_22 -> M_33, M_33 -> M_11
+        //   M_12 -> M_23, M_23 -> M_31 = M_13, M_13 -> M_21 = M_12
+        //
+        // So in the basis {M_11, M_22, M_33, M_12, M_13, M_23}:
+        let mut rho_sym3_psi = DMatrix::<f64>::zeros(6, 6);
+        // Diagonal block: (M_11 -> M_22, M_22 -> M_33, M_33 -> M_11)
+        rho_sym3_psi[(1, 0)] = 1.0; // M_11 -> M_22
+        rho_sym3_psi[(2, 1)] = 1.0; // M_22 -> M_33
+        rho_sym3_psi[(0, 2)] = 1.0; // M_33 -> M_11
+        // Off-diagonal block: (M_12 -> M_23, M_13 -> M_12, M_23 -> M_13)
+        // In our basis: index 3 = M_12, index 4 = M_13, index 5 = M_23
+        rho_sym3_psi[(5, 3)] = 1.0; // M_12 -> M_23
+        rho_sym3_psi[(3, 4)] = 1.0; // M_13 -> M_12
+        rho_sym3_psi[(4, 5)] = 1.0; // M_23 -> M_13
+
+        println!("\n  rho_Sym3(psi) matrix (6x6, generation permutation):");
+        for i in 0..6 {
+            let row: Vec<String> = (0..6).map(|j|
+                format!("{:5.1}", rho_sym3_psi[(i, j)])
+            ).collect();
+            println!("    [{}]", row.join(", "));
+        }
+
+        // Verify psi^3 = I on Sym_3
+        let sym_psi2 = &rho_sym3_psi * &rho_sym3_psi;
+        let sym_psi3 = &sym_psi2 * &rho_sym3_psi;
+        let sym_id = DMatrix::<f64>::identity(6, 6);
+        let sym_psi3_error: f64 = (&sym_psi3 - &sym_id).iter().map(|x| x * x).sum::<f64>().sqrt();
+        println!("  |psi^3 - I| on Sym_3 = {:.6e}", sym_psi3_error);
+
+        // ===== PART 4: Solve intertwining equation =====
+        // L * rho_V6(psi) = rho_Sym3(psi) * L
+        // where L is 6x6 (maps V_6 -> Sym_3(R)).
+        //
+        // Vectorize: let l = vec(L) be the 36-element column vector.
+        // The equation becomes: (rho_V6(psi)^T kron I_6 - I_6 kron rho_Sym3(psi)) * l = 0
+        //
+        // For psi alone (one equation): 36 unknowns, 36 equations.
+        // Also add psi^2 for redundancy (same equation with psi^2).
+
+        let n = 6_usize;
+        let n_sq = n * n; // 36
+
+        // Build the constraint matrix A where A * vec(L) = 0
+        // From L * R_V6 = R_S3 * L, we get:
+        // (R_V6^T kron I) - (I kron R_S3) applied to vec(L) = 0
+        //
+        // Kronecker product: (A kron B)_{(i*n+k), (j*n+l)} = A_{ij} * B_{kl}
+        // vec(L) maps L_{ij} -> index i*n + j
+
+        let mut constraint = DMatrix::<f64>::zeros(n_sq, n_sq);
+
+        // Add constraint from psi
+        for i in 0..n {
+            for j in 0..n {
+                let row = i * n + j;
+                // L * R_V6: sum_k L_{ik} * R_V6_{kj}
+                // In vec form: coefficient of L_{ik} at row (i,j) is R_V6_{kj}
+                // -> (R_V6^T)_{jk} at position (i*n+j, i*n+k)... wait, let me be
+                // more careful.
+                //
+                // [L * R_V6]_{ij} = sum_k L_{ik} R_V6_{kj}
+                // [R_S3 * L]_{ij} = sum_k R_S3_{ik} L_{kj}
+                //
+                // Setting them equal: sum_k L_{ik} R_V6_{kj} - sum_k R_S3_{ik} L_{kj} = 0
+                //
+                // In terms of vec(L) where L_{ab} = l[a*n + b]:
+                // sum_k l[i*n + k] * R_V6_{kj} - sum_k R_S3_{ik} * l[k*n + j] = 0
+
+                for k in 0..n {
+                    // From L * R_V6 term:
+                    let col_1 = i * n + k;
+                    constraint[(row, col_1)] += rho_v6_psi[(k, j)];
+
+                    // From -R_S3 * L term:
+                    let col_2 = k * n + j;
+                    constraint[(row, col_2)] -= rho_sym3_psi[(i, k)];
+                }
+            }
+        }
+
+        // Also add constraint from psi^2
+        let mut constraint2 = DMatrix::<f64>::zeros(n_sq, n_sq);
+        for i in 0..n {
+            for j in 0..n {
+                let row = i * n + j;
+                for k in 0..n {
+                    let col_1 = i * n + k;
+                    constraint2[(row, col_1)] += psi2[(k, j)];
+                    let col_2 = k * n + j;
+                    constraint2[(row, col_2)] -= sym_psi2[(i, k)];
+                }
+            }
+        }
+
+        // Stack both constraint matrices (72 equations, 36 unknowns)
+        let mut full_constraint = DMatrix::<f64>::zeros(2 * n_sq, n_sq);
+        for i in 0..n_sq {
+            for j in 0..n_sq {
+                full_constraint[(i, j)] = constraint[(i, j)];
+                full_constraint[(n_sq + i, j)] = constraint2[(i, j)];
+            }
+        }
+
+        // SVD to find null space
+        let constraint_rows = full_constraint.nrows();
+        let constraint_cols = full_constraint.ncols();
+        let svd = full_constraint.svd(false, true);
+        let sigma = &svd.singular_values;
+        let v_t = svd.v_t.as_ref().unwrap();
+
+        // Count near-zero singular values (null space dimension)
+        let sv_threshold = 1e-8 * sigma[0];
+        let null_dim = sigma.iter().filter(|&&s| s < sv_threshold).count();
+
+        println!("\n  === S_3 INTERTWINING EQUATION ===");
+        println!("  Constraint matrix: {}x{}", constraint_rows, constraint_cols);
+        println!("  Singular values (last 10):");
+        let n_sv = sigma.len();
+        for i in (n_sv.saturating_sub(10))..n_sv {
+            println!("    sigma[{}] = {:.6e}", i, sigma[i]);
+        }
+        println!("  Null space dimension: {} (1 = unique equivariant map up to scale)", null_dim);
+
+        if null_dim > 0 {
+            // Extract the null-space vectors (intertwiners)
+            // The last null_dim rows of V^T are the null vectors
+            println!("\n  Intertwiner(s) found!");
+
+            for ns_idx in 0..null_dim {
+                let row_idx = n_sv - 1 - ns_idx;
+                if sigma[row_idx] > sv_threshold { break; }
+
+                // Extract L from vec(L)
+                let mut l_mat = DMatrix::<f64>::zeros(n, n);
+                for i in 0..n {
+                    for j in 0..n {
+                        l_mat[(i, j)] = v_t[(row_idx, i * n + j)];
+                    }
+                }
+
+                println!("\n  Intertwiner L_{} (6x6, maps V_6 -> Sym_3):", ns_idx);
+                for i in 0..n {
+                    let row: Vec<String> = (0..n).map(|j|
+                        format!("{:8.4}", l_mat[(i, j)])
+                    ).collect();
+                    println!("    [{}]", row.join(", "));
+                }
+
+                // Compare with TensorElementLift's effective matrix
+                // TensorElementLift sums assessors in blocks of 7:
+                // Block k maps to Sym_3 element k.
+                // The effective L_TEL is: L_TEL[sym_idx, v6_idx] = sum over assessors
+                // in block sym_idx of v6_basis[v6_idx, assessor]
+                let mut l_tel = DMatrix::<f64>::zeros(n, n);
+                for sym_idx in 0..6 {
+                    let block_start = sym_idx * 7;
+                    let block_end = (block_start + 7).min(42);
+                    for v6_idx in 0..n_v6 {
+                        let mut sum = 0.0_f64;
+                        for a in block_start..block_end {
+                            sum += v6_basis[(v6_idx, a)];
+                        }
+                        l_tel[(sym_idx, v6_idx)] = sum;
+                    }
+                }
+
+                // Normalize both for comparison
+                let norm_l: f64 = l_mat.iter().map(|x| x * x).sum::<f64>().sqrt();
+                let norm_tel: f64 = l_tel.iter().map(|x| x * x).sum::<f64>().sqrt();
+
+                if norm_l > 1e-10 && norm_tel > 1e-10 {
+                    let l_normed = &l_mat * (1.0 / norm_l);
+                    let l_tel_normed = &l_tel * (1.0 / norm_tel);
+
+                    // Cosine similarity
+                    let dot: f64 = l_normed.iter().zip(l_tel_normed.iter())
+                        .map(|(a, b)| a * b).sum();
+
+                    println!("\n  Comparison with TensorElementLift:");
+                    println!("    cos(L_intertwiner, L_TEL) = {:.6}", dot);
+                    if dot.abs() > 0.95 {
+                        println!("    MATCH: TensorElementLift IS the S_3-equivariant map (up to scale)!");
+                    } else if dot.abs() > 0.5 {
+                        println!("    PARTIAL: significant overlap but not identical");
+                    } else {
+                        println!("    MISMATCH: TensorElementLift is NOT the equivariant map");
+                    }
+                }
+            }
+        } else {
+            println!("  No intertwiner exists: V_6 and Sym_3(R) carry incompatible S_3 representations.");
+        }
+    }
 }
