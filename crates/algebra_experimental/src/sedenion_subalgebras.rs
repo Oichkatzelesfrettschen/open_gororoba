@@ -720,10 +720,11 @@ mod tests {
             }).collect::<Vec<_>>()
         );
 
-        // SVD for each submatrix
-        let svd_b = mat_b.svd(false, false);
-        let svd_c = mat_c.svd(false, false);
-        let svd_x = mat_x.svd(false, false);
+        // SVD (clone first since SVD consumes the matrix)
+        let svd_b = mat_b.clone().svd(false, false);
+        let svd_c = mat_c.clone().svd(false, false);
+        let svd_x = mat_x.clone().svd(false, false);
+        // mat_b, mat_c, mat_x remain usable below
 
         let rank = |sv: &nalgebra::OVector<f64, nalgebra::Dyn>| -> usize {
             sv.iter().filter(|&&s| s > 1e-10).count()
@@ -767,6 +768,99 @@ mod tests {
         if rank_b == rank_c && rank_c == rank_x {
             println!("  [CONFIRMED] All three types span the SAME column space");
             println!("  The incidence is assessor-regular: B/C/X are coverage classes");
+        } else {
+            println!("  Column spaces DIFFER: rank B/C = {}, rank X = {}", rank_b, rank_x);
+            println!("  B/C live in a {}-dim subspace; X adds {} extra directions",
+                rank_b, rank_x - rank_b);
+        }
+
+        // --- Follow-up test 1: B/C Gram matrix comparison ---
+        // If B and C have the same Gram matrix G = M^T * M, they are
+        // column-permutation equivalent (same geometry, different row ordering).
+        let gram_b = mat_b.transpose() * &mat_b;
+        let gram_c = mat_c.transpose() * &mat_c;
+
+        // Sort eigenvalues of both Gram matrices and compare
+        let eig_gb = gram_b.symmetric_eigenvalues();
+        let eig_gc = gram_c.symmetric_eigenvalues();
+        let gram_match = eig_gb.iter().zip(eig_gc.iter())
+            .all(|(a, b)| (a - b).abs() < 1e-8);
+
+        println!("\n  Follow-up 1: Gram matrix eigenvalue comparison");
+        println!("    Gram(B) and Gram(C) eigenvalues match: {}", gram_match);
+        if gram_match {
+            println!("    => B and C have identical column geometry (up to row permutation)");
+        }
+
+        // --- Follow-up test 2: Column space intersection dim(C_B intersect C_X) ---
+        // Stack B and X column spaces, compute rank of the union
+        // dim(C_B intersect C_X) = rank(B) + rank(X) - rank([B; X])
+        let mut stacked = DMatrix::zeros(triads_b.len() + triads_x.len(), 42);
+        for i in 0..triads_b.len() {
+            for j in 0..42 {
+                stacked[(i, j)] = mat_b[(i, j)];
+            }
+        }
+        for i in 0..triads_x.len() {
+            for j in 0..42 {
+                stacked[(triads_b.len() + i, j)] = mat_x[(i, j)];
+            }
+        }
+        let svd_stacked = stacked.svd(false, false);
+        let rank_union = rank(&svd_stacked.singular_values);
+        let intersection_dim = rank_b + rank_x - rank_union;
+
+        println!("\n  Follow-up 2: Column space intersection");
+        println!("    rank(B) = {}, rank(X) = {}, rank([B;X]) = {}", rank_b, rank_x, rank_union);
+        println!("    dim(C_B intersect C_X) = {} + {} - {} = {}",
+            rank_b, rank_x, rank_union, intersection_dim);
+
+        if intersection_dim == rank_b {
+            println!("    => C_B is ENTIRELY CONTAINED in C_X");
+            println!("    => X = B-space + {} extra directions", rank_x - rank_b);
+        } else if intersection_dim == 0 {
+            println!("    => B and X column spaces are ORTHOGONAL");
+        } else {
+            println!("    => Partial intersection: {} shared dimensions", intersection_dim);
+        }
+
+        // --- Follow-up test 3: Principal angles between B and X ---
+        // The principal angles between two subspaces are the arccos of
+        // the singular values of Q_B^T * Q_X, where Q_B, Q_X are
+        // orthonormal bases of the column spaces.
+        //
+        // We use the thin SVD to get orthonormal column bases.
+        let svd_b_full = mat_b.clone().svd(false, true);
+        let svd_x_full = mat_x.clone().svd(false, true);
+
+        if let Some(ref vt_b) = svd_b_full.v_t {
+            if let Some(ref vt_x) = svd_x_full.v_t {
+                // Extract the first rank_b/rank_x rows of V^T (= columns of V)
+                let q_b = vt_b.rows(0, rank_b).transpose();
+                let q_x = vt_x.rows(0, rank_x).transpose();
+
+                // Cosines of principal angles = singular values of Q_B^T * Q_X
+                let cross = q_b.transpose() * &q_x;
+                let svd_cross = cross.svd(false, false);
+
+                let cosines: Vec<f64> = svd_cross.singular_values.iter().copied().collect();
+                let angles_deg: Vec<f64> = cosines.iter()
+                    .map(|c| c.min(1.0).acos().to_degrees())
+                    .collect();
+
+                println!("\n  Follow-up 3: Principal angles between B and X column spaces");
+                println!("    Cosines (top-10): [{}]",
+                    cosines.iter().take(10).map(|c| format!("{:.4}", c))
+                        .collect::<Vec<_>>().join(", "));
+                println!("    Angles (top-10): [{}]",
+                    angles_deg.iter().take(10).map(|a| format!("{:.1}", a))
+                        .collect::<Vec<_>>().join(", "));
+
+                let n_zero_angle = angles_deg.iter().filter(|a| **a < 1.0).count();
+                let n_right_angle = angles_deg.iter().filter(|a| (**a - 90.0).abs() < 1.0).count();
+                println!("    Coincident directions (angle < 1 deg): {}", n_zero_angle);
+                println!("    Orthogonal directions (angle ~ 90 deg): {}", n_right_angle);
+            }
         }
     }
 }
