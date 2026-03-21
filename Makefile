@@ -201,16 +201,15 @@ check: ansi-check terminology-gate verify-no-reports-writes
 
 # Governance verifier targets
 registry-verify-markdown-governance:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify markdown-removal-policy
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-removal-policy
 
 governance-gate-readonly:
-	@# Single release build for all gate binaries, then run directly.
-	@# Release mode: crossrefs 31x faster (14s -> 0.45s) due to TOML parsing.
-	@# Incremental no-op build: ~1.3s. Total gate: ~3.3s when binaries are cached.
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin markdown-registry --bin governance-verify --bin integrity-resolution
-	$(REPO_CARGO_TARGET_DIR)/release/markdown-registry verify-gate-all
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify gate-all
+	@# release-gate profile: thin LTO + 6 codegen-units = 10x faster compile
+	@# than fat LTO, <5% runtime difference for TOML-parsing gate binaries.
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin markdown-registry --bin governance-verify --bin integrity-resolution
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry verify-gate-all
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify gate-all
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
@@ -489,7 +488,7 @@ x87-strategy-bench:
 
 x87-strategy-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-strategy-bench
-	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench \
+	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench \
 		--len $${LEN:-262144} \
 		--repeats $${REPEATS:-5} \
 		--worker-counts $${WORKER_COUNTS:-1,2,4,6} \
@@ -500,10 +499,10 @@ x87-strategy-perf:
 x87-strategy-hyperfine:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-strategy-bench
 	hyperfine --shell=none --warmup $${WARMUP:-1} --runs $${RUNS:-5} \
-		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 1 --output /tmp/x87_strategy_hyperfine_1.csv' \
-		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 2 --output /tmp/x87_strategy_hyperfine_2.csv' \
-		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 4 --output /tmp/x87_strategy_hyperfine_4.csv' \
-		'$(REPO_CARGO_TARGET_DIR)/release/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 6 --output /tmp/x87_strategy_hyperfine_6.csv'
+		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 1 --output /tmp/x87_strategy_hyperfine_1.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 2 --output /tmp/x87_strategy_hyperfine_2.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 4 --output /tmp/x87_strategy_hyperfine_4.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 6 --output /tmp/x87_strategy_hyperfine_6.csv'
 	@echo "OK: x87 strategy hyperfine sweep completed."
 
 x87-strategy-flamegraph:
@@ -527,7 +526,7 @@ x87-givens-microbench:
 x87-givens-microbench-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-givens-microbench
 	perf stat -x, -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-5} \
-		$(REPO_CARGO_TARGET_DIR)/release/x87-givens-microbench \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/x87-givens-microbench \
 		--iterations $${ITERATIONS:-200000} \
 		--repeats $${REPEATS:-9} \
 		$${CASES:+--cases $${CASES}} \
@@ -555,7 +554,7 @@ gpu-bench-ncu:
 		--set $${NCU_SECTIONS:-SpeedOfLight,MemoryWorkloadAnalysis,ComputeWorkloadAnalysis} \
 		--target-processes all \
 		--export data/benchmarks/ncu/cuda_kernels_$$(date +%Y%m%d_%H%M%S) \
-		$(REPO_CARGO_TARGET_DIR)/release/cuda-precision-bench \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/cuda-precision-bench \
 		--output data/benchmarks/cuda_kernel_baseline_ncu.csv \
 		$${GRIDS:+--grids $${GRIDS}} \
 		$${WORKLOADS:+--workloads $${WORKLOADS}} \
@@ -569,7 +568,7 @@ gpu-bench-nsys:
 		--trace=$${NSYS_TRACE:-cuda,nvtx} \
 		--output data/benchmarks/nsys/cuda_pipeline_$$(date +%Y%m%d_%H%M%S) \
 		--force-overwrite true \
-		$(REPO_CARGO_TARGET_DIR)/release/cuda-precision-bench \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/cuda-precision-bench \
 		--output data/benchmarks/cuda_kernel_baseline_nsys.csv \
 		$${GRIDS:+--grids $${GRIDS}} \
 		$${WORKLOADS:+--workloads $${WORKLOADS}} \
@@ -588,7 +587,7 @@ cpu-bench-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cpu-lbm-bench
 	@mkdir -p reports/benchmarks
 	perf stat -d \
-		$(REPO_CARGO_TARGET_DIR)/release/cpu-lbm-bench \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/cpu-lbm-bench \
 		--grids $${GRIDS:-64} --workloads $${WORKLOADS:-bgk} \
 		--output /dev/null \
 		2> $${COUNTERS_OUT:-reports/benchmarks/cpu_lbm_perf.stat}
@@ -599,7 +598,7 @@ cpu-bench-cachegrind:
 	@mkdir -p reports/benchmarks
 	valgrind --tool=cachegrind \
 		--cachegrind-out-file=$${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm} \
-		$(REPO_CARGO_TARGET_DIR)/release/cpu-lbm-bench \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/cpu-lbm-bench \
 		--grids $${GRIDS:-32} --workloads $${WORKLOADS:-bgk} --steps-small 10 \
 		--output /dev/null
 	@echo "OK: cachegrind output saved. Annotate with: cg_annotate $${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm}"
@@ -672,7 +671,7 @@ structured-spectrum-bench:
 
 jacobi-backend-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin jacobi-backend-sweep
-	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release/jacobi-backend-sweep \
+	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release-gate/jacobi-backend-sweep \
 		--sizes $${SIZES:-68} \
 		--repeats $${REPEATS:-3} \
 		$${FAMILIES:+--families $${FAMILIES}} \
@@ -993,31 +992,31 @@ registry-wave5-batch2: registry-strict-toml-batch2
 	@echo "DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
 
 registry-strict-toml-batch3-build:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin integrity-resolution
-	$(REPO_CARGO_TARGET_DIR)/release/integrity-resolution --repo-root .
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution
+	$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .
 
 registry-verify-schema-signatures:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify schema-signatures
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify schema-signatures
 
 registry-verify-crossrefs:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify crossrefs
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify crossrefs
 
 registry-verify-dataset-label-aliases:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify dataset-label-aliases
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify dataset-label-aliases
 
 registry-verify-external-source-operational-contracts:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify external-source-operational-contracts
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify external-source-operational-contracts
 
 registry-verify-strict-toml-batch3:
-	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin integrity-resolution --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release/integrity-resolution --verify --repo-root .
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify crossrefs
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify dataset-label-aliases
-	$(REPO_CARGO_TARGET_DIR)/release/governance-verify external-source-operational-contracts
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --verify --repo-root .
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify crossrefs
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify dataset-label-aliases
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify external-source-operational-contracts
 
 registry-strict-toml-batch3: registry-verify-strict-toml-batch3
 	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
