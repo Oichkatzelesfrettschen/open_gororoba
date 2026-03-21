@@ -882,3 +882,36 @@ C-1485: Fundamental Casimir: T_a*T_a = -(4/3)*I_3 (anti-Hermitian convention)
 C-1486: All-embeddings equivalence: 7 SU(3) embeddings produce identical Casimir
 C-1487: SU(5)/SU(3) cross-validation: sum f_{abc}^2 = 24 for both embeddings
 C-1488: Real-part projection: e_0 component is unique commutative-associative scalar
+
+**Subalgebra and subloop structure:**
+- Cawagas et al. (2009): "Trigintaduonion subalgebra structure" [arXiv:0907.2047]
+  32D pathion loop T_L: 373 non-trivial subloops. Full 32x32 multiplication table.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf
+
+- Cawagas & Gutierrez (2005): "Subloop structure of sedenion loop" [Matimyas Matematika]
+  Sedenion loop S_L: quasi-octonion loop O~_L discovered (contains zero divisors).
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/CawagasMatimyas.pdf
+
+**Annihilator and zero divisor theory:**
+- Biss, Christensen, Dugger, Isaksen (2007): "Large annihilators in CD algebras II" [arXiv:math/0702075]
+  Codimension-4 splitting simplifies multiplication. Theorem 5.10: annihilator dimension formula.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/0702075v2.pdf
+
+- Moreno (1997): "Zero divisors of CD algebras over R" [arXiv:q-alg/9710013]
+  Original algebraic ZD characterization for A_n (n>=4). Foundation for Reggiani 2024.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/9710013v1.pdf
+
+- de Marrais (2008): "Voyage by Catamaran" [arXiv:0804.3416]
+  Spandrels: HBK quartets in 2^{N+1}-ions exploded from box-kites in 2^N-ions.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/0804.3416v2.pdf
+
+**Sedenionic matrix algebra:**
+- Gursoy & Bektas (2024): "Sedenionic matrices and their properties" [GUJS 14(3)]
+  Matrix algebra with sedenion coefficients. Addition, multiplication, conjugation, transpose.
+  Vector space over R/C, module structure over quaternions.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/10.17714-gumusfenbil.1415410-3642320.pdf
+
+**Octonionic gauge theory:**
+- Chanyal, Sharma, Negi (2015): "Octonionic gravi-electromagnetism and dark matter" [arXiv:1502.05293]
+  Split octonion gauge formulation for SU(2)xU(1) and SU(3)xSU(2)xU(1). Dark matter field equations.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf
