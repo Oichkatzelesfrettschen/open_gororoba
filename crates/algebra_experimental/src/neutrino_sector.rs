@@ -6720,4 +6720,128 @@ mod tests {
         println!("  -> delta_CP ~ {:.1} deg", (3e-2 / j_max).clamp(-1.0, 1.0).asin().to_degrees());
         println!("  Gram phase arg(G_12) = {:.1} deg = algebraic prediction", gram_phases[0][1].to_degrees());
     }
+
+    /// Extract delta_CP from the standard parameterization.
+    ///
+    /// In the PDG parameterization, delta_CP appears ONLY in U_e3:
+    ///   U_e3 = s_13 * exp(-i * delta)
+    ///
+    /// The Gram phase matrix phi_ij = arg(G_ij) gives the raw phase each
+    /// PMNS element would carry. But 5 of the 9 phases are unphysical
+    /// (removable by charged-lepton and neutrino rephasing). The single
+    /// physical phase is:
+    ///
+    ///   delta_CP = phi_e1 + phi_mu3 - phi_e3 - phi_mu1
+    ///            = arg(U_e1 * U_mu3 * conj(U_e3) * conj(U_mu1))
+    ///
+    /// This is the rephasing-invariant quartet (Jarlskog invariant phase).
+    #[test]
+    fn test_delta_cp_from_gram_quartet() {
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
+            let mode_j = MajoranaMode { gamma_index: sel.1 - 1, cd_basis_index: sel.1, cd_dim: 16 };
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(ch_pair, s)).collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(nu_pair, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        // Compute full 3x3 Gram phase matrix
+        let mut gram_phases = [[0.0_f64; 3]; 3];
+        let mut gram_complex = [[(0.0_f64, 0.0_f64); 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                let c0 = dot16(&ch_profiles[i], &nu_profiles[j]);
+                let psi1_j = gourlay_psi(&nu_profiles[j]);
+                let c1 = dot16(&ch_profiles[i], &psi1_j);
+                let psi2_j = cd_kernel::gourlay_psi_n(&nu_profiles[j], 2);
+                let c2 = dot16(&ch_profiles[i], &psi2_j);
+                let re = c0 + c1 * omega_re + c2 * omega_re;
+                let im = c1 * omega_im - c2 * omega_im;
+                gram_phases[i][j] = im.atan2(re);
+                gram_complex[i][j] = (re, im);
+            }
+        }
+
+        println!("  === Delta_CP from Rephasing-Invariant Quartet ===\n");
+        println!("  Gram phases (degrees):");
+        for i in 0..3 {
+            println!("    [{:>8.2}, {:>8.2}, {:>8.2}]",
+                gram_phases[i][0].to_degrees(),
+                gram_phases[i][1].to_degrees(),
+                gram_phases[i][2].to_degrees());
+        }
+
+        // The rephasing-invariant quartet:
+        // delta = phi[0][0] + phi[1][2] - phi[0][2] - phi[1][0]
+        // (indices: e=0, mu=1, tau=2; 1st=e-type, 2nd=mu-type, 3rd=tau-type)
+        let delta_quartet = gram_phases[0][0] + gram_phases[1][2]
+                          - gram_phases[0][2] - gram_phases[1][0];
+        println!("\n  Rephasing-invariant quartet:");
+        println!("  delta = phi[0][0] + phi[1][2] - phi[0][2] - phi[1][0]");
+        println!("        = {:.2} + {:.2} - {:.2} - {:.2}",
+            gram_phases[0][0].to_degrees(), gram_phases[1][2].to_degrees(),
+            gram_phases[0][2].to_degrees(), gram_phases[1][0].to_degrees());
+        println!("        = {:.2} deg", delta_quartet.to_degrees());
+
+        // Also compute the complex quartet product:
+        // Q = G[0][0] * G[1][2] * conj(G[0][2]) * conj(G[1][0])
+        use num_complex::Complex;
+        let g = |i: usize, j: usize| -> Complex<f64> {
+            Complex::new(gram_complex[i][j].0, gram_complex[i][j].1)
+        };
+        let quartet = g(0, 0) * g(1, 2) * g(0, 2).conj() * g(1, 0).conj();
+        println!("\n  Complex quartet: {:.4} + {:.4}i", quartet.re, quartet.im);
+        println!("  arg(quartet) = {:.2} deg", quartet.arg().to_degrees());
+        println!("  |quartet| = {:.4}", quartet.norm());
+
+        // Try all 4 possible quartets (different index assignments)
+        println!("\n  All rephasing-invariant quartets:");
+        let quartets = [
+            ((0, 0), (1, 2), (0, 2), (1, 0), "e1*mu3/e3*mu1"),
+            ((0, 1), (1, 2), (0, 2), (1, 1), "e2*mu3/e3*mu2"),
+            ((0, 0), (1, 1), (0, 1), (1, 0), "e1*mu2/e2*mu1"),
+            ((0, 0), (2, 2), (0, 2), (2, 0), "e1*tau3/e3*tau1"),
+        ];
+        for &((a, b), (c, d), (e, f), (h, k), label) in &quartets {
+            let q = g(a, b) * g(c, d) * g(e, f).conj() * g(h, k).conj();
+            println!("  {}: arg = {:.2} deg, |Q| = {:.4}",
+                label, q.arg().to_degrees(), q.norm());
+        }
+
+        println!("\n  PDG 2024: delta_CP = 195 deg (= -165 deg)");
+        println!("  The quartet phase is the algebraic prediction for delta_CP.");
+    }
 }
