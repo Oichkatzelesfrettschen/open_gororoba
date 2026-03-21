@@ -6844,4 +6844,131 @@ mod tests {
         println!("\n  PDG 2024: delta_CP = 195 deg (= -165 deg)");
         println!("  The quartet phase is the algebraic prediction for delta_CP.");
     }
+
+    /// Scan all 6 generation-to-flavor assignments for delta_CP.
+    ///
+    /// The algebra produces 3 generation indices (O_1, O_2, O_3) but the
+    /// mapping to physical flavors (e, mu, tau) is a discrete choice with
+    /// 3! = 6 possibilities. Each gives a different delta_CP from the
+    /// rephasing-invariant quartet.
+    #[test]
+    fn test_delta_cp_all_flavor_assignments() {
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use num_complex::Complex;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
+            let mode_j = MajoranaMode { gamma_index: sel.1 - 1, cd_basis_index: sel.1, cd_dim: 16 };
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(ch_pair, s)).collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(nu_pair, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        // Full 3x3 complex Gram matrix
+        let mut gc = [[Complex::new(0.0, 0.0); 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                let c0 = dot16(&ch_profiles[i], &nu_profiles[j]);
+                let psi1_j = gourlay_psi(&nu_profiles[j]);
+                let c1 = dot16(&ch_profiles[i], &psi1_j);
+                let psi2_j = cd_kernel::gourlay_psi_n(&nu_profiles[j], 2);
+                let c2 = dot16(&ch_profiles[i], &psi2_j);
+                let re = c0 + c1 * omega_re + c2 * omega_re;
+                let im = c1 * omega_im - c2 * omega_im;
+                gc[i][j] = Complex::new(re, im);
+            }
+        }
+
+        // All 6 permutations of (0,1,2) -> (e, mu, tau)
+        let perms: [(usize, usize, usize, &str); 6] = [
+            (0, 1, 2, "O1=e, O2=mu, O3=tau"),
+            (0, 2, 1, "O1=e, O2=tau, O3=mu"),
+            (1, 0, 2, "O1=mu, O2=e, O3=tau"),
+            (1, 2, 0, "O1=mu, O2=tau, O3=e"),
+            (2, 0, 1, "O1=tau, O2=e, O3=mu"),
+            (2, 1, 0, "O1=tau, O2=mu, O3=e"),
+        ];
+
+        println!("  === Delta_CP: All 6 Generation-to-Flavor Assignments ===\n");
+        println!("  {:>35} | {:>10} | {:>10}",
+            "Assignment", "delta_CP", "Residual");
+        println!("  {:-<35}-+-{:-<10}-+-{:-<10}", "", "", "");
+
+        let pdg_delta = -165.0_f64; // 195 deg = -165 deg in [-180, 180]
+
+        for &(e, mu, _tau, label) in &perms {
+            // Quartet: G[e,0] * G[mu,2] * conj(G[e,2]) * conj(G[mu,0])
+            // In the permuted indices: e-row=perm[e], mu-row=perm[mu]
+            // Column indices 0,1,2 = mass eigenstates (no permutation)
+            let q = gc[e][0] * gc[mu][2] * gc[e][2].conj() * gc[mu][0].conj();
+            let delta = q.arg().to_degrees();
+            let residual = ((delta - pdg_delta + 540.0) % 360.0) - 180.0;
+
+            println!("  {:>35} | {:>+10.2} | {:>+10.2}",
+                label, delta, residual);
+        }
+
+        // Also try with column permutations (mass eigenstate relabeling)
+        println!("\n  With mass-eigenstate relabeling (column perm):");
+        let col_perms: [(usize, usize, usize); 6] = [
+            (0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0),
+        ];
+
+        let mut best_residual = 180.0_f64;
+        let mut best_assignment = String::new();
+        let mut best_delta = 0.0_f64;
+
+        for &(e, mu, _tau, row_label) in &perms {
+            for &(c1, c2, c3) in &col_perms {
+                let cols = [c1, c2, c3];
+                let q = gc[e][cols[0]] * gc[mu][cols[2]]
+                      * gc[e][cols[2]].conj() * gc[mu][cols[0]].conj();
+                let delta = q.arg().to_degrees();
+                let residual = ((delta - pdg_delta + 540.0) % 360.0) - 180.0;
+
+                if residual.abs() < best_residual.abs() {
+                    best_residual = residual;
+                    best_delta = delta;
+                    best_assignment = format!("{} | cols=({},{},{})", row_label, c1, c2, c3);
+                }
+            }
+        }
+
+        println!("\n  === BEST MATCH ===");
+        println!("  Assignment: {}", best_assignment);
+        println!("  delta_CP = {:.2} deg", best_delta);
+        println!("  PDG: {:.2} deg", pdg_delta);
+        println!("  Residual: {:.2} deg", best_residual);
+    }
 }
