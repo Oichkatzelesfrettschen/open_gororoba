@@ -10097,3 +10097,10 @@ statement = """V_6 2D constrained scan: two orthogonal constrained directions in
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_2d_constrained_scan"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1491"
+statement = """Joint 4D PMNS optimization: re-optimizing (alpha_ch, alpha_nu) jointly with (t_solar, t_atmo) via TensorElementLift yields all three PMNS angles within 1.3% of PDG 2025. Optimal: alpha_ch=3.50, alpha_nu=1.35, t_solar=1.54, t_atmo=2.00. Results: theta_12=33.84 deg (1.28%), theta_13=8.56 deg (0.24%), theta_23=48.74 deg (0.54%). Combined score 0.000221 (4.9x improvement over fixed-alpha 4-param model). Rayon-parallel 4D scan: 1302 (alpha_ch,alpha_nu) points x ~663 inner evaluations."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_joint_4d_optimization"
+last_verified = "2026-03-21"
