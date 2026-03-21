@@ -12,7 +12,7 @@ updated = "2026-03-20"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 19
+document_count = 23
 
 [[owner]]
 path = "README.md"
@@ -124,6 +124,30 @@ removal_reason = ""
 
 [[owner]]
 path = "papers/ghost_paper_final.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/NEXT_ACTIONS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/ROADMAP.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/TODO.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/physics/sedenion_standard_model.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
