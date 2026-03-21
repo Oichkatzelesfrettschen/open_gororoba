@@ -197,3 +197,4 @@ theories/CDLinearLemmas.v
 verified/C1455_AssociatorTrilinear.v
 verified/C1463_ArithmeticInventory.v
 verified/C1464_SedenionAnticommutation.v
+verified/C1465_KoebisuEqualNorm.v
