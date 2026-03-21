@@ -658,12 +658,21 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/ (3 Wilmot PDFs)
   Integration: sedenion_subalgebras.rs claims C-1467..C-1473
 
-- de Marrais (2000-2007): "Pathions" (7 papers)
+- de Marrais (2000-2007): CD tower zero-divisor geometry (8 papers)
   Box-kite ZD structure. 42 assessors. Sand mandala emanation tables.
   Property cascade: alternativity (16D), power-assoc (32D), flexibility (64D).
   ZD counts: 84 (sedenions), 252 (pathions).
+  Integration: cd_tower.rs naming conventions, AlgebraDim enum, XOR sign cocycle
+  Papers:
+    math/0011260 (2000): Original assessor/box-kite framework
+    math/0207003 (2002): Placeholder substructures I (ZD equivalence classes)
+    math/0403113 (2004): Box-kites III (mock octonions, quizzical quaternions)
+    Wolfram (2004): Visual box-kite geometry presentation
+    math/0603281 (2006): Presto digitization I (CDP bit-string encoding)
+    0704.0026 (2007): Catamaran sails (pathion ZD patterns)
+    0704.0112 (2007): Sedenions XOR (explicit XOR multiplication framework)
+    math/0703745 (2007): Placeholder substructures III (closure properties)
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/de_marrais_*.pdf
-  Integration: cd_tower.rs naming conventions, AlgebraDim enum
 
 **Canonical mathematical reference:**
 - Baez (2002): "The Octonions" [arXiv:math/0105155]
