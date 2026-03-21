@@ -366,6 +366,16 @@ Incidence SVD: B rank=21, C rank=21, X rank=27, B+C rank=27 (not 42).
 C_X column space decomposes as C_B + V_6 (strict 6D extension).
 B and C have identical singular-value spectra (spectral identity).
 
+### Literature Axiom Verification
+
+10 axioms from Tang/Tang (2024) and Gresnigt (2025) independently verified:
+- Shared quaternion subalgebra across O_1, O_2, O_3
+- Octonion subalgebra closure under CD multiplication
+- Anticommutation of all 120 sedenion basis pairs ({e_i, e_j} = 0 for i != j)
+- Psi automorphism: psi^3 = Id, U-conjugation U^3 = -I, orbit sum = 3/2 exact
+- Epsilon automorphism: upper-block parity flip, order 2
+- Koebisu equal-norm property: |a| = |b| for ZD pairs
+
 ### Scheme Comparison (Interleaved vs Contiguous)
 
 | Parameter | Interleaved stride | Tang contiguous | PDG |
@@ -479,12 +489,26 @@ invariant:
 The magnitude matches within 10%. The phase quadrant (90 deg vs PDG 195
 deg) depends on sign conventions in the rephasing.
 
+The rephasing formula:
+    U_CP[i][j] = |U_real[i][j]| * exp(i * alpha_CP * arg(G_ij))
+where G_ij is the cross-sector Gram matrix. At alpha_CP ~ 0.8, the
+accumulated phase alpha_CP * arg(G_12) = 0.8 * 45 = 36 degrees per
+element, producing sin(delta) ~ 1 (maximal CP violation) because
+J = J_max * sin(delta) and J_max = 3.07e-2 from the mixing angles.
+
 ### Null Results and Falsifications
 
 - Intra-sector psi eigenspace decomposition: Im = 0 (psi symmetric on
   single-sector profiles). RULES OUT simple psi-eigenspace mechanism.
+  Reason: <v_i, psi(v_j)> = <v_i, psi^2(v_j)> within each sector, so
+  the omega and omega^2 projections cancel exactly.
 - Direct complex mass matrix construction via J_k injection at alpha_CP=1
-  distorts theta_13 to ~32 deg due to eigenvector permutation mismatch.
+  distorts theta_13 to ~55 deg due to eigenvector permutation mismatch
+  between nalgebra::SymmetricEigen and faer::selfadjoint_eigendecomposition.
+  The rephasing approach avoids this by preserving |U_ij|.
+- Separate complex J_k PMNS extension (4082ba84): J_CP ~ 6e-2 for k=1,5,7
+  but mixing angles destroyed. Conjugate pairing observed: k=1 and k=5
+  give J with opposite signs (G2 conjugacy structure).
 
 ## X. Chi-squared Global Fit
 
@@ -572,15 +596,23 @@ is proved by boolean reflection for ALL Cayley-Dickson dimensions from 16D
 | 65536D    | 2.2s  | THE SUMMIT -- boolean reflection |
 
 Key technique: `rewrite sed_mul_scale_left + rewrite <- sed_scale_sub +
-reflexivity` = 3s (vs 13GB/6min OOM with monolithic `ring`).
+reflexivity` = 3s. The previous monolithic approach (`dest_sed + ring` on
+48+ variable sedenion polynomials) consumed 13GB and was killed after 6
+minutes. The tower lift reduces this to 3 seconds by factoring through
+CD doubling lemmas recursively.
+
+65536D = 2^16 is the practical summit: no further CD doubling possible
+within 16-bit index space. Total tower proof time: <15s for all dimensions.
 
 ### Boolean Reflection Infrastructure
 
-- XOR sign cocycle: 147 sign-associative triads (35 + 112 split)
-- Subalgebra closure: 7 theorems in 0.76s (384 products via vm_compute)
-- Slot-shift ZD preservation: 84 pairs invariant under shift
-- CDDouble functor: generic CD doubling with 7 auto-linearity axioms (C-1474)
-- Fuel adequacy: cd_sign_fuel(log2(dim)+1) proven sufficient
+- XOR sign cocycle: 147 sign-associative triads (35 fully associative +
+  112 sign-associative; the 35 correspond to H_15 quaternion subalgebra count)
+- Subalgebra closure: 7 theorems in 0.76s (384 products via vm_compute,
+  verifying O_1, O_2, O_3 multiplication closure)
+- Slot-shift ZD preservation: 84 pairs invariant under cyclic basis reindexing
+- CDDouble functor: generic CD doubling with 7 auto-linearity axioms
+- Fuel adequacy: cd_sign_fuel(log2(dim)+1) proven sufficient for all dims
 
 ### G2 Stabilizer Dimension (this session)
 
@@ -611,9 +643,11 @@ generations. Consistent with Gourlay 2024.
 ### Psi: S_3 Generation Symmetry
 
 The psi automorphism (order 3) cycles O_1 -> O_2 -> O_3. Key properties:
-- psi^3 = Id (verified computationally)
+- psi^3 = Id (verified computationally); U-conjugation: U^3 = -I
+- Orbit sum = 3/2 exact (sum of psi eigenvalues on friction profiles)
 - Psi overlap/norm ratio = cos(2*pi/3) = -0.5 for all generation pairs
-- Type X defect vectors are psi FIXED POINTS (overlap = +1.0)
+- Type X defect vectors (all 3 associators nonzero, 252 triads) are psi
+  FIXED POINTS with overlap = +1.0 -- they are generation-invariant
 - V_6 is a psi-eigenspace (scalar 0.25*I_6) -- generation-invariant
 
 The psi automorphism is the primary driver of atmospheric mixing:
