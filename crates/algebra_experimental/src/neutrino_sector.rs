@@ -49,6 +49,13 @@ pub struct PmnsResult {
     pub delta_m21_sq: f64,
     /// Delta m^2_31 = m3^2 - m1^2 (atmospheric).
     pub delta_m31_sq: f64,
+    /// Jarlskog invariant J = Im(U_e2 U_mu3 U_e3* U_mu2*).
+    /// For real PMNS matrices J = 0 (no CP violation).
+    pub jarlskog_invariant: f64,
+    /// Dirac CP phase delta_CP in degrees.
+    /// Extracted from J via J = s12 c12 s23 c23 s13 c13^2 sin(delta).
+    /// PDG 2024: delta_CP ~ 195 deg (normal ordering).
+    pub cp_phase_deg: f64,
 }
 
 /// Construct neutrino and charged-lepton mass matrices from signed friction.
@@ -243,6 +250,55 @@ pub fn construct_pmns_matrices_offdiag(
 }
 
 /// Extract PMNS angles from a 3x3 unitary matrix using standard parameterization.
+/// Extract the Jarlskog invariant and CP phase from a real PMNS matrix.
+///
+/// For a real orthogonal matrix, J = 0 always. The CP phase is undefined
+/// in this case (returned as 0.0).
+///
+/// For a complex unitary PMNS matrix U:
+///   J = Im(U_e2 * U_mu3 * U_e3* * U_mu2*)
+///   = s12 * c12 * s23 * c23 * s13 * c13^2 * sin(delta_CP)
+///
+/// PDG 2024 best fit (normal ordering): delta_CP ~ 195 deg, J ~ -0.033.
+pub fn extract_cp_phase(angles_deg: (f64, f64, f64), j_invariant: f64) -> f64 {
+    let (t12, t13, t23) = angles_deg;
+    let s12 = t12.to_radians().sin();
+    let c12 = t12.to_radians().cos();
+    let s13 = t13.to_radians().sin();
+    let c13 = t13.to_radians().cos();
+    let s23 = t23.to_radians().sin();
+    let c23 = t23.to_radians().cos();
+
+    let denom = s12 * c12 * s23 * c23 * s13 * c13 * c13;
+    if denom.abs() < 1e-15 {
+        return 0.0;
+    }
+    let sin_delta = j_invariant / denom;
+    sin_delta.clamp(-1.0, 1.0).asin().to_degrees()
+}
+
+/// Compute the Jarlskog invariant for a real 3x3 matrix.
+///
+/// J = det(Im([M_up, M_down])) / (Delta m^2 products)
+/// For real matrices: J = 0 identically.
+/// This function returns 0.0 for real matrices; it exists to
+/// establish the interface for future complex extension.
+pub fn jarlskog_from_real_pmns(u: &faer::Mat<f64>) -> f64 {
+    // J = Im(U_e2 * U_mu3 * conj(U_e3) * conj(U_mu2))
+    // For real U: all products are real, so Im = 0.
+    let prod = u.read(0, 1) * u.read(1, 2) * u.read(0, 2) * u.read(1, 1);
+    // For a real orthogonal matrix, the "imaginary part" is always zero.
+    // We return the antisymmetric combination as a consistency check.
+    let j = u.read(0, 1) * u.read(1, 2) * u.read(2, 0)
+          - u.read(0, 2) * u.read(1, 1) * u.read(2, 0);
+    // This is actually Re(U_e2 * U_mu3 * U_tau1) - Re(U_e3 * U_mu2 * U_tau1),
+    // which is an antisymmetric product, NOT the Jarlskog invariant.
+    // For a truly real orthogonal matrix, J = 0 by definition.
+    let _ = prod;
+    let _ = j;
+    0.0
+}
+
 pub fn extract_pmns_angles(u: &faer::Mat<f64>) -> (f64, f64, f64) {
     let u_e3 = u.read(0, 2).abs();
     let theta_13 = u_e3.min(1.0).asin();
@@ -298,6 +354,9 @@ pub fn compute_pmns(
     let delta_m21_sq = nu_masses[1].powi(2) - nu_masses[0].powi(2);
     let delta_m31_sq = nu_masses[2].powi(2) - nu_masses[0].powi(2);
 
+    let j = jarlskog_from_real_pmns(&u_pmns);
+    let cp_phase = extract_cp_phase((theta_12, theta_13, theta_23), j);
+
     PmnsResult {
         matrix: u_pmns,
         angles_deg: (theta_12, theta_13, theta_23),
@@ -305,6 +364,8 @@ pub fn compute_pmns(
         charged_masses: ch_masses,
         delta_m21_sq,
         delta_m31_sq,
+        jarlskog_invariant: j,
+        cp_phase_deg: cp_phase,
     }
 }
 
@@ -4863,5 +4924,59 @@ mod tests {
                        + 5.0 * ((8.52 - pdg_t13) / pdg_t13).powi(2);
         println!("\n  Previous 4-param score (3.75, 1.30, 2.49, 0.11): {:.6}", prev_score);
         println!("  Improvement: {:.1}x", prev_score / fine_best.0);
+    }
+
+    /// CP violation baseline: real PMNS matrices have J = 0, delta_CP = 0.
+    ///
+    /// This establishes the interface for future complex-phase extension
+    /// via the G2 stabilizer's Fano pair signs.
+    #[test]
+    fn test_cp_phase_baseline_real_pmns() {
+        let result = compute_pmns((11, 12), (7, 8));
+        assert!(
+            result.jarlskog_invariant.abs() < 1e-15,
+            "Real PMNS matrix must have J = 0, got {}",
+            result.jarlskog_invariant
+        );
+        assert!(
+            result.cp_phase_deg.abs() < 1e-10,
+            "Real PMNS matrix must have delta_CP = 0, got {}",
+            result.cp_phase_deg
+        );
+        println!("  CP phase baseline: J = {:.2e}, delta_CP = {:.2} deg",
+            result.jarlskog_invariant, result.cp_phase_deg);
+        println!("  PDG 2024: delta_CP ~ 195 deg (normal ordering)");
+        println!("  Next: complex phase from Fano pair signs (G2 stabilizer J_k)");
+    }
+
+    /// Verify extract_cp_phase correctly recovers delta from known J.
+    #[test]
+    fn test_cp_phase_extraction_formula() {
+        // PDG values: theta_12=33.41, theta_13=8.54, theta_23=49.0
+        // delta_CP=195 deg -> J ~ -0.0334
+        let t12 = 33.41_f64;
+        let t13 = 8.54_f64;
+        let t23 = 49.0_f64;
+        let delta = 195.0_f64;
+        let s12 = t12.to_radians().sin();
+        let c12 = t12.to_radians().cos();
+        let s13 = t13.to_radians().sin();
+        let c13 = t13.to_radians().cos();
+        let s23 = t23.to_radians().sin();
+        let c23 = t23.to_radians().cos();
+        let j_pdg = s12 * c12 * s23 * c23 * s13 * c13 * c13 * delta.to_radians().sin();
+
+        let recovered = super::extract_cp_phase((t12, t13, t23), j_pdg);
+        // extract_cp_phase returns asin(sin(delta)), which maps 195 -> -15 (mod 360)
+        // since sin(195) = sin(-15) = -sin(15).
+        let sin_delta = delta.to_radians().sin();
+        let sin_recovered = recovered.to_radians().sin();
+        assert!(
+            (sin_delta - sin_recovered).abs() < 1e-10,
+            "sin(delta) mismatch: expected {:.6}, got {:.6}",
+            sin_delta, sin_recovered
+        );
+        println!("  J_PDG = {:.6}", j_pdg);
+        println!("  Recovered delta_CP = {:.2} deg (sin matches PDG 195 deg)", recovered);
     }
 }
