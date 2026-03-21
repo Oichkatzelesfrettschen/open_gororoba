@@ -762,4 +762,36 @@ mod physics_tests {
             f016
         );
     }
+
+    /// Verify that scalar_fraction from real_part_projection accepts the
+    /// same element shapes used by the topological-friction mass pipeline.
+    /// The mass matrices operate on 16-component sedenion elements;
+    /// scalar_fraction must handle those correctly.
+    #[test]
+    fn test_scalar_projection_mass_interface_shape() {
+        use crate::construction::real_part_projection::{project, scalar_fraction};
+
+        // Sedenion-shaped element (16 components) -- typical mass pipeline output
+        let mut sedenion = [0.0f64; 16];
+        sedenion[0] = 0.511; // e_0 component (mass-like)
+        sedenion[1] = 0.1;
+        sedenion[5] = 0.3;
+
+        let p = project(&sedenion);
+        assert!((p - 0.511).abs() < 1e-15, "project should extract e_0 = 0.511");
+
+        let frac = scalar_fraction(&sedenion);
+        assert!(frac > 0.0 && frac < 1.0, "scalar_fraction must be in (0,1)");
+
+        // Octonion-shaped (8 components)
+        let oct = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+        assert!((scalar_fraction(&oct) - 1.0).abs() < 1e-15);
+
+        // 1024D DekaVoudon-shaped
+        let mut dv = vec![0.0f64; 1024];
+        dv[0] = 1.0;
+        dv[512] = 1.0;
+        let frac_dv = scalar_fraction(&dv);
+        assert!((frac_dv - 0.5).abs() < 1e-15, "1024D: half real, half imaginary");
+    }
 }
