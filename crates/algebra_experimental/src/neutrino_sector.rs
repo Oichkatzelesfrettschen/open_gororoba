@@ -6114,4 +6114,257 @@ mod tests {
             }
         }
     }
+
+    /// Complex PMNS extension: J_k-based complexification for CP violation.
+    ///
+    /// The real symmetric mass matrices force J_CP = 0. To get nonzero CP,
+    /// we use the Fano-derived complex structure J_k from the G2 stabilizer
+    /// to inject phases into the off-diagonal mass matrix entries.
+    ///
+    /// For each embedding k=1..7, the 3 Fano pairs define 3 complex lines
+    /// on e_k^perp. The cross-generational psi-overlaps in this complex
+    /// basis carry natural phases that become the source of CP violation.
+    #[test]
+    fn test_complex_pmns_cp_violation() {
+        use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+        use cd_kernel::gourlay_psi;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let alpha_ch = 3.00;
+        let alpha_nu = 1.35;
+
+        // Get the current best real mass matrices
+        let (m_ch_real, m_nu_real) = construct_pmns_matrices_two_param(
+            ch_pair, nu_pair, alpha_ch, alpha_nu,
+        );
+
+        // Apply V_6 correction at the optimal point
+        let (v6_basis, _sv, _assessors) = extract_v6_basis();
+        let lift = TensorElementLift;
+        let eps = 0.05_f64;
+        let n_basis = v6_basis.nrows().min(6);
+
+        // Compute constrained directions
+        let eig_ch_0 = m_ch_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig_nu_0 = m_nu_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_raw_0 = eig_ch_0.u().transpose() * eig_nu_0.u();
+        let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+        let angles_at = |beta: &[f64; 6]| -> (f64, f64, f64) {
+            let mut m_nu = m_nu_real.clone();
+            apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+            let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch_0.u().transpose() * eig_nu.u();
+            let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
+            for i in 0..3 { for j in 0..3 {
+                u_pmns.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+            }}
+            extract_pmns_angles(&u_pmns)
+        };
+
+        let mut g_12 = [0.0_f64; 6];
+        let mut g_13 = [0.0_f64; 6];
+        let mut g_23 = [0.0_f64; 6];
+        for mu in 0..n_basis {
+            let mut bp = [0.0_f64; 6]; bp[mu] = eps;
+            let mut bm = [0.0_f64; 6]; bm[mu] = -eps;
+            let (t12_p, t13_p, t23_p) = angles_at(&bp);
+            let (t12_m, t13_m, t23_m) = angles_at(&bm);
+            g_12[mu] = (t12_p - t12_m) / (2.0 * eps);
+            g_13[mu] = (t13_p - t13_m) / (2.0 * eps);
+            g_23[mu] = (t23_p - t23_m) / (2.0 * eps);
+        }
+        let u_solar = compute_constrained_solar_direction(&g_12, &g_13, &g_23);
+        let u_atmo = compute_constrained_atmospheric_direction(&g_23, &g_13, &u_solar);
+
+        // Apply optimal V_6 correction
+        let inner_angles = |t1: f64, t2: f64| -> (f64, f64, f64) {
+            let mut beta = [0.0_f64; 6];
+            for k in 0..6 { beta[k] = t1 * u_solar[k] + t2 * u_atmo[k]; }
+            angles_at(&beta)
+        };
+        let (t_sol, t_atm, _, _) = gauss_newton_2d(
+            &inner_angles, 1.5, 0.0,
+            (33.41, 8.54, 49.0), (1.0, 2.24, 1.0), 15,
+        );
+
+        let mut beta_opt = [0.0_f64; 6];
+        for k in 0..6 { beta_opt[k] = t_sol * u_solar[k] + t_atm * u_atmo[k]; }
+        let mut m_nu_corrected = m_nu_real.clone();
+        apply_v6_perturbation(&mut m_nu_corrected, &v6_basis, &beta_opt, &lift);
+        let m_nu_corrected = (&m_nu_corrected + m_nu_corrected.transpose()) * faer::scale(0.5);
+
+        println!("--- COMPLEX PMNS: CP VIOLATION VIA J_k ---");
+
+        // For each k=1..7, build the complex PMNS matrix
+        for k in 1..=7 {
+            let cs = complex_structure(k);
+
+            // The 3 Fano pairs give 3 complex lines on e_k^perp.
+            // Each pair (a_idx, b_idx, sign) defines:
+            //   z_j = e_{perp[a_idx]} + i * sign * e_{perp[b_idx]}
+            //
+            // The cross-generational psi overlap in this complex basis
+            // carries a phase. We compute this phase for each generation pair.
+
+            // Build the 3 complex friction profiles
+            // For each generation g and each Fano pair j, compute the
+            // complex overlap: <profile_g, z_j> = <profile_g, u_j> + i*sign*<profile_g, J_k(u_j)>
+
+            // The psi overlap between generation i and j in the complex basis gives
+            // the off-diagonal phase. We use the existing nu_profiles.
+            use crate::bell_inequality::{SignTableCache, rotate_sparse};
+            use crate::majorana_braiding::MajoranaMode;
+            use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+            let (o1, o2, o3) = get_sedenion_subalgebras();
+            let subs = [&o1, &o2, &o3];
+            let sign_table = SignTableCache::new(16);
+
+            let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+            let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+            // Build 16D friction profiles per generation
+            let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+                let i = mode_i.cd_basis_index;
+                let j = mode_j.cd_basis_index;
+                let a_sparse = vec![(i, 1.0)];
+                let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+                let b_sparse = vec![(j, 1.0)];
+                let mut profile = [0.0_f64; 16];
+                for &kk in sub {
+                    if kk == 0 || kk == i || kk == j { continue; }
+                    let x_sparse = [(kk, 1.0)];
+                    profile[kk] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+                }
+                profile
+            };
+
+            let nu_profiles: Vec<[f64; 16]> = subs.iter()
+                .map(|s| build_profile(&nu_a, &nu_b, s)).collect();
+
+            // For each generation pair (i,j), compute the psi-overlap PHASE
+            // in the J_k complex basis.
+            // psi maps nu_profiles[j] -> psi(nu_profiles[j]).
+            // The overlap <nu_profiles[i], psi(nu_profiles[j])> is the real part.
+            // In the complex basis, the J_k-rotated overlap gives the imaginary part:
+            // <nu_profiles[i], J_k(psi(nu_profiles[j]))> is the imaginary component.
+            //
+            // J_k acts on the lower 8 components (octonion part) via the 6x6 matrix.
+
+            let apply_jk = |v: &[f64; 16]| -> [f64; 16] {
+                let mut result = [0.0_f64; 16];
+                // J_k acts on perp indices only
+                for r in 0..6 {
+                    for s in 0..6 {
+                        result[cs.perp_indices[r]] += cs.matrix[r][s] * v[cs.perp_indices[s]];
+                    }
+                }
+                result
+            };
+
+            let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+                a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+            };
+
+            // Build complex neutrino mass matrix with CP amplitude scan
+            // M_nu^complex[i][j] = M_nu_real[i][j] + i * alpha_CP * <profile_i, J_k(psi(profile_j))>
+            // alpha_CP << alpha_nu to preserve the real angle fit
+
+            // Pre-compute the imaginary overlap matrix
+            let mut im_template = [[0.0_f64; 3]; 3];
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i != j {
+                        let psi_j = gourlay_psi(&nu_profiles[j]);
+                        let jk_psi_j = apply_jk(&psi_j);
+                        im_template[i][j] = dot16(&nu_profiles[i], &jk_psi_j);
+                    }
+                }
+            }
+
+            // Scan alpha_CP to find the sweet spot: nonzero J_CP with minimal angle distortion
+            let mut best_alpha_cp = 0.0_f64;
+            let mut best_j_cp = 0.0_f64;
+            let mut best_delta = 0.0_f64;
+            let mut best_score = f64::MAX;
+            let mut best_angles_cp = (0.0_f64, 0.0_f64, 0.0_f64);
+
+            for step in 0..=100_i32 {
+                let alpha_cp = step as f64 * 0.01;
+
+                let mut m_nu_re = [[0.0_f64; 3]; 3];
+                let mut m_nu_im = [[0.0_f64; 3]; 3];
+                for i in 0..3 {
+                    for j in 0..3 {
+                        m_nu_re[i][j] = m_nu_corrected.read(i, j);
+                        if i != j {
+                            m_nu_im[i][j] = alpha_cp * im_template[i][j];
+                        }
+                    }
+                }
+
+                // Hermitize
+                for i in 0..3 {
+                    for j in (i + 1)..3 {
+                        let re_avg = (m_nu_re[i][j] + m_nu_re[j][i]) / 2.0;
+                        let im_avg = (m_nu_im[i][j] - m_nu_im[j][i]) / 2.0;
+                        m_nu_re[i][j] = re_avg;
+                        m_nu_re[j][i] = re_avg;
+                        m_nu_im[i][j] = im_avg;
+                        m_nu_im[j][i] = -im_avg;
+                    }
+                    m_nu_im[i][i] = 0.0;
+                }
+
+                let mut m_nu_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+                let mut m_ch_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+                for i in 0..3 {
+                    for j in 0..3 {
+                        m_nu_c.write(i, j, faer::complex_native::c64::new(m_nu_re[i][j], m_nu_im[i][j]));
+                        m_ch_c.write(i, j, faer::complex_native::c64::new(m_ch_real.read(i, j), 0.0));
+                    }
+                }
+
+                let eig_ch_c = m_ch_c.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu_c = m_nu_c.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_pmns_c = eig_ch_c.u().adjoint() * eig_nu_c.u();
+
+                let u_e3 = u_pmns_c.read(0, 2);
+                let theta_13 = u_e3.abs().min(1.0).asin().to_degrees();
+                let cos_13 = (theta_13.to_radians()).cos();
+                let theta_12 = if cos_13 > 1e-15 {
+                    (u_pmns_c.read(0, 1).abs() / cos_13).min(1.0).asin().to_degrees()
+                } else { 0.0 };
+                let theta_23 = if cos_13 > 1e-15 {
+                    (u_pmns_c.read(1, 2).abs() / cos_13).min(1.0).asin().to_degrees()
+                } else { 0.0 };
+
+                let j_cp = (u_pmns_c.read(0, 0) * u_pmns_c.read(1, 1)
+                    * u_pmns_c.read(0, 1).conj() * u_pmns_c.read(1, 0).conj()).im;
+                let delta_cp = (-u_e3).arg().to_degrees();
+
+                // Score: angle preservation + nonzero J_CP
+                let angle_cost = ((theta_12 - 33.41) / 33.41).powi(2)
+                    + ((theta_13 - 8.54) / 8.54).powi(2)
+                    + ((theta_23 - 49.0) / 49.0).powi(2);
+                let score = angle_cost - 0.01 * j_cp.abs(); // reward nonzero J_CP
+
+                if score < best_score && j_cp.abs() > 1e-6 {
+                    best_score = score;
+                    best_alpha_cp = alpha_cp;
+                    best_j_cp = j_cp;
+                    best_delta = delta_cp;
+                    best_angles_cp = (theta_12, theta_13, theta_23);
+                }
+            }
+
+            println!("  k={}: best alpha_CP={:.2}, theta_12={:.2}, theta_13={:.2}, theta_23={:.2}, J_CP={:.4e}, delta={:.1}",
+                k, best_alpha_cp, best_angles_cp.0, best_angles_cp.1, best_angles_cp.2, best_j_cp, best_delta);
+        }
+
+        println!("\n  PDG targets: J_CP ~ 3.0e-2 (leptons), delta_CP ~ -140 to -180 deg (NO best-fit)");
+    }
 }
