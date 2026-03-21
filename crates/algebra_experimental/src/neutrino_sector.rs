@@ -1246,4 +1246,317 @@ mod tests {
         let overlap: f64 = best_defect.iter().zip(psi_d.iter()).map(|(a, b)| a * b).sum();
         println!("  Overlap/norm ratio = {:.4} (cos(120) = -0.5)", overlap / self_norm);
     }
+
+    /// V_6 solar angle correction: extract orthogonal complement of B/C
+    /// column space from X incidence matrix, then scan for theta_12 correction.
+    ///
+    /// Pipeline:
+    ///   1. Build B/C incidence matrix (168 rows x 42 cols), rank 21
+    ///   2. Compute column-space projector P_BC = Q_BC * Q_BC^T
+    ///   3. Apply (I - P_BC) to X columns -> residual C_V6
+    ///   4. SVD of C_V6 -> 6 non-zero singular values = V_6 basis
+    ///   5. Build solar friction tensor from V_6 basis vectors
+    ///   6. Scan alpha_solar for theta_12 correction
+    #[test]
+    fn test_v6_solar_angle_extraction() {
+        use cd_kernel::cayley_dickson::cd_multiply;
+        use crate::sedenion_subalgebras::assoc_strict;
+        use nalgebra::DMatrix;
+
+        let dim = 16_usize;
+
+        // ===== STEP 1: Build B/C/X incidence matrices =====
+        let mut assessors: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                assessors.push((low, high));
+            }
+        }
+        assert_eq!(assessors.len(), 42);
+
+        let build_row = |b: usize, c: usize, d: usize| -> Vec<f64> {
+            let mut eb = vec![0.0; dim]; eb[b] = 1.0;
+            let mut ec = vec![0.0; dim]; ec[c] = 1.0;
+            let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+            let products = [
+                cd_multiply(&eb, &ec),
+                cd_multiply(&eb, &ed),
+                cd_multiply(&ec, &ed),
+            ];
+            let mut row = vec![0.0_f64; 42];
+            for prod in &products {
+                let nonzero: Vec<usize> = prod.iter().enumerate()
+                    .filter(|(_, v)| v.abs() > 1e-12)
+                    .map(|(i, _)| i)
+                    .collect();
+                if nonzero.len() == 1 {
+                    let idx = nonzero[0];
+                    for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+                        if idx == low || idx == high {
+                            row[a_idx] = 1.0;
+                        }
+                    }
+                }
+            }
+            row
+        };
+
+        let mut rows_bc = Vec::new();
+        let mut rows_x = Vec::new();
+
+        for b in 1..dim {
+            for c in (b + 1)..dim {
+                for d in (c + 1)..dim {
+                    let t1 = assoc_strict(dim, b, c, d);
+                    let t2 = assoc_strict(dim, b, d, c);
+                    let t3 = assoc_strict(dim, c, b, d);
+                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
+                    let row = build_row(b, c, d);
+                    match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
+                        (false, true, false) | (false, false, true) => {
+                            rows_bc.push(nalgebra::RowDVector::from_vec(row));
+                        }
+                        _ => {
+                            rows_x.push(nalgebra::RowDVector::from_vec(row));
+                        }
+                    }
+                }
+            }
+        }
+
+        let mat_bc = DMatrix::from_rows(&rows_bc);
+        let mat_x = DMatrix::from_rows(&rows_x);
+
+        println!("--- V_6 SOLAR ANGLE EXTRACTION ---");
+        println!("  B/C matrix: {} x {}", mat_bc.nrows(), mat_bc.ncols());
+        println!("  X matrix: {} x {}", mat_x.nrows(), mat_x.ncols());
+
+        // ===== STEP 2: Compute B/C column space projector =====
+        // SVD of mat_bc^T to get column space basis
+        let svd_bc = mat_bc.transpose().svd(true, false);
+        let rank_threshold = 1e-8;
+
+        let u_bc = svd_bc.u.as_ref().unwrap();
+        let rank_bc = svd_bc.singular_values.iter()
+            .filter(|&&s| s > rank_threshold)
+            .count();
+
+        println!("  B/C column space rank: {}", rank_bc);
+
+        // Q_BC = first rank_bc columns of U (orthonormal basis of col(BC^T))
+        let q_bc = u_bc.columns(0, rank_bc);
+
+        // Projector: P_BC = Q_BC * Q_BC^T (42 x 42)
+        let p_bc = &q_bc * q_bc.transpose();
+
+        // ===== STEP 3: Project out B/C column space from X =====
+        // (I - P_BC) applied to each COLUMN of mat_x^T
+        let identity = DMatrix::identity(42, 42);
+        let proj_complement = &identity - &p_bc;
+
+        // Apply to X columns: C_V6 = X * (I - P_BC)^T = X * (I - P_BC)
+        // Since (I - P_BC) is symmetric, (I - P_BC)^T = (I - P_BC)
+        let c_v6 = &mat_x * &proj_complement;
+
+        println!("  C_V6 (projected X): {} x {}", c_v6.nrows(), c_v6.ncols());
+
+        // ===== STEP 4: SVD of C_V6 to extract V_6 basis =====
+        let svd_v6 = c_v6.svd(false, true);
+        let rank_v6 = svd_v6.singular_values.iter()
+            .filter(|&&s| s > rank_threshold)
+            .count();
+
+        println!("  V_6 rank: {} (expected 6)", rank_v6);
+        println!("  V_6 singular values: [{}]",
+            svd_v6.singular_values.iter().take(10)
+                .map(|s| format!("{:.3}", s))
+                .collect::<Vec<_>>().join(", "));
+
+        // The V_6 basis vectors are the first rank_v6 rows of V^T
+        // (= right singular vectors)
+        let vt = svd_v6.v_t.as_ref().unwrap();
+
+        // ===== STEP 5: Build solar friction tensor from V_6 =====
+        // Each V_6 basis vector is a 42-dimensional assessor-space direction.
+        // To build a 3x3 generation friction tensor, we project each V_6 vector
+        // onto the 3 subalgebra sectors (o1, o2, o3).
+        //
+        // The subalgebra assessor indices partition the 42 assessors into
+        // generation-correlated groups. We use the cross-generational
+        // assessor overlap to build the off-diagonal coupling.
+
+        // Map assessor pairs to generations:
+        // o1 uses basis 1..7, o2 uses {1..3, 8..11}, o3 uses {1..3, 12..15}
+        // An assessor (low, high) with low in 1..7 and high in 9..15
+        // connects across the o1 boundary to o2 (high in 9..11) or o3 (high in 12..15).
+
+        // For the solar correction, we want the component of V_6 that
+        // discriminates between o1 and o2 (generations 1 and 2).
+        // We build a "generation discriminant" by projecting V_6 onto
+        // assessors that connect o1-o2 vs o1-o3 vs o2-o3.
+
+        let mut gen_12_idx = Vec::new(); // assessors connecting gen 1 and gen 2
+        let mut gen_13_idx = Vec::new(); // assessors connecting gen 1 and gen 3
+        let mut gen_23_idx = Vec::new(); // assessors connecting gen 2 and gen 3
+
+        for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+            let low_in_o1_only = (4..=7).contains(&low);  // in o1 but not shared
+            let high_in_o2 = (9..=11).contains(&high);
+            let high_in_o3 = (12..=15).contains(&high);
+
+            if low_in_o1_only && high_in_o2 {
+                gen_12_idx.push(a_idx);
+            } else if low_in_o1_only && high_in_o3 {
+                gen_13_idx.push(a_idx);
+            } else if high_in_o2 && (1..=3).contains(&low) {
+                // shared quaternion sector -- affects all gens
+                gen_23_idx.push(a_idx);
+            }
+        }
+
+        println!("\n  Generation-discriminant assessor counts:");
+        println!("    1-2 (solar): {}", gen_12_idx.len());
+        println!("    1-3 (reactor): {}", gen_13_idx.len());
+        println!("    2-3 (atmospheric): {}", gen_23_idx.len());
+
+        // For each V_6 basis vector, compute its projection strength
+        // on the 1-2 (solar) sector vs the 1-3 and 2-3 sectors
+        println!("\n  V_6 basis vector projections onto generation sectors:");
+
+        let mut solar_v6_weights = Vec::new();
+        for k in 0..rank_v6.min(6) {
+            let v = vt.row(k);
+            let proj_12: f64 = gen_12_idx.iter().map(|&i| v[i] * v[i]).sum();
+            let proj_13: f64 = gen_13_idx.iter().map(|&i| v[i] * v[i]).sum();
+            let proj_23: f64 = gen_23_idx.iter().map(|&i| v[i] * v[i]).sum();
+            let total = proj_12 + proj_13 + proj_23;
+            let solar_frac = if total > 1e-15 { proj_12 / total } else { 0.0 };
+
+            println!("    V_6[{}]: solar={:.3}, reactor={:.3}, atmo={:.3}, solar_frac={:.3}",
+                k, proj_12, proj_13, proj_23, solar_frac);
+            solar_v6_weights.push((k, solar_frac, svd_v6.singular_values[k]));
+        }
+
+        // ===== STEP 6: Scan alpha_solar =====
+        // Use the most solar-selective V_6 basis vector to construct
+        // a perturbation to the PMNS mass matrix.
+
+        // Sort by solar fraction (descending)
+        solar_v6_weights.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+
+        if !solar_v6_weights.is_empty() {
+            let (best_k, best_frac, best_sv) = solar_v6_weights[0];
+            println!("\n  Best solar-selective V_6 vector: V_6[{}]", best_k);
+            println!("    Solar fraction: {:.3}", best_frac);
+            println!("    Singular value: {:.3}", best_sv);
+
+            // Build the solar perturbation: a 3x3 matrix where
+            // M_12 = M_21 = alpha_solar * (V_6 projection on 1-2 assessors)
+            // M_13 = M_31 ~ 0 (orthogonal to reactor channel)
+            // M_23 = M_32 ~ 0 (orthogonal to atmospheric channel)
+
+            let v_best = vt.row(best_k);
+
+            // Compute the generation-resolved friction from V_6:
+            // f_12 = sum of v_best components on 1-2 assessors
+            // f_13 = sum of v_best components on 1-3 assessors
+            // f_23 = sum of v_best components on 2-3 assessors
+            let f_12: f64 = gen_12_idx.iter().map(|&i| v_best[i]).sum();
+            let f_13: f64 = gen_13_idx.iter().map(|&i| v_best[i]).sum();
+            let f_23: f64 = gen_23_idx.iter().map(|&i| v_best[i]).sum();
+
+            println!("    f_12 = {:.4}, f_13 = {:.4}, f_23 = {:.4}", f_12, f_13, f_23);
+
+            // Scan alpha_solar with the existing two-parameter psi coupling
+            let ch_pair = (11, 12);
+            let nu_pair = (7, 8);
+
+            println!("\n  Alpha_solar scan (base: alpha_ch=3.75, alpha_nu=1.30):");
+            println!("  {:>10} {:>10} {:>10} {:>10} {:>10}",
+                "alpha_sol", "theta_12", "theta_13", "theta_23", "score");
+
+            let mut best_score = f64::MAX;
+            let mut best_alpha = 0.0_f64;
+            let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+            for step in -40..=40_i32 {
+                let alpha_solar = step as f64 * 0.1;
+
+                // Build PMNS matrices with psi off-diagonal coupling
+                let (m_ch, m_nu) = construct_pmns_matrices_offdiag(
+                    ch_pair, nu_pair, 3.75,
+                );
+
+                // Add second psi coupling (nu-specific)
+                let (_, m_nu2) = construct_pmns_matrices_offdiag(
+                    ch_pair, nu_pair, 1.30,
+                );
+
+                // Combine: use the ch from alpha=3.75, nu as weighted sum
+                let mut m_nu_combined = faer::Mat::zeros(3, 3);
+                for i in 0..3 {
+                    for j in 0..3 {
+                        // Base nu from the two-param fit
+                        let base = m_nu.read(i, j) + (m_nu2.read(i, j) - m_nu.read(i, j))
+                            * (1.30 / 3.75);
+                        m_nu_combined.write(i, j, base);
+                    }
+                }
+
+                // Add V_6 solar perturbation
+                // This adds to the 1-2 off-diagonal coupling
+                let solar_perturb = alpha_solar * f_12;
+                m_nu_combined.write(0, 1, m_nu_combined.read(0, 1) + solar_perturb);
+                m_nu_combined.write(1, 0, m_nu_combined.read(1, 0) + solar_perturb);
+
+                // Small reactor/atmospheric leakage (keep for honesty)
+                let reactor_leak = alpha_solar * f_13 * 0.1;
+                let atmo_leak = alpha_solar * f_23 * 0.1;
+                m_nu_combined.write(0, 2, m_nu_combined.read(0, 2) + reactor_leak);
+                m_nu_combined.write(2, 0, m_nu_combined.read(2, 0) + reactor_leak);
+                m_nu_combined.write(1, 2, m_nu_combined.read(1, 2) + atmo_leak);
+                m_nu_combined.write(2, 1, m_nu_combined.read(2, 1) + atmo_leak);
+
+                // Eigendecompose and extract PMNS angles
+                let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+                let m_nu_sym = (&m_nu_combined + m_nu_combined.transpose()) * faer::scale(0.5);
+
+                let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+
+                let u_pmns_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_pmns_raw);
+                let (theta_12, theta_13, theta_23) = extract_pmns_angles(&u_pmns);
+                let t12 = theta_12;
+                let t13 = theta_13;
+                let t23 = theta_23;
+
+                let score = ((t12 - 33.41) / 33.41).powi(2)
+                          + ((t13 - 8.54) / 8.54).powi(2)
+                          + ((t23 - 49.0) / 49.0).powi(2);
+
+                if score < best_score {
+                    best_score = score;
+                    best_alpha = alpha_solar;
+                    best_angles = (t12, t13, t23);
+                }
+
+                if step % 10 == 0 {
+                    println!("  {:10.2} {:10.2} {:10.2} {:10.2} {:10.4}",
+                        alpha_solar, t12, t13, t23, score);
+                }
+            }
+
+            println!("\n  === BEST V_6 SOLAR CORRECTION ===");
+            println!("  alpha_solar = {:.2}", best_alpha);
+            println!("  theta_12 = {:.2} deg (PDG: 33.41, error: {:.1}%)",
+                best_angles.0, ((best_angles.0 - 33.41) / 33.41 * 100.0).abs());
+            println!("  theta_13 = {:.2} deg (PDG: 8.54, error: {:.1}%)",
+                best_angles.1, ((best_angles.1 - 8.54) / 8.54 * 100.0).abs());
+            println!("  theta_23 = {:.2} deg (PDG: 49.0, error: {:.1}%)",
+                best_angles.2, ((best_angles.2 - 49.0) / 49.0 * 100.0).abs());
+            println!("  Combined score: {:.6}", best_score);
+        }
+    }
 }
