@@ -743,6 +743,14 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Monomorphisms between CD algebras. Subalgebra embeddings. Doubly-pure elements.
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512516_companion.pdf
 
+**Alternative CD constructions:**
+- Flipped Polynomial Rings (2024): "CD algebras from flipped Ore extensions" [arXiv:2403.03763]
+  ALL CD algebras arise as quotients of flipped non-associative polynomial rings.
+  Parity-dependent multiplication: tau_n(r,s) = rs if n even, sr if n odd.
+  C, H, O, S all unified as R[X;sigma,delta]^[1]/(X^2+1) with appropriate maps.
+  Potential: alternative to recursive cd_multiply, cleaner Rocq formalization.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf
+
 **CD tower structure and non-associativity:**
 - Wilmot (2026): "G_2 from Clifford calibrations" [arXiv:2505.06011]
 - Wilmot (2026): "Structure of CD algebras" [arXiv:2505.11747]
@@ -830,6 +838,9 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Twisted commutator, Krein space. Future CP/Majorana packaging.
 - West (2001): "E11 and M-theory" [arXiv:hep-th/0104081]
   Exceptional group chain. G2 at root of E-series.
+- Clifford Invariant Unification (2026) [arXiv:2601.19734]
+  Clifford-algebra-valued curvature for gravity + Yang-Mills. Pair-symmetric decomposition.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.19734v1_clifford_invariant_unification.pdf
 
 ## Claims Index
 
