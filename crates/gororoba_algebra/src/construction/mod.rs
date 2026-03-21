@@ -25,6 +25,7 @@ pub mod wheels;
 pub mod species_audit;
 pub mod twist;
 pub mod cd_loop;
+pub mod real_part_projection;
 
 #[cfg(feature = "lie")]
 pub mod golay_code;

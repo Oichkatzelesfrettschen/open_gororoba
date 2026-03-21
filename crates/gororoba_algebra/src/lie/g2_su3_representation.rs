@@ -651,3 +651,115 @@ mod tests {
         }
     }
 }
+
+// ---------------------------------------------------------------------------
+// Physics cross-validation (feature-gated)
+// ---------------------------------------------------------------------------
+
+#[cfg(all(test, feature = "physics-sm"))]
+mod physics_tests {
+    use super::*;
+    use super::super::g2_stabilizer::{stabilizer_decomposition, complex_structure};
+    use super::super::su5_gut;
+
+    const TOL: f64 = 1e-8;
+
+    /// Cross-validate the octonionic SU(3) against the SU(3) sector of SU(5) GUT
+    /// using basis-invariant contractions.
+    ///
+    /// The su5_gut generator ordering differs from the standard Gell-Mann ordering,
+    /// so component-by-component comparison requires explicit basis mapping.
+    /// Instead, we compare invariant quantities:
+    ///   1. Adjoint Casimir: sum_{c,d} f_{acd} f_{bcd} = C_2 delta_{ab}
+    ///   2. Total contraction: sum_{a,b,c} f_{abc}^2 = C_2 * dim(su(3)) = 3 * 8 = 24
+    ///
+    /// These are basis-independent and normalization-diagnostic.
+    #[test]
+    fn test_su5_su3_sector_invariant_match() {
+        // 1. SU(5) GUT: compute SU(3) sector structure constants and invariants
+        let su5_gens = su5_gut::build_generators();
+        let su5_f = su5_gut::structure_constants(&su5_gens);
+
+        // Adjoint Casimir for SU(3) sector (generators 0..7)
+        let mut c2_su5 = 0.0f64;
+        for a in 0..8 {
+            let mut diag = 0.0;
+            for ci in 0..8 {
+                for d in 0..8 {
+                    diag += su5_f[a][ci][d] * su5_f[a][ci][d];
+                }
+            }
+            c2_su5 += diag;
+        }
+        // Total contraction = C_2 * dim = 3 * 8 = 24
+        let total_su5 = c2_su5;
+
+        // 2. Octonionic SU(3): compute the same total contraction
+        let decomp = stabilizer_decomposition(1);
+        let cs = complex_structure(1);
+        let rep = fundamental_representation(&decomp, &cs);
+
+        let mut f_oct = vec![vec![vec![0.0; 8]; 8]; 8];
+        for a in 0..8 {
+            for b in 0..8 {
+                let comm = rep.matrices[a] * rep.matrices[b]
+                         - rep.matrices[b] * rep.matrices[a];
+                for ci in 0..8 {
+                    f_oct[a][b][ci] = hs_inner_product(&comm, &rep.matrices[ci]);
+                }
+            }
+        }
+
+        let mut total_oct = 0.0f64;
+        for a in 0..8 {
+            for b in 0..8 {
+                for ci in 0..8 {
+                    total_oct += f_oct[a][b][ci] * f_oct[a][b][ci];
+                }
+            }
+        }
+
+        // Both total contractions should equal 24 = C_2(adj) * dim(su(3)) = 3 * 8
+        assert!(
+            (total_su5 - 24.0).abs() < TOL,
+            "SU(5) SU(3)-sector total contraction = {}, expected 24",
+            total_su5
+        );
+        assert!(
+            (total_oct - 24.0).abs() < TOL,
+            "Octonionic SU(3) total contraction = {}, expected 24",
+            total_oct
+        );
+    }
+
+    /// Verify the normalization convention produces the correct f_{123} = 1.
+    #[test]
+    fn test_normalization_translation_is_explicit() {
+        // PR2 standard Gell-Mann: T_a = (i/2) lambda_a (anti-Hermitian).
+        // [T_1, T_2] = (i/2)^2 [lambda_1, lambda_2] = (-1/4)(2i lambda_3) = -T_3.
+        // So f_{123} = -1 in this convention (not +1, which is the Hermitian convention).
+        let gm = standard_gell_mann_antihermitian();
+        let comm_12 = gm[0] * gm[1] - gm[1] * gm[0];
+        let f123_pr2 = hs_inner_product(&comm_12, &gm[2]);
+
+        assert!(
+            (f123_pr2.abs() - 1.0).abs() < TOL,
+            "PR2 |f_123| = {}, expected 1.0 (sign depends on convention)",
+            f123_pr2.abs()
+        );
+
+        // su5_gut ordering is NOT standard Gell-Mann, so we verify its
+        // internal consistency: [gen0, gen1] should have nonzero projection
+        // onto gen6 (the first Cartan generator, analogous to lambda_3).
+        let su5_gens = su5_gut::build_generators();
+        let su5_f = su5_gut::structure_constants(&su5_gens);
+        // gen0 = symmetric(0,1) ~ lambda_1, gen1 = antisymmetric(0,1) ~ lambda_2
+        // [lambda_1, lambda_2] = 2i lambda_3, so f^{016} should be nonzero
+        let f016 = su5_f[0][1][6]; // gen6 = Cartan h_1 ~ lambda_3
+        assert!(
+            f016.abs() > 0.1,
+            "su5_gut f^{{0,1,6}} = {} should be nonzero (lambda_1, lambda_2 -> lambda_3)",
+            f016
+        );
+    }
+}

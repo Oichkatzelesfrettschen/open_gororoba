@@ -171,7 +171,7 @@ fn anticommutator10(a: &Mat10, b: &Mat10) -> Mat10 {
 }
 
 /// Compute structure constants f^{abc} = -2i Tr([T^a,T^b] T^c).
-fn structure_constants(generators: &[Mat5; 24]) -> Box<[[[f64; 24]; 24]; 24]> {
+pub(crate) fn structure_constants(generators: &[Mat5; 24]) -> Box<[[[f64; 24]; 24]; 24]> {
     let mut f = Box::new([[[0.0_f64; 24]; 24]; 24]);
     for a in 0..24 {
         for b in (a + 1)..24 {

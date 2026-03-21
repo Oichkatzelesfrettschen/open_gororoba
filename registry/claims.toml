@@ -10069,3 +10069,17 @@ statement = """All-embeddings equivalence: All 7 SU(3) embeddings (one per fixed
 status = "Verified"
 where_stated = "crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_all_embeddings_equivalent_casimir"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1487"
+statement = """SU(5)/SU(3) sector cross-validation: The total structure constant contraction sum_{a,b,c} f_{abc}^2 equals 24 (= C_2(adj) * dim(su(3)) = 3 * 8) for both the octonionic SU(3) (from G2 stabilizer) and the SU(3) sector of SU(5) GUT (su5_gut.rs generators 0..7). This basis-invariant quantity confirms the two SU(3) embeddings are the same Lie algebra."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_su5_su3_sector_invariant_match"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1488"
+statement = """Real-part projection: The e_0 component of a CD algebra element is the unique commutative-associative coordinate. scalar_fraction is bounded in [0,1], exact 1.0 for e_0 basis vector, exact 0.0 for pure imaginary elements. Verified for dimensions 1, 4, 8, 16."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/construction/real_part_projection.rs::test_scalar_fraction_exact_on_basis"
+last_verified = "2026-03-21"

@@ -5298,3 +5298,9 @@ id = "E-214"
 title = "Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer"
 status = "completed"
 claim_refs = ["C-1483", "C-1484", "C-1485", "C-1486"]
+
+[[experiment]]
+id = "E-215"
+title = "Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection"
+status = "completed"
+claim_refs = ["C-1487", "C-1488"]
