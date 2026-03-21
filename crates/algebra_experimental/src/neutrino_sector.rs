@@ -1059,4 +1059,127 @@ mod tests {
             println!("  *** THETA_23 > 45 DEG -- NEAR-MAXIMAL MIXING ***");
         }
     }
+
+    /// Two-parameter off-diagonal scan with weighted score.
+    ///
+    /// Uses independent alpha_ch and alpha_nu for the two sectors,
+    /// and a weighted score that penalizes theta_13 drift while
+    /// rewarding theta_23 improvement.
+    #[test]
+    fn test_pmns_offdiag_two_param() {
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::cayley_dickson_structs::Sedenion;
+        use crate::quark_sector::SubalgebraScheme;
+        use cd_kernel::gourlay_psi;
+        use rayon::prelude::*;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let ch_a = MajoranaMode { gamma_index: ch_pair.0 - 1, cd_basis_index: ch_pair.0, cd_dim: 16 };
+        let ch_b = MajoranaMode { gamma_index: ch_pair.1 - 1, cd_basis_index: ch_pair.1, cd_dim: 16 };
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        // Build full 16D profiles
+        let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            use crate::bell_inequality::rotate_sparse;
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles: Vec<[f64; 16]> = subs.iter().map(|s| build_profile(&ch_a, &ch_b, s)).collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter().map(|s| build_profile(&nu_a, &nu_b, s)).collect();
+
+        let sel_ch: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table)).collect();
+        let sel_nu: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table)).collect();
+
+        let mut basis = [Sedenion::default(); 16];
+        for i in 0..16 { let mut c = [0.0; 16]; c[i] = 1.0; basis[i] = Sedenion::from_slice(&c); }
+        let cs = basis[15];
+        let (m_base_ch, m_base_nu) = crate::quark_sector::construct_quark_mass_matrices(
+            &basis, &cs, SubalgebraScheme::InterleavedStride);
+
+        let w1: f64 = -0.656850;
+        let w2: f64 = -0.741999;
+        let pdg_t12: f64 = 33.41;
+        let pdg_t13: f64 = 8.54;
+        let pdg_t23: f64 = 49.0;
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        println!("--- PMNS TWO-PARAMETER OFF-DIAGONAL SCAN ---");
+
+        // Parallel scan over (alpha_ch, alpha_nu) grid
+        let grid: Vec<(f64, f64)> = (0..100).flat_map(|i|
+            (0..100).map(move |j| (i as f64 * 0.05, j as f64 * 0.05))
+        ).collect();
+
+        let results: Vec<(f64, f64, f64, (f64, f64, f64))> = grid.par_iter().map(|&(a_ch, a_nu)| {
+            let mut m_ch = m_base_ch.clone();
+            let mut m_nu = m_base_nu.clone();
+
+            for i in 0..3 {
+                let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
+                let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
+                m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
+                m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+            }
+
+            for i in 0..3 { for j in 0..3 { if i == j { continue; }
+                let psi_nu_j = gourlay_psi(&nu_profiles[j]);
+                let psi_ch_j = gourlay_psi(&ch_profiles[j]);
+                m_nu.write(i, j, m_nu.read(i, j) + a_nu * dot16(&nu_profiles[i], &psi_nu_j));
+                m_ch.write(i, j, m_ch.read(i, j) + a_ch * dot16(&ch_profiles[i], &psi_ch_j));
+            }}
+
+            for i in 0..3 { for j in (i+1)..3 {
+                let avg_ch = (m_ch.read(i,j) + m_ch.read(j,i)) / 2.0;
+                let avg_nu = (m_nu.read(i,j) + m_nu.read(j,i)) / 2.0;
+                m_ch.write(i,j,avg_ch); m_ch.write(j,i,avg_ch);
+                m_nu.write(i,j,avg_nu); m_nu.write(j,i,avg_nu);
+            }}
+
+            let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+            let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_ch = m_ch_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+            let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+            // Weighted score: penalize theta_13 drift, reward theta_23
+            let score = ((t12 - pdg_t12) / pdg_t12).powi(2)
+                + 2.0 * ((t13 - pdg_t13) / pdg_t13).powi(2)
+                + 3.0 * ((t23 - pdg_t23) / pdg_t23).powi(2);
+
+            (score, a_ch, a_nu, (t12, t13, t23))
+        }).collect();
+
+        let best = results.iter().min_by(|a, b| a.0.partial_cmp(&b.0).unwrap()).unwrap();
+
+        println!("  Best (alpha_ch, alpha_nu) = ({:.4}, {:.4})", best.1, best.2);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2})", (best.3).0, pdg_t12);
+        println!("  theta_13 = {:.2} deg (PDG: {:.2})", (best.3).1, pdg_t13);
+        println!("  theta_23 = {:.2} deg (PDG: {:.2})", (best.3).2, pdg_t23);
+        println!("  Weighted score: {:.6}", best.0);
+    }
 }
