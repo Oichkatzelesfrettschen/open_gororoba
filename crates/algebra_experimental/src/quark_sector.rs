@@ -279,8 +279,8 @@ pub fn construct_quark_mass_matrices_with_friction(
 
 /// Build quark mass matrices using the fitted weighted signed friction composite.
 ///
-/// Uses the lepton-sector fitted weights (w1=-0.9488, w2=-0.9609) but with
-/// DIFFERENT selector pairs for up-type vs down-type to ensure [H_u, H_d] != 0.
+/// Uses the lepton-sector fitted weights (difference-normalized):
+///   w1=-0.6569, w2=-0.7420 (w_sym ~ -1/sqrt(2))
 ///
 /// Up-type:   F_up   = w1 * Sel(e_1,e_4) + w2 * Sel(e_2,e_4)
 /// Down-type: F_down = w1 * Sel(e_1,e_4) + w2 * Sel(e_3,e_4)
@@ -302,9 +302,12 @@ pub fn construct_quark_mass_matrices_weighted_friction(
     let subs = [&o1, &o2, &o3];
     let sign_table = SignTableCache::new(16);
 
-    // Fitted weights from the lepton mass hierarchy
-    let w1 = -0.9488;
-    let w2 = -0.9609;
+    // Fitted weights from the lepton mass hierarchy (difference-normalized fit)
+    // Old (buggy F_e=0 normalization): w1=-0.9488, w2=-0.9609
+    // New (correct exp(F_g - F_e) ratios): w1=-0.6569, w2=-0.7420
+    // w_sym = -0.6994 ~ -1/sqrt(2), |w_asym/w_sym| = 0.061
+    let w1 = -0.656850;
+    let w2 = -0.741999;
 
     // Shared selector: Sel(e_1, e_4)
     let sel_shared_a = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
@@ -331,6 +334,57 @@ pub fn construct_quark_mass_matrices_weighted_friction(
     for i in 0..3 {
         let f_up = w1 * sel_shared[i] + w2 * sel_up[i];
         let f_down = w1 * sel_shared[i] + w2 * sel_down[i];
+        m_up.write(i, i, m_up.read(i, i) + f_up.exp());
+        m_down.write(i, i, m_down.read(i, i) + f_down.exp());
+    }
+
+    (m_up, m_down)
+}
+
+/// Build quark mass matrices with arbitrary selector pairs for the CKM scan.
+///
+/// Each sector uses two selectors: sel_a (shared or distinct) and sel_b,
+/// combined with the lepton-fitted weights.
+pub fn construct_quark_mass_matrices_scan(
+    basis: &[Sedenion; 16],
+    complex_structure: &Sedenion,
+    scheme: SubalgebraScheme,
+    up_pair: (usize, usize),   // (basis_idx_a, basis_idx_b) for up-type
+    down_pair: (usize, usize), // (basis_idx_a, basis_idx_b) for down-type
+) -> (Mat<f64>, Mat<f64>) {
+    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+    use crate::majorana_braiding::MajoranaMode;
+    use crate::bell_inequality::SignTableCache;
+    use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+    let (m_up_0, m_down_0) = construct_quark_mass_matrices(basis, complex_structure, scheme);
+    let (o1, o2, o3) = get_sedenion_subalgebras();
+    let subs = [&o1, &o2, &o3];
+    let sign_table = SignTableCache::new(16);
+
+    // Corrected lepton-sector weights (difference-normalized)
+    let w1 = -0.656850;
+    let w2 = -0.741999;
+
+    let up_a = MajoranaMode { gamma_index: up_pair.0.saturating_sub(1), cd_basis_index: up_pair.0, cd_dim: 16 };
+    let up_b = MajoranaMode { gamma_index: up_pair.1.saturating_sub(1), cd_basis_index: up_pair.1, cd_dim: 16 };
+    let down_a = MajoranaMode { gamma_index: down_pair.0.saturating_sub(1), cd_basis_index: down_pair.0, cd_dim: 16 };
+    let down_b = MajoranaMode { gamma_index: down_pair.1.saturating_sub(1), cd_basis_index: down_pair.1, cd_dim: 16 };
+
+    let sel_up: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&up_a, &up_b, s, &sign_table))
+        .collect();
+    let sel_down: Vec<f64> = subs.iter()
+        .map(|s| cd_braid_signed_friction(&down_a, &down_b, s, &sign_table))
+        .collect();
+
+    // Use w1 for each sector's own selector, w2 for the other sector's selector
+    // This creates cross-coupling that drives off-diagonal CKM
+    let mut m_up = m_up_0;
+    let mut m_down = m_down_0;
+    for i in 0..3 {
+        let f_up = w1 * sel_up[i] + w2 * sel_down[i];
+        let f_down = w1 * sel_down[i] + w2 * sel_up[i];
         m_up.write(i, i, m_up.read(i, i) + f_up.exp());
         m_down.write(i, i, m_down.read(i, i) + f_down.exp());
     }
@@ -365,9 +419,9 @@ pub fn extract_ckm_permutation_aware(v_raw: &Mat<f64>) -> (Mat<f64>, [usize; 3],
                 best_diag = diag_sum;
                 best_pu = *pu;
                 best_pd = *pd;
-                for i in 0..3 {
-                    for j in 0..3 {
-                        best_v.write(i, j, v_raw.read(pu[i], pd[j]));
+                for (i, &pi) in pu.iter().enumerate() {
+                    for (j, &pj) in pd.iter().enumerate() {
+                        best_v.write(i, j, v_raw.read(pi, pj));
                     }
                 }
             }
@@ -960,6 +1014,146 @@ mod tests {
         }
         if down_evals[2].abs() > 1e-10 {
             println!("  m_t/m_b = {:.4} (PDG: {PDG_MT_MB})", up_evals[2].abs() / down_evals[2].abs());
+        }
+    }
+
+    /// Exhaustive CKM selector pair scan (Rayon-parallelized).
+    ///
+    /// Scans all splitting-pair combinations for up/down sector assignment.
+    /// For each (up_pair, down_pair) combo where up != down, computes
+    /// permutation-aligned CKM and measures log-distance to PDG.
+    ///
+    /// PDG targets: |V_us|=0.2250, |V_ub|=0.00373, |V_cb|=0.0418
+    #[test]
+    fn test_ckm_selector_pair_scan() {
+        use rayon::prelude::*;
+
+        let (basis, cs) = standard_basis_and_cs();
+
+        // Enumerate all 1+1+1 splitting pairs
+        let mut splitting_pairs: Vec<(usize, usize)> = Vec::new();
+        {
+            use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+            use crate::majorana_braiding::MajoranaMode;
+            use crate::bell_inequality::SignTableCache;
+            use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+            let (o1, o2, o3) = get_sedenion_subalgebras();
+            let sign_table = SignTableCache::new(16);
+
+            for i in 1..16_usize {
+                for j in (i + 1)..16 {
+                    let mi = MajoranaMode { gamma_index: i - 1, cd_basis_index: i, cd_dim: 16 };
+                    let mj = MajoranaMode { gamma_index: j - 1, cd_basis_index: j, cd_dim: 16 };
+                    let s1 = cd_braid_signed_friction(&mi, &mj, &o1, &sign_table);
+                    let s2 = cd_braid_signed_friction(&mi, &mj, &o2, &sign_table);
+                    let s3 = cd_braid_signed_friction(&mi, &mj, &o3, &sign_table);
+                    if (s1 - s2).abs() > 1e-9 && (s2 - s3).abs() > 1e-9 && (s1 - s3).abs() > 1e-9 {
+                        splitting_pairs.push((i, j));
+                    }
+                }
+            }
+        }
+        println!("--- CKM SELECTOR PAIR SCAN ---");
+        println!("Splitting pairs found: {}", splitting_pairs.len());
+
+        // PDG CKM targets
+        let pdg_v_us: f64 = 0.2250;
+        let pdg_v_ub: f64 = 0.00373;
+        let pdg_v_cb: f64 = 0.0418;
+        let ln_v_us = pdg_v_us.ln();
+        let ln_v_ub = pdg_v_ub.ln();
+        let ln_v_cb = pdg_v_cb.ln();
+
+        // Build all (up, down) combos for Rayon parallel iteration
+        let combos: Vec<((usize, usize), (usize, usize))> = splitting_pairs.iter()
+            .flat_map(|&up| splitting_pairs.iter()
+                .filter(move |&&down| down != up)
+                .map(move |&down| (up, down)))
+            .collect();
+
+        println!("Total combos to evaluate: {}", combos.len());
+
+        // Parallel scan: each combo independently evaluates CKM
+        let mut all_results: Vec<(f64, (usize, usize), (usize, usize), (f64, f64, f64))> =
+            combos.par_iter().map(|&(up_pair, down_pair)| {
+                let (m_up, m_down) = construct_quark_mass_matrices_scan(
+                    &basis, &cs, SubalgebraScheme::InterleavedStride,
+                    up_pair, down_pair,
+                );
+
+                let m_up_sym = (&m_up + m_up.transpose()) * faer::scale(0.5);
+                let m_down_sym = (&m_down + m_down.transpose()) * faer::scale(0.5);
+
+                let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
+                let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
+
+                let v_raw = eig_up.u().transpose() * eig_down.u();
+                let (v_ckm, _pu, _pd) = extract_ckm_permutation_aware(&v_raw);
+
+                let v_us = v_ckm.read(0, 1).abs();
+                let v_ub = v_ckm.read(0, 2).abs();
+                let v_cb = v_ckm.read(1, 2).abs();
+
+                let score = if v_us > 1e-15 && v_ub > 1e-15 && v_cb > 1e-15 {
+                    (v_us.ln() - ln_v_us).powi(2)
+                        + (v_ub.ln() - ln_v_ub).powi(2)
+                        + (v_cb.ln() - ln_v_cb).powi(2)
+                } else {
+                    f64::INFINITY
+                };
+
+                (score, up_pair, down_pair, (v_us, v_ub, v_cb))
+            }).collect();
+
+        all_results.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        // Report best result
+        if let Some(&(score, best_up, best_down, (v_us, v_ub, v_cb))) = all_results.first() {
+            let theta_13 = v_ub.asin();
+            let cos_13 = theta_13.cos();
+            let theta_12 = if cos_13 > 1e-15 { (v_us / cos_13).min(1.0).asin() } else { 0.0 };
+            let theta_23 = if cos_13 > 1e-15 { (v_cb / cos_13).min(1.0).asin() } else { 0.0 };
+
+            println!("\nBest selector pair combination:");
+            println!("  Up-type:   (e_{}, e_{})", best_up.0, best_up.1);
+            println!("  Down-type: (e_{}, e_{})", best_down.0, best_down.1);
+            println!("  |V_us| = {:.4} (PDG: {:.4})", v_us, pdg_v_us);
+            println!("  |V_ub| = {:.6} (PDG: {:.6})", v_ub, pdg_v_ub);
+            println!("  |V_cb| = {:.4} (PDG: {:.4})", v_cb, pdg_v_cb);
+            println!("  theta_12 = {:.4} deg (PDG: {PDG_CKM_THETA12_DEG})", theta_12.to_degrees());
+            println!("  theta_13 = {:.4} deg (PDG: {PDG_CKM_THETA13_DEG})", theta_13.to_degrees());
+            println!("  theta_23 = {:.4} deg (PDG: {PDG_CKM_THETA23_DEG})", theta_23.to_degrees());
+            println!("  Log-distance score: {:.4}", score);
+
+            // Print full aligned CKM for the best pair
+            let (m_up, m_down) = construct_quark_mass_matrices_scan(
+                &basis, &cs, SubalgebraScheme::InterleavedStride,
+                best_up, best_down,
+            );
+            let m_up_sym = (&m_up + m_up.transpose()) * faer::scale(0.5);
+            let m_down_sym = (&m_down + m_down.transpose()) * faer::scale(0.5);
+            let eig_up = m_up_sym.selfadjoint_eigendecomposition(Side::Lower);
+            let eig_down = m_down_sym.selfadjoint_eigendecomposition(Side::Lower);
+            let v_raw = eig_up.u().transpose() * eig_down.u();
+            let (v_best, pu, pd) = extract_ckm_permutation_aware(&v_raw);
+
+            println!("\n  Best V_CKM (perm up={:?}, down={:?}):", pu, pd);
+            for r in 0..3 {
+                println!("    [{:.6}, {:.6}, {:.6}]",
+                    v_best.read(r, 0), v_best.read(r, 1), v_best.read(r, 2));
+            }
+            println!("  PDG |V_CKM|:");
+            println!("    [0.9744, 0.2250, 0.0037]");
+            println!("    [0.2249, 0.9735, 0.0418]");
+            println!("    [0.0086, 0.0411, 0.9991]");
+        }
+
+        // Print top-5
+        println!("\n--- TOP-5 SELECTOR PAIRS ---");
+        for (rank, (score, up, down, (v_us, v_ub, v_cb))) in all_results.iter().take(5).enumerate() {
+            println!("  #{}: up=(e_{},e_{}), down=(e_{},e_{}) | V_us={:.4}, V_ub={:.6}, V_cb={:.4} | score={:.4}",
+                rank + 1, up.0, up.1, down.0, down.1, v_us, v_ub, v_cb, score);
         }
     }
 }
