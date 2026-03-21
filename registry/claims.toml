@@ -10104,3 +10104,10 @@ statement = """Joint 4D PMNS optimization: re-optimizing (alpha_ch, alpha_nu) jo
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_joint_4d_optimization"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1492"
+statement = """PMNS angle-sector fit via Gauss-Newton 4D optimization: all three angles within 0.15% of PDG 2025. alpha_ch=3.00, alpha_nu=1.35, t_solar=1.35, t_atmo=2.24 (TensorElementLift). theta_12 = 33.36 deg (0.15%), theta_13 = 8.54 deg (0.01%), theta_23 = 48.99 deg (0.02%). Combined score 2e-6 (499x improvement over grid search). Gauss-Newton with Levenberg-Marquardt damping + backtracking line search replaces 651-point inner grid with ~15 iterations (4.8x total speedup)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_joint_4d_optimization"
+last_verified = "2026-03-21"

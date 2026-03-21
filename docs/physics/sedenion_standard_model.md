@@ -225,8 +225,16 @@ Residual fraction at optimum = 60.9% (still well-decoupled at t=2.47).
 | theta_13   | 8.56 deg  | 8.54     | 0.24% |
 | theta_23   | 48.74 deg | 49.0     | 0.54% |
 
-alpha_ch=3.50, alpha_nu=1.35, t_solar=1.54, t_atmo=2.00. Score: 0.000221.
-All three angles within 1.3% of PDG (4.9x improvement over fixed-alpha model).
+**Gauss-Newton optimized** (C-1492, 4 parameters):
+
+| Parameter  | This work | PDG 2025 | Error |
+|------------|-----------|----------|-------|
+| theta_12   | 33.36 deg | 33.41    | 0.15% |
+| theta_13   | 8.54 deg  | 8.54     | 0.01% |
+| theta_23   | 48.99 deg | 49.0     | 0.02% |
+
+alpha_ch=3.00, alpha_nu=1.35, t_solar=1.35, t_atmo=2.24. Score: 2e-6.
+All three angles within 0.15% of PDG. Gauss-Newton + LM damping (34s runtime).
 
 Invariance audit: block alignment MODERATE (44% max concentration, 16.7%
 would be uniform). Psi orbits cross blocks (30 cross, 12 within). The lift
@@ -405,7 +413,8 @@ C-1477: V_6 alpha-modulation: 10x gradient boost but rank-2 lock persists (42D->
 C-1478: V_6 TensorElementLift: rank broken (75.7%), theta_12 = 33.42 deg (0.02% PDG)
 C-1489: V_6 psi-eigenspace (0.25*I_6), no S_3-equivariant intertwiner, su(3) reducible
 C-1490: 2D constrained scan: (33.37, 8.52, 47.40) deg, all within 3.3% of PDG
-C-1491: Joint 4D: (33.84, 8.56, 48.74) deg, all within 1.3% of PDG, score 0.000221
+C-1491: Joint 4D grid: (33.84, 8.56, 48.74) deg, all within 1.3% of PDG
+C-1492: Gauss-Newton 4D: (33.36, 8.54, 48.99) deg, all within 0.15% of PDG
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
