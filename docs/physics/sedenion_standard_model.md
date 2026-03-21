@@ -915,3 +915,10 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - Chanyal, Sharma, Negi (2015): "Octonionic gravi-electromagnetism and dark matter" [arXiv:1502.05293]
   Split octonion gauge formulation for SU(2)xU(1) and SU(3)xSU(2)xU(1). Dark matter field equations.
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf
+
+- Connes (2008): "On the spectral characterization of manifolds" [arXiv:0810.2088]
+  First five spectral triple axioms characterize smooth compact manifolds. Core theory.
+- Aastrup & Grimstrup (2008): "On spectral triples in QG" I+II [arXiv:0802.1783, 0802.1784]
+  Semi-finite spectral triple over LQG holonomy loop space. Dirac-type operator.
+- Aastrup, Grimstrup & Nest (2009): "Holonomy loops + spectral triples" [arXiv:0902.4191]
+  Quantized Poisson bracket from algebra-operator interaction on loop space.
