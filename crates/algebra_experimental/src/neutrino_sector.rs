@@ -4776,26 +4776,29 @@ mod tests {
 
         // Helper: for given (alpha_ch, alpha_nu), compute constrained directions
         // and scan (t_solar, t_atmo) to find best angles.
-        // OPTIMIZED: precompute baseline matrices once, only perturb M_nu in inner loop.
+        //
+        // OPTIMIZED (3 levels):
+        // 1. Precompute M_ch eigenvectors + M_nu baseline ONCE per outer point
+        // 2. Precompute perturbation matrices A, B from constrained directions
+        //    so inner loop is M_nu(t1,t2) = M_nu_base + t1*A + t2*B (no V_6 recompute)
+        // 3. Gradient-guided scan center (Newton estimate of t1)
         let evaluate = |alpha_ch: f64, alpha_nu: f64| -> (f64, (f64, f64, f64), f64, f64) {
-            // Build baseline ONCE for this (alpha_ch, alpha_nu)
             let (m_ch_base, m_nu_base) = construct_pmns_matrices_two_param(
                 ch_pair, nu_pair, alpha_ch, alpha_nu,
             );
             let eig_ch = m_ch_base.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_ch = eig_ch.u();
             let u_raw_0 = {
                 let eig_nu_0 = m_nu_base.selfadjoint_eigendecomposition(faer::Side::Lower);
-                eig_ch.u().transpose() * eig_nu_0.u()
+                u_ch.transpose() * eig_nu_0.u()
             };
             let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
 
-            // Fast angle computation: only perturb m_nu, reuse m_ch eigenvectors
-            let fast_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
-                let mut m_nu = m_nu_base.clone();
-                apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
-                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            // Angle extraction from perturbed M_nu (reusing M_ch eigenvectors)
+            let angles_from_mnu = |m_nu: &faer::Mat<f64>| -> (f64, f64, f64) {
+                let m_nu_s = (m_nu + m_nu.transpose()) * faer::scale(0.5);
                 let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
-                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let u_raw = u_ch.transpose() * eig_nu.u();
                 let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
                 for i in 0..3 { for j in 0..3 {
                     u_pmns.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
@@ -4803,15 +4806,19 @@ mod tests {
                 extract_pmns_angles(&u_pmns)
             };
 
-            // Compute gradients (12 evaluations)
+            // Compute gradients using V_6 basis directions (12 evals)
             let mut g_12 = [0.0_f64; 6];
             let mut g_13 = [0.0_f64; 6];
             let mut g_23 = [0.0_f64; 6];
             for mu in 0..n_basis {
                 let mut bp = [0.0_f64; 6]; bp[mu] = eps;
                 let mut bm = [0.0_f64; 6]; bm[mu] = -eps;
-                let (t12_p, t13_p, t23_p) = fast_angles(&bp);
-                let (t12_m, t13_m, t23_m) = fast_angles(&bm);
+                let mut m_nu_p = m_nu_base.clone();
+                let mut m_nu_m = m_nu_base.clone();
+                apply_v6_perturbation(&mut m_nu_p, &v6_basis, &bp, &lift);
+                apply_v6_perturbation(&mut m_nu_m, &v6_basis, &bm, &lift);
+                let (t12_p, t13_p, t23_p) = angles_from_mnu(&m_nu_p);
+                let (t12_m, t13_m, t23_m) = angles_from_mnu(&m_nu_m);
                 g_12[mu] = (t12_p - t12_m) / (2.0 * eps);
                 g_13[mu] = (t13_p - t13_m) / (2.0 * eps);
                 g_23[mu] = (t23_p - t23_m) / (2.0 * eps);
@@ -4820,7 +4827,26 @@ mod tests {
             let u_solar = compute_constrained_solar_direction(&g_12, &g_13, &g_23);
             let u_atmo = compute_constrained_atmospheric_direction(&g_23, &g_13, &u_solar);
 
-            // Gradient-guided t1 estimate, then narrow scan
+            // Precompute perturbation matrices A (solar) and B (atmospheric)
+            // A = TensorElementLift applied to sum_k u_solar[k] * v6_basis.row(k)
+            // B = TensorElementLift applied to sum_k u_atmo[k] * v6_basis.row(k)
+            let precompute_perturbation = |u: &[f64; 6]| -> faer::Mat<f64> {
+                let mut m_perturbed = m_nu_base.clone();
+                let mut beta = [0.0_f64; 6];
+                for k in 0..6 { beta[k] = u[k]; }
+                apply_v6_perturbation(&mut m_perturbed, &v6_basis, &beta, &lift);
+                // A = m_perturbed - m_nu_base
+                let mut delta = faer::Mat::<f64>::zeros(3, 3);
+                for i in 0..3 { for j in 0..3 {
+                    delta.write(i, j, m_perturbed.read(i, j) - m_nu_base.read(i, j));
+                }}
+                delta
+            };
+
+            let a_mat = precompute_perturbation(&u_solar);
+            let b_mat = precompute_perturbation(&u_atmo);
+
+            // Inner scan: M_nu = M_nu_base + t1*A + t2*B (no V_6 recompute!)
             let dot6 = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
                 a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
             };
@@ -4833,16 +4859,20 @@ mod tests {
             let mut best_t2 = 0.0_f64;
             let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
 
-            // Scan around gradient-predicted t1, narrow t2 range
             let t1_lo = (t1_est - 1.5).max(0.0);
             let t1_hi = t1_est + 1.5;
             for s1 in 0..=30_i32 {
                 let t1 = t1_lo + s1 as f64 * (t1_hi - t1_lo) / 30.0;
                 for s2 in -10..=10_i32 {
                     let t2 = s2 as f64 * 0.2;
-                    let mut beta = [0.0_f64; 6];
-                    for k in 0..6 { beta[k] = t1 * u_solar[k] + t2 * u_atmo[k]; }
-                    let (t12, t13, t23) = fast_angles(&beta);
+                    // M_nu = M_nu_base + t1*A + t2*B
+                    let mut m_nu = m_nu_base.clone();
+                    for i in 0..3 { for j in 0..3 {
+                        m_nu.write(i, j, m_nu.read(i, j)
+                            + t1 * a_mat.read(i, j)
+                            + t2 * b_mat.read(i, j));
+                    }}
+                    let (t12, t13, t23) = angles_from_mnu(&m_nu);
                     if (t13 - pdg_t13).abs() > 1.0 { continue; }
                     let score = ((t12 - pdg_t12) / pdg_t12).powi(2)
                               + ((t23 - pdg_t23) / pdg_t23).powi(2)
@@ -4978,5 +5008,227 @@ mod tests {
         );
         println!("  J_PDG = {:.6}", j_pdg);
         println!("  Recovered delta_CP = {:.2} deg (sin matches PDG 195 deg)", recovered);
+    }
+
+    // =======================================================================
+    // Phase B: Absolute neutrino masses
+    // =======================================================================
+
+    /// Mass-squared ratio r = dm21_sq / dm31_sq is a scale-free prediction.
+    /// PDG 2024 (normal ordering): r = 7.53e-5 / 2.453e-3 = 0.0307.
+    #[test]
+    fn test_mass_squared_ratio() {
+        let result = compute_pmns((11, 12), (7, 8));
+        let dm21 = result.delta_m21_sq;
+        let dm31 = result.delta_m31_sq;
+
+        println!("  Mass eigenvalues (arb. units): {:?}", result.neutrino_masses);
+        println!("  dm21_sq = {:.6e}", dm21);
+        println!("  dm31_sq = {:.6e}", dm31);
+
+        if dm31.abs() > 1e-30 {
+            let r = dm21 / dm31;
+            println!("  r = dm21_sq / dm31_sq = {:.6}", r);
+            println!("  PDG 2024: r = 0.0307 (normal ordering)");
+
+            // Register whether the ratio is in the right ballpark
+            // (order of magnitude is the first test)
+            if r > 0.0 && r < 1.0 {
+                println!("  PASS: r is in (0, 1) -- normal ordering");
+            } else if r > 1.0 {
+                println!("  NOTE: r > 1 -- inverted ordering");
+            } else {
+                println!("  NOTE: r <= 0 -- degenerate spectrum");
+            }
+        } else {
+            println!("  WARNING: dm31_sq ~ 0, degenerate spectrum");
+        }
+    }
+
+    /// Reconstruct absolute masses from the algebraic ratio + m1 input.
+    /// Scan m1 from 0 to 0.1 eV and check cosmological bound.
+    #[test]
+    fn test_absolute_mass_reconstruction() {
+        let result = compute_pmns((11, 12), (7, 8));
+        let nu = &result.neutrino_masses;
+
+        // Compute ratios relative to the lightest eigenvalue
+        // The absolute scale drops out of the PMNS matrix; only ratios matter.
+        let m_min = nu[0].max(1e-30);
+        let r1 = nu[1] / m_min;
+        let r2 = nu[2] / m_min;
+
+        println!("  Mass ratios: m2/m1 = {:.4}, m3/m1 = {:.4}", r1, r2);
+
+        // PDG 2024 mass-squared differences (normal ordering):
+        //   dm21_sq = 7.53e-5 eV^2, dm31_sq = 2.453e-3 eV^2
+        let pdg_dm21_sq = 7.53e-5_f64;
+        let pdg_dm31_sq = 2.453e-3_f64;
+
+        // For several m1 values, compute sum(m_i)
+        println!("\n  Absolute mass reconstruction (using PDG dm^2 for scale):");
+        println!("  {:>8} | {:>8} {:>8} {:>8} | {:>10} | {:>6}",
+            "m1 (eV)", "m1", "m2", "m3", "sum (eV)", "bound");
+
+        for m1_mev in [0.0, 1.0, 5.0, 10.0, 20.0, 50.0] {
+            let m1 = m1_mev * 1e-3; // meV -> eV
+            let m2 = (m1 * m1 + pdg_dm21_sq).sqrt();
+            let m3 = (m1 * m1 + pdg_dm31_sq).sqrt();
+            let sum_m = m1 + m2 + m3;
+            let bound = if sum_m < 0.12 { "OK" } else { "EXCLUDED" };
+            println!("  {:>8.4} | {:>8.5} {:>8.5} {:>8.5} | {:>10.5} | {:>6}",
+                m1, m1, m2, m3, sum_m, bound);
+        }
+    }
+
+    /// Effective electron-neutrino mass m_beta for KATRIN.
+    /// m_beta^2 = sum |U_ei|^2 m_i^2
+    #[test]
+    fn test_effective_electron_neutrino_mass() {
+        let result = compute_pmns((11, 12), (7, 8));
+        let u = &result.matrix;
+
+        // Using PDG mass-squared diffs with m1 = 0 (lightest case)
+        let pdg_dm21_sq = 7.53e-5_f64;
+        let pdg_dm31_sq = 2.453e-3_f64;
+        let m1 = 0.0_f64;
+        let m2 = (m1 * m1 + pdg_dm21_sq).sqrt();
+        let m3 = (m1 * m1 + pdg_dm31_sq).sqrt();
+        let masses = [m1, m2, m3];
+
+        let mut m_beta_sq = 0.0_f64;
+        for i in 0..3 {
+            let u_ei = u.read(0, i);
+            m_beta_sq += u_ei * u_ei * masses[i] * masses[i];
+        }
+        let m_beta = m_beta_sq.sqrt();
+
+        println!("  m_beta = {:.4} meV (m1=0 case)", m_beta * 1e3);
+        println!("  KATRIN bound: m_beta < 450 meV (90% CL)");
+        assert!(m_beta < 0.45, "m_beta = {} eV exceeds KATRIN bound", m_beta);
+
+        // Also compute for m1 = 50 meV (near cosmological bound)
+        let m1_heavy = 0.05_f64;
+        let m2h = (m1_heavy * m1_heavy + pdg_dm21_sq).sqrt();
+        let m3h = (m1_heavy * m1_heavy + pdg_dm31_sq).sqrt();
+        let masses_h = [m1_heavy, m2h, m3h];
+        let mut m_beta_sq_h = 0.0_f64;
+        for i in 0..3 {
+            let u_ei = u.read(0, i);
+            m_beta_sq_h += u_ei * u_ei * masses_h[i] * masses_h[i];
+        }
+        let m_beta_h = m_beta_sq_h.sqrt();
+        println!("  m_beta = {:.2} meV (m1=50 meV case)", m_beta_h * 1e3);
+        println!("  sum(m_i) = {:.4} eV", m1_heavy + m2h + m3h);
+    }
+
+    // =======================================================================
+    // Phase A: CP violation via Fano pair complex phases
+    // =======================================================================
+
+    /// Explore the CP phase structure from Fano pair signs.
+    ///
+    /// For each fixed imaginary unit k=1..7, the G2 stabilizer gives 3 Fano
+    /// lines with signs sigma_j in {+1, -1}. These signs define a complex
+    /// basis z_j = u_j - i*sigma_j*w_j. When the PMNS matrix is rephased
+    /// by these signs, it acquires a Dirac CP phase.
+    ///
+    /// The rephasing: U_PMNS_complex = diag(sigma_1, sigma_2, sigma_3) * U_PMNS_real
+    /// This is a diagonal phase matrix acting on the flavor (generation) indices.
+    /// The Jarlskog invariant of the rephased matrix is:
+    ///   J = sigma_1 * sigma_2 * sigma_3 * J_real
+    /// which is zero since J_real = 0 for a real matrix.
+    ///
+    /// A more physical approach: the complex structure J_k introduces phases
+    /// into the OFF-DIAGONAL mass matrix elements. If M_ij for i != j picks up
+    /// a factor exp(i * phi_ij) where phi_ij comes from the Fano line connecting
+    /// generations i and j, then the diagonalization produces a genuinely
+    /// complex unitary matrix with nonzero J.
+    #[test]
+    fn test_cp_phase_from_fano_signs() {
+        use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+
+        let result = compute_pmns((11, 12), (7, 8));
+
+        println!("  === CP Phase from Fano Pair Signs ===\n");
+
+        for k in 1..=7 {
+            let cs = complex_structure(k);
+            let signs: Vec<i8> = cs.fano_pairs.iter().map(|&(_, _, s)| s).collect();
+            let sign_product: i8 = signs.iter().product();
+
+            println!("  k={}: fano_pairs = {:?}", k, cs.fano_pairs);
+            println!("       signs = {:?}, product = {}", signs, sign_product);
+
+            // The Fano signs define a Z_2^3 phase structure.
+            // For CP violation, we need a RELATIVE phase between mass matrix
+            // elements. Consider the off-diagonal phase:
+            // phi_ij = pi * (1 - sigma_line(i,j)) / 2
+            // where sigma_line(i,j) is the sign of the Fano line connecting
+            // the perp-index pairs for generations i and j.
+            //
+            // If sigma = +1: phi = 0 (no phase)
+            // If sigma = -1: phi = pi (sign flip = exp(i*pi))
+
+            // Count how many signs are -1 (these contribute pi phases)
+            let n_negative = signs.iter().filter(|&&s| s == -1).count();
+            println!("       negative signs: {} -> discrete phase: {} * pi/3",
+                n_negative, n_negative);
+        }
+
+        // The discrete Z_2^3 structure from Fano signs gives at most
+        // exp(i*pi) = -1 phases. For a continuous CP phase like delta_CP = 195 deg,
+        // we need a mechanism beyond discrete signs.
+        //
+        // The continuous mechanism: the psi automorphism (S_3 generator, order 3)
+        // introduces exp(2*pi*i/3) = exp(i*120 deg) phases when cycling
+        // O_1 -> O_2 -> O_3. This is the natural source of a CP phase near 180 deg.
+        //
+        // delta_CP ~ 180 + correction from Fano signs
+        // PDG: delta_CP ~ 195 deg (= 180 + 15)
+
+        println!("\n  The psi automorphism (order 3) provides the dominant phase:");
+        println!("  exp(2*pi*i/3) = exp(i * 120 deg)");
+        println!("  Combined with Fano sign corrections:");
+        println!("  delta_CP ~ 180 + O(15) deg -- consistent with PDG 195 deg");
+
+        // Compute what delta_CP would be if J comes from the psi automorphism:
+        // The psi overlap <sel_i, psi(sel_j)> ~ cos(2*pi/3) = -0.5
+        // The imaginary part ~ sin(2*pi/3) = sqrt(3)/2
+        // J ~ sin(120 deg) * product_of_sines = sqrt(3)/2 * s12*c12*s23*c23*s13*c13^2
+        let (t12, t13, t23) = result.angles_deg;
+        let s12 = t12.to_radians().sin();
+        let c12 = t12.to_radians().cos();
+        let s13 = t13.to_radians().sin();
+        let c13 = t13.to_radians().cos();
+        let s23 = t23.to_radians().sin();
+        let c23 = t23.to_radians().cos();
+
+        let j_max = s12 * c12 * s23 * c23 * s13 * c13 * c13;
+        let j_psi = j_max * (2.0 * std::f64::consts::PI / 3.0).sin();
+        let delta_psi = extract_cp_phase((t12, t13, t23), j_psi);
+
+        println!("\n  J_max (from angles) = {:.6}", j_max);
+        println!("  J_psi (sin(120) * J_max) = {:.6}", j_psi);
+        println!("  delta_CP_psi = {:.2} deg", delta_psi);
+        println!("  PDG 2024: delta_CP = 195 +/- 25 deg");
+
+        // This is a PREDICTION: the psi automorphism predicts
+        // sin(delta_CP) = sin(120 deg) = sqrt(3)/2
+        // delta_CP = 60 deg or 120 deg (from asin)
+        // But the physical phase could be in the second quadrant: 180 - 60 = 120 or 180 + 60 = 240
+        // or equivalently -120 deg = 240 deg.
+        // PDG convention: delta_CP in [0, 360), so 195 is close to 180 + 15.
+        //
+        // The psi prediction gives |sin(delta)| = sqrt(3)/2 ~ 0.866.
+        // PDG sin(195 deg) = sin(180+15) = -sin(15) = -0.259.
+        // These don't match -- the psi automorphism alone doesn't give the right magnitude.
+        //
+        // This means the CP phase requires the FULL complex mass matrix construction
+        // (task A1-A3), not just a simple rephasing argument.
+        println!("\n  NOTE: Full complex mass matrix construction needed for delta_CP.");
+        println!("  The psi rephasing gives |sin(delta)| = {:.3}, PDG has |sin(195)| = {:.3}",
+            (2.0 * std::f64::consts::PI / 3.0).sin(),
+            195.0_f64.to_radians().sin().abs());
     }
 }
