@@ -1012,4 +1012,98 @@ mod tests {
         println!("\n  S_3 structure: <psi, epsilon | psi^3=1, epsilon^2=1, epsilon*psi=psi^2*epsilon>");
         println!("  Verified computationally in test_gresnigt_full_complex_psi3_block");
     }
+
+    /// Epsilon-action on Witt basis ladder operators (Gourlay 2024).
+    ///
+    /// The creation/annihilation operators are a_j = (-e_j + i*e_{j+4})/2.
+    /// epsilon flips the sign of v[8..16]. Test which Witt pairs are
+    /// preserved vs transformed by epsilon.
+    ///
+    /// Gourlay 2024: epsilon does NOT generate three generations but
+    /// produces a complementary degree of freedom (the even/odd
+    /// semi-spinor split).
+    #[test]
+    fn test_epsilon_on_witt_basis() {
+        use cd_kernel::gourlay_epsilon;
+
+        println!("--- EPSILON ON WITT BASIS (Gresnigt/Gourlay S3 framework) ---");
+
+        // Witt basis pairs: a_j uses (e_j, e_{j+4})
+        // j=1: (e_1, e_5)  -- both in lower octonion [0..8]
+        // j=2: (e_2, e_6)  -- both in lower octonion
+        // j=3: (e_3, e_7)  -- both in lower octonion
+        // j=4: (e_4, e_8)  -- e_4 in lower, e_8 in upper!
+
+        for j in 1..=4_usize {
+            let a_idx = j;
+            let b_idx = j + 4;
+
+            let mut e_a = [0.0_f64; 16]; e_a[a_idx] = 1.0;
+            let mut e_b = [0.0_f64; 16]; e_b[b_idx] = 1.0;
+
+            let eps_a = gourlay_epsilon(&e_a);
+            let eps_b = gourlay_epsilon(&e_b);
+
+            let a_preserved = eps_a == e_a;
+            let a_flipped = eps_a.iter().zip(e_a.iter()).all(|(x, y)| (x + y).abs() < 1e-15);
+            let b_preserved = eps_b == e_b;
+            let b_flipped = eps_b.iter().zip(e_b.iter()).all(|(x, y)| (x + y).abs() < 1e-15);
+
+            let a_status = if a_preserved { "PRESERVED" }
+                else if a_flipped { "NEGATED" }
+                else { "MIXED" };
+            let b_status = if b_preserved { "PRESERVED" }
+                else if b_flipped { "NEGATED" }
+                else { "MIXED" };
+
+            println!("  a_{j} = (e_{a_idx}, e_{b_idx}): e_{a_idx} {a_status}, e_{b_idx} {b_status}");
+
+            // For j=1..3: both indices < 8, so epsilon preserves both
+            // For j=4: e_4 < 8 (preserved), e_8 >= 8 (negated)
+            if j <= 3 {
+                assert!(a_preserved, "e_{} should be preserved by epsilon", a_idx);
+                assert!(b_preserved, "e_{} should be preserved by epsilon", b_idx);
+            } else {
+                assert!(a_preserved, "e_4 should be preserved by epsilon");
+                assert!(b_flipped, "e_8 should be negated by epsilon");
+            }
+        }
+
+        // Tang's 5 creation/annihilation pairs (Eq 11A)
+        // alpha_4 = (-e_14 + i*e_13)/2 -- both in upper octonion [8..16]
+        // alpha_5 = (-e_11 + i*e_9)/2 -- both in upper octonion
+        println!("\n  Tang Eq 11A pairs:");
+        for &(a_idx, b_idx, label) in &[
+            (6_usize, 5_usize, "alpha_1"),
+            (3, 1, "alpha_2"),
+            (7, 2, "alpha_3"),
+            (14, 13, "alpha_4"),
+            (11, 9, "alpha_5"),
+        ] {
+            let mut e_a = [0.0_f64; 16]; e_a[a_idx] = 1.0;
+            let mut e_b = [0.0_f64; 16]; e_b[b_idx] = 1.0;
+            let eps_a = gourlay_epsilon(&e_a);
+            let eps_b = gourlay_epsilon(&e_b);
+
+            let a_in_upper = a_idx >= 8;
+            let b_in_upper = b_idx >= 8;
+
+            println!("  {label}: (e_{a_idx}, e_{b_idx}) -- upper=({a_in_upper},{b_in_upper})");
+
+            // Epsilon negates upper-half indices
+            if a_in_upper {
+                assert!(eps_a.iter().zip(e_a.iter()).all(|(x, y)| (x + y).abs() < 1e-15),
+                    "e_{} in upper half should be negated", a_idx);
+            }
+            if b_in_upper {
+                assert!(eps_b.iter().zip(e_b.iter()).all(|(x, y)| (x + y).abs() < 1e-15),
+                    "e_{} in upper half should be negated", b_idx);
+            }
+        }
+
+        println!("\n  Result: epsilon preserves alpha_1..3 (SU(3) sector, lower octonion)");
+        println!("  epsilon NEGATES alpha_4,5 (leptoquark sector, upper octonion)");
+        println!("  This splits the SU(5) into SU(3) (preserved) + leptoquark (sign-flipped)");
+        println!("  Consistent with Gourlay: epsilon produces semi-spinor split, not generations");
+    }
 }
