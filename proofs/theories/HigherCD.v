@@ -135,3 +135,51 @@ Definition dekavoudon_mul (x y : CDDekaVoudon) : CDDekaVoudon :=
 Definition dekavoudon_assoc (a b c : CDDekaVoudon) : CDDekaVoudon :=
   dekavoudon_sub (dekavoudon_mul (dekavoudon_mul a b) c)
                  (dekavoudon_mul a (dekavoudon_mul b c)).
+
+(** ========== CD-2048 (dim=2048) ========== *)
+Record CD2048 := mk2048 { cd2048_lo : CDDekaVoudon; cd2048_hi : CDDekaVoudon }.
+Definition cd2048_conj x := mk2048 (dekavoudon_conj (cd2048_lo x)) (dekavoudon_neg (cd2048_hi x)).
+Definition cd2048_add x y := mk2048 (dekavoudon_add (cd2048_lo x) (cd2048_lo y)) (dekavoudon_add (cd2048_hi x) (cd2048_hi y)).
+Definition cd2048_neg x := mk2048 (dekavoudon_neg (cd2048_lo x)) (dekavoudon_neg (cd2048_hi x)).
+Definition cd2048_sub x y := cd2048_add x (cd2048_neg y).
+Definition cd2048_scale r x := mk2048 (dekavoudon_scale r (cd2048_lo x)) (dekavoudon_scale r (cd2048_hi x)).
+Definition cd2048_mul x y := mk2048
+  (dekavoudon_sub (dekavoudon_mul (cd2048_lo x) (cd2048_lo y)) (dekavoudon_mul (dekavoudon_conj (cd2048_hi y)) (cd2048_hi x)))
+  (dekavoudon_add (dekavoudon_mul (cd2048_hi y) (cd2048_lo x)) (dekavoudon_mul (cd2048_hi x) (dekavoudon_conj (cd2048_lo y)))).
+Definition cd2048_assoc a b c := cd2048_sub (cd2048_mul (cd2048_mul a b) c) (cd2048_mul a (cd2048_mul b c)).
+
+(** ========== CD-4096 (dim=4096) ========== *)
+Record CD4096 := mk4096 { cd4096_lo : CD2048; cd4096_hi : CD2048 }.
+Definition cd4096_conj x := mk4096 (cd2048_conj (cd4096_lo x)) (cd2048_neg (cd4096_hi x)).
+Definition cd4096_add x y := mk4096 (cd2048_add (cd4096_lo x) (cd4096_lo y)) (cd2048_add (cd4096_hi x) (cd4096_hi y)).
+Definition cd4096_neg x := mk4096 (cd2048_neg (cd4096_lo x)) (cd2048_neg (cd4096_hi x)).
+Definition cd4096_sub x y := cd4096_add x (cd4096_neg y).
+Definition cd4096_scale r x := mk4096 (cd2048_scale r (cd4096_lo x)) (cd2048_scale r (cd4096_hi x)).
+Definition cd4096_mul x y := mk4096
+  (cd2048_sub (cd2048_mul (cd4096_lo x) (cd4096_lo y)) (cd2048_mul (cd2048_conj (cd4096_hi y)) (cd4096_hi x)))
+  (cd2048_add (cd2048_mul (cd4096_hi y) (cd4096_lo x)) (cd2048_mul (cd4096_hi x) (cd2048_conj (cd4096_lo y)))).
+Definition cd4096_assoc a b c := cd4096_sub (cd4096_mul (cd4096_mul a b) c) (cd4096_mul a (cd4096_mul b c)).
+
+(** ========== CD-8192 (dim=8192) ========== *)
+Record CD8192 := mk8192 { cd8192_lo : CD4096; cd8192_hi : CD4096 }.
+Definition cd8192_conj x := mk8192 (cd4096_conj (cd8192_lo x)) (cd4096_neg (cd8192_hi x)).
+Definition cd8192_add x y := mk8192 (cd4096_add (cd8192_lo x) (cd8192_lo y)) (cd4096_add (cd8192_hi x) (cd8192_hi y)).
+Definition cd8192_neg x := mk8192 (cd4096_neg (cd8192_lo x)) (cd4096_neg (cd8192_hi x)).
+Definition cd8192_sub x y := cd8192_add x (cd8192_neg y).
+Definition cd8192_scale r x := mk8192 (cd4096_scale r (cd8192_lo x)) (cd4096_scale r (cd8192_hi x)).
+Definition cd8192_mul x y := mk8192
+  (cd4096_sub (cd4096_mul (cd8192_lo x) (cd8192_lo y)) (cd4096_mul (cd4096_conj (cd8192_hi y)) (cd8192_hi x)))
+  (cd4096_add (cd4096_mul (cd8192_hi y) (cd8192_lo x)) (cd4096_mul (cd8192_hi x) (cd4096_conj (cd8192_lo y)))).
+Definition cd8192_assoc a b c := cd8192_sub (cd8192_mul (cd8192_mul a b) c) (cd8192_mul a (cd8192_mul b c)).
+
+(** ========== CD-16384 (dim=16384, Tessareskaidekavoudon) ========== *)
+Record CD16384 := mk16384 { cd16384_lo : CD8192; cd16384_hi : CD8192 }.
+Definition cd16384_conj x := mk16384 (cd8192_conj (cd16384_lo x)) (cd8192_neg (cd16384_hi x)).
+Definition cd16384_add x y := mk16384 (cd8192_add (cd16384_lo x) (cd16384_lo y)) (cd8192_add (cd16384_hi x) (cd16384_hi y)).
+Definition cd16384_neg x := mk16384 (cd8192_neg (cd16384_lo x)) (cd8192_neg (cd16384_hi x)).
+Definition cd16384_sub x y := cd16384_add x (cd16384_neg y).
+Definition cd16384_scale r x := mk16384 (cd8192_scale r (cd16384_lo x)) (cd8192_scale r (cd16384_hi x)).
+Definition cd16384_mul x y := mk16384
+  (cd8192_sub (cd8192_mul (cd16384_lo x) (cd16384_lo y)) (cd8192_mul (cd8192_conj (cd16384_hi y)) (cd16384_hi x)))
+  (cd8192_add (cd8192_mul (cd16384_hi y) (cd16384_lo x)) (cd8192_mul (cd16384_hi x) (cd8192_conj (cd16384_lo y)))).
+Definition cd16384_assoc a b c := cd16384_sub (cd16384_mul (cd16384_mul a b) c) (cd16384_mul a (cd16384_mul b c)).
