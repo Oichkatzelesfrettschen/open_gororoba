@@ -41,6 +41,10 @@ enum Command {
     Crossrefs(CommonArgs),
     DatasetLabelAliases(CommonArgs),
     ExternalSourceOperationalContracts(CommonArgs),
+    /// Run all governance-gate checks in a single process invocation.
+    /// Equivalent to: schema-signatures + crossrefs + dataset-label-aliases
+    /// + external-source-operational-contracts + markdown-removal-policy.
+    GateAll(CommonArgs),
 }
 
 #[derive(Parser, Debug, Clone)]
@@ -66,6 +70,42 @@ fn main() -> Result<()> {
         Command::ExternalSourceOperationalContracts(args) => {
             verify_external_source_operational_contracts(&args)
         }
+        Command::GateAll(args) => run_gate_all(&args),
+    }
+}
+
+fn run_gate_all(args: &CommonArgs) -> Result<()> {
+    let mut failed: Vec<&str> = Vec::new();
+
+    macro_rules! run_check {
+        ($name:expr, $func:expr) => {
+            match $func(args) {
+                Ok(()) => eprintln!("[done] {}", $name),
+                Err(e) => {
+                    eprintln!("[FAIL] {}: {e}", $name);
+                    failed.push($name);
+                }
+            }
+        };
+    }
+
+    run_check!("schema-signatures", verify_schema_signatures);
+    run_check!("crossrefs", verify_crossrefs);
+    run_check!("dataset-label-aliases", verify_dataset_label_aliases);
+    run_check!(
+        "external-source-operational-contracts",
+        verify_external_source_operational_contracts
+    );
+    run_check!("markdown-removal-policy", verify_markdown_removal_policy);
+
+    if failed.is_empty() {
+        Ok(())
+    } else {
+        bail!(
+            "governance-gate: {} check(s) failed: {}",
+            failed.len(),
+            failed.join(", ")
+        )
     }
 }
 
