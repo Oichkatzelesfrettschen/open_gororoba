@@ -197,6 +197,7 @@ credentials.*
 !docs/SEDENION_GRAVASTAR_EQUIVALENCE.md
 !docs/GRAND_SYNTHESIS_PLAN.md
 !docs/db/ARCHITECTURE.md
+!docs/physics/sedenion_standard_model.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)

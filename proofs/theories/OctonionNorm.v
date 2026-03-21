@@ -36,6 +36,14 @@ Definition sed_neg (x : CDSed) : CDSed :=
 Definition sed_sub (x y : CDSed) : CDSed :=
   sed_add x (sed_neg y).
 
+(** * Scalar multiplication. *)
+
+Definition oct_scale (r : R) (x : CDOct) : CDOct :=
+  mkOct (quat_scale r (oct_lo x)) (quat_scale r (oct_hi x)).
+
+Definition sed_scale (r : R) (x : CDSed) : CDSed :=
+  mkSed (oct_scale r (sed_lo x)) (oct_scale r (sed_hi x)).
+
 (** * Norm squared operations. *)
 
 Definition oct_norm_sq (x : CDOct) : R :=
