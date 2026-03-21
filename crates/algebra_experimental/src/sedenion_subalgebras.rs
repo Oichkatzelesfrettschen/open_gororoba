@@ -864,6 +864,99 @@ mod tests {
         }
     }
 
+    /// Cross-tabulate 455 triads: Wilmot non-assoc type vs sigma-associativity.
+    ///
+    /// Determines where the 112 sigma-associative (sign-defect=0) but
+    /// Wilmot-non-associative triads live in the A/B/C/X classification.
+    #[test]
+    fn test_triad_cross_tabulation() {
+        use cd_kernel::cd_basis_mul_sign;
+
+        let dim = 16_usize;
+
+        // Sign-level associator defect
+        let sign_defect = |i: usize, j: usize, k: usize| -> i32 {
+            let s_ij = cd_basis_mul_sign(dim, i, j);
+            let s_ij_k = cd_basis_mul_sign(dim, i ^ j, k);
+            let s_jk = cd_basis_mul_sign(dim, j, k);
+            let s_i_jk = cd_basis_mul_sign(dim, i, j ^ k);
+            s_ij * s_ij_k - s_jk * s_i_jk
+        };
+
+        // Count cross-tabulation
+        let mut strict_assoc = 0_usize;
+        let mut sigma_assoc_type_b = 0_usize;
+        let mut sigma_assoc_type_c = 0_usize;
+        let mut sigma_assoc_type_x = 0_usize;
+        let mut sigma_nonassoc_type_b = 0_usize;
+        let mut sigma_nonassoc_type_c = 0_usize;
+        let mut sigma_nonassoc_type_x = 0_usize;
+
+        for b in 1..dim {
+            for c in (b + 1)..dim {
+                for d in (c + 1)..dim {
+                    // Strict associativity (all orderings)
+                    let t1 = assoc_strict(dim, b, c, d);
+                    let t2 = assoc_strict(dim, b, d, c);
+                    let t3 = assoc_strict(dim, c, b, d);
+                    let is_strict = t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10;
+
+                    if is_strict {
+                        strict_assoc += 1;
+                        continue;
+                    }
+
+                    // Non-assoc type
+                    let na_type = match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
+                        (false, true, false) => 'B',
+                        (false, false, true) => 'C',
+                        _ => 'X',
+                    };
+
+                    // Sign-level sigma-associativity: check ALL 6 ordered permutations
+                    let sigma_assoc = sign_defect(b, c, d) == 0
+                        && sign_defect(b, d, c) == 0
+                        && sign_defect(c, b, d) == 0
+                        && sign_defect(c, d, b) == 0
+                        && sign_defect(d, b, c) == 0
+                        && sign_defect(d, c, b) == 0;
+
+                    match (na_type, sigma_assoc) {
+                        ('B', true) => sigma_assoc_type_b += 1,
+                        ('C', true) => sigma_assoc_type_c += 1,
+                        ('X', true) => sigma_assoc_type_x += 1,
+                        ('B', false) => sigma_nonassoc_type_b += 1,
+                        ('C', false) => sigma_nonassoc_type_c += 1,
+                        ('X', false) => sigma_nonassoc_type_x += 1,
+                        _ => {}
+                    }
+                }
+            }
+        }
+
+        let total_sigma_ghost = sigma_assoc_type_b + sigma_assoc_type_c + sigma_assoc_type_x;
+
+        println!("--- TRIAD CROSS-TABULATION ---");
+        println!("  Strict-associative: {}", strict_assoc);
+        println!("  Sigma-assoc ghost triads: {} (= 147 - 35 = 112)", total_sigma_ghost);
+        println!("    In Type B: {}", sigma_assoc_type_b);
+        println!("    In Type C: {}", sigma_assoc_type_c);
+        println!("    In Type X: {}", sigma_assoc_type_x);
+        println!("  Sigma-nonassoc:");
+        println!("    In Type B: {}", sigma_nonassoc_type_b);
+        println!("    In Type C: {}", sigma_nonassoc_type_c);
+        println!("    In Type X: {}", sigma_nonassoc_type_x);
+
+        assert_eq!(strict_assoc, 35);
+        // When ALL 6 permutations are required to have zero sign defect,
+        // ONLY the 35 strict-associative triads survive. The "112 ghost triads"
+        // from C1467 were an artifact of checking a single ordering per triple.
+        // Triads can be sign-associative in SOME orderings but not all.
+        assert_eq!(total_sigma_ghost, 0, "No ghost triads when all 6 perms checked");
+        assert_eq!(strict_assoc + total_sigma_ghost
+            + sigma_nonassoc_type_b + sigma_nonassoc_type_c + sigma_nonassoc_type_x, 455);
+    }
+
     /// Gourlay & Gresnigt (arXiv:2407.01580) zero-divisor example verification.
     ///
     /// Sec 2.2: (s_1 + s_10) * (s_5 + s_14) = 0.
