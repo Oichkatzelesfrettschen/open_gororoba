@@ -832,9 +832,8 @@ mod tests {
 
     /// PMNS theta_23 with psi-circulant off-diagonal coupling.
     ///
-    /// Scans alpha_cross to find the off-diagonal coupling strength
-    /// that maximizes agreement with PDG PMNS angles.
-    /// The circulant structure from psi should push theta_23 toward 45 deg.
+    /// Scans alpha_cross for the off-diagonal coupling strength.
+    /// Uses the full 16D associator profile as psi input for richer overlap.
     #[test]
     fn test_pmns_offdiag_psi_coupling() {
         let ch_pair = (11_usize, 12);
@@ -884,6 +883,180 @@ mod tests {
 
         if best_angles.2 > 40.0 {
             println!("  *** THETA_23 > 40 DEG -- CEILING BROKEN ***");
+        }
+    }
+
+    /// Refined PMNS with FULL 16D friction profiles + psi overlap.
+    ///
+    /// Instead of placing friction at 2 sparse indices, compute the
+    /// full 16D associator profile for each generation's braid,
+    /// then use <profile_i, psi(profile_j)> for the off-diagonal M_ij.
+    #[test]
+    fn test_pmns_offdiag_full_profile() {
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::cayley_dickson_structs::Sedenion;
+        use crate::quark_sector::SubalgebraScheme;
+        use cd_kernel::gourlay_psi;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let ch_a = MajoranaMode { gamma_index: ch_pair.0 - 1, cd_basis_index: ch_pair.0, cd_dim: 16 };
+        let ch_b = MajoranaMode { gamma_index: ch_pair.1 - 1, cd_basis_index: ch_pair.1, cd_dim: 16 };
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        // Build FULL 16D friction profiles per generation
+        // For each generation g, the profile is a 16D vector where
+        // component k = associator contribution from probe e_k
+        let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            use crate::bell_inequality::rotate_sparse;
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let theta = std::f64::consts::FRAC_PI_4;
+            let a_rotated = rotate_sparse(&a_sparse, i, j, theta);
+            let b_sparse = vec![(j, 1.0)];
+
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                let val = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+                profile[k] = val;
+            }
+            profile
+        };
+
+        // Build profiles for each generation for both sectors
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&ch_a, &ch_b, s))
+            .collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&nu_a, &nu_b, s))
+            .collect();
+
+        println!("--- PMNS FULL-PROFILE PSI OVERLAP SCAN ---");
+
+        // Compute psi overlaps for the neutrino sector
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        // Self-overlaps (diagonal) -- should be identical across generations if psi-symmetric
+        for g in 0..3 {
+            println!("  nu_profile[{}] norm^2 = {:.4}", g,
+                dot16(&nu_profiles[g], &nu_profiles[g]));
+        }
+
+        // Psi overlaps (off-diagonal)
+        for g in 0..3 {
+            let psi_prof = gourlay_psi(&nu_profiles[g]);
+            let overlap = dot16(&nu_profiles[g], &psi_prof);
+            println!("  <nu[{}], psi(nu[{}])> = {:.4}", g, g, overlap);
+        }
+
+        // Build Casimir baseline
+        let mut basis = [Sedenion::default(); 16];
+        for i in 0..16 { let mut c = [0.0; 16]; c[i] = 1.0; basis[i] = Sedenion::from_slice(&c); }
+        let cs = basis[15];
+        let (m_base_ch, m_base_nu) = crate::quark_sector::construct_quark_mass_matrices(
+            &basis, &cs, SubalgebraScheme::InterleavedStride,
+        );
+
+        let w1: f64 = -0.656850;
+        let w2: f64 = -0.741999;
+        let pdg_t12: f64 = 33.41;
+        let pdg_t13: f64 = 8.54;
+        let pdg_t23: f64 = 49.0;
+
+        let sel_ch: Vec<f64> = subs.iter()
+            .map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table))
+            .collect();
+        let sel_nu: Vec<f64> = subs.iter()
+            .map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table))
+            .collect();
+
+        // Scan alpha_cross with full-profile psi overlap
+        let mut best_score = f64::INFINITY;
+        let mut best_alpha = 0.0_f64;
+        let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+        for step in 0..400 {
+            let alpha = -2.0 + step as f64 * 0.01;
+
+            let mut m_ch = m_base_ch.clone();
+            let mut m_nu = m_base_nu.clone();
+
+            // Diagonal
+            for i in 0..3 {
+                let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
+                let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
+                m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
+                m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+            }
+
+            // Off-diagonal from psi overlap on FULL profiles
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i == j { continue; }
+                    let psi_nu_j = gourlay_psi(&nu_profiles[j]);
+                    let overlap_nu = dot16(&nu_profiles[i], &psi_nu_j);
+                    let psi_ch_j = gourlay_psi(&ch_profiles[j]);
+                    let overlap_ch = dot16(&ch_profiles[i], &psi_ch_j);
+
+                    m_nu.write(i, j, m_nu.read(i, j) + alpha * overlap_nu);
+                    m_ch.write(i, j, m_ch.read(i, j) + alpha * overlap_ch);
+                }
+            }
+
+            // Symmetrize
+            for i in 0..3 {
+                for j in (i + 1)..3 {
+                    let avg_ch = (m_ch.read(i, j) + m_ch.read(j, i)) / 2.0;
+                    let avg_nu = (m_nu.read(i, j) + m_nu.read(j, i)) / 2.0;
+                    m_ch.write(i, j, avg_ch); m_ch.write(j, i, avg_ch);
+                    m_nu.write(i, j, avg_nu); m_nu.write(j, i, avg_nu);
+                }
+            }
+
+            let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+            let m_nu_sym = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+            let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+            let score = ((t23 - pdg_t23) / pdg_t23).powi(2)
+                + ((t12 - pdg_t12) / pdg_t12).powi(2)
+                + ((t13 - pdg_t13) / pdg_t13).powi(2);
+
+            if score < best_score {
+                best_score = score;
+                best_alpha = alpha;
+                best_angles = (t12, t13, t23);
+            }
+        }
+
+        println!("\n  Best alpha_cross: {:.4}", best_alpha);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2})", best_angles.0, pdg_t12);
+        println!("  theta_13 = {:.2} deg (PDG: {:.2})", best_angles.1, pdg_t13);
+        println!("  theta_23 = {:.2} deg (PDG: {:.2})", best_angles.2, pdg_t23);
+        println!("  Score: {:.6} (sparse: 0.110, diagonal: 0.132)", best_score);
+
+        if best_angles.2 > 40.0 {
+            println!("  *** THETA_23 > 40 DEG -- APPROACHING PDG ***");
+        }
+        if best_angles.2 > 45.0 {
+            println!("  *** THETA_23 > 45 DEG -- NEAR-MAXIMAL MIXING ***");
         }
     }
 }
