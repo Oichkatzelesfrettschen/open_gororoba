@@ -329,6 +329,13 @@ pub use lie::g2_stabilizer::{
 };
 
 #[cfg(feature = "lie")]
+pub use lie::g2_su3_representation::{
+    FundamentalRepresentation, GellMannAlignment, Mat3c, align_with_gell_mann,
+    fundamental_casimir, fundamental_representation, hs_inner_product,
+    standard_gell_mann_antihermitian,
+};
+
+#[cfg(feature = "lie")]
 pub use lie::group_theory::{
     PSL_2_7_ORDER, exceptional, is_prime, order_alternating, order_gl, order_psl2_q, order_sl,
     order_symmetric, prime_power,

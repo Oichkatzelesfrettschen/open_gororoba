@@ -5292,3 +5292,9 @@ id = "E-213"
 title = "G2 stabilizer extraction via thin-SVD with u(3) embedding verification"
 status = "completed"
 claim_refs = ["C-1479", "C-1480", "C-1481", "C-1482"]
+
+[[experiment]]
+id = "E-214"
+title = "Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer"
+status = "completed"
+claim_refs = ["C-1483", "C-1484", "C-1485", "C-1486"]

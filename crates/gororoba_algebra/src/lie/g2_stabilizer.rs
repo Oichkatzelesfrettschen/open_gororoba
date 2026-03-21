@@ -416,7 +416,7 @@ pub fn complex_structure(fixed_unit: usize) -> ComplexStructure {
 /// e_k^perp is only D-invariant when D(e_k) = 0 (stabilizer derivations).
 ///
 /// For stabilizer derivations, this block IS the genuine restricted action.
-fn perp_block(
+pub(crate) fn perp_block(
     derivation: &OctonionDerivation,
     perp_indices: &[usize; 6],
 ) -> [[f64; 6]; 6] {

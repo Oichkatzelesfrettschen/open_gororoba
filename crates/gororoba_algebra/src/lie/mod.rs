@@ -10,5 +10,6 @@ pub mod nilpotent_orbits;
 // imports get_sedenion_subalgebras from it regardless of feature state.
 pub mod three_fermion_generations;
 pub mod g2_stabilizer;
+pub mod g2_su3_representation;
 #[cfg(feature = "physics-sm")]
 pub mod su5_gut;
