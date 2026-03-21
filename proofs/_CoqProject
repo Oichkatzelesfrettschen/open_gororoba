@@ -174,4 +174,5 @@ verified/C1466_SubalgebraClosure.v
 verified/C1467_XORSignCocycle.v
 verified/C1468_SlotShiftEquivariance.v
 verified/C1469_TowerTrilinearity.v
+verified/C1470_PathionTrilinearity.v
 verified/C1463_ArithmeticInventory.v
