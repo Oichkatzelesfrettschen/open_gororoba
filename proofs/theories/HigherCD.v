@@ -183,3 +183,27 @@ Definition cd16384_mul x y := mk16384
   (cd8192_sub (cd8192_mul (cd16384_lo x) (cd16384_lo y)) (cd8192_mul (cd8192_conj (cd16384_hi y)) (cd16384_hi x)))
   (cd8192_add (cd8192_mul (cd16384_hi y) (cd16384_lo x)) (cd8192_mul (cd16384_hi x) (cd8192_conj (cd16384_lo y)))).
 Definition cd16384_assoc a b c := cd16384_sub (cd16384_mul (cd16384_mul a b) c) (cd16384_mul a (cd16384_mul b c)).
+
+(** ========== CD-32768 (dim=32768) ========== *)
+Record CD32768 := mk32768 { cd32768_lo : CD16384; cd32768_hi : CD16384 }.
+Definition cd32768_conj x := mk32768 (cd16384_conj (cd32768_lo x)) (cd16384_neg (cd32768_hi x)).
+Definition cd32768_add x y := mk32768 (cd16384_add (cd32768_lo x) (cd32768_lo y)) (cd16384_add (cd32768_hi x) (cd32768_hi y)).
+Definition cd32768_neg x := mk32768 (cd16384_neg (cd32768_lo x)) (cd16384_neg (cd32768_hi x)).
+Definition cd32768_sub x y := cd32768_add x (cd32768_neg y).
+Definition cd32768_scale r x := mk32768 (cd16384_scale r (cd32768_lo x)) (cd16384_scale r (cd32768_hi x)).
+Definition cd32768_mul x y := mk32768
+  (cd16384_sub (cd16384_mul (cd32768_lo x) (cd32768_lo y)) (cd16384_mul (cd16384_conj (cd32768_hi y)) (cd32768_hi x)))
+  (cd16384_add (cd16384_mul (cd32768_hi y) (cd32768_lo x)) (cd16384_mul (cd32768_hi x) (cd16384_conj (cd32768_lo y)))).
+Definition cd32768_assoc a b c := cd32768_sub (cd32768_mul (cd32768_mul a b) c) (cd32768_mul a (cd32768_mul b c)).
+
+(** ========== CD-65536 (dim=65536 = 2^16) ========== *)
+Record CD65536 := mk65536 { cd65536_lo : CD32768; cd65536_hi : CD32768 }.
+Definition cd65536_conj x := mk65536 (cd32768_conj (cd65536_lo x)) (cd32768_neg (cd65536_hi x)).
+Definition cd65536_add x y := mk65536 (cd32768_add (cd65536_lo x) (cd65536_lo y)) (cd32768_add (cd65536_hi x) (cd65536_hi y)).
+Definition cd65536_neg x := mk65536 (cd32768_neg (cd65536_lo x)) (cd32768_neg (cd65536_hi x)).
+Definition cd65536_sub x y := cd65536_add x (cd65536_neg y).
+Definition cd65536_scale r x := mk65536 (cd32768_scale r (cd65536_lo x)) (cd32768_scale r (cd65536_hi x)).
+Definition cd65536_mul x y := mk65536
+  (cd32768_sub (cd32768_mul (cd65536_lo x) (cd65536_lo y)) (cd32768_mul (cd32768_conj (cd65536_hi y)) (cd65536_hi x)))
+  (cd32768_add (cd32768_mul (cd65536_hi y) (cd65536_lo x)) (cd32768_mul (cd65536_hi x) (cd32768_conj (cd65536_lo y)))).
+Definition cd65536_assoc a b c := cd65536_sub (cd65536_mul (cd65536_mul a b) c) (cd65536_mul a (cd65536_mul b c)).

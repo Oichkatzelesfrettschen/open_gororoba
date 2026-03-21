@@ -537,12 +537,56 @@ Proof. intros r [? ?] [? ?]. unfold cd16384_mul, cd16384_scale. simpl. f_equal.
 Lemma cd16384_scale_sub : forall r a b, cd16384_scale r (cd16384_sub a b) = cd16384_sub (cd16384_scale r a) (cd16384_scale r b).
 Proof. intros r [? ?] [? ?]. unfold cd16384_scale, cd16384_sub, cd16384_add, cd16384_neg. simpl. f_equal; apply cd8192_scale_sub. Qed.
 
-(** THE SUMMIT: Associator trilinearity at dim=16384. *)
 Theorem cd16384_assoc_trilinear : forall r a b c,
   cd16384_assoc (cd16384_scale r a) b c = cd16384_scale r (cd16384_assoc a b c).
+Proof. intros. unfold cd16384_assoc. repeat rewrite cd16384_mul_scale_left. rewrite <- cd16384_scale_sub. reflexivity. Qed.
+
+(** ========== CD-32768 ========== *)
+Lemma cd16384_scale_add : forall r a b, cd16384_add (cd16384_scale r a) (cd16384_scale r b) = cd16384_scale r (cd16384_add a b).
+Proof. intros r [? ?] [? ?]. unfold cd16384_scale, cd16384_add. simpl. f_equal; apply cd8192_scale_add. Qed.
+Lemma cd16384_conj_scale : forall r x, cd16384_conj (cd16384_scale r x) = cd16384_scale r (cd16384_conj x).
+Proof. intros r [? ?]. unfold cd16384_conj, cd16384_scale. simpl. f_equal. apply cd8192_conj_scale. apply cd8192_neg_scale. Qed.
+Theorem cd16384_mul_scale_right : forall r x y, cd16384_mul x (cd16384_scale r y) = cd16384_scale r (cd16384_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd16384_mul, cd16384_scale. simpl. f_equal.
+  - rewrite cd8192_mul_scale_right. rewrite cd8192_conj_scale. rewrite cd8192_mul_scale_left. rewrite <- cd8192_scale_sub. reflexivity.
+  - rewrite cd8192_mul_scale_left. rewrite cd8192_conj_scale. rewrite cd8192_mul_scale_right. rewrite <- cd8192_scale_add. reflexivity. Qed.
+Lemma cd16384_neg_scale : forall r x, cd16384_neg (cd16384_scale r x) = cd16384_scale r (cd16384_neg x).
+Proof. intros r [? ?]. unfold cd16384_neg, cd16384_scale. simpl. f_equal; apply cd8192_neg_scale. Qed.
+
+Theorem cd32768_mul_scale_left : forall r x y, cd32768_mul (cd32768_scale r x) y = cd32768_scale r (cd32768_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd32768_mul, cd32768_scale. simpl. f_equal.
+  - rewrite cd16384_mul_scale_left. rewrite cd16384_mul_scale_right. rewrite <- cd16384_scale_sub. reflexivity.
+  - rewrite cd16384_mul_scale_right. rewrite cd16384_mul_scale_left. rewrite <- cd16384_scale_add. reflexivity. Qed.
+Lemma cd32768_scale_sub : forall r a b, cd32768_scale r (cd32768_sub a b) = cd32768_sub (cd32768_scale r a) (cd32768_scale r b).
+Proof. intros r [? ?] [? ?]. unfold cd32768_scale, cd32768_sub, cd32768_add, cd32768_neg. simpl. f_equal; apply cd16384_scale_sub. Qed.
+Theorem cd32768_assoc_trilinear : forall r a b c, cd32768_assoc (cd32768_scale r a) b c = cd32768_scale r (cd32768_assoc a b c).
+Proof. intros. unfold cd32768_assoc. repeat rewrite cd32768_mul_scale_left. rewrite <- cd32768_scale_sub. reflexivity. Qed.
+
+(** ========== CD-65536 = 2^16 (THE SUMMIT) ========== *)
+Lemma cd32768_scale_add : forall r a b, cd32768_add (cd32768_scale r a) (cd32768_scale r b) = cd32768_scale r (cd32768_add a b).
+Proof. intros r [? ?] [? ?]. unfold cd32768_scale, cd32768_add. simpl. f_equal; apply cd16384_scale_add. Qed.
+Lemma cd32768_conj_scale : forall r x, cd32768_conj (cd32768_scale r x) = cd32768_scale r (cd32768_conj x).
+Proof. intros r [? ?]. unfold cd32768_conj, cd32768_scale. simpl. f_equal. apply cd16384_conj_scale. apply cd16384_neg_scale. Qed.
+Theorem cd32768_mul_scale_right : forall r x y, cd32768_mul x (cd32768_scale r y) = cd32768_scale r (cd32768_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd32768_mul, cd32768_scale. simpl. f_equal.
+  - rewrite cd16384_mul_scale_right. rewrite cd16384_conj_scale. rewrite cd16384_mul_scale_left. rewrite <- cd16384_scale_sub. reflexivity.
+  - rewrite cd16384_mul_scale_left. rewrite cd16384_conj_scale. rewrite cd16384_mul_scale_right. rewrite <- cd16384_scale_add. reflexivity. Qed.
+Lemma cd32768_neg_scale : forall r x, cd32768_neg (cd32768_scale r x) = cd32768_scale r (cd32768_neg x).
+Proof. intros r [? ?]. unfold cd32768_neg, cd32768_scale. simpl. f_equal; apply cd16384_neg_scale. Qed.
+
+Theorem cd65536_mul_scale_left : forall r x y, cd65536_mul (cd65536_scale r x) y = cd65536_scale r (cd65536_mul x y).
+Proof. intros r [? ?] [? ?]. unfold cd65536_mul, cd65536_scale. simpl. f_equal.
+  - rewrite cd32768_mul_scale_left. rewrite cd32768_mul_scale_right. rewrite <- cd32768_scale_sub. reflexivity.
+  - rewrite cd32768_mul_scale_right. rewrite cd32768_mul_scale_left. rewrite <- cd32768_scale_add. reflexivity. Qed.
+Lemma cd65536_scale_sub : forall r a b, cd65536_scale r (cd65536_sub a b) = cd65536_sub (cd65536_scale r a) (cd65536_scale r b).
+Proof. intros r [? ?] [? ?]. unfold cd65536_scale, cd65536_sub, cd65536_add, cd65536_neg. simpl. f_equal; apply cd32768_scale_sub. Qed.
+
+(** THE SUMMIT: Associator trilinearity at dim=65536 = 2^16. *)
+Theorem cd65536_assoc_trilinear : forall r a b c,
+  cd65536_assoc (cd65536_scale r a) b c = cd65536_scale r (cd65536_assoc a b c).
 Proof.
-  intros. unfold cd16384_assoc.
-  repeat rewrite cd16384_mul_scale_left.
-  rewrite <- cd16384_scale_sub.
+  intros. unfold cd65536_assoc.
+  repeat rewrite cd65536_mul_scale_left.
+  rewrite <- cd65536_scale_sub.
   reflexivity.
 Qed.
