@@ -45,6 +45,10 @@ Definition pathion_neg (x : CDPathion) : CDPathion :=
 Definition pathion_sub (x y : CDPathion) : CDPathion :=
   pathion_add x (pathion_neg y).
 
+(** Pathion scalar multiplication. *)
+Definition pathion_scale (r : R) (x : CDPathion) : CDPathion :=
+  mkPathion (sed_scale r (pathion_lo x)) (sed_scale r (pathion_hi x)).
+
 (** * Pathion norm squared. *)
 
 Definition pathion_norm_sq (x : CDPathion) : R :=
