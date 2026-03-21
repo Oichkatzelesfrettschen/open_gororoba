@@ -10090,3 +10090,10 @@ statement = """V_6 representation analysis: (1) SU(3) stabilizer acts nontrivial
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_intertwiner_analysis, test_s3_intertwiner_analysis"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1490"
+statement = """V_6 2D constrained scan: two orthogonal constrained directions in V_6 (solar + atmospheric, machine-precise orthogonality 2.8e-17) optimize theta_12 AND theta_23 simultaneously while locking theta_13. 4-parameter model (alpha_ch=3.75, alpha_nu=1.30, t_solar=2.49, t_atmo=0.11): theta_12 = 33.37 deg (0.11% PDG), theta_13 = 8.52 deg (0.26% PDG), theta_23 = 47.40 deg (3.27% PDG). All three PMNS angles within 3.3% of PDG 2025. Combined score 0.0011."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_2d_constrained_scan"
+last_verified = "2026-03-21"

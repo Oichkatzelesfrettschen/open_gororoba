@@ -211,15 +211,24 @@ Residual fraction = 75.7%. Constrained Gram-Schmidt direction at t=2.47:
 | theta_13   | 8.63 deg  | 8.54     | 1.05% |
 | theta_23   | 47.08 deg | 49.0     | 3.93% |
 
-Three parameters: alpha_ch=3.75, alpha_nu=1.30, t_V6=2.47 (constrained direction).
+**1D solar correction** (3 parameters: alpha_ch=3.75, alpha_nu=1.30, t_V6=2.47).
 
 Stability at optimum: Jacobian rank = 3 (full), condition number = 6.85
 (well-conditioned), d^2(theta_12)/dt^2 = -0.28 (concave -- stable peak).
 Residual fraction at optimum = 60.9% (still well-decoupled at t=2.47).
 
+**2D solar+atmospheric correction** (C-1490, 4 parameters: +t_atmo=0.11):
+
+| Parameter  | This work | PDG 2025 | Error |
+|------------|-----------|----------|-------|
+| theta_12   | 33.37 deg | 33.41    | 0.11% |
+| theta_13   | 8.52 deg  | 8.54     | 0.26% |
+| theta_23   | 47.40 deg | 49.0     | 3.27% |
+
 Invariance audit: block alignment MODERATE (44% max concentration, 16.7%
 would be uniform). Psi orbits cross blocks (30 cross, 12 within). The lift
 works because it preserves 6 DOFs, not because the blocks are canonical.
+V_6 is a psi-eigenspace (scalar 0.25*I_6) -- generation-invariant (C-1489).
 
 ### Electroweak Mixing Angle (C-1458)
 
@@ -391,6 +400,8 @@ C-1475: V_6 solar pipeline: compositional, beta=0 exact, partition null result
 C-1476: V_6 constrained scan: g_12 100% in span{g_13,g_23}, linear injection insufficient
 C-1477: V_6 alpha-modulation: 10x gradient boost but rank-2 lock persists (42D->3D collapse)
 C-1478: V_6 TensorElementLift: rank broken (75.7%), theta_12 = 33.42 deg (0.02% PDG)
+C-1489: V_6 psi-eigenspace (0.25*I_6), no S_3-equivariant intertwiner, su(3) reducible
+C-1490: 2D constrained scan: (33.37, 8.52, 47.40) deg, all within 3.3% of PDG
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
