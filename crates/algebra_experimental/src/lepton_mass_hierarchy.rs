@@ -445,6 +445,133 @@ mod tests {
             let m_tau_pred = (alpha_fit * best_frictions_composite[2]).exp();
             println!("  Implied masses: 1 : 207 : {:.1} (PDG: 3477, error: {:.1}%)",
                 m_tau_pred, ((m_tau_pred - 3477.0) / 3477.0 * 100.0).abs());
+        // --- Geometric vector sum scan ---
+        // Instead of |f1| + |f2|, compute the VECTOR sum of associator
+        // values per generation and THEN take the norm. Orthogonal
+        // components interfere, giving irrational ratios.
+        let mut best_vec_error = f64::INFINITY;
+        let mut best_vec_pair = String::new();
+        let mut best_vec_frictions = [0.0; 3];
+
+        for a in 0..splits.len() {
+            for b in (a + 1)..splits.len() {
+                // For each generation, compute the vector sum of the two
+                // signed friction values (treated as orthogonal components)
+                let mut vf = [0.0_f64; 3];
+                for g in 0..3 {
+                    let fa = splits[a].frictions[g];
+                    let fb = splits[b].frictions[g];
+                    // Geometric sum: treat as orthogonal components
+                    vf[g] = (fa * fa + fb * fb).sqrt();
+                }
+                vf.sort_by(|x, y| x.partial_cmp(y).unwrap());
+
+                if vf[1] > 1e-9 {
+                    let ratio = vf[2] / vf[1];
+                    let error = (ratio - target_ratio).abs();
+                    if error < best_vec_error {
+                        best_vec_error = error;
+                        best_vec_pair = format!(
+                            "(e_{},e_{}) |+| (e_{},e_{})",
+                            splits[a].i, splits[a].j, splits[b].i, splits[b].j
+                        );
+                        best_vec_frictions = vf;
+                    }
+                }
+            }
+        }
+
+        println!("\n--- GEOMETRIC VECTOR SUM SCAN ---");
+        println!("Best vector composite: {}", best_vec_pair);
+        println!("  ||F||: {:.4} : {:.4} : {:.4}",
+            best_vec_frictions[0], best_vec_frictions[1], best_vec_frictions[2]);
+        let vec_ratio = if best_vec_frictions[1] > 1e-9 {
+            best_vec_frictions[2] / best_vec_frictions[1]
+        } else { f64::INFINITY };
+        println!("  f_heavy/f_mid = {:.4} (target: {:.4}, error: {:.4})",
+            vec_ratio, target_ratio, best_vec_error);
+        if best_vec_frictions[1] > 1e-9 && best_vec_frictions[0] < 1e-9 {
+            let alpha_fit = (207.0_f64).ln() / best_vec_frictions[1];
+            let m_tau_pred = (alpha_fit * best_vec_frictions[2]).exp();
+            println!("  Implied masses: 1 : 207 : {:.1} (PDG: 3477, error: {:.1}%)",
+                m_tau_pred, ((m_tau_pred - 3477.0) / 3477.0 * 100.0).abs());
+        }
+
+        // --- 2-parameter weighted fit using RAW signed frictions ---
+        // The sorted frictions are identical across all 21 pairs (all {0, 2.83, 8.49}).
+        // The raw SIGNED values differ: pair (e_1,e_4) -> (0, 2.83, -8.49)
+        //                               pair (e_2,e_4) -> (-8.49, 0, 2.83)
+        // These are linearly independent in R^3 family space.
+        // Use two pairs with different generation assignments as a basis.
+        //
+        // The fit objective: find w1, w2 such that
+        //   exp(w1*s1_g + w2*s2_g) ~ m_g for each generation g.
+        {
+            // Use pair (e_1,e_4): raw signed = (0, 2.83, -8.49) for (O1, O2, O3)
+            // and pair (e_2,e_4): raw signed = (-8.49, 0, 2.83)
+            // These are linearly independent.
+            let mode_1 = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+            let mode_2 = MajoranaMode { gamma_index: 1, cd_basis_index: 2, cd_dim: 16 };
+            let mode_4 = MajoranaMode { gamma_index: 3, cd_basis_index: 4, cd_dim: 16 };
+            let subs = [&o1, &o2, &o3];
+
+            let sel1: Vec<f64> = subs.iter().map(|s|
+                cd_braid_signed_friction(&mode_1, &mode_4, s, &sign_table)).collect();
+            let sel2: Vec<f64> = subs.iter().map(|s|
+                cd_braid_signed_friction(&mode_2, &mode_4, s, &sign_table)).collect();
+
+            println!("\n--- 2-PARAMETER WEIGHTED FIT (raw signed) ---");
+            println!("Selector 1 (e_1,e_4): [{:.4}, {:.4}, {:.4}]", sel1[0], sel1[1], sel1[2]);
+            println!("Selector 2 (e_2,e_4): [{:.4}, {:.4}, {:.4}]", sel2[0], sel2[1], sel2[2]);
+
+            // Target: F_g = w1*sel1_g + w2*sel2_g
+            // where exp(F_e) ~ 0.511, exp(F_mu) ~ 105.7, exp(F_tau) ~ 1776.9
+            // Normalize: F_e = 0, F_mu = ln(207), F_tau = ln(3477)
+            let log_mu = (207.0_f64).ln();
+            let log_tau = (3477.0_f64).ln();
+
+            // We need to assign generations: which O_i is electron, muon, tau?
+            // Try all 6 permutations and find the best fit.
+            let perms: [(usize, usize, usize); 6] = [
+                (0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)
+            ];
+            let mut best_perm_error = f64::INFINITY;
+            let mut best_perm_result = String::new();
+
+            for (e_gen, mu_gen, tau_gen) in &perms {
+                // F_electron = 0 (lightest), F_mu = log_mu, F_tau = log_tau
+                // w1*sel1[mu_gen] + w2*sel2[mu_gen] = log_mu
+                // w1*sel1[tau_gen] + w2*sel2[tau_gen] = log_tau
+                let a11 = sel1[*mu_gen]; let a12 = sel2[*mu_gen];
+                let a21 = sel1[*tau_gen]; let a22 = sel2[*tau_gen];
+                let det = a11 * a22 - a12 * a21;
+                if det.abs() < 1e-10 { continue; }
+
+                let w1 = (log_mu * a22 - log_tau * a12) / det;
+                let w2 = (a11 * log_tau - a21 * log_mu) / det;
+
+                // Check electron constraint: w1*sel1[e_gen] + w2*sel2[e_gen] should be ~0
+                let f_e = w1 * sel1[*e_gen] + w2 * sel2[*e_gen];
+                let error = f_e.abs(); // closer to 0 = better
+
+                if error < best_perm_error {
+                    best_perm_error = error;
+                    let f_mu = w1 * sel1[*mu_gen] + w2 * sel2[*mu_gen];
+                    let f_tau = w1 * sel1[*tau_gen] + w2 * sel2[*tau_gen];
+                    best_perm_result = format!(
+                        "e=O{}, mu=O{}, tau=O{}: w1={:.4}, w2={:.4}\n\
+                         \t  F_e={:.4} (target 0), F_mu={:.4} (target {:.4}), F_tau={:.4} (target {:.4})\n\
+                         \t  Masses: {:.1} : {:.1} : {:.1} (PDG: 1 : 207 : 3477)",
+                        e_gen+1, mu_gen+1, tau_gen+1, w1, w2,
+                        f_e, f_mu, log_mu, f_tau, log_tau,
+                        f_e.exp(), f_mu.exp(), f_tau.exp()
+                    );
+                }
+            }
+            println!("Best permutation: {}", best_perm_result);
+            println!("Electron residual (should be 0): {:.6}", best_perm_error);
+        }
+
         } else if best_frictions_composite[0] > 1e-9 {
             let alpha_fit = (207.0_f64).ln() / (best_frictions_composite[1] - best_frictions_composite[0]);
             let m_e_pred = (alpha_fit * best_frictions_composite[0]).exp();
