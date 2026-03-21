@@ -323,6 +323,12 @@ pub use lie::e8_lattice::{
 };
 
 #[cfg(feature = "lie")]
+pub use lie::g2_stabilizer::{
+    ComplexStructure, G2Stabilizer, commutes_with_j, complex_structure, derivation_bracket,
+    invariant_form, is_skew_adjoint_on_perp, stabilizer_decomposition, structure_constants,
+};
+
+#[cfg(feature = "lie")]
 pub use lie::group_theory::{
     PSL_2_7_ORDER, exceptional, is_prime, order_alternating, order_gl, order_psl2_q, order_sl,
     order_symmetric, prime_power,

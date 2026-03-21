@@ -5286,3 +5286,9 @@ id = "E-212"
 title = "Electroweak mixing angle from associator flux ratio"
 status = "completed"
 claim_refs = ["C-1458"]
+
+[[experiment]]
+id = "E-213"
+title = "G2 stabilizer extraction via thin-SVD with u(3) embedding verification"
+status = "completed"
+claim_refs = ["C-1479", "C-1480", "C-1481", "C-1482"]

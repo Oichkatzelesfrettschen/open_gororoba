@@ -9978,3 +9978,66 @@ statement = """Dou et al. (2512.00600) ZD kernel: ker(e_1-e_10) = span_R(e_4+e_1
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/sedenion_subalgebras.rs::test_dou_zd_kernel_structure"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1474"
+statement = """V_6 Jacobian solar selectivity: the 6D orthogonal complement of B/C column space in X incidence matrix (rank=6, all SV=3.420) has epsilon-stable finite-difference gradients (angular deviation <0.1 deg across eps=0.01/0.05/0.1). Gradients g_12, g_13, g_23 are nearly collinear in V_6, so no unit direction achieves positive solar selectivity S(u) = |g_12.u| - 10|g_13.u| - 3|g_23.u| under the default (12/12/6) assessor partition."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_jacobian_solar_selectivity"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1475"
+statement = """V_6 solar correction pipeline: compositional construct_pmns_matrices_two_param -> apply_v6_perturbation -> eigendecompose pipeline verified. beta=0 recovery exact. 1D scan along optimal V_6 direction (t in [-10,10]) shows theta_12 shift < 0.04 deg, theta_13 locked within 0.006 deg, confirming that the default AssessorToFlavorMap (12/12/6) partition does not couple V_6 to generation-discriminant eigenvalue sensitivity. The pipeline infrastructure is correct; the assessor-to-flavor mapping needs revision for solar selectivity."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_solar_1d_scan"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1476"
+statement = """V_6 constrained solar scan: under FlavorLift maps that factor through a 3D generation-scalar intermediate (DirectOffDiagonalLift, AssessorToFlavorMap), the PMNS angle Jacobian has at most rank 2 in V_6. Gram-Schmidt residual fraction = 4.57e-5 (DirectOffDiagonal) to 5.18e-4 (alpha-modulation). This is a no-go for the current 42D->3D lift family, not for all conceivable V_6 couplings. SUPERSEDED by C-1478: the 42D->6D TensorElementLift breaks the lock (residual 75.7%)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_constrained_solar_scan"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1477"
+statement = """V_6 alpha-modulation: nonlinear exponential modulation of psi coupling strengths alpha_ch/alpha_nu via V_6 field increases gradient magnitudes 10x (|g_12| = 37.9 vs 3.3) but preserves the rank-2 Jacobian lock under the 42D->3D generation-factor partition. Residual fraction = 5.18e-4. The lock is specific to FlavorLift maps that collapse 42 assessors to 3 generation scalars. SUPERSEDED by C-1478."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_alpha_modulated_jacobian"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1478"
+statement = """V_6 solar angle correction via TensorElementLift: 42D->6D tensor partition (6 blocks of 7 assessors, one per independent element of Herm_3) breaks the rank-2 Jacobian lock. Residual fraction = 75.7% (g_12 is 75.7% outside the {g_13, g_23} constraint plane). Constrained Gram-Schmidt direction achieves g_13.u = 5.7e-15, g_23.u = 2.6e-15 (machine-zero reactor/atmospheric leakage). 1D scan at t=2.47: theta_12 = 33.42 deg (PDG 33.41, 0.02% error), theta_13 = 8.63 deg (1.05%), theta_23 = 47.08 deg (3.93%). All three PMNS angles now within 4% of PDG."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_tensor_element_lift_jacobian"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1479"
+statement = """G2 stabilizer dimension: For any imaginary unit e_k in O (k=1..7), the stabilizer stab(e_k) = { D in Der(O) : D(e_k) = 0 } has dimension 8. The orthogonal complement in g2 has dimension 6 = dim(S^6 = G2/SU(3)). Verified for all 7 embeddings via thin-SVD kernel extraction with relative threshold."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_stabilizer_dimension"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1480"
+statement = """Complex structure on e_k^perp: Left-multiplication by e_k defines a complex structure J_k on the 6-dim perpendicular complement e_k^perp in Im(O), satisfying J_k^2 = -Id and J_k^T J_k = Id (orthogonal). Every stabilizer derivation commutes with J_k (consequence of Leibniz rule + D(e_k)=0). Verified for all k=1..7."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_stabilizer_commutes_with_j"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1481"
+statement = """u(3) embedding of stabilizer: Each stabilizer derivation is skew-adjoint on e_k^perp (R^T + R = 0) and commutes with J_k. Together these establish an embedding stab(e_k) -> u(3). Since dim(stab) = 8 < dim(u(3)) = 9, compact Lie algebra classification identifies stab(e_k) with su(3). Verified computationally for all k=1..7; constructive 3x3 identification deferred to PR2."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_restricted_action_is_skew_adjoint"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1482"
+statement = """Fano lines through fixed unit: Exactly 3 Fano lines pass through each imaginary unit e_k, decomposing the 6-dim perpendicular complement e_k^perp into 3 complex lines. The 6 endpoints of these 3 pairs exhaust all perpendicular basis indices. Verified for all k=1..7 by direct octonion multiplication."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_fano_pairs_cover_complement"
+last_verified = "2026-03-21"
