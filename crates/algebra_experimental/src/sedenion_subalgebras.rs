@@ -1005,7 +1005,8 @@ mod tests {
         assert!(both_eps_norm < 1e-12, "Epsilon maps ZD pairs to ZD pairs");
         println!("  [PASS] epsilon preserves zero-divisor structure");
 
-        // Verify Aut(S) = G_2 x S_3 relation:
+        // Verify S_3 family symmetry (Gresnigt/Gourlay/Brown framework):
+        // NOTE: Wilmot argues Aut(S) = G_2 (Schafer), not G_2 x S_3.
         // The S_3 generators psi (order 3) and epsilon (order 2) satisfy:
         //   epsilon * psi = psi^2 * epsilon
         // This is the defining relation of S_3 = <psi, epsilon | psi^3=1, epsilon^2=1, epsilon*psi=psi^2*epsilon>
