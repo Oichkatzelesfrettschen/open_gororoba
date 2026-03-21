@@ -485,9 +485,38 @@ invariant:
 | 0.8      | 28.54    | 8.63     | 47.07    | 3.33e-2   | 90.0     |
 | 1.0      | 28.54    | 8.63     | 47.07    | 2.99e-2   | 76.6     |
 
-**Prediction**: |J_CP| = 3.3e-2 at alpha_CP ~ 0.8 (PDG target: ~3e-2).
-The magnitude matches within 10%. The phase quadrant (90 deg vs PDG 195
-deg) depends on sign conventions in the rephasing.
+**Jarlskog magnitude**: |J_CP| = 3.3e-2 at alpha_CP ~ 0.8 (PDG target: ~3e-2).
+The magnitude matches within 10%.
+
+### Delta_CP from Rephasing-Invariant Quartet
+
+The physical CP phase is extracted from the rephasing-invariant quartet:
+
+    delta = arg(G[e,1] * G[mu,3] * conj(G[e,3]) * conj(G[mu,1]))
+          = phi[0,0] + phi[1,2] - phi[0,2] - phi[1,0]
+          = 161.57 + 45.00 - 45.00 - 45.00 = **116.57 deg**
+
+The Gram phase matrix has diagonal 161.57 deg (self-correlation) and
+off-diagonal 45.00 deg (cross-generation):
+
+    phi = [161.57,  45.00,  45.00]
+          [ 45.00, 161.57,  45.00]
+          [ 45.00,  45.00,  45.00]
+
+This is determined by the cross-sector Gram matrix with ZERO free
+parameters. All four quartets:
+
+| Quartet | arg (deg) | Note |
+|---------|-----------|------|
+| e1*mu3/e3*mu1 | +116.57 | Primary |
+| e2*mu3/e3*mu2 | -116.57 | Sign conjugate |
+| e1*mu2/e2*mu1 | -126.87 | Different pair |
+| e1*tau3/e3*tau1 | +116.57 | tau sector |
+
+PDG 2024: delta_CP = 195 deg (= -165 deg). The prediction +116.57 deg
+differs by ~79 deg; the quadrant depends on generation-to-flavor
+assignment convention. The value 116.57 = 180 - arctan(2) arises from
+the diagonal:off-diagonal Gram ratio -9:3 = -3:1.
 
 The rephasing formula:
     U_CP[i][j] = |U_real[i][j]| * exp(i * alpha_CP * arg(G_ij))
