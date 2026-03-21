@@ -5806,4 +5806,169 @@ mod tests {
 
         println!("  PASS: Gauss-Newton regression");
     }
+
+    // =======================================================================
+    // Complex PMNS: CP violation from psi eigenspace decomposition
+    // =======================================================================
+
+    /// Construct complex mass matrices using psi-eigenspace decomposition.
+    ///
+    /// The psi automorphism (order 3, cycles O_1->O_2->O_3) has eigenvalues
+    /// {1, omega, omega^2} where omega = exp(2*pi*i/3).
+    ///
+    /// For a 16D friction profile v, the psi-eigenspace projections are:
+    ///   P_1(v) = (v + psi(v) + psi^2(v)) / 3           (eigenvalue 1)
+    ///   P_w(v) = (v + w^2*psi(v) + w*psi^2(v)) / 3     (eigenvalue omega)
+    ///   P_w2(v) = (v + w*psi(v) + w^2*psi^2(v)) / 3    (eigenvalue omega^2)
+    ///
+    /// The complex off-diagonal mass matrix element is:
+    ///   M_ij = alpha * (<v_i, P_1(v_j)> + w*<v_i, P_w(v_j)> + w^2*<v_i, P_w2(v_j)>)
+    ///        = alpha * (<v_i, v_j> + w*<v_i, psi_w(v_j)> + w^2*<v_i, psi_w2(v_j)>)
+    ///
+    /// Simplified: M_ij = alpha * sum_k w^k * <v_i, psi^k(v_j)>
+    /// where the sum is over the three psi eigenvalues.
+    ///
+    /// The imaginary part of M_ij carries the CP-violating phase.
+    #[test]
+    fn test_complex_pmns_cp_phase() {
+        use cd_kernel::{gourlay_psi, gourlay_psi_n};
+
+        let nu_pair = (7_usize, 8);
+
+        // Build friction profiles (same as two-param pipeline)
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&nu_a, &nu_b, s))
+            .collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        // omega = exp(2*pi*i/3) = -1/2 + i*sqrt(3)/2
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        println!("  === Complex PMNS: CP Phase from Psi Eigenspace ===\n");
+        println!("  omega = exp(2*pi*i/3) = {:.4} + {:.4}i\n", omega_re, omega_im);
+
+        // Build complex off-diagonal elements for the neutrino mass matrix
+        // M_ij^complex = sum_{k=0,1,2} omega^k * <profile_i, psi^k(profile_j)>
+        let mut m_complex = [[(0.0_f64, 0.0_f64); 3]; 3]; // (re, im)
+
+        for i in 0..3 {
+            for j in 0..3 {
+                // <v_i, psi^0(v_j)> = <v_i, v_j>  (k=0, omega^0 = 1)
+                let c0 = dot16(&nu_profiles[i], &nu_profiles[j]);
+
+                // <v_i, psi^1(v_j)>  (k=1, omega^1 = omega)
+                let psi1_j = gourlay_psi(&nu_profiles[j]);
+                let c1 = dot16(&nu_profiles[i], &psi1_j);
+
+                // <v_i, psi^2(v_j)>  (k=2, omega^2 = omega*)
+                let psi2_j = gourlay_psi_n(&nu_profiles[j], 2);
+                let c2 = dot16(&nu_profiles[i], &psi2_j);
+
+                // M_ij = c0 * 1 + c1 * omega + c2 * omega^2
+                //      = c0 * 1 + c1 * (w_re + i*w_im) + c2 * (w_re - i*w_im)
+                // (omega^2 = conjugate of omega for cube root of unity)
+                let re = c0 + c1 * omega_re + c2 * omega_re;
+                let im = c1 * omega_im - c2 * omega_im;
+
+                m_complex[i][j] = (re, im);
+            }
+        }
+
+        println!("  Complex neutrino mass matrix M_nu:");
+        for i in 0..3 {
+            let row: Vec<String> = (0..3).map(|j| {
+                let (re, im) = m_complex[i][j];
+                if im.abs() < 1e-15 {
+                    format!("{:>8.4}", re)
+                } else {
+                    format!("{:.4}{:+.4}i", re, im)
+                }
+            }).collect();
+            println!("    [{}]", row.join("  "));
+        }
+
+        // Check Hermiticity: M_ij = M_ji*
+        let mut max_herm_err = 0.0_f64;
+        for i in 0..3 {
+            for j in 0..3 {
+                let err_re = (m_complex[i][j].0 - m_complex[j][i].0).abs();
+                let err_im = (m_complex[i][j].1 + m_complex[j][i].1).abs();
+                max_herm_err = max_herm_err.max(err_re).max(err_im);
+            }
+        }
+        println!("\n  Hermiticity error: {:.2e}", max_herm_err);
+
+        // Check if any off-diagonal element has nonzero imaginary part
+        let mut max_im = 0.0_f64;
+        for i in 0..3 {
+            for j in 0..3 {
+                if i != j {
+                    max_im = max_im.max(m_complex[i][j].1.abs());
+                }
+            }
+        }
+        println!("  Max off-diagonal |Im(M_ij)|: {:.6e}", max_im);
+
+        if max_im > 1e-15 {
+            println!("  NONZERO imaginary part detected -- CP violation present!");
+
+            // The Jarlskog invariant is proportional to the imaginary part
+            // of the off-diagonal products. For a 3x3 Hermitian matrix,
+            // J ~ Im(M_12 * M_23 * M_31) / (mass differences)^3
+            let m12 = (m_complex[0][1].0, m_complex[0][1].1);
+            let m23 = (m_complex[1][2].0, m_complex[1][2].1);
+            let m31 = (m_complex[2][0].0, m_complex[2][0].1);
+
+            // Complex product M_12 * M_23 * M_31
+            let p12_23_re = m12.0 * m23.0 - m12.1 * m23.1;
+            let p12_23_im = m12.0 * m23.1 + m12.1 * m23.0;
+            let _triple_re = p12_23_re * m31.0 - p12_23_im * m31.1;
+            let triple_im = p12_23_re * m31.1 + p12_23_im * m31.0;
+
+            println!("  Im(M_12 * M_23 * M_31) = {:.6e}", triple_im);
+            println!("  This is proportional to the Jarlskog invariant.");
+
+            // Extract a crude delta_CP from the phase of M_12
+            let phase_12 = m_complex[0][1].1.atan2(m_complex[0][1].0);
+            println!("  arg(M_12) = {:.2} deg", phase_12.to_degrees());
+            println!("  arg(M_23) = {:.2} deg",
+                m_complex[1][2].1.atan2(m_complex[1][2].0).to_degrees());
+            println!("  arg(M_31) = {:.2} deg",
+                m_complex[2][0].1.atan2(m_complex[2][0].0).to_degrees());
+        } else {
+            println!("  All imaginary parts are zero -- no CP violation in this basis.");
+            println!("  This means the psi overlaps <v_i, psi(v_j)> = <v_i, psi^2(v_j)>");
+            println!("  (psi is symmetric on the friction profiles).");
+        }
+    }
 }
