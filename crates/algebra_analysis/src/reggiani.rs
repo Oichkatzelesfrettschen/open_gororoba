@@ -785,4 +785,56 @@ mod tests {
         println!("\n  Wilmot calibration: 14-simplex on Pin(15) -> sedenion structure");
         println!("  Calibration dim = 14 = dim(G2) -- confirms G2 isometry origin");
     }
+
+    /// Koebisu (arXiv:2512.13002) Theorem 3.6: D_2 polynomial verification.
+    ///
+    /// D_2(v) = (||v_1||^2 - ||v_2||^2)^2 + 4*<v_1,v_2>^2
+    /// where v = v_1 + v_2*e_8, v_1 = v[0..8], v_2 = v[8..16].
+    ///
+    /// v != 0 is a zero-divisor iff D_2(v) = 0 iff ||v_1|| = ||v_2|| and <v_1,v_2> = 0.
+    #[test]
+    fn test_koebisu_d2_polynomial() {
+        let zds = standard_zero_divisors();
+
+        let d2 = |v: &[f64]| -> f64 {
+            let v1_sq: f64 = v[..8].iter().map(|x| x * x).sum();
+            let v2_sq: f64 = v[8..].iter().map(|x| x * x).sum();
+            let inner: f64 = v[..8].iter().zip(v[8..].iter()).map(|(a, b)| a * b).sum();
+            (v1_sq - v2_sq).powi(2) + 4.0 * inner.powi(2)
+        };
+
+        println!("--- KOEBISU D_2 POLYNOMIAL VERIFICATION ---");
+
+        // D_2 = 0 on all 84 standard ZDs
+        let max_d2: f64 = zds.iter().map(|zd| d2(&zd.vector)).fold(0.0, f64::max);
+        println!("  Max D_2 on 84 ZDs: {:.2e}", max_d2);
+        assert!(max_d2 < 1e-20, "D_2 must vanish on all ZDs");
+        println!("  [PASS] D_2 = 0 on all 84 standard ZDs");
+
+        // D_2 = 1 on single basis elements (non-ZD)
+        for i in 1..16_usize {
+            let mut v = vec![0.0; 16];
+            v[i] = 1.0;
+            assert!((d2(&v) - 1.0).abs() < 1e-12,
+                "D_2(e_{i}) should be 1");
+        }
+        println!("  [PASS] D_2 = 1 on all single basis elements");
+
+        // det(L_v) = 0 for first ZD (Theorem 3.6)
+        let la = left_multiplication_matrix(&zds[0].vector, 16);
+        let det = nalgebra::DMatrix::from_fn(16, 16, |i, j| la[(i, j)]).determinant();
+        println!("  det(L_v) for ZD_0: {:.2e}", det);
+        assert!(det.abs() < 1e-10, "det(L_v) must be 0 for ZD");
+        println!("  [PASS] det(L_v) = 0 for ZD");
+
+        // D_2 = 0 for e_1 + e_10 (a ZD pair): v_1[1]=1, v_2[2]=1, <v_1,v_2>=0
+        let mut cand = vec![0.0; 16]; cand[1] = 1.0; cand[10] = 1.0;
+        assert!(d2(&cand).abs() < 1e-20, "e_1+e_10 is a ZD");
+        println!("  [PASS] D_2(e_1 + e_10) = 0");
+
+        // D_2 > 0 for e_1 + e_9 (not a ZD): v_1[1]=1, v_2[1]=1, <v_1,v_2>=1
+        let mut non_zd = vec![0.0; 16]; non_zd[1] = 1.0; non_zd[9] = 1.0;
+        assert!((d2(&non_zd) - 4.0).abs() < 1e-12, "e_1+e_9 has D_2=4");
+        println!("  [PASS] D_2(e_1 + e_9) = 4 (non-ZD, inner product = 1)");
+    }
 }
