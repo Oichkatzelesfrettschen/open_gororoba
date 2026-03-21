@@ -318,3 +318,112 @@ pub fn is_zero_divisor_koebisu(v: &[f64], epsilon: f64) -> bool {
 pub fn koebisu_d1(v: &[f64]) -> f64 {
     v.iter().map(|x| x * x).sum()
 }
+
+/// Gourlay/Gresnigt epsilon automorphism (order 2).
+///
+///   epsilon(A + B*e_8) = A - B*e_8
+///
+/// Flips the sign of the upper octonion half.
+/// Reference: Gourlay & Gresnigt (arXiv:2407.01580), Eq 4.
+#[inline]
+pub fn gourlay_epsilon(v: &[f64; 16]) -> [f64; 16] {
+    let mut out = *v;
+    for x in out[8..].iter_mut() {
+        *x = -*x;
+    }
+    out
+}
+
+/// Gourlay/Gresnigt psi automorphism (order 3).
+///
+///   psi(A + B*e_8) = (1/4)[A + 3A* + sqrt(3)(B - B*)]
+///                   + (1/4)[B + 3B* - sqrt(3)(A - A*)] * e_8
+///
+/// where A* is the octonion conjugate of A (negate imaginary, keep real).
+///
+/// This cycles the three generations: psi^3 = Id.
+/// Reference: Gourlay & Gresnigt (arXiv:2407.01580), Eq 5.
+pub fn gourlay_psi(v: &[f64; 16]) -> [f64; 16] {
+    let sqrt3 = 3.0_f64.sqrt();
+
+    // Split into octonion halves
+    let a = &v[..8];   // lower octonion
+    let b = &v[8..];   // upper octonion
+
+    // Octonion conjugation: negate imaginary (indices 1..7), keep real (index 0)
+    let mut a_conj = [0.0_f64; 8];
+    a_conj[0] = a[0];
+    for i in 1..8 { a_conj[i] = -a[i]; }
+
+    let mut b_conj = [0.0_f64; 8];
+    b_conj[0] = b[0];
+    for i in 1..8 { b_conj[i] = -b[i]; }
+
+    let mut out = [0.0_f64; 16];
+
+    // Lower half: (1/4)[A + 3A* + sqrt(3)(B - B*)]
+    for i in 0..8 {
+        out[i] = 0.25 * (a[i] + 3.0 * a_conj[i] + sqrt3 * (b[i] - b_conj[i]));
+    }
+
+    // Upper half: (1/4)[B + 3B* - sqrt(3)(A - A*)]
+    for i in 0..8 {
+        out[8 + i] = 0.25 * (b[i] + 3.0 * b_conj[i] - sqrt3 * (a[i] - a_conj[i]));
+    }
+
+    out
+}
+
+/// Apply psi n times (for computing psi^2, psi^3, etc.).
+pub fn gourlay_psi_n(v: &[f64; 16], n: usize) -> [f64; 16] {
+    let mut result = *v;
+    for _ in 0..n {
+        result = gourlay_psi(&result);
+    }
+    result
+}
+
+/// Cross-generational signed friction between subalgebra O_i and O_j.
+///
+/// Measures how much topological friction exists BETWEEN generations
+/// by computing the associator [A_rot, X, Y] where X is in O_i and Y
+/// is in O_j.
+pub fn cross_generational_friction(
+    mode_a: usize, mode_b: usize,
+    subalgebra_i: &[usize], subalgebra_j: &[usize],
+) -> f64 {
+    use super::arith::cd_multiply;
+
+    let dim = 16_usize;
+    let theta = std::f64::consts::FRAC_PI_4;
+
+    // Construct the rotated braid element
+    let mut a_rot = vec![0.0; dim];
+    a_rot[mode_a] = theta.cos();
+    a_rot[mode_b] = theta.sin();
+
+    let mut total = 0.0_f64;
+
+    for &x_idx in subalgebra_i {
+        if x_idx == 0 || x_idx == mode_a || x_idx == mode_b { continue; }
+        for &y_idx in subalgebra_j {
+            if y_idx == 0 || y_idx == mode_a || y_idx == mode_b { continue; }
+            if x_idx == y_idx { continue; }
+
+            let mut ex = vec![0.0; dim]; ex[x_idx] = 1.0;
+            let mut ey = vec![0.0; dim]; ey[y_idx] = 1.0;
+
+            // [A_rot, X, Y] = (A_rot * X) * Y - A_rot * (X * Y)
+            let ax = cd_multiply(&a_rot, &ex);
+            let axy = cd_multiply(&ax, &ey);
+            let xy = cd_multiply(&ex, &ey);
+            let a_xy = cd_multiply(&a_rot, &xy);
+
+            // Signed sum of the associator
+            for k in 0..dim {
+                total += axy[k] - a_xy[k];
+            }
+        }
+    }
+    total
+}

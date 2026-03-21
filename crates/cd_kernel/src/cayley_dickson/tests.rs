@@ -455,3 +455,82 @@ fn test_koebisu_d2_random_consistency() {
     zd_scaled[10] = 3.0;
     assert!(is_zero_divisor_koebisu(&zd_scaled, 1e-10), "3*(e_1+e_10) must be a ZD");
 }
+
+#[test]
+fn test_gourlay_psi_order_3() {
+    // psi^3(e_i) = e_i for all basis elements
+    for i in 0..16_usize {
+        let mut v = [0.0_f64; 16];
+        v[i] = 1.0;
+        let psi3 = gourlay_psi_n(&v, 3);
+        let max_err: f64 = v.iter().zip(psi3.iter())
+            .map(|(a, b)| (a - b).abs())
+            .fold(0.0, f64::max);
+        assert!(max_err < 1e-12,
+            "psi^3(e_{}) != e_{}: max error {:.2e}", i, i, max_err);
+    }
+    println!("psi^3 = Id verified on all 16 basis elements");
+}
+
+#[test]
+fn test_gourlay_epsilon_order_2() {
+    // epsilon^2(e_i) = e_i for all basis elements
+    for i in 0..16_usize {
+        let mut v = [0.0_f64; 16];
+        v[i] = 1.0;
+        let eps2 = gourlay_epsilon(&gourlay_epsilon(&v));
+        let max_err: f64 = v.iter().zip(eps2.iter())
+            .map(|(a, b)| (a - b).abs())
+            .fold(0.0, f64::max);
+        assert!(max_err < 1e-12,
+            "epsilon^2(e_{}) != e_{}: max error {:.2e}", i, i, max_err);
+    }
+    println!("epsilon^2 = Id verified on all 16 basis elements");
+}
+
+#[test]
+fn test_gourlay_s3_relation() {
+    // epsilon * psi = psi^2 * epsilon for all basis elements
+    for i in 0..16_usize {
+        let mut v = [0.0_f64; 16];
+        v[i] = 1.0;
+
+        // LHS: epsilon(psi(v))
+        let psi_v = gourlay_psi(&v);
+        let eps_psi_v = gourlay_epsilon(&psi_v);
+
+        // RHS: psi^2(epsilon(v))
+        let eps_v = gourlay_epsilon(&v);
+        let psi2_eps_v = gourlay_psi_n(&eps_v, 2);
+
+        let max_err: f64 = eps_psi_v.iter().zip(psi2_eps_v.iter())
+            .map(|(a, b)| (a - b).abs())
+            .fold(0.0, f64::max);
+        assert!(max_err < 1e-12,
+            "epsilon*psi != psi^2*epsilon on e_{}: max error {:.2e}", i, max_err);
+    }
+    println!("S3 relation epsilon*psi = psi^2*epsilon verified on all 16 basis elements");
+}
+
+#[test]
+fn test_gourlay_psi_zd_preservation() {
+    // psi preserves ZD pairs: if (a, b) is a ZD pair, then (psi(a), psi(b)) is also a ZD pair
+    let mut a = [0.0_f64; 16]; a[1] = 1.0; a[10] = 1.0;
+    let mut b = [0.0_f64; 16]; b[5] = 1.0; b[14] = 1.0;
+
+    // Verify original is a ZD
+    let ab = cd_multiply(&a.to_vec(), &b.to_vec());
+    let ab_norm: f64 = ab.iter().map(|x| x * x).sum::<f64>().sqrt();
+    assert!(ab_norm < 1e-12, "Original pair not a ZD");
+
+    // Apply psi to both
+    let pa = gourlay_psi(&a);
+    let pb = gourlay_psi(&b);
+    let pab = cd_multiply(&pa.to_vec(), &pb.to_vec());
+    let pab_norm: f64 = pab.iter().map(|x| x * x).sum::<f64>().sqrt();
+
+    println!("psi(a)*psi(b) norm = {:.6e}", pab_norm);
+    assert!(pab_norm < 1e-10,
+        "psi must preserve ZD pairs: psi(a)*psi(b) norm = {:.2e}", pab_norm);
+    println!("psi preserves zero-divisor structure");
+}
