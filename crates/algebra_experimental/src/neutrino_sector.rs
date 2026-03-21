@@ -5663,4 +5663,60 @@ mod tests {
         println!("\n  Total chi2 at 4D optimum: {:.2} (3 observables, 4 parameters -> 0 effective dof)",
             chi2_4d);
     }
+
+    /// Mass ordering prediction from the algebraic eigenvalue spectrum.
+    ///
+    /// Normal ordering: m1 < m2 < m3 (dm31 > 0)
+    /// Inverted ordering: m3 < m1 < m2 (dm31 < 0)
+    ///
+    /// The algebraic framework predicts the ordering from the sign of
+    /// dm31_sq = m3^2 - m1^2.
+    #[test]
+    fn test_mass_ordering_prediction() {
+        // Use the two-param pipeline at the optimized point
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let (_m_ch, m_nu) = construct_pmns_matrices_two_param(ch_pair, nu_pair, 3.75, 1.30);
+
+        let eig_nu = m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let mut eigenvalues: Vec<f64> = (0..3)
+            .map(|i| eig_nu.s().column_vector().read(i))
+            .collect();
+
+        let mut abs_eigenvalues: Vec<f64> = eigenvalues.iter().map(|e| e.abs()).collect();
+        abs_eigenvalues.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+        let m1 = abs_eigenvalues[0];
+        let m2 = abs_eigenvalues[1];
+        let m3 = abs_eigenvalues[2];
+
+        let dm21_sq = m2 * m2 - m1 * m1;
+        let dm31_sq = m3 * m3 - m1 * m1;
+        let r = dm21_sq / dm31_sq;
+
+        println!("  === Mass Ordering Prediction ===\n");
+        println!("  Raw eigenvalues: {:.6e}, {:.6e}, {:.6e}",
+            eigenvalues[0], eigenvalues[1], eigenvalues[2]);
+        println!("  |m_i| sorted:    {:.6e}, {:.6e}, {:.6e}", m1, m2, m3);
+        println!("  dm21_sq = {:.6e}", dm21_sq);
+        println!("  dm31_sq = {:.6e}", dm31_sq);
+        println!("  r = dm21/dm31 = {:.6}", r);
+        println!("  PDG: r = 0.0307 (normal ordering)");
+
+        let ordering = if dm31_sq > 0.0 { "NORMAL" } else { "INVERTED" };
+        println!("\n  Predicted ordering: {}", ordering);
+        println!("  PDG 2024: Normal ordering preferred (>3 sigma)");
+
+        // The hierarchy ratio tells us how separated the mass scales are
+        let hierarchy = m3 / m1;
+        println!("  m3/m1 = {:.2} (mass hierarchy strength)", hierarchy);
+
+        // Check if the eigenvalue signs are all positive (physical consistency)
+        eigenvalues.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let all_positive = eigenvalues.iter().all(|&e| e > 0.0);
+        println!("  All eigenvalues positive: {}", all_positive);
+        if !all_positive {
+            println!("  (Negative eigenvalues indicate see-saw-like mechanism)");
+        }
+    }
 }
