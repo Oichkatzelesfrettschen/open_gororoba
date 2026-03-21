@@ -318,6 +318,58 @@ pub fn extract_pmns_angles(u: &faer::Mat<f64>) -> (f64, f64, f64) {
     (theta_12.to_degrees(), theta_13.to_degrees(), theta_23.to_degrees())
 }
 
+/// PDG 2024 central values and 1-sigma uncertainties (normal ordering).
+#[derive(Clone, Copy)]
+pub struct Pdg2024 {
+    pub theta_12_deg: f64,
+    pub theta_12_err: f64,
+    pub theta_13_deg: f64,
+    pub theta_13_err: f64,
+    pub theta_23_deg: f64,
+    pub theta_23_err: f64,
+    pub delta_cp_deg: f64,
+    pub delta_cp_err: f64,
+    pub dm21_sq_ev2: f64,
+    pub dm21_sq_err: f64,
+    pub dm31_sq_ev2: f64,
+    pub dm31_sq_err: f64,
+}
+
+impl Default for Pdg2024 {
+    fn default() -> Self {
+        Self {
+            theta_12_deg: 33.41, theta_12_err: 0.75,
+            theta_13_deg: 8.54,  theta_13_err: 0.12,
+            theta_23_deg: 49.0,  theta_23_err: 1.1,
+            delta_cp_deg: 195.0, delta_cp_err: 25.0,
+            dm21_sq_ev2: 7.53e-5, dm21_sq_err: 0.18e-5,
+            dm31_sq_ev2: 2.453e-3, dm31_sq_err: 0.033e-3,
+        }
+    }
+}
+
+/// Chi-squared for PMNS mixing angles against PDG 2024.
+///
+/// Uses 3 mixing angles (always available from real PMNS).
+pub fn chi_squared_pmns(result: &PmnsResult, pdg: &Pdg2024) -> f64 {
+    let (t12, t13, t23) = result.angles_deg;
+    let mut chi2 = 0.0;
+    chi2 += ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2);
+    chi2 += ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2);
+    chi2 += ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+    chi2
+}
+
+/// Individual pulls for each observable: (observable - PDG) / sigma.
+pub fn pmns_pulls(result: &PmnsResult, pdg: &Pdg2024) -> Vec<(&'static str, f64)> {
+    let (t12, t13, t23) = result.angles_deg;
+    vec![
+        ("theta_12", (t12 - pdg.theta_12_deg) / pdg.theta_12_err),
+        ("theta_13", (t13 - pdg.theta_13_deg) / pdg.theta_13_err),
+        ("theta_23", (t23 - pdg.theta_23_deg) / pdg.theta_23_err),
+    ]
+}
+
 /// Compute PMNS result for given selector pairs.
 pub fn compute_pmns(
     charged_pair: (usize, usize),
@@ -4581,7 +4633,11 @@ mod tests {
     ///   u_solar: max g_12.u subject to g_13.u = 0, g_23.u = 0
     ///   u_atmo:  max g_23.u subject to g_13.u = 0, u_solar.u = 0
     /// Then scans over (t1, t2) to push both angles toward PDG.
+    ///
+    /// Runtime: ~56s. Marked #[ignore] for CI.
+    /// Run: cargo test -- test_v6_2d_constrained --ignored --nocapture
     #[test]
+    #[ignore]
     fn test_v6_2d_constrained_scan() {
         let ch_pair = (11_usize, 12);
         let nu_pair = (7_usize, 8);
@@ -4759,7 +4815,11 @@ mod tests {
     /// Re-optimizes the psi coupling parameters jointly with V_6 corrections.
     /// The constrained directions are recomputed at each (alpha_ch, alpha_nu)
     /// for correctness.
+    ///
+    /// Runtime: ~160s (Rayon-parallel). Marked #[ignore] for CI.
+    /// Run: cargo test -- test_v6_joint_4d --ignored --nocapture
     #[test]
+    #[ignore]
     fn test_v6_joint_4d_optimization() {
         use rayon::prelude::*;
 
@@ -4892,9 +4952,9 @@ mod tests {
         println!("--- JOINT 4D OPTIMIZATION ---");
 
         // Coarse grid over (alpha_ch, alpha_nu)
-        // Previous optimum: (3.75, 1.30). Scan a neighborhood.
-        let grid: Vec<(f64, f64)> = (20..=60_i32).flat_map(|i|
-            (5..=25_i32).map(move |j| (i as f64 * 0.1, j as f64 * 0.1))
+        // Previous optimum: (3.50, 1.35). Focused neighborhood.
+        let grid: Vec<(f64, f64)> = (25..=50_i32).flat_map(|i|
+            (8..=20_i32).map(move |j| (i as f64 * 0.1, j as f64 * 0.1))
         ).collect();
 
         let results: Vec<(f64, f64, f64, (f64, f64, f64), f64, f64)> = grid.par_iter()
@@ -5230,5 +5290,84 @@ mod tests {
         println!("  The psi rephasing gives |sin(delta)| = {:.3}, PDG has |sin(195)| = {:.3}",
             (2.0 * std::f64::consts::PI / 3.0).sin(),
             195.0_f64.to_radians().sin().abs());
+    }
+
+    // =======================================================================
+    // Phase C: Chi-squared global fit
+    // =======================================================================
+
+    /// Chi-squared evaluation at the current best-fit point.
+    #[test]
+    fn test_chi2_best_fit_point() {
+        let pdg = Pdg2024::default();
+        let result = compute_pmns((11, 12), (7, 8));
+        let chi2 = chi_squared_pmns(&result, &pdg);
+        let pulls = pmns_pulls(&result, &pdg);
+
+        let (t12, t13, t23) = result.angles_deg;
+        println!("  === Chi-squared Global Fit (3 angles) ===\n");
+        println!("  {:>10} | {:>8} | {:>8} | {:>6} | {:>6}",
+            "Observable", "This", "PDG", "sigma", "Pull");
+        println!("  {:-<10}-+-{:-<8}-+-{:-<8}-+-{:-<6}-+-{:-<6}", "", "", "", "", "");
+        for &(name, pull) in &pulls {
+            let (val, pdg_val, err) = match name {
+                "theta_12" => (t12, pdg.theta_12_deg, pdg.theta_12_err),
+                "theta_13" => (t13, pdg.theta_13_deg, pdg.theta_13_err),
+                "theta_23" => (t23, pdg.theta_23_deg, pdg.theta_23_err),
+                _ => (0.0, 0.0, 1.0),
+            };
+            println!("  {:>10} | {:>8.2} | {:>8.2} | {:>6.2} | {:>+6.2}",
+                name, val, pdg_val, err, pull);
+        }
+        println!("\n  chi2 = {:.4} (3 dof)", chi2);
+        println!("  chi2/dof = {:.4}", chi2 / 3.0);
+        println!("  Note: Good fit if chi2/dof < 1. Tension if > 4.");
+    }
+
+    /// Selector pair scan: find the best (charged, neutrino) pair minimizing chi^2.
+    #[test]
+    fn test_chi2_selector_scan() {
+        use rayon::prelude::*;
+
+        let pdg = Pdg2024::default();
+
+        // All valid selector pairs: (a, b) with 1 <= a < b <= 15
+        let pairs: Vec<(usize, usize)> = (1..=15)
+            .flat_map(|a| ((a + 1)..=15).map(move |b| (a, b)))
+            .collect();
+
+        // Scan all (charged, neutrino) combinations
+        // Outer loop parallel via rayon, inner loop sequential.
+        let results: Vec<(f64, (usize, usize), (usize, usize), (f64, f64, f64))> = pairs
+            .par_iter()
+            .flat_map_iter(|&ch| {
+                pairs.iter().map(move |&nu| {
+                    let r = compute_pmns(ch, nu);
+                    let chi2 = chi_squared_pmns(&r, &pdg);
+                    (chi2, ch, nu, r.angles_deg)
+                })
+            })
+            .collect();
+
+        // Sort by chi2
+        let mut sorted = results;
+        sorted.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("  === Chi-squared Selector Pair Scan ===\n");
+        println!("  {:>6} | {:>10} | {:>10} | {:>8} {:>8} {:>8}",
+            "chi2", "charged", "neutrino", "t12", "t13", "t23");
+        println!("  {:-<6}-+-{:-<10}-+-{:-<10}-+-{:-<8}-{:-<8}-{:-<8}", "", "", "", "", "", "");
+
+        for entry in sorted.iter().take(10) {
+            let (chi2, ch, nu, (t12, t13, t23)) = entry;
+            println!("  {:>6.2} | {:>10?} | {:>10?} | {:>8.2} {:>8.2} {:>8.2}",
+                chi2, ch, nu, t12, t13, t23);
+        }
+
+        let best = &sorted[0];
+        println!("\n  Best fit: chi2 = {:.4}, charged = {:?}, neutrino = {:?}",
+            best.0, best.1, best.2);
+        println!("  chi2/dof = {:.4} (3 dof)", best.0 / 3.0);
+        println!("  Total pairs scanned: {}", sorted.len());
     }
 }
