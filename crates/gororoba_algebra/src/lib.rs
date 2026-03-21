@@ -90,6 +90,8 @@ pub use construction::hypercomplex::{
     ZeroSearchConfig,
 };
 
+pub use construction::real_part_projection;
+
 // Re-export external algebra crates for convenience
 #[cfg(feature = "core")]
 pub use padic as ext_padic;
