@@ -6367,4 +6367,194 @@ mod tests {
 
         println!("\n  PDG targets: J_CP ~ 3.0e-2 (leptons), delta_CP ~ -140 to -180 deg (NO best-fit)");
     }
+
+    /// Fine-grained alpha_CP scan for the best k-embedding.
+    ///
+    /// At alpha_CP = 1.0 the complex coupling overwhelms the real mass matrix,
+    /// distorting mixing angles. Scan alpha_CP in [0.001, 0.5] to find the
+    /// sweet spot where J_CP is nonzero but angles remain close to PDG.
+    #[test]
+    fn test_complex_pmns_alpha_scan() {
+        use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use nalgebra::SMatrix;
+        use num_complex::Complex;
+
+        type Mat3c = SMatrix<Complex<f64>, 3, 3>;
+
+        let pdg = Pdg2024::default();
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        // Build real mass matrices at the optimal point
+        let (m_ch_real, m_nu_real) = construct_pmns_matrices_two_param(
+            ch_pair, nu_pair, 3.75, 1.30
+        );
+
+        // Build friction profiles for the imaginary injection
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&nu_a, &nu_b, s))
+            .collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        // Use k=1 (strongest CP signal from earlier scan)
+        let k_fixed = 1_usize;
+        let _cs = complex_structure(k_fixed);
+
+        // Build the J_k-rotated profiles: J_k(psi(profile_j))
+        // J_k acts on the octonion part (indices 1-7) via left-multiplication by e_k
+        let apply_jk = |profile: &[f64; 16]| -> [f64; 16] {
+            use gororoba_algebra::construction::octonion::Octonion;
+            let ek = Octonion::basis(k_fixed);
+            let mut result = [0.0_f64; 16];
+            // J_k acts on the lower octonion block (indices 0-7)
+            let mut oct_part = [0.0_f64; 8];
+            for idx in 0..8 {
+                oct_part[idx] = profile[idx];
+            }
+            let oct = Octonion::new(oct_part);
+            let jk_oct = ek.multiply(&oct);
+            for idx in 0..8 {
+                result[idx] = jk_oct.components[idx];
+            }
+            // Upper block: J_k acts similarly via e_k multiplication on the upper octonion
+            let mut upper = [0.0_f64; 8];
+            for idx in 0..8 {
+                upper[idx] = profile[idx + 8];
+            }
+            let upper_oct = Octonion::new(upper);
+            let jk_upper = ek.multiply(&upper_oct);
+            for idx in 0..8 {
+                result[idx + 8] = jk_upper.components[idx];
+            }
+            result
+        };
+
+        println!("  === Alpha_CP Fine Scan (k={}) ===\n", k_fixed);
+        println!("  {:>8} | {:>8} {:>8} {:>8} | {:>10} | {:>8} | {:>6}",
+            "alpha_CP", "t12", "t13", "t23", "J_CP", "delta", "chi2");
+        println!("  {:-<8}-+-{:-<8}-{:-<8}-{:-<8}-+-{:-<10}-+-{:-<8}-+-{:-<6}",
+            "", "", "", "", "", "", "");
+
+        let mut best_chi2 = f64::MAX;
+        let mut best_alpha = 0.0_f64;
+        let mut best_result = (0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64);
+
+        for alpha_step in 0..=50 {
+            let alpha_cp = alpha_step as f64 * 0.01; // 0.00 to 0.50
+
+            // Build complex neutrino mass matrix:
+            // M_nu_complex = M_nu_real + i * alpha_cp * Im_injection
+            let mut m_nu_complex = Mat3c::zeros();
+            for i in 0..3 {
+                for j in 0..3 {
+                    m_nu_complex[(i, j)] = Complex::new(m_nu_real.read(i, j), 0.0);
+                }
+            }
+
+            // Add imaginary off-diagonal: i * alpha_cp * <profile_i, J_k(psi(profile_j))>
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i == j { continue; }
+                    let psi_j = gourlay_psi(&nu_profiles[j]);
+                    let jk_psi_j = apply_jk(&psi_j);
+                    let coupling = dot16(&nu_profiles[i], &jk_psi_j);
+                    m_nu_complex[(i, j)] += Complex::new(0.0, alpha_cp * coupling);
+                }
+            }
+
+            // Hermitianize: M = (M + M^dagger) / 2
+            let m_herm = (m_nu_complex + m_nu_complex.adjoint()) * Complex::new(0.5, 0.0);
+
+            // Eigendecompose
+            let eigen = nalgebra::SymmetricEigen::new(m_herm);
+
+            // Charged lepton eigenvectors (real, from faer)
+            let eig_ch = m_ch_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+
+            // Build PMNS: U = U_ch^T * U_nu (U_ch is real, U_nu is complex)
+            let u_nu = &eigen.eigenvectors;
+            let mut u_pmns = Mat3c::zeros();
+            for i in 0..3 {
+                for j in 0..3 {
+                    let mut sum = Complex::new(0.0, 0.0);
+                    for m in 0..3 {
+                        let u_ch_mi = eig_ch.u().read(m, i);
+                        sum += Complex::new(u_ch_mi, 0.0) * u_nu[(m, j)];
+                    }
+                    u_pmns[(i, j)] = sum;
+                }
+            }
+
+            // Extract angles from |U_ij|
+            let u_e3 = u_pmns[(0, 2)].norm();
+            let theta_13 = u_e3.min(1.0).asin().to_degrees();
+            let cos_13 = theta_13.to_radians().cos();
+            let theta_12 = if cos_13 > 1e-15 {
+                (u_pmns[(0, 1)].norm() / cos_13).min(1.0).asin().to_degrees()
+            } else { 0.0 };
+            let theta_23 = if cos_13 > 1e-15 {
+                (u_pmns[(1, 2)].norm() / cos_13).min(1.0).asin().to_degrees()
+            } else { 0.0 };
+
+            // Jarlskog: J = Im(U_e2 * U_mu3 * conj(U_e3) * conj(U_mu2))
+            let j_cp = (u_pmns[(0, 1)] * u_pmns[(1, 2)]
+                      * u_pmns[(0, 2)].conj() * u_pmns[(1, 1)].conj()).im;
+
+            let delta = extract_cp_phase((theta_12, theta_13, theta_23), j_cp);
+
+            // Chi^2 over 3 angles only
+            let chi2_angles = ((theta_12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                            + ((theta_13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                            + ((theta_23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+
+            if alpha_step % 5 == 0 || chi2_angles < best_chi2 {
+                println!("  {:>8.3} | {:>8.2} {:>8.2} {:>8.2} | {:>10.4e} | {:>8.1} | {:>6.1}",
+                    alpha_cp, theta_12, theta_13, theta_23, j_cp, delta, chi2_angles);
+            }
+
+            if chi2_angles < best_chi2 {
+                best_chi2 = chi2_angles;
+                best_alpha = alpha_cp;
+                best_result = (theta_12, theta_13, theta_23, j_cp, delta);
+            }
+        }
+
+        println!("\n  === BEST FIT ===");
+        println!("  alpha_CP = {:.3}", best_alpha);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2})", best_result.0, pdg.theta_12_deg);
+        println!("  theta_13 = {:.2} deg (PDG: {:.2})", best_result.1, pdg.theta_13_deg);
+        println!("  theta_23 = {:.2} deg (PDG: {:.2})", best_result.2, pdg.theta_23_deg);
+        println!("  J_CP = {:.4e} (PDG: ~3e-2)", best_result.3);
+        println!("  delta_CP = {:.1} deg (PDG: ~195)", best_result.4);
+        println!("  chi2 = {:.2} (3 angles)", best_chi2);
+    }
 }
