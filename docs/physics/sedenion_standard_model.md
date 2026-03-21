@@ -19,11 +19,25 @@ the sedenion subalgebras and extracts:
 - Electroweak mixing angle sin^2(theta_W) within 14% (C-1458)
 - Discrete 2*sqrt(2) quantization of the friction spectrum (C-1459)
 
-**Scope distinction (peer-reviewed)**: The mathematical backbone -- Z(S)
-isometric to G_2 (Reggiani 2024), ZD(S) isometric to V_2(R^7) (Reggiani
-2024), and V_2(R^8) frame decomposition (Koebisu 2025, complementary) --
-is established in the literature.  The selector-pair choices and numerical
-fits are project-specific results, not literature claims.
+**Scope distinction (peer-reviewed)**:
+
+**(A) Literature-backed**: Interleaved sedenion subalgebras and the psi
+automorphism exist and are explicit (Gresnigt/Gourlay 2019/2023). Overlap
+and linear dependence across generations may underlie CKM/PMNS mixing
+(speculative in the papers). Z(S) isometric to G_2 (Reggiani 2024), ZD(S)
+isometric to V_2(R^7) (Reggiani 2024), V_2(R^8) frame decomposition
+(Koebisu 2025). Aut(S) = G_2 (Schafer, confirmed by Wilmot 2025); the S_3
+family symmetry is specific to the Gresnigt/Gourlay/Brown framework.
+
+**(B) Project-specific computational results**: CKM/PMNS angles from
+friction/psi coupling, V_6 SVD geometry, TensorElementLift solar correction
+(C-1478). For the current selector/friction observable class, the
+interleaved scheme is the strongest CKM/PMNS phenomenology platform.
+
+**(C) Heuristic / provisional**: The specific 7-assessor block assignment in
+TensorElementLift (moderate block alignment 44%, psi orbits cross blocks).
+The (12/12/6) assessor partition (falsified, C-1474). Block assignment is
+the minimal successful project lift, not yet derived from the algebra.
 
 ## II. The Flavor Hierarchy Mechanism
 
@@ -156,6 +170,49 @@ The charged lepton selector (e_11, e_12) is identical to the CKM up-type
 selector -- consistent with the SU(5) prediction that charged leptons
 partner with up-type quarks (C-1462).
 
+### V_6 Solar Angle Correction Pipeline (C-1474, C-1475)
+
+The 6D orthogonal complement V_6 of the B/C column space within the Type X
+incidence matrix (rank=6, all singular values = 3.420) provides a
+basis-invariant candidate subspace for targeted solar angle correction. The pipeline:
+
+1. `construct_casimir_baseline` -- neutral Casimir matrices (no quark leakage)
+2. `construct_pmns_matrices_two_param` -- factored two-parameter psi coupling
+3. `extract_v6_basis` -- incidence algebra SVD -> 6x42 basis
+4. `AssessorToFlavorMap` -- explicit (12/12/6) assessor-to-generation partition
+5. `apply_v6_perturbation` -- composable, beta=0 recovery exact
+
+The Jacobian is epsilon-stable (<0.1 deg angular deviation across eps=0.01/0.05/0.1).
+However, the gradients g_12, g_13, g_23 are nearly collinear in V_6 space under
+the default (12/12/6) partition. No unit direction achieves positive solar
+selectivity S(u) = |g_12.u| - 10|g_13.u| - 3|g_23.u|. The 1D scan confirms:
+theta_12 shifts < 0.04 deg over t in [-10, 10].
+
+This is a **structural null result** for the (12/12/6) partition (first-pass
+projection heuristic): cos(g_12, g_13) = -1.0 (perfectly anti-collinear).
+
+The FlavorLift trait makes the mapping pluggable. Three implementations tested:
+- Partition(12/12/6): null (collinear gradients, S(u) = -0.04)
+- DirectOffDiagonal: decorrelated (cos = 0.47), theta_12 moves 14-46 deg
+  but g_13/g_12 = 1.7x prevents solar isolation within theta_13 constraint
+- PsiEquivariant: zero gradients (orbit weights cancel; needs refinement)
+
+Rank-2 lock (C-1476): under FlavorLifts that collapse 42D to 3 generation
+factors, g_12 lies 100% in span{g_13, g_23} (residual 4.57e-5 to 5.18e-4).
+This is a no-go for the 42D->3D lift family, not all V_6 couplings.
+
+**Solar correction achieved (C-1478)**: TensorElementLift (42D->6D, 6 blocks
+of 7 assessors mapping to all 6 independent Herm_3 elements) breaks the lock.
+Residual fraction = 75.7%. Constrained Gram-Schmidt direction at t=2.47:
+
+| Parameter  | This work | PDG 2025 | Error |
+|------------|-----------|----------|-------|
+| theta_12   | 33.42 deg | 33.41    | 0.02% |
+| theta_13   | 8.63 deg  | 8.54     | 1.05% |
+| theta_23   | 47.08 deg | 49.0     | 3.93% |
+
+Three parameters: alpha_ch=3.75, alpha_nu=1.30, t_V6=2.47 (constrained direction).
+
 ### Electroweak Mixing Angle (C-1458)
 
 The associator flux ratio SU(2)/SU(3) = 0.529 gives:
@@ -282,3 +339,8 @@ C-1470: Wilmot 252 = 8*28 + 7*4 decomposition
 C-1471: Wilmot Aut(S) = G_2 (Schafer confirmed)
 C-1472: Wilmot Fano volume: 35 quaternions, 15 planes
 C-1473: Dou ZD kernel: 4-dim ker(e_1-e_10)
+C-1474: V_6 Jacobian: epsilon-stable gradients, collinear in assessor space
+C-1475: V_6 solar pipeline: compositional, beta=0 exact, partition null result
+C-1476: V_6 constrained scan: g_12 100% in span{g_13,g_23}, linear injection insufficient
+C-1477: V_6 alpha-modulation: 10x gradient boost but rank-2 lock persists (42D->3D collapse)
+C-1478: V_6 TensorElementLift: rank broken (75.7%), theta_12 = 33.42 deg (0.02% PDG)

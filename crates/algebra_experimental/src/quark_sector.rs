@@ -66,6 +66,94 @@ pub fn get_subalgebras(scheme: SubalgebraScheme) -> [Vec<usize>; 3] {
     }
 }
 
+/// Raw Casimir projection matrices, before any sector-specific assembly.
+///
+/// Holds the 3x3 Gram matrices for SU(3) and SU(2) Casimir operators
+/// projected onto the three octonionic subalgebras:
+///   c_su3[i,j] = Re(C_SU3_i^* C_SU3_j)
+///   c_su2[i,j] = Re(C_SU2_i^* C_SU2_j)
+///
+/// Sector-specific conventions (e.g., M_up = c_su3 + c_su2 for quarks)
+/// belong in the assembler, not here.
+pub struct CasimirBaseline {
+    pub c_su3: Mat<f64>,
+    pub c_su2: Mat<f64>,
+}
+
+/// Compute raw Casimir projection matrices for SU(3) and SU(2).
+///
+/// Pure function: extracts the SU(5) generators, computes the quadratic
+/// Casimir for SU(3) and SU(2), projects each onto the three octonionic
+/// subalgebras of the given scheme, and returns the two 3x3 Gram matrices.
+///
+/// The caller decides how to combine them (quark: +/-, lepton: any convention).
+pub fn construct_casimir_projections(
+    basis: &[Sedenion; 16],
+    complex_structure: &Sedenion,
+    scheme: SubalgebraScheme,
+) -> CasimirBaseline {
+    let su5_gens = construct_su5_generators_algebraic(basis, complex_structure);
+    let subalgebras = get_subalgebras(scheme);
+
+    // SU(3) Casimir: C_2 = sum_{a=0}^{7} T_a * T_a
+    let su3_gens: Vec<QuantumState> = su5_gens
+        .iter()
+        .enumerate()
+        .filter(|(i, g)| classify_generator(*i) == GeneratorType::SU3 && **g != QuantumState::TopologicalNull)
+        .map(|(_, g)| *g)
+        .collect();
+
+    let casimir_su3 = su3_gens
+        .iter()
+        .fold(QuantumState::Observable(Sedenion::default()), |acc, g| acc + *g * *g);
+
+    let casimir_s = match casimir_su3 {
+        QuantumState::Observable(s) => s,
+        QuantumState::TopologicalNull => Sedenion::default(),
+    };
+
+    // SU(2) Casimir
+    let su2_gens: Vec<QuantumState> = su5_gens
+        .iter()
+        .enumerate()
+        .filter(|(i, g)| classify_generator(*i) == GeneratorType::SU2 && **g != QuantumState::TopologicalNull)
+        .map(|(_, g)| *g)
+        .collect();
+
+    let casimir_su2 = su2_gens
+        .iter()
+        .fold(QuantumState::Observable(Sedenion::default()), |acc, g| acc + *g * *g);
+
+    let casimir_su2_s = match casimir_su2 {
+        QuantumState::Observable(s) => s,
+        QuantumState::TopologicalNull => Sedenion::default(),
+    };
+
+    // Project Casimir onto each subalgebra
+    let proj_su3: Vec<Sedenion> = subalgebras
+        .iter()
+        .map(|sub| casimir_s.project_to_subalgebra(sub))
+        .collect();
+
+    let proj_su2: Vec<Sedenion> = subalgebras
+        .iter()
+        .map(|sub| casimir_su2_s.project_to_subalgebra(sub))
+        .collect();
+
+    // Build 3x3 Gram matrices (raw projections, no +/- combination)
+    let mut c_su3 = Mat::<f64>::zeros(3, 3);
+    let mut c_su2 = Mat::<f64>::zeros(3, 3);
+
+    for i in 0..3 {
+        for j in 0..3 {
+            c_su3.write(i, j, (proj_su3[i].conj() * proj_su3[j]).to_slice()[0]);
+            c_su2.write(i, j, (proj_su2[i].conj() * proj_su2[j]).to_slice()[0]);
+        }
+    }
+
+    CasimirBaseline { c_su3, c_su2 }
+}
+
 /// Construct quark ladder operators as color triplets.
 ///
 /// Uses the SU(3) generators (axes 1-8 from classify_generator) to build
@@ -177,67 +265,24 @@ pub fn construct_quark_mass_matrices(
     complex_structure: &Sedenion,
     scheme: SubalgebraScheme,
 ) -> (Mat<f64>, Mat<f64>) {
-    let su5_gens = construct_su5_generators_algebraic(basis, complex_structure);
-    let subalgebras = get_subalgebras(scheme);
+    let cb = construct_casimir_projections(basis, complex_structure, scheme);
+    assemble_quark_matrices(&cb)
+}
 
-    // SU(3) Casimir: C_2 = sum_{a=0}^{7} T_a * T_a
-    let su3_gens: Vec<QuantumState> = su5_gens
-        .iter()
-        .enumerate()
-        .filter(|(i, g)| classify_generator(*i) == GeneratorType::SU3 && **g != QuantumState::TopologicalNull)
-        .map(|(_, g)| *g)
-        .collect();
-
-    let casimir_su3 = su3_gens
-        .iter()
-        .fold(QuantumState::Observable(Sedenion::default()), |acc, g| acc + *g * *g);
-
-    let casimir_s = match casimir_su3 {
-        QuantumState::Observable(s) => s,
-        QuantumState::TopologicalNull => Sedenion::default(),
-    };
-
-    // SU(2) Casimir for up/down separation
-    let su2_gens: Vec<QuantumState> = su5_gens
-        .iter()
-        .enumerate()
-        .filter(|(i, g)| classify_generator(*i) == GeneratorType::SU2 && **g != QuantumState::TopologicalNull)
-        .map(|(_, g)| *g)
-        .collect();
-
-    let casimir_su2 = su2_gens
-        .iter()
-        .fold(QuantumState::Observable(Sedenion::default()), |acc, g| acc + *g * *g);
-
-    let casimir_su2_s = match casimir_su2 {
-        QuantumState::Observable(s) => s,
-        QuantumState::TopologicalNull => Sedenion::default(),
-    };
-
-    // Project Casimir onto each subalgebra
-    let proj_su3: Vec<Sedenion> = subalgebras
-        .iter()
-        .map(|sub| casimir_s.project_to_subalgebra(sub))
-        .collect();
-
-    let proj_su2: Vec<Sedenion> = subalgebras
-        .iter()
-        .map(|sub| casimir_su2_s.project_to_subalgebra(sub))
-        .collect();
-
-    // Build 3x3 mass matrices
-    // M_up_{ij} = Re(proj_su3[i].conj() * proj_su3[j] + proj_su2[i].conj() * proj_su2[j])
-    // M_down_{ij} = Re(proj_su3[i].conj() * proj_su3[j] - proj_su2[i].conj() * proj_su2[j])
+/// Assemble quark mass matrices from raw Casimir projections.
+///
+/// Quark convention: M_up = C_SU3 + C_SU2, M_down = C_SU3 - C_SU2.
+/// This is where the sector-specific sign choice lives.
+pub fn assemble_quark_matrices(cb: &CasimirBaseline) -> (Mat<f64>, Mat<f64>) {
     let mut m_up = Mat::<f64>::zeros(3, 3);
     let mut m_down = Mat::<f64>::zeros(3, 3);
 
     for i in 0..3 {
         for j in 0..3 {
-            let su3_term = (proj_su3[i].conj() * proj_su3[j]).to_slice()[0];
-            let su2_term = (proj_su2[i].conj() * proj_su2[j]).to_slice()[0];
-
-            m_up.write(i, j, su3_term + su2_term);
-            m_down.write(i, j, su3_term - su2_term);
+            let su3 = cb.c_su3.read(i, j);
+            let su2 = cb.c_su2.read(i, j);
+            m_up.write(i, j, su3 + su2);
+            m_down.write(i, j, su3 - su2);
         }
     }
 
@@ -1302,5 +1347,76 @@ mod tests {
             println!("  #{}: up=(e_{},e_{}), down=(e_{},e_{}) | V_us={:.4}, V_ub={:.6}, V_cb={:.4} | score={:.4}",
                 rank + 1, up.0, up.1, down.0, down.1, v_us, v_ub, v_cb, score);
         }
+    }
+
+    /// Regression test: verify CasimirBaseline refactor preserves quark results.
+    ///
+    /// Pins CKM angles and mass eigenvalues to pre-refactor values. If this test
+    /// fails after a Casimir refactor, the internal restructuring changed behavior.
+    #[test]
+    fn test_ckm_casimir_refactor_regression() {
+        let (basis, cs) = standard_basis_and_cs();
+        let scheme = SubalgebraScheme::InterleavedStride;
+
+        // Verify CasimirBaseline decomposition: c_su3 + c_su2 = M_up, c_su3 - c_su2 = M_down
+        let cb = construct_casimir_projections(&basis, &cs, scheme);
+        let (m_up_via_wrapper, m_down_via_wrapper) = construct_quark_mass_matrices(&basis, &cs, scheme);
+        let (m_up_via_assemble, m_down_via_assemble) = assemble_quark_matrices(&cb);
+
+        for i in 0..3 {
+            for j in 0..3 {
+                assert!(
+                    (m_up_via_wrapper.read(i, j) - m_up_via_assemble.read(i, j)).abs() < 1e-14,
+                    "M_up mismatch at ({},{})", i, j
+                );
+                assert!(
+                    (m_down_via_wrapper.read(i, j) - m_down_via_assemble.read(i, j)).abs() < 1e-14,
+                    "M_down mismatch at ({},{})", i, j
+                );
+            }
+        }
+
+        // Verify the raw components reconstruct correctly
+        for i in 0..3 {
+            for j in 0..3 {
+                let reconstructed_up = cb.c_su3.read(i, j) + cb.c_su2.read(i, j);
+                let reconstructed_down = cb.c_su3.read(i, j) - cb.c_su2.read(i, j);
+                assert!(
+                    (reconstructed_up - m_up_via_wrapper.read(i, j)).abs() < 1e-14,
+                    "c_su3 + c_su2 != M_up at ({},{})", i, j
+                );
+                assert!(
+                    (reconstructed_down - m_down_via_wrapper.read(i, j)).abs() < 1e-14,
+                    "c_su3 - c_su2 != M_down at ({},{})", i, j
+                );
+            }
+        }
+
+        // Pin CKM angles from pre-refactor run
+        let ckm = derive_ckm_matrix(&basis, &cs, scheme);
+        assert!(
+            (ckm.angles_deg.0 - 3.29).abs() < 0.01,
+            "CKM theta_12 regression: got {:.4}", ckm.angles_deg.0
+        );
+        assert!(
+            ckm.angles_deg.1.abs() < 0.01,
+            "CKM theta_13 regression: got {:.4}", ckm.angles_deg.1
+        );
+        assert!(
+            ckm.angles_deg.2.abs() < 0.01,
+            "CKM theta_23 regression: got {:.4}", ckm.angles_deg.2
+        );
+
+        // Pin mass eigenvalues (up sector dominant: 13.6875)
+        assert!(
+            (ckm.up_masses[2] - 13.6875).abs() < 0.001,
+            "up mass[2] regression: got {:.6}", ckm.up_masses[2]
+        );
+        assert!(
+            (ckm.down_masses[2] - 10.3125).abs() < 0.001,
+            "down mass[2] regression: got {:.6}", ckm.down_masses[2]
+        );
+
+        println!("PASS: CKM Casimir refactor regression");
     }
 }
