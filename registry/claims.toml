@@ -10083,3 +10083,10 @@ statement = """Real-part projection: The e_0 component of a CD algebra element i
 status = "Verified"
 where_stated = "crates/gororoba_algebra/src/construction/real_part_projection.rs::test_scalar_fraction_exact_on_basis"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1489"
+statement = """V_6 representation analysis: (1) SU(3) stabilizer acts nontrivially on V_6 (all 8 generators have identical Frobenius norm 0.436). V_6 is REDUCIBLE under su(3) (Casimir not proportional to I, diagonal average -0.254, off-diagonal max 0.063). (2) psi (S_3 generator) acts as SCALAR 0.25*I_6 on V_6 -- V_6 is a psi-eigenspace. Since Sym_3(R) has psi eigenvalues {1, omega, omega^2}, no S_3-equivariant intertwiner exists. TensorElementLift cannot be derived as an S_3-equivariant map; it is a project-specific construction."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_intertwiner_analysis, test_s3_intertwiner_analysis"
+last_verified = "2026-03-21"
