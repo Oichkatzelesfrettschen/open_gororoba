@@ -201,14 +201,16 @@ check: ansi-check terminology-gate verify-no-reports-writes
 
 # Governance verifier targets
 registry-verify-markdown-governance:
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin governance-verify -- markdown-removal-policy
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify markdown-removal-policy
 
 governance-gate-readonly:
-	@# Build both gate binaries once, then run directly from cache.
-	@# This avoids 7x cargo freshness-check overhead (~4.5s each).
-	$(CARGO_ENV) cargo build -p gororoba_cli_data --bin markdown-registry --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/debug/markdown-registry verify-gate-all
-	$(REPO_CARGO_TARGET_DIR)/debug/governance-verify gate-all
+	@# Single release build for all gate binaries, then run directly.
+	@# Release mode: crossrefs 31x faster (14s -> 0.45s) due to TOML parsing.
+	@# Incremental no-op build: ~1.3s. Total gate: ~3.3s when binaries are cached.
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin markdown-registry --bin governance-verify --bin integrity-resolution
+	$(REPO_CARGO_TARGET_DIR)/release/markdown-registry verify-gate-all
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify gate-all
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
@@ -991,25 +993,31 @@ registry-wave5-batch2: registry-strict-toml-batch2
 	@echo "DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
 
 registry-strict-toml-batch3-build:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --repo-root .
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin integrity-resolution
+	$(REPO_CARGO_TARGET_DIR)/release/integrity-resolution --repo-root .
 
 registry-verify-schema-signatures:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- schema-signatures
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify schema-signatures
 
 registry-verify-crossrefs:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify crossrefs
 
 registry-verify-dataset-label-aliases:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify dataset-label-aliases
 
 registry-verify-external-source-operational-contracts:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify external-source-operational-contracts
 
 registry-verify-strict-toml-batch3:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin integrity-resolution -- --verify --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- external-source-operational-contracts
+	$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin integrity-resolution --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/release/integrity-resolution --verify --repo-root .
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify crossrefs
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify dataset-label-aliases
+	$(REPO_CARGO_TARGET_DIR)/release/governance-verify external-source-operational-contracts
 
 registry-strict-toml-batch3: registry-verify-strict-toml-batch3
 	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
