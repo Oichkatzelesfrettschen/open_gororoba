@@ -101,6 +101,11 @@ selectively than the unsigned norm:
 The signed friction resolves more structure because sign cancellations
 restore some S_3 symmetries that the norm discards.
 
+The initial 6-pair scan (C(4,2)) over Majorana modes found 2+1 splitting
+(e.g., pair (e_1,e_4): O_1=5.66, O_2=O_3=8.49). The full 105-pair scan
+confirmed: all 54 breaking pairs exhibit 2+1 pattern; zero achieve 1+1+1
+from unsigned norm alone. Signed friction unlocks the remaining splits.
+
 ## III. The Fermion Mass Spectra
 
 ### Charged Leptons
@@ -110,6 +115,11 @@ Selectors: Sel(e_1, e_4) and Sel(e_2, e_4).  Assignment: e=O_2, mu=O_3, tau=O_1.
     F_g = w_1 * Sel_1(g) + w_2 * Sel_2(g)
     m_mu / m_e = exp(F_mu - F_e) = 207.0  (PDG: 206.8, exact to 5e-16)
     m_tau / m_e = exp(F_tau - F_e) = 3477.0  (PDG: 3477.2, exact to 3e-16)
+
+Progression: single-pair exp(|f|) gave 1:17:4843 (tau overshoot 39%).
+Composite operator (e_1,e_4)+(e_9,e_12) gave ratio 5/3 = 1.667 (target
+1.529, 2300x improvement over single-pair 255000% error). Final weighted
+fit (w_1=-0.9488, w_2=-0.9609) nails mu and tau to machine precision.
 
 ### 3-Blade Zero-Divisor Hierarchy (C-1459)
 
@@ -173,8 +183,16 @@ Two independent parameters: alpha_ch = 3.75, alpha_nu = 1.30.
 
 The psi overlap/norm ratio is -0.5 = cos(2*pi/3) for all generations,
 confirming the S3 120-degree rotation directly drives atmospheric mixing.
-The diagonal-only ceiling at 32.3 deg was broken by the off-diagonal
-coupling, progressing: 32.3 -> 37.6 -> 39.0 -> 47.1 degrees.
+
+**theta_23 progression** (the ceiling-breaking arc):
+
+| Step | theta_23 | Mechanism |
+|------|----------|-----------|
+| Diagonal-only baseline | 32.3 deg | Ceiling identified: no off-diagonal coupling |
+| First psi injection | 37.6 deg | Ceiling broken: psi couples M_ij for i != j |
+| Full-profile psi overlap | 39.0 deg | Score 0.044 (3x improvement) |
+| Two-param (alpha_ch, alpha_nu) | 47.1 deg | Near-maximal: 3.9% PDG error (C-1464) |
+| Gauss-Newton 4-param | 48.99 deg | 0.02% PDG error (C-1492) |
 
 The charged lepton selector (e_11, e_12) is identical to the CKM up-type
 selector -- consistent with the SU(5) prediction that charged leptons
@@ -280,6 +298,11 @@ Stiefel manifold V_2(R^8).
 All 84 standard zero-divisors satisfy both conditions (verified in
 reggiani.rs::test_koebisu_holonomy_v2r8_decomposition).
 
+The Koebisu D_2 polynomial provides an O(N) zero-divisor detector:
+D_2(v) = |a|^2 * |b|^2 - <a,b>^2 - |a*b|^2 = 0 iff v is a zero divisor.
+Related to the left-multiplication determinant: D_1(v)^4 * D_2(v)^2 = det(L_v).
+Implemented in cd_kernel::is_zero_divisor_koebisu().
+
 Note: Koebisu's V_2(R^8) and Reggiani's V_2(R^7) are complementary results
 using different mathematical frameworks.  Koebisu uses the full octonion
 pair including the real component; Reggiani restricts to the imaginary sector.
@@ -334,6 +357,14 @@ ZDs" is **falsified** by this incidence matrix.  The correct statement is:
 
 The 35+84+84+252=455 refinement is a uniform cover structure over the
 42 assessors.  Type B, C, and X are coverage classes, not flavor labels.
+
+Note: an initial count reported 112 Type B triads, but these were artifacts
+of single-ordering checks. Corrected to 84 after evaluating all three
+associator orderings.
+
+Incidence SVD: B rank=21, C rank=21, X rank=27, B+C rank=27 (not 42).
+C_X column space decomposes as C_B + V_6 (strict 6D extension).
+B and C have identical singular-value spectra (spectral identity).
 
 ### Scheme Comparison (Interleaved vs Contiguous)
 
@@ -710,6 +741,15 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 - Mironov (2014): "Sedeonic equations" [SCIRP]
   Sedenion field equations for gravitoelectromagnetism. Cross-check multiplication.
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf
+
+**Fano plane and octonion geometry:**
+- Ruan & Fan (2009): "Fano plane from quadratic residues" [arXiv:0909.3323]
+  Construction of PG(2,2) from residues mod 7. Octonion multiplication encoding.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf
+
+- Gazeau et al. (2026): "Split-octonion conformal space" [arXiv:2601.18433]
+  Cl(4,2) from split-octonion left multiplication. SO(4,2) conformal embedding.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf
 
 **Zero divisor theory (adjacent):**
 - Carlstrom (2001): "Wheels -- On Division by Zero" [KTH Report]
