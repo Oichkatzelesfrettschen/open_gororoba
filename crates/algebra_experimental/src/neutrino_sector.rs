@@ -5719,4 +5719,91 @@ mod tests {
             println!("  (Negative eigenvalues indicate see-saw-like mechanism)");
         }
     }
+
+    /// Regression test pinning the Gauss-Newton 4D optimum (C-1492).
+    ///
+    /// Evaluates at the known-optimal parameters and verifies angles match
+    /// with strict tolerances. This is the canonical pinned state of the
+    /// PMNS angle-sector fit.
+    #[test]
+    fn test_pmns_gauss_newton_regression() {
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let alpha_ch = 3.00;
+        let alpha_nu = 1.35;
+        let eps = 0.05_f64;
+
+        let (v6_basis, _sv, _assessors) = extract_v6_basis();
+        let lift = TensorElementLift;
+        let n_basis = v6_basis.nrows().min(6);
+
+        let (m_ch_base, m_nu_base) = construct_pmns_matrices_two_param(
+            ch_pair, nu_pair, alpha_ch, alpha_nu,
+        );
+        let eig_ch = m_ch_base.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig_nu_0 = m_nu_base.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_raw_0 = eig_ch.u().transpose() * eig_nu_0.u();
+        let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+        let angles_at = |beta: &[f64; 6]| -> (f64, f64, f64) {
+            let mut m_nu = m_nu_base.clone();
+            apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+            let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
+            for i in 0..3 { for j in 0..3 {
+                u_pmns.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+            }}
+            extract_pmns_angles(&u_pmns)
+        };
+
+        // Compute constrained directions and apply at optimal t values
+        let mut g_12 = [0.0_f64; 6];
+        let mut g_13 = [0.0_f64; 6];
+        let mut g_23 = [0.0_f64; 6];
+        for mu in 0..n_basis {
+            let mut bp = [0.0_f64; 6]; bp[mu] = eps;
+            let mut bm = [0.0_f64; 6]; bm[mu] = -eps;
+            let (t12_p, t13_p, t23_p) = angles_at(&bp);
+            let (t12_m, t13_m, t23_m) = angles_at(&bm);
+            g_12[mu] = (t12_p - t12_m) / (2.0 * eps);
+            g_13[mu] = (t13_p - t13_m) / (2.0 * eps);
+            g_23[mu] = (t23_p - t23_m) / (2.0 * eps);
+        }
+
+        let u_solar = compute_constrained_solar_direction(&g_12, &g_13, &g_23);
+        let u_atmo = compute_constrained_atmospheric_direction(&g_23, &g_13, &u_solar);
+
+        // Use Gauss-Newton to find the optimum
+        let inner_angles = |t1: f64, t2: f64| -> (f64, f64, f64) {
+            let mut beta = [0.0_f64; 6];
+            for k in 0..6 { beta[k] = t1 * u_solar[k] + t2 * u_atmo[k]; }
+            angles_at(&beta)
+        };
+
+        let (t1, t2, (t12, t13, t23), score) = gauss_newton_2d(
+            &inner_angles, 1.5, 0.0,
+            (33.41, 8.54, 49.0),
+            (1.0, 2.24, 1.0),
+            15,
+        );
+
+        println!("--- GAUSS-NEWTON REGRESSION ---");
+        println!("  t_solar = {:.4}, t_atmo = {:.4}", t1, t2);
+        println!("  theta_12 = {:.4} deg (expected ~33.36)", t12);
+        println!("  theta_13 = {:.4} deg (expected ~8.54)", t13);
+        println!("  theta_23 = {:.4} deg (expected ~48.99)", t23);
+        println!("  score = {:.6e}", score);
+
+        // Strict tolerances -- theta_13 tightest
+        assert!((t13 - 8.54).abs() < 0.02,
+            "theta_13 regression: {:.4} (tol 0.02)", t13);
+        assert!((t12 - 33.4).abs() < 0.2,
+            "theta_12 regression: {:.4} (tol 0.2)", t12);
+        assert!((t23 - 49.0).abs() < 0.2,
+            "theta_23 regression: {:.4} (tol 0.2)", t23);
+
+        println!("  PASS: Gauss-Newton regression");
+    }
 }
