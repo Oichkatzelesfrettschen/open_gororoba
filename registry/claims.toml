@@ -10041,3 +10041,31 @@ statement = """Fano lines through fixed unit: Exactly 3 Fano lines pass through 
 status = "Verified"
 where_stated = "crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_fano_pairs_cover_complement"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1483"
+statement = """Constructive SU(3) realization: The 3x3 complex representation of stab(e_k) on (e_k^perp, J_k) via the +i eigenspace basis z_j = u_j - i J_k(u_j) produces 8 anti-Hermitian traceless matrices, confirming constructive su(3) identification. Verified for all k=1..7."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_anti_hermitian"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1484"
+statement = """Gell-Mann alignment: The octonionic su(3) structure constants from the 3x3 representation match the standard Gell-Mann lambda_1..lambda_8 after orthogonal basis alignment. Alignment residual (O O^T - I) below 1e-10 for all k=1..7."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_bracket_structure_after_alignment"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1485"
+statement = """Fundamental Casimir: sum_a T_a T_a = -(4/3) I_3 in the anti-Hermitian convention T_a = (i/2) lambda_a, confirmed to 1e-10 for all k=1..7. Adjoint Casimir: f_{acd} f_{bcd} = 3 delta_{ab}, confirmed to 1e-10."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_fundamental_casimir"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1486"
+statement = """All-embeddings equivalence: All 7 SU(3) embeddings (one per fixed e_k) produce identical fundamental Casimir eigenvalue -(4/3) and adjoint Casimir contraction 3, confirming structural equivalence across all imaginary units."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_all_embeddings_equivalent_casimir"
+last_verified = "2026-03-21"
