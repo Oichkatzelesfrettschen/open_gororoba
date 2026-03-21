@@ -85,3 +85,53 @@ Definition voudon_mul (x y : CDVoudon) : CDVoudon :=
 Definition voudon_assoc (a b c : CDVoudon) : CDVoudon :=
   voudon_sub (voudon_mul (voudon_mul a b) c)
              (voudon_mul a (voudon_mul b c)).
+
+(** ========== ERISTON (dim=512) ========== *)
+
+Record CDEriston := mkEriston { eriston_lo : CDVoudon; eriston_hi : CDVoudon }.
+Definition eriston_conj (x : CDEriston) : CDEriston :=
+  mkEriston (voudon_conj (eriston_lo x)) (voudon_neg (eriston_hi x)).
+Definition eriston_add (x y : CDEriston) : CDEriston :=
+  mkEriston (voudon_add (eriston_lo x) (eriston_lo y))
+            (voudon_add (eriston_hi x) (eriston_hi y)).
+Definition eriston_neg (x : CDEriston) : CDEriston :=
+  mkEriston (voudon_neg (eriston_lo x)) (voudon_neg (eriston_hi x)).
+Definition eriston_sub (x y : CDEriston) : CDEriston :=
+  eriston_add x (eriston_neg y).
+Definition eriston_scale (r : R) (x : CDEriston) : CDEriston :=
+  mkEriston (voudon_scale r (eriston_lo x)) (voudon_scale r (eriston_hi x)).
+Definition eriston_zero : CDEriston := mkEriston voudon_zero voudon_zero.
+Definition eriston_mul (x y : CDEriston) : CDEriston :=
+  mkEriston
+    (voudon_sub (voudon_mul (eriston_lo x) (eriston_lo y))
+                (voudon_mul (voudon_conj (eriston_hi y)) (eriston_hi x)))
+    (voudon_add (voudon_mul (eriston_hi y) (eriston_lo x))
+                (voudon_mul (eriston_hi x) (voudon_conj (eriston_lo y)))).
+Definition eriston_assoc (a b c : CDEriston) : CDEriston :=
+  eriston_sub (eriston_mul (eriston_mul a b) c)
+              (eriston_mul a (eriston_mul b c)).
+
+(** ========== DEKAVOUDON (dim=1024) ========== *)
+
+Record CDDekaVoudon := mkDekaVoudon { dekavoudon_lo : CDEriston; dekavoudon_hi : CDEriston }.
+Definition dekavoudon_conj (x : CDDekaVoudon) : CDDekaVoudon :=
+  mkDekaVoudon (eriston_conj (dekavoudon_lo x)) (eriston_neg (dekavoudon_hi x)).
+Definition dekavoudon_add (x y : CDDekaVoudon) : CDDekaVoudon :=
+  mkDekaVoudon (eriston_add (dekavoudon_lo x) (dekavoudon_lo y))
+               (eriston_add (dekavoudon_hi x) (dekavoudon_hi y)).
+Definition dekavoudon_neg (x : CDDekaVoudon) : CDDekaVoudon :=
+  mkDekaVoudon (eriston_neg (dekavoudon_lo x)) (eriston_neg (dekavoudon_hi x)).
+Definition dekavoudon_sub (x y : CDDekaVoudon) : CDDekaVoudon :=
+  dekavoudon_add x (dekavoudon_neg y).
+Definition dekavoudon_scale (r : R) (x : CDDekaVoudon) : CDDekaVoudon :=
+  mkDekaVoudon (eriston_scale r (dekavoudon_lo x)) (eriston_scale r (dekavoudon_hi x)).
+Definition dekavoudon_zero : CDDekaVoudon := mkDekaVoudon eriston_zero eriston_zero.
+Definition dekavoudon_mul (x y : CDDekaVoudon) : CDDekaVoudon :=
+  mkDekaVoudon
+    (eriston_sub (eriston_mul (dekavoudon_lo x) (dekavoudon_lo y))
+                 (eriston_mul (eriston_conj (dekavoudon_hi y)) (dekavoudon_hi x)))
+    (eriston_add (eriston_mul (dekavoudon_hi y) (dekavoudon_lo x))
+                 (eriston_mul (dekavoudon_hi x) (eriston_conj (dekavoudon_lo y)))).
+Definition dekavoudon_assoc (a b c : CDDekaVoudon) : CDDekaVoudon :=
+  dekavoudon_sub (dekavoudon_mul (dekavoudon_mul a b) c)
+                 (dekavoudon_mul a (dekavoudon_mul b c)).
