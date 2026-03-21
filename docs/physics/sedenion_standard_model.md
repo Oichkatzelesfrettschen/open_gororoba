@@ -127,20 +127,34 @@ small off-diagonal mixing.
 
 Best pair: charged lepton = (e_11, e_12), neutrino = (e_7, e_8).
 
+**Diagonal-only friction (baseline):**
+
 | Parameter  | This work | PDG 2025 | Error |
 |------------|-----------|----------|-------|
 | theta_12   | 29.2 deg  | 33.4     | 12.6% |
 | theta_13   | 8.64 deg  | 8.54     | 1.2%  |
 | theta_23   | 32.3 deg  | 49.0     | 34%   |
 
+**With psi-automorphism off-diagonal coupling (C-1464):**
+
+| Parameter  | This work | PDG 2025 | Error |
+|------------|-----------|----------|-------|
+| theta_12   | 28.5 deg  | 33.4     | 15%   |
+| theta_13   | 8.63 deg  | 8.54     | 1.1%  |
+| theta_23   | 47.1 deg  | 49.0     | 3.9%  |
+
+The off-diagonal coupling uses the Gourlay/Gresnigt psi automorphism
+(order-3 S3 generator) to inject cross-generational friction.
+Two independent parameters: alpha_ch = 3.75, alpha_nu = 1.30.
+
+The psi overlap/norm ratio is -0.5 = cos(2*pi/3) for all generations,
+confirming the S3 120-degree rotation directly drives atmospheric mixing.
+The diagonal-only ceiling at 32.3 deg was broken by the off-diagonal
+coupling, progressing: 32.3 -> 37.6 -> 39.0 -> 47.1 degrees.
+
 The charged lepton selector (e_11, e_12) is identical to the CKM up-type
 selector -- consistent with the SU(5) prediction that charged leptons
 partner with up-type quarks (C-1462).
-
-The PMNS/CKM theta_13 ratio is 39.3 (observed: 39.9, within 1.6%).
-This is a structural prediction: the algebra naturally produces large PMNS
-angles from neutrino pairs in the lower CD block (e_7, e_8) vs the upper
-block (e_11, e_12) for charged leptons.
 
 ### Electroweak Mixing Angle (C-1458)
 

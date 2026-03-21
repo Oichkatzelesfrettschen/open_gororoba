@@ -9901,3 +9901,31 @@ statement = """The charged lepton CKM-optimal selector (e_11,e_12) is identical 
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_pmns_selector_pair_scan"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1463"
+statement = """Associator trilinearity formally verified from dim=16 (Sedenion) through dim=65536 (2^16) via tower proof architecture. Each CD level uses ONLY the previous level's lemmas. Ring arithmetic appears only at the sedenion floor (16 R variables). Total compile time under 6 seconds for 13 levels of CD doubling."""
+status = "Verified"
+where_stated = "proofs/verified/C1455_AssociatorTrilinear.v, C1470_PathionTrilinearity.v, C1471_HigherCDTrilinearity.v"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1464"
+statement = """PMNS neutrino mixing angle theta_23 = 47.1 deg (PDG 49.0, 3.9% error) achieved via psi-automorphism off-diagonal coupling with two independent parameters alpha_ch=3.75, alpha_nu=1.30. The psi overlap/norm ratio of -0.5 = cos(2*pi/3) confirms the S3 120-degree rotation directly drives atmospheric mixing. Previous diagonal-only approach was limited to 32.3 deg."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_pmns_offdiag_two_param"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1465"
+statement = """XOR sign cocycle properties exhaustively verified at dim=16: identity (sigma(i,0)=1), squares (sigma(i,i)=-1), anti-commutativity (sigma(i,j)=-sigma(j,i)), and associator defect count (1527/3375 ordered triples). Refined to 147 unordered sigma-associative triads = 35 strict + 112 sign-associative ghost triads."""
+status = "Verified"
+where_stated = "proofs/verified/C1467_XORSignCocycle.v"
+last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1466"
+statement = """Gourlay/Gresnigt psi automorphism verified on sedenion vectors: psi^3=Id on all 16 basis elements, epsilon^2=Id, epsilon*psi=psi^2*epsilon (S3 relation), and psi preserves zero-divisor pairs. Within the Gresnigt/Gourlay S3 framework (Aut(S)=G2xS3, not universally settled)."""
+status = "Verified"
+where_stated = "crates/cd_kernel/src/cayley_dickson/tests.rs::test_gourlay_psi_order_3"
+last_verified = "2026-03-21"
