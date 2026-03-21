@@ -165,4 +165,5 @@ verified/C957_VoudonZD.v
 verified/C958_ZDGraphTopology.v
 verified/C016_ParityFlips.v
 verified/C010_ConnectivityObstruction.v
+theories/CDLinearLemmas.v
 verified/C1455_AssociatorTrilinear.v

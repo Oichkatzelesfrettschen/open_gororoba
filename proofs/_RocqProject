@@ -193,4 +193,5 @@ verified/C1363_HarmonicHaloExactRecovery.v
 verified/C1364_HomotopyBridgeLaw.v
 verified/C016_ParityFlips.v
 verified/C010_ConnectivityObstruction.v
+theories/CDLinearLemmas.v
 verified/C1455_AssociatorTrilinear.v
