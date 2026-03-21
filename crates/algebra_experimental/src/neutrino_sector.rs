@@ -6557,4 +6557,167 @@ mod tests {
         println!("  delta_CP = {:.1} deg (PDG: ~195)", best_result.4);
         println!("  chi2 = {:.2} (3 angles)", best_chi2);
     }
+
+    /// CP violation via cross-sector rephasing of the EXISTING PMNS matrix.
+    ///
+    /// Instead of making mass matrices complex (which changes eigenvalues and
+    /// breaks the permutation alignment), inject the CP phase as a diagonal
+    /// rephasing of the real PMNS matrix:
+    ///
+    ///   U_CP = diag(1, e^{i*phi_12}, e^{i*phi_13}) * U_real * diag(1, e^{i*psi_2}, e^{i*psi_3})
+    ///
+    /// where the phases come from the cross-sector Gram matrix:
+    ///   phi_ij = alpha_CP * arg(G_ij)
+    ///   G_ij = sum_k omega^k * <ch_profile_i, psi^k(nu_profile_j)>
+    ///
+    /// This preserves the mixing angles (|U_ij| unchanged) while introducing
+    /// a nonzero Jarlskog invariant.
+    #[test]
+    fn test_cp_rephasing_pipeline() {
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use num_complex::Complex;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        // Step 1: Get the real PMNS matrix from the existing pipeline
+        let (m_ch, m_nu) = construct_pmns_matrices_two_param(ch_pair, nu_pair, 3.75, 1.30);
+        let eig_ch = m_ch.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig_nu = m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_raw = eig_ch.u().transpose() * eig_nu.u();
+        let (u_real, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+        let (t12, t13, t23) = extract_pmns_angles(&u_real);
+
+        println!("  === CP Rephasing Pipeline ===\n");
+        println!("  Real PMNS angles: t12={:.2}, t13={:.2}, t23={:.2}", t12, t13, t23);
+
+        // Step 2: Build cross-sector Gram phases
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
+            let mode_j = MajoranaMode { gamma_index: sel.1 - 1, cd_basis_index: sel.1, cd_dim: 16 };
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(ch_pair, s)).collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(nu_pair, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        // Cross-sector Gram phases
+        let mut gram_phases = [[0.0_f64; 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                let c0 = dot16(&ch_profiles[i], &nu_profiles[j]);
+                let psi1_j = gourlay_psi(&nu_profiles[j]);
+                let c1 = dot16(&ch_profiles[i], &psi1_j);
+                let psi2_j = cd_kernel::gourlay_psi_n(&nu_profiles[j], 2);
+                let c2 = dot16(&ch_profiles[i], &psi2_j);
+                let re = c0 + c1 * omega_re + c2 * omega_re;
+                let im = c1 * omega_im - c2 * omega_im;
+                gram_phases[i][j] = im.atan2(re);
+            }
+        }
+
+        println!("  Cross-sector Gram phases (radians):");
+        for i in 0..3 {
+            println!("    [{:.4}, {:.4}, {:.4}]",
+                gram_phases[i][0], gram_phases[i][1], gram_phases[i][2]);
+        }
+
+        // Step 3: Apply rephasing to the PMNS matrix.
+        // The CP phase enters through the relative phases between rows and columns.
+        // For the standard parameterization, delta_CP appears in U_e3:
+        //   U_e3 = s13 * e^{-i*delta}
+        // So we can inject delta directly into the (0,2) element.
+        //
+        // The algebraic prediction: delta_CP comes from the off-diagonal
+        // Gram phase arg(G_12) = 45 deg = pi/4 (from earlier test).
+        // But the physical delta_CP in the PMNS matrix is a combination of
+        // all the Gram phases.
+        //
+        // Rephasing: U_CP[i][j] = U_real[i][j] * exp(i * alpha * gram_phases[i][j])
+        println!("\n  Alpha_CP scan with rephasing:");
+        println!("  {:>8} | {:>8} {:>8} {:>8} | {:>10} | {:>8}",
+            "alpha_CP", "t12", "t13", "t23", "J_CP", "delta");
+
+        for alpha_step in 0..=20 {
+            let alpha_cp = alpha_step as f64 * 0.05;
+
+            // Build complex PMNS via rephasing
+            let mut u_cp = [[Complex::new(0.0, 0.0); 3]; 3];
+            for i in 0..3 {
+                for j in 0..3 {
+                    let phase = alpha_cp * gram_phases[i][j];
+                    u_cp[i][j] = Complex::from_polar(u_real.read(i, j).abs(), phase);
+                    // Preserve the sign of the real element
+                    if u_real.read(i, j) < 0.0 {
+                        u_cp[i][j] = -u_cp[i][j];
+                    }
+                }
+            }
+
+            // Extract angles from |U_ij| -- these should be unchanged since we
+            // only changed phases, not magnitudes
+            let u_e3_abs = u_cp[0][2].norm();
+            let theta_13_cp = u_e3_abs.min(1.0).asin().to_degrees();
+            let cos_13 = theta_13_cp.to_radians().cos();
+            let theta_12_cp = if cos_13 > 1e-15 {
+                (u_cp[0][1].norm() / cos_13).min(1.0).asin().to_degrees()
+            } else { 0.0 };
+            let theta_23_cp = if cos_13 > 1e-15 {
+                (u_cp[1][2].norm() / cos_13).min(1.0).asin().to_degrees()
+            } else { 0.0 };
+
+            // Jarlskog invariant
+            let j_cp = (u_cp[0][1] * u_cp[1][2] * u_cp[0][2].conj() * u_cp[1][1].conj()).im;
+            let delta = extract_cp_phase((theta_12_cp, theta_13_cp, theta_23_cp), j_cp);
+
+            if alpha_step % 2 == 0 {
+                println!("  {:>8.2} | {:>8.2} {:>8.2} {:>8.2} | {:>10.4e} | {:>8.1}",
+                    alpha_cp, theta_12_cp, theta_13_cp, theta_23_cp, j_cp, delta);
+            }
+        }
+
+        // The key prediction: at what alpha_CP does |J_CP| ~ 3e-2?
+        // And what is the corresponding delta_CP?
+        // Since |U_ij| are preserved, the angles stay at their PDG-matched values.
+        // The only free parameter is alpha_CP, which sets the magnitude of J.
+        let s12 = t12.to_radians().sin();
+        let c12 = t12.to_radians().cos();
+        let s13 = t13.to_radians().sin();
+        let c13 = t13.to_radians().cos();
+        let s23 = t23.to_radians().sin();
+        let c23 = t23.to_radians().cos();
+        let j_max = s12 * c12 * s23 * c23 * s13 * c13 * c13;
+
+        println!("\n  J_max (from angles) = {:.6}", j_max);
+        println!("  PDG J_CP ~ 3e-2 -> sin(delta) = {:.4}", 3e-2 / j_max);
+        println!("  -> delta_CP ~ {:.1} deg", (3e-2 / j_max).clamp(-1.0, 1.0).asin().to_degrees());
+        println!("  Gram phase arg(G_12) = {:.1} deg = algebraic prediction", gram_phases[0][1].to_degrees());
+    }
 }
