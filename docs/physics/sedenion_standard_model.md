@@ -213,6 +213,14 @@ Residual fraction = 75.7%. Constrained Gram-Schmidt direction at t=2.47:
 
 Three parameters: alpha_ch=3.75, alpha_nu=1.30, t_V6=2.47 (constrained direction).
 
+Stability at optimum: Jacobian rank = 3 (full), condition number = 6.85
+(well-conditioned), d^2(theta_12)/dt^2 = -0.28 (concave -- stable peak).
+Residual fraction at optimum = 60.9% (still well-decoupled at t=2.47).
+
+Invariance audit: block alignment MODERATE (44% max concentration, 16.7%
+would be uniform). Psi orbits cross blocks (30 cross, 12 within). The lift
+works because it preserves 6 DOFs, not because the blocks are canonical.
+
 ### Electroweak Mixing Angle (C-1458)
 
 The associator flux ratio SU(2)/SU(3) = 0.529 gives:
@@ -310,6 +318,45 @@ CD-generated scheme (Gresnigt 2023) is the phenomenologically superior
 CKM model, outperforming Tang's contiguous-block scheme by a factor
 of ~83x in log-distance score.
 
+## VII. G_2 -> SU(3) Gauge Sector (PR1-3, C-1479 to C-1488)
+
+### Stabilizer Extraction (PR1, algebra/geometry)
+
+For any imaginary octonion unit e_k (k=1..7), the G_2 derivation algebra
+(14-dimensional) contains an 8-dimensional stabilizer subalgebra stab(e_k)
+that fixes e_k. Extracted via thin SVD + Modified Gram-Schmidt kernel
+completion (avoids condition-number squaring from E^T*E).
+
+Left-multiplication by e_k defines a complex structure J_k on the 6D
+orthogonal complement e_k^perp. Each stabilizer derivation is both
+skew-adjoint (R^T + R = 0) and J_k-commuting (R*J_k = J_k*R),
+establishing a u(3) embedding: stab(e_k) embeds in u(3) acting on
+(e_k^perp, J_k) as a complex 3-space.
+
+### Constructive SU(3) Realization (PR2, representation theory)
+
+The 3x3 complex anti-Hermitian traceless representation of stab(e_k)
+is constructed using the complex structure J_k to convert the real 6x6
+stabilizer matrices to complex 3x3. Structure constants match the
+standard Gell-Mann matrices under the anti-Hermitian convention
+T_a = (i/2)*lambda_a (f_123 = -1 in anti-Hermitian vs +1 in Hermitian).
+
+Basis-invariant cross-validation: sum_{a,b,c} f_{abc}^2 = 24 =
+C_2(adj) * dim(su(3)) = 3 * 8 for both the octonionic SU(3) and the
+SU(3) sector of SU(5) GUT. All 7 embeddings produce identical Casimir.
+
+### Scalar Projection Bridge (PR3, project-specific)
+
+The e_0 component of a CD algebra element is the unique commutative-
+associative scalar projection. A feature-gated physics bridge connects
+this to the SU(5) GUT mass/scalar infrastructure. The bridge is
+explicitly project-specific, not literature-dictated.
+
+**Epistemic classification**:
+- PR1: largely algebra/geometry extraction and verification
+- PR2: representation-theoretic cross-validation, convention-sensitive
+- PR3: bridge/lift construction, project-specific until intertwiners solved
+
 ## References
 
 - Reggiani (2024): Geometry of sedenion zero divisors [arXiv:2411.18881]
@@ -344,3 +391,13 @@ C-1475: V_6 solar pipeline: compositional, beta=0 exact, partition null result
 C-1476: V_6 constrained scan: g_12 100% in span{g_13,g_23}, linear injection insufficient
 C-1477: V_6 alpha-modulation: 10x gradient boost but rank-2 lock persists (42D->3D collapse)
 C-1478: V_6 TensorElementLift: rank broken (75.7%), theta_12 = 33.42 deg (0.02% PDG)
+C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
+C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
+C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
+C-1482: Fano lines through fixed unit: exactly 3 per e_k, 6D = 2+2+2
+C-1483: Constructive SU(3): 3x3 complex anti-Hermitian traceless representation
+C-1484: Gell-Mann alignment via orthogonal change of basis
+C-1485: Fundamental Casimir: T_a*T_a = -(4/3)*I_3 (anti-Hermitian convention)
+C-1486: All-embeddings equivalence: 7 SU(3) embeddings produce identical Casimir
+C-1487: SU(5)/SU(3) cross-validation: sum f_{abc}^2 = 24 for both embeddings
+C-1488: Real-part projection: e_0 component is unique commutative-associative scalar
