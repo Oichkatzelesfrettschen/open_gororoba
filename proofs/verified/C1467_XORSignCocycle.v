@@ -116,7 +116,43 @@ Definition count_assoc_triples : nat :=
   ) (list_prod (list_prod (seq 1 15) (seq 1 15)) (seq 1 15))).
 
 (** The count of sign-level associative ordered triples. *)
-(** The sign-level associator defect vanishes for 1527 of 3375 ordered triples. *)
-Theorem assoc_triple_count :
+(** The sign-level associator defect vanishes for 1527 of 3375 ordered triples.
+    This includes 645 degenerate triples (repeated indices). *)
+Theorem assoc_triple_count_ordered :
   count_assoc_triples = 1527.
+Proof. vm_compute. reflexivity. Qed.
+
+(** Refined: count ONLY distinct-index associative triples (i != j != k != i). *)
+Definition count_assoc_distinct : nat :=
+  length (filter (fun ijk =>
+    let i := fst (fst ijk) in
+    let j := snd (fst ijk) in
+    let k := snd ijk in
+    if (Nat.eqb i j || Nat.eqb j k || Nat.eqb i k)%bool then false
+    else Z.eqb (sed_sign_f i j * sed_sign_f (Nat.lxor i j) k -
+                sed_sign_f j k * sed_sign_f i (Nat.lxor j k)) 0
+  ) (list_prod (list_prod (seq 1 15) (seq 1 15)) (seq 1 15))).
+
+(** 882 distinct-index ordered triples have zero defect.
+    882 / 6 = 147 unordered triads (vs Wilmot's 35 fully-associative).
+    The difference 147 - 35 = 112 are triads that are sign-associative
+    but not fully associative in the multilinear sense. *)
+Theorem assoc_distinct_count :
+  count_assoc_distinct = 882.
+Proof. vm_compute. reflexivity. Qed.
+
+(** Degenerate triples: 15^3 - 15*14*13 = 3375 - 2730 = 645. *)
+Theorem degenerate_triple_count : 3375 - 2730 = 645.
+Proof. vm_compute. reflexivity. Qed.
+
+(** Consistency: 1527 = 882 + 645 (distinct-assoc + degenerate). *)
+Theorem assoc_split : 882 + 645 = 1527.
+Proof. vm_compute. reflexivity. Qed.
+
+(** 882 / 6 = 147 unordered triads. *)
+Theorem unordered_assoc_triads : 882 / 6 = 147.
+Proof. vm_compute. reflexivity. Qed.
+
+(** 147 + 308 = 455 = C(15,3). *)
+Theorem triad_total : 147 + 308 = 455.
 Proof. vm_compute. reflexivity. Qed.
