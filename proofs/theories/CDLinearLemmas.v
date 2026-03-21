@@ -60,6 +60,14 @@ Proof.
   f_equal; ring.
 Qed.
 
+Theorem quat_neg_scale : forall r a,
+  quat_neg (quat_scale r a) = quat_scale r (quat_neg a).
+Proof.
+  intros r a; destruct a.
+  unfold quat_neg, quat_scale; simpl.
+  f_equal; ring.
+Qed.
+
 Theorem quat_conj_add : forall a b,
   quat_conj (quat_add a b) = quat_add (quat_conj a) (quat_conj b).
 Proof.
@@ -171,7 +179,7 @@ Proof.
     assert (Hcs: forall s v, oct_conj (oct_scale s v) = oct_scale s (oct_conj v)).
     { intros s v; destruct v as [vlo vhi].
       unfold oct_conj, oct_scale, oct_neg; simpl.
-      f_equal. apply quat_conj_scale. apply quat_conj_scale. }
+      f_equal. apply quat_conj_scale. apply quat_neg_scale. }
     rewrite Hcs.
     rewrite oct_mul_scale_left.
     destruct xa as [xalo xahi], xb as [xblo xbhi],
@@ -185,7 +193,7 @@ Proof.
     assert (Hcs: forall s v, oct_conj (oct_scale s v) = oct_scale s (oct_conj v)).
     { intros s v; destruct v as [vlo vhi].
       unfold oct_conj, oct_scale, oct_neg; simpl.
-      f_equal. apply quat_conj_scale. apply quat_conj_scale. }
+      f_equal. apply quat_conj_scale. apply quat_neg_scale. }
     rewrite Hcs.
     rewrite oct_mul_scale_right.
     destruct xa as [xalo xahi], xb as [xblo xbhi],
