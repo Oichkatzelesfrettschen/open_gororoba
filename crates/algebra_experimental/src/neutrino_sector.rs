@@ -451,4 +451,240 @@ mod tests {
         println!("    sin^2(theta_W) one-loop = {:.6} (PDG: {:.6})",
             sin2_tw_run, sin2_tw_mz);
     }
+
+    /// PMNS theta_23 targeted alpha scan.
+    ///
+    /// Current: theta_23 = 32.3 deg (PDG 49.0, 34% error).
+    /// The issue: diagonal friction perturbation produces too much hierarchy
+    /// in the 2-3 sector. Near-maximal theta_23 requires near-degeneracy.
+    ///
+    /// Strategy: vary the relative strength of neutrino-sector friction
+    /// via an alpha parameter while keeping the best selector pair fixed.
+    #[test]
+    fn test_pmns_theta23_alpha_scan() {
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::cayley_dickson_structs::Sedenion;
+        use crate::quark_sector::SubalgebraScheme;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        // Best selector pair from the PMNS scan
+        let ch_pair = (11_usize, 12_usize);
+        let nu_pair = (7_usize, 8_usize);
+
+        let ch_a = MajoranaMode { gamma_index: ch_pair.0 - 1, cd_basis_index: ch_pair.0, cd_dim: 16 };
+        let ch_b = MajoranaMode { gamma_index: ch_pair.1 - 1, cd_basis_index: ch_pair.1, cd_dim: 16 };
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        let sel_ch: Vec<f64> = subs.iter()
+            .map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table))
+            .collect();
+        let sel_nu: Vec<f64> = subs.iter()
+            .map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table))
+            .collect();
+
+        // Casimir baseline
+        let mut basis = [Sedenion::default(); 16];
+        for i in 0..16 {
+            let mut components = [0.0; 16];
+            components[i] = 1.0;
+            basis[i] = Sedenion::from_slice(&components);
+        }
+        let cs = basis[15];
+        let (m_base_ch, m_base_nu) = crate::quark_sector::construct_quark_mass_matrices(
+            &basis, &cs, SubalgebraScheme::InterleavedStride,
+        );
+
+        let pdg_t23: f64 = 49.0;
+        let pdg_t12: f64 = 33.41;
+        let pdg_t13: f64 = 8.54;
+
+        println!("--- PMNS theta_23 ALPHA SCAN ---");
+        println!("  Selectors: ch=(e_{},e_{}), nu=(e_{},e_{})",
+            ch_pair.0, ch_pair.1, nu_pair.0, nu_pair.1);
+        println!("  sel_ch = [{:.4}, {:.4}, {:.4}]", sel_ch[0], sel_ch[1], sel_ch[2]);
+        println!("  sel_nu = [{:.4}, {:.4}, {:.4}]", sel_nu[0], sel_nu[1], sel_nu[2]);
+
+        // Scan alpha_nu from 0.01 to 2.0: controls neutrino friction strength
+        let mut best_score = f64::INFINITY;
+        let mut best_alpha = 0.0_f64;
+        let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+        for step in 0..200 {
+            let alpha_nu = 0.01 + step as f64 * 0.01;
+
+            // Lepton-fitted weights
+            let w1: f64 = -0.656850;
+            let w2: f64 = -0.741999;
+
+            let mut m_ch = m_base_ch.clone();
+            let mut m_nu = m_base_nu.clone();
+
+            for i in 0..3 {
+                let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
+                let f_nu = alpha_nu * (w1 * sel_nu[i] + w2 * sel_ch[i]);
+                m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
+                m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+            }
+
+            let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+            let m_nu_sym = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+
+            let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+
+            let u_pmns_raw = eig_ch.u().transpose() * eig_nu.u();
+            let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_pmns_raw);
+
+            let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+            let score = ((t23 - pdg_t23) / pdg_t23).powi(2)
+                + ((t12 - pdg_t12) / pdg_t12).powi(2)
+                + ((t13 - pdg_t13) / pdg_t13).powi(2);
+
+            if score < best_score {
+                best_score = score;
+                best_alpha = alpha_nu;
+                best_angles = (t12, t13, t23);
+            }
+        }
+
+        println!("\n  Best alpha_nu: {:.4}", best_alpha);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2})", best_angles.0, pdg_t12);
+        println!("  theta_13 = {:.2} deg (PDG: {:.2})", best_angles.1, pdg_t13);
+        println!("  theta_23 = {:.2} deg (PDG: {:.2})", best_angles.2, pdg_t23);
+        println!("  Score: {:.6}", best_score);
+        println!("  (Previous: theta_23=32.3, score=0.132)");
+    }
+
+    /// PMNS theta_23 composite selector scan.
+    ///
+    /// Uses TWO braid pairs per sector (4 total) to fill the zero entry
+    /// in the friction vector. The composite friction is:
+    ///   F_ch = w1*sel_A + w2*sel_B  (two selectors for charged lepton)
+    ///   F_nu = w1*sel_C + w2*sel_D  (two selectors for neutrino)
+    ///
+    /// Each selector pair is chosen from the 21 splitting pairs.
+    #[test]
+    fn test_pmns_theta23_composite_scan() {
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::cayley_dickson_structs::Sedenion;
+        use crate::quark_sector::SubalgebraScheme;
+        use rayon::prelude::*;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let sign_table = SignTableCache::new(16);
+
+        // Precompute all 21 signed friction vectors
+        let mut pairs: Vec<(usize, usize)> = Vec::new();
+        let mut frictions: Vec<[f64; 3]> = Vec::new();
+        for i in 1..16_usize {
+            for j in (i + 1)..16 {
+                let mi = MajoranaMode { gamma_index: i - 1, cd_basis_index: i, cd_dim: 16 };
+                let mj = MajoranaMode { gamma_index: j - 1, cd_basis_index: j, cd_dim: 16 };
+                let s1 = cd_braid_signed_friction(&mi, &mj, &o1, &sign_table);
+                let s2 = cd_braid_signed_friction(&mi, &mj, &o2, &sign_table);
+                let s3 = cd_braid_signed_friction(&mi, &mj, &o3, &sign_table);
+                if (s1 - s2).abs() > 1e-9 && (s2 - s3).abs() > 1e-9 && (s1 - s3).abs() > 1e-9 {
+                    pairs.push((i, j));
+                    frictions.push([s1, s2, s3]);
+                }
+            }
+        }
+
+        println!("--- PMNS theta_23 COMPOSITE SELECTOR SCAN ---");
+        println!("Splitting pairs: {}", pairs.len());
+
+        // Casimir baseline
+        let mut basis = [Sedenion::default(); 16];
+        for i in 0..16 {
+            let mut components = [0.0; 16];
+            components[i] = 1.0;
+            basis[i] = Sedenion::from_slice(&components);
+        }
+        let cs = basis[15];
+        let (m_base_ch, m_base_nu) = crate::quark_sector::construct_quark_mass_matrices(
+            &basis, &cs, SubalgebraScheme::InterleavedStride,
+        );
+
+        let pdg_t23: f64 = 49.0;
+        let pdg_t12: f64 = 33.41;
+        let pdg_t13: f64 = 8.54;
+
+        let w1: f64 = -0.656850;
+        let w2: f64 = -0.741999;
+        let n = frictions.len();
+
+        // Fix ch to best pair, scan nu composites
+        let best_ch_idx = pairs.iter().position(|&p| p == (11, 12)).unwrap();
+        let combos_reduced: Vec<(usize, usize)> = (0..n).flat_map(|c|
+            (0..n).filter(move |&d| d != c).map(move |d| (c, d))
+        ).collect();
+
+        println!("Scanning {} nu composite pairs (ch fixed to (e_11,e_12))", combos_reduced.len());
+
+        let results: Vec<(f64, usize, usize, (f64, f64, f64))> =
+            combos_reduced.par_iter().map(|&(c_idx, d_idx)| {
+                let sel_ch = &frictions[best_ch_idx];
+
+                // Composite neutrino friction: average of two friction vectors
+                let sel_nu_composite: [f64; 3] = [
+                    (frictions[c_idx][0] + frictions[d_idx][0]) / 2.0,
+                    (frictions[c_idx][1] + frictions[d_idx][1]) / 2.0,
+                    (frictions[c_idx][2] + frictions[d_idx][2]) / 2.0,
+                ];
+
+                let mut m_ch = m_base_ch.clone();
+                let mut m_nu = m_base_nu.clone();
+                for i in 0..3 {
+                    let f_ch = w1 * sel_ch[i] + w2 * sel_nu_composite[i];
+                    let f_nu = w1 * sel_nu_composite[i] + w2 * sel_ch[i];
+                    m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
+                    m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+                }
+
+                let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+                let m_nu_sym = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+                let score = ((t23 - pdg_t23) / pdg_t23).powi(2)
+                    + ((t12 - pdg_t12) / pdg_t12).powi(2)
+                    + ((t13 - pdg_t13) / pdg_t13).powi(2);
+
+                (score, c_idx, d_idx, (t12, t13, t23))
+            }).collect();
+
+        let mut sorted = results;
+        sorted.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        if let Some(&(score, c, d, (t12, t13, t23))) = sorted.first() {
+            println!("\nBest composite neutrino selector:");
+            println!("  nu = avg((e_{},e_{}), (e_{},e_{}))",
+                pairs[c].0, pairs[c].1, pairs[d].0, pairs[d].1);
+            println!("  theta_12 = {:.2} deg (PDG: {:.2})", t12, pdg_t12);
+            println!("  theta_13 = {:.2} deg (PDG: {:.2})", t13, pdg_t13);
+            println!("  theta_23 = {:.2} deg (PDG: {:.2})", t23, pdg_t23);
+            println!("  Score: {:.6} (previous single: 0.132)", score);
+        }
+
+        println!("\n--- TOP-5 COMPOSITE ---");
+        for (rank, (score, c, d, (t12, t13, t23))) in sorted.iter().take(5).enumerate() {
+            println!("  #{}: nu=avg(({},{}),({},{})) | t12={:.1}, t13={:.1}, t23={:.1} | score={:.4}",
+                rank + 1, pairs[*c].0, pairs[*c].1, pairs[*d].0, pairs[*d].1,
+                t12, t13, t23, score);
+        }
+    }
 }
