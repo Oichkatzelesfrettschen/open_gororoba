@@ -267,3 +267,169 @@ Proof.
   rewrite voudon_mul_scale_left. rewrite <- voudon_scale_sub.
   reflexivity.
 Qed.
+
+(** ========== ERISTON (dim=512) ========== *)
+
+Lemma voudon_scale_add : forall r a b,
+  voudon_add (voudon_scale r a) (voudon_scale r b) =
+  voudon_scale r (voudon_add a b).
+Proof.
+  intros r [alo ahi] [blo bhi].
+  unfold voudon_scale, voudon_add.
+  simpl voudon_lo; simpl voudon_hi.
+  f_equal; apply routon_scale_add.
+Qed.
+
+Lemma routon_neg_scale : forall r x,
+  routon_neg (routon_scale r x) = routon_scale r (routon_neg x).
+Proof.
+  intros r [xlo xhi].
+  unfold routon_neg, routon_scale.
+  simpl routon_lo; simpl routon_hi.
+  f_equal; apply chingon_neg_scale.
+Qed.
+
+Lemma voudon_conj_scale : forall r x,
+  voudon_conj (voudon_scale r x) = voudon_scale r (voudon_conj x).
+Proof.
+  intros r [xlo xhi].
+  unfold voudon_conj, voudon_scale.
+  simpl voudon_lo; simpl voudon_hi.
+  f_equal. apply routon_conj_scale. apply routon_neg_scale.
+Qed.
+
+Theorem voudon_mul_scale_right : forall r x y,
+  voudon_mul x (voudon_scale r y) = voudon_scale r (voudon_mul x y).
+Proof.
+  intros r [xa xb] [ya yb].
+  unfold voudon_mul, voudon_scale.
+  simpl voudon_lo; simpl voudon_hi.
+  f_equal.
+  - rewrite routon_mul_scale_right.
+    rewrite routon_conj_scale. rewrite routon_mul_scale_left.
+    rewrite <- routon_scale_sub. reflexivity.
+  - rewrite routon_mul_scale_left.
+    rewrite routon_conj_scale. rewrite routon_mul_scale_right.
+    rewrite <- routon_scale_add. reflexivity.
+Qed.
+
+Lemma voudon_neg_scale : forall r x,
+  voudon_neg (voudon_scale r x) = voudon_scale r (voudon_neg x).
+Proof.
+  intros r [xlo xhi].
+  unfold voudon_neg, voudon_scale.
+  simpl voudon_lo; simpl voudon_hi.
+  f_equal; apply routon_neg_scale.
+Qed.
+
+Theorem eriston_mul_scale_left : forall r x y,
+  eriston_mul (eriston_scale r x) y = eriston_scale r (eriston_mul x y).
+Proof.
+  intros r [xa xb] [ya yb].
+  unfold eriston_mul, eriston_scale.
+  simpl eriston_lo; simpl eriston_hi.
+  f_equal.
+  - rewrite voudon_mul_scale_left. rewrite voudon_mul_scale_right.
+    rewrite <- voudon_scale_sub. reflexivity.
+  - rewrite voudon_mul_scale_right. rewrite voudon_mul_scale_left.
+    rewrite <- voudon_scale_add. reflexivity.
+Qed.
+
+Lemma eriston_scale_sub : forall r a b,
+  eriston_scale r (eriston_sub a b) =
+  eriston_sub (eriston_scale r a) (eriston_scale r b).
+Proof.
+  intros r [alo ahi] [blo bhi].
+  unfold eriston_scale, eriston_sub, eriston_add, eriston_neg.
+  simpl eriston_lo; simpl eriston_hi.
+  f_equal; apply voudon_scale_sub.
+Qed.
+
+Theorem eriston_assoc_trilinear_scale_1 : forall r a b c,
+  eriston_assoc (eriston_scale r a) b c =
+  eriston_scale r (eriston_assoc a b c).
+Proof.
+  intros. unfold eriston_assoc.
+  rewrite eriston_mul_scale_left. rewrite eriston_mul_scale_left.
+  rewrite eriston_mul_scale_left. rewrite <- eriston_scale_sub.
+  reflexivity.
+Qed.
+
+(** ========== DEKAVOUDON (dim=1024) ========== *)
+
+Lemma eriston_scale_add : forall r a b,
+  eriston_add (eriston_scale r a) (eriston_scale r b) =
+  eriston_scale r (eriston_add a b).
+Proof.
+  intros r [alo ahi] [blo bhi].
+  unfold eriston_scale, eriston_add.
+  simpl eriston_lo; simpl eriston_hi.
+  f_equal; apply voudon_scale_add.
+Qed.
+
+Lemma eriston_conj_scale : forall r x,
+  eriston_conj (eriston_scale r x) = eriston_scale r (eriston_conj x).
+Proof.
+  intros r [xlo xhi].
+  unfold eriston_conj, eriston_scale.
+  simpl eriston_lo; simpl eriston_hi.
+  f_equal. apply voudon_conj_scale. apply voudon_neg_scale.
+Qed.
+
+Theorem eriston_mul_scale_right : forall r x y,
+  eriston_mul x (eriston_scale r y) = eriston_scale r (eriston_mul x y).
+Proof.
+  intros r [xa xb] [ya yb].
+  unfold eriston_mul, eriston_scale.
+  simpl eriston_lo; simpl eriston_hi.
+  f_equal.
+  - rewrite voudon_mul_scale_right.
+    rewrite voudon_conj_scale. rewrite voudon_mul_scale_left.
+    rewrite <- voudon_scale_sub. reflexivity.
+  - rewrite voudon_mul_scale_left.
+    rewrite voudon_conj_scale. rewrite voudon_mul_scale_right.
+    rewrite <- voudon_scale_add. reflexivity.
+Qed.
+
+Lemma eriston_neg_scale : forall r x,
+  eriston_neg (eriston_scale r x) = eriston_scale r (eriston_neg x).
+Proof.
+  intros r [xlo xhi].
+  unfold eriston_neg, eriston_scale.
+  simpl eriston_lo; simpl eriston_hi.
+  f_equal; apply voudon_neg_scale.
+Qed.
+
+Theorem dekavoudon_mul_scale_left : forall r x y,
+  dekavoudon_mul (dekavoudon_scale r x) y =
+  dekavoudon_scale r (dekavoudon_mul x y).
+Proof.
+  intros r [xa xb] [ya yb].
+  unfold dekavoudon_mul, dekavoudon_scale.
+  simpl dekavoudon_lo; simpl dekavoudon_hi.
+  f_equal.
+  - rewrite eriston_mul_scale_left. rewrite eriston_mul_scale_right.
+    rewrite <- eriston_scale_sub. reflexivity.
+  - rewrite eriston_mul_scale_right. rewrite eriston_mul_scale_left.
+    rewrite <- eriston_scale_add. reflexivity.
+Qed.
+
+Lemma dekavoudon_scale_sub : forall r a b,
+  dekavoudon_scale r (dekavoudon_sub a b) =
+  dekavoudon_sub (dekavoudon_scale r a) (dekavoudon_scale r b).
+Proof.
+  intros r [alo ahi] [blo bhi].
+  unfold dekavoudon_scale, dekavoudon_sub, dekavoudon_add, dekavoudon_neg.
+  simpl dekavoudon_lo; simpl dekavoudon_hi.
+  f_equal; apply eriston_scale_sub.
+Qed.
+
+Theorem dekavoudon_assoc_trilinear_scale_1 : forall r a b c,
+  dekavoudon_assoc (dekavoudon_scale r a) b c =
+  dekavoudon_scale r (dekavoudon_assoc a b c).
+Proof.
+  intros. unfold dekavoudon_assoc.
+  rewrite dekavoudon_mul_scale_left. rewrite dekavoudon_mul_scale_left.
+  rewrite dekavoudon_mul_scale_left. rewrite <- dekavoudon_scale_sub.
+  reflexivity.
+Qed.
