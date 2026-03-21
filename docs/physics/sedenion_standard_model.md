@@ -12,8 +12,9 @@ This document summarizes the computational results of a systematic
 selector-pair scan that maps the SU(3) x SU(2) x U(1) gauge structure onto
 the sedenion subalgebras and extracts:
 
-- Charged lepton mass ratios (1 : 207 : 3477) to machine precision
-- CKM quark mixing angles within 10% of PDG global fit (C-1456)
+- Exact two-weight fit of charged-lepton log-ratios within the selector basis
+- Best interleaved-scheme selector scan, after permutation-aware extraction,
+  yields all three CKM angles within 10% of PDG (C-1456)
 - PMNS neutrino mixing angle theta_13 within 1.2% of PDG (C-1457)
 - Electroweak mixing angle sin^2(theta_W) within 14% (C-1458)
 - Discrete 2*sqrt(2) quantization of the friction spectrum (C-1459)
@@ -184,6 +185,56 @@ dim(G_2) = 14, providing a calibration-theoretic origin for the G_2 isometry.
 investigation.  Gresnigt's framework uses Aut(S) = G_2 x S_3; Wilmot's
 calibration analysis supports Schafer's Aut(S) = G_2.  This document does
 not take a position on this mathematical question.
+
+## VI. Non-Associativity Structure and ZD Incidence
+
+### Triad Classification (Wilmot Table 2, verified)
+
+All C(15,3) = 455 triads of imaginary sedenion basis elements decompose as:
+
+    35 fully associative = C(7,3) = H_15 quaternion subalgebra count
+    84 Type B non-associative (only [b,d,c] nonzero)
+    84 Type C non-associative (only [c,b,d] nonzero)
+    252 Type X non-associative (all three orderings nonzero)
+    0 Type A
+
+This decomposition uses the standard associator [x,y,z] = (x*y)*z - x*(y*z)
+in all three orderings.  Wilmot's Table 2 for U_1 gives 35+60+360=455
+(the 155 in Table 2 belongs to U_2, not U_1).
+
+### ZD-Triad Incidence (Chirality Conjecture Falsified)
+
+The incidence matrix between 420 non-associative triads and 42 ZD assessor
+pairs reveals **universal coverage, not chiral partition**:
+
+| Type | Triads | Assessors covered | Hits per assessor |
+|------|--------|-------------------|-------------------|
+| B    | 84     | 42/42             | 36 (uniform)      |
+| C    | 84     | 42/42             | 36 (uniform)      |
+| X    | 252    | 42/42             | 96 (uniform)      |
+
+All three types cover all assessors with perfectly uniform multiplicity.
+The 84:84:252 decomposition is a **cardinality structure** from the
+non-associativity theorem, not a chiral partition of the ZD manifold.
+
+The earlier conjecture that "Type B = left-handed ZDs, Type C = right-handed
+ZDs" is **falsified** by this incidence matrix.  The correct statement is:
+
+The 35+84+84+252=455 refinement is a uniform cover structure over the
+42 assessors.  Type B, C, and X are coverage classes, not flavor labels.
+
+### Scheme Comparison (Interleaved vs Contiguous)
+
+| Parameter | Interleaved stride | Tang contiguous | PDG |
+|-----------|--------------------|-----------------|-----|
+| Score     | 0.010              | 0.834           | --  |
+| |V_us|    | 0.245              | 0.188           | 0.225 |
+| theta_23  | 2.52 deg           | 0.99 deg        | 2.40  |
+
+Within the current selector/friction observable class, the interleaved
+CD-generated scheme (Gresnigt 2023) is the phenomenologically superior
+CKM model, outperforming Tang's contiguous-block scheme by a factor
+of ~83x in log-distance score.
 
 ## References
 
