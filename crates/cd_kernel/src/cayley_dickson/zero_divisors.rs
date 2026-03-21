@@ -267,3 +267,54 @@ fn accumulate_sparse_basis_term(
     coeffs[*used] = coeff;
     *used += 1;
 }
+
+/// Koebisu's D_2 polynomial for zero-divisor detection.
+///
+/// For a sedenion v = v_1 + v_2*e_8 (where v_1 = v[0..8], v_2 = v[8..16]):
+///
+///   D_2(v) = (||v_1||^2 - ||v_2||^2)^2 + 4*<v_1, v_2>^2
+///
+/// A nonzero v is a zero-divisor iff D_2(v) = 0.
+///
+/// This replaces the O(N^3) matrix determinant with an O(N) polynomial.
+///
+/// Reference: Koebisu (arXiv:2512.13002), Theorem 3.6, Lemma 3.3.
+#[inline]
+pub fn koebisu_d2(v: &[f64]) -> f64 {
+    debug_assert!(v.len() >= 16, "Koebisu D_2 requires at least 16 components");
+    let half = v.len() / 2;
+
+    let mut norm_sq_v1 = 0.0_f64;
+    let mut norm_sq_v2 = 0.0_f64;
+    let mut dot_v1_v2 = 0.0_f64;
+
+    for i in 0..half {
+        let x = v[i];
+        let y = v[i + half];
+        norm_sq_v1 += x * x;
+        norm_sq_v2 += y * y;
+        dot_v1_v2 += x * y;
+    }
+
+    let b = norm_sq_v1 - norm_sq_v2;
+    b * b + 4.0 * dot_v1_v2 * dot_v1_v2
+}
+
+/// Fast zero-divisor membership test using Koebisu's D_2 polynomial.
+///
+/// Returns true if v is a zero-divisor (D_2(v) < epsilon).
+/// O(N) time, zero allocation, branchless inner loop.
+#[inline]
+pub fn is_zero_divisor_koebisu(v: &[f64], epsilon: f64) -> bool {
+    koebisu_d2(v) < epsilon
+}
+
+/// D_1 polynomial: the squared norm.
+///
+///   D_1(v) = ||v_1||^2 + ||v_2||^2 = ||v||^2
+///
+/// The full determinant factorization is det(L_v) = D_1(v)^4 * D_2(v)^2.
+#[inline]
+pub fn koebisu_d1(v: &[f64]) -> f64 {
+    v.iter().map(|x| x * x).sum()
+}

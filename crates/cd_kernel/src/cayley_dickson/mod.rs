@@ -36,7 +36,8 @@ pub use simd::{
 };
 pub use zero_divisors::{
     GeneralFormZD, count_pathion_zero_divisors, find_zero_divisors, find_zero_divisors_3blade,
-    find_zero_divisors_general_form, find_zero_divisors_parallel, zd_spectrum_analysis,
+    find_zero_divisors_general_form, find_zero_divisors_parallel, is_zero_divisor_koebisu,
+    koebisu_d1, koebisu_d2, zd_spectrum_analysis,
 };
 
 #[cfg(test)]

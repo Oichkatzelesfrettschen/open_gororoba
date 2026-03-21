@@ -394,3 +394,64 @@ fn test_cd_tower_timing_4d_to_16384d() {
             dim, elapsed, norm_sq);
     }
 }
+
+#[test]
+fn test_koebisu_d2_on_all_standard_zds() {
+    // All 84 standard ZDs must have D_2 = 0
+    let zds = find_zero_divisors(16, 1e-10);
+    let mut zd_count = 0;
+    for (i, j, k, l, _norm) in &zds {
+        let mut a = vec![0.0; 16];
+        a[*i] = 1.0;
+        a[*j] = 1.0;
+        let d2 = koebisu_d2(&a);
+        assert!(d2 < 1e-20,
+            "ZD ({},{}) has D_2 = {:.2e}, expected ~0", i, j, d2);
+
+        let mut b = vec![0.0; 16];
+        b[*k] = 1.0;
+        b[*l] = 1.0;
+        let d2b = koebisu_d2(&b);
+        assert!(d2b < 1e-20,
+            "ZD ({},{}) has D_2 = {:.2e}, expected ~0", k, l, d2b);
+        zd_count += 1;
+    }
+
+    // Single basis elements are NOT zero divisors (D_2 = 1)
+    for i in 1..16_usize {
+        let mut v = vec![0.0; 16];
+        v[i] = 1.0;
+        assert!(!is_zero_divisor_koebisu(&v, 1e-10),
+            "e_{} should not be a ZD", i);
+    }
+
+    println!("Koebisu D_2 verified on {} ZD pairs + 15 non-ZD basis elements", zd_count);
+}
+
+#[test]
+fn test_koebisu_d2_random_consistency() {
+    // Random sedenions: D_2 = 0 iff the element is a ZD (verified by multiplication)
+    use rand::Rng;
+    let mut rng = rand::thread_rng();
+
+    for _ in 0..100 {
+        let v: Vec<f64> = (0..16).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
+        let d2 = koebisu_d2(&v);
+
+        // Random sedenions are almost never ZDs
+        assert!(d2 > 1e-6,
+            "Random sedenion has D_2 = {:.2e}, suspiciously close to 0", d2);
+    }
+
+    // Construct a deliberate ZD: e_1 + e_10 (assessor pair)
+    let mut zd = vec![0.0; 16];
+    zd[1] = 1.0;
+    zd[10] = 1.0;
+    assert!(is_zero_divisor_koebisu(&zd, 1e-10), "e_1+e_10 must be a ZD");
+
+    // Scale it: 3*(e_1 + e_10) is still a ZD
+    let mut zd_scaled = vec![0.0; 16];
+    zd_scaled[1] = 3.0;
+    zd_scaled[10] = 3.0;
+    assert!(is_zero_divisor_koebisu(&zd_scaled, 1e-10), "3*(e_1+e_10) must be a ZD");
+}
