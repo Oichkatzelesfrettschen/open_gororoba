@@ -337,4 +337,121 @@ mod tests {
             predicted_tau_ratio,
             ((predicted_tau_ratio - 3477.0) / 3477.0 * 100.0).abs());
     }
+
+    /// Composite operator scan: find pairs of braid axes whose SUMMED signed
+    /// frictions give a ratio close to 1:1.52 (the target for m_tau/m_e = 3477).
+    ///
+    /// The math: if exp(alpha * f_mu) = 207 and exp(alpha * f_tau) = 3477,
+    /// then f_tau/f_mu = ln(3477)/ln(207) = 1.527.
+    ///
+    /// Single pairs give 0:1:3 ratio. Composite (sum of two pairs) may give
+    /// intermediate ratios closer to 0:1:1.52.
+    #[test]
+    fn test_composite_operator_scan_for_lepton_ratio() {
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let sign_table = SignTableCache::new(16);
+        let all_modes: Vec<MajoranaMode> = (1..16_usize).map(|idx| MajoranaMode {
+            gamma_index: idx - 1,
+            cd_basis_index: idx,
+            cd_dim: 16,
+        }).collect();
+
+        // Target ratio: f_heavy / f_mid = ln(3477) / ln(207) = 1.527
+        let target_ratio = (3477.0_f64).ln() / (207.0_f64).ln();
+        println!("Target f_heavy/f_mid ratio: {:.4}", target_ratio);
+
+        // Collect all 1+1+1 splitting pairs with their signed friction triples
+        struct SplitPair {
+            i: usize,
+            j: usize,
+            frictions: [f64; 3], // sorted by absolute value ascending
+        }
+        let mut splits = Vec::new();
+        for i in 0..all_modes.len() {
+            for j in (i + 1)..all_modes.len() {
+                let s1 = cd_braid_signed_friction(&all_modes[i], &all_modes[j], &o1, &sign_table);
+                let s2 = cd_braid_signed_friction(&all_modes[i], &all_modes[j], &o2, &sign_table);
+                let s3 = cd_braid_signed_friction(&all_modes[i], &all_modes[j], &o3, &sign_table);
+                if (s1 - s2).abs() > 1e-9 && (s2 - s3).abs() > 1e-9 && (s1 - s3).abs() > 1e-9 {
+                    let mut f = [s1.abs(), s2.abs(), s3.abs()];
+                    f.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                    splits.push(SplitPair {
+                        i: all_modes[i].cd_basis_index,
+                        j: all_modes[j].cd_basis_index,
+                        frictions: f,
+                    });
+                }
+            }
+        }
+        println!("Found {} 1+1+1 splitting pairs", splits.len());
+
+        // Scan composites: sum of frictions from two different pairs
+        let mut best_error = f64::INFINITY;
+        let mut best_composite = String::new();
+        let mut best_frictions_composite = [0.0; 3];
+
+        for a in 0..splits.len() {
+            for b in (a + 1)..splits.len() {
+                // Composite friction: element-wise sum of absolute friction triples
+                let mut cf = [0.0_f64; 3];
+                for g in 0..3 {
+                    cf[g] = splits[a].frictions[g] + splits[b].frictions[g];
+                }
+                cf.sort_by(|x, y| x.partial_cmp(y).unwrap());
+
+                // Check ratio: cf[2] / cf[1] should be close to target_ratio
+                if cf[1] > 1e-9 {
+                    let ratio = cf[2] / cf[1];
+                    let error = (ratio - target_ratio).abs();
+                    if error < best_error {
+                        best_error = error;
+                        best_composite = format!(
+                            "(e_{},e_{}) + (e_{},e_{})",
+                            splits[a].i, splits[a].j, splits[b].i, splits[b].j
+                        );
+                        best_frictions_composite = cf;
+                    }
+                }
+            }
+        }
+
+        // Also scan single pairs -- maybe some have better ratio than 1:3
+        for sp in &splits {
+            if sp.frictions[1] > 1e-9 {
+                let ratio = sp.frictions[2] / sp.frictions[1];
+                let error = (ratio - target_ratio).abs();
+                if error < best_error {
+                    best_error = error;
+                    best_composite = format!("(e_{},e_{}) single", sp.i, sp.j);
+                    best_frictions_composite = sp.frictions;
+                }
+            }
+        }
+
+        println!("\n--- COMPOSITE OPERATOR SCAN ---");
+        println!("Best composite: {}", best_composite);
+        println!("  Frictions: {:.4} : {:.4} : {:.4}",
+            best_frictions_composite[0], best_frictions_composite[1], best_frictions_composite[2]);
+        let achieved_ratio = if best_frictions_composite[1] > 1e-9 {
+            best_frictions_composite[2] / best_frictions_composite[1]
+        } else { f64::INFINITY };
+        println!("  f_heavy/f_mid = {:.4} (target: {:.4}, error: {:.4})",
+            achieved_ratio, target_ratio, best_error);
+
+        // Compute the implied mass hierarchy
+        if best_frictions_composite[1] > 1e-9 && best_frictions_composite[0] < 1e-9 {
+            // Zero lightest mode: use exp model with alpha fitted to muon
+            let alpha_fit = (207.0_f64).ln() / best_frictions_composite[1];
+            let m_tau_pred = (alpha_fit * best_frictions_composite[2]).exp();
+            println!("  Implied masses: 1 : 207 : {:.1} (PDG: 3477, error: {:.1}%)",
+                m_tau_pred, ((m_tau_pred - 3477.0) / 3477.0 * 100.0).abs());
+        } else if best_frictions_composite[0] > 1e-9 {
+            let alpha_fit = (207.0_f64).ln() / (best_frictions_composite[1] - best_frictions_composite[0]);
+            let m_e_pred = (alpha_fit * best_frictions_composite[0]).exp();
+            let m_tau_pred = (alpha_fit * best_frictions_composite[2]).exp();
+            let m_mu_pred = (alpha_fit * best_frictions_composite[1]).exp();
+            println!("  Implied masses: {:.1} : {:.1} : {:.1}",
+                m_e_pred / m_e_pred, m_mu_pred / m_e_pred, m_tau_pred / m_e_pred);
+        }
+    }
 }
