@@ -19,6 +19,8 @@ parameters. Using 2-blade topological friction for mixing angles and
 | sin^2(theta_W) | 0.250 | 0.231 | 8.1% |
 | m_mu/m_e | 207.0 | 206.768 | 0.1% |
 | m_tau/m_e | 3477 | 3477.2 | 0.0% |
+| m_b/m_s | 52.3 | 51.5 | 1.5% |
+| m_s/m_d | 15.7 | ~20 | 22% |
 | |J_CP| (PMNS) | 3.34e-2 | ~3e-2 | ~10% |
 | Mass ordering | Normal | Normal | Correct |
 
