@@ -6971,4 +6971,193 @@ mod tests {
         println!("  PDG: {:.2} deg", pdg_delta);
         println!("  Residual: {:.2} deg", best_residual);
     }
+
+    /// Full delta_CP with both charged-lepton AND neutrino Gram matrices.
+    ///
+    /// The PMNS matrix is U = U_ch^dagger * U_nu. The CP phase comes from
+    /// the RELATIVE complex structure between both sectors, not just the
+    /// neutrino sector. We compute:
+    ///   G_ch[i][j] = sum_k omega^k * <ch_i, psi^k(ch_j)>  (intra-sector)
+    ///   G_nu[i][j] = sum_k omega^k * <nu_i, psi^k(nu_j)>  (intra-sector)
+    ///   G_cross[i][j] = sum_k omega^k * <ch_i, psi^k(nu_j)>  (cross-sector)
+    ///
+    /// The physical delta_CP involves the PRODUCT of the charged and neutrino
+    /// rephasing: delta = arg(quartet from G_cross) - arg(quartet from G_ch)
+    ///                    + arg(quartet from G_nu)
+    ///
+    /// Also scan alpha_ch and alpha_nu for sensitivity.
+    #[test]
+    fn test_delta_cp_full_bilateral() {
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use num_complex::Complex;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
+            let mode_j = MajoranaMode { gamma_index: sel.1 - 1, cd_basis_index: sel.1, cd_dim: 16 };
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(ch_pair, s)).collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(nu_pair, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        // Build all three Gram matrices
+        let build_gram = |profiles_a: &[[f64; 16]], profiles_b: &[[f64; 16]]| -> [[Complex<f64>; 3]; 3] {
+            let mut g = [[Complex::new(0.0, 0.0); 3]; 3];
+            for i in 0..3 {
+                for j in 0..3 {
+                    let c0 = dot16(&profiles_a[i], &profiles_b[j]);
+                    let psi1_j = gourlay_psi(&profiles_b[j]);
+                    let c1 = dot16(&profiles_a[i], &psi1_j);
+                    let psi2_j = cd_kernel::gourlay_psi_n(&profiles_b[j], 2);
+                    let c2 = dot16(&profiles_a[i], &psi2_j);
+                    let re = c0 + c1 * omega_re + c2 * omega_re;
+                    let im = c1 * omega_im - c2 * omega_im;
+                    g[i][j] = Complex::new(re, im);
+                }
+            }
+            g
+        };
+
+        let g_ch = build_gram(&ch_profiles, &ch_profiles);
+        let g_nu = build_gram(&nu_profiles, &nu_profiles);
+        let g_cross = build_gram(&ch_profiles, &nu_profiles);
+
+        // Compute quartet for each Gram matrix
+        let quartet = |g: &[[Complex<f64>; 3]; 3], e: usize, mu: usize, c1: usize, c3: usize| -> Complex<f64> {
+            g[e][c1] * g[mu][c3] * g[e][c3].conj() * g[mu][c1].conj()
+        };
+
+        println!("  === Full Bilateral Delta_CP ===\n");
+
+        // Check intra-sector phases (should be zero from earlier null result)
+        let q_ch = quartet(&g_ch, 0, 1, 0, 2);
+        let q_nu = quartet(&g_nu, 0, 1, 0, 2);
+        let q_cross = quartet(&g_cross, 0, 1, 0, 2);
+        println!("  Intra-charged quartet:  arg = {:.2} deg, |Q| = {:.4}", q_ch.arg().to_degrees(), q_ch.norm());
+        println!("  Intra-neutrino quartet: arg = {:.2} deg, |Q| = {:.4}", q_nu.arg().to_degrees(), q_nu.norm());
+        println!("  Cross-sector quartet:   arg = {:.2} deg, |Q| = {:.4}", q_cross.arg().to_degrees(), q_cross.norm());
+
+        // The physical delta_CP for U = U_ch^dagger * U_nu involves:
+        // delta = arg(Q_cross) because U_ch is real (Q_ch has arg=0) and
+        // U_nu is real (Q_nu has arg=0). The cross-sector Gram carries
+        // the entire CP phase.
+        //
+        // But if we use DIFFERENT psi coupling strengths for ch vs nu,
+        // the effective Gram involves weighted profiles. Let's check
+        // with the psi-coupled profiles.
+
+        // With psi coupling: profile_i_coupled = profile_i + alpha * psi(profile_i)
+        let build_coupled = |profiles: &[[f64; 16]], alpha: f64| -> Vec<[f64; 16]> {
+            profiles.iter().map(|p| {
+                let psi_p = gourlay_psi(p);
+                let mut coupled = [0.0_f64; 16];
+                for k in 0..16 {
+                    coupled[k] = p[k] + alpha * psi_p[k];
+                }
+                coupled
+            }).collect()
+        };
+
+        println!("\n  --- Alpha sensitivity scan ---");
+        println!("  {:>8} {:>8} | {:>10} | {:>10}",
+            "a_ch", "a_nu", "delta_CP", "residual");
+
+        let pdg_delta = -165.0_f64;
+        let mut best_residual = 180.0_f64;
+        let mut best_params = (0.0_f64, 0.0_f64, 0.0_f64);
+
+        // Scan alpha_ch x alpha_nu with best assignment (e=0, mu=1, cols=(0,2,1))
+        for ach_step in 0..=20 {
+            let a_ch = ach_step as f64 * 0.5;
+            for anu_step in 0..=20 {
+                let a_nu = anu_step as f64 * 0.5;
+
+                let ch_coupled = build_coupled(&ch_profiles, a_ch);
+                let nu_coupled = build_coupled(&nu_profiles, a_nu);
+                let gc = build_gram(&ch_coupled, &nu_coupled);
+
+                // Best assignment from previous test: e=0, mu=1, cols=(0,2,1)
+                let q = gc[0][0] * gc[1][1] * gc[0][1].conj() * gc[1][0].conj();
+                let delta = q.arg().to_degrees();
+                let residual = ((delta - pdg_delta + 540.0) % 360.0) - 180.0;
+
+                if residual.abs() < best_residual.abs() {
+                    best_residual = residual;
+                    best_params = (a_ch, a_nu, delta);
+                }
+            }
+        }
+
+        println!("\n  === BEST BILATERAL MATCH ===");
+        println!("  alpha_ch = {:.1}, alpha_nu = {:.1}", best_params.0, best_params.1);
+        println!("  delta_CP = {:.2} deg", best_params.2);
+        println!("  PDG: {:.2} deg", pdg_delta);
+        println!("  Residual: {:.2} deg", best_residual);
+
+        // Also scan with the PMNS-optimized alpha values (3.75, 1.30)
+        let ch_opt = build_coupled(&ch_profiles, 3.75);
+        let nu_opt = build_coupled(&nu_profiles, 1.30);
+        let gc_opt = build_gram(&ch_opt, &nu_opt);
+
+        println!("\n  --- At PMNS-optimal alphas (3.75, 1.30) ---");
+        // Scan all assignments + column perms at optimal alphas
+        let perms: [(usize, usize, &str); 6] = [
+            (0, 1, "e=O1,mu=O2"), (0, 2, "e=O1,mu=O3"),
+            (1, 0, "e=O2,mu=O1"), (1, 2, "e=O2,mu=O3"),
+            (2, 0, "e=O3,mu=O1"), (2, 1, "e=O3,mu=O2"),
+        ];
+        let col_perms: [(usize, usize); 6] = [
+            (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1),
+        ];
+
+        let mut best2_residual = 180.0_f64;
+        let mut best2_delta = 0.0_f64;
+        let mut best2_label = String::new();
+
+        for &(e, mu, label) in &perms {
+            for &(c1, c3) in &col_perms {
+                let q = gc_opt[e][c1] * gc_opt[mu][c3] * gc_opt[e][c3].conj() * gc_opt[mu][c1].conj();
+                let delta = q.arg().to_degrees();
+                let residual = ((delta - pdg_delta + 540.0) % 360.0) - 180.0;
+                if residual.abs() < best2_residual.abs() {
+                    best2_residual = residual;
+                    best2_delta = delta;
+                    best2_label = format!("{} cols=({},{})", label, c1, c3);
+                }
+            }
+        }
+
+        println!("  Best: {} -> delta_CP = {:.2} deg (residual {:.2})",
+            best2_label, best2_delta, best2_residual);
+    }
 }
