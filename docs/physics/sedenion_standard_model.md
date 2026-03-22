@@ -714,10 +714,12 @@ Given algebraic ratio r and one input m1 (lightest mass):
    through shared Casimir baseline. Best simultaneous fit: cost=7053 (all angles
    >50% off). Conclusion: mass ratio (3-blade) and angles (2-blade+V_6) are
    best treated as COMPLEMENTARY predictions from separate algebraic mechanisms.
-8. Unification of mass ratio + angles requires either:
-   (a) a different baseline (not Casimir) that decouples diagonal/off-diagonal, or
-   (b) a higher-dimensional lift (beyond 3x3 mass matrices) where both mechanisms
-       act on independent subspaces
+8. [x] Friction-native baseline (no Casimir): r=0.0275 (10% PDG) + theta_13=8.53
+   (0.1% PDG). Confirms Casimir was the r obstacle. theta_12/23 still collapsed
+   due to 3-blade diagonal >> 2-blade off-diagonal amplitude ratio (~53:6).
+9. Unification path: need either
+   (a) 3-blade off-diagonal coupling (sum of 3 pairwise psi overlaps), or
+   (b) higher-dimensional lift where diagonal and off-diagonal act independently
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
