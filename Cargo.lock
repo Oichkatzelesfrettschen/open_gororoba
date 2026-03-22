@@ -115,6 +115,7 @@ dependencies = [
  "criterion",
  "cudarc 0.19.3",
  "faer",
+ "flavor_lifts",
  "gororoba_algebra",
  "nalgebra 0.33.2",
  "num-bigint",
@@ -3176,6 +3177,15 @@ checksum = "843fba2746e448b37e26a819579957415c8cef339bf08564fe8b7ddbd959573c"
 dependencies = [
  "crc32fast",
  "miniz_oxide",
+]
+
+[[package]]
+name = "flavor_lifts"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "faer",
+ "nalgebra 0.33.2",
 ]
 
 [[package]]

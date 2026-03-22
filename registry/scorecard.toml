@@ -1,0 +1,256 @@
+# Canonical Observable Scorecard
+#
+# Single source of truth for all sedenion SM observable claims.
+# Each observable is assigned to exactly ONE epistemic bin:
+#   1 = Framework-backed, zero/low-parameter prediction
+#   2 = Optimized angle-sector fit
+#   3 = CP and lift-level exploratory (frontier)
+#
+# All public-facing text MUST reference this file for observable counts.
+# Do NOT write a specific count without checking this registry first.
+
+# --------------------------------------------------------------------------
+# BIN 1: Framework-backed predictions (zero or low free parameters)
+# --------------------------------------------------------------------------
+
+[[observable]]
+id = "OBS-001"
+name = "m_mu/m_e"
+bin = 1
+method = "3-blade lepton zero-divisor friction"
+value = 207.0
+pdg_value = 206.768
+error_pct = 0.1
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Exact 3-blade friction ratio, zero free parameters"
+
+[[observable]]
+id = "OBS-002"
+name = "m_tau/m_e"
+bin = 1
+method = "3-blade lepton zero-divisor friction"
+value = 3477.0
+pdg_value = 3477.2
+error_pct = 0.0
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Exact 3-blade friction ratio, zero free parameters"
+
+[[observable]]
+id = "OBS-003"
+name = "m_c/m_u"
+bin = 1
+method = "3-blade up-type quark zero-divisor friction"
+value = 542.0
+pdg_value = 550.0
+error_pct = 1.4
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Up-type quark ratio, zero free parameters"
+
+[[observable]]
+id = "OBS-004"
+name = "m_t/m_c"
+bin = 1
+method = "3-blade up-type quark zero-divisor friction"
+value = 128.0
+pdg_value = 130.0
+error_pct = 1.6
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Up-type quark ratio, zero free parameters"
+
+[[observable]]
+id = "OBS-005"
+name = "r_nu = dm21_sq/dm31_sq"
+bin = 1
+method = "3-blade neutrino zero-divisor friction"
+value = 0.0304
+pdg_value = 0.0307
+error_pct = 1.0
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Mass-squared ratio, zero free parameters, 380x improvement over 2-blade"
+
+[[observable]]
+id = "OBS-006"
+name = "m_b/m_s"
+bin = 1
+method = "3-blade down-type quark zero-divisor friction"
+value = 52.3
+pdg_value = 51.5
+error_pct = 1.5
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Down-type, strong result"
+
+[[observable]]
+id = "OBS-007"
+name = "m_s/m_d"
+bin = 1
+method = "3-blade down-type quark zero-divisor friction"
+value = 15.7
+pdg_value = 20.0
+error_pct = 22.0
+parameter_count = 0
+claim_id = "C-1459"
+strength = "weak"
+notes = "Down-type, WEAK result -- needs different triple structure. Split from up-type."
+
+[[observable]]
+id = "OBS-008"
+name = "sin_sq_theta_W"
+bin = 1
+method = "G2 stabilizer/coset structure constant ratio"
+value = 0.250
+pdg_value = 0.231
+error_pct = 8.1
+parameter_count = 0
+claim_id = "C-1458"
+strength = "heuristic"
+notes = "Tree-level structural estimate ONLY. NOT precision electroweak. 1-loop SM running worsens match."
+
+[[observable]]
+id = "OBS-009"
+name = "mass_ordering"
+bin = 1
+method = "3-blade friction eigenvalue ordering"
+value = "normal"
+pdg_value = "normal"
+error_pct = 0.0
+parameter_count = 0
+claim_id = "C-1459"
+strength = "categorical"
+notes = "Categorical prediction, not quantitative"
+
+# --------------------------------------------------------------------------
+# BIN 2: Optimized angle-sector fits (non-zero parameter count)
+# --------------------------------------------------------------------------
+
+[[observable]]
+id = "OBS-010"
+name = "theta_12_PMNS"
+bin = 2
+method = "2-blade + psi + V_6 + Gauss-Newton optimization"
+value = 33.36
+pdg_value = 33.41
+error_pct = 0.15
+parameter_count = 4
+claim_id = "C-1492"
+strength = "strong"
+notes = "4 parameters: alpha_ch, alpha_nu, t_solar, t_atmo"
+
+[[observable]]
+id = "OBS-011"
+name = "theta_13_PMNS"
+bin = 2
+method = "2-blade + psi + V_6 + Gauss-Newton optimization"
+value = 8.54
+pdg_value = 8.54
+error_pct = 0.01
+parameter_count = 4
+claim_id = "C-1492"
+strength = "strong"
+notes = "4 parameters: alpha_ch, alpha_nu, t_solar, t_atmo"
+
+[[observable]]
+id = "OBS-012"
+name = "theta_23_PMNS"
+bin = 2
+method = "2-blade + psi + V_6 + Gauss-Newton optimization"
+value = 48.99
+pdg_value = 49.0
+error_pct = 0.02
+parameter_count = 4
+claim_id = "C-1492"
+strength = "strong"
+notes = "4 parameters: alpha_ch, alpha_nu, t_solar, t_atmo"
+
+[[observable]]
+id = "OBS-013"
+name = "V_us_CKM"
+bin = 2
+method = "2-blade selector scan (interleaved scheme)"
+value = 0.245
+pdg_value = 0.225
+error_pct = 8.9
+parameter_count = 2
+claim_id = "C-1456"
+strength = "moderate"
+notes = "CKM angles within 10% of PDG, not as precise as PMNS"
+
+[[observable]]
+id = "OBS-014"
+name = "V_ub_CKM"
+bin = 2
+method = "2-blade selector scan (interleaved scheme)"
+value = 0.00382
+pdg_value = 0.00373
+error_pct = 2.4
+parameter_count = 2
+claim_id = "C-1456"
+strength = "strong"
+notes = "CKM element, good agreement"
+
+[[observable]]
+id = "OBS-015"
+name = "V_cb_CKM"
+bin = 2
+method = "2-blade selector scan (interleaved scheme)"
+value = 0.044
+pdg_value = 0.042
+error_pct = 5.0
+parameter_count = 2
+claim_id = "C-1456"
+strength = "moderate"
+notes = "CKM element, reasonable agreement"
+
+# --------------------------------------------------------------------------
+# BIN 3: CP and lift-level exploratory (frontier / scaffolding changing)
+# --------------------------------------------------------------------------
+
+[[observable]]
+id = "OBS-016"
+name = "J_CP_PMNS"
+bin = 3
+method = "CP-A: phase-only complexification / CP-B: cross-sector Gram"
+value = "8.5e-3 (CP-A) or 3.28e-2 (CP-B)"
+pdg_value = 3.3e-2
+error_pct = "25% (CP-A) or 0.6% (CP-B)"
+parameter_count = "1 (CP-A: alpha_CP) or 3 (CP-B: alpha_CP, t_sol, t_atm)"
+claim_id = "C-1494 (CP-A) / C-1497 (CP-B)"
+strength = "exploratory"
+notes = "TWO different pipelines, NOT one result with different conventions. CP-B preserves angles within 2% but quartet phase != physical PMNS delta_CP."
+
+[[observable]]
+id = "OBS-017"
+name = "delta_CP_PMNS"
+bin = 3
+method = "CP-A: phase-only complexification / CP-B: cross-sector Gram"
+value = "~165 deg (CP-A) or -90 deg (CP-B)"
+pdg_value = "195 deg"
+error_pct = "30 deg (CP-A) or 105 deg (CP-B)"
+parameter_count = "1 (CP-A) or 3 (CP-B)"
+claim_id = "C-1494 (CP-A) / C-1497 (CP-B)"
+strength = "exploratory"
+notes = "Quartet phase from Gram matrix is NOT physical PMNS delta_CP. Two pipelines disagree on what object is primary. Closure criterion not yet met."
+
+# --------------------------------------------------------------------------
+# Summary counts
+# --------------------------------------------------------------------------
+
+[summary]
+bin_1_count = 9
+bin_2_count = 6
+bin_3_count = 2
+total_quantitative = 16
+total_categorical = 1
+total = 17
+canonical_statement = "17 observables across 3 epistemic bins: 9 framework-backed (8 quantitative + 1 categorical), 6 optimized angle-sector fits, 2 CP-exploratory"

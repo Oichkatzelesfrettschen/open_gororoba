@@ -23,6 +23,7 @@ petgraph = { workspace = true }
 serde = { workspace = true }
 cudarc = { workspace = true, optional = true }
 faer.workspace = true
+flavor_lifts = { path = "../flavor_lifts" }
 argmin = { workspace = true }
 argmin-math = { workspace = true }
 
