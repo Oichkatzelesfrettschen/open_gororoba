@@ -1224,13 +1224,34 @@ on the multiplication table, not the coefficient field). However, it provides:
 - A formal language for "near-zero-divisor" deformations
 - A bridge to non-Archimedean valuation theory on the ZD manifold
 
+### Homotopy Transfer m3 (A-infinity Correction)
+
+The sedenion retraction p(u,v)=(u+v)/2 with section i(x)=(x,x) defines
+a transferred cubic operation on octonions:
+
+    m3(x,y,z) = p(h(i(x)*i(y))*i(z)) - p(i(x)*h(i(y)*i(z)))
+
+Classification of all 210 ordered triples (e_i, e_j, e_k):
+- **42 scalar outputs** (m3 = +/-2 e_0): ALL on Fano-line triples
+  (7 lines * 3! orderings = 42)
+- **168 imaginary outputs** (m3 = +/-2 e_l): ALL on non-Fano triples
+- **0 zero outputs**: m3 is nonzero for every triple
+
+This encodes the two fundamental G2 calibration forms:
+- phi (3-form, scalar on Fano lines) = the G2-invariant 3-form
+- psi (4-form dual, imaginary on non-Fano) = the co-associative 4-form
+
+The m3 is the first A-infinity correction to the octonionic product
+from the sedenion doubling. It makes precise how much associativity
+the retraction "forgets."
+
 ### Open Problems
 
 1. Classify whether surreal coefficient growth defines new invariant
    strata in the box-kite graph
 2. Formalize the scalar extension theorem in Rocq (A_n(K) = K tensor A_n(R))
 3. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
-4. Implement homotopy transfer m3 from sedenion retraction to octonions
+4. Higher m_n (n >= 4) from the homotopy transfer -- do they vanish?
 5. Connect surreal CD asymptotics to p-adic / ultrametric scaling
 
 ## Claims Index
