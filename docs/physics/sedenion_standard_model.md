@@ -1285,3 +1285,24 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - Reggiani 2025 [2512.13002] -> This is actually Koebisu 2025. Reggiani's 2025 paper
   may be a different preprint not yet on arXiv.
 - Gresnigt 2025 [2601.07857] -> Corrected to 2026 (January 2026 preprint).
+
+### Guterman-Zhilina graph sequence (gap-filled from Math-Net.ru)
+
+- Guterman & Zhilina (2019): "Relationship graphs of real CD algebras" [Springer/POMI]
+  Precursor to orthogonality graphs. Relation graph formalism for CD algebras.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/
+  Mirror: Math-Net.ru (POMI original, open access)
+
+- Zhilina (2020): "Relation graphs of the split-sedenion algebra" [Springer/POMI]
+  Split-sedenion ZD organization via graph structure.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/
+  Mirror: Math-Net.ru (POMI original, open access)
+
+- Guterman & Zhilina (2021): "Relation graphs of the sedenion algebra" [Springer/POMI]
+  Direct sedenion relation graph paper.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/
+  Mirror: Math-Net.ru (POMI original, open access)
+
+- Zhilina (2021): "Orthogonality graphs of real CD algebras Part II" [arXiv:2106.01006]
+  Companion to existing Part I (2106.00926). Hexagon/graph patterns in ZD structure.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/
