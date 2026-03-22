@@ -736,6 +736,168 @@ pub async fn search_lens(
     }).collect())
 }
 
+// ---------------------------------------------------------------------------
+// Google Scholar (Tier 2, no key, web scraping -- best-effort)
+// ---------------------------------------------------------------------------
+
+pub async fn search_google_scholar(
+    client: &Client,
+    query: &str,
+    limit: usize,
+) -> Result<Vec<Paper>, SourceError> {
+    use scraper::{Html, Selector};
+
+    let num = limit.min(20);
+    let url = format!(
+        "https://scholar.google.com/scholar?q={}&num={}&hl=en",
+        urlencoding::encode(query),
+        num
+    );
+
+    let resp = client
+        .get(&url)
+        .header("Accept", "text/html")
+        .header("Accept-Language", "en-US,en;q=0.9")
+        .send()
+        .await?;
+
+    let status = resp.status();
+    let text = resp.text().await?;
+
+    // CAPTCHA or block detection
+    if status.as_u16() == 429 || text.contains("unusual traffic") || text.contains("CAPTCHA") {
+        tracing::warn!("Google Scholar: rate limited or CAPTCHA triggered");
+        return Err(SourceError::RateLimited);
+    }
+
+    if status.as_u16() != 200 {
+        return Err(SourceError::Unavailable(
+            format!("Google Scholar returned HTTP {}", status.as_u16()),
+        ));
+    }
+
+    let document = Html::parse_document(&text);
+
+    // Each result lives in a <div class="gs_r gs_or gs_scl"> container
+    let result_sel = Selector::parse("div.gs_r.gs_or.gs_scl")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+    let title_sel = Selector::parse("h3.gs_rt a")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+    let title_nolink_sel = Selector::parse("h3.gs_rt")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+    let info_sel = Selector::parse("div.gs_a")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+    let snippet_sel = Selector::parse("div.gs_rs")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+    let pdf_sel = Selector::parse("div.gs_or_ggsm a")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+
+    let mut papers = Vec::new();
+
+    for result in document.select(&result_sel) {
+        // Title + URL
+        let (title, result_url) = if let Some(a) = result.select(&title_sel).next() {
+            let t: String = a.text().collect::<String>().trim().to_string();
+            let u = a.value().attr("href").unwrap_or("").to_string();
+            (t, u)
+        } else if let Some(h3) = result.select(&title_nolink_sel).next() {
+            (h3.text().collect::<String>().trim().to_string(), String::new())
+        } else {
+            continue;
+        };
+
+        if title.is_empty() {
+            continue;
+        }
+
+        // Author/venue line: "A Author, B Author - Journal, Year - publisher"
+        let info_text = result
+            .select(&info_sel)
+            .next()
+            .map(|el| el.text().collect::<String>())
+            .unwrap_or_default();
+
+        let (authors, year, venue) = parse_gs_info_line(&info_text);
+
+        // Snippet as abstract
+        let snippet = result
+            .select(&snippet_sel)
+            .next()
+            .map(|el| el.text().collect::<String>().trim().to_string())
+            .unwrap_or_default();
+
+        // PDF link (sidebar green link)
+        let pdf_url = result
+            .select(&pdf_sel)
+            .next()
+            .and_then(|a| a.value().attr("href"))
+            .unwrap_or("")
+            .to_string();
+
+        papers.push(Paper {
+            paper_id: format!("gs:{}", title.len()),
+            title,
+            authors,
+            year,
+            r#abstract: snippet,
+            venue,
+            url: result_url,
+            pdf_url,
+            source: "google_scholar".to_string(),
+            ..Default::default()
+        });
+    }
+
+    Ok(papers)
+}
+
+/// Parse Google Scholar info line: "A Author, B Author - Journal, Year - publisher"
+fn parse_gs_info_line(info: &str) -> (Vec<Author>, u32, String) {
+    let parts: Vec<&str> = info.split(" - ").collect();
+    let mut authors = Vec::new();
+    let mut year = 0u32;
+    let mut venue = String::new();
+
+    // First segment: authors
+    if let Some(author_str) = parts.first() {
+        // Remove ellipsis artifacts
+        let cleaned = author_str.replace("...", "").replace('\u{2026}', "");
+        for name in cleaned.split(',') {
+            let name = name.trim();
+            if !name.is_empty() && name.len() > 1 {
+                authors.push(Author {
+                    name: name.to_string(),
+                    affiliation: String::new(),
+                });
+            }
+        }
+    }
+
+    // Second segment: "Journal, Year" or just "Year"
+    if let Some(venue_year) = parts.get(1) {
+        // Try to extract a 4-digit year
+        for word in venue_year.split(|c: char| !c.is_ascii_digit()) {
+            if word.len() == 4
+                && let Ok(y) = word.parse::<u32>()
+                && (1900..=2030).contains(&y)
+            {
+                year = y;
+            }
+        }
+        // Everything before the year is venue
+        if year > 0 {
+            let yr_str = year.to_string();
+            if let Some(pos) = venue_year.find(&yr_str) {
+                venue = venue_year[..pos].trim().trim_end_matches(',').trim().to_string();
+            }
+        } else {
+            venue = venue_year.trim().to_string();
+        }
+    }
+
+    (authors, year, venue)
+}
+
 // Encode URL component
 mod urlencoding {
     pub fn encode(s: &str) -> String {

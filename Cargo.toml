@@ -257,6 +257,7 @@ toml = "0.8"                     # TOML serialization/deserialization
 toml_edit = "0.23"               # Deterministic TOML emission/editing for compatibility exports
 camino = "1.2"                   # UTF-8 canonical repo-relative paths in provenance layers
 strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
+scraper = "0.22"                 # HTML scraping with CSS selectors (Google Scholar)
 unicode-normalization = "0.1"    # Unicode normalization for ANSI-safe UTF-8 sanitation
 
 # HDF5 data export (requires system libhdf5)

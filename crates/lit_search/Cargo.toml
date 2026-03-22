@@ -6,10 +6,11 @@ description = "Multi-source academic literature search with deduplication"
 
 [dependencies]
 reqwest = { workspace = true, features = ["json"] }
-tokio = { workspace = true }
+tokio = { workspace = true, features = ["process"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 strsim = { workspace = true }
+scraper = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }

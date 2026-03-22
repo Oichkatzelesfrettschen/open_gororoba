@@ -9008,4 +9008,288 @@ mod tests {
         println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", obs[3], pdg_r, ((obs[3] - pdg_r) / pdg_r * 100.0).abs());
         println!("  cost = {:.2}", best.0);
     }
+
+    /// Phase-only CP violation: multiply off-diagonal M[i][j] by exp(i * phi[i][j])
+    /// instead of adding imaginary parts. This preserves eigenvalue magnitudes
+    /// while introducing rephasing-invariant CP violation.
+    ///
+    /// The phase phi[i][j] comes from the Fano-derived J_k complex structure:
+    ///   phi[i][j] = alpha_CP * atan2(im_overlap[i][j], re_overlap[i][j])
+    /// where im_overlap = <profile_i, J_k(psi(profile_j))>
+    /// and   re_overlap = <profile_i, psi(profile_j)>
+    ///
+    /// This is the correct physical approach: the mass matrix should be
+    /// Hermitian (M = M^dagger), not symmetric, to produce CP violation.
+    #[test]
+    fn test_cp_violation_phase_only() {
+        use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let alpha_ch = 3.00_f64;
+        let alpha_nu = 1.35_f64;
+
+        // Get the best real mass matrices + V_6 correction
+        let (m_ch_real, m_nu_real) = construct_pmns_matrices_two_param(
+            ch_pair, nu_pair, alpha_ch, alpha_nu,
+        );
+        let (v6_basis, _, _) = extract_v6_basis();
+        let lift = TensorElementLift;
+        let eps = 0.05_f64;
+        let n_basis = v6_basis.nrows().min(6);
+
+        // Compute constrained directions
+        let eig_ch_0 = m_ch_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig_nu_0 = m_nu_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_raw_0 = eig_ch_0.u().transpose() * eig_nu_0.u();
+        let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+        let angles_at = |beta: &[f64; 6]| -> (f64, f64, f64) {
+            let mut m_nu = m_nu_real.clone();
+            apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+            let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch_0.u().transpose() * eig_nu.u();
+            let mut u_perm = faer::Mat::zeros(3, 3);
+            for i in 0..3 { for j in 0..3 {
+                u_perm.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+            }}
+            extract_pmns_angles(&u_perm)
+        };
+
+        // Compute gradients via finite differences
+        let mut g_12 = [0.0_f64; 6];
+        let mut g_13 = [0.0_f64; 6];
+        let mut g_23 = [0.0_f64; 6];
+        for mu in 0..n_basis {
+            let mut bp = [0.0_f64; 6];
+            let mut bm = [0.0_f64; 6];
+            bp[mu] = eps;
+            bm[mu] = -eps;
+            let (t12p, t13p, t23p) = angles_at(&bp);
+            let (t12m, t13m, t23m) = angles_at(&bm);
+            g_12[mu] = (t12p - t12m) / (2.0 * eps);
+            g_13[mu] = (t13p - t13m) / (2.0 * eps);
+            g_23[mu] = (t23p - t23m) / (2.0 * eps);
+        }
+
+        let u_solar = compute_constrained_solar_direction(&g_12, &g_13, &g_23);
+        let u_atmo = compute_constrained_atmospheric_direction(&g_23, &g_13, &u_solar);
+
+        let inner_angles = |t_sol: f64, t_atm: f64| -> (f64, f64, f64) {
+            let mut beta = [0.0_f64; 6];
+            for k in 0..6 { beta[k] = t_sol * u_solar[k] + t_atm * u_atmo[k]; }
+            angles_at(&beta)
+        };
+        let (t_sol, t_atm, _, _) = gauss_newton_2d(
+            &inner_angles, 1.5, 0.0,
+            (33.41, 8.54, 49.0), (1.0, 2.24, 1.0), 15,
+        );
+
+        let mut beta_opt = [0.0_f64; 6];
+        for k in 0..6 { beta_opt[k] = t_sol * u_solar[k] + t_atm * u_atmo[k]; }
+        let mut m_nu_corrected = m_nu_real.clone();
+        apply_v6_perturbation(&mut m_nu_corrected, &v6_basis, &beta_opt, &lift);
+        let m_nu_corrected = (&m_nu_corrected + m_nu_corrected.transpose()) * faer::scale(0.5);
+
+        // Verify baseline angles
+        let eig_nu_c0 = m_nu_corrected.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_real_baseline = eig_ch_0.u().transpose() * eig_nu_c0.u();
+        let mut u_perm_base = faer::Mat::zeros(3, 3);
+        for i in 0..3 { for j in 0..3 {
+            u_perm_base.write(i, j, u_real_baseline.read(perm_u[i], perm_d[j]));
+        }}
+        let (t12_b, t13_b, t23_b) = extract_pmns_angles(&u_perm_base);
+        println!("--- CP VIOLATION: PHASE-ONLY COMPLEXIFICATION ---");
+        println!("  Real baseline: theta_12={:.2}, theta_13={:.2}, theta_23={:.2}",
+            t12_b, t13_b, t23_b);
+
+        // Build friction profiles
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+        let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+        let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+        let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &kk in sub {
+                if kk == 0 || kk == i || kk == j { continue; }
+                let x_sparse = [(kk, 1.0)];
+                profile[kk] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(&nu_a, &nu_b, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        println!("\n  Scanning k=1..7 embeddings with phase-only complexification:");
+
+        // For each k=1..7, compute phase angles from J_k complex structure
+        for k in 1..=7 {
+            let cs = complex_structure(k);
+
+            let apply_jk = |v: &[f64; 16]| -> [f64; 16] {
+                let mut result = [0.0_f64; 16];
+                for r in 0..6 {
+                    for s in 0..6 {
+                        result[cs.perp_indices[r]] += cs.matrix[r][s] * v[cs.perp_indices[s]];
+                    }
+                }
+                result
+            };
+
+            // Compute BOTH real and imaginary psi-overlaps
+            let mut re_overlap = [[0.0_f64; 3]; 3];
+            let mut im_overlap = [[0.0_f64; 3]; 3];
+            for i in 0..3 {
+                for j in 0..3 {
+                    let psi_j = gourlay_psi(&nu_profiles[j]);
+                    re_overlap[i][j] = dot16(&nu_profiles[i], &psi_j);
+                    if i != j {
+                        let jk_psi_j = apply_jk(&psi_j);
+                        im_overlap[i][j] = dot16(&nu_profiles[i], &jk_psi_j);
+                    }
+                }
+            }
+
+            // Compute natural phase angles from the overlap structure
+            let mut phi = [[0.0_f64; 3]; 3];
+            let mut has_nonzero_phase = false;
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i != j {
+                        phi[i][j] = im_overlap[i][j].atan2(re_overlap[i][j]);
+                        if phi[i][j].abs() > 1e-10 {
+                            has_nonzero_phase = true;
+                        }
+                    }
+                }
+            }
+
+            if !has_nonzero_phase {
+                println!("  k={}: all phases zero, skipping", k);
+                continue;
+            }
+
+            // Scan alpha_CP in [0.001, 1.0] with phase-only modification:
+            // M_nu[i][j] -> |M_nu[i][j]| * exp(i * alpha_CP * phi[i][j])
+            let mut best_alpha_cp = 0.0_f64;
+            let mut best_j_cp = 0.0_f64;
+            let mut best_delta = 0.0_f64;
+            let mut best_score = f64::MAX;
+            let mut best_angles = (0.0_f64, 0.0_f64, 0.0_f64);
+
+            for step in 1..=200_i32 {
+                let alpha_cp = step as f64 * 0.005;
+
+                // Build Hermitian complex neutrino mass matrix
+                // M[i][j] = M_real[i][j] * exp(i * alpha_CP * phi[i][j])
+                // with Hermiticity: M[j][i] = conj(M[i][j])
+                let mut m_nu_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+                let mut m_ch_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+
+                for i in 0..3 {
+                    // Diagonal stays real
+                    m_nu_c.write(i, i, faer::complex_native::c64::new(
+                        m_nu_corrected.read(i, i), 0.0,
+                    ));
+                    m_ch_c.write(i, i, faer::complex_native::c64::new(
+                        m_ch_real.read(i, i), 0.0,
+                    ));
+
+                    for j in (i + 1)..3 {
+                        // Off-diagonal: phase rotation
+                        let phase = alpha_cp * phi[i][j];
+                        let mag = m_nu_corrected.read(i, j);
+                        let re = mag * phase.cos();
+                        let im = mag * phase.sin();
+                        m_nu_c.write(i, j, faer::complex_native::c64::new(re, im));
+                        m_nu_c.write(j, i, faer::complex_native::c64::new(re, -im)); // Hermitian
+
+                        // Charged lepton stays real symmetric
+                        m_ch_c.write(i, j, faer::complex_native::c64::new(
+                            m_ch_real.read(i, j), 0.0,
+                        ));
+                        m_ch_c.write(j, i, faer::complex_native::c64::new(
+                            m_ch_real.read(j, i), 0.0,
+                        ));
+                    }
+                }
+
+                let eig_ch_c = m_ch_c.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu_c = m_nu_c.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_pmns_c = eig_ch_c.u().adjoint() * eig_nu_c.u();
+
+                // Apply same permutation as real baseline
+                let mut u_perm_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+                for i in 0..3 { for j in 0..3 {
+                    u_perm_c.write(i, j, u_pmns_c.read(perm_u[i], perm_d[j]));
+                }}
+
+                // Extract angles from |U_ij|
+                let u_e3_abs = u_perm_c.read(0, 2).abs();
+                let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
+                let cos_13 = theta_13.to_radians().cos();
+                let theta_12 = if cos_13 > 1e-15 {
+                    (u_perm_c.read(0, 1).abs() / cos_13).min(1.0).asin().to_degrees()
+                } else { 0.0 };
+                let theta_23 = if cos_13 > 1e-15 {
+                    (u_perm_c.read(1, 2).abs() / cos_13).min(1.0).asin().to_degrees()
+                } else { 0.0 };
+
+                // Jarlskog invariant: J = Im(U_e1 * U_mu2 * conj(U_e2) * conj(U_mu1))
+                let j_cp = (u_perm_c.read(0, 0) * u_perm_c.read(1, 1)
+                    * u_perm_c.read(0, 1).conj() * u_perm_c.read(1, 0).conj()).im;
+
+                // delta_CP from arg(-U_e3)
+                let delta_cp = (-u_perm_c.read(0, 2)).arg().to_degrees();
+
+                // Score: angle preservation is primary, J_CP is secondary reward
+                let angle_cost = ((theta_12 - 33.41) / 33.41).powi(2)
+                    + ((theta_13 - 8.54) / 8.54).powi(2)
+                    + ((theta_23 - 49.0) / 49.0).powi(2);
+
+                // Only accept if angles are within 5% of PDG
+                if angle_cost < 0.01 && j_cp.abs() > 1e-6 {
+                    let score = angle_cost - 0.1 * j_cp.abs();
+                    if score < best_score {
+                        best_score = score;
+                        best_alpha_cp = alpha_cp;
+                        best_j_cp = j_cp;
+                        best_delta = delta_cp;
+                        best_angles = (theta_12, theta_13, theta_23);
+                    }
+                }
+            }
+
+            if best_j_cp.abs() > 1e-6 {
+                let err_12 = ((best_angles.0 - 33.41) / 33.41 * 100.0).abs();
+                let err_13 = ((best_angles.1 - 8.54) / 8.54 * 100.0).abs();
+                let err_23 = ((best_angles.2 - 49.0) / 49.0 * 100.0).abs();
+                println!("  k={}: alpha_CP={:.3}, theta_12={:.2} ({:.1}%), theta_13={:.2} ({:.1}%), theta_23={:.2} ({:.1}%), J_CP={:.4e}, delta={:.1} deg",
+                    k, best_alpha_cp, best_angles.0, err_12, best_angles.1, err_13, best_angles.2, err_23, best_j_cp, best_delta);
+            } else {
+                println!("  k={}: no solution with <5% angle error and nonzero J_CP", k);
+            }
+        }
+
+        println!("\n  PDG targets: J_CP ~ 3.3e-2, delta_CP ~ 195 deg (normal ordering, NuFIT 5.3)");
+        println!("  Rephasing-invariant Jarlskog: |J| = cos(t12)*sin(t12)*cos(t13)^2*sin(t13)*cos(t23)*sin(t23)*sin(delta)");
+        println!("  With PDG angles + delta=195: J ~ -0.033");
+    }
 }
