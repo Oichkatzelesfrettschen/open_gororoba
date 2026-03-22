@@ -7160,4 +7160,138 @@ mod tests {
         println!("  Best: {} -> delta_CP = {:.2} deg (residual {:.2})",
             best2_label, best2_delta, best2_residual);
     }
+
+    /// Scan ALL selector pairs for delta_CP + mixing angle chi^2.
+    ///
+    /// For each (charged_pair, neutrino_pair), compute:
+    /// 1. Mixing angles via the real PMNS pipeline (chi^2 vs PDG)
+    /// 2. Cross-sector Gram quartet phase (delta_CP prediction)
+    /// 3. Combined score = chi2_angles + w_CP * (delta_CP - PDG)^2
+    #[test]
+    fn test_delta_cp_selector_scan() {
+        use rayon::prelude::*;
+        use cd_kernel::gourlay_psi;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use num_complex::Complex;
+
+        let pdg = Pdg2024::default();
+        let pdg_delta = -165.0_f64;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs_owned: Vec<Vec<usize>> = vec![o1.clone(), o2.clone(), o3.clone()];
+
+        let pairs: Vec<(usize, usize)> = (1..=15)
+            .flat_map(|a| ((a + 1)..=15).map(move |b| (a, b)))
+            .collect();
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        // Parallel scan over selector pairs
+        let results: Vec<_> = pairs.par_iter().flat_map_iter(|&ch| {
+            let subs = &subs_owned;
+            pairs.iter().map(move |&nu| {
+                let sign_table = SignTableCache::new(16);
+
+                let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+                    let i = sel.0;
+                    let j = sel.1;
+                    let a_sparse = vec![(i, 1.0)];
+                    let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+                    let b_sparse = vec![(j, 1.0)];
+                    let mut profile = [0.0_f64; 16];
+                    for &k in sub {
+                        if k == 0 || k == i || k == j { continue; }
+                        let x_sparse = [(k, 1.0)];
+                        profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+                    }
+                    profile
+                };
+
+                let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+                    a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+                };
+
+                let ch_profiles: Vec<[f64; 16]> = subs.iter()
+                    .map(|s| build_profile(ch, s)).collect();
+                let nu_profiles: Vec<[f64; 16]> = subs.iter()
+                    .map(|s| build_profile(nu, s)).collect();
+
+                // Cross-sector Gram matrix
+                let mut gc = [[Complex::new(0.0, 0.0); 3]; 3];
+                for i in 0..3 {
+                    for j in 0..3 {
+                        let c0 = dot16(&ch_profiles[i], &nu_profiles[j]);
+                        let psi1_j = gourlay_psi(&nu_profiles[j]);
+                        let c1 = dot16(&ch_profiles[i], &psi1_j);
+                        let psi2_j = cd_kernel::gourlay_psi_n(&nu_profiles[j], 2);
+                        let c2 = dot16(&ch_profiles[i], &psi2_j);
+                        gc[i][j] = Complex::new(
+                            c0 + c1 * omega_re + c2 * omega_re,
+                            c1 * omega_im - c2 * omega_im,
+                        );
+                    }
+                }
+
+                // Best delta_CP across assignments + column perms
+                let mut best_delta_residual = 180.0_f64;
+                let mut best_delta = 0.0_f64;
+                for &(e, mu) in &[(0usize, 1usize), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)] {
+                    for &(c1, c3) in &[(0usize, 1usize), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)] {
+                        let q = gc[e][c1] * gc[mu][c3] * gc[e][c3].conj() * gc[mu][c1].conj();
+                        if q.norm() < 1e-20 { continue; }
+                        let delta = q.arg().to_degrees();
+                        let residual = ((delta - pdg_delta + 540.0) % 360.0) - 180.0;
+                        if residual.abs() < best_delta_residual.abs() {
+                            best_delta_residual = residual;
+                            best_delta = delta;
+                        }
+                    }
+                }
+
+                // Mixing angles (quick compute_pmns)
+                let r = compute_pmns(ch, nu);
+                let chi2 = chi_squared_pmns(&r, &pdg);
+
+                (chi2, best_delta, best_delta_residual.abs(), ch, nu)
+            })
+        }).collect();
+
+        // Sort by combined score: angle chi2 + CP residual weight
+        let mut sorted = results;
+        sorted.sort_by(|a, b| {
+            let score_a = a.0 + 0.5 * a.2 * a.2; // chi2 + 0.5 * delta_residual^2
+            let score_b = b.0 + 0.5 * b.2 * b.2;
+            score_a.partial_cmp(&score_b).unwrap()
+        });
+
+        println!("  === Delta_CP + Angle Chi2 Selector Scan ===\n");
+        println!("  {:>6} | {:>10} {:>10} | {:>8} | {:>8} | {:>8}",
+            "rank", "charged", "neutrino", "chi2", "delta_CP", "|resid|");
+        println!("  {:-<6}-+-{:-<10}-{:-<10}-+-{:-<8}-+-{:-<8}-+-{:-<8}", "", "", "", "", "", "");
+
+        for (rank, entry) in sorted.iter().take(15).enumerate() {
+            println!("  {:>6} | {:>10?} {:>10?} | {:>8.1} | {:>+8.1} | {:>8.1}",
+                rank + 1, entry.3, entry.4, entry.0, entry.1, entry.2);
+        }
+
+        // Find the entry closest to PDG delta
+        let best_cp = sorted.iter().min_by(|a, b| a.2.partial_cmp(&b.2).unwrap()).unwrap();
+        println!("\n  Closest to PDG delta_CP:");
+        println!("  charged={:?}, neutrino={:?}", best_cp.3, best_cp.4);
+        println!("  chi2_angles = {:.1}, delta_CP = {:.1} deg, |residual| = {:.1} deg",
+            best_cp.0, best_cp.1, best_cp.2);
+
+        // Find the entry with best chi2 that also has |residual| < 60 deg
+        let best_combined = sorted.iter()
+            .filter(|e| e.2 < 60.0)
+            .min_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        if let Some(bc) = best_combined {
+            println!("\n  Best angles + decent CP (|resid| < 60 deg):");
+            println!("  charged={:?}, neutrino={:?}", bc.3, bc.4);
+            println!("  chi2_angles = {:.1}, delta_CP = {:.1} deg, |residual| = {:.1} deg",
+                bc.0, bc.1, bc.2);
+        }
+    }
 }
