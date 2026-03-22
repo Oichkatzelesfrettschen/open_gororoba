@@ -8691,4 +8691,152 @@ mod tests {
         println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", obs[3], pdg_r, ((obs[3] - pdg_r) / pdg_r * 100.0).abs());
         println!("  cost = {:.2}", best.0);
     }
+
+    /// Full 3-blade model: 3-blade diagonal + 3-blade off-diagonal.
+    ///
+    /// Off-diagonal: sum of 3 pairwise psi overlaps (3x amplitude of 2-blade).
+    /// This should provide enough off-diagonal strength to rotate eigenvectors
+    /// while preserving the 3-blade mass hierarchy.
+    #[test]
+    fn test_full_3blade_model() {
+        use cd_kernel::gourlay_psi;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let pdg = Pdg2024::default();
+        let pdg_r = 0.0307_f64;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+
+        // Build 3-blade profiles for BOTH diagonal and off-diagonal
+        let build_3blade_profile = |a: usize, b: usize, c: usize, sub: &[usize]| -> [f64; 16] {
+            let ma = MajoranaMode { gamma_index: a-1, cd_basis_index: a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b-1, cd_basis_index: b, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: c-1, cd_basis_index: c, cd_dim: 16 };
+            let build_pair = |m1: &MajoranaMode, m2: &MajoranaMode, s: &[usize]| -> [f64; 16] {
+                let i = m1.cd_basis_index; let j = m2.cd_basis_index;
+                let a_sp = vec![(i, 1.0)];
+                let a_rot = rotate_sparse(&a_sp, i, j, std::f64::consts::FRAC_PI_4);
+                let b_sp = vec![(j, 1.0)];
+                let mut p = [0.0_f64; 16];
+                for &k in s {
+                    if k == 0 || k == i || k == j { continue; }
+                    p[k] = sign_table.sparse_associator_sum(&a_rot, &[(k, 1.0)], &b_sp);
+                }
+                p
+            };
+            let p_ab = build_pair(&ma, &mb, sub);
+            let p_ac = build_pair(&ma, &mc, sub);
+            let p_bc = build_pair(&mb, &mc, sub);
+            let mut combined = [0.0_f64; 16];
+            for idx in 0..16 { combined[idx] = p_ab[idx] + p_ac[idx] + p_bc[idx]; }
+            combined
+        };
+
+        // Use angle-optimal triple for off-diagonal (different from mass-ratio triple)
+        // ch: (11,12) pair embedded as triple (10,11,12) -- includes neighbors
+        // nu: (7,8) pair embedded as triple (7,8,9) -- includes neighbors
+        let ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_3blade_profile(10, 11, 12, s)).collect();
+        let nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_3blade_profile(7, 8, 9, s)).collect();
+
+        // Mass-ratio triple frictions (diagonal)
+        let sel_ch_3: Vec<f64> = subs.iter().map(|s| {
+            let ma = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: 5, cd_basis_index: 6, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: 10, cd_basis_index: 11, cd_dim: 16 };
+            cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+            + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+            + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+        }).collect();
+        let sel_nu_3: Vec<f64> = subs.iter().map(|s| {
+            let ma = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: 2, cd_basis_index: 3, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: 7, cd_basis_index: 8, cd_dim: 16 };
+            cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+            + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+            + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+        }).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        println!("  === Full 3-Blade Model (3-blade diagonal + 3-blade off-diagonal) ===\n");
+
+        // Check 3-blade off-diagonal amplitude vs 2-blade
+        let psi_nu_0 = gourlay_psi(&nu_profiles[0]);
+        let offdiag_3b = dot16(&nu_profiles[1], &psi_nu_0);
+        println!("  3-blade off-diagonal amplitude: {:.2}", offdiag_3b);
+
+        let mut best = (f64::MAX, 0.0_f64, 0.0, [0.0_f64; 4]);
+
+        for beta_step in 1..=30 {
+            let beta = beta_step as f64 * 0.1;
+            for alpha_step in 0..=40 {
+                let alpha = alpha_step as f64 * 0.5;
+
+                let mut m_ch = faer::Mat::zeros(3, 3);
+                let mut m_nu = faer::Mat::zeros(3, 3);
+
+                // Diagonal: 3-blade (mass-ratio optimal)
+                for g in 0..3 {
+                    let f_ch = beta * (w1 * sel_ch_3[g] + w2 * sel_nu_3[g]);
+                    let f_nu = beta * (w1 * sel_nu_3[g] + w2 * sel_ch_3[g]);
+                    m_ch.write(g, g, f_ch.exp());
+                    m_nu.write(g, g, f_nu.exp());
+                }
+
+                // Off-diagonal: 3-blade psi coupling (3x amplitude)
+                for i in 0..3 {
+                    for j in 0..3 {
+                        if i == j { continue; }
+                        let psi_nu_j = gourlay_psi(&nu_profiles[j]);
+                        let psi_ch_j = gourlay_psi(&ch_profiles[j]);
+                        m_nu.write(i, j, alpha * dot16(&nu_profiles[i], &psi_nu_j));
+                        m_ch.write(i, j, alpha * dot16(&ch_profiles[i], &psi_ch_j));
+                    }
+                }
+
+                let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_ch = m_ch_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+                let mut ev: Vec<f64> = (0..3).map(|i| eig_nu.s().column_vector().read(i).abs()).collect();
+                ev.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let dm21 = ev[1]*ev[1] - ev[0]*ev[0];
+                let dm31 = ev[2]*ev[2] - ev[0]*ev[0];
+                let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { 1.0 };
+
+                let cost = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2)
+                         + ((r - pdg_r) / 0.003).powi(2);
+
+                if cost < best.0 {
+                    best = (cost, beta, alpha, [t12, t13, t23, r]);
+                }
+            }
+        }
+
+        let obs = best.3;
+        println!("\n  === BEST FULL 3-BLADE RESULT ===");
+        println!("  beta = {:.1}, alpha = {:.1}", best.1, best.2);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[0], pdg.theta_12_deg, ((obs[0] - pdg.theta_12_deg) / pdg.theta_12_deg * 100.0).abs());
+        println!("  theta_13 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[1], pdg.theta_13_deg, ((obs[1] - pdg.theta_13_deg) / pdg.theta_13_deg * 100.0).abs());
+        println!("  theta_23 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[2], pdg.theta_23_deg, ((obs[2] - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
+        println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", obs[3], pdg_r, ((obs[3] - pdg_r) / pdg_r * 100.0).abs());
+        println!("  cost = {:.2}", best.0);
+    }
 }
