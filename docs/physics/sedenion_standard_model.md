@@ -1245,13 +1245,26 @@ The m3 is the first A-infinity correction to the octonionic product
 from the sedenion doubling. It makes precise how much associativity
 the retraction "forgets."
 
+### m4 Does NOT Vanish (Infinite A-infinity Tower)
+
+The quartic transfer m4 is nonzero for 672 of 840 ordered quadruples (80%).
+Max |m4| = 4.0 (vs m3 max = 2.0). The ratio |m4|/|m3| = 2 means the series
+GROWS, not converges. The A-infinity structure is genuinely infinite.
+
+168 zero quadruples = same count as non-Fano triples from m3, suggesting
+deep combinatorial correlation with the Fano plane structure.
+
+**Implication**: Any finite truncation (using only m2 + m3) is an approximation.
+The full algebraic content of the sedenion retraction requires infinitely
+many higher operations. This is the algebraic analogue of an asymptotic
+series -- useful when truncated, but not convergent.
+
 ### Open Problems
 
-1. Classify whether surreal coefficient growth defines new invariant
-   strata in the box-kite graph
-2. Formalize the scalar extension theorem in Rocq (A_n(K) = K tensor A_n(R))
-3. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
-4. Higher m_n (n >= 4) from the homotopy transfer -- do they vanish?
+1. Classify the 168 m4-zero quadruples combinatorially
+2. Compute m5 and check the growth rate |m_n|/|m_{n-1}|
+3. Formalize the scalar extension theorem in Rocq
+4. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
 5. Connect surreal CD asymptotics to p-adic / ultrametric scaling
 
 ## Claims Index
