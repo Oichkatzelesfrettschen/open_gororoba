@@ -206,3 +206,4 @@ verified/C1470_PathionTrilinearity.v
 theories/HigherCD.v
 verified/C1471_HigherCDTrilinearity.v
 theories/G2StabilizerDimension.v
+theories/SU3StructureConstants.v
