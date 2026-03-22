@@ -543,6 +543,47 @@ explicitly project-specific, not literature-dictated.
 5. **V_6 is generation-invariant**: psi acts as a scalar on V_6 by construction
    (V_6 = complement of B/C where generation structure lives).
 
+## VIII-B. Negative-Result Ladder
+
+The following null results are evidence of systematic exploration, not
+failures. They narrow the search space and make the positive results
+(TensorElementLift 42->6 success, near-exact PMNS angles) more convincing.
+
+1. **Casimir-only is too flavor-blind**: The CasimirBaseline (c_su3, c_su2)
+   provides a useful decomposition of the mass matrix, but it carries no
+   generation-specific information. Without additional structure (selectors,
+   friction, V_6 perturbation), it cannot distinguish between generations.
+
+2. **Fixed-axis norm braiding preserves too much symmetry**: Using a single
+   Majorana mode pair (2-blade) without psi coupling gives mass matrices
+   that are too symmetric to reproduce the PMNS structure. The psi
+   automorphism is essential for breaking the inter-generation symmetry.
+
+3. **All tested 42->3 generation-factor lifts hit the rank-2 PMNS lock**:
+   The (12/12/6) partition (C-1475), DirectOffDiagonalLift, and
+   AssessorToFlavorMap all collapse 42D to 3 effective DOFs, producing a
+   rank-2 Jacobian that cannot independently steer theta_12 without
+   contaminating theta_13. TensorElementLift (42->6) breaks this lock by
+   preserving 6 independent DOFs matching the V_6 dimension (C-1478).
+
+4. **Current psi linearization does not define faithful order-3 on V_6**:
+   The assessor-level psi restriction satisfies psi^3 != I on V_6 under
+   the current linearization. This means the S_3-equivariance analysis
+   (B3) is provisional on the current action, and the non-equivariance
+   finding for TensorElementLift may change once a faithful S_3 action
+   is constructed at the triad/incidence level.
+
+5. **Intra-sector psi eigenspace gives Im = 0**: The cross-sector Gram
+   matrix between charged and neutrino friction profiles shows nonzero
+   imaginary parts (arg ~ 45 deg), but the intra-sector psi eigenspace
+   has Im = 0 exactly (psi symmetric, cancels). CP violation is a
+   cross-sector phenomenon.
+
+6. **16D vs 6D J_k action gives identical results (C-1496)**: Full 16D J_k
+   (both octonion halves) produces identical |J_CP| to 6D perp-only action.
+   Friction profiles from (e_7, e_8) associators have zero upper-block
+   components. The gap is algebraic, not dimensional.
+
 ## IX. CP Violation from Cross-Sector Gram Phase
 
 ### The Mechanism
@@ -1106,6 +1147,76 @@ The only fitted parameters are w1, w2 (lepton mass fit), alpha_ch,
 alpha_nu (psi coupling, GN-optimized), and t_solar, t_atmo (V_6
 corrections). The 3-blade mass ratios and sin^2(theta_W) are
 zero-parameter predictions.
+
+### Methodological unification: structure replaces search
+
+The same thesis governs runtime and proof time. The zero-copy dense
+CD kernels (SIMD f64x4 octonionic multiply), the sign-table boolean
+reflection proofs (vm_compute + reflexivity in < 1s), the tower-rewrite
+trilinearity proofs (rewrite sed_mul_scale_left x3 in 3s), and the
+CDDouble functor (7-axiom generic doubling with automatic linearity)
+all express the same idea: structure-aware computation eliminates the
+need for brute-force search. This is not just elegant engineering --
+it is one of the most convincing unifying ideas in the project, because
+it demonstrates that the algebraic structure is computationally productive
+at every level of the verification stack.
+
+### Future directions: scalar extension
+
+The scalar extension theorem (A_n(K) = K tensor_R A_n(R) for any ordered
+field K extending R, with fixed integer structure constants) is proven
+computationally and is the subject of formal verification (Epic C, C6).
+Beyond this clean algebraic result, surreal birthday valuations, p-adic
+Cayley-Dickson algebras A_n(Q_p), and infinitesimal deformations of
+zero-divisor varieties are a separate mathematical program (Epic D).
+They should not leak into the PMNS/CKM thesis except as notation that
+the framework is extensible. See Section XVI for the full surreal
+Cayley-Dickson tower treatment.
+
+## XV-B. Known Tensions and Scope Limits
+
+These are stated explicitly so they become part of the intellectual map
+rather than unstated weaknesses discovered in peer review.
+
+1. **Aut(S) framing tension**: Aut(S) = G_2 (Schafer, confirmed by Wilmot)
+   is the standard result. The S_3 family symmetry is specific to the
+   Gresnigt/Gourlay/Brown framework, where it arises from the interleaved
+   subalgebra structure. This framework is productive but not universal.
+
+2. **CP has two pipelines, not yet a single canonical one**: CP-A
+   (phase-only complexification) and CP-B (cross-sector Gram / rephasing)
+   produce materially different |J_CP| and delta_CP values. They disagree
+   not only in delta_CP convention but in what object is treated as primary
+   (quartet phase vs rephased PMNS phase). The closure criterion is not yet
+   met by either pipeline individually.
+
+3. **CP-optimal and angle-optimal selector pairs are not the same**: The
+   pair giving delta_CP ~ -166 deg is badly incompatible with the
+   angle-sector fit, while the angle-optimal pair gives a CP phase that is
+   much further from PDG. This is a "one framework, multiple incompatible
+   optima" fact that must be owned early.
+
+4. **TensorElementLift is successful but response-fitted**: The 42->6 block
+   assignment works because it preserves 6 effective DOFs matching V_6, but
+   the specific 7-assessor blocks are not yet derived from the algebra.
+   Whether TensorElementLift lies in Hom_{S_3}(V_6, Sym_3) is the central
+   open question (Epic B).
+
+5. **Mass ratios and mixing angles are complementary rather than unified**:
+   2-blade off-diagonal structure is angle-optimal; 3-blade diagonal
+   structure is mass-ratio-optimal; naive combination degrades both. The
+   structurally correct forward model is "two-selector-type": 3-blade
+   triples set the hierarchy, 2-blade pairs set the mixing.
+
+6. **sin^2(theta_W) = 0.250 is tree-level structural output**: The 8% gap
+   from PDG 0.231 is plausibly the size of omitted radiative corrections.
+   1-loop SM running actually worsens the match. This should be read as a
+   group-theoretic heuristic, not a precision electroweak derivation.
+
+7. **Down-type quark mass ratios are asymmetrically weaker**: m_b/m_s =
+   52.3 (1.5% PDG) is strong, but m_s/m_d = 15.7 (22% PDG) needs a
+   different triple structure. The up-type/down-type asymmetry should not
+   be flattened in the observable count.
 
 ## References and Bibliography
 
