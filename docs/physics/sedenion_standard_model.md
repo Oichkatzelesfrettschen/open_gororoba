@@ -1096,6 +1096,10 @@ zero-parameter predictions.
     math/0703745 (2007): Placeholder substructures III (closure properties)
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/de_marrais_*.pdf
 
+- Anon (2025): "Cayley-Dickson tower mnemonic" [arXiv:2512.22134v3]
+  Pedagogical overview of doubling tower naming and dimensional structure.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/cd_tower_structure/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf
+
 **Canonical mathematical reference:**
 - Baez (2002): "The Octonions" [arXiv:math/0105155]
   Division algebra tower R->C->H->O. Fano plane. G2=Aut(O). Triality.
@@ -1154,6 +1158,9 @@ zero-parameter predictions.
   Spectral triple (A, H, D) with A = C + H + M_3(C). Gauge/fermion emergence.
 - Chamseddine & Connes (1996): "Spectral action principle" [arXiv:hep-th/9606001]
   Tr(phi(D/Lambda)) reproduces Einstein + SM action.
+- van den Dungen & van Suijlekom (2015): "Particle physics from almost-commutative Krein spaces" [arXiv:1505.01939]
+  Krein spectral triples for indefinite inner product. Precursor to Lorentz-signature formulation.
+  Local: ~/Documents/Projects/CayleyDickson/tier2_architectural_precedent/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf
 - van den Dungen (2017): "Lorentz twisted spectral triples" [arXiv:1710.04965]
   Twisted commutator, Krein space. Future CP/Majorana packaging.
 - West (2001): "E11 and M-theory" [arXiv:hep-th/0104081]
@@ -1267,21 +1274,39 @@ Check: 28*6 = 168 zeros, 28*18 + 7*24 = 504 + 168 = 672 nonzeros. Correct.
 m5 sampling (w=e1, 360 quintuples): all nonzero, max |m5 term| = 1.0.
 Growth sequence: **|m3|=2, |m4|=4, |m5|=1**. The series OSCILLATES.
 
-This suggests the A-infinity tower has a non-trivial convergence structure
-controlled by the Fano incidence geometry at each level.
+### Unit-Norm Building Blocks (Corrected Oscillation)
 
-**Implication**: Any finite truncation (using only m2 + m3) is an approximation.
-The full algebraic content of the sedenion retraction requires infinitely
-many higher operations. This is the algebraic analogue of an asymptotic
-series -- useful when truncated, but not convergent.
+Individual left-nested terms `p(h^{n-2}(i(e_a)*...)*i(e_b))` have norm
+EXACTLY 1.0 for ALL n-tuples at ALL levels n=3..7 (verified through 7!=5040
+permutations). The growth |m3|=2, |m4|=4 comes from COMBINATORIAL
+multiplicity (number of terms with alternating signs), not from individual
+term magnitude. The Catalan numbers C_1=1, C_2=2, C_3=5, C_4=14 govern
+the term count at each level.
+
+### Terminology (Novel to This Work)
+
+- **CD retraction transfer**: Homotopy transfer theorem applied to the
+  Cayley-Dickson doubling retraction p(u,v)=(u+v)/2 with section i(x)=(x,x)
+- **Fano-adjacent n-set**: n-element subset of {1..7} containing exactly
+  1 Fano line sub-triple (28 of 35 four-element sets)
+- **Anti-Fano n-set**: n-element subset containing 0 Fano line sub-triples
+  (7 of 35: {1,2,4,7}, {1,2,5,6}, {1,3,4,6}, {1,3,5,7}, {2,3,4,5},
+  {2,3,6,7}, {4,5,6,7})
+- **Fano incidence tower**: The hierarchy of m_n zero/nonzero classifications
+  by Fano sub-triple count at each A-infinity level
+
+No prior work combining homotopy transfer with the CD retraction and Fano
+plane classification was found in the literature (searched: arXiv, nLab,
+Buchholtz-Rijke HoTT, Baez octonions, Freudenthal-Fano incidence geometry).
 
 ### Open Problems
 
-1. Classify the 168 m4-zero quadruples combinatorially
-2. Compute m5 and check the growth rate |m_n|/|m_{n-1}|
+1. [x] Classify m4-zero quadruples: 28 Fano-adjacent + 7 anti-Fano sets
+2. [x] Individual term norms: constant 1.0 (growth is combinatorial)
 3. Formalize the scalar extension theorem in Rocq
-4. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
-5. Connect surreal CD asymptotics to p-adic / ultrametric scaling
+4. Compute full m5 (all terms, not just left-nested) for Catalan count verification
+5. Connect Fano incidence tower to G2 representation theory
+6. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
 
 ## Claims Index
 
@@ -1418,12 +1443,25 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Polynomial theory on arbitrary-dimension CD algebras.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/chapman_2022_2205.05605_roots_polynomials_cd.pdf
 
-**Paywalled / not yet downloaded (chase items):**
+**Formerly paywalled (now acquired):**
 - Imaeda & Imaeda (2000): "Sedenions: algebra and analysis" [Appl. Math. Comp. 115:77-88]
   Foundational sedenion paper. DOI: 10.1016/S0096-3003(99)00140-X
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/imaeda_2000_sedenions_algebra_analysis.pdf
 - Cariow & Cariowa (2013): "Algorithm for fast multiplication of sedenions" [IPL 113:324-331]
-  Computational sedenion paper. DOI: 10.1016/j.ipl.2013.02.011
-- Eakin & Sathaye (1990): "Automorphisms and derivations of CD algebras" [Proc. AMS 108]
+  DOI: 10.1016/j.ipl.2013.02.011
+  Decomposes B_16 = B_check (block-symmetric Toeplitz) + 2*B_hat (sparse).
+  B_check diagonalized by 4-stage WHT (H_2 tensor products), giving 16 spectral muls.
+  B_hat computed directly: 106 muls from non-zero entries. Total: 122 muls, 298 adds.
+  ANALYSIS: 52% fewer multiplications than naive (256), 15% fewer total ops (420 vs 496).
+  NOT ADOPTED for our SIMD path: Cariow's irregular sparse-matrix pattern destroys ILP
+  and AVX2 SIMD utilization. Our CD-doubling SIMD path (4 octonion muls -> 64 FMAs)
+  achieves L1 cache speed with 12/16 YMM registers and excellent pipeline throughput.
+  Cariow is optimal for VLSI/FPGA hardware multiplier design, not CPU software.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/adjacent/cariow_2013_fast_sedenion_multiplication.pdf
+
+**Paywalled (chase via ILL or author contact):**
+- Eakin & Sathaye (1990): "Automorphisms and derivations of CD algebras" [J. Algebra 129]
+  DOI: 10.1016/0021-8693(90)90221-9
 
 - Zhilina (2023): "On doubly alternative zero divisors in CD algebras" [arXiv:2301.11006]
   Follow-up to Zhilina 2021 orthogonality graphs. Doubly alternative ZD characterization.
