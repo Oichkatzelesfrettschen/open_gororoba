@@ -34,7 +34,7 @@
 .PHONY: registry-embedded-markdown registry-verify-embedded-markdown
 .PHONY: registry-build-semantic-atoms registry-verify-semantic-atoms registry-semantic-atoms-gate
 .PHONY: registry-build-evidence-provenance registry-verify-evidence-provenance registry-evidence-provenance-gate
-.PHONY: registry-build-integrity-resolution registry-verify-integrity-resolution registry-integrity-resolution-gate
+.PHONY: integrity-resolution registry-build-integrity-resolution registry-verify-integrity-resolution registry-integrity-resolution-gate
 .PHONY: registry-build-execution-planning registry-verify-execution-planning registry-execution-planning-gate
 .PHONY: registry-strict-toml-batch1-build registry-verify-strict-toml-batch1 registry-strict-toml-batch1 registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
 .PHONY: registry-strict-toml-batch2-build registry-verify-strict-toml-batch2 registry-strict-toml-batch2 registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-acceptance-gate registry-wave5
@@ -990,6 +990,25 @@ registry-verify-wave5-batch2: registry-verify-strict-toml-batch2
 
 registry-wave5-batch2: registry-strict-toml-batch2
 	@echo "DEPRECATED: make registry-wave5-batch2 is a legacy alias. Use make registry-evidence-provenance-gate."
+
+# Convenience fast-path for schema_signatures.toml regeneration.
+#
+# The full registry-strict-toml-batch3-build target always runs
+# `cargo build` (~3 min), even when the binary is already compiled.
+# This target checks for the pre-built binary first and skips the
+# build if it exists (~1.2s vs ~180s).
+#
+# When to use: after editing any registry/*.toml file, run
+#   make integrity-resolution
+# to regenerate registry/schema_signatures.toml before committing.
+# The governance gate will fail on content_sha mismatch otherwise.
+integrity-resolution:
+	@if [ -x "$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution" ]; then \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .; \
+	else \
+		$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution; \
+		$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .; \
+	fi
 
 registry-strict-toml-batch3-build:
 	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution

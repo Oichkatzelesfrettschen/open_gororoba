@@ -10132,3 +10132,17 @@ statement = """CDDoubleFunctor tower instantiation: RealBase (7 axioms proven by
 status = "Formally verified"
 where_stated = "proofs/theories/CDDoubleTower.v"
 last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1496"
+statement = """Full 16D J_k action (both octonion halves) vs 6D perp-only action: NULL RESULT. For all k=1..7, the two J_k implementations produce nearly identical |J_CP| values (within 3% of each other). This is because friction profiles from associators [a,x,b] with selectors (e_7,e_8) have zero components in upper octonion indices (8-15), so the full sedenion J_k upper-block multiplication acts on zeros. The |J_CP| gap to PDG is algebraic (from associator structure), not from truncating J_k to 6D. Example: k=3: 6D gives |J_CP|=8.4909e-3, 16D gives |J_CP|=8.4909e-3 (identical). k=7: 6D gives 8.7193e-3, 16D gives 8.5251e-3."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_jk_dimension_comparison"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1497"
+statement = """Joint 3D optimization (alpha_CP, t_solar, t_atmo) achieves |J_CP| = 3.2762e-2, which is 99.3% of the PDG Jarlskog invariant (3.3e-2). All three mixing angles within 2% of PDG: theta_12=32.84 (1.72%), theta_13=8.58 (0.47%), theta_23=49.48 (0.98%). Optimal parameters: k=1, alpha_CP=0.425, t_sol=0.947, t_atm=3.847. delta_CP=-97.7 deg. The key insight: fixing V_6 parameters at the real-matrix GN optimum (t_sol=1.347, t_atm=2.247) constrains |J_CP| to 8.5e-3 (25% of PDG), but jointly optimizing allows the real mass matrix to shift in mixing-angle space to accommodate larger CP phases. t_sol drops 30%, t_atm rises 71% from the real baseline."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_joint_3d_scan"
+last_verified = "2026-03-22"
