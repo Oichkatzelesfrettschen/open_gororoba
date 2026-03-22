@@ -2294,4 +2294,133 @@ mod tests {
         println!("  Growth: |m3|=2, |m4|=4, |m5 term|={:.1}", max_m5);
         println!("  Ratio: {:.1}x per level", if max_m5 > 0.1 { max_m5 / 4.0 } else { 0.0 });
     }
+
+    /// Oscillation pattern: compute max|m_n| for n=3..7 via iterated homotopy nesting.
+    ///
+    /// The "naive m_n" is computed by nesting h compositions n-2 times:
+    ///   m_n ~ p( h^{n-2}(i(x1)*...) * i(x_n) )
+    /// This is one representative term of the full A-infinity m_n.
+    ///
+    /// The question: does the sequence |m3|, |m4|, |m5|, |m6|, |m7| oscillate,
+    /// converge, or diverge?
+    #[test]
+    fn test_oscillation_pattern() {
+        use cd_kernel::cd_multiply;
+
+        let section = |x: &[f64; 8]| -> [f64; 16] {
+            let mut s = [0.0_f64; 16];
+            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
+            s
+        };
+        let project = |s: &[f64]| -> [f64; 8] {
+            let mut o = [0.0_f64; 8];
+            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
+            o
+        };
+        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
+            let ps = project(s);
+            let ips = section(&ps);
+            let mut h = [0.0_f64; 16];
+            for k in 0..16 { h[k] = s[k] - ips[k]; }
+            h
+        };
+        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+            let r = cd_multiply(a, b);
+            let mut out = [0.0_f64; 16];
+            for k in 0..16 { out[k] = r[k]; }
+            out
+        };
+
+        println!("  === A-infinity Oscillation Pattern ===\n");
+
+        // Use a fixed sequence of basis elements: e1, e2, e4, e7, e3, e5, e6
+        // (chosen to include Fano and non-Fano sub-tuples)
+        let _basis_seq: [usize; 7] = [1, 2, 4, 7, 3, 5, 6];
+
+        // For each n from 3 to 7, compute the "left-nested" representative term:
+        //   t_n = p( h( h( ... h(i(e_{b1}) * i(e_{b2})) ... * i(e_{b_{n-1}})) * i(e_{bn}) )
+        // This is one specific term of the full m_n.
+
+        println!("  {:>4} | {:>12} | {:>12} | {:>10}",
+            "n", "max|term|", "avg|term|", "nonzero%");
+        println!("  {:-<4}-+-{:-<12}-+-{:-<12}-+-{:-<10}", "", "", "", "");
+
+        for n in 3..=7 {
+            let mut max_norm = 0.0_f64;
+            let mut sum_norm = 0.0_f64;
+            let mut count = 0_usize;
+            let mut nonzero = 0_usize;
+
+            // Sample: all n-tuples from basis_seq (permutations of n elements from 7)
+            // For n=3: 7*6*5 = 210, for n=7: 7! = 5040
+            let indices: Vec<usize> = (1..=7).collect();
+
+            // Generate permutations of size n from {1..7}
+            fn perm_iter(n: usize, pool: &[usize]) -> Vec<Vec<usize>> {
+                if n == 0 { return vec![vec![]]; }
+                let mut result = Vec::new();
+                for (i, &v) in pool.iter().enumerate() {
+                    let rest: Vec<usize> = pool.iter().enumerate()
+                        .filter(|&(j, _)| j != i).map(|(_, &x)| x).collect();
+                    for mut sub in perm_iter(n - 1, &rest) {
+                        sub.insert(0, v);
+                        result.push(sub);
+                    }
+                }
+                result
+            }
+
+            let perms = perm_iter(n, &indices);
+
+            for perm in &perms {
+                count += 1;
+
+                // Build basis vectors
+                let mut basis_vecs: Vec<[f64; 8]> = Vec::new();
+                for &idx in perm {
+                    let mut v = [0.0_f64; 8];
+                    v[idx] = 1.0;
+                    basis_vecs.push(v);
+                }
+
+                // Left-nested homotopy composition:
+                // Start: h(i(b1) * i(b2))
+                // Then: h(prev * i(b3))
+                // ...
+                // Finally: p(prev * i(b_n))
+                let mut current = {
+                    let ib1 = section(&basis_vecs[0]);
+                    let ib2 = section(&basis_vecs[1]);
+                    let prod = sed_mul(&ib1, &ib2);
+                    homotopy(&prod)
+                };
+
+                for step in 2..(n - 1) {
+                    let ib = section(&basis_vecs[step]);
+                    let prod = sed_mul(&current, &ib);
+                    current = homotopy(&prod);
+                }
+
+                // Final step: project
+                let ib_last = section(&basis_vecs[n - 1]);
+                let final_prod = sed_mul(&current, &ib_last);
+                let result = project(&final_prod);
+
+                let norm: f64 = result.iter().map(|v| v * v).sum::<f64>().sqrt();
+                if norm > 1e-10 { nonzero += 1; }
+                max_norm = max_norm.max(norm);
+                sum_norm += norm;
+            }
+
+            let avg_norm = if count > 0 { sum_norm / count as f64 } else { 0.0 };
+            let pct_nonzero = if count > 0 { 100.0 * nonzero as f64 / count as f64 } else { 0.0 };
+
+            println!("  {:>4} | {:>12.4} | {:>12.4} | {:>9.1}%",
+                n, max_norm, avg_norm, pct_nonzero);
+        }
+
+        println!("\n  Sequence of max|term|: this reveals the oscillation/convergence pattern.");
+        println!("  If oscillatory: the A-infinity tower has bounded norms.");
+        println!("  If growing: the tower diverges and only finite truncation is meaningful.");
+    }
 }
