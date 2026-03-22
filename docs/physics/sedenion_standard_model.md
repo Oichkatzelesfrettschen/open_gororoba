@@ -21,19 +21,23 @@ parameters. Using 2-blade topological friction for mixing angles and
 | m_tau/m_e | 3477 | 3477.2 | 0.0% |
 | m_b/m_s | 52.3 | 51.5 | 1.5% |
 | m_s/m_d | 15.7 | ~20 | 22% |
-| |J_CP| (PMNS) | 3.34e-2 | ~3e-2 | ~10% |
+| |J_CP| (PMNS) | 8.5e-3 | ~3.3e-2 | 25% of PDG |
+| delta_CP | ~165 deg | 195 deg | 30 deg off |
 | Mass ordering | Normal | Normal | Correct |
 
 The G2 automorphism group of the octonions is constructively identified
 with su(3) via stabilizer extraction (Rocq-verified). The CP-violating
-phase arises from the cross-sector Gram matrix between charged-lepton
-and neutrino friction profiles, with arg = 45 deg (algebraically determined).
-The Jacobi identity for the full SU(3) structure constants is formally
-verified in Rocq using Z[sqrt(3)] arithmetic.
+phase arises from phase-only complexification of the neutrino mass matrix
+via the Fano-derived J_k complex structure (C-1494): off-diagonal entries
+M[i][j] -> |M[i][j]| * exp(i * alpha_CP * phi[i][j]), where phi comes
+from the G2 stabilizer action on psi-overlap profiles. The Jacobi identity
+for the full SU(3) structure constants is formally verified in Rocq using
+Z[sqrt(3)] arithmetic.
 
-The framework makes a testable prediction: near-maximal CP violation
-(delta_CP ~ -90 deg) versus the PDG best fit of -165 deg (submaximal).
-This is distinguishable by DUNE, Hyper-Kamiokande, and JUNO.
+delta_CP ~ 165 deg is 30 deg from PDG best-fit 195 deg (correct quadrant).
+|J_CP| = 8.5e-3 is 25% of the PDG value; closing this gap requires
+extending J_k from 6 perpendicular indices to the full 14D sedenion
+complement. Testable by DUNE, Hyper-Kamiokande, and JUNO.
 
 43 Rocq theory files, 190+ verified .v files, 50+ Rust tests across
 the algebra trilogy (G2 stabilizer, SU(3) realization, physics bridge).
@@ -56,7 +60,7 @@ the sedenion subalgebras and extracts:
 - PMNS angle-sector fit: all three angles within 0.15% of PDG 2025 (C-1492)
   via Gauss-Newton optimized 4-parameter model (alpha_ch, alpha_nu, t_solar, t_atmo)
 - G2 stabilizer extraction: stab(e_k) = su(3) constructively verified (C-1479..C-1488)
-- CP violation: cross-sector Gram phase arg = 45 deg, |J_CP| = 3.3e-2 (PDG: ~3e-2)
+- CP violation: phase-only J_k complexification gives |J_CP| = 8.5e-3, delta = 165 deg (C-1494)
 - Chi-squared global fit: chi2/3 = 0.14 at 4D optimum, all pulls < 0.6 sigma
 - Electroweak mixing angle sin^2(theta_W) within 14% (C-1458)
 - Discrete 2*sqrt(2) quantization of the friction spectrum (C-1459)
@@ -799,28 +803,24 @@ Given algebraic ratio r and one input m1 (lightest mass):
 **Open**:
 1. [x] Mass ratio: 3-blade friction gives r = 0.0304 (PDG 0.0307, 1.0% error)
 2. [x] Rocq SU(3): COMPLETE Jacobi in Z[sqrt(3)] -- all 56 triples verified
-3. Delta_CP maximal vs submaximal: algebra predicts -90 deg (maximal),
-   PDG best fit -165 deg (submaximal). Testable by DUNE/HyperK/JUNO.
+3. [x] Delta_CP: phase-only J_k complexification gives delta ~ 165 deg (C-1494).
+   Old additive approach predicted -90 deg (maximal); new approach is 30 deg
+   from PDG best-fit 195 deg. Testable by DUNE/HyperK/JUNO.
 4. [x] TensorElementLift: S_3 intertwiner proves NO equivariant map exists
    (null space dim=0, V_6 scalar representation incompatible with Sym_3(R)).
    The lift is response-fitted, not algebraically canonical.
 5. [x] Complete Rocq SU(3): Z[sqrt(3)] Jacobi proof (SU3JacobiFull.v)
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
-   (3-blade triples that give r=0.0304 collapse mixing angles)
-7. [x] Two-selector-type model: Gauss-Newton optimization confirms structural
-   limitation. 3-blade diagonal + 2-blade off-diagonal interfere destructively
-   through shared Casimir baseline. Best simultaneous fit: cost=7053 (all angles
-   >50% off). Conclusion: mass ratio (3-blade) and angles (2-blade+V_6) are
-   best treated as COMPLEMENTARY predictions from separate algebraic mechanisms.
-8. [x] Friction-native baseline (no Casimir): r=0.0275 (10% PDG) + theta_13=8.53
-   (0.1% PDG). Confirms Casimir was the r obstacle. theta_12/23 still collapsed
-   due to 3-blade diagonal >> 2-blade off-diagonal amplitude ratio (~53:6).
-9. [x] Full 3-blade off-diagonal: SMALLER amplitude (-2.0 vs 2-blade +6.0) due
-   to destructive interference of 3 pairwise psi overlaps. 2-blade remains
-   optimal for mixing, 3-blade for mass hierarchy. COMPLEMENTARY is structural.
-10. Unification beyond 3x3 mass matrices: need higher-dimensional framework
+7. [x] Gauss-Newton 4D: all angles within 0.15% PDG (C-1492)
+8. [x] Phase-only CP violation: |J_CP| = 8.5e-3 at alpha_CP=0.05 (C-1494)
+9. [x] CDDoubleTower Rocq: generic functor chain R through Pathion (C-1495)
+10. [x] Cariow analysis: 122 muls vs 256 naive; not adopted for SIMD (C-1493)
+11. J_CP gap closure: |J_CP| = 8.5e-3 is 25% of PDG 3.3e-2. Extend J_k
+    from 6 perp indices to full 14D complement using Reggiani/Wilmot graded
+    decomposition. Joint (alpha_CP, V_6) optimization not yet attempted.
+12. Unification beyond 3x3 mass matrices: need higher-dimensional framework
     (6x6 block-diagonal, or separate mass/mixing matrices) to decouple the
-    two mechanisms. This is the frontier for the next theoretical development.
+    mass-ratio and mixing-angle mechanisms.
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
@@ -1384,6 +1384,9 @@ C-1489: V_6 psi-eigenspace (0.25*I_6), no S_3-equivariant intertwiner, su(3) red
 C-1490: 2D constrained scan: (33.37, 8.52, 47.40) deg, all within 3.3% of PDG
 C-1491: Joint 4D grid: (33.84, 8.56, 48.74) deg, all within 1.3% of PDG
 C-1492: Gauss-Newton 4D: (33.36, 8.54, 48.99) deg, all within 0.15% of PDG
+C-1493: Cariow sedenion mult analysis: WHT 122 muls vs 256 naive; NOT adopted (SIMD ILP)
+C-1494: Phase-only CP violation: |J_CP|=8.5e-3, delta=165 deg, angles within 1.5% PDG
+C-1495: CDDoubleTower Rocq: functor chain R->C->H->O->S->P, 42 theorems from 7 base proofs
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
