@@ -1510,5 +1510,102 @@ mod tests {
             best.1, best.2);
         println!("  m_t/m_u = {:.0} (PDG: ~71500)", best.5);
         println!("  up_triple = {:?}, dn_triple = {:?}", triples[best.3], triples[best.4]);
+
+        // Also compute down-type ratios for the best pair
+        let sel_up = &af[best.3];
+        let sel_dn = &af[best.4];
+        let mut masses_dn = [0.0_f64; 3];
+        for g in 0..3 {
+            masses_dn[g] = (w1 * sel_dn[g] + w2 * sel_up[g]).exp();
+        }
+        masses_dn.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let ms_md = if masses_dn[0] > 1e-30 { masses_dn[1] / masses_dn[0] } else { f64::MAX };
+        let mb_ms = if masses_dn[1] > 1e-30 { masses_dn[2] / masses_dn[1] } else { f64::MAX };
+        let mb_md = if masses_dn[0] > 1e-30 { masses_dn[2] / masses_dn[0] } else { f64::MAX };
+
+        println!("\n  Down-type ratios (same pair):");
+        println!("    m_s/m_d = {:.1} (PDG: ~20)", ms_md);
+        println!("    m_b/m_s = {:.1} (PDG: ~51.5)", mb_ms);
+        println!("    m_b/m_d = {:.0} (PDG: ~1030)", mb_md);
+    }
+
+    /// 3-blade charged lepton mass ratios with universal (w1, w2).
+    ///
+    /// PDG: m_mu/m_e ~ 207, m_tau/m_e ~ 3477.
+    #[test]
+    fn test_3blade_lepton_mass_ratios() {
+        use rayon::prelude::*;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [o1.clone(), o2.clone(), o3.clone()];
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+
+        let pdg_mmu_me = 206.768_f64;
+        let pdg_mtau_me = 3477.2_f64;
+
+        let mut triples: Vec<(usize, usize, usize)> = Vec::new();
+        for i in 1..16_usize {
+            for j in (i+1)..16 { for k in (j+1)..16 { triples.push((i, j, k)); } }
+        }
+
+        let compute_3blade = |triple: (usize, usize, usize)| -> [f64; 3] {
+            let sign_table = SignTableCache::new(16);
+            let (a, b, c) = triple;
+            let ma = MajoranaMode { gamma_index: a-1, cd_basis_index: a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b-1, cd_basis_index: b, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: c-1, cd_basis_index: c, cd_dim: 16 };
+            let mut f = [0.0_f64; 3];
+            for (g, sub) in subs.iter().enumerate() {
+                f[g] = cd_braid_signed_friction(&ma, &mb, sub, &sign_table)
+                     + cd_braid_signed_friction(&ma, &mc, sub, &sign_table)
+                     + cd_braid_signed_friction(&mb, &mc, sub, &sign_table);
+            }
+            f
+        };
+
+        let all_frictions: Vec<[f64; 3]> = triples.par_iter()
+            .map(|&t| compute_3blade(t)).collect();
+
+        // For leptons: single selector (no cross-coupling), so m_g ~ exp(w1 * f_g)
+        // Actually the lepton model uses TWO selectors with cross-coupling,
+        // same as quarks. Scan pairs of triples.
+        let af = &all_frictions;
+        let results: Vec<_> = (0..triples.len()).into_par_iter().flat_map_iter(|ci| {
+            (0..triples.len()).map(move |ni| {
+                let sel_ch = &af[ci];
+                let sel_nu = &af[ni];
+                let mut masses = [0.0_f64; 3];
+                for g in 0..3 {
+                    masses[g] = (w1 * sel_ch[g] + w2 * sel_nu[g]).exp();
+                }
+                masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let mmu_me = if masses[0] > 1e-30 { masses[1] / masses[0] } else { f64::MAX };
+                let mtau_me = if masses[0] > 1e-30 { masses[2] / masses[0] } else { f64::MAX };
+                let err = ((mmu_me - pdg_mmu_me) / pdg_mmu_me).powi(2)
+                        + ((mtau_me - pdg_mtau_me) / pdg_mtau_me).powi(2);
+                (err, mmu_me, mtau_me, ci, ni)
+            })
+        }).collect();
+
+        let mut sorted = results;
+        sorted.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("  === 3-Blade Lepton Mass Ratios ===\n");
+        println!("  PDG: m_mu/m_e ~ 207, m_tau/m_e ~ 3477\n");
+        for (rank, e) in sorted.iter().take(5).enumerate() {
+            println!("  {:>3}. ch={:?} nu={:?}: m_mu/m_e={:.1}, m_tau/m_e={:.0}",
+                rank+1, triples[e.3], triples[e.4], e.1, e.2);
+        }
+
+        let best = &sorted[0];
+        println!("\n  BEST: m_mu/m_e = {:.1} (PDG: 207, err: {:.1}%)",
+            best.1, ((best.1 - pdg_mmu_me) / pdg_mmu_me * 100.0).abs());
+        println!("  m_tau/m_e = {:.0} (PDG: 3477, err: {:.1}%)",
+            best.2, ((best.2 - pdg_mtau_me) / pdg_mtau_me * 100.0).abs());
     }
 }
