@@ -707,7 +707,10 @@ Given algebraic ratio r and one input m1 (lightest mass):
    PDG best fit -165 deg (submaximal). Testable by DUNE/HyperK/JUNO.
 4. Derive TensorElementLift from algebra (currently heuristic 42D->6D)
 5. Complete Rocq SU(3): extend to Q[sqrt(3)] or 12*f integer encoding
-6. Unify 3-blade mass ratio with 2-blade angle fit (currently separate)
+6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
+   (3-blade triples that give r=0.0304 collapse mixing angles)
+7. Two-selector-type model: 3-blade for hierarchy + 2-blade for mixing
+   (analogous to see-saw: diagonal and off-diagonal scales from different physics)
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
