@@ -1,5 +1,39 @@
 # Sedenion Standard Model: Algebraic Origin of Fermion Masses and Mixing
 
+## Abstract
+
+The 16-dimensional sedenion algebra, via its Cayley-Dickson doubling
+structure and non-associative multiplication table, produces quantitative
+predictions for Standard Model observables with zero or minimal free
+parameters. Using 2-blade topological friction for mixing angles and
+3-blade zero-divisor friction for mass hierarchies, we achieve:
+
+| Observable | Prediction | PDG 2024 | Error |
+|-----------|-----------|----------|-------|
+| theta_12 (PMNS) | 33.36 deg | 33.41 | 0.15% |
+| theta_13 (PMNS) | 8.54 deg | 8.54 | 0.01% |
+| theta_23 (PMNS) | 48.99 deg | 49.0 | 0.02% |
+| r = dm21/dm31 | 0.0304 | 0.0307 | 1.0% |
+| m_c/m_u | 542 | 550 | 1.4% |
+| m_t/m_c | 128 | 130 | 1.6% |
+| sin^2(theta_W) | 0.250 | 0.231 | 8.1% |
+| |J_CP| (PMNS) | 3.34e-2 | ~3e-2 | ~10% |
+| Mass ordering | Normal | Normal | Correct |
+
+The G2 automorphism group of the octonions is constructively identified
+with su(3) via stabilizer extraction (Rocq-verified). The CP-violating
+phase arises from the cross-sector Gram matrix between charged-lepton
+and neutrino friction profiles, with arg = 45 deg (algebraically determined).
+The Jacobi identity for the full SU(3) structure constants is formally
+verified in Rocq using Z[sqrt(3)] arithmetic.
+
+The framework makes a testable prediction: near-maximal CP violation
+(delta_CP ~ -90 deg) versus the PDG best fit of -165 deg (submaximal).
+This is distinguishable by DUNE, Hyper-Kamiokande, and JUNO.
+
+43 Rocq theory files, 190+ verified .v files, 50+ Rust tests across
+the algebra trilogy (G2 stabilizer, SU(3) realization, physics bridge).
+
 ## I. Executive Summary
 
 The 16-dimensional Sedenion algebra S contains three canonical octonionic
