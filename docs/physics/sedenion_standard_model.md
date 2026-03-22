@@ -1115,3 +1115,7 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - Cariow & Cariowa (2013): "Algorithm for fast multiplication of sedenions" [IPL 113:324-331]
   Computational sedenion paper. DOI: 10.1016/j.ipl.2013.02.011
 - Eakin & Sathaye (1990): "Automorphisms and derivations of CD algebras" [Proc. AMS 108]
+
+- Zhilina (2023): "On doubly alternative zero divisors in CD algebras" [arXiv:2301.11006]
+  Follow-up to Zhilina 2021 orthogonality graphs. Doubly alternative ZD characterization.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/zhilina_2023_doubly_alternative_zd_cd.pdf
