@@ -1,4 +1,28 @@
 //! PMNS angle extraction from unitary matrices.
+//!
+//! # PDG parameterization
+//!
+//! The standard PMNS parameterization (PDG 2024) uses three mixing angles
+//! and one CP-violating phase:
+//!
+//! ```text
+//! U_PMNS = R_23(theta_23) * diag(1, 1, e^{-i*delta}) * R_13(theta_13)
+//!        * diag(1, e^{i*delta}, 1) * R_12(theta_12)
+//! ```
+//!
+//! From a real PMNS matrix (no CP phase), the angles are extracted via:
+//!
+//! ```text
+//! sin(theta_13) = |U_e3|          -- reactor angle
+//! sin(theta_12) = |U_e2| / cos(theta_13)  -- solar angle
+//! sin(theta_23) = |U_mu3| / cos(theta_13) -- atmospheric angle
+//! ```
+//!
+//! # Callers
+//!
+//! - `neutrino_sector::test_pmns_gauss_newton_regression` (primary regression)
+//! - `neutrino_sector::test_cp_violation_phase_only` (CP pipeline)
+//! - All PMNS construction functions in `neutrino_sector.rs`
 
 /// Extract PMNS mixing angles (in degrees) from a 3x3 unitary matrix.
 ///

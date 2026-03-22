@@ -1,9 +1,46 @@
 //! Constrained direction computation and Gauss-Newton 2D optimizer.
 //!
+//! # Purpose
+//!
 //! These are the numerical tools for finding the optimal (t_solar, t_atmo)
-//! parameters in the V_6 perturbation space. The constrained directions
+//! parameters in the V_6 perturbation space.  The constrained directions
 //! use Gram-Schmidt orthogonalization to isolate solar and atmospheric
-//! sensitivity while zeroing reactor leakage.
+//! sensitivity while zeroing first-order reactor leakage.
+//!
+//! # Why constrained directions instead of unconstrained 6D optimization
+//!
+//! The 6D V_6 space has 6 degrees of freedom, but the PMNS matrix has only
+//! 3 angles (+ 1 phase).  Unconstrained optimization in 6D is under-determined
+//! and numerically unstable.  The constrained-direction approach reduces to 2D
+//! (t_solar, t_atmo) by:
+//!
+//! 1. Computing gradient vectors g_12, g_13, g_23 (how each V_6 direction
+//!    affects each PMNS angle).
+//! 2. Projecting g_12 orthogonal to {g_13, g_23} -> solar direction u_solar
+//!    (maximal theta_12 sensitivity with zero reactor/atmospheric leakage).
+//! 3. Projecting g_23 orthogonal to {g_13, u_solar} -> atmospheric direction
+//!    u_atmo (maximal theta_23 sensitivity, orthogonal to solar).
+//!
+//! This gives a 2D affine model: M_nu(t1, t2) = M_nu_base + t1*A + t2*B
+//! where A, B are the mass matrix perturbations along u_solar, u_atmo.
+//!
+//! # Gauss-Newton with Levenberg-Marquardt damping
+//!
+//! The [`gauss_newton_2d`] solver minimizes weighted relative residuals:
+//!
+//! ```text
+//! r_i = w_i * (theta_i - pdg_i) / pdg_i
+//! ```
+//!
+//! using a 3x2 finite-difference Jacobian, Levenberg-Marquardt damped
+//! normal equations (lambda = 0.01), and backtracking line search.
+//! Convergence typically in 5-10 iterations for well-conditioned gradients.
+//!
+//! # Callers
+//!
+//! - `neutrino_sector::test_pmns_gauss_newton_regression` (C-1492)
+//! - `neutrino_sector::test_cp_violation_phase_only` (C-1494)
+//! - `neutrino_sector::test_cp_violation_joint_3d_scan` (C-1497)
 
 /// Compute the constrained solar direction in V_6 space.
 ///
