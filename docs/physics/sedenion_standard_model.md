@@ -1428,3 +1428,14 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - Zhilina (2021): "Orthogonality graphs of real CD algebras Part II" [arXiv:2106.01006]
   Companion to existing Part I (2106.00926). Hexagon/graph patterns in ZD structure.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/
+
+### Papers found via CORE API (gap-fill)
+
+- Moreno (2004): "Alternative elements in CD algebras" [arXiv:math/0404395]
+  Characterizes alternative and strongly alternative elements for A_n.
+  Bridges Moreno's 1997/2005 ZD papers and the Biss-Dugger-Isaksen sequence.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/broader_cd_theory/
+
+- Born-Infeld CD Lagrangian (2003): [arXiv:hep-th/0306271]
+  Uses CD algebras for Born-Infeld Lagrangian construction. Adjacent.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/adjacent/
