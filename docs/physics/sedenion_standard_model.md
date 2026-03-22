@@ -1278,7 +1278,21 @@ This encodes the two fundamental G2 calibration forms:
 - phi (3-form, scalar on Fano lines) = the G2-invariant 3-form
 - psi (4-form dual, imaginary on non-Fano) = the co-associative 4-form
 
-**KEY RESULT**: m3 decomposes into two components:
+### Universal Theorem: Retraction m3 = Wilmot Decomposition
+
+At each CD level, the retraction m3 classifies triads into the Wilmot
+triad decomposition of the target algebra:
+
+| CD level | Target | Scalar | Imaginary (=Assoc) | Zero | Total |
+|----------|--------|--------|-------------------|------|-------|
+| S -> O | Octonion | 42 (Fano) | 168 (non-Fano) | 0 | 210 |
+| P -> S | Sedenion | 35 (assoc) | 252 (Type X) | 168 (B+C) | 455 |
+
+The 168 zero m3 at the pathion level = Wilmot Type B (84) + Type C (84).
+This is a UNIVERSAL structural theorem connecting homotopy transfer to
+the Wilmot non-associativity classification.
+
+**KEY RESULT (octonion level)**: m3 decomposes into two components:
 - **Non-Fano triples (168)**: m3(x,y,z) = Assoc(x,y,z) EXACTLY (ratio 1.0)
   where Assoc = (xy)z - x(yz) is the octonionic associator
 - **Fano triples (42)**: m3(x,y,z) = +/-2 e_0 (scalar), while Assoc = 0
