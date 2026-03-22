@@ -1297,9 +1297,15 @@ GROWS, not converges. The A-infinity structure is genuinely infinite.
 Complete classification of C(7,4) = 35 four-element sets:
 - **28 sets with exactly 1 Fano sub-triple**: m4 = 0 for 6/24 orderings
   (those where the Fano triple occupies positions 1-3)
-- **7 sets with 0 Fano sub-triples** ("anti-Fano"): m4 nonzero for ALL
-  24 orderings. These are: {1,2,4,7}, {1,2,5,6}, {1,3,4,6}, {1,3,5,7},
-  {2,3,4,5}, {2,3,6,7}, {4,5,6,7}.
+- **7 sets with 0 Fano sub-triples** ("co-Fano"): m4 nonzero for ALL
+  24 orderings. These are EXACTLY the complements of the 7 Fano lines:
+  {1,2,3}^c = {4,5,6,7}, {1,4,5}^c = {2,3,6,7}, {1,6,7}^c = {2,3,4,5},
+  {2,4,6}^c = {1,3,5,7}, {2,5,7}^c = {1,3,4,6}, {3,4,7}^c = {1,2,5,6},
+  {3,5,6}^c = {1,2,4,7}.
+
+This is the **phi/psi duality of G2**: Fano lines carry the associative
+3-form phi (m3 scalar), their complements carry the co-associative 4-form
+psi (m4 fully nonzero). The m4 classification IS the G2 calibration duality.
 
 Check: 28*6 = 168 zeros, 28*18 + 7*24 = 504 + 168 = 672 nonzeros. Correct.
 
