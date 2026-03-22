@@ -1019,3 +1019,22 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Semi-finite spectral triple over LQG holonomy loop space. Dirac-type operator.
 - Aastrup, Grimstrup & Nest (2009): "Holonomy loops + spectral triples" [arXiv:0902.4191]
   Quantized Poisson bracket from algebra-operator interaction on loop space.
+
+**Subalgebra classification and alternativity:**
+- Chan & Dokovic (2018): "Conjugacy classes of subalgebras of the real sedenions" [Cambridge]
+  Complete classification of sedenion subalgebra conjugacy classes.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/chan_dokovic_conjugacy_sedenion_subalgebras.pdf
+
+- Biss, Dugger, Isaksen (2009): "How alternativity fails in CD algebras" [arXiv:0905.2987]
+  Explicit characterization of where and how alternativity breaks at dim >= 16.
+  Same authors as Large Annihilators I/II.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/biss_2009_0905.2987_alternativity_fails_cd.pdf
+
+**Alternative algebraic constructions:**
+- Flaut (2021): "Twisted group algebra structure for CD algebras" [arXiv:2103.12805]
+  CD algebras as twisted group algebras over Z_2^n.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/flaut_2021_2103.12805_twisted_group_algebra_cd.pdf
+
+- arXiv:2401.01166 (2024): "Sixteen-dimensional sedenion-like associative algebra"
+  Novel 16D algebra preserving associativity (differs from standard sedenions).
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2401.01166_sedenion_like_associative.pdf
