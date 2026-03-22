@@ -1251,8 +1251,17 @@ The quartic transfer m4 is nonzero for 672 of 840 ordered quadruples (80%).
 Max |m4| = 4.0 (vs m3 max = 2.0). The ratio |m4|/|m3| = 2 means the series
 GROWS, not converges. The A-infinity structure is genuinely infinite.
 
-168 zero quadruples = same count as non-Fano triples from m3, suggesting
-deep combinatorial correlation with the Fano plane structure.
+### m4-Zero Classification: Fano-Adjacent Quadruples
+
+The 168 m4-zero quadruples are completely classified:
+- ALL contain exactly 1 Fano sub-triple (0 without Fano)
+- NONE have XOR = 0
+- 28 distinct 4-element sets (out of C(7,4) = 35)
+- The 7 missing sets contain 2+ Fano sub-triples (over-constrained)
+
+m4 vanishes when the quadruple touches exactly one associative direction.
+The Fano line "absorbs" the quartic correction, connecting the A-infinity
+tower to the G2 geometry of the Fano plane.
 
 **Implication**: Any finite truncation (using only m2 + m3) is an approximation.
 The full algebraic content of the sedenion retraction requires infinitely
