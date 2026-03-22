@@ -709,9 +709,15 @@ Given algebraic ratio r and one input m1 (lightest mass):
 5. Complete Rocq SU(3): extend to Q[sqrt(3)] or 12*f integer encoding
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
    (3-blade triples that give r=0.0304 collapse mixing angles)
-7. Two-selector-type model (in progress): 3-blade diagonal + 2-blade
-   off-diagonal with damping factor beta. At beta=0.60: r=0.0303 (1.2% PDG)
-   + theta_13=9.8 (14.7% PDG). Needs Gauss-Newton for theta_12/23.
+7. [x] Two-selector-type model: Gauss-Newton optimization confirms structural
+   limitation. 3-blade diagonal + 2-blade off-diagonal interfere destructively
+   through shared Casimir baseline. Best simultaneous fit: cost=7053 (all angles
+   >50% off). Conclusion: mass ratio (3-blade) and angles (2-blade+V_6) are
+   best treated as COMPLEMENTARY predictions from separate algebraic mechanisms.
+8. Unification of mass ratio + angles requires either:
+   (a) a different baseline (not Casimir) that decouples diagonal/off-diagonal, or
+   (b) a higher-dimensional lift (beyond 3x3 mass matrices) where both mechanisms
+       act on independent subspaces
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
