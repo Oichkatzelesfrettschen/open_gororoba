@@ -717,9 +717,12 @@ Given algebraic ratio r and one input m1 (lightest mass):
 8. [x] Friction-native baseline (no Casimir): r=0.0275 (10% PDG) + theta_13=8.53
    (0.1% PDG). Confirms Casimir was the r obstacle. theta_12/23 still collapsed
    due to 3-blade diagonal >> 2-blade off-diagonal amplitude ratio (~53:6).
-9. Unification path: need either
-   (a) 3-blade off-diagonal coupling (sum of 3 pairwise psi overlaps), or
-   (b) higher-dimensional lift where diagonal and off-diagonal act independently
+9. [x] Full 3-blade off-diagonal: SMALLER amplitude (-2.0 vs 2-blade +6.0) due
+   to destructive interference of 3 pairwise psi overlaps. 2-blade remains
+   optimal for mixing, 3-blade for mass hierarchy. COMPLEMENTARY is structural.
+10. Unification beyond 3x3 mass matrices: need higher-dimensional framework
+    (6x6 block-diagonal, or separate mass/mixing matrices) to decouple the
+    two mechanisms. This is the frontier for the next theoretical development.
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
