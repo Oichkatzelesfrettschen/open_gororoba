@@ -1402,41 +1402,152 @@ pub fn apply_jk_full_16d(v: &[f64; 16], k: usize) -> [f64; 16] {
 // ---------------------------------------------------------------------------
 // Parameterized CP scan point evaluator
 // ---------------------------------------------------------------------------
+//
+// This section implements the parameterized evaluation pipeline for the
+// CP violation scan.  The design separates three concerns:
+//
+//   CpScanResult   -- pure data, the 5 physical observables
+//   CpScanContext   -- immutable algebraic data shared across all grid points
+//   CpScanBuffers   -- mutable pre-allocated matrices, one per thread
+//   evaluate_cp_scan_point() -- the pipeline itself
+//
+// The separation is motivated by the same principle Lions uses for malloc's
+// "coremap" and "swapmap" (Lions 5.1): the resource layout is fixed, but
+// the allocator state is per-invocation.  Here, the algebraic "layout"
+// (mass matrices, V_6 basis, permutation) is fixed per scan, while the
+// eigendecomposition working memory is per-thread mutable state.
 
-/// Result of evaluating a single CP scan point.
+/// The five physical observables from a single CP scan point.
+///
+/// All angles are in **degrees** (not radians), following the PDG
+/// convention.  `j_cp` is the rephasing-invariant Jarlskog:
+///
+/// ```text
+/// J = Im(U_e1 * U_mu2 * conj(U_e2) * conj(U_mu1))
+/// ```
+///
+/// `delta_cp` is `arg(-U_e3)` in degrees -- this is convention-dependent.
+/// For the rephasing-invariant delta, compute `arg(Jarlskog quartet)`
+/// separately (see the rephasing analysis in [`test_cp_violation_joint_3d_scan`]).
+///
+/// # Concrete values at the optimum (C-1497)
+///
+/// ```text
+/// theta_12 = 32.84,  theta_13 = 8.58,  theta_23 = 49.48
+/// j_cp     = 3.33e-2 (101% PDG),  delta_cp = 97.9 deg
+/// ```
 #[derive(Debug, Clone, Copy)]
 pub struct CpScanResult {
+    /// Solar mixing angle (PDG: 33.41 +/- 0.72 deg).
     pub theta_12: f64,
+    /// Reactor mixing angle (PDG: 8.54 +/- 0.12 deg).
     pub theta_13: f64,
+    /// Atmospheric mixing angle (PDG: 49.0 +/- 1.3 deg).
     pub theta_23: f64,
+    /// Jarlskog invariant (PDG: |J| ~ 3.3e-2).
     pub j_cp: f64,
+    /// CP phase from arg(-U_e3), in degrees.
     pub delta_cp: f64,
 }
 
-/// Immutable context shared across all scan points within one test.
+/// Immutable algebraic context for a CP violation scan.
 ///
-/// Groups the mass matrices, V_6 basis, constrained directions, and
-/// permutation indices that are constant during a CP scan.  Passed
-/// by reference to [`evaluate_cp_scan_point`] to keep the argument
-/// count within clippy's 7-parameter limit.
+/// # Algebraic origin of each field
+///
+/// ```text
+/// m_nu_real   : 3x3 symmetric, from sedenion associator friction
+///               [a, x, b] with selectors (e_7, e_8), coupling alpha_nu=1.35.
+///               Constructed by construct_pmns_matrices_two_param().
+///
+/// m_ch_real   : 3x3 symmetric, from selectors (e_11, e_12), alpha_ch=3.00.
+///               Same construction, different subalgebra embedding.
+///
+/// v6_basis    : nalgebra DMatrix (6 x 42), the top-6 singular vectors of
+///               the assessor-space Jacobian.  Spans the directions in the
+///               42D assessor space that most efficiently steer the mixing
+///               angles.  Computed by extract_v6_basis().
+///
+/// u_solar     : [f64; 6], the direction in V_6 that moves theta_12 while
+///               preserving theta_13.  From compute_constrained_solar_direction().
+///
+/// u_atmo      : [f64; 6], the direction in V_6 that moves theta_23 while
+///               preserving theta_13 and staying orthogonal to u_solar.
+///               From compute_constrained_atmospheric_direction().
+///
+/// lift        : &dyn FlavorLift, maps 42D assessor vectors to 3x3 mass
+///               matrix perturbations.  Currently TensorElementLift (the
+///               S_3 intertwiner).  This is the ONLY non-algebraically-
+///               canonical component -- see C-1489 for the no-equivariance
+///               proof.
+///
+/// perm_u/d    : [usize; 3], eigenvalue permutation indices calibrated
+///               against the real mass matrix baseline.  Ensures that
+///               eigenvalue 0 maps to the lightest mass eigenstate
+///               consistently across the scan.
+/// ```
+///
+/// # Edge cases and invariants
+///
+/// - **perm stability**: The permutation is computed ONCE from the real
+///   (alpha_CP=0) baseline.  If alpha_CP is so large that eigenvalues
+///   cross (level repulsion), the permutation becomes invalid and angles
+///   will be nonsensical.  The 2% acceptance filter catches this.
+///
+/// - **v6_basis rank**: The V_6 extraction can produce fewer than 6
+///   significant singular values if the assessor-space Jacobian is
+///   rank-deficient.  In practice, n_basis = min(nrows, 6) = 6 always.
+///
+/// - **lift non-uniqueness**: TensorElementLift is response-fitted, not
+///   algebraically canonical.  A different FlavorLift implementation
+///   would change the optimal (t_sol, t_atm) but NOT the existence
+///   of CP violation (which comes from the J_k phase structure).
+///
+/// # Thread safety
+///
+/// All fields are shared references (`&'a`), so `CpScanContext` is
+/// `Send + Sync` by construction.  It can be shared across rayon
+/// threads without cloning.
 pub struct CpScanContext<'a> {
+    /// Neutrino mass matrix (3x3 real symmetric, from associator friction).
     pub m_nu_real: &'a faer::Mat<f64>,
+    /// Charged lepton mass matrix (3x3 real symmetric).
     pub m_ch_real: &'a faer::Mat<f64>,
+    /// Top-6 V_6 singular vectors (6 x 42, from assessor-space Jacobian).
     pub v6_basis: &'a nalgebra::DMatrix<f64>,
+    /// Constrained solar direction in V_6 space.
     pub u_solar: &'a [f64; 6],
+    /// Constrained atmospheric direction in V_6 space.
     pub u_atmo: &'a [f64; 6],
+    /// The 42D -> 3x3 flavor lift (currently TensorElementLift).
     pub lift: &'a dyn FlavorLift,
+    /// Eigenvalue permutation for charged leptons.
     pub perm_u: [usize; 3],
+    /// Eigenvalue permutation for neutrinos.
     pub perm_d: [usize; 3],
 }
 
 /// Mutable pre-allocated buffers for the eigendecomposition loop.
 ///
-/// Owns two 3x3 complex faer matrices that are written into (not
-/// allocated) at each scan point.  Each rayon thread creates its
-/// own `CpScanBuffers` so there is no contention.
+/// Owns two 3x3 complex Hermitian faer matrices that are overwritten
+/// (not re-allocated) at each scan point.  This eliminates ~1200
+/// `Mat::zeros(3, 3)` heap allocations per k-embedding in the scan.
+///
+/// # Why separate from CpScanContext
+///
+/// `faer::Mat` is not `Sync` (it uses internal mutability for the
+/// eigendecomposition working buffer).  By separating the mutable
+/// buffers into their own struct, each rayon thread creates its own
+/// `CpScanBuffers` while sharing a single `&CpScanContext`.
+///
+/// # Memory layout
+///
+/// Each `Mat<c64>::zeros(3, 3)` allocates 9 * 16 = 144 bytes on the
+/// heap (9 complex f64s).  Two buffers = 288 bytes per thread.
+/// This is allocated ONCE per k-embedding, not per grid point.
 pub struct CpScanBuffers {
+    /// Pre-allocated neutrino mass matrix (overwritten each point).
     pub m_nu: faer::Mat<faer::complex_native::c64>,
+    /// Pre-allocated charged lepton mass matrix (overwritten each point).
     pub m_ch: faer::Mat<faer::complex_native::c64>,
 }
 
@@ -1450,30 +1561,56 @@ impl Default for CpScanBuffers {
 }
 
 impl CpScanBuffers {
+    /// Create a new buffer pair.  Equivalent to `Default::default()`.
     pub fn new() -> Self { Self::default() }
 }
 
-/// Evaluate a single CP scan point: given (alpha_CP, t_sol, t_atm)
-/// and the pre-computed phase matrix phi[i][j], builds the complex
-/// Hermitian neutrino mass matrix, eigendecomposes both sectors,
-/// and returns mixing angles + Jarlskog invariant + delta_CP.
+/// Evaluate a single CP scan point in the 3D (alpha_CP, t_sol, t_atm) space.
 ///
 /// # Mathematical pipeline
 ///
+/// The pipeline has 5 steps, each corresponding to a physical operation:
+///
 /// ```text
-/// (t_sol, t_atm) --[u_solar, u_atmo]--> beta[6]
-///     --[apply_v6_perturbation]--> M_nu_pert(3x3 real)
-///     --[phase injection]--> M_nu_complex(3x3 Hermitian)
-///         M[i][j] = |M_pert[i][j]| * exp(i * alpha * phi[i][j])
-///     --[eigendecomp]--> U_nu
-///     --[U_ch^dag * U_nu]--> U_PMNS
-///     --[permutation + extraction]--> (angles, J_CP, delta)
+/// Step 1: (t_sol, t_atm) --[u_solar, u_atmo]--> beta[6]
+///         Linear combination in V_6 constrained-direction space.
+///         beta[k] = t_sol * u_solar[k] + t_atm * u_atmo[k]
+///
+/// Step 2: beta --[apply_v6_perturbation]--> M_nu_pert (3x3 real)
+///         The lift maps the 6D beta into a 42D assessor vector,
+///         which is then injected into the mass matrix.
+///         Symmetrization: M = (M + M^T) / 2.
+///
+/// Step 3: (M_nu_pert, alpha_CP, phi) --> M_nu_complex (3x3 Hermitian)
+///         Phase injection: M[i][j] = |M_pert[i][j]| * exp(i * alpha * phi[i][j])
+///         Hermiticity: M[j][i] = conj(M[i][j]).  Diagonal stays real.
+///
+/// Step 4: (M_ch, M_nu_complex) --[eigendecomp]--> (U_ch, U_nu)
+///         Hermitian eigendecomposition via faer (iterative QR).
+///         U_PMNS = U_ch^dag * U_nu.
+///
+/// Step 5: U_PMNS --[perm + extraction]--> CpScanResult
+///         Apply perm_u/perm_d, extract |U_ij| -> angles,
+///         Jarlskog quartet -> J_CP, arg(-U_e3) -> delta_CP.
 /// ```
+///
+/// # Why phi is a separate argument (not in CpScanContext)
+///
+/// The phase matrix `phi[i][j]` depends on the k-embedding (which
+/// complex structure J_k is used).  The context is k-independent;
+/// phi changes per k.  This allows a single context to be reused
+/// across all 7 k-embeddings in the parallel scan.
+///
+/// # Performance
+///
+/// ~1.5us per call with pre-allocated buffers (dominated by the
+/// 3x3 complex eigendecomposition, ~0.7us per matrix * 2 matrices).
+/// Without pre-allocation: ~5us per call (dominated by 2 * Mat::zeros).
 ///
 /// # Callers
 ///
 /// - [`test_cp_violation_joint_3d_scan`]: coarse + fine inner loops
-/// - Future Nelder-Mead objective via argmin
+/// - Future Nelder-Mead objective via argmin (planned, C-1497 follow-up)
 #[allow(clippy::too_many_arguments, clippy::needless_range_loop)]
 pub fn evaluate_cp_scan_point(
     alpha_cp: f64,
