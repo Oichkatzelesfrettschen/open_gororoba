@@ -729,3 +729,143 @@ fn test_sign_nullity_stratification() {
     println!("\n  dim=1024: +fraction = {:.6}, -fraction = {:.6}", pfrac, 1.0 - pfrac);
     println!("  Deviation from 0.5: {:.6}", (pfrac - 0.5).abs());
 }
+
+// =========================================================================
+// D3a: Infinitesimal ZD deformation -- tangent space at standard witnesses
+// =========================================================================
+
+/// Compute the tangent space to the zero-divisor variety at standard
+/// sedenion ZD witnesses.
+///
+/// The ZD variety: {(a,b) : a*b = 0, a != 0, b != 0} in S x S.
+/// At a witness (a_0, b_0), the tangent space is:
+///   T = {(da, db) : da*b_0 + a_0*db = 0}
+///
+/// This is a linear system: the Jacobian of F(a,b) = a*b at (a_0, b_0)
+/// is the 16x32 matrix [L_{b_0} | R_{a_0}] where L_b is left multiplication
+/// by b and R_a is right multiplication by a.
+///
+/// The tangent space dimension reveals the local geometry of the ZD manifold.
+/// Moreno (2005) shows all nontrivial annihilators are 4-dimensional.
+/// Reggiani (2024) shows Z(S) is isometric to G_2.
+///
+/// Reference: Reggiani 2024, Moreno 2004 (math/0404395).
+#[test]
+fn test_zd_tangent_space() {
+    let dim = 16_usize;
+
+    // Standard ZD witnesses (from find_zero_divisors)
+    let witnesses: Vec<([f64; 16], [f64; 16])> = vec![
+        // (e_1 + e_10)(e_4 - e_15) = 0 (verified witness)
+        {
+            let mut a = [0.0_f64; 16]; a[1] = 1.0; a[10] = 1.0;
+            let mut b = [0.0_f64; 16]; b[4] = 1.0; b[15] = -1.0;
+            (a, b)
+        },
+        // (e_3 + e_10)(e_6 - e_15) = 0 (from Compendium eq 2.8)
+        {
+            let mut a = [0.0_f64; 16]; a[3] = 1.0; a[10] = 1.0;
+            let mut b = [0.0_f64; 16]; b[6] = 1.0; b[15] = -1.0;
+            (a, b)
+        },
+    ];
+
+    println!("--- D3a: ZD TANGENT SPACE AT STANDARD WITNESSES ---\n");
+
+    for (w_idx, (a0, b0)) in witnesses.iter().enumerate() {
+        // Verify this is actually a ZD
+        let prod = cd_multiply(a0, b0);
+        let norm_sq: f64 = prod.iter().map(|x| x * x).sum();
+        assert!(norm_sq < 1e-20,
+            "Witness {} is not a ZD: ||a*b|| = {:.2e}", w_idx, norm_sq.sqrt());
+
+        // Build the Jacobian: 16x32 matrix [L_{b0} | R_{a0}]
+        // L_{b0}[i][j] = (e_j * b0)[i]  (left multiply basis vector by b0)
+        // R_{a0}[i][j] = (a0 * e_j)[i]  (right multiply a0 by basis vector)
+        let mut jac = vec![vec![0.0_f64; 2 * dim]; dim];
+
+        // Left block: da * b0 -> columns 0..15
+        for j in 0..dim {
+            let mut ej = vec![0.0_f64; dim];
+            ej[j] = 1.0;
+            let prod_j = cd_multiply(&ej, b0);
+            for i in 0..dim {
+                jac[i][j] = prod_j[i];
+            }
+        }
+
+        // Right block: a0 * db -> columns 16..31
+        for j in 0..dim {
+            let mut ej = vec![0.0_f64; dim];
+            ej[j] = 1.0;
+            let prod_j = cd_multiply(a0, &ej);
+            for i in 0..dim {
+                jac[i][dim + j] = prod_j[i];
+            }
+        }
+
+        // Row-echelon rank via Gaussian elimination (no external dep)
+        let rows = dim;
+        let cols = 2 * dim;
+        let mut mat = jac.clone();
+        let mut rank = 0_usize;
+        let mut pivot_col = 0_usize;
+        for row in 0..rows {
+            if pivot_col >= cols { break; }
+            // Find pivot
+            let mut max_row = row;
+            let mut max_val = mat[row][pivot_col].abs();
+            for r in (row + 1)..rows {
+                if mat[r][pivot_col].abs() > max_val {
+                    max_val = mat[r][pivot_col].abs();
+                    max_row = r;
+                }
+            }
+            if max_val < 1e-10 {
+                pivot_col += 1;
+                continue;
+            }
+            mat.swap(row, max_row);
+            let pivot = mat[row][pivot_col];
+            for j in pivot_col..cols {
+                mat[row][j] /= pivot;
+            }
+            for r in 0..rows {
+                if r == row { continue; }
+                let factor = mat[r][pivot_col];
+                if factor.abs() < 1e-15 { continue; }
+                for j in pivot_col..cols {
+                    mat[r][j] -= factor * mat[row][j];
+                }
+            }
+            rank += 1;
+            pivot_col += 1;
+        }
+        let kernel_dim = cols - rank;
+
+        // The a0 and b0 support indices
+        let a_support: Vec<usize> = a0.iter().enumerate()
+            .filter(|(_, v)| v.abs() > 1e-15)
+            .map(|(i, _)| i).collect();
+        let b_support: Vec<usize> = b0.iter().enumerate()
+            .filter(|(_, v)| v.abs() > 1e-15)
+            .map(|(i, _)| i).collect();
+
+        println!("  Witness {}: a = e_{} + e_{}, b = e_{} - e_{}",
+            w_idx,
+            a_support.get(0).unwrap_or(&0),
+            a_support.get(1).unwrap_or(&0),
+            b_support.get(0).unwrap_or(&0),
+            b_support.get(1).unwrap_or(&0));
+        println!("    Jacobian rank: {} / {}", rank, dim);
+        println!("    Tangent space dimension: {} (= 32 - {})", kernel_dim, rank);
+        // Singular values would require SVD (nalgebra); rank from
+        // Gaussian elimination is sufficient for dimension count.
+
+        // Moreno predicts: annihilator dimension = 4 for each factor
+        // So the tangent space should have a specific structure related
+        // to the 4D annihilator fibers.
+        println!("    (Moreno: nontrivial annihilators are 4-dimensional)");
+        println!();
+    }
+}
