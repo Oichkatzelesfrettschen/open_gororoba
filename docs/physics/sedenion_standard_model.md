@@ -1183,3 +1183,105 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - Zhilina (2023): "On doubly alternative zero divisors in CD algebras" [arXiv:2301.11006]
   Follow-up to Zhilina 2021 orthogonality graphs. Doubly alternative ZD characterization.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/zhilina_2023_doubly_alternative_zd_cd.pdf
+
+## Cayley-Dickson Algebra Terminology Reference
+
+### Doubling Tower (named algebras)
+
+| Dim | Name | arXiv/de Marrais name | Properties Lost at This Level |
+|-----|------|----------------------|-------------------------------|
+| 1   | Reals (R) | -- | -- |
+| 2   | Complex numbers (C) | -- | Ordering |
+| 4   | Quaternions (H) | -- | Commutativity |
+| 8   | Octonions (O) | -- | Associativity |
+| 16  | Sedenions (S) | -- | Alternativity, norm multiplicativity |
+| 32  | Pathions / Trigintaduonions (T) | 2^5-ions | Power-associativity |
+| 64  | Chingons | 2^6-ions | Flexibility |
+| 128 | Routons | 2^7-ions | (purely multiplicative) |
+| 256 | Voudons | 2^8-ions | (purely multiplicative) |
+| 512 | Eriston | 2^9-ions | -- |
+| 1024 | DekaVoudon | 2^10-ions | -- |
+| 16384 | Tessareskaidekavoudon | 2^14-ions | -- |
+
+### Key Structural Concepts
+
+**Zero divisors**: Elements a,b != 0 with a*b = 0. First appear at 16D (sedenions).
+  84 standard ZDs in sedenions (Moreno 1997, Reggiani 2024).
+  ZD set Z(S) homeomorphic to G2 (Reggiani 2024).
+
+**Box-kites**: Octahedral vertex figures organizing ZD geometry (de Marrais 2000).
+  7 box-kites in sedenions, each with 6 assessor vertices.
+
+**Assessors**: The 42 diagonal axis-pair systems of ZDs in 16D (de Marrais 2000).
+  Each assessor pair (low, high) with low in 1..7, high in 9..15.
+
+**Emanation tables**: Systematic ZD-pair organization within box-kites (de Marrais 2006).
+  72 emanation tables in pathions (32D).
+
+**Sand mandalas**: Recursive ZD organization patterns in higher CD algebras (de Marrais 2002).
+
+**Strut constants**: Indices labeling the internal geometry of box-kite structures.
+
+**Quasi-octonion**: A non-standard 8D subalgebra of sedenions containing ZDs (Cawagas 2005).
+
+**Fano plane**: PG(2,2), the projective plane of order 2. Encodes octonion multiplication.
+  7 points, 7 lines, 3 points per line, 3 lines per point.
+  Automorphism group: PSL(2,7) of order 168.
+
+**Complex structure J_k**: Left-multiplication by e_k on e_k^perp defines C^3 structure.
+  3 Fano-derived complex lines per fixed imaginary unit (PR1 g2_stabilizer.rs).
+
+**Psi automorphism**: Order-3 S3 generator cycling O_1->O_2->O_3.
+  Overlap ratio cos(2*pi/3) = -0.5 for all generation pairs.
+
+**Epsilon automorphism**: Order-2 parity flip on upper octonion block [8..15].
+  Splits SU(5) into SU(3) + leptoquark sectors.
+
+### Algebraic Properties Lost at Each Doubling
+
+**Commutativity** (lost at 4D): ab = ba
+**Associativity** (lost at 8D): (ab)c = a(bc)
+**Alternativity** (lost at 16D): a(ab) = a^2 b and (ba)a = ba^2
+**Power-associativity** (lost at 32D): a^m * a^n = a^(m+n)
+**Flexibility** (lost at 64D): a(ba) = (ab)a
+
+### Zero Divisor Counts by Dimension
+
+| Dim | Standard ZDs | Annihilator dim range | Source |
+|-----|-------------|----------------------|--------|
+| 8   | 0 | -- | Hurwitz |
+| 16  | 84 | 4 | Moreno 1997, Cawagas 2004 |
+| 32  | 252+ | 4-8 | de Marrais 2002 |
+| 64  | multiples of 84 | -- | Wilmot 2026 |
+
+### Foundational papers added from gap-fill audit
+
+- Schafer (1954): "On the algebras formed by the CD process" [Pacific J. Math.]
+  Classical foundational paper. Cited by all modern CD literature.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/broader_cd_theory/
+
+- Brown (1967): "On generalized Cayley-Dickson algebras" [Pacific J. Math.]
+  Classification/isomorphism in dimensions 16, 32, 64.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/broader_cd_theory/
+
+- Moreno (2004): "Exponential map on CD algebras" [arXiv:math/0405424]
+  Topology/analysis of CD algebras beyond zero-divisor counting.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/
+
+- Saniga, Planat, Pracna (2015): "From CD algebras to combinatorial Grassmannians"
+  Covers 8D through 64D, finite geometry / combinatorial interpretation.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/broader_cd_theory/
+
+- Ludkovsky (2004): "Differentiable functions of CD numbers" [arXiv:math/0405471]
+  Analysis/function theory over arbitrary-dimension CD algebras.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/broader_cd_theory/
+
+- Kivunge (2004): "Sedenion extension loops" [Iowa State dissertation]
+  Loop-theoretic perspective on sedenion structure.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/loop_subalgebra_automorphism/
+
+### Corrections applied
+
+- Reggiani 2025 [2512.13002] -> This is actually Koebisu 2025. Reggiani's 2025 paper
+  may be a different preprint not yet on arXiv.
+- Gresnigt 2025 [2601.07857] -> Corrected to 2026 (January 2026 preprint).
