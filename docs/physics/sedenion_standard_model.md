@@ -1343,12 +1343,16 @@ Buchholtz-Rijke HoTT, Baez octonions, Freudenthal-Fano incidence geometry).
 
 ### Open Problems
 
-1. [x] Classify m4-zero quadruples: 28 Fano-adjacent + 7 anti-Fano sets
+1. [x] Classify m4-zero quadruples: 28 Fano-adjacent + 7 co-Fano sets
 2. [x] Individual term norms: constant 1.0 (growth is combinatorial)
-3. Formalize the scalar extension theorem in Rocq
-4. Compute full m5 (all terms, not just left-nested) for Catalan count verification
-5. Connect Fano incidence tower to G2 representation theory
-6. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
+3. [x] m3 = Assoc on 168 non-Fano triples + scalar trace on 42 Fano triples
+4. [x] Rocq: 42+168 classification via XOR (HomotopyTransferAssociator.v)
+5. [x] 5-element subsets: ALL 21 have exactly 2 Fano sub-triples (uniform)
+6. Fano incidence sequence across n-set sizes:
+   n=3: {7 with 1, 28 with 0}, n=4: {28 with 1, 7 with 0},
+   n=5: {21 with 2} (uniform), n=6: {7 with 4}, n=7: {1 with 7}
+7. Formalize the scalar extension theorem in Rocq
+8. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
 
 ## Claims Index
 
