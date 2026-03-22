@@ -109,6 +109,8 @@ version = "0.1.0"
 dependencies = [
  "algebra_analysis",
  "approx",
+ "argmin",
+ "argmin-math",
  "cd_kernel",
  "criterion",
  "cudarc 0.19.3",

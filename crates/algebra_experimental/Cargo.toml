@@ -23,6 +23,8 @@ petgraph = { workspace = true }
 serde = { workspace = true }
 cudarc = { workspace = true, optional = true }
 faer.workspace = true
+argmin = { workspace = true }
+argmin-math = { workspace = true }
 
 [features]
 gpu = ["gororoba_algebra/gpu", "dep:cudarc"]
