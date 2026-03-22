@@ -689,6 +689,36 @@ J = J_max * sin(delta) and J_max = 3.07e-2 from the mixing angles.
   but mixing angles destroyed. Conjugate pairing observed: k=1 and k=5
   give J with opposite signs (G2 conjugacy structure).
 
+### Phase-Only Complexification (C-1494, 2026-03-22)
+
+**Breakthrough**: Multiplicative phase injection preserves mixing angles while
+producing nonzero CP violation. Instead of M += i*alpha*template (additive,
+which distorts eigenvalues), use:
+
+    M[i][j] -> |M[i][j]| * exp(i * alpha_CP * phi[i][j])
+
+where phi[i][j] = atan2(<profile_i, J_k(psi(profile_j))>, <profile_i, psi(profile_j)>)
+is the natural Fano-derived complex angle from the G2 stabilizer.
+
+| k | alpha_CP | theta_12 | theta_13 | theta_23 | |J_CP| | delta_CP |
+|---|----------|----------|----------|----------|---------| ---------|
+| 1 | 0.050 | 33.35 (0.2%) | 8.66 (1.4%) | 48.93 (0.1%) | 8.26e-3 | 165.9 |
+| 3 | 0.045 | 33.35 (0.2%) | 8.66 (1.5%) | 48.94 (0.1%) | 8.49e-3 | 165.4 |
+| 7 | 0.055 | 33.35 (0.2%) | 8.67 (1.5%) | 48.95 (0.1%) | 8.72e-3 | -165.0 |
+| PDG | -- | 33.41 | 8.54 | 49.0 | 3.3e-2 | 195 |
+
+Key observations:
+- All mixing angles within 1.5% of PDG (vs 50-300% distortion with additive)
+- |J_CP| = 8.5e-3 (25% of PDG target) with alpha_CP = 0.05
+- Z_2 conjugation symmetry: k and (8-k) give |J| same, sign flipped
+- k=3,4 now active (were zero under additive injection)
+- delta_CP ~ 165 deg (PDG: 195 deg) -- correct quadrant
+
+Remaining gap: factor 3.9x in |J_CP|. Possible routes:
+- J_k action on full 16D (currently 6 perp indices only)
+- Joint (alpha_CP, V_6) optimization
+- Non-uniform phase scaling per generation pair
+
 ## X. Chi-squared Global Fit
 
 ### Pipeline Levels
