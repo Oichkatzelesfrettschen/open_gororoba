@@ -702,11 +702,11 @@ Given algebraic ratio r and one input m1 (lightest mass):
 
 **Open**:
 1. [x] Mass ratio: 3-blade friction gives r = 0.0304 (PDG 0.0307, 1.0% error)
-2. [x] Rocq SU(3): rational subset Jacobi verified (sqrt(3) subset open)
+2. [x] Rocq SU(3): COMPLETE Jacobi in Z[sqrt(3)] -- all 56 triples verified
 3. Delta_CP maximal vs submaximal: algebra predicts -90 deg (maximal),
    PDG best fit -165 deg (submaximal). Testable by DUNE/HyperK/JUNO.
 4. Derive TensorElementLift from algebra (currently heuristic 42D->6D)
-5. Complete Rocq SU(3): extend to Q[sqrt(3)] or 12*f integer encoding
+5. [x] Complete Rocq SU(3): Z[sqrt(3)] Jacobi proof (SU3JacobiFull.v)
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
    (3-blade triples that give r=0.0304 collapse mixing angles)
 7. [x] Two-selector-type model: Gauss-Newton optimization confirms structural
@@ -776,15 +776,15 @@ sqrt(3)) verified by boolean reflection:
 - Total antisymmetry: vm_compute verified for all permutations
 - Jacobi identity: verified for 10 individual triples via vm_compute
 
-Limitation: f_{458} = f_{678} = sqrt(3)/2 are omitted (require algebraic
-number field). Triples involving generators 4-7 simultaneously may fail
-Jacobi in the rational subset. Full verification requires either:
-(a) extending Rocq with Q[sqrt(3)], or (b) encoding 12*f as integers
-(clearing all denominators including sqrt(3) via multiplication by 12).
+**COMPLETE Jacobi (SU3JacobiFull.v)**: All 9 structure constants including
+f_{458} = f_{678} = sqrt(3)/2, verified using Z[sqrt(3)] arithmetic.
+Pairs (a, b) represent a + b*sqrt(3) with multiplication rule
+(a1+b1*s)(a2+b2*s) = (a1*a2+3*b1*b2) + (a1*b2+a2*b1)*s.
+All C(8,3) = 56 triples x 8 indices = 448 checks via single vm_compute.
 
 ### Proof Statistics
 
-- 39 theory files in proofs/theories/
+- 41 theory files in proofs/theories/
 - 145+ verified files in proofs/verified/
 - 190+ total .v files
 - All proofs compile with Rocq 9.1.1 (nightly-2026-03-05)
