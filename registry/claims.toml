@@ -10125,3 +10125,10 @@ statement = """Phase-only CP violation via J_k complex structure: multiplicative
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_phase_only"
 last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1495"
+statement = """CDDoubleFunctor tower instantiation: RealBase (7 axioms proven by ring) chains through CDDouble functor to produce Complex(2D), Quat(4D), Oct(8D), Sed(16D), Pathion(32D) with ALL 42 linearity theorems (7 per level x 6 levels) proven with only 7 manual proofs at the base. sed_mul_scale_left and pathion_mul_scale_left are concrete witnesses: sedenion and pathion linearity inherited automatically from the functor chain. Rocq compilation: 0 warnings, <1s."""
+status = "Formally verified"
+where_stated = "proofs/theories/CDDoubleTower.v"
+last_verified = "2026-03-22"
