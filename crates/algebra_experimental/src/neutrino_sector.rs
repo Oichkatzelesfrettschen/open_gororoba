@@ -7802,4 +7802,106 @@ mod tests {
         println!("  chi2 (3 angles + delta_CP) = {:.2} / 4 dof = {:.2}",
             chi2_full, chi2_full / 4.0);
     }
+
+    /// 3-blade friction for mass ratio: use triple selectors instead of pairs.
+    ///
+    /// The 2-blade friction gives r = 0.1478 (4.8x PDG). The 3-blade friction
+    /// (sum of 3 pairwise braid frictions) has a quantized spectrum in 2*sqrt(2)
+    /// steps and can produce steeper hierarchies.
+    #[test]
+    fn test_3blade_mass_ratio() {
+        use rayon::prelude::*;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let _pdg = Pdg2024::default();
+        let pdg_r = 0.0307_f64;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [o1.clone(), o2.clone(), o3.clone()];
+
+        // Generate all triples C(15,3) = 455
+        let mut triples: Vec<(usize, usize, usize)> = Vec::new();
+        for i in 1..16_usize {
+            for j in (i + 1)..16 {
+                for k in (j + 1)..16 {
+                    triples.push((i, j, k));
+                }
+            }
+        }
+
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+
+        // Scan all (ch_triple, nu_triple) combinations
+        // For efficiency, precompute all 3-blade frictions first
+        let compute_3blade = |triple: (usize, usize, usize)| -> [f64; 3] {
+            let sign_table = SignTableCache::new(16);
+            let (i, j, k) = triple;
+            let mi = MajoranaMode { gamma_index: i - 1, cd_basis_index: i, cd_dim: 16 };
+            let mj = MajoranaMode { gamma_index: j - 1, cd_basis_index: j, cd_dim: 16 };
+            let mk = MajoranaMode { gamma_index: k - 1, cd_basis_index: k, cd_dim: 16 };
+            let mut f = [0.0_f64; 3];
+            for (g, sub) in subs.iter().enumerate() {
+                f[g] = cd_braid_signed_friction(&mi, &mj, sub, &sign_table)
+                     + cd_braid_signed_friction(&mi, &mk, sub, &sign_table)
+                     + cd_braid_signed_friction(&mj, &mk, sub, &sign_table);
+            }
+            f
+        };
+
+        // Precompute all friction values
+        let all_frictions: Vec<[f64; 3]> = triples.par_iter()
+            .map(|&t| compute_3blade(t))
+            .collect();
+
+        // Now scan pairs of triples for mass ratio
+        let af = &all_frictions;
+        let results: Vec<_> = (0..triples.len()).into_par_iter().flat_map_iter(|ci| {
+            (0..triples.len()).map(move |ni| {
+                let sel_ch = &af[ci];
+                let sel_nu = &af[ni];
+
+                // Build diagonal mass contributions
+                let mut masses = [0.0_f64; 3];
+                for g in 0..3 {
+                    let f = w1 * sel_ch[g] + w2 * sel_nu[g];
+                    masses[g] = f.exp();
+                }
+
+                // Sort by magnitude
+                masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let dm21 = masses[1] * masses[1] - masses[0] * masses[0];
+                let dm31 = masses[2] * masses[2] - masses[0] * masses[0];
+                let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
+                let r_err = (r - pdg_r).abs();
+                let hierarchy = masses[2] / masses[0];
+
+                (r_err, r, hierarchy, ci, ni)
+            })
+        }).collect();
+
+        let mut sorted = results;
+        sorted.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("  === 3-Blade Mass Ratio Scan ===\n");
+        println!("  PDG: r = {:.4}, m3/m1 ~ 50\n", pdg_r);
+        println!("  {:>5} | {:>12} {:>12} | {:>8} | {:>6} | {:>8}",
+            "rank", "ch_triple", "nu_triple", "r", "m3/m1", "|r_err|");
+        println!("  {:-<5}-+-{:-<12}-{:-<12}-+-{:-<8}-+-{:-<6}-+-{:-<8}", "", "", "", "", "", "");
+
+        for (rank, e) in sorted.iter().take(10).enumerate() {
+            println!("  {:>5} | {:>12?} {:>12?} | {:>8.4} | {:>6.1} | {:>8.4}",
+                rank + 1, triples[e.3], triples[e.4], e.1, e.2, e.0);
+        }
+
+        let best = &sorted[0];
+        println!("\n  BEST: r = {:.6} (PDG: {:.4}, error: {:.1}%)",
+            best.1, pdg_r, (best.1 - pdg_r) / pdg_r * 100.0);
+        println!("  m3/m1 = {:.1}", best.2);
+        println!("  ch_triple = {:?}", triples[best.3]);
+        println!("  nu_triple = {:?}", triples[best.4]);
+    }
 }
