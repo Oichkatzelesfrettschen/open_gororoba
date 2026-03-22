@@ -1160,6 +1160,77 @@ zero-parameter predictions.
   Clifford-algebra-valued curvature for gravity + Yang-Mills. Pair-symmetric decomposition.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2601.19734v1_clifford_invariant_unification.pdf
 
+## XVI. Surreal Cayley-Dickson Tower
+
+### Scalar Extension Principle
+
+The Cayley-Dickson multiplication table uses structure constants in {0, +1, -1}.
+Therefore, for ANY coefficient field K extending R (including the surreal
+numbers No), the scalar extension A_n(K) = K tensor_R A_n(R) inherits:
+- the same basis multiplication table
+- the same zero-divisor identities
+- the same property-loss ladder
+
+Formally: if u, v in A_n(R) satisfy uv = 0 with u != 0, v != 0, then
+their images in A_n(K) also satisfy uv = 0.
+
+### Surreal CD Tower
+
+| Stage | Algebra | dim | Properties over No |
+|-------|---------|-----|-------------------|
+| A_0 | No | 1 | Ordered real-closed field |
+| A_1 | C_No | 2 | Commutative, associative, division |
+| A_2 | H_No | 4 | Noncommutative, associative, division |
+| A_3 | O_No | 8 | Alternative, division, norm multiplicative |
+| A_4 | S_No | 16 | Non-alternative, zero divisors, norm NOT multiplicative |
+
+Through A_3 (surreal octonions): N(x) = sum x_i^2 is anisotropic over
+any ordered field (sum of squares = 0 iff all zero). Hence division holds.
+
+At A_4: norm multiplicativity fails. Explicit ZD witnesses verified:
+  (e1+e10)(e5+e14) = 0, (e3+e10)(e6-e15) = 0, (e1+e10)(e4-e15) = 0
+
+### What Changes Over No
+
+The multiplication table does NOT change. What changes:
+- Coefficients can be infinitesimal, finite, or infinite surreal values
+- ZD geometry persists at every surreal scale: (alpha*x)(y) = alpha*(xy) = 0
+- The ZD locus contains infinitesimal and infinite rays
+- Transseries-like asymptotics can be encoded directly in coefficients
+
+### What Does NOT Change
+
+- Basis multiplication rules (structure constants in {0, +1, -1})
+- Existence of zero divisors at dim >= 16
+- Loss of alternativity beyond octonions
+- Loss of norm multiplicativity at sedenion stage
+- The 84 standard Reggiani zero-divisor pairs
+- Box-kite / octahedral ZD geometry
+
+### Set-Theoretic Caveat
+
+No is a proper class. For set-sized algebra objects, restrict to a
+set-sized real-closed subfield K of No (e.g., surreals of birthday < kappa).
+All constructions above work over any such K.
+
+### Connection to the Sedenion Standard Model
+
+The surreal extension does not change any physics predictions (which depend
+on the multiplication table, not the coefficient field). However, it provides:
+- A natural framework for scale-separated perturbation theory
+- Infinitesimal/infinite coefficient regimes for asymptotic analysis
+- A formal language for "near-zero-divisor" deformations
+- A bridge to non-Archimedean valuation theory on the ZD manifold
+
+### Open Problems
+
+1. Classify whether surreal coefficient growth defines new invariant
+   strata in the box-kite graph
+2. Formalize the scalar extension theorem in Rocq (A_n(K) = K tensor A_n(R))
+3. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
+4. Implement homotopy transfer m3 from sedenion retraction to octonions
+5. Connect surreal CD asymptotics to p-adic / ultrametric scaling
+
 ## Claims Index
 
 C-1455: Lepton mass fit w_sym ~ -1/sqrt(2)
