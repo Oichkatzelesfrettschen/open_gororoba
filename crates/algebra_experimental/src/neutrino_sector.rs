@@ -10663,4 +10663,233 @@ mod tests {
             println!("  No solution found within 2% angle tolerance with nonzero J_CP.");
         }
     }
+
+    // =========================================================================
+    // Epic B: S_3-module lift derivation
+    // =========================================================================
+
+    /// Compute the full S_3 representation on V_6 and determine whether
+    /// TensorElementLift lies in Hom_{S_3}(V_6, Sym_3(R)).
+    ///
+    /// Steps:
+    /// 1. Build 42x42 psi and epsilon matrices on assessor space
+    /// 2. Verify S_3 relations (psi^3=I, eps^2=I, eps*psi=psi^2*eps)
+    /// 3. Restrict to V_6 (6x6 matrices)
+    /// 4. Compute S_3 characters: chi(e), chi(psi), chi(eps)
+    /// 5. Decompose V_6 = n_triv * 1 + n_sgn * sgn + n_std * std
+    /// 6. Compute Hom_{S_3}(V_6, Sym_3(R))
+    ///
+    /// Reference: Gresnigt/Gourlay 2019 (1904.03186), 2026 (2601.07857).
+    /// Psi formula: Gourlay & Gresnigt (arXiv:2407.01580), Eq 5.
+    /// Epsilon: negates upper octonion half (indices 8..15).
+    /// V_6 extraction: complement of B/C column space in 42D assessor space.
+    #[test]
+    fn test_s3_action_on_v6_and_lift_derivation() {
+        use cd_kernel::{gourlay_psi, gourlay_epsilon};
+        use nalgebra::DMatrix;
+
+        // ---- Step 0: Build assessor pairs (same as extract_v6_basis) ----
+        let mut assessors: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                assessors.push((low, high));
+            }
+        }
+        assert_eq!(assessors.len(), 42);
+
+        // ---- Step 1: Build 42x42 psi and epsilon matrices ----
+        // Psi acts on each sedenion basis vector e_i. The induced action on
+        // the assessor (low, high) is: find which assessor contains the
+        // images of e_low and e_high under psi.
+        //
+        // For a unit assessor vector with assessor[a] = 1 (corresponding to
+        // the pair (low, high)), we embed into 16D as e_low + e_high,
+        // apply psi, then decompose the result back into assessor space.
+        //
+        // This gives a 42x42 real matrix M_psi where
+        //   M_psi[b][a] = <assessor_b | psi(assessor_a)>
+
+        let build_s3_matrix = |action: &dyn Fn(&[f64; 16]) -> [f64; 16]| -> DMatrix<f64> {
+            let mut mat = DMatrix::zeros(42, 42);
+            for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+                // Embed: e_low
+                let mut v_low = [0.0_f64; 16];
+                v_low[low] = 1.0;
+                let img_low = action(&v_low);
+
+                // Embed: e_high
+                let mut v_high = [0.0_f64; 16];
+                v_high[high] = 1.0;
+                let img_high = action(&v_high);
+
+                // Decompose each image into assessor overlaps.
+                // An assessor (l, h) has overlap |img[l]| + |img[h]| with
+                // the image, but we need the LINEAR action. Since psi is
+                // linear on basis vectors, we compute:
+                //   psi(e_low) = sum_i c_i * e_i
+                // The assessor weight for (l, h) from this image is:
+                //   contribution to assessor[b=(l,h)] = img_low[l] or img_low[h]
+                // depending on which index the image lands on.
+                for (b_idx, &(bl, bh)) in assessors.iter().enumerate() {
+                    // Contribution of psi(e_low) to assessor (bl, bh):
+                    // if psi(e_low) has component at bl or bh
+                    let c_low = img_low[bl] + img_low[bh];
+                    let c_high = img_high[bl] + img_high[bh];
+                    mat[(b_idx, a_idx)] += c_low + c_high;
+                }
+            }
+            mat
+        };
+
+        let psi_fn = |v: &[f64; 16]| -> [f64; 16] { gourlay_psi(v) };
+        let eps_fn = |v: &[f64; 16]| -> [f64; 16] { gourlay_epsilon(v) };
+
+        let m_psi_42 = build_s3_matrix(&psi_fn);
+        let m_eps_42 = build_s3_matrix(&eps_fn);
+
+        // ---- Step 2: Verify S_3 relations ----
+        let id42 = DMatrix::identity(42, 42);
+        let psi3 = &m_psi_42 * &m_psi_42 * &m_psi_42;
+        let eps2 = &m_eps_42 * &m_eps_42;
+        let eps_psi = &m_eps_42 * &m_psi_42;
+        let psi2_eps = &m_psi_42 * &m_psi_42 * &m_eps_42;
+
+        let psi3_err = (&psi3 - &id42).norm();
+        let eps2_err = (&eps2 - &id42).norm();
+        let relation_err = (&eps_psi - &psi2_eps).norm();
+
+        println!("--- S_3 ACTION ON ASSESSOR SPACE (42D) ---");
+        println!("  ||psi^3 - I||  = {:.6e}", psi3_err);
+        println!("  ||eps^2 - I||  = {:.6e}", eps2_err);
+        println!("  ||eps*psi - psi^2*eps|| = {:.6e}", relation_err);
+
+        // ---- Step 3: Extract V_6 basis and restrict ----
+        let (v6_basis, sv, _) = extract_v6_basis();
+        let n_basis = v6_basis.nrows().min(6);
+        println!("\n  V_6 basis: {}x{}, singular values: {:?}", v6_basis.nrows(), v6_basis.ncols(), &sv[..n_basis]);
+
+        // V_6 basis is n_basis x 42. Restriction: M_V6 = V * M_42 * V^T
+        // where V is n_basis x 42.
+        let v6 = v6_basis.rows(0, n_basis);
+        let m_psi_v6 = &v6 * &m_psi_42 * &v6.transpose();
+        let m_eps_v6 = &v6 * &m_eps_42 * &v6.transpose();
+
+        // ---- Step 4: S_3 characters = traces ----
+        let chi_e = n_basis as f64; // trace of identity on V_6
+        let chi_psi = m_psi_v6.trace();
+        let chi_eps = m_eps_v6.trace();
+
+        // Also compute chi(psi^2) and chi(eps*psi)
+        let m_psi2_v6 = &m_psi_v6 * &m_psi_v6;
+        let m_eps_psi_v6 = &m_eps_v6 * &m_psi_v6;
+        let chi_psi2 = m_psi2_v6.trace();
+        let chi_eps_psi = m_eps_psi_v6.trace();
+
+        println!("\n--- S_3 CHARACTERS ON V_6 ---");
+        println!("  chi(e)       = {:.6}", chi_e);
+        println!("  chi(psi)     = {:.6}", chi_psi);
+        println!("  chi(psi^2)   = {:.6}", chi_psi2);
+        println!("  chi(eps)     = {:.6}", chi_eps);
+        println!("  chi(eps*psi) = {:.6}", chi_eps_psi);
+
+        // Verify S_3 relations on V_6
+        let v6_psi3 = &m_psi_v6 * &m_psi_v6 * &m_psi_v6;
+        let v6_id = DMatrix::identity(n_basis, n_basis);
+        let v6_psi3_err = (&v6_psi3 - &v6_id).norm();
+        let v6_eps2 = &m_eps_v6 * &m_eps_v6;
+        let v6_eps2_err = (&v6_eps2 - &v6_id).norm();
+
+        println!("\n  V_6 S_3 relation checks:");
+        println!("    ||psi^3 - I|| on V_6 = {:.6e}", v6_psi3_err);
+        println!("    ||eps^2 - I|| on V_6 = {:.6e}", v6_eps2_err);
+
+        let faithful = v6_psi3_err < 0.1 && v6_eps2_err < 0.1;
+        println!("    Faithful S_3 action on V_6: {}", faithful);
+
+        // ---- Step 5: Decompose V_6 into S_3 irreps ----
+        // S_3 has 3 irreps over R:
+        //   1 (trivial):  chi(e)=1, chi(psi)=1,  chi(eps)=1
+        //   sgn (sign):   chi(e)=1, chi(psi)=1,  chi(eps)=-1
+        //   std (standard): chi(e)=2, chi(psi)=-1, chi(eps)=0
+        //
+        // Multiplicity formula: n_rho = (1/|G|) * sum_{g in G} chi_V(g) * chi_rho(g)
+        // |S_3| = 6, conjugacy classes: {e} (size 1), {psi, psi^2} (size 2), {eps, eps*psi, eps*psi^2} (size 3)
+        //
+        // n_triv = (1/6) * [1*chi(e)*1 + 2*chi(psi)*1 + 3*chi(eps)*1]
+        // n_sgn  = (1/6) * [1*chi(e)*1 + 2*chi(psi)*1 + 3*chi(eps)*(-1)]
+        // n_std  = (1/6) * [1*chi(e)*2 + 2*chi(psi)*(-1) + 3*chi(eps)*0]
+
+        let n_triv = (chi_e + 2.0 * chi_psi + 3.0 * chi_eps) / 6.0;
+        let n_sgn = (chi_e + 2.0 * chi_psi - 3.0 * chi_eps) / 6.0;
+        let n_std = (2.0 * chi_e - 2.0 * chi_psi) / 6.0;
+
+        println!("\n--- S_3 IRREP DECOMPOSITION OF V_6 ---");
+        println!("  n_trivial  = {:.4}", n_triv);
+        println!("  n_sign     = {:.4}", n_sgn);
+        println!("  n_standard = {:.4}", n_std);
+        println!("  check: {} + {} + 2*{} = {:.4} (should be {})",
+            n_triv, n_sgn, n_std,
+            n_triv + n_sgn + 2.0 * n_std,
+            n_basis);
+
+        // ---- Step 6: Hom_{S_3}(V_6, Sym_3(R)) ----
+        // Sym_3(R) = 6D space of 3x3 real symmetric matrices.
+        // S_3 acts by simultaneous permutation of rows and columns.
+        // Character: chi(e)=6, chi(psi)=0, chi(eps)=2
+        //   (psi permutes all 3 diagonal entries cyclically and all 3 off-diag -> trace 0)
+        //   (eps swaps two rows/cols: fixes 1 diagonal + 1 off-diag, swaps the rest -> trace 2)
+        //
+        // Sym_3 decomposition: 2*1 + 0*sgn + 2*std
+        //   n_triv = (6 + 0 + 6)/6 = 2
+        //   n_sgn  = (6 + 0 - 6)/6 = 0
+        //   n_std  = (12 - 0)/6 = 2
+        //
+        // dim Hom_{S_3}(V_6, Sym_3) = n_triv(V_6)*n_triv(Sym_3) + n_sgn(V_6)*n_sgn(Sym_3) + n_std(V_6)*n_std(Sym_3)
+        // (by Schur's lemma: Hom(rho, sigma) = 0 if rho != sigma, = R^{mult} if rho = sigma)
+
+        let chi_sym3_e = 6.0_f64;
+        let chi_sym3_psi = 0.0_f64;
+        let chi_sym3_eps = 2.0_f64;
+
+        let n_triv_sym3 = (chi_sym3_e + 2.0 * chi_sym3_psi + 3.0 * chi_sym3_eps) / 6.0;
+        let n_sgn_sym3 = (chi_sym3_e + 2.0 * chi_sym3_psi - 3.0 * chi_sym3_eps) / 6.0;
+        let n_std_sym3 = (2.0 * chi_sym3_e - 2.0 * chi_sym3_psi) / 6.0;
+
+        println!("\n--- Sym_3(R) IRREP DECOMPOSITION ---");
+        println!("  n_trivial  = {:.4}", n_triv_sym3);
+        println!("  n_sign     = {:.4}", n_sgn_sym3);
+        println!("  n_standard = {:.4}", n_std_sym3);
+
+        // dim Hom_{S_3}(V_6, Sym_3) via Schur's lemma
+        let dim_hom = n_triv * n_triv_sym3 + n_sgn * n_sgn_sym3 + n_std * n_std_sym3;
+
+        println!("\n--- CENTRAL THEOREM: dim Hom_{{S_3}}(V_6, Sym_3) ---");
+        println!("  = {:.4} * {:.4} + {:.4} * {:.4} + {:.4} * {:.4}",
+            n_triv, n_triv_sym3, n_sgn, n_sgn_sym3, n_std, n_std_sym3);
+        println!("  = {:.4}", dim_hom);
+
+        if dim_hom.abs() < 0.5 {
+            println!("\n  RESULT: Hom_{{S_3}}(V_6, Sym_3) = 0");
+            println!("  TensorElementLift is genuinely NON-equivariant under this S_3 action.");
+            println!("  This is an important negative theorem (if the S_3 action is faithful).");
+        } else {
+            let dim_hom_int = dim_hom.round() as usize;
+            println!("\n  RESULT: dim Hom_{{S_3}}(V_6, Sym_3) = {}", dim_hom_int);
+            println!("  Equivariant lifts EXIST. Characterize the intertwiner space.");
+        }
+
+        if !faithful {
+            println!("\n  WARNING: S_3 action is NOT faithful on V_6.");
+            println!("  psi^3 != I means the induced action is not a true S_3 representation.");
+            println!("  The non-equivariance result is PROVISIONAL on the current action.");
+            println!("  A triad/incidence-level S_3 action may give different results.");
+        }
+
+        // Print eigenvalues of psi on V_6 for additional diagnostics
+        let eig_psi = m_psi_v6.clone().symmetric_eigen();
+        println!("\n  Eigenvalues of psi on V_6: {:?}", eig_psi.eigenvalues.as_slice());
+        let eig_eps = m_eps_v6.clone().symmetric_eigen();
+        println!("  Eigenvalues of eps on V_6: {:?}", eig_eps.eigenvalues.as_slice());
+    }
 }

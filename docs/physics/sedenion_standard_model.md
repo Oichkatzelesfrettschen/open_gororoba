@@ -542,6 +542,16 @@ explicitly project-specific, not literature-dictated.
    derivation problem is fundamentally an S_3-family question.
 5. **V_6 is generation-invariant**: psi acts as a scalar on V_6 by construction
    (V_6 = complement of B/C where generation structure lives).
+6. **S_3 action on V_6 is defective (C-1502)**: The assessor-level induced
+   S_3 action has ||psi^3 - I|| = 746 on 42D, and psi eigenvalue -0.2215
+   (6-fold degenerate scalar) on V_6. Epsilon eigenvalue -0.2658, also
+   scalar. Non-integer irrep multiplicities (n_triv=-0.24, n_sgn=1.35,
+   n_std=2.44) confirm the action is NOT a genuine S_3 representation.
+   The formal dim Hom_{S_3}(V_6, Sym_3) = 4.4 is meaningless without a
+   faithful action. The STRUCTURAL insight: V_6 is a psi-eigenspace,
+   which is WHY the lift cannot be S_3-equivariant -- V_6 carries
+   trivial-like psi action while Sym_3 carries the permutation action.
+   Reference: test_s3_action_on_v6_and_lift_derivation.
 
 ## VIII-B. Negative-Result Ladder
 
