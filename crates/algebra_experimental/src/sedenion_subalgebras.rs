@@ -1720,4 +1720,171 @@ mod tests {
         }
         println!("\n  All verified. ZD geometry is coefficient-field-independent.");
     }
+
+    /// Homotopy transfer m3: the cubic operation from sedenion retraction to octonions.
+    ///
+    /// Given the retraction/section pair:
+    ///   p(u,v) = (u+v)/2       (S -> O, fold-average projection)
+    ///   i(x) = (x,x)           (O -> S, diagonal section)
+    ///   h = id - i*p            (contracting homotopy)
+    ///
+    /// The transferred cubic is:
+    ///   m3(x,y,z) = p( h(i(x)*i(y)) * i(z) ) - p( i(x) * h(i(y)*i(z)) )
+    ///
+    /// This measures how much the sedenion multiplication deviates from
+    /// what the octonion projection predicts. It is the first A-infinity
+    /// correction to the octonionic product.
+    #[test]
+    fn test_homotopy_transfer_m3() {
+        use cd_kernel::cd_multiply;
+
+        // Octonion basis as 16D sedenion vectors (lower 8 components)
+        let _oct_basis = |k: usize| -> [f64; 16] {
+            assert!(k < 8);
+            let mut v = [0.0_f64; 16];
+            v[k] = 1.0;
+            v
+        };
+
+        // Section i: O -> S, i(x) = (x, x)
+        let section = |x: &[f64; 8]| -> [f64; 16] {
+            let mut s = [0.0_f64; 16];
+            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
+            s
+        };
+
+        // Projection p: S -> O, p(u,v) = (u+v)/2
+        let project = |s: &[f64]| -> [f64; 8] {
+            let mut o = [0.0_f64; 8];
+            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
+            o
+        };
+
+        // Homotopy h = id - i*p
+        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
+            let ps = project(s);
+            let ips = section(&ps);
+            let mut h = [0.0_f64; 16];
+            for k in 0..16 { h[k] = s[k] - ips[k]; }
+            h
+        };
+
+        // Sedenion multiplication (16D)
+        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+            let result = cd_multiply(a, b);
+            let mut out = [0.0_f64; 16];
+            for k in 0..16 { out[k] = result[k]; }
+            out
+        };
+
+        // m3(x,y,z) = p( h(i(x)*i(y)) * i(z) ) - p( i(x) * h(i(y)*i(z)) )
+        let compute_m3 = |x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
+            let ix = section(x);
+            let iy = section(y);
+            let iz = section(z);
+
+            let ix_iy = sed_mul(&ix, &iy);
+            let h_ix_iy = homotopy(&ix_iy);
+            let term1 = sed_mul(&h_ix_iy, &iz);
+            let p_term1 = project(&term1);
+
+            let iy_iz = sed_mul(&iy, &iz);
+            let h_iy_iz = homotopy(&iy_iz);
+            let term2 = sed_mul(&ix, &h_iy_iz);
+            let p_term2 = project(&term2);
+
+            let mut m3 = [0.0_f64; 8];
+            for k in 0..8 { m3[k] = p_term1[k] - p_term2[k]; }
+            m3
+        };
+
+        println!("  === Homotopy Transfer m3: Sedenion Retraction to Octonions ===\n");
+
+        // Compute m3 for all 210 ordered triples of distinct imaginary units
+        let mut scalar_count = 0;
+        let mut imaginary_count = 0;
+        let mut zero_count = 0;
+
+        // Fano lines (for classification)
+        let fano: [(usize, usize, usize); 7] = [
+            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
+        ];
+
+        let is_fano_triple = |i: usize, j: usize, k: usize| -> bool {
+            let mut sorted = [i, j, k];
+            sorted.sort();
+            fano.iter().any(|&(a, b, c)| sorted == [a, b, c])
+        };
+
+        println!("  Sample m3 outputs:");
+        for i in 1..8 {
+            for j in 1..8 {
+                if j == i { continue; }
+                for k in 1..8 {
+                    if k == i || k == j { continue; }
+
+                    let mut xi = [0.0_f64; 8]; xi[i] = 1.0;
+                    let mut yj = [0.0_f64; 8]; yj[j] = 1.0;
+                    let mut zk = [0.0_f64; 8]; zk[k] = 1.0;
+
+                    let m3_ijk = compute_m3(&xi, &yj, &zk);
+                    let norm: f64 = m3_ijk.iter().map(|v| v * v).sum::<f64>().sqrt();
+
+                    if norm < 1e-10 {
+                        zero_count += 1;
+                    } else if m3_ijk[0].abs() > 0.5 && m3_ijk[1..].iter().all(|v| v.abs() < 1e-10) {
+                        scalar_count += 1;
+                        if scalar_count <= 3 {
+                            println!("    m3(e{},e{},e{}) = {:.1} e0 [SCALAR, Fano={}]",
+                                i, j, k, m3_ijk[0], is_fano_triple(i, j, k));
+                        }
+                    } else {
+                        imaginary_count += 1;
+                        // Find the dominant imaginary component
+                        let (max_idx, max_val) = m3_ijk[1..].iter().enumerate()
+                            .max_by(|(_, a), (_, b)| a.abs().partial_cmp(&b.abs()).unwrap())
+                            .map(|(i, v)| (i+1, *v)).unwrap();
+                        if imaginary_count <= 3 {
+                            println!("    m3(e{},e{},e{}) = {:.1} e{} [IMAGINARY, Fano={}]",
+                                i, j, k, max_val, max_idx, is_fano_triple(i, j, k));
+                        }
+                    }
+                }
+            }
+        }
+
+        let total = scalar_count + imaginary_count + zero_count;
+        println!("\n  === Classification ===");
+        println!("  Total ordered triples: {} (expected: 7*6*5 = 210)", total);
+        println!("  Scalar outputs (e0 only): {}", scalar_count);
+        println!("  Imaginary outputs: {}", imaginary_count);
+        println!("  Zero outputs: {}", zero_count);
+
+        // Verify the audit's prediction: 42 scalar + 168 imaginary
+        println!("\n  Audit prediction: 42 scalar + 168 imaginary");
+        println!("  Actual:           {} scalar + {} imaginary + {} zero", scalar_count, imaginary_count, zero_count);
+
+        // Check Fano correlation
+        let mut fano_scalar = 0;
+        let mut nonfano_imag = 0;
+        for i in 1..8 {
+            for j in 1..8 {
+                if j == i { continue; }
+                for k in 1..8 {
+                    if k == i || k == j { continue; }
+                    let mut xi = [0.0_f64; 8]; xi[i] = 1.0;
+                    let mut yj = [0.0_f64; 8]; yj[j] = 1.0;
+                    let mut zk = [0.0_f64; 8]; zk[k] = 1.0;
+                    let m3_ijk = compute_m3(&xi, &yj, &zk);
+                    let is_scalar = m3_ijk[0].abs() > 0.5 && m3_ijk[1..].iter().all(|v| v.abs() < 1e-10);
+                    if is_fano_triple(i, j, k) && is_scalar { fano_scalar += 1; }
+                    if !is_fano_triple(i, j, k) && !is_scalar && m3_ijk.iter().map(|v| v*v).sum::<f64>().sqrt() > 1e-10 {
+                        nonfano_imag += 1;
+                    }
+                }
+            }
+        }
+        println!("\n  Fano-line triples with scalar m3: {} (expected: 42 = 7 lines * 6 orderings)", fano_scalar);
+        println!("  Non-Fano triples with imaginary m3: {}", nonfano_imag);
+    }
 }
