@@ -1564,6 +1564,11 @@ C-1495: CDDoubleTower Rocq: functor chain R->C->H->O->S->P, 42 theorems from 7 b
 C-1496: 16D vs 6D J_k: null result, friction profiles have zero upper-block components
 C-1497: Joint 3D scan: |J_CP|=3.33e-2 (101% PDG), two-pass refined, k=5, alpha=0.450
 C-1498: delta_CP = 93 deg (near-maximal CP violation), testable by DUNE/HyperK
+C-1499: Canonical scorecard: 17 observables, 3 epistemic bins (registry/scorecard.toml)
+C-1500: flavor_lifts crate: FlavorLift trait + 4 impls + CP scaffolding + optimizer
+C-1501: Paper restructuring: 3-bin abstract, negative-result ladder, known tensions
+C-1502: S_3 lift derivation: V_6 is psi-eigenspace (-0.2215), non-equivariant lift (Epic B)
+C-1503: CDTowerInstantiation: R->C->H->O->S via CDDoubleFunctor, 0 new proofs per level
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting

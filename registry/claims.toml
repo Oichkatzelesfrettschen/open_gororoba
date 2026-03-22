@@ -10174,3 +10174,19 @@ statement = """Paper restructuring: 3-bin abstract with defensible thesis, negat
 status = "Verified"
 where_stated = "docs/physics/sedenion_standard_model.md (abstract, VIII-B, XV, XV-B)"
 last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1502"
+statement = """S_3 lift derivation (Epic B): V_6 is a psi-eigenspace with eigenvalue -0.2215 (6-fold degenerate scalar). Epsilon eigenvalue -0.2658, also scalar. The assessor-level induced S_3 action has ||psi^3 - I|| = 746 on 42D -- NOT a faithful representation. Non-integer irrep multiplicities (n_triv=-0.24, n_sgn=1.35, n_std=2.44) confirm the action is defective. Formal dim Hom_{S_3}(V_6, Sym_3) = 4.4 (meaningless non-integer). Sym_3(R) decomposition verified analytically: 2 trivial + 0 sign + 2 standard. STRUCTURAL INSIGHT: V_6 carries trivial-like psi action while Sym_3 carries permutation action. By Schur's lemma, TensorElementLift CANNOT be S_3-equivariant under this action. Result is PROVISIONAL on the current assessor-level action (psi^3 != I on V_6)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_s3_action_on_v6_and_lift_derivation"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1503"
+formal_proof = "proofs/theories/CDTowerInstantiation.v"
+statement = """CDDoubleFunctor instantiation chain: RealBase (carrier=R, trivial conjugation, 7 ring proofs) -> Complex := CDDouble RealBase -> Quaternion := CDDouble Complex -> Octonion := CDDouble Quaternion -> Sedenion := CDDouble Octonion. All 7 CDAlgLinear linearity theorems (mul_scale_left, mul_scale_right, conj_scale, neg_scale, scale_add, scale_sub, sub_def) inherited automatically at each level with zero new proofs. Total proof effort: 7 trivial ring lemmas in RealBase. Compiles under rocq-9.1.1."""
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/theories/CDTowerInstantiation.v"
+where_stated = "proofs/theories/CDTowerInstantiation.v"
+last_verified = "2026-03-22"
