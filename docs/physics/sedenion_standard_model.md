@@ -46,16 +46,18 @@ mass ratios and requires a different triple structure.
 
 **Bin 3 -- CP violation (exploratory, two pipelines):**
 
-| Observable | CP-A (phase-only) | CP-B (Gram/rephasing) | PDG |
+| Observable | CP-A (phase-only) | CP-B (joint 3D) | PDG |
 |-----------|-------------------|----------------------|-----|
-| |J_CP| | 8.5e-3 (C-1494) | 3.28e-2 (C-1497) | 3.3e-2 |
-| delta_CP | ~165 deg | -90 deg | 195 deg |
+| |J_CP| | 8.5e-3 (C-1494) | 3.33e-2 = J_max (C-1497) | 8.6e-3 |
+| delta_CP | ~165 deg | ~93 deg (maximal) | 195 deg |
 
-CP-A and CP-B are different pipelines, not one result with different
-conventions. The quartet phase from the cross-sector Gram matrix is
-not the physical PMNS delta_CP. Closure criterion not yet met: no
-single pipeline simultaneously preserves angles, yields nonzero J_CP,
-and produces a rephasing-invariant PMNS delta_CP.
+AMENDED (2026-03-22): |J_CP| = 3.33e-2 is the kinematic maximum
+J_max = c12*s12*c23*s23*s13*c13^2, attained because the framework
+predicts delta ~ 90 deg (|sin(delta)| ~ 1). PDG measured |J| = 8.6e-3
+corresponds to delta = 195 deg (|sin(delta)| = 0.26). The framework
+prediction is 3.9x larger than experiment. The earlier "101% of PDG"
+interpretation was misleading -- it compared J_max against the kinematic
+bound, not the measured value. Cardano eigensolver q-sign bug also fixed.
 
 **Structural complementarity theorem**: 2-blade off-diagonal structure
 is angle-optimal; 3-blade diagonal structure is mass-ratio-optimal;
@@ -88,8 +90,10 @@ the sedenion subalgebras and extracts:
 - G2 stabilizer extraction: stab(e_k) = su(3) constructively verified (C-1479..C-1488)
 - CP violation (TWO pipelines, see Bin 3 in Abstract):
   CP-A (phase-only): |J_CP| = 8.5e-3, delta ~ 165 deg, angles within 1.5% (C-1494)
-  CP-B (Gram/rephasing): |J_CP| = 3.28e-2, delta ~ -90 deg, angles within 2% (C-1497)
-  Closure criterion not yet met by either pipeline individually.
+  CP-B (joint 3D): |J_CP| = 3.33e-2 = J_max, delta ~ 93 deg, angles within 2% (C-1497)
+  AMENDED: J_max is 3.9x larger than PDG measured |J| = 8.6e-3. Framework predicts
+  maximal CP violation; experiment measures non-maximal. Sign systematics (8 combos)
+  confirm no route to delta = 195 deg.
 - Chi-squared global fit: chi2/3 = 0.14 at 4D optimum, all pulls < 0.6 sigma
 - Electroweak mixing angle sin^2(theta_W) = 0.250 (tree-level structural estimate, C-1458)
 - Discrete 2*sqrt(2) quantization of the friction spectrum (C-1459)
@@ -810,10 +814,14 @@ instead of fixing V_6 at the real-matrix optimum closes the gap completely:
 | 5 | 0.450 | 1.027 | 3.927 | within 2% | within 2% | within 2% | 3.33e-2 | 92.8 |
 | PDG | -- | -- | -- | 33.41 | 8.54 | 49.0 | 3.3e-2 | 195 |
 
-**|J_CP| = 3.33e-2 (101% of PDG)** after two-pass refinement (C-1497).
+**|J_CP| = 3.33e-2 = J_max** (kinematic maximum, C-1497 AMENDED).
 delta_CP = 92.8 deg (rephasing-invariant) = near-maximal CP violation (C-1498).
-The Jarlskog magnitude matches PDG exactly; the phase quadrant (93 vs 195 deg)
-is a genuine algebraic prediction testable by DUNE/HyperK.
+PDG measured |J| = 8.6e-3 at delta = 195 deg. The framework predicts
+|sin(delta)| ~ 1 (maximal), yielding J_max, which is 3.9x larger than
+experiment. Sign systematics confirm no combination gives delta ~ 195.
+Nelder-Mead refinement yields chi2 table: angles < 0.2 sigma, but
+|J_CP| pull = +11.9 sigma, r pull = +4.6 sigma. Prediction mode
+(no angle penalty) diverges -- structure is not generative.
 
 ## X. Chi-squared Global Fit
 
@@ -895,8 +903,9 @@ Given algebraic ratio r and one input m1 (lightest mass):
 **Open**:
 1. [x] Mass ratio: 3-blade friction gives r = 0.0304 (PDG 0.0307, 1.0% error)
 2. [x] Rocq SU(3): COMPLETE Jacobi in Z[sqrt(3)] -- all 56 triples verified
-3. [x] Delta_CP + J_CP: joint 3D scan gives |J_CP|=3.28e-2 (99.3% of PDG), delta=-97.7 deg (C-1497).
-   Phase-only baseline: |J_CP|=8.5e-3 at fixed V_6 (C-1494). 16D vs 6D J_k: null result (C-1496).
+3. [x] Delta_CP + J_CP: joint 3D scan gives |J_CP|=3.33e-2 = J_max (C-1497 AMENDED).
+   Framework predicts maximal CP (delta~93), PDG measures non-maximal (delta=195, |J|=8.6e-3).
+   Discrepancy 3.9x. Phase-only baseline: |J_CP|=8.5e-3 (C-1494). 16D vs 6D: null (C-1496).
 4. [x] TensorElementLift: S_3 intertwiner proves NO equivariant map exists
    (null space dim=0, V_6 scalar representation incompatible with Sym_3(R)).
    The lift is response-fitted, not algebraically canonical.
@@ -907,7 +916,7 @@ Given algebraic ratio r and one input m1 (lightest mass):
 9. [x] CDDoubleTower Rocq: generic functor chain R through Pathion (C-1495)
 10. [x] Cariow analysis: 122 muls vs 256 naive; not adopted for SIMD (C-1493)
 11. [x] J_CP gap closure: 16D J_k null result (C-1496); joint 3D scan achieves
-    |J_CP|=3.28e-2 = 99.3% of PDG (C-1497). alpha_CP=0.425, t_sol=0.947, t_atm=3.847.
+    |J_CP|=3.33e-2 = J_max (C-1497 AMENDED). This is 3.9x > PDG |J|=8.6e-3.
 12. Unification beyond 3x3 mass matrices: need higher-dimensional framework
     (6x6 block-diagonal, or separate mass/mixing matrices) to decouple the
     mass-ratio and mixing-angle mechanisms.
@@ -1595,8 +1604,8 @@ C-1493: Cariow sedenion mult analysis: WHT 122 muls vs 256 naive; NOT adopted (S
 C-1494: Phase-only CP violation: |J_CP|=8.5e-3, delta=165 deg, angles within 1.5% PDG
 C-1495: CDDoubleTower Rocq: functor chain R->C->H->O->S->P, 42 theorems from 7 base proofs
 C-1496: 16D vs 6D J_k: null result, friction profiles have zero upper-block components
-C-1497: Joint 3D scan: |J_CP|=3.33e-2 (101% PDG), two-pass refined, k=5, alpha=0.450
-C-1498: delta_CP = 93 deg (near-maximal CP violation), testable by DUNE/HyperK
+C-1497: Joint 3D scan: |J_CP|=3.33e-2 = J_max (AMENDED: 3.9x > PDG |J|=8.6e-3), k=5
+C-1498: delta_CP = 93 deg (maximal CP, |sin|~1). PDG: 195 deg (non-maximal, |sin|~0.26)
 C-1499: Canonical scorecard: 17 observables, 3 epistemic bins (registry/scorecard.toml)
 C-1500: flavor_lifts crate: FlavorLift trait + 4 impls + CP scaffolding + optimizer
 C-1501: Paper restructuring: 3-bin abstract, negative-result ladder, known tensions

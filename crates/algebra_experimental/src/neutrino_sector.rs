@@ -1430,11 +1430,13 @@ pub fn apply_jk_full_16d(v: &[f64; 16], k: usize) -> [f64; 16] {
 /// For the rephasing-invariant delta, compute `arg(Jarlskog quartet)`
 /// separately (see the rephasing analysis in [`test_cp_violation_joint_3d_scan`]).
 ///
-/// # Concrete values at the optimum (C-1497)
+/// # Concrete values at the optimum (C-1497, AMENDED)
 ///
 /// ```text
 /// theta_12 = 32.84,  theta_13 = 8.58,  theta_23 = 49.48
-/// j_cp     = 3.33e-2 (101% PDG),  delta_cp = 97.9 deg
+/// j_cp     = 3.33e-2 = J_max (kinematic maximum, delta~90)
+/// delta_cp = 97.9 deg (arg(-U_e3)), 92.8 deg (invariant)
+/// PDG |J|  = 8.6e-3 (non-maximal, delta=195).  Ratio 3.9x.
 /// ```
 #[derive(Debug, Clone, Copy)]
 pub struct CpScanResult {
@@ -1444,10 +1446,50 @@ pub struct CpScanResult {
     pub theta_13: f64,
     /// Atmospheric mixing angle (PDG: 49.0 +/- 1.3 deg).
     pub theta_23: f64,
-    /// Jarlskog invariant (PDG: |J| ~ 3.3e-2).
+    /// Jarlskog invariant -- kinematic maximum J_max for these angles.
+    /// PDG measured |J| ~ 8.6e-3 (non-maximal, sin(delta) ~ 0.26).
     pub j_cp: f64,
-    /// CP phase from arg(-U_e3), in degrees.
+    /// CP phase from arg(-U_e3), in degrees (convention-dependent).
     pub delta_cp: f64,
+    /// Rephasing-invariant delta_CP from atan2(sin_delta, cos_delta),
+    /// using Jarlskog for sin and |U_mu1|^2 identity for cos.
+    /// In degrees. This is the preferred observable for PDG comparison.
+    pub delta_cp_invariant: f64,
+}
+
+/// Extract delta_CP using rephasing-invariant observables (PDG convention).
+///
+/// Uses sin(delta) from the Jarlskog invariant and cos(delta) from the
+/// |U_mu1|^2 unitarity relation, combined via atan2 for quadrant resolution.
+///
+/// This avoids the convention-dependence of arg(-U_e3), which depends on
+/// individual matrix element phases rather than physical observables.
+pub fn extract_delta_cp_invariant(u_moduli: &[[f64; 3]; 3], j_cp: f64) -> f64 {
+    let s13 = u_moduli[0][2];
+    let c13 = (1.0 - s13 * s13).max(0.0).sqrt();
+    if c13 < 1e-15 { return 0.0; }
+
+    let s12 = u_moduli[0][1] / c13;
+    let c12 = u_moduli[0][0] / c13;
+    let s23 = u_moduli[1][2] / c13;
+    let c23 = u_moduli[2][2] / c13;
+
+    // sin(delta) = J / (s12*c12*s23*c23*s13*c13^2)
+    let denom = s12 * c12 * s23 * c23 * s13 * c13 * c13;
+    let sin_delta = if denom.abs() > 1e-15 { j_cp / denom } else { 0.0 };
+
+    // cos(delta) from |U_mu1|^2 = s12^2*c23^2 + c12^2*s23^2*s13^2
+    //                              + 2*s12*c12*s23*c23*s13*cos(delta)
+    let u_mu1_sq = u_moduli[1][0] * u_moduli[1][0];
+    let expected_no_cp = s12 * s12 * c23 * c23 + c12 * c12 * s23 * s23 * s13 * s13;
+    let cos_denom = 2.0 * s12 * c12 * s23 * c23 * s13;
+    let cos_delta = if cos_denom.abs() > 1e-15 {
+        (u_mu1_sq - expected_no_cp) / cos_denom
+    } else {
+        1.0
+    };
+
+    sin_delta.atan2(cos_delta).to_degrees()
 }
 
 /// Immutable algebraic context for a CP violation scan.
@@ -1678,7 +1720,147 @@ pub fn evaluate_cp_scan_point(
 
     let delta_cp = (-u_at(0, 2)).arg().to_degrees();
 
-    CpScanResult { theta_12, theta_13, theta_23, j_cp, delta_cp }
+    // Rephasing-invariant delta_CP via moduli + Jarlskog
+    let u_moduli = {
+        let mut m = [[0.0_f64; 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                m[i][j] = u_at(i, j).abs();
+            }
+        }
+        m
+    };
+    let delta_cp_invariant = extract_delta_cp_invariant(&u_moduli, j_cp);
+
+    CpScanResult { theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant }
+}
+
+// ---------------------------------------------------------------------------
+// Nelder-Mead refinement of CP scan (argmin)
+// ---------------------------------------------------------------------------
+
+/// Cost function for argmin Nelder-Mead optimization of the CP scan.
+///
+/// The parameter vector is `[alpha_CP, t_sol, t_atm]` (k is frozen from
+/// the grid search).  The cost function penalizes angle deviation from PDG
+/// and rewards large |J_CP|.
+pub struct CpNelderMeadCost<'a> {
+    pub ctx: &'a CpScanContext<'a>,
+    pub phi: [[f64; 3]; 3],
+    pub bounds: [(f64, f64); 3],
+    /// If true, pure prediction mode: cost = -|J_CP| (no angle penalty).
+    pub prediction_mode: bool,
+}
+
+impl<'a> argmin::core::CostFunction for CpNelderMeadCost<'a> {
+    type Param = Vec<f64>;
+    type Output = f64;
+
+    fn cost(&self, param: &Self::Param) -> Result<Self::Output, argmin::core::Error> {
+        let alpha_cp = param[0].clamp(self.bounds[0].0, self.bounds[0].1);
+        let t_sol = param[1].clamp(self.bounds[1].0, self.bounds[1].1);
+        let t_atm = param[2].clamp(self.bounds[2].0, self.bounds[2].1);
+
+        let mut bufs = CpScanBuffers::new();
+        let r = evaluate_cp_scan_point(alpha_cp, t_sol, t_atm, &self.phi, self.ctx, &mut bufs);
+
+        if self.prediction_mode {
+            return Ok(-r.j_cp.abs());
+        }
+
+        let err_12 = ((r.theta_12 - 33.41) / 0.72).powi(2);
+        let err_13 = ((r.theta_13 - 8.54) / 0.12).powi(2);
+        let err_23 = ((r.theta_23 - 49.0) / 1.3).powi(2);
+        let chi2_angles = err_12 + err_13 + err_23;
+
+        // Reward larger |J_CP| by subtracting a scaled version
+        Ok(chi2_angles - 100.0 * r.j_cp.abs())
+    }
+}
+
+/// Run Nelder-Mead refinement starting from the grid-best point.
+///
+/// Freezes k (discrete), optimizes `(alpha_CP, t_sol, t_atm)` continuously.
+/// Uses multi-start: grid-best + 3 random perturbations.
+///
+/// Returns the best `CpScanResult` found across all starts, along with the
+/// optimized parameters `(alpha_CP, t_sol, t_atm)`.
+pub fn refine_cp_nelder_mead(
+    ctx: &CpScanContext<'_>,
+    phi: &[[f64; 3]; 3],
+    alpha0: f64,
+    t_sol0: f64,
+    t_atm0: f64,
+    prediction_mode: bool,
+) -> (CpScanResult, [f64; 3]) {
+    use argmin::core::{Executor, State};
+    use argmin::solver::neldermead::NelderMead;
+
+    let bounds = [(0.01, 1.0), (t_sol0 - 2.0, t_sol0 + 4.0), (t_atm0 - 2.0, t_atm0 + 8.0)];
+
+    let build_simplex = |x0: &[f64; 3]| -> Vec<Vec<f64>> {
+        let steps = [0.05, 0.2, 0.5];
+        let mut simplex = Vec::with_capacity(4);
+        simplex.push(vec![x0[0], x0[1], x0[2]]);
+        for i in 0..3 {
+            let mut v = vec![x0[0], x0[1], x0[2]];
+            v[i] += steps[i];
+            for (j, &(lo, hi)) in bounds.iter().enumerate() {
+                v[j] = v[j].clamp(lo, hi);
+            }
+            simplex.push(v);
+        }
+        simplex
+    };
+
+    // Multi-start: grid-best + 3 perturbations
+    let starts: [[f64; 3]; 4] = [
+        [alpha0, t_sol0, t_atm0],
+        [alpha0 * 1.2, t_sol0 + 0.3, t_atm0 - 0.5],
+        [alpha0 * 0.8, t_sol0 - 0.3, t_atm0 + 0.5],
+        [(alpha0 + 0.1).min(1.0), t_sol0 + 0.5, t_atm0 + 1.0],
+    ];
+
+    let mut best_cost = f64::MAX;
+    let mut best_params = [alpha0, t_sol0, t_atm0];
+
+    for start in &starts {
+        let simplex = build_simplex(start);
+        let solver = match NelderMead::new(simplex).with_sd_tolerance(1e-8) {
+            Ok(s) => s,
+            Err(_) => continue,
+        };
+        let problem = CpNelderMeadCost {
+            ctx,
+            phi: *phi,
+            bounds,
+            prediction_mode,
+        };
+        let run = Executor::new(problem, solver)
+            .configure(|state| state.max_iters(500))
+            .run();
+        if let Ok(result) = run {
+            let state = result.state();
+            if let Some(param) = state.get_best_param() {
+                let cost = state.get_best_cost();
+                if cost < best_cost {
+                    best_cost = cost;
+                    best_params = [
+                        param[0].clamp(bounds[0].0, bounds[0].1),
+                        param[1].clamp(bounds[1].0, bounds[1].1),
+                        param[2].clamp(bounds[2].0, bounds[2].1),
+                    ];
+                }
+            }
+        }
+    }
+
+    let mut bufs = CpScanBuffers::new();
+    let result = evaluate_cp_scan_point(
+        best_params[0], best_params[1], best_params[2],
+        phi, ctx, &mut bufs,
+    );
+    (result, best_params)
 }
 
 // ---------------------------------------------------------------------------
@@ -1734,6 +1916,7 @@ fn cconj(a: C2) -> C2 { (a.0, -a.1) }
 ///
 /// Returns `(eigenvalues_sorted, eigenvectors_as_columns)` where
 /// eigenvalues are in ascending order.
+#[allow(clippy::needless_range_loop)]
 pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
     // Characteristic polynomial coefficients (all real for Hermitian H):
     // p = -tr(H), q = s2(H), r = -det(H)
@@ -1763,7 +1946,7 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
     // Depressed cubic: t^3 + p*t + q = 0 where lambda = t + tr_h/3
     let shift = tr_h / 3.0;
     let p = s2 - tr_h * tr_h / 3.0;
-    let q = 2.0 * tr_h * tr_h * tr_h / 27.0 - tr_h * s2 / 3.0 + det;
+    let q = tr_h * s2 / 3.0 - 2.0 * tr_h * tr_h * tr_h / 27.0 - det;
 
     // Vieta trigonometric solution (always 3 real roots for Hermitian)
     let disc = -(4.0 * p * p * p + 27.0 * q * q);
@@ -1840,9 +2023,133 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
                 evecs[col][col] = (1.0, 0.0);
             }
         }
+
+        // U(1) phase canonicalization: make the largest-magnitude component
+        // real and nonnegative.  This is the complex analogue of the LAPACK
+        // convention for real eigenvectors (largest component positive).
+        //
+        // Without this, each eigenvector carries an arbitrary e^{i*theta}
+        // phase.  Quantities like arg(-U_e3) for delta_CP depend on
+        // individual matrix elements and are meaningless without a fixed
+        // phase convention.
+        let max_idx = {
+            let mut best = 0;
+            let mut best_mag_sq = evecs[0][col].0 * evecs[0][col].0
+                                + evecs[0][col].1 * evecs[0][col].1;
+            for idx in 1..3 {
+                let mag_sq = evecs[idx][col].0 * evecs[idx][col].0
+                           + evecs[idx][col].1 * evecs[idx][col].1;
+                if mag_sq > best_mag_sq {
+                    best = idx;
+                    best_mag_sq = mag_sq;
+                }
+            }
+            best
+        };
+        let (re, im) = evecs[max_idx][col];
+        let mag = (re * re + im * im).sqrt();
+        if mag > 1e-15 {
+            // Rotate entire vector by e^{-i*theta} where theta = arg(v_max)
+            let cos_t = re / mag;
+            let sin_t = im / mag;
+            for i in 0..3 {
+                let (r, m) = evecs[i][col];
+                evecs[i][col] = (r * cos_t + m * sin_t,
+                                 m * cos_t - r * sin_t);
+            }
+            // Ensure the reference component is strictly nonneg real
+            if evecs[max_idx][col].0 < 0.0 {
+                for i in 0..3 {
+                    evecs[i][col].0 = -evecs[i][col].0;
+                    evecs[i][col].1 = -evecs[i][col].1;
+                }
+            }
+        }
     }
 
     (evals, evecs)
+}
+
+/// Minimum relative eigenvalue gap below which the Cardano cross-product
+/// eigenvector method becomes numerically unstable.  When the gap falls
+/// below this threshold times the Frobenius norm, we fall back to faer's
+/// iterative QR which handles near-degeneracies gracefully.
+const EIGGAP_THRESHOLD: f64 = 1e-10;
+
+/// Hybrid 3x3 Hermitian eigensolver: Cardano if well-separated, faer if
+/// degenerate.
+///
+/// Uses [`hermitian_3x3_eig`] (zero-alloc, O(1) Cardano) when eigenvalue
+/// gaps are large relative to the matrix norm.  Falls back to faer's
+/// `selfadjoint_eigendecomposition` near degeneracies where the cross-product
+/// eigenvector method loses accuracy.
+///
+/// Returns `(eigenvalues_sorted, eigenvectors_as_columns)`.
+#[allow(clippy::needless_range_loop)]
+pub fn hermitian_3x3_eig_hybrid(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
+    let (evals, evecs) = hermitian_3x3_eig(h);
+
+    // Check eigenvalue gap relative to matrix Frobenius norm
+    let h_frob_sq: f64 = h.iter().flat_map(|row| row.iter())
+        .map(|&(r, m)| r * r + m * m).sum();
+    let h_norm = h_frob_sq.sqrt();
+
+    let min_gap = (evals[1] - evals[0]).abs().min((evals[2] - evals[1]).abs());
+
+    if min_gap > EIGGAP_THRESHOLD * h_norm {
+        (evals, evecs)
+    } else {
+        // faer fallback for near-degenerate cases
+        let mut h_faer = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+        for i in 0..3 {
+            for j in 0..3 {
+                h_faer.write(i, j, faer::complex_native::c64::new(h[i][j].0, h[i][j].1));
+            }
+        }
+        let eig = h_faer.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let mut fe = [0.0_f64; 3];
+        for i in 0..3 { fe[i] = eig.s().column_vector().read(i).re; }
+
+        // Sort and build index map
+        let mut idx = [0_usize, 1, 2];
+        idx.sort_by(|&a, &b| fe[a].partial_cmp(&fe[b]).unwrap());
+        let sorted_evals = [fe[idx[0]], fe[idx[1]], fe[idx[2]]];
+
+        let mut sorted_evecs = [[(0.0, 0.0); 3]; 3];
+        for col in 0..3 {
+            let src = idx[col];
+            for row in 0..3 {
+                let c = eig.u().read(row, src);
+                sorted_evecs[row][col] = (c.re, c.im);
+            }
+            // Apply same phase canonicalization as Cardano path
+            let max_idx = (0..3).max_by(|&a, &b| {
+                let na = sorted_evecs[a][col].0 * sorted_evecs[a][col].0
+                       + sorted_evecs[a][col].1 * sorted_evecs[a][col].1;
+                let nb = sorted_evecs[b][col].0 * sorted_evecs[b][col].0
+                       + sorted_evecs[b][col].1 * sorted_evecs[b][col].1;
+                na.partial_cmp(&nb).unwrap()
+            }).unwrap();
+            let (re, im) = sorted_evecs[max_idx][col];
+            let mag = (re * re + im * im).sqrt();
+            if mag > 1e-15 {
+                let cos_t = re / mag;
+                let sin_t = im / mag;
+                for i in 0..3 {
+                    let (r, m) = sorted_evecs[i][col];
+                    sorted_evecs[i][col] = (r * cos_t + m * sin_t,
+                                            m * cos_t - r * sin_t);
+                }
+                if sorted_evecs[max_idx][col].0 < 0.0 {
+                    for i in 0..3 {
+                        sorted_evecs[i][col].0 = -sorted_evecs[i][col].0;
+                        sorted_evecs[i][col].1 = -sorted_evecs[i][col].1;
+                    }
+                }
+            }
+        }
+        (sorted_evals, sorted_evecs)
+    }
 }
 
 /// Compute Jarlskog invariant and mixing angles directly from two 3x3
@@ -1871,13 +2178,13 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
 ///
 /// # Returns
 ///
-/// `(theta_12, theta_13, theta_23, j_cp, delta_cp)` in degrees.
+/// `(theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant)` in degrees.
 pub fn pmns_from_hermitian_pair(
     m_ch: &[[C2; 3]; 3],
     m_nu: &[[C2; 3]; 3],
     perm_u: &[usize; 3],
     perm_d: &[usize; 3],
-) -> (f64, f64, f64, f64, f64) {
+) -> (f64, f64, f64, f64, f64, f64) {
     let (_evals_ch, u_ch) = hermitian_3x3_eig(m_ch);
     let (_evals_nu, u_nu) = hermitian_3x3_eig(m_nu);
 
@@ -1932,7 +2239,20 @@ pub fn pmns_from_hermitian_pair(
     let neg_ue3 = (-u_perm[0][2].0, -u_perm[0][2].1);
     let delta_cp = neg_ue3.1.atan2(neg_ue3.0).to_degrees();
 
-    (theta_12, theta_13, theta_23, j_cp, delta_cp)
+    // Rephasing-invariant delta_CP via moduli + Jarlskog
+    let u_moduli = {
+        let mut m = [[0.0_f64; 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                m[i][j] = (u_perm[i][j].0 * u_perm[i][j].0
+                         + u_perm[i][j].1 * u_perm[i][j].1).sqrt();
+            }
+        }
+        m
+    };
+    let delta_cp_invariant = extract_delta_cp_invariant(&u_moduli, j_cp);
+
+    (theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant)
 }
 
 #[cfg(test)]
@@ -9625,6 +9945,197 @@ mod tests {
         println!("  cost = {:.2}", best.0);
     }
 
+    /// Validate U(1) phase canonicalization in the Cardano eigensolver.
+    ///
+    /// Constructs a known 3x3 Hermitian matrix with complex off-diagonal
+    /// entries, solves with both `hermitian_3x3_eig` (Cardano) and faer
+    /// (iterative QR), then verifies:
+    ///
+    /// 1. Eigenvalue agreement: |lambda_cardano - lambda_faer| < 1e-12
+    /// 2. Projector agreement: |v*v^dag - v_faer*v_faer^dag|_F < 1e-10
+    /// 3. Residual: |Hv - lambda*v| / (|H|*|v|) < 1e-12
+    /// 4. Phase convention: largest-magnitude component is real and nonneg
+    #[test]
+    fn test_cardano_phase_canonicalization() {
+        // Build a 3x3 Hermitian matrix with nontrivial complex structure
+        let h: [[C2; 3]; 3] = [
+            [(3.0, 0.0),  (0.5, 1.2), (-0.3, 0.8)],
+            [(0.5, -1.2), (1.0, 0.0),  (0.7, -0.4)],
+            [(-0.3, -0.8),(0.7, 0.4),  (2.0, 0.0)],
+        ];
+
+        let (evals, evecs) = hermitian_3x3_eig(&h);
+
+        // --- Check 4: phase convention ---
+        for col in 0..3 {
+            let mut max_mag_sq = 0.0_f64;
+            let mut max_idx = 0;
+            for i in 0..3 {
+                let ms = evecs[i][col].0 * evecs[i][col].0
+                       + evecs[i][col].1 * evecs[i][col].1;
+                if ms > max_mag_sq { max_mag_sq = ms; max_idx = i; }
+            }
+            let (re, im) = evecs[max_idx][col];
+            assert!(re >= -1e-14,
+                "col {col}: largest component has re={re:.6e} (should be >= 0)");
+            assert!(im.abs() < 1e-12,
+                "col {col}: largest component has im={im:.6e} (should be ~0)");
+        }
+
+        // --- Check 3: residual |Hv - lam*v| ---
+        let h_frob = {
+            let mut s = 0.0_f64;
+            for row in &h { for &(r, m) in row { s += r * r + m * m; } }
+            s.sqrt()
+        };
+        for col in 0..3 {
+            let lam = evals[col];
+            let mut res_sq = 0.0_f64;
+            for i in 0..3 {
+                let mut hv = (0.0_f64, 0.0_f64);
+                for j in 0..3 {
+                    let p = cmul(h[i][j], evecs[j][col]);
+                    hv.0 += p.0;
+                    hv.1 += p.1;
+                }
+                let diff_re = hv.0 - lam * evecs[i][col].0;
+                let diff_im = hv.1 - lam * evecs[i][col].1;
+                res_sq += diff_re * diff_re + diff_im * diff_im;
+            }
+            let residual = res_sq.sqrt() / (h_frob + lam.abs());
+            assert!(residual < 1e-12,
+                "col {col}: relative residual {residual:.3e} exceeds 1e-12");
+        }
+
+        // --- Check 1: eigenvalue agreement with faer ---
+        let mut h_faer = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+        for i in 0..3 {
+            for j in 0..3 {
+                h_faer.write(i, j, faer::complex_native::c64::new(h[i][j].0, h[i][j].1));
+            }
+        }
+        let eig_faer = h_faer.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let mut faer_evals = [0.0_f64; 3];
+        for i in 0..3 { faer_evals[i] = eig_faer.s().column_vector().read(i).re; }
+        faer_evals.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        for i in 0..3 {
+            let diff = (evals[i] - faer_evals[i]).abs();
+            assert!(diff < 1e-12,
+                "eigenvalue {i}: cardano={:.12e}, faer={:.12e}, diff={diff:.3e}",
+                evals[i], faer_evals[i]);
+        }
+
+        // --- Check 2: projector agreement |v*v^dag - v_faer*v_faer^dag|_F ---
+        // Match Cardano eigenvectors to faer by closest eigenvalue
+        for col in 0..3 {
+            // Find faer column with closest eigenvalue
+            let faer_col = (0..3).min_by(|&a, &b| {
+                let da = (evals[col] - eig_faer.s().column_vector().read(a).re).abs();
+                let db = (evals[col] - eig_faer.s().column_vector().read(b).re).abs();
+                da.partial_cmp(&db).unwrap()
+            }).unwrap();
+
+            // Compute |P_cardano - P_faer|_F^2
+            let mut frob_sq = 0.0_f64;
+            for i in 0..3 {
+                for j in 0..3 {
+                    // P_cardano[i][j] = v_i * conj(v_j)
+                    let pc = cmul(evecs[i][col], cconj(evecs[j][col]));
+                    // P_faer[i][j] = u_i * conj(u_j)
+                    let ui = eig_faer.u().read(i, faer_col);
+                    let uj = eig_faer.u().read(j, faer_col);
+                    let pf_re = ui.re * uj.re + ui.im * uj.im;
+                    let pf_im = ui.im * uj.re - ui.re * uj.im;
+                    let dr = pc.0 - pf_re;
+                    let di = pc.1 - pf_im;
+                    frob_sq += dr * dr + di * di;
+                }
+            }
+            let frob = frob_sq.sqrt();
+            assert!(frob < 1e-10,
+                "col {col}: projector Frobenius distance {frob:.3e} exceeds 1e-10");
+        }
+
+        println!("  Cardano phase canonicalization: all 4 checks passed");
+        println!("  Eigenvalues: [{:.6}, {:.6}, {:.6}]", evals[0], evals[1], evals[2]);
+    }
+
+    /// Validate rephasing-invariant delta_CP extraction against known PDG
+    /// parametrization.
+    ///
+    /// Constructs a PMNS matrix from known angles and delta using the PDG
+    /// standard parametrization, extracts moduli and Jarlskog, then
+    /// verifies that `extract_delta_cp_invariant` recovers the input delta.
+    #[test]
+    fn test_delta_cp_invariant_extraction() {
+        // PDG best-fit values (NuFIT 5.3, NO)
+        let t12 = 33.41_f64.to_radians();
+        let t13 = 8.54_f64.to_radians();
+        let t23 = 49.0_f64.to_radians();
+
+        // Test several delta values including the PDG best-fit
+        let test_deltas = [195.0_f64, 93.0, 270.0, 45.0, 0.0, 180.0, -30.0];
+
+        let (s12, c12) = (t12.sin(), t12.cos());
+        let (s13, c13) = (t13.sin(), t13.cos());
+        let (s23, c23) = (t23.sin(), t23.cos());
+
+        for &delta_deg in &test_deltas {
+            let delta = delta_deg.to_radians();
+            let (sd, cd) = (delta.sin(), delta.cos());
+
+            // Build PMNS moduli from PDG parametrization
+            // U_e1 = c12*c13, U_e2 = s12*c13, U_e3 = s13
+            // U_mu1 = -s12*c23 - c12*s23*s13*exp(i*delta)
+            // |U_mu1|^2 = s12^2*c23^2 + c12^2*s23^2*s13^2
+            //             + 2*s12*c12*s23*c23*s13*cos(delta)
+            let u_mu1_sq = s12 * s12 * c23 * c23 + c12 * c12 * s23 * s23 * s13 * s13
+                + 2.0 * s12 * c12 * s23 * c23 * s13 * cd;
+
+            // U_mu2 = c12*c23 - s12*s23*s13*exp(i*delta)
+            let u_mu2_sq = c12 * c12 * c23 * c23 + s12 * s12 * s23 * s23 * s13 * s13
+                - 2.0 * c12 * s12 * s23 * c23 * s13 * cd;
+
+            // U_tau1 = s12*s23 - c12*c23*s13*exp(i*delta)
+            let u_tau1_sq = s12 * s12 * s23 * s23 + c12 * c12 * c23 * c23 * s13 * s13
+                - 2.0 * s12 * c12 * c23 * s23 * s13 * cd;
+
+            // U_tau2 = -c12*s23 - s12*c23*s13*exp(i*delta)
+            let u_tau2_sq = c12 * c12 * s23 * s23 + s12 * s12 * c23 * c23 * s13 * s13
+                + 2.0 * c12 * s12 * c23 * s23 * s13 * cd;
+
+            let u_moduli = [
+                [c12 * c13, s12 * c13, s13],
+                [u_mu1_sq.sqrt(), u_mu2_sq.sqrt(), s23 * c13],
+                [u_tau1_sq.sqrt(), u_tau2_sq.sqrt(), c23 * c13],
+            ];
+
+            // Jarlskog = s12*c12*s23*c23*s13*c13^2*sin(delta)
+            let j_cp = s12 * c12 * s23 * c23 * s13 * c13 * c13 * sd;
+
+            let recovered = extract_delta_cp_invariant(&u_moduli, j_cp);
+
+            // Wrap both to [-180, 180] for comparison
+            let wrap = |x: f64| -> f64 {
+                let mut v = x % 360.0;
+                if v > 180.0 { v -= 360.0; }
+                if v < -180.0 { v += 360.0; }
+                v
+            };
+            let diff = (wrap(recovered) - wrap(delta_deg)).abs();
+            let diff = if diff > 180.0 { 360.0 - diff } else { diff };
+
+            println!("  delta_in={:7.1} deg  recovered={:7.1} deg  diff={:.2e}",
+                delta_deg, recovered, diff);
+
+            // Skip delta=0 and delta=180 where cos(delta) is degenerate
+            if delta_deg.abs() > 1.0 && (delta_deg - 180.0).abs() > 1.0 {
+                assert!(diff < 0.1,
+                    "delta={delta_deg}: recovered={recovered:.2}, diff={diff:.2e}");
+            }
+        }
+    }
+
     /// Phase-only CP violation via J_k complex structure (C-1494).
     ///
     /// # Physical mechanism
@@ -10301,27 +10812,39 @@ mod tests {
     ///
     /// ```text
     /// k=5: alpha_CP=0.450, t_sol=1.027, t_atm=3.927
-    ///       |J_CP| = 3.33e-2 (101% of PDG 3.3e-2)
+    ///       |J_CP| = 3.33e-2 = J_max (kinematic maximum at delta~90)
     ///       delta_CP = arg(Jarlskog quartet) = 92.8 deg
     /// ```
     ///
+    /// # AMENDED J_CP interpretation (C-1497)
+    ///
+    /// |J_CP| = 3.33e-2 is the KINEMATIC MAXIMUM:
+    ///   J_max = c12*s12*c23*s23*s13*c13^2 ~ 0.033
+    /// attained because the framework gives delta ~ 90 (|sin(delta)| ~ 1).
+    ///
+    /// PDG measured |J| = J_max * |sin(195)| = 0.033 * 0.259 = 8.6e-3.
+    /// Our |J| / |J_PDG| = 3.9x LARGER than experiment.
+    ///
+    /// The earlier "101% of PDG" claim was MISLEADING because it compared
+    /// our J_max against the kinematic bound, not the measured value.
+    ///
     /// # delta_CP analysis (C-1498)
     ///
-    /// Two independent delta extractions agree:
+    /// Three independent delta extractions agree:
     /// - `arg(-U_e3) = 97.9 deg` (convention-dependent)
     /// - `arg(Jarlskog quartet) = 92.8 deg` (rephasing-invariant)
+    /// - `atan2(sin_delta, cos_delta) invariant` (from moduli + J)
     ///
-    /// Both give delta ~ pi/2, i.e. **near-maximal CP violation**
-    /// (sin(delta) ~ 1.0).  PDG best-fit is 195 +/- 25 deg.  The
-    /// Jarlskog magnitude matches because |J| depends on |sin(delta)|
-    /// and sin(93) = sin(195-180) are both ~ 1.  The quadrant
-    /// difference (93 vs 195) is a genuine prediction testable by
-    /// DUNE and Hyper-Kamiokande.
+    /// All give delta ~ pi/2 = MAXIMAL CP violation (|sin(delta)| ~ 1).
+    /// PDG best-fit: 195 +/- 25 deg = NON-MAXIMAL (|sin(delta)| ~ 0.26).
+    /// The framework CANNOT accommodate delta = 195 without breaking
+    /// the angle fit.  This is a genuine discrepancy testable by DUNE
+    /// and Hyper-Kamiokande.
     ///
     /// # Claims exercised
     ///
-    /// - C-1497: Joint 3D scan achieves 101% of PDG Jarlskog
-    /// - C-1498: delta_CP = 93 deg (near-maximal CP violation)
+    /// - C-1497: Joint 3D scan gives J_max (AMENDED from "101% of PDG")
+    /// - C-1498: delta_CP = 93 deg (near-maximal, 3.9x discrepancy vs PDG)
     /// - C-1494: Phase-only baseline (compared against)
     #[test]
     fn test_cp_violation_joint_3d_scan() {
@@ -10607,8 +11130,9 @@ mod tests {
             let err_13 = ((t13 - 8.54) / 8.54 * 100.0).abs();
             let err_23 = ((t23 - 49.0) / 49.0 * 100.0).abs();
             println!("  Errors: t12={:.2}%, t13={:.2}%, t23={:.2}%", err_12, err_13, err_23);
-            println!("  PDG target: |J_CP| ~ 3.3e-2");
-            println!("  Ratio achieved: {:.1}% of PDG", fine_best_jcp.abs() / 0.033 * 100.0);
+            println!("  J_max (kinematic) = {:.4e}", fine_best_jcp.abs());
+            println!("  PDG |J| = 8.6e-3 (non-maximal, sin(195)=0.26)");
+            println!("  |J|/|J_PDG| = {:.1}x (3.9x expected for maximal CP)", fine_best_jcp.abs() / 0.0086);
 
             // Rephasing-aware delta_CP: recompute via evaluate_cp_scan_point
             // to get both arg(-U_e3) and arg(Jarlskog quartet).
@@ -10656,11 +11180,321 @@ mod tests {
             println!("\n  --- delta_CP extraction (rephasing analysis) ---");
             println!("  arg(-U_e3) = {:.1} deg", delta_ue3);
             println!("  arg(Jarlskog quartet) = {:.1} deg", delta_jarlskog);
+            println!("  atan2(sin,cos) invariant = {:.1} deg", r_final.delta_cp_invariant);
             println!("  PDG NuFIT 5.3: delta = 195 +/- 25 deg (NO)");
-            println!("  Note: arg(quartet) = delta is rephasing-invariant;");
-            println!("  arg(-U_e3) depends on phase conventions.");
+
+            // ----- Nelder-Mead refinement (B2) -----
+            println!("\n  --- Nelder-Mead refinement (k={}, constrained fit) ---", k_best);
+            let (nm_result, nm_params) = refine_cp_nelder_mead(
+                &ctx_fine, &phi_fine, alpha, ts, ta, false,
+            );
+            println!("  NM params: alpha={:.4}, t_sol={:.4}, t_atm={:.4}",
+                nm_params[0], nm_params[1], nm_params[2]);
+            println!("  NM angles: t12={:.2}, t13={:.2}, t23={:.2}",
+                nm_result.theta_12, nm_result.theta_13, nm_result.theta_23);
+            println!("  NM |J_CP| = {:.4e}, delta_inv = {:.1} deg",
+                nm_result.j_cp.abs(), nm_result.delta_cp_invariant);
+
+            // Prediction mode (B2): pure -|J| cost, no angle penalty
+            let (nm_pred, nm_pred_params) = refine_cp_nelder_mead(
+                &ctx_fine, &phi_fine, alpha, ts, ta, true,
+            );
+            println!("\n  --- Nelder-Mead prediction mode ---");
+            println!("  Pred params: alpha={:.4}, t_sol={:.4}, t_atm={:.4}",
+                nm_pred_params[0], nm_pred_params[1], nm_pred_params[2]);
+            println!("  Pred angles: t12={:.2}, t13={:.2}, t23={:.2}",
+                nm_pred.theta_12, nm_pred.theta_13, nm_pred.theta_23);
+            println!("  Pred |J_CP| = {:.4e}", nm_pred.j_cp.abs());
+            let pred_12_err = ((nm_pred.theta_12 - 33.41) / 33.41 * 100.0).abs();
+            let pred_13_err = ((nm_pred.theta_13 - 8.54) / 8.54 * 100.0).abs();
+            let pred_23_err = ((nm_pred.theta_23 - 49.0) / 49.0 * 100.0).abs();
+            println!("  Pred errors: t12={:.1}%, t13={:.1}%, t23={:.1}%",
+                pred_12_err, pred_13_err, pred_23_err);
+            if pred_12_err > 20.0 || pred_13_err > 20.0 || pred_23_err > 20.0 {
+                println!("  ** Prediction mode: angles DIVERGE -- structure is not generative **");
+            }
+
+            // ----- Mass-squared ratio r (B3) -----
+            // ----- Gradient recomputation + principal angle drift (C1) -----
+            println!("\n  --- Gradient recomputation at NM optimum ---");
+            let angles_at_nm = |beta: &[f64; 6]| -> (f64, f64, f64) {
+                let mut m_nu = m_nu_real.clone();
+                apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch_0.u().transpose() * eig_nu.u();
+                let mut u_perm2 = faer::Mat::zeros(3, 3);
+                for i in 0..3 { for j in 0..3 {
+                    u_perm2.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+                }}
+                extract_pmns_angles(&u_perm2)
+            };
+            let eps_g = 0.05_f64;
+            let mut g_12_nm = [0.0_f64; 6];
+            let mut g_13_nm = [0.0_f64; 6];
+            let mut g_23_nm = [0.0_f64; 6];
+            for mu in 0..n_basis {
+                let mut bp = [0.0_f64; 6];
+                let mut bm = [0.0_f64; 6];
+                // Perturb around NM-optimized beta
+                for kk in 0..6 {
+                    bp[kk] = nm_params[1] * ctx_fine.u_solar[kk]
+                           + nm_params[2] * ctx_fine.u_atmo[kk];
+                    bm[kk] = bp[kk];
+                }
+                bp[mu] += eps_g;
+                bm[mu] -= eps_g;
+                let (t12p, t13p, t23p) = angles_at_nm(&bp);
+                let (t12m, t13m, t23m) = angles_at_nm(&bm);
+                g_12_nm[mu] = (t12p - t12m) / (2.0 * eps_g);
+                g_13_nm[mu] = (t13p - t13m) / (2.0 * eps_g);
+                g_23_nm[mu] = (t23p - t23m) / (2.0 * eps_g);
+            }
+            // Principal angle: cos(theta) = (g_old . g_new) / (|g_old|*|g_new|)
+            let dot6 = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
+                a.iter().zip(b).map(|(x, y)| x * y).sum()
+            };
+            let norm6 = |a: &[f64; 6]| -> f64 { dot6(a, a).sqrt() };
+            for (name, g_old, g_new) in [
+                ("g_12", &g_12, &g_12_nm),
+                ("g_13", &g_13, &g_13_nm),
+                ("g_23", &g_23, &g_23_nm),
+            ] {
+                let n_old = norm6(g_old);
+                let n_new = norm6(g_new);
+                if n_old > 1e-15 && n_new > 1e-15 {
+                    let cos_pa = (dot6(g_old, g_new) / (n_old * n_new)).clamp(-1.0, 1.0);
+                    let pa_deg = cos_pa.acos().to_degrees();
+                    println!("  {name}: principal angle = {pa_deg:.1} deg, |g_old|={n_old:.3}, |g_new|={n_new:.3}");
+                    if pa_deg > 10.0 {
+                        println!("    ** WARNING: > 10 deg drift -- V_6 basis may not be intrinsic **");
+                    }
+                }
+            }
+
+            println!("\n  --- Mass-squared ratio at NM optimum ---");
+            // Rebuild complex mass matrices at NM-optimized point
+            let mut beta_nm = [0.0_f64; 6];
+            for kk in 0..6 {
+                beta_nm[kk] = nm_params[1] * ctx_fine.u_solar[kk]
+                            + nm_params[2] * ctx_fine.u_atmo[kk];
+            }
+            let mut m_nu_nm = m_nu_real.clone();
+            apply_v6_perturbation(&mut m_nu_nm, &v6_basis, &beta_nm, &lift);
+            let m_nu_nm = (&m_nu_nm + m_nu_nm.transpose()) * faer::scale(0.5);
+            let mut m_nu_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+            for i in 0..3 {
+                m_nu_c.write(i, i, faer::complex_native::c64::new(m_nu_nm.read(i, i), 0.0));
+                for j in (i + 1)..3 {
+                    let phase = nm_params[0] * phi_fine[i][j];
+                    let mag = m_nu_nm.read(i, j);
+                    m_nu_c.write(i, j, faer::complex_native::c64::new(
+                        mag * phase.cos(), mag * phase.sin()));
+                    m_nu_c.write(j, i, faer::complex_native::c64::new(
+                        mag * phase.cos(), -mag * phase.sin()));
+                }
+            }
+            let eig_nu_nm = m_nu_c.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let mut ev_nu: Vec<f64> = (0..3).map(|i|
+                eig_nu_nm.s().column_vector().read(i).re.abs()
+            ).collect();
+            ev_nu.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            let dm21_sq = ev_nu[1] * ev_nu[1] - ev_nu[0] * ev_nu[0];
+            let dm31_sq = ev_nu[2] * ev_nu[2] - ev_nu[0] * ev_nu[0];
+            let r_mass = if dm31_sq.abs() > 1e-30 { dm21_sq / dm31_sq } else { 0.0 };
+            println!("  dm21^2/dm31^2 = {:.4}", r_mass);
+            println!("  3-blade prediction: 0.0304");
+            println!("  PDG measured: 0.0307 +/- 0.001");
+
+            // ----- Publication chi2 table (E1) -----
+            println!("\n  ========= PUBLICATION CHI2 TABLE =========");
+            println!("  Observable       |  Value     |  PDG       |  Pull (sigma)");
+            println!("  ---------------------------------------------------------");
+            let pull_12 = (nm_result.theta_12 - 33.41) / 0.72;
+            let pull_13 = (nm_result.theta_13 - 8.54) / 0.12;
+            let pull_23 = (nm_result.theta_23 - 49.0) / 1.3;
+            let j_pdg = 0.0086_f64;
+            let j_pdg_err = 0.0020_f64;
+            let pull_j = (nm_result.j_cp.abs() - j_pdg) / j_pdg_err;
+            let r_pdg = 0.0307_f64;
+            let r_err = 0.001_f64;
+            let pull_r = (r_mass - r_pdg) / r_err;
+            println!("  theta_12 (deg)   | {:7.2}    | {:7.2}    | {:+.2}",
+                nm_result.theta_12, 33.41, pull_12);
+            println!("  theta_13 (deg)   | {:7.2}    | {:7.2}    | {:+.2}",
+                nm_result.theta_13, 8.54, pull_13);
+            println!("  theta_23 (deg)   | {:7.2}    | {:7.2}    | {:+.2}",
+                nm_result.theta_23, 49.0, pull_23);
+            println!("  |J_CP|           | {:.3e}  | {:.3e}  | {:+.2}",
+                nm_result.j_cp.abs(), j_pdg, pull_j);
+            println!("  r = dm21/dm31    | {:7.4}    | {:7.4}    | {:+.2}",
+                r_mass, r_pdg, pull_r);
+            let chi2_total = pull_12 * pull_12 + pull_13 * pull_13
+                + pull_23 * pull_23 + pull_j * pull_j + pull_r * pull_r;
+            println!("  ---------------------------------------------------------");
+            println!("  Total chi2 (5 obs) = {:.2}", chi2_total);
+            println!("  chi2/ndf = {:.2} (ndf = 5 - 3 params = 2)", chi2_total / 2.0);
+            println!("  =========================================");
         } else {
             println!("  No solution found within 2% angle tolerance with nonzero J_CP.");
+        }
+    }
+
+    /// delta_CP sign systematics (C2): explore 8 combinations of:
+    /// 1. Selector swap: (7,8) vs (8,7) -- which basis element drives nu_a/nu_b
+    /// 2. L vs R multiplication order in the associator (swap a,b)
+    /// 3. Epsilon sign flip: negate the upper octonion half
+    ///
+    /// If ANY combination gives delta ~ 195, the model has a sign degeneracy
+    /// (weak predictive power). If NONE does, the delta ~ 93 prediction is
+    /// robust but falsified against PDG.
+    #[test]
+    fn test_delta_cp_sign_systematics() {
+        use cd_kernel::gourlay_psi;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let ch_pair = (11_usize, 12);
+        let alpha_ch = 3.00_f64;
+        let alpha_nu = 1.35_f64;
+
+        // Selector pairs to test: (7,8) and (8,7)
+        let selector_pairs = [(7_usize, 8_usize), (8_usize, 7_usize)];
+        // L/R swap: controls which mode is a vs b in the associator
+        let lr_swaps = [false, true];
+        // Epsilon sign: negate profiles or not
+        let eps_signs = [false, true];
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        println!("--- delta_CP SIGN SYSTEMATICS (8 combinations) ---\n");
+        println!("  {:>6} {:>4} {:>4} | {:>8} {:>8} {:>8} | {:>10} {:>8}",
+            "sel", "swap", "eps", "t12", "t13", "t23", "|J|", "delta");
+
+        let k_test = 5_usize;
+
+        for &(sel_a, sel_b) in &selector_pairs {
+            for &lr_swap in &lr_swaps {
+                for &eps_flip in &eps_signs {
+                    let nu_pair = if !lr_swap { (sel_a, sel_b) } else { (sel_b, sel_a) };
+
+                    let (m_ch_real, m_nu_real) = construct_pmns_matrices_two_param(
+                        ch_pair, nu_pair, alpha_ch, alpha_nu,
+                    );
+                    let (v6_basis, _, _) = extract_v6_basis();
+                    let lift = TensorElementLift;
+
+                    let eig_ch_0 = m_ch_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+                    let eig_nu_0 = m_nu_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+                    let u_raw_0 = eig_ch_0.u().transpose() * eig_nu_0.u();
+                    let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+                    let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
+                    let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
+
+                    let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+                        let i = mode_i.cd_basis_index;
+                        let j = mode_j.cd_basis_index;
+                        let a_sparse = vec![(i, 1.0)];
+                        let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+                        let b_sparse = vec![(j, 1.0)];
+                        let mut profile = [0.0_f64; 16];
+                        for &kk in sub {
+                            if kk == 0 || kk == i || kk == j { continue; }
+                            let x_sparse = [(kk, 1.0)];
+                            profile[kk] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+                        }
+                        if eps_flip {
+                            for idx in 8..16 { profile[idx] = -profile[idx]; }
+                        }
+                        profile
+                    };
+
+                    let nu_profiles: Vec<[f64; 16]> = subs.iter()
+                        .map(|s| build_profile(&nu_a, &nu_b, s)).collect();
+
+                    let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+                        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+                    };
+
+                    let apply_jk = |v: &[f64; 16]| -> [f64; 16] { apply_jk_full_16d(v, k_test) };
+
+                    let mut phi = [[0.0_f64; 3]; 3];
+                    let mut has_phase = false;
+                    for i in 0..3 {
+                        for j in 0..3 {
+                            if i != j {
+                                let psi_j = gourlay_psi(&nu_profiles[j]);
+                                let re = dot16(&nu_profiles[i], &psi_j);
+                                let jk_psi = apply_jk(&psi_j);
+                                let im = dot16(&nu_profiles[i], &jk_psi);
+                                phi[i][j] = im.atan2(re);
+                                if phi[i][j].abs() > 1e-10 { has_phase = true; }
+                            }
+                        }
+                    }
+
+                    if !has_phase {
+                        println!("  ({},{}) {:>4} {:>4} | no phase structure", sel_a, sel_b, lr_swap, eps_flip);
+                        continue;
+                    }
+
+                    // Quick scan: alpha=0.45, use GN baseline
+                    let eps_fd = 0.05_f64;
+                    let n_basis = v6_basis.nrows().min(6);
+                    let angles_at = |beta: &[f64; 6]| -> (f64, f64, f64) {
+                        let mut m_nu = m_nu_real.clone();
+                        apply_v6_perturbation(&mut m_nu, &v6_basis, beta, &lift);
+                        let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                        let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                        let u_raw = eig_ch_0.u().transpose() * eig_nu.u();
+                        let mut u_perm2 = faer::Mat::zeros(3, 3);
+                        for i in 0..3 { for j in 0..3 {
+                            u_perm2.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+                        }}
+                        extract_pmns_angles(&u_perm2)
+                    };
+                    let mut g12 = [0.0_f64; 6];
+                    let mut g13 = [0.0_f64; 6];
+                    let mut g23 = [0.0_f64; 6];
+                    for mu in 0..n_basis {
+                        let mut bp = [0.0_f64; 6]; bp[mu] = eps_fd;
+                        let mut bm = [0.0_f64; 6]; bm[mu] = -eps_fd;
+                        let (t12p, t13p, t23p) = angles_at(&bp);
+                        let (t12m, t13m, t23m) = angles_at(&bm);
+                        g12[mu] = (t12p - t12m) / (2.0 * eps_fd);
+                        g13[mu] = (t13p - t13m) / (2.0 * eps_fd);
+                        g23[mu] = (t23p - t23m) / (2.0 * eps_fd);
+                    }
+                    let u_s = compute_constrained_solar_direction(&g12, &g13, &g23);
+                    let u_a = compute_constrained_atmospheric_direction(&g23, &g13, &u_s);
+                    let inner = |t_s: f64, t_a: f64| -> (f64, f64, f64) {
+                        let mut beta = [0.0_f64; 6];
+                        for kk in 0..6 { beta[kk] = t_s * u_s[kk] + t_a * u_a[kk]; }
+                        angles_at(&beta)
+                    };
+                    let (ts, ta, _, _) = gauss_newton_2d(&inner, 1.5, 0.0,
+                        (33.41, 8.54, 49.0), (1.0, 2.24, 1.0), 15);
+
+                    let ctx = CpScanContext {
+                        m_nu_real: &m_nu_real, m_ch_real: &m_ch_real,
+                        v6_basis: &v6_basis, u_solar: &u_s, u_atmo: &u_a,
+                        lift: &lift,
+                        perm_u: [perm_u[0], perm_u[1], perm_u[2]],
+                        perm_d: [perm_d[0], perm_d[1], perm_d[2]],
+                    };
+                    let mut bufs = CpScanBuffers::new();
+                    let r = evaluate_cp_scan_point(0.45, ts, ta, &phi, &ctx, &mut bufs);
+
+                    println!("  ({},{}) {:>4} {:>4} | {:8.2} {:8.2} {:8.2} | {:10.3e} {:8.1}",
+                        sel_a, sel_b, lr_swap, eps_flip,
+                        r.theta_12, r.theta_13, r.theta_23,
+                        r.j_cp.abs(), r.delta_cp_invariant);
+                }
+            }
         }
     }
 
