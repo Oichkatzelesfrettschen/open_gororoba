@@ -1183,6 +1183,39 @@ They should not leak into the PMNS/CKM thesis except as notation that
 the framework is extensible. See Section XVI for the full surreal
 Cayley-Dickson tower treatment.
 
+### Experimental context: algebraic structure survives nonperturbative transitions
+
+The STAR Collaboration (Nature 650, Feb 2026) reports that spin
+correlations in Lambda-Antilambda hyperon pairs inherit from
+spin-correlated virtual strange quark-antiquark pairs in the QCD
+vacuum condensate, with P = 0.181 +/- 0.035 (4.4 sigma significance).
+The correlation vanishes at large pair separation, consistent with
+quantum decoherence. This demonstrates experimentally that algebraic
+spin structure (SU(6) quark model predictions for spin-triplet states)
+persists through the nonperturbative hadronization transition -- a
+principle that is philosophically parallel to our thesis that the
+algebraic CD structure persists through the lift into flavor space.
+
+### Dual 455-decomposition at the sedenion boundary (C-1507)
+
+The sign-table associator on sedenion imaginary indices {1..15}
+produces a DIFFERENT 455-decomposition from Wilmot's retraction m3:
+
+| Decomposition | Fano-like | Middle | Genuine | Total |
+|--------------|-----------|--------|---------|-------|
+| Wilmot (retraction m3) | 35 (U_1) | 252 (U_2) | 168 (U_3) | 455 |
+| Sign-table (cd_sign) | 35 | 112 | 308 | 455 |
+
+The 672 ordered cross-subalgebra-zero triples (112 unordered) are
+triples where XOR != 0 but the sign-table associator vanishes because
+the indices span different octonionic subalgebras within the sedenion.
+The retraction m3 correctly identifies these as non-trivial (they
+appear in Wilmot's U_2 category), capturing cross-subalgebra effects
+that the naive sign-table approach misses.
+
+This dual decomposition is formally verified in Rocq:
+M3IsAssociatorPathion.v (vm_compute, all 2730 ordered triples).
+
 ## XV-B. Known Tensions and Scope Limits
 
 These are stated explicitly so they become part of the intellectual map
