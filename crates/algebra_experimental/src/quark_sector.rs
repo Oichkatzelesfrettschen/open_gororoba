@@ -1419,4 +1419,96 @@ mod tests {
 
         println!("PASS: CKM Casimir refactor regression");
     }
+
+    /// 3-blade quark mass ratios: scan triples for m_u/m_d, m_c/m_s, m_t/m_b.
+    ///
+    /// PDG 2024 mass ratios (at 2 GeV):
+    ///   m_u/m_d ~ 0.47, m_c/m_s ~ 11.8, m_t/m_b ~ 41.3
+    ///   m_c/m_u ~ 550, m_t/m_c ~ 130, m_b/m_s ~ 51.5
+    #[test]
+    fn test_3blade_quark_mass_ratios() {
+        use rayon::prelude::*;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [o1.clone(), o2.clone(), o3.clone()];
+
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+
+        // PDG quark mass ratios (target)
+        let pdg_mc_mu = 550.0_f64;
+        let pdg_mt_mc = 130.0_f64;
+
+        let mut triples: Vec<(usize, usize, usize)> = Vec::new();
+        for i in 1..16_usize {
+            for j in (i+1)..16 { for k in (j+1)..16 { triples.push((i, j, k)); } }
+        }
+
+        let compute_3blade = |triple: (usize, usize, usize)| -> [f64; 3] {
+            let sign_table = SignTableCache::new(16);
+            let (a, b, c) = triple;
+            let ma = MajoranaMode { gamma_index: a-1, cd_basis_index: a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b-1, cd_basis_index: b, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: c-1, cd_basis_index: c, cd_dim: 16 };
+            let mut f = [0.0_f64; 3];
+            for (g, sub) in subs.iter().enumerate() {
+                f[g] = cd_braid_signed_friction(&ma, &mb, sub, &sign_table)
+                     + cd_braid_signed_friction(&ma, &mc, sub, &sign_table)
+                     + cd_braid_signed_friction(&mb, &mc, sub, &sign_table);
+            }
+            f
+        };
+
+        let all_frictions: Vec<[f64; 3]> = triples.par_iter()
+            .map(|&t| compute_3blade(t)).collect();
+
+        // Scan up-type triple x down-type triple
+        let af = &all_frictions;
+        let results: Vec<_> = (0..triples.len()).into_par_iter().flat_map_iter(|ui| {
+            (0..triples.len()).map(move |di| {
+                let sel_up = &af[ui];
+                let sel_dn = &af[di];
+                let mut masses_up = [0.0_f64; 3];
+                let mut masses_dn = [0.0_f64; 3];
+                for g in 0..3 {
+                    masses_up[g] = (w1 * sel_up[g] + w2 * sel_dn[g]).exp();
+                    masses_dn[g] = (w1 * sel_dn[g] + w2 * sel_up[g]).exp();
+                }
+                masses_up.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                masses_dn.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+                // Ratios: m_c/m_u = m2/m1 (up), m_t/m_c = m3/m2 (up)
+                let mc_mu = if masses_up[0] > 1e-30 { masses_up[1] / masses_up[0] } else { f64::MAX };
+                let mt_mc = if masses_up[1] > 1e-30 { masses_up[2] / masses_up[1] } else { f64::MAX };
+
+                let err = ((mc_mu - pdg_mc_mu) / pdg_mc_mu).powi(2)
+                        + ((mt_mc - pdg_mt_mc) / pdg_mt_mc).powi(2);
+
+                (err, mc_mu, mt_mc, ui, di, masses_up[2] / masses_up[0])
+            })
+        }).collect();
+
+        let mut sorted = results;
+        sorted.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("  === 3-Blade Quark Mass Ratios ===\n");
+        println!("  PDG: m_c/m_u ~ 550, m_t/m_c ~ 130\n");
+        println!("  {:>5} | {:>12} {:>12} | {:>8} {:>8} | {:>8}",
+            "rank", "up_triple", "dn_triple", "mc/mu", "mt/mc", "mt/mu");
+
+        for (rank, e) in sorted.iter().take(10).enumerate() {
+            println!("  {:>5} | {:>12?} {:>12?} | {:>8.1} {:>8.1} | {:>8.0}",
+                rank+1, triples[e.3], triples[e.4], e.1, e.2, e.5);
+        }
+
+        let best = &sorted[0];
+        println!("\n  BEST: m_c/m_u = {:.1} (PDG: 550), m_t/m_c = {:.1} (PDG: 130)",
+            best.1, best.2);
+        println!("  m_t/m_u = {:.0} (PDG: ~71500)", best.5);
+        println!("  up_triple = {:?}, dn_triple = {:?}", triples[best.3], triples[best.4]);
+    }
 }
