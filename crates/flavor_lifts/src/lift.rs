@@ -1,17 +1,32 @@
 //! Flavor lift trait and implementations.
 //!
+//! # The lift problem
+//!
 //! A `FlavorLift` maps a perturbation vector from the 42D assessor space
-//! (or V_6 complement) into a symmetric 3x3 mass matrix. This is the
+//! (or its V_6 complement) into a symmetric 3x3 mass matrix.  This is the
 //! architectural layer between algebraic family geometry and physical
 //! mixing matrices.
 //!
-//! Three implementations exist, in order of discovery:
-//! - `DirectOffDiagonalLift`: 42 -> 3 off-diagonal channels (fails: rank-2 lock)
-//! - `PsiEquivariantLift`: uses psi orbit structure (weak gradients)
-//! - `TensorElementLift`: 42 -> 6 independent Herm_3 elements (SUCCEEDS, C-1478)
+//! The central theorem from Epic B (C-1502): V_6 is a **psi-eigenspace**
+//! with eigenvalue -0.2215 (6-fold degenerate scalar).  This means V_6
+//! carries a trivial-like S_3 representation, while Sym_3(R) carries the
+//! natural permutation representation.  By Schur's lemma, no S_3-equivariant
+//! map from a scalar source to a permutation target exists -- explaining
+//! why TensorElementLift WORKS by being non-equivariant.
 //!
-//! The `AssessorToFlavorMap` is the original partition-based lift that also
-//! hits the rank-2 lock due to collinear gradients in the (12/12/6) partition.
+//! # Implementation history (negative-result ladder)
+//!
+//! | Lift | Effective DOFs | Result | Claim |
+//! |------|---------------|--------|-------|
+//! | [`AssessorToFlavorMap`] (12/12/6 partition) | 3 | FAIL: collinear gradients | C-1475 |
+//! | [`DirectOffDiagonalLift`] (3 blocks of 14) | 3 | FAIL: rank-2 Jacobian lock | C-1476 |
+//! | [`PsiEquivariantLift`] (psi orbit weights) | 3 | FAIL: weak gradients | C-1477 |
+//! | [`TensorElementLift`] (6 blocks of 7) | **6** | **SUCCESS** | C-1478 |
+//!
+//! The pattern: all 42->3 lifts hit the rank-2 lock because 3 DOFs cannot
+//! independently steer 3 mixing angles (g_12 lies 100% in span{g_13, g_23}).
+//! The 42->6 lift breaks this lock by preserving 6 independent DOFs matching
+//! the dimension of V_6 exactly.
 
 /// Core trait: map an assessor-space perturbation into a mass matrix.
 pub trait FlavorLift {

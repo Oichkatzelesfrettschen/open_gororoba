@@ -1,8 +1,12 @@
 //! CP violation pipeline scaffolding.
 //!
-//! Two materially different CP constructions exist. They are NOT "one result
+//! # Two pipelines, not one result
+//!
+//! Two materially different CP constructions exist.  They are NOT "one result
 //! with different conventions" -- they are different pipelines producing
-//! different J_CP and delta_CP values.
+//! different |J_CP| and delta_CP values.  This distinction was identified
+//! in the deep review (feedback_deep_review_claim_hygiene.md, item 6) and
+//! must be maintained throughout the codebase.
 //!
 //! **CP-A: Phase-only complexification in J_k basis**
 //!   M_ij -> |M_ij| * exp(i * alpha_CP * phi_ij)
