@@ -513,10 +513,44 @@ parameters. All four quartets:
 | e1*mu2/e2*mu1 | -126.87 | Different pair |
 | e1*tau3/e3*tau1 | +116.57 | tau sector |
 
-PDG 2024: delta_CP = 195 deg (= -165 deg). The prediction +116.57 deg
-differs by ~79 deg; the quadrant depends on generation-to-flavor
-assignment convention. The value 116.57 = 180 - arctan(2) arises from
-the diagonal:off-diagonal Gram ratio -9:3 = -3:1.
+PDG 2024: delta_CP = 195 deg (= -165 deg). With flavor assignment
+optimization (O1=e, O2=mu, O3=tau, column perm (0,2,1)):
+
+    delta_CP = -126.87 deg  (38 deg from PDG, angle-optimal pair)
+
+### Exhaustive Selector Pair Scan for delta_CP
+
+Scanning all 11,025 selector pair combinations reveals an angle-CP tradeoff:
+
+| Pair | theta_12 | theta_13 | theta_23 | delta_CP | |
+|------|----------|----------|----------|----------|--|
+| (11,12)/(7,8) | 33.4 (0.15%) | 8.54 (0.01%) | 49.0 (0.02%) | -126.9 | Best angles |
+| (11,13)/(11,14) | 5.9 (82%) | 7.72 (9.6%) | 9.4 (81%) | **-166.0** | Best delta_CP |
+
+Three symmetry-equivalent pairs give delta_CP = -166.0 deg (1 deg from PDG):
+(11,13)/(11,14), (9,14)/(9,15), (10,15)/(10,13). All use upper-block
+selectors sharing one index.
+
+**Structural tension**: no single pair simultaneously optimizes all 4
+observables. The angle-optimal pair has delta_CP 38 deg off; the
+CP-optimal pair has theta_12 and theta_23 collapsed (shared-index
+rank-1 mass matrix). Psi coupling cannot rescue the CP-optimal pair.
+
+The resolution likely requires composite selectors (weighted sums of
+multiple pairs) or a mechanism that rotates the Gram phase structure
+without destroying the angle hierarchy. This is a genuine open problem
+in the algebraic framework.
+
+### Bilateral Phase Analysis
+
+The cross-sector Gram quartet carries the ENTIRE CP phase. Intra-sector
+quartets are exactly zero (arg = 0.00 deg for both charged and neutrino
+sectors). The phase is RIGID: scanning alpha_ch x alpha_nu from 0 to 10
+does not change delta_CP. The psi coupling modifies Gram magnitudes,
+not phases.
+
+The value 116.57 = 180 - arctan(2) arises from the
+diagonal:off-diagonal Gram ratio -9:3 = -3:1.
 
 The rephasing formula:
     U_CP[i][j] = |U_real[i][j]| * exp(i * alpha_CP * arg(G_ij))
