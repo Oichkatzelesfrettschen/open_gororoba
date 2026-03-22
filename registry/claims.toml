@@ -10111,3 +10111,17 @@ statement = """PMNS angle-sector fit via Gauss-Newton 4D optimization: all three
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_v6_joint_4d_optimization"
 last_verified = "2026-03-21"
+
+[[claim]]
+id = "C-1493"
+statement = """Cariow 2013 sedenion multiplication analysis: WHT-diagonalization of B_16 Toeplitz component + sparse remainder achieves 122 muls / 298 adds (vs 256/240 naive, 15% fewer total ops). Algorithm NOT adopted for our SIMD path: the irregular sparse-matrix pattern (106 scattered multiply-accumulates in B_hat) destroys ILP and AVX2 utilization. Our CD-doubling SIMD path (4 octonion muls decomposed to 64 FMAs with 12/16 YMM register fit) runs at L1 cache speed with superior pipeline throughput. Cariow is optimal for VLSI/FPGA hardware multiplier design where multiplier count dominates area/power. For CPU software, wall-clock time is dominated by instruction throughput and data-dependency depth, not raw multiplication count."""
+status = "Verified"
+where_stated = "docs/physics/sedenion_standard_model.md (bibliography, Cariow analysis)"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1494"
+statement = """Phase-only CP violation via J_k complex structure: multiplicative phase complexification M[i][j] -> |M[i][j]| * exp(i * alpha_CP * phi[i][j]) preserves mixing angles within 1.5% of PDG while producing nonzero Jarlskog invariant. Best results across k-embeddings: |J_CP| ~ 8.5e-3 (25% of PDG 3.3e-2), delta_CP ~ 165 deg (PDG: 195). Angles: theta_12=33.35 (0.2%), theta_13=8.66 (1.5%), theta_23=48.93 (0.1%). Phase phi[i][j] = atan2(<profile_i, J_k(psi(profile_j))>, <profile_i, psi(profile_j)>) is the natural Fano-derived complex angle. Critical improvement over additive approach (C-old): additive M += i*alpha*template distorted angles by 50-300%; multiplicative phase preserves eigenvalue magnitudes exactly. Z_2 symmetry: k and (8-k) give conjugate J_CP signs."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_phase_only"
+last_verified = "2026-03-22"

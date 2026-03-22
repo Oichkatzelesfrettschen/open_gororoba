@@ -99,17 +99,19 @@ impl SearchEngine {
             }
         }
 
-        // Tier 2: keyed sources
+        // Tier 2: keyed sources + Google Scholar
         if self.tier == SourceTier::All {
-            let (core_r, cinii_r, ads_r, lens_r) = tokio::join!(
+            let (core_r, cinii_r, ads_r, lens_r, gs_r) = tokio::join!(
                 sources::search_core(&self.client, query, limit, &self.keys),
                 sources::search_cinii(&self.client, query, limit, &self.keys),
                 sources::search_ads(&self.client, query, limit, &self.keys),
                 sources::search_lens(&self.client, query, limit, &self.keys),
+                sources::search_google_scholar(&self.client, query, limit),
             );
 
             for (name, res) in [
                 ("CORE", core_r), ("CiNii", cinii_r), ("ADS", ads_r), ("Lens", lens_r),
+                ("GScholar", gs_r),
             ] {
                 match res {
                     Ok(papers) if !papers.is_empty() => {
@@ -144,5 +146,10 @@ impl SearchEngine {
     /// Search by DOI across all sources.
     pub async fn search_by_doi(&self, doi: &str) -> Vec<Paper> {
         self.search(&format!("DOI:{doi}"), 5, 0).await
+    }
+
+    /// Access the underlying HTTP client (for download module reuse).
+    pub fn client(&self) -> &Client {
+        &self.client
     }
 }
