@@ -661,3 +661,71 @@ fn test_amplitude_cd_sign_comparison() {
     // The key finding is whether 2*A is always in {-2, 0, +2}.
     assert!(all_integer, "2*A should always be in {{-2, 0, +2}} for n=4");
 }
+
+// =========================================================================
+// D14: Sign-nullity stratification across the CD tower
+// =========================================================================
+
+/// Compute the sign-nullity partition for each CD dimension:
+/// - nonzero_count: number of (p,q) pairs with p!=q where e_p*e_q != 0
+/// - annihilating_count: always 0 for basis elements (only 2-blade ZDs)
+/// - positive_count: sign(p,q) = +1
+/// - negative_count: sign(p,q) = -1
+///
+/// This is a new invariant tracking how the sign structure evolves
+/// across the CD tower (dim=2,4,8,16,32,64,...).
+#[test]
+fn test_sign_nullity_stratification() {
+    println!("--- D14: SIGN-NULLITY STRATIFICATION ACROSS CD TOWER ---\n");
+    println!("  {:>5} | {:>8} {:>8} {:>8} | {:>6} {:>6}",
+        "dim", "positive", "negative", "total", "+frac", "-frac");
+    println!("  {:-<5}-+-{:-<8}-{:-<8}-{:-<8}-+-{:-<6}-{:-<6}",
+        "", "", "", "", "", "");
+
+    for log_dim in 1..=10_u32 {
+        let dim = 1_usize << log_dim;
+        let mut pos = 0_usize;
+        let mut neg = 0_usize;
+
+        for p in 1..dim {
+            for q in 1..dim {
+                if p == q { continue; }
+                let s = cd_basis_mul_sign_iter(dim, p, q);
+                if s > 0 { pos += 1; }
+                else { neg += 1; }
+            }
+        }
+
+        let total = pos + neg;
+        let expected = (dim - 1) * (dim - 2); // imaginary x imaginary, p != q
+        assert_eq!(total, expected,
+            "dim={}: total should be (d-1)*(d-2)", dim);
+
+        let pfrac = pos as f64 / total as f64;
+        let nfrac = neg as f64 / total as f64;
+
+        println!("  {:>5} | {:>8} {:>8} {:>8} | {:>6.4} {:>6.4}",
+            dim, pos, neg, total, pfrac, nfrac);
+    }
+
+    // Key question: does the +/- ratio converge as dim -> infinity?
+    // If it converges to 0.5, the sign table becomes "balanced" --
+    // equal numbers of positive and negative products.
+    // If it doesn't converge, there's an asymptotic bias.
+
+    // Check dim=1024: the fraction should be close to one of the
+    // convergence candidates (0.5, golden ratio complement, etc.)
+    let dim = 1024;
+    let mut pos = 0_usize;
+    let mut neg = 0_usize;
+    for p in 1..dim {
+        for q in 1..dim {
+            if p == q { continue; }
+            let s = cd_basis_mul_sign_iter(dim, p, q);
+            if s > 0 { pos += 1; } else { neg += 1; }
+        }
+    }
+    let pfrac = pos as f64 / (pos + neg) as f64;
+    println!("\n  dim=1024: +fraction = {:.6}, -fraction = {:.6}", pfrac, 1.0 - pfrac);
+    println!("  Deviation from 0.5: {:.6}", (pfrac - 0.5).abs());
+}
