@@ -705,7 +705,9 @@ Given algebraic ratio r and one input m1 (lightest mass):
 2. [x] Rocq SU(3): COMPLETE Jacobi in Z[sqrt(3)] -- all 56 triples verified
 3. Delta_CP maximal vs submaximal: algebra predicts -90 deg (maximal),
    PDG best fit -165 deg (submaximal). Testable by DUNE/HyperK/JUNO.
-4. Derive TensorElementLift from algebra (currently heuristic 42D->6D)
+4. [x] TensorElementLift: S_3 intertwiner proves NO equivariant map exists
+   (null space dim=0, V_6 scalar representation incompatible with Sym_3(R)).
+   The lift is response-fitted, not algebraically canonical.
 5. [x] Complete Rocq SU(3): Z[sqrt(3)] Jacobi proof (SU3JacobiFull.v)
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
    (3-blade triples that give r=0.0304 collapse mixing angles)
