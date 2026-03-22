@@ -921,23 +921,23 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 **Zero-divisor geometry and G2 structure:**
 - Reggiani (2024): "Geometry of sedenion zero divisors" [arXiv:2411.18881]
   Z(S) homeomorphic to G2. Principal bundle SU(2)->G2->V_2(R^7). 84 standard ZDs.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/reggiani_2024_2411.18881.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/reggiani_2024_2411.18881.pdf
   Integration: g2_stabilizer.rs, sedenion_subalgebras.rs
 
 - Reggiani (2025): "CD algebras -- full study" [arXiv:2512.13002]
   Isometry group G2 x S^1. Curvature polynomial (285 coefficients).
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/reggiani_2025_251213002_cd_algebras.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/reggiani_2025_251213002_cd_algebras.pdf
 
 - Koebisu (2025): "Singular structures + holonomy" [arXiv:2512.13002]
   det(L_v) = D_1(v)^4 D_2(v)^2. Local singular model. V_2(R^8) holonomy.
 
 - Moreno (2005): "Zero divisors of 2^n-ions" [arXiv:math/0512517]
   ZD counting formula for general CD algebras. Stiefel manifold identification.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512517_zero_divisors_2n_ions.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/moreno_2005_math0512517_zero_divisors_2n_ions.pdf
 
 - Moreno (2005): "Companion" [arXiv:math/0512516]
   Monomorphisms between CD algebras. Subalgebra embeddings. Doubly-pure elements.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512516_companion.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/moreno_2005_math0512516_companion.pdf
 
 **Alternative CD constructions:**
 - Flipped Polynomial Rings (2024): "CD algebras from flipped Ore extensions" [arXiv:2403.03763]
@@ -945,7 +945,7 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Parity-dependent multiplication: tau_n(r,s) = rs if n even, sr if n odd.
   C, H, O, S all unified as R[X;sigma,delta]^[1]/(X^2+1) with appropriate maps.
   Potential: alternative to recursive cd_multiply, cleaner Rocq formalization.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf
 
 **CD tower structure and non-associativity:**
 - Wilmot (2026): "G_2 from Clifford calibrations" [arXiv:2505.06011]
@@ -953,7 +953,7 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Graded CD construction. 35+60+360=455 triad count (U_1). A/B/C/X stratification.
 - Wilmot (2025): "Automorphisms of sedenions" [arXiv:2512.07210]
   Aut(S) = G2 (Schafer confirmed). Fano volume. Power-associative subalgebras.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/ (3 Wilmot PDFs)
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/ (3 Wilmot PDFs)
   Integration: sedenion_subalgebras.rs claims C-1467..C-1473
 
 - de Marrais (2000-2007): CD tower zero-divisor geometry (8 papers)
@@ -970,13 +970,13 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
     0704.0026 (2007): Catamaran sails (pathion ZD patterns)
     0704.0112 (2007): Sedenions XOR (explicit XOR multiplication framework)
     math/0703745 (2007): Placeholder substructures III (closure properties)
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/de_marrais_*.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/de_marrais_*.pdf
 
 **Canonical mathematical reference:**
 - Baez (2002): "The Octonions" [arXiv:math/0105155]
   Division algebra tower R->C->H->O. Fano plane. G2=Aut(O). Triality.
   Exceptional groups E6/E7/E8/F4. Hurwitz theorem. Freudenthal-Tits magic square.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_math0105155_baez_2002_octonions.pdf
 
 **Interleaved generation framework (Layer B):**
 - Gresnigt (2019): "Intersecting octonion subalgebras" [arXiv:1904.03186]
@@ -991,7 +991,7 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 
 - Tang (2025): "Sedenionic QED" [Preprints 2025, 11.0427]
   Fermion mapping e_1-3 (1st gen quarks), e_10-12 (1st gen leptons).
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt
 
 - Dou et al. (2024): "Sedenionic star-power series" [arXiv:2512.00600]
   ZD kernel structure. Second convergence radius.
@@ -999,30 +999,30 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 **G2/SU(3) stabilizer validation:**
 - AACA (2025): "G2 via CD doubling" [Adv. Appl. Clifford Algebras 35:14]
   Explicit G2 construction. SU(3) = Stab_G2(1-form). Validates PR1/PR2.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/s00006-025-01423-5.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/s00006-025-01423-5.pdf
 
 - Southampton (2025): "PSL(2,7) structure" [PhD thesis, U. Southampton]
   PSL(2,7) = Aut(Fano plane). Dessin d'enfant. Klein quartic embedding.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/soton_2025_psl2_7_structure_957754.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/soton_2025_psl2_7_structure_957754.pdf
 
 - Mironov (2014): "Sedeonic equations" [SCIRP]
   Sedenion field equations for gravitoelectromagnetism. Cross-check multiplication.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf
 
 **Fano plane and octonion geometry:**
 - Ruan & Fan (2009): "Fano plane from quadratic residues" [arXiv:0909.3323]
   Construction of PG(2,2) from residues mod 7. Octonion multiplication encoding.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf
 
 - Gazeau et al. (2026): "Split-octonion conformal space" [arXiv:2601.18433]
   Cl(4,2) from split-octonion left multiplication. SO(4,2) conformal embedding.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf
 
 **Zero divisor theory (adjacent):**
 - Carlstrom (2001): "Wheels -- On Division by Zero" [KTH Report]
   Extends division algebras to handle division by zero via wheel structure.
   Tangential to ZD analysis: if v is a ZD (v*w=0), wheels formalize "dividing by v."
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/carlstrom_2001_wheels_report.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/carlstrom_2001_wheels_report.pdf
 
 ### TIER 2: Architectural Precedent
 
@@ -1036,7 +1036,7 @@ perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
   Exceptional group chain. G2 at root of E-series.
 - Clifford Invariant Unification (2026) [arXiv:2601.19734]
   Clifford-algebra-valued curvature for gravity + Yang-Mills. Pair-symmetric decomposition.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.19734v1_clifford_invariant_unification.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2601.19734v1_clifford_invariant_unification.pdf
 
 ## Claims Index
 
@@ -1082,35 +1082,35 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 **Subalgebra and subloop structure:**
 - Cawagas et al. (2009): "Trigintaduonion subalgebra structure" [arXiv:0907.2047]
   32D pathion loop T_L: 373 non-trivial subloops. Full 32x32 multiplication table.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf
 
 - Cawagas & Gutierrez (2005): "Subloop structure of sedenion loop" [Matimyas Matematika]
   Sedenion loop S_L: quasi-octonion loop O~_L discovered (contains zero divisors).
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/CawagasMatimyas.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/CawagasMatimyas.pdf
 
 **Annihilator and zero divisor theory:**
 - Biss, Christensen, Dugger, Isaksen (2007): "Large annihilators in CD algebras II" [arXiv:math/0702075]
   Codimension-4 splitting simplifies multiplication. Theorem 5.10: annihilator dimension formula.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/0702075v2.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/0702075v2.pdf
 
 - Moreno (1997): "Zero divisors of CD algebras over R" [arXiv:q-alg/9710013]
   Original algebraic ZD characterization for A_n (n>=4). Foundation for Reggiani 2024.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/9710013v1.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/9710013v1.pdf
 
 - de Marrais (2008): "Voyage by Catamaran" [arXiv:0804.3416]
   Spandrels: HBK quartets in 2^{N+1}-ions exploded from box-kites in 2^N-ions.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/0804.3416v2.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/0804.3416v2.pdf
 
 **Sedenionic matrix algebra:**
 - Gursoy & Bektas (2024): "Sedenionic matrices and their properties" [GUJS 14(3)]
   Matrix algebra with sedenion coefficients. Addition, multiplication, conjugation, transpose.
   Vector space over R/C, module structure over quaternions.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/10.17714-gumusfenbil.1415410-3642320.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/10.17714-gumusfenbil.1415410-3642320.pdf
 
 **Octonionic gauge theory:**
 - Chanyal, Sharma, Negi (2015): "Octonionic gravi-electromagnetism and dark matter" [arXiv:1502.05293]
   Split octonion gauge formulation for SU(2)xU(1) and SU(3)xSU(2)xU(1). Dark matter field equations.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf
 
 - Connes (2008): "On the spectral characterization of manifolds" [arXiv:0810.2088]
   First five spectral triple axioms characterize smooth compact manifolds. Core theory.
@@ -1122,56 +1122,56 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 **Subalgebra classification and alternativity:**
 - Chan & Dokovic (2018): "Conjugacy classes of subalgebras of the real sedenions" [Cambridge]
   Complete classification of sedenion subalgebra conjugacy classes.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/chan_dokovic_conjugacy_sedenion_subalgebras.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/chan_dokovic_conjugacy_sedenion_subalgebras.pdf
 
 - Biss, Dugger, Isaksen (2009): "How alternativity fails in CD algebras" [arXiv:0905.2987]
   Explicit characterization of where and how alternativity breaks at dim >= 16.
   Same authors as Large Annihilators I/II.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/biss_2009_0905.2987_alternativity_fails_cd.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/biss_2009_0905.2987_alternativity_fails_cd.pdf
 
 **Alternative algebraic constructions:**
 - Flaut (2021): "Twisted group algebra structure for CD algebras" [arXiv:2103.12805]
   CD algebras as twisted group algebras over Z_2^n.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/flaut_2021_2103.12805_twisted_group_algebra_cd.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/flaut_2021_2103.12805_twisted_group_algebra_cd.pdf
 
 - arXiv:2401.01166 (2024): "Sixteen-dimensional sedenion-like associative algebra"
   Novel 16D algebra preserving associativity (differs from standard sedenions).
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2401.01166_sedenion_like_associative.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2401.01166_sedenion_like_associative.pdf
 
 **Annihilator / eigentheory / alternativity (Biss-Dugger-Isaksen sequence):**
 - Biss, Dugger, Isaksen (2005): "Large annihilators in CD algebras" [arXiv:math/0511691]
   Part I -- predecessor to the already-listed Part II. Extremal zero-divisor bounds.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/biss_2005_math0511691_large_annihilators_I.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/biss_2005_math0511691_large_annihilators_I.pdf
 
 **Loop automorphisms and structure:**
 - Kirshtein (2011): "Automorphism groups of Cayley-Dickson loops" [arXiv:1102.5151]
   Loop automorphism structure across the CD tower.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/kirshtein_2011_1102.5151_automorphism_groups_cd_loops.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/kirshtein_2011_1102.5151_automorphism_groups_cd_loops.pdf
 
 - Culbert (2007): "Cayley-Dickson algebras and loops" [Hilaris Publisher]
   Loop-theoretic perspective complementing Kirshtein.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/culbert_2007_cd_algebras_and_loops.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/culbert_2007_cd_algebras_and_loops.pdf
 
 **Zero-divisor orthogonality and graph structure:**
 - Zhilina (2021): "Orthogonality graphs of real CD algebras I: doubly alternative ZDs" [arXiv:2106.00926]
   Zero-divisor graph structure, hexagon patterns. Directly relevant to incidence analysis.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/zhilina_2021_orthogonality_graphs_cd.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/zhilina_2021_orthogonality_graphs_cd.pdf
 
 **Sedenion physics (Gillard-Gresnigt precursor):**
 - Gillard & Gresnigt (2019): "Three fermion generations with two unbroken gauge symmetries
   from the complex sedenions" [arXiv:1904.03186]
   Complex sedenions for fermion generations. Precursor to Gresnigt-Gourlay-Varma 2023.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/gillard_gresnigt_2019_1904.03186_three_fermion_complex_sedenions.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/gillard_gresnigt_2019_1904.03186_three_fermion_complex_sedenions.pdf
 
 **Broader CD algebra theory:**
 - Darpo (2020): "CD algebras of dimension >= 4 with isotropic norm" [arXiv:1608.04898]
   Nondivision/isotropic regime above octonions. General CD structure.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/darpo_2020_1608.04898_cd_isotropic_norm.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/darpo_2020_1608.04898_cd_isotropic_norm.pdf
 
 - Chapman, Guterman, Vishkautsan, Zhilina (2022): "Roots and critical points of polynomials
   over CD algebras" [arXiv:2205.05605]
   Polynomial theory on arbitrary-dimension CD algebras.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/chapman_2022_2205.05605_roots_polynomials_cd.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/chapman_2022_2205.05605_roots_polynomials_cd.pdf
 
 **Paywalled / not yet downloaded (chase items):**
 - Imaeda & Imaeda (2000): "Sedenions: algebra and analysis" [Appl. Math. Comp. 115:77-88]
@@ -1182,4 +1182,4 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 
 - Zhilina (2023): "On doubly alternative zero divisors in CD algebras" [arXiv:2301.11006]
   Follow-up to Zhilina 2021 orthogonality graphs. Doubly alternative ZD characterization.
-  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/zhilina_2023_doubly_alternative_zd_cd.pdf
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/zhilina_2023_doubly_alternative_zd_cd.pdf
