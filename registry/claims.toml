@@ -10153,3 +10153,24 @@ statement = """Rephasing-invariant delta_CP extraction: arg(U_e2 * U_mu3 * conj(
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_joint_3d_scan"
 last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1499"
+statement = """Canonical observable scorecard (registry/scorecard.toml): 17 observables across 3 epistemic bins. Bin 1 (9 framework-backed, zero-parameter): m_mu/m_e (0.1%), m_tau/m_e (0.0%), m_c/m_u (1.4%), m_t/m_c (1.6%), r_nu (1.0%), m_b/m_s (1.5%), m_s/m_d (22%, weak), sin^2(theta_W) (8.1%, tree-level structural estimate), mass ordering (categorical). Bin 2 (6 optimized fits): theta_12/13/23 PMNS (0.15/0.01/0.02%, 4 params), |V_us|/|V_ub|/|V_cb| CKM (8.9/2.4/5.0%, 2 params). Bin 3 (2 CP exploratory): |J_CP| and delta_CP with two materially different pipelines (CP-A phase-only vs CP-B Gram/rephasing). Resolves the 9/11/13 observable count drift across sessions."""
+status = "Verified"
+where_stated = "registry/scorecard.toml, docs/physics/sedenion_standard_model.md (abstract)"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1500"
+statement = """flavor_lifts crate (crates/flavor_lifts/) isolates the lift layer -- the map from algebraic/incidence data into flavor operator space. Contains: FlavorLift trait + 4 implementations (AssessorToFlavorMap, DirectOffDiagonalLift, PsiEquivariantLift, TensorElementLift), apply_v6_perturbation, extract_pmns_angles, Pdg2024, gauss_newton_2d, compute_constrained_solar/atmospheric_direction, and CP scaffolding (CpResult, CpPipeline enum, meets_closure_criterion). Compiles clean with clippy -D warnings."""
+status = "Verified"
+where_stated = "crates/flavor_lifts/src/{lib,lift,angles,optimizer,cp}.rs"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1501"
+statement = """Paper restructuring: 3-bin abstract with defensible thesis, negative-result ladder (6 null results in VIII-B), known tensions (7 items in XV-B), runtime/proof-time unification paragraph, surreal future-directions paragraph (one paragraph). Complementarity theorem foregrounded. Weinberg angle labeled tree-level structural estimate. Down-type quark asymmetry noted. CP-A/CP-B pipeline distinction explicit."""
+status = "Verified"
+where_stated = "docs/physics/sedenion_standard_model.md (abstract, VIII-B, XV, XV-B)"
+last_verified = "2026-03-22"
