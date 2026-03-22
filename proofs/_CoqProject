@@ -182,3 +182,4 @@ theories/G2StabilizerDimension.v
 theories/SU3StructureConstants.v
 theories/SU3JacobiFull.v
 theories/SedenionAlternativityFails.v
+theories/HomotopyTransferAssociator.v
