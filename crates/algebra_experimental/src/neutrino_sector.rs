@@ -8214,7 +8214,78 @@ mod tests {
         }
 
         let (a_ch, a_nu, t12, t13, t23, r, chi2) = best_result;
-        println!("\n  === BEST TWO-SELECTOR-TYPE RESULT ===");
+
+        // === Scaled version: dampen diagonal to balance with off-diagonal ===
+        println!("\n  --- Scaled diagonal scan (damping factor beta) ---");
+
+        let mut best_scaled = (f64::MAX, 0.0_f64, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        for beta_step in 1..=20 {
+            let beta = beta_step as f64 * 0.05; // 0.05 to 1.0
+            for ach_step in 0..=10 {
+                for anu_step in 0..=10 {
+                    let a_ch_s = ach_step as f64;
+                    let a_nu_s = anu_step as f64 * 0.3;
+
+                    let cb = construct_casimir_baseline(crate::quark_sector::SubalgebraScheme::InterleavedStride);
+                    let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
+                    let mut m_ch_s = m_base_ch;
+                    let mut m_nu_s = m_base_nu;
+
+                    // Diagonal: SCALED 3-blade friction
+                    for g in 0..3 {
+                        let f_ch = beta * (w1 * sel_ch_3blade[g] + w2 * sel_nu_3blade[g]);
+                        let f_nu = beta * (w1 * sel_nu_3blade[g] + w2 * sel_ch_3blade[g]);
+                        m_ch_s.write(g, g, m_ch_s.read(g, g) + f_ch.exp());
+                        m_nu_s.write(g, g, m_nu_s.read(g, g) + f_nu.exp());
+                    }
+
+                    // Off-diagonal: 2-blade psi coupling (unscaled)
+                    for i in 0..3 {
+                        for j in 0..3 {
+                            if i == j { continue; }
+                            let psi_nu_j = gourlay_psi(&nu_profiles_2blade[j]);
+                            let psi_ch_j = gourlay_psi(&ch_profiles_2blade[j]);
+                            m_nu_s.write(i, j, m_nu_s.read(i, j) + a_nu_s * dot16(&nu_profiles_2blade[i], &psi_nu_j));
+                            m_ch_s.write(i, j, m_ch_s.read(i, j) + a_ch_s * dot16(&ch_profiles_2blade[i], &psi_ch_j));
+                        }
+                    }
+
+                    let m_ch_sym = (&m_ch_s + m_ch_s.transpose()) * faer::scale(0.5);
+                    let m_nu_sym = (&m_nu_s + m_nu_s.transpose()) * faer::scale(0.5);
+                    let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+                    let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(faer::Side::Lower);
+                    let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                    let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                    let (t12_s, t13_s, t23_s) = extract_pmns_angles(&u_pmns);
+
+                    let mut ev: Vec<f64> = (0..3).map(|i| eig_nu.s().column_vector().read(i).abs()).collect();
+                    ev.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                    let dm21 = ev[1] * ev[1] - ev[0] * ev[0];
+                    let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
+                    let r_s = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
+
+                    let chi2_s = ((t12_s - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                               + ((t13_s - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                               + ((t23_s - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                    let r_pen = ((r_s - pdg_r) / pdg_r).powi(2) * 100.0;
+                    let score = chi2_s + r_pen;
+
+                    if score < best_scaled.0 {
+                        best_scaled = (score, beta, a_ch_s, a_nu_s, t12_s, t13_s, t23_s, r_s);
+                    }
+                }
+            }
+        }
+
+        println!("\n  === BEST SCALED TWO-SELECTOR RESULT ===");
+        println!("  beta = {:.2} (diagonal damping)", best_scaled.1);
+        println!("  alpha_ch = {:.1}, alpha_nu = {:.1}", best_scaled.2, best_scaled.3);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", best_scaled.4, pdg.theta_12_deg, ((best_scaled.4 - pdg.theta_12_deg) / pdg.theta_12_deg * 100.0).abs());
+        println!("  theta_13 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", best_scaled.5, pdg.theta_13_deg, ((best_scaled.5 - pdg.theta_13_deg) / pdg.theta_13_deg * 100.0).abs());
+        println!("  theta_23 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", best_scaled.6, pdg.theta_23_deg, ((best_scaled.6 - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
+        println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", best_scaled.7, pdg_r, ((best_scaled.7 - pdg_r) / pdg_r * 100.0).abs());
+
+        println!("\n  === ORIGINAL (UNSCALED) RESULT ===");
         println!("  alpha_ch = {:.1}, alpha_nu = {:.1}", a_ch, a_nu);
         println!("  theta_12 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", t12, pdg.theta_12_deg, ((t12 - pdg.theta_12_deg) / pdg.theta_12_deg * 100.0).abs());
         println!("  theta_13 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", t13, pdg.theta_13_deg, ((t13 - pdg.theta_13_deg) / pdg.theta_13_deg * 100.0).abs());
