@@ -8817,6 +8817,50 @@ mod tests {
         }
     }
 
+    /// Weinberg angle: 1-loop RG running from G2 tree-level to M_Z.
+    ///
+    /// sin^2(theta_W, mu) = sin^2(M_GUT) + (b_1 - b_2) / (2*pi) * alpha * ln(mu/M_GUT)
+    /// where b_1 = 41/10, b_2 = -19/6 are the SM 1-loop beta coefficients.
+    #[test]
+    fn test_weinberg_running() {
+        let sin2_gut = 0.250_f64; // G2 tree-level prediction (= 1/4)
+        let m_z = 91.1876_f64; // GeV
+        let alpha_em = 1.0 / 127.9_f64; // at M_Z
+
+        // SM 1-loop beta coefficients (U(1)_Y and SU(2)_L)
+        let b1 = 41.0 / 10.0_f64;  // U(1)_Y
+        let b2 = -19.0 / 6.0_f64;  // SU(2)_L
+
+        println!("  === Weinberg Angle RG Running ===\n");
+        println!("  Tree-level (G2): sin^2 = {:.4}", sin2_gut);
+        println!("  PDG at M_Z: sin^2 = 0.2312\n");
+
+        // Scan unification scales
+        for log_m_gut in [14.0, 15.0, 15.5, 16.0, 16.5, 17.0, 18.0_f64] {
+            let m_gut = 10.0_f64.powf(log_m_gut);
+            // 1-loop running: Delta(sin^2) = (3/5) * alpha/(2*pi) * (b1 - b2) * ln(M_Z/M_GUT)
+            // The 3/5 is the SU(5) normalization factor for U(1)_Y
+            let delta = (3.0/5.0) * alpha_em / (2.0 * std::f64::consts::PI)
+                      * (b1 - b2) * (m_z / m_gut).ln();
+            let sin2_mz = sin2_gut + delta;
+            let err = ((sin2_mz - 0.2312) / 0.2312 * 100.0).abs();
+            let marker = if err < 3.0 { " <--" } else { "" };
+            println!("  M_GUT = 10^{:.1} GeV: sin^2(M_Z) = {:.4} (err: {:.1}%){}",
+                log_m_gut, sin2_mz, err, marker);
+        }
+
+        // The G2-specific unification scale: related to the G2 manifold volume
+        // In string/M-theory, G2 holonomy manifolds have characteristic scale
+        // around 10^16 GeV. Let's check.
+        let m_gut_g2 = 1e16_f64;
+        let delta_g2 = (3.0/5.0) * alpha_em / (2.0 * std::f64::consts::PI)
+                     * (b1 - b2) * (m_z / m_gut_g2).ln();
+        let sin2_mz_g2 = sin2_gut + delta_g2;
+        println!("\n  At M_G2 = 10^16 GeV (G2 holonomy scale):");
+        println!("  sin^2(M_Z) = {:.4} (PDG: 0.2312, err: {:.1}%)",
+            sin2_mz_g2, ((sin2_mz_g2 - 0.2312) / 0.2312 * 100.0).abs());
+    }
+
     /// Full 3-blade model: 3-blade diagonal + 3-blade off-diagonal.
     ///
     /// Off-diagonal: sum of 3 pairwise psi overlaps (3x amplitude of 2-blade).
