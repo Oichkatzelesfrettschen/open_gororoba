@@ -534,3 +534,130 @@ fn test_gourlay_psi_zd_preservation() {
         "psi must preserve ZD pairs: psi(a)*psi(b) norm = {:.2e}", pab_norm);
     println!("psi preserves zero-divisor structure");
 }
+
+// =========================================================================
+// D8: CD sign table vs scattering amplitude recursion (Guevara-Strominger)
+// =========================================================================
+
+/// Compare the CD sign recursion with the Berends-Giele single-minus
+/// stripped amplitude recursion from arXiv:2602.12176.
+///
+/// The stripped amplitudes A_{1...n} in the half-collinear regime are
+/// piecewise-constant functions of the momenta z_i, taking values {+1,-1,0}.
+/// They are built from products of sign functions sg_{ij} = sign(z_ij).
+///
+/// Concrete formulas (eqs 29-32 of the paper):
+///   A_{123} = sg_{12}
+///   A_{1234} = (sg_{23}*sg_{41} + sg_{12}*sg_{34}) / 2
+///   A_{12345} = (1/4)[8 terms of sg products]
+///
+/// Our cd_basis_mul_sign(dim=2^n, p, q) also produces {+1,-1} via a
+/// recursive halving. The question: is there an index map such that
+/// the amplitude values match CD sign values?
+///
+/// This test evaluates the amplitudes for ALL sign assignments (all
+/// possible {+1,-1} values for the z_ij variables) and checks whether
+/// the resulting amplitude is always in {+1,-1,0}.
+#[test]
+fn test_amplitude_cd_sign_comparison() {
+    // sg function: maps a real value to its sign {+1, -1}
+    // In the half-collinear regime, z_ij = z_i - z_j where z_i are
+    // ordered real parameters. We parametrize by choosing all possible
+    // orderings of n points on a line.
+
+    // For n=3: A_{123} = sg_{12} = sign(z_1 - z_2)
+    // This is just +1 or -1 depending on ordering.
+    // cd_sign(8, 1, 2) = +1 (fixed by Fano plane)
+    // So A_{123} can be +1 or -1, but cd_sign is always +1.
+    // NOT a direct match -- the amplitude depends on kinematics.
+
+    // For n=4: A_{1234} = (sg_{23}*sg_{41} + sg_{12}*sg_{34}) / 2
+    // Enumerate all 2^3 = 8 possible sign patterns for {sg_{12}, sg_{23}, sg_{34}}
+    // (sg_{41} is determined: sg_{41} = -sg_{14} and in ordered form
+    //  z_{41} = z_4 - z_1, so sg_{41} depends on z_4 vs z_1)
+
+    // Actually, for n=4 with half-collinear kinematics (all <ij>=0),
+    // the z_i are just ordered real numbers. The sign pattern is
+    // determined by the ordering. For 4 points on a line, there are
+    // 4! = 24 orderings, but many give the same sign pattern.
+
+    // Let's compute A_{1234} for all 4! orderings of (z_1, z_2, z_3, z_4)
+    // and verify the result is always in {+1, -1, 0}.
+
+    let sg = |x: f64| -> i32 {
+        if x > 0.0 { 1 } else if x < 0.0 { -1 } else { 0 }
+    };
+
+    // n=4: A_{1234} = (sg_{23}*sg_{41} + sg_{12}*sg_{34}) / 2
+    let perms_4: [(usize, usize, usize, usize); 24] = [
+        (0,1,2,3),(0,1,3,2),(0,2,1,3),(0,2,3,1),(0,3,1,2),(0,3,2,1),
+        (1,0,2,3),(1,0,3,2),(1,2,0,3),(1,2,3,0),(1,3,0,2),(1,3,2,0),
+        (2,0,1,3),(2,0,3,1),(2,1,0,3),(2,1,3,0),(2,3,0,1),(2,3,1,0),
+        (3,0,1,2),(3,0,2,1),(3,1,0,2),(3,1,2,0),(3,2,0,1),(3,2,1,0),
+    ];
+
+    // Use distinct z values so all sg's are nonzero
+    let z_vals = [1.0_f64, 2.0, 3.0, 4.0];
+
+    println!("--- D8: AMPLITUDE-CD SIGN COMPARISON ---\n");
+    println!("n=4 stripped amplitudes A_{{1234}} for all 24 orderings:\n");
+
+    let mut amplitude_values = std::collections::BTreeSet::new();
+
+    for &(a, b, c, d) in &perms_4 {
+        let z = [z_vals[a], z_vals[b], z_vals[c], z_vals[d]];
+        // sg_{ij} = sign(z_i - z_j) where indices are 1-based in the paper
+        let sg12 = sg(z[0] - z[1]);
+        let sg23 = sg(z[1] - z[2]);
+        let sg34 = sg(z[2] - z[3]);
+        let sg41 = sg(z[3] - z[0]);
+
+        // A_{1234} = (sg_{23}*sg_{41} + sg_{12}*sg_{34}) / 2
+        let numerator = sg23 * sg41 + sg12 * sg34;
+        let a_1234 = numerator; // * 2 to keep integer (check if always even)
+
+        println!("  z = ({:.0},{:.0},{:.0},{:.0}): sg12={:+}, sg23={:+}, sg34={:+}, sg41={:+}, 2*A = {:+}",
+            z[0], z[1], z[2], z[3], sg12, sg23, sg34, sg41, a_1234);
+
+        amplitude_values.insert(a_1234);
+    }
+
+    println!("\n  Distinct values of 2*A_{{1234}}: {:?}", amplitude_values);
+
+    // Key check: is 2*A always in {-2, 0, +2}?
+    // If so, A is always in {-1, 0, +1} -- the piecewise-constant property.
+    let all_integer = amplitude_values.iter().all(|&v| v == -2 || v == 0 || v == 2);
+    println!("  All values in {{-2, 0, +2}}: {}", all_integer);
+
+    // Now compare with CD signs at dim=16 (sedenions, 4 doublings)
+    println!("\n  CD sign table comparison (dim=16):");
+    println!("  cd_sign(16, p, q) for p,q in 1..4:");
+    for p in 1..=4_usize {
+        for q in 1..=4 {
+            if p == q { continue; }
+            let s = cd_basis_mul_sign_iter(16, p, q);
+            println!("    cd_sign(16, {}, {}) = {:+}", p, q, s);
+        }
+    }
+
+    // Count: how many distinct amplitude chambers exist for n=4?
+    // vs how many nonzero cd_sign entries exist in the 4x4 sub-table?
+    let mut cd_signs_4 = Vec::new();
+    for p in 1..=4_usize {
+        for q in 1..=4 {
+            if p != q {
+                cd_signs_4.push(cd_basis_mul_sign_iter(16, p, q));
+            }
+        }
+    }
+    println!("\n  CD signs for indices 1..4: {:?}", cd_signs_4);
+    println!("  Amplitude chambers (2*A): {:?}", amplitude_values);
+    println!("  Structural parallel: both produce {{+1, -1}} values");
+    println!("  Direct isomorphism: UNLIKELY (amplitude depends on z-ordering,");
+    println!("    CD sign is fixed by algebra). Connection is at recursion level,");
+    println!("    not at individual-value level.");
+
+    // The test PASSES regardless -- it's exploratory, not assertive.
+    // The key finding is whether 2*A is always in {-2, 0, +2}.
+    assert!(all_integer, "2*A should always be in {{-2, 0, +2}} for n=4");
+}
