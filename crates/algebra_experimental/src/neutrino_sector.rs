@@ -8692,6 +8692,131 @@ mod tests {
         println!("  cost = {:.2}", best.0);
     }
 
+    /// Weinberg angle from G2 stabilizer decomposition.
+    ///
+    /// Multiple approaches:
+    /// 1. GUT: sin^2(theta_W) = 3/8 = 0.375 (SU(5) at unification)
+    /// 2. Flux ratio: SU(2)/SU(3) associator flux = 0.529 -> 0.199 (C-1458)
+    /// 3. Dimensional: various dim ratios from G2 decomposition
+    /// 4. Casimir: C2(SU(2))/C2(SU(3)) ratios
+    /// 5. NEW: G2 stabilizer norm decomposition
+    #[test]
+    fn test_weinberg_angle_from_g2() {
+        use gororoba_algebra::lie::g2_stabilizer::{
+            stabilizer_decomposition, structure_constants,
+        };
+
+        let pdg_sin2_tw = 0.2312_f64;
+
+        println!("  === Weinberg Angle from G2 Stabilizer ===\n");
+        println!("  PDG: sin^2(theta_W) = {:.4}\n", pdg_sin2_tw);
+
+        // Approach 1: GUT SU(5)
+        let gut = 3.0 / 8.0;
+        println!("  1. SU(5) GUT: sin^2 = 3/8 = {:.4} (err: {:.1}%)",
+            gut, ((gut - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+
+        // Approach 2: Existing flux ratio
+        let flux = 0.199;
+        println!("  2. Flux ratio (C-1458): sin^2 = {:.4} (err: {:.1}%)",
+            flux, ((flux - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+
+        // Approach 3: G2 dim decomposition
+        let dim_stab = 8.0_f64;
+        let dim_coset = 6.0_f64;
+        let dim_g2 = 14.0_f64;
+
+        // sin^2 = dim(coset) / dim(G2) * correction?
+        let dim_ratio_a = dim_coset / dim_g2; // 6/14 = 0.429
+        let _dim_ratio_b = dim_coset / (dim_stab + dim_coset); // = 6/14 same
+        let dim_ratio_c = 1.0 / (1.0 + dim_stab / 3.0); // 1/(1+8/3) = 3/11 = 0.273
+
+        println!("  3a. dim(coset)/dim(G2) = 6/14 = {:.4} (err: {:.1}%)",
+            dim_ratio_a, ((dim_ratio_a - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+        println!("  3b. 3/(3+8) = 3/11 = {:.4} (err: {:.1}%)",
+            dim_ratio_c, ((dim_ratio_c - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+
+        // Approach 4: Casimir ratios
+        // C2(fund, SU(3)) = 4/3, C2(fund, SU(2)) = 3/4
+        let c2_su3 = 4.0 / 3.0;
+        let c2_su2 = 3.0 / 4.0;
+        let casimir_ratio = c2_su2 / (c2_su2 + c2_su3); // 0.75/(0.75+1.33) = 0.36
+        println!("  4. C2(SU2)/(C2(SU2)+C2(SU3)) = {:.4} (err: {:.1}%)",
+            casimir_ratio, ((casimir_ratio - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+
+        // Approach 5: G2 stabilizer structure constants
+        // The total contraction sum f_{abc}^2 for the stabilizer gives the
+        // dual Coxeter number h* times dim. For SU(3): h*=3, dim=8, total=24.
+        // For the coset: compute the coset structure constants and their total.
+        let decomp = stabilizer_decomposition(1);
+        let f_stab = structure_constants(&decomp.stabilizer_basis);
+
+        let mut total_stab = 0.0_f64;
+        for a in 0..8 {
+            for b in 0..8 {
+                for c in 0..8 {
+                    total_stab += f_stab[a][b][c] * f_stab[a][b][c];
+                }
+            }
+        }
+
+        let f_coset = structure_constants(&decomp.coset_complement);
+        let mut total_coset = 0.0_f64;
+        for a in 0..6 {
+            for b in 0..6 {
+                for c in 0..6 {
+                    total_coset += f_coset[a][b][c] * f_coset[a][b][c];
+                }
+            }
+        }
+
+        println!("\n  5. G2 structure constant decomposition:");
+        println!("     sum f_stab^2 = {:.2} (expected: 24 = 3*8)", total_stab);
+        println!("     sum f_coset^2 = {:.2}", total_coset);
+
+        let sc_ratio = total_coset / (total_stab + total_coset);
+        println!("     f_coset^2 / (f_stab^2 + f_coset^2) = {:.4} (err: {:.1}%)",
+            sc_ratio, ((sc_ratio - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+
+        // Approach 6: Use the Fano line structure
+        // Each e_k lies on 3 Fano lines (21 edges total for 7 points).
+        // The Weinberg angle relates to the SU(2)/SU(3) coupling ratio.
+        // In the Fano plane: 7 points, 7 lines, 3 points per line.
+        // The ratio 3/7 = 0.429 and 1/7 = 0.143...
+        // Try: (7 - 3*2) / (7 + 7) = 1/14 = 0.071... nope.
+        //
+        // Actually: sin^2(theta_W) = g'^2/(g^2+g'^2).
+        // At the GUT scale, g = g' = g_5, so sin^2 = 1/(1+1) * normalization.
+        // The normalization is 3/5 for SU(5): sin^2 = 3/(3+5) = 3/8.
+        //
+        // In the G2 framework: the SU(3) stabilizer has 8 generators,
+        // the coset has 6 directions. If we identify the U(1) generator
+        // as a specific coset direction, then:
+        // g'^2 proportional to 1 (one U(1) generator)
+        // g^2 proportional to 3 (three SU(2) generators)
+        // sin^2 = 1/(1+3) = 1/4 = 0.25
+        let simple = 0.25;
+        println!("\n  6. 1/(1+3) = 1/4 = {:.4} (err: {:.1}%)",
+            simple, ((simple - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs());
+
+        // Best match summary
+        println!("\n  === SUMMARY ===");
+        let approaches = [
+            ("SU(5) GUT 3/8", gut),
+            ("Flux ratio", flux),
+            ("dim 6/14", dim_ratio_a),
+            ("dim 3/11", dim_ratio_c),
+            ("Casimir ratio", casimir_ratio),
+            ("f^2 coset/total", sc_ratio),
+            ("1/4 simple", simple),
+        ];
+        for (name, val) in &approaches {
+            let err = ((val - pdg_sin2_tw) / pdg_sin2_tw * 100.0).abs();
+            let marker = if err < 10.0 { " <-- BEST" } else { "" };
+            println!("    {:>20}: {:.4} (err: {:.1}%){}", name, val, err, marker);
+        }
+    }
+
     /// Full 3-blade model: 3-blade diagonal + 3-blade off-diagonal.
     ///
     /// Off-diagonal: sum of 3 pairwise psi overlaps (3x amplitude of 2-blade).
