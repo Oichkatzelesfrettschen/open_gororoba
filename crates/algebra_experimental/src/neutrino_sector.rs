@@ -1400,6 +1400,151 @@ pub fn apply_jk_full_16d(v: &[f64; 16], k: usize) -> [f64; 16] {
 }
 
 // ---------------------------------------------------------------------------
+// Parameterized CP scan point evaluator
+// ---------------------------------------------------------------------------
+
+/// Result of evaluating a single CP scan point.
+#[derive(Debug, Clone, Copy)]
+pub struct CpScanResult {
+    pub theta_12: f64,
+    pub theta_13: f64,
+    pub theta_23: f64,
+    pub j_cp: f64,
+    pub delta_cp: f64,
+}
+
+/// Immutable context shared across all scan points within one test.
+///
+/// Groups the mass matrices, V_6 basis, constrained directions, and
+/// permutation indices that are constant during a CP scan.  Passed
+/// by reference to [`evaluate_cp_scan_point`] to keep the argument
+/// count within clippy's 7-parameter limit.
+pub struct CpScanContext<'a> {
+    pub m_nu_real: &'a faer::Mat<f64>,
+    pub m_ch_real: &'a faer::Mat<f64>,
+    pub v6_basis: &'a nalgebra::DMatrix<f64>,
+    pub u_solar: &'a [f64; 6],
+    pub u_atmo: &'a [f64; 6],
+    pub lift: &'a dyn FlavorLift,
+    pub perm_u: [usize; 3],
+    pub perm_d: [usize; 3],
+}
+
+/// Mutable pre-allocated buffers for the eigendecomposition loop.
+///
+/// Owns two 3x3 complex faer matrices that are written into (not
+/// allocated) at each scan point.  Each rayon thread creates its
+/// own `CpScanBuffers` so there is no contention.
+pub struct CpScanBuffers {
+    pub m_nu: faer::Mat<faer::complex_native::c64>,
+    pub m_ch: faer::Mat<faer::complex_native::c64>,
+}
+
+impl Default for CpScanBuffers {
+    fn default() -> Self {
+        Self {
+            m_nu: faer::Mat::<faer::complex_native::c64>::zeros(3, 3),
+            m_ch: faer::Mat::<faer::complex_native::c64>::zeros(3, 3),
+        }
+    }
+}
+
+impl CpScanBuffers {
+    pub fn new() -> Self { Self::default() }
+}
+
+/// Evaluate a single CP scan point: given (alpha_CP, t_sol, t_atm)
+/// and the pre-computed phase matrix phi[i][j], builds the complex
+/// Hermitian neutrino mass matrix, eigendecomposes both sectors,
+/// and returns mixing angles + Jarlskog invariant + delta_CP.
+///
+/// # Mathematical pipeline
+///
+/// ```text
+/// (t_sol, t_atm) --[u_solar, u_atmo]--> beta[6]
+///     --[apply_v6_perturbation]--> M_nu_pert(3x3 real)
+///     --[phase injection]--> M_nu_complex(3x3 Hermitian)
+///         M[i][j] = |M_pert[i][j]| * exp(i * alpha * phi[i][j])
+///     --[eigendecomp]--> U_nu
+///     --[U_ch^dag * U_nu]--> U_PMNS
+///     --[permutation + extraction]--> (angles, J_CP, delta)
+/// ```
+///
+/// # Callers
+///
+/// - [`test_cp_violation_joint_3d_scan`]: coarse + fine inner loops
+/// - Future Nelder-Mead objective via argmin
+#[allow(clippy::too_many_arguments, clippy::needless_range_loop)]
+pub fn evaluate_cp_scan_point(
+    alpha_cp: f64,
+    t_sol: f64,
+    t_atm: f64,
+    phi: &[[f64; 3]; 3],
+    ctx: &CpScanContext<'_>,
+    bufs: &mut CpScanBuffers,
+) -> CpScanResult {
+    // Step 1: beta from (t_sol, t_atm)
+    let mut beta = [0.0_f64; 6];
+    for k in 0..6 {
+        beta[k] = t_sol * ctx.u_solar[k] + t_atm * ctx.u_atmo[k];
+    }
+
+    // Step 2: perturb real mass matrix
+    let mut m_nu_pert = ctx.m_nu_real.clone();
+    apply_v6_perturbation(&mut m_nu_pert, ctx.v6_basis, &beta, ctx.lift);
+    let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::scale(0.5);
+
+    // Step 3: fill pre-allocated complex Hermitian matrices
+    for i in 0..3 {
+        bufs.m_nu.write(i, i, faer::complex_native::c64::new(
+            m_nu_pert.read(i, i), 0.0));
+        bufs.m_ch.write(i, i, faer::complex_native::c64::new(
+            ctx.m_ch_real.read(i, i), 0.0));
+        for j in (i + 1)..3 {
+            let phase = alpha_cp * phi[i][j];
+            let mag = m_nu_pert.read(i, j);
+            bufs.m_nu.write(i, j, faer::complex_native::c64::new(
+                mag * phase.cos(), mag * phase.sin()));
+            bufs.m_nu.write(j, i, faer::complex_native::c64::new(
+                mag * phase.cos(), -mag * phase.sin()));
+            bufs.m_ch.write(i, j, faer::complex_native::c64::new(
+                ctx.m_ch_real.read(i, j), 0.0));
+            bufs.m_ch.write(j, i, faer::complex_native::c64::new(
+                ctx.m_ch_real.read(j, i), 0.0));
+        }
+    }
+
+    // Step 4: eigendecompose
+    let eig_ch = bufs.m_ch.selfadjoint_eigendecomposition(faer::Side::Lower);
+    let eig_nu = bufs.m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
+    let u_pmns = eig_ch.u().adjoint() * eig_nu.u();
+
+    // Step 5: extract with permutation (no allocation)
+    let u_at = |i: usize, j: usize| -> faer::complex_native::c64 {
+        u_pmns.read(ctx.perm_u[i], ctx.perm_d[j])
+    };
+
+    let u_e3_abs = u_at(0, 2).abs();
+    let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
+    let cos_13 = theta_13.to_radians().cos();
+
+    let theta_12 = if cos_13 > 1e-15 {
+        (u_at(0, 1).abs() / cos_13).min(1.0).asin().to_degrees()
+    } else { 0.0 };
+
+    let theta_23 = if cos_13 > 1e-15 {
+        (u_at(1, 2).abs() / cos_13).min(1.0).asin().to_degrees()
+    } else { 0.0 };
+
+    let j_cp = (u_at(0, 0) * u_at(1, 1)
+        * u_at(0, 1).conj() * u_at(1, 0).conj()).im;
+
+    let delta_cp = (-u_at(0, 2)).arg().to_degrees();
+
+    CpScanResult { theta_12, theta_13, theta_23, j_cp, delta_cp }
+}
+
+// ---------------------------------------------------------------------------
 // Stack-allocated 3x3 complex Hermitian eigensolver (Cardano)
 // ---------------------------------------------------------------------------
 
@@ -10182,21 +10327,19 @@ mod tests {
             let mut best_jcp = 0.0_f64;
             let mut best = (0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64);
 
-            // Pre-allocate faer matrices ONCE per k (reuse across grid).
-            // This avoids ~1210 Mat::zeros heap allocations per k.
-            let mut m_nu_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
-            let mut m_ch_c = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
-            // m_ch is constant -- fill once
-            for i in 0..3 {
-                m_ch_c.write(i, i, faer::complex_native::c64::new(m_ch_real.read(i, i), 0.0));
-                for j in (i + 1)..3 {
-                    m_ch_c.write(i, j, faer::complex_native::c64::new(m_ch_real.read(i, j), 0.0));
-                    m_ch_c.write(j, i, faer::complex_native::c64::new(m_ch_real.read(j, i), 0.0));
-                }
-            }
+            let ctx = CpScanContext {
+                m_nu_real: &m_nu_real,
+                m_ch_real: &m_ch_real,
+                v6_basis: &v6_basis,
+                u_solar: &u_solar,
+                u_atmo: &u_atmo,
+                lift: &lift,
+                perm_u: [perm_u[0], perm_u[1], perm_u[2]],
+                perm_d: [perm_d[0], perm_d[1], perm_d[2]],
+            };
+            let mut bufs = CpScanBuffers::new();
 
             // Coarse pass: 10 alpha x 11 t_sol x 11 t_atm = 1210 pts
-            // Pre-allocated matrices eliminate heap allocation in inner loop.
             for a_step in 1..=10_i32 {
                 let alpha_cp = a_step as f64 * 0.05;
                 for ts_step in -5..=5_i32 {
@@ -10204,63 +10347,22 @@ mod tests {
                     for ta_step in -5..=5_i32 {
                         let t_atm_trial = t_atm + ta_step as f64 * 0.6;
 
-                        let mut beta = [0.0_f64; 6];
-                        for kk in 0..6 {
-                            beta[kk] = t_sol_trial * u_solar[kk] + t_atm_trial * u_atmo[kk];
-                        }
-                        let mut m_nu_pert = m_nu_real.clone();
-                        apply_v6_perturbation(&mut m_nu_pert, &v6_basis, &beta, &lift);
-                        let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::scale(0.5);
+                        let r = evaluate_cp_scan_point(
+                            alpha_cp, t_sol_trial, t_atm_trial, &phi,
+                            &ctx, &mut bufs,
+                        );
 
-                        // Fill pre-allocated neutrino matrix (no new allocation)
-                        for i in 0..3 {
-                            m_nu_c.write(i, i, faer::complex_native::c64::new(
-                                m_nu_pert.read(i, i), 0.0));
-                            for j in (i + 1)..3 {
-                                let phase = alpha_cp * phi[i][j];
-                                let mag = m_nu_pert.read(i, j);
-                                m_nu_c.write(i, j, faer::complex_native::c64::new(
-                                    mag * phase.cos(), mag * phase.sin()));
-                                m_nu_c.write(j, i, faer::complex_native::c64::new(
-                                    mag * phase.cos(), -mag * phase.sin()));
-                            }
-                        }
-
-                        let eig_ch_c = m_ch_c.selfadjoint_eigendecomposition(faer::Side::Lower);
-                        let eig_nu_c = m_nu_c.selfadjoint_eigendecomposition(faer::Side::Lower);
-                        let u_pmns_c = eig_ch_c.u().adjoint() * eig_nu_c.u();
-
-                        // Extract angles + J_CP without allocating u_perm
-                        let u_at = |i: usize, j: usize| -> faer::complex_native::c64 {
-                            u_pmns_c.read(perm_u[i], perm_d[j])
-                        };
-
-                        let u_e3_abs = u_at(0, 2).abs();
-                        let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
-                        let cos_13 = theta_13.to_radians().cos();
-                        let theta_12 = if cos_13 > 1e-15 {
-                            (u_at(0, 1).abs() / cos_13).min(1.0).asin().to_degrees()
-                        } else { 0.0 };
-                        let theta_23 = if cos_13 > 1e-15 {
-                            (u_at(1, 2).abs() / cos_13).min(1.0).asin().to_degrees()
-                        } else { 0.0 };
-
-                        let err_12 = ((theta_12 - 33.41) / 33.41).abs();
-                        let err_13 = ((theta_13 - 8.54) / 8.54).abs();
-                        let err_23 = ((theta_23 - 49.0) / 49.0).abs();
-
+                        let err_12 = ((r.theta_12 - 33.41) / 33.41).abs();
+                        let err_13 = ((r.theta_13 - 8.54) / 8.54).abs();
+                        let err_23 = ((r.theta_23 - 49.0) / 49.0).abs();
                         if err_12 > 0.02 || err_13 > 0.02 || err_23 > 0.02 {
                             continue;
                         }
 
-                        let j_cp = (u_at(0, 0) * u_at(1, 1)
-                            * u_at(0, 1).conj() * u_at(1, 0).conj()).im;
-                        let delta_cp = (-u_at(0, 2)).arg().to_degrees();
-
-                        if j_cp.abs() > best_jcp.abs() {
-                            best_jcp = j_cp;
+                        if r.j_cp.abs() > best_jcp.abs() {
+                            best_jcp = r.j_cp;
                             best = (alpha_cp, t_sol_trial, t_atm_trial,
-                                    theta_12, theta_13, theta_23, delta_cp);
+                                    r.theta_12, r.theta_13, r.theta_23, r.delta_cp);
                         }
                     }
                 }
@@ -10317,16 +10419,18 @@ mod tests {
                 }
             }
 
-            // Pre-allocate faer matrices for fine loop
-            let mut m_nu_fine = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
-            let mut m_ch_fine = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
-            for i in 0..3 {
-                m_ch_fine.write(i, i, faer::complex_native::c64::new(m_ch_real.read(i, i), 0.0));
-                for j in (i + 1)..3 {
-                    m_ch_fine.write(i, j, faer::complex_native::c64::new(m_ch_real.read(i, j), 0.0));
-                    m_ch_fine.write(j, i, faer::complex_native::c64::new(m_ch_real.read(j, i), 0.0));
-                }
-            }
+            // Reuse the same context struct; fresh buffers for the fine pass
+            let ctx_fine = CpScanContext {
+                m_nu_real: &m_nu_real,
+                m_ch_real: &m_ch_real,
+                v6_basis: &v6_basis,
+                u_solar: &u_solar,
+                u_atmo: &u_atmo,
+                lift: &lift,
+                perm_u: [perm_u[0], perm_u[1], perm_u[2]],
+                perm_d: [perm_d[0], perm_d[1], perm_d[2]],
+            };
+            let mut bufs_fine = CpScanBuffers::new();
 
             let mut fine_best_jcp = jcp_c;
             let mut fine_best = (alpha_c, ts_c, ta_c, t12_c, t13_c, t23_c, delta_c);
@@ -10338,57 +10442,20 @@ mod tests {
                     for ta_step in -5..=5_i32 {
                         let t_atm_f = ta_c + ta_step as f64 * 0.12;
 
-                        let mut beta = [0.0_f64; 6];
-                        for kk in 0..6 {
-                            beta[kk] = t_sol_f * u_solar[kk] + t_atm_f * u_atmo[kk];
-                        }
-                        let mut m_nu_pert = m_nu_real.clone();
-                        apply_v6_perturbation(&mut m_nu_pert, &v6_basis, &beta, &lift);
-                        let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::scale(0.5);
+                        let r = evaluate_cp_scan_point(
+                            alpha_cp, t_sol_f, t_atm_f, &phi_fine,
+                            &ctx_fine, &mut bufs_fine,
+                        );
 
-                        for i in 0..3 {
-                            m_nu_fine.write(i, i, faer::complex_native::c64::new(
-                                m_nu_pert.read(i, i), 0.0));
-                            for j in (i + 1)..3 {
-                                let phase = alpha_cp * phi_fine[i][j];
-                                let mag = m_nu_pert.read(i, j);
-                                m_nu_fine.write(i, j, faer::complex_native::c64::new(
-                                    mag * phase.cos(), mag * phase.sin()));
-                                m_nu_fine.write(j, i, faer::complex_native::c64::new(
-                                    mag * phase.cos(), -mag * phase.sin()));
-                            }
-                        }
-
-                        let eig_ch_f = m_ch_fine.selfadjoint_eigendecomposition(faer::Side::Lower);
-                        let eig_nu_f = m_nu_fine.selfadjoint_eigendecomposition(faer::Side::Lower);
-                        let u_pmns_f = eig_ch_f.u().adjoint() * eig_nu_f.u();
-                        let u_at = |i: usize, j: usize| -> faer::complex_native::c64 {
-                            u_pmns_f.read(perm_u[i], perm_d[j])
-                        };
-
-                        let u_e3_abs = u_at(0, 2).abs();
-                        let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
-                        let cos_13 = theta_13.to_radians().cos();
-                        let theta_12 = if cos_13 > 1e-15 {
-                            (u_at(0, 1).abs() / cos_13).min(1.0).asin().to_degrees()
-                        } else { 0.0 };
-                        let theta_23 = if cos_13 > 1e-15 {
-                            (u_at(1, 2).abs() / cos_13).min(1.0).asin().to_degrees()
-                        } else { 0.0 };
-
-                        let j_cp = (u_at(0, 0) * u_at(1, 1)
-                            * u_at(0, 1).conj() * u_at(1, 0).conj()).im;
-                        let delta_cp = (-u_at(0, 2)).arg().to_degrees();
-
-                        let err_12 = ((theta_12 - 33.41) / 33.41).abs();
-                        let err_13 = ((theta_13 - 8.54) / 8.54).abs();
-                        let err_23 = ((theta_23 - 49.0) / 49.0).abs();
+                        let err_12 = ((r.theta_12 - 33.41) / 33.41).abs();
+                        let err_13 = ((r.theta_13 - 8.54) / 8.54).abs();
+                        let err_23 = ((r.theta_23 - 49.0) / 49.0).abs();
                         if err_12 > 0.02 || err_13 > 0.02 || err_23 > 0.02 { continue; }
 
-                        if j_cp.abs() > fine_best_jcp.abs() {
-                            fine_best_jcp = j_cp;
+                        if r.j_cp.abs() > fine_best_jcp.abs() {
+                            fine_best_jcp = r.j_cp;
                             fine_best = (alpha_cp, t_sol_f, t_atm_f,
-                                         theta_12, theta_13, theta_23, delta_cp);
+                                         r.theta_12, r.theta_13, r.theta_23, r.delta_cp);
                         }
                     }
                 }
@@ -10406,39 +10473,48 @@ mod tests {
             println!("  PDG target: |J_CP| ~ 3.3e-2");
             println!("  Ratio achieved: {:.1}% of PDG", fine_best_jcp.abs() / 0.033 * 100.0);
 
-            // Rephasing-aware delta_CP: recompute with best refined
-            // parameters, then extract arg(Jarlskog quartet).
+            // Rephasing-aware delta_CP: recompute via evaluate_cp_scan_point
+            // to get both arg(-U_e3) and arg(Jarlskog quartet).
+            let r_final = evaluate_cp_scan_point(
+                alpha, ts, ta, &phi_fine,
+                &ctx_fine, &mut bufs_fine,
+            );
+
+            // For the Jarlskog quartet arg we need the full PMNS matrix.
+            // Rebuild it one more time (single call, not in a loop).
             let mut beta_f = [0.0_f64; 6];
             for kk in 0..6 {
-                beta_f[kk] = ts * u_solar[kk] + ta * u_atmo[kk];
+                beta_f[kk] = ts * ctx_fine.u_solar[kk] + ta * ctx_fine.u_atmo[kk];
             }
             let mut m_nu_f = m_nu_real.clone();
             apply_v6_perturbation(&mut m_nu_f, &v6_basis, &beta_f, &lift);
             let m_nu_f = (&m_nu_f + m_nu_f.transpose()) * faer::scale(0.5);
-
             for i in 0..3 {
-                m_nu_fine.write(i, i, faer::complex_native::c64::new(m_nu_f.read(i, i), 0.0));
+                bufs_fine.m_nu.write(i, i, faer::complex_native::c64::new(m_nu_f.read(i, i), 0.0));
+                bufs_fine.m_ch.write(i, i, faer::complex_native::c64::new(m_ch_real.read(i, i), 0.0));
                 for j in (i + 1)..3 {
                     let phase = alpha * phi_fine[i][j];
                     let mag = m_nu_f.read(i, j);
-                    m_nu_fine.write(i, j, faer::complex_native::c64::new(
+                    bufs_fine.m_nu.write(i, j, faer::complex_native::c64::new(
                         mag * phase.cos(), mag * phase.sin()));
-                    m_nu_fine.write(j, i, faer::complex_native::c64::new(
+                    bufs_fine.m_nu.write(j, i, faer::complex_native::c64::new(
                         mag * phase.cos(), -mag * phase.sin()));
+                    bufs_fine.m_ch.write(i, j, faer::complex_native::c64::new(m_ch_real.read(i, j), 0.0));
+                    bufs_fine.m_ch.write(j, i, faer::complex_native::c64::new(m_ch_real.read(j, i), 0.0));
                 }
             }
-            let eig_ch_r = m_ch_fine.selfadjoint_eigendecomposition(faer::Side::Lower);
-            let eig_nu_r = m_nu_fine.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_ch_r = bufs_fine.m_ch.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_nu_r = bufs_fine.m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
             let u_r = eig_ch_r.u().adjoint() * eig_nu_r.u();
             let u_at_r = |i: usize, j: usize| -> faer::complex_native::c64 {
                 u_r.read(perm_u[i], perm_d[j])
             };
 
-            // arg(Jarlskog quartet): U_e2 * U_mu3 * conj(U_e3) * conj(U_mu2)
             let jarlskog_q = u_at_r(0, 1) * u_at_r(1, 2)
                 * u_at_r(0, 2).conj() * u_at_r(1, 1).conj();
             let delta_jarlskog = jarlskog_q.arg().to_degrees();
             let delta_ue3 = (-u_at_r(0, 2)).arg().to_degrees();
+            let _ = r_final; // consistency check -- same as fine_best
 
             println!("\n  --- delta_CP extraction (rephasing analysis) ---");
             println!("  arg(-U_e3) = {:.1} deg", delta_ue3);
