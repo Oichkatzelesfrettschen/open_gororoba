@@ -7904,4 +7904,163 @@ mod tests {
         println!("  ch_triple = {:?}", triples[best.3]);
         println!("  nu_triple = {:?}", triples[best.4]);
     }
+
+    /// Unified 3-blade: mass ratio + mixing angles from the SAME triple selectors.
+    ///
+    /// Build full mass matrices using 3-blade friction (sum of 3 pairwise
+    /// braid frictions) with psi off-diagonal coupling, then extract both
+    /// the mass ratio r AND the mixing angles.
+    #[test]
+    fn test_3blade_unified() {
+        use rayon::prelude::*;
+        use cd_kernel::gourlay_psi;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let pdg = Pdg2024::default();
+        let pdg_r = 0.0307_f64;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs_owned = [o1.clone(), o2.clone(), o3.clone()];
+
+        // Best 3-blade triples from the mass ratio scan
+        let candidates: [(usize, usize, usize, usize, usize, usize); 3] = [
+            (1, 6, 11, 1, 3, 8),     // r = 0.0304
+            (4, 9, 15, 6, 7, 12),    // r = 0.0304
+            (4, 11, 14, 5, 6, 12),   // r = 0.0304
+        ];
+
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+
+        println!("  === Unified 3-Blade: Mass Ratio + Angles ===\n");
+
+        for &(ci, cj, ck, ni, nj, nk) in &candidates {
+            let sign_table = SignTableCache::new(16);
+            let subs = &subs_owned;
+
+            // Build 3-blade friction profiles (16D vectors)
+            let build_3blade_profile = |a: usize, b: usize, c: usize, sub: &[usize]| -> [f64; 16] {
+                let ma = MajoranaMode { gamma_index: a - 1, cd_basis_index: a, cd_dim: 16 };
+                let mb = MajoranaMode { gamma_index: b - 1, cd_basis_index: b, cd_dim: 16 };
+                let mc = MajoranaMode { gamma_index: c - 1, cd_basis_index: c, cd_dim: 16 };
+
+                // Sum the 3 pairwise 16D profiles
+                let build_pair_profile = |m1: &MajoranaMode, m2: &MajoranaMode, s: &[usize]| -> [f64; 16] {
+                    let i = m1.cd_basis_index;
+                    let j = m2.cd_basis_index;
+                    let a_sparse = vec![(i, 1.0)];
+                    let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+                    let b_sparse = vec![(j, 1.0)];
+                    let mut profile = [0.0_f64; 16];
+                    for &k in s {
+                        if k == 0 || k == i || k == j { continue; }
+                        let x_sparse = [(k, 1.0)];
+                        profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+                    }
+                    profile
+                };
+
+                let p_ab = build_pair_profile(&ma, &mb, sub);
+                let p_ac = build_pair_profile(&ma, &mc, sub);
+                let p_bc = build_pair_profile(&mb, &mc, sub);
+                let mut combined = [0.0_f64; 16];
+                for idx in 0..16 {
+                    combined[idx] = p_ab[idx] + p_ac[idx] + p_bc[idx];
+                }
+                combined
+            };
+
+            let ch_profiles: Vec<[f64; 16]> = subs.iter()
+                .map(|s| build_3blade_profile(ci, cj, ck, s)).collect();
+            let nu_profiles: Vec<[f64; 16]> = subs.iter()
+                .map(|s| build_3blade_profile(ni, nj, nk, s)).collect();
+
+            // 3-blade scalar friction (for diagonal)
+            let sel_ch: Vec<f64> = subs.iter().map(|s| {
+                let ma = MajoranaMode { gamma_index: ci - 1, cd_basis_index: ci, cd_dim: 16 };
+                let mb = MajoranaMode { gamma_index: cj - 1, cd_basis_index: cj, cd_dim: 16 };
+                let mc = MajoranaMode { gamma_index: ck - 1, cd_basis_index: ck, cd_dim: 16 };
+                cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+                + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+                + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+            }).collect();
+            let sel_nu: Vec<f64> = subs.iter().map(|s| {
+                let ma = MajoranaMode { gamma_index: ni - 1, cd_basis_index: ni, cd_dim: 16 };
+                let mb = MajoranaMode { gamma_index: nj - 1, cd_basis_index: nj, cd_dim: 16 };
+                let mc = MajoranaMode { gamma_index: nk - 1, cd_basis_index: nk, cd_dim: 16 };
+                cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+                + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+                + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+            }).collect();
+
+            let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+                a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+            };
+
+            // Scan alpha_ch x alpha_nu
+            let alpha_grid: Vec<(f64, f64)> = (0..=20)
+                .flat_map(|a| (0..=20).map(move |b| (a as f64 * 0.5, b as f64 * 0.5)))
+                .collect();
+
+            let best = alpha_grid.par_iter().map(|&(a_ch, a_nu)| {
+                let cb = construct_casimir_baseline(crate::quark_sector::SubalgebraScheme::InterleavedStride);
+                let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
+                let mut m_ch = m_base_ch;
+                let mut m_nu = m_base_nu;
+
+                // Diagonal: 3-blade friction
+                for g in 0..3 {
+                    let f_ch = w1 * sel_ch[g] + w2 * sel_nu[g];
+                    let f_nu = w1 * sel_nu[g] + w2 * sel_ch[g];
+                    m_ch.write(g, g, m_ch.read(g, g) + f_ch.exp());
+                    m_nu.write(g, g, m_nu.read(g, g) + f_nu.exp());
+                }
+
+                // Off-diagonal: psi coupling with 3-blade profiles
+                for i in 0..3 {
+                    for j in 0..3 {
+                        if i == j { continue; }
+                        let psi_nu_j = gourlay_psi(&nu_profiles[j]);
+                        let psi_ch_j = gourlay_psi(&ch_profiles[j]);
+                        m_nu.write(i, j, m_nu.read(i, j) + a_nu * dot16(&nu_profiles[i], &psi_nu_j));
+                        m_ch.write(i, j, m_ch.read(i, j) + a_ch * dot16(&ch_profiles[i], &psi_ch_j));
+                    }
+                }
+
+                // Symmetrize + eigendecompose
+                let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_ch = m_ch_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+                // Mass ratio
+                let mut ev: Vec<f64> = (0..3).map(|i| eig_nu.s().column_vector().read(i).abs()).collect();
+                ev.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let dm21 = ev[1] * ev[1] - ev[0] * ev[0];
+                let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
+                let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
+
+                let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                let r_err = ((r - pdg_r) / pdg_r).powi(2);
+                let score = chi2 + 100.0 * r_err; // weight mass ratio
+
+                (score, a_ch, a_nu, t12, t13, t23, r, ev[2] / ev[0])
+            }).min_by(|a, b| a.0.partial_cmp(&b.0).unwrap()).unwrap();
+
+            println!("  ch=({},{},{}), nu=({},{},{})", ci, cj, ck, ni, nj, nk);
+            println!("    alpha_ch={:.1}, alpha_nu={:.1}", best.1, best.2);
+            println!("    t12={:.2}, t13={:.2}, t23={:.2}", best.3, best.4, best.5);
+            println!("    r = {:.4} (PDG: {:.4}, err: {:.1}%)", best.6, pdg_r, (best.6 - pdg_r) / pdg_r * 100.0);
+            println!("    m3/m1 = {:.1}", best.7);
+            println!();
+        }
+    }
 }
