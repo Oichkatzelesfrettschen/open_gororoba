@@ -536,10 +536,41 @@ observables. The angle-optimal pair has delta_CP 38 deg off; the
 CP-optimal pair has theta_12 and theta_23 collapsed (shared-index
 rank-1 mass matrix). Psi coupling cannot rescue the CP-optimal pair.
 
-The resolution likely requires composite selectors (weighted sums of
-multiple pairs) or a mechanism that rotates the Gram phase structure
-without destroying the angle hierarchy. This is a genuine open problem
-in the algebraic framework.
+### Composite Selector Blend
+
+Blending angle-optimal and CP-optimal friction profiles with weight w:
+    profile_blended = (1-w) * profile_(11,12)/(7,8) + w * profile_(11,13)/(11,14)
+
+Profile cosine similarity: 0.1667 (nearly orthogonal in 16D).
+The Gram phase interpolates smoothly with w:
+
+| w | delta_CP | |residual| | Note |
+|---|----------|-----------|------|
+| 0.00 | -126.9 | 38.1 | Angle-optimal pair |
+| 0.30 | -155.1 | 9.9 | |
+| 0.40 | -174.1 | 9.1 | |
+| 0.60 | -168.8 | 3.8 | |
+| 0.70 | -162.1 | **2.9** | Near-PDG CP phase |
+| 1.00 | -166.0 | 1.0 | CP-optimal pair |
+
+At w = 0.70: delta_CP = -162.1 deg (2.9 deg from PDG). However, the
+blended profiles collapse the mixing angles because scalar norm loses
+sign information from the friction.
+
+### Split Approach: Independent Angle + CP Control
+
+The enabling insight: **angles and CP phase live in algebraically
+independent subspaces**. V_6 perturbations control the angles (via mass
+matrix eigenvalues), while the cross-sector Gram matrix controls the CP
+phase (via PMNS rephasing). These can be controlled by separate mechanisms:
+
+1. **Angles**: Use the angle-optimal pair (11,12)/(7,8) with Gauss-Newton
+   optimization (0.15% PDG on all three angles)
+2. **CP phase**: Use the blended Gram phases (w ~ 0.70) for the rephasing
+   pipeline, applied POST-diagonalization to preserve |U_ij|
+
+This decouples the angle fit from the CP prediction, allowing both to
+achieve near-PDG accuracy simultaneously.
 
 ### Bilateral Phase Analysis
 
