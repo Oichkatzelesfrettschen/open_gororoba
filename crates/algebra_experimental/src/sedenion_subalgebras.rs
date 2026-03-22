@@ -2170,4 +2170,128 @@ mod tests {
             println!("    {:?}: {} orderings, XOR={}, Fano sub-triples={}", s, n_orderings, xor, fano_count);
         }
     }
+
+    /// Identify the 7 missing m4-nonzero sets and check m5 growth rate.
+    #[test]
+    fn test_m4_missing_sets_and_m5() {
+        use cd_kernel::cd_multiply;
+
+        let section = |x: &[f64; 8]| -> [f64; 16] {
+            let mut s = [0.0_f64; 16];
+            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
+            s
+        };
+        let project = |s: &[f64]| -> [f64; 8] {
+            let mut o = [0.0_f64; 8];
+            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
+            o
+        };
+        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
+            let ps = project(s);
+            let ips = section(&ps);
+            let mut h = [0.0_f64; 16];
+            for k in 0..16 { h[k] = s[k] - ips[k]; }
+            h
+        };
+        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+            let r = cd_multiply(a, b);
+            let mut out = [0.0_f64; 16];
+            for k in 0..16 { out[k] = r[k]; }
+            out
+        };
+
+        let fano: [(usize, usize, usize); 7] = [
+            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
+        ];
+        let is_fano = |a: usize, b: usize, c: usize| -> bool {
+            let mut s = [a, b, c]; s.sort();
+            fano.iter().any(|&(x, y, z)| s == [x, y, z])
+        };
+
+        // Find the 7 missing 4-element sets (those with 2+ Fano sub-triples)
+        println!("  === 7 Missing Sets (2+ Fano Sub-Triples) ===\n");
+
+        let mut all_sets: Vec<[usize; 4]> = Vec::new();
+        for a in 1..8 {
+            for b in (a+1)..8 {
+                for c in (b+1)..8 {
+                    for d in (c+1)..8 {
+                        all_sets.push([a, b, c, d]);
+                    }
+                }
+            }
+        }
+        assert_eq!(all_sets.len(), 35);
+
+        for s in &all_sets {
+            let fano_count = [(s[0],s[1],s[2]), (s[0],s[1],s[3]), (s[0],s[2],s[3]), (s[1],s[2],s[3])]
+                .iter().filter(|&&(a,b,c)| is_fano(a,b,c)).count();
+            if fano_count >= 2 {
+                // This is a missing set -- all 24 orderings have nonzero m4
+                println!("  {:?}: {} Fano sub-triples, complement = e_{}",
+                    s, fano_count, (1..8).find(|x| !s.contains(x)).unwrap_or(0));
+            }
+        }
+
+        // Now check m5: does the growth pattern continue?
+        // m5 has 7*6*5*4*3 = 2520 ordered quintuples
+        // Too many for full scan, but we can sample
+        println!("\n  === m5 Sampling (Growth Rate Check) ===\n");
+
+        // For m5, we need one more nested level of homotopy composition
+        // Simplified: check if m4 composed with m3 gives nonzero results
+        // This is a proxy for whether m5 grows further
+
+        // Quick check: |m3| = 2, |m4| = 4. Does |m5| = 8?
+        // Compute a few m5 samples by nesting h one more time
+        let mut max_m5 = 0.0_f64;
+        let mut m5_count = 0;
+        let mut m5_nonzero = 0;
+
+        // Sample: fix w=e1, scan (x,y,z,u) over distinct {2..7}
+        for x in 2..8 {
+            for y in 2..8 {
+                if y == x { continue; }
+                for z in 2..8 {
+                    if z == x || z == y { continue; }
+                    for u in 2..8 {
+                        if u == x || u == y || u == z { continue; }
+                        m5_count += 1;
+
+                        let mut w1 = [0.0_f64; 8]; w1[1] = 1.0;
+                        let mut xi = [0.0_f64; 8]; xi[x] = 1.0;
+                        let mut yj = [0.0_f64; 8]; yj[y] = 1.0;
+                        let mut zk = [0.0_f64; 8]; zk[z] = 1.0;
+                        let mut ul = [0.0_f64; 8]; ul[u] = 1.0;
+
+                        // Naive m5: nest h one more level
+                        let iw = section(&w1);
+                        let ix = section(&xi);
+                        let iy = section(&yj);
+                        let iz = section(&zk);
+                        let iu = section(&ul);
+
+                        // One representative term of m5:
+                        // p( h(h(h(iw*ix)*iy)*iz) * iu )
+                        let wx = sed_mul(&iw, &ix);
+                        let h1 = homotopy(&wx);
+                        let h1y = sed_mul(&h1, &iy);
+                        let h2 = homotopy(&h1y);
+                        let h2z = sed_mul(&h2, &iz);
+                        let h3 = homotopy(&h2z);
+                        let h3u = sed_mul(&h3, &iu);
+                        let t = project(&h3u);
+
+                        let norm: f64 = t.iter().map(|v| v * v).sum::<f64>().sqrt();
+                        if norm > 1e-10 { m5_nonzero += 1; }
+                        max_m5 = max_m5.max(norm);
+                    }
+                }
+            }
+        }
+
+        println!("  w=e1 sample: {}/{} nonzero, max |m5 term| = {:.1}", m5_nonzero, m5_count, max_m5);
+        println!("  Growth: |m3|=2, |m4|=4, |m5 term|={:.1}", max_m5);
+        println!("  Ratio: {:.1}x per level", if max_m5 > 0.1 { max_m5 / 4.0 } else { 0.0 });
+    }
 }
