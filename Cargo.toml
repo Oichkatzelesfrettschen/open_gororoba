@@ -62,6 +62,7 @@ members = [
     "crates/manga_experiments",
     "crates/gororoba_db",
     "xtask",
+    "crates/lit_search",
 ]
 
 [workspace.metadata.execution_policy]
