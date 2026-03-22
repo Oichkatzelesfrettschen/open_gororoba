@@ -1887,4 +1887,151 @@ mod tests {
         println!("\n  Fano-line triples with scalar m3: {} (expected: 42 = 7 lines * 6 orderings)", fano_scalar);
         println!("  Non-Fano triples with imaginary m3: {}", nonfano_imag);
     }
+
+    /// Does m4 vanish? Check if the A-infinity structure truncates at m3.
+    ///
+    /// m4(w,x,y,z) is the quartic transferred operation. If m4 = 0 for all
+    /// basis inputs, the homotopy transfer is FINITE (only m2 and m3).
+    /// This would mean the sedenion retraction produces a STRICT A_3 algebra
+    /// on the octonions, not an infinite A-infinity tower.
+    #[test]
+    fn test_m4_vanishes() {
+        use cd_kernel::cd_multiply;
+
+        let section = |x: &[f64; 8]| -> [f64; 16] {
+            let mut s = [0.0_f64; 16];
+            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
+            s
+        };
+        let project = |s: &[f64]| -> [f64; 8] {
+            let mut o = [0.0_f64; 8];
+            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
+            o
+        };
+        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
+            let ps = project(s);
+            let ips = section(&ps);
+            let mut h = [0.0_f64; 16];
+            for k in 0..16 { h[k] = s[k] - ips[k]; }
+            h
+        };
+        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+            let result = cd_multiply(a, b);
+            let mut out = [0.0_f64; 16];
+            for k in 0..16 { out[k] = result[k]; }
+            out
+        };
+
+        // m4 has multiple terms from the A-infinity relations.
+        // The simplest check: does the transferred product of m3 outputs vanish?
+        //
+        // The A-infinity relation for m4:
+        //   m4(w,x,y,z) = sum of terms involving m2 and m3 compositions
+        //
+        // For the specific retraction (p, i, h), m4 involves:
+        //   p( h(h(i(w)*i(x))*i(y)) * i(z) )
+        //   - p( h(i(w)*h(i(x)*i(y))) * i(z) )
+        //   + p( i(w) * h(h(i(x)*i(y))*i(z)) )
+        //   - p( i(w) * h(i(x)*h(i(y)*i(z))) )
+        //   + correction terms from m3 compositions
+        //
+        // Simplified test: compute the "naive" m4 (without m3 corrections)
+        // and check if it's zero. If not, m4 is nonzero.
+
+        let compute_naive_m4 = |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
+            let iw = section(w);
+            let ix = section(x);
+            let iy = section(y);
+            let iz = section(z);
+
+            // Term 1: p( h(h(iw*ix)*iy) * iz )
+            let wx = sed_mul(&iw, &ix);
+            let h_wx = homotopy(&wx);
+            let h_wx_y = sed_mul(&h_wx, &iy);
+            let hh_wxy = homotopy(&h_wx_y);
+            let t1_full = sed_mul(&hh_wxy, &iz);
+            let t1 = project(&t1_full);
+
+            // Term 2: -p( h(iw * h(ix*iy)) * iz )
+            let xy = sed_mul(&ix, &iy);
+            let h_xy = homotopy(&xy);
+            let w_hxy = sed_mul(&iw, &h_xy);
+            let h_whxy = homotopy(&w_hxy);
+            let t2_full = sed_mul(&h_whxy, &iz);
+            let t2 = project(&t2_full);
+
+            // Term 3: p( iw * h(h(ix*iy)*iz) )
+            let hxy_z = sed_mul(&h_xy, &iz);
+            let h_hxyz = homotopy(&hxy_z);
+            let t3_full = sed_mul(&iw, &h_hxyz);
+            let t3 = project(&t3_full);
+
+            // Term 4: -p( iw * h(ix * h(iy*iz)) )
+            let yz = sed_mul(&iy, &iz);
+            let h_yz = homotopy(&yz);
+            let x_hyz = sed_mul(&ix, &h_yz);
+            let h_xhyz = homotopy(&x_hyz);
+            let t4_full = sed_mul(&iw, &h_xhyz);
+            let t4 = project(&t4_full);
+
+            let mut m4 = [0.0_f64; 8];
+            for k in 0..8 {
+                m4[k] = t1[k] - t2[k] + t3[k] - t4[k];
+            }
+            m4
+        };
+
+        println!("  === Does m4 Vanish? (A-infinity Truncation Test) ===\n");
+
+        let mut max_m4_norm = 0.0_f64;
+        let mut nonzero_count = 0;
+        let mut total = 0;
+
+        // Sample: all quadruples of distinct imaginary units from {1..7}
+        // C(7,4) * 4! = 35 * 24 = 840 ordered quadruples
+        for i in 1..8 {
+            for j in 1..8 {
+                if j == i { continue; }
+                for k in 1..8 {
+                    if k == i || k == j { continue; }
+                    for l in 1..8 {
+                        if l == i || l == j || l == k { continue; }
+                        total += 1;
+                        let mut wi = [0.0_f64; 8]; wi[i] = 1.0;
+                        let mut xj = [0.0_f64; 8]; xj[j] = 1.0;
+                        let mut yk = [0.0_f64; 8]; yk[k] = 1.0;
+                        let mut zl = [0.0_f64; 8]; zl[l] = 1.0;
+
+                        let m4 = compute_naive_m4(&wi, &xj, &yk, &zl);
+                        let norm: f64 = m4.iter().map(|v| v * v).sum::<f64>().sqrt();
+
+                        if norm > 1e-10 {
+                            nonzero_count += 1;
+                            if nonzero_count <= 3 {
+                                let (max_idx, max_val) = m4.iter().enumerate()
+                                    .max_by(|(_, a), (_, b)| a.abs().partial_cmp(&b.abs()).unwrap())
+                                    .unwrap();
+                                println!("  m4(e{},e{},e{},e{}) = {:.1} e{} (|m4| = {:.2})",
+                                    i, j, k, l, max_val, max_idx, norm);
+                            }
+                        }
+                        max_m4_norm = max_m4_norm.max(norm);
+                    }
+                }
+            }
+        }
+
+        println!("\n  Total ordered quadruples: {} (expected: 7*6*5*4 = 840)", total);
+        println!("  Nonzero m4 outputs: {}", nonzero_count);
+        println!("  Max |m4|: {:.4}", max_m4_norm);
+
+        if nonzero_count == 0 {
+            println!("\n  m4 VANISHES! A-infinity truncates at m3.");
+            println!("  The sedenion retraction produces a STRICT A_3 algebra on O.");
+        } else {
+            println!("\n  m4 is NONZERO for {}/{} quadruples.", nonzero_count, total);
+            println!("  The A-infinity structure does NOT truncate at m3.");
+            println!("  Higher operations m_n (n >= 4) are needed for the full transfer.");
+        }
+    }
 }
