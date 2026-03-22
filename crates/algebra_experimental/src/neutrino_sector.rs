@@ -8063,4 +8063,164 @@ mod tests {
             println!();
         }
     }
+
+    /// Two-selector-type model: 3-blade diagonal + 2-blade off-diagonal.
+    ///
+    /// Diagonal mass hierarchy: 3-blade triples (1,6,11)/(1,3,8) -> r=0.0304
+    /// Off-diagonal mixing: 2-blade pairs (11,12)/(7,8) -> angles ~0.15% PDG
+    ///
+    /// The model uses DIFFERENT selectors for diagonal (eigenvalue spacing)
+    /// and off-diagonal (eigenvector rotation), analogous to the see-saw
+    /// mechanism where heavy and light scales come from different physics.
+    #[test]
+    fn test_two_selector_type_model() {
+        use cd_kernel::gourlay_psi;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let pdg = Pdg2024::default();
+        let pdg_r = 0.0307_f64;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+
+        // === 3-blade diagonal friction (mass hierarchy) ===
+        let ch_triple = (1_usize, 6, 11);
+        let nu_triple = (1_usize, 3, 8);
+
+        let sel_ch_3blade: Vec<f64> = subs.iter().map(|s| {
+            let (a, b, c) = ch_triple;
+            let ma = MajoranaMode { gamma_index: a - 1, cd_basis_index: a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b - 1, cd_basis_index: b, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: c - 1, cd_basis_index: c, cd_dim: 16 };
+            cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+            + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+            + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+        }).collect();
+
+        let sel_nu_3blade: Vec<f64> = subs.iter().map(|s| {
+            let (a, b, c) = nu_triple;
+            let ma = MajoranaMode { gamma_index: a - 1, cd_basis_index: a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b - 1, cd_basis_index: b, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: c - 1, cd_basis_index: c, cd_dim: 16 };
+            cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+            + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+            + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+        }).collect();
+
+        // === 2-blade off-diagonal profiles (mixing angles) ===
+        let angle_ch = (11_usize, 12);
+        let angle_nu = (7_usize, 8);
+
+        let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let i = sel.0;
+            let j = sel.1;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        let ch_profiles_2blade: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(angle_ch, s)).collect();
+        let nu_profiles_2blade: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(angle_nu, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        println!("  === Two-Selector-Type Model ===\n");
+        println!("  Diagonal: 3-blade {:?}/{:?}", ch_triple, nu_triple);
+        println!("  Off-diag: 2-blade {:?}/{:?}\n", angle_ch, angle_nu);
+
+        println!("  3-blade frictions:");
+        println!("    ch: [{:.2}, {:.2}, {:.2}]", sel_ch_3blade[0], sel_ch_3blade[1], sel_ch_3blade[2]);
+        println!("    nu: [{:.2}, {:.2}, {:.2}]", sel_nu_3blade[0], sel_nu_3blade[1], sel_nu_3blade[2]);
+
+        // Scan alpha_ch x alpha_nu for the 2-blade off-diagonal coupling
+        println!("\n  {:>6} {:>6} | {:>8} {:>8} {:>8} | {:>8} | {:>6} | {:>6}",
+            "a_ch", "a_nu", "t12", "t13", "t23", "r", "chi2", "score");
+
+        let mut best_score = f64::MAX;
+        let mut best_result = (0.0_f64, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+
+        for ach_step in 0..=20 {
+            for anu_step in 0..=20 {
+                let a_ch = ach_step as f64 * 0.5;
+                let a_nu = anu_step as f64 * 0.5;
+
+                let cb = construct_casimir_baseline(crate::quark_sector::SubalgebraScheme::InterleavedStride);
+                let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
+                let mut m_ch = m_base_ch;
+                let mut m_nu = m_base_nu;
+
+                // Diagonal: 3-blade friction
+                for g in 0..3 {
+                    let f_ch = w1 * sel_ch_3blade[g] + w2 * sel_nu_3blade[g];
+                    let f_nu = w1 * sel_nu_3blade[g] + w2 * sel_ch_3blade[g];
+                    m_ch.write(g, g, m_ch.read(g, g) + f_ch.exp());
+                    m_nu.write(g, g, m_nu.read(g, g) + f_nu.exp());
+                }
+
+                // Off-diagonal: 2-blade psi coupling
+                for i in 0..3 {
+                    for j in 0..3 {
+                        if i == j { continue; }
+                        let psi_nu_j = gourlay_psi(&nu_profiles_2blade[j]);
+                        let psi_ch_j = gourlay_psi(&ch_profiles_2blade[j]);
+                        m_nu.write(i, j, m_nu.read(i, j) + a_nu * dot16(&nu_profiles_2blade[i], &psi_nu_j));
+                        m_ch.write(i, j, m_ch.read(i, j) + a_ch * dot16(&ch_profiles_2blade[i], &psi_ch_j));
+                    }
+                }
+
+                let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_ch = m_ch_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+                let mut ev: Vec<f64> = (0..3).map(|i| eig_nu.s().column_vector().read(i).abs()).collect();
+                ev.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let dm21 = ev[1] * ev[1] - ev[0] * ev[0];
+                let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
+                let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
+
+                let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                let r_pen = ((r - pdg_r) / pdg_r).powi(2) * 100.0;
+                let score = chi2 + r_pen;
+
+                if score < best_score {
+                    best_score = score;
+                    best_result = (a_ch, a_nu, t12, t13, t23, r, chi2);
+                }
+            }
+        }
+
+        let (a_ch, a_nu, t12, t13, t23, r, chi2) = best_result;
+        println!("\n  === BEST TWO-SELECTOR-TYPE RESULT ===");
+        println!("  alpha_ch = {:.1}, alpha_nu = {:.1}", a_ch, a_nu);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", t12, pdg.theta_12_deg, ((t12 - pdg.theta_12_deg) / pdg.theta_12_deg * 100.0).abs());
+        println!("  theta_13 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", t13, pdg.theta_13_deg, ((t13 - pdg.theta_13_deg) / pdg.theta_13_deg * 100.0).abs());
+        println!("  theta_23 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", t23, pdg.theta_23_deg, ((t23 - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
+        println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", r, pdg_r, ((r - pdg_r) / pdg_r * 100.0).abs());
+        println!("  chi2_angles = {:.1}", chi2);
+        println!("  score = {:.1}", best_score);
+    }
 }
