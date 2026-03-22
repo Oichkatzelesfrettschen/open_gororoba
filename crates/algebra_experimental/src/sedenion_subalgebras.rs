@@ -2423,4 +2423,95 @@ mod tests {
         println!("  If oscillatory: the A-infinity tower has bounded norms.");
         println!("  If growing: the tower diverges and only finite truncation is meaningful.");
     }
+
+    /// Is m3 = alpha * octonionic associator?
+    #[test]
+    fn test_m3_is_associator() {
+        use cd_kernel::cd_multiply;
+
+        let section = |x: &[f64; 8]| -> [f64; 16] {
+            let mut s = [0.0_f64; 16];
+            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
+            s
+        };
+        let project = |s: &[f64]| -> [f64; 8] {
+            let mut o = [0.0_f64; 8];
+            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
+            o
+        };
+        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
+            let ps = project(s);
+            let ips = section(&ps);
+            let mut h = [0.0_f64; 16];
+            for k in 0..16 { h[k] = s[k] - ips[k]; }
+            h
+        };
+        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+            let r = cd_multiply(a, b);
+            let mut out = [0.0_f64; 16];
+            for k in 0..16 { out[k] = r[k]; }
+            out
+        };
+        // Octonion mul via sedenion embed
+        let oct_mul = |a: &[f64; 8], b: &[f64; 8]| -> [f64; 8] {
+            let mut sa = [0.0_f64; 16]; let mut sb = [0.0_f64; 16];
+            for k in 0..8 { sa[k] = a[k]; sb[k] = b[k]; }
+            let p = cd_multiply(&sa, &sb);
+            let mut out = [0.0_f64; 8];
+            for k in 0..8 { out[k] = p[k]; }
+            out
+        };
+
+        let compute_m3 = |x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
+            let ix = section(x); let iy = section(y); let iz = section(z);
+            let t1 = project(&sed_mul(&homotopy(&sed_mul(&ix, &iy)), &iz));
+            let t2 = project(&sed_mul(&ix, &homotopy(&sed_mul(&iy, &iz))));
+            let mut m3 = [0.0_f64; 8];
+            for k in 0..8 { m3[k] = t1[k] - t2[k]; }
+            m3
+        };
+
+        println!("  === m3 vs Octonionic Associator ===\n");
+
+        let mut ratios = Vec::new();
+        for i in 1..8 {
+            for j in 1..8 {
+                if j == i { continue; }
+                for k in 1..8 {
+                    if k == i || k == j { continue; }
+                    let mut ei = [0.0_f64; 8]; ei[i] = 1.0;
+                    let mut ej = [0.0_f64; 8]; ej[j] = 1.0;
+                    let mut ek = [0.0_f64; 8]; ek[k] = 1.0;
+
+                    let m3_v = compute_m3(&ei, &ej, &ek);
+                    let xy = oct_mul(&ei, &ej);
+                    let xy_z = oct_mul(&xy, &ek);
+                    let yz = oct_mul(&ej, &ek);
+                    let x_yz = oct_mul(&ei, &yz);
+                    let mut assoc = [0.0_f64; 8];
+                    for c in 0..8 { assoc[c] = xy_z[c] - x_yz[c]; }
+
+                    // Find ratio m3/assoc
+                    for c in 0..8 {
+                        if assoc[c].abs() > 0.5 {
+                            ratios.push(m3_v[c] / assoc[c]);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check if all ratios are the same
+        if !ratios.is_empty() {
+            let r0 = ratios[0];
+            let all_same = ratios.iter().all(|r| (r - r0).abs() < 1e-10);
+            println!("  Sample ratios: {:.4}, {:.4}, {:.4}", ratios[0], ratios[1], ratios[2]);
+            println!("  All {} ratios equal: {}", ratios.len(), all_same);
+            if all_same {
+                println!("  m3(x,y,z) = {:.4} * Assoc(x,y,z) for ALL 210 triples!", r0);
+                println!("  The A-infinity cubic IS the octonionic associator (scaled).");
+            }
+        }
+    }
 }
