@@ -64,20 +64,62 @@ impl SearchEngine {
             tracing::warn!("S2 failed: {:?}", s2_res.err());
         }
 
-        // Tier 1: open sources (no key)
-        if self.tier != SourceTier::Core
-            && let Ok(papers) = sources::search_crossref(&self.client, query, limit).await
-        {
-            tracing::info!("Crossref: {} results", papers.len());
+        // Tier 0: arXiv
+        if let Ok(papers) = sources::search_arxiv(&self.client, query, limit).await {
+            tracing::info!("arXiv: {} results", papers.len());
             all_papers.extend(papers);
         }
 
+        // Tier 1: open sources (no key needed)
+        if self.tier != SourceTier::Core {
+            let (cr, ihep, dblp, epmc, hal, dc, scielo, jst) = tokio::join!(
+                sources::search_crossref(&self.client, query, limit),
+                sources::search_inspirehep(&self.client, query, limit),
+                sources::search_dblp(&self.client, query, limit),
+                sources::search_europepmc(&self.client, query, limit),
+                sources::search_hal(&self.client, query, limit),
+                sources::search_datacite(&self.client, query, limit),
+                sources::search_scielo(&self.client, query, limit),
+                sources::search_jstage(&self.client, query, limit),
+            );
+
+            for (name, res) in [
+                ("Crossref", cr), ("InspireHEP", ihep), ("DBLP", dblp),
+                ("EuropePMC", epmc), ("HAL", hal), ("DataCite", dc),
+                ("SciELO", scielo), ("J-STAGE", jst),
+            ] {
+                match res {
+                    Ok(papers) if !papers.is_empty() => {
+                        tracing::info!("{name}: {} results", papers.len());
+                        all_papers.extend(papers);
+                    }
+                    Err(e) => tracing::debug!("{name}: {e}"),
+                    _ => {}
+                }
+            }
+        }
+
         // Tier 2: keyed sources
-        if self.tier == SourceTier::All
-            && let Ok(papers) = sources::search_core(&self.client, query, limit, &self.keys).await
-        {
-            tracing::info!("CORE: {} results", papers.len());
-            all_papers.extend(papers);
+        if self.tier == SourceTier::All {
+            let (core_r, cinii_r, ads_r, lens_r) = tokio::join!(
+                sources::search_core(&self.client, query, limit, &self.keys),
+                sources::search_cinii(&self.client, query, limit, &self.keys),
+                sources::search_ads(&self.client, query, limit, &self.keys),
+                sources::search_lens(&self.client, query, limit, &self.keys),
+            );
+
+            for (name, res) in [
+                ("CORE", core_r), ("CiNii", cinii_r), ("ADS", ads_r), ("Lens", lens_r),
+            ] {
+                match res {
+                    Ok(papers) if !papers.is_empty() => {
+                        tracing::info!("{name}: {} results", papers.len());
+                        all_papers.extend(papers);
+                    }
+                    Err(e) => tracing::debug!("{name}: {e}"),
+                    _ => {}
+                }
+            }
         }
 
         // Check Unpaywall for OA PDFs on papers with DOIs but no PDF
