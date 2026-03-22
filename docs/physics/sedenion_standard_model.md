@@ -648,9 +648,20 @@ confirmed as optimal across all pipeline levels (C-1462).
 
 ### Mass-Squared Ratio
 
-The scale-free ratio r = dm21_sq / dm31_sq is predicted from the algebraic
-eigenvalue spectrum independently of absolute mass scale.
-PDG 2024: r = 0.0307 (normal ordering).
+The scale-free ratio r = dm21_sq / dm31_sq is a RIGID algebraic invariant
+of the selector pair, independent of the psi coupling strengths alpha.
+
+    r = 0.1478 at selectors (11,12)/(7,8)  (PDG: 0.0307, 4.8x too large)
+
+This means the mass hierarchy is too weak (m3/m1 = 7.4, PDG ~ 50).
+The ratio is alpha-independent because alpha only changes off-diagonal
+mass matrix elements (eigenvectors/angles), not diagonal friction
+values (eigenvalue spacing). Confirmed by scanning 3200 alpha grid
+points: r = 0.1478 at ALL alpha values.
+
+Improving r requires different selectors or higher-order friction
+(e.g., 3-blade associators, composite operators). This is the next
+genuinely hard structural prediction problem.
 
 ### Absolute Mass Reconstruction
 
@@ -685,11 +696,13 @@ Given algebraic ratio r and one input m1 (lightest mass):
 7. [x] Mass ordering: normal ordering predicted
 
 **Open**:
-1. CP phase quadrant: resolve sign convention between Gram rephasing and PDG
-2. Absolute neutrino masses: derive algebraic ratio r from friction spectrum
-3. Rocq: SU(3) structure constants formal proof
-4. Derive TensorElementLift from the algebra (currently heuristic)
-5. Complex mass matrix with correct permutation alignment
+1. Mass ratio r = 0.1478 vs PDG 0.0307: need different friction mechanism
+   (3-blade associators, composite operators, or different selectors)
+2. Delta_CP maximal vs submaximal: algebra predicts -90 deg (maximal),
+   PDG best fit -165 deg (submaximal). Testable by DUNE/HyperK/JUNO.
+3. Derive TensorElementLift from algebra (currently heuristic 42D->6D)
+4. Rocq: SU(3) structure constants formal proof
+5. Composite selectors: weighted pair sums for simultaneous angle + CP
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
