@@ -7294,4 +7294,62 @@ mod tests {
                 bc.0, bc.1, bc.2);
         }
     }
+
+    /// Test the CP-optimal pair (11,13)/(11,14) with psi coupling.
+    ///
+    /// This pair gives delta_CP = -166 deg (1 deg from PDG) at baseline,
+    /// but angles are far off. Apply the two-param psi coupling and scan
+    /// alpha_ch x alpha_nu to see if angles can be brought closer.
+    #[test]
+    fn test_cp_optimal_pair_with_psi() {
+        use rayon::prelude::*;
+
+        let pdg = Pdg2024::default();
+
+        // CP-optimal pairs to test
+        let cp_pairs: [(usize, usize, usize, usize); 3] = [
+            (11, 13, 11, 14),
+            (9, 14, 9, 15),
+            (10, 15, 10, 13),
+        ];
+
+        println!("  === CP-Optimal Pairs with Psi Coupling ===\n");
+
+        for &(ch_a, ch_b, nu_a, nu_b) in &cp_pairs {
+            let ch_pair = (ch_a, ch_b);
+            let nu_pair = (nu_a, nu_b);
+
+            println!("  --- Pair: ch=({},{}), nu=({},{}) ---", ch_a, ch_b, nu_a, nu_b);
+
+            // Scan alpha_ch x alpha_nu
+            let grid: Vec<(f64, f64)> = (0..=20)
+                .flat_map(|a| (0..=20).map(move |b| (a as f64 * 0.5, b as f64 * 0.5)))
+                .collect();
+
+            let results: Vec<_> = grid.par_iter().map(|&(a_ch, a_nu)| {
+                let (m_ch, m_nu) = construct_pmns_matrices_two_param(
+                    ch_pair, nu_pair, a_ch, a_nu
+                );
+                let eig_ch = m_ch.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+                let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                (chi2, a_ch, a_nu, t12, t13, t23)
+            }).collect();
+
+            let best = results.iter().min_by(|a, b| a.0.partial_cmp(&b.0).unwrap()).unwrap();
+            println!("  Best: alpha_ch={:.1}, alpha_nu={:.1}", best.1, best.2);
+            println!("  t12={:.2}, t13={:.2}, t23={:.2}, chi2={:.1}",
+                best.3, best.4, best.5, best.0);
+            println!("  PDG errors: t12={:.1}%, t13={:.1}%, t23={:.1}%",
+                ((best.3 - pdg.theta_12_deg) / pdg.theta_12_deg * 100.0).abs(),
+                ((best.4 - pdg.theta_13_deg) / pdg.theta_13_deg * 100.0).abs(),
+                ((best.5 - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
+            println!();
+        }
+    }
 }
