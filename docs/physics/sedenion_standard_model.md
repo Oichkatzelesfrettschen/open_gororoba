@@ -1546,3 +1546,11 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - Born-Infeld CD Lagrangian (2003): [arXiv:hep-th/0306271]
   Uses CD algebras for Born-Infeld Lagrangian construction. Adjacent.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/adjacent/
+
+### Bonus paper found by lit-search tool
+
+- G2 Extension of Standard Model (2021): "An exceptional G(2) extension of the
+  Standard Model from the correspondence with CD algebras automorphism groups"
+  [Nature Scientific Reports 11, DOI: 10.1038/s41598-021-01814-1]
+  Open access. G2 automorphism group -> SM gauge structure.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/g2_su3_fano_validation/
