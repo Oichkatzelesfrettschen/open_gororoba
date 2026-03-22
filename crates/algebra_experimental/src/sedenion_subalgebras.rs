@@ -2034,4 +2034,140 @@ mod tests {
             println!("  Higher operations m_n (n >= 4) are needed for the full transfer.");
         }
     }
+
+    /// Classify the 168 m4-zero quadruples combinatorially.
+    ///
+    /// The 168 quadruples where m4 vanishes may correlate with:
+    /// (a) quadruples containing a Fano-line triple as a sub-triple
+    /// (b) quadruples with specific XOR structure
+    /// (c) quadruples related to the G2 coset geometry
+    #[test]
+    fn test_m4_zero_classification() {
+        use cd_kernel::cd_multiply;
+
+        let section = |x: &[f64; 8]| -> [f64; 16] {
+            let mut s = [0.0_f64; 16];
+            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
+            s
+        };
+        let project = |s: &[f64]| -> [f64; 8] {
+            let mut o = [0.0_f64; 8];
+            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
+            o
+        };
+        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
+            let ps = project(s);
+            let ips = section(&ps);
+            let mut h = [0.0_f64; 16];
+            for k in 0..16 { h[k] = s[k] - ips[k]; }
+            h
+        };
+        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+            let r = cd_multiply(a, b);
+            let mut out = [0.0_f64; 16];
+            for k in 0..16 { out[k] = r[k]; }
+            out
+        };
+
+        let compute_m4 = |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> f64 {
+            let iw = section(w); let ix = section(x);
+            let iy = section(y); let iz = section(z);
+            let wx = sed_mul(&iw, &ix);
+            let h_wx = homotopy(&wx);
+            let h_wx_y = sed_mul(&h_wx, &iy);
+            let hh_wxy = homotopy(&h_wx_y);
+            let t1 = project(&sed_mul(&hh_wxy, &iz));
+            let xy = sed_mul(&ix, &iy);
+            let h_xy = homotopy(&xy);
+            let w_hxy = sed_mul(&iw, &h_xy);
+            let h_whxy = homotopy(&w_hxy);
+            let t2 = project(&sed_mul(&h_whxy, &iz));
+            let hxy_z = sed_mul(&h_xy, &iz);
+            let h_hxyz = homotopy(&hxy_z);
+            let t3 = project(&sed_mul(&iw, &h_hxyz));
+            let yz = sed_mul(&iy, &iz);
+            let h_yz = homotopy(&yz);
+            let x_hyz = sed_mul(&ix, &h_yz);
+            let h_xhyz = homotopy(&x_hyz);
+            let t4 = project(&sed_mul(&iw, &h_xhyz));
+            let mut m4 = [0.0_f64; 8];
+            for k in 0..8 { m4[k] = t1[k] - t2[k] + t3[k] - t4[k]; }
+            m4.iter().map(|v| v * v).sum::<f64>().sqrt()
+        };
+
+        let fano: [(usize, usize, usize); 7] = [
+            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
+        ];
+        let is_fano = |a: usize, b: usize, c: usize| -> bool {
+            let mut s = [a, b, c]; s.sort();
+            fano.iter().any(|&(x, y, z)| s == [x, y, z])
+        };
+
+        let mut zeros: Vec<(usize, usize, usize, usize)> = Vec::new();
+        let mut nonzeros = 0;
+
+        for i in 1..8 {
+            for j in 1..8 {
+                if j == i { continue; }
+                for k in 1..8 {
+                    if k == i || k == j { continue; }
+                    for l in 1..8 {
+                        if l == i || l == j || l == k { continue; }
+                        let mut wi = [0.0_f64; 8]; wi[i] = 1.0;
+                        let mut xj = [0.0_f64; 8]; xj[j] = 1.0;
+                        let mut yk = [0.0_f64; 8]; yk[k] = 1.0;
+                        let mut zl = [0.0_f64; 8]; zl[l] = 1.0;
+                        let norm = compute_m4(&wi, &xj, &yk, &zl);
+                        if norm < 1e-10 {
+                            zeros.push((i, j, k, l));
+                        } else {
+                            nonzeros += 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        println!("  === m4-Zero Quadruple Classification ===\n");
+        println!("  Total: {} zero + {} nonzero = 840", zeros.len(), nonzeros);
+
+        // Check: how many zero quadruples contain a Fano sub-triple?
+        let mut contains_fano = 0;
+        let mut no_fano = 0;
+        for &(i, j, k, l) in &zeros {
+            let has_fano = is_fano(i, j, k) || is_fano(i, j, l) || is_fano(i, k, l) || is_fano(j, k, l);
+            if has_fano { contains_fano += 1; } else { no_fano += 1; }
+        }
+        println!("  Zeros containing a Fano sub-triple: {}", contains_fano);
+        println!("  Zeros with NO Fano sub-triple: {}", no_fano);
+
+        // Check XOR structure: i XOR j XOR k XOR l
+        let mut xor_zero = 0;
+        let mut xor_nonzero = 0;
+        for &(i, j, k, l) in &zeros {
+            if (i ^ j ^ k ^ l) == 0 { xor_zero += 1; } else { xor_nonzero += 1; }
+        }
+        println!("  Zeros with i XOR j XOR k XOR l = 0: {}", xor_zero);
+        println!("  Zeros with i XOR j XOR k XOR l != 0: {}", xor_nonzero);
+
+        // Check: which distinct 4-element SETS appear?
+        let mut sets: std::collections::BTreeSet<[usize; 4]> = std::collections::BTreeSet::new();
+        for &(i, j, k, l) in &zeros {
+            let mut s = [i, j, k, l]; s.sort();
+            sets.insert(s);
+        }
+        println!("  Distinct 4-element sets among zeros: {} (out of C(7,4)=35)", sets.len());
+
+        // Print the sets
+        println!("\n  Zero sets:");
+        for s in &sets {
+            let n_orderings = zeros.iter().filter(|&&(i,j,k,l)| {
+                let mut t = [i,j,k,l]; t.sort(); t == *s
+            }).count();
+            let xor = s[0] ^ s[1] ^ s[2] ^ s[3];
+            let fano_count = [(s[0],s[1],s[2]), (s[0],s[1],s[3]), (s[0],s[2],s[3]), (s[1],s[2],s[3])]
+                .iter().filter(|&&(a,b,c)| is_fano(a,b,c)).count();
+            println!("    {:?}: {} orderings, XOR={}, Fano sub-triples={}", s, n_orderings, xor, fano_count);
+        }
+    }
 }
