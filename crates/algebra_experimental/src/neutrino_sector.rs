@@ -8471,6 +8471,75 @@ mod tests {
             if delta.norm() < 1e-6 { break; }
         }
 
+        // Compute initial cost before multi-start
+        let init_obs = evaluate(params[0], params[1], params[2]);
+        let init_cost: f64 = (0..n_resid).map(|i| ((init_obs[i] - pdg_targets[i]) / pdg_sigma[i]).powi(2)).sum();
+
+        // Multi-start from different initial conditions to escape local minima
+        let starts = [
+            [0.60, 8.0, 1.5],
+            [0.30, 4.0, 1.0],
+            [0.10, 2.0, 0.5],
+            [0.80, 6.0, 2.0],
+            [0.15, 10.0, 0.8],
+            [0.50, 3.0, 3.0],
+        ];
+
+        let mut global_best_params = params;
+        let mut global_best_cost = init_cost;
+
+        for start in &starts {
+            let mut p = *start;
+            for _iter in 0..50 {
+                let obs = evaluate(p[0], p[1], p[2]);
+                let res: Vec<f64> = (0..n_resid).map(|i| (obs[i] - pdg_targets[i]) / pdg_sigma[i]).collect();
+                let cost: f64 = res.iter().map(|r| r * r).sum();
+
+                let mut jac = DMatrix::zeros(n_resid, n_params);
+                for pi in 0..n_params {
+                    let mut pp = p; let mut pm = p;
+                    pp[pi] += eps; pm[pi] -= eps;
+                    let obs_p = evaluate(pp[0], pp[1], pp[2]);
+                    let obs_m = evaluate(pm[0], pm[1], pm[2]);
+                    for r in 0..n_resid {
+                        jac[(r, pi)] = (obs_p[r] - obs_m[r]) / (2.0 * eps * pdg_sigma[r]);
+                    }
+                }
+                let jt = jac.transpose();
+                let jtj = &jt * &jac;
+                let jtr = &jt * DVector::from_row_slice(&res);
+                let lambda_ms = 0.1;
+                let mut jtj_d = jtj.clone();
+                for i in 0..n_params { jtj_d[(i, i)] += lambda_ms; }
+                let delta = match jtj_d.lu().solve(&(-&jtr)) { Some(d) => d, None => break };
+
+                let mut step = 1.0;
+                for _ in 0..10 {
+                    let np = [
+                        (p[0] + step * delta[0]).max(0.01).min(2.0),
+                        (p[1] + step * delta[1]).max(0.0).min(20.0),
+                        (p[2] + step * delta[2]).max(0.0).min(10.0),
+                    ];
+                    let no = evaluate(np[0], np[1], np[2]);
+                    let nc: f64 = (0..n_resid).map(|i| ((no[i] - pdg_targets[i]) / pdg_sigma[i]).powi(2)).sum();
+                    if nc < cost { p = np; break; }
+                    step *= 0.5;
+                }
+                if delta.norm() < 1e-6 { break; }
+            }
+            let obs = evaluate(p[0], p[1], p[2]);
+            let cost: f64 = (0..n_resid).map(|i| ((obs[i] - pdg_targets[i]) / pdg_sigma[i]).powi(2)).sum();
+            if cost < global_best_cost {
+                global_best_cost = cost;
+                global_best_params = p;
+            }
+        }
+
+        if global_best_cost < init_cost {
+            params = global_best_params;
+            println!("\n  Multi-start found better minimum: cost = {:.2}", global_best_cost);
+        }
+
         let final_obs = evaluate(params[0], params[1], params[2]);
         let final_cost: f64 = (0..n_resid).map(|i| ((final_obs[i] - pdg_targets[i]) / pdg_sigma[i]).powi(2)).sum();
 
@@ -8481,5 +8550,145 @@ mod tests {
         println!("  theta_23 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", final_obs[2], pdg.theta_23_deg, ((final_obs[2] - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
         println!("  r = {:.6} (PDG: {:.4}, err: {:.1}%)", final_obs[3], pdg_r, ((final_obs[3] - pdg_r) / pdg_r * 100.0).abs());
         println!("  cost = {:.4} (4 residuals)", final_cost);
+    }
+
+    /// Friction-native baseline: M_ij = <profile_i, profile_j> (Gram matrix).
+    ///
+    /// No additive Casimir baseline. The mass matrix IS the friction Gram
+    /// matrix directly. Diagonal = self-overlap (mass scale), off-diagonal =
+    /// cross-generation overlap (mixing).
+    ///
+    /// Uses 3-blade profiles for the Gram construction, with psi coupling
+    /// for cross-generation terms. The alpha parameter scales the psi
+    /// contribution relative to the direct overlap.
+    #[test]
+    fn test_friction_native_baseline() {
+        use cd_kernel::gourlay_psi;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let pdg = Pdg2024::default();
+        let pdg_r = 0.0307_f64;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        // Use BOTH 3-blade and 2-blade profiles
+        let build_pair_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let i = sel.0; let j = sel.1;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        // 2-blade profiles for angle-optimal mixing
+        let ch_2b: Vec<[f64; 16]> = subs.iter().map(|s| build_pair_profile((11, 12), s)).collect();
+        let nu_2b: Vec<[f64; 16]> = subs.iter().map(|s| build_pair_profile((7, 8), s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        // 3-blade scalar frictions for mass hierarchy
+        let sel_ch_3: Vec<f64> = subs.iter().map(|s| {
+            let ma = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: 5, cd_basis_index: 6, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: 10, cd_basis_index: 11, cd_dim: 16 };
+            cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+            + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+            + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+        }).collect();
+        let sel_nu_3: Vec<f64> = subs.iter().map(|s| {
+            let ma = MajoranaMode { gamma_index: 0, cd_basis_index: 1, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: 2, cd_basis_index: 3, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: 7, cd_basis_index: 8, cd_dim: 16 };
+            cd_braid_signed_friction(&ma, &mb, s, &sign_table)
+            + cd_braid_signed_friction(&ma, &mc, s, &sign_table)
+            + cd_braid_signed_friction(&mb, &mc, s, &sign_table)
+        }).collect();
+
+        println!("  === Friction-Native Baseline (No Casimir) ===\n");
+        println!("  3-blade ch frictions: [{:.2}, {:.2}, {:.2}]", sel_ch_3[0], sel_ch_3[1], sel_ch_3[2]);
+        println!("  3-blade nu frictions: [{:.2}, {:.2}, {:.2}]", sel_nu_3[0], sel_nu_3[1], sel_nu_3[2]);
+
+        // Scan: beta scales 3-blade diagonal, alpha scales 2-blade off-diagonal
+        println!("\n  {:>6} {:>6} | {:>8} {:>8} {:>8} | {:>8} | {:>8}",
+            "beta", "alpha", "t12", "t13", "t23", "r", "cost");
+
+        let mut best = (f64::MAX, 0.0_f64, 0.0, [0.0_f64; 4]);
+
+        for beta_step in 1..=30 {
+            let beta = beta_step as f64 * 0.1;
+            for alpha_step in 0..=30 {
+                let alpha = alpha_step as f64 * 0.5;
+
+                // Build mass matrix: M_ij = beta * exp(3blade) * delta_ij + alpha * <2blade_i, psi(2blade_j)>
+                let mut m_nu = faer::Mat::zeros(3, 3);
+                let mut m_ch = faer::Mat::zeros(3, 3);
+
+                // Diagonal: exp(3-blade friction)
+                let w1 = -0.656850_f64;
+                let w2 = -0.741999_f64;
+                for g in 0..3 {
+                    let f_ch = beta * (w1 * sel_ch_3[g] + w2 * sel_nu_3[g]);
+                    let f_nu = beta * (w1 * sel_nu_3[g] + w2 * sel_ch_3[g]);
+                    m_ch.write(g, g, f_ch.exp());
+                    m_nu.write(g, g, f_nu.exp());
+                }
+
+                // Off-diagonal: 2-blade psi coupling (NO Casimir baseline)
+                for i in 0..3 {
+                    for j in 0..3 {
+                        if i == j { continue; }
+                        let psi_nu_j = gourlay_psi(&nu_2b[j]);
+                        let psi_ch_j = gourlay_psi(&ch_2b[j]);
+                        m_nu.write(i, j, alpha * dot16(&nu_2b[i], &psi_nu_j));
+                        m_ch.write(i, j, alpha * dot16(&ch_2b[i], &psi_ch_j));
+                    }
+                }
+
+                let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+                let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+                let eig_ch = m_ch_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+                let u_raw = eig_ch.u().transpose() * eig_nu.u();
+                let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+                let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+
+                let mut ev: Vec<f64> = (0..3).map(|i| eig_nu.s().column_vector().read(i).abs()).collect();
+                ev.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let dm21 = ev[1]*ev[1] - ev[0]*ev[0];
+                let dm31 = ev[2]*ev[2] - ev[0]*ev[0];
+                let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { 1.0 };
+
+                let cost = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2)
+                         + ((r - pdg_r) / 0.003).powi(2);
+
+                if cost < best.0 {
+                    best = (cost, beta, alpha, [t12, t13, t23, r]);
+                }
+            }
+        }
+
+        let obs = best.3;
+        println!("\n  === BEST FRICTION-NATIVE RESULT ===");
+        println!("  beta = {:.1}, alpha = {:.1}", best.1, best.2);
+        println!("  theta_12 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[0], pdg.theta_12_deg, ((obs[0] - pdg.theta_12_deg) / pdg.theta_12_deg * 100.0).abs());
+        println!("  theta_13 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[1], pdg.theta_13_deg, ((obs[1] - pdg.theta_13_deg) / pdg.theta_13_deg * 100.0).abs());
+        println!("  theta_23 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[2], pdg.theta_23_deg, ((obs[2] - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
+        println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", obs[3], pdg_r, ((obs[3] - pdg_r) / pdg_r * 100.0).abs());
+        println!("  cost = {:.2}", best.0);
     }
 }
