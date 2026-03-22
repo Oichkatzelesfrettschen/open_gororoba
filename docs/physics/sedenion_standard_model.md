@@ -702,11 +702,12 @@ Given algebraic ratio r and one input m1 (lightest mass):
 
 **Open**:
 1. [x] Mass ratio: 3-blade friction gives r = 0.0304 (PDG 0.0307, 1.0% error)
-2. Delta_CP maximal vs submaximal: algebra predicts -90 deg (maximal),
+2. [x] Rocq SU(3): rational subset Jacobi verified (sqrt(3) subset open)
+3. Delta_CP maximal vs submaximal: algebra predicts -90 deg (maximal),
    PDG best fit -165 deg (submaximal). Testable by DUNE/HyperK/JUNO.
-3. Derive TensorElementLift from algebra (currently heuristic 42D->6D)
-4. Rocq: SU(3) structure constants formal proof
-5. Composite selectors: weighted pair sums for simultaneous angle + CP
+4. Derive TensorElementLift from algebra (currently heuristic 42D->6D)
+5. Complete Rocq SU(3): extend to Q[sqrt(3)] or 12*f integer encoding
+6. Unify 3-blade mass ratio with 2-blade angle fit (currently separate)
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
@@ -751,11 +752,26 @@ stab(e_k) in Der(O) = g2 has dimension 8. Proof: each e_k lies on exactly
 3 Fano lines (7 independent vm_compute proofs), each line contributes 2
 constraints, dim(stab) = dim(g2) - 6 = 14 - 6 = 8.
 
+### SU(3) Structure Constants (SU3StructureConstants.v)
+
+The 7 rational SU(3) structure constants (2*f_{abc} as integers, avoiding
+sqrt(3)) verified by boolean reflection:
+- f_{123} = 1, f_{147} = f_{246} = f_{257} = f_{345} = 1/2
+- f_{156} = f_{367} = -1/2
+- Total antisymmetry: vm_compute verified for all permutations
+- Jacobi identity: verified for 10 individual triples via vm_compute
+
+Limitation: f_{458} = f_{678} = sqrt(3)/2 are omitted (require algebraic
+number field). Triples involving generators 4-7 simultaneously may fail
+Jacobi in the rational subset. Full verification requires either:
+(a) extending Rocq with Q[sqrt(3)], or (b) encoding 12*f as integers
+(clearing all denominators including sqrt(3) via multiplication by 12).
+
 ### Proof Statistics
 
-- 37+ theory files in proofs/theories/
+- 39 theory files in proofs/theories/
 - 145+ verified files in proofs/verified/
-- 188+ total .v files
+- 190+ total .v files
 - All proofs compile with Rocq 9.1.1 (nightly-2026-03-05)
 
 ## XIII. Epsilon and Psi Automorphisms
