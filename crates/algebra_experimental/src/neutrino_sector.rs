@@ -7352,4 +7352,204 @@ mod tests {
             println!();
         }
     }
+
+    /// Composite selector: blend angle-optimal and CP-optimal friction profiles.
+    ///
+    /// profile_blended = (1-w) * profile_angle_pair + w * profile_cp_pair
+    ///
+    /// Scan blend weight w to find the sweet spot where mixing angles remain
+    /// close to PDG AND delta_CP moves toward -165 deg.
+    #[test]
+    fn test_composite_selector_blend() {
+        use cd_kernel::gourlay_psi;
+        use crate::bell_inequality::{SignTableCache, rotate_sparse};
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use num_complex::Complex;
+
+        let pdg = Pdg2024::default();
+        let pdg_delta = -165.0_f64;
+
+        // Angle-optimal pair
+        let angle_ch = (11_usize, 12);
+        let angle_nu = (7_usize, 8);
+        // CP-optimal pair
+        let cp_ch = (11_usize, 13);
+        let cp_nu = (11_usize, 14);
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1, &o2, &o3];
+        let sign_table = SignTableCache::new(16);
+
+        let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
+            let i = sel.0;
+            let j = sel.1;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j { continue; }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
+
+        // Build profiles for both pairs
+        let angle_ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(angle_ch, s)).collect();
+        let angle_nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(angle_nu, s)).collect();
+        let cp_ch_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(cp_ch, s)).collect();
+        let cp_nu_profiles: Vec<[f64; 16]> = subs.iter()
+            .map(|s| build_profile(cp_nu, s)).collect();
+
+        let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+            a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+        };
+
+        let omega_re = -0.5_f64;
+        let omega_im = 3.0_f64.sqrt() / 2.0;
+
+        // First: check profile orthogonality
+        println!("  === Composite Selector Blend ===\n");
+        println!("  Profile orthogonality (gen 1):");
+        let overlap_ch = dot16(&angle_ch_profiles[0], &cp_ch_profiles[0]);
+        let norm_a_ch = dot16(&angle_ch_profiles[0], &angle_ch_profiles[0]).sqrt();
+        let norm_c_ch = dot16(&cp_ch_profiles[0], &cp_ch_profiles[0]).sqrt();
+        println!("    ch: cos(angle,cp) = {:.4} (norms: {:.2}, {:.2})",
+            overlap_ch / (norm_a_ch * norm_c_ch), norm_a_ch, norm_c_ch);
+
+        let overlap_nu = dot16(&angle_nu_profiles[0], &cp_nu_profiles[0]);
+        let norm_a_nu = dot16(&angle_nu_profiles[0], &angle_nu_profiles[0]).sqrt();
+        let norm_c_nu = dot16(&cp_nu_profiles[0], &cp_nu_profiles[0]).sqrt();
+        println!("    nu: cos(angle,cp) = {:.4} (norms: {:.2}, {:.2})",
+            overlap_nu / (norm_a_nu * norm_c_nu), norm_a_nu, norm_c_nu);
+
+        // Blend and scan
+        println!("\n  {:>6} | {:>8} {:>8} {:>8} | {:>8} | {:>8} | {:>8}",
+            "w", "t12", "t13", "t23", "chi2", "delta_CP", "|resid|");
+        println!("  {:-<6}-+-{:-<8}-{:-<8}-{:-<8}-+-{:-<8}-+-{:-<8}-+-{:-<8}",
+            "", "", "", "", "", "", "");
+
+        let mut best_combined = (f64::MAX, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64);
+
+        for w_step in 0..=20 {
+            let w = w_step as f64 * 0.05;
+
+            // Blend profiles
+            let blend = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
+                let mut out = [0.0_f64; 16];
+                for k in 0..16 {
+                    out[k] = (1.0 - w) * a[k] + w * b[k];
+                }
+                out
+            };
+
+            let blended_ch: Vec<[f64; 16]> = (0..3).map(|i|
+                blend(&angle_ch_profiles[i], &cp_ch_profiles[i])
+            ).collect();
+            let blended_nu: Vec<[f64; 16]> = (0..3).map(|i|
+                blend(&angle_nu_profiles[i], &cp_nu_profiles[i])
+            ).collect();
+
+            // Compute cross-sector Gram for delta_CP
+            let mut gc = [[Complex::new(0.0, 0.0); 3]; 3];
+            for i in 0..3 {
+                for j in 0..3 {
+                    let c0 = dot16(&blended_ch[i], &blended_nu[j]);
+                    let psi1_j = gourlay_psi(&blended_nu[j]);
+                    let c1 = dot16(&blended_ch[i], &psi1_j);
+                    let psi2_j = cd_kernel::gourlay_psi_n(&blended_nu[j], 2);
+                    let c2 = dot16(&blended_ch[i], &psi2_j);
+                    gc[i][j] = Complex::new(
+                        c0 + c1 * omega_re + c2 * omega_re,
+                        c1 * omega_im - c2 * omega_im,
+                    );
+                }
+            }
+
+            // Best quartet phase (using best assignment from earlier scan)
+            let mut best_delta = 0.0_f64;
+            let mut best_resid = 180.0_f64;
+            for &(e, mu) in &[(0usize, 1usize), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)] {
+                for &(c1, c3) in &[(0usize, 1usize), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)] {
+                    let q = gc[e][c1] * gc[mu][c3] * gc[e][c3].conj() * gc[mu][c1].conj();
+                    if q.norm() < 1e-20 { continue; }
+                    let delta = q.arg().to_degrees();
+                    let resid = ((delta - pdg_delta + 540.0) % 360.0) - 180.0;
+                    if resid.abs() < best_resid.abs() {
+                        best_resid = resid;
+                        best_delta = delta;
+                    }
+                }
+            }
+
+            // Compute mixing angles via blended diagonal friction
+            // Use scalar friction from blended profiles as diagonal perturbation
+            let sel_ch: Vec<f64> = blended_ch.iter().map(|p| {
+                let norm: f64 = p.iter().map(|x| x * x).sum::<f64>();
+                norm.sqrt()
+            }).collect();
+            let sel_nu: Vec<f64> = blended_nu.iter().map(|p| {
+                let norm: f64 = p.iter().map(|x| x * x).sum::<f64>();
+                norm.sqrt()
+            }).collect();
+
+            // Build mass matrices from blended friction
+            let w1 = -0.656850_f64;
+            let w2 = -0.741999_f64;
+            let cb = construct_casimir_baseline(crate::quark_sector::SubalgebraScheme::InterleavedStride);
+            let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
+            let mut m_ch = m_base_ch;
+            let mut m_nu = m_base_nu;
+            for i in 0..3 {
+                let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
+                let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
+                m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
+                m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+            }
+
+            // Add psi off-diagonal with alpha = 3.75/1.30
+            for i in 0..3 {
+                for j in 0..3 {
+                    if i == j { continue; }
+                    let psi_nu_j = gourlay_psi(&blended_nu[j]);
+                    let psi_ch_j = gourlay_psi(&blended_ch[j]);
+                    m_nu.write(i, j, m_nu.read(i, j) + 1.30 * dot16(&blended_nu[i], &psi_nu_j));
+                    m_ch.write(i, j, m_ch.read(i, j) + 3.75 * dot16(&blended_ch[i], &psi_ch_j));
+                }
+            }
+
+            // Symmetrize + eigendecompose
+            let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
+            let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let eig_ch = m_ch_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let eig_nu = m_nu_s.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+            let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+            let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                     + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                     + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+
+            // Combined score: angle chi2 + CP weight
+            let score = chi2 + 0.1 * best_resid * best_resid;
+            if score < best_combined.0 {
+                best_combined = (score, w, t12, t13, t23, best_delta);
+            }
+
+            if w_step % 2 == 0 {
+                println!("  {:>6.2} | {:>8.2} {:>8.2} {:>8.2} | {:>8.1} | {:>+8.1} | {:>8.1}",
+                    w, t12, t13, t23, chi2, best_delta, best_resid.abs());
+            }
+        }
+
+        println!("\n  === BEST COMBINED (chi2 + 0.1*|delta_resid|^2) ===");
+        println!("  w = {:.2}", best_combined.1);
+        println!("  t12 = {:.2}, t13 = {:.2}, t23 = {:.2}",
+            best_combined.2, best_combined.3, best_combined.4);
+        println!("  delta_CP = {:.1} deg", best_combined.5);
+    }
 }
