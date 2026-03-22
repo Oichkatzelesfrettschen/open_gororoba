@@ -1677,4 +1677,47 @@ mod tests {
         println!("  in sedenionic star-power series (Theorem 2.13)");
         println!("  Domain = sigma-ball INTERSECT hyper-sigma-ball");
     }
+
+    /// Surreal CD: scalar extension principle for zero-divisor identities.
+    ///
+    /// CD structure constants are in {0, +1, -1}, so any ZD identity
+    /// xy = 0 holds over ANY coefficient field (R, No, K subset No).
+    /// For any nonzero alpha in No: (alpha*x)(y) = alpha*(xy) = 0.
+    #[test]
+    fn test_surreal_cd_scalar_extension_zd() {
+        use cd_kernel::cd_multiply;
+
+        // Three standard ZD witnesses
+        let cases: [([f64; 16], [f64; 16], &str); 3] = [
+            ({let mut x = [0.0; 16]; x[1]=1.0; x[10]=1.0;
+              let mut y = [0.0; 16]; y[5]=1.0; y[14]=1.0; (x, y, "(e1+e10)(e5+e14)")}.0,
+             {let mut y = [0.0; 16]; y[5]=1.0; y[14]=1.0; y}.into(),
+             "(e1+e10)(e5+e14)"),
+            ({let mut x = [0.0; 16]; x[3]=1.0; x[10]=1.0; x},
+             {let mut y = [0.0; 16]; y[6]=1.0; y[15]=-1.0; y},
+             "(e3+e10)(e6-e15)"),
+            // Standard Reggiani ZD pair from the 84 assessors
+            ({let mut x = [0.0; 16]; x[1]=1.0; x[10]=1.0; x},
+             {let mut y = [0.0; 16]; y[4]=1.0; y[15]=-1.0; y},
+             "(e1+e10)(e4-e15)"),
+        ];
+
+        println!("  === Surreal CD: Scalar Extension ZD Verification ===\n");
+
+        for (idx, (x, y, label)) in cases.iter().enumerate() {
+            let product = cd_multiply(x, y);
+            let norm: f64 = product.iter().map(|v| v * v).sum::<f64>().sqrt();
+            println!("  Witness {}: {} -> |product| = {:.2e}", idx+1, label, norm);
+            assert!(norm < 1e-14, "ZD witness {} failed", idx+1);
+
+            // Scalar extension: alpha * x still gives zero
+            for &alpha in &[0.001_f64, 1000.0, std::f64::consts::PI] {
+                let x_s: Vec<f64> = x.iter().map(|v| alpha * v).collect();
+                let p_s = cd_multiply(&x_s, y);
+                let n_s: f64 = p_s.iter().map(|v| v * v).sum::<f64>().sqrt();
+                assert!(n_s < 1e-10, "Scaled ZD failed at alpha={}", alpha);
+            }
+        }
+        println!("\n  All verified. ZD geometry is coefficient-field-independent.");
+    }
 }
