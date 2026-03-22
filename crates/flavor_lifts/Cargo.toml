@@ -1,0 +1,12 @@
+[package]
+name = "flavor_lifts"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+faer = { workspace = true }
+nalgebra = { workspace = true }
+cd_kernel = { workspace = true }
+
+[lints]
+workspace = true

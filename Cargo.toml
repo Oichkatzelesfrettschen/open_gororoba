@@ -63,6 +63,7 @@ members = [
     "crates/gororoba_db",
     "xtask",
     "crates/lit_search",
+    "crates/flavor_lifts",
 ]
 
 [workspace.metadata.execution_policy]
