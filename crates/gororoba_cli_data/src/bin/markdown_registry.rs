@@ -265,6 +265,10 @@ fn verify_inventory_toml_first(repo_root: &Path) -> Result<()> {
     // Build the set of paths declared in TOML (normalize to forward-slash).
     let registered: BTreeSet<String> = rows
         .iter()
+        .filter(|row| {
+            let status = table_str(row, "removal_status");
+            status.trim() != "removed"
+        })
         .map(|row| table_str(row, "path").replace('\\', "/"))
         .filter(|p| !p.is_empty())
         .collect();
@@ -321,6 +325,7 @@ fn verify_owner_map(repo_root: &Path) -> Result<()> {
         "deprecated",
         "archived",
         "locked",
+        "removed",
     ]);
 
     // Check document_count metadata if present.
