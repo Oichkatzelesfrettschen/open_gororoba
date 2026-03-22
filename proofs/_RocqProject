@@ -207,3 +207,4 @@ theories/HigherCD.v
 verified/C1471_HigherCDTrilinearity.v
 theories/G2StabilizerDimension.v
 theories/SU3StructureConstants.v
+theories/SU3JacobiFull.v
