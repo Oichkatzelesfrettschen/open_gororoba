@@ -1251,17 +1251,24 @@ The quartic transfer m4 is nonzero for 672 of 840 ordered quadruples (80%).
 Max |m4| = 4.0 (vs m3 max = 2.0). The ratio |m4|/|m3| = 2 means the series
 GROWS, not converges. The A-infinity structure is genuinely infinite.
 
-### m4-Zero Classification: Fano-Adjacent Quadruples
+### m4-Zero Classification: Fano Incidence Hierarchy
 
-The 168 m4-zero quadruples are completely classified:
-- ALL contain exactly 1 Fano sub-triple (0 without Fano)
-- NONE have XOR = 0
-- 28 distinct 4-element sets (out of C(7,4) = 35)
-- The 7 missing sets contain 2+ Fano sub-triples (over-constrained)
+Complete classification of C(7,4) = 35 four-element sets:
+- **28 sets with exactly 1 Fano sub-triple**: m4 = 0 for 6/24 orderings
+  (those where the Fano triple occupies positions 1-3)
+- **7 sets with 0 Fano sub-triples** ("anti-Fano"): m4 nonzero for ALL
+  24 orderings. These are: {1,2,4,7}, {1,2,5,6}, {1,3,4,6}, {1,3,5,7},
+  {2,3,4,5}, {2,3,6,7}, {4,5,6,7}.
 
-m4 vanishes when the quadruple touches exactly one associative direction.
-The Fano line "absorbs" the quartic correction, connecting the A-infinity
-tower to the G2 geometry of the Fano plane.
+Check: 28*6 = 168 zeros, 28*18 + 7*24 = 504 + 168 = 672 nonzeros. Correct.
+
+### m5 Growth: Oscillatory, Not Monotonic
+
+m5 sampling (w=e1, 360 quintuples): all nonzero, max |m5 term| = 1.0.
+Growth sequence: **|m3|=2, |m4|=4, |m5|=1**. The series OSCILLATES.
+
+This suggests the A-infinity tower has a non-trivial convergence structure
+controlled by the Fano incidence geometry at each level.
 
 **Implication**: Any finite truncation (using only m2 + m3) is an approximation.
 The full algebraic content of the sedenion retraction requires infinitely
