@@ -2424,6 +2424,129 @@ mod tests {
         println!("  If growing: the tower diverges and only finite truncation is meaningful.");
     }
 
+    /// Pathion (32D) retraction transfer: does the Fano pattern generalize?
+    ///
+    /// The sedenion retraction to octonions gave m3 with 42+168 classification.
+    /// Apply the SAME retraction p(u,v)=(u+v)/2 to pathion -> sedenion.
+    /// The sedenion has 15 imaginary units, giving C(15,3) = 455 triples.
+    /// Check: does the associator classification match the 35+84+84+252 Wilmot decomposition?
+    #[test]
+    fn test_pathion_retraction_m3() {
+        use cd_kernel::cd_multiply;
+
+        // Pathion = 32D. Sedenion = lower 16D. Retraction: p(u,v) = (u+v)/2.
+        let section_32 = |x: &[f64; 16]| -> Vec<f64> {
+            let mut s = vec![0.0_f64; 32];
+            for k in 0..16 { s[k] = x[k]; s[k+16] = x[k]; }
+            s
+        };
+        let project_32 = |s: &[f64]| -> [f64; 16] {
+            let mut o = [0.0_f64; 16];
+            for k in 0..16 { o[k] = (s[k] + s[k+16]) / 2.0; }
+            o
+        };
+        let homotopy_32 = |s: &[f64]| -> Vec<f64> {
+            let ps = project_32(s);
+            let ips = section_32(&ps);
+            s.iter().zip(ips.iter()).map(|(a, b)| a - b).collect()
+        };
+
+        // Sedenion associator via pathion retraction
+        let compute_sed_m3 = |x: &[f64; 16], y: &[f64; 16], z: &[f64; 16]| -> [f64; 16] {
+            let ix = section_32(x);
+            let iy = section_32(y);
+            let iz = section_32(z);
+            let ix_iy = cd_multiply(&ix, &iy);
+            let h_ix_iy = homotopy_32(&ix_iy);
+            let t1_full = cd_multiply(&h_ix_iy, &iz);
+            let t1 = project_32(&t1_full);
+            let iy_iz = cd_multiply(&iy, &iz);
+            let h_iy_iz = homotopy_32(&iy_iz);
+            let t2_full = cd_multiply(&ix, &h_iy_iz);
+            let t2 = project_32(&t2_full);
+            let mut m3 = [0.0_f64; 16];
+            for k in 0..16 { m3[k] = t1[k] - t2[k]; }
+            m3
+        };
+
+        // Also compute the sedenion associator directly
+        let sed_assoc = |x: &[f64; 16], y: &[f64; 16], z: &[f64; 16]| -> [f64; 16] {
+            let mut sx = vec![0.0_f64; 16]; sx.copy_from_slice(x);
+            let mut sy = vec![0.0_f64; 16]; sy.copy_from_slice(y);
+            let mut sz = vec![0.0_f64; 16]; sz.copy_from_slice(z);
+            let xy = cd_multiply(&sx, &sy);
+            let xy_z = cd_multiply(&xy, &sz);
+            let yz = cd_multiply(&sy, &sz);
+            let x_yz = cd_multiply(&sx, &yz);
+            let mut assoc = [0.0_f64; 16];
+            for k in 0..16 { assoc[k] = xy_z[k] - x_yz[k]; }
+            assoc
+        };
+
+        println!("  === Pathion (32D) Retraction to Sedenion (16D) ===\n");
+
+        let mut scalar_count = 0;
+        let mut imaginary_count = 0;
+        let mut zero_count = 0;
+        let mut m3_equals_assoc = 0;
+        let mut m3_differs = 0;
+        let mut total = 0;
+
+        // Sample: all triples of distinct imaginary sedenion units (1..15)
+        // C(15,3) = 455 unordered, but 15*14*13 = 2730 ordered
+        // For speed, just check unordered triples
+        for i in 1..16_usize {
+            for j in (i+1)..16 {
+                for k in (j+1)..16 {
+                    total += 1;
+                    let mut ei = [0.0_f64; 16]; ei[i] = 1.0;
+                    let mut ej = [0.0_f64; 16]; ej[j] = 1.0;
+                    let mut ek = [0.0_f64; 16]; ek[k] = 1.0;
+
+                    let m3 = compute_sed_m3(&ei, &ej, &ek);
+                    let assoc = sed_assoc(&ei, &ej, &ek);
+
+                    let m3_norm: f64 = m3.iter().map(|v| v*v).sum::<f64>().sqrt();
+                    let assoc_norm: f64 = assoc.iter().map(|v| v*v).sum::<f64>().sqrt();
+
+                    // Check if m3 = 0
+                    if m3_norm < 1e-10 {
+                        zero_count += 1;
+                    } else if m3[0].abs() > 0.5 && m3[1..].iter().all(|v| v.abs() < 1e-10) {
+                        scalar_count += 1;
+                    } else {
+                        imaginary_count += 1;
+                    }
+
+                    // Check if m3 = assoc
+                    if assoc_norm > 1e-10 && m3_norm > 1e-10 {
+                        let diff_norm: f64 = m3.iter().zip(assoc.iter())
+                            .map(|(a, b)| (a - b).powi(2)).sum::<f64>().sqrt();
+                        if diff_norm / m3_norm < 0.01 {
+                            m3_equals_assoc += 1;
+                        } else {
+                            m3_differs += 1;
+                        }
+                    } else if assoc_norm < 1e-10 && m3_norm > 1e-10 {
+                        m3_differs += 1; // m3 nonzero but assoc zero (scalar term)
+                    }
+                }
+            }
+        }
+
+        println!("  Total unordered triples: {} (expected: C(15,3) = 455)", total);
+        println!("  Scalar m3: {}", scalar_count);
+        println!("  Imaginary m3: {}", imaginary_count);
+        println!("  Zero m3: {}", zero_count);
+        println!("  m3 = Assoc (within 1%): {}", m3_equals_assoc);
+        println!("  m3 != Assoc: {}", m3_differs);
+
+        println!("\n  Wilmot comparison:");
+        println!("  35 associative triads (quaternionic)");
+        println!("  84 Type B + 84 Type C + 252 Type X = 420 non-associative");
+        println!("  Total: 455");
+    }
+
     /// Is m3 = alpha * octonionic associator?
     #[test]
     fn test_m3_is_associator() {
