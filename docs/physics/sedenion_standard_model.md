@@ -1068,3 +1068,45 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 - arXiv:2401.01166 (2024): "Sixteen-dimensional sedenion-like associative algebra"
   Novel 16D algebra preserving associativity (differs from standard sedenions).
   Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/arxiv_2401.01166_sedenion_like_associative.pdf
+
+**Annihilator / eigentheory / alternativity (Biss-Dugger-Isaksen sequence):**
+- Biss, Dugger, Isaksen (2005): "Large annihilators in CD algebras" [arXiv:math/0511691]
+  Part I -- predecessor to the already-listed Part II. Extremal zero-divisor bounds.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/biss_2005_math0511691_large_annihilators_I.pdf
+
+**Loop automorphisms and structure:**
+- Kirshtein (2011): "Automorphism groups of Cayley-Dickson loops" [arXiv:1102.5151]
+  Loop automorphism structure across the CD tower.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/kirshtein_2011_1102.5151_automorphism_groups_cd_loops.pdf
+
+- Culbert (2007): "Cayley-Dickson algebras and loops" [Hilaris Publisher]
+  Loop-theoretic perspective complementing Kirshtein.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/culbert_2007_cd_algebras_and_loops.pdf
+
+**Zero-divisor orthogonality and graph structure:**
+- Zhilina (2021): "Orthogonality graphs of real CD algebras I: doubly alternative ZDs" [arXiv:2106.00926]
+  Zero-divisor graph structure, hexagon patterns. Directly relevant to incidence analysis.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/zhilina_2021_orthogonality_graphs_cd.pdf
+
+**Sedenion physics (Gillard-Gresnigt precursor):**
+- Gillard & Gresnigt (2019): "Three fermion generations with two unbroken gauge symmetries
+  from the complex sedenions" [arXiv:1904.03186]
+  Complex sedenions for fermion generations. Precursor to Gresnigt-Gourlay-Varma 2023.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/gillard_gresnigt_2019_1904.03186_three_fermion_complex_sedenions.pdf
+
+**Broader CD algebra theory:**
+- Darpo (2020): "CD algebras of dimension >= 4 with isotropic norm" [arXiv:1608.04898]
+  Nondivision/isotropic regime above octonions. General CD structure.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/darpo_2020_1608.04898_cd_isotropic_norm.pdf
+
+- Chapman, Guterman, Vishkautsan, Zhilina (2022): "Roots and critical points of polynomials
+  over CD algebras" [arXiv:2205.05605]
+  Polynomial theory on arbitrary-dimension CD algebras.
+  Local: ~/Documents/Projects/CayleyDickson/1_CAYLEYDICKSON_AND_MORE/chapman_2022_2205.05605_roots_polynomials_cd.pdf
+
+**Paywalled / not yet downloaded (chase items):**
+- Imaeda & Imaeda (2000): "Sedenions: algebra and analysis" [Appl. Math. Comp. 115:77-88]
+  Foundational sedenion paper. DOI: 10.1016/S0096-3003(99)00140-X
+- Cariow & Cariowa (2013): "Algorithm for fast multiplication of sedenions" [IPL 113:324-331]
+  Computational sedenion paper. DOI: 10.1016/j.ipl.2013.02.011
+- Eakin & Sathaye (1990): "Automorphisms and derivations of CD algebras" [Proc. AMS 108]
