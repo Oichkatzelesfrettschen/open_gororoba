@@ -1278,13 +1278,15 @@ This encodes the two fundamental G2 calibration forms:
 - phi (3-form, scalar on Fano lines) = the G2-invariant 3-form
 - psi (4-form dual, imaginary on non-Fano) = the co-associative 4-form
 
-**BREAKTHROUGH**: m3(x,y,z) = Assoc(x,y,z) EXACTLY (ratio 1.0000 for all
-210 triples). The homotopy transfer cubic IS the octonionic associator
-with no scaling factor. This means:
-- The A-infinity tower IS the associator hierarchy
-- The G2 calibration forms phi and psi ARE the associator components
-- No new algebraic operations needed -- everything reduces to the associator
-- The Fano classification of m3 IS the associator classification
+**KEY RESULT**: m3 decomposes into two components:
+- **Non-Fano triples (168)**: m3(x,y,z) = Assoc(x,y,z) EXACTLY (ratio 1.0)
+  where Assoc = (xy)z - x(yz) is the octonionic associator
+- **Fano triples (42)**: m3(x,y,z) = +/-2 e_0 (scalar), while Assoc = 0
+  (Fano lines are associative sub-quaternions, so their associator vanishes)
+
+The Fano scalar term is a "quaternionic trace" contribution from the
+sedenion doubling that has no counterpart in the bare octonion associator.
+The non-Fano component IS the associator; the Fano component is new.
 
 ### m4 Does NOT Vanish (Infinite A-infinity Tower)
 

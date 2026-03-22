@@ -211,3 +211,4 @@ theories/SU3JacobiFull.v
 theories/SedenionAlternativityFails.v
 theories/CDDoubleFunctor.v
 theories/CDDoubleTower.v
+theories/HomotopyTransferAssociator.v
