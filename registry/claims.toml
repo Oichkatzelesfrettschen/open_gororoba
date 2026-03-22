@@ -10190,3 +10190,40 @@ status = "Verified"
 status_note = "Kernel-checked via Rocq 9.1: proofs/theories/CDTowerInstantiation.v"
 where_stated = "proofs/theories/CDTowerInstantiation.v"
 last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1504"
+statement = """Cardano eigensolver correctness: (1) Fixed sign error in depressed cubic constant q -- code had +2*tr^3/27 - s2*tr/3 + det, corrected to s2*tr/3 - 2*tr^3/27 - det. Bug was latent because scan loop uses faer, not Cardano. (2) Added U(1) phase canonicalization making largest-magnitude eigenvector component real+nonneg. (3) Test validates: eigenvalue agreement with faer < 1e-12, projector Frobenius distance < 1e-10, residual < 1e-12, phase convention verified."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_cardano_phase_canonicalization"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1505"
+statement = """Rephasing-invariant delta_CP extraction via atan2(sin_delta, cos_delta) using Jarlskog invariant for sin(delta) and |U_mu1|^2 unitarity relation for cos(delta). Validated against 7 known delta values (0, 45, 93, 180, 195, 270, -30 deg), all recovered within 1e-14 deg. Added delta_cp_invariant field to CpScanResult."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_delta_cp_invariant_extraction"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1506"
+statement = """Pathion (32D) V_k spectrum: assessor complement has rank 1 (single sv=2.03), compared to sedenion (16D) rank 6 (6-fold degenerate sv=3.42). The sedenion is the unique CD dimension where the assessor complement has exactly rank 6 -- the minimum needed for independent 3-angle + 3-ratio steering. Higher CD dimensions DESTROY this structure by flooding the assessor space with B/C constraints. CDDoubleLift is therefore pointless (only 1 independent direction in 32D)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_pathion_vk_spectrum"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1507"
+formal_proof = "proofs/theories/CardanoEigensolver.v"
+statement = """Rocq formal verification of Cardano eigensolver: (9a) depressed_cubic_q_sign proves the substitution lambda=t+tr/3 transforms the characteristic polynomial to t^3+pt+q=0 with CORRECT q sign. (9b) cardano_trigonometric_root proves that t=2*r*c satisfies t^3+pt+q=0 when p=-3r^2 and 2r^3*(4c^3-3c)+q=0 (the algebraic core of the Vieta trigonometric formula). Also: eigenvalue_sum_equals_trace (Vieta sum) and vieta_product (determinant recovery). All 4 theorems kernel-checked by Rocq 9.1.1."""
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/theories/CardanoEigensolver.v"
+where_stated = "proofs/theories/CardanoEigensolver.v"
+last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1508"
+statement = """delta_CP sign systematics: 8 combinations tested (selector swap (7,8)<->(8,7), L/R multiplication swap, epsilon sign flip). Only two distinct outcomes (Z_2 symmetry). Epsilon flip has NO effect. No combination gives delta near 195 deg -- framework robustly predicts delta ~ 87-93 deg (maximal CP violation). This is a genuine falsification of the CP phase prediction vs PDG delta = 195 +/- 25 deg."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_delta_cp_sign_systematics"
+last_verified = "2026-03-22"

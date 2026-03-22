@@ -818,6 +818,131 @@ pub fn extract_v6_basis() -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usiz
     (basis_matrix, singular_values, assessors)
 }
 
+/// Generalized V_k basis extraction for any CD algebra dimension.
+///
+/// For dim=16 (sedenion): assessor pairs (low in 1..7, high in 9..15) = 42 pairs.
+/// For dim=32 (Pathion): assessor pairs (low in 1..15, high in 17..31) = 210 pairs.
+///
+/// The algorithm is identical to [`extract_v6_basis`] but parameterized by
+/// dimension. The "6" in V_6 referred to the sedenion-specific rank; for
+/// higher dimensions the rank may differ.
+///
+/// Returns `(basis_matrix, singular_values, assessors)` where basis_matrix
+/// has shape `(rank, n_assessors)` and singular_values has length `rank`.
+/// The `max_rank` parameter caps how many basis vectors to extract.
+pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
+    use cd_kernel::cayley_dickson::cd_multiply;
+    use crate::sedenion_subalgebras::assoc_strict;
+    use nalgebra::DMatrix;
+
+    assert!(dim.is_power_of_two() && dim >= 16, "dim must be power of 2 >= 16");
+    let half = dim / 2;
+
+    // Build assessor index: (low, high) with low in 1..half-1, high in half+1..dim-1,
+    // excluding same-offset pairs (high == low + half)
+    let mut assessors: Vec<(usize, usize)> = Vec::new();
+    for low in 1..half {
+        for high in (half + 1)..dim {
+            if high == low + half { continue; }
+            assessors.push((low, high));
+        }
+    }
+    let n_assess = assessors.len();
+
+    let build_row = |b: usize, c: usize, d: usize| -> Vec<f64> {
+        let mut eb = vec![0.0; dim]; eb[b] = 1.0;
+        let mut ec = vec![0.0; dim]; ec[c] = 1.0;
+        let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+        let products = [
+            cd_multiply(&eb, &ec),
+            cd_multiply(&eb, &ed),
+            cd_multiply(&ec, &ed),
+        ];
+        let mut row = vec![0.0_f64; n_assess];
+        for prod in &products {
+            let nonzero: Vec<usize> = prod.iter().enumerate()
+                .filter(|(_, v)| v.abs() > 1e-12)
+                .map(|(i, _)| i)
+                .collect();
+            if nonzero.len() == 1 {
+                let idx = nonzero[0];
+                for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+                    if idx == low || idx == high {
+                        row[a_idx] = 1.0;
+                    }
+                }
+            }
+        }
+        row
+    };
+
+    let mut rows_bc = Vec::new();
+    let mut rows_x = Vec::new();
+
+    for b in 1..dim {
+        for c in (b + 1)..dim {
+            for d in (c + 1)..dim {
+                let t1 = assoc_strict(dim, b, c, d);
+                let t2 = assoc_strict(dim, b, d, c);
+                let t3 = assoc_strict(dim, c, b, d);
+                if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
+                let row = build_row(b, c, d);
+                match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
+                    (false, true, false) | (false, false, true) => {
+                        rows_bc.push(nalgebra::RowDVector::from_vec(row));
+                    }
+                    _ => {
+                        rows_x.push(nalgebra::RowDVector::from_vec(row));
+                    }
+                }
+            }
+        }
+    }
+
+    if rows_bc.is_empty() || rows_x.is_empty() {
+        return (DMatrix::zeros(0, n_assess), vec![], assessors);
+    }
+
+    let mat_bc = DMatrix::from_rows(&rows_bc);
+    let mat_x = DMatrix::from_rows(&rows_x);
+
+    let svd_bc = mat_bc.transpose().svd(true, false);
+    let rank_threshold = 1e-8;
+    let u_bc = svd_bc.u.as_ref().unwrap();
+    let rank_bc = svd_bc.singular_values.iter()
+        .filter(|&&s| s > rank_threshold)
+        .count();
+
+    let q_bc = u_bc.columns(0, rank_bc);
+    let p_bc = q_bc * q_bc.transpose();
+
+    let identity = DMatrix::identity(n_assess, n_assess);
+    let proj_complement = &identity - &p_bc;
+    let c_vk = &mat_x * &proj_complement;
+
+    let svd_vk = c_vk.svd(false, true);
+    let rank_vk = svd_vk.singular_values.iter()
+        .filter(|&&s| s > rank_threshold)
+        .count();
+
+    let vt = svd_vk.v_t.as_ref().unwrap();
+
+    let n_basis = rank_vk.min(max_rank);
+    let mut basis_matrix = DMatrix::zeros(n_basis, n_assess);
+    for k in 0..n_basis {
+        for col in 0..n_assess {
+            basis_matrix[(k, col)] = vt[(k, col)];
+        }
+    }
+
+    let singular_values: Vec<f64> = svd_vk.singular_values.iter()
+        .take(rank_vk.min(max_rank * 2))  // report up to 2x max_rank for spectrum analysis
+        .copied()
+        .collect();
+
+    (basis_matrix, singular_values, assessors)
+}
+
 /// Maps 42-dimensional assessor-space vectors to 3x3 generation couplings.
 ///
 /// EXPERIMENTAL / FIRST-PASS PROJECTION HEURISTIC: the (12/12/6) partition
@@ -11335,9 +11460,114 @@ mod tests {
             println!("  Total chi2 (5 obs) = {:.2}", chi2_total);
             println!("  chi2/ndf = {:.2} (ndf = 5 - 3 params = 2)", chi2_total / 2.0);
             println!("  =========================================");
+
+            // ----- Tangent map spectral analysis (D2b) -----
+            println!("\n  --- Tangent map D_Phi at NM optimum ---");
+            // D_Phi maps (alpha, t_sol, t_atm) -> (theta_12, theta_13, theta_23, J_CP)
+            // via finite differences
+            let eps_t = 1e-4_f64;
+            let _param_names = ["alpha_CP", "t_sol", "t_atm"];
+            let mut jacobian = [[0.0_f64; 3]; 4]; // 4 observables x 3 params
+            for p in 0..3 {
+                let mut params_p = nm_params;
+                let mut params_m = nm_params;
+                params_p[p] += eps_t;
+                params_m[p] -= eps_t;
+                let mut bp = CpScanBuffers::new();
+                let mut bm = CpScanBuffers::new();
+                let rp = evaluate_cp_scan_point(
+                    params_p[0], params_p[1], params_p[2],
+                    &phi_fine, &ctx_fine, &mut bp);
+                let rm = evaluate_cp_scan_point(
+                    params_m[0], params_m[1], params_m[2],
+                    &phi_fine, &ctx_fine, &mut bm);
+                jacobian[0][p] = (rp.theta_12 - rm.theta_12) / (2.0 * eps_t);
+                jacobian[1][p] = (rp.theta_13 - rm.theta_13) / (2.0 * eps_t);
+                jacobian[2][p] = (rp.theta_23 - rm.theta_23) / (2.0 * eps_t);
+                jacobian[3][p] = (rp.j_cp - rm.j_cp) / (2.0 * eps_t);
+            }
+            // Build 4x3 nalgebra matrix for SVD
+            let jac_mat = nalgebra::DMatrix::from_fn(4, 3, |i, j| jacobian[i][j]);
+            let svd_jac = jac_mat.svd(false, false);
+            println!("  Jacobian D_Phi (4x3) singular values:");
+            for (i, s) in svd_jac.singular_values.iter().enumerate() {
+                println!("    sigma[{i}] = {s:.4e}");
+            }
+            if svd_jac.singular_values.len() >= 2 {
+                let ratio = svd_jac.singular_values[0] / svd_jac.singular_values[1];
+                println!("  Condition number sigma[0]/sigma[1] = {ratio:.2}");
+            }
+            println!("  Jacobian entries (rows: t12, t13, t23, J; cols: alpha, t_sol, t_atm):");
+            for (obs_name, row) in ["t12", "t13", "t23", "J"].iter().zip(jacobian.iter()) {
+                println!("    d{obs_name}/d: [{:+.4}, {:+.4}, {:+.4}]",
+                    row[0], row[1], row[2]);
+            }
         } else {
             println!("  No solution found within 2% angle tolerance with nonzero J_CP.");
         }
+    }
+
+    /// Pathion (32D) V_k spectrum analysis (D1).
+    ///
+    /// Compares the assessor-complement basis for dim=16 (sedenion, V_6)
+    /// versus dim=32 (Pathion, V_k). Reports:
+    /// - Number of assessor pairs at each dimension
+    /// - Singular value spectrum
+    /// - Effective rank at multiple thresholds
+    /// - Whether extra directions beyond 6 carry significant weight
+    #[test]
+    fn test_pathion_vk_spectrum() {
+        println!("--- PATHION (32D) V_k SPECTRUM ANALYSIS ---\n");
+
+        // Sedenion (16D) baseline
+        let (basis_16, sv_16, assess_16) = extract_vk_basis(16, 12);
+        println!("  dim=16 (sedenion): {} assessor pairs", assess_16.len());
+        println!("  V_k rank = {}, singular values:", basis_16.nrows());
+        for (i, &s) in sv_16.iter().enumerate() {
+            println!("    sv[{i:2}] = {s:.6e}");
+        }
+
+        // Pathion (32D)
+        println!();
+        let (basis_32, sv_32, assess_32) = extract_vk_basis(32, 20);
+        println!("  dim=32 (Pathion): {} assessor pairs", assess_32.len());
+        println!("  V_k rank = {}, singular values:", basis_32.nrows());
+        for (i, &s) in sv_32.iter().enumerate() {
+            println!("    sv[{i:2}] = {s:.6e}");
+        }
+
+        // Effective rank analysis
+        println!("\n  Effective rank summary:");
+        for &thresh in &[1e-4, 1e-6, 1e-8, 1e-10] {
+            let rank_16 = sv_16.iter().filter(|&&s| s > thresh).count();
+            let rank_32 = sv_32.iter().filter(|&&s| s > thresh).count();
+            println!("    thresh={thresh:.0e}: dim16_rank={rank_16}, dim32_rank={rank_32}");
+        }
+
+        // Gap analysis: ratio of sv[6]/sv[5] tells us if V_6 is natural
+        if sv_16.len() >= 7 {
+            let gap_16 = sv_16[6] / sv_16[5];
+            println!("\n  dim=16 gap sv[6]/sv[5] = {gap_16:.4} (small = V_6 natural cutoff)");
+        }
+        if sv_32.len() >= 7 {
+            let gap_32 = sv_32[6] / sv_32[5];
+            println!("  dim=32 gap sv[6]/sv[5] = {gap_32:.4}");
+        }
+        if sv_32.len() >= 13 {
+            let gap_32_12 = sv_32[12] / sv_32[11];
+            println!("  dim=32 gap sv[12]/sv[11] = {gap_32_12:.4}");
+        }
+
+        // Sanity check: sedenion V_6 should match original extract_v6_basis
+        let (basis_orig, sv_orig, _) = extract_v6_basis();
+        assert_eq!(basis_16.nrows(), basis_orig.nrows(),
+            "extract_vk_basis(16) rank differs from extract_v6_basis");
+        for i in 0..sv_orig.len().min(sv_16.len()) {
+            let diff = (sv_16[i] - sv_orig[i]).abs();
+            assert!(diff < 1e-10,
+                "sv mismatch at {i}: vk={:.6e}, v6={:.6e}", sv_16[i], sv_orig[i]);
+        }
+        println!("\n  Consistency check: extract_vk_basis(16) matches extract_v6_basis: OK");
     }
 
     /// delta_CP sign systematics (C2): explore 8 combinations of:
