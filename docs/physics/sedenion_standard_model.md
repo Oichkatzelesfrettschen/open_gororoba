@@ -709,8 +709,9 @@ Given algebraic ratio r and one input m1 (lightest mass):
 5. Complete Rocq SU(3): extend to Q[sqrt(3)] or 12*f integer encoding
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
    (3-blade triples that give r=0.0304 collapse mixing angles)
-7. Two-selector-type model: 3-blade for hierarchy + 2-blade for mixing
-   (analogous to see-saw: diagonal and off-diagonal scales from different physics)
+7. Two-selector-type model (in progress): 3-blade diagonal + 2-blade
+   off-diagonal with damping factor beta. At beta=0.60: r=0.0303 (1.2% PDG)
+   + theta_13=9.8 (14.7% PDG). Needs Gauss-Newton for theta_12/23.
 
 ## XII. Formal Verification (Rocq 9.1.1)
 
