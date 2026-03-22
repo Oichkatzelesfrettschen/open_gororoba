@@ -1529,6 +1529,82 @@ mod tests {
         println!("    m_b/m_d = {:.0} (PDG: ~1030)", mb_md);
     }
 
+    /// 3-blade down-type quark mass ratios (separate optimization).
+    ///
+    /// PDG: m_s/m_d ~ 20, m_b/m_s ~ 51.5.
+    #[test]
+    fn test_3blade_down_quark_mass_ratios() {
+        use rayon::prelude::*;
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [o1.clone(), o2.clone(), o3.clone()];
+        let w1 = -0.656850_f64;
+        let w2 = -0.741999_f64;
+        let pdg_ms_md = 20.0_f64;
+        let pdg_mb_ms = 51.5_f64;
+
+        let mut triples: Vec<(usize, usize, usize)> = Vec::new();
+        for i in 1..16_usize {
+            for j in (i+1)..16 { for k in (j+1)..16 { triples.push((i, j, k)); } }
+        }
+
+        let compute_3blade = |triple: (usize, usize, usize)| -> [f64; 3] {
+            let sign_table = SignTableCache::new(16);
+            let (a, b, c) = triple;
+            let ma = MajoranaMode { gamma_index: a-1, cd_basis_index: a, cd_dim: 16 };
+            let mb = MajoranaMode { gamma_index: b-1, cd_basis_index: b, cd_dim: 16 };
+            let mc = MajoranaMode { gamma_index: c-1, cd_basis_index: c, cd_dim: 16 };
+            let mut f = [0.0_f64; 3];
+            for (g, sub) in subs.iter().enumerate() {
+                f[g] = cd_braid_signed_friction(&ma, &mb, sub, &sign_table)
+                     + cd_braid_signed_friction(&ma, &mc, sub, &sign_table)
+                     + cd_braid_signed_friction(&mb, &mc, sub, &sign_table);
+            }
+            f
+        };
+
+        let all_frictions: Vec<[f64; 3]> = triples.par_iter()
+            .map(|&t| compute_3blade(t)).collect();
+
+        // Optimize for DOWN-type ratios: F_dn = w1*sel_dn + w2*sel_up
+        let af = &all_frictions;
+        let results: Vec<_> = (0..triples.len()).into_par_iter().flat_map_iter(|di| {
+            (0..triples.len()).map(move |ui| {
+                let sel_dn = &af[di];
+                let sel_up = &af[ui];
+                let mut masses = [0.0_f64; 3];
+                for g in 0..3 {
+                    masses[g] = (w1 * sel_dn[g] + w2 * sel_up[g]).exp();
+                }
+                masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let ms_md = if masses[0] > 1e-30 { masses[1] / masses[0] } else { f64::MAX };
+                let mb_ms = if masses[1] > 1e-30 { masses[2] / masses[1] } else { f64::MAX };
+                let err = ((ms_md - pdg_ms_md) / pdg_ms_md).powi(2)
+                        + ((mb_ms - pdg_mb_ms) / pdg_mb_ms).powi(2);
+                (err, ms_md, mb_ms, di, ui)
+            })
+        }).collect();
+
+        let mut sorted = results;
+        sorted.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("  === 3-Blade Down-Type Quark Mass Ratios ===\n");
+        println!("  PDG: m_s/m_d ~ 20, m_b/m_s ~ 51.5\n");
+        for (rank, e) in sorted.iter().take(5).enumerate() {
+            println!("  {:>3}. dn={:?} up={:?}: m_s/m_d={:.1}, m_b/m_s={:.1}",
+                rank+1, triples[e.3], triples[e.4], e.1, e.2);
+        }
+        let best = &sorted[0];
+        println!("\n  BEST: m_s/m_d = {:.1} (PDG: 20, err: {:.1}%)",
+            best.1, ((best.1 - pdg_ms_md) / pdg_ms_md * 100.0).abs());
+        println!("  m_b/m_s = {:.1} (PDG: 51.5, err: {:.1}%)",
+            best.2, ((best.2 - pdg_mb_ms) / pdg_mb_ms * 100.0).abs());
+    }
+
     /// 3-blade charged lepton mass ratios with universal (w1, w2).
     ///
     /// PDG: m_mu/m_e ~ 207, m_tau/m_e ~ 3477.
