@@ -5720,6 +5720,80 @@ mod tests {
         }
     }
 
+    /// Mass ratio r = dm21/dm31 scan over alpha parameters.
+    ///
+    /// PDG: r = 0.0307. Current baseline gives r = 0.213 (7x too large).
+    /// Scan alpha_ch x alpha_nu to find values giving r closer to PDG.
+    #[test]
+    fn test_mass_ratio_alpha_scan() {
+        use rayon::prelude::*;
+
+        let pdg = Pdg2024::default();
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let pdg_r = 0.0307_f64;
+
+        let grid: Vec<(f64, f64)> = (1..=80)
+            .flat_map(|a| (1..=40).map(move |b| (a as f64 * 0.1, b as f64 * 0.1)))
+            .collect();
+
+        let results: Vec<_> = grid.par_iter().map(|&(a_ch, a_nu)| {
+            let (_m_ch, m_nu) = construct_pmns_matrices_two_param(
+                ch_pair, nu_pair, a_ch, a_nu
+            );
+            let eig_nu = m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let mut ev: Vec<f64> = (0..3)
+                .map(|i| eig_nu.s().column_vector().read(i).abs())
+                .collect();
+            ev.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+            let dm21 = ev[1] * ev[1] - ev[0] * ev[0];
+            let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
+            let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
+
+            // Also compute angles
+            let (m_ch2, _) = construct_pmns_matrices_two_param(ch_pair, nu_pair, a_ch, a_nu);
+            let eig_ch = m_ch2.selfadjoint_eigendecomposition(faer::Side::Lower);
+            let u_raw = eig_ch.u().transpose() * eig_nu.u();
+            let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+            let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+            let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+                     + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+                     + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+
+            let r_err = (r - pdg_r).abs() / pdg_r;
+            (r_err, r, chi2, a_ch, a_nu, t12, t13, t23, ev[2] / ev[0])
+        }).collect();
+
+        // Sort by mass ratio accuracy
+        let mut by_r = results.clone();
+        by_r.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        println!("  === Mass Ratio r = dm21/dm31 Alpha Scan ===\n");
+        println!("  PDG: r = {:.4}, m3/m1 ~ 50\n", pdg_r);
+        println!("  Top 10 by ratio accuracy:");
+        println!("  {:>6} {:>6} | {:>8} {:>8} | {:>8} {:>8} {:>8} | {:>6}",
+            "a_ch", "a_nu", "r", "m3/m1", "t12", "t13", "t23", "chi2");
+        for e in by_r.iter().take(10) {
+            println!("  {:>6.1} {:>6.1} | {:>8.4} {:>8.1} | {:>8.2} {:>8.2} {:>8.2} | {:>6.1}",
+                e.3, e.4, e.1, e.8, e.5, e.6, e.7, e.2);
+        }
+
+        // Find best combined (good r + good angles)
+        let mut combined = results;
+        combined.sort_by(|a, b| {
+            let sa = a.0 + 0.001 * a.2; // r_error + weight * chi2_angles
+            let sb = b.0 + 0.001 * b.2;
+            sa.partial_cmp(&sb).unwrap()
+        });
+
+        println!("\n  Best combined (r accuracy + angle chi2):");
+        for e in combined.iter().take(5) {
+            println!("  a_ch={:.1} a_nu={:.1}: r={:.4} (err {:.1}%), chi2={:.1}, t12={:.1} t13={:.1} t23={:.1}",
+                e.3, e.4, e.1, e.0 * 100.0, e.2, e.5, e.6, e.7);
+        }
+    }
+
     /// Regression test pinning the Gauss-Newton 4D optimum (C-1492).
     ///
     /// Evaluates at the known-optimal parameters and verifies angles match
