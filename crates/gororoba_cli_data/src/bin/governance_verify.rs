@@ -261,6 +261,7 @@ fn verify_markdown_removal_policy(args: &CommonArgs) -> Result<()> {
         "deprecated",
         "archived",
         "locked",
+        "removed",
     ]);
     let mut counts = BTreeMap::<String, usize>::new();
     for row in table_array(&owner_map, "owner") {

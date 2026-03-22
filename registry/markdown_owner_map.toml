@@ -125,8 +125,8 @@ removal_reason = ""
 [[owner]]
 path = "papers/ghost_paper_final.md"
 owner_group = "project"
-removal_status = "active"
-removal_reason = ""
+removal_status = "removed"
+removal_reason = "papers/ directory no longer exists; content migrated to docs/"
 
 [[owner]]
 path = "docs/NEXT_ACTIONS.md"
