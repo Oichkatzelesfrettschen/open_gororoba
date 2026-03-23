@@ -1905,6 +1905,60 @@ atmo/solar coupling ratio is 0.167, but the observed ratio from PDG
 is 0.391. The TensorElementLift must amplify the atmospheric channel
 by 2.3x, constraining its 42->6 block assignment.
 
+### Phase B: 3-Generation Persistence -- Falsification Test (2026-03-23)
+
+**Outcome: CORROBORATED WITH CAVEAT** (evid E -- exact integer computation)
+
+The index structure O1/O2/O3 (each = dim/4 exclusive indices), shared = dim/4,
+was tested at dim=16, 32, 64, 128, 256.  The formula holds EXACTLY at every
+tested dimension.  Fano-like triples: 7 -> 35 -> 155 -> 651 (dim/4 - 1 shared).
+
+**Caveat -- active vs inheritance**: Psi is an ORDER-3 automorphism at dim=16
+(by Gourlay/Gresnigt construction).  At dim=32+ the psi action is inherited by
+index replication, not by a new order-3 automorphism acting on the full algebra.
+The generation INDEX PATTERN persists; the psi MECHANISM is dim=16-specific.
+
+**Stop-gate NOT triggered**: The "3 generations" claim (C-1530) is not falsified.
+However, any language stating "psi acts as an order-3 automorphism at dim=32+"
+should be qualified to "the index pattern inherits the dim=16 psi structure."
+
+See: `surreal_algebra/src/surreal_cd.rs::test_generation_falsification_64_128_256`
+
+### Phase C: Experimental Overlays (2026-03-23)
+
+**Mixing angles (Bin 2, evid B)**:
+All three PMNS angles sit inside NuFit 6.0 1-sigma (NO + SK atmospheric):
+- theta_12 = 33.36 deg vs NuFit 33.41 (pull = -0.067, inside 1-sigma)
+- theta_13 = 8.54 deg vs NuFit 8.54 (pull = 0.000)
+- theta_23 = 48.99 deg vs NuFit 49.0 (pull = -0.009)
+
+**CP phase (Bin 3, evid F -- FALSIFICATION TARGETS)**:
+- CP-A (~165 deg): INSIDE NuFit 1-sigma [138, 258].  DUNE reach ~3.5 sigma.
+- CP-B (~93 deg): OUTSIDE NuFit 1-sigma (maximal CP).  DUNE reach ~5 sigma.
+- Both values are falsification targets.  DUNE/HyperK will resolve.
+- JUNO: mass ordering + dm^2 precision ONLY -- not sensitive to delta_CP.
+
+See: `algebra_experimental/src/experimental_predictions.rs`
+
+### Phase D: Associator Flux Quantization Scaling (2026-03-23)
+
+**Scaling (evid E -- exact)**: The count formula
+  n_0 = dim/2-dim/8-1, n_1 = dim/2, n_sqrt2 = dim/8
+holds EXACTLY at dim = 16, 32, 64, 128, 256, 512, 1024.
+
+**Null baseline results**:
+- Permutation: level set CHANGES to {0,1,sqrt2,sqrt3,2} (CD not permutation-invariant)
+- Random signs: level names survive but counts DIFFER from CD formula
+- Commutative XOR: all-zero (XOR is associative -- expected)
+
+**Casimir comparison (evid H -- heuristic)**:
+No exceptional group (G2, F4, E6, E7, E8) dimension or Casimir eigenvalue
+matches the flux count formula directly.  The level names {1, sqrt(2)} coincide
+with root norms in G2 and B2, but this likely reflects the sparse ±{0,1,2}
+witness arithmetic rather than exceptional Lie structure.
+
+See: `algebra_experimental/src/topological_associator_flux.rs`
+
 ## Claims Index
 
 C-1455: Lepton mass fit w_sym ~ -1/sqrt(2)
@@ -2246,3 +2300,27 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   [Nature Scientific Reports 11, DOI: 10.1038/s41598-021-01814-1]
   Open access. G2 automorphism group -> SM gauge structure.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/g2_su3_fano_validation/
+
+### Citation corrections (2026-03-23, Phase A)
+
+The following citations were corrected or added during the research expansion:
+
+**CORRECTED -- wrong arXiv previously used:**
+- T2K+NOvA joint (2025): arXiv:2510.19888 / Nature 646, 818-824 (was: 2405.12360)
+- math/0702075: "Large annihilators in Cayley-Dickson algebras II" (not "Theory of 2^n-ions")
+
+**ADDED -- previously missing:**
+- DUNE TDR physics volume: arXiv:2002.03005. CP sensitivity shown as CONTOURS, not single sigma.
+- Hyper-K Design Report: arXiv:1805.04163
+- JUNO Yellow Book: arXiv:1507.05613 (mass ordering only -- NOT sensitive to delta_CP)
+- NuFit 6.0 (2024): www.nu-fit.org
+- Muon g-2 WP 2025: arXiv:2505.21476 (Delta_a_mu = 38(63)x10^-11, NO LONGER anomalous)
+- Fermilab final Run 1-6: a_mu^exp = 1165920715(145) x 10^-12
+
+**STATUS of g-2 claim**: The 2021 "g-2 anomaly" is NO LONGER a strong discrepancy.
+Delta_a_mu = 38(63) x 10^-11 (2025 Theory WP) is compatible within uncertainties.
+Any text in this document referencing "the muon g-2 anomaly" should be read as
+historical framing only.  The G_2 structural estimate for sin^2(theta_W) = 0.250
+(evid H, heuristic) is analogous and stands independently of the g-2 situation.
+
+All new bibliography entries are at BIB-0435 through BIB-0442 in registry/bibliography.toml.
