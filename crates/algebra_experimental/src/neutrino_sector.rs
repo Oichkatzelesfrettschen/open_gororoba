@@ -854,15 +854,24 @@ pub fn extract_v6_basis() -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usiz
 /// Uses faer `selfadjoint_eigendecomposition(Side::Lower)` (divide-and-conquer)
 /// rather than nalgebra `symmetric_eigen()` (Jacobi rotations). D&C has better
 /// cache behavior and parallelizes naturally on the 930x930 matrices at dim=64.
-/// The nalgebra fallback is preserved as [`extract_vk_basis_nalgebra`] behind
+/// The nalgebra fallback is preserved as `extract_vk_basis_nalgebra` behind
 /// `#[cfg(test)]` for backend regression.
 ///
 /// # Rank threshold
 ///
-/// Absolute+relative: `threshold = max(1e-6, 1e-4 * sv_max)`. This correctly
-/// handles rank-0 (where a pure relative threshold would be 0.0, retaining
-/// noise as signal) and clamps tiny negative eigenvalues from numerical PSD
-/// violation via `e.max(0.0).sqrt()`.
+/// Two-level: absolute+relative with a Frobenius-relative noise guard.
+///
+/// Level 1: `threshold = max(1e-6, 1e-4 * sv_max)` handles small matrices
+/// where the leading SV is a genuine signal.
+///
+/// Level 2: if `sv_max / ||G_x||_F < 1e-8`, the entire complement matrix
+/// is numerical noise and rank is forced to 0.  This catches the dim=64
+/// case where `||G_vk||_F = 3.8e-11` but `sv_max = 1.8e-6` (just above
+/// the absolute floor).  The Frobenius ratio `1.8e-6 / 2.75e5 = 6.5e-12`
+/// correctly identifies this as noise.
+///
+/// Tiny negative eigenvalues from PSD violation are clamped via
+/// `e.max(0.0).sqrt()` before thresholding.
 ///
 /// # Invariants
 ///
@@ -871,7 +880,7 @@ pub fn extract_v6_basis() -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usiz
 ///   orthonormality     : |B * B^T - I_rank|_F < 1e-10
 ///   projector          : P = B^T * B is the n_assess x n_assess projector
 ///   rank pattern       : dim=16 -> 6, dim=32 -> 1, dim=64 -> 0
-///                        (observed at threshold abs=1e-6, rel=1e-4)
+///                        (Frobenius-relative noise guard: sv_max/||G_x||_F < 1e-8)
 /// ```
 ///
 /// # Profiling
@@ -882,14 +891,14 @@ pub fn extract_v6_basis() -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usiz
 ///
 /// # Callers
 ///
-/// - [`test_numerical_regression_baselines`]: rank=6 and sv degeneracy at dim=16
-/// - [`test_pathion_vk_spectrum`]: rank pattern across dim=16/32/64
-/// - [`test_faer_vs_nalgebra_eigendecomp`]: backend subspace agreement
+/// - `test_numerical_regression_baselines`: rank=6 and sv degeneracy at dim=16
+/// - `test_pathion_vk_spectrum`: rank pattern across dim=16/32/64
+/// - `test_faer_vs_nalgebra_eigendecomp`: backend subspace agreement
 ///
-/// # Why this is a separate function from `extract_v6_basis`
+/// # Why this is a separate function from [`extract_v6_basis`]
 ///
 /// `extract_v6_basis` is hard-coded for dim=16 with the original nalgebra
-/// backend and the "6" baked into variable names. This generalized version
+/// backend and the "6" baked into variable names.  This generalized version
 /// parameterizes by dimension and uses the faster faer backend, but both
 /// compute the same subspace for dim=16 (verified by `test_pathion_vk_spectrum`).
 pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
@@ -1041,16 +1050,19 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     // Build faer matrices directly from the flat i64 buffers.  We skip the
     // nalgebra DMatrix intermediate that the old code used -- the only consumer
     // of the Gram matrices is now faer's eigendecomposition.
-    let (gram_bc_faer, gram_x_faer) = profile_stage!(3, "i64 -> f64 faer::Mat conversion", {
+    let (gram_bc_faer, gram_x_faer, gram_x_frob) = profile_stage!(3, "i64 -> f64 faer::Mat conversion", {
         let mut gbc = faer::Mat::<f64>::zeros(n_assess, n_assess);
         let mut gx = faer::Mat::<f64>::zeros(n_assess, n_assess);
+        let mut gx_frob_sq = 0.0_f64;
         for i in 0..n_assess {
             for j in 0..n_assess {
                 gbc.write(i, j, gram_bc_flat[i * n_assess + j] as f64);
-                gx.write(i, j, gram_x_flat[i * n_assess + j] as f64);
+                let v = gram_x_flat[i * n_assess + j] as f64;
+                gx.write(i, j, v);
+                gx_frob_sq += v * v;
             }
         }
-        (gbc, gx)
+        (gbc, gx, gx_frob_sq.sqrt())
     });
 
     // ---------------------------------------------------------------------------
@@ -1128,13 +1140,16 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     });
 
     // ---------------------------------------------------------------------------
-    // Rank thresholding (shared between Stages 4 and 7)
+    // Rank thresholding (two-level, shared between Stages 4 and 7)
     // ---------------------------------------------------------------------------
-    // threshold = max(abs_eps, rel_eps * sv_max)
+    // Level 1: threshold = max(abs_eps, rel_eps * sv_max)
+    //   Handles the per-eigenvalue decision for matrices with genuine signal.
     //
-    // Why not pure relative?  When sv_max = 0 (rank-0 matrix), a pure
-    // relative threshold is 0.0, which would retain floating-point noise
-    // as "signal".  The absolute floor abs_eps = 1e-6 prevents this.
+    // Level 2 (gram_vk only): Frobenius-relative noise guard.
+    //   If sv_max / ||G_x||_F < 1e-8, the entire complement is noise and
+    //   rank is forced to 0.  This catches the dim=64 case where
+    //   ||G_vk||_F = 3.8e-11, sv_max = 1.8e-6, but the ratio to the input
+    //   Gram (||G_x||_F = 2.5e5) is only 7.5e-12 -- pure numerical noise.
     //
     // Why clamp negatives?  The Gram matrices are PSD by construction
     // (G = M^T M), but floating-point accumulation can produce eigenvalues
@@ -1236,7 +1251,26 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
         // Clamp negatives to zero (see threshold rationale above)
         let vk_sv: Vec<f64> = vk_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
         let vk_sv_max = vk_sv.iter().cloned().fold(0.0_f64, f64::max);
-        let vk_threshold = abs_eps.max(rel_eps * vk_sv_max);
+
+        // Frobenius-relative guard: if the leading SV of gram_vk is
+        // negligible relative to the input Gram's Frobenius norm, the
+        // entire complement matrix is numerical noise and rank is 0.
+        //
+        // Why this is needed: at dim=64, gram_vk has ||G_vk||_F = 3.8e-11
+        // but sv_max = sqrt(3.4e-12) = 1.8e-6.  Without this guard, the
+        // absolute floor abs_eps = 1e-6 lets noise through (1.8e-6 > 1e-6).
+        // The Frobenius guard detects that 1.8e-6 / 2.75e5 = 6.5e-12,
+        // far below any physical signal.
+        let frob_rel_eps = 1e-8_f64;
+        let complement_is_noise = gram_x_frob > 0.0
+            && vk_sv_max / gram_x_frob < frob_rel_eps;
+
+        let vk_threshold = if complement_is_noise {
+            // Everything is noise -- set threshold above sv_max to get rank=0
+            vk_sv_max + 1.0
+        } else {
+            abs_eps.max(rel_eps * vk_sv_max)
+        };
 
         let mut sv_pairs: Vec<(f64, usize)> = Vec::new();
         for (k, &sv) in vk_sv.iter().enumerate() {
@@ -1256,6 +1290,8 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
                 sorted.sort_by(|a, b| b.partial_cmp(a).unwrap());
                 sorted.into_iter().take(5).collect()
             };
+            let frob_ratio = if gram_x_frob > 0.0 { vk_sv_max / gram_x_frob } else { 0.0 };
+            eprintln!("  [VK_PROFILE] gram_vk: sv_max/||G_x||_F = {frob_ratio:.3e} (noise guard: complement_is_noise={complement_is_noise})");
             eprintln!("  [VK_PROFILE] gram_vk: retained_rank={retained_rank_vk}, threshold={vk_threshold:.3e}");
             eprintln!("  [VK_PROFILE] gram_vk: leading 5 eigenvalues = {leading:?}");
         }
@@ -1289,7 +1325,7 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
 ///
 /// This is the pre-faer implementation of [`extract_vk_basis`], using nalgebra's
 /// `symmetric_eigen()` (Jacobi rotations) instead of faer's divide-and-conquer.
-/// It exists solely so that [`test_faer_vs_nalgebra_eigendecomp`] can verify
+/// It exists solely so that `test_faer_vs_nalgebra_eigendecomp` can verify
 /// that the faer migration did not change the extracted subspace.
 ///
 /// # Differences from the production version
@@ -12396,11 +12432,16 @@ mod tests {
         println!("  dim=16: rank={}, assessors={}", basis_16.nrows(), assess_16.len());
         println!("  dim=32: rank={}, assessors={}", basis_32.nrows(), assess_32.len());
         println!("  dim=64: rank={}, assessors={}", basis_64.nrows(), assess_64.len());
-        println!("  Pattern: rank drops monotonically (6 -> {} -> {}) with doubling.",
+        println!("  Pattern: 6 -> {} -> {} (rank drops with doubling).",
             basis_32.nrows(), basis_64.nrows());
-        println!("  The sedenion (dim=16) is the unique CD dimension with rank-6");
-        println!("  assessor complement -- exactly the dimension needed for");
-        println!("  independent 3-angle + 3-mass steering of flavor physics.");
+        if basis_64.nrows() == 0 {
+            println!("  dim=64 rank=0: Frobenius noise guard triggered (sv_max/||G_x||_F < 1e-8).");
+            println!("  The sedenion (dim=16) is the unique CD dimension with rank-6");
+            println!("  assessor complement -- exactly the dimension needed for");
+            println!("  independent 3-angle + 3-mass steering of flavor physics.");
+        } else {
+            println!("  NOTE: dim=64 rank={} may be noise -- check VK_PROFILE output.", basis_64.nrows());
+        }
     }
 
     /// delta_CP sign systematics (C2): explore 8 combinations of:
