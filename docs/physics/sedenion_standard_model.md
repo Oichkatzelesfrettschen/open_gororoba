@@ -1618,9 +1618,79 @@ Buchholtz-Rijke HoTT, Baez octonions, Freudenthal-Fano incidence geometry).
 9. [x] Archimedean stratification: ZD variety stratifies by class over No (C-1521)
 10. [x] Friction is field-independent: associator coefficients are integers (C-1523)
 11. [x] Implied class ratios: lepton 1.529, quark 1.771 (sector-dependent, C-1524)
-12. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
-13. Formalize Archimedean stratification in Rocq (define class equivalence, prove invariance)
-14. Test friction profile clustering to verify 3-generation emergence
+12. [x] Archimedean stratification formalized in Rocq: ZD requires alpha^2=beta^2 (C-1527)
+13. [x] Sign-profile clustering: 21 doublets, not 3 generations (C-1525)
+14. [x] Subalgebra classification: 42 = 6 intra + 24 cross + 12 shared (C-1528)
+15. [x] Cross-class coupling penalty: 10% coupling -> 1% mass shift (C-1526)
+16. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
+17. Test friction profiles with explicit psi cycling across subalgebras
+18. Connect Archimedean class ratios to experimental CKM/PMNS mixing angles
+
+### Archimedean Stratification of the ZD Variety (C-1521, C-1527)
+
+Over the surreal field No, the zero-divisor variety STRATIFIES by
+Archimedean class. The formal content (ArchimedeanStratification.v):
+
+**Theorem (zd_cross_ratio)**: If (alpha*e_i + beta*e_j)(gamma*e_k - delta*e_l) = 0
+and gamma, delta are nonzero, then alpha^2 = beta^2.
+
+**Corollary (no_zd_different_scales)**: If alpha^2 != beta^2 (different
+magnitudes, hence different Archimedean classes), then the product is
+nonzero. Zero divisors REQUIRE equal-magnitude coefficients.
+
+This means:
+- Over R: the ZD variety is a single connected 14D manifold (Reggiani G_2)
+- Over No: it stratifies into infinitely many copies, one per Archimedean class
+- Cross-class ZDs do not exist
+
+### Three-Layer Theorem: Sign Table / Generations / Mass Hierarchy
+
+The surreal CD research program establishes a three-layer structure:
+
+**Layer 1 (field-independent)**: The sign table has integer structure
+constants ({+1, -1}). Friction (the associator) is field-independent
+(C-1523): [e_1, e_4, e_6] = -2*e_3 over R, No, and F_p identically.
+The sign-profile Gram matrix gives 21 doublets (C-1525), showing the
+sign table is generation-BLIND.
+
+**Layer 2 (generation structure)**: Three octonionic subalgebras
+O_1 = {1,5,9,13}, O_2 = {2,6,10,14}, O_3 = {3,7,11,15} with shared
+quaternionic core {0,4,8,12}. The 42 assessors decompose as 6 intra-
+generation + 24 cross-generation + 12 shared-to-exclusive (C-1528).
+Psi cycles O_1 -> O_2 -> O_3, creating S_3 family symmetry.
+
+**Layer 3 (mass hierarchy)**: The Archimedean separation NATURALLY
+suppresses cross-generation coupling: at 10% of geometric mean,
+mass ratios shift by only 1% (C-1526). Class ratios are sector-
+dependent: lepton (c3-c1)/(c2-c1) = 1.529, quark = 1.771 (C-1524).
+The mass hierarchy enters through the LIFT (TensorElementLift), not
+through the friction or the Archimedean class structure directly.
+
+### F_p Universality and Finite-Field CD (C-1520)
+
+Sedenion zero divisors persist over F_p for ALL primes tested
+(p = 3, 5, 7, 11, 13). This is the scalar extension theorem in action:
+the ZD identity has integer structure constants, so it holds mod p.
+Over F_p, quadratic reciprocity governs complex ZDs: -1 is a quadratic
+residue iff p = 1 mod 4. The F_p octonion norm form is isotropic for
+dim >= 3 (Chevalley-Warning), but norm-zero does NOT automatically
+mean zero divisor. The surreal_algebra crate provides fp_cd_multiply
+and fp_norm_sq for explicit computation.
+
+### Precision Infrastructure (C-1514..C-1519)
+
+Five precision tiers are operational for CD algebra computation:
+
+| Tier | Method | Precision | Key claim |
+|------|--------|-----------|-----------|
+| x87 FP-80 oracle | 80-bit accumulation | ~18.5 digits | C-1518 |
+| x87 FTST exact zero | No epsilon threshold | Exact IEEE | C-1514 |
+| Dual-pipe verified | x87 validates f64 | Flagged divergence | C-1519 |
+| FMA single-rounding | VFMADD231PD | Half ULP | C-1516 |
+| i8 SignTableI8 | SIMD-ready layout | Exact integer | C-1515 |
+
+CacheHierarchy auto-detects L1d/L2/L3/L4 via CPUID (C-1517).
+bitvec 1.0 integrated into SignTable and SplitSignTable.
 
 ## Claims Index
 
@@ -1663,6 +1733,11 @@ C-1500: flavor_lifts crate: FlavorLift trait + 4 impls + CP scaffolding + optimi
 C-1501: Paper restructuring: 3-bin abstract, negative-result ladder, known tensions
 C-1502: S_3 lift derivation: V_6 is psi-eigenspace (-0.2215), non-equivariant lift (Epic B)
 C-1503: CDTowerInstantiation: R->C->H->O->S via CDDoubleFunctor, 0 new proofs per level
+C-1504: CDScalarExtension: ring axioms suffice for CD linearity (no ordered-field needed)
+C-1505: WilmotRetractionTheorem: 42+0+168=210 at octonion level, pathion 35+252+168=455
+C-1506: M3IsAssociator: Assoc=0 on Fano, |Assoc|=2 on non-Fano (boolean reflection)
+C-1507: M3IsAssociatorPathion: sign-table partition 35+112+308=455 (dual decomposition)
+C-1508: delta_CP sign systematics: Z_2 symmetry, maximal CP robust across 8 combinations
 C-1509: Sign-nullity stratification: exact 1:1 balance at every CD dimension
 C-1510: ZD tangent space dim=20 = 14(G_2) + 6(2-blade), Moreno 4D annihilator confirmed
 C-1511: Bales sign 50% match, p-adic norm isotropy, A_3(Q_p) division status OPEN
@@ -1682,6 +1757,7 @@ C-1524: Class ratios sector-dependent: lepton 1.529, quark 1.771 (16% mismatch)
 C-1525: Sign profiles give 21 doublets (C(7,2)) -- generations from psi, not signs
 C-1526: Cross-class coupling at 10% shifts masses by 1% (natural mixing suppression)
 C-1527: Rocq proof: ZD requires alpha^2 = beta^2 (ArchimedeanStratification.v)
+C-1528: Subalgebra classification: 42 assessors = 6 intra + 24 cross + 12 shared-to-excl
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
