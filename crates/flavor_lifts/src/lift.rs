@@ -71,7 +71,11 @@ impl AssessorToFlavorMap {
             }
         }
 
-        Self { gen_12_indices: gen_12, gen_13_indices: gen_13, gen_23_indices: gen_23 }
+        Self {
+            gen_12_indices: gen_12,
+            gen_13_indices: gen_13,
+            gen_23_indices: gen_23,
+        }
     }
 
     /// Map a 42D assessor vector to a symmetric 3x3 generation matrix.
@@ -189,7 +193,9 @@ impl FlavorLift for PsiEquivariantLift {
         let mut f_23 = 0.0_f64;
 
         for (idx, &val) in v.iter().enumerate() {
-            if idx >= self.weights.len() { break; }
+            if idx >= self.weights.len() {
+                break;
+            }
             f_12 += val * self.weights[idx][0];
             f_13 += val * self.weights[idx][1];
             f_23 += val * self.weights[idx][2];
@@ -271,7 +277,9 @@ pub fn apply_v6_perturbation(
 
     let mut v_combined = vec![0.0_f64; n_cols];
     for k in 0..n_basis {
-        if beta[k].abs() < 1e-15 { continue; }
+        if beta[k].abs() < 1e-15 {
+            continue;
+        }
         for col in 0..n_cols {
             v_combined[col] += beta[k] * v6_basis[(k, col)];
         }
