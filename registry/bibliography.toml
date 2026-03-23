@@ -3,17 +3,17 @@
 
 [bibliography]
 authoritative = true
-updated = "2026-03-18"
+updated = "2026-03-23"
 source_markdown = "docs/BIBLIOGRAPHY.md"
 group_count = 1
-section_count = 60
-entry_count = 434
+section_count = 62
+entry_count = 442
 
 [[group]]
 id = "BGR-001"
 name = "Primary Research & Data Sources"
-section_count = 60
-entry_count = 434
+section_count = 62
+entry_count = 442
 
 [[section]]
 id = "BSEC-001"
@@ -5145,7 +5145,119 @@ order_index = 434
 group = "Primary Research & Data Sources"
 section = "Quantum Information & Optics"
 citation_markdown = "**Hensen, B., et al.** (2015). *Loophole-free Bell inequality violation using electron spins separated by 1.3 kilometres*. Nature."
-notes = ['Landmark loophole-free Bell test using NV centers, measuring S = 2.42 ± 0.20.']
+notes = ['Landmark loophole-free Bell test using NV centers, measuring S = 2.42 +/- 0.20.']
 urls = []
 dois = ['10.1038/nature15759']
+source_line = 0
+
+# ---------------------------------------------------------------------------
+# Section 61: Neutrino Oscillation Experiments
+# Added 2026-03-23 (Phase A/C). Corrected from prior stale arXiv.
+# arXiv:2510.19888 is the correct T2K+NOvA joint result (not 2405.12360).
+# ---------------------------------------------------------------------------
+
+[[section]]
+id = "BSEC-061"
+name = "Neutrino Oscillation Experiments"
+groups = ["Primary Research & Data Sources"]
+entry_count = 5
+
+[[entry]]
+id = "BIB-0435"
+order_index = 435
+group = "Primary Research & Data Sources"
+section = "Neutrino Oscillation Experiments"
+citation_markdown = "**T2K and NOvA Collaborations.** (2025). *Measurement of neutrino oscillation parameters with T2K and NOvA data*. Nature 646, 818-824."
+notes = ['arXiv:2510.19888. Correct citation for T2K+NOvA joint analysis (NOT arXiv:2405.12360). First joint constraint on delta_CP with two long-baseline experiments.']
+urls = ['https://arxiv.org/abs/2510.19888']
+dois = ['10.1038/s41586-025-09217-8']
+source_line = 0
+
+[[entry]]
+id = "BIB-0436"
+order_index = 436
+group = "Primary Research & Data Sources"
+section = "Neutrino Oscillation Experiments"
+citation_markdown = "**DUNE Collaboration.** (2020). *Long-Baseline Neutrino Facility (LBNF) and Deep Underground Neutrino Experiment (DUNE): Technical Design Report, Volume II*. arXiv:2002.03005."
+notes = ['arXiv:2002.03005. DUNE TDR physics volume. CP sensitivity shown as CONTOURS, not a single sigma -- sensitivity depends on true delta_CP value.']
+urls = ['https://arxiv.org/abs/2002.03005']
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0437"
+order_index = 437
+group = "Primary Research & Data Sources"
+section = "Neutrino Oscillation Experiments"
+citation_markdown = "**Hyper-Kamiokande Collaboration.** (2018). *Hyper-Kamiokande Design Report*. arXiv:1805.04163."
+notes = ['arXiv:1805.04163. HyperK design report. CP discovery fraction ~76% at 3-sigma for full exposure.']
+urls = ['https://arxiv.org/abs/1805.04163']
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0438"
+order_index = 438
+group = "Primary Research & Data Sources"
+section = "Neutrino Oscillation Experiments"
+citation_markdown = "**JUNO Collaboration.** (2016). *Neutrino Physics with JUNO*. Journal of Physics G 43, 030401. arXiv:1507.05613."
+notes = ['arXiv:1507.05613. JUNO Yellow Book. JUNO is sensitive to mass ordering and dm^2 precision, NOT delta_CP. Data-taking began 2025-08-26.']
+urls = ['https://arxiv.org/abs/1507.05613']
+dois = ['10.1088/0954-3899/43/3/030401']
+source_line = 0
+
+[[entry]]
+id = "BIB-0439"
+order_index = 439
+group = "Primary Research & Data Sources"
+section = "Neutrino Oscillation Experiments"
+citation_markdown = "**Esteban, I., et al.** (2024). *NuFit 6.0: Global analysis of neutrino oscillation data*. www.nu-fit.org."
+notes = ['NuFit 6.0 (2024). Normal ordering (NO) with SK atmospheric data. theta_12=33.41, theta_13=8.54, theta_23=49.0 deg, delta_CP=195 deg (1-sigma [138,258]). The 3-sigma range for delta_CP covers the full 0-360 circle.']
+urls = ['http://www.nu-fit.org']
+dois = []
+source_line = 0
+
+# ---------------------------------------------------------------------------
+# Section 62: Anomalous Magnetic Moment of the Muon
+# Added 2026-03-23 (Phase A/G). NOTE: g-2 is NO LONGER a strong anomaly.
+# Delta_a_mu = 38(63) x 10^-11 (2025 WP), compatible within uncertainties.
+# ---------------------------------------------------------------------------
+
+[[section]]
+id = "BSEC-062"
+name = "Anomalous Magnetic Moment of the Muon"
+groups = ["Primary Research & Data Sources"]
+entry_count = 3
+
+[[entry]]
+id = "BIB-0440"
+order_index = 440
+group = "Primary Research & Data Sources"
+section = "Anomalous Magnetic Moment of the Muon"
+citation_markdown = "**Aoyama, T., et al.** (2025). *The anomalous magnetic moment of the muon in the Standard Model: an update*. arXiv:2505.21476."
+notes = ['Muon g-2 Theory Initiative 2025 White Paper update. Delta_a_mu = 38(63) x 10^-11 -- compatible within uncertainties with SM. The 2021 anomaly is NO LONGER a strong discrepancy.']
+urls = ['https://arxiv.org/abs/2505.21476']
+dois = []
+source_line = 0
+
+[[entry]]
+id = "BIB-0441"
+order_index = 441
+group = "Primary Research & Data Sources"
+section = "Anomalous Magnetic Moment of the Muon"
+citation_markdown = "**Aoyama, T., et al.** (2020). *The anomalous magnetic moment of the muon in the Standard Model*. Physics Reports 887, 1-166. arXiv:2006.04822."
+notes = ['arXiv:2006.04822. WP 2020 (historical context). SM prediction a_mu(SM) = 116 591 810(43) x 10^-11.']
+urls = ['https://arxiv.org/abs/2006.04822']
+dois = ['10.1016/j.physrep.2020.07.006']
+source_line = 0
+
+[[entry]]
+id = "BIB-0442"
+order_index = 442
+group = "Primary Research & Data Sources"
+section = "Anomalous Magnetic Moment of the Muon"
+citation_markdown = "**Muon g-2 Collaboration (Fermilab).** (2025). *Final measurement of the anomalous magnetic moment of the muon*. Runs 1-6."
+notes = ['Fermilab final Run 1-6 result (2025). a_mu^exp = 1165920715(145) x 10^-12. Combined with BNL: Delta_a_mu = 38(63) x 10^-11 -- compatible within uncertainties.']
+urls = []
+dois = []
 source_line = 0
