@@ -46,7 +46,11 @@ pub fn extract_pmns_angles(u: &faer::Mat<f64>) -> (f64, f64, f64) {
         0.0
     };
 
-    (theta_12.to_degrees(), theta_13.to_degrees(), theta_23.to_degrees())
+    (
+        theta_12.to_degrees(),
+        theta_13.to_degrees(),
+        theta_23.to_degrees(),
+    )
 }
 
 /// PDG 2024 central values and 1-sigma uncertainties (normal ordering).
@@ -69,12 +73,18 @@ pub struct Pdg2024 {
 impl Default for Pdg2024 {
     fn default() -> Self {
         Self {
-            theta_12_deg: 33.41, theta_12_err: 0.75,
-            theta_13_deg: 8.54,  theta_13_err: 0.12,
-            theta_23_deg: 49.0,  theta_23_err: 1.1,
-            delta_cp_deg: 195.0, delta_cp_err: 25.0,
-            dm21_sq_ev2: 7.53e-5, dm21_sq_err: 0.18e-5,
-            dm31_sq_ev2: 2.453e-3, dm31_sq_err: 0.033e-3,
+            theta_12_deg: 33.41,
+            theta_12_err: 0.75,
+            theta_13_deg: 8.54,
+            theta_13_err: 0.12,
+            theta_23_deg: 49.0,
+            theta_23_err: 1.1,
+            delta_cp_deg: 195.0,
+            delta_cp_err: 25.0,
+            dm21_sq_ev2: 7.53e-5,
+            dm21_sq_err: 0.18e-5,
+            dm31_sq_ev2: 2.453e-3,
+            dm31_sq_err: 0.033e-3,
         }
     }
 }

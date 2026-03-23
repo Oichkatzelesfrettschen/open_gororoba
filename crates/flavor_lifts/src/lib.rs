@@ -49,10 +49,12 @@
 //! | [`angles`] | PMNS angle extraction, PDG reference data | [`extract_pmns_angles`], [`angles::Pdg2024`] |
 //! | [`optimizer`] | Constrained V_6 directions, Gauss-Newton 2D | [`gauss_newton_2d`] |
 //! | [`cp`] | CP pipeline scaffolding (CP-A / CP-B) | [`cp::CpResult`], [`cp::CpPipeline`] |
+//! | [`structurable_bridge`] | Value-level middle-tier handoff | [`apply_structurable_bridge`] |
 //!
 //! # Relationship to other crates
 //!
 //! - Depends on [`cd_kernel`] for `gourlay_psi` (used by [`PsiEquivariantLift`]).
+//! - Depends on `gororoba_structurable` for value-level ternary bridge inputs.
 //! - Depends on `faer` for 3x3 matrix operations and `nalgebra` for V_6 basis.
 //! - Used by `algebra_experimental::neutrino_sector` for PMNS construction.
 //! - Does NOT depend on the selector scan infrastructure (that stays in
@@ -62,13 +64,14 @@ pub mod angles;
 pub mod cp;
 pub mod lift;
 pub mod optimizer;
+pub mod structurable_bridge;
 
-pub use angles::{extract_pmns_angles, Pdg2024};
+pub use angles::{Pdg2024, extract_pmns_angles};
 pub use lift::{
     AssessorToFlavorMap, DirectOffDiagonalLift, FlavorLift, PsiEquivariantLift, TensorElementLift,
     apply_v6_perturbation,
 };
 pub use optimizer::{
-    compute_constrained_atmospheric_direction, compute_constrained_solar_direction,
-    gauss_newton_2d,
+    compute_constrained_atmospheric_direction, compute_constrained_solar_direction, gauss_newton_2d,
 };
+pub use structurable_bridge::apply_structurable_bridge;

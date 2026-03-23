@@ -54,9 +54,8 @@ pub fn compute_constrained_solar_direction(
     g_13: &[f64; 6],
     g_23: &[f64; 6],
 ) -> [f64; 6] {
-    let dot = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
-        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
-    };
+    let dot =
+        |a: &[f64; 6], b: &[f64; 6]| -> f64 { a.iter().zip(b.iter()).map(|(x, y)| x * y).sum() };
 
     let mut u1 = *g_13;
     let norm_u1 = dot(&u1, &u1).sqrt();
@@ -65,21 +64,35 @@ pub fn compute_constrained_solar_direction(
         let norm_u2 = dot(&u2, &u2).sqrt();
         if norm_u2 < 1e-15 {
             let norm_12 = dot(g_12, g_12).sqrt();
-            if norm_12 < 1e-15 { return [0.0; 6]; }
+            if norm_12 < 1e-15 {
+                return [0.0; 6];
+            }
             let mut out = *g_12;
-            for x in &mut out { *x /= norm_12; }
+            for x in &mut out {
+                *x /= norm_12;
+            }
             return out;
         }
-        for x in &mut u2 { *x /= norm_u2; }
+        for x in &mut u2 {
+            *x /= norm_u2;
+        }
         let proj = dot(g_12, &u2);
         let mut out = [0.0_f64; 6];
-        for i in 0..6 { out[i] = g_12[i] - proj * u2[i]; }
+        for i in 0..6 {
+            out[i] = g_12[i] - proj * u2[i];
+        }
         let norm = dot(&out, &out).sqrt();
-        if norm < 1e-15 { return [0.0; 6]; }
-        for x in &mut out { *x /= norm; }
+        if norm < 1e-15 {
+            return [0.0; 6];
+        }
+        for x in &mut out {
+            *x /= norm;
+        }
         return out;
     }
-    for x in &mut u1 { *x /= norm_u1; }
+    for x in &mut u1 {
+        *x /= norm_u1;
+    }
 
     let proj_23_on_1 = dot(g_23, &u1);
     let mut u2 = [0.0_f64; 6];
@@ -88,7 +101,9 @@ pub fn compute_constrained_solar_direction(
     }
     let norm_u2 = dot(&u2, &u2).sqrt();
     if norm_u2 > 1e-15 {
-        for x in &mut u2 { *x /= norm_u2; }
+        for x in &mut u2 {
+            *x /= norm_u2;
+        }
     }
 
     let proj_12_on_1 = dot(g_12, &u1);
@@ -100,8 +115,12 @@ pub fn compute_constrained_solar_direction(
     }
 
     let norm = dot(&optimal, &optimal).sqrt();
-    if norm < 1e-15 { return [0.0; 6]; }
-    for x in &mut optimal { *x /= norm; }
+    if norm < 1e-15 {
+        return [0.0; 6];
+    }
+    for x in &mut optimal {
+        *x /= norm;
+    }
 
     optimal
 }
@@ -114,21 +133,30 @@ pub fn compute_constrained_atmospheric_direction(
     g_13: &[f64; 6],
     u_solar: &[f64; 6],
 ) -> [f64; 6] {
-    let dot = |a: &[f64; 6], b: &[f64; 6]| -> f64 {
-        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
-    };
+    let dot =
+        |a: &[f64; 6], b: &[f64; 6]| -> f64 { a.iter().zip(b.iter()).map(|(x, y)| x * y).sum() };
 
     let mut u1 = *g_13;
     let norm_u1 = dot(&u1, &u1).sqrt();
-    if norm_u1 < 1e-15 { return [0.0; 6]; }
-    for x in &mut u1 { *x /= norm_u1; }
+    if norm_u1 < 1e-15 {
+        return [0.0; 6];
+    }
+    for x in &mut u1 {
+        *x /= norm_u1;
+    }
 
     let proj = dot(u_solar, &u1);
     let mut u2 = *u_solar;
-    for i in 0..6 { u2[i] -= proj * u1[i]; }
+    for i in 0..6 {
+        u2[i] -= proj * u1[i];
+    }
     let norm_u2 = dot(&u2, &u2).sqrt();
-    if norm_u2 < 1e-15 { return [0.0; 6]; }
-    for x in &mut u2 { *x /= norm_u2; }
+    if norm_u2 < 1e-15 {
+        return [0.0; 6];
+    }
+    for x in &mut u2 {
+        *x /= norm_u2;
+    }
 
     let proj_1 = dot(g_23, &u1);
     let proj_2 = dot(g_23, &u2);
@@ -138,8 +166,12 @@ pub fn compute_constrained_atmospheric_direction(
     }
 
     let norm = dot(&optimal, &optimal).sqrt();
-    if norm < 1e-15 { return [0.0; 6]; }
-    for x in &mut optimal { *x /= norm; }
+    if norm < 1e-15 {
+        return [0.0; 6];
+    }
+    for x in &mut optimal {
+        *x /= norm;
+    }
 
     optimal
 }
@@ -181,23 +213,33 @@ where
         let (a12_m2, a13_m2, a23_m2) = angles_fn(t1, t2 - eps);
 
         let j = [
-            [weights.0 * (a12_p1 - a12_m1) / (2.0 * eps * pdg.0),
-             weights.0 * (a12_p2 - a12_m2) / (2.0 * eps * pdg.0)],
-            [weights.1 * (a13_p1 - a13_m1) / (2.0 * eps * pdg.1),
-             weights.1 * (a13_p2 - a13_m2) / (2.0 * eps * pdg.1)],
-            [weights.2 * (a23_p1 - a23_m1) / (2.0 * eps * pdg.2),
-             weights.2 * (a23_p2 - a23_m2) / (2.0 * eps * pdg.2)],
+            [
+                weights.0 * (a12_p1 - a12_m1) / (2.0 * eps * pdg.0),
+                weights.0 * (a12_p2 - a12_m2) / (2.0 * eps * pdg.0),
+            ],
+            [
+                weights.1 * (a13_p1 - a13_m1) / (2.0 * eps * pdg.1),
+                weights.1 * (a13_p2 - a13_m2) / (2.0 * eps * pdg.1),
+            ],
+            [
+                weights.2 * (a23_p1 - a23_m1) / (2.0 * eps * pdg.2),
+                weights.2 * (a23_p2 - a23_m2) / (2.0 * eps * pdg.2),
+            ],
         ];
 
         let jtj = [
-            [j[0][0]*j[0][0] + j[1][0]*j[1][0] + j[2][0]*j[2][0],
-             j[0][0]*j[0][1] + j[1][0]*j[1][1] + j[2][0]*j[2][1]],
-            [j[0][1]*j[0][0] + j[1][1]*j[1][0] + j[2][1]*j[2][0],
-             j[0][1]*j[0][1] + j[1][1]*j[1][1] + j[2][1]*j[2][1]],
+            [
+                j[0][0] * j[0][0] + j[1][0] * j[1][0] + j[2][0] * j[2][0],
+                j[0][0] * j[0][1] + j[1][0] * j[1][1] + j[2][0] * j[2][1],
+            ],
+            [
+                j[0][1] * j[0][0] + j[1][1] * j[1][0] + j[2][1] * j[2][0],
+                j[0][1] * j[0][1] + j[1][1] * j[1][1] + j[2][1] * j[2][1],
+            ],
         ];
         let jtr = [
-            j[0][0]*r[0] + j[1][0]*r[1] + j[2][0]*r[2],
-            j[0][1]*r[0] + j[1][1]*r[1] + j[2][1]*r[2],
+            j[0][0] * r[0] + j[1][0] * r[1] + j[2][0] * r[2],
+            j[0][1] * r[0] + j[1][1] * r[1] + j[2][1] * r[2],
         ];
 
         let lambda = 0.01;
@@ -205,7 +247,9 @@ where
         let a12_m = jtj[0][1];
         let a22 = jtj[1][1] + lambda;
         let det = a11 * a22 - a12_m * a12_m;
-        if det.abs() < 1e-30 { break; }
+        if det.abs() < 1e-30 {
+            break;
+        }
 
         let dt1 = -(a22 * jtr[0] - a12_m * jtr[1]) / det;
         let dt2 = -(a11 * jtr[1] - a12_m * jtr[0]) / det;
@@ -230,12 +274,14 @@ where
             alpha *= 0.5;
         }
 
-        if dt1.abs() < 1e-6 && dt2.abs() < 1e-6 { break; }
+        if dt1.abs() < 1e-6 && dt2.abs() < 1e-6 {
+            break;
+        }
     }
 
     let (a12, a13, a23) = angles_fn(t1, t2);
     let score = ((a12 - pdg.0) / pdg.0).powi(2)
-              + ((a13 - pdg.1) / pdg.1).powi(2)
-              + ((a23 - pdg.2) / pdg.2).powi(2);
+        + ((a13 - pdg.1) / pdg.1).powi(2)
+        + ((a23 - pdg.2) / pdg.2).powi(2);
     (t1, t2, (a12, a13, a23), score)
 }
