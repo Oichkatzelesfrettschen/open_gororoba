@@ -3201,6 +3201,8 @@ dependencies = [
  "gororoba_structurable",
  "nalgebra 0.33.2",
  "rayon",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -3992,6 +3994,7 @@ dependencies = [
  "rand_distr 0.4.3",
  "rustfft",
  "serde",
+ "serde_json",
  "sha2",
  "verified_core",
  "wheel",
@@ -4395,6 +4398,8 @@ name = "gororoba_structurable"
 version = "0.1.0"
 dependencies = [
  "cd_kernel",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

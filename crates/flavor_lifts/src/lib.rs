@@ -49,7 +49,7 @@
 //! | [`angles`] | PMNS angle extraction, PDG reference data | [`extract_pmns_angles`], [`angles::Pdg2024`] |
 //! | [`optimizer`] | Constrained V_6 directions, Gauss-Newton 2D | [`gauss_newton_2d`] |
 //! | [`cp`] | CP pipeline scaffolding (CP-A / CP-B) | [`cp::CpResult`], [`cp::CpPipeline`] |
-//! | [`structurable_bridge`] | Value-level middle-tier handoff and snapshots | [`apply_structurable_bridge`], [`sample_structurable_bridge`] |
+//! | [`structurable_bridge`] | Value-level middle-tier handoff and snapshots | [`apply_structurable_bridge`], [`sample_structurable_bridge`], [`StructurableBridgeSnapshot`] |
 //!
 //! # Relationship to other crates
 //!
@@ -59,6 +59,8 @@
 //! - Used by `algebra_experimental::neutrino_sector` for PMNS construction.
 //! - Does NOT depend on the selector scan infrastructure (that stays in
 //!   `neutrino_sector.rs`).
+//! - Exploration helpers expose both text summaries and JSON snapshots.
+//! - For a quick probe, run `cargo run -p flavor_lifts --example structurable_bridge_snapshot`.
 
 pub mod angles;
 pub mod basis;

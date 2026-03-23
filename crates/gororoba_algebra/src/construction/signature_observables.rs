@@ -8,9 +8,10 @@ use super::{exotic_octonions::HybridSignatureOctonion, split_octonion::SplitOcto
 use cd_kernel::{
     cayley_dickson::CdSignature, cross_generational_friction, is_zero_divisor_koebisu, koebisu_d2,
 };
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ObservableSignatureRegime {
     CompactEuclidean,
     SplitIndefinite,
@@ -38,10 +39,10 @@ pub trait SignatureAwareObservable {
     fn evaluate(&self) -> Self::Output;
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ObservableReading {
     pub regime: ObservableSignatureRegime,
-    pub observable: &'static str,
+    pub observable: String,
     pub primary_value: f64,
     pub secondary_value: Option<f64>,
     pub flagged: bool,
@@ -54,6 +55,14 @@ impl ObservableReading {
             self.secondary_value.unwrap_or(0.0),
             if self.flagged { 1.0 } else { 0.0 },
         ]
+    }
+
+    pub fn summary_line(&self) -> String {
+        self.to_string()
+    }
+
+    pub fn to_json_pretty(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string_pretty(self)
     }
 }
 
@@ -74,7 +83,7 @@ impl fmt::Display for ObservableReading {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CompactKoebisuResult {
     pub d2: f64,
     pub is_zero_divisor: bool,
@@ -111,7 +120,7 @@ impl CompactKoebisuResult {
     pub fn to_reading(&self) -> ObservableReading {
         ObservableReading {
             regime: ObservableSignatureRegime::CompactEuclidean,
-            observable: "koebisu-d2",
+            observable: "koebisu-d2".to_string(),
             primary_value: self.d2,
             secondary_value: Some(if self.is_zero_divisor { 1.0 } else { 0.0 }),
             flagged: self.is_zero_divisor,
@@ -180,7 +189,7 @@ pub fn cross_generational_friction_compact_reading(
 ) -> ObservableReading {
     ObservableReading {
         regime: ObservableSignatureRegime::CompactEuclidean,
-        observable: "cross-generational-friction",
+        observable: "cross-generational-friction".to_string(),
         primary_value: cross_generational_friction_compact(
             mode_a,
             mode_b,
@@ -192,7 +201,7 @@ pub fn cross_generational_friction_compact_reading(
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SplitNormDiagnostics {
     pub norm_squared: f64,
     pub is_isotropic: bool,
@@ -228,7 +237,7 @@ impl SplitNormDiagnostics {
     pub fn to_reading(&self) -> ObservableReading {
         ObservableReading {
             regime: ObservableSignatureRegime::SplitIndefinite,
-            observable: "split-norm",
+            observable: "split-norm".to_string(),
             primary_value: self.norm_squared,
             secondary_value: Some(if self.is_isotropic { 1.0 } else { 0.0 }),
             flagged: self.is_isotropic,
@@ -315,5 +324,25 @@ mod tests {
             ObservableSignatureRegime::SplitIndefinite.to_string(),
             "split-indefinite"
         );
+    }
+
+    #[test]
+    fn test_observable_reading_json_roundtrip() {
+        let reading = ObservableReading {
+            regime: ObservableSignatureRegime::CompactEuclidean,
+            observable: "koebisu-d2".to_string(),
+            primary_value: 0.0,
+            secondary_value: Some(1.0),
+            flagged: true,
+        };
+
+        let json = reading
+            .to_json_pretty()
+            .expect("observable reading should serialize");
+        let decoded: ObservableReading =
+            serde_json::from_str(&json).expect("observable reading should deserialize");
+
+        assert_eq!(decoded, reading);
+        assert!(reading.summary_line().contains("koebisu-d2"));
     }
 }

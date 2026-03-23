@@ -19,6 +19,7 @@ sha2 = { workspace = true }
 wide = { workspace = true }
 rustfft = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 csv = { workspace = true }
 
 # External algebra crates (workspace)
