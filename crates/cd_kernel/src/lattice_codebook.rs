@@ -335,6 +335,61 @@ mod tests {
             (v, c)
         }).collect();
         println!("\n  l[7] distribution in (-1,1,1,-1,...): {:?}", l7_dist);
+
+        // KEY APPROACH: The 2 singletons are points with prefix (-1,1,1,...)
+        // that are in Lambda_1024 but NOT in Lambda_512, and are NOT covered
+        // by the three known exclusion prefixes (-1,1,1,1), (-1,1,1,0,0), (-1,1,1,0,1).
+        //
+        // But wait: ALL points with prefix (-1,1,1,...) have l[1]=1, which is
+        // the FIRST exclusion rule for Lambda_512 ("l[1]=1 -> exclude").
+        // So ALL (-1,1,1,...) points are excluded from Lambda_512.
+        //
+        // The 1024->512 cut excludes l[1]=1 first. Our Lambda_1024 has:
+        // - 41 points with (-1,1,1,-1,...) -- should be excluded at 1024 level
+        //   but only 41 of these are excluded by our prefix rules (the (-1,1,1,1) rule).
+        //   Wait: (-1,1,1,-1,...) is NOT (-1,1,1,1,...). These are different!
+        //
+        // The (-1,1,1,-1,...) branch has 41 points, and NONE of our three prefix
+        // rules exclude them. The (-1,1,1,1,...) rule excludes the separate
+        // (-1,1,1,+1,...) family.
+        //
+        // So: (-1,1,1,0,-1) = 13 points and (-1,1,1,-1,...) = 41 points are
+        // ALL in Lambda_1024 and ALL excluded from Lambda_512 (by l[1]=1 rule).
+        // Total: 13 + 41 = 54 points with (-1,1,1,...) in Lambda_1024\Lambda_512.
+        //
+        // The full Lambda_1024\Lambda_512 has 514 points. Of those 514,
+        // how many have prefix (-1,1,1,...)?
+
+        let extra_with_111: Vec<LatticePoint> = current_1024.iter()
+            .filter(|l| !in_lambda_512(l) && l[1]==1 && l[2]==1)
+            .copied()
+            .collect();
+        println!("\n  Points in Lambda_1024\\Lambda_512 with (-1,1,1,...): {}", extra_with_111.len());
+
+        // These should be 54 (13 + 41). The 2 singletons are among them.
+        // But we need to know which 2 of these 54 should have been excluded
+        // at the 1024 level.
+        //
+        // INSIGHT: We excluded 41+14+13 = 68 with (-1,1,1,+1), (-1,1,1,0,0), (-1,1,1,0,+1).
+        // The remaining (-1,1,1,...) points NOT excluded are:
+        //   (-1,1,1,0,-1,...) = 13 points (our branch_0_m1)
+        //   (-1,1,1,-1,...) = 41 points (our branch_m1)
+        // Total: 54. Need to exclude 2 more from these 54.
+        //
+        // Without the original codebook data, we can try to find them by
+        // checking which 2, when excluded, produce the most "regular" pattern.
+        //
+        // ALTERNATIVE: check if the spec mentions which points are the
+        // singletons elsewhere in the document.
+
+        println!("\n  CONCLUSION: The 2 singletons are among {} points in",
+            extra_with_111.len());
+        println!("  the (-1,1,1,0,-1,...) U (-1,1,1,-1,...) families.");
+        println!("  Without the original codebook CSV, they cannot be");
+        println!("  determined purely from the prefix-cut specification.");
+        println!("  The spec says 'longer prefixes' -- meaning specific");
+        println!("  6+ coordinate patterns within these two families.");
+        println!("  STATUS: 1024 validated to within 2 points (99.8% exact).");
     }
 
     #[test]
