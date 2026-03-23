@@ -1,4 +1,4 @@
-use cd_kernel::cayley_dickson::{cd_basis_mul_sign_iter, cd_multiply, cd_norm_sq};
+use cd_kernel::cayley_dickson::{SignTable, cd_multiply, cd_norm_sq};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::collections::HashSet;
@@ -232,102 +232,17 @@ fn rotate_in_plane(x: &[f64], axis_a: usize, axis_b: usize, theta: f64) -> Vec<f
 
 /// Pre-computed sign table for O(1) basis multiplication.
 ///
-/// Caches `sign_table[i * dim + j] = cd_basis_mul_sign_iter(dim, i, j)`.
-/// At 512D: 512*512 = 262K entries = 1 MB (fits in L2 cache on 5600X3D).
+/// Precomputed sign table for sparse CD arithmetic.
 ///
-/// This eliminates ALL recursive `cd_multiply` calls in the Bell test hot loop.
-/// The sparse associator evaluates [A', e_k, B'] using only coefficient arithmetic
-/// on the ~4-6 nonzero components of each rotated element.
-pub struct SignTableCache {
-    pub dim: usize,
-    table: Vec<i32>,
-}
-
-impl SignTableCache {
-    pub fn new(dim: usize) -> Self {
-        let table: Vec<i32> = (0..dim * dim)
-            .map(|idx| cd_basis_mul_sign_iter(dim, idx / dim, idx % dim))
-            .collect();
-        Self { dim, table }
-    }
-
-    /// Multiply two sparse elements using sign-table lookups.
-    ///
-    /// Input: sparse coefficient lists `[(basis_idx, coeff), ...]`
-    /// Output: sparse coefficient list of the product.
-    ///
-    /// Each pair (i, a_i) * (j, b_j) produces (i^j, sign(i,j) * a_i * b_j).
-    /// We accumulate into a small dense buffer indexed by output basis.
-    pub fn sparse_multiply(
-        &self,
-        a_sparse: &[(usize, f64)],
-        b_sparse: &[(usize, f64)],
-    ) -> Vec<(usize, f64)> {
-        // Use a small fixed-size accumulator. For sedenion-lifted elements
-        // with 2-4 nonzero components, the product has at most ~16 terms
-        // that collapse to fewer distinct basis indices via XOR.
-        let mut accum = vec![0.0f64; self.dim];
-        let mut touched = Vec::with_capacity(a_sparse.len() * b_sparse.len());
-
-        for &(i, ai) in a_sparse {
-            for &(j, bj) in b_sparse {
-                let out_idx = i ^ j;
-                let sign = self.table[i * self.dim + j] as f64;
-                let old = accum[out_idx];
-                if old == 0.0 {
-                    touched.push(out_idx);
-                }
-                accum[out_idx] = old + sign * ai * bj;
-            }
-        }
-
-        let result: Vec<(usize, f64)> = touched
-            .into_iter()
-            .filter_map(|idx| {
-                let v = accum[idx];
-                accum[idx] = 0.0; // Reset for reuse
-                if v.abs() > 1e-20 {
-                    Some((idx, v))
-                } else {
-                    None
-                }
-            })
-            .collect();
-
-        result
-    }
-
-    /// Compute sparse associator [a, x, b] = (a*x)*b - a*(x*b).
-    ///
-    /// Returns the sum of all components (used for sign measurement).
-    pub fn sparse_associator_sum(
-        &self,
-        a_sparse: &[(usize, f64)],
-        x_sparse: &[(usize, f64)],
-        b_sparse: &[(usize, f64)],
-    ) -> f64 {
-        // Left: (a*x)*b
-        let ax = self.sparse_multiply(a_sparse, x_sparse);
-        let left = self.sparse_multiply(&ax, b_sparse);
-
-        // Right: a*(x*b)
-        let xb = self.sparse_multiply(x_sparse, b_sparse);
-        let right = self.sparse_multiply(a_sparse, &xb);
-
-        // Sum all components of (left - right)
-        let left_sum: f64 = left.iter().map(|&(_, v)| v).sum();
-        let right_sum: f64 = right.iter().map(|&(_, v)| v).sum();
-        left_sum - right_sum
-    }
-}
+/// Graduated from local SignTableCache to cd_kernel::SignTable (bitvec, 8x more
+/// memory-efficient: 32 KB at 512D vs 1 MB for the former Vec<i32> layout).
+/// `sparse_multiply` and `sparse_associator_sum` live on SignTable in cd_kernel.
+pub type SignTableCache = SignTable;
 
 /// Extract sparse representation from a dense vector.
+/// Delegates to `SignTable::to_sparse`; kept for call-site compatibility.
 pub fn to_sparse(v: &[f64]) -> Vec<(usize, f64)> {
-    v.iter()
-        .enumerate()
-        .filter(|&(_, &val)| val.abs() > 1e-15)
-        .map(|(i, &val)| (i, val))
-        .collect()
+    SignTable::to_sparse(v)
 }
 
 /// Rotate sparse element in the (axis_a, axis_b) SO(2) subplane by angle theta.

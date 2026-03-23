@@ -32,7 +32,7 @@ pub use signature::{
     CdSignature, SplitSignTable, cd_basis_mul_sign_split, cd_basis_mul_sign_split_iter,
     cd_mul_table_split, cd_multiply_split,
 };
-pub use signs::{SignTable, cd_basis_mul_sign, cd_basis_mul_sign_iter, cd_to_sparse};
+pub use signs::{SignTable, cd_basis_mul_sign, cd_basis_mul_sign_iter};
 pub use simd::{
     cd_multiply_flat_into, cd_multiply_simd, cd_norm_sq_simd, octonion_multiply_flat,
     octonion_multiply_scalar_flat, quaternion_multiply_flat, quaternion_multiply_scalar_flat,
