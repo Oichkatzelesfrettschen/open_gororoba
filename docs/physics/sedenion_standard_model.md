@@ -1630,6 +1630,17 @@ C-1500: flavor_lifts crate: FlavorLift trait + 4 impls + CP scaffolding + optimi
 C-1501: Paper restructuring: 3-bin abstract, negative-result ladder, known tensions
 C-1502: S_3 lift derivation: V_6 is psi-eigenspace (-0.2215), non-equivariant lift (Epic B)
 C-1503: CDTowerInstantiation: R->C->H->O->S via CDDoubleFunctor, 0 new proofs per level
+C-1509: Sign-nullity stratification: exact 1:1 balance at every CD dimension
+C-1510: ZD tangent space dim=20 = 14(G_2) + 6(2-blade), Moreno 4D annihilator confirmed
+C-1511: Bales sign 50% match, p-adic norm isotropy, A_3(Q_p) division status OPEN
+C-1512: CD sign table verified correct through 2048D (11th level)
+C-1513: Lattice codebook: 5/6 levels exact (Lambda_1024 off by 2)
+C-1514: x87 FTST exact zero-divisor detection (no epsilon threshold)
+C-1515: SignTableI8: i8 sign table for SIMD-ready CD multiply
+C-1516: FMA CD multiply: max diff vs recursive = 4.44e-16 (half ULP)
+C-1517: CacheHierarchy: auto-detect L1-L4 via CPUID, CPU-agnostic
+C-1518: x87 FP-80 CD multiply oracle (80-bit accumulation)
+C-1519: Dual-pipe verified multiply: x87 oracle validates f64 fast path
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
