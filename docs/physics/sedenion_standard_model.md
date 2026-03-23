@@ -1692,6 +1692,40 @@ Five precision tiers are operational for CD algebra computation:
 CacheHierarchy auto-detects L1d/L2/L3/L4 via CPUID (C-1517).
 bitvec 1.0 integrated into SignTable and SplitSignTable.
 
+### Psi-Friction Profiles and Generation Mechanism (C-1529..C-1533)
+
+The 42x3 friction matrix F[assessor][subalgebra] reveals the deepest
+structure of the generation mechanism:
+
+**Intra-generation friction = ZERO (C-1529)**: Assessors connecting two
+indices within the same exclusive subalgebra produce NO topological
+friction. Mass generation requires CROSS-generation friction exclusively.
+
+**Cross-generation friction is quantized (C-1529)**: The friction values
+are exact multiples of 2*sqrt(2) = 2.828. The dominant subalgebra gets
+3x the subdominant (8.485 vs 2.828).
+
+**3 generations persist at dim=32 (C-1530)**: The generation count is
+topologically stable because psi has order 3 regardless of CD level.
+Each generation doubles its exclusive index count under CD doubling
+(4 -> 8 at dim=32). Fano-like triples: 7 -> 35 -> 155.
+
+**Quaternionic core mediates atmospheric mixing (C-1531)**: The 6
+atmospheric assessors use shared-to-exclusive crossings (democratic,
+unsuppressed by Archimedean separation). Solar/reactor use exclusive-
+to-exclusive (24 assessors, suppressed). This structurally predicts
+theta_23 > theta_12 > theta_13 (matching PDG ordering).
+
+**Symmetric friction implies pure class scaling (C-1532)**: Each
+generation gets IDENTICAL total friction (11.31). The mass hierarchy
+is ENTIRELY determined by Archimedean class separations:
+c_2 - c_1 = 0.471, c_3 - c_1 = 0.721, ratio = 1.529.
+
+**TensorElementLift amplification factor (C-1533)**: The structural
+atmo/solar coupling ratio is 0.167, but the observed ratio from PDG
+is 0.391. The TensorElementLift must amplify the atmospheric channel
+by 2.3x, constraining its 42->6 block assignment.
+
 ## Claims Index
 
 C-1455: Lepton mass fit w_sym ~ -1/sqrt(2)
@@ -1758,6 +1792,11 @@ C-1525: Sign profiles give 21 doublets (C(7,2)) -- generations from psi, not sig
 C-1526: Cross-class coupling at 10% shifts masses by 1% (natural mixing suppression)
 C-1527: Rocq proof: ZD requires alpha^2 = beta^2 (ArchimedeanStratification.v)
 C-1528: Subalgebra classification: 42 assessors = 6 intra + 24 cross + 12 shared-to-excl
+C-1529: Intra-generation friction = ZERO; cross-gen quantized in 2*sqrt(2), 1:3 ratio
+C-1530: 3 generations persist at dim=32 (topological: psi order 3 is CD-level-independent)
+C-1531: Quaternionic core {0,4,8,12} mediates atmospheric mixing (democratic, unsuppressed)
+C-1532: Symmetric friction (11.31/gen) -> mass hierarchy is pure Archimedean class scaling
+C-1533: TensorElementLift must amplify atmospheric by 2.3x over structural baseline
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
