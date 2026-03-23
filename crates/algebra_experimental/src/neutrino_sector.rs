@@ -11807,6 +11807,7 @@ mod tests {
     /// - Effective rank at multiple thresholds
     /// - Whether extra directions beyond 6 carry significant weight
     #[test]
+    #[ignore] // ~4 min due to dim=64 triple loop (C(63,3) = 39,711 triads)
     fn test_pathion_vk_spectrum() {
         println!("--- PATHION (32D) V_k SPECTRUM ANALYSIS ---\n");
 
