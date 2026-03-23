@@ -1074,6 +1074,139 @@ Key design decisions:
   implementation alongside the original. Canonical comparison test sorts by
   (i,j,k,l) tuple and asserts identical result sets.
 
+### Eigensolver Backend Swap: nalgebra -> faer (2026-03-22)
+
+The `extract_vk_basis` function performs two eigendecompositions on dense
+Gram matrices built from Cayley-Dickson associator triads.  The first
+decomposes the B/C Gram to find the bilinear Cayley column space; the
+second decomposes the orthogonal complement of that space projected
+onto the cross-term Gram, revealing the "V_k" basis -- the non-associative
+directions that steer PMNS mixing angles.
+
+The bottleneck at dim=64 is the 930x930 eigendecomposition (930 assessor
+pairs from low in 1..31, high in 33..63, excluding same-offset).  This
+motivated a measurement-driven backend swap from nalgebra to faer.
+
+#### Why faer instead of nalgebra
+
+nalgebra's `symmetric_eigen()` uses Jacobi rotations: iteratively zeroing
+off-diagonal elements one (i,j) pair at a time.  Convergence is quadratic
+but each "sweep" costs O(n^2) Givens rotations, and multiple sweeps are
+needed.  The algorithm has poor cache behavior because it accesses
+arbitrary (i,j) pairs across the full matrix.
+
+faer's `selfadjoint_eigendecomposition()` uses Householder tridiagonalization
+(O(n^3) once, sequential and cache-friendly) followed by divide-and-conquer
+on the tridiagonal form.  D&C recursively splits the n-by-n problem into
+two ~n/2 problems via a rank-1 perturbation, then merges with a secular
+equation solve.  This parallelizes naturally and has O(n^2) merge cost
+per level, giving O(n^2 log n) total for the tridiagonal phase.
+
+For the 42x42 Gram at dim=16, the difference is negligible (~12ms either
+way).  At 930x930 (dim=64), D&C is expected to dominate.
+
+#### Instrumentation (8 profiled stages)
+
+Set `VK_PROFILE=1` to emit per-stage wall-clock timing and structural
+diagnostics to stderr.  The stages and their roles:
+
+```text
+  Stage 1: Sign table construction              -- O(dim^2) precompute
+  Stage 2: Rayon parallel Gram accumulation      -- C(dim-1, 3) triads
+  Stage 3: i64 -> f64 faer::Mat conversion       -- exact, single pass
+  Stage 4: Eigendecomp gram_bc (faer D&C)        -- finds B/C column space
+  Stage 5: Projector P_BC from retained eigvecs  -- sum |v_k><v_k|
+  Stage 6: Complement matmul P_perp*G_x*P_perp  -- isolates V_k Gram
+  Stage 7: Eigendecomp gram_vk (faer D&C)        -- extracts V_k basis
+  Stage 8: Threshold + descending sort + extract -- final basis matrix
+```
+
+At each eigendecomp input, the profiler also reports:
+- `max_asym_pre`: max |M[i,j] - M[j,i]| before symmetrization
+- `max_asym_post`: same, after symmetrization (should be 0.0)
+- `nnz_fraction`: fraction of entries with |M[i,j]| > 1e-12
+- `frobenius_norm`: ||M||_F for residual normalization
+- `retained_rank`: count of SVs above threshold
+- Leading 5 eigenvalues (spectrum snapshot)
+
+#### Measured dim=16 diagnostics (42x42 Gram)
+
+```text
+  gram_bc: max_asym_pre = 0.0 (exact -- integer construction)
+           nnz_fraction = 1.0 (fully dense)
+           frobenius    = 1.15e3
+           retained_rank = 21, threshold = 3.2e-3
+           leading eigs = [1024.0, 207.2, 207.2, 207.2, 207.2]
+
+  gram_vk: max_asym_pre = 7.3e-15 (from projector matmul -- not integer)
+           nnz_fraction = 1.0 (fully dense)
+           frobenius    = 2.86e1
+           retained_rank = 6, threshold = 3.4e-4
+           leading eigs = [11.696, 11.696, 11.696, 11.696, 11.696]
+```
+
+Two key findings from these diagnostics:
+
+1. **nnz_fraction = 1.0** for both matrices.  Sparse eigensolvers (sprs,
+   ARPACK-style) would gain nothing here; the Gram matrices are fully dense
+   despite the sparse incidence structure of the triad rows.  This happens
+   because the XOR product indices `b^c`, `b^d`, `c^d` spread across
+   nearly all assessor pairs, filling the Gram matrix densely.
+
+2. **gram_vk asymmetry ~ 7e-15**.  The complement matmul
+   `P_perp * G_x * P_perp` introduces roundoff asymmetry even though G_x
+   is perfectly symmetric (integer).  The explicit symmetrization step
+   erases this before the eigendecomp, preventing backend-dependent
+   sensitivity to upper-vs-lower triangle conventions.
+
+#### Rank threshold change
+
+Old: pure relative `sigma_threshold = 1e-4` (squared to `1e-8` for eigenvalue
+comparison).
+
+New: `threshold = max(abs_eps, rel_eps * sv_max)` with `abs_eps = 1e-6`,
+`rel_eps = 1e-4`.
+
+Why the change matters:
+- **Rank-0 case**: when `sv_max = 0` (all eigenvalues below noise), the old
+  threshold was `0.0`, retaining noise as "signal".  The absolute floor
+  prevents this.
+- **Negative eigenvalues**: PSD matrices (G = M^T M) can acquire eigenvalues
+  as negative as -1e-14 from floating-point accumulation.  The new code
+  clamps via `e.max(0.0).sqrt()` before thresholding.
+
+Rank pattern at this threshold: dim=16 -> 6, dim=32 -> 1, dim=64 -> 0.
+This is an observed numerical pattern, not a uniqueness theorem.
+
+#### Validation
+
+`test_faer_vs_nalgebra_eigendecomp` (dim=16, 42x42 Gram):
+
+| Metric | Tolerance | Measured |
+|--------|-----------|----------|
+| Effective rank agreement | exact | 6 = 6 |
+| Leading SV difference | < 1e-6 | ~ 1e-15 |
+| Orthonormality (faer) | < 1e-10 | ~ 1e-15 |
+| Orthonormality (nalgebra) | < 1e-10 | ~ 1e-15 |
+| Projector agreement |P_f - P_n|_F | < 1e-8 | ~ 1e-14 |
+
+The nalgebra fallback (`extract_vk_basis_nalgebra`) is retained behind
+`#[cfg(test)]` for this comparison.  It can be removed once dim=64
+timing results are recorded and the projector agreement is confirmed
+at that scale.
+
+#### Deferred decisions
+
+- **sprs / sparse EVD**: no Rust crate provides sparse symmetric EVD.
+  Dense faer is adequate at 930x930 given nnz_fraction = 1.0.
+- **Decision gate 8e** (low-rank projector trick): if Stage 6 dominates
+  after the faer swap at dim=64, apply the identity
+  `P_perp * X * P_perp = X - B^T(BX) - (XB^T)B + B^T(BXB^T)B`
+  for cost O(r * n^2) instead of O(n^3), where r is the retained rank
+  and r << n (e.g., r=36 retained eigenvectors out of n=930).
+- **egg/egglog**: proof-lemma generation backlog (unrelated).
+- **noether**: trait refactor backlog (unrelated).
+
 ## XV. Axiomatic Derivation Chain
 
 The complete mathematical derivation from foundational axioms to each

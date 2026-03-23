@@ -818,27 +818,104 @@ pub fn extract_v6_basis() -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usiz
     (basis_matrix, singular_values, assessors)
 }
 
-/// Generalized V_k basis extraction for any CD algebra dimension.
+/// Generalized V_k basis extraction for any Cayley-Dickson algebra dimension.
 ///
-/// For dim=16 (sedenion): assessor pairs (low in 1..7, high in 9..15) = 42 pairs.
-/// For dim=32 (Pathion): assessor pairs (low in 1..15, high in 17..31) = 210 pairs.
+/// Given a CD algebra of dimension `dim` (must be a power of 2, >= 16), this
+/// function constructs the non-associative "assessor complement" subspace --
+/// the directions in assessor space that are orthogonal to the B/C (bilinear
+/// Cayley) Gram matrix but present in the cross-term Gram matrix.
 ///
-/// The algorithm is identical to [`extract_v6_basis`] but parameterized by
-/// dimension. The "6" in V_6 referred to the sedenion-specific rank; for
-/// higher dimensions the rank may differ.
+/// # Algorithm (8 stages, instrumented with `VK_PROFILE=1`)
 ///
-/// Returns `(basis_matrix, singular_values, assessors)` where basis_matrix
-/// has shape `(rank, n_assessors)` and singular_values has length `rank`.
-/// The `max_rank` parameter caps how many basis vectors to extract.
+/// ```text
+///   Stage 1: Build SignTable(dim)              -- O(dim^2) precompute
+///   Stage 2: Rayon parallel Gram accumulation  -- C(dim-1, 3) triads
+///   Stage 3: i64 -> f64 faer::Mat conversion   -- exact, single pass
+///   Stage 4: Eigendecomp gram_bc (faer D&C)    -- selfadjoint_eigendecomposition
+///   Stage 5: Projector P_BC from retained eigenvectors
+///   Stage 6: Complement matmul: G_vk = P_perp * G_x * P_perp
+///   Stage 7: Eigendecomp gram_vk (faer D&C)    -- selfadjoint_eigendecomposition
+///   Stage 8: Threshold + descending sort + basis extraction
+/// ```
+///
+/// # Assessor geometry
+///
+/// ```text
+///   dim=16 (sedenion):  low in 1..7,  high in 9..15   -> 42 assessor pairs
+///   dim=32 (Pathion):   low in 1..15, high in 17..31  -> 210 assessor pairs
+///   dim=64 (Chingon):   low in 1..31, high in 33..63  -> 930 assessor pairs
+/// ```
+///
+/// Same-offset pairs (`high == low + half`) are excluded -- they are the
+/// "doubled identity" directions that carry no non-associative information.
+///
+/// # Eigendecomp backend
+///
+/// Uses faer `selfadjoint_eigendecomposition(Side::Lower)` (divide-and-conquer)
+/// rather than nalgebra `symmetric_eigen()` (Jacobi rotations). D&C has better
+/// cache behavior and parallelizes naturally on the 930x930 matrices at dim=64.
+/// The nalgebra fallback is preserved as [`extract_vk_basis_nalgebra`] behind
+/// `#[cfg(test)]` for backend regression.
+///
+/// # Rank threshold
+///
+/// Absolute+relative: `threshold = max(1e-6, 1e-4 * sv_max)`. This correctly
+/// handles rank-0 (where a pure relative threshold would be 0.0, retaining
+/// noise as signal) and clamps tiny negative eigenvalues from numerical PSD
+/// violation via `e.max(0.0).sqrt()`.
+///
+/// # Invariants
+///
+/// ```text
+///   basis_matrix shape : (rank, n_assess)  -- basis vectors are ROWS
+///   orthonormality     : |B * B^T - I_rank|_F < 1e-10
+///   projector          : P = B^T * B is the n_assess x n_assess projector
+///   rank pattern       : dim=16 -> 6, dim=32 -> 1, dim=64 -> 0
+///                        (observed at threshold abs=1e-6, rel=1e-4)
+/// ```
+///
+/// # Profiling
+///
+/// Set `VK_PROFILE=1` to emit per-stage wall-clock timing and structural
+/// diagnostics (max asymmetry, nnz fraction, Frobenius norm, retained rank,
+/// leading 5 eigenvalues) to stderr.
+///
+/// # Callers
+///
+/// - [`test_numerical_regression_baselines`]: rank=6 and sv degeneracy at dim=16
+/// - [`test_pathion_vk_spectrum`]: rank pattern across dim=16/32/64
+/// - [`test_faer_vs_nalgebra_eigendecomp`]: backend subspace agreement
+///
+/// # Why this is a separate function from `extract_v6_basis`
+///
+/// `extract_v6_basis` is hard-coded for dim=16 with the original nalgebra
+/// backend and the "6" baked into variable names. This generalized version
+/// parameterizes by dimension and uses the faster faer backend, but both
+/// compute the same subspace for dim=16 (verified by `test_pathion_vk_spectrum`).
 pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
     use cd_kernel::cayley_dickson::SignTable;
     use nalgebra::DMatrix;
 
     assert!(dim.is_power_of_two() && dim >= 16, "dim must be power of 2 >= 16");
     let half = dim / 2;
+    let profiling = std::env::var("VK_PROFILE").is_ok();
 
-    // Precompute sign table once -- O(dim^2) total, all lookups O(1).
-    let stab = SignTable::new(dim);
+    macro_rules! profile_stage {
+        ($stage:expr, $name:expr, $body:expr) => {{
+            let _t0 = std::time::Instant::now();
+            let result = $body;
+            if profiling {
+                eprintln!("  [VK_PROFILE] Stage {}: {} -- {:.3}s",
+                    $stage, $name, _t0.elapsed().as_secs_f64());
+            }
+            result
+        }};
+    }
+
+    // Stage 1: Sign table construction
+    let stab = profile_stage!(1, "sign table construction", {
+        SignTable::new(dim)
+    });
 
     // Build assessor index: (low, high) with low in 1..half-1, high in half+1..dim-1,
     // excluding same-offset pairs (high == low + half)
@@ -892,6 +969,375 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     // on the outer b-loop: expected ~30-60s.
     use rayon::prelude::*;
 
+    // Stage 2: Rayon Gram accumulation (triple loop)
+    let nn = n_assess * n_assess;
+    let (gram_bc_flat, gram_x_flat, count_bc, count_x) = profile_stage!(2, "rayon Gram accumulation", {
+        (1..dim)
+            .into_par_iter()
+            .fold(
+                || (vec![0i64; nn], vec![0i64; nn], 0usize, 0usize),
+                |(mut gbc, mut gx, mut cbc, mut cx), b| {
+                    let mut nz_buf: Vec<usize> = Vec::with_capacity(8);
+                    for c in (b + 1)..dim {
+                        for d in (c + 1)..dim {
+                            let t1 = assoc_nonzero(b, c, d);
+                            let t2 = assoc_nonzero(b, d, c);
+                            let t3 = assoc_nonzero(c, b, d);
+                            if !t1 && !t2 && !t3 { continue; }
+
+                            nz_buf.clear();
+                            for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
+                                if prod_idx > 0 && prod_idx < dim {
+                                    for &a_idx in &assess_lookup[prod_idx] {
+                                        if !nz_buf.contains(&a_idx) {
+                                            nz_buf.push(a_idx);
+                                        }
+                                    }
+                                }
+                            }
+
+                            let target = match (t1, t2, t3) {
+                                (false, true, false) | (false, false, true) => {
+                                    cbc += 1;
+                                    &mut gbc
+                                }
+                                _ => {
+                                    cx += 1;
+                                    &mut gx
+                                }
+                            };
+                            for &i in &nz_buf {
+                                for &j in &nz_buf {
+                                    target[i * n_assess + j] += 1;
+                                }
+                            }
+                        }
+                    }
+                    (gbc, gx, cbc, cx)
+                },
+            )
+            .reduce(
+                || (vec![0i64; nn], vec![0i64; nn], 0, 0),
+                |(mut a0, mut a1, a2, a3), (b0, b1, b2, b3)| {
+                    for i in 0..nn { a0[i] += b0[i]; }
+                    for i in 0..nn { a1[i] += b1[i]; }
+                    (a0, a1, a2 + b2, a3 + b3)
+                },
+            )
+    });
+
+    if profiling {
+        eprintln!("  [VK_PROFILE] dim={dim}, n_assess={n_assess}, count_bc={count_bc}, count_x={count_x}");
+        eprintln!("  [VK_PROFILE] RAYON_NUM_THREADS={}", rayon::current_num_threads());
+    }
+
+    if count_bc == 0 || count_x == 0 {
+        return (DMatrix::zeros(0, n_assess), vec![], assessors);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Stage 3: i64 -> f64 faer::Mat conversion
+    // ---------------------------------------------------------------------------
+    // Build faer matrices directly from the flat i64 buffers.  We skip the
+    // nalgebra DMatrix intermediate that the old code used -- the only consumer
+    // of the Gram matrices is now faer's eigendecomposition.
+    let (gram_bc_faer, gram_x_faer) = profile_stage!(3, "i64 -> f64 faer::Mat conversion", {
+        let mut gbc = faer::Mat::<f64>::zeros(n_assess, n_assess);
+        let mut gx = faer::Mat::<f64>::zeros(n_assess, n_assess);
+        for i in 0..n_assess {
+            for j in 0..n_assess {
+                gbc.write(i, j, gram_bc_flat[i * n_assess + j] as f64);
+                gx.write(i, j, gram_x_flat[i * n_assess + j] as f64);
+            }
+        }
+        (gbc, gx)
+    });
+
+    // ---------------------------------------------------------------------------
+    // Structural diagnostics (profiling only)
+    // ---------------------------------------------------------------------------
+    // These two closures instrument the eigendecomp inputs.  They answer the
+    // question "is my matrix actually symmetric and dense, or am I paying for
+    // structure I don't have?"  The answer at dim=16 is: perfectly symmetric
+    // (integer construction), nnz=1.0, dense.  At dim=64 the projector matmul
+    // introduces ~1e-14 asymmetry which the symmetrize step erases.
+
+    // Log max |M[i,j]-M[j,i]|, fraction of entries > 1e-12, and ||M||_F.
+    let log_gram_diagnostics = |name: &str, m: &faer::Mat<f64>| {
+        if !profiling { return; }
+        let n = m.nrows();
+        let mut max_asym = 0.0_f64;
+        let mut nnz_count = 0_usize;
+        let mut frob_sq = 0.0_f64;
+        for i in 0..n {
+            for j in 0..n {
+                let v = m.read(i, j);
+                frob_sq += v * v;
+                if v.abs() > 1e-12 { nnz_count += 1; }
+                if j > i {
+                    let asym = (m.read(i, j) - m.read(j, i)).abs();
+                    if asym > max_asym { max_asym = asym; }
+                }
+            }
+        }
+        let total = n * n;
+        eprintln!("  [VK_PROFILE] {name}: max_asym_pre={max_asym:.3e}, nnz_fraction={:.4}, frobenius={:.6e}",
+            nnz_count as f64 / total as f64, frob_sq.sqrt());
+    };
+
+    // Force exact symmetry: M[i,j] = M[j,i] = avg(M[i,j], M[j,i]).
+    // Returns the max defect BEFORE overwriting, so the caller can log it.
+    // Why symmetrize at all?  faer's selfadjoint_eigendecomposition reads
+    // only the lower triangle (Side::Lower), but a defect > ~1e-12 in the
+    // upper triangle would cause nalgebra's Jacobi solver to give different
+    // results, making backend comparison unreliable.
+    let symmetrize = |m: &mut faer::Mat<f64>| -> f64 {
+        let n = m.nrows();
+        let mut max_asym = 0.0_f64;
+        for i in 0..n {
+            for j in (i + 1)..n {
+                let asym = (m.read(i, j) - m.read(j, i)).abs();
+                if asym > max_asym { max_asym = asym; }
+                let avg = 0.5 * (m.read(i, j) + m.read(j, i));
+                m.write(i, j, avg);
+                m.write(j, i, avg);
+            }
+        }
+        max_asym
+    };
+
+    // ---------------------------------------------------------------------------
+    // Stage 4: First eigendecomposition (gram_bc)
+    // ---------------------------------------------------------------------------
+    // This gives us the column space of the B/C (bilinear Cayley) triad
+    // incidence matrix.  We need the eigenvectors to build the projector P_BC
+    // that will be subtracted off in Stage 6.
+    //
+    // Why faer instead of nalgebra?  faer uses divide-and-conquer after
+    // Householder tridiagonalization, which has better cache locality than
+    // nalgebra's Jacobi rotations for n > ~100.  At n=930 (dim=64), this
+    // is the dominant cost center.
+    log_gram_diagnostics("gram_bc", &gram_bc_faer);
+    let mut gram_bc_sym = gram_bc_faer;
+    let asym_bc = symmetrize(&mut gram_bc_sym);
+    if profiling {
+        eprintln!("  [VK_PROFILE] gram_bc: max_asym_post symmetrize = {asym_bc:.3e}");
+    }
+    let eig_bc = profile_stage!(4, "eigendecomp gram_bc (faer)", {
+        gram_bc_sym.selfadjoint_eigendecomposition(faer::Side::Lower)
+    });
+
+    // ---------------------------------------------------------------------------
+    // Rank thresholding (shared between Stages 4 and 7)
+    // ---------------------------------------------------------------------------
+    // threshold = max(abs_eps, rel_eps * sv_max)
+    //
+    // Why not pure relative?  When sv_max = 0 (rank-0 matrix), a pure
+    // relative threshold is 0.0, which would retain floating-point noise
+    // as "signal".  The absolute floor abs_eps = 1e-6 prevents this.
+    //
+    // Why clamp negatives?  The Gram matrices are PSD by construction
+    // (G = M^T M), but floating-point accumulation can produce eigenvalues
+    // as negative as -1e-14.  Clamping via e.max(0.0) before sqrt avoids
+    // NaN and correctly treats these as zero-rank directions.
+    let abs_eps = 1e-6_f64;
+    let rel_eps = 1e-4_f64;
+
+    let bc_eigenvalues: Vec<f64> = (0..n_assess)
+        .map(|k| eig_bc.s().column_vector().read(k))
+        .collect();
+    // Singular values = sqrt(max(eigenvalue, 0))
+    let bc_sv: Vec<f64> = bc_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
+    let bc_sv_max = bc_sv.iter().cloned().fold(0.0_f64, f64::max);
+    let bc_threshold = abs_eps.max(rel_eps * bc_sv_max);
+    let retained_rank_bc = bc_sv.iter().filter(|&&s| s > bc_threshold).count();
+
+    if profiling {
+        let leading: Vec<f64> = {
+            let mut sorted = bc_eigenvalues.clone();
+            sorted.sort_by(|a, b| b.partial_cmp(a).unwrap());
+            sorted.into_iter().take(5).collect()
+        };
+        eprintln!("  [VK_PROFILE] gram_bc: retained_rank={retained_rank_bc}, threshold={bc_threshold:.3e}");
+        eprintln!("  [VK_PROFILE] gram_bc: leading 5 eigenvalues = {leading:?}");
+    }
+
+    // ---------------------------------------------------------------------------
+    // Stage 5: Projector P_BC = sum_k |v_k><v_k| for retained eigenvectors
+    // ---------------------------------------------------------------------------
+    // P_BC projects onto the column space of the B/C Gram matrix.  The
+    // complement (I - P_BC) will isolate the "V_k" directions in Stage 6.
+    //
+    // Why build in nalgebra?  The outer-product accumulation p += v*v^T is
+    // a dense rank-1 update.  nalgebra's column-major DMatrix handles this
+    // naturally.  We convert back to faer only for the Stage 6 matmul.
+    let p_bc = profile_stage!(5, "projector construction P_BC", {
+        let u_bc = eig_bc.u();
+        let mut p = DMatrix::zeros(n_assess, n_assess);
+        for (k, &sv) in bc_sv.iter().enumerate() {
+            if sv > bc_threshold {
+                let mut col = nalgebra::DVector::zeros(n_assess);
+                for i in 0..n_assess {
+                    col[i] = u_bc.read(i, k);
+                }
+                p += &col * col.transpose();
+            }
+        }
+        p
+    });
+
+    // ---------------------------------------------------------------------------
+    // Stage 6: Complement matmul -- G_vk = P_perp * G_x * P_perp
+    // ---------------------------------------------------------------------------
+    // P_perp = I - P_BC.  The triple product isolates the Gram structure of
+    // the "cross" triads (those not in the B/C family) projected onto the
+    // orthogonal complement of the B/C column space.
+    //
+    // Decision gate 8e: if this stage dominates after the faer swap, the
+    // low-rank trick (cost O(r*n^2) instead of O(n^3)) should be applied:
+    //   P_perp * X * P_perp = X - B^T(BX) - (XB^T)B + B^T(BXB^T)B
+    // where B is the (r x n) retained basis and r << n.
+    let gram_vk_faer = profile_stage!(6, "complement matmul P_perp*G_x*P_perp", {
+        let identity = DMatrix::identity(n_assess, n_assess);
+        let proj_complement = &identity - &p_bc;
+        let p_perp_faer = faer::Mat::from_fn(n_assess, n_assess, |r, c| proj_complement[(r, c)]);
+        &p_perp_faer * &gram_x_faer * &p_perp_faer
+    });
+
+    // ---------------------------------------------------------------------------
+    // Stage 7: Second eigendecomposition (gram_vk)
+    // ---------------------------------------------------------------------------
+    // This is the one that actually extracts the V_k basis.  The spectrum
+    // of gram_vk reveals the non-associative directions that are independent
+    // of the B/C structure.
+    //
+    // For dim=16: 6 nonzero eigenvalues (all degenerate at ~11.696), giving
+    // the V_6 subspace that steers three PMNS mixing angles + three masses.
+    // For dim=32: 1 nonzero eigenvalue.  For dim=64: 0 (rank drops to zero).
+    log_gram_diagnostics("gram_vk", &gram_vk_faer);
+    let mut gram_vk_sym = gram_vk_faer;
+    let asym_vk = symmetrize(&mut gram_vk_sym);
+    if profiling {
+        eprintln!("  [VK_PROFILE] gram_vk: max_asym_post symmetrize = {asym_vk:.3e}");
+    }
+    let eig_vk = profile_stage!(7, "eigendecomp gram_vk (faer)", {
+        gram_vk_sym.selfadjoint_eigendecomposition(faer::Side::Lower)
+    });
+
+    // ---------------------------------------------------------------------------
+    // Stage 8: Postprocessing -- threshold, canonical sort, basis extraction
+    // ---------------------------------------------------------------------------
+    let (basis_matrix, singular_values) = profile_stage!(8, "postprocessing (sort, extract basis)", {
+        // faer returns eigenvalues in nondecreasing order.  We want descending
+        // singular values for a canonical, backend-independent output.
+        let vk_eigenvalues: Vec<f64> = (0..n_assess)
+            .map(|k| eig_vk.s().column_vector().read(k))
+            .collect();
+        // Clamp negatives to zero (see threshold rationale above)
+        let vk_sv: Vec<f64> = vk_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
+        let vk_sv_max = vk_sv.iter().cloned().fold(0.0_f64, f64::max);
+        let vk_threshold = abs_eps.max(rel_eps * vk_sv_max);
+
+        let mut sv_pairs: Vec<(f64, usize)> = Vec::new();
+        for (k, &sv) in vk_sv.iter().enumerate() {
+            if sv > vk_threshold {
+                sv_pairs.push((sv, k));
+            }
+        }
+        // Single canonical descending sort.  (The old code had a duplicate sort
+        // at this point -- removed in the faer migration.)
+        sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
+
+        let retained_rank_vk = sv_pairs.len();
+
+        if profiling {
+            let leading: Vec<f64> = {
+                let mut sorted = vk_eigenvalues.clone();
+                sorted.sort_by(|a, b| b.partial_cmp(a).unwrap());
+                sorted.into_iter().take(5).collect()
+            };
+            eprintln!("  [VK_PROFILE] gram_vk: retained_rank={retained_rank_vk}, threshold={vk_threshold:.3e}");
+            eprintln!("  [VK_PROFILE] gram_vk: leading 5 eigenvalues = {leading:?}");
+        }
+
+        let n_basis = retained_rank_vk.min(max_rank);
+        let u_vk = eig_vk.u();
+
+        // basis_matrix shape: (rank, n_assess) -- basis vectors are ROWS.
+        // Eigenvector k from faer is column k of u_vk; we transpose into
+        // row k of the output so that B * B^T = I_rank (orthonormality).
+        let mut basis = DMatrix::zeros(n_basis, n_assess);
+        for (k, &(_, eig_idx)) in sv_pairs.iter().take(n_basis).enumerate() {
+            for col in 0..n_assess {
+                basis[(k, col)] = u_vk.read(col, eig_idx);
+            }
+        }
+
+        // Return up to 2*max_rank SVs for diagnostic gap analysis
+        let svs: Vec<f64> = sv_pairs.iter()
+            .take(retained_rank_vk.min(max_rank * 2))
+            .map(|&(sv, _)| sv)
+            .collect();
+
+        (basis, svs)
+    });
+
+    (basis_matrix, singular_values, assessors)
+}
+
+/// nalgebra-based eigendecomp fallback, preserved for backend regression.
+///
+/// This is the pre-faer implementation of [`extract_vk_basis`], using nalgebra's
+/// `symmetric_eigen()` (Jacobi rotations) instead of faer's divide-and-conquer.
+/// It exists solely so that [`test_faer_vs_nalgebra_eigendecomp`] can verify
+/// that the faer migration did not change the extracted subspace.
+///
+/// # Differences from the production version
+///
+/// - Uses nalgebra `symmetric_eigen()` (Jacobi) instead of faer D&C
+/// - Uses the old pure-relative threshold `sigma_threshold = 1e-4`
+///   (squared to `eig_threshold = 1e-8` for eigenvalue comparison)
+/// - No profiling instrumentation, no symmetrization, no diagnostics
+///
+/// # When to remove
+///
+/// After the faer backend has been validated at dim=64 and the timing
+/// results recorded, this function can be deleted.  The projector
+/// agreement test is the single gate for removal.
+#[cfg(test)]
+fn extract_vk_basis_nalgebra(
+    dim: usize, max_rank: usize,
+) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
+    use cd_kernel::cayley_dickson::SignTable;
+    use nalgebra::DMatrix;
+
+    assert!(dim.is_power_of_two() && dim >= 16);
+    let half = dim / 2;
+    let stab = SignTable::new(dim);
+
+    let mut assessors: Vec<(usize, usize)> = Vec::new();
+    for low in 1..half {
+        for high in (half + 1)..dim {
+            if high == low + half { continue; }
+            assessors.push((low, high));
+        }
+    }
+    let n_assess = assessors.len();
+    let mut assess_lookup = vec![Vec::new(); dim];
+    for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+        assess_lookup[low].push(a_idx);
+        assess_lookup[high].push(a_idx);
+    }
+
+    let assoc_nonzero = |a: usize, b: usize, c: usize| -> bool {
+        let sab = stab.sign(a, b);
+        let sabc_l = sab * stab.sign(a ^ b, c);
+        let sbc = stab.sign(b, c);
+        let sabc_r = sbc * stab.sign(a, b ^ c);
+        sabc_l != sabc_r
+    };
+
+    use rayon::prelude::*;
     let nn = n_assess * n_assess;
     let (gram_bc_flat, gram_x_flat, count_bc, count_x) = (1..dim)
         .into_par_iter()
@@ -905,33 +1351,19 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
                         let t2 = assoc_nonzero(b, d, c);
                         let t3 = assoc_nonzero(c, b, d);
                         if !t1 && !t2 && !t3 { continue; }
-
                         nz_buf.clear();
                         for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
                             if prod_idx > 0 && prod_idx < dim {
                                 for &a_idx in &assess_lookup[prod_idx] {
-                                    if !nz_buf.contains(&a_idx) {
-                                        nz_buf.push(a_idx);
-                                    }
+                                    if !nz_buf.contains(&a_idx) { nz_buf.push(a_idx); }
                                 }
                             }
                         }
-
                         let target = match (t1, t2, t3) {
-                            (false, true, false) | (false, false, true) => {
-                                cbc += 1;
-                                &mut gbc
-                            }
-                            _ => {
-                                cx += 1;
-                                &mut gx
-                            }
+                            (false, true, false) | (false, false, true) => { cbc += 1; &mut gbc }
+                            _ => { cx += 1; &mut gx }
                         };
-                        for &i in &nz_buf {
-                            for &j in &nz_buf {
-                                target[i * n_assess + j] += 1;
-                            }
-                        }
+                        for &i in &nz_buf { for &j in &nz_buf { target[i * n_assess + j] += 1; } }
                     }
                 }
                 (gbc, gx, cbc, cx)
@@ -950,7 +1382,6 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
         return (DMatrix::zeros(0, n_assess), vec![], assessors);
     }
 
-    // Convert i64 Gram to f64 DMatrix (single pass, exact conversion)
     let mut gram_bc = DMatrix::zeros(n_assess, n_assess);
     let mut gram_x = DMatrix::zeros(n_assess, n_assess);
     for i in 0..n_assess {
@@ -960,13 +1391,10 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
         }
     }
 
-    // Eigendecompose the B/C Gram matrix to get column space
     let sigma_threshold = 1e-4;
     let eig_threshold = sigma_threshold * sigma_threshold;
-
     let eig_bc = gram_bc.symmetric_eigen();
 
-    // Build projector onto B/C column space
     let mut p_bc = DMatrix::zeros(n_assess, n_assess);
     for k in 0..n_assess {
         if eig_bc.eigenvalues[k] > eig_threshold {
@@ -975,14 +1403,11 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
         }
     }
 
-    // Complement Gram: G_vk = (I - P_BC)^T * G_x * (I - P_BC)
     let identity = DMatrix::identity(n_assess, n_assess);
     let proj_complement = &identity - &p_bc;
     let gram_vk = &proj_complement * &gram_x * &proj_complement;
     let eig_vk = gram_vk.symmetric_eigen();
 
-    // Eigenvalues are sigma^2 (sorted ascending in nalgebra).
-    // Collect nonzero ones in descending order.
     let mut sv_pairs: Vec<(f64, usize)> = Vec::new();
     for k in 0..n_assess {
         let ev: f64 = eig_vk.eigenvalues[k];
@@ -990,7 +1415,6 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
             sv_pairs.push((ev.sqrt(), k));
         }
     }
-    sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
     sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
 
     let rank_vk = sv_pairs.len();
@@ -10324,6 +10748,13 @@ mod tests {
                 "sv[{i}]={:.6} differs from sv[0]={:.6}", sv_16[i], sv_16[0]);
         }
 
+        // Orthonormality: B * B^T = I_rank (basis vectors are ROWS)
+        let bbt = &basis_16 * basis_16.transpose();
+        let eye6 = nalgebra::DMatrix::identity(6, 6);
+        let ortho_err = (&bbt - &eye6).norm();
+        assert!(ortho_err < 1e-10,
+            "basis non-orthonormal: |B*B^T - I|_F = {:.3e}", ortho_err);
+
         // --- SignTable dim=16: spot checks (exact integer) ---
         let stab = SignTable::new(16);
         assert_eq!(stab.sign(0, 0), 1, "sign(0,0) must be +1 (scalar*scalar)");
@@ -12468,5 +12899,97 @@ mod tests {
         println!("    Concentrated (>80% in one sub): {}", concentrated);
         println!("    Spread (< 80% in one sub): {}", spread);
         println!("    (Prediction: intra-gen assessors concentrate, cross-gen spread)");
+    }
+
+    /// Backend regression: faer vs nalgebra eigendecomp on dim=16 (42x42 Gram).
+    ///
+    /// # Purpose
+    ///
+    /// Verifies that the faer divide-and-conquer eigensolver produces the
+    /// same physical subspace as the original nalgebra Jacobi solver.
+    /// This is the single gate for the eigensolver backend migration.
+    ///
+    /// # Why projector agreement, not eigenvector equality?
+    ///
+    /// Eigenvector signs are a gauge freedom: if v is an eigenvector,
+    /// so is -v.  Different backends may choose different signs (and
+    /// for degenerate eigenvalues, different rotations within the
+    /// eigenspace).  The projector P = B^T * B (n_assess x n_assess)
+    /// is sign-invariant and rotation-invariant within eigenspaces,
+    /// so it is the correct observable to compare.
+    ///
+    /// # Checks (ordered by diagnostic priority)
+    ///
+    /// 1. **Effective rank**: same count of SVs above threshold
+    /// 2. **Leading singular values**: within 1e-6 absolute tolerance
+    /// 3. **Orthonormality**: |B * B^T - I_rank|_F < 1e-10
+    ///    (basis vectors are ROWS, so B*B^T is rank x rank)
+    /// 4. **Projector agreement**: |P_faer - P_nalgebra|_F < 1e-8
+    ///
+    /// # Expected output
+    ///
+    /// ```text
+    ///   rank = 6, n_assess = 42
+    ///   sv[0] ~ 3.41997e0 (6-fold degenerate)
+    ///   |B*B^T - I|_F ~ 1e-15 (both backends)
+    ///   |P_faer - P_nal|_F ~ 1e-14
+    /// ```
+    ///
+    /// PASS: all four assertions hold.
+    /// FAIL: subspace differs between backends -- investigate whether the
+    /// threshold change (abs+rel vs pure relative) caused a rank difference.
+    #[test]
+    fn test_faer_vs_nalgebra_eigendecomp() {
+        use nalgebra::DMatrix;
+
+        let (basis_faer, sv_faer, assess_faer) = extract_vk_basis(16, 12);
+        let (basis_nal, sv_nal, assess_nal) = extract_vk_basis_nalgebra(16, 12);
+
+        // Same assessor set (deterministic construction)
+        assert_eq!(assess_faer.len(), assess_nal.len(), "assessor count mismatch");
+        assert_eq!(assess_faer, assess_nal, "assessor pairs differ");
+
+        // Same effective rank
+        assert_eq!(basis_faer.nrows(), basis_nal.nrows(),
+            "rank mismatch: faer={}, nalgebra={}", basis_faer.nrows(), basis_nal.nrows());
+        let rank = basis_faer.nrows();
+        let n_assess = assess_faer.len();
+
+        // Leading singular values within tolerance
+        let n_sv = sv_faer.len().min(sv_nal.len());
+        for i in 0..n_sv {
+            let diff = (sv_faer[i] - sv_nal[i]).abs();
+            assert!(diff < 1e-6,
+                "sv[{i}] mismatch: faer={:.8e}, nalgebra={:.8e}, diff={:.3e}",
+                sv_faer[i], sv_nal[i], diff);
+        }
+
+        // Orthonormality: B * B^T should be I_rank
+        // basis_matrix shape is (rank, n_assess), so B*B^T is (rank, rank)
+        let bbt_faer = &basis_faer * basis_faer.transpose();
+        let eye_rank = DMatrix::identity(rank, rank);
+        let ortho_err = (&bbt_faer - &eye_rank).norm();
+        assert!(ortho_err < 1e-10,
+            "faer basis non-orthonormal: |B*B^T - I|_F = {:.3e}", ortho_err);
+
+        let bbt_nal = &basis_nal * basis_nal.transpose();
+        let ortho_err_nal = (&bbt_nal - &eye_rank).norm();
+        assert!(ortho_err_nal < 1e-10,
+            "nalgebra basis non-orthonormal: |B*B^T - I|_F = {:.3e}", ortho_err_nal);
+
+        // Projector agreement: P = B^T * B is the n_assess x n_assess projector
+        // onto the rank-dimensional subspace. Eigenvector signs may differ between
+        // backends, but the projector is sign-invariant.
+        let proj_faer = basis_faer.transpose() * &basis_faer;
+        let proj_nal = basis_nal.transpose() * &basis_nal;
+        let proj_diff = (&proj_faer - &proj_nal).norm();
+        assert!(proj_diff < 1e-8,
+            "projector disagreement: |P_faer - P_nal|_F = {:.3e}", proj_diff);
+
+        println!("  faer vs nalgebra backend regression: PASS");
+        println!("    rank = {rank}, n_assess = {n_assess}");
+        println!("    sv[0] = {:.8e} (faer) vs {:.8e} (nalgebra)", sv_faer[0], sv_nal[0]);
+        println!("    |B*B^T - I|_F: faer={:.3e}, nalgebra={:.3e}", ortho_err, ortho_err_nal);
+        println!("    |P_faer - P_nal|_F = {:.3e}", proj_diff);
     }
 }
