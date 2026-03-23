@@ -46,16 +46,16 @@ pub fn non_associative_geodesic_step(
     fracture_magnitude = fracture_magnitude.sqrt();
     
     // 4. Update primary momentum
-    for i in 0..16 {
-        ray.momentum[i] += curvature_force[i] * dt;
+    for (m, &cf) in ray.momentum.iter_mut().zip(curvature_force.iter()) {
+        *m += cf * dt;
     }
-    
+
     // 5. If the alternativity failure is high (we hit a ZD singularity), the ray fractures.
     if fracture_magnitude > 1e-3 {
         let mut fractured_ray = ray.clone();
-        for i in 0..16 {
+        for (m, &ac) in fractured_ray.momentum.iter_mut().zip(alt_curvature.iter()) {
             // The secondary ray takes the alternative path's momentum
-            fractured_ray.momentum[i] = alt_curvature[i] * dt;
+            *m = ac * dt;
         }
         return Some(fractured_ray);
     }

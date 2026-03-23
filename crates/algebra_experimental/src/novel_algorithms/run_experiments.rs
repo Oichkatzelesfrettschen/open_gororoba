@@ -153,7 +153,7 @@ pub fn execute_all_prototypes() {
     // 21. Hypercomplex CA
     let mut cell = [0.0; 16]; cell[0] = 1.0;
     let mut env = [0.0; 16];
-    for i in 0..16 { env[i] = (i as f64).exp().fract(); } // Non-alternative "noisy" environment
+    for (i, e) in env.iter_mut().enumerate() { *e = (i as f64).exp().fract(); } // Non-alternative "noisy" environment
     let surv = update_cell(&cell, &env);
     println!("[21/25] Hypercomplex CA: Cell survived? {}", surv[0] > 0.0);
 
