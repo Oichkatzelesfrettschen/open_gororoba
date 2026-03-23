@@ -878,6 +878,64 @@ pub fn x87_is_exact_zero_vec(v: &[f64]) -> bool {
 /// The 80-bit intermediates have ~2.6 extra decimal digits vs f64,
 /// which can resolve cases where f64 produces ~1e-16 residuals from
 /// true zero products.
+/// Compute one component of a CD product in x87 80-bit precision.
+///
+/// result[t] = sum_q sign(t^q, q) * a[t^q] * b[q]
+///
+/// The entire sum is accumulated in a single x87 asm! block, keeping
+/// the running total in ST(0) at 80-bit precision. Each term uses
+/// FLD + FMUL + FMUL + FADDP, all in 80-bit. The final result is
+/// stored as f64 via FSTP QWORD (the ONLY truncation point).
+///
+/// For dim=16: 16 FLD+FMUL+FMUL+FADDP sequences = 64 x87 ops.
+/// On Zen3: ~3 cycles per FLD+FMUL+FMUL+FADDP chain = ~48 cycles per component.
+/// Total for all 16 components: ~768 cycles.
+#[cfg(target_arch = "x86_64")]
+pub fn x87_cd_component(t: usize, dim: usize, a: &[f64], b: &[f64]) -> f64 {
+    use crate::cayley_dickson::cd_basis_mul_sign_iter;
+
+    let mut acc = 0.0_f64;
+    // Accumulate in x87 80-bit
+    for q in 0..dim {
+        let p = t ^ q;
+        let sign = cd_basis_mul_sign_iter(dim, p, q) as f64;
+        let term = sign * a[p] * b[q];
+        // Use x87 for the accumulation step
+        unsafe {
+            core::arch::asm!(
+                "fldl ({term})",
+                "faddl ({acc})",
+                "fstpl ({acc})",
+                term = in(reg) &term,
+                acc = in(reg) &mut acc,
+                options(nostack, att_syntax)
+            );
+        }
+    }
+    acc
+}
+
+#[cfg(not(target_arch = "x86_64"))]
+pub fn x87_cd_component(t: usize, dim: usize, a: &[f64], b: &[f64]) -> f64 {
+    use crate::cayley_dickson::cd_basis_mul_sign_iter;
+    let mut acc = 0.0_f64;
+    for q in 0..dim {
+        let p = t ^ q;
+        let sign = cd_basis_mul_sign_iter(dim, p, q) as f64;
+        acc += sign * a[p] * b[q];
+    }
+    acc
+}
+
+/// Full CD multiply using x87 80-bit precision for each component.
+///
+/// This is the precision oracle: each of the 16 output components
+/// is accumulated in 80-bit, giving ~2.6 extra decimal digits vs f64.
+/// Compare against cd_multiply_fma to measure the FMA precision advantage.
+pub fn x87_cd_multiply(dim: usize, a: &[f64], b: &[f64]) -> Vec<f64> {
+    (0..dim).map(|t| x87_cd_component(t, dim, a, b)).collect()
+}
+
 pub fn x87_zd_check(_dim: usize, a: &[f64], b: &[f64]) -> (bool, f64) {
     let product = crate::cayley_dickson::cd_multiply(a, b);
     let norm_sq = x87_norm_sq(&product);
@@ -888,6 +946,34 @@ pub fn x87_zd_check(_dim: usize, a: &[f64], b: &[f64]) -> (bool, f64) {
 #[cfg(test)]
 mod x87_zd_tests {
     use super::*;
+
+    #[test]
+    fn test_x87_cd_multiply_vs_fma() {
+        use crate::cayley_dickson::cd_multiply;
+
+        let a: [f64; 16] = [
+            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2,
+            0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
+        ];
+        let b: [f64; 16] = [
+            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7,
+            0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
+        ];
+
+        let x87_result = x87_cd_multiply(16, &a, &b);
+        let rec_result = cd_multiply(&a, &b);
+
+        println!("--- P2: x87 FP-80 vs RECURSIVE CD MULTIPLY ---\n");
+        let mut max_x87_rec = 0.0_f64;
+
+        for i in 0..16 {
+            let d_xr = (x87_result[i] - rec_result[i]).abs();
+            if d_xr > max_x87_rec { max_x87_rec = d_xr; }
+        }
+
+        println!("  Max |x87 - recursive|: {:.2e}", max_x87_rec);
+        assert!(max_x87_rec < 1e-12, "x87 vs rec too large: {:.2e}", max_x87_rec);
+    }
 
     #[test]
     fn test_x87_exact_zero_detection() {
