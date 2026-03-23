@@ -695,6 +695,97 @@ mod tests {
         }
     }
 
+    /// S2: Test whether assessor pairs naturally cluster into 3 groups.
+    ///
+    /// Each assessor (low, high) has a "sign profile": the vector of
+    /// signs sign(low, k) * sign(high, k) for k = 0..15. Two assessors
+    /// are in the same "generation" if their sign profiles are similar.
+    ///
+    /// If the 42 assessors cluster into 3 groups of ~14, this supports
+    /// the 3-generation structure emerging from algebraic structure.
+    #[test]
+    fn test_assessor_sign_profile_clustering() {
+        use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
+
+        println!("--- S2: ASSESSOR SIGN PROFILE CLUSTERING ---\n");
+
+        // Build 42 assessor pairs
+        let mut assessors: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                assessors.push((low, high));
+            }
+        }
+        assert_eq!(assessors.len(), 42);
+
+        // For each assessor, compute its "sign product profile":
+        // profile[k] = sign(low, k) * sign(high, k) for k = 1..15
+        let profiles: Vec<Vec<i32>> = assessors.iter().map(|&(low, high)| {
+            (1..16_usize).map(|k| {
+                cd_basis_mul_sign_iter(16, low, k) * cd_basis_mul_sign_iter(16, high, k)
+            }).collect()
+        }).collect();
+
+        // Compute 42x42 inner product matrix (Gram matrix of sign profiles)
+        let n = 42;
+        let mut gram = vec![vec![0_i32; n]; n];
+        for i in 0..n {
+            for j in 0..n {
+                gram[i][j] = profiles[i].iter()
+                    .zip(profiles[j].iter())
+                    .map(|(&a, &b)| a * b)
+                    .sum();
+            }
+        }
+
+        // Analyze: how many distinct inner product values exist?
+        let mut values = std::collections::BTreeSet::new();
+        for i in 0..n {
+            for j in 0..n {
+                values.insert(gram[i][j]);
+            }
+        }
+        println!("  Distinct Gram matrix values: {:?}", values);
+        println!("  Gram matrix diagonal (self-overlap): {}", gram[0][0]);
+
+        // Check diagonal: all self-overlaps should be equal (= 15 for dim-1 matching indices)
+        let diag_values: std::collections::BTreeSet<i32> = (0..n).map(|i| gram[i][i]).collect();
+        println!("  Distinct diagonal values: {:?}", diag_values);
+
+        // Cluster by row similarity: group assessors with identical Gram rows
+        let mut clusters: std::collections::BTreeMap<Vec<i32>, Vec<usize>> =
+            std::collections::BTreeMap::new();
+        for i in 0..n {
+            let row = gram[i].clone();
+            clusters.entry(row).or_default().push(i);
+        }
+
+        println!("\n  Number of distinct Gram row patterns: {}", clusters.len());
+        println!("  Cluster sizes:");
+        let mut sizes: Vec<usize> = clusters.values().map(|v| v.len()).collect();
+        sizes.sort_unstable();
+        sizes.reverse();
+        for (idx, size) in sizes.iter().enumerate() {
+            println!("    Cluster {}: {} assessors", idx, size);
+            if idx >= 9 { println!("    ... ({} more)", sizes.len() - 10); break; }
+        }
+
+        // The key question: do we get exactly 3 large clusters (generations)?
+        let large_clusters = sizes.iter().filter(|&&s| s >= 5).count();
+        println!("\n  Large clusters (>= 5 assessors): {}", large_clusters);
+
+        if large_clusters == 3 {
+            println!("  *** 3-GENERATION CLUSTERING DETECTED ***");
+        } else if large_clusters <= 6 {
+            println!("  Partial clustering: {} groups (not exactly 3).", large_clusters);
+            println!("  The sign profile structure is more granular than");
+            println!("  3 clean generations.");
+        } else {
+            println!("  No clear clustering: {} distinct patterns.", clusters.len());
+        }
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
