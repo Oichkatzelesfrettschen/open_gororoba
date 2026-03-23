@@ -831,12 +831,14 @@ pub fn extract_v6_basis() -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usiz
 /// has shape `(rank, n_assessors)` and singular_values has length `rank`.
 /// The `max_rank` parameter caps how many basis vectors to extract.
 pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
-    use cd_kernel::cayley_dickson::cd_multiply;
-    use crate::sedenion_subalgebras::assoc_strict;
+    use cd_kernel::cayley_dickson::SignTable;
     use nalgebra::DMatrix;
 
     assert!(dim.is_power_of_two() && dim >= 16, "dim must be power of 2 >= 16");
     let half = dim / 2;
+
+    // Precompute sign table once -- O(dim^2) total, all lookups O(1).
+    let stab = SignTable::new(dim);
 
     // Build assessor index: (low, high) with low in 1..half-1, high in half+1..dim-1,
     // excluding same-offset pairs (high == low + half)
@@ -849,27 +851,37 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     }
     let n_assess = assessors.len();
 
-    let build_row = |b: usize, c: usize, d: usize| -> Vec<f64> {
-        let mut eb = vec![0.0; dim]; eb[b] = 1.0;
-        let mut ec = vec![0.0; dim]; ec[c] = 1.0;
-        let mut ed = vec![0.0; dim]; ed[d] = 1.0;
-        let products = [
-            cd_multiply(&eb, &ec),
-            cd_multiply(&eb, &ed),
-            cd_multiply(&ec, &ed),
-        ];
+    // Build assessor lookup: idx -> position in assessors vec.
+    // For a product e_p * e_q = +/- e_{p^q}, the result index is p^q.
+    // We need to check if p^q matches any assessor's low or high component.
+    let mut assess_lookup = vec![Vec::new(); dim];
+    for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+        assess_lookup[low].push(a_idx);
+        assess_lookup[high].push(a_idx);
+    }
+
+    // O(1) associator check via sign table:
+    // [a,b,c] = (a*b)*c - a*(b*c)
+    // e_a*e_b = s(a,b)*e_{a^b}, then (a*b)*c = s(a,b)*s(a^b,c)*e_{a^b^c}
+    // a*(b*c) = s(b,c)*s(a,b^c)*e_{a^b^c}
+    // [a,b,c] = (s(a,b)*s(a^b,c) - s(b,c)*s(a,b^c)) * e_{a^b^c}
+    // nonzero iff s(a,b)*s(a^b,c) != s(b,c)*s(a,b^c)
+    let assoc_nonzero = |a: usize, b: usize, c: usize| -> bool {
+        let sab = stab.sign(a, b);
+        let sabc_l = sab * stab.sign(a ^ b, c);
+        let sbc = stab.sign(b, c);
+        let sabc_r = sbc * stab.sign(a, b ^ c);
+        sabc_l != sabc_r
+    };
+
+    // O(1) incidence row via XOR product index
+    let build_row_fast = |b: usize, c: usize, d: usize| -> Vec<f64> {
         let mut row = vec![0.0_f64; n_assess];
-        for prod in &products {
-            let nonzero: Vec<usize> = prod.iter().enumerate()
-                .filter(|(_, v)| v.abs() > 1e-12)
-                .map(|(i, _)| i)
-                .collect();
-            if nonzero.len() == 1 {
-                let idx = nonzero[0];
-                for (a_idx, &(low, high)) in assessors.iter().enumerate() {
-                    if idx == low || idx == high {
-                        row[a_idx] = 1.0;
-                    }
+        // Products: e_b*e_c -> e_{b^c}, e_b*e_d -> e_{b^d}, e_c*e_d -> e_{c^d}
+        for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
+            if prod_idx > 0 && prod_idx < dim {
+                for &a_idx in &assess_lookup[prod_idx] {
+                    row[a_idx] = 1.0;
                 }
             }
         }
@@ -882,12 +894,12 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     for b in 1..dim {
         for c in (b + 1)..dim {
             for d in (c + 1)..dim {
-                let t1 = assoc_strict(dim, b, c, d);
-                let t2 = assoc_strict(dim, b, d, c);
-                let t3 = assoc_strict(dim, c, b, d);
-                if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
-                let row = build_row(b, c, d);
-                match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
+                let t1 = assoc_nonzero(b, c, d);
+                let t2 = assoc_nonzero(b, d, c);
+                let t3 = assoc_nonzero(c, b, d);
+                if !t1 && !t2 && !t3 { continue; }
+                let row = build_row_fast(b, c, d);
+                match (t1, t2, t3) {
                     (false, true, false) | (false, false, true) => {
                         rows_bc.push(nalgebra::RowDVector::from_vec(row));
                     }
@@ -906,38 +918,58 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     let mat_bc = DMatrix::from_rows(&rows_bc);
     let mat_x = DMatrix::from_rows(&rows_x);
 
-    let svd_bc = mat_bc.transpose().svd(true, false);
-    let rank_threshold = 1e-8;
-    let u_bc = svd_bc.u.as_ref().unwrap();
-    let rank_bc = svd_bc.singular_values.iter()
-        .filter(|&&s| s > rank_threshold)
-        .count();
+    // Gram-matrix approach: G = M^T * M is n_assess x n_assess.
+    // Eigenvalues of G = sigma^2 of M. O(n_assess^3) vs O(n_rows * n_assess^2).
+    //
+    // Use sigma threshold 1e-4 (eigenvalue threshold 1e-8) to match the original
+    // SVD-based rank detection. The Gram matrix squares the condition number,
+    // so we use a looser threshold than the raw 1e-8 SVD threshold.
+    let sigma_threshold = 1e-4;
+    let eig_threshold = sigma_threshold * sigma_threshold;
 
-    let q_bc = u_bc.columns(0, rank_bc);
-    let p_bc = q_bc * q_bc.transpose();
+    let gram_bc = mat_bc.transpose() * &mat_bc;
+    let eig_bc = gram_bc.symmetric_eigen();
 
+    // Build projector onto B/C column space from eigenvectors with nonzero eigenvalues
+    let mut p_bc = DMatrix::zeros(n_assess, n_assess);
+    for k in 0..n_assess {
+        if eig_bc.eigenvalues[k] > eig_threshold {
+            let col = eig_bc.eigenvectors.column(k);
+            p_bc += col * col.transpose();
+        }
+    }
+
+    // Project X onto complement: C_vk = X * (I - P_BC)
     let identity = DMatrix::identity(n_assess, n_assess);
     let proj_complement = &identity - &p_bc;
     let c_vk = &mat_x * &proj_complement;
 
-    let svd_vk = c_vk.svd(false, true);
-    let rank_vk = svd_vk.singular_values.iter()
-        .filter(|&&s| s > rank_threshold)
-        .count();
+    // For the complement, use the Gram matrix approach again:
+    // G_vk = c_vk^T * c_vk is n_assess x n_assess
+    let gram_vk = c_vk.transpose() * &c_vk;
+    let eig_vk = gram_vk.symmetric_eigen();
 
-    let vt = svd_vk.v_t.as_ref().unwrap();
+    // Eigenvalues are sigma^2 (sorted ascending in nalgebra).
+    // Collect nonzero ones in descending order.
+    let mut sv_pairs: Vec<(f64, usize)> = eig_vk.eigenvalues.iter()
+        .enumerate()
+        .filter(|(_, e)| **e > eig_threshold)
+        .map(|(i, e)| (e.sqrt(), i))
+        .collect();
+    sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
 
+    let rank_vk = sv_pairs.len();
     let n_basis = rank_vk.min(max_rank);
     let mut basis_matrix = DMatrix::zeros(n_basis, n_assess);
-    for k in 0..n_basis {
+    for (k, &(_, eig_idx)) in sv_pairs.iter().take(n_basis).enumerate() {
         for col in 0..n_assess {
-            basis_matrix[(k, col)] = vt[(k, col)];
+            basis_matrix[(k, col)] = eig_vk.eigenvectors[(col, eig_idx)];
         }
     }
 
-    let singular_values: Vec<f64> = svd_vk.singular_values.iter()
-        .take(rank_vk.min(max_rank * 2))  // report up to 2x max_rank for spectrum analysis
-        .copied()
+    let singular_values: Vec<f64> = sv_pairs.iter()
+        .take(rank_vk.min(max_rank * 2))
+        .map(|&(sv, _)| sv)
         .collect();
 
     (basis_matrix, singular_values, assessors)
