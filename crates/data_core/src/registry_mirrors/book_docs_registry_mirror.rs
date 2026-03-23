@@ -5,9 +5,9 @@
 //!
 //! Authoritative source: `registry/book_docs.toml`.
 //!
-//! - Updated: 2026-03-12
+//! - Updated: 2026-03-23
 //! - Source markdown glob: `docs/book/src/**/*.md`
-//! - Document count: 25
+//! - Document count: 26
 //!
 //! ## Documents
 //!
@@ -92,6 +92,13 @@
 //! - Section: `architecture`
 //! - Slug: `docs_book_src_architecture_layout`
 //! - Line count: 100
+//!
+//! ### BOOK-026: RFC-001.1 The Mergus Bridge
+//!
+//! - Source markdown: `docs/book/src/architecture/mergus-bridge.md`
+//! - Section: `architecture`
+//! - Slug: `docs_book_src_architecture_mergus-bridge`
+//! - Line count: 42
 //!
 //! ### BOOK-024: Migrated Lanes
 //!

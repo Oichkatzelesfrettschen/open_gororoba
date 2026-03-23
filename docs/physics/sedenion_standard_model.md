@@ -909,6 +909,8 @@ Given algebraic ratio r and one input m1 (lightest mass):
 4. [x] TensorElementLift: S_3 intertwiner proves NO equivariant map exists
    (null space dim=0, V_6 scalar representation incompatible with Sym_3(R)).
    The lift is response-fitted, not algebraically canonical.
+   A cleaner algebraic bridge may still improve the source-side symmetry
+   language, but it does not by itself make the PMNS/CKM map canonical.
 5. [x] Complete Rocq SU(3): Z[sqrt(3)] Jacobi proof (SU3JacobiFull.v)
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
 7. [x] Gauss-Newton 4D: all angles within 0.15% PDG (C-1492)
@@ -1539,7 +1541,8 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
 
 - de Marrais (2000-2007): CD tower zero-divisor geometry (8 papers)
   Box-kite ZD structure. 42 assessors. Sand mandala emanation tables.
-  Property cascade: alternativity (16D), power-assoc (32D), flexibility (64D).
+  Historically important for the ZD combinatorics and XOR encoding, but not
+  authoritative for a post-octonionic property-loss ladder.
   ZD counts: 84 (sedenions), 252 (pathions).
   Integration: cd_tower.rs naming conventions, AlgebraDim enum, XOR sign cocycle
   Papers:
@@ -1635,7 +1638,9 @@ Therefore, for ANY coefficient field K extending R (including the surreal
 numbers No), the scalar extension A_n(K) = K tensor_R A_n(R) inherits:
 - the same basis multiplication table
 - the same zero-divisor identities
-- the same property-loss ladder
+- the same universal law class tracked by the kernel:
+  flexibility and power-associativity persist through the full CD tower,
+  while alternativity is the first major law lost beyond octonions
 
 Formally: if u, v in A_n(R) satisfy uv = 0 with u != 0, v != 0, then
 their images in A_n(K) also satisfy uv = 0.
@@ -2212,13 +2217,20 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 **Epsilon automorphism**: Order-2 parity flip on upper octonion block [8..15].
   Splits SU(5) into SU(3) + leptoquark sectors.
 
-### Algebraic Properties Lost at Each Doubling
+### Universal CD Law Class
+
+The post-octonionic ladder in older tower summaries is not reliable for this
+repo. The kernel-side reference class is:
 
 **Commutativity** (lost at 4D): ab = ba
 **Associativity** (lost at 8D): (ab)c = a(bc)
 **Alternativity** (lost at 16D): a(ab) = a^2 b and (ba)a = ba^2
-**Power-associativity** (lost at 32D): a^m * a^n = a^(m+n)
-**Flexibility** (lost at 64D): a(ba) = (ab)a
+**Power-associativity** (retained through the CD tower): a^m * a^n = a^(m+n)
+**Flexibility** (retained through the CD tower): a(ba) = (ab)a
+
+This is the law class implemented by `UniversalCDProperties` and the
+hypercomplex kernel, and it is the only tower-level property summary the repo
+should treat as authoritative.
 
 ### Zero Divisor Counts by Dimension
 

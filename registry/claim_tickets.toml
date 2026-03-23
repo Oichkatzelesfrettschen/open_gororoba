@@ -3,9 +3,9 @@
 
 [claim_tickets]
 authoritative = true
-updated = "2026-03-18"
+updated = "2026-03-23"
 source_markdown_glob = "docs/tickets/*.md"
-ticket_count = 14
+ticket_count = 15
 
 [[ticket]]
 id = "TICKET-C001-C050"
@@ -270,5 +270,24 @@ backlog_reports = ["reports/claims_falsification_campaign.md"]
 deliverable_links = ["reports/claims_falsification_campaign.toml", "registry/claims_tasks.toml", "registry/claim_tickets.toml", "crates/gororoba_cli_algebra/src/bin/legacy_crossval_audit.rs"]
 acceptance_checks = ["cargo test -p gororoba_cli_data --bin claims-audit", "cargo run -p gororoba_cli_data --bin claims-audit -- --report falsification-campaign --campaign-manifest-out reports/claims_falsification_campaign.toml --out reports/claims_falsification_campaign.md"]
 goal_summary = "Backfill authoritative ticket/task/insight linkage for the empirical refutation campaign, starting with C-543 and the no-experiment claims, then keep the compatibility exports synchronized with the canonical worklist."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-MERGUS-BRIDGE-ROLLOUT"
+title = "Ticket: Mergus Bridge rollout"
+source_markdown = "docs/tickets/TICKET_MERGUS_BRIDGE_ROLLOUT.md"
+ticket_kind = "GENERAL"
+owner = "agent"
+created = "2026-03-23"
+status_raw = "IN_PROGRESS"
+status_token = "IN_PROGRESS"
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = []
+backlog_reports = []
+deliverable_links = ["crates/cd_kernel/src/cayley_dickson/", "crates/flavor_lifts/", "crates/gororoba_algebra/src/construction/", "crates/gororoba_structurable/", "docs/external_sources/MERGUS_BRIDGE_SOURCES.md", "docs/physics/sedenion_standard_model.md", "registry/book_docs.toml", "registry/claim_tickets.toml"]
+acceptance_checks = ["cargo test -p cd_kernel --lib", "cargo test -p gororoba_algebra --lib", "cargo test -p gororoba_algebra --test test_exotic_octonions", "cargo check -p gororoba_structurable", "cargo run -p gororoba_cli_data --bin registry-emit -- claim-tickets", "cargo run -p gororoba_cli_data --bin registry-emit -- book-docs"]
+goal_summary = "Implement RFC-001.1 The Mergus Bridge in the repo's canonical sources and code: fix the false post-octonionic property-loss ladder, route future middle-tier work through `flavor_lifts`, separate signature-aware observables from signature-parametric multiplication, add symmetric-composition and structurable scaffolding, and keep higher towers as control infrastructure."
 done_checkboxes = 0
 open_checkboxes = 0
