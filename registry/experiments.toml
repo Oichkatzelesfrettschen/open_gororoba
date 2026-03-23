@@ -5310,3 +5310,52 @@ id = "E-216"
 title = "PMD CPD 7.12.0 codebase duplication baseline scan"
 status = "completed"
 claim_refs = ["C-1528"]
+
+[[experiment]]
+id = "E-217"
+title = "Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path"
+status = "completed"
+claim_refs = []
+notes = """
+WHY: Tasks #57/#58 were filed as 'migrate to TOML + codegen'. User updated requirement:
+SQLite is the primary source of truth; TOML-codegen is a fallback. First evaluate whether
+existing Rust crates from crates.io can replace the inline data entirely.
+
+FINDINGS (2026-03-23):
+- mnp-plasmon 0.1.1 (GPL-3.0): Created 2026-03-11, 0 stars, only Au/Ag/Al with bare Drude.
+  Contains physics bug: omega = energy_ev / HC_EV_NM gives 1/nm not rad/s.
+  Eliminated even after GPL-2.0-or-later upgrade -- provides no value.
+- oxiphoton 0.1.0 (Apache-2.0): 'materials-builtin' feature undocumented at 0.1.0. Immature.
+- spglib 1.15.1 (BSD-3-Clause): C FFI wrapper. Superseded by moyo (pure Rust, same spglib org).
+- moyo 0.7.9 (MIT/Apache-2.0): ALREADY IN WORKSPACE. Handles symmetry determination from
+  atomic positions. Does NOT provide space group lookup tables or character tables.
+  No action needed -- it is already the correct dep for dynamic symmetry analysis.
+
+CONCLUSION on external crates: None are suitable replacements. Build internal solution.
+
+optical_database.rs DATA REGION (lines 3282-10630):
+  Data is NOT flat-CSV-able. The Lorentz oscillators are one-to-many per material (2 to 5+
+  oscillators), and some strengths are derived via documented formulas from Rakic 1998
+  convention (strength = f_j * omega_p^2 / omega_0j^2). Flat CSV cannot represent variable-
+  length oscillator lists cleanly.
+  DECISION: SQLite as primary source of truth.
+  Schema: drude_params(material, variant, source, omega_p_ev, gamma_ev, eps_inf) +
+          lorentz_oscillators(material, variant, idx, strength, omega_0_ev, gamma_ev).
+  Computation code (lines 1-3281: struct defs, epsilon(), Matsubara sums) stays in Rust.
+
+crystal_symmetry.rs DATA REGIONS:
+  - 230 space group lookup (HM symbol, Schoenflies, lattice system): SIMPLE -- CSV in
+    materials_data/data/symmetry/space_groups.csv is appropriate; build.rs emits static array.
+  - 32 point group character tables (~2752 lines of impl): Variable-size matrices with complex
+    entries per group. SQLite is natural; OR keep in Rust (justified: it IS computation).
+  - Miller index math + phonon modes: Pure computation -- stays in Rust regardless.
+  DECISION: Space group table -> CSV + build.rs codegen. Character tables -> keep in Rust
+  (complexity not warranted for ~32 fixed entries; no deduplication issue identified).
+
+STATUS: Architecture decided. Implementation of SQLite migration for optical_database.rs
+data region is a future sprint item. Space group CSV migration can proceed independently.
+Both files remain in CPD_EXCLUDE_FILES until migration is complete.
+
+LICENSE NOTE: Workspace upgraded from GPL-2.0-only to GPL-2.0-or-later (2026-03-23)
+to widen compatible dependency pool. Historical records left unchanged.
+"""
