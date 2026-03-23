@@ -5304,3 +5304,9 @@ id = "E-215"
 title = "Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection"
 status = "completed"
 claim_refs = ["C-1487", "C-1488"]
+
+[[experiment]]
+id = "E-216"
+title = "PMD CPD 7.12.0 codebase duplication baseline scan"
+status = "completed"
+claim_refs = ["C-1528"]
