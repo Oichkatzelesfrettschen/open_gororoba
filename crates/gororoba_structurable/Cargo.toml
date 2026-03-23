@@ -7,6 +7,8 @@ description = "Structurable, Jordan-pair, and value-level ternary bridge scaffol
 
 [dependencies]
 cd_kernel = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 [lints]
 workspace = true

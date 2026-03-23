@@ -8,9 +8,11 @@ use gororoba_structurable::{
     StructurableElement, StructurableVOperatorReport, structurable_v_operator,
     structurable_v_operator_report,
 };
+use serde::{Deserialize, Serialize};
+use std::fmt;
 
 /// A machine-stable snapshot of one bridge evaluation.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StructurableBridgeSnapshot {
     pub operator_report: StructurableVOperatorReport,
     pub mass_matrix: [[f64; 3]; 3],
@@ -29,6 +31,27 @@ impl StructurableBridgeSnapshot {
             self.mass_matrix[2][1],
             self.mass_matrix[2][2],
         ]
+    }
+
+    pub fn summary_lines(&self) -> [String; 2] {
+        [
+            self.operator_report.summary_line(),
+            format!(
+                "mass-diagonal=[{:.6}, {:.6}, {:.6}]",
+                self.mass_matrix[0][0], self.mass_matrix[1][1], self.mass_matrix[2][2]
+            ),
+        ]
+    }
+
+    pub fn to_json_pretty(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string_pretty(self)
+    }
+}
+
+impl fmt::Display for StructurableBridgeSnapshot {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let lines = self.summary_lines();
+        write!(f, "{}\n{}", lines[0], lines[1])
     }
 }
 
@@ -109,5 +132,23 @@ mod tests {
             (flattened[0] - snapshot.operator_report.output_coords.iter().sum::<f64>()).abs()
                 < 1e-12
         );
+    }
+
+    #[test]
+    fn test_structurable_bridge_snapshot_json_roundtrip() {
+        let x = StructurableElement::new(vec![1.0, 0.0, 0.0, 0.0]);
+        let y = StructurableElement::new(vec![0.0, 1.0, 0.0, 0.0]);
+        let z = StructurableElement::new(vec![0.0, 0.0, 1.0, 0.0]);
+
+        let snapshot = sample_structurable_bridge(&x, &y, &z, &SumLift);
+        let json = snapshot
+            .to_json_pretty()
+            .expect("bridge snapshot should serialize");
+        let decoded: StructurableBridgeSnapshot =
+            serde_json::from_str(&json).expect("bridge snapshot should deserialize");
+
+        assert_eq!(decoded, snapshot);
+        assert!(json.contains("\"mass_matrix\""));
+        assert!(snapshot.to_string().contains("mass-diagonal"));
     }
 }

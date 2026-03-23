@@ -4,8 +4,11 @@
 //! Jordan pairs, involutive structurable carriers, and value-level ternary
 //! operators that can later feed the `flavor_lifts` seam without materializing
 //! dense operators in hot loops.
+//!
+//! For a quick probe, run `cargo run -p gororoba_structurable --example v_operator_report`.
 
 use cd_kernel::cayley_dickson::{cd_conjugate, cd_multiply};
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 #[derive(Clone, Debug, PartialEq)]
@@ -65,7 +68,7 @@ impl StructurableElement {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ValueLevelOperatorCost {
     pub binary_products: usize,
     pub conjugations: usize,
@@ -82,7 +85,7 @@ pub const STRUCTURABLE_V_OPERATOR_COST: ValueLevelOperatorCost = ValueLevelOpera
 ///
 /// This keeps the output inspectable in tests and experiments without forcing
 /// callers to reconstruct norms or cost metadata by hand.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StructurableVOperatorReport {
     pub dimension: usize,
     pub input_norms: [f64; 3],
@@ -100,6 +103,14 @@ impl StructurableVOperatorReport {
             self.input_norms[2],
             self.output_norm,
         ]
+    }
+
+    pub fn summary_line(&self) -> String {
+        self.to_string()
+    }
+
+    pub fn to_json_pretty(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string_pretty(self)
     }
 }
 
@@ -213,5 +224,23 @@ mod tests {
         assert_eq!(report.output_coords, raw.coords().to_vec());
         assert_eq!(report.cost, STRUCTURABLE_V_OPERATOR_COST);
         assert_eq!(report.summary_row()[0], 4.0);
+    }
+
+    #[test]
+    fn test_structurable_v_operator_report_json_roundtrip() {
+        let x = StructurableElement::new(vec![1.0, 0.0, 0.0, 0.0]);
+        let y = StructurableElement::new(vec![0.0, 1.0, 0.0, 0.0]);
+        let z = StructurableElement::new(vec![0.0, 0.0, 1.0, 0.0]);
+
+        let report = structurable_v_operator_report(&x, &y, &z);
+        let json = report
+            .to_json_pretty()
+            .expect("structurable report should serialize");
+        let decoded: StructurableVOperatorReport =
+            serde_json::from_str(&json).expect("structurable report should deserialize");
+
+        assert_eq!(decoded, report);
+        assert!(json.contains("\"output_coords\""));
+        assert!(report.summary_line().contains("dim=4"));
     }
 }

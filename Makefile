@@ -8,6 +8,7 @@
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit
+.PHONY: cache-status cache-sweep cache-purge-exp cache-check
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -57,7 +58,7 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
-.PHONY: cpd-audit cpd-audit-strict
+.PHONY: cpd-audit cpd-audit-strict cargo-cache-status cargo-cache-prune cargo-cache-smoke
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
@@ -73,11 +74,23 @@ RAYON_THREADS ?= $(WORKER_BUDGET)
 RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
+REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
+REPO_PATH_HASH ?= $(shell printf "%s" "$(CURDIR)" | sha256sum | cut -c1-16)
+REPO_TMP_CARGO_ROOT ?= $(REPO_TMPDIR)/open_gororoba-cargo-build/gate/$(REPO_PATH_HASH)
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
+# Gate builds use a separate target dir from ambient (LSP/editor) builds to
+# avoid file-lock contention during concurrent cargo check / nextest runs.
+# Both dirs are bounded by `make cache-sweep` (cargo-sweep --maxsize).
+# Experimental target dirs MUST follow the naming convention .cache/exp-<name>-target/
+# Use `make cache-purge-exp` to remove all of them. Never create ad-hoc names.
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
-CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
-# CI variant: disable incremental so sccache can cache all compiled artifacts
-# cross-session. With incremental=true, sccache passes through without caching.
+# Build intermediates (.o/.d) go to /tmp via build-dir, keeping target-dir lean.
+# /tmp on this machine is the same nvme partition (not tmpfs), so benefit is
+# layout isolation only. See .cargo/config.toml [build] build-dir for details.
+REPO_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)
+CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+# [env] CARGO_INCREMENTAL=0 in .cargo/config.toml now enforces this globally.
+# Kept here as belt-and-suspenders for CI environments where the config may be absent.
 CARGO_ENV_CI = $(CARGO_ENV) CARGO_INCREMENTAL=0
 
 HOOKS_DIR ?= .githooks
@@ -89,7 +102,8 @@ DOCS_SITE_DIR ?= $(CURDIR)/target/site-docs
 DOCS_BOOK_DIR ?= $(DOCS_SITE_DIR)/book
 DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
-DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
+DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
 MD_BOOK ?= mdbook
 PGO_DIR ?= /tmp/pgo-data
 SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
@@ -232,7 +246,7 @@ governance-gate: governance-gate-readonly
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-gate-local:
+gate-local: cache-check
 	@set -e; \
 	scope=""; \
 	run_rust="true"; \
@@ -297,6 +311,49 @@ host-profile:
 gate-audit:
 	$(CARGO_ENV) cargo run -p xtask -- gate-audit
 	@echo "OK: gate-audit completed."
+
+# ---- Cargo cache management -----------------------------------------------
+# WHY: Two independent target dirs (.cache/gate-target and
+# .cache/cargo-default-target) balloon without bounds because Cargo never
+# auto-evicts build artifacts. cargo-sweep enforces size limits.
+# cargo clean gc (enabled by [unstable] gc=true) handles CARGO_HOME only.
+#
+# Experimental target dirs: MUST be named .cache/exp-<name>-target/
+# Use: CARGO_TARGET_DIR=$(CURDIR)/.cache/exp-myname-target cargo ...
+# Clean: make cache-purge-exp
+.PHONY: cache-status cache-sweep cache-purge-exp cache-check
+
+cache-status:
+	@printf '=== Cargo target dirs ===\n'
+	@du -sh .cache/gate-target .cache/cargo-default-target 2>/dev/null || true
+	@printf '=== CARGO_HOME ===\n'
+	@du -sh .cache/cargo-home 2>/dev/null || true
+	@printf '=== /tmp build-dir intermediates ===\n'
+	@du -sh /tmp/open_gororoba-cargo-build 2>/dev/null || printf '(empty)\n'
+	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
+	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
+
+cache-sweep:
+	@echo "Sweeping gate-target to <= 100GB..."
+	cargo sweep --maxsize 100GB .cache/gate-target
+	@echo "Sweeping cargo-default-target to <= 100GB..."
+	cargo sweep --maxsize 100GB .cache/cargo-default-target
+	@echo "OK: cache-sweep complete."
+
+cache-purge-exp:
+	rm -rf .cache/exp-*-target
+	@echo "OK: experimental target dirs purged."
+
+# Fast cache size check: warns but does not fail. Integrated into gate-local.
+cache-check:
+	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
+	AMBIENT_MB=$$(du -sm .cache/cargo-default-target 2>/dev/null | cut -f1 || printf '0'); \
+	TOTAL=$$((GATE_MB + AMBIENT_MB)); \
+	if [ "$$TOTAL" -gt 102400 ]; then \
+		printf '[cache-check] WARNING: cargo target dirs total %dGB (>100GB). Run: make cache-sweep\n' "$$((TOTAL / 1024))"; \
+	else \
+		printf '[cache-check] OK: cargo target dirs at %dMB\n' "$$TOTAL"; \
+	fi
 
 profile-python-toml-inventory:
 	@mkdir -p "$(PROFILE_ROOT)"
@@ -1573,8 +1630,20 @@ clean-builds:
 	rm -rf target/
 	rm -rf .cache/cargo-default-target/
 	rm -rf .cache/gate-target/
+	rm -rf $(REPO_TMP_CARGO_ROOT)
+	rm -rf /tmp/open_gororoba-cargo-build 2>/dev/null || true
 	rm -rf /tmp/open_gororoba_*_target 2>/dev/null || true
+	rm -rf /tmp/open_gororoba-cargo-build-* 2>/dev/null || true
 	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
+
+cargo-cache-status:
+	sh scripts/cargo_cache_status.sh
+
+cargo-cache-prune:
+	sh scripts/cargo_cache_prune.sh
+
+cargo-cache-smoke:
+	$(CARGO_ENV) cargo test -p gororoba_structurable --lib
 
 clean-all: clean clean-builds clean-artifacts
 	@rm -rf $(REPO_CARGO_HOME)

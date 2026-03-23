@@ -8,13 +8,36 @@
 # off the gate runner's dedicated target dir. Gate commands override this via
 # CARGO_TARGET_DIR=.cache/gate-target so they still land in the isolated gate tree.
 target-dir = ".cache/cargo-default-target"
-# sccache caches compiled crate artifacts cross-session via ~/.cache/sccache.
-# IMPORTANT: sccache only caches when CARGO_INCREMENTAL=0. For incremental
-# profiles (test/dev with incremental=true), it passes through harmlessly with
-# ~5ms overhead per crate. Maximum benefit comes from --release builds or when
-# running with CARGO_INCREMENTAL=0 (e.g., add to gate-ci-rust for cold-build
-# speedup after profile changes). Stats: sccache --show-stats
-rustc-wrapper = "sccache"
+# Cargo splits final artifacts (target-dir) from heavy build intermediates
+# (build-dir). We redirect intermediates to /tmp so that `make cache-sweep`
+# only needs to manage the much smaller final-artifact tree.
+# NOTE: on this machine /tmp is on the same nvme partition as the repo (not
+# a tmpfs RAM disk), so the benefit is layout isolation, not speed.
+# `{workspace-path-hash}` prevents collisions between multiple repo clones.
+build-dir = "/tmp/open_gororoba-cargo-build/ambient/{workspace-path-hash}"
+# Belt-and-suspenders: the [env] section below sets CARGO_INCREMENTAL=0 which
+# wins over any profile-level `incremental = true` in Cargo.toml. This field
+# keeps the *config-level* default consistent even without the env override.
+incremental = false
+
+[env]
+# Disable incremental compilation globally. This wins over profile-level
+# `incremental = true` in Cargo.toml (env var has highest precedence). Without
+# this, dev and test profiles re-enable incremental, which was the primary
+# cause of the target-dir ballooning to 1.7 TB in March 2026.
+CARGO_INCREMENTAL = "0"
+
+[cache]
+# auto-clean-frequency controls Cargo's built-in GC of CARGO_HOME (downloaded
+# crate sources, registry indexes, git checkouts). It does NOT clean build
+# artifact target dirs -- use `make cache-sweep` for those.
+auto-clean-frequency = "1 day"
+
+[unstable]
+# Enables `cargo clean gc` and automatic GC of CARGO_HOME during normal builds.
+# Tracks access timestamps on downloaded sources and evicts stale entries.
+# Only affects CARGO_HOME caches; build artifact dirs need `make cache-sweep`.
+gc = true
 
 [target.'cfg(target_arch = "x86_64")']
 # Enable native CPU instruction set (AVX2, BMI2, FMA, POPCNT, etc.)

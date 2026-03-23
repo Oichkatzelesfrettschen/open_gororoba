@@ -9,6 +9,8 @@ nalgebra = { workspace = true }
 cd_kernel = { workspace = true }
 gororoba_structurable = { workspace = true }
 rayon = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 [lints]
 workspace = true

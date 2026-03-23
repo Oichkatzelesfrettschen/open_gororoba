@@ -36,6 +36,10 @@ venv/
 .mamba/
 
 # Rust
+# Workspace-local Cargo artifact trees stay untracked under `.cache/` and
+# `target/`. The heavy intermediate build state now lives outside the repo
+# under `/tmp/open_gororoba-cargo-build/...`, so there is nothing additional
+# to ignore here for that split-cache layout.
 target/
 target_codex_hve/
 target_codex_hve2/

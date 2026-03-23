@@ -5,6 +5,7 @@
 //! and explicit triality actions.
 
 use super::{exotic_octonions::ParaOctonion, octonion::Octonion};
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 pub fn para_hurwitz_multiply(lhs: &Octonion, rhs: &Octonion) -> Octonion {
@@ -13,7 +14,7 @@ pub fn para_hurwitz_multiply(lhs: &Octonion, rhs: &Octonion) -> Octonion {
         .value
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TrialityAction {
     Identity,
     CycleForward,
@@ -56,7 +57,7 @@ impl fmt::Display for TrialityAction {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TrialityOrbitSummary {
     pub action: TrialityAction,
     pub permutation: [usize; 3],
@@ -74,6 +75,17 @@ impl TrialityOrbitSummary {
             self.output_norms[1],
             self.output_norms[2],
         ]
+    }
+
+    pub fn summary_line(&self) -> String {
+        format!(
+            "{} perm={:?} in={:?} out={:?}",
+            self.action, self.permutation, self.input_norms, self.output_norms
+        )
+    }
+
+    pub fn to_json_pretty(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string_pretty(self)
     }
 }
 
@@ -171,5 +183,24 @@ mod tests {
         assert_eq!(summary.input_norms, [1.0, 4.0, 9.0]);
         assert_eq!(summary.output_norms, [4.0, 9.0, 1.0]);
         assert_eq!(summary.summary_row(), [1.0, 4.0, 9.0, 4.0, 9.0, 1.0]);
+    }
+
+    #[test]
+    fn test_triality_summary_json_roundtrip() {
+        let summary = TrialityOrbitSummary {
+            action: TrialityAction::CycleBackward,
+            permutation: [2, 0, 1],
+            input_norms: [1.0, 1.0, 1.0],
+            output_norms: [1.0, 1.0, 1.0],
+        };
+
+        let json = summary
+            .to_json_pretty()
+            .expect("triality summary should serialize");
+        let decoded: TrialityOrbitSummary =
+            serde_json::from_str(&json).expect("triality summary should deserialize");
+
+        assert_eq!(decoded, summary);
+        assert!(summary.summary_line().contains("cycle-backward"));
     }
 }
