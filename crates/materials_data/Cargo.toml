@@ -3,7 +3,7 @@ name = "materials_data"
 version = "0.1.0"
 edition = { workspace = true }
 description = "Compile-time optical, crystal, and periodic-table data tables for materials_core. Data lives in data/ as CSV/TOML; build.rs emits const arrays into OUT_DIR."
-license = "GPL-2.0-only"
+license = "GPL-2.0-or-later"
 build = "build.rs"
 
 # No runtime dependencies -- this crate is purely data.

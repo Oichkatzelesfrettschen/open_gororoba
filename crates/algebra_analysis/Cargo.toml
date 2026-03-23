@@ -3,7 +3,7 @@ name = "algebra_analysis"
 version = "0.1.0"
 edition = { workspace = true }
 description = "Zero-divisor analysis, box-kites, codebook/lattice, projective geometry, homotopy algebra, grassmannian, fractal/stochastic for Cayley-Dickson algebras"
-license = "GPL-2.0-only"
+license = "GPL-2.0-or-later"
 
 [features]
 default = []

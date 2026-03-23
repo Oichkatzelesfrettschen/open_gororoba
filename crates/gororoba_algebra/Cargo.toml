@@ -3,7 +3,7 @@ name = "gororoba_algebra"
 version = "0.1.0"
 edition = { workspace = true }
 description = "Cayley-Dickson algebras, Clifford algebras, and algebraic structures for physics"
-license = "GPL-2.0-only"
+license = "GPL-2.0-or-later"
 
 [dependencies]
 cd_kernel = { workspace = true }

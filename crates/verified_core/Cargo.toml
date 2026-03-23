@@ -3,7 +3,7 @@ name = "verified_core"
 version = "0.1.0"
 edition = { workspace = true }
 description = "Rocq-verified operations extracted to Rust"
-license = "GPL-2.0-only"
+license = "GPL-2.0-or-later"
 
 # Most modules in this crate are pure arithmetic derived from Rocq extraction.
 # The topology helper is intentionally host-facing and depends on runtime CPU
