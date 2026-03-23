@@ -12358,4 +12358,115 @@ mod tests {
         let eig_eps = m_eps_v6.clone().symmetric_eigen();
         println!("  Eigenvalues of eps on V_6: {:?}", eig_eps.eigenvalues.as_slice());
     }
+
+    /// T4: Compute psi-friction profiles for all 42 assessors across 3 subalgebras.
+    ///
+    /// For each assessor pair (low, high), compute the signed friction
+    /// cd_braid_signed_friction in each of the 3 octonionic subalgebras
+    /// (O_1, O_2, O_3). This gives a 42x3 matrix where:
+    ///   F[a][g] = friction of assessor a in subalgebra O_g
+    ///
+    /// The subalgebra classification (C-1528) predicts that intra-generation
+    /// assessors have friction concentrated in one subalgebra, while cross-
+    /// generation assessors spread across 2 or 3.
+    ///
+    /// Claim: C-1529.
+    #[test]
+    fn test_psi_friction_profiles_42x3() {
+        use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
+        use crate::majorana_braiding::MajoranaMode;
+        use crate::bell_inequality::SignTableCache;
+        use crate::three_fermion_generations::get_sedenion_subalgebras;
+
+        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let subs = [&o1[..], &o2[..], &o3[..]];
+        let sign_table = SignTableCache::new(16);
+
+        // Build 42 assessor pairs
+        let mut assessors: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                assessors.push((low, high));
+            }
+        }
+
+        println!("--- T4: PSI-FRICTION PROFILES (42 x 3) ---\n");
+
+        // Subalgebra exclusive membership for classification
+        let o1_excl: std::collections::HashSet<usize> = [1,5,9,13].into();
+        let o2_excl: std::collections::HashSet<usize> = [2,6,10,14].into();
+        let o3_excl: std::collections::HashSet<usize> = [3,7,11,15].into();
+
+        let gen_label = |idx: usize| -> &'static str {
+            if o1_excl.contains(&idx) { "O1" }
+            else if o2_excl.contains(&idx) { "O2" }
+            else if o3_excl.contains(&idx) { "O3" }
+            else { "Sh" } // shared
+        };
+
+        // Compute 42x3 friction matrix
+        let mut friction_matrix = vec![[0.0_f64; 3]; 42];
+        let mut gen_labels = Vec::new();
+
+        for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+            let mode_i = MajoranaMode { gamma_index: low - 1, cd_basis_index: low, cd_dim: 16 };
+            let mode_j = MajoranaMode { gamma_index: high - 1, cd_basis_index: high, cd_dim: 16 };
+
+            for (g, sub) in subs.iter().enumerate() {
+                friction_matrix[a_idx][g] = cd_braid_signed_friction(&mode_i, &mode_j, sub, &sign_table);
+            }
+
+            let label = format!("{}-{}", gen_label(low), gen_label(high));
+            gen_labels.push(label);
+        }
+
+        // Print friction matrix with generation labels
+        println!("  {:>3} ({:>2},{:>2}) {:>5} | {:>8} {:>8} {:>8} | {:>5}",
+            "idx", "lo", "hi", "type", "F(O1)", "F(O2)", "F(O3)", "dom");
+        println!("  {:-<3}-{:-<7}-{:-<5}-+-{:-<8}-{:-<8}-{:-<8}-+-{:-<5}",
+            "", "", "", "", "", "", "");
+
+        let mut type_friction_sums: std::collections::BTreeMap<String, [f64; 3]> =
+            std::collections::BTreeMap::new();
+
+        for (a_idx, &(low, high)) in assessors.iter().enumerate() {
+            let f = friction_matrix[a_idx];
+            let abs_f: Vec<f64> = f.iter().map(|x| x.abs()).collect();
+            let max_g = abs_f.iter().enumerate()
+                .max_by(|a, b| a.1.partial_cmp(b.1).unwrap())
+                .map(|(i, _)| i).unwrap_or(0);
+            let dom = ["O1", "O2", "O3"][max_g];
+
+            println!("  {:>3} ({:>2},{:>2}) {:>5} | {:>8.3} {:>8.3} {:>8.3} | {:>5}",
+                a_idx, low, high, gen_labels[a_idx],
+                f[0], f[1], f[2], dom);
+
+            let entry = type_friction_sums.entry(gen_labels[a_idx].clone()).or_insert([0.0; 3]);
+            for g in 0..3 { entry[g] += f[g].abs(); }
+        }
+
+        // Summary: average friction by generation type
+        println!("\n  Average |friction| by assessor type:\n");
+        println!("  {:>7} | {:>8} {:>8} {:>8}", "type", "|F(O1)|", "|F(O2)|", "|F(O3)|");
+        for (label, sums) in &type_friction_sums {
+            println!("  {:>7} | {:>8.2} {:>8.2} {:>8.2}", label, sums[0], sums[1], sums[2]);
+        }
+
+        // Key test: do intra-generation assessors concentrate friction?
+        // Count how many assessors have > 80% of their friction in one subalgebra
+        let mut concentrated = 0;
+        let mut spread = 0;
+        for f in &friction_matrix {
+            let total: f64 = f.iter().map(|x| x.abs()).sum();
+            if total < 1e-10 { continue; }
+            let max_frac = f.iter().map(|x| x.abs()).fold(0.0_f64, f64::max) / total;
+            if max_frac > 0.8 { concentrated += 1; } else { spread += 1; }
+        }
+
+        println!("\n  Concentration analysis:");
+        println!("    Concentrated (>80% in one sub): {}", concentrated);
+        println!("    Spread (< 80% in one sub): {}", spread);
+        println!("    (Prediction: intra-gen assessors concentrate, cross-gen spread)");
+    }
 }
