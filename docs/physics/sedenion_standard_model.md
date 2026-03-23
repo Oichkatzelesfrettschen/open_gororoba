@@ -1230,45 +1230,64 @@ M3IsAssociatorPathion.v (vm_compute, all 2730 ordered triples).
 These are stated explicitly so they become part of the intellectual map
 rather than unstated weaknesses discovered in peer review.
 
-1. **Aut(S) framing tension**: Aut(S) = G_2 (Schafer, confirmed by Wilmot)
+### Quantitative Tensions Table (2026-03-22)
+
+| # | Observable | Framework | PDG | Pull | Type |
+|---|-----------|-----------|-----|------|------|
+| T1 | delta_CP | ~93 deg | 195 +/- 25 deg | **FALSIFIED** | Structural |
+| T2 | |J_CP| | 3.33e-2 (J_max) | 8.6e-3 | +11.9 sigma | Structural |
+| T3 | r = dm21/dm31 (at NM opt.) | 0.0353 | 0.0307 +/- 0.001 | +4.6 sigma | Parametric |
+| T4 | sin^2(theta_W) | 0.250 | 0.231 | ~8% | Tree-level |
+| T5 | m_s/m_d | 15.7 | 20.2 | ~22% | Weak sector |
+
+**Structural** = cannot be resolved by parameter tuning within the framework.
+**Parametric** = depends on the optimizer trade-off (Pareto frontier).
+
+**T1 (delta_CP, FALSIFIED)**: Sign systematics (8 combinations of selector
+swap, L/R multiplication, epsilon sign flip) confirm NO route to delta=195.
+The framework robustly predicts maximal CP violation (|sin(delta)| ~ 1).
+PDG measures non-maximal (|sin(delta)| ~ 0.26). Three independent
+extraction methods agree: arg(-U_e3)=97.9, Jarlskog quartet=92.8,
+atan2 invariant=86.5 deg. (C-1498, C-1508)
+
+**T2 (J_CP, 3.9x excess)**: |J_CP| = 3.33e-2 is the kinematic maximum
+J_max = c12*s12*c23*s23*s13*c13^2, attained because delta ~ 90. The
+PDG measured |J| = 8.6e-3 is suppressed by |sin(195)| = 0.26. This
+tension is inseparable from T1. (C-1497 AMENDED)
+
+**T3 (r, Pareto trade-off)**: At the angle-optimal NM point, r = 0.0353
+(+4.6 sigma). The 3-blade prediction r = 0.0304 (1% error) is better but
+incompatible with the CP optimization. The Pareto frontier shows:
+w_r=0.01: angles 0.3%, r=0.0353 | w_r=10: angles 12%, r=0.0312.
+No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
+
+**T4-T7 (pre-existing):**
+
+4. **Aut(S) framing tension**: Aut(S) = G_2 (Schafer, confirmed by Wilmot)
    is the standard result. The S_3 family symmetry is specific to the
    Gresnigt/Gourlay/Brown framework, where it arises from the interleaved
    subalgebra structure. This framework is productive but not universal.
 
-2. **CP has two pipelines, not yet a single canonical one**: CP-A
-   (phase-only complexification) and CP-B (cross-sector Gram / rephasing)
-   produce materially different |J_CP| and delta_CP values. They disagree
-   not only in delta_CP convention but in what object is treated as primary
-   (quartet phase vs rephased PMNS phase). The closure criterion is not yet
-   met by either pipeline individually.
-
-3. **CP-optimal and angle-optimal selector pairs are not the same**: The
-   pair giving delta_CP ~ -166 deg is badly incompatible with the
-   angle-sector fit, while the angle-optimal pair gives a CP phase that is
-   much further from PDG. This is a "one framework, multiple incompatible
-   optima" fact that must be owned early.
-
-4. **TensorElementLift is successful but response-fitted**: The 42->6 block
+5. **TensorElementLift is successful but response-fitted**: The 42->6 block
    assignment works because it preserves 6 effective DOFs matching V_6, but
-   the specific 7-assessor blocks are not yet derived from the algebra.
-   Whether TensorElementLift lies in Hom_{S_3}(V_6, Sym_3) is the central
-   open question (Epic B).
+   the specific 7-assessor blocks are not derivable from S_3 equivariance
+   (C-1502: null space dim=0, V_6 is scalar under psi). The lift is
+   project-specific, not algebraically canonical.
 
-5. **Mass ratios and mixing angles are complementary rather than unified**:
-   2-blade off-diagonal structure is angle-optimal; 3-blade diagonal
-   structure is mass-ratio-optimal; naive combination degrades both. The
-   structurally correct forward model is "two-selector-type": 3-blade
-   triples set the hierarchy, 2-blade pairs set the mixing.
+6. **Prediction mode diverges**: With no angle penalty, the NM optimizer
+   pushes theta_13 to 36.8 deg (PDG 8.54). The structure is NOT generative
+   -- it has no intrinsic attractor at the PDG angles.
 
-6. **sin^2(theta_W) = 0.250 is tree-level structural output**: The 8% gap
+7. **Sedenion uniqueness**: Pathion (32D) V_k has rank 1 vs sedenion rank 6.
+   The sedenion is the unique CD dimension with rank-6 assessor complement.
+   Higher dimensions DESTROY the flavor structure. (C-1506)
+
+8. **sin^2(theta_W) = 0.250 is tree-level structural output**: The 8% gap
    from PDG 0.231 is plausibly the size of omitted radiative corrections.
-   1-loop SM running actually worsens the match. This should be read as a
-   group-theoretic heuristic, not a precision electroweak derivation.
 
-7. **Down-type quark mass ratios are asymmetrically weaker**: m_b/m_s =
+9. **Down-type quark mass ratios are asymmetrically weaker**: m_b/m_s =
    52.3 (1.5% PDG) is strong, but m_s/m_d = 15.7 (22% PDG) needs a
-   different triple structure. The up-type/down-type asymmetry should not
-   be flattened in the observable count.
+   different triple structure.
 
 ## References and Bibliography
 
