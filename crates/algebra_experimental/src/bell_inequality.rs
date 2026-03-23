@@ -557,14 +557,44 @@ pub fn chsh_violation_test(dim: usize, n_samples: usize, seed: u64) -> BellTestR
     }
 }
 
+/// Check if two sorted slices share any element (merge-join, zero allocation).
+///
+/// # Why sorted-Vec merge instead of HashSet
+///
+/// The old implementation allocated two HashSets per channel pair in a double
+/// loop -- O(n^2) allocations with ~64 bytes overhead per entry. Sorted-Vec
+/// merge-join uses zero allocation and O(k1 + k2) time via two-pointer scan.
+/// Pattern from `algebra_analysis::sparse::SparseState::dot()`.
+fn sorted_slices_intersect(a: &[usize], b: &[usize]) -> bool {
+    let (mut i, mut j) = (0, 0);
+    while i < a.len() && j < b.len() {
+        match a[i].cmp(&b[j]) {
+            std::cmp::Ordering::Less => i += 1,
+            std::cmp::Ordering::Greater => j += 1,
+            std::cmp::Ordering::Equal => return true,
+        }
+    }
+    false
+}
+
 /// Count shared ZD paths: pairs of channels with overlapping basis support.
+///
+/// Uses sorted-Vec merge-join intersection (zero per-pair allocation).
 fn count_shared_zd_paths(channels: &[ZdChannel]) -> usize {
+    // Pre-sort each channel's basis_indices once
+    let sorted: Vec<Vec<usize>> = channels.iter()
+        .map(|ch| {
+            let mut v = ch.basis_indices.clone();
+            v.sort_unstable();
+            v.dedup();
+            v
+        })
+        .collect();
+
     let mut count = 0;
-    for (i, ch_i) in channels.iter().enumerate() {
-        let set_i: HashSet<usize> = ch_i.basis_indices.iter().copied().collect();
-        for ch_j in channels.iter().skip(i + 1) {
-            let set_j: HashSet<usize> = ch_j.basis_indices.iter().copied().collect();
-            if set_i.intersection(&set_j).next().is_some() {
+    for (i, si) in sorted.iter().enumerate() {
+        for sj in sorted.iter().skip(i + 1) {
+            if sorted_slices_intersect(si, sj) {
                 count += 1;
             }
         }
@@ -592,11 +622,19 @@ pub fn find_shared_zd_paths(dim: usize) -> Vec<Vec<usize>> {
     let n = channels.len();
     let mut adj: Vec<Vec<usize>> = vec![Vec::new(); n];
 
-    for (i, ch_i) in channels.iter().enumerate() {
-        let set_i: HashSet<usize> = ch_i.basis_indices.iter().copied().collect();
-        for (j, ch_j) in channels.iter().enumerate().skip(i + 1) {
-            let set_j: HashSet<usize> = ch_j.basis_indices.iter().copied().collect();
-            if set_i.intersection(&set_j).next().is_some() {
+    // Pre-sort basis_indices for merge-join intersection (zero per-pair allocation)
+    let sorted: Vec<Vec<usize>> = channels.iter()
+        .map(|ch| {
+            let mut v = ch.basis_indices.clone();
+            v.sort_unstable();
+            v.dedup();
+            v
+        })
+        .collect();
+
+    for (i, si) in sorted.iter().enumerate() {
+        for (j, sj) in sorted.iter().enumerate().skip(i + 1) {
+            if sorted_slices_intersect(si, sj) {
                 adj[i].push(j);
                 adj[j].push(i);
             }

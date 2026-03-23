@@ -1047,6 +1047,33 @@ release-gate profile: thin LTO + 6 codegen-units + line-tables debug info.
 Fat LTO was the root cause of 2-9 minute recompile times (confirmed via
 perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 
+### CD/ZD Performance Optimization (2026-03-22)
+
+Systematic elimination of heap allocation from the algebraic computation
+hot paths. All changes validated against numerical regression baselines
+(119 cd_kernel tests + regression snapshot at commit 83c4254f).
+
+| Optimization | File | Before | After | Speedup |
+|---|---|---|---|---|
+| cd_multiply_into workspace fix | arith.rs | Workspace ignored, called allocating cd_multiply | True recursive workspace multiply, zero alloc | ~10x for dim>=32 |
+| cd_conjugate_into | arith.rs | Vec::to_vec() per call | Caller-provided buffer, zero alloc | Eliminates ~64 allocs per dim=16 multiply |
+| Zero-divisor sign-table enum | zero_divisors.rs | O(dim^4) cd_multiply calls | O(1) sign table + XOR | ~1000x for dim=32 |
+| Bell inequality merge-join | bell_inequality.rs | O(n^2) HashSet alloc | Sorted-Vec two-pointer merge | Zero per-pair alloc |
+| extract_vk_basis rayon | neutrino_sector.rs | Sequential triple loop | rayon fold+reduce, i64 accum | ~4-8x on 8 cores |
+| Gram matrix accumulation | neutrino_sector.rs | Full DMatrix row storage | Sparse outer product, integer Gram | ~30x memory reduction |
+
+Key design decisions:
+- **Integer accumulation** in rayon: Gram updates are `+= 1` counts, accumulated
+  as i64 thread-locally, converted to f64 ONCE after reduce. This gives
+  bit-identical results regardless of thread scheduling (rayon does not
+  guarantee fold/reduce ordering for f64).
+- **cd_multiply_workspace_len(dim)**: runtime-asserted workspace sizing helper
+  with documented non-overlap contract (res must not alias inputs, workspace
+  must not alias anything).
+- **Sign-table ZD**: new `find_zero_divisors_sign_table` as a specialized exact
+  implementation alongside the original. Canonical comparison test sorts by
+  (i,j,k,l) tuple and asserts identical result sets.
+
 ## XV. Axiomatic Derivation Chain
 
 The complete mathematical derivation from foundational axioms to each

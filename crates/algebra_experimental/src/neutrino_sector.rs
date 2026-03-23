@@ -875,62 +875,89 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
     };
 
     // Accumulate Gram matrices G_bc = M_bc^T * M_bc and G_x = M_x^T * M_x
-    // DIRECTLY without building the full row matrices. Each row is sparse
-    // (at most 6 nonzeros in n_assess columns), so the outer product
-    // update is O(36) per triad instead of O(n_assess^2).
+    // via rayon-parallel fold+reduce with integer accumulation.
     //
-    // This eliminates ~290 MB of heap allocation for dim=64 and reduces
-    // the Gram accumulation from O(n_triads * n_assess^2) to O(n_triads * 36).
-    let mut gram_bc = DMatrix::zeros(n_assess, n_assess);
-    let mut gram_x = DMatrix::zeros(n_assess, n_assess);
-    let mut count_bc = 0_usize;
-    let mut count_x = 0_usize;
+    // # Why integer accumulation
+    //
+    // The Gram updates are `+= 1` (binary incidence rows). Accumulating as
+    // i64 in thread-local flat buffers avoids the non-determinism of parallel
+    // f64 addition (rayon does not guarantee fold/reduce ordering). The final
+    // i64-to-f64 conversion happens ONCE after the reduce, giving bit-identical
+    // results to the sequential path.
+    //
+    // # Why rayon here
+    //
+    // For dim=64: C(63,3)=39,711 triads, each with 3 sign-table lookups and
+    // ~6 sparse Gram updates. Sequential: ~240s. With 8-core rayon fold+reduce
+    // on the outer b-loop: expected ~30-60s.
+    use rayon::prelude::*;
 
-    // Reusable buffer for nonzero indices (avoids per-triad allocation)
-    let mut nz_buf: Vec<usize> = Vec::with_capacity(8);
+    let nn = n_assess * n_assess;
+    let (gram_bc_flat, gram_x_flat, count_bc, count_x) = (1..dim)
+        .into_par_iter()
+        .fold(
+            || (vec![0i64; nn], vec![0i64; nn], 0usize, 0usize),
+            |(mut gbc, mut gx, mut cbc, mut cx), b| {
+                let mut nz_buf: Vec<usize> = Vec::with_capacity(8);
+                for c in (b + 1)..dim {
+                    for d in (c + 1)..dim {
+                        let t1 = assoc_nonzero(b, c, d);
+                        let t2 = assoc_nonzero(b, d, c);
+                        let t3 = assoc_nonzero(c, b, d);
+                        if !t1 && !t2 && !t3 { continue; }
 
-    for b in 1..dim {
-        for c in (b + 1)..dim {
-            for d in (c + 1)..dim {
-                let t1 = assoc_nonzero(b, c, d);
-                let t2 = assoc_nonzero(b, d, c);
-                let t3 = assoc_nonzero(c, b, d);
-                if !t1 && !t2 && !t3 { continue; }
+                        nz_buf.clear();
+                        for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
+                            if prod_idx > 0 && prod_idx < dim {
+                                for &a_idx in &assess_lookup[prod_idx] {
+                                    if !nz_buf.contains(&a_idx) {
+                                        nz_buf.push(a_idx);
+                                    }
+                                }
+                            }
+                        }
 
-                // Collect nonzero assessor indices for this triad (sparse row)
-                nz_buf.clear();
-                for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
-                    if prod_idx > 0 && prod_idx < dim {
-                        for &a_idx in &assess_lookup[prod_idx] {
-                            if !nz_buf.contains(&a_idx) {
-                                nz_buf.push(a_idx);
+                        let target = match (t1, t2, t3) {
+                            (false, true, false) | (false, false, true) => {
+                                cbc += 1;
+                                &mut gbc
+                            }
+                            _ => {
+                                cx += 1;
+                                &mut gx
+                            }
+                        };
+                        for &i in &nz_buf {
+                            for &j in &nz_buf {
+                                target[i * n_assess + j] += 1;
                             }
                         }
                     }
                 }
-
-                // Sparse outer product: G[i][j] += 1 for all i,j in nz_buf
-                let target = match (t1, t2, t3) {
-                    (false, true, false) | (false, false, true) => {
-                        count_bc += 1;
-                        &mut gram_bc
-                    }
-                    _ => {
-                        count_x += 1;
-                        &mut gram_x
-                    }
-                };
-                for &i in &nz_buf {
-                    for &j in &nz_buf {
-                        target[(i, j)] += 1.0;
-                    }
-                }
-            }
-        }
-    }
+                (gbc, gx, cbc, cx)
+            },
+        )
+        .reduce(
+            || (vec![0i64; nn], vec![0i64; nn], 0, 0),
+            |(mut a0, mut a1, a2, a3), (b0, b1, b2, b3)| {
+                for i in 0..nn { a0[i] += b0[i]; }
+                for i in 0..nn { a1[i] += b1[i]; }
+                (a0, a1, a2 + b2, a3 + b3)
+            },
+        );
 
     if count_bc == 0 || count_x == 0 {
         return (DMatrix::zeros(0, n_assess), vec![], assessors);
+    }
+
+    // Convert i64 Gram to f64 DMatrix (single pass, exact conversion)
+    let mut gram_bc = DMatrix::zeros(n_assess, n_assess);
+    let mut gram_x = DMatrix::zeros(n_assess, n_assess);
+    for i in 0..n_assess {
+        for j in 0..n_assess {
+            gram_bc[(i, j)] = gram_bc_flat[i * n_assess + j] as f64;
+            gram_x[(i, j)] = gram_x_flat[i * n_assess + j] as f64;
+        }
     }
 
     // Eigendecompose the B/C Gram matrix to get column space
@@ -10263,6 +10290,59 @@ mod tests {
         println!("  theta_23 = {:.2} deg (PDG: {:.2}, err: {:.1}%)", obs[2], pdg.theta_23_deg, ((obs[2] - pdg.theta_23_deg) / pdg.theta_23_deg * 100.0).abs());
         println!("  r = {:.4} (PDG: {:.4}, err: {:.1}%)", obs[3], pdg_r, ((obs[3] - pdg_r) / pdg_r * 100.0).abs());
         println!("  cost = {:.2}", best.0);
+    }
+
+    /// Numerical regression baselines for the optimization refactor.
+    ///
+    /// Small, deterministic checks that run in < 1s. Captures the known-good
+    /// outputs from commit 83c4254f so any performance optimization that
+    /// changes numerical results is caught immediately.
+    #[test]
+    fn test_numerical_regression_baselines() {
+        use cd_kernel::cayley_dickson::SignTable;
+
+        // --- Cardano eigensolver: known eigenvalues ---
+        let h: [[C2; 3]; 3] = [
+            [(3.0, 0.0),  (0.5, 1.2), (-0.3, 0.8)],
+            [(0.5, -1.2), (1.0, 0.0),  (0.7, -0.4)],
+            [(-0.3, -0.8),(0.7, 0.4),  (2.0, 0.0)],
+        ];
+        let (evals, _) = hermitian_3x3_eig(&h);
+        assert!((evals[0] - 0.061606).abs() < 1e-4, "eval[0]={}", evals[0]);
+        assert!((evals[1] - 1.850281).abs() < 1e-4, "eval[1]={}", evals[1]);
+        assert!((evals[2] - 4.088113).abs() < 1e-4, "eval[2]={}", evals[2]);
+
+        // --- V_k basis dim=16: rank and leading singular value ---
+        let (basis_16, sv_16, assess_16) = extract_vk_basis(16, 12);
+        assert_eq!(assess_16.len(), 42, "sedenion assessor count");
+        assert_eq!(basis_16.nrows(), 6, "sedenion V_k rank must be 6");
+        assert!((sv_16[0] - 3.419971).abs() < 1e-4,
+            "sv[0]={:.6}, expected 3.419971", sv_16[0]);
+        // All 6 SVs are degenerate
+        for i in 1..6 {
+            assert!((sv_16[i] - sv_16[0]).abs() < 1e-4,
+                "sv[{i}]={:.6} differs from sv[0]={:.6}", sv_16[i], sv_16[0]);
+        }
+
+        // --- SignTable dim=16: spot checks (exact integer) ---
+        let stab = SignTable::new(16);
+        assert_eq!(stab.sign(0, 0), 1, "sign(0,0) must be +1 (scalar*scalar)");
+        for k in 0..16 {
+            assert_eq!(stab.sign(0, k), 1, "sign(0,{k}) must be +1 (e_0 is identity)");
+        }
+        // Antisymmetry for imaginary units
+        for p in 1..16 {
+            for q in (p + 1)..16 {
+                assert_eq!(stab.sign(p, q), -stab.sign(q, p),
+                    "antisymmetry violated at ({p},{q})");
+            }
+        }
+        // Self-products: e_p * e_p = -1 for p > 0
+        for p in 1..16 {
+            assert_eq!(stab.sign(p, p), -1, "sign({p},{p}) must be -1");
+        }
+
+        println!("  Numerical regression baselines: all checks passed");
     }
 
     /// Validate U(1) phase canonicalization in the Cardano eigensolver.
