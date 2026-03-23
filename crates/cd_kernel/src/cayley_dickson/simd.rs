@@ -464,3 +464,116 @@ pub fn cd_norm_sq_simd(a: &[f64]) -> f64 {
 
     total
 }
+
+// ---------------------------------------------------------------------------
+// P4: FMA-based CD multiply using sign table
+// ---------------------------------------------------------------------------
+
+/// CD multiplication using the sign table and `f64::mul_add` (FMA).
+///
+/// For each output index `t`, computes:
+///   result[t] = sum_q sign(p, q) * a[p] * b[q]
+///   where p = t ^ q (since p ^ q = t implies p = t ^ q)
+///
+/// Each term uses `f64::mul_add(x, y, acc)` which computes `x*y + acc`
+/// with a single IEEE 754 rounding (VFMADD231PD on x86_64 with FMA3).
+/// This gives better precision than separate mul+add (2 roundings).
+///
+/// # Precision advantage
+///
+/// Standard CD multiply: `result[t] += sign * a[p] * b[q]` has 2 roundings
+/// (one for `a[p] * b[q]`, one for the addition). FMA reduces to 1 rounding
+/// per accumulation step, eliminating half the roundoff error.
+///
+/// # Performance
+///
+/// For dim=16: 16 outputs * 16 terms = 256 FMA operations.
+/// On Zen3: VFMADD231PD has 4-cycle latency, 2/cycle throughput.
+/// Theoretical: 256 / 2 = 128 cycles for the inner loop.
+/// With sign table lookup overhead: ~200 cycles estimated.
+/// Exported for use in benchmarks and precision comparison tests.
+#[allow(dead_code)]
+pub fn cd_multiply_fma(dim: usize, a: &[f64], b: &[f64]) -> Vec<f64> {
+    debug_assert_eq!(a.len(), dim);
+    debug_assert_eq!(b.len(), dim);
+
+    let table = crate::avx2_primitives::SignTableI8::new(dim);
+    let mut result = vec![0.0_f64; dim];
+
+    for t in 0..dim {
+        let mut acc = 0.0_f64;
+        for q in 0..dim {
+            let p = t ^ q;
+            let sign = table.sign(p, q) as f64;
+            // FMA: acc = sign * a[p] * b[q] + acc  (single rounding)
+            // Rust's f64::mul_add compiles to VFMADD on x86_64 with -C target-feature=+fma
+            acc = (sign * a[p]).mul_add(b[q], acc);
+        }
+        result[t] = acc;
+    }
+
+    result
+}
+
+/// Sedenion-specialized FMA multiply (dim=16, fixed arrays).
+#[allow(dead_code)]
+pub fn sedenion_multiply_fma(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
+    let result_vec = cd_multiply_fma(16, a, b);
+    let mut result = [0.0_f64; 16];
+    result.copy_from_slice(&result_vec);
+    result
+}
+
+#[cfg(test)]
+mod fma_tests {
+    use super::*;
+    use crate::cayley_dickson::cd_multiply;
+
+    #[test]
+    fn test_cd_multiply_fma_matches_recursive() {
+        // Compare FMA multiply against recursive cd_multiply for dim=16
+        let a: [f64; 16] = [
+            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2,
+            0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
+        ];
+        let b: [f64; 16] = [
+            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7,
+            0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
+        ];
+
+        let recursive = cd_multiply(&a, &b);
+        let fma_result = cd_multiply_fma(16, &a, &b);
+
+        println!("--- P4: FMA vs RECURSIVE CD MULTIPLY ---\n");
+        let mut max_diff = 0.0_f64;
+        for i in 0..16 {
+            let diff = (fma_result[i] - recursive[i]).abs();
+            if diff > max_diff { max_diff = diff; }
+            if diff > 1e-14 {
+                println!("  [{}] fma={:.15e} rec={:.15e} diff={:.2e}",
+                    i, fma_result[i], recursive[i], diff);
+            }
+        }
+        println!("  Max component difference: {:.2e}", max_diff);
+        println!("  (Should be < 1e-14 for matching results)");
+
+        // They should agree to within ~1e-14 (FP roundoff)
+        assert!(max_diff < 1e-12,
+            "FMA and recursive results should agree: max_diff={:.2e}", max_diff);
+    }
+
+    #[test]
+    fn test_fma_zd_witness() {
+        // Verify FMA multiply gives exact zero for known ZD
+        let mut a = [0.0_f64; 16];
+        a[1] = 1.0; a[10] = 1.0;
+        let mut b = [0.0_f64; 16];
+        b[4] = 1.0; b[15] = -1.0;
+
+        let result = sedenion_multiply_fma(&a, &b);
+        let norm_sq: f64 = result.iter().map(|x| x * x).sum();
+
+        println!("FMA ZD witness: norm_sq = {:.2e}", norm_sq);
+        assert!(norm_sq < 1e-28, "FMA ZD product should be near-zero");
+    }
+}
