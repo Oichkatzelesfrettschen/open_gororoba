@@ -399,3 +399,144 @@ mod tests {
         );
     }
 }
+
+// ---------------------------------------------------------------------------
+// P10: i8 sign table for SIMD CD multiply
+// ---------------------------------------------------------------------------
+
+/// Precomputed i8 sign table for a fixed CD dimension.
+///
+/// Stores sign(p, q) as i8 values in row-major order.
+/// For dim=16, the table is 16*16 = 256 bytes = one AVX2 cache line pair.
+/// For dim=32, the table is 32*32 = 1024 bytes = fits L1 easily.
+///
+/// This enables AVX2 VPMADDUBSW-based inner products where the sign
+/// values are multiplied with i8-quantized coefficients in a single
+/// instruction (32 products per cycle).
+///
+/// # Why i8 instead of the bit-packed SignTable?
+///
+/// The bit-packed SignTable (1 bit per sign) is more memory-efficient
+/// but requires bit extraction (shift + mask + branch) per lookup.
+/// The i8 table trades 8x memory for direct byte-addressable access
+/// and SIMD compatibility via VPMADDUBSW.
+pub struct SignTableI8 {
+    dim: usize,
+    signs: Vec<i8>,
+}
+
+impl SignTableI8 {
+    /// Build the i8 sign table for a given CD dimension.
+    pub fn new(dim: usize) -> Self {
+        assert!(dim.is_power_of_two() && dim >= 2);
+        let mut signs = vec![0_i8; dim * dim];
+        for p in 0..dim {
+            for q in 0..dim {
+                signs[p * dim + q] = crate::cayley_dickson::cd_basis_mul_sign_iter(dim, p, q) as i8;
+            }
+        }
+        Self { dim, signs }
+    }
+
+    /// Get the sign for basis product e_p * e_q.
+    #[inline(always)]
+    pub fn sign(&self, p: usize, q: usize) -> i8 {
+        debug_assert!(p < self.dim && q < self.dim);
+        self.signs[p * self.dim + q]
+    }
+
+    /// Get a row of the sign table (all signs for a fixed p).
+    /// Returns a slice of dim i8 values.
+    #[inline(always)]
+    pub fn row(&self, p: usize) -> &[i8] {
+        debug_assert!(p < self.dim);
+        &self.signs[p * self.dim..(p + 1) * self.dim]
+    }
+
+    /// Table size in bytes.
+    pub fn size_bytes(&self) -> usize {
+        self.dim * self.dim
+    }
+
+    /// Compute the inner product sign(p, .) * coeffs using scalar i8 arithmetic.
+    /// Returns i16 results (sign * coeff accumulated).
+    ///
+    /// For the CD multiply inner loop: result[p^q] += sign(p,q) * b[q]
+    /// When b[q] is quantized to i8, this computes 16 products in one pass.
+    pub fn signed_inner_product_scalar(&self, p: usize, coeffs: &[i8]) -> Vec<i16> {
+        let row = self.row(p);
+        let n = row.len().min(coeffs.len());
+        (0..n).map(|q| row[q] as i16 * coeffs[q] as i16).collect()
+    }
+}
+
+#[cfg(test)]
+mod sign_table_i8_tests {
+    use super::*;
+
+    #[test]
+    fn test_sign_table_i8_sedenion() {
+        let table = SignTableI8::new(16);
+        assert_eq!(table.size_bytes(), 256);
+
+        // Self-products: sign(p,p) = -1
+        for p in 1..16 {
+            assert_eq!(table.sign(p, p), -1,
+                "sign({},{}) should be -1", p, p);
+        }
+
+        // Products with e_0: sign(0,q) = +1
+        for q in 0..16 {
+            assert_eq!(table.sign(0, q), 1,
+                "sign(0,{}) should be +1", q);
+        }
+
+        // Antisymmetry: sign(p,q) = -sign(q,p)
+        for p in 1..16 {
+            for q in (p+1)..16 {
+                assert_eq!(table.sign(p, q), -table.sign(q, p),
+                    "sign({},{}) should be -sign({},{})", p, q, q, p);
+            }
+        }
+
+        println!("SignTableI8(16): {} bytes, all properties verified", table.size_bytes());
+    }
+
+    #[test]
+    fn test_sign_table_i8_pathion() {
+        let table = SignTableI8::new(32);
+        assert_eq!(table.size_bytes(), 1024);
+
+        // Same properties at pathion level
+        for p in 1..32 {
+            assert_eq!(table.sign(p, p), -1);
+        }
+        for p in 1..32 {
+            for q in (p+1)..32 {
+                assert_eq!(table.sign(p, q), -table.sign(q, p));
+            }
+        }
+
+        println!("SignTableI8(32): {} bytes, all properties verified", table.size_bytes());
+    }
+
+    #[test]
+    fn test_signed_inner_product() {
+        let table = SignTableI8::new(16);
+
+        // Compute sign(1, .) * [1, 0, 0, ..., 0, 1, 0, 0, 0, 0, 0]
+        // This is the inner product for the ZD witness a = e_1 + e_10
+        let mut coeffs = [0_i8; 16];
+        coeffs[1] = 1;
+        coeffs[10] = 1;
+
+        let products = table.signed_inner_product_scalar(4, &coeffs);
+        println!("sign(4, .) * (e_1 + e_10): {:?}", products);
+
+        // Verify against direct computation
+        for q in 0..16 {
+            let expected = table.sign(4, q) as i16 * coeffs[q] as i16;
+            assert_eq!(products[q], expected);
+        }
+    }
+}
