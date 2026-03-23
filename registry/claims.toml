@@ -10353,3 +10353,17 @@ statement = """Cross-class coupling at 10% of geometric mean shifts mass ratios 
 status = "Verified"
 where_stated = "crates/surreal_algebra/src/surreal_cd.rs::test_cross_class_coupling_penalty"
 last_verified = "2026-03-22"
+
+[[claim]]
+id = "C-1527"
+statement = """faer selfadjoint_eigendecomposition (divide-and-conquer) replaces nalgebra symmetric_eigen (Jacobi) in extract_vk_basis. Measured speedup at dim=64: ~280s -> 1.66s (~170x). Per-stage VK_PROFILE timing: Stage 2 rayon Gram accumulation is now the dominant cost at 46% (0.763s); eigendecomp Stages 4+7 combined 34% (0.56s); Stage 6 complement matmul 9%. Decision gate 8e (low-rank projector trick) NOT triggered. Frobenius-relative noise guard (sv_max/||G_x||_F < 1e-8) correctly forces dim=64 V_k rank to 0 (was spuriously 20 at abs threshold 1e-6 due to noise eigenvalues at sqrt(3.4e-12) = 1.8e-6)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs::test_pathion_vk_spectrum, commit a704495b"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1528"
+statement = """Phase A codebase deduplication: (1) gororoba_algebra/src/analysis/legacy_crossval.rs (1,617 lines) was a byte-for-byte copy of algebra_analysis/src/legacy_crossval.rs modulo one import path (crate::construction::cayley_dickson -> cd_kernel::cayley_dickson, which are identical via re-export). Deleted and replaced with pub use re-export. (2) neutrino_sector.rs lift/optimizer block (L1473-1972, 499 lines) was an exact duplicate of flavor_lifts crate modules. Deleted and replaced with pub use flavor_lifts re-export. (3) extract_pmns_angles + Pdg2024 (48 lines) likewise deleted and re-exported from flavor_lifts::angles. Net: 2,143 lines eliminated, 681 tests pass, clippy clean."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/neutrino_sector.rs, crates/gororoba_algebra/src/analysis/mod.rs, commit 7c73ef73"
+last_verified = "2026-03-23"
