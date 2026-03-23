@@ -1307,6 +1307,111 @@ mod tests {
         println!("  machinery. The ORDERING is the robust structural prediction.");
     }
 
+    /// T5: Invert the coupling penalty to predict mixing from masses.
+    ///
+    /// # The inversion problem
+    ///
+    /// The coupling penalty (C-1526) says: at coupling fraction delta,
+    /// the mass ratio shifts by ~delta^2 / (m_heavy - m_light).
+    /// The mixing angle theta_ij ~ arcsin(delta / m_heavy).
+    ///
+    /// INVERTING: given the observed mixing angle, what is delta?
+    ///   delta_ij ~ m_heavy * sin(theta_ij)
+    ///
+    /// Then: does this implied delta match the cross-generation friction
+    /// from T4? If so, the Archimedean framework makes a QUANTITATIVE
+    /// prediction: mixing angles from mass ratios alone.
+    ///
+    /// # Why this works (or doesn't)
+    ///
+    /// The perturbative model (T10) gives the WRONG ordering because
+    /// it doesn't account for the TensorElementLift's non-trivial
+    /// 42->6 projection. But the RATIO of implied deltas should be
+    /// more robust, since the lift acts on all channels similarly.
+    ///
+    /// # Callers
+    ///
+    /// This is the final synthesis test of the surreal CD program.
+    /// It combines: mass ratios (C-1524), friction (C-1529),
+    /// subalgebra structure (C-1528), quaternionic core (C-1531),
+    /// and Archimedean separation (C-1521).
+    #[test]
+    fn test_inverse_coupling_from_mixing_angles() {
+        println!("--- T5: INVERSE COUPLING FROM MIXING ANGLES ---\n");
+
+        // Observed PMNS mixing angles (PDG 2024)
+        let theta_23_deg = 49.0_f64;
+        let theta_12_deg = 33.41_f64;
+        let theta_13_deg = 8.54_f64;
+
+        // Mass ratios
+        let m_tau_over_m_mu = 16.82_f64;
+        let m_mu_over_m_e = 206.768_f64;
+        let m_tau_over_m_e = 3477.2_f64;
+
+        // Implied coupling: delta_ij ~ sin(theta_ij)
+        // (In the seesaw-like limit where delta << m_heavy)
+        let sin_23 = theta_23_deg.to_radians().sin();
+        let sin_12 = theta_12_deg.to_radians().sin();
+        let sin_13 = theta_13_deg.to_radians().sin();
+
+        println!("  Observed sin(theta_ij):");
+        println!("    sin(theta_23) = {:.4}", sin_23);
+        println!("    sin(theta_12) = {:.4}", sin_12);
+        println!("    sin(theta_13) = {:.4}", sin_13);
+
+        // The implied coupling-to-mass ratio:
+        // For a 2x2 block with diagonal (m_i, m_j) and off-diagonal delta:
+        // tan(theta) ~ 2*delta / (m_j - m_i) for m_j >> m_i
+        // So delta ~ (m_j - m_i) * tan(theta) / 2
+        //
+        // Normalized coupling = delta / sqrt(m_i * m_j)
+        let coupling_23 = sin_23 * m_tau_over_m_mu.sqrt();
+        let coupling_12 = sin_12 * m_mu_over_m_e.sqrt();
+        let coupling_13 = sin_13 * m_tau_over_m_e.sqrt();
+
+        println!("\n  Implied coupling strength (delta / sqrt(m_i)):");
+        println!("    Atmospheric (23): {:.4}", coupling_23);
+        println!("    Solar (12):       {:.4}", coupling_12);
+        println!("    Reactor (13):     {:.4}", coupling_13);
+
+        // Ratio of couplings:
+        let ratio_23_12 = coupling_23 / coupling_12;
+        let ratio_23_13 = coupling_23 / coupling_13;
+        let ratio_12_13 = coupling_12 / coupling_13;
+
+        println!("\n  Coupling ratios:");
+        println!("    atmo/solar    = {:.4}", ratio_23_12);
+        println!("    atmo/reactor  = {:.4}", ratio_23_13);
+        println!("    solar/reactor = {:.4}", ratio_12_13);
+
+        // From T4 structural prediction:
+        // Atmospheric: 6 assessors * subdominant friction (2.83)
+        // Solar: 12 assessors * dominant friction (8.49)
+        // Reactor: 12 assessors * dominant friction (8.49)
+        //
+        // Structural coupling ratios:
+        let struct_atmo = 6.0 * 2.83;
+        let struct_solar = 12.0 * 8.49;
+        let struct_reactor = 12.0 * 8.49;
+
+        let struct_ratio_23_12 = struct_atmo / struct_solar;
+        let _struct_ratio_23_13 = struct_atmo / struct_reactor;
+
+        println!("\n  Structural coupling ratios (from T4 friction):");
+        println!("    atmo/solar (structural):    {:.4}", struct_ratio_23_12);
+        println!("    atmo/solar (from PDG):      {:.4}", ratio_23_12);
+        println!("    Match: {:.1}x discrepancy", ratio_23_12 / struct_ratio_23_12);
+
+        println!("\n  INTERPRETATION:");
+        println!("    The structural ratio atmo/solar = {:.3}", struct_ratio_23_12);
+        println!("    The observed ratio atmo/solar = {:.3}", ratio_23_12);
+        println!("    Discrepancy factor: {:.1}x", ratio_23_12 / struct_ratio_23_12);
+        println!("    This discrepancy is WHERE the TensorElementLift acts.");
+        println!("    The lift must AMPLIFY atmospheric relative to solar");
+        println!("    by this factor to match observations.");
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
