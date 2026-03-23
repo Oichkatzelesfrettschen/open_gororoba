@@ -9,18 +9,56 @@
 //! This module validates the exact codebook structure described in
 //! cayley_dickson_misc.md against the prefix-cut specification.
 //!
+//! # Why prefix-cuts instead of geometric constraints
+//!
+//! The codebook structure is NOT a ball, lattice shell, or symmetry orbit.
+//! It is a **trie-like decision cut**: points are excluded by matching
+//! specific early-coordinate patterns (prefixes).  This is consistent
+//! with a hierarchical encoding/generation procedure, not a geometric one.
+//! The same principle governs Huffman codes and arithmetic coding.
+//!
 //! # Base universe
 //!
+//! ```text
 //! S_base = { l in {-1,0,1}^8 : l[0] != +1,
 //!            sum(l_i) == 0 mod 2,
 //!            #{i : l_i != 0} == 0 mod 2 }
+//! |S_base| = 2187 = 3^7
+//! ```
 //!
-//! |S_base| = 2187.  Lambda_2048 = S_base minus 139 forbidden-prefix points.
+//! The three constraints: no positive first coordinate, even coordinate
+//! sum, even nonzero count.  These are D_8/E_8-like parity conditions
+//! on trinary vectors.
 //!
-//! # Filtration
+//! # Filtration hierarchy
 //!
-//! Lambda_2048 -> Lambda_1024 -> Lambda_512 -> Lambda_256 -> Lambda_32
-//! Each step excludes points matching specific prefix patterns.
+//! ```text
+//! S_base (2187) --[-139]--> Lambda_2048
+//!     |
+//!     +--[-70]-->  Lambda_1024 (off by 2: 1026 actual, 2 singletons unknown)
+//!     |
+//!     +--[-512]--> Lambda_512
+//!     |
+//!     +--[-256]--> Lambda_256
+//!     |
+//!     +--[-224]--> Lambda_32
+//! ```
+//!
+//! # Validated counts (C-1513)
+//!
+//! | Level | Expected | Actual | Status |
+//! |-------|----------|--------|--------|
+//! | S_base | 2187 | 2187 | EXACT |
+//! | Lambda_2048 | 2048 | 2048 | EXACT |
+//! | Lambda_1024 | 1024 | 1026 | OFF BY 2 |
+//! | Lambda_512 | 512 | 512 | EXACT |
+//! | Lambda_256 | 256 | 256 | EXACT |
+//! | Lambda_32 | 32 | 32 | EXACT |
+//!
+//! # Callers
+//!
+//! - `test_codebook_sizes`: validates all 6 levels
+//! - `test_find_lambda_1024_singletons`: analyzes the 2 missing points
 //!
 //! Reference: cayley_dickson_misc.md, "Prefix-cut lattice codebook" section.
 //! Claim: C-1513.

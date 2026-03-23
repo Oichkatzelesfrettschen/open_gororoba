@@ -8,18 +8,41 @@
 //! squares CAN be isotropic (zero with nonzero summands), which
 //! means zero divisors may appear even at the OCTONION level.
 //!
-//! This is the computational approach to the open question from D2:
-//! does A_3(Q_p) remain division? We test the simpler question first:
-//! does A_3(F_p) remain division?
+//! # Why F_p instead of Q_p
 //!
-//! # Key theorem (Chevalley-Warning)
+//! Q_p (p-adic numbers) requires Hensel lifting and infinite-precision
+//! arithmetic. F_p is the residue field of Q_p, and many properties
+//! (like norm isotropy) can be tested over F_p first. If A_3(F_p)
+//! has zero divisors, then A_3(Q_p) likely does too (by Hensel lifting
+//! of norm-zero elements). If not, the Q_p question remains open.
 //!
-//! Over F_p, any quadratic form in n >= 3 variables has a nontrivial
-//! zero. For the norm form N(x) = sum x_i^2 (8 variables for octonions),
-//! this means there exist nonzero x in F_p^8 with N(x) = 0 mod p.
-//! But norm-zero does NOT automatically mean zero divisor.
+//! # Key theorems
+//!
+//! - **Chevalley-Warning**: Over F_p, any quadratic form in n >= 3
+//!   variables has a nontrivial zero. So norm-zero elements exist
+//!   at dim >= 4 for ALL primes.
+//! - **Quadratic reciprocity**: -1 is a quadratic residue mod p iff
+//!   p = 1 mod 4. So F_p complex numbers (dim=2) have zero divisors
+//!   iff p = 1 mod 4 (e.g., p=5: 2^2 + 1^2 = 5 = 0 mod 5).
+//! - **Scalar extension (C-1504)**: Sedenion ZDs persist over F_p
+//!   because the ZD identity has integer structure constants (C-1520).
+//!
+//! # Concrete results
+//!
+//! | Field | Complex (dim=2) | Octonion norm-zero | Sedenion ZD |
+//! |-------|----------------|-------------------|-------------|
+//! | F_3 | No (-1 not QR) | Yes (dim >= 3) | Yes (C-1520) |
+//! | F_5 | Yes (2^2+1=0) | Yes | Yes |
+//! | F_7 | No | Yes | Yes |
+//!
+//! # Callers
+//!
+//! - `test_fp_complex_zd`: quadratic reciprocity validation
+//! - `test_fp_octonion_norm_zero`: Chevalley-Warning verification
+//! - `test_fp_sedenion_zd`: scalar extension universality (C-1520)
 //!
 //! Reference: surreal_cayley_dickson_harmonized.md, Section 6.
+//! Reference: Bales 2003 (arXiv:1107.1375) for twist formulation.
 
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 
@@ -27,6 +50,7 @@ use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 ///
 /// Uses the same sign table as real CD, but with all arithmetic mod p.
 /// The sign values {+1, -1} are mapped to {1, p-1} in F_p.
+#[allow(clippy::needless_range_loop)]
 pub fn fp_cd_multiply(dim: usize, p: u64, a: &[u64], b: &[u64]) -> Vec<u64> {
     assert_eq!(a.len(), dim);
     assert_eq!(b.len(), dim);
