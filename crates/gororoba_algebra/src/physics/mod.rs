@@ -17,6 +17,7 @@ pub mod supersymmetry;
 pub mod topological_insulators;
 pub mod tripotent_topology;
 pub mod crystallography;
+pub mod anomalous_moment;
 #[cfg(all(feature = "physics-sm", feature = "analysis"))]
 pub mod particle_physics;
 
