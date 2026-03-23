@@ -3200,6 +3200,7 @@ dependencies = [
  "faer",
  "gororoba_structurable",
  "nalgebra 0.33.2",
+ "rayon",
 ]
 
 [[package]]

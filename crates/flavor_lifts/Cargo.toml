@@ -8,6 +8,7 @@ faer = { workspace = true }
 nalgebra = { workspace = true }
 cd_kernel = { workspace = true }
 gororoba_structurable = { workspace = true }
+rayon = { workspace = true }
 
 [lints]
 workspace = true

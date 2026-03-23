@@ -49,7 +49,7 @@
 //! | [`angles`] | PMNS angle extraction, PDG reference data | [`extract_pmns_angles`], [`angles::Pdg2024`] |
 //! | [`optimizer`] | Constrained V_6 directions, Gauss-Newton 2D | [`gauss_newton_2d`] |
 //! | [`cp`] | CP pipeline scaffolding (CP-A / CP-B) | [`cp::CpResult`], [`cp::CpPipeline`] |
-//! | [`structurable_bridge`] | Value-level middle-tier handoff | [`apply_structurable_bridge`] |
+//! | [`structurable_bridge`] | Value-level middle-tier handoff and snapshots | [`apply_structurable_bridge`], [`sample_structurable_bridge`] |
 //!
 //! # Relationship to other crates
 //!
@@ -61,12 +61,14 @@
 //!   `neutrino_sector.rs`).
 
 pub mod angles;
+pub mod basis;
 pub mod cp;
 pub mod lift;
 pub mod optimizer;
 pub mod structurable_bridge;
 
 pub use angles::{Pdg2024, extract_pmns_angles};
+pub use basis::{extract_v6_basis, extract_vk_basis};
 pub use lift::{
     AssessorToFlavorMap, DirectOffDiagonalLift, FlavorLift, PsiEquivariantLift, TensorElementLift,
     apply_v6_perturbation,
@@ -74,4 +76,6 @@ pub use lift::{
 pub use optimizer::{
     compute_constrained_atmospheric_direction, compute_constrained_solar_direction, gauss_newton_2d,
 };
-pub use structurable_bridge::apply_structurable_bridge;
+pub use structurable_bridge::{
+    StructurableBridgeSnapshot, apply_structurable_bridge, sample_structurable_bridge,
+};
