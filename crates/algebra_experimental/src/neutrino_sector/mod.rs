@@ -79,5 +79,12 @@ pub use flavor_lifts::{
     compute_constrained_solar_direction, gauss_newton_2d,
 };
 
+// Test-only re-exports so grandchild test submodules can reach these via
+// `use super::super::*;` without needing the full sub-module path.
+#[cfg(test)]
+pub(crate) use pmns::assemble_lepton_baseline;
+#[cfg(test)]
+pub(crate) use basis::extract_vk_basis_nalgebra;
+
 #[cfg(test)]
 mod tests;

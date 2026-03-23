@@ -647,7 +647,7 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
 /// results recorded, this function can be deleted.  The projector
 /// agreement test is the single gate for removal.
 #[cfg(test)]
-pub(super) fn extract_vk_basis_nalgebra(
+pub(crate) fn extract_vk_basis_nalgebra(
     dim: usize, max_rank: usize,
 ) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
     use cd_kernel::cayley_dickson::SignTable;
