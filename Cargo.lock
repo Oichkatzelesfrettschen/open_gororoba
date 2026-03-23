@@ -5795,6 +5795,7 @@ dependencies = [
  "fixedbitset 0.5.7",
  "gauss-quad 0.2.4",
  "gororoba_algebra",
+ "materials_data",
  "moyo",
  "nalgebra 0.33.2",
  "num-complex",
@@ -5808,6 +5809,10 @@ dependencies = [
  "serde",
  "toml",
 ]
+
+[[package]]
+name = "materials_data"
+version = "0.1.0"
 
 [[package]]
 name = "matrixcompare"

@@ -1590,14 +1590,30 @@ clean-all: clean clean-builds clean-artifacts
 CPD_MIN_TOKENS ?= 42
 CPD_TOP        ?= 20
 
+# Data-heavy source files excluded from CPD scans until materials_data codegen migration
+# is complete (tasks #56-#58). These files are pure const-array data, not logic.
+# Remove entries here as each file is migrated to build.rs + CSV/TOML.
+CPD_EXCLUDE_FILES := \
+	crates/materials_core/src/optical_database.rs \
+	crates/materials_core/src/tabulated_nk.rs \
+	crates/materials_core/src/crystal_symmetry.rs
+
+# Build a file-list of all .rs sources under crates/ minus the excluded data files.
+_CPD_FILE_LIST := /tmp/cpd_src_list.txt
+_CPD_REGEN_LIST = find crates -name '*.rs' \
+	$(foreach f,$(CPD_EXCLUDE_FILES), ! -path './$(f)') \
+	> $(_CPD_FILE_LIST)
+
 cpd-audit:
 	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit."; exit 1; }
-	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --dir crates --format xml 2>/dev/null \
+	@$(_CPD_REGEN_LIST)
+	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --file-list $(_CPD_FILE_LIST) --format xml 2>/dev/null \
 		| python3 scripts/cpd_report.py --top $(CPD_TOP)
 
 cpd-audit-strict:
 	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-strict."; exit 1; }
-	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --dir crates --format xml 2>/dev/null \
+	@$(_CPD_REGEN_LIST)
+	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --file-list $(_CPD_FILE_LIST) --format xml 2>/dev/null \
 		| python3 scripts/cpd_report.py --strict --top $(CPD_TOP)
 
 # ---- Help ----
