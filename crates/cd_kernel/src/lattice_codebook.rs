@@ -158,6 +158,185 @@ pub fn count_all_levels() -> (usize, usize, usize, usize, usize, usize) {
 mod tests {
     use super::*;
 
+    /// Find the two missing singleton leaf exceptions for Lambda_1024.
+    ///
+    /// Lambda_1024 should have 1024 points, but our prefix rules give 1026.
+    /// The two extra points are "singleton leaf exceptions requiring longer
+    /// prefixes" (cayley_dickson_misc.md). We find them by analyzing the
+    /// 1026 points: the two singletons should be the ones that don't fit
+    /// the prefix-cut pattern of the other exclusions.
+    ///
+    /// Strategy: the three known exclusion prefixes are all of the form
+    /// (-1, 1, 1, ...). The two singletons are likely in the same (-1,1,1,...)
+    /// family but with specific tail patterns that require full 8-coordinate
+    /// specification.
+    #[test]
+    fn test_find_lambda_1024_singletons() {
+        let base = enumerate_base_universe();
+
+        // Points in Lambda_2048 with l[0] = -1 (the 1094 candidates)
+        let candidates: Vec<LatticePoint> = base.iter()
+            .filter(|l| in_lambda_2048(l) && l[0] == -1)
+            .copied()
+            .collect();
+        eprintln!("Candidates (Lambda_2048, l[0]=-1): {}", candidates.len());
+
+        // Points currently in Lambda_1024 (1026)
+        let current_1024: Vec<LatticePoint> = base.iter()
+            .filter(|l| in_lambda_1024(l))
+            .copied()
+            .collect();
+        println!("Current Lambda_1024: {}", current_1024.len());
+
+        // The 68 excluded by our three prefix rules
+        let excluded_by_prefix: Vec<LatticePoint> = candidates.iter()
+            .filter(|l| !in_lambda_1024(l))
+            .copied()
+            .collect();
+        println!("Excluded by prefix rules: {}", excluded_by_prefix.len());
+        assert_eq!(excluded_by_prefix.len(), 68);
+
+        // We need to exclude 2 more to get 1024.
+        // The singletons are in current_1024 but should NOT be.
+        // Look at the 1026 points -- which 2 are "leaf exceptions"?
+
+        // The excluded 68 have prefixes:
+        //   (-1, 1, 1, 1, ...)      41 points
+        //   (-1, 1, 1, 0, 0, ...)   14 points
+        //   (-1, 1, 1, 0, 1, ...)   13 points
+        // Total: 68
+        // The two singletons are likely in the (-1, 1, 1, 0, -1, ...) family
+        // (the remaining branch not covered by our rules).
+
+        // Check: how many points have prefix (-1, 1, 1, 0, -1)?
+        let prefix_m1_1_1_0_m1: Vec<&LatticePoint> = current_1024.iter()
+            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1)
+            .collect();
+        println!("\nPoints with prefix (-1,1,1,0,-1): {}", prefix_m1_1_1_0_m1.len());
+        for p in &prefix_m1_1_1_0_m1 {
+            println!("  {:?}", p);
+        }
+
+        // Also check (-1, 1, 1, -1, ...) family
+        let prefix_m1_1_1_m1: Vec<&LatticePoint> = current_1024.iter()
+            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==-1)
+            .collect();
+        println!("\nPoints with prefix (-1,1,1,-1): {}", prefix_m1_1_1_m1.len());
+        for p in &prefix_m1_1_1_m1 {
+            println!("  {:?}", p);
+        }
+
+        // The two singletons should be specific points from one of these families.
+        // Since the overall Lambda_512 check further down correctly gives 512,
+        // the singletons must be points that are in Lambda_1024 but NOT in
+        // Lambda_512. Let's check: how many of current_1024 are also in Lambda_512?
+        let in_512_count = current_1024.iter()
+            .filter(|l| in_lambda_512(l))
+            .count();
+        println!("\nOf 1026 in Lambda_1024, {} are also in Lambda_512", in_512_count);
+
+        // The 1026 - 512 = 514 points in Lambda_1024 but not Lambda_512 include
+        // the 2 singletons plus 512 legitimate exclusions.
+        // We need a different approach: check Lambda_512 working BACKWARD.
+        // Lambda_512 has exactly 512 points. Lambda_1024 should have 1024.
+        // The 512 exclusions from Lambda_1024 -> Lambda_512 are well-defined.
+        // So Lambda_1024 = Lambda_512 union {512 more points}.
+        // Currently Lambda_1024 = Lambda_512 union {514 more points}.
+        // The 2 singletons are among those 514 extra points.
+
+        let extra_points: Vec<LatticePoint> = current_1024.iter()
+            .filter(|l| !in_lambda_512(l))
+            .copied()
+            .collect();
+        println!("\nExtra points (Lambda_1024 \\ Lambda_512): {}", extra_points.len());
+
+        // The Lambda_512 exclusion rules are well-tested (gives exact 512).
+        // So the 514 extra points include 512 that belong + 2 singletons.
+        // The singletons are the 2 points that are INCORRECTLY included
+        // in Lambda_1024.
+
+        // Let's look at this differently. The spec says 1094 candidates
+        // with l[0]=-1 minus 70 exclusions = 1024. We exclude 68.
+        // The 2 missing exclusions are specific points in the 1026.
+        //
+        // Since all 3 prefix families start with (-1, 1, 1, ...),
+        // the singletons are likely also in (-1, 1, 1, ...) family.
+        // The exhausted prefixes are:
+        //   (-1, 1, 1, 1) -> all excluded
+        //   (-1, 1, 1, 0, 0) -> all excluded
+        //   (-1, 1, 1, 0, 1) -> all excluded
+        //   (-1, 1, 1, 0, -1) -> NOT excluded (these are the candidates)
+        //   (-1, 1, 1, -1, ...) -> NOT excluded (also candidates)
+        //
+        // The 2 singletons must come from (-1,1,1,0,-1) or (-1,1,1,-1,...).
+
+        // Print the smallest families for manual inspection:
+        let _prefix_m1_1_1_0_m1_specific: Vec<&LatticePoint> = current_1024.iter()
+            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1)
+            .collect();
+
+        // Narrow down: which sub-prefixes of (-1,1,1,0,-1) and (-1,1,1,-1) exist?
+        // The singletons have "longer prefixes" -- meaning they need 6+ coordinates
+        // to specify. Check all length-6 prefixes in these families.
+
+        println!("\n--- Sub-prefix analysis of (-1,1,1,0,-1,?) ---");
+        for l5 in [-1_i8, 0, 1] {
+            let count = current_1024.iter()
+                .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1 && l[5]==l5)
+                .count();
+            if count > 0 {
+                println!("  (-1,1,1,0,-1,{:+}): {} points", l5, count);
+            }
+        }
+
+        println!("\n--- Sub-prefix analysis of (-1,1,1,-1,?,?) ---");
+        for l4 in [-1_i8, 0, 1] {
+            for l5 in [-1_i8, 0, 1] {
+                let count = current_1024.iter()
+                    .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==-1 && l[4]==l4 && l[5]==l5)
+                    .count();
+                if count > 0 {
+                    println!("  (-1,1,1,-1,{:+},{:+}): {} points", l4, l5, count);
+                }
+            }
+        }
+
+        // Since we need exactly 2 singletons and the spec says they require
+        // "longer prefixes", let's try: find length-7 and length-8 prefixes
+        // that isolate exactly 1 point each.
+        println!("\n--- Singleton search (length-8 = full point) ---");
+        println!("Looking for sub-families of size 1 in (-1,1,1,...) branches...");
+
+        // Check all (-1,1,1,0,-1,...) points individually
+        let branch_0_m1: Vec<LatticePoint> = current_1024.iter()
+            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1)
+            .copied()
+            .collect();
+        println!("\n  (-1,1,1,0,-1,...) branch ({} points):", branch_0_m1.len());
+        for p in &branch_0_m1 {
+            println!("    {:?}", p);
+        }
+
+        // Check all (-1,1,1,-1,...) points individually
+        let branch_m1: Vec<LatticePoint> = current_1024.iter()
+            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==-1)
+            .copied()
+            .collect();
+        println!("\n  (-1,1,1,-1,...) branch ({} points):", branch_m1.len());
+        for p in &branch_m1 {
+            println!("    {:?}", p);
+        }
+
+        // HEURISTIC: The singletons are likely the two points that break
+        // a symmetry or parity pattern. Look at the l[7] distribution
+        // within the (-1,1,1,-1,...) branch:
+        let l7_dist: Vec<(i8, usize)> = [-1_i8, 0, 1].iter().map(|&v| {
+            let c = branch_m1.iter().filter(|l| l[7] == v).count();
+            (v, c)
+        }).collect();
+        println!("\n  l[7] distribution in (-1,1,1,-1,...): {:?}", l7_dist);
+    }
+
     #[test]
     fn test_codebook_sizes() {
         let (base, n2048, n1024, n512, n256, n32) = count_all_levels();
