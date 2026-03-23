@@ -311,6 +311,96 @@ mod tests {
         println!("  Split construction available via cd_kernel::CdSignature");
     }
 
+    // -----------------------------------------------------------------
+    // Archimedean-class stratification (harmonized doc Appendix B, target 1)
+    // -----------------------------------------------------------------
+
+    /// Study how the ZD variety behaves across Archimedean classes.
+    ///
+    /// A surreal sedenion x = sum_i alpha_i * e_i has coefficients
+    /// alpha_i in the surreal field. The "Archimedean class" of x is
+    /// determined by the largest |alpha_i|. Two surreals are in the
+    /// same Archimedean class if their ratio is finite (neither
+    /// infinitesimal nor infinite).
+    ///
+    /// We use the birthday as a proxy for Archimedean class:
+    /// - birthday 0: the integer 0
+    /// - birthday 1: integers {-1, 0, 1}
+    /// - birthday 2: half-integers {-2, -1, -1/2, 0, 1/2, 1, 2}
+    /// - birthday n: dyadics k/2^n with |k| <= 2^n
+    ///
+    /// The "max birthday" of a surreal sedenion measures its
+    /// coefficient complexity. A ZD product should have max birthday
+    /// <= sum of input max birthdays.
+    #[test]
+    fn test_archimedean_stratification_of_zd() {
+        println!("--- ARCHIMEDEAN STRATIFICATION OF ZD VARIETY ---\n");
+
+        // Test ZD at different Archimedean scales
+        let scales: Vec<(SurrealDyadic, &str)> = vec![
+            (SurrealDyadic::new(1, 100), "infinitesimal (1/2^100)"),
+            (SurrealDyadic::new(1, 10), "small (1/2^10)"),
+            (SurrealDyadic::one(), "unit (1)"),
+            (SurrealDyadic::from_int(1000), "large (1000)"),
+            (SurrealDyadic::new(1_i128 << 50, 0), "huge (2^50)"),
+        ];
+
+        for (scale, label) in &scales {
+            let mut a = [SurrealDyadic::zero(); 16];
+            a[1] = *scale;
+            a[10] = *scale;
+
+            let mut b = [SurrealDyadic::zero(); 16];
+            b[4] = SurrealDyadic::one();
+            b[15] = -SurrealDyadic::one();
+
+            let product = surreal_cd_multiply(16, &a, &b);
+            let is_zd = product.iter().all(|c| c.is_zero());
+            let max_bday = product.iter().map(|c| c.birthday()).max().unwrap_or(0);
+
+            println!("  scale={:>25} (bday {:>3}): is_zd={}, product_max_bday={}",
+                label, scale.birthday(), is_zd, max_bday);
+            assert!(is_zd, "ZD should persist at scale {}", label);
+        }
+
+        // Now test with MIXED scales: one factor infinitesimal, one finite
+        let epsilon = SurrealDyadic::new(1, 50);
+        let omega = SurrealDyadic::new(1_i128 << 30, 0);
+
+        let mut a_mixed = [SurrealDyadic::zero(); 16];
+        a_mixed[1] = epsilon;      // infinitesimal * e_1
+        a_mixed[10] = omega;       // large * e_10
+
+        let mut b_unit = [SurrealDyadic::zero(); 16];
+        b_unit[4] = SurrealDyadic::one();
+        b_unit[15] = -SurrealDyadic::one();
+
+        let mixed_product = surreal_cd_multiply(16, &a_mixed, &b_unit);
+        let mixed_is_zd = mixed_product.iter().all(|c| c.is_zero());
+
+        println!("\n  Mixed scale (epsilon*e_1 + omega*e_10)(e_4 - e_15):");
+        println!("    epsilon = 1/2^50, omega = 2^30");
+        println!("    is_zd: {}", mixed_is_zd);
+        if !mixed_is_zd {
+            println!("    Product components:");
+            for (i, c) in mixed_product.iter().enumerate() {
+                if !c.is_zero() {
+                    println!("      e_{}: {} (birthday {})", i, c, c.birthday());
+                }
+            }
+        }
+
+        // The mixed case is NOT a ZD because epsilon != omega.
+        // The ZD condition requires alpha*gamma = beta*delta for
+        // (alpha*e_1 + beta*e_10)(gamma*e_4 - delta*e_15).
+        // Here alpha=epsilon, beta=omega, gamma=1, delta=1.
+        // epsilon*1 != omega*1, so NOT a ZD.
+        assert!(!mixed_is_zd,
+            "Mixed-scale should break ZD: epsilon != omega");
+        println!("    CORRECT: mixed Archimedean classes break ZD");
+        println!("    (ZD requires equal-scale coefficients: alpha*delta = beta*gamma)");
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
