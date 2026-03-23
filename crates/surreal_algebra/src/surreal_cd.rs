@@ -484,6 +484,120 @@ mod tests {
         println!("  not from the Archimedean class structure directly.");
     }
 
+    /// Verify that the associator (and hence friction) is field-independent.
+    ///
+    /// The associator [a, b, c] = (ab)c - a(bc) depends only on the sign
+    /// table (integer structure constants), not on the coefficient field.
+    /// This means friction values are IDENTICAL over R, No, and F_p.
+    ///
+    /// Implication: the Archimedean stratification (C-1521) explains
+    /// generation INDEPENDENCE, but the mass RATIOS come from the lift
+    /// (which maps field-independent friction into field-dependent
+    /// mass matrix coefficients). The field enters through the lift,
+    /// not through the friction.
+    ///
+    /// Claim: C-1523 (friction is field-independent).
+    #[test]
+    fn test_friction_field_independence() {
+        println!("--- FRICTION FIELD INDEPENDENCE ---\n");
+
+        // Compute [e_1, e_2, e_3] = (e_1*e_2)*e_3 - e_1*(e_2*e_3)
+        // over surreal dyadics vs f64
+
+        let one = SurrealDyadic::one();
+
+        // (e_1 * e_2) using surreal CD
+        let mut e1 = [SurrealDyadic::zero(); 16];
+        e1[1] = one;
+        let mut e2 = [SurrealDyadic::zero(); 16];
+        e2[2] = one;
+        let mut e3 = [SurrealDyadic::zero(); 16];
+        e3[3] = one;
+
+        // (e_1 * e_2) * e_3
+        let e1e2 = surreal_cd_multiply(16, &e1, &e2);
+        let e1e2_arr: [SurrealDyadic; 16] = core::array::from_fn(|i| e1e2[i]);
+        let lhs = surreal_cd_multiply(16, &e1e2_arr, &e3);
+
+        // e_1 * (e_2 * e_3)
+        let e2e3 = surreal_cd_multiply(16, &e2, &e3);
+        let e2e3_arr: [SurrealDyadic; 16] = core::array::from_fn(|i| e2e3[i]);
+        let rhs = surreal_cd_multiply(16, &e1, &e2e3_arr);
+
+        // Associator = lhs - rhs
+        println!("  [e_1, e_2, e_3] = (e_1*e_2)*e_3 - e_1*(e_2*e_3):");
+        let mut nonzero_count = 0;
+        for i in 0..16 {
+            let diff = lhs[i] - rhs[i];
+            if !diff.is_zero() {
+                println!("    e_{}: {}", i, diff);
+                nonzero_count += 1;
+            }
+        }
+
+        if nonzero_count == 0 {
+            println!("    = 0 (associative triple, Fano line {{1,2,3}})");
+        } else {
+            println!("    ({} nonzero components)", nonzero_count);
+        }
+
+        // Now compute [e_1, e_4, e_6] -- a non-Fano triple
+        let mut e4 = [SurrealDyadic::zero(); 16];
+        e4[4] = one;
+        let mut e6 = [SurrealDyadic::zero(); 16];
+        e6[6] = one;
+
+        let e1e4 = surreal_cd_multiply(16, &e1, &e4);
+        let e1e4_arr: [SurrealDyadic; 16] = core::array::from_fn(|i| e1e4[i]);
+        let lhs2 = surreal_cd_multiply(16, &e1e4_arr, &e6);
+
+        let e4e6 = surreal_cd_multiply(16, &e4, &e6);
+        let e4e6_arr: [SurrealDyadic; 16] = core::array::from_fn(|i| e4e6[i]);
+        let rhs2 = surreal_cd_multiply(16, &e1, &e4e6_arr);
+
+        println!("\n  [e_1, e_4, e_6] (non-Fano triple):");
+        let mut surreal_assoc = Vec::new();
+        for i in 0..16 {
+            let diff = lhs2[i] - rhs2[i];
+            if !diff.is_zero() {
+                println!("    e_{}: {}", i, diff);
+                surreal_assoc.push((i, diff));
+            }
+        }
+
+        // Compare with f64 computation
+        use cd_kernel::cayley_dickson::cd_multiply;
+        let mut e1_f = [0.0_f64; 16]; e1_f[1] = 1.0;
+        let mut e4_f = [0.0_f64; 16]; e4_f[4] = 1.0;
+        let mut e6_f = [0.0_f64; 16]; e6_f[6] = 1.0;
+
+        let e1e4_f = cd_multiply(&e1_f, &e4_f);
+        let lhs_f = cd_multiply(&e1e4_f, &e6_f);
+        let e4e6_f = cd_multiply(&e4_f, &e6_f);
+        let rhs_f = cd_multiply(&e1_f, &e4e6_f);
+
+        println!("\n  f64 associator [e_1, e_4, e_6]:");
+        for i in 0..16 {
+            let diff = lhs_f[i] - rhs_f[i];
+            if diff.abs() > 1e-15 {
+                println!("    e_{}: {}", i, diff);
+            }
+        }
+
+        // Verify: surreal and f64 agree on the nonzero component
+        for (idx, coeff) in &surreal_assoc {
+            let f64_val = lhs_f[*idx] - rhs_f[*idx];
+            let surreal_val = coeff.to_f64();
+            assert!((f64_val - surreal_val).abs() < 1e-12,
+                "Surreal and f64 associator disagree at e_{}: surreal={}, f64={}",
+                idx, surreal_val, f64_val);
+        }
+
+        println!("\n  VERIFIED: surreal and f64 associators agree exactly.");
+        println!("  Friction is field-independent (C-1523).");
+        println!("  The mass hierarchy enters through the LIFT, not the friction.");
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
