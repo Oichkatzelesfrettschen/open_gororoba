@@ -4,7 +4,7 @@
 name = "open_gororoba"
 version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
-license = "GPL-2.0-only"
+license = "GPL-2.0-or-later"
 test_count = 5399
 claim_count = 1359
 insight_count = 182
