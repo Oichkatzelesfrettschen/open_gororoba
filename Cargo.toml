@@ -118,6 +118,7 @@ num-traits = "0.2"
 
 # Graph algorithms
 petgraph = "0.7"
+bitvec = "1.0"
 fixedbitset = "0.5"
 
 # Topological Data Analysis
