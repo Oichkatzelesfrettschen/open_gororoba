@@ -31,7 +31,8 @@ mod tests {
     fn test_na_prng() {
         let mut x = [0.0; 16]; x[1] = 1.0; x[10] = 1.0;
         let mut y = [0.0; 16]; y[15] = 1.0; y[4] = -1.0;
-        let next_val = generate_next_random(&x, &y);
+        let mut z = [0.0; 16]; z[3] = 1.0; z[12] = -1.0;
+        let next_val = generate_next_random(&x, &y, &z);
         // Depending on the precise geometric routing, some ZD pairs might yield 0.
         // In a true PRNG loop, we would ensure the seed lies outside the alternative nucleus.
         let _ = next_val;
