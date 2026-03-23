@@ -212,3 +212,9 @@ theories/SedenionAlternativityFails.v
 theories/CDDoubleFunctor.v
 theories/CDDoubleTower.v
 theories/HomotopyTransferAssociator.v
+theories/CDConjAntimorph.v
+theories/CDTraceZero.v
+theories/HModuleDim.v
+theories/C1538_MorZDSymmetry.v
+theories/C1539_MorSkewSymm.v
+theories/C1543_MorMod4Bound.v

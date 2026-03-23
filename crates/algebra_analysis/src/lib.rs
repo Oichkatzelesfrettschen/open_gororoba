@@ -24,6 +24,7 @@ pub mod x87_jacobi;
 pub mod avt;
 pub mod sparse;
 pub mod annihilator;
+pub mod moreno;
 pub mod associator_entropy;
 pub mod avt_entropy;
 pub mod block_jacobi;

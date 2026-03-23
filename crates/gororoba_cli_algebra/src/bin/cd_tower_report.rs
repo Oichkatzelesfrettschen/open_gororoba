@@ -12,7 +12,7 @@
 //! - Split-CD zero-divisor counts (where feasible)
 //!
 //! References claims: C-483, C-487, C-520, C-528, C-529, C-531, C-534,
-//! C-537, C-544, C-545..C-549.
+//! C-537, C-544, C-545..C-549, C-1541..C-1547 (Moreno 1997).
 
 use std::time::Instant;
 
@@ -420,6 +420,114 @@ fn main() {
     println!("    motif_classes = dim/16 (doubles each time)");
     println!("    ZD pairs grow super-linearly with dim");
     println!();
+
+    // =========================================================================
+    // Section 3.5: Moreno (1997) Structural Theorems
+    // =========================================================================
+    // All tests run at fixed dims (16D, 8D) regardless of max_dim; fast (<50ms).
+    // References: C-1538..C-1547 (Moreno arXiv:q-alg/9710013v1).
+    {
+        use algebra_analysis::moreno as moreno_thm;
+        use cd_kernel::cayley_dickson::predicates as cd_pred;
+
+        let moreno_t = Instant::now();
+        let s2 = 1.0_f64 / (2.0_f64.sqrt());
+
+        println!("SECTION 3.5: MORENO (1997) STRUCTURAL THEOREMS");
+        println!("-----------------------------------------------------------------------------");
+
+        // [16D] Theorem 1.15: A_n = H_a + Ker(T~_a) + Ker(L_a) + sum(V_lambda)
+        // Test element a = (e_1 + e_10) / sqrt(2):
+        //   - e_1 is in A_3 lower half (indices 0..7), e_10 in A_3 upper half (indices 8..15)
+        //   - both halves have zero real part => doubly pure (Moreno Def p.12)
+        //   - norm = 1 (two components each 1/sqrt(2))
+        let mut a16 = vec![0.0_f64; 16];
+        a16[1] = s2;
+        a16[10] = s2;
+
+        let dec = moreno_thm::moreno_decomposition(&a16, 16, 1e-10);
+        let ker_la_dim = dec.ker_l_a.ncols();
+        let ker_tt_dim = dec.ker_t_tilde.ncols();
+        let vlam_total: usize = dec.v_lambda.iter().map(|(_, m)| m.ncols()).sum();
+        let total_sum = dec.h_a_dim + ker_la_dim + ker_tt_dim + vlam_total;
+
+        println!("[16D] Theorem 1.15 (Direct Sum Decomposition) [C-1541]");
+        println!("  Test element: a = (e1 + e10) / sqrt(2)  [doubly pure, unit norm]");
+        println!("  H_a basis: {{e0, a, tilde_a, tilde_e0}}   dim = {}", dec.h_a_dim);
+        println!("  Ker(L_a)  dim = {:<4}  [expect 0 mod 4, <= 12]", ker_la_dim);
+        println!("  Ker(T~_a) dim = {:<4}  [expect 0 mod 4]", ker_tt_dim);
+        print!("  V_lambda subspaces:");
+        for (lam, mat) in &dec.v_lambda {
+            print!(" lambda={:.4} dim={}", lam, mat.ncols());
+        }
+        println!();
+        println!(
+            "  Total = {}  [expect 16]  [{}]",
+            total_sum,
+            if dec.total_dim_check { "PASS" } else { "FAIL" }
+        );
+        println!();
+
+        // [16D] Theorem 1.16: every V_lambda has dim = 0 mod 4 (H-module structure).
+        println!("[16D] Theorem 1.16 (Mod-4 Eigenspace Constraint) [C-1542]");
+        println!(
+            "  All dim(V_lambda) = 0 mod 4: [{}]",
+            if dec.all_mod4 { "PASS" } else { "FAIL" }
+        );
+        println!();
+
+        // [16D] Corollary 1.17: 0 mod 4 <= dim Ker(L_a) <= 2^n - 4.
+        println!("[16D] Corollary 1.17 (Annihilator Bound) [C-1543]");
+        let (kd, mod4_ok, leq_ok) = moreno_thm::verify_corollary_1_17(&a16, 16, 1e-10);
+        println!(
+            "  dim Ker(L_a) = {}, = 0 mod 4: [{}], <= {}: [{}]",
+            kd,
+            if mod4_ok { "PASS" } else { "FAIL" },
+            16_usize - 4,
+            if leq_ok { "PASS" } else { "FAIL" }
+        );
+        println!();
+
+        // [8D / A_3] Theorem 2.9: (a,b) in A_{n+1} is ZD iff -2 in spec(L^2_{a+b}) on A_n.
+        // A_3 is alternative so c*(c*y) = c^2*y for all y.  c = e1+e2 => c^2 = -2,
+        // hence L_c^2 = -2*I and -2 is an eigenvalue of multiplicity 8.
+        let mut a8 = vec![0.0_f64; 8];
+        a8[1] = 1.0;
+        let mut b8 = vec![0.0_f64; 8];
+        b8[2] = 1.0;
+
+        println!("[8D / A_3] Theorem 2.9 (Lambda=-2 ZD Characterization) [C-1546]");
+        println!("  a = e1 in A_3, b = e2 in A_3  [unit norm, trace 0, alternative]");
+        println!("  Lift (a,b) to A_4 (16D) is a ZD iff -2 in spec(L^2_{{a+b}}) on A_3.");
+        let is_zd = moreno_thm::is_zd_moreno(&a8, &b8, 1e-10);
+        println!(
+            "  is_zd_moreno(e1, e2) [lifts to (e1,e2) in 16D]: [{}]",
+            if is_zd { "PASS" } else { "FAIL" }
+        );
+        println!();
+
+        // [8D / A_3] Theorem 2.13: V(a;y;b) = span{e0,a,b,ab,(ay)b,yb,ay,y} is a copy of O.
+        let mut e1_oct = vec![0.0_f64; 8];
+        e1_oct[1] = 1.0;
+        let mut e7_oct = vec![0.0_f64; 8];
+        e7_oct[7] = 1.0;
+        let mut e2_oct = vec![0.0_f64; 8];
+        e2_oct[2] = 1.0;
+
+        println!("[8D / A_3] Theorem 2.13 (Special Triple -> Octonion Copy) [C-1547]");
+        let is_sp_triple = cd_pred::is_special_triple(&e1_oct, &e7_oct, &e2_oct, 1e-10);
+        let triple_ok = moreno_thm::verify_theorem_2_13(&e1_oct, &e7_oct, &e2_oct, 1e-10);
+        println!(
+            "  {{e1, e7, e2}} in A_3: is_special_triple: [{}]",
+            if is_sp_triple { "PASS" } else { "FAIL" }
+        );
+        println!(
+            "  V(e1;e7;e2) multiplication table matches O: [{}]",
+            if triple_ok { "PASS" } else { "FAIL" }
+        );
+        println!("  Moreno section elapsed: {}ms", moreno_t.elapsed().as_millis());
+        println!();
+    }
 
     // =========================================================================
     // Section 4: Face Sign Census & Imbalance
