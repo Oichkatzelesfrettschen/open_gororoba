@@ -1679,6 +1679,9 @@ C-1521: ZD variety stratifies by Archimedean class over No (first surreal result
 C-1522: Mass hierarchy is NOT dyadic-birthday-driven; framework/content distinction
 C-1523: Friction is field-independent (associator coefficients are integers)
 C-1524: Class ratios sector-dependent: lepton 1.529, quark 1.771 (16% mismatch)
+C-1525: Sign profiles give 21 doublets (C(7,2)) -- generations from psi, not signs
+C-1526: Cross-class coupling at 10% shifts masses by 1% (natural mixing suppression)
+C-1527: Rocq proof: ZD requires alpha^2 = beta^2 (ArchimedeanStratification.v)
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
