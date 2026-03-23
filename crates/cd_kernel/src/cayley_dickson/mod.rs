@@ -16,7 +16,8 @@ mod simd;
 mod zero_divisors;
 
 pub use arith::{
-    cd_conjugate, cd_multiply, cd_multiply_conjugated, cd_multiply_into, cd_multiply_mut,
+    cd_conjugate, cd_conjugate_into, cd_multiply, cd_multiply_conjugated,
+    cd_multiply_into, cd_multiply_mut, cd_multiply_workspace_len,
     cd_norm_sq, left_mult_operator,
 };
 pub use associator::{
@@ -37,6 +38,7 @@ pub use simd::{
 };
 pub use zero_divisors::{
     GeneralFormZD, count_pathion_zero_divisors, find_zero_divisors, find_zero_divisors_3blade,
+    find_zero_divisors_3blade_sign_table, find_zero_divisors_sign_table,
     cross_generational_friction, find_zero_divisors_general_form, find_zero_divisors_parallel,
     gourlay_epsilon, gourlay_psi, gourlay_psi_n, is_zero_divisor_koebisu,
     koebisu_d1, koebisu_d2, zd_spectrum_analysis,

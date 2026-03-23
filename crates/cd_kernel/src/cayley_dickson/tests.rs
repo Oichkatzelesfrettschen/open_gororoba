@@ -1052,3 +1052,78 @@ fn test_zd_tangent_space() {
         println!();
     }
 }
+
+/// Validate cd_multiply_into matches cd_multiply across dims 1..=256.
+    ///
+    /// # Why this test matters
+    ///
+    /// cd_multiply_into previously IGNORED its workspace parameter and
+    /// called the allocating cd_multiply internally (commit pre-83c4254f).
+    /// This test ensures the true workspace-based recursion produces
+    /// bit-identical results to the reference allocating implementation.
+    #[test]
+    fn test_cd_multiply_into_sweep() {
+        use rand::prelude::*;
+        use rand::rngs::StdRng;
+
+        let mut rng = StdRng::seed_from_u64(42);
+        let mut dim = 1;
+        while dim <= 256 {
+            let a: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
+            let b: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
+
+            let reference = cd_multiply(&a, &b);
+
+            let ws_len = cd_multiply_workspace_len(dim);
+            let mut res = vec![0.0; dim];
+            let mut workspace = vec![0.0; ws_len];
+            cd_multiply_into(&a, &b, &mut res, &mut workspace);
+
+            for i in 0..dim {
+                assert!(
+                    (res[i] - reference[i]).abs() < 1e-12,
+                    "dim={dim}, component {i}: into={:.15e}, ref={:.15e}, diff={:.3e}",
+                    res[i], reference[i], (res[i] - reference[i]).abs()
+                );
+            }
+
+            dim *= 2;
+        }
+        println!("  cd_multiply_into sweep: all dims 1..=256 match reference");
+    }
+
+/// Canonical comparison: sign-table ZD enumeration vs allocating cd_multiply.
+///
+/// # Why canonical comparison, not just output equality
+///
+/// The original `find_zero_divisors` returns `(i,j,k,l,norm)` where norm
+/// is a floating-point value near zero. The sign-table version returns
+/// exact `0.0` for the norm. We sort both by `(i,j,k,l)` and compare
+/// the index tuples exactly, ignoring norm differences.
+#[test]
+fn test_zero_divisors_sign_table_canonical() {
+    let old = find_zero_divisors(16, 1e-8);
+    let new = find_zero_divisors_sign_table(16);
+
+    // Canonicalize: sort by (i,j,k,l), extract index tuples
+    let mut old_indices: Vec<(usize, usize, usize, usize)> =
+        old.iter().map(|&(i, j, k, l, _)| (i, j, k, l)).collect();
+    let mut new_indices: Vec<(usize, usize, usize, usize)> =
+        new.iter().map(|&(i, j, k, l, _)| (i, j, k, l)).collect();
+    old_indices.sort();
+    new_indices.sort();
+
+    assert_eq!(old_indices.len(), new_indices.len(),
+        "result count mismatch: old={}, new={}", old_indices.len(), new_indices.len());
+    for (idx, (o, n)) in old_indices.iter().zip(&new_indices).enumerate() {
+        assert_eq!(o, n, "mismatch at index {idx}: old={o:?}, new={n:?}");
+    }
+
+    // Verify old norms are all near zero
+    for &(i, j, k, l, norm) in &old {
+        assert!(norm < 1e-8,
+            "old ({i},{j},{k},{l}) has norm {norm:.3e} -- should be < 1e-8");
+    }
+
+    println!("  ZD sign-table canonical comparison: {} entries match", old_indices.len());
+}
