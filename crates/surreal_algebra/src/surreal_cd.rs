@@ -598,6 +598,103 @@ mod tests {
         println!("  The mass hierarchy enters through the LIFT, not the friction.");
     }
 
+    /// Compute the implied Archimedean class ratios from observed masses.
+    ///
+    /// If three generations live in three Archimedean classes with
+    /// "class sizes" c_1 < c_2 < c_3, and the mass of generation g
+    /// is proportional to exp(friction_g * c_g), then:
+    ///
+    ///   m_mu/m_e = exp(f_mu * c_2) / exp(f_e * c_1)
+    ///   m_tau/m_e = exp(f_tau * c_3) / exp(f_e * c_1)
+    ///
+    /// Since friction is field-independent (C-1523), f_g is the SAME
+    /// over R and No. The class ratio c_2/c_1 determines m_mu/m_e.
+    ///
+    /// The 3-blade friction values for the best triple (already computed
+    /// in quark_sector.rs) are f = [f_1, f_2, f_3] for the three
+    /// generations. With weights w1=-0.6569, w2=-0.7420:
+    ///   m_g ~ exp(w1 * f_charged_g + w2 * f_neutral_g)
+    ///
+    /// The class ratio enters as a SCALING of the friction:
+    ///   m_g ~ exp(c_g * (w1 * f_ch + w2 * f_nu))
+    ///
+    /// So the mass ratio is:
+    ///   m_mu/m_e = exp((c_2 - c_1) * F)
+    /// where F = w1*f_ch + w2*f_nu is the combined friction per unit class.
+    ///
+    /// Solving: c_2 - c_1 = ln(m_mu/m_e) / F
+    ///          c_3 - c_1 = ln(m_tau/m_e) / F
+    ///
+    /// The CLASS SEPARATION RATIO is:
+    ///   (c_3 - c_1) / (c_2 - c_1) = ln(m_tau/m_e) / ln(m_mu/m_e)
+    ///                               = ln(3477) / ln(207)
+    ///                               = 8.154 / 5.333
+    ///                               = 1.529
+    ///
+    /// This ratio is INDEPENDENT of F and of the absolute class sizes.
+    /// It is a pure consequence of the mass hierarchy.
+    #[test]
+    fn test_implied_archimedean_class_ratios() {
+        println!("--- IMPLIED ARCHIMEDEAN CLASS RATIOS ---\n");
+
+        // PDG mass ratios
+        let m_mu_over_m_e = 206.768_f64;
+        let m_tau_over_m_e = 3477.2_f64;
+        let m_tau_over_m_mu = m_tau_over_m_e / m_mu_over_m_e;
+
+        // Class separation ratio (independent of friction scale)
+        let ln_mu_e = m_mu_over_m_e.ln();
+        let ln_tau_e = m_tau_over_m_e.ln();
+        let ln_tau_mu = m_tau_over_m_mu.ln();
+
+        let class_ratio_tau_mu_over_mu_e = ln_tau_e / ln_mu_e;
+
+        println!("  Mass ratios:");
+        println!("    m_mu/m_e  = {:.1}", m_mu_over_m_e);
+        println!("    m_tau/m_e = {:.1}", m_tau_over_m_e);
+        println!("    m_tau/m_mu = {:.2}", m_tau_over_m_mu);
+
+        println!("\n  Log ratios:");
+        println!("    ln(m_mu/m_e)  = {:.4}", ln_mu_e);
+        println!("    ln(m_tau/m_e) = {:.4}", ln_tau_e);
+        println!("    ln(m_tau/m_mu) = {:.4}", ln_tau_mu);
+
+        println!("\n  Class separation ratio:");
+        println!("    (c3-c1)/(c2-c1) = ln(tau/e)/ln(mu/e) = {:.4}", class_ratio_tau_mu_over_mu_e);
+        println!("    (c3-c2)/(c2-c1) = ln(tau/mu)/ln(mu/e) = {:.4}", ln_tau_mu / ln_mu_e);
+
+        // The class ratio 1.529 means the tau-electron separation is
+        // 1.529 times the muon-electron separation in "Archimedean distance."
+        // This is NOT 3/2 or any simple fraction -- it's irrational.
+
+        // Compare with quark sector:
+        let m_c_over_m_u = 550.0_f64;
+        let m_t_over_m_u: f64 = 550.0 * 130.0; // m_t/m_u = (m_c/m_u) * (m_t/m_c)
+        let quark_class_ratio = m_t_over_m_u.ln() / m_c_over_m_u.ln();
+
+        println!("\n  Quark sector comparison:");
+        println!("    m_c/m_u = {:.0}", m_c_over_m_u);
+        println!("    m_t/m_u = {:.0}", m_t_over_m_u);
+        println!("    quark class ratio (c3-c1)/(c2-c1) = {:.4}", quark_class_ratio);
+
+        // If the Archimedean class structure is UNIVERSAL (same for
+        // leptons and quarks), the class ratio should be the same.
+        let ratio_diff = (class_ratio_tau_mu_over_mu_e - quark_class_ratio).abs();
+        println!("\n  Lepton class ratio:  {:.4}", class_ratio_tau_mu_over_mu_e);
+        println!("  Quark class ratio:   {:.4}", quark_class_ratio);
+        println!("  Difference:          {:.4}", ratio_diff);
+
+        if ratio_diff < 0.1 {
+            println!("\n  MATCH: lepton and quark class ratios agree to < 0.1!");
+            println!("  This supports UNIVERSAL Archimedean class structure.");
+        } else {
+            println!("\n  MISMATCH: lepton and quark class ratios differ by {:.2}", ratio_diff);
+            println!("  The Archimedean class structure is SECTOR-DEPENDENT,");
+            println!("  not universal. This is consistent with different");
+            println!("  3-blade triples for leptons vs quarks.");
+        }
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
