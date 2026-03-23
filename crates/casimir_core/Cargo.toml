@@ -3,7 +3,7 @@ name = "casimir_core"
 version = "0.1.0"
 edition = { workspace = true }
 description = "Worldline Monte Carlo Casimir energy computation (White 2021)"
-license = "GPL-2.0-only"
+license = "GPL-2.0-or-later"
 
 [dependencies]
 rand = { workspace = true }
