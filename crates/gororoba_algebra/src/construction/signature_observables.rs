@@ -8,6 +8,7 @@ use super::{exotic_octonions::HybridSignatureOctonion, split_octonion::SplitOcto
 use cd_kernel::{
     cayley_dickson::CdSignature, cross_generational_friction, is_zero_divisor_koebisu, koebisu_d2,
 };
+use std::fmt;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ObservableSignatureRegime {
@@ -15,11 +16,62 @@ pub enum ObservableSignatureRegime {
     SplitIndefinite,
 }
 
+impl ObservableSignatureRegime {
+    pub fn label(&self) -> &'static str {
+        match self {
+            ObservableSignatureRegime::CompactEuclidean => "compact-euclidean",
+            ObservableSignatureRegime::SplitIndefinite => "split-indefinite",
+        }
+    }
+}
+
+impl fmt::Display for ObservableSignatureRegime {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.label())
+    }
+}
+
 pub trait SignatureAwareObservable {
     type Output;
 
     fn regime(&self) -> ObservableSignatureRegime;
     fn evaluate(&self) -> Self::Output;
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ObservableReading {
+    pub regime: ObservableSignatureRegime,
+    pub observable: &'static str,
+    pub primary_value: f64,
+    pub secondary_value: Option<f64>,
+    pub flagged: bool,
+}
+
+impl ObservableReading {
+    pub fn summary_row(&self) -> [f64; 3] {
+        [
+            self.primary_value,
+            self.secondary_value.unwrap_or(0.0),
+            if self.flagged { 1.0 } else { 0.0 },
+        ]
+    }
+}
+
+impl fmt::Display for ObservableReading {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self.secondary_value {
+            Some(secondary) => write!(
+                f,
+                "{}:{} primary={:.6} secondary={:.6} flagged={}",
+                self.regime, self.observable, self.primary_value, secondary, self.flagged
+            ),
+            None => write!(
+                f,
+                "{}:{} primary={:.6} flagged={}",
+                self.regime, self.observable, self.primary_value, self.flagged
+            ),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -51,6 +103,18 @@ impl SignatureAwareObservable for CompactKoebisuObservable<'_> {
         CompactKoebisuResult {
             d2,
             is_zero_divisor: is_zero_divisor_koebisu(self.vector, self.epsilon),
+        }
+    }
+}
+
+impl CompactKoebisuResult {
+    pub fn to_reading(&self) -> ObservableReading {
+        ObservableReading {
+            regime: ObservableSignatureRegime::CompactEuclidean,
+            observable: "koebisu-d2",
+            primary_value: self.d2,
+            secondary_value: Some(if self.is_zero_divisor { 1.0 } else { 0.0 }),
+            flagged: self.is_zero_divisor,
         }
     }
 }
@@ -108,6 +172,26 @@ pub fn cross_generational_friction_compact(
     CompactFrictionObservable::new(mode_a, mode_b, subalgebra_i, subalgebra_j).evaluate()
 }
 
+pub fn cross_generational_friction_compact_reading(
+    mode_a: usize,
+    mode_b: usize,
+    subalgebra_i: &[usize],
+    subalgebra_j: &[usize],
+) -> ObservableReading {
+    ObservableReading {
+        regime: ObservableSignatureRegime::CompactEuclidean,
+        observable: "cross-generational-friction",
+        primary_value: cross_generational_friction_compact(
+            mode_a,
+            mode_b,
+            subalgebra_i,
+            subalgebra_j,
+        ),
+        secondary_value: None,
+        flagged: false,
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct SplitNormDiagnostics {
     pub norm_squared: f64,
@@ -136,6 +220,18 @@ impl SignatureAwareObservable for SplitNormObservable<'_> {
         SplitNormDiagnostics {
             norm_squared,
             is_isotropic: norm_squared.abs() < 1e-12,
+        }
+    }
+}
+
+impl SplitNormDiagnostics {
+    pub fn to_reading(&self) -> ObservableReading {
+        ObservableReading {
+            regime: ObservableSignatureRegime::SplitIndefinite,
+            observable: "split-norm",
+            primary_value: self.norm_squared,
+            secondary_value: Some(if self.is_isotropic { 1.0 } else { 0.0 }),
+            flagged: self.is_isotropic,
         }
     }
 }
@@ -169,6 +265,7 @@ mod tests {
         let result = koebisu_d2_compact(&witness, 1e-12);
         assert!(result.d2.abs() < 1e-12);
         assert!(result.is_zero_divisor);
+        assert_eq!(result.to_reading().summary_row(), [result.d2, 1.0, 1.0]);
     }
 
     #[test]
@@ -178,6 +275,10 @@ mod tests {
         let wrapped = cross_generational_friction_compact(1, 8, &left, &right);
         let direct = cross_generational_friction(1, 8, &left, &right);
         assert!((wrapped - direct).abs() < 1e-12);
+        assert_eq!(
+            cross_generational_friction_compact_reading(1, 8, &left, &right).observable,
+            "cross-generational-friction"
+        );
     }
 
     #[test]
@@ -186,6 +287,7 @@ mod tests {
         let diagnostics = split_octonion_diagnostics(&isotropic);
         assert!(diagnostics.is_isotropic);
         assert!(diagnostics.norm_squared.abs() < 1e-12);
+        assert_eq!(diagnostics.to_reading().summary_row()[2], 1.0);
     }
 
     #[test]
@@ -200,6 +302,18 @@ mod tests {
         assert_eq!(
             regime_for_hybrid_octonion(&split),
             ObservableSignatureRegime::SplitIndefinite
+        );
+    }
+
+    #[test]
+    fn test_regime_labels_are_human_readable() {
+        assert_eq!(
+            ObservableSignatureRegime::CompactEuclidean.label(),
+            "compact-euclidean"
+        );
+        assert_eq!(
+            ObservableSignatureRegime::SplitIndefinite.to_string(),
+            "split-indefinite"
         );
     }
 }
