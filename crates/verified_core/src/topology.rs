@@ -13,12 +13,78 @@ pub struct HardwareTopology {
     /// By binding threads to these IDs, we evade OS-level SMT (Hyperthreading) oversubscription.
     pub physical_core_ids: Vec<usize>,
 
+    /// Detected cache sizes in bytes per level (L1d, L2, L3, L4 if present).
+    /// Falls back to conservative defaults if detection fails.
+    pub cache_hierarchy: CacheHierarchy,
+
     /// The total detected Level 3 Cache size in bytes.
     /// Falls back to a conservative 16MB if detection fails.
     pub l3_cache_bytes: usize,
 
     /// Estimated safe working set size (90% of L3 cache to leave room for OS/background tasks).
     pub l3_safe_working_set_bytes: usize,
+}
+
+/// Detected cache sizes for all levels.
+///
+/// Used by the CD sign table to auto-select representation:
+/// - dim <= sqrt(L1d * 8): bit-packed SignTable (1 bit/entry, fits L1)
+/// - dim <= sqrt(L2): i8 SignTableI8 (1 byte/entry, fits L2)
+/// - dim <= sqrt(L3): precomputed f64 rows (8 bytes/entry, fits L3)
+///
+/// # Detection
+///
+/// Uses CPUID leaf 4 (deterministic cache parameters) on x86_64.
+/// Falls back to conservative defaults on other architectures.
+#[derive(Debug, Clone)]
+pub struct CacheHierarchy {
+    /// L1 data cache size in bytes (typically 32-48KB).
+    pub l1d_bytes: usize,
+    /// L2 cache size in bytes (typically 256KB-1MB).
+    pub l2_bytes: usize,
+    /// L3 cache size in bytes (typically 8-96MB).
+    pub l3_bytes: usize,
+    /// L4 cache size in bytes (0 if not present).
+    pub l4_bytes: usize,
+    /// Cache line size in bytes (typically 64).
+    pub line_size: usize,
+}
+
+impl CacheHierarchy {
+    /// Conservative defaults for when detection fails.
+    pub fn defaults() -> Self {
+        Self {
+            l1d_bytes: 32 * 1024,       // 32 KB
+            l2_bytes: 512 * 1024,       // 512 KB
+            l3_bytes: 16 * 1024 * 1024, // 16 MB
+            l4_bytes: 0,
+            line_size: 64,
+        }
+    }
+
+    /// Maximum CD dimension whose sign table fits in the given cache level.
+    ///
+    /// For bit-packed: dim^2 / 8 bytes. Max dim = sqrt(cache_bytes * 8).
+    /// For i8: dim^2 bytes. Max dim = sqrt(cache_bytes).
+    pub fn max_dim_bitpacked(&self, level: usize) -> usize {
+        let bytes = match level {
+            1 => self.l1d_bytes,
+            2 => self.l2_bytes,
+            3 => self.l3_bytes,
+            _ => self.l3_bytes,
+        };
+        ((bytes * 8) as f64).sqrt() as usize
+    }
+
+    pub fn max_dim_i8(&self, level: usize) -> usize {
+        let bytes = match level {
+            1 => self.l1d_bytes,
+            2 => self.l2_bytes,
+            3 => self.l3_bytes,
+            _ => self.l3_bytes,
+        };
+        (bytes as f64).sqrt() as usize
+    }
 }
 
 impl HardwareTopology {
@@ -51,38 +117,59 @@ impl HardwareTopology {
             .build_global()
     }
     fn detect() -> Self {
-        let l3_cache_bytes = Self::detect_l3_cache().unwrap_or(16 * 1024 * 1024);
+        let cache_hierarchy = Self::detect_cache_hierarchy();
+        let l3_cache_bytes = cache_hierarchy.l3_bytes;
         let physical_core_ids = Self::detect_physical_cores();
 
         HardwareTopology {
             physical_core_ids,
+            cache_hierarchy,
             l3_cache_bytes,
             l3_safe_working_set_bytes: (l3_cache_bytes as f64 * 0.90) as usize,
         }
     }
 
+    /// Detect all cache levels via CPUID.
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    fn detect_l3_cache() -> Option<usize> {
+    fn detect_cache_hierarchy() -> CacheHierarchy {
         let cpuid = raw_cpuid::CpuId::new();
+        let mut hier = CacheHierarchy::defaults();
+
         if let Some(cparams) = cpuid.get_cache_parameters() {
             for cache in cparams {
-                if cache.level() == 3 {
-                    // Cache size = sets * associativity * coherency_line_size * physical_line_partitions
-                    let size = cache.sets()
-                        * cache.associativity()
-                        * cache.coherency_line_size()
-                        * cache.physical_line_partitions();
-                    return Some(size);
+                let size = cache.sets()
+                    * cache.associativity()
+                    * cache.coherency_line_size()
+                    * cache.physical_line_partitions();
+                let line_size = cache.coherency_line_size();
+
+                match cache.level() {
+                    1 => {
+                        // Only count data caches (not instruction)
+                        if cache.cache_type() == raw_cpuid::CacheType::Data
+                            || cache.cache_type() == raw_cpuid::CacheType::Unified
+                        {
+                            hier.l1d_bytes = size;
+                            hier.line_size = line_size;
+                        }
+                    }
+                    2 => { hier.l2_bytes = size; }
+                    3 => { hier.l3_bytes = size; }
+                    4 => { hier.l4_bytes = size; }
+                    _ => {}
                 }
             }
         }
-        None
+
+        hier
     }
 
     #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
-    fn detect_l3_cache() -> Option<usize> {
-        None
+    fn detect_cache_hierarchy() -> CacheHierarchy {
+        CacheHierarchy::defaults()
     }
+
+    // detect_l3_cache removed: superseded by detect_cache_hierarchy (P7).
 
     fn detect_physical_cores() -> Vec<usize> {
         #[cfg(target_os = "linux")]
