@@ -3280,11 +3280,8 @@ impl DrudeLorentzParams {
 ///
 /// From: Lambrecht & Reynaud, Eur. Phys. J. D 8, 309 (2000)
 pub fn gold_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 9.0, // Plasma energy
-        gamma_ev: 0.035, // Relaxation rate
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::GOLD_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Gold (Au) with interband transitions.
@@ -3369,11 +3366,8 @@ pub fn gold_rakic_ld() -> DrudeLorentzParams {
 
 /// Silver (Ag) Drude parameters.
 pub fn silver_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 9.17,
-        gamma_ev: 0.021,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::SILVER_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Silver (Ag) with interband transitions.
@@ -3403,20 +3397,14 @@ pub fn silver_drude_lorentz() -> DrudeLorentzParams {
 
 /// Copper (Cu) Drude parameters.
 pub fn copper_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 8.71,
-        gamma_ev: 0.073,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::COPPER_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Aluminum (Al) Drude parameters.
 pub fn aluminum_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 15.0, // High plasma frequency
-        gamma_ev: 0.6,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::ALUMINUM_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Silicon (intrinsic) optical model.
@@ -3617,11 +3605,8 @@ pub fn aluminum_drude_lorentz() -> DrudeLorentzParams {
 
 /// Beryllium (Be) Drude parameters (Rakic 1998).
 pub fn beryllium_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 18.51,
-        gamma_ev: 0.035,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::BERYLLIUM_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Beryllium (Be) Drude-Lorentz (Rakic 1998 LD model).
@@ -3651,11 +3636,8 @@ pub fn beryllium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Chromium (Cr) Drude parameters (Rakic 1998).
 pub fn chromium_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 10.75,
-        gamma_ev: 0.047,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::CHROMIUM_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Chromium (Cr) Drude-Lorentz (Rakic 1998 LD model).
@@ -3685,11 +3667,8 @@ pub fn chromium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Nickel (Ni) Drude parameters (Rakic 1998).
 pub fn nickel_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 15.92,
-        gamma_ev: 0.048,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::NICKEL_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Nickel (Ni) Drude-Lorentz (Rakic 1998 LD model).
@@ -3719,11 +3698,8 @@ pub fn nickel_drude_lorentz() -> DrudeLorentzParams {
 
 /// Palladium (Pd) Drude parameters (Rakic 1998).
 pub fn palladium_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 9.72,
-        gamma_ev: 0.009,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::PALLADIUM_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Palladium (Pd) Drude-Lorentz (Rakic 1998 LD model).
@@ -3753,11 +3729,8 @@ pub fn palladium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Platinum (Pt) Drude parameters (Rakic 1998).
 pub fn platinum_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 9.59,
-        gamma_ev: 0.080,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::PLATINUM_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Platinum (Pt) Drude-Lorentz (Rakic 1998 LD model).
@@ -3787,11 +3760,8 @@ pub fn platinum_drude_lorentz() -> DrudeLorentzParams {
 
 /// Titanium (Ti) Drude parameters (Rakic 1998).
 pub fn titanium_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 7.29,
-        gamma_ev: 0.082,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::TITANIUM_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Titanium (Ti) Drude-Lorentz (Rakic 1998 LD model).
@@ -3821,11 +3791,8 @@ pub fn titanium_drude_lorentz() -> DrudeLorentzParams {
 
 /// Tungsten (W) Drude parameters (Rakic 1998).
 pub fn tungsten_drude() -> DrudeParams {
-    DrudeParams {
-        omega_p_ev: 13.22,
-        gamma_ev: 0.064,
-        eps_inf: 1.0,
-    }
+    let [omega_p_ev, gamma_ev, eps_inf] = materials_data::TUNGSTEN_DRUDE;
+    DrudeParams { omega_p_ev, gamma_ev, eps_inf }
 }
 
 /// Tungsten (W) Drude-Lorentz (Rakic 1998 LD model).
