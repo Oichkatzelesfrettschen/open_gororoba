@@ -366,7 +366,7 @@ pub fn construct_casimir_baseline(
 /// Currently uses the same convention as the quark sector (M_ch = C_SU3 + C_SU2,
 /// M_nu = C_SU3 - C_SU2) to preserve regression. This is an explicit choice
 /// that can be revisited independently of the quark sector.
-pub(super) fn assemble_lepton_baseline(
+pub(crate) fn assemble_lepton_baseline(
     cb: &crate::quark_sector::CasimirBaseline,
 ) -> (faer::Mat<f64>, faer::Mat<f64>) {
     crate::quark_sector::assemble_quark_matrices(cb)
