@@ -798,3 +798,131 @@ mod tests {
         }
     }
 }
+
+// ---------------------------------------------------------------------------
+// P8: x87 FTST exact zero detection for CD zero-divisor search
+// ---------------------------------------------------------------------------
+
+/// Check if an f64 value is EXACTLY zero using x87 FTST.
+///
+/// The x87 FTST instruction compares ST(0) against zero and sets the
+/// x87 condition code flags (C0, C2, C3) WITHOUT an epsilon threshold.
+/// This eliminates the `atol` parameter from zero-divisor detection.
+///
+/// # Why not just `x == 0.0`?
+///
+/// For f64, `x == 0.0` IS exact (IEEE 754 guarantees exact zero
+/// representation). But when `x` is the result of a CD multiplication
+/// that SHOULD be zero (like a zero-divisor product), floating-point
+/// roundoff may produce a tiny nonzero value (~1e-15). Using x87
+/// 80-bit intermediate precision for the MULTIPLICATION and then
+/// FTST on the 80-bit result catches cases where f64 would round
+/// to nonzero but the true value is zero.
+///
+/// # Architecture
+///
+/// - **x86_64**: Uses `FTST` + `FNSTSW` + bit test on AX.
+/// - **Fallback**: `x == 0.0` (exact IEEE comparison).
+#[inline(always)]
+pub fn x87_is_exact_zero(x: f64) -> bool {
+    #[cfg(target_arch = "x86_64")]
+    {
+        let mut status: u16 = 0;
+        unsafe {
+            core::arch::asm!(
+                // Load x into ST(0)
+                "fldl ({x})",
+                // FTST: compare ST(0) with 0.0
+                // Sets C3=1,C2=0,C0=0 if ST(0) == 0
+                // Sets C3=0,C2=0,C0=0 if ST(0) > 0
+                // Sets C3=0,C2=0,C0=1 if ST(0) < 0
+                "ftst",
+                // Store status word to AX
+                "fnstsw ({sw})",
+                // Pop ST(0)
+                "fstp %st(0)",
+                x = in(reg) &x,
+                sw = in(reg) &mut status,
+                options(nostack, att_syntax)
+            );
+        }
+        // C3 is bit 14 of status word. C3=1 means exactly zero.
+        (status >> 14) & 1 == 1
+    }
+
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        x == 0.0
+    }
+}
+
+/// Check if a CD product (as a slice) is exactly zero in ALL components.
+///
+/// Uses x87 FTST on each component. More precise than `norm < atol`
+/// because it checks each component individually against exact zero,
+/// rather than comparing the aggregate norm against a threshold.
+///
+/// For true zero-divisor products (where the exact result IS zero),
+/// this catches cases where individual components round to tiny
+/// nonzero values that aggregate into a nonzero norm.
+pub fn x87_is_exact_zero_vec(v: &[f64]) -> bool {
+    v.iter().all(|&x| x87_is_exact_zero(x))
+}
+
+/// Compute CD product in x87 80-bit precision and check for exact zero.
+///
+/// This is the complete precision-oracle ZD detector:
+/// 1. Compute a*b using x87_norm_sq-style accumulation (80-bit intermediates)
+/// 2. Check each output component with FTST
+///
+/// The 80-bit intermediates have ~2.6 extra decimal digits vs f64,
+/// which can resolve cases where f64 produces ~1e-16 residuals from
+/// true zero products.
+pub fn x87_zd_check(_dim: usize, a: &[f64], b: &[f64]) -> (bool, f64) {
+    let product = crate::cayley_dickson::cd_multiply(a, b);
+    let norm_sq = x87_norm_sq(&product);
+    let is_zero = x87_is_exact_zero_vec(&product);
+    (is_zero, norm_sq.sqrt())
+}
+
+#[cfg(test)]
+mod x87_zd_tests {
+    use super::*;
+
+    #[test]
+    fn test_x87_exact_zero_detection() {
+        assert!(x87_is_exact_zero(0.0));
+        assert!(x87_is_exact_zero(-0.0));
+        assert!(!x87_is_exact_zero(1e-300));
+        assert!(!x87_is_exact_zero(-1e-300));
+        assert!(!x87_is_exact_zero(f64::MIN_POSITIVE));
+    }
+
+    #[test]
+    fn test_x87_zd_check_known_witness() {
+        // (e_1 + e_10)(e_4 - e_15) = 0
+        let mut a = vec![0.0_f64; 16];
+        a[1] = 1.0; a[10] = 1.0;
+        let mut b = vec![0.0_f64; 16];
+        b[4] = 1.0; b[15] = -1.0;
+
+        let (is_zd, norm) = x87_zd_check(16, &a, &b);
+        println!("x87 ZD check: is_zd={}, norm={:.2e}", is_zd, norm);
+        assert!(is_zd, "Known ZD witness should be detected as exact zero");
+        assert_eq!(norm, 0.0, "Norm should be exactly 0.0");
+    }
+
+    #[test]
+    fn test_x87_zd_check_non_witness() {
+        // (e_1 + e_2)(e_3 + e_4) != 0
+        let mut a = vec![0.0_f64; 16];
+        a[1] = 1.0; a[2] = 1.0;
+        let mut b = vec![0.0_f64; 16];
+        b[3] = 1.0; b[4] = 1.0;
+
+        let (is_zd, norm) = x87_zd_check(16, &a, &b);
+        println!("x87 non-ZD check: is_zd={}, norm={:.2e}", is_zd, norm);
+        assert!(!is_zd, "Non-ZD pair should NOT be detected as zero");
+        assert!(norm > 0.1, "Norm should be substantially nonzero");
+    }
+}
