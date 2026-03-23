@@ -9,6 +9,7 @@
 
 pub mod avx2_primitives;
 pub mod cayley_dickson;
+pub mod lattice_codebook;
 pub mod error;
 pub mod mult_table;
 pub mod parallel_primitives;
