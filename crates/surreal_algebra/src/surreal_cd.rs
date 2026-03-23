@@ -868,6 +868,93 @@ mod tests {
         println!("  This is the STRUCTURAL origin of mixing suppression.");
     }
 
+    /// S6: Classify assessors by subalgebra membership.
+    ///
+    /// Each assessor (low, high) connects two basis elements. The
+    /// three octonionic subalgebras O_1, O_2, O_3 partition the
+    /// non-shared basis elements. An assessor's "generation character"
+    /// is which subalgebras its low and high indices belong to.
+    ///
+    /// O_1 = {0,1,4,5,8,9,12,13}, O_2 = {0,2,4,6,8,10,12,14}, O_3 = {0,3,4,7,8,11,12,15}
+    /// Shared: {0, 4, 8, 12} (all three), other indices belong to exactly 2 of 3.
+    ///
+    /// Classification predicts: assessors connecting O_i-exclusive to O_j-exclusive
+    /// indices should cluster by (i,j) pair -- giving at most C(3,2)+3 = 6 types.
+    #[test]
+    fn test_assessor_subalgebra_classification() {
+        println!("--- S6: ASSESSOR SUBALGEBRA CLASSIFICATION ---\n");
+
+        let o1: std::collections::HashSet<usize> = [0,1,4,5,8,9,12,13].into();
+        let o2: std::collections::HashSet<usize> = [0,2,4,6,8,10,12,14].into();
+        let o3: std::collections::HashSet<usize> = [0,3,4,7,8,11,12,15].into();
+
+        // For each index 0..15, determine which subalgebras it belongs to
+        let membership = |idx: usize| -> Vec<usize> {
+            let mut m = Vec::new();
+            if o1.contains(&idx) { m.push(1); }
+            if o2.contains(&idx) { m.push(2); }
+            if o3.contains(&idx) { m.push(3); }
+            m
+        };
+
+        // Build assessor pairs
+        let mut assessors: Vec<(usize, usize)> = Vec::new();
+        for low in 1..=7_usize {
+            for high in 9..=15_usize {
+                if high == low + 8 { continue; }
+                assessors.push((low, high));
+            }
+        }
+
+        // Classify each assessor by subalgebra membership of (low, high)
+        let mut classification: std::collections::BTreeMap<String, Vec<(usize, usize)>> =
+            std::collections::BTreeMap::new();
+
+        for &(low, high) in &assessors {
+            let m_low = membership(low);
+            let m_high = membership(high);
+            let key = format!("{:?}-{:?}", m_low, m_high);
+            classification.entry(key).or_default().push((low, high));
+        }
+
+        println!("  Subalgebra membership classification of 42 assessors:\n");
+        for (key, pairs) in &classification {
+            println!("  {} ({} assessors):", key, pairs.len());
+            for &(l, h) in pairs.iter().take(5) {
+                println!("    ({}, {})", l, h);
+            }
+            if pairs.len() > 5 {
+                println!("    ... ({} more)", pairs.len() - 5);
+            }
+        }
+
+        println!("\n  Classification summary:");
+        println!("  {} distinct types", classification.len());
+        let mut sizes: Vec<(String, usize)> = classification.iter()
+            .map(|(k, v)| (k.clone(), v.len())).collect();
+        sizes.sort_by(|a, b| b.1.cmp(&a.1));
+        for (key, size) in &sizes {
+            println!("    {}: {} assessors", key, size);
+        }
+
+        // The key finding: does the classification match 3 generations?
+        // Each generation should correspond to assessors connecting
+        // O_i-unique indices to other subalgebra indices.
+
+        // Count: how many assessors have low in O_1-only (={1,5,9,13} minus shared)?
+        // O_1-unique (not in O_2 or O_3): indices where membership = [1] only
+        let o1_only: Vec<usize> = (0..16).filter(|&i| membership(i) == vec![1]).collect();
+        let o2_only: Vec<usize> = (0..16).filter(|&i| membership(i) == vec![2]).collect();
+        let o3_only: Vec<usize> = (0..16).filter(|&i| membership(i) == vec![3]).collect();
+        let shared_all: Vec<usize> = (0..16).filter(|&i| membership(i).len() >= 2).collect();
+
+        println!("\n  Exclusive membership:");
+        println!("    O_1 only: {:?}", o1_only);
+        println!("    O_2 only: {:?}", o2_only);
+        println!("    O_3 only: {:?}", o3_only);
+        println!("    Shared (2+ subs): {:?}", shared_all);
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
