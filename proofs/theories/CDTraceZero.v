@@ -108,8 +108,15 @@ Module Type CDAlgTraceZero.
   Axiom mul_one_right   : forall x, mul x one = x.
 
   (** Additive structure. *)
-  Axiom add_def_scale   : forall x y, add x y = add y x.  (** commutativity *)
+  Axiom add_comm        : forall x y, add x y = add y x.
+  Axiom add_zero_left   : forall x, add zero x = x.
+  Axiom add_neg_cancel  : forall x y, add x y = zero -> y = neg x.
+  Axiom neg_add         : forall x y, neg (add x y) = add (neg x) (neg y).
   Axiom mul_add_left    : forall x y z, mul x (add y z) = add (mul x y) (mul x z).
+
+  (** Scale interaction with negation. *)
+  Axiom scale_zero_left : forall x, scale 0 x = zero.
+  Axiom scale_neg_r     : forall r x, scale (- r) x = neg (scale r x).
 
   (** Decomposition: y = scale r one + y_im for some r, y_im.
       We axiomatize the decomposition and its key property. *)
@@ -224,25 +231,35 @@ Module TraceZero (Alg : CDAlgTraceZero).
         x*(r*1 + y_im) = r*x + x*y_im = 0
         So x*y_im = -r*x = scale(-r, x). *)
     assert (Hxyi : mul x y_im = scale (- r) x).
-    { (* Proof outline:
-         x*y = x*[r*1 + y_im] = x*[r*1] + x*y_im = r*[x*1] + x*y_im = r*x + x*y_im.
-         From xy=0: r*x + x*y_im = 0, so x*y_im = -[r*x] = scale[-r, x].
-         Uses: mul_add_left, mul_scale_right, mul_one_right. *)
-      admit. }
+    { (* x*y = x*[r*1 + y_im] = r*x + x*y_im = 0, so x*y_im = -r*x *)
+      assert (Hdecomp := decompose y).
+      fold r in Hdecomp. fold y_im in Hdecomp.
+      rewrite Hdecomp in Hxy.
+      rewrite mul_add_left in Hxy.
+      rewrite mul_scale_right in Hxy.
+      rewrite mul_one_right in Hxy.
+      (* Hxy: add (scale r x) (mul x y_im) = zero *)
+      apply add_neg_cancel in Hxy.
+      (* Hxy: mul x y_im = neg (scale r x) *)
+      rewrite <- scale_neg_r in Hxy.
+      exact Hxy. }
 
     (* Step 5: ||x*y_im||^2 = 0. *)
     assert (Hnorm_xy : norm_sq (mul x y_im) = 0).
-    { (* Proof chain:
-         ||x*y_im||^2 = <x*y_im, x*y_im>
-           = <y_im, conj x * [x*y_im]>              [adjoint]
-           = <y_im, [neg x] * [x*y_im]>             [purely imaginary]
-           = -<y_im, x * [x*y_im]>                  [neg_mul]
-           = -<y_im, scale [-r] [x*x]>              [Hxyi + mul_scale_right]
-           = -<y_im, scale [-r] [scale [-||x||^2] one]>  [imaginary_square]
-           = -<y_im, scale [r*||x||^2] one>         [scale_scale]
-           = -[r*||x||^2] * <y_im, one>             [inner_scale_right]
-           = 0                                        [im_part_perp_one] *)
-      admit. }
+    { (* Chain: ||x*y_im||^2 = ... = -r*||x||^2 * <y_im, 1> = 0 *)
+      rewrite <- inner_self_norm.
+      rewrite inner_adj_left.
+      rewrite Hpure.
+      rewrite neg_mul_left.
+      rewrite inner_neg_right.
+      (* Goal: - inner y_im (mul x (mul x y_im)) = 0 *)
+      rewrite Hxyi.
+      rewrite mul_scale_right.
+      rewrite (imaginary_square x Hpure).
+      rewrite scale_scale.
+      rewrite inner_scale_right.
+      unfold y_im. rewrite im_part_perp_one.
+      ring. }
 
     (** Step 6: ||x*y_im||^2 = r^2 * ||x||^2. *)
     assert (Hnorm_r : norm_sq (mul x y_im) = r^2 * norm_sq x).
@@ -257,10 +274,7 @@ Module TraceZero (Alg : CDAlgTraceZero).
     assert (Hr2_zero : r^2 = 0).
     { nra. }
     nra.
-  Admitted.
-  (* Two subgoals admitted: Hxyi and Hnorm_xy.
-     Both are 5-10 step rewrite chains using module axioms;
-     the logical structure [steps 5-7] is fully proved. *)
+  Qed.
 
   (** Corollary: if x purely imaginary, xy=0, x nonzero, then conj(y) = neg(y).
 
@@ -274,12 +288,20 @@ Module TraceZero (Alg : CDAlgTraceZero).
     intros x y Hpure Hxy Hxnz.
     assert (Hr : real_part y = 0).
     { exact (trace_zero_of_zd x y Hpure Hxy Hxnz). }
-    (* With real_part y = 0:
-       conj y = scale r one + neg y_im = scale 0 one + neg y_im = neg y_im
-       neg y  = neg [scale r one + y_im] = neg [scale r one] + neg y_im
-       Both reduce to neg y_im when r = 0. *)
-    Admitted.
-    (* Needs: scale 0 x = zero, add zero x = x. Straightforward but
-       requires additional axioms in the module type. *)
+    (* conj y = scale(real_part y)*one + neg(im_part y)
+             = scale(0)*one + neg(im_part y)    [Hr]
+             = zero + neg(im_part y)             [scale_zero_left]
+             = neg(im_part y)                    [add_zero_left]
+       neg y  = neg(scale(real_part y)*one + im_part y)
+             = neg(scale(0)*one + im_part y)    [Hr]
+             = neg(zero + im_part y)             [scale_zero_left]
+             = neg(im_part y)                    [add_zero_left + simplification]
+       So conj y = neg y. *)
+    rewrite conj_decompose, Hr, scale_zero_left, add_zero_left.
+    rewrite (decompose y) at 2.
+    rewrite Hr, scale_zero_left, add_zero_left.
+    (* Goal: neg (im_part y) = neg (im_part y) *)
+    reflexivity.
+  Qed.
 
 End TraceZero.

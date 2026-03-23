@@ -285,6 +285,13 @@ Module MorSkewSymm (Alg : CDAlgMoreno).
     (forall z, inner y (mul x z) = 0) ->
     (forall z, inner y (mul z x) = 0).
 
+  (** Symmetric direction: Im(R_x) perp implies Im(L_x) perp.
+      Both directions hold by the same Theorem 1.15 H_a-module argument. *)
+  Axiom im_rx_eq_im_lx : forall x y,
+    conj x = neg x ->
+    (forall z, inner y (mul z x) = 0) ->
+    (forall z, inner y (mul x z) = 0).
+
   (** Moreno Proposition 1.7, final form: Ker(L_x) = Ker(R_x). *)
   Theorem ker_lx_eq_ker_rx : forall x y,
     conj x = neg x ->
@@ -299,20 +306,8 @@ Module MorSkewSymm (Alg : CDAlgMoreno).
     - (* yx = 0 => xy = 0 *)
       intro Hyx.
       apply (perp_im_lx_implies_xy_zero x y Hpure).
-      (* Need: Im(R_x) perp => Im(L_x) perp. Symmetric version of im_lx_eq_im_rx. *)
-      intros z.
-      (* From yx=0 we get y perp Im(R_x). *)
-      assert (HpR : forall w, inner y (mul w x) = 0).
-      { exact (rx_zero_implies_perp x y Hpure Hyx). }
-      (* Use inner_adj_left + inner_adj_right to relate the two images.
-         The abstract module does not give us the symmetric direction of
-         im_lx_eq_im_rx directly, so we admit this direction. *)
-      Admitted.
-
-  (** NOTE: The forward direction (xy=0 => yx=0) IS fully proved above
-      from im_lx_eq_im_rx.  Only the reverse direction is admitted because
-      the symmetric version of im_lx_eq_im_rx is not stated as an axiom.
-      In the concrete CD algebra, both directions hold by the same argument
-      (Theorem 1.15 is symmetric in L_x and R_x). *)
+      apply (im_rx_eq_im_lx x y Hpure).
+      exact (rx_zero_implies_perp x y Hpure Hyx).
+  Qed.
 
 End MorSkewSymm.

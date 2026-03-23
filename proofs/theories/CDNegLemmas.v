@@ -25,40 +25,40 @@ Open Scope R_scope.
 
 (** Addition: zero element. *)
 Lemma quat_add_zero_left : forall q, quat_add quat_zero q = q.
-Proof. intros [a b c d]; unfold quat_add, quat_zero; f_equal; ring. Qed.
+Proof. intros [a b c d]; unfold quat_add, quat_zero; simpl; f_equal; ring. Qed.
 
 Lemma quat_add_zero_right : forall q, quat_add q quat_zero = q.
-Proof. intros [a b c d]; unfold quat_add, quat_zero; f_equal; ring. Qed.
+Proof. intros [a b c d]; unfold quat_add, quat_zero; simpl; f_equal; ring. Qed.
 
 (** Scale by zero. *)
 Lemma quat_scale_zero : forall q, quat_scale 0 q = quat_zero.
-Proof. intros [a b c d]; unfold quat_scale, quat_zero; f_equal; ring. Qed.
+Proof. intros [a b c d]; unfold quat_scale, quat_zero; simpl; f_equal; ring. Qed.
 
 (** Negation distributes over addition. *)
 Lemma quat_neg_add : forall a b,
   quat_neg (quat_add a b) = quat_add (quat_neg a) (quat_neg b).
-Proof. intros [a1 a2 a3 a4] [b1 b2 b3 b4]; unfold quat_neg, quat_add; f_equal; ring. Qed.
+Proof. intros [a1 a2 a3 a4] [b1 b2 b3 b4]; unfold quat_neg, quat_add; simpl; f_equal; ring. Qed.
 
 (** neg(zero) = zero. *)
 Lemma quat_neg_zero : quat_neg quat_zero = quat_zero.
-Proof. unfold quat_neg, quat_zero; f_equal; ring. Qed.
+Proof. unfold quat_neg, quat_zero; simpl; f_equal; ring. Qed.
 
 (** Right identity: q * 1 = q. *)
 Lemma quat_mul_one_right : forall q, quat_mul q quat_one = q.
-Proof. intros [a b c d]; unfold quat_mul, quat_one; f_equal; ring. Qed.
+Proof. intros [a b c d]; unfold quat_mul, quat_one; simpl; f_equal; ring. Qed.
 
 (** Left identity: 1 * q = q. *)
 Lemma quat_mul_one_left : forall q, quat_mul quat_one q = q.
-Proof. intros [a b c d]; unfold quat_mul, quat_one; f_equal; ring. Qed.
+Proof. intros [a b c d]; unfold quat_mul, quat_one; simpl; f_equal; ring. Qed.
 
 (** Cancellation: a + neg a = zero. *)
 Lemma quat_add_neg_cancel : forall q, quat_add q (quat_neg q) = quat_zero.
-Proof. intros [a b c d]; unfold quat_add, quat_neg, quat_zero; f_equal; ring. Qed.
+Proof. intros [a b c d]; unfold quat_add, quat_neg, quat_zero; simpl; f_equal; ring. Qed.
 
 (** Scale by -r: scale(-r, x) = neg(scale(r, x)). *)
 Lemma quat_scale_neg_r : forall r q,
   quat_scale (- r) q = quat_neg (quat_scale r q).
-Proof. intros r [a b c d]; unfold quat_scale, quat_neg; f_equal; ring. Qed.
+Proof. intros r [a b c d]; unfold quat_scale, quat_neg; simpl; f_equal; ring. Qed.
 
 (** ================================================================== *)
 (** * Octonion level (tower lift from quaternion).                     *)
