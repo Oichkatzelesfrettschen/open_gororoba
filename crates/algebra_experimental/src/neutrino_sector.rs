@@ -2020,6 +2020,7 @@ impl<'a> argmin::core::CostFunction for CpNelderMeadCost<'a> {
     type Param = Vec<f64>;
     type Output = f64;
 
+    #[allow(clippy::needless_range_loop)]
     fn cost(&self, param: &Self::Param) -> Result<Self::Output, argmin::core::Error> {
         let alpha_cp = param[0].clamp(self.bounds[0].0, self.bounds[0].1);
         let t_sol = param[1].clamp(self.bounds[1].0, self.bounds[1].1);
