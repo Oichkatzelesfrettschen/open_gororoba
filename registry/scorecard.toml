@@ -220,27 +220,27 @@ notes = "CKM element, reasonable agreement"
 id = "OBS-016"
 name = "J_CP_PMNS"
 bin = 3
-method = "CP-A: phase-only complexification / CP-B: cross-sector Gram"
-value = "8.5e-3 (CP-A) or 3.28e-2 (CP-B)"
-pdg_value = 3.3e-2
-error_pct = "25% (CP-A) or 0.6% (CP-B)"
+method = "CP-A: phase-only complexification / CP-B: joint 3D scan + NM"
+value = "8.5e-3 (CP-A) or 3.33e-2 = J_max (CP-B)"
+pdg_value = 8.6e-3
+error_pct = "CP-A: within 1%. CP-B: 3.9x LARGER (J_max vs measured |J|)"
 parameter_count = "1 (CP-A: alpha_CP) or 3 (CP-B: alpha_CP, t_sol, t_atm)"
-claim_id = "C-1494 (CP-A) / C-1497 (CP-B)"
+claim_id = "C-1494 (CP-A) / C-1497 (CP-B, AMENDED)"
 strength = "exploratory"
-notes = "TWO different pipelines, NOT one result with different conventions. CP-B preserves angles within 2% but quartet phase != physical PMNS delta_CP."
+notes = "AMENDED 2026-03-22: CP-B |J|=3.33e-2 is the kinematic maximum J_max attained at delta~90 (maximal CP). PDG measured |J|=8.6e-3 at delta=195 (non-maximal). Discrepancy 3.9x. Former '101% of PDG' was misleading -- compared J_max against the kinematic bound, not the measured value. NM chi2 table: |J| pull = +11.9 sigma."
 
 [[observable]]
 id = "OBS-017"
 name = "delta_CP_PMNS"
 bin = 3
-method = "CP-A: phase-only complexification / CP-B: cross-sector Gram"
-value = "~165 deg (CP-A) or -90 deg (CP-B)"
+method = "CP-A: phase-only complexification / CP-B: joint 3D scan + NM"
+value = "~165 deg (CP-A) or ~93 deg (CP-B, maximal CP)"
 pdg_value = "195 deg"
-error_pct = "30 deg (CP-A) or 105 deg (CP-B)"
+error_pct = "30 deg (CP-A) or 102 deg (CP-B)"
 parameter_count = "1 (CP-A) or 3 (CP-B)"
-claim_id = "C-1494 (CP-A) / C-1497 (CP-B)"
+claim_id = "C-1494 (CP-A) / C-1498 (CP-B, AMENDED)"
 strength = "exploratory"
-notes = "Quartet phase from Gram matrix is NOT physical PMNS delta_CP. Two pipelines disagree on what object is primary. Closure criterion not yet met."
+notes = "AMENDED 2026-03-22: CP-B gives delta~93 deg (maximal CP, |sin(delta)|~1). Three independent extractions agree: arg(-U_e3)=97.9, Jarlskog quartet=92.8, atan2 invariant=86.5. Sign systematics (8 combos) confirm NO route to delta=195. Framework prediction is genuinely falsified on delta_CP. Testable by DUNE/HyperK."
 
 # --------------------------------------------------------------------------
 # Summary counts

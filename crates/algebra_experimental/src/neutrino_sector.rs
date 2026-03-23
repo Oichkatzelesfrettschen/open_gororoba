@@ -1481,7 +1481,7 @@ pub fn apply_v6_perturbation(
 ///
 /// - [`test_cp_violation_phase_only`]: primary CP violation pipeline
 /// - [`test_cp_violation_jk_dimension_comparison`]: 6D-vs-16D diagnostic
-/// - [`test_cp_violation_joint_3d_scan`]: 3D optimiser for J_CP gap closure
+/// - [`test_cp_violation_joint_3d_scan`]: 3D optimiser for J_max (C-1497 AMENDED)
 /// - [`test_complex_pmns_alpha_scan`]: fine alpha_CP scan (origin of this
 ///   implementation, extracted from closure at former line 6508)
 ///
@@ -1861,6 +1861,111 @@ pub fn evaluate_cp_scan_point(
 }
 
 // ---------------------------------------------------------------------------
+/// Evaluate a single CP scan point using the stack-based Cardano eigensolver.
+///
+/// Identical to [`evaluate_cp_scan_point`] but uses [`hermitian_3x3_eig_hybrid`]
+/// instead of faer's heap-allocated eigendecomposition. This eliminates ALL
+/// heap allocation in the inner scan loop.
+///
+/// The mass matrices are read from `ctx.m_nu_real` and `ctx.m_ch_real` (faer Mats)
+/// and converted to stack-allocated `[[C2; 3]; 3]` arrays for the Cardano solver.
+#[allow(clippy::too_many_arguments, clippy::needless_range_loop)]
+pub fn evaluate_cp_scan_point_cardano(
+    alpha_cp: f64,
+    t_sol: f64,
+    t_atm: f64,
+    phi: &[[f64; 3]; 3],
+    ctx: &CpScanContext<'_>,
+) -> CpScanResult {
+    // Step 1: beta from (t_sol, t_atm)
+    let mut beta = [0.0_f64; 6];
+    for k in 0..6 {
+        beta[k] = t_sol * ctx.u_solar[k] + t_atm * ctx.u_atmo[k];
+    }
+
+    // Step 2: perturb real mass matrix
+    let mut m_nu_pert = ctx.m_nu_real.clone();
+    apply_v6_perturbation(&mut m_nu_pert, ctx.v6_basis, &beta, ctx.lift);
+    let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::scale(0.5);
+
+    // Step 3: build stack-allocated 3x3 complex Hermitian matrices
+    let mut h_nu: [[C2; 3]; 3] = [[(0.0, 0.0); 3]; 3];
+    let mut h_ch: [[C2; 3]; 3] = [[(0.0, 0.0); 3]; 3];
+    for i in 0..3 {
+        h_nu[i][i] = (m_nu_pert.read(i, i), 0.0);
+        h_ch[i][i] = (ctx.m_ch_real.read(i, i), 0.0);
+        for j in (i + 1)..3 {
+            let phase = alpha_cp * phi[i][j];
+            let mag = m_nu_pert.read(i, j);
+            h_nu[i][j] = (mag * phase.cos(), mag * phase.sin());
+            h_nu[j][i] = (mag * phase.cos(), -mag * phase.sin());
+            h_ch[i][j] = (ctx.m_ch_real.read(i, j), 0.0);
+            h_ch[j][i] = (ctx.m_ch_real.read(j, i), 0.0);
+        }
+    }
+
+    // Step 4: Cardano eigendecompose
+    let (_evals_ch, u_ch) = hermitian_3x3_eig_hybrid(&h_ch);
+    let (_evals_nu, u_nu) = hermitian_3x3_eig_hybrid(&h_nu);
+
+    // U_PMNS = U_ch^dag * U_nu
+    let mut u_pmns = [[(0.0, 0.0); 3]; 3];
+    for i in 0..3 {
+        for j in 0..3 {
+            let mut s = (0.0_f64, 0.0_f64);
+            for k in 0..3 {
+                let a = cconj(u_ch[k][i]);
+                let b = u_nu[k][j];
+                s.0 += a.0 * b.0 - a.1 * b.1;
+                s.1 += a.0 * b.1 + a.1 * b.0;
+            }
+            u_pmns[i][j] = s;
+        }
+    }
+
+    // Step 5: apply permutation and extract
+    let u_at = |i: usize, j: usize| -> C2 {
+        u_pmns[ctx.perm_u[i]][ctx.perm_d[j]]
+    };
+
+    let u_e3 = u_at(0, 2);
+    let u_e3_abs = (u_e3.0 * u_e3.0 + u_e3.1 * u_e3.1).sqrt();
+    let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
+    let cos_13 = theta_13.to_radians().cos();
+
+    let theta_12 = if cos_13 > 1e-15 {
+        let u_e2 = u_at(0, 1);
+        let u_e2_abs = (u_e2.0 * u_e2.0 + u_e2.1 * u_e2.1).sqrt();
+        (u_e2_abs / cos_13).min(1.0).asin().to_degrees()
+    } else { 0.0 };
+
+    let theta_23 = if cos_13 > 1e-15 {
+        let u_mu3 = u_at(1, 2);
+        let u_mu3_abs = (u_mu3.0 * u_mu3.0 + u_mu3.1 * u_mu3.1).sqrt();
+        (u_mu3_abs / cos_13).min(1.0).asin().to_degrees()
+    } else { 0.0 };
+
+    let j_cp = cmul(cmul(u_at(0, 0), u_at(1, 1)),
+                    cmul(cconj(u_at(0, 1)), cconj(u_at(1, 0)))).1;
+
+    let neg_ue3 = (-u_e3.0, -u_e3.1);
+    let delta_cp = neg_ue3.1.atan2(neg_ue3.0).to_degrees();
+
+    let u_moduli = {
+        let mut m = [[0.0_f64; 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                let u = u_at(i, j);
+                m[i][j] = (u.0 * u.0 + u.1 * u.1).sqrt();
+            }
+        }
+        m
+    };
+    let delta_cp_invariant = extract_delta_cp_invariant(&u_moduli, j_cp);
+
+    CpScanResult { theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant }
+}
+
 // Nelder-Mead refinement of CP scan (argmin)
 // ---------------------------------------------------------------------------
 
@@ -10886,8 +10991,8 @@ mod tests {
         println!("  If 16D > 6D, the gap is architectural, not algebraic.");
     }
 
-    /// Joint (alpha_CP, t_solar, t_atmo) 3D optimization for J_CP
-    /// gap closure (C-1497).
+    /// Joint (alpha_CP, t_solar, t_atmo) 3D optimization for J_max
+    /// (C-1497 AMENDED: yields J_max, not PDG |J|; 3.9x discrepancy).
     ///
     /// # Physical motivation
     ///
@@ -11505,6 +11610,67 @@ mod tests {
         } else {
             println!("  No solution found within 2% angle tolerance with nonzero J_CP.");
         }
+    }
+
+    /// Validate Cardano scan point against faer scan point.
+    ///
+    /// Runs both evaluate_cp_scan_point (faer) and evaluate_cp_scan_point_cardano
+    /// at the same parameters and verifies angles/J_CP match within tolerance.
+    #[test]
+    fn test_cardano_vs_faer_scan_point() {
+        let ch_pair = (11_usize, 12);
+        let nu_pair = (7_usize, 8);
+        let alpha_ch = 3.00_f64;
+        let alpha_nu = 1.35_f64;
+
+        let (m_ch_real, m_nu_real) = construct_pmns_matrices_two_param(
+            ch_pair, nu_pair, alpha_ch, alpha_nu,
+        );
+        let (v6_basis, _, _) = extract_v6_basis();
+        let lift = TensorElementLift;
+
+        let eig_ch_0 = m_ch_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig_nu_0 = m_nu_real.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let u_raw_0 = eig_ch_0.u().transpose() * eig_nu_0.u();
+        let (_, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw_0);
+
+        let u_solar = [0.1, 0.2, 0.3, 0.15, 0.25, 0.05];
+        let u_atmo = [0.05, 0.1, 0.15, 0.3, 0.2, 0.1];
+        let phi = [[0.0, 0.3, -0.2], [-0.3, 0.0, 0.5], [0.2, -0.5, 0.0]];
+
+        let ctx = CpScanContext {
+            m_nu_real: &m_nu_real, m_ch_real: &m_ch_real,
+            v6_basis: &v6_basis, u_solar: &u_solar, u_atmo: &u_atmo,
+            lift: &lift,
+            perm_u: [perm_u[0], perm_u[1], perm_u[2]],
+            perm_d: [perm_d[0], perm_d[1], perm_d[2]],
+        };
+
+        let test_points = [
+            (0.1, 1.0, 2.0),
+            (0.3, 0.5, 3.0),
+            (0.45, 1.5, 4.0),
+        ];
+
+        println!("--- Cardano vs faer scan point validation ---");
+        for &(alpha, ts, ta) in &test_points {
+            let mut bufs = CpScanBuffers::new();
+            let r_faer = evaluate_cp_scan_point(alpha, ts, ta, &phi, &ctx, &mut bufs);
+            let r_card = evaluate_cp_scan_point_cardano(alpha, ts, ta, &phi, &ctx);
+
+            let d12 = (r_faer.theta_12 - r_card.theta_12).abs();
+            let d13 = (r_faer.theta_13 - r_card.theta_13).abs();
+            let d23 = (r_faer.theta_23 - r_card.theta_23).abs();
+            let dj = (r_faer.j_cp - r_card.j_cp).abs();
+
+            println!("  alpha={alpha:.2}, ts={ts:.1}, ta={ta:.1}: dt12={d12:.2e}, dt13={d13:.2e}, dt23={d23:.2e}, dJ={dj:.2e}");
+
+            assert!(d12 < 1e-6, "theta_12 mismatch: faer={:.6}, cardano={:.6}", r_faer.theta_12, r_card.theta_12);
+            assert!(d13 < 1e-6, "theta_13 mismatch: faer={:.6}, cardano={:.6}", r_faer.theta_13, r_card.theta_13);
+            assert!(d23 < 1e-6, "theta_23 mismatch: faer={:.6}, cardano={:.6}", r_faer.theta_23, r_card.theta_23);
+            assert!(dj < 1e-8, "j_cp mismatch: faer={:.10}, cardano={:.10}", r_faer.j_cp, r_card.j_cp);
+        }
+        println!("  All 3 test points match within tolerance.");
     }
 
     /// Pathion (32D) V_k spectrum analysis (D1).

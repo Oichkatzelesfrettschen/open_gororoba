@@ -16,7 +16,8 @@
 //! **CP-B: Cross-sector Gram / rephasing pipeline**
 //!   Computes Gram matrix between charged and neutrino friction profiles,
 //!   extracts quartet phases, builds complex mass matrix from Gram structure.
-//!   Current result: |J_CP| ~ 3.28e-2, delta ~ -90 deg. (C-1497)
+//!   Current result: |J_CP| = 3.33e-2 = J_max (kinematic maximum at delta~93 deg).
+//!   AMENDED: PDG |J| = 8.6e-3 at delta=195 deg. Discrepancy 3.9x. (C-1497)
 //!
 //! **Closure criterion**: CP is "closed" ONLY when one chosen pipeline
 //! simultaneously:
