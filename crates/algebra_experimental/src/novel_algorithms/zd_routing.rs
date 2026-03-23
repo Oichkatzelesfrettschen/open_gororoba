@@ -29,7 +29,6 @@
 //! - `crate::novel_algorithms::defect_sensing` -- detects ZD-like anomalies via flux
 
 use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq};
-use rand::Rng;
 
 /// Represents a message encoded as a 16D Sedenion vector.
 pub type SedenionMsg = [f64; 16];
@@ -37,12 +36,12 @@ pub type SedenionMsg = [f64; 16];
 /// Generates a random standard basis Sedenion ZD pair.
 /// In a real system, these would be selected from the known 84 canonical pairs.
 #[allow(dead_code)]
-fn get_zd_pair(_rng: &mut impl Rng) -> (SedenionMsg, SedenionMsg) {
+pub fn get_zd_pair() -> (SedenionMsg, SedenionMsg) {
+    let (a_vec, b_vec) = algebra_analysis::avt::zero_divisor_witness(16);
     let mut a = [0.0; 16];
     let mut b = [0.0; 16];
-    // Simplistic mock of a ZD pair selection: e.g., (e_1 + e_10) and (e_15 - e_4)
-    a[1] = 1.0; a[10] = 1.0;
-    b[15] = 1.0; b[4] = -1.0;
+    a.copy_from_slice(&a_vec[..16]);
+    b.copy_from_slice(&b_vec[..16]);
     (a, b)
 }
 
@@ -68,17 +67,14 @@ pub fn trapdoor_encrypt(message: SedenionMsg, keys: &[SedenionMsg], bracketing: 
 /// Encodes a message such that the valid codeword lies entirely on the Zero-Divisor manifold.
 /// If noise perturbs the data, the product evaluates to a non-zero syndrome.
 pub fn generate_null_codeword(payload: &[f64; 8]) -> (SedenionMsg, SedenionMsg) {
-    let mut a = [0.0; 16];
-    let mut b = [0.0; 16];
+    // We start with a genuine ZD pair
+    let (mut a, mut b) = get_zd_pair();
     
-    // Embed the 8D payload into the Sedenion
-    a[..8].copy_from_slice(payload);
-    
-    // To construct a valid null code, B must be orthogonal and structured such that A * B = 0.
-    // Here we use a deterministic projection to the nearest ZD manifold.
-    // (Mock implementation: generating a generic ZD-like orthogonal state)
-    for i in 0..8 {
-        b[i + 8] = payload[7 - i]; // Simplistic structural flip
+    // Encode information via scaling - scaling preserves the ZD property (a*x)(y*b) = 0
+    // We carefully scale non-zero elements
+    for i in 0..16 {
+        if a[i] != 0.0 { a[i] *= payload[0]; }
+        if b[i] != 0.0 { b[i] *= payload[1]; }
     }
     
     (a, b)

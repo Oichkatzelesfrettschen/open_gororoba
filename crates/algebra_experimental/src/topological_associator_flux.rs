@@ -448,10 +448,8 @@ pub fn compare_flux_to_exceptional(dim: usize) -> Vec<String> {
             "  [H] No exceptional group dimension or Casimir matches counts at dim={}", dim
         ));
     }
-    notes.push(format!(
-        "  [H] Level names {{0,1,sqrt2}} reflect sparse witness ±{{0,1,2}} arithmetic,\n      \
-         not exceptional Lie structure.  Count formula is CD-sign-specific."
-    ));
+    notes.push("  [H] Level names {0,1,sqrt2} reflect sparse witness +/-{0,1,2} arithmetic,
+      not exceptional Lie structure.  Count formula is CD-sign-specific.".to_owned());
     notes
 }
 

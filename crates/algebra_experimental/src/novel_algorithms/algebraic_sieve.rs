@@ -55,7 +55,7 @@ pub fn sieve_hidden_dualities(nodes: &[DataNode], tolerance: f64) -> Vec<Duality
     for i in 0..sorted_nodes.len() {
         if used[i] { continue; }
         let weight_i = sorted_nodes[i].spectral_weight;
-        let parity_i = weight_i % 2 == 0;
+        let parity_i = weight_i.is_multiple_of(2);
         
         let mut best_j = None;
         let mut best_ratio_diff = f64::MAX;
@@ -63,7 +63,7 @@ pub fn sieve_hidden_dualities(nodes: &[DataNode], tolerance: f64) -> Vec<Duality
         for j in (i + 1)..sorted_nodes.len() {
             if used[j] { continue; }
             let weight_j = sorted_nodes[j].spectral_weight;
-            let parity_j = weight_j % 2 == 0;
+            let parity_j = weight_j.is_multiple_of(2);
             
             // Require opposite parity (Boson/Fermion duality)
             if parity_i == parity_j { continue; }
@@ -87,7 +87,7 @@ pub fn sieve_hidden_dualities(nodes: &[DataNode], tolerance: f64) -> Vec<Duality
                 node_b: sorted_nodes[j].id,
                 ratio: sorted_nodes[j].spectral_weight as f64 / weight_i as f64,
                 parity_a: parity_i,
-                parity_b: sorted_nodes[j].spectral_weight % 2 == 0,
+                parity_b: sorted_nodes[j].spectral_weight.is_multiple_of(2),
             });
         }
     }
