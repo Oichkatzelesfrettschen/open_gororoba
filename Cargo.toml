@@ -26,6 +26,7 @@ members = [
     "crates/docpipe",
     "crates/scrolls_core",
     "crates/materials_core",
+    "crates/materials_data",
     "crates/optics_core",
     "crates/quantum_core",
     "crates/gr_core",
