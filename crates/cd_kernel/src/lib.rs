@@ -50,7 +50,7 @@ pub use x87_transcendentals::{
 pub use cayley_dickson::{
     batch_associator_norms, batch_associator_norms_parallel, batch_associator_norms_sq,
     batch_octonion_basis_associators, cd_associator, cd_associator_norm, cd_basis_mul_sign,
-    cd_conjugate, cd_multiply, cd_multiply_simd, cd_norm_sq, cd_norm_sq_simd, cd_to_sparse,
+    cd_conjugate, cd_multiply, cd_multiply_simd, cd_norm_sq, cd_norm_sq_simd,
     count_pathion_zero_divisors, cross_generational_friction, find_zero_divisors, gourlay_epsilon,
     gourlay_psi, gourlay_psi_n, is_zero_divisor_koebisu, koebisu_d1, koebisu_d2,
     left_mult_operator, measure_associator_density, zd_spectrum_analysis,

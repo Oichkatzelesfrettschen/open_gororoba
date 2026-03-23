@@ -163,6 +163,70 @@ impl SignTable {
         let start = p * words_per_row;
         &self.bits.as_raw_slice()[start..start + words_per_row]
     }
+
+    /// Multiply two sparse CD elements using sign-table lookups.
+    ///
+    /// Each pair `(i, a_i) * (j, b_j)` contributes `(i^j, sign(i,j) * a_i * b_j)`.
+    /// Results are accumulated into a dense buffer, filtered, and returned sparse.
+    ///
+    /// WHY: at 512D with ~4-component sparse elements this is ~16 sign lookups vs
+    /// ~262K recursive `cd_multiply` calls per product.
+    pub fn sparse_multiply(
+        &self,
+        a_sparse: &[(usize, f64)],
+        b_sparse: &[(usize, f64)],
+    ) -> Vec<(usize, f64)> {
+        let mut accum = vec![0.0f64; self.dim];
+        let mut touched = Vec::with_capacity(a_sparse.len() * b_sparse.len());
+        for &(i, ai) in a_sparse {
+            for &(j, bj) in b_sparse {
+                let out_idx = i ^ j;
+                let sign = self.sign(i, j) as f64;
+                let old = accum[out_idx];
+                if old == 0.0 {
+                    touched.push(out_idx);
+                }
+                accum[out_idx] = old + sign * ai * bj;
+            }
+        }
+        touched
+            .into_iter()
+            .filter_map(|idx| {
+                let v = accum[idx];
+                accum[idx] = 0.0;
+                if v.abs() > 1e-20 { Some((idx, v)) } else { None }
+            })
+            .collect()
+    }
+
+    /// Compute the CD associator `[a, x, b] = (a*x)*b - a*(x*b)` in sparse form,
+    /// returning the sum of all output components.
+    pub fn sparse_associator_sum(
+        &self,
+        a_sparse: &[(usize, f64)],
+        x_sparse: &[(usize, f64)],
+        b_sparse: &[(usize, f64)],
+    ) -> f64 {
+        let ax = self.sparse_multiply(a_sparse, x_sparse);
+        let left = self.sparse_multiply(&ax, b_sparse);
+        let xb = self.sparse_multiply(x_sparse, b_sparse);
+        let right = self.sparse_multiply(a_sparse, &xb);
+        let left_sum: f64 = left.iter().map(|&(_, v)| v).sum();
+        let right_sum: f64 = right.iter().map(|&(_, v)| v).sum();
+        left_sum - right_sum
+    }
+
+    /// Convert a dense coefficient slice to sparse `(basis_index, coefficient)` form.
+    /// Filters out entries with `|val| <= 1e-15`.
+    ///
+    /// Produces the input format expected by `sparse_multiply` and `sparse_associator_sum`.
+    pub fn to_sparse(v: &[f64]) -> Vec<(usize, f64)> {
+        v.iter()
+            .enumerate()
+            .filter(|&(_, &val)| val.abs() > 1e-15)
+            .map(|(i, &val)| (i, val))
+            .collect()
+    }
 }
 
 impl std::fmt::Debug for SignTable {
