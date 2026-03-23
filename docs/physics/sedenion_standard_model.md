@@ -1102,8 +1102,9 @@ two ~n/2 problems via a rank-1 perturbation, then merges with a secular
 equation solve.  This parallelizes naturally and has O(n^2) merge cost
 per level, giving O(n^2 log n) total for the tridiagonal phase.
 
-For the 42x42 Gram at dim=16, the difference is negligible (~12ms either
-way).  At 930x930 (dim=64), D&C is expected to dominate.
+For the 42x42 Gram at dim=16, the difference is negligible (~4ms either
+way).  At 930x930 (dim=64), D&C completes both eigendecompositions in
+0.56s combined -- approximately 500x faster than Jacobi's estimated ~250s.
 
 #### Instrumentation (8 profiled stages)
 
@@ -1159,24 +1160,66 @@ Two key findings from these diagnostics:
    erases this before the eigendecomp, preventing backend-dependent
    sensitivity to upper-vs-lower triangle conventions.
 
-#### Rank threshold change
+#### Rank threshold (two-level)
 
-Old: pure relative `sigma_threshold = 1e-4` (squared to `1e-8` for eigenvalue
-comparison).
+Old: pure relative `sigma_threshold = 1e-4`.
 
-New: `threshold = max(abs_eps, rel_eps * sv_max)` with `abs_eps = 1e-6`,
-`rel_eps = 1e-4`.
+New: two-level threshold with a Frobenius-relative noise guard.
 
-Why the change matters:
-- **Rank-0 case**: when `sv_max = 0` (all eigenvalues below noise), the old
-  threshold was `0.0`, retaining noise as "signal".  The absolute floor
-  prevents this.
-- **Negative eigenvalues**: PSD matrices (G = M^T M) can acquire eigenvalues
-  as negative as -1e-14 from floating-point accumulation.  The new code
-  clamps via `e.max(0.0).sqrt()` before thresholding.
+**Level 1** (per-eigenvalue): `threshold = max(1e-6, 1e-4 * sv_max)`.
+Handles matrices where the leading SV is a genuine signal.
 
-Rank pattern at this threshold: dim=16 -> 6, dim=32 -> 1, dim=64 -> 0.
+**Level 2** (whole-matrix noise guard): if `sv_max / ||G_x||_F < 1e-8`,
+the entire complement matrix is numerical noise and rank is forced to 0.
+
+Why Level 2 is needed -- the dim=64 trap:
+
+```text
+  dim=64: ||G_vk||_F = 3.77e-11  (zero matrix within float precision)
+          lambda_max  = 3.36e-12  (noise eigenvalue)
+          sv_max      = sqrt(3.36e-12) = 1.83e-6
+
+  Level 1 alone: threshold = max(1e-6, 1e-4 * 1.83e-6) = 1e-6
+                 1.83e-6 > 1e-6 -> PASSES (noise retained as signal!)
+
+  Level 2:      sv_max / ||G_x||_F = 1.83e-6 / 2.45e5 = 7.5e-12
+                7.5e-12 < 1e-8 -> complement_is_noise = true -> rank = 0
+```
+
+The Frobenius ratio provides 4 orders of magnitude of separation between
+genuine signals and noise:
+
+```text
+  dim=16:  sv_max / ||G_x||_F = 2.1e-3   -> false (rank = 6, genuine)
+  dim=32:  sv_max / ||G_x||_F = 1.0e-4   -> false (rank = 1, genuine)
+  dim=64:  sv_max / ||G_x||_F = 7.5e-12  -> true  (rank = 0, noise)
+```
+
+Rank pattern: dim=16 -> 6, dim=32 -> 1, dim=64 -> 0.
 This is an observed numerical pattern, not a uniqueness theorem.
+
+#### Measured dim=64 per-stage timing (930x930 Gram, release, 2 threads)
+
+```text
+  Stage 1: Sign table              0.000s  ( 0%)
+  Stage 2: Rayon Gram accumulation  0.763s  (46%)  <-- NEW BOTTLENECK
+  Stage 3: i64 -> f64 conversion    0.014s  ( 1%)
+  Stage 4: Eigendecomp gram_bc      0.313s  (19%)
+  Stage 5: Projector P_BC           0.175s  (11%)
+  Stage 6: Complement matmul        0.146s  ( 9%)
+  Stage 7: Eigendecomp gram_vk      0.247s  (15%)
+  Stage 8: Postprocessing           0.000s  ( 0%)
+  -----------------------------------------------
+  TOTAL                             1.66s   (was ~280s with nalgebra)
+```
+
+The bottleneck migrated from eigendecomposition (Stages 4+7: was ~90% of
+the old ~280s) to the rayon Gram accumulation triple loop (Stage 2: 46%).
+The faer eigendecomp speedup on the 930x930 matrices is approximately
+500x (0.56s combined vs estimated ~250s with Jacobi).
+
+Decision gate 8e (low-rank projector trick) is **NOT triggered**: Stage 6
+is only 9% of total, well below the threshold for optimization effort.
 
 #### Validation
 
@@ -1199,11 +1242,14 @@ at that scale.
 
 - **sprs / sparse EVD**: no Rust crate provides sparse symmetric EVD.
   Dense faer is adequate at 930x930 given nnz_fraction = 1.0.
-- **Decision gate 8e** (low-rank projector trick): if Stage 6 dominates
-  after the faer swap at dim=64, apply the identity
-  `P_perp * X * P_perp = X - B^T(BX) - (XB^T)B + B^T(BXB^T)B`
-  for cost O(r * n^2) instead of O(n^3), where r is the retained rank
-  and r << n (e.g., r=36 retained eigenvectors out of n=930).
+- **Decision gate 8e** (low-rank projector trick): **NOT triggered**.
+  Stage 6 is only 9% at dim=64. The new bottleneck is Stage 2 (rayon
+  Gram accumulation, 46%).
+- **Stage 2 optimization**: the triple loop over C(dim-1, 3) triads is
+  embarrassingly parallel but has O(dim^3) work.  Potential approaches:
+  sign-table precomputation to skip non-contributing triads, or blocked
+  iteration with SIMD accumulation.  Currently 0.76s at dim=64 -- fast
+  enough for interactive use but would matter at dim=128 (C(127,3) = 333,375).
 - **egg/egglog**: proof-lemma generation backlog (unrelated).
 - **noether**: trait refactor backlog (unrelated).
 
