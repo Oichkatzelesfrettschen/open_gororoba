@@ -1586,8 +1586,14 @@ Buchholtz-Rijke HoTT, Baez octonions, Freudenthal-Fano incidence geometry).
 6. Fano incidence sequence across n-set sizes:
    n=3: {7 with 1, 28 with 0}, n=4: {28 with 1, 7 with 0},
    n=5: {21 with 2} (uniform), n=6: {7 with 4}, n=7: {1 with 7}
-7. Formalize the scalar extension theorem in Rocq
-8. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
+7. [x] Formalize the scalar extension theorem in Rocq (CDScalarExtension.v, C-1504)
+8. [x] Surreal ZD persistence verified with exact dyadic arithmetic (C-1520)
+9. [x] Archimedean stratification: ZD variety stratifies by class over No (C-1521)
+10. [x] Friction is field-independent: associator coefficients are integers (C-1523)
+11. [x] Implied class ratios: lepton 1.529, quark 1.771 (sector-dependent, C-1524)
+12. Develop surreal-valued ZD measures and asymptotic box-kite amplitudes
+13. Formalize Archimedean stratification in Rocq (define class equivalence, prove invariance)
+14. Test friction profile clustering to verify 3-generation emergence
 
 ## Claims Index
 
@@ -1641,6 +1647,11 @@ C-1516: FMA CD multiply: max diff vs recursive = 4.44e-16 (half ULP)
 C-1517: CacheHierarchy: auto-detect L1-L4 via CPUID, CPU-agnostic
 C-1518: x87 FP-80 CD multiply oracle (80-bit accumulation)
 C-1519: Dual-pipe verified multiply: x87 oracle validates f64 fast path
+C-1520: Sedenion ZD persists over F_p for all primes (scalar extension universality)
+C-1521: ZD variety stratifies by Archimedean class over No (first surreal result)
+C-1522: Mass hierarchy is NOT dyadic-birthday-driven; framework/content distinction
+C-1523: Friction is field-independent (associator coefficients are integers)
+C-1524: Class ratios sector-dependent: lepton 1.529, quark 1.771 (16% mismatch)
 C-1479: G2 stabilizer dimension: stab(e_k) = 8D for all k=1..7
 C-1480: Complex structure J_k on e_k^perp, left-multiplication defines C^3
 C-1481: u(3) embedding: stabilizer is skew-adjoint + J_k-commuting
