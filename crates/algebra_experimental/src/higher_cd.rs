@@ -1,10 +1,15 @@
+// Higher-tower compatibility/control lane.
+//
+// This module remains in-tree as regression infrastructure and for bounded
+// falsification work. It is no longer the repo's primary architectural climb.
+//
 // ---------------------------------------------------------------------------
 // Trap B: Re-export canonical types from gororoba_algebra::construction::cd_tower
 // so that any consumer using `algebra_experimental::higher_cd::*` continues to
 // resolve these names after their definitions were removed from this file.
 // ---------------------------------------------------------------------------
 pub use gororoba_algebra::construction::cd_tower::{
-    Pathion, Chingon, Routon, Voudon, Eriston, DekaVoudon,
+    Chingon, DekaVoudon, Eriston, Pathion, Routon, Voudon,
 };
 
 // ---------------------------------------------------------------------------
@@ -23,13 +28,19 @@ pub struct UniversalCDProperties;
 
 impl UniversalCDProperties {
     /// All CD algebras are power-associative: x^n is well-defined.
-    pub fn is_power_associative() -> bool { true }
+    pub fn is_power_associative() -> bool {
+        true
+    }
 
     /// All CD algebras are flexible: x(yx) = (xy)x.
-    pub fn is_flexible() -> bool { true }
+    pub fn is_flexible() -> bool {
+        true
+    }
 
     /// CD algebras for dim >= 16 contain zero divisors.
-    pub fn has_zero_divisors(dim: usize) -> bool { dim >= 16 }
+    pub fn has_zero_divisors(dim: usize) -> bool {
+        dim >= 16
+    }
 }
 
 /// Systematic naming for higher Cayley-Dickson algebras.
@@ -38,22 +49,22 @@ impl UniversalCDProperties {
 /// Covers 4D through 16384D for the SIMD/sparse tower; also includes 1D-2D for completeness.
 pub fn cd_name(dim: usize) -> &'static str {
     match dim {
-        1     => "Real",
-        2     => "Complex",
-        4     => "Quaternion",
-        8     => "Octonion",
-        16    => "Sedenion",
-        32    => "Pathion",
-        64    => "Chingon",
-        128   => "Routon",
-        256   => "Voudon",
-        512   => "Eriston",
-        1024  => "DekaVoudon",
-        2048  => "Endekavoudon",
-        4096  => "Dodekvoudon",
-        8192  => "Dekatrisvoudon",
+        1 => "Real",
+        2 => "Complex",
+        4 => "Quaternion",
+        8 => "Octonion",
+        16 => "Sedenion",
+        32 => "Pathion",
+        64 => "Chingon",
+        128 => "Routon",
+        256 => "Voudon",
+        512 => "Eriston",
+        1024 => "DekaVoudon",
+        2048 => "Endekavoudon",
+        4096 => "Dodekvoudon",
+        8192 => "Dekatrisvoudon",
         16384 => "Tessareskaidekavoudon",
-        _     => "Higher 2^n-ion",
+        _ => "Higher 2^n-ion",
     }
 }
 
@@ -93,7 +104,9 @@ mod tests {
                 avt.violations.len() * std::mem::size_of::<(usize, usize, usize, usize, i32)>();
             eprintln!(
                 "HigherAvt::new({:>4}): {:>8} violations, {:>10.3}ms, {:.1} MB",
-                dim, avt.violations.len(), elapsed.as_secs_f64() * 1000.0,
+                dim,
+                avt.violations.len(),
+                elapsed.as_secs_f64() * 1000.0,
                 mem_bytes as f64 / 1e6,
             );
         }
@@ -107,7 +120,10 @@ mod tests {
             let elapsed = t.elapsed();
             eprintln!(
                 "HigherAvt::sampled({:>4}, {}): {:>8} violations, hit_rate={:.4}, {:>10.3}ms",
-                dim, n_samples, result.avt.violations.len(), result.hit_rate,
+                dim,
+                n_samples,
+                result.avt.violations.len(),
+                result.hit_rate,
                 elapsed.as_secs_f64() * 1000.0,
             );
         }
