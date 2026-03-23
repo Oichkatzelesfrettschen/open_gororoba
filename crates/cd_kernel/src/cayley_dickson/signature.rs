@@ -209,26 +209,27 @@ pub fn cd_mul_table_split(sig: &CdSignature) -> Vec<Vec<(usize, i32)>> {
 }
 
 /// Precomputed sign table for a parameterized CD algebra.
+///
+/// Uses `bitvec::BitVec` for type-safe bit-packed storage,
+/// matching the `SignTable` refactor.
 #[derive(Clone)]
 pub struct SplitSignTable {
     dim: usize,
     sig: CdSignature,
-    bits: Vec<u64>,
+    bits: bitvec::vec::BitVec<u64, bitvec::order::Lsb0>,
 }
 
 impl SplitSignTable {
     pub fn new(sig: &CdSignature) -> Self {
         let dim = sig.dim();
         let total_bits = dim * dim;
-        let n_words = total_bits.div_ceil(64);
-        let mut bits = vec![0u64; n_words];
+        let mut bits = bitvec::vec::BitVec::<u64, bitvec::order::Lsb0>::repeat(false, total_bits);
 
         for p in 0..dim {
             for q in 0..dim {
                 let s = cd_basis_mul_sign_split_iter(dim, p, q, sig);
                 if s == -1 {
-                    let idx = p * dim + q;
-                    bits[idx / 64] |= 1u64 << (idx % 64);
+                    bits.set(p * dim + q, true);
                 }
             }
         }
@@ -243,10 +244,8 @@ impl SplitSignTable {
     #[inline(always)]
     pub fn sign(&self, p: usize, q: usize) -> i32 {
         debug_assert!(p < self.dim && q < self.dim);
-        let idx = p * self.dim + q;
-        let word = self.bits[idx / 64];
-        let bit = (word >> (idx % 64)) & 1;
-        1 - 2 * (bit as i32)
+        let is_neg = self.bits[p * self.dim + q];
+        if is_neg { -1 } else { 1 }
     }
 
     pub fn signature(&self) -> &CdSignature {

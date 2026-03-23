@@ -143,19 +143,14 @@ impl HardwareTopology {
                     * cache.physical_line_partitions();
                 let line_size = cache.coherency_line_size();
 
-                match cache.level() {
-                    1 => {
-                        // Only count data caches (not instruction)
-                        if cache.cache_type() == raw_cpuid::CacheType::Data
-                            || cache.cache_type() == raw_cpuid::CacheType::Unified
-                        {
-                            hier.l1d_bytes = size;
-                            hier.line_size = line_size;
-                        }
-                    }
-                    2 => { hier.l2_bytes = size; }
-                    3 => { hier.l3_bytes = size; }
-                    4 => { hier.l4_bytes = size; }
+                let ct = cache.cache_type();
+                let is_data = ct == raw_cpuid::CacheType::Data
+                    || ct == raw_cpuid::CacheType::Unified;
+                match (cache.level(), is_data) {
+                    (1, true) => { hier.l1d_bytes = size; hier.line_size = line_size; }
+                    (2, _) => { hier.l2_bytes = size; }
+                    (3, _) => { hier.l3_bytes = size; }
+                    (4, _) => { hier.l4_bytes = size; }
                     _ => {}
                 }
             }

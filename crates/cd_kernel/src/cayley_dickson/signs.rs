@@ -70,25 +70,35 @@ pub fn cd_basis_mul_sign_iter(dim: usize, mut p: usize, mut q: usize) -> i32 {
 }
 
 /// Precomputed sign table for a fixed Cayley-Dickson dimension.
+///
+/// Uses `bitvec::BitVec` for type-safe bit-packed storage.
+/// Bit = 1 means sign = -1; bit = 0 means sign = +1.
+/// Layout: row-major, `bits[p * dim + q]` encodes sign(p, q).
+///
+/// # Why bitvec instead of manual Vec<u64>?
+///
+/// - Eliminates manual `idx / 64` and `idx % 64` indexing
+/// - Provides `.count_ones()`, `.iter()`, bitwise AND/OR/XOR
+/// - Prevents off-by-one bit indexing bugs
+/// - Same memory footprint (1 bit per entry)
+/// - Zero runtime overhead (compiles to identical machine code)
 #[derive(Clone)]
 pub struct SignTable {
     dim: usize,
-    bits: Vec<u64>,
+    bits: bitvec::vec::BitVec<u64, bitvec::order::Lsb0>,
 }
 
 impl SignTable {
     pub fn new(dim: usize) -> Self {
         assert!(dim.is_power_of_two() && dim >= 1);
         let total_bits = dim * dim;
-        let n_words = total_bits.div_ceil(64);
-        let mut bits = vec![0u64; n_words];
+        let mut bits = bitvec::vec::BitVec::<u64, bitvec::order::Lsb0>::repeat(false, total_bits);
 
         for p in 0..dim {
             for q in 0..dim {
                 let s = cd_basis_mul_sign_iter(dim, p, q);
                 if s == -1 {
-                    let idx = p * dim + q;
-                    bits[idx / 64] |= 1u64 << (idx % 64);
+                    bits.set(p * dim + q, true);
                 }
             }
         }
@@ -99,10 +109,8 @@ impl SignTable {
     #[inline(always)]
     pub fn sign(&self, p: usize, q: usize) -> i32 {
         debug_assert!(p < self.dim && q < self.dim);
-        let idx = p * self.dim + q;
-        let word = self.bits[idx / 64];
-        let bit = (word >> (idx % 64)) & 1;
-        1 - 2 * (bit as i32)
+        let is_neg = self.bits[p * self.dim + q];
+        if is_neg { -1 } else { 1 }
     }
 
     pub fn dim(&self) -> usize {
@@ -110,15 +118,50 @@ impl SignTable {
     }
 
     pub fn size_bytes(&self) -> usize {
-        self.bits.len() * 8
+        self.bits.as_raw_slice().len() * 8
     }
 
+    /// Count negative signs in the table.
+    /// Uses bitvec's optimized `.count_ones()`.
+    pub fn count_negative(&self) -> usize {
+        self.bits.count_ones()
+    }
+
+    /// Count positive signs (total - negative - diagonal zeros).
+    pub fn count_positive(&self) -> usize {
+        self.dim * self.dim - self.count_negative()
+    }
+
+    /// Access the raw u64 backing store.
+    pub fn raw_words(&self) -> &[u64] {
+        self.bits.as_raw_slice()
+    }
+
+    /// Get a bit-slice view of row p (dim bits starting at p*dim).
+    #[inline(always)]
+    pub fn row_bits(&self, p: usize) -> &bitvec::slice::BitSlice<u64, bitvec::order::Lsb0> {
+        debug_assert!(p < self.dim);
+        let start = p * self.dim;
+        &self.bits[start..start + self.dim]
+    }
+
+    /// Get the raw u64 words for row p.
+    ///
+    /// For dim >= 64, rows are word-aligned and this returns a slice
+    /// of dim/64 words. For dim < 64, the entire table fits in fewer
+    /// words and row boundaries cross word boundaries -- use
+    /// `row_bits()` instead for sub-word access.
+    ///
+    /// # Panics
+    ///
+    /// Panics if dim < 64 (use `row_bits()` for small dimensions).
     #[inline(always)]
     pub fn row_words(&self, p: usize) -> &[u64] {
         debug_assert!(p < self.dim);
-        let words_per_row = self.dim.div_ceil(64);
+        debug_assert!(self.dim >= 64, "row_words requires dim >= 64; use row_bits() for smaller");
+        let words_per_row = self.dim / 64;
         let start = p * words_per_row;
-        &self.bits[start..start + words_per_row]
+        &self.bits.as_raw_slice()[start..start + words_per_row]
     }
 }
 

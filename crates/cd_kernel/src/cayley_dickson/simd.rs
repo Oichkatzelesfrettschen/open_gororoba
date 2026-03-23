@@ -492,7 +492,7 @@ pub fn cd_norm_sq_simd(a: &[f64]) -> f64 {
 /// Theoretical: 256 / 2 = 128 cycles for the inner loop.
 /// With sign table lookup overhead: ~200 cycles estimated.
 /// Exported for use in benchmarks and precision comparison tests.
-#[allow(dead_code)]
+#[allow(dead_code, clippy::needless_range_loop)]
 pub fn cd_multiply_fma(dim: usize, a: &[f64], b: &[f64]) -> Vec<f64> {
     debug_assert_eq!(a.len(), dim);
     debug_assert_eq!(b.len(), dim);
