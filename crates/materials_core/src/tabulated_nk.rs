@@ -32,6 +32,7 @@
 
 use crate::optical_database::{C, DrudeParams, E_CHARGE, EV_TO_RADS, K_B_EV};
 use gauss_quad::GaussLegendre;
+use rayon::prelude::*;
 use std::f64::consts::PI;
 
 // n,k data arrays generated from data/nk/*.csv by materials_data/build.rs.
@@ -128,21 +129,25 @@ impl TabulatedNK {
         let n_pts = self.energy_ev.len();
         let omega_min = self.energy_ev[0] * EV_TO_RADS;
         let omega_max = self.energy_ev[n_pts - 1] * EV_TO_RADS;
-
-        // Build eps2 = 2nk and omega arrays in rad/s
-        let omega_tab: Vec<f64> = self.energy_ev.iter().map(|&e| e * EV_TO_RADS).collect();
-        let eps2_tab: Vec<f64> = (0..n_pts).map(|i| 2.0 * self.n[i] * self.k[i]).collect();
-        let eps2_min = eps2_tab[0];
-        let eps2_max = eps2_tab[n_pts - 1];
+        let eps2_min = 2.0 * self.n[0] * self.k[0];
+        let eps2_max = 2.0 * self.n[n_pts - 1] * self.k[n_pts - 1];
 
         // --- 1. Trapezoidal integral over tabulated range ---
+        //
+        // Inlined: compute omega_i and eps2_i on the fly rather than building
+        // two temporary Vec<f64> on every call. This eliminates ~2 heap
+        // allocations per KK evaluation (32K+ per full Lifshitz calculation
+        // at n_matsubara=500, n_gauss=32). xi_sq hoisted out of the loop.
+        let xi_sq = xi * xi;
         let mut integral = 0.0;
+        let mut w0 = self.energy_ev[0] * EV_TO_RADS;
+        let mut f0 = w0 * (2.0 * self.n[0] * self.k[0]) / (w0 * w0 + xi_sq);
         for i in 0..n_pts - 1 {
-            let w0 = omega_tab[i];
-            let w1 = omega_tab[i + 1];
-            let f0 = w0 * eps2_tab[i] / (w0 * w0 + xi * xi);
-            let f1 = w1 * eps2_tab[i + 1] / (w1 * w1 + xi * xi);
+            let w1 = self.energy_ev[i + 1] * EV_TO_RADS;
+            let f1 = w1 * (2.0 * self.n[i + 1] * self.k[i + 1]) / (w1 * w1 + xi_sq);
             integral += 0.5 * (f0 + f1) * (w1 - w0);
+            w0 = w1;
+            f0 = f1;
         }
 
         // --- 2. UV tail: eps2(omega) = eps2_max * (omega_max/omega)^3 for omega > omega_max ---
@@ -158,7 +163,7 @@ impl TabulatedNK {
         //    = 1/a - (pi/(2*xi) - arctan(a/xi)/xi)
         //    = 1/a - pi/(2*xi) + arctan(a/xi)/xi
         let r_uv = omega_max / xi;
-        let uv_tail = eps2_max * omega_max.powi(3) / (xi * xi)
+        let uv_tail = eps2_max * omega_max.powi(3) / xi_sq
             * (1.0 / omega_max - PI / (2.0 * xi) + r_uv.atan() / xi);
         integral += uv_tail;
 
@@ -176,7 +181,7 @@ impl TabulatedNK {
             let op = drude.omega_p_ev * EV_TO_RADS;
             let gam = drude.gamma_ev * EV_TO_RADS;
             let g2 = gam * gam;
-            let x2 = xi * xi;
+            let x2 = xi_sq;
             if (g2 - x2).abs() > 1e-8 * (g2 + x2) {
                 op * op * gam / (x2 - g2)
                     * ((omega_min / gam).atan() / gam - (omega_min / xi).atan() / xi)
@@ -489,35 +494,60 @@ pub fn casimir_lifshitz_energy_tabulated(
     }
 
     // ------------------------------------------------------------------
-    // n >= 1 Matsubara terms
+    // n >= 1 Matsubara terms -- parallelized over n with rayon.
     // I_n = (xi_n/c)^2 * integral_1^{p_max} p * [f_TE + f_TM] dp
+    //
+    // WHY parallel: each Matsubara term is fully independent (no shared mutable
+    // state). For typical n_matsubara=500 at room temperature, the active range
+    // before the exp(-100) cutoff is ~40-60 terms on the first call but can be
+    // up to n_matsubara at low T / small d. Rayon's work-stealing scheduler
+    // handles uneven workloads gracefully.
+    //
+    // WHY pre-compute cutoff: rayon's into_par_iter() does not support break.
+    // We find n_cutoff = min(n_matsubara, last n with decay_1 <= 100.0) first,
+    // then parallelize only the live range.
     // ------------------------------------------------------------------
-    for n in 1..=n_matsubara {
-        let xi_n = n as f64 * xi_unit;
-        // Exponential at p=1: if > e^{-100} the term is negligible.
-        let decay_1 = 2.0 * xi_n * d / C;
-        if decay_1 > 100.0 {
-            break;
+    let n_cutoff = {
+        let mut cut = 0usize;
+        for n in 1..=n_matsubara {
+            let xi_n = n as f64 * xi_unit;
+            if 2.0 * xi_n * d / C > 100.0 {
+                break;
+            }
+            cut = n;
         }
-        let eps1 = nk1.epsilon_imaginary_kk(xi_n, drude_ir1).max(1.0);
-        let eps2 = nk2.epsilon_imaginary_kk(xi_n, drude_ir2).max(1.0);
-        // Truncate p-integral: integrand ~ exp(-decay_1*p) < e^{-40} when p > 1 + 40/decay_1.
-        let p_max = (1.0 + 40.0 / decay_1.max(1e-10)).min(1.0e4_f64);
-        let pref_n = (xi_n / C) * (xi_n / C);
-        let int_n = gl.integrate(1.0, p_max, |p| {
-            let r_te1 = tab_r_te(p, eps1);
-            let r_te2 = tab_r_te(p, eps2);
-            let r_tm1 = tab_r_tm(p, eps1);
-            let r_tm2 = tab_r_tm(p, eps2);
-            let decay = (-decay_1 * p).exp();
-            let g_te = 1.0 - r_te1 * r_te2 * decay;
-            let g_tm = 1.0 - r_tm1 * r_tm2 * decay;
-            let f_te = if g_te > 0.0 { g_te.ln() } else { 0.0 };
-            let f_tm = if g_tm > 0.0 { g_tm.ln() } else { 0.0 };
-            p * (f_te + f_tm) // correct p dp measure
-        });
-        energy += global_pref * pref_n * int_n;
-    }
+        cut
+    };
+
+    let par_sum: f64 = (1..=n_cutoff)
+        .into_par_iter()
+        .map(|n| {
+            let xi_n = n as f64 * xi_unit;
+            let decay_1 = 2.0 * xi_n * d / C;
+            let eps1 = nk1.epsilon_imaginary_kk(xi_n, drude_ir1).max(1.0);
+            let eps2 = nk2.epsilon_imaginary_kk(xi_n, drude_ir2).max(1.0);
+            // Truncate p-integral: integrand ~ exp(-decay_1*p) < e^{-40} when p > 1 + 40/decay_1.
+            let p_max = (1.0 + 40.0 / decay_1.max(1e-10)).min(1.0e4_f64);
+            let pref_n = (xi_n / C) * (xi_n / C);
+            // GaussLegendre::new is cheap (node/weight computation for n_gauss points).
+            // Constructing it per-thread avoids requiring GaussLegendre: Sync.
+            let gl_n = GaussLegendre::new(n_gauss).expect("GL degree must be >= 1");
+            let int_n = gl_n.integrate(1.0, p_max, |p| {
+                let r_te1 = tab_r_te(p, eps1);
+                let r_te2 = tab_r_te(p, eps2);
+                let r_tm1 = tab_r_tm(p, eps1);
+                let r_tm2 = tab_r_tm(p, eps2);
+                let decay = (-decay_1 * p).exp();
+                let g_te = 1.0 - r_te1 * r_te2 * decay;
+                let g_tm = 1.0 - r_tm1 * r_tm2 * decay;
+                let f_te = if g_te > 0.0 { g_te.ln() } else { 0.0 };
+                let f_tm = if g_tm > 0.0 { g_tm.ln() } else { 0.0 };
+                p * (f_te + f_tm)
+            });
+            global_pref * pref_n * int_n
+        })
+        .sum();
+    energy += par_sum;
 
     energy
 }
