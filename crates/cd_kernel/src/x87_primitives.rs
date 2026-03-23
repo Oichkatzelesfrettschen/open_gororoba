@@ -938,6 +938,39 @@ pub fn x87_cd_multiply(dim: usize, a: &[f64], b: &[f64]) -> Vec<f64> {
     (0..dim).map(|t| x87_cd_component(t, dim, a, b)).collect()
 }
 
+/// Dual-pipe verified CD multiply: compute with both x87 80-bit and
+/// f64 recursive, compare component-wise, return the f64 result
+/// with a precision flag.
+///
+/// Returns (result, max_component_diff, all_within_threshold).
+/// If `all_within_threshold` is false, the f64 result has
+/// precision loss > `threshold` compared to the x87 oracle.
+///
+/// # Use case
+///
+/// Production code uses the fast f64 path; the x87 oracle runs
+/// in parallel (on a different FPU port on Zen3) and flags any
+/// computation where f64 roundoff exceeds the threshold.
+/// This is the runtime version of the precision cascade.
+pub fn x87_verified_cd_multiply(
+    dim: usize,
+    a: &[f64],
+    b: &[f64],
+    threshold: f64,
+) -> (Vec<f64>, f64, bool) {
+    let fast = crate::cayley_dickson::cd_multiply(a, b);
+    let oracle = x87_cd_multiply(dim, a, b);
+
+    let mut max_diff = 0.0_f64;
+    for i in 0..dim {
+        let diff = (fast[i] - oracle[i]).abs();
+        if diff > max_diff { max_diff = diff; }
+    }
+
+    let within = max_diff <= threshold;
+    (fast, max_diff, within)
+}
+
 pub fn x87_zd_check(_dim: usize, a: &[f64], b: &[f64]) -> (bool, f64) {
     let product = crate::cayley_dickson::cd_multiply(a, b);
     let norm_sq = x87_norm_sq(&product);
@@ -975,6 +1008,23 @@ mod x87_zd_tests {
 
         println!("  Max |x87 - recursive|: {:.2e}", max_x87_rec);
         assert!(max_x87_rec < 1e-12, "x87 vs rec too large: {:.2e}", max_x87_rec);
+    }
+
+    #[test]
+    fn test_verified_cd_multiply() {
+        let a: [f64; 16] = [
+            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2,
+            0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
+        ];
+        let b: [f64; 16] = [
+            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7,
+            0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
+        ];
+
+        let (result, max_diff, within) = x87_verified_cd_multiply(16, &a, &b, 1e-14);
+        println!("P5 verified multiply: max_diff={:.2e}, within_1e-14={}", max_diff, within);
+        assert!(within, "Should be within 1e-14 threshold");
+        assert_eq!(result.len(), 16);
     }
 
     #[test]
