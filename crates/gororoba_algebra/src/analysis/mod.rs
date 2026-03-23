@@ -17,8 +17,8 @@ pub use algebra_analysis::{
 };
 
 // These modules stay in gororoba_algebra (cross-module deps on construction/experimental).
+pub mod annihilators;
 pub mod motif_summary;
 pub mod numerical_stability;
-pub mod zd_ecology;
 pub mod test_wedged_validation;
-pub mod annihilators;
+pub mod zd_ecology;

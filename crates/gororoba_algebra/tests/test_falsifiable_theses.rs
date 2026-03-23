@@ -15,10 +15,7 @@
 //! - **Prediction**: Always fails for some elements.
 //! - **Falsification Criteria**: Find an associative 8D+ Cayley-Dickson algebra.
 
-use cd_kernel::cayley_dickson::{
-    cd_multiply, cd_norm_sq,
-    sedenion::sedenion_multiply_explicit,
-};
+use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq, sedenion::sedenion_multiply_explicit};
 
 /// Mathematical Thesis 1: Sedenions violate the division algebra property.
 /// We verify this by concretely exhibiting zero divisors a and b where
@@ -39,7 +36,7 @@ fn test_thesis_1_sedenion_no_normed_division() {
 
     let norm_sq_a = cd_norm_sq(&a);
     let norm_sq_b = cd_norm_sq(&b);
-    
+
     assert!(norm_sq_a > 1e-10, "a must be non-zero");
     assert!(norm_sq_b > 1e-10, "b must be non-zero");
 
@@ -48,8 +45,11 @@ fn test_thesis_1_sedenion_no_normed_division() {
 
     // If it were a normed division algebra, ||ab||^2 = ||a||^2 * ||b||^2
     // For Sedenions with these elements, the product is zero!
-    assert!(norm_sq_prod < 1e-10, "Product must be zero, exhibiting zero divisors");
-    
+    assert!(
+        norm_sq_prod < 1e-10,
+        "Product must be zero, exhibiting zero divisors"
+    );
+
     // Thus ||ab|| != ||a|| * ||b||
     assert!(
         (norm_sq_prod - (norm_sq_a * norm_sq_b)).abs() > 1e-10,
@@ -84,7 +84,10 @@ fn test_thesis_2_associativity_loss() {
             break;
         }
     }
-    assert!(difference_found, "Associativity MUST FAIL in octonions (8D)");
+    assert!(
+        difference_found,
+        "Associativity MUST FAIL in octonions (8D)"
+    );
 
     // The same holds for sedenions.
     let mut s1 = [0.0; 16];
@@ -106,14 +109,17 @@ fn test_thesis_2_associativity_loss() {
             break;
         }
     }
-    assert!(difference_sedenion, "Associativity MUST FAIL in sedenions (16D)");
+    assert!(
+        difference_sedenion,
+        "Associativity MUST FAIL in sedenions (16D)"
+    );
 }
 
 /// Verify Clifford structure aliases align with Synthesis.
 #[test]
 fn test_clifford_taxonomy() {
     use gororoba_algebra::construction::clifford::CliffordSignature;
-    
+
     // Cl(0,1) ≅ C
     let c = CliffordSignature::complex();
     assert_eq!(c.dim(), 2);

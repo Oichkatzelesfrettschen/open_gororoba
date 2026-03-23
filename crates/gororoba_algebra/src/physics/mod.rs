@@ -1,6 +1,8 @@
 pub mod amplitudes;
+pub mod anomalous_moment;
 pub mod billiard_sim;
 pub mod clifford;
+pub mod crystallography;
 pub mod dft_mapping;
 pub mod experimental_protocols;
 pub mod heterotic_e8;
@@ -9,6 +11,8 @@ pub mod m3;
 pub mod octonion_e8_theory;
 pub mod octonion_field;
 pub mod pais_superforce;
+#[cfg(all(feature = "physics-sm", feature = "analysis"))]
+pub mod particle_physics;
 pub mod quat_rotation;
 pub mod quaternionic_qm;
 pub mod sedenion_field;
@@ -16,11 +20,6 @@ pub mod speculative;
 pub mod supersymmetry;
 pub mod topological_insulators;
 pub mod tripotent_topology;
-pub mod crystallography;
-pub mod anomalous_moment;
-#[cfg(all(feature = "physics-sm", feature = "analysis"))]
-pub mod particle_physics;
-
 
 /// Golden ratio constant phi = (1 + sqrt(5))/2.
 pub const PHI: f64 = 1.618033988749895;

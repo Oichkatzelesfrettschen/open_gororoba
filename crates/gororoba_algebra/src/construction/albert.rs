@@ -274,6 +274,37 @@ impl AlbertElement {
         eigs[0].abs() < eps && eigs[1].abs() < eps && (eigs[2] - 1.0).abs() < eps
     }
 
+    /// Direct algebraic check for a primitive idempotent.
+    ///
+    /// This avoids depending on the eigenvalue solver when the geometry layer
+    /// only needs the compact Albert -> OP^2 adapter contract.
+    pub fn is_primitive_idempotent(&self, tol: f64) -> bool {
+        if (self.trace() - 1.0).abs() > tol {
+            return false;
+        }
+
+        let squared = self.jordan_product(self);
+        let diag_residual: f64 = squared
+            .diag
+            .iter()
+            .zip(self.diag.iter())
+            .map(|(lhs, rhs)| (lhs - rhs).abs())
+            .sum();
+        let off_residual: f64 = squared
+            .off
+            .iter()
+            .zip(self.off.iter())
+            .map(|(lhs, rhs)| {
+                lhs.iter()
+                    .zip(rhs.iter())
+                    .map(|(a, b)| (a - b).abs())
+                    .sum::<f64>()
+            })
+            .sum();
+
+        diag_residual + off_residual < tol
+    }
+
     /// Compute delta^2 using x87 high precision.
     pub fn delta_squared_x87(&self) -> f64 {
         let eigs = self.eigenvalues_x87();

@@ -159,10 +159,12 @@ pub struct AdelicProduct {
 
 impl AdelicProduct {
     pub fn new(norms: Vec<f64>) -> Self {
-        Self { p_adic_norms: norms }
+        Self {
+            p_adic_norms: norms,
+        }
     }
 
-    /// Evaluates the Adelic Product constraint. If it approximates 1.0, 
+    /// Evaluates the Adelic Product constraint. If it approximates 1.0,
     /// the multi-p-adic quantum field is completely coherent.
     pub fn is_coherent(&self, tolerance: f64) -> bool {
         let product: f64 = self.p_adic_norms.iter().product();

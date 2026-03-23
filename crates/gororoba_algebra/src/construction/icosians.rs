@@ -43,33 +43,39 @@ pub fn generate_icosians() -> Vec<Quaternion> {
 
     // 3) 96 elements: even permutations of (+/-phi/2, +/-1/2, +/-1/(2*phi), 0)
     let vals = [PHI / 2.0, 0.5, INV_PHI / 2.0, 0.0];
-    
+
     // Generate all 24 permutations of indices [0, 1, 2, 3]
     // Filter for even permutations
     let mut perms = Vec::new();
     for i in 0..4 {
         for j in 0..4 {
-            if j == i { continue; }
+            if j == i {
+                continue;
+            }
             for k in 0..4 {
-                if k == i || k == j { continue; }
+                if k == i || k == j {
+                    continue;
+                }
                 let l = 6 - i - j - k; // sum of 0,1,2,3 is 6
-                
+
                 // Check if even permutation
                 let mut inversions = 0;
                 let arr = [i, j, k, l];
                 for a in 0..4 {
-                    for b in (a+1)..4 {
-                        if arr[a] > arr[b] { inversions += 1; }
+                    for b in (a + 1)..4 {
+                        if arr[a] > arr[b] {
+                            inversions += 1;
+                        }
                     }
                 }
-                
+
                 if inversions % 2 == 0 {
                     perms.push(arr);
                 }
             }
         }
     }
-    
+
     // For each even permutation, apply all 16 sign combinations to the 4 slots
     // Wait, the 0 slot doesn't need sign combinations (since +0 = -0),
     // but applying all 16 combinations gives duplicates if we don't filter.
@@ -82,7 +88,11 @@ pub fn generate_icosians() -> Vec<Quaternion> {
             for slot in 0..4 {
                 let v = vals[perm[slot]];
                 if v > 1e-10 {
-                    q[slot] = if (sign_bits >> sign_idx) & 1 == 1 { -v } else { v };
+                    q[slot] = if (sign_bits >> sign_idx) & 1 == 1 {
+                        -v
+                    } else {
+                        v
+                    };
                     sign_idx += 1;
                 } else {
                     q[slot] = 0.0;
@@ -101,13 +111,13 @@ pub fn verify_icosian_group_closure() -> bool {
     if icosians.len() != 120 {
         return false;
     }
-    
+
     // Test a randomized subset to keep tests fast, or all if feasible.
     // 120 x 120 = 14,400 pairs, we can test all of them quickly.
     for i in 0..120 {
         for j in 0..120 {
             let p = quat_multiply(&icosians[i], &icosians[j]);
-            
+
             // Check if p is in the set of icosians
             let mut found = false;
             for candidate in icosians.iter().take(120) {
@@ -120,13 +130,13 @@ pub fn verify_icosian_group_closure() -> bool {
                     break;
                 }
             }
-            
+
             if !found {
                 return false;
             }
         }
     }
-    
+
     true
 }
 
@@ -138,9 +148,9 @@ mod tests {
     fn test_icosian_count() {
         let ico = generate_icosians();
         assert_eq!(ico.len(), 120);
-        
+
         for q in ico {
-            let norm = (q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]).sqrt();
+            let norm = (q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]).sqrt();
             assert!((norm - 1.0).abs() < 1e-10, "Icosian is not unit length");
         }
     }

@@ -9,6 +9,11 @@
 //! Surreal numbers (No) form a real-closed ordered field extending R,
 //! making A_n(No) a valid CD algebra.
 //!
+//! Within the repo's current architecture, this crate is a control and
+//! falsification lane. It remains first-class because scalar-extension and
+//! persistence checks are valuable regression infrastructure, not because the
+//! surreal tower is the primary forward bridge architecture.
+//!
 //! # Architecture
 //!
 //! ```text

@@ -10,6 +10,7 @@
 //!
 //! Date: 2026-02-10, Phase 10.3 Track 2
 
+use cd_kernel::cayley_dickson::CdSignature;
 use std::collections::HashMap;
 
 /// Two-axis taxonomy for composition algebras
@@ -23,39 +24,65 @@ pub enum ConstructionMethod {
     Exceptional,
 }
 
-/// Metric signature for Cayley-Dickson families
-/// Each element corresponds to gamma_n in the recursive formula
+/// Compatibility wrapper around [`CdSignature`] for taxonomy code.
+///
+/// New code should treat [`CdSignature`] as the canonical signature carrier.
+/// This wrapper remains so existing taxonomy/tests can migrate without
+/// breaking every call site at once.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct MetricSignature {
-    /// Gamma values [gamma_1, gamma_2, ...] where gamma_n in {-1, +1}
-    /// gamma = -1: Hurwitz (division algebra, zero-divisor free)
-    /// gamma = +1: split (zero-divisors present)
-    pub gammas: Vec<i8>,
+    inner: CdSignature,
 }
 
 impl MetricSignature {
     pub fn new(gammas: Vec<i8>) -> Self {
-        Self { gammas }
+        Self {
+            inner: CdSignature::from_gammas(&gammas.into_iter().map(i32::from).collect::<Vec<_>>()),
+        }
     }
 
     /// Hurwitz signature: all gamma = -1 (e.g., R, C, H, O)
     pub fn hurwitz(dimension_log2: usize) -> Self {
-        Self {
-            gammas: vec![-1; dimension_log2],
-        }
+        Self::new(vec![-1; dimension_log2])
     }
 
     /// Mixed signature: alternating or partial +1
     pub fn mixed(gammas: Vec<i8>) -> Self {
-        Self { gammas }
+        Self::new(gammas)
     }
 
     pub fn is_hurwitz(&self) -> bool {
-        self.gammas.iter().all(|&g| g == -1)
+        self.inner.is_standard()
     }
 
     pub fn has_zero_divisors(&self) -> bool {
-        self.gammas.contains(&1)
+        self.inner.gammas().contains(&1)
+    }
+
+    pub fn gammas(&self) -> &[i32] {
+        self.inner.gammas()
+    }
+
+    pub fn cd_signature(&self) -> &CdSignature {
+        &self.inner
+    }
+}
+
+impl From<CdSignature> for MetricSignature {
+    fn from(inner: CdSignature) -> Self {
+        Self { inner }
+    }
+}
+
+impl From<MetricSignature> for CdSignature {
+    fn from(signature: MetricSignature) -> Self {
+        signature.inner
+    }
+}
+
+impl From<&MetricSignature> for CdSignature {
+    fn from(signature: &MetricSignature) -> Self {
+        signature.inner.clone()
     }
 }
 
@@ -315,10 +342,22 @@ mod tests {
         let hurwitz = MetricSignature::hurwitz(3);
         assert!(hurwitz.is_hurwitz());
         assert!(!hurwitz.has_zero_divisors());
+        assert_eq!(hurwitz.gammas(), &[-1, -1, -1]);
 
         let mixed = MetricSignature::mixed(vec![-1, -1, 1]);
         assert!(!mixed.is_hurwitz());
         assert!(mixed.has_zero_divisors());
+        assert_eq!(mixed.gammas(), &[-1, -1, 1]);
+    }
+
+    #[test]
+    fn test_metric_signature_roundtrips_through_cd_signature() {
+        let metric = MetricSignature::mixed(vec![-1, 1, -1]);
+        let cd: CdSignature = (&metric).into();
+        assert_eq!(cd.gammas(), &[-1, 1, -1]);
+
+        let back = MetricSignature::from(cd);
+        assert_eq!(back.gammas(), &[-1, 1, -1]);
     }
 
     #[test]

@@ -3,7 +3,7 @@
 //! Unlike the standard octonions, split-octonions have zero divisors and
 //! satisfy a different norm composition property. They form an important bridge
 //! to string theory and M-theory, particularly in relation to the exceptional
-//! group embeddings and supersymmetric formulations requiring specific Lorentzian 
+//! group embeddings and supersymmetric formulations requiring specific Lorentzian
 //! signatures.
 //!
 //! Implementation follows the mnemonic matrix rule from Gazeau et al. (2026).

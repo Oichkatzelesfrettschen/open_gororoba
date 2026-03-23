@@ -38,7 +38,7 @@ mod tests {
         // F_SF is approximately 1.21 x 10^44 N
         assert!(f_sf > 1.2e44 && f_sf < 1.22e44);
     }
-    
+
     #[test]
     fn test_phi_modulation() {
         let f_sf = pais_superforce();

@@ -1,11 +1,11 @@
 //! Zero-Divisor (ZD) Ecology and Emanation Analysis.
 //!
-//! Implements the "Emanation Table" (ET) logic and "Sand Mandala" detection 
+//! Implements the "Emanation Table" (ET) logic and "Sand Mandala" detection
 //! for higher-dimensional Cayley-Dickson algebras (32D Pathions, 64D Chingons, etc.)
 //! as described in the Robert de Marrais corpus.
 
-use cd_kernel::cayley_dickson::cd_multiply;
 use crate::construction::hypercomplex::AlgebraDim;
+use cd_kernel::cayley_dickson::cd_multiply;
 
 /// An Emanation Table (ET) representing zero-division interactions
 /// for a specific strut constant S in a 2^N-ion algebra.
@@ -36,9 +36,9 @@ impl EmanationTable {
                 let x = vec_unit(i, d);
                 let y = vec_unit(j, d);
                 let res = cd_multiply(&x, &y);
-                
+
                 // If product is zero, they zero-divide.
-                // (Note: pure basis units don't zero-divide in standard CD, 
+                // (Note: pure basis units don't zero-divide in standard CD,
                 // but the ETs track "emanations" of ZD dyads).
                 if res.iter().all(|&v| v.abs() < 1e-10) {
                     *cell = true;
@@ -74,7 +74,7 @@ pub fn analyze_pathion_transition() -> Vec<(usize, f64, bool)> {
     let mut results = Vec::new();
     for s in 1..16 {
         // In a real implementation, we would use the specific ZD dyad
-        // construction from de Marrais (e_L + e_U). 
+        // construction from de Marrais (e_L + e_U).
         // For this audit, we track the complexity/sparsity shift.
         let et = EmanationTable::compute(AlgebraDim::Pathion, s);
         results.push((s, et.density, et.is_sand_mandala()));
@@ -90,8 +90,8 @@ mod tests {
     fn test_pathion_ecology_stub() {
         // Verify the taxonomy handles 32D correctly
         assert_eq!(AlgebraDim::Pathion.dim(), 32);
-        
-        // The full computation of ETs for 32D is heavy, 
+
+        // The full computation of ETs for 32D is heavy,
         // we verify the transition logic exists.
         let transition = analyze_pathion_transition();
         assert_eq!(transition.len(), 15);

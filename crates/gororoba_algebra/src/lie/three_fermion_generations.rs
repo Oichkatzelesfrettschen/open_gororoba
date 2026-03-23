@@ -36,7 +36,7 @@
 //!   gauge symmetries from the complex sedenions"
 //! - Rocq formal proof C-029 in `proofs/ThreeFermionGenerations.v`
 
-use cd_kernel::cayley_dickson::{cd_multiply, cd_associator_norm};
+use cd_kernel::cayley_dickson::{cd_associator_norm, cd_multiply};
 use rand::Rng;
 
 /// Verifies the "Three Fermion Generations" hypothesis by mapping them to
@@ -73,10 +73,14 @@ pub fn is_alternative(subalgebra: &[usize], dim: usize, n_tests: usize) -> bool 
         }
 
         // Normalize
-        let norm_x = x.iter().map(|v| v*v).sum::<f64>().sqrt();
-        let norm_y = y.iter().map(|v| v*v).sum::<f64>().sqrt();
-        if norm_x > 0.0 { x.iter_mut().for_each(|v| *v /= norm_x); }
-        if norm_y > 0.0 { y.iter_mut().for_each(|v| *v /= norm_y); }
+        let norm_x = x.iter().map(|v| v * v).sum::<f64>().sqrt();
+        let norm_y = y.iter().map(|v| v * v).sum::<f64>().sqrt();
+        if norm_x > 0.0 {
+            x.iter_mut().for_each(|v| *v /= norm_x);
+        }
+        if norm_y > 0.0 {
+            y.iter_mut().for_each(|v| *v /= norm_y);
+        }
 
         let xx = cd_multiply(&x, &x);
         let xx_y = cd_multiply(&xx, &y);
@@ -115,16 +119,18 @@ pub fn total_associator_norm(subalgebra: &[usize], dim: usize) -> f64 {
     for &i_idx in subalgebra {
         for &j_idx in subalgebra {
             for &k_idx in subalgebra {
-                let mut a = vec![0.0; dim]; a[i_idx] = 1.0;
-                let mut b = vec![0.0; dim]; b[j_idx] = 1.0;
-                let mut c = vec![0.0; dim]; c[k_idx] = 1.0;
+                let mut a = vec![0.0; dim];
+                a[i_idx] = 1.0;
+                let mut b = vec![0.0; dim];
+                b[j_idx] = 1.0;
+                let mut c = vec![0.0; dim];
+                c[k_idx] = 1.0;
                 total_norm += cd_associator_norm(&a, &b, &c);
             }
         }
     }
     total_norm
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -135,20 +141,32 @@ mod tests {
         println!("--- VERIFYING SEDENION SUBALGEBRAS ARE OCTONIONS ---");
         let (o1, o2, o3) = get_sedenion_subalgebras();
 
-        assert!(is_alternative(&o1, 16, 1000), "Subalgebra O1 is not alternative");
+        assert!(
+            is_alternative(&o1, 16, 1000),
+            "Subalgebra O1 is not alternative"
+        );
         println!("Subalgebra O1 is a valid octonion algebra.");
 
-        assert!(is_alternative(&o2, 16, 1000), "Subalgebra O2 is not alternative");
+        assert!(
+            is_alternative(&o2, 16, 1000),
+            "Subalgebra O2 is not alternative"
+        );
         println!("Subalgebra O2 is a valid octonion algebra.");
 
-        assert!(is_alternative(&o3, 16, 1000), "Subalgebra O3 is not alternative");
+        assert!(
+            is_alternative(&o3, 16, 1000),
+            "Subalgebra O3 is not alternative"
+        );
         println!("Subalgebra O3 is a valid octonion algebra.");
     }
 
     #[test]
     fn test_full_sedenion_is_not_alternative() {
         let sedenions: Vec<usize> = (0..16).collect();
-        assert!(!is_alternative(&sedenions, 16, 1000), "Sedenions should NOT be alternative");
+        assert!(
+            !is_alternative(&sedenions, 16, 1000),
+            "Sedenions should NOT be alternative"
+        );
         println!("Sedenion algebra correctly identified as non-alternative.");
     }
 

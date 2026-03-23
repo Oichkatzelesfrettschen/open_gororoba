@@ -156,26 +156,21 @@ macro_rules! implement_cd_algebra {
             /// intermediate to_slice()/from_slice() copies.
             pub fn mul(&self, other: &Self) -> Self {
                 let mut result = Self::zero();
-                cd_multiply_flat_into(
-                    self.as_flat(),
-                    other.as_flat(),
-                    result.as_flat_mut(),
-                    $dim,
-                );
+                cd_multiply_flat_into(self.as_flat(), other.as_flat(), result.as_flat_mut(), $dim);
                 result
             }
         }
     };
 }
 
-implement_cd_algebra!(Pathion,  32,   8);
-implement_cd_algebra!(Chingon,  64,  16);
-implement_cd_algebra!(Routon,  128,  32);
-implement_cd_algebra!(Voudon,     256,  64);
+implement_cd_algebra!(Pathion, 32, 8);
+implement_cd_algebra!(Chingon, 64, 16);
+implement_cd_algebra!(Routon, 128, 32);
+implement_cd_algebra!(Voudon, 256, 64);
 // Eriston and DekaVoudon are unconditional to preserve backward compat with
 // existing consumers (quantum_core, cosmology_core, gororoba_engine).
 // The cd-512/cd-1024 features are reserved for future opt-out gating.
-implement_cd_algebra!(Eriston,    512, 128);
+implement_cd_algebra!(Eriston, 512, 128);
 implement_cd_algebra!(DekaVoudon, 1024, 256);
 
 // ---------------------------------------------------------------------------
@@ -183,16 +178,16 @@ implement_cd_algebra!(DekaVoudon, 1024, 256);
 // ---------------------------------------------------------------------------
 
 /// 32D Cayley-Dickson algebra (academic Latin name).
-pub type Trigintaduonion          = Pathion;
+pub type Trigintaduonion = Pathion;
 /// 64D Cayley-Dickson algebra (academic Latin name).
-pub type Sexagintaquatronion      = Chingon;
+pub type Sexagintaquatronion = Chingon;
 /// 128D Cayley-Dickson algebra (academic Latin name).
-pub type Centumduodetrigintanion  = Routon;
+pub type Centumduodetrigintanion = Routon;
 /// 256D Cayley-Dickson algebra (academic Latin name).
 pub type Ducentiquinquagintasexion = Voudon;
 
 /// 512D Cayley-Dickson algebra (academic Latin name).
-pub type Quingentoduodecimnion    = Eriston;
+pub type Quingentoduodecimnion = Eriston;
 
 /// 1024D Cayley-Dickson algebra (academic Latin name).
 pub type Millevigintiquattuornion = DekaVoudon;
@@ -206,18 +201,18 @@ pub use algebra_analysis::sparse::SparseState;
 
 /// 2048D Cayley-Dickson level-11 algebra (sparse representation).
 #[cfg(feature = "analysis")]
-pub type Endekavoudon    = SparseState;
+pub type Endekavoudon = SparseState;
 /// 4096D Cayley-Dickson level-12 algebra (sparse representation).
 #[cfg(feature = "analysis")]
-pub type Dodekvoudon     = SparseState;
+pub type Dodekvoudon = SparseState;
 /// 8192D Cayley-Dickson level-13 algebra (sparse representation).
 #[cfg(feature = "analysis")]
-pub type Dekatrisvoudon  = SparseState;
+pub type Dekatrisvoudon = SparseState;
 
 /// Deprecated: use `Endekavoudon` (level-11 Greek ordinal naming).
 #[cfg(feature = "analysis")]
 #[deprecated(since = "0.1.0", note = "use Endekavoudon")]
-pub type Icosikaivoudon  = SparseState;
+pub type Icosikaivoudon = SparseState;
 
 #[cfg(test)]
 mod tests {
@@ -252,7 +247,11 @@ mod tests {
         let c = Chingon::from_slice(&e1);
         let sq = c.mul(&c);
         let out = sq.to_slice();
-        assert!((out[0] + 1.0).abs() < 1e-12, "e1^2 should be -e0, got {}", out[0]);
+        assert!(
+            (out[0] + 1.0).abs() < 1e-12,
+            "e1^2 should be -e0, got {}",
+            out[0]
+        );
     }
 
     #[test]
@@ -278,7 +277,9 @@ mod tests {
             assert!(
                 (r_out[i] - p_out[i]).abs() < 1e-12,
                 "Lower block mismatch at index {}: Routon={} Pathion={}",
-                i, r_out[i], p_out[i]
+                i,
+                r_out[i],
+                p_out[i]
             );
         }
     }

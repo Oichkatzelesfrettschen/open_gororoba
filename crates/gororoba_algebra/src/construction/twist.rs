@@ -20,7 +20,7 @@ pub fn cd_twist(a: usize, b: usize) -> u8 {
     // Find the highest bit position involved
     let max_val = a.max(b);
     let n = (usize::BITS - max_val.leading_zeros()) as i32;
-    
+
     sigma_recursive(a, b, n - 1)
 }
 
@@ -28,23 +28,23 @@ fn sigma_recursive(a: usize, b: usize, bit: i32) -> u8 {
     if bit < 0 {
         return 0;
     }
-    
+
     let mask = 1 << bit;
     let a_low = a & (mask - 1);
     let b_low = b & (mask - 1);
     let a_n = ((a >> bit) & 1) as u8;
     let b_n = ((b >> bit) & 1) as u8;
-    
+
     let s_ab = sigma_recursive(a_low, b_low, bit - 1);
     let s_ba = sigma_recursive(b_low, a_low, bit - 1);
     let s_bb = sigma_recursive(b_low, b_low, bit - 1);
-    
+
     // Formula: s_ab * (1 + b_n) + s_ba * b_n + a_n * s_bb + a_n * b_n
     let term1 = s_ab * (1 - b_n); // (1 + b_n) mod 2 is (1 - b_n)
     let term2 = s_ba * b_n;
     let term3 = a_n * s_bb;
     let term4 = a_n * b_n;
-    
+
     (term1 + term2 + term3 + term4) % 2
 }
 
@@ -89,7 +89,11 @@ mod tests {
                 for b in 0..dim {
                     let s1 = table.sign(a, b);
                     let s2 = cd_basis_mul_sign_iter(dim, a, b);
-                    assert_eq!(s1, s2, "Sign mismatch at dim {}, indices ({}, {})", dim, a, b);
+                    assert_eq!(
+                        s1, s2,
+                        "Sign mismatch at dim {}, indices ({}, {})",
+                        dim, a, b
+                    );
                 }
             }
         }

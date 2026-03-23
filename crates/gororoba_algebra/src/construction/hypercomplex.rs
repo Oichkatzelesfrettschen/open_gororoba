@@ -8,7 +8,7 @@
 //!
 //! The hypercomplex number tower follows the Cayley-Dickson construction,
 //! but "species" is defined as a product of orthogonal axes:
-//! 
+//!
 //! - **Axis A: Stage / Rung (`STAGE:n`)**
 //!   - Dim 1: Reals (R) - associative, commutative, no zero-divisors
 //!   - Dim 2: Complex (C) - associative, commutative, no zero-divisors
@@ -20,20 +20,20 @@
 //!
 //! - **Axis B: Doubling Parameter (`PARAM:gamma`)**
 //!   - Gamma controls the signature (e.g., standard division chain vs split chain).
-//! 
+//!
 //! - **Axis C: Base Scalar (`SCALAR:F`)**
 //!   - Typically real numbers, but generalizes to complex, p-adic, or finite fields.
-//! 
+//!
 //! - **Axis D: Property Regime (`REGIME`)**
 //!   - Division / Composition / Alternative / Flexible / Quadratic / Power-Associative.
 //!   - (n >= 4 algebras are flexible, quadratic, and power-associative).
-//! 
+//!
 //! - **Axis E: Representation (`REPR`)**
 //!   - Pair doubling, XOR-basis with twist function, finite geometry (PG(k,2)).
-//! 
+//!
 //! - **Axis F: Arithmetic (`ARITH`)**
 //!   - Orders, lattices (e.g., E8 octavians).
-//! 
+//!
 //! - **Axis G: Loop Species (`LOOP`)**
 //!   - Cayley-Dickson unit loops (Q_n) and their subloop/subalgebra structures.
 //!
@@ -48,21 +48,21 @@
 //! - Reggiani's Stiefel manifold embedding V_2(R^7)
 //!
 //! ## Higher-Dimensional ZD Phenomena (Pathions and Beyond)
-//! 
-//! As defined in the Robert de Marrais corpus (e.g., *Flying Higher Than A Box-Kite*), 
+//!
+//! As defined in the Robert de Marrais corpus (e.g., *Flying Higher Than A Box-Kite*),
 //! scaling beyond 16D introduces complex ZD network topologies:
-//! 
-//! - **Emanation Tables (ETs):** Spreadsheet-like adjacency matrices mapping Zero Divisors 
-//!   (ZDs) to each other based on shared strut constants. Empty cells indicate pairs that 
+//!
+//! - **Emanation Tables (ETs):** Spreadsheet-like adjacency matrices mapping Zero Divisors
+//!   (ZDs) to each other based on shared strut constants. Empty cells indicate pairs that
 //!   do not zero-divide.
-//! - **Carry-Bit Overflow:** In the 32D Pathions (and higher), when the strut constant `S > 8`, 
-//!   the indexing exceeds the structural capacity of standard Sedenion Box-Kites, causing 
-//!   expected zero-divisions to fail. 
-//! - **Sand Mandalas:** A direct result of carry-bit overflow. These are sparse Emanation 
-//!   Tables found in the Pathions containing only 3 Box-Kites (instead of the expected 7) 
+//! - **Carry-Bit Overflow:** In the 32D Pathions (and higher), when the strut constant `S > 8`,
+//!   the indexing exceeds the structural capacity of standard Sedenion Box-Kites, causing
+//!   expected zero-divisions to fail.
+//! - **Sand Mandalas:** A direct result of carry-bit overflow. These are sparse Emanation
+//!   Tables found in the Pathions containing only 3 Box-Kites (instead of the expected 7)
 //!   with severe DMZ (Dyads Making Zero) sparsity.
-//! - **Muster Master (Atlas) & Pléiades:** Pathions feature higher-order ensembles like the 
-//!   7 "Pléiades" septets, and the "Muster Master" which uniquely maps Box-Kite zigzags 
+//! - **Muster Master (Atlas) & Pléiades:** Pathions feature higher-order ensembles like the
+//!   7 "Pléiades" septets, and the "Muster Master" which uniquely maps Box-Kite zigzags
 //!   to Octonion triplets, serving as a topological atlas for ZD patterns.
 
 //!
@@ -189,7 +189,6 @@ impl AlgebraDim {
         ((d - 1) * (d - 2)) / 6
     }
 
-
     /// Create from dimension, returns None if not a valid CD dimension.
     pub fn from_dim(dim: usize) -> Option<Self> {
         match dim {
@@ -206,7 +205,7 @@ impl AlgebraDim {
             1024 => Some(AlgebraDim::DekaVoudon),
             2048 => Some(AlgebraDim::Endekavoudon),
             4096 => Some(AlgebraDim::Dodekvoudon),
-            8192  => Some(AlgebraDim::Dekatrisvoudon),
+            8192 => Some(AlgebraDim::Dekatrisvoudon),
             16384 => Some(AlgebraDim::Tessareskaidekavoudon),
             _ => None,
         }
@@ -218,13 +217,13 @@ impl AlgebraDim {
     /// ordinal names exist (upper tower and small algebras).
     pub fn latin_name(&self) -> &'static str {
         match self {
-            AlgebraDim::Pathion    => "Trigintaduonion",
-            AlgebraDim::Chingon    => "Sexagintaquatronion",
-            AlgebraDim::Routon     => "Centumduodetrigintanion",
-            AlgebraDim::Voudon     => "Ducentiquinquagintasexion",
-            AlgebraDim::Eriston    => "Quingentoduodecimnion",
+            AlgebraDim::Pathion => "Trigintaduonion",
+            AlgebraDim::Chingon => "Sexagintaquatronion",
+            AlgebraDim::Routon => "Centumduodetrigintanion",
+            AlgebraDim::Voudon => "Ducentiquinquagintasexion",
+            AlgebraDim::Eriston => "Quingentoduodecimnion",
             AlgebraDim::DekaVoudon => "Millevigintiquattuornion",
-            _                      => "(no Latin name established)",
+            _ => "(no Latin name established)",
         }
     }
 

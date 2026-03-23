@@ -3198,6 +3198,7 @@ version = "0.1.0"
 dependencies = [
  "cd_kernel",
  "faer",
+ "gororoba_structurable",
  "nalgebra 0.33.2",
 ]
 
@@ -4387,6 +4388,13 @@ dependencies = [
 [[package]]
 name = "gororoba_sparse_grid"
 version = "0.1.0"
+
+[[package]]
+name = "gororoba_structurable"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+]
 
 [[package]]
 name = "gororoba_view_core"

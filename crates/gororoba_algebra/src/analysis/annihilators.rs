@@ -16,7 +16,7 @@ use nalgebra::DMatrix;
 pub fn annihilator_dimension(dim: usize, x: &[f64], atol: f64) -> usize {
     // We construct the matrix representing multiplication by x: M_x
     // The dimension of the nullspace of M_x is the annihilator dimension.
-    
+
     let mut matrix_data = Vec::with_capacity(dim * dim);
     for j in 0..dim {
         let mut e_j = vec![0.0; dim];
@@ -24,10 +24,10 @@ pub fn annihilator_dimension(dim: usize, x: &[f64], atol: f64) -> usize {
         let col = cd_multiply(x, &e_j);
         matrix_data.extend_from_slice(&col);
     }
-    
+
     let m = DMatrix::from_column_slice(dim, dim, &matrix_data);
     let svd = m.svd(false, false);
-    
+
     // Count singular values below tolerance
     svd.singular_values.iter().filter(|&&s| s < atol).count()
 }
@@ -35,11 +35,7 @@ pub fn annihilator_dimension(dim: usize, x: &[f64], atol: f64) -> usize {
 /// The Biss-Dugger-Isaksen theoretical upper bound for dim Ann(x).
 pub fn biss_dugger_isaksen_bound(dim: usize) -> usize {
     let n = (dim as f64).log2() as usize;
-    if n < 4 {
-        0
-    } else {
-        (1 << n) - 4 * n + 4
-    }
+    if n < 4 { 0 } else { (1 << n) - 4 * n + 4 }
 }
 
 /// Moreno Corollary 1.17 upper bound on dim Ker(L_a) for doubly-pure unit-norm a.
@@ -98,7 +94,11 @@ mod tests {
         assert_eq!(biss_dugger_isaksen_bound(16), 4);
         let results = analyze_annihilators(AlgebraDim::Sedenion);
         for (dim, within_bound) in results {
-            assert!(within_bound, "Annihilator dimension {} exceeded bound 4", dim);
+            assert!(
+                within_bound,
+                "Annihilator dimension {} exceeded bound 4",
+                dim
+            );
         }
     }
 }
