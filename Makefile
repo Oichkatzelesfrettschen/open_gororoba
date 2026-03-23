@@ -57,6 +57,7 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
+.PHONY: cpd-audit cpd-audit-strict
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
@@ -1580,6 +1581,25 @@ clean-all: clean clean-builds clean-artifacts
 	@command -v cargo-sweep >/dev/null 2>&1 && cargo sweep --time 14 || true
 	@echo "Full cleanup complete. Run 'make install && make artifacts' to rebuild."
 
+# ---- Code Duplication Audit ----
+# Scans all Rust sources under crates/ for copy-paste duplication using PMD CPD.
+# WHY: Duplication accumulates silently between sprints; periodic audit catches regressions
+#      before they compound into structural debt.
+# --minimum-tokens 42 is the project-canonical threshold (validated in E-213).
+
+CPD_MIN_TOKENS ?= 42
+CPD_TOP        ?= 20
+
+cpd-audit:
+	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit."; exit 1; }
+	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --dir crates --format xml 2>/dev/null \
+		| python3 scripts/cpd_report.py --top $(CPD_TOP)
+
+cpd-audit-strict:
+	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-strict."; exit 1; }
+	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --dir crates --format xml 2>/dev/null \
+		| python3 scripts/cpd_report.py --strict --top $(CPD_TOP)
+
 # ---- Help ----
 
 help:
@@ -1589,6 +1609,8 @@ help:
 	@echo "    make bootstrap-dev        Ensure the dev environment is current"
 	@echo ""
 	@echo "  Quality:"
+	@echo "    make cpd-audit            Report cross/within-crate Rust duplication (CPD, 42 tokens)"
+	@echo "    make cpd-audit-strict     Same, exits 1 if any clusters found"
 	@echo "    make lint                 Run workspace-wide clippy -- -D warnings"
 	@echo "    make test                 Run workspace-wide nextest"
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
