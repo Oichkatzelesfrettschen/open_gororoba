@@ -63,7 +63,7 @@ pub mod cp;
 pub mod lift;
 pub mod optimizer;
 
-pub use angles::extract_pmns_angles;
+pub use angles::{extract_pmns_angles, Pdg2024};
 pub use lift::{
     AssessorToFlavorMap, DirectOffDiagonalLift, FlavorLift, PsiEquivariantLift, TensorElementLift,
     apply_v6_perturbation,
