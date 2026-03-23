@@ -377,25 +377,23 @@ pub(crate) fn assemble_lepton_baseline(
 /// Factored from the `test_pmns_offdiag_two_param` scan body into a pure,
 /// deterministic function. The construction is:
 ///
-/// 1. Casimir baseline via `construct_casimir_baseline`
-/// 2. Diagonal friction: `M[i,i] += exp(w1*sel_own[i] + w2*sel_other[i])`
-/// 3. Off-diagonal psi circulant: `M[i,j] += alpha * <profile_i, psi(profile_j)>`
-///    with `alpha_ch` for charged, `alpha_nu` for neutrino
-/// 4. Symmetrize
-pub fn construct_pmns_matrices_two_param(
+/// Shared initialization for psi-coupling PMNS functions.
+///
+/// Computes the Casimir baseline, signed-friction profiles per generation,
+/// and applies the diagonal friction terms.  The returned matrices are ready
+/// for the caller's off-diagonal psi-circulant coupling step.
+///
+/// Used by: `construct_pmns_matrices_two_param`, `construct_pmns_matrices_v6_modulated`.
+fn build_friction_matrices(
     charged_pair: (usize, usize),
     neutrino_pair: (usize, usize),
-    alpha_ch: f64,
-    alpha_nu: f64,
-) -> (faer::Mat<f64>, faer::Mat<f64>) {
+) -> (faer::Mat<f64>, faer::Mat<f64>, Vec<[f64; 16]>, Vec<[f64; 16]>) {
     use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
     use crate::majorana_braiding::MajoranaMode;
     use crate::bell_inequality::{SignTableCache, rotate_sparse};
     use crate::three_fermion_generations::get_sedenion_subalgebras;
     use crate::quark_sector::SubalgebraScheme;
-    use cd_kernel::gourlay_psi;
 
-    // Step 1: Casimir baseline via neutral projections + lepton assembly
     let cb = construct_casimir_baseline(SubalgebraScheme::InterleavedStride);
     let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
 
@@ -411,7 +409,6 @@ pub fn construct_pmns_matrices_two_param(
     let nu_a = MajoranaMode { gamma_index: neutrino_pair.0 - 1, cd_basis_index: neutrino_pair.0, cd_dim: 16 };
     let nu_b = MajoranaMode { gamma_index: neutrino_pair.1 - 1, cd_basis_index: neutrino_pair.1, cd_dim: 16 };
 
-    // Build full 16D friction profiles per generation
     let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
         let i = mode_i.cd_basis_index;
         let j = mode_j.cd_basis_index;
@@ -433,11 +430,6 @@ pub fn construct_pmns_matrices_two_param(
     let sel_ch: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table)).collect();
     let sel_nu: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table)).collect();
 
-    let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
-        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
-    };
-
-    // Step 2: Diagonal friction
     let mut m_ch = m_base_ch;
     let mut m_nu = m_base_nu;
     for i in 0..3 {
@@ -447,7 +439,30 @@ pub fn construct_pmns_matrices_two_param(
         m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
     }
 
-    // Step 3: Off-diagonal psi circulant coupling
+    (m_ch, m_nu, ch_profiles, nu_profiles)
+}
+
+/// 1. Casimir baseline via `construct_casimir_baseline`
+/// 2. Diagonal friction: `M[i,i] += exp(w1*sel_own[i] + w2*sel_other[i])`
+/// 3. Off-diagonal psi circulant: `M[i,j] += alpha * <profile_i, psi(profile_j)>`
+///    with `alpha_ch` for charged, `alpha_nu` for neutrino
+/// 4. Symmetrize
+pub fn construct_pmns_matrices_two_param(
+    charged_pair: (usize, usize),
+    neutrino_pair: (usize, usize),
+    alpha_ch: f64,
+    alpha_nu: f64,
+) -> (faer::Mat<f64>, faer::Mat<f64>) {
+    use cd_kernel::gourlay_psi;
+
+    let (mut m_ch, mut m_nu, ch_profiles, nu_profiles) =
+        build_friction_matrices(charged_pair, neutrino_pair);
+
+    let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
+        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+    };
+
+    // Off-diagonal psi circulant coupling
     for i in 0..3 {
         for j in 0..3 {
             if i == j { continue; }
@@ -497,49 +512,10 @@ pub fn construct_pmns_matrices_v6_modulated(
     v6_basis: &nalgebra::DMatrix<f64>,
     beta: &[f64; 6],
 ) -> (faer::Mat<f64>, faer::Mat<f64>) {
-    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
-    use crate::majorana_braiding::MajoranaMode;
-    use crate::bell_inequality::{SignTableCache, rotate_sparse};
-    use crate::three_fermion_generations::get_sedenion_subalgebras;
-    use crate::quark_sector::SubalgebraScheme;
     use cd_kernel::gourlay_psi;
 
-    // Casimir baseline
-    let cb = construct_casimir_baseline(SubalgebraScheme::InterleavedStride);
-    let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
-
-    let (o1, o2, o3) = get_sedenion_subalgebras();
-    let subs = [&o1, &o2, &o3];
-    let sign_table = SignTableCache::new(16);
-
-    let w1: f64 = -0.656850;
-    let w2: f64 = -0.741999;
-
-    let ch_a = MajoranaMode { gamma_index: charged_pair.0 - 1, cd_basis_index: charged_pair.0, cd_dim: 16 };
-    let ch_b = MajoranaMode { gamma_index: charged_pair.1 - 1, cd_basis_index: charged_pair.1, cd_dim: 16 };
-    let nu_a = MajoranaMode { gamma_index: neutrino_pair.0 - 1, cd_basis_index: neutrino_pair.0, cd_dim: 16 };
-    let nu_b = MajoranaMode { gamma_index: neutrino_pair.1 - 1, cd_basis_index: neutrino_pair.1, cd_dim: 16 };
-
-    let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
-        let i = mode_i.cd_basis_index;
-        let j = mode_j.cd_basis_index;
-        let a_sparse = vec![(i, 1.0)];
-        let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
-        let b_sparse = vec![(j, 1.0)];
-        let mut profile = [0.0_f64; 16];
-        for &k in sub {
-            if k == 0 || k == i || k == j { continue; }
-            let x_sparse = [(k, 1.0)];
-            profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
-        }
-        profile
-    };
-
-    let ch_profiles: Vec<[f64; 16]> = subs.iter().map(|s| build_profile(&ch_a, &ch_b, s)).collect();
-    let nu_profiles: Vec<[f64; 16]> = subs.iter().map(|s| build_profile(&nu_a, &nu_b, s)).collect();
-
-    let sel_ch: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table)).collect();
-    let sel_nu: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table)).collect();
+    let (mut m_ch, mut m_nu, ch_profiles, nu_profiles) =
+        build_friction_matrices(charged_pair, neutrino_pair);
 
     let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
         a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
@@ -563,16 +539,6 @@ pub fn construct_pmns_matrices_v6_modulated(
         v_combined[block_size..2 * block_size].iter().sum::<f64>(),
         v_combined[2 * block_size..n_cols].iter().sum::<f64>(),
     ];
-
-    // Diagonal friction (unchanged)
-    let mut m_ch = m_base_ch;
-    let mut m_nu = m_base_nu;
-    for i in 0..3 {
-        let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
-        let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-        m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
-        m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
-    }
 
     // Off-diagonal psi coupling with V_6-modulated alpha
     for i in 0..3 {
