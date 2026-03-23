@@ -58,3 +58,4 @@ pub mod dark_inflaton;
 pub mod cd_black_hole;
 pub mod su5_gut;
 pub mod experimental_predictions;
+pub mod novel_algorithms;

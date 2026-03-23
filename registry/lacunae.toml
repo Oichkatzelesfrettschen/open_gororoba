@@ -5,10 +5,10 @@
 updated = "deterministic"
 authoritative = true
 status = "active"
-lacuna_count = 182
-open_count = 1
+lacuna_count = 185
+open_count = 4
 high_priority_count = 72
-medium_priority_count = 104
+medium_priority_count = 107
 low_priority_count = 6
 origin_kind_count = 1
 
@@ -102,6 +102,42 @@ origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-1273"
 description = "C-1273 remains unresolved with status token THEORETICAL: ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat preserves galaxy core against LBM homogenization."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1538"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1538"
+description = "C-1538 remains unresolved with status token THEORETICAL: Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bar*y=0 iff x*y_bar=0. If xy=0 and x!=0, then t(y)=0. x^2=0 implies x=0. Source: Moreno (1997) arXiv:q-alg/9710013v1."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1539"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1539"
+description = "C-1539 remains unresolved with status token THEORETICAL: Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetric operators on A_n (with respect to the Euclidean inner product). Ker(L_x) = Ker(R_x). Source: Moreno (1997) arXiv:q-alg/9710013v1."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1542"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1542"
+description = "C-1542 remains unresolved with status token THEORETICAL: Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1."
 priority = "medium"
 status = "open"
 claim_refs = []

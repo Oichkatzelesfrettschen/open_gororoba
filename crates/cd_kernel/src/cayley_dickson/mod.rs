@@ -9,6 +9,8 @@
 
 mod arith;
 mod associator;
+pub mod cariow_factorization;
+pub mod trigintaduonion;
 pub mod predicates;
 pub mod sedenion;
 mod signature;

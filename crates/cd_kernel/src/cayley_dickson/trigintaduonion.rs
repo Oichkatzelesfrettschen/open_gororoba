@@ -22,9 +22,11 @@ impl Trigintaduonion {
     }
 
     /// Multiply two Trigintaduonions using standard Cayley-Dickson doubling (1024 mults).
+    ///
+    /// Workspace requirement: cd_multiply_workspace_len(32) = 4*32 = 128 elements.
     pub fn mul_standard(&self, other: &Self) -> Self {
         let mut res = [0.0; 32];
-        let mut workspace = [0.0; 64];
+        let mut workspace = [0.0; 128]; // 4 * dim = 4 * 32
         super::arith::cd_multiply_into(&self.data, &other.data, &mut res, &mut workspace);
         Self { data: res }
     }
@@ -94,8 +96,72 @@ mod tests {
         let res_opt = a.mul_optimized(&b);
 
         for i in 0..32 {
-            assert!((res_std.data[i] - res_opt.data[i]).abs() < 1e-10, 
+            assert!((res_std.data[i] - res_opt.data[i]).abs() < 1e-10,
                 "Mismatch at index {}: std {} vs opt {}", i, res_std.data[i], res_opt.data[i]);
         }
+    }
+
+    /// Track B benchmark: mul_standard vs mul_optimized at dim=32.
+    ///
+    /// Key finding (evid B):
+    /// mul_optimized currently calls 4 sedenion_multiply_explicit (same as standard).
+    /// Both paths perform ~1024 real multiplications -- mul_optimized does NOT
+    /// yet achieve the claimed 498. Additional array-copy overhead in mul_optimized
+    /// makes it slightly SLOWER than mul_standard in practice.
+    ///
+    /// This is the Track B finding from the plan:
+    /// "the repo docs already note Cariow sparsity is better for FPGA, not obviously
+    ///  good for CPU SIMD. Do NOT pursue AVX-512 until profiling shows the sparse
+    ///  pattern helps ILP."
+    ///
+    /// Conclusion: AVX-512 optimization is NOT warranted for the current implementation.
+    /// The 498-mult algorithm must be fully implemented before any SIMD benefit is possible.
+    #[test]
+    fn test_mul_standard_vs_optimized_correctness_and_parity() {
+        use std::time::Instant;
+
+        let mut a = Trigintaduonion::zero();
+        let mut b = Trigintaduonion::zero();
+        for i in 0..32 {
+            a.data[i] = (i as f64 + 1.0) / 32.0;
+            b.data[i] = (32.0 - i as f64) / 32.0;
+        }
+
+        // Correctness: both paths must agree.
+        let res_std = a.mul_standard(&b);
+        let res_opt = a.mul_optimized(&b);
+        for i in 0..32 {
+            assert!((res_std.data[i] - res_opt.data[i]).abs() < 1e-10,
+                "Correctness mismatch at [{}]: std={} opt={}", i, res_std.data[i], res_opt.data[i]);
+        }
+
+        // Timing: measure relative performance over N iterations.
+        // Not a criterion benchmark -- this gives wall-clock ratios for documentation.
+        const N: usize = 1000;
+        let t0 = Instant::now();
+        for _ in 0..N {
+            let _ = std::hint::black_box(a.mul_standard(&b));
+        }
+        let time_std = t0.elapsed();
+
+        let t1 = Instant::now();
+        for _ in 0..N {
+            let _ = std::hint::black_box(a.mul_optimized(&b));
+        }
+        let time_opt = t1.elapsed();
+
+        // Finding: mul_optimized is NOT faster (same or higher latency due to copy overhead).
+        // We assert both complete in similar wall-clock time (within 3x of each other).
+        // A true 2x speedup would require fully implementing the 498-mult Cariow algorithm.
+        let ratio = time_opt.as_secs_f64() / time_std.as_secs_f64();
+        println!(
+            "Track B timing: mul_standard={:?}, mul_optimized={:?}, ratio={:.2}",
+            time_std, time_opt, ratio
+        );
+        // Both are ~1024-mult paths; ratio should be near 1.0 (within 3x given test noise).
+        assert!(
+            ratio < 3.0,
+            "mul_optimized should not be >3x slower than mul_standard (ratio={:.2})", ratio
+        );
     }
 }

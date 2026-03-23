@@ -10367,3 +10367,136 @@ statement = """Phase A codebase deduplication: (1) gororoba_algebra/src/analysis
 status = "Verified"
 where_stated = "crates/algebra_experimental/src/neutrino_sector.rs, crates/gororoba_algebra/src/analysis/mod.rs, commit 7c73ef73"
 last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1529"
+statement = """Phase B falsification test (evid E): 3-generation index structure CORROBORATED at dim=64,128,256 with CAVEAT. The psi-automorphism cycling that produces three generations operates ACTIVELY only at dim=16 (lower-half indices 0..15). At dim=32,64,128,256, the pattern persists by CD tower INHERITANCE: the dim=16 block is embedded unchanged in the lower half; upper half indices follow by doubling. The psi argument is dimension-specific for active cycling; it is not an independent mechanism at higher dims. OUTCOME: corroborated structurally, not by independent psi cycles."""
+status = "Verified"
+where_stated = "crates/surreal_algebra/src/surreal_cd.rs::test_pathion_generation_count_falsification"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1530"
+statement = """Phase C experimental overlay (evid H): All three PMNS mixing angles from the Sedenion Standard Model scorecard lie within NuFit 6.0 1-sigma contours. Asymmetric pulls: theta_12 = -0.067 (best=33.41, ours~33.37), theta_13 = 0.000 (best=8.54, ours=8.54), theta_23 = -0.009 (best=49.0, ours~49.0). Evidentiary class H (heuristic fit, not derived). Experiment sensitivity: DUNE/HyperK for delta_CP and theta_23; JUNO for mass ordering and precision theta_12/theta_13."""
+status = "Heuristic"
+where_stated = "crates/algebra_experimental/src/experimental_predictions.rs::test_mixing_angles_in_1sigma"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1531"
+statement = """Phase C CP-phase overlay (evid H): CP-A (~165 deg, Gram-derived) lies within NuFit 6.0 1-sigma for delta_CP (pull = -0.526; 1-sigma range [138,258] deg). CP-B (~93 deg, maximal CP violation) lies outside 1-sigma (pull = -1.789) but inside 3-sigma ([0,360] deg). The 2025 NuFit best-fit is 195 deg; CP-B is displaced toward maximal CP. Both values are exploratory (scorecard Bin 3). Falsification target: DUNE/HyperK sensitivity will determine which, if either, is consistent at 5-sigma."""
+status = "Heuristic"
+where_stated = "crates/algebra_experimental/src/experimental_predictions.rs::test_cp_a_in_1sigma, test_cp_b_outside_1sigma"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1532"
+statement = """Phase C JUNO overlay (evid H): JUNO r_nu observable from the project scorecard is within 3% of NuFit 6.0 baseline. JUNO sensitivity covers mass ordering and precision oscillation inputs (theta_12, Delta_m_21^2); it does NOT directly constrain delta_CP. JUNO began data taking 2025-08-26. r_nu is not a directly measured JUNO quantity; the overlay uses the JUNO-accessible parameter space as context only."""
+status = "Heuristic"
+where_stated = "crates/algebra_experimental/src/experimental_predictions.rs::test_juno_r_nu_within_3pct"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1533"
+statement = """Phase D flux quantization scaling (evid E): CD associator flux quantization levels {0, 1, sqrt(2)} persist at dim=128,256,512,1024. Count formula: zero_count = dim/2 - dim/8 - 1, one_count = dim/2, sqrt2_count = dim/8. Example at dim=128: zero=47, one=64, sqrt2=16. The formula scales exactly with dimension and is verified by integer arithmetic on the exact CD sign table (cd_sign function)."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/topological_associator_flux.rs::test_flux_scaling_dim128..test_flux_scaling_dim1024"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1534"
+statement = """Phase D null baselines (evid E): Three controls confirm CD-sign-specificity of flux quantization. (1) Commutative XOR (all signs +1): all flux values zero -- confirms nonzero flux requires non-trivial sign table. (2) Random signs (FNV hash): preserves level NAMES {0,1,sqrt(2)} but breaks the count formula -- level names are partially combinatorial (sparse 2x2 witness structure), counts are CD-specific. (3) Basis permutation: changes the level set, removing sqrt(2) entries at tested dims. CONCLUSION: count formula is CD-sign-specific; level names {0,1,sqrt(2)} have combinatorial and CD components."""
+status = "Verified"
+where_stated = "crates/algebra_experimental/src/topological_associator_flux.rs::test_null_baseline_permutation, test_null_baseline_random_signs, test_null_baseline_commutative_xor"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1535"
+statement = """Phase D Casimir comparison null result (evid H): No exceptional group Casimir eigenvalue or dimension (G_2=14, F_4=52, E_6=78, E_7=133, E_8=248) matches the flux count formula at any tested dimension (dim=128..1024). At dim=128: zero=47, one=64, sqrt2=16. At dim=1024: zero=383, one=512, sqrt2=128. Null result: no exceptional group alignment detected."""
+status = "Heuristic"
+where_stated = "crates/algebra_experimental/src/topological_associator_flux.rs::test_d6_casimir_comparison"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1536"
+statement = """Phase G G_2 structural estimate (evid E + H): G_2 structural ratio dim(SU(3))/dim(G_2) = 8/14 = 0.5714 (exact Lie theory, evid E). Scale gap from Delta_a_mu = 38(63)e-11 ~ 3.8e-10: log10(0.5714 / 3.8e-10) >= 9 orders of magnitude (evid E). NEGATIVE RESULT: No G_2 dimensional ratio produces the correct scale for a_mu without injecting alpha and 1/(2*pi). The sin^2(theta_W) analogy (dimensional ratio -> O(1) number) does NOT extend to a_mu."""
+status = "Heuristic"
+where_stated = "crates/gororoba_algebra/src/physics/anomalous_moment.rs::test_g2_structural_ratio_not_muon_scale, test_scale_gap_at_least_9_orders"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1537"
+statement = """Phase G muon g-2 2025 status (evid E): Delta_a_mu = 38(63)e-11, significance = 38/63 = 0.60-sigma. Compatible within 1-sigma with the Standard Model. The muon g-2 is NO LONGER a strong anomaly as of 2025 (arXiv:2505.21476, BIB-0440). Fermilab Run 1-6 final: a_mu^exp = 1165920715(145)e-12. The algebraic scale gap (C-1536) and experimental resolution jointly rule out G_2 as an explanation. Module anomalous_moment.rs records this as a negative result."""
+status = "Verified"
+where_stated = "crates/gororoba_algebra/src/physics/anomalous_moment.rs::test_g2_2025_discrepancy_below_one_sigma, test_fermilab_2025_value_correct"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1538"
+statement = """Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bar*y=0 iff x*y_bar=0. If xy=0 and x!=0, then t(y)=0. x^2=0 implies x=0. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Theoretical"
+where_stated = "crates/algebra_analysis/src/moreno.rs (moreno_decomposition, Cor 1.6 background)"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1539"
+statement = """Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetric operators on A_n (with respect to the Euclidean inner product). Ker(L_x) = Ker(R_x). Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Theoretical"
+where_stated = "crates/algebra_analysis/src/moreno.rs (l_a_squared, moreno_decomposition)"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1540"
+statement = """Moreno Theorem 1.13 (H_a quaternion subalgebra): For doubly-pure unit-norm a in A_n (n>=2), the span H_a = {e0, a, tilde_a, tilde_e0} is isomorphic to H (quaternions). The multiplication table in source order {1, a, tilde_a, tilde_e0} satisfies quaternion laws with orientation: a*tilde_a = -tilde_e0. Numerically verified at 8D for a=e1. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::verify_h_a_isomorphism, h_a_basis; tests::test_verify_h_a_isomorphism_e1_in_a3"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1541"
+statement = """Moreno Theorem 1.15 (direct sum decomposition): For doubly-pure unit-norm a in A_n, A_n = H_a + Ker(T~_a) + Ker(L_a) + direct-sum(V_lambda) where T~_a = -I - L_a^2 restricted to H_a^perp, and V_lambda are eigenspaces of L_a^2 on H_a^perp. Numerically verified at 8D and 16D (total dimension check passes). Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::moreno_decomposition, MorenoDecomposition; tests::test_moreno_decomposition_totals_8d, test_moreno_decomposition_totals_16d"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1542"
+statement = """Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Theoretical"
+where_stated = "crates/algebra_analysis/src/moreno.rs::MorenoDecomposition::all_mod4"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1543"
+statement = """Moreno Corollary 1.17 (annihilator bound): 0 <= dim_R(Ker L_a) = 0 mod 4 and dim_R(Ker L_a) <= 2^n - 4 for doubly-pure unit-norm a in A_n. Moreno bound is 2^n - 4; BDI bound 2^n - 4n + 4 is tighter for n >= 4. Numerically verified: a=e1 in 8D gives Ker(L_a) dim 0; a=(e1+e10)/sqrt(2) in 16D gives Ker(L_a) dim 4. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::verify_corollary_1_17; crates/gororoba_algebra/src/analysis/annihilators.rs::moreno_corollary_1_17_bound; tests::test_verify_corollary_1_17_a3, test_verify_corollary_1_17_a4_with_zd"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1544"
+statement = """Moreno Theorem 2.3 (Ker(S) decomposition): For special couple {a,b} in A_n, Ker(S restricted to V(a;b)^perp) = Ker(L_{a+b}) + Ker(L_{a-b}), where both kernels lie in V(a;b)^perp and S(y) = (a,y,b) = R_b*L_a - L_a*R_b. S is skew-symmetric. Numerically verified at 8D for {e1,e2}. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::s_operator_matrix, ker_s_restricted_decomposition; tests::test_s_operator_is_skew_symmetric, test_ker_s_restricted_decomposition_a3"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1545"
+statement = """Moreno Corollary 2.4 (mod-8 Ker(S) constraint): dim Ker(S restricted to V(a;b)^perp) = 2 * dim Ker(L_{a+b}) = 0 mod 8, for special couple {a,b}. Numerically verified at 8D for {e1,e2}. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::verify_corollary_2_4; tests::test_ker_s_restricted_decomposition_a3"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1546"
+statement = """Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d"
+last_verified = "2026-03-23"
+
+[[claim]]
+id = "C-1547"
+statement = """Moreno Theorem 2.13 (special triple -> octonion copy): V(a;y;b) = span{e0, a, b, a*b, (a*y)*b, y*b, a*y, y} is a copy of O (octonions) embedded in A_n iff {a,y,b} is a special triple ({a,b} special couple AND (ay)b = -a(yb)). Basis source order matches standard octonion index assignment [e0..e7]. Verified at 8D for {e1, e7, e2}: all 64 products in V(e1;e7;e2) match the CD octonion multiplication table. Source: Moreno (1997) arXiv:q-alg/9710013v1."""
+status = "Verified"
+where_stated = "crates/algebra_analysis/src/moreno.rs::v_triple_basis, verify_theorem_2_13; tests::test_v_triple_basis_order_a3, test_verify_theorem_2_13_e1_e7_e2"
+last_verified = "2026-03-23"
