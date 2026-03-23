@@ -1,7 +1,7 @@
 use super::{arith::cd_conjugate, signs::cd_basis_mul_sign};
 
 /// Signature for a parameterized Cayley-Dickson algebra.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct CdSignature {
     gammas: Vec<i32>,
 }
