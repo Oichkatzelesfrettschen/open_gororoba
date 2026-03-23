@@ -1,0 +1,11 @@
+[package]
+name = "surreal_algebra"
+version = "0.1.0"
+edition = "2024"
+description = "Surreal number coefficients for Cayley-Dickson algebras"
+
+[dependencies]
+cd_kernel = { workspace = true }
+
+[lints]
+workspace = true

@@ -64,6 +64,7 @@ members = [
     "xtask",
     "crates/lit_search",
     "crates/flavor_lifts",
+    "crates/surreal_algebra",
 ]
 
 [workspace.metadata.execution_policy]
