@@ -6,6 +6,7 @@
 //! dense operators in hot loops.
 
 use cd_kernel::cayley_dickson::{cd_conjugate, cd_multiply};
+use std::fmt;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct JordanPairElement {
@@ -53,6 +54,10 @@ impl StructurableElement {
         self.coords.len()
     }
 
+    pub fn norm_squared(&self) -> f64 {
+        self.coords.iter().map(|value| value * value).sum()
+    }
+
     pub fn involute(&self) -> Self {
         Self {
             coords: cd_conjugate(&self.coords),
@@ -72,6 +77,48 @@ pub const STRUCTURABLE_V_OPERATOR_COST: ValueLevelOperatorCost = ValueLevelOpera
     conjugations: 2,
     vector_additions: 2,
 };
+
+/// Compact exploration record for the value-level structurable V operator.
+///
+/// This keeps the output inspectable in tests and experiments without forcing
+/// callers to reconstruct norms or cost metadata by hand.
+#[derive(Clone, Debug, PartialEq)]
+pub struct StructurableVOperatorReport {
+    pub dimension: usize,
+    pub input_norms: [f64; 3],
+    pub output_norm: f64,
+    pub output_coords: Vec<f64>,
+    pub cost: ValueLevelOperatorCost,
+}
+
+impl StructurableVOperatorReport {
+    pub fn summary_row(&self) -> [f64; 5] {
+        [
+            self.dimension as f64,
+            self.input_norms[0],
+            self.input_norms[1],
+            self.input_norms[2],
+            self.output_norm,
+        ]
+    }
+}
+
+impl fmt::Display for StructurableVOperatorReport {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "dim={} ||x||^2={:.6} ||y||^2={:.6} ||z||^2={:.6} ||V||^2={:.6} cost=({} mul, {} conj, {} add)",
+            self.dimension,
+            self.input_norms[0],
+            self.input_norms[1],
+            self.input_norms[2],
+            self.output_norm,
+            self.cost.binary_products,
+            self.cost.conjugations,
+            self.cost.vector_additions
+        )
+    }
+}
 
 pub fn structurable_v_operator(
     x: &StructurableElement,
@@ -110,6 +157,22 @@ pub fn structurable_v_operator(
     StructurableElement::new(coords)
 }
 
+/// Evaluate the V operator and retain a lightweight exploration report.
+pub fn structurable_v_operator_report(
+    x: &StructurableElement,
+    y: &StructurableElement,
+    z: &StructurableElement,
+) -> StructurableVOperatorReport {
+    let output = structurable_v_operator(x, y, z);
+    StructurableVOperatorReport {
+        dimension: output.dim(),
+        input_norms: [x.norm_squared(), y.norm_squared(), z.norm_squared()],
+        output_norm: output.norm_squared(),
+        output_coords: output.coords().to_vec(),
+        cost: STRUCTURABLE_V_OPERATOR_COST,
+    }
+}
+
 pub fn jordan_pair_from_structurable(
     plus: StructurableElement,
     minus: StructurableElement,
@@ -135,5 +198,20 @@ mod tests {
     #[test]
     fn test_cost_contract_is_value_level() {
         assert_eq!(STRUCTURABLE_V_OPERATOR_COST.binary_products, 5);
+    }
+
+    #[test]
+    fn test_structurable_v_operator_report_matches_raw_output() {
+        let x = StructurableElement::new(vec![1.0, 0.0, 0.0, 0.0]);
+        let y = StructurableElement::new(vec![0.0, 1.0, 0.0, 0.0]);
+        let z = StructurableElement::new(vec![0.0, 0.0, 1.0, 0.0]);
+
+        let raw = structurable_v_operator(&x, &y, &z);
+        let report = structurable_v_operator_report(&x, &y, &z);
+
+        assert_eq!(report.dimension, 4);
+        assert_eq!(report.output_coords, raw.coords().to_vec());
+        assert_eq!(report.cost, STRUCTURABLE_V_OPERATOR_COST);
+        assert_eq!(report.summary_row()[0], 4.0);
     }
 }

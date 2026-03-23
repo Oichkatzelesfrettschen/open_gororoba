@@ -80,14 +80,15 @@ pub use construction::exotic_octonions::{
 pub use construction::kronecker::kron2;
 #[cfg(feature = "core")]
 pub use construction::signature_observables::{
-    CompactFrictionObservable, CompactKoebisuObservable, CompactKoebisuResult,
+    CompactFrictionObservable, CompactKoebisuObservable, CompactKoebisuResult, ObservableReading,
     ObservableSignatureRegime, SignatureAwareObservable, SplitNormDiagnostics, SplitNormObservable,
-    cross_generational_friction_compact, koebisu_d2_compact, regime_for_hybrid_octonion,
-    regime_for_signature, split_octonion_diagnostics,
+    cross_generational_friction_compact, cross_generational_friction_compact_reading,
+    koebisu_d2_compact, regime_for_hybrid_octonion, regime_for_signature,
+    split_octonion_diagnostics,
 };
 #[cfg(feature = "core")]
 pub use construction::symmetric_composition::{
-    OkuboElement, TrialityAction, para_hurwitz_multiply,
+    OkuboElement, TrialityAction, TrialityOrbitSummary, para_hurwitz_multiply,
 };
 
 #[cfg(feature = "core")]

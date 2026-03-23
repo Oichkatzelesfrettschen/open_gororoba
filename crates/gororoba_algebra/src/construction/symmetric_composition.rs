@@ -5,6 +5,7 @@
 //! and explicit triality actions.
 
 use super::{exotic_octonions::ParaOctonion, octonion::Octonion};
+use std::fmt;
 
 pub fn para_hurwitz_multiply(lhs: &Octonion, rhs: &Octonion) -> Octonion {
     ParaOctonion::new(*lhs)
@@ -20,6 +21,22 @@ pub enum TrialityAction {
 }
 
 impl TrialityAction {
+    pub fn label(&self) -> &'static str {
+        match self {
+            TrialityAction::Identity => "identity",
+            TrialityAction::CycleForward => "cycle-forward",
+            TrialityAction::CycleBackward => "cycle-backward",
+        }
+    }
+
+    pub fn permutation(&self) -> [usize; 3] {
+        match self {
+            TrialityAction::Identity => [0, 1, 2],
+            TrialityAction::CycleForward => [1, 2, 0],
+            TrialityAction::CycleBackward => [2, 0, 1],
+        }
+    }
+
     pub fn apply_triplet<T: Clone>(&self, triple: &[T; 3]) -> [T; 3] {
         match self {
             TrialityAction::Identity => triple.clone(),
@@ -30,6 +47,33 @@ impl TrialityAction {
                 [triple[2].clone(), triple[0].clone(), triple[1].clone()]
             }
         }
+    }
+}
+
+impl fmt::Display for TrialityAction {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.label())
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct TrialityOrbitSummary {
+    pub action: TrialityAction,
+    pub permutation: [usize; 3],
+    pub input_norms: [f64; 3],
+    pub output_norms: [f64; 3],
+}
+
+impl TrialityOrbitSummary {
+    pub fn summary_row(&self) -> [f64; 6] {
+        [
+            self.input_norms[0],
+            self.input_norms[1],
+            self.input_norms[2],
+            self.output_norms[0],
+            self.output_norms[1],
+            self.output_norms[2],
+        ]
     }
 }
 
@@ -51,6 +95,10 @@ impl OkuboElement {
         &self.coeffs
     }
 
+    pub fn norm_squared(&self) -> f64 {
+        self.coeffs.iter().map(|value| value * value).sum()
+    }
+
     pub fn as_para_octonion(&self) -> ParaOctonion {
         ParaOctonion::new(Octonion::new(self.coeffs))
     }
@@ -63,6 +111,21 @@ impl OkuboElement {
         let _ = self;
         action.apply_triplet(peers)
     }
+
+    pub fn orbit_summary(
+        &self,
+        action: TrialityAction,
+        peers: &[OkuboElement; 3],
+    ) -> TrialityOrbitSummary {
+        let _ = self;
+        let orbit = action.apply_triplet(peers);
+        TrialityOrbitSummary {
+            action,
+            permutation: action.permutation(),
+            input_norms: peers.map(|value| value.norm_squared()),
+            output_norms: orbit.map(|value| value.norm_squared()),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -74,6 +137,7 @@ mod tests {
         let triple = [1, 2, 3];
         let cycled = TrialityAction::CycleForward.apply_triplet(&triple);
         assert_eq!(cycled, [2, 3, 1]);
+        assert_eq!(TrialityAction::CycleForward.permutation(), [1, 2, 0]);
 
         let restored = TrialityAction::CycleBackward.apply_triplet(&cycled);
         assert_eq!(restored, triple);
@@ -93,5 +157,19 @@ mod tests {
         let c = OkuboElement::new([0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
         let orbit = a.triality_orbit(TrialityAction::CycleForward, &[a, b, c]);
         assert_eq!(orbit, [b, c, a]);
+    }
+
+    #[test]
+    fn test_triality_orbit_summary_preserves_norm_inventory() {
+        let a = OkuboElement::new([1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+        let b = OkuboElement::new([0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+        let c = OkuboElement::new([0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+
+        let summary = a.orbit_summary(TrialityAction::CycleForward, &[a, b, c]);
+        assert_eq!(summary.action.to_string(), "cycle-forward");
+        assert_eq!(summary.permutation, [1, 2, 0]);
+        assert_eq!(summary.input_norms, [1.0, 4.0, 9.0]);
+        assert_eq!(summary.output_norms, [4.0, 9.0, 1.0]);
+        assert_eq!(summary.summary_row(), [1.0, 4.0, 9.0, 4.0, 9.0, 1.0]);
     }
 }
