@@ -1,6 +1,6 @@
 //! Supersymmetry Dimension Theorem and String Theory Connections.
 //!
-//! This module provides rigorous algorithmic checks for the physics-algebra 
+//! This module provides rigorous algorithmic checks for the physics-algebra
 //! correspondence defined by the Baez-Huerta theorem.
 //!
 //! Supersymmetric Yang-Mills theory and Superstring existence are intimately tied
@@ -55,7 +55,7 @@ pub fn check_3_psi_rule_algebra_existence(d: usize) -> Result<&'static str, &'st
 /// Lie 2-Supergroup Construction for String Theory.
 ///
 /// Spacetime dimension d = k + 2 corresponds to a division algebra K of dim k.
-/// This construction extends the Poincaré supergroup to describe parallel 
+/// This construction extends the Poincaré supergroup to describe parallel
 /// transport of strings.
 pub struct Lie2Supergroup {
     pub spacetime_dim: usize,

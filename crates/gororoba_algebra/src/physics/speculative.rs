@@ -1,6 +1,6 @@
 //! Speculative Pais Superforce and phi-doping logic.
 //!
-//! Preserves the theoretical connection between Pais's Superforce (c^4/G) 
+//! Preserves the theoretical connection between Pais's Superforce (c^4/G)
 //! and the Golden Ratio resonance.
 
 use super::PHI;

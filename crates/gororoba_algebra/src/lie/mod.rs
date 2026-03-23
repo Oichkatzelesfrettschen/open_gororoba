@@ -8,8 +8,8 @@ pub mod nilpotent_orbits;
 // three_fermion_generations depends only on cd_kernel + rand -- no heavy deps.
 // It must be always available because lepton_mass_hierarchy (algebra_experimental)
 // imports get_sedenion_subalgebras from it regardless of feature state.
-pub mod three_fermion_generations;
 pub mod g2_stabilizer;
 pub mod g2_su3_representation;
 #[cfg(feature = "physics-sm")]
 pub mod su5_gut;
+pub mod three_fermion_generations;

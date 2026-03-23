@@ -6,8 +6,10 @@
 //!
 //! Migrated from Appendix C of the Advanced Theoretical Developments.
 
-use crate::physics::octonion_field::{Octonion, oct_multiply};
-use crate::lie::e8_lattice::E8Lattice;
+use crate::{
+    lie::e8_lattice::E8Lattice,
+    physics::octonion_field::{Octonion, oct_multiply},
+};
 
 /// Results of an octonionic tensor mapping experiment (Protocol C.1.1).
 #[derive(Debug, Clone)]

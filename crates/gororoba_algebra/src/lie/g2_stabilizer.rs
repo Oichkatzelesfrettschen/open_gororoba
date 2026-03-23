@@ -29,8 +29,10 @@
 //!   Baez, "The Octonions" (2002), Section 4.1
 //!   Harvey, "Spinors and Calibrations" (1990)
 
-use crate::construction::g2_automorphisms::{OctonionDerivation, compute_g2_basis};
-use crate::construction::octonion::Octonion;
+use crate::construction::{
+    g2_automorphisms::{OctonionDerivation, compute_g2_basis},
+    octonion::Octonion,
+};
 use nalgebra::DMatrix;
 
 /// Relative tolerance factor for SVD rank determination.
@@ -111,18 +113,14 @@ fn orthonormalize(basis: &[OctonionDerivation], tol: f64) -> Vec<OctonionDerivat
 ///
 /// The commutator of two derivations is a derivation (closure property
 /// of the Lie algebra Der(O) = g2).
-pub fn derivation_bracket(
-    a: &OctonionDerivation,
-    b: &OctonionDerivation,
-) -> OctonionDerivation {
+pub fn derivation_bracket(a: &OctonionDerivation, b: &OctonionDerivation) -> OctonionDerivation {
     let mut result = [[0.0f64; 8]; 8];
     #[allow(clippy::needless_range_loop)]
     for i in 0..8 {
         for j in 0..8 {
             let mut sum = 0.0;
             for k in 0..8 {
-                sum += a.matrix[i][k] * b.matrix[k][j]
-                     - b.matrix[i][k] * a.matrix[k][j];
+                sum += a.matrix[i][k] * b.matrix[k][j] - b.matrix[i][k] * a.matrix[k][j];
             }
             result[i][j] = sum;
         }
@@ -267,7 +265,9 @@ pub fn stabilizer_decomposition(fixed_unit: usize) -> G2Stabilizer {
     // Step 5: Convert coefficient vectors to derivations.
     let mut stab_derivations = Vec::with_capacity(kernel_coeffs.len());
     for coeffs in &kernel_coeffs {
-        let mut d = OctonionDerivation { matrix: [[0.0; 8]; 8] };
+        let mut d = OctonionDerivation {
+            matrix: [[0.0; 8]; 8],
+        };
         for (a, t_a) in g2_basis.iter().enumerate() {
             let c = coeffs[a];
             for i in 0..8 {
@@ -281,7 +281,9 @@ pub fn stabilizer_decomposition(fixed_unit: usize) -> G2Stabilizer {
 
     let mut coset_derivations = Vec::with_capacity(row_space.len());
     for coeffs in &row_space {
-        let mut d = OctonionDerivation { matrix: [[0.0; 8]; 8] };
+        let mut d = OctonionDerivation {
+            matrix: [[0.0; 8]; 8],
+        };
         for (a, t_a) in g2_basis.iter().enumerate() {
             let c = coeffs[a];
             for i in 0..8 {
@@ -394,7 +396,12 @@ pub fn complex_structure(fixed_unit: usize) -> ComplexStructure {
         }
     }
 
-    assert_eq!(pairs.len(), 3, "Must find exactly 3 Fano lines through e_{}", fixed_unit);
+    assert_eq!(
+        pairs.len(),
+        3,
+        "Must find exactly 3 Fano lines through e_{}",
+        fixed_unit
+    );
 
     let fano_pairs: [(usize, usize, i8); 3] = [pairs[0], pairs[1], pairs[2]];
 
@@ -471,11 +478,7 @@ pub fn is_skew_adjoint_on_perp(
 /// numerical coincidence. The test serves as defense-in-depth.
 ///
 /// Combined with skew-adjointness, this establishes the u(3) embedding.
-pub fn commutes_with_j(
-    derivation: &OctonionDerivation,
-    j: &ComplexStructure,
-    tol: f64,
-) -> bool {
+pub fn commutes_with_j(derivation: &OctonionDerivation, j: &ComplexStructure, tol: f64) -> bool {
     let perp = &j.perp_indices;
     let r_block = perp_block(derivation, perp);
     let j_mat = &j.matrix;
@@ -514,9 +517,11 @@ mod tests {
         for k in 1..=7 {
             let decomp = stabilizer_decomposition(k);
             assert_eq!(
-                decomp.stabilizer_basis.len(), 8,
+                decomp.stabilizer_basis.len(),
+                8,
                 "stab(e_{}) must have dimension 8, got {}",
-                k, decomp.stabilizer_basis.len()
+                k,
+                decomp.stabilizer_basis.len()
             );
         }
     }
@@ -526,9 +531,11 @@ mod tests {
         for k in 1..=7 {
             let decomp = stabilizer_decomposition(k);
             assert_eq!(
-                decomp.coset_complement.len(), 6,
+                decomp.coset_complement.len(),
+                6,
                 "coset for e_{} must have dimension 6, got {}",
-                k, decomp.coset_complement.len()
+                k,
+                decomp.coset_complement.len()
             );
         }
     }
@@ -538,7 +545,11 @@ mod tests {
         for k in 1..=7 {
             let decomp = stabilizer_decomposition(k);
             let total = decomp.stabilizer_basis.len() + decomp.coset_complement.len();
-            assert_eq!(total, 14, "stab + coset for e_{} must sum to 14, got {}", k, total);
+            assert_eq!(
+                total, 14,
+                "stab + coset for e_{} must sum to 14, got {}",
+                k, total
+            );
         }
     }
 
@@ -555,7 +566,10 @@ mod tests {
                 assert!(
                     norm < TOL,
                     "stab(e_{}) basis[{}]: D(e_{}) has norm {}, expected 0",
-                    k, idx, k, norm
+                    k,
+                    idx,
+                    k,
+                    norm
                 );
             }
         }
@@ -573,7 +587,9 @@ mod tests {
                 assert!(
                     residual < TOL,
                     "e_{}: stabilizer basis[{}] evaluation residual {} exceeds tolerance",
-                    k, idx, residual
+                    k,
+                    idx,
+                    residual
                 );
             }
             // Coset elements should NOT annihilate e_k
@@ -583,7 +599,9 @@ mod tests {
                 assert!(
                     norm > TOL,
                     "e_{}: coset element should NOT annihilate e_{}, but norm = {}",
-                    k, k, norm
+                    k,
+                    k,
+                    norm
                 );
             }
         }
@@ -599,11 +617,15 @@ mod tests {
             for (idx, d) in decomp.stabilizer_basis.iter().enumerate() {
                 assert!(
                     d.verify_leibniz(&e1, &e2, TOL),
-                    "e_{}: stab basis[{}] fails Leibniz on (e1,e2)", k, idx
+                    "e_{}: stab basis[{}] fails Leibniz on (e1,e2)",
+                    k,
+                    idx
                 );
                 assert!(
                     d.verify_leibniz(&e2, &e4, TOL),
-                    "e_{}: stab basis[{}] fails Leibniz on (e2,e4)", k, idx
+                    "e_{}: stab basis[{}] fails Leibniz on (e2,e4)",
+                    k,
+                    idx
                 );
             }
         }
@@ -622,7 +644,9 @@ mod tests {
 
                     // Construct the projection explicitly, then measure residual.
                     // This avoids catastrophic cancellation from |bracket|^2 - sum(coeff^2).
-                    let mut projected = OctonionDerivation { matrix: [[0.0; 8]; 8] };
+                    let mut projected = OctonionDerivation {
+                        matrix: [[0.0; 8]; 8],
+                    };
                     for c in 0..n {
                         let coeff = invariant_form(&bracket, &basis[c]);
                         for i in 0..8 {
@@ -645,7 +669,10 @@ mod tests {
                     assert!(
                         residual < TOL,
                         "e_{}: [stab[{}], stab[{}]] leaks outside stabilizer, residual = {}",
-                        k, a, b, residual
+                        k,
+                        a,
+                        b,
+                        residual
                     );
                 }
             }
@@ -663,7 +690,8 @@ mod tests {
                 assert!(
                     norm_sq > 0.0,
                     "g2 basis[{}]: invariant form must be positive, got {}",
-                    idx, norm_sq
+                    idx,
+                    norm_sq
                 );
             }
         }
@@ -681,7 +709,10 @@ mod tests {
                 assert!(
                     (ip - expected).abs() < TOL,
                     "<T_{}, T_{}> = {}, expected {}",
-                    a, b, ip, expected
+                    a,
+                    b,
+                    ip,
+                    expected
                 );
             }
         }
@@ -699,7 +730,11 @@ mod tests {
                     assert!(
                         (ip - expected).abs() < TOL,
                         "e_{}: <stab[{}], stab[{}]> = {}, expected {}",
-                        k, a, b, ip, expected
+                        k,
+                        a,
+                        b,
+                        ip,
+                        expected
                     );
                 }
             }
@@ -716,7 +751,10 @@ mod tests {
                     assert!(
                         ip.abs() < TOL,
                         "e_{}: <stab[{}], coset[{}]> = {}, expected 0",
-                        k, si, ci, ip
+                        k,
+                        si,
+                        ci,
+                        ip
                     );
                 }
             }
@@ -738,13 +776,25 @@ mod tests {
                     assert!(
                         (f[a][b][c] + f[b][a][c]).abs() < TOL,
                         "f_{{{}{}{}}} + f_{{{}{}{}}} = {} (should be 0)",
-                        a, b, c, b, a, c, f[a][b][c] + f[b][a][c]
+                        a,
+                        b,
+                        c,
+                        b,
+                        a,
+                        c,
+                        f[a][b][c] + f[b][a][c]
                     );
                     // f_{abc} = -f_{acb}
                     assert!(
                         (f[a][b][c] + f[a][c][b]).abs() < TOL,
                         "f_{{{}{}{}}} + f_{{{}{}{}}} = {} (should be 0)",
-                        a, b, c, a, c, b, f[a][b][c] + f[a][c][b]
+                        a,
+                        b,
+                        c,
+                        a,
+                        c,
+                        b,
+                        f[a][b][c] + f[a][c][b]
                     );
                 }
             }
@@ -767,13 +817,17 @@ mod tests {
                         let mut jac = 0.0;
                         for d in 0..n {
                             jac += f[b][c][d] * f[a][d][e]
-                                 + f[c][a][d] * f[b][d][e]
-                                 + f[a][b][d] * f[c][d][e];
+                                + f[c][a][d] * f[b][d][e]
+                                + f[a][b][d] * f[c][d][e];
                         }
                         assert!(
                             jac.abs() < TOL,
                             "Jacobi fails for (a,b,c,e)=({},{},{},{}): {}",
-                            a, b, c, e, jac
+                            a,
+                            b,
+                            c,
+                            e,
+                            jac
                         );
                     }
                 }
@@ -814,7 +868,9 @@ mod tests {
                 assert!(
                     residual_sq.sqrt() < TOL,
                     "[T_{}, T_{}] reconstruction residual = {}",
-                    a, b, residual_sq.sqrt()
+                    a,
+                    b,
+                    residual_sq.sqrt()
                 );
             }
         }
@@ -839,7 +895,11 @@ mod tests {
                     assert!(
                         (j2 - expected).abs() < TOL,
                         "e_{}: J^2[{}][{}] = {}, expected {}",
-                        k, i, l, j2, expected
+                        k,
+                        i,
+                        l,
+                        j2,
+                        expected
                     );
                 }
             }
@@ -863,7 +923,11 @@ mod tests {
                     assert!(
                         (jtj - expected).abs() < TOL,
                         "e_{}: (J^T J)[{}][{}] = {}, expected {}",
-                        k, i, l, jtj, expected
+                        k,
+                        i,
+                        l,
+                        jtj,
+                        expected
                     );
                 }
             }
@@ -880,7 +944,8 @@ mod tests {
                 assert!(
                     is_skew_adjoint_on_perp(d, &decomp.perp_indices, TOL),
                     "e_{}: stab basis[{}] restricted action is NOT skew-adjoint",
-                    k, idx
+                    k,
+                    idx
                 );
             }
         }
@@ -895,7 +960,9 @@ mod tests {
                 assert!(
                     commutes_with_j(d, &cs, TOL),
                     "e_{}: stab basis[{}] does NOT commute with J_{}",
-                    k, idx, k
+                    k,
+                    idx,
+                    k
                 );
             }
         }
@@ -909,8 +976,12 @@ mod tests {
         // is stated in module docs, not tested here.
         for k in 1..=7 {
             let decomp = stabilizer_decomposition(k);
-            assert_eq!(decomp.stabilizer_basis.len(), 8,
-                "e_{}: stabilizer dimension must be 8 for u(3) embedding argument", k);
+            assert_eq!(
+                decomp.stabilizer_basis.len(),
+                8,
+                "e_{}: stabilizer dimension must be 8 for u(3) embedding argument",
+                k
+            );
         }
     }
 
@@ -942,7 +1013,8 @@ mod tests {
             }
             assert!(
                 covered.iter().all(|&c| c),
-                "e_{}: Fano pairs do not cover all 6 perp indices", k
+                "e_{}: Fano pairs do not cover all 6 perp indices",
+                k
             );
         }
     }

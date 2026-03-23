@@ -31,7 +31,7 @@ pub fn collect_motif_summary(dims: &[usize]) -> Vec<MotifDimSummary> {
             continue;
         }
 
-        // Toy implementation for logic migration: 
+        // Toy implementation for logic migration:
         // In a real run, we'd use csv::Reader to parse the files.
         // For now, we provide the aggregation structure.
         let mut reader = csv::Reader::from_path(path).unwrap();
@@ -51,10 +51,14 @@ pub fn collect_motif_summary(dims: &[usize]) -> Vec<MotifDimSummary> {
             total_nodes += nodes;
             max_nodes = max_nodes.max(nodes);
             max_edges = max_edges.max(edges);
-            
+
             // Check flags (assume columns 3, 4, 5 for symmetry)
-            if record.get(3).unwrap_or("false") == "true" { k222 += 1; }
-            if record.get(4).unwrap_or("false") == "true" { cuboct += 1; }
+            if record.get(3).unwrap_or("false") == "true" {
+                k222 += 1;
+            }
+            if record.get(4).unwrap_or("false") == "true" {
+                cuboct += 1;
+            }
             let parts: usize = record.get(5).unwrap_or("0").parse().unwrap_or(0);
             max_parts = max_parts.max(parts);
         }

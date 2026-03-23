@@ -7,7 +7,7 @@
 //! turbulence" in the field evolution.
 //!
 //! # Equations of Motion
-//! The field evolves under a Hamiltonian with a Laplacian term and a 
+//! The field evolves under a Hamiltonian with a Laplacian term and a
 //! non-linear potential (e.g., quartic).
 //!
 //! # Metric Corrections (Audit Refinement)
@@ -16,7 +16,7 @@
 //!   G_eff(D_H) = G_0 * exp(-alpha * (D_H - 4))
 //! where D_H is the Hausdorff dimension of the fractal spacetime foam.
 
-use crate::construction::cayley_dickson::{cd_multiply, cd_associator};
+use crate::construction::cayley_dickson::{cd_associator, cd_multiply};
 use std::f64::consts::PI;
 
 /// Sedenion (16 components).
@@ -57,7 +57,7 @@ impl Default for SedenionFieldParams {
 
 impl SedenionFieldParams {
     /// Compute the effective gravitational coupling constant G_eff.
-    /// 
+    ///
     /// Corrects the dimensionally inconsistent exp(-delta D_H) from the original
     /// proposal using the Audit's dimensionless exponential form.
     pub fn g_eff(&self, g0: f64) -> f64 {
@@ -66,11 +66,7 @@ impl SedenionFieldParams {
 }
 
 /// One Stormer-Verlet step for the Sedenion field on a 3D grid.
-pub fn sedenion_step_3d(
-    phi: &mut [Sedenion],
-    pi: &mut [Sedenion],
-    params: &SedenionFieldParams,
-) {
+pub fn sedenion_step_3d(phi: &mut [Sedenion], pi: &mut [Sedenion], params: &SedenionFieldParams) {
     let nx = params.n[0];
     let ny = params.n[1];
     let nz = params.n[2];
@@ -86,7 +82,7 @@ pub fn sedenion_step_3d(
         for y in 0..ny {
             for z in 0..nz {
                 let idx = x * ny * nz + y * nz + z;
-                
+
                 // Indices for 6 neighbors
                 let idx_px = ((x + 1) % nx) * ny * nz + y * nz + z;
                 let idx_mx = ((x + nx - 1) % nx) * ny * nz + y * nz + z;
@@ -96,11 +92,15 @@ pub fn sedenion_step_3d(
                 let idx_mz = x * ny * nz + y * nz + ((z + nz - 1) % nz);
 
                 for k in 0..16 {
-                    let lap = (phi[idx_px][k] + phi[idx_mx][k] +
-                               phi[idx_py][k] + phi[idx_my][k] +
-                               phi[idx_pz][k] + phi[idx_mz][k] -
-                               6.0 * phi[idx][k]) / dx2;
-                    
+                    let lap = (phi[idx_px][k]
+                        + phi[idx_mx][k]
+                        + phi[idx_py][k]
+                        + phi[idx_my][k]
+                        + phi[idx_pz][k]
+                        + phi[idx_mz][k]
+                        - 6.0 * phi[idx][k])
+                        / dx2;
+
                     force[idx][k] = lap - params.mass * params.mass * phi[idx][k];
                 }
 
@@ -127,7 +127,7 @@ pub fn sedenion_step_3d(
     // Final momentum update (requires second force evaluation for true second-order)
     // For simplicity in this migration, we'll do a simple Euler-Chromer-like update
     // or re-compute the force. Let's re-compute force for rigor.
-    
+
     // (Re-computing force here... omitted for brevity in template, but ideally required)
 }
 

@@ -65,6 +65,7 @@ members = [
     "xtask",
     "crates/lit_search",
     "crates/flavor_lifts",
+    "crates/gororoba_structurable",
     "crates/surreal_algebra",
 ]
 
@@ -107,6 +108,7 @@ gororoba_gpu_readback = { path = "crates/gororoba_gpu_readback" }
 gororoba_sparse_grid = { path = "crates/gororoba_sparse_grid" }
 gororoba_view_core = { path = "crates/gororoba_view_core" }
 gororoba_view_raster = { path = "crates/gororoba_view_raster" }
+gororoba_structurable = { path = "crates/gororoba_structurable" }
 
 # Core numerics
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls

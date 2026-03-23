@@ -34,9 +34,11 @@ impl CayleyDicksonFunctor {
         (norm_sq_combined - (norm_sq_a + norm_sq_b)).abs() < 1e-10
     }
 
-    /// CD is NOT a monad because composition does not yield a natural associative 
+    /// CD is NOT a monad because composition does not yield a natural associative
     /// algebra structure for all N (fails at N=8).
-    pub fn is_monad() -> bool { false }
+    pub fn is_monad() -> bool {
+        false
+    }
 }
 
 #[cfg(test)]

@@ -2,7 +2,7 @@
 
 /// Adelic Product Framework for P-adic Quantum Coherence.
 ///
-/// Multi-p-adic quantum fields $Q_p$ maintaining coherence across all 
+/// Multi-p-adic quantum fields $Q_p$ maintaining coherence across all
 /// primes via the adelic product formula: $\prod_p ||Q_p||_p = 1$.
 pub struct AdelicProduct {
     /// P-adic absolute values observed across localized primes
@@ -11,7 +11,9 @@ pub struct AdelicProduct {
 
 impl AdelicProduct {
     pub fn new(norms: Vec<f64>) -> Self {
-        Self { p_adic_norms: norms }
+        Self {
+            p_adic_norms: norms,
+        }
     }
 
     /// Evaluates the Adelic Product constraint.

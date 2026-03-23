@@ -182,38 +182,60 @@ pub fn print_g2_muon_summary() {
     println!("  Evidentiary class: H (heuristic structural ansatz)");
     println!();
     println!("--- Experimental status (2025) ---");
-    println!("  a_mu^exp (Fermilab R1-6): {:.1} x 10^-11  (arXiv:BIB-0442)",
-        est.data.a_mu_exp);
-    println!("  a_mu^SM  (WP 2025):       {:.1} x 10^-11  (arXiv:2505.21476)",
-        est.data.a_mu_sm);
-    println!("  Delta_a_mu:               {:.0}({:.0}) x 10^-11",
-        est.data.delta_a_mu, est.data.delta_uncertainty);
+    println!(
+        "  a_mu^exp (Fermilab R1-6): {:.1} x 10^-11  (arXiv:BIB-0442)",
+        est.data.a_mu_exp
+    );
+    println!(
+        "  a_mu^SM  (WP 2025):       {:.1} x 10^-11  (arXiv:2505.21476)",
+        est.data.a_mu_sm
+    );
+    println!(
+        "  Delta_a_mu:               {:.0}({:.0}) x 10^-11",
+        est.data.delta_a_mu, est.data.delta_uncertainty
+    );
     println!("  STATUS: Compatible within 1-sigma (NOT a strong anomaly as of 2025).");
     println!();
     println!("--- G_2 structural data (evid E -- exact Lie theory) ---");
-    println!("  dim(G_2) = {}  rank = {}",
-        est.g2.dim_g2, est.g2.rank);
-    println!("  dim(SU(3)) = {}  (embedded in G_2 as Aut(Octonions|e_7))",
-        est.g2.dim_su3);
+    println!("  dim(G_2) = {}  rank = {}", est.g2.dim_g2, est.g2.rank);
+    println!(
+        "  dim(SU(3)) = {}  (embedded in G_2 as Aut(Octonions|e_7))",
+        est.g2.dim_su3
+    );
     println!("  dim(coset G_2/SU(3)) = {}", est.g2.dim_coset);
-    println!("  ratio dim(SU(3))/dim(G_2) = {}/{} = {:.4}  (sin^2(theta_W) analogy)",
-        est.g2.dim_su3, est.g2.dim_g2, est.g2.ratio_su3_over_g2);
-    println!("  ratio dim(coset)/dim(G_2) = {}/{} = {:.4}",
-        est.g2.dim_coset, est.g2.dim_g2, est.g2.ratio_coset_over_g2);
+    println!(
+        "  ratio dim(SU(3))/dim(G_2) = {}/{} = {:.4}  (sin^2(theta_W) analogy)",
+        est.g2.dim_su3, est.g2.dim_g2, est.g2.ratio_su3_over_g2
+    );
+    println!(
+        "  ratio dim(coset)/dim(G_2) = {}/{} = {:.4}",
+        est.g2.dim_coset, est.g2.dim_g2, est.g2.ratio_coset_over_g2
+    );
     println!();
     println!("--- Structural estimate (evid H) ---");
-    println!("  Structural ratio: {:.4}  (analogous to sin^2(theta_W) ~ 0.250 heuristic)",
-        est.structural_ratio);
-    println!("  QED leading term alpha/(2*pi): {:.4e}  (correct scale for a_mu)",
-        est.qed_leading);
-    println!("  Delta_a_mu in natural units: {:.1e}",
-        est.data.delta_a_mu * 1e-11);
-    println!("  Scale gap: {:.1} orders of magnitude between structural ratio and Delta_a_mu",
-        est.scale_gap_orders);
+    println!(
+        "  Structural ratio: {:.4}  (analogous to sin^2(theta_W) ~ 0.250 heuristic)",
+        est.structural_ratio
+    );
+    println!(
+        "  QED leading term alpha/(2*pi): {:.4e}  (correct scale for a_mu)",
+        est.qed_leading
+    );
+    println!(
+        "  Delta_a_mu in natural units: {:.1e}",
+        est.data.delta_a_mu * 1e-11
+    );
+    println!(
+        "  Scale gap: {:.1} orders of magnitude between structural ratio and Delta_a_mu",
+        est.scale_gap_orders
+    );
     println!();
     println!("--- Finding ---");
     println!("  G_2 dimensional ratios are O(1).  Delta_a_mu ~ 3.8 x 10^-10.");
-    println!("  The scale gap is ~{:.0} orders of magnitude.", est.scale_gap_orders);
+    println!(
+        "  The scale gap is ~{:.0} orders of magnitude.",
+        est.scale_gap_orders
+    );
     println!("  CONCLUSION: There is no meaningful G_2 structural estimate for a_mu.");
     println!("  The sin^2(theta_W) analogy (dim ratio -> O(1) estimate) does not");
     println!("  extend to a_mu, which requires alpha and loop-factor input.");
@@ -228,10 +250,13 @@ mod tests {
     fn test_g2_structure_exact() {
         let g2 = G2Structure::canonical();
         assert_eq!(g2.dim_g2, 14, "G_2 should have dimension 14");
-        assert_eq!(g2.dim_su3, 8,  "SU(3) subgroup should have dimension 8");
+        assert_eq!(g2.dim_su3, 8, "SU(3) subgroup should have dimension 8");
         assert_eq!(g2.dim_coset, 6, "G_2/SU(3) coset should have dimension 6");
-        assert_eq!(g2.dim_su3 + g2.dim_coset, g2.dim_g2,
-            "su3 + coset should equal g2 dim");
+        assert_eq!(
+            g2.dim_su3 + g2.dim_coset,
+            g2.dim_g2,
+            "su3 + coset should equal g2 dim"
+        );
         // Exact fractions
         let expected_ratio_su3 = 8.0_f64 / 14.0;
         let expected_ratio_coset = 6.0_f64 / 14.0;
@@ -249,7 +274,8 @@ mod tests {
         let significance = data.delta_a_mu / data.delta_uncertainty;
         assert!(
             significance.abs() < 1.0,
-            "2025 Delta_a_mu significance should be < 1 sigma, got {:.2}", significance
+            "2025 Delta_a_mu significance should be < 1 sigma, got {:.2}",
+            significance
         );
     }
 
@@ -258,15 +284,24 @@ mod tests {
     fn test_g2_structural_ratio_not_muon_scale() {
         let est = G2MuonEstimate::compute();
         // Structural ratio should be > 0.1 (order 1)
-        assert!(est.structural_ratio > 0.1,
-            "G_2 structural ratio {} should be O(1)", est.structural_ratio);
+        assert!(
+            est.structural_ratio > 0.1,
+            "G_2 structural ratio {} should be O(1)",
+            est.structural_ratio
+        );
         // Delta_a_mu (natural units) should be < 10^-9 (much smaller than structural ratio)
         let delta_natural = est.data.delta_a_mu * 1e-11;
-        assert!(delta_natural < 1e-9,
-            "Delta_a_mu {} should be < 10^-9 (muon scale)", delta_natural);
+        assert!(
+            delta_natural < 1e-9,
+            "Delta_a_mu {} should be < 10^-9 (muon scale)",
+            delta_natural
+        );
         // Scale gap should be > 8 orders of magnitude
-        assert!(est.scale_gap_orders > 8.0,
-            "Scale gap {:.1} should be > 8 orders of magnitude", est.scale_gap_orders);
+        assert!(
+            est.scale_gap_orders > 8.0,
+            "Scale gap {:.1} should be > 8 orders of magnitude",
+            est.scale_gap_orders
+        );
     }
 
     /// Validate Fermilab 2025 final a_mu^exp encoding.
@@ -281,19 +316,22 @@ mod tests {
         let expected_exp = 116_592_071.5_f64;
         assert!(
             (data.a_mu_exp - expected_exp).abs() < 0.1,
-            "a_mu^exp should be 116592071.5 x 10^-11, got {}", data.a_mu_exp
+            "a_mu^exp should be 116592071.5 x 10^-11, got {}",
+            data.a_mu_exp
         );
         // SM WP 2020 baseline (still used in 2025 comparison)
         let expected_sm = 116_591_810.0_f64;
         assert!(
             (data.a_mu_sm - expected_sm).abs() < 0.1,
-            "a_mu^SM should be 116591810.0 x 10^-11, got {}", data.a_mu_sm
+            "a_mu^SM should be 116591810.0 x 10^-11, got {}",
+            data.a_mu_sm
         );
         // Naive difference (not the official discrepancy -- see delta_a_mu)
         let naive_diff = data.a_mu_exp - data.a_mu_sm;
         assert!(
             naive_diff > 0.0,
-            "Naive exp-SM difference should be positive, got {}", naive_diff
+            "Naive exp-SM difference should be positive, got {}",
+            naive_diff
         );
     }
 
@@ -309,12 +347,14 @@ mod tests {
         assert!(
             (est.qed_leading - expected).abs() / expected < 1e-6,
             "QED leading term should match alpha/(2*pi) = {:.6e}, got {:.6e}",
-            expected, est.qed_leading
+            expected,
+            est.qed_leading
         );
         // Must be O(10^-3), not O(1)
         assert!(
             est.qed_leading < 1e-2 && est.qed_leading > 1e-4,
-            "QED leading ~ 1.16e-3, got {:.4e}", est.qed_leading
+            "QED leading ~ 1.16e-3, got {:.4e}",
+            est.qed_leading
         );
     }
 
@@ -328,7 +368,8 @@ mod tests {
         let est = G2MuonEstimate::compute();
         assert!(
             est.scale_gap_orders >= 9.0,
-            "Scale gap should be >= 9 orders, got {:.2}", est.scale_gap_orders
+            "Scale gap should be >= 9 orders, got {:.2}",
+            est.scale_gap_orders
         );
     }
 

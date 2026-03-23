@@ -1,6 +1,6 @@
 //! Topological Insulators and Anyon Braiding Physics.
 //!
-//! Implements theoretical bounds for topological materials based on algebraic 
+//! Implements theoretical bounds for topological materials based on algebraic
 //! connections (Clifford algebras, Quaternions).
 //!
 //! Validates:
@@ -12,20 +12,20 @@ use std::f64::consts::PI;
 /// Evaluates the Z2 topological invariant for a given Hamiltonian matrix
 /// representation in a Time-Reversal Symmetric (TRS) system.
 ///
-/// In 2D topological insulators (like Kane-Mele), $\nu = 0$ is trivial, 
+/// In 2D topological insulators (like Kane-Mele), $\nu = 0$ is trivial,
 /// and $\nu = 1$ is topological.
 pub fn calculate_z2_invariant(pfaffian_t_invariant_points: &[f64]) -> i32 {
     let mut product = 1.0;
     for &pf in pfaffian_t_invariant_points {
         product *= pf.signum();
     }
-    
+
     // If product is -1, nu = 1 (topological). If +1, nu = 0 (trivial).
     if product < 0.0 { 1 } else { 0 }
 }
 
 /// Fractional Quantum Hall Effect (FQHE) braiding phase.
-/// 
+///
 /// In FQHE, quasiparticles (anyons) pick up a fractional phase when braided.
 /// For a filling factor $\nu = 1/m$, the braiding phase is $\theta = \pi / m$.
 pub fn anyon_braiding_phase(m: u32) -> f64 {
@@ -33,7 +33,7 @@ pub fn anyon_braiding_phase(m: u32) -> f64 {
 }
 
 /// Evaluates if a given FQHE state requires non-Abelian statistics.
-/// Standard Laughlin states (1/m) are Abelian. Moore-Read (5/2) and 
+/// Standard Laughlin states (1/m) are Abelian. Moore-Read (5/2) and
 /// Fibonacci anyons are non-Abelian.
 pub fn is_non_abelian_anyon(_numerator: u32, denominator: u32) -> bool {
     // A heuristic: even denominators generally indicate non-Abelian states
@@ -58,12 +58,12 @@ mod tests {
     fn test_anyon_braiding() {
         // Nu = 1/3 (Laughlin state)
         let phase = anyon_braiding_phase(3);
-        assert!((phase - PI/3.0).abs() < 1e-10);
+        assert!((phase - PI / 3.0).abs() < 1e-10);
     }
 
     #[test]
     fn test_non_abelian() {
         assert!(!is_non_abelian_anyon(1, 3)); // Abelian (Laughlin)
-        assert!(is_non_abelian_anyon(5, 2));  // Non-Abelian (Moore-Read)
+        assert!(is_non_abelian_anyon(5, 2)); // Non-Abelian (Moore-Read)
     }
 }

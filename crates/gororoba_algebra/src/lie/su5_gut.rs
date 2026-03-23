@@ -241,9 +241,7 @@ pub fn build_generators() -> [Mat5; 24] {
     idx += 1;
 
     // Leptoquark symmetric: one index in {0,1,2}, other in {3,4}
-    let lq_pairs = [
-        (0, 3), (0, 4), (1, 3), (1, 4), (2, 3), (2, 4),
-    ];
+    let lq_pairs = [(0, 3), (0, 4), (1, 3), (1, 4), (2, 3), (2, 4)];
     for &(i, j) in &lq_pairs {
         gens[idx] = symmetric_generator(i, j);
         idx += 1;
@@ -286,18 +284,25 @@ struct CatalogEntry {
 }
 
 const SU3_NAMES: [&str; 8] = [
-    "gluon_1", "gluon_2", "gluon_3", "gluon_4",
-    "gluon_5", "gluon_6", "gluon_7", "gluon_8",
+    "gluon_1", "gluon_2", "gluon_3", "gluon_4", "gluon_5", "gluon_6", "gluon_7", "gluon_8",
 ];
 const SU2_NAMES: [&str; 3] = ["W_1", "W_2", "W_3"];
 const U1_NAMES: [&str; 1] = ["B"];
 const LQ_SYM_NAMES: [&str; 6] = [
-    "X_boson_1", "X_boson_2", "X_boson_3",
-    "X_boson_4", "X_boson_5", "X_boson_6",
+    "X_boson_1",
+    "X_boson_2",
+    "X_boson_3",
+    "X_boson_4",
+    "X_boson_5",
+    "X_boson_6",
 ];
 const LQ_ANTI_NAMES: [&str; 6] = [
-    "Y_boson_1", "Y_boson_2", "Y_boson_3",
-    "Y_boson_4", "Y_boson_5", "Y_boson_6",
+    "Y_boson_1",
+    "Y_boson_2",
+    "Y_boson_3",
+    "Y_boson_4",
+    "Y_boson_5",
+    "Y_boson_6",
 ];
 
 fn build_catalog() -> Vec<CatalogEntry> {
@@ -310,14 +315,22 @@ fn build_catalog() -> Vec<CatalogEntry> {
             sector: GeneratorSector::SU3,
             gen_type: GenType::Symmetric,
             indices: (j, k),
-            sm_rep: SmRep { dim_su3: "8", dim_su2: 1, hypercharge: "0" },
+            sm_rep: SmRep {
+                dim_su3: "8",
+                dim_su2: 1,
+                hypercharge: "0",
+            },
             name: SU3_NAMES[2 * pi],
         });
         cat.push(CatalogEntry {
             sector: GeneratorSector::SU3,
             gen_type: GenType::Antisymmetric,
             indices: (j, k),
-            sm_rep: SmRep { dim_su3: "8", dim_su2: 1, hypercharge: "0" },
+            sm_rep: SmRep {
+                dim_su3: "8",
+                dim_su2: 1,
+                hypercharge: "0",
+            },
             name: SU3_NAMES[2 * pi + 1],
         });
     }
@@ -327,14 +340,22 @@ fn build_catalog() -> Vec<CatalogEntry> {
         sector: GeneratorSector::SU3,
         gen_type: GenType::Diagonal,
         indices: (0, 0),
-        sm_rep: SmRep { dim_su3: "8", dim_su2: 1, hypercharge: "0" },
+        sm_rep: SmRep {
+            dim_su3: "8",
+            dim_su2: 1,
+            hypercharge: "0",
+        },
         name: SU3_NAMES[6],
     });
     cat.push(CatalogEntry {
         sector: GeneratorSector::SU3,
         gen_type: GenType::Diagonal,
         indices: (1, 1),
-        sm_rep: SmRep { dim_su3: "8", dim_su2: 1, hypercharge: "0" },
+        sm_rep: SmRep {
+            dim_su3: "8",
+            dim_su2: 1,
+            hypercharge: "0",
+        },
         name: SU3_NAMES[7],
     });
 
@@ -343,14 +364,22 @@ fn build_catalog() -> Vec<CatalogEntry> {
         sector: GeneratorSector::SU2,
         gen_type: GenType::Symmetric,
         indices: (3, 4),
-        sm_rep: SmRep { dim_su3: "1", dim_su2: 3, hypercharge: "0" },
+        sm_rep: SmRep {
+            dim_su3: "1",
+            dim_su2: 3,
+            hypercharge: "0",
+        },
         name: SU2_NAMES[0],
     });
     cat.push(CatalogEntry {
         sector: GeneratorSector::SU2,
         gen_type: GenType::Antisymmetric,
         indices: (3, 4),
-        sm_rep: SmRep { dim_su3: "1", dim_su2: 3, hypercharge: "0" },
+        sm_rep: SmRep {
+            dim_su3: "1",
+            dim_su2: 3,
+            hypercharge: "0",
+        },
         name: SU2_NAMES[1],
     });
 
@@ -359,7 +388,11 @@ fn build_catalog() -> Vec<CatalogEntry> {
         sector: GeneratorSector::SU2,
         gen_type: GenType::Diagonal,
         indices: (3, 3),
-        sm_rep: SmRep { dim_su3: "1", dim_su2: 3, hypercharge: "0" },
+        sm_rep: SmRep {
+            dim_su3: "1",
+            dim_su2: 3,
+            hypercharge: "0",
+        },
         name: SU2_NAMES[2],
     });
 
@@ -368,20 +401,26 @@ fn build_catalog() -> Vec<CatalogEntry> {
         sector: GeneratorSector::U1,
         gen_type: GenType::Diagonal,
         indices: (0, 0),
-        sm_rep: SmRep { dim_su3: "1", dim_su2: 1, hypercharge: "0" },
+        sm_rep: SmRep {
+            dim_su3: "1",
+            dim_su2: 1,
+            hypercharge: "0",
+        },
         name: U1_NAMES[0],
     });
 
     // Leptoquark symmetric
-    let lq_pairs: [(usize, usize); 6] = [
-        (0, 3), (0, 4), (1, 3), (1, 4), (2, 3), (2, 4),
-    ];
+    let lq_pairs: [(usize, usize); 6] = [(0, 3), (0, 4), (1, 3), (1, 4), (2, 3), (2, 4)];
     for (pi, &(i, j)) in lq_pairs.iter().enumerate() {
         cat.push(CatalogEntry {
             sector: GeneratorSector::Leptoquark,
             gen_type: GenType::Symmetric,
             indices: (i, j),
-            sm_rep: SmRep { dim_su3: "3", dim_su2: 2, hypercharge: "5/6" },
+            sm_rep: SmRep {
+                dim_su3: "3",
+                dim_su2: 2,
+                hypercharge: "5/6",
+            },
             name: LQ_SYM_NAMES[pi],
         });
     }
@@ -392,7 +431,11 @@ fn build_catalog() -> Vec<CatalogEntry> {
             sector: GeneratorSector::Leptoquark,
             gen_type: GenType::Antisymmetric,
             indices: (i, j),
-            sm_rep: SmRep { dim_su3: "3*", dim_su2: 2, hypercharge: "-5/6" },
+            sm_rep: SmRep {
+                dim_su3: "3*",
+                dim_su2: 2,
+                hypercharge: "-5/6",
+            },
             name: LQ_ANTI_NAMES[pi],
         });
     }
@@ -442,9 +485,8 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
     static POS_3: [usize; 1] = [3];
     static POS_4: [usize; 1] = [4];
 
-    let colors: [(&str, &'static [usize]); 3] = [
-        ("red", &POS_0), ("green", &POS_1), ("blue", &POS_2),
-    ];
+    let colors: [(&str, &'static [usize]); 3] =
+        [("red", &POS_0), ("green", &POS_1), ("blue", &POS_2)];
     static NAMES_DBAR: [&str; 3] = ["d_R_bar_red", "d_R_bar_green", "d_R_bar_blue"];
     for (ci, &(color, pos)) in colors.iter().enumerate() {
         fermions.push(FermionAssignment {
@@ -452,7 +494,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
             representation: FermionRep::FiveBar,
             position: pos,
             quantum_numbers: QuantumNumbers {
-                t3: 0.0, y: 1.0 / 3.0, q: 1.0 / 3.0, color,
+                t3: 0.0,
+                y: 1.0 / 3.0,
+                q: 1.0 / 3.0,
+                color,
             },
         });
     }
@@ -463,7 +508,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         representation: FermionRep::FiveBar,
         position: &POS_3,
         quantum_numbers: QuantumNumbers {
-            t3: 0.5, y: -0.5, q: 0.0, color: "singlet",
+            t3: 0.5,
+            y: -0.5,
+            q: 0.0,
+            color: "singlet",
         },
     });
     fermions.push(FermionAssignment {
@@ -471,7 +519,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         representation: FermionRep::FiveBar,
         position: &POS_4,
         quantum_numbers: QuantumNumbers {
-            t3: -0.5, y: -0.5, q: -1.0, color: "singlet",
+            t3: -0.5,
+            y: -0.5,
+            q: -1.0,
+            color: "singlet",
         },
     });
 
@@ -493,7 +544,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         representation: FermionRep::Ten,
         position: &POS_01,
         quantum_numbers: QuantumNumbers {
-            t3: 0.0, y: -2.0 / 3.0, q: -2.0 / 3.0, color: "blue",
+            t3: 0.0,
+            y: -2.0 / 3.0,
+            q: -2.0 / 3.0,
+            color: "blue",
         },
     });
     fermions.push(FermionAssignment {
@@ -501,7 +555,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         representation: FermionRep::Ten,
         position: &POS_02,
         quantum_numbers: QuantumNumbers {
-            t3: 0.0, y: -2.0 / 3.0, q: -2.0 / 3.0, color: "green",
+            t3: 0.0,
+            y: -2.0 / 3.0,
+            q: -2.0 / 3.0,
+            color: "green",
         },
     });
     fermions.push(FermionAssignment {
@@ -509,7 +566,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         representation: FermionRep::Ten,
         position: &POS_12,
         quantum_numbers: QuantumNumbers {
-            t3: 0.0, y: -2.0 / 3.0, q: -2.0 / 3.0, color: "red",
+            t3: 0.0,
+            y: -2.0 / 3.0,
+            q: -2.0 / 3.0,
+            color: "red",
         },
     });
 
@@ -522,12 +582,48 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         q: f64,
     }
     let ql = [
-        QLEntry { name: "u_L_red",   position: &POS_03, color: "red",    t3:  0.5, q:  2.0/3.0 },
-        QLEntry { name: "d_L_red",   position: &POS_04, color: "red",    t3: -0.5, q: -1.0/3.0 },
-        QLEntry { name: "u_L_green", position: &POS_13, color: "green",  t3:  0.5, q:  2.0/3.0 },
-        QLEntry { name: "d_L_green", position: &POS_14, color: "green",  t3: -0.5, q: -1.0/3.0 },
-        QLEntry { name: "u_L_blue",  position: &POS_23, color: "blue",   t3:  0.5, q:  2.0/3.0 },
-        QLEntry { name: "d_L_blue",  position: &POS_24, color: "blue",   t3: -0.5, q: -1.0/3.0 },
+        QLEntry {
+            name: "u_L_red",
+            position: &POS_03,
+            color: "red",
+            t3: 0.5,
+            q: 2.0 / 3.0,
+        },
+        QLEntry {
+            name: "d_L_red",
+            position: &POS_04,
+            color: "red",
+            t3: -0.5,
+            q: -1.0 / 3.0,
+        },
+        QLEntry {
+            name: "u_L_green",
+            position: &POS_13,
+            color: "green",
+            t3: 0.5,
+            q: 2.0 / 3.0,
+        },
+        QLEntry {
+            name: "d_L_green",
+            position: &POS_14,
+            color: "green",
+            t3: -0.5,
+            q: -1.0 / 3.0,
+        },
+        QLEntry {
+            name: "u_L_blue",
+            position: &POS_23,
+            color: "blue",
+            t3: 0.5,
+            q: 2.0 / 3.0,
+        },
+        QLEntry {
+            name: "d_L_blue",
+            position: &POS_24,
+            color: "blue",
+            t3: -0.5,
+            q: -1.0 / 3.0,
+        },
     ];
     for e in &ql {
         fermions.push(FermionAssignment {
@@ -535,7 +631,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
             representation: FermionRep::Ten,
             position: e.position,
             quantum_numbers: QuantumNumbers {
-                t3: e.t3, y: 1.0 / 6.0, q: e.q, color: e.color,
+                t3: e.t3,
+                y: 1.0 / 6.0,
+                q: e.q,
+                color: e.color,
             },
         });
     }
@@ -546,7 +645,10 @@ pub fn build_quark_sector() -> Vec<FermionAssignment> {
         representation: FermionRep::Ten,
         position: &POS_34,
         quantum_numbers: QuantumNumbers {
-            t3: 0.0, y: 1.0, q: 1.0, color: "singlet",
+            t3: 0.0,
+            y: 1.0,
+            q: 1.0,
+            color: "singlet",
         },
     });
 
@@ -851,10 +953,9 @@ fn check_anomaly_cancellation(generators: &[Mat5; 24]) -> VerificationResult {
     for a in (0..24).step_by(4) {
         for b in (0..24).step_by(4) {
             for ci in (0..24).step_by(4) {
-                let d_5bar = cr(0.5)
-                    * (anticommutator5(&rep5bar[a], &rep5bar[b]) * rep5bar[ci]).trace();
-                let d_10 = cr(0.5)
-                    * (anticommutator10(&rep10[a], &rep10[b]) * rep10[ci]).trace();
+                let d_5bar =
+                    cr(0.5) * (anticommutator5(&rep5bar[a], &rep5bar[b]) * rep5bar[ci]).trace();
+                let d_10 = cr(0.5) * (anticommutator10(&rep10[a], &rep10[b]) * rep10[ci]).trace();
                 let residual = (d_5bar + d_10).norm();
                 max_residual = max_residual.max(residual);
             }
@@ -991,8 +1092,10 @@ pub fn format_fermion_table(fermions: &[FermionAssignment]) -> String {
     let mut lines = Vec::new();
 
     for (rep_name, rep_val) in [("5-bar", FermionRep::FiveBar), ("10", FermionRep::Ten)] {
-        let subset: Vec<&FermionAssignment> =
-            fermions.iter().filter(|f| f.representation == rep_val).collect();
+        let subset: Vec<&FermionAssignment> = fermions
+            .iter()
+            .filter(|f| f.representation == rep_val)
+            .collect();
         if subset.is_empty() {
             continue;
         }
@@ -1019,11 +1122,11 @@ pub fn format_fermion_table(fermions: &[FermionAssignment]) -> String {
 /// Format the 10-rep antisymmetric tensor matrix.
 pub fn format_ten_tensor() -> String {
     let labels: [[&str; 5]; 5] = [
-        ["0",      "u_b^c",   "-u_g^c",  "u_r",   "d_r"],
-        ["-u_b^c", "0",       "u_r^c",   "u_g",   "d_g"],
-        ["u_g^c",  "-u_r^c",  "0",       "u_b",   "d_b"],
-        ["-u_r",   "-u_g",    "-u_b",    "0",     "e^+"],
-        ["-d_r",   "-d_g",    "-d_b",    "-e^+",  "0"],
+        ["0", "u_b^c", "-u_g^c", "u_r", "d_r"],
+        ["-u_b^c", "0", "u_r^c", "u_g", "d_g"],
+        ["u_g^c", "-u_r^c", "0", "u_b", "d_b"],
+        ["-u_r", "-u_g", "-u_b", "0", "e^+"],
+        ["-d_r", "-d_g", "-d_b", "-e^+", "0"],
     ];
     let mut lines = vec![
         "10-rep antisymmetric tensor (1/sqrt(2)) * psi^{ij}:".to_string(),
@@ -1053,7 +1156,13 @@ pub fn format_verification_table(results: &[VerificationResult]) -> String {
     lines.push("-".repeat(hdr.len().max(80)));
     for (i, r) in results.iter().enumerate() {
         let status = if r.passed { "PASS" } else { "FAIL" };
-        lines.push(format!("{:>2}  {:<24}  {:<6}  {}", i + 1, r.name, status, r.detail));
+        lines.push(format!(
+            "{:>2}  {:<24}  {:<6}  {}",
+            i + 1,
+            r.name,
+            status,
+            r.detail
+        ));
     }
     lines.join("\n")
 }
@@ -1083,8 +1192,8 @@ pub fn format_commutator_table(generators: &[Mat5; 24]) -> String {
     let sector_ranges: [(&str, Vec<usize>); 4] = [
         ("SU(3)", (0..8).collect()),
         ("SU(2)", vec![8, 9, 10]),
-        ("U(1)",  vec![11]),
-        ("LQ",    (12..24).collect()),
+        ("U(1)", vec![11]),
+        ("LQ", (12..24).collect()),
     ];
     let mut lines = vec![
         "Commutator closure table:".to_string(),
@@ -1157,10 +1266,22 @@ mod tests {
     fn test_sector_counts() {
         let gens = build_generators();
         let infos = classify_all(&gens);
-        let su3 = infos.iter().filter(|g| g.sector == GeneratorSector::SU3).count();
-        let su2 = infos.iter().filter(|g| g.sector == GeneratorSector::SU2).count();
-        let u1 = infos.iter().filter(|g| g.sector == GeneratorSector::U1).count();
-        let lq = infos.iter().filter(|g| g.sector == GeneratorSector::Leptoquark).count();
+        let su3 = infos
+            .iter()
+            .filter(|g| g.sector == GeneratorSector::SU3)
+            .count();
+        let su2 = infos
+            .iter()
+            .filter(|g| g.sector == GeneratorSector::SU2)
+            .count();
+        let u1 = infos
+            .iter()
+            .filter(|g| g.sector == GeneratorSector::U1)
+            .count();
+        let lq = infos
+            .iter()
+            .filter(|g| g.sector == GeneratorSector::Leptoquark)
+            .count();
         assert_eq!(su3, 8);
         assert_eq!(su2, 3);
         assert_eq!(u1, 1);
@@ -1171,8 +1292,14 @@ mod tests {
     #[test]
     fn test_fermion_count() {
         let fermions = build_quark_sector();
-        let five_bar = fermions.iter().filter(|f| f.representation == FermionRep::FiveBar).count();
-        let ten = fermions.iter().filter(|f| f.representation == FermionRep::Ten).count();
+        let five_bar = fermions
+            .iter()
+            .filter(|f| f.representation == FermionRep::FiveBar)
+            .count();
+        let ten = fermions
+            .iter()
+            .filter(|f| f.representation == FermionRep::Ten)
+            .count();
         assert_eq!(five_bar, 5);
         assert_eq!(ten, 10);
         assert_eq!(fermions.len(), 15);

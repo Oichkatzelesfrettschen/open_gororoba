@@ -1,12 +1,12 @@
 //! Criterion benchmarks for tensor_avt CPU and GPU paths.
 
-use std::hint::black_box;
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 #[cfg(feature = "gpu")]
 use gororoba_algebra::gpu::ComputeBackend;
 use gororoba_algebra::gpu::TensorAVT;
 #[cfg(feature = "gpu")]
 use gororoba_algebra::gpu::is_gpu_available;
+use std::hint::black_box;
 #[cfg(feature = "gpu")]
 use std::time::Instant;
 

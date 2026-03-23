@@ -71,9 +71,24 @@ pub use construction::cayley_dickson::{
 
 #[cfg(feature = "core")]
 pub use construction::albert::AlbertElement;
+#[cfg(feature = "core")]
+pub use construction::exotic_octonions::{
+    Bioctonion, DualOctonion, HybridSignatureOctonion, ParaOctonion,
+};
 
 #[cfg(feature = "core")]
 pub use construction::kronecker::kron2;
+#[cfg(feature = "core")]
+pub use construction::signature_observables::{
+    CompactFrictionObservable, CompactKoebisuObservable, CompactKoebisuResult,
+    ObservableSignatureRegime, SignatureAwareObservable, SplitNormDiagnostics, SplitNormObservable,
+    cross_generational_friction_compact, koebisu_d2_compact, regime_for_hybrid_octonion,
+    regime_for_signature, split_octonion_diagnostics,
+};
+#[cfg(feature = "core")]
+pub use construction::symmetric_composition::{
+    OkuboElement, TrialityAction, para_hurwitz_multiply,
+};
 
 #[cfg(feature = "core")]
 pub use construction::wheels::{WheelQ, canonical_test_set, verify_carlstrom_axioms};
@@ -332,9 +347,8 @@ pub use lie::g2_stabilizer::{
 
 #[cfg(feature = "lie")]
 pub use lie::g2_su3_representation::{
-    FundamentalRepresentation, GellMannAlignment, Mat3c, align_with_gell_mann,
-    fundamental_casimir, fundamental_representation, hs_inner_product,
-    standard_gell_mann_antihermitian,
+    FundamentalRepresentation, GellMannAlignment, Mat3c, align_with_gell_mann, fundamental_casimir,
+    fundamental_representation, hs_inner_product, standard_gell_mann_antihermitian,
 };
 
 #[cfg(feature = "lie")]

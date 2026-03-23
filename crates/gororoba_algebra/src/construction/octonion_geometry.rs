@@ -10,7 +10,7 @@
 //! - OP^2 lines: defined by incidence relation using the Hermitian inner product
 //! - Moufang loop: unit octonions S^7 form a Moufang loop (not a group)
 //! - Moufang identities: a(x(ay)) = (axa)y, ((xa)y)a = x(aya), (ax)(ya) = a(xy)a
-//! - Collineation group: E6(-26) (52-dimensional exceptional Lie group)
+//! - Compact symmetry anchor: F4 (52-dimensional exceptional Lie group)
 //!
 //! Non-associativity forces careful formulation: homogeneous coordinates are
 //! represented as (a, b, c) in O^3 satisfying the rank-1 Hermitian matrix condition.
@@ -18,7 +18,7 @@
 //! Reference: Baez "The Octonions" (2002), Lackmann (arXiv:1909.07047),
 //! Rosenfeld "Geometry of Lie Groups" (1997)
 
-use super::octonion::Octonion;
+use super::{albert::AlbertElement, octonion::Octonion};
 
 // ============================================================================
 // Cayley Plane OP^2
@@ -82,6 +82,10 @@ impl CayleyPlanePoint {
         }
     }
 
+    pub fn from_albert_idempotent<T: AlbertPrimitiveIdempotent>(value: &T) -> Option<Self> {
+        value.to_cayley_plane_point()
+    }
+
     /// Trace of the Hermitian matrix (should be 1 for a valid point).
     pub fn trace(&self) -> f64 {
         self.xi[0] + self.xi[1] + self.xi[2]
@@ -124,6 +128,27 @@ impl CayleyPlanePoint {
         }
 
         trace_pl.abs() < tol
+    }
+}
+
+pub trait AlbertPrimitiveIdempotent {
+    fn to_cayley_plane_point(&self) -> Option<CayleyPlanePoint>;
+}
+
+impl AlbertPrimitiveIdempotent for AlbertElement {
+    fn to_cayley_plane_point(&self) -> Option<CayleyPlanePoint> {
+        if !self.is_primitive_idempotent(1e-12) {
+            return None;
+        }
+
+        Some(CayleyPlanePoint {
+            xi: self.diag,
+            x: [
+                Octonion::new(self.off[0]),
+                Octonion::new(self.off[1]),
+                Octonion::new(self.off[2]),
+            ],
+        })
     }
 }
 
@@ -474,6 +499,22 @@ mod tests {
                 "Scaling should not change the point"
             );
         }
+    }
+
+    #[test]
+    fn test_albert_idempotent_adapter_for_standard_point() {
+        let idempotent = AlbertElement::diagonal(1.0, 0.0, 0.0);
+        let point = CayleyPlanePoint::from_albert_idempotent(&idempotent)
+            .expect("standard Albert idempotent should map into OP^2");
+        assert!((point.trace() - 1.0).abs() < 1e-12);
+        assert!(point.verify_idempotent(1e-12));
+        assert!((point.xi[0] - 1.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_non_idempotent_albert_element_is_rejected() {
+        let not_idempotent = AlbertElement::diagonal(2.0, 0.0, 0.0);
+        assert!(CayleyPlanePoint::from_albert_idempotent(&not_idempotent).is_none());
     }
 
     #[test]

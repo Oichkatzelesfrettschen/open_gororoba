@@ -8,7 +8,6 @@
 //! - Fractal analysis (Hurst exponent, fBm generation)
 //! - fBm algorithm comparison (Hosking vs diffusionx)
 
-use std::hint::black_box;
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use diffusionx::simulation::{continuous::FBm, prelude::*};
 use gororoba_algebra::{
@@ -16,6 +15,7 @@ use gororoba_algebra::{
     cd_associator, cd_associator_norm, cd_multiply, cd_multiply_simd, find_zero_divisors,
     gaussian_wave_packet, generate_fbm, oct_multiply, stormer_verlet_step,
 };
+use std::hint::black_box;
 
 /// Benchmark Cayley-Dickson multiplication at various dimensions.
 fn bench_cd_multiply(c: &mut Criterion) {

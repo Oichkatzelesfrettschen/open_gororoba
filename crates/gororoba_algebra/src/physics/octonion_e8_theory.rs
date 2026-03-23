@@ -4,7 +4,7 @@
 //! research appendices, focusing on topologically protected modes and
 //! gauge-field interactions in E8-symmetric lattices.
 
-use crate::physics::octonion_field::{Octonion, oct_multiply, build_structure_constants};
+use crate::physics::octonion_field::{Octonion, build_structure_constants, oct_multiply};
 
 /// E8 Gauge Theory implementation for vibration-quantum coupling.
 pub struct E8GaugeTheory {

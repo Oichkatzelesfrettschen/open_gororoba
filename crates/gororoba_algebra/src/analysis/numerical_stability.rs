@@ -1,11 +1,11 @@
 //! Numerical Stability Analysis for Cayley-Dickson Algebras.
 //!
-//! Tools for measuring precision drift, norm accumulation, and zero-divisor 
+//! Tools for measuring precision drift, norm accumulation, and zero-divisor
 //! proximity in high-dimensional algebras.
 
 use cd_kernel::cayley_dickson::{cd_associator, cd_norm_sq};
 
-/// Measures the norm accumulation error growth. 
+/// Measures the norm accumulation error growth.
 /// In an N-dimensional algebra, errors are expected to scale roughly as sqrt(N).
 pub fn estimate_norm_error_growth(dim: usize) -> f64 {
     (dim as f64).sqrt()

@@ -19,28 +19,26 @@
 //! T11: Software/dataset reproducibility in misorientation clustering
 //! T12: E8/quasicrystal bridge via quaternion/octonion arithmetic admits computable constructions
 
-use cd_kernel::cayley_dickson::{
-    cd_multiply, cd_norm_sq, find_zero_divisors, SignTable
-};
+use cd_kernel::cayley_dickson::{SignTable, cd_multiply, cd_norm_sq, find_zero_divisors};
 
 /// Verify T1: Quadratic identity
 /// For x in A_n, x^2 - t(x)x + n(x) = 0.
 pub fn verify_t1_quadratic_identity(dim: usize, samples: usize) -> bool {
     let mut rng = rand::thread_rng();
     use rand::Rng;
-    
+
     for _ in 0..samples {
         let x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
         let x2 = cd_multiply(&x, &x);
         let t_x = 2.0 * x[0];
         let n_x = cd_norm_sq(&x);
-        
+
         let mut res = vec![0.0; dim];
         for i in 0..dim {
             res[i] = x2[i] - t_x * x[i];
         }
         res[0] += n_x;
-        
+
         for v in res {
             if v.abs() > 1e-10 {
                 return false;
@@ -54,13 +52,13 @@ pub fn verify_t1_quadratic_identity(dim: usize, samples: usize) -> bool {
 pub fn verify_t2_power_associativity(dim: usize, samples: usize) -> bool {
     let mut rng = rand::thread_rng();
     use rand::Rng;
-    
+
     for _ in 0..samples {
         let x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
         let x2 = cd_multiply(&x, &x);
         let x3_a = cd_multiply(&x2, &x);
         let x3_b = cd_multiply(&x, &x2);
-        
+
         for i in 0..dim {
             if (x3_a[i] - x3_b[i]).abs() > 1e-10 {
                 return false;
@@ -74,17 +72,17 @@ pub fn verify_t2_power_associativity(dim: usize, samples: usize) -> bool {
 pub fn verify_t3_flexibility(dim: usize, samples: usize) -> bool {
     let mut rng = rand::thread_rng();
     use rand::Rng;
-    
+
     for _ in 0..samples {
         let x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
         let y: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        
+
         let xy = cd_multiply(&x, &y);
         let xy_x = cd_multiply(&xy, &x);
-        
+
         let yx = cd_multiply(&y, &x);
         let x_yx = cd_multiply(&x, &yx);
-        
+
         for i in 0..dim {
             if (xy_x[i] - x_yx[i]).abs() > 1e-10 {
                 return false;
@@ -99,26 +97,26 @@ pub fn verify_t4_alternativity_breaks(dim: usize) -> bool {
     if dim < 16 {
         return false; // Does not break for dim < 16
     }
-    
+
     // Search for basis vectors breaking alternativity
     for i in 1..dim {
-        for j in i+1..dim {
+        for j in i + 1..dim {
             for k in 1..dim {
                 let mut x = vec![0.0; dim];
                 x[i] = 1.0;
                 x[j] = 1.0;
                 let mut y = vec![0.0; dim];
                 y[k] = 1.0;
-                
+
                 let xx = cd_multiply(&x, &x);
                 let x_xy = cd_multiply(&x, &cd_multiply(&x, &y));
                 let xx_y = cd_multiply(&xx, &y);
-                
+
                 let mut diff = 0.0;
                 for idx in 0..dim {
                     diff += (x_xy[idx] - xx_y[idx]).abs();
                 }
-                
+
                 if diff > 1e-5 {
                     return true;
                 }
@@ -148,15 +146,15 @@ pub fn verify_t7_xor_twist_basis(dim: usize) -> bool {
             x[a] = 1.0;
             let mut y = vec![0.0; dim];
             y[b] = 1.0;
-            
+
             let res = cd_multiply(&x, &y);
             let expected_idx = a ^ b;
             let sign = table.sign(a, b);
-            
+
             if (res[expected_idx] - sign as f64).abs() > 1e-10 {
                 return false;
             }
-            
+
             for (i, value) in res.iter().enumerate().take(dim) {
                 if i != expected_idx && value.abs() > 1e-10 {
                     return false;
@@ -178,26 +176,30 @@ pub fn verify_t6_annihilator_bound(dim: usize, max_annihilator_dim: usize) -> bo
 /// Verify T8: Finite Geometry Incidence (Saniga-Holweck-Pracna)
 ///
 /// In Cayley-Dickson algebras, any three non-identity units {e_a, e_b, e_c}
-/// that form a multiplicative triad (e_a * e_b = +/- e_c) can be viewed as a 
+/// that form a multiplicative triad (e_a * e_b = +/- e_c) can be viewed as a
 /// line in a finite projective geometry PG(k, 2).
 pub fn verify_t8_finite_geometry_triads(dim: usize) -> bool {
     let table = SignTable::new(dim);
-    
+
     // Total number of non-identity basis elements is dim - 1.
     // In PG(k, 2) where dim = 2^{k+1}, the number of lines is (dim-1)(dim-2)/6.
-    let expected_lines = if dim < 4 { 0 } else { (dim - 1) * (dim - 2) / 6 };
+    let expected_lines = if dim < 4 {
+        0
+    } else {
+        (dim - 1) * (dim - 2) / 6
+    };
     let mut actual_lines = 0;
 
     for a in 1..dim {
         for b in (a + 1)..dim {
             let c = a ^ b;
             if c > b {
-                // We have a triad {a, b, c}. 
+                // We have a triad {a, b, c}.
                 // In XOR-twist representation, a ^ b = c implies e_a * e_b = +/- e_c.
                 let sign_ab = table.sign(a, b);
                 let sign_bc = table.sign(b, c);
                 let sign_ca = table.sign(c, a);
-                
+
                 // Verify the cycle: e_a*e_b = s1*e_c, e_b*e_c = s2*e_a, e_c*e_a = s3*e_b
                 // This must hold for a legitimate Fano-like line.
                 if sign_ab != 0 && sign_bc != 0 && sign_ca != 0 {
@@ -206,7 +208,7 @@ pub fn verify_t8_finite_geometry_triads(dim: usize) -> bool {
             }
         }
     }
-    
+
     actual_lines == expected_lines
 }
 
@@ -239,7 +241,7 @@ pub fn verify_t12_e8_octonion_bridge() -> bool {
 /// scaling follows: Trip_N = (2^N - 1)(2^N - 2) / 6.
 pub fn verify_t13_triplet_scaling() -> bool {
     use crate::construction::hypercomplex::AlgebraDim;
-    
+
     let tests = vec![
         (AlgebraDim::Quaternion, 1),
         (AlgebraDim::Octonion, 7),
@@ -249,7 +251,7 @@ pub fn verify_t13_triplet_scaling() -> bool {
         (AlgebraDim::Routon, 2667),
         (AlgebraDim::Voudon, 10795),
     ];
-    
+
     for (dim_enum, expected) in tests {
         if dim_enum.associative_triplet_count() != expected {
             return false;
@@ -261,7 +263,6 @@ pub fn verify_t13_triplet_scaling() -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-
 
     #[test]
     fn test_audit_t1_quadratic() {
@@ -289,16 +290,16 @@ mod tests {
 
     #[test]
     fn test_audit_t5_zd_existence() {
-        assert!(verify_t5_zero_divisors_exist(8));  // Returns true if correctly EMPTY
+        assert!(verify_t5_zero_divisors_exist(8)); // Returns true if correctly EMPTY
         assert!(verify_t5_zero_divisors_exist(16)); // Returns true if correctly NON-EMPTY
     }
 
     #[test]
     fn test_audit_t6_annihilator_bound() {
-        // Sedenions (n=4): bound = 16 - 16 + 4 = 4. 
+        // Sedenions (n=4): bound = 16 - 16 + 4 = 4.
         // Moreno found max annihilator dim is 4.
         assert!(verify_t6_annihilator_bound(16, 4));
-        
+
         // Pathions (n=5): bound = 32 - 20 + 4 = 16.
         assert!(verify_t6_annihilator_bound(32, 16));
     }
@@ -330,4 +331,3 @@ mod tests {
         assert!(verify_t13_triplet_scaling());
     }
 }
-

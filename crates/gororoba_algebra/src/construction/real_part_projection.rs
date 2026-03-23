@@ -17,7 +17,10 @@
 /// # Panics
 /// Panics if `element` is empty.
 pub fn project(element: &[f64]) -> f64 {
-    assert!(!element.is_empty(), "element must have at least one component");
+    assert!(
+        !element.is_empty(),
+        "element must have at least one component"
+    );
     element[0]
 }
 
@@ -28,7 +31,10 @@ pub fn project(element: &[f64]) -> f64 {
 ///
 /// Returns 0.0 if the element is the zero vector.
 pub fn scalar_fraction(element: &[f64]) -> f64 {
-    assert!(!element.is_empty(), "element must have at least one component");
+    assert!(
+        !element.is_empty(),
+        "element must have at least one component"
+    );
     let norm_sq: f64 = element.iter().map(|x| x * x).sum();
     if norm_sq == 0.0 {
         return 0.0;

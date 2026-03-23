@@ -87,10 +87,7 @@ pub fn build_complex_basis(cs: &ComplexStructure) -> ComplexBasis3 {
 ///            + i (sigma_p R[b_p][a_q] - sigma_q R[a_p][b_q])
 ///
 /// (derived from the real/imaginary decomposition of the complex inner product)
-fn real_6x6_to_complex_3x3(
-    r: &[[f64; 6]; 6],
-    basis: &ComplexBasis3,
-) -> Mat3c {
+fn real_6x6_to_complex_3x3(r: &[[f64; 6]; 6], basis: &ComplexBasis3) -> Mat3c {
     let mut m = Mat3c::zeros();
 
     for p in 0..3 {
@@ -178,36 +175,45 @@ pub fn standard_gell_mann_antihermitian() -> [Mat3c; 8] {
 
     // lambda_1: off-diagonal (0,1)+(1,0)
     let mut l1 = Mat3c::zeros();
-    l1[(0, 1)] = cr(1.0); l1[(1, 0)] = cr(1.0);
+    l1[(0, 1)] = cr(1.0);
+    l1[(1, 0)] = cr(1.0);
 
     // lambda_2: off-diagonal (0,1)-(1,0) with i
     let mut l2 = Mat3c::zeros();
-    l2[(0, 1)] = ci(-1.0); l2[(1, 0)] = ci(1.0);
+    l2[(0, 1)] = ci(-1.0);
+    l2[(1, 0)] = ci(1.0);
 
     // lambda_3: diagonal (1,-1,0)
     let mut l3 = Mat3c::zeros();
-    l3[(0, 0)] = cr(1.0); l3[(1, 1)] = cr(-1.0);
+    l3[(0, 0)] = cr(1.0);
+    l3[(1, 1)] = cr(-1.0);
 
     // lambda_4: off-diagonal (0,2)+(2,0)
     let mut l4 = Mat3c::zeros();
-    l4[(0, 2)] = cr(1.0); l4[(2, 0)] = cr(1.0);
+    l4[(0, 2)] = cr(1.0);
+    l4[(2, 0)] = cr(1.0);
 
     // lambda_5: off-diagonal (0,2)-(2,0) with i
     let mut l5 = Mat3c::zeros();
-    l5[(0, 2)] = ci(-1.0); l5[(2, 0)] = ci(1.0);
+    l5[(0, 2)] = ci(-1.0);
+    l5[(2, 0)] = ci(1.0);
 
     // lambda_6: off-diagonal (1,2)+(2,1)
     let mut l6 = Mat3c::zeros();
-    l6[(1, 2)] = cr(1.0); l6[(2, 1)] = cr(1.0);
+    l6[(1, 2)] = cr(1.0);
+    l6[(2, 1)] = cr(1.0);
 
     // lambda_7: off-diagonal (1,2)-(2,1) with i
     let mut l7 = Mat3c::zeros();
-    l7[(1, 2)] = ci(-1.0); l7[(2, 1)] = ci(1.0);
+    l7[(1, 2)] = ci(-1.0);
+    l7[(2, 1)] = ci(1.0);
 
     // lambda_8: diagonal (1,1,-2)/sqrt(3)
     let s3 = 1.0 / 3.0_f64.sqrt();
     let mut l8 = Mat3c::zeros();
-    l8[(0, 0)] = cr(s3); l8[(1, 1)] = cr(s3); l8[(2, 2)] = cr(-2.0 * s3);
+    l8[(0, 0)] = cr(s3);
+    l8[(1, 1)] = cr(s3);
+    l8[(2, 2)] = cr(-2.0 * s3);
 
     // T_a = (i/2) lambda_a
     let scale = |m: &Mat3c| -> Mat3c {
@@ -220,8 +226,16 @@ pub fn standard_gell_mann_antihermitian() -> [Mat3c; 8] {
         result
     };
 
-    [scale(&l1), scale(&l2), scale(&l3), scale(&l4),
-     scale(&l5), scale(&l6), scale(&l7), scale(&l8)]
+    [
+        scale(&l1),
+        scale(&l2),
+        scale(&l3),
+        scale(&l4),
+        scale(&l5),
+        scale(&l6),
+        scale(&l7),
+        scale(&l8),
+    ]
 }
 
 // ---------------------------------------------------------------------------
@@ -320,9 +334,9 @@ pub fn adjoint_casimir_contraction(f: &[Vec<Vec<f64>>]) -> Vec<Vec<f64>> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use super::super::g2_stabilizer::{
-        stabilizer_decomposition, complex_structure, structure_constants,
+    use super::{
+        super::g2_stabilizer::{complex_structure, stabilizer_decomposition, structure_constants},
+        *,
     };
 
     const TOL: f64 = 1e-10;
@@ -346,7 +360,9 @@ mod tests {
                 assert!(
                     norm < TOL,
                     "e_{}: matrix[{}] is NOT anti-Hermitian, |M + M^dag| = {}",
-                    k, idx, norm
+                    k,
+                    idx,
+                    norm
                 );
             }
         }
@@ -362,7 +378,9 @@ mod tests {
                 assert!(
                     tr.norm() < TOL,
                     "e_{}: matrix[{}] trace = {}, expected 0",
-                    k, idx, tr
+                    k,
+                    idx,
+                    tr
                 );
             }
         }
@@ -387,11 +405,18 @@ mod tests {
                     }
 
                     let residual_mat = comm - projected;
-                    let residual: f64 = residual_mat.iter().map(|x| x.norm_sqr()).sum::<f64>().sqrt();
+                    let residual: f64 = residual_mat
+                        .iter()
+                        .map(|x| x.norm_sqr())
+                        .sum::<f64>()
+                        .sqrt();
                     assert!(
                         residual < TOL,
                         "e_{}: [M_{}, M_{}] leaks outside su(3), residual = {}",
-                        k, a, b, residual
+                        k,
+                        a,
+                        b,
+                        residual
                     );
                 }
             }
@@ -410,7 +435,11 @@ mod tests {
                     assert!(
                         (ip - expected).abs() < TOL,
                         "e_{}: <M_{}, M_{}> = {}, expected {}",
-                        k, a, b, ip, expected
+                        k,
+                        a,
+                        b,
+                        ip,
+                        expected
                     );
                 }
             }
@@ -426,7 +455,9 @@ mod tests {
             assert!(
                 alignment.max_residual < TOL,
                 "e_{}: Gell-Mann alignment residual = {}, expected < {}",
-                k, alignment.max_residual, TOL
+                k,
+                alignment.max_residual,
+                TOL
             );
         }
     }
@@ -456,8 +487,7 @@ mod tests {
         let mut f_rep = vec![vec![vec![0.0; 8]; 8]; 8];
         for a in 0..8 {
             for b in 0..8 {
-                let comm = rep.matrices[a] * rep.matrices[b]
-                         - rep.matrices[b] * rep.matrices[a];
+                let comm = rep.matrices[a] * rep.matrices[b] - rep.matrices[b] * rep.matrices[a];
                 for ci in 0..8 {
                     f_rep[a][b][ci] = hs_inner_product(&comm, &rep.matrices[ci]);
                 }
@@ -505,7 +535,8 @@ mod tests {
             assert!(
                 norm < TOL,
                 "e_{}: fundamental Casimir differs from -(4/3)I by {}",
-                k, norm
+                k,
+                norm
             );
         }
     }
@@ -524,7 +555,11 @@ mod tests {
                     assert!(
                         (c2[a][b] - expected).abs() < TOL,
                         "e_{}: adjoint Casimir C2[{}][{}] = {}, expected {}",
-                        k, a, b, c2[a][b], expected
+                        k,
+                        a,
+                        b,
+                        c2[a][b],
+                        expected
                     );
                 }
             }
@@ -555,7 +590,9 @@ mod tests {
             assert!(
                 (fund_casimirs[i] - fund_casimirs[0]).abs() < TOL,
                 "Fundamental Casimir differs between e_1 ({}) and e_{} ({})",
-                fund_casimirs[0], i + 1, fund_casimirs[i]
+                fund_casimirs[0],
+                i + 1,
+                fund_casimirs[i]
             );
         }
 
@@ -564,7 +601,9 @@ mod tests {
             assert!(
                 (adj_casimirs[i] - adj_casimirs[0]).abs() < TOL,
                 "Adjoint Casimir differs between e_1 ({}) and e_{} ({})",
-                adj_casimirs[0], i + 1, adj_casimirs[i]
+                adj_casimirs[0],
+                i + 1,
+                adj_casimirs[i]
             );
         }
     }
@@ -603,7 +642,11 @@ mod tests {
                 assert!(
                     (j_u[b_idx] - s).abs() < TOL,
                     "e_{}: J_k(u_{}) should have component {} at index {}, got {}",
-                    k, idx, s, b_idx, j_u[b_idx]
+                    k,
+                    idx,
+                    s,
+                    b_idx,
+                    j_u[b_idx]
                 );
                 // Other components should be zero
                 for r in 0..6 {
@@ -611,7 +654,10 @@ mod tests {
                         assert!(
                             j_u[r].abs() < TOL,
                             "e_{}: J_k(u_{}) has spurious component {} at index {}",
-                            k, idx, j_u[r], r
+                            k,
+                            idx,
+                            j_u[r],
+                            r
                         );
                     }
                 }
@@ -630,7 +676,10 @@ mod tests {
                 assert!(
                     (ip - expected).abs() < TOL,
                     "<T_{}, T_{}> = {}, expected {}",
-                    a + 1, b + 1, ip, expected
+                    a + 1,
+                    b + 1,
+                    ip,
+                    expected
                 );
             }
         }
@@ -646,7 +695,8 @@ mod tests {
             assert!(
                 norm < TOL,
                 "Standard T_{} is NOT anti-Hermitian, |T + T^dag| = {}",
-                idx + 1, norm
+                idx + 1,
+                norm
             );
         }
     }
@@ -658,9 +708,13 @@ mod tests {
 
 #[cfg(all(test, feature = "physics-sm"))]
 mod physics_tests {
-    use super::*;
-    use super::super::g2_stabilizer::{stabilizer_decomposition, complex_structure};
-    use super::super::su5_gut;
+    use super::{
+        super::{
+            g2_stabilizer::{complex_structure, stabilizer_decomposition},
+            su5_gut,
+        },
+        *,
+    };
 
     const TOL: f64 = 1e-8;
 
@@ -702,8 +756,7 @@ mod physics_tests {
         let mut f_oct = vec![vec![vec![0.0; 8]; 8]; 8];
         for a in 0..8 {
             for b in 0..8 {
-                let comm = rep.matrices[a] * rep.matrices[b]
-                         - rep.matrices[b] * rep.matrices[a];
+                let comm = rep.matrices[a] * rep.matrices[b] - rep.matrices[b] * rep.matrices[a];
                 for ci in 0..8 {
                     f_oct[a][b][ci] = hs_inner_product(&comm, &rep.matrices[ci]);
                 }
@@ -778,7 +831,10 @@ mod physics_tests {
         sedenion[5] = 0.3;
 
         let p = project(&sedenion);
-        assert!((p - 0.511).abs() < 1e-15, "project should extract e_0 = 0.511");
+        assert!(
+            (p - 0.511).abs() < 1e-15,
+            "project should extract e_0 = 0.511"
+        );
 
         let frac = scalar_fraction(&sedenion);
         assert!(frac > 0.0 && frac < 1.0, "scalar_fraction must be in (0,1)");
@@ -792,6 +848,9 @@ mod physics_tests {
         dv[0] = 1.0;
         dv[512] = 1.0;
         let frac_dv = scalar_fraction(&dv);
-        assert!((frac_dv - 0.5).abs() < 1e-15, "1024D: half real, half imaginary");
+        assert!(
+            (frac_dv - 0.5).abs() < 1e-15,
+            "1024D: half real, half imaginary"
+        );
     }
 }

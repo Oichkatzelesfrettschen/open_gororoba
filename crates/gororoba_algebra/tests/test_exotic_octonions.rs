@@ -1,91 +1,43 @@
-use gororoba_algebra::construction::cayley_dickson::{CdSignature, cd_multiply};
+use gororoba_algebra::{
+    Bioctonion, DualOctonion, ParaOctonion,
+    construction::{cayley_dickson::CdSignature, octonion::Octonion},
+};
 
-// Helper: Standard Octonion Multiply (dim 8)
-fn oct_multiply(a: &[f64], b: &[f64]) -> Vec<f64> {
-    assert_eq!(a.len(), 8);
-    assert_eq!(b.len(), 8);
-    cd_multiply(a, b)
+fn as_octonion(slice: &[f64]) -> Octonion {
+    Octonion::new(slice.try_into().expect("expected an 8D octonion slice"))
 }
 
-// Helper: Conjugate (dim 8)
-fn oct_conj(a: &[f64]) -> Vec<f64> {
-    let mut res = a.to_vec();
-    res.iter_mut().skip(1).for_each(|x| *x = -*x);
-    res
-}
-
-// 1. Dual-Octonions (O x D)
-// Elements: A + eps B, where A,B are Octonions. eps^2 = 0.
-// Product: (A + eps B)(C + eps D) = AC + eps(AD + BC)
 fn dual_oct_multiply(u: &[f64], v: &[f64]) -> Vec<f64> {
     assert_eq!(u.len(), 16);
     assert_eq!(v.len(), 16);
 
-    let a = &u[0..8];
-    let b = &u[8..16];
-    let c = &v[0..8];
-    let d = &v[8..16];
+    let lhs = DualOctonion::new(as_octonion(&u[0..8]), as_octonion(&u[8..16]));
+    let rhs = DualOctonion::new(as_octonion(&v[0..8]), as_octonion(&v[8..16]));
+    let product = lhs.multiply(&rhs);
 
-    let ac = oct_multiply(a, c);
-    let ad = oct_multiply(a, d);
-    let bc = oct_multiply(b, c);
-
-    // Real part: AC
-    // Dual part: AD + BC
-    let mut res = Vec::with_capacity(16);
-    res.extend_from_slice(&ac);
-
-    // Sum dual parts
-    let mut dual_part = vec![0.0; 8];
-    for i in 0..8 {
-        dual_part[i] = ad[i] + bc[i];
-    }
-    res.extend_from_slice(&dual_part);
-    res
+    let mut out = Vec::with_capacity(16);
+    out.extend_from_slice(&product.real.components);
+    out.extend_from_slice(&product.dual.components);
+    out
 }
 
-// 2. Bi-Octonions (Complexified Octonions) (O x C)
-// Elements: A + i B. i^2 = -1. Commutes with O? Usually yes in tensor product.
-// Product: (A + i B)(C + i D) = (AC - BD) + i(AD + BC)
 fn bioct_multiply(u: &[f64], v: &[f64]) -> Vec<f64> {
     assert_eq!(u.len(), 16);
     assert_eq!(v.len(), 16);
 
-    let a = &u[0..8];
-    let b = &u[8..16];
-    let c = &v[0..8];
-    let d = &v[8..16];
+    let lhs = Bioctonion::new(as_octonion(&u[0..8]), as_octonion(&u[8..16]));
+    let rhs = Bioctonion::new(as_octonion(&v[0..8]), as_octonion(&v[8..16]));
+    let product = lhs.multiply(&rhs);
 
-    let ac = oct_multiply(a, c);
-    let bd = oct_multiply(b, d);
-    let ad = oct_multiply(a, d);
-    let bc = oct_multiply(b, c);
-
-    // Real part: AC - BD
-    let mut real_part = vec![0.0; 8];
-    for i in 0..8 {
-        real_part[i] = ac[i] - bd[i];
-    }
-
-    // Imag part: AD + BC
-    let mut imag_part = vec![0.0; 8];
-    for i in 0..8 {
-        imag_part[i] = ad[i] + bc[i];
-    }
-
-    let mut res = Vec::with_capacity(16);
-    res.extend_from_slice(&real_part);
-    res.extend_from_slice(&imag_part);
-    res
+    let mut out = Vec::with_capacity(16);
+    out.extend_from_slice(&product.real.components);
+    out.extend_from_slice(&product.imag.components);
+    out
 }
 
-// 3. Para-Octonions
-// Product: x * y = conj(x) * conj(y) (in standard O)
-// This is related to the Okubo algebra? Or just Para-Hurwitz.
 fn para_oct_multiply(a: &[f64], b: &[f64]) -> Vec<f64> {
-    let a_bar = oct_conj(a);
-    let b_bar = oct_conj(b);
-    oct_multiply(&a_bar, &b_bar)
+    let product = ParaOctonion::new(as_octonion(a)).multiply(&ParaOctonion::new(as_octonion(b)));
+    product.value.components.to_vec()
 }
 
 #[test]

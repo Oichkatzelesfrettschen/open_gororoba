@@ -8,13 +8,12 @@
 //! Run with: cargo bench --bench dimensional_bench -p gororoba_algebra
 //! GPU benchmarks: cargo bench --bench dimensional_bench -p gororoba_algebra --features gpu
 
-use std::hint::black_box;
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use gororoba_algebra::{
     analysis::boxkites::{cross_assessors, motif_components_for_cross_assessors},
     cd_basis_mul_sign,
 };
-use std::time::Duration;
+use std::{hint::black_box, time::Duration};
 
 /// Benchmark component extraction at various dimensions.
 /// This is Stage 1 of the pipeline: building the cross-assessor graph and finding

@@ -1,6 +1,6 @@
 //! Physical Laws and Algebraic Theses from the Unified Synthesis.
 //!
-//! Formally represents the property cascade of hypercomplex systems and 
+//! Formally represents the property cascade of hypercomplex systems and
 //! the falsifiable physics theses identified in the Comprehensive Audit.
 
 use super::PHI;
@@ -53,15 +53,33 @@ mod tests {
     fn test_property_cascade() {
         assert!(check_property_retention(1, AlgebraicProperty::Ordering));
         assert!(!check_property_retention(2, AlgebraicProperty::Ordering));
-        
-        assert!(check_property_retention(2, AlgebraicProperty::Commutativity));
-        assert!(!check_property_retention(4, AlgebraicProperty::Commutativity));
-        
-        assert!(check_property_retention(4, AlgebraicProperty::Associativity));
-        assert!(!check_property_retention(8, AlgebraicProperty::Associativity));
-        
-        assert!(check_property_retention(8, AlgebraicProperty::Alternativity));
-        assert!(!check_property_retention(16, AlgebraicProperty::Alternativity));
+
+        assert!(check_property_retention(
+            2,
+            AlgebraicProperty::Commutativity
+        ));
+        assert!(!check_property_retention(
+            4,
+            AlgebraicProperty::Commutativity
+        ));
+
+        assert!(check_property_retention(
+            4,
+            AlgebraicProperty::Associativity
+        ));
+        assert!(!check_property_retention(
+            8,
+            AlgebraicProperty::Associativity
+        ));
+
+        assert!(check_property_retention(
+            8,
+            AlgebraicProperty::Alternativity
+        ));
+        assert!(!check_property_retention(
+            16,
+            AlgebraicProperty::Alternativity
+        ));
     }
 
     #[test]

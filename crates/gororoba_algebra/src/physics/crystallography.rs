@@ -8,8 +8,10 @@
 //! - orix: Symmetry-aware distance and clustering.
 //! - Grimmer (1974): Disorientations in cubic crystals.
 
-use crate::physics::quat_rotation::{Quaternion, quat_multiply};
-use crate::construction::cayley_dickson::cd_conjugate;
+use crate::{
+    construction::cayley_dickson::cd_conjugate,
+    physics::quat_rotation::{Quaternion, quat_multiply},
+};
 use std::f64::consts::FRAC_1_SQRT_2;
 
 /// Misorientation between two orientations q1 and q2.
@@ -29,22 +31,36 @@ pub fn misorientation_angle(q: &Quaternion) -> f64 {
 /// Symmetry operations for the cubic point group (O, order 24) in quaternion form.
 pub const CUBIC_SYMMETRY_QUATS: [Quaternion; 24] = [
     [1.0, 0.0, 0.0, 0.0],
-    [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0],
-    [0.5, 0.5, 0.5, 0.5], [0.5, 0.5, 0.5, -0.5], [0.5, 0.5, -0.5, 0.5], [0.5, 0.5, -0.5, -0.5],
-    [0.5, -0.5, 0.5, 0.5], [0.5, -0.5, 0.5, -0.5], [0.5, -0.5, -0.5, 0.5], [0.5, -0.5, -0.5, -0.5],
-    [FRAC_1_SQRT_2, FRAC_1_SQRT_2, 0.0, 0.0], [FRAC_1_SQRT_2, -FRAC_1_SQRT_2, 0.0, 0.0],
-    [FRAC_1_SQRT_2, 0.0, FRAC_1_SQRT_2, 0.0], [FRAC_1_SQRT_2, 0.0, -FRAC_1_SQRT_2, 0.0],
-    [FRAC_1_SQRT_2, 0.0, 0.0, FRAC_1_SQRT_2], [FRAC_1_SQRT_2, 0.0, 0.0, -FRAC_1_SQRT_2],
-    [0.0, FRAC_1_SQRT_2, FRAC_1_SQRT_2, 0.0], [0.0, FRAC_1_SQRT_2, -FRAC_1_SQRT_2, 0.0],
-    [0.0, FRAC_1_SQRT_2, 0.0, FRAC_1_SQRT_2], [0.0, FRAC_1_SQRT_2, 0.0, -FRAC_1_SQRT_2],
-    [0.0, 0.0, FRAC_1_SQRT_2, FRAC_1_SQRT_2], [0.0, 0.0, FRAC_1_SQRT_2, -FRAC_1_SQRT_2],
+    [0.0, 1.0, 0.0, 0.0],
+    [0.0, 0.0, 1.0, 0.0],
+    [0.0, 0.0, 0.0, 1.0],
+    [0.5, 0.5, 0.5, 0.5],
+    [0.5, 0.5, 0.5, -0.5],
+    [0.5, 0.5, -0.5, 0.5],
+    [0.5, 0.5, -0.5, -0.5],
+    [0.5, -0.5, 0.5, 0.5],
+    [0.5, -0.5, 0.5, -0.5],
+    [0.5, -0.5, -0.5, 0.5],
+    [0.5, -0.5, -0.5, -0.5],
+    [FRAC_1_SQRT_2, FRAC_1_SQRT_2, 0.0, 0.0],
+    [FRAC_1_SQRT_2, -FRAC_1_SQRT_2, 0.0, 0.0],
+    [FRAC_1_SQRT_2, 0.0, FRAC_1_SQRT_2, 0.0],
+    [FRAC_1_SQRT_2, 0.0, -FRAC_1_SQRT_2, 0.0],
+    [FRAC_1_SQRT_2, 0.0, 0.0, FRAC_1_SQRT_2],
+    [FRAC_1_SQRT_2, 0.0, 0.0, -FRAC_1_SQRT_2],
+    [0.0, FRAC_1_SQRT_2, FRAC_1_SQRT_2, 0.0],
+    [0.0, FRAC_1_SQRT_2, -FRAC_1_SQRT_2, 0.0],
+    [0.0, FRAC_1_SQRT_2, 0.0, FRAC_1_SQRT_2],
+    [0.0, FRAC_1_SQRT_2, 0.0, -FRAC_1_SQRT_2],
+    [0.0, 0.0, FRAC_1_SQRT_2, FRAC_1_SQRT_2],
+    [0.0, 0.0, FRAC_1_SQRT_2, -FRAC_1_SQRT_2],
 ];
 
 /// Minimum misorientation angle between two orientations considering cubic symmetry.
 /// Also known as the "disorientation" angle.
 pub fn min_cubic_misorientation_angle(q1: &Quaternion, q2: &Quaternion) -> f64 {
     let mut min_angle = f64::MAX;
-    
+
     for s1 in &CUBIC_SYMMETRY_QUATS {
         let q1_sym = quat_multiply(s1, q1);
         for s2 in &CUBIC_SYMMETRY_QUATS {
@@ -56,7 +72,7 @@ pub fn min_cubic_misorientation_angle(q1: &Quaternion, q2: &Quaternion) -> f64 {
             }
         }
     }
-    
+
     min_angle
 }
 
@@ -69,10 +85,10 @@ mod tests {
     fn test_cubic_identity_misorientation() {
         let q1 = [1.0, 0.0, 0.0, 0.0];
         let q2 = [0.0, 1.0, 0.0, 0.0]; // 180-deg rotation about X
-        
+
         // Without symmetry, angle is PI.
         assert!((misorientation_angle(&misorientation(&q1, &q2)) - PI).abs() < 1e-10);
-        
+
         // With cubic symmetry, 180-deg about X is a symmetry operation, so min angle is 0.
         let min_angle = min_cubic_misorientation_angle(&q1, &q2);
         assert!(min_angle < 1e-10);
@@ -84,13 +100,17 @@ mod tests {
         // Replicating a known misorientation from orix/MTEX:
         // Sigma 3 Twin boundary (60 deg about [111])
         let angle = 60.0 * PI / 180.0;
-        let axis = [1.0 / 3.0f64.sqrt(), 1.0 / 3.0f64.sqrt(), 1.0 / 3.0f64.sqrt()];
+        let axis = [
+            1.0 / 3.0f64.sqrt(),
+            1.0 / 3.0f64.sqrt(),
+            1.0 / 3.0f64.sqrt(),
+        ];
         let s = (angle / 2.0).sin();
         let q_sigma3 = [(angle / 2.0).cos(), axis[0] * s, axis[1] * s, axis[2] * s];
-        
+
         let q_id = [1.0, 0.0, 0.0, 0.0];
         let min_angle = min_cubic_misorientation_angle(&q_id, &q_sigma3);
-        
+
         // Expected min angle is 60 degrees (1.0471975512 radians)
         assert!((min_angle - angle).abs() < 1e-10);
     }
