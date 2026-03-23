@@ -409,12 +409,7 @@ use super::super::*;
         println!("  t_optimal = {:.4}", best_t);
         println!("  beta = [{}]",
             (0..6).map(|k| format!("{:.4}", best_t * best_u[k])).collect::<Vec<_>>().join(", "));
-        println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.0, pdg_t12, ((best_angles.0 - pdg_t12) / pdg_t12 * 100.0).abs());
-        println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.1, pdg_t13, ((best_angles.1 - pdg_t13) / pdg_t13 * 100.0).abs());
-        println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.2, pdg_t23, ((best_angles.2 - pdg_t23) / pdg_t23 * 100.0).abs());
+        super::print_best_angles(best_angles, pdg_t12, pdg_t13, pdg_t23);
 
         // theta_13 hard constraint verification across entire scan
         println!("\n  Verifying theta_13 stability at best point...");
@@ -531,12 +526,7 @@ use super::super::*;
 
         println!("\n  === BEST SOLAR CORRECTION (DirectOffDiagonal) ===");
         println!("  t_optimal = {:.4}", best_t);
-        println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.0, pdg_t12, ((best_angles.0 - pdg_t12) / pdg_t12 * 100.0).abs());
-        println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.1, pdg_t13, ((best_angles.1 - pdg_t13) / pdg_t13 * 100.0).abs());
-        println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.2, pdg_t23, ((best_angles.2 - pdg_t23) / pdg_t23 * 100.0).abs());
+        super::print_best_angles(best_angles, pdg_t12, pdg_t13, pdg_t23);
     }
 
     /// Constrained solar scan: zero first-order reactor/atmospheric leakage.
@@ -671,12 +661,7 @@ use super::super::*;
 
         println!("\n  === CONSTRAINED SOLAR CORRECTION ===");
         println!("  t_optimal = {:.4}", best_t);
-        println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.0, pdg_t12, ((best_angles.0 - pdg_t12) / pdg_t12 * 100.0).abs());
-        println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.1, pdg_t13, ((best_angles.1 - pdg_t13) / pdg_t13 * 100.0).abs());
-        println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-            best_angles.2, pdg_t23, ((best_angles.2 - pdg_t23) / pdg_t23 * 100.0).abs());
+        super::print_best_angles(best_angles, pdg_t12, pdg_t13, pdg_t23);
 
         // Report the raw projected solar sensitivity
         println!("  Projected solar sensitivity: {:.4} deg/unit", g12_dot_u);
@@ -948,12 +933,7 @@ use super::super::*;
 
             println!("\n  === TENSOR ELEMENT SOLAR CORRECTION ===");
             println!("  t_optimal = {:.4}", best_t);
-            println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-                best_angles.0, pdg_t12, ((best_angles.0 - pdg_t12) / pdg_t12 * 100.0).abs());
-            println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-                best_angles.1, pdg_t13, ((best_angles.1 - pdg_t13) / pdg_t13 * 100.0).abs());
-            println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-                best_angles.2, pdg_t23, ((best_angles.2 - pdg_t23) / pdg_t23 * 100.0).abs());
+            super::print_best_angles(best_angles, pdg_t12, pdg_t13, pdg_t23);
         } else {
             println!("\n  Rank-2 lock persists under TensorElementLift.");
         }
@@ -1103,12 +1083,7 @@ use super::super::*;
 
             println!("\n  === ALPHA-MODULATED SOLAR CORRECTION ===");
             println!("  t_optimal = {:.4}", best_t);
-            println!("  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-                best_angles.0, pdg_t12, ((best_angles.0 - pdg_t12) / pdg_t12 * 100.0).abs());
-            println!("  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-                best_angles.1, pdg_t13, ((best_angles.1 - pdg_t13) / pdg_t13 * 100.0).abs());
-            println!("  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-                best_angles.2, pdg_t23, ((best_angles.2 - pdg_t23) / pdg_t23 * 100.0).abs());
+            super::print_best_angles(best_angles, pdg_t12, pdg_t13, pdg_t23);
         } else {
             println!("\n  Rank-2 lock persists under alpha modulation.");
             println!("  Residual fraction {:.6e} is below threshold 0.001.", residual_frac.abs());

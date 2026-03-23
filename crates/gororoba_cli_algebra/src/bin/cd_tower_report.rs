@@ -14,11 +14,12 @@
 //! References claims: C-483, C-487, C-520, C-528, C-529, C-531, C-534,
 //! C-537, C-544, C-545..C-549.
 
-use std::{collections::VecDeque, time::Instant};
+use std::time::Instant;
 
 use gororoba_algebra::{
     analysis::boxkites::{
-        CrossPair, generic_face_sign_census, motif_components_for_cross_assessors,
+        compute_imbalance_ratio, generic_face_sign_census,
+        motif_components_for_cross_assessors,
     },
     construction::cayley_dickson::{
         CdSignature, cd_basis_mul_sign_iter, cd_norm_sq, find_zero_divisors,
@@ -122,78 +123,6 @@ fn compute_psi_fraction(dim: usize) -> (usize, usize, f64) {
 /// Count 2-blade zero-divisor pairs. O(dim^4), only feasible for dim <= 64.
 fn count_zd_pairs(dim: usize) -> usize {
     find_zero_divisors(dim, 1e-10).len()
-}
-
-/// Compute imbalance ratio for a given dimension using BFS cohomology.
-fn compute_imbalance_ratio(dim: usize) -> (usize, usize, f64) {
-    let components = motif_components_for_cross_assessors(dim);
-    let psi = |d: usize, i: usize, j: usize| -> u8 {
-        if cd_basis_mul_sign_iter(d, i, j) == 1 {
-            0
-        } else {
-            1
-        }
-    };
-
-    let mut total_b1 = 0usize;
-    let mut total_frustrated = 0usize;
-
-    for comp in &components {
-        let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
-        let n = nodes.len();
-        if n < 2 {
-            continue;
-        }
-
-        // Build adjacency with eta labels
-        let node_idx: std::collections::HashMap<CrossPair, usize> =
-            nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
-        let mut adj: Vec<Vec<(usize, u8)>> = vec![Vec::new(); n];
-
-        for &(u, v) in &comp.edges {
-            let eta_val = psi(dim, u.0, v.1) ^ psi(dim, u.1, v.0);
-            let ui = node_idx[&u];
-            let vi = node_idx[&v];
-            adj[ui].push((vi, eta_val));
-            adj[vi].push((ui, eta_val));
-        }
-
-        // BFS cohomology
-        let mut delta: Vec<Option<u8>> = vec![None; n];
-        delta[0] = Some(0);
-        let mut queue = VecDeque::new();
-        queue.push_back(0);
-        let mut tree_edges = 0usize;
-        let mut frustrated = 0usize;
-
-        while let Some(u) = queue.pop_front() {
-            for &(v, eta_val) in &adj[u] {
-                if let Some(dv) = delta[v] {
-                    if u < v {
-                        let expected = delta[u].unwrap() ^ eta_val;
-                        if expected != dv {
-                            frustrated += 1;
-                        }
-                    }
-                } else {
-                    delta[v] = Some(delta[u].unwrap() ^ eta_val);
-                    tree_edges += 1;
-                    queue.push_back(v);
-                }
-            }
-        }
-
-        let b1 = comp.edges.len() - tree_edges;
-        total_b1 += b1;
-        total_frustrated += frustrated;
-    }
-
-    let ratio = if total_b1 > 0 {
-        total_frustrated as f64 / total_b1 as f64
-    } else {
-        0.0
-    };
-    (total_frustrated, total_b1, ratio)
 }
 
 /// Count split-CD zero-divisor 2-blade pairs using the split sign table.
@@ -337,7 +266,7 @@ fn main() {
 
         // Imbalance ratio (feasible up to dim=256 in reasonable time)
         let frust = if do_imbalance && (16..=256).contains(&dim) {
-            let (_, _, r) = compute_imbalance_ratio(dim);
+            let r = compute_imbalance_ratio(dim).imbalance_ratio;
             Some(r)
         } else if dim < 16 {
             Some(0.0)

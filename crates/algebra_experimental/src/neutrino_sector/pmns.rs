@@ -384,6 +384,9 @@ pub(crate) fn assemble_lepton_baseline(
 /// for the caller's off-diagonal psi-circulant coupling step.
 ///
 /// Used by: `construct_pmns_matrices_two_param`, `construct_pmns_matrices_v6_modulated`.
+// Private helper: (m_ch, m_nu, ch_profiles, nu_profiles).
+// Returning four values as a tuple is intentional for a private one-caller helper.
+#[allow(clippy::type_complexity)]
 fn build_friction_matrices(
     charged_pair: (usize, usize),
     neutrino_pair: (usize, usize),
