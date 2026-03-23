@@ -38,6 +38,7 @@
 //! - CDScalarExtension.v (formal proof that ring axioms suffice)
 
 mod dyadic;
+pub mod finite_field_cd;
 mod surreal_cd;
 
 pub use dyadic::SurrealDyadic;
