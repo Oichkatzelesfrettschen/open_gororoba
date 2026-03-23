@@ -95,6 +95,61 @@ mod tests {
     use super::*;
     use std::collections::HashSet;
 
+    // ---------------------------------------------------------------------------
+    // Shared homotopy-transfer helpers (used by test_homotopy_transfer_m3,
+    // test_m4_vanishes, test_m4_zero_classification, test_m4_missing_sets_and_m5,
+    // test_oscillation_pattern, test_m3_is_associator).
+    //
+    // These implement the canonical retraction O -> S -> O from the A-infinity
+    // homotopy-transfer theorem applied to the sedenion-to-octonion retraction.
+    // ---------------------------------------------------------------------------
+
+    /// Section i: O -> S,  i(x)[k] = x[k], i(x)[k+8] = x[k].
+    fn ht_section(x: &[f64; 8]) -> [f64; 16] {
+        let mut s = [0.0_f64; 16];
+        for k in 0..8 { s[k] = x[k]; s[k + 8] = x[k]; }
+        s
+    }
+
+    /// Projection p: S -> O,  p(u,v)[k] = (u[k] + v[k+8]) / 2.
+    fn ht_project(s: &[f64]) -> [f64; 8] {
+        let mut o = [0.0_f64; 8];
+        for k in 0..8 { o[k] = (s[k] + s[k + 8]) / 2.0; }
+        o
+    }
+
+    /// Homotopy h = id_S - i*p.
+    fn ht_homotopy(s: &[f64; 16]) -> [f64; 16] {
+        let ps = ht_project(s);
+        let ips = ht_section(&ps);
+        let mut h = [0.0_f64; 16];
+        for k in 0..16 { h[k] = s[k] - ips[k]; }
+        h
+    }
+
+    /// Sedenion (16D) multiplication wrapper returning a fixed-size array.
+    fn ht_sed_mul(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
+        use cd_kernel::cd_multiply;
+        let result = cd_multiply(a, b);
+        let mut out = [0.0_f64; 16];
+        for k in 0..16 { out[k] = result[k]; }
+        out
+    }
+
+    /// Transferred m3 operation: p( h(i(x)*i(y)) * i(z) ) - p( i(x) * h(i(y)*i(z)) ).
+    fn ht_compute_m3(x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]) -> [f64; 8] {
+        let ix = ht_section(x);
+        let iy = ht_section(y);
+        let iz = ht_section(z);
+        let h_ix_iy = ht_homotopy(&ht_sed_mul(&ix, &iy));
+        let p_term1 = ht_project(&ht_sed_mul(&h_ix_iy, &iz));
+        let h_iy_iz = ht_homotopy(&ht_sed_mul(&iy, &iz));
+        let p_term2 = ht_project(&ht_sed_mul(&ix, &h_iy_iz));
+        let mut m3 = [0.0_f64; 8];
+        for k in 0..8 { m3[k] = p_term1[k] - p_term2[k]; }
+        m3
+    }
+
     #[test]
     fn test_quaternion_subalgebras_are_disjoint() {
         let (qg, qt, qu, qv, qw) = get_quaternion_subalgebras();
@@ -1736,7 +1791,6 @@ mod tests {
     /// correction to the octonionic product.
     #[test]
     fn test_homotopy_transfer_m3() {
-        use cd_kernel::cd_multiply;
 
         // Octonion basis as 16D sedenion vectors (lower 8 components)
         let _oct_basis = |k: usize| -> [f64; 16] {
@@ -1746,57 +1800,10 @@ mod tests {
             v
         };
 
-        // Section i: O -> S, i(x) = (x, x)
-        let section = |x: &[f64; 8]| -> [f64; 16] {
-            let mut s = [0.0_f64; 16];
-            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
-            s
-        };
 
-        // Projection p: S -> O, p(u,v) = (u+v)/2
-        let project = |s: &[f64]| -> [f64; 8] {
-            let mut o = [0.0_f64; 8];
-            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
-            o
-        };
 
-        // Homotopy h = id - i*p
-        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
-            let ps = project(s);
-            let ips = section(&ps);
-            let mut h = [0.0_f64; 16];
-            for k in 0..16 { h[k] = s[k] - ips[k]; }
-            h
-        };
 
-        // Sedenion multiplication (16D)
-        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
-            let result = cd_multiply(a, b);
-            let mut out = [0.0_f64; 16];
-            for k in 0..16 { out[k] = result[k]; }
-            out
-        };
 
-        // m3(x,y,z) = p( h(i(x)*i(y)) * i(z) ) - p( i(x) * h(i(y)*i(z)) )
-        let compute_m3 = |x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
-            let ix = section(x);
-            let iy = section(y);
-            let iz = section(z);
-
-            let ix_iy = sed_mul(&ix, &iy);
-            let h_ix_iy = homotopy(&ix_iy);
-            let term1 = sed_mul(&h_ix_iy, &iz);
-            let p_term1 = project(&term1);
-
-            let iy_iz = sed_mul(&iy, &iz);
-            let h_iy_iz = homotopy(&iy_iz);
-            let term2 = sed_mul(&ix, &h_iy_iz);
-            let p_term2 = project(&term2);
-
-            let mut m3 = [0.0_f64; 8];
-            for k in 0..8 { m3[k] = p_term1[k] - p_term2[k]; }
-            m3
-        };
 
         println!("  === Homotopy Transfer m3: Sedenion Retraction to Octonions ===\n");
 
@@ -1827,7 +1834,7 @@ mod tests {
                     let mut yj = [0.0_f64; 8]; yj[j] = 1.0;
                     let mut zk = [0.0_f64; 8]; zk[k] = 1.0;
 
-                    let m3_ijk = compute_m3(&xi, &yj, &zk);
+                    let m3_ijk = ht_compute_m3(&xi, &yj, &zk);
                     let norm: f64 = m3_ijk.iter().map(|v| v * v).sum::<f64>().sqrt();
 
                     if norm < 1e-10 {
@@ -1875,7 +1882,7 @@ mod tests {
                     let mut xi = [0.0_f64; 8]; xi[i] = 1.0;
                     let mut yj = [0.0_f64; 8]; yj[j] = 1.0;
                     let mut zk = [0.0_f64; 8]; zk[k] = 1.0;
-                    let m3_ijk = compute_m3(&xi, &yj, &zk);
+                    let m3_ijk = ht_compute_m3(&xi, &yj, &zk);
                     let is_scalar = m3_ijk[0].abs() > 0.5 && m3_ijk[1..].iter().all(|v| v.abs() < 1e-10);
                     if is_fano_triple(i, j, k) && is_scalar { fano_scalar += 1; }
                     if !is_fano_triple(i, j, k) && !is_scalar && m3_ijk.iter().map(|v| v*v).sum::<f64>().sqrt() > 1e-10 {
@@ -1896,31 +1903,7 @@ mod tests {
     /// on the octonions, not an infinite A-infinity tower.
     #[test]
     fn test_m4_vanishes() {
-        use cd_kernel::cd_multiply;
 
-        let section = |x: &[f64; 8]| -> [f64; 16] {
-            let mut s = [0.0_f64; 16];
-            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
-            s
-        };
-        let project = |s: &[f64]| -> [f64; 8] {
-            let mut o = [0.0_f64; 8];
-            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
-            o
-        };
-        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
-            let ps = project(s);
-            let ips = section(&ps);
-            let mut h = [0.0_f64; 16];
-            for k in 0..16 { h[k] = s[k] - ips[k]; }
-            h
-        };
-        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
-            let result = cd_multiply(a, b);
-            let mut out = [0.0_f64; 16];
-            for k in 0..16 { out[k] = result[k]; }
-            out
-        };
 
         // m4 has multiple terms from the A-infinity relations.
         // The simplest check: does the transferred product of m3 outputs vanish?
@@ -1936,50 +1919,27 @@ mod tests {
         //   + correction terms from m3 compositions
         //
         // Simplified test: compute the "naive" m4 (without m3 corrections)
+        //   + correction terms from m3 compositions
+        //
+        // Simplified test: compute the "naive" m4 (without m3 corrections)
         // and check if it's zero. If not, m4 is nonzero.
 
         let compute_naive_m4 = |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
-            let iw = section(w);
-            let ix = section(x);
-            let iy = section(y);
-            let iz = section(z);
-
+            let iw = ht_section(w); let ix = ht_section(x);
+            let iy = ht_section(y); let iz = ht_section(z);
             // Term 1: p( h(h(iw*ix)*iy) * iz )
-            let wx = sed_mul(&iw, &ix);
-            let h_wx = homotopy(&wx);
-            let h_wx_y = sed_mul(&h_wx, &iy);
-            let hh_wxy = homotopy(&h_wx_y);
-            let t1_full = sed_mul(&hh_wxy, &iz);
-            let t1 = project(&t1_full);
-
+            let t1 = ht_project(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&iw, &ix)), &iy)), &iz));
             // Term 2: -p( h(iw * h(ix*iy)) * iz )
-            let xy = sed_mul(&ix, &iy);
-            let h_xy = homotopy(&xy);
-            let w_hxy = sed_mul(&iw, &h_xy);
-            let h_whxy = homotopy(&w_hxy);
-            let t2_full = sed_mul(&h_whxy, &iz);
-            let t2 = project(&t2_full);
-
+            let t2 = ht_project(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ix, &iy)))), &iz));
             // Term 3: p( iw * h(h(ix*iy)*iz) )
-            let hxy_z = sed_mul(&h_xy, &iz);
-            let h_hxyz = homotopy(&hxy_z);
-            let t3_full = sed_mul(&iw, &h_hxyz);
-            let t3 = project(&t3_full);
-
+            let t3 = ht_project(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&ix, &iy)), &iz))));
             // Term 4: -p( iw * h(ix * h(iy*iz)) )
-            let yz = sed_mul(&iy, &iz);
-            let h_yz = homotopy(&yz);
-            let x_hyz = sed_mul(&ix, &h_yz);
-            let h_xhyz = homotopy(&x_hyz);
-            let t4_full = sed_mul(&iw, &h_xhyz);
-            let t4 = project(&t4_full);
-
+            let t4 = ht_project(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ix, &ht_homotopy(&ht_sed_mul(&iy, &iz))))));
             let mut m4 = [0.0_f64; 8];
-            for k in 0..8 {
-                m4[k] = t1[k] - t2[k] + t3[k] - t4[k];
-            }
+            for k in 0..8 { m4[k] = t1[k] - t2[k] + t3[k] - t4[k]; }
             m4
         };
+
 
         println!("  === Does m4 Vanish? (A-infinity Truncation Test) ===\n");
 
@@ -2043,53 +2003,29 @@ mod tests {
     /// (c) quadruples related to the G2 coset geometry
     #[test]
     fn test_m4_zero_classification() {
-        use cd_kernel::cd_multiply;
 
-        let section = |x: &[f64; 8]| -> [f64; 16] {
-            let mut s = [0.0_f64; 16];
-            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
-            s
-        };
-        let project = |s: &[f64]| -> [f64; 8] {
-            let mut o = [0.0_f64; 8];
-            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
-            o
-        };
-        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
-            let ps = project(s);
-            let ips = section(&ps);
-            let mut h = [0.0_f64; 16];
-            for k in 0..16 { h[k] = s[k] - ips[k]; }
-            h
-        };
-        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
-            let r = cd_multiply(a, b);
-            let mut out = [0.0_f64; 16];
-            for k in 0..16 { out[k] = r[k]; }
-            out
-        };
 
         let compute_m4 = |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> f64 {
-            let iw = section(w); let ix = section(x);
-            let iy = section(y); let iz = section(z);
-            let wx = sed_mul(&iw, &ix);
-            let h_wx = homotopy(&wx);
-            let h_wx_y = sed_mul(&h_wx, &iy);
-            let hh_wxy = homotopy(&h_wx_y);
-            let t1 = project(&sed_mul(&hh_wxy, &iz));
-            let xy = sed_mul(&ix, &iy);
-            let h_xy = homotopy(&xy);
-            let w_hxy = sed_mul(&iw, &h_xy);
-            let h_whxy = homotopy(&w_hxy);
-            let t2 = project(&sed_mul(&h_whxy, &iz));
-            let hxy_z = sed_mul(&h_xy, &iz);
-            let h_hxyz = homotopy(&hxy_z);
-            let t3 = project(&sed_mul(&iw, &h_hxyz));
-            let yz = sed_mul(&iy, &iz);
-            let h_yz = homotopy(&yz);
-            let x_hyz = sed_mul(&ix, &h_yz);
-            let h_xhyz = homotopy(&x_hyz);
-            let t4 = project(&sed_mul(&iw, &h_xhyz));
+            let iw = ht_section(w); let ix = ht_section(x);
+            let iy = ht_section(y); let iz = ht_section(z);
+            let wx = ht_sed_mul(&iw, &ix);
+            let h_wx = ht_homotopy(&wx);
+            let h_wx_y = ht_sed_mul(&h_wx, &iy);
+            let hh_wxy = ht_homotopy(&h_wx_y);
+            let t1 = ht_project(&ht_sed_mul(&hh_wxy, &iz));
+            let xy = ht_sed_mul(&ix, &iy);
+            let h_xy = ht_homotopy(&xy);
+            let w_hxy = ht_sed_mul(&iw, &h_xy);
+            let h_whxy = ht_homotopy(&w_hxy);
+            let t2 = ht_project(&ht_sed_mul(&h_whxy, &iz));
+            let hxy_z = ht_sed_mul(&h_xy, &iz);
+            let h_hxyz = ht_homotopy(&hxy_z);
+            let t3 = ht_project(&ht_sed_mul(&iw, &h_hxyz));
+            let yz = ht_sed_mul(&iy, &iz);
+            let h_yz = ht_homotopy(&yz);
+            let x_hyz = ht_sed_mul(&ix, &h_yz);
+            let h_xhyz = ht_homotopy(&x_hyz);
+            let t4 = ht_project(&ht_sed_mul(&iw, &h_xhyz));
             let mut m4 = [0.0_f64; 8];
             for k in 0..8 { m4[k] = t1[k] - t2[k] + t3[k] - t4[k]; }
             m4.iter().map(|v| v * v).sum::<f64>().sqrt()
@@ -2174,31 +2110,7 @@ mod tests {
     /// Identify the 7 missing m4-nonzero sets and check m5 growth rate.
     #[test]
     fn test_m4_missing_sets_and_m5() {
-        use cd_kernel::cd_multiply;
 
-        let section = |x: &[f64; 8]| -> [f64; 16] {
-            let mut s = [0.0_f64; 16];
-            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
-            s
-        };
-        let project = |s: &[f64]| -> [f64; 8] {
-            let mut o = [0.0_f64; 8];
-            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
-            o
-        };
-        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
-            let ps = project(s);
-            let ips = section(&ps);
-            let mut h = [0.0_f64; 16];
-            for k in 0..16 { h[k] = s[k] - ips[k]; }
-            h
-        };
-        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
-            let r = cd_multiply(a, b);
-            let mut out = [0.0_f64; 16];
-            for k in 0..16 { out[k] = r[k]; }
-            out
-        };
 
         let fano: [(usize, usize, usize); 7] = [
             (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
@@ -2265,22 +2177,22 @@ mod tests {
                         let mut ul = [0.0_f64; 8]; ul[u] = 1.0;
 
                         // Naive m5: nest h one more level
-                        let iw = section(&w1);
-                        let ix = section(&xi);
-                        let iy = section(&yj);
-                        let iz = section(&zk);
-                        let iu = section(&ul);
+                        let iw = ht_section(&w1);
+                        let ix = ht_section(&xi);
+                        let iy = ht_section(&yj);
+                        let iz = ht_section(&zk);
+                        let iu = ht_section(&ul);
 
                         // One representative term of m5:
                         // p( h(h(h(iw*ix)*iy)*iz) * iu )
-                        let wx = sed_mul(&iw, &ix);
-                        let h1 = homotopy(&wx);
-                        let h1y = sed_mul(&h1, &iy);
-                        let h2 = homotopy(&h1y);
-                        let h2z = sed_mul(&h2, &iz);
-                        let h3 = homotopy(&h2z);
-                        let h3u = sed_mul(&h3, &iu);
-                        let t = project(&h3u);
+                        let wx = ht_sed_mul(&iw, &ix);
+                        let h1 = ht_homotopy(&wx);
+                        let h1y = ht_sed_mul(&h1, &iy);
+                        let h2 = ht_homotopy(&h1y);
+                        let h2z = ht_sed_mul(&h2, &iz);
+                        let h3 = ht_homotopy(&h2z);
+                        let h3u = ht_sed_mul(&h3, &iu);
+                        let t = ht_project(&h3u);
 
                         let norm: f64 = t.iter().map(|v| v * v).sum::<f64>().sqrt();
                         if norm > 1e-10 { m5_nonzero += 1; }
@@ -2305,31 +2217,7 @@ mod tests {
     /// converge, or diverge?
     #[test]
     fn test_oscillation_pattern() {
-        use cd_kernel::cd_multiply;
 
-        let section = |x: &[f64; 8]| -> [f64; 16] {
-            let mut s = [0.0_f64; 16];
-            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
-            s
-        };
-        let project = |s: &[f64]| -> [f64; 8] {
-            let mut o = [0.0_f64; 8];
-            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
-            o
-        };
-        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
-            let ps = project(s);
-            let ips = section(&ps);
-            let mut h = [0.0_f64; 16];
-            for k in 0..16 { h[k] = s[k] - ips[k]; }
-            h
-        };
-        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
-            let r = cd_multiply(a, b);
-            let mut out = [0.0_f64; 16];
-            for k in 0..16 { out[k] = r[k]; }
-            out
-        };
 
         println!("  === A-infinity Oscillation Pattern ===\n");
 
@@ -2389,22 +2277,22 @@ mod tests {
                 // ...
                 // Finally: p(prev * i(b_n))
                 let mut current = {
-                    let ib1 = section(&basis_vecs[0]);
-                    let ib2 = section(&basis_vecs[1]);
-                    let prod = sed_mul(&ib1, &ib2);
-                    homotopy(&prod)
+                    let ib1 = ht_section(&basis_vecs[0]);
+                    let ib2 = ht_section(&basis_vecs[1]);
+                    let prod = ht_sed_mul(&ib1, &ib2);
+                    ht_homotopy(&prod)
                 };
 
                 for step in 2..(n - 1) {
-                    let ib = section(&basis_vecs[step]);
-                    let prod = sed_mul(&current, &ib);
-                    current = homotopy(&prod);
+                    let ib = ht_section(&basis_vecs[step]);
+                    let prod = ht_sed_mul(&current, &ib);
+                    current = ht_homotopy(&prod);
                 }
 
                 // Final step: project
-                let ib_last = section(&basis_vecs[n - 1]);
-                let final_prod = sed_mul(&current, &ib_last);
-                let result = project(&final_prod);
+                let ib_last = ht_section(&basis_vecs[n - 1]);
+                let final_prod = ht_sed_mul(&current, &ib_last);
+                let result = ht_project(&final_prod);
 
                 let norm: f64 = result.iter().map(|v| v * v).sum::<f64>().sqrt();
                 if norm > 1e-10 { nonzero += 1; }
@@ -2552,29 +2440,6 @@ mod tests {
     fn test_m3_is_associator() {
         use cd_kernel::cd_multiply;
 
-        let section = |x: &[f64; 8]| -> [f64; 16] {
-            let mut s = [0.0_f64; 16];
-            for k in 0..8 { s[k] = x[k]; s[k+8] = x[k]; }
-            s
-        };
-        let project = |s: &[f64]| -> [f64; 8] {
-            let mut o = [0.0_f64; 8];
-            for k in 0..8 { o[k] = (s[k] + s[k+8]) / 2.0; }
-            o
-        };
-        let homotopy = |s: &[f64; 16]| -> [f64; 16] {
-            let ps = project(s);
-            let ips = section(&ps);
-            let mut h = [0.0_f64; 16];
-            for k in 0..16 { h[k] = s[k] - ips[k]; }
-            h
-        };
-        let sed_mul = |a: &[f64; 16], b: &[f64; 16]| -> [f64; 16] {
-            let r = cd_multiply(a, b);
-            let mut out = [0.0_f64; 16];
-            for k in 0..16 { out[k] = r[k]; }
-            out
-        };
         // Octonion mul via sedenion embed
         let oct_mul = |a: &[f64; 8], b: &[f64; 8]| -> [f64; 8] {
             let mut sa = [0.0_f64; 16]; let mut sb = [0.0_f64; 16];
@@ -2585,14 +2450,6 @@ mod tests {
             out
         };
 
-        let compute_m3 = |x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
-            let ix = section(x); let iy = section(y); let iz = section(z);
-            let t1 = project(&sed_mul(&homotopy(&sed_mul(&ix, &iy)), &iz));
-            let t2 = project(&sed_mul(&ix, &homotopy(&sed_mul(&iy, &iz))));
-            let mut m3 = [0.0_f64; 8];
-            for k in 0..8 { m3[k] = t1[k] - t2[k]; }
-            m3
-        };
 
         println!("  === m3 vs Octonionic Associator ===\n");
 
@@ -2606,7 +2463,7 @@ mod tests {
                     let mut ej = [0.0_f64; 8]; ej[j] = 1.0;
                     let mut ek = [0.0_f64; 8]; ek[k] = 1.0;
 
-                    let m3_v = compute_m3(&ei, &ej, &ek);
+                    let m3_v = ht_compute_m3(&ei, &ej, &ek);
                     let xy = oct_mul(&ei, &ej);
                     let xy_z = oct_mul(&xy, &ek);
                     let yz = oct_mul(&ej, &ek);
