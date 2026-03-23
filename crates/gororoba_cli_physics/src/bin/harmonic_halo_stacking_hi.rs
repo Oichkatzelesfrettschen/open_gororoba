@@ -17,8 +17,9 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
     stack_residuals,
 };
-use data_core::catalogs::hi_cube::{
-    HiCubeMetadata, HiRotationCurve, parse_hi_cube_metadata, parse_hi_rotcurves,
+use data_core::catalogs::{
+    hi_cube::{HiCubeMetadata, HiRotationCurve, parse_hi_cube_metadata, parse_hi_rotcurves},
+    manga::moster2013_log_m200,
 };
 use std::{collections::HashMap, path::PathBuf};
 
@@ -79,34 +80,6 @@ struct Cli {
     eigen_csv: PathBuf,
 }
 
-/// SMHM inversion (Moster+2013 z=0) to get log10(M_halo) from log10(M_star).
-fn smhm_log_m200(log_m_star: f64) -> f64 {
-    if !log_m_star.is_finite() || log_m_star < 7.0 {
-        return f64::NAN;
-    }
-    let log_m1 = 11.59;
-    let n = 0.0351;
-    let beta = 1.376;
-    let gamma = 0.608;
-
-    let m_star_target = 10.0_f64.powf(log_m_star);
-    let mut best_log_mh = 12.0;
-    let mut best_diff = f64::INFINITY;
-
-    for i in 0..500 {
-        let log_mh = 10.0 + i as f64 * 0.01;
-        let mh = 10.0_f64.powf(log_mh);
-        let m1 = 10.0_f64.powf(log_m1);
-        let ratio = mh / m1;
-        let m_star_pred = 2.0 * n * mh / (ratio.powf(-beta) + ratio.powf(gamma));
-        let diff = (m_star_pred - m_star_target).abs();
-        if diff < best_diff {
-            best_diff = diff;
-            best_log_mh = log_mh;
-        }
-    }
-    best_log_mh
-}
 
 /// Try to read stellar masses from a sidecar CSV (column: name, log_m_star or stellar_mass_msun).
 /// Returns a map from galaxy name to log10(M_star / Msun).
@@ -204,7 +177,7 @@ fn main() -> anyhow::Result<()> {
             .get(*name)
             .copied()
             .unwrap_or_else(|| FIDUCIAL_M_STAR_MSUN.log10());
-        let log_m200 = smhm_log_m200(log_ms);
+        let log_m200 = moster2013_log_m200(log_ms);
         if !log_m200.is_finite() || log_m200 < 10.0 {
             skipped_smhm += 1;
             continue;

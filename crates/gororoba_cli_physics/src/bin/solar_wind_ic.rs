@@ -31,7 +31,7 @@ use data_core::catalogs::{
     omni::{OmniRecord, parse_omni_file, parse_omni_hourly},
     pioneer::{PioneerSpacecraft, parse_pioneer_file, pioneer_to_omni},
     soho_celias::{parse_soho_celias_bundle_file, soho_to_hourly_omni, soho_to_native_omni},
-    solar_wind::parse_swepam_file,
+    solar_wind::{parse_swepam_file, swepam_to_omni},
     stereo_plastic::{
         average_stereo_mag_hourly, parse_stereo_magplasma_file, parse_stereo_plastic_file,
         stereo_to_omni,
@@ -563,36 +563,6 @@ fn filter_valid_omni_mag(records: &[OmniRecord]) -> Vec<OmniRecord> {
                 || !r.bz_gse.is_nan()
         })
         .cloned()
-        .collect()
-}
-
-/// SWEPAM-to-OMNI adapter: convert SWEPAM records to OmniRecord with
-/// NaN for B-field (triggers Parker spiral fallback).
-fn swepam_to_omni(records: &[data_core::catalogs::solar_wind::SwepamRecord]) -> Vec<OmniRecord> {
-    records
-        .iter()
-        .filter(|r| !r.proton_density.is_nan() || !r.bulk_speed.is_nan())
-        .map(|r| OmniRecord {
-            year: r.decimal_year as u16,
-            doy: r.doy,
-            hour: r.hour,
-            b_magnitude: f64::NAN,
-            bx_gse: f64::NAN,
-            by_gse: f64::NAN,
-            bz_gse: f64::NAN,
-            proton_temperature: r.ion_temperature,
-            proton_density: r.proton_density,
-            bulk_speed: r.bulk_speed,
-            flow_pressure: f64::NAN,
-            plasma_beta: f64::NAN,
-            alfven_mach: f64::NAN,
-            dst_index: f64::NAN,
-            ae_index: f64::NAN,
-            kp_times_10: 0,
-            r_au: 1.0,
-            lat_deg: f64::NAN,
-            lon_deg: f64::NAN,
-        })
         .collect()
 }
 

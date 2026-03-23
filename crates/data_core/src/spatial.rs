@@ -6,6 +6,8 @@
 //! geometry and sky-cell bookkeeping.
 
 use std::collections::HashMap;
+#[cfg(feature = "fits")]
+use wide::f64x4;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CatalogModality {
@@ -376,6 +378,205 @@ pub fn parse_dms_radians(value: &str) -> Option<f64> {
     let deg_abs = deg.abs();
     let deg_total = deg_abs + min / 60.0 + sec / 3600.0;
     Some(sign * deg_total.to_radians())
+}
+
+// ---- SIMD point-grid cone search -----------------------------------------------
+//
+// Shared by data_core::catalogs::lotss and gororoba_cli_physics::survey_crossmatch.
+// Both had identical PreparedLotss/MatrixPointGrid structs and identical
+// for_each_*_match + candidate_dot_chunk functions.  Extracted here so the
+// feature-gated CLI binary can use the same kernel via data_core::spatial.
+
+/// A sky-point catalog prepared for SIMD-accelerated cone search.
+///
+/// Unit vectors (x, y, z) are precomputed for each point; the inner
+/// SIMD lane-4 loop does cheap dot-product pre-screening before the
+/// more expensive Haversine refinement.  `grid` handles coarse cell
+/// filtering so the SIMD loop only sees a small candidate set.
+#[cfg(feature = "fits")]
+#[derive(Debug)]
+pub struct PreparedPointGrid {
+    /// Total point count.
+    pub point_count: usize,
+    /// Cell-level spatial index for candidate pre-filtering.
+    pub grid: SkyGridIndex,
+    /// Precomputed unit-vector X = cos(dec)*cos(ra) for each point.
+    pub unit_x: Vec<f64>,
+    /// Precomputed unit-vector Y = cos(dec)*sin(ra) for each point.
+    pub unit_y: Vec<f64>,
+    /// Precomputed unit-vector Z = sin(dec) for each point.
+    pub unit_z: Vec<f64>,
+}
+
+/// Build a [`PreparedPointGrid`] from a slice of sky points.
+///
+/// `match_radius_arcsec` sizes the internal grid cells; set it to the
+/// largest search radius you plan to use to avoid cell-boundary misses.
+#[cfg(feature = "fits")]
+pub fn prepare_point_grid(points: &[SkyPoint], match_radius_arcsec: f64) -> PreparedPointGrid {
+    let mut unit_x = Vec::with_capacity(points.len());
+    let mut unit_y = Vec::with_capacity(points.len());
+    let mut unit_z = Vec::with_capacity(points.len());
+    for point in points {
+        let [x, y, z] = sky_point_unit_vector(point.ra_deg, point.dec_deg);
+        unit_x.push(x);
+        unit_y.push(y);
+        unit_z.push(z);
+    }
+    PreparedPointGrid {
+        point_count: points.len(),
+        grid: SkyGridIndex::from_points(
+            points.to_vec(),
+            (match_radius_arcsec / 3600.0).max(0.01),
+        ),
+        unit_x,
+        unit_y,
+        unit_z,
+    }
+}
+
+/// Convert (RA, Dec) in degrees to a Cartesian unit vector on the unit sphere.
+#[cfg(feature = "fits")]
+pub fn sky_point_unit_vector(ra_deg: f64, dec_deg: f64) -> [f64; 3] {
+    let ra = ra_deg.to_radians();
+    let dec = dec_deg.to_radians();
+    let cos_dec = dec.cos();
+    [cos_dec * ra.cos(), cos_dec * ra.sin(), dec.sin()]
+}
+
+/// Angular separation using x87 80-bit extended precision on x86_64, Haversine elsewhere.
+///
+/// Used inside [`for_each_point_grid_match`] for the final per-candidate
+/// distance check after dot-product pre-filtering.
+#[cfg(feature = "fits")]
+pub fn precise_angular_separation_arcsec(
+    ra1_deg: f64,
+    dec1_deg: f64,
+    ra2_deg: f64,
+    dec2_deg: f64,
+) -> f64 {
+    #[cfg(target_arch = "x86_64")]
+    {
+        use cd_kernel::angular_separation_arcsec_ext80_deg;
+        let sep = angular_separation_arcsec_ext80_deg(ra1_deg, dec1_deg, ra2_deg, dec2_deg);
+        if sep.is_finite() {
+            sep
+        } else {
+            angular_separation_arcsec(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
+        }
+    }
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        angular_separation_arcsec(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
+    }
+}
+
+/// SIMD-accelerated cone search visitor over a [`PreparedPointGrid`].
+///
+/// Calls `visitor(candidate_index, separation_arcsec)` for every point
+/// within `match_radius_arcsec` of the query position.  Processes four
+/// candidates at a time with `f64x4` dot-product screening; a scalar tail
+/// drains any remainder.
+#[cfg(feature = "fits")]
+pub fn for_each_point_grid_match<F>(
+    prepared: &PreparedPointGrid,
+    query_ra_deg: f64,
+    query_dec_deg: f64,
+    match_radius_arcsec: f64,
+    mut visitor: F,
+) where
+    F: FnMut(usize, f64),
+{
+    let mut candidate_indices = Vec::new();
+    prepared.grid.for_each_search_candidate(
+        query_ra_deg,
+        query_dec_deg,
+        match_radius_arcsec,
+        |idx| {
+            candidate_indices.push(idx);
+        },
+    );
+    if candidate_indices.is_empty() {
+        return;
+    }
+
+    let [query_x, query_y, query_z] = sky_point_unit_vector(query_ra_deg, query_dec_deg);
+    let cos_threshold = (match_radius_arcsec / 3600.0).to_radians().cos();
+    let cos_threshold_slack = 1.0e-12;
+    let points = prepared.grid.points();
+
+    let mut offset = 0usize;
+    while offset + 4 <= candidate_indices.len() {
+        let chunk = &candidate_indices[offset..offset + 4];
+        let dots = simd_dot_chunk(prepared, query_x, query_y, query_z, chunk);
+        let dot_arr = dots.to_array();
+        for lane in 0..4 {
+            if dot_arr[lane] + cos_threshold_slack < cos_threshold {
+                continue;
+            }
+            let candidate_index = chunk[lane];
+            let point = &points[candidate_index];
+            let separation_arcsec = precise_angular_separation_arcsec(
+                query_ra_deg,
+                query_dec_deg,
+                point.ra_deg,
+                point.dec_deg,
+            );
+            if separation_arcsec <= match_radius_arcsec {
+                visitor(candidate_index, separation_arcsec);
+            }
+        }
+        offset += 4;
+    }
+
+    while offset < candidate_indices.len() {
+        let candidate_index = candidate_indices[offset];
+        let point = &points[candidate_index];
+        let separation_arcsec = precise_angular_separation_arcsec(
+            query_ra_deg,
+            query_dec_deg,
+            point.ra_deg,
+            point.dec_deg,
+        );
+        if separation_arcsec <= match_radius_arcsec {
+            visitor(candidate_index, separation_arcsec);
+        }
+        offset += 1;
+    }
+}
+
+/// Compute f64x4 dot products of four candidate unit vectors against the query vector.
+#[cfg(feature = "fits")]
+fn simd_dot_chunk(
+    prepared: &PreparedPointGrid,
+    query_x: f64,
+    query_y: f64,
+    query_z: f64,
+    candidate_indices: &[usize],
+) -> f64x4 {
+    let idx0 = candidate_indices[0];
+    let idx1 = candidate_indices[1];
+    let idx2 = candidate_indices[2];
+    let idx3 = candidate_indices[3];
+    let xs = f64x4::from([
+        prepared.unit_x[idx0],
+        prepared.unit_x[idx1],
+        prepared.unit_x[idx2],
+        prepared.unit_x[idx3],
+    ]);
+    let ys = f64x4::from([
+        prepared.unit_y[idx0],
+        prepared.unit_y[idx1],
+        prepared.unit_y[idx2],
+        prepared.unit_y[idx3],
+    ]);
+    let zs = f64x4::from([
+        prepared.unit_z[idx0],
+        prepared.unit_z[idx1],
+        prepared.unit_z[idx2],
+        prepared.unit_z[idx3],
+    ]);
+    xs * f64x4::splat(query_x) + ys * f64x4::splat(query_y) + zs * f64x4::splat(query_z)
 }
 
 /// Converts equatorial (RA, Dec) in degrees to Galactic latitude (b) in degrees.

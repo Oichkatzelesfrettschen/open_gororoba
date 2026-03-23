@@ -2,15 +2,14 @@
 
 #[cfg(feature = "euclid-catalog")]
 use anyhow::{Result, anyhow, bail};
-#[cfg(all(feature = "euclid-catalog", target_arch = "x86_64"))]
-use cd_kernel::angular_separation_arcsec_ext80_deg;
 #[cfg(feature = "euclid-catalog")]
 use clap::{Parser, Subcommand, ValueEnum};
 #[cfg(feature = "euclid-catalog")]
 use cosmology_core::euclid_morphology::{EuclidMorphologyRecord, read_euclid_visual_morphology};
 #[cfg(feature = "euclid-catalog")]
 use data_core::{
-    CatalogModality, SkyGridIndex, SkyPoint,
+    CatalogModality, PreparedPointGrid, SkyGridIndex, SkyPoint,
+    for_each_point_grid_match, prepare_point_grid,
     catalogs::{
         atnf::parse_atnf_csv,
         chime::parse_chime_csv,
@@ -41,8 +40,6 @@ use std::{
 };
 #[cfg(feature = "euclid-catalog")]
 use verified_core::topology::HardwareTopology;
-#[cfg(feature = "euclid-catalog")]
-use wide::f64x4;
 
 #[cfg(feature = "euclid-catalog")]
 const DRPALL_COLUMNS: &[&str] = &["plateifu", "mangaid", "objra", "objdec"];
@@ -2131,16 +2128,6 @@ struct LotssPositionLayout {
 
 #[cfg(feature = "euclid-catalog")]
 #[derive(Debug)]
-struct PreparedPointMatrixGrid {
-    point_count: usize,
-    grid: SkyGridIndex,
-    unit_x: Vec<f64>,
-    unit_y: Vec<f64>,
-    unit_z: Vec<f64>,
-}
-
-#[cfg(feature = "euclid-catalog")]
-#[derive(Debug)]
 struct MatrixScanSummary {
     matched_flags: Vec<Vec<bool>>,
 }
@@ -2263,30 +2250,10 @@ fn count_multi_point_overlaps_with_lotss(
 fn prepare_point_matrix_grids(
     catalogs: &[PreparedPointMatrixCatalog],
     match_radius_arcsec: f64,
-) -> Vec<PreparedPointMatrixGrid> {
+) -> Vec<PreparedPointGrid> {
     catalogs
         .iter()
-        .map(|catalog| {
-            let mut unit_x = Vec::with_capacity(catalog.points.len());
-            let mut unit_y = Vec::with_capacity(catalog.points.len());
-            let mut unit_z = Vec::with_capacity(catalog.points.len());
-            for point in &catalog.points {
-                let [x, y, z] = sky_point_unit_vector(point.ra_deg, point.dec_deg);
-                unit_x.push(x);
-                unit_y.push(y);
-                unit_z.push(z);
-            }
-            PreparedPointMatrixGrid {
-                point_count: catalog.points.len(),
-                grid: SkyGridIndex::from_points(
-                    catalog.points.clone(),
-                    (match_radius_arcsec / 3600.0).max(0.01),
-                ),
-                unit_x,
-                unit_y,
-                unit_z,
-            }
-        })
+        .map(|catalog| prepare_point_grid(&catalog.points, match_radius_arcsec))
         .collect()
 }
 
@@ -2366,7 +2333,7 @@ fn split_matrix_work_bounds(len: usize, parts: usize) -> Vec<(usize, usize)> {
 fn scan_lotss_point_overlap_range(
     lotss_path: &Path,
     layout: &LotssPositionLayout,
-    catalogs: &[PreparedPointMatrixGrid],
+    catalogs: &[PreparedPointGrid],
     match_radius_arcsec: f64,
     worker_bounds: std::ops::Range<usize>,
     chunk_rows: usize,
@@ -2414,7 +2381,7 @@ fn scan_lotss_point_overlap_range(
                 continue;
             }
             for (catalog_idx, catalog) in catalogs.iter().enumerate() {
-                for_each_catalog_match(
+                for_each_point_grid_match(
                     catalog,
                     ra_deg,
                     dec_deg,
@@ -2515,142 +2482,6 @@ fn shared_lotss_match_to_local(entry: data_core::LotssFitsBestMatch) -> LotssBes
         lotss_flux_mjy: entry.source.flux_mjy,
         lotss_spectral_index: entry.source.spectral_index,
         lotss_structure_code: entry.source.structure_code,
-    }
-}
-
-#[cfg(feature = "euclid-catalog")]
-fn for_each_catalog_match<F>(
-    catalog: &PreparedPointMatrixGrid,
-    query_ra_deg: f64,
-    query_dec_deg: f64,
-    match_radius_arcsec: f64,
-    mut visitor: F,
-) where
-    F: FnMut(usize, f64),
-{
-    let mut candidate_indices = Vec::new();
-    catalog.grid.for_each_search_candidate(
-        query_ra_deg,
-        query_dec_deg,
-        match_radius_arcsec,
-        |idx| {
-            candidate_indices.push(idx);
-        },
-    );
-    if candidate_indices.is_empty() {
-        return;
-    }
-
-    let [query_x, query_y, query_z] = sky_point_unit_vector(query_ra_deg, query_dec_deg);
-    let cos_threshold = (match_radius_arcsec / 3600.0).to_radians().cos();
-    let cos_threshold_slack = 1.0e-12;
-    let points = catalog.grid.points();
-
-    let mut offset = 0usize;
-    while offset + 4 <= candidate_indices.len() {
-        let chunk = &candidate_indices[offset..offset + 4];
-        let dots = candidate_dot_chunk(catalog, query_x, query_y, query_z, chunk);
-        let dot_arr = dots.to_array();
-        for lane in 0..4 {
-            if dot_arr[lane] + cos_threshold_slack < cos_threshold {
-                continue;
-            }
-            let candidate_index = chunk[lane];
-            let point = &points[candidate_index];
-            let separation_arcsec = precise_angular_separation_arcsec(
-                query_ra_deg,
-                query_dec_deg,
-                point.ra_deg,
-                point.dec_deg,
-            );
-            if separation_arcsec <= match_radius_arcsec {
-                visitor(candidate_index, separation_arcsec);
-            }
-        }
-        offset += 4;
-    }
-
-    while offset < candidate_indices.len() {
-        let candidate_index = candidate_indices[offset];
-        let point = &points[candidate_index];
-        let separation_arcsec = precise_angular_separation_arcsec(
-            query_ra_deg,
-            query_dec_deg,
-            point.ra_deg,
-            point.dec_deg,
-        );
-        if separation_arcsec <= match_radius_arcsec {
-            visitor(candidate_index, separation_arcsec);
-        }
-        offset += 1;
-    }
-}
-
-#[cfg(feature = "euclid-catalog")]
-fn candidate_dot_chunk(
-    catalog: &PreparedPointMatrixGrid,
-    query_x: f64,
-    query_y: f64,
-    query_z: f64,
-    candidate_indices: &[usize],
-) -> f64x4 {
-    let idx0 = candidate_indices[0];
-    let idx1 = candidate_indices[1];
-    let idx2 = candidate_indices[2];
-    let idx3 = candidate_indices[3];
-    let xs = f64x4::from([
-        catalog.unit_x[idx0],
-        catalog.unit_x[idx1],
-        catalog.unit_x[idx2],
-        catalog.unit_x[idx3],
-    ]);
-    let ys = f64x4::from([
-        catalog.unit_y[idx0],
-        catalog.unit_y[idx1],
-        catalog.unit_y[idx2],
-        catalog.unit_y[idx3],
-    ]);
-    let zs = f64x4::from([
-        catalog.unit_z[idx0],
-        catalog.unit_z[idx1],
-        catalog.unit_z[idx2],
-        catalog.unit_z[idx3],
-    ]);
-    xs * f64x4::splat(query_x) + ys * f64x4::splat(query_y) + zs * f64x4::splat(query_z)
-}
-
-#[cfg(feature = "euclid-catalog")]
-fn sky_point_unit_vector(ra_deg: f64, dec_deg: f64) -> [f64; 3] {
-    let ra = ra_deg.to_radians();
-    let dec = dec_deg.to_radians();
-    let cos_dec = dec.cos();
-    [cos_dec * ra.cos(), cos_dec * ra.sin(), dec.sin()]
-}
-
-#[cfg(feature = "euclid-catalog")]
-fn precise_angular_separation_arcsec(
-    ra1_deg: f64,
-    dec1_deg: f64,
-    ra2_deg: f64,
-    dec2_deg: f64,
-) -> f64 {
-    #[cfg(target_arch = "x86_64")]
-    {
-        angular_separation_arcsec_x87(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
-    }
-    #[cfg(not(target_arch = "x86_64"))]
-    {
-        data_core::angular_separation_arcsec(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
-    }
-}
-
-#[cfg(all(feature = "euclid-catalog", target_arch = "x86_64"))]
-fn angular_separation_arcsec_x87(ra1_deg: f64, dec1_deg: f64, ra2_deg: f64, dec2_deg: f64) -> f64 {
-    let separation = angular_separation_arcsec_ext80_deg(ra1_deg, dec1_deg, ra2_deg, dec2_deg);
-    if separation.is_finite() {
-        separation
-    } else {
-        data_core::angular_separation_arcsec(ra1_deg, dec1_deg, ra2_deg, dec2_deg)
     }
 }
 

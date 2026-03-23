@@ -89,6 +89,11 @@ pub use tabular::{
 };
 
 #[cfg(feature = "fits")]
+pub use spatial::{
+    PreparedPointGrid, for_each_point_grid_match, precise_angular_separation_arcsec,
+    prepare_point_grid, sky_point_unit_vector,
+};
+#[cfg(feature = "fits")]
 pub use catalogs::lotss::{
     LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,
     crossmatch_points_against_fits_catalog,
