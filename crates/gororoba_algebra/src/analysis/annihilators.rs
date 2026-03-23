@@ -42,33 +42,49 @@ pub fn biss_dugger_isaksen_bound(dim: usize) -> usize {
     }
 }
 
+/// Moreno Corollary 1.17 upper bound on dim Ker(L_a) for doubly-pure unit-norm a.
+///
+/// Returns `2^n - 4` where `n = log2(dim)`.
+///
+/// # Distinction from BDI bound
+///
+/// - Moreno Cor 1.17: `dim Ker(L_a) <= 2^n - 4` for doubly-pure unit-norm a.
+/// - Biss-Dugger-Isaksen: `dim Ann(x) <= 2^n - 4n + 4` for any nonzero x (all n >= 4).
+///
+/// For n >= 4: BDI gives a TIGHTER bound (2^n - 4n + 4 < 2^n - 4 since 4n > 8 for n > 2).
+/// Both are 0 mod 4, consistent with Theorem 1.16 (eigenspaces have dim = 0 mod 4).
+pub fn moreno_corollary_1_17_bound(dim: usize) -> usize {
+    let n = (dim as f64).log2() as usize;
+    (1 << n) - 4
+}
+
 /// Analyze annihilator dimensions for a suite of known zero divisors.
 pub fn analyze_annihilators(dim_enum: AlgebraDim) -> Vec<(usize, bool)> {
     let dim = dim_enum.dim();
     let n = (dim as f64).log2() as usize;
     let bound = biss_dugger_isaksen_bound(dim);
-    
+
     if n < 4 {
         return vec![(0, true)]; // No ZDs below 16D
     }
-    
-    // Construction from Moreno: x = e_i*e_l - e_{i^l} in some sense
-    // Actually, simple ZDs in 16D look like: x = e_1 + e_{10} * e_{15} ... no.
-    // Let's use known 2-blade ZDs from the kernel.
+
+    // Use known 2-blade ZDs from the kernel.
+    // x = e_i + e_j is the LEFT factor of a ZD pair (i, j, k, l, ...).
+    // x IS a zero divisor: it has a nontrivial left annihilator (Ann(x) != {0}).
+    // We measure dim Ann(x) and verify it stays within the BDI bound.
     use cd_kernel::cayley_dickson::find_zero_divisors;
     let zds = find_zero_divisors(dim, 1e-10);
-    
+
     let mut results = Vec::new();
     for (i, j, _, _, _) in zds.iter().take(10) {
         let mut x = vec![0.0; dim];
         x[*i] = 1.0;
-        x[*j] = 1.0; 
-        // Note: x itself isn't a ZD, but (e_i + e_j) * (e_k + e_l) = 0
-        // We want to find the dimension of elements y that kill x.
+        x[*j] = 1.0;
+        // x = e_i + e_j is a ZD; Ann(x) = {y : x*y = 0} has dim >= 1.
         let d = annihilator_dimension(dim, &x, 1e-8);
         results.push((d, d <= bound));
     }
-    
+
     results
 }
 

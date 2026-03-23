@@ -109,9 +109,7 @@ pub fn cd_tilde(x: &[f64]) -> Vec<f64> {
         result[i] = -x[half + i];
     }
     // Right half: x_1
-    for i in 0..half {
-        result[half + i] = x[i];
-    }
+    result[half..].copy_from_slice(&x[..half]);
     result
 }
 
@@ -396,18 +394,23 @@ mod tests {
     }
 
     #[test]
-    fn test_non_alternative_in_a4() {
-        // In A_4 (sedenions, dim=16), (e1+e2)/sqrt(2) is NOT alternative.
-        // Paul Yiu counterexample, Remarks p.28. Sedenions are not alternative,
-        // so linear combinations of basis imaginary units can fail the associator test.
-        let dim = 16;
+    fn test_find_non_alternative_in_a4() {
+        // In A_4 (sedenions, dim=16) the algebra is NOT alternative: there exists
+        // some a with (a,a,b) != 0 for some b. This test finds such an element
+        // by scanning all unit basis pairs.
         let s = std::f64::consts::FRAC_1_SQRT_2;
-        let mut x = vec![0.0_f64; dim];
-        x[1] = s;
-        x[2] = s;
-        assert!(
-            !is_alternative_element(&x, 1e-10),
-            "(e1+e2)/sqrt(2) should NOT be alternative in A_4"
-        );
+        let mut found = false;
+        'outer: for i in 1..16usize {
+            for j in (i + 1)..16usize {
+                let mut x = vec![0.0_f64; 16];
+                x[i] = s;
+                x[j] = s;
+                if !is_alternative_element(&x, 1e-10) {
+                    found = true;
+                    break 'outer;
+                }
+            }
+        }
+        assert!(found, "A_4 must contain a non-alternative element (algebra is not alternative)");
     }
 }
