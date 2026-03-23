@@ -9,6 +9,7 @@
 //! Reference: McComas et al. (1998), Space Sci. Rev. 86, 563
 
 use crate::{
+    catalogs::omni::OmniRecord,
     fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
@@ -190,6 +191,39 @@ impl DatasetProvider for AceSwepamProvider {
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("ace_swepam").exists()
     }
+}
+
+/// Convert ACE SWEPAM records to OmniRecord format.
+///
+/// B-field fields are set to NaN (SWEPAM is a plasma-only instrument);
+/// callers that need magnetic data should merge with an ACE MAG or
+/// WIND MFI source via `data_core::catalogs::ace_mag::ace_mag_to_omni`.
+pub fn swepam_to_omni(records: &[SwepamRecord]) -> Vec<OmniRecord> {
+    records
+        .iter()
+        .filter(|r| !r.proton_density.is_nan() || !r.bulk_speed.is_nan())
+        .map(|r| OmniRecord {
+            year: r.decimal_year as u16,
+            doy: r.doy,
+            hour: r.hour,
+            b_magnitude: f64::NAN,
+            bx_gse: f64::NAN,
+            by_gse: f64::NAN,
+            bz_gse: f64::NAN,
+            proton_temperature: r.ion_temperature,
+            proton_density: r.proton_density,
+            bulk_speed: r.bulk_speed,
+            flow_pressure: f64::NAN,
+            plasma_beta: f64::NAN,
+            alfven_mach: f64::NAN,
+            dst_index: f64::NAN,
+            ae_index: f64::NAN,
+            kp_times_10: 0,
+            r_au: 1.0,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+        })
+        .collect()
 }
 
 #[cfg(test)]

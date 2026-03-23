@@ -11,7 +11,7 @@ use clap::Parser;
 #[cfg(feature = "euclid-catalog")]
 use cosmology_core::euclid_morphology::{EuclidMorphologyRecord, read_euclid_visual_morphology};
 #[cfg(feature = "euclid-catalog")]
-use data_core::formats::fits_table::{FitsValue, read_fits_table};
+use data_core::{angular_separation_arcsec, formats::fits_table::{FitsValue, read_fits_table}};
 #[cfg(feature = "euclid-catalog")]
 use kiddo::{ImmutableKdTree, SquaredEuclidean};
 #[cfg(feature = "euclid-catalog")]
@@ -358,21 +358,6 @@ fn unit_vector(ra_deg: f64, dec_deg: f64) -> [f64; 3] {
     let dec = dec_deg.to_radians();
     let cos_dec = dec.cos();
     [cos_dec * ra.cos(), cos_dec * ra.sin(), dec.sin()]
-}
-
-#[cfg(feature = "euclid-catalog")]
-fn angular_separation_arcsec(ra1_deg: f64, dec1_deg: f64, ra2_deg: f64, dec2_deg: f64) -> f64 {
-    let ra1 = ra1_deg.to_radians();
-    let dec1 = dec1_deg.to_radians();
-    let ra2 = ra2_deg.to_radians();
-    let dec2 = dec2_deg.to_radians();
-    let delta_ra = ra2 - ra1;
-    let delta_dec = dec2 - dec1;
-    let sin_ddec = (delta_dec / 2.0).sin();
-    let sin_dra = (delta_ra / 2.0).sin();
-    let a = sin_ddec * sin_ddec + dec1.cos() * dec2.cos() * sin_dra * sin_dra;
-    let c = 2.0 * a.sqrt().min(1.0).asin();
-    c.to_degrees() * 3600.0
 }
 
 #[cfg(feature = "euclid-catalog")]

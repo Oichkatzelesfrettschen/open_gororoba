@@ -1017,7 +1017,7 @@ fn run_null_hypothesis_cpu(args: &Args, config: &GalaxyPipelineConfig) {
         0,
     ));
 
-    drop(run_cpu_trial);
+    let _ = run_cpu_trial;
     report_null_hypothesis(&results);
 }
 

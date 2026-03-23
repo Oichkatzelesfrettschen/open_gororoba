@@ -85,34 +85,44 @@ impl MangaDapallEntry {
     ///
     /// Inverted numerically for the z=0 calibration.
     pub fn estimated_log_m200(&self) -> f64 {
-        if !self.log_stellar_mass.is_finite() || self.log_stellar_mass < 7.0 {
-            return f64::NAN;
-        }
-        // Moster+2013 z=0 parameters
-        let log_m1 = 11.59;
-        let n = 0.0351;
-        let beta = 1.376;
-        let gamma = 0.608;
-
-        // Simple iterative inversion: scan log(M_halo) from 10 to 15
-        let m_star_target = 10.0_f64.powf(self.log_stellar_mass);
-        let mut best_log_mh = 12.0;
-        let mut best_diff = f64::INFINITY;
-
-        for i in 0..500 {
-            let log_mh = 10.0 + i as f64 * 0.01;
-            let mh = 10.0_f64.powf(log_mh);
-            let m1 = 10.0_f64.powf(log_m1);
-            let ratio = mh / m1;
-            let m_star_pred = 2.0 * n * mh / (ratio.powf(-beta) + ratio.powf(gamma));
-            let diff = (m_star_pred - m_star_target).abs();
-            if diff < best_diff {
-                best_diff = diff;
-                best_log_mh = log_mh;
-            }
-        }
-        best_log_mh
+        moster2013_log_m200(self.log_stellar_mass)
     }
+}
+
+/// Moster+2013 SMHM inversion: log10(M200) from log10(M_star) at z=0.
+///
+/// Uses M_star/M_halo = 2*N * [(M_halo/M1)^-beta + (M_halo/M1)^gamma]^-1
+/// with z=0 calibration N=0.0351, M1=10^11.59, beta=1.376, gamma=0.608
+/// (Moster et al. 2013, ApJ 770, 57).
+///
+/// Inverted numerically via a grid scan over log(M_halo) in [10, 15].
+/// Returns NaN for log_m_star < 7.0 or non-finite input.
+pub fn moster2013_log_m200(log_m_star: f64) -> f64 {
+    if !log_m_star.is_finite() || log_m_star < 7.0 {
+        return f64::NAN;
+    }
+    let log_m1 = 11.59;
+    let n = 0.0351;
+    let beta = 1.376;
+    let gamma = 0.608;
+
+    let m_star_target = 10.0_f64.powf(log_m_star);
+    let mut best_log_mh = 12.0;
+    let mut best_diff = f64::INFINITY;
+
+    for i in 0..500 {
+        let log_mh = 10.0 + i as f64 * 0.01;
+        let mh = 10.0_f64.powf(log_mh);
+        let m1 = 10.0_f64.powf(log_m1);
+        let ratio = mh / m1;
+        let m_star_pred = 2.0 * n * mh / (ratio.powf(-beta) + ratio.powf(gamma));
+        let diff = (m_star_pred - m_star_target).abs();
+        if diff < best_diff {
+            best_diff = diff;
+            best_log_mh = log_mh;
+        }
+    }
+    best_log_mh
 }
 
 /// Parse MaNGA rotation curves from the master CSV.
