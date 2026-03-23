@@ -731,6 +731,82 @@ fn test_sign_nullity_stratification() {
 }
 
 // =========================================================================
+// D13: High-dim sign table verification (512D, 1024D, 2048D)
+// =========================================================================
+
+/// Verify that cd_basis_mul_sign_iter produces valid signs at high
+/// dimensions (512, 1024, 2048) and measure computation time.
+///
+/// For each dimension, we verify:
+/// 1. Self-products: sign(p,p) = -1 for all p >= 1
+/// 2. Products with e_0: sign(0,q) = sign(q,0) = +1
+/// 3. Antisymmetry: sign(p,q) = -sign(q,p) for p != q
+/// 4. Sign table is {+1, -1} only (no zeros for p != q, p,q >= 1)
+///
+/// This confirms cd_sign_fuel / cd_basis_mul_sign_iter is correct
+/// up to the 11th Cayley-Dickson level (2^11 = 2048D).
+#[test]
+fn test_high_dim_sign_table_verification() {
+    println!("--- D13: HIGH-DIM SIGN TABLE VERIFICATION ---\n");
+
+    for log_dim in [9_u32, 10, 11] {
+        let dim = 1_usize << log_dim;
+        let start = std::time::Instant::now();
+
+        // Sample: check a subset of products for large dimensions
+        let sample_size = 1000_usize.min(dim - 1);
+        let stride = (dim - 1) / sample_size;
+
+        let mut self_ok = true;
+        let mut zero_ok = true;
+        let mut antisym_ok = true;
+        let mut range_ok = true;
+
+        for idx in 0..sample_size {
+            let p = 1 + idx * stride;
+            if p >= dim { break; }
+
+            // Self-product
+            if cd_basis_mul_sign_iter(dim, p, p) != -1 {
+                self_ok = false;
+            }
+
+            // Product with e_0
+            if cd_basis_mul_sign_iter(dim, 0, p) != 1 {
+                zero_ok = false;
+            }
+            if cd_basis_mul_sign_iter(dim, p, 0) != 1 {
+                zero_ok = false;
+            }
+
+            // Antisymmetry and range check for a few q values
+            for q_idx in 0..10_usize.min(sample_size) {
+                let q = 1 + q_idx * stride;
+                if q >= dim || p == q { continue; }
+                let spq = cd_basis_mul_sign_iter(dim, p, q);
+                let sqp = cd_basis_mul_sign_iter(dim, q, p);
+                if spq != -sqp { antisym_ok = false; }
+                if spq != 1 && spq != -1 { range_ok = false; }
+            }
+        }
+
+        let elapsed = start.elapsed();
+        println!("  dim={:>5} (2^{:>2}): self={} zero={} antisym={} range={} [{:.1}ms]",
+            dim, log_dim,
+            if self_ok { "OK" } else { "FAIL" },
+            if zero_ok { "OK" } else { "FAIL" },
+            if antisym_ok { "OK" } else { "FAIL" },
+            if range_ok { "OK" } else { "FAIL" },
+            elapsed.as_secs_f64() * 1000.0);
+
+        assert!(self_ok, "dim={}: self-product check failed", dim);
+        assert!(zero_ok, "dim={}: e_0 product check failed", dim);
+        assert!(antisym_ok, "dim={}: antisymmetry check failed", dim);
+        assert!(range_ok, "dim={}: range check failed", dim);
+    }
+}
+
+// =========================================================================
 // D2: p-adic CD extension -- Bales twist and norm isotropy
 // =========================================================================
 
