@@ -874,22 +874,20 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
         sabc_l != sabc_r
     };
 
-    // O(1) incidence row via XOR product index
-    let build_row_fast = |b: usize, c: usize, d: usize| -> Vec<f64> {
-        let mut row = vec![0.0_f64; n_assess];
-        // Products: e_b*e_c -> e_{b^c}, e_b*e_d -> e_{b^d}, e_c*e_d -> e_{c^d}
-        for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
-            if prod_idx > 0 && prod_idx < dim {
-                for &a_idx in &assess_lookup[prod_idx] {
-                    row[a_idx] = 1.0;
-                }
-            }
-        }
-        row
-    };
+    // Accumulate Gram matrices G_bc = M_bc^T * M_bc and G_x = M_x^T * M_x
+    // DIRECTLY without building the full row matrices. Each row is sparse
+    // (at most 6 nonzeros in n_assess columns), so the outer product
+    // update is O(36) per triad instead of O(n_assess^2).
+    //
+    // This eliminates ~290 MB of heap allocation for dim=64 and reduces
+    // the Gram accumulation from O(n_triads * n_assess^2) to O(n_triads * 36).
+    let mut gram_bc = DMatrix::zeros(n_assess, n_assess);
+    let mut gram_x = DMatrix::zeros(n_assess, n_assess);
+    let mut count_bc = 0_usize;
+    let mut count_x = 0_usize;
 
-    let mut rows_bc = Vec::new();
-    let mut rows_x = Vec::new();
+    // Reusable buffer for nonzero indices (avoids per-triad allocation)
+    let mut nz_buf: Vec<usize> = Vec::with_capacity(8);
 
     for b in 1..dim {
         for c in (b + 1)..dim {
@@ -898,39 +896,50 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
                 let t2 = assoc_nonzero(b, d, c);
                 let t3 = assoc_nonzero(c, b, d);
                 if !t1 && !t2 && !t3 { continue; }
-                let row = build_row_fast(b, c, d);
-                match (t1, t2, t3) {
+
+                // Collect nonzero assessor indices for this triad (sparse row)
+                nz_buf.clear();
+                for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
+                    if prod_idx > 0 && prod_idx < dim {
+                        for &a_idx in &assess_lookup[prod_idx] {
+                            if !nz_buf.contains(&a_idx) {
+                                nz_buf.push(a_idx);
+                            }
+                        }
+                    }
+                }
+
+                // Sparse outer product: G[i][j] += 1 for all i,j in nz_buf
+                let target = match (t1, t2, t3) {
                     (false, true, false) | (false, false, true) => {
-                        rows_bc.push(nalgebra::RowDVector::from_vec(row));
+                        count_bc += 1;
+                        &mut gram_bc
                     }
                     _ => {
-                        rows_x.push(nalgebra::RowDVector::from_vec(row));
+                        count_x += 1;
+                        &mut gram_x
+                    }
+                };
+                for &i in &nz_buf {
+                    for &j in &nz_buf {
+                        target[(i, j)] += 1.0;
                     }
                 }
             }
         }
     }
 
-    if rows_bc.is_empty() || rows_x.is_empty() {
+    if count_bc == 0 || count_x == 0 {
         return (DMatrix::zeros(0, n_assess), vec![], assessors);
     }
 
-    let mat_bc = DMatrix::from_rows(&rows_bc);
-    let mat_x = DMatrix::from_rows(&rows_x);
-
-    // Gram-matrix approach: G = M^T * M is n_assess x n_assess.
-    // Eigenvalues of G = sigma^2 of M. O(n_assess^3) vs O(n_rows * n_assess^2).
-    //
-    // Use sigma threshold 1e-4 (eigenvalue threshold 1e-8) to match the original
-    // SVD-based rank detection. The Gram matrix squares the condition number,
-    // so we use a looser threshold than the raw 1e-8 SVD threshold.
+    // Eigendecompose the B/C Gram matrix to get column space
     let sigma_threshold = 1e-4;
     let eig_threshold = sigma_threshold * sigma_threshold;
 
-    let gram_bc = mat_bc.transpose() * &mat_bc;
     let eig_bc = gram_bc.symmetric_eigen();
 
-    // Build projector onto B/C column space from eigenvectors with nonzero eigenvalues
+    // Build projector onto B/C column space
     let mut p_bc = DMatrix::zeros(n_assess, n_assess);
     for k in 0..n_assess {
         if eig_bc.eigenvalues[k] > eig_threshold {
@@ -939,23 +948,22 @@ pub fn extract_vk_basis(dim: usize, max_rank: usize) -> (nalgebra::DMatrix<f64>,
         }
     }
 
-    // Project X onto complement: C_vk = X * (I - P_BC)
+    // Complement Gram: G_vk = (I - P_BC)^T * G_x * (I - P_BC)
     let identity = DMatrix::identity(n_assess, n_assess);
     let proj_complement = &identity - &p_bc;
-    let c_vk = &mat_x * &proj_complement;
-
-    // For the complement, use the Gram matrix approach again:
-    // G_vk = c_vk^T * c_vk is n_assess x n_assess
-    let gram_vk = c_vk.transpose() * &c_vk;
+    let gram_vk = &proj_complement * &gram_x * &proj_complement;
     let eig_vk = gram_vk.symmetric_eigen();
 
     // Eigenvalues are sigma^2 (sorted ascending in nalgebra).
     // Collect nonzero ones in descending order.
-    let mut sv_pairs: Vec<(f64, usize)> = eig_vk.eigenvalues.iter()
-        .enumerate()
-        .filter(|(_, e)| **e > eig_threshold)
-        .map(|(i, e)| (e.sqrt(), i))
-        .collect();
+    let mut sv_pairs: Vec<(f64, usize)> = Vec::new();
+    for k in 0..n_assess {
+        let ev: f64 = eig_vk.eigenvalues[k];
+        if ev > eig_threshold {
+            sv_pairs.push((ev.sqrt(), k));
+        }
+    }
+    sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
     sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
 
     let rank_vk = sv_pairs.len();
