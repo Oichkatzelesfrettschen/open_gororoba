@@ -90,8 +90,7 @@ use rayon::prelude::*;
     fn test_cp_violation_joint_3d_scan() {
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
 
         let ch_pair = (11_usize, 12);
         let nu_pair = (7_usize, 8);
@@ -158,9 +157,8 @@ use rayon::prelude::*;
         // Build friction profiles from sedenion associators [a, x, b]
         // with selectors (e_7, e_8).  Three profiles for three generations,
         // one per quaternionic subalgebra of the octonion.
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
         let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
         let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
 
@@ -829,8 +827,7 @@ use rayon::prelude::*;
     fn test_delta_cp_sign_systematics() {
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
 
         let ch_pair = (11_usize, 12);
         let alpha_ch = 3.00_f64;
@@ -843,9 +840,8 @@ use rayon::prelude::*;
         // Epsilon sign: negate profiles or not
         let eps_signs = [false, true];
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         println!("--- delta_CP SIGN SYSTEMATICS (8 combinations) ---\n");
         println!("  {:>6} {:>4} {:>4} | {:>8} {:>8} {:>8} | {:>10} {:>8}",
@@ -1220,12 +1216,8 @@ use rayon::prelude::*;
     fn test_psi_friction_profiles_42x3() {
         use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::SignTableCache;
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
-
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1[..], &o2[..], &o3[..]];
-        let sign_table = SignTableCache::new(16);
 
         // Build 42 assessor pairs
         let mut assessors: Vec<(usize, usize)> = Vec::new();

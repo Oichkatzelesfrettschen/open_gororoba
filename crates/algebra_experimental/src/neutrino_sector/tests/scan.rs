@@ -18,15 +18,13 @@ use super::super::*;
     fn test_delta_cp_from_gram_quartet() {
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
 
         let ch_pair = (11_usize, 12);
         let nu_pair = (7_usize, 8);
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
             let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
@@ -134,16 +132,14 @@ use super::super::*;
     fn test_delta_cp_all_flavor_assignments() {
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
         use num_complex::Complex;
 
         let ch_pair = (11_usize, 12);
         let nu_pair = (7_usize, 8);
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
             let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
@@ -269,16 +265,14 @@ use super::super::*;
     fn test_delta_cp_full_bilateral() {
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
         use num_complex::Complex;
 
         let ch_pair = (11_usize, 12);
         let nu_pair = (7_usize, 8);
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
             let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };
@@ -641,8 +635,7 @@ use super::super::*;
     #[test]
     fn test_composite_selector_blend() {
         use cd_kernel::gourlay_psi;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
         use num_complex::Complex;
 
         let pdg = Pdg2024::default();
@@ -655,9 +648,8 @@ use super::super::*;
         let cp_ch = (11_usize, 13);
         let cp_nu = (11_usize, 14);
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
             let i = sel.0;
@@ -843,8 +835,7 @@ use super::super::*;
     #[test]
     fn test_split_angle_cp() {
         use cd_kernel::gourlay_psi;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
         use num_complex::Complex;
 
         let pdg = Pdg2024::default();
@@ -865,9 +856,8 @@ use super::super::*;
         let cp_ch = (11_usize, 13);
         let cp_nu = (11_usize, 14);
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
             let i = sel.0;
@@ -1282,15 +1272,13 @@ use super::super::*;
         use cd_kernel::gourlay_psi;
         use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
 
         let pdg = Pdg2024::default();
         let pdg_r = 0.0307_f64;
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let w1 = -0.656850_f64;
         let w2 = -0.741999_f64;

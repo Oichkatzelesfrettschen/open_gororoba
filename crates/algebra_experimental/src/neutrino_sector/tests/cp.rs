@@ -741,12 +741,10 @@ use super::super::*;
 
         // Build friction profiles (same as two-param pipeline)
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
         let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
@@ -893,15 +891,13 @@ use super::super::*;
     fn test_cross_sector_cp_phase() {
         use cd_kernel::{gourlay_psi, gourlay_psi_n};
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
 
         let ch_pair = (11_usize, 12);
         let nu_pair = (7_usize, 8);
 
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let ch_a = MajoranaMode { gamma_index: ch_pair.0 - 1, cd_basis_index: ch_pair.0, cd_dim: 16 };
         let ch_b = MajoranaMode { gamma_index: ch_pair.1 - 1, cd_basis_index: ch_pair.1, cd_dim: 16 };
@@ -1119,13 +1115,11 @@ use super::super::*;
 
             // The psi overlap between generation i and j in the complex basis gives
             // the off-diagonal phase. We use the existing nu_profiles.
-            use crate::bell_inequality::{SignTableCache, rotate_sparse};
+            use crate::bell_inequality::rotate_sparse;
             use crate::majorana_braiding::MajoranaMode;
-            use crate::three_fermion_generations::get_sedenion_subalgebras;
 
-            let (o1, o2, o3) = get_sedenion_subalgebras();
+            let (o1, o2, o3, sign_table) = super::psi_setup();
             let subs = [&o1, &o2, &o3];
-            let sign_table = SignTableCache::new(16);
 
             let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
             let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
@@ -1282,8 +1276,7 @@ use super::super::*;
         use gororoba_algebra::lie::g2_stabilizer::complex_structure;
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
         use nalgebra::SMatrix;
         use num_complex::Complex;
 
@@ -1299,9 +1292,8 @@ use super::super::*;
         );
 
         // Build friction profiles for the imaginary injection
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let nu_a = MajoranaMode { gamma_index: nu_pair.0 - 1, cd_basis_index: nu_pair.0, cd_dim: 16 };
         let nu_b = MajoranaMode { gamma_index: nu_pair.1 - 1, cd_basis_index: nu_pair.1, cd_dim: 16 };
@@ -1480,8 +1472,7 @@ use super::super::*;
     fn test_cp_rephasing_pipeline() {
         use cd_kernel::gourlay_psi;
         use crate::majorana_braiding::MajoranaMode;
-        use crate::bell_inequality::{SignTableCache, rotate_sparse};
-        use crate::three_fermion_generations::get_sedenion_subalgebras;
+        use crate::bell_inequality::rotate_sparse;
         use num_complex::Complex;
 
         let ch_pair = (11_usize, 12);
@@ -1499,9 +1490,8 @@ use super::super::*;
         println!("  Real PMNS angles: t12={:.2}, t13={:.2}, t23={:.2}", t12, t13, t23);
 
         // Step 2: Build cross-sector Gram phases
-        let (o1, o2, o3) = get_sedenion_subalgebras();
+        let (o1, o2, o3, sign_table) = super::psi_setup();
         let subs = [&o1, &o2, &o3];
-        let sign_table = SignTableCache::new(16);
 
         let build_profile = |sel: (usize, usize), sub: &[usize]| -> [f64; 16] {
             let mode_i = MajoranaMode { gamma_index: sel.0 - 1, cd_basis_index: sel.0, cd_dim: 16 };

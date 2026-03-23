@@ -9,6 +9,7 @@
 
 mod arith;
 mod associator;
+pub mod predicates;
 pub mod sedenion;
 mod signature;
 mod signs;
