@@ -1591,11 +1591,11 @@ CPD_MIN_TOKENS ?= 42
 CPD_TOP        ?= 20
 
 # Data-heavy source files excluded from CPD scans until materials_data codegen migration
-# is complete (tasks #56-#58). These files are pure const-array data, not logic.
+# is complete (tasks #57-#58). These files are pure const-array data, not logic.
 # Remove entries here as each file is migrated to build.rs + CSV/TOML.
+# tabulated_nk.rs removed: migrated to materials_data in task #56.
 CPD_EXCLUDE_FILES := \
 	crates/materials_core/src/optical_database.rs \
-	crates/materials_core/src/tabulated_nk.rs \
 	crates/materials_core/src/crystal_symmetry.rs
 
 # Build a file-list of all .rs sources under crates/ minus the excluded data files.
