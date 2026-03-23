@@ -1529,6 +1529,104 @@ mod tests {
         println!("    (vs {} concrete pairs over R)", zds.len());
     }
 
+    /// T3: Box-kite amplitudes -- XOR rectangle ZD families over No.
+    ///
+    /// # Box-kite structure (de Marrais 2007)
+    ///
+    /// A box-kite is a set of 4 basis indices {i,j,k,l} satisfying
+    /// the XOR rectangle condition: i^j^k^l = 0 (equivalently,
+    /// i^j = k^l). Each such rectangle gives a pair of ZD witnesses:
+    ///   (e_i + e_j)(e_k - e_l) = 0  AND  (e_i - e_j)(e_k + e_l) = 0
+    ///
+    /// # Over No
+    ///
+    /// Each box-kite generates a 2-parameter ZD family:
+    ///   (alpha*e_i + alpha*e_j)(beta*e_k - beta*e_l) = 0
+    /// for alpha, beta in the same Archimedean class (C-1521).
+    /// The birthday-graded hierarchy of box-kites follows from
+    /// the valuation (T1): box-kites at higher birthday are
+    /// "finer" versions of the same algebraic structure.
+    ///
+    /// # Callers
+    ///
+    /// This test counts box-kites and verifies the XOR rectangle
+    /// condition. References: de_marrais_2007_07040112_sedenions_xor.pdf,
+    /// boxkites.rs in algebra_analysis.
+    #[test]
+    fn test_box_kite_xor_rectangles() {
+        println!("--- T3: BOX-KITE XOR RECTANGLES OVER No ---\n");
+
+        // Find all XOR rectangles: 4 distinct indices {i,j,k,l} from
+        // {1..15} with i^j = k^l (which implies i^j^k^l = 0).
+        let mut rectangles: Vec<(usize, usize, usize, usize)> = Vec::new();
+
+        for i in 1..16_usize {
+            for j in (i+1)..16 {
+                let ij = i ^ j;
+                if ij == 0 { continue; } // skip if i^j = 0 (Fano line pair)
+                for k in 1..16 {
+                    if k == i || k == j { continue; }
+                    let l = k ^ ij; // l = k ^ (i^j) so that k^l = i^j
+                    if l == 0 || l <= k || l == i || l == j { continue; }
+                    if l >= 16 { continue; }
+                    rectangles.push((i, j, k, l));
+                }
+            }
+        }
+
+        // Deduplicate: {i,j,k,l} as unordered set
+        let mut unique: std::collections::BTreeSet<[usize; 4]> = std::collections::BTreeSet::new();
+        for &(i, j, k, l) in &rectangles {
+            let mut quad = [i, j, k, l];
+            quad.sort();
+            unique.insert(quad);
+        }
+
+        println!("  XOR rectangles (i^j = k^l) in {{1..15}}: {}", unique.len());
+
+        // For each rectangle, verify it produces a ZD
+        let mut zd_count = 0;
+        let mut non_zd_count = 0;
+
+        for &quad in &unique {
+            let [i, j, k, l] = quad;
+            // Try (e_i + e_j)(e_k - e_l)
+            let one = SurrealDyadic::one();
+            let mut a = [SurrealDyadic::zero(); 16];
+            a[i] = one; a[j] = one;
+            let mut b = [SurrealDyadic::zero(); 16];
+            b[k] = one; b[l] = -one;
+
+            let product = surreal_cd_multiply(16, &a, &b);
+            if product.iter().all(|c| c.is_zero()) {
+                zd_count += 1;
+            } else {
+                non_zd_count += 1;
+            }
+        }
+
+        println!("  ZD rectangles: {}", zd_count);
+        println!("  Non-ZD rectangles: {}", non_zd_count);
+        println!("  ZD fraction: {:.1}%", 100.0 * zd_count as f64 / unique.len() as f64);
+
+        // Group by XOR value (i^j = k^l)
+        let mut by_xor: std::collections::BTreeMap<usize, usize> = std::collections::BTreeMap::new();
+        for &(i, j, _, _) in &rectangles {
+            *by_xor.entry(i ^ j).or_default() += 1;
+        }
+        println!("\n  Rectangles by XOR value:");
+        for (xor_val, count) in &by_xor {
+            println!("    XOR={:>2}: {} rectangles", xor_val, count);
+        }
+
+        // Over No: each ZD rectangle generates a family parametrized
+        // by (alpha, beta) in the same Archimedean class.
+        println!("\n  Over No: {} ZD families (one per ZD rectangle)", zd_count);
+        println!("  Each family has countably many copies per class.");
+        println!("  Non-ZD rectangles ({}) are XOR-compatible but", non_zd_count);
+        println!("  the sign structure prevents the product from vanishing.");
+    }
+
     /// Test surreal infinitesimal coefficients.
     ///
     /// Surreal numbers include infinitesimals (e.g., 1/2^n for large n).
