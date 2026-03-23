@@ -54,6 +54,7 @@ Module Type CDAlgInner.
   Axiom conj_invol    : forall x, conj (conj x) = x.
   Axiom conj_zero     : conj zero = zero.
   Axiom neg_zero       : neg zero = zero.
+  Axiom neg_neg        : forall x, neg (neg x) = x.
   Axiom neg_mul_left  : forall x y, mul (neg x) y = neg (mul x y).
   Axiom neg_mul_right : forall x y, mul x (neg y) = neg (mul x y).
 
@@ -187,12 +188,8 @@ Module MorZDSymmetry (Alg : CDAlgInner).
   Proof.
     intros a b.
     rewrite neg_mul_left. rewrite neg_mul_right.
-    (* Goal: neg (neg (mul a b)) = mul a b *)
-    (* Need: neg (neg x) = x.  Derive from inner product non-degeneracy. *)
-    Admitted.
-    (* Could be proved with an additional axiom neg_neg : neg (neg x) = x.
-       This is provable for all CD algebras but not in the current module type.
-       The concrete sedenion proof in Part II does not need this step. *)
+    apply neg_neg.
+  Qed.
 
   (* ================================================================== *)
   (** ** Ker(L_x) subset Ker(R_x) -- the main direction.               *)
@@ -227,10 +224,9 @@ Module MorZDSymmetry (Alg : CDAlgInner).
     (* neg(y)*neg(x) = yx, so yx = 0. *)
     rewrite neg_mul_left in Hconj.
     rewrite neg_mul_right in Hconj.
-    (* Hconj: neg (neg (mul y x)) = zero *)
-    (* Need: neg (neg a) = a. *)
-    (* Same admitted step as neg_neg_mul. *)
-    Admitted.
+    rewrite neg_neg in Hconj.
+    exact Hconj.
+  Qed.
 
   (** Symmetric direction: yx = 0 => xy = 0.
       Same argument with roles swapped (y is given purely imaginary). *)
@@ -241,13 +237,33 @@ Module MorZDSymmetry (Alg : CDAlgInner).
     mul x y = zero.
   Proof.
     intros x y Hpure Hxnz Hyx.
-    (* From yx = 0: by the right-adjoint route, x is in Ker(R_y).
-       The argument is symmetric via conj_antimorphism applied to yx:
-       conj(yx) = conj(x)*conj(y) = 0.
-       For purely imaginary x: conj(x) = -x.
-       Need y purely imaginary too: follows from yx = 0 and x != 0
-       by the trace-zero of the transpose. *)
-    Admitted.
+    (* Step 1: conj(yx) = conj(x)*conj(y) = 0. *)
+    assert (Hconj : mul (conj x) (conj y) = zero).
+    { rewrite <- conj_antimorphism. rewrite Hyx. exact conj_zero. }
+    (* Step 2: conj(x) = neg(x), so neg(x)*conj(y) = 0. *)
+    rewrite Hpure in Hconj.
+    rewrite neg_mul_left in Hconj.
+    (* Hconj: neg (mul x (conj y)) = zero *)
+    assert (Hxcy : mul x (conj y) = zero).
+    { rewrite <- (neg_neg (mul x (conj y))). rewrite Hconj. exact neg_zero. }
+    (* Step 3: x purely imaginary, x nonzero, x*conj(y) = 0.
+       By zd_trace_zero: conj(conj y) = neg(conj y). *)
+    assert (Hccy : conj (conj y) = neg (conj y)).
+    { exact (zd_trace_zero x (conj y) Hpure Hxcy Hxnz). }
+    (* Step 4: conj(conj y) = y, so y = neg(conj y), hence conj y = neg y. *)
+    rewrite conj_invol in Hccy.
+    assert (Hypure : conj y = neg y).
+    { assert (Htmp := f_equal neg Hccy).
+      rewrite neg_neg in Htmp. symmetry. exact Htmp. }
+    (* Step 5: conj(yx) = conj(x)*conj(y) = (-x)*(-y) = xy. *)
+    assert (Hconj2 : mul (conj x) (conj y) = zero).
+    { rewrite <- conj_antimorphism. rewrite Hyx. exact conj_zero. }
+    rewrite Hypure in Hconj2. rewrite Hpure in Hconj2.
+    (* Hconj2: mul (neg x) (neg y) = zero *)
+    rewrite (neg_neg_mul x y) in Hconj2.
+    (* Hconj2: mul x y = zero *)
+    exact Hconj2.
+  Qed.
 
   (* ================================================================== *)
   (** ** Moreno Corollary 1.6: ZD symmetry. *)
