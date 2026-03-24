@@ -587,9 +587,7 @@ use super::super::*;
             let u_raw = eig_ch.u().transpose() * eig_nu.u();
             let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
             let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
-            let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                     + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                     + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+            let chi2 = super::pdg_score(t12, t13, t23, &pdg);
 
             let r_err = (r - pdg_r).abs() / pdg_r;
             (r_err, r, chi2, a_ch, a_nu, t12, t13, t23, ev[2] / ev[0])
@@ -1428,9 +1426,7 @@ use super::super::*;
             let delta = extract_cp_phase((theta_12, theta_13, theta_23), j_cp);
 
             // Chi^2 over 3 angles only
-            let chi2_angles = ((theta_12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                            + ((theta_13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                            + ((theta_23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+            let chi2_angles = super::pdg_score(theta_12, theta_13, theta_23, &pdg);
 
             if alpha_step % 5 == 0 || chi2_angles < best_chi2 {
                 println!("  {:>8.3} | {:>8.2} {:>8.2} {:>8.2} | {:>10.4e} | {:>8.1} | {:>6.1}",

@@ -608,9 +608,7 @@ use super::super::*;
                 let u_raw = eig_ch.u().transpose() * eig_nu.u();
                 let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
                 let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
-                let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                let chi2 = super::pdg_score(t12, t13, t23, &pdg);
                 (chi2, a_ch, a_nu, t12, t13, t23)
             }).collect();
 
@@ -801,9 +799,7 @@ use super::super::*;
             let u_raw = eig_ch.u().transpose() * eig_nu.u();
             let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
             let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
-            let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                     + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                     + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+            let chi2 = super::pdg_score(t12, t13, t23, &pdg);
 
             // Combined score: angle chi2 + CP weight
             let score = chi2 + 0.1 * best_resid * best_resid;
@@ -1241,9 +1237,7 @@ use super::super::*;
                 let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
                 let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
 
-                let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                let chi2 = super::pdg_score(t12, t13, t23, &pdg);
                 let r_err = ((r - pdg_r) / pdg_r).powi(2);
                 let score = chi2 + 100.0 * r_err; // weight mass ratio
 
@@ -1393,9 +1387,7 @@ use super::super::*;
                 let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
                 let r = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
 
-                let chi2 = ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                         + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                         + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                let chi2 = super::pdg_score(t12, t13, t23, &pdg);
                 let r_pen = ((r - pdg_r) / pdg_r).powi(2) * 100.0;
                 let score = chi2 + r_pen;
 
@@ -1457,9 +1449,7 @@ use super::super::*;
                     let dm31 = ev[2] * ev[2] - ev[0] * ev[0];
                     let r_s = if dm31.abs() > 1e-30 { dm21 / dm31 } else { f64::MAX };
 
-                    let chi2_s = ((t12_s - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
-                               + ((t13_s - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
-                               + ((t23_s - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
+                    let chi2_s = super::pdg_score(t12_s, t13_s, t23_s, &pdg);
                     let r_pen = ((r_s - pdg_r) / pdg_r).powi(2) * 100.0;
                     let score = chi2_s + r_pen;
 
