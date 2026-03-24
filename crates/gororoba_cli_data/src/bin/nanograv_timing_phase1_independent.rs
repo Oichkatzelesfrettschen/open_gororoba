@@ -1,11 +1,13 @@
 use anyhow::{Result, bail};
 use clap::Parser;
 use csv::Writer;
-use gororoba_cli_data::nanograv_timing_engine::{
-    IndependentRefitResult, TimingEphemeris, build_phase1_independent_datasets,
-    solve_independent_refit,
+use gororoba_cli_data::{
+    nanograv_timing_engine::{
+        IndependentRefitResult, TimingEphemeris, build_phase1_independent_datasets,
+        solve_independent_refit,
+    },
+    nanograv_timing_model::{BinaryFamily, TimingModel},
 };
-use gororoba_cli_data::nanograv_timing_model::{BinaryFamily, TimingModel};
 use std::{
     collections::{BTreeMap, BTreeSet},
     env,
@@ -35,10 +37,16 @@ struct Args {
     )]
     root: PathBuf,
 
-    #[arg(long, default_value = "reports/nanograv_15yr_timing_refit_preflight.toml")]
+    #[arg(
+        long,
+        default_value = "reports/nanograv_15yr_timing_refit_preflight.toml"
+    )]
     phase1_report: PathBuf,
 
-    #[arg(long, default_value = "data/csv/nanograv_phase1_independent_residuals.csv")]
+    #[arg(
+        long,
+        default_value = "data/csv/nanograv_phase1_independent_residuals.csv"
+    )]
     csv_out: PathBuf,
 
     #[arg(long, default_value = "reports/nanograv_phase1_independent_refit.toml")]
@@ -56,13 +64,22 @@ struct Args {
     )]
     baseline_csv_out: PathBuf,
 
-    #[arg(long, default_value = "reports/nanograv_phase1_independent_comparison.toml")]
+    #[arg(
+        long,
+        default_value = "reports/nanograv_phase1_independent_comparison.toml"
+    )]
     comparison_report_out: PathBuf,
 
-    #[arg(long, default_value = "data/csv/nanograv_phase1_independent_pairwise.csv")]
+    #[arg(
+        long,
+        default_value = "data/csv/nanograv_phase1_independent_pairwise.csv"
+    )]
     pairwise_csv_out: PathBuf,
 
-    #[arg(long, default_value = "reports/nanograv_phase1_independent_pairwise.toml")]
+    #[arg(
+        long,
+        default_value = "reports/nanograv_phase1_independent_pairwise.toml"
+    )]
     pairwise_report_out: PathBuf,
 
     #[arg(long, default_value_t = 120.0)]
@@ -170,7 +187,12 @@ fn main() -> Result<()> {
         })
         .collect::<Result<Vec<_>>>()?;
     // Sort by solution_id so report ordering is stable and deterministic.
-    fits.sort_by(|a, b| a.dataset.model.solution_id.cmp(&b.dataset.model.solution_id));
+    fits.sort_by(|a, b| {
+        a.dataset
+            .model
+            .solution_id
+            .cmp(&b.dataset.model.solution_id)
+    });
     let comparison_rows = fits
         .iter()
         .map(build_comparison_row)
@@ -180,7 +202,10 @@ fn main() -> Result<()> {
     let mut rows = Vec::new();
     let mut report = String::new();
     writeln!(report, "[metadata]")?;
-    writeln!(report, "title = \"NANOGrav Phase 1 independent timing-engine pilot\"")?;
+    writeln!(
+        report,
+        "title = \"NANOGrav Phase 1 independent timing-engine pilot\""
+    )?;
     writeln!(report, "root = {:?}", args.root.display().to_string())?;
     writeln!(report, "phase1_solution_count = {}", fits.len())?;
     writeln!(report, "ephemeris_used = {:?}", ephemeris.ephemeris_name())?;
@@ -214,7 +239,11 @@ fn main() -> Result<()> {
                 .map(|family| family.as_str())
                 .unwrap_or("isolated")
         )?;
-        writeln!(report, "requested_ephem = {:?}", fit.dataset.requested_ephem)?;
+        writeln!(
+            report,
+            "requested_ephem = {:?}",
+            fit.dataset.requested_ephem
+        )?;
         writeln!(report, "ephem_used = {:?}", fit.dataset.ephem_used)?;
         writeln!(
             report,
@@ -231,17 +260,33 @@ fn main() -> Result<()> {
             "provisional_acceptance_policy = {:?}",
             fit.covariance_calibration.provisional_acceptance_policy
         )?;
-        writeln!(report, "dominant_subgroup = {:?}", fit.dataset.dominant_subgroup)?;
+        writeln!(
+            report,
+            "dominant_subgroup = {:?}",
+            fit.dataset.dominant_subgroup
+        )?;
         writeln!(
             report,
             "dominant_subgroup_count = {}",
             fit.dataset.dominant_subgroup_count
         )?;
         writeln!(report, "all_subgroups = {:?}", fit.dataset.all_subgroups)?;
-        writeln!(report, "subgroup_count = {}", fit.dataset.all_subgroups.len())?;
+        writeln!(
+            report,
+            "subgroup_count = {}",
+            fit.dataset.all_subgroups.len()
+        )?;
         writeln!(report, "total_toa_count = {}", fit.dataset.total_toa_count)?;
-        writeln!(report, "observation_count = {}", fit.summary.observation_count)?;
-        writeln!(report, "dm_observation_count = {}", fit.summary.dm_observation_count)?;
+        writeln!(
+            report,
+            "observation_count = {}",
+            fit.summary.observation_count
+        )?;
+        writeln!(
+            report,
+            "dm_observation_count = {}",
+            fit.summary.dm_observation_count
+        )?;
         writeln!(
             report,
             "residual_rms_before_us = {:.12}",
@@ -317,10 +362,22 @@ fn main() -> Result<()> {
             "synthesis_score_gls = {:.12}",
             fit.summary.synthesis_score_gls
         )?;
-        writeln!(report, "recommended_solver = {:?}", fit.summary.recommended_solver)?;
-        writeln!(report, "acceptance_track = {:?}", fit.summary.acceptance_track)?;
+        writeln!(
+            report,
+            "recommended_solver = {:?}",
+            fit.summary.recommended_solver
+        )?;
+        writeln!(
+            report,
+            "acceptance_track = {:?}",
+            fit.summary.acceptance_track
+        )?;
         writeln!(report, "metric_conflict = {}", fit.summary.metric_conflict)?;
-        writeln!(report, "gls_ridge_factor = {:.12e}", fit.summary.gls_ridge_factor)?;
+        writeln!(
+            report,
+            "gls_ridge_factor = {:.12e}",
+            fit.summary.gls_ridge_factor
+        )?;
         writeln!(
             report,
             "corr_length_days = {:.12}",
@@ -387,7 +444,11 @@ fn main() -> Result<()> {
             fit.covariance_calibration.ecorr_basis_count
         )?;
         writeln!(report, "ecorr_status = {:?}", ecorr_status_for_fit(&fit))?;
-        writeln!(report, "simplification_note = {:?}", fit.dataset.simplification_notes)?;
+        writeln!(
+            report,
+            "simplification_note = {:?}",
+            fit.dataset.simplification_notes
+        )?;
         let wls_parameters = fit
             .parameter_names
             .iter()
@@ -423,7 +484,10 @@ fn main() -> Result<()> {
     );
     println!("Residual CSV: {}", args.csv_out.display());
     println!("Report: {}", args.report_out.display());
-    println!("Comparison report: {}", args.comparison_report_out.display());
+    println!(
+        "Comparison report: {}",
+        args.comparison_report_out.display()
+    );
     println!("Pairwise CSV: {}", args.pairwise_csv_out.display());
     println!("Pairwise report: {}", args.pairwise_report_out.display());
     Ok(())
@@ -435,7 +499,8 @@ struct RunLock {
 
 impl RunLock {
     fn acquire() -> Result<Self> {
-        let lock_path = env::temp_dir().join("open_gororoba_nanograv_timing_phase1_independent.lock");
+        let lock_path =
+            env::temp_dir().join("open_gororoba_nanograv_timing_phase1_independent.lock");
         let file = OpenOptions::new()
             .create(true)
             .read(true)
@@ -446,7 +511,10 @@ impl RunLock {
         // exclusive advisory lock so concurrent solver launches queue instead of thrashing CPU.
         let result = unsafe { flock(file.as_raw_fd(), LOCK_EX) };
         if result != 0 {
-            bail!("failed to acquire timing-engine run lock {}", lock_path.display());
+            bail!(
+                "failed to acquire timing-engine run lock {}",
+                lock_path.display()
+            );
         }
         Ok(Self { file })
     }
@@ -500,16 +568,15 @@ fn write_csv(
             &format!("{:.12}", row.residual_after_wls_us),
             &format!("{:.12}", row.residual_after_gls_us),
             &format!("{:.12}", row.dm_model),
-            &row.pp_dm.map_or_else(String::new, |value| format!("{value:.12}")),
-            &row.pp_dme.map_or_else(String::new, |value| format!("{value:.12}")),
-            &row
-                .dm_residual_before
+            &row.pp_dm
                 .map_or_else(String::new, |value| format!("{value:.12}")),
-            &row
-                .dm_residual_after_wls
+            &row.pp_dme
                 .map_or_else(String::new, |value| format!("{value:.12}")),
-            &row
-                .dm_residual_after_gls
+            &row.dm_residual_before
+                .map_or_else(String::new, |value| format!("{value:.12}")),
+            &row.dm_residual_after_wls
+                .map_or_else(String::new, |value| format!("{value:.12}")),
+            &row.dm_residual_after_gls
                 .map_or_else(String::new, |value| format!("{value:.12}")),
         ])?;
     }
@@ -537,10 +604,16 @@ fn freeze_reference_if_missing(source: &Path, destination: &Path) -> Result<()> 
 }
 
 fn build_comparison_row(fit: &IndependentRefitResult) -> Result<ComparisonRow> {
-    let wls_plausibility =
-        assess_parameter_plausibility(&fit.dataset.model, &fit.parameter_names, &fit.wls_coefficients);
-    let gls_plausibility =
-        assess_parameter_plausibility(&fit.dataset.model, &fit.parameter_names, &fit.gls_coefficients);
+    let wls_plausibility = assess_parameter_plausibility(
+        &fit.dataset.model,
+        &fit.parameter_names,
+        &fit.wls_coefficients,
+    );
+    let gls_plausibility = assess_parameter_plausibility(
+        &fit.dataset.model,
+        &fit.parameter_names,
+        &fit.gls_coefficients,
+    );
     let equivalence = assess_family_equivalence(fit);
     Ok(ComparisonRow {
         solution_id: fit.dataset.model.solution_id.clone(),
@@ -877,8 +950,14 @@ fn pearson_correlation(xs: &[f64], ys: &[f64]) -> Option<f64> {
 }
 
 fn model_sky_vector(model: &TimingModel) -> Option<[f64; 3]> {
-    if let (Some(elong), Some(elat)) = (model.parameter_value("ELONG"), model.parameter_value("ELAT")) {
-        return Some(ecliptic_to_equatorial_vector(elong.to_radians(), elat.to_radians()));
+    if let (Some(elong), Some(elat)) = (
+        model.parameter_value("ELONG"),
+        model.parameter_value("ELAT"),
+    ) {
+        return Some(ecliptic_to_equatorial_vector(
+            elong.to_radians(),
+            elat.to_radians(),
+        ));
     }
     let raj = model.parameter_term("RAJ")?.raw_value.as_str();
     let decj = model.parameter_term("DECJ")?.raw_value.as_str();
@@ -970,27 +1049,37 @@ fn assess_parameter_plausibility(
         let absolute = resolved_parameter_value(model, name, *coefficient);
         match name.as_str() {
             "PX" => {
-                if let Some(value) = absolute && value < 0.0 {
+                if let Some(value) = absolute
+                    && value < 0.0
+                {
                     severe.push(format!("PX_negative:{value:.6e}"));
                 }
             }
             "M2" => {
-                if let Some(value) = absolute && (value <= 0.0 || value > 5.0) {
+                if let Some(value) = absolute
+                    && (value <= 0.0 || value > 5.0)
+                {
                     severe.push(format!("M2_out_of_range:{value:.6e}"));
                 }
             }
             "SINI" => {
-                if let Some(value) = absolute && !(0.0..=1.0).contains(&value) {
+                if let Some(value) = absolute
+                    && !(0.0..=1.0).contains(&value)
+                {
                     severe.push(format!("SINI_out_of_range:{value:.6e}"));
                 }
             }
             "KIN" => {
-                if let Some(value) = absolute && !(0.0..=180.0).contains(&value) {
+                if let Some(value) = absolute
+                    && !(0.0..=180.0).contains(&value)
+                {
                     severe.push(format!("KIN_out_of_range:{value:.6e}"));
                 }
             }
             "KOM" => {
-                if let Some(value) = absolute && !(0.0..360.0).contains(&value) {
+                if let Some(value) = absolute
+                    && !(0.0..360.0).contains(&value)
+                {
                     advisory.push(format!("KOM_unwrapped:{value:.6e}"));
                 }
             }
@@ -1047,7 +1136,12 @@ fn resolved_parameter_value(model: &TimingModel, name: &str, coefficient: f64) -
     model.parameter_value(name).map(|value| value + coefficient)
 }
 
-fn exceeds_uncertainty_gate(model: &TimingModel, name: &str, coefficient: f64, sigma_multiple: f64) -> bool {
+fn exceeds_uncertainty_gate(
+    model: &TimingModel,
+    name: &str,
+    coefficient: f64,
+    sigma_multiple: f64,
+) -> bool {
     let Some(term) = model.parameter_term(name) else {
         return false;
     };
@@ -1063,21 +1157,27 @@ fn assess_family_equivalence(fit: &IndependentRefitResult) -> FamilyEquivalenceA
     let model = &fit.dataset.model;
     match model.binary_family.as_ref() {
         Some(BinaryFamily::Dd) if model.pulsar_id == "J1903+0327" => {
-            let required = ["A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "M2", "SINI"];
+            let required = [
+                "A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "M2", "SINI",
+            ];
             equivalence_from_required("DD_targeted_surface", &available, &required)
         }
         Some(BinaryFamily::Ell1) if model.pulsar_id == "J2214+3000" => {
             let has_fb = available.iter().any(|name| name.starts_with("FB"));
             let base = ["A1", "TASC", "EPS1", "EPS2"];
-            let mut assessment = equivalence_from_required("ELL1_targeted_surface", &available, &base);
+            let mut assessment =
+                equivalence_from_required("ELL1_targeted_surface", &available, &base);
             if !has_fb {
                 assessment.status.push_str("_missing_FBn");
             }
             assessment
         }
         Some(BinaryFamily::Ddk) if model.pulsar_id == "J1713+0747" => {
-            let required = ["A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "KIN", "KOM", "M2"];
-            let mut assessment = equivalence_from_required("DDK_closure_surface", &available, &required);
+            let required = [
+                "A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "KIN", "KOM", "M2",
+            ];
+            let mut assessment =
+                equivalence_from_required("DDK_closure_surface", &available, &required);
             if model.parameter_bool("K96") != Some(true) {
                 assessment.status.push_str("_k96_off_or_missing");
             }
@@ -1085,7 +1185,8 @@ fn assess_family_equivalence(fit: &IndependentRefitResult) -> FamilyEquivalenceA
         }
         Some(BinaryFamily::Ell1h) if model.pulsar_id == "J2317+1439" => {
             let required = ["A1", "TASC", "EPS1", "EPS2", "H3"];
-            let mut assessment = equivalence_from_required("ELL1H_closure_surface", &available, &required);
+            let mut assessment =
+                equivalence_from_required("ELL1H_closure_surface", &available, &required);
             let has_stigma = available.contains("STIGMA");
             let has_h4 = available.contains("H4");
             if !(has_stigma || has_h4) {
@@ -1093,21 +1194,15 @@ fn assess_family_equivalence(fit: &IndependentRefitResult) -> FamilyEquivalenceA
             }
             assessment
         }
-        Some(BinaryFamily::Dd) => equivalence_from_required(
-            "DD_surface",
-            &available,
-            &["A1", "PB", "ECC", "T0", "OM"],
-        ),
-        Some(BinaryFamily::Bt) => equivalence_from_required(
-            "BT_surface",
-            &available,
-            &["A1", "PB", "ECC", "T0", "OM"],
-        ),
-        Some(BinaryFamily::Ell1) => equivalence_from_required(
-            "ELL1_surface",
-            &available,
-            &["A1", "TASC", "EPS1", "EPS2"],
-        ),
+        Some(BinaryFamily::Dd) => {
+            equivalence_from_required("DD_surface", &available, &["A1", "PB", "ECC", "T0", "OM"])
+        }
+        Some(BinaryFamily::Bt) => {
+            equivalence_from_required("BT_surface", &available, &["A1", "PB", "ECC", "T0", "OM"])
+        }
+        Some(BinaryFamily::Ell1) => {
+            equivalence_from_required("ELL1_surface", &available, &["A1", "TASC", "EPS1", "EPS2"])
+        }
         Some(BinaryFamily::Ell1h) => equivalence_from_required(
             "ELL1H_surface",
             &available,

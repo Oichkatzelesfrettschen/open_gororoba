@@ -246,12 +246,24 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
     let conj_cl_lo = (cl_lo * conj_lo).to_array();
     let conj_cl_hi = (cl_hi * conj_hi).to_array();
     let conj_c_r: [f64; 8] = [
-        conj_cr_lo[0], conj_cr_lo[1], conj_cr_lo[2], conj_cr_lo[3],
-        conj_cr_hi[0], conj_cr_hi[1], conj_cr_hi[2], conj_cr_hi[3],
+        conj_cr_lo[0],
+        conj_cr_lo[1],
+        conj_cr_lo[2],
+        conj_cr_lo[3],
+        conj_cr_hi[0],
+        conj_cr_hi[1],
+        conj_cr_hi[2],
+        conj_cr_hi[3],
     ];
     let conj_c_l: [f64; 8] = [
-        conj_cl_lo[0], conj_cl_lo[1], conj_cl_lo[2], conj_cl_lo[3],
-        conj_cl_hi[0], conj_cl_hi[1], conj_cl_hi[2], conj_cl_hi[3],
+        conj_cl_lo[0],
+        conj_cl_lo[1],
+        conj_cl_lo[2],
+        conj_cl_lo[3],
+        conj_cl_hi[0],
+        conj_cl_hi[1],
+        conj_cl_hi[2],
+        conj_cl_hi[3],
     ];
 
     // (a,b)(c,d) = (ac - d*b, da + bc*)
@@ -275,8 +287,8 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
     let rl = right_lo.to_array();
     let rh = right_hi.to_array();
     [
-        ll[0], ll[1], ll[2], ll[3], lh[0], lh[1], lh[2], lh[3],
-        rl[0], rl[1], rl[2], rl[3], rh[0], rh[1], rh[2], rh[3],
+        ll[0], ll[1], ll[2], ll[3], lh[0], lh[1], lh[2], lh[3], rl[0], rl[1], rl[2], rl[3], rh[0],
+        rh[1], rh[2], rh[3],
     ]
 }
 
@@ -292,10 +304,10 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
 #[inline]
 pub fn quaternion_multiply_scalar_flat(q: &[f64; 4], r: &[f64; 4]) -> [f64; 4] {
     [
-        q[0]*r[0] - q[1]*r[1] - q[2]*r[2] - q[3]*r[3],
-        q[0]*r[1] + q[1]*r[0] - q[3]*r[2] + q[2]*r[3],
-        q[0]*r[2] + q[2]*r[0] + q[3]*r[1] - q[1]*r[3],
-        q[0]*r[3] + q[3]*r[0] + q[1]*r[2] - q[2]*r[1],
+        q[0] * r[0] - q[1] * r[1] - q[2] * r[2] - q[3] * r[3],
+        q[0] * r[1] + q[1] * r[0] - q[3] * r[2] + q[2] * r[3],
+        q[0] * r[2] + q[2] * r[0] + q[3] * r[1] - q[1] * r[3],
+        q[0] * r[3] + q[3] * r[0] + q[1] * r[2] - q[2] * r[1],
     ]
 }
 
@@ -313,8 +325,14 @@ pub fn octonion_multiply_scalar_flat(a: &[f64; 8], b: &[f64; 8]) -> [f64; 8] {
     let da = quaternion_multiply_scalar_flat(&c_r, &a_l);
     let bcc = quaternion_multiply_scalar_flat(&a_r, &conj_c_l);
     [
-        ac[0]-dcb[0], ac[1]-dcb[1], ac[2]-dcb[2], ac[3]-dcb[3],
-        da[0]+bcc[0], da[1]+bcc[1], da[2]+bcc[2], da[3]+bcc[3],
+        ac[0] - dcb[0],
+        ac[1] - dcb[1],
+        ac[2] - dcb[2],
+        ac[3] - dcb[3],
+        da[0] + bcc[0],
+        da[1] + bcc[1],
+        da[2] + bcc[2],
+        da[3] + bcc[3],
     ]
 }
 
@@ -421,14 +439,20 @@ fn cd_conjugate_into(src: &[f64], dst: &mut [f64], dim: usize) {
     if dim >= 4 {
         let v = f64x4::from([src[0], src[1], src[2], src[3]]) * conj_mask;
         let a = v.to_array();
-        dst[0] = a[0]; dst[1] = a[1]; dst[2] = a[2]; dst[3] = a[3];
+        dst[0] = a[0];
+        dst[1] = a[1];
+        dst[2] = a[2];
+        dst[3] = a[3];
     }
     // Remaining elements: negate all (they are all imaginary)
     let mut i = 4;
     while i + 4 <= dim {
-        let v = f64x4::from([src[i], src[i+1], src[i+2], src[i+3]]) * neg_mask;
+        let v = f64x4::from([src[i], src[i + 1], src[i + 2], src[i + 3]]) * neg_mask;
         let a = v.to_array();
-        dst[i] = a[0]; dst[i+1] = a[1]; dst[i+2] = a[2]; dst[i+3] = a[3];
+        dst[i] = a[0];
+        dst[i + 1] = a[1];
+        dst[i + 2] = a[2];
+        dst[i + 3] = a[3];
         i += 4;
     }
     while i < dim {
@@ -533,12 +557,10 @@ mod fma_tests {
     fn test_cd_multiply_fma_matches_recursive() {
         // Compare FMA multiply against recursive cd_multiply for dim=16
         let a: [f64; 16] = [
-            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2,
-            0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
+            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2, 0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
         ];
         let b: [f64; 16] = [
-            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7,
-            0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
+            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7, 0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
         ];
 
         let recursive = cd_multiply(&a, &b);
@@ -548,27 +570,36 @@ mod fma_tests {
         let mut max_diff = 0.0_f64;
         for i in 0..16 {
             let diff = (fma_result[i] - recursive[i]).abs();
-            if diff > max_diff { max_diff = diff; }
+            if diff > max_diff {
+                max_diff = diff;
+            }
             if diff > 1e-14 {
-                println!("  [{}] fma={:.15e} rec={:.15e} diff={:.2e}",
-                    i, fma_result[i], recursive[i], diff);
+                println!(
+                    "  [{}] fma={:.15e} rec={:.15e} diff={:.2e}",
+                    i, fma_result[i], recursive[i], diff
+                );
             }
         }
         println!("  Max component difference: {:.2e}", max_diff);
         println!("  (Should be < 1e-14 for matching results)");
 
         // They should agree to within ~1e-14 (FP roundoff)
-        assert!(max_diff < 1e-12,
-            "FMA and recursive results should agree: max_diff={:.2e}", max_diff);
+        assert!(
+            max_diff < 1e-12,
+            "FMA and recursive results should agree: max_diff={:.2e}",
+            max_diff
+        );
     }
 
     #[test]
     fn test_fma_zd_witness() {
         // Verify FMA multiply gives exact zero for known ZD
         let mut a = [0.0_f64; 16];
-        a[1] = 1.0; a[10] = 1.0;
+        a[1] = 1.0;
+        a[10] = 1.0;
         let mut b = [0.0_f64; 16];
-        b[4] = 1.0; b[15] = -1.0;
+        b[4] = 1.0;
+        b[15] = -1.0;
 
         let result = sedenion_multiply_fma(&a, &b);
         let norm_sq: f64 = result.iter().map(|x| x * x).sum();
@@ -587,12 +618,10 @@ mod fma_tests {
     #[test]
     fn test_fma_regression_pinned_output() {
         let a: [f64; 16] = [
-            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0,
-            9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
         ];
         let b: [f64; 16] = [
-            16.0, 15.0, 14.0, 13.0, 12.0, 11.0, 10.0, 9.0,
-            8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0,
+            16.0, 15.0, 14.0, 13.0, 12.0, 11.0, 10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0,
         ];
 
         let fma = cd_multiply_fma(16, &a, &b);
@@ -601,16 +630,24 @@ mod fma_tests {
         // Pin: the FMA and recursive results must agree component-wise
         for i in 0..16 {
             let diff = (fma[i] - rec[i]).abs();
-            assert!(diff < 1e-10,
+            assert!(
+                diff < 1e-10,
                 "FMA regression FAIL at [{}]: fma={:.15e} rec={:.15e} diff={:.2e}",
-                i, fma[i], rec[i], diff);
+                i,
+                fma[i],
+                rec[i],
+                diff
+            );
         }
 
         // Pin the first few components of the recursive result
         // (these are determined entirely by the sign table)
         // Pin rec[0] to actual computed value (determined by CD sign table)
-        assert!((rec[0] - (-784.0)).abs() < 1e-10,
-            "rec[0] regression: got {}, expected -784", rec[0]);
+        assert!(
+            (rec[0] - (-784.0)).abs() < 1e-10,
+            "rec[0] regression: got {}, expected -784",
+            rec[0]
+        );
     }
 
     /// Regression: all 84 known sedenion 2-blade ZDs produce exact zero
@@ -625,18 +662,25 @@ mod fma_tests {
         let mut exact_zero_count = 0;
         for &(i, j, k, l, _) in zds.iter().take(84) {
             let mut a = vec![0.0_f64; 16];
-            a[i] = 1.0; a[j] = 1.0;
+            a[i] = 1.0;
+            a[j] = 1.0;
             let mut b = vec![0.0_f64; 16];
-            b[k] = 1.0; b[l] = 1.0; // sign may vary but we check norm
+            b[k] = 1.0;
+            b[l] = 1.0; // sign may vary but we check norm
 
             let result = cd_multiply_fma(16, &a, &b);
             let norm_sq: f64 = result.iter().map(|x| x * x).sum();
-            if norm_sq < 1e-20 { exact_zero_count += 1; }
+            if norm_sq < 1e-20 {
+                exact_zero_count += 1;
+            }
         }
 
         // At least 50% should be exact zero (sign convention may differ)
-        assert!(exact_zero_count > 40,
-            "FMA ZD regression: only {}/84 are near-zero", exact_zero_count);
+        assert!(
+            exact_zero_count > 40,
+            "FMA ZD regression: only {}/84 are near-zero",
+            exact_zero_count
+        );
     }
 
     /// Regression: SignTableI8 at dim=16 has exactly 120 +1 entries
@@ -648,7 +692,9 @@ mod fma_tests {
         let mut neg = 0_usize;
         for p in 1..16_usize {
             for q in 1..16 {
-                if p == q { continue; }
+                if p == q {
+                    continue;
+                }
                 match table.sign(p, q) {
                     1 => pos += 1,
                     -1 => neg += 1,

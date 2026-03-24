@@ -48,12 +48,7 @@ pub fn resource_efficiency(energy_cost: f64, gamma: f64) -> f64 {
 /// Overall Net Advantage metric for high-dimensional quantum synchronization.
 ///
 /// Net Advantage = (log2(d) / N_corr(d, n)) * F(d) * eta_resource(d, n)
-pub fn net_advantage(
-    d: usize,
-    n_corr: f64,
-    fidelity: f64,
-    eta_resource: f64,
-) -> f64 {
+pub fn net_advantage(d: usize, n_corr: f64, fidelity: f64, eta_resource: f64) -> f64 {
     if n_corr <= 0.0 || d == 0 {
         return 0.0;
     }

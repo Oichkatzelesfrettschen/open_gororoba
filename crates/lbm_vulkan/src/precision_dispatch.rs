@@ -16,7 +16,7 @@
 //! })?;
 //! ```
 
-use crate::compute::{compile_wgsl, VulkanEngineError};
+use crate::compute::{VulkanEngineError, compile_wgsl};
 use std::collections::HashMap;
 
 /// Collision operator type.
@@ -81,9 +81,7 @@ impl ShaderKey {
             (Bgk, Fp32, AlternateAccess) => Some(include_str!("../shaders/lbm_aa.wgsl")),
             (Mrt, Fp32, AlternateAccess) => Some(include_str!("../shaders/lbm_mrt_aa.wgsl")),
             (Bgk, Fp32, Coarsened) => Some(include_str!("../shaders/lbm_coarsened.wgsl")),
-            (Bgk, Fp32, NonNewtonian) => {
-                Some(include_str!("../shaders/lbm_non_newtonian.wgsl"))
-            }
+            (Bgk, Fp32, NonNewtonian) => Some(include_str!("../shaders/lbm_non_newtonian.wgsl")),
 
             // FP64 variants
             (Bgk, Fp64, Push) => Some(include_str!("../shaders/lbm_fp64.wgsl")),
@@ -153,10 +151,7 @@ impl ShaderRegistry {
     ///
     /// Returns None if the (collision, precision, streaming) combination
     /// has no WGSL shader source defined.
-    pub fn get_or_compile(
-        &mut self,
-        key: ShaderKey,
-    ) -> Result<&CompiledShader, VulkanEngineError> {
+    pub fn get_or_compile(&mut self, key: ShaderKey) -> Result<&CompiledShader, VulkanEngineError> {
         use std::collections::hash_map::Entry;
         match self.cache.entry(key) {
             Entry::Occupied(e) => Ok(e.into_mut()),
@@ -184,10 +179,7 @@ impl ShaderRegistry {
 
     /// Total SPIR-V memory usage across all cached shaders (bytes).
     pub fn total_spirv_bytes(&self) -> usize {
-        self.cache
-            .values()
-            .map(|s| s.word_count * 4)
-            .sum()
+        self.cache.values().map(|s| s.word_count * 4).sum()
     }
 
     /// List all supported shader configurations.

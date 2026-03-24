@@ -215,12 +215,17 @@ pub fn cd_dimension_nacelle_map(cd_dim: usize) -> Option<usize> {
 
 /// Computes the effective stress-energy tensor correction from ZD harmonic forcing.
 /// T_munu^ZD = alpha_zd * Potential(r) * g_munu
-pub fn algebraic_stress_energy_correction(dim: usize, r: f64, r_s: f64, alpha_zd_coupling: f64) -> f64 {
+pub fn algebraic_stress_energy_correction(
+    dim: usize,
+    r: f64,
+    r_s: f64,
+    alpha_zd_coupling: f64,
+) -> f64 {
     let x = r / r_s;
 
     let (n_modes, fbf) = match dim {
         16 => (7, 0.5),
-        32 => (15, 4.0/7.0),
+        32 => (15, 4.0 / 7.0),
         64 => (31, 1854.0 / 3036.0), // FBF for 64D
         _ => (0, 0.0),
     };

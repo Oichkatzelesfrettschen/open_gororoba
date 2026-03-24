@@ -11,7 +11,10 @@ use clap::Parser;
 #[cfg(feature = "euclid-catalog")]
 use cosmology_core::euclid_morphology::{EuclidMorphologyRecord, read_euclid_visual_morphology};
 #[cfg(feature = "euclid-catalog")]
-use data_core::{angular_separation_arcsec, formats::fits_table::{FitsValue, read_fits_table}};
+use data_core::{
+    angular_separation_arcsec,
+    formats::fits_table::{FitsValue, read_fits_table},
+};
 #[cfg(feature = "euclid-catalog")]
 use kiddo::{ImmutableKdTree, SquaredEuclidean};
 #[cfg(feature = "euclid-catalog")]

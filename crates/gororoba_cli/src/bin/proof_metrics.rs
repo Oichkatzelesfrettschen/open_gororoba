@@ -1,10 +1,7 @@
 //! proof_metrics: Pure Rust port of `proofs/scripts/collect_metrics.sh`.
 //! Gathers proof compilation metrics for PGFPlots.
 
-use std::fs;
-use std::path::Path;
-use std::process::Command;
-use std::time::Instant;
+use std::{fs, path::Path, process::Command, time::Instant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let repo_root = Path::new(".");
@@ -42,7 +39,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut total_vo = 0;
 
     for v_file in &v_files {
-        let base = v_file.file_name().and_then(|s| s.to_str()).unwrap_or_default();
+        let base = v_file
+            .file_name()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default();
         let content = fs::read_to_string(v_file)?;
         let lines = content.lines().count();
         total_lines += lines;
@@ -74,18 +74,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         let label = base.replace(".v", "").replace("_", "\\_");
-        csv_content.push_str(&format!("{},{},{},{:.2}\n", label, lines, vo_size, compile_seconds));
+        csv_content.push_str(&format!(
+            "{},{},{},{:.2}\n",
+            label, lines, vo_size, compile_seconds
+        ));
     }
 
     fs::write(&out_file, csv_content)?;
 
     let theory_count = if theories_dir.exists() {
-        fs::read_dir(&theories_dir)?.filter_map(|e| e.ok()).filter(|e| e.path().extension().map(|s| s == "v").unwrap_or(false)).count()
+        fs::read_dir(&theories_dir)?
+            .filter_map(|e| e.ok())
+            .filter(|e| e.path().extension().map(|s| s == "v").unwrap_or(false))
+            .count()
     } else {
         0
     };
     let verified_count = if verified_dir.exists() {
-        fs::read_dir(&verified_dir)?.filter_map(|e| e.ok()).filter(|e| e.path().extension().map(|s| s == "v").unwrap_or(false)).count()
+        fs::read_dir(&verified_dir)?
+            .filter_map(|e| e.ok())
+            .filter(|e| e.path().extension().map(|s| s == "v").unwrap_or(false))
+            .count()
     } else {
         0
     };
@@ -97,7 +106,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     fs::write(&summary_file, summary_content)?;
 
-    println!("\nSummary: {} .v files, {} .vo compiled, {} total lines", total_v, total_vo, total_lines);
+    println!(
+        "\nSummary: {} .v files, {} .vo compiled, {} total lines",
+        total_v, total_vo, total_lines
+    );
     println!("Output: {}", out_file.display());
     println!("Summary: {}", summary_file.display());
 

@@ -577,6 +577,6 @@
 //! [13] A. R. Rajwade, Squares, Cambridge University Press, Cambridge, 1993.
 //! [14] Steve Strogatz, Sync: The Emerging Science of Spontaneous Order, Hyperion,
 //! >      New York, 2003.
-//! 
+//!
 //! ```ignore
 //!

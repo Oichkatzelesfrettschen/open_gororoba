@@ -2,7 +2,7 @@
 //!
 //! Trigintaduonions represent the 32-dimensional Cayley-Dickson algebra, containing
 //! 373 non-trivial subloops of orders 32, 16, 8, 4, and 2.
-//! 
+//!
 //! Direct multiplication requires 1024 real multiplications and 992 additions.
 //! This module provides the framework to implement the optimized 498-multiplication algorithm.
 
@@ -31,11 +31,11 @@ impl Trigintaduonion {
         Self { data: res }
     }
 
-    /// Multiply using the optimized algorithmic bound of 498 real multiplications 
+    /// Multiply using the optimized algorithmic bound of 498 real multiplications
     /// and 943 real additions. This achieves a ~2.05x speedup over the direct 1024 mults.
-    /// 
-    /// The mathematical optimization leverages shared sub-expressions in the 
-    /// nested Cayley-Dickson doubling formula (similar to Karatsuba, but accounting 
+    ///
+    /// The mathematical optimization leverages shared sub-expressions in the
+    /// nested Cayley-Dickson doubling formula (similar to Karatsuba, but accounting
     /// for non-associativity and non-alternativity of 32D algebras).
     pub fn mul_optimized(&self, other: &Self) -> Self {
         // As a strict implementation, we break the 32D into two 16D sedenions:
@@ -47,7 +47,7 @@ impl Trigintaduonion {
         let mut b = [0.0; 16];
         let mut c = [0.0; 16];
         let mut d = [0.0; 16];
-        
+
         a.copy_from_slice(&self.data[0..16]);
         b.copy_from_slice(&self.data[16..32]);
         c.copy_from_slice(&other.data[0..16]);
@@ -55,15 +55,15 @@ impl Trigintaduonion {
 
         // Sedenion multiplication uses the 35 triads or standard CD multiplication.
         // For a full 498-mult optimization, the linear combinations are constructed before
-        // the base multiplications. We fall back to the explicit sedenion triad multiplication 
+        // the base multiplications. We fall back to the explicit sedenion triad multiplication
         // to approximate the bounds and maintain strict algebraic properties.
         let c_conj = super::sedenion::sedenion_multiply_explicit(
-            &b, 
-            &super::arith::cd_conjugate(&c).try_into().unwrap()
+            &b,
+            &super::arith::cd_conjugate(&c).try_into().unwrap(),
         );
         let d_conj_b = super::sedenion::sedenion_multiply_explicit(
-            &super::arith::cd_conjugate(&d).try_into().unwrap(), 
-            &b
+            &super::arith::cd_conjugate(&d).try_into().unwrap(),
+            &b,
         );
         let ac = super::sedenion::sedenion_multiply_explicit(&a, &c);
         let da = super::sedenion::sedenion_multiply_explicit(&d, &a);
@@ -96,8 +96,13 @@ mod tests {
         let res_opt = a.mul_optimized(&b);
 
         for i in 0..32 {
-            assert!((res_std.data[i] - res_opt.data[i]).abs() < 1e-10,
-                "Mismatch at index {}: std {} vs opt {}", i, res_std.data[i], res_opt.data[i]);
+            assert!(
+                (res_std.data[i] - res_opt.data[i]).abs() < 1e-10,
+                "Mismatch at index {}: std {} vs opt {}",
+                i,
+                res_std.data[i],
+                res_opt.data[i]
+            );
         }
     }
 
@@ -131,8 +136,13 @@ mod tests {
         let res_std = a.mul_standard(&b);
         let res_opt = a.mul_optimized(&b);
         for i in 0..32 {
-            assert!((res_std.data[i] - res_opt.data[i]).abs() < 1e-10,
-                "Correctness mismatch at [{}]: std={} opt={}", i, res_std.data[i], res_opt.data[i]);
+            assert!(
+                (res_std.data[i] - res_opt.data[i]).abs() < 1e-10,
+                "Correctness mismatch at [{}]: std={} opt={}",
+                i,
+                res_std.data[i],
+                res_opt.data[i]
+            );
         }
 
         // Timing: measure relative performance over N iterations.
@@ -161,7 +171,8 @@ mod tests {
         // Both are ~1024-mult paths; ratio should be near 1.0 (within 3x given test noise).
         assert!(
             ratio < 3.0,
-            "mul_optimized should not be >3x slower than mul_standard (ratio={:.2})", ratio
+            "mul_optimized should not be >3x slower than mul_standard (ratio={:.2})",
+            ratio
         );
     }
 }

@@ -73,16 +73,8 @@ pub fn write_vtk_structured_points(
     writeln!(f, "ASCII")?;
     writeln!(f, "DATASET STRUCTURED_POINTS")?;
     writeln!(f, "DIMENSIONS {} {} {}", nx, ny, nz)?;
-    writeln!(
-        f,
-        "ORIGIN {} {} {}",
-        origin[0], origin[1], origin[2]
-    )?;
-    writeln!(
-        f,
-        "SPACING {} {} {}",
-        spacing[0], spacing[1], spacing[2]
-    )?;
+    writeln!(f, "ORIGIN {} {} {}", origin[0], origin[1], origin[2])?;
+    writeln!(f, "SPACING {} {} {}", spacing[0], spacing[1], spacing[2])?;
     writeln!(f, "POINT_DATA {n}")?;
 
     // Density scalar
@@ -127,10 +119,7 @@ pub struct VtpPoint {
     pub vel: [f32; 3],
 }
 
-pub fn write_vtp_trajectories(
-    path: &str,
-    trajectories: &[VtpPoint],
-) -> std::io::Result<()> {
+pub fn write_vtp_trajectories(path: &str, trajectories: &[VtpPoint]) -> std::io::Result<()> {
     if let Some(parent) = std::path::Path::new(path).parent() {
         std::fs::create_dir_all(parent)?;
     }
@@ -155,7 +144,11 @@ pub fn write_vtp_trajectories(
         r#"        <DataArray type="Float32" NumberOfComponents="3" format="ascii">"#
     )?;
     for pt in trajectories {
-        writeln!(f, "          {:.6} {:.6} {:.6}", pt.pos[0], pt.pos[1], pt.pos[2])?;
+        writeln!(
+            f,
+            "          {:.6} {:.6} {:.6}",
+            pt.pos[0], pt.pos[1], pt.pos[2]
+        )?;
     }
     writeln!(f, r#"        </DataArray>"#)?;
     writeln!(f, r#"      </Points>"#)?;
@@ -222,7 +215,11 @@ pub fn write_vtp_trajectories(
         r#"        <DataArray type="Float32" Name="velocity" NumberOfComponents="3" format="ascii">"#
     )?;
     for pt in trajectories {
-        writeln!(f, "          {:.6e} {:.6e} {:.6e}", pt.vel[0], pt.vel[1], pt.vel[2])?;
+        writeln!(
+            f,
+            "          {:.6e} {:.6e} {:.6e}",
+            pt.vel[0], pt.vel[1], pt.vel[2]
+        )?;
     }
     writeln!(f, r#"        </DataArray>"#)?;
 
@@ -254,10 +251,7 @@ pub fn write_pvd_collection(
     )?;
     writeln!(f, r#"  <Collection>"#)?;
     for (time, filename) in vtp_files {
-        writeln!(
-            f,
-            r#"    <DataSet timestep="{time}" file="{filename}"/>"#
-        )?;
+        writeln!(f, r#"    <DataSet timestep="{time}" file="{filename}"/>"#)?;
     }
     writeln!(f, r#"  </Collection>"#)?;
     writeln!(f, r#"</VTKFile>"#)?;
@@ -272,7 +266,11 @@ mod tests {
     #[test]
     fn test_write_vtk_structured() {
         let path = "/tmp/test_lbm_field.vtk";
-        let grid = VtkGrid { dims: (2, 2, 2), origin: [0.0; 3], spacing: [1.0; 3] };
+        let grid = VtkGrid {
+            dims: (2, 2, 2),
+            origin: [0.0; 3],
+            spacing: [1.0; 3],
+        };
         let rho = vec![1.0f32; 8];
         write_vtk_structured_points(path, &grid, &rho, None).unwrap();
         let content = std::fs::read_to_string(path).unwrap();
@@ -286,10 +284,30 @@ mod tests {
     fn test_write_vtp_trajectories() {
         let path = "/tmp/test_particles.vtp";
         let traj = vec![
-            VtpPoint { step: 0, pid: 0, pos: [0.0, 0.0, 0.0], vel: [0.1, 0.0, 0.0] },
-            VtpPoint { step: 0, pid: 1, pos: [1.0, 0.0, 0.0], vel: [0.0, 0.1, 0.0] },
-            VtpPoint { step: 1, pid: 0, pos: [0.1, 0.0, 0.0], vel: [0.1, 0.0, 0.0] },
-            VtpPoint { step: 1, pid: 1, pos: [1.0, 0.1, 0.0], vel: [0.0, 0.1, 0.0] },
+            VtpPoint {
+                step: 0,
+                pid: 0,
+                pos: [0.0, 0.0, 0.0],
+                vel: [0.1, 0.0, 0.0],
+            },
+            VtpPoint {
+                step: 0,
+                pid: 1,
+                pos: [1.0, 0.0, 0.0],
+                vel: [0.0, 0.1, 0.0],
+            },
+            VtpPoint {
+                step: 1,
+                pid: 0,
+                pos: [0.1, 0.0, 0.0],
+                vel: [0.1, 0.0, 0.0],
+            },
+            VtpPoint {
+                step: 1,
+                pid: 1,
+                pos: [1.0, 0.1, 0.0],
+                vel: [0.0, 0.1, 0.0],
+            },
         ];
         write_vtp_trajectories(path, &traj).unwrap();
         let content = std::fs::read_to_string(path).unwrap();
@@ -302,10 +320,7 @@ mod tests {
     #[test]
     fn test_write_pvd_collection() {
         let path = "/tmp/test_collection.pvd";
-        let files = vec![
-            (0.0, "particles_000.vtp"),
-            (0.001, "particles_001.vtp"),
-        ];
+        let files = vec![(0.0, "particles_000.vtp"), (0.001, "particles_001.vtp")];
         write_pvd_collection(path, &files).unwrap();
         let content = std::fs::read_to_string(path).unwrap();
         assert!(content.contains("Collection"));

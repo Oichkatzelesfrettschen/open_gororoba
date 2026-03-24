@@ -1,7 +1,9 @@
-use qgp_scaling::data_tables::{cms_oo_5360_raa, alice_oo_5360_pi0_raa, atlas_nene_5360_v2};
-use qgp_scaling::multiplicity::{multiplicity_table, CollisionSystem};
-use qgp_scaling::glauber::{compute_centrality_bins, SigmaNN};
-use qgp_scaling::nucleus::NucleusParams;
+use qgp_scaling::{
+    data_tables::{alice_oo_5360_pi0_raa, atlas_nene_5360_v2, cms_oo_5360_raa},
+    glauber::{SigmaNN, compute_centrality_bins},
+    multiplicity::{CollisionSystem, multiplicity_table},
+    nucleus::NucleusParams,
+};
 
 #[test]
 fn test_oo_5360_reconstruction_consistency() {
@@ -21,7 +23,7 @@ fn test_oo_5360_reconstruction_consistency() {
     let o16 = NucleusParams::o16();
     let edges = vec![0.0, 0.05, 0.10];
     let bins = compute_centrality_bins(&edges, &sigma, &o16, 40, 100);
-    
+
     assert_eq!(bins.len(), 2);
     // Central O-O should have Npart ~ 25-28
     assert!(bins[0].n_part > 20.0 && bins[0].n_part < 30.0);
@@ -32,7 +34,7 @@ fn test_nene_5360_deformation_anchor() {
     // Verify ATLAS v2 reference for Ne-Ne prolate shape
     let v2_ref = atlas_nene_5360_v2();
     assert!(!v2_ref.is_empty());
-    
+
     // Central bin (0-5%) should show flow signature
     let central = &v2_ref[0];
     assert_eq!(central.n, 2);
@@ -43,7 +45,7 @@ fn test_nene_5360_deformation_anchor() {
 fn test_pi0_oo_comparison() {
     let pi0_raa = alice_oo_5360_pi0_raa();
     assert!(!pi0_raa.is_empty());
-    
+
     // ALICE pi0 R_AA should be significantly suppressed (< 1.0)
     for point in pi0_raa {
         assert!(point.raa < 0.9);

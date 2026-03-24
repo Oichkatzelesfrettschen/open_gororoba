@@ -80,7 +80,6 @@ struct Cli {
     eigen_csv: PathBuf,
 }
 
-
 /// Try to read stellar masses from a sidecar CSV (column: name, log_m_star or stellar_mass_msun).
 /// Returns a map from galaxy name to log10(M_star / Msun).
 fn try_load_stellar_masses(meta_path: &std::path::Path) -> HashMap<String, f64> {

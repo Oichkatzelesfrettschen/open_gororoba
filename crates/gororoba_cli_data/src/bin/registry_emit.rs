@@ -169,7 +169,10 @@ struct TodoMirrorArgs {
     #[arg(long, default_value = "registry/todo.toml")]
     input: PathBuf,
     /// Output markdown mirror path.
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/todo_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/todo_registry_mirror.rs"
+    )]
     output: PathBuf,
     /// Allow unicode output (default false to satisfy repository ASCII policy).
     #[arg(long, default_value_t = false)]
@@ -192,7 +195,10 @@ struct TodoLegacyArgs {
 struct RoadmapMirrorArgs {
     #[arg(long, default_value = "registry/roadmap.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/roadmap_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/roadmap_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -204,7 +210,10 @@ struct RoadmapLegacyArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/roadmap_narrative.toml")]
     narrative: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/roadmap.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/roadmap.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -214,7 +223,10 @@ struct RoadmapLegacyArgs {
 struct NextActionsMirrorArgs {
     #[arg(long, default_value = "registry/next_actions.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/next_actions_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/next_actions_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -226,7 +238,10 @@ struct NextActionsLegacyArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/next_actions_narrative.toml")]
     narrative: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/next_actions.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/next_actions.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -252,7 +267,10 @@ struct KnowledgeMigrationPlanMirrorArgs {
 struct NavigatorMirrorArgs {
     #[arg(long, default_value = "registry/navigator.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -262,7 +280,10 @@ struct NavigatorMirrorArgs {
 struct NavigatorLegacyArgs {
     #[arg(long, default_value = "registry/navigator.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/navigator.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/navigator.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -295,7 +316,10 @@ struct EntrypointDocsLegacyArgs {
 struct RequirementsMirrorArgs {
     #[arg(long, default_value = "registry/requirements.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/requirements_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/requirements_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -365,7 +389,10 @@ struct InsightsMirrorArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/insights_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/insights_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -379,7 +406,10 @@ struct InsightsLegacyArgs {
     canonical_db: PathBuf,
     #[arg(long, default_value = "registry/insights_narrative.toml")]
     narrative: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/insights.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/insights.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -391,7 +421,10 @@ struct ClaimsMirrorArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/claims_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/claims_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -403,7 +436,10 @@ struct ClaimsMatrixLegacyArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/claims_evidence_matrix.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/claims_evidence_matrix.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -413,7 +449,10 @@ struct ClaimsMatrixLegacyArgs {
 struct BibliographyMirrorArgs {
     #[arg(long, default_value = "registry/bibliography.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/bibliography_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/bibliography_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -423,7 +462,10 @@ struct BibliographyMirrorArgs {
 struct BibliographyLegacyArgs {
     #[arg(long, default_value = "registry/bibliography.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/bibliography.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/bibliography.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -435,7 +477,10 @@ struct ExperimentsMirrorArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/experiments_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/experiments_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -449,7 +494,10 @@ struct ExperimentsLegacyArgs {
     canonical_db: PathBuf,
     #[arg(long, default_value = "registry/experiments_narrative.toml")]
     narrative: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -459,7 +507,10 @@ struct ExperimentsLegacyArgs {
 struct TheoremsMirrorArgs {
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/theorems_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/theorems_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -469,7 +520,10 @@ struct TheoremsMirrorArgs {
 struct TheoremsLegacyArgs {
     #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
     canonical_db: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/theorems.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/theorems.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -489,21 +543,45 @@ struct ControlPlaneDocsArgs {
     insights_narrative: PathBuf,
     #[arg(long, default_value = "registry/experiments_narrative.toml")]
     experiments_narrative: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/claims_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/claims_registry_mirror.rs"
+    )]
     claims_mirror_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/claims_evidence_matrix.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/claims_evidence_matrix.rs"
+    )]
     claims_legacy_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/insights_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/insights_registry_mirror.rs"
+    )]
     insights_mirror_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/insights.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/insights.rs"
+    )]
     insights_legacy_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/experiments_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/experiments_registry_mirror.rs"
+    )]
     experiments_mirror_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs"
+    )]
     experiments_legacy_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/theorems_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/theorems_registry_mirror.rs"
+    )]
     theorems_mirror_output: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/theorems.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/theorems.rs"
+    )]
     theorems_legacy_output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -526,7 +604,10 @@ struct MarkdownGovernanceMirrorArgs {
 struct ClaimsTasksMirrorArgs {
     #[arg(long, default_value = "registry/claims_tasks.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -536,7 +617,10 @@ struct ClaimsTasksMirrorArgs {
 struct ClaimsTasksLegacyArgs {
     #[arg(long, default_value = "registry/claims_tasks.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/claims_tasks.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/claims_tasks.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -615,7 +699,10 @@ struct ExternalSourcesLegacyArgs {
 struct BookDocsMirrorArgs {
     #[arg(long, default_value = "registry/book_docs.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/book_docs_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/book_docs_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -683,7 +770,10 @@ struct ReportsNarrativesLegacyArgs {
 struct DocsConvosMirrorArgs {
     #[arg(long, default_value = "registry/docs_convos.toml")]
     input: PathBuf,
-    #[arg(long, default_value = "crates/data_core/src/registry_mirrors/docs_convos_registry_mirror.rs")]
+    #[arg(
+        long,
+        default_value = "crates/data_core/src/registry_mirrors/docs_convos_registry_mirror.rs"
+    )]
     output: PathBuf,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
@@ -1629,7 +1719,10 @@ fn emit_entrypoint_docs_legacy(args: EntrypointDocsLegacyArgs) -> Result<(), Str
     for doc in docs {
         let rel_path = str_field(doc, "path");
         if rel_path.is_empty()
-            || matches!(rel_path.as_str(), "crates/data_core/src/registry_mirrors/agents.rs" | "CLAUDE.md" | "GEMINI.md")
+            || matches!(
+                rel_path.as_str(),
+                "crates/data_core/src/registry_mirrors/agents.rs" | "CLAUDE.md" | "GEMINI.md"
+            )
         {
             continue;
         }
@@ -3104,7 +3197,9 @@ fn emit_claims_domains_legacy(args: ClaimsDomainsLegacyArgs) -> Result<(), Strin
     let mut index_lines = generated_doc_header("registry/claims_domains.toml");
     index_lines.push("# Claims by domain".to_string());
     index_lines.push(String::new());
-    index_lines.push("See also: crates/data_core/src/registry_mirrors/claims_domain_taxonomy.rs".to_string());
+    index_lines.push(
+        "See also: crates/data_core/src/registry_mirrors/claims_domain_taxonomy.rs".to_string(),
+    );
     index_lines.push(String::new());
     for row in &domains {
         index_lines.push(format!(

@@ -2,11 +2,14 @@ use anyhow::Result;
 use clap::Parser;
 use num_complex::Complex64;
 use quantum_core::fractional_schrodinger::split_operator_evolve;
-use std::fs::File;
-use std::io::Write;
+use std::{fs::File, io::Write};
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Fractional Schrodinger Equation Solver (Spectral/Strang)")]
+#[command(
+    author,
+    version,
+    about = "Fractional Schrodinger Equation Solver (Spectral/Strang)"
+)]
 struct Args {
     #[arg(short, long, default_value_t = 1024)]
     n: usize,
@@ -26,7 +29,11 @@ struct Args {
     #[arg(short, long, default_value = "2.0,1.5,1.2")]
     alphas: String,
 
-    #[arg(short, long, default_value = "data/artifacts/fractional_schrodinger_results.csv")]
+    #[arg(
+        short,
+        long,
+        default_value = "data/artifacts/fractional_schrodinger_results.csv"
+    )]
     output: String,
 }
 

@@ -28,10 +28,10 @@ pub fn dpss_tapers(n: usize, nw: f64, k: usize) -> Vec<Vec<f64>> {
     // Construct the symmetric tridiagonal matrix L (Slepian 1978)
     // L[i, i] = ((N-1-2i)/2)^2 * cos(2pi*W)
     // L[i, i+1] = 0.5 * (i+1)*(N-1-i)
-    
+
     let mut diag = Vec::with_capacity(n);
     let mut off_diag = Vec::with_capacity(n - 1);
-    
+
     for i in 0..n {
         let term = (n as f64 - 1.0 - 2.0 * i as f64) / 2.0;
         diag.push(term * term * cos_2pi_w);
@@ -42,7 +42,7 @@ pub fn dpss_tapers(n: usize, nw: f64, k: usize) -> Vec<Vec<f64>> {
 
     // Solve the eigenproblem. Since L is symmetric tridiagonal,
     // we use faer's specialized solvers if available, or general symmetric.
-    
+
     let mut mat = Mat::<f64>::zeros(n, n);
     for i in 0..n {
         mat.write(i, i, diag[i]);
@@ -70,7 +70,7 @@ pub fn dpss_tapers(n: usize, nw: f64, k: usize) -> Vec<Vec<f64>> {
         for i in 0..n {
             taper.push(eigenvectors.read(i, idx));
         }
-        
+
         // Ensure the first lobe is positive (convention)
         let sum: f64 = taper.iter().sum();
         if sum < 0.0 {
@@ -111,12 +111,13 @@ pub fn multitaper_psd(signal: &[f64], nw: f64, k: usize) -> MultitaperResult {
 
     let mut planner = FftPlanner::new();
     let fft = planner.plan_fft_forward(n);
-    
+
     let mut eigencoeffs = Vec::with_capacity(k);
     let n_freq = n / 2 + 1;
 
     for taper in &tapers {
-        let mut buffer: Vec<Complex64> = centered.iter()
+        let mut buffer: Vec<Complex64> = centered
+            .iter()
             .zip(taper.iter())
             .map(|(&x, &w)| Complex64::new(x * w, 0.0))
             .collect();
@@ -152,7 +153,7 @@ pub fn thomson_f_test(eigencoeffs: &[Vec<Complex64>], tapers: &[Vec<f64>]) -> Ve
     }
     let k = eigencoeffs.len();
     let n_freq = eigencoeffs[0].len();
-    
+
     let taper_sums: Vec<f64> = tapers.iter().map(|t| t.iter().sum::<f64>()).collect();
     let denom_norm: f64 = taper_sums.iter().map(|&s| s * s).sum();
 
@@ -197,11 +198,15 @@ mod tests {
         let n = 64;
         let tapers = dpss_tapers(n, 4.0, 4);
         assert_eq!(tapers.len(), 4);
-        
+
         // Check orthogonality
         for i in 0..tapers.len() {
             for j in 0..tapers.len() {
-                let dot: f64 = tapers[i].iter().zip(tapers[j].iter()).map(|(a, b)| a * b).sum();
+                let dot: f64 = tapers[i]
+                    .iter()
+                    .zip(tapers[j].iter())
+                    .map(|(a, b)| a * b)
+                    .sum();
                 if i == j {
                     assert!((dot - 1.0).abs() < 1e-10);
                 } else {
@@ -216,7 +221,7 @@ mod tests {
         let n = 256;
         let freq = 0.2;
         let signal: Vec<f64> = (0..n).map(|i| (2.0 * PI * freq * i as f64).sin()).collect();
-        
+
         let res = multitaper_psd(&signal, 4.0, 7);
         let mut max_p = -1.0;
         let mut max_f = 0.0;

@@ -10,11 +10,11 @@
 //! - Ryu & Takayanagi, PRL 96 (2006) 181602 - Holographic entanglement
 //! - Swingle, PRD 86 (2012) 065007 - MERA/AdS connection
 
-use verified_core::coupler_manifold::CouplerPoint;
 use nalgebra::DVector;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::collections::{HashMap, HashSet, VecDeque};
+use verified_core::coupler_manifold::CouplerPoint;
 
 // Physical constants (SI units)
 /// Boltzmann constant (J/K)
@@ -230,7 +230,7 @@ impl RTLattice {
         for i in 0..=depth {
             n_total += p.pow(i as u32);
         }
-        
+
         let n_boundary = p.pow(depth as u32);
         let n_bulk = n_total - n_boundary;
 

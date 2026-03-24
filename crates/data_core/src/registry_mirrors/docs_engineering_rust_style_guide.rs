@@ -19,7 +19,7 @@
 //! ## 3. Linting & Clippy
 //!
 //! - **Tool:** `clippy`.
-//! - **Policy:** 
+//! - **Policy:**
 //! - `cargo clippy --all-targets --all-features -- -D warnings`
 //! - Explicitly allow specific lints only with documented justification (e.g., `#[allow(clippy::too_many_arguments)]` on legacy physics kernels).
 //! - **Custom Lints:** Use `cargo-deny` for license and dependency graph checking (`deny.toml` in root).

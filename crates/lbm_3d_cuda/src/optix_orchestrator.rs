@@ -23,8 +23,7 @@
 //! 5. FP16 velocity buffer can be freed after trace completes
 //! 6. Stream A continues LBM step N+1 concurrently with steps 3-5
 
-use crate::optix_pipeline::OptiXPipeline;
-use crate::optix_tracer::OptiXTracerConfig;
+use crate::{optix_pipeline::OptiXPipeline, optix_tracer::OptiXTracerConfig};
 
 /// Orchestrator state for concurrent LBM + OptiX execution.
 #[derive(Debug)]
@@ -164,7 +163,8 @@ impl EulerianLagrangianOrchestrator {
 
     /// Check if the BVH needs rebuilding (amortized).
     pub fn needs_bvh_rebuild(&self, current_occupancy: f64) -> bool {
-        self.pipeline.needs_rebuild(self.lbm_step, current_occupancy)
+        self.pipeline
+            .needs_rebuild(self.lbm_step, current_occupancy)
     }
 
     /// Update particle positions from device readback.

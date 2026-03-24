@@ -238,13 +238,13 @@ impl WaveletFractalKernel {
     pub fn multi_scale_transform(&self, signal: &[f64]) -> Vec<f64> {
         let mut coeffs = haar_dwt(signal);
         let n = coeffs.len();
-        
+
         // Apply fractal map at each scale: detail_coeff = scale * tanh(coeff / scale)
         // Coeffs layout: [scaling | detail_level_0 | detail_level_1 | ... | detail_level_L]
         // where L = log2(n) - 1.
         let mut current_len = 1;
         let mut level = 0;
-        
+
         while current_len < n {
             let scale_factor = self.alpha.powi(level);
             for coeff in coeffs.iter_mut().take(current_len * 2).skip(current_len) {
@@ -257,7 +257,7 @@ impl WaveletFractalKernel {
             current_len *= 2;
             level += 1;
         }
-        
+
         haar_idwt(&coeffs)
     }
 }
@@ -315,7 +315,11 @@ pub fn compute_fractal_dimension(signal: &[f64]) -> f64 {
     let sum_x: f64 = log_sizes.iter().sum();
     let sum_y: f64 = log_counts.iter().sum();
     let sum_xx: f64 = log_sizes.iter().map(|x| x * x).sum();
-    let sum_xy: f64 = log_sizes.iter().zip(log_counts.iter()).map(|(x, y)| x * y).sum();
+    let sum_xy: f64 = log_sizes
+        .iter()
+        .zip(log_counts.iter())
+        .map(|(x, y)| x * y)
+        .sum();
 
     let denom = m * sum_xx - sum_x * sum_x;
     if denom.abs() < 1e-12 {
@@ -362,11 +366,11 @@ pub fn continuous_wavelet_transform(signal: &[f64], widths: &[f64]) -> Vec<Vec<f
         // Kernel length: typically 10 * width
         let points = ((10.0 * a).ceil() as usize).min(n).max(3);
         let kernel = ricker_wavelet(points, a);
-        
+
         // Convolution (mode='same')
         let mut conv = vec![0.0; n];
         let half_k = points / 2;
-        
+
         for (i, conv_value) in conv.iter_mut().enumerate().take(n) {
             let mut sum = 0.0;
             for (j, kernel_value) in kernel.iter().enumerate().take(points) {

@@ -58,7 +58,8 @@ pub fn compute_graph_persistence_b0(
 ) -> Vec<usize> {
     let mut results = Vec::new();
     for &threshold in steps {
-        let active_edges: Vec<(usize, usize)> = edges.iter()
+        let active_edges: Vec<(usize, usize)> = edges
+            .iter()
             .filter(|&&(_, _, val)| val <= threshold)
             .map(|&(u, v, _)| (u, v))
             .collect();

@@ -1,6 +1,6 @@
 use anyhow::Result;
+use materials_core::kramers_kronig::{kk_mskk2_from_im, kk_sskk_from_im, kk_standard_from_im};
 use num_complex::Complex64;
-use materials_core::kramers_kronig::{kk_standard_from_im, kk_sskk_from_im, kk_mskk2_from_im};
 
 fn eps_hn(omega: f64) -> Complex64 {
     let eps_inf = 2.05;
@@ -8,10 +8,10 @@ fn eps_hn(omega: f64) -> Complex64 {
     let tau = 7e-1; // Adjusted tau to put peak in measurable range
     let alpha = 0.74;
     let beta = 0.65;
-    
+
     let wta = Complex64::new(0.0, omega * tau).powf(alpha);
     let hn = delta_eps / (Complex64::new(1.0, 0.0) + wta).powf(beta);
-    
+
     Complex64::new(eps_inf, 0.0) + hn
 }
 
@@ -59,21 +59,25 @@ fn main() -> Result<()> {
     // Measurement bands (where we pretend to have data)
     let bands = vec![
         (1e-1, 1e7, "[1e-01,1e+07] (Wide)"),
-        (1e0, 1e6,  "[1e+00,1e+06] (Medium)"),
-        (5e0, 1e5,  "[5e+00,1e+05] (Narrow)"),
+        (1e0, 1e6, "[1e+00,1e+06] (Medium)"),
+        (5e0, 1e5, "[5e+00,1e+05] (Narrow)"),
     ];
 
     // Evaluate in a central region
     let n_eval = 200;
     let mut omega_eval = Vec::with_capacity(n_eval);
     let log_eval_start = 1.0_f64; // 1e1
-    let log_eval_end = 4.0_f64;   // 1e4
+    let log_eval_end = 4.0_f64; // 1e4
     for i in 0..n_eval {
-        let l = log_eval_start + (log_eval_end - log_eval_start) * (i as f64) / (n_eval as f64 - 1.0);
+        let l =
+            log_eval_start + (log_eval_end - log_eval_start) * (i as f64) / (n_eval as f64 - 1.0);
         omega_eval.push(10.0_f64.powf(l));
     }
 
-    let true_eval: Vec<f64> = omega_eval.iter().map(|&w| interp_log(w, &w_true, &eps1_true)).collect();
+    let true_eval: Vec<f64> = omega_eval
+        .iter()
+        .map(|&w| interp_log(w, &w_true, &eps1_true))
+        .collect();
 
     struct ResultRow {
         label: String,

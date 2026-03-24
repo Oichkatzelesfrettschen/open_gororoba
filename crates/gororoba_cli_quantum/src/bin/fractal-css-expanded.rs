@@ -6,7 +6,11 @@ use std::path::PathBuf;
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Fractal CSS Expanded Stabilizer Search")]
 struct Args {
-    #[arg(short, long, default_value = "data/artifacts/images/css_fractal_candidate_logical_expanded_rust.png")]
+    #[arg(
+        short,
+        long,
+        default_value = "data/artifacts/images/css_fractal_candidate_logical_expanded_rust.png"
+    )]
     output: PathBuf,
 }
 
@@ -28,7 +32,7 @@ fn gf2_rank(matrix: &mut [Vec<u8>]) -> usize {
                 break;
             }
         }
-        
+
         if let Some(pivot_row) = piv {
             if pivot_row != r {
                 matrix.swap(r, pivot_row);
@@ -95,8 +99,34 @@ fn main() -> Result<()> {
         out
     };
 
-    let x_shifts = vec![(0,0),(2,0),(0,2),(2,2),(4,2),(2,4),(6,0),(0,6),(6,4),(4,6),(8,2),(2,8)];
-    let z_shifts = vec![(2,0),(0,2),(4,0),(0,4),(6,2),(2,6),(4,4),(8,0),(0,8),(6,6),(8,4),(4,8)];
+    let x_shifts = vec![
+        (0, 0),
+        (2, 0),
+        (0, 2),
+        (2, 2),
+        (4, 2),
+        (2, 4),
+        (6, 0),
+        (0, 6),
+        (6, 4),
+        (4, 6),
+        (8, 2),
+        (2, 8),
+    ];
+    let z_shifts = vec![
+        (2, 0),
+        (0, 2),
+        (4, 0),
+        (0, 4),
+        (6, 2),
+        (2, 6),
+        (4, 4),
+        (8, 0),
+        (0, 8),
+        (6, 6),
+        (8, 4),
+        (4, 8),
+    ];
 
     let flat = |mask: &[Vec<u8>]| -> Vec<u8> {
         let mut out = Vec::with_capacity(n_qubits);
@@ -139,7 +169,10 @@ fn main() -> Result<()> {
     let rank_hz = gf2_rank(&mut hz_working);
     let k = n_qubits - rank_hx - rank_hz;
 
-    println!("L={}, n={}, rank(HX)={}, rank(HZ)={}, k={}", l, n_qubits, rank_hx, rank_hz, k);
+    println!(
+        "L={}, n={}, rank(HX)={}, rank(HZ)={}, k={}",
+        l, n_qubits, rank_hx, rank_hz, k
+    );
 
     let mut best: Option<(usize, usize, usize, Vec<Vec<u8>>)> = None;
 
@@ -166,7 +199,9 @@ fn main() -> Result<()> {
                     break;
                 }
             }
-            if !commutes { continue; }
+            if !commutes {
+                continue;
+            }
 
             // must be independent of H_X
             let mut hx_ext = hx_orig.clone();
@@ -183,7 +218,10 @@ fn main() -> Result<()> {
     }
 
     if let Some((w_best, tx_best, ty_best, xlog)) = best {
-        println!("Found X-Logical: w={}, shift=({},{})", w_best, tx_best, ty_best);
+        println!(
+            "Found X-Logical: w={}, shift=({},{})",
+            w_best, tx_best, ty_best
+        );
 
         let cell_size = 20;
         let img_size = (l * cell_size) as u32;

@@ -171,7 +171,11 @@ impl AlternativityViolationTensor {
             }
         }
 
-        let hit_rate = if tested > 0 { hits as f64 / tested as f64 } else { 0.0 };
+        let hit_rate = if tested > 0 {
+            hits as f64 / tested as f64
+        } else {
+            0.0
+        };
 
         SampledAvt {
             avt: Self { dim, violations },
@@ -316,12 +320,12 @@ pub fn index_bits_for_dim(dim: usize) -> usize {
 ///
 /// # Panics
 /// Panics if `dim` is not a power of two >= 1.
-pub fn zero_divisor_sedenion_embedding(
-    dim: usize,
-    atol: f64,
-) -> Vec<(Vec<f64>, Vec<f64>)> {
+pub fn zero_divisor_sedenion_embedding(dim: usize, atol: f64) -> Vec<(Vec<f64>, Vec<f64>)> {
     use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq, find_zero_divisors};
-    assert!(dim >= 1 && dim.is_power_of_two(), "dim must be a power-of-two");
+    assert!(
+        dim >= 1 && dim.is_power_of_two(),
+        "dim must be a power-of-two"
+    );
     if dim < 16 {
         return Vec::new();
     }
@@ -400,7 +404,9 @@ pub fn zero_divisor_witness(dim: usize) -> (Vec<f64>, Vec<f64>) {
     // one cd_multiply on a dim-sized vector.
     for low2 in 1..=7_usize {
         for high2 in 9..=15_usize {
-            if high2 == low2 + 8 { continue; }
+            if high2 == low2 + 8 {
+                continue;
+            }
             for s in [1.0_f64, -1.0] {
                 for t in [1.0_f64, -1.0] {
                     let mut a = vec![0.0; dim];
@@ -448,9 +454,9 @@ pub fn zero_divisor_primary_seven(dim: usize) -> Vec<(Vec<f64>, Vec<f64>)> {
         let mut found = false;
         'pair: for i in 0..bk.assessors.len() {
             for j in (i + 1)..bk.assessors.len() {
-                if let Some((s, t)) = diagonal_zero_product(
-                    &bk.assessors[i], &bk.assessors[j], 1e-10,
-                ) {
+                if let Some((s, t)) =
+                    diagonal_zero_product(&bk.assessors[i], &bk.assessors[j], 1e-10)
+                {
                     let mut a = vec![0.0; dim];
                     let mut b = vec![0.0; dim];
                     a[bk.assessors[i].low] = 1.0;
@@ -568,7 +574,10 @@ mod tests {
         assert!(!zds.is_empty(), "should find ZDs in C_16");
         for (a, b) in &zds {
             let ab = cd_multiply(a, b);
-            assert!(cd_norm_sq(&ab).sqrt() < 1e-9, "embedding produced invalid ZD");
+            assert!(
+                cd_norm_sq(&ab).sqrt() < 1e-9,
+                "embedding produced invalid ZD"
+            );
         }
     }
 
@@ -579,7 +588,10 @@ mod tests {
         assert!(!zds.is_empty(), "should find ZDs in C_64 via embedding");
         for (a, b) in &zds {
             let ab = cd_multiply(a, b);
-            assert!(cd_norm_sq(&ab).sqrt() < 1e-9, "C_64 embedding produced invalid ZD");
+            assert!(
+                cd_norm_sq(&ab).sqrt() < 1e-9,
+                "C_64 embedding produced invalid ZD"
+            );
         }
     }
 
@@ -610,7 +622,9 @@ mod tests {
                 let mut count = 0usize;
                 let mut seen = std::collections::HashSet::new();
                 for &(i, j, k, l, _) in &sedenion_raw {
-                    if !seen.insert((i, j, k, l)) { continue; }
+                    if !seen.insert((i, j, k, l)) {
+                        continue;
+                    }
                     for sign in [1.0_f64, -1.0] {
                         let mut a = vec![0.0; dim];
                         let mut b = vec![0.0; dim];
@@ -624,7 +638,14 @@ mod tests {
                         }
                     }
                 }
-                println!("dim={} slot={} offset={}..{} valid_zds={}", dim, slot, offset, offset+15, count);
+                println!(
+                    "dim={} slot={} offset={}..{} valid_zds={}",
+                    dim,
+                    slot,
+                    offset,
+                    offset + 15,
+                    count
+                );
             }
         }
     }
@@ -646,15 +667,21 @@ mod tests {
         let ab = cd_multiply(&a, &b);
         // sigma(e_1 * e_2) would place the result at index 16 + (1 XOR 2) = 16+3 = 19
         // But in C_32, e_17 * e_18 has output index 17 XOR 18 = 3 (NOT 19!)
-        let output_idx_actual = ab.iter().enumerate()
+        let output_idx_actual = ab
+            .iter()
+            .enumerate()
             .find(|(_, v)| v.abs() > 1e-12)
             .map(|(i, _)| i)
             .unwrap_or(usize::MAX);
         let output_idx_if_subalgebra = 19; // 16 + (1 XOR 2)
-        println!("e_17 * e_18 lands at index {} (subalgebra would need {})",
-            output_idx_actual, output_idx_if_subalgebra);
-        assert_ne!(output_idx_actual, output_idx_if_subalgebra,
-            "Shifted block IS closed (unexpected) -- Proposition 2 not confirmed");
+        println!(
+            "e_17 * e_18 lands at index {} (subalgebra would need {})",
+            output_idx_actual, output_idx_if_subalgebra
+        );
+        assert_ne!(
+            output_idx_actual, output_idx_if_subalgebra,
+            "Shifted block IS closed (unexpected) -- Proposition 2 not confirmed"
+        );
     }
 
     /// Proposition 1 test: verify canonical embedding is a homomorphism.
@@ -672,18 +699,31 @@ mod tests {
         let ab_small = cd_multiply(&a_small, &b_small);
         // Embed ab_small into C_64 (pad zeros)
         let mut iota_ab = vec![0.0; dim_big];
-        for i in 0..dim_small { iota_ab[i] = ab_small[i]; }
+        for i in 0..dim_small {
+            iota_ab[i] = ab_small[i];
+        }
         // Embed a and b individually, then multiply in C_64
         let mut iota_a = vec![0.0; dim_big];
         let mut iota_b = vec![0.0; dim_big];
-        for i in 0..dim_small { iota_a[i] = a_small[i]; }
-        for i in 0..dim_small { iota_b[i] = b_small[i]; }
+        for i in 0..dim_small {
+            iota_a[i] = a_small[i];
+        }
+        for i in 0..dim_small {
+            iota_b[i] = b_small[i];
+        }
         let product_big = cd_multiply(&iota_a, &iota_b);
         // Verify: iota(a*b) == iota(a) * iota(b)
-        let diff: f64 = iota_ab.iter().zip(product_big.iter())
-            .map(|(x, y)| (x - y).powi(2)).sum::<f64>().sqrt();
-        assert!(diff < 1e-12,
-            "Canonical embedding is not a homomorphism! diff={}", diff);
+        let diff: f64 = iota_ab
+            .iter()
+            .zip(product_big.iter())
+            .map(|(x, y)| (x - y).powi(2))
+            .sum::<f64>()
+            .sqrt();
+        assert!(
+            diff < 1e-12,
+            "Canonical embedding is not a homomorphism! diff={}",
+            diff
+        );
     }
 
     /// Wilmot 7 primary pairs: one ZD pair per box-kite, all verified.
@@ -695,8 +735,12 @@ mod tests {
         for (i, (a, b)) in pairs.iter().enumerate() {
             let ab = cd_multiply(a, b);
             let norm = cd_norm_sq(&ab).sqrt();
-            assert!(norm < 1e-9,
-                "primary pair {} is not a ZD: ||ab|| = {}", i, norm);
+            assert!(
+                norm < 1e-9,
+                "primary pair {} is not a ZD: ||ab|| = {}",
+                i,
+                norm
+            );
         }
     }
 
@@ -720,9 +764,16 @@ mod tests {
     fn test_wilmot_multiples_of_84_sedenion() {
         use cd_kernel::cayley_dickson::find_zero_divisors;
         let zds = find_zero_divisors(16, 1e-9);
-        assert_eq!(zds.len() % 84, 0,
-            "Sedenion ZD count {} is not a multiple of 84", zds.len());
-        assert_eq!(zds.len(), 168,
-            "Expected exactly 168 sedenion 2-blade ZDs (84 tuples x 2 sign variants)");
+        assert_eq!(
+            zds.len() % 84,
+            0,
+            "Sedenion ZD count {} is not a multiple of 84",
+            zds.len()
+        );
+        assert_eq!(
+            zds.len(),
+            168,
+            "Expected exactly 168 sedenion 2-blade ZDs (84 tuples x 2 sign variants)"
+        );
     }
 }

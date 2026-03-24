@@ -53,7 +53,7 @@
 //! - Baez (2002), Bull. AMS 39, 145-205 — The Octonions
 //! - Schafer (1966) — On the algebras formed by the Cayley-Dickson process
 
-use cd_kernel::cayley_dickson::{associator_independence_stats, AssociatorStats};
+use cd_kernel::cayley_dickson::{AssociatorStats, associator_independence_stats};
 use nalgebra::{DMatrix, DVector};
 use std::f64::consts::PI;
 
@@ -168,36 +168,186 @@ pub struct CdTowerFitResult {
 /// Extracted from Zenodo record 10344086 (KDE v1.1.0).
 /// Reference: Agazie et al. (2023), ApJL 951, L8.
 pub const HD_FREE_SPECTRUM: [FreqBin; N_BINS] = [
-    FreqBin { f_hz: 1.9768264576e-09, log10_rho: -3.824356, log10_rho_lo: -12.239962, log10_rho_hi: -1.192436 },
-    FreqBin { f_hz: 3.9536529151e-09, log10_rho: -8.314518, log10_rho_lo: -14.419953, log10_rho_hi: -1.563951 },
-    FreqBin { f_hz: 5.9304793727e-09, log10_rho: -5.686763, log10_rho_lo: -14.198086, log10_rho_hi: -1.378676 },
-    FreqBin { f_hz: 7.9073058303e-09, log10_rho: -4.324256, log10_rho_lo: -12.283386, log10_rho_hi: -1.242426 },
-    FreqBin { f_hz: 9.8841322878e-09, log10_rho: -4.191523, log10_rho_lo: -10.567086, log10_rho_hi: -1.229152 },
-    FreqBin { f_hz: 1.1860958745e-08, log10_rho: -4.139625, log10_rho_lo: -9.835739, log10_rho_hi: -1.223963 },
-    FreqBin { f_hz: 1.3837785203e-08, log10_rho: -4.119372, log10_rho_lo: -9.763380, log10_rho_hi: -1.221937 },
-    FreqBin { f_hz: 1.5814611661e-08, log10_rho: -4.455705, log10_rho_lo: -12.469490, log10_rho_hi: -1.255570 },
-    FreqBin { f_hz: 1.7791438118e-08, log10_rho: -4.284785, log10_rho_lo: -9.058763, log10_rho_hi: -1.238479 },
-    FreqBin { f_hz: 1.9768264576e-08, log10_rho: -4.197701, log10_rho_lo: -9.572466, log10_rho_hi: -1.229770 },
-    FreqBin { f_hz: 2.1745091033e-08, log10_rho: -4.256292, log10_rho_lo: -9.804122, log10_rho_hi: -1.235629 },
-    FreqBin { f_hz: 2.3721917491e-08, log10_rho: -4.297346, log10_rho_lo: -9.526431, log10_rho_hi: -1.239735 },
-    FreqBin { f_hz: 2.5698743948e-08, log10_rho: -4.366242, log10_rho_lo: -8.755714, log10_rho_hi: -1.246624 },
-    FreqBin { f_hz: 2.7675570406e-08, log10_rho: -4.330105, log10_rho_lo: -8.838375, log10_rho_hi: -1.243011 },
-    FreqBin { f_hz: 2.9652396864e-08, log10_rho: -4.253942, log10_rho_lo: -9.057492, log10_rho_hi: -1.235394 },
-    FreqBin { f_hz: 3.1629223321e-08, log10_rho: -3.355449, log10_rho_lo: -11.156964, log10_rho_hi: -1.145545 },
-    FreqBin { f_hz: 3.3606049779e-08, log10_rho: -4.019221, log10_rho_lo: -10.332758, log10_rho_hi: -1.211922 },
-    FreqBin { f_hz: 3.5582876236e-08, log10_rho: -4.218475, log10_rho_lo: -9.979593, log10_rho_hi: -1.231847 },
-    FreqBin { f_hz: 3.7559702694e-08, log10_rho: -4.283774, log10_rho_lo: -9.594341, log10_rho_hi: -1.238377 },
-    FreqBin { f_hz: 3.9536529151e-08, log10_rho: -4.354106, log10_rho_lo: -9.628553, log10_rho_hi: -1.245411 },
-    FreqBin { f_hz: 4.1513355609e-08, log10_rho: -4.358596, log10_rho_lo: -8.971711, log10_rho_hi: -1.245860 },
-    FreqBin { f_hz: 4.3490182066e-08, log10_rho: -4.326085, log10_rho_lo: -9.048752, log10_rho_hi: -1.242608 },
-    FreqBin { f_hz: 4.5467008524e-08, log10_rho: -4.281646, log10_rho_lo: -9.260830, log10_rho_hi: -1.238165 },
-    FreqBin { f_hz: 4.7443834982e-08, log10_rho: -4.320090, log10_rho_lo: -9.515511, log10_rho_hi: -1.242009 },
-    FreqBin { f_hz: 4.9420661439e-08, log10_rho: -4.288476, log10_rho_lo: -10.414934, log10_rho_hi: -1.238848 },
-    FreqBin { f_hz: 5.1397487897e-08, log10_rho: -4.339775, log10_rho_lo: -10.295456, log10_rho_hi: -1.243978 },
-    FreqBin { f_hz: 5.3374314354e-08, log10_rho: -4.454512, log10_rho_lo: -8.581017, log10_rho_hi: -1.255451 },
-    FreqBin { f_hz: 5.5351140812e-08, log10_rho: -4.357294, log10_rho_lo: -8.794067, log10_rho_hi: -1.245729 },
-    FreqBin { f_hz: 5.7327967269e-08, log10_rho: -4.424931, log10_rho_lo: -8.688157, log10_rho_hi: -1.252493 },
-    FreqBin { f_hz: 5.9304793727e-08, log10_rho: -4.274741, log10_rho_lo: -9.584661, log10_rho_hi: -1.237474 },
+    FreqBin {
+        f_hz: 1.9768264576e-09,
+        log10_rho: -3.824356,
+        log10_rho_lo: -12.239962,
+        log10_rho_hi: -1.192436,
+    },
+    FreqBin {
+        f_hz: 3.9536529151e-09,
+        log10_rho: -8.314518,
+        log10_rho_lo: -14.419953,
+        log10_rho_hi: -1.563951,
+    },
+    FreqBin {
+        f_hz: 5.9304793727e-09,
+        log10_rho: -5.686763,
+        log10_rho_lo: -14.198086,
+        log10_rho_hi: -1.378676,
+    },
+    FreqBin {
+        f_hz: 7.9073058303e-09,
+        log10_rho: -4.324256,
+        log10_rho_lo: -12.283386,
+        log10_rho_hi: -1.242426,
+    },
+    FreqBin {
+        f_hz: 9.8841322878e-09,
+        log10_rho: -4.191523,
+        log10_rho_lo: -10.567086,
+        log10_rho_hi: -1.229152,
+    },
+    FreqBin {
+        f_hz: 1.1860958745e-08,
+        log10_rho: -4.139625,
+        log10_rho_lo: -9.835739,
+        log10_rho_hi: -1.223963,
+    },
+    FreqBin {
+        f_hz: 1.3837785203e-08,
+        log10_rho: -4.119372,
+        log10_rho_lo: -9.763380,
+        log10_rho_hi: -1.221937,
+    },
+    FreqBin {
+        f_hz: 1.5814611661e-08,
+        log10_rho: -4.455705,
+        log10_rho_lo: -12.469490,
+        log10_rho_hi: -1.255570,
+    },
+    FreqBin {
+        f_hz: 1.7791438118e-08,
+        log10_rho: -4.284785,
+        log10_rho_lo: -9.058763,
+        log10_rho_hi: -1.238479,
+    },
+    FreqBin {
+        f_hz: 1.9768264576e-08,
+        log10_rho: -4.197701,
+        log10_rho_lo: -9.572466,
+        log10_rho_hi: -1.229770,
+    },
+    FreqBin {
+        f_hz: 2.1745091033e-08,
+        log10_rho: -4.256292,
+        log10_rho_lo: -9.804122,
+        log10_rho_hi: -1.235629,
+    },
+    FreqBin {
+        f_hz: 2.3721917491e-08,
+        log10_rho: -4.297346,
+        log10_rho_lo: -9.526431,
+        log10_rho_hi: -1.239735,
+    },
+    FreqBin {
+        f_hz: 2.5698743948e-08,
+        log10_rho: -4.366242,
+        log10_rho_lo: -8.755714,
+        log10_rho_hi: -1.246624,
+    },
+    FreqBin {
+        f_hz: 2.7675570406e-08,
+        log10_rho: -4.330105,
+        log10_rho_lo: -8.838375,
+        log10_rho_hi: -1.243011,
+    },
+    FreqBin {
+        f_hz: 2.9652396864e-08,
+        log10_rho: -4.253942,
+        log10_rho_lo: -9.057492,
+        log10_rho_hi: -1.235394,
+    },
+    FreqBin {
+        f_hz: 3.1629223321e-08,
+        log10_rho: -3.355449,
+        log10_rho_lo: -11.156964,
+        log10_rho_hi: -1.145545,
+    },
+    FreqBin {
+        f_hz: 3.3606049779e-08,
+        log10_rho: -4.019221,
+        log10_rho_lo: -10.332758,
+        log10_rho_hi: -1.211922,
+    },
+    FreqBin {
+        f_hz: 3.5582876236e-08,
+        log10_rho: -4.218475,
+        log10_rho_lo: -9.979593,
+        log10_rho_hi: -1.231847,
+    },
+    FreqBin {
+        f_hz: 3.7559702694e-08,
+        log10_rho: -4.283774,
+        log10_rho_lo: -9.594341,
+        log10_rho_hi: -1.238377,
+    },
+    FreqBin {
+        f_hz: 3.9536529151e-08,
+        log10_rho: -4.354106,
+        log10_rho_lo: -9.628553,
+        log10_rho_hi: -1.245411,
+    },
+    FreqBin {
+        f_hz: 4.1513355609e-08,
+        log10_rho: -4.358596,
+        log10_rho_lo: -8.971711,
+        log10_rho_hi: -1.245860,
+    },
+    FreqBin {
+        f_hz: 4.3490182066e-08,
+        log10_rho: -4.326085,
+        log10_rho_lo: -9.048752,
+        log10_rho_hi: -1.242608,
+    },
+    FreqBin {
+        f_hz: 4.5467008524e-08,
+        log10_rho: -4.281646,
+        log10_rho_lo: -9.260830,
+        log10_rho_hi: -1.238165,
+    },
+    FreqBin {
+        f_hz: 4.7443834982e-08,
+        log10_rho: -4.320090,
+        log10_rho_lo: -9.515511,
+        log10_rho_hi: -1.242009,
+    },
+    FreqBin {
+        f_hz: 4.9420661439e-08,
+        log10_rho: -4.288476,
+        log10_rho_lo: -10.414934,
+        log10_rho_hi: -1.238848,
+    },
+    FreqBin {
+        f_hz: 5.1397487897e-08,
+        log10_rho: -4.339775,
+        log10_rho_lo: -10.295456,
+        log10_rho_hi: -1.243978,
+    },
+    FreqBin {
+        f_hz: 5.3374314354e-08,
+        log10_rho: -4.454512,
+        log10_rho_lo: -8.581017,
+        log10_rho_hi: -1.255451,
+    },
+    FreqBin {
+        f_hz: 5.5351140812e-08,
+        log10_rho: -4.357294,
+        log10_rho_lo: -8.794067,
+        log10_rho_hi: -1.245729,
+    },
+    FreqBin {
+        f_hz: 5.7327967269e-08,
+        log10_rho: -4.424931,
+        log10_rho_lo: -8.688157,
+        log10_rho_hi: -1.252493,
+    },
+    FreqBin {
+        f_hz: 5.9304793727e-08,
+        log10_rho: -4.274741,
+        log10_rho_lo: -9.584661,
+        log10_rho_hi: -1.237474,
+    },
 ];
 
 // ---------------------------------------------------------------------------
@@ -346,8 +496,9 @@ pub fn fit_baseline(data: &[FreqBin]) -> BaselineFitResult {
         _ => (data[i].f_hz / f_ref).log10(),
     });
 
-    let beta = wls_solve(&design, &y, &weights)
-        .expect("fit_baseline: WLS solver failed (singular normal equations); baseline fit is undefined");
+    let beta = wls_solve(&design, &y, &weights).expect(
+        "fit_baseline: WLS solver failed (singular normal equations); baseline fit is undefined",
+    );
     let y_hat = &design * &beta;
     let cs = chi_squared(&y, &y_hat, &weights);
     let dof = n.saturating_sub(2);
@@ -374,10 +525,7 @@ pub fn fit_baseline(data: &[FreqBin]) -> BaselineFitResult {
 /// Model: log₁₀(ρ_k) = A + γ · log₁₀(f_k / f_ref) + λ_d · Φ_d(k)
 ///
 /// Three free parameters (A, γ, λ_d) fitted via WLS.
-pub fn fit_single_dim(
-    data: &[FreqBin],
-    props: &CdAlgebraicProps,
-) -> CdDimFitResult {
+pub fn fit_single_dim(data: &[FreqBin], props: &CdAlgebraicProps) -> CdDimFitResult {
     let n = data.len();
     let f_ref = F_YR;
 
@@ -519,7 +667,10 @@ mod tests {
     #[test]
     fn data_frequencies_nanohertz_range() {
         for b in &HD_FREE_SPECTRUM {
-            assert!(b.f_hz > 1e-10 && b.f_hz < 1e-7, "Frequency out of nHz range");
+            assert!(
+                b.f_hz > 1e-10 && b.f_hz < 1e-7,
+                "Frequency out of nHz range"
+            );
         }
     }
 
@@ -551,12 +702,11 @@ mod tests {
     fn basis_functions_differ_across_dims() {
         let phi_16 = cd_basis_function(16, 0.5, 30);
         let phi_32 = cd_basis_function(32, 0.5, 30);
-        let diff: f64 = phi_16
-            .iter()
-            .zip(&phi_32)
-            .map(|(a, b)| (a - b).abs())
-            .sum();
-        assert!(diff > 0.01, "Different dims should give different basis functions");
+        let diff: f64 = phi_16.iter().zip(&phi_32).map(|(a, b)| (a - b).abs()).sum();
+        assert!(
+            diff > 0.01,
+            "Different dims should give different basis functions"
+        );
     }
 
     // -- Sigma from CI --------------------------------------------------------
@@ -613,7 +763,10 @@ mod tests {
         let props = compute_cd_algebraic_props(16, 100, 42);
         assert_eq!(props.dim, 16);
         assert_eq!(props.level, 4);
-        assert!(props.stats.mean_assoc_sq > 0.0, "Sedenion should be non-associative");
+        assert!(
+            props.stats.mean_assoc_sq > 0.0,
+            "Sedenion should be non-associative"
+        );
 
         let result = fit_single_dim(&HD_FREE_SPECTRUM, &props);
         assert!(result.chi_sq.is_finite() && result.chi_sq >= 0.0);

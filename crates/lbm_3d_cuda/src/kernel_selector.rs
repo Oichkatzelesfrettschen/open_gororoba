@@ -210,9 +210,16 @@ mod tests {
     #[test]
     fn test_256_cube_fits_in_12gb_at_int8() {
         let sel = select_optimal_kernel((256, 256, 256), PrecisionRequirement::MaxThroughput);
-        assert!(fits_in_vram(&sel, 12 * 1024), "256^3 INT8 A-A must fit in 12 GB");
+        assert!(
+            fits_in_vram(&sel, 12 * 1024),
+            "256^3 INT8 A-A must fit in 12 GB"
+        );
         // 256^3 * 19 * 1 byte = 319 MB distribution
-        assert!(sel.vram_dist_mb < 400, "VRAM should be ~319 MB, got {}", sel.vram_dist_mb);
+        assert!(
+            sel.vram_dist_mb < 400,
+            "VRAM should be ~319 MB, got {}",
+            sel.vram_dist_mb
+        );
     }
 
     #[test]
@@ -220,6 +227,9 @@ mod tests {
         // FP32 ping-pong at 256^3: 19 * 16.7M * 4 * 2 = 2.5 GB
         // But our selector uses A-A (single buffer): 19 * 16.7M * 4 = 1.27 GB
         let sel = select_optimal_kernel((256, 256, 256), PrecisionRequirement::HighAccuracy);
-        assert!(fits_in_vram(&sel, 12 * 1024), "256^3 FP32 A-A should fit in 12 GB");
+        assert!(
+            fits_in_vram(&sel, 12 * 1024),
+            "256^3 FP32 A-A should fit in 12 GB"
+        );
     }
 }

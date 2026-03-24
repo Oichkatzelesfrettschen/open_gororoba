@@ -136,7 +136,10 @@ fn main() -> Result<()> {
 
     let release = load_release(&args.root)?;
     if release.is_empty() {
-        bail!("no timing-release products found under {}", args.root.display());
+        bail!(
+            "no timing-release products found under {}",
+            args.root.display()
+        );
     }
 
     let mut prepared = release
@@ -147,7 +150,10 @@ fn main() -> Result<()> {
 
     let pair_rows = build_pair_rows(&prepared, &args);
 
-    write_pulsar_csv(&args.pulsar_csv_out, prepared.iter().map(|entry| &entry.row))?;
+    write_pulsar_csv(
+        &args.pulsar_csv_out,
+        prepared.iter().map(|entry| &entry.row),
+    )?;
     write_pair_csv(&args.pair_csv_out, pair_rows.iter())?;
     write_report(
         &args.report_out,
@@ -203,8 +209,11 @@ fn prepare_pulsar(data: &PulsarTimingData, args: &Args) -> Result<PreparedPulsar
     }
 
     let dmx_pairs = match_avg_residuals_to_dmx(&data.avg_residuals, &data.dmx);
-    let wb_dm_pairs =
-        match_avg_residuals_to_wb_dm(&data.avg_residuals, &data.wideband_dm, args.match_tolerance_days);
+    let wb_dm_pairs = match_avg_residuals_to_wb_dm(
+        &data.avg_residuals,
+        &data.wideband_dm,
+        args.match_tolerance_days,
+    );
 
     let row = PulsarAuditRow {
         pulsar: data.pulsar.clone(),
@@ -230,7 +239,10 @@ fn prepare_pulsar(data: &PulsarTimingData, args: &Args) -> Result<PreparedPulsar
         avg_abs_res_vs_unc_pearson: pearson_correlation(&abs_residuals, &uncertainties),
         avg_abs_res_vs_unc_spearman: spearman_correlation(&abs_residuals, &uncertainties),
         avg_abs_res_vs_dmx_pairs: dmx_pairs.len(),
-        avg_abs_res_vs_dmx_pearson: pairwise_abs_residual_correlation(&dmx_pairs, pearson_correlation),
+        avg_abs_res_vs_dmx_pearson: pairwise_abs_residual_correlation(
+            &dmx_pairs,
+            pearson_correlation,
+        ),
         avg_abs_res_vs_dmx_spearman: pairwise_abs_residual_correlation(
             &dmx_pairs,
             spearman_correlation,
@@ -284,7 +296,8 @@ fn build_pair_rows(prepared: &[PreparedPulsar], args: &Args) -> Vec<PairAuditRow
                 continue;
             };
             let white_overlap = overlapping_values(&left.white_bins, &right.white_bins);
-            let avg_white_residual_pearson = pearson_correlation(&white_overlap.0, &white_overlap.1);
+            let avg_white_residual_pearson =
+                pearson_correlation(&white_overlap.0, &white_overlap.1);
             let separation_rad = angular_separation(left_vec, right_vec);
             rows.push(PairAuditRow {
                 pulsar_a: left.pulsar.clone(),
@@ -298,13 +311,11 @@ fn build_pair_rows(prepared: &[PreparedPulsar], args: &Args) -> Vec<PairAuditRow
         }
     }
     rows.sort_by(|a, b| {
-        b.overlap_bins
-            .cmp(&a.overlap_bins)
-            .then_with(|| {
-                b.avg_residual_pearson
-                    .abs()
-                    .total_cmp(&a.avg_residual_pearson.abs())
-            })
+        b.overlap_bins.cmp(&a.overlap_bins).then_with(|| {
+            b.avg_residual_pearson
+                .abs()
+                .total_cmp(&a.avg_residual_pearson.abs())
+        })
     });
     rows
 }
@@ -315,10 +326,13 @@ fn match_avg_residuals_to_dmx(
 ) -> Vec<(f64, f64)> {
     let mut pairs = Vec::new();
     for residual in residuals {
-        let matched = dmx_points.iter().find(|point| match (point.window_start_mjd, point.window_end_mjd) {
-            (Some(start), Some(end)) => residual.mjd >= start && residual.mjd <= end,
-            _ => false,
-        });
+        let matched =
+            dmx_points.iter().find(
+                |point| match (point.window_start_mjd, point.window_end_mjd) {
+                    (Some(start), Some(end)) => residual.mjd >= start && residual.mjd <= end,
+                    _ => false,
+                },
+            );
         if let Some(point) = matched {
             pairs.push((residual.residual_us.abs(), point.dmx_value));
         }
@@ -407,7 +421,10 @@ fn overlapping_values(
 
 fn sky_vector(meta: &TimingModelMetadata) -> Option<[f64; 3]> {
     if let (Some(elong_deg), Some(elat_deg)) = (meta.elong_deg, meta.elat_deg) {
-        return Some(ecliptic_to_equatorial_vector(elong_deg.to_radians(), elat_deg.to_radians()));
+        return Some(ecliptic_to_equatorial_vector(
+            elong_deg.to_radians(),
+            elat_deg.to_radians(),
+        ));
     }
     let raj = meta.raj.as_deref()?;
     let decj = meta.decj.as_deref()?;
@@ -472,7 +489,8 @@ fn hellings_downs(separation_rad: f64) -> f64 {
 }
 
 fn mean_of_pairs(series: &[(f64, f64)]) -> Option<f64> {
-    (!series.is_empty()).then(|| series.iter().map(|(_, value)| *value).sum::<f64>() / series.len() as f64)
+    (!series.is_empty())
+        .then(|| series.iter().map(|(_, value)| *value).sum::<f64>() / series.len() as f64)
 }
 
 fn stddev_of_pairs(series: &[(f64, f64)]) -> Option<f64> {
@@ -563,10 +581,7 @@ fn rank_values(values: &[f64]) -> Option<Vec<f64>> {
     Some(ranks)
 }
 
-fn write_pulsar_csv<'a>(
-    path: &Path,
-    rows: impl Iterator<Item = &'a PulsarAuditRow>,
-) -> Result<()> {
+fn write_pulsar_csv<'a>(path: &Path, rows: impl Iterator<Item = &'a PulsarAuditRow>) -> Result<()> {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).with_context(|| format!("create {}", parent.display()))?;
     }
@@ -700,27 +715,48 @@ fn write_report(
 
     let mut out = String::new();
     let _ = writeln!(out, "root = {:?}", root.display().to_string());
-    let _ = writeln!(out, "pulsar_csv = {:?}", pulsar_csv_out.display().to_string());
+    let _ = writeln!(
+        out,
+        "pulsar_csv = {:?}",
+        pulsar_csv_out.display().to_string()
+    );
     let _ = writeln!(out, "pair_csv = {:?}", pair_csv_out.display().to_string());
     let _ = writeln!(out, "pulsar_count = {}", prepared.len());
     let _ = writeln!(out, "pair_count = {}", pair_rows.len());
-    let _ = writeln!(out, "match_tolerance_days = {:.3}", args.match_tolerance_days);
+    let _ = writeln!(
+        out,
+        "match_tolerance_days = {:.3}",
+        args.match_tolerance_days
+    );
     let _ = writeln!(out, "pair_bin_days = {:.3}", args.pair_bin_days);
-    let _ = writeln!(out, "min_pair_overlap_bins = {}", args.min_pair_overlap_bins);
+    let _ = writeln!(
+        out,
+        "min_pair_overlap_bins = {}",
+        args.min_pair_overlap_bins
+    );
     let _ = writeln!(
         out,
         "sky_ready_count = {}",
-        prepared.iter().filter(|entry| entry.sky_vector.is_some()).count()
+        prepared
+            .iter()
+            .filter(|entry| entry.sky_vector.is_some())
+            .count()
     );
     let _ = writeln!(
         out,
         "dmx_ready_count = {}",
-        prepared.iter().filter(|entry| entry.row.dmx_count > 0).count()
+        prepared
+            .iter()
+            .filter(|entry| entry.row.dmx_count > 0)
+            .count()
     );
     let _ = writeln!(
         out,
         "wideband_dm_ready_count = {}",
-        prepared.iter().filter(|entry| entry.row.wb_dm_count > 0).count()
+        prepared
+            .iter()
+            .filter(|entry| entry.row.wb_dm_count > 0)
+            .count()
     );
     let _ = writeln!(
         out,
@@ -786,7 +822,11 @@ fn write_report(
         let _ = writeln!(out, "overlap_bins = {}", pair.overlap_bins);
         let _ = writeln!(out, "separation_deg = {:.12}", pair.separation_deg);
         let _ = writeln!(out, "hellings_downs = {:.12}", pair.hellings_downs);
-        let _ = writeln!(out, "avg_residual_pearson = {:.12}", pair.avg_residual_pearson);
+        let _ = writeln!(
+            out,
+            "avg_residual_pearson = {:.12}",
+            pair.avg_residual_pearson
+        );
     }
     if let Some(pair) = top_pair_corr {
         let _ = writeln!(out);
@@ -796,15 +836,15 @@ fn write_report(
         let _ = writeln!(out, "overlap_bins = {}", pair.overlap_bins);
         let _ = writeln!(out, "separation_deg = {:.12}", pair.separation_deg);
         let _ = writeln!(out, "hellings_downs = {:.12}", pair.hellings_downs);
-        let _ = writeln!(out, "avg_residual_pearson = {:.12}", pair.avg_residual_pearson);
+        let _ = writeln!(
+            out,
+            "avg_residual_pearson = {:.12}",
+            pair.avg_residual_pearson
+        );
     }
     let _ = writeln!(out);
     let _ = writeln!(out, "[timing_model_refit_scope]");
-    let _ = writeln!(
-        out,
-        "status = {:?}",
-        "scoped_only_not_recomputed_in_repo"
-    );
+    let _ = writeln!(out, "status = {:?}", "scoped_only_not_recomputed_in_repo");
     let _ = writeln!(
         out,
         "note = {:?}",
@@ -819,7 +859,9 @@ fn write_report(
 }
 
 fn format_opt(value: Option<f64>) -> String {
-    value.map(|number| format!("{number:.12}")).unwrap_or_default()
+    value
+        .map(|number| format!("{number:.12}"))
+        .unwrap_or_default()
 }
 
 fn update_min(slot: &mut Option<f64>, value: f64) {

@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 
 use cd_kernel::cayley_dickson::{
@@ -20,7 +20,12 @@ fn bench_quaternion_multiply(c: &mut Criterion) {
         bench.iter(|| black_box(cd_multiply_simd(black_box(&a_slice), black_box(&b_slice))))
     });
     group.bench_function("flat_scalar", |bench| {
-        bench.iter(|| black_box(quaternion_multiply_scalar_flat(black_box(&a), black_box(&b))))
+        bench.iter(|| {
+            black_box(quaternion_multiply_scalar_flat(
+                black_box(&a),
+                black_box(&b),
+            ))
+        })
     });
     group.bench_function("flat_avx2", |bench| {
         bench.iter(|| black_box(quaternion_multiply_flat(black_box(&a), black_box(&b))))
@@ -52,12 +57,10 @@ fn bench_octonion_multiply(c: &mut Criterion) {
 
 fn bench_sedenion_multiply(c: &mut Criterion) {
     let a: [f64; 16] = [
-        1.0, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6, 0.7,
-        -0.8, 0.9, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6,
+        1.0, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6, 0.7, -0.8, 0.9, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6,
     ];
     let b: [f64; 16] = [
-        0.5, -0.1, 0.2, -0.3, 0.4, 0.5, -0.6, 0.7,
-        0.8, -0.9, 0.1, 0.2, -0.3, 0.4, 0.5, -0.6,
+        0.5, -0.1, 0.2, -0.3, 0.4, 0.5, -0.6, 0.7, 0.8, -0.9, 0.1, 0.2, -0.3, 0.4, 0.5, -0.6,
     ];
     let a_slice: Vec<f64> = a.to_vec();
     let b_slice: Vec<f64> = b.to_vec();
@@ -104,7 +107,9 @@ fn bench_full_cd_tower(c: &mut Criterion) {
     group.sample_size(10); // fewer samples for large dims
     group.measurement_time(std::time::Duration::from_secs(5));
 
-    for dim in [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384] {
+    for dim in [
+        4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384,
+    ] {
         let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.123).sin()).collect();
         let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.456).cos()).collect();
         group.bench_with_input(BenchmarkId::new("flat", dim), &dim, |bench, &d| {

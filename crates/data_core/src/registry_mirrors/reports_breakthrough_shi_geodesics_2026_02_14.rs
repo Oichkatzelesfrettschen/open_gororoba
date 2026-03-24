@@ -25,7 +25,7 @@
 //! 1. **Embedding:** Local metric components scale the signs of the Sedenion basis products.
 //! 2. **Coherence Evaluation:** Compute the ratio of `Vector` to `Scalar` outputs of the trilinear M3 operation over the Fano-plane triples.
 //! 3. **Homotopy Force:** Calculate the gradient $\nabla \mathcal{F}$ of the algebraic frustration $\mathcal{F}$.
-//! 4. **Integration Step:** 
+//! 4. **Integration Step:**
 //! >  $$\vec{v}_{new} = \vec{v} - \alpha \nabla \mathcal{F}$$
 //! >  where $\alpha$ is the homotopy coupling constant.
 //!

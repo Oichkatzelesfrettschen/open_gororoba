@@ -236,9 +236,7 @@ fn load_owner_map(repo_root: &Path) -> Result<toml::Value> {
 }
 
 fn table_str<'a>(row: &'a toml::Value, key: &str) -> &'a str {
-    row.get(key)
-        .and_then(toml::Value::as_str)
-        .unwrap_or("")
+    row.get(key).and_then(toml::Value::as_str).unwrap_or("")
 }
 
 fn table_array<'a>(value: &'a toml::Value, key: &str) -> &'a [toml::Value] {
@@ -274,9 +272,7 @@ fn verify_inventory_toml_first(repo_root: &Path) -> Result<()> {
         .collect();
 
     // Walk disk.
-    let on_disk: BTreeSet<String> = list_markdown_files(repo_root)?
-        .into_iter()
-        .collect();
+    let on_disk: BTreeSet<String> = list_markdown_files(repo_root)?.into_iter().collect();
 
     let mut failures = Vec::new();
 
@@ -301,7 +297,11 @@ fn verify_inventory_toml_first(repo_root: &Path) -> Result<()> {
     }
 
     println!("PASS: markdown inventory toml-first");
-    println!("  registered={} on_disk={}", registered.len(), on_disk.len());
+    println!(
+        "  registered={} on_disk={}",
+        registered.len(),
+        on_disk.len()
+    );
     Ok(())
 }
 
@@ -361,7 +361,9 @@ fn verify_owner_map(repo_root: &Path) -> Result<()> {
             failures.push(format!("owner[{idx}]: missing 'path' field"));
         }
         if owner_group.is_empty() {
-            failures.push(format!("owner[{idx}] ({path}): missing 'owner_group' field"));
+            failures.push(format!(
+                "owner[{idx}] ({path}): missing 'owner_group' field"
+            ));
         }
         if !valid_statuses.contains(removal_status) {
             failures.push(format!(

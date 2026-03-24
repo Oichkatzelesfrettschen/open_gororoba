@@ -19,7 +19,11 @@ use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 /// This is the SAME formula as f64 CD multiplication, but with exact
 /// SurrealDyadic arithmetic instead of floating-point.
 #[allow(clippy::needless_range_loop)]
-pub fn surreal_cd_multiply(dim: usize, a: &[SurrealDyadic], b: &[SurrealDyadic]) -> Vec<SurrealDyadic> {
+pub fn surreal_cd_multiply(
+    dim: usize,
+    a: &[SurrealDyadic],
+    b: &[SurrealDyadic],
+) -> Vec<SurrealDyadic> {
     assert_eq!(a.len(), dim);
     assert_eq!(b.len(), dim);
 
@@ -28,9 +32,13 @@ pub fn surreal_cd_multiply(dim: usize, a: &[SurrealDyadic], b: &[SurrealDyadic])
     // Indices p, q are used for XOR (p ^ q) and sign table lookup,
     // not just array indexing -- needless_range_loop doesn't apply.
     for p in 0..dim {
-        if a[p].is_zero() { continue; }
+        if a[p].is_zero() {
+            continue;
+        }
         for q in 0..dim {
-            if b[q].is_zero() { continue; }
+            if b[q].is_zero() {
+                continue;
+            }
             let sign = cd_basis_mul_sign_iter(dim, p, q);
             let target = p ^ q;
             let coeff = a[p] * b[q];
@@ -78,8 +86,10 @@ mod tests {
         b[4] = one;
         b[15] = neg_one;
 
-        assert!(surreal_sedenion_zd_check(&a, &b),
-            "Standard ZD witness should persist over surreal coefficients");
+        assert!(
+            surreal_sedenion_zd_check(&a, &b),
+            "Standard ZD witness should persist over surreal coefficients"
+        );
 
         println!("PASS: (e_1 + e_10)(e_4 - e_15) = 0 over No");
     }
@@ -89,7 +99,7 @@ mod tests {
     /// for any surreal alpha, beta (by bilinearity).
     #[test]
     fn test_surreal_zd_persistence_scaled() {
-        let half = SurrealDyadic::new(1, 1);  // 1/2
+        let half = SurrealDyadic::new(1, 1); // 1/2
         let three = SurrealDyadic::from_int(3);
 
         // a = (1/2)*e_1 + (1/2)*e_10
@@ -102,8 +112,10 @@ mod tests {
         b[4] = three;
         b[15] = -three;
 
-        assert!(surreal_sedenion_zd_check(&a, &b),
-            "Scaled ZD should persist: (1/2)(e_1+e_10) * 3(e_4-e_15) = 0");
+        assert!(
+            surreal_sedenion_zd_check(&a, &b),
+            "Scaled ZD should persist: (1/2)(e_1+e_10) * 3(e_4-e_15) = 0"
+        );
 
         println!("PASS: (1/2)(e_1 + e_10) * 3(e_4 - e_15) = 0 over No");
     }
@@ -144,8 +156,7 @@ mod tests {
         // The ZD condition (alpha*e_i + beta*e_j)(gamma*e_k - delta*e_l) = 0
         // requires alpha*gamma = beta*delta (from the sign table structure).
         // Here 2*1 != 5*1, so it should NOT be a ZD.
-        assert!(!is_zd,
-            "Mixed scaling should break ZD: 2*1 != 5*1");
+        assert!(!is_zd, "Mixed scaling should break ZD: 2*1 != 5*1");
         println!("PASS: Mixed scaling correctly breaks ZD condition");
     }
 
@@ -169,14 +180,17 @@ mod tests {
 
         let product = surreal_cd_multiply(16, &a, &b);
 
-        let max_birthday: u32 = product.iter()
-            .map(|c| c.birthday())
-            .max()
-            .unwrap_or(0);
+        let max_birthday: u32 = product.iter().map(|c| c.birthday()).max().unwrap_or(0);
 
         println!("Birthday filtration test:");
-        println!("  a: max birthday = {}", a.iter().map(|c| c.birthday()).max().unwrap_or(0));
-        println!("  b: max birthday = {}", b.iter().map(|c| c.birthday()).max().unwrap_or(0));
+        println!(
+            "  a: max birthday = {}",
+            a.iter().map(|c| c.birthday()).max().unwrap_or(0)
+        );
+        println!(
+            "  b: max birthday = {}",
+            b.iter().map(|c| c.birthday()).max().unwrap_or(0)
+        );
         println!("  a*b: max birthday = {}", max_birthday);
 
         // Product birthday should be bounded by sum of input birthdays
@@ -287,16 +301,18 @@ mod tests {
 
         // Standard CD (gamma = -1): (1 + e_1)(1 - e_1) = 2
         let mut a = [SurrealDyadic::zero(); 2];
-        a[0] = one;  // 1
-        a[1] = one;  // + e_1
+        a[0] = one; // 1
+        a[1] = one; // + e_1
 
         let mut b = [SurrealDyadic::zero(); 2];
-        b[0] = one;   // 1
-        b[1] = -one;  // - e_1
+        b[0] = one; // 1
+        b[1] = -one; // - e_1
 
         let product = surreal_cd_multiply(2, &a, &b);
-        println!("Standard CD (gamma=-1): (1+e_1)(1-e_1) = {} + {}*e_1",
-            product[0], product[1]);
+        println!(
+            "Standard CD (gamma=-1): (1+e_1)(1-e_1) = {} + {}*e_1",
+            product[0], product[1]
+        );
         assert_eq!(product[0], two, "Should be 2 (= 1 - (-1))");
         assert!(product[1].is_zero(), "e_1 component should be 0");
 
@@ -358,8 +374,13 @@ mod tests {
             let is_zd = product.iter().all(|c| c.is_zero());
             let max_bday = product.iter().map(|c| c.birthday()).max().unwrap_or(0);
 
-            println!("  scale={:>25} (bday {:>3}): is_zd={}, product_max_bday={}",
-                label, scale.birthday(), is_zd, max_bday);
+            println!(
+                "  scale={:>25} (bday {:>3}): is_zd={}, product_max_bday={}",
+                label,
+                scale.birthday(),
+                is_zd,
+                max_bday
+            );
             assert!(is_zd, "ZD should persist at scale {}", label);
         }
 
@@ -368,8 +389,8 @@ mod tests {
         let omega = SurrealDyadic::new(1_i128 << 30, 0);
 
         let mut a_mixed = [SurrealDyadic::zero(); 16];
-        a_mixed[1] = epsilon;      // infinitesimal * e_1
-        a_mixed[10] = omega;       // large * e_10
+        a_mixed[1] = epsilon; // infinitesimal * e_1
+        a_mixed[10] = omega; // large * e_10
 
         let mut b_unit = [SurrealDyadic::zero(); 16];
         b_unit[4] = SurrealDyadic::one();
@@ -395,8 +416,10 @@ mod tests {
         // (alpha*e_1 + beta*e_10)(gamma*e_4 - delta*e_15).
         // Here alpha=epsilon, beta=omega, gamma=1, delta=1.
         // epsilon*1 != omega*1, so NOT a ZD.
-        assert!(!mixed_is_zd,
-            "Mixed-scale should break ZD: epsilon != omega");
+        assert!(
+            !mixed_is_zd,
+            "Mixed-scale should break ZD: epsilon != omega"
+        );
         println!("    CORRECT: mixed Archimedean classes break ZD");
         println!("    (ZD requires equal-scale coefficients: alpha*delta = beta*gamma)");
     }
@@ -422,9 +445,9 @@ mod tests {
         //   Gen 1 (electron): epsilon = 1/2^10  (small)
         //   Gen 2 (muon):     mu_coeff = 1       (unit)
         //   Gen 3 (tau):      tau_coeff = 2^5     (large)
-        let gen1 = SurrealDyadic::new(1, 10);  // 1/1024
+        let gen1 = SurrealDyadic::new(1, 10); // 1/1024
         let gen2 = SurrealDyadic::one();
-        let gen3 = SurrealDyadic::new(32, 0);  // 32
+        let gen3 = SurrealDyadic::new(32, 0); // 32
 
         println!("  Generation coefficients:");
         println!("    Gen 1 (e):   {} (birthday {})", gen1, gen1.birthday());
@@ -567,9 +590,12 @@ mod tests {
 
         // Compare with f64 computation
         use cd_kernel::cayley_dickson::cd_multiply;
-        let mut e1_f = [0.0_f64; 16]; e1_f[1] = 1.0;
-        let mut e4_f = [0.0_f64; 16]; e4_f[4] = 1.0;
-        let mut e6_f = [0.0_f64; 16]; e6_f[6] = 1.0;
+        let mut e1_f = [0.0_f64; 16];
+        e1_f[1] = 1.0;
+        let mut e4_f = [0.0_f64; 16];
+        e4_f[4] = 1.0;
+        let mut e6_f = [0.0_f64; 16];
+        e6_f[6] = 1.0;
 
         let e1e4_f = cd_multiply(&e1_f, &e4_f);
         let lhs_f = cd_multiply(&e1e4_f, &e6_f);
@@ -588,9 +614,13 @@ mod tests {
         for (idx, coeff) in &surreal_assoc {
             let f64_val = lhs_f[*idx] - rhs_f[*idx];
             let surreal_val = coeff.to_f64();
-            assert!((f64_val - surreal_val).abs() < 1e-12,
+            assert!(
+                (f64_val - surreal_val).abs() < 1e-12,
                 "Surreal and f64 associator disagree at e_{}: surreal={}, f64={}",
-                idx, surreal_val, f64_val);
+                idx,
+                surreal_val,
+                f64_val
+            );
         }
 
         println!("\n  VERIFIED: surreal and f64 associators agree exactly.");
@@ -660,8 +690,14 @@ mod tests {
         println!("    ln(m_tau/m_mu) = {:.4}", ln_tau_mu);
 
         println!("\n  Class separation ratio:");
-        println!("    (c3-c1)/(c2-c1) = ln(tau/e)/ln(mu/e) = {:.4}", class_ratio_tau_mu_over_mu_e);
-        println!("    (c3-c2)/(c2-c1) = ln(tau/mu)/ln(mu/e) = {:.4}", ln_tau_mu / ln_mu_e);
+        println!(
+            "    (c3-c1)/(c2-c1) = ln(tau/e)/ln(mu/e) = {:.4}",
+            class_ratio_tau_mu_over_mu_e
+        );
+        println!(
+            "    (c3-c2)/(c2-c1) = ln(tau/mu)/ln(mu/e) = {:.4}",
+            ln_tau_mu / ln_mu_e
+        );
 
         // The class ratio 1.529 means the tau-electron separation is
         // 1.529 times the muon-electron separation in "Archimedean distance."
@@ -675,12 +711,18 @@ mod tests {
         println!("\n  Quark sector comparison:");
         println!("    m_c/m_u = {:.0}", m_c_over_m_u);
         println!("    m_t/m_u = {:.0}", m_t_over_m_u);
-        println!("    quark class ratio (c3-c1)/(c2-c1) = {:.4}", quark_class_ratio);
+        println!(
+            "    quark class ratio (c3-c1)/(c2-c1) = {:.4}",
+            quark_class_ratio
+        );
 
         // If the Archimedean class structure is UNIVERSAL (same for
         // leptons and quarks), the class ratio should be the same.
         let ratio_diff = (class_ratio_tau_mu_over_mu_e - quark_class_ratio).abs();
-        println!("\n  Lepton class ratio:  {:.4}", class_ratio_tau_mu_over_mu_e);
+        println!(
+            "\n  Lepton class ratio:  {:.4}",
+            class_ratio_tau_mu_over_mu_e
+        );
         println!("  Quark class ratio:   {:.4}", quark_class_ratio);
         println!("  Difference:          {:.4}", ratio_diff);
 
@@ -688,7 +730,10 @@ mod tests {
             println!("\n  MATCH: lepton and quark class ratios agree to < 0.1!");
             println!("  This supports UNIVERSAL Archimedean class structure.");
         } else {
-            println!("\n  MISMATCH: lepton and quark class ratios differ by {:.2}", ratio_diff);
+            println!(
+                "\n  MISMATCH: lepton and quark class ratios differ by {:.2}",
+                ratio_diff
+            );
             println!("  The Archimedean class structure is SECTOR-DEPENDENT,");
             println!("  not universal. This is consistent with different");
             println!("  3-blade triples for leptons vs quarks.");
@@ -713,7 +758,9 @@ mod tests {
         let mut assessors: Vec<(usize, usize)> = Vec::new();
         for low in 1..=7_usize {
             for high in 9..=15_usize {
-                if high == low + 8 { continue; }
+                if high == low + 8 {
+                    continue;
+                }
                 assessors.push((low, high));
             }
         }
@@ -721,18 +768,24 @@ mod tests {
 
         // For each assessor, compute its "sign product profile":
         // profile[k] = sign(low, k) * sign(high, k) for k = 1..15
-        let profiles: Vec<Vec<i32>> = assessors.iter().map(|&(low, high)| {
-            (1..16_usize).map(|k| {
-                cd_basis_mul_sign_iter(16, low, k) * cd_basis_mul_sign_iter(16, high, k)
-            }).collect()
-        }).collect();
+        let profiles: Vec<Vec<i32>> = assessors
+            .iter()
+            .map(|&(low, high)| {
+                (1..16_usize)
+                    .map(|k| {
+                        cd_basis_mul_sign_iter(16, low, k) * cd_basis_mul_sign_iter(16, high, k)
+                    })
+                    .collect()
+            })
+            .collect();
 
         // Compute 42x42 inner product matrix (Gram matrix of sign profiles)
         let n = 42;
         let mut gram = vec![vec![0_i32; n]; n];
         for i in 0..n {
             for j in 0..n {
-                gram[i][j] = profiles[i].iter()
+                gram[i][j] = profiles[i]
+                    .iter()
                     .zip(profiles[j].iter())
                     .map(|(&a, &b)| a * b)
                     .sum();
@@ -761,14 +814,20 @@ mod tests {
             clusters.entry(row).or_default().push(i);
         }
 
-        println!("\n  Number of distinct Gram row patterns: {}", clusters.len());
+        println!(
+            "\n  Number of distinct Gram row patterns: {}",
+            clusters.len()
+        );
         println!("  Cluster sizes:");
         let mut sizes: Vec<usize> = clusters.values().map(|v| v.len()).collect();
         sizes.sort_unstable();
         sizes.reverse();
         for (idx, size) in sizes.iter().enumerate() {
             println!("    Cluster {}: {} assessors", idx, size);
-            if idx >= 9 { println!("    ... ({} more)", sizes.len() - 10); break; }
+            if idx >= 9 {
+                println!("    ... ({} more)", sizes.len() - 10);
+                break;
+            }
         }
 
         // The key question: do we get exactly 3 large clusters (generations)?
@@ -778,11 +837,17 @@ mod tests {
         if large_clusters == 3 {
             println!("  *** 3-GENERATION CLUSTERING DETECTED ***");
         } else if large_clusters <= 6 {
-            println!("  Partial clustering: {} groups (not exactly 3).", large_clusters);
+            println!(
+                "  Partial clustering: {} groups (not exactly 3).",
+                large_clusters
+            );
             println!("  The sign profile structure is more granular than");
             println!("  3 clean generations.");
         } else {
-            println!("  No clear clustering: {} distinct patterns.", clusters.len());
+            println!(
+                "  No clear clustering: {} distinct patterns.",
+                clusters.len()
+            );
         }
     }
 
@@ -835,11 +900,13 @@ mod tests {
             // Compute eigenvalues via characteristic polynomial
             // For 3x3: lambda^3 - tr*lambda^2 + s2*lambda - det = 0
             let _tr = m[0][0] + m[1][1] + m[2][2];
-            let _s2 = m[0][0]*m[1][1] + m[0][0]*m[2][2] + m[1][1]*m[2][2]
-                    - m[0][1]*m[0][1] - m[0][2]*m[0][2] - m[1][2]*m[1][2];
-            let _det = m[0][0]*(m[1][1]*m[2][2] - m[1][2]*m[1][2])
-                    - m[0][1]*(m[0][1]*m[2][2] - m[1][2]*m[0][2])
-                    + m[0][2]*(m[0][1]*m[1][2] - m[1][1]*m[0][2]);
+            let _s2 = m[0][0] * m[1][1] + m[0][0] * m[2][2] + m[1][1] * m[2][2]
+                - m[0][1] * m[0][1]
+                - m[0][2] * m[0][2]
+                - m[1][2] * m[1][2];
+            let _det = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[1][2])
+                - m[0][1] * (m[0][1] * m[2][2] - m[1][2] * m[0][2])
+                + m[0][2] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
 
             // Eigenvalues via Cardano (using existing x87_cubic_roots or Newton)
             // For simplicity, use the trace/det invariants
@@ -847,7 +914,8 @@ mod tests {
                 omega_val / unit_val
             } else {
                 // Perturbative estimate: largest eigenvalue ~ omega + delta^2/omega
-                let lambda3_approx = omega_val + delta_23 * delta_23 / (omega_val - unit_val)
+                let lambda3_approx = omega_val
+                    + delta_23 * delta_23 / (omega_val - unit_val)
                     + delta_13 * delta_13 / (omega_val - eps_val);
                 let lambda2_approx = unit_val + delta_12 * delta_12 / (unit_val - eps_val)
                     - delta_23 * delta_23 / (omega_val - unit_val);
@@ -856,8 +924,10 @@ mod tests {
 
             let penalty = ((ratio_32 / (omega_val / unit_val)) - 1.0).abs() * 100.0;
 
-            println!("  coupling={:.2}: delta_12={:.4e}, delta_23={:.4e}, ratio_32={:.3}, penalty={:.2}%",
-                coupling_frac, delta_12, delta_23, ratio_32, penalty);
+            println!(
+                "  coupling={:.2}: delta_12={:.4e}, delta_23={:.4e}, ratio_32={:.3}, penalty={:.2}%",
+                coupling_frac, delta_12, delta_23, ratio_32, penalty
+            );
         }
 
         println!("\n  CONCLUSION: Cross-class coupling at 10% of geometric mean");
@@ -884,16 +954,22 @@ mod tests {
     fn test_assessor_subalgebra_classification() {
         println!("--- S6: ASSESSOR SUBALGEBRA CLASSIFICATION ---\n");
 
-        let o1: std::collections::HashSet<usize> = [0,1,4,5,8,9,12,13].into();
-        let o2: std::collections::HashSet<usize> = [0,2,4,6,8,10,12,14].into();
-        let o3: std::collections::HashSet<usize> = [0,3,4,7,8,11,12,15].into();
+        let o1: std::collections::HashSet<usize> = [0, 1, 4, 5, 8, 9, 12, 13].into();
+        let o2: std::collections::HashSet<usize> = [0, 2, 4, 6, 8, 10, 12, 14].into();
+        let o3: std::collections::HashSet<usize> = [0, 3, 4, 7, 8, 11, 12, 15].into();
 
         // For each index 0..15, determine which subalgebras it belongs to
         let membership = |idx: usize| -> Vec<usize> {
             let mut m = Vec::new();
-            if o1.contains(&idx) { m.push(1); }
-            if o2.contains(&idx) { m.push(2); }
-            if o3.contains(&idx) { m.push(3); }
+            if o1.contains(&idx) {
+                m.push(1);
+            }
+            if o2.contains(&idx) {
+                m.push(2);
+            }
+            if o3.contains(&idx) {
+                m.push(3);
+            }
             m
         };
 
@@ -901,7 +977,9 @@ mod tests {
         let mut assessors: Vec<(usize, usize)> = Vec::new();
         for low in 1..=7_usize {
             for high in 9..=15_usize {
-                if high == low + 8 { continue; }
+                if high == low + 8 {
+                    continue;
+                }
                 assessors.push((low, high));
             }
         }
@@ -930,8 +1008,10 @@ mod tests {
 
         println!("\n  Classification summary:");
         println!("  {} distinct types", classification.len());
-        let mut sizes: Vec<(String, usize)> = classification.iter()
-            .map(|(k, v)| (k.clone(), v.len())).collect();
+        let mut sizes: Vec<(String, usize)> = classification
+            .iter()
+            .map(|(k, v)| (k.clone(), v.len()))
+            .collect();
         sizes.sort_by(|a, b| b.1.cmp(&a.1));
         for (key, size) in &sizes {
             println!("    {}: {} assessors", key, size);
@@ -1008,8 +1088,8 @@ mod tests {
         // Count Fano-like triples at dim=32
         let mut fano_count_32 = 0_usize;
         for i in 1..32_usize {
-            for j in (i+1)..32 {
-                for k in (j+1)..32 {
+            for j in (i + 1)..32 {
+                for k in (j + 1)..32 {
                     if i ^ j ^ k == 0 {
                         fano_count_32 += 1;
                     }
@@ -1020,8 +1100,8 @@ mod tests {
         // At dim=16: C(15,3) with XOR=0 gives 35 unordered Fano triples
         let mut fano_count_16 = 0_usize;
         for i in 1..16_usize {
-            for j in (i+1)..16 {
-                for k in (j+1)..16 {
+            for j in (i + 1)..16 {
+                for k in (j + 1)..16 {
                     if i ^ j ^ k == 0 {
                         fano_count_16 += 1;
                     }
@@ -1032,8 +1112,8 @@ mod tests {
         // At dim=8: C(7,3) with XOR=0 gives 7 Fano lines
         let mut fano_count_8 = 0_usize;
         for i in 1..8_usize {
-            for j in (i+1)..8 {
-                for k in (j+1)..8 {
+            for j in (i + 1)..8 {
+                for k in (j + 1)..8 {
                     if i ^ j ^ k == 0 {
                         fano_count_8 += 1;
                     }
@@ -1068,21 +1148,29 @@ mod tests {
         // Verify: how many indices are O_1-exclusive at dim=32?
         // Lower half: {1,5,9,13} (same as dim=16)
         // Upper half: {17,21,25,29} (= lower + 16)
-        let o1_32: Vec<usize> = vec![1,5,9,13,17,21,25,29];
-        let o2_32: Vec<usize> = vec![2,6,10,14,18,22,26,30];
-        let o3_32: Vec<usize> = vec![3,7,11,15,19,23,27,31];
-        let shared_32: Vec<usize> = vec![0,4,8,12,16,20,24,28];
+        let o1_32: Vec<usize> = vec![1, 5, 9, 13, 17, 21, 25, 29];
+        let o2_32: Vec<usize> = vec![2, 6, 10, 14, 18, 22, 26, 30];
+        let o3_32: Vec<usize> = vec![3, 7, 11, 15, 19, 23, 27, 31];
+        let shared_32: Vec<usize> = vec![0, 4, 8, 12, 16, 20, 24, 28];
 
         println!("\n  Pathion (32D) subalgebra membership:");
         println!("    O_1: {:?} ({} indices)", o1_32, o1_32.len());
         println!("    O_2: {:?} ({} indices)", o2_32, o2_32.len());
         println!("    O_3: {:?} ({} indices)", o3_32, o3_32.len());
         println!("    Shared: {:?} ({} indices)", shared_32, shared_32.len());
-        println!("    Total: {} + {} + {} + {} = {}",
-            o1_32.len(), o2_32.len(), o3_32.len(), shared_32.len(),
-            o1_32.len() + o2_32.len() + o3_32.len() + shared_32.len());
+        println!(
+            "    Total: {} + {} + {} + {} = {}",
+            o1_32.len(),
+            o2_32.len(),
+            o3_32.len(),
+            shared_32.len(),
+            o1_32.len() + o2_32.len() + o3_32.len() + shared_32.len()
+        );
 
-        assert_eq!(o1_32.len() + o2_32.len() + o3_32.len() + shared_32.len(), 32);
+        assert_eq!(
+            o1_32.len() + o2_32.len() + o3_32.len() + shared_32.len(),
+            32
+        );
         println!("\n  RESULT: 3 generations PERSIST at dim=32.");
         println!("  Each generation has 8 exclusive indices (4 lower + 4 upper).");
         println!("  The shared quaternionic core also doubles (4 + 4 = 8).");
@@ -1111,15 +1199,17 @@ mod tests {
         // Reactor (gen 1-3): low in 4..7 (O1-only) AND high in 12..15 (O3)
         // Atmospheric (gen 2-3): low in 1..3 (shared) AND high in 9..11 (O2)
 
-        let o1_excl: std::collections::HashSet<usize> = [1,5,9,13].into();
-        let o2_excl: std::collections::HashSet<usize> = [2,6,10,14].into();
-        let o3_excl: std::collections::HashSet<usize> = [3,7,11,15].into();
-        let shared: std::collections::HashSet<usize> = [0,4,8,12].into();
+        let o1_excl: std::collections::HashSet<usize> = [1, 5, 9, 13].into();
+        let o2_excl: std::collections::HashSet<usize> = [2, 6, 10, 14].into();
+        let o3_excl: std::collections::HashSet<usize> = [3, 7, 11, 15].into();
+        let shared: std::collections::HashSet<usize> = [0, 4, 8, 12].into();
 
         let mut assessors: Vec<(usize, usize)> = Vec::new();
         for low in 1..=7_usize {
             for high in 9..=15_usize {
-                if high == low + 8 { continue; }
+                if high == low + 8 {
+                    continue;
+                }
                 assessors.push((low, high));
             }
         }
@@ -1130,16 +1220,25 @@ mod tests {
         let mut atmo_count = 0;
         let mut unclassified = 0;
 
-        let mut solar_types: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
-        let mut reactor_types: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
-        let mut atmo_types: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
+        let mut solar_types: std::collections::BTreeMap<String, usize> =
+            std::collections::BTreeMap::new();
+        let mut reactor_types: std::collections::BTreeMap<String, usize> =
+            std::collections::BTreeMap::new();
+        let mut atmo_types: std::collections::BTreeMap<String, usize> =
+            std::collections::BTreeMap::new();
 
         let sub_label = |idx: usize| -> &'static str {
-            if o1_excl.contains(&idx) { "O1" }
-            else if o2_excl.contains(&idx) { "O2" }
-            else if o3_excl.contains(&idx) { "O3" }
-            else if shared.contains(&idx) { "Sh" }
-            else { "??" }
+            if o1_excl.contains(&idx) {
+                "O1"
+            } else if o2_excl.contains(&idx) {
+                "O2"
+            } else if o3_excl.contains(&idx) {
+                "O3"
+            } else if shared.contains(&idx) {
+                "Sh"
+            } else {
+                "??"
+            }
         };
 
         for &(low, high) in &assessors {
@@ -1166,13 +1265,22 @@ mod tests {
 
         println!("  AssessorToFlavorMap partition:");
         println!("    Solar (gen 1-2):      {} assessors", solar_count);
-        for (t, c) in &solar_types { println!("      {}: {}", t, c); }
+        for (t, c) in &solar_types {
+            println!("      {}: {}", t, c);
+        }
         println!("    Reactor (gen 1-3):    {} assessors", reactor_count);
-        for (t, c) in &reactor_types { println!("      {}: {}", t, c); }
+        for (t, c) in &reactor_types {
+            println!("      {}: {}", t, c);
+        }
         println!("    Atmospheric (gen 2-3): {} assessors", atmo_count);
-        for (t, c) in &atmo_types { println!("      {}: {}", t, c); }
+        for (t, c) in &atmo_types {
+            println!("      {}: {}", t, c);
+        }
         println!("    Unclassified:         {} assessors", unclassified);
-        println!("    Total classified:     {}", solar_count + reactor_count + atmo_count);
+        println!(
+            "    Total classified:     {}",
+            solar_count + reactor_count + atmo_count
+        );
 
         // Key finding: the flavor map channels correspond to subalgebra crossings:
         // Solar = O1-O2 crossing (exclusive-to-exclusive)
@@ -1220,7 +1328,7 @@ mod tests {
 
         let friction_quantum = 2.0_f64 * 2.0_f64.sqrt(); // 2*sqrt(2) = 2.828...
         let dominant = 3.0 * friction_quantum; // 8.485...
-        let subdominant = friction_quantum;    // 2.828...
+        let subdominant = friction_quantum; // 2.828...
 
         // The diagonal mass terms come from cross-gen friction accumulated
         // across all assessors. From T4:
@@ -1238,7 +1346,10 @@ mod tests {
         // The mass HIERARCHY must come from the Archimedean class scaling.
 
         let friction_per_gen = dominant + subdominant; // 11.31 for all 3
-        println!("  Friction per generation (field-independent): {:.2}", friction_per_gen);
+        println!(
+            "  Friction per generation (field-independent): {:.2}",
+            friction_per_gen
+        );
         println!("  (Same for all 3 -- hierarchy comes from class scaling)");
 
         // Mass model: m_g = exp(c_g * friction_per_gen) where c_g is
@@ -1285,9 +1396,15 @@ mod tests {
 
         // Mixing angle estimate: theta_ij ~ arctan(coupling_ij * sqrt(m_i/m_j))
         // (first-order perturbation theory)
-        let theta_23_est = (coupling_atmo * (1.0 / 16.82_f64.sqrt())).atan().to_degrees();
-        let theta_12_est = (coupling_solar * (1.0 / 206.768_f64.sqrt())).atan().to_degrees();
-        let theta_13_est = (coupling_reactor * (1.0 / 3477.2_f64.sqrt())).atan().to_degrees();
+        let theta_23_est = (coupling_atmo * (1.0 / 16.82_f64.sqrt()))
+            .atan()
+            .to_degrees();
+        let theta_12_est = (coupling_solar * (1.0 / 206.768_f64.sqrt()))
+            .atan()
+            .to_degrees();
+        let theta_13_est = (coupling_reactor * (1.0 / 3477.2_f64.sqrt()))
+            .atan()
+            .to_degrees();
 
         println!("\n  Predicted mixing angles (perturbative):");
         println!("    theta_23 = {:.2} deg (PDG: 49.0)", theta_23_est);
@@ -1401,12 +1518,21 @@ mod tests {
         println!("\n  Structural coupling ratios (from T4 friction):");
         println!("    atmo/solar (structural):    {:.4}", struct_ratio_23_12);
         println!("    atmo/solar (from PDG):      {:.4}", ratio_23_12);
-        println!("    Match: {:.1}x discrepancy", ratio_23_12 / struct_ratio_23_12);
+        println!(
+            "    Match: {:.1}x discrepancy",
+            ratio_23_12 / struct_ratio_23_12
+        );
 
         println!("\n  INTERPRETATION:");
-        println!("    The structural ratio atmo/solar = {:.3}", struct_ratio_23_12);
+        println!(
+            "    The structural ratio atmo/solar = {:.3}",
+            struct_ratio_23_12
+        );
         println!("    The observed ratio atmo/solar = {:.3}", ratio_23_12);
-        println!("    Discrepancy factor: {:.1}x", ratio_23_12 / struct_ratio_23_12);
+        println!(
+            "    Discrepancy factor: {:.1}x",
+            ratio_23_12 / struct_ratio_23_12
+        );
         println!("    This discrepancy is WHERE the TensorElementLift acts.");
         println!("    The lift must AMPLIFY atmospheric relative to solar");
         println!("    by this factor to match observations.");
@@ -1444,7 +1570,11 @@ mod tests {
 
         // Define the valuation: max birthday of nonzero coefficients
         let valuation = |x: &[SurrealDyadic]| -> u32 {
-            x.iter().filter(|c| !c.is_zero()).map(|c| c.birthday()).max().unwrap_or(0)
+            x.iter()
+                .filter(|c| !c.is_zero())
+                .map(|c| c.birthday())
+                .max()
+                .unwrap_or(0)
         };
 
         // Test on known elements
@@ -1467,7 +1597,10 @@ mod tests {
         let mut mixed = [SurrealDyadic::zero(); 16];
         mixed[1] = quarter;
         mixed[3] = one;
-        println!("  v((1/4)*e_1 + e_3) = {} (quarter dominates)", valuation(&mixed));
+        println!(
+            "  v((1/4)*e_1 + e_3) = {} (quarter dominates)",
+            valuation(&mixed)
+        );
 
         // 1000*e_5 (birthday 10 from large integer)
         let mut large = [SurrealDyadic::zero(); 16];
@@ -1476,12 +1609,12 @@ mod tests {
 
         // Sub-multiplicativity: v(x*y) <= v(x) + v(y)
         let mut a = [SurrealDyadic::zero(); 16];
-        a[1] = quarter;  // v(a) = 2
-        a[3] = half;     // v(a) = max(2, 1) = 2
+        a[1] = quarter; // v(a) = 2
+        a[3] = half; // v(a) = max(2, 1) = 2
 
         let mut b = [SurrealDyadic::zero(); 16];
-        b[2] = half;     // v(b) = 1
-        b[5] = one;      // v(b) = max(1, 1) = 1
+        b[2] = half; // v(b) = 1
+        b[5] = one; // v(b) = max(1, 1) = 1
 
         let product = surreal_cd_multiply(16, &a, &b);
         let va = valuation(&a);
@@ -1490,10 +1623,18 @@ mod tests {
 
         println!("\n  Sub-multiplicativity test:");
         println!("    v(a) = {}, v(b) = {}, v(a*b) = {}", va, vb, vab);
-        println!("    v(a*b) <= v(a) + v(b): {} <= {} : {}",
-            vab, va + vb, vab <= va + vb);
-        assert!(vab <= va + vb + 1, // +1 for rounding
-            "Sub-multiplicativity violated: {} > {}", vab, va + vb);
+        println!(
+            "    v(a*b) <= v(a) + v(b): {} <= {} : {}",
+            vab,
+            va + vb,
+            vab <= va + vb
+        );
+        assert!(
+            vab <= va + vb + 1, // +1 for rounding
+            "Sub-multiplicativity violated: {} > {}",
+            vab,
+            va + vb
+        );
 
         // T2: Count ZD families by valuation class
         println!("\n--- T2: ZD FAMILIES BY VALUATION CLASS ---\n");
@@ -1524,7 +1665,10 @@ mod tests {
         println!("  (Each family has countably many copies, one per Archimedean class)");
 
         println!("\n  CONCLUSION:");
-        println!("    {} distinct ZD families x countably many Archimedean classes", xor_patterns.len());
+        println!(
+            "    {} distinct ZD families x countably many Archimedean classes",
+            xor_patterns.len()
+        );
         println!("    = proper-class-many ZD pairs over No");
         println!("    (vs {} concrete pairs over R)", zds.len());
     }
@@ -1561,14 +1705,22 @@ mod tests {
         let mut rectangles: Vec<(usize, usize, usize, usize)> = Vec::new();
 
         for i in 1..16_usize {
-            for j in (i+1)..16 {
+            for j in (i + 1)..16 {
                 let ij = i ^ j;
-                if ij == 0 { continue; } // skip if i^j = 0 (Fano line pair)
+                if ij == 0 {
+                    continue;
+                } // skip if i^j = 0 (Fano line pair)
                 for k in 1..16 {
-                    if k == i || k == j { continue; }
+                    if k == i || k == j {
+                        continue;
+                    }
                     let l = k ^ ij; // l = k ^ (i^j) so that k^l = i^j
-                    if l == 0 || l <= k || l == i || l == j { continue; }
-                    if l >= 16 { continue; }
+                    if l == 0 || l <= k || l == i || l == j {
+                        continue;
+                    }
+                    if l >= 16 {
+                        continue;
+                    }
                     rectangles.push((i, j, k, l));
                 }
             }
@@ -1582,7 +1734,10 @@ mod tests {
             unique.insert(quad);
         }
 
-        println!("  XOR rectangles (i^j = k^l) in {{1..15}}: {}", unique.len());
+        println!(
+            "  XOR rectangles (i^j = k^l) in {{1..15}}: {}",
+            unique.len()
+        );
 
         // For each rectangle, verify it produces a ZD
         let mut zd_count = 0;
@@ -1593,9 +1748,11 @@ mod tests {
             // Try (e_i + e_j)(e_k - e_l)
             let one = SurrealDyadic::one();
             let mut a = [SurrealDyadic::zero(); 16];
-            a[i] = one; a[j] = one;
+            a[i] = one;
+            a[j] = one;
             let mut b = [SurrealDyadic::zero(); 16];
-            b[k] = one; b[l] = -one;
+            b[k] = one;
+            b[l] = -one;
 
             let product = surreal_cd_multiply(16, &a, &b);
             if product.iter().all(|c| c.is_zero()) {
@@ -1607,10 +1764,14 @@ mod tests {
 
         println!("  ZD rectangles: {}", zd_count);
         println!("  Non-ZD rectangles: {}", non_zd_count);
-        println!("  ZD fraction: {:.1}%", 100.0 * zd_count as f64 / unique.len() as f64);
+        println!(
+            "  ZD fraction: {:.1}%",
+            100.0 * zd_count as f64 / unique.len() as f64
+        );
 
         // Group by XOR value (i^j = k^l)
-        let mut by_xor: std::collections::BTreeMap<usize, usize> = std::collections::BTreeMap::new();
+        let mut by_xor: std::collections::BTreeMap<usize, usize> =
+            std::collections::BTreeMap::new();
         for &(i, j, _, _) in &rectangles {
             *by_xor.entry(i ^ j).or_default() += 1;
         }
@@ -1621,9 +1782,15 @@ mod tests {
 
         // Over No: each ZD rectangle generates a family parametrized
         // by (alpha, beta) in the same Archimedean class.
-        println!("\n  Over No: {} ZD families (one per ZD rectangle)", zd_count);
+        println!(
+            "\n  Over No: {} ZD families (one per ZD rectangle)",
+            zd_count
+        );
         println!("  Each family has countably many copies per class.");
-        println!("  Non-ZD rectangles ({}) are XOR-compatible but", non_zd_count);
+        println!(
+            "  Non-ZD rectangles ({}) are XOR-compatible but",
+            non_zd_count
+        );
         println!("  the sign structure prevents the product from vanishing.");
     }
 
@@ -1663,11 +1830,13 @@ mod tests {
 
         // Split complex multiply: (a + b*j)(c + d*j) = (ac + bd) + (ad + bc)*j
         // (Note: +bd not -bd because j^2 = +1)
-        let split_mul = |a: SurrealDyadic, b: SurrealDyadic,
-                         c: SurrealDyadic, d: SurrealDyadic|
-                         -> (SurrealDyadic, SurrealDyadic) {
-            let real = a * c + b * d;  // ac + bd (split: +bd not -bd)
-            let imag = a * d + b * c;  // ad + bc
+        let split_mul = |a: SurrealDyadic,
+                         b: SurrealDyadic,
+                         c: SurrealDyadic,
+                         d: SurrealDyadic|
+         -> (SurrealDyadic, SurrealDyadic) {
+            let real = a * c + b * d; // ac + bd (split: +bd not -bd)
+            let imag = a * d + b * c; // ad + bc
             (real, imag)
         };
 
@@ -1687,7 +1856,10 @@ mod tests {
         println!("\n  Same-class: (alpha + alpha*j)(beta - beta*j)");
         println!("    alpha = {}, beta = {}", alpha, beta);
         println!("    = {} + {}*j", r2, i2);
-        assert!(r2.is_zero() && i2.is_zero(), "Same-class split ZD should persist");
+        assert!(
+            r2.is_zero() && i2.is_zero(),
+            "Same-class split ZD should persist"
+        );
         println!("    CONFIRMED: split ZD persists with same-class scaling");
 
         // Mixed-class: (alpha + beta*j)(gamma - gamma*j) where alpha != beta
@@ -1756,28 +1928,38 @@ mod tests {
             // For large dims, sample instead of exhaustive
             if dim <= 64 {
                 for i in 1..dim {
-                    for j in (i+1)..dim {
-                        for k in (j+1)..dim {
-                            if i ^ j ^ k == 0 { fano_count += 1; }
+                    for j in (i + 1)..dim {
+                        for k in (j + 1)..dim {
+                            if i ^ j ^ k == 0 {
+                                fano_count += 1;
+                            }
                         }
                     }
                 }
             } else {
                 // Sample: count Fano triples in lower 64 indices only
                 for i in 1..64_usize.min(dim) {
-                    for j in (i+1)..64_usize.min(dim) {
-                        for k in (j+1)..64_usize.min(dim) {
-                            if i ^ j ^ k == 0 { fano_count += 1; }
+                    for j in (i + 1)..64_usize.min(dim) {
+                        for k in (j + 1)..64_usize.min(dim) {
+                            if i ^ j ^ k == 0 {
+                                fano_count += 1;
+                            }
                         }
                     }
                 }
             }
 
-            let gen_count = if o1_count > 0 && o2_count > 0 && o3_count > 0 { 3 } else { 0 };
+            let gen_count = if o1_count > 0 && o2_count > 0 && o3_count > 0 {
+                3
+            } else {
+                0
+            };
             let _expected_per_gen = (dim - 1) / 4; // approximate
 
-            println!("  dim={:>4}: O1={}, O2={}, O3={}, Shared={}, gens={}, fano={}",
-                dim, o1_count, o2_count, o3_count, shared_count, gen_count, fano_count);
+            println!(
+                "  dim={:>4}: O1={}, O2={}, O3={}, Shared={}, gens={}, fano={}",
+                dim, o1_count, o2_count, o3_count, shared_count, gen_count, fano_count
+            );
 
             // Check: does exclusive count match expected?
             let scale_ok = o1_count == o2_count && o2_count == o3_count;
@@ -1837,8 +2019,14 @@ mod tests {
         let product = surreal_cd_multiply(16, &a, &b);
         let is_zd = product.iter().all(|c| c.is_zero());
 
-        println!("Infinitesimal ZD: epsilon = 1/2^100 (birthday {})", epsilon.birthday());
-        println!("  (epsilon*e_1 + epsilon*e_10)(e_4 - e_15) is ZD: {}", is_zd);
+        println!(
+            "Infinitesimal ZD: epsilon = 1/2^100 (birthday {})",
+            epsilon.birthday()
+        );
+        println!(
+            "  (epsilon*e_1 + epsilon*e_10)(e_4 - e_15) is ZD: {}",
+            is_zd
+        );
         assert!(is_zd, "ZD should persist for infinitesimal coefficients");
 
         // Also test with LARGE surreal coefficient
@@ -1849,7 +2037,10 @@ mod tests {
 
         let product_large = surreal_cd_multiply(16, &a_large, &b);
         let is_zd_large = product_large.iter().all(|c| c.is_zero());
-        println!("  (omega*e_1 + omega*e_10)(e_4 - e_15) is ZD: {} (omega = 2^100)", is_zd_large);
+        println!(
+            "  (omega*e_1 + omega*e_10)(e_4 - e_15) is ZD: {} (omega = 2^100)",
+            is_zd_large
+        );
         assert!(is_zd_large, "ZD should persist for large coefficients");
         println!("  PASS: ZD persists across 200 orders of magnitude");
     }

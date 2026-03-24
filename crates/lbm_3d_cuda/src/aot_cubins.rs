@@ -49,10 +49,9 @@ pub fn load_aot_module(
     // Load cubin via the low-level CUDA driver API (cuModuleLoadData).
     // cudarc wraps this internally; we use the sys API since PtxKind is pub(crate).
     ctx.bind_to_thread().ok()?;
-    let cu_module = unsafe {
-        cudarc::driver::result::module::load_data(cubin_bytes.as_ptr() as *const _)
-    }
-    .ok()?;
+    let cu_module =
+        unsafe { cudarc::driver::result::module::load_data(cubin_bytes.as_ptr() as *const _) }
+            .ok()?;
     // Wrap in CudaModule (requires reconstructing the Arc<CudaModule> manually).
     // For now, return None and log -- the full integration requires cudarc internals.
     // Unload immediately -- this is a probe to verify the cubin is valid.

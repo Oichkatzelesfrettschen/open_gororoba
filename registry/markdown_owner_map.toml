@@ -12,7 +12,7 @@ updated = "2026-03-23"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 68
+document_count = 72
 
 [[owner]]
 path = "README.md"
@@ -424,6 +424,30 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/monograph/unified_treatise.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "data/benchmarks/parity_report.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "data/results/higher_cd/pathion_control/pathion_control_summary.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/preregistered/README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "data/results/higher_cd/pathion_resonance/pathion_resonance_summary.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

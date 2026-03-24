@@ -1,13 +1,13 @@
 //! Spectral Flow Analysis for Sedenion Fields.
 //!
 //! Investigates the time evolution of "energy modes" in a sedenion field
-//! configuration via Singular Value Decomposition (SVD) of the unfolded 
+//! configuration via Singular Value Decomposition (SVD) of the unfolded
 //! field tensor.
 //!
 //! Migrated from src/spectral_flow_sim.py.
 
-use ndarray::Array3;
 use nalgebra::DMatrix;
+use ndarray::Array3;
 
 /// Sedenion field state (16 components per site).
 pub struct SedenionField3D {
@@ -73,7 +73,7 @@ impl SedenionField3D {
                     // For now, let's use a 16D variant of oct_multiply or re-use gororoba_algebra
                     // Actually, we can use crate::construction::cayley_dickson::cd_multiply
                     // but we need to ensure it's available.
-                    
+
                     // Stub for sedenion multiplication (placeholder)
                     let mut phi_sq = [0.0; 16];
                     for i in 0..16 {
@@ -101,7 +101,7 @@ mod tests {
         let s = field.singular_values();
         assert_eq!(s.len(), 16);
         for i in 1..s.len() {
-            assert!(s[i-1] >= s[i]); // Should be sorted
+            assert!(s[i - 1] >= s[i]); // Should be sorted
         }
     }
 }

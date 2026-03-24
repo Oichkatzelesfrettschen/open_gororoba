@@ -263,8 +263,7 @@ impl SwapchainPresenter {
     /// Submit the blit command buffer and wait for completion.
     pub fn submit_and_wait(&self, cmd: vk::CommandBuffer) -> Result<(), vk::Result> {
         unsafe {
-            self.device
-                .wait_for_fences(&[self.fence], true, u64::MAX)?;
+            self.device.wait_for_fences(&[self.fence], true, u64::MAX)?;
             self.device.reset_fences(&[self.fence])?;
 
             let submit = vk::SubmitInfo {
@@ -274,8 +273,7 @@ impl SwapchainPresenter {
             };
             self.device
                 .queue_submit(self.queue, &[submit], self.fence)?;
-            self.device
-                .wait_for_fences(&[self.fence], true, u64::MAX)?;
+            self.device.wait_for_fences(&[self.fence], true, u64::MAX)?;
         }
         Ok(())
     }

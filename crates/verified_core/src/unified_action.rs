@@ -31,10 +31,10 @@ impl ActionComponent for AlgebraicCosmologicalConstant {
 
 /// The Associativity Violation Tensor (AVT) Lagrangian $\mathcal{L}_{AVT}$.
 ///
-/// This component models the "Topological Friction" induced by the 
+/// This component models the "Topological Friction" induced by the
 /// 16D (or higher) non-associative background on propagating waves.
-/// 
-/// The friction scales not logarithmically, but exactly proportional to 
+///
+/// The friction scales not logarithmically, but exactly proportional to
 /// the strict topological quantization of associator flux:
 /// Each imaginary basis element contributes discretely as either 0, 1, or sqrt(2).
 /// Total Flux = (D/8) * sqrt(2) + (D/2) * 1 + (D/2 - D/8 - 1) * 0
@@ -47,13 +47,13 @@ pub struct TopologicalFrictionLagrangian {
 
 impl ActionComponent for TopologicalFrictionLagrangian {
     fn lagrangian_density(&self, local_phi: f64) -> f64 {
-        // Friction is maximized when the local imbalance matches the 
+        // Friction is maximized when the local imbalance matches the
         // global topological vacuum attractor (3/8).
         // A simple parabolic well model centered at VACUUM_PHI.
         let deviation = local_phi - VACUUM_PHI;
-        
+
         let d = self.manifold_dimension as f64;
-        
+
         // The exact Associator Flux Topolical Invariant:
         // Level sqrt(2) states: D/8
         // Level 1 states: D/2
@@ -63,7 +63,7 @@ impl ActionComponent for TopologicalFrictionLagrangian {
         } else {
             0.0 // No zero divisors in dim < 16, therefore no associator flux friction
         };
-        
+
         // Negative sign because friction decreases the total action (dissipation)
         -self.coupling_strength * deviation.powi(2) * flux_volume
     }
@@ -81,7 +81,7 @@ pub fn compute_local_action(
     let cc = AlgebraicCosmologicalConstant { scale_factor };
     let avt = TopologicalFrictionLagrangian {
         coupling_strength: avt_coupling,
-        manifold_dimension, 
+        manifold_dimension,
     };
 
     let l_grav = ricci_scalar * scale_factor + cc.lagrangian_density(phi);
@@ -114,7 +114,7 @@ mod tests {
     #[test]
     fn test_cosmological_uplift() {
         let cc = AlgebraicCosmologicalConstant { scale_factor: 1.0 };
-        
+
         // Entropy is positive, so the Lambda term (-2 * Lambda) must be negative
         let density = cc.lagrangian_density(VACUUM_PHI);
         assert!(density < 0.0);

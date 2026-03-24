@@ -1,10 +1,8 @@
 //! proof_dep_graph: Pure Rust port of `proofs/scripts/dep_graph.sh`.
 //! Generates a proof dependency graph in DOT format by parsing .v files.
 
-use std::fs;
-use std::path::Path;
 use regex::Regex;
-use std::process::Command;
+use std::{fs, path::Path, process::Command};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let repo_root = Path::new(".");
@@ -15,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     fs::create_dir_all(&out_dir)?;
 
     let mut dot_content = String::from(
-        "digraph ProofDependencies {\n  rankdir=BT;\n  node [shape=box, fontsize=10, fontname=\"monospace\"];\n  edge [color=\"#666666\"];\n\n  // Theory nodes (blue)\n  node [style=filled, fillcolor=\"#d4e6f1\"];\n"
+        "digraph ProofDependencies {\n  rankdir=BT;\n  node [shape=box, fontsize=10, fontname=\"monospace\"];\n  edge [color=\"#666666\"];\n\n  // Theory nodes (blue)\n  node [style=filled, fillcolor=\"#d4e6f1\"];\n",
     );
 
     // Theory nodes
@@ -25,23 +23,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let entry = entry?;
             let path = entry.path();
             if path.extension().and_then(|s| s.to_str()) == Some("v")
-                && let Some(base) = path.file_stem().and_then(|s| s.to_str()) {
-                    dot_content.push_str(&format!("  \"{}\";\n", base));
-                }
+                && let Some(base) = path.file_stem().and_then(|s| s.to_str())
+            {
+                dot_content.push_str(&format!("  \"{}\";\n", base));
+            }
         }
     }
 
     // Verified nodes
-    dot_content.push_str("\n  // Verified claim nodes (green)\n  node [style=filled, fillcolor=\"#d5f5e3\"];\n");
+    dot_content.push_str(
+        "\n  // Verified claim nodes (green)\n  node [style=filled, fillcolor=\"#d5f5e3\"];\n",
+    );
     let verified_dir = proofs_dir.join("verified");
     if verified_dir.exists() {
         for entry in fs::read_dir(&verified_dir)? {
             let entry = entry?;
             let path = entry.path();
             if path.extension().and_then(|s| s.to_str()) == Some("v")
-                && let Some(base) = path.file_stem().and_then(|s| s.to_str()) {
-                    dot_content.push_str(&format!("  \"{}\";\n", base));
-                }
+                && let Some(base) = path.file_stem().and_then(|s| s.to_str())
+            {
+                dot_content.push_str(&format!("  \"{}\";\n", base));
+            }
         }
     }
 
@@ -66,7 +68,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if v_file.extension().and_then(|s| s.to_str()) != Some("v") {
             continue;
         }
-        let src = v_file.file_stem().and_then(|s| s.to_str()).unwrap_or_default();
+        let src = v_file
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default();
         let content = fs::read_to_string(&v_file)?;
 
         for cap in re_open.captures_iter(&content) {
@@ -89,14 +94,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Render if graphviz is available
     if Command::new("dot").arg("-V").output().is_ok() {
         if Command::new("dot")
-            .args(["-Tpdf", dot_file.to_str().unwrap(), "-o", out_dir.join("dep_graph.pdf").to_str().unwrap()])
+            .args([
+                "-Tpdf",
+                dot_file.to_str().unwrap(),
+                "-o",
+                out_dir.join("dep_graph.pdf").to_str().unwrap(),
+            ])
             .output()
             .is_ok()
         {
             println!("Generated: {}", out_dir.join("dep_graph.pdf").display());
         }
         if Command::new("dot")
-            .args(["-Tsvg", dot_file.to_str().unwrap(), "-o", out_dir.join("dep_graph.svg").to_str().unwrap()])
+            .args([
+                "-Tsvg",
+                dot_file.to_str().unwrap(),
+                "-o",
+                out_dir.join("dep_graph.svg").to_str().unwrap(),
+            ])
             .output()
             .is_ok()
         {

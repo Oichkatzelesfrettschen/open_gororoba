@@ -14,11 +14,11 @@
 //! See BIB-0307 (Moreno 1998) for CD zero-divisor structure and
 //! BIB-0314 (Pastawski et al. 2015) for holographic code analogies.
 
-use verified_core::coupler_manifold::CouplerPoint;
 use crate::stabilizer_like::{CompositeCode, StabilizerLikeCode};
-use nalgebra::DVector;
 use algebra_experimental::higher_cd::SparseApeironState;
+use nalgebra::DVector;
 use std::collections::HashSet;
+use verified_core::coupler_manifold::CouplerPoint;
 
 /// A snapshot of one lattice site's algebraic state, expressed as deviation
 /// from equilibrium in the CD basis.
@@ -182,7 +182,7 @@ impl LatticeQecSnapshot {
     /// `g` should contain the control parameters (e.g., lattice Re, threshold, etc.).
     pub fn to_coupler_point(&self, error_mask: &HashSet<usize>, g: DVector<f64>) -> CouplerPoint {
         let (triggered, total, mean_strength) = self.detect_active_syndromes(error_mask);
-        
+
         let mut o = DVector::zeros(3);
         o[0] = (triggered as f64) + 1e-12; // Avoid log(0)
         o[1] = (total as f64) + 1e-12;

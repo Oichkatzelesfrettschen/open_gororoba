@@ -28,14 +28,14 @@ pub mod warp_physics;
 pub mod wavelet;
 
 pub use coherence::{magnitude_squared_coherence, welch_cpsd};
-pub use lomb_scargle::{compute_lomb_scargle, false_alarm_probability_baluev, LombScargleResult};
-pub use multitaper::{dpss_tapers, multitaper_psd, thomson_f_test, MultitaperResult};
-pub use surrogates::{empirical_p_value, iaaft_surrogate, phase_randomize};
-pub use wavelet::{continuous_wavelet_transform, ricker_wavelet};
+pub use lomb_scargle::{LombScargleResult, compute_lomb_scargle, false_alarm_probability_baluev};
+pub use multitaper::{MultitaperResult, dpss_tapers, multitaper_psd, thomson_f_test};
 pub use neg_dim::{
     ConvergenceResult, EigenResult, build_kinetic_operator, caffarelli_silvestre_eigenvalues,
     eigenvalues_imaginary_time, epsilon_convergence_sweep,
 };
+pub use surrogates::{empirical_p_value, iaaft_surrogate, phase_randomize};
+pub use wavelet::{continuous_wavelet_transform, ricker_wavelet};
 
 use ndarray::{Array2, Array3, Axis};
 use num_complex::Complex64;

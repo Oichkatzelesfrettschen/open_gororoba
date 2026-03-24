@@ -10,9 +10,9 @@
 
 use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
 use nalgebra::DVector;
-use verified_core::coupler_manifold::CouplerPoint;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
+use verified_core::coupler_manifold::CouplerPoint;
 
 /// Represents the state of an algebraic phase transition.
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -153,7 +153,10 @@ mod tests {
         let density = sed.calculate_defect_density(1000, 42);
         let p_sed = sed.to_coupler_point(density);
         assert_eq!(p_sed.g[0], 16.0);
-        println!("Sedenion Density (O[0]): {:.4}, Order Param (O[1]): {:.4}", p_sed.o[0], p_sed.o[1]);
+        println!(
+            "Sedenion Density (O[0]): {:.4}, Order Param (O[1]): {:.4}",
+            p_sed.o[0], p_sed.o[1]
+        );
     }
 }
 

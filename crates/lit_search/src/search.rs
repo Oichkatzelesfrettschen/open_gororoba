@@ -1,8 +1,10 @@
 //! Unified search engine combining multiple sources.
 
-use crate::dedup::deduplicate;
-use crate::models::Paper;
-use crate::sources::{self, ApiKeys};
+use crate::{
+    dedup::deduplicate,
+    models::Paper,
+    sources::{self, ApiKeys},
+};
 use reqwest::Client;
 use std::time::Duration;
 
@@ -36,12 +38,7 @@ impl SearchEngine {
     }
 
     /// Search all enabled sources and return deduplicated results.
-    pub async fn search(
-        &self,
-        query: &str,
-        limit: usize,
-        year_min: u32,
-    ) -> Vec<Paper> {
+    pub async fn search(&self, query: &str, limit: usize, year_min: u32) -> Vec<Paper> {
         let mut all_papers = Vec::new();
 
         // Tier 0: always-on
@@ -84,9 +81,14 @@ impl SearchEngine {
             );
 
             for (name, res) in [
-                ("Crossref", cr), ("InspireHEP", ihep), ("DBLP", dblp),
-                ("EuropePMC", epmc), ("HAL", hal), ("DataCite", dc),
-                ("SciELO", scielo), ("J-STAGE", jst),
+                ("Crossref", cr),
+                ("InspireHEP", ihep),
+                ("DBLP", dblp),
+                ("EuropePMC", epmc),
+                ("HAL", hal),
+                ("DataCite", dc),
+                ("SciELO", scielo),
+                ("J-STAGE", jst),
             ] {
                 match res {
                     Ok(papers) if !papers.is_empty() => {
@@ -110,7 +112,10 @@ impl SearchEngine {
             );
 
             for (name, res) in [
-                ("CORE", core_r), ("CiNii", cinii_r), ("ADS", ads_r), ("Lens", lens_r),
+                ("CORE", core_r),
+                ("CiNii", cinii_r),
+                ("ADS", ads_r),
+                ("Lens", lens_r),
                 ("GScholar", gs_r),
             ] {
                 match res {
@@ -128,9 +133,11 @@ impl SearchEngine {
         if self.tier == SourceTier::All && !self.keys.unpaywall_email.is_empty() {
             for paper in &mut all_papers {
                 if paper.pdf_url.is_empty() && !paper.doi.is_empty() {
-                    if let Ok(Some(pdf_url)) = sources::check_unpaywall(
-                        &self.client, &paper.doi, &self.keys
-                    ).await { paper.pdf_url = pdf_url; }
+                    if let Ok(Some(pdf_url)) =
+                        sources::check_unpaywall(&self.client, &paper.doi, &self.keys).await
+                    {
+                        paper.pdf_url = pdf_url;
+                    }
                     tokio::time::sleep(Duration::from_millis(100)).await;
                 }
             }

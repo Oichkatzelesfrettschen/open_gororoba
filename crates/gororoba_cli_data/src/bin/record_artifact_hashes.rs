@@ -6,8 +6,7 @@ use anyhow::Result;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct ArtifactProvenance {
@@ -47,9 +46,10 @@ fn main() -> Result<()> {
     for result in reader.records() {
         let record = result?;
         if let Some(p) = record.get(0)
-            && !p.is_empty() {
-                artifact_paths.push(p.to_string());
-            }
+            && !p.is_empty()
+        {
+            artifact_paths.push(p.to_string());
+        }
     }
 
     let mut entries = Vec::new();
@@ -61,7 +61,9 @@ fn main() -> Result<()> {
             missing.push(ap);
             continue;
         }
-        if !path.is_file() { continue; }
+        if !path.is_file() {
+            continue;
+        }
 
         let st = fs::metadata(path)?;
         entries.append(&mut vec![FileHash {
@@ -82,7 +84,7 @@ fn main() -> Result<()> {
 
     let json = serde_json::to_string_pretty(&payload)?;
     fs::write(output_path, json)?;
-    
+
     println!("Wrote: {}", output_path.display());
     Ok(())
 }

@@ -21,7 +21,7 @@
 //! ### 4. Breakthrough Discoveries
 //!
 //! #### A. The Topological Defect Floor (LBM Fluid Mechanics)
-//! Analysis of the 46MB `topological_voids.csv` dataset revealed that Lattice Boltzmann simulations exhibit a strict "Defect Floor" at low imbalance thresholds. 
+//! Analysis of the 46MB `topological_voids.csv` dataset revealed that Lattice Boltzmann simulations exhibit a strict "Defect Floor" at low imbalance thresholds.
 //! - **Regime Shift**: The system moves from a **High Elasticity Regime** ($J \approx -59$) to a **Saturated Baseline** ($J = 0.00$) as thresholds decrease.
 //! - **Monograph Link**: This mirrors the rare-event burst floor observed in superconducting QEC experiments (e.g., Google 2023), suggesting that topological defects in macroscopic fluids are governed by similar information-theoretic bounds as quantum syndromes.
 //!

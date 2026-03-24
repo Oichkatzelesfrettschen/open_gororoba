@@ -52,7 +52,10 @@
 ///
 /// Evidentiary class: T (theorem, follows directly from CD doubling formula).
 pub fn standard_mult_count(dim: usize) -> usize {
-    assert!(dim.is_power_of_two() && dim >= 2, "dim must be a power of 2 >= 2");
+    assert!(
+        dim.is_power_of_two() && dim >= 2,
+        "dim must be a power of 2 >= 2"
+    );
     dim * dim
 }
 
@@ -75,7 +78,10 @@ pub fn standard_mult_count(dim: usize) -> usize {
 ///
 /// Evidentiary class: C (structural upper bound, not a proven implementation count).
 pub fn cariow_pure_3x_bound(dim: usize) -> usize {
-    assert!(dim.is_power_of_two() && dim >= 2, "dim must be a power of 2 >= 2");
+    assert!(
+        dim.is_power_of_two() && dim >= 2,
+        "dim must be a power of 2 >= 2"
+    );
     if dim == 2 {
         return 4;
     }
@@ -95,13 +101,13 @@ pub fn cariow_pure_3x_bound(dim: usize) -> usize {
 /// Evidentiary class: C (conjecture; conditional on verified C(32)=498 implementation).
 pub fn cariow_repo_bound(dim: usize) -> Option<usize> {
     match dim {
-        2  => Some(4),
-        4  => Some(8),    // Karatsuba quaternion (standard result)
-        8  => Some(26),   // Cariow 2012 (published claim, evid C)
-        16 => Some(84),   // Cariow 2013 (published claim, evid C)
-        32 => Some(498),  // Repo trigintaduonion.rs claim (evid C, not yet implemented)
-        64 => Some(3 * 498),  // = 1494, structural upper bound (evid C)
-        _  => None,       // Unknown for other dimensions
+        2 => Some(4),
+        4 => Some(8),        // Karatsuba quaternion (standard result)
+        8 => Some(26),       // Cariow 2012 (published claim, evid C)
+        16 => Some(84),      // Cariow 2013 (published claim, evid C)
+        32 => Some(498),     // Repo trigintaduonion.rs claim (evid C, not yet implemented)
+        64 => Some(3 * 498), // = 1494, structural upper bound (evid C)
+        _ => None,           // Unknown for other dimensions
     }
 }
 
@@ -145,15 +151,19 @@ pub fn print_mult_count_table() {
     println!("=== Cariow-Style CD Multiplication Count Analysis ===");
     println!("  Evid T: standard (exact). Evid C: bounds (conjecture).");
     println!();
-    println!("{:>6}  {:>10}  {:>12}  {:>12}  {:>8}",
-        "dim", "standard", "pure_3x_bnd", "repo_bound", "speedup");
+    println!(
+        "{:>6}  {:>10}  {:>12}  {:>12}  {:>8}",
+        "dim", "standard", "pure_3x_bnd", "repo_bound", "speedup"
+    );
     println!("{}", "-".repeat(56));
     for &d in &[2usize, 4, 8, 16, 32, 64] {
         let r = MultCountRecord::compute(d);
         let repo_str = r.repo_bound.map_or("?".to_string(), |v| v.to_string());
         let spd_str = r.speedup.map_or("?".to_string(), |v| format!("{:.2}x", v));
-        println!("{:>6}  {:>10}  {:>12}  {:>12}  {:>8}",
-            r.dim, r.standard, r.pure_3x_bound, repo_str, spd_str);
+        println!(
+            "{:>6}  {:>10}  {:>12}  {:>12}  {:>8}",
+            r.dim, r.standard, r.pure_3x_bound, repo_str, spd_str
+        );
     }
     println!();
     println!("NOTE: repo_bound for dim=64 is 3*498=1494 (structural, unverified).");
@@ -172,9 +182,9 @@ mod tests {
     /// Evid T (theorem).
     #[test]
     fn test_standard_mult_count_exact() {
-        assert_eq!(standard_mult_count(2),  4);
-        assert_eq!(standard_mult_count(4),  16);
-        assert_eq!(standard_mult_count(8),  64);
+        assert_eq!(standard_mult_count(2), 4);
+        assert_eq!(standard_mult_count(4), 16);
+        assert_eq!(standard_mult_count(8), 64);
         assert_eq!(standard_mult_count(16), 256);
         assert_eq!(standard_mult_count(32), 1024);
         assert_eq!(standard_mult_count(64), 4096);
@@ -186,8 +196,14 @@ mod tests {
         for &d in &[4usize, 8, 16, 32, 64] {
             let s = standard_mult_count(d);
             let b = cariow_pure_3x_bound(d);
-            assert!(b < s,
-                "pure_3x_bound({}) = {} should be < standard({}) = {}", d, b, d, s);
+            assert!(
+                b < s,
+                "pure_3x_bound({}) = {} should be < standard({}) = {}",
+                d,
+                b,
+                d,
+                s
+            );
         }
     }
 
@@ -196,8 +212,11 @@ mod tests {
     /// Evid C (conjecture; implementation does not yet achieve this).
     #[test]
     fn test_repo_bound_dim32_matches_claim() {
-        assert_eq!(cariow_repo_bound(32), Some(498),
-            "Repo claims 498 mults for dim=32 (trigintaduonion.rs docstring)");
+        assert_eq!(
+            cariow_repo_bound(32),
+            Some(498),
+            "Repo claims 498 mults for dim=32 (trigintaduonion.rs docstring)"
+        );
     }
 
     /// Repo bound for dim=64 is at most 3*498 = 1494.
@@ -208,13 +227,22 @@ mod tests {
     #[test]
     fn test_repo_bound_dim64_upper_bound() {
         let bound = cariow_repo_bound(64).unwrap();
-        assert_eq!(bound, 1494,
-            "C(64) <= 3*C(32) = 3*498 = 1494 (structural upper bound)");
-        assert!(bound < standard_mult_count(64),
-            "Upper bound {} should be < standard {} for dim=64", bound, 4096);
+        assert_eq!(
+            bound, 1494,
+            "C(64) <= 3*C(32) = 3*498 = 1494 (structural upper bound)"
+        );
+        assert!(
+            bound < standard_mult_count(64),
+            "Upper bound {} should be < standard {} for dim=64",
+            bound,
+            4096
+        );
         let speedup = cariow_speedup(64).unwrap();
-        assert!(speedup > 2.5 && speedup < 3.0,
-            "Expected speedup ~2.74x for dim=64, got {:.2}x", speedup);
+        assert!(
+            speedup > 2.5 && speedup < 3.0,
+            "Expected speedup ~2.74x for dim=64, got {:.2}x",
+            speedup
+        );
     }
 
     /// Speedup is always > 1 at all known dimensions (Cariow is strictly faster).
@@ -227,8 +255,12 @@ mod tests {
     fn test_speedup_always_above_one() {
         for &d in &[4usize, 8, 16, 32, 64] {
             let spd = cariow_speedup(d).unwrap();
-            assert!(spd > 1.0,
-                "speedup at dim={} should be > 1.0, got {:.2}", d, spd);
+            assert!(
+                spd > 1.0,
+                "speedup at dim={} should be > 1.0, got {:.2}",
+                d,
+                spd
+            );
         }
         // Specific known values (evid C: conditional on published claims)
         let spd16 = cariow_speedup(16).unwrap();

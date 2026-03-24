@@ -22,7 +22,7 @@
 //! The RTX 4070 Ti features 4th Gen Tensor Cores and 3rd Gen RT Cores. Standard CUDA kernels (SIMT) are the baseline; the following opportunities target the hardware "ceiling":
 //!
 //! #### 2.2.1 FP8 / INT8 Quantization (Tensor Cores)
-//! *   **Opportunity:** Use NVIDIA's **Transformer Engine** (FP8) for the distribution functions ($f_i$). 
+//! *   **Opportunity:** Use NVIDIA's **Transformer Engine** (FP8) for the distribution functions ($f_i$).
 //! *   **Benefit:** 2x throughput over FP16, 4x over FP32. Reduced VRAM footprint allows $256^3$ or $512^3$ grids.
 //! *   **Mechanism:** LBM collision can be cast as a **Fused Multiply-Add (FMA)** operation. 4th Gen Tensor Cores perform asynchronous FP8 matrix-multiply-accumulate (MMA) at massive rates.
 //! *   **Risk:** Numerical stability of the E7 spectral forcing. Requires a "dynamic range" manager to prevent underflow in high-frequency spectral modes.
@@ -44,7 +44,7 @@
 //!
 //! ## 3. Data Contract & Interpretation
 //! *   **Schema:** `WarpRingExperiment` (in `gororoba_contracts`).
-//! *   **Artifacts:** 
+//! *   **Artifacts:**
 //! >   *   `warp_ring_trace.h5`: Time-series scalars (Enstrophy, Density).
 //! >   *   `warp_field_step_N.h5`: Full 3D velocity field [nx, ny, nz, 3] for topological verification.
 //! *   **Goal:** Provide a "Gold Standard" dataset for lambda-gororoba cross-validation.

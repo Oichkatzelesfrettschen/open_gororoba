@@ -43,7 +43,9 @@ use cd_kernel::cayley_dickson::{
 };
 use nalgebra::{DMatrix, DVector};
 
-use crate::annihilator::{left_multiplication_matrix, nullspace_basis, right_multiplication_matrix};
+use crate::annihilator::{
+    left_multiplication_matrix, nullspace_basis, right_multiplication_matrix,
+};
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Internal helpers
@@ -506,12 +508,7 @@ pub fn has_eigenvalue_minus_2(c: &[f64], dim: usize, atol: f64) -> bool {
 ///
 /// Returns `None` if no such `y` exists (the pair `(a,b)` is not a ZD pair
 /// in Moreno's framework).
-pub fn find_zd_witness_moreno(
-    a: &[f64],
-    b: &[f64],
-    dim: usize,
-    atol: f64,
-) -> Option<Vec<f64>> {
+pub fn find_zd_witness_moreno(a: &[f64], b: &[f64], dim: usize, atol: f64) -> Option<Vec<f64>> {
     let c: Vec<f64> = a.iter().zip(b.iter()).map(|(x, y)| x + y).collect();
     let lc = left_multiplication_matrix(&c, dim);
     let lc2 = &lc * &lc;
@@ -698,13 +695,16 @@ mod tests {
         // tilde_a = (-a_2, a_1): e1 in 8D split -> tilde(e1) = e5
         assert!((aj[5] - 1.0).abs() < ATOL, "tilde(e1) should be e5 in 8D");
         // All four are orthonormal
-        for (name, v) in [("e0",&e0),("a",&ai),("ta",&aj),("te0",&ak)] {
+        for (name, v) in [("e0", &e0), ("a", &ai), ("ta", &aj), ("te0", &ak)] {
             let n = cd_norm_sq(v);
             assert!((n - 1.0).abs() < ATOL, "{name} should have norm 1");
         }
         assert!(cd_inner_product(&e0, &ai).abs() < ATOL, "e0 perp a");
         assert!(cd_inner_product(&ai, &aj).abs() < ATOL, "a perp tilde_a");
-        assert!(cd_inner_product(&aj, &ak).abs() < ATOL, "tilde_a perp tilde_e0");
+        assert!(
+            cd_inner_product(&aj, &ak).abs() < ATOL,
+            "tilde_a perp tilde_e0"
+        );
     }
 
     #[test]
@@ -764,7 +764,7 @@ mod tests {
             "Total dim should equal 8, got H_a(4) + ker_la({}) + ker_tt({}) + v_lambda({}) = {}",
             dec.ker_l_a.ncols(),
             dec.ker_t_tilde.ncols(),
-            dec.v_lambda.iter().map(|(_,m)| m.ncols()).sum::<usize>(),
+            dec.v_lambda.iter().map(|(_, m)| m.ncols()).sum::<usize>(),
             4 + dec.ker_l_a.ncols()
                 + dec.ker_t_tilde.ncols()
                 + dec.v_lambda.iter().map(|(_, m)| m.ncols()).sum::<usize>()
@@ -796,10 +796,7 @@ mod tests {
         let b = basis(DIM8, 2); // e2
         let s = s_operator_matrix(&a, &b, DIM8);
         let st = s.transpose();
-        assert!(
-            (s + st).norm() < ATOL * 10.0,
-            "S should be skew-symmetric"
-        );
+        assert!((s + st).norm() < ATOL * 10.0, "S should be skew-symmetric");
     }
 
     #[test]
@@ -807,7 +804,10 @@ mod tests {
         // {e1, e2} is a special couple in A_3; Corollary 2.4 should hold
         let a = basis(DIM8, 1);
         let b = basis(DIM8, 2);
-        assert!(is_special_couple(&a, &b, ATOL), "test prereq: {{e1,e2}} must be special couple");
+        assert!(
+            is_special_couple(&a, &b, ATOL),
+            "test prereq: {{e1,e2}} must be special couple"
+        );
         let ok = verify_corollary_2_4(&a, &b, DIM8, ATOL);
         assert!(ok, "Corollary 2.4 should hold for {{e1,e2}} in A_3");
     }

@@ -507,9 +507,8 @@ pub fn build_zhilina_commutativity_graph(dim: usize) -> ZhilinaCommutativityGrap
     }
 
     // Compute degree sequence
-    let mut degree_sequence: Vec<usize> = nodes.iter()
-        .map(|&n| graph.neighbors(n).count())
-        .collect();
+    let mut degree_sequence: Vec<usize> =
+        nodes.iter().map(|&n| graph.neighbors(n).count()).collect();
     degree_sequence.sort_unstable_by(|a, b| b.cmp(a));
 
     ZhilinaCommutativityGraph {
@@ -1358,7 +1357,10 @@ mod tests {
         // imaginary basis units (sign(i,j) = -sign(j,i)).  This holds at
         // ALL CD levels >= 4, so the basis-unit commutativity graph is
         // always empty (fully anti-commutative).
-        assert_eq!(g.n_edges, 0, "Octonions are fully anti-commutative on basis");
+        assert_eq!(
+            g.n_edges, 0,
+            "Octonions are fully anti-commutative on basis"
+        );
         assert_eq!(g.n_components, 7, "7 isolated vertices");
     }
 
@@ -1374,10 +1376,17 @@ mod tests {
         // a finite basis-unit computation.
         let g = build_zhilina_commutativity_graph(16);
         assert_eq!(g.n_vertices, 15, "S has 15 imaginary basis units");
-        assert_eq!(g.n_edges, 0,
-            "All CD imaginary basis units anti-commute in the standard basis");
-        assert_eq!(g.n_components, 15, "15 isolated vertices (no commuting pairs)");
-        println!("Zhilina basis commutativity graph: {} vertices, {} edges (all anti-commute)",
-            g.n_vertices, g.n_edges);
+        assert_eq!(
+            g.n_edges, 0,
+            "All CD imaginary basis units anti-commute in the standard basis"
+        );
+        assert_eq!(
+            g.n_components, 15,
+            "15 isolated vertices (no commuting pairs)"
+        );
+        println!(
+            "Zhilina basis commutativity graph: {} vertices, {} edges (all anti-commute)",
+            g.n_vertices, g.n_edges
+        );
     }
 }

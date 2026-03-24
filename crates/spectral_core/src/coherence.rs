@@ -102,11 +102,12 @@ mod tests {
         let n = 1024;
         let x: Vec<f64> = (0..n).map(|i| (i as f64 * 0.1).sin()).collect();
         let (freqs, msc) = magnitude_squared_coherence(&x, &x, 256, 128);
-        
+
         assert_eq!(freqs.len(), 129);
         // Coherence of identical signals should be 1.0
         for &val in &msc {
-            if val > 1e-10 { // some bins might be zero if signal has no power there
+            if val > 1e-10 {
+                // some bins might be zero if signal has no power there
                 assert!((val - 1.0).abs() < 1e-10);
             }
         }
@@ -118,9 +119,9 @@ mod tests {
         let mut rng = rand::thread_rng();
         let x: Vec<f64> = (0..n).map(|_| rng.r#gen()).collect();
         let y: Vec<f64> = (0..n).map(|_| rng.r#gen()).collect();
-        
+
         let (_, msc) = magnitude_squared_coherence(&x, &y, 256, 128);
-        
+
         let mean_msc = msc.iter().sum::<f64>() / msc.len() as f64;
         // For independent signals, coherence should be small (~ 1/L where L=n_segments)
         assert!(mean_msc < 0.5);

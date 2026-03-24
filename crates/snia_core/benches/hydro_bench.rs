@@ -1,6 +1,6 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use std::hint::black_box;
 use snia_core::{BoundaryCondition, HllcFlux1D, HydroState1D, LimiterKind};
+use std::hint::black_box;
 
 fn bench_hydro_rk2_update(c: &mut Criterion) {
     let h = HllcFlux1D {

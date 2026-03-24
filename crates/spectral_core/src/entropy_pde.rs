@@ -40,7 +40,13 @@ impl EntropyField3D {
         let mut s = vec![0.0; nx * ny * nz];
         // Seed center
         s[(nx / 2) * ny * nz + (ny / 2) * nz + (nz / 2)] = 0.1;
-        Self { s, nx, ny, nz, params }
+        Self {
+            s,
+            nx,
+            ny,
+            nz,
+            params,
+        }
     }
 
     pub fn step(&mut self) {
@@ -52,20 +58,28 @@ impl EntropyField3D {
             for y in 0..self.ny {
                 for z in 0..self.nz {
                     let idx = x * self.ny * self.nz + y * self.nz + z;
-                    
-                    let idx_px = ((x + 1) % self.nx) * self.ny * self.nz + y * self.nz + z;
-                    let idx_mx = ((x + self.nx - 1) % self.nx) * self.ny * self.nz + y * self.nz + z;
-                    let idx_py = x * self.ny * self.nz + ((y + 1) % self.ny) * self.nz + z;
-                    let idx_my = x * self.ny * self.nz + ((y + self.ny - 1) % self.ny) * self.nz + z;
-                    let idx_pz = x * self.ny * self.nz + y * self.nz + ((z + 1) % self.nz);
-                    let idx_mz = x * self.ny * self.nz + y * self.nz + ((z + self.nz - 1) % self.nz);
 
-                    let lap = self.s[idx_px] + self.s[idx_mx] + 
-                              self.s[idx_py] + self.s[idx_my] + 
-                              self.s[idx_pz] + self.s[idx_mz] - 
-                              6.0 * self.s[idx];
-                    
-                    ds[idx] = p.diffusion * lap - p.gamma * self.s[idx] - p.alpha * self.s[idx].powi(3) + p.source;
+                    let idx_px = ((x + 1) % self.nx) * self.ny * self.nz + y * self.nz + z;
+                    let idx_mx =
+                        ((x + self.nx - 1) % self.nx) * self.ny * self.nz + y * self.nz + z;
+                    let idx_py = x * self.ny * self.nz + ((y + 1) % self.ny) * self.nz + z;
+                    let idx_my =
+                        x * self.ny * self.nz + ((y + self.ny - 1) % self.ny) * self.nz + z;
+                    let idx_pz = x * self.ny * self.nz + y * self.nz + ((z + 1) % self.nz);
+                    let idx_mz =
+                        x * self.ny * self.nz + y * self.nz + ((z + self.nz - 1) % self.nz);
+
+                    let lap = self.s[idx_px]
+                        + self.s[idx_mx]
+                        + self.s[idx_py]
+                        + self.s[idx_my]
+                        + self.s[idx_pz]
+                        + self.s[idx_mz]
+                        - 6.0 * self.s[idx];
+
+                    ds[idx] =
+                        p.diffusion * lap - p.gamma * self.s[idx] - p.alpha * self.s[idx].powi(3)
+                            + p.source;
                 }
             }
         }

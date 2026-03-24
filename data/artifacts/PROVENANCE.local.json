@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-24T01:07:04.188842705Z",
+  "generated_at_utc": "2026-03-24T01:24:54.368535460Z",
   "root": "data/artifacts",
   "hashes": [
     {
@@ -136,9 +136,9 @@
     },
     {
       "path": "data/artifacts/images/absorber_pareto_3160x2820.png",
-      "size_bytes": 410586,
-      "mtime_utc": "2026-03-24T00:28:37.952636282Z",
-      "sha256": "31430c90ab63db793480e55cde69388eafe106bdb7ffb5fef93029853062bd94"
+      "size_bytes": 0,
+      "mtime_utc": "2026-03-24T01:07:42.913571362Z",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "path": "data/artifacts/images/box_kites_clustering.png",
@@ -221,19 +221,19 @@
     {
       "path": "data/artifacts/images/hyper_fractal_sedenion.png",
       "size_bytes": 1375685,
-      "mtime_utc": "2026-03-19T04:17:44.643909675Z",
+      "mtime_utc": "2026-03-24T01:08:31.145789096Z",
       "sha256": "e05082bb1a5b9edf5049e70e95a89081e98826b82a955257e3d73e6494212b98"
     },
     {
       "path": "data/artifacts/images/hyper_mass_ladder_v2.png",
       "size_bytes": 342462,
-      "mtime_utc": "2026-03-19T04:17:46.353920832Z",
+      "mtime_utc": "2026-03-24T01:08:32.898796979Z",
       "sha256": "8411cb907ff85cbdf1f4ad5576a2f40f38a416bb1421a819fd404a6e606efc4e"
     },
     {
       "path": "data/artifacts/images/hyper_mera_network_v2.png",
       "size_bytes": 799139,
-      "mtime_utc": "2026-03-19T04:17:48.146932515Z",
+      "mtime_utc": "2026-03-24T01:08:34.780805439Z",
       "sha256": "651f839f2771a35356fdccbfd761a9821172fcbe72cfcb8d83eed87301eb0061"
     },
     {

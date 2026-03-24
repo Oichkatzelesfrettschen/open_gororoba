@@ -35,10 +35,7 @@ pub async fn download_pdfs(
     output_dir: &Path,
     client: &reqwest::Client,
 ) -> Vec<DownloadResult> {
-    let downloadable: Vec<&Paper> = papers
-        .iter()
-        .filter(|p| !p.pdf_url.is_empty())
-        .collect();
+    let downloadable: Vec<&Paper> = papers.iter().filter(|p| !p.pdf_url.is_empty()).collect();
 
     if downloadable.is_empty() {
         tracing::info!("No papers with PDF URLs to download");
@@ -59,10 +56,7 @@ pub async fn download_pdfs(
 ///
 /// Writes a temporary input file with one URL per line, then invokes
 /// aria2c with resume, conditional-get, and parallel connections.
-async fn download_via_aria2c(
-    papers: &[&Paper],
-    output_dir: &Path,
-) -> Vec<DownloadResult> {
+async fn download_via_aria2c(papers: &[&Paper], output_dir: &Path) -> Vec<DownloadResult> {
     let input_path = output_dir.join(".aria2c_input.txt");
     let mut input_content = String::new();
 
@@ -94,9 +88,9 @@ async fn download_via_aria2c(
         .arg(&input_path)
         .arg("--dir")
         .arg(output_dir)
-        .arg("--continue=true")        // Resume partial downloads
+        .arg("--continue=true") // Resume partial downloads
         .arg("--auto-file-renaming=false")
-        .arg("--conditional-get=true")  // HTTP If-Modified-Since
+        .arg("--conditional-get=true") // HTTP If-Modified-Since
         .arg("--max-concurrent-downloads=4")
         .arg("--max-connection-per-server=2")
         .arg("--retry-wait=3")
@@ -163,44 +157,42 @@ async fn download_via_reqwest(
         }
 
         match client.get(&paper.pdf_url).send().await {
-            Ok(resp) if resp.status().is_success() => {
-                match resp.bytes().await {
-                    Ok(bytes) if bytes.len() > 1000 => {
-                        if let Err(e) = std::fs::write(&path, &bytes) {
-                            results.push(DownloadResult {
-                                paper_id: paper.paper_id.clone(),
-                                title: paper.title.clone(),
-                                path: None,
-                                error: Some(format!("Write error: {e}")),
-                            });
-                        } else {
-                            tracing::info!("Downloaded: {filename} ({} bytes)", bytes.len());
-                            results.push(DownloadResult {
-                                paper_id: paper.paper_id.clone(),
-                                title: paper.title.clone(),
-                                path: Some(path),
-                                error: None,
-                            });
-                        }
-                    }
-                    Ok(bytes) => {
+            Ok(resp) if resp.status().is_success() => match resp.bytes().await {
+                Ok(bytes) if bytes.len() > 1000 => {
+                    if let Err(e) = std::fs::write(&path, &bytes) {
                         results.push(DownloadResult {
                             paper_id: paper.paper_id.clone(),
                             title: paper.title.clone(),
                             path: None,
-                            error: Some(format!("Response too small ({} bytes)", bytes.len())),
+                            error: Some(format!("Write error: {e}")),
                         });
-                    }
-                    Err(e) => {
+                    } else {
+                        tracing::info!("Downloaded: {filename} ({} bytes)", bytes.len());
                         results.push(DownloadResult {
                             paper_id: paper.paper_id.clone(),
                             title: paper.title.clone(),
-                            path: None,
-                            error: Some(format!("Download error: {e}")),
+                            path: Some(path),
+                            error: None,
                         });
                     }
                 }
-            }
+                Ok(bytes) => {
+                    results.push(DownloadResult {
+                        paper_id: paper.paper_id.clone(),
+                        title: paper.title.clone(),
+                        path: None,
+                        error: Some(format!("Response too small ({} bytes)", bytes.len())),
+                    });
+                }
+                Err(e) => {
+                    results.push(DownloadResult {
+                        paper_id: paper.paper_id.clone(),
+                        title: paper.title.clone(),
+                        path: None,
+                        error: Some(format!("Download error: {e}")),
+                    });
+                }
+            },
             Ok(resp) => {
                 results.push(DownloadResult {
                     paper_id: paper.paper_id.clone(),
@@ -238,7 +230,13 @@ fn sanitize_filename(cite_key: &str, url: &str) -> String {
 
     let safe: String = cite_key
         .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || c == '_' || c == '-' {
+                c
+            } else {
+                '_'
+            }
+        })
         .collect();
 
     let name = if safe.is_empty() {
@@ -256,8 +254,14 @@ mod tests {
 
     #[test]
     fn test_sanitize_filename() {
-        assert_eq!(sanitize_filename("smith2024geometry", "https://arxiv.org/pdf/2401.01234"), "smith2024geometry.pdf");
-        assert_eq!(sanitize_filename("o'malley2023", "http://example.com/paper.pdf"), "o_malley2023.pdf");
+        assert_eq!(
+            sanitize_filename("smith2024geometry", "https://arxiv.org/pdf/2401.01234"),
+            "smith2024geometry.pdf"
+        );
+        assert_eq!(
+            sanitize_filename("o'malley2023", "http://example.com/paper.pdf"),
+            "o_malley2023.pdf"
+        );
         assert_eq!(sanitize_filename("", "http://x.pdf"), "unknown_paper.pdf");
     }
 }

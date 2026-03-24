@@ -20,13 +20,10 @@
 //! ~100 seconds compute.
 
 use crate::common::{
-    detection_snr, fourier_power_at_wavenumbers, generate_galaxy_sample,
-    inject_zd_signal, nfw_v_circ, predicted_wavenumbers_cd16, G_KPC_KMS2,
-    SyntheticGalaxy,
+    G_KPC_KMS2, SyntheticGalaxy, detection_snr, fourier_power_at_wavenumbers,
+    generate_galaxy_sample, inject_zd_signal, nfw_v_circ, predicted_wavenumbers_cd16,
 };
-use cosmology_core::nfw_utils::{
-    dc14_enclosed_mass, dc14_shape_params, nfw_params_from_mass,
-};
+use cosmology_core::nfw_utils::{dc14_enclosed_mass, dc14_shape_params, nfw_params_from_mass};
 use rayon::prelude::*;
 
 // ---------------------------------------------------------------------------
@@ -108,10 +105,7 @@ fn dc14_v_circ(r_kpc: f64, m200_solar: f64, log_mstar: f64, z: f64) -> f64 {
 // ---------------------------------------------------------------------------
 
 /// Fractional residuals for one galaxy under a given profile.
-pub fn compute_residuals(
-    galaxy: &SyntheticGalaxy,
-    profile: ProfileType,
-) -> (Vec<f64>, Vec<f64>) {
+pub fn compute_residuals(galaxy: &SyntheticGalaxy, profile: ProfileType) -> (Vec<f64>, Vec<f64>) {
     let m200 = 10.0_f64.powf(galaxy.meta.log_m200);
     let z = galaxy.meta.z;
     let p = nfw_params_from_mass(m200, z);
@@ -213,9 +207,7 @@ pub fn run_h2(config: &H2Config) -> H2Result {
         let summary = format!(
             "H2 DC14 Phase-Shift Exclusion: profile={:?}, phase_scan={}, {} galaxies, \
              empty residual set; returning empty exclusion surface",
-            config.profile,
-            config.phase_scan,
-            config.n_galaxies,
+            config.profile, config.phase_scan, config.n_galaxies,
         );
 
         return H2Result {

@@ -1,10 +1,10 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use csv::Writer;
-use gororoba_cli_data::nanograv_refit::{
-    build_refit_dataset, load_phase1_models_from_report, solve_refit,
+use gororoba_cli_data::{
+    nanograv_refit::{build_refit_dataset, load_phase1_models_from_report, solve_refit},
+    nanograv_timing_model::ReleaseBand,
 };
-use gororoba_cli_data::nanograv_timing_model::ReleaseBand;
 use std::{
     fmt::Write as _,
     fs,
@@ -23,7 +23,10 @@ struct Args {
     )]
     root: PathBuf,
 
-    #[arg(long, default_value = "reports/nanograv_15yr_timing_refit_preflight.toml")]
+    #[arg(
+        long,
+        default_value = "reports/nanograv_15yr_timing_refit_preflight.toml"
+    )]
     phase1_report: PathBuf,
 
     #[arg(long, default_value = "data/csv/nanograv_phase1_refit_residuals.csv")]
@@ -80,19 +83,29 @@ fn main() -> Result<()> {
     )?;
 
     for model in models {
-        let dataset =
-            build_refit_dataset(&args.root, &model, args.residual_tolerance_days).with_context(
-                || format!("build refit dataset for {}", model.solution_id),
-            )?;
-        let fit = solve_refit(&dataset, args.gls_corr_length_days, args.gls_red_noise_fraction)
-            .with_context(|| format!("solve pilot refit for {}", model.solution_id))?;
+        let dataset = build_refit_dataset(&args.root, &model, args.residual_tolerance_days)
+            .with_context(|| format!("build refit dataset for {}", model.solution_id))?;
+        let fit = solve_refit(
+            &dataset,
+            args.gls_corr_length_days,
+            args.gls_red_noise_fraction,
+        )
+        .with_context(|| format!("solve pilot refit for {}", model.solution_id))?;
 
         writeln!(report)?;
         writeln!(report, "[[pulsar]]")?;
         writeln!(report, "solution_id = {:?}", model.solution_id)?;
         writeln!(report, "pulsar_id = {:?}", model.pulsar_id)?;
-        writeln!(report, "matched_observations = {}", dataset.observations.len())?;
-        writeln!(report, "channel_rows_used = {}", dataset.total_channel_rows_used)?;
+        writeln!(
+            report,
+            "matched_observations = {}",
+            dataset.observations.len()
+        )?;
+        writeln!(
+            report,
+            "channel_rows_used = {}",
+            dataset.total_channel_rows_used
+        )?;
         writeln!(
             report,
             "wls_toa_rms_before_us = {:.12}",
@@ -113,10 +126,26 @@ fn main() -> Result<()> {
             "gls_toa_rms_after_us = {:.12}",
             fit.gls_summary.toa_rms_after_us
         )?;
-        writeln!(report, "wls_dm_rms_before = {:.12}", fit.wls_summary.dm_rms_before)?;
-        writeln!(report, "wls_dm_rms_after = {:.12}", fit.wls_summary.dm_rms_after)?;
-        writeln!(report, "gls_dm_rms_before = {:.12}", fit.gls_summary.dm_rms_before)?;
-        writeln!(report, "gls_dm_rms_after = {:.12}", fit.gls_summary.dm_rms_after)?;
+        writeln!(
+            report,
+            "wls_dm_rms_before = {:.12}",
+            fit.wls_summary.dm_rms_before
+        )?;
+        writeln!(
+            report,
+            "wls_dm_rms_after = {:.12}",
+            fit.wls_summary.dm_rms_after
+        )?;
+        writeln!(
+            report,
+            "gls_dm_rms_before = {:.12}",
+            fit.gls_summary.dm_rms_before
+        )?;
+        writeln!(
+            report,
+            "gls_dm_rms_after = {:.12}",
+            fit.gls_summary.dm_rms_after
+        )?;
 
         for row in fit.rows {
             rows.push(row);
@@ -126,7 +155,13 @@ fn main() -> Result<()> {
     write_csv(&args.csv_out, &rows)?;
     write_report(&args.report_out, &report)?;
 
-    println!("Phase 1 refit solutions: {}", rows.iter().map(|row| row.solution_id.as_str()).collect::<std::collections::BTreeSet<_>>().len());
+    println!(
+        "Phase 1 refit solutions: {}",
+        rows.iter()
+            .map(|row| row.solution_id.as_str())
+            .collect::<std::collections::BTreeSet<_>>()
+            .len()
+    );
     println!("Residual CSV: {}", args.csv_out.display());
     println!("Report: {}", args.report_out.display());
     Ok(())
@@ -169,7 +204,8 @@ fn write_csv(
             &format!("{:.12}", row.dm_before),
             &format!("{:.12}", row.dm_after_wls),
             &format!("{:.12}", row.dm_after_gls),
-            &row.dm_uncertainty.map_or_else(String::new, |value| format!("{value:.12}")),
+            &row.dm_uncertainty
+                .map_or_else(String::new, |value| format!("{value:.12}")),
         ])?;
     }
     writer.flush()?;

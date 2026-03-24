@@ -366,7 +366,9 @@ fn prepare_pulsars(
     backend: ComputeBackend,
 ) -> Result<Vec<PulsarProjection>> {
     if let Some(path) = &args.independent_residual_csv {
-        return prepare_pulsars_from_independent_csv(release, path, args, lattice, dimension, backend);
+        return prepare_pulsars_from_independent_csv(
+            release, path, args, lattice, dimension, backend,
+        );
     }
     let mut names = Vec::new();
     let mut residual_sets = Vec::new();
@@ -387,10 +389,14 @@ fn prepare_pulsars(
         let b = equatorial_to_galactic_lat(ra_deg, dec_deg);
 
         let mut inside = true;
-        if let Some(min) = args.lat_min && b < min {
+        if let Some(min) = args.lat_min
+            && b < min
+        {
             inside = false;
         }
-        if let Some(max) = args.lat_max && b > max {
+        if let Some(max) = args.lat_max
+            && b > max
+        {
             inside = false;
         }
 
@@ -465,10 +471,14 @@ fn prepare_pulsars_from_independent_csv(
     let mut reader = csv::Reader::from_path(csv_path)?;
     for result in reader.deserialize() {
         let row: IndependentResidualRow = result?;
-        if let Some(start) = args.mjd_start && row.mjd_utc < start {
+        if let Some(start) = args.mjd_start
+            && row.mjd_utc < start
+        {
             continue;
         }
-        if let Some(end) = args.mjd_end && row.mjd_utc > end {
+        if let Some(end) = args.mjd_end
+            && row.mjd_utc > end
+        {
             continue;
         }
         grouped.entry(row.pulsar_id.clone()).or_default().push(row);
@@ -502,10 +512,14 @@ fn prepare_pulsars_from_independent_csv(
         let dec_deg = sky[2].asin().to_degrees();
         let b = equatorial_to_galactic_lat(ra_deg, dec_deg);
         let mut inside = true;
-        if let Some(min) = args.lat_min && b < min {
+        if let Some(min) = args.lat_min
+            && b < min
+        {
             inside = false;
         }
-        if let Some(max) = args.lat_max && b > max {
+        if let Some(max) = args.lat_max
+            && b > max
+        {
             inside = false;
         }
         if args.lat_exclude {
@@ -517,7 +531,8 @@ fn prepare_pulsars_from_independent_csv(
         }
 
         let avg_unc = mean(
-            &rows.iter()
+            &rows
+                .iter()
                 .map(|row| row.uncertainty_us.max(1.0e-6))
                 .collect::<Vec<_>>(),
         );
@@ -529,9 +544,7 @@ fn prepare_pulsars_from_independent_csv(
     }
 
     if names.is_empty() {
-        bail!(
-            "no pulsars with usable independent residuals and sky metadata for AVT audit"
-        );
+        bail!("no pulsars with usable independent residuals and sky metadata for AVT audit");
     }
 
     let frustrations =
@@ -1006,10 +1019,14 @@ fn residual_series(data: &PulsarTimingData, args: &Args) -> Vec<f64> {
     points
         .iter()
         .filter(|p| {
-            if let Some(start) = args.mjd_start && p.mjd < start {
+            if let Some(start) = args.mjd_start
+                && p.mjd < start
+            {
                 return false;
             }
-            if let Some(end) = args.mjd_end && p.mjd > end {
+            if let Some(end) = args.mjd_end
+                && p.mjd > end
+            {
                 return false;
             }
             true
@@ -1148,11 +1165,7 @@ fn write_report(path: &PathBuf, args: &Args, summaries: &[PerDimensionSummary]) 
     let _ = writeln!(out, "root = \"{}\"", args.root.display());
     let _ = writeln!(out, "surface = \"{}\"", args.surface.as_str());
     if let Some(path) = &args.independent_residual_csv {
-        let _ = writeln!(
-            out,
-            "independent_residual_csv = \"{}\"",
-            path.display()
-        );
+        let _ = writeln!(out, "independent_residual_csv = \"{}\"", path.display());
         let _ = writeln!(
             out,
             "independent_surface = \"{:?}\"",

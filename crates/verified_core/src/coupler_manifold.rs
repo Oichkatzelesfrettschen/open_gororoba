@@ -1,4 +1,4 @@
-//! Coupler-Manifold Monograph for Quantum Error Correction, 
+//! Coupler-Manifold Monograph for Quantum Error Correction,
 //! Measurement-Induced Phase Transitions, and Hierarchical Geometry.
 //!
 //! This module implements the single falsification-ready framework that unifies:
@@ -10,26 +10,25 @@
 //! 6. p-adic Bruhat-Tits Tree representations for hierarchical correlation lengths.
 
 use nalgebra::{DMatrix, DVector};
-use rand::seq::SliceRandom;
-use rand::thread_rng;
+use rand::{seq::SliceRandom, thread_rng};
 
 /// Represents an observation point in the coupler manifold coordinate chart.
 #[derive(Debug, Clone)]
 pub struct CouplerPoint {
     /// Coupler coordinates (knobs/latent parameters), strictly positive.
-    /// Example: `g = (p/p_{thr}, d, \tau_{cyc}, ...)` for QEC, 
+    /// Example: `g = (p/p_{thr}, d, \tau_{cyc}, ...)` for QEC,
     /// or `g = (p, L, T, ...)` for MIPT.
     pub g: DVector<f64>,
     /// Observables, strictly positive.
-    /// Example: `O = (\varepsilon_d, \Lambda)` for QEC, 
+    /// Example: `O = (\varepsilon_d, \Lambda)` for QEC,
     /// or `O = (\zeta)` for MIPT.
     pub o: DVector<f64>,
 }
 
-/// Represents the Jacobian matrix J in log-space: 
+/// Represents the Jacobian matrix J in log-space:
 /// J_{ij} = \partial \ln O_i / \partial \ln g_j
-/// 
-/// J_{ij} is a dimensionless elasticity: a 1% fractional change in g_j 
+///
+/// J_{ij} is a dimensionless elasticity: a 1% fractional change in g_j
 /// produces a J_{ij}% fractional change in O_i locally.
 #[derive(Debug, Clone)]
 pub struct CouplerJacobian {
@@ -45,7 +44,10 @@ impl CouplerJacobian {
 
     /// Estimates the Coupler Jacobian from a base point and a perturbed point
     /// using finite differences in log-space.
-    pub fn estimate_from_delta(base: &CouplerPoint, perturbed: &CouplerPoint) -> Result<Self, &'static str> {
+    pub fn estimate_from_delta(
+        base: &CouplerPoint,
+        perturbed: &CouplerPoint,
+    ) -> Result<Self, &'static str> {
         let m = base.o.len();
         let k = base.g.len();
 
@@ -80,14 +82,10 @@ impl CouplerJacobian {
     /// If Path A and Path B both claim to vary the same latent parameter g,
     /// but produce significantly different dimensionless elasticities J,
     /// a confound is present.
-    pub fn detect_confound(
-        &self, 
-        other: &Self, 
-        tolerance: f64
-    ) -> Vec<(usize, usize, f64)> {
+    pub fn detect_confound(&self, other: &Self, tolerance: f64) -> Vec<(usize, usize, f64)> {
         let mut mismatches = Vec::new();
         let (rows, cols) = self.j_mat.shape();
-        
+
         for i in 0..rows {
             for j in 0..cols {
                 let diff = (self.j_mat[(i, j)] - other.j_mat[(i, j)]).abs();
@@ -112,7 +110,7 @@ impl IdentifiabilityAudit {
         // Compute SVD to check the condition number
         let svd = fisher_info.clone().svd(false, false);
         let singular_values = svd.singular_values;
-        
+
         if singular_values.is_empty() {
             return None;
         }
@@ -143,7 +141,10 @@ pub struct BootstrapEstimator;
 impl BootstrapEstimator {
     /// Given a dataset of measurements, resample with replacement `num_bootstraps` times
     /// to estimate the empirical mean and covariance.
-    pub fn estimate_mean_and_cov(data: &[DVector<f64>], num_bootstraps: usize) -> (DVector<f64>, DMatrix<f64>) {
+    pub fn estimate_mean_and_cov(
+        data: &[DVector<f64>],
+        num_bootstraps: usize,
+    ) -> (DVector<f64>, DMatrix<f64>) {
         if data.is_empty() {
             return (DVector::zeros(0), DMatrix::zeros(0, 0));
         }
@@ -176,7 +177,7 @@ impl BootstrapEstimator {
             let diff = m - &overall_mean;
             cov += &diff * diff.transpose();
         }
-        
+
         if num_bootstraps > 1 {
             cov /= (num_bootstraps - 1) as f64;
         }
@@ -243,7 +244,7 @@ pub mod mipt {
 
     /// Heuristic effective measurement rate from MIPT experiments:
     /// p \approx M / ((M+L)*T)
-    /// Note: Changing T changes p, but also accumulates physical noise, 
+    /// Note: Changing T changes p, but also accumulates physical noise,
     /// making the naive model susceptible to identifiability confounds.
     pub fn effective_measurement_rate(m: f64, l: f64, t: f64) -> f64 {
         m / ((m + l) * t)
@@ -252,10 +253,10 @@ pub mod mipt {
     /// Provides a proxy for the finite-size scaling order parameter (e.g., teleportation fidelity proxy \zeta)
     /// Q(p, L) = F((p-p_c)L^{1/\nu}) + L^{-\omega} G((p-p_c)L^{1/\nu})
     pub fn finite_size_scaling_ansatz(
-        p: f64, 
-        l: f64, 
-        p_c: f64, 
-        nu: f64, 
+        p: f64,
+        l: f64,
+        p_c: f64,
+        nu: f64,
         omega: f64,
         f_func: impl Fn(f64) -> f64,
         g_func: impl Fn(f64) -> f64,
@@ -362,27 +363,33 @@ mod tests {
         let mut g_base = DVector::zeros(2);
         g_base[0] = 0.5; // p/p_thr
         g_base[1] = 5.0; // distance
-        
+
         let mut o_base = DVector::zeros(1);
         o_base[0] = 0.01; // error
-        
-        let base = CouplerPoint { g: g_base, o: o_base };
-        
+
+        let base = CouplerPoint {
+            g: g_base,
+            o: o_base,
+        };
+
         let mut g_pert = DVector::zeros(2);
         g_pert[0] = 0.505; // 1% change
         g_pert[1] = 5.0;
-        
+
         let mut o_pert = DVector::zeros(1);
         // expected J = (5+1)/2 = 3.0
         // so a 1% change in g should lead to a 3% change in o
         o_pert[0] = 0.01 * 1.03;
-        
-        let pert = CouplerPoint { g: g_pert, o: o_pert };
-        
+
+        let pert = CouplerPoint {
+            g: g_pert,
+            o: o_pert,
+        };
+
         let jacobian = CouplerJacobian::estimate_from_delta(&base, &pert).unwrap();
-        
+
         // Check J_{0, 0}
-        assert!((jacobian.j_mat[(0, 0)] - 3.0).abs() < 0.1); 
+        assert!((jacobian.j_mat[(0, 0)] - 3.0).abs() < 0.1);
     }
 
     #[test]

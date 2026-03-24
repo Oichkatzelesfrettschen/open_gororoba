@@ -148,9 +148,9 @@ impl UnifiedInt8Runner {
         for _ in 0..n {
             let parity = (self.step_count & 1) as i32;
             let mut b = self.stream.launch_builder(&self.step_kernel);
-            b.arg(&mut self.d_f)   // single f buffer (read+write in-place)
+            b.arg(&mut self.d_f) // single f buffer (read+write in-place)
                 .arg(&self.d_tau)
-                .arg(&force_null)    // null force pointer (kernel guards)
+                .arg(&force_null) // null force pointer (kernel guards)
                 .arg(&self.nx)
                 .arg(&self.ny)
                 .arg(&self.nz)
@@ -162,11 +162,7 @@ impl UnifiedInt8Runner {
     }
 
     /// Extract a 2D slice of rho and velocity magnitude on-the-fly.
-    pub fn read_slice(
-        &mut self,
-        slice_axis: i32,
-        slice_idx: i32,
-    ) -> Result<(Vec<f32>, Vec<f32>)> {
+    pub fn read_slice(&mut self, slice_axis: i32, slice_idx: i32) -> Result<(Vec<f32>, Vec<f32>)> {
         // Lazy-compile slice kernel
         if self.slice_kernel.is_none() {
             let arch = crate::probe_cuda_device_props()
@@ -198,7 +194,9 @@ impl UnifiedInt8Runner {
             shared_mem_bytes: 0,
         };
         {
-            let mut b = self.stream.launch_builder(self.slice_kernel.as_ref().unwrap());
+            let mut b = self
+                .stream
+                .launch_builder(self.slice_kernel.as_ref().unwrap());
             b.arg(&self.d_f)
                 .arg(&mut d_rho_slice)
                 .arg(&mut d_vel_slice)

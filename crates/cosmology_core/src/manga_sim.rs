@@ -1,6 +1,6 @@
 //! Synthetic MaNGA-like Rotation Curve Generation.
 //!
-//! Generates synthetic galaxy rotation curves matching MaNGA IFU 
+//! Generates synthetic galaxy rotation curves matching MaNGA IFU
 //! statistics (E-183) for null-result validation of Zero-Divisor (ZD) signals.
 //!
 //! Migrated from main.py.
@@ -35,10 +35,16 @@ pub struct MangaDataBundle {
 pub fn compute_nfw_v_template(x_grid: &Array1<f64>) -> Array1<f64> {
     let mut v = x_grid.mapv(|x| {
         let val = (x.ln_1p() - x / (1.0 + x)) / x;
-        if val > 0.0 && val.is_finite() { val.sqrt() } else { 0.0 }
+        if val > 0.0 && val.is_finite() {
+            val.sqrt()
+        } else {
+            0.0
+        }
     });
     let vmax: f64 = v.fold(0.0, |a, &b| a.max(b));
-    if vmax > 0.0 { v /= vmax; }
+    if vmax > 0.0 {
+        v /= vmax;
+    }
     v
 }
 
@@ -46,7 +52,9 @@ pub fn compute_nfw_v_template(x_grid: &Array1<f64>) -> Array1<f64> {
 pub fn compute_baryonic_v_template(x_grid: &Array1<f64>) -> Array1<f64> {
     let mut v = x_grid.mapv(|x| x * (-x / 0.3).exp());
     let vmax: f64 = v.fold(0.0, |a, &b| a.max(b));
-    if vmax > 0.0 { v /= vmax; }
+    if vmax > 0.0 {
+        v /= vmax;
+    }
     v
 }
 
@@ -115,7 +123,7 @@ pub fn generate_synthetic_manga(params: &MangaSimParams) -> MangaDataBundle {
             let v_circ = a_nfw * nfw_template[j] + a_bar * baryonic_template[j];
             let noise = noise_dist.sample(&mut rng) * noise_sigma;
             let v_l = v_circ * sin_i + noise;
-            
+
             v_los[[i, j]] = v_l;
             v_corrected[[i, j]] = v_l / sin_i.max(0.1);
             err_corrected[[i, j]] = noise_sigma.max(1e-6) / sin_i.max(0.1);

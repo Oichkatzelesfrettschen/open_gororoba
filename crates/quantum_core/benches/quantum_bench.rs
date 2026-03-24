@@ -6,8 +6,8 @@
 //! - FHS Chern number calculation
 
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
-use std::hint::black_box;
 use quantum_core::{MatrixProductState, fhs_chern_numbers, harper_hamiltonian};
+use std::hint::black_box;
 
 /// Benchmark MPS single-qubit gate application.
 fn bench_mps_single_gate(c: &mut Criterion) {

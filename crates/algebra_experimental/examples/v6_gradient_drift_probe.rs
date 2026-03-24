@@ -1,9 +1,8 @@
 use algebra_experimental::neutrino_sector::{
     BranchMapReport, BranchWallReport, LoopReport, PathScanReport, V6ProbeArtifacts,
-    default_probe_artifacts,
+    V6ProbeSummary, default_probe_artifacts, summarize_probe_artifacts,
 };
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 const OUT_DIR: &str = "data/results/neutrino_sector/v6_branch_transport";
 
@@ -132,10 +131,62 @@ fn write_probe_artifacts(base: &Path, artifacts: &V6ProbeArtifacts) -> std::io::
     Ok(())
 }
 
+fn render_summary_markdown(summary: &V6ProbeSummary) -> String {
+    format!(
+        "# V6 Branch Transport Summary\n\n\
+Base branch: `{}`\n\n\
+## Key Metrics\n\n\
+- Branch-map rows: `{}`\n\
+- Same-branch points: `{}`\n\
+- Switched-branch points: `{}`\n\
+- Branch-wall edges: `{}`\n\
+- Stable-loop wall crossings: `{}`\n\
+- Wall-crossing-loop wall crossings: `{}`\n\
+- Stable loop closes after transport: `{}`\n\
+- Wall-crossing loop closes after transport: `{}`\n\
+- Fixed `alpha_nu = 1.35` strip stays on base branch: `{}`\n\
+- Fixed `alpha_ch = 3.00` path shows low-`alpha_nu` wall: `{}`\n\
+- Singular value min/max/spread: `{:.12}` / `{:.12}` / `{:.12}`\n\n\
+## Method\n\n\
+These numbers are derived directly from the pure-Rust branch-transport lane in\n\
+`algebra_experimental::neutrino_sector::branch_transport`. The structural `V_6`\n\
+subspace is extracted once, gradient-selected frames are recomputed at each\n\
+parameter point, and loop closure is evaluated after sign-consistent transport.\n\n\
+## Interpretation\n\n\
+The current evidence supports a stable structural `V_6` subspace and a highly\n\
+stable local gradient frame in the main branch. The dominant warnings arise from\n\
+discrete permutation-branch walls with associated gauge/sign flips, not from\n\
+detected residual monodromy in the tested loops.\n",
+        summary.base_branch,
+        summary.branch_map_rows,
+        summary.same_perm_points,
+        summary.switched_perm_points,
+        summary.branch_wall_count,
+        summary.stable_loop_wall_crossings,
+        summary.wall_loop_wall_crossings,
+        summary.stable_loop_closes,
+        summary.wall_loop_closes,
+        summary.fixed_alpha_nu_scan_all_match,
+        summary.fixed_alpha_ch_scan_has_low_alpha_wall,
+        summary.singular_value_min,
+        summary.singular_value_max,
+        summary.singular_value_spread
+    )
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let artifacts = default_probe_artifacts();
+    let summary = summarize_probe_artifacts(&artifacts);
     let out_dir = Path::new(OUT_DIR);
     write_probe_artifacts(out_dir, &artifacts)?;
+    fs::write(
+        out_dir.join("summary_metrics.json"),
+        serde_json::to_string_pretty(&summary).expect("serialize V6 summary metrics"),
+    )?;
+    fs::write(
+        out_dir.join("SUMMARY.md"),
+        render_summary_markdown(&summary),
+    )?;
 
     println!(
         "v6_branch_transport_artifacts branch_map_rows={} wall_count={} stable_loop_walls={} wall_loop_walls={}",

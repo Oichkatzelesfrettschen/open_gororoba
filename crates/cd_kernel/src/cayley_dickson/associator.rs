@@ -109,7 +109,9 @@ pub fn octonion_associator_simd(a: &[f64; 8], b: &[f64; 8], c: &[f64; 8]) -> [f6
     let bc = octonion_multiply_flat(b, c);
     let a_bc = octonion_multiply_flat(a, &bc);
     let mut assoc = [0.0_f64; 8];
-    for k in 0..8 { assoc[k] = ab_c[k] - a_bc[k]; }
+    for k in 0..8 {
+        assoc[k] = ab_c[k] - a_bc[k];
+    }
     assoc
 }
 
@@ -121,12 +123,19 @@ pub fn batch_octonion_basis_associators() -> Vec<(usize, usize, usize, [f64; 8])
     let mut results = Vec::with_capacity(210);
     for i in 1..8 {
         for j in 1..8 {
-            if j == i { continue; }
+            if j == i {
+                continue;
+            }
             for k in 1..8 {
-                if k == i || k == j { continue; }
-                let mut ei = [0.0_f64; 8]; ei[i] = 1.0;
-                let mut ej = [0.0_f64; 8]; ej[j] = 1.0;
-                let mut ek = [0.0_f64; 8]; ek[k] = 1.0;
+                if k == i || k == j {
+                    continue;
+                }
+                let mut ei = [0.0_f64; 8];
+                ei[i] = 1.0;
+                let mut ej = [0.0_f64; 8];
+                ej[j] = 1.0;
+                let mut ek = [0.0_f64; 8];
+                ek[k] = 1.0;
                 let assoc = octonion_associator_simd(&ei, &ej, &ek);
                 results.push((i, j, k, assoc));
             }

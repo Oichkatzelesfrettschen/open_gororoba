@@ -26,10 +26,16 @@ struct Args {
     #[arg(long, value_enum, default_value_t = BandArg::Wideband)]
     band: BandArg,
 
-    #[arg(long, default_value = "data/csv/nanograv_15yr_timing_refit_preflight.csv")]
+    #[arg(
+        long,
+        default_value = "data/csv/nanograv_15yr_timing_refit_preflight.csv"
+    )]
     csv_out: PathBuf,
 
-    #[arg(long, default_value = "reports/nanograv_15yr_timing_refit_preflight.toml")]
+    #[arg(
+        long,
+        default_value = "reports/nanograv_15yr_timing_refit_preflight.toml"
+    )]
     report_out: PathBuf,
 }
 
@@ -90,7 +96,11 @@ fn main() -> Result<()> {
     let models = load_release_timing_models(&args.root, band)
         .with_context(|| format!("failed to load {:?} timing models", band))?;
     if models.is_empty() {
-        bail!("no {:?} timing models found under {}", band, args.root.display());
+        bail!(
+            "no {:?} timing models found under {}",
+            band,
+            args.root.display()
+        );
     }
 
     let pulsar_solution_counts = count_solutions_per_pulsar(&models);
@@ -135,10 +145,10 @@ fn build_row(
         solution_id: model.solution_id.clone(),
         pulsar_id: model.pulsar_id.clone(),
         band: model.band.as_str(),
-        binary_family: model
-            .binary_family
-            .as_ref()
-            .map_or_else(|| "isolated".to_string(), |family| family.as_str().to_string()),
+        binary_family: model.binary_family.as_ref().map_or_else(
+            || "isolated".to_string(),
+            |family| family.as_str().to_string(),
+        ),
         ntoa: model.ntoa,
         chi2: model.chi2,
         start_mjd: model.start_mjd,
@@ -150,10 +160,16 @@ fn build_row(
         noise_term_count: model.noise_terms.len(),
         fd_term_count: model.fd_terms.len(),
         dmx_window_count: model.dispersion.dmx_windows.len(),
-        has_equatorial_astrometry: model.astrometry.raj.is_some() && model.astrometry.decj.is_some(),
-        has_ecliptic_astrometry: model.astrometry.elong.is_some() && model.astrometry.elat.is_some(),
+        has_equatorial_astrometry: model.astrometry.raj.is_some()
+            && model.astrometry.decj.is_some(),
+        has_ecliptic_astrometry: model.astrometry.elong.is_some()
+            && model.astrometry.elat.is_some(),
         px_mas,
-        multi_solution_pulsar: pulsar_solution_counts.get(&model.pulsar_id).copied().unwrap_or(0) > 1,
+        multi_solution_pulsar: pulsar_solution_counts
+            .get(&model.pulsar_id)
+            .copied()
+            .unwrap_or(0)
+            > 1,
         phase1_selected: phase1_map.contains_key(&model.solution_id),
         phase1_reason: phase1_map.get(&model.solution_id).cloned(),
     }
@@ -201,7 +217,10 @@ fn select_phase1_subset(models: &[TimingModel]) -> Vec<Phase1Selection> {
             selected.push(Phase1Selection {
                 solution_id: model.solution_id.clone(),
                 pulsar_id: model.pulsar_id.clone(),
-                reason: format!("family_representative_{}", family.as_str().to_ascii_lowercase()),
+                reason: format!(
+                    "family_representative_{}",
+                    family.as_str().to_ascii_lowercase()
+                ),
             });
         }
     }
@@ -209,7 +228,10 @@ fn select_phase1_subset(models: &[TimingModel]) -> Vec<Phase1Selection> {
     selected
 }
 
-fn best_model_for_pulsar<'a>(models: &'a [TimingModel], pulsar_id: &str) -> Option<&'a TimingModel> {
+fn best_model_for_pulsar<'a>(
+    models: &'a [TimingModel],
+    pulsar_id: &str,
+) -> Option<&'a TimingModel> {
     models
         .iter()
         .filter(|model| model.pulsar_id == pulsar_id)
@@ -232,10 +254,7 @@ fn compare_models(left: &TimingModel, right: &TimingModel) -> std::cmp::Ordering
     left.ntoa
         .unwrap_or(0)
         .cmp(&right.ntoa.unwrap_or(0))
-        .then_with(|| {
-            left.fit_parameter_count()
-                .cmp(&right.fit_parameter_count())
-        })
+        .then_with(|| left.fit_parameter_count().cmp(&right.fit_parameter_count()))
 }
 
 fn write_csv(path: &Path, rows: &[PreflightRow]) -> Result<()> {

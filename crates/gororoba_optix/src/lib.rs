@@ -10,8 +10,7 @@
 //! BVH rebuild policy, and particle-tracing semantics should remain in the
 //! simulation crates that consume this boundary.
 
-use std::ffi::c_void;
-use std::sync::Arc;
+use std::{ffi::c_void, sync::Arc};
 
 /// OptiX result code (0 = success).
 pub type OptixResult = i32;
@@ -225,14 +224,8 @@ pub struct OptixApi {
     pub table: OptixFunctionTable,
 }
 
-type QueryFunctionTableFn = unsafe extern "C" fn(
-    u32,
-    u32,
-    *mut c_void,
-    *mut c_void,
-    *mut c_void,
-    usize,
-) -> OptixResult;
+type QueryFunctionTableFn =
+    unsafe extern "C" fn(u32, u32, *mut c_void, *mut c_void, *mut c_void, usize) -> OptixResult;
 
 impl OptixApi {
     /// Load `libnvoptix.so.1` and query the OptiX function table.
@@ -254,12 +247,8 @@ impl OptixApi {
         let query_fn: libloading::Symbol<QueryFunctionTableFn> =
             lib.get(b"optixQueryFunctionTable\0")?;
 
-        const ABI_TABLE_SIZES: &[(u32, usize)] = &[
-            (91, 50 * 8),
-            (86, 50 * 8),
-            (78, 56 * 8),
-            (55, 60 * 8),
-        ];
+        const ABI_TABLE_SIZES: &[(u32, usize)] =
+            &[(91, 50 * 8), (86, 50 * 8), (78, 56 * 8), (55, 60 * 8)];
 
         let mut raw_table = vec![0u8; 512];
         let mut matched_abi = 0u32;

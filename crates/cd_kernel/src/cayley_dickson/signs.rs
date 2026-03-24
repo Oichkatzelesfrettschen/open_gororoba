@@ -158,7 +158,10 @@ impl SignTable {
     #[inline(always)]
     pub fn row_words(&self, p: usize) -> &[u64] {
         debug_assert!(p < self.dim);
-        debug_assert!(self.dim >= 64, "row_words requires dim >= 64; use row_bits() for smaller");
+        debug_assert!(
+            self.dim >= 64,
+            "row_words requires dim >= 64; use row_bits() for smaller"
+        );
         let words_per_row = self.dim / 64;
         let start = p * words_per_row;
         &self.bits.as_raw_slice()[start..start + words_per_row]
@@ -194,7 +197,11 @@ impl SignTable {
             .filter_map(|idx| {
                 let v = accum[idx];
                 accum[idx] = 0.0;
-                if v.abs() > 1e-20 { Some((idx, v)) } else { None }
+                if v.abs() > 1e-20 {
+                    Some((idx, v))
+                } else {
+                    None
+                }
             })
             .collect()
     }

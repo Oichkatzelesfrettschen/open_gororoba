@@ -851,9 +851,7 @@ impl SoaBenchRunner {
     pub fn new_fp8_e5m2_soa_mrt(nx: usize, ny: usize, nz: usize) -> Result<Self> {
         let arch = arch_static();
         if !arch.contains("sm_89") && !arch.starts_with("sm_9") {
-            anyhow::bail!(
-                "FP8 e5m2 SoA MRT requires SM 8.9+ (Ada Lovelace). Current arch: {arch}"
-            );
+            anyhow::bail!("FP8 e5m2 SoA MRT requires SM 8.9+ (Ada Lovelace). Current arch: {arch}");
         }
         Self::build(
             SoaBuildSpec {
@@ -962,11 +960,7 @@ impl SoaBenchRunner {
     ///
     /// This enables live viewing of 512^3 INT8 simulations within 12 GB:
     /// only ~2 MB is read back per frame instead of multi-GB macroscopic.
-    pub fn read_slice(
-        &self,
-        slice_axis: i32,
-        slice_idx: i32,
-    ) -> Result<(Vec<f32>, Vec<f32>)> {
+    pub fn read_slice(&self, slice_axis: i32, slice_idx: i32) -> Result<(Vec<f32>, Vec<f32>)> {
         let arch = arch_static();
         let opts = cudarc::nvrtc::CompileOptions {
             arch: Some(arch),

@@ -157,26 +157,103 @@ impl TimingModel {
             .chain(self.other_terms.iter())
             .filter(|term| term.fit == Some(true))
             .count()
-            + self.jumps.iter().filter(|term| term.fit == Some(true)).count()
-            + self.dmjumps.iter().filter(|term| term.fit == Some(true)).count()
-            + self.noise_terms.iter().filter(|term| term.fit == Some(true)).count()
-            + usize::from(self.astrometry.raj.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.decj.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.elong.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.elat.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.pmelong.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.pmelat.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.pmra.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.pmdec.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.astrometry.px.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.dispersion.dm.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.dispersion.dmepoch.as_ref().is_some_and(|term| term.fit == Some(true)))
-            + usize::from(self.dispersion.dmx_step.as_ref().is_some_and(|term| term.fit == Some(true)))
+            + self
+                .jumps
+                .iter()
+                .filter(|term| term.fit == Some(true))
+                .count()
+            + self
+                .dmjumps
+                .iter()
+                .filter(|term| term.fit == Some(true))
+                .count()
+            + self
+                .noise_terms
+                .iter()
+                .filter(|term| term.fit == Some(true))
+                .count()
+            + usize::from(
+                self.astrometry
+                    .raj
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .decj
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .elong
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .elat
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .pmelong
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .pmelat
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .pmra
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .pmdec
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.astrometry
+                    .px
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.dispersion
+                    .dm
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.dispersion
+                    .dmepoch
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
+            + usize::from(
+                self.dispersion
+                    .dmx_step
+                    .as_ref()
+                    .is_some_and(|term| term.fit == Some(true)),
+            )
             + self
                 .dispersion
                 .dmx_windows
                 .iter()
-                .filter(|window| window.dmx.as_ref().is_some_and(|term| term.fit == Some(true)))
+                .filter(|window| {
+                    window
+                        .dmx
+                        .as_ref()
+                        .is_some_and(|term| term.fit == Some(true))
+                })
                 .count()
     }
 
@@ -251,7 +328,11 @@ pub fn parse_par_timing_model(path: &Path, band: ReleaseBand) -> Result<TimingMo
     parse_par_timing_model_text(path, band, &content)
 }
 
-fn parse_par_timing_model_text(path: &Path, band: ReleaseBand, content: &str) -> Result<TimingModel> {
+fn parse_par_timing_model_text(
+    path: &Path,
+    band: ReleaseBand,
+    content: &str,
+) -> Result<TimingModel> {
     let solution_id = path
         .file_stem()
         .and_then(|value| value.to_str())
@@ -335,7 +416,9 @@ fn parse_par_timing_model_text(path: &Path, band: ReleaseBand, content: &str) ->
             "EFAC" | "EQUAD" | "ECORR" | "TNEF" | "TNEQ" | "DMEFAC" | "DMEQUAD" => {
                 model.noise_terms.push(parse_tagged_term(&fields));
             }
-            _ if spin_pattern.is_match(name) => model.spin_terms.push(parse_parameter_term(&fields)),
+            _ if spin_pattern.is_match(name) => {
+                model.spin_terms.push(parse_parameter_term(&fields))
+            }
             _ if fd_pattern.is_match(name) => model.fd_terms.push(parse_parameter_term(&fields)),
             _ if dmx_pattern.is_match(name) => {
                 let label = dmx_pattern
@@ -343,10 +426,12 @@ fn parse_par_timing_model_text(path: &Path, band: ReleaseBand, content: &str) ->
                     .and_then(|captures| captures.get(1))
                     .map(|capture| capture.as_str().to_string())
                     .expect("dmx label");
-                let window = dmx_windows.entry(label.clone()).or_insert_with(|| DmxWindow {
-                    label,
-                    ..DmxWindow::default()
-                });
+                let window = dmx_windows
+                    .entry(label.clone())
+                    .or_insert_with(|| DmxWindow {
+                        label,
+                        ..DmxWindow::default()
+                    });
                 window.dmx = Some(parse_parameter_term(&fields));
             }
             _ if dmxr1_pattern.is_match(name) => {
@@ -355,10 +440,12 @@ fn parse_par_timing_model_text(path: &Path, band: ReleaseBand, content: &str) ->
                     .and_then(|captures| captures.get(1))
                     .map(|capture| capture.as_str().to_string())
                     .expect("dmxr1 label");
-                let window = dmx_windows.entry(label.clone()).or_insert_with(|| DmxWindow {
-                    label,
-                    ..DmxWindow::default()
-                });
+                let window = dmx_windows
+                    .entry(label.clone())
+                    .or_insert_with(|| DmxWindow {
+                        label,
+                        ..DmxWindow::default()
+                    });
                 window.start_mjd = parse_f64(fields[1]);
             }
             _ if dmxr2_pattern.is_match(name) => {
@@ -367,10 +454,12 @@ fn parse_par_timing_model_text(path: &Path, band: ReleaseBand, content: &str) ->
                     .and_then(|captures| captures.get(1))
                     .map(|capture| capture.as_str().to_string())
                     .expect("dmxr2 label");
-                let window = dmx_windows.entry(label.clone()).or_insert_with(|| DmxWindow {
-                    label,
-                    ..DmxWindow::default()
-                });
+                let window = dmx_windows
+                    .entry(label.clone())
+                    .or_insert_with(|| DmxWindow {
+                        label,
+                        ..DmxWindow::default()
+                    });
                 window.end_mjd = parse_f64(fields[1]);
             }
             _ => model.other_terms.push(parse_parameter_term(&fields)),
@@ -410,13 +499,18 @@ fn parse_tagged_term(fields: &[&str]) -> TaggedTerm {
         selectors,
         raw_value: fields.get(index).unwrap_or(&"").to_string(),
         value: fields.get(index).and_then(|value| parse_f64(value)),
-        fit: fields.get(index + 1).and_then(|value| parse_fit_flag(value)),
+        fit: fields
+            .get(index + 1)
+            .and_then(|value| parse_fit_flag(value)),
         uncertainty: fields.get(index + 2).and_then(|value| parse_f64(value)),
     }
 }
 
 fn parse_f64(value: &str) -> Option<f64> {
-    value.parse::<f64>().ok().filter(|parsed| parsed.is_finite())
+    value
+        .parse::<f64>()
+        .ok()
+        .filter(|parsed| parsed.is_finite())
 }
 
 fn parse_usize(value: &str) -> Option<usize> {

@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use quantum_core::grover::{grover_search, GroverConfig, optimal_iterations};
+use quantum_core::grover::{grover_search, optimal_iterations, GroverConfig};
 use rand::prelude::*;
 use std::collections::HashSet;
 
@@ -12,7 +12,7 @@ struct Args {
 
     #[arg(short, long, default_value = "0.01,0.05,0.1,0.25")]
     fractions: String,
-    
+
     #[arg(long, default_value_t = 42)]
     seed: u64,
 }
@@ -51,7 +51,7 @@ fn run_benchmark_suite(sizes: &[usize], fractions: &[f64], seed: u64) -> Vec<Ben
     for &n_states in sizes {
         let n_qubits = (n_states as f64).log2().ceil() as u32;
         let actual_n_states = 1usize << n_qubits;
-        
+
         let mut rng = StdRng::seed_from_u64(seed);
 
         for &frac in fractions {
@@ -70,7 +70,10 @@ fn run_benchmark_suite(sizes: &[usize], fractions: &[f64], seed: u64) -> Vec<Ben
                 n_qubits as usize,
                 is_marked,
                 n_marked,
-                GroverConfig { iterations: Some(q_iters), top_k: 1 }
+                GroverConfig {
+                    iterations: Some(q_iters),
+                    top_k: 1,
+                },
             );
 
             let quantum_calls = q_result.iterations;
@@ -94,12 +97,16 @@ fn run_benchmark_suite(sizes: &[usize], fractions: &[f64], seed: u64) -> Vec<Ben
 
 fn main() -> Result<()> {
     let args = Args::parse();
-    
-    let sizes: Vec<usize> = args.sizes.split(',')
+
+    let sizes: Vec<usize> = args
+        .sizes
+        .split(',')
         .map(|s| s.trim().parse::<usize>().expect("Invalid size"))
         .collect();
-        
-    let fractions: Vec<f64> = args.fractions.split(',')
+
+    let fractions: Vec<f64> = args
+        .fractions
+        .split(',')
         .map(|s| s.trim().parse::<f64>().expect("Invalid fraction"))
         .collect();
 

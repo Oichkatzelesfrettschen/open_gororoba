@@ -8,8 +8,7 @@
 //! - Kraskov et al. (2004): Estimating mutual information
 //! - Kozachenko & Leonenko (1987): Sample estimate of the entropy of a random vector
 
-use kiddo::KdTree;
-use kiddo::float::distance::SquaredEuclidean;
+use kiddo::{KdTree, float::distance::SquaredEuclidean};
 use statrs::function::gamma::digamma;
 use std::f64::consts::PI;
 
@@ -35,11 +34,7 @@ pub fn ksg_mutual_information_2d(x: &[[f64; 2]], y: &[[f64; 2]], k: usize) -> f6
     let mut tree_x: KdTree<f64, 2> = KdTree::new();
     let mut tree_y: KdTree<f64, 2> = KdTree::new();
 
-    for (index, ((xy_point, x_point), y_point)) in xy
-        .iter()
-        .zip(x.iter())
-        .zip(y.iter())
-        .enumerate()
+    for (index, ((xy_point, x_point), y_point)) in xy.iter().zip(x.iter()).zip(y.iter()).enumerate()
     {
         tree_xy.add(xy_point, index as u64);
         tree_x.add(x_point, index as u64);

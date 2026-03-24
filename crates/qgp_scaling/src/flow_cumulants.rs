@@ -66,7 +66,10 @@ mod tests {
 
     #[test]
     fn test_v2_4() {
-        let c4 = FourParticleCumulant { n: 2, c_n_4: -0.0016 };
+        let c4 = FourParticleCumulant {
+            n: 2,
+            c_n_4: -0.0016,
+        };
         assert!((c4.v_n_4().unwrap() - 0.2).abs() < 1e-6);
     }
 }

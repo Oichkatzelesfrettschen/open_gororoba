@@ -34,22 +34,31 @@ pub struct ChatAnalysis {
 pub fn analyze_chat_log(content: &str) -> ChatAnalysis {
     let mut keywords = HashMap::new();
     let concepts = vec![
-        "Sedenion", "Gravastar", "Fractal", "Negative Dimension", 
-        "Zero Divisor", "LIGO", "Chern", "Hamiltonian",
+        "Sedenion",
+        "Gravastar",
+        "Fractal",
+        "Negative Dimension",
+        "Zero Divisor",
+        "LIGO",
+        "Chern",
+        "Hamiltonian",
     ];
     for concept in concepts {
         let re = Regex::new(&format!(r"(?i){}", concept)).unwrap();
         keywords.insert(concept.to_string(), re.find_iter(content).count());
     }
 
-    let re_action = Regex::new(r"(?i)(?:Next steps|Future work|To do|We should|explore)(.*)").unwrap();
-    let action_items = re_action.captures_iter(content)
+    let re_action =
+        Regex::new(r"(?i)(?:Next steps|Future work|To do|We should|explore)(.*)").unwrap();
+    let action_items = re_action
+        .captures_iter(content)
         .map(|cap| cap[1].trim().to_string())
         .filter(|s| s.len() > 10)
         .collect();
 
     let re_eq = Regex::new(r"(?s)\$\$(.*?)\$\$").unwrap();
-    let equations = re_eq.captures_iter(content)
+    let equations = re_eq
+        .captures_iter(content)
         .map(|cap| cap[1].trim().to_string())
         .collect();
 

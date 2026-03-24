@@ -13,8 +13,7 @@ use anyhow::Result;
 use gororoba_gpu_bridge::{ExecutionProfile, FrameMode};
 
 pub use gororoba_gpu_readback::{
-    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
-    ReadbackResidency,
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout, ReadbackResidency,
 };
 
 /// Runtime grid dimensions for a 3D simulation or data volume.

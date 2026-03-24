@@ -701,7 +701,11 @@ impl DatasetProvider for NanoGrav15yrTimingProvider {
             .join("nanograv_15yr_pulsar_timing_v2.1.0.tar.gz");
         let extract_dir = config.output_dir.join("nanograv_15yr_timing");
         if config.skip_existing && nanograv_timing_tree_present(&extract_dir) {
-            log::info!("{} already cached at {}", self.name(), extract_dir.display());
+            log::info!(
+                "{} already cached at {}",
+                self.name(),
+                extract_dir.display()
+            );
             return Ok(extract_dir);
         }
 
@@ -946,7 +950,8 @@ mod tests {
     }
 
     #[test]
-    fn test_extract_kde_zip_alternate_interpretations_remain_finite_but_do_not_match_if_available() {
+    fn test_extract_kde_zip_alternate_interpretations_remain_finite_but_do_not_match_if_available()
+    {
         let path = repo_path("data/external/nanograv_15yr_kde.zip");
         if !path.exists() {
             eprintln!("Skipping: NANOGrav KDE ZIP not available (run fetch-datasets first)");

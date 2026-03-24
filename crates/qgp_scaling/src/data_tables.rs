@@ -284,9 +284,21 @@ pub struct RaaReference {
 #[must_use]
 pub fn cms_oo_5360_raa() -> Vec<RaaReference> {
     vec![
-        RaaReference { pt: 6.0, raa: 0.69, raa_err: 0.04 },
-        RaaReference { pt: 20.0, raa: 0.85, raa_err: 0.05 },
-        RaaReference { pt: 100.0, raa: 0.98, raa_err: 0.08 },
+        RaaReference {
+            pt: 6.0,
+            raa: 0.69,
+            raa_err: 0.04,
+        },
+        RaaReference {
+            pt: 20.0,
+            raa: 0.85,
+            raa_err: 0.05,
+        },
+        RaaReference {
+            pt: 100.0,
+            raa: 0.98,
+            raa_err: 0.08,
+        },
     ]
 }
 
@@ -294,8 +306,16 @@ pub fn cms_oo_5360_raa() -> Vec<RaaReference> {
 #[must_use]
 pub fn alice_oo_5360_pi0_raa() -> Vec<RaaReference> {
     vec![
-        RaaReference { pt: 5.0, raa: 0.65, raa_err: 0.06 },
-        RaaReference { pt: 15.0, raa: 0.78, raa_err: 0.07 },
+        RaaReference {
+            pt: 5.0,
+            raa: 0.65,
+            raa_err: 0.06,
+        },
+        RaaReference {
+            pt: 15.0,
+            raa: 0.78,
+            raa_err: 0.07,
+        },
     ]
 }
 
@@ -312,8 +332,16 @@ pub struct VnReference {
 #[must_use]
 pub fn atlas_nene_5360_v2() -> Vec<VnReference> {
     vec![
-        VnReference { n: 2, v_n: 0.045, v_n_err: 0.005 }, // 0-5%
-        VnReference { n: 2, v_n: 0.065, v_n_err: 0.006 }, // 20-30%
+        VnReference {
+            n: 2,
+            v_n: 0.045,
+            v_n_err: 0.005,
+        }, // 0-5%
+        VnReference {
+            n: 2,
+            v_n: 0.065,
+            v_n_err: 0.006,
+        }, // 20-30%
     ]
 }
 
@@ -330,8 +358,16 @@ pub enum VnSystem {
 #[must_use]
 pub fn alice_oo_5360_flow() -> Vec<VnReference> {
     vec![
-        VnReference { n: 2, v_n: 0.035, v_n_err: 0.004 }, // Central
-        VnReference { n: 3, v_n: 0.018, v_n_err: 0.003 },
+        VnReference {
+            n: 2,
+            v_n: 0.035,
+            v_n_err: 0.004,
+        }, // Central
+        VnReference {
+            n: 3,
+            v_n: 0.018,
+            v_n_err: 0.003,
+        },
     ]
 }
 
@@ -339,9 +375,11 @@ pub fn alice_oo_5360_flow() -> Vec<VnReference> {
 /// Confirms Neon prolate shape in fixed-target mode.
 #[must_use]
 pub fn lhcb_pbne_70_flow() -> Vec<VnReference> {
-    vec![
-        VnReference { n: 2, v_n: 0.052, v_n_err: 0.006 },
-    ]
+    vec![VnReference {
+        n: 2,
+        v_n: 0.052,
+        v_n_err: 0.006,
+    }]
 }
 
 /// STAR BES-II net-proton cumulant ratio C4/C2 (arXiv:2504.00817).
@@ -356,9 +394,21 @@ pub struct CumulantReference {
 #[must_use]
 pub fn star_bes2_cumulants() -> Vec<CumulantReference> {
     vec![
-        CumulantReference { energy_gev: 200.0, c4_c2: 1.05, c4_c2_err: 0.05 },
-        CumulantReference { energy_gev: 54.4, c4_c2: 1.12, c4_c2_err: 0.08 },
-        CumulantReference { energy_gev: 27.0, c4_c2: 1.25, c4_c2_err: 0.15 },
+        CumulantReference {
+            energy_gev: 200.0,
+            c4_c2: 1.05,
+            c4_c2_err: 0.05,
+        },
+        CumulantReference {
+            energy_gev: 54.4,
+            c4_c2: 1.12,
+            c4_c2_err: 0.08,
+        },
+        CumulantReference {
+            energy_gev: 27.0,
+            c4_c2: 1.25,
+            c4_c2_err: 0.15,
+        },
     ]
 }
 

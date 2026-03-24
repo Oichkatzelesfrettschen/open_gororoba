@@ -24,13 +24,17 @@ pub fn deduplicate(papers: Vec<Paper>) -> Vec<Paper> {
         }
 
         // Fuzzy title match against existing results
-        let title_normalized: String = paper.title.to_lowercase()
+        let title_normalized: String = paper
+            .title
+            .to_lowercase()
             .chars()
             .filter(|c| c.is_alphanumeric() || c.is_whitespace())
             .collect();
 
         let is_fuzzy_dup = result.iter().any(|existing| {
-            let existing_norm: String = existing.title.to_lowercase()
+            let existing_norm: String = existing
+                .title
+                .to_lowercase()
                 .chars()
                 .filter(|c| c.is_alphanumeric() || c.is_whitespace())
                 .collect();

@@ -88,11 +88,8 @@ impl OptiXPipeline {
         velocity_device_ptr: u64,
         density_device_ptr: u64,
     ) -> Self {
-        let sbt_data = LbmSbtData::from_config(
-            &tracer_config,
-            velocity_device_ptr,
-            density_device_ptr,
-        );
+        let sbt_data =
+            LbmSbtData::from_config(&tracer_config, velocity_device_ptr, density_device_ptr);
         Self {
             config: pipeline_config,
             tracer_config,
@@ -111,16 +108,9 @@ impl OptiXPipeline {
     }
 
     /// Update the SBT device pointers (call when LBM buffers are reallocated).
-    pub fn update_device_pointers(
-        &mut self,
-        velocity_device_ptr: u64,
-        density_device_ptr: u64,
-    ) {
-        self.sbt_data = LbmSbtData::from_config(
-            &self.tracer_config,
-            velocity_device_ptr,
-            density_device_ptr,
-        );
+    pub fn update_device_pointers(&mut self, velocity_device_ptr: u64, density_device_ptr: u64) {
+        self.sbt_data =
+            LbmSbtData::from_config(&self.tracer_config, velocity_device_ptr, density_device_ptr);
     }
 
     /// Check if the BVH needs rebuilding based on step count and occupancy delta.
@@ -248,15 +238,9 @@ pub struct OptiXCompileOptions {
 impl Default for OptiXCompileOptions {
     fn default() -> Self {
         Self {
-            include_paths: vec![
-                "/usr/include/optix".to_string(),
-                "/usr/include".to_string(),
-            ],
+            include_paths: vec!["/usr/include/optix".to_string(), "/usr/include".to_string()],
             arch: "sm_89".to_string(),
-            extra_flags: vec![
-                "--use_fast_math".to_string(),
-                "-default-device".to_string(),
-            ],
+            extra_flags: vec!["--use_fast_math".to_string(), "-default-device".to_string()],
         }
     }
 }
@@ -385,10 +369,10 @@ mod tests {
         };
         let mut pipeline = OptiXPipeline::new(config, tracer, 0, 0);
         pipeline.last_rebuild_occupancy = 0.5;
-        assert!(pipeline.needs_rebuild(0, 0.5));  // step 0 always rebuilds
+        assert!(pipeline.needs_rebuild(0, 0.5)); // step 0 always rebuilds
         assert!(!pipeline.needs_rebuild(5, 0.52)); // delta < 0.05
-        assert!(pipeline.needs_rebuild(5, 0.6));   // delta > 0.05
-        assert!(pipeline.needs_rebuild(20, 0.5));  // periodic
+        assert!(pipeline.needs_rebuild(5, 0.6)); // delta > 0.05
+        assert!(pipeline.needs_rebuild(20, 0.5)); // periodic
     }
 
     #[test]

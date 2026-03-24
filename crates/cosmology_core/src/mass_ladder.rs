@@ -5,8 +5,7 @@
 //!
 //! Migrated from src/map_cosmic_objects.py and src/fetch_ligo_gwpy.py.
 
-use data_core::catalogs::gwtc::GwEvent;
-use data_core::catalogs::atnf::Pulsar;
+use data_core::catalogs::{atnf::Pulsar, gwtc::GwEvent};
 use stats_core::helpers::histogram;
 
 /// A predicted mass mode from the Sedenion ladder.
@@ -46,7 +45,8 @@ impl MassLadderMatch {
 
     /// Load LIGO masses from a list of events.
     pub fn load_ligo(&mut self, events: &[GwEvent]) {
-        self.ligo_masses = events.iter()
+        self.ligo_masses = events
+            .iter()
             .map(|e| e.mass_1_source)
             .filter(|&m| m > 0.0)
             .collect();
@@ -67,7 +67,11 @@ impl MassLadderMatch {
     }
 
     /// Compute histograms for the aggregated masses.
-    pub fn compute_histograms(&self, n_bins: usize, max_mass: f64) -> (Vec<f64>, Vec<usize>, Vec<usize>) {
+    pub fn compute_histograms(
+        &self,
+        n_bins: usize,
+        max_mass: f64,
+    ) -> (Vec<f64>, Vec<usize>, Vec<usize>) {
         let (centers, ligo_counts) = histogram(&self.ligo_masses, n_bins, 0.0, max_mass);
         let (_, pulsar_counts) = histogram(&self.pulsar_masses, n_bins, 0.0, max_mass);
         (centers, ligo_counts, pulsar_counts)
@@ -75,8 +79,12 @@ impl MassLadderMatch {
 
     /// Find the nearest Sedenion mode for a given observed mass.
     pub fn find_nearest_mode(&self, mass: f64) -> Option<&SedenionMassMode> {
-        self.modes.iter()
-            .min_by(|a, b| (a.mass_solar - mass).abs().partial_cmp(&(b.mass_solar - mass).abs()).unwrap())
+        self.modes.iter().min_by(|a, b| {
+            (a.mass_solar - mass)
+                .abs()
+                .partial_cmp(&(b.mass_solar - mass).abs())
+                .unwrap()
+        })
     }
 }
 

@@ -37,11 +37,11 @@ pub enum GpuTier {
     /// Low-memory device where reduced precision and smaller grids are favored.
     Constrained = 0, // < 2GB VRAM
     /// Midrange device suited for moderate grid sizes and mixed precision.
-    Standard = 1,    // 2-4GB VRAM
+    Standard = 1, // 2-4GB VRAM
     /// High-memory device suited for larger grids and more complex shaders.
-    High = 2,        // 4-8GB VRAM
+    High = 2, // 4-8GB VRAM
     /// Large-memory device where full-resolution render targets are practical.
-    Ultra = 3,       // > 8GB VRAM
+    Ultra = 3, // > 8GB VRAM
 }
 
 /// Vulkan hardware capabilities used to scale solver and render policy.
@@ -720,5 +720,4 @@ mod tests {
         let src = include_str!("../shaders/lbm_mrt_aa.wgsl");
         crate::compute::compile_wgsl(src).expect("MRT A-A shader must compile via naga");
     }
-
 }

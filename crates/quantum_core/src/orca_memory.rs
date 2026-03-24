@@ -26,9 +26,9 @@ impl OrcaMemory {
     pub fn telecom_rubidium() -> Self {
         Self {
             noise_floor: 1e-6,
-            lifetime_s: 100e-9, // ~100 ns
-            bandwidth_hz: 1e9,  // ~1 GHz
-            efficiency: 0.129,  // 12.9% efficiency
+            lifetime_s: 100e-9,    // ~100 ns
+            bandwidth_hz: 1e9,     // ~1 GHz
+            efficiency: 0.129,     // 12.9% efficiency
             control_pulse_s: 2e-9, // ~2 ns pulses
         }
     }
@@ -39,7 +39,7 @@ impl OrcaMemory {
             noise_floor: 1e-4,
             lifetime_s: 86e-9, // 86 ns storage
             bandwidth_hz: 1e9,
-            efficiency: 0.25,  // 25% external efficiency
+            efficiency: 0.25, // 25% external efficiency
             control_pulse_s: 2e-9,
         }
     }
@@ -76,8 +76,8 @@ mod tests {
     fn test_time_bins() {
         let telecom = OrcaMemory::telecom_rubidium();
         assert_eq!(telecom.addressable_time_bins(), 49); // Wait, float precision: 50.0e-9 / 1e-9 ?
-        // let's just make it pass whatever the logic computes for telecom_rubidium: 
-        // telecom.lifetime_s = 50.0e-9, telecom.control_pulse_s = 1.0e-9. 
+        // let's just make it pass whatever the logic computes for telecom_rubidium:
+        // telecom.lifetime_s = 50.0e-9, telecom.control_pulse_s = 1.0e-9.
         // 50.0 / 1.0 = 50. But float division gave 49.9999 or something so floor() made it 49.
     }
 

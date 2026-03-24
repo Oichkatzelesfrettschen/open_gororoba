@@ -14,11 +14,11 @@
 //! - Vidal, PRL 99 (2007) 220405
 //! - Swingle, PRD 86 (2012) 065007 (MERA/AdS)
 
-use verified_core::coupler_manifold::CouplerPoint;
 use nalgebra::DVector;
 use num_complex::Complex64;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
+use verified_core::coupler_manifold::CouplerPoint;
 
 /// Complex matrix type.
 pub type ComplexMatrix = Vec<Vec<Complex64>>;

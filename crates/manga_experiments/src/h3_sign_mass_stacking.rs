@@ -17,13 +17,14 @@
 //!
 //! ~75 seconds compute.
 
-use crate::common::{
-    detection_snr, fourier_power_at_wavenumbers, generate_galaxy_sample,
-    predicted_wavenumbers_cd16, rms, SyntheticGalaxy,
+use crate::{
+    common::{
+        SyntheticGalaxy, detection_snr, fourier_power_at_wavenumbers, generate_galaxy_sample,
+        predicted_wavenumbers_cd16, rms,
+    },
+    h2_dc14_exclusion::{ProfileType, compute_residuals},
 };
-use crate::h2_dc14_exclusion::compute_residuals;
-use crate::h2_dc14_exclusion::ProfileType;
-use adjustp::{adjust, Procedure};
+use adjustp::{Procedure, adjust};
 use statrs::distribution::{ChiSquared, ContinuousCDF};
 
 // ---------------------------------------------------------------------------
@@ -192,8 +193,7 @@ pub fn run_h3(config: &H3Config, mode: SplitMode) -> H3Result {
         .filter_map(|g| {
             let (x, dv) = compute_residuals(g, profile);
             let mean_dv: f64 = dv.iter().sum::<f64>() / dv.len() as f64;
-            classify_galaxy(g, mean_dv, &config.mass_bin_edges, mode)
-                .map(|(s, m)| (s, m, x, dv))
+            classify_galaxy(g, mean_dv, &config.mass_bin_edges, mode).map(|(s, m)| (s, m, x, dv))
         })
         .collect();
 

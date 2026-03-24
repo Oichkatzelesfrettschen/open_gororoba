@@ -135,10 +135,7 @@ pub struct BrickResult {
 ///
 /// For the GPU path, use the `scan_brick_occupancy` CUDA kernel from
 /// `optix_brick_scan.cu` which runs on the device without readback.
-pub fn build_brick_aabbs(
-    rho: &[f32],
-    config: &OptiXTracerConfig,
-) -> Vec<BrickResult> {
+pub fn build_brick_aabbs(rho: &[f32], config: &OptiXTracerConfig) -> Vec<BrickResult> {
     let (nx, ny, nz) = config.grid_dim;
     let bs = config.brick_size;
     let brick_grid = BrickGrid3d::from_logical_grid(
@@ -185,12 +182,9 @@ pub fn build_brick_aabbs(
                             min_x: config.grid_origin[0] + x0 as f32 * config.cell_size[0],
                             min_y: config.grid_origin[1] + y0 as f32 * config.cell_size[1],
                             min_z: config.grid_origin[2] + z0 as f32 * config.cell_size[2],
-                            max_x: config.grid_origin[0]
-                                + (x0 + bs) as f32 * config.cell_size[0],
-                            max_y: config.grid_origin[1]
-                                + (y0 + bs) as f32 * config.cell_size[1],
-                            max_z: config.grid_origin[2]
-                                + (z0 + bs) as f32 * config.cell_size[2],
+                            max_x: config.grid_origin[0] + (x0 + bs) as f32 * config.cell_size[0],
+                            max_y: config.grid_origin[1] + (y0 + bs) as f32 * config.cell_size[1],
+                            max_z: config.grid_origin[2] + (z0 + bs) as f32 * config.cell_size[2],
                         },
                         brick_idx,
                         _pad: 0,

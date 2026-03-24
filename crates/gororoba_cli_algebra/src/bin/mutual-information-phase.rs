@@ -1,8 +1,6 @@
 use anyhow::{Context, Result};
 use clap::Parser;
-use std::collections::HashMap;
-use std::fs::File;
-use std::path::PathBuf;
+use std::{collections::HashMap, fs::File, path::PathBuf};
 
 use stats_core::mutual_information::{entropy_ksg_2d, ksg_mutual_information_2d};
 
@@ -10,7 +8,11 @@ const ALGEBRA_NAMES: [&str; 4] = ["CD-ZD", "G2", "J3O", "sl2"];
 const RE_COLS: [usize; 4] = [1, 3, 5, 7];
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Cross-algebra mutual information analysis of per-galaxy DFT phases.")]
+#[command(
+    author,
+    version,
+    about = "Cross-algebra mutual information analysis of per-galaxy DFT phases."
+)]
 struct Args {
     /// Path to cross_algebra_correlation.galaxies.csv
     input: PathBuf,
@@ -27,7 +29,9 @@ fn load_galaxy_phases(csv_path: &PathBuf) -> Result<HashMap<String, Vec<f64>>> {
         .collect();
 
     let file = File::open(csv_path).context("Failed to open CSV file")?;
-    let mut rdr = csv::ReaderBuilder::new().has_headers(true).from_reader(file);
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(file);
 
     for result in rdr.records() {
         let record = result?;

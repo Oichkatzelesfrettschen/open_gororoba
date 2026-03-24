@@ -8,22 +8,19 @@
 //! - Oseledets & Tyrtyshnikov (2010): TT-cross approximation for multidimensional arrays
 
 use crate::tt_train::{TTCore, TTTrain};
-use ndarray::Array3;
 use faer::Mat;
+use ndarray::Array3;
 
 /// Build a rank-1 TT approximation using a single dominant pivot multi-index j.
 ///
 /// Ref: Paper Section II.B, "Rank-1 symmetry-adapted scheme".
-pub fn build_rank1_symmetry_adapted<F>(
-    d: usize,
-    n: usize,
-    pivot: &[usize],
-    mut f: F,
-) -> TTTrain 
-where F: FnMut(&[usize]) -> f64 {
+pub fn build_rank1_symmetry_adapted<F>(d: usize, n: usize, pivot: &[usize], mut f: F) -> TTTrain
+where
+    F: FnMut(&[usize]) -> f64,
+{
     let f_pivot = f(pivot);
     let mut cores = Vec::with_capacity(d);
-    
+
     for k in 0..d {
         // G_k(1, i_k, 1) = f(j_1, ..., i_k, ..., j_d)
         let mut core_data = Array3::<f64>::zeros((1, n, 1));
@@ -44,7 +41,10 @@ where F: FnMut(&[usize]) -> f64 {
         intersection_matrices.push(m);
     }
 
-    TTTrain { cores, intersection_matrices }
+    TTTrain {
+        cores,
+        intersection_matrices,
+    }
 }
 
 /// Build a rank-2 TT approximation using two super-diagonal anchors.
@@ -58,26 +58,28 @@ pub fn build_rank2_symmetry_adapted<F>(
     j2: &[usize],
     mut f: F,
 ) -> TTTrain
-where F: FnMut(&[usize]) -> f64 {
+where
+    F: FnMut(&[usize]) -> f64,
+{
     let mut cores = Vec::with_capacity(d);
     let mut intersection_matrices = Vec::with_capacity(d - 1);
 
     // Compute intersection matrices S_k and their inverses M_k
     for k in 0..(d - 1) {
         let mut s_k = Mat::<f64>::zeros(2, 2);
-        
+
         // S_k[alpha, beta] = f( J_alpha(<k), j_beta(k), J_beta(>k) )
-        // Actually simpler for rank-2 symmetry-adapted: 
+        // Actually simpler for rank-2 symmetry-adapted:
         // S_k is the submatrix of the k-th unfolding.
         // We use the two multi-indices j1 and j2 as anchors.
-        
+
         let idx11 = j1.to_vec();
         let mut idx12 = j1.to_vec();
         idx12[(k + 1)..d].copy_from_slice(&j2[(k + 1)..d]);
 
         let mut idx21 = j2.to_vec();
         idx21[(k + 1)..d].copy_from_slice(&j1[(k + 1)..d]);
-        
+
         let idx22 = j2.to_vec();
 
         let v11 = f(&idx11);
@@ -91,7 +93,10 @@ where F: FnMut(&[usize]) -> f64 {
         s_k.write(1, 1, v22);
 
         let det = v11 * v22 - v12 * v21;
-        println!("DEBUG: S_{} values: [[{:.2e}, {:.2e}], [{:.2e}, {:.2e}]] det={:.2e}", k, v11, v12, v21, v22, det);
+        println!(
+            "DEBUG: S_{} values: [[{:.2e}, {:.2e}], [{:.2e}, {:.2e}]] det={:.2e}",
+            k, v11, v12, v21, v22, det
+        );
         let mut inv = Mat::<f64>::zeros(2, 2);
         if det.abs() > 1e-15 {
             inv.write(0, 0, v22 / det);
@@ -132,5 +137,8 @@ where F: FnMut(&[usize]) -> f64 {
         cores.push(TTCore { data: core_data });
     }
 
-    TTTrain { cores, intersection_matrices }
+    TTTrain {
+        cores,
+        intersection_matrices,
+    }
 }

@@ -40,14 +40,10 @@ use wide::f64x4;
 // Source data: Johnson & Christy (1972), Ordal et al., Henke et al. (public domain).
 // To update a dataset, edit crates/materials_data/data/nk/<material>.csv.
 use materials_data::{
-    JC_AU_EV, JC_AU_N, JC_AU_K,
-    JC_AG_EV, JC_AG_N, JC_AG_K,
-    JC_CU_EV, JC_CU_N, JC_CU_K,
-    SPLICED_AU_EV, SPLICED_AU_N, SPLICED_AU_K,
-    SPLICED_CU_EV, SPLICED_CU_N, SPLICED_CU_K,
-    SPLICED3_AU_EV, SPLICED3_AU_N, SPLICED3_AU_K,
-    SPLICED3_AG_EV, SPLICED3_AG_N, SPLICED3_AG_K,
-    SPLICED3_CU_EV, SPLICED3_CU_N, SPLICED3_CU_K,
+    JC_AG_EV, JC_AG_K, JC_AG_N, JC_AU_EV, JC_AU_K, JC_AU_N, JC_CU_EV, JC_CU_K, JC_CU_N,
+    SPLICED_AU_EV, SPLICED_AU_K, SPLICED_AU_N, SPLICED_CU_EV, SPLICED_CU_K, SPLICED_CU_N,
+    SPLICED3_AG_EV, SPLICED3_AG_K, SPLICED3_AG_N, SPLICED3_AU_EV, SPLICED3_AU_K, SPLICED3_AU_N,
+    SPLICED3_CU_EV, SPLICED3_CU_K, SPLICED3_CU_N,
 };
 
 // ============================================================================

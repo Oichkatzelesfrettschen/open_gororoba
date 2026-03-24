@@ -17,19 +17,19 @@
 
 use clap::Parser;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
+use rayon::prelude::*;
 use spectral_core::chsh_betti_bridge::{spearman_correlation, velocity_to_betti, velocity_to_chsh};
 use std::{f64::consts::PI, fs, path::Path};
-use rayon::prelude::*;
 
 #[cfg(target_arch = "x86_64")]
 fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
     println!("    [Screening] CPU Rayon multi-core pre-flight (FP64 / x87 FP80)");
-    
+
     // Ensure Rayon is pinned to physical cores
     let _ = verified_core::topology::HardwareTopology::init_pinned_rayon_pool();
 
     let mut solver = lbm_3d::solver::LbmSolver3D::new(n, n, n, tau);
-    
+
     let n_total = n * n * n;
     let force_field: Vec<[f64; 3]> = (0..n_total)
         .into_par_iter()
@@ -39,7 +39,9 @@ fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
             [fx, 0.0, 0.0]
         })
         .collect();
-    solver.set_force_field(force_field).expect("set CPU force field");
+    solver
+        .set_force_field(force_field)
+        .expect("set CPU force field");
 
     // Evolve 10 steps using Rayon parallel backend inside LbmSolver3D
     for _ in 0..10 {
@@ -47,10 +49,11 @@ fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
     }
 
     // Compute KE using rayon mapping and then accumulate via x87 FP80
-    let local_kes: Vec<f64> = solver.rho.par_iter().zip(solver.u.par_iter())
-        .map(|(r, u)| {
-            r * (u[0]*u[0] + u[1]*u[1] + u[2]*u[2])
-        })
+    let local_kes: Vec<f64> = solver
+        .rho
+        .par_iter()
+        .zip(solver.u.par_iter())
+        .map(|(r, u)| r * (u[0] * u[0] + u[1] * u[1] + u[2] * u[2]))
         .collect();
 
     let mut total_ke = 0.0;
@@ -60,10 +63,13 @@ fn cpu_precision_screening(n: usize, tau: f64, force_amp: f64) -> bool {
         f[..chunk.len()].copy_from_slice(&chunk[..chunk.len()]);
         total_ke += verified_core::x87_math::x87_abm8_dot_product(&f, &c);
     }
-    
+
     let mean_ke = total_ke / n_total as f64;
-    println!("    [Screening] Validated mean KE (x87 FP80): {:.6e}", mean_ke);
-    
+    println!(
+        "    [Screening] Validated mean KE (x87 FP80): {:.6e}",
+        mean_ke
+    );
+
     mean_ke.is_finite() && mean_ke < 1e5
 }
 
@@ -135,7 +141,10 @@ fn main() {
     for (name, tau, force_amp) in &configs {
         // Initial precision screening via CPU multiple cores + x87 FP80
         if !cpu_precision_screening(n, *tau, *force_amp) {
-            println!("  {:>12}  {:>8}  {:>8}  {:>8}  {:>8}", name, "NaN", "NaN", 0, "SCREEN_FAIL");
+            println!(
+                "  {:>12}  {:>8}  {:>8}  {:>8}  {:>8}",
+                name, "NaN", "NaN", 0, "SCREEN_FAIL"
+            );
             continue;
         }
 

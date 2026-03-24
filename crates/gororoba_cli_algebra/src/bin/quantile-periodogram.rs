@@ -1,7 +1,6 @@
 use anyhow::{Context, Result};
 use clap::Parser;
-use std::fs::File;
-use std::path::PathBuf;
+use std::{fs::File, path::PathBuf};
 
 use stats_core::quantile_regression::quantile_periodogram_at_freq;
 
@@ -16,7 +15,12 @@ struct Args {
     #[arg(short, long, default_value = "value")]
     column: String,
 
-    #[arg(short, long, value_delimiter = ',', default_value = "0.1,0.25,0.5,0.75,0.9")]
+    #[arg(
+        short,
+        long,
+        value_delimiter = ',',
+        default_value = "0.1,0.25,0.5,0.75,0.9"
+    )]
     quantiles: String,
 
     #[arg(short, long, default_value_t = 100)]
@@ -27,11 +31,15 @@ fn fisher_g_test(periodogram: &[f64]) -> (f64, f64) {
     let mut max_p = 0.0;
     let mut sum_p = 0.0;
     for &p in periodogram {
-        if p > max_p { max_p = p; }
+        if p > max_p {
+            max_p = p;
+        }
         sum_p += p;
     }
 
-    if sum_p <= 0.0 { return (0.0, 1.0); }
+    if sum_p <= 0.0 {
+        return (0.0, 1.0);
+    }
 
     let g = max_p / sum_p;
     let m = periodogram.len() as f64;
@@ -39,19 +47,21 @@ fn fisher_g_test(periodogram: &[f64]) -> (f64, f64) {
     // Exact p-value: P(G > g) = sum_{k=1..floor(1/g)} (-1)^{k+1} * C(M,k) * (1-kg)^{M-1}
     let mut p_value = 0.0;
     let limit = (1.0 / g).floor() as usize;
-    
+
     for k in 1..=limit.min(periodogram.len()) {
         let term = 1.0 - k as f64 * g;
-        if term <= 0.0 { break; }
-        
+        if term <= 0.0 {
+            break;
+        }
+
         let sign = if k % 2 == 1 { 1.0 } else { -1.0 };
-        
+
         // C(M,k) can be large, use logs
         let mut log_comb = 0.0;
         for i in 0..k {
             log_comb += (m - i as f64).ln() - (i as f64 + 1.0).ln();
         }
-        
+
         let log_term = log_comb + (m - 1.0) * term.ln();
         p_value += sign * log_term.exp();
     }
@@ -61,8 +71,10 @@ fn fisher_g_test(periodogram: &[f64]) -> (f64, f64) {
 
 fn main() -> Result<()> {
     let args = Args::parse();
-    
-    let quantiles: Vec<f64> = args.quantiles.split(',')
+
+    let quantiles: Vec<f64> = args
+        .quantiles
+        .split(',')
         .filter_map(|s| s.trim().parse().ok())
         .collect();
 
@@ -86,9 +98,10 @@ fn main() -> Result<()> {
 
         if let Some(v_str) = val
             && let Ok(v) = v_str.parse::<f64>()
-                && v.is_finite() {
-                    signal.push(v);
-                }
+            && v.is_finite()
+        {
+            signal.push(v);
+        }
     }
 
     if signal.is_empty() {
@@ -98,7 +111,7 @@ fn main() -> Result<()> {
     let n = signal.len();
     let freq_min = (1.0 / n as f64).max(0.01);
     let freq_max = 0.5;
-    
+
     // Grid around target freq
     let freq_tol = 0.02;
     let mut freqs = Vec::new();
@@ -114,7 +127,12 @@ fn main() -> Result<()> {
     freqs.sort_by(|a, b| a.partial_cmp(b).unwrap());
     freqs.dedup_by(|a, b| (*a - *b).abs() < 1e-10);
 
-    println!("N={}, {} frequency bins, quantiles={:?}", n, freqs.len(), quantiles);
+    println!(
+        "N={}, {} frequency bins, quantiles={:?}",
+        n,
+        freqs.len(),
+        quantiles
+    );
 
     let mut combined_fisher_inputs = Vec::new();
 
@@ -126,7 +144,7 @@ fn main() -> Result<()> {
         }
 
         let (g, p_fisher) = fisher_g_test(&powers);
-        
+
         let mut max_p = -1.0;
         let mut max_f = 0.0;
         for (i, &p) in powers.iter().enumerate() {
@@ -137,14 +155,21 @@ fn main() -> Result<()> {
         }
 
         println!("    Fisher g={:.6}, p={:.6e}", g, p_fisher);
-        println!("    Global max at f={:.6} (target={:.6})", max_f, ALIASED_GHOST_FREQ);
-        
+        println!(
+            "    Global max at f={:.6} (target={:.6})",
+            max_f, ALIASED_GHOST_FREQ
+        );
+
         combined_fisher_inputs.push(p_fisher);
     }
 
     // Combine across quantiles using Fisher's method
-    let combined_chi2 = -2.0 * combined_fisher_inputs.iter().map(|&p| p.max(1e-300).ln()).sum::<f64>();
-    
+    let combined_chi2 = -2.0
+        * combined_fisher_inputs
+            .iter()
+            .map(|&p| p.max(1e-300).ln())
+            .sum::<f64>();
+
     // Chi-squared p-value (df = 2 * n_quantiles)
     // We can use statrs for this
     use statrs::distribution::{ChiSquared, ContinuousCDF};
@@ -154,7 +179,7 @@ fn main() -> Result<()> {
     println!("\nSummary:");
     println!("  Combined Fisher chi2: {:.4}", combined_chi2);
     println!("  Combined p-value: {:.6e}", combined_p);
-    
+
     if combined_p < 0.05 {
         println!("  Verdict: SIGNIFICANT");
     } else {

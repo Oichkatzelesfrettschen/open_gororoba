@@ -73,9 +73,13 @@ pub type LatticePoint = [i8; 8];
 /// 2. sum(l_i) == 0 mod 2
 /// 3. count(l_i != 0) == 0 mod 2
 pub fn in_base_universe(l: &LatticePoint) -> bool {
-    if l[0] == 1 { return false; }
+    if l[0] == 1 {
+        return false;
+    }
     let sum: i32 = l.iter().map(|&x| x as i32).sum();
-    if sum.rem_euclid(2) != 0 { return false; }
+    if sum.rem_euclid(2) != 0 {
+        return false;
+    }
     let nonzero_count: usize = l.iter().filter(|&&x| x != 0).count();
     nonzero_count.is_multiple_of(2)
 }
@@ -87,11 +91,17 @@ pub fn in_base_universe(l: &LatticePoint) -> bool {
 /// - (l[0], l[1], l[2], l[3], l[4]) = (0, 1, 0, 1, 1)
 /// - (l[0], l[1], l[2], l[3], l[4], l[5]) = (0, 1, 0, 1, 0, 1)
 pub fn in_lambda_2048(l: &LatticePoint) -> bool {
-    if !in_base_universe(l) { return false; }
+    if !in_base_universe(l) {
+        return false;
+    }
     // Forbidden prefix 1: (0, 1, 1)
-    if l[0] == 0 && l[1] == 1 && l[2] == 1 { return false; }
+    if l[0] == 0 && l[1] == 1 && l[2] == 1 {
+        return false;
+    }
     // Forbidden prefix 2: (0, 1, 0, 1, 1)
-    if l[0] == 0 && l[1] == 1 && l[2] == 0 && l[3] == 1 && l[4] == 1 { return false; }
+    if l[0] == 0 && l[1] == 1 && l[2] == 0 && l[3] == 1 && l[4] == 1 {
+        return false;
+    }
     // Forbidden prefix 3: (0, 1, 0, 1, 0, 1)
     if l[0] == 0 && l[1] == 1 && l[2] == 0 && l[3] == 1 && l[4] == 0 && l[5] == 1 {
         return false;
@@ -106,12 +116,22 @@ pub fn in_lambda_2048(l: &LatticePoint) -> bool {
 /// - (-1, 1, 1, 0, 0) prefix (14 points)
 /// - (-1, 1, 1, 0, 1) prefix (13 points)
 pub fn in_lambda_1024(l: &LatticePoint) -> bool {
-    if !in_lambda_2048(l) { return false; }
-    if l[0] != -1 { return false; }
+    if !in_lambda_2048(l) {
+        return false;
+    }
+    if l[0] != -1 {
+        return false;
+    }
     // Additional exclusions within l[0] = -1
-    if l[1] == 1 && l[2] == 1 && l[3] == 1 { return false; }
-    if l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == 0 { return false; }
-    if l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == 1 { return false; }
+    if l[1] == 1 && l[2] == 1 && l[3] == 1 {
+        return false;
+    }
+    if l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == 0 {
+        return false;
+    }
+    if l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == 1 {
+        return false;
+    }
     true
 }
 
@@ -125,12 +145,24 @@ pub fn in_lambda_1024(l: &LatticePoint) -> bool {
 /// - l[1] = l[2] = 0 and l[3] = -1 and l[4] = 1, OR
 /// - l[1] = l[2] = 0 and l[3] = -1 and l[4] = 0 and l[5] = 1 and l[6] = 1
 pub fn in_lambda_512(l: &LatticePoint) -> bool {
-    if !in_lambda_1024(l) { return false; }
-    if l[1] == 1 { return false; }
-    if l[1] == 0 && l[2] == 1 { return false; }
-    if l[1] == 0 && l[2] == 0 && l[3] == 0 { return false; }
-    if l[1] == 0 && l[2] == 0 && l[3] == 1 { return false; }
-    if l[1] == 0 && l[2] == 0 && l[3] == -1 && l[4] == 1 { return false; }
+    if !in_lambda_1024(l) {
+        return false;
+    }
+    if l[1] == 1 {
+        return false;
+    }
+    if l[1] == 0 && l[2] == 1 {
+        return false;
+    }
+    if l[1] == 0 && l[2] == 0 && l[3] == 0 {
+        return false;
+    }
+    if l[1] == 0 && l[2] == 0 && l[3] == 1 {
+        return false;
+    }
+    if l[1] == 0 && l[2] == 0 && l[3] == -1 && l[4] == 1 {
+        return false;
+    }
     if l[1] == 0 && l[2] == 0 && l[3] == -1 && l[4] == 0 && l[5] == 1 && l[6] == 1 {
         return false;
     }
@@ -147,13 +179,27 @@ pub fn in_lambda_512(l: &LatticePoint) -> bool {
 /// 5. (-1, -1, 1, -1, 0, ...) prefix
 /// 6. singleton (-1, -1, 1, -1, -1, 1, 1, 1)
 pub fn in_lambda_256(l: &LatticePoint) -> bool {
-    if !in_lambda_512(l) { return false; }
-    if l[0] == -1 && l[1] == 0 { return false; }
-    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == 1 { return false; }
-    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == 0 { return false; }
-    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == -1 && l[4] == 1 { return false; }
-    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == -1 && l[4] == 0 { return false; }
-    if *l == [-1, -1, 1, -1, -1, 1, 1, 1] { return false; }
+    if !in_lambda_512(l) {
+        return false;
+    }
+    if l[0] == -1 && l[1] == 0 {
+        return false;
+    }
+    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == 1 {
+        return false;
+    }
+    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == 0 {
+        return false;
+    }
+    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == -1 && l[4] == 1 {
+        return false;
+    }
+    if l[0] == -1 && l[1] == -1 && l[2] == 1 && l[3] == -1 && l[4] == 0 {
+        return false;
+    }
+    if *l == [-1, -1, 1, -1, -1, 1, 1, 1] {
+        return false;
+    }
     true
 }
 
@@ -162,9 +208,15 @@ pub fn in_lambda_256(l: &LatticePoint) -> bool {
 /// Lambda_32 = Lambda_256 with (l[0..4]) = (-1,-1,-1,-1)
 ///             and (l[4] != 1 or l[5] = -1).
 pub fn in_lambda_32(l: &LatticePoint) -> bool {
-    if !in_lambda_256(l) { return false; }
-    if l[0] != -1 || l[1] != -1 || l[2] != -1 || l[3] != -1 { return false; }
-    if l[4] == 1 && l[5] != -1 { return false; }
+    if !in_lambda_256(l) {
+        return false;
+    }
+    if l[0] != -1 || l[1] != -1 || l[2] != -1 || l[3] != -1 {
+        return false;
+    }
+    if l[4] == 1 && l[5] != -1 {
+        return false;
+    }
     true
 }
 
@@ -172,11 +224,26 @@ pub fn in_lambda_32(l: &LatticePoint) -> bool {
 pub fn enumerate_base_universe() -> Vec<LatticePoint> {
     let vals: [i8; 3] = [-1, 0, 1];
     let mut points = Vec::new();
-    for &a in &vals { for &b in &vals { for &c in &vals { for &d in &vals {
-    for &e in &vals { for &f in &vals { for &g in &vals { for &h in &vals {
-        let l = [a, b, c, d, e, f, g, h];
-        if in_base_universe(&l) { points.push(l); }
-    }}}}}}}}
+    for &a in &vals {
+        for &b in &vals {
+            for &c in &vals {
+                for &d in &vals {
+                    for &e in &vals {
+                        for &f in &vals {
+                            for &g in &vals {
+                                for &h in &vals {
+                                    let l = [a, b, c, d, e, f, g, h];
+                                    if in_base_universe(&l) {
+                                        points.push(l);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     points
 }
 
@@ -213,21 +280,21 @@ mod tests {
         let base = enumerate_base_universe();
 
         // Points in Lambda_2048 with l[0] = -1 (the 1094 candidates)
-        let candidates: Vec<LatticePoint> = base.iter()
+        let candidates: Vec<LatticePoint> = base
+            .iter()
             .filter(|l| in_lambda_2048(l) && l[0] == -1)
             .copied()
             .collect();
         eprintln!("Candidates (Lambda_2048, l[0]=-1): {}", candidates.len());
 
         // Points currently in Lambda_1024 (1026)
-        let current_1024: Vec<LatticePoint> = base.iter()
-            .filter(|l| in_lambda_1024(l))
-            .copied()
-            .collect();
+        let current_1024: Vec<LatticePoint> =
+            base.iter().filter(|l| in_lambda_1024(l)).copied().collect();
         println!("Current Lambda_1024: {}", current_1024.len());
 
         // The 68 excluded by our three prefix rules
-        let excluded_by_prefix: Vec<LatticePoint> = candidates.iter()
+        let excluded_by_prefix: Vec<LatticePoint> = candidates
+            .iter()
             .filter(|l| !in_lambda_1024(l))
             .copied()
             .collect();
@@ -247,19 +314,27 @@ mod tests {
         // (the remaining branch not covered by our rules).
 
         // Check: how many points have prefix (-1, 1, 1, 0, -1)?
-        let prefix_m1_1_1_0_m1: Vec<&LatticePoint> = current_1024.iter()
-            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1)
+        let prefix_m1_1_1_0_m1: Vec<&LatticePoint> = current_1024
+            .iter()
+            .filter(|l| l[0] == -1 && l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == -1)
             .collect();
-        println!("\nPoints with prefix (-1,1,1,0,-1): {}", prefix_m1_1_1_0_m1.len());
+        println!(
+            "\nPoints with prefix (-1,1,1,0,-1): {}",
+            prefix_m1_1_1_0_m1.len()
+        );
         for p in &prefix_m1_1_1_0_m1 {
             println!("  {:?}", p);
         }
 
         // Also check (-1, 1, 1, -1, ...) family
-        let prefix_m1_1_1_m1: Vec<&LatticePoint> = current_1024.iter()
-            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==-1)
+        let prefix_m1_1_1_m1: Vec<&LatticePoint> = current_1024
+            .iter()
+            .filter(|l| l[0] == -1 && l[1] == 1 && l[2] == 1 && l[3] == -1)
             .collect();
-        println!("\nPoints with prefix (-1,1,1,-1): {}", prefix_m1_1_1_m1.len());
+        println!(
+            "\nPoints with prefix (-1,1,1,-1): {}",
+            prefix_m1_1_1_m1.len()
+        );
         for p in &prefix_m1_1_1_m1 {
             println!("  {:?}", p);
         }
@@ -268,10 +343,11 @@ mod tests {
         // Since the overall Lambda_512 check further down correctly gives 512,
         // the singletons must be points that are in Lambda_1024 but NOT in
         // Lambda_512. Let's check: how many of current_1024 are also in Lambda_512?
-        let in_512_count = current_1024.iter()
-            .filter(|l| in_lambda_512(l))
-            .count();
-        println!("\nOf 1026 in Lambda_1024, {} are also in Lambda_512", in_512_count);
+        let in_512_count = current_1024.iter().filter(|l| in_lambda_512(l)).count();
+        println!(
+            "\nOf 1026 in Lambda_1024, {} are also in Lambda_512",
+            in_512_count
+        );
 
         // The 1026 - 512 = 514 points in Lambda_1024 but not Lambda_512 include
         // the 2 singletons plus 512 legitimate exclusions.
@@ -282,11 +358,15 @@ mod tests {
         // Currently Lambda_1024 = Lambda_512 union {514 more points}.
         // The 2 singletons are among those 514 extra points.
 
-        let extra_points: Vec<LatticePoint> = current_1024.iter()
+        let extra_points: Vec<LatticePoint> = current_1024
+            .iter()
             .filter(|l| !in_lambda_512(l))
             .copied()
             .collect();
-        println!("\nExtra points (Lambda_1024 \\ Lambda_512): {}", extra_points.len());
+        println!(
+            "\nExtra points (Lambda_1024 \\ Lambda_512): {}",
+            extra_points.len()
+        );
 
         // The Lambda_512 exclusion rules are well-tested (gives exact 512).
         // So the 514 extra points include 512 that belong + 2 singletons.
@@ -309,8 +389,9 @@ mod tests {
         // The 2 singletons must come from (-1,1,1,0,-1) or (-1,1,1,-1,...).
 
         // Print the smallest families for manual inspection:
-        let _prefix_m1_1_1_0_m1_specific: Vec<&LatticePoint> = current_1024.iter()
-            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1)
+        let _prefix_m1_1_1_0_m1_specific: Vec<&LatticePoint> = current_1024
+            .iter()
+            .filter(|l| l[0] == -1 && l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == -1)
             .collect();
 
         // Narrow down: which sub-prefixes of (-1,1,1,0,-1) and (-1,1,1,-1) exist?
@@ -319,8 +400,11 @@ mod tests {
 
         println!("\n--- Sub-prefix analysis of (-1,1,1,0,-1,?) ---");
         for l5 in [-1_i8, 0, 1] {
-            let count = current_1024.iter()
-                .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1 && l[5]==l5)
+            let count = current_1024
+                .iter()
+                .filter(|l| {
+                    l[0] == -1 && l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == -1 && l[5] == l5
+                })
                 .count();
             if count > 0 {
                 println!("  (-1,1,1,0,-1,{:+}): {} points", l5, count);
@@ -330,8 +414,16 @@ mod tests {
         println!("\n--- Sub-prefix analysis of (-1,1,1,-1,?,?) ---");
         for l4 in [-1_i8, 0, 1] {
             for l5 in [-1_i8, 0, 1] {
-                let count = current_1024.iter()
-                    .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==-1 && l[4]==l4 && l[5]==l5)
+                let count = current_1024
+                    .iter()
+                    .filter(|l| {
+                        l[0] == -1
+                            && l[1] == 1
+                            && l[2] == 1
+                            && l[3] == -1
+                            && l[4] == l4
+                            && l[5] == l5
+                    })
                     .count();
                 if count > 0 {
                     println!("  (-1,1,1,-1,{:+},{:+}): {} points", l4, l5, count);
@@ -346,18 +438,23 @@ mod tests {
         println!("Looking for sub-families of size 1 in (-1,1,1,...) branches...");
 
         // Check all (-1,1,1,0,-1,...) points individually
-        let branch_0_m1: Vec<LatticePoint> = current_1024.iter()
-            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==0 && l[4]==-1)
+        let branch_0_m1: Vec<LatticePoint> = current_1024
+            .iter()
+            .filter(|l| l[0] == -1 && l[1] == 1 && l[2] == 1 && l[3] == 0 && l[4] == -1)
             .copied()
             .collect();
-        println!("\n  (-1,1,1,0,-1,...) branch ({} points):", branch_0_m1.len());
+        println!(
+            "\n  (-1,1,1,0,-1,...) branch ({} points):",
+            branch_0_m1.len()
+        );
         for p in &branch_0_m1 {
             println!("    {:?}", p);
         }
 
         // Check all (-1,1,1,-1,...) points individually
-        let branch_m1: Vec<LatticePoint> = current_1024.iter()
-            .filter(|l| l[0]==-1 && l[1]==1 && l[2]==1 && l[3]==-1)
+        let branch_m1: Vec<LatticePoint> = current_1024
+            .iter()
+            .filter(|l| l[0] == -1 && l[1] == 1 && l[2] == 1 && l[3] == -1)
             .copied()
             .collect();
         println!("\n  (-1,1,1,-1,...) branch ({} points):", branch_m1.len());
@@ -368,10 +465,13 @@ mod tests {
         // HEURISTIC: The singletons are likely the two points that break
         // a symmetry or parity pattern. Look at the l[7] distribution
         // within the (-1,1,1,-1,...) branch:
-        let l7_dist: Vec<(i8, usize)> = [-1_i8, 0, 1].iter().map(|&v| {
-            let c = branch_m1.iter().filter(|l| l[7] == v).count();
-            (v, c)
-        }).collect();
+        let l7_dist: Vec<(i8, usize)> = [-1_i8, 0, 1]
+            .iter()
+            .map(|&v| {
+                let c = branch_m1.iter().filter(|l| l[7] == v).count();
+                (v, c)
+            })
+            .collect();
         println!("\n  l[7] distribution in (-1,1,1,-1,...): {:?}", l7_dist);
 
         // KEY APPROACH: The 2 singletons are points with prefix (-1,1,1,...)
@@ -398,11 +498,15 @@ mod tests {
         // The full Lambda_1024\Lambda_512 has 514 points. Of those 514,
         // how many have prefix (-1,1,1,...)?
 
-        let extra_with_111: Vec<LatticePoint> = current_1024.iter()
-            .filter(|l| !in_lambda_512(l) && l[1]==1 && l[2]==1)
+        let extra_with_111: Vec<LatticePoint> = current_1024
+            .iter()
+            .filter(|l| !in_lambda_512(l) && l[1] == 1 && l[2] == 1)
             .copied()
             .collect();
-        println!("\n  Points in Lambda_1024\\Lambda_512 with (-1,1,1,...): {}", extra_with_111.len());
+        println!(
+            "\n  Points in Lambda_1024\\Lambda_512 with (-1,1,1,...): {}",
+            extra_with_111.len()
+        );
 
         // These should be 54 (13 + 41). The 2 singletons are among them.
         // But we need to know which 2 of these 54 should have been excluded
@@ -420,8 +524,10 @@ mod tests {
         // ALTERNATIVE: check if the spec mentions which points are the
         // singletons elsewhere in the document.
 
-        println!("\n  CONCLUSION: The 2 singletons are among {} points in",
-            extra_with_111.len());
+        println!(
+            "\n  CONCLUSION: The 2 singletons are among {} points in",
+            extra_with_111.len()
+        );
         println!("  the (-1,1,1,0,-1,...) U (-1,1,1,-1,...) families.");
         println!("  Without the original codebook CSV, they cannot be");
         println!("  determined purely from the prefix-cut specification.");

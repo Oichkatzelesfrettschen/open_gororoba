@@ -481,25 +481,33 @@ mod sign_table_i8_tests {
 
         // Self-products: sign(p,p) = -1
         for p in 1..16 {
-            assert_eq!(table.sign(p, p), -1,
-                "sign({},{}) should be -1", p, p);
+            assert_eq!(table.sign(p, p), -1, "sign({},{}) should be -1", p, p);
         }
 
         // Products with e_0: sign(0,q) = +1
         for q in 0..16 {
-            assert_eq!(table.sign(0, q), 1,
-                "sign(0,{}) should be +1", q);
+            assert_eq!(table.sign(0, q), 1, "sign(0,{}) should be +1", q);
         }
 
         // Antisymmetry: sign(p,q) = -sign(q,p)
         for p in 1..16 {
-            for q in (p+1)..16 {
-                assert_eq!(table.sign(p, q), -table.sign(q, p),
-                    "sign({},{}) should be -sign({},{})", p, q, q, p);
+            for q in (p + 1)..16 {
+                assert_eq!(
+                    table.sign(p, q),
+                    -table.sign(q, p),
+                    "sign({},{}) should be -sign({},{})",
+                    p,
+                    q,
+                    q,
+                    p
+                );
             }
         }
 
-        println!("SignTableI8(16): {} bytes, all properties verified", table.size_bytes());
+        println!(
+            "SignTableI8(16): {} bytes, all properties verified",
+            table.size_bytes()
+        );
     }
 
     #[test]
@@ -512,12 +520,15 @@ mod sign_table_i8_tests {
             assert_eq!(table.sign(p, p), -1);
         }
         for p in 1..32 {
-            for q in (p+1)..32 {
+            for q in (p + 1)..32 {
                 assert_eq!(table.sign(p, q), -table.sign(q, p));
             }
         }
 
-        println!("SignTableI8(32): {} bytes, all properties verified", table.size_bytes());
+        println!(
+            "SignTableI8(32): {} bytes, all properties verified",
+            table.size_bytes()
+        );
     }
 
     #[test]

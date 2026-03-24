@@ -101,16 +101,14 @@ pub fn predicted_wavenumbers_cd16() -> Vec<f64> {
 /// `delta_v[i] += alpha * sum_n sin(k_n * x[i] + phi_n)`
 ///
 /// where k_n are the CD-predicted wavenumbers and phi_n are random phases.
-pub fn inject_zd_signal(
-    x: &[f64],
-    delta_v: &mut [f64],
-    alpha: f64,
-    seed: u64,
-) {
+pub fn inject_zd_signal(x: &[f64], delta_v: &mut [f64], alpha: f64, seed: u64) {
     let mut rng = ChaCha20Rng::seed_from_u64(seed);
     let phase_dist = rand_distr::Uniform::new(0.0, 2.0 * PI);
     let wavenumbers = predicted_wavenumbers_cd16();
-    let phases: Vec<f64> = wavenumbers.iter().map(|_| phase_dist.sample(&mut rng)).collect();
+    let phases: Vec<f64> = wavenumbers
+        .iter()
+        .map(|_| phase_dist.sample(&mut rng))
+        .collect();
 
     for (i, xi) in x.iter().enumerate() {
         let mut signal = 0.0;
@@ -203,11 +201,7 @@ pub fn generate_galaxy_sample(
 
 /// Compute discrete Fourier power at specified wavenumbers on irregularly
 /// sampled (x, y) data using a direct (non-FFT) evaluation.
-pub fn fourier_power_at_wavenumbers(
-    x: &[f64],
-    y: &[f64],
-    wavenumbers: &[f64],
-) -> Vec<f64> {
+pub fn fourier_power_at_wavenumbers(x: &[f64], y: &[f64], wavenumbers: &[f64]) -> Vec<f64> {
     assert_eq!(x.len(), y.len());
     let n = x.len() as f64;
     wavenumbers
@@ -273,13 +267,18 @@ mod tests {
     #[test]
     fn test_fourier_power_detects_injected() {
         let n = 200;
-        let x: Vec<f64> = (0..n).map(|i| 0.5 + 9.5 * (i as f64) / (n as f64 - 1.0)).collect();
+        let x: Vec<f64> = (0..n)
+            .map(|i| 0.5 + 9.5 * (i as f64) / (n as f64 - 1.0))
+            .collect();
         let mut y = vec![0.0; n];
         inject_zd_signal(&x, &mut y, 0.1, 99);
         let k = predicted_wavenumbers_cd16();
         let power = fourier_power_at_wavenumbers(&x, &y, &k);
         let max_p = power.iter().cloned().fold(0.0_f64, f64::max);
-        assert!(max_p > 1e-6, "Injected signal should produce measurable Fourier power");
+        assert!(
+            max_p > 1e-6,
+            "Injected signal should produce measurable Fourier power"
+        );
     }
 
     #[test]

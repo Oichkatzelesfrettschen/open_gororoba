@@ -1,0 +1,7 @@
+# Centralized event log for canonical registry modifications.
+# Schema: timestamp, commit_sha, author, change_type, registry_file, record_id, description.
+# Validation gates: monotonic sequence, record ID resolution, change type enumeration.
+# See C-651 and C-652 for the full schema specification.
+
+[[event]]
+# Stub entry -- populate on first real registry event after this file was created.

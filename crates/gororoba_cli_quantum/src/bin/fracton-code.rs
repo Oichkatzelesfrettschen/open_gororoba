@@ -4,12 +4,20 @@ use image::{ImageBuffer, Rgb};
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Fracton Stabilizer Code Visualization (Rule-90)")]
+#[command(
+    author,
+    version,
+    about = "Fracton Stabilizer Code Visualization (Rule-90)"
+)]
 struct Args {
     #[arg(short, long, default_value_t = 65)]
     l: usize,
 
-    #[arg(short, long, default_value = "data/artifacts/images/fracton_stabilizer_mask.png")]
+    #[arg(
+        short,
+        long,
+        default_value = "data/artifacts/images/fracton_stabilizer_mask.png"
+    )]
     output: PathBuf,
 }
 
@@ -27,10 +35,10 @@ fn main() -> Result<()> {
         for c in 0..l {
             let left_idx = if c == 0 { l - 1 } else { c - 1 };
             let right_idx = if c == l - 1 { 0 } else { c + 1 };
-            
+
             let left = grid[r - 1][left_idx];
             let right = grid[r - 1][right_idx];
-            
+
             grid[r][c] = left ^ right;
         }
     }

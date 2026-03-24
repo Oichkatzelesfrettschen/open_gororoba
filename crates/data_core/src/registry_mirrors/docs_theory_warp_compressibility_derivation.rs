@@ -8,7 +8,7 @@
 //! ## 1. The Paradox of Incompressible Compression
 //! In classical fluid dynamics, an **incompressible fluid** is defined by the vanishing of the velocity divergence:
 //! $$ \nabla \cdot \mathbf{u} = 0 $$
-//! Under this constraint, the density $\rho$ is constant along streamlines. Therefore, "compressing" the fluid is mathematically impossible. 
+//! Under this constraint, the density $\rho$ is constant along streamlines. Therefore, "compressing" the fluid is mathematically impossible.
 //!
 //! However, the "Warp Ring" simulation achieves **Metric Compression**, not bulk material compression. We simulate an incompressible fluid trapped in a **curved effective spacetime**, where the "compression" occurs in the acoustic phase space.
 //!

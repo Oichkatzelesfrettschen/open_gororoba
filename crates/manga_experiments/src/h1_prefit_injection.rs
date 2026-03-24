@@ -20,8 +20,8 @@
 //! ~125 seconds compute (synthetic data, no I/O).
 
 use crate::common::{
-    detection_snr, fourier_power_at_wavenumbers, generate_synthetic_galaxy,
-    inject_zd_signal, nfw_v_circ, predicted_wavenumbers_cd16, Verdict,
+    Verdict, detection_snr, fourier_power_at_wavenumbers, generate_synthetic_galaxy,
+    inject_zd_signal, nfw_v_circ, predicted_wavenumbers_cd16,
 };
 use cosmology_core::nfw_utils;
 use rayon::prelude::*;
@@ -269,14 +269,11 @@ pub fn run_h1(config: &H1Config) -> H1Result {
     let cells: Vec<CellResult> = tasks
         .par_iter()
         .map(|&(alpha, seed)| {
-            let dm =
-                (log_m200_max - log_m200_min) / (config.n_galaxies as f64 - 1.0).max(1.0);
+            let dm = (log_m200_max - log_m200_min) / (config.n_galaxies as f64 - 1.0).max(1.0);
             let results: Vec<GalaxyInjectionResult> = (0..config.n_galaxies)
                 .map(|i| {
                     let log_m = log_m200_min + dm * (i as f64);
-                    let gseed = seed
-                        .wrapping_mul(100_000)
-                        .wrapping_add(i as u64);
+                    let gseed = seed.wrapping_mul(100_000).wrapping_add(i as u64);
                     run_single_galaxy(
                         log_m,
                         alpha,

@@ -16,7 +16,11 @@ struct Args {
     #[arg(long, default_value_t = 0.10)]
     gap_threshold: f64,
 
-    #[arg(short, long, default_value = "data/artifacts/images/projector_fhs_polar_q11_rust.png")]
+    #[arg(
+        short,
+        long,
+        default_value = "data/artifacts/images/projector_fhs_polar_q11_rust.png"
+    )]
     output: PathBuf,
 }
 
@@ -84,7 +88,7 @@ fn main() -> Result<()> {
     let w = 800;
     let h = 800;
     let mut img = ImageBuffer::new(w, h);
-    
+
     // Fill with dark background
     for pixel in img.pixels_mut() {
         *pixel = Rgb([13u8, 15u8, 20u8]);
@@ -106,7 +110,7 @@ fn main() -> Result<()> {
 
                 let alpha = p as f64 / q as f64;
                 let rnorm = r as f64 / q as f64;
-                
+
                 records.push((alpha, rnorm, diff));
             }
         }
@@ -114,16 +118,17 @@ fn main() -> Result<()> {
 
     let mut n_ok = 0;
     let n_tot = records.len();
-    
+
     for &(alpha, rnorm, diff) in &records {
-        if diff.abs() < 1 { // integer diff
+        if diff.abs() < 1 {
+            // integer diff
             n_ok += 1;
         }
 
         // Map to pixel coordinates
         let px = (alpha * w as f64).clamp(0.0, w as f64 - 1.0) as u32;
         let py = ((1.0 - rnorm) * h as f64).clamp(0.0, h as f64 - 1.0) as u32;
-        
+
         // Draw a small 5x5 block
         for dx in 0..5 {
             for dy in 0..5 {

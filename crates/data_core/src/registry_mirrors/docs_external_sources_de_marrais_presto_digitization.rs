@@ -1756,6 +1756,6 @@
 //! >    each row and column in the S=15 emanation table will have all entries for 8, 16, 24 filled (save for those
 //! >    which fall on the long diagonals); redoubling for the same S and keeping the screen size constant would
 //! >    thereby induce a doubling of the number of such lines (as well as new subdiagonals in quadrants, etc.).
-//! 
+//!
 //! ```ignore
 //!

@@ -622,11 +622,7 @@ fn rayleigh_resultant(coeffs: &[Complex64]) -> f64 {
             n += 1;
         }
     }
-    if n == 0 {
-        0.0
-    } else {
-        sum.norm() / n as f64
-    }
+    if n == 0 { 0.0 } else { sum.norm() / n as f64 }
 }
 
 fn summarize_stacked_modes(
@@ -665,7 +661,11 @@ fn summarize_stacked_modes(
             let unaligned_coeffs: Vec<Complex64> = entries
                 .iter()
                 .map(|(galaxy, ring)| {
-                    rotate_mode_coeff(ring_mode_coeff(ring, mode), mode, galaxy.pa_deg.to_radians())
+                    rotate_mode_coeff(
+                        ring_mode_coeff(ring, mode),
+                        mode,
+                        galaxy.pa_deg.to_radians(),
+                    )
                 })
                 .collect();
 
@@ -868,10 +868,7 @@ fn write_summary_toml(
         out.push_str(&format!("ring_count = {}\n", mode_rows.len()));
         out.push_str(&format!("mean_galaxies_per_ring = {:.3}\n", mean_galaxies));
         out.push_str(&format!("peak_aligned_snr = {:.6}\n", peak_aligned_snr));
-        out.push_str(&format!(
-            "peak_unaligned_snr = {:.6}\n",
-            peak_unaligned_snr
-        ));
+        out.push_str(&format!("peak_unaligned_snr = {:.6}\n", peak_unaligned_snr));
         out.push_str(&format!(
             "peak_aligned_rayleigh_r = {:.6}\n\n",
             peak_rayleigh_r
@@ -1117,7 +1114,10 @@ mod tests {
             args.stack_bootstrap_resamples,
             args.stack_bootstrap_seed,
         );
-        assert!(!stacked.is_empty(), "expected at least one stacked row from real cache");
+        assert!(
+            !stacked.is_empty(),
+            "expected at least one stacked row from real cache"
+        );
         assert!(stacked.iter().all(|row| {
             row.mean_r_kpc.is_finite()
                 && row.mean_r_norm.is_finite()
