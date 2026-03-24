@@ -1,0 +1,20 @@
+[
+  {
+    "label": "stable_branch_loop",
+    "wall_crossings": 0,
+    "final_align_g12": 1.0,
+    "final_align_g13": 1.0,
+    "final_align_g23": 1.0,
+    "final_align_u_solar": 1.0,
+    "final_align_u_atmo": 1.0
+  },
+  {
+    "label": "wall_crossing_loop",
+    "wall_crossings": 2,
+    "final_align_g12": 1.0,
+    "final_align_g13": 1.0000000000000002,
+    "final_align_g23": 1.0,
+    "final_align_u_solar": 1.0000000000000002,
+    "final_align_u_atmo": 1.0
+  }
+]
