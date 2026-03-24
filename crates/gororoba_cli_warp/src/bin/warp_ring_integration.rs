@@ -22,6 +22,7 @@ use gororoba_algebra::{
 use gororoba_engine::{SimulationConfig, SimulationState};
 use gr_core::{kerr::Kerr, sedenion_geodesic::sedenion_homotopy_step};
 use lbm_core::turbulence::{extract_dominant_triads, power_spectrum};
+use lbm_core::{CX, W};
 use log::info;
 use materials_core::{
     build_absorber_stack, canonical_sedenion_zd_pairs, tmm_reflection,
@@ -117,7 +118,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let nx = 64;
     let ny = 64;
     let lbm_tau = 0.8;
-    let lbm_steps = 2000;
+    // 500 steps: the Kolmogorov mode reaches ~40% steady state while the initial
+    // perturbation modes (decay time ~1040 steps for mode (1,0)) retain ~62% amplitude.
+    // This keeps all three triad legs detectable: (1,0)+(0,1)+(-1,-1)=0.
+    let lbm_steps = 500;
 
     let sim_config = SimulationConfig {
         nx,
@@ -131,15 +135,69 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut state = SimulationState::new(sim_config);
 
+    // Multi-mode perturbation to seed spectral diversity.
+    //
+    // WHY: The laminar Kolmogorov solution is an exact NS solution with energy at
+    // ONLY the (kx=0, ky=1) mode -- a pure sine wave with zero nonlinear coupling.
+    // No valid triad exists from a single mode (triads require 3 distinct wavevectors).
+    // Re~10 is below the turbulent bifurcation (~Re~40), so the flow stays laminar.
+    //
+    // Adding modes at (1,0) and (1,1) [i.e. diagonal] provides triad closure with the
+    // Kolmogorov mode: (1,0) + (0,1) + (-1,-1) = (0,0). The two perturbation modes
+    // decay viscously (tau_decay ~ 1/(nu*k^2) = 1037 steps for (1,0)), but remain
+    // detectable for ~500 steps at 62% of initial amplitude.
+    let perturb_amp = 1e-2_f64; // 1% of lattice speed, well below Ma stability limit
+    for x in 0..nx {
+        for y in 0..ny {
+            // Mode (1,0): sin(2*pi*x/nx) excites wavevector (kx=1, ky=0) in u_x
+            let ux_mode_10 =
+                perturb_amp * (2.0 * PI * x as f64 / nx as f64).sin();
+            // Mode (1,1): sin(2*pi*(x+y)/nx) excites wavevectors (1,1) and (-1,-1) in u_x
+            // The (-1,-1) leg closes the triad with (0,1) and (1,0): 1+0+(-1)=0, 0+1+(-1)=0
+            let ux_mode_11 =
+                perturb_amp * (2.0 * PI * (x + y) as f64 / nx as f64).sin();
+            let upx = ux_mode_10 + ux_mode_11;
+            for i in 0..9 {
+                let cx = CX[i] as f64;
+                // Linearized Maxwell: delta_f_i = W_i * (c_{ix}/cs^2) * delta_u_x = 3*W_i*cx*upx
+                state.fluid.f[[i, x, y]] += W[i] * (3.0 * cx * upx);
+            }
+        }
+    }
+
     info!(
         "[1/9] Running Engine LBM ({}x{}, tau={}, {} steps)...",
         nx, ny, lbm_tau, lbm_steps
     );
 
-    // Run fluid thermalization
+    // Kolmogorov forcing parameters: sinusoidal body force fx(y) = A*sin(2*pi*n*y/ny)
+    // drives large-scale turbulence at wavenumber force_mode=1. Without this force
+    // the collide-stream loop thermalizes to zero velocity (no triads to find).
+    // Analytical Kolmogorov solution: U_max = F / (nu * ky^2)
+    // nu = (2*tau-1)/6 = 0.1, ky = 2*pi/ny = 2*pi/64 => ky^2 ~ 0.0096
+    // U_max ~ 1e-4 / (0.1 * 0.0096) ~ 0.104 lu (Ma ~ 0.18, stable)
+    // Re = U_max * (ny/2pi) / nu ~ 0.104 * 10.2 / 0.1 ~ 10.6
+    let force_amp = 1e-4_f64; // amplitude yields Re ~ 10 for tau=0.8, 64x64 grid
+    let force_mode = 1_usize; // fundamental mode drives the longest-wavelength instability
+
+    // Run fluid simulation with Kolmogorov body forcing
     for _ in 0..lbm_steps {
         state.fluid.collide(0, ny);
-        // Apply Kolmogorov forcing inline (engine doesn't have forcing config yet)
+
+        // Guo (2002) forcing scheme: f[i,x,y] += 3*W[i]*cx * fy(y) * rho[x,y]
+        // where fy(y) = A * sin(2*pi*n*y/ny) is the Kolmogorov sinusoidal force.
+        let (rho, _, _) = state.fluid.macroscopic();
+        for i in 0..9 {
+            let cx = CX[i] as f64;
+            for x in 0..nx {
+                for y in 0..ny {
+                    let fy = force_amp
+                        * (2.0 * PI * force_mode as f64 * y as f64 / ny as f64).sin();
+                    state.fluid.f[[i, x, y]] += 3.0 * W[i] * cx * fy * rho[[x, y]];
+                }
+            }
+        }
+
         state.fluid.stream();
     }
 
@@ -166,7 +224,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // -- Step 2: Extract Standard Spectral Triads --
     // ... (Remainder of spectral analysis remains similar, using `u` and `v` from engine)
     info!("[2/9] Extracting spectral triads...");
-    let spectral_triads = extract_dominant_triads(&u, &v, 50.0);
+    // Threshold calibrated to forcing scale: amplitude = |u_hat| / (nx*ny).
+    // At force_amp=1e-4, 64x64, Re~10: dominant triple product ~ 5e-11.
+    // 1e-12 captures the energetically significant triads, rejects numerical noise.
+    let spectral_triads = extract_dominant_triads(&u, &v, 1e-12);
     info!(
         "      Found {} spectral triads (standard).",
         spectral_triads.len()
