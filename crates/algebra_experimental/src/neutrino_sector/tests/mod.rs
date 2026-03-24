@@ -5,6 +5,7 @@ mod cp;
 mod scan;
 mod regression;
 mod spectrum;
+mod branch_transport;
 
 // ---------------------------------------------------------------------------
 // Shared test helpers (accessed by submodules as `super::*`)

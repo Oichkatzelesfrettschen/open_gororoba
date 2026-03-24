@@ -540,7 +540,7 @@ use rayon::prelude::*;
                     let pa_deg = cos_pa.acos().to_degrees();
                     println!("  {name}: principal angle = {pa_deg:.1} deg, |g_old|={n_old:.3}, |g_new|={n_new:.3}");
                     if pa_deg > 10.0 {
-                        println!("    ** WARNING: > 10 deg drift -- V_6 basis may not be intrinsic **");
+                        println!("    ** WARNING: > 10 deg drift -- branch/gauge frame may have changed across parameter points **");
                     }
                 }
             }
