@@ -1,0 +1,36 @@
+# Identity gap policy -- governed list of claim/insight IDs that are
+# intentionally absent from the sequential numbering (gaps are OK).
+#
+# WHY: registry-check --identity-gap-policy error flags any gap in claim or
+#      insight IDs that is not explicitly listed here as intentional.
+#
+# HOW: Add a range or individual ID token (e.g. "C-0061..C-0063", "I-007")
+#      to suppress false-positive gap errors for known intentional gaps.
+
+[claims]
+# Intentional gaps in C-0933..C-1547 range from restructured/retired experiments.
+# Computed from registry/claims.toml: 139 total gap IDs.
+governed_gap_ids = [
+    "C-0933..C-0935",
+    "C-0940",
+    "C-0954..C-0959",
+    "C-0961..C-0969",
+    "C-0971..C-0979",
+    "C-0981..C-0989",
+    "C-0991..C-1009",
+    "C-1011..C-1019",
+    "C-1021..C-1029",
+    "C-1031..C-1039",
+    "C-1041..C-1049",
+    "C-1051..C-1059",
+    "C-1061..C-1069",
+    "C-1071..C-1079",
+    "C-1081..C-1089",
+    "C-1091..C-1099",
+    "C-1293..C-1294",
+]
+
+[insights]
+# I-061..I-063: original gaps from early sprint numbering.
+# I-142..I-167: restructured insight batch; IDs retired in sprint 76+.
+governed_gap_ids = ["I-061..I-063", "I-142..I-167"]

@@ -12,7 +12,7 @@ updated = "2026-03-23"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 65
+document_count = 68
 
 [[owner]]
 path = "README.md"
@@ -406,6 +406,24 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/THEOREMS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/monograph/unified_treatise.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
