@@ -3542,7 +3542,7 @@ notes = "Technique-reference capture mapping external GPU optimization patterns 
 [[record]]
 id = "PSR-00253"
 document_id = "XS-024"
-source_markdown = ""
+source_markdown = "docs/external_sources/LELLI_2016_SPARC.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.3847/0004-6256/152/6/157"
 sha256 = ""
@@ -3556,7 +3556,7 @@ notes = "Primary SPARC database paper. Source for E-179, E-180, E-182 rotation c
 [[record]]
 id = "PSR-00254"
 document_id = "XS-025"
-source_markdown = ""
+source_markdown = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.3847/1538-4365/ab700e"
 sha256 = ""
@@ -3570,7 +3570,7 @@ notes = "Published NFW fitting parameters for SPARC sample. Used to initialize N
 [[record]]
 id = "PSR-00255"
 document_id = "XS-026"
-source_markdown = ""
+source_markdown = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.3847/1538-3881/ab44a2"
 sha256 = ""
@@ -3584,7 +3584,7 @@ notes = "MaNGA DAP/DRP pipeline paper. Describes the MAPS FITS format consumed b
 [[record]]
 id = "PSR-00256"
 document_id = "XS-027"
-source_markdown = ""
+source_markdown = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.1088/0004-637X/798/1/7"
 sha256 = ""
@@ -3598,7 +3598,7 @@ notes = "MaNGA survey overview paper. Context for E-183 MaNGA rotation curve sta
 [[record]]
 id = "PSR-00257"
 document_id = "XS-028"
-source_markdown = ""
+source_markdown = "docs/external_sources/MOSTER_2013_SMHM.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.1093/mnras/sts261"
 sha256 = ""
