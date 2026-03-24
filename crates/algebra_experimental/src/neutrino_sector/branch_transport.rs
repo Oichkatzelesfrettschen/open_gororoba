@@ -65,6 +65,25 @@ pub struct BranchWallReport {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct PathScanRow {
+    pub alpha_ch: f64,
+    pub alpha_nu: f64,
+    pub branch: String,
+    pub perm_match: bool,
+    pub align_g12: f64,
+    pub align_g13: f64,
+    pub align_g23: f64,
+    pub align_u_solar: f64,
+    pub align_u_atmo: f64,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct PathScanReport {
+    pub label: String,
+    pub rows: Vec<PathScanRow>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct LoopStep {
     pub step: usize,
     pub alpha_ch: f64,
@@ -103,6 +122,8 @@ pub struct V6ProbeArtifacts {
     pub base_frame: GradientFrame,
     pub branch_map: BranchMapReport,
     pub branch_walls: BranchWallReport,
+    pub fixed_alpha_ch_scan: PathScanReport,
+    pub fixed_alpha_nu_scan: PathScanReport,
     pub stable_branch_loop: LoopReport,
     pub wall_crossing_loop: LoopReport,
 }
@@ -441,6 +462,35 @@ pub fn compute_loop_transport(
     }
 }
 
+pub fn compute_path_scan(
+    label: &str,
+    base: &GradientFrame,
+    v6_basis: &DMatrix<f64>,
+    points: &[(f64, f64)],
+) -> PathScanReport {
+    let rows = points
+        .iter()
+        .map(|&(alpha_ch, alpha_nu)| {
+            let frame = compute_gradient_frame(v6_basis, alpha_ch, alpha_nu);
+            PathScanRow {
+                alpha_ch,
+                alpha_nu,
+                branch: perm_label(&frame),
+                perm_match: frame.perm_u == base.perm_u && frame.perm_d == base.perm_d,
+                align_g12: alignment(&base.g_12, &frame.g_12),
+                align_g13: alignment(&base.g_13, &frame.g_13),
+                align_g23: alignment(&base.g_23, &frame.g_23),
+                align_u_solar: alignment(&base.u_solar, &frame.u_solar),
+                align_u_atmo: alignment(&base.u_atmo, &frame.u_atmo),
+            }
+        })
+        .collect();
+    PathScanReport {
+        label: label.to_string(),
+        rows,
+    }
+}
+
 pub fn default_alpha_ch_values() -> Vec<f64> {
     (28..=38).map(|x| x as f64 / 10.0).collect()
 }
@@ -457,6 +507,14 @@ pub fn wall_crossing_loop_points() -> Vec<(f64, f64)> {
     vec![(3.00, 1.25), (3.00, 1.20), (3.10, 1.20), (3.10, 1.25), (3.00, 1.25)]
 }
 
+pub fn fixed_alpha_ch_scan_points() -> Vec<(f64, f64)> {
+    vec![(3.00, 1.20), (3.00, 1.25), (3.00, 1.30), (3.00, 1.35), (3.00, 1.40), (3.00, 1.45)]
+}
+
+pub fn fixed_alpha_nu_scan_points() -> Vec<(f64, f64)> {
+    vec![(2.80, 1.35), (3.00, 1.35), (3.20, 1.35), (3.40, 1.35), (3.60, 1.35), (3.80, 1.35)]
+}
+
 pub fn default_probe_artifacts() -> V6ProbeArtifacts {
     let (v6_basis, singular_values, _assessors) = extract_v6_basis();
     let base_frame = compute_gradient_frame(&v6_basis, 3.00, 1.35);
@@ -465,6 +523,18 @@ pub fn default_probe_artifacts() -> V6ProbeArtifacts {
     let branch_map = compute_branch_map(&base_frame, &v6_basis, &alpha_ch_values, &alpha_nu_values);
     let branch_walls =
         compute_branch_walls(&base_frame, &v6_basis, &alpha_ch_values, &alpha_nu_values);
+    let fixed_alpha_ch_scan = compute_path_scan(
+        "fixed_alpha_ch_3.00",
+        &base_frame,
+        &v6_basis,
+        &fixed_alpha_ch_scan_points(),
+    );
+    let fixed_alpha_nu_scan = compute_path_scan(
+        "fixed_alpha_nu_1.35",
+        &base_frame,
+        &v6_basis,
+        &fixed_alpha_nu_scan_points(),
+    );
     let stable_branch_loop =
         compute_loop_transport("stable_branch_loop", &v6_basis, &stable_branch_loop_points());
     let wall_crossing_loop =
@@ -474,6 +544,8 @@ pub fn default_probe_artifacts() -> V6ProbeArtifacts {
         base_frame,
         branch_map,
         branch_walls,
+        fixed_alpha_ch_scan,
+        fixed_alpha_nu_scan,
         stable_branch_loop,
         wall_crossing_loop,
     }

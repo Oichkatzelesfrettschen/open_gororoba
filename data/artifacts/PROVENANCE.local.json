@@ -1,170 +1,440 @@
 {
-  "generated_at_utc": "2026-02-04T04:24:27.114976+00:00",
+  "generated_at_utc": "2026-03-24T01:07:04.188842705Z",
+  "root": "data/artifacts",
   "hashes": [
     {
-      "mtime_utc": "2026-01-31T21:18:30.078106+00:00",
-      "path": "engineering/spaceplate_geometry.scad",
-      "sha256": "5ee2c73d692adf7d55163fbb68f6c620a944263a5549e757d458d1563e12de8f",
-      "size_bytes": 1120
+      "path": "data/artifacts/images/cd_motif_max_component_nodes_3160x2820.png",
+      "size_bytes": 280312,
+      "mtime_utc": "2026-03-19T03:55:18.379935601Z",
+      "sha256": "a431b32a3fba4cdfdfc37d64a7d3afd09bdb457fc43d715ce69b3bf31895396e"
     },
     {
-      "mtime_utc": "2026-02-02T00:32:39.372962+00:00",
-      "path": "images/OCULUS_GRAND_DASHBOARD_v4.png",
-      "sha256": "1d9f3bca42ee3d1e7f832cff650c099b021f821cceb997c446ce7243b3e03c64",
-      "size_bytes": 538072
+      "path": "data/artifacts/images/dimensional_geometry_0_to_32.png",
+      "size_bytes": 253843,
+      "mtime_utc": "2026-03-19T04:17:53.346966306Z",
+      "sha256": "87e6f5b9d9dac46127f776db76b7770090d5d46422f69368eb39f46f3548c0c0"
     },
     {
-      "mtime_utc": "2026-01-29T06:49:45.701497+00:00",
-      "path": "images/associator_stats_3160x2820.png",
-      "sha256": "0934f5c499726506dad5c794944cd83138f9bd4d48fd37a9d61f2bad2058c796",
-      "size_bytes": 135306
+      "path": "data/artifacts/images/genesis_simulation_grand.png",
+      "size_bytes": 827733,
+      "mtime_utc": "2026-02-04T05:38:07.536217177Z",
+      "sha256": "e637bc5d5e77c20c1e5febd2a2239ffff8597ab0b3de78561b37f10718ff9671"
     },
     {
-      "mtime_utc": "2026-02-02T17:47:27.826601+00:00",
-      "path": "images/cd_motif_max_component_nodes_3160x2820.png",
-      "sha256": "de141f13bf6cba7164937d85a27ef3e573a77f5df10f157ea7eaa5bc2f1efa8e",
-      "size_bytes": 147308
+      "path": "data/artifacts/images/materials_pca_16d.png",
+      "size_bytes": 293829,
+      "mtime_utc": "2026-03-12T19:17:10.678375592Z",
+      "sha256": "cc11dd40c85e2b753fc771533bfffddc2bec8c9feda7a6541a4e2ba81ab7e391"
     },
     {
-      "mtime_utc": "2026-01-29T17:17:08.294811+00:00",
-      "path": "images/cd_motif_scaling_laws_3160x2820.png",
-      "sha256": "b935eac4e2fc030dc519a367904495cadc6ad42506d491f764051868f644cdf3",
-      "size_bytes": 310615
+      "path": "data/artifacts/images/materials_pca_32d.png",
+      "size_bytes": 294286,
+      "mtime_utc": "2026-03-12T19:17:12.397377077Z",
+      "sha256": "190e9e97b78074ee35b6abcb718f5822f7497d4315c25ff54e5bf85815a5aa27"
     },
     {
-      "mtime_utc": "2026-02-03T06:00:06.290981+00:00",
-      "path": "images/cosmology_comparison.png",
-      "sha256": "f10463ff51ab62e9c2a838f7a0b2bd1326bf99c298632e06e149260a05fe03a1",
-      "size_bytes": 53869
+      "path": "data/artifacts/images/materials_pca_4d.png",
+      "size_bytes": 293485,
+      "mtime_utc": "2026-03-12T19:17:07.240372623Z",
+      "sha256": "8326e7565418958fa59b6464f920618ee56ef6cc13ed1d8671a3fb908773832e"
     },
     {
-      "mtime_utc": "2026-01-27T06:18:28.172124+00:00",
-      "path": "images/dimensional_geometry_-4_to_16.png",
-      "sha256": "a49fe081837e2dd4db6d6bc2962e7ee9e97cc7069d87eb7bf133eec8151b4326",
-      "size_bytes": 340197
+      "path": "data/artifacts/images/materials_pca_8d.png",
+      "size_bytes": 293833,
+      "mtime_utc": "2026-03-12T19:17:08.955374104Z",
+      "sha256": "00a3db553250ea1d20ab12cb24bb227d75a2ba91ec4567928b84831c4a4c1697"
     },
     {
-      "mtime_utc": "2026-01-27T06:18:28.700125+00:00",
-      "path": "images/dimensional_geometry_0_to_32.png",
-      "sha256": "3e1e1aa49f4d14988b9244b5a0d3f6fe935da8069808749dbb3ecabf7ea51c76",
-      "size_bytes": 328741
+      "path": "data/artifacts/images/reggiani_annihilator_nullity_3160x2820.png",
+      "size_bytes": 265446,
+      "mtime_utc": "2026-03-12T19:16:41.027349999Z",
+      "sha256": "4b40e743e975c7e64bcea970335ad78a75940639d3d3a7e8fe05aaf11ea8bfbe"
     },
     {
-      "mtime_utc": "2026-02-02T07:52:07.034306+00:00",
-      "path": "images/genesis_simulation_grand.png",
-      "sha256": "190946cd373e6103fe6cfc11051a7f1c82ae1ddca589f699d3ff371f522370be",
-      "size_bytes": 836776
+      "path": "data/artifacts/3d_time_evolution_mosaic.png",
+      "size_bytes": 49057,
+      "mtime_utc": "2026-01-26T21:51:19.433804196Z",
+      "sha256": "6d29c9f91473980e973e0e8f6a3d8d7c2521a6f9dbc39b9e5290e473f1956d2f"
     },
     {
-      "mtime_utc": "2026-02-02T00:01:06.174695+00:00",
-      "path": "images/holographic_warp_gpu.png",
-      "sha256": "ee478b5bd9f0ed7dc222f03fb1db82c44a1f9a55bbab599ba0bd82c7109f62e2",
-      "size_bytes": 258426
+      "path": "data/artifacts/4d_entropy_mosaic.png",
+      "size_bytes": 49057,
+      "mtime_utc": "2026-01-26T21:51:19.329803983Z",
+      "sha256": "6d29c9f91473980e973e0e8f6a3d8d7c2521a6f9dbc39b9e5290e473f1956d2f"
     },
     {
-      "mtime_utc": "2026-02-03T06:00:05.484979+00:00",
-      "path": "images/kerr_shadow_asymmetry.png",
-      "sha256": "4bb89b7b567ed2a86a026f4a910b9294c225a7cf8a5fcfc60f5de4b876e4a66b",
-      "size_bytes": 35899
+      "path": "data/artifacts/c756_physical_audit.mp4",
+      "size_bytes": 222238,
+      "mtime_utc": "2026-02-18T19:42:59.461076143Z",
+      "sha256": "474a55391663f8ae0e123b0257ec3d6ca28d8d8c5455d493f29a12defe1361d0"
     },
     {
-      "mtime_utc": "2026-02-03T05:56:06.890486+00:00",
-      "path": "images/kerr_trace_demo.png",
-      "sha256": "05b3a97c61adf1de896962aeeeaa4d9e73c132b02b6d4e831368be5e0385dd16",
-      "size_bytes": 36185
+      "path": "data/artifacts/c756_production.mp4",
+      "size_bytes": 9403202,
+      "mtime_utc": "2026-02-18T19:53:56.836463991Z",
+      "sha256": "ad9a4bf2ff2f02972771b94b2f9b021c310c2289744416f12375f94d4973505e"
     },
     {
-      "mtime_utc": "2026-01-28T19:20:49.907488+00:00",
-      "path": "images/materials_nomad_pca_16d.png",
-      "sha256": "1e77d89cdf6e56e58efd904a2081a0c875f58ae0a459772e48e66b74a2a168b5",
-      "size_bytes": 203125
+      "path": "data/artifacts/c756_simulation.mp4",
+      "size_bytes": 224249,
+      "mtime_utc": "2026-02-18T19:24:48.821123713Z",
+      "sha256": "ddf96fe7d741f110c6b0f734c77188a3d05b66cf649525ef59d99d842d11efc0"
     },
     {
-      "mtime_utc": "2026-01-28T19:20:50.484488+00:00",
-      "path": "images/materials_nomad_pca_32d.png",
-      "sha256": "ffef92bf0c92b2c90545975129fcc58336eef47cb466aa5bf0d4893859e6cd8e",
-      "size_bytes": 204015
+      "path": "data/artifacts/c756_simulation_audit.mp4",
+      "size_bytes": 1223055,
+      "mtime_utc": "2026-02-18T18:44:25.325959580Z",
+      "sha256": "5bb1c94ce6de0fb314b3975f155e30e6e5290a2fa7c27075d578c6f9d81809e8"
     },
     {
-      "mtime_utc": "2026-01-28T19:20:48.985487+00:00",
-      "path": "images/materials_nomad_pca_4d.png",
-      "sha256": "f451610818b2d0ce00136038798f6fde4b122fdf0556e78a0b26f181b97f00a9",
-      "size_bytes": 201900
+      "path": "data/artifacts/c756_simulation_debug.mp4",
+      "size_bytes": 4815,
+      "mtime_utc": "2026-02-18T17:50:22.353746461Z",
+      "sha256": "2166f4dbb94586a5096d4f82c3089b264d6fccf6a2c1f104b8acb308fd50de26"
     },
     {
-      "mtime_utc": "2026-01-28T19:20:49.409487+00:00",
-      "path": "images/materials_nomad_pca_8d.png",
-      "sha256": "e1312e3cd1d1b2e54f81fdbd67bde82999fd7fbfb930ef695be3ff11c0409190",
-      "size_bytes": 202907
+      "path": "data/artifacts/c756_simulation_debug2.mp4",
+      "size_bytes": 4815,
+      "mtime_utc": "2026-02-18T17:54:28.815185466Z",
+      "sha256": "2166f4dbb94586a5096d4f82c3089b264d6fccf6a2c1f104b8acb308fd50de26"
     },
     {
-      "mtime_utc": "2026-01-30T13:50:31.238955+00:00",
-      "path": "images/materials_pca_16d.png",
-      "sha256": "84434b14bbd586e2fe2c40a4b495ba88530ff8f5306fa32dbdd0a25ec8503114",
-      "size_bytes": 174480
+      "path": "data/artifacts/c756_simulation_final.mp4",
+      "size_bytes": 4815,
+      "mtime_utc": "2026-02-18T17:56:43.960406618Z",
+      "sha256": "2166f4dbb94586a5096d4f82c3089b264d6fccf6a2c1f104b8acb308fd50de26"
     },
     {
-      "mtime_utc": "2026-01-30T13:50:31.238955+00:00",
-      "path": "images/materials_pca_32d.png",
-      "sha256": "5c3bba0c863098758a36a7b885ff4225bc27968d245d78fe0cf270b3e45a365d",
-      "size_bytes": 175126
+      "path": "data/artifacts/c756_simulation_pure_rust.mp4",
+      "size_bytes": 4815,
+      "mtime_utc": "2026-02-18T17:29:28.319550514Z",
+      "sha256": "2166f4dbb94586a5096d4f82c3089b264d6fccf6a2c1f104b8acb308fd50de26"
     },
     {
-      "mtime_utc": "2026-01-30T13:50:31.238955+00:00",
-      "path": "images/materials_pca_4d.png",
-      "sha256": "ee6dd67ac79e59525c4c95151018e0fb7d31f343cad9142f278d0b483393f30a",
-      "size_bytes": 173716
+      "path": "data/artifacts/entropy_pde_nd.png",
+      "size_bytes": 46122,
+      "mtime_utc": "2026-01-26T21:43:29.567774235Z",
+      "sha256": "24662bb302691697d96a9619944d6338e2b07f84a9e51af1b1970443c7cdc263"
     },
     {
-      "mtime_utc": "2026-01-30T13:50:31.239144+00:00",
-      "path": "images/materials_pca_8d.png",
-      "sha256": "3dbd6b14a10c22b9286f9a899865f86485f86876f8f1adf33391bd8b15caf207",
-      "size_bytes": 174496
+      "path": "data/artifacts/frames_v9/phase5_results_dashboard.png",
+      "size_bytes": 353591,
+      "mtime_utc": "2026-02-04T21:39:16.251164633Z",
+      "sha256": "1517e823b7d0795274614061709acddcc78426be8a68f16d6f29fc97b7479e12"
     },
     {
-      "mtime_utc": "2026-02-02T17:48:03.894589+00:00",
-      "path": "images/reggiani_annihilator_nullity_3160x2820.png",
-      "sha256": "1c566811c73f241bdcb10c9443b4c21a00c24acb4c96512d57502e4612e3ab59",
-      "size_bytes": 112467
+      "path": "data/artifacts/images/8c4d93e6d0e99f056a442e4a8ceeb54df0852a79a0da6f0318fc0d75f6ccdac5.png",
+      "size_bytes": 337176,
+      "mtime_utc": "2026-01-26T17:07:38.193775771Z",
+      "sha256": "cba99ee94e3f320b5fdefff5b5983f0f325590ef4c2ad9419caf98d6f64b025e"
     },
     {
-      "mtime_utc": "2026-02-02T00:05:14.253806+00:00",
-      "path": "images/sedenion_capture_scaling.png",
-      "sha256": "d6ece371474ae02dca824380ec5d4722b9937d682b128c6df918d936b023f13e",
-      "size_bytes": 9396
+      "path": "data/artifacts/images/LIGO_GWTC3_Mass_Spectrum.png",
+      "size_bytes": 31831,
+      "mtime_utc": "2026-01-27T04:01:40.583801113Z",
+      "sha256": "3d2cbba02c9221dbbed5137549604fc3a21876975e1fb51ef4781907fd9ca216"
     },
     {
-      "mtime_utc": "2026-02-03T06:22:38.916622+00:00",
-      "path": "images/sedenion_slice_3d.png",
-      "sha256": "37d81dca312e7a2d95fa0facdd6e2a0dcddeefbbbd021b8400a270244b19ee9c",
-      "size_bytes": 539516
+      "path": "data/artifacts/images/absorber_pareto_3160x2820.png",
+      "size_bytes": 410586,
+      "mtime_utc": "2026-03-24T00:28:37.952636282Z",
+      "sha256": "31430c90ab63db793480e55cde69388eafe106bdb7ffb5fef93029853062bd94"
     },
     {
-      "mtime_utc": "2026-01-29T06:49:44.484495+00:00",
-      "path": "images/tensor_network_entropy_scaling_3160x2820.png",
-      "sha256": "4983afb5c98a7ecd2d35093c6354d697c06303bb122ba37ac4ca61c76ccea4ef",
-      "size_bytes": 115502
+      "path": "data/artifacts/images/box_kites_clustering.png",
+      "size_bytes": 164859,
+      "mtime_utc": "2026-01-27T03:39:45.790901071Z",
+      "sha256": "ec447ebdf8aa550728b93ad31b2359eaae99c56b7b0642cfe6f8284fe11202e0"
     },
     {
-      "mtime_utc": "2026-02-02T08:00:01.195076+00:00",
-      "path": "images/warp_pulse_animation_directors_cut.mp4",
-      "sha256": "926a71926d5e023166968bc8a398a9cf4c0a99e84e2da63e75efec6b578c300c",
-      "size_bytes": 23579442
+      "path": "data/artifacts/images/claims_dashboard_3160x2820.png",
+      "size_bytes": 320374,
+      "mtime_utc": "2026-02-04T05:38:47.020212625Z",
+      "sha256": "9fb4bb0c9edf83b063e880650ff5c302d4ba6d9e34892b82af12a1c1c750d880"
     },
     {
-      "mtime_utc": "2026-02-03T06:44:46.581161+00:00",
-      "path": "images/warp_ring_annotated.png",
-      "sha256": "b5e2fe84c603ea0d9b56d90c2472d859925e7b123a0326e46a9816b70245bf58",
-      "size_bytes": 1556151
+      "path": "data/artifacts/images/cosmic_correlation.png",
+      "size_bytes": 27531,
+      "mtime_utc": "2026-01-27T03:53:52.454235960Z",
+      "sha256": "ad036addf0882df324ff877333be2f65320f1566483130837cd4d1a92af346b7"
     },
     {
-      "mtime_utc": "2026-02-02T04:16:44.001106+00:00",
-      "path": "manufacturing/sedenion_spaceplate_bom.csv",
-      "sha256": "168e29af157ea378d89f990f0b406cea724e834e994531b1bfa73e974c452998",
-      "size_bytes": 5914
+      "path": "data/artifacts/images/css_fractal_candidate_logical_expanded_3160x2820.png",
+      "size_bytes": 93734,
+      "mtime_utc": "2026-01-27T04:24:09.362630796Z",
+      "sha256": "f419969ac8887352b3966c8df0dcbfbd88c49a2985ccf718dfce4d2faf87e1f9"
+    },
+    {
+      "path": "data/artifacts/images/fractional_schrodinger_potential_highres.png",
+      "size_bytes": 459505,
+      "mtime_utc": "2026-01-27T04:16:45.272472010Z",
+      "sha256": "8ebb5cd9af3709be573928856175cd3ab3eb4dcf6446ffd14056be0d5ec04b22"
+    },
+    {
+      "path": "data/artifacts/images/fracton_stabilizer_mask.png",
+      "size_bytes": 79074,
+      "mtime_utc": "2026-01-27T04:16:45.922474083Z",
+      "sha256": "3732ae1c21b4afea6db2a6495d36c197dd3eb352d8b9f8ce45b6df5277ac1875"
+    },
+    {
+      "path": "data/artifacts/images/genesis_advanced_analysis.png",
+      "size_bytes": 417732,
+      "mtime_utc": "2026-01-26T21:19:54.221554038Z",
+      "sha256": "09407d8045968544a56510326698109ddc36c745c26db86e0191c56daca1bb98"
+    },
+    {
+      "path": "data/artifacts/images/genesis_trajectory_viz.png",
+      "size_bytes": 382507,
+      "mtime_utc": "2026-03-19T04:17:51.612955053Z",
+      "sha256": "30d7e4e3d9849758f7d9269ff92b12bac9e90b8cd3565f9ca361a4381dca1821"
+    },
+    {
+      "path": "data/artifacts/images/grand_cosmic_map.png",
+      "size_bytes": 64971,
+      "mtime_utc": "2026-01-27T04:08:49.198286743Z",
+      "sha256": "1753103d3413bca8e74c98bd906a3b317500eefc102b2198bda4f138a977f172"
+    },
+    {
+      "path": "data/artifacts/images/gravastar_profile_35.png",
+      "size_bytes": 45097,
+      "mtime_utc": "2026-01-27T04:11:28.522463480Z",
+      "sha256": "63d1e23ad4abcd4865658241de21169ccbd0d85df7d9e814de1579d1e6ed9e87"
+    },
+    {
+      "path": "data/artifacts/images/harper_chern_map_highres.png",
+      "size_bytes": 210056,
+      "mtime_utc": "2026-01-27T04:16:44.418469285Z",
+      "sha256": "3e455d6eb539851defb1eea91b6df177eedc8d1b8f61de06d1ff956d16730672"
+    },
+    {
+      "path": "data/artifacts/images/holographic_entropy_scaling.png",
+      "size_bytes": 48349,
+      "mtime_utc": "2026-01-27T04:55:17.969935879Z",
+      "sha256": "c17c51b2c4f187dccaae2572400476b3a4a5f0a6ae14b98543880edf813d0e7c"
+    },
+    {
+      "path": "data/artifacts/images/holographic_tensor_net.png",
+      "size_bytes": 91560,
+      "mtime_utc": "2026-01-27T04:55:18.041935917Z",
+      "sha256": "fc6e767a10289f61965c4941e821c582bf043a837f6fff0aa0f68a354b656403"
+    },
+    {
+      "path": "data/artifacts/images/hyper_fractal_sedenion.png",
+      "size_bytes": 1375685,
+      "mtime_utc": "2026-03-19T04:17:44.643909675Z",
+      "sha256": "e05082bb1a5b9edf5049e70e95a89081e98826b82a955257e3d73e6494212b98"
+    },
+    {
+      "path": "data/artifacts/images/hyper_mass_ladder_v2.png",
+      "size_bytes": 342462,
+      "mtime_utc": "2026-03-19T04:17:46.353920832Z",
+      "sha256": "8411cb907ff85cbdf1f4ad5576a2f40f38a416bb1421a819fd404a6e606efc4e"
+    },
+    {
+      "path": "data/artifacts/images/hyper_mera_network_v2.png",
+      "size_bytes": 799139,
+      "mtime_utc": "2026-03-19T04:17:48.146932515Z",
+      "sha256": "651f839f2771a35356fdccbfd761a9821172fcbe72cfcb8d83eed87301eb0061"
+    },
+    {
+      "path": "data/artifacts/images/kk_mskk2_bars_fixed_3160x2820.png",
+      "size_bytes": 116931,
+      "mtime_utc": "2026-01-27T04:25:27.417796341Z",
+      "sha256": "00d75d5805653b40016ec10c28e054ddebac408156d4331204c0cb6a55c0d335"
+    },
+    {
+      "path": "data/artifacts/images/neg_dim_evolution_alpha_-1.5.png",
+      "size_bytes": 300680,
+      "mtime_utc": "2026-01-27T03:45:34.836535026Z",
+      "sha256": "9e7d2c461731041c1e45229a276a3cc221978aef8707f7a6d99f055f58b0561e"
+    },
+    {
+      "path": "data/artifacts/images/neg_dim_spectrum_-1.5.png",
+      "size_bytes": 27440,
+      "mtime_utc": "2026-01-27T04:01:50.598812700Z",
+      "sha256": "9dfe33363f4629d5407530f6db7342b35e7b7206bcb81c742e3a738c9a8f2332"
+    },
+    {
+      "path": "data/artifacts/images/pathion_zd_graph.png",
+      "size_bytes": 388128,
+      "mtime_utc": "2026-02-04T05:38:07.539217176Z",
+      "sha256": "62b9ef3dc1cc30f9bfdbff3d6fc2af96521ceaca1d98050bfaaaec6d9d4ec171"
+    },
+    {
+      "path": "data/artifacts/images/projector_fhs_polar_q11_3160x2820.png",
+      "size_bytes": 114011,
+      "mtime_utc": "2026-01-27T04:24:07.812627425Z",
+      "sha256": "06e0b51d2ea8eb4cf58fe1f289d10dfca5a5194969778a7e009f3b569eb50833"
+    },
+    {
+      "path": "data/artifacts/images/pseudospectrum_slice_3160x2820.png",
+      "size_bytes": 102576,
+      "mtime_utc": "2026-01-27T04:26:21.176905863Z",
+      "sha256": "885c09d6837c112285e857023ff0c715a5b739fec0f8c16bc0b8c97cd527ce53"
+    },
+    {
+      "path": "data/artifacts/images/real_physics_correlation.png",
+      "size_bytes": 41615,
+      "mtime_utc": "2026-01-27T03:58:01.119542823Z",
+      "sha256": "653a37edc3194648b82d191c8eac279d30d48db2fca6725ee8f85b33fbe84fa5"
+    },
+    {
+      "path": "data/artifacts/images/real_physics_correlation_gwtc3.png",
+      "size_bytes": 74148,
+      "mtime_utc": "2026-01-27T04:00:12.108698058Z",
+      "sha256": "41ebe1d4365d0a2c74b4dcedadc4d5f584c1113b92d7d63df9da5a54cc44eaff"
+    },
+    {
+      "path": "data/artifacts/images/repo_crate_family_map_3160x2820.png",
+      "size_bytes": 1460790,
+      "mtime_utc": "2026-03-18T21:02:03.184512595Z",
+      "sha256": "81cebf284496f54d68191d3fa1541577e86929b620ef79bbf760dc0c54e8fbe5"
+    },
+    {
+      "path": "data/artifacts/images/repo_operator_matrix_3160x2820.png",
+      "size_bytes": 700406,
+      "mtime_utc": "2026-03-18T21:02:05.807519584Z",
+      "sha256": "653920c49dff7b586aa2914bd918969f8c2fb6a2f8cf67cd84be4732e84bf13c"
+    },
+    {
+      "path": "data/artifacts/images/repo_scope_dashboard_3160x2820.png",
+      "size_bytes": 1886213,
+      "mtime_utc": "2026-03-18T21:02:00.877506441Z",
+      "sha256": "a45ed1f981db90c991be05d811e01dac7d42bb28a2fe646a206645021cc78170"
+    },
+    {
+      "path": "data/artifacts/images/science_pathion_zero_divisor_interaction_graph_3160x2820.png",
+      "size_bytes": 9361350,
+      "mtime_utc": "2026-03-18T21:02:16.332547534Z",
+      "sha256": "c9b5245bf8c9f86e51c3d09349081b93ecde06aeabc858ab8c332222f9d229ad"
+    },
+    {
+      "path": "data/artifacts/images/science_e183_phase_plate_3160x2820.png",
+      "size_bytes": 2807800,
+      "mtime_utc": "2026-03-18T21:02:07.761524784Z",
+      "sha256": "31293930b92d192b243248e3a0935f00278d2a7eab3ebd436ab6bf2092bdc2ea"
+    },
+    {
+      "path": "data/artifacts/images/science_gravastar_stability_plate_3160x2820.png",
+      "size_bytes": 493790,
+      "mtime_utc": "2026-03-18T21:02:10.204531279Z",
+      "sha256": "4394a5ef38754873e3a3a4e6d0d77a8d273d69d200ad2c967347bf1e52fd4e2f"
+    },
+    {
+      "path": "data/artifacts/images/sedenion_zd_pca.png",
+      "size_bytes": 701437,
+      "mtime_utc": "2026-03-19T04:17:58.521999803Z",
+      "sha256": "59a707bc690db0def8394cadd03cee81a3f05de7c159e08f4d6001af6d0359f7"
+    },
+    {
+      "path": "data/artifacts/images/surreal_composite_rgb.png",
+      "size_bytes": 252709,
+      "mtime_utc": "2026-01-26T21:09:40.586002777Z",
+      "sha256": "936b77ab14371f2fbe16b337c2ef47b6565017b570f3ff34ad23b076afeed911"
+    },
+    {
+      "path": "data/artifacts/images/surreal_tensor_layers.png",
+      "size_bytes": 1090233,
+      "mtime_utc": "2026-01-26T21:09:13.704978954Z",
+      "sha256": "624c60b4bde9891e53db9d7d0f0923594d3a39b5554fbca10c789d13506ebdcb"
+    },
+    {
+      "path": "data/artifacts/images/surreal_time_evolution.png",
+      "size_bytes": 246898,
+      "mtime_utc": "2026-01-26T21:12:08.623134615Z",
+      "sha256": "64b1edc460aa7737f12b5239a41c21388165f6ecb5f89a73cc0fc874b0dde0dc"
+    },
+    {
+      "path": "data/artifacts/images/theory_validation_gravastar.png",
+      "size_bytes": 53367,
+      "mtime_utc": "2026-01-27T04:11:28.678463653Z",
+      "sha256": "c84e4e98617f01b237841b0898918ac81cd40c3904fe8b03713737199451095d"
+    },
+    {
+      "path": "data/artifacts/m3_tensor_log.txt",
+      "size_bytes": 231,
+      "mtime_utc": "2026-01-26T21:43:27.500769322Z",
+      "sha256": "acdc0707764c4d4eec6d3877f429684e486aa7d6b0d612dc2d9a73a4b9b75cb2"
+    },
+    {
+      "path": "data/artifacts/modular_chaos_plot.png",
+      "size_bytes": 78139,
+      "mtime_utc": "2026-01-26T21:46:25.537177929Z",
+      "sha256": "a3bff21412949b1b9eb4dede32475776e7d22853769f92019b5f93c1942fdbac"
+    },
+    {
+      "path": "data/artifacts/nonlocal_slope_nd.png",
+      "size_bytes": 44290,
+      "mtime_utc": "2026-01-27T02:47:45.781189001Z",
+      "sha256": "52ce2ba5692cada513d9d0a78eebba3537f645cf56f454f7f7f98501b3df44ff"
+    },
+    {
+      "path": "data/artifacts/sedenion_field_3D_plot.png",
+      "size_bytes": 41113,
+      "mtime_utc": "2026-01-27T02:47:46.525189768Z",
+      "sha256": "92e663fd1a187214502a4c6e2f7e95a1126b5b5b6823963b564194b7f3b481b3"
+    },
+    {
+      "path": "data/artifacts/sedenion_field_3d_plot.png",
+      "size_bytes": 45567,
+      "mtime_utc": "2026-01-26T21:46:54.783242568Z",
+      "sha256": "f7dcd83cefe95a6b638389089857b6e56ee2f03e41d554b27d951806132bcbd2"
+    },
+    {
+      "path": "data/artifacts/sedenion_field_4D_plot.png",
+      "size_bytes": 41954,
+      "mtime_utc": "2026-01-27T02:47:46.735189985Z",
+      "sha256": "10ed02b3c2faf6dd7f857dcd688028b99703f7f9405477d0ed8c7afd8d13619c"
+    },
+    {
+      "path": "data/artifacts/spectral_flow_plot.png",
+      "size_bytes": 51522,
+      "mtime_utc": "2026-01-26T21:51:20.104805576Z",
+      "sha256": "e1f78522b22c50331f20264187a036cc7411dadf48d67d81b00c41a29a627306"
+    },
+    {
+      "path": "data/artifacts/warp_ring_integration.png",
+      "size_bytes": 29922,
+      "mtime_utc": "2026-02-11T04:38:03.357713670Z",
+      "sha256": "047859f35e6c909357a6e05c896de9712784820dda990390b7490a49311bb01d"
     }
   ],
   "manifest": "data/artifacts/ARTIFACTS_MANIFEST.csv",
-  "missing_manifest_paths": [],
-  "root": "data/artifacts"
+  "missing_manifest_paths": [
+    "data/artifacts/engineering/spaceplate_geometry.scad",
+    "data/artifacts/images/OCULUS_GRAND_DASHBOARD_v4.png",
+    "data/artifacts/images/associator_stats_3160x2820.png",
+    "data/artifacts/images/cd_motif_scaling_laws_3160x2820.png",
+    "data/artifacts/images/cosmology_comparison.png",
+    "data/artifacts/images/dimensional_geometry_-4_to_16.png",
+    "data/artifacts/images/holographic_warp_gpu.png",
+    "data/artifacts/images/kerr_shadow_asymmetry.png",
+    "data/artifacts/images/kerr_trace_demo.png",
+    "data/artifacts/images/materials_nomad_pca_16d.png",
+    "data/artifacts/images/materials_nomad_pca_32d.png",
+    "data/artifacts/images/materials_nomad_pca_4d.png",
+    "data/artifacts/images/materials_nomad_pca_8d.png",
+    "data/artifacts/images/sedenion_capture_scaling.png",
+    "data/artifacts/images/sedenion_slice_3d.png",
+    "data/artifacts/images/tensor_network_entropy_scaling_3160x2820.png",
+    "data/artifacts/images/warp_ring_annotated.png",
+    "data/artifacts/images/warp_pulse_animation_directors_cut.mp4",
+    "data/artifacts/manufacturing/sedenion_spaceplate_bom.csv",
+    "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+    "data/artifacts/BIBLIOGRAPHY.md",
+    "data/artifacts/FINAL_REPORT.md",
+    "data/artifacts/QUANTUM_REPORT.md",
+    "data/artifacts/SIMULATION_REPORT.md",
+    "data/artifacts/THESIS_3D_SYNTHESIS.md",
+    "data/artifacts/WARP_RING_REPORT.md",
+    "data/artifacts/c756_frames/frame_*.png",
+    "data/artifacts/extracted_equations.md",
+    "data/artifacts/images/hyper_mass_ladder.png",
+    "data/artifacts/images/hyper_mera_network.png",
+    "data/artifacts/images/sedenion_mass_hypothesis.png",
+    "data/artifacts/images/sedenion_mass_ladder_log.png",
+    "data/artifacts/images/sedenion_zd_graph.png",
+    "data/artifacts/images/sedenion_zd_network.png",
+    "data/artifacts/reality_check_and_synthesis.md"
+  ]
 }

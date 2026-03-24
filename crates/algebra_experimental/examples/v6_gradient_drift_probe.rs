@@ -1,5 +1,6 @@
 use algebra_experimental::neutrino_sector::{
-    BranchMapReport, BranchWallReport, LoopReport, V6ProbeArtifacts, default_probe_artifacts,
+    BranchMapReport, BranchWallReport, LoopReport, PathScanReport, V6ProbeArtifacts,
+    default_probe_artifacts,
 };
 use std::fs;
 use std::path::Path;
@@ -75,6 +76,27 @@ fn write_loop_csv(path: &Path, report: &LoopReport) -> std::io::Result<()> {
     fs::write(path, out)
 }
 
+fn write_path_scan_csv(path: &Path, report: &PathScanReport) -> std::io::Result<()> {
+    let mut out = String::from(
+        "alpha_ch,alpha_nu,branch,perm_match,align_g12,align_g13,align_g23,align_u_solar,align_u_atmo\n",
+    );
+    for row in &report.rows {
+        out.push_str(&format!(
+            "{:.2},{:.2},{},{},{:.6},{:.6},{:.6},{:.6},{:.6}\n",
+            row.alpha_ch,
+            row.alpha_nu,
+            row.branch,
+            row.perm_match,
+            row.align_g12,
+            row.align_g13,
+            row.align_g23,
+            row.align_u_solar,
+            row.align_u_atmo
+        ));
+    }
+    fs::write(path, out)
+}
+
 fn write_probe_artifacts(base: &Path, artifacts: &V6ProbeArtifacts) -> std::io::Result<()> {
     fs::create_dir_all(base)?;
     fs::write(
@@ -91,6 +113,14 @@ fn write_probe_artifacts(base: &Path, artifacts: &V6ProbeArtifacts) -> std::io::
     )?;
     write_branch_map_csv(&base.join("branch_map.csv"), &artifacts.branch_map)?;
     write_branch_walls_csv(&base.join("branch_walls.csv"), &artifacts.branch_walls)?;
+    write_path_scan_csv(
+        &base.join("fixed_alpha_ch_3_00_scan.csv"),
+        &artifacts.fixed_alpha_ch_scan,
+    )?;
+    write_path_scan_csv(
+        &base.join("fixed_alpha_nu_1_35_scan.csv"),
+        &artifacts.fixed_alpha_nu_scan,
+    )?;
     write_loop_csv(
         &base.join("stable_branch_loop_steps.csv"),
         &artifacts.stable_branch_loop,
