@@ -2,12 +2,23 @@
 //
 // This module remains in-tree as regression infrastructure and for bounded
 // falsification work. It is no longer the repo's primary architectural climb.
+// New orchestration/report surfaces live in `higher_cd_control`; selected
+// re-exports below keep the normalized control seam discoverable from the
+// older compatibility lane without collapsing the separation.
 //
 // ---------------------------------------------------------------------------
 // Trap B: Re-export canonical types from gororoba_algebra::construction::cd_tower
 // so that any consumer using `algebra_experimental::higher_cd::*` continues to
 // resolve these names after their definitions were removed from this file.
 // ---------------------------------------------------------------------------
+pub use crate::higher_cd_control::{
+    HigherCdBasisReport, HigherCdControlReport, HigherCdControlSpec, HigherCdControlSummary,
+    PathionControlReport, PathionResonanceReport, ZdGraphSpectrumReport, ZdResonanceBand,
+    ZdResonanceConfig, ZdResonanceReport, compute_higher_cd_basis_report,
+    compute_higher_cd_control_report, compute_resonance_bands_from_eigenvalues,
+    compute_resonance_report_from_control_report, compute_zd_graph_spectrum,
+    default_pathion_control_report, default_pathion_resonance_report,
+};
 pub use gororoba_algebra::construction::cd_tower::{
     Chingon, DekaVoudon, Eriston, Pathion, Routon, Voudon,
 };

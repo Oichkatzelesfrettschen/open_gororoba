@@ -4,8 +4,9 @@
 //! computes the graph-Laplacian, and extracts eigenvalues that modulate
 //! the GPU Pathion heat sink.
 
-use cd_kernel::cayley_dickson::cd_basis_mul_sign_iter;
-use nalgebra::{DMatrix, SymmetricEigen};
+use algebra_experimental::higher_cd_control::{
+    PathionControlReport, compute_zd_graph_spectrum, default_pathion_control_report,
+};
 
 /// Eigenvalue spectrum of the 32D Pathion ZD interaction graph.
 #[derive(Debug, Clone)]
@@ -18,74 +19,6 @@ pub struct PathionEigenvalueSpectrum {
     pub n_components: usize,
 }
 
-/// Build the ZD adjacency matrix for a Cayley-Dickson algebra of given dimension.
-///
-/// Entry A[i][j] = 1.0 if basis elements e_i and e_j participate in a
-/// zero-divisor pair (there exist signs s1, s2 such that
-/// ||(e_i + s1*e_j) * (e_k + s2*e_l)|| = 0 for some k, l involving i or j).
-///
-/// For efficiency, we use the associator-based criterion:
-/// A[i][j] = 1 if the associator [e_i, e_j, e_k] is nonzero for any k,
-/// which indicates non-alternative behavior linking i and j.
-fn build_zd_adjacency(dim: usize) -> DMatrix<f64> {
-    let mut adj = DMatrix::zeros(dim, dim);
-
-    for i in 1..dim {
-        for j in (i + 1)..dim {
-            // Check if e_i and e_j participate in any nonzero associator
-            let mut has_assoc = false;
-            for k in 1..dim {
-                if k == i || k == j {
-                    continue;
-                }
-                // Associator [e_i, e_j, e_k] = (e_i * e_j) * e_k - e_i * (e_j * e_k)
-                // For basis elements, this reduces to sign arithmetic.
-                let ij = i ^ j;
-                let sign_ij = cd_basis_mul_sign_iter(dim, i, j);
-                let jk = j ^ k;
-                let sign_jk = cd_basis_mul_sign_iter(dim, j, k);
-
-                // (e_i * e_j) * e_k
-                let ij_k = ij ^ k;
-                let sign_ij_k = sign_ij * cd_basis_mul_sign_iter(dim, ij, k);
-
-                // e_i * (e_j * e_k)
-                let i_jk = i ^ jk;
-                let sign_i_jk = sign_jk * cd_basis_mul_sign_iter(dim, i, jk);
-
-                // Associator is nonzero if the two products differ
-                if ij_k == i_jk && sign_ij_k != sign_i_jk {
-                    has_assoc = true;
-                    break;
-                }
-                if ij_k != i_jk {
-                    // Different target basis element -- always nonzero associator
-                    has_assoc = true;
-                    break;
-                }
-            }
-
-            if has_assoc {
-                adj[(i, j)] = 1.0;
-                adj[(j, i)] = 1.0;
-            }
-        }
-    }
-
-    adj
-}
-
-/// Compute the graph Laplacian L = D - A where D is the degree matrix.
-fn graph_laplacian(adj: &DMatrix<f64>) -> DMatrix<f64> {
-    let n = adj.nrows();
-    let mut lap = -adj.clone();
-    for i in 0..n {
-        let degree: f64 = (0..n).map(|j| adj[(i, j)]).sum();
-        lap[(i, i)] = degree;
-    }
-    lap
-}
-
 impl PathionEigenvalueSpectrum {
     /// Compute the eigenvalue spectrum for a 32D Pathion ZD graph.
     pub fn compute() -> Self {
@@ -94,43 +27,18 @@ impl PathionEigenvalueSpectrum {
 
     /// Compute eigenvalue spectrum for arbitrary CD dimension.
     pub fn compute_for_dim(dim: usize) -> Self {
-        let adj = build_zd_adjacency(dim);
-        let lap = graph_laplacian(&adj);
-
-        let eigen = SymmetricEigen::new(lap);
-        let mut eigenvalues: Vec<f64> = eigen.eigenvalues.iter().copied().collect();
-        eigenvalues.sort_by(|a, b| a.partial_cmp(b).unwrap());
-
-        // Clamp near-zero eigenvalues
-        for ev in &mut eigenvalues {
-            if ev.abs() < 1e-10 {
-                *ev = 0.0;
-            }
-        }
-
-        // Count connected components (multiplicity of zero eigenvalue)
-        let n_components = eigenvalues.iter().filter(|&&v| v == 0.0).count();
-
-        // Build 16 representative eigenvalues for GPU
-        // Strategy: take the first 16 distinct non-negative eigenvalues
-        let mut ev16 = [0.0f32; 16];
-        let positive: Vec<f64> = eigenvalues.iter().copied().filter(|&v| v > 1e-10).collect();
-        for (i, &v) in positive.iter().take(16).enumerate() {
-            ev16[i] = v as f32;
-        }
-        // Normalize so max = 1.0 for stable GPU arithmetic
-        let max_ev = ev16.iter().copied().fold(0.0f32, f32::max);
-        if max_ev > 0.0 {
-            for v in &mut ev16 {
-                *v /= max_ev;
-            }
-        }
+        let report = compute_zd_graph_spectrum(dim);
 
         Self {
-            eigenvalues,
-            eigenvalues_16: ev16,
-            n_components,
+            eigenvalues: report.eigenvalues,
+            eigenvalues_16: report.eigenvalues_16,
+            n_components: report.n_components,
         }
+    }
+
+    /// Return the normalized shared 32D control report backing the Pathion lane.
+    pub fn shared_control_report() -> PathionControlReport {
+        default_pathion_control_report()
     }
 }
 
@@ -211,5 +119,30 @@ mod tests {
         // Should have positive eigenvalues (edges in the graph)
         let has_positive = spec.eigenvalues.iter().any(|&v| v > 1e-10);
         assert!(has_positive, "Sedenion ZD graph should have edges");
+    }
+
+    #[test]
+    fn test_shared_control_report_matches_legacy_surface() {
+        let legacy = PathionEigenvalueSpectrum::compute();
+        let shared = PathionEigenvalueSpectrum::shared_control_report();
+
+        assert_eq!(legacy.n_components, shared.spectrum_report.n_components);
+        assert_eq!(legacy.eigenvalues_16, shared.spectrum_report.eigenvalues_16);
+        assert_eq!(
+            legacy.eigenvalues.len(),
+            shared.spectrum_report.eigenvalues.len()
+        );
+        for (legacy_ev, shared_ev) in legacy
+            .eigenvalues
+            .iter()
+            .zip(shared.spectrum_report.eigenvalues.iter())
+        {
+            assert!(
+                (legacy_ev - shared_ev).abs() < 1e-10,
+                "legacy and shared eigenvalues diverged: {legacy_ev} vs {shared_ev}"
+            );
+        }
+        assert_eq!(shared.summary.algebra_name, "Pathion");
+        assert_eq!(shared.summary.actual_rank, 1);
     }
 }

@@ -1,56 +1,18 @@
 //! Pathion resonance band detection for N-body orbital dynamics.
 //!
-//! Maps 32D Pathion ZD graph eigenvalues to orbital resonance bands.
-//! When an orbital frequency matches a harmonic of a ZD eigenvalue,
-//! the coupling between the Pathion perturbation and the orbit is enhanced.
-//!
-//! # Physics
-//! The ZD graph Laplacian eigenvalues lambda_k define natural frequencies
-//! of the Pathion algebraic structure. An orbit with frequency f_orb
-//! experiences enhanced coupling when f_orb ~ lambda_k / (2*pi*n) for
-//! integer n (harmonic resonance).
-//!
-//! # References
-//! - Moreno (1998): Zero divisors of the Cayley-Dickson algebras
-//! - Murray & Dermott (1999): Solar System Dynamics, Ch. 8
+//! This client lane now consumes the normalized higher-CD resonance helpers from
+//! `algebra_experimental::higher_cd_control` while preserving the familiar
+//! Pathion-facing API.
 
 use crate::pathion_eigenvalues::PathionEigenvalueSpectrum;
-
-/// A single resonance band identified between a ZD eigenvalue and an orbital frequency.
-#[derive(Debug, Clone)]
-pub struct ResonanceBand {
-    /// Which harmonic (1 = fundamental, 2 = first overtone, etc.)
-    pub harmonic: usize,
-    /// Index of the ZD eigenvalue involved.
-    pub zd_index: usize,
-    /// ZD eigenvalue (from graph Laplacian).
-    pub eigenvalue: f64,
-    /// Detuning: |f_orb - eigenvalue / (2*pi*n)| / f_orb.
-    pub detuning: f64,
-    /// Coupling strength: 1 / (1 + detuning^2 / width^2) (Lorentzian profile).
-    pub coupling_strength: f64,
-}
-
-/// Configuration for resonance detection.
-#[derive(Debug, Clone)]
-pub struct ResonanceConfig {
-    /// Maximum harmonic order to check.
-    pub max_harmonic: usize,
-    /// Resonance width (fractional): bands within this fraction of f_orb are coupled.
-    pub width: f64,
-    /// Minimum coupling strength to report (filter weak resonances).
-    pub min_coupling: f64,
-}
-
-impl Default for ResonanceConfig {
-    fn default() -> Self {
-        Self {
-            max_harmonic: 5,
-            width: 0.1,
-            min_coupling: 0.01,
-        }
-    }
-}
+pub use algebra_experimental::higher_cd_control::{
+    PathionResonanceReport, ZdResonanceBand as ResonanceBand, ZdResonanceConfig as ResonanceConfig,
+};
+use algebra_experimental::higher_cd_control::{
+    compute_resonance_bands_from_eigenvalues, compute_resonance_report_from_control_report,
+    default_pathion_resonance_report, resonance_modulated_perturbation_from_eigenvalues,
+    total_resonance_coupling_from_bands,
+};
 
 /// Compute resonance bands between Pathion eigenvalues and an orbital frequency.
 ///
@@ -60,44 +22,7 @@ pub fn compute_resonance_bands(
     orbital_freq: f64,
     config: &ResonanceConfig,
 ) -> Vec<ResonanceBand> {
-    if orbital_freq <= 0.0 {
-        return Vec::new();
-    }
-
-    let two_pi = 2.0 * std::f64::consts::PI;
-    let mut bands = Vec::new();
-
-    for (idx, &eigenvalue) in spectrum.eigenvalues.iter().enumerate() {
-        if eigenvalue <= 1e-10 {
-            continue; // Skip zero eigenvalues (connected component modes)
-        }
-
-        for n in 1..=config.max_harmonic {
-            let resonant_freq = eigenvalue / (two_pi * n as f64);
-            let detuning = (orbital_freq - resonant_freq).abs() / orbital_freq;
-
-            // Lorentzian coupling profile
-            let coupling = 1.0 / (1.0 + (detuning / config.width).powi(2));
-
-            if coupling >= config.min_coupling {
-                bands.push(ResonanceBand {
-                    harmonic: n,
-                    zd_index: idx,
-                    eigenvalue,
-                    detuning,
-                    coupling_strength: coupling,
-                });
-            }
-        }
-    }
-
-    bands.sort_by(|a, b| {
-        b.coupling_strength
-            .partial_cmp(&a.coupling_strength)
-            .unwrap()
-    });
-
-    bands
+    compute_resonance_bands_from_eigenvalues(&spectrum.eigenvalues, orbital_freq, config)
 }
 
 /// Compute total resonance coupling for a given orbital frequency.
@@ -109,10 +34,8 @@ pub fn total_resonance_coupling(
     orbital_freq: f64,
     config: &ResonanceConfig,
 ) -> f64 {
-    compute_resonance_bands(spectrum, orbital_freq, config)
-        .iter()
-        .map(|b| b.coupling_strength)
-        .sum()
+    let bands = compute_resonance_bands(spectrum, orbital_freq, config);
+    total_resonance_coupling_from_bands(&bands)
 }
 
 /// Compute the resonance-modulated perturbation matrix for N-body integration.
@@ -126,33 +49,47 @@ pub fn resonance_modulated_perturbation(
     alpha_pathion: f64,
     config: &ResonanceConfig,
 ) -> [f64; 3] {
-    let total = total_resonance_coupling(spectrum, orbital_freq, config);
+    resonance_modulated_perturbation_from_eigenvalues(
+        &spectrum.eigenvalues,
+        orbital_freq,
+        alpha_pathion,
+        config,
+    )
+}
 
-    // Distribute coupling across 3 spatial dimensions using
-    // the first 3 positive eigenvalues as weights (if available).
-    let positive_evs: Vec<f64> = spectrum
-        .eigenvalues
-        .iter()
-        .copied()
-        .filter(|&v| v > 1e-10)
-        .take(3)
-        .collect();
-
-    if positive_evs.is_empty() || total < 1e-15 {
-        return [0.0; 3];
-    }
-
-    let sum_evs: f64 = positive_evs.iter().sum();
-    let scale = alpha_pathion * total;
-
-    let mut result = [scale / 3.0; 3]; // Default: isotropic
-    if sum_evs > 0.0 {
-        for (i, &ev) in positive_evs.iter().enumerate() {
-            result[i] = scale * ev / sum_evs;
+pub fn compute_resonance_report(
+    spectrum: &PathionEigenvalueSpectrum,
+    orbital_freq: f64,
+    alpha_pathion: f64,
+    config: &ResonanceConfig,
+) -> PathionResonanceReport {
+    let control = PathionEigenvalueSpectrum::shared_control_report();
+    let uses_shared_pathion_basis = spectrum.eigenvalues == control.spectrum_report.eigenvalues;
+    if uses_shared_pathion_basis {
+        compute_resonance_report_from_control_report(&control, orbital_freq, alpha_pathion, config)
+    } else {
+        let bands = compute_resonance_bands(spectrum, orbital_freq, config);
+        let total_coupling = total_resonance_coupling_from_bands(&bands);
+        let perturbation =
+            resonance_modulated_perturbation(spectrum, orbital_freq, alpha_pathion, config);
+        PathionResonanceReport {
+            algebra_name: "Pathion".to_string(),
+            ambient_dim: spectrum.eigenvalues.len(),
+            orbital_frequency: orbital_freq,
+            alpha_scale: alpha_pathion,
+            total_coupling,
+            perturbation,
+            bands,
         }
     }
+}
 
-    result
+pub fn default_resonance_report(
+    orbital_freq: f64,
+    alpha_pathion: f64,
+    config: &ResonanceConfig,
+) -> PathionResonanceReport {
+    default_pathion_resonance_report(orbital_freq, alpha_pathion, config)
 }
 
 #[cfg(test)]
@@ -241,5 +178,14 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn shared_resonance_report_matches_pathion_defaults() {
+        let config = ResonanceConfig::default();
+        let report = default_resonance_report(1.0, 1e-6, &config);
+        assert_eq!(report.algebra_name, "Pathion");
+        assert_eq!(report.ambient_dim, 32);
+        assert!(report.total_coupling >= 0.0);
     }
 }

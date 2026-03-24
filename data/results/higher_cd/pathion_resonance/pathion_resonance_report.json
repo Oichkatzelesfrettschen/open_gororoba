@@ -1,0 +1,644 @@
+{
+  "algebra_name": "Pathion",
+  "ambient_dim": 32,
+  "orbital_frequency": 1.0,
+  "alpha_scale": 1e-6,
+  "total_coupling": 34.83946690320712,
+  "perturbation": [
+    0.000011613155634402371,
+    0.000011613155634402371,
+    0.000011613155634402371
+  ],
+  "bands": [
+    {
+      "harmonic": 5,
+      "zd_index": 31,
+      "eigenvalue": 31.00000000000011,
+      "detuning": 0.013239352830245354,
+      "coupling_strength": 0.9827738936538579
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 30,
+      "eigenvalue": 31.000000000000078,
+      "detuning": 0.013239352830246354,
+      "coupling_strength": 0.9827738936538554
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 29,
+      "eigenvalue": 31.00000000000007,
+      "detuning": 0.013239352830246576,
+      "coupling_strength": 0.9827738936538547
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 28,
+      "eigenvalue": 31.000000000000064,
+      "detuning": 0.013239352830246798,
+      "coupling_strength": 0.9827738936538541
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 26,
+      "eigenvalue": 31.000000000000057,
+      "detuning": 0.01323935283024702,
+      "coupling_strength": 0.9827738936538537
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 27,
+      "eigenvalue": 31.000000000000057,
+      "detuning": 0.01323935283024702,
+      "coupling_strength": 0.9827738936538537
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 25,
+      "eigenvalue": 31.000000000000043,
+      "detuning": 0.013239352830247575,
+      "coupling_strength": 0.9827738936538521
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 21,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.013239352830248019,
+      "coupling_strength": 0.982773893653851
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 22,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.013239352830248019,
+      "coupling_strength": 0.982773893653851
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 23,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.013239352830248019,
+      "coupling_strength": 0.982773893653851
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 24,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.013239352830248019,
+      "coupling_strength": 0.982773893653851
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 18,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.013239352830248352,
+      "coupling_strength": 0.9827738936538503
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 19,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.013239352830248352,
+      "coupling_strength": 0.9827738936538503
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 20,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.013239352830248352,
+      "coupling_strength": 0.9827738936538503
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 13,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.013239352830248574,
+      "coupling_strength": 0.9827738936538496
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 14,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.013239352830248574,
+      "coupling_strength": 0.9827738936538496
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 15,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.013239352830248574,
+      "coupling_strength": 0.9827738936538496
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 16,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.013239352830248574,
+      "coupling_strength": 0.9827738936538496
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 17,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.013239352830248574,
+      "coupling_strength": 0.9827738936538496
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 11,
+      "eigenvalue": 31.000000000000004,
+      "detuning": 0.013239352830248796,
+      "coupling_strength": 0.9827738936538492
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 12,
+      "eigenvalue": 31.000000000000004,
+      "detuning": 0.013239352830248796,
+      "coupling_strength": 0.9827738936538492
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 7,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.013239352830249018,
+      "coupling_strength": 0.9827738936538485
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 8,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.013239352830249018,
+      "coupling_strength": 0.9827738936538485
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 9,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.013239352830249018,
+      "coupling_strength": 0.9827738936538485
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 10,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.013239352830249018,
+      "coupling_strength": 0.9827738936538485
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 5,
+      "eigenvalue": 30.99999999999999,
+      "detuning": 0.01323935283024924,
+      "coupling_strength": 0.9827738936538478
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 6,
+      "eigenvalue": 30.99999999999999,
+      "detuning": 0.01323935283024924,
+      "coupling_strength": 0.9827738936538478
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 2,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.013239352830249684,
+      "coupling_strength": 0.9827738936538468
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 3,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.013239352830249684,
+      "coupling_strength": 0.9827738936538468
+    },
+    {
+      "harmonic": 5,
+      "zd_index": 4,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.013239352830249684,
+      "coupling_strength": 0.9827738936538468
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 2,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.23345080896218784,
+      "coupling_strength": 0.15504048988145616
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 3,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.23345080896218784,
+      "coupling_strength": 0.15504048988145616
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 4,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.23345080896218784,
+      "coupling_strength": 0.15504048988145616
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 5,
+      "eigenvalue": 30.99999999999999,
+      "detuning": 0.2334508089621885,
+      "coupling_strength": 0.1550404898814554
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 6,
+      "eigenvalue": 30.99999999999999,
+      "detuning": 0.2334508089621885,
+      "coupling_strength": 0.1550404898814554
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 7,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.23345080896218873,
+      "coupling_strength": 0.15504048988145516
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 8,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.23345080896218873,
+      "coupling_strength": 0.15504048988145516
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 9,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.23345080896218873,
+      "coupling_strength": 0.15504048988145516
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 10,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.23345080896218873,
+      "coupling_strength": 0.15504048988145516
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 11,
+      "eigenvalue": 31.000000000000004,
+      "detuning": 0.23345080896218895,
+      "coupling_strength": 0.1550404898814549
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 12,
+      "eigenvalue": 31.000000000000004,
+      "detuning": 0.23345080896218895,
+      "coupling_strength": 0.1550404898814549
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 13,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.2334508089621894,
+      "coupling_strength": 0.1550404898814544
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 14,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.2334508089621894,
+      "coupling_strength": 0.1550404898814544
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 15,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.2334508089621894,
+      "coupling_strength": 0.1550404898814544
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 16,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.2334508089621894,
+      "coupling_strength": 0.1550404898814544
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 17,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.2334508089621894,
+      "coupling_strength": 0.1550404898814544
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 18,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.23345080896218962,
+      "coupling_strength": 0.15504048988145416
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 19,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.23345080896218962,
+      "coupling_strength": 0.15504048988145416
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 20,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.23345080896218962,
+      "coupling_strength": 0.15504048988145416
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 21,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.23345080896219006,
+      "coupling_strength": 0.15504048988145366
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 22,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.23345080896219006,
+      "coupling_strength": 0.15504048988145366
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 23,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.23345080896219006,
+      "coupling_strength": 0.15504048988145366
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 24,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.23345080896219006,
+      "coupling_strength": 0.15504048988145366
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 25,
+      "eigenvalue": 31.000000000000043,
+      "detuning": 0.2334508089621905,
+      "coupling_strength": 0.1550404898814532
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 26,
+      "eigenvalue": 31.000000000000057,
+      "detuning": 0.23345080896219117,
+      "coupling_strength": 0.15504048988145241
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 27,
+      "eigenvalue": 31.000000000000057,
+      "detuning": 0.23345080896219117,
+      "coupling_strength": 0.15504048988145241
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 28,
+      "eigenvalue": 31.000000000000064,
+      "detuning": 0.2334508089621914,
+      "coupling_strength": 0.15504048988145216
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 29,
+      "eigenvalue": 31.00000000000007,
+      "detuning": 0.23345080896219184,
+      "coupling_strength": 0.15504048988145167
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 30,
+      "eigenvalue": 31.000000000000078,
+      "detuning": 0.23345080896219206,
+      "coupling_strength": 0.15504048988145142
+    },
+    {
+      "harmonic": 4,
+      "zd_index": 31,
+      "eigenvalue": 31.00000000000011,
+      "detuning": 0.2334508089621934,
+      "coupling_strength": 0.15504048988144994
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 2,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.6446010786162506,
+      "coupling_strength": 0.023501179904936213
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 3,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.6446010786162506,
+      "coupling_strength": 0.023501179904936213
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 4,
+      "eigenvalue": 30.999999999999975,
+      "detuning": 0.6446010786162506,
+      "coupling_strength": 0.023501179904936213
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 5,
+      "eigenvalue": 30.99999999999999,
+      "detuning": 0.6446010786162513,
+      "coupling_strength": 0.023501179904936168
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 6,
+      "eigenvalue": 30.99999999999999,
+      "detuning": 0.6446010786162513,
+      "coupling_strength": 0.023501179904936168
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 7,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.6446010786162517,
+      "coupling_strength": 0.023501179904936133
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 8,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.6446010786162517,
+      "coupling_strength": 0.023501179904936133
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 9,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.6446010786162517,
+      "coupling_strength": 0.023501179904936133
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 10,
+      "eigenvalue": 30.999999999999996,
+      "detuning": 0.6446010786162517,
+      "coupling_strength": 0.023501179904936133
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 11,
+      "eigenvalue": 31.000000000000004,
+      "detuning": 0.6446010786162522,
+      "coupling_strength": 0.023501179904936102
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 12,
+      "eigenvalue": 31.000000000000004,
+      "detuning": 0.6446010786162522,
+      "coupling_strength": 0.023501179904936102
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 13,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.6446010786162524,
+      "coupling_strength": 0.02350117990493609
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 14,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.6446010786162524,
+      "coupling_strength": 0.02350117990493609
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 15,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.6446010786162524,
+      "coupling_strength": 0.02350117990493609
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 16,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.6446010786162524,
+      "coupling_strength": 0.02350117990493609
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 17,
+      "eigenvalue": 31.00000000000001,
+      "detuning": 0.6446010786162524,
+      "coupling_strength": 0.02350117990493609
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 18,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.6446010786162528,
+      "coupling_strength": 0.023501179904936054
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 19,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.6446010786162528,
+      "coupling_strength": 0.023501179904936054
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 20,
+      "eigenvalue": 31.000000000000018,
+      "detuning": 0.6446010786162528,
+      "coupling_strength": 0.023501179904936054
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 21,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.6446010786162533,
+      "coupling_strength": 0.023501179904936022
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 22,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.6446010786162533,
+      "coupling_strength": 0.023501179904936022
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 23,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.6446010786162533,
+      "coupling_strength": 0.023501179904936022
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 24,
+      "eigenvalue": 31.00000000000003,
+      "detuning": 0.6446010786162533,
+      "coupling_strength": 0.023501179904936022
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 25,
+      "eigenvalue": 31.000000000000043,
+      "detuning": 0.6446010786162542,
+      "coupling_strength": 0.02350117990493596
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 26,
+      "eigenvalue": 31.000000000000057,
+      "detuning": 0.6446010786162548,
+      "coupling_strength": 0.023501179904935915
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 27,
+      "eigenvalue": 31.000000000000057,
+      "detuning": 0.6446010786162548,
+      "coupling_strength": 0.023501179904935915
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 28,
+      "eigenvalue": 31.000000000000064,
+      "detuning": 0.6446010786162553,
+      "coupling_strength": 0.023501179904935884
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 29,
+      "eigenvalue": 31.00000000000007,
+      "detuning": 0.6446010786162557,
+      "coupling_strength": 0.023501179904935852
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 30,
+      "eigenvalue": 31.000000000000078,
+      "detuning": 0.6446010786162559,
+      "coupling_strength": 0.02350117990493583
+    },
+    {
+      "harmonic": 3,
+      "zd_index": 31,
+      "eigenvalue": 31.00000000000011,
+      "detuning": 0.6446010786162577,
+      "coupling_strength": 0.023501179904935707
+    }
+  ]
+}

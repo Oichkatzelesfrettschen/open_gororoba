@@ -347,6 +347,11 @@ the stable branch and across a wall-crossing loop both return to the initial
 frame after sign-consistent transport, so no residual monodromy was detected
 in the tested loops.
 
+The canonical narrative for this interpretation lives here in the sedenion
+physics note. The derived transport artifacts under
+`data/results/neutrino_sector/v6_branch_transport/` are supporting evidence,
+not the primary statement of meaning.
+
 **Joint 4D optimization** (C-1491, 4 parameters re-optimized jointly):
 
 | Parameter  | This work | PDG 2025 | Error |
@@ -1499,7 +1504,12 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
 
 7. **Sedenion uniqueness**: Pathion (32D) V_k has rank 1 vs sedenion rank 6.
    The sedenion is the unique CD dimension with rank-6 assessor complement.
-   Higher dimensions DESTROY the flavor structure. (C-1506)
+   The normalized Pathion Rust lane should therefore be read as a control and
+   falsification surface, not as the primary bridge architecture. Its current
+   artifact bundle is derived stepwise in pure Rust from `cd_kernel`,
+   `extract_vk_basis`, and the shared higher-CD control report layer. The
+   downstream resonance consumer now reads through that same normalized
+   spectrum instead of maintaining a separate 32D control stack. (C-1506)
 
 8. **sin^2(theta_W) = 0.250 is tree-level structural output**: The 8% gap
    from PDG 0.231 is plausibly the size of omitted radiative corrections.
