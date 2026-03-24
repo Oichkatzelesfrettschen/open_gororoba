@@ -61,10 +61,6 @@ name = "verify-source-infrastructure"
 path = "src/bin/verify_source_infrastructure.rs"
 
 [[bin]]
-name = "provenance"
-path = "src/bin/provenance.rs"
-
-[[bin]]
 name = "data-governance-gate"
 path = "src/bin/data_governance_gate.rs"
 
@@ -395,10 +391,6 @@ path = "src/bin/repo_utilities.rs"
 [[bin]]
 name = "repo-visuals"
 path = "src/bin/repo_visuals.rs"
-
-[[bin]]
-name = "download-recovery"
-path = "src/bin/download_recovery.rs"
 
 # ---- Radio Surveys (1) ----
 
