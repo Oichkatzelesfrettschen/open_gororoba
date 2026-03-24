@@ -17,7 +17,7 @@ struct Args {
     #[arg(short, long, default_value_t = 0.5)]
     d: f64,
 
-    #[arg(short, long, default_value_t = 0.05)]
+    #[arg(long, default_value_t = 0.05)]
     dt: f64,
 
     #[arg(short, long, default_value_t = 40.0)]

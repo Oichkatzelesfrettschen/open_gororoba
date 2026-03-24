@@ -19,7 +19,7 @@ struct Args {
     size: usize,
 
     /// Number of simulation steps
-    #[arg(short, long, default_value_t = 10000)]
+    #[arg(long, default_value_t = 10000)]
     steps: usize,
 
     /// Relaxation time base (tau_base)
