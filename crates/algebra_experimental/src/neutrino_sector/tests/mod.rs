@@ -29,6 +29,16 @@ pub(super) fn psi_setup() -> (
     (o1, o2, o3, sign_table)
 }
 
+/// Compute the 3-angle PMNS chi-squared against PDG 2024 central values.
+///
+/// Uses the canonical sum: ((t_i - mu_i) / sigma_i)^2 for i in {12, 13, 23}.
+/// Replaces the repeated 3-line inline pattern at every scan/cp hot loop.
+pub(super) fn pdg_score(t12: f64, t13: f64, t23: f64, pdg: &super::Pdg2024) -> f64 {
+    ((t12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2)
+        + ((t13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2)
+        + ((t23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2)
+}
+
 /// Print theta_12 / theta_13 / theta_23 vs supplied PDG central values with
 /// percentage errors.  Format matches the rest of the V_6 scan output.
 pub(super) fn print_best_angles(

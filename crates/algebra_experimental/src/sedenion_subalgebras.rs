@@ -96,6 +96,27 @@ mod tests {
     use std::collections::HashSet;
 
     // ---------------------------------------------------------------------------
+    // Shared basis-vector helpers
+    // ---------------------------------------------------------------------------
+
+    /// Unit octonion basis vector: e_k as a [f64; 8] array.
+    fn oct8(k: usize) -> [f64; 8] {
+        let mut v = [0.0_f64; 8];
+        v[k] = 1.0;
+        v
+    }
+
+    /// Test whether (i, j, k) is a Fano line in the octonion imaginary units.
+    fn is_fano_triple(i: usize, j: usize, k: usize) -> bool {
+        const FANO: [(usize, usize, usize); 7] = [
+            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
+        ];
+        let mut s = [i, j, k];
+        s.sort();
+        FANO.iter().any(|&(a, b, c)| s == [a, b, c])
+    }
+
+    // ---------------------------------------------------------------------------
     // Shared homotopy-transfer helpers (used by test_homotopy_transfer_m3,
     // test_m4_vanishes, test_m4_zero_classification, test_m4_missing_sets_and_m5,
     // test_oscillation_pattern, test_m3_is_associator).
@@ -402,26 +423,10 @@ mod tests {
     /// Additionally, the associative triads form the quaternion calibration structure.
     #[test]
     fn test_wilmot_triad_classification() {
-        use cd_kernel::cayley_dickson::cd_multiply;
-
         let dim = 16_usize;
 
-        // Compute triple associator T(b,c,d) = [b,d,c] - [d,c,b] + [c,b,d]
-        // where [x,y,z] = (x*y)*z - x*(y*z)
-        let assoc = |x: usize, y: usize, z: usize| -> f64 {
-            let mut ex = vec![0.0; dim]; ex[x] = 1.0;
-            let mut ey = vec![0.0; dim]; ey[y] = 1.0;
-            let mut ez = vec![0.0; dim]; ez[z] = 1.0;
-            let xy = cd_multiply(&ex, &ey);
-            let xyz = cd_multiply(&xy, &ez);
-            let yz = cd_multiply(&ey, &ez);
-            let x_yz = cd_multiply(&ex, &yz);
-            // [x,y,z] norm
-            xyz.iter().zip(x_yz.iter())
-                .map(|(a, b)| (a - b).powi(2))
-                .sum::<f64>()
-                .sqrt()
-        };
+        // [x,y,z] norm -- delegates to the canonical assoc_strict function.
+        let assoc = |x: usize, y: usize, z: usize| assoc_strict(dim, x, y, z);
 
         let mut associative_count = 0_usize;
         let mut non_associative_count = 0_usize;
@@ -1812,17 +1817,6 @@ mod tests {
         let mut imaginary_count = 0;
         let mut zero_count = 0;
 
-        // Fano lines (for classification)
-        let fano: [(usize, usize, usize); 7] = [
-            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
-        ];
-
-        let is_fano_triple = |i: usize, j: usize, k: usize| -> bool {
-            let mut sorted = [i, j, k];
-            sorted.sort();
-            fano.iter().any(|&(a, b, c)| sorted == [a, b, c])
-        };
-
         println!("  Sample m3 outputs:");
         for i in 1..8 {
             for j in 1..8 {
@@ -1830,11 +1824,7 @@ mod tests {
                 for k in 1..8 {
                     if k == i || k == j { continue; }
 
-                    let mut xi = [0.0_f64; 8]; xi[i] = 1.0;
-                    let mut yj = [0.0_f64; 8]; yj[j] = 1.0;
-                    let mut zk = [0.0_f64; 8]; zk[k] = 1.0;
-
-                    let m3_ijk = ht_compute_m3(&xi, &yj, &zk);
+                    let m3_ijk = ht_compute_m3(&oct8(i), &oct8(j), &oct8(k));
                     let norm: f64 = m3_ijk.iter().map(|v| v * v).sum::<f64>().sqrt();
 
                     if norm < 1e-10 {
@@ -2031,14 +2021,6 @@ mod tests {
             m4.iter().map(|v| v * v).sum::<f64>().sqrt()
         };
 
-        let fano: [(usize, usize, usize); 7] = [
-            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
-        ];
-        let is_fano = |a: usize, b: usize, c: usize| -> bool {
-            let mut s = [a, b, c]; s.sort();
-            fano.iter().any(|&(x, y, z)| s == [x, y, z])
-        };
-
         let mut zeros: Vec<(usize, usize, usize, usize)> = Vec::new();
         let mut nonzeros = 0;
 
@@ -2071,7 +2053,7 @@ mod tests {
         let mut contains_fano = 0;
         let mut no_fano = 0;
         for &(i, j, k, l) in &zeros {
-            let has_fano = is_fano(i, j, k) || is_fano(i, j, l) || is_fano(i, k, l) || is_fano(j, k, l);
+            let has_fano = is_fano_triple(i, j, k) || is_fano_triple(i, j, l) || is_fano_triple(i, k, l) || is_fano_triple(j, k, l);
             if has_fano { contains_fano += 1; } else { no_fano += 1; }
         }
         println!("  Zeros containing a Fano sub-triple: {}", contains_fano);
@@ -2102,7 +2084,7 @@ mod tests {
             }).count();
             let xor = s[0] ^ s[1] ^ s[2] ^ s[3];
             let fano_count = [(s[0],s[1],s[2]), (s[0],s[1],s[3]), (s[0],s[2],s[3]), (s[1],s[2],s[3])]
-                .iter().filter(|&&(a,b,c)| is_fano(a,b,c)).count();
+                .iter().filter(|&&(a,b,c)| is_fano_triple(a,b,c)).count();
             println!("    {:?}: {} orderings, XOR={}, Fano sub-triples={}", s, n_orderings, xor, fano_count);
         }
     }
@@ -2111,14 +2093,6 @@ mod tests {
     #[test]
     fn test_m4_missing_sets_and_m5() {
 
-
-        let fano: [(usize, usize, usize); 7] = [
-            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
-        ];
-        let is_fano = |a: usize, b: usize, c: usize| -> bool {
-            let mut s = [a, b, c]; s.sort();
-            fano.iter().any(|&(x, y, z)| s == [x, y, z])
-        };
 
         // Find the 7 missing 4-element sets (those with 2+ Fano sub-triples)
         println!("  === 7 Missing Sets (2+ Fano Sub-Triples) ===\n");
@@ -2137,7 +2111,7 @@ mod tests {
 
         for s in &all_sets {
             let fano_count = [(s[0],s[1],s[2]), (s[0],s[1],s[3]), (s[0],s[2],s[3]), (s[1],s[2],s[3])]
-                .iter().filter(|&&(a,b,c)| is_fano(a,b,c)).count();
+                .iter().filter(|&&(a,b,c)| is_fano_triple(a,b,c)).count();
             if fano_count >= 2 {
                 // This is a missing set -- all 24 orderings have nonzero m4
                 println!("  {:?}: {} Fano sub-triples, complement = e_{}",
