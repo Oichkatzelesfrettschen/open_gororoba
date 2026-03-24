@@ -14,7 +14,7 @@
 //!
 //! - Phase 2 (tabulated n,k): COMPLETE -- task #56
 //! - Phase 3 (optical params): COMPLETE -- task #57
-//! - Phase 4 (crystal tables): pending -- see task #58
+//! - Phase 4 (crystal tables): COMPLETE -- all 230 ITA space groups -- task #58
 
 // Generated tables are included from OUT_DIR.
 // Each include! expands to zero or more pub const declarations.

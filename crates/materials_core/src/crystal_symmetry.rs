@@ -265,41 +265,91 @@ pub struct SpaceGroup {
 
 impl SpaceGroup {
     /// Get space group by number (1-230).
+    ///
+    /// Uses the full ITA table generated from `materials_data/data/space_groups.csv` at
+    /// compile time. All 230 groups are covered; returns `None` only for n outside 1..=230.
     pub fn from_number(n: u16) -> Option<Self> {
         if !(1..=230).contains(&n) {
             return None;
         }
-
-        // Sample of high-symmetry space groups (complete list requires all 230)
-        // This demonstrates the structure; full implementation would enumerate all
-        match n {
-            1 => Some(SpaceGroup {
-                number: 1,
-                hm_symbol: "P1",
-                schoenflies_symbol: "C1^1",
-                point_group: PointGroup::C1,
-                lattice_system: LatticeSystem::Triclinic,
-                bravais_centering: 'P',
-            }),
-            2 => Some(SpaceGroup {
-                number: 2,
-                hm_symbol: "P-1",
-                schoenflies_symbol: "Ci^1",
-                point_group: PointGroup::Ci,
-                lattice_system: LatticeSystem::Triclinic,
-                bravais_centering: 'P',
-            }),
-            // ... (228 more entries)
-            // For Phase 4f-1, we create the scaffold; full table is in a data file
-            _ => None,
-        }
+        let row = materials_data::SPACE_GROUP_TABLE[(n as usize) - 1];
+        Some(SpaceGroup {
+            number: row.0,
+            hm_symbol: row.1,
+            schoenflies_symbol: row.2,
+            point_group: point_group_from_str(row.3),
+            lattice_system: lattice_system_from_str(row.4),
+            bravais_centering: row.5,
+        })
     }
 
-    /// All space groups for a given point group.
-    pub fn for_point_group(pg: PointGroup) -> Vec<&'static SpaceGroup> {
-        // Placeholder: return empty vec; full implementation maps point groups to space groups
-        let _ = pg;
-        Vec::new()
+    /// All space groups for a given point group (linear scan of the full ITA table).
+    pub fn for_point_group(pg: PointGroup) -> Vec<SpaceGroup> {
+        materials_data::SPACE_GROUP_TABLE
+            .iter()
+            .filter(|row| point_group_from_str(row.3) == pg)
+            .map(|row| SpaceGroup {
+                number: row.0,
+                hm_symbol: row.1,
+                schoenflies_symbol: row.2,
+                point_group: pg,
+                lattice_system: lattice_system_from_str(row.4),
+                bravais_centering: row.5,
+            })
+            .collect()
+    }
+}
+
+/// Convert a PointGroup CSV variant name to the enum variant.
+fn point_group_from_str(s: &str) -> PointGroup {
+    match s {
+        "C1" => PointGroup::C1,
+        "Ci" => PointGroup::Ci,
+        "C2" => PointGroup::C2,
+        "Cs" => PointGroup::Cs,
+        "C2h" => PointGroup::C2h,
+        "D2" => PointGroup::D2,
+        "C2v" => PointGroup::C2v,
+        "D2h" => PointGroup::D2h,
+        "C4" => PointGroup::C4,
+        "S4" => PointGroup::S4,
+        "C4h" => PointGroup::C4h,
+        "D4" => PointGroup::D4,
+        "C4v" => PointGroup::C4v,
+        "D2d" => PointGroup::D2d,
+        "D4h" => PointGroup::D4h,
+        "C3" => PointGroup::C3,
+        "C3i" => PointGroup::C3i,
+        "C3v" => PointGroup::C3v,
+        "D3" => PointGroup::D3,
+        "D3d" => PointGroup::D3d,
+        "C6" => PointGroup::C6,
+        "C3h" => PointGroup::C3h,
+        "C6h" => PointGroup::C6h,
+        "D6" => PointGroup::D6,
+        "C6v" => PointGroup::C6v,
+        "D3h" => PointGroup::D3h,
+        "D6h" => PointGroup::D6h,
+        "T" => PointGroup::T,
+        "Td" => PointGroup::Td,
+        "Th" => PointGroup::Th,
+        "O" => PointGroup::O,
+        "Oh" => PointGroup::Oh,
+        other => panic!("unknown PointGroup in space_groups.csv: {other:?}"),
+    }
+}
+
+/// Convert a LatticeSystem CSV variant name to the enum variant.
+fn lattice_system_from_str(s: &str) -> LatticeSystem {
+    match s {
+        "Triclinic" => LatticeSystem::Triclinic,
+        "Monoclinic" => LatticeSystem::Monoclinic,
+        "Orthorhombic" => LatticeSystem::Orthorhombic,
+        "Tetragonal" => LatticeSystem::Tetragonal,
+        "Hexagonal" => LatticeSystem::Hexagonal,
+        "Rhombohedral" => LatticeSystem::Rhombohedral,
+        "Cubic" => LatticeSystem::Cubic,
+        other => panic!("unknown LatticeSystem in space_groups.csv: {other:?}"),
     }
 }
 
