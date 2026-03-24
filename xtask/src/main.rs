@@ -1228,11 +1228,11 @@ fn run_gate_audit(output_dir_override: Option<PathBuf>) -> Result<()> {
     let commands: Vec<(&str, Vec<String>)> = vec![
         (
             "gate-ci-registry",
-            vec!["./makew".to_string(), "gate-ci-registry".to_string()],
+            vec!["make".to_string(), "gate-ci-registry".to_string()],
         ),
         (
             "gate-ci-rust",
-            vec!["./makew".to_string(), "gate-ci-rust".to_string()],
+            vec!["make".to_string(), "gate-ci-rust".to_string()],
         ),
         (
             "nextest-list",
