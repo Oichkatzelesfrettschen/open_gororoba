@@ -2344,13 +2344,11 @@ pub struct DarkHaloCudaSolver {
     d_tau: CudaSlice<f32>,
     // Atomic counter for halo detection
     d_halo_count: CudaSlice<u32>,
-    #[expect(dead_code)] // TODO: wire convergence_check kernel
     d_delta_sum: CudaSlice<f32>,
     // Kernels
     lbm_step_kernel: CudaFunction,
     halo_detector_kernel: CudaFunction,
     zd_viscosity_kernel: CudaFunction,
-    #[expect(dead_code)] // TODO: wire convergence_check kernel
     convergence_kernel: CudaFunction,
 }
 
@@ -2767,7 +2765,7 @@ impl DarkHaloCudaSolver {
 
         // Step 3: Run LBM steps with ping-pong via swap
         let mut steps_run = 0u32;
-        let early_stopped = false;
+        let mut early_stopped = false;
         // NULL pointer for no forcing -- pass as a raw device pointer value
         let null_force: u64 = 0;
 
@@ -2788,12 +2786,44 @@ impl DarkHaloCudaSolver {
             std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
             steps_run += 1;
 
-            // Convergence check every check_interval steps
+            // Convergence check every check_interval steps.
+            // Compares d_rho against the snapshot taken at the previous interval
+            // (or zeros on the first interval -- that check always fails, which
+            // is correct since the simulation has not yet reached steady state).
             if convergence_tol > 0.0 && check_interval > 0 && step > 0 && step % check_interval == 0
             {
-                // TODO: implement delta-rho convergence via convergence_check kernel
-                // For now, just run all steps (stub)
-                let _ = &self.d_rho_prev;
+                // Zero the atomic accumulator before each launch.
+                self.d_delta_sum = self
+                    .stream
+                    .clone_htod(&[0.0f32])
+                    .context("Zero d_delta_sum")?;
+
+                let n_i32 = n as i32;
+                unsafe {
+                    let mut b = self.stream.launch_builder(&self.convergence_kernel);
+                    b.arg(&self.d_rho)
+                        .arg(&self.d_rho_prev)
+                        .arg(&mut self.d_delta_sum)
+                        .arg(&n_i32);
+                    b.launch(cfg).context("Convergence check kernel")?;
+                }
+
+                // clone_dtoh synchronizes the stream before returning.
+                let delta_buf = self
+                    .stream
+                    .clone_dtoh(&self.d_delta_sum)
+                    .context("Read d_delta_sum")?;
+                let delta_mean = delta_buf[0] / n as f32;
+
+                // Update the reference snapshot for the next interval.
+                self.stream
+                    .memcpy_dtod(&self.d_rho, &mut self.d_rho_prev)
+                    .context("Update rho_prev")?;
+
+                if delta_mean < convergence_tol {
+                    early_stopped = true;
+                    break;
+                }
             }
         }
 
