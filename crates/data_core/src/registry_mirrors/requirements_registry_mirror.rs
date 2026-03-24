@@ -22,73 +22,73 @@
 //! - Status: `active`
 //! - Markdown: `docs/requirements/analysis.md`
 //! - Install targets:
-//! - `make install-analysis`
+//!   - `make install-analysis`
 //!
 //! ### REQ-ASTRO: astro
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/astro.md`
 //! - Install targets:
-//! - `make install-astro`
+//!   - `make install-astro`
 //!
 //! ### REQ-COQ: rocq
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/rocq.md`
 //! - Install targets:
-//! - `make rocq`
+//!   - `make rocq`
 //!
 //! ### REQ-CORE: core
 //!
 //! - Status: `active`
 //! - Markdown: `docs/REQUIREMENTS.md`
 //! - Install targets:
-//! - `make install`
+//!   - `make install`
 //!
 //! ### REQ-CPP: cpp
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/cpp.md`
 //! - Install targets:
-//! - `make cpp-build`
-//! - `make cpp-test`
+//!   - `make cpp-build`
+//!   - `make cpp-test`
 //!
 //! ### REQ-DATA-GOVERNANCE: data_governance
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/analysis.md`
 //! - Install targets:
-//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external`
-//! - `cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json`
-//! - `cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch`
-//! - `cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown`
-//! - `cargo run -p gororoba_cli_data --bin data-governance-gate --`
-//! - `cargo run -p gororoba_cli_data --bin data-semantic-validate --`
+//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external`
+//!   - `cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json`
+//!   - `cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch`
+//!   - `cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown`
+//!   - `cargo run -p gororoba_cli_data --bin data-governance-gate --`
+//!   - `cargo run -p gororoba_cli_data --bin data-semantic-validate --`
 //!
 //! ### REQ-HELIOSPHERE: heliosphere
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/heliosphere.md`
 //! - Install targets:
-//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 1 Merged Hourly" --skip-existing`
-//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 2 Merged Hourly" --skip-existing`
-//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 Merged Hourly (2016)" --skip-existing`
-//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 CRS Daily Flux (2016)" --skip-existing`
-//! - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "NASA OMNI2 Solar Wind + IMF (2016)" --skip-existing`
+//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 1 Merged Hourly" --skip-existing`
+//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 2 Merged Hourly" --skip-existing`
+//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 Merged Hourly (2016)" --skip-existing`
+//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 CRS Daily Flux (2016)" --skip-existing`
+//!   - `cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "NASA OMNI2 Solar Wind + IMF (2016)" --skip-existing`
 //!
 //! ### REQ-LATEX: latex
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/latex.md`
 //! - Install targets:
-//! - `make latex`
+//!   - `make latex`
 //!
 //! ### REQ-LBM-CUDA: lbm_3d_cuda
 //!
 //! - Status: `active`
 //! - Markdown: `crates/lbm_3d_cuda/README.md`
 //! - Install targets:
-//! - `cargo check -p lbm_3d_cuda`
+//!   - `cargo check -p lbm_3d_cuda`
 //!
 //! ### REQ-MATERIALS: materials
 //!
@@ -100,23 +100,23 @@
 //! - Status: `active`
 //! - Markdown: `docs/requirements/particle.md`
 //! - Install targets:
-//! - `make install-particle`
+//!   - `make install-particle`
 //!
 //! ### REQ-QUANTUM: quantum_docker
 //!
 //! - Status: `active`
 //! - Markdown: `docs/requirements/quantum-docker.md`
 //! - Install targets:
-//! - `make install-quantum`
-//! - `docker-quantum-build`
-//! - `docker-quantum-run`
+//!   - `make install-quantum`
+//!   - `docker-quantum-build`
+//!   - `docker-quantum-run`
 //!
 //! ### REQ-STUDIO: gororoba_studio
 //!
 //! - Status: `active`
 //! - Markdown: `apps/gororoba_studio/README.md`
 //! - Install targets:
-//! - `make studio-run`
+//!   - `make studio-run`
 //!
 //! ## Coverage Gaps
 //!

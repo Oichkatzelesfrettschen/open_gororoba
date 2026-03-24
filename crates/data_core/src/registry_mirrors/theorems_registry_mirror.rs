@@ -6,7 +6,7 @@
 //!
 //! # Theorems
 //!
-//! This file is generated from the canonical SQLite control plane and currently indexes 144 Rocq proof files.
+//! This file is generated from the canonical SQLite control plane and currently indexes 154 Rocq proof files.
 //!
 //! | Theorem | Proof File | Status | Linked Claims |
 //! |---|---|---|---|
@@ -71,6 +71,16 @@
 //! | `C1313_Thesis42Arithmetic` | `proofs/verified/C1313_Thesis42Arithmetic.v` | kernel_checked | C-1313 |
 //! | `C1363_HarmonicHaloExactRecovery` | `proofs/verified/C1363_HarmonicHaloExactRecovery.v` | kernel_checked | C-1363 |
 //! | `C1364_HomotopyBridgeLaw` | `proofs/verified/C1364_HomotopyBridgeLaw.v` | kernel_checked | C-1364 |
+//! | `C1455_AssociatorTrilinear` | `proofs/verified/C1455_AssociatorTrilinear.v` | kernel_checked | C-1455, C-1463 |
+//! | `C1463_ArithmeticInventory` | `proofs/verified/C1463_ArithmeticInventory.v` | kernel_checked | C-1463 |
+//! | `C1464_SedenionAnticommutation` | `proofs/verified/C1464_SedenionAnticommutation.v` | kernel_checked | C-1464 |
+//! | `C1465_KoebisuEqualNorm` | `proofs/verified/C1465_KoebisuEqualNorm.v` | kernel_checked | C-1465 |
+//! | `C1466_SubalgebraClosure` | `proofs/verified/C1466_SubalgebraClosure.v` | kernel_checked | C-1466 |
+//! | `C1467_XORSignCocycle` | `proofs/verified/C1467_XORSignCocycle.v` | kernel_checked | C-1465, C-1467 |
+//! | `C1468_SlotShiftEquivariance` | `proofs/verified/C1468_SlotShiftEquivariance.v` | kernel_checked | C-1468 |
+//! | `C1469_TowerTrilinearity` | `proofs/verified/C1469_TowerTrilinearity.v` | kernel_checked | C-1469 |
+//! | `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | C-1470 |
+//! | `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | C-1471 |
 //! | `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | C-868 |
 //! | `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | C-869 |
 //! | `C870_NacelleModulationDistinct` | `proofs/verified/C870_NacelleModulationDistinct.v` | kernel_checked | C-870 |
