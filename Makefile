@@ -78,6 +78,8 @@ REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
 REPO_PATH_HASH ?= $(shell printf "%s" "$(CURDIR)" | sha256sum | cut -c1-16)
 REPO_TMP_CARGO_ROOT ?= $(REPO_TMPDIR)/open_gororoba-cargo-build/gate/$(REPO_PATH_HASH)
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
+CARGO_CACHE_REPO_BUDGET_GIB ?= 8
+CARGO_CACHE_TMP_BUDGET_GIB ?= 16
 # Gate builds use a separate target dir from ambient (LSP/editor) builds to
 # avoid file-lock contention during concurrent cargo check / nextest runs.
 # Both dirs are bounded by `make cache-sweep` (cargo-sweep --maxsize).
@@ -1637,6 +1639,8 @@ clean-builds:
 	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
 
 cargo-cache-status:
+	CARGO_CACHE_REPO_BUDGET_GIB=$(CARGO_CACHE_REPO_BUDGET_GIB) \
+	CARGO_CACHE_TMP_BUDGET_GIB=$(CARGO_CACHE_TMP_BUDGET_GIB) \
 	sh scripts/cargo_cache_status.sh
 
 cargo-cache-prune:

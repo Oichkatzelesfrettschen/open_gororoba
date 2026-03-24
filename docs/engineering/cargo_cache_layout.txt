@@ -1,0 +1,51 @@
+open_gororoba cargo cache layout
+================================
+
+Purpose
+-------
+Keep the repo readable and fast to clean without forcing every local shell
+into a fully hermetic Cargo setup.
+
+Current layout
+--------------
+- Final workspace-local artifacts live under `.cache/` inside the repo.
+- Heavy intermediate build state lives under `/tmp/open_gororoba-cargo-build/`.
+- Docs still stage final rustdoc output through `target/docs-target/`, which is
+  already gitignored and not the main source of ballooning.
+- Gate/docs targets use repo-local `CARGO_HOME=.cache/cargo-home`.
+- Ambient interactive shells may still use `~/.cargo` unless explicitly
+  overridden for a hermetic run.
+
+Why this split exists
+---------------------
+Cargo distinguishes final artifacts from intermediate build artifacts.
+The large ballooning in this repo came from build output trees, not mainly from
+the global Cargo download cache.
+
+Practical commands
+------------------
+- `make cargo-cache-status`
+- `make cargo-cache-prune`
+- `make cargo-cache-smoke`
+
+Budget warnings
+---------------
+`make cargo-cache-status` now emits soft warnings only. It does not fail the
+build. Default budgets:
+
+- repo cache budget: 8 GiB
+- tmp cache budget: 16 GiB
+
+Override them ad hoc if needed:
+
+- `CARGO_CACHE_REPO_BUDGET_GIB=12 make cargo-cache-status`
+- `CARGO_CACHE_TMP_BUDGET_GIB=32 make cargo-cache-status`
+
+Decision guidance
+-----------------
+- Keep repo-local `CARGO_HOME` for gates/docs/CI where reproducibility matters.
+- Keep `~/.cargo` as the default interactive home unless disk duplication is no
+  longer acceptable or a workflow specifically needs hermetic dependency state.
+- Do not move docs staging off `target/` until it is actually the bottleneck.
+  The urgent problem was the intermediate build churn, which already moved to
+  `/tmp`.

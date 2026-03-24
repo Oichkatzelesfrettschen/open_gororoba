@@ -1,0 +1,523 @@
+# Workspace crate catalog -- governed inventory of all Rust crates.
+# Required by: crates/gororoba_cli_data/src/bin/crate_inventory.rs
+# Schema: gororoba.rust.crate_catalog.v1
+# Referenced by: agents.toml (rust_crate_catalog field)
+#
+# target_types must exactly match cargo metadata normalize_targets output
+# (sorted unique set of first-kind per target, includes custom-build).
+#
+# WHY: Provides a governed, auditable inventory of workspace crates with
+#      domain classification and backend relevance metadata, validated
+#      against live cargo metadata on every gate run.
+
+schema = "gororoba.rust.crate_catalog.v1"
+
+[meta]
+repo = "open_gororoba"
+source_of_truth = "registry/rust_crate_catalog.toml"
+
+# ---- Algebra ----
+
+[[workspace_crate]]
+name = "algebra_analysis"
+manifest_path = "crates/algebra_analysis/Cargo.toml"
+target_types = ["bench", "bin", "example", "lib", "test"]
+domain = "algebra"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "algebra_experimental"
+manifest_path = "crates/algebra_experimental/Cargo.toml"
+target_types = ["bench", "bin", "example", "lib"]
+domain = "algebra"
+backend_relevance = "experimental"
+status = "active"
+
+[[workspace_crate]]
+name = "cd_kernel"
+manifest_path = "crates/cd_kernel/Cargo.toml"
+target_types = ["bench", "lib"]
+domain = "algebra"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "cd_spin_bridge"
+manifest_path = "crates/cd_spin_bridge/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "flavor_lifts"
+manifest_path = "crates/flavor_lifts/Cargo.toml"
+target_types = ["example", "lib"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_algebra"
+manifest_path = "crates/gororoba_algebra/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "algebra"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "pathion_ellip"
+manifest_path = "crates/pathion_ellip/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "sign_imbalance"
+manifest_path = "crates/sign_imbalance/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "spectral_core"
+manifest_path = "crates/spectral_core/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "surreal_algebra"
+manifest_path = "crates/surreal_algebra/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "tensor_core"
+manifest_path = "crates/tensor_core/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "library"
+status = "active"
+
+# ---- Physics ----
+
+[[workspace_crate]]
+name = "casimir_core"
+manifest_path = "crates/casimir_core/Cargo.toml"
+target_types = ["lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "cosmology_core"
+manifest_path = "crates/cosmology_core/Cargo.toml"
+target_types = ["lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "cr_transport"
+manifest_path = "crates/cr_transport/Cargo.toml"
+target_types = ["lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gr_core"
+manifest_path = "crates/gr_core/Cargo.toml"
+target_types = ["example", "lib", "test"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "materials_core"
+manifest_path = "crates/materials_core/Cargo.toml"
+target_types = ["lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "materials_data"
+manifest_path = "crates/materials_data/Cargo.toml"
+target_types = ["custom-build", "lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "optics_core"
+manifest_path = "crates/optics_core/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "qgp_scaling"
+manifest_path = "crates/qgp_scaling/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "quantum_core"
+manifest_path = "crates/quantum_core/Cargo.toml"
+target_types = ["bench", "example", "lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "snia_core"
+manifest_path = "crates/snia_core/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "spin_tomography_core"
+manifest_path = "crates/spin_tomography_core/Cargo.toml"
+target_types = ["lib"]
+domain = "physics"
+backend_relevance = "library"
+status = "active"
+
+# ---- Simulation (LBM / fluid dynamics) ----
+
+[[workspace_crate]]
+name = "lbm_3d"
+manifest_path = "crates/lbm_3d/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "simulation"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_3d_cuda"
+manifest_path = "crates/lbm_3d_cuda/Cargo.toml"
+target_types = ["bench", "custom-build", "lib", "test"]
+domain = "simulation"
+backend_relevance = "gpu"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_core"
+manifest_path = "crates/lbm_core/Cargo.toml"
+target_types = ["lib"]
+domain = "simulation"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "lbm_vulkan"
+manifest_path = "crates/lbm_vulkan/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "simulation"
+backend_relevance = "gpu"
+status = "active"
+
+# ---- Data ----
+
+[[workspace_crate]]
+name = "data_core"
+manifest_path = "crates/data_core/Cargo.toml"
+target_types = ["lib"]
+domain = "data"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "manga_experiments"
+manifest_path = "crates/manga_experiments/Cargo.toml"
+target_types = ["lib"]
+domain = "data"
+backend_relevance = "library"
+status = "active"
+
+# ---- CLI / Tooling ----
+
+[[workspace_crate]]
+name = "docpipe"
+manifest_path = "crates/docpipe/Cargo.toml"
+target_types = ["bin", "lib", "test"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli"
+manifest_path = "crates/gororoba_cli/Cargo.toml"
+target_types = ["bin", "lib", "test"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_algebra"
+manifest_path = "crates/gororoba_cli_algebra/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_data"
+manifest_path = "crates/gororoba_cli_data/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_governance"
+manifest_path = "crates/gororoba_cli_governance/Cargo.toml"
+target_types = ["bin"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_physics"
+manifest_path = "crates/gororoba_cli_physics/Cargo.toml"
+target_types = ["bin", "lib", "test"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_provenance"
+manifest_path = "crates/gororoba_cli_provenance/Cargo.toml"
+target_types = ["bin"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_quantum"
+manifest_path = "crates/gororoba_cli_quantum/Cargo.toml"
+target_types = ["bin"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_cli_warp"
+manifest_path = "crates/gororoba_cli_warp/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "lit_search"
+manifest_path = "crates/lit_search/Cargo.toml"
+target_types = ["bin", "lib"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+[[workspace_crate]]
+name = "xtask"
+manifest_path = "xtask/Cargo.toml"
+target_types = ["bin"]
+domain = "cli"
+backend_relevance = "tooling"
+status = "active"
+
+# ---- Database ----
+
+[[workspace_crate]]
+name = "gororoba_db"
+manifest_path = "crates/gororoba_db/Cargo.toml"
+target_types = ["bin"]
+domain = "database"
+backend_relevance = "library"
+status = "active"
+
+# ---- Engine / Rendering / GPU ----
+
+[[workspace_crate]]
+name = "gororoba_engine"
+manifest_path = "crates/gororoba_engine/Cargo.toml"
+target_types = ["bench", "example", "lib", "test"]
+domain = "engine"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_gpu_bridge"
+manifest_path = "crates/gororoba_gpu_bridge/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "gpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_gpu_readback"
+manifest_path = "crates/gororoba_gpu_readback/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "gpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_optix"
+manifest_path = "crates/gororoba_optix/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "gpu"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_pipeline"
+manifest_path = "crates/gororoba_pipeline/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_sparse_grid"
+manifest_path = "crates/gororoba_sparse_grid/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_structurable"
+manifest_path = "crates/gororoba_structurable/Cargo.toml"
+target_types = ["example", "lib"]
+domain = "engine"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_view_core"
+manifest_path = "crates/gororoba_view_core/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_view_raster"
+manifest_path = "crates/gororoba_view_raster/Cargo.toml"
+target_types = ["lib"]
+domain = "engine"
+backend_relevance = "library"
+status = "active"
+
+# ---- Infrastructure ----
+
+[[workspace_crate]]
+name = "control_core"
+manifest_path = "crates/control_core/Cargo.toml"
+target_types = ["lib"]
+domain = "infrastructure"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "cosmic_scheduler"
+manifest_path = "crates/cosmic_scheduler/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "infrastructure"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "gororoba_contracts"
+manifest_path = "crates/gororoba_contracts/Cargo.toml"
+target_types = ["lib"]
+domain = "infrastructure"
+backend_relevance = "library"
+status = "active"
+
+# ---- Topology / Analysis ----
+
+[[workspace_crate]]
+name = "lattice_filtration"
+manifest_path = "crates/lattice_filtration/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "topology"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "neural_homotopy"
+manifest_path = "crates/neural_homotopy/Cargo.toml"
+target_types = ["bench", "lib", "test"]
+domain = "topology"
+backend_relevance = "library"
+status = "active"
+
+# ---- Statistics ----
+
+[[workspace_crate]]
+name = "stats_core"
+manifest_path = "crates/stats_core/Cargo.toml"
+target_types = ["lib"]
+domain = "statistics"
+backend_relevance = "library"
+status = "active"
+
+# ---- Provenance ----
+
+[[workspace_crate]]
+name = "provenance_core"
+manifest_path = "crates/provenance_core/Cargo.toml"
+target_types = ["lib"]
+domain = "provenance"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "provenance_ops"
+manifest_path = "crates/provenance_ops/Cargo.toml"
+target_types = ["lib"]
+domain = "provenance"
+backend_relevance = "library"
+status = "active"
+
+[[workspace_crate]]
+name = "provenance_store"
+manifest_path = "crates/provenance_store/Cargo.toml"
+target_types = ["lib"]
+domain = "provenance"
+backend_relevance = "library"
+status = "active"
+
+# ---- Documentation / Scrolls ----
+
+[[workspace_crate]]
+name = "scrolls_core"
+manifest_path = "crates/scrolls_core/Cargo.toml"
+target_types = ["lib"]
+domain = "documentation"
+backend_relevance = "library"
+status = "active"
+
+# ---- Verification ----
+
+[[workspace_crate]]
+name = "verified_core"
+manifest_path = "crates/verified_core/Cargo.toml"
+target_types = ["lib", "test"]
+domain = "verification"
+backend_relevance = "library"
+status = "active"

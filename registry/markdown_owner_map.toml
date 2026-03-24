@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-03-20"
+updated = "2026-03-23"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 23
+document_count = 65
 
 [[owner]]
 path = "README.md"
@@ -148,6 +148,264 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/physics/sedenion_standard_model.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+# ---- mdBook documentation (docs/book/) ----
+
+[[owner]]
+path = "docs/book/src/SUMMARY.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/introduction.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/glossary.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/algebra/box-kites.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/algebra/emanation.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/algebra/motif-scaling.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/algebra/zero-divisors.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/canonical-sources.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/compatibility-exports.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/crates.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/db-authoring.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/execution-targets.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/layout.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/mergus-bridge.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/migrated-lanes.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/architecture/verification.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/cli/catalog.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/experiments/e001.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/experiments/e002.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/experiments/e003.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/papers/collection.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/proofs/index.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/proofs/linking.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/registry/claims.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/registry/experiments.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/registry/insights.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+# ---- External sources documentation ----
+
+[[owner]]
+path = "docs/external_sources/MERGUS_BRIDGE_SOURCES.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+# ---- Claim ticket batch audits (docs/tickets/) ----
+
+[[owner]]
+path = "docs/tickets/C001_C050_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C051_C100_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C101_C150_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C151_C200_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C201_C250_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C251_C300_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C301_C350_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C351_C400_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/C401_C427_claims_audit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/INDEX.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/TICKET_FALSIFICATION_CAMPAIGN_REFUTED_BACKFILL.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/TICKET_MERGUS_BRIDGE_ROLLOUT.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
