@@ -22,11 +22,11 @@
 //! - Status: `done`
 //! - Description: Synthesize E7 Lie Algebra roots and Navier-Stokes turbulence triads (k+p+q=0) into a unified visual and mathematical framework. Includes spectral analysis, hypergraph metrics (Clustering, Betti), and Kerr-optics lensing.
 //! - Primary outputs:
-//! - `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`
-//! - `CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)`
-//! - `crates/lbm_core/src/turbulence.rs`
-//! - `registry/monograph.toml`
-//! - `registry/lacunae.toml`
+//!   - `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`
+//!   - `CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)`
+//!   - `crates/lbm_core/src/turbulence.rs`
+//!   - `registry/monograph.toml`
+//!   - `registry/lacunae.toml`
 //!
 //! ### WS-CLAIMS-001: Claims Evidence Governance
 //!
@@ -34,9 +34,9 @@
 //! - Status: `active`
 //! - Description: Maintain claim lifecycle with TOML registry authority and markdown mirrors. Perpetual-maintenance workstream: no terminal deliverable, the discipline is in place and operating.
 //! - Primary outputs:
-//! - `registry/claims.toml`
-//! - `docs/CLAIMS_EVIDENCE_MATRIX.md`
-//! - `docs/CLAIMS_TASKS.md`
+//!   - `registry/claims.toml`
+//!   - `docs/CLAIMS_EVIDENCE_MATRIX.md`
+//!   - `docs/CLAIMS_TASKS.md`
 //!
 //! ### WS-COMMUTATIVITY-001: Phase 6: CD Non-Commutativity Verification
 //!
@@ -44,10 +44,10 @@
 //! - Status: `done`
 //! - Description: Phase 6 verified that CD non-commutativity at dim>=4 is universal across the standard parameter space. Literature search across 7 mathematical domains (20+ papers) found zero counterexamples. Exhaustive computational verification across all 28 standard gamma signatures (dim=4: 4, dim=8: 8, dim=16: 16, dim=32: 8 sampled) found 0 commuting pairs in ~1200 basis element pairs. Combined confidence: 99%. This cross-validates C-589 (octonion-driven lattice) and strengthens C-546 (universal non-commutativity) by establishing it as a STRUCTURAL property of the CD doubling formula's conjugation asymmetry.
 //! - Primary outputs:
-//! - `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)`
-//! - `registry/claims.toml`
-//! - `registry/insights.toml`
-//! - `docs/PHASE_5_6_CONSOLIDATION.md`
+//!   - `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)`
+//!   - `registry/claims.toml`
+//!   - `registry/insights.toml`
+//!   - `docs/PHASE_5_6_CONSOLIDATION.md`
 //!
 //! ### WS-FACESIGN-001: Face Sign Census and 3:1 Theorem
 //!
@@ -55,7 +55,7 @@
 //! - Status: `done`
 //! - Description: Extended box-kite face sign census from dim=16 to dim=512 (33 regimes, 214M triangles). Discovered the Universal 3:1 Theorem (C-487): OneSameTwoOpp=3*AllSame AND TwoSameOneOpp=3*AllOpposite in ALL components at ALL dimensions. Derived the mechanism via Anti-Diagonal Parity Theorem (WS-MECHANISM-001).
 //! - Primary outputs:
-//! - `crates/algebra_analysis/src/boxkites.rs`
+//!   - `crates/algebra_analysis/src/boxkites.rs`
 //!
 //! ### WS-GATES-001: Required Gate Stabilization
 //!
@@ -63,13 +63,13 @@
 //! - Status: `in_progress`
 //! - Description: Stabilize the scoped local gate, the authoritative Python gate, and the authoritative Rust gate without exploding backlog tracking into per-test busywork. Current tranche CP-GATES-2026-03 keeps the work bucketed into control-plane truthfulness, Rust regression routing, and final acceptance evidence.
 //! - Primary outputs:
-//! - `Makefile`
-//! - `.githooks/pre-push`
-//! - `.github/workflows/ci.yml`
-//! - `registry/control_plane_roadmap.toml`
-//! - `registry/next_actions.toml`
-//! - `registry/todo.toml`
-//! - `reports/gates/`
+//!   - `Makefile`
+//!   - `.githooks/pre-push`
+//!   - `.github/workflows/ci.yml`
+//!   - `registry/control_plane_roadmap.toml`
+//!   - `registry/next_actions.toml`
+//!   - `registry/todo.toml`
+//!   - `reports/gates/`
 //!
 //! ### WS-GPU-001: Phase 5: GPU Tensor Networks + Octonion Connection
 //!
@@ -77,10 +77,10 @@
 //! - Status: `done`
 //! - Description: Phase 5 combined GPU tensor network implementation (PEPS row contraction via cudarc 0.19.1) with the octonion-lattice connection breakthrough. GPU benchmarking revealed memory transfer overhead dominates at small problem sizes (~130 ms baseline). The critical finding was I-040: the 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique 8D normed division algebra), NOT by E8 roots. Evidence chain: C-453 (8D invariance), C-455 (E8 refuted), C-458 (parity constraints), C-589 (octonion-driven lattice). 199 quantum_core tests pass.
 //! - Primary outputs:
-//! - `crates/quantum_core/`
-//! - `registry/claims.toml`
-//! - `registry/insights.toml`
-//! - `docs/PHASE_5_6_CONSOLIDATION.md`
+//!   - `crates/quantum_core/`
+//!   - `registry/claims.toml`
+//!   - `registry/insights.toml`
+//!   - `docs/PHASE_5_6_CONSOLIDATION.md`
 //!
 //! ### WS-MECHANISM-001: Anti-Diagonal Parity Mechanism
 //!
@@ -88,9 +88,9 @@
 //! - Status: `done`
 //! - Description: Complete mechanistic explanation for the Universal 3:1 Theorem (C-487). The GF(2) twist exponent psi(i,j) per edge yields a 2-bit anti-diagonal XOR invariant eta. Per triangle, the Klein-four invariant F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256. Key sub-results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta=1 XOR eta_half (C-526), psi ANF degree=log2(dim) and eta degree=log2(dim)-1 (C-527).
 //! - Primary outputs:
-//! - `crates/algebra_analysis/src/boxkites.rs`
-//! - `registry/claims.toml`
-//! - `registry/insights.toml`
+//!   - `crates/algebra_analysis/src/boxkites.rs`
+//!   - `registry/claims.toml`
+//!   - `registry/insights.toml`
 //!
 //! ### WS-OPTICS-GR-001: Optics + GR Infrastructure Expansion
 //!
@@ -98,12 +98,12 @@
 //! - Status: `in_progress`
 //! - Description: Sprint 56: Expand materials_core with Landy 2008 metamaterial absorber TMM reproduction (Byrnes amplitude transfer matrix, Lorentz effective-medium model, impedance matching, multilayer convergence). Expand gr_core PPN constraint framework from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Create immirzi_bridge.rs in sign_imbalance connecting CD imbalance density to Barbero-Immirzi parameter via entropy mapping. Fix complex Bessel functions (J_n sign, Y_n Euler gamma) and Fano TCMT tests in optics_core.
 //! - Primary outputs:
-//! - `crates/materials_core/src/landy_absorber.rs`
-//! - `crates/materials_core/src/effective_medium.rs`
-//! - `crates/gr_core/src/ppn_constraints.rs`
-//! - `crates/sign_imbalance/src/immirzi_bridge.rs`
-//! - `crates/optics_core/src/bessel.rs`
-//! - `crates/optics_core/src/fano_tcmt.rs`
+//!   - `crates/materials_core/src/landy_absorber.rs`
+//!   - `crates/materials_core/src/effective_medium.rs`
+//!   - `crates/gr_core/src/ppn_constraints.rs`
+//!   - `crates/sign_imbalance/src/immirzi_bridge.rs`
+//!   - `crates/optics_core/src/bessel.rs`
+//!   - `crates/optics_core/src/fano_tcmt.rs`
 //!
 //! ### WS-PUB-001: Phase 5: Publication Preparation
 //!
@@ -111,13 +111,13 @@
 //! - Status: `done`
 //! - Description: LLM-Scaffold monograph prepared for arXiv submission. Paper compiles clean (120pp, 0 errors). 818 claims in appendix. arXiv package in docs/latex/arxiv/. Evidence package verified. All 4 theses PASS. 742 Verified, 3 Established, 34 Refuted, 13 Falsified, 10 Superseded claims.
 //! - Primary outputs:
-//! - `docs/latex/llm_scaffold_paper.tex`
-//! - `docs/latex/out/llm_scaffold_paper.pdf`
-//! - `docs/latex/claims_appendix.tex`
-//! - `docs/latex/experiments_appendix.tex`
-//! - `docs/latex/insights_appendix.tex`
-//! - `docs/latex/reproducibility_appendix.tex`
-//! - `docs/latex/arxiv/`
+//!   - `docs/latex/llm_scaffold_paper.tex`
+//!   - `docs/latex/out/llm_scaffold_paper.pdf`
+//!   - `docs/latex/claims_appendix.tex`
+//!   - `docs/latex/experiments_appendix.tex`
+//!   - `docs/latex/insights_appendix.tex`
+//!   - `docs/latex/reproducibility_appendix.tex`
+//!   - `docs/latex/arxiv/`
 //!
 //! ### WS-QUALITY-001: Warnings-As-Errors Discipline
 //!
@@ -125,9 +125,9 @@
 //! - Status: `active`
 //! - Description: All Python and Rust checks run with warnings treated as failures. Perpetual-maintenance workstream: no terminal deliverable, the discipline is in place and operating.
 //! - Primary outputs:
-//! - `Makefile`
-//! - `docs/REQUIREMENTS.md`
-//! - `AGENTS.md`
+//!   - `Makefile`
+//!   - `docs/REQUIREMENTS.md`
+//!   - `AGENTS.md`
 //!
 //! ### WS-REGISTRY-001: Documentation Registry Evolution
 //!
@@ -135,23 +135,23 @@
 //! - Status: `done`
 //! - Description: Move markdown operational docs to TOML-first authoritative registries with generated markdown mirrors.
 //! - Primary outputs:
-//! - `registry/knowledge_sources.toml`
-//! - `registry/knowledge/documents.toml`
-//! - `registry/roadmap.toml`
-//! - `registry/todo.toml`
-//! - `registry/next_actions.toml`
-//! - `registry/requirements.toml`
-//! - `registry/claims_tasks.toml`
-//! - `registry/claims_domains.toml`
-//! - `registry/claim_tickets.toml`
-//! - `registry/lacunae.toml`
-//! - `registry/monograph.toml`
-//! - `crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs`
-//! - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
-//! - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
-//! - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
-//! - `docs/CLAIMS_TASKS.md`
-//! - `docs/claims/INDEX.md`
+//!   - `registry/knowledge_sources.toml`
+//!   - `registry/knowledge/documents.toml`
+//!   - `registry/roadmap.toml`
+//!   - `registry/todo.toml`
+//!   - `registry/next_actions.toml`
+//!   - `registry/requirements.toml`
+//!   - `registry/claims_tasks.toml`
+//!   - `registry/claims_domains.toml`
+//!   - `registry/claim_tickets.toml`
+//!   - `registry/lacunae.toml`
+//!   - `registry/monograph.toml`
+//!   - `crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs`
+//!   - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
+//!   - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
+//!   - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+//!   - `docs/CLAIMS_TASKS.md`
+//!   - `docs/claims/INDEX.md`
 //!
 //! ### WS-REGISTRY-002: Wave 5 Strict TOML Granularization
 //!
@@ -159,12 +159,12 @@
 //! - Status: `done`
 //! - Description: Reduce remaining narrative free-text by moving claims, equations, proofs, provenance, and planning metadata into stricter TOML schemas.
 //! - Primary outputs:
-//! - `registry/strict_toml_granularization_plan.toml`
-//! - `registry/claims_atoms.toml`
-//! - `registry/claims_evidence_edges.toml`
-//! - `registry/knowledge/proof_skeletons.toml`
-//! - `registry/knowledge/derivation_steps.toml`
-//! - `registry/bibliography_normalized.toml`
+//!   - `registry/strict_toml_granularization_plan.toml`
+//!   - `registry/claims_atoms.toml`
+//!   - `registry/claims_evidence_edges.toml`
+//!   - `registry/knowledge/proof_skeletons.toml`
+//!   - `registry/knowledge/derivation_steps.toml`
+//!   - `registry/bibliography_normalized.toml`
 //!
 //! ### WS-THESIS-002: Thesis 2/3/4 Falsifiability Hardening
 //!
@@ -172,11 +172,11 @@
 //! - Status: `done`
 //! - Description: Expand and harden falsifiability for C-010 (Holographic Entropy Trap), C-011 (Sedenion-Gravastar Equivalence), and C-452/C-453 (Universal 8D Lattice Embedding) with stricter tests, explicit obstruction criteria, and primary-source triangulation.
 //! - Primary outputs:
-//! - `crates/gororoba_cli_data/src/bin/repo_utilities.rs`
-//! - `crates/gororoba_cli_physics/src/bin/entropy_trap.rs`
-//! - `crates/gororoba_cli/tests/integration_gravastar.rs`
-//! - `crates/algebra_experimental/src/cd_external.rs`
-//! - `registry/claims.toml`
-//! - `registry/insights.toml`
-//! - `registry/next_actions.toml`
-//! - `registry/todo.toml`
+//!   - `crates/gororoba_cli_data/src/bin/repo_utilities.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/entropy_trap.rs`
+//!   - `crates/gororoba_cli/tests/integration_gravastar.rs`
+//!   - `crates/algebra_experimental/src/cd_external.rs`
+//!   - `registry/claims.toml`
+//!   - `registry/insights.toml`
+//!   - `registry/next_actions.toml`
+//!   - `registry/todo.toml`

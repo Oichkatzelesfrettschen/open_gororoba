@@ -23,11 +23,11 @@
 //! - Source lineage summary: Bundy, K. et al. (2015) ApJ 798 7. Overview of the SDSS-IV MaNGA survey: instrument, target selection, and scientific goals.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (1):
-//! - `data/external/manga/`
+//!   - `data/external/manga/`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - URL refs (1):
-//! - `https://doi.org/10.1088/0004-637X/798/1/7`
+//!   - `https://doi.org/10.1088/0004-637X/798/1/7`
 //! - Notes: MaNGA survey overview paper. Context for E-183 MaNGA rotation curve stacking experiment.
 //!
 //! ### XS-001: C-010 Non-Local Algebraic Metamaterials Sources
@@ -41,21 +41,21 @@
 //! - Operational role: `claim_bridge`
 //! - Truth surfaces: environment_context
 //! - Artifact contract paths (3):
-//! - `crates/materials_core/src/nonlocal_metamaterial.rs`
-//! - `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`
-//! - `data/csv/c010_nonlocal_material_calibrations.csv`
+//!   - `crates/materials_core/src/nonlocal_metamaterial.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`
+//!   - `data/csv/c010_nonlocal_material_calibrations.csv`
 //! - Has full transcript: `false`
 //! - Line count: 126
 //! - Claim refs (1): C-010
 //! - URL refs (8):
-//! - `https://arxiv.org/abs/1710.01373`
-//! - `https://doi.org/10.1002/adma.202209988`
-//! - `https://doi.org/10.1021/acsphotonics.5c01385`
-//! - `https://doi.org/10.1038/s41467-020-15940-3`
-//! - `https://doi.org/10.1038/s41467-022-31140-7`
-//! - `https://doi.org/10.1038/s42005-021-00719-9`
-//! - `https://pubmed.ncbi.nlm.nih.gov/36655553/`
-//! - `https://www.aph.kit.edu/wegener/english/21_1085.php`
+//!   - `https://arxiv.org/abs/1710.01373`
+//!   - `https://doi.org/10.1002/adma.202209988`
+//!   - `https://doi.org/10.1021/acsphotonics.5c01385`
+//!   - `https://doi.org/10.1038/s41467-020-15940-3`
+//!   - `https://doi.org/10.1038/s41467-022-31140-7`
+//!   - `https://doi.org/10.1038/s42005-021-00719-9`
+//!   - `https://pubmed.ncbi.nlm.nih.gov/36655553/`
+//!   - `https://www.aph.kit.edu/wegener/english/21_1085.php`
 //! - Notes: Sources pack for the non-local C-010 recovery lane with explicit literature-backed LC, Floquet, graphene, and magnonic calibration anchors.
 //!
 //! ### XS-002: C-053 Pathion Metamaterial Mapping Sources
@@ -69,10 +69,10 @@
 //! - Operational role: `claim_bridge`
 //! - Truth surfaces: environment_context
 //! - Artifact contract paths (4):
-//! - `crates/materials_core/src/pathion_toy_mapping.rs`
-//! - `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`
-//! - `data/csv/c053_pathion_tmm_summary.csv`
-//! - `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`
+//!   - `crates/materials_core/src/pathion_toy_mapping.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`
+//!   - `data/csv/c053_pathion_tmm_summary.csv`
+//!   - `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`
 //! - Has full transcript: `false`
 //! - Line count: 48
 //! - Claim refs (1): C-053
@@ -91,8 +91,8 @@
 //! - Line count: 74
 //! - Claim refs (2): C-071, C-080
 //! - URL refs (2):
-//! - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv`
-//! - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv`
+//!   - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv`
+//!   - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv`
 //! - Notes: Claim C-071 outcome is explicitly refuted with reproducible dataset hashes.
 //!
 //! ### XS-004: Dataset Manifest
@@ -120,12 +120,12 @@
 //! - Has full transcript: `true`
 //! - Line count: 576
 //! - URL refs (6):
-//! - `http://arXiv.org/abs/hep-th/9506080`
-//! - `http://arXiv.org/abs/math.DG/0203158`
-//! - `http://arXiv.org/abs/math.GM/0011260`
-//! - `http://arXiv.org/abs/math.RA/0207003`
-//! - `http://arXiv.org/abs/q-alg/9710013`
-//! - `http://arxiv.org/abs/hep-th/9501007`
+//!   - `http://arXiv.org/abs/hep-th/9506080`
+//!   - `http://arXiv.org/abs/math.DG/0203158`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.RA/0207003`
+//!   - `http://arXiv.org/abs/q-alg/9710013`
+//!   - `http://arxiv.org/abs/hep-th/9501007`
 //! - Notes: Cached transcript mirror for source auditability; not itself a verification result.
 //!
 //! ### XS-006: Voyage by Catamaran
@@ -153,10 +153,10 @@
 //! - Has full transcript: `true`
 //! - Line count: 1087
 //! - URL refs (4):
-//! - `http://arXiv.org/abs/math.GM/0011260`
-//! - `http://arXiv.org/abs/math.QA/9802116`
-//! - `http://arXiv.org/abs/q-alg/9710013`
-//! - `http://www.innerx.net/~tsmith/Ndalg.html`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.QA/9802116`
+//!   - `http://arXiv.org/abs/q-alg/9710013`
+//!   - `http://www.innerx.net/~tsmith/Ndalg.html`
 //! - Notes: Contains large transcript and summary notes for downstream claims triage.
 //!
 //! ### XS-008: Placeholder Substructures I
@@ -171,7 +171,7 @@
 //! - Has full transcript: `true`
 //! - Line count: 670
 //! - URL refs (1):
-//! - `http://www.wolframscience.com/conference/2004/presentations/materials/`
+//!   - `http://www.wolframscience.com/conference/2004/presentations/materials/`
 //! - Notes: Revision-aware source capture for placeholder substructure literature.
 //!
 //! ### XS-009: Placeholder Substructures III
@@ -199,12 +199,12 @@
 //! - Has full transcript: `true`
 //! - Line count: 1755
 //! - URL refs (6):
-//! - `http://arXiv.org.abs/q-alg/9710013`
-//! - `http://arXiv.org/abs/math.GM/0011260`
-//! - `http://arXiv.org/abs/math.RA/0207003`
-//! - `http://arXiv.org/abs/math.RA/0403113`
-//! - `http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Laplace.html`
-//! - `http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf`
+//!   - `http://arXiv.org.abs/q-alg/9710013`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.RA/0207003`
+//!   - `http://arXiv.org/abs/math.RA/0403113`
+//!   - `http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Laplace.html`
+//!   - `http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf`
 //! - Notes: Primary transcript with explicit rule extraction for Cayley-Dickson references.
 //!
 //! ### XS-011: 2004 Wolfram Science Slides
@@ -219,11 +219,11 @@
 //! - Has full transcript: `true`
 //! - Line count: 885
 //! - URL refs (5):
-//! - `http://arXiv.org/abs.math.RA/0403113`
-//! - `http://arXiv.org/abs/math.GM/0011260`
-//! - `http://arXiv.org/abs/math.RA/0207003`
-//! - `http://arXiv.org/abs/q-alg/9710013`
-//! - `http://arxiv.org/abs/astro-ph/9801276`
+//!   - `http://arXiv.org/abs.math.RA/0403113`
+//!   - `http://arXiv.org/abs/math.GM/0011260`
+//!   - `http://arXiv.org/abs/math.RA/0207003`
+//!   - `http://arXiv.org/abs/q-alg/9710013`
+//!   - `http://arxiv.org/abs/astro-ph/9801276`
 //! - Notes: Slide transcript capture; interpretation remains separate from source capture.
 //!
 //! ### XS-012: Heliosphere Dataset Progress 2026-03-09
@@ -278,13 +278,13 @@
 //! - Source lineage summary: Lelli, F., McGaugh, S.S., Schombert, J.M. (2016) AJ 152 157. SPARC database of 175 nearby disk galaxies with Spitzer photometry and HI/Halpha rotation curves.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (2):
-//! - `data/external/sparc/`
-//! - `crates/data_core/src/catalogs/sparc.rs`
+//!   - `data/external/sparc/`
+//!   - `crates/data_core/src/catalogs/sparc.rs`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - Claim refs (1): C-1338
 //! - URL refs (1):
-//! - `https://doi.org/10.3847/0004-6256/152/6/157`
+//!   - `https://doi.org/10.3847/0004-6256/152/6/157`
 //! - Notes: Primary SPARC database paper. Source for E-179, E-180, E-182 rotation curve stacking experiments.
 //!
 //! ### XS-025: SPARC NFW Fitting Parameters (Li et al. 2020 ApJS 247 31)
@@ -299,13 +299,13 @@
 //! - Source lineage summary: Li, P., Lelli, F., McGaugh, S.S., Schombert, J.M. (2020) ApJS 247 31. Bayesian analysis of SPARC galaxy rotation curves with NFW and other halo profiles.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (2):
-//! - `data/external/sparc_nfw/`
-//! - `crates/data_core/src/catalogs`
+//!   - `data/external/sparc_nfw/`
+//!   - `crates/data_core/src/catalogs`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - Claim refs (1): C-1338
 //! - URL refs (1):
-//! - `https://doi.org/10.3847/1538-4365/ab700e`
+//!   - `https://doi.org/10.3847/1538-4365/ab700e`
 //! - Notes: Published NFW fitting parameters for SPARC sample. Used to initialize NFW priors in E-180, E-182 stacking.
 //!
 //! ### XS-028: Stellar-to-Halo Mass Relation (Moster et al. 2013 MNRAS 428 3121)
@@ -320,11 +320,11 @@
 //! - Source lineage summary: Moster, B.P., Naab, T., White, S.D.M. (2013) MNRAS 428 3121. Empirical stellar-to-halo mass relation used to convert observed M* to NFW halo parameters for rotation curve normalization.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (1):
-//! - `crates/cosmology_core/src/harmonic_stacking.rs`
+//!   - `crates/cosmology_core/src/harmonic_stacking.rs`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - URL refs (1):
-//! - `https://doi.org/10.1093/mnras/sts261`
+//!   - `https://doi.org/10.1093/mnras/sts261`
 //! - Notes: Moster+2013 SMHM relation used to normalize MaNGA/SPARC rotation curves by NFW v_200 in E-180, E-182, E-183.
 //!
 //! ### XS-015: OMNI Data Audit (2026-03-10)
@@ -339,8 +339,8 @@
 //! - Source lineage summary: Mixed lineage: governed AMDA omni-hour-all fallback for 1997-2019; canonical SPDF OMNI2 yearly ASCII for 2020-2025.
 //! - Truth surfaces: environment_context, lineage_transition
 //! - Artifact contract paths (2):
-//! - `crates/data_core/src/catalogs/omni.rs`
-//! - `crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs`
+//!   - `crates/data_core/src/catalogs/omni.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs`
 //! - Has full transcript: `false`
 //! - Line count: 91
 //! - Notes: Documents the staged OMNI mixed-lineage lane and year-by-year local coverage.
@@ -370,10 +370,10 @@
 //! - Operational role: `falsification_contract`
 //! - Truth surfaces: observation_benchmark, environment_context
 //! - Artifact contract paths (4):
-//! - `crates/gororoba_cli_physics/src/anomaly_residual.rs`
-//! - `crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs`
-//! - `crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs`
-//! - `crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs`
+//!   - `crates/gororoba_cli_physics/src/anomaly_residual.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs`
 //! - Has full transcript: `false`
 //! - Line count: 65
 //! - Notes: Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs.
@@ -391,7 +391,7 @@
 //! - Line count: 39
 //! - Claim refs (1): C-005
 //! - URL refs (1):
-//! - `https://arxiv.org/abs/2411.18881`
+//!   - `https://arxiv.org/abs/2411.18881`
 //! - Notes: Distinguishes paper-asserted manifold claims from replicated algebraic checks.
 //!
 //! ### XS-019: Sedenion Zero-Divisor Experimental Connections
@@ -406,7 +406,7 @@
 //! - Has full transcript: `false`
 //! - Line count: 100
 //! - URL refs (1):
-//! - `https://github.com/silvioreggiani/sedenion-zero-div`
+//!   - `https://github.com/silvioreggiani/sedenion-zero-div`
 //! - Notes: Combines primary-source statements with codebase verification references.
 //!
 //! ### XS-020: SOHO Archive Mirror Audit (2026-03-09)
@@ -421,17 +421,17 @@
 //! - Has full transcript: `false`
 //! - Line count: 129
 //! - URL refs (22):
-//! - `http://soho.esac.esa.int/data/archive/index_gsfc.html`
-//! - `http://soho.esac.esa.int/data/archive/index_ssa.html`
-//! - `http://solar.oato.inaf.it/`
-//! - `http://solar.to.astro.it/`
-//! - `https://idoc-medoc.ias.u-psud.fr/sitools/client-user/index.html?project=Medoc-Solar-Portal`
-//! - `https://lasco-www.nrl.navy.mil/index.php?p=get_data`
-//! - `https://sdac.virtualsolar.org/cgi/search`
-//! - `https://seal.nascom.nasa.gov/cgi-bin/gui_seal`
-//! - `https://soho.nascom.nasa.gov/data/.dash/sohoar-dashboard.html`
-//! - `https://soho.nascom.nasa.gov/data/archive.html`
-//! - ... (12 more)
+//!   - `http://soho.esac.esa.int/data/archive/index_gsfc.html`
+//!   - `http://soho.esac.esa.int/data/archive/index_ssa.html`
+//!   - `http://solar.oato.inaf.it/`
+//!   - `http://solar.to.astro.it/`
+//!   - `https://idoc-medoc.ias.u-psud.fr/sitools/client-user/index.html?project=Medoc-Solar-Portal`
+//!   - `https://lasco-www.nrl.navy.mil/index.php?p=get_data`
+//!   - `https://sdac.virtualsolar.org/cgi/search`
+//!   - `https://seal.nascom.nasa.gov/cgi-bin/gui_seal`
+//!   - `https://soho.nascom.nasa.gov/data/.dash/sohoar-dashboard.html`
+//!   - `https://soho.nascom.nasa.gov/data/archive.html`
+//!   - ... (12 more)
 //! - Notes: Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior.
 //!
 //! ### XS-026: MaNGA Data Reduction Pipeline (Westfall et al. 2019 AJ 158 231)
@@ -446,12 +446,12 @@
 //! - Source lineage summary: Westfall, K.B. et al. (2019) AJ 158 231. Description of the MaNGA Data Analysis Pipeline (DAP) and DRP used to produce MAPS FITS files.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (2):
-//! - `data/external/manga/`
-//! - `crates/data_core/src/catalogs/manga.rs`
+//!   - `data/external/manga/`
+//!   - `crates/data_core/src/catalogs/manga.rs`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - URL refs (1):
-//! - `https://doi.org/10.3847/1538-3881/ab44a2`
+//!   - `https://doi.org/10.3847/1538-3881/ab44a2`
 //! - Notes: MaNGA DAP/DRP pipeline paper. Describes the MAPS FITS format consumed by manga-maps-extractor (E-183).
 //!
 //! ### XS-021: Wheel Algebra Taxonomy
@@ -480,11 +480,11 @@
 //! - Line count: 83
 //! - Claim refs (2): C-769, C-773
 //! - URL refs (5):
-//! - `https://bldata.berkeley.edu/6EQUJ5/``
-//! - `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/full/full/0/default.jpg``
-//! - `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/manifest.json``
-//! - `https://seti.berkeley.edu/wow/``
-//! - `https://www.bigear.org/6equj5.htm``
+//!   - `https://bldata.berkeley.edu/6EQUJ5/``
+//!   - `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/full/full/0/default.jpg``
+//!   - `https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:12429/manifest.json``
+//!   - `https://seti.berkeley.edu/wow/``
+//!   - `https://www.bigear.org/6equj5.htm``
 //! - Notes: Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up.
 //!
 //! ### XS-029: x87 / AVX Accumulation Sources
@@ -499,18 +499,18 @@
 //! - Source lineage summary: Primary-source bundle for the x87/AVX accumulation claim cluster: AMD64 instruction semantics for `FDIVR` / `FUCOMPP`, Intel FMA single-rounding reference, Rust intrinsic docs for AVX packed-double operations, and Ogita-Rump-Oishi compensated-summation error bounds.
 //! - Truth surfaces: environment_context
 //! - Artifact contract paths (3):
-//! - `crates/algebra_analysis/src/x87_jacobi.rs`
-//! - `crates/cd_kernel/src/x87_primitives.rs`
-//! - `crates/cd_kernel/src/avx2_primitives.rs`
+//!   - `crates/algebra_analysis/src/x87_jacobi.rs`
+//!   - `crates/cd_kernel/src/x87_primitives.rs`
+//!   - `crates/cd_kernel/src/avx2_primitives.rs`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - Claim refs (4): C-1359, C-1360, C-1361, C-1362
 //! - URL refs (5):
-//! - `https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content`
-//! - `https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html`
-//! - `https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html`
-//! - `https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html`
-//! - `https://epubs.siam.org/doi/10.1137/030601818`
+//!   - `https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content`
+//!   - `https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html`
+//!   - `https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html`
+//!   - `https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html`
+//!   - `https://epubs.siam.org/doi/10.1137/030601818`
 //! - Notes: The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths.
 //!
 //! ### XS-023: YSU-engine GPU Optimization Patterns: Technique Reference
@@ -525,5 +525,5 @@
 //! - Has full transcript: `false`
 //! - Line count: 241
 //! - URL refs (1):
-//! - `https://github.com/ismail0098-lang/YSU-engine`
+//!   - `https://github.com/ismail0098-lang/YSU-engine`
 //! - Notes: Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work.
