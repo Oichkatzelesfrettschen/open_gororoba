@@ -34,6 +34,7 @@ use crate::optical_database::{C, DrudeParams, E_CHARGE, EV_TO_RADS, K_B_EV};
 use gauss_quad::GaussLegendre;
 use rayon::prelude::*;
 use std::f64::consts::PI;
+use wide::f64x4;
 
 // n,k data arrays generated from data/nk/*.csv by materials_data/build.rs.
 // Source data: Johnson & Christy (1972), Ordal et al., Henke et al. (public domain).
@@ -132,22 +133,92 @@ impl TabulatedNK {
         let eps2_min = 2.0 * self.n[0] * self.k[0];
         let eps2_max = 2.0 * self.n[n_pts - 1] * self.k[n_pts - 1];
 
-        // --- 1. Trapezoidal integral over tabulated range ---
+        // --- 1. Trapezoidal integral over tabulated range (SIMD) ---
         //
-        // Inlined: compute omega_i and eps2_i on the fly rather than building
-        // two temporary Vec<f64> on every call. This eliminates ~2 heap
-        // allocations per KK evaluation (32K+ per full Lifshitz calculation
-        // at n_matsubara=500, n_gauss=32). xi_sq hoisted out of the loop.
+        // Uses the precomputed-weights form of the trapezoidal rule to break the
+        // sequential loop-carried dependency (w0=w1, f0=f1) and enable f64x4 SIMD:
+        //
+        //   integral = sum_i f[i] * c[i]
+        //
+        // where c[i] = (omega[i+1] - omega[i-1]) / 2  for interior points (i in 1..n-1)
+        //       c[0]   = (omega[1] - omega[0]) / 2     (left boundary)
+        //       c[n-1] = (omega[n-1] - omega[n-2]) / 2 (right boundary)
+        //
+        // and f[i] = omega[i] * eps2[i] / (omega[i]^2 + xi^2) -- independently computable.
+        //
+        // WHY SIMD: with the sequential dependency broken, each f[i] depends only on
+        // data[i]. Interior points are processed 4-wide using f64x4; boundary pairs
+        // and the remainder strip are handled scalarly. No heap allocation.
+        // WHY no heap alloc: c[i] and f[i] are not materialized -- they are computed
+        // and fused into the accumulator in the same pass.
         let xi_sq = xi * xi;
-        let mut integral = 0.0;
-        let mut w0 = self.energy_ev[0] * EV_TO_RADS;
-        let mut f0 = w0 * (2.0 * self.n[0] * self.k[0]) / (w0 * w0 + xi_sq);
-        for i in 0..n_pts - 1 {
-            let w1 = self.energy_ev[i + 1] * EV_TO_RADS;
-            let f1 = w1 * (2.0 * self.n[i + 1] * self.k[i + 1]) / (w1 * w1 + xi_sq);
-            integral += 0.5 * (f0 + f1) * (w1 - w0);
-            w0 = w1;
-            f0 = f1;
+        let xi_sq_v = f64x4::splat(xi_sq);
+        let ev2rads = f64x4::splat(EV_TO_RADS);
+        let two_v = f64x4::splat(2.0);
+        let half_v = f64x4::splat(0.5);
+
+        // Boundary contributions (scalar, 2 evaluations).
+        let w0 = self.energy_ev[0] * EV_TO_RADS;
+        let w_last = self.energy_ev[n_pts - 1] * EV_TO_RADS;
+        let w1_bnd = self.energy_ev[1] * EV_TO_RADS;
+        let w_pen = self.energy_ev[n_pts - 2] * EV_TO_RADS;
+        let f0_bnd = w0 * (2.0 * self.n[0] * self.k[0]) / (w0 * w0 + xi_sq);
+        let fn_bnd =
+            w_last * (2.0 * self.n[n_pts - 1] * self.k[n_pts - 1]) / (w_last * w_last + xi_sq);
+        let mut integral = f0_bnd * (w1_bnd - w0) * 0.5 + fn_bnd * (w_last - w_pen) * 0.5;
+
+        // Interior SIMD pass: process i=1..n_pts-2 in chunks of 4.
+        // For each interior i: c[i] = (omega[i+1] - omega[i-1]) / 2
+        //                       f[i] = omega[i] * eps2[i] / (omega[i]^2 + xi_sq)
+        let n_interior = n_pts.saturating_sub(2);
+        let simd_end = 1 + (n_interior / 4) * 4; // largest index <= n_pts-1 aligned to chunks of 4
+        let mut acc_v = f64x4::splat(0.0);
+
+        let mut i = 1usize;
+        while i + 4 < n_pts {
+            // omega[i..i+4]
+            let w_v = f64x4::from([
+                self.energy_ev[i],
+                self.energy_ev[i + 1],
+                self.energy_ev[i + 2],
+                self.energy_ev[i + 3],
+            ]) * ev2rads;
+            // eps2[i..i+4] = 2 * n[i] * k[i]
+            let n_v = f64x4::from([self.n[i], self.n[i + 1], self.n[i + 2], self.n[i + 3]]);
+            let k_v = f64x4::from([self.k[i], self.k[i + 1], self.k[i + 2], self.k[i + 3]]);
+            let eps2_v = two_v * n_v * k_v;
+            // f[i] = omega[i] * eps2[i] / (omega[i]^2 + xi_sq)
+            let f_v = w_v * eps2_v / (w_v * w_v + xi_sq_v);
+            // c[i] = (omega[i+1] - omega[i-1]) / 2
+            let w_prev = f64x4::from([
+                self.energy_ev[i - 1],
+                self.energy_ev[i],
+                self.energy_ev[i + 1],
+                self.energy_ev[i + 2],
+            ]) * ev2rads;
+            let w_next = f64x4::from([
+                self.energy_ev[i + 1],
+                self.energy_ev[i + 2],
+                self.energy_ev[i + 3],
+                self.energy_ev[i + 4],
+            ]) * ev2rads;
+            let c_v = (w_next - w_prev) * half_v;
+            acc_v += f_v * c_v;
+            i += 4;
+        }
+        // Drain acc_v into scalar
+        let acc_arr: [f64; 4] = acc_v.into();
+        integral += acc_arr[0] + acc_arr[1] + acc_arr[2] + acc_arr[3];
+
+        // Scalar remainder: i in simd_end..n_pts-1
+        let _ = simd_end; // suppress unused warning if n_interior < 4
+        while i < n_pts - 1 {
+            let w_i = self.energy_ev[i] * EV_TO_RADS;
+            let f_i = w_i * (2.0 * self.n[i] * self.k[i]) / (w_i * w_i + xi_sq);
+            let w_prev_i = self.energy_ev[i - 1] * EV_TO_RADS;
+            let w_next_i = self.energy_ev[i + 1] * EV_TO_RADS;
+            integral += f_i * (w_next_i - w_prev_i) * 0.5;
+            i += 1;
         }
 
         // --- 2. UV tail: eps2(omega) = eps2_max * (omega_max/omega)^3 for omega > omega_max ---
