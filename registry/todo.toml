@@ -682,8 +682,8 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/data_core/src/catalogs/solo.rs"]
 
 [[item]]
 id = "T-057"
@@ -718,8 +718,8 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/data_core/src/catalogs/ulysses.rs"]
 
 [[item]]
 id = "T-060"
@@ -730,8 +730,8 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/data_core/src/catalogs/juno.rs"]
 
 [[item]]
 id = "T-061"
@@ -742,8 +742,8 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/data_core/src/catalogs/wind.rs"]
 
 [[item]]
 id = "T-062"

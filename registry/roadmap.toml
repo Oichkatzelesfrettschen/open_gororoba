@@ -193,5 +193,5 @@ primary_outputs = ["crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates
 claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
-evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_physics/src/bin/entropy_trap.rs", "crates/gororoba_cli/tests/integration_gravastar.rs"]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_physics/src/bin/entropy_trap.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml"]
 

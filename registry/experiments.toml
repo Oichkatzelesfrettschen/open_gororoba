@@ -9,8 +9,8 @@ deterministic_count = 153
 experiment_count = 210
 gpu_count = 28
 seeded_count = 46
-status_allowlist = ["active", "blocked", "completed", "deprecated", "planned"]
-updated = "2026-03-18"
+status_allowlist = ["active", "deprecated", "planned", "blocked"]
+updated = "2026-02-10"
 
 [[experiment]]
 binary = "motif-census"
@@ -3328,7 +3328,7 @@ output = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
 output_path_refs = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995"
-run_command_sha256 = "6a5839d1ebe7a1d5f48b8649ea7a4a0d339d1028ca8545137b3522b6f52fd35f"
+run_command_sha256 = "62b3e3a53b3a6306aee19de4152becfd242d2eef26cc8b6cd09e2e94fb0cdf1d"
 status = "planned"
 status_token = "PLANNED"
 title = "Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)"
@@ -3354,7 +3354,7 @@ output = ["data/output/pioneer_amda_mag_radial_profile.csv"]
 output_path_refs = ["data/output/pioneer_amda_mag_radial_profile.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --pioneer --spacecraft p10 --source amda --start 1972 --end 1995"
-run_command_sha256 = "829a7cedcb4700b144e2af5214ebe667b31d9e46356441cb46753b9a60c3f247"
+run_command_sha256 = "3505de2b4f7bc7e3c48565b7a20f4aae0a0a5c284338f041797fcbeda52d91e1"
 status = "planned"
 status_token = "PLANNED"
 title = "Pioneer AMDA MAG-only radial B-field profile (5-80 AU)"
@@ -3380,7 +3380,7 @@ output = ["data/output/psp_perihelion_scaling.csv"]
 output_path_refs = ["data/output/psp_perihelion_scaling.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --psp"
-run_command_sha256 = "f6ca790c011992255d93c53ebd978d022e94cc9dcc3625260d3c1b7cb9bf6339"
+run_command_sha256 = "8064d79cbab4ee2a5ac38fc94f6d20541dbe2de99cc8987fb2c6ba52a91c1058"
 status = "planned"
 status_token = "PLANNED"
 title = "PSP AMDA inner heliosphere perihelion pass validation"
@@ -3406,7 +3406,7 @@ output = ["data/output/helios_voyager_radial_comparison.csv"]
 output_path_refs = ["data/output/helios_voyager_radial_comparison.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --helios --spacecraft helios1 --source amda --start 1976 --end 1980"
-run_command_sha256 = "fe9d78c8980f3cf264694f1cc6b2941adb51522132ab7d899a87e5838151f4fb"
+run_command_sha256 = "39f83829e4b58ba47c51d75d61c03edfa2922233513d8804244a16dc084f498f"
 status = "planned"
 status_token = "PLANNED"
 title = "Helios corefit radial gradient (0.3-1.0 AU) vs Voyager at matched distances"
@@ -3432,7 +3432,7 @@ output = ["data/output/ulysses_amda_spdf_crossval.csv"]
 output_path_refs = ["data/output/ulysses_amda_spdf_crossval.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --ulysses --source amda --start 1994 --end 1995"
-run_command_sha256 = "b2745269dd727f07b6760cfefc7fa312efd7705bc4010daae370a6ac91ebdadc"
+run_command_sha256 = "dfaecff8f6fd99a219d2b17d4d92ecd0aa305c2da28b6141d91d2dcd82fdb23b"
 status = "planned"
 status_token = "PLANNED"
 title = "Ulysses AMDA vs SPDF cross-validation for polar wind data"
@@ -3458,7 +3458,7 @@ output = ["data/output/juno_cruise_bfield_validation.csv"]
 output_path_refs = ["data/output/juno_cruise_bfield_validation.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --juno --source amda --start 2013 --end 2015"
-run_command_sha256 = "6801dc1f594786c388d0f84b7c84ef38a5f9b8f5cc96542fe832d478fbef18cd"
+run_command_sha256 = "7427cb1ad26253eedc7c055769412b0d042287a871d037234cee454a7d12b9bf"
 status = "planned"
 status_token = "PLANNED"
 title = "Juno cruise AMDA B-field validation against Connerney et al. published values"
@@ -3484,7 +3484,7 @@ output = ["data/output/wind_amda_omni2_crosscheck.csv"]
 output_path_refs = ["data/output/wind_amda_omni2_crosscheck.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_data --bin fetch-datasets -- --wind --source amda --start 2024 --end 2024"
-run_command_sha256 = "cf0f8df3ae1c2e7317fbee06dedfe8041806ef885b4a0d45f74f2b62641ac888"
+run_command_sha256 = "56117b1a66e58aace4a44ba624a7406f4923ac39e54b9e79caf7197ee3d5e3e9"
 status = "planned"
 status_token = "PLANNED"
 title = "Wind AMDA vs OMNI2 L1 cross-check for 2024"
@@ -4681,8 +4681,8 @@ output_path_refs = ["manga_harmonic_stacking.csv"]
 reproducibility_class = "deterministic_replay"
 run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv"
 run_command_sha256 = "ecd714db2846646bd0695ad9ebbc1762d6123c6eacf0adf623d4569800c8c1d4"
-status = "completed"
-status_token = "COMPLETED"
+status = "active"
+status_token = "ACTIVE"
 title = "MaNGA N=6992 harmonic halo stacking null result with pseudo-slit rotation curves (D=16,64,256,1024)"
 truth_surface_consumption = []
 
@@ -4707,8 +4707,8 @@ output_path_refs = ["braid_fidelity_audit.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo test -p algebra_experimental --lib -- majorana"
 run_command_sha256 = "994cb5f53d8b700851da87a8dfc73e8f25bbc22ceb9b6e8c5338fbb7c949a9b1"
-status = "completed"
-status_token = "COMPLETED"
+status = "active"
+status_token = "ACTIVE"
 title = "Braid fidelity audit: confirm fidelity < 1.0 at all dim >= 16 (C-1350, C-1351)"
 truth_surface_consumption = []
 
@@ -5167,7 +5167,7 @@ external_source_refs = []
 gpu = false
 id = "E-204"
 input = "data/csv/cayley_dickson/* and exact Rust Cayley-Dickson verifiers"
-input_path_refs = ["data/csv/cayley_dickson/64d_chingon_adjacency.csv", "data/csv/cayley_dickson/256d_basis_properties.csv", "data/csv/cayley_dickson/256d_lattice_mapping.csv"]
+input_path_refs = ["data/csv/cayley_dickson/", "data/csv/cayley_dickson/256d_basis_properties.csv", "data/csv/cayley_dickson/256d_lattice_mapping.csv", "data/csv/cayley_dickson/64d_chingon_adjacency.csv"]
 lineage_id = "XL-204"
 method = "Exact Rust audit of refuted external Cayley-Dickson CSV claims: sparse 64D adjacency methodology mismatch (C-450), lattice-difference norm census excluding E8 roots (C-455), direct associativity mismatches in the 256D basis-properties CSV (C-456), and parity-clique failure across 16D/32D/64D (C-463)."
 output = ["data/output/claims_falsification/cd_external_audit.toml"]
@@ -5210,8 +5210,8 @@ truth_surface_consumption = []
 binary = "particle-numerology-audit"
 binary_experiment_declared = "E-206"
 binary_registered = true
-claim_refs = ["C-069", "C-077", "C-081", "C-084", "C-587", "C-1355"]
-claims = ["C-069", "C-077", "C-081", "C-084", "C-587", "C-1355"]
+claim_refs = ["C-069", "C-077", "C-081", "C-084", "C-1355", "C-587"]
+claims = ["C-069", "C-077", "C-081", "C-084", "C-1355", "C-587"]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -5219,7 +5219,7 @@ external_source_refs = []
 gpu = false
 id = "E-206"
 input = "in-repo PMNS, subalgebra, Tang mass, and constants surfaces"
-input_path_refs = ["crates/algebra_analysis/src/grassmannian.rs", "crates/algebra_analysis/src/subalgebra.rs", "crates/materials_core/src/tang_mass.rs", "crates/gr_core/src/constants.rs", "crates/quantum_core/src/he3_superfluid.rs", "crates/stats_core/src/lib.rs"]
+input_path_refs = ["crates/algebra_analysis/src/grassmannian.rs", "crates/algebra_analysis/src/subalgebra.rs", "crates/gr_core/src/constants.rs", "crates/materials_core/src/tang_mass.rs", "crates/quantum_core/src/he3_superfluid.rs", "crates/stats_core/src/lib.rs"]
 lineage_id = "XL-206"
 method = "Shared Rust audit for six particle-numerology negative claims: octonion-subalgebra principal angles collapse to {0,90} rather than PMNS values (C-069); democratic associator mixing remains far from PMNS probabilities and is not better than a random doubly-stochastic null (C-077); three-angle Givens fits are exact for arbitrary targets and therefore non-evidentiary (C-081); small Yukawa-like diagonal perturbations improve the democratic matrix only modestly and remain null-like (C-084); depth-based associator norms fail to reproduce the lepton hierarchy and are not significant against a random-assignment null (C-587); and the Planck/BCS 1764 coincidence disappears outside chosen unit systems while the BCS factor remains pi/e^gamma numerics (C-1355)."
 output = ["data/output/claims_falsification/particle_numerology_audit.toml"]
@@ -5245,7 +5245,7 @@ external_source_refs = []
 gpu = false
 id = "E-207"
 input = "in-repo partner-graph spectrum, exact associator norms, checked-in NANOGrav medians, and SO(7) drift sweeps"
-input_path_refs = ["crates/algebra_analysis/src/reggiani.rs", "crates/algebra_experimental/src/so7_drift.rs", "crates/data_core/src/catalogs/nanograv.rs", "data/external/nanograv_15yr_freespectrum.csv", "crates/stats_core/src/lib.rs"]
+input_path_refs = ["crates/algebra_analysis/src/reggiani.rs", "crates/algebra_experimental/src/so7_drift.rs", "crates/data_core/src/catalogs/nanograv.rs", "crates/stats_core/src/lib.rs", "data/external/nanograv_15yr_freespectrum.csv"]
 lineage_id = "XL-207"
 method = "Shared Rust audit for three refuted or methodology-insufficient Cayley-Dickson pattern claims: partner-graph eigenvalue ladders are compared against PDG masses under both log and linear transforms with random-subset nulls (C-068); exact associator-quantile curves are compared against checked-in NANOGrav medians with Frechet nulls and simple template families (C-070); and generic SO(7) rotations leave the exact zero-divisor lane immediately, so the surviving orbit structure is discrete rather than continuous (C-092)."
 output = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml"]
@@ -5259,105 +5259,262 @@ title = "Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7)
 truth_surface_consumption = []
 
 [[experiment]]
-claim_refs = ["C-1440", "C-1441", "C-1442", "C-1443"]
-id = "E-208"
-status = "verified"
-title = "Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D"
-
-[[experiment]]
-claim_refs = ["C-1456"]
-id = "E-209"
-status = "completed"
-title = "CKM selector pair scan: 420 combos, Rayon-parallel"
-
-[[experiment]]
-claim_refs = ["C-1457", "C-1462"]
-id = "E-210"
-status = "completed"
-title = "PMNS neutrino mixing selector pair scan"
-
-[[experiment]]
-claim_refs = ["C-1459"]
-id = "E-211"
-status = "completed"
-title = "3-blade zero-divisor friction scan (455 triples)"
-
-[[experiment]]
-claim_refs = ["C-1458"]
-id = "E-212"
-status = "completed"
-title = "Electroweak mixing angle from associator flux ratio"
-
-[[experiment]]
-claim_refs = ["C-1479", "C-1480", "C-1481", "C-1482"]
-id = "E-213"
-status = "completed"
-title = "G2 stabilizer extraction via thin-SVD with u(3) embedding verification"
-
-[[experiment]]
-claim_refs = ["C-1483", "C-1484", "C-1485", "C-1486"]
-id = "E-214"
-status = "completed"
-title = "Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer"
-
-[[experiment]]
-claim_refs = ["C-1487", "C-1488"]
-id = "E-215"
-status = "completed"
-title = "Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection"
-
-[[experiment]]
-claim_refs = ["C-1528"]
-id = "E-216"
-status = "completed"
-title = "PMD CPD 7.12.0 codebase duplication baseline scan"
-
-[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
 claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-208"
+input = ""
+input_path_refs = []
+lineage_id = "XL-151"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-209"
+input = ""
+input_path_refs = []
+lineage_id = "XL-170"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "CKM selector pair scan: 420 combos, Rayon-parallel"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-210"
+input = ""
+input_path_refs = []
+lineage_id = "XL-171"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "PMNS neutrino mixing selector pair scan"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-211"
+input = ""
+input_path_refs = []
+lineage_id = "XL-173"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "3-blade zero-divisor friction scan (455 triples)"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-212"
+input = ""
+input_path_refs = []
+lineage_id = "XL-191"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "Electroweak mixing angle from associator flux ratio"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-213"
+input = ""
+input_path_refs = []
+lineage_id = "XL-199"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "G2 stabilizer extraction via thin-SVD with u(3) embedding verification"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-214"
+input = ""
+input_path_refs = []
+lineage_id = "XL-200"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-215"
+input = ""
+input_path_refs = []
+lineage_id = "XL-208"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-216"
+input = ""
+input_path_refs = []
+lineage_id = "XL-209"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
+title = "PMD CPD 7.12.0 codebase duplication baseline scan"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = ""
+binary_experiment_declared = ""
+binary_registered = false
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
 id = "E-217"
-notes = """
-WHY: Tasks #57/#58 were filed as 'migrate to TOML + codegen'. User updated requirement:
-SQLite is the primary source of truth; TOML-codegen is a fallback. First evaluate whether
-existing Rust crates from crates.io can replace the inline data entirely.
-
-FINDINGS (2026-03-23):
-- mnp-plasmon 0.1.1 (GPL-3.0): Created 2026-03-11, 0 stars, only Au/Ag/Al with bare Drude.
-  Contains physics bug: omega = energy_ev / HC_EV_NM gives 1/nm not rad/s.
-  Eliminated even after GPL-2.0-or-later upgrade -- provides no value.
-- oxiphoton 0.1.0 (Apache-2.0): 'materials-builtin' feature undocumented at 0.1.0. Immature.
-- spglib 1.15.1 (BSD-3-Clause): C FFI wrapper. Superseded by moyo (pure Rust, same spglib org).
-- moyo 0.7.9 (MIT/Apache-2.0): ALREADY IN WORKSPACE. Handles symmetry determination from
-  atomic positions. Does NOT provide space group lookup tables or character tables.
-  No action needed -- it is already the correct dep for dynamic symmetry analysis.
-
-CONCLUSION on external crates: None are suitable replacements. Build internal solution.
-
-optical_database.rs DATA REGION (lines 3282-10630):
-  Data is NOT flat-CSV-able. The Lorentz oscillators are one-to-many per material (2 to 5+
-  oscillators), and some strengths are derived via documented formulas from Rakic 1998
-  convention (strength = f_j * omega_p^2 / omega_0j^2). Flat CSV cannot represent variable-
-  length oscillator lists cleanly.
-  DECISION: SQLite as primary source of truth.
-  Schema: drude_params(material, variant, source, omega_p_ev, gamma_ev, eps_inf) +
-          lorentz_oscillators(material, variant, idx, strength, omega_0_ev, gamma_ev).
-  Computation code (lines 1-3281: struct defs, epsilon(), Matsubara sums) stays in Rust.
-
-crystal_symmetry.rs DATA REGIONS:
-  - 230 space group lookup (HM symbol, Schoenflies, lattice system): SIMPLE -- CSV in
-    materials_data/data/symmetry/space_groups.csv is appropriate; build.rs emits static array.
-  - 32 point group character tables (~2752 lines of impl): Variable-size matrices with complex
-    entries per group. SQLite is natural; OR keep in Rust (justified: it IS computation).
-  - Miller index math + phonon modes: Pure computation -- stays in Rust regardless.
-  DECISION: Space group table -> CSV + build.rs codegen. Character tables -> keep in Rust
-  (complexity not warranted for ~32 fixed entries; no deduplication issue identified).
-
-STATUS: Architecture decided. Implementation of SQLite migration for optical_database.rs
-data region is a future sprint item. Space group CSV migration can proceed independently.
-Both files remain in CPD_EXCLUDE_FILES until migration is complete.
-
-LICENSE NOTE: Workspace upgraded from GPL-2.0-only to GPL-2.0-or-later (2026-03-23)
-to widen compatible dependency pool. Historical records left unchanged.
-"""
-status = "completed"
+input = ""
+input_path_refs = []
+lineage_id = "XL-210"
+method = ""
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "active"
+status_token = "ACTIVE"
 title = "Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path"
+truth_surface_consumption = []
 

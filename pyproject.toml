@@ -1,0 +1,10 @@
+# Minimal pyproject.toml for execution-planning registry lane.
+# This project is pure Rust; Python tooling is not used.
+# The file exists because `execution-planning --repo-root .` reads it
+# to extract [project.dependencies] and [project.optional-dependencies].
+
+[project]
+name = "open-gororoba"
+version = "0.0.0"
+requires-python = ">=3.10"
+dependencies = []
