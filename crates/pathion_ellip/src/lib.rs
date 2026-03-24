@@ -7,5 +7,8 @@ pub mod pathion_shadow;
 pub mod quartic;
 pub mod shadow_boundary;
 
+pub use pathion_eigenvalues::PathionEigenvalueSpectrum;
+pub use pathion_resonance::{PathionResonanceReport, ResonanceBand, ResonanceConfig};
+
 #[cfg(test)]
 mod tests;

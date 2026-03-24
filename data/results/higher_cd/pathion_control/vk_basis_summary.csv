@@ -1,0 +1,14 @@
+metric,value
+algebra_name,Pathion
+ambient_dim,32
+requested_rank,20
+actual_rank,1
+basis_cols,210
+assessor_count,210
+effective_rank_1e4,1
+effective_rank_1e6,1
+effective_rank_1e8,1
+effective_rank_1e10,1
+leading_singular_value,2.033735180020
+trailing_singular_value,2.033735180020
+singular_value_0,2.033735180020

@@ -33,6 +33,7 @@ pub mod f4_casimir;
 pub mod fractal_dimension;
 pub mod golay_code;
 pub mod higher_cd;
+pub mod higher_cd_control;
 #[cfg(test)]
 mod invariance_tests;
 pub mod leech_lattice;

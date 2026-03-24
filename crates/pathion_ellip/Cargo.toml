@@ -7,6 +7,7 @@ repository.workspace = true
 
 [dependencies]
 cd_kernel = { workspace = true }
+algebra_experimental = { workspace = true }
 anyhow.workspace = true
 nalgebra.workspace = true
 num-complex.workspace = true

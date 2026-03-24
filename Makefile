@@ -9,7 +9,7 @@
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit
 .PHONY: cache-status cache-sweep cache-purge-exp cache-check
-.PHONY: v6-branch-transport-artifacts
+.PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
@@ -1652,6 +1652,12 @@ cargo-cache-smoke:
 
 v6-branch-transport-artifacts:
 	$(CARGO_ENV) cargo run -p algebra_experimental --example v6_gradient_drift_probe
+
+pathion-control-artifacts:
+	$(CARGO_ENV) cargo run -p algebra_experimental --example pathion_control_probe
+
+pathion-resonance-artifacts:
+	$(CARGO_ENV) cargo run -p pathion_ellip --example pathion_resonance_probe
 
 clean-all: clean clean-builds clean-artifacts
 	@rm -rf $(REPO_CARGO_HOME)
