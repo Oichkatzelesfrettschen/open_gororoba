@@ -1,5 +1,5 @@
 use super::hermitian::{C2, cmul, cconj, hermitian_3x3_eig_hybrid};
-use flavor_lifts::{FlavorLift, apply_v6_perturbation};
+use flavor_lifts::{FlavorLift, Pdg2024, apply_v6_perturbation};
 
 // ---------------------------------------------------------------------------
 // Parameterized CP scan point evaluator
@@ -477,9 +477,10 @@ impl<'a> argmin::core::CostFunction for CpNelderMeadCost<'a> {
             return Ok(-r.j_cp.abs());
         }
 
-        let err_12 = ((r.theta_12 - 33.41) / 0.72).powi(2);
-        let err_13 = ((r.theta_13 - 8.54) / 0.12).powi(2);
-        let err_23 = ((r.theta_23 - 49.0) / 1.3).powi(2);
+        let pdg = Pdg2024::default();
+        let err_12 = ((r.theta_12 - pdg.theta_12_deg) / pdg.theta_12_err).powi(2);
+        let err_13 = ((r.theta_13 - pdg.theta_13_deg) / pdg.theta_13_err).powi(2);
+        let err_23 = ((r.theta_23 - pdg.theta_23_deg) / pdg.theta_23_err).powi(2);
         let chi2_angles = err_12 + err_13 + err_23;
 
         let mut cost = chi2_angles - 100.0 * r.j_cp.abs();
