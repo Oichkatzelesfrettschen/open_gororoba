@@ -1,12 +1,11 @@
 //! makew: Pure Rust port of the `makew` shell script.
 //! Unsets GNU make environment variables and executes `make`.
 
-use std::env;
-use std::process::Command;
+use std::{env, process::Command};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::new("make");
-    
+
     // GNU make reads MAKEFLAGS from the environment.
     // Strip inherited make state here and let the repo's own concurrency policy take over.
     cmd.env_remove("MAKEFLAGS");

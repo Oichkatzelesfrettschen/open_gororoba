@@ -227,8 +227,8 @@ fn main() {
 }
 
 fn handle_data(cmd: DataCmd) {
-    use std::path::Path;
     use provenance_ops::data_ingest::orix::download_orix_dataset;
+    use std::path::Path;
 
     match cmd {
         DataCmd::Orix { target } => {

@@ -1,11 +1,13 @@
+use algebra_analysis::{
+    codebook::{enumerate_lambda_4096, is_in_lambda_1024},
+    sky_mapping::project_sky_to_basis,
+};
+use algebra_experimental::higher_cd::{HigherAvt, SparseApeironState};
 use anyhow::{Context, Result};
 use clap::Parser;
-use gororoba_cli_data::nanograv_timing::load_release;
-use algebra_analysis::codebook::{enumerate_lambda_4096, is_in_lambda_1024};
-use algebra_analysis::sky_mapping::project_sky_to_basis;
-use algebra_experimental::higher_cd::{HigherAvt, SparseApeironState};
-use std::path::PathBuf;
 use csv::Writer;
+use gororoba_cli_data::nanograv_timing::load_release;
+use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(
@@ -31,12 +33,18 @@ fn main() -> Result<()> {
 
     println!("Loading NANOGrav 15-year dataset...");
     let release = load_release(&args.root).context("failed to load timing release")?;
-    
-    println!("Generating 1024D DekaVoudon AVT ({} samples)...", args.n_samples);
+
+    println!(
+        "Generating 1024D DekaVoudon AVT ({} samples)...",
+        args.n_samples
+    );
     let avt_wrapper = HigherAvt::sampled(1024, args.n_samples, 42);
     let avt = &avt_wrapper.avt;
-    
-    let lattice_1024 = enumerate_lambda_4096().into_iter().filter(is_in_lambda_1024).collect::<Vec<_>>();
+
+    let lattice_1024 = enumerate_lambda_4096()
+        .into_iter()
+        .filter(is_in_lambda_1024)
+        .collect::<Vec<_>>();
 
     // 4. Calculate Shannon Entropy of AVT violation distribution
     // First, pre-calculate global violation participation counts per axis
@@ -49,18 +57,29 @@ fn main() -> Result<()> {
 
     println!("Computing holographic entropy saturation for each pulsar...");
     let mut writer = Writer::from_path(&args.csv_out)?;
-    writer.write_record(["pulsar", "dist_pc", "rms_us", "shannon_entropy", "bekenstein_bound", "saturation_ratio"])?;
+    writer.write_record([
+        "pulsar",
+        "dist_pc",
+        "rms_us",
+        "shannon_entropy",
+        "bekenstein_bound",
+        "saturation_ratio",
+    ])?;
 
     // Planck length in parsecs (approx)
-    let l_p_pc = 5.23e-52; 
+    let l_p_pc = 5.23e-52;
 
     for (name, data) in &release {
-        let Some(sky) = data.sky_vector() else { continue; };
+        let Some(sky) = data.sky_vector() else {
+            continue;
+        };
         let residuals: Vec<f64> = data.avg_residuals.iter().map(|p| p.residual_us).collect();
-        if residuals.is_empty() { continue; }
-        
+        if residuals.is_empty() {
+            continue;
+        }
+
         let rms_us = stats_core::metrics::rms(&residuals);
-        
+
         // 1. Estimate distance from parallax
         let meta = data.preferred_metadata();
         let dist_pc = if let Some(px) = meta.px_mas {
@@ -76,7 +95,7 @@ fn main() -> Result<()> {
 
         // 3. Project sky to 1024D basis
         let basis_vec = project_sky_to_basis(&sky, &lattice_1024, 1024);
-        
+
         // 4. Calculate Shannon Entropy of AVT violation distribution
         // For each basis axis i, we sum its violation participations.
         let mut violations_per_axis = vec![0.0; 1024];
@@ -85,7 +104,7 @@ fn main() -> Result<()> {
                 violations_per_axis[i] = val.abs() * (global_participation[i] as f64);
             }
         }
-        
+
         let sparse_state = SparseApeironState::from_dense(1024, &violations_per_axis, 1e-10);
         let h_avt = sparse_state.shannon_entropy();
 
@@ -104,7 +123,10 @@ fn main() -> Result<()> {
     }
 
     writer.flush()?;
-    println!("Entropy audit complete. Results saved to {:?}", args.csv_out);
+    println!(
+        "Entropy audit complete. Results saved to {:?}",
+        args.csv_out
+    );
 
     Ok(())
 }

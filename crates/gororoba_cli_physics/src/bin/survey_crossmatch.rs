@@ -9,7 +9,6 @@ use cosmology_core::euclid_morphology::{EuclidMorphologyRecord, read_euclid_visu
 #[cfg(feature = "euclid-catalog")]
 use data_core::{
     CatalogModality, PreparedPointGrid, SkyGridIndex, SkyPoint,
-    for_each_point_grid_match, prepare_point_grid,
     catalogs::{
         atnf::parse_atnf_csv,
         chime::parse_chime_csv,
@@ -23,7 +22,9 @@ use data_core::{
         sdss::parse_sdss_quasar_csv,
         things::{build_things_hi_metadata, parse_things_galaxies, parse_things_hi_spectra},
     },
+    for_each_point_grid_match,
     formats::fits_table::{FitsValue, read_fits_table},
+    prepare_point_grid,
 };
 #[cfg(feature = "euclid-catalog")]
 use fitsio::{FitsFile, hdu::HduInfo};

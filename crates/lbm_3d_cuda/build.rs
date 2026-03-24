@@ -6,19 +6,21 @@
 //!
 //! Feature-gated behind `aot-cubin`. When disabled, falls back to NVRTC.
 
-use std::env;
-use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::{
+    env,
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 /// CUDA kernel source files to compile AOT.
 /// Only the production-critical kernels are compiled; the rest use NVRTC fallback.
 const AOT_KERNELS: &[&str] = &[
-    "kernels_soa.cu",         // FP32 MRT/A-A/tiled/coarsened/ephemeral
-    "kernels_int8_soa.cu",    // INT8 MRT/A-A (production tier)
-    "kernels_bf16_soa.cu",    // BF16 MRT/A-A
-    "kernels_fp16_soa.cu",    // FP16 MRT
-    "kernels_fp8_soa.cu",     // FP8 e4m3 MRT
-    "kernels_slice.cu",       // On-the-fly slice extraction
+    "kernels_soa.cu",      // FP32 MRT/A-A/tiled/coarsened/ephemeral
+    "kernels_int8_soa.cu", // INT8 MRT/A-A (production tier)
+    "kernels_bf16_soa.cu", // BF16 MRT/A-A
+    "kernels_fp16_soa.cu", // FP16 MRT
+    "kernels_fp8_soa.cu",  // FP8 e4m3 MRT
+    "kernels_slice.cu",    // On-the-fly slice extraction
 ];
 
 fn main() {

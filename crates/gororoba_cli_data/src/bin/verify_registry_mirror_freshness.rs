@@ -304,7 +304,10 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             command: "insights-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("crates/data_core/src/registry_mirrors/insights.rs").display().to_string(),
+                stage_root
+                    .join("crates/data_core/src/registry_mirrors/insights.rs")
+                    .display()
+                    .to_string(),
             ],
         },
         Job {
@@ -312,7 +315,9 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             args: vec![
                 "--output".into(),
                 stage_root
-                    .join("crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs")
+                    .join(
+                        "crates/data_core/src/registry_mirrors/experiments_portfolio_shortlist.rs",
+                    )
                     .display()
                     .to_string(),
             ],
@@ -321,21 +326,30 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             command: "theorems-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("crates/data_core/src/registry_mirrors/theorems.rs").display().to_string(),
+                stage_root
+                    .join("crates/data_core/src/registry_mirrors/theorems.rs")
+                    .display()
+                    .to_string(),
             ],
         },
         Job {
             command: "roadmap-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("crates/data_core/src/registry_mirrors/roadmap.rs").display().to_string(),
+                stage_root
+                    .join("crates/data_core/src/registry_mirrors/roadmap.rs")
+                    .display()
+                    .to_string(),
             ],
         },
         Job {
             command: "todo-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("crates/data_core/src/registry_mirrors/todo.rs").display().to_string(),
+                stage_root
+                    .join("crates/data_core/src/registry_mirrors/todo.rs")
+                    .display()
+                    .to_string(),
             ],
         },
         Job {
@@ -356,7 +370,10 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
             command: "navigator-legacy",
             args: vec![
                 "--output".into(),
-                stage_root.join("crates/data_core/src/registry_mirrors/navigator.rs").display().to_string(),
+                stage_root
+                    .join("crates/data_core/src/registry_mirrors/navigator.rs")
+                    .display()
+                    .to_string(),
             ],
         },
         Job {

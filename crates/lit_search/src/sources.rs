@@ -67,34 +67,43 @@ pub async fn search_openalex(
     let resp: Value = client.get(&url).send().await?.json().await?;
     let results = resp["results"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(results.iter().map(|w| {
-        let authors: Vec<Author> = w["authorships"].as_array()
-            .unwrap_or(&Vec::new())
-            .iter()
-            .filter_map(|a| {
-                a["author"]["display_name"].as_str().map(|n| Author {
-                    name: n.to_string(),
-                    affiliation: String::new(),
+    Ok(results
+        .iter()
+        .map(|w| {
+            let authors: Vec<Author> = w["authorships"]
+                .as_array()
+                .unwrap_or(&Vec::new())
+                .iter()
+                .filter_map(|a| {
+                    a["author"]["display_name"].as_str().map(|n| Author {
+                        name: n.to_string(),
+                        affiliation: String::new(),
+                    })
                 })
-            })
-            .collect();
+                .collect();
 
-        Paper {
-            paper_id: w["id"].as_str().unwrap_or("").to_string(),
-            title: w["title"].as_str().unwrap_or("").to_string(),
-            authors,
-            year: w["publication_year"].as_u64().unwrap_or(0) as u32,
-            r#abstract: String::new(), // OpenAlex doesn't return abstracts in search
-            venue: w["primary_location"]["source"]["display_name"]
-                .as_str().unwrap_or("").to_string(),
-            citation_count: w["cited_by_count"].as_u64().unwrap_or(0) as u32,
-            doi: w["doi"].as_str().unwrap_or("").to_string(),
-            arxiv_id: String::new(),
-            url: w["id"].as_str().unwrap_or("").to_string(),
-            pdf_url: w["open_access"]["oa_url"].as_str().unwrap_or("").to_string(),
-            source: "openalex".to_string(),
-        }
-    }).collect())
+            Paper {
+                paper_id: w["id"].as_str().unwrap_or("").to_string(),
+                title: w["title"].as_str().unwrap_or("").to_string(),
+                authors,
+                year: w["publication_year"].as_u64().unwrap_or(0) as u32,
+                r#abstract: String::new(), // OpenAlex doesn't return abstracts in search
+                venue: w["primary_location"]["source"]["display_name"]
+                    .as_str()
+                    .unwrap_or("")
+                    .to_string(),
+                citation_count: w["cited_by_count"].as_u64().unwrap_or(0) as u32,
+                doi: w["doi"].as_str().unwrap_or("").to_string(),
+                arxiv_id: String::new(),
+                url: w["id"].as_str().unwrap_or("").to_string(),
+                pdf_url: w["open_access"]["oa_url"]
+                    .as_str()
+                    .unwrap_or("")
+                    .to_string(),
+                source: "openalex".to_string(),
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -119,40 +128,47 @@ pub async fn search_semantic_scholar(
     }
 
     let resp: Value = req.send().await?.json().await?;
-    if resp["message"].as_str().is_some_and(|m| m.contains("Too Many")) {
+    if resp["message"]
+        .as_str()
+        .is_some_and(|m| m.contains("Too Many"))
+    {
         return Err(SourceError::RateLimited);
     }
 
     let data = resp["data"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(data.iter().map(|p| {
-        let authors: Vec<Author> = p["authors"].as_array()
-            .unwrap_or(&Vec::new())
-            .iter()
-            .filter_map(|a| {
-                a["name"].as_str().map(|n| Author {
-                    name: n.to_string(),
-                    affiliation: String::new(),
+    Ok(data
+        .iter()
+        .map(|p| {
+            let authors: Vec<Author> = p["authors"]
+                .as_array()
+                .unwrap_or(&Vec::new())
+                .iter()
+                .filter_map(|a| {
+                    a["name"].as_str().map(|n| Author {
+                        name: n.to_string(),
+                        affiliation: String::new(),
+                    })
                 })
-            })
-            .collect();
+                .collect();
 
-        let ext = &p["externalIds"];
-        Paper {
-            paper_id: p["paperId"].as_str().unwrap_or("").to_string(),
-            title: p["title"].as_str().unwrap_or("").to_string(),
-            authors,
-            year: p["year"].as_u64().unwrap_or(0) as u32,
-            r#abstract: p["abstract"].as_str().unwrap_or("").to_string(),
-            venue: p["venue"].as_str().unwrap_or("").to_string(),
-            citation_count: p["citationCount"].as_u64().unwrap_or(0) as u32,
-            doi: ext["DOI"].as_str().unwrap_or("").to_string(),
-            arxiv_id: ext["ArXiv"].as_str().unwrap_or("").to_string(),
-            url: p["url"].as_str().unwrap_or("").to_string(),
-            pdf_url: p["openAccessPdf"]["url"].as_str().unwrap_or("").to_string(),
-            source: "semantic_scholar".to_string(),
-        }
-    }).collect())
+            let ext = &p["externalIds"];
+            Paper {
+                paper_id: p["paperId"].as_str().unwrap_or("").to_string(),
+                title: p["title"].as_str().unwrap_or("").to_string(),
+                authors,
+                year: p["year"].as_u64().unwrap_or(0) as u32,
+                r#abstract: p["abstract"].as_str().unwrap_or("").to_string(),
+                venue: p["venue"].as_str().unwrap_or("").to_string(),
+                citation_count: p["citationCount"].as_u64().unwrap_or(0) as u32,
+                doi: ext["DOI"].as_str().unwrap_or("").to_string(),
+                arxiv_id: ext["ArXiv"].as_str().unwrap_or("").to_string(),
+                url: p["url"].as_str().unwrap_or("").to_string(),
+                pdf_url: p["openAccessPdf"]["url"].as_str().unwrap_or("").to_string(),
+                source: "semantic_scholar".to_string(),
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -171,46 +187,58 @@ pub async fn search_crossref(
     );
 
     let resp: Value = client.get(&url).send().await?.json().await?;
-    let items = resp["message"]["items"].as_array().unwrap_or(&Vec::new()).clone();
+    let items = resp["message"]["items"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
-    Ok(items.iter().map(|item| {
-        let authors: Vec<Author> = item["author"].as_array()
-            .unwrap_or(&Vec::new())
-            .iter()
-            .filter_map(|a| {
-                let given = a["given"].as_str().unwrap_or("");
-                let family = a["family"].as_str().unwrap_or("");
-                if family.is_empty() { return None; }
-                Some(Author {
-                    name: format!("{given} {family}").trim().to_string(),
-                    affiliation: String::new(),
+    Ok(items
+        .iter()
+        .map(|item| {
+            let authors: Vec<Author> = item["author"]
+                .as_array()
+                .unwrap_or(&Vec::new())
+                .iter()
+                .filter_map(|a| {
+                    let given = a["given"].as_str().unwrap_or("");
+                    let family = a["family"].as_str().unwrap_or("");
+                    if family.is_empty() {
+                        return None;
+                    }
+                    Some(Author {
+                        name: format!("{given} {family}").trim().to_string(),
+                        affiliation: String::new(),
+                    })
                 })
-            })
-            .collect();
+                .collect();
 
-        let title = item["title"].as_array()
-            .and_then(|t| t.first())
-            .and_then(|t| t.as_str())
-            .unwrap_or("");
-
-        Paper {
-            paper_id: item["DOI"].as_str().unwrap_or("").to_string(),
-            title: title.to_string(),
-            authors,
-            year: item["published"]["date-parts"][0][0].as_u64().unwrap_or(0) as u32,
-            r#abstract: String::new(),
-            venue: item["container-title"].as_array()
+            let title = item["title"]
+                .as_array()
                 .and_then(|t| t.first())
                 .and_then(|t| t.as_str())
-                .unwrap_or("").to_string(),
-            citation_count: item["is-referenced-by-count"].as_u64().unwrap_or(0) as u32,
-            doi: item["DOI"].as_str().unwrap_or("").to_string(),
-            arxiv_id: String::new(),
-            url: item["URL"].as_str().unwrap_or("").to_string(),
-            pdf_url: String::new(),
-            source: "crossref".to_string(),
-        }
-    }).collect())
+                .unwrap_or("");
+
+            Paper {
+                paper_id: item["DOI"].as_str().unwrap_or("").to_string(),
+                title: title.to_string(),
+                authors,
+                year: item["published"]["date-parts"][0][0].as_u64().unwrap_or(0) as u32,
+                r#abstract: String::new(),
+                venue: item["container-title"]
+                    .as_array()
+                    .and_then(|t| t.first())
+                    .and_then(|t| t.as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                citation_count: item["is-referenced-by-count"].as_u64().unwrap_or(0) as u32,
+                doi: item["DOI"].as_str().unwrap_or("").to_string(),
+                arxiv_id: String::new(),
+                url: item["URL"].as_str().unwrap_or("").to_string(),
+                pdf_url: String::new(),
+                source: "crossref".to_string(),
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -237,9 +265,14 @@ pub async fn search_core(
     let resp: Value = client.get(&url).send().await?.json().await?;
     let results = resp["results"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(results.iter().map(|w| {
-        Paper {
-            paper_id: w["id"].as_str().or(w["id"].as_u64().map(|_| "")).unwrap_or("").to_string(),
+    Ok(results
+        .iter()
+        .map(|w| Paper {
+            paper_id: w["id"]
+                .as_str()
+                .or(w["id"].as_u64().map(|_| ""))
+                .unwrap_or("")
+                .to_string(),
             title: w["title"].as_str().unwrap_or("").to_string(),
             authors: Vec::new(),
             year: w["yearPublished"].as_u64().unwrap_or(0) as u32,
@@ -251,8 +284,8 @@ pub async fn search_core(
             url: w["downloadUrl"].as_str().unwrap_or("").to_string(),
             pdf_url: w["downloadUrl"].as_str().unwrap_or("").to_string(),
             source: "core".to_string(),
-        }
-    }).collect())
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -304,9 +337,14 @@ pub async fn search_arxiv(
     // Simple XML parsing without a full XML crate -- extract entries
     for entry in text.split("<entry>").skip(1) {
         let extract = |tag: &str| -> String {
-            entry.split(&format!("<{tag}>")).nth(1)
+            entry
+                .split(&format!("<{tag}>"))
+                .nth(1)
                 .and_then(|s| s.split(&format!("</{tag}>")).next())
-                .unwrap_or("").trim().replace('\n', " ").to_string()
+                .unwrap_or("")
+                .trim()
+                .replace('\n', " ")
+                .to_string()
         };
 
         let id_full = extract("id");
@@ -315,8 +353,10 @@ pub async fn search_arxiv(
         papers.push(Paper {
             paper_id: arxiv_id.clone(),
             title: extract("title"),
-            year: extract("published").get(..4)
-                .and_then(|y| y.parse().ok()).unwrap_or(0),
+            year: extract("published")
+                .get(..4)
+                .and_then(|y| y.parse().ok())
+                .unwrap_or(0),
             r#abstract: extract("summary"),
             arxiv_id: arxiv_id.clone(),
             url: id_full,
@@ -345,37 +385,52 @@ pub async fn search_inspirehep(
     );
 
     let resp: Value = client.get(&url).send().await?.json().await?;
-    let hits = resp["hits"]["hits"].as_array().unwrap_or(&Vec::new()).clone();
+    let hits = resp["hits"]["hits"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
-    Ok(hits.iter().map(|h| {
-        let meta = &h["metadata"];
-        let title = meta["titles"].as_array()
-            .and_then(|t| t.first())
-            .and_then(|t| t["title"].as_str())
-            .unwrap_or("");
-        let arxiv = meta["arxiv_eprints"].as_array()
-            .and_then(|a| a.first())
-            .and_then(|a| a["value"].as_str())
-            .unwrap_or("");
-        let doi = meta["dois"].as_array()
-            .and_then(|d| d.first())
-            .and_then(|d| d["value"].as_str())
-            .unwrap_or("");
+    Ok(hits
+        .iter()
+        .map(|h| {
+            let meta = &h["metadata"];
+            let title = meta["titles"]
+                .as_array()
+                .and_then(|t| t.first())
+                .and_then(|t| t["title"].as_str())
+                .unwrap_or("");
+            let arxiv = meta["arxiv_eprints"]
+                .as_array()
+                .and_then(|a| a.first())
+                .and_then(|a| a["value"].as_str())
+                .unwrap_or("");
+            let doi = meta["dois"]
+                .as_array()
+                .and_then(|d| d.first())
+                .and_then(|d| d["value"].as_str())
+                .unwrap_or("");
 
-        Paper {
-            paper_id: h["id"].as_str().unwrap_or("").to_string(),
-            title: title.to_string(),
-            year: meta["earliest_date"].as_str()
-                .and_then(|d| d.get(..4))
-                .and_then(|y| y.parse().ok()).unwrap_or(0),
-            citation_count: meta["citation_count"].as_u64().unwrap_or(0) as u32,
-            doi: doi.to_string(),
-            arxiv_id: arxiv.to_string(),
-            pdf_url: if !arxiv.is_empty() { format!("https://arxiv.org/pdf/{arxiv}") } else { String::new() },
-            source: "inspirehep".to_string(),
-            ..Default::default()
-        }
-    }).collect())
+            Paper {
+                paper_id: h["id"].as_str().unwrap_or("").to_string(),
+                title: title.to_string(),
+                year: meta["earliest_date"]
+                    .as_str()
+                    .and_then(|d| d.get(..4))
+                    .and_then(|y| y.parse().ok())
+                    .unwrap_or(0),
+                citation_count: meta["citation_count"].as_u64().unwrap_or(0) as u32,
+                doi: doi.to_string(),
+                arxiv_id: arxiv.to_string(),
+                pdf_url: if !arxiv.is_empty() {
+                    format!("https://arxiv.org/pdf/{arxiv}")
+                } else {
+                    String::new()
+                },
+                source: "inspirehep".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -394,22 +449,30 @@ pub async fn search_dblp(
     );
 
     let resp: Value = client.get(&url).send().await?.json().await?;
-    let hits = resp["result"]["hits"]["hit"].as_array().unwrap_or(&Vec::new()).clone();
+    let hits = resp["result"]["hits"]["hit"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
-    Ok(hits.iter().map(|h| {
-        let info = &h["info"];
-        Paper {
-            paper_id: info["key"].as_str().unwrap_or("").to_string(),
-            title: info["title"].as_str().unwrap_or("").to_string(),
-            year: info["year"].as_str()
-                .and_then(|y| y.parse().ok()).unwrap_or(0),
-            venue: info["venue"].as_str().unwrap_or("").to_string(),
-            doi: info["doi"].as_str().unwrap_or("").to_string(),
-            url: info["ee"].as_str().unwrap_or("").to_string(),
-            source: "dblp".to_string(),
-            ..Default::default()
-        }
-    }).collect())
+    Ok(hits
+        .iter()
+        .map(|h| {
+            let info = &h["info"];
+            Paper {
+                paper_id: info["key"].as_str().unwrap_or("").to_string(),
+                title: info["title"].as_str().unwrap_or("").to_string(),
+                year: info["year"]
+                    .as_str()
+                    .and_then(|y| y.parse().ok())
+                    .unwrap_or(0),
+                venue: info["venue"].as_str().unwrap_or("").to_string(),
+                doi: info["doi"].as_str().unwrap_or("").to_string(),
+                url: info["ee"].as_str().unwrap_or("").to_string(),
+                source: "dblp".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -428,21 +491,27 @@ pub async fn search_europepmc(
     );
 
     let resp: Value = client.get(&url).send().await?.json().await?;
-    let results = resp["resultList"]["result"].as_array().unwrap_or(&Vec::new()).clone();
+    let results = resp["resultList"]["result"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
-    Ok(results.iter().map(|r| {
-        Paper {
+    Ok(results
+        .iter()
+        .map(|r| Paper {
             paper_id: r["id"].as_str().unwrap_or("").to_string(),
             title: r["title"].as_str().unwrap_or("").to_string(),
-            year: r["pubYear"].as_str()
-                .and_then(|y| y.parse().ok()).unwrap_or(0),
+            year: r["pubYear"]
+                .as_str()
+                .and_then(|y| y.parse().ok())
+                .unwrap_or(0),
             r#abstract: r["abstractText"].as_str().unwrap_or("").to_string(),
             doi: r["doi"].as_str().unwrap_or("").to_string(),
             citation_count: r["citedByCount"].as_u64().unwrap_or(0) as u32,
             source: "europepmc".to_string(),
             ..Default::default()
-        }
-    }).collect())
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -461,30 +530,44 @@ pub async fn search_hal(
     );
 
     let resp: Value = client.get(&url).send().await?.json().await?;
-    let docs = resp["response"]["docs"].as_array().unwrap_or(&Vec::new()).clone();
+    let docs = resp["response"]["docs"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
-    Ok(docs.iter().map(|d| {
-        let authors: Vec<Author> = d["authFullName_s"].as_array()
-            .unwrap_or(&Vec::new())
-            .iter()
-            .filter_map(|a| a.as_str().map(|n| Author { name: n.to_string(), affiliation: String::new() }))
-            .collect();
+    Ok(docs
+        .iter()
+        .map(|d| {
+            let authors: Vec<Author> = d["authFullName_s"]
+                .as_array()
+                .unwrap_or(&Vec::new())
+                .iter()
+                .filter_map(|a| {
+                    a.as_str().map(|n| Author {
+                        name: n.to_string(),
+                        affiliation: String::new(),
+                    })
+                })
+                .collect();
 
-        Paper {
-            paper_id: d["uri_s"].as_str().unwrap_or("").to_string(),
-            title: d["title_s"].as_array()
-                .and_then(|t| t.first())
-                .and_then(|t| t.as_str())
-                .unwrap_or("").to_string(),
-            authors,
-            year: d["producedDateY_i"].as_u64().unwrap_or(0) as u32,
-            doi: d["doiId_s"].as_str().unwrap_or("").to_string(),
-            url: d["uri_s"].as_str().unwrap_or("").to_string(),
-            pdf_url: d["fileMain_s"].as_str().unwrap_or("").to_string(),
-            source: "hal".to_string(),
-            ..Default::default()
-        }
-    }).collect())
+            Paper {
+                paper_id: d["uri_s"].as_str().unwrap_or("").to_string(),
+                title: d["title_s"]
+                    .as_array()
+                    .and_then(|t| t.first())
+                    .and_then(|t| t.as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                authors,
+                year: d["producedDateY_i"].as_u64().unwrap_or(0) as u32,
+                doi: d["doiId_s"].as_str().unwrap_or("").to_string(),
+                url: d["uri_s"].as_str().unwrap_or("").to_string(),
+                pdf_url: d["fileMain_s"].as_str().unwrap_or("").to_string(),
+                source: "hal".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -505,21 +588,26 @@ pub async fn search_datacite(
     let resp: Value = client.get(&url).send().await?.json().await?;
     let data = resp["data"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(data.iter().map(|d| {
-        let attrs = &d["attributes"];
-        Paper {
-            paper_id: attrs["doi"].as_str().unwrap_or("").to_string(),
-            title: attrs["titles"].as_array()
-                .and_then(|t| t.first())
-                .and_then(|t| t["title"].as_str())
-                .unwrap_or("").to_string(),
-            year: attrs["publicationYear"].as_u64().unwrap_or(0) as u32,
-            doi: attrs["doi"].as_str().unwrap_or("").to_string(),
-            url: attrs["url"].as_str().unwrap_or("").to_string(),
-            source: "datacite".to_string(),
-            ..Default::default()
-        }
-    }).collect())
+    Ok(data
+        .iter()
+        .map(|d| {
+            let attrs = &d["attributes"];
+            Paper {
+                paper_id: attrs["doi"].as_str().unwrap_or("").to_string(),
+                title: attrs["titles"]
+                    .as_array()
+                    .and_then(|t| t.first())
+                    .and_then(|t| t["title"].as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                year: attrs["publicationYear"].as_u64().unwrap_or(0) as u32,
+                doi: attrs["doi"].as_str().unwrap_or("").to_string(),
+                url: attrs["url"].as_str().unwrap_or("").to_string(),
+                source: "datacite".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -540,17 +628,17 @@ pub async fn search_scielo(
     let resp: Value = client.get(&url).send().await?.json().await?;
     let docs = resp["docs"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(docs.iter().map(|d| {
-        Paper {
+    Ok(docs
+        .iter()
+        .map(|d| Paper {
             paper_id: d["id"].as_str().unwrap_or("").to_string(),
             title: d["title"].as_str().unwrap_or("").to_string(),
-            year: d["year"].as_str()
-                .and_then(|y| y.parse().ok()).unwrap_or(0),
+            year: d["year"].as_str().and_then(|y| y.parse().ok()).unwrap_or(0),
             doi: d["doi"].as_str().unwrap_or("").to_string(),
             source: "scielo".to_string(),
             ..Default::default()
-        }
-    }).collect())
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -574,9 +662,13 @@ pub async fn search_jstage(
     // J-STAGE returns XML; simple extraction
     for entry in text.split("<entry>").skip(1) {
         let extract = |tag: &str| -> String {
-            entry.split(&format!("<{tag}>")).nth(1)
+            entry
+                .split(&format!("<{tag}>"))
+                .nth(1)
                 .and_then(|s| s.split(&format!("</{tag}>")).next())
-                .unwrap_or("").trim().to_string()
+                .unwrap_or("")
+                .trim()
+                .to_string()
         };
 
         papers.push(Paper {
@@ -616,16 +708,17 @@ pub async fn search_cinii(
     let resp: Value = client.get(&url).send().await?.json().await?;
     let items = resp["items"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(items.iter().map(|item| {
-        Paper {
+    Ok(items
+        .iter()
+        .map(|item| Paper {
             paper_id: item["@id"].as_str().unwrap_or("").to_string(),
             title: item["title"].as_str().unwrap_or("").to_string(),
             doi: item["doi"].as_str().unwrap_or("").to_string(),
             url: item["@id"].as_str().unwrap_or("").to_string(),
             source: "cinii".to_string(),
             ..Default::default()
-        }
-    }).collect())
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -648,46 +741,66 @@ pub async fn search_ads(
         limit.min(25)
     );
 
-    let resp: Value = client.get(&url)
+    let resp: Value = client
+        .get(&url)
         .header("Authorization", format!("Bearer {}", keys.ads_token))
-        .send().await?.json().await?;
+        .send()
+        .await?
+        .json()
+        .await?;
 
-    let docs = resp["response"]["docs"].as_array().unwrap_or(&Vec::new()).clone();
+    let docs = resp["response"]["docs"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
-    Ok(docs.iter().map(|d| {
-        let authors: Vec<Author> = d["author"].as_array()
-            .unwrap_or(&Vec::new())
-            .iter()
-            .filter_map(|a| a.as_str().map(|n| Author { name: n.to_string(), affiliation: String::new() }))
-            .collect();
+    Ok(docs
+        .iter()
+        .map(|d| {
+            let authors: Vec<Author> = d["author"]
+                .as_array()
+                .unwrap_or(&Vec::new())
+                .iter()
+                .filter_map(|a| {
+                    a.as_str().map(|n| Author {
+                        name: n.to_string(),
+                        affiliation: String::new(),
+                    })
+                })
+                .collect();
 
-        let arxiv = d["identifier"].as_array()
-            .unwrap_or(&Vec::new())
-            .iter()
-            .filter_map(|id| id.as_str())
-            .find(|id| id.starts_with("arXiv:"))
-            .map(|id| id.trim_start_matches("arXiv:").to_string())
-            .unwrap_or_default();
+            let arxiv = d["identifier"]
+                .as_array()
+                .unwrap_or(&Vec::new())
+                .iter()
+                .filter_map(|id| id.as_str())
+                .find(|id| id.starts_with("arXiv:"))
+                .map(|id| id.trim_start_matches("arXiv:").to_string())
+                .unwrap_or_default();
 
-        Paper {
-            paper_id: d["bibcode"].as_str().unwrap_or("").to_string(),
-            title: d["title"].as_array()
-                .and_then(|t| t.first())
-                .and_then(|t| t.as_str())
-                .unwrap_or("").to_string(),
-            authors,
-            year: d["year"].as_str()
-                .and_then(|y| y.parse().ok()).unwrap_or(0),
-            citation_count: d["citation_count"].as_u64().unwrap_or(0) as u32,
-            doi: d["doi"].as_array()
-                .and_then(|d| d.first())
-                .and_then(|d| d.as_str())
-                .unwrap_or("").to_string(),
-            arxiv_id: arxiv,
-            source: "ads".to_string(),
-            ..Default::default()
-        }
-    }).collect())
+            Paper {
+                paper_id: d["bibcode"].as_str().unwrap_or("").to_string(),
+                title: d["title"]
+                    .as_array()
+                    .and_then(|t| t.first())
+                    .and_then(|t| t.as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                authors,
+                year: d["year"].as_str().and_then(|y| y.parse().ok()).unwrap_or(0),
+                citation_count: d["citation_count"].as_u64().unwrap_or(0) as u32,
+                doi: d["doi"]
+                    .as_array()
+                    .and_then(|d| d.first())
+                    .and_then(|d| d.as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                arxiv_id: arxiv,
+                source: "ads".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -710,30 +823,38 @@ pub async fn search_lens(
         "include": ["title", "year_published", "authors", "external_ids", "source_urls"]
     });
 
-    let resp: Value = client.post("https://api.lens.org/scholarly/search")
+    let resp: Value = client
+        .post("https://api.lens.org/scholarly/search")
         .header("Authorization", format!("Bearer {}", keys.lens_api_key))
         .json(&body)
-        .send().await?.json().await?;
+        .send()
+        .await?
+        .json()
+        .await?;
 
     let data = resp["data"].as_array().unwrap_or(&Vec::new()).clone();
 
-    Ok(data.iter().map(|d| {
-        let empty_vec = Vec::new();
-        let ext_ids = d["external_ids"].as_array().unwrap_or(&empty_vec);
-        let doi = ext_ids.iter()
-            .find(|id| id["type"].as_str() == Some("doi"))
-            .and_then(|id| id["value"].as_str())
-            .unwrap_or("");
+    Ok(data
+        .iter()
+        .map(|d| {
+            let empty_vec = Vec::new();
+            let ext_ids = d["external_ids"].as_array().unwrap_or(&empty_vec);
+            let doi = ext_ids
+                .iter()
+                .find(|id| id["type"].as_str() == Some("doi"))
+                .and_then(|id| id["value"].as_str())
+                .unwrap_or("");
 
-        Paper {
-            paper_id: d["lens_id"].as_str().unwrap_or("").to_string(),
-            title: d["title"].as_str().unwrap_or("").to_string(),
-            year: d["year_published"].as_u64().unwrap_or(0) as u32,
-            doi: doi.to_string(),
-            source: "lens".to_string(),
-            ..Default::default()
-        }
-    }).collect())
+            Paper {
+                paper_id: d["lens_id"].as_str().unwrap_or("").to_string(),
+                title: d["title"].as_str().unwrap_or("").to_string(),
+                year: d["year_published"].as_u64().unwrap_or(0) as u32,
+                doi: doi.to_string(),
+                source: "lens".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
 }
 
 // ---------------------------------------------------------------------------
@@ -771,9 +892,10 @@ pub async fn search_google_scholar(
     }
 
     if status.as_u16() != 200 {
-        return Err(SourceError::Unavailable(
-            format!("Google Scholar returned HTTP {}", status.as_u16()),
-        ));
+        return Err(SourceError::Unavailable(format!(
+            "Google Scholar returned HTTP {}",
+            status.as_u16()
+        )));
     }
 
     let document = Html::parse_document(&text);
@@ -801,7 +923,10 @@ pub async fn search_google_scholar(
             let u = a.value().attr("href").unwrap_or("").to_string();
             (t, u)
         } else if let Some(h3) = result.select(&title_nolink_sel).next() {
-            (h3.text().collect::<String>().trim().to_string(), String::new())
+            (
+                h3.text().collect::<String>().trim().to_string(),
+                String::new(),
+            )
         } else {
             continue;
         };
@@ -888,7 +1013,11 @@ fn parse_gs_info_line(info: &str) -> (Vec<Author>, u32, String) {
         if year > 0 {
             let yr_str = year.to_string();
             if let Some(pos) = venue_year.find(&yr_str) {
-                venue = venue_year[..pos].trim().trim_end_matches(',').trim().to_string();
+                venue = venue_year[..pos]
+                    .trim()
+                    .trim_end_matches(',')
+                    .trim()
+                    .to_string();
             }
         } else {
             venue = venue_year.trim().to_string();

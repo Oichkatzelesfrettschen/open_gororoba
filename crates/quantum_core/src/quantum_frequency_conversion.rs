@@ -30,8 +30,8 @@ impl QuantumFrequencyConverter {
             input_wavelength_nm: 637.0,
             pump_wavelength_nm: 1064.0,
             output_wavelength_nm: 1588.0,
-            device_efficiency: 0.17, // 17%
-            noise_rate_hz: 10.0, // Low noise after filtering
+            device_efficiency: 0.17,    // 17%
+            noise_rate_hz: 10.0,        // Low noise after filtering
             filter_bandwidth_nm: 0.004, // 4 pm bandwidth (500 MHz)
             filter_rejection_db: 55.0,  // 55 dB rejection
         }
@@ -43,8 +43,8 @@ impl QuantumFrequencyConverter {
             input_wavelength_nm: 737.0,
             pump_wavelength_nm: 2812.6, // Long wavelength pump avoids noise
             output_wavelength_nm: 1550.0, // Telecom C-band
-            device_efficiency: 0.356, // 35.6% efficiency
-            noise_rate_hz: 0.1, // < 0.1 Hz noise
+            device_efficiency: 0.356,   // 35.6% efficiency
+            noise_rate_hz: 0.1,         // < 0.1 Hz noise
             filter_bandwidth_nm: 0.01,
             filter_rejection_db: 80.0,
         }
@@ -54,7 +54,7 @@ impl QuantumFrequencyConverter {
     pub fn verify_energy_conservation(&self) -> bool {
         let expected_inv = (1.0 / self.input_wavelength_nm) - (1.0 / self.pump_wavelength_nm);
         let actual_inv = 1.0 / self.output_wavelength_nm;
-        
+
         // Allow for some tolerance due to rounding
         (expected_inv - actual_inv).abs() < 1e-4
     }

@@ -62,8 +62,16 @@ pub fn load_sweep_csv<P: AsRef<Path>>(path: P) -> Result<Vec<(usize, f64)>, Stri
     let mut data = Vec::new();
     for result in reader.records() {
         let record = result.map_err(|e| e.to_string())?;
-        let dim: usize = record.get(0).ok_or("Missing dimension")?.parse().map_err(|e: std::num::ParseIntError| e.to_string())?;
-        let drop: f64 = record.get(1).ok_or("Missing drop_pct")?.parse().map_err(|e: std::num::ParseFloatError| e.to_string())?;
+        let dim: usize = record
+            .get(0)
+            .ok_or("Missing dimension")?
+            .parse()
+            .map_err(|e: std::num::ParseIntError| e.to_string())?;
+        let drop: f64 = record
+            .get(1)
+            .ok_or("Missing drop_pct")?
+            .parse()
+            .map_err(|e: std::num::ParseFloatError| e.to_string())?;
         data.push((dim, drop));
     }
     Ok(data)

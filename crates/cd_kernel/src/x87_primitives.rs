@@ -964,7 +964,9 @@ pub fn x87_verified_cd_multiply(
     let mut max_diff = 0.0_f64;
     for i in 0..dim {
         let diff = (fast[i] - oracle[i]).abs();
-        if diff > max_diff { max_diff = diff; }
+        if diff > max_diff {
+            max_diff = diff;
+        }
     }
 
     let within = max_diff <= threshold;
@@ -987,12 +989,10 @@ mod x87_zd_tests {
         use crate::cayley_dickson::cd_multiply;
 
         let a: [f64; 16] = [
-            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2,
-            0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
+            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2, 0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
         ];
         let b: [f64; 16] = [
-            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7,
-            0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
+            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7, 0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
         ];
 
         let x87_result = x87_cd_multiply(16, &a, &b);
@@ -1003,26 +1003,33 @@ mod x87_zd_tests {
 
         for i in 0..16 {
             let d_xr = (x87_result[i] - rec_result[i]).abs();
-            if d_xr > max_x87_rec { max_x87_rec = d_xr; }
+            if d_xr > max_x87_rec {
+                max_x87_rec = d_xr;
+            }
         }
 
         println!("  Max |x87 - recursive|: {:.2e}", max_x87_rec);
-        assert!(max_x87_rec < 1e-12, "x87 vs rec too large: {:.2e}", max_x87_rec);
+        assert!(
+            max_x87_rec < 1e-12,
+            "x87 vs rec too large: {:.2e}",
+            max_x87_rec
+        );
     }
 
     #[test]
     fn test_verified_cd_multiply() {
         let a: [f64; 16] = [
-            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2,
-            0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
+            1.0, 0.5, -0.3, 0.7, -0.1, 0.4, -0.6, 0.2, 0.8, -0.9, 0.3, -0.5, 0.1, -0.4, 0.6, -0.2,
         ];
         let b: [f64; 16] = [
-            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7,
-            0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
+            -0.3, 0.6, 0.1, -0.8, 0.5, -0.2, 0.4, -0.7, 0.9, -0.1, 0.7, -0.3, 0.2, -0.6, 0.8, -0.4,
         ];
 
         let (result, max_diff, within) = x87_verified_cd_multiply(16, &a, &b, 1e-14);
-        println!("P5 verified multiply: max_diff={:.2e}, within_1e-14={}", max_diff, within);
+        println!(
+            "P5 verified multiply: max_diff={:.2e}, within_1e-14={}",
+            max_diff, within
+        );
         assert!(within, "Should be within 1e-14 threshold");
         assert_eq!(result.len(), 16);
     }
@@ -1040,9 +1047,11 @@ mod x87_zd_tests {
     fn test_x87_zd_check_known_witness() {
         // (e_1 + e_10)(e_4 - e_15) = 0
         let mut a = vec![0.0_f64; 16];
-        a[1] = 1.0; a[10] = 1.0;
+        a[1] = 1.0;
+        a[10] = 1.0;
         let mut b = vec![0.0_f64; 16];
-        b[4] = 1.0; b[15] = -1.0;
+        b[4] = 1.0;
+        b[15] = -1.0;
 
         let (is_zd, norm) = x87_zd_check(16, &a, &b);
         println!("x87 ZD check: is_zd={}, norm={:.2e}", is_zd, norm);
@@ -1054,9 +1063,11 @@ mod x87_zd_tests {
     fn test_x87_zd_check_non_witness() {
         // (e_1 + e_2)(e_3 + e_4) != 0
         let mut a = vec![0.0_f64; 16];
-        a[1] = 1.0; a[2] = 1.0;
+        a[1] = 1.0;
+        a[2] = 1.0;
         let mut b = vec![0.0_f64; 16];
-        b[3] = 1.0; b[4] = 1.0;
+        b[3] = 1.0;
+        b[4] = 1.0;
 
         let (is_zd, norm) = x87_zd_check(16, &a, &b);
         println!("x87 non-ZD check: is_zd={}, norm={:.2e}", is_zd, norm);

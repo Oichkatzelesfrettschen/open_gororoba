@@ -1,9 +1,9 @@
-//! Quantum measurement formalism: Kraus operators, Lindblad master equation, 
+//! Quantum measurement formalism: Kraus operators, Lindblad master equation,
 //! and Wiseman-Milburn stochastic master equation.
 
 use nalgebra::{Complex, SMatrix};
-use rand_distr::{Normal, Distribution};
 use rand::thread_rng;
+use rand_distr::{Distribution, Normal};
 
 pub type DensityMatrix1Q = SMatrix<Complex<f64>, 2, 2>;
 pub type Matrix2x2 = SMatrix<Complex<f64>, 2, 2>;
@@ -30,7 +30,7 @@ pub fn lindblad_dissipator(l: &Matrix2x2, rho: &DensityMatrix1Q) -> DensityMatri
     let l_rho_l_adj = l * rho * l_adj;
     let l_adj_l = l_adj * l;
     let anticomm = l_adj_l * rho + rho * l_adj_l;
-    
+
     // D[L](rho)
     l_rho_l_adj - anticomm.map(|c| c * 0.5)
 }
@@ -46,12 +46,12 @@ pub fn lindblad_evolve(
     // Commutator [H, rho]
     let comm = h * rho - rho * h;
     let mut drho = comm.map(|c| -i * c);
-    
+
     for (gamma, l) in jump_ops {
         let d = lindblad_dissipator(l, rho);
         drho += d.map(|c| c * *gamma);
     }
-    
+
     rho + drho.map(|c| c * dt)
 }
 
@@ -68,20 +68,20 @@ pub fn wiseman_milburn_step(
     let i = Complex::new(0.0, 1.0);
     let comm = h * rho - rho * h;
     let det_drho = comm.map(|c| -i * c) + lindblad_dissipator(c_op, rho);
-    
+
     // Stochastic part (H_meas[c] rho = c rho + rho c^dag - Tr(c rho + rho c^dag) rho)
     let c_adj = c_op.map(|c| c.conj()).transpose();
     let c_rho_rho_c_adj = c_op * rho + rho * c_adj;
     let expected_val = c_rho_rho_c_adj.trace().re; // Should be real
-    
+
     let meas_drho = c_rho_rho_c_adj - rho.map(|x| x * expected_val);
-    
+
     let mut rng = thread_rng();
     let normal = Normal::new(0.0, dt.sqrt()).unwrap();
     let dw = normal.sample(&mut rng);
-    
+
     let stoch_drho = meas_drho.map(|x| x * (eta.sqrt() * dw));
-    
+
     rho + det_drho.map(|x| x * dt) + stoch_drho
 }
 
@@ -92,12 +92,16 @@ mod tests {
     #[test]
     fn test_lindblad_dissipator() {
         let sigma_minus = Matrix2x2::new(
-            Complex::new(0.0, 0.0), Complex::new(1.0, 0.0),
-            Complex::new(0.0, 0.0), Complex::new(0.0, 0.0),
+            Complex::new(0.0, 0.0),
+            Complex::new(1.0, 0.0),
+            Complex::new(0.0, 0.0),
+            Complex::new(0.0, 0.0),
         );
         let rho = Matrix2x2::new(
-            Complex::new(0.5, 0.0), Complex::new(0.0, 0.0),
-            Complex::new(0.0, 0.0), Complex::new(0.5, 0.0),
+            Complex::new(0.5, 0.0),
+            Complex::new(0.0, 0.0),
+            Complex::new(0.0, 0.0),
+            Complex::new(0.5, 0.0),
         );
         let d = lindblad_dissipator(&sigma_minus, &rho);
         // Spontaneous emission: population moves from excited (|1><1|) to ground (|0><0|)

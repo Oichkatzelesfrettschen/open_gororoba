@@ -3,14 +3,13 @@
 
 use anyhow::{Context, Result};
 use cudarc::driver::{
-    result, sys, CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, DeviceSlice,
-    LaunchConfig, PushKernelArg, UnifiedSlice,
+    CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, DeviceSlice, LaunchConfig,
+    PushKernelArg, UnifiedSlice, result, sys,
 };
 use gororoba_sparse_grid::{
     ActiveBrickWindow, BrickGrid3d, BrickShape3d, LogicalGrid3d, OccupancyBitsetStats,
 };
-use std::env;
-use std::sync::Arc;
+use std::{env, sync::Arc};
 
 const KERNEL_SPARSE_MAP_SRC: &str = include_str!("kernels_sparse_map.cu");
 
@@ -315,9 +314,11 @@ impl SparseLbmSolver {
             SparseKernelVariant::SharedHaloTiled => "lbm_step_sparse_aa_tiled",
         })?;
         let prefetch_stream = match memory_mode {
-            SparseMemoryMode::ManagedUnifiedTilePrefetch => {
-                Some(map.ctx.new_stream().context("create sparse prefetch stream")?)
-            }
+            SparseMemoryMode::ManagedUnifiedTilePrefetch => Some(
+                map.ctx
+                    .new_stream()
+                    .context("create sparse prefetch stream")?,
+            ),
             _ => None,
         };
 
@@ -470,13 +471,13 @@ impl SparseLbmSolver {
                             d_f,
                             d_rho,
                             d_u,
-                                    d_tau,
-                                    d_force,
-                                    stream: prefetch_stream,
-                                    active_cell_start: first_tile.active_cell_start as usize,
-                                    active_cell_count: first_tile.active_cell_count as usize,
-                                    total_active_cells: n_active_cells,
-                                })?;
+                            d_tau,
+                            d_force,
+                            stream: prefetch_stream,
+                            active_cell_start: first_tile.active_cell_start as usize,
+                            active_cell_count: first_tile.active_cell_count as usize,
+                            total_active_cells: n_active_cells,
+                        })?;
 
                         for (tile_idx, tile) in tile_windows.iter().enumerate() {
                             self.map

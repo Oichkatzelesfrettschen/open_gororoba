@@ -553,9 +553,7 @@ mod tests {
 /// M_BH(n) ~ n^(-alpha) for n-th mode and fractional exponent alpha < 0.
 /// For alpha = -1.5, M ~ n^1.5.
 pub fn predict_bh_mass_spectrum(alpha: f64, n_modes: usize) -> Vec<f64> {
-    (1..=n_modes)
-        .map(|n| (n as f64).powf(-alpha))
-        .collect()
+    (1..=n_modes).map(|n| (n as f64).powf(-alpha)).collect()
 }
 
 /// Correlation metric between predicted mass peaks and observed LIGO events.
@@ -566,7 +564,8 @@ pub fn correlate_with_ligo_peaks(alpha: f64, targets: &[f64]) -> f64 {
     let mut total_error = 0.0;
     for &target in targets {
         // Find nearest predicted mass
-        let min_err = spectrum.iter()
+        let min_err = spectrum
+            .iter()
             .map(|&m| (m - target).powi(2))
             .fold(f64::INFINITY, f64::min);
         total_error += min_err;

@@ -13,12 +13,12 @@
 //! ### 2.1 The Modified Navier-Stokes Equation
 //! We simulate an incompressible fluid with an active spectral forcing term:
 //!
-//! $$ \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{F}_{warp}(\mathbf{k}, t) $$ 
+//! $$ \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{F}_{warp}(\mathbf{k}, t) $$
 //!
 //! ### 2.2 The Warp Forcing Term ($\mathbf{F}_{warp}$)
 //! The forcing term is a **spectral sieve** that selectively injects energy or dissipates modes based on their alignment with the E7 root lattice.
 //!
-//! $$ \mathbf{F}_{warp}(\mathbf{k}) = \lambda \cdot \underbrace{\left( \sum_{\mathbf{r} \in \Phi_{E7}} e^{-\frac{||\mathbf{k} - \mathbf{r}||^2}{2\sigma^2}} \right)}_{\text{E7 Projector } P_{E7}(\mathbf{k})} \cdot \hat{\mathbf{u}}(\mathbf{k}) $$ 
+//! $$ \mathbf{F}_{warp}(\mathbf{k}) = \lambda \cdot \underbrace{\left( \sum_{\mathbf{r} \in \Phi_{E7}} e^{-\frac{||\mathbf{k} - \mathbf{r}||^2}{2\sigma^2}} \right)}_{\text{E7 Projector } P_{E7}(\mathbf{k})} \cdot \hat{\mathbf{u}}(\mathbf{k}) $$
 //!
 //! *   **$\Phi_{E7}$**: The set of 126 root vectors of the E7 Lie algebra, projected from 7D to 3D spectral space.
 //! *   **$\lambda$ (Coupling Constant)**:

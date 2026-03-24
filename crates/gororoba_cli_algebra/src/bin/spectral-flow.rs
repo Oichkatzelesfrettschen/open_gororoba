@@ -1,11 +1,10 @@
 use anyhow::Result;
-use clap::Parser;
 use cd_kernel::cayley_dickson::cd_multiply;
+use clap::Parser;
 use faer::Mat;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
-use std::fs::File;
-use std::io::Write;
+use std::{fs::File, io::Write};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Spectral Flow of Sedenion Field")]

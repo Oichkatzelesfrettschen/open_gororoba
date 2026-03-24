@@ -1,8 +1,7 @@
 use crate::{Precision, VulkanContext};
 use ash::{Device, vk};
 use gororoba_gpu_readback::{
-    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
-    ReadbackResidency,
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout, ReadbackResidency,
 };
 use gpu_allocator::{MemoryLocation, vulkan::*};
 use std::{
@@ -347,7 +346,9 @@ impl GororobaEngine {
             Precision::FP16 => include_str!("../shaders/lbm_f16.wgsl"),
             _ => include_str!("../shaders/lbm.wgsl"),
         };
-        Self::create_lbm_pipeline_with_src(device, ctx, f_a, f_b, rho, u, tau, force, entropy, lbm_src)
+        Self::create_lbm_pipeline_with_src(
+            device, ctx, f_a, f_b, rho, u, tau, force, entropy, lbm_src,
+        )
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -1491,11 +1492,8 @@ impl GororobaEngine {
                     VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
                 })?;
             std::ptr::write(mapped_ptr.as_ptr() as *mut LbmConstants, lbm_pc);
-            self.device.cmd_bind_pipeline(
-                cmd,
-                vk::PipelineBindPoint::COMPUTE,
-                active_lbm.pipeline,
-            );
+            self.device
+                .cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, active_lbm.pipeline);
             self.device.cmd_bind_descriptor_sets(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,
@@ -1642,9 +1640,7 @@ impl GororobaEngine {
                 .allocation
                 .mapped_ptr()
                 .ok_or_else(|| {
-                    VulkanEngineError::MappingError(
-                        "Failed to map ZD uniform buffer".to_string(),
-                    )
+                    VulkanEngineError::MappingError("Failed to map ZD uniform buffer".to_string())
                 })?;
             std::ptr::write(mapped_ptr.as_ptr() as *mut ZdGenConstants, zd_pc);
             self.device.cmd_bind_pipeline(
@@ -1687,16 +1683,11 @@ impl GororobaEngine {
                 .allocation
                 .mapped_ptr()
                 .ok_or_else(|| {
-                    VulkanEngineError::MappingError(
-                        "Failed to map LBM uniform buffer".to_string(),
-                    )
+                    VulkanEngineError::MappingError("Failed to map LBM uniform buffer".to_string())
                 })?;
             std::ptr::write(mapped_ptr.as_ptr() as *mut LbmConstants, lbm_pc);
-            self.device.cmd_bind_pipeline(
-                cmd,
-                vk::PipelineBindPoint::COMPUTE,
-                active_lbm.pipeline,
-            );
+            self.device
+                .cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, active_lbm.pipeline);
             self.device.cmd_bind_descriptor_sets(
                 cmd,
                 vk::PipelineBindPoint::COMPUTE,

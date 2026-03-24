@@ -132,7 +132,8 @@ fn walk_release(
     scan_dir: &Path,
     pulsars: &mut BTreeMap<String, PulsarTimingData>,
 ) -> Result<()> {
-    for entry in fs::read_dir(scan_dir).with_context(|| format!("read_dir {}", scan_dir.display()))?
+    for entry in
+        fs::read_dir(scan_dir).with_context(|| format!("read_dir {}", scan_dir.display()))?
     {
         let entry = entry?;
         let path = entry.path();
@@ -319,9 +320,10 @@ fn parse_dmx_file(path: &Path) -> Result<Vec<DmxPoint>> {
             continue;
         }
         let fields: Vec<&str> = trimmed.split_whitespace().collect();
-        let (Some(epoch_mjd), Some(dmx_value)) =
-            (fields.first().and_then(|v| parse_f64(v)), fields.get(1).and_then(|v| parse_f64(v)))
-        else {
+        let (Some(epoch_mjd), Some(dmx_value)) = (
+            fields.first().and_then(|v| parse_f64(v)),
+            fields.get(1).and_then(|v| parse_f64(v)),
+        ) else {
             continue;
         };
         points.push(DmxPoint {
@@ -346,9 +348,10 @@ fn parse_residual_file(path: &Path) -> Result<Vec<ResidualPoint>> {
             continue;
         }
         let fields: Vec<&str> = trimmed.split_whitespace().collect();
-        let (Some(mjd), Some(residual_us)) =
-            (fields.first().and_then(|v| parse_f64(v)), fields.get(2).and_then(|v| parse_f64(v)))
-        else {
+        let (Some(mjd), Some(residual_us)) = (
+            fields.first().and_then(|v| parse_f64(v)),
+            fields.get(2).and_then(|v| parse_f64(v)),
+        ) else {
             continue;
         };
         let frequency_mhz = fields.get(1).and_then(|v| parse_f64(v));
@@ -406,7 +409,10 @@ fn parse_residual_file(path: &Path) -> Result<Vec<ResidualPoint>> {
 }
 
 fn parse_f64(value: &str) -> Option<f64> {
-    value.parse::<f64>().ok().filter(|parsed| parsed.is_finite())
+    value
+        .parse::<f64>()
+        .ok()
+        .filter(|parsed| parsed.is_finite())
 }
 
 fn set_if_none(slot: &mut Option<f64>, value: Option<f64>) {

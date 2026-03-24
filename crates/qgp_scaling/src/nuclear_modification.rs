@@ -16,11 +16,7 @@ pub struct RaaMeasurement {
 ///
 /// # Formula
 /// $R_{AA}(p_T) = \frac{1}{\langle T_{AA} \rangle} \frac{dN_{AA}/dp_T}{d\sigma_{pp}/dp_T}$
-pub fn compute_raa(
-    yield_aa: f64,
-    cross_section_pp: f64,
-    t_aa: f64,
-) -> f64 {
+pub fn compute_raa(yield_aa: f64, cross_section_pp: f64, t_aa: f64) -> f64 {
     if t_aa <= 0.0 || cross_section_pp <= 0.0 {
         return 0.0;
     }
@@ -39,10 +35,10 @@ pub fn compute_raa_stat_err(
     if raa == 0.0 {
         return 0.0;
     }
-    
+
     let rel_err_aa = err_yield_aa / yield_aa;
     let rel_err_pp = err_cross_section_pp / cross_section_pp;
-    
+
     raa * (rel_err_aa * rel_err_aa + rel_err_pp * rel_err_pp).sqrt()
 }
 

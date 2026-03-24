@@ -111,9 +111,7 @@ pub fn alloc_unified_distributions(
 /// This is a non-blocking hint to the CUDA driver to migrate the data
 /// from system RAM to VRAM. For slab-level granularity, use the raw
 /// `cuMemPrefetchAsync` driver API on a subrange pointer.
-pub fn prefetch_to_device(
-    unified: &cudarc::driver::UnifiedSlice<u8>,
-) -> anyhow::Result<()> {
+pub fn prefetch_to_device(unified: &cudarc::driver::UnifiedSlice<u8>) -> anyhow::Result<()> {
     unified.prefetch()?;
     Ok(())
 }

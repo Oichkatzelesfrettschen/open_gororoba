@@ -6,7 +6,7 @@
 //! This report concludes the autonomous exploration and execution of the **Coupler-Manifold Framework**. We have successfully unified disparate physical and mathematical domains—Quantum Error Correction, MIPT, Astrophysics, Fluid Mechanics, and High-Dimensional Algebra—into a single, falsification-ready geometric manifold.
 //!
 //! ### 2. The Core Invariant
-//! The **Coupler Jacobian** $J = \frac{\partial \ln O}{\partial \ln g}$ has been established as the universal metric for scaling. 
+//! The **Coupler Jacobian** $J = \frac{\partial \ln O}{\partial \ln g}$ has been established as the universal metric for scaling.
 //!
 //! ### 3. Final Portfolio of Discoveries
 //!
@@ -21,7 +21,7 @@
 //!
 //! #### C. Algebraic vs. Informational Alignment
 //! *   **Comparison**: Non-associativity growth in CD algebras vs. Baire-encoded data cube complexity.
-//! *   **Finding**: High alignment in the "Saturation Sector" ($\Delta J \approx 0.19$). 
+//! *   **Finding**: High alignment in the "Saturation Sector" ($\Delta J \approx 0.19$).
 //! *   **Insight**: The way mathematical structure breaks down in high dimensions (associativity loss) is structurally identical to how information-theoretic hierarchy saturates in high-dimensional datasets.
 //!
 //! #### D. The Attractor Sector

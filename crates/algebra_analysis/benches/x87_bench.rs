@@ -48,9 +48,9 @@
 //! Verdict: `extended` crate offers no advantage over our inline asm and lacks
 //! the transcendental functions we need. Evaluated and rejected.
 
-use std::hint::black_box;
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use nalgebra::DMatrix;
+use std::hint::black_box;
 
 // ── Jacobi benchmark helpers ─────────────────────────────────────────────────
 

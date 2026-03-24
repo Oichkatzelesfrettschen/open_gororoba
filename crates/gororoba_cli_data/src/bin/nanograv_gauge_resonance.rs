@@ -1,12 +1,13 @@
+use algebra_analysis::{
+    codebook::{enumerate_lambda_4096, is_in_lambda_1024},
+    sky_mapping::project_sky_to_basis,
+};
+use algebra_experimental::{higher_cd::HigherAvt, particle_physics::StandardModelMapping};
 use anyhow::{Context, Result};
 use clap::Parser;
-use gororoba_cli_data::nanograv_timing::load_release;
-use algebra_analysis::codebook::{enumerate_lambda_4096, is_in_lambda_1024};
-use algebra_analysis::sky_mapping::project_sky_to_basis;
-use algebra_experimental::higher_cd::HigherAvt;
-use algebra_experimental::particle_physics::StandardModelMapping;
-use std::path::PathBuf;
 use csv::Writer;
+use gororoba_cli_data::nanograv_timing::load_release;
+use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(
@@ -35,31 +36,46 @@ fn main() -> Result<()> {
 
     println!("Loading NANOGrav 15-year dataset...");
     let release = load_release(&args.root).context("failed to load timing release")?;
-    
-    println!("Generating 1024D DekaVoudon AVT ({} samples)...", args.n_samples);
+
+    println!(
+        "Generating 1024D DekaVoudon AVT ({} samples)...",
+        args.n_samples
+    );
     let avt_wrapper = HigherAvt::sampled(1024, args.n_samples, 42);
     let avt = &avt_wrapper.avt;
-    
+
     let sm = StandardModelMapping::new();
     let su3_axes = sm.su3_axes;
     let su2_axes = sm.su2_axes;
 
     println!("Calculating Gauge Cross-Coupling Density for each pulsar...");
-    let lattice_1024 = enumerate_lambda_4096().into_iter().filter(is_in_lambda_1024).collect::<Vec<_>>();
-    
+    let lattice_1024 = enumerate_lambda_4096()
+        .into_iter()
+        .filter(is_in_lambda_1024)
+        .collect::<Vec<_>>();
+
     let mut writer = Writer::from_path(&args.csv_out)?;
-    writer.write_record(["pulsar", "rms_us", "gauge_frustration", "su3_su2_cross_coupling"])?;
+    writer.write_record([
+        "pulsar",
+        "rms_us",
+        "gauge_frustration",
+        "su3_su2_cross_coupling",
+    ])?;
 
     for (name, data) in &release {
-        let Some(sky) = data.sky_vector() else { continue; };
+        let Some(sky) = data.sky_vector() else {
+            continue;
+        };
         let residuals: Vec<f64> = data.avg_residuals.iter().map(|p| p.residual_us).collect();
-        if residuals.is_empty() { continue; }
-        
+        if residuals.is_empty() {
+            continue;
+        }
+
         let rms_us = stats_core::metrics::rms(&residuals);
-        
+
         // Project sky to 1024D basis
         let basis_vec = project_sky_to_basis(&sky, &lattice_1024, 1024);
-        
+
         // Find indices with significant projection
         let mut active_indices = Vec::new();
         for (i, &val) in basis_vec.iter().enumerate() {
@@ -68,7 +84,7 @@ fn main() -> Result<()> {
             }
         }
 
-        // Compute Gauge Frustration: count AVT violations connecting active basis indices 
+        // Compute Gauge Frustration: count AVT violations connecting active basis indices
         // to the SU(3) and SU(2) sectors.
         let mut cross_coupling_count = 0;
         for &idx in &active_indices {
@@ -94,7 +110,10 @@ fn main() -> Result<()> {
     }
 
     writer.flush()?;
-    println!("Gauge resonance audit complete. Results saved to {:?}", args.csv_out);
+    println!(
+        "Gauge resonance audit complete. Results saved to {:?}",
+        args.csv_out
+    );
 
     Ok(())
 }

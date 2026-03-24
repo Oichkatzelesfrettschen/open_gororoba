@@ -5,7 +5,7 @@
 //!
 //! Migrated from bin/analyze_field_h5.py.
 
-use anyhow::{Result, Context};
+use anyhow::{Context, Result};
 use hdf5::File;
 use ndarray::Array1;
 
@@ -35,7 +35,9 @@ fn main() -> Result<()> {
             } else {
                 let sq = val * val;
                 sum_sq += sq;
-                if sq > max_sq { max_sq = sq; }
+                if sq > max_sq {
+                    max_sq = sq;
+                }
             }
         }
 
@@ -44,12 +46,15 @@ fn main() -> Result<()> {
         }
 
         let n_total = u_flat.len() / 3;
-        let res = (n_total as f64).powf(1.0/3.0).round() as usize;
-        
+        let res = (n_total as f64).powf(1.0 / 3.0).round() as usize;
+
         if res * res * res == n_total {
             println!("  Detected Grid: {}^3", res);
             println!("  Max Velocity: {:.6e}", max_sq.sqrt());
-            println!("  Mean Velocity: {:.6e}", (sum_sq / u_flat.len() as f64).sqrt());
+            println!(
+                "  Mean Velocity: {:.6e}",
+                (sum_sq / u_flat.len() as f64).sqrt()
+            );
             println!("  Total Kinetic Energy: {:.6e}", 0.5 * sum_sq);
         } else {
             println!("  Unknown grid layout. Total elements: {}", u_flat.len());

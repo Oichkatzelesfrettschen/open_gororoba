@@ -31,8 +31,8 @@
 
 use std::f64::consts::PI;
 
-use gr_core::adm_algebra_bridge::algebraic_stress_energy_correction;
 use crate::nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass};
+use gr_core::adm_algebra_bridge::algebraic_stress_energy_correction;
 
 /// Gravitational constant in kpc^3 Msun^{-1} (km/s)^2 units.
 ///
@@ -90,8 +90,8 @@ impl HarmonicHaloConfig {
         // Use the exact FBF values derived computationally
         let assessor_fraction = match cd_dim {
             16 => 0.5,
-            32 => 4.0 / 7.0, // Pathion Anomaly!
-            64 => 1854.0 / 3036.0, // Chingon FBF
+            32 => 4.0 / 7.0,        // Pathion Anomaly!
+            64 => 1854.0 / 3036.0,  // Chingon FBF
             _ => ASSESSOR_FRACTION, // Fallback for higher dims or custom
         };
 
@@ -222,7 +222,9 @@ pub fn v_circ_with_halos(
     // Ensure non-negative under modulation (modulation can dip below 1.0
     // for negative cosine phases, but v_sq * modulation should stay positive
     // for physically reasonable alpha_zd values)
-    (v_sq_nfw * modulation + v_sq_alg_correction).max(0.0).sqrt()
+    (v_sq_nfw * modulation + v_sq_alg_correction)
+        .max(0.0)
+        .sqrt()
 }
 
 /// Standard NFW circular velocity (no modulation), in km/s.

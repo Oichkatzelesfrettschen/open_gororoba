@@ -42,17 +42,26 @@ impl SurrealDyadic {
 
     /// Create from an integer (shift = 0).
     pub fn from_int(n: i64) -> Self {
-        Self { num: n as i128, shift: 0 }
+        Self {
+            num: n as i128,
+            shift: 0,
+        }
     }
 
     /// The surreal number 0.
-    pub fn zero() -> Self { Self { num: 0, shift: 0 } }
+    pub fn zero() -> Self {
+        Self { num: 0, shift: 0 }
+    }
 
     /// The surreal number 1.
-    pub fn one() -> Self { Self { num: 1, shift: 0 } }
+    pub fn one() -> Self {
+        Self { num: 1, shift: 0 }
+    }
 
     /// Check if this is zero.
-    pub fn is_zero(&self) -> bool { self.num == 0 }
+    pub fn is_zero(&self) -> bool {
+        self.num == 0
+    }
 
     /// Convert to f64 (lossy for large values).
     pub fn to_f64(&self) -> f64 {
@@ -84,7 +93,9 @@ impl SurrealDyadic {
 
     /// Approximate birthday: max(bit_length(|num|), shift).
     pub fn birthday(&self) -> u32 {
-        let bit_len = if self.num == 0 { 0 } else {
+        let bit_len = if self.num == 0 {
+            0
+        } else {
             128 - self.num.unsigned_abs().leading_zeros()
         };
         bit_len.max(self.shift)
@@ -117,7 +128,10 @@ impl std::ops::Mul for SurrealDyadic {
 impl std::ops::Neg for SurrealDyadic {
     type Output = Self;
     fn neg(self) -> Self {
-        Self { num: -self.num, shift: self.shift }
+        Self {
+            num: -self.num,
+            shift: self.shift,
+        }
     }
 }
 

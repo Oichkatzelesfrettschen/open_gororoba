@@ -2,9 +2,10 @@
 //! Integrates Diamond NV centers, QFC (Frequency Conversion), and ORCA memories.
 //! Simulates Barrett-Kok entanglement generation over a telecom fiber link.
 
-use crate::diamond_nv::DiamondNV;
-use crate::quantum_frequency_conversion::QuantumFrequencyConverter;
-use crate::orca_memory::OrcaMemory;
+use crate::{
+    diamond_nv::DiamondNV, orca_memory::OrcaMemory,
+    quantum_frequency_conversion::QuantumFrequencyConverter,
+};
 
 #[derive(Debug)]
 pub struct HybridQuantumNode {
@@ -41,10 +42,10 @@ impl Default for MetropolitanNetwork {
         Self {
             node_a: HybridQuantumNode::default(),
             node_b: HybridQuantumNode::default(),
-            fiber_length_km: 25.0, // Delft to Hague distance
+            fiber_length_km: 25.0,     // Delft to Hague distance
             fiber_loss_db_per_km: 0.2, // standard telecom fiber
             detector_efficiency: 0.60, // SNSPD efficiency
-            hom_visibility: 0.79, // From Stolk et al. 2022
+            hom_visibility: 0.79,      // From Stolk et al. 2022
         }
     }
 }
@@ -54,14 +55,14 @@ impl MetropolitanNetwork {
     pub fn transmission_efficiency(&self) -> f64 {
         // NV emission into ZPL is ~3%
         let zpl_fraction = 0.03;
-        
+
         // QFC efficiency
         let qfc_eff = self.node_a.qfc.device_efficiency; // assume symmetric
-        
+
         // Fiber loss (half distance to central station)
         let loss_db = (self.fiber_length_km / 2.0) * self.fiber_loss_db_per_km;
         let fiber_transmission = 10.0f64.powf(-loss_db / 10.0);
-        
+
         // Output efficiency per attempt
         zpl_fraction * qfc_eff * fiber_transmission * self.detector_efficiency
     }
@@ -71,10 +72,10 @@ impl MetropolitanNetwork {
     /// In modern single-click protocols, it scales roughly linearly per node, so P_success ~ 2 * p * (1-p) ~ 2p.
     pub fn estimated_entanglement_rate_hz(&self, repetition_rate_hz: f64) -> f64 {
         let p_click = self.transmission_efficiency();
-        
+
         // Probability of exactly one click from two nodes
         let p_success = 2.0 * p_click * (1.0 - p_click);
-        
+
         repetition_rate_hz * p_success
     }
 
@@ -83,14 +84,14 @@ impl MetropolitanNetwork {
         // Fidelity is bounded by HOM visibility and decoherence during the attempt.
         // Simplified model combining visibility and dark counts/noise.
         let base_fidelity = (1.0 + self.hom_visibility) / 2.0;
-        
+
         // Assume NV spin decoherence during the short communication time (~100 us for 25km) is negligible
         // T2 > 1ms.
         let comm_time = (self.fiber_length_km * 1e3) / 2.0e8; // c in fiber ~ 2e8 m/s
         let t2 = self.node_a.nv_center.t2_coherence_time();
-        
+
         let decoherence_factor = (-comm_time / t2).exp();
-        
+
         base_fidelity * decoherence_factor
     }
 }

@@ -56,7 +56,7 @@ pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleR
 
     for &f in freqs {
         let omega = 2.0 * PI * f;
-        
+
         let mut s = 0.0;
         let mut c = 0.0;
         let mut ss = 0.0;
@@ -68,7 +68,7 @@ pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleR
         for (i, &ti) in t.iter().enumerate() {
             let (si, ci) = (omega * ti).sin_cos();
             let yi = y_centered[i];
-            
+
             s += si;
             c += ci;
             ss += si * si;
@@ -81,10 +81,10 @@ pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleR
         // Floating mean normalization (Zechmeister & Kürster Eq. 5)
         // We solve the 3x3 system for [offset, A, B] where y ~ offset + A*cos + B*sin
         // But centered y_mean=0 and unit weights simplifies it slightly.
-        
+
         let s_hat = s / w_sum;
         let c_hat = c / w_sum;
-        
+
         let cc_tilde = cc - c * c_hat;
         let ss_tilde = ss - s * s_hat;
         let sc_tilde = sc - c * s_hat;
@@ -93,15 +93,16 @@ pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleR
 
         // Determinant of the 2x2 reduced system
         let det = cc_tilde * ss_tilde - sc_tilde * sc_tilde;
-        
+
         if det.abs() < 1e-15 {
             power.push(0.0);
             continue;
         }
 
-        let p = (ss_tilde * yc_tilde * yc_tilde + cc_tilde * ys_tilde * ys_tilde 
-                 - 2.0 * sc_tilde * yc_tilde * ys_tilde) / (det * yy_sum);
-        
+        let p = (ss_tilde * yc_tilde * yc_tilde + cc_tilde * ys_tilde * ys_tilde
+            - 2.0 * sc_tilde * yc_tilde * ys_tilde)
+            / (det * yy_sum);
+
         power.push(p.clamp(0.0, 1.0));
     }
 
@@ -153,7 +154,10 @@ mod tests {
         let n = 100;
         let freq_true = 0.234;
         let t: Vec<f64> = (0..n).map(|i| i as f64).collect();
-        let y: Vec<f64> = t.iter().map(|&ti| (2.0 * PI * freq_true * ti).sin()).collect();
+        let y: Vec<f64> = t
+            .iter()
+            .map(|&ti| (2.0 * PI * freq_true * ti).sin())
+            .collect();
 
         let freqs: Vec<f64> = (1..500).map(|i| i as f64 / 1000.0).collect();
         let result = compute_lomb_scargle(&t, &y, &freqs);

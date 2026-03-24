@@ -7,9 +7,11 @@
 //! This completes the Coupler-Manifold atlas for the current repo datasets.
 
 use nalgebra::DVector;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+};
+use verified_core::coupler_manifold::{CouplerJacobian, CouplerPoint};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("--- Domain 6: Algebraic Attractor Scaling (c590_attractor_ratio_sweep.csv) ---");
@@ -21,8 +23,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for line in reader.lines().skip(1) {
         let l = line?;
         let parts: Vec<&str> = l.split(',').collect();
-        if parts.len() < 3 { continue; }
-        
+        if parts.len() < 3 {
+            continue;
+        }
+
         if let (Ok(dim), Ok(ratio)) = (parts[1].parse::<f64>(), parts[2].parse::<f64>()) {
             // Observable O is the delta to the theoretical limit (0.375)
             // We want to see how this 'gap' closes.
@@ -38,9 +42,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if points.len() >= 2 {
         println!("\nAttractor Convergence Jacobians:");
         for i in 0..(points.len() - 1) {
-            if let Ok(jac) = CouplerJacobian::estimate_from_delta(&points[i], &points[i+1]) {
-                println!("    g range [{:.0}, {:.0}]: J = {:.4}", 
-                         points[i].g[0], points[i+1].g[0], jac.j_mat[(0,0)]);
+            if let Ok(jac) = CouplerJacobian::estimate_from_delta(&points[i], &points[i + 1]) {
+                println!(
+                    "    g range [{:.0}, {:.0}]: J = {:.4}",
+                    points[i].g[0],
+                    points[i + 1].g[0],
+                    jac.j_mat[(0, 0)]
+                );
             }
         }
     }

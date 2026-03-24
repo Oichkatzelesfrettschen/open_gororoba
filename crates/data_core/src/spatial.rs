@@ -425,10 +425,7 @@ pub fn prepare_point_grid(points: &[SkyPoint], match_radius_arcsec: f64) -> Prep
     }
     PreparedPointGrid {
         point_count: points.len(),
-        grid: SkyGridIndex::from_points(
-            points.to_vec(),
-            (match_radius_arcsec / 3600.0).max(0.01),
-        ),
+        grid: SkyGridIndex::from_points(points.to_vec(), (match_radius_arcsec / 3600.0).max(0.01)),
         unit_x,
         unit_y,
         unit_z,

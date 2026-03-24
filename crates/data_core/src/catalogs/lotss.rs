@@ -18,12 +18,9 @@
 //!
 //! Feature-gated behind `data_core/fits`.
 
-use crate::{
-    fetcher::FetchError,
-    spatial::SkyPoint,
-};
 #[cfg(feature = "fits")]
 use crate::spatial::{PreparedPointGrid, for_each_point_grid_match, prepare_point_grid};
+use crate::{fetcher::FetchError, spatial::SkyPoint};
 #[cfg(feature = "fits")]
 use rayon::prelude::*;
 use std::{collections::HashMap, ops::Range, path::Path, time::Instant};

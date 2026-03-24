@@ -1,14 +1,14 @@
 //! Hydrodynamic medium response and wake formation.
 //!
 //! Models the energy-momentum deposition of a hard parton traversing
-//! the Quark-Gluon Plasma, solving for the source term $J^\nu$ in the 
+//! the Quark-Gluon Plasma, solving for the source term $J^\nu$ in the
 //! hydrodynamic conservation equations: $\partial_\mu T^{\mu\nu} = J^\nu$.
 
 /// Energy-momentum tensor $T^{\mu\nu}$
 #[derive(Debug, Clone, Copy)]
 pub struct EnergyMomentumTensor {
-    pub t00: f64, // Energy density
-    pub t0i: [f64; 3], // Momentum density
+    pub t00: f64,           // Energy density
+    pub t0i: [f64; 3],      // Momentum density
     pub tij: [[f64; 3]; 3], // Stress tensor
 }
 
@@ -16,17 +16,13 @@ pub struct EnergyMomentumTensor {
 /// along the parton trajectory.
 #[derive(Debug, Clone, Copy)]
 pub struct WakeSourceTerm {
-    pub energy_deposition: f64,   // J^0
+    pub energy_deposition: f64,        // J^0
     pub momentum_deposition: [f64; 3], // J^i
 }
 
 impl WakeSourceTerm {
     /// Creates a localized Gaussian deposition profile (simplified discrete map).
-    pub fn new_gaussian(
-        amplitude: f64,
-        direction: [f64; 3],
-        velocity: f64,
-    ) -> Self {
+    pub fn new_gaussian(amplitude: f64, direction: [f64; 3], velocity: f64) -> Self {
         // Normalizing direction
         let norm = (direction[0].powi(2) + direction[1].powi(2) + direction[2].powi(2)).sqrt();
         let nx = direction[0] / norm;
@@ -58,10 +54,10 @@ pub fn compute_linear_wake_response(
         t0i: [0.0, 0.0, 0.0],
         tij: [[0.0; 3]; 3],
     };
-    
+
     for i in 0..3 {
         t.t0i[i] = source.momentum_deposition[i] * dt;
     }
-    
+
     t
 }

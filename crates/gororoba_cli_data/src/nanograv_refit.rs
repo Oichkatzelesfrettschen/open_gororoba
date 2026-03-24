@@ -1,4 +1,6 @@
-use crate::nanograv_timing_model::{ReleaseBand, TaggedTerm, TimingModel, load_release_timing_models};
+use crate::nanograv_timing_model::{
+    ReleaseBand, TaggedTerm, TimingModel, load_release_timing_models,
+};
 use anyhow::{Context, Result, bail};
 use nalgebra::{DMatrix, DVector};
 use std::{
@@ -120,11 +122,14 @@ pub fn load_phase1_models_from_report(
     let phase1 = value
         .get("phase1_subset")
         .and_then(|entry| entry.as_array())
-        .ok_or_else(|| anyhow::anyhow!("missing phase1_subset array in {}", report_path.display()))?;
+        .ok_or_else(|| {
+            anyhow::anyhow!("missing phase1_subset array in {}", report_path.display())
+        })?;
     let wanted = phase1
         .iter()
         .filter_map(|entry| {
-            entry.get("solution_id")
+            entry
+                .get("solution_id")
                 .and_then(|value| value.as_str())
                 .map(str::to_string)
         })
@@ -137,7 +142,10 @@ pub fn load_phase1_models_from_report(
     let mut selected = Vec::new();
     for solution_id in wanted {
         let Some(model) = index.get(&solution_id) else {
-            bail!("phase1 solution {solution_id} missing under {}", root.display());
+            bail!(
+                "phase1 solution {solution_id} missing under {}",
+                root.display()
+            );
         };
         selected.push(model.clone());
     }
@@ -149,7 +157,9 @@ pub fn build_refit_dataset(
     model: &TimingModel,
     residual_tolerance_days: f64,
 ) -> Result<RefitDataset> {
-    let tim_path = root.join("wideband/tim").join(format!("{}.tim", model.solution_id));
+    let tim_path = root
+        .join("wideband/tim")
+        .join(format!("{}.tim", model.solution_id));
     let full_residual_path = root
         .join("residuals")
         .join(format!("{}_NG15yr_nb.full.res", model.pulsar_id));
@@ -448,12 +458,21 @@ fn flagged_numeric(fields: &[&str], needle: &str) -> Option<f64> {
 }
 
 fn current_dm_model(model: &TimingModel, mjd: f64, flags: &BTreeMap<String, String>) -> f64 {
-    let mut total = model.dispersion.dm.as_ref().and_then(|term| term.value).unwrap_or(0.0);
+    let mut total = model
+        .dispersion
+        .dm
+        .as_ref()
+        .and_then(|term| term.value)
+        .unwrap_or(0.0);
     for window in &model.dispersion.dmx_windows {
         let in_window = window.start_mjd.is_some_and(|start| mjd >= start)
             && window.end_mjd.is_some_and(|end| mjd <= end);
         if in_window {
-            total += window.dmx.as_ref().and_then(|term| term.value).unwrap_or(0.0);
+            total += window
+                .dmx
+                .as_ref()
+                .and_then(|term| term.value)
+                .unwrap_or(0.0);
         }
     }
     for jump in &model.dmjumps {
@@ -771,7 +790,11 @@ fn weighted_rms(values: &[f64], sigma: &[f64]) -> f64 {
     }
 }
 
-fn jump_basis_from_key(target: &str, terms: &[TaggedTerm], flags: &BTreeMap<String, String>) -> f64 {
+fn jump_basis_from_key(
+    target: &str,
+    terms: &[TaggedTerm],
+    flags: &BTreeMap<String, String>,
+) -> f64 {
     for (index, term) in terms.iter().enumerate() {
         if selector_key(index, term) == target {
             return tagged_term_matches(term, flags) as usize as f64;
@@ -825,7 +848,8 @@ fn active_dmx_window_label(model: &TimingModel, mjd: f64) -> Option<String> {
 }
 
 fn sanitize_token(value: &str) -> String {
-    value.chars()
+    value
+        .chars()
         .map(|ch| if ch.is_ascii_alphanumeric() { ch } else { '_' })
         .collect()
 }
@@ -849,7 +873,10 @@ fn model_parameter_value(model: &TimingModel, name: &str) -> Option<f64> {
 }
 
 fn parse_f64(value: &str) -> Option<f64> {
-    value.parse::<f64>().ok().filter(|parsed| parsed.is_finite())
+    value
+        .parse::<f64>()
+        .ok()
+        .filter(|parsed| parsed.is_finite())
 }
 
 fn row_dot(matrix: &DMatrix<f64>, row: usize, coefficients: &DVector<f64>) -> f64 {
@@ -860,7 +887,7 @@ fn row_dot(matrix: &DMatrix<f64>, row: usize, coefficients: &DVector<f64>) -> f6
 
 #[cfg(test)]
 mod tests {
-    use super::{build_gls_toa_covariance, group_channel_residuals, ChannelResidual};
+    use super::{ChannelResidual, build_gls_toa_covariance, group_channel_residuals};
     use std::collections::BTreeMap;
 
     #[test]

@@ -17,9 +17,7 @@
 
 use crate::{
     catalogs::omni::OmniRecord,
-    fetcher::{
-        DatasetProvider, FetchConfig, FetchError, download_amda_hapi_csv, download_to_file,
-    },
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_amda_hapi_csv, download_to_file},
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use std::{
@@ -633,8 +631,10 @@ pub fn merge_wind_amda(
     mag: &[WindAmdaMagRecord],
 ) -> Vec<OmniRecord> {
     use std::collections::BTreeMap;
-    let plasma_map: BTreeMap<(u16, u16, u8), &WindAmdaPlasmaRecord> =
-        plasma.iter().map(|r| ((r.year, r.doy, r.hour), r)).collect();
+    let plasma_map: BTreeMap<(u16, u16, u8), &WindAmdaPlasmaRecord> = plasma
+        .iter()
+        .map(|r| ((r.year, r.doy, r.hour), r))
+        .collect();
     let mag_map: BTreeMap<(u16, u16, u8), &WindAmdaMagRecord> =
         mag.iter().map(|r| ((r.year, r.doy, r.hour), r)).collect();
 
@@ -725,8 +725,9 @@ impl DatasetProvider for WindAmdaProvider {
             let mag = parse_wind_amda_mfi(&mfi_csv);
             let merged = merge_wind_amda(&plasma, &mag);
 
-            let mut csv_buf =
-                String::from("year,doy,hour,bx_gse,by_gse,bz_gse,b_mag,density,speed,temperature\n");
+            let mut csv_buf = String::from(
+                "year,doy,hour,bx_gse,by_gse,bz_gse,b_mag,density,speed,temperature\n",
+            );
             for r in &merged {
                 csv_buf.push_str(&format!(
                     "{},{},{},{},{},{},{},{},{},{}\n",

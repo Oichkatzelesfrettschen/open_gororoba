@@ -30,9 +30,10 @@ fn main() {
         "managed" | "managed-prefetch" | "unified" | "unified-prefetch" => {
             SparseMemoryMode::ManagedUnifiedPrefetch
         }
-        "managed-tiled" | "managed-tile-prefetch" | "unified-tiled" | "unified-oversubscribed-tiled" => {
-            SparseMemoryMode::ManagedUnifiedTilePrefetch
-        }
+        "managed-tiled"
+        | "managed-tile-prefetch"
+        | "unified-tiled"
+        | "unified-oversubscribed-tiled" => SparseMemoryMode::ManagedUnifiedTilePrefetch,
         _ => SparseMemoryMode::DeviceLocal,
     };
 

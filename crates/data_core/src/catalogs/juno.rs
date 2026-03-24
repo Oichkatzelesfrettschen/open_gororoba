@@ -277,8 +277,7 @@ pub fn merge_juno_amda(
     orb: &[(u16, u16, u8, f64, f64, f64)],
 ) -> Vec<SpdfMergedRecord> {
     use std::collections::BTreeMap;
-    let plasma_map: BTreeMap<_, _> =
-        plasma.iter().map(|r| ((r.0, r.1, r.2), r)).collect();
+    let plasma_map: BTreeMap<_, _> = plasma.iter().map(|r| ((r.0, r.1, r.2), r)).collect();
     let mag_map: BTreeMap<_, _> = mag.iter().map(|r| ((r.0, r.1, r.2), r)).collect();
     let orb_map: BTreeMap<_, _> = orb.iter().map(|r| ((r.0, r.1, r.2), r)).collect();
 
@@ -343,14 +342,13 @@ impl DatasetProvider for JunoAmdaProvider {
                 continue;
             }
 
-            let plasma_csv =
-                match download_amda_hapi_csv(JUNO_AMDA_PLASMA, &t_min, &t_max, None) {
-                    Ok(csv) => csv,
-                    Err(e) => {
-                        log::warn!("AMDA Juno plasma {year}: {e}");
-                        continue;
-                    }
-                };
+            let plasma_csv = match download_amda_hapi_csv(JUNO_AMDA_PLASMA, &t_min, &t_max, None) {
+                Ok(csv) => csv,
+                Err(e) => {
+                    log::warn!("AMDA Juno plasma {year}: {e}");
+                    continue;
+                }
+            };
             let mag_csv = match download_amda_hapi_csv(JUNO_AMDA_MAG, &t_min, &t_max, None) {
                 Ok(csv) => csv,
                 Err(e) => {
@@ -371,8 +369,9 @@ impl DatasetProvider for JunoAmdaProvider {
             let orb = parse_juno_amda_orb(&orb_csv);
             let merged = merge_juno_amda(&plasma, &mag, &orb);
 
-            let mut csv_buf =
-                String::from("year,doy,hour,distance_au,lat_deg,lon_deg,br,bt,bn,b_mag,density,speed,temperature\n");
+            let mut csv_buf = String::from(
+                "year,doy,hour,distance_au,lat_deg,lon_deg,br,bt,bn,b_mag,density,speed,temperature\n",
+            );
             for r in &merged {
                 csv_buf.push_str(&format!(
                     "{},{},{},{},{},{},{},{},{},{},{},{},{}\n",

@@ -2,7 +2,7 @@
 //!
 //! ## Overview
 //!
-//! The Drude model of electrical conduction provides a foundational phenomenological framework for describing the optical and transport properties of materials with mobile charge carriers. However, there is no finite, universally accepted "complete list" of Drude materials. "Drude-ness" is not a membership label; rather, it is a *regime* wherein a material's free carriers (electrons, holes, or ions) behave as a damped charge fluid characterized by a single momentum-relaxation time ($\tau$). 
+//! The Drude model of electrical conduction provides a foundational phenomenological framework for describing the optical and transport properties of materials with mobile charge carriers. However, there is no finite, universally accepted "complete list" of Drude materials. "Drude-ness" is not a membership label; rather, it is a *regime* wherein a material's free carriers (electrons, holes, or ions) behave as a damped charge fluid characterized by a single momentum-relaxation time ($\tau$).
 //!
 //! Consequently, any material possessing mobile charge carriers can exhibit a Drude response within a specific frequency or temperature window where the free-carrier term dominates its complex permittivity or conductivity.
 //!
@@ -19,11 +19,11 @@
 //!
 //! ## Elemental Metals
 //!
-//! Most elemental metals exhibit a low-frequency Drude-like intraband response. However, interband transitions, multiple carrier pockets, and strong correlations often necessitate a transition to a **Drude-Lorentz** or **Extended Drude** formulation, particularly in the visible and UV spectrum. 
+//! Most elemental metals exhibit a low-frequency Drude-like intraband response. However, interband transitions, multiple carrier pockets, and strong correlations often necessitate a transition to a **Drude-Lorentz** or **Extended Drude** formulation, particularly in the visible and UV spectrum.
 //!
-//! The Gororoba framework incorporates the canonical 11-metal Drude-Lorentz parameter set (e.g., from Rakic et al.) which provides the Drude oscillator strength ($f_0$) and damping ($\Gamma_0$), yielding an effective Drude plasma energy $\omega_{p,\text{eff}} = \omega_p \sqrt{f_0}$. 
+//! The Gororoba framework incorporates the canonical 11-metal Drude-Lorentz parameter set (e.g., from Rakic et al.) which provides the Drude oscillator strength ($f_0$) and damping ($\Gamma_0$), yielding an effective Drude plasma energy $\omega_{p,\text{eff}} = \omega_p \sqrt{f_0}$.
 //!
-//! Included metals: Silver (Ag), Gold (Au), Copper (Cu), Aluminum (Al), Beryllium (Be), Chromium (Cr), Nickel (Ni), Palladium (Pd), Platinum (Pt), Titanium (Ti), and Tungsten (W). 
+//! Included metals: Silver (Ag), Gold (Au), Copper (Cu), Aluminum (Al), Beryllium (Be), Chromium (Cr), Nickel (Ni), Palladium (Pd), Platinum (Pt), Titanium (Ti), and Tungsten (W).
 //!
 //! ## Non-Elemental Drude Material Families
 //!

@@ -30,11 +30,11 @@ mod tests {
         let gamma = derive_immirzi_parameter();
         let dl_value = 0.123556531;
         let deviation = (gamma - dl_value).abs() / dl_value;
-        
+
         println!("Algebraic Barbero-Immirzi Parameter: {}", gamma);
         println!("Domagala-Lewandowski: {}", dl_value);
         println!("Deviation: {:.2}%", deviation * 100.0);
-        
+
         // Assert within 2%
         assert!(deviation < 0.02);
     }

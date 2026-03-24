@@ -147,7 +147,8 @@ impl ValueSeries {
     }
 
     fn mean(&self) -> Option<f64> {
-        (!self.values.is_empty()).then(|| self.values.iter().sum::<f64>() / self.values.len() as f64)
+        (!self.values.is_empty())
+            .then(|| self.values.iter().sum::<f64>() / self.values.len() as f64)
     }
 
     fn stddev(&self) -> Option<f64> {
@@ -215,7 +216,12 @@ fn main() -> Result<()> {
     }
 
     write_inventory_csv(&args.csv_out, inventories.values())?;
-    write_report(&args.report_out, &args.root, &args.csv_out, inventories.values())?;
+    write_report(
+        &args.report_out,
+        &args.root,
+        &args.csv_out,
+        inventories.values(),
+    )?;
 
     println!("Pulsars inventoried: {}", inventories.len());
     println!("CSV: {}", args.csv_out.display());
@@ -228,7 +234,8 @@ fn walk_release(
     scan_dir: &Path,
     inventories: &mut BTreeMap<String, PulsarInventory>,
 ) -> Result<()> {
-    for entry in fs::read_dir(scan_dir).with_context(|| format!("read_dir {}", scan_dir.display()))?
+    for entry in
+        fs::read_dir(scan_dir).with_context(|| format!("read_dir {}", scan_dir.display()))?
     {
         let entry = entry?;
         let path = entry.path();
@@ -460,7 +467,11 @@ fn parse_noise_chain(path: &Path, content: &str, stats: &mut NoiseStats) -> Resu
     }
 
     let mut columns = vec![Vec::<f64>::new(); names.len()];
-    for line in content.lines().map(str::trim).filter(|line| !line.is_empty()) {
+    for line in content
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty())
+    {
         let fields: Vec<&str> = line.split_whitespace().collect();
         if fields.len() < names.len() {
             continue;
@@ -584,11 +595,18 @@ fn parse_residual_file(path: &Path, stats: &mut ResidualStats) -> Result<()> {
 }
 
 fn parse_field_f64(fields: &[&str], index: usize) -> Option<f64> {
-    fields.get(index)?.parse::<f64>().ok().filter(|value| value.is_finite())
+    fields
+        .get(index)?
+        .parse::<f64>()
+        .ok()
+        .filter(|value| value.is_finite())
 }
 
 fn parse_f64(value: &str) -> Option<f64> {
-    value.parse::<f64>().ok().filter(|parsed| parsed.is_finite())
+    value
+        .parse::<f64>()
+        .ok()
+        .filter(|parsed| parsed.is_finite())
 }
 
 fn parse_usize(value: &str) -> Option<usize> {
@@ -770,18 +788,48 @@ fn write_inventory_csv<'a>(
             format_opt(inv.wideband_par.px_mas.or(inv.narrowband_par.px_mas)),
             format_opt(inv.wideband_par.elong_deg.or(inv.narrowband_par.elong_deg)),
             format_opt(inv.wideband_par.elat_deg.or(inv.narrowband_par.elat_deg)),
-            inv.wideband_par.dmx_values.count().max(inv.narrowband_par.dmx_values.count()).to_string(),
-            format_opt(inv.wideband_par.dmx_values.mean().or(inv.narrowband_par.dmx_values.mean())),
-            format_opt(inv.wideband_par.dmx_values.stddev().or(inv.narrowband_par.dmx_values.stddev())),
-            format_opt(inv.wideband_par.dmx_values.min().or(inv.narrowband_par.dmx_values.min())),
-            format_opt(inv.wideband_par.dmx_values.max().or(inv.narrowband_par.dmx_values.max())),
-            format_opt(match (
-                inv.wideband_par.dmx_window_start_min.or(inv.narrowband_par.dmx_window_start_min),
-                inv.wideband_par.dmx_window_end_max.or(inv.narrowband_par.dmx_window_end_max),
-            ) {
-                (Some(start), Some(end)) => Some(end - start),
-                _ => None,
-            }),
+            inv.wideband_par
+                .dmx_values
+                .count()
+                .max(inv.narrowband_par.dmx_values.count())
+                .to_string(),
+            format_opt(
+                inv.wideband_par
+                    .dmx_values
+                    .mean()
+                    .or(inv.narrowband_par.dmx_values.mean()),
+            ),
+            format_opt(
+                inv.wideband_par
+                    .dmx_values
+                    .stddev()
+                    .or(inv.narrowband_par.dmx_values.stddev()),
+            ),
+            format_opt(
+                inv.wideband_par
+                    .dmx_values
+                    .min()
+                    .or(inv.narrowband_par.dmx_values.min()),
+            ),
+            format_opt(
+                inv.wideband_par
+                    .dmx_values
+                    .max()
+                    .or(inv.narrowband_par.dmx_values.max()),
+            ),
+            format_opt(
+                match (
+                    inv.wideband_par
+                        .dmx_window_start_min
+                        .or(inv.narrowband_par.dmx_window_start_min),
+                    inv.wideband_par
+                        .dmx_window_end_max
+                        .or(inv.narrowband_par.dmx_window_end_max),
+                ) {
+                    (Some(start), Some(end)) => Some(end - start),
+                    _ => None,
+                },
+            ),
             inv.narrowband_noise.chain_file_count.to_string(),
             inv.narrowband_noise.chain_row_count.to_string(),
             inv.narrowband_noise.parameter_count.to_string(),
@@ -806,13 +854,15 @@ fn write_inventory_csv<'a>(
             format_opt(inv.residuals.full_residual_us.rms()),
             format_opt(inv.residuals.full_white_residual_us.rms()),
             format_opt(inv.residuals.full_uncertainty_us.mean_value()),
-            format_opt(match (
-                inv.residuals.full_residual_us.rms(),
-                inv.residuals.full_white_residual_us.rms(),
-            ) {
-                (Some(raw), Some(white)) if white > 0.0 => Some(raw / white),
-                _ => None,
-            }),
+            format_opt(
+                match (
+                    inv.residuals.full_residual_us.rms(),
+                    inv.residuals.full_white_residual_us.rms(),
+                ) {
+                    (Some(raw), Some(white)) if white > 0.0 => Some(raw / white),
+                    _ => None,
+                },
+            ),
             inv.residuals.avg_file_count.to_string(),
             inv.residuals.avg_row_count.to_string(),
             format_opt(inv.residuals.avg_mjd_min),
@@ -820,13 +870,15 @@ fn write_inventory_csv<'a>(
             format_opt(inv.residuals.avg_residual_us.rms()),
             format_opt(inv.residuals.avg_white_residual_us.rms()),
             format_opt(inv.residuals.avg_uncertainty_us.mean_value()),
-            format_opt(match (
-                inv.residuals.avg_residual_us.rms(),
-                inv.residuals.avg_white_residual_us.rms(),
-            ) {
-                (Some(raw), Some(white)) if white > 0.0 => Some(raw / white),
-                _ => None,
-            }),
+            format_opt(
+                match (
+                    inv.residuals.avg_residual_us.rms(),
+                    inv.residuals.avg_white_residual_us.rms(),
+                ) {
+                    (Some(raw), Some(white)) if white > 0.0 => Some(raw / white),
+                    _ => None,
+                },
+            ),
         ])?;
     }
     writer.flush()?;
@@ -864,13 +916,18 @@ fn write_report<'a>(
         .count();
     let dmx_ready = rows
         .iter()
-        .filter(|row| row.narrowband_par.dmx_values.count() > 0 || row.wideband_par.dmx_values.count() > 0)
+        .filter(|row| {
+            row.narrowband_par.dmx_values.count() > 0 || row.wideband_par.dmx_values.count() > 0
+        })
         .count();
     let wideband_dm_ready = rows
         .iter()
         .filter(|row| row.wideband_timing.pp_dm.count > 0)
         .count();
-    let parallax_ready = rows.iter().filter(|row| preferred_px(row).is_some()).count();
+    let parallax_ready = rows
+        .iter()
+        .filter(|row| preferred_px(row).is_some())
+        .count();
     let whitened_residual_ready = rows
         .iter()
         .filter(|row| row.residuals.full_white_residual_us.count > 0)
@@ -884,9 +941,9 @@ fn write_report<'a>(
                 || row.wideband_noise.parameter_count > 0
         })
         .count();
-    let max_toa = rows.iter().max_by_key(|row| {
-        row.narrowband_timing.toa_count + row.wideband_timing.toa_count
-    });
+    let max_toa = rows
+        .iter()
+        .max_by_key(|row| row.narrowband_timing.toa_count + row.wideband_timing.toa_count);
     let max_dmx = rows
         .iter()
         .filter_map(|row| {
@@ -904,7 +961,12 @@ fn write_report<'a>(
         .max_by(|a, b| a.1.total_cmp(&b.1));
     let max_full_rms = rows
         .iter()
-        .filter_map(|row| row.residuals.full_residual_us.rms().map(|value| (row, value)))
+        .filter_map(|row| {
+            row.residuals
+                .full_residual_us
+                .rms()
+                .map(|value| (row, value))
+        })
         .max_by(|a, b| a.1.total_cmp(&b.1));
     let max_parallax = rows
         .iter()
@@ -992,12 +1054,7 @@ fn write_report<'a>(
     write_ranked_metric(&mut out, "top_total_toa", "total_toa_count", &top_total_toa);
     write_ranked_metric(&mut out, "top_dmx_std", "dmx_std", &top_dmx);
     write_ranked_metric(&mut out, "top_wideband_dm_std", "pp_dm_std", &top_wb_dm);
-    write_ranked_metric(
-        &mut out,
-        "top_full_residual_rms",
-        "rms_us",
-        &top_full_rms,
-    );
+    write_ranked_metric(&mut out, "top_full_residual_rms", "rms_us", &top_full_rms);
     write_ranked_metric(
         &mut out,
         "top_full_whitening_gain",
@@ -1055,7 +1112,11 @@ fn write_ranked_metric(
             "narrowband_toa_count = {}",
             row.narrowband_timing.toa_count
         );
-        let _ = writeln!(out, "wideband_toa_count = {}", row.wideband_timing.toa_count);
+        let _ = writeln!(
+            out,
+            "wideband_toa_count = {}",
+            row.wideband_timing.toa_count
+        );
         if value_key != "px_mas"
             && let Some(px_mas) = preferred_px(row)
         {

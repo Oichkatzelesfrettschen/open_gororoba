@@ -36,7 +36,7 @@ impl DiamondNV {
     /// Uses the two-phonon Raman and Orbach processes (Jarmola et al. 2012).
     pub fn t1_relaxation_time(&self) -> f64 {
         let t = self.temperature_k;
-        
+
         // Approximate scaling limits from Jarmola 2012.
         // At 10K, T1 is ~200 s. At 300K, T1 is ~6 ms.
         if t < 15.0 {
@@ -46,14 +46,14 @@ impl DiamondNV {
         // Orbach process (73 meV local vibrational mode) dominates 77-300K
         // Raman process (T^5) dominates >300K
         // We fit an empirical curve to match 6.5 ms at 300K and 200 s at 10K
-        
+
         // E_A = 73 meV, k_B = 8.617e-5 eV/K -> E_A / k_B = 847 K
-        let orbach_rate = 1.7e3 * (-847.0 / t).exp(); 
+        let orbach_rate = 1.7e3 * (-847.0 / t).exp();
         let raman_rate = 6e-11 * t.powi(5);
-        
+
         // Base rate for very low temp (1/200 s^-1)
         let base_rate = 1.0 / 200.0;
-        
+
         let total_rate = base_rate + orbach_rate + raman_rate;
         1.0 / total_rate
     }
@@ -62,7 +62,7 @@ impl DiamondNV {
     /// T2 is limited by the 13C spin bath (isotopic purity) and surface noise (depth).
     pub fn t2_coherence_time(&self) -> f64 {
         let frac_13c = 1.0 - self.isotopic_purity_12c;
-        
+
         // Bulk T2 from 13C bath (Herbschleb 2019: 99.999% 12C -> 2.4 ms)
         // Natural (1.1% 13C) -> ~0.7 ms
         let t2_bulk = if frac_13c > 1e-5 {
@@ -89,9 +89,9 @@ impl DiamondNV {
 
         // Physical limit T2 <= 2 * T1
         let physical_limit = 2.0 * self.t1_relaxation_time();
-        
+
         let t2_calc = t2_bulk * surface_factor;
-        
+
         t2_calc.min(physical_limit)
     }
 
@@ -139,7 +139,7 @@ mod tests {
         // Enriched 12C
         let nv_pure = DiamondNV::new(0.99999, 50.0, 300.0);
         assert!(nv_pure.t2_coherence_time() > 0.002); // > 2 ms
-        
+
         // Shallow NV
         let nv_shallow = DiamondNV::new(0.989, 2.0, 300.0);
         assert!(nv_shallow.t2_coherence_time() < 0.0001); // Heavily degraded

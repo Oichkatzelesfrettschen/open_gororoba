@@ -6,7 +6,7 @@
 //!
 //! Mirrors the API of `lbm_3d_cuda::chingon_gpu`.
 
-use crate::compute::{compile_wgsl, VulkanEngineError};
+use crate::compute::{VulkanEngineError, compile_wgsl};
 
 /// Compile the Chingon AVT WGSL shader to SPIR-V words.
 pub fn compile_chingon_avt_shader() -> Result<Vec<u32>, VulkanEngineError> {

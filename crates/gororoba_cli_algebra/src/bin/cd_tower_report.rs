@@ -18,8 +18,7 @@ use std::time::Instant;
 
 use gororoba_algebra::{
     analysis::boxkites::{
-        compute_imbalance_ratio, generic_face_sign_census,
-        motif_components_for_cross_assessors,
+        compute_imbalance_ratio, generic_face_sign_census, motif_components_for_cross_assessors,
     },
     construction::cayley_dickson::{
         CdSignature, cd_basis_mul_sign_iter, cd_norm_sq, find_zero_divisors,
@@ -453,8 +452,14 @@ fn main() {
 
         println!("[16D] Theorem 1.15 (Direct Sum Decomposition) [C-1541]");
         println!("  Test element: a = (e1 + e10) / sqrt(2)  [doubly pure, unit norm]");
-        println!("  H_a basis: {{e0, a, tilde_a, tilde_e0}}   dim = {}", dec.h_a_dim);
-        println!("  Ker(L_a)  dim = {:<4}  [expect 0 mod 4, <= 12]", ker_la_dim);
+        println!(
+            "  H_a basis: {{e0, a, tilde_a, tilde_e0}}   dim = {}",
+            dec.h_a_dim
+        );
+        println!(
+            "  Ker(L_a)  dim = {:<4}  [expect 0 mod 4, <= 12]",
+            ker_la_dim
+        );
         println!("  Ker(T~_a) dim = {:<4}  [expect 0 mod 4]", ker_tt_dim);
         print!("  V_lambda subspaces:");
         for (lam, mat) in &dec.v_lambda {
@@ -525,7 +530,10 @@ fn main() {
             "  V(e1;e7;e2) multiplication table matches O: [{}]",
             if triple_ok { "PASS" } else { "FAIL" }
         );
-        println!("  Moreno section elapsed: {}ms", moreno_t.elapsed().as_millis());
+        println!(
+            "  Moreno section elapsed: {}ms",
+            moreno_t.elapsed().as_millis()
+        );
         println!();
     }
 

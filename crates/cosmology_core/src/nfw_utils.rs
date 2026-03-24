@@ -376,11 +376,7 @@ pub fn dc14_density(r_kpc: f64, r_s_kpc: f64, rho_s: f64, shape: &Dc14ShapeParam
     let inner = x.powf(shape.gamma);
     let outer = (1.0 + x.powf(shape.alpha)).powf((shape.beta - shape.gamma) / shape.alpha);
     let denom = inner * outer;
-    if denom > 0.0 {
-        rho_s / denom
-    } else {
-        0.0
-    }
+    if denom > 0.0 { rho_s / denom } else { 0.0 }
 }
 
 /// DC14 enclosed mass M(r) via 64-point Gauss-Legendre quadrature.
@@ -389,12 +385,7 @@ pub fn dc14_density(r_kpc: f64, r_s_kpc: f64, rho_s: f64, shape: &Dc14ShapeParam
 ///
 /// Uses Gauss-Legendre on [0, r_kpc] with 64 points, which gives
 /// better than 1e-6 relative accuracy for the smooth DC14 profile.
-pub fn dc14_enclosed_mass(
-    r_kpc: f64,
-    r_s_kpc: f64,
-    rho_s: f64,
-    shape: &Dc14ShapeParams,
-) -> f64 {
+pub fn dc14_enclosed_mass(r_kpc: f64, r_s_kpc: f64, rho_s: f64, shape: &Dc14ShapeParams) -> f64 {
     if r_kpc <= 0.0 {
         return 0.0;
     }

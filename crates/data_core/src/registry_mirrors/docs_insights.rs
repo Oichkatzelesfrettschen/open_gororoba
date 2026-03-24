@@ -907,8 +907,8 @@
 //!
 //! ## I-064: The Bit-to-Physics Pipeline as Scientific Paradigm
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -917,8 +917,8 @@
 //!
 //! ## I-065: Cross-Thesis Non-Monotonic Coupling Reveals Optimal Imbalance Regime
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -927,8 +927,8 @@
 //!
 //! ## I-066: Neural Initialization Escapes Associator Basin in Pentagon Optimization
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -937,8 +937,8 @@
 //!
 //! ## I-067: First-Principles Kubo Coupling Replaces Tautological Viscosity Postulate
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -948,7 +948,7 @@
 //! ## I-068: Varma Mechanism Explains Polarized-Regime Transport Enhancement
 //!
 //! Date: 2026-02-13
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -958,7 +958,7 @@
 //! ## I-069: Stolpp Lifshitz-Point Mechanism: Microscopic Origin of High-Field Transport Enhancement
 //!
 //! Date: 2026-02-13
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -968,7 +968,7 @@
 //! ## I-070: Wavelet reservoir bridging as Mori-Zwanzig exponential-memory closure
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -978,7 +978,7 @@
 //! ## I-071: Meltdown gating as control-theoretic adaptive concurrency regulation
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -988,7 +988,7 @@
 //! ## I-072: Tensor permittivity requires polycrystalline averaging for scalar Casimir
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -998,7 +998,7 @@
 //! ## I-073: Oxygen vacancy concentration controls plasmon frequency in WO3-x
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1008,7 +1008,7 @@
 //! ## I-074: Lorentz oscillator sign convention requires absolute-value guards in derived properties
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1018,7 +1018,7 @@
 //! ## I-075: Matsubara frequencies bridge optical spectroscopy to Casimir force calculations
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1028,7 +1028,7 @@
 //! ## I-076: Lorentzian vs Urbach tails determine optical gap finder reliability
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1038,7 +1038,7 @@
 //! ## I-077: Optical sum rules as self-consistency diagnostics for Drude-Lorentz models
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1048,7 +1048,7 @@
 //! ## I-078: Kramers-Kronig self-consistency of Drude-Lorentz models: baseline and subtraction
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1058,7 +1058,7 @@
 //! ## I-079: Temperature-dependent optical response and effective medium composites
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1068,7 +1068,7 @@
 //! ## I-080: Nonlinear optics from linear Drude-Lorentz: scope and limits of Miller's rule
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1078,7 +1078,7 @@
 //! ## I-081: Surface plasmon physics from Drude-Lorentz models: parameterization vs reality
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1088,7 +1088,7 @@
 //! ## I-082: Magneto-optical response and transport diagnostics from Drude parameters
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1098,7 +1098,7 @@
 //! ## I-083: Ellipsometry, thermal emission, and ENZ physics from Drude-Lorentz: measurement connections
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1108,7 +1108,7 @@
 //! ## I-084: EELS, LDOS, and absorption engineering: from fundamental response to device design
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1118,7 +1118,7 @@
 //! ## I-085: Quality metrics and coherence: bridging optics to device performance
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1128,7 +1128,7 @@
 //! ## I-086: Photovoltaic metrics and selective thermal emission: from material response to energy harvesting
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1138,7 +1138,7 @@
 //! ## I-087: Sensor-fusion audit: cosmological constant claims vs codebase reality
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1148,7 +1148,7 @@
 //! ## I-088: From bulk dielectric to photonic devices: waveguide, sensing, and thin-film design from a single DL model
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1158,7 +1158,7 @@
 //! ## I-089: Phonon polaritonics and carrier dynamics: infrared nanophotonics and ultrafast response
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1168,7 +1168,7 @@
 //! ## I-090: Scattering, fluctuation, and advanced optical methods complete the DL toolkit
 //!
 //! Date: 2026-02-17
-//! Status: 
+//! Status:
 //! Claims: (none)
 //!
 //!
@@ -1487,8 +1487,8 @@
 //!
 //! ## I-122: Concentration-mass anti-correlation: UDG halos are denser than MW halos
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1176
 //!
 //!
@@ -1687,8 +1687,8 @@
 //!
 //! ## I-168: Assessor fraction 0.5 is an algebraic identity, not empirical
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1341, C-1342, C-1343
 //!
 //! The assessor fraction n_assessors/n_ZDs = 0.5 holds identically for all CD dimensions >= 16 because each cross-assessor pair (i,j) generates exactly 2 zero-divisors via the +/- sign variants of diag(e_i +/- e_j). This trivial identity means the harmonic halo amplitude scaling (assessor_fraction / n) is universal across all CD dimensions, simplifying the multi-dimensional falsification sweep.
@@ -1697,8 +1697,8 @@
 //!
 //! ## I-169: THINGS dropped from harmonic halo pipeline: N=34 insufficient, no rotation curves in VizieR catalog
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1345
 //!
 //! THINGS VizieR catalog J/AJ/136/2563 contains HI spectra (velocity-channel flux), not rotation curves. Rotation curves require downloading multi-GB FITS cubes and running tilted-ring fitting (3D-Barolo/GIPSY). Even if extracted, N=34 cannot break the 1/sqrt(N) noise floor that N=93 SPARC already fails at (SNR=0.68). MaNGA (N~10000) is the only viable path to sub-percent alpha_zd sensitivity.
@@ -1707,8 +1707,8 @@
 //!
 //! ## I-170: CD dimension sweep null result: stacking physics is dimension-invariant at finite N
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1344, C-1341
 //!
 //! Running harmonic halo stacking at D=16,32,64,128,256,512,1024 produces identical RMS (0.1463) and SNR (0.67-0.68). More Fourier modes do not extract more signal because the noise floor is set by 1/sqrt(N_galaxies), not by the number of modes analyzed. The assessor fraction a_f = 0.5 is a combinatorial tautology (each assessor generates exactly +/- ZD pair), confirmed invariant across the entire CD tower.
@@ -1717,8 +1717,8 @@
 //!
 //! ## I-171: MaNGA two-stage pipeline: DAPall Guillotine + MAPS pseudo-slit replaces THINGS
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1346, C-1347, C-1348
 //!
 //! The MaNGA pipeline is architecturally split into Stage 1 (DAPall scalar catalog for morphological selection: n, i, EW, M*) and Stage 2 (per-galaxy MAPS FITS download for spatially-resolved EMLINE_GVEL pseudo-slit extraction). DAPall integrated moments cannot resolve the k_n = 2*pi*n/(n_modes * r_s) wavenumbers needed for harmonic Fourier lock-in. Only the 2D velocity maps preserve the spatial frequency content. With N~2500 disk galaxies after cuts, the noise floor drops to alpha_zd ~ 0.003, a 5x improvement over SPARC N=93.
@@ -1727,8 +1727,8 @@
 //!
 //! ## I-172: x87 accumulation oracle: entire loop in asm! prevents LLVM spill truncation
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1349
 //!
 //! When a Rust for loop calls a small asm! block for each element, LLVM spills the ST(n) accumulator to a 64-bit stack slot across every loop-iteration boundary (FSTP m64, LLVM #44218), truncating the 80-bit mantissa to 52 bits and defeating x87 precision. The safe pattern: the entire reduction loop (pointer arithmetic, branch, termination) lives inside a single asm! block. LLVM never sees intermediate ST values and cannot insert spills. x87_primitives.rs applies this to x87_sum (2-acc FADDP rotation), x87_dot (2-acc FMUL-mem), x87_norm_sq (4-acc ILP), and x87_norm_sq_16 (fully unrolled sedenion oracle). The result is a reliable FP-80 oracle tier (18.5 digits) for the precision cascade: x87 -> f64 CPU -> f32 GPU.
@@ -1737,8 +1737,8 @@
 //!
 //! ## I-173: 42-physics thesis reliability gradient: algebra >> computation >> observation >> cosmology
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1350, C-1351, C-1352, C-1353, C-1354, C-1355, C-1356, C-1357
 //!
 //! Three-thesis audit establishes a reliability gradient for 42-physics claims. Tier 1 (strongest): Rocq-verified algebraic structure -- C-1133 to C-1138, C-1137/C-1140, C-1350 to C-1352 -- these are kernel-checkable and unit-independent. Tier 2: computational predictions internally consistent but model-dependent -- C-611 to C-615, C-1313/C-1314. Tier 3 (null): observational claims falsified by data -- C-1338/C-1340, C-1353/C-1354, null at D=16..1024. Tier 4 (weakest): cosmological claims architecturally disconnected -- Chain A gravastar TOV (homotopy_bridge.rs) and Chain B orthoplex w(z) (orthoplex_diffusion.rs) have no bridge function. Future work should focus on Tier 1 kernel-checkable claims and on connecting the two dark energy chains if such a bridge exists.
@@ -1747,8 +1747,8 @@
 //!
 //! ## I-174: Three-thesis audit summary: algebraic 42 is real, physical 42 is absent
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1350, C-1351, C-1352, C-1353, C-1354, C-1355, C-1356, C-1357, C-1331
 //!
 //! The three-thesis audit confirms: (T1) CD box-kite fusion channels structurally isomorphic to Ising anyon rules is genuine algebra (5 Rocq proofs), but 'antimatter simulation' label is semantic inflation -- no Hamiltonian, no decoherence; braid fidelity always < 1.0 at dim >= 16. (T2) Both DM sub-claims falsified independently: sigma_chi_b = 1e-42 is a test fixture (default = 0.0), harmonic halos null at SPARC/MW/D=16..1024. (T3) Planck/BCS '1764' is unit-dependent numerology; gap=4 is real but not 42; obstruction-to-dark-energy chain architecturally disconnected -- gravastar solver and orthoplex EOS are independent implementations with no bridge. Strongest physics connection remains NEGATIVE: 7-box-kite topology obstructs local metamaterial design (C-010), requiring explicit non-local bridges.
@@ -1757,8 +1757,8 @@
 //!
 //! ## I-175: m_3 associator at D=16 is low-rank-dominated: spectral radius ~ Frobenius/dim^1.5
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1358, C-1357
 //!
 //! The near-equality of spectral_radius/dim^1.5 (7.764) and frobenius/dim^1.5 (8.725) at D=16 reveals that the m_3 associator tensor M^T M has energy concentrated in a small number of dominant eigenmodes rather than diffusely distributed across all 256 entries. This is the low-rank-dominated regime (spectral radius / Frobenius close to 1 implies the rank-1 component dominates). It is a genuine structural property of the sedenion m_3 operator -- analogous to how the Reggiani graph has a large spectral gap (flat band fraction 0.5) -- but it is not a cosmological observable. Both the spectral radius and the Frobenius norm remain normalization-dependent by a 63x factor (C-1358), so neither can serve as a physical constant.
@@ -1767,8 +1767,8 @@
 //!
 //! ## I-176: x87 Givens rotation: fdivr+fucompp idioms and single-truncation half-angle pattern
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1359, C-1349
 //!
 //! > Two key x87 idioms for high-precision Jacobi rotation: (1) `FDIVR ST(0), ST(i)` means `ST(0) <- ST(i)/ST(0)`, so after computing `2*cos(t)` in `ST(0)` and keeping `sin(2t)` in `ST(3)`, a single `FDIVR ST(0), ST(3)` gives `sin(t)` at TOS without `FXCH`. (2) `FUCOMPP` is the convenient compare-plus-pop-twice form for restoring stack balance after holding intermediate quadratic factors. It is a good cleanup idiom, but not side-effect-free: it still performs the unordered compare, updates x87 condition codes, and keeps the usual invalid-operation nuance for signaling NaNs. The broader win is unchanged: the half-angle and quadratic-update algebra stays in x87 until the final `fstp`, cutting the truncation count from 2 to 1 versus the store-then-SSE2 path.
@@ -1777,8 +1777,8 @@
 //!
 //! ## I-177: AVX2+FMA vs x87 FP-80 precision cascade: single-rounding FMA bridges the gap
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1360, C-1359, C-1349
 //!
 //! The four-tier accumulation picture is: (1) x87 FP-80 oracle with extended-precision intermediates, (2) Kahan compensated sum with O(eps) error growth, (3) AVX packed-double plus FMA3 where `_mm256_fmadd_pd` gives a binary64 result after one fused rounding, and (4) naive f64 with separate multiply/add roundings. The key wording fix is that `__m256d` is the AVX packed-double type; AVX2 is adjacent, but not what introduces 256-bit packed `f64`. The key numerical fix is that AVX+FMA should be described as single-rounding binary64, not as a fixed number of decimal digits below x87. FMA reduces rounding error for `a*b + c`, but x87 still has the distinct advantage of keeping more precision in intermediates.
@@ -1787,8 +1787,8 @@
 //!
 //! ## I-178: Strategic x87/AVX2 interlacing: double-double preferred over x87 for precision scalars in SIMD functions
 //!
-//! Date: 
-//! Status: 
+//! Date:
+//! Status:
 //! Claims: C-1362, C-1361, C-1349
 //!
 //! The strategic guidance is now intentionally scoped as a working heuristic. If a vectorized path needs a precision-critical scalar intermediate, keep it in the vector register world with Kahan or double-double instead of bouncing through x87. Use x87 FP-80 for entirely non-SIMD kernels where its extended intermediates can stay resident end-to-end. The Ogita-Rump-Oishi crossover arithmetic still gives `N = 2048`, and that still puts the repo's sedenion-sized reductions (`dim <= 1024`) on the x87 side of the line while pushing large Berry-phase grids toward Kahan, but this row now records that split as source-backed design guidance pending the full follow-on benchmark and source dossier rather than as a closed universal theorem.

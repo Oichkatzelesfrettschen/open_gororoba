@@ -20,6 +20,7 @@ pub mod axioms;
 pub mod binary_entropy;
 pub mod brans_dicke;
 pub mod cayley_dickson;
+pub mod coupler_manifold;
 pub mod fano_resonance;
 pub mod gf2;
 pub mod neg_dim;
@@ -30,8 +31,7 @@ pub mod s3_mixing;
 pub mod spectral_dim;
 pub mod topology;
 pub mod x87_math;
-pub mod coupler_manifold;
 
 pub mod axiomatic_gates;
-pub mod unified_action;
 pub mod monograph;
+pub mod unified_action;

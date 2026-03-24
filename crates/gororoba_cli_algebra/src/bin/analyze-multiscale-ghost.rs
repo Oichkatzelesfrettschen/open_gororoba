@@ -1,10 +1,8 @@
 use anyhow::Result;
 use clap::Parser;
-use std::f64::consts::PI;
-use std::fs::File;
-use std::path::PathBuf;
 use glob::glob;
 use hdf5_metno as hdf5;
+use std::{f64::consts::PI, fs::File, path::PathBuf};
 
 use spectral_core::wavelet::continuous_wavelet_transform;
 
@@ -26,7 +24,9 @@ struct Args {
 fn analyze_cwt(data: &[f64], fs: f64, title: &str) -> bool {
     println!("\n--- Multiscale CWT Analysis: {} ---", title);
     let n = data.len();
-    if n == 0 { return false; }
+    if n == 0 {
+        return false;
+    }
 
     // Detrend: Subtract mean
     let mean = data.iter().sum::<f64>() / n as f64;
@@ -91,7 +91,9 @@ fn analyze_cwt(data: &[f64], fs: f64, title: &str) -> bool {
 fn load_wow_sband() -> Result<Option<Vec<f64>>> {
     let pattern = "data/bl_6equj5_gbt/*.h5";
     let paths: Vec<_> = glob(pattern)?.filter_map(|x| x.ok()).collect();
-    if paths.is_empty() { return Ok(None); }
+    if paths.is_empty() {
+        return Ok(None);
+    }
 
     let mut stacked_ts: Option<Vec<f64>> = None;
     let mut count = 0;
@@ -135,7 +137,9 @@ fn load_wow_sband() -> Result<Option<Vec<f64>>> {
 
     if let Some(mut s) = stacked_ts {
         if count > 0 {
-            for val in &mut s { *val /= count as f64; }
+            for val in &mut s {
+                *val /= count as f64;
+            }
         }
         Ok(Some(s))
     } else {
@@ -145,18 +149,19 @@ fn load_wow_sband() -> Result<Option<Vec<f64>>> {
 
 fn load_alice() -> Result<Option<Vec<f64>>> {
     let path = "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv";
-    if !std::path::Path::new(path).exists() { return Ok(None); }
+    if !std::path::Path::new(path).exists() {
+        return Ok(None);
+    }
 
     let file = File::open(path)?;
-    let mut rdr = csv::ReaderBuilder::new()
-        .flexible(true)
-        .from_reader(file);
+    let mut rdr = csv::ReaderBuilder::new().flexible(true).from_reader(file);
     let mut data = Vec::new();
     for result in rdr.records() {
         let record = result?;
         // R_{AA} is often the last column or named
         // Based on Python df['R_{AA}'].values
-        if let Some(val) = record.get(1) { // assuming 2nd column
+        if let Some(val) = record.get(1) {
+            // assuming 2nd column
             if let Ok(v) = val.parse::<f64>() {
                 data.push(v);
             }

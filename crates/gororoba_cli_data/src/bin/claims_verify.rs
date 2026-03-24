@@ -352,13 +352,26 @@ fn verify_claim_where_stated_from_db(store: &ProvenanceStore) -> Vec<String> {
     };
     for claim in claims {
         let ws = claim.where_stated.trim();
+        // A "stable path pointer" is any of:
+        //   - a backtick-quoted fragment (code span referencing a path)
+        //   - a known repo-relative path prefix
+        //   - an experiment ID reference (E-NNN or multiple E-refs)
+        //   - a URL reference (http/https for external evidence)
+        //   - the sentinel "multiple docs" for cross-cutting claims
         let has_path = ws.contains('`')
             || ws.contains("src/")
             || ws.contains("docs/")
             || ws.contains("data/")
             || ws.contains("crates/")
             || ws.contains("proofs/")
-            || ws.contains("multiple docs");
+            || ws.contains("registry/")
+            || ws.contains("experiments/")
+            || ws.contains("multiple docs")
+            || ws.contains("http://")
+            || ws.contains("https://")
+            || ws.contains("github.com/")
+            // Experiment-ID-only references: "E-NNN" is a stable pointer into registry/experiments.toml
+            || (ws.contains("E-") && ws.chars().skip(ws.find("E-").unwrap_or(0) + 2).next().map(|c| c.is_ascii_digit()).unwrap_or(false));
         if !has_path {
             failures.push(format!(
                 "{}: missing stable path pointer in where_stated",
@@ -367,6 +380,20 @@ fn verify_claim_where_stated_from_db(store: &ProvenanceStore) -> Vec<String> {
         }
     }
     failures
+}
+
+/// Returns true if `path` (relative to `repo_root`) is listed in .gitignore.
+///
+/// WHY: This repo intentionally gitignores data/csv/ (runtime output) and most
+/// docs/*.md (generated/ephemeral). Checking for their on-disk existence would
+/// produce false positives for any claim that references these paths.
+fn is_gitignored(repo_root: &std::path::Path, path: &str) -> bool {
+    std::process::Command::new("git")
+        .args(["check-ignore", "-q", path])
+        .current_dir(repo_root)
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false)
 }
 
 fn verify_claim_evidence_links_from_db(
@@ -381,7 +408,7 @@ fn verify_claim_evidence_links_from_db(
     for claim in claims {
         for path in extract_backtick_paths(&claim.where_stated) {
             let full = repo_root.join(&path);
-            if !full.exists() {
+            if !full.exists() && !is_gitignored(repo_root, &path) {
                 failures.push(format!("{}: missing referenced path {}", claim.id, path));
             }
         }

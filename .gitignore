@@ -207,6 +207,12 @@ credentials.*
 # 7. Root Directory Protection (Keep Root Clean)
 # ------------------------------------------------------------------------------
 # Ignore ad-hoc logs, scripts, and results in root to force migration to standardized paths.
+# The root-level src/ directory holds Python analysis code (ghost_stats, gemini_physics,
+# spectral, holography, quantum, verification, scripts). These files are not committed to
+# git -- all analysis migrated to Rust crates. This entry prevents false-positive
+# evidence-link failures in claims-verify for claims referencing old Python script paths.
+# NOTE: This does NOT affect crates/*/src/ since gitignore root patterns are root-relative.
+src/
 /*.log
 /*.sh
 /*.tex

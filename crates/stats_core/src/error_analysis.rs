@@ -5,9 +5,9 @@
 //!
 //! Migrated from Appendix F of the Advanced Theoretical Developments.
 
-use std::collections::HashMap;
 use rand::prelude::*;
 use rand_distr::Normal;
+use std::collections::HashMap;
 
 /// A systematic error budget for a physical measurement (e.g., beta-parameter).
 pub struct SystematicErrorBudget {
@@ -37,14 +37,16 @@ impl SystematicErrorBudget {
 
     /// Perform a Monte Carlo propagation of errors.
     ///
-    /// Simulates `n_trials` where each error source is sampled from a normal 
+    /// Simulates `n_trials` where each error source is sampled from a normal
     /// distribution with zero mean and the given magnitude as its standard deviation.
     pub fn monte_carlo_propagation(&self, n_trials: usize) -> (f64, f64) {
         let mut rng = thread_rng();
         let mut results = Vec::with_capacity(n_trials);
 
         // Pre-create distributions
-        let dists: Vec<Normal<f64>> = self.sources.values()
+        let dists: Vec<Normal<f64>> = self
+            .sources
+            .values()
             .map(|&m| Normal::new(0.0, m).unwrap())
             .collect();
 

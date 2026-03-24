@@ -128,6 +128,24 @@ pub struct V6ProbeArtifacts {
     pub wall_crossing_loop: LoopReport,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct V6ProbeSummary {
+    pub base_branch: String,
+    pub branch_map_rows: usize,
+    pub same_perm_points: usize,
+    pub switched_perm_points: usize,
+    pub branch_wall_count: usize,
+    pub stable_loop_wall_crossings: usize,
+    pub wall_loop_wall_crossings: usize,
+    pub stable_loop_closes: bool,
+    pub wall_loop_closes: bool,
+    pub fixed_alpha_nu_scan_all_match: bool,
+    pub fixed_alpha_ch_scan_has_low_alpha_wall: bool,
+    pub singular_value_min: f64,
+    pub singular_value_max: f64,
+    pub singular_value_spread: f64,
+}
+
 #[derive(Clone, Debug)]
 struct OrientedFrame {
     g_12: [f64; 6],
@@ -203,9 +221,9 @@ fn pmns_angles_at(
 
     let u_raw = eig_ch.u().transpose() * eig_nu.u();
     let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
-    for i in 0..3 {
-        for j in 0..3 {
-            u_pmns.write(i, j, u_raw.read(perm_u[i], perm_d[j]));
+    for (i, &row) in perm_u.iter().enumerate() {
+        for (j, &col) in perm_d.iter().enumerate() {
+            u_pmns.write(i, j, u_raw.read(row, col));
         }
     }
     extract_pmns_angles(&u_pmns)
@@ -500,19 +518,45 @@ pub fn default_alpha_nu_values() -> Vec<f64> {
 }
 
 pub fn stable_branch_loop_points() -> Vec<(f64, f64)> {
-    vec![(3.00, 1.30), (3.60, 1.30), (3.60, 1.40), (3.00, 1.40), (3.00, 1.30)]
+    vec![
+        (3.00, 1.30),
+        (3.60, 1.30),
+        (3.60, 1.40),
+        (3.00, 1.40),
+        (3.00, 1.30),
+    ]
 }
 
 pub fn wall_crossing_loop_points() -> Vec<(f64, f64)> {
-    vec![(3.00, 1.25), (3.00, 1.20), (3.10, 1.20), (3.10, 1.25), (3.00, 1.25)]
+    vec![
+        (3.00, 1.25),
+        (3.00, 1.20),
+        (3.10, 1.20),
+        (3.10, 1.25),
+        (3.00, 1.25),
+    ]
 }
 
 pub fn fixed_alpha_ch_scan_points() -> Vec<(f64, f64)> {
-    vec![(3.00, 1.20), (3.00, 1.25), (3.00, 1.30), (3.00, 1.35), (3.00, 1.40), (3.00, 1.45)]
+    vec![
+        (3.00, 1.20),
+        (3.00, 1.25),
+        (3.00, 1.30),
+        (3.00, 1.35),
+        (3.00, 1.40),
+        (3.00, 1.45),
+    ]
 }
 
 pub fn fixed_alpha_nu_scan_points() -> Vec<(f64, f64)> {
-    vec![(2.80, 1.35), (3.00, 1.35), (3.20, 1.35), (3.40, 1.35), (3.60, 1.35), (3.80, 1.35)]
+    vec![
+        (2.80, 1.35),
+        (3.00, 1.35),
+        (3.20, 1.35),
+        (3.40, 1.35),
+        (3.60, 1.35),
+        (3.80, 1.35),
+    ]
 }
 
 pub fn default_probe_artifacts() -> V6ProbeArtifacts {
@@ -535,10 +579,16 @@ pub fn default_probe_artifacts() -> V6ProbeArtifacts {
         &v6_basis,
         &fixed_alpha_nu_scan_points(),
     );
-    let stable_branch_loop =
-        compute_loop_transport("stable_branch_loop", &v6_basis, &stable_branch_loop_points());
-    let wall_crossing_loop =
-        compute_loop_transport("wall_crossing_loop", &v6_basis, &wall_crossing_loop_points());
+    let stable_branch_loop = compute_loop_transport(
+        "stable_branch_loop",
+        &v6_basis,
+        &stable_branch_loop_points(),
+    );
+    let wall_crossing_loop = compute_loop_transport(
+        "wall_crossing_loop",
+        &v6_basis,
+        &wall_crossing_loop_points(),
+    );
     V6ProbeArtifacts {
         singular_values,
         base_frame,
@@ -548,5 +598,52 @@ pub fn default_probe_artifacts() -> V6ProbeArtifacts {
         fixed_alpha_nu_scan,
         stable_branch_loop,
         wall_crossing_loop,
+    }
+}
+
+pub fn summarize_probe_artifacts(artifacts: &V6ProbeArtifacts) -> V6ProbeSummary {
+    let singular_value_min = artifacts
+        .singular_values
+        .iter()
+        .copied()
+        .fold(f64::INFINITY, f64::min);
+    let singular_value_max = artifacts
+        .singular_values
+        .iter()
+        .copied()
+        .fold(f64::NEG_INFINITY, f64::max);
+    let stable_loop = &artifacts.stable_branch_loop.summary;
+    let wall_loop = &artifacts.wall_crossing_loop.summary;
+    let fixed_alpha_nu_scan_all_match = artifacts
+        .fixed_alpha_nu_scan
+        .rows
+        .iter()
+        .all(|row| row.perm_match);
+    let fixed_alpha_ch_scan_has_low_alpha_wall = artifacts.fixed_alpha_ch_scan.rows.len() >= 2
+        && !artifacts.fixed_alpha_ch_scan.rows[0].perm_match
+        && artifacts.fixed_alpha_ch_scan.rows[1].perm_match;
+    V6ProbeSummary {
+        base_branch: artifacts.branch_map.base_branch.clone(),
+        branch_map_rows: artifacts.branch_map.rows.len(),
+        same_perm_points: artifacts.branch_map.same_perm_points,
+        switched_perm_points: artifacts.branch_map.switched_perm_points,
+        branch_wall_count: artifacts.branch_walls.count,
+        stable_loop_wall_crossings: stable_loop.wall_crossings,
+        wall_loop_wall_crossings: wall_loop.wall_crossings,
+        stable_loop_closes: (stable_loop.final_align_g12 - 1.0).abs() < 1e-9
+            && (stable_loop.final_align_g13 - 1.0).abs() < 1e-9
+            && (stable_loop.final_align_g23 - 1.0).abs() < 1e-9
+            && (stable_loop.final_align_u_solar - 1.0).abs() < 1e-9
+            && (stable_loop.final_align_u_atmo - 1.0).abs() < 1e-9,
+        wall_loop_closes: (wall_loop.final_align_g12 - 1.0).abs() < 1e-9
+            && (wall_loop.final_align_g13 - 1.0).abs() < 1e-9
+            && (wall_loop.final_align_g23 - 1.0).abs() < 1e-9
+            && (wall_loop.final_align_u_solar - 1.0).abs() < 1e-9
+            && (wall_loop.final_align_u_atmo - 1.0).abs() < 1e-9,
+        fixed_alpha_nu_scan_all_match,
+        fixed_alpha_ch_scan_has_low_alpha_wall,
+        singular_value_min,
+        singular_value_max,
+        singular_value_spread: singular_value_max - singular_value_min,
     }
 }

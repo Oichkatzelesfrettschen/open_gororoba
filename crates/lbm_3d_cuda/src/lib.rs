@@ -71,8 +71,7 @@ use cudarc::{
     runtime::result::device as cudart_device,
 };
 use gororoba_gpu_readback::{
-    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
-    ReadbackResidency,
+    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout, ReadbackResidency,
 };
 use std::sync::Arc;
 
@@ -103,10 +102,7 @@ pub fn query_free_vram_mb() -> usize {
     let mut free: usize = 0;
     let mut total: usize = 0;
     unsafe {
-        cudarc::driver::sys::cuMemGetInfo_v2(
-            &mut free as *mut usize,
-            &mut total as *mut usize,
-        );
+        cudarc::driver::sys::cuMemGetInfo_v2(&mut free as *mut usize, &mut total as *mut usize);
     }
     free / (1024 * 1024)
 }

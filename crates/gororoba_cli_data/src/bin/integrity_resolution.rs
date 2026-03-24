@@ -137,7 +137,6 @@ const STOPWORDS: &[&str] = &[
     "without",
 ];
 
-
 fn main() -> Result<()> {
     let args = Args::parse();
     let repo_root = args.repo_root.canonicalize().context("resolve repo root")?;

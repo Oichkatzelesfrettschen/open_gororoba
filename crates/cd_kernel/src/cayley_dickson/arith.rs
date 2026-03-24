@@ -136,7 +136,9 @@ pub(crate) fn allclose(a: &[f64], b: &[f64], atol: f64) -> bool {
 /// - [`cd_multiply_mut`]: allocates workspace of this size
 #[inline]
 pub fn cd_multiply_workspace_len(dim: usize) -> usize {
-    if dim <= 1 { return 0; }
+    if dim <= 1 {
+        return 0;
+    }
     4 * dim
 }
 

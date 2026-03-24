@@ -58,7 +58,7 @@
 //! 1. **Corpus Normalization**: Source registry maintained in `registry/bibliography.toml`.
 //! 2. **Slide/Video Mirror**: Seminar hub (Indico 1586852) and CDS talk records.
 //! 3. **Results-Data Mirror**: HEPData numeric files (DOIs stored in registry).
-//! 4. **Model-to-Data Reconstruction**: 
+//! 4. **Model-to-Data Reconstruction**:
 //! >   - **Geometry**: TGlauberMC 3.3.2 (Loizides update) / TRENTo.
 //! >   - **Dynamics**: JETSCAPE / Hydro + Transport.
 //! >   - **Hadronic Afterburner**: SMASH.

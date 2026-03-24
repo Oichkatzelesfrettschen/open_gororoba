@@ -1,15 +1,15 @@
 //! Genesis Simulation: 2D Vacuum Instability and Soliton Formation (C-010).
 //!
-//! Implements a 2D spectral evolution of a complex field under the 
+//! Implements a 2D spectral evolution of a complex field under the
 //! "Negative Dimension" anti-diffusion operator:
 //!   i * dpsi/dt = -(-Delta)^alpha * psi + V(|psi|^2) * psi
 //! where alpha = -1.5.
 //!
 //! Migrated from src/genesis_simulation.py.
 
+use crate::ndfft::{fft_2d, freq_index, ifft_2d};
 use ndarray::{Array2, Zip};
 use num_complex::Complex64;
-use crate::ndfft::{fft_2d, ifft_2d, freq_index};
 use std::f64::consts::PI;
 
 /// Parameters for the Genesis simulation.
@@ -77,14 +77,14 @@ impl GenesisSim {
         // 1. Kinetic evolution in k-space (Split-step Fourier)
         let mut psi_k = fft_2d(&self.psi);
         let dt = self.params.dt;
-        
+
         Zip::from(&mut psi_k).and(&self.t_k).for_each(|pk, &tk| {
             // exp(-i * T_k * dt)
             let phase = -tk.re * dt;
             let prop = Complex64::new(phase.cos(), phase.sin());
             *pk *= prop;
         });
-        
+
         self.psi = ifft_2d(&psi_k);
 
         // 2. Non-linear interaction in real space
@@ -112,14 +112,17 @@ impl GenesisSim {
         let mut count = 0;
         let n = self.params.n;
         let density = self.psi.mapv(|c| c.norm_sqr());
-        
-        for i in 1..n-1 {
-            for j in 1..n-1 {
+
+        for i in 1..n - 1 {
+            for j in 1..n - 1 {
                 let d = density[[i, j]];
                 if d > threshold {
                     // Check if local maximum
-                    if d >= density[[i-1, j]] && d >= density[[i+1, j]] &&
-                       d >= density[[i, j-1]] && d >= density[[i, j+1]] {
+                    if d >= density[[i - 1, j]]
+                        && d >= density[[i + 1, j]]
+                        && d >= density[[i, j - 1]]
+                        && d >= density[[i, j + 1]]
+                    {
                         count += 1;
                     }
                 }

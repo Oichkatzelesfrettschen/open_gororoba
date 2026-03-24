@@ -4,7 +4,11 @@ use faer::Mat;
 use tensor_core::{build_rank1_symmetry_adapted, build_rank2_symmetry_adapted};
 
 #[derive(Parser, Debug)]
-#[command(author, version, about = "Symmetry-Adapted configurational integral for crystals")]
+#[command(
+    author,
+    version,
+    about = "Symmetry-Adapted configurational integral for crystals"
+)]
 struct Args {
     /// Number of particles
     #[arg(short, long, default_value_t = 4)]
@@ -36,7 +40,7 @@ fn potential(q: &[f64]) -> f64 {
     }
     // Inter-particle bonds
     for i in 0..q.len() {
-        for j in i+1..q.len() {
+        for j in i + 1..q.len() {
             let r = (q[i] - q[j]).abs();
             if r > 1e-6 {
                 energy += (r - (j - i) as f64).powi(2);
@@ -52,15 +56,17 @@ fn main() -> Result<()> {
 
     let d = args.n_particles;
     let n = args.grid_n;
-    
+
     // Equilibrium positions q_bar = (0, 1, 2, ..., N-1)
     let q_bar: Vec<f64> = (0..d).map(|i| i as f64).collect();
-    
+
     // Discretization offsets around q_bar
-    let nodes: Vec<f64> = (0..n).map(|i| {
-        let t = (i as f64) / (n as f64 - 1.0);
-        args.width * (t - 0.5)
-    }).collect();
+    let nodes: Vec<f64> = (0..n)
+        .map(|i| {
+            let t = (i as f64) / (n as f64 - 1.0);
+            args.width * (t - 0.5)
+        })
+        .collect();
 
     let boltzmann = |indices: &[usize]| -> f64 {
         let mut q = vec![0.0; d];
@@ -71,7 +77,7 @@ fn main() -> Result<()> {
     };
 
     let pivot: Vec<usize> = vec![n / 2; d];
-    
+
     let tt = if args.rank == 1 {
         println!("Building Rank-1 approximation...");
         build_rank1_symmetry_adapted(d, n, &pivot, boltzmann)
@@ -80,7 +86,11 @@ fn main() -> Result<()> {
         // pivot2 must be significantly different to avoid S_k singularity
         let mut pivot2 = vec![0; d];
         for k in 0..d {
-            pivot2[k] = if pivot[k] > 2 { pivot[k] - 2 } else { pivot[k] + 2 };
+            pivot2[k] = if pivot[k] > 2 {
+                pivot[k] - 2
+            } else {
+                pivot[k] + 2
+            };
         }
         build_rank2_symmetry_adapted(d, n, &pivot, &pivot2, boltzmann)
     };
@@ -88,7 +98,7 @@ fn main() -> Result<()> {
     // Contract Z = sum_i1 ... sum_id F(i1...id) * w1*...*wd
     // Since uniform weights for now: w = width / (n-1)
     let w = args.width / (n as f64);
-    
+
     // Integration via TT contraction
     let mut res = Mat::<f64>::zeros(1, tt.cores[0].data.shape()[2]);
     for j in 0..tt.cores[0].data.shape()[2] {

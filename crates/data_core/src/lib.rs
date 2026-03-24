@@ -89,11 +89,6 @@ pub use tabular::{
 };
 
 #[cfg(feature = "fits")]
-pub use spatial::{
-    PreparedPointGrid, for_each_point_grid_match, precise_angular_separation_arcsec,
-    prepare_point_grid, sky_point_unit_vector,
-};
-#[cfg(feature = "fits")]
 pub use catalogs::lotss::{
     LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,
     crossmatch_points_against_fits_catalog,
@@ -132,6 +127,11 @@ pub use catalogs::{
         Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
         abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
     },
+};
+#[cfg(feature = "fits")]
+pub use spatial::{
+    PreparedPointGrid, for_each_point_grid_match, precise_angular_separation_arcsec,
+    prepare_point_grid, sky_point_unit_vector,
 };
 
 /// All dataset provider names that should appear in the manifest.

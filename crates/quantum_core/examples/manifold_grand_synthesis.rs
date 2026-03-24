@@ -11,10 +11,12 @@
 //! to prove the universality of the Coupler-Manifold scaling laws.
 
 use nalgebra::DVector;
-use std::collections::HashMap;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-use verified_core::coupler_manifold::{CouplerPoint, CouplerJacobian};
+use std::{
+    collections::HashMap,
+    fs::File,
+    io::{BufRead, BufReader},
+};
+use verified_core::coupler_manifold::{CouplerJacobian, CouplerPoint};
 
 #[derive(Debug, Clone)]
 struct ScalingObservation {
@@ -24,8 +26,11 @@ struct ScalingObservation {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = "../../data/csv/c071g_exploration.csv";
-    println!("--- Grand Synthesis: Universal Manifold Projection ({}) ---", path);
-    
+    println!(
+        "--- Grand Synthesis: Universal Manifold Projection ({}) ---",
+        path
+    );
+
     let file = File::open(path)?;
     let reader = BufReader::new(file);
 
@@ -35,21 +40,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for line in reader.lines().skip(1) {
         let l = line?;
         let parts: Vec<&str> = l.split(',').collect();
-        if parts.len() < 7 { continue; }
-        
+        if parts.len() < 7 {
+            continue;
+        }
+
         let dataset = parts[0].to_string();
         let subset = parts[1];
         let metric = parts[2];
-        
+
         if let Ok(effect_size) = parts[6].parse::<f64>() {
             if metric == "um_fraction_eps05" {
                 // Approximate latent dimension 'g' by counting the number of features joined by '+'
                 let dim = (subset.matches('+').count() + 1) as f64;
-                
-                domains.entry(dataset).or_default().push(ScalingObservation {
-                    dimension: dim,
-                    effect_size,
-                });
+
+                domains
+                    .entry(dataset)
+                    .or_default()
+                    .push(ScalingObservation {
+                        dimension: dim,
+                        effect_size,
+                    });
             }
         }
     }
@@ -67,10 +77,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             entry.1 += 1;
         }
 
-        let mut dim_avg: Vec<(f64, f64)> = dim_sums.into_iter()
+        let mut dim_avg: Vec<(f64, f64)> = dim_sums
+            .into_iter()
             .map(|(d, (sum, count))| (d as f64, sum / count as f64))
             .collect();
-        
+
         // Sort by dimension
         dim_avg.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
 
@@ -88,8 +99,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
 
             // Extract the dimension-scaling Jacobian for this physical domain
-            if let Ok(jac) = CouplerJacobian::estimate_from_delta(&points[0], &points[points.len()-1]) {
-                let j_val = jac.j_mat[(0,0)];
+            if let Ok(jac) =
+                CouplerJacobian::estimate_from_delta(&points[0], &points[points.len() - 1])
+            {
+                let j_val = jac.j_mat[(0, 0)];
                 println!("   Scaling Jacobian (J): {:.4}\n", j_val);
                 cross_domain_jacobians.push((dataset.clone(), j_val));
             }
@@ -100,16 +113,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let sum_j: f64 = cross_domain_jacobians.iter().map(|(_, j)| j).sum();
     let mean_j = sum_j / cross_domain_jacobians.len() as f64;
 
-    println!("Mean Universal Jacobian <J> across all astrophysical scales: {:.4}", mean_j);
+    println!(
+        "Mean Universal Jacobian <J> across all astrophysical scales: {:.4}",
+        mean_j
+    );
 
-    let variance: f64 = cross_domain_jacobians.iter().map(|(_, j)| (j - mean_j).powi(2)).sum::<f64>() / cross_domain_jacobians.len() as f64;
+    let variance: f64 = cross_domain_jacobians
+        .iter()
+        .map(|(_, j)| (j - mean_j).powi(2))
+        .sum::<f64>()
+        / cross_domain_jacobians.len() as f64;
     println!("Variance: {:.4}", variance);
 
     if variance < 1.0 {
         println!("\n!! GRAND DISCOVERY !!");
-        println!("The variance of the scaling Jacobian across entirely distinct physical systems (FRBs, GRBs, Quasars, Black Holes)");
-        println!("is remarkably tight. This empirically validates the core thesis: Information-theoretic phase transitions and ");
-        println!("hierarchical structures are governed by a single, universal Coupler-Manifold invariant, independent of the underlying physics.");
+        println!(
+            "The variance of the scaling Jacobian across entirely distinct physical systems (FRBs, GRBs, Quasars, Black Holes)"
+        );
+        println!(
+            "is remarkably tight. This empirically validates the core thesis: Information-theoretic phase transitions and "
+        );
+        println!(
+            "hierarchical structures are governed by a single, universal Coupler-Manifold invariant, independent of the underlying physics."
+        );
     }
 
     Ok(())

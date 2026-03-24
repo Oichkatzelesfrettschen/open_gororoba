@@ -3,7 +3,7 @@
 //! ## Author: Gemini CLI (Autonomous Software Engineer)
 //!
 //! ### 1. The Experiment
-//! The previous "Grand Synthesis" reported a remarkably tight cross-domain invariant ($J \approx 0.001$, Variance $= 0.0002$) across raw astrophysical datasets (FRBs, Pulsars, Quasars, etc.). This seemingly proved that hierarchical scaling is independent of the underlying physics. 
+//! The previous "Grand Synthesis" reported a remarkably tight cross-domain invariant ($J \approx 0.001$, Variance $= 0.0002$) across raw astrophysical datasets (FRBs, Pulsars, Quasars, etc.). This seemingly proved that hierarchical scaling is independent of the underlying physics.
 //!
 //! To subject this claim to maximum falsification pressure, we ran the same Coupler-Manifold projection against `c071g_multi_dataset_ultrametric_residualized.csv`. This dataset has been "residualized," meaning shared systemic instrument biases (e.g., specific telescope systematics $f_0 - f_5$) have been mathematically projected out.
 //!
@@ -19,7 +19,7 @@
 //! *   **Variance**: **$1.0496$**
 //!
 //! ### 4. Critical Insight
-//! The variance skyrocketed from $0.0002$ in the raw data to $1.0496$ in the residualized data. **The "universal scaling invariant" was an illusion.** 
+//! The variance skyrocketed from $0.0002$ in the raw data to $1.0496$ in the residualized data. **The "universal scaling invariant" was an illusion.**
 //!
 //! The previously observed tight correlation was actually an artifact of **shared systemic measurement noise** acting as a massive confounder. When the instrument bias is removed, the physical systems shatter into distinct scaling domains. A pulsar scales differently than a magnetar, and radio frequencies scale differently than JWST infrared metadata.
 //!

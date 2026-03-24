@@ -1,13 +1,17 @@
 use anyhow::Result;
 use clap::Parser;
-use faer::{Mat, Side, complex_native::c64};
+use faer::{complex_native::c64, Mat, Side};
 use image::{ImageBuffer, Rgb};
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Pseudospectrum slice")]
 struct Args {
-    #[arg(short, long, default_value = "data/artifacts/images/pseudospectrum_slice_rust_3160x2820.png")]
+    #[arg(
+        short,
+        long,
+        default_value = "data/artifacts/images/pseudospectrum_slice_rust_3160x2820.png"
+    )]
     output: PathBuf,
 }
 
@@ -37,7 +41,7 @@ fn main() -> Result<()> {
     let n = 80;
     let h = 1.0 / (n as f64 + 1.0);
     let mut l_mat = Mat::<f64>::zeros(n, n);
-    
+
     // Build Dirichlet Laplacian
     for i in 0..n {
         l_mat.write(i, i, 2.0 / (h * h));
@@ -89,16 +93,15 @@ fn main() -> Result<()> {
     let mut l_lam = Mat::<f64>::zeros(n, n);
     for i in 0..n {
         for j in 0..n {
-            let val = c0 * lp0.read(i, j)
-                    + lam * c1 * lp1.read(i, j)
-                    + (lam * lam) * c2 * lp2.read(i, j);
+            let val =
+                c0 * lp0.read(i, j) + lam * c1 * lp1.read(i, j) + (lam * lam) * c2 * lp2.read(i, j);
             l_lam.write(i, j, val);
         }
     }
 
     let n_re = 20;
     let n_im = 20;
-    
+
     let re_min = 0.0;
     let re_max = 40.0;
     let im_min = -12.0;
@@ -114,7 +117,7 @@ fn main() -> Result<()> {
         let im_z = im_min + (im_max - im_min) * (i as f64) / (n_im as f64 - 1.0);
         for j in 0..n_re {
             let re_z = re_min + (re_max - re_min) * (j as f64) / (n_re as f64 - 1.0);
-            
+
             let mut a = Mat::<c64>::zeros(n, n);
             for r in 0..n {
                 for c in 0..n {
@@ -128,7 +131,7 @@ fn main() -> Result<()> {
 
             let svd = a.svd();
             let sing_vals = svd.s_diagonal();
-            
+
             let mut s_min_val = f64::INFINITY;
             for k in 0..n {
                 let sv = sing_vals.read(k).re; // SVD of c64 matrix yields real singular values
@@ -136,12 +139,16 @@ fn main() -> Result<()> {
                     s_min_val = sv;
                 }
             }
-            
+
             let log_smin = (s_min_val + 1e-14).log10();
             smin[i][j] = log_smin;
-            
-            if log_smin < min_val { min_val = log_smin; }
-            if log_smin > max_val { max_val = log_smin; }
+
+            if log_smin < min_val {
+                min_val = log_smin;
+            }
+            if log_smin > max_val {
+                max_val = log_smin;
+            }
         }
     }
 

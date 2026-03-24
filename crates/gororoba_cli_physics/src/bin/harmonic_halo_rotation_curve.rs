@@ -75,7 +75,10 @@ fn main() -> anyhow::Result<()> {
         args.m200, c200, r_s
     );
     eprintln!("r_200 = {:.2} kpc, z = {:.4}", nfw.r200_kpc, args.z);
-    eprintln!("alpha_zd = {}, n_modes = {}, cd_dim = {}", args.alpha_zd, args.n_modes, args.cd_dim);
+    eprintln!(
+        "alpha_zd = {}, n_modes = {}, cd_dim = {}",
+        args.alpha_zd, args.n_modes, args.cd_dim
+    );
 
     let config = HarmonicHaloConfig::new_cd(args.alpha_zd, args.n_modes, r_s, args.cd_dim);
 

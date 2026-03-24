@@ -37,63 +37,50 @@ pub mod pmns;
 // Re-exports: preserve the flat public API surface of the original file
 // ---------------------------------------------------------------------------
 
-pub use jk_action::{GeneratorType, classify_generator, apply_jk_full_16d};
+pub use jk_action::{GeneratorType, apply_jk_full_16d, classify_generator};
 
 pub use pmns::{
-    PmnsResult,
-    construct_pmns_matrices,
-    construct_pmns_matrices_offdiag,
-    extract_cp_phase,
-    jarlskog_from_real_pmns,
-    chi_squared_pmns,
-    pmns_pulls,
-    compute_pmns,
-    construct_casimir_baseline,
-    construct_pmns_matrices_two_param,
-    construct_pmns_matrices_v6_modulated,
+    PmnsResult, chi_squared_pmns, compute_pmns, construct_casimir_baseline,
+    construct_pmns_matrices, construct_pmns_matrices_offdiag, construct_pmns_matrices_two_param,
+    construct_pmns_matrices_v6_modulated, extract_cp_phase, jarlskog_from_real_pmns, pmns_pulls,
 };
 
 pub use basis::{extract_v6_basis, extract_vk_basis};
 pub use branch_transport::{
     BranchMapReport, BranchMapRow, BranchWallReport, BranchWallRow, GradientFrame, LoopReport,
-    LoopStep, LoopSummary, PathScanReport, PathScanRow, V6ProbeArtifacts, alignment,
-    compute_branch_map, compute_branch_walls, compute_gradient_frame, compute_loop_transport,
-    compute_path_scan, default_alpha_ch_values, default_alpha_nu_values, default_probe_artifacts,
-    fixed_alpha_ch_scan_points, fixed_alpha_nu_scan_points, perm_label,
-    stable_branch_loop_points, wall_crossing_loop_points,
+    LoopStep, LoopSummary, PathScanReport, PathScanRow, V6ProbeArtifacts, V6ProbeSummary,
+    alignment, compute_branch_map, compute_branch_walls, compute_gradient_frame,
+    compute_loop_transport, compute_path_scan, default_alpha_ch_values, default_alpha_nu_values,
+    default_probe_artifacts, fixed_alpha_ch_scan_points, fixed_alpha_nu_scan_points, perm_label,
+    stable_branch_loop_points, summarize_probe_artifacts, wall_crossing_loop_points,
 };
 
 pub use cp_scan::{
-    CpScanResult,
-    extract_delta_cp_invariant,
-    CpScanContext,
-    CpScanBuffers,
-    evaluate_cp_scan_point,
-    evaluate_cp_scan_point_cardano,
-    CpNelderMeadCost,
-    refine_cp_nelder_mead,
+    CpNelderMeadCost, CpScanBuffers, CpScanContext, CpScanResult, evaluate_cp_scan_point,
+    evaluate_cp_scan_point_cardano, extract_delta_cp_invariant, refine_cp_nelder_mead,
     refine_cp_nelder_mead_r,
 };
 
-pub use hermitian::{hermitian_3x3_eig, hermitian_3x3_eig_hybrid, pmns_from_hermitian_pair};
-pub use hermitian::{C2, cmul, cconj};
+pub use hermitian::{
+    C2, cconj, cmul, hermitian_3x3_eig, hermitian_3x3_eig_hybrid, pmns_from_hermitian_pair,
+};
 
 // extract_pmns_angles and Pdg2024 are re-exported from flavor_lifts::angles.
-pub use flavor_lifts::{extract_pmns_angles, Pdg2024};
+pub use flavor_lifts::{Pdg2024, extract_pmns_angles};
 
 // Lift layer: re-exported from flavor_lifts (preserved from original).
 pub use flavor_lifts::{
-    AssessorToFlavorMap, DirectOffDiagonalLift, FlavorLift, PsiEquivariantLift,
-    TensorElementLift, apply_v6_perturbation, compute_constrained_atmospheric_direction,
+    AssessorToFlavorMap, DirectOffDiagonalLift, FlavorLift, PsiEquivariantLift, TensorElementLift,
+    apply_v6_perturbation, compute_constrained_atmospheric_direction,
     compute_constrained_solar_direction, gauss_newton_2d,
 };
 
 // Test-only re-exports so grandchild test submodules can reach these via
 // `use super::super::*;` without needing the full sub-module path.
 #[cfg(test)]
-pub(crate) use pmns::assemble_lepton_baseline;
-#[cfg(test)]
 pub(crate) use basis::extract_vk_basis_nalgebra;
+#[cfg(test)]
+pub(crate) use pmns::assemble_lepton_baseline;
 
 #[cfg(test)]
 mod tests;

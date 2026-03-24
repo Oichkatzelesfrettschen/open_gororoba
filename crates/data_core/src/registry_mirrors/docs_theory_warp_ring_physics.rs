@@ -50,6 +50,6 @@
 //! - **Topology:** Persistent Homology (Vietoris-Rips on spectral triads) to compute $b_1$.
 //!
 //! ## 4. Current Status
-//! - **64^3 Run:** Completed. Shows strong decay ($10^{-5} \to 10^{-11}$). 
+//! - **64^3 Run:** Completed. Shows strong decay ($10^{-5} \to 10^{-11}$).
 //! - **Scaling Sweep:** Currently running ($8^3, 16^3, 32^3$) to establish the Reynolds independence baseline.
 //!

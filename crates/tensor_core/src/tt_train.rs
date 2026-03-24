@@ -3,8 +3,8 @@
 //! Implements the compressed representation of a high-dimensional array
 //! as a chain of 3-way cores.
 
-use ndarray::Array3;
 use faer::Mat;
+use ndarray::Array3;
 
 /// A single core in the Tensor-Train.
 /// Shape: (r_prev, n_k, r_next)

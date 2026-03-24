@@ -9,8 +9,7 @@
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, Normal, Uniform};
-use std::collections::HashMap;
-use std::f64::consts::PI;
+use std::{collections::HashMap, f64::consts::PI};
 
 /// Experiment configuration.
 #[derive(Debug, Clone)]
@@ -230,8 +229,9 @@ fn wls_baryonic(bundle: &DataBundle) -> Vec<Vec<f64>> {
         let coeffs = solve_3x3(&a, &rhs);
         let mut res = vec![0.0; b];
         for j in 0..b {
-            let v_fit =
-                coeffs[0] * templates[0][j] + coeffs[1] * templates[1][j] + coeffs[2] * templates[2][j];
+            let v_fit = coeffs[0] * templates[0][j]
+                + coeffs[1] * templates[1][j]
+                + coeffs[2] * templates[2][j];
             res[j] = bundle.v_obs[i][j] - v_fit;
         }
         residuals.push(res);
@@ -271,7 +271,11 @@ fn compute_rms(residuals: &[Vec<f64>], v_obs: &[Vec<f64>]) -> f64 {
         let v_scale: f64 = v_obs[i].iter().map(|v| v.abs()).sum::<f64>() / v_obs[i].len() as f64;
         let v_scale = v_scale.max(1e-6);
         let b = residuals[i].len();
-        let mse: f64 = residuals[i].iter().map(|r| (r / v_scale).powi(2)).sum::<f64>() / b as f64;
+        let mse: f64 = residuals[i]
+            .iter()
+            .map(|r| (r / v_scale).powi(2))
+            .sum::<f64>()
+            / b as f64;
         total_rms += mse.sqrt();
     }
     total_rms / n as f64
@@ -356,7 +360,11 @@ pub fn evaluate_baryonic_baseline(bundle: &DataBundle, cd_dim: usize) -> Conditi
     let snr = compute_snr(&residuals, &bundle.v_obs, &basis);
     let rms = compute_rms(&residuals, &bundle.v_obs);
     let threshold = compute_threshold(&residuals, &bundle.v_obs);
-    ConditionMetrics { snr, rms, threshold }
+    ConditionMetrics {
+        snr,
+        rms,
+        threshold,
+    }
 }
 
 /// Assess null result: SNR < 3 means no ZD detection.
@@ -402,7 +410,11 @@ mod tests {
             let norm_sq: f64 = basis[i].iter().map(|x| x * x).sum();
             assert!((norm_sq - 1.0).abs() < 1e-10, "basis[{i}] norm = {norm_sq}");
             for j in (i + 1)..basis.len() {
-                let dot: f64 = basis[i].iter().zip(basis[j].iter()).map(|(a, b)| a * b).sum();
+                let dot: f64 = basis[i]
+                    .iter()
+                    .zip(basis[j].iter())
+                    .map(|(a, b)| a * b)
+                    .sum();
                 assert!(dot.abs() < 1e-10, "basis[{i}] . basis[{j}] = {dot}");
             }
         }
@@ -431,7 +443,11 @@ mod tests {
         // Verify Ax = b
         for i in 0..3 {
             let ax_i: f64 = (0..3).map(|j| a[i][j] * x[j]).sum();
-            assert!((ax_i - b[i]).abs() < 1e-10, "Ax[{i}]={ax_i}, b[{i}]={}", b[i]);
+            assert!(
+                (ax_i - b[i]).abs() < 1e-10,
+                "Ax[{i}]={ax_i}, b[{i}]={}",
+                b[i]
+            );
         }
     }
 }

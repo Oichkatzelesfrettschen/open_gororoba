@@ -4,8 +4,7 @@
 //! - Quantile regression solver via Clarabel (Interior Point Method)
 //! - Quantile periodogram computation
 
-use clarabel::solver::*;
-use clarabel::algebra::CscMatrix;
+use clarabel::{algebra::CscMatrix, solver::*};
 use std::f64::consts::PI;
 
 /// Quantile regression result.
@@ -40,7 +39,7 @@ pub fn solve_quantile_regression(
     // Matrix A in CSC format
     // A_eq = [X I -I] (n rows)
     // A_ineq = [0 -I_{2n}] (2n rows) to enforce u, v >= 0 via NonnegativeCone
-    
+
     let mut a_total_data = Vec::new();
     let mut a_total_indices = Vec::new();
     let mut a_total_indptr = vec![0];
@@ -60,11 +59,11 @@ pub fn solve_quantile_regression(
         // A_eq part: X*beta + 1*u ... = y
         a_total_data.push(1.0);
         a_total_indices.push(j);
-        
+
         // A_ineq part: -1*u <= 0
         a_total_data.push(-1.0);
         a_total_indices.push(n + j);
-        
+
         a_total_indptr.push(a_total_data.len());
     }
 
@@ -73,11 +72,11 @@ pub fn solve_quantile_regression(
         // A_eq part: X*beta - 1*v = y
         a_total_data.push(-1.0);
         a_total_indices.push(j);
-        
+
         // A_ineq part: -1*v <= 0
         a_total_data.push(-1.0);
         a_total_indices.push(n + n + j);
-        
+
         a_total_indptr.push(a_total_data.len());
     }
 
@@ -104,7 +103,8 @@ pub fn solve_quantile_regression(
     );
 
     let settings = DefaultSettings::default();
-    let mut solver = DefaultSolver::new(&p_mat, &c, &a_total_csc, &b_total, &total_cones, settings).unwrap();
+    let mut solver =
+        DefaultSolver::new(&p_mat, &c, &a_total_csc, &b_total, &total_cones, settings).unwrap();
 
     solver.solve();
 
@@ -138,9 +138,15 @@ mod tests {
     #[test]
     fn test_quantile_regression_simple() {
         // y = 2 + 0.5*x
-        let x = vec![vec![1.0, 1.0], vec![1.0, 2.0], vec![1.0, 3.0], vec![1.0, 4.0], vec![1.0, 5.0]];
+        let x = vec![
+            vec![1.0, 1.0],
+            vec![1.0, 2.0],
+            vec![1.0, 3.0],
+            vec![1.0, 4.0],
+            vec![1.0, 5.0],
+        ];
         let y = vec![2.5, 3.0, 3.5, 4.0, 4.5];
-        
+
         let res = solve_quantile_regression(&x, &y, 0.5);
         assert!((res.beta[0] - 2.0).abs() < 1e-5);
         assert!((res.beta[1] - 0.5).abs() < 1e-5);

@@ -22,6 +22,6 @@
 //!
 //! ## Current Result
 //! - **Warp Ring Forcing active.**
-//! - **Topological Persistence:** Initial triad extraction showed 0 triads at 1e-6 threshold post-decay. 
+//! - **Topological Persistence:** Initial triad extraction showed 0 triads at 1e-6 threshold post-decay.
 //! - **Next Step:** Run Phase 3 (High-Res Production) with lower thresholds or more energetic initialization to visualize the stabilized "Warp Ring".
 //!

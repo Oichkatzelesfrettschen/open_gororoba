@@ -104,7 +104,7 @@
 //! >   branches: [ main, develop ]
 //! ```ignore
 //!
-//! **Why?** 
+//! **Why?**
 //! - PRs to main/develop must pass CI
 //! - Direct pushes to main/develop run CI
 //! - Copilot branches get CI for testing
@@ -313,7 +313,7 @@
 //!
 //! The old workflow is backed up as `.github/workflows/ci-old.yml.bak`.
 //!
-//! **To revert:** 
+//! **To revert:**
 //! ```ignore
 //! mv .github/workflows/ci.yml .github/workflows/ci-new.yml.bak
 //! mv .github/workflows/ci-old.yml.bak .github/workflows/ci.yml

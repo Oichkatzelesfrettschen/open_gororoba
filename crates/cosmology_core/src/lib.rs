@@ -55,8 +55,8 @@ pub mod eos;
 #[cfg(feature = "euclid-catalog")]
 pub mod euclid_morphology;
 pub mod flrw;
-pub mod galaxy_pipeline;
 pub mod galactic_disk;
+pub mod galaxy_pipeline;
 pub mod gravastar;
 pub mod gravastar_potential;
 pub mod halo;

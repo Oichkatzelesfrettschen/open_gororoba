@@ -43,7 +43,7 @@
 //!
 //!
 //! Using the standard HPL formula for transferring a binary product $\mu$, the effective ternary product $m_3$ is:
-//! $$m_3(x,y,z) = p \circ \mu( h \circ \mu( i(x), i(y) ), i(z) ) - p \circ \mu( i(x), h \circ \mu( i(y), i(z) ) )$$ 
+//! $$m_3(x,y,z) = p \circ \mu( h \circ \mu( i(x), i(y) ), i(z) ) - p \circ \mu( i(x), h \circ \mu( i(y), i(z) ) )$$
 //! This formula measures the "associator anomaly" induced by the projection.
 //!
 //! ### 2.3 Computational Search

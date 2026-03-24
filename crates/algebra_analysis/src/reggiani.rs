@@ -520,8 +520,12 @@ mod tests {
         // Normalize to unit sphere
         let na = cd_norm_sq(&a).sqrt();
         let nb = cd_norm_sq(&b).sqrt();
-        for x in &mut a { *x /= na; }
-        for x in &mut b { *x /= nb; }
+        for x in &mut a {
+            *x /= na;
+        }
+        for x in &mut b {
+            *x /= nb;
+        }
 
         // Verify (a, b) is on Z(S)
         let ab = cd_multiply(&a, &b);
@@ -565,17 +569,28 @@ mod tests {
         let rank = singular_values.iter().filter(|&&s| s > 1e-6).count();
         let manifold_dim = n_vars - rank;
 
-        println!("Reggiani G2 test: Jacobian {}x{}, rank={}, manifold_dim={}",
-            n_constraints, n_vars, rank, manifold_dim);
+        println!(
+            "Reggiani G2 test: Jacobian {}x{}, rank={}, manifold_dim={}",
+            n_constraints, n_vars, rank, manifold_dim
+        );
         // Note: SV degeneracies at one sample point are suggestive of G2
         // representation structure but are NOT a Lie-theoretic identification.
         // A full proof would require tangent-space decomposition under the
         // isotropy action (Reggiani 2024, Theorem 3.1).
-        println!("Singular values (suggestive, not Lie-theoretic): {:?}",
-            singular_values.iter().take(20).map(|s| format!("{:.4}", s)).collect::<Vec<_>>());
+        println!(
+            "Singular values (suggestive, not Lie-theoretic): {:?}",
+            singular_values
+                .iter()
+                .take(20)
+                .map(|s| format!("{:.4}", s))
+                .collect::<Vec<_>>()
+        );
 
-        assert_eq!(manifold_dim, 14,
-            "Z(S) manifold dimension should be 14 = dim(G2), got {}", manifold_dim);
+        assert_eq!(
+            manifold_dim, 14,
+            "Z(S) manifold dimension should be 14 = dim(G2), got {}",
+            manifold_dim
+        );
     }
 
     /// Reggiani (2024) proves the space of unit sedenions with nontrivial
@@ -594,15 +609,17 @@ mod tests {
     /// (c) Combined with the G2 test: 14 - 3 = 11.
     #[test]
     fn test_reggiani_single_zd_stiefel_v2r7() {
-        use crate::annihilator::{annihilator_info, left_multiplication_matrix};
-        use crate::annihilator::nullspace_basis;
+        use crate::annihilator::{annihilator_info, left_multiplication_matrix, nullspace_basis};
 
         let dim = 16;
         // (a) Verify all 84 ZDs have nullity 4 (annihilator dimension 4).
         for zd in &standard_zero_divisors() {
             let info = annihilator_info(&zd.vector, dim, 1e-12);
-            assert_eq!(info.left_nullity, 4,
-                "ZD ({},{}) left-nullity should be 4", zd.assessor_low, zd.assessor_high);
+            assert_eq!(
+                info.left_nullity, 4,
+                "ZD ({},{}) left-nullity should be 4",
+                zd.assessor_low, zd.assessor_high
+            );
         }
 
         // (b) Fiber dimension: S^{nullity-1} = S^3, so dim(fiber) = 3.
@@ -613,19 +630,25 @@ mod tests {
         let single_zd_dim = zs_dim - fiber_dim;
         let v2r7_dim = 7 * 2 - 2 * 3 / 2; // nk - k(k+1)/2 = 14 - 3 = 11
 
-        println!("Reggiani V2(R7): Z(S) dim={}, fiber dim={}, single-ZD dim={}, V_2(R^7) dim={}",
-            zs_dim, fiber_dim, single_zd_dim, v2r7_dim);
+        println!(
+            "Reggiani V2(R7): Z(S) dim={}, fiber dim={}, single-ZD dim={}, V_2(R^7) dim={}",
+            zs_dim, fiber_dim, single_zd_dim, v2r7_dim
+        );
 
-        assert_eq!(single_zd_dim, v2r7_dim,
+        assert_eq!(
+            single_zd_dim, v2r7_dim,
             "Single-ZD manifold dimension should be {} = dim(V_2(R^7)), got {}",
-            v2r7_dim, single_zd_dim);
+            v2r7_dim, single_zd_dim
+        );
 
         // Additional structural check: verify the annihilator basis vectors
         // are orthogonal (as required for a Stiefel manifold frame).
         let zd0 = &standard_zero_divisors()[0];
         let mut x = zd0.vector.clone();
         let nx = x.iter().map(|v| v * v).sum::<f64>().sqrt();
-        for v in &mut x { *v /= nx; }
+        for v in &mut x {
+            *v /= nx;
+        }
         let lx = left_multiplication_matrix(&x, dim);
         let kernel = nullspace_basis(&lx, 1e-10);
         assert_eq!(kernel.ncols(), 4, "Kernel should be 4-dimensional");
@@ -633,8 +656,13 @@ mod tests {
         for i in 0..kernel.ncols() {
             for j in (i + 1)..kernel.ncols() {
                 let dot: f64 = (0..dim).map(|k| kernel[(k, i)] * kernel[(k, j)]).sum();
-                assert!(dot.abs() < 1e-8,
-                    "Kernel vectors {} and {} not orthogonal: dot = {}", i, j, dot);
+                assert!(
+                    dot.abs() < 1e-8,
+                    "Kernel vectors {} and {} not orthogonal: dot = {}",
+                    i,
+                    j,
+                    dot
+                );
             }
         }
     }
@@ -660,52 +688,86 @@ mod tests {
         // (a) All 84 standard ZDs have support on exactly 2 basis elements:
         // one in {1..7} (octonion imaginary) and one in {8..15} (sedenion imaginary).
         for zd in &standard_zero_divisors() {
-            let nonzero: Vec<usize> = zd.vector.iter().enumerate()
+            let nonzero: Vec<usize> = zd
+                .vector
+                .iter()
+                .enumerate()
                 .filter(|(_, v)| v.abs() > 1e-12)
                 .map(|(i, _)| i)
                 .collect();
-            assert_eq!(nonzero.len(), 2,
-                "ZD should have exactly 2 nonzero components, got {:?}", nonzero);
-            assert!((1..=7).contains(&nonzero[0]),
-                "Low index {} not in octonion imaginary 1..=7", nonzero[0]);
-            assert!((8..=15).contains(&nonzero[1]),
-                "High index {} not in sedenion imaginary 8..=15", nonzero[1]);
+            assert_eq!(
+                nonzero.len(),
+                2,
+                "ZD should have exactly 2 nonzero components, got {:?}",
+                nonzero
+            );
+            assert!(
+                (1..=7).contains(&nonzero[0]),
+                "Low index {} not in octonion imaginary 1..=7",
+                nonzero[0]
+            );
+            assert!(
+                (8..=15).contains(&nonzero[1]),
+                "High index {} not in sedenion imaginary 8..=15",
+                nonzero[1]
+            );
         }
 
         // (b) The witness pair from zero_divisor_witness(16) conforms:
         // both a and b should be 2-blade assessor diagonals.
         let (a, b) = zero_divisor_witness(16);
         for (label, vec) in [("a", &a), ("b", &b)] {
-            let nonzero: Vec<(usize, f64)> = vec.iter().enumerate()
+            let nonzero: Vec<(usize, f64)> = vec
+                .iter()
+                .enumerate()
                 .filter(|(_, v)| v.abs() > 1e-12)
                 .map(|(i, v)| (i, *v))
                 .collect();
-            assert_eq!(nonzero.len(), 2,
-                "Witness {} should have 2 nonzero components, got {:?}", label, nonzero);
+            assert_eq!(
+                nonzero.len(),
+                2,
+                "Witness {} should have 2 nonzero components, got {:?}",
+                label,
+                nonzero
+            );
             let (low, _) = nonzero[0];
             let (high, _) = nonzero[1];
-            assert!((1..=7).contains(&low),
-                "Witness {} low index {} not in octonion sector", label, low);
-            assert!((8..=15).contains(&high),
-                "Witness {} high index {} not in sedenion sector", label, high);
+            assert!(
+                (1..=7).contains(&low),
+                "Witness {} low index {} not in octonion sector",
+                label,
+                low
+            );
+            assert!(
+                (8..=15).contains(&high),
+                "Witness {} high index {} not in sedenion sector",
+                label,
+                high
+            );
         }
 
         // (c) Verify the witness is a valid ZD
         let ab = cd_multiply(&a, &b);
-        assert!(cd_norm_sq(&ab).sqrt() < 1e-10,
-            "Witness a*b should be zero");
+        assert!(cd_norm_sq(&ab).sqrt() < 1e-10, "Witness a*b should be zero");
 
         // (d) Slot-shift empirical finding: the witness embedded at offset 16
         // in C_32 should still be a valid ZD (C-1454).
         let dim = 32;
         let mut a32 = vec![0.0; dim];
         let mut b32 = vec![0.0; dim];
-        for i in 0..16 { a32[16 + i] = a[i]; b32[16 + i] = b[i]; }
+        for i in 0..16 {
+            a32[16 + i] = a[i];
+            b32[16 + i] = b[i];
+        }
         let ab32 = cd_multiply(&a32, &b32);
-        assert!(cd_norm_sq(&ab32).sqrt() < 1e-10,
-            "Slot-shifted witness should remain a ZD (C-1454)");
+        assert!(
+            cd_norm_sq(&ab32).sqrt() < 1e-10,
+            "Slot-shifted witness should remain a ZD (C-1454)"
+        );
 
-        println!("Moreno Stiefel cross-validation: all 84 ZDs + witness conform to V_2(R^7) parametrization");
+        println!(
+            "Moreno Stiefel cross-validation: all 84 ZDs + witness conform to V_2(R^7) parametrization"
+        );
     }
 
     /// Koebisu (arXiv:2512.13002) holonomy verification.
@@ -768,7 +830,10 @@ mod tests {
         // With the pair (a,b) both normalized: dim = 7 + 6 = 13
         // (S^7 for direction of a, S^6 for direction of b perp a)
         let v2r8_dim = 8 + 7 - 2; // 13
-        println!("  dim(V_2(R^8)) = {} (consistent with normalized ZD manifold)", v2r8_dim);
+        println!(
+            "  dim(V_2(R^8)) = {} (consistent with normalized ZD manifold)",
+            v2r8_dim
+        );
 
         // Connection to our Reggiani G2 test:
         // G2 (dim 14) acts on V_2(R^7) (dim 11), with isotropy SO(4) (dim 6).
@@ -815,8 +880,7 @@ mod tests {
         for i in 1..16_usize {
             let mut v = vec![0.0; 16];
             v[i] = 1.0;
-            assert!((d2(&v) - 1.0).abs() < 1e-12,
-                "D_2(e_{i}) should be 1");
+            assert!((d2(&v) - 1.0).abs() < 1e-12, "D_2(e_{i}) should be 1");
         }
         println!("  [PASS] D_2 = 1 on all single basis elements");
 
@@ -828,12 +892,16 @@ mod tests {
         println!("  [PASS] det(L_v) = 0 for ZD");
 
         // D_2 = 0 for e_1 + e_10 (a ZD pair): v_1[1]=1, v_2[2]=1, <v_1,v_2>=0
-        let mut cand = vec![0.0; 16]; cand[1] = 1.0; cand[10] = 1.0;
+        let mut cand = vec![0.0; 16];
+        cand[1] = 1.0;
+        cand[10] = 1.0;
         assert!(d2(&cand).abs() < 1e-20, "e_1+e_10 is a ZD");
         println!("  [PASS] D_2(e_1 + e_10) = 0");
 
         // D_2 > 0 for e_1 + e_9 (not a ZD): v_1[1]=1, v_2[1]=1, <v_1,v_2>=1
-        let mut non_zd = vec![0.0; 16]; non_zd[1] = 1.0; non_zd[9] = 1.0;
+        let mut non_zd = vec![0.0; 16];
+        non_zd[1] = 1.0;
+        non_zd[9] = 1.0;
         assert!((d2(&non_zd) - 4.0).abs() < 1e-12, "e_1+e_9 has D_2=4");
         println!("  [PASS] D_2(e_1 + e_9) = 4 (non-ZD, inner product = 1)");
     }

@@ -2870,8 +2870,7 @@ impl ProvenanceStore {
                 .conn
                 .query_row(&format!("SELECT count(*) FROM [{name}]"), [], |r| r.get(0))
                 .with_context(|| format!("Failed to count rows in table '{name}'"))?;
-            let mut cols_stmt =
-                self.conn.prepare(&format!("PRAGMA table_info([{name}])"))?;
+            let mut cols_stmt = self.conn.prepare(&format!("PRAGMA table_info([{name}])"))?;
             let cols: Vec<String> = cols_stmt
                 .query_map([], |r| {
                     let col_name: String = r.get(1)?;
@@ -2919,8 +2918,14 @@ impl ProvenanceStore {
               dependencies_json, acceptance_criteria_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
             params![
-                item.id, item.area, item.title, item.description, item.priority,
-                item.status, item.status_token, item.dependencies_json,
+                item.id,
+                item.area,
+                item.title,
+                item.description,
+                item.priority,
+                item.status,
+                item.status_token,
+                item.dependencies_json,
                 item.acceptance_criteria_json,
             ],
         )?;
@@ -2935,8 +2940,14 @@ impl ProvenanceStore {
               dependencies_json, acceptance_criteria_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
             params![
-                item.id, item.area, item.title, item.description, item.priority,
-                item.status, item.status_token, item.dependencies_json,
+                item.id,
+                item.area,
+                item.title,
+                item.description,
+                item.priority,
+                item.status,
+                item.status_token,
+                item.dependencies_json,
                 item.acceptance_criteria_json,
             ],
         )?;
@@ -2965,10 +2976,19 @@ impl ProvenanceStore {
                  body_markdown        = excluded.body_markdown,
                  line_count           = excluded.line_count",
             params![
-                row.id, row.source_markdown, row.domain, row.slug, row.title,
-                row.status_token, row.content_kind, row.verification_level,
-                row.claim_refs_json, row.url_refs_json, row.path_refs_json,
-                row.body_markdown, row.line_count,
+                row.id,
+                row.source_markdown,
+                row.domain,
+                row.slug,
+                row.title,
+                row.status_token,
+                row.content_kind,
+                row.verification_level,
+                row.claim_refs_json,
+                row.url_refs_json,
+                row.path_refs_json,
+                row.body_markdown,
+                row.line_count,
             ],
         )?;
         Ok(())
@@ -2987,14 +3007,16 @@ impl ProvenanceStore {
         }
         let count = self
             .conn
-            .query_row(&format!("SELECT count(*) FROM [{table}]"), [], |r| {
-                r.get(0)
-            })?;
+            .query_row(&format!("SELECT count(*) FROM [{table}]"), [], |r| r.get(0))?;
         Ok(count)
     }
 
     /// Full-text search across research narratives.
-    pub fn search_narratives(&self, query: &str, limit: usize) -> Result<Vec<(String, String, f64)>> {
+    pub fn search_narratives(
+        &self,
+        query: &str,
+        limit: usize,
+    ) -> Result<Vec<(String, String, f64)>> {
         search_narratives_on_conn(&self.conn, query, limit)
     }
 
@@ -3012,31 +3034,48 @@ impl ProvenanceStore {
             let rows = stmt.query_map(params![s], |row| {
                 Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
             })?;
-            for r in rows { out.push(r?); }
+            for r in rows {
+                out.push(r?);
+            }
         } else {
             let sql = format!("SELECT {cols} FROM [{table}] ORDER BY id");
             let mut stmt = self.conn.prepare(&sql)?;
             let rows = stmt.query_map([], |row| {
                 Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
             })?;
-            for r in rows { out.push(r?); }
+            for r in rows {
+                out.push(r?);
+            }
         }
         Ok(out)
     }
 
     /// List roadmap items, optionally filtered by status.
-    pub fn list_roadmap_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+    pub fn list_roadmap_items(
+        &self,
+        status_filter: Option<&str>,
+    ) -> Result<Vec<(String, String, String, String)>> {
         self.list_four_col_table("roadmap_items", "id, name, priority, status", status_filter)
     }
 
     /// List todo items, optionally filtered by status.
-    pub fn list_todo_items(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
+    pub fn list_todo_items(
+        &self,
+        status_filter: Option<&str>,
+    ) -> Result<Vec<(String, String, String, String)>> {
         self.list_four_col_table("todo_items", "id, title, priority, status", status_filter)
     }
 
     /// List next-action items, optionally filtered by status.
-    pub fn list_next_actions(&self, status_filter: Option<&str>) -> Result<Vec<(String, String, String, String)>> {
-        self.list_four_col_table("next_action_items", "id, title, priority, status", status_filter)
+    pub fn list_next_actions(
+        &self,
+        status_filter: Option<&str>,
+    ) -> Result<Vec<(String, String, String, String)>> {
+        self.list_four_col_table(
+            "next_action_items",
+            "id, title, priority, status",
+            status_filter,
+        )
     }
 
     /// Insert or replace a notebook session.
@@ -3045,7 +3084,15 @@ impl ProvenanceStore {
             "INSERT OR REPLACE INTO notebook_sessions
              (id, title, description, kernel, status, cell_count, cells_json, updated_at)
              VALUES (?1,?2,?3,?4,?5,?6,?7, datetime('now'))",
-            params![row.id, row.title, row.description, row.kernel, row.status, row.cell_count, row.cells_json],
+            params![
+                row.id,
+                row.title,
+                row.description,
+                row.kernel,
+                row.status,
+                row.cell_count,
+                row.cells_json
+            ],
         )?;
         Ok(())
     }
@@ -3152,10 +3199,7 @@ impl ProvenanceStore {
                     .or_else(|| edge.get("type"))
                     .and_then(|v| v.as_str())
                     .unwrap_or("supports");
-                let weight = edge
-                    .get("weight")
-                    .and_then(|v| v.as_float())
-                    .unwrap_or(1.0);
+                let weight = edge.get("weight").and_then(|v| v.as_float()).unwrap_or(1.0);
                 let notes = edge.get("notes").and_then(|v| v.as_str()).unwrap_or("");
 
                 self.conn.execute(
@@ -3180,7 +3224,10 @@ impl ProvenanceStore {
                     continue;
                 }
                 let title = item.get("title").and_then(|v| v.as_str()).unwrap_or("");
-                let status = item.get("status").and_then(|v| v.as_str()).unwrap_or("open");
+                let status = item
+                    .get("status")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("open");
                 let domain = item.get("domain").and_then(|v| v.as_str()).unwrap_or("");
                 let description = item
                     .get("description")
@@ -3258,7 +3305,11 @@ impl ProvenanceStore {
     }
 
     /// Search claims via FTS5.
-    pub fn search_claims(&self, query: &str, limit: usize) -> Result<Vec<(String, String, String, f64)>> {
+    pub fn search_claims(
+        &self,
+        query: &str,
+        limit: usize,
+    ) -> Result<Vec<(String, String, String, f64)>> {
         let mut stmt = self.conn.prepare(
             "SELECT c.id, c.statement, c.status, bm25(claims_fts) as rank
              FROM claims_fts fts
@@ -3283,7 +3334,11 @@ impl ProvenanceStore {
     }
 
     /// Search insights via FTS5.
-    pub fn search_insights(&self, query: &str, limit: usize) -> Result<Vec<(String, String, String, f64)>> {
+    pub fn search_insights(
+        &self,
+        query: &str,
+        limit: usize,
+    ) -> Result<Vec<(String, String, String, f64)>> {
         let mut stmt = self.conn.prepare(
             "SELECT i.id, i.title, i.status, bm25(insights_fts) as rank
              FROM insights_fts fts
@@ -3308,7 +3363,11 @@ impl ProvenanceStore {
     }
 
     /// Search bibliography via FTS5.
-    pub fn search_bibliography(&self, query: &str, limit: usize) -> Result<Vec<(String, String, String, f64)>> {
+    pub fn search_bibliography(
+        &self,
+        query: &str,
+        limit: usize,
+    ) -> Result<Vec<(String, String, String, f64)>> {
         let mut stmt = self.conn.prepare(
             "SELECT b.id, b.title, b.authors, bm25(bibliography_fts) as rank
              FROM bibliography_fts fts
@@ -3357,7 +3416,11 @@ impl ProvenanceStore {
     }
 
     /// List claims with optional status filter.
-    pub fn list_claims_filtered(&self, status: Option<&str>, limit: usize) -> Result<Vec<ClaimRecord>> {
+    pub fn list_claims_filtered(
+        &self,
+        status: Option<&str>,
+        limit: usize,
+    ) -> Result<Vec<ClaimRecord>> {
         let mut out = Vec::new();
         if let Some(s) = status {
             let mut stmt = self.conn.prepare(
@@ -3404,17 +3467,18 @@ impl ProvenanceStore {
     }
 
     /// List experiments with optional status filter.
-    pub fn list_experiments_filtered(&self, status: Option<&str>, limit: usize) -> Result<Vec<ExperimentRecord>> {
+    pub fn list_experiments_filtered(
+        &self,
+        status: Option<&str>,
+        limit: usize,
+    ) -> Result<Vec<ExperimentRecord>> {
         let map_row = |row: &rusqlite::Row<'_>| -> rusqlite::Result<ExperimentRecord> {
             Ok(ExperimentRecord {
                 id: row.get(0)?,
                 title: row.get(1)?,
                 status: row.get(2)?,
                 binary: row.get(3)?,
-                claim_refs: serde_json::from_str(
-                    &row.get::<_, String>(4)?,
-                )
-                .unwrap_or_default(),
+                claim_refs: serde_json::from_str(&row.get::<_, String>(4)?).unwrap_or_default(),
                 compat_toml_text: row.get::<_, String>(5).unwrap_or_default(),
             })
         };
@@ -3971,10 +4035,7 @@ fn toml_array_to_json_string(val: &Value, key: &str) -> String {
     val.get(key)
         .and_then(Value::as_array)
         .map(|items| {
-            let strs: Vec<&str> = items
-                .iter()
-                .filter_map(Value::as_str)
-                .collect();
+            let strs: Vec<&str> = items.iter().filter_map(Value::as_str).collect();
             serde_json::to_string(&strs).unwrap_or_else(|_| "[]".to_string())
         })
         .unwrap_or_else(|| "[]".to_string())
@@ -5160,7 +5221,7 @@ fn write_text(path: &Path, body: &str) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rusqlite::{params, Connection};
+    use rusqlite::{Connection, params};
     use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
@@ -5183,12 +5244,20 @@ mod tests {
         .expect("create research_narrative_search FTS table");
         conn.execute(
             "INSERT INTO research_narratives (id, title, body) VALUES (?1, ?2, ?3)",
-            params!["n1", "SQLite narrative", "This narrative talks about sqlite and databases."],
+            params![
+                "n1",
+                "SQLite narrative",
+                "This narrative talks about sqlite and databases."
+            ],
         )
         .expect("insert narrative n1");
         conn.execute(
             "INSERT INTO research_narratives (id, title, body) VALUES (?1, ?2, ?3)",
-            params!["n2", "Unrelated narrative", "This one is about something else entirely."],
+            params![
+                "n2",
+                "Unrelated narrative",
+                "This one is about something else entirely."
+            ],
         )
         .expect("insert narrative n2");
         conn.execute(
@@ -5197,8 +5266,8 @@ mod tests {
             [],
         )
         .expect("populate FTS index");
-        let results =
-            search_narratives_on_conn(&conn, "sqlite", 10).expect("search_narratives_on_conn failed");
+        let results = search_narratives_on_conn(&conn, "sqlite", 10)
+            .expect("search_narratives_on_conn failed");
         assert_eq!(results.len(), 1, "expected exactly one FTS match");
         assert_eq!(results[0].0, "n1");
         assert_eq!(results[0].1, "SQLite narrative");

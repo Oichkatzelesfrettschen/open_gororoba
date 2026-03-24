@@ -318,8 +318,8 @@ fn main() -> Result<()> {
         return cmd_build(&cli.repo_root, &db_path, args);
     }
 
-    let store =
-        ProvenanceStore::open(&db_path).with_context(|| format!("open database {}", db_path.display()))?;
+    let store = ProvenanceStore::open(&db_path)
+        .with_context(|| format!("open database {}", db_path.display()))?;
 
     match cli.command {
         Commands::Build(_) => unreachable!(),
@@ -407,28 +407,58 @@ fn cmd_import_knowledge(
     // Import equation atoms
     let eq_path = repo_root.join(&args.equation_atoms);
     if eq_path.exists() {
-        let text = fs::read_to_string(&eq_path)
-            .with_context(|| format!("read {}", eq_path.display()))?;
-        let val: Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", eq_path.display()))?;
+        let text =
+            fs::read_to_string(&eq_path).with_context(|| format!("read {}", eq_path.display()))?;
+        let val: Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", eq_path.display()))?;
         let mut count = 0u64;
         if let Some(atoms) = val.get("atom").and_then(|v| v.as_array()) {
             for atom in atoms {
                 let id = atom.get("id").and_then(|v| v.as_str()).unwrap_or("");
-                let expression = atom.get("expression").and_then(|v| v.as_str()).unwrap_or("");
+                let expression = atom
+                    .get("expression")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("");
                 if !id.is_empty() {
-                    let normalized = atom.get("normalized_expression").and_then(|v| v.as_str()).unwrap_or("");
-                    let relation = atom.get("relation_operator").and_then(|v| v.as_str()).unwrap_or("implicit");
-                    let kind = atom.get("equation_kind").and_then(|v| v.as_str()).unwrap_or("");
-                    let confidence = atom.get("extraction_confidence").and_then(|v| v.as_str()).unwrap_or("medium");
-                    let domain = atom.get("domain_applicability").and_then(|v| v.as_str()).unwrap_or("");
-                    let source_uid = atom.get("source_uid").and_then(|v| v.as_str()).unwrap_or("");
-                    let source_path = atom.get("source_path").and_then(|v| v.as_str()).unwrap_or("");
-                    let section = atom.get("section_title").and_then(|v| v.as_str()).unwrap_or("");
+                    let normalized = atom
+                        .get("normalized_expression")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let relation = atom
+                        .get("relation_operator")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("implicit");
+                    let kind = atom
+                        .get("equation_kind")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let confidence = atom
+                        .get("extraction_confidence")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("medium");
+                    let domain = atom
+                        .get("domain_applicability")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let source_uid = atom
+                        .get("source_uid")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let source_path = atom
+                        .get("source_path")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let section = atom
+                        .get("section_title")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
                     let assumptions = json_array_field(atom, "assumptions");
                     let derivation_links = json_array_field(atom, "derivation_links");
                     let depends_on = json_array_field(atom, "depends_on_equations");
-                    let sweep = atom.get("parameter_sweep").map(|v| serde_json::to_string(v).unwrap_or_default()).unwrap_or_default();
+                    let sweep = atom
+                        .get("parameter_sweep")
+                        .map(|v| serde_json::to_string(v).unwrap_or_default())
+                        .unwrap_or_default();
 
                     store.conn_exec(
                         "INSERT OR REPLACE INTO equation_atoms
@@ -437,15 +467,31 @@ fn cmd_import_knowledge(
                           section_title, assumptions_json, parameter_sweep_json,
                           derivation_links_json, depends_on_json)
                          VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14)",
-                        [id, expression, normalized, relation, kind, confidence,
-                          domain, source_uid, source_path, section,
-                          &assumptions, &sweep, &derivation_links, &depends_on],
+                        [
+                            id,
+                            expression,
+                            normalized,
+                            relation,
+                            kind,
+                            confidence,
+                            domain,
+                            source_uid,
+                            source_path,
+                            section,
+                            &assumptions,
+                            &sweep,
+                            &derivation_links,
+                            &depends_on,
+                        ],
                     )?;
                     count += 1;
                 }
             }
         }
-        println!("  ✓ Imported {count} equation atoms from {}", eq_path.display());
+        println!(
+            "  ✓ Imported {count} equation atoms from {}",
+            eq_path.display()
+        );
     } else {
         println!("  ⚠ Equation atoms file not found: {}", eq_path.display());
     }
@@ -453,37 +499,64 @@ fn cmd_import_knowledge(
     // Import proof skeletons
     let ps_path = repo_root.join(&args.proof_skeletons);
     if ps_path.exists() {
-        let text = fs::read_to_string(&ps_path)
-            .with_context(|| format!("read {}", ps_path.display()))?;
-        let val: Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", ps_path.display()))?;
+        let text =
+            fs::read_to_string(&ps_path).with_context(|| format!("read {}", ps_path.display()))?;
+        let val: Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", ps_path.display()))?;
         let mut count = 0u64;
         if let Some(skels) = val.get("skeleton").and_then(|v| v.as_array()) {
             for skel in skels {
                 let id = skel.get("id").and_then(|v| v.as_str()).unwrap_or("");
                 if !id.is_empty() {
-                    let kind = skel.get("skeleton_kind").and_then(|v| v.as_str()).unwrap_or("");
-                    let source_path = skel.get("source_path").and_then(|v| v.as_str()).unwrap_or("");
-                    let source_uid = skel.get("source_uid").and_then(|v| v.as_str()).unwrap_or("");
+                    let kind = skel
+                        .get("skeleton_kind")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let source_path = skel
+                        .get("source_path")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let source_uid = skel
+                        .get("source_uid")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
                     let claim_id = skel.get("claim_id").and_then(|v| v.as_str()).unwrap_or("");
                     let claim_refs = json_array_field(skel, "claim_refs");
                     let title = skel.get("title").and_then(|v| v.as_str()).unwrap_or("");
-                    let status = skel.get("status").and_then(|v| v.as_str()).unwrap_or("draft");
-                    let step_count = skel.get("step_count").and_then(|v| v.as_integer()).unwrap_or(0);
+                    let status = skel
+                        .get("status")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("draft");
+                    let step_count = skel
+                        .get("step_count")
+                        .and_then(|v| v.as_integer())
+                        .unwrap_or(0);
 
                     store.conn_exec(
                         "INSERT OR REPLACE INTO proof_skeletons
                          (id, skeleton_kind, source_path, source_uid, claim_id,
                           claim_refs_json, title, status, step_count)
                          VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)",
-                        [id, kind, source_path, source_uid, claim_id,
-                          &claim_refs, title, status, &step_count.to_string()],
+                        [
+                            id,
+                            kind,
+                            source_path,
+                            source_uid,
+                            claim_id,
+                            &claim_refs,
+                            title,
+                            status,
+                            &step_count.to_string(),
+                        ],
                     )?;
                     count += 1;
                 }
             }
         }
-        println!("  ✓ Imported {count} proof skeletons from {}", ps_path.display());
+        println!(
+            "  ✓ Imported {count} proof skeletons from {}",
+            ps_path.display()
+        );
     } else {
         println!("  ⚠ Proof skeletons file not found: {}", ps_path.display());
     }
@@ -491,32 +564,59 @@ fn cmd_import_knowledge(
     // Import derivation steps
     let ds_path = repo_root.join(&args.derivation_steps);
     if ds_path.exists() {
-        let text = fs::read_to_string(&ds_path)
-            .with_context(|| format!("read {}", ds_path.display()))?;
-        let val: Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", ds_path.display()))?;
+        let text =
+            fs::read_to_string(&ds_path).with_context(|| format!("read {}", ds_path.display()))?;
+        let val: Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", ds_path.display()))?;
         let mut count = 0u64;
         if let Some(steps) = val.get("step").and_then(|v| v.as_array()) {
             for step in steps {
                 let id = step.get("id").and_then(|v| v.as_str()).unwrap_or("");
                 if !id.is_empty() {
-                    let skeleton_id = step.get("skeleton_id").and_then(|v| v.as_str()).unwrap_or("");
-                    let skeleton_kind = step.get("skeleton_kind").and_then(|v| v.as_str()).unwrap_or("");
-                    let source_path = step.get("source_path").and_then(|v| v.as_str()).unwrap_or("");
-                    let source_uid = step.get("source_uid").and_then(|v| v.as_str()).unwrap_or("");
+                    let skeleton_id = step
+                        .get("skeleton_id")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let skeleton_kind = step
+                        .get("skeleton_kind")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let source_path = step
+                        .get("source_path")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
+                    let source_uid = step
+                        .get("source_uid")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
                     let claim_id = step.get("claim_id").and_then(|v| v.as_str()).unwrap_or("");
                     let claim_refs = json_array_field(step, "claim_refs");
-                    let step_index = step.get("step_index").and_then(|v| v.as_integer()).unwrap_or(0);
-                    let step_kind = step.get("step_kind").and_then(|v| v.as_str()).unwrap_or("derivation_step");
+                    let step_index = step
+                        .get("step_index")
+                        .and_then(|v| v.as_integer())
+                        .unwrap_or(0);
+                    let step_kind = step
+                        .get("step_kind")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("derivation_step");
                     let text_val = step.get("text").and_then(|v| v.as_str()).unwrap_or("");
-                    let text_sha256 = step.get("text_sha256").and_then(|v| v.as_str()).unwrap_or("");
+                    let text_sha256 = step
+                        .get("text_sha256")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("");
                     let equation_refs = json_array_field(step, "equation_refs");
                     let symbol_refs = json_array_field(step, "symbol_refs");
                     let numeric_constants = json_array_field(step, "numeric_constants");
                     let key_tokens = json_array_field(step, "key_tokens");
                     let depends_on = json_array_field(step, "depends_on_step_ids");
-                    let line_start = step.get("line_start").and_then(|v| v.as_integer()).unwrap_or(0);
-                    let line_end = step.get("line_end").and_then(|v| v.as_integer()).unwrap_or(0);
+                    let line_start = step
+                        .get("line_start")
+                        .and_then(|v| v.as_integer())
+                        .unwrap_or(0);
+                    let line_end = step
+                        .get("line_end")
+                        .and_then(|v| v.as_integer())
+                        .unwrap_or(0);
 
                     store.conn_exec(
                         "INSERT OR REPLACE INTO derivation_steps
@@ -525,16 +625,35 @@ fn cmd_import_knowledge(
                           equation_refs_json, symbol_refs_json, numeric_constants_json,
                           key_tokens_json, depends_on_step_ids_json, line_start, line_end)
                          VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18)",
-                        [id, skeleton_id, skeleton_kind, source_path, source_uid, claim_id,
-                          &claim_refs, &step_index.to_string(), step_kind, text_val,
-                          text_sha256, &equation_refs, &symbol_refs, &numeric_constants,
-                          &key_tokens, &depends_on, &line_start.to_string(), &line_end.to_string()],
+                        [
+                            id,
+                            skeleton_id,
+                            skeleton_kind,
+                            source_path,
+                            source_uid,
+                            claim_id,
+                            &claim_refs,
+                            &step_index.to_string(),
+                            step_kind,
+                            text_val,
+                            text_sha256,
+                            &equation_refs,
+                            &symbol_refs,
+                            &numeric_constants,
+                            &key_tokens,
+                            &depends_on,
+                            &line_start.to_string(),
+                            &line_end.to_string(),
+                        ],
                     )?;
                     count += 1;
                 }
             }
         }
-        println!("  ✓ Imported {count} derivation steps from {}", ds_path.display());
+        println!(
+            "  ✓ Imported {count} derivation steps from {}",
+            ds_path.display()
+        );
     } else {
         println!("  ⚠ Derivation steps file not found: {}", ds_path.display());
     }
@@ -555,10 +674,10 @@ fn cmd_import_planning(
     // Import roadmap
     let rm_path = repo_root.join(&args.roadmap);
     if rm_path.exists() {
-        let text = fs::read_to_string(&rm_path)
-            .with_context(|| format!("read {}", rm_path.display()))?;
-        let val: Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", rm_path.display()))?;
+        let text =
+            fs::read_to_string(&rm_path).with_context(|| format!("read {}", rm_path.display()))?;
+        let val: Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", rm_path.display()))?;
         let mut count = 0u64;
         if let Some(items) = val.get("workstream").and_then(|v| v.as_array()) {
             for item in items {
@@ -572,10 +691,22 @@ fn cmd_import_planning(
                     store.upsert_roadmap_item(&provenance_store::RoadmapItem {
                         id,
                         name: item.get("name").and_then(|v| v.as_str()).unwrap_or(""),
-                        priority: item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
-                        status: item.get("status").and_then(|v| v.as_str()).unwrap_or("planned"),
-                        status_token: item.get("status_token").and_then(|v| v.as_str()).unwrap_or("PLANNED"),
-                        description: item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
+                        priority: item
+                            .get("priority")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("medium"),
+                        status: item
+                            .get("status")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("planned"),
+                        status_token: item
+                            .get("status_token")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("PLANNED"),
+                        description: item
+                            .get("description")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or(""),
                         sprint: item.get("sprint").and_then(|v| v.as_str()).unwrap_or(""),
                         dependencies_json: &deps,
                         acceptance_criteria_json: &ac,
@@ -587,7 +718,10 @@ fn cmd_import_planning(
                 }
             }
         }
-        println!("  ✓ Imported {count} roadmap workstreams from {}", rm_path.display());
+        println!(
+            "  ✓ Imported {count} roadmap workstreams from {}",
+            rm_path.display()
+        );
     } else {
         println!("  ⚠ Roadmap file not found: {}", rm_path.display());
     }
@@ -595,10 +729,10 @@ fn cmd_import_planning(
     // Import todo
     let td_path = repo_root.join(&args.todo);
     if td_path.exists() {
-        let text = fs::read_to_string(&td_path)
-            .with_context(|| format!("read {}", td_path.display()))?;
-        let val: Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", td_path.display()))?;
+        let text =
+            fs::read_to_string(&td_path).with_context(|| format!("read {}", td_path.display()))?;
+        let val: Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", td_path.display()))?;
         let mut count = 0u64;
         if let Some(items) = val.get("item").and_then(|v| v.as_array()) {
             for item in items {
@@ -610,10 +744,22 @@ fn cmd_import_planning(
                         id,
                         area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
                         title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                        description: item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
-                        priority: item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
-                        status: item.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
-                        status_token: item.get("status_token").and_then(|v| v.as_str()).unwrap_or("OPEN"),
+                        description: item
+                            .get("description")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or(""),
+                        priority: item
+                            .get("priority")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("medium"),
+                        status: item
+                            .get("status")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("open"),
+                        status_token: item
+                            .get("status_token")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("OPEN"),
                         dependencies_json: &deps,
                         acceptance_criteria_json: &ac,
                     })?;
@@ -629,10 +775,10 @@ fn cmd_import_planning(
     // Import next actions
     let na_path = repo_root.join(&args.next_actions);
     if na_path.exists() {
-        let text = fs::read_to_string(&na_path)
-            .with_context(|| format!("read {}", na_path.display()))?;
-        let val: Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", na_path.display()))?;
+        let text =
+            fs::read_to_string(&na_path).with_context(|| format!("read {}", na_path.display()))?;
+        let val: Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", na_path.display()))?;
         let mut count = 0u64;
         if let Some(items) = val.get("action").and_then(|v| v.as_array()) {
             for item in items {
@@ -644,10 +790,22 @@ fn cmd_import_planning(
                         id,
                         area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
                         title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                        description: item.get("description").and_then(|v| v.as_str()).unwrap_or(""),
-                        priority: item.get("priority").and_then(|v| v.as_str()).unwrap_or("medium"),
-                        status: item.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
-                        status_token: item.get("status_token").and_then(|v| v.as_str()).unwrap_or("OPEN"),
+                        description: item
+                            .get("description")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or(""),
+                        priority: item
+                            .get("priority")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("medium"),
+                        status: item
+                            .get("status")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("open"),
+                        status_token: item
+                            .get("status_token")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("OPEN"),
                         dependencies_json: &deps,
                         acceptance_criteria_json: &ac,
                     })?;
@@ -655,7 +813,10 @@ fn cmd_import_planning(
                 }
             }
         }
-        println!("  ✓ Imported {count} next actions from {}", na_path.display());
+        println!(
+            "  ✓ Imported {count} next actions from {}",
+            na_path.display()
+        );
     } else {
         println!("  ⚠ Next actions file not found: {}", na_path.display());
     }
@@ -679,10 +840,8 @@ fn cmd_import_narratives(
         return Ok(());
     }
 
-    let text = fs::read_to_string(&path)
-        .with_context(|| format!("read {}", path.display()))?;
-    let val: Value = toml::from_str(&text)
-        .with_context(|| format!("parse {}", path.display()))?;
+    let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+    let val: Value = toml::from_str(&text).with_context(|| format!("parse {}", path.display()))?;
     let mut count = 0u64;
 
     if let Some(docs) = val.get("document").and_then(|v| v.as_array()) {
@@ -694,25 +853,46 @@ fn cmd_import_narratives(
                 let pr = json_array_field(doc, "path_refs");
                 store.upsert_research_narrative(&provenance_store::ResearchNarrativeRow {
                     id,
-                    source_markdown: doc.get("source_markdown").and_then(|v| v.as_str()).unwrap_or(""),
+                    source_markdown: doc
+                        .get("source_markdown")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or(""),
                     domain: doc.get("domain").and_then(|v| v.as_str()).unwrap_or(""),
                     slug: doc.get("slug").and_then(|v| v.as_str()).unwrap_or(""),
                     title: doc.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                    status_token: doc.get("status_token").and_then(|v| v.as_str()).unwrap_or("NARRATIVE"),
-                    content_kind: doc.get("content_kind").and_then(|v| v.as_str()).unwrap_or("research_note"),
-                    verification_level: doc.get("verification_level").and_then(|v| v.as_str()).unwrap_or(""),
+                    status_token: doc
+                        .get("status_token")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("NARRATIVE"),
+                    content_kind: doc
+                        .get("content_kind")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("research_note"),
+                    verification_level: doc
+                        .get("verification_level")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or(""),
                     claim_refs_json: &cr,
                     url_refs_json: &ur,
                     path_refs_json: &pr,
-                    body_markdown: doc.get("body_markdown").and_then(|v| v.as_str()).unwrap_or(""),
-                    line_count: doc.get("line_count").and_then(|v| v.as_integer()).unwrap_or(0),
+                    body_markdown: doc
+                        .get("body_markdown")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or(""),
+                    line_count: doc
+                        .get("line_count")
+                        .and_then(|v| v.as_integer())
+                        .unwrap_or(0),
                 })?;
                 count += 1;
             }
         }
     }
 
-    println!("  ✓ Imported {count} research narratives from {}", path.display());
+    println!(
+        "  ✓ Imported {count} research narratives from {}",
+        path.display()
+    );
     println!("Narrative import complete.");
     Ok(())
 }
@@ -791,7 +971,11 @@ fn cmd_search(store: &ProvenanceStore, args: &SearchArgs) -> Result<()> {
         println!("No results for query: {}", args.query);
         return Ok(());
     }
-    println!("Search results for \"{}\" ({} hits):", args.query, results.len());
+    println!(
+        "Search results for \"{}\" ({} hits):",
+        args.query,
+        results.len()
+    );
     for (id, title, rank) in &results {
         println!("  {id:<12} (rank: {rank:.4})  {title}");
     }
@@ -828,7 +1012,10 @@ fn cmd_query(store: &ProvenanceStore, args: &QueryArgs) -> Result<()> {
             let items = store.list_notebook_sessions()?;
             println!("notebook_sessions ({} rows):", items.len());
             for s in items.iter().take(args.limit) {
-                println!("  {:<20} [{}] {:<10} cells={}  {}", s.id, s.kernel, s.status, s.cell_count, s.title);
+                println!(
+                    "  {:<20} [{}] {:<10} cells={}  {}",
+                    s.id, s.kernel, s.status, s.cell_count, s.title
+                );
             }
         }
         other => {
@@ -836,7 +1023,9 @@ fn cmd_query(store: &ProvenanceStore, args: &QueryArgs) -> Result<()> {
             let count = store.table_row_count(other)?;
             println!("{other} ({count} rows)");
             println!("  (Use a specific table name for detailed output.)");
-            println!("  Supported tables: roadmap_items, todo_items, next_action_items, notebook_sessions");
+            println!(
+                "  Supported tables: roadmap_items, todo_items, next_action_items, notebook_sessions"
+            );
         }
     }
     Ok(())
@@ -909,7 +1098,11 @@ fn cmd_archive_legacy(repo_root: &Path) -> Result<()> {
     ];
     for path in &legacy_scripts {
         let full = repo_root.join(path);
-        let status = if full.exists() { "present (legacy)" } else { "absent" };
+        let status = if full.exists() {
+            "present (legacy)"
+        } else {
+            "absent"
+        };
         println!("    {path:<55} [{status}]");
     }
 
@@ -980,7 +1173,10 @@ fn cmd_notebooks(store: &ProvenanceStore, args: &NotebookArgs) -> Result<()> {
             }
             println!("Notebook sessions ({}):", sessions.len());
             for s in &sessions {
-                println!("  {:<20} [{}] {:<10} cells={}  {}", s.id, s.kernel, s.status, s.cell_count, s.title);
+                println!(
+                    "  {:<20} [{}] {:<10} cells={}  {}",
+                    s.id, s.kernel, s.status, s.cell_count, s.title
+                );
             }
         }
         NotebookAction::Create { title, description } => {
@@ -1011,7 +1207,10 @@ fn json_array_field(val: &Value, key: &str) -> String {
         Some(Value::Array(arr)) => {
             let items: Vec<String> = arr
                 .iter()
-                .filter_map(|v| v.as_str().map(|s| format!("\"{}\"", s.replace('"', "\\\""))))
+                .filter_map(|v| {
+                    v.as_str()
+                        .map(|s| format!("\"{}\"", s.replace('"', "\\\"")))
+                })
                 .collect();
             format!("[{}]", items.join(","))
         }
@@ -1051,16 +1250,16 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
     let manifest: SourceManifest = toml::from_str(&manifest_text)
         .with_context(|| format!("parse {}", manifest_path.display()))?;
 
-    println!("  {} source files declared in manifest", manifest.source.len());
+    println!(
+        "  {} source files declared in manifest",
+        manifest.source.len()
+    );
 
     // Create fresh DB (deletes any existing file).
     let mut store = ProvenanceStore::build_fresh(db_path)?;
     store.record_build_metadata("builder", "gororoba-db build")?;
     store.record_build_metadata("built_at", &chrono::Utc::now().to_rfc3339())?;
-    store.record_build_metadata(
-        "source_count",
-        &manifest.source.len().to_string(),
-    )?;
+    store.record_build_metadata("source_count", &manifest.source.len().to_string())?;
 
     // Ingest core registries via existing reindex methods.
     let claims_path = repo_root.join("registry/claims.toml");
@@ -1084,7 +1283,11 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
         )?;
         println!(
             "  Control plane: {} claims, {} insights, {} experiments, {} binaries, {} theorems",
-            stats.claim_count, stats.insight_count, stats.experiment_count, stats.binary_count, stats.theorem_count
+            stats.claim_count,
+            stats.insight_count,
+            stats.experiment_count,
+            stats.binary_count,
+            stats.theorem_count
         );
     }
 
@@ -1160,31 +1363,36 @@ fn cmd_claims(store: &ProvenanceStore, args: &ClaimsArgs) -> Result<()> {
         ClaimsAction::List { status, limit } => {
             let claims = store.list_claims_filtered(status.as_deref(), *limit)?;
             for c in &claims {
-                let proof_marker = if c.formal_proof.is_some() { " [proved]" } else { "" };
-                println!("{:<8} [{:<12}] {}{}", c.id, c.status, c.statement, proof_marker);
+                let proof_marker = if c.formal_proof.is_some() {
+                    " [proved]"
+                } else {
+                    ""
+                };
+                println!(
+                    "{:<8} [{:<12}] {}{}",
+                    c.id, c.status, c.statement, proof_marker
+                );
             }
             println!("\n{} claims shown.", claims.len());
         }
-        ClaimsAction::Show { id } => {
-            match store.claim_by_id(id)? {
-                Some(c) => {
-                    println!("ID:            {}", c.id);
-                    println!("Status:        {}", c.status);
-                    println!("Statement:     {}", c.statement);
-                    println!("Where stated:  {}", c.where_stated);
-                    println!("Last verified: {}", c.last_verified);
-                    if let Some(ref proof) = c.formal_proof {
-                        println!("Formal proof:  {proof}");
-                    }
-                    if let Some(ref note) = c.status_note {
-                        println!("Status note:   {note}");
-                    }
+        ClaimsAction::Show { id } => match store.claim_by_id(id)? {
+            Some(c) => {
+                println!("ID:            {}", c.id);
+                println!("Status:        {}", c.status);
+                println!("Statement:     {}", c.statement);
+                println!("Where stated:  {}", c.where_stated);
+                println!("Last verified: {}", c.last_verified);
+                if let Some(ref proof) = c.formal_proof {
+                    println!("Formal proof:  {proof}");
                 }
-                None => {
-                    println!("Claim {id} not found.");
+                if let Some(ref note) = c.status_note {
+                    println!("Status note:   {note}");
                 }
             }
-        }
+            None => {
+                println!("Claim {id} not found.");
+            }
+        },
         ClaimsAction::Search { query, limit } => {
             let results = store.search_claims(query, *limit)?;
             for (id, statement, status, _rank) in &results {

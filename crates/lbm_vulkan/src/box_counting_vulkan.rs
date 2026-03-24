@@ -5,7 +5,7 @@
 //!
 //! Mirrors the API of `lbm_3d_cuda::box_counting_gpu::GpuBoxCounter`.
 
-use crate::compute::{compile_wgsl, VulkanEngineError};
+use crate::compute::{VulkanEngineError, compile_wgsl};
 
 /// Compile the box-counting WGSL shader to SPIR-V words.
 pub fn compile_box_counting_shader() -> Result<Vec<u32>, VulkanEngineError> {

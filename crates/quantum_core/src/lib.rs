@@ -201,12 +201,6 @@ pub mod qec_boxkite;
 pub mod stabilizer_like;
 
 pub use verified_core::coupler_manifold::{
-    CouplerPoint,
-    CouplerJacobian,
-    IdentifiabilityAudit,
-    suppression_factor,
-    suppression_elasticity,
-    qec,
-    mipt,
-    tree_geometry,
+    CouplerJacobian, CouplerPoint, IdentifiabilityAudit, mipt, qec, suppression_elasticity,
+    suppression_factor, tree_geometry,
 };

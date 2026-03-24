@@ -145,7 +145,7 @@ pub fn is_alternative_element(a: &[f64], atol: f64) -> bool {
         }
         basis[i] = 1.0;
         let a_ei = cd_multiply(a, &basis);
-        let lhs = cd_multiply(a, &a_ei);      // a*(a*e_i)
+        let lhs = cd_multiply(a, &a_ei); // a*(a*e_i)
         let rhs = cd_multiply(&a_sq, &basis); // (a*a)*e_i
         for k in 0..dim {
             if (lhs[k] - rhs[k]).abs() > atol {
@@ -174,9 +174,7 @@ pub fn is_alternative_element(a: &[f64], atol: f64) -> bool {
 /// - `a`: element to test
 /// - `atol`: absolute tolerance
 pub fn is_special_element(a: &[f64], atol: f64) -> bool {
-    is_purely_imaginary(a)
-        && (cd_norm_sq(a) - 1.0).abs() < atol
-        && is_alternative_element(a, atol)
+    is_purely_imaginary(a) && (cd_norm_sq(a) - 1.0).abs() < atol && is_alternative_element(a, atol)
 }
 
 /// Returns `true` if `{a, b}` is a special couple (Ch. II, p.20).
@@ -411,6 +409,9 @@ mod tests {
                 }
             }
         }
-        assert!(found, "A_4 must contain a non-alternative element (algebra is not alternative)");
+        assert!(
+            found,
+            "A_4 must contain a non-alternative element (algebra is not alternative)"
+        );
     }
 }

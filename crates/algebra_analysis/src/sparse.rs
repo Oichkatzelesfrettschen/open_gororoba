@@ -42,7 +42,10 @@ pub struct SparseState {
 impl SparseState {
     /// Create a zero state in the given dimension.
     pub fn zero(dim: usize) -> Self {
-        Self { dim, components: Vec::new() }
+        Self {
+            dim,
+            components: Vec::new(),
+        }
     }
 
     /// Create from a dense slice, dropping components with |v| <= threshold.
@@ -59,15 +62,22 @@ impl SparseState {
     /// Create from explicit (axis, value) pairs. Sorts by axis index.
     pub fn from_pairs(dim: usize, mut pairs: Vec<(usize, f64)>) -> Self {
         pairs.sort_by_key(|(idx, _)| *idx);
-        Self { dim, components: pairs }
+        Self {
+            dim,
+            components: pairs,
+        }
     }
 
     /// Number of nonzero components.
-    pub fn nnz(&self) -> usize { self.components.len() }
+    pub fn nnz(&self) -> usize {
+        self.components.len()
+    }
 
     /// Sparsity ratio: 1.0 = fully zero, 0.0 = fully dense.
     pub fn sparsity(&self) -> f64 {
-        if self.dim == 0 { return 1.0; }
+        if self.dim == 0 {
+            return 1.0;
+        }
         1.0 - (self.components.len() as f64 / self.dim as f64)
     }
 
@@ -77,7 +87,9 @@ impl SparseState {
     }
 
     /// L2 norm.
-    pub fn norm(&self) -> f64 { self.norm_sq().sqrt() }
+    pub fn norm(&self) -> f64 {
+        self.norm_sq().sqrt()
+    }
 
     /// Inner product (overlap integral) via merge-join on sorted axis lists.
     ///
@@ -106,9 +118,13 @@ impl SparseState {
             let (ai, vi) = self.components[i];
             let (aj, vj) = other.components[j];
             match ai.cmp(&aj) {
-                std::cmp::Ordering::Less    => i += 1,
+                std::cmp::Ordering::Less => i += 1,
                 std::cmp::Ordering::Greater => j += 1,
-                std::cmp::Ordering::Equal   => { result += vi * vj; i += 1; j += 1; }
+                std::cmp::Ordering::Equal => {
+                    result += vi * vj;
+                    i += 1;
+                    j += 1;
+                }
             }
         }
         result
@@ -117,13 +133,17 @@ impl SparseState {
     /// Convert to dense representation.
     pub fn to_dense(&self) -> Vec<f64> {
         let mut dense = vec![0.0; self.dim];
-        for &(idx, val) in &self.components { dense[idx] = val; }
+        for &(idx, val) in &self.components {
+            dense[idx] = val;
+        }
         dense
     }
 
     /// Scale all components in place.
     pub fn scale(&mut self, factor: f64) {
-        for (_, v) in &mut self.components { *v *= factor; }
+        for (_, v) in &mut self.components {
+            *v *= factor;
+        }
     }
 
     /// Add two sparse states, merging component lists.
@@ -136,29 +156,51 @@ impl SparseState {
             let (ai, vi) = self.components[i];
             let (aj, vj) = other.components[j];
             match ai.cmp(&aj) {
-                std::cmp::Ordering::Less    => { result.push((ai, vi)); i += 1; }
-                std::cmp::Ordering::Greater => { result.push((aj, vj)); j += 1; }
-                std::cmp::Ordering::Equal   => {
+                std::cmp::Ordering::Less => {
+                    result.push((ai, vi));
+                    i += 1;
+                }
+                std::cmp::Ordering::Greater => {
+                    result.push((aj, vj));
+                    j += 1;
+                }
+                std::cmp::Ordering::Equal => {
                     let sum = vi + vj;
-                    if sum.abs() > 1e-15 { result.push((ai, sum)); }
-                    i += 1; j += 1;
+                    if sum.abs() > 1e-15 {
+                        result.push((ai, sum));
+                    }
+                    i += 1;
+                    j += 1;
                 }
             }
         }
-        while i < self.components.len() { result.push(self.components[i]); i += 1; }
-        while j < other.components.len() { result.push(other.components[j]); j += 1; }
-        Self { dim: self.dim, components: result }
+        while i < self.components.len() {
+            result.push(self.components[i]);
+            i += 1;
+        }
+        while j < other.components.len() {
+            result.push(other.components[j]);
+            j += 1;
+        }
+        Self {
+            dim: self.dim,
+            components: result,
+        }
     }
 
     /// Shannon entropy H = -sum(p_i ln p_i) of the magnitude distribution.
     /// H = 0 for a single-axis state; H = ln(k) for k equal components.
     pub fn shannon_entropy(&self) -> f64 {
         let total: f64 = self.components.iter().map(|(_, v)| v.abs()).sum();
-        if total < 1e-15 { return 0.0; }
+        if total < 1e-15 {
+            return 0.0;
+        }
         let mut h = 0.0;
         for &(_, v) in &self.components {
             let p = v.abs() / total;
-            if p > 1e-15 { h -= p * p.ln(); }
+            if p > 1e-15 {
+                h -= p * p.ln();
+            }
         }
         h
     }
@@ -179,7 +221,9 @@ mod tests {
     #[test]
     fn from_dense_threshold() {
         let mut dense = vec![0.0; 256];
-        dense[0] = 1.0; dense[42] = -3.0; dense[100] = 0.5;
+        dense[0] = 1.0;
+        dense[42] = -3.0;
+        dense[100] = 0.5;
         let s = SparseState::from_dense(256, &dense, 1e-10);
         assert_eq!(s.nnz(), 3);
         assert!((s.norm_sq() - (1.0 + 9.0 + 0.25)).abs() < 1e-10);

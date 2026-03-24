@@ -45,7 +45,9 @@ impl Paper {
             return format!("arxiv:{}", self.arxiv_id);
         }
         // Normalize title for fuzzy matching
-        let normalized: String = self.title.to_lowercase()
+        let normalized: String = self
+            .title
+            .to_lowercase()
             .chars()
             .filter(|c| c.is_alphanumeric() || c.is_whitespace())
             .collect();
@@ -54,9 +56,13 @@ impl Paper {
 
     /// Citation key: lastname + year + first keyword.
     pub fn cite_key(&self) -> String {
-        let last = self.authors.first()
+        let last = self
+            .authors
+            .first()
             .map(|a| {
-                a.name.split_whitespace().last()
+                a.name
+                    .split_whitespace()
+                    .last()
                     .unwrap_or("anon")
                     .to_lowercase()
                     .chars()
@@ -64,8 +70,14 @@ impl Paper {
                     .collect::<String>()
             })
             .unwrap_or_else(|| "anon".to_string());
-        let yr = if self.year > 0 { self.year.to_string() } else { "0000".to_string() };
-        let kw = self.title.split_whitespace()
+        let yr = if self.year > 0 {
+            self.year.to_string()
+        } else {
+            "0000".to_string()
+        };
+        let kw = self
+            .title
+            .split_whitespace()
             .find(|w| w.len() > 3 && w.chars().all(|c| c.is_alphabetic()))
             .map(|w| w.to_lowercase())
             .unwrap_or_default();

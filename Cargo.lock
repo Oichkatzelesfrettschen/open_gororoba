@@ -7148,6 +7148,7 @@ dependencies = [
 name = "pathion_ellip"
 version = "0.1.0"
 dependencies = [
+ "algebra_experimental",
  "anyhow",
  "approx",
  "cd_kernel",

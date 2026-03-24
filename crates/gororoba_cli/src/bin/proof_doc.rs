@@ -1,9 +1,7 @@
 //! proof_doc: Pure Rust port of `proofs/scripts/generate_rocqdoc.sh`.
 //! Produces browsable HTML documentation via rocq doc.
 
-use std::fs;
-use std::path::Path;
-use std::process::Command;
+use std::{fs, path::Path, process::Command};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let repo_root = Path::new(".");
@@ -43,10 +41,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     for v_file in theory_files.iter().chain(verified_files.iter()) {
-        let base = v_file.file_stem().and_then(|s| s.to_str()).unwrap_or_default();
+        let base = v_file
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default();
         println!("  rocq doc: {}", base);
         let output_file = out_dir.join(format!("{}.html", base));
-        
+
         let _ = Command::new("rocq")
             .arg("doc")
             .arg("--html")
@@ -67,19 +68,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "<!DOCTYPE html>\n<html><head><title>open_gororoba Proof Documentation</title>\n\
         <style>body{font-family:monospace;max-width:800px;margin:2em auto}\n\
         a{color:#2200cc}h2{border-bottom:1px solid #ccc;padding-bottom:0.3em}</style>\n\
-        </head><body>\n<h1>open_gororoba: Formal Proofs</h1>\n<h2>Theories</h2><ul>\n"
+        </head><body>\n<h1>open_gororoba: Formal Proofs</h1>\n<h2>Theories</h2><ul>\n",
     );
 
     for v_file in &theory_files {
-        let base = v_file.file_stem().and_then(|s| s.to_str()).unwrap_or_default();
-        index_content.push_str(&format!("<li><a href=\"{}.html\">{}</a></li>\n", base, base));
+        let base = v_file
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default();
+        index_content.push_str(&format!(
+            "<li><a href=\"{}.html\">{}</a></li>\n",
+            base, base
+        ));
     }
 
     index_content.push_str("</ul>\n<h2>Verified Claims</h2><ul>\n");
 
     for v_file in &verified_files {
-        let base = v_file.file_stem().and_then(|s| s.to_str()).unwrap_or_default();
-        index_content.push_str(&format!("<li><a href=\"{}.html\">{}</a></li>\n", base, base));
+        let base = v_file
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default();
+        index_content.push_str(&format!(
+            "<li><a href=\"{}.html\">{}</a></li>\n",
+            base, base
+        ));
     }
 
     index_content.push_str("</ul></body></html>\n");

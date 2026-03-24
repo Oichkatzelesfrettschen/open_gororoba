@@ -1,4 +1,3 @@
-use anyhow::{Context, Result, anyhow, bail};
 use algebra_analysis::{
     associator_entropy::decompose_entropy_adaptive,
     boxkite_alignment::compute_alignment,
@@ -7,6 +6,7 @@ use algebra_analysis::{
     },
     phase_transition::PhaseTransitionAnalyzer,
 };
+use anyhow::{Context, Result, anyhow, bail};
 use cd_kernel::cayley_dickson::{cd_associator_norm, cd_basis_mul_sign, cd_norm_sq};
 use chrono::{DateTime, Duration, TimeZone, Utc};
 use clap::Parser;
@@ -190,7 +190,8 @@ fn build_algebra_references() -> Vec<AlgebraReference> {
         .iter()
         .map(|&cd_dim| {
             let analyzer = PhaseTransitionAnalyzer::new(cd_dim);
-            let defect_density_mc = analyzer.calculate_defect_density(4096, 0xC0A1_0000 + cd_dim as u64);
+            let defect_density_mc =
+                analyzer.calculate_defect_density(4096, 0xC0A1_0000 + cd_dim as u64);
             let entropy = decompose_entropy_adaptive(
                 cd_dim,
                 entropy_sample_budget(cd_dim),
@@ -222,14 +223,21 @@ fn build_rows(datasets: &[DatasetCloud], algebra_refs: &[AlgebraReference]) -> V
             }
 
             let epsilon = epsilon_from_knn(&window_points, 4).max(1e-6);
-            let ultrametric = local_ultrametricity_test_nd(&window_points, epsilon, 48, 64, 0x5EED_1000 + reference.cd_dim as u64);
+            let ultrametric = local_ultrametricity_test_nd(
+                &window_points,
+                epsilon,
+                48,
+                64,
+                0x5EED_1000 + reference.cd_dim as u64,
+            );
             let associators = sampled_associator_norms(&window_points);
             let graph = knn_graph(&window_points, KNN_K);
             let observed_graph_metrics = graph_metrics(&graph);
             let parity_ref = graph_metrics(&generate_zd_parity_cliques(window_points.len()));
             let pathion_ref = (window_points.len() >= 64)
                 .then(|| graph_metrics(&generate_pathion_matching(window_points.len())));
-            let (mean_boxkite_capture, dominant_boxkite_share) = boxkite_summary(&window_points, reference.cd_dim);
+            let (mean_boxkite_capture, dominant_boxkite_share) =
+                boxkite_summary(&window_points, reference.cd_dim);
 
             let csv = CsvRow {
                 dataset_id: dataset.dataset_id.clone(),
@@ -721,7 +729,11 @@ fn read_fits_massmap_points(path: &Path) -> Result<Vec<Vec<f64>>> {
     let (ny, nx) = match &hdu.info {
         HduInfo::ImageInfo { shape, .. } if shape.len() == 2 => (shape[0], shape[1]),
         HduInfo::ImageInfo { shape, .. } => {
-            bail!("expected 2D FITS image at {}, found shape {:?}", path.display(), shape)
+            bail!(
+                "expected 2D FITS image at {}, found shape {:?}",
+                path.display(),
+                shape
+            )
         }
         _ => bail!("expected image HDU at {}", path.display()),
     };
@@ -999,11 +1011,7 @@ fn boxkite_summary(points: &[Vec<f64>], cd_dim: usize) -> (Option<f64>, Option<f
     for point in points {
         let spectrum = compute_alignment(&point[..16]);
         captures.push(spectrum.total_captured);
-        let dominant_weight = spectrum
-            .weights
-            .iter()
-            .copied()
-            .fold(0.0_f64, f64::max);
+        let dominant_weight = spectrum.weights.iter().copied().fold(0.0_f64, f64::max);
         dominant.push(dominant_weight);
     }
 

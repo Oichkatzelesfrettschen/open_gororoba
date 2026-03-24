@@ -2,8 +2,7 @@ use anyhow::Result;
 use num_complex::Complex64;
 use plotters::prelude::*;
 use rustfft::FftPlanner;
-use std::f64::consts::PI;
-use std::path::PathBuf;
+use std::{f64::consts::PI, path::PathBuf};
 
 fn integrate_trapezoidal(y: &[f64], dx: f64) -> f64 {
     let mut sum = 0.0;
@@ -19,13 +18,19 @@ fn main() -> Result<()> {
     let n = 1024;
     let l_domain = 200.0;
     let dx = (2.0 * l_domain) / n as f64;
-    
+
     let x: Vec<f64> = (0..n).map(|i| -l_domain + i as f64 * dx).collect();
-    
-    let k: Vec<f64> = (0..n).map(|i| {
-        let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
-        2.0 * PI * freq / (n as f64 * dx)
-    }).collect();
+
+    let k: Vec<f64> = (0..n)
+        .map(|i| {
+            let freq = if i <= n / 2 {
+                i as f64
+            } else {
+                i as f64 - n as f64
+            };
+            2.0 * PI * freq / (n as f64 * dx)
+        })
+        .collect();
 
     let alpha = 1.5_f64;
     let d = 0.5_f64;
@@ -38,12 +43,15 @@ fn main() -> Result<()> {
     let x0 = -120.0;
     let k0 = 1.2;
     let sig = 8.0;
-    
-    let mut psi0: Vec<Complex64> = x.iter().map(|&xi| {
-        let amp = (-0.5 * ((xi - x0) / sig).powi(2)).exp();
-        let phase = k0 * xi;
-        Complex64::new(amp * phase.cos(), amp * phase.sin())
-    }).collect();
+
+    let mut psi0: Vec<Complex64> = x
+        .iter()
+        .map(|&xi| {
+            let amp = (-0.5 * ((xi - x0) / sig).powi(2)).exp();
+            let phase = k0 * xi;
+            Complex64::new(amp * phase.cos(), amp * phase.sin())
+        })
+        .collect();
 
     let density0: Vec<f64> = psi0.iter().map(|p| p.norm_sqr()).collect();
     let norm = integrate_trapezoidal(&density0, dx).sqrt();
@@ -51,10 +59,13 @@ fn main() -> Result<()> {
         *p /= norm;
     }
 
-    let phase_k: Vec<Complex64> = k.iter().map(|&ki| {
-        let phase = -d * ki.abs().powf(alpha) * dt;
-        Complex64::new(phase.cos(), phase.sin())
-    }).collect();
+    let phase_k: Vec<Complex64> = k
+        .iter()
+        .map(|&ki| {
+            let phase = -d * ki.abs().powf(alpha) * dt;
+            Complex64::new(phase.cos(), phase.sin())
+        })
+        .collect();
 
     let mut planner = FftPlanner::new();
     let fft = planner.plan_fft_forward(n);
@@ -75,13 +86,16 @@ fn main() -> Result<()> {
     }
 
     let run_abs = |eta: f64, m_order: i32, xc: f64| -> Vec<Complex64> {
-        let absorb: Vec<f64> = x.iter().map(|&xi| {
-            if xi.abs() > xc {
-                (-eta * (xi.abs() - xc).powi(m_order)).exp()
-            } else {
-                1.0
-            }
-        }).collect();
+        let absorb: Vec<f64> = x
+            .iter()
+            .map(|&xi| {
+                if xi.abs() > xc {
+                    (-eta * (xi.abs() - xc).powi(m_order)).exp()
+                } else {
+                    1.0
+                }
+            })
+            .collect();
 
         let mut psi = psi0.clone();
         let mut local_planner = FftPlanner::new();
@@ -108,7 +122,13 @@ fn main() -> Result<()> {
     let total_runs = orders.len() * etas.len() * xcs.len();
     println!("Starting parameter sweep ({} combinations)...", total_runs);
 
-    struct Point { m_edge: f64, e_int: f64, m: i32, eta: f64, xc: f64 }
+    struct Point {
+        m_edge: f64,
+        e_int: f64,
+        m: i32,
+        eta: f64,
+        xc: f64,
+    }
     let mut points = Vec::new();
     let mut count = 0;
 
@@ -116,7 +136,7 @@ fn main() -> Result<()> {
         for &eta in &etas {
             for &xc in &xcs {
                 let psi_abs = run_abs(eta, m, xc);
-                
+
                 // Edge mass
                 let mut edge_density = Vec::new();
                 for i in 0..n {
@@ -135,7 +155,13 @@ fn main() -> Result<()> {
                 }
                 let e_int = integrate_trapezoidal(&int_diff_sq, dx).sqrt();
 
-                points.push(Point { m_edge, e_int, m, eta, xc });
+                points.push(Point {
+                    m_edge,
+                    e_int,
+                    m,
+                    eta,
+                    xc,
+                });
                 count += 1;
                 if count % 5 == 0 {
                     println!("Progress: {}/{}", count, total_runs);
@@ -153,7 +179,11 @@ fn main() -> Result<()> {
     let root = BitMapBackend::new(&out_path, (3160, 2820)).into_drawing_area();
     root.fill(&RGBColor(13, 15, 20))?;
 
-    let min_x = points.iter().map(|p| p.m_edge).fold(f64::INFINITY, f64::min) * 0.5;
+    let min_x = points
+        .iter()
+        .map(|p| p.m_edge)
+        .fold(f64::INFINITY, f64::min)
+        * 0.5;
     let max_x = points.iter().map(|p| p.m_edge).fold(0.0, f64::max) * 2.0;
     let min_y = points.iter().map(|p| p.e_int).fold(f64::INFINITY, f64::min) * 0.5;
     let max_y = points.iter().map(|p| p.e_int).fold(0.0, f64::max) * 2.0;
@@ -162,10 +192,14 @@ fn main() -> Result<()> {
         .margin(100)
         .x_label_area_size(80)
         .y_label_area_size(100)
-        .caption("Absorber Pareto: Edge mass vs Interior distortion (alpha=1.5)", ("sans-serif", 60).into_font().color(&WHITE))
+        .caption(
+            "Absorber Pareto: Edge mass vs Interior distortion (alpha=1.5)",
+            ("sans-serif", 60).into_font().color(&WHITE),
+        )
         .build_cartesian_2d((min_x..max_x).log_scale(), (min_y..max_y).log_scale())?;
 
-    chart.configure_mesh()
+    chart
+        .configure_mesh()
         .x_desc("Edge mass M_edge (down better)")
         .y_desc("Interior distortion E_int (down better)")
         .axis_style(RGBColor(31, 41, 55))

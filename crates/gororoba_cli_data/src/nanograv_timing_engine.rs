@@ -1,12 +1,17 @@
-use crate::nanograv_refit::load_phase1_models_from_report;
-use crate::nanograv_timing_model::{BinaryFamily, ReleaseBand, TimingModel};
-use anyhow::{Context, Result, anyhow, bail};
+use crate::{
+    nanograv_refit::load_phase1_models_from_report,
+    nanograv_timing_model::{BinaryFamily, ReleaseBand, TimingModel},
+};
 use anise::{
     constants::frames::{EARTH_ITRF93, EARTH_J2000, SSB_J2000, SUN_J2000},
     naif::kpl::parser::convert_tpc,
     prelude::{Almanac, Orbit},
 };
-use faer::{Mat as FaerMat, Side, prelude::{SpSolver, SpSolverLstsq}};
+use anyhow::{Context, Result, anyhow, bail};
+use faer::{
+    Mat as FaerMat, Side,
+    prelude::{SpSolver, SpSolverLstsq},
+};
 use hifitime::{Epoch, TimeScale};
 use nalgebra::{DMatrix, DVector};
 use rayon::prelude::*;
@@ -302,13 +307,19 @@ pub struct TimingEphemeris {
 }
 
 trait TimingModelExt {
-    fn parameter_term_local(&self, name: &str) -> Option<&crate::nanograv_timing_model::ParameterTerm>;
+    fn parameter_term_local(
+        &self,
+        name: &str,
+    ) -> Option<&crate::nanograv_timing_model::ParameterTerm>;
     fn parameter_value_local(&self, name: &str) -> Option<f64>;
     fn parameter_bool_local(&self, name: &str) -> Option<bool>;
 }
 
 impl TimingModelExt for TimingModel {
-    fn parameter_term_local(&self, name: &str) -> Option<&crate::nanograv_timing_model::ParameterTerm> {
+    fn parameter_term_local(
+        &self,
+        name: &str,
+    ) -> Option<&crate::nanograv_timing_model::ParameterTerm> {
         let astrometry = [
             self.astrometry.raj.as_ref(),
             self.astrometry.decj.as_ref(),
@@ -355,11 +366,15 @@ impl TimingModelExt for TimingModel {
 
 impl TimingEphemeris {
     pub fn load_default() -> Result<Self> {
-        let ephemeris_path = [PathBuf::from("data/external/de440.bsp"), PathBuf::from("data/external/de440s.bsp")]
-            .into_iter()
-            .find(|candidate| candidate.exists())
-            .ok_or_else(|| anyhow!("missing local DE440 ephemeris under data/external"))?;
-        let bpc_path = PathBuf::from("data/external/nanograv_timing_engine/earth_latest_high_prec.bpc");
+        let ephemeris_path = [
+            PathBuf::from("data/external/de440.bsp"),
+            PathBuf::from("data/external/de440s.bsp"),
+        ]
+        .into_iter()
+        .find(|candidate| candidate.exists())
+        .ok_or_else(|| anyhow!("missing local DE440 ephemeris under data/external"))?;
+        let bpc_path =
+            PathBuf::from("data/external/nanograv_timing_engine/earth_latest_high_prec.bpc");
         let pck_path = PathBuf::from("data/external/nanograv_timing_engine/pck00011.tpc");
         let gm_path = PathBuf::from("data/external/nanograv_timing_engine/gm_de440.tpc");
         for dependency in [&bpc_path, &pck_path, &gm_path] {
@@ -517,7 +532,9 @@ pub fn build_independent_dataset(
     model: &TimingModel,
     ephemeris: &TimingEphemeris,
 ) -> Result<IndependentDataset> {
-    let tim_path = root.join("wideband/tim").join(format!("{}.tim", model.solution_id));
+    let tim_path = root
+        .join("wideband/tim")
+        .join(format!("{}.tim", model.solution_id));
     let all_toas = parse_tempo2_toas(&tim_path)?;
     if all_toas.is_empty() {
         bail!("no TOAs parsed from {}", tim_path.display());
@@ -539,7 +556,10 @@ pub fn build_independent_dataset(
         "GLS covariance combines an inflated white-noise floor with short-timescale Matern and long-timescale Fourier process terms, plus a coupled DM process in the joint phase-plus-DM system.".to_string(),
         "All available wideband frontend/backend groups are retained; release JUMP, DMJUMP, EFAC, EQUAD, DMEFAC, DMEQUAD, and ECORR terms are interpreted through their selectors instead of collapsing to the dominant -f subgroup only.".to_string(),
     ];
-    if matches!(model.binary_family, Some(BinaryFamily::Ell1 | BinaryFamily::Ell1h)) {
+    if matches!(
+        model.binary_family,
+        Some(BinaryFamily::Ell1 | BinaryFamily::Ell1h)
+    ) {
         simplification_notes.push(
             "ELL1-family forward model follows cached PINT small-eccentricity formulas through O(e^3); ELL1H now matches the cached branch structure: H3-only uses the truncated higher-harmonic approximation, H3+H4 uses the higher-harmonic approximation with stigma = H4/H3, and H3+STIGMA uses the exact orthometric form.".to_string(),
         );
@@ -573,7 +593,11 @@ pub fn build_independent_dataset(
     let mut observations = all_toas
         .par_iter()
         .map(|toa| {
-            let subgroup = toa.flags.get("-f").cloned().unwrap_or_else(|| "unlabeled".to_string());
+            let subgroup = toa
+                .flags
+                .get("-f")
+                .cloned()
+                .unwrap_or_else(|| "unlabeled".to_string());
             let epoch_tdb = Epoch::from_mjd_utc(toa.mjd_utc).to_time_scale(TimeScale::TDB);
             let static_delay = ephemeris.static_delay_context(epoch_tdb, toa.site)?;
             let residual_s = independent_residual_seconds_cached(
@@ -737,7 +761,10 @@ pub fn solve_independent_refit(
 ) -> Result<IndependentRefitResult> {
     let parameter_names = fit_parameter_names(&dataset.model, &dataset.observations);
     if parameter_names.is_empty() {
-        bail!("no independent fit parameters for {}", dataset.model.solution_id);
+        bail!(
+            "no independent fit parameters for {}",
+            dataset.model.solution_id
+        );
     }
     let covariance_preset =
         covariance_preset_for_dataset(dataset, gls_corr_length_days, gls_red_noise_fraction);
@@ -756,7 +783,11 @@ pub fn solve_independent_refit(
                 r * r
             })
             .sum();
-        if n_phase > 0 { (sumsq / n_phase as f64).sqrt() } else { 0.0 }
+        if n_phase > 0 {
+            (sumsq / n_phase as f64).sqrt()
+        } else {
+            0.0
+        }
     };
     let dm_rms_floor = {
         let dm_values = joint
@@ -775,9 +806,12 @@ pub fn solve_independent_refit(
         dm_rms_floor,
     );
     let mut gls = solve_generalized_least_squares(&joint.design, &joint.response, &covariance)?;
-    let (mut rows, mut summary) = build_rows_and_summary(dataset, &joint, &wls, &gls, gls_ridge_factor);
-    let gls_bad_residual = summary.residual_rms_after_gls_us > 3.0 * summary.residual_rms_after_wls_us;
-    let gls_bad_weighted = summary.weighted_rms_after_gls_us > 3.0 * summary.weighted_rms_after_wls_us;
+    let (mut rows, mut summary) =
+        build_rows_and_summary(dataset, &joint, &wls, &gls, gls_ridge_factor);
+    let gls_bad_residual =
+        summary.residual_rms_after_gls_us > 3.0 * summary.residual_rms_after_wls_us;
+    let gls_bad_weighted =
+        summary.weighted_rms_after_gls_us > 3.0 * summary.weighted_rms_after_wls_us;
     let gls_bad_dm = match (summary.dm_rms_after_gls, summary.dm_rms_after_wls) {
         (Some(gls_dm), Some(wls_dm)) => gls_dm > 20.0 * wls_dm.max(1.0e-12),
         _ => false,
@@ -854,18 +888,30 @@ fn build_rows_and_summary(
     let dm_rms_before = optional_rms(&dm_before);
     let dm_rms_after_wls = optional_rms(&dm_after_wls);
     let dm_rms_after_gls = optional_rms(&dm_after_gls);
-    let raw_improvement_wls_frac = fractional_improvement(residual_rms_before_us, residual_rms_after_wls_us);
-    let raw_improvement_gls_frac = fractional_improvement(residual_rms_before_us, residual_rms_after_gls_us);
+    let raw_improvement_wls_frac =
+        fractional_improvement(residual_rms_before_us, residual_rms_after_wls_us);
+    let raw_improvement_gls_frac =
+        fractional_improvement(residual_rms_before_us, residual_rms_after_gls_us);
     let weighted_improvement_wls_frac =
         fractional_improvement(weighted_rms_before_us, weighted_rms_after_wls_us);
     let weighted_improvement_gls_frac =
         fractional_improvement(weighted_rms_before_us, weighted_rms_after_gls_us);
-    let dm_improvement_wls_frac = dm_rms_before.zip(dm_rms_after_wls).map(|(before, after)| fractional_improvement(before, after));
-    let dm_improvement_gls_frac = dm_rms_before.zip(dm_rms_after_gls).map(|(before, after)| fractional_improvement(before, after));
-    let synthesis_score_wls =
-        synthesis_score(raw_improvement_wls_frac, weighted_improvement_wls_frac, dm_improvement_wls_frac);
-    let synthesis_score_gls =
-        synthesis_score(raw_improvement_gls_frac, weighted_improvement_gls_frac, dm_improvement_gls_frac);
+    let dm_improvement_wls_frac = dm_rms_before
+        .zip(dm_rms_after_wls)
+        .map(|(before, after)| fractional_improvement(before, after));
+    let dm_improvement_gls_frac = dm_rms_before
+        .zip(dm_rms_after_gls)
+        .map(|(before, after)| fractional_improvement(before, after));
+    let synthesis_score_wls = synthesis_score(
+        raw_improvement_wls_frac,
+        weighted_improvement_wls_frac,
+        dm_improvement_wls_frac,
+    );
+    let synthesis_score_gls = synthesis_score(
+        raw_improvement_gls_frac,
+        weighted_improvement_gls_frac,
+        dm_improvement_gls_frac,
+    );
     let raw_prefers_gls = raw_improvement_gls_frac > raw_improvement_wls_frac;
     let weighted_prefers_gls = weighted_improvement_gls_frac > weighted_improvement_wls_frac;
     let recommended_solver = if synthesis_score_gls > synthesis_score_wls {
@@ -949,9 +995,9 @@ fn build_joint_system(
     for (phase_row, observation) in dataset.observations.iter().enumerate() {
         if let (Some(pp_dm), Some(pp_dme)) = (observation.pp_dm, observation.pp_dme) {
             response[next_dm_row] = pp_dm - observation.dm_model;
-            sigma[next_dm_row] = observation_cache[phase_row].dm_sigma.unwrap_or_else(|| {
-                effective_dm_sigma(&dataset.model, observation, pp_dme)
-            });
+            sigma[next_dm_row] = observation_cache[phase_row]
+                .dm_sigma
+                .unwrap_or_else(|| effective_dm_sigma(&dataset.model, observation, pp_dme));
             dm_row_of_phase[phase_row] = Some(next_dm_row);
             next_dm_row += 1;
         }
@@ -1005,11 +1051,9 @@ fn build_joint_system(
             continue;
         }
         if let Some(index) = parse_selector_parameter_index(name, "JUMP@") {
-            let jump = dataset
-                .model
-                .jumps
-                .get(index)
-                .ok_or_else(|| anyhow!("{} missing jump index {}", dataset.model.solution_id, index))?;
+            let jump = dataset.model.jumps.get(index).ok_or_else(|| {
+                anyhow!("{} missing jump index {}", dataset.model.solution_id, index)
+            })?;
             for (row_index, observation) in dataset.observations.iter().enumerate() {
                 if observation_cache[row_index]
                     .jump_matches
@@ -1023,11 +1067,13 @@ fn build_joint_system(
             continue;
         }
         if let Some(index) = parse_selector_parameter_index(name, "DMJUMP@") {
-            let jump = dataset
-                .model
-                .dmjumps
-                .get(index)
-                .ok_or_else(|| anyhow!("{} missing dmjump index {}", dataset.model.solution_id, index))?;
+            let jump = dataset.model.dmjumps.get(index).ok_or_else(|| {
+                anyhow!(
+                    "{} missing dmjump index {}",
+                    dataset.model.solution_id,
+                    index
+                )
+            })?;
             for (row_index, observation) in dataset.observations.iter().enumerate() {
                 let matches = observation_cache[row_index]
                     .dmjump_matches
@@ -1035,9 +1081,12 @@ fn build_joint_system(
                     .copied()
                     .unwrap_or_else(|| tagged_term_matches_observation(jump, observation));
                 if matches {
-                    design[(row_index, col_index)] = -observation_cache[row_index].dm_delay_coeff_s_per_dm;
+                    design[(row_index, col_index)] =
+                        -observation_cache[row_index].dm_delay_coeff_s_per_dm;
                 }
-                if let Some(dm_row_index) = dm_row_of_phase[row_index] && matches {
+                if let Some(dm_row_index) = dm_row_of_phase[row_index]
+                    && matches
+                {
                     design[(dm_row_index, col_index)] = -1.0;
                 }
             }
@@ -1115,7 +1164,10 @@ fn build_joint_system(
     })
 }
 
-fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservation]) -> Vec<String> {
+fn fit_parameter_names(
+    model: &TimingModel,
+    observations: &[IndependentObservation],
+) -> Vec<String> {
     let mut names = vec!["PHASE_OFFSET".to_string()];
     if model.parameter_value_local("F0").is_some() {
         names.push("F0".to_string());
@@ -1134,7 +1186,8 @@ fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservati
     let touched_windows = observations
         .iter()
         .flat_map(|observation| {
-            model.dispersion
+            model
+                .dispersion
                 .dmx_windows
                 .iter()
                 .filter(move |window| {
@@ -1157,7 +1210,11 @@ fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservati
             .jumps
             .iter()
             .enumerate()
-            .filter(|(_, term)| observations.iter().any(|observation| tagged_term_matches_observation(term, observation)))
+            .filter(|(_, term)| {
+                observations
+                    .iter()
+                    .any(|observation| tagged_term_matches_observation(term, observation))
+            })
             .map(|(index, _)| format!("JUMP@{index}")),
     );
     names.extend(
@@ -1165,7 +1222,11 @@ fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservati
             .dmjumps
             .iter()
             .enumerate()
-            .filter(|(_, term)| observations.iter().any(|observation| tagged_term_matches_observation(term, observation)))
+            .filter(|(_, term)| {
+                observations
+                    .iter()
+                    .any(|observation| tagged_term_matches_observation(term, observation))
+            })
             .map(|(index, _)| format!("DMJUMP@{index}")),
     );
 
@@ -1182,17 +1243,7 @@ fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservati
     match model.binary_family.as_ref() {
         Some(BinaryFamily::Ell1) | Some(BinaryFamily::Ell1h) => {
             for name in [
-                "A1",
-                "TASC",
-                "EPS1",
-                "EPS2",
-                "FB0",
-                "FB1",
-                "FB2",
-                "FB3",
-                "H3",
-                "H4",
-                "STIGMA",
+                "A1", "TASC", "EPS1", "EPS2", "FB0", "FB1", "FB2", "FB3", "H3", "H4", "STIGMA",
             ] {
                 if model.parameter_value_local(name).is_some() {
                     names.push(name.to_string());
@@ -1213,7 +1264,9 @@ fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservati
         // They have a direct analytic effect on the Shapiro delay term; omitting them means
         // Shapiro delay residuals are absorbed into orbital elements, biasing T0 and OM.
         Some(BinaryFamily::Dd) => {
-            for name in ["A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "M2", "SINI"] {
+            for name in [
+                "A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "M2", "SINI",
+            ] {
                 if model.parameter_value_local(name).is_some() {
                     names.push(name.to_string());
                 }
@@ -1221,7 +1274,8 @@ fn fit_parameter_names(model: &TimingModel, observations: &[IndependentObservati
         }
         Some(BinaryFamily::Ddk) => {
             for name in [
-                "A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "KIN", "KOM", "M2", "SINI",
+                "A1", "PB", "ECC", "T0", "OM", "OMDOT", "PBDOT", "GAMMA", "KIN", "KOM", "M2",
+                "SINI",
             ] {
                 if model.parameter_value_local(name).is_some() {
                     names.push(name.to_string());
@@ -1251,12 +1305,13 @@ fn independent_residual_seconds_cached(
     let roemer_s = dot3(context.site_barycentric_km, context.sky_unit) / C_KM_PER_S;
     let parallax_s = astrometry
         .parallax_distance_km
-        .map(|distance_km| parallax_delay_seconds(context.site_barycentric_km, context.sky_unit, distance_km))
+        .map(|distance_km| {
+            parallax_delay_seconds(context.site_barycentric_km, context.sky_unit, distance_km)
+        })
         .unwrap_or(0.0);
     let shapiro_s = solar_system_shapiro_seconds(context.sun_from_earth_km, context.sky_unit);
     let binary_s = binary_delay_seconds(model, toa.mjd_utc, &context, overrides)?;
-    let dm_s = DM_DELAY_S_PER_MHZ2_DM
-        * dispersion_measure(model, overrides, toa.mjd_utc)
+    let dm_s = DM_DELAY_S_PER_MHZ2_DM * dispersion_measure(model, overrides, toa.mjd_utc)
         / (toa.frequency_mhz * toa.frequency_mhz);
     let barycentric_tdb_s =
         epoch_tdb.to_tdb_seconds() + roemer_s + parallax_s + shapiro_s + binary_s - dm_s;
@@ -1270,7 +1325,11 @@ fn independent_residual_seconds_cached(
     Ok(wrapped_cycles / spin_frequency_hz(model, overrides)? - fd_s)
 }
 
-fn spin_phase(model: &TimingModel, barycentric_tdb_s: f64, overrides: &BTreeMap<String, f64>) -> Result<f64> {
+fn spin_phase(
+    model: &TimingModel,
+    barycentric_tdb_s: f64,
+    overrides: &BTreeMap<String, f64>,
+) -> Result<f64> {
     let pepoch_mjd = parameter_current_value(model, "PEPOCH")
         .or_else(|_| parameter_current_value(model, "POSEPOCH"))?;
     let pepoch_tdb_s = Epoch::from_mjd_in_time_scale(pepoch_mjd, TimeScale::TDB).to_tdb_seconds();
@@ -1311,7 +1370,10 @@ fn astrometric_state(
         .copied()
         .or_else(|| model.parameter_value_local("ELONG"))
     else {
-        bail!("{} missing numeric ELONG/ELAT astrometry", model.solution_id);
+        bail!(
+            "{} missing numeric ELONG/ELAT astrometry",
+            model.solution_id
+        );
     };
     let base_elat_deg = overrides
         .get("ELAT")
@@ -1324,7 +1386,8 @@ fn astrometric_state(
         .or_else(|| model.parameter_value_local("POSEPOCH"))
         .or_else(|| model.parameter_value_local("PEPOCH"))
         .unwrap_or(epoch_tdb.to_jde_tdb_days() - 2_400_000.5);
-    let posepoch_tdb_s = Epoch::from_mjd_in_time_scale(posepoch_mjd, TimeScale::TDB).to_tdb_seconds();
+    let posepoch_tdb_s =
+        Epoch::from_mjd_in_time_scale(posepoch_mjd, TimeScale::TDB).to_tdb_seconds();
     let dt_years = (epoch_tdb.to_tdb_seconds() - posepoch_tdb_s) / JULIAN_YEAR_S;
     let base_elong_rad = base_elong_deg.to_radians();
     let base_elat_rad = base_elat_deg.to_radians();
@@ -1342,8 +1405,8 @@ fn astrometric_state(
         * MAS_TO_RAD;
     let cos_lat = base_elat_rad.cos().abs().max(1.0e-12);
     let elong_rad = base_elong_rad + dt_years * pmelong_rad_yr / cos_lat;
-    let elat_rad = (base_elat_rad + dt_years * pmelat_rad_yr)
-        .clamp(-0.5 * PI + 1.0e-12, 0.5 * PI - 1.0e-12);
+    let elat_rad =
+        (base_elat_rad + dt_years * pmelat_rad_yr).clamp(-0.5 * PI + 1.0e-12, 0.5 * PI - 1.0e-12);
     let sky_unit_ecliptic = sky_unit_from_ecliptic(elong_rad, elat_rad);
     let sky_unit_equatorial = ecliptic_to_equatorial(sky_unit_ecliptic);
     let parallax_distance_km = parallax_distance_km(model, overrides);
@@ -1375,7 +1438,12 @@ fn dispersion_measure(model: &TimingModel, overrides: &BTreeMap<String, f64>, mj
         })
         .filter_map(|window| {
             let term = window.dmx.as_ref()?;
-            Some(overrides.get(&term.name).copied().unwrap_or(term.value.unwrap_or(0.0)))
+            Some(
+                overrides
+                    .get(&term.name)
+                    .copied()
+                    .unwrap_or(term.value.unwrap_or(0.0)),
+            )
         })
         .sum::<f64>();
     dm + dmx
@@ -1429,8 +1497,7 @@ fn ell1_delay_seconds(
     let orbits = ell1_orbits(model, overrides, ttasc_s)?;
     let phi = 2.0 * PI * fract(orbits);
 
-    let dre_over_a1 = phi.sin()
-        + 0.5 * (eps2 * (2.0 * phi).sin() - eps1 * (2.0 * phi).cos())
+    let dre_over_a1 = phi.sin() + 0.5 * (eps2 * (2.0 * phi).sin() - eps1 * (2.0 * phi).cos())
         - 0.125
             * (5.0 * eps2 * eps2 * phi.sin()
                 - 3.0 * eps2 * eps2 * (3.0 * phi).sin()
@@ -1438,18 +1505,14 @@ fn ell1_delay_seconds(
                 + 6.0 * eps2 * eps1 * (3.0 * phi).cos()
                 + 3.0 * eps1 * eps1 * phi.sin()
                 + 3.0 * eps1 * eps1 * (3.0 * phi).sin());
-    let drep_over_a1 = phi.cos()
-        + eps1 * (2.0 * phi).sin()
-        + eps2 * (2.0 * phi).cos()
+    let drep_over_a1 = phi.cos() + eps1 * (2.0 * phi).sin() + eps2 * (2.0 * phi).cos()
         - 0.125
-            * (5.0 * eps2 * eps2 * phi.cos()
-                - 9.0 * eps2 * eps2 * (3.0 * phi).cos()
+            * (5.0 * eps2 * eps2 * phi.cos() - 9.0 * eps2 * eps2 * (3.0 * phi).cos()
                 + 2.0 * eps1 * eps2 * phi.sin()
                 - 18.0 * eps1 * eps2 * (3.0 * phi).sin()
                 + 3.0 * eps1 * eps1 * phi.cos()
                 + 9.0 * eps1 * eps1 * (3.0 * phi).cos());
-    let drepp_over_a1 = -phi.sin()
-        + 2.0 * eps1 * (2.0 * phi).cos()
+    let drepp_over_a1 = -phi.sin() + 2.0 * eps1 * (2.0 * phi).cos()
         - 2.0 * eps2 * (2.0 * phi).sin()
         - 0.125
             * (-5.0 * eps2 * eps2 * phi.sin()
@@ -1464,8 +1527,8 @@ fn ell1_delay_seconds(
     let nhat = 2.0 * PI / pb_s;
     let drep = a1 * drep_over_a1;
     let drepp = a1 * drepp_over_a1;
-    let delay_i = delay_r
-        * (1.0 - nhat * drep + (nhat * drep).powi(2) + 0.5 * nhat * nhat * delay_r * drepp);
+    let delay_i =
+        delay_r * (1.0 - nhat * drep + (nhat * drep).powi(2) + 0.5 * nhat * nhat * delay_r * drepp);
     let shapiro = if include_h3 {
         ell1h_shapiro_seconds(model, overrides, phi)
     } else {
@@ -1487,7 +1550,8 @@ fn ell1h_shapiro_seconds(model: &TimingModel, overrides: &BTreeMap<String, f64>,
         .get("STIGMA")
         .copied()
         .or_else(|| model.parameter_value_local("STIGMA"));
-    if let Some(stigma) = explicit_stigma.filter(|value| value.is_finite() && value.abs() > 1.0e-8) {
+    if let Some(stigma) = explicit_stigma.filter(|value| value.is_finite() && value.abs() > 1.0e-8)
+    {
         return ell1h_shapiro_exact_seconds(h3, stigma, phi);
     }
     let h4 = overrides
@@ -1539,7 +1603,11 @@ fn ell1h_shapiro_exact_seconds(h3: f64, stigma: f64, phi: f64) -> f64 {
     -2.0 / stigma.powi(3) * h3 * lognum.ln()
 }
 
-fn ell1_orbits(model: &TimingModel, overrides: &BTreeMap<String, f64>, ttasc_s: f64) -> Result<f64> {
+fn ell1_orbits(
+    model: &TimingModel,
+    overrides: &BTreeMap<String, f64>,
+    ttasc_s: f64,
+) -> Result<f64> {
     if model.parameter_value_local("FB0").is_some() {
         let mut value = 0.0;
         let mut power = 1.0;
@@ -1564,7 +1632,11 @@ fn ell1_orbits(model: &TimingModel, overrides: &BTreeMap<String, f64>, ttasc_s: 
     }
 }
 
-fn ell1_binary_period_seconds(model: &TimingModel, overrides: &BTreeMap<String, f64>, ttasc_s: f64) -> Result<f64> {
+fn ell1_binary_period_seconds(
+    model: &TimingModel,
+    overrides: &BTreeMap<String, f64>,
+    ttasc_s: f64,
+) -> Result<f64> {
     if model.parameter_value_local("FB0").is_some() {
         let mut derivative = 0.0;
         let mut power = 1.0;
@@ -1593,7 +1665,11 @@ fn ell1_binary_period_seconds(model: &TimingModel, overrides: &BTreeMap<String, 
     }
 }
 
-fn bt_delay_seconds(model: &TimingModel, mjd_utc: f64, overrides: &BTreeMap<String, f64>) -> Result<f64> {
+fn bt_delay_seconds(
+    model: &TimingModel,
+    mjd_utc: f64,
+    overrides: &BTreeMap<String, f64>,
+) -> Result<f64> {
     let state = orbital_state(model, mjd_utc, overrides)?;
     let omega_rad = bt_omega_rad(model, overrides, state.dt_s);
     let sin_e = state.eccentric_anomaly.sin();
@@ -1603,7 +1679,8 @@ fn bt_delay_seconds(model: &TimingModel, mjd_utc: f64, overrides: &BTreeMap<Stri
     let beta = state.a1_lt_s * omega_rad.cos() * root + state.gamma_s;
     let delay_l1 = alpha * (cos_e - state.ecc);
     let delay_l2 = beta * sin_e;
-    let num = state.a1_lt_s * omega_rad.cos() * root * cos_e - state.a1_lt_s * omega_rad.sin() * sin_e;
+    let num =
+        state.a1_lt_s * omega_rad.cos() * root * cos_e - state.a1_lt_s * omega_rad.sin() * sin_e;
     let den = (1.0 - state.ecc * cos_e).max(1.0e-12);
     let delay_r = 1.0 - 2.0 * PI * num / (den * state.pb_s);
     Ok((delay_l1 + delay_l2) * delay_r)
@@ -1648,14 +1725,8 @@ fn dd_family_delay_seconds(
     let drepp = -alpha * cos_e - (beta + state.gamma_s) * sin_e;
     let nhat = state.mean_motion_rad_s / (1.0 - state.ecc * cos_e).max(1.0e-12);
     let inverse = dre
-        * (1.0
-            - nhat * drep
-            + (nhat * drep).powi(2)
-            + 0.5 * nhat * nhat * dre * drepp
-            - 0.5
-                * state.ecc
-                * sin_e
-                / (1.0 - state.ecc * cos_e).max(1.0e-12)
+        * (1.0 - nhat * drep + (nhat * drep).powi(2) + 0.5 * nhat * nhat * dre * drepp
+            - 0.5 * state.ecc * sin_e / (1.0 - state.ecc * cos_e).max(1.0e-12)
                 * nhat
                 * nhat
                 * dre
@@ -1674,8 +1745,16 @@ fn dd_family_delay_seconds(
         })
         .unwrap_or(0.0)
         .clamp(0.0, 1.0);
-    let shapiro = dd_shapiro_delay_seconds(state.ecc, state.eccentric_anomaly, omega_rad, sini, model, overrides);
-    let aberration = dd_aberration_delay_seconds(model, overrides, omega_rad, state.true_anomaly, state.ecc);
+    let shapiro = dd_shapiro_delay_seconds(
+        state.ecc,
+        state.eccentric_anomaly,
+        omega_rad,
+        sini,
+        model,
+        overrides,
+    );
+    let aberration =
+        dd_aberration_delay_seconds(model, overrides, omega_rad, state.true_anomaly, state.ecc);
     Ok(inverse + shapiro + aberration)
 }
 
@@ -1694,8 +1773,9 @@ fn dd_shapiro_delay_seconds(
     let cos_e = eccentric_anomaly.cos();
     let sin_e = eccentric_anomaly.sin();
     let root = (1.0 - ecc * ecc).max(0.0).sqrt();
-    let argument =
-        1.0 - ecc * cos_e - sini * (omega_rad.sin() * (cos_e - ecc) + root * omega_rad.cos() * sin_e);
+    let argument = 1.0
+        - ecc * cos_e
+        - sini * (omega_rad.sin() * (cos_e - ecc) + root * omega_rad.cos() * sin_e);
     -2.0 * SOLAR_MASS_TIME_S * m2 * argument.max(1.0e-12).ln()
 }
 
@@ -1715,7 +1795,11 @@ fn dd_aberration_delay_seconds(
     a0 * (angle.sin() + ecc * omega_rad.sin()) + b0 * (angle.cos() + ecc * omega_rad.cos())
 }
 
-fn orbital_state(model: &TimingModel, mjd_utc: f64, overrides: &BTreeMap<String, f64>) -> Result<OrbitalState> {
+fn orbital_state(
+    model: &TimingModel,
+    mjd_utc: f64,
+    overrides: &BTreeMap<String, f64>,
+) -> Result<OrbitalState> {
     let pb_s = parameter_value_or(model, overrides, "PB")? * 86_400.0;
     let t0 = parameter_value_or(model, overrides, "T0")?;
     let dt_s = (mjd_utc - t0) * 86_400.0;
@@ -1741,13 +1825,19 @@ fn orbital_state(model: &TimingModel, mjd_utc: f64, overrides: &BTreeMap<String,
 
 fn bt_omega_rad(model: &TimingModel, overrides: &BTreeMap<String, f64>, dt_s: f64) -> f64 {
     let om0_rad = parameter_value_or_default(model, overrides, "OM", 0.0).to_radians();
-    let omdot_rad_s = parameter_value_or_default(model, overrides, "OMDOT", 0.0).to_radians() / JULIAN_YEAR_S;
+    let omdot_rad_s =
+        parameter_value_or_default(model, overrides, "OMDOT", 0.0).to_radians() / JULIAN_YEAR_S;
     om0_rad + omdot_rad_s * dt_s
 }
 
-fn dd_omega_rad(model: &TimingModel, overrides: &BTreeMap<String, f64>, state: &OrbitalState) -> f64 {
+fn dd_omega_rad(
+    model: &TimingModel,
+    overrides: &BTreeMap<String, f64>,
+    state: &OrbitalState,
+) -> f64 {
     let om0_rad = parameter_value_or_default(model, overrides, "OM", 0.0).to_radians();
-    let omdot_rad_s = parameter_value_or_default(model, overrides, "OMDOT", 0.0).to_radians() / JULIAN_YEAR_S;
+    let omdot_rad_s =
+        parameter_value_or_default(model, overrides, "OMDOT", 0.0).to_radians() / JULIAN_YEAR_S;
     let k = omdot_rad_s / state.mean_motion_rad_s;
     om0_rad + state.true_anomaly * k
 }
@@ -1819,14 +1909,22 @@ fn ddk_corrections(
     })
 }
 
-fn proper_motion_component_rad_s(model: &TimingModel, overrides: &BTreeMap<String, f64>, longitude: bool) -> f64 {
+fn proper_motion_component_rad_s(
+    model: &TimingModel,
+    overrides: &BTreeMap<String, f64>,
+    longitude: bool,
+) -> f64 {
     let names = if longitude {
         ["PMELONG", "PMRA"]
     } else {
         ["PMELAT", "PMDEC"]
     };
     for name in names {
-        if let Some(value) = overrides.get(name).copied().or_else(|| model.parameter_value_local(name)) {
+        if let Some(value) = overrides
+            .get(name)
+            .copied()
+            .or_else(|| model.parameter_value_local(name))
+        {
             return value * MAS_TO_RAD / JULIAN_YEAR_S;
         }
     }
@@ -1834,7 +1932,11 @@ fn proper_motion_component_rad_s(model: &TimingModel, overrides: &BTreeMap<Strin
 }
 
 fn parallax_distance_au(model: &TimingModel, overrides: &BTreeMap<String, f64>) -> f64 {
-    let Some(px_mas) = overrides.get("PX").copied().or_else(|| model.parameter_value_local("PX")) else {
+    let Some(px_mas) = overrides
+        .get("PX")
+        .copied()
+        .or_else(|| model.parameter_value_local("PX"))
+    else {
         return f64::INFINITY;
     };
     if px_mas <= 0.0 {
@@ -1896,7 +1998,12 @@ fn sky_long_lat(sky_unit: [f64; 3]) -> (f64, f64, f64, f64) {
     if cos_lat <= 1.0e-15 {
         (0.0, 1.0, sin_lat, cos_lat)
     } else {
-        (sky_unit[1] / cos_lat, sky_unit[0] / cos_lat, sin_lat, cos_lat)
+        (
+            sky_unit[1] / cos_lat,
+            sky_unit[0] / cos_lat,
+            sin_lat,
+            cos_lat,
+        )
     }
 }
 
@@ -1961,7 +2068,10 @@ fn parse_tempo2_toas(path: &Path) -> Result<Vec<TopocentricToa>> {
                     pp_dme,
                 });
             }
-            Some(other) => bail!("unsupported TEMPO2 tim FORMAT {other} in {}", path.display()),
+            Some(other) => bail!(
+                "unsupported TEMPO2 tim FORMAT {other} in {}",
+                path.display()
+            ),
             None => bail!("missing FORMAT header in {}", path.display()),
         }
     }
@@ -2000,7 +2110,11 @@ fn parse_fd_order(name: &str) -> Option<u32> {
 
 /// Computes the total FD profile-delay correction in seconds for the given frequency.
 /// TEMPO2 convention: delay_FD = sum_k FD_k * ln(f/f_ref)^k with f_ref = 1 GHz.
-fn fd_delay_seconds(model: &TimingModel, overrides: &BTreeMap<String, f64>, frequency_mhz: f64) -> f64 {
+fn fd_delay_seconds(
+    model: &TimingModel,
+    overrides: &BTreeMap<String, f64>,
+    frequency_mhz: f64,
+) -> f64 {
     const F_REF_MHZ: f64 = 1000.0;
     let log_f = (frequency_mhz / F_REF_MHZ).ln();
     model
@@ -2008,13 +2122,21 @@ fn fd_delay_seconds(model: &TimingModel, overrides: &BTreeMap<String, f64>, freq
         .iter()
         .filter_map(|term| {
             let k = parse_fd_order(&term.name)?;
-            let value = overrides.get(&term.name).copied().or(term.value).unwrap_or(0.0);
+            let value = overrides
+                .get(&term.name)
+                .copied()
+                .or(term.value)
+                .unwrap_or(0.0);
             Some(value * log_f.powi(k as i32))
         })
         .sum()
 }
 
-fn parameter_value_or(model: &TimingModel, overrides: &BTreeMap<String, f64>, name: &str) -> Result<f64> {
+fn parameter_value_or(
+    model: &TimingModel,
+    overrides: &BTreeMap<String, f64>,
+    name: &str,
+) -> Result<f64> {
     overrides
         .get(name)
         .copied()
@@ -2165,7 +2287,11 @@ fn effective_phase_sigma_seconds(model: &TimingModel, observation: &IndependentO
     (((efac * formal_s).powi(2) + equad_s.powi(2)).sqrt()).max(1.0e-12)
 }
 
-fn effective_dm_sigma(model: &TimingModel, observation: &IndependentObservation, pp_dme: f64) -> f64 {
+fn effective_dm_sigma(
+    model: &TimingModel,
+    observation: &IndependentObservation,
+    pp_dme: f64,
+) -> f64 {
     let mut dmefac = 1.0;
     let mut dmequad2 = 0.0;
     for term in &model.noise_terms {
@@ -2327,20 +2453,13 @@ fn build_joint_gls_covariance(
     let long_corr_days = (5.0 * corr_length_days).max(corr_length_days);
     let dm_phase_for_row = invert_dm_row_map(&joint.dm_row_of_phase, nrows);
     let ecorr_columns = ecorr_column_map(dataset);
-    let phase_short_centers = evenly_spaced_centers(
-        mjd_min,
-        mjd_max,
-        calibration.phase_short_basis_count,
-    );
-    let phase_long_centers = evenly_spaced_centers(
-        mjd_min,
-        mjd_max,
-        calibration.phase_long_basis_count,
-    );
+    let phase_short_centers =
+        evenly_spaced_centers(mjd_min, mjd_max, calibration.phase_short_basis_count);
+    let phase_long_centers =
+        evenly_spaced_centers(mjd_min, mjd_max, calibration.phase_long_basis_count);
     let dm_short_centers =
         evenly_spaced_centers(mjd_min, mjd_max, calibration.dm_short_basis_count);
-    let dm_long_centers =
-        evenly_spaced_centers(mjd_min, mjd_max, calibration.dm_long_basis_count);
+    let dm_long_centers = evenly_spaced_centers(mjd_min, mjd_max, calibration.dm_long_basis_count);
     let low_rank_cols = 2 * calibration.phase_fourier_harmonics
         + phase_short_centers.len()
         + phase_long_centers.len()
@@ -2358,7 +2477,9 @@ fn build_joint_gls_covariance(
         .map(|(start, end)| {
             let mut diagonal = vec![0.0; end - start];
             let mut low_rank = vec![0.0; (end - start) * low_rank_cols];
-            for (global_row, dm_phase_entry) in dm_phase_for_row.iter().enumerate().take(end).skip(start) {
+            for (global_row, dm_phase_entry) in
+                dm_phase_for_row.iter().enumerate().take(end).skip(start)
+            {
                 let local_row = global_row - start;
                 let mut cursor = 0usize;
                 if global_row < n_phase {
@@ -2425,7 +2546,8 @@ fn build_joint_gls_covariance(
                     );
                     cursor += dm_long_centers.len();
                     populate_ecorr_basis_row(
-                        &mut low_rank[local_row * low_rank_cols + cursor..local_row * low_rank_cols + low_rank_cols],
+                        &mut low_rank[local_row * low_rank_cols + cursor
+                            ..local_row * low_rank_cols + low_rank_cols],
                         dataset,
                         global_row,
                         &ecorr_columns,
@@ -2479,7 +2601,8 @@ fn build_joint_gls_covariance(
         diagonal[start..start + rows].copy_from_slice(&block_diag);
         for local_row in 0..rows {
             for col in 0..low_rank_cols {
-                low_rank[(start + local_row, col)] = block_low_rank[local_row * low_rank_cols + col];
+                low_rank[(start + local_row, col)] =
+                    block_low_rank[local_row * low_rank_cols + col];
             }
         }
     }
@@ -2507,7 +2630,10 @@ fn finalize_structured_covariance(
             ridge_factor = ridge_factor.max(1.0e-24);
         }
     }
-    let inv_diagonal = diagonal.iter().map(|value| 1.0 / value.max(1.0e-24)).collect::<Vec<_>>();
+    let inv_diagonal = diagonal
+        .iter()
+        .map(|value| 1.0 / value.max(1.0e-24))
+        .collect::<Vec<_>>();
     let mut inv_low_rank = low_rank.clone();
     for row in 0..inv_low_rank.nrows() {
         let scale = inv_diagonal[row];
@@ -2580,14 +2706,18 @@ fn calibrate_structured_covariance(
     let dm_amp = red_noise_fraction.max(0.0) * dm_excess.max(0.25 * dm_white_floor);
     let phase_fourier_harmonics = (((n_phase as f64).sqrt() / 10.0).round() as usize).clamp(4, 12);
     let dm_fourier_harmonics = (((n_dm.max(1) as f64).sqrt() / 12.0).round() as usize).clamp(3, 8);
-    let phase_short_basis_count =
-        ((mjd_span / corr_length_days).ceil() as usize).clamp(6, 24).min(n_phase.max(1));
-    let phase_long_basis_count =
-        ((mjd_span / long_corr_days).ceil() as usize).clamp(4, 12).min(n_phase.max(1));
-    let dm_short_basis_count =
-        ((mjd_span / long_corr_days).ceil() as usize).clamp(4, 16).min(n_dm.max(1));
-    let dm_long_basis_count =
-        ((mjd_span / (2.0 * long_corr_days)).ceil() as usize).clamp(3, 10).min(n_dm.max(1));
+    let phase_short_basis_count = ((mjd_span / corr_length_days).ceil() as usize)
+        .clamp(6, 24)
+        .min(n_phase.max(1));
+    let phase_long_basis_count = ((mjd_span / long_corr_days).ceil() as usize)
+        .clamp(4, 12)
+        .min(n_phase.max(1));
+    let dm_short_basis_count = ((mjd_span / long_corr_days).ceil() as usize)
+        .clamp(4, 16)
+        .min(n_dm.max(1));
+    let dm_long_basis_count = ((mjd_span / (2.0 * long_corr_days)).ceil() as usize)
+        .clamp(3, 10)
+        .min(n_dm.max(1));
     StructuredCovarianceCalibration {
         preset_name: "generic".to_string(),
         tactical_lane: "unspecified".to_string(),
@@ -2706,7 +2836,9 @@ fn fourier_basis_weight(harmonic: usize, spectral_index: f64) -> f64 {
 }
 
 fn dmatrix_to_faer(matrix: &DMatrix<f64>) -> FaerMat<f64> {
-    FaerMat::from_fn(matrix.nrows(), matrix.ncols(), |row, col| matrix[(row, col)])
+    FaerMat::from_fn(matrix.nrows(), matrix.ncols(), |row, col| {
+        matrix[(row, col)]
+    })
 }
 
 fn dvector_to_faer_col(vector: &DVector<f64>) -> FaerMat<f64> {
@@ -2714,7 +2846,10 @@ fn dvector_to_faer_col(vector: &DVector<f64>) -> FaerMat<f64> {
 }
 
 fn faer_col_to_dvector(matrix: &FaerMat<f64>) -> DVector<f64> {
-    DVector::from_iterator(matrix.nrows(), (0..matrix.nrows()).map(|row| matrix[(row, 0)]))
+    DVector::from_iterator(
+        matrix.nrows(),
+        (0..matrix.nrows()).map(|row| matrix[(row, 0)]),
+    )
 }
 
 fn faer_column_norms(matrix: &FaerMat<f64>) -> Vec<f64> {
@@ -2730,7 +2865,11 @@ fn faer_column_norms(matrix: &FaerMat<f64>) -> Vec<f64> {
 
 fn scale_faer_columns(matrix: &mut FaerMat<f64>, scales: &[f64], inverse: bool) {
     for col in 0..matrix.ncols() {
-        let factor = if inverse { 1.0 / scales[col] } else { scales[col] };
+        let factor = if inverse {
+            1.0 / scales[col]
+        } else {
+            scales[col]
+        };
         for row in 0..matrix.nrows() {
             matrix[(row, col)] *= factor;
         }
@@ -2796,11 +2935,7 @@ fn closest_residual(candidate: f64, baseline: f64, period_s: f64) -> f64 {
     [-1.0, 0.0, 1.0]
         .into_iter()
         .map(|offset| candidate + offset * period_s)
-        .min_by(|left, right| {
-            (left - baseline)
-                .abs()
-                .total_cmp(&(right - baseline).abs())
-        })
+        .min_by(|left, right| (left - baseline).abs().total_cmp(&(right - baseline).abs()))
         .unwrap_or(candidate)
 }
 
@@ -2985,7 +3120,8 @@ mod tests {
         let stigma = 0.75;
         let phi = 0.41;
         let delay = ell1h_shapiro_exact_seconds(h3, stigma, phi);
-        let expected = -2.0 * h3 / stigma.powi(3) * (1.0 + stigma * stigma - 2.0 * stigma * phi.sin()).ln();
+        let expected =
+            -2.0 * h3 / stigma.powi(3) * (1.0 + stigma * stigma - 2.0 * stigma * phi.sin()).ln();
         assert!((delay - expected).abs() < 1.0e-18);
     }
 }

@@ -58,10 +58,14 @@ pub fn fp_cd_multiply(dim: usize, p: u64, a: &[u64], b: &[u64]) -> Vec<u64> {
     let mut result = vec![0_u64; dim];
 
     for q in 0..dim {
-        if b[q] == 0 { continue; }
+        if b[q] == 0 {
+            continue;
+        }
         for t in 0..dim {
             let src = t ^ q;
-            if a[src] == 0 { continue; }
+            if a[src] == 0 {
+                continue;
+            }
             let sign = cd_basis_mul_sign_iter(dim, src, q);
             let coeff = (a[src] * b[q]) % p;
             if sign == 1 {
@@ -149,12 +153,19 @@ mod tests {
         for p in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31_u64] {
             let norm_zero = find_norm_zero_fp(2, p);
             let has_sqrt_neg1 = p % 4 == 1;
-            println!("  p={:>2}: -1 is QR: {:>5}, norm-zero element: {:?}",
-                p, has_sqrt_neg1, norm_zero.as_ref().map(|v| format!("({},{})", v[0], v[1])));
+            println!(
+                "  p={:>2}: -1 is QR: {:>5}, norm-zero element: {:?}",
+                p,
+                has_sqrt_neg1,
+                norm_zero.as_ref().map(|v| format!("({},{})", v[0], v[1]))
+            );
 
             if has_sqrt_neg1 {
-                assert!(norm_zero.is_some(),
-                    "p={}: -1 is QR so norm-zero should exist", p);
+                assert!(
+                    norm_zero.is_some(),
+                    "p={}: -1 is QR so norm-zero should exist",
+                    p
+                );
 
                 // Check: is this actually a zero divisor in A_1(F_p)?
                 let v = norm_zero.unwrap();
@@ -175,8 +186,11 @@ mod tests {
 
         for p in [3, 5, 7_u64] {
             let norm_zero = find_norm_zero_fp(4, p); // dim=4 for tractability
-            println!("  p={}: dim=4 norm-zero: {:?}", p,
-                norm_zero.as_ref().map(|v| format!("{:?}", v)));
+            println!(
+                "  p={}: dim=4 norm-zero: {:?}",
+                p,
+                norm_zero.as_ref().map(|v| format!("{:?}", v))
+            );
 
             if let Some(v) = &norm_zero {
                 let n = fp_norm_sq(p, v);
@@ -194,16 +208,24 @@ mod tests {
         for p in [3, 5, 7, 11, 13_u64] {
             // a = e_1 + e_10, b = e_4 - e_15 = e_4 + (p-1)*e_15
             let mut a = vec![0_u64; 16];
-            a[1] = 1; a[10] = 1;
+            a[1] = 1;
+            a[10] = 1;
             let mut b = vec![0_u64; 16];
-            b[4] = 1; b[15] = p - 1; // -1 mod p
+            b[4] = 1;
+            b[15] = p - 1; // -1 mod p
 
             let product = fp_cd_multiply(16, p, &a, &b);
             let is_zd = product.iter().all(|&c| c == 0);
 
-            println!("  p={:>2}: (e_1+e_10)(e_4-e_15) mod {} is ZD: {}", p, p, is_zd);
-            assert!(is_zd,
-                "p={}: sedenion ZD should persist mod p (integer structure constants)", p);
+            println!(
+                "  p={:>2}: (e_1+e_10)(e_4-e_15) mod {} is ZD: {}",
+                p, p, is_zd
+            );
+            assert!(
+                is_zd,
+                "p={}: sedenion ZD should persist mod p (integer structure constants)",
+                p
+            );
         }
 
         println!("\n  PASS: Sedenion ZD persists over F_p for all tested primes");

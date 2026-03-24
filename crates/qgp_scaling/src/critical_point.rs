@@ -1,7 +1,7 @@
 //! QCD Critical Point (QCP) and Beam Energy Scan (BES) observables.
 //!
-//! Implements net-baryon fluctuation cumulants ($C_n$) used to search for the 
-//! critical end point in the QCD phase diagram. Relates experimental net-proton 
+//! Implements net-baryon fluctuation cumulants ($C_n$) used to search for the
+//! critical end point in the QCD phase diagram. Relates experimental net-proton
 //! distributions to theoretical susceptibilities.
 
 /// Net-proton cumulant ratio $C_4/C_2$ (kurtosis * variance / variance).
@@ -32,12 +32,9 @@ impl CumulantRatio {
     }
 }
 
-/// Skewness $S\sigma = C_3/C_2$ and kurtosis $\kappa\sigma^2 = C_4/C_2$ 
+/// Skewness $S\sigma = C_3/C_2$ and kurtosis $\kappa\sigma^2 = C_4/C_2$
 /// relative to Hadron Resonance Gas (HRG) baseline.
-pub fn calculate_deviation_from_baseline(
-    measured: f64,
-    baseline: f64,
-) -> f64 {
+pub fn calculate_deviation_from_baseline(measured: f64, baseline: f64) -> f64 {
     (measured - baseline) / baseline
 }
 

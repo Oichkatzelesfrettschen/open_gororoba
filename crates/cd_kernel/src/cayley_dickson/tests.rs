@@ -90,14 +90,14 @@ fn test_thesis_t1_quadratic_identity() {
         let x2 = cd_multiply(&x, &x);
         let t_x = 2.0 * x[0];
         let n_x = cd_norm_sq(&x);
-        
+
         // x^2 - t(x)x + n(x) = 0
         let mut res = vec![0.0; dim];
         for i in 0..dim {
             res[i] = x2[i] - t_x * x[i];
         }
         res[0] += n_x;
-        
+
         for v in res {
             assert!(v.abs() < 1e-10, "Quadratic identity failed at dim {}", dim);
         }
@@ -112,9 +112,12 @@ fn test_thesis_t2_power_associativity() {
     let x2 = cd_multiply(&x, &x);
     let x2_x = cd_multiply(&x2, &x);
     let x_x2 = cd_multiply(&x, &x2);
-    
+
     for i in 0..dim {
-        assert!((x2_x[i] - x_x2[i]).abs() < 1e-10, "Power-associativity failed");
+        assert!(
+            (x2_x[i] - x_x2[i]).abs() < 1e-10,
+            "Power-associativity failed"
+        );
     }
 }
 
@@ -124,15 +127,15 @@ fn test_thesis_t3_flexibility() {
     let dim = 16;
     let x: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.1).sin()).collect();
     let y: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.2).cos()).collect();
-    
+
     // (xy)x
     let xy = cd_multiply(&x, &y);
     let xy_x = cd_multiply(&xy, &x);
-    
+
     // x(yx)
     let yx = cd_multiply(&y, &x);
     let x_yx = cd_multiply(&x, &yx);
-    
+
     for i in 0..dim {
         assert!((xy_x[i] - x_yx[i]).abs() < 1e-10, "Flexibility failed");
     }
@@ -143,37 +146,41 @@ fn test_thesis_t3_flexibility() {
 fn test_thesis_t4_alternativity_breaks() {
     let dim = 16;
     let mut found_break = false;
-    
+
     // We can search for x = e_i + e_j, y = e_k that breaks alternativity
     for i in 1..dim {
-        for j in i+1..dim {
+        for j in i + 1..dim {
             for k in 1..dim {
                 let mut x = vec![0.0; dim];
                 x[i] = 1.0;
                 x[j] = 1.0;
-                
+
                 let mut y = vec![0.0; dim];
                 y[k] = 1.0;
-                
+
                 let xx = cd_multiply(&x, &x);
                 let x_xy = cd_multiply(&x, &cd_multiply(&x, &y));
                 let xx_y = cd_multiply(&xx, &y);
-                
+
                 let mut diff = 0.0;
                 for idx in 0..dim {
                     diff += (x_xy[idx] - xx_y[idx]).abs();
                 }
-                
+
                 if diff > 1e-5 {
                     found_break = true;
                     break;
                 }
             }
-            if found_break { break; }
+            if found_break {
+                break;
+            }
         }
-        if found_break { break; }
+        if found_break {
+            break;
+        }
     }
-    
+
     assert!(found_break, "Alternativity should break in 16D");
 }
 
@@ -187,7 +194,9 @@ fn test_quaternion_multiply_flat_matches_scalar() {
         assert!(
             (flat[i] - scalar[i]).abs() < 1e-12,
             "quaternion_multiply_flat[{}] = {}, scalar = {}",
-            i, flat[i], scalar[i]
+            i,
+            flat[i],
+            scalar[i]
         );
     }
 }
@@ -202,7 +211,9 @@ fn test_octonion_multiply_flat_matches_scalar() {
         assert!(
             (flat[i] - scalar[i]).abs() < 1e-12,
             "octonion_multiply_flat[{}] = {}, scalar = {}",
-            i, flat[i], scalar[i]
+            i,
+            flat[i],
+            scalar[i]
         );
     }
 }
@@ -223,7 +234,9 @@ fn test_quaternion_multiply_flat_associativity_fails_at_octonion() {
         assert!(
             (ab_c[i] - a_bc[i]).abs() < 1e-12,
             "Quaternion associativity failed at [{}]: (ab)c={}, a(bc)={}",
-            i, ab_c[i], a_bc[i]
+            i,
+            ab_c[i],
+            a_bc[i]
         );
     }
 }
@@ -231,12 +244,10 @@ fn test_quaternion_multiply_flat_associativity_fails_at_octonion() {
 #[test]
 fn test_sedenion_multiply_flat_matches_scalar() {
     let a: [f64; 16] = [
-        1.0, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6, 0.7,
-        -0.8, 0.9, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6,
+        1.0, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6, 0.7, -0.8, 0.9, 0.1, -0.2, 0.3, 0.4, -0.5, 0.6,
     ];
     let b: [f64; 16] = [
-        0.5, -0.1, 0.2, -0.3, 0.4, 0.5, -0.6, 0.7,
-        0.8, -0.9, 0.1, 0.2, -0.3, 0.4, 0.5, -0.6,
+        0.5, -0.1, 0.2, -0.3, 0.4, 0.5, -0.6, 0.7, 0.8, -0.9, 0.1, 0.2, -0.3, 0.4, 0.5, -0.6,
     ];
     let flat = sedenion_multiply_flat(&a, &b);
     let scalar = cd_multiply(&a, &b);
@@ -244,7 +255,10 @@ fn test_sedenion_multiply_flat_matches_scalar() {
         assert!(
             (flat[i] - scalar[i]).abs() < 1e-10,
             "sedenion_multiply_flat[{}] = {}, scalar = {}, diff = {}",
-            i, flat[i], scalar[i], (flat[i] - scalar[i]).abs()
+            i,
+            flat[i],
+            scalar[i],
+            (flat[i] - scalar[i]).abs()
         );
     }
 }
@@ -274,12 +288,17 @@ fn test_sedenion_multiply_flat_non_associative() {
     let bc = sedenion_multiply_flat(&b, &c);
     let ab_c = sedenion_multiply_flat(&ab, &c);
     let a_bc = sedenion_multiply_flat(&a, &bc);
-    let diff: f64 = ab_c.iter().zip(a_bc.iter())
+    let diff: f64 = ab_c
+        .iter()
+        .zip(a_bc.iter())
         .map(|(x, y)| (x - y).powi(2))
         .sum::<f64>()
         .sqrt();
-    assert!(diff > 1e-6,
-        "Sedenion (ab)c should differ from a(bc) -- non-associativity. diff={}", diff);
+    assert!(
+        diff > 1e-6,
+        "Sedenion (ab)c should differ from a(bc) -- non-associativity. diff={}",
+        diff
+    );
 }
 
 #[test]
@@ -294,7 +313,11 @@ fn test_cd_multiply_flat_into_matches_scalar_all_dims() {
             assert!(
                 (flat_out[i] - scalar[i]).abs() < 1e-10,
                 "dim={} flat_into[{}] = {}, scalar = {}, diff = {}",
-                dim, i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+                dim,
+                i,
+                flat_out[i],
+                scalar[i],
+                (flat_out[i] - scalar[i]).abs()
             );
         }
     }
@@ -311,7 +334,10 @@ fn test_pathion_32d_flat_into_matches_scalar() {
         assert!(
             (flat_out[i] - scalar[i]).abs() < 1e-9,
             "pathion flat_into[{}] = {}, scalar = {}, diff = {}",
-            i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+            i,
+            flat_out[i],
+            scalar[i],
+            (flat_out[i] - scalar[i]).abs()
         );
     }
 }
@@ -327,7 +353,10 @@ fn test_chingon_64d_flat_into_matches_scalar() {
         assert!(
             (flat_out[i] - scalar[i]).abs() < 1e-8,
             "chingon flat_into[{}] = {}, scalar = {}, diff = {}",
-            i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+            i,
+            flat_out[i],
+            scalar[i],
+            (flat_out[i] - scalar[i]).abs()
         );
     }
 }
@@ -343,7 +372,10 @@ fn test_cd_flat_into_256d_matches_scalar() {
         assert!(
             (flat_out[i] - scalar[i]).abs() < 1e-6,
             "256d flat_into[{}] = {}, scalar = {}, diff = {}",
-            i, flat_out[i], scalar[i], (flat_out[i] - scalar[i]).abs()
+            i,
+            flat_out[i],
+            scalar[i],
+            (flat_out[i] - scalar[i]).abs()
         );
     }
 }
@@ -355,10 +387,16 @@ fn test_cd_flat_into_512d_matches_scalar() {
     let scalar = cd_multiply(&a, &b);
     let mut flat_out = vec![0.0; 512];
     cd_multiply_flat_into(&a, &b, &mut flat_out, 512);
-    let max_diff: f64 = flat_out.iter().zip(scalar.iter())
-        .map(|(f, s)| (f - s).abs()).fold(0.0_f64, f64::max);
-    assert!(max_diff < 1e-5,
-        "512d max diff = {} (threshold 1e-5)", max_diff);
+    let max_diff: f64 = flat_out
+        .iter()
+        .zip(scalar.iter())
+        .map(|(f, s)| (f - s).abs())
+        .fold(0.0_f64, f64::max);
+    assert!(
+        max_diff < 1e-5,
+        "512d max diff = {} (threshold 1e-5)",
+        max_diff
+    );
 }
 
 #[test]
@@ -368,10 +406,16 @@ fn test_cd_flat_into_1024d_matches_scalar() {
     let scalar = cd_multiply(&a, &b);
     let mut flat_out = vec![0.0; 1024];
     cd_multiply_flat_into(&a, &b, &mut flat_out, 1024);
-    let max_diff: f64 = flat_out.iter().zip(scalar.iter())
-        .map(|(f, s)| (f - s).abs()).fold(0.0_f64, f64::max);
-    assert!(max_diff < 1e-4,
-        "1024d max diff = {} (threshold 1e-4)", max_diff);
+    let max_diff: f64 = flat_out
+        .iter()
+        .zip(scalar.iter())
+        .map(|(f, s)| (f - s).abs())
+        .fold(0.0_f64, f64::max);
+    assert!(
+        max_diff < 1e-4,
+        "1024d max diff = {} (threshold 1e-4)",
+        max_diff
+    );
 }
 
 /// Time the full CD tower from 4D through 16384D (Tessareskaidekavoudon).
@@ -390,8 +434,10 @@ fn test_cd_tower_timing_4d_to_16384d() {
         // Verify output is not all zeros (not a degenerate case)
         let norm_sq: f64 = out.iter().map(|x| x * x).sum();
         assert!(norm_sq > 0.0, "dim={} produced zero output", dim);
-        println!("cd_multiply_flat_into dim={:>5} time={:>12.3?} norm_sq={:.6e}",
-            dim, elapsed, norm_sq);
+        println!(
+            "cd_multiply_flat_into dim={:>5} time={:>12.3?} norm_sq={:.6e}",
+            dim, elapsed, norm_sq
+        );
     }
 }
 
@@ -405,15 +451,25 @@ fn test_koebisu_d2_on_all_standard_zds() {
         a[*i] = 1.0;
         a[*j] = 1.0;
         let d2 = koebisu_d2(&a);
-        assert!(d2 < 1e-20,
-            "ZD ({},{}) has D_2 = {:.2e}, expected ~0", i, j, d2);
+        assert!(
+            d2 < 1e-20,
+            "ZD ({},{}) has D_2 = {:.2e}, expected ~0",
+            i,
+            j,
+            d2
+        );
 
         let mut b = vec![0.0; 16];
         b[*k] = 1.0;
         b[*l] = 1.0;
         let d2b = koebisu_d2(&b);
-        assert!(d2b < 1e-20,
-            "ZD ({},{}) has D_2 = {:.2e}, expected ~0", k, l, d2b);
+        assert!(
+            d2b < 1e-20,
+            "ZD ({},{}) has D_2 = {:.2e}, expected ~0",
+            k,
+            l,
+            d2b
+        );
         zd_count += 1;
     }
 
@@ -421,11 +477,17 @@ fn test_koebisu_d2_on_all_standard_zds() {
     for i in 1..16_usize {
         let mut v = vec![0.0; 16];
         v[i] = 1.0;
-        assert!(!is_zero_divisor_koebisu(&v, 1e-10),
-            "e_{} should not be a ZD", i);
+        assert!(
+            !is_zero_divisor_koebisu(&v, 1e-10),
+            "e_{} should not be a ZD",
+            i
+        );
     }
 
-    println!("Koebisu D_2 verified on {} ZD pairs + 15 non-ZD basis elements", zd_count);
+    println!(
+        "Koebisu D_2 verified on {} ZD pairs + 15 non-ZD basis elements",
+        zd_count
+    );
 }
 
 #[test]
@@ -439,8 +501,11 @@ fn test_koebisu_d2_random_consistency() {
         let d2 = koebisu_d2(&v);
 
         // Random sedenions are almost never ZDs
-        assert!(d2 > 1e-6,
-            "Random sedenion has D_2 = {:.2e}, suspiciously close to 0", d2);
+        assert!(
+            d2 > 1e-6,
+            "Random sedenion has D_2 = {:.2e}, suspiciously close to 0",
+            d2
+        );
     }
 
     // Construct a deliberate ZD: e_1 + e_10 (assessor pair)
@@ -453,7 +518,10 @@ fn test_koebisu_d2_random_consistency() {
     let mut zd_scaled = vec![0.0; 16];
     zd_scaled[1] = 3.0;
     zd_scaled[10] = 3.0;
-    assert!(is_zero_divisor_koebisu(&zd_scaled, 1e-10), "3*(e_1+e_10) must be a ZD");
+    assert!(
+        is_zero_divisor_koebisu(&zd_scaled, 1e-10),
+        "3*(e_1+e_10) must be a ZD"
+    );
 }
 
 #[test]
@@ -463,11 +531,18 @@ fn test_gourlay_psi_order_3() {
         let mut v = [0.0_f64; 16];
         v[i] = 1.0;
         let psi3 = gourlay_psi_n(&v, 3);
-        let max_err: f64 = v.iter().zip(psi3.iter())
+        let max_err: f64 = v
+            .iter()
+            .zip(psi3.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0, f64::max);
-        assert!(max_err < 1e-12,
-            "psi^3(e_{}) != e_{}: max error {:.2e}", i, i, max_err);
+        assert!(
+            max_err < 1e-12,
+            "psi^3(e_{}) != e_{}: max error {:.2e}",
+            i,
+            i,
+            max_err
+        );
     }
     println!("psi^3 = Id verified on all 16 basis elements");
 }
@@ -479,11 +554,18 @@ fn test_gourlay_epsilon_order_2() {
         let mut v = [0.0_f64; 16];
         v[i] = 1.0;
         let eps2 = gourlay_epsilon(&gourlay_epsilon(&v));
-        let max_err: f64 = v.iter().zip(eps2.iter())
+        let max_err: f64 = v
+            .iter()
+            .zip(eps2.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0, f64::max);
-        assert!(max_err < 1e-12,
-            "epsilon^2(e_{}) != e_{}: max error {:.2e}", i, i, max_err);
+        assert!(
+            max_err < 1e-12,
+            "epsilon^2(e_{}) != e_{}: max error {:.2e}",
+            i,
+            i,
+            max_err
+        );
     }
     println!("epsilon^2 = Id verified on all 16 basis elements");
 }
@@ -503,11 +585,17 @@ fn test_gourlay_s3_relation() {
         let eps_v = gourlay_epsilon(&v);
         let psi2_eps_v = gourlay_psi_n(&eps_v, 2);
 
-        let max_err: f64 = eps_psi_v.iter().zip(psi2_eps_v.iter())
+        let max_err: f64 = eps_psi_v
+            .iter()
+            .zip(psi2_eps_v.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0, f64::max);
-        assert!(max_err < 1e-12,
-            "epsilon*psi != psi^2*epsilon on e_{}: max error {:.2e}", i, max_err);
+        assert!(
+            max_err < 1e-12,
+            "epsilon*psi != psi^2*epsilon on e_{}: max error {:.2e}",
+            i,
+            max_err
+        );
     }
     println!("S3 relation epsilon*psi = psi^2*epsilon verified on all 16 basis elements");
 }
@@ -515,8 +603,12 @@ fn test_gourlay_s3_relation() {
 #[test]
 fn test_gourlay_psi_zd_preservation() {
     // psi preserves ZD pairs: if (a, b) is a ZD pair, then (psi(a), psi(b)) is also a ZD pair
-    let mut a = [0.0_f64; 16]; a[1] = 1.0; a[10] = 1.0;
-    let mut b = [0.0_f64; 16]; b[5] = 1.0; b[14] = 1.0;
+    let mut a = [0.0_f64; 16];
+    a[1] = 1.0;
+    a[10] = 1.0;
+    let mut b = [0.0_f64; 16];
+    b[5] = 1.0;
+    b[14] = 1.0;
 
     // Verify original is a ZD
     let ab = cd_multiply(&a.to_vec(), &b.to_vec());
@@ -530,8 +622,11 @@ fn test_gourlay_psi_zd_preservation() {
     let pab_norm: f64 = pab.iter().map(|x| x * x).sum::<f64>().sqrt();
 
     println!("psi(a)*psi(b) norm = {:.6e}", pab_norm);
-    assert!(pab_norm < 1e-10,
-        "psi must preserve ZD pairs: psi(a)*psi(b) norm = {:.2e}", pab_norm);
+    assert!(
+        pab_norm < 1e-10,
+        "psi must preserve ZD pairs: psi(a)*psi(b) norm = {:.2e}",
+        pab_norm
+    );
     println!("psi preserves zero-divisor structure");
 }
 
@@ -585,15 +680,41 @@ fn test_amplitude_cd_sign_comparison() {
     // and verify the result is always in {+1, -1, 0}.
 
     let sg = |x: f64| -> i32 {
-        if x > 0.0 { 1 } else if x < 0.0 { -1 } else { 0 }
+        if x > 0.0 {
+            1
+        } else if x < 0.0 {
+            -1
+        } else {
+            0
+        }
     };
 
     // n=4: A_{1234} = (sg_{23}*sg_{41} + sg_{12}*sg_{34}) / 2
     let perms_4: [(usize, usize, usize, usize); 24] = [
-        (0,1,2,3),(0,1,3,2),(0,2,1,3),(0,2,3,1),(0,3,1,2),(0,3,2,1),
-        (1,0,2,3),(1,0,3,2),(1,2,0,3),(1,2,3,0),(1,3,0,2),(1,3,2,0),
-        (2,0,1,3),(2,0,3,1),(2,1,0,3),(2,1,3,0),(2,3,0,1),(2,3,1,0),
-        (3,0,1,2),(3,0,2,1),(3,1,0,2),(3,1,2,0),(3,2,0,1),(3,2,1,0),
+        (0, 1, 2, 3),
+        (0, 1, 3, 2),
+        (0, 2, 1, 3),
+        (0, 2, 3, 1),
+        (0, 3, 1, 2),
+        (0, 3, 2, 1),
+        (1, 0, 2, 3),
+        (1, 0, 3, 2),
+        (1, 2, 0, 3),
+        (1, 2, 3, 0),
+        (1, 3, 0, 2),
+        (1, 3, 2, 0),
+        (2, 0, 1, 3),
+        (2, 0, 3, 1),
+        (2, 1, 0, 3),
+        (2, 1, 3, 0),
+        (2, 3, 0, 1),
+        (2, 3, 1, 0),
+        (3, 0, 1, 2),
+        (3, 0, 2, 1),
+        (3, 1, 0, 2),
+        (3, 1, 2, 0),
+        (3, 2, 0, 1),
+        (3, 2, 1, 0),
     ];
 
     // Use distinct z values so all sg's are nonzero
@@ -616,17 +737,24 @@ fn test_amplitude_cd_sign_comparison() {
         let numerator = sg23 * sg41 + sg12 * sg34;
         let a_1234 = numerator; // * 2 to keep integer (check if always even)
 
-        println!("  z = ({:.0},{:.0},{:.0},{:.0}): sg12={:+}, sg23={:+}, sg34={:+}, sg41={:+}, 2*A = {:+}",
-            z[0], z[1], z[2], z[3], sg12, sg23, sg34, sg41, a_1234);
+        println!(
+            "  z = ({:.0},{:.0},{:.0},{:.0}): sg12={:+}, sg23={:+}, sg34={:+}, sg41={:+}, 2*A = {:+}",
+            z[0], z[1], z[2], z[3], sg12, sg23, sg34, sg41, a_1234
+        );
 
         amplitude_values.insert(a_1234);
     }
 
-    println!("\n  Distinct values of 2*A_{{1234}}: {:?}", amplitude_values);
+    println!(
+        "\n  Distinct values of 2*A_{{1234}}: {:?}",
+        amplitude_values
+    );
 
     // Key check: is 2*A always in {-2, 0, +2}?
     // If so, A is always in {-1, 0, +1} -- the piecewise-constant property.
-    let all_integer = amplitude_values.iter().all(|&v| v == -2 || v == 0 || v == 2);
+    let all_integer = amplitude_values
+        .iter()
+        .all(|&v| v == -2 || v == 0 || v == 2);
     println!("  All values in {{-2, 0, +2}}: {}", all_integer);
 
     // Now compare with CD signs at dim=16 (sedenions, 4 doublings)
@@ -634,7 +762,9 @@ fn test_amplitude_cd_sign_comparison() {
     println!("  cd_sign(16, p, q) for p,q in 1..4:");
     for p in 1..=4_usize {
         for q in 1..=4 {
-            if p == q { continue; }
+            if p == q {
+                continue;
+            }
             let s = cd_basis_mul_sign_iter(16, p, q);
             println!("    cd_sign(16, {}, {}) = {:+}", p, q, s);
         }
@@ -677,10 +807,14 @@ fn test_amplitude_cd_sign_comparison() {
 #[test]
 fn test_sign_nullity_stratification() {
     println!("--- D14: SIGN-NULLITY STRATIFICATION ACROSS CD TOWER ---\n");
-    println!("  {:>5} | {:>8} {:>8} {:>8} | {:>6} {:>6}",
-        "dim", "positive", "negative", "total", "+frac", "-frac");
-    println!("  {:-<5}-+-{:-<8}-{:-<8}-{:-<8}-+-{:-<6}-{:-<6}",
-        "", "", "", "", "", "");
+    println!(
+        "  {:>5} | {:>8} {:>8} {:>8} | {:>6} {:>6}",
+        "dim", "positive", "negative", "total", "+frac", "-frac"
+    );
+    println!(
+        "  {:-<5}-+-{:-<8}-{:-<8}-{:-<8}-+-{:-<6}-{:-<6}",
+        "", "", "", "", "", ""
+    );
 
     for log_dim in 1..=10_u32 {
         let dim = 1_usize << log_dim;
@@ -689,23 +823,29 @@ fn test_sign_nullity_stratification() {
 
         for p in 1..dim {
             for q in 1..dim {
-                if p == q { continue; }
+                if p == q {
+                    continue;
+                }
                 let s = cd_basis_mul_sign_iter(dim, p, q);
-                if s > 0 { pos += 1; }
-                else { neg += 1; }
+                if s > 0 {
+                    pos += 1;
+                } else {
+                    neg += 1;
+                }
             }
         }
 
         let total = pos + neg;
         let expected = (dim - 1) * (dim - 2); // imaginary x imaginary, p != q
-        assert_eq!(total, expected,
-            "dim={}: total should be (d-1)*(d-2)", dim);
+        assert_eq!(total, expected, "dim={}: total should be (d-1)*(d-2)", dim);
 
         let pfrac = pos as f64 / total as f64;
         let nfrac = neg as f64 / total as f64;
 
-        println!("  {:>5} | {:>8} {:>8} {:>8} | {:>6.4} {:>6.4}",
-            dim, pos, neg, total, pfrac, nfrac);
+        println!(
+            "  {:>5} | {:>8} {:>8} {:>8} | {:>6.4} {:>6.4}",
+            dim, pos, neg, total, pfrac, nfrac
+        );
     }
 
     // Key question: does the +/- ratio converge as dim -> infinity?
@@ -720,13 +860,23 @@ fn test_sign_nullity_stratification() {
     let mut neg = 0_usize;
     for p in 1..dim {
         for q in 1..dim {
-            if p == q { continue; }
+            if p == q {
+                continue;
+            }
             let s = cd_basis_mul_sign_iter(dim, p, q);
-            if s > 0 { pos += 1; } else { neg += 1; }
+            if s > 0 {
+                pos += 1;
+            } else {
+                neg += 1;
+            }
         }
     }
     let pfrac = pos as f64 / (pos + neg) as f64;
-    println!("\n  dim=1024: +fraction = {:.6}, -fraction = {:.6}", pfrac, 1.0 - pfrac);
+    println!(
+        "\n  dim=1024: +fraction = {:.6}, -fraction = {:.6}",
+        pfrac,
+        1.0 - pfrac
+    );
     println!("  Deviation from 0.5: {:.6}", (pfrac - 0.5).abs());
 }
 
@@ -764,7 +914,9 @@ fn test_high_dim_sign_table_verification() {
 
         for idx in 0..sample_size {
             let p = 1 + idx * stride;
-            if p >= dim { break; }
+            if p >= dim {
+                break;
+            }
 
             // Self-product
             if cd_basis_mul_sign_iter(dim, p, p) != -1 {
@@ -782,22 +934,31 @@ fn test_high_dim_sign_table_verification() {
             // Antisymmetry and range check for a few q values
             for q_idx in 0..10_usize.min(sample_size) {
                 let q = 1 + q_idx * stride;
-                if q >= dim || p == q { continue; }
+                if q >= dim || p == q {
+                    continue;
+                }
                 let spq = cd_basis_mul_sign_iter(dim, p, q);
                 let sqp = cd_basis_mul_sign_iter(dim, q, p);
-                if spq != -sqp { antisym_ok = false; }
-                if spq != 1 && spq != -1 { range_ok = false; }
+                if spq != -sqp {
+                    antisym_ok = false;
+                }
+                if spq != 1 && spq != -1 {
+                    range_ok = false;
+                }
             }
         }
 
         let elapsed = start.elapsed();
-        println!("  dim={:>5} (2^{:>2}): self={} zero={} antisym={} range={} [{:.1}ms]",
-            dim, log_dim,
+        println!(
+            "  dim={:>5} (2^{:>2}): self={} zero={} antisym={} range={} [{:.1}ms]",
+            dim,
+            log_dim,
             if self_ok { "OK" } else { "FAIL" },
             if zero_ok { "OK" } else { "FAIL" },
             if antisym_ok { "OK" } else { "FAIL" },
             if range_ok { "OK" } else { "FAIL" },
-            elapsed.as_secs_f64() * 1000.0);
+            elapsed.as_secs_f64() * 1000.0
+        );
 
         assert!(self_ok, "dim={}: self-product check failed", dim);
         assert!(zero_ok, "dim={}: e_0 product check failed", dim);
@@ -843,24 +1004,33 @@ fn test_padic_cd_bales_sign_comparison() {
 
     // Compare Bales vs cd_sign for dim=8 (octonions)
     println!("  Octonion level (dim=8):");
-    println!("  {:>3} {:>3} | {:>6} {:>6} | {:>5}",
-        "p", "q", "bales", "cd_sign", "match");
+    println!(
+        "  {:>3} {:>3} | {:>6} {:>6} | {:>5}",
+        "p", "q", "bales", "cd_sign", "match"
+    );
     let mut match_count = 0;
     let mut total = 0;
     for p in 1..8_usize {
         for q in 1..8 {
-            if p == q { continue; }
+            if p == q {
+                continue;
+            }
             let b = bales_sign(p, q);
             let c = cd_basis_mul_sign_iter(8, p, q);
             let m = b == c;
-            if m { match_count += 1; }
+            if m {
+                match_count += 1;
+            }
             total += 1;
-            println!("  {:>3} {:>3} | {:>+6} {:>+6} | {:>5}",
-                p, q, b, c, m);
+            println!("  {:>3} {:>3} | {:>+6} {:>+6} | {:>5}", p, q, b, c, m);
         }
     }
-    println!("\n  Match rate: {}/{} = {:.1}%\n",
-        match_count, total, 100.0 * match_count as f64 / total as f64);
+    println!(
+        "\n  Match rate: {}/{} = {:.1}%\n",
+        match_count,
+        total,
+        100.0 * match_count as f64 / total as f64
+    );
 
     // The Bales sign and cd_sign differ because they use different
     // CD conventions:
@@ -941,14 +1111,22 @@ fn test_zd_tangent_space() {
     let witnesses: Vec<([f64; 16], [f64; 16])> = vec![
         // (e_1 + e_10)(e_4 - e_15) = 0 (verified witness)
         {
-            let mut a = [0.0_f64; 16]; a[1] = 1.0; a[10] = 1.0;
-            let mut b = [0.0_f64; 16]; b[4] = 1.0; b[15] = -1.0;
+            let mut a = [0.0_f64; 16];
+            a[1] = 1.0;
+            a[10] = 1.0;
+            let mut b = [0.0_f64; 16];
+            b[4] = 1.0;
+            b[15] = -1.0;
             (a, b)
         },
         // (e_3 + e_10)(e_6 - e_15) = 0 (from Compendium eq 2.8)
         {
-            let mut a = [0.0_f64; 16]; a[3] = 1.0; a[10] = 1.0;
-            let mut b = [0.0_f64; 16]; b[6] = 1.0; b[15] = -1.0;
+            let mut a = [0.0_f64; 16];
+            a[3] = 1.0;
+            a[10] = 1.0;
+            let mut b = [0.0_f64; 16];
+            b[6] = 1.0;
+            b[15] = -1.0;
             (a, b)
         },
     ];
@@ -959,8 +1137,12 @@ fn test_zd_tangent_space() {
         // Verify this is actually a ZD
         let prod = cd_multiply(a0, b0);
         let norm_sq: f64 = prod.iter().map(|x| x * x).sum();
-        assert!(norm_sq < 1e-20,
-            "Witness {} is not a ZD: ||a*b|| = {:.2e}", w_idx, norm_sq.sqrt());
+        assert!(
+            norm_sq < 1e-20,
+            "Witness {} is not a ZD: ||a*b|| = {:.2e}",
+            w_idx,
+            norm_sq.sqrt()
+        );
 
         // Build the Jacobian: 16x32 matrix [L_{b0} | R_{a0}]
         // L_{b0}[i][j] = (e_j * b0)[i]  (left multiply basis vector by b0)
@@ -994,7 +1176,9 @@ fn test_zd_tangent_space() {
         let mut rank = 0_usize;
         let mut pivot_col = 0_usize;
         for row in 0..rows {
-            if pivot_col >= cols { break; }
+            if pivot_col >= cols {
+                break;
+            }
             // Find pivot
             let mut max_row = row;
             let mut max_val = mat[row][pivot_col].abs();
@@ -1014,9 +1198,13 @@ fn test_zd_tangent_space() {
                 mat[row][j] /= pivot;
             }
             for r in 0..rows {
-                if r == row { continue; }
+                if r == row {
+                    continue;
+                }
                 let factor = mat[r][pivot_col];
-                if factor.abs() < 1e-15 { continue; }
+                if factor.abs() < 1e-15 {
+                    continue;
+                }
                 for j in pivot_col..cols {
                     mat[r][j] -= factor * mat[row][j];
                 }
@@ -1027,21 +1215,32 @@ fn test_zd_tangent_space() {
         let kernel_dim = cols - rank;
 
         // The a0 and b0 support indices
-        let a_support: Vec<usize> = a0.iter().enumerate()
+        let a_support: Vec<usize> = a0
+            .iter()
+            .enumerate()
             .filter(|(_, v)| v.abs() > 1e-15)
-            .map(|(i, _)| i).collect();
-        let b_support: Vec<usize> = b0.iter().enumerate()
+            .map(|(i, _)| i)
+            .collect();
+        let b_support: Vec<usize> = b0
+            .iter()
+            .enumerate()
             .filter(|(_, v)| v.abs() > 1e-15)
-            .map(|(i, _)| i).collect();
+            .map(|(i, _)| i)
+            .collect();
 
-        println!("  Witness {}: a = e_{} + e_{}, b = e_{} - e_{}",
+        println!(
+            "  Witness {}: a = e_{} + e_{}, b = e_{} - e_{}",
             w_idx,
             a_support.get(0).unwrap_or(&0),
             a_support.get(1).unwrap_or(&0),
             b_support.get(0).unwrap_or(&0),
-            b_support.get(1).unwrap_or(&0));
+            b_support.get(1).unwrap_or(&0)
+        );
         println!("    Jacobian rank: {} / {}", rank, dim);
-        println!("    Tangent space dimension: {} (= 32 - {})", kernel_dim, rank);
+        println!(
+            "    Tangent space dimension: {} (= 32 - {})",
+            kernel_dim, rank
+        );
         // Singular values would require SVD (nalgebra); rank from
         // Gaussian elimination is sufficient for dimension count.
 
@@ -1054,43 +1253,44 @@ fn test_zd_tangent_space() {
 }
 
 /// Validate cd_multiply_into matches cd_multiply across dims 1..=256.
-    ///
-    /// # Why this test matters
-    ///
-    /// cd_multiply_into previously IGNORED its workspace parameter and
-    /// called the allocating cd_multiply internally (commit pre-83c4254f).
-    /// This test ensures the true workspace-based recursion produces
-    /// bit-identical results to the reference allocating implementation.
-    #[test]
-    fn test_cd_multiply_into_sweep() {
-        use rand::prelude::*;
-        use rand::rngs::StdRng;
+///
+/// # Why this test matters
+///
+/// cd_multiply_into previously IGNORED its workspace parameter and
+/// called the allocating cd_multiply internally (commit pre-83c4254f).
+/// This test ensures the true workspace-based recursion produces
+/// bit-identical results to the reference allocating implementation.
+#[test]
+fn test_cd_multiply_into_sweep() {
+    use rand::{prelude::*, rngs::StdRng};
 
-        let mut rng = StdRng::seed_from_u64(42);
-        let mut dim = 1;
-        while dim <= 256 {
-            let a: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
-            let b: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
+    let mut rng = StdRng::seed_from_u64(42);
+    let mut dim = 1;
+    while dim <= 256 {
+        let a: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
+        let b: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
 
-            let reference = cd_multiply(&a, &b);
+        let reference = cd_multiply(&a, &b);
 
-            let ws_len = cd_multiply_workspace_len(dim);
-            let mut res = vec![0.0; dim];
-            let mut workspace = vec![0.0; ws_len];
-            cd_multiply_into(&a, &b, &mut res, &mut workspace);
+        let ws_len = cd_multiply_workspace_len(dim);
+        let mut res = vec![0.0; dim];
+        let mut workspace = vec![0.0; ws_len];
+        cd_multiply_into(&a, &b, &mut res, &mut workspace);
 
-            for i in 0..dim {
-                assert!(
-                    (res[i] - reference[i]).abs() < 1e-12,
-                    "dim={dim}, component {i}: into={:.15e}, ref={:.15e}, diff={:.3e}",
-                    res[i], reference[i], (res[i] - reference[i]).abs()
-                );
-            }
-
-            dim *= 2;
+        for i in 0..dim {
+            assert!(
+                (res[i] - reference[i]).abs() < 1e-12,
+                "dim={dim}, component {i}: into={:.15e}, ref={:.15e}, diff={:.3e}",
+                res[i],
+                reference[i],
+                (res[i] - reference[i]).abs()
+            );
         }
-        println!("  cd_multiply_into sweep: all dims 1..=256 match reference");
+
+        dim *= 2;
     }
+    println!("  cd_multiply_into sweep: all dims 1..=256 match reference");
+}
 
 /// Canonical comparison: sign-table ZD enumeration vs allocating cd_multiply.
 ///
@@ -1113,17 +1313,27 @@ fn test_zero_divisors_sign_table_canonical() {
     old_indices.sort();
     new_indices.sort();
 
-    assert_eq!(old_indices.len(), new_indices.len(),
-        "result count mismatch: old={}, new={}", old_indices.len(), new_indices.len());
+    assert_eq!(
+        old_indices.len(),
+        new_indices.len(),
+        "result count mismatch: old={}, new={}",
+        old_indices.len(),
+        new_indices.len()
+    );
     for (idx, (o, n)) in old_indices.iter().zip(&new_indices).enumerate() {
         assert_eq!(o, n, "mismatch at index {idx}: old={o:?}, new={n:?}");
     }
 
     // Verify old norms are all near zero
     for &(i, j, k, l, norm) in &old {
-        assert!(norm < 1e-8,
-            "old ({i},{j},{k},{l}) has norm {norm:.3e} -- should be < 1e-8");
+        assert!(
+            norm < 1e-8,
+            "old ({i},{j},{k},{l}) has norm {norm:.3e} -- should be < 1e-8"
+        );
     }
 
-    println!("  ZD sign-table canonical comparison: {} entries match", old_indices.len());
+    println!(
+        "  ZD sign-table canonical comparison: {} entries match",
+        old_indices.len()
+    );
 }

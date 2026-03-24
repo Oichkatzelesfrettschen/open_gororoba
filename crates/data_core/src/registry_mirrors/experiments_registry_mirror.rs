@@ -339,7 +339,7 @@
 //! ## E-021: Tessarines vs. Mixed-Quaternions Categorical Distinction Census
 //!
 //! - Binary: `tessarines-mixed-quaternions-census`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -356,7 +356,7 @@
 //! ## E-022: Albert Algebra Commutativity and Exceptional Structure Census
 //!
 //! - Binary: `albert-algebra-structure-census`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -373,7 +373,7 @@
 //! ## E-023: Composition Algebra Taxonomy: Two-Axis Classification Framework
 //!
 //! - Binary: `composition-algebra-taxonomy`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -390,7 +390,7 @@
 //! ## E-024: Registry Event Tracking Infrastructure
 //!
 //! - Binary: `registry-event-tracker`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -407,7 +407,7 @@
 //! ## E-026: Third-Party Source Verification Infrastructure
 //!
 //! - Binary: `third-party-source-verifier`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
