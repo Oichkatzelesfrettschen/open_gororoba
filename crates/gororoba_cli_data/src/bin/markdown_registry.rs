@@ -197,6 +197,10 @@ const SKIP_DIRS: &[&str] = &[
     "__pycache__",
     "site-packages",
     "dist-info",
+    // Gate-audit output: generated summary.md files with date-stamped paths.
+    // Each run creates a new timestamped directory, so owner-map tracking is
+    // not viable.  The canonical output is reports/gates/latest.json.
+    "gates",
 ];
 
 /// Returns all .md paths relative to repo_root, sorted, excluding skip dirs.
