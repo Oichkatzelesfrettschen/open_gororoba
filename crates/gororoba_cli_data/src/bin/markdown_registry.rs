@@ -107,6 +107,10 @@ enum Command {
         #[arg(long)]
         bootstrap_from_markdown: bool,
     },
+    /// Normalize operational narratives bootstrap (stub)
+    NormalizeOperationalNarratives,
+    /// Normalize narrative overlays bootstrap (stub)
+    NormalizeNarrativeOverlays,
 }
 
 fn main() -> Result<()> {
@@ -169,7 +173,9 @@ fn main() -> Result<()> {
         | Command::NormalizeReportsNarratives { .. }
         | Command::NormalizeDocsConvos { .. }
         | Command::NormalizeDataArtifactNarratives { .. }
-        | Command::NormalizeEntrypointDocs { .. } => {
+        | Command::NormalizeEntrypointDocs { .. }
+        | Command::NormalizeOperationalNarratives
+        | Command::NormalizeNarrativeOverlays => {
             println!("OK: normalize (stub)");
             Ok(())
         }
