@@ -27,6 +27,7 @@
 //! | [`hermitian`] | `hermitian_3x3_eig`, Cardano eigensolver |
 
 pub mod basis;
+pub mod branch_transport;
 pub mod cp_scan;
 pub mod hermitian;
 pub mod jk_action;
@@ -53,6 +54,13 @@ pub use pmns::{
 };
 
 pub use basis::{extract_v6_basis, extract_vk_basis};
+pub use branch_transport::{
+    BranchMapReport, BranchMapRow, BranchWallReport, BranchWallRow, GradientFrame, LoopReport,
+    LoopStep, LoopSummary, V6ProbeArtifacts, alignment, compute_branch_map, compute_branch_walls,
+    compute_gradient_frame, compute_loop_transport, default_alpha_ch_values,
+    default_alpha_nu_values, default_probe_artifacts, perm_label, stable_branch_loop_points,
+    wall_crossing_loop_points,
+};
 
 pub use cp_scan::{
     CpScanResult,

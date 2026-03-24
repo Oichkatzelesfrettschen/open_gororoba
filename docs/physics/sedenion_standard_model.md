@@ -336,6 +336,17 @@ Stability at optimum: Jacobian rank = 3 (full), condition number = 6.85
 (well-conditioned), d^2(theta_12)/dt^2 = -0.28 (concave -- stable peak).
 Residual fraction at optimum = 60.9% (still well-decoupled at t=2.47).
 
+Branch-aware transport audit: the structural `V_6` subspace itself remains
+stable under recomputation. What moves across the fit landscape is the
+gradient-selected frame inside `V_6`. In the main branch around the current
+fit basin, that frame is extremely stable. The observed recomputation
+warnings are better interpreted as sensitivity to discrete permutation-branch
+walls with associated gauge/sign flips, not as evidence that the local
+tangent space is intrinsically non-unique. Closed-loop transport tests within
+the stable branch and across a wall-crossing loop both return to the initial
+frame after sign-consistent transport, so no residual monodromy was detected
+in the tested loops.
+
 **Joint 4D optimization** (C-1491, 4 parameters re-optimized jointly):
 
 | Parameter  | This work | PDG 2025 | Error |
