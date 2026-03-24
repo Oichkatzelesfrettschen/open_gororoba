@@ -75,7 +75,7 @@ RAYON_THREADS ?= $(WORKER_BUDGET)
 RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
-REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
+REPO_TMPDIR ?= $(or $(TMPDIR),/srv/fast/tmp)
 REPO_PATH_HASH ?= $(shell printf "%s" "$(CURDIR)" | sha256sum | cut -c1-16)
 REPO_TMP_CARGO_ROOT ?= $(REPO_TMPDIR)/open_gororoba-cargo-build/gate/$(REPO_PATH_HASH)
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
@@ -331,8 +331,8 @@ cache-status:
 	@du -sh .cache/gate-target .cache/cargo-default-target 2>/dev/null || true
 	@printf '=== CARGO_HOME ===\n'
 	@du -sh .cache/cargo-home 2>/dev/null || true
-	@printf '=== /tmp build-dir intermediates ===\n'
-	@du -sh /tmp/open_gororoba-cargo-build 2>/dev/null || printf '(empty)\n'
+	@printf '=== /srv/fast/tmp build-dir intermediates ===\n'
+	@du -sh /srv/fast/tmp/open_gororoba-cargo-build 2>/dev/null || printf '(empty)\n'
 	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
 
@@ -820,17 +820,17 @@ e027-validate:
 	@echo "OK: E-027 validation passed (binary operational, TOML pipeline functional)."
 
 rust-parity:
-	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo test --workspace
-	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo clippy --workspace -- -D warnings
+	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo test --workspace
+	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo clippy --workspace -- -D warnings
 	@echo "OK: parity lane passed (workspace tests + clippy with release-class optimization semantics)."
 
 rust-release-fat-lto:
-	CARGO_TARGET_DIR=/tmp/open_gororoba_release_target $(CARGO_ENV) cargo build --release --workspace
+	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_release_target $(CARGO_ENV) cargo build --release --workspace
 	@echo "OK: release fat-LTO workspace build completed."
 
 rust-pgo-instrument:
 	mkdir -p "$(PGO_DIR)"
-	CARGO_TARGET_DIR=/tmp/open_gororoba_pgo_target \
+	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_pgo_target \
 	$(CARGO_ENV) \
 	RUSTFLAGS="-Cprofile-generate=$(PGO_DIR)" \
 	cargo build --release --workspace
@@ -841,7 +841,7 @@ rust-pgo-merge:
 	@echo "OK: merged profile written to $(PGO_DIR)/merged.profdata."
 
 rust-pgo-build:
-	CARGO_TARGET_DIR=/tmp/open_gororoba_pgo_use_target \
+	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_pgo_use_target \
 	$(CARGO_ENV) \
 	RUSTFLAGS="-Cprofile-use=$(PGO_DIR)/merged.profdata" \
 	cargo build --release --workspace
@@ -1634,9 +1634,9 @@ clean-builds:
 	rm -rf .cache/cargo-default-target/
 	rm -rf .cache/gate-target/
 	rm -rf $(REPO_TMP_CARGO_ROOT)
-	rm -rf /tmp/open_gororoba-cargo-build 2>/dev/null || true
-	rm -rf /tmp/open_gororoba_*_target 2>/dev/null || true
-	rm -rf /tmp/open_gororoba-cargo-build-* 2>/dev/null || true
+	rm -rf /srv/fast/tmp/open_gororoba-cargo-build 2>/dev/null || true
+	rm -rf /srv/fast/tmp/open_gororoba_*_target 2>/dev/null || true
+	rm -rf /srv/fast/tmp/open_gororoba-cargo-build-* 2>/dev/null || true
 	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
 
 cargo-cache-status:

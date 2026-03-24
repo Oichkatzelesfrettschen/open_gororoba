@@ -9,12 +9,12 @@
 # CARGO_TARGET_DIR=.cache/gate-target so they still land in the isolated gate tree.
 target-dir = ".cache/cargo-default-target"
 # Cargo splits final artifacts (target-dir) from heavy build intermediates
-# (build-dir). We redirect intermediates to /tmp so that `make cache-sweep`
-# only needs to manage the much smaller final-artifact tree.
-# NOTE: on this machine /tmp is on the same nvme partition as the repo (not
-# a tmpfs RAM disk), so the benefit is layout isolation, not speed.
+# (build-dir). We redirect intermediates to /srv/fast/tmp so that
+# `make cache-sweep` only needs to manage the much smaller final-artifact tree.
+# NOTE: /tmp is a tmpfs (RAM-backed) on this machine -- never put build
+# artifacts there. /srv/fast is an nvme partition with room to spare.
 # `{workspace-path-hash}` prevents collisions between multiple repo clones.
-build-dir = "/tmp/open_gororoba-cargo-build/ambient/{workspace-path-hash}"
+build-dir = "/srv/fast/tmp/open_gororoba-cargo-build/ambient/{workspace-path-hash}"
 # Belt-and-suspenders: the [env] section below sets CARGO_INCREMENTAL=0 which
 # wins over any profile-level `incremental = true` in Cargo.toml. This field
 # keeps the *config-level* default consistent even without the env override.

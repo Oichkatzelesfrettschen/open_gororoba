@@ -9,7 +9,7 @@ into a fully hermetic Cargo setup.
 Current layout
 --------------
 - Final workspace-local artifacts live under `.cache/` inside the repo.
-- Heavy intermediate build state lives under `/tmp/open_gororoba-cargo-build/`.
+- Heavy intermediate build state lives under `/srv/fast/tmp/open_gororoba-cargo-build/`.
 - Docs still stage final rustdoc output through `target/docs-target/`, which is
   already gitignored and not the main source of ballooning.
 - Gate/docs targets use repo-local `CARGO_HOME=.cache/cargo-home`.
@@ -48,4 +48,4 @@ Decision guidance
   longer acceptable or a workflow specifically needs hermetic dependency state.
 - Do not move docs staging off `target/` until it is actually the bottleneck.
   The urgent problem was the intermediate build churn, which already moved to
-  `/tmp`.
+  `/srv/fast/tmp`.
