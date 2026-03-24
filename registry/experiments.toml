@@ -1,10 +1,12 @@
-# SOURCE OF TRUTH: experiments registry.
-# Edit this file directly. Rebuild derived DB with: make registry-build
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: experiments
 
 [experiments]
 authoritative = true
 deterministic_count = 153
-experiment_count = 201
+experiment_count = 210
 gpu_count = 28
 seeded_count = 46
 status_allowlist = ["active", "blocked", "completed", "deprecated", "planned"]
@@ -5256,66 +5258,63 @@ status_token = "ACTIVE"
 title = "Deterministic audit for Cayley-Dickson spectrum, shape-match, and SO(7) orbit refutations"
 truth_surface_consumption = []
 
-
 [[experiment]]
-id = "E-208"
-title = """Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D"""
-status = "verified"
 claim_refs = ["C-1440", "C-1441", "C-1442", "C-1443"]
+id = "E-208"
+status = "verified"
+title = "Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D"
 
 [[experiment]]
-id = "E-209"
-title = "CKM selector pair scan: 420 combos, Rayon-parallel"
-status = "completed"
 claim_refs = ["C-1456"]
+id = "E-209"
+status = "completed"
+title = "CKM selector pair scan: 420 combos, Rayon-parallel"
 
 [[experiment]]
-id = "E-210"
-title = "PMNS neutrino mixing selector pair scan"
-status = "completed"
 claim_refs = ["C-1457", "C-1462"]
+id = "E-210"
+status = "completed"
+title = "PMNS neutrino mixing selector pair scan"
 
 [[experiment]]
-id = "E-211"
-title = "3-blade zero-divisor friction scan (455 triples)"
-status = "completed"
 claim_refs = ["C-1459"]
+id = "E-211"
+status = "completed"
+title = "3-blade zero-divisor friction scan (455 triples)"
 
 [[experiment]]
-id = "E-212"
-title = "Electroweak mixing angle from associator flux ratio"
-status = "completed"
 claim_refs = ["C-1458"]
+id = "E-212"
+status = "completed"
+title = "Electroweak mixing angle from associator flux ratio"
 
 [[experiment]]
-id = "E-213"
-title = "G2 stabilizer extraction via thin-SVD with u(3) embedding verification"
-status = "completed"
 claim_refs = ["C-1479", "C-1480", "C-1481", "C-1482"]
+id = "E-213"
+status = "completed"
+title = "G2 stabilizer extraction via thin-SVD with u(3) embedding verification"
 
 [[experiment]]
-id = "E-214"
-title = "Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer"
-status = "completed"
 claim_refs = ["C-1483", "C-1484", "C-1485", "C-1486"]
+id = "E-214"
+status = "completed"
+title = "Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer"
 
 [[experiment]]
-id = "E-215"
-title = "Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection"
-status = "completed"
 claim_refs = ["C-1487", "C-1488"]
+id = "E-215"
+status = "completed"
+title = "Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection"
 
 [[experiment]]
-id = "E-216"
-title = "PMD CPD 7.12.0 codebase duplication baseline scan"
-status = "completed"
 claim_refs = ["C-1528"]
+id = "E-216"
+status = "completed"
+title = "PMD CPD 7.12.0 codebase duplication baseline scan"
 
 [[experiment]]
-id = "E-217"
-title = "Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path"
-status = "completed"
 claim_refs = []
+id = "E-217"
 notes = """
 WHY: Tasks #57/#58 were filed as 'migrate to TOML + codegen'. User updated requirement:
 SQLite is the primary source of truth; TOML-codegen is a fallback. First evaluate whether
@@ -5359,3 +5358,6 @@ Both files remain in CPD_EXCLUDE_FILES until migration is complete.
 LICENSE NOTE: Workspace upgraded from GPL-2.0-only to GPL-2.0-or-later (2026-03-23)
 to widen compatible dependency pool. Historical records left unchanged.
 """
+status = "completed"
+title = "Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path"
+

@@ -1,5 +1,7 @@
-# SOURCE OF TRUTH: insights registry.
-# Edit this file directly. Rebuild derived DB with: make registry-build
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: insights
 
 [[insight]]
 claims = ["C-071"]
@@ -1913,33 +1915,3 @@ status = "verified"
 summary = "The later refutation wave is still informative: associator entropy shifts mark algebraic boundaries, but ghost frequencies, pulsed forcing gains, pathion sinks, eta-wake corrections, heavy-ion scaling collapses, and 0.1764 slope ratios are bounded by discretization, instability ceilings, or coincidence cancellation rather than a transported mechanism."
 title = "Late-stage falsification sweeps reveal artifact ceilings, not transported physics"
 
-
-[[insights]]
-id = "I-212"
-title = """Topological Quantization of Associator Flux in Higher Cayley-Dickson Algebras"""
-status = "verified"
-claim_refs = ["C-1440", "C-1441", "C-1442", "C-1443"]
-
-[[insights]]
-id = "I-213"
-title = """Analytical Exact Mapping of S(phi) Yields Thermodynamic Renormalization Flow"""
-status = "verified"
-claim_refs = ["C-1444"]
-
-[[insights]]
-id = "I-214"
-title = """Refutation of CD Doubling FBF Invariant via Pathion Cubic Anomaly"""
-status = "verified"
-claim_refs = ["C-1445", "C-1446"]
-
-[[insights]]
-id = "I-215"
-title = """Hyper-Dimensional Topological Compaction drives UV-Limit of Quantum Gravity"""
-status = "verified"
-claim_refs = ["C-1450"]
-
-[[insights]]
-id = "I-216"
-title = """Cayley-Dickson ZD Algebra Directly Sources Topological Valley Chern Numbers"""
-status = "verified"
-claim_refs = ["C-1452"]

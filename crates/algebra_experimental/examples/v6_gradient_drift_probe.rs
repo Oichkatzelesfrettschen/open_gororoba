@@ -20,6 +20,15 @@ struct GradientFrame {
     u_atmo: [f64; 6],
 }
 
+#[derive(Clone, Debug)]
+struct OrientedFrame {
+    g_12: [f64; 6],
+    g_13: [f64; 6],
+    g_23: [f64; 6],
+    u_solar: [f64; 6],
+    u_atmo: [f64; 6],
+}
+
 fn dot(a: &[f64; 6], b: &[f64; 6]) -> f64 {
     a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
 }
@@ -34,6 +43,33 @@ fn alignment(a: &[f64; 6], b: &[f64; 6]) -> f64 {
         0.0
     } else {
         dot(a, b) / denom
+    }
+}
+
+fn negate(a: &[f64; 6]) -> [f64; 6] {
+    let mut out = [0.0_f64; 6];
+    for i in 0..6 {
+        out[i] = -a[i];
+    }
+    out
+}
+
+fn orient_to_reference(reference: &[f64; 6], candidate: &[f64; 6]) -> ([f64; 6], i32, f64) {
+    let align = alignment(reference, candidate);
+    if align < 0.0 {
+        (negate(candidate), -1, -align)
+    } else {
+        (*candidate, 1, align)
+    }
+}
+
+fn oriented_from_frame(frame: &GradientFrame) -> OrientedFrame {
+    OrientedFrame {
+        g_12: frame.g_12,
+        g_13: frame.g_13,
+        g_23: frame.g_23,
+        u_solar: frame.u_solar,
+        u_atmo: frame.u_atmo,
     }
 }
 
@@ -342,6 +378,85 @@ fn print_branch_walls(base: &GradientFrame, v6_basis: &DMatrix<f64>) {
     println!("branch_wall_summary count={}", wall_count);
 }
 
+fn print_loop_transport(label: &str, v6_basis: &DMatrix<f64>, points: &[(f64, f64)]) {
+    let frames: Vec<GradientFrame> = points
+        .iter()
+        .map(|&(alpha_ch, alpha_nu)| compute_gradient_frame(v6_basis, alpha_ch, alpha_nu))
+        .collect();
+
+    println!();
+    println!("loop_transport label={}", label);
+    println!(
+        "step,alpha_ch,alpha_nu,branch,wall_crossed,flip_g12,flip_g13,flip_g23,flip_u_solar,flip_u_atmo,align_g23,align_u_atmo"
+    );
+
+    let start = &frames[0];
+    let start_oriented = oriented_from_frame(start);
+    let mut prev_oriented = start_oriented.clone();
+    let mut prev_frame = start;
+    let mut wall_crossings = 0_usize;
+
+    println!(
+        "0,{:.2},{:.2},{},false,+,+,+,+,+,{:.6},{:.6}",
+        start.alpha_ch,
+        start.alpha_nu,
+        perm_label(start),
+        1.0,
+        1.0
+    );
+
+    for (step, frame) in frames.iter().enumerate().skip(1) {
+        let wall_crossed = frame.perm_u != prev_frame.perm_u || frame.perm_d != prev_frame.perm_d;
+        if wall_crossed {
+            wall_crossings += 1;
+        }
+
+        let (g_12, flip_g12, _) = orient_to_reference(&prev_oriented.g_12, &frame.g_12);
+        let (g_13, flip_g13, _) = orient_to_reference(&prev_oriented.g_13, &frame.g_13);
+        let (g_23, flip_g23, align_g23) = orient_to_reference(&prev_oriented.g_23, &frame.g_23);
+        let (u_solar, flip_u_solar, _) =
+            orient_to_reference(&prev_oriented.u_solar, &frame.u_solar);
+        let (u_atmo, flip_u_atmo, align_u_atmo) =
+            orient_to_reference(&prev_oriented.u_atmo, &frame.u_atmo);
+
+        println!(
+            "{},{:.2},{:.2},{},{},{},{},{},{},{},{:.6},{:.6}",
+            step,
+            frame.alpha_ch,
+            frame.alpha_nu,
+            perm_label(frame),
+            wall_crossed,
+            sign_label(flip_g12 as f64),
+            sign_label(flip_g13 as f64),
+            sign_label(flip_g23 as f64),
+            sign_label(flip_u_solar as f64),
+            sign_label(flip_u_atmo as f64),
+            align_g23,
+            align_u_atmo
+        );
+
+        prev_oriented = OrientedFrame {
+            g_12,
+            g_13,
+            g_23,
+            u_solar,
+            u_atmo,
+        };
+        prev_frame = frame;
+    }
+
+    println!(
+        "loop_summary label={} wall_crossings={} final_align_g12={:.6} final_align_g13={:.6} final_align_g23={:.6} final_align_u_solar={:.6} final_align_u_atmo={:.6}",
+        label,
+        wall_crossings,
+        alignment(&start_oriented.g_12, &prev_oriented.g_12),
+        alignment(&start_oriented.g_13, &prev_oriented.g_13),
+        alignment(&start_oriented.g_23, &prev_oriented.g_23),
+        alignment(&start_oriented.u_solar, &prev_oriented.u_solar),
+        alignment(&start_oriented.u_atmo, &prev_oriented.u_atmo)
+    );
+}
+
 fn main() {
     let (v6_basis, singular_values, _assessors) = extract_v6_basis();
     println!(
@@ -404,4 +519,26 @@ fn main() {
         ],
     );
     print_branch_walls(base, &v6_basis);
+    print_loop_transport(
+        "stable_branch_loop",
+        &v6_basis,
+        &[
+            (3.00, 1.30),
+            (3.60, 1.30),
+            (3.60, 1.40),
+            (3.00, 1.40),
+            (3.00, 1.30),
+        ],
+    );
+    print_loop_transport(
+        "wall_crossing_loop",
+        &v6_basis,
+        &[
+            (3.00, 1.25),
+            (3.00, 1.20),
+            (3.10, 1.20),
+            (3.10, 1.25),
+            (3.00, 1.25),
+        ],
+    );
 }
