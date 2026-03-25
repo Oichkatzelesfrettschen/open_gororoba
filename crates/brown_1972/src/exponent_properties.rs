@@ -96,6 +96,21 @@ pub fn verify_no_nilpotent(a: &[f64], max_n: i32) -> bool {
     true
 }
 
+/// Verify Lemma 5.8: T(a^2) = T(a)^2 - 2*N(a).
+/// The trace of a squared element follows this quadratic formula.
+/// Mirrors: Brown (1972) Lemma 5.8.
+pub fn verify_trace_of_square(a: &[f64]) -> f64 {
+    let a_sq = cd_multiply(a, a);
+    // T(a) = 2*a[0] for CD algebras
+    let trace_a = 2.0 * a[0];
+    let norm_a = cd_norm_sq(a);
+
+    let expected = trace_a * trace_a - 2.0 * norm_a;
+    let actual = a_sq[0] * 2.0; // T(a^2) = 2 * a_sq[0]
+
+    (actual - expected).abs()
+}
+
 /// Verify Lemma 5.14: (a,b,c)^2 = -N((a,b,c)).
 /// The associator of any triple squares to negative its norm.
 /// This is because T((a,b,c)) = 0 (Thm 3.1), so by the quadratic
@@ -189,5 +204,12 @@ mod tests {
         let c = random_sedenion(3);
         let err = verify_associator_square(&a, &b, &c);
         assert!(err < 1e-6, "sedenion associator^2 should be -N(assoc): err={err}");
+    }
+
+    #[test]
+    fn test_trace_of_square_dim16() {
+        let a = random_sedenion(42);
+        let err = verify_trace_of_square(&a);
+        assert!(err < 1e-5, "T(a^2) should be T(a)^2 - 2*N(a): err={err}");
     }
 }
