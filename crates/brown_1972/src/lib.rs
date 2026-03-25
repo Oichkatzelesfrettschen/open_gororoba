@@ -17,6 +17,7 @@
 //!
 //! Mirrors: C1538_MorZDSymmetry.v, CDTraceZero.v, CDPowerAssociative.v
 
+pub mod basis_element_properties;
 pub mod exponent_properties;
 pub mod norm_defect;
 pub mod star_operator;

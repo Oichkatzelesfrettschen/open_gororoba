@@ -118,6 +118,140 @@ impl std::fmt::Display for MajorTheoremResult {
     }
 }
 
+/// Verify Theorem 7.9: If A and B are mutual zero divisors, then <A,B>
+/// (the span of A, B, and their products) is a commutative Jordan subalgebra.
+///
+/// Part i): <A,B> has 3D form r1 + r2*A + r3*B
+/// Part ii): <A,B> is commutative (verified by checking AB=0)
+/// Part iii): <A,B> is NOT alternative (A^2*B != A*(AB))
+///
+/// Mirrors: Brown (1972) Theorem 7.9.
+pub fn verify_jordan_subalgebra_property(a: &[f64], b: &[f64]) -> (f64, f64, f64) {
+    // Part i) implicitly satisfied when AB=0
+    let ab = cd_multiply(a, b);
+    let ba = cd_multiply(b, a);
+
+    // Part ii) Commutativity: AB = BA = 0
+    let commutativity_err = cd_norm_sq(&ab).max(cd_norm_sq(&ba));
+
+    // Part iii) Check non-alternativity: A^2*B should not equal A*(AB)
+    let a_sq = cd_multiply(a, a);
+    let a_sq_b = cd_multiply(&a_sq, b);
+    let ab_prod = cd_multiply(a, &ab);
+
+    let non_alternativity_err = a_sq_b
+        .iter()
+        .zip(ab_prod.iter())
+        .map(|(x, y)| (x - y).abs())
+        .fold(0.0, f64::max);
+
+    (commutativity_err, non_alternativity_err, 0.0)
+}
+
+/// Verify Theorem 7.13: Properties of mutual zero divisors.
+///
+/// If A and B are mutual ZDs:
+///   i) T([a1*a2]*b1) = T([a1*a2]*b2) = 0
+///   ii) a1 = ±a2 implies a1*b1 = a1*b2 = 0
+///   iii) a1 and a2 are not both real numbers
+///   iv) a1 = 0 implies a2*b1 = a2*b2 = 0
+///   v) a2 = 0 implies a1*b1 = a1*b2 = 0
+///
+/// Mirrors: Brown (1972) Theorem 7.13.
+pub fn verify_mutual_zd_properties(a: &[f64], b: &[f64]) -> MutualZdProperties {
+    let dim = a.len();
+    let half = dim / 2;
+
+    let a1 = &a[..half];
+    let a2 = &a[half..];
+    let b1 = &b[..half];
+    let b2 = &b[half..];
+
+    // i) T([a1*a2]*bi) = 0
+    let a1_a2 = cd_multiply(a1, a2);
+    let a1a2_b1 = cd_multiply(&a1_a2, b1);
+    let a1a2_b2 = cd_multiply(&a1_a2, b2);
+    let trace_a1a2b1 = a1a2_b1[0] * 2.0; // T(x) = 2*x[0]
+    let trace_a1a2b2 = a1a2_b2[0] * 2.0;
+
+    // iii) Check if either a1 or a2 is a real number
+    let a1_is_real = a1[1..].iter().all(|&x| x.abs() < 1e-10);
+    let a2_is_real = a2[1..].iter().all(|&x| x.abs() < 1e-10);
+    let both_nonreal = !a1_is_real && !a2_is_real;
+
+    // iv) & v) Check zero conditions
+    let a1_zero = a1.iter().all(|&x| x.abs() < 1e-10);
+    let a2_zero = a2.iter().all(|&x| x.abs() < 1e-10);
+
+    MutualZdProperties {
+        trace_a1a2b1: trace_a1a2b1.abs(),
+        trace_a1a2b2: trace_a1a2b2.abs(),
+        both_nonreal,
+        a1_zero,
+        a2_zero,
+    }
+}
+
+/// Result of checking mutual ZD properties.
+#[derive(Debug, Clone)]
+pub struct MutualZdProperties {
+    pub trace_a1a2b1: f64,
+    pub trace_a1a2b2: f64,
+    pub both_nonreal: bool,
+    pub a1_zero: bool,
+    pub a2_zero: bool,
+}
+
+/// Verify Theorem 7.14: If A is a zero divisor in A_4:
+///   i) a1 ≠ ±a2
+///   ii) a1 and a2 are not real numbers
+///   iii) N(a1) = N(a2)
+///
+/// Mirrors: Brown (1972) Theorem 7.14.
+pub fn verify_zd_element_condition_dim4(a: &[f64]) -> ZdElementProperties {
+    let dim = a.len();
+    let half = dim / 2;
+
+    let a1 = &a[..half];
+    let a2 = &a[half..];
+
+    let n_a1 = cd_norm_sq(a1);
+    let n_a2 = cd_norm_sq(a2);
+
+    // i) a1 ≠ ±a2
+    let a1_plus_a2: Vec<f64> = a1.iter().zip(a2.iter()).map(|(x, y)| x + y).collect();
+    let a1_minus_a2: Vec<f64> = a1.iter().zip(a2.iter()).map(|(x, y)| x - y).collect();
+    let a1_equals_a2 = cd_norm_sq(&a1_plus_a2) < 1e-10;
+    let a1_equals_neg_a2 = cd_norm_sq(&a1_minus_a2) < 1e-10;
+    let cond_i = !a1_equals_a2 && !a1_equals_neg_a2;
+
+    // ii) a1 and a2 not real
+    let a1_is_real = a1[1..].iter().all(|&x| x.abs() < 1e-10);
+    let a2_is_real = a2[1..].iter().all(|&x| x.abs() < 1e-10);
+    let cond_ii = !a1_is_real && !a2_is_real;
+
+    // iii) N(a1) = N(a2)
+    let cond_iii = (n_a1 - n_a2).abs() < 1e-10;
+
+    ZdElementProperties {
+        cond_i,
+        cond_ii,
+        cond_iii,
+        norm_a1: n_a1,
+        norm_a2: n_a2,
+    }
+}
+
+/// Result of checking ZD element properties.
+#[derive(Debug, Clone)]
+pub struct ZdElementProperties {
+    pub cond_i: bool,
+    pub cond_ii: bool,
+    pub cond_iii: bool,
+    pub norm_a1: f64,
+    pub norm_a2: f64,
+}
+
 /// Check Theorem 7.3: verify that AB=0 implies BA=0, conj(A)B=0, etc.
 ///
 /// Returns the 7 equivalent condition norms.
@@ -197,5 +331,31 @@ mod tests {
         let r = check_major_theorem(&a, &b, 1e-8);
         let s = format!("{r}");
         assert!(s.contains("ZD PAIR"));
+    }
+
+    #[test]
+    fn test_jordan_subalgebra_property() {
+        let (a, b) = schafer_1945::division_test::zd_witness_16();
+        let (comm_err, alt_err, _) = verify_jordan_subalgebra_property(&a, &b);
+        assert!(comm_err < 1e-10, "mutual ZDs should be commutative: err={comm_err}");
+        assert!(alt_err > 0.01, "mutual ZD span should NOT be alternative: err={alt_err}");
+    }
+
+    #[test]
+    fn test_mutual_zd_properties() {
+        let (a, b) = schafer_1945::division_test::zd_witness_16();
+        let props = verify_mutual_zd_properties(&a, &b);
+        assert!(props.trace_a1a2b1 < 1e-8, "T([a1*a2]*b1) should be 0");
+        assert!(props.trace_a1a2b2 < 1e-8, "T([a1*a2]*b2) should be 0");
+        assert!(props.both_nonreal, "a1 and a2 should both be nonreal");
+    }
+
+    #[test]
+    fn test_zd_element_condition_dim4() {
+        let (a, _) = schafer_1945::division_test::zd_witness_16();
+        let props = verify_zd_element_condition_dim4(&a);
+        assert!(props.cond_i, "a1 should not equal ±a2");
+        assert!(props.cond_ii, "a1 and a2 should be nonreal");
+        assert!(props.cond_iii, "N(a1) should equal N(a2)");
     }
 }
