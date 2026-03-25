@@ -1,0 +1,23 @@
+[package]
+name = "cd_papers"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Meta-crate re-exporting all Cayley-Dickson paper formalizations"
+license = "GPL-2.0-or-later"
+
+# This crate re-exports all paper-specific crates for convenient
+# one-import access to the full CD algebra formalization library.
+#
+# Usage: `use cd_papers::prelude::*;` to get everything.
+
+[dependencies]
+cd_kernel.workspace = true
+hurwitz_1898 = { path = "../hurwitz_1898" }
+dickson_1919 = { path = "../dickson_1919" }
+schafer_1945 = { path = "../schafer_1945" }
+wilmot_2025 = { path = "../wilmot_2025" }
+brown_1967 = { path = "../brown_1967" }
+brown_1972 = { path = "../brown_1972" }
+
+[lints]
+workspace = true

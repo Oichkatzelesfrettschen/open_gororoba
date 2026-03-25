@@ -1,0 +1,31 @@
+[package]
+name = "brown_1972"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Brown (1972) Zero Divisor Structure in CD Algebras -- verified Rust implementation"
+license = "GPL-2.0-or-later"
+
+# Source: Brown, H.C. (1972) "Structure of zero divisors, and other algebraic
+# structures, in higher dimensional real Cayley-Dickson algebras",
+# Doctoral Dissertation, University of Missouri-Rolla, 89 pages.
+#
+# THE foundational dissertation for ZD theory in CD algebras.
+# Contains the Major Theorem (Thm 7.15): complete ZD criterion for A_4.
+# This is the result that Moreno (1997) later refined into eigenvalue form.
+#
+# Key results implemented:
+# - Norm defect formula (Thm 7.1)
+# - ZD symmetry (Thm 7.3, 11 equivalent conditions)
+# - Star operator and its properties (Thm 7.5)
+# - ZD subspace structure: 3D commutative Jordan (Thm 7.9)
+# - Major Theorem: complete ZD criterion (Thm 7.15)
+# - ZD half-constraints: N(a1)=N(a2), not real, not +/-a2 (Thm 7.14)
+
+[dependencies]
+cd_kernel.workspace = true
+hurwitz_1898 = { path = "../hurwitz_1898" }
+dickson_1919 = { path = "../dickson_1919" }
+schafer_1945 = { path = "../schafer_1945" }
+
+[lints]
+workspace = true

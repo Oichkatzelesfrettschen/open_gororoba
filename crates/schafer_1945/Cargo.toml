@@ -1,0 +1,24 @@
+[package]
+name = "schafer_1945"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Schafer (1945) Division Algebras of Order 16 -- verified Rust implementation"
+license = "GPL-2.0-or-later"
+
+# Source: Schafer, R.D. (1945) "On a Construction for Division Algebras of
+# Order 16", Bull. Amer. Math. Soc., 51, pp. 532-534.
+#
+# Rocq verification: proofs/theories/SchaferDivAlg16.v (0 Admitted)
+#
+# This crate implements:
+# - Modified CD multiplication (eq.1) with arbitrary element g
+# - Division condition (eq.2) singularity test
+# - Zero-divisor witness at dim 16 (the negative result over R)
+
+[dependencies]
+cd_kernel.workspace = true
+hurwitz_1898 = { path = "../hurwitz_1898" }
+dickson_1919 = { path = "../dickson_1919" }
+
+[lints]
+workspace = true
