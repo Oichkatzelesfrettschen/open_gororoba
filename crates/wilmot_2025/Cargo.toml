@@ -1,0 +1,24 @@
+[package]
+name = "wilmot_2025"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Wilmot (2025) Structure of Cayley-Dickson Algebras -- verified Rust implementation"
+license = "GPL-2.0-or-later"
+
+# Source: Wilmot, G.P. (2025) "Structure of the Cayley-Dickson algebras",
+# arXiv:2505.11747v3, University of Adelaide.
+#
+# Rocq verification: proofs/theories/WilmotPathionRetraction.v,
+#                     proofs/theories/WilmotRetractionTheorem.v (292 lines total)
+#
+# Key results: graded CD construction, 3 associativity types (A/B/C/X),
+# 8 cycle silos (AAA/ACC/XBB/BBA/BXC/CAB/CCX/XXX), zero divisor
+# counting formula Z_m = N_m(N_m-1)(N_m-3)(N_m-7)/16, mode theorem.
+
+[dependencies]
+cd_kernel.workspace = true
+hurwitz_1898 = { path = "../hurwitz_1898" }
+dickson_1919 = { path = "../dickson_1919" }
+
+[lints]
+workspace = true

@@ -14,6 +14,13 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 resolver = "3"
 members = [
     "crates/cd_kernel",
+    "crates/hurwitz_1898",
+    "crates/dickson_1919",
+    "crates/schafer_1945",
+    "crates/wilmot_2025",
+    "crates/brown_1967",
+    "crates/brown_1972",
+    "crates/cd_papers",
     "crates/algebra_analysis",
     "crates/algebra_experimental",
     "crates/provenance_core",

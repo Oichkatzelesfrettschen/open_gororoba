@@ -964,6 +964,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "brown_1967"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "dickson_1919",
+ "hurwitz_1898",
+ "schafer_1945",
+]
+
+[[package]]
+name = "brown_1972"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "dickson_1919",
+ "hurwitz_1898",
+ "schafer_1945",
+]
+
+[[package]]
 name = "bstr"
 version = "1.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1407,6 +1427,19 @@ dependencies = [
  "thiserror 2.0.18",
  "verified_core",
  "wide",
+]
+
+[[package]]
+name = "cd_papers"
+version = "0.1.0"
+dependencies = [
+ "brown_1967",
+ "brown_1972",
+ "cd_kernel",
+ "dickson_1919",
+ "hurwitz_1898",
+ "schafer_1945",
+ "wilmot_2025",
 ]
 
 [[package]]
@@ -2614,6 +2647,14 @@ dependencies = [
  "quote",
  "rustc_version",
  "syn 2.0.117",
+]
+
+[[package]]
+name = "dickson_1919"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "hurwitz_1898",
 ]
 
 [[package]]
@@ -4768,6 +4809,13 @@ name = "humantime"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "135b12329e5e3ce057a9f972339ea52bc954fe1e9358ef27f95e89716fbc5424"
+
+[[package]]
+name = "hurwitz_1898"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+]
 
 [[package]]
 name = "hyper"
@@ -9160,6 +9208,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "schafer_1945"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "dickson_1919",
+ "hurwitz_1898",
+]
+
+[[package]]
 name = "schannel"
 version = "0.1.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -11383,6 +11440,15 @@ checksum = "0ce5da8ecb62bcd8ec8b7ea19f69a51275e91299be594ea5cc6ef7819e16cd03"
 dependencies = [
  "bytemuck",
  "safe_arch",
+]
+
+[[package]]
+name = "wilmot_2025"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "dickson_1919",
+ "hurwitz_1898",
 ]
 
 [[package]]

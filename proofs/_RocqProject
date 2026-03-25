@@ -221,3 +221,11 @@ theories/FinDimHModule.v
 theories/C1538_MorZDSymmetry.v
 theories/C1539_MorSkewSymm.v
 theories/C1543_MorMod4Bound.v
+theories/HurwitzTheorem.v
+theories/WedderburnPrimitive.v
+theories/DicksonCDProcess.v
+theories/SchaferDivAlg16.v
+theories/WalkerFermatAlgebras.v
+theories/CDPowerAssociative.v
+theories/WilmotCDStructure.v
+theories/BrownGeneralizedCD.v

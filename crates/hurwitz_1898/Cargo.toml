@@ -1,0 +1,25 @@
+[package]
+name = "hurwitz_1898"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Hurwitz (1898) Composition of Quadratic Forms -- verified Rust implementation"
+license = "GPL-2.0-or-later"
+
+# Source: Hurwitz, A. (1898) "Ueber die Composition der quadratischen Formen
+# von beliebig vielen Variablen", Nachr. Ges. Wiss. Goettingen, pp. 309-316.
+#
+# Rocq verification: proofs/theories/HurwitzTheorem.v (443 lines, 0 Admitted)
+#
+# This crate implements all computable content from the paper:
+# - Norm multiplicativity at dims 1, 2, 4, 8
+# - Hurwitz dimension bound (2^{n-2} <= n^2)
+# - Refined skew-symmetric counting (2^{n-2} <= n*(n-1)/2)
+# - Elimination of dimensions 6 and >= 10
+# - Hurwitz-Radon function rho(n)
+# - Explicit multiplication tables (A_0 matrices) for dims 2, 4, 8
+
+[dependencies]
+cd_kernel.workspace = true
+
+[lints]
+workspace = true

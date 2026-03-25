@@ -1,0 +1,23 @@
+[package]
+name = "brown_1967"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Brown (1967) Generalized Cayley-Dickson Algebras -- verified Rust implementation"
+license = "GPL-2.0-or-later"
+
+# Source: Brown, R.B. (1967) "On Generalized Cayley-Dickson Algebras",
+# Pacific J. Math., 20(3), pp. 415-422.
+#
+# Rocq verification: proofs/theories/BrownGeneralizedCD.v (0 Admitted)
+#
+# Key contribution: generalized CD construction with arbitrary gamma parameters,
+# classification up to isomorphism at dims 16/32/64, division algebra criterion.
+
+[dependencies]
+cd_kernel.workspace = true
+hurwitz_1898 = { path = "../hurwitz_1898" }
+dickson_1919 = { path = "../dickson_1919" }
+schafer_1945 = { path = "../schafer_1945" }
+
+[lints]
+workspace = true
