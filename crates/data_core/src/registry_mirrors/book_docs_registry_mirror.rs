@@ -7,7 +7,7 @@
 //!
 //! - Updated: 2026-03-25
 //! - Source markdown glob: `docs/book/src/**/*.md`
-//! - Document count: 28
+//! - Document count: 29
 //!
 //! ## Documents
 //!
@@ -16,7 +16,7 @@
 //! - Source markdown: `docs/book/src/SUMMARY.md`
 //! - Section: `SUMMARY.md`
 //! - Slug: `docs_book_src_SUMMARY`
-//! - Line count: 66
+//! - Line count: 69
 //!
 //! ### BOOK-002: Box-Kite Structure
 //!
@@ -166,7 +166,7 @@
 //! - Source markdown: `docs/book/src/papers/chronology.md`
 //! - Section: `papers`
 //! - Slug: `docs_book_src_papers_chronology`
-//! - Line count: 34
+//! - Line count: 43
 //!
 //! ### BOOK-015: Paper Collection
 //!
@@ -180,7 +180,14 @@
 //! - Source markdown: `docs/book/src/papers/frontier.md`
 //! - Section: `papers`
 //! - Slug: `docs_book_src_papers_frontier`
-//! - Line count: 45
+//! - Line count: 57
+//!
+//! ### BOOK-029: Pre-Moreno Distillation
+//!
+//! - Source markdown: `docs/book/src/papers/pre-moreno.md`
+//! - Section: `papers`
+//! - Slug: `docs_book_src_papers_pre-moreno`
+//! - Line count: 67
 //!
 //! ### BOOK-020: Proof Inventory
 //!

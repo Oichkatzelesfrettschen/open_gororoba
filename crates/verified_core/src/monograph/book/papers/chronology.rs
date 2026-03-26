@@ -18,7 +18,9 @@
 //! This page tracks the active formalization frontier in chronological order. The
 //! full historical cache lives off-repo in
 //! `~/Documents/Projects/CayleyDickson/CHRONOLOGICAL_REFERENCE_MATRIX.md`; this
-//! page is the executable subset we are actively routing into Rust and Rocq.
+//! page is the executable subset we are actively routing into Rust and Rocq. The
+//! pre-Moreno dependency chain and its missing-source audit now live in
+//! `./pre-moreno.md`.
 //!
 //! | Year | Paper | Best current landing | Status |
 //! |------|-------|----------------------|--------|
@@ -26,6 +28,7 @@
 //! | 1818 | Degen eight-square precursor | reference only | cached off-repo |
 //! | 1845 | Cayley quaternion/octave note | reference only | cached off-repo |
 //! | 1898 | Hurwitz, composition of quadratic forms | paired Rust + Rocq | formalized |
+//! | 1914 | Wedderburn, primitive algebra | Rocq reference stub | formalized |
 //! | 1919 | Dickson, Cayley-Dickson process | paired Rust + Rocq | formalized |
 //! | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
 //! | 1954 | Schafer, algebras formed by the CD process | Rocq-first backlog | source on disk |

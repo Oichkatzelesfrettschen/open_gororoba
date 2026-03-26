@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-03-23"
+updated = "2026-03-25"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 72
+document_count = 95
 
 [[owner]]
 path = "README.md"
@@ -448,6 +448,144 @@ removal_reason = ""
 
 [[owner]]
 path = "data/results/higher_cd/pathion_resonance/pathion_resonance_summary.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "crates/brown_1972/COMPUTATIONAL_VALIDATION.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "crates/brown_1972/PHASE_CD_MILESTONE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "crates/brown_1972/PL1_EMULATOR_STATUS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "crates/brown_1972/ZD_STRUCTURE_ANALYSIS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/COMPREHENSIVE_EXPLORATION_SCOPE_EXHAUSTIVE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/OCTONION_SEDENION_UNIFICATION.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/PHASE_X_COMPREHENSIVE_ROADMAP.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/PHASE_X_LACUNAE_AUDIT.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/TASK_101_BAEZ_CHAPTERS_1_3.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/TASK_102_BAEZ_CHAPTERS_4_6.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/TASK_103_DEMARRAIS_PART1.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/TASK_104_DEMARRAIS_PART2.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/TASK_105_SYNTHESIS_UNIFIED_CONCEPT_MAP.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/papers/chronology.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/papers/frontier.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/book/src/papers/pre-moreno.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "jacobson_googlebooks_accessible_berkeley.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "jacobson_googlebooks_accessible_virginia.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "jacobson_googlebooks_classic_search_results.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "jacobson_googlebooks_search_results.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/cayley_dickson_cache_audit_2026_03_25.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "researchgate_huang_security_check.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "ucsd_jacobson_chapter_detail.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

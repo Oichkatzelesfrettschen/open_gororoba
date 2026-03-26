@@ -20,6 +20,7 @@
 //! # Architecture
 //!
 //! - [Canonical Sources](./architecture/canonical-sources.md)
+//! - [RFC-001.1 The Mergus Bridge](./architecture/mergus-bridge.md)
 //! - [Migrated Lanes](./architecture/migrated-lanes.md)
 //! - [DB Authoring Workflow](./architecture/db-authoring.md)
 //! - [Compatibility Exports](./architecture/compatibility-exports.md)
@@ -60,6 +61,7 @@
 //!
 //! - [Paper Collection](./papers/collection.md)
 //! - [Paper Chronology](./papers/chronology.md)
+//! - [Pre-Moreno Distillation](./papers/pre-moreno.md)
 //! - [Formalization Frontier](./papers/frontier.md)
 //!
 //! # Appendix
