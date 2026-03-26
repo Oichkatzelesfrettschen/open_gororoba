@@ -2,16 +2,14 @@ use anyhow::{Context, Result};
 use cd_kernel::cd_associator_norm;
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
-use data_core::{
-    compute_invariant_samples, HeliosphereFeatureRow,
-};
+use data_core::HeliosphereFeatureRow;
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(
     name = "heliosphere-quench-scan",
-    about = "Map the algebraic quenching point across heliocentric distance"
+    about = "Map the algebraic quenching point across heliocentric distance using Magnetic Takens embedding"
 )]
 struct Cli {
     #[arg(long)]
@@ -20,7 +18,7 @@ struct Cli {
     #[arg(long)]
     out_csv: PathBuf,
 
-    #[arg(long, default_value_t = 1.0)]
+    #[arg(long, default_value_t = 5.0)]
     bin_size_au: f64,
 }
 
@@ -42,10 +40,13 @@ fn main() -> Result<()> {
 
     let mut all_rows = Vec::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
-        all_rows.push(result?);
+        let r = result?;
+        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+            all_rows.push(r);
+        }
     }
 
-    // Group rows by mission+product to compute temporal associators
+    // Group rows by mission+product to compute temporal Takens associators
     let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
     for row in all_rows {
         mission_groups.entry((row.mission.clone(), row.product.clone())).or_default().push(row);
@@ -53,29 +54,37 @@ fn main() -> Result<()> {
 
     let mut associator_data: Vec<(f64, f64, String)> = Vec::new(); // (r_au, associator, mission)
 
-    println!("[1/2] Computing associators with r_au awareness...");
+    println!("[1/2] Computing Takens associators with r_au awareness...");
     for ((mission, _product), rows) in mission_groups {
-        let inv_samples = compute_invariant_samples(&rows);
-        let vectors: Vec<[f64; 16]> = inv_samples.iter().map(|s| {
-            let mut v = [0.0; 16];
-            for i in 0..10 { v[i] = s.channels[i]; }
-            v
-        }).collect();
+        if rows.len() < 6 { continue; } // Need at least 4 for v16 + 2 more for triple
 
-        let norms: Vec<f64> = vectors.windows(3)
-            .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-            .collect();
+        let mut embedded_vectors = Vec::new();
+        let mut r_aus = Vec::new();
 
-        // Map norms back to average r_au of the triple
-        for (i, norm) in norms.into_iter().enumerate() {
-            let avg_r = (rows[i].r_au + rows[i+1].r_au + rows[i+2].r_au) / 3.0;
-            if norm.is_finite() && avg_r.is_finite() {
-                associator_data.push((avg_r, norm, mission.clone()));
+        for window in rows.windows(4) {
+            let mut v16 = [0.0; 16];
+            let local_mean_b = (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
+            if local_mean_b <= 0.0 { continue; }
+
+            for i in 0..4 {
+                v16[i * 4 + 0] = window[i].bx / local_mean_b;
+                v16[i * 4 + 1] = window[i].by / local_mean_b;
+                v16[i * 4 + 2] = window[i].bz / local_mean_b;
+                v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
+            }
+            embedded_vectors.push(v16);
+            r_aus.push(window[3].r_au);
+        }
+
+        for (i, w) in embedded_vectors.windows(3).enumerate() {
+            let norm = cd_associator_norm(&w[0], &w[1], &w[2]);
+            if norm.is_finite() {
+                associator_data.push((r_aus[i + 2], norm, mission.clone()));
             }
         }
     }
 
-    println!("[2/2] Aggregating {} associator samples into radial bins...", associator_data.len());
+    println!("[2/2] Aggregating {} samples into radial bins...", associator_data.len());
     let mut bins: BTreeMap<i32, Vec<(f64, String)>> = BTreeMap::new();
     for (r, norm, mission) in associator_data {
         let bin_idx = (r / cli.bin_size_au).floor() as i32;
@@ -103,6 +112,5 @@ fn main() -> Result<()> {
         })?;
     }
 
-    println!("Quench scan complete: {}", cli.out_csv.display());
     Ok(())
 }

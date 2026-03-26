@@ -178,8 +178,38 @@ where
         });
     }
 
+    // Channel Permutation Null
+    let mut permute_nulls = Vec::new();
+    for ((mission, product), vectors) in &group_vectors {
+        let mut iteration_means = Vec::new();
+        for _ in 0..null_iters {
+            let mut shuffled_vectors = Vec::new();
+            let mut indices: Vec<usize> = (0..16).collect();
+            indices.shuffle(&mut thread_rng());
+            
+            for v in vectors {
+                let mut v_perm = [0.0; 16];
+                for (i, &idx) in indices.iter().enumerate() {
+                    v_perm[i] = v[idx];
+                }
+                shuffled_vectors.push(v_perm);
+            }
+
+            let m = shuffled_vectors.windows(3)
+                .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
+                .sum::<f64>() / (shuffled_vectors.len().max(3) - 2) as f64;
+            iteration_means.push(m);
+        }
+        permute_nulls.push(GroupNullSummary {
+            mission: mission.clone(),
+            product: product.clone(),
+            null_mean_of_means: iteration_means.iter().sum::<f64>() / null_iters as f64,
+        });
+    }
+
     let mut null_summaries = BTreeMap::new();
     null_summaries.insert("temporal-shuffle".to_string(), shuffle_nulls);
+    null_summaries.insert("channel-permutation".to_string(), permute_nulls);
 
     EmbeddingResult {
         embedding_name: name.to_string(),
@@ -241,8 +271,38 @@ fn audit_invariant_embedding(
         });
     }
 
+    // Channel Permutation Null
+    let mut permute_nulls = Vec::new();
+    for ((mission, product), vectors) in &group_vectors {
+        let mut iteration_means = Vec::new();
+        for _ in 0..null_iters {
+            let mut shuffled_vectors = Vec::new();
+            let mut indices: Vec<usize> = (0..16).collect();
+            indices.shuffle(&mut thread_rng());
+            
+            for v in vectors {
+                let mut v_perm = [0.0; 16];
+                for (i, &idx) in indices.iter().enumerate() {
+                    v_perm[i] = v[idx];
+                }
+                shuffled_vectors.push(v_perm);
+            }
+
+            let m = shuffled_vectors.windows(3)
+                .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
+                .sum::<f64>() / (shuffled_vectors.len().max(3) - 2) as f64;
+            iteration_means.push(m);
+        }
+        permute_nulls.push(GroupNullSummary {
+            mission: mission.clone(),
+            product: product.clone(),
+            null_mean_of_means: iteration_means.iter().sum::<f64>() / null_iters as f64,
+        });
+    }
+
     let mut null_summaries = BTreeMap::new();
     null_summaries.insert("temporal-shuffle".to_string(), shuffle_nulls);
+    null_summaries.insert("channel-permutation".to_string(), permute_nulls);
 
     EmbeddingResult {
         embedding_name: name.to_string(),
