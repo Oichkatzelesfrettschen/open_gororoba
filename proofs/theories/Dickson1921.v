@@ -23,7 +23,7 @@
                                   relations, and canonical infinitesimal lane
 
     Remaining Dickson 1921 backlog:
-    - a fuller field-abstract surface beyond the current real-parameter
+    - a fuller field-abstract lift beyond the current real-parameter
       surrogate used by the repo
     - the full infinitesimal-transformation reduction in paper order beyond the
       canonical n = 4 quaternion lane
@@ -32,7 +32,8 @@
 *)
 
 From Stdlib Require Import Arith Lia Lra Psatz Reals.
-From OpenGororoba Require Export CayleyDicksonAlgebra DicksonCDProcess HurwitzTheorem.
+From OpenGororoba Require Export
+  CayleyDicksonAlgebra DicksonCDProcess HurwitzTheorem FloatAxioms FloatQuaternion.
 
 Open Scope R_scope.
 
@@ -149,6 +150,365 @@ Section Dickson1921Derived.
     reflexivity.
   Qed.
 End Dickson1921Derived.
+
+(** ================================================================== *)
+(** * FLOAT_OPS-based coefficient lift.                                *)
+(** ================================================================== *)
+
+(** The repo already has a generic coefficient interface [`FLOAT_OPS`] and a
+    functorized quaternion lane [`QuatOps`]. Dickson 1921 can start its
+    field-abstract lift there without inventing a second scalar hierarchy.
+
+    This module lands the low-cost section-3 structural fragment abstractly:
+    principal unit, conjugation involution, and norm preservation under
+    conjugation. The heavier norm-conjugate and norm-multiplicative paper
+    consequences still remain in the concrete real-number lane for now. *)
+Module Dickson1921FloatSection3 (F : FLOAT_OPS).
+  Module Q := QuatOps F.
+
+  Theorem d1921_float_eq3_unit_left : forall q : Q.Quat,
+    Q.quat_mul Q.quat_one q = q.
+  Proof.
+    exact Q.quat_mul_one_left.
+  Qed.
+
+  Theorem d1921_float_eq3_unit_right : forall q : Q.Quat,
+    Q.quat_mul q Q.quat_one = q.
+  Proof.
+    exact Q.quat_mul_one_right.
+  Qed.
+
+  Theorem d1921_float_conj_involution : forall q : Q.Quat,
+    Q.quat_conj (Q.quat_conj q) = q.
+  Proof.
+    exact Q.quat_conj_involution.
+  Qed.
+
+  Theorem d1921_float_norm_conj_preserved : forall q : Q.Quat,
+    Q.quat_norm_sq (Q.quat_conj q) = Q.quat_norm_sq q.
+  Proof.
+    exact Q.quat_norm_sq_conj.
+  Qed.
+
+  Theorem d1921_float_section3_summary :
+    (forall q : Q.Quat, Q.quat_mul Q.quat_one q = q) /\
+    (forall q : Q.Quat, Q.quat_mul q Q.quat_one = q) /\
+    (forall q : Q.Quat, Q.quat_conj (Q.quat_conj q) = q) /\
+    (forall q : Q.Quat, Q.quat_norm_sq (Q.quat_conj q) = Q.quat_norm_sq q).
+  Proof.
+    repeat split.
+    - exact d1921_float_eq3_unit_left.
+    - exact d1921_float_eq3_unit_right.
+    - exact d1921_float_conj_involution.
+    - exact d1921_float_norm_conj_preserved.
+  Qed.
+End Dickson1921FloatSection3.
+
+Module Dickson1921FloatSection4 (F : FLOAT_OPS).
+  Import F.
+  Module Q := QuatOps F.
+
+  Theorem d1921_float_eq3_right : forall q : Q.Quat,
+    Q.quat_mul q (Q.quat_conj q) = Q.quat_scale (Q.quat_norm_sq q) Q.quat_one.
+  Proof.
+    exact Q.quat_norm_conjugate.
+  Qed.
+
+  Theorem d1921_float_eq3_left : forall q : Q.Quat,
+    Q.quat_mul (Q.quat_conj q) q = Q.quat_scale (Q.quat_norm_sq q) Q.quat_one.
+  Proof.
+    exact Q.quat_conj_norm_left.
+  Qed.
+
+  Theorem d1921_float_eq4 : forall p q : Q.Quat,
+    Q.quat_norm_sq (Q.quat_mul p q) = Q.quat_norm_sq p * Q.quat_norm_sq q.
+  Proof.
+    exact Q.quat_norm_mul.
+  Qed.
+
+  Theorem d1921_float_mul_assoc : forall x y z : Q.Quat,
+    Q.quat_mul (Q.quat_mul x y) z = Q.quat_mul x (Q.quat_mul y z).
+  Proof.
+    exact Q.quat_mul_assoc.
+  Qed.
+
+  Theorem d1921_float_section4_summary :
+    (forall q : Q.Quat,
+        Q.quat_mul q (Q.quat_conj q) =
+        Q.quat_scale (Q.quat_norm_sq q) Q.quat_one) /\
+    (forall q : Q.Quat,
+        Q.quat_mul (Q.quat_conj q) q =
+        Q.quat_scale (Q.quat_norm_sq q) Q.quat_one) /\
+    (forall p q : Q.Quat,
+        Q.quat_norm_sq (Q.quat_mul p q) = Q.quat_norm_sq p * Q.quat_norm_sq q) /\
+    (forall x y z : Q.Quat,
+        Q.quat_mul (Q.quat_mul x y) z = Q.quat_mul x (Q.quat_mul y z)).
+  Proof.
+    repeat split.
+    - exact d1921_float_eq3_right.
+    - exact d1921_float_eq3_left.
+    - exact d1921_float_eq4.
+    - exact d1921_float_mul_assoc.
+  Qed.
+End Dickson1921FloatSection4.
+
+Module Dickson1921FloatQuaternionCase (F : FLOAT_OPS).
+  Import F.
+  Module Q := QuatOps F.
+
+  Theorem d1921_float_quaternion_table :
+    Q.quat_mul Q.qi Q.qi = Q.quat_scale (opp one) Q.quat_one /\
+    Q.quat_mul Q.qj Q.qj = Q.quat_scale (opp one) Q.quat_one /\
+    Q.quat_mul Q.qk Q.qk = Q.quat_scale (opp one) Q.quat_one /\
+    Q.quat_mul Q.qi Q.qj = Q.qk /\
+    Q.quat_mul Q.qj Q.qk = Q.qi /\
+    Q.quat_mul Q.qk Q.qi = Q.qj /\
+    Q.quat_mul Q.qj Q.qi = Q.quat_neg Q.qk /\
+    Q.quat_mul Q.qk Q.qj = Q.quat_neg Q.qi /\
+    Q.quat_mul Q.qi Q.qk = Q.quat_neg Q.qj.
+  Proof.
+    exact Q.quat_basis_table.
+  Qed.
+
+  Theorem d1921_float_quaternion_case_summary :
+    (forall x y z : Q.Quat,
+        Q.quat_mul (Q.quat_mul x y) z = Q.quat_mul x (Q.quat_mul y z)) /\
+    Q.quat_mul Q.qi Q.qi = Q.quat_scale (opp one) Q.quat_one /\
+    Q.quat_mul Q.qj Q.qj = Q.quat_scale (opp one) Q.quat_one /\
+    Q.quat_mul Q.qk Q.qk = Q.quat_scale (opp one) Q.quat_one /\
+    Q.quat_mul Q.qi Q.qj = Q.qk /\
+    Q.quat_mul Q.qj Q.qk = Q.qi /\
+    Q.quat_mul Q.qk Q.qi = Q.qj /\
+    Q.quat_mul Q.qj Q.qi = Q.quat_neg Q.qk /\
+    Q.quat_mul Q.qk Q.qj = Q.quat_neg Q.qi /\
+    Q.quat_mul Q.qi Q.qk = Q.quat_neg Q.qj.
+  Proof.
+    split.
+    - exact Q.quat_mul_assoc.
+    - exact d1921_float_quaternion_table.
+  Qed.
+End Dickson1921FloatQuaternionCase.
+
+Module Dickson1921FloatMatrixLane (F : FLOAT_OPS).
+  Import F.
+  Module Q := QuatOps F.
+
+  Theorem d1921_float_matrix_action :
+    forall x xi : Q.Quat, Q.quat_hamilton_apply x xi = Q.quat_mul x xi.
+  Proof.
+    exact Q.quat_hamilton_apply_eq_mul.
+  Qed.
+
+  Theorem d1921_float_eq13_dim4 :
+    forall x xi : Q.Quat,
+      Q.quat_norm_sq (Q.quat_hamilton_apply x xi) =
+      Q.quat_norm_sq x * Q.quat_norm_sq xi.
+  Proof.
+    exact Q.quat_eq13_dim4.
+  Qed.
+
+  Theorem d1921_float_eq15_dim4 :
+    forall x : Q.Quat, forall i j : nat,
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      Q.quat_hamilton_gram_entry x i j =
+      Q.quat_norm_sq x * Q.quat_identity_entry i j.
+  Proof.
+    exact Q.quat_eq15_dim4.
+  Qed.
+
+  Theorem d1921_float_eq16_basis_skew :
+    forall k i j : nat,
+      (1 <= k <= 3)%nat ->
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      Q.quat_matrix_transpose (Q.quat_hamilton_basis_entry k) i j =
+      opp (Q.quat_hamilton_basis_entry k i j).
+  Proof.
+    exact Q.quat_eq16_basis_skew.
+  Qed.
+
+  Theorem d1921_float_eq16_basis_square :
+    forall k i j : nat,
+      (1 <= k <= 3)%nat ->
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      Q.quat_matrix_mul_entry (Q.quat_hamilton_basis_entry k)
+                              (Q.quat_hamilton_basis_entry k) i j =
+      opp (Q.quat_identity_entry i j).
+  Proof.
+    exact Q.quat_eq16_basis_square.
+  Qed.
+
+  Theorem d1921_float_eq16_basis_anticommute :
+    forall k l i j : nat,
+      (1 <= k <= 3)%nat ->
+      (1 <= l <= 3)%nat ->
+      k <> l ->
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      Q.quat_matrix_mul_entry (Q.quat_hamilton_basis_entry k)
+                              (Q.quat_hamilton_basis_entry l) i j +
+      Q.quat_matrix_mul_entry (Q.quat_hamilton_basis_entry l)
+                              (Q.quat_hamilton_basis_entry k) i j = zero.
+  Proof.
+    exact Q.quat_eq16_basis_anticommute.
+  Qed.
+
+  Theorem d1921_float_matrix_summary :
+    (forall x xi : Q.Quat, Q.quat_hamilton_apply x xi = Q.quat_mul x xi) /\
+    (forall x xi : Q.Quat,
+        Q.quat_norm_sq (Q.quat_hamilton_apply x xi) =
+        Q.quat_norm_sq x * Q.quat_norm_sq xi) /\
+    (forall x : Q.Quat, forall i j : nat,
+        (i < 4)%nat ->
+        (j < 4)%nat ->
+        Q.quat_hamilton_gram_entry x i j =
+        Q.quat_norm_sq x * Q.quat_identity_entry i j) /\
+    (forall k i j : nat,
+        (1 <= k <= 3)%nat ->
+        (i < 4)%nat ->
+        (j < 4)%nat ->
+        Q.quat_matrix_transpose (Q.quat_hamilton_basis_entry k) i j =
+        opp (Q.quat_hamilton_basis_entry k i j)) /\
+    (forall k i j : nat,
+        (1 <= k <= 3)%nat ->
+        (i < 4)%nat ->
+        (j < 4)%nat ->
+        Q.quat_matrix_mul_entry (Q.quat_hamilton_basis_entry k)
+                                (Q.quat_hamilton_basis_entry k) i j =
+        opp (Q.quat_identity_entry i j)) /\
+    (forall k l i j : nat,
+        (1 <= k <= 3)%nat ->
+        (1 <= l <= 3)%nat ->
+        k <> l ->
+        (i < 4)%nat ->
+        (j < 4)%nat ->
+        Q.quat_matrix_mul_entry (Q.quat_hamilton_basis_entry k)
+                                (Q.quat_hamilton_basis_entry l) i j +
+        Q.quat_matrix_mul_entry (Q.quat_hamilton_basis_entry l)
+                                (Q.quat_hamilton_basis_entry k) i j = zero).
+  Proof.
+    repeat split.
+    - exact d1921_float_matrix_action.
+    - exact d1921_float_eq13_dim4.
+    - exact d1921_float_eq15_dim4.
+    - exact d1921_float_eq16_basis_skew.
+    - exact d1921_float_eq16_basis_square.
+    - exact d1921_float_eq16_basis_anticommute.
+  Qed.
+End Dickson1921FloatMatrixLane.
+
+Module Dickson1921FloatParamLane (F : FLOAT_OPS).
+  Import F.
+  Module Q := QuatOps F.
+
+  Theorem d1921_float_param_norm_summary :
+    forall c2 c3 : t,
+      (forall x, Q.quat_param_mul c2 c3 Q.quat_one x = x) /\
+      (forall x, Q.quat_param_mul c2 c3 x Q.quat_one = x) /\
+      (forall x,
+          Q.quat_param_mul c2 c3 x (Q.quat_conj x) =
+          Q.quat_scale (Q.quat_param_norm c2 c3 x) Q.quat_one) /\
+      (forall x,
+          Q.quat_param_mul c2 c3 (Q.quat_conj x) x =
+          Q.quat_scale (Q.quat_param_norm c2 c3 x) Q.quat_one) /\
+      (forall x,
+          Q.quat_param_norm c2 c3 (Q.quat_conj x) =
+          Q.quat_param_norm c2 c3 x) /\
+      (forall x y,
+          Q.quat_param_norm c2 c3 (Q.quat_param_mul c2 c3 x y) =
+          Q.quat_param_norm c2 c3 x * Q.quat_param_norm c2 c3 y).
+  Proof.
+    intros c2 c3.
+    repeat split.
+    - exact (Q.quat_param_mul_one_left c2 c3).
+    - exact (Q.quat_param_mul_one_right c2 c3).
+    - exact (Q.quat_param_norm_conj_right c2 c3).
+    - exact (Q.quat_param_norm_conj_left c2 c3).
+    - exact (Q.quat_param_norm_conj_preserved c2 c3).
+    - exact (Q.quat_param_norm_mul c2 c3).
+  Qed.
+
+  Theorem d1921_float_param_table_summary :
+    forall c2 c3 : t,
+      Q.quat_param_mul c2 c3 Q.qi Q.qi = Q.quat_scale c2 Q.quat_one /\
+      Q.quat_param_mul c2 c3 Q.qj Q.qj = Q.quat_scale c3 Q.quat_one /\
+      Q.quat_param_mul c2 c3 Q.qk Q.qk =
+        Q.quat_scale (opp c2 * c3) Q.quat_one /\
+      Q.quat_param_mul c2 c3 Q.qi Q.qj = Q.qk /\
+      Q.quat_param_mul c2 c3 Q.qj Q.qi = Q.quat_neg Q.qk /\
+      Q.quat_param_mul c2 c3 Q.qi Q.qk = Q.quat_scale c2 Q.qj /\
+      Q.quat_param_mul c2 c3 Q.qk Q.qi = Q.quat_scale (opp c2) Q.qj /\
+      Q.quat_param_mul c2 c3 Q.qj Q.qk = Q.quat_scale (opp c3) Q.qi /\
+      Q.quat_param_mul c2 c3 Q.qk Q.qj = Q.quat_scale c3 Q.qi.
+  Proof.
+    intros c2 c3.
+    repeat split;
+      [ exact (Q.quat_param_qi_sq c2 c3)
+      | exact (Q.quat_param_qj_sq c2 c3)
+      | exact (Q.quat_param_qk_sq c2 c3)
+      | exact (Q.quat_param_qi_qj c2 c3)
+      | exact (Q.quat_param_qj_qi c2 c3)
+      | exact (Q.quat_param_qi_qk c2 c3)
+      | exact (Q.quat_param_qk_qi c2 c3)
+      | exact (Q.quat_param_qj_qk c2 c3)
+      | exact (Q.quat_param_qk_qj c2 c3) ].
+  Qed.
+
+  Theorem d1921_float_param_matrix_summary :
+    forall c2 c3 : t,
+      (forall x xi,
+          Q.quat_param_matrix_apply c2 c3 x xi =
+          Q.quat_param_mul c2 c3 x xi) /\
+      (forall x xi,
+          Q.quat_param_norm c2 c3 (Q.quat_param_matrix_apply c2 c3 x xi) =
+          Q.quat_param_norm c2 c3 x * Q.quat_param_norm c2 c3 xi) /\
+      (forall x i j,
+          (i < 4)%nat ->
+          (j < 4)%nat ->
+          Q.quat_param_gram_entry c2 c3 x i j =
+          Q.quat_param_norm c2 c3 x * Q.quat_param_form_entry c2 c3 i j).
+  Proof.
+    intros c2 c3.
+    repeat split.
+    - exact (Q.quat_param_matrix_apply_eq_mul c2 c3).
+    - exact (Q.quat_param_eq13_dim4 c2 c3).
+    - exact (Q.quat_param_eq15_dim4 c2 c3).
+  Qed.
+
+  Theorem d1921_float_param_infinitesimal_summary :
+    forall c2 c3 : t,
+      (forall x k eps i,
+          (1 <= k <= 3)%nat ->
+          (i < 4)%nat ->
+          Q.quat_coord (Q.quat_param_mul c2 c3 x (Q.quat_near_identity k eps)) i =
+          Q.quat_coord x i + eps * Q.quat_param_eq6_delta_coord c2 c3 k x i) /\
+      (forall k eps,
+          (1 <= k <= 3)%nat ->
+          Q.quat_param_norm c2 c3 (Q.quat_near_identity k eps) =
+          one + Q.quat_param_near_identity_quadratic_factor c2 c3 k * (eps * eps)) /\
+      (forall x k eps,
+          (1 <= k <= 3)%nat ->
+          Q.quat_param_norm c2 c3
+            (Q.quat_param_mul c2 c3 x (Q.quat_near_identity k eps)) -
+          Q.quat_param_norm c2 c3 x =
+          (eps * eps) * Q.quat_param_near_identity_quadratic_factor c2 c3 k *
+            Q.quat_param_norm c2 c3 x) /\
+      (forall x k,
+          (1 <= k <= 3)%nat ->
+          Q.quat_param_eq7_linear_form c2 c3 k x = zero).
+  Proof.
+    intros c2 c3.
+    repeat split.
+    - exact (Q.quat_param_eq6_dim4 c2 c3).
+    - exact (Q.quat_param_near_identity_norm c2 c3).
+    - intros x k eps Hk.
+      exact (Q.quat_param_infinitesimal_no_linear_term c2 c3 k eps x Hk).
+    - intros x k Hk.
+      exact (Q.quat_param_eq7_linear_form_vanish c2 c3 k x Hk).
+  Qed.
+End Dickson1921FloatParamLane.
 
 (** The canonical quaternion lane inhabits Dickson's paper surface inside the
     current real-number formalization. *)
@@ -1305,6 +1665,25 @@ Theorem dickson1921_param_direct_generalization_summary : forall c2 c3,
   (forall x,
       dickson1921_matrix_det4 (dickson1921_param_matrix_entry c2 c3 x) =
       (dickson1921_param_norm c2 c3 x)^2) /\
+  (forall x k eps i,
+      (1 <= k <= 3)%nat ->
+      (i < 4)%nat ->
+      quat_coord (dickson1921_param_mul c2 c3 x (dickson1921_near_identity k eps)) i =
+      quat_coord x i + eps * dickson1921_param_eq6_delta_coord c2 c3 k x i) /\
+  (forall k eps,
+      (1 <= k <= 3)%nat ->
+      dickson1921_param_norm c2 c3 (dickson1921_near_identity k eps) =
+      1 + dickson1921_param_near_identity_quadratic_factor c2 c3 k * eps^2) /\
+  (forall x k eps,
+      (1 <= k <= 3)%nat ->
+      dickson1921_param_norm c2 c3
+        (dickson1921_param_mul c2 c3 x (dickson1921_near_identity k eps)) -
+      dickson1921_param_norm c2 c3 x =
+      eps^2 * dickson1921_param_near_identity_quadratic_factor c2 c3 k *
+        dickson1921_param_norm c2 c3 x) /\
+  (forall x k,
+      (1 <= k <= 3)%nat ->
+      dickson1921_param_eq7_linear_form c2 c3 k x = 0) /\
   dickson1921_param_mul c2 c3 qi qi = quat_scale c2 quat_one /\
   dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one /\
   dickson1921_param_mul c2 c3 qk qk = quat_scale (- c2 * c3) quat_one /\
@@ -1316,19 +1695,27 @@ Theorem dickson1921_param_direct_generalization_summary : forall c2 c3,
   dickson1921_param_mul c2 c3 qk qj = quat_scale c3 qi.
 Proof.
   intros c2 c3.
-  repeat split.
-  - exact (ex_intro _ (dickson1921_param_surface c2 c3) I).
-  - exact (dickson1921_param_mul_assoc c2 c3).
-  - exact (dickson1921_param_det_equals_norm_sq c2 c3).
-  - exact (dickson1921_param_i_sq c2 c3).
-  - exact (dickson1921_param_j_sq c2 c3).
-  - exact (dickson1921_param_k_sq c2 c3).
-  - exact (dickson1921_param_ij c2 c3).
-  - exact (dickson1921_param_ji c2 c3).
-  - exact (dickson1921_param_ik c2 c3).
-  - exact (dickson1921_param_ki c2 c3).
-  - exact (dickson1921_param_jk c2 c3).
-  - exact (dickson1921_param_kj c2 c3).
+  split.
+  - exists (dickson1921_param_surface c2 c3).
+    exact I.
+  - repeat split.
+    + exact (dickson1921_param_mul_assoc c2 c3).
+    + exact (dickson1921_param_det_equals_norm_sq c2 c3).
+    + exact (dickson1921_param_eq6_dim4 c2 c3).
+    + exact (dickson1921_param_near_identity_norm c2 c3).
+    + intros x k eps Hk.
+      exact (dickson1921_param_infinitesimal_no_linear_term c2 c3 k eps x Hk).
+    + intros x k Hk.
+      exact (dickson1921_param_eq7_linear_form_vanish c2 c3 k x Hk).
+    + exact (dickson1921_param_i_sq c2 c3).
+    + exact (dickson1921_param_j_sq c2 c3).
+    + exact (dickson1921_param_k_sq c2 c3).
+    + exact (dickson1921_param_ij c2 c3).
+    + exact (dickson1921_param_ji c2 c3).
+    + exact (dickson1921_param_ik c2 c3).
+    + exact (dickson1921_param_ki c2 c3).
+    + exact (dickson1921_param_jk c2 c3).
+    + exact (dickson1921_param_kj c2 c3).
 Qed.
 
 (** The customary quaternion algebra is recovered when c2 = c3 = -1. *)
@@ -1345,16 +1732,12 @@ Proof.
     rewrite dickson1921_param_specializes_to_standard_norm.
     reflexivity.
   - exact (dickson1921_param_ij (-1) (-1)).
-  - change (dickson1921_param_mul (-1) (-1) qj qk =
-            quat_scale (- (-1)) qi).
-    rewrite dickson1921_param_jk.
-    unfold quat_scale.
+  - rewrite dickson1921_param_jk.
+    unfold quat_scale, qi.
     simpl.
     f_equal; ring.
-  - change (dickson1921_param_mul (-1) (-1) qk qi =
-            quat_scale (- (-1)) qj).
-    rewrite dickson1921_param_ki.
-    unfold quat_scale.
+  - rewrite dickson1921_param_ki.
+    unfold quat_scale, qj.
     simpl.
     f_equal; ring.
 Qed.
@@ -1575,6 +1958,198 @@ Proof.
   - exact dickson1921_n5_det_obstruction.
   - exact dickson1921_n6_skew_obstruction.
 Qed.
+
+(** After Dickson's internal n = 5 / n = 6 exclusions, the remaining tracked
+    higher Cayley-Dickson tower dimensions are ruled out by the Hurwitz lane. *)
+Theorem dickson1921_hurwitz_handoff : forall n : nat,
+  tracked_cd_tower_dimension n ->
+  ~ hurwitz_square_dimension n ->
+  ~(hurwitz_radon n = n).
+Proof.
+  intros n Htracked Hnonsquare Heq.
+  pose proof (hurwitz_cd_tower_classification n Htracked) as Hclass.
+  apply Hnonsquare.
+  apply Hclass.
+  exact Heq.
+Qed.
+
+(** Paper-order exclusion summary for the current repo formalization:
+    Dickson excludes n = 5 and n = 6 internally, and the tracked higher
+    dimensions then fall under Hurwitz's classification. *)
+Theorem dickson1921_section7_exclusion_summary :
+  ~(exists r : R, r * r = (-1 : R)^5) /\
+  (skew_product_count 6 > skew_sym_dim 6)%nat /\
+  (forall n : nat,
+      tracked_cd_tower_dimension n ->
+      ~ hurwitz_square_dimension n ->
+      ~(hurwitz_radon n = n)).
+Proof.
+  repeat split.
+  - exact dickson1921_n5_det_obstruction.
+  - exact dickson1921_n6_skew_obstruction.
+  - exact dickson1921_hurwitz_handoff.
+Qed.
+
+Definition dickson1921_section7_dimension (n : nat) : Prop :=
+  n = 5%nat \/ n = 6%nat \/ tracked_cd_tower_dimension n.
+
+Theorem dickson1921_section7_square_case_classification : forall n : nat,
+  dickson1921_section7_dimension n ->
+  (hurwitz_radon n = n <-> hurwitz_square_dimension n).
+Proof.
+  intros n Hn.
+  destruct Hn as [-> | [-> | Htracked]].
+  - simpl. split.
+    + intro H. lia.
+    + intro H.
+      destruct H as [H1 | [H2 | [H4 | H8]]]; lia.
+  - simpl. split.
+    + intro H. lia.
+    + intro H.
+      destruct H as [H1 | [H2 | [H4 | H8]]]; lia.
+  - exact (hurwitz_cd_tower_classification n Htracked).
+Qed.
+
+Theorem dickson1921_section7_noncomposition_summary : forall n : nat,
+  dickson1921_section7_dimension n ->
+  ~ hurwitz_square_dimension n ->
+  hurwitz_radon n <> n.
+Proof.
+  intros n Hn Hnonsquare Heq.
+  apply Hnonsquare.
+  apply (proj1 (dickson1921_section7_square_case_classification n Hn)).
+  exact Heq.
+Qed.
+
+(** Paper-order package: the generalized-family lane supplies the section-5/6
+    infinitesimal foundation, and section 7 then reduces the surviving square
+    cases to the same dimension classification already tracked via Hurwitz. *)
+Theorem dickson1921_param_foundation_section7_summary :
+  (forall c2 c3,
+      (exists s : Dickson1921Surface CDQuat, True) /\
+      (forall x y z,
+          dickson1921_param_mul c2 c3 (dickson1921_param_mul c2 c3 x y) z =
+          dickson1921_param_mul c2 c3 x (dickson1921_param_mul c2 c3 y z)) /\
+      (forall x,
+          dickson1921_matrix_det4 (dickson1921_param_matrix_entry c2 c3 x) =
+          (dickson1921_param_norm c2 c3 x)^2) /\
+      (forall x k eps i,
+          (1 <= k <= 3)%nat ->
+          (i < 4)%nat ->
+          quat_coord (dickson1921_param_mul c2 c3 x (dickson1921_near_identity k eps)) i =
+          quat_coord x i + eps * dickson1921_param_eq6_delta_coord c2 c3 k x i) /\
+      (forall k eps,
+          (1 <= k <= 3)%nat ->
+          dickson1921_param_norm c2 c3 (dickson1921_near_identity k eps) =
+          1 + dickson1921_param_near_identity_quadratic_factor c2 c3 k * eps^2) /\
+      (forall x k eps,
+          (1 <= k <= 3)%nat ->
+          dickson1921_param_norm c2 c3
+            (dickson1921_param_mul c2 c3 x (dickson1921_near_identity k eps)) -
+          dickson1921_param_norm c2 c3 x =
+          eps^2 * dickson1921_param_near_identity_quadratic_factor c2 c3 k *
+            dickson1921_param_norm c2 c3 x) /\
+      (forall x k,
+          (1 <= k <= 3)%nat ->
+          dickson1921_param_eq7_linear_form c2 c3 k x = 0)) /\
+  (forall n : nat,
+      dickson1921_section7_dimension n ->
+      (hurwitz_radon n = n <-> hurwitz_square_dimension n)) /\
+  (forall n : nat,
+      dickson1921_section7_dimension n ->
+      ~ hurwitz_square_dimension n ->
+      hurwitz_radon n <> n).
+Proof.
+  split.
+  - intros a2 a3.
+    destruct (dickson1921_param_direct_generalization_summary a2 a3)
+      as [Hsurf [Hassoc [Hdet [Heq6 [Hnear [Hinf [Heq7 _]]]]]]].
+    split.
+    + exact Hsurf.
+    + split.
+      * exact Hassoc.
+      * split.
+        -- exact Hdet.
+        -- split.
+           ++ exact Heq6.
+           ++ split.
+              ** exact Hnear.
+              ** split.
+                 --- exact Hinf.
+                 --- exact Heq7.
+  - split.
+    + exact dickson1921_section7_square_case_classification.
+    + exact dickson1921_section7_noncomposition_summary.
+Qed.
+
+Module Dickson1921FloatSection7Lane (F : FLOAT_OPS).
+  Import F.
+  Module P := Dickson1921FloatParamLane F.
+
+  Definition d1921_float_param_section5_6_foundation (c2 c3 : t) : Prop :=
+    (forall x y,
+        P.Q.quat_param_norm c2 c3 (P.Q.quat_param_mul c2 c3 x y) =
+        P.Q.quat_param_norm c2 c3 x * P.Q.quat_param_norm c2 c3 y) /\
+    (forall x xi,
+        P.Q.quat_param_matrix_apply c2 c3 x xi =
+        P.Q.quat_param_mul c2 c3 x xi) /\
+    (forall x i j,
+        (i < 4)%nat ->
+        (j < 4)%nat ->
+        P.Q.quat_param_gram_entry c2 c3 x i j =
+        P.Q.quat_param_norm c2 c3 x * P.Q.quat_param_form_entry c2 c3 i j) /\
+    (forall x k eps i,
+        (1 <= k <= 3)%nat ->
+        (i < 4)%nat ->
+        P.Q.quat_coord (P.Q.quat_param_mul c2 c3 x (P.Q.quat_near_identity k eps)) i =
+        P.Q.quat_coord x i + eps * P.Q.quat_param_eq6_delta_coord c2 c3 k x i) /\
+    (forall k eps,
+        (1 <= k <= 3)%nat ->
+        P.Q.quat_param_norm c2 c3 (P.Q.quat_near_identity k eps) =
+        one + P.Q.quat_param_near_identity_quadratic_factor c2 c3 k * (eps * eps)) /\
+    (forall x k eps,
+        (1 <= k <= 3)%nat ->
+        P.Q.quat_param_norm c2 c3
+          (P.Q.quat_param_mul c2 c3 x (P.Q.quat_near_identity k eps)) -
+        P.Q.quat_param_norm c2 c3 x =
+        (eps * eps) * P.Q.quat_param_near_identity_quadratic_factor c2 c3 k *
+          P.Q.quat_param_norm c2 c3 x) /\
+    (forall x k,
+        (1 <= k <= 3)%nat ->
+        P.Q.quat_param_eq7_linear_form c2 c3 k x = zero).
+
+  Theorem d1921_float_param_foundation_section7_summary :
+    (forall c2 c3 : t, d1921_float_param_section5_6_foundation c2 c3) /\
+    (forall n : nat,
+        dickson1921_section7_dimension n ->
+        (hurwitz_radon n = n <-> hurwitz_square_dimension n)) /\
+    (forall n : nat,
+        dickson1921_section7_dimension n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n).
+  Proof.
+    split.
+    - intros c2 c3.
+      unfold d1921_float_param_section5_6_foundation.
+      destruct (P.d1921_float_param_norm_summary c2 c3)
+        as [_ [_ [_ [_ [_ Hnorm]]]]].
+      destruct (P.d1921_float_param_matrix_summary c2 c3)
+        as [Hmat [_ Hgram]].
+      destruct (P.d1921_float_param_infinitesimal_summary c2 c3)
+        as [Heq6 [Hnear [Hinf Heq7]]].
+      repeat split.
+      + exact Hnorm.
+      + exact Hmat.
+      + exact Hgram.
+      + exact Heq6.
+      + exact Hnear.
+      + exact Hinf.
+      + exact Heq7.
+    - split.
+      + exact dickson1921_section7_square_case_classification.
+      + exact dickson1921_section7_noncomposition_summary.
+  Qed.
+End Dickson1921FloatSection7Lane.
 
 Theorem Dickson1921_lane_compiles : True.
 Proof. exact I. Qed.

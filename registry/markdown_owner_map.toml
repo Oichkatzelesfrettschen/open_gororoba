@@ -12,7 +12,7 @@ updated = "2026-03-25"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 95
+document_count = 97
 
 [[owner]]
 path = "README.md"
@@ -586,6 +586,18 @@ removal_reason = ""
 
 [[owner]]
 path = "ucsd_jacobson_chapter_detail.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "bielefeld_jacobson_prefilled_form.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "leipzig_freudenthal_request_login.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
