@@ -107,11 +107,7 @@ Proof.
     cbv [sed_zd_b sed_zero sed_lo oct_hi qc oct_zero quat_zero] in Hc.
     lra.
   - (* sed_zd_a * sed_zd_b = 0 *)
-    cbv [sed_mul sed_zd_a sed_zd_b sed_zero
-         oct_mul oct_conj oct_zero
-         quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-         sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-    f_equal; f_equal; f_equal; ring.
+    exact sed_zd_product_zero.
 Qed.
 
 (** Norm multiplicativity fails at dim 16. *)
@@ -162,11 +158,7 @@ Theorem schafer_eq2_singular_witness :
   sed_norm_sq sed_zd_b = 2.
 Proof.
   repeat split.
-  - cbv [sed_mul sed_zd_a sed_zd_b sed_zero
-         oct_mul oct_conj oct_zero
-         quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-         sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-    f_equal; f_equal; f_equal; ring.
+  - exact sed_zd_product_zero.
   - exact sed_zd_a_norm.
   - exact sed_zd_b_norm.
 Qed.

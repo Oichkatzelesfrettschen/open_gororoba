@@ -10894,7 +10894,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1538"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs"]
 
 [[skeleton]]
 id = "PRS-00606"
@@ -10912,7 +10912,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1539"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs"]
 
 [[skeleton]]
 id = "PRS-00607"
@@ -10948,7 +10948,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1540"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1540_MorHaQuaternion.v"]
 
 [[skeleton]]
 id = "PRS-00609"
@@ -10966,7 +10966,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1541"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1541_MorDirectSum.v"]
 
 [[skeleton]]
 id = "PRS-00610"
@@ -10984,7 +10984,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1542"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1542_MorVlambdaMod4.v", "proofs/theories/C1542_MorVlambdaOrbit.v"]
 
 [[skeleton]]
 id = "PRS-00611"
@@ -11002,7 +11002,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1543"]
-evidence_refs = ["annihilators.rs", "crates/algebra_analysis/src/moreno.rs", "crates/gororoba_algebra/src/analysis/annihilators.rs", "moreno.rs"]
+evidence_refs = ["annihilators.rs", "crates/moreno_1997/src/lib.rs", "crates/gororoba_algebra/src/analysis/annihilators.rs", "moreno.rs"]
 
 [[skeleton]]
 id = "PRS-00612"
@@ -11020,7 +11020,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1544"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1544_MorKerSDecomp.v"]
 
 [[skeleton]]
 id = "PRS-00613"
@@ -11038,7 +11038,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1545"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1544_MorKerSDecomp.v"]
 
 [[skeleton]]
 id = "PRS-00614"
@@ -11049,14 +11049,14 @@ assumptions = ["Moreno Theorem 2.9 (ZD eigenvalue characterization): For alterna
 obligations = ["Establish evidence-backed status for C-1546."]
 derivation_steps = []
 decision_rule = ""
-conclusion = "VERIFIED: Verified"
+conclusion = "THEORETICAL: Theoretical"
 source_uid = "C-1546"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1546"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1546_MorEigenZD.v", "proofs/theories/C1546_MorEigenIFF.v"]
 
 [[skeleton]]
 id = "PRS-00615"
@@ -11074,7 +11074,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1547"]
-evidence_refs = ["crates/algebra_analysis/src/moreno.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1547_MorSpecialTripleOct.v"]
 
 [[skeleton]]
 id = "PRS-00616"

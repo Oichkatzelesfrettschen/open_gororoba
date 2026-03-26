@@ -11,19 +11,14 @@
     The dimension=4 result itself is verified computationally in Rust:
     crates/algebra_analysis/src/zero_divisors.rs *)
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm CDNegLemmas.
 From OpenGororobaVerified Require Import C908_SedenionZeroDivisor.
 
 (** Zero annihilates everything: 0 * a = 0. *)
 Theorem C014_zero_annihilates : forall a : CDSed,
   sed_mul sed_zero a = sed_zero.
 Proof.
-  intro a. destruct a as [[[a0 a1 a2 a3] [a4 a5 a6 a7]]
-                           [[b0 b1 b2 b3] [b4 b5 b6 b7]]].
-  cbv [sed_mul sed_zero oct_mul oct_conj oct_zero
-       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-  f_equal; f_equal; f_equal; abstract ring.
+  exact sed_mul_zero_left.
 Qed.
 
 (** The Moreno-Froloff witness provides one nonzero annihilator. *)
@@ -31,10 +26,6 @@ Theorem C014_nonzero_annihilator_exists :
   sed_mul sed_zd_b sed_zd_a = sed_zero /\ sed_zd_b <> sed_zero.
 Proof.
   split.
-  - cbv [sed_mul sed_zd_b sed_zd_a
-         oct_mul oct_conj quat_mul quat_add quat_neg quat_conj
-         sed_lo sed_hi oct_lo oct_hi oct_zero quat_zero quat_one
-         sed_zero qa qb qc qd].
-    f_equal; f_equal; f_equal; ring.
+  - exact sed_zd_product_zero_rev.
   - exact sed_zd_b_nonzero.
 Qed.

@@ -1,0 +1,143 @@
+{
+  "query": "Cockle On a new imaginary in algebra 1849",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455956.6861444,
+  "papers": [
+    {
+      "paper_id": "oalex-W2114093155",
+      "title": "Time-Reversal Symmetry in Non-Hermitian Systems",
+      "authors": [
+        {
+          "name": "M. Sato",
+          "affiliation": "The University of Tokyo"
+        },
+        {
+          "name": "K. Hasebe",
+          "affiliation": "National Institute of Technology, Kagawa College"
+        },
+        {
+          "name": "K. Esaki",
+          "affiliation": "The University of Tokyo"
+        },
+        {
+          "name": "M. Kohmoto",
+          "affiliation": "The University of Tokyo"
+        }
+      ],
+      "year": 2012,
+      "abstract": "For ordinary Hermitian Hamiltonians, the states support the mathematical structure of quaternion and show the Kramers degeneracy when the system has a half-odd-integer spin and the time-reversal operator obeys \u03982 = -1, while no such structure exists when \u03982 = +1. Here, we point out that for non-Hermitian systems, there exists a similar mathematical structure called split-quaternion even when \u03982 = +1. It is also found that a degeneracy similar to the Kramers degeneracy follows from the split-quaternion structure if the Hamiltonian is pseudo-Hermitian with the metric operator \u03b7 satisfying {\u03b7, \u0398} = 0. Furthermore, we show that particle/hole symmetry gives rise to a pair of states with opposite energies on the basis of the split-quaternion in a class of non-Hermitian Hamiltonians. As concrete examples, we examine in detail N \u00d7N Hamiltonians with N = 2 and 4, which are non-Hermitian generalizations of spin 1/2 Hamiltonian and quadrupole Hamiltonian of spin 3/2, respectively.",
+      "venue": "Progress of Theoretical Physics",
+      "citation_count": 78,
+      "doi": "10.1143/ptp.127.937",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1143/ptp.127.937",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W3212993823",
+      "title": "Generalized commutative quaternions of the Fibonacci type",
+      "authors": [
+        {
+          "name": "Anetta Szynal\u2010Liana",
+          "affiliation": "Rzesz\u00f3w University of Technology"
+        },
+        {
+          "name": "Iwona W\u0142och",
+          "affiliation": "Rzesz\u00f3w University of Technology"
+        }
+      ],
+      "year": 2021,
+      "abstract": "Abstract Quaternions are a four-dimensional hypercomplex number system discovered by Hamilton in 1843 and next intensively applied in mathematics, modern physics, computer graphics and other fields. After the discovery of quaternions, modified quaternions were also defined in such a way that commutative property in multiplication is possible. That number system called as commutative quaternions is intensively studied and used for example in signal processing. In this paper we define generalized commutative quaternions and next based on them we define and explore Fibonacci type generalized commutative quaternions.",
+      "venue": "Bolet\u00edn de la Sociedad Matem\u00e1tica Mexicana",
+      "citation_count": 18,
+      "doi": "10.1007/s40590-021-00386-4",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/s40590-021-00386-4",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W3082371402",
+      "title": "A Study on Dual-Generalized Complex and Hyperbolic-Generalized Complex Numbers",
+      "authors": [
+        {
+          "name": "Nurten G\u00fcrses",
+          "affiliation": "Y\u0131ld\u0131z Technical University"
+        },
+        {
+          "name": "G\u00fcls\u00fcm Yeliz \u015eent\u00fcrk",
+          "affiliation": "Geli\u015fim \u00dcniversitesi"
+        },
+        {
+          "name": "Sal\u00eem Y\u00fcce",
+          "affiliation": "Y\u0131ld\u0131z Technical University"
+        }
+      ],
+      "year": 2021,
+      "abstract": "This work is intended to introduce the theories of dual-generalized complex and hyperbolicgeneralized complex numbers. The algebraic properties of these numbers are taken into consideration. Besides, dual-generalized complex and hyperbolic-generalized complex valued functions are defined and different matrix representations of these numbers are examined. Moreover, a remarkable classification are given for special cases and the set of complexgeneralized complex numbers are mentioned.",
+      "venue": "GAZI UNIVERSITY JOURNAL OF SCIENCE",
+      "citation_count": 19,
+      "doi": "10.35378/gujs.653906",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.35378/gujs.653906",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W3136366523",
+      "title": "Bicomplex Mittag-Leffler function and associated properties",
+      "authors": [
+        {
+          "name": "Ritu Agarwal",
+          "affiliation": "Malaviya National Institute of Technology Jaipur"
+        },
+        {
+          "name": "Urvashi Purohit Sharma",
+          "affiliation": ""
+        },
+        {
+          "name": "Rishabh Agarwal",
+          "affiliation": "Texas A&M University \u2013 Kingsville"
+        }
+      ],
+      "year": 2021,
+      "abstract": "With the increasing importance of the Mittag-Leffler function in physical applications, these days many researchers are studying various generalizations and extensions of the Mittag-Leffler function. In this paper, efforts are made to define the bicomplex extension of the Mittag-Leffler function, and also its analyticity and region of convergence are discussed. Various properties of the bicomplex Mittag-Leffler function including integral representation, recurrence relations, duplication formula, and differential relations are established.",
+      "venue": "The Journal of Nonlinear Sciences and Applications",
+      "citation_count": 14,
+      "doi": "10.22436/jnsa.015.01.04",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.22436/jnsa.015.01.04",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W3099445031",
+      "title": "On the Consimilarity of Split Quaternions and Split Quaternion Matrices",
+      "authors": [
+        {
+          "name": "Hidayet H\u00fcda K\u00f6sal",
+          "affiliation": "Sakarya University"
+        },
+        {
+          "name": "Mahmut Akyi\u011fit",
+          "affiliation": "Sakarya University"
+        },
+        {
+          "name": "Murat Tosun",
+          "affiliation": "Sakarya University"
+        }
+      ],
+      "year": 2016,
+      "abstract": "Abstract In this paper, we introduce the concept of consimilarity of split quaternions and split quaternion matrices. In his regard, we examine the solvability conditions and general solutions of the equations and in split quaternions and split quaternion matrices, respectively. Moreover, coneigenvalue and coneigenvector are defined for split quaternion matrices. Some consequences are also presented.",
+      "venue": "Analele Universit\u0103\u0163ii \"Ovidius\" Constan\u0163a. Seria Matematic\u0103",
+      "citation_count": 12,
+      "doi": "10.1515/auom-2016-0054",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1515/auom-2016-0054",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

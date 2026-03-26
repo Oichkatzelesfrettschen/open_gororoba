@@ -18,7 +18,7 @@ use std::{
     path::Path,
 };
 
-const DESCRIPTOR_DIM: usize = 4;
+const DESCRIPTOR_DIM: usize = 8;
 
 /// Stable row key used to join raw, transformed, and invariant views.
 pub type RowKey = (String, String, String, u16, u16, u8);
@@ -37,6 +37,7 @@ pub struct LabeledInvariantSample {
     pub channels: [f64; HELIOSPHERE_INVARIANT_DIM],
     pub uncertainty_scales: [f64; HELIOSPHERE_INVARIANT_DIM],
     pub weighted_channels: [f64; HELIOSPHERE_INVARIANT_DIM],
+    pub b_field: [f64; 4],
     pub descriptor_channels: [f64; DESCRIPTOR_DIM],
 }
 
@@ -239,6 +240,8 @@ enum DescriptorProfile {
     Full,
     DeltaAssociator,
     AssociatorOnly,
+    TakensSedenion,
+    TakensComparison,
 }
 
 impl DescriptorProfile {
@@ -247,6 +250,8 @@ impl DescriptorProfile {
             Self::Full => "full",
             Self::DeltaAssociator => "delta_associator",
             Self::AssociatorOnly => "associator_only",
+            Self::TakensSedenion => "takens_sedenion",
+            Self::TakensComparison => "takens_comparison",
         }
     }
 
@@ -255,6 +260,8 @@ impl DescriptorProfile {
             "full" => Some(Self::Full),
             "delta_associator" => Some(Self::DeltaAssociator),
             "associator_only" => Some(Self::AssociatorOnly),
+            "takens_sedenion" => Some(Self::TakensSedenion),
+            "takens_comparison" => Some(Self::TakensComparison),
             _ => None,
         }
     }
@@ -431,6 +438,7 @@ pub fn build_labeled_samples(
                 channels: sample.channels,
                 uncertainty_scales: sample.uncertainty_scales,
                 weighted_channels: sample.weighted_channels,
+                b_field: sample.b_field,
                 descriptor_channels,
             });
         }
@@ -868,6 +876,8 @@ pub fn evaluate_predictive_counterfactuals(
         DescriptorProfile::Full,
         DescriptorProfile::DeltaAssociator,
         DescriptorProfile::AssociatorOnly,
+        DescriptorProfile::TakensSedenion,
+        DescriptorProfile::TakensComparison,
     ] {
         rows.push(train_counterfactual_predictive_model(
             &splits,
@@ -894,6 +904,8 @@ pub fn evaluate_predictive_counterfactuals(
             DescriptorProfile::Full,
             DescriptorProfile::DeltaAssociator,
             DescriptorProfile::AssociatorOnly,
+            DescriptorProfile::TakensSedenion,
+            DescriptorProfile::TakensComparison,
         ] {
             rows.push(train_counterfactual_predictive_model(
                 &splits,
@@ -1093,6 +1105,8 @@ pub fn summarize_sparse_policy_counterfactuals_with_seed(
             DescriptorProfile::Full,
             DescriptorProfile::DeltaAssociator,
             DescriptorProfile::AssociatorOnly,
+            DescriptorProfile::TakensSedenion,
+            DescriptorProfile::TakensComparison,
         ] {
             rows.push(thresholded_sparse_policy_summary(
                 &samples,
@@ -1443,13 +1457,81 @@ fn descriptor_channels(group: &[HeliosphereInvariantSample], idx: usize) -> [f64
         .iter()
         .map(|sample| sample.weighted_channels)
         .collect::<Vec<_>>();
-    descriptor_channels_from_arrays(&vectors, idx)
+    let mut out = [0.0; DESCRIPTOR_DIM];
+    let base = descriptor_channels_from_arrays(&vectors, idx);
+    out[..4].copy_from_slice(&base);
+
+    // Compute Takens descriptors (using 4-step delay of 4D B-field)
+    let takens = takens_descriptors(group, idx);
+    out[4..8].copy_from_slice(&takens);
+    out
+}
+
+trait HasBField {
+    fn b_field(&self) -> [f64; 4];
+}
+
+impl HasBField for HeliosphereInvariantSample {
+    fn b_field(&self) -> [f64; 4] {
+        self.b_field
+    }
+}
+
+impl HasBField for &LabeledInvariantSample {
+    fn b_field(&self) -> [f64; 4] {
+        self.b_field
+    }
+}
+
+fn takens_descriptors<T: HasBField>(group: &[T], idx: usize) -> [f64; 4] {
+    let get_v16 = |target_idx: usize| -> Option<[f64; 16]> {
+        if target_idx < 3 {
+            return None;
+        }
+        let mut v16 = [0.0; 16];
+        for i in 0..4 {
+            let s = &group[target_idx - 3 + i];
+            v16[i * 4..i * 4 + 4].copy_from_slice(&s.b_field());
+        }
+        Some(v16)
+    };
+
+    let v_curr = get_v16(idx);
+    let v_prev = idx.checked_sub(1).and_then(get_v16);
+    let v_prev2 = idx.checked_sub(2).and_then(get_v16);
+
+    match (v_prev2, v_prev, v_curr) {
+        (Some(a), Some(b), Some(c)) => {
+            let sedenion_assoc = cd_kernel::cd_associator_norm(&a, &b, &c);
+
+            let mut a_oct = [0.0; 16];
+            let mut b_oct = [0.0; 16];
+            let mut c_oct = [0.0; 16];
+            a_oct[..8].copy_from_slice(&a[..8]);
+            b_oct[..8].copy_from_slice(&b[..8]);
+            c_oct[..8].copy_from_slice(&c[..8]);
+            let octonion_assoc = cd_kernel::cd_associator_norm(&a_oct, &b_oct, &c_oct);
+
+            let mut a_rand = a;
+            a_rand.reverse();
+            let mut b_rand = b;
+            b_rand.reverse();
+            let mut c_rand = c;
+            c_rand.reverse();
+            let random_assoc = cd_kernel::cd_associator_norm(&a_rand, &b_rand, &c_rand);
+
+            let euclidean = (l2_norm_sq(&a) + l2_norm_sq(&b) + l2_norm_sq(&c)).sqrt();
+
+            [sedenion_assoc, octonion_assoc, random_assoc, euclidean]
+        }
+        _ => [0.0; 4],
+    }
 }
 
 fn descriptor_channels_from_arrays(
     vectors: &[[f64; HELIOSPHERE_INVARIANT_DIM]],
     idx: usize,
-) -> [f64; DESCRIPTOR_DIM] {
+) -> [f64; 4] {
     let current = &vectors[idx];
     let prev = idx.checked_sub(1).map(|index| &vectors[index]);
     let prev2 = idx.checked_sub(2).map(|index| &vectors[index]);
@@ -1749,11 +1831,17 @@ fn build_normalized_samples_with_strategy_and_seed(
             .map(|sample| normalize_channels(sample, &params))
             .collect::<Vec<_>>();
         for idx in 0..group.len() {
+            let mut descriptor = [0.0; DESCRIPTOR_DIM];
+            let base = descriptor_channels_from_arrays(&channels, idx);
+            descriptor[..4].copy_from_slice(&base);
+            let takens = takens_descriptors(&group, idx);
+            descriptor[4..8].copy_from_slice(&takens);
+
             normalized.insert(
                 group[idx].key.clone(),
                 NormalizedSample {
                     normalized_channels: channels[idx],
-                    normalized_descriptor_channels: descriptor_channels_from_arrays(&channels, idx),
+                    normalized_descriptor_channels: descriptor,
                 },
             );
         }
@@ -1843,6 +1931,8 @@ fn selected_descriptor_values(
         DescriptorProfile::Full => descriptor.to_vec(),
         DescriptorProfile::DeltaAssociator => vec![descriptor[1], descriptor[2]],
         DescriptorProfile::AssociatorOnly => vec![descriptor[2]],
+        DescriptorProfile::TakensSedenion => vec![descriptor[4]],
+        DescriptorProfile::TakensComparison => descriptor[4..8].to_vec(),
     }
 }
 
@@ -2031,6 +2121,8 @@ fn fit_sparse_budget_policy_profile_model_with_seed(
             DescriptorProfile::Full => "hybrid_budget_policy_full",
             DescriptorProfile::DeltaAssociator => "hybrid_budget_policy_delta_associator",
             DescriptorProfile::AssociatorOnly => "hybrid_budget_policy_associator_only",
+            DescriptorProfile::TakensSedenion => "hybrid_budget_policy_takens_sedenion",
+            DescriptorProfile::TakensComparison => "hybrid_budget_policy_takens_comparison",
         },
     };
     let train = feature_matrix_with_descriptor_profile(
@@ -2974,6 +3066,10 @@ pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
     "delta_weighted_norm_sq",
     "rolling_associator_norm",
     "mean_abs_weighted_channel",
+    "takens_sedenion_assoc",
+    "takens_octonion_pair",
+    "takens_random_orthogonal",
+    "takens_euclidean_baseline",
 ];
 
 fn to_cd16(values: &[f64; HELIOSPHERE_INVARIANT_DIM]) -> [f64; 16] {

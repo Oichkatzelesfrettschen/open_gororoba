@@ -1,0 +1,107 @@
+{
+  "query": "Coxeter Quaternions and Reflections 1946",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455973.6919036,
+  "papers": [
+    {
+      "paper_id": "oalex-W4235693166",
+      "title": "The octonions",
+      "authors": [
+        {
+          "name": "John C. Baez",
+          "affiliation": "University of California, Riverside"
+        }
+      ],
+      "year": 2001,
+      "abstract": "The octonions are the largest of the four normed division algebras. While somewhat neglected due to their nonassociativity, they stand at the crossroads of many interesting fields of mathematics. Here we describe them and their relation to Clifford algebras and spinors, Bott periodicity, projective and Lorentzian geometry, Jordan algebras, and the exceptional Lie groups. We also touch upon their applications in quantum logic, special relativity and supersymmetry.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 815,
+      "doi": "10.1090/s0273-0979-01-00934-x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0273-0979-01-00934-x",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2046726526",
+      "title": "Reflection makes sense of rotation of the eyes",
+      "authors": [
+        {
+          "name": "S.J. Judge",
+          "affiliation": "University of Oxford"
+        }
+      ],
+      "year": 2006,
+      "abstract": "",
+      "venue": "Vision Research",
+      "citation_count": 6,
+      "doi": "10.1016/j.visres.2006.05.006",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1016/j.visres.2006.05.006",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2069842320",
+      "title": "The importance of the Selberg integral",
+      "authors": [
+        {
+          "name": "Peter J. Forrester",
+          "affiliation": "University of Melbourne"
+        },
+        {
+          "name": "S. Ole Warnaar",
+          "affiliation": "University of Queensland"
+        }
+      ],
+      "year": 2008,
+      "abstract": "It has been remarked that a fair measure of the impact of Atle Selberg\u00e2\u0080\u0099s work is the number of mathematical terms that bear his name. One of these is the Selberg integral, an $n$-dimensional generalization of the Euler beta integral. We trace its sudden rise to prominence, initiated by a question to Selberg from Enrico Bombieri, more than thirty years after its initial publication. In quick succession the Selberg integral was used to prove an outstanding conjecture in random matrix theory and cases of the Macdonald conjectures. It further initiated the study of $q$-analogues, which in turn enriched the Macdonald conjectures. We review these developments and proceed to exhibit the sustained prominence of the Selberg integral as evidenced by its central role in random matrix theory, Calogero\u00e2\u0080\u0093Sutherland quantum many-body systems, Knizhnik\u00e2\u0080\u0093Zamolodchikov equations, and multivariable orthogonal polynomial theory.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 317,
+      "doi": "10.1090/s0273-0979-08-01221-4",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0273-0979-08-01221-4",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2060941833",
+      "title": "Matrices of quaternions",
+      "authors": [
+        {
+          "name": "J. L. Brenner",
+          "affiliation": ""
+        }
+      ],
+      "year": 1951,
+      "abstract": "",
+      "venue": "Pacific Journal of Mathematics",
+      "citation_count": 169,
+      "doi": "10.2140/pjm.1951.1.329",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2140/pjm.1951.1.329",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2012239776",
+      "title": "Book Review: On quaternions and octonions: Their geometry, arithmetic, and symmetry",
+      "authors": [
+        {
+          "name": "John C. Baez",
+          "affiliation": "University of California, Riverside"
+        }
+      ],
+      "year": 2005,
+      "abstract": "Conway and Smith's book is a wonderful introduction to the normed division algebras: the real numbers (R), the complex numbers (C), the quaternions (H), and the octonions (O). The first two are well-known to every mathematician. In contrast, the quaternions and especially the octonions are sadly neglected, so the authors rightly concentrate on these. They develop these number systems from scratch, explore their connections to geometry, and even study number theory in quaternionic and octonionic versions of the integers.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 44,
+      "doi": "10.1090/s0273-0979-05-01043-8",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0273-0979-05-01043-8",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

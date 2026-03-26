@@ -1,0 +1,119 @@
+{
+  "query": "Albert Quadratic Forms Permitting Composition 1942",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455968.8979764,
+  "papers": [
+    {
+      "paper_id": "oalex-W2114631056",
+      "title": "PISCES-v2: an ocean biogeochemical model for carbon and ecosystem studies",
+      "authors": [
+        {
+          "name": "Olivier Aumont",
+          "affiliation": "Laboratoire d'Oc\u00e9anographie et du Climat : Exp\u00e9rimentations et Approches Num\u00e9riques"
+        },
+        {
+          "name": "Christian \u00c9th\u00e9",
+          "affiliation": "Laboratoire d'Oc\u00e9anographie et du Climat : Exp\u00e9rimentations et Approches Num\u00e9riques"
+        },
+        {
+          "name": "Alessandro Tagliabue",
+          "affiliation": "University of Liverpool"
+        },
+        {
+          "name": "Laurent Bopp",
+          "affiliation": "Laboratoire des Sciences du Climat et de l'Environnement"
+        },
+        {
+          "name": "Marion Gehlen",
+          "affiliation": "Commissariat \u00e0 l'\u00c9nergie Atomique et aux \u00c9nergies Alternatives"
+        }
+      ],
+      "year": 2015,
+      "abstract": "Abstract. PISCES-v2 (Pelagic Interactions Scheme for Carbon and Ecosystem Studies volume 2) is a biogeochemical model which simulates the lower trophic levels of marine ecosystems (phytoplankton, microzooplankton and mesozooplankton) and the biogeochemical cycles of carbon and of the main nutrients (P, N, Fe, and Si). The model is intended to be used for both regional and global configurations at high or low spatial resolutions as well as for short-term (seasonal, interannual) and long-term (climate change, paleoceanography) analyses. There are 24 prognostic variables (tracers) including two phytoplankton compartments (diatoms and nanophytoplankton), two zooplankton size classes (microzooplankton and mesozooplankton) and a description of the carbonate chemistry. Formulations in PISCES-v2 are based on a mixed Monod\u2013quota formalism. On the one hand, stoichiometry of C / N / P is fixed and growth rate of phytoplankton is limited by the external availability in N, P and Si. On the other hand, the iron and silicon quotas are variable and the growth rate of phytoplankton is limited by the internal availability in Fe. Various parameterizations can be activated in PISCES-v2, setting, for instance, the complexity of iron chemistry or the description of particulate organic materials. So far, PISCES-v2 has been coupled to the Nucleus for European Modelling of the Ocean (NEMO) and Regional Ocean Modeling System (ROMS) systems. A full description of PISCES-v2 and of its optional functionalities is provided here. The results of a quasi-steady-state simulation are presented and evaluated against diverse observational and satellite-derived data. Finally, some of the new functionalities of PISCES-v2 are tested in a series of sensitivity experiments.",
+      "venue": "Geoscientific model development",
+      "citation_count": 771,
+      "doi": "10.5194/gmd-8-2465-2015",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.5194/gmd-8-2465-2015",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2037343293",
+      "title": "Human-competitive results produced by genetic programming",
+      "authors": [
+        {
+          "name": "John R. Koza",
+          "affiliation": "Stanford University"
+        }
+      ],
+      "year": 2010,
+      "abstract": "Genetic programming has now been used to produce at least 76 instances of results that are competitive with human-produced results. These human-competitive results come from a wide variety of fields, including quantum computing circuits, analog electrical circuits, antennas, mechanical systems, controllers, game playing, finite algebras, photonic systems, image recognition, optical lens systems, mathematical algorithms, cellular automata rules, bioinformatics, sorting networks, robotics, assembly code generation, software repair, scheduling, communication protocols, symbolic regression, reverse engineering, and empirical model discovery. This paper observes that, despite considerable variation in the techniques employed by the various researchers and research groups that produced these human-competitive results, many of the results share several common features. Many of the results were achieved by using a developmental process and by using native representations regularly used by engineers in the fields involved. The best individual in the initial generation of the run of genetic programming often contains only a small number of operative parts. Most of the results that duplicated the functionality of previously issued patents were novel solutions, not infringing solutions. In addition, the production of human-competitive results, as well as the increased intricacy of the results, are broadly correlated to increased availability of computing power tracked by Moore\u2019s law. The paper ends by predicting that the increased availability of computing power (through both parallel computing and Moore\u2019s law) should result in the production, in the future, of an increasing flow of human-competitive results, as well as more intricate and impressive results.",
+      "venue": "Genetic Programming and Evolvable Machines",
+      "citation_count": 317,
+      "doi": "10.1007/s10710-010-9112-3",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/s10710-010-9112-3",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W4299550864",
+      "title": "Environmental radioactivity from natural, industrial, and military sources",
+      "authors": [
+        {
+          "name": "Merril Eisenbud",
+          "affiliation": ""
+        }
+      ],
+      "year": 1987,
+      "abstract": "This document is the third edition of a book generally considered a standard in the field of radioactive materials in the environment. Topics include radiation protection standards, transport mechanisms, terrestrial and aquatic pathways, reprocessing of nuclear fuels, radioactive waste management, the fallout from nuclear explosions, nuclear accidents, and risk assessment. (TEM)",
+      "venue": "",
+      "citation_count": 152,
+      "doi": "10.2172/5601702",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2172/5601702",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2022821512",
+      "title": "Some results in the theory of linear non-associative algebras",
+      "authors": [
+        {
+          "name": "R. H. Bruck",
+          "affiliation": ""
+        }
+      ],
+      "year": 1944,
+      "abstract": "over if ra transformations, linearly independent or not, be arbitrarily assigned in dt to correspond to a basis of 21, then 8 is uniquely determined (and conversely) since 9 determines 21 and 2, 2.",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 74,
+      "doi": "10.1090/s0002-9947-1944-0011083-5",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9947-1944-0011083-5",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2061861749",
+      "title": "Composition algebras over algebraic curves of genus zero",
+      "authors": [
+        {
+          "name": "Holger P. Petersson",
+          "affiliation": ""
+        }
+      ],
+      "year": 1993,
+      "abstract": "We rephrase the classical theory of composition algebras over fields, particularly the Cayley-Dickson Doubling Process and Zorn's Vector Matrices, in the setting of locally ringed spaces.Fixing an arbitrary base field, we use these constructions to classify composition algebras over (complete smooth) curves of genus zero.Applications are given to composition algebras over function fields of genus zero and polynomial rings.",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 51,
+      "doi": "10.1090/s0002-9947-1993-1108613-x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9947-1993-1108613-x",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

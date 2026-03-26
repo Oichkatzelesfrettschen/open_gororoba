@@ -4,7 +4,7 @@
     This proves sedenions do NOT form a division algebra.
     Verified component-wise on the concrete 16-component product. *)
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
 
 (** The zero-divisor witnesses are nonzero. *)
 Theorem sed_zd_a_nonzero : sed_zd_a <> sed_zero.
@@ -30,9 +30,5 @@ Qed.
 Theorem C908_sedenion_zero_divisor :
   sed_mul sed_zd_a sed_zd_b = sed_zero.
 Proof.
-  cbv [sed_zd_a sed_zd_b sed_mul oct_mul oct_conj
-       quat_mul quat_add quat_neg quat_conj
-       oct_zero quat_zero quat_one sed_zero
-       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-  f_equal; f_equal; f_equal; abstract ring.
+  exact sed_zd_product_zero.
 Qed.

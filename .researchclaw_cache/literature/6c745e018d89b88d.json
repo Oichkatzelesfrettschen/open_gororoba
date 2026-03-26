@@ -1,0 +1,103 @@
+{
+  "query": "The Automorphisms of Cayley's Non-associative Algebra Zorn 1935",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455899.2863257,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1073/pnas.21.6.355",
+      "title": "The Automorphisms of Cayley's Non-Associative Algebra",
+      "authors": [
+        {
+          "name": "Max Zorn",
+          "affiliation": "Department of Mathematics, Yale University"
+        }
+      ],
+      "year": 1935,
+      "abstract": "",
+      "venue": "Proceedings of the National Academy of Sciences",
+      "citation_count": 13,
+      "doi": "10.1073/pnas.21.6.355",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1073/pnas.21.6.355",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-94-011-0990-1_34",
+      "title": "Hermitian Jordan Triple Systems and the Automorphisms of Bounded Symmetric Domains",
+      "authors": [
+        {
+          "name": "Wilhelm Kaup",
+          "affiliation": ""
+        }
+      ],
+      "year": 1994,
+      "abstract": "",
+      "venue": "Non-Associative Algebra and Its Applications",
+      "citation_count": 15,
+      "doi": "10.1007/978-94-011-0990-1_34",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-94-011-0990-1_34",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1017/s0017089500004961",
+      "title": "Computer generated natural inner automorphisms of Cayley's algebra",
+      "authors": [
+        {
+          "name": "P. J. C. Lamont",
+          "affiliation": ""
+        }
+      ],
+      "year": 1982,
+      "abstract": "This paper results from the design and development of computer software for lengthy computations with Cayley's algebra C over the field of reals. The algebra C is 8-dimensional over the reals and is not associative. Integer elements of C are defined and can be stored as integer arrays. The problem of solving linear equations \u03b1\u03be = \u03b2 in C is implemented by using the equation  where  is the conjugate and N(\u03b1) is the non-zero norm of \u03b1. Programming multiplication of Cayley numbers is comparable in difficulty to programming matrix multiplication for matrices with eight rows and eight columns.",
+      "venue": "Glasgow Mathematical Journal",
+      "citation_count": 1,
+      "doi": "10.1017/s0017089500004961",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1017/s0017089500004961",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1080/00927878908823826",
+      "title": "On commutative non-associative algebras associated with a group of automorphisms of a 2-design",
+      "authors": [
+        {
+          "name": "M.R. Darafsheh",
+          "affiliation": ""
+        }
+      ],
+      "year": 1989,
+      "abstract": "",
+      "venue": "Communications in Algebra",
+      "citation_count": 0,
+      "doi": "10.1080/00927878908823826",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1080/00927878908823826",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1080/00927878608823395",
+      "title": "The group of automorphisms of non-associative commutative algebras associated with psl(m,q), m \u2265 3",
+      "authors": [
+        {
+          "name": "Kamal narang",
+          "affiliation": ""
+        }
+      ],
+      "year": 1986,
+      "abstract": "",
+      "venue": "Communications in Algebra",
+      "citation_count": 1,
+      "doi": "10.1080/00927878608823395",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1080/00927878608823395",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

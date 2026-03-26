@@ -1,0 +1,27 @@
+[package]
+name = "de_marrais_2000"
+version = "0.1.0"
+edition = { workspace = true }
+description = "de Marrais (2000) -- The 42 Assessors and the Box-Kites they fly"
+license = "GPL-2.0-or-later"
+
+# Source: R.P.C. de Marrais (2000),
+#   "The 42 Assessors and the Box-Kites they fly:
+#    Diagonal Axis-Pair Systems of Zero-Divisors in the Sedenions' 16 Dimensions"
+#   arXiv:math/0011260.
+#
+# Rocq verification: proofs/theories/DeMarraisAssessors.v (256 lines, 0 Admitted)
+#
+# This crate implements all enumerable content from Sections I and II:
+# - The 7 O-trips (octonion associative triples) with XOR consistency
+# - The 28 S-trips (sedenion associative triples) with XOR consistency
+# - The co-assessor predicate (shared XOR G-index)
+# - Production Rule #1: from two co-assessors, derive a third
+# - The three-ring circuit (mutually zero-dividing triple)
+# - The 168 = 42 * 4 zero-divisor count decomposition
+
+[dependencies]
+cd_kernel = { workspace = true }
+
+[lints]
+workspace = true

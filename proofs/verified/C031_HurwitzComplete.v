@@ -7,6 +7,7 @@
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion.
 From OpenGororoba Require Import OctonionNorm HurwitzTheorem.
+Open Scope R_scope.
 
 (** Dim 1: trivial. *)
 Theorem C031_dim1 : forall x y : R, (x * y) ^ 2 = x ^ 2 * y ^ 2.

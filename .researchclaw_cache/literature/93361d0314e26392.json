@@ -1,0 +1,107 @@
+{
+  "query": "Jacobson Cayley Numbers and Normal Simple Lie Algebras of Type G 1939",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455964.2531943,
+  "papers": [
+    {
+      "paper_id": "oalex-W2580370298",
+      "title": "Octonions and the Exceptional Lie Algebra g_2.",
+      "authors": [
+        {
+          "name": "Kelly English McLewin",
+          "affiliation": ""
+        }
+      ],
+      "year": 2004,
+      "abstract": "We first introduce the octonions as an eight dimensional vector space over a field of characteristic zero with a multiplication defined using a table. We also show that the multiplication rules for octonions can be derived from a special graph with seven vertices call the Fano Plane. Next we explain the Cayley-Dickson construction, which exhibits the octonions as the set of ordered pairs of quaternions. This approach parallels the realization of the complex numbers as ordered pairs of real numbers. The rest of the thesis is devoted to following a paper by N. Jacobson written in 1939 entitled \"Cayley Numbers and Normal Simple Lie Algebras of Type G\". We prove that the algebra of derivations on the octonions is a Lie algebra of type G_2. The proof proceeds by showing the set of derivations on the octonions is a Lie algebra, has dimension fourteen, and is semisimple. Next, we complexify the algebra of derivations on the octonions and show the complexification is simple. This suffices to show the complexification of the algebra of derivations is isomorphic to g_2 since g_2 is the only semisimple complex Lie algebra of dimension fourteen. Finally, we conclude the algebra of derivations on the octonions is a simple Lie algebra of type G_2.",
+      "venue": "VTechWorks (Virginia Tech)",
+      "citation_count": 1,
+      "doi": "",
+      "arxiv_id": "",
+      "url": "https://openalex.org/W2580370298",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2022821512",
+      "title": "Some results in the theory of linear non-associative algebras",
+      "authors": [
+        {
+          "name": "R. H. Bruck",
+          "affiliation": ""
+        }
+      ],
+      "year": 1944,
+      "abstract": "over if ra transformations, linearly independent or not, be arbitrarily assigned in dt to correspond to a basis of 21, then 8 is uniquely determined (and conversely) since 9 determines 21 and 2, 2.",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 74,
+      "doi": "10.1090/s0002-9947-1944-0011083-5",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9947-1944-0011083-5",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2018560262",
+      "title": "Inner derivations of non-associative algebras",
+      "authors": [
+        {
+          "name": "R. D. Schafer",
+          "affiliation": ""
+        }
+      ],
+      "year": 1949,
+      "abstract": "In this note we propose a definition of inner derivation for nonassociative algebras. This definition coincides with the usual one for Lie algebras, and for associative algebras with no absolute right (left) divisor of zero. It is well known that all derivations of semi-simple associative or Lie algebras over a field of characteristic zero are inner.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 41,
+      "doi": "10.1090/s0002-9904-1949-09281-9",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9904-1949-09281-9",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W4234014411",
+      "title": "Topological rings",
+      "authors": [
+        {
+          "name": "Irving Kaplansky",
+          "affiliation": ""
+        }
+      ],
+      "year": 1948,
+      "abstract": "",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 35,
+      "doi": "10.1090/s0002-9904-1948-09058-9",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9904-1948-09058-9",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1975158945",
+      "title": "Jordan algebras and exceptional subalgebras of the exceptional algebra<i>E</i><sub>6</sub>",
+      "authors": [
+        {
+          "name": "Harry P Allen",
+          "affiliation": "Dai Nippon Printing (Japan)"
+        },
+        {
+          "name": "Joseph C. Ferrar",
+          "affiliation": "Dai Nippon Printing (Japan)"
+        }
+      ],
+      "year": 1970,
+      "abstract": "The close relationship which exists between exceptional central simple Lie algebras, Cayley algebras, and exceptional central simple Jordan algebras has been known for some time. The representational point of view which the latter nonassociative algebras afford has led to the complete classification of the Lie algebras G 2 and F 4f partial classification of the Lie algebras A and E 6 , and to concrete realizations for forms of the above algebras and the algebras E 7 and E s .",
+      "venue": "Pacific Journal of Mathematics",
+      "citation_count": 24,
+      "doi": "10.2140/pjm.1970.32.283",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2140/pjm.1970.32.283",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

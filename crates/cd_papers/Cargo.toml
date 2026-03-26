@@ -15,9 +15,11 @@ cd_kernel.workspace = true
 hurwitz_1898 = { path = "../hurwitz_1898" }
 dickson_1919 = { path = "../dickson_1919" }
 schafer_1945 = { path = "../schafer_1945" }
+de_marrais_2000 = { path = "../de_marrais_2000" }
 wilmot_2025 = { path = "../wilmot_2025" }
 brown_1967 = { path = "../brown_1967" }
 brown_1972 = { path = "../brown_1972" }
+moreno_1997 = { path = "../moreno_1997" }
 
 [lints]
 workspace = true

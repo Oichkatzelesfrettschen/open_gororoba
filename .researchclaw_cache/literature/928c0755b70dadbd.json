@@ -1,0 +1,92 @@
+{
+  "query": "Cockle On certain functions resembling quaternions 1848",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455955.81624,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1163/9789004460409_mor2-b2927932x",
+      "title": "On certain functions resembling quaternions, and on a new imaginary in algebra, by James Cockle ; in a letter to T.S. Davies.",
+      "authors": [],
+      "year": 0,
+      "abstract": "",
+      "venue": "Mathematics General Collection",
+      "citation_count": 0,
+      "doi": "10.1163/9789004460409_mor2-b2927932x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1163/9789004460409_mor2-b2927932x",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1080/14786444808646139",
+      "title": "LXIV. <i>On certain functions resembling quaternions, and on a new imaginary in algebra</i>",
+      "authors": [
+        {
+          "name": "James Cockle",
+          "affiliation": ""
+        },
+        {
+          "name": "T.S. Davies",
+          "affiliation": ""
+        }
+      ],
+      "year": 1848,
+      "abstract": "",
+      "venue": "The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science",
+      "citation_count": 31,
+      "doi": "10.1080/14786444808646139",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1080/14786444808646139",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1080/14786444808646015",
+      "title": "LVII. <i>On certain researches of</i> Murphy",
+      "authors": [
+        {
+          "name": "James Cockle",
+          "affiliation": "a  Trinity College ,  Cambridge"
+        }
+      ],
+      "year": 1848,
+      "abstract": "",
+      "venue": "The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science",
+      "citation_count": 0,
+      "doi": "10.1080/14786444808646015",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1080/14786444808646015",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1163/9789004460409_mor2-b29298866",
+      "title": "On certain linear differential equations, by James Cockle.",
+      "authors": [],
+      "year": 0,
+      "abstract": "",
+      "venue": "Mathematics General Collection",
+      "citation_count": 0,
+      "doi": "10.1163/9789004460409_mor2-b29298866",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1163/9789004460409_mor2-b29298866",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1163/9789004460409_mor2-b29279343",
+      "title": "On the solutions of certain systems of equations, by James Cockle.",
+      "authors": [],
+      "year": 0,
+      "abstract": "",
+      "venue": "Mathematics General Collection",
+      "citation_count": 0,
+      "doi": "10.1163/9789004460409_mor2-b29279343",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1163/9789004460409_mor2-b29279343",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

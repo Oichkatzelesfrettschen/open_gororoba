@@ -1,0 +1,6 @@
+tau,ke_ghost_detected,ke_ghost_freq,ke_ghost_snr,ke_ghost_fwhm,ke_dominant_freq,ke_dominant_power,var_ghost_detected,var_ghost_freq,var_ghost_snr,spatial_ghost_detected,spatial_ghost_freq,spatial_ghost_snr,final_ke,final_var,label
+0.550,false,NaN,0.0000,NaN,0.380000,9.155830e-23,false,NaN,0.0000,false,NaN,0.0000,9.117905e-5,0.000000e0,tau=0.55
+0.600,false,NaN,0.0000,NaN,0.310000,8.884057e-23,false,NaN,0.0000,false,NaN,0.0000,9.117924e-5,0.000000e0,tau=0.60
+0.650,true,0.200000,0.0000,0.017635,0.410000,2.743519e-50,false,NaN,0.0000,false,NaN,0.0000,9.117834e-5,0.000000e0,tau=0.65
+0.700,false,NaN,0.0000,NaN,0.090000,2.284759e-24,false,NaN,0.0000,false,NaN,0.0000,9.074541e-5,0.000000e0,tau=0.70
+0.750,false,NaN,0.0000,NaN,0.160000,4.297813e-22,false,NaN,0.0000,false,NaN,0.0000,9.116683e-5,0.000000e0,tau=0.75

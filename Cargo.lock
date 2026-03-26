@@ -93,6 +93,7 @@ dependencies = [
  "cd_kernel",
  "core_affinity",
  "criterion",
+ "moreno_1997",
  "nalgebra 0.33.2",
  "petgraph 0.7.1",
  "rand 0.8.5",
@@ -1436,8 +1437,10 @@ dependencies = [
  "brown_1967",
  "brown_1972",
  "cd_kernel",
+ "de_marrais_2000",
  "dickson_1919",
  "hurwitz_1898",
+ "moreno_1997",
  "schafer_1945",
  "wilmot_2025",
 ]
@@ -2488,6 +2491,13 @@ name = "dbgf"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6ca96b45ca70b8045e0462f191bd209fcb3c3bfe8dbfb1257ada54c4dd59169"
+
+[[package]]
+name = "de_marrais_2000"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+]
 
 [[package]]
 name = "debug_unsafe"
@@ -6042,6 +6052,14 @@ dependencies = [
  "libc",
  "wasi",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "moreno_1997"
+version = "0.1.0"
+dependencies = [
+ "cd_kernel",
+ "nalgebra 0.33.2",
 ]
 
 [[package]]

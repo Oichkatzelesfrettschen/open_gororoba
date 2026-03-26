@@ -1,0 +1,103 @@
+{
+  "query": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774463288.106643,
+  "papers": [
+    {
+      "paper_id": "oalex-W2024024636",
+      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "authors": [
+        {
+          "name": "Hans Freudenthal",
+          "affiliation": ""
+        }
+      ],
+      "year": 1985,
+      "abstract": "",
+      "venue": "Geometriae Dedicata",
+      "citation_count": 121,
+      "doi": "10.1007/bf00233101",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/bf00233101",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W4235693166",
+      "title": "The octonions",
+      "authors": [
+        {
+          "name": "John C. Baez",
+          "affiliation": "University of California, Riverside"
+        }
+      ],
+      "year": 2001,
+      "abstract": "The octonions are the largest of the four normed division algebras. While somewhat neglected due to their nonassociativity, they stand at the crossroads of many interesting fields of mathematics. Here we describe them and their relation to Clifford algebras and spinors, Bott periodicity, projective and Lorentzian geometry, Jordan algebras, and the exceptional Lie groups. We also touch upon their applications in quantum logic, special relativity and supersymmetry.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 815,
+      "doi": "10.1090/s0273-0979-01-00934-x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0273-0979-01-00934-x",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1493852014",
+      "title": "Minimum imbeddings of compact symmetric spaces of rank one",
+      "authors": [
+        {
+          "name": "Shin-sheng Tai",
+          "affiliation": ""
+        }
+      ],
+      "year": 1968,
+      "abstract": "",
+      "venue": "Journal of Differential Geometry",
+      "citation_count": 58,
+      "doi": "10.4310/jdg/1214501137",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.4310/jdg/1214501137",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1565563094",
+      "title": "Differentiable Structures on the 15-Sphere and Pontrjagin Classes of Certain Manifolds",
+      "authors": [
+        {
+          "name": "Nobuo Shimada",
+          "affiliation": "Nagoya University"
+        }
+      ],
+      "year": 1957,
+      "abstract": "No manifold had been known which can carry two distinct differentiable structures until the recent important contribution due to J. Milnor [7] concerning the 7-sphere appeared. In connection with his work, there are several problems, for example, about the existence of any other manifold with such property, about the topological invariance of the Pontrjagin classes of manifolds, etc.; some of them will be discussed in the present note.",
+      "venue": "Nagoya Mathematical Journal",
+      "citation_count": 28,
+      "doi": "10.1017/s0027763000021942",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1017/s0027763000021942",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W4248477381",
+      "title": "Infinite-Dimensional Quadratic Forms Admitting Composition",
+      "authors": [
+        {
+          "name": "Irving Kaplansky",
+          "affiliation": ""
+        }
+      ],
+      "year": 1953,
+      "abstract": "",
+      "venue": "Proceedings of the American Mathematical Society",
+      "citation_count": 21,
+      "doi": "10.2307/2031837",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2307/2031837",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

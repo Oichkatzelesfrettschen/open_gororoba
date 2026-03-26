@@ -666,7 +666,26 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(solar_orbiter_swa::SolarOrbiterSwaProvider::default()),
+            provider: Box::new(mms::MmsFgmProvider::default()),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~500 MB-2 GB/year",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "MMS1 FGM Survey L2 (1-day sample)",
+                mms::MmsFgmProvider {
+                    year_start: 2024,
+                    year_end: 2024,
+                    doy_range: Some((1, 1)),
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(solar_orbiter_mag::SolarOrbiterMagProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~20-200 MB/year",

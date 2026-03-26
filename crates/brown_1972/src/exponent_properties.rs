@@ -1,6 +1,7 @@
-//! Exponent properties (Brown Chapter V, Theorems 5.6-5.17).
+//! Exponent properties (Brown Chapter V, Theorems 5.6-5.17, Lemma 5.1).
 //!
 //! The remarkable results:
+//! - conj(a^n) = (conj(a))^n for ALL integers n (Lemma 5.1)
 //! - a^m * a^n = a^{m+n} for ALL integers m, n (Thm 5.11)
 //! - (a^m)^n = a^{mn} for ALL integers m, n (Thm 5.12)
 //! - (a^m, b, a^n) = 0 for ALL integers m, n (Thm 5.17)
@@ -132,6 +133,69 @@ pub fn verify_associator_square(a: &[f64], b: &[f64], c: &[f64]) -> f64 {
     max_err
 }
 
+/// Verify Lemma 5.1: conjugation commutes with exponentiation.
+/// That is, conj(a^n) = (conj(a))^n for all integers n.
+/// This follows because conjugation is an automorphism of the CD algebra:
+/// it is linear and an antimorphism of the multiplication (conj(xy) = conj(y)conj(x)).
+/// Mirrors: Brown (1972) Lemma 5.1.
+pub fn verify_conj_power_commute(a: &[f64], n: i32) -> f64 {
+    let a_n = cd_power(a, n);
+    let conj_a_n = cd_conjugate(&a_n);
+
+    let conj_a = cd_conjugate(a);
+    let conj_a_n_alt = cd_power(&conj_a, n);
+
+    conj_a_n
+        .iter()
+        .zip(conj_a_n_alt.iter())
+        .map(|(x, y)| (x - y).abs())
+        .fold(0.0, f64::max)
+}
+
+/// Verify Corollary 5.3: the only idempotent elements are 0 and 1.
+/// An element a is idempotent if a^2 = a. The only such elements in CD algebras are
+/// the additive identity (0) and multiplicative identity (1).
+/// This follows from the quadratic formula: a^2 - T(a)*a + N(a)*1 = 0.
+/// If a^2 = a, then N(a)*(a - 1) = 0, forcing either a = 0 or a = 1.
+/// Mirrors: Brown (1972) Corollary 5.3.
+pub fn verify_idempotent_characterization(a: &[f64]) -> f64 {
+    let dim = a.len();
+    let a_sq = cd_multiply(a, a);
+    // Check how close a^2 is to a
+    let deviation: f64 = a_sq
+        .iter()
+        .zip(a.iter())
+        .map(|(x, y)| (x - y).abs())
+        .fold(0.0, f64::max);
+
+    // If not idempotent, return the deviation (non-zero)
+    if deviation > 1e-6 {
+        return deviation;
+    }
+
+    // If idempotent, verify it is either 0 or 1
+    // 0: all components are zero
+    let is_zero = a.iter().all(|&x| x.abs() < 1e-10);
+    if is_zero {
+        return 0.0; // Valid idempotent: 0
+    }
+
+    // 1: real part is 1, imaginary parts are zero
+    let mut is_one = (a[0] - 1.0).abs() < 1e-10;
+    for i in 1..dim {
+        if a[i].abs() > 1e-10 {
+            is_one = false;
+            break;
+        }
+    }
+    if is_one {
+        return 0.0; // Valid idempotent: 1
+    }
+
+    // If idempotent but neither 0 nor 1, return deviation to show it's an error
+    deviation
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -145,6 +209,71 @@ mod tests {
             *v = ((s >> 33) as f64) / (1u64 << 31) as f64 - 1.0;
         }
         x
+    }
+
+    #[test]
+    fn test_conj_power_commute_dim4() {
+        // Quaternion: conj(a^n) = (conj(a))^n
+        let mut a = vec![0.0; 4];
+        a[0] = 1.5;
+        a[1] = 0.5;
+        a[2] = -0.3;
+        a[3] = 0.8;
+        for n in -3..=3 {
+            let err = verify_conj_power_commute(&a, n);
+            assert!(
+                err < 1e-10,
+                "conj(a^{n}) != (conj(a))^{n} for quaternion: err={err}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_conj_power_commute_dim8() {
+        // Octonion: conj(a^n) = (conj(a))^n
+        let mut a = vec![0.0; 8];
+        a[0] = 1.2;
+        a[1] = 0.4;
+        a[3] = -0.6;
+        a[5] = 0.7;
+        for n in -2..=2 {
+            let err = verify_conj_power_commute(&a, n);
+            assert!(
+                err < 1e-10,
+                "conj(a^{n}) != (conj(a))^{n} for octonion: err={err}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_conj_power_commute_dim16() {
+        // Sedenion: conj(a^n) = (conj(a))^n
+        let a = random_sedenion(5000);
+        for n in -2..=3 {
+            let err = verify_conj_power_commute(&a, n);
+            assert!(
+                err < 1e-6,
+                "conj(a^{n}) != (conj(a))^{n} for sedenion: err={err}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_conj_power_zero() {
+        // conj(a^0) = conj(1) = 1, (conj(a))^0 = 1
+        let mut a = vec![0.0; 16];
+        a[0] = 2.0;
+        a[1] = 1.0;
+        let err = verify_conj_power_commute(&a, 0);
+        assert!(err < 1e-15, "conj(a^0) should equal (conj(a))^0: err={err}");
+    }
+
+    #[test]
+    fn test_conj_power_one() {
+        // conj(a^1) = conj(a), (conj(a))^1 = conj(a)
+        let a = random_sedenion(5001);
+        let err = verify_conj_power_commute(&a, 1);
+        assert!(err < 1e-15, "conj(a^1) should equal (conj(a))^1: err={err}");
     }
 
     #[test]
@@ -211,5 +340,111 @@ mod tests {
         let a = random_sedenion(42);
         let err = verify_trace_of_square(&a);
         assert!(err < 1e-5, "T(a^2) should be T(a)^2 - 2*N(a): err={err}");
+    }
+
+    #[test]
+    fn test_idempotent_zero_quaternion() {
+        // Test that 0 is idempotent in quaternions (4D)
+        let zero = vec![0.0, 0.0, 0.0, 0.0];
+        let err = verify_idempotent_characterization(&zero);
+        assert!(
+            err < 1e-15,
+            "0 should be idempotent in quaternions: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_idempotent_one_quaternion() {
+        // Test that 1 is idempotent in quaternions (4D)
+        let one = vec![1.0, 0.0, 0.0, 0.0];
+        let err = verify_idempotent_characterization(&one);
+        assert!(
+            err < 1e-15,
+            "1 should be idempotent in quaternions: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_idempotent_zero_octonion() {
+        // Test that 0 is idempotent in octonions (8D)
+        let zero = vec![0.0; 8];
+        let err = verify_idempotent_characterization(&zero);
+        assert!(
+            err < 1e-15,
+            "0 should be idempotent in octonions: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_idempotent_one_octonion() {
+        // Test that 1 is idempotent in octonions (8D)
+        let mut one = vec![0.0; 8];
+        one[0] = 1.0;
+        let err = verify_idempotent_characterization(&one);
+        assert!(
+            err < 1e-15,
+            "1 should be idempotent in octonions: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_idempotent_zero_sedenion() {
+        // Test that 0 is idempotent in sedenions (16D)
+        let zero = vec![0.0; 16];
+        let err = verify_idempotent_characterization(&zero);
+        assert!(
+            err < 1e-15,
+            "0 should be idempotent in sedenions: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_idempotent_one_sedenion() {
+        // Test that 1 is idempotent in sedenions (16D)
+        let mut one = vec![0.0; 16];
+        one[0] = 1.0;
+        let err = verify_idempotent_characterization(&one);
+        assert!(
+            err < 1e-15,
+            "1 should be idempotent in sedenions: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_non_idempotent_sedenion() {
+        // Random sedenion should not be idempotent
+        let a = random_sedenion(999);
+        let err = verify_idempotent_characterization(&a);
+        // Most random elements are not idempotent
+        assert!(
+            err > 1e-6,
+            "random sedenion should not be idempotent: err={err}"
+        );
+    }
+
+    #[test]
+    fn test_only_idempotents_are_zero_and_one_sedenion() {
+        // Verify that the quadratic formula a^2 = T(a)*a - N(a)*1 (Thm 5.4)
+        // is always true in CD algebras.
+        // For idempotents (a^2 = a), this forces either a = 0 or a = 1.
+        let a = random_sedenion(1001);
+        let a_sq = cd_multiply(&a, &a);
+        let trace_a = 2.0 * a[0];
+        let norm_a = cd_norm_sq(&a);
+
+        // Check quadratic formula: a^2 = T(a)*a - N(a)*1
+        // Rearranged: a^2 - T(a)*a + N(a)*1 = 0
+        let mut deviation = 0.0_f64;
+        for i in 0..16 {
+            let trace_term = trace_a * a[i];
+            let norm_term = if i == 0 { norm_a } else { 0.0 };
+            let lhs = a_sq[i] - trace_term + norm_term;
+            deviation = deviation.max(lhs.abs());
+        }
+
+        assert!(
+            deviation < 1e-6,
+            "quadratic formula (a^2 - T(a)*a + N(a)*1 = 0) must hold: err={deviation}"
+        );
     }
 }

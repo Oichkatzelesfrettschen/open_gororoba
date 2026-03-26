@@ -257,8 +257,20 @@ name = "cross-validate-solar-wind"
 path = "src/bin/cross_validate_solar_wind.rs"
 
 [[bin]]
+name = "heliosphere-associator-null-audit"
+path = "src/bin/heliosphere_associator_null_audit.rs"
+
+[[bin]]
 name = "heliosphere-temporal-overlay"
 path = "src/bin/heliosphere_temporal_overlay.rs"
+
+[[bin]]
+name = "heliosphere-magnetic-takens"
+path = "src/bin/heliosphere_magnetic_takens.rs"
+
+[[bin]]
+name = "heliosphere-quench-scan"
+path = "src/bin/heliosphere_quench_scan.rs"
 
 [[bin]]
 name = "heliosphere-feature-cube"

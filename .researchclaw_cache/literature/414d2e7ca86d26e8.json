@@ -1,0 +1,131 @@
+{
+  "query": "Zorn The Automorphisms of Cayley's Non-associative Algebra 1935",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455961.1340134,
+  "papers": [
+    {
+      "paper_id": "oalex-W1967388266",
+      "title": "Structure and representation of nonassociative algebras",
+      "authors": [
+        {
+          "name": "R. D. Schafer",
+          "affiliation": ""
+        }
+      ],
+      "year": 1955,
+      "abstract": "Introduction. By a nonassociative algebra is meant a vector space which is equipped with a bilinear multiplication. If the multiplication is associative, we have the familiar notion of an associative algebra. Also Lie algebras are an essential tool for the study of Lie groups, as is well known. However, we shall not be particularly concerned with associative or Lie algebras today, except as models of what well-behaved nonassociative algebras should be.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 22,
+      "doi": "10.1090/s0002-9904-1955-09974-9",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9904-1955-09974-9",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2134737960",
+      "title": "Rotations in the Space of Split Octonions",
+      "authors": [
+        {
+          "name": "Merab Gogberashvili",
+          "affiliation": "Tbilisi State University"
+        }
+      ],
+      "year": 2009,
+      "abstract": "The geometrical application of split octonions is considered. The new representation of products of the basis units of split octonionic having David\u2032s star shape (instead of the Fano triangle) is presented. It is shown that active and passive transformations of coordinates in octonionic \u201ceight\u2010space\u201d are not equivalent. The group of passive transformations that leave invariant the pseudonorm of split octonions is S O (4, 4), while active rotations are done by the direct product of O (3, 4)\u2010boosts and real noncompact form of the exceptional group G 2 . In classical limit, these transformations reduce to the standard Lorentz group.",
+      "venue": "Advances in Mathematical Physics",
+      "citation_count": 13,
+      "doi": "10.1155/2009/483079",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1155/2009/483079",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2316640100",
+      "title": "Alternating 3-Forms and Exceptional Simple Lie Groups of Type G<sub>2</sub>",
+      "authors": [
+        {
+          "name": "Carl Herz",
+          "affiliation": "McGill University"
+        }
+      ],
+      "year": 1983,
+      "abstract": "It is now customary to give concrete descriptions of the exceptional simple Lie groups of type G 2 as groups of automorphisms of the Cayley algebras. There is, however, a more elementary description. Let W be a complex 7-dimensional vector space. Among the alternating 3-forms on W there is a connected dense open subset \u03a8( W ) of \u201cmaximal\u201d forms. If \u03c8 \u2208 \u03a8( W ) then the subgroup of AUT C ( W ) consisting of the invertible complex-linear transformations S such that \u03c8 ( S\u2022, S\u2022, S\u2022 ) = \u03c8 (\u2022, \u2022, \u2022) is denoted G ( \u03c8 ), and, in Proposition 3.6. we prove where G 1 ( \u03c8 ) is identified with the exceptional simple complex Lie group of dimension 14. Thus the complex Lie algebra of type G 2 is defined in terms of the alternating 3-form \u03c8 alone without the need to specify an invariant quadratic form. In the real case the result is more striking.",
+      "venue": "Canadian Journal of Mathematics",
+      "citation_count": 6,
+      "doi": "10.4153/cjm-1983-045-2",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.4153/cjm-1983-045-2",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1995003897",
+      "title": "Modular realizations of hyperbolic Weyl groups",
+      "authors": [
+        {
+          "name": "Axel Kleinschmidt",
+          "affiliation": "Universit\u00e9 Libre de Bruxelles"
+        },
+        {
+          "name": "Hermann Nicolai",
+          "affiliation": "Max Planck Institute for Gravitational Physics"
+        },
+        {
+          "name": "Jakob Palmkvist",
+          "affiliation": "Max Planck Society"
+        }
+      ],
+      "year": 2012,
+      "abstract": "We study the recently discovered isomorphisms between hyperbolic Weyl groups and modular groups over integer domains in normed division algebras. We show how to realize the group action via fractional linear transformations on generalized upper half-planes over the division algebras, focusing on the cases involving quaternions and octonions. For these we construct automorphic forms, whose explicit expressions depend crucially on the underlying arithmetic properties of the integer domains. Another main new result is the explicit octavian realization of W + (E 10 ), which contains as a special case a new realization of W + (E 8 ) in terms of unit octavians and their automorphism group.",
+      "venue": "Advances in Theoretical and Mathematical Physics",
+      "citation_count": 7,
+      "doi": "10.4310/atmp.2012.v16.n1.a4",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.4310/atmp.2012.v16.n1.a4",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2941217474",
+      "title": "Literature Survey on Non-Associative Rings and Developments",
+      "authors": [
+        {
+          "name": "Syed Tariq Shah",
+          "affiliation": "Quaid-i-Azam University"
+        },
+        {
+          "name": "Asima Razzaque",
+          "affiliation": "University of Okara"
+        },
+        {
+          "name": "\u0130nayatur Rehman",
+          "affiliation": "Dhofar University"
+        },
+        {
+          "name": "Muhammad Asif Gondal",
+          "affiliation": "Dhofar University"
+        },
+        {
+          "name": "Muhammad Iftikhar Faraz",
+          "affiliation": ""
+        },
+        {
+          "name": "K. P. Shum",
+          "affiliation": ""
+        }
+      ],
+      "year": 2019,
+      "abstract": "In this paper we present a comprehensive survey and developments of existing literature of non-associative rings and enumerate some of their various applications in different directions to date. These applications explain the voluminous work in different fields of non-associative rings and through which various algebraic structures in theoretical point of view could be developed.",
+      "venue": "European Journal of Pure and Applied Mathematics",
+      "citation_count": 4,
+      "doi": "10.29020/nybg.ejpam.v12i2.3408",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.29020/nybg.ejpam.v12i2.3408",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

@@ -139,6 +139,22 @@ Proof.
   intros r [lo hi]; unfold oct_scale, oct_neg; simpl; f_equal; apply quat_scale_neg_r.
 Qed.
 
+Lemma oct_mul_zero_left : forall x : CDOct, oct_mul oct_zero x = oct_zero.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero qa qb qc qd].
+  f_equal; f_equal; ring.
+Qed.
+
+Lemma oct_mul_zero_right : forall x : CDOct, oct_mul x oct_zero = oct_zero.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero qa qb qc qd].
+  f_equal; f_equal; ring.
+Qed.
+
 (** ================================================================== *)
 (** * Sedenion level (tower lift from octonion).                       *)
 (** ================================================================== *)
@@ -222,4 +238,22 @@ Lemma sed_scale_neg_r : forall r (x : CDSed),
   sed_scale (- r) x = sed_neg (sed_scale r x).
 Proof.
   intros r [lo hi]; unfold sed_scale, sed_neg; simpl; f_equal; apply oct_scale_neg_r.
+Qed.
+
+Lemma sed_mul_zero_left : forall x : CDSed, sed_mul sed_zero x = sed_zero.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[b1 b2 b3 b4] [b5 b6 b7 b8]]].
+  cbv [sed_mul sed_zero sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero qa qb qc qd].
+  f_equal; f_equal; f_equal; ring.
+Qed.
+
+Lemma sed_mul_zero_right : forall x : CDSed, sed_mul x sed_zero = sed_zero.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[b1 b2 b3 b4] [b5 b6 b7 b8]]].
+  cbv [sed_mul sed_zero sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero qa qb qc qd].
+  f_equal; f_equal; f_equal; ring.
 Qed.

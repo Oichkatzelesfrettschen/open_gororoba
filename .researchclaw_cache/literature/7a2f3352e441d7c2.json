@@ -1,0 +1,147 @@
+{
+  "query": "Huang So On Left Eigenvalues of a Quaternionic Matrix 2001",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455982.6277008,
+  "papers": [
+    {
+      "paper_id": "oalex-W2582157661",
+      "title": "Quantum Entanglement in Neural Network States",
+      "authors": [
+        {
+          "name": "Dong-Ling Deng",
+          "affiliation": "Joint Quantum Institute"
+        },
+        {
+          "name": "Xiaopeng Li",
+          "affiliation": "Collaborative Innovation Center of Advanced Microstructures"
+        },
+        {
+          "name": "S. Das Sarma",
+          "affiliation": "University of Maryland, College Park"
+        }
+      ],
+      "year": 2017,
+      "abstract": "Machine learning has recently gained attention as a possible way to understand phase transitions in many-body quantum systems. A new entanglement analysis reveals crucial properties of the data structures that encode quantum states in a neural network, opening new inroads in applying machine learning to quantum many-body physics.",
+      "venue": "Physical Review X",
+      "citation_count": 390,
+      "doi": "10.1103/physrevx.7.021021",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1103/physrevx.7.021021",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2121713720",
+      "title": "Vector Sparse Representation of Color Image Using Quaternion Matrix Analysis",
+      "authors": [
+        {
+          "name": "Yi Xu",
+          "affiliation": "Shandong Jiaotong University"
+        },
+        {
+          "name": "Licheng Yu",
+          "affiliation": "Shanghai Jiao Tong University"
+        },
+        {
+          "name": "Hongteng Xu",
+          "affiliation": "Shanghai Jiao Tong University"
+        },
+        {
+          "name": "Hao Zhang",
+          "affiliation": "Shanghai Jiao Tong University"
+        },
+        {
+          "name": "Truong Q. Nguyen",
+          "affiliation": "University of California, San Diego"
+        }
+      ],
+      "year": 2015,
+      "abstract": "Traditional sparse image models treat color image pixel as a scalar, which represents color channels separately or concatenate color channels as a monochrome image. In this paper, we propose a vector sparse representation model for color images using quaternion matrix analysis. As a new tool for color image representation, its potential applications in several image-processing tasks are presented, including color image reconstruction, denoising, inpainting, and super-resolution. The proposed model represents the color image as a quaternion matrix, where a quaternion-based dictionary learning algorithm is presented using the K-quaternion singular value decomposition (QSVD) (generalized K-means clustering for QSVD) method. It conducts the sparse basis selection in quaternion space, which uniformly transforms the channel images to an orthogonal color space. In this new color space, it is significant that the inherent color structures can be completely preserved during vector reconstruction. Moreover, the proposed sparse model is more efficient comparing with the current sparse models for image restoration tasks due to lower redundancy between the atoms of different color channels. The experimental results demonstrate that the proposed sparse image model avoids the hue bias issue successfully and shows its potential as a general and powerful tool in color image analysis and processing domain.",
+      "venue": "IEEE Transactions on Image Processing",
+      "citation_count": 177,
+      "doi": "10.1109/tip.2015.2397314",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1109/tip.2015.2397314",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W3216335463",
+      "title": "Efficient Hashing Method Using 2D-2D PCA for Image Copy Detection",
+      "authors": [
+        {
+          "name": "Xiaoping Liang",
+          "affiliation": "Guangxi Normal University"
+        },
+        {
+          "name": "Zhenjun Tang",
+          "affiliation": "Guangxi Normal University"
+        },
+        {
+          "name": "Ziqing Huang",
+          "affiliation": "Henan University"
+        },
+        {
+          "name": "Xianquan Zhang",
+          "affiliation": "Guangxi Normal University"
+        },
+        {
+          "name": "Shichao Zhang",
+          "affiliation": "Guangxi Normal University"
+        }
+      ],
+      "year": 2021,
+      "abstract": "Image copy detection is an important technology of copyright protection. This paper proposes an efficient hashing method for image copy detection using 2D-2D (two-directional two-dimensional) PCA (Principal Component Analysis). The key is the discovery of the translation invariance of 2D-2D PCA. With the property of translation invariance, a novel model of extracting rotation-invariant low-dimensional features is designed by combining PCT (Polar Coordinate Transformation) and 2D-2D PCA. The PCT can convert an input rotated image to a translation matrix. Since the 2D-2D PCA is invariant to translation, the low-dimensional features learned from the translation matrix are rotation-invariant. Moreover, vector distances of low-dimensional features are stable to common digital operations and thus hash construction with the vector distances is of robustness and compactness. Three open image datasets are exploited to conduct various experiments for validating efficiencies of the proposed method. The results demonstrate that the proposed method is much better than some representative hashing methods in the performances of classification and copy detection.",
+      "venue": "IEEE Transactions on Knowledge and Data Engineering",
+      "citation_count": 63,
+      "doi": "10.1109/tkde.2021.3131188",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1109/tkde.2021.3131188",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2021407787",
+      "title": "Determinantal representation of the Moore\u2013Penrose inverse matrix over the quaternion skew field",
+      "authors": [
+        {
+          "name": "Ivan Kyrchei",
+          "affiliation": "National Academy of Sciences"
+        }
+      ],
+      "year": 2011,
+      "abstract": "",
+      "venue": "Journal of Mathematical Sciences",
+      "citation_count": 26,
+      "doi": "10.1007/s10958-011-0626-x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/s10958-011-0626-x",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W25643407",
+      "title": "East Timor : beyond independence",
+      "authors": [
+        {
+          "name": "Damien Kingsbury",
+          "affiliation": ""
+        },
+        {
+          "name": "Michael Leach",
+          "affiliation": ""
+        }
+      ],
+      "year": 2007,
+      "abstract": "Traditional sparse image models treat color image pixel as a scalar, which represents color channels separately or concatenate color channels as a monochrome image. In this paper, we propose a vector sparse representation model for color images using quaternion matrix analysis. As a new tool for color image representation, its potential applications in several image-processing tasks are presented, including color image reconstruction, denoising, inpainting, and super-resolution. The proposed model represents the color image as a quaternion matrix, where a quaternion-based dictionary learning algorithm is presented using the K-quaternion singular value decomposition (QSVD) (generalized K-means clustering for QSVD) method. It conducts the sparse basis selection in quaternion space, which uniformly transforms the channel images to an orthogonal color space. In this new color space, it is significant that the inherent color structures can be completely preserved during vector reconstruction. Moreover, the proposed sparse model is more efficient comparing with the current sparse models for image restoration tasks due to lower redundancy between the atoms of different color channels. The experimental results demonstrate that the proposed sparse image model avoids the hue bias issue successfully and shows its potential as a general and powerful tool in color image analysis and processing domain.",
+      "venue": "Monash University Press eBooks",
+      "citation_count": 48,
+      "doi": "10.1109/tip.2015.2397314",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1109/tip.2015.2397314",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

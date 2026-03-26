@@ -1,0 +1,271 @@
+{
+  "query": "Hamilton Theory of Conjugate Functions or Algebraic Couples 1835",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455946.2957978,
+  "papers": [
+    {
+      "paper_id": "oalex-W4235693166",
+      "title": "The octonions",
+      "authors": [
+        {
+          "name": "John C. Baez",
+          "affiliation": "University of California, Riverside"
+        }
+      ],
+      "year": 2001,
+      "abstract": "The octonions are the largest of the four normed division algebras. While somewhat neglected due to their nonassociativity, they stand at the crossroads of many interesting fields of mathematics. Here we describe them and their relation to Clifford algebras and spinors, Bott periodicity, projective and Lorentzian geometry, Jordan algebras, and the exceptional Lie groups. We also touch upon their applications in quantum logic, special relativity and supersymmetry.",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 815,
+      "doi": "10.1090/s0273-0979-01-00934-x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0273-0979-01-00934-x",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W3025424660",
+      "title": "TURBOMOLE: Modular program suite for <i>ab initio</i> quantum-chemical and condensed-matter simulations",
+      "authors": [
+        {
+          "name": "Sree Ganesh Balasubramani",
+          "affiliation": "University of California, Irvine"
+        },
+        {
+          "name": "Guo P. Chen",
+          "affiliation": "University of California, Irvine"
+        },
+        {
+          "name": "Sonia Coriani",
+          "affiliation": "Technical University of Denmark"
+        },
+        {
+          "name": "Michael Diedenhofen",
+          "affiliation": "Dassault Syst\u00e8mes (Germany)"
+        },
+        {
+          "name": "Marius S. Frank",
+          "affiliation": "Ruhr University Bochum"
+        },
+        {
+          "name": "Yannick J. Franzke",
+          "affiliation": "Karlsruhe Institute of Technology"
+        },
+        {
+          "name": "Filipp Furche",
+          "affiliation": "University of California, Irvine"
+        },
+        {
+          "name": "Robin Grotjahn",
+          "affiliation": "Technische Universit\u00e4t Berlin"
+        },
+        {
+          "name": "Michael E. Harding",
+          "affiliation": ""
+        },
+        {
+          "name": "Christof H\u00e4ttig",
+          "affiliation": "Ruhr University Bochum"
+        },
+        {
+          "name": "Arnim Hellweg",
+          "affiliation": "Dassault Syst\u00e8mes (Germany)"
+        },
+        {
+          "name": "Benjamin Helmich\u2010Paris",
+          "affiliation": "Max-Planck-Institut f\u00fcr Kohlenforschung"
+        },
+        {
+          "name": "Christof Holzer",
+          "affiliation": "Karlsruhe Institute of Technology"
+        },
+        {
+          "name": "Uwe Huniar",
+          "affiliation": "Dassault Syst\u00e8mes (Germany)"
+        },
+        {
+          "name": "Martin Kaupp",
+          "affiliation": "Technische Universit\u00e4t Berlin"
+        },
+        {
+          "name": "Alireza Marefat Khah",
+          "affiliation": "Ruhr University Bochum"
+        },
+        {
+          "name": "Sarah Karbalaei Khani",
+          "affiliation": "Ruhr University Bochum"
+        },
+        {
+          "name": "Thomas M\u00fcller",
+          "affiliation": "Forschungszentrum J\u00fclich"
+        },
+        {
+          "name": "Fabian Mack",
+          "affiliation": "Karlsruhe Institute of Technology"
+        },
+        {
+          "name": "Brian D. Nguyen",
+          "affiliation": "University of California, Irvine"
+        },
+        {
+          "name": "Shane M. Parker",
+          "affiliation": "Case Western Reserve University"
+        },
+        {
+          "name": "Eva Perlt",
+          "affiliation": "University of California, Irvine"
+        },
+        {
+          "name": "Dmitrij Rappoport",
+          "affiliation": "University of North Carolina at Chapel Hill"
+        },
+        {
+          "name": "Kevin Reiter",
+          "affiliation": "Karlsruhe Institute of Technology"
+        },
+        {
+          "name": "Saswata Roy",
+          "affiliation": "University of California, Irvine"
+        },
+        {
+          "name": "Matthias R\u00fcckert",
+          "affiliation": "Ruhr University Bochum"
+        },
+        {
+          "name": "Gunnar Alexander Schmitz",
+          "affiliation": "Aarhus University"
+        },
+        {
+          "name": "Marek Sierka",
+          "affiliation": "Schott (Germany)"
+        },
+        {
+          "name": "Enrico Tapavicza",
+          "affiliation": "California State University, Long Beach"
+        },
+        {
+          "name": "David P. Tew",
+          "affiliation": "University of Oxford"
+        },
+        {
+          "name": "Christoph van W\u00fcllen",
+          "affiliation": "University of Kaiserslautern"
+        },
+        {
+          "name": "Vamsee K. Voora",
+          "affiliation": "Tata Institute of Fundamental Research"
+        },
+        {
+          "name": "Florian Weigend",
+          "affiliation": "Karlsruhe Institute of Technology"
+        },
+        {
+          "name": "Artur Wody\u0144ski",
+          "affiliation": "Technische Universit\u00e4t Berlin"
+        },
+        {
+          "name": "Jason M. Yu",
+          "affiliation": "University of California, Irvine"
+        }
+      ],
+      "year": 2020,
+      "abstract": "TURBOMOLE is a collaborative, multi-national software development project aiming to provide highly efficient and stable computational tools for quantum chemical simulations of molecules, clusters, periodic systems, and solutions. The TURBOMOLE software suite is optimized for widely available, inexpensive, and resource-efficient hardware such as multi-core workstations and small computer clusters. TURBOMOLE specializes in electronic structure methods with outstanding accuracy-cost ratio, such as density functional theory including local hybrids and the random phase approximation (RPA), GW-Bethe-Salpeter methods, second-order M\u00f8ller-Plesset theory, and explicitly correlated coupled-cluster methods. TURBOMOLE is based on Gaussian basis sets and has been pivotal for the development of many fast and low-scaling algorithms in the past three decades, such as integral-direct methods, fast multipole methods, the resolution-of-the-identity approximation, imaginary frequency integration, Laplace transform, and pair natural orbital methods. This review focuses on recent additions to TURBOMOLE's functionality, including excited-state methods, RPA and Green's function methods, relativistic approaches, high-order molecular properties, solvation effects, and periodic systems. A variety of illustrative applications along with accuracy and timing data are discussed. Moreover, available interfaces to users as well as other software are summarized. TURBOMOLE's current licensing, distribution, and support model are discussed, and an overview of TURBOMOLE's development workflow is provided. Challenges such as communication and outreach, software infrastructure, and funding are highlighted.",
+      "venue": "The Journal of Chemical Physics",
+      "citation_count": 1094,
+      "doi": "10.1063/5.0004635",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1063/5.0004635",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2071175902",
+      "title": "Resolution enhancement techniques in microscopy",
+      "authors": [
+        {
+          "name": "Christoph Cremer",
+          "affiliation": "Institute of Molecular Biology"
+        },
+        {
+          "name": "Barry R. Masters",
+          "affiliation": "Harvard University"
+        }
+      ],
+      "year": 2013,
+      "abstract": "We survey the history of resolution enhancement techniques in microscopy and their impact on current research in biomedicine. Often these techniques are labeled superresolution, or enhanced resolution microscopy, or light-optical nanoscopy. First, we introduce the development of diffraction theory in its relation to enhanced resolution; then we explore the foundations of resolution as expounded by the astronomers and the physicists and describe the conditions for which they apply. Then we elucidate Ernst Abbe\u2019s theory of optical formation in the microscope, and its experimental verification and dissemination to the world wide microscope communities. Second, we describe and compare the early techniques that can enhance the resolution of the microscope. Third, we present the historical development of various techniques that substantially enhance the optical resolution of the light microscope. These enhanced resolution techniques in their modern form constitute an active area of research with seminal applications in biology and medicine. Our historical survey of the field of resolution enhancement uncovers many examples of reinvention, rediscovery, and independent invention and development of similar proposals, concepts, techniques, and instruments. Attribution of credit is therefore confounded by the fact that for understandable reasons authors stress the achievements from their own research groups and sometimes obfuscate their contributions and the prior art of others. In some cases, attribution of credit is also made more complex by the fact that long term developments are difficult to allocate to a specific individual because of the many mutual connections often existing between sometimes fiercely competing, sometimes strongly collaborating groups. Since applications in biology and medicine have been a major driving force in the development of resolution enhancing approaches, we focus on the contribution of enhanced resolution to these fields.",
+      "venue": "The European Physical Journal H",
+      "citation_count": 155,
+      "doi": "10.1140/epjh/e2012-20060-1",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1140/epjh/e2012-20060-1",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2000773028",
+      "title": "Toward a comprehensive definition of oxidation state (IUPAC Technical Report)",
+      "authors": [
+        {
+          "name": "Pavel Karen",
+          "affiliation": "University of Oslo"
+        },
+        {
+          "name": "Patrick McArdle",
+          "affiliation": "Ollscoil na Gaillimhe \u2013 University of Galway"
+        },
+        {
+          "name": "Josef Takats",
+          "affiliation": "University of Alberta"
+        }
+      ],
+      "year": 2014,
+      "abstract": "Abstract A generic definition of oxidation state (OS) is formulated: \u201c The OS of a bonded atom equals its charge after ionic approximation \u201d. In the ionic approximation, the atom that contributes more to the bonding molecular orbital (MO) becomes negative. This sign can also be estimated by comparing Allen electronegativities of the two bonded atoms, but this simplification carries an exception when the more electronegative atom is bonded as a Lewis acid. Two principal algorithms are outlined for OS determination of an atom in a compound; one based on composition, the other on topology. Both provide the same generic OS because both the ionic approximation and structural formula obey rules of stable electron configurations. A sufficiently simple empirical formula yields OS via the algorithm of direct ionic approximation (DIA) by these rules. The topological algorithm works on a Lewis formula (for a molecule) or a bond graph (for an extended solid) and has two variants. One assigns bonding electrons to more electronegative bond partners, the other sums an atom\u2019s formal charge with bond orders (or bond valences) of sign defined by the ionic approximation of each particular bond at the atom. A glossary of terms and auxiliary rules needed for determination of OS are provided, illustrated with examples, and the origins of ambiguous OS values are pointed out. An electrochemical OS is suggested with a nominal value equal to the average OS for atoms of the same element in a moiety that is charged or otherwise electrochemically relevant.",
+      "venue": "Pure and Applied Chemistry",
+      "citation_count": 110,
+      "doi": "10.1515/pac-2013-0505",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1515/pac-2013-0505",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W4393387922",
+      "title": "A canonical Hamiltonian formulation of the Navier\u2013Stokes problem",
+      "authors": [
+        {
+          "name": "John W. Sanders",
+          "affiliation": "Citadel"
+        },
+        {
+          "name": "Adam C. DeVoria",
+          "affiliation": "Citadel"
+        },
+        {
+          "name": "Nathan Washuta",
+          "affiliation": "Citadel"
+        },
+        {
+          "name": "Gafar Elamin",
+          "affiliation": "Citadel"
+        },
+        {
+          "name": "Kevin Skenes",
+          "affiliation": "Citadel"
+        },
+        {
+          "name": "Joel C. Berlinghieri",
+          "affiliation": "Citadel"
+        }
+      ],
+      "year": 2024,
+      "abstract": "This paper presents a novel Hamiltonian formulation of the isotropic Navier\u2013Stokes problem based on a minimum-action principle derived from the principle of least squares. This formulation uses the velocities $u_{i}(x_{j},t)$ and pressure $p(x_{j},t)$ as the field quantities to be varied, along with canonically conjugate momenta deduced from the analysis. From these, a conserved Hamiltonian functional $H^{*}$ satisfying Hamilton's canonical equations is constructed, and the associated Hamilton\u2013Jacobi equation is formulated for both compressible and incompressible flows. This Hamilton\u2013Jacobi equation reduces the problem of finding four separate field quantities ( $u_{i}$ , $p$ ) to that of finding a single scalar functional in those fields \u2013 Hamilton's principal functional ${S}^{*}[u_{i},p,t]$ . Moreover, the transformation theory of Hamilton and Jacobi now provides a prescribed recipe for solving the Navier\u2013Stokes problem: find ${S}^{*}$ . If an analytical expression for ${S}^{*}$ can be obtained, it will lead via canonical transformation to a new set of fields which are simply equal to their initial values, giving analytical expressions for the original velocity and pressure fields. Failing that, if one can only show that a complete solution to this Hamilton\u2013Jacobi equation does or does not exist, that will also resolve the question of existence of solutions. The method employed here is not specific to the Navier\u2013Stokes problem or even to classical mechanics, and can be applied to any traditionally non-Hamiltonian problem.",
+      "venue": "Journal of Fluid Mechanics",
+      "citation_count": 11,
+      "doi": "10.1017/jfm.2024.229",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1017/jfm.2024.229",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

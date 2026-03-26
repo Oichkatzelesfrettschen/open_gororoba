@@ -1,0 +1,24 @@
+[package]
+name = "moreno_1997"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Moreno (1997) Zero divisors of real Cayley-Dickson algebras -- verified Rust implementation"
+license = "GPL-2.0-or-later"
+
+# Source: Moreno, G. (1997) "The zero divisors of the Cayley-Dickson algebras
+# over the real numbers", arXiv:q-alg/9710013v1.
+#
+# Rocq companions: proofs/theories/C1538_MorZDSymmetry.v,
+# proofs/theories/C1539_MorSkewSymm.v, proofs/theories/C1543_MorMod4Bound.v,
+# plus the sign-table bridge files under proofs/theories/CDSign*.v.
+#
+# This crate exposes the executable linear-algebra side of Moreno's operator
+# theorems: H_a, T_a, T~_a, S(a,b), eigenspace decompositions, and the
+# eigenvalue -2 zero-divisor criterion.
+
+[dependencies]
+cd_kernel.workspace = true
+nalgebra = { workspace = true }
+
+[lints]
+workspace = true

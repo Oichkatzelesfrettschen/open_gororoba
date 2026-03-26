@@ -1,0 +1,103 @@
+{
+  "query": "Composition Algebras and Their Automorphisms Jacobson 1958",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455904.6615727,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1007/bf02854388",
+      "title": "Composition algebras and their automorphisms",
+      "authors": [
+        {
+          "name": "N. Jacobson",
+          "affiliation": ""
+        }
+      ],
+      "year": 1958,
+      "abstract": "",
+      "venue": "Rendiconti del Circolo Matematico di Palermo",
+      "citation_count": 165,
+      "doi": "10.1007/bf02854388",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/bf02854388",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-1-4612-3694-8_24",
+      "title": "Composition Algebras and Their Automorphisms",
+      "authors": [
+        {
+          "name": "N. Jacobson",
+          "affiliation": ""
+        }
+      ],
+      "year": 1989,
+      "abstract": "",
+      "venue": "Nathan Jacobson Collected Mathematical Papers",
+      "citation_count": 0,
+      "doi": "10.1007/978-1-4612-3694-8_24",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-1-4612-3694-8_24",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1201/9780203756478-5",
+      "title": "Automorphisms of .",
+      "authors": [
+        {
+          "name": "N. Jacobson",
+          "affiliation": ""
+        }
+      ],
+      "year": 2017,
+      "abstract": "",
+      "venue": "Exceptional Lie Algebras",
+      "citation_count": 0,
+      "doi": "10.1201/9780203756478-5",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1201/9780203756478-5",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-1-4612-3694-8_32",
+      "title": "A Note on Automorphisms of Lie Algebras",
+      "authors": [
+        {
+          "name": "N. Jacobson",
+          "affiliation": ""
+        }
+      ],
+      "year": 1989,
+      "abstract": "",
+      "venue": "Nathan Jacobson Collected Mathematical Papers",
+      "citation_count": 5,
+      "doi": "10.1007/978-1-4612-3694-8_32",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-1-4612-3694-8_32",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-1-4612-3694-8_16",
+      "title": "A Note on Automorphisms and Derivations of Lie Algebras",
+      "authors": [
+        {
+          "name": "N. Jacobson",
+          "affiliation": ""
+        }
+      ],
+      "year": 1989,
+      "abstract": "",
+      "venue": "Nathan Jacobson Collected Mathematical Papers",
+      "citation_count": 3,
+      "doi": "10.1007/978-1-4612-3694-8_16",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-1-4612-3694-8_16",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

@@ -70,7 +70,7 @@
 //!   experiments, binaries, and theorem rows
 //! - `registry/claims.toml`, `registry/insights.toml`, `registry/experiments.toml`,
 //!   and `registry/binaries.toml` as generated compatibility exports
-//! - `papers/MANIFEST.toml` for the paper corpus
+//! - `data/papers/corpus/MANIFEST.toml` for the repo-owned paper corpus
 //!
 //! ## Quick Start
 //!
@@ -120,7 +120,7 @@
 //!   gororoba_py/      PyO3 bindings (thin wrappers)
 //!   gororoba_cli*/    Domain-specific operator surfaces
 //! registry/           SQLite control plane plus generated compatibility registries
-//! papers/             PDF collection + TOML extractions
+//! data/papers/        Cached paper corpus, sidecar text, and manifests
 //! docs/               Documentation and tracking
 //! ```text
 //!

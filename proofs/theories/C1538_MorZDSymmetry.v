@@ -324,22 +324,14 @@ From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionN
     self-containment. *)
 Theorem sed_zd_product_ab : sed_mul sed_zd_a sed_zd_b = sed_zero.
 Proof.
-  cbv [sed_mul sed_zd_a sed_zd_b sed_zero
-       oct_mul oct_conj oct_zero
-       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-  f_equal; f_equal; f_equal; ring.
+  exact sed_zd_product_zero.
 Qed.
 
 (** Reverse direction: b * a = 0.
     This is the ZD symmetry (Corollary 1.6) verified computationally. *)
 Theorem sed_zd_product_ba : sed_mul sed_zd_b sed_zd_a = sed_zero.
 Proof.
-  cbv [sed_mul sed_zd_a sed_zd_b sed_zero
-       oct_mul oct_conj oct_zero
-       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-  f_equal; f_equal; f_equal; ring.
+  exact sed_zd_product_zero_rev.
 Qed.
 
 (** Both products vanish: the complete ZD symmetry witness. *)

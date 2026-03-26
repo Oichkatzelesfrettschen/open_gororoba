@@ -4513,14 +4513,14 @@ id = "C-1538"
 last_verified = "2026-03-23"
 statement = "Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bar*y=0 iff x*y_bar=0. If xy=0 and x!=0, then t(y)=0. x^2=0 implies x=0. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Theoretical"
-where_stated = "crates/algebra_analysis/src/moreno.rs (moreno_decomposition, Cor 1.6 background)"
+where_stated = "crates/moreno_1997/src/lib.rs (moreno_decomposition, Cor 1.6 background)"
 
 [[claim]]
 id = "C-1539"
 last_verified = "2026-03-23"
 statement = "Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetric operators on A_n (with respect to the Euclidean inner product). Ker(L_x) = Ker(R_x). Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Theoretical"
-where_stated = "crates/algebra_analysis/src/moreno.rs (l_a_squared, moreno_decomposition)"
+where_stated = "crates/moreno_1997/src/lib.rs (l_a_squared, moreno_decomposition)"
 
 [[claim]]
 id = "C-154"
@@ -4532,59 +4532,61 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/cs
 
 [[claim]]
 id = "C-1540"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Theorem 1.13 (H_a quaternion subalgebra): For doubly-pure unit-norm a in A_n (n>=2), the span H_a = {e0, a, tilde_a, tilde_e0} is isomorphic to H (quaternions). The multiplication table in source order {1, a, tilde_a, tilde_e0} satisfies quaternion laws with orientation: a*tilde_a = -tilde_e0. Numerically verified at 8D for a=e1. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::verify_h_a_isomorphism, h_a_basis; tests::test_verify_h_a_isomorphism_e1_in_a3"
+where_stated = "crates/moreno_1997/src/lib.rs::verify_h_a_isomorphism, h_a_basis; proofs/theories/C1540_MorHaQuaternion.v::moreno_ha_mul_table; tests::test_verify_h_a_isomorphism_e1_in_a3"
 
 [[claim]]
 id = "C-1541"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Theorem 1.15 (direct sum decomposition): For doubly-pure unit-norm a in A_n, A_n = H_a + Ker(T~_a) + Ker(L_a) + direct-sum(V_lambda) where T~_a = -I - L_a^2 restricted to H_a^perp, and V_lambda are eigenspaces of L_a^2 on H_a^perp. Numerically verified at 8D and 16D (total dimension check passes). Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::moreno_decomposition, MorenoDecomposition; tests::test_moreno_decomposition_totals_8d, test_moreno_decomposition_totals_16d"
+where_stated = "crates/moreno_1997/src/lib.rs::moreno_decomposition, MorenoDecomposition; proofs/theories/C1541_MorDirectSum.v::moreno15_direct_sum_exists, moreno15_direct_sum_unique, moreno15_ker_t_tilde_is_ha_perp, moreno15_ker_l_trivial; tests::test_moreno_decomposition_totals_8d, test_moreno_decomposition_totals_16d"
 
 [[claim]]
 id = "C-1542"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Theoretical"
-where_stated = "crates/algebra_analysis/src/moreno.rs::MorenoDecomposition::all_mod4"
+status_note = "Canonical A_3 eigenspace profile and the abstract H-module orbit theorem are formalized in Rocq; the concrete bridge from arbitrary Cayley-Dickson V_lambda subspaces to that module interface remains open."
+where_stated = "crates/moreno_1997/src/lib.rs::MorenoDecomposition::all_mod4; proofs/theories/C1542_MorVlambdaMod4.v::moreno16_v1_eq_ha_perp, moreno16_nonunit_vlambda_trivial, moreno16_canonical_mod4_profile (canonical A_3 lane); proofs/theories/C1542_MorVlambdaOrbit.v::moreno16_vlambda_dim_div4, moreno16_vlambda_dim_mod4, moreno16_orbit_dim_div4, moreno16_orbit_dim_mod4 (abstract H-module lane)"
 
 [[claim]]
 id = "C-1543"
 last_verified = "2026-03-23"
 statement = "Moreno Corollary 1.17 (annihilator bound): 0 <= dim_R(Ker L_a) = 0 mod 4 and dim_R(Ker L_a) <= 2^n - 4 for doubly-pure unit-norm a in A_n. Moreno bound is 2^n - 4; BDI bound 2^n - 4n + 4 is tighter for n >= 4. Numerically verified: a=e1 in 8D gives Ker(L_a) dim 0; a=(e1+e10)/sqrt(2) in 16D gives Ker(L_a) dim 4. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::verify_corollary_1_17; crates/gororoba_algebra/src/analysis/annihilators.rs::moreno_corollary_1_17_bound; tests::test_verify_corollary_1_17_a3, test_verify_corollary_1_17_a4_with_zd"
+where_stated = "crates/moreno_1997/src/lib.rs::verify_corollary_1_17; crates/gororoba_algebra/src/analysis/annihilators.rs::moreno_corollary_1_17_bound; tests::test_verify_corollary_1_17_a3, test_verify_corollary_1_17_a4_with_zd"
 
 [[claim]]
 id = "C-1544"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Theorem 2.3 (Ker(S) decomposition): For special couple {a,b} in A_n, Ker(S restricted to V(a;b)^perp) = Ker(L_{a+b}) + Ker(L_{a-b}), where both kernels lie in V(a;b)^perp and S(y) = (a,y,b) = R_b*L_a - L_a*R_b. S is skew-symmetric. Numerically verified at 8D for {e1,e2}. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::s_operator_matrix, ker_s_restricted_decomposition; tests::test_s_operator_is_skew_symmetric, test_ker_s_restricted_decomposition_a3"
+where_stated = "crates/moreno_1997/src/lib.rs::s_operator_matrix, ker_s_restricted_decomposition; proofs/theories/C1544_MorKerSDecomp.v::moreno23_kernel_decomposition_canonical; tests::test_s_operator_is_skew_symmetric, test_ker_s_restricted_decomposition_a3"
 
 [[claim]]
 id = "C-1545"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Corollary 2.4 (mod-8 Ker(S) constraint): dim Ker(S restricted to V(a;b)^perp) = 2 * dim Ker(L_{a+b}) = 0 mod 8, for special couple {a,b}. Numerically verified at 8D for {e1,e2}. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::verify_corollary_2_4; tests::test_ker_s_restricted_decomposition_a3"
+where_stated = "crates/moreno_1997/src/lib.rs::verify_corollary_2_4; proofs/theories/C1544_MorKerSDecomp.v::moreno24_canonical_mod8; tests::test_ker_s_restricted_decomposition_a3"
 
 [[claim]]
 id = "C-1546"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1."
-status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d"
+status = "Theoretical"
+status_note = "The canonical A_3 witness lane and the abstract iff core with explicit purity/anticommutation side conditions are formalized in Rocq; the full arbitrary-alternative Cayley-Dickson discharge of those side conditions remains open."
+where_stated = "crates/moreno_1997/src/lib.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; proofs/theories/C1546_MorEigenZD.v::moreno29_c_has_eigen_minus_two, moreno29_pair_is_zero_divisor, moreno29_parallel_not_eigen_minus_two (canonical witness lane); proofs/theories/C1546_MorEigenIFF.v::moreno29_witness_implies_eigen, moreno29_eigen_implies_witness, moreno29_abstract_iff (abstract iff core); tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d"
 
 [[claim]]
 id = "C-1547"
-last_verified = "2026-03-23"
+last_verified = "2026-03-25"
 statement = "Moreno Theorem 2.13 (special triple -> octonion copy): V(a;y;b) = span{e0, a, b, a*b, (a*y)*b, y*b, a*y, y} is a copy of O (octonions) embedded in A_n iff {a,y,b} is a special triple ({a,b} special couple AND (ay)b = -a(yb)). Basis source order matches standard octonion index assignment [e0..e7]. Verified at 8D for {e1, e7, e2}: all 64 products in V(e1;e7;e2) match the CD octonion multiplication table. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
-where_stated = "crates/algebra_analysis/src/moreno.rs::v_triple_basis, verify_theorem_2_13; tests::test_v_triple_basis_order_a3, test_verify_theorem_2_13_e1_e7_e2"
+where_stated = "crates/moreno_1997/src/lib.rs::v_triple_basis, verify_theorem_2_13; proofs/theories/C1547_MorSpecialTripleOct.v::moreno_special_triple_relation, moreno_v_mul_table; tests::test_v_triple_basis_order_a3, test_verify_theorem_2_13_e1_e7_e2"
 
 [[claim]]
 id = "C-155"
@@ -10513,4 +10515,3 @@ statement = "The 64D Chingon algebra breaks alternativity, inducing a non-conser
 status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
-
