@@ -1775,7 +1775,7 @@ pre-Moreno dependency chain and its missing-source audit now live in
 | 1914 | Wedderburn, primitive algebra | Rocq paper surface | abstract n=2 cyclic, section-1 matric, split-root projector, coefficient spectral, matrix-unit, total-matric, abstract cyclic/matric, and higher-n-shaped section-1 cyclic-presentation and associative-presentation surfaces plus the generic n=2 specialization bridge and explicit Dickson 1921 handoff theorems, primitive and section-2 criterion surfaces, nonrepresentation/singular-witness criteria, and a surfaced generalized-quaternion division criterion under anisotropy landed |
 | 1919 | Dickson, Cayley-Dickson process | paired Rust + Rocq | formalized |
 | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
-| 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | Section 1 anchors plus abstract Theorem 2 extension map and Theorem 3 block-restriction bridge landed |
+| 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | Section 1 anchors plus abstract Theorem 2 extension map, Theorem 3 block-restriction and coordinate surfaces, and an abstract Theorem 4 identification surface landed |
 | 1967 | Brown, generalized CD algebras | paired Rust + Rocq | formalized |
 | 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | formalized |
 | 1997 | Moreno, zero divisors over the reals | paired Rust + Rocq | extracted |
@@ -1925,7 +1925,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
 | 1945 | Schafer | `crates/schafer_1945/` + `proofs/theories/SchaferDivAlg16.v` | paired lane is in place |
 | 1951 | Freudenthal | support material only | exact original remains missing |
-| 1954 | Schafer | `proofs/theories/Schafer1954.v` | Rocq paper index, Section 1 anchors, an abstract Theorem 2 derivation-extension map, the Theorem 3 block-restriction bridge through equations (29)-(35), and the first type-G support surface landed; the full Theorem 3 coordinate uniqueness proof and Theorem 4's D(M_t) = D(C) equality lane are still open |
+| 1954 | Schafer | `proofs/theories/Schafer1954.v` | Rocq paper index, Section 1 anchors, an abstract Theorem 2 derivation-extension map, the Theorem 3 block-restriction bridge through equations (29)-(35), a coordinate normalization/uniqueness surface for equations (36)-(52), an abstract Theorem 4 identification surface for D(M_t) = D(C), and the first type-G support surface landed; the remaining gap is the concrete paper-specific coordinate discharge into the final equality/type-G theorem |
 | 1958 | Jacobson | previews and support on disk | exact full text remains institution-locked |
 | 1965 | Cullen | reconstructed PDF + OCR cached off-repo | source gap resolved; paper lane not yet started |
 | 1967 | Brown | `crates/brown_1967/` + `proofs/theories/BrownGeneralizedCD.v` | extend dim-32/dim-64 theorem surfacing |
@@ -1945,9 +1945,11 @@ off-repo chronology matrix and roadmap as reference surfaces:
   abstract section-7 exclusion/classification, internal-vs-Hurwitz boundary,
   and presentation-to-obstruction surfaces,
   Schafer (1954) now has its abstract Theorem 2 extension map, its Theorem 3
-  block-restriction bridge through equations (29)-(35), and its first type-G
-  support surface, but still needs the full Theorem 3 coordinate uniqueness
-  proof and the derivation-algebra / type-G equality lane,
+  block-restriction bridge through equations (29)-(35), a coordinate
+  normalization/uniqueness surface for equations (36)-(52), an abstract
+  Theorem 4 identification surface for D(M_t) = D(C), and its first type-G
+  support surface, but still needs the concrete paper-specific coordinate
+  discharge into the final derivation-algebra / type-G equality lane,
   and Brown (1972) still needs Chapters III-VI plus a Rocq Appendix C bridge.
 - Earlier reference foundation is now explicitly tracked but not yet lifted
   into dedicated Rocq paper lanes: Euler (1770), Degen (1818), and the
@@ -1971,10 +1973,11 @@ off-repo chronology matrix and roadmap as reference surfaces:
 4. Record Cullen (1965) as source-available rather than blocked, then decide
    where its quaternionic-analysis lane belongs relative to the algebra-first
    pre-Moreno chain.
-5. Extend Schafer (1954) from the landed abstract Theorem 2 extension map and
-   Theorem 3 block-restriction bridge to the full Theorem 3
-   restriction/uniqueness lane and then the Theorem 4 derivation-algebra /
-   type-G theorem lane.
+5. Extend Schafer (1954) from the landed abstract Theorem 2 extension map,
+   Theorem 3 block-restriction bridge, coordinate normalization surface, and
+   abstract Theorem 4 identification surface to the concrete paper-specific
+   coordinate discharge and the final derivation-algebra / type-G theorem
+   lane.
 6. Extend Brown (1972) beyond the current Chapter VII map.
 7. Continue Moreno only after those pre-Moreno surfaces stay readable and
    tracked in-repo.
