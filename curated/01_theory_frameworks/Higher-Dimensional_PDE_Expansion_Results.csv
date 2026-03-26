@@ -1,2 +1,3 @@
-Dimension,Grid Points per Dimension,Numeric Precision,Laplacian Norm,Memory Usage (MB)
-4,20,float64,978.1799144961179,1.220703125
+version https://git-lfs.github.com/spec/v1
+oid sha256:2dd029442fe42b35c315a558c94b0a50ab111ca79f546a7ed287ff077fa78b73
+size 130

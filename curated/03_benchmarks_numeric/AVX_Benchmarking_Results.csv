@@ -1,4 +1,3 @@
-Method,Execution Time (s)
-NumPy (No AVX),0.1017176529999233
-Numba JIT,0.09216025000023365
-Numba AVX2 (Fastmath),0.9836699480001698
+version https://git-lfs.github.com/spec/v1
+oid sha256:2e9a85856179f0f629a118db63fadb6dbd4f540690b11fe4fd30db61d13e6767
+size 131

@@ -1,2 +1,3 @@
-window_name,mission,product,year,doy,hour,r_au,lat_deg,lon_deg,density_cm3,speed_kms,temperature_k,bx,by,bz,b_mag,crs_flux,spectral_mean,spectral_peak,map_flux_mean,map_flux_std,event_score,event_mask,event_segment_id
-boundary2009,IBEX,ENA sky-map summary,2009,1,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,252073.69702562265,164166.92705648008,,,
+version https://git-lfs.github.com/spec/v1
+oid sha256:f596b9cecf251f7d9e195d92d91781b7f793a4de30f86ead577fb4f8a63f1971
+size 358

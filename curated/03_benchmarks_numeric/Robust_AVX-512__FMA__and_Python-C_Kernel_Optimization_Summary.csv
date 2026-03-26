@@ -1,4 +1,3 @@
-Optimization Area,Details
-AVX-512 & FMA Numeric Benchmark,AVX-512 FMA execution complete.
-Available AVX-512 Instruction Subsets,"-mavx512bw, -mavx512cd, -mavx512dq, -mavx512f, -mavx512vl"
-Python-C Kernel Development Capability,"{'Cython': 'Available', 'Python C-API (ctypes)': 'Available'}"
+version https://git-lfs.github.com/spec/v1
+oid sha256:036e708ac99bdb7a7d708fb5eb6d15148fc54ab1ea9817797b92fe7744eadf23
+size 291

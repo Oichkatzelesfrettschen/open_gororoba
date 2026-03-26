@@ -1,7 +1,3 @@
-Input 1,Input 2,Triality Output
-v1,s1,s2
-v2,s2,s3
-v3,s3,s1
-s1,v1,v2
-s2,v2,v3
-s3,v3,v1
+version https://git-lfs.github.com/spec/v1
+oid sha256:7f1d23b2e2bb3c886618c97491ab885b12e3d298fdef6f98a824ccb8d85aa050
+size 86

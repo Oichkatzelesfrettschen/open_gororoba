@@ -1,10 +1,3 @@
-PDE Model,Dominant Numeric Precision,Average Execution Time per Step (s),Final Max Absolute Value,Tensor Rank (Decomposition),Decomposition Norm Difference,Hybrid Tensor Contraction Result,Quantum-Compatible Tensor Shape,Numerical Stability Confirmation
-Quantum Foam PDE,float128 (adaptive RL),0.000338,0.0099,10.0,0.0227,,,
-Domain-Wall Electron Transport PDE,float128 (adaptive RL),0.000266,0.000989,10.0,0.0237,,,
-Dielectric Polarization Dynamics PDE,float128 (adaptive RL),0.00016,0.000994,10.0,0.0235,,,
-Field-Induced Electron Density Modulation PDE,float128 (adaptive RL),0.000176,0.000995,10.0,0.02324,,,
-Quantum Vacuum PDE,float128 (adaptive RL),0.00959,0.0009909,10.0,0.0229,,,
-4D High-Dimensional PDE,float128 (adaptive RL),0.0016,0.0009942,10.0,0.0226,,,
-Exotic Quantum Nonlocal Interaction PDE,float128 (adaptive RL),0.0537,0.0009947,10.0,0.02392,,,
-Exotic Quantum Nonlocal Interaction PDE (Hybrid Solver),float128 (adaptive RL),,,,,0.00271578,"(100, 100, 1)",Explicitly Confirmed Stable
-Quantum Topological Defect PDE,float128 (adaptive RL),0.00693,0.00099504,10.0,0.02392,0.00272402,"(100, 100, 1)",Explicitly Confirmed Stable
+version https://git-lfs.github.com/spec/v1
+oid sha256:8e7e06996b6a651890689a9482a2b3d7b4c24a437bee14dd4b970ef109bcc172
+size 1140

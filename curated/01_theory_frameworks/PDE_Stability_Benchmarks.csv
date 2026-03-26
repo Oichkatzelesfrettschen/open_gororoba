@@ -1,6 +1,3 @@
-Data Type,Mean Time (ms),Stable
-float16,1.0335680000252978,True
-float32,0.3858099999926405,True
-float64,0.3433259999875797,True
-complex64,28.683250666669363,True
-complex128,0.7118079999865282,True
+version https://git-lfs.github.com/spec/v1
+oid sha256:893a069e06b474d378bedc633681489c575c27a01b9d6af09c49515391f04745
+size 197

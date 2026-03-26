@@ -1,3 +1,3 @@
-Solution Method,Solution Explicitly,Precision/Error Explicitly
-Numeric (NumPy),[1. 1.],[-2.22044605e-12  2.22044605e-12]
-Symbolic (SymPy),[1. 1.],[0 0]
+version https://git-lfs.github.com/spec/v1
+oid sha256:83cdb071b85bb3aedd79eb3418d7c55b2ecfa40bd7ae1415d77ca6c373325cfe
+size 152

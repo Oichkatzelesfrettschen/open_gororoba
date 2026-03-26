@@ -1,5 +1,3 @@
-Structure,Description
-Simple Roots,"['\alpha_1, \alpha_2, \alpha_3, \alpha_4, \alpha_5, \alpha_6']"
-Dynkin Diagram,6 nodes with one extra branching at \alpha_2
-Dimension,78
-Fundamental Representation,26D (Jordan algebra representation)
+version https://git-lfs.github.com/spec/v1
+oid sha256:b5fb26f243521d38d6913e098b48c9d5c2f385a83d2569b9183d121539147f43
+size 236

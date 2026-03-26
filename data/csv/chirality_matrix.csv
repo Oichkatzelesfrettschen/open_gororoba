@@ -1,5 +1,3 @@
-config,mode,helicity,enstrophy,energy,associator_norm,stable
-A,Std CD + Std vort,3.2864682821e-16,5.3546107431e-3,1.5098769094e3,4.8410862254e-2,true
-B,Std CD + Flip vort,-3.2789529320e-16,5.3546107431e-3,1.5098769094e3,4.8410862254e-2,true
-C,Conj CD + Std vort,-5.4995695784e-15,5.3550552344e-3,1.5099858260e3,5.5742223762e-2,true
-D,Conj CD + Flip vort,-6.1554331812e-15,5.3550552344e-3,1.5099858261e3,5.5742223764e-2,true
+version https://git-lfs.github.com/spec/v1
+oid sha256:fb051f06cfe57763090b612c024a4094a2bce682c6c7f4d546f9f872e08ee5ee
+size 424

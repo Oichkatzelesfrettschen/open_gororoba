@@ -1,6 +1,3 @@
-Combined Operations,Computed Result Sample,Mean Time (ms),Status
-exp(log1p(x)),6.001,0.21017099999198763,PASS
-sqrt(square(x)),5.001,0.09143100000130744,PASS
-reciprocal(absolute(x)),0.1999600079984003,0.01926100000559927,PASS
-sin(cos(x)),0.2807936883893623,0.0403549999958841,PASS
-tan(sqrt(x)),-1.2739698006096398,0.048423000009734096,PASS
+version https://git-lfs.github.com/spec/v1
+oid sha256:d77393a74652cf21a882e3215e1cfa3ee255b73a9b3286f9f33ab81eebdd7960
+size 339

@@ -1,4 +1,3 @@
-id,operator,symbolic_expression
-1,Laplacian,"Derivative(f(x, y), (x, 2)) + Derivative(f(x, y), (y, 2))"
-2,Gradient,"Matrix([[Derivative(f(x, y), x)], [Derivative(f(x, y), y)]])"
-3,Divergence,"Derivative(u(x, y), x) + Derivative(v(x, y), y)"
+version https://git-lfs.github.com/spec/v1
+oid sha256:eeb77fad30bd25014a612a6fdc7ccece4f49ac85b08ff3cf806bfe3ab28ef740
+size 241

@@ -1,6 +1,3 @@
-Growth Type,Computational Feasibility,Expected Computational Complexity
-Fractal Tensor Growth,Extreme,Exponential
-Braided Modular Categories,Extreme,Tensorial
-Homotopy Stacking Structures,Confirmed,A-Infinity Homotopy Complexity
-Exceptional Stacks & Monoidal Functors,Beyond Known Models,Unknown
-Non-Commutative Higher-Order Cohomology,Unknown,Unknown
+version https://git-lfs.github.com/spec/v1
+oid sha256:280d3d45189936db0fdd6972d2e4875b0094df7e0a322f3abd196c9b09eeccc7
+size 352

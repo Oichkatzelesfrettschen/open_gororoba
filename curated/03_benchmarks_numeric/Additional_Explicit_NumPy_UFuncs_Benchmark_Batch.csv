@@ -1,6 +1,3 @@
-Combined Operations,Computed Result Sample,Mean Time (ms),Status
-cosh(tanh(x)),1.5429841860362903,0.7707540000296831,PASS
-log1p(square(x)),3.277427721063275,0.20663300000478557,PASS
-sqrt(abs(tan(x))),1.6864404346030568,0.21263299998963703,PASS
-reciprocal(sin(x)),-1.06001309075375,0.06882999997515071,PASS
-exp(sin(log(x))),2.71506224366827,0.0844749999941996,PASS
+version https://git-lfs.github.com/spec/v1
+oid sha256:9c4d160941f16c284f3f1817121bd4af2bfdd187acefc5cf0f01106034ec0d66
+size 364

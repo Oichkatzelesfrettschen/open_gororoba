@@ -1,5 +1,3 @@
-Structure,Description
-Dimension,248
-Fundamental Representation,Adjoint (248D)
-Root Structure,240 roots in 8D
-Dynkin Diagram,"8 nodes, extended from E_7"
+version https://git-lfs.github.com/spec/v1
+oid sha256:9abefc5176d0b3c28065acc3672967c38907fd1ce77cffec838f8df5ba0adadd
+size 153

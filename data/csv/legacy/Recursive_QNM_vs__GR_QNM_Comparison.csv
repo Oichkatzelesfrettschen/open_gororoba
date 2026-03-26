@@ -1,4 +1,3 @@
-GR QNM (Hz),Detected Recursive QNM (Hz),\Deltaf (Hz),GR Damping Rate,Detected Damping Rate,\Delta\tau (Damping Shift)
-132.0,131.8,-0.19999999999998863,4.1,-58.92642072782401,-63.02642072782401
-242.0,242.0,0.0,8.2,-58.92642072782401,-67.12642072782401
-356.0,350.3,-5.699999999999989,12.5,-58.92642072782401,-71.42642072782401
+version https://git-lfs.github.com/spec/v1
+oid sha256:5c6cc1fa3cd6b4ed7eef5409afd94f71946148f8a909449ac45b2741579f01c1
+size 325

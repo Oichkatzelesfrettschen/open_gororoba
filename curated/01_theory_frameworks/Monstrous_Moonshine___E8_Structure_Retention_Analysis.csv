@@ -1,7 +1,3 @@
-Dimension,Retains Jordan Algebra?,Retains Octonion Structure?,Retains E8 Structure?,Monstrous Moonshine Linked?
-3,True,False,False,False
-8,False,True,False,False
-27,True,False,False,True
-56,True,False,True,True
-128,False,False,True,True
-248,False,False,True,True
+version https://git-lfs.github.com/spec/v1
+oid sha256:50046d7f6d7907fac5d5ff8f879425a108d019923101b539a9b22d568a09106d
+size 263

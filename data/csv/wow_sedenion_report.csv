@@ -1,2 +1,3 @@
-ghost_detected,ghost_freq,ghost_snr,ghost_fwhm,top_peak_freq,lattice_frac,shallow_frac,deep_frac,ultrametric_frac,ultrametric_p_value
-true,0.213867,69.4598,0.000311,0.213867,0.0000,1.0000,0.0000,0.131000,0.564356
+version https://git-lfs.github.com/spec/v1
+oid sha256:b1b9c41b44a0cbb3b81eae79be56ec33061947d5385a4a890230ac9e60e860d9
+size 213

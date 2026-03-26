@@ -1,4 +1,3 @@
-Bracket,Computed Result,Expected
-"[i, j]","[0, 1, 0, 1]",2k
-"[j, k]","[0, 1, 1, 0]",2i
-"[k, i]","[0, 0, 1, 1]",2j
+version https://git-lfs.github.com/spec/v1
+oid sha256:d30d43508c938032e5a3ab7e027d6c5ddea0c46e4c4aa4f45555b1fcf71872c6
+size 114

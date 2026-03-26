@@ -1,2 +1,3 @@
-PDE Model,Dominant Numeric Precision,Average Execution Time per Step (s),Final Max Absolute Value,Tensor Rank (Decomposition),Decomposition Norm Difference
-Photon Ring Recursive Kernel PDE,float128 (adaptive RL),0.007309484481811524,0.0009918938815100986,10,
+version https://git-lfs.github.com/spec/v1
+oid sha256:1c8d5679efa33ef1ed1d6a72ac21b2143ed9fb8d0b55c7d727b64380c95003da
+size 259

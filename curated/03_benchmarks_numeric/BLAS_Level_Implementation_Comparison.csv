@@ -1,3 +1,3 @@
-Method,Execution Time (s)
-np.dot(),0.005572009999923466
-scipy.linalg.blas.ddot(),0.16561067400016327
+version https://git-lfs.github.com/spec/v1
+oid sha256:63921bbb03bd1651bbb6be65d13edfd5521623a030dd6029f0e0f081af107e45
+size 101

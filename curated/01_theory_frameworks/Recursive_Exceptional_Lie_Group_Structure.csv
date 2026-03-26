@@ -1,8 +1,3 @@
-Lie Group Embedding,Structural Property
-Spin(8) -> Spin(7),Fixes a vector in V8
-Spin(7) -> G2,Fixes a spinor in S+8
-G2 -> SO(7),Automorphism group of octonions
-SO(7) -> F4,Isometry group of OP2
-F4 -> E6,Symmetry of 27D Jordan algebra
-E6 -> E7,Symmetry of 56D space
-E7 -> E8,Largest exceptional Lie group
+version https://git-lfs.github.com/spec/v1
+oid sha256:17f564c755b4f895d4a1568135a16990d178e284b5fef6e823274a244c5ce7de
+size 304

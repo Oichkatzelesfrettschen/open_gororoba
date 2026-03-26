@@ -1,6 +1,3 @@
-Computation,Execution Time (s)
-Adjusted Large FFT,0.124572
-Dense Eigenvalue Problem,4.583449
-Sparse Eigenvalue Problem,2.509359
-Polynomial Root Finding,0.007398
-High-dimensional Integration,0.001333
+version https://git-lfs.github.com/spec/v1
+oid sha256:baa553d778e6a261acc0ab461faed4f51c968d6ac2d9ef5406b2f9fbe3b0f881
+size 199

@@ -1,5 +1,3 @@
-Configuration,Theoretical Bandwidth (GB/s),Empirical Bandwidth (GB/s)
-DDR4-2400 Mixed,19.2,15.8
-DDR4-2400 Uniform,21.3,20.0
-DDR4-3600 Tight Timings,28.8,27.5
-DDR5,36.0,33.2
+version https://git-lfs.github.com/spec/v1
+oid sha256:bd96debcd5ce4295ef73f50851bc368283d89affcbcc8fecb05db7bb91296e48
+size 173

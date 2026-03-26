@@ -1,4 +1,3 @@
-Bracket,Result
-"[i, j]",2*k
-"[j, k]",2*i
-"[k, i]",2*j
+version https://git-lfs.github.com/spec/v1
+oid sha256:dc1e4d9570c33fe884e7298cb7d4dd0b49612ecc26b5e86d92385da281529be1
+size 54

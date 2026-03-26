@@ -2349,6 +2349,13 @@ claims we should trust and which search lanes are worth burning time on.
   support texts can keep the Rust/Rocq lane moving, but they must not silently
   replace the exact source in the chronology. This matters for Freudenthal
   1951, Jacobson 1958, and Cullen 1965.
+- Canonicalize the local "paper inbox" aggressively once provenance is known.
+  In the 2026-03-26 cleanup pass, loose root downloads were either filed into
+  the taxonomy, kept as distinct article-only backups when they added real
+  value (Dickson 1921, Zorn 1935), or moved to trash as redundant mirrors.
+  The same pass also replaced a broken Eilenberg-Niven (1944) local stub with
+  a valid AMS direct PDF so the cache would not silently carry a bad canonical
+  file.
 - Test suspicious repository bitstreams like data, not like titles. The Utrecht
   Freudenthal candidate looked promising by filename but resolved to a tiny
   DSpace HTML shell under `curl`, `wget`, and `fetch`, not a PDF.
@@ -2631,6 +2638,12 @@ claims we should trust and which search lanes are worth burning time on.
   inspection. By contrast, `isbnlib` was not dependable under this Python
   3.14 venv because it still expects `pkg_resources`, so it should not be
   treated as a core retrieval dependency here.
+- The `abstract_algebra` documentation is useful in a different lane: as a
+  reference-only finite-algebra sandbox for future experimentation with
+  multiple Cayley-Dickson multiplication conventions. Its API explicitly
+  distinguishes Schafer 1954, Schafer 1966, and Baez-style variants, which is
+  relevant to finite Cayley-table prototyping, but it is not archival evidence
+  and not a dependency for the main retrieval/formalization pipeline.
 - `perl-furl` is a good complement to that stack once `perl-mozilla-ca` is
   installed. It is light enough for quick endpoint classification and helped
   confirm three different response classes cleanly: Google Books chapter-image

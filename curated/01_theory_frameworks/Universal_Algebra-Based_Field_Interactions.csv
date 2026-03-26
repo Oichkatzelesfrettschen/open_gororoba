@@ -1,5 +1,3 @@
-Field Component,Mathematical Expression
-Scalar Kinetic Term,0
-Spinor Kinetic Term,0
-Gauge Kinetic Term,F_\mu\nu**2/4
-Higher-Order Interaction,A_\mu*\alpha*\psi*\phi + F_\mu\nu*\beta*\psi*\phi
+version https://git-lfs.github.com/spec/v1
+oid sha256:ad5cb2c020a616b45bb16c9aa15e6edb61537edfa2139a4451ad6c5ca9d6383c
+size 192

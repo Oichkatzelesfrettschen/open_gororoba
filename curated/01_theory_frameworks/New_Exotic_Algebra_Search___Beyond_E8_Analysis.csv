@@ -1,9 +1,3 @@
-Dimension,"Jordan, Clifford, or Lie Retained?",E8 Embedded?,New Exotic Structure Possible?,Beyond Monstrous Moonshine?
-3,True,False,False,False
-8,True,False,False,False
-27,True,False,False,False
-56,True,True,False,False
-128,True,True,True,False
-248,True,True,True,True
-512,True,True,True,True
-1024,True,True,True,True
+version https://git-lfs.github.com/spec/v1
+oid sha256:2688613ab5f2cc7b20fc08d5d671cf8ce91bbc611cba0ff675e6e275014a54c5
+size 318

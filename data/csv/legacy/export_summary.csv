@@ -1,5 +1,3 @@
-Description,File Path
-Final Refined Solution,/mnt/data/final_2d_foam_solution.csv
-FFT Spectrum of Refined Solution,/mnt/data/fft_2d_spectrum.csv
-Final Combined Solution,/mnt/data/final_combined_solution.csv
-Final Superforce Solution,/mnt/data/final_superforce_solution.csv
+version https://git-lfs.github.com/spec/v1
+oid sha256:edb8d2267fe7d75ede21934a58b5eba09d44323fb5a18477c1b49eddf71e1205
+size 273

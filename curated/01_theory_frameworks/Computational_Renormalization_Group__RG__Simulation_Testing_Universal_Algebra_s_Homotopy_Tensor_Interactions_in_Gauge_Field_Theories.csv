@@ -1,6 +1,3 @@
-Renormalization Group Simulation Model,Computational Implementation
-Homotopy Tensor Renormalization in Quantum Gauge Fields,Encodes gauge field renormalization using homotopy tensor renormalization methods
-Exceptional Lie Algebra Scaling Laws in Renormalization Flow,Implements exceptional Lie algebra renormalization scaling in non-perturbative QFT
-Modular Tensor Renormalization for Non-Perturbative Gauge Theories,Models modular tensor quantum field interactions in renormalization flow
-Braided Homotopy Renormalization Flow in Quantum Gravity,Simulates braided homotopy renormalization group dynamics in gravity models
-Higher-Category Tensor Evolution in Quantum Field Renormalization,Numerically validates higher-category tensor network renormalization structures
+version https://git-lfs.github.com/spec/v1
+oid sha256:ba66f2bdb728fe19d072a4453c86a5920ebdb3d41028cb33e8742df1876ec82a
+size 769

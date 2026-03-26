@@ -1,6 +1,3 @@
-Invariant Type,Mathematical Expression
-Higher-Homotopy Gauge Field Invariants,\pi_n(G) where G is an exceptional Lie gauge structure
-Modular Tensor Chern-Simons Invariants,Tr(F \star F) - Modular Tensor Field Curvature
-Exceptional Lie Group Homotopy Classes,"H^n(E6, E7, E8) Homotopy Classes"
-Braided Monoidal Functorial Topology,exists f : H_n(U) -> \pi_n(U) (Homotopy-Cohomology Duality)
-Gauge-Gravity Cohomology Correspondence,Quantum Deformed Gauge-Gravity Cohomology Mapping
+version https://git-lfs.github.com/spec/v1
+oid sha256:db1d165cceb27059a1ff6802a63aa2fcd13a9276d1d50bb9c6f3a0cdf939f3be
+size 480

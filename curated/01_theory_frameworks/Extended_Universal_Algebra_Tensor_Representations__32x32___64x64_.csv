@@ -1,3 +1,3 @@
-Tensor Representation,Rule
-32x32 Non-Commutative Structure,U32*U32.T - U32.T*U32
-64x64 Non-Commutative Structure,U64*U64.T - U64.T*U64
+version https://git-lfs.github.com/spec/v1
+oid sha256:c40e947fcf8d925ffc999c89b88d7ac55cc0099267cc602c5549989529a91e69
+size 135

@@ -1,6 +1,3 @@
-Method,Applicable to Universal Algebra?,Expected Complexity
-Higher Homotopy Groups (\pi_n),True,High
-Spectral Sequences for Decompositions,True,Very High
-Derived Categories and Homotopy Theory,True,Extreme
-Higher Lie Algebroids & Non-Commutative Geometry,True,Extreme
-Exceptional Algebraic Stacks & Sheaf Cohomology,True,Beyond Known Methods
+version https://git-lfs.github.com/spec/v1
+oid sha256:e8355182a36efcb50652d250404dcc7cd645afb81e260bcc32ea6108b9384482
+size 342

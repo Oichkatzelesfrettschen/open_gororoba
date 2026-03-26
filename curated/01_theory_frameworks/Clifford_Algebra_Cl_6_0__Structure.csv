@@ -1,11 +1,3 @@
-Clifford Product,Result
-e1^2,1
-e2^2,1
-e3^2,1
-e4^2,1
-e5^2,1
-e6^2,1
-e1 * e2,e3
-e2 * e3,e4
-e3 * e4,e5
-e4 * e5,e6
+version https://git-lfs.github.com/spec/v1
+oid sha256:bc32265cc32f9f482897ba42df85da3c6061c5195a642c85b64b58515725e0d0
+size 110

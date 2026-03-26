@@ -1,6 +1,3 @@
-Numerical Quantum Computing Model,Computational Implementation
-Homotopy Tensor-Based Quantum Circuit Simulations,Simulates homotopy tensor-encoded quantum gates in topological fault-tolerant computation
-Modular Tensor Topological Qubit Encodings,Implements modular tensor category qubit transformations for quantum information processing
-Braided Fault-Tolerant Quantum Logic Networks,Models fault-tolerant quantum circuits using braided quantum tensor structures
-Exceptional Lie Algebra Quantum Gate Simulations,Encodes exceptional Lie algebra symmetries into quantum computing architectures
-Higher-Category Tensor-Based Quantum Computation,Maps quantum information theory into higher-category quantum network formulations
+version https://git-lfs.github.com/spec/v1
+oid sha256:a292e586ce9a3c39767c11d112f9282bacb16c249db9a2dc012ce63b1141e76c
+size 723

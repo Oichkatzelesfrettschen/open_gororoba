@@ -1,2 +1,3 @@
-PDE Kernel Explicitly,Grid Size Explicitly,Average Execution Time (seconds)
-Simplified 5D Heat Equation,"(32, 32, 32, 16, 8)",0.11114655666642648
+version https://git-lfs.github.com/spec/v1
+oid sha256:3401fed3463ef23013b474db718d7a70348abddb766709a4d6d37ad260450a4d
+size 146

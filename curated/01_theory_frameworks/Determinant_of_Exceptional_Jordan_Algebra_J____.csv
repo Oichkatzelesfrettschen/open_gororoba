@@ -1,2 +1,3 @@
-Determinant of J_3(O)
-O_1**3 - O_1*O_2*conjugate(O_2) - 2*O_1*O_3*conjugate(O_3) + O_2*O_3*conjugate(O_3) + O_3*conjugate(O_2)*conjugate(O_3)
+version https://git-lfs.github.com/spec/v1
+oid sha256:ba22d4acdd863427939a8654edd336c1fb720715087e5efb787077a01e01cd72
+size 142

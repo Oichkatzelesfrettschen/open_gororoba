@@ -1,2 +1,3 @@
-Operation,Data Size (elements),Average Execution Time (seconds)
-FFT Benchmark explicitly,1048576,0.12674291160001303
+version https://git-lfs.github.com/spec/v1
+oid sha256:b12eab1bd42cc289e98b0588120101580b39a5f6f68cee627453bfd9115e4bc8
+size 117

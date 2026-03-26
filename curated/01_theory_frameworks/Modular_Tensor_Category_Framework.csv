@@ -1,6 +1,3 @@
-Concept,Role in Universal Algebra
-Braided Tensor Structures,Defines non-commutative algebraic operations
-Monoidal Functorial Mappings,Provides mappings between algebraic growth layers
-Modular Invariant Transformations,Ensures modular function compatibility
-Quantum Group and Affine Extensions,Links to Kac-Moody and Quantum Group structures
-Exceptional Category Theoretic Constructions,Forms a categorical backbone for higher homotopy theory
+version https://git-lfs.github.com/spec/v1
+oid sha256:db2dc9c058d8b2689797561493addbefa710d8497919f842b4ad198a96d81319
+size 442

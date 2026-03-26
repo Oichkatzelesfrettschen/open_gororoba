@@ -1,5 +1,3 @@
-Structure,Description
-Dimension,78
-Fundamental Representation,26D (Jordan algebra representation)
-Root Structure,72 roots in 6D
-Dynkin Diagram,"6 nodes, extra branching at \alpha_2"
+version https://git-lfs.github.com/spec/v1
+oid sha256:0ad626288d263a027d51db158a4075b3e6d38fbac1197d4d89039c845db88a28
+size 182

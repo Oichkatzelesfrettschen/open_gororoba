@@ -1,2 +1,3 @@
-,Data Type,Operation,Matrix Size,Mean Time (ms),Residual Norm,Status
-0,complex128,np.linalg.solve,100x100,2865.8574676666717,3.983916248077412e-14,
+version https://git-lfs.github.com/spec/v1
+oid sha256:d7538adf9d0699de9bc1660a507c9572edc185c6562d5bbdbe26385206f3df25
+size 148

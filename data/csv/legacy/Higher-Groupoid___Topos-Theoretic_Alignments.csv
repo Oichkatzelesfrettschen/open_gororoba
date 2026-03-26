@@ -1,6 +1,3 @@
-Structure,Necessary for Universal Algebra?,Expected Mathematical Complexity
-infty-Groupoid & Derived Homotopy Categories,True,Extreme
-Exceptional Stacks & Higher Fiber Bundles,True,Beyond Known Models
-Topos Theory & Higher Sheaf Cohomology,True,Confirmed
-Non-Commutative Higher Spaces,True,Confirmed
-Braided & Modular Tensor Categories,True,Confirmed
+version https://git-lfs.github.com/spec/v1
+oid sha256:33c933205266f1139dd1d70666b8bccc075068219b3bd07ff3256ac489d3ce90
+size 351

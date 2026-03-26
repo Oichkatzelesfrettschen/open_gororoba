@@ -1,6 +1,3 @@
-Dimension,E-Series Expansion (E12+)?,A-Infinity Stability?,New Exceptional Algebra Possible?,Distinct from Existing Algebras?,Potential Infinite-Dimensional Generalization?
-8192,False,Stable,Emerging,Likely,Confirmed
-16384,True,Unknown,Confirmed,Confirmed,Confirmed
-32768,True,Unknown,Confirmed,Confirmed,Strong
-65536,True,Unknown,Beyond Known Structures,Needs Verification,Beyond Classification
-131072,True,Unknown,Unknown,Unknown,Unknown
+version https://git-lfs.github.com/spec/v1
+oid sha256:e6307aacdf6b53def0000f2de88aedf0fd6a90c428062824f788dcbbcc3897bc
+size 440

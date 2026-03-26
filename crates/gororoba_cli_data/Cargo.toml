@@ -438,7 +438,25 @@ path = "src/bin/nanograv_vacuum_symmetry.rs"
 name = "generate-synthetic-ghost"
 path = "src/bin/generate-synthetic-ghost.rs"
 
+[[bin]]
+name = "inspect-feature-cube"
+path = "src/bin/inspect_feature_cube.rs"
+
+[[bin]]
+name = "cpd-report"
+path = "src/bin/cpd_report.rs"
+
+[[bin]]
+name = "extract-nk-arrays"
+path = "src/bin/extract_nk_arrays.rs"
+
+[[bin]]
+name = "audit-cd-cache"
+path = "src/bin/audit_cd_cache.rs"
+
 [dependencies]
+polars = { workspace = true }
+quick-xml = { workspace = true }
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }
 cd_kernel = { workspace = true }

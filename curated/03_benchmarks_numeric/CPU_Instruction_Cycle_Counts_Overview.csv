@@ -1,6 +1,3 @@
-Instruction,8086 (cycles),8088 (cycles),80186 (cycles),80188 (cycles),80286 (cycles),80386 (cycles),80486 (cycles)
-AAA,8,8,6,6,3,4,3
-AAM,83,83,60,60,14,19,14
-AAS,8,8,6,6,3,4,3
-DAA,60,60,40,40,14,19,14
-DAS,16,16,12,12,3,4,3
+version https://git-lfs.github.com/spec/v1
+oid sha256:197363f1f84c812d62ade1bf696b591121d2de9d1bfd1fa569fc07ffe2b088ac
+size 223

@@ -1,6 +1,3 @@
-Dimension,Affine Extensions Retained?,Infinite-Dimensional Structure Emerging?,E-Series Expansion (E12+)?,A-Infinity Stability?,Potential New Algebraic Discoveries?
-4096,True,True,False,Stable,Confirmed
-8192,True,True,False,Stable,Beyond Known Models
-16384,True,True,True,Unknown,Unknown
-32768,True,True,True,Unknown,Unknown
-65536,True,True,True,Unknown,Unknown
+version https://git-lfs.github.com/spec/v1
+oid sha256:b833bbf7d60474ed8ed086a45c52cd629363fd9c360a610204e4cef26455a295
+size 362

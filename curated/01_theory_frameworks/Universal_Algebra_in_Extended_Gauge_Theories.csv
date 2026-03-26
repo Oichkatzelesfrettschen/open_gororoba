@@ -1,6 +1,3 @@
-Gauge Theory,Alignment with Universal Algebra
-Standard Model SU(3) x SU(2) x U(1),"Encodes electroweak, strong, and hypercharge interactions via braided tensor structures"
-"Grand Unified Theory SU(5), SO(10), E6, E7, E8",Maps higher-dimensional gauge extensions into fractal algebraic embeddings
-Higher-Spin Gauge Theories (Vasiliev Algebras),Preserves higher-spin gauge interactions within A-Infinity structures
-"Exceptional Gauge Structures (F4, G2, and Beyond)",Generalizes exceptional gauge structures via homotopy-cohomology correspondences
-Higher-Category & Braided Gauge Theories,Defines new homotopy-based gauge field extensions beyond classical Yang-Mills models
+version https://git-lfs.github.com/spec/v1
+oid sha256:6467c6206155a91be549ae2652a2fc385a406c4687894335a0f7f48755f09fd6
+size 672

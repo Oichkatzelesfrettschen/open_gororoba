@@ -1,6 +1,3 @@
-Invariant Type,Mathematical Expression
-Higher-Exceptional Homotopy Invariants,\pi_n(U) where U encodes exceptional algebra embeddings
-Non-Commutative Quantum Gravity Invariants,Tr(U_A \star U_B) - Quantum Braided Tensor Homotopy
-Higher-Spin Modular Tensor Topology,"SL(2, Z) Modular Invariant in Homotopy Tensor Algebra"
-Homotopy-Cohomology Correspondence,exists f : H_n(U) -> \pi_n(U) (Homotopy-Cohomology Duality)
-Loop Quantum Gravity Derived Cohomological Classes,Quantum Deformed LQG Spectrum as Derived Category of U
+version https://git-lfs.github.com/spec/v1
+oid sha256:f7c8fac00ed7d4a3d323d754f05a671fb45e2a248fbf1e769b787ae403a629fc
+size 522

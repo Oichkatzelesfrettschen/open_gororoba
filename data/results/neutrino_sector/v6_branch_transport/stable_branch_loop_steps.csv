@@ -1,6 +1,3 @@
-step,alpha_ch,alpha_nu,branch,wall_crossed,flip_g12,flip_g13,flip_g23,flip_u_solar,flip_u_atmo,align_g23,align_u_atmo
-0,3.00,1.30,u[0, 1, 2]_d[0, 2, 1],false,1,1,1,1,1,1.000000,1.000000
-1,3.60,1.30,u[0, 1, 2]_d[0, 2, 1],false,1,1,1,1,1,0.999992,0.999997
-2,3.60,1.40,u[0, 1, 2]_d[0, 2, 1],false,1,1,1,1,1,0.999065,0.992172
-3,3.00,1.40,u[0, 1, 2]_d[0, 2, 1],false,1,1,1,1,1,0.999994,0.999997
-4,3.00,1.30,u[0, 1, 2]_d[0, 2, 1],false,1,1,1,1,1,0.999067,0.992163
+version https://git-lfs.github.com/spec/v1
+oid sha256:e8c505855ea15d01f3317917e1572afee1d38078269d8fe02c46c5bcdff44594
+size 458

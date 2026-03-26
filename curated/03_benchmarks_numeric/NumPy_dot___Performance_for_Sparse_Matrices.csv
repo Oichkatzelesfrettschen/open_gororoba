@@ -1,5 +1,3 @@
-Matrix Size,Sparse NumPy dot() Time (s)
-128,0.0012879679998150095
-256,0.001268768999580061
-512,0.002649565999490733
-1024,0.01270385800035001
+version https://git-lfs.github.com/spec/v1
+oid sha256:b722c0e9ef0d28eb3307d966fcace78de40bbc31a8b720d50bd0ccacd2a4f2f7
+size 141

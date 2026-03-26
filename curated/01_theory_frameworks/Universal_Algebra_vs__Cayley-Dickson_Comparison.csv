@@ -1,6 +1,3 @@
-Property,Cayley-Dickson,Universal Algebra
-Growth Pattern,Exponential Doubling,Fractal Tensor Growth
-Higher Associativity,Strictly Defined,A-Infinity & Homotopy Invariant
-Modular Homotopy Structure,Absent,Confirmed
-Exceptional Embeddings,Limited to Octonions,Beyond Known Models
-Categorical Formulation,Linear Recursive Structure,Higher-Stacked Tensor Categories
+version https://git-lfs.github.com/spec/v1
+oid sha256:565441be74ae77c184f29069ad005c47cd076c3fd6125df1207329968db73dde
+size 362

@@ -1,3 +1,3 @@
-spacecraft,interval_start_utc,interval_end_utc,sample_time_utc,observed_anomalous_accel_m_s2,observed_sigma_m_s2,sampled_r_au,sampled_speed_km_s,sampled_density_cm3,sampled_bmag_nt,dynamic_pressure_npa,fractal_predicted_accel_m_s2_df27,provider_contract_satisfied,source_label,source_bib,benchmark_kind,notes
-Pioneer 10,1987-01-03T00:00:00Z,1998-07-22T00:00:00Z,1991-07-03T11:30:00+00:00,8.74e-10,1.33e-10,52.055,,,,,,false,Pioneer 10 annual merged PDS/PPI,BIB-0317,combined_reference,Uses the Anderson et al. 2002 combined benchmark acceleration as a batch-1 reference row for Pioneer 10 interval analysis; provider covers only partial benchmark interval: overlap 1987-01-03T00:00:00+00:00 to 1995-12-31T23:00:00+00:00
-Pioneer 11,1987-01-05T00:00:00Z,1990-10-01T00:00:00Z,1988-11-17T12:00:00+00:00,8.74e-10,1.33e-10,27.05,411.6,0.022,,0.006234063071167009,0.02721268580279126,true,Pioneer 11 annual merged PDS/PPI,BIB-0317,combined_reference,Uses the Anderson et al. 2002 combined benchmark acceleration as a batch-1 reference row for Pioneer 11 interval analysis; provider covers full benchmark interval
+version https://git-lfs.github.com/spec/v1
+oid sha256:b94f4118b2a72fece5dfd626ea7325f4dc7ffb3b89b4f83200bf1e337ed46411
+size 1106

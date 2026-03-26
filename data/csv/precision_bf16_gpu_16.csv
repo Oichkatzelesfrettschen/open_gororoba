@@ -1,4 +1,3 @@
-precision,step,ke,wall_ms_per_step,ke_rel_error_vs_ref
-bf16_gpu,0,0.000000000000e0,0.0000,1.000000e0
-bf16_gpu,50,0.000000000000e0,0.0017,1.000000e0
-bf16_gpu,100,0.000000000000e0,0.0017,1.000000e0
+version https://git-lfs.github.com/spec/v1
+oid sha256:54d117ff1812abe58b9d6a4b659061d1ef0079d5753231572eb2440f9e9e61f1
+size 196

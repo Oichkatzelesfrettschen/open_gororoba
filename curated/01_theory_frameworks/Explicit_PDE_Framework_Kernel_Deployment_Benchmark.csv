@@ -1,2 +1,3 @@
-Explicit PDE Kernel Operation,Simulation Size explicitly,Average Execution Time (seconds)
-2D Heat Equation Kernel explicitly,512 x 512,0.006564334599897847
+version https://git-lfs.github.com/spec/v1
+oid sha256:3b22d1f3daff6a680014b1f928dc9573f11443b0c25876990d9a2c0256ca2652
+size 156

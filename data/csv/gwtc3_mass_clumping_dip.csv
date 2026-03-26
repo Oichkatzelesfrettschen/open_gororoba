@@ -1,4 +1,3 @@
-column,n_events,dip_statistic,p_value,n_permutations,verdict
-mass_1_source,176,0.23363440,0.00009999,10000,MULTIMODAL
-mass_2_source,176,0.26489350,0.00009999,10000,MULTIMODAL
-chirp_mass_source,176,0.25267380,0.00009999,10000,MULTIMODAL
+version https://git-lfs.github.com/spec/v1
+oid sha256:11829c7d1c1ec042b61fdd6db858a0e1985ad546ea45169e78593dd3b1a47585
+size 236

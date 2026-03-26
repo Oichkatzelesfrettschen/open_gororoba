@@ -1,3 +1,3 @@
-Method,Execution Time (s)
-NumPy dot(),0.0051315999999133055
-Hand-Optimized AVX2,1.3386988100000963
+version https://git-lfs.github.com/spec/v1
+oid sha256:1dbfb7c1965e077ba211e1c383dd7241b40ff29782c2b1bfc6520f31fe7980c1
+size 99

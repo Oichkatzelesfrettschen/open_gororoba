@@ -1,8 +1,3 @@
-Dimension,E9 Structure Present?,E10 Structure Present?,E11 Structure Present?,Affine and Infinite Extensions?,Stability in A-Infinity Framework?
-512,True,False,False,False,Confirmed
-1024,True,True,False,False,Confirmed
-2048,True,True,True,False,Confirmed
-4096,True,True,True,True,Stable
-8192,True,True,True,True,Stable
-16384,True,True,True,True,Unknown
-32768,True,True,True,True,Unknown
+version https://git-lfs.github.com/spec/v1
+oid sha256:446be0e6e438c43b23d5649a675726d56aecae42dd40cfa81e5882fbb5bd4f6c
+size 387

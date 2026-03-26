@@ -1,10 +1,3 @@
-Operator,Grid Size,Optimal Precision,Kernel Mode,Predicted Numeric Time (s),Tensor Contraction Result
-Laplacian,32x32,float64,Symbolic,0.0022362200262883887,1.0000000000000002
-Laplacian,64x64,float64,Symbolic,0.0022362200262883887,1.0000000000000002
-Laplacian,128x128,float64,Symbolic,0.0022362200262883887,1.0000000000000002
-Gradient,32x32,float64,Symbolic,0.0017185780116231036,1.0
-Gradient,64x64,float64,Symbolic,0.0017185780116231036,1.0
-Gradient,128x128,float64,Symbolic,0.0017185780116231036,1.0
-Divergence,32x32,float64,Symbolic,0.0018440525426208752,1.0000000000000002
-Divergence,64x64,float64,Symbolic,0.0018440525426208752,1.0000000000000002
-Divergence,128x128,float64,Symbolic,0.0018440525426208752,1.0000000000000002
+version https://git-lfs.github.com/spec/v1
+oid sha256:7d1c208ab2c4c374ddcb97505a2057a0e5d89dcbb55bddb6582b5a30d62d0d8b
+size 729

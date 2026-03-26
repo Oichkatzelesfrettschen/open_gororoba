@@ -1,6 +1,3 @@
-Type,Status,Benchmark (s)
-np.float128,Success,0.37523436546325684
-np.longdouble,Success,0.3691983222961426
-np.complex128,Success,0.1769106388092041
-np.uint64,Success,0.05513715744018555
-np.complex256,Success,0.7055075168609619
+version https://git-lfs.github.com/spec/v1
+oid sha256:9d6bacaece4c338d42c873adc555df93ef7df8a552633e1961681f5c593cde51
+size 227

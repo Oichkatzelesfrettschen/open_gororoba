@@ -1,5 +1,3 @@
-Module,Operation,DataType,Input Size,Computed Result Sample,Expected Result,Abs Error,Mean Time (ms),Status
-NumPy,add,<class 'numpy.uint8'>,10000 elements,2,2,0.0,0.1924480002344353,PASS
-NumPy,add,<class 'numpy.uint16'>,10000 elements,2,2,0.0,0.3047869995498331,PASS
-NumPy,add,<class 'numpy.uint32'>,10000 elements,2,2,0.0,0.049666999984765425,PASS
-NumPy,add,<class 'numpy.uint64'>,10000 elements,2,2,0.0,0.11471499965409748,PASS
+version https://git-lfs.github.com/spec/v1
+oid sha256:da4105c00aad184296aed57d7d4496b444318a82aebe4aafa129205928827e5b
+size 430

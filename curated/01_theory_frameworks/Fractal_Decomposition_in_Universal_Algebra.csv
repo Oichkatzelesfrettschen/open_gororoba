@@ -1,6 +1,3 @@
-Dimension,Fractal Substructure Evident?,Self-Similar Scaling?,Alignment with Homotopy Groups?,Deviation from Cayley-Dickson Doubling?
-512,True,Modular,True,Confirmed
-1024,True,Tensorial,True,Confirmed
-2048,True,Braided,True,Beyond Known Models
-4096,True,Stacked,True,Unknown
-8192,True,Unknown,True,Unknown
+version https://git-lfs.github.com/spec/v1
+oid sha256:1e124c3efc97311bb88f6af3480a6580aa36306754be52e47f0b04eab9d9e7f8
+size 306

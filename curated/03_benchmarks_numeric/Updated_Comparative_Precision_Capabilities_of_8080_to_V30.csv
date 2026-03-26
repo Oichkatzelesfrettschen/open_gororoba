@@ -1,13 +1,3 @@
-Processor,Native Integer Precision,Max Integer Precision,Floating-Point Support,Max Floating-Point Precision,Hybrid Integer + Floating-Point
-Intel 8080,8-bit,16-bit (via register pairs),Software emulation,Software-based,Software emulation
-Intel 8085,8-bit,16-bit (via register pairs),Software emulation,Software-based,Software emulation
-Intel 8086,16-bit,32-bit (via register pairs),8087 Coprocessor,80-bit (via 8087),Yes (8087 integration)
-Intel 8088,16-bit,32-bit (via register pairs),8087 Coprocessor,80-bit (via 8087),Yes (8087 integration)
-Intel 80186,16-bit,32-bit (via register pairs),80187 Coprocessor,80-bit (via 80187),Yes (80187 integration)
-Intel 80188,16-bit,32-bit (via register pairs),80187 Coprocessor,80-bit (via 80187),Yes (80187 integration)
-Intel 80286,16-bit,"32-bit (via register pairs, no native 32-bit ALU)",80287 Coprocessor,80-bit (via 80287),Yes (80287 integration)
-Intel 80288,16-bit,"32-bit (via register pairs, no native 32-bit ALU)",80287 Coprocessor,80-bit (via 80287),Yes (80287 integration)
-Intel 80187,N/A,N/A,Yes (80-bit),80-bit,Yes
-Intel 80287,N/A,N/A,Yes (80-bit),80-bit,Yes
-NEC V20,16-bit,"32-bit (via register pairs, no native 32-bit ALU)",8087 Compatible,80-bit,Yes (8087 Compatible)
-NEC V30,16-bit,"32-bit (via register pairs, no native 32-bit ALU)",8087 Compatible,80-bit,Yes (8087 Compatible)
+version https://git-lfs.github.com/spec/v1
+oid sha256:400034ce19b4ec0b963fdc466c2e4a342c310add8ad2e63449ba0fd5e402c965
+size 1337

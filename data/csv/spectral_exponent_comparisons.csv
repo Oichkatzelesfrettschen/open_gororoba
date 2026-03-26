@@ -1,5 +1,3 @@
-framework,exponent,rms_deviation_from_k_minus_3,matches
-kolmogorov,-1.6666666666666667,1.54114340083979,False
-kraichnan_enstrophy,-3,0.0,True
-calcagni,running (1 to 3),5.833529261178719,False
-parisi_sourlas_D4,1,N/A,False
+version https://git-lfs.github.com/spec/v1
+oid sha256:876e30ca004a3ef40fa2f55f4ac3563b1760498a5f63b69f176f02515464a8e6
+size 227

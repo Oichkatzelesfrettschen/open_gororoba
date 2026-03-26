@@ -1,3 +1,3 @@
-model,n_galaxies,rms_residual,detection_snr,alpha_zd_estimate
-NFW,6994,0.12635420,0.430287,0.29557797
-DC14,6994,0.08665159,2.516172,1.18533557
+version https://git-lfs.github.com/spec/v1
+oid sha256:a8170424f32cbffe838c86c5fa5e87a758d8649274c6f27048c1a247cce8305e
+size 143

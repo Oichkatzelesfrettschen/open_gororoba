@@ -1,6 +1,3 @@
-Quantum Circuit Model,Mathematical Implementation
-Homotopy Tensor-Based Quantum Gates,Encodes logical qubits within higher-homotopy tensor categories
-Modular Tensor Functorial Quantum Computation,Maps quantum logic gates to modular tensor homotopy transformations
-Braided Quantum Circuits for Fault-Tolerance,Implements topological fault-tolerance using braided quantum structures
-Exceptional Lie Algebra Encoded Quantum Gates,Defines quantum information processing via exceptional Lie algebra symmetries
-Higher-Category Quantum Error Correction,Frames quantum error correction within higher-category functorial mappings
+version https://git-lfs.github.com/spec/v1
+oid sha256:81000aacf48a5c665ef5d48b7d23c7eaa8a71aae9df5263eba58efc00b338583
+size 621

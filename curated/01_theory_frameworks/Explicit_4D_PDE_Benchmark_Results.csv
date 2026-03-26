@@ -1,2 +1,3 @@
-PDE Simulation Kernel,Simulation Grid Size,Average Execution Time (seconds)
-Explicit 4D Heat Equation Kernel,32^4,0.03139023833318788
+version https://git-lfs.github.com/spec/v1
+oid sha256:e29e5c2070e69279a804b7812fa2c30d890a14cfba00261a48a6f9b07f504376
+size 134

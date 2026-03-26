@@ -1,4 +1,3 @@
-Operator,Definition
-L_x (Linear Action),"X |-> [X, Y] for Y in J_3(O)"
-D_x (Derivation),X |-> X circ Y - Y circ X
-Quadratic Representation,Q(X) = X^2 - tr(X)X
+version https://git-lfs.github.com/spec/v1
+oid sha256:bf8a5ab887a61c4074b7d2aaf829eb6306969f0332e9ec0013698a56dc75c696
+size 159

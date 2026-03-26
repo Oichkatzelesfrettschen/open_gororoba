@@ -1,6 +1,3 @@
-Scenario,Basis Element,Lattice Point,Aligned Basis,Aligned Lattice,Result
-Detailed Numeric Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1 -1]...,bot,bot,bot (Type Mismatch)
-Detailed Numeric Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1 -1]...,bot,bot,bot (Type Mismatch)
-Detailed Numeric Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1  1]...,bot,bot,bot (Type Mismatch)
-Detailed Numeric Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1  1]...,bot,bot,bot (Type Mismatch)
-Detailed Numeric Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1  0  0]...,bot,bot,bot (Type Mismatch)
+version https://git-lfs.github.com/spec/v1
+oid sha256:abfd226d0dd5032e87679d6c49865791a45ccf729e675751568ae9c7781ad004
+size 781

@@ -1,5 +1,3 @@
-Matrix Size,Memory Usage Before (%),Memory Usage After (%)
-128,82.5,82.5
-256,82.5,82.5
-512,82.5,82.5
-1024,82.5,82.5
+version https://git-lfs.github.com/spec/v1
+oid sha256:22c501d43462b934449ceb7ba0060d07d3bd935aaa1ae277a424aef1d70ddc4b
+size 116

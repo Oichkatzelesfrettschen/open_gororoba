@@ -1,6 +1,3 @@
-Dimension,E12+ Exceptional Algebra?,Monstrous Moonshine Structure Possible?,Infinite-Dimensional Lie Algebra Linked?,Modular Function Symmetry Detected?,Completely New Algebra?
-16384,True,True,False,False,Emerging
-32768,True,True,True,True,Confirmed
-65536,True,True,True,True,Confirmed
-131072,True,True,True,True,Beyond Known Models
-262144,True,True,True,True,Unknown
+version https://git-lfs.github.com/spec/v1
+oid sha256:e7b6d9c39316033c75a6564afd5cc4aae8ab8ff67775deeb63bf45f1d72b1f13
+size 368

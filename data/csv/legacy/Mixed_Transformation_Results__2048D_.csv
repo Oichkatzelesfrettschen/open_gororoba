@@ -1,10 +1,3 @@
-Scenario,Mixed Transformation,Lattice Point,Addition Result,Multiplication Result
-Mixed Transformation,"(1, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,"(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)","(array([-1, -1, -1, -1, -1, -1, -1, -1]), 0)"
-Mixed Transformation,"(1, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,"(array([0, 0, 0, 0, 0, 0, 0, 2]), 0)","(array([-1, -1, -1, -1, -1, -1, -1,  1]), 0)"
-Mixed Transformation,"(1, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,"(array([0, 0, 0, 0, 0, 0, 1, 1]), 0)","(array([-1, -1, -1, -1, -1, -1,  0,  0]), 0)"
-Mixed Transformation,"(0, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,"(array([-1, -1, -1, -1, -1, -1, -1, -1]), 0)","(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)"
-Mixed Transformation,"(0, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,"(array([-1, -1, -1, -1, -1, -1, -1,  1]), 0)","(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)"
-Mixed Transformation,"(0, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,"(array([-1, -1, -1, -1, -1, -1,  0,  0]), 0)","(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)"
-Mixed Transformation,"(0, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,"(array([-1, -1, -1, -1, -1, -1, -1, -1]), 0)","(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)"
-Mixed Transformation,"(0, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,"(array([-1, -1, -1, -1, -1, -1, -1,  1]), 0)","(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)"
-Mixed Transformation,"(0, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,"(array([-1, -1, -1, -1, -1, -1,  0,  0]), 0)","(array([0, 0, 0, 0, 0, 0, 0, 0]), 0)"
+version https://git-lfs.github.com/spec/v1
+oid sha256:8d8de51fd5cda3d7a0d7a3d0063b35736abb176e1ad31a21b787f1abc73aced3
+size 1414

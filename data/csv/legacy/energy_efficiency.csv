@@ -1,4 +1,3 @@
-Configuration,Energy (Watts)
-DDR4-2400 Mixed,25
-DDR4-2400 Uniform,18
-DDR4-3600 Tight Timings,12
+version https://git-lfs.github.com/spec/v1
+oid sha256:1b6253792cced20f71373917689a320722ed6df03ccdab55aef56f12be2b86e7
+size 96

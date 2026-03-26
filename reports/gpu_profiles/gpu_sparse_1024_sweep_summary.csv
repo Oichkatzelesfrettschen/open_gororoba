@@ -1,2 +1,3 @@
-bench,mode,tile_bytes,elapsed_seconds,throughput_mlups,effective_glups,stdout_path,nsys_report,ncu_csv,skipped_reason
-gpu_sparse_1024,device,,3.320600,1858.630000,32.340000,reports/gpu_profiles/gpu_sparse_1024_device.stdout.txt,,,
+version https://git-lfs.github.com/spec/v1
+oid sha256:f9c1aef822d40c957f2a4ef3ce9da3b4fae04f5ad8f4bb652687e3a96fdf7680
+size 231

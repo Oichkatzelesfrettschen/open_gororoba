@@ -1,7 +1,3 @@
-Dimension,Grid Points per Dimension,Numeric Precision,Symbolic Reduction Factor,Quantum-Classical Hybrid Norm,Memory Usage (MB),Laplacian Norm,Symbolic-Numeric Kernel Norm,Explicit Memory Usage (MB),Recursive Kernel Norm
-5,15,complex128 (Quantum-Classical Hybrid),0.8,2985.5721322399504,11.587142944335938,,,,
-5,15,complex128,,,11.587142944335938,3731.9651652999382,,,
-5,15,float64 (Symbolic-Numeric Hybrid explicitly optimized),0.75,,5.793571472167969,,1976.618877363851,,
-5,15,complex128,,,,,,11.587142944335938,
-5,20,float32,0.7,,12.20703125,,,,3792.65
-8,7,float32,,,21.990970611572266,11432.720703125,,,
+version https://git-lfs.github.com/spec/v1
+oid sha256:5e077bb766c17d98371e49030bac4570a0e1166b193056b8cf50dfbc24d871a5
+size 608

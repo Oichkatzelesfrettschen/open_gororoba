@@ -1,6 +1,3 @@
-Lattice Model for Monstrous Moonshine,Computational Implementation
-Modular Tensor Lattice Representation of Monstrous Moonshine Symmetries,Encodes Monstrous Moonshine correspondences using modular tensor lattices
-Exceptional Lie Algebra Embeddings in Monstrous Moonshine Lattices,Implements exceptional Lie algebra representations in Monstrous Moonshine
-Homotopy Tensor Networks as Computational Moonshine Models,Models homotopy tensor networks as computational tools for Moonshine physics
-Higher-Category Functorial Transformations in Modular Moonshine Algebra,Simulates higher-category functorial structures in algebraic Monstrous Moonshine
-Braided Tensor Modular Lattices in Quantum Field Theory,Numerically validates braided modular tensor lattices as quantum field representations
+version https://git-lfs.github.com/spec/v1
+oid sha256:0146ae5127aa217a8f6216b30aab5d689784d79578cc8b4720cba9a94089da61
+size 786
