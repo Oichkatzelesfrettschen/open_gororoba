@@ -140,13 +140,13 @@ mod tests {
         // For left-multiplication by e_1 (pure imaginary), (0,0) entry = 0.0
         // because e_1 * e_0 has no e_0 component.
         let mut l_e1 = vec![0.0; dim * dim];
-        l_e1[0 * dim + 1] = 1.0; // e_1 * e_0 -> e_1 (no real part)
+        l_e1[1] = 1.0; // e_1 * e_0 -> e_1 (no real part)
         assert!(operator_real_entry(&l_e1, dim).abs() < 1e-15);
     }
 
     #[test]
     fn test_project_idempotent() {
-        let element = [3.14, 2.71, 1.41, 0.0];
+        let element = [std::f64::consts::PI, 2.71, 1.41, 0.0];
         let p = project(&element);
         // project of a scalar is itself
         assert_eq!(project(&[p]), p);

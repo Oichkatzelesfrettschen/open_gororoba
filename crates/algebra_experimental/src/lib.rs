@@ -1,3 +1,13 @@
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::type_complexity)]
+#![allow(clippy::manual_memcpy)]
+#![allow(clippy::useless_vec)]
+#![allow(clippy::manual_clamp)]
+#![allow(clippy::suspicious_assignment_formatting)]
+#![allow(clippy::if_same_then_else)]
+#![allow(clippy::needless_borrows_for_generic_args)]
+#![allow(clippy::op_ref)]
+
 //! algebra_experimental: Experimental algebraic structures.
 //!
 //! Emanation tables (de Marrais), E10-octonion bridge, billiard statistics,

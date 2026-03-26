@@ -352,6 +352,7 @@ impl Pl1Emulator {
             let a_norm = cd_norm_sq(&self.pairs[i].a);
             let b_norm = cd_norm_sq(&self.pairs[i].b);
 
+            #[allow(clippy::needless_range_loop)]
             for j in (i + 1)..self.pairs.len() {
                 if used[j] {
                     continue;
@@ -565,7 +566,7 @@ mod tests {
         let b = vec![2.0, 1.0, 0.5, 0.3, 0.0, 0.1, 0.0, 0.0, 2.0, 1.0, 0.5, 0.3, 0.0, 0.1, 0.0, 0.0];
 
         let result = emulator.check_major_theorem(&a, &b);
-        assert!(result.is_zero_divisor || !result.is_zero_divisor); // Just check it computes
+        let _ = result.is_zero_divisor; // Just check it computes
     }
 
     #[test]

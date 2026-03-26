@@ -1,16 +1,11 @@
+#![allow(clippy::items_after_test_module)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::manual_memcpy)]
+
 //! algebra_analysis: Zero-divisor analysis, box-kites, codebook/lattice,
 //! projective geometry, homotopy algebra, grassmannian, fractal/stochastic
 //! for Cayley-Dickson algebras.
-//!
-//! This crate depends on `cd_kernel` for core arithmetic and provides the
-//! analytical layer: graph-based zero-divisor analysis, de Marrais box-kite
-//! structures, codebook/lattice theory, projective geometry, A-infinity and
-//! L-infinity homotopy algebras, Grassmannian manifolds, fractal analysis,
-//! and stochastic processes.
 
-// DD arithmetic and dd_jacobi are the non-x86_64 fallback; on x86_64 builds,
-// only tests exercise them. Allow dead_code to suppress lint on x86_64.
-// Modules are pub for benchmark access (internal workspace crate, not published).
 #[allow(dead_code)]
 pub mod dd_jacobi;
 #[allow(dead_code)]

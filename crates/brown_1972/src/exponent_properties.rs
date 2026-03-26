@@ -182,8 +182,8 @@ pub fn verify_idempotent_characterization(a: &[f64]) -> f64 {
 
     // 1: real part is 1, imaginary parts are zero
     let mut is_one = (a[0] - 1.0).abs() < 1e-10;
-    for i in 1..dim {
-        if a[i].abs() > 1e-10 {
+    for &val in a.iter().take(dim).skip(1) {
+        if val.abs() > 1e-10 {
             is_one = false;
             break;
         }

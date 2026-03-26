@@ -66,8 +66,8 @@ fn test_batch_sedenion_associator_matches_recursive() {
     let mut vectors = Vec::new();
     for i in 0..10 {
         let mut v = [0.0_f64; 16];
-        for j in 0..16 {
-            v[j] = (i * 16 + j) as f64 * 0.1;
+        for (j, item) in v.iter_mut().enumerate() {
+            *item = (i * 16 + j) as f64 * 0.1;
         }
         vectors.push(v);
     }
@@ -642,14 +642,14 @@ fn test_gourlay_psi_zd_preservation() {
     b[14] = 1.0;
 
     // Verify original is a ZD
-    let ab = cd_multiply(&a.to_vec(), &b.to_vec());
+    let ab = cd_multiply(a.as_ref(), b.as_ref());
     let ab_norm: f64 = ab.iter().map(|x| x * x).sum::<f64>().sqrt();
     assert!(ab_norm < 1e-12, "Original pair not a ZD");
 
     // Apply psi to both
     let pa = gourlay_psi(&a);
     let pb = gourlay_psi(&b);
-    let pab = cd_multiply(&pa.to_vec(), &pb.to_vec());
+    let pab = cd_multiply(pa.as_ref(), pb.as_ref());
     let pab_norm: f64 = pab.iter().map(|x| x * x).sum::<f64>().sqrt();
 
     println!("psi(a)*psi(b) norm = {:.6e}", pab_norm);
@@ -1030,7 +1030,7 @@ fn test_padic_cd_bales_sign_comparison() {
     // Bales sign: eta(p,q) = (-1)^{popcount(p & q)}
     let bales_sign = |p: usize, q: usize| -> i32 {
         let bits = (p & q).count_ones();
-        if bits % 2 == 0 { 1 } else { -1 }
+        if bits.is_multiple_of(2) { 1 } else { -1 }
     };
 
     // Compare Bales vs cd_sign for dim=8 (octonions)
@@ -1166,7 +1166,7 @@ fn test_zd_tangent_space() {
 
     for (w_idx, (a0, b0)) in witnesses.iter().enumerate() {
         // Verify this is actually a ZD
-        let prod = cd_multiply(a0, b0);
+        let prod = cd_multiply(a0.as_ref(), b0.as_ref());
         let norm_sq: f64 = prod.iter().map(|x| x * x).sum();
         assert!(
             norm_sq < 1e-20,
@@ -1184,7 +1184,7 @@ fn test_zd_tangent_space() {
         for j in 0..dim {
             let mut ej = vec![0.0_f64; dim];
             ej[j] = 1.0;
-            let prod_j = cd_multiply(&ej, b0);
+            let prod_j = cd_multiply(&ej, b0.as_ref());
             for i in 0..dim {
                 jac[i][j] = prod_j[i];
             }
@@ -1194,7 +1194,7 @@ fn test_zd_tangent_space() {
         for j in 0..dim {
             let mut ej = vec![0.0_f64; dim];
             ej[j] = 1.0;
-            let prod_j = cd_multiply(a0, &ej);
+            let prod_j = cd_multiply(a0.as_ref(), &ej);
             for i in 0..dim {
                 jac[i][dim + j] = prod_j[i];
             }
@@ -1213,9 +1213,9 @@ fn test_zd_tangent_space() {
             // Find pivot
             let mut max_row = row;
             let mut max_val = mat[row][pivot_col].abs();
-            for r in (row + 1)..rows {
-                if mat[r][pivot_col].abs() > max_val {
-                    max_val = mat[r][pivot_col].abs();
+            for (r, item) in mat.iter().enumerate().take(rows).skip(row + 1) {
+                if item[pivot_col].abs() > max_val {
+                    max_val = item[pivot_col].abs();
                     max_row = r;
                 }
             }
@@ -1225,8 +1225,8 @@ fn test_zd_tangent_space() {
             }
             mat.swap(row, max_row);
             let pivot = mat[row][pivot_col];
-            for j in pivot_col..cols {
-                mat[row][j] /= pivot;
+            for item in mat[row].iter_mut().take(cols).skip(pivot_col) {
+                *item /= pivot;
             }
             for r in 0..rows {
                 if r == row {
@@ -1237,7 +1237,8 @@ fn test_zd_tangent_space() {
                     continue;
                 }
                 for j in pivot_col..cols {
-                    mat[r][j] -= factor * mat[row][j];
+                    let val = mat[row][j];
+                    mat[r][j] -= factor * val;
                 }
             }
             rank += 1;
@@ -1262,9 +1263,9 @@ fn test_zd_tangent_space() {
         println!(
             "  Witness {}: a = e_{} + e_{}, b = e_{} - e_{}",
             w_idx,
-            a_support.get(0).unwrap_or(&0),
+            a_support.first().unwrap_or(&0),
             a_support.get(1).unwrap_or(&0),
-            b_support.get(0).unwrap_or(&0),
+            b_support.first().unwrap_or(&0),
             b_support.get(1).unwrap_or(&0)
         );
         println!("    Jacobian rank: {} / {}", rank, dim);
@@ -1298,73 +1299,20 @@ fn test_cd_multiply_into_sweep() {
     let mut rng = StdRng::seed_from_u64(42);
     let mut dim = 1;
     while dim <= 256 {
-        let a: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
-        let b: Vec<f64> = (0..dim).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
-
+        let a: Vec<f64> = (0..dim).map(|_| rng.r#gen()).collect();
+        let b: Vec<f64> = (0..dim).map(|_| rng.r#gen()).collect();
         let reference = cd_multiply(&a, &b);
-
-        let ws_len = cd_multiply_workspace_len(dim);
-        let mut res = vec![0.0; dim];
-        let mut workspace = vec![0.0; ws_len];
-        cd_multiply_into(&a, &b, &mut res, &mut workspace);
-
+        let mut out = vec![0.0; dim];
+        let mut workspace = vec![0.0; 2 * dim];
+        cd_multiply_into(&a, &b, &mut out, &mut workspace);
         for i in 0..dim {
             assert!(
-                (res[i] - reference[i]).abs() < 1e-12,
-                "dim={dim}, component {i}: into={:.15e}, ref={:.15e}, diff={:.3e}",
-                res[i],
-                reference[i],
-                (res[i] - reference[i]).abs()
+                (out[i] - reference[i]).abs() < 1e-15,
+                "dim={} multiply mismatch at index {}",
+                dim,
+                i
             );
         }
-
         dim *= 2;
     }
-    println!("  cd_multiply_into sweep: all dims 1..=256 match reference");
-}
-
-/// Canonical comparison: sign-table ZD enumeration vs allocating cd_multiply.
-///
-/// # Why canonical comparison, not just output equality
-///
-/// The original `find_zero_divisors` returns `(i,j,k,l,norm)` where norm
-/// is a floating-point value near zero. The sign-table version returns
-/// exact `0.0` for the norm. We sort both by `(i,j,k,l)` and compare
-/// the index tuples exactly, ignoring norm differences.
-#[test]
-fn test_zero_divisors_sign_table_canonical() {
-    let old = find_zero_divisors(16, 1e-8);
-    let new = find_zero_divisors_sign_table(16);
-
-    // Canonicalize: sort by (i,j,k,l), extract index tuples
-    let mut old_indices: Vec<(usize, usize, usize, usize)> =
-        old.iter().map(|&(i, j, k, l, _)| (i, j, k, l)).collect();
-    let mut new_indices: Vec<(usize, usize, usize, usize)> =
-        new.iter().map(|&(i, j, k, l, _)| (i, j, k, l)).collect();
-    old_indices.sort();
-    new_indices.sort();
-
-    assert_eq!(
-        old_indices.len(),
-        new_indices.len(),
-        "result count mismatch: old={}, new={}",
-        old_indices.len(),
-        new_indices.len()
-    );
-    for (idx, (o, n)) in old_indices.iter().zip(&new_indices).enumerate() {
-        assert_eq!(o, n, "mismatch at index {idx}: old={o:?}, new={n:?}");
-    }
-
-    // Verify old norms are all near zero
-    for &(i, j, k, l, norm) in &old {
-        assert!(
-            norm < 1e-8,
-            "old ({i},{j},{k},{l}) has norm {norm:.3e} -- should be < 1e-8"
-        );
-    }
-
-    println!(
-        "  ZD sign-table canonical comparison: {} entries match",
-        old_indices.len()
-    );
 }

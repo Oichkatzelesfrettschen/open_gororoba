@@ -27,15 +27,6 @@ impl AlgebraicTriad {
     pub fn to_pauli_axes(&self) -> [nalgebra::Matrix2<Complex64>; 3] {
         let (s1, s2, s3) = pauli_matrices();
 
-        let to_m2 =
-            |m: gororoba_algebra::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
-                nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
-            };
-
-        let s1 = to_m2(s1);
-        let s2 = to_m2(s2);
-        let s3 = to_m2(s3);
-
         let get_sigma = |idx: usize| match idx {
             1 => s1,
             2 => s2,

@@ -19,13 +19,7 @@ impl TwoQubitState {
     /// rho = 1/4 * (I + a.sigma x I + I x b.sigma + sum T_ij sigma_i x sigma_j)
     pub fn from_ab_t(a: &Vector3<f64>, b: &Vector3<f64>, t: &Matrix3<f64>) -> Self {
         let (d1, d2, d3) = pauli_matrices();
-
-        let to_m2 =
-            |m: gororoba_algebra::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
-                nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
-            };
-
-        let sigmas = [to_m2(d1), to_m2(d2), to_m2(d3)];
+        let sigmas = [d1, d2, d3];
 
         let eye2 = nalgebra::Matrix2::<Complex64>::identity();
 
@@ -47,12 +41,12 @@ impl TwoQubitState {
             if b[j] != 0.0 {
                 let term = kron2(&eye2, &sigmas[j]) * Complex64::from(b[j]);
                 rho += term;
-            }
-        }
+                }
+                }
 
-        // Correlation term T_ij sigma_i x sigma_j
-        for i in 0..3 {
-            for j in 0..3 {
+                // Correlated part -> sum t_ij sigma_i x sigma_j
+                for i in 0..3 {
+                for j in 0..3 {
                 if t[(i, j)] != 0.0 {
                     let term = kron2(&sigmas[i], &sigmas[j]) * Complex64::from(t[(i, j)]);
                     rho += term;

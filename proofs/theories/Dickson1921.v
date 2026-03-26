@@ -508,6 +508,91 @@ Module Dickson1921FloatParamLane (F : FLOAT_OPS).
     - intros x k Hk.
       exact (Q.quat_param_eq7_linear_form_vanish c2 c3 k x Hk).
   Qed.
+
+  (** Dickson's "general case may be reduced" step, recorded on the reduced
+      c1 = -1 parameter surface already formalized in the repo.  The paper's
+      irrational transformation is still cited rather than reconstructed; this
+      package captures the resulting reduced-case laws in one abstract Rocq
+      surface. *)
+  Record Dickson1921FloatReducedGeneralCaseSurface (c2 c3 : t) : Prop := {
+    d1921_frgc_norm_summary :
+      (forall x, Q.quat_param_mul c2 c3 Q.quat_one x = x) /\
+      (forall x, Q.quat_param_mul c2 c3 x Q.quat_one = x) /\
+      (forall x,
+          Q.quat_param_mul c2 c3 x (Q.quat_conj x) =
+          Q.quat_scale (Q.quat_param_norm c2 c3 x) Q.quat_one) /\
+      (forall x,
+          Q.quat_param_mul c2 c3 (Q.quat_conj x) x =
+          Q.quat_scale (Q.quat_param_norm c2 c3 x) Q.quat_one) /\
+      (forall x,
+          Q.quat_param_norm c2 c3 (Q.quat_conj x) =
+          Q.quat_param_norm c2 c3 x) /\
+      (forall x y,
+          Q.quat_param_norm c2 c3 (Q.quat_param_mul c2 c3 x y) =
+          Q.quat_param_norm c2 c3 x * Q.quat_param_norm c2 c3 y);
+    d1921_frgc_matrix_summary :
+      (forall x xi,
+          Q.quat_param_matrix_apply c2 c3 x xi =
+          Q.quat_param_mul c2 c3 x xi) /\
+      (forall x xi,
+          Q.quat_param_norm c2 c3 (Q.quat_param_matrix_apply c2 c3 x xi) =
+          Q.quat_param_norm c2 c3 x * Q.quat_param_norm c2 c3 xi) /\
+      (forall x i j,
+          (i < 4)%nat ->
+          (j < 4)%nat ->
+          Q.quat_param_gram_entry c2 c3 x i j =
+          Q.quat_param_norm c2 c3 x * Q.quat_param_form_entry c2 c3 i j);
+    d1921_frgc_infinitesimal_summary :
+      (forall x k eps i,
+          (1 <= k <= 3)%nat ->
+          (i < 4)%nat ->
+          Q.quat_coord (Q.quat_param_mul c2 c3 x (Q.quat_near_identity k eps)) i =
+          Q.quat_coord x i + eps * Q.quat_param_eq6_delta_coord c2 c3 k x i) /\
+      (forall k eps,
+          (1 <= k <= 3)%nat ->
+          Q.quat_param_norm c2 c3 (Q.quat_near_identity k eps) =
+          one + Q.quat_param_near_identity_quadratic_factor c2 c3 k * (eps * eps)) /\
+      (forall x k eps,
+          (1 <= k <= 3)%nat ->
+          Q.quat_param_norm c2 c3
+            (Q.quat_param_mul c2 c3 x (Q.quat_near_identity k eps)) -
+          Q.quat_param_norm c2 c3 x =
+          (eps * eps) * Q.quat_param_near_identity_quadratic_factor c2 c3 k *
+            Q.quat_param_norm c2 c3 x) /\
+      (forall x k,
+          (1 <= k <= 3)%nat ->
+          Q.quat_param_eq7_linear_form c2 c3 k x = zero);
+    d1921_frgc_table_summary :
+      Q.quat_param_mul c2 c3 Q.qi Q.qi = Q.quat_scale c2 Q.quat_one /\
+      Q.quat_param_mul c2 c3 Q.qj Q.qj = Q.quat_scale c3 Q.quat_one /\
+      Q.quat_param_mul c2 c3 Q.qk Q.qk =
+        Q.quat_scale (opp c2 * c3) Q.quat_one /\
+      Q.quat_param_mul c2 c3 Q.qi Q.qj = Q.qk /\
+      Q.quat_param_mul c2 c3 Q.qj Q.qi = Q.quat_neg Q.qk /\
+      Q.quat_param_mul c2 c3 Q.qi Q.qk = Q.quat_scale c2 Q.qj /\
+      Q.quat_param_mul c2 c3 Q.qk Q.qi = Q.quat_scale (opp c2) Q.qj /\
+      Q.quat_param_mul c2 c3 Q.qj Q.qk = Q.quat_scale (opp c3) Q.qi /\
+      Q.quat_param_mul c2 c3 Q.qk Q.qj = Q.quat_scale c3 Q.qi
+  }.
+
+  Definition d1921_float_param_reduced_general_case_surface
+      (c2 c3 : t) : Dickson1921FloatReducedGeneralCaseSurface c2 c3.
+  Proof.
+    refine
+      {| d1921_frgc_norm_summary := d1921_float_param_norm_summary c2 c3;
+         d1921_frgc_matrix_summary := d1921_float_param_matrix_summary c2 c3;
+         d1921_frgc_infinitesimal_summary :=
+           d1921_float_param_infinitesimal_summary c2 c3;
+         d1921_frgc_table_summary := d1921_float_param_table_summary c2 c3 |}.
+  Defined.
+
+  Theorem d1921_float_param_reduced_general_case_summary :
+    forall c2 c3 : t,
+      Dickson1921FloatReducedGeneralCaseSurface c2 c3.
+  Proof.
+    intros c2 c3.
+    exact (d1921_float_param_reduced_general_case_surface c2 c3).
+  Qed.
 End Dickson1921FloatParamLane.
 
 (** The canonical quaternion lane inhabits Dickson's paper surface inside the
@@ -1742,6 +1827,111 @@ Proof.
     f_equal; ring.
 Qed.
 
+(** Dickson 1921, pp. 112-113: after reducing to c1 = -1, the paper works
+    entirely inside the reduced generalized quaternion family.  This surface
+    packages the reduced-case equations and determinant law in the same order
+    they are used before the section-7 obstruction transition. *)
+Record Dickson1921ReducedGeneralCaseSurface (c2 c3 : R) : Prop := {
+  d1921_rgc_surface_exists : exists s : Dickson1921Surface CDQuat, True;
+  d1921_rgc_eq13 :
+    forall x xi,
+      dickson1921_param_norm c2 c3 (dickson1921_param_matrix_apply c2 c3 x xi) =
+      dickson1921_param_norm c2 c3 x * dickson1921_param_norm c2 c3 xi;
+  d1921_rgc_eq15 :
+    forall x i j,
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      dickson1921_param_gram_entry c2 c3 x i j =
+      dickson1921_param_norm c2 c3 x * dickson1921_param_form_entry c2 c3 i j;
+  d1921_rgc_eq10 :
+    forall i j,
+      (1 <= i <= 3)%nat ->
+      (1 <= j <= 3)%nat ->
+      i <> j ->
+      dickson1921_param_gamma c2 c3 j i i =
+      - dickson1921_param_gamma c2 c3 i j i;
+  d1921_rgc_eq11 :
+    forall x xi,
+      quat_coord (dickson1921_param_mul c2 c3 x xi) 0%nat =
+        quat_coord x 0%nat * quat_coord xi 0%nat +
+        c2 * quat_coord x 1%nat * quat_coord xi 1%nat +
+        c3 * quat_coord x 2%nat * quat_coord xi 2%nat -
+        c2 * c3 * quat_coord x 3%nat * quat_coord xi 3%nat /\
+      quat_coord (dickson1921_param_mul c2 c3 x xi) 1%nat =
+        quat_coord x 0%nat * quat_coord xi 1%nat +
+        quat_coord x 1%nat * quat_coord xi 0%nat -
+        c3 * quat_coord x 2%nat * quat_coord xi 3%nat +
+        c3 * quat_coord x 3%nat * quat_coord xi 2%nat /\
+      quat_coord (dickson1921_param_mul c2 c3 x xi) 2%nat =
+        quat_coord x 0%nat * quat_coord xi 2%nat +
+        quat_coord x 2%nat * quat_coord xi 0%nat +
+        c2 * quat_coord x 1%nat * quat_coord xi 3%nat -
+        c2 * quat_coord x 3%nat * quat_coord xi 1%nat /\
+      quat_coord (dickson1921_param_mul c2 c3 x xi) 3%nat =
+        quat_coord x 0%nat * quat_coord xi 3%nat +
+        quat_coord x 3%nat * quat_coord xi 0%nat +
+        quat_coord x 1%nat * quat_coord xi 2%nat -
+        quat_coord x 2%nat * quat_coord xi 1%nat;
+  d1921_rgc_eq12 :
+    dickson1921_param_mul c2 c3 qi qi = quat_scale c2 quat_one /\
+    dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one /\
+    dickson1921_param_mul c2 c3 qk qk = quat_scale (- c2 * c3) quat_one /\
+    dickson1921_param_mul c2 c3 qi qj = qk /\
+    dickson1921_param_mul c2 c3 qj qi = quat_neg qk /\
+    dickson1921_param_mul c2 c3 qi qk = quat_scale c2 qj /\
+    dickson1921_param_mul c2 c3 qk qi = quat_scale (- c2) qj /\
+    dickson1921_param_mul c2 c3 qj qk = quat_scale (- c3) qi /\
+    dickson1921_param_mul c2 c3 qk qj = quat_scale c3 qi;
+  d1921_rgc_eq16_skew :
+    forall k i j,
+      (1 <= k <= 3)%nat ->
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      dickson1921_param_form_entry c2 c3 j j *
+        dickson1921_param_basis_entry c2 c3 k j i =
+      - (dickson1921_param_form_entry c2 c3 i i *
+         dickson1921_param_basis_entry c2 c3 k i j);
+  d1921_rgc_eq16_square :
+    forall k i j,
+      (1 <= k <= 3)%nat ->
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      quat_matrix_mul_entry (dickson1921_param_basis_entry c2 c3 k)
+                            (dickson1921_param_basis_entry c2 c3 k) i j =
+      dickson1921_param_basis_square_scalar c2 c3 k * quat_identity_entry i j;
+  d1921_rgc_eq16_anticommute :
+    forall k l i j,
+      (1 <= k <= 3)%nat ->
+      (1 <= l <= 3)%nat ->
+      k <> l ->
+      (i < 4)%nat ->
+      (j < 4)%nat ->
+      quat_matrix_mul_entry (dickson1921_param_basis_entry c2 c3 k)
+                            (dickson1921_param_basis_entry c2 c3 l) i j +
+      quat_matrix_mul_entry (dickson1921_param_basis_entry c2 c3 l)
+                            (dickson1921_param_basis_entry c2 c3 k) i j = 0;
+  d1921_rgc_det :
+    forall x,
+      dickson1921_matrix_det4 (dickson1921_param_matrix_entry c2 c3 x) =
+      (dickson1921_param_norm c2 c3 x)^2
+}.
+
+Definition dickson1921_param_reduced_general_case_surface
+    (c2 c3 : R) : Dickson1921ReducedGeneralCaseSurface c2 c3.
+Proof.
+  refine
+    {| d1921_rgc_surface_exists := ex_intro _ (dickson1921_param_surface c2 c3) I;
+       d1921_rgc_eq13 := dickson1921_param_eq13_dim4 c2 c3;
+       d1921_rgc_eq15 := dickson1921_param_eq15_dim4 c2 c3;
+       d1921_rgc_eq10 := dickson1921_param_eq10_sign_relation c2 c3;
+       d1921_rgc_eq11 := dickson1921_param_eq11_dim4 c2 c3;
+       d1921_rgc_eq12 := dickson1921_param_eq12_table c2 c3;
+       d1921_rgc_eq16_skew := dickson1921_param_basis_metric_skew c2 c3;
+       d1921_rgc_eq16_square := dickson1921_param_basis_square c2 c3;
+       d1921_rgc_eq16_anticommute := dickson1921_param_basis_anticommute c2 c3;
+       d1921_rgc_det := dickson1921_param_det_equals_norm_sq c2 c3 |}.
+Defined.
+
 Theorem dickson1921_param_matrix_specializes_to_standard : forall x i j,
   dickson1921_param_matrix_entry (-1) (-1) x i j = quat_hamilton_entry x i j.
 Proof.
@@ -1950,6 +2140,20 @@ Proof.
   exact n6_eliminated.
 Qed.
 
+Theorem dickson1921_dim5_square_excluded :
+  ~ hurwitz_square_dimension 5%nat.
+Proof.
+  intro H.
+  destruct H as [H1 | [H2 | [H4 | H8]]]; lia.
+Qed.
+
+Theorem dickson1921_dim6_square_excluded :
+  ~ hurwitz_square_dimension 6%nat.
+Proof.
+  intro H.
+  destruct H as [H1 | [H2 | [H4 | H8]]]; lia.
+Qed.
+
 Theorem dickson1921_small_internal_exclusions :
   ~(exists r : R, r * r = (-1 : R)^5) /\
   (skew_product_count 6 > skew_sym_dim 6)%nat.
@@ -2019,6 +2223,41 @@ Proof.
   apply Hnonsquare.
   apply (proj1 (dickson1921_section7_square_case_classification n Hn)).
   exact Heq.
+Qed.
+
+Theorem dickson1921_section7_internal_vs_hurwitz_boundary :
+  forall n : nat,
+    dickson1921_section7_dimension n ->
+    (((n = 5%nat \/ n = 6%nat) /\ ~ hurwitz_square_dimension n) \/
+     (tracked_cd_tower_dimension n /\
+      (~ hurwitz_square_dimension n -> hurwitz_radon n <> n))).
+Proof.
+  intros n Hn.
+  destruct Hn as [-> | [-> | Htracked]].
+  - left. split.
+    + left. reflexivity.
+    + exact dickson1921_dim5_square_excluded.
+  - left. split.
+    + right. reflexivity.
+    + exact dickson1921_dim6_square_excluded.
+  - right. split.
+    + exact Htracked.
+    + exact (dickson1921_hurwitz_handoff n Htracked).
+Qed.
+
+Theorem dickson1921_param_general_case_may_be_reduced_summary :
+  forall c2 c3,
+    Dickson1921ReducedGeneralCaseSurface c2 c3 /\
+    (forall n : nat,
+        dickson1921_section7_dimension n ->
+        (((n = 5%nat \/ n = 6%nat) /\ ~ hurwitz_square_dimension n) \/
+         (tracked_cd_tower_dimension n /\
+          (~ hurwitz_square_dimension n -> hurwitz_radon n <> n)))).
+Proof.
+  intros c2 c3.
+  split.
+  - exact (dickson1921_param_reduced_general_case_surface c2 c3).
+  - exact dickson1921_section7_internal_vs_hurwitz_boundary.
 Qed.
 
 (** Paper-order package: the generalized-family lane supplies the section-5/6
@@ -2192,6 +2431,31 @@ Module Dickson1921FloatSection7Lane (F : FLOAT_OPS).
       hurwitz_radon n <> n.
   Proof.
     exact dickson1921_section7_noncomposition_summary.
+  Qed.
+
+  Theorem d1921_float_param_section7_internal_vs_hurwitz_boundary :
+    forall n : nat,
+      d1921_float_param_section7_dimension n ->
+      (((n = 5%nat \/ n = 6%nat) /\ ~ hurwitz_square_dimension n) \/
+       (tracked_cd_tower_dimension n /\
+        (~ hurwitz_square_dimension n -> hurwitz_radon n <> n))).
+  Proof.
+    exact dickson1921_section7_internal_vs_hurwitz_boundary.
+  Qed.
+
+  Theorem d1921_float_param_reduced_general_case_to_obstruction :
+    forall c2 c3 : t,
+      P.Dickson1921FloatReducedGeneralCaseSurface c2 c3 /\
+      (forall n : nat,
+          d1921_float_param_section7_dimension n ->
+          (((n = 5%nat \/ n = 6%nat) /\ ~ hurwitz_square_dimension n) \/
+           (tracked_cd_tower_dimension n /\
+            (~ hurwitz_square_dimension n -> hurwitz_radon n <> n)))).
+  Proof.
+    intros c2 c3.
+    split.
+    - exact (P.d1921_float_param_reduced_general_case_summary c2 c3).
+    - exact d1921_float_param_section7_internal_vs_hurwitz_boundary.
   Qed.
 
   Theorem d1921_float_param_section7_exclusion_summary :

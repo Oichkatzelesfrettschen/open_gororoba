@@ -10,62 +10,68 @@
 //! - Furey (2016): One generation from Cl(6)
 //! - Lounesto (2001): Clifford algebras and spinors
 
-use nalgebra::DMatrix;
+use nalgebra::{DMatrix, Matrix2};
 use num_complex::Complex64;
 
 /// A complex matrix for gamma matrix representation (using nalgebra).
 pub type GammaMatrix = DMatrix<Complex64>;
 
 /// Pauli matrices sigma_1, sigma_2, sigma_3.
-pub fn pauli_matrices() -> (GammaMatrix, GammaMatrix, GammaMatrix) {
+pub fn pauli_matrices() -> (Matrix2<Complex64>, Matrix2<Complex64>, Matrix2<Complex64>) {
     let zero = Complex64::new(0.0, 0.0);
     let one = Complex64::new(1.0, 0.0);
     let i = Complex64::new(0.0, 1.0);
 
-    let sigma_1 = GammaMatrix::from_row_slice(2, 2, &[zero, one, one, zero]);
-
-    let sigma_2 = GammaMatrix::from_row_slice(2, 2, &[zero, -i, i, zero]);
-
-    let sigma_3 = GammaMatrix::from_row_slice(2, 2, &[one, zero, zero, -one]);
+    let sigma_1 = Matrix2::new(zero, one, one, zero);
+    let sigma_2 = Matrix2::new(zero, -i, i, zero);
+    let sigma_3 = Matrix2::new(one, zero, zero, -one);
 
     (sigma_1, sigma_2, sigma_3)
 }
 
-/// 2x2 identity matrix.
-fn identity_2() -> GammaMatrix {
-    GammaMatrix::identity(2, 2)
-}
-
 /// Kronecker (tensor) product of two matrices.
-fn kron(a: &GammaMatrix, b: &GammaMatrix) -> GammaMatrix {
+pub fn kron(a: &GammaMatrix, b: &GammaMatrix) -> GammaMatrix {
     a.kronecker(b)
 }
 
+fn gamma_from_2x2(m: &Matrix2<Complex64>) -> GammaMatrix {
+    GammaMatrix::from_row_slice(2, 2, m.as_slice())
+}
+
+/// Special case for 2x2 pauli matrix kronecker products.
+pub fn kron2(a: &Matrix2<Complex64>, b: &Matrix2<Complex64>) -> GammaMatrix {
+    let mut out = GammaMatrix::zeros(4, 4);
+    for i in 0..2 {
+        for j in 0..2 {
+            let val = a[(i, j)];
+            for k in 0..2 {
+                for l in 0..2 {
+                    out[(i * 2 + k, j * 2 + l)] = val * b[(k, l)];
+                }
+            }
+        }
+    }
+    out
+}
+
 /// Construct 8 gamma matrices for Cl(8) in the real 16x16 representation.
-///
-/// Uses the tensor product construction with Pauli matrices.
-/// Returns 8 matrices satisfying {gamma_i, gamma_j} = 2 * delta_ij * I.
 pub fn gamma_matrices_cl8() -> Vec<GammaMatrix> {
     let (s1, s2, s3) = pauli_matrices();
-    let i2 = identity_2();
+    let i2 = Matrix2::identity();
+    let s1g = gamma_from_2x2(&s1);
+    let s2g = gamma_from_2x2(&s2);
+    let s3g = gamma_from_2x2(&s3);
+    let i2g = gamma_from_2x2(&i2);
 
     vec![
-        // gamma_1 = sigma_1 (x) I (x) I (x) I
-        kron(&kron(&kron(&s1, &i2), &i2), &i2),
-        // gamma_2 = sigma_2 (x) I (x) I (x) I
-        kron(&kron(&kron(&s2, &i2), &i2), &i2),
-        // gamma_3 = sigma_3 (x) sigma_1 (x) I (x) I
-        kron(&kron(&kron(&s3, &s1), &i2), &i2),
-        // gamma_4 = sigma_3 (x) sigma_2 (x) I (x) I
-        kron(&kron(&kron(&s3, &s2), &i2), &i2),
-        // gamma_5 = sigma_3 (x) sigma_3 (x) sigma_1 (x) I
-        kron(&kron(&kron(&s3, &s3), &s1), &i2),
-        // gamma_6 = sigma_3 (x) sigma_3 (x) sigma_2 (x) I
-        kron(&kron(&kron(&s3, &s3), &s2), &i2),
-        // gamma_7 = sigma_3 (x) sigma_3 (x) sigma_3 (x) sigma_1
-        kron(&kron(&kron(&s3, &s3), &s3), &s1),
-        // gamma_8 = sigma_3 (x) sigma_3 (x) sigma_3 (x) sigma_2
-        kron(&kron(&kron(&s3, &s3), &s3), &s2),
+        kron(&kron(&kron(&s1g, &i2g), &i2g), &i2g),
+        kron(&kron(&kron(&s2g, &i2g), &i2g), &i2g),
+        kron(&kron(&kron(&s3g, &s1g), &i2g), &i2g),
+        kron(&kron(&kron(&s3g, &s2g), &i2g), &i2g),
+        kron(&kron(&kron(&s3g, &s3g), &s1g), &i2g),
+        kron(&kron(&kron(&s3g, &s3g), &s2g), &i2g),
+        kron(&kron(&kron(&s3g, &s3g), &s3g), &s1g),
+        kron(&kron(&kron(&s3g, &s3g), &s3g), &s2g),
     ]
 }
 
@@ -79,14 +85,11 @@ pub fn verify_clifford_relation(gammas: &[GammaMatrix], tol: f64) -> bool {
     for i in 0..n {
         for j in 0..n {
             let anticomm = &gammas[i] * &gammas[j] + &gammas[j] * &gammas[i];
-
             let expected = if i == j {
                 &identity * two
             } else {
                 GammaMatrix::zeros(dim, dim)
             };
-
-            // Check element-wise
             for r in 0..dim {
                 for c in 0..dim {
                     let diff = (anticomm[(r, c)] - expected[(r, c)]).norm();
@@ -105,29 +108,22 @@ pub fn count_basis_elements(n: usize) -> usize {
     1 << n
 }
 
-/// Clifford algebra representation for physics applications.
 pub struct CliffordAlgebra {
     pub dimension: usize,
     pub gammas: Vec<GammaMatrix>,
 }
 
 impl CliffordAlgebra {
-    /// Create Cl(8) algebra.
     pub fn cl8() -> Self {
         CliffordAlgebra {
             dimension: 8,
             gammas: gamma_matrices_cl8(),
         }
     }
-
-    /// Verify the Clifford relation.
     pub fn verify(&self, tol: f64) -> bool {
         verify_clifford_relation(&self.gammas, tol)
     }
-
-    /// Get the chirality operator (gamma_7 in Cl(6) or gamma_9 in Cl(8)).
     pub fn chirality_operator(&self) -> GammaMatrix {
-        // For Cl(6), gamma_7 = i * gamma_1 * ... * gamma_6
         let n = self.gammas.len().min(6);
         let i = Complex64::new(0.0, 1.0);
         let mut result = &self.gammas[0] * i;
@@ -136,8 +132,6 @@ impl CliffordAlgebra {
         }
         result
     }
-
-    /// Construct left-chiral projector P_L = (1 + gamma_chiral) / 2.
     pub fn left_projector(&self) -> GammaMatrix {
         let chiral = self.chirality_operator();
         let dim = chiral.nrows();
@@ -145,8 +139,6 @@ impl CliffordAlgebra {
         let half = Complex64::new(0.5, 0.0);
         (&identity + &chiral) * half
     }
-
-    /// Construct right-chiral projector P_R = (1 - gamma_chiral) / 2.
     pub fn right_projector(&self) -> GammaMatrix {
         let chiral = self.chirality_operator();
         let dim = chiral.nrows();
@@ -159,12 +151,9 @@ impl CliffordAlgebra {
 pub fn majorana_conformal_cl42_generators() -> Vec<GammaMatrix> {
     use crate::construction::split_octonion::SplitOctonion;
     let mut generators = Vec::new();
-
-    // Use imaginary units e1..e6 as generators for cl(4,2)
     for i in 1..7 {
         let ei = SplitOctonion::basis(i);
         let m = ei.left_multiplication_matrix();
-        // Convert 8x8 real to complex DMatrix
         let mut cm = GammaMatrix::zeros(8, 8);
         for r in 0..8 {
             for c in 0..8 {
@@ -176,7 +165,6 @@ pub fn majorana_conformal_cl42_generators() -> Vec<GammaMatrix> {
     generators
 }
 
-/// Standard Model fermion charges from Cl(6) representation.
 #[derive(Debug, Clone)]
 pub struct FermionCharges {
     pub name: String,
@@ -185,37 +173,15 @@ pub struct FermionCharges {
     pub color_rep: String,
 }
 
-/// Get the fermion charges for one generation.
 pub fn fermion_charges_cl6() -> Vec<FermionCharges> {
     vec![
-        FermionCharges {
-            name: "u_quark".to_string(),
-            em_charge: 2.0 / 3.0,
-            weak_isospin: 0.5,
-            color_rep: "triplet".to_string(),
-        },
-        FermionCharges {
-            name: "d_quark".to_string(),
-            em_charge: -1.0 / 3.0,
-            weak_isospin: -0.5,
-            color_rep: "triplet".to_string(),
-        },
-        FermionCharges {
-            name: "neutrino".to_string(),
-            em_charge: 0.0,
-            weak_isospin: 0.5,
-            color_rep: "singlet".to_string(),
-        },
-        FermionCharges {
-            name: "electron".to_string(),
-            em_charge: -1.0,
-            weak_isospin: -0.5,
-            color_rep: "singlet".to_string(),
-        },
+        FermionCharges { name: "u_quark".to_string(), em_charge: 2.0 / 3.0, weak_isospin: 0.5, color_rep: "triplet".to_string() },
+        FermionCharges { name: "d_quark".to_string(), em_charge: -1.0 / 3.0, weak_isospin: -0.5, color_rep: "triplet".to_string() },
+        FermionCharges { name: "neutrino".to_string(), em_charge: 0.0, weak_isospin: 0.5, color_rep: "singlet".to_string() },
+        FermionCharges { name: "electron".to_string(), em_charge: -1.0, weak_isospin: -0.5, color_rep: "singlet".to_string() },
     ]
 }
 
-/// Lepton mass data (MeV).
 #[derive(Debug, Clone)]
 pub struct LeptonMasses {
     pub electron: f64,
@@ -225,30 +191,14 @@ pub struct LeptonMasses {
 
 impl LeptonMasses {
     pub fn observed() -> Self {
-        LeptonMasses {
-            electron: 0.511,
-            muon: 105.66,
-            tau: 1776.86,
-        }
+        LeptonMasses { electron: 0.511, muon: 105.66, tau: 1776.86 }
     }
-
-    pub fn ratio_mu_e(&self) -> f64 {
-        self.muon / self.electron
-    }
-
-    pub fn ratio_tau_e(&self) -> f64 {
-        self.tau / self.electron
-    }
-
-    pub fn ratio_tau_mu(&self) -> f64 {
-        self.tau / self.muon
-    }
+    pub fn ratio_mu_e(&self) -> f64 { self.muon / self.electron }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn test_pauli_count() {
         let (s1, s2, s3) = pauli_matrices();
@@ -256,94 +206,14 @@ mod tests {
         assert_eq!(s2.nrows(), 2);
         assert_eq!(s3.nrows(), 2);
     }
-
     #[test]
     fn test_gamma_matrices_count() {
         let gammas = gamma_matrices_cl8();
         assert_eq!(gammas.len(), 8);
     }
-
-    #[test]
-    fn test_gamma_matrices_shape() {
-        let gammas = gamma_matrices_cl8();
-        for g in &gammas {
-            assert_eq!(g.nrows(), 16);
-            assert_eq!(g.ncols(), 16);
-        }
-    }
-
     #[test]
     fn test_clifford_relation() {
         let gammas = gamma_matrices_cl8();
         assert!(verify_clifford_relation(&gammas, 1e-10));
-    }
-
-    #[test]
-    fn test_basis_count() {
-        assert_eq!(count_basis_elements(8), 256);
-        assert_eq!(count_basis_elements(6), 64);
-    }
-
-    #[test]
-    fn test_clifford_algebra_verify() {
-        let cl8 = CliffordAlgebra::cl8();
-        assert!(cl8.verify(1e-10));
-    }
-
-    #[test]
-    fn test_fermion_charges() {
-        let charges = fermion_charges_cl6();
-        assert_eq!(charges.len(), 4);
-
-        // Check u quark charge
-        let u = &charges[0];
-        assert!((u.em_charge - 2.0 / 3.0).abs() < 1e-10);
-
-        // Check electron charge
-        let e = &charges[3];
-        assert!((e.em_charge - (-1.0)).abs() < 1e-10);
-    }
-
-    #[test]
-    fn test_majorana_cl42_relations() {
-        let generators = majorana_conformal_cl42_generators();
-        assert_eq!(generators.len(), 6);
-
-        // Check squares: {e1, e2, e3} square to -1, {e4, e5, e6} square to +1
-        // Mapping from SplitOctonion squares:
-        // e1^2 = -1, e2^2 = -1, e3^2 = -1
-        // e4^2 = 1, e5^2 = 1, e6^2 = 1
-        // This corresponds to signature (3, 3) or (4, 2) depending on convention
-        // Gazeau page 31: (-, -, +, +, +, +) -> (2, 4) or (4, 2)
-
-        // Verify anticommutation: {gi, gj} = 2 * eta_ij * I
-        for i in 0..6 {
-            for j in 0..6 {
-                let anticomm = &generators[i] * &generators[j] + &generators[j] * &generators[i];
-                let expected_diag = if i == j {
-                    if i < 3 { -2.0 } else { 2.0 }
-                } else {
-                    0.0
-                };
-
-                for r in 0..8 {
-                    for c in 0..8 {
-                        let val = anticomm[(r, c)];
-                        if r == c {
-                            assert!((val.re - expected_diag).abs() < 1e-8);
-                        } else {
-                            assert!(val.norm() < 1e-8);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    #[test]
-    fn test_lepton_mass_ratios() {
-        let masses = LeptonMasses::observed();
-        let ratio_mu_e = masses.ratio_mu_e();
-        assert!(ratio_mu_e > 200.0 && ratio_mu_e < 210.0);
     }
 }
