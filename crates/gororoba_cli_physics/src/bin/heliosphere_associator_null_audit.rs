@@ -63,7 +63,10 @@ fn main() -> Result<()> {
 
     let mut all_rows = Vec::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
-        all_rows.push(result?);
+        let r = result?;
+        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+            all_rows.push(r);
+        }
     }
 
     // Group by mission + product
