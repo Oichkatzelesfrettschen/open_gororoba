@@ -52,6 +52,7 @@
 pub mod aot_cubins;
 pub mod bench_kernels;
 pub mod box_counting_gpu;
+pub mod alignment_gpu;
 pub mod chingon_gpu;
 pub mod kernel_selector;
 pub mod managed_memory;

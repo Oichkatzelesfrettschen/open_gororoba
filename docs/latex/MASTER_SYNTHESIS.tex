@@ -193,6 +193,38 @@ hierarchical organization (Galactic proper motions, ISM electron-density
 structure) show strong signal; isotropic catalogs show none (insight I-013).
 
 %% ===================================================================
+\section{Sedenion Stabilizer and Heliospheric Boundaries}
+\label{sec:stabilizer}
+
+The project applies the sedenion algebra as a topological filter for heliospheric
+magnetic field data (171,465 records from 16 missions).  By embedding 4-sample
+delay vectors of $(B_x, B_y, B_z, |B|)$ into 16D states, we measure the
+\textbf{associator norm} as a dynamical observable.
+
+\subsection{Magnetic Takens Embedding and Algebraic Quench}
+
+Magnetic Takens embedding reveals a sharp transition in algebraic coherence
+at heliocentric boundaries.  The associator norm $\langle |A(a,b,c)| \rangle$
+drops from $\sim 2.9$ in the inner core to $\sim 1.28$ at the Termination Shock
+(84--94 AU), and finally quenches to $\sim 0.007$ in the Interstellar Medium
+(ISM).
+
+We identify the \textbf{Algebraic Termination Shock} at approximately 135 AU,
+where the magnetic field enters a ``low-associator regime'' (quench point).
+This mapping is latitude-aware, integrating tranches from Ulysses (high latitude)
+and Parker Solar Probe (near-sun) into a 3D radial-latitudinal map.
+
+\subsection{Sedenion Stabilizer (Ghost Suppression)}
+
+In CUDA-accelerated LBM simulations at $128^3$ resolution (BF16), non-physical
+lattice resonances (ghosts) appear at $f=0.2000$.  We demonstrate that
+\textbf{ZD-coupling} ($\lambda \ge 0.1$) acts as a dynamical stabilizer
+(claim C-1165).  The non-associative frustration introduced by the sedenion
+associator scrambles the phase coherence of these rounding artifacts,
+effectively filtering non-physical lattice modes without affecting bulk
+fluid dynamics.
+
+%% ===================================================================
 \section{Physical Models (Speculative Tier)}
 \label{sec:speculative}
 

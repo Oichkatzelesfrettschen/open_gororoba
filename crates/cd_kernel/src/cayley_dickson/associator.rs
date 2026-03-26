@@ -22,6 +22,18 @@ pub fn cd_associator_norm(a: &[f64], b: &[f64], c: &[f64]) -> f64 {
     cd_norm_sq(&assoc).sqrt()
 }
 
+#[inline]
+fn simd_available_x86_64() -> bool {
+    #[cfg(target_arch = "x86_64")]
+    {
+        is_x86_feature_detected!("avx2") && is_x86_feature_detected!("fma")
+    }
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        false
+    }
+}
+
 pub fn batch_associator_norms(
     a_flat: &[f64],
     b_flat: &[f64],
@@ -92,6 +104,60 @@ pub fn batch_associator_norms_parallel(
                 &b_flat[start..end],
                 &c_flat[start..end],
             )
+        })
+        .collect()
+}
+
+/// Batch compute sedenion associator norms for a sequence of 16D vectors.
+///
+/// Uses sliding window of 3: Assoc(v[i], v[i+1], v[i+2]).
+/// Optimized with AVX2+FMA if detected at runtime.
+pub fn batch_sedenion_associator_norms(vectors: &[[f64; 16]]) -> Vec<f64> {
+    if vectors.len() < 3 {
+        return Vec::new();
+    }
+
+    let use_simd = simd_available_x86_64();
+
+    (0..vectors.len() - 2)
+        .map(|i| {
+            if use_simd {
+                super::simd::sedenion_associator_norm_sq_flat(
+                    &vectors[i],
+                    &vectors[i + 1],
+                    &vectors[i + 2],
+                )
+                .sqrt()
+            } else {
+                cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2])
+            }
+        })
+        .collect()
+}
+
+/// Parallel batch compute sedenion associator norms for a sequence of 16D vectors.
+///
+/// Uses Rayon for multi-core scaling and AVX2+FMA for per-core throughput.
+pub fn batch_sedenion_associator_norms_parallel(vectors: &[[f64; 16]]) -> Vec<f64> {
+    if vectors.len() < 3 {
+        return Vec::new();
+    }
+
+    let use_simd = simd_available_x86_64();
+
+    (0..vectors.len() - 2)
+        .into_par_iter()
+        .map(|i| {
+            if use_simd {
+                super::simd::sedenion_associator_norm_sq_flat(
+                    &vectors[i],
+                    &vectors[i + 1],
+                    &vectors[i + 2],
+                )
+                .sqrt()
+            } else {
+                cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2])
+            }
         })
         .collect()
 }

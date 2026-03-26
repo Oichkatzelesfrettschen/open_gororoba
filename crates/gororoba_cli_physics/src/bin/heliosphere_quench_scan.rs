@@ -1,5 +1,4 @@
 use anyhow::{Context, Result};
-use cd_kernel::cd_associator_norm;
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
 use data_core::HeliosphereFeatureRow;
@@ -20,11 +19,15 @@ struct Cli {
 
     #[arg(long, default_value_t = 5.0)]
     bin_size_au: f64,
+
+    #[arg(long, default_value_t = 10.0)]
+    lat_bin_size_deg: f64,
 }
 
 #[derive(Debug, Clone, Serialize)]
 struct QuenchBin {
     r_center_au: f64,
+    lat_center_deg: f64,
     mean_associator: f64,
     median_associator: f64,
     max_associator: f64,
@@ -52,14 +55,15 @@ fn main() -> Result<()> {
         mission_groups.entry((row.mission.clone(), row.product.clone())).or_default().push(row);
     }
 
-    let mut associator_data: Vec<(f64, f64, String)> = Vec::new(); // (r_au, associator, mission)
+    let mut associator_data: Vec<(f64, f64, f64, String)> = Vec::new(); // (r_au, lat_deg, associator, mission)
 
-    println!("[1/2] Computing Takens associators with r_au awareness...");
+    println!("[1/2] Computing Takens associators with 3D (r, lat) awareness...");
     for ((mission, _product), rows) in mission_groups {
-        if rows.len() < 6 { continue; } // Need at least 4 for v16 + 2 more for triple
+        if rows.len() < 6 { continue; }
 
         let mut embedded_vectors = Vec::new();
         let mut r_aus = Vec::new();
+        let mut lats = Vec::new();
 
         for window in rows.windows(4) {
             let mut v16 = [0.0; 16];
@@ -74,26 +78,28 @@ fn main() -> Result<()> {
             }
             embedded_vectors.push(v16);
             r_aus.push(window[3].r_au);
+            lats.push(window[3].lat_deg);
         }
 
-        for (i, w) in embedded_vectors.windows(3).enumerate() {
-            let norm = cd_associator_norm(&w[0], &w[1], &w[2]);
-            if norm.is_finite() {
-                associator_data.push((r_aus[i + 2], norm, mission.clone()));
-            }
+        let associators = cd_kernel::batch_sedenion_associator_norms_parallel(&embedded_vectors);
+        for (i, &norm) in associators.iter().enumerate() {
+            associator_data.push((r_aus[i + 2], lats[i + 2], norm, mission.clone()));
         }
     }
 
-    println!("[2/2] Aggregating {} samples into radial bins...", associator_data.len());
-    let mut bins: BTreeMap<i32, Vec<(f64, String)>> = BTreeMap::new();
-    for (r, norm, mission) in associator_data {
-        let bin_idx = (r / cli.bin_size_au).floor() as i32;
-        bins.entry(bin_idx).or_default().push((norm, mission));
+    println!("[2/2] Aggregating {} samples into 3D bins (r, lat)...", associator_data.len());
+    let mut bins: BTreeMap<(i32, i32), Vec<(f64, String)>> = BTreeMap::new();
+    for (r, lat, norm, mission) in associator_data {
+        let r_bin = (r / cli.bin_size_au).floor() as i32;
+        let lat_bin = (lat / cli.lat_bin_size_deg).floor() as i32;
+        bins.entry((r_bin, lat_bin)).or_default().push((norm, mission));
     }
 
     let mut writer = WriterBuilder::new().from_path(&cli.out_csv)?;
-    for (bin_idx, samples) in bins {
-        let r_center = (bin_idx as f64 + 0.5) * cli.bin_size_au;
+    for ((r_bin, lat_bin), samples) in bins {
+        let r_center = (r_bin as f64 + 0.5) * cli.bin_size_au;
+        let lat_center = (lat_bin as f64 + 0.5) * cli.lat_bin_size_deg;
+        
         let mut values: Vec<f64> = samples.iter().map(|(v, _)| *v).collect();
         values.sort_by(|a, b| a.partial_cmp(b).unwrap());
         
@@ -104,6 +110,7 @@ fn main() -> Result<()> {
 
         writer.serialize(QuenchBin {
             r_center_au: r_center,
+            lat_center_deg: lat_center,
             mean_associator: mean,
             median_associator: median,
             max_associator: max,

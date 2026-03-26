@@ -1,5 +1,4 @@
 use anyhow::{Context, Result};
-use cd_kernel::cd_associator_norm;
 use chrono::Utc;
 use clap::Parser;
 use csv::ReaderBuilder;
@@ -140,10 +139,7 @@ where
 
     for ((mission, product), rows) in groups {
         let vectors = embed_fn(rows);
-        let associators: Vec<f64> = vectors
-            .windows(3)
-            .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-            .collect();
+        let associators = cd_kernel::batch_sedenion_associator_norms(&vectors);
 
         if associators.is_empty() { continue; }
 
@@ -166,9 +162,10 @@ where
         for _ in 0..null_iters {
             let mut shuffled = vectors.clone();
             shuffled.shuffle(&mut thread_rng());
-            let m = shuffled.windows(3)
-                .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-                .sum::<f64>() / (shuffled.len().max(3) - 2) as f64;
+            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled);
+            let m = if associators.is_empty() { 0.0 } else {
+                associators.iter().sum::<f64>() / associators.len() as f64
+            };
             iteration_means.push(m);
         }
         shuffle_nulls.push(GroupNullSummary {
@@ -195,9 +192,10 @@ where
                 shuffled_vectors.push(v_perm);
             }
 
-            let m = shuffled_vectors.windows(3)
-                .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-                .sum::<f64>() / (shuffled_vectors.len().max(3) - 2) as f64;
+            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled_vectors);
+            let m = if associators.is_empty() { 0.0 } else {
+                associators.iter().sum::<f64>() / associators.len() as f64
+            };
             iteration_means.push(m);
         }
         permute_nulls.push(GroupNullSummary {
@@ -233,10 +231,7 @@ fn audit_invariant_embedding(
             v
         }).collect();
 
-        let associators: Vec<f64> = vectors
-            .windows(3)
-            .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-            .collect();
+        let associators = cd_kernel::batch_sedenion_associator_norms(&vectors);
 
         if associators.is_empty() { continue; }
 
@@ -259,9 +254,10 @@ fn audit_invariant_embedding(
         for _ in 0..null_iters {
             let mut shuffled = vectors.clone();
             shuffled.shuffle(&mut thread_rng());
-            let m = shuffled.windows(3)
-                .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-                .sum::<f64>() / (shuffled.len().max(3) - 2) as f64;
+            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled);
+            let m = if associators.is_empty() { 0.0 } else {
+                associators.iter().sum::<f64>() / associators.len() as f64
+            };
             iteration_means.push(m);
         }
         shuffle_nulls.push(GroupNullSummary {
@@ -288,9 +284,10 @@ fn audit_invariant_embedding(
                 shuffled_vectors.push(v_perm);
             }
 
-            let m = shuffled_vectors.windows(3)
-                .map(|w| cd_associator_norm(&w[0], &w[1], &w[2]))
-                .sum::<f64>() / (shuffled_vectors.len().max(3) - 2) as f64;
+            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled_vectors);
+            let m = if associators.is_empty() { 0.0 } else {
+                associators.iter().sum::<f64>() / associators.len() as f64
+            };
             iteration_means.push(m);
         }
         permute_nulls.push(GroupNullSummary {
