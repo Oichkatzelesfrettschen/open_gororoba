@@ -1854,9 +1854,9 @@ different first landings:
    FLOAT_OPS-based abstract quaternion lift plus abstract matrix
    action/Gram/generator slice, abstract parameterized generalized-family
    lane, abstract near-identity/infinitesimal slice, abstract
-   section-5/6-to-section-7 handoff, and abstract section-7 exclusion slice
-   to any broader field-abstract obstruction semantics that prove worth
-   landing.
+   section-5/6-to-section-7 handoff, abstract section-7 exclusion slice, and
+   the new FLOAT_OPS-based presentation-to-obstruction surface to the fuller
+   field-abstract obstruction semantics that still remain open.
 4. Record Cullen (1965) as source-available rather than blocked, then decide
    where its quaternionic-analysis lane belongs relative to the algebra-first
    pre-Moreno chain.
@@ -1920,7 +1920,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | 1898 | Hurwitz | `crates/hurwitz_1898/` + `proofs/theories/HurwitzTheorem.v` | tracked CD-tower fixed-point classification is formalized; full all-`n` matrix converse still open |
 | 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | module-dimension surface plus abstract n=2 cyclic, section-1 matric, split-root projector, coefficient spectral, matrix-unit, total-matric, abstract cyclic/matric, and higher-n-shaped section-1 cyclic-presentation and associative-presentation interfaces, the generic n=2 specialization bridge, explicit Wedderburn-to-Dickson handoff theorems, primitive and section-2 criterion interfaces, quaternion/generalized-quaternion cyclic-generation and determinant/two-sided-invertibility lanes, and section-2 decomposition plus coefficient/affine primitive criteria, nonrepresentation/singular-witness criteria, a surfaced generalized-quaternion division criterion under anisotropy, and explicit section-1 matrix-coordinate and paper-order cyclic-presentation decomposition theorems landed; the remaining open boundary is the broader all-n primitive/matric theorem layer beyond the current n=2 realizations |
 | 1919 | Dickson | `crates/dickson_1919/` + `proofs/theories/DicksonCDProcess.v` | paired lane is in place; Wedderburn now hands off explicitly into the generalized quaternion presentation shared by the Dickson 1919/1921 lanes |
-| 1921 | Dickson companion note | `proofs/theories/Dickson1921.v` | abstract paper surface plus real-parameter generalized family, generalized/canonical matrix lanes, generalized basis-generator relations, section-6 determinant/table/conclusion, section-7 exclusion summary and paper-dimension classification, and a FLOAT_OPS-based abstract quaternion lift plus abstract matrix action/Gram/generator slice, abstract parameterized generalized-family lane, abstract near-identity/infinitesimal slice, abstract section-5/6-to-section-7 handoff, and abstract section-7 exclusion/classification slice landed; Wedderburn's section-1 presentation surfaces now hand off explicitly into this lane, whose next frontier is broader field-abstract obstruction semantics |
+| 1921 | Dickson companion note | `proofs/theories/Dickson1921.v` | abstract paper surface plus real-parameter generalized family, generalized/canonical matrix lanes, generalized basis-generator relations, section-6 determinant/table/conclusion, section-7 exclusion summary and paper-dimension classification, and a FLOAT_OPS-based abstract quaternion lift plus abstract matrix action/Gram/generator slice, abstract parameterized generalized-family lane, abstract near-identity/infinitesimal slice, abstract section-5/6-to-section-7 handoff, abstract section-7 exclusion/classification slice, and a FLOAT_OPS-based presentation-to-obstruction surface landed; Wedderburn's section-1 presentation surfaces now hand off explicitly into this lane, whose next frontier is fuller field-abstract obstruction semantics |
 | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
 | 1945 | Schafer | `crates/schafer_1945/` + `proofs/theories/SchaferDivAlg16.v` | paired lane is in place |
 | 1951 | Freudenthal | support material only | exact original remains missing |
@@ -1941,7 +1941,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
   division-criterion lane, but its handoff into Dickson is now explicit;
   Dickson (1921) now becomes the active next theorem lane and still needs its
   fuller field-abstract obstruction semantics beyond the landed abstract
-  section-7 exclusion/classification slice,
+  section-7 exclusion/classification and presentation-to-obstruction surfaces,
   Schafer (1954) still
   needs its derivation-algebra / type-G lane,
   and Brown (1972) still needs Chapters III-VI plus a Rocq Appendix C bridge.
