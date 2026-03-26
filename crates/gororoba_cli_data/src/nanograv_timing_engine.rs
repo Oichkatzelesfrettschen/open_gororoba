@@ -587,7 +587,7 @@ pub fn build_independent_dataset(
         ));
     }
 
-    // WHY: per-TOA residual computation is embarrassingly parallel — each call is
+    // WHY: per-TOA residual computation is embarrassingly parallel -- each call is
     // independent (read-only model and ephemeris). Rayon par_iter gives near-linear
     // speedup on the ~1000-2000 TOA baseline pass that dominates dataset construction.
     let mut observations = all_toas
@@ -1010,8 +1010,8 @@ fn build_joint_system(
         sigma[next_prior_row] = *prior_sigma;
     }
 
-    // First pass: analytic columns — O(N_obs) each, cheap.
-    // Second pass: numerical-diff columns — O(N_obs) residual evals × 2, parallelized.
+    // First pass: analytic columns -- O(N_obs) each, cheap.
+    // Second pass: numerical-diff columns -- O(N_obs) residual evals x 2, parallelized.
     // WHY: analytic columns (PHASE_OFFSET, DM/DMX, JUMP@, DMJUMP@, FD) are fast
     // sequential fills. Numerical-diff columns require two forward-model calls per
     // observation; collecting them for a parallel rayon sweep gives near-linear speedup

@@ -234,7 +234,7 @@ fn handle_data(cmd: DataCmd) {
         DataCmd::Orix { target } => {
             let path = Path::new(&target);
             if let Err(e) = download_orix_dataset(path) {
-                eprintln!("❌ Failed to download orix-data: {}", e);
+                eprintln!("<EMOJI+274C> Failed to download orix-data: {}", e);
                 std::process::exit(1);
             }
         }

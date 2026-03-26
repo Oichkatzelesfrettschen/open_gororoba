@@ -1,4 +1,4 @@
-//! `gororoba-db` — unified Rust-native CLI for the SQLite source-of-truth.
+//! `gororoba-db` -- unified Rust-native CLI for the SQLite source-of-truth.
 //!
 //! This binary consolidates all database interaction into a single
 //! entrypoint: schema introspection, statistics, querying, import/export
@@ -489,11 +489,11 @@ fn cmd_import_knowledge(
             }
         }
         println!(
-            "  ✓ Imported {count} equation atoms from {}",
+            "  <EMOJI+2713> Imported {count} equation atoms from {}",
             eq_path.display()
         );
     } else {
-        println!("  ⚠ Equation atoms file not found: {}", eq_path.display());
+        println!("  <EMOJI+26A0> Equation atoms file not found: {}", eq_path.display());
     }
 
     // Import proof skeletons
@@ -554,11 +554,11 @@ fn cmd_import_knowledge(
             }
         }
         println!(
-            "  ✓ Imported {count} proof skeletons from {}",
+            "  <EMOJI+2713> Imported {count} proof skeletons from {}",
             ps_path.display()
         );
     } else {
-        println!("  ⚠ Proof skeletons file not found: {}", ps_path.display());
+        println!("  <EMOJI+26A0> Proof skeletons file not found: {}", ps_path.display());
     }
 
     // Import derivation steps
@@ -651,11 +651,11 @@ fn cmd_import_knowledge(
             }
         }
         println!(
-            "  ✓ Imported {count} derivation steps from {}",
+            "  <EMOJI+2713> Imported {count} derivation steps from {}",
             ds_path.display()
         );
     } else {
-        println!("  ⚠ Derivation steps file not found: {}", ds_path.display());
+        println!("  <EMOJI+26A0> Derivation steps file not found: {}", ds_path.display());
     }
 
     println!("Knowledge import complete.");
@@ -719,11 +719,11 @@ fn cmd_import_planning(
             }
         }
         println!(
-            "  ✓ Imported {count} roadmap workstreams from {}",
+            "  <EMOJI+2713> Imported {count} roadmap workstreams from {}",
             rm_path.display()
         );
     } else {
-        println!("  ⚠ Roadmap file not found: {}", rm_path.display());
+        println!("  <EMOJI+26A0> Roadmap file not found: {}", rm_path.display());
     }
 
     // Import todo
@@ -767,9 +767,9 @@ fn cmd_import_planning(
                 }
             }
         }
-        println!("  ✓ Imported {count} todo items from {}", td_path.display());
+        println!("  <EMOJI+2713> Imported {count} todo items from {}", td_path.display());
     } else {
-        println!("  ⚠ Todo file not found: {}", td_path.display());
+        println!("  <EMOJI+26A0> Todo file not found: {}", td_path.display());
     }
 
     // Import next actions
@@ -814,11 +814,11 @@ fn cmd_import_planning(
             }
         }
         println!(
-            "  ✓ Imported {count} next actions from {}",
+            "  <EMOJI+2713> Imported {count} next actions from {}",
             na_path.display()
         );
     } else {
-        println!("  ⚠ Next actions file not found: {}", na_path.display());
+        println!("  <EMOJI+26A0> Next actions file not found: {}", na_path.display());
     }
 
     println!("Planning import complete.");
@@ -836,7 +836,7 @@ fn cmd_import_narratives(
 
     let path = repo_root.join(&args.narratives);
     if !path.exists() {
-        println!("  ⚠ Narratives file not found: {}", path.display());
+        println!("  <EMOJI+26A0> Narratives file not found: {}", path.display());
         return Ok(());
     }
 
@@ -890,7 +890,7 @@ fn cmd_import_narratives(
     }
 
     println!(
-        "  ✓ Imported {count} research narratives from {}",
+        "  <EMOJI+2713> Imported {count} research narratives from {}",
         path.display()
     );
     println!("Narrative import complete.");
@@ -1086,7 +1086,7 @@ fn cmd_archive_legacy(repo_root: &Path) -> Result<()> {
     ];
     for path in &archive_dirs {
         let full = repo_root.join(path);
-        let status = if full.exists() { "✓" } else { "✗" };
+        let status = if full.exists() { "<EMOJI+2713>" } else { "<EMOJI+2717>" };
         println!("    {status} {path}");
     }
 
@@ -1193,7 +1193,7 @@ fn cmd_notebooks(store: &ProvenanceStore, args: &NotebookArgs) -> Result<()> {
                 cell_count: 0,
                 cells_json: "[]",
             })?;
-            println!("Created notebook session: {id} — \"{title}\"");
+            println!("Created notebook session: {id} -- \"{title}\"");
         }
     }
     Ok(())

@@ -232,7 +232,7 @@ impl E8Lattice {
             .collect()
     }
 
-    /// Compute the E8 theta function Θ_E8(τ) = Σ q^(||λ||^2) up to a max norm squared.
+    /// Compute the E8 theta function \Theta_E8(\tau) = \Sigma q^(||\lambda||^2) up to a max norm squared.
     ///
     /// The theta function for E8 is a modular form of weight 4 for SL(2, Z).
     pub fn compute_theta_function(&self, q: f64, max_norm_sq: usize) -> f64 {
@@ -278,7 +278,7 @@ impl E8Lattice {
     /// Compute the sphere packing density for E8.
     ///
     /// The E8 lattice achieves the optimal sphere packing in 8 dimensions.
-    /// Density Δ = V_8(r) / det(L), where r = 1 (half of min distance sqrt(2)).
+    /// Density \Delta = V_8(r) / det(L), where r = 1 (half of min distance sqrt(2)).
     /// Wait, min distance is sqrt(2), so r = sqrt(2)/2 = 1/sqrt(2).
     /// V_8(r) = (pi^4 / 24) * r^8.
     /// det(E8) = 1.
@@ -295,14 +295,14 @@ impl E8Lattice {
 /// These are the dual basis to the simple roots.
 pub fn e8_fundamental_weights() -> [[f64; 8]; 8] {
     [
-        [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], // ω_1
-        [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.0, 0.0], // ω_2
-        [3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.0, 0.0], // ω_3
-        [4.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 0.0], // ω_4
-        [5.0, 4.0, 3.0, 2.0, 2.0, 1.0, 1.0, 0.0], // ω_5
-        [4.0, 3.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0], // ω_6
-        [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0], // ω_7
-        [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // ω_8
+        [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], // \omega_1
+        [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.0, 0.0], // \omega_2
+        [3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 1.0, 0.0], // \omega_3
+        [4.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 0.0], // \omega_4
+        [5.0, 4.0, 3.0, 2.0, 2.0, 1.0, 1.0, 0.0], // \omega_5
+        [4.0, 3.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0], // \omega_6
+        [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0], // \omega_7
+        [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // \omega_8
     ]
     .map(|mut w| {
         for val in &mut w {

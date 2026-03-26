@@ -61,8 +61,8 @@
 //! - **Sand Mandalas:** A direct result of carry-bit overflow. These are sparse Emanation
 //!   Tables found in the Pathions containing only 3 Box-Kites (instead of the expected 7)
 //!   with severe DMZ (Dyads Making Zero) sparsity.
-//! - **Muster Master (Atlas) & Pléiades:** Pathions feature higher-order ensembles like the
-//!   7 "Pléiades" septets, and the "Muster Master" which uniquely maps Box-Kite zigzags
+//! - **Muster Master (Atlas) & Pleiades:** Pathions feature higher-order ensembles like the
+//!   7 "Pleiades" septets, and the "Muster Master" which uniquely maps Box-Kite zigzags
 //!   to Octonion triplets, serving as a topological atlas for ZD patterns.
 
 //!

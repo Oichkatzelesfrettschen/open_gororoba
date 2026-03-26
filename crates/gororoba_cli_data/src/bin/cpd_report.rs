@@ -1,11 +1,13 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use clap::Parser;
-use quick_xml::events::Event;
-use quick_xml::reader::Reader;
+use quick_xml::{events::Event, reader::Reader};
 use std::io::{self, Read};
 
 #[derive(Parser, Debug)]
-#[command(name = "cpd-report", about = "PMD CPD XML report formatter (Rust replacement for cpd_report.py)")]
+#[command(
+    name = "cpd-report",
+    about = "PMD CPD XML report formatter (Rust replacement for cpd_report.py)"
+)]
 struct Cli {
     #[arg(long)]
     strict: bool,
@@ -54,40 +56,40 @@ fn main() -> Result<()> {
 
     loop {
         match reader.read_event_into(&mut buf) {
-            Ok(Event::Start(e)) => {
-                match e.name().as_ref() {
-                    b"duplication" => {
-                        let mut dup = Duplication::default();
+            Ok(Event::Start(e)) => match e.name().as_ref() {
+                b"duplication" => {
+                    let mut dup = Duplication::default();
+                    for attr in e.attributes().flatten() {
+                        match attr.key.as_ref() {
+                            b"lines" => dup.lines = std::str::from_utf8(&attr.value)?.parse()?,
+                            b"tokens" => dup.tokens = std::str::from_utf8(&attr.value)?.parse()?,
+                            _ => {}
+                        }
+                    }
+                    current_dup = Some(dup);
+                }
+                b"file" => {
+                    if let Some(ref mut dup) = current_dup {
+                        let mut file = CpdFile::default();
                         for attr in e.attributes().flatten() {
                             match attr.key.as_ref() {
-                                b"lines" => dup.lines = std::str::from_utf8(&attr.value)?.parse()?,
-                                b"tokens" => dup.tokens = std::str::from_utf8(&attr.value)?.parse()?,
+                                b"path" => {
+                                    file.path = std::str::from_utf8(&attr.value)?.to_string()
+                                }
+                                b"line" => file.line = std::str::from_utf8(&attr.value)?.parse()?,
                                 _ => {}
                             }
                         }
-                        current_dup = Some(dup);
+                        dup.files.push(file);
                     }
-                    b"file" => {
-                        if let Some(ref mut dup) = current_dup {
-                            let mut file = CpdFile::default();
-                            for attr in e.attributes().flatten() {
-                                match attr.key.as_ref() {
-                                    b"path" => file.path = std::str::from_utf8(&attr.value)?.to_string(),
-                                    b"line" => file.line = std::str::from_utf8(&attr.value)?.parse()?,
-                                    _ => {}
-                                }
-                            }
-                            dup.files.push(file);
-                        }
-                    }
-                    b"codefragment" => {
-                        if let Some(ref mut dup) = current_dup {
-                            dup.codefragment = reader.read_text(e.name())?.to_string();
-                        }
-                    }
-                    _ => {}
                 }
-            }
+                b"codefragment" => {
+                    if let Some(ref mut dup) = current_dup {
+                        dup.codefragment = reader.read_text(e.name())?.to_string();
+                    }
+                }
+                _ => {}
+            },
             Ok(Event::End(e)) => {
                 if e.name().as_ref() == b"duplication" {
                     if let Some(dup) = current_dup.take() {
@@ -124,13 +126,25 @@ fn main() -> Result<()> {
     println!("{}", "-".repeat(72));
 
     for (i, dup) in show.iter().enumerate() {
-        let locs: Vec<String> = dup.files.iter()
+        let locs: Vec<String> = dup
+            .files
+            .iter()
             .map(|f| format!("{}:{}", short_path(&f.path), f.line))
             .collect();
         let loc_str = locs.join("  /  ");
-        println!("{: <4}  {: >6}  {: >7}  {}", i + 1, dup.lines, dup.tokens, loc_str);
+        println!(
+            "{: <4}  {: >6}  {: >7}  {}",
+            i + 1,
+            dup.lines,
+            dup.tokens,
+            loc_str
+        );
         let preview = dup.codefragment.replace('\n', " ");
-        let preview = if preview.len() > 90 { format!("{}...", &preview[..87]) } else { preview };
+        let preview = if preview.len() > 90 {
+            format!("{}...", &preview[..87])
+        } else {
+            preview
+        };
         println!("       {:?}", preview);
     }
 
@@ -139,7 +153,10 @@ fn main() -> Result<()> {
     }
 
     if cli.strict && !dups.is_empty() {
-        eprintln!("\ncpd-audit-strict: FAIL -- {} cluster(s) found.", dups.len());
+        eprintln!(
+            "\ncpd-audit-strict: FAIL -- {} cluster(s) found.",
+            dups.len()
+        );
         std::process::exit(1);
     }
 

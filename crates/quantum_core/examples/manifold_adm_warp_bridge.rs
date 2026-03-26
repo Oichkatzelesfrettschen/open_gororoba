@@ -94,7 +94,7 @@ fn thermodynamic_phi(dim: usize, temp: f64) -> f64 {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Hyperdimensional ADM/Warp Bridge...");
+    println!("<EMOJI+1F30C> Initializing Hyperdimensional ADM/Warp Bridge...");
     println!(
         "   Analyzing the Algebraic York Time Correction under Topo-Thermal Renormalization Flow."
     );
@@ -124,7 +124,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Standard ADM solver requires numeric dt_gamma and spatial derivatives.
     // For this demonstration, we'll use an analytic approximation of the York Time (Theta)
     // for a standard Alcubierre drive at the leading edge:
-    // Theta_GR ≈ -v_s * (x - x_s) / sigma^2  (simplification)
+    // Theta_GR ~= -v_s * (x - x_s) / sigma^2  (simplification)
     // We'll set a representative generic GR York time value for a contracting bubble wall:
     let theta_gr = -0.05;
     let alpha_s = 1.0; // Unit coupling for clear signal visibility
@@ -134,7 +134,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &dim in &dimensions {
         println!("===================================================");
-        println!("🔥 ADM-Warp Analysis for Manifold Dimension: {}", dim);
+        println!("<EMOJI+1F525> ADM-Warp Analysis for Manifold Dimension: {}", dim);
 
         for &t in &temperatures {
             let phi_t = thermodynamic_phi(dim, t);
@@ -169,7 +169,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "✅ Exact ADM Warp algebraic coupling generated at {}",
+        "<EMOJI+2705> Exact ADM Warp algebraic coupling generated at {}",
         out_path.display()
     );
     Ok(())

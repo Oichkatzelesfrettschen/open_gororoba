@@ -3,7 +3,7 @@
 //! Last updated: 2026-02-13
 //!
 //! ## Current Phase
-//! Phase 6 — Root-module synthesis and merge_in reconciliation
+//! Phase 6 -- Root-module synthesis and merge_in reconciliation
 //!
 //! ## Progress Snapshot
 //! - [x] Sync/pull all three repos from origin.

@@ -203,7 +203,7 @@ pub struct MutualZdProperties {
 }
 
 /// Verify Theorem 7.14: If A is a zero divisor in A_4:
-///   i) a1 ≠ ±a2
+///   i) a1 = ±a2
 ///   ii) a1 and a2 are not real numbers
 ///   iii) N(a1) = N(a2)
 ///
@@ -218,7 +218,7 @@ pub fn verify_zd_element_condition_dim4(a: &[f64]) -> ZdElementProperties {
     let n_a1 = cd_norm_sq(a1);
     let n_a2 = cd_norm_sq(a2);
 
-    // i) a1 ≠ ±a2
+    // i) a1 = ±a2
     let a1_plus_a2: Vec<f64> = a1.iter().zip(a2.iter()).map(|(x, y)| x + y).collect();
     let a1_minus_a2: Vec<f64> = a1.iter().zip(a2.iter()).map(|(x, y)| x - y).collect();
     let a1_equals_a2 = cd_norm_sq(&a1_plus_a2) < 1e-10;

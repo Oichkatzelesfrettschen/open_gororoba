@@ -1,4 +1,4 @@
-//! Web page → Markdown extraction crawler (Rust port).
+//! Web page -> Markdown extraction crawler (Rust port).
 //!
 //! Primary engine: chromiumoxide (Headless Chrome) for JS-heavy sites.
 //! Fallback: reqwest + scraper for lightweight HTML extraction.
@@ -163,7 +163,7 @@ impl WebCrawler {
         }
     }
 
-    /// Robust HTML → Markdown conversion.
+    /// Robust HTML -> Markdown conversion.
     /// Removes nav, footer, header, scripts, styles.
     fn html_to_markdown(&self, html: &str) -> String {
         let document = Html::parse_document(html);

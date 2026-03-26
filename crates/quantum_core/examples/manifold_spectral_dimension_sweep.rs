@@ -44,7 +44,7 @@ use algebra_experimental::fractal_dimension::compute_zd_fractal_dimension;
 // We map the scale parameter 's' to the Dimensional ZD topology.
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Algebraic Spectral Dimension Sweep...");
+    println!("<EMOJI+1F30C> Initializing Algebraic Spectral Dimension Sweep...");
 
     // We compute the exact algebraic fractal dimensions for CD manifolds
     let fbf_16d = 0.5;
@@ -75,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let s_64d = compute_s(df_64d);
 
     println!("===================================================");
-    println!("🔥 Topo-Spectral Coupling Analysis:");
+    println!("<EMOJI+1F525> Topo-Spectral Coupling Analysis:");
     println!("   (Mapping Discrete ZD Topology to Continuous Quantum Gravity)");
     println!("   16D Effective Scale s: {:.6}", s_16d);
     println!("   32D Effective Scale s: {:.6}", s_32d);
@@ -95,7 +95,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     writeln!(file, "64,{},{}", df_64d, s_64d)?;
 
     println!(
-        "✅ Exact spectral mappings generated at {}",
+        "<EMOJI+2705> Exact spectral mappings generated at {}",
         out_path.display()
     );
     Ok(())

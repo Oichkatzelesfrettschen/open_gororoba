@@ -19,7 +19,7 @@ use verified_core::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Exact Unified Action Sweep...");
+    println!("<EMOJI+1F30C> Initializing Exact Unified Action Sweep...");
     println!("   Utilizing Discrete Topological Associator Flux Invariants");
 
     let steps = 10000;
@@ -76,7 +76,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             )?;
         }
 
-        println!("\n🔍 Analysis Results for Dimension {}:", dim);
+        println!("\n<EMOJI+1F50D> Analysis Results for Dimension {}:", dim);
         println!("   - Bare Vacuum Attractor (GUT Scale): {:.6}", VACUUM_PHI);
         println!("   - Effective Imbalance (Max Action):  {:.6}", optimal_phi);
 
@@ -95,7 +95,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "\n✅ Sweep complete. High-precision data written to {}",
+        "\n<EMOJI+2705> Sweep complete. High-precision data written to {}",
         out_path.display()
     );
 

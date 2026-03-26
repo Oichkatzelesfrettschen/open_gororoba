@@ -238,7 +238,7 @@ mod tests {
     #[test]
     fn test_polarization_identity_same_element() {
         // When x = y: N(2x) + N(0) = 2(N(x) + N(x))
-        // Which is: 4*N(x) = 4*N(x) ✓
+        // Which is: 4*N(x) = 4*N(x) <EMOJI+2713>
         let x = random_sedenion(203);
         let err = verify_polarization_identity(&x, &x);
         assert!(

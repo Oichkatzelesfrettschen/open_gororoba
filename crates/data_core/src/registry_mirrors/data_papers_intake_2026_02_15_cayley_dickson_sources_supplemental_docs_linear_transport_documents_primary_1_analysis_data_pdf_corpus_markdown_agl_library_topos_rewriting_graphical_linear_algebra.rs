@@ -815,8 +815,8 @@
 //! 𝑅 [𝑓 ] : R𝑛 × R𝑚 → R𝑛
 //! sends a pair (𝑥, 𝑣) to 𝐽 [𝑓 ]𝑇 (𝑥) · 𝑣: the transpose of the Jacobian of 𝑓 at 𝑥 in the direction 𝑣.
 //! For example, if 𝑓 : R2 → R3 is defined as 𝑓 (𝑥 1, 𝑥 2 ) := (𝑥 13 + 2𝑥 1𝑥 2, 𝑥 2, sin(𝑥 1 )), then 𝑅 [𝑓 ] :
-//! 
-//!  𝑣 
+//! 
+//!  𝑣 
 //! 3𝑥 1 + 2𝑥 2 0 cos(𝑥 1 )  1 
 //! 2
 //! 3

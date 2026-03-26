@@ -9,7 +9,7 @@ use verified_core::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Bott Periodicity Mod 8 Action Sweep...");
+    println!("<EMOJI+1F30C> Initializing Bott Periodicity Mod 8 Action Sweep...");
 
     let steps = 1000;
     let out_dir = Path::new("data/results");
@@ -71,6 +71,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    println!("✅ Sweep complete. Data written to {}", out_path.display());
+    println!("<EMOJI+2705> Sweep complete. Data written to {}", out_path.display());
     Ok(())
 }

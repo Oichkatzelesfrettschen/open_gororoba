@@ -212,11 +212,11 @@
 //! u }i=1 and {xF }i=1 be the set of randomly selected training and residual points, respectively. These points are
 //! usually drawn from an unknown a priori distribution and chosen from a given input data. The PINN algorithm aims
 //! to learn a surrogate u ≈ uΘ̃ to compute the solution u for a given PDE. The loss function for the PINN is given as
-//!  
-//! 
-//! 
-//! 
-//! 
+//!  
+//! 
+//! 
+//! 
+//! 
 //! Nu
 //! NF
 //! L Θ̃ = Wu MSEu Θ̃; {xu(i) }i=1
@@ -229,9 +229,9 @@
 //! --- PAGE BREAK ---
 //! where Wu and WF are the weights for the data and residual losses, respectively. The mean square error is given by
 //! Nu
-//!  2
-//! 
-//! 
+//!  2
+//! 
+//! 
 //! 1 X
 //! Nu
 //! ,
@@ -241,9 +241,9 @@
 //! u }i=1 =
 //! Nu i=1
 //! NF
-//!  2
-//! 
-//! 
+//!  2
+//! 
+//! 
 //! 1 X
 //! NF
 //! ,
@@ -840,13 +840,13 @@
 //! Nuq
 //! uΘ̃q =DNN({x(i)
 //! uq }i=1 , Wq , bq );
-//!  
+//!  
 //! compute FΘ̃q xFq ,
 //! compute uΘ̃q (xIq )
 //! if method == 0 then
 //! compute flux fΘ̃q (xIq )
 //! else
-//!  
+//!  
 //! compute residual FΘ̃q xIq
 //! for i in (0, size) do
 //! if i == rank then
@@ -857,18 +857,18 @@
 //! MPI.Irecv(uΘ̃q (xIq ), r)
 //! MPI.Irecv( fΘ̃q (xIq ), r)
 //! MPI.waitall()
-//!  
+//!  
 //! compute J Θ̃q
 //! else
 //! MPI.Isend(uΘ̃q (xIq ), r), where r ∈ {S r , Er , Nr , Wr } with S r , Er , Nr , Wr being the neighboring
 //! processes
-//!  
+//!  
 //! MPI.Isend(FΘ̃q xIq , r)
 //! MPI.Irecv(uΘ̃q (xIq ), r)
-//!  
+//!  
 //! MPI.Irecv(FΘ̃q xIq , r)
 //! MPI.waitall()
-//!  
+//!  
 //! compute J Θ̃q
 //! Compute the model parameters by minimizing the loss function using an optimization process in each
 //! subdomain independently

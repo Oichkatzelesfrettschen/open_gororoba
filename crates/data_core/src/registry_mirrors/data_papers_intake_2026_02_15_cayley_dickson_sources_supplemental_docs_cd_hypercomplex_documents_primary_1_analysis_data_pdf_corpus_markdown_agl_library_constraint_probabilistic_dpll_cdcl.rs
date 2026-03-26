@@ -41,7 +41,7 @@
 //! 2 Dataset Contents
 //!
 //! There has been an increase of interest in code search using natural language. Assessing the performance of such
-//! code search models can be diﬃcult without a readily available evaluation suite. In this paper, we present an evaluation
+//! code search models can be difficult without a readily available evaluation suite. In this paper, we present an evaluation
 //! dataset consisting of natural language query and code snippet pairs, with the hope that future work in this area can use
 //! this dataset as a common benchmark. We also provide the
 //! results of two code search models ([6] and [1]) from recent
@@ -53,21 +53,21 @@
 //!
 //! Introduction
 //!
-//! In recent years, learning the mapping between natural language and code snippets has been a popular ﬁeld of research.
-//! In particular, [6], [1], [2] have explored ﬁnding relevant code
+//! In recent years, learning the mapping between natural language and code snippets has been a popular field of research.
+//! In particular, [6], [1], [2] have explored finding relevant code
 //! snippets given a natural language query, with the models
 //! varying from using word embeddings and IR techniques to
-//! using sophisticated neural networks. To evaluate the performance of these models, Stack Overﬂow questions and
-//! code answer pairs are prime candidates, as Stack Overﬂow
+//! using sophisticated neural networks. To evaluate the performance of these models, Stack Overflow questions and
+//! code answer pairs are prime candidates, as Stack Overflow
 //! questions well resemble what a developer may ask. Such an
 //! example is "Close/hide the Android Soft Keyboard".12 One
-//! of the ﬁrst answers34 on Stack Overﬂow correctly answers
+//! of the first answers34 on Stack Overflow correctly answers
 //! this question. However, collecting these questions can be
 //! tedious, and systematically comparing various models can
 //! pose a challenge.
 //! To this end, we have constructed an evaluation dataset,
 //! which contains natural language queries and relevant code
-//! snippet answers from Stack Overﬂow. It also includes code
+//! snippet answers from Stack Overflow. It also includes code
 //! snippet examples from the search corpus (public repositories from GitHub) that correctly answers each query. We
 //! hope that this dataset can be served as a benchmark to evaluate performance across various code search models.
 //! The paper is organized as follows. First we will explain
@@ -86,37 +86,37 @@
 //! The most popular Android repositories on GitHub (ranked
 //! by the number of stars) is used to create the search corpus.
 //! For each repository that we indexed, we provide the link,
-//! speciﬁc to the commit that was used.5 In total, there are
-//! 24,549 repositories.6 We will release a text ﬁle containing
+//! specific to the commit that was used.5 In total, there are
+//! 24,549 repositories.6 We will release a text file containing
 //! the download links for these GitHub repositories. See Listing 1 for an example.
 //! 2.2 Search Corpus
 //! The search corpus is indexed using all method bodies parsed
 //! from the 24,549 GitHub repositories. In total, there are 4,716,814
-//! methods in this corpus. The code search model will ﬁnd relevant code snippets (i.e. method bodies) from this corpus
+//! methods in this corpus. The code search model will find relevant code snippets (i.e. method bodies) from this corpus
 //! given a natural language query. In this data release, we will
 //! provide the following information for each method in the
 //! corpus:
-//! • id: Each method in the corpus has a unique numeric identiﬁer. This ID number will also be referenced in our evaluation
+//! • id: Each method in the corpus has a unique numeric identifier. This ID number will also be referenced in our evaluation
 //! dataset.
-//! • ﬁlepath: The ﬁle path is in the format of
+//! • filepath: The file path is in the format of
 //! :owner/:repo/relative-file-path-to-the-repo
 //!
 //! • method_name
-//! • start_line: Starting line number of the method in the ﬁle.
-//! • end_line: Ending line number of the method in the ﬁle.
+//! • start_line: Starting line number of the method in the file.
+//! • end_line: Ending line number of the method in the file.
 //! • url: GitHub link to the method body with commit ID and line
 //! numbers encoded.
 //!
 //! Listing 2 provides an example of a method in the search corpus.
 //! 2.3 Evaluation Dataset
-//! The evaluation dataset is composed of 287 Stack Overﬂow
+//! The evaluation dataset is composed of 287 Stack Overflow
 //! question and answer pairs, for which we release the following information:
-//! • stackoverﬂow_id: Stack Overﬂow post ID.
-//! • question: Title of the Stack Overﬂow post.
-//! • question_url: URL of the Stack Overﬂow post.
+//! • stackoverflow_id: Stack Overflow post ID.
+//! • question: Title of the Stack Overflow post.
+//! • question_url: URL of the Stack Overflow post.
 //! • answer: Code snippet answer to the question.
 //! 5 From August 2018
-//! 6 There were originally 26,109 repositories - the diﬀerence is due to reasons
+//! 6 There were originally 26,109 repositories - the difference is due to reasons
 //!
 //! outside of our control (e.g. repositories getting deleted). Note that not all
 //! of the links in this dataset may not always be available in the future for the
@@ -124,7 +124,7 @@
 //!
 //!
 //! --- PAGE BREAK ---
-//! Conference’17, July 2017, Washington, DC, USA
+//! Conference'17, July 2017, Washington, DC, USA
 //!
 //! Li, Kim, and Chandra
 //!
@@ -186,8 +186,8 @@
 //!
 //! Listing 3. Evaluation dataset example.
 //!
-//! • answer_url: URL of the Stack Overﬂow answer to the question.
-//! • examples: 3 methods from the search corpus that best answer the question (most similar to the Stack Overﬂow answer).
+//! • answer_url: URL of the Stack Overflow answer to the question.
+//! • examples: 3 methods from the search corpus that best answer the question (most similar to the Stack Overflow answer).
 //! • examples_url: GitHub links to the examples.
 //!
 //! Note that there may be more acceptable answers to each
@@ -199,12 +199,12 @@
 //! • NCS: an unsupervised model which uses word embedding derived directly from the search corpus[6].
 //! • NCSpostrank : an extension of the base NCS model that
 //! performs a post-pass ranking, as explained in [6].
-//! • UNIFandroid, UNIFstackoverﬂow: a supervised extension of
+//! • UNIFandroid, UNIFstackoverflow: a supervised extension of
 //! the NCS model that uses a bag-of-words-based neural
-//! network with attention. The supervision is learned using GitHub-Android-Train and StackOverﬂow-AndroidTrain datasets, respectively, as described in [1].
-//! We provide the rank of the ﬁrst correct answer (FRank) for
+//! network with attention. The supervision is learned using GitHub-Android-Train and StackOverflow-AndroidTrain datasets, respectively, as described in [1].
+//! We provide the rank of the first correct answer (FRank) for
 //! each question in our evaluation dataset. The score sheet is
-//! saved in a comma-delimited csv ﬁle as illustrated in Listing 4.
+//! saved in a comma-delimited csv file as illustrated in Listing 4.
 //! No.,StackOverflow ID,NCS FRank,NCS_postrank FRank,
 //! UNIF_android FRank,UNIF_stackoverflow FRank
 //! 1,1109022,NF,1,1,1
@@ -221,23 +221,23 @@
 //! In this section, we describe the procedure for how we obtained the data.
 //! GitHub repositories. We obtained the information of
 //! the GitHub repositories with the GitHub REST API [3], and
-//! the source ﬁles were downloaded using publicly available
+//! the source files were downloaded using publicly available
 //! links.
-//! Search corpus. The search corpus was obtained by dividing each ﬁle in the GitHub repositories by method-level
+//! Search corpus. The search corpus was obtained by dividing each file in the GitHub repositories by method-level
 //! granularity.
 //! Evaluation dataset. The benchmark questions were collected from a data dump publicly released by Stack Exchange
-//! [4]. To select the set of Stack Overﬂow question and answer pairs, we created a heuristics-based ﬁltering pipeline
+//! [4]. To select the set of Stack Overflow question and answer pairs, we created a heuristics-based filtering pipeline
 //! where we discarded open-ended, discussion-style questions.
-//! We ﬁrst obtained the most popular 17,000 questions on Stack
+//! We first obtained the most popular 17,000 questions on Stack
 //!
 //!
 //! --- PAGE BREAK ---
 //! Neural Code Search Evaluation Dataset
 //!
-//! Conference’17, July 2017, Washington, DC, USA
+//! Conference'17, July 2017, Washington, DC, USA
 //!
 //! Table 1. Number of questions answered in the top 1, 5, 10 and MRR for
-//! NCS, NCSpostrank , UNIFandroid and UNIFstackoverﬂow .
+//! NCS, NCSpostrank , UNIFandroid and UNIFstackoverflow .
 //! Model
 //!
 //! Answered@1
@@ -251,7 +251,7 @@
 //! NCS
 //! NCSpostrank
 //! UNIFandroid
-//! UNIFstackoverﬂow
+//! UNIFstackoverflow
 //!
 //! 33
 //! 85
@@ -273,15 +273,15 @@
 //! 0.178
 //! 0.465
 //!
-//! Overﬂow with “Android” and “Java” tags. The dataset is further ﬁltered with the following criteria: 1) there exists an upvoted code answer, 2) the ground truth code snippet has at
+//! Overflow with "Android" and "Java" tags. The dataset is further filtered with the following criteria: 1) there exists an upvoted code answer, 2) the ground truth code snippet has at
 //! least one match in the search corpus. From this pipeline, we
 //! were able to obtain 518 questions. Finally, we manually went
-//! through these questions and ﬁltered out questions with vague
-//! queries and/or code answers. The ﬁnal dataset contains 287
-//! Stack Overﬂow question and answers pairs.
+//! through these questions and filtered out questions with vague
+//! queries and/or code answers. The final dataset contains 287
+//! Stack Overflow question and answers pairs.
 //! NCS / UNIF score sheet. To judge whether a method
 //! body correctly answers the query, we compare how similar
-//! it is to the Stack Overﬂow answer - we do this systematically using a code-to-code similarity tool, called Aroma [5].
+//! it is to the Stack Overflow answer - we do this systematically using a code-to-code similarity tool, called Aroma [5].
 //! Aroma gives a similarity score between two code snippets;
 //! if this score is above a certain threshold (0.25 in our case),
 //! we count it as success. This similarity score, aims to mimic
@@ -291,7 +291,7 @@
 //!
 //! 4 Evaluation
 //! We provide the results for four models: NCS, NCSpostrank ,
-//! UNIFandroid, and UNIFstackoverﬂow.
+//! UNIFandroid, and UNIFstackoverflow.
 //! Table 1 reports the number of questions answered within
 //! the top_n returned code snippet, where n = 1, 5, and 10 (Answered@1, 5, 10 in Table 1), as well as the Mean Reciprocal
 //! Rank (MRR).
@@ -301,7 +301,7 @@
 //! Chandra. When deep learning met code search. CoRR, abs/1905.03813,
 //! 2019. URL: https://arxiv.org/abs/1905.03813, arXiv:1905.03813.
 //! [2] Xiaodong Gu, Hongyu Zhang, and Sunghun Kim. Deep code search. In
-//! Proceedings of the 40th International Conference on Software Engineering, pages 933–944. ACM, 2018.
+//! Proceedings of the 40th International Conference on Software Engineering, pages 933-944. ACM, 2018.
 //! [3] GitHub Inc. Github rest api v3. URL: https://developer.github.com/v3/
 //! search/.
 //! [4] Stack Exchange Inc. datastack exchange data dump, 2018. CC-BY-SA
@@ -312,7 +312,7 @@
 //! arXiv:1812.01158.
 //! [6] Saksham Sachdev, Hongyu Li, Sifei Luan, Seohyun Kim, Koushik Sen,
 //! and Satish Chandra. Retrieval on source code: a neural code search.
-//! In Proceedings of the 2nd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages, pages 31–41. ACM, 2018.
+//! In Proceedings of the 2nd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages, pages 31-41. ACM, 2018.
 //!
 //!
 //! --- PAGE BREAK ---

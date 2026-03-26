@@ -143,9 +143,9 @@ impl EvolutionStore {
             parts.push("## Lessons from Prior Runs".to_string());
             for (i, l) in lessons.iter().enumerate() {
                 let icon = match l.severity.as_str() {
-                    "error" => "❌",
-                    "warning" => "⚠️",
-                    "info" => "ℹ️",
+                    "error" => "<EMOJI+274C>",
+                    "warning" => "<EMOJI+26A0><EMOJI+FE0F>",
+                    "info" => "i<EMOJI+FE0F>",
                     _ => "•",
                 };
                 parts.push(format!(

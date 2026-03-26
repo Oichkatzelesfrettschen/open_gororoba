@@ -53,7 +53,7 @@ fn flux_volume(dim: usize) -> f64 {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Analytical Renormalization Flow (Pure Rust)...");
+    println!("<EMOJI+1F30C> Initializing Analytical Renormalization Flow (Pure Rust)...");
     println!("   Solving Exact S'(\\phi) = 0 via Newton-Raphson Root Finding.");
 
     let out_dir = Path::new("data/results");
@@ -92,7 +92,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &dim in &dimensions {
         println!("===================================================");
-        println!("🔥 Analytical Sweep for Manifold Dimension: {}", dim);
+        println!("<EMOJI+1F525> Analytical Sweep for Manifold Dimension: {}", dim);
 
         let v_d = flux_volume(dim);
 
@@ -164,7 +164,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "✅ Exact analytical renormalization data generated at {}",
+        "<EMOJI+2705> Exact analytical renormalization data generated at {}",
         out_path.display()
     );
     Ok(())

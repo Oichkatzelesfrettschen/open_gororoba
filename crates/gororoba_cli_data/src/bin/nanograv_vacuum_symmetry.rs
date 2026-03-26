@@ -7,7 +7,7 @@ use std::{collections::HashMap, path::PathBuf};
 #[derive(Parser, Debug)]
 #[command(
     name = "nanograv-vacuum-symmetry",
-    about = "Detects point group symmetry in the 1024D DekaVoudon vacuum frustration field"
+    about = "Detects point group symmetry in the 1024D DekaVoudon sign imbalance field"
 )]
 struct Args {
     #[arg(

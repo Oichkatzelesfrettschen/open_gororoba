@@ -8,7 +8,7 @@
 //! ## Physics
 //!
 //! 1.  **ZD Graph as a Metamaterial:** We model a sub-motif of the 16D Sedenion
-//!     zero-divisor graph—a frustrated triangular plaquette—as a tight-binding
+//!     zero-divisor graph--a frustrated triangular plaquette--as a tight-binding
 //!     model on a hexagonal lattice. This simulates a "magnonic crystal" where the
 //!     hopping parameters are dictated by the ZD adjacency matrix.
 //!
@@ -58,7 +58,7 @@ use std::f64::consts::PI;
 /// 2. Total Chern is 0
 /// 3. The flat band isolates to exactly fbf = 0.5 for sedenions, suppressing group velocity.
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Magnonic Valley Chern Topology Explorer...");
+    println!("<EMOJI+1F30C> Initializing Magnonic Valley Chern Topology Explorer...");
     println!("   Mapping Cayley-Dickson ZD Graphs to Tight-Binding Reciprocal Space");
 
     let out_dir = Path::new("data/results");
@@ -169,7 +169,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )?;
     }
 
-    println!("✅ Theorem 9.3 Verified: Under TRS, VCN(K) = -VCN(K') and Total Chern = 0.");
+    println!("<EMOJI+2705> Theorem 9.3 Verified: Under TRS, VCN(K) = -VCN(K') and Total Chern = 0.");
 
     // Now we break TRS using an effective magnetic field or imaginary hopping phase.
     // This simulates rotational kinetic angular momentum (e.g. Kerr effect) isolating the valleys.
@@ -209,7 +209,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "\n✅ Magnonic exact analysis mapped to {}",
+        "\n<EMOJI+2705> Magnonic exact analysis mapped to {}",
         out_path.display()
     );
 

@@ -23,7 +23,7 @@ impl Default for QuantumFrequencyConverter {
 }
 
 impl QuantumFrequencyConverter {
-    /// Standard setup from Dréau et al. (2018) for NV centers.
+    /// Standard setup from Dreau et al. (2018) for NV centers.
     pub fn nv_to_telecom() -> Self {
         // 1/637 - 1/1064 = 1/1588.3
         Self {
@@ -37,7 +37,7 @@ impl QuantumFrequencyConverter {
         }
     }
 
-    /// Two-stage cascaded setup from SiV to telecom C-band (Schäfer et al., 2025)
+    /// Two-stage cascaded setup from SiV to telecom C-band (Schafer et al., 2025)
     pub fn siv_cascaded() -> Self {
         Self {
             input_wavelength_nm: 737.0,

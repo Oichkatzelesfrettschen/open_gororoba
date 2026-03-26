@@ -16,9 +16,9 @@ fn main() {
             for (idx, pair) in emulator.pairs.iter().enumerate() {
                 println!("  [{}] {}", idx + 1, pair.display());
                 if pair.verify() {
-                    println!("       ✓ Verified: A*B = 0");
+                    println!("       <EMOJI+2713> Verified: A*B = 0");
                 } else {
-                    println!("       ✗ Failed verification!");
+                    println!("       <EMOJI+2717> Failed verification!");
                 }
             }
         }

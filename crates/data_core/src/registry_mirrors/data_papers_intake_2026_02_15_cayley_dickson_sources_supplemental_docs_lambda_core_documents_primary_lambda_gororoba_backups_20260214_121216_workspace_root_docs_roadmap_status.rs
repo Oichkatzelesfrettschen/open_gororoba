@@ -3,7 +3,7 @@
 //! Last updated: 2026-02-14
 //!
 //! ## Current Phase
-//! Phase 6 — Singular-structure integration and manual root reconciliation
+//! Phase 6 -- Singular-structure integration and manual root reconciliation
 //!
 //! ## Progress Snapshot
 //! - [x] Sync/pull all three repos from origin.

@@ -2,20 +2,20 @@
 //!
 //! Replaces the NFW profile with the feedback-modified DC14 cored profile
 //! (Di Cintio et al. 2014) on all galaxies, then builds an exclusion surface
-//! over a 21-point phase scan δx ∈ [−0.5, +0.5].
+//! over a 21-point phase scan \deltax ∈ [-0.5, +0.5].
 //!
 //! ## Design
 //! - For each galaxy:
 //!   1. Compute DC14 profile from (M_star, M_halo)
-//!   2. Compute velocity residual: δv = (v_obs − v_DC14) / v_DC14
-//!   3. For each phase shift δx (21 values in [−0.5, +0.5]):
-//!      - Shift the CD wavenumbers: k_n → k_n + δx
+//!   2. Compute velocity residual: \deltav = (v_obs - v_DC14) / v_DC14
+//!   3. For each phase shift \deltax (21 values in [-0.5, +0.5]):
+//!      - Shift the CD wavenumbers: k_n -> k_n + \deltax
 //!      - Compute Fourier power at shifted wavenumbers
-//!   4. Build 2D exclusion surface (δx, α_zd) from injection-recovery
+//!   4. Build 2D exclusion surface (\deltax, \alpha_zd) from injection-recovery
 //!
 //! ## Ablations
-//! - **NFW-only (no phase scan)**: Use NFW residuals, no δx sweep.
-//! - **NFW + phase scan (no DC14)**: Use NFW residuals with δx sweep.
+//! - **NFW-only (no phase scan)**: Use NFW residuals, no \deltax sweep.
+//! - **NFW + phase scan (no DC14)**: Use NFW residuals with \deltax sweep.
 //!
 //! ~100 seconds compute.
 
@@ -44,9 +44,9 @@ pub enum ProfileType {
 pub struct H2Config {
     /// Number of galaxies.
     pub n_galaxies: usize,
-    /// Phase-shift scan values δx.
+    /// Phase-shift scan values \deltax.
     pub delta_x_values: Vec<f64>,
-    /// α_zd injection amplitudes for exclusion-surface construction.
+    /// \alpha_zd injection amplitudes for exclusion-surface construction.
     pub alpha_values: Vec<f64>,
     /// Profile for the primary analysis.
     pub profile: ProfileType,
@@ -60,7 +60,7 @@ pub struct H2Config {
     pub seed: u64,
 }
 
-/// Number of phase-scan points in the default δx sweep.
+/// Number of phase-scan points in the default \deltax sweep.
 const N_PHASE_POINTS: usize = 21;
 
 /// Step size for the default phase-scan sweep (covers [-0.5, +0.5]).
@@ -158,7 +158,7 @@ pub struct ExclusionPoint {
 /// Full H2 experiment result.
 #[derive(Debug, Clone)]
 pub struct H2Result {
-    /// Exclusion surface: grid of (δx, α) points.
+    /// Exclusion surface: grid of (\deltax, \alpha) points.
     pub exclusion_surface: Vec<ExclusionPoint>,
     /// Profile used.
     pub profile: ProfileType,
@@ -193,11 +193,11 @@ pub fn run_h2(config: &H2Config) -> H2Result {
     let base_wavenumbers = predicted_wavenumbers_cd16();
     let snr_threshold = 2.0;
 
-    // Determine effective δx values.
+    // Determine effective \deltax values.
     let delta_x_values: Vec<f64> = if config.phase_scan {
         config.delta_x_values.clone()
     } else {
-        vec![0.0] // no scan: only δx = 0
+        vec![0.0] // no scan: only \deltax = 0
     };
 
     // Build exclusion surface.
@@ -271,8 +271,8 @@ pub fn run_h2(config: &H2Config) -> H2Result {
         .collect();
 
     let summary = format!(
-        "H2 DC14 Phase-Shift Exclusion: profile={:?}, phase_scan={}, {} galaxies, \
-         {} δx × {} α = {} surface points",
+        r"H2 DC14 Phase-Shift Exclusion: profile={:?}, phase_scan={}, {} galaxies, \
+         {} \deltax x {} \alpha = {} surface points",
         config.profile,
         config.phase_scan,
         config.n_galaxies,
@@ -336,7 +336,7 @@ mod tests {
             ..Default::default()
         };
         let result = run_h2(&config);
-        assert_eq!(result.exclusion_surface.len(), 6); // 3 δx × 2 α
+        assert_eq!(result.exclusion_surface.len(), 6); // 3 \deltax x 2 \alpha
         assert!(result.phase_scan);
         assert_eq!(result.profile, ProfileType::Dc14);
         println!("{}", result.summary);
@@ -347,7 +347,7 @@ mod tests {
         let result = run_h2_ablation_nfw_only(10, 42);
         assert_eq!(result.profile, ProfileType::Nfw);
         assert!(!result.phase_scan);
-        // Should have n_alpha surface points (only δx=0).
+        // Should have n_alpha surface points (only \deltax=0).
         assert!(result.exclusion_surface.len() >= 1);
     }
 
@@ -390,7 +390,7 @@ mod tests {
             .mean_power;
         assert!(
             p1 > p0,
-            "Power should increase with injected α: p0={p0}, p1={p1}"
+            r"Power should increase with injected \alpha: p0={p0}, p1={p1}"
         );
     }
 }

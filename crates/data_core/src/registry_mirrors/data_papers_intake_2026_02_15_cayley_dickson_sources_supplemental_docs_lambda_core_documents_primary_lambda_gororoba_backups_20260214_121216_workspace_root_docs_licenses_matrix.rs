@@ -14,7 +14,7 @@
 //!
 //! ## Workspace policy
 //! - Keep repositories as separate legal units.
-//! - Record provenance of each third-party dependency in each module’s `requirements.md` or equivalent package manifest.
+//! - Record provenance of each third-party dependency in each module's `requirements.md` or equivalent package manifest.
 //! - Consolidated outputs may reference the workspace target as `GPL-2.0-only` only after this snapshot is current.
 //!
 //! ## Short-term legal plan

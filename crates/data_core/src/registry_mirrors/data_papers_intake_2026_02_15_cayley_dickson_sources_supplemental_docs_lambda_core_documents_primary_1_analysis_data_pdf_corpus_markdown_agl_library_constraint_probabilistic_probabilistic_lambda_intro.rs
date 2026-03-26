@@ -372,10 +372,10 @@
 //!
 //! which denotes a Dirac distribution, and Jlet x = t in uK(γ)(V ) is
 //! Z
-//! 
-//! 
-//!  
-//! 
+//! 
+//! 
+//!  
+//! 
 //! JtK(γ)(d(r, x)) .
 //! JuK(γ, x) (s, b) (r · s, b) ∈ V
 //!
@@ -468,10 +468,10 @@
 //! (2,
 //! ∗)
 //! ιX (p) =
-//!  if p̄(X) = ∞ (3)
-//! 
+//!  if p̄(X) = ∞ (3)
+//! 
 //! 
-//!  0, p̄(X), λU. p̄(U ) 
+//!  0, p̄(X), λU. p̄(U ) 
 //! otherwise
 //! p̄(X)
 //!
@@ -490,25 +490,25 @@
 //! {
 //! norm(let x = sample(gauss (0.0, 3.0)) in
 //! score(density gauss(5.0, (x, 1.0)); return(x < 4.5))
-//! 
+//! 
 //! = 0, (0.949, bern (0.5))
 //! {
 //! s
 //! norm let x = sample(bern(0.25)) in
-//! 
+//! 
 //! (if x then score(5.0) else score(2.0)); return(x)
-//! 
+//! 
 //! 5
 //! ))
 //! = 0, (2.75, bern( 11
-//! 
+//! 
 //! Jnorm let x = sample(exp(1.0)) in score(ex ) K = (2, ∗)
 //! { s
 //! s
 //! {
 //! 1
 //! norm let x = sample(beta(1,
-//!  3)) = norm score( 1+3 ); 
+//!  3)) = norm score( 1+3 ); 
 //! in score(x); return(x)
 //! sample(beta(2, 3))
 //!
@@ -534,7 +534,7 @@
 //! Sampling a distribution on R introduces another complication.
 //! Informally, there is a transition
 //!
-//! Monads The interpretation of letand return given above arises
+//! Monads The interpretation of letand return given above arises
 //! from the fact that P R≥0 × (−) is a commutative monad on
 //! the category of measurable spaces and measurable functions (see
 //! also [7, §2.3.1], [33, §6]). Recall that a commutative monad
@@ -542,18 +542,18 @@
 //! natural transformations ηX : X → T (X), µX : T (T (X)) →
 //! T (X), σX,Y : X ×T (Y ) → T (X ×Y ) satisfying some laws [17].
 //! Using this structure we interpret return and let following Moggi [23]:
-//! 
+//! 
 //! def
 //! JΓ ⊢p return(t) : AK(γ) = ηJAK JtK(γ)
-//! 
+//! 
 //! def
 //! JΓ ⊢p let x = t in u : BK(γ) = µJBK T (JuK) σJΓK,JAK (γ, JtK(γ))
 //!
 //! sample(gauss (0.0, 1.0)) −→ return(r)
 //! for every real r, but any single transition has zero probability. We
 //! can assign non-zero probabilities to sets of transitions; informally:
-//! 
-//! 
+//! 
+//! 
 //! Pr sample(gauss (0.0, 1.0)) −→ {return(r) | r ≤ 0} = 0.5.
 //!
 //! To make this precise we need a σ-algebra on the set of terms, which
@@ -629,7 +629,7 @@
 //! v, w ::= xi | ∗ | (v, w) | (i, v)
 //!
 //! parameterized by a family of measurable ‘normalization’ functions
-//! 
+//! 
 //! νA : Conp (A) → R≥0 × P (JAK) + 1 + 1
 //! (8)
 //!
@@ -815,8 +815,8 @@
 //! Proposition 5.5. The map ConNp (A) × ΣR≥0 ×Conp (A) → [0, 1]
 //! that sends (C, U ) to Pr(C −→ U ), defined as
 //! X
-//! 
-//! 
+//! 
+//! 
 //! Pr C −→ (Γ, t) Pr C −→Γ,t {γ | (Sc(C), hΓ, t, γi) ∈ U } ,
 //!
 //! (Γ,t)
@@ -829,7 +829,7 @@
 //!
 //! on t
 //! Proof. For each p-configuration C = h , t, i, use induction
-//! 
+//! 
 //! to see that the probability distribution Pr C −→ (−) on pairs
 //!
 //! (C ∈ ConVd (A))
@@ -851,8 +851,8 @@
 //! stochastic relation (as in Definition 2.3) is a sub-stochastic relation
 //! with f (x, Y ) = 1. Define a sub-stochastic relation
 //!
-//! 
-//! def 
+//! 
+//! def 
 //! Pr(hΓ, E [t], γi −→ (Γ′ , E [t′ ])) = hΓ, t, γi −→ hΓ′ , t′ , γ ′ i
 //! def
 //!
@@ -998,7 +998,7 @@
 //! one-step
 //! reduction
 //!
-//! 
+//! 
 //!
 //! Cond (A)
 //!
@@ -1030,7 +1030,7 @@
 //!
 //! multiplication
 //!
-//! 
+//! 
 //!
 //! R≥0 × Conp (A)
 //!
@@ -1052,13 +1052,13 @@
 //! Adequacy
 //!
 //! The denotational semantics is adequate, in the sense:
-//! 
+//! 
 //! JtK(∗) = P (R≥0 × sV p ) Pr(h∅, t, ∗i ⇓ (−)) for all ⊢p t : A.
 //!
 //! That is, the denotation JtK(∗) is nothing but pushing forward the
 //! probability measure Pr(h∅, t, ∗i ⇓ (−)) from the operational semantics along the function sV p . This adequacy condition holds because Proposition 5.9 ensures that
 //! X
-//! 
+//! 
 //! Pr(h∅, t, ∗i ⇓k {(r, C) | (r, sV p (C)) ∈ U }) ≤ JtK(∗)(U )
 //!
 //! 7. Higher-order operational semantics
@@ -1119,9 +1119,9 @@
 //!
 //! hΓ, (λx.t) v, γi −→ hΓ, t[v/x], γi.
 //! Extend the probabilistic transition relation with the following rules.
-//! 
+//! 
 //! Pr hΓ, force(thunk(t)), γi −→ (Γ, t) = 1
-//! 
+//! 
 //! Pr hΓ, force(thunk(t)), γi −→(Γ,t) U = [γ ∈ U ]
 //!
 //! Second, we have syntax for thunking and forcing (e.g. [19, 23, 26]).
@@ -1262,7 +1262,7 @@
 //! JR ⇒ RK. Despite there being no such measurable space JR ⇒ RK,
 //! we can speak of uncurried measurable functions X ×R → R. Thus
 //! we might define a probability distribution on JR ⇒ RK to be a triple
-//! 
+//! 
 //! (X, ΣX ), f : X × R → R, p : ΣX → [0, 1]
 //!
 //! Other models of higher-order programs Semantics of higherorder languages with discrete probability are understood well. For
@@ -1281,8 +1281,8 @@
 //!
 //! satisfying F ◦ y ∼
 //! = y ◦ F , given by
-//! X
-//! 
+//! X
+//! 
 //! G(a) × C b, F (a) / ∼
 //! F (G)(b) =
 //! a
@@ -1298,8 +1298,8 @@
 //! • similarly, any functor F : C × C → C in two arguments
 //! extends to a functor F : C×C → C, with F ◦(y×y) ∼
 //! = y◦F :
-//! P
-//! 
+//! P
+//! 
 //! G(a)
 //! ×
 //! H(b)
@@ -1319,7 +1319,7 @@
 //! Definition 8.4. For a type A, the binary reachability relation ∗d
 //! on {(Γ, t) | Γ ⊢d t : A ∧ Γ canonical} is the least reflexive and transitive relation with (Γ, t) ∗d (Γ′ , u) if hΓ, t, γi −→ hΓ′ , u, γ ′ i
 //! for γ ∈ JΓK, γ ′ ∈ JΓ′ K. Similarly, ∗p is the least reflexive
-//! and transitive relation on {(Γ, t) | Γ ⊢p t : A∧ Γ canonical} with
+//! and transitive relation on {(Γ, t) | Γ ⊢p t : A∧ Γ canonical} with
 //! (Γ, t) ∗p (Γ′ , u) if Pr hΓ, t, γi −→ (Γ′ , u) 6= 0 for γ ∈ JΓK.
 //!
 //! → G between functors
@@ -1409,7 +1409,7 @@
 //!
 //! y(reduction)
 //!
-//! 
+//! 
 //!
 //! y(Cond (A))
 //!
@@ -1422,7 +1422,7 @@
 //!
 //! d
 //!
-//! 
+//! 
 //!
 //! ❱❱s❱p❱+
 //! 3 T LAM
@@ -1431,7 +1431,7 @@
 //! T (Conp (A)) µ·T (sp )
 //!
 //! Adequacy It follows that the higher denotational semantics remains adequate, in the sense that for all probabilistic terms ⊢p t : A,
-//! 
+//! 
 //! LtM1 (∗) = (T (sV p ))1 Pr(h∅, t, ∗i ⇓ (−)) .
 //!
 //! Adequacy is usually only stated at first-order types. At first-order

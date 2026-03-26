@@ -454,6 +454,14 @@ path = "src/bin/extract_nk_arrays.rs"
 name = "audit-cd-cache"
 path = "src/bin/audit_cd_cache.rs"
 
+[[bin]]
+name = "cd-gap-binders"
+path = "src/bin/cd_gap_binders.rs"
+
+[[bin]]
+name = "cd-row-upgrade-batch"
+path = "src/bin/cd_row_upgrade_batch.rs"
+
 [dependencies]
 polars = { workspace = true }
 quick-xml = { workspace = true }
@@ -516,6 +524,7 @@ petgraph = { workspace = true }
 hdf5 = { workspace = true }
 wide = { workspace = true }
 ndarray = "0.17"
+lopdf = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export"]

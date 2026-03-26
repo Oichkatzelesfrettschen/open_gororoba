@@ -435,14 +435,14 @@
 //! To obtain a denser signal, tightly coupled with the final objective, we also give a reward proportional to the improvement of S on the reference set R after each Annotate
 //!
 //! (ann) and Collect (col) action:
-//! Rtann = mIoU(St , R) − mIoU(St−1 , R) − ann
+//! Rtann = mIoU(St , R) − mIoU(St−1 , R) − ann
 //!
 //! (2)
 //!
 //! Rtcol = mIoU(St , R) − mIoU(St−1 , R)
 //! (3)
 //! To ensure the agent does not request costly annotations too
-//! frequently, each Annotate action is penalized with a negative reward −ann (we set ann = 0.01), as seen in (2). Such
+//! frequently, each Annotate action is penalized with a negative reward −ann (we set ann = 0.01), as seen in (2). Such
 //! a penalty is not given for the free Collect action. Moreover, the dataset we use has 40 different semantic classes,
 //! but some are very rare and apply only to small objects, and
 //! some might not even be present in certain houses. We address this imbalance by computing the mIoU using only the

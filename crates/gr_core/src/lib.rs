@@ -36,7 +36,7 @@
 //! - `area_quantization` -- LQG area spectrum, Barbero-Immirzi parameter (Barbero 1995, Immirzi 1997)
 //! - `photon_graviton_tcmt` -- Photon-graviton TCMT: maps worldline QFT amplitude to resonant scattering (Ruan-Fan 2009, Ahmadiniaz et al. 2026, Maksimov 2025)
 //! - `quantum_inequalities` -- Ford-Roman QI bounds, Pfenning-Ford warp analysis, energy conditions
-//! - `nanograv_cd_fit` -- NANOGrav 15-yr GWB spectral fitting with Cayley-Dickson tower (16D–1024D)
+//! - `nanograv_cd_fit` -- NANOGrav 15-yr GWB spectral fitting with Cayley-Dickson tower (16D-1024D)
 //!
 //! # Literature
 //! - Bardeen (1973): Black Holes, Les Houches

@@ -13,7 +13,7 @@ use std::{fs::File, io::Write, path::Path};
 /// altering the harmonic density and coupling strength.
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing ZD Harmonic Forcing Profile Generator...");
+    println!("<EMOJI+1F30C> Initializing ZD Harmonic Forcing Profile Generator...");
     println!("   Computing Halo Velocity Modulations from Sedenion & Pathion ZD Spectra.");
 
     let out_dir = Path::new("data/results");
@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "✅ ZD Harmonic Forcing Profiles generated at {}",
+        "<EMOJI+2705> ZD Harmonic Forcing Profiles generated at {}",
         out_path.display()
     );
     println!("   - 16D Forcing utilizes the 7-mode Box-Kite spectrum (FBF = 1/2).");

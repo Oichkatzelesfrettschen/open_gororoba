@@ -127,14 +127,14 @@
 //! explicit threading of the array:
 //! read2AndDiscard :: (Read n, Write n) =◦ UArray a n → (Ur a, Ur a)
 //! read2AndDiscard arr =
-//! let x = read arr 0
-//! y = read arr 1
-//!  () = free arr
+//! let x = read arr 0
+//! y = read arr 1
+//!  () = free arr
 //! in (x, y)
 //! The only changes from the impure version are that this version explicitly requires having read
-//! and write access to the array, and pattern-matching against  (read “pack”) is necessary in order
+//! and write access to the array, and pattern-matching against  (read “pack”) is necessary in order
 //! to access the linear constraint packed in the result of read and free. (Section 8.3 suggests how we
-//! can get rid of , too.) Crucially, the resource representing the ownership of the array is a linear
+//! can get rid of , too.) Crucially, the resource representing the ownership of the array is a linear
 //! constraint and is separate from the array itself, which no longer needs to be threaded manually.
 //! Our contributions are as follows:
 //! • A system of qualiﬁed types that allows a constraint assumption to be given a multiplicity
@@ -207,8 +207,8 @@
 //! Pattern matching on a value of type Ur a yields a payload of multiplicity 𝜔, even when the scrutinee has multiplicity 1. In general, given a multiplicity set, the desired (sub)structural rules can be
 //! obtained by endowing multiplicities with the appropriate semiring structure [Abel and Bernardy 2020].
 //! In this paper, we use the same multiplicity structure as Linear Haskell:2,3
-//! 
-//! 
+//! 
+//! 
 //! 1·𝜋 = 𝜋
 //! 𝜋 +𝜌 = 𝜔
 //! 𝜔·𝜋 = 𝜔
@@ -307,7 +307,7 @@
 //! must have multiplicity 1. Linearly is explained more fully in Section 3.2.
 //! • Because UArray is now parameterised by a type-level tag n, new must return a UArray with
 //! a fresh such n. This is achieved through returning an existentially-quantiﬁed type4 packing
-//! the type variable n. Such types are introduced with the  constructor.
+//! the type variable n. Such types are introduced with the  constructor.
 //! • Not only do we need a fresh type variable n, but we also need to introduce the linear constraint RW n for use in subsequent calls to read and free. Our existentials also allow packing
 //! a constraint, thanks to the R operator.
 //! With all these features working together, we see that new returns a non-duplicable UArray
@@ -499,23 +499,23 @@
 //! Arnaud Spiwack, Csongor Kiss, Jean-Philippe Bernardy, Nicolas Wu, and Richard A. Eisenberg
 //!
 //! swap :: RW n =◦ PArray AtomRef n → Int → Int → () R RW n
-//! swap arr i j | i ≡ j =  ()
+//! swap arr i j | i ≡ j =  ()
 //! | i > j = swap arr j i
-//! | i < j = let  (Ur (l, r)) = split arr (i + 1)
+//! | i < j = let  (Ur (l, r)) = split arr (i + 1)
 //! = lendMut l i (𝜆a𝑖 →
-//!  ()
-//! let  () = lendMut r (j − (i + 1)) (𝜆a 𝑗 →
-//! let  (Ur a𝑖 _𝑣𝑎𝑙) = readRef a𝑖
-//!  (Ur a 𝑗 _𝑣𝑎𝑙) = readRef a 𝑗
+//!  ()
+//! let  () = lendMut r (j − (i + 1)) (𝜆a 𝑗 →
+//! let  (Ur a𝑖 _𝑣𝑎𝑙) = readRef a𝑖
+//!  (Ur a 𝑗 _𝑣𝑎𝑙) = readRef a 𝑗
 //! = writeRef a 𝑗 a𝑖 _𝑣𝑎𝑙
-//!  ()
+//!  ()
 //! ()
 //! = writeRef a𝑖 a 𝑗 _𝑣𝑎𝑙
-//! 
-//! in  ()) in  ())
+//! 
+//! in  ()) in  ())
 //! = join l r
-//!  (Ur )
-//! in  ()
+//!  (Ur )
+//! in  ()
 //! Fig. 2. Swapping two elements of an array
 //!
 //! 4.2.1 Borrowing. The lendMut arr i k primitive lends access to the reference at index i in arr,
@@ -554,33 +554,33 @@
 //!
 //! sort :: RW n =◦ UArray Int n → () R RW n
 //! sort arr = let len = length arr in
-//! if len ⩽ 1 then  ()
-//! else let pivotIdx = partition arr
-//!  (Ur (l, r)) = split arr pivotIdx
+//! if len ⩽ 1 then  ()
+//! else let pivotIdx = partition arr
+//!  (Ur (l, r)) = split arr pivotIdx
 //! = sort l
-//!  ()
+//!  ()
 //! = sort r
-//!  ()
+//!  ()
 //! )
 //! =
 //! join l r
 //! (Ur
-//! 
-//! in  ()
+//! 
+//! in  ()
 //!
 //! partition :: RW n =◦ UArray Int n → Int R RW n
 //! partition arr =
 //! let last
 //! = length arr − 1
-//!  (Ur pivot) = read arr last
+//!  (Ur pivot) = read arr last
 //! go :: RW n =◦ Int → Int → Int R RW n
 //! go l r
 //! | l>r
-//! = let  () = swap arr last l in l
+//! = let  () = swap arr last l in l
 //! | otherwise
-//! = let  (Ur lVal) = read arr l in
+//! = let  (Ur lVal) = read arr l in
 //! if lVal > pivot
-//! then let  () = swap arr l r
+//! then let  () = swap arr l r
 //! in go l (r − 1)
 //! else go (l + 1) r
 //! in go 0 (last − 1)
@@ -688,7 +688,7 @@
 //! simple constraints
 //!
 //! We can now straightforwardly deﬁne the operations we need on simple constraints:
-//! 
+//! 
 //! 1·q = (∅, q)
 //! 𝜀 = (∅, ∅)
 //! (U1, L1 ) ⊗(U2, L2 ) = (U1 ∪ U2, L1 ⊎ L2 )
@@ -727,10 +727,10 @@
 //! F a | ∃a.𝜏 R Q | 𝜏1 →𝜋 𝜏2 | T 𝜏
 //! F • | Γ, x:𝜋 𝜎
 //! Contexts
-//! F x | K | 𝜆x.e | e1 e2 |  e
+//! F x | K | 𝜆x.e | e1 e2 |  e
 //! Expressions
 //! |
-//! let x = e1 in e2 | case𝜋 e of {K𝑖 x𝑖 → e𝑖 }
+//! let x = e1 in e2 | case𝜋 e of {K𝑖 x𝑖 → e𝑖 }
 //! |
 //! let𝜋 x = e1 in e2 | let𝜋 x : 𝜎 = e1 in e2
 //!
@@ -739,7 +739,7 @@
 //! (Γ1, x:𝜋 𝜎) + Γ2 = Γ1 + Γ2′, x: (𝜋+𝜌) 𝜎 where Γ2 = {x:𝜌 𝜎} ∪ Γ2′
 //! 
 //! 
-//! 
+//! 
 //! 
 //! 
 //! 
@@ -791,7 +791,7 @@
 //! An important feature of simple constraints is that, while scaling syntactically happens at the
 //! level of atomic constraints, these properties of scaling extend to scaling of arbitrary constraints.
 //! Deﬁne 𝜋 ·Q as:
-//! 
+//! 
 //! 1·(U , L) = (U , L)
 //! 𝜔·(U , L) = (U ∪ L, ∅)
 //! Then the following properties hold
@@ -859,9 +859,9 @@
 //! a fresh
 //! Q2 ⊗ Q; Γ2, x:1𝜏1 ⊢ e2 : 𝜏
 //!
-//! Q ⊗ Q1 [𝜐/a]; Γ ⊢  e : ∃a.𝜏 R Q1
+//! Q ⊗ Q1 [𝜐/a]; Γ ⊢  e : ∃a.𝜏 R Q1
 //!
-//! Q1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏
+//! Q1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏
 //!
 //! E-Pack
 //!
@@ -945,7 +945,7 @@
 //! very easy to add a multiplicity annotation on let, and so we do.
 //! Local assumptions. Rule E-Let includes support for local assumptions. We thus have the ability to generalise a subset of the constraints needed by e1 (but not the type variables—no letgeneralisation here, though it could be added). The inference algorithm of Section 6 will not make
 //! use of this possibility.
-//! Existentials. We include ∃a.𝜏 R Q, as introduced in Section 3, together with the  constructor.
+//! Existentials. We include ∃a.𝜏 R Q, as introduced in Section 3, together with the  constructor.
 //! See rules E-Pack and E-Unpack.
 //! 6 CONSTRAINT INFERENCE
 //! The type system of Figure 6 gives a declarative description of what programs are acceptable. We
@@ -1150,9 +1150,9 @@
 //! G-Pack
 //! Γ ⊢◮ e : 𝜏 [𝜐/a] { 𝐶
 //!
-//! Γ1 + Γ2 ⊢◮ let x = e1 in e2 : 𝜏 { 𝐶 1 ⊗ 1·(Q1 =◦ 𝐶 2 )
+//! Γ1 + Γ2 ⊢◮ let x = e1 in e2 : 𝜏 { 𝐶 1 ⊗ 1·(Q1 =◦ 𝐶 2 )
 //!
-//! Γ ⊢◮  e : ∃a.𝜏 R Q { 𝐶 ⊗ Q[𝜐/a]
+//! Γ ⊢◮  e : ∃a.𝜏 R Q { 𝐶 ⊗ Q[𝜐/a]
 //! G-Case
 //! Γ ⊢◮ e : T 𝜎 { 𝐶
 //! Ki : ∀a.𝜐 i →𝜋 i T a
@@ -1352,7 +1352,7 @@
 //! takes care to use the most recent occurrence of q (remember that rule S-ImplOne adds the new
 //! hypotheses on the front of the list). To understand why, consider the following example:
 //! f = linearly $
-//! let  (Ur arr) = new 10
+//! let  (Ur arr) = new 10
 //! fr :: RW n =◦ ()
 //! fr = free arr
 //! () = fr
@@ -1387,7 +1387,7 @@
 //!
 //! ∀a.𝜏
 //! ... | ∃a.𝜏 ⊗ 𝜐
-//! ... |  (e1, e2 ) | let  (x, y) = e1 in e2
+//! ... |  (e1, e2 ) | let  (x, y) = e1 in e2
 //!
 //! Γ ⊢e :𝜏
 //!
@@ -1404,9 +1404,9 @@
 //! L-Pack
 //! Γ1 ⊢ e1 : 𝜏1 [𝜐/a]
 //! Γ2 ⊢ e2 : 𝜏2 [𝜐/a]
-//! Γ1 + Γ2 ⊢  (e1, e2 ) : ∃a.𝜏2 ⊗ 𝜏1
+//! Γ1 + Γ2 ⊢  (e1, e2 ) : ∃a.𝜏2 ⊗ 𝜏1
 //!
-//! Γ1 + Γ2 ⊢ let  (x, y) = e1 in e2 : 𝜏
+//! Γ1 + Γ2 ⊢ let  (x, y) = e1 in e2 : 𝜏
 //!
 //! Fig. 11. Core calculus (subset)
 //!
@@ -1446,7 +1446,7 @@
 //! Figure 11 highlights the diﬀerences from the qualiﬁed system:
 //! • Type schemes 𝜎 do not support qualiﬁed types.
 //! • Existentially quantiﬁed types (∃a.𝜏 R Q) are now represented as an (existentially quantiﬁed,
-//! linear) pair of values (∃a.𝜏2 ⊗ 𝜏1 ). Accordingly,  operates on pairs.
+//! linear) pair of values (∃a.𝜏2 ⊗ 𝜏1 ). Accordingly,  operates on pairs.
 //! The diﬀerences between our core calculus and 𝜆𝑞 are as follows:
 //! • We do not support multiplicity polymorphism.
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
@@ -1479,12 +1479,12 @@
 //! core calculus.
 //! 7.2.2 Translating types. Type schemes 𝜎 are translated by turning the implicit argument Q into
 //! an explicit one of type JQKev . Translating types 𝜏 and contexts Γ proceeds as expected.
-//! 
-//! 
+//! 
+//! 
 //! J∀a.Q =◦ 𝜏K = ∀a.JQKev →1 J𝜏K
 //! J•K
 //! = •
-//! 
+//! 
 //! J𝜏1 →𝜋 𝜏2 K = J𝜏1 K →𝜋 J𝜏2 K
 //! JΓ, x:𝜋 𝜏K = JΓK, x:𝜋 J𝜏K
 //! J∃a.𝜏 R QK = ∃a.J𝜏K ⊗ JQKev
@@ -1505,7 +1505,7 @@
 //!
 //! are dictionaries, and because type classes were the original form of constraints in Haskell.
 //! 9 The attentive reader may note that the case for let extracts out Q and Q from the provided simple constraint. Given
-//! 
+//! 
 //! 1
 //! 2
 //! that simple constraints Q have no internal ordering and allow duplicates (in the non-linear component), this splitting is
@@ -1555,7 +1555,7 @@
 //! 
 //! 
 //! JQ
-//! ⊗ Q1 [𝜐/a]; Γ ⊢ e : ∃ a.𝜏 R Q1 Kz =
+//! ⊗ Q1 [𝜐/a]; Γ ⊢ e : ∃ a.𝜏 R Q1 Kz =
 //! 
 //! 
 //! 
@@ -1569,20 +1569,20 @@
 //! 
 //! ′′
 //! 
-//!  (z , JQ; Γ ⊢ e : 𝜏 [𝜐/a]Kz′ ) }
+//!  (z , JQ; Γ ⊢ e : 𝜏 [𝜐/a]Kz′ ) }
 //! 
 //! 
 //! 
 //! 
 //! 
-//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏Kz =
+//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏Kz =
 //! 
 //! 
 //! 
 //!  case1 z of { (z1, z2 ) →
 //! 
 //! 
-//! let z ′, x = JQ1 ; Γ1 ⊢ e1 : ∃ a.𝜏1 R QKz1 in
+//! let z ′, x = JQ1 ; Γ1 ⊢ e1 : ∃ a.𝜏1 R QKz1 in
 //! 
 //! 
 //! 
@@ -1689,14 +1689,14 @@
 //! no special treatment, and are harmless.
 //! 8.3 Inferring packing and unpacking
 //! Recent work [Eisenberg, Duboc, et al. 2021] describes an algorithm (call it edwl, after the authors’
-//! names) that can infer the location of the pack and unpack annotations (our  and let) in a program.10 In Section 9.2 of that paper, the authors extend their system to include class constraints,
+//! names) that can infer the location of the pack and unpack annotations (our  and let) in a program.10 In Section 9.2 of that paper, the authors extend their system to include class constraints,
 //! much as we allow our existential packages to carry linear constraints.
 //! Accordingly, edwl would work well for us here and remove the need for these annotations.
 //! The edwl algorithm is only a small change on the way some types are treated during bidirectional
 //! type-checking. Though the presentation of linear constraints is not written using a bidirectional
 //! 10 Actually, Eisenberg, Duboc, et al. [2021] use an open construct instead of let
 //!
-//!  to access the contents of an existential
+//!  to access the contents of an existential
 //! package, but that distinction does not aﬀect our usage of existentials with linear constraints.
 //!
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
@@ -1896,8 +1896,8 @@
 //! ∀a.𝜏
 //! a | ∃a.𝜏 ⊗ 𝜐 | 𝜏1 →𝜋 𝜏2 | T 𝜏
 //! • | Γ, x:𝜋 𝜎
-//! x | K | 𝜆x.e | e1 e2 |  (e1, e2 )
-//! let  (y, x) = e1 in e2 | case𝜋 e of {K𝑖 x𝑖 → e𝑖 }
+//! x | K | 𝜆x.e | e1 e2 |  (e1, e2 )
+//! let  (y, x) = e1 in e2 | case𝜋 e of {K𝑖 x𝑖 → e𝑖 }
 //! let𝜋 x = e1 in e2 | let𝜋 x : 𝜎 = e1 in e2
 //!
 //! F
@@ -1942,7 +1942,7 @@
 //!
 //! L-Pack
 //!
-//! Γ1 + Γ2 ⊢  (e1, e2 ) : ∃a.𝜏2 ⊗ 𝜏1
+//! Γ1 + Γ2 ⊢  (e1, e2 ) : ∃a.𝜏2 ⊗ 𝜏1
 //!
 //! Γ1 ⊢ e1 : 𝜏1 [𝜐/a]
 //! Γ2 ⊢ e2 : 𝜏2 [𝜐/a]
@@ -1955,7 +1955,7 @@
 //! L-Let
 //! Γ1 ⊢ e1 : 𝜏1
 //!
-//! Γ1 + Γ2 ⊢ let  (x, y) = e1 in e2 : 𝜏
+//! Γ1 + Γ2 ⊢ let  (x, y) = e1 in e2 : 𝜏
 //!
 //! 𝜋 ·Γ1 + Γ2 ⊢ let𝜋 x : 𝜎 = e1 in e2 : 𝜏
 //!
@@ -2039,7 +2039,7 @@
 //! Q1 , this is equivalent to 𝜔·Q1 1·q2 .
 //! This follows from the fact that Q1 Q2 implies 𝜔·Q1 Q2 (Deﬁnition 5.3) and the property,
 //! shown above, that 𝜔·Q1 Q2 ⊗ Q2′ if and only if 𝜔·Q1 Q2 and 𝜔·Q1 Q2′ .
-//! 
+//! 
 //! Proof of Lemma 5.5. Let us prove separately the cases 𝜋 = 1 and 𝜋 = 𝜔.
 //! 1·Q2 implies that Q1 = 1·Q1 with
 //! • When 𝜋 = 1, then 𝜋 ·Q = Q for all Q, in particular Q1
@@ -2053,11 +2053,11 @@
 //! Q
 //! 𝜌·q2 (for all 𝜌).
 //! This result, in turns, holds by Deﬁnition 5.3.
-//! 
+//! 
 //! Lemma B.1. The following equality holds 𝜋 ·(𝜌·Q) = (𝜋 ·𝜌)·Q
 //! Proof. Immediate by case analysis of 𝜋 and 𝜌.
 //!
-//! 
+//! 
 //!
 //! B.6 Lemmas on constraint inference
 //! Lemma B.2 (D discarding). The two following, equivalent, properties hold
@@ -2070,7 +2070,7 @@
 //! Let 𝑄 D ∈ D, then for each 1·q ∈ 𝑄 D , 1·q
 //! 𝜀 (per Fig. 4), tensoring each of these entailments
 //! together and with the 𝜔·q ∈ 𝑄 D , we get 𝑄 D 𝜀.
-//! 
+//! 
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
 //!
 //!
@@ -2139,7 +2139,7 @@
 //! 
 //! 
 //! 
-//! JQ ⊗ Q1 [𝜐/a]; Γ ⊢ e : ∃ a.𝜏 R Q1 Kz =
+//! JQ ⊗ Q1 [𝜐/a]; Γ ⊢ e : ∃ a.𝜏 R Q1 Kz =
 //! 
 //! 
 //! 
@@ -2150,12 +2150,12 @@
 //! 
 //! 
 //! 
-//!  (z ′′, JQ; Γ ⊢ e : 𝜏 [𝜐/a]Kz′ ) }
+//!  (z ′′, JQ; Γ ⊢ e : 𝜏 [𝜐/a]Kz′ ) }
 //! 
 //! 
 //! 
 //! 
-//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏Kz =
+//! JQ1 ⊗ Q2 ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏Kz =
 //! 
 //! 
 //! 
@@ -2166,7 +2166,7 @@
 //! 
 //! 
 //! 
-//! let z ′, x = JQ1 ; Γ1 ⊢ e1 : ∃ a.𝜏1 R QKz1 in
+//! let z ′, x = JQ1 ; Γ1 ⊢ e1 : ∃ a.𝜏1 R QKz1 in
 //! 
 //! 
 //! 
@@ -2344,7 +2344,7 @@
 //! there exists Q1′ , 𝑄 ′D , Q2′ , such that
 //!
 //! Q2 ⊗ Q2′
-//! 
+//! 
 //! Q1 ⊗ 𝑄 D ⊗ Q2 , then
 //!
 //! • Q1′ ⊗ 𝑄 ′D Q1
@@ -2404,7 +2404,7 @@
 //!
 //! This concludes the proof
 //!
-//! 
+//! 
 //!
 //! Proof of Lemma 6.1. The cases Q ⊢ 𝐶 1 & 𝐶 2 and Q ⊢ 𝜋 ·(Q2 =◦ 𝐶) are straightforward by induction, so let us prove them ﬁrst
 //! • Suppose Q ⊢ 𝐶 1 & 𝐶 2 , then there are two cases
@@ -2446,7 +2446,7 @@
 //! – Q1 ⊗ 𝑄 D Q1′ ⊗ 𝑄 ′D
 //! – 𝑄 D ⊗ Q2 𝑄 ′D ⊗ Q2′
 //! Which concludes the proof, by the C-Dom rule
-//! 
+//! 
 //! Proof of Lemma 6.2. By induction on the syntax of 𝐶
 //! • If 𝐶 = Q ′ , then the result follows from Lemma 5.4
 //! • If 𝐶 = 𝐶 1 ⊗ 𝐶 2 , then we can prove the result like we proved the corresponding case in
@@ -2459,7 +2459,7 @@
 //! • If 𝐶 = 𝜌·(Q1 =◦ 𝐶 ′ ), then by Lemma 6.1, there is a Q ′ such that Q = 𝜋 ·Q ′ and Q ′ ⊗ Q1 ⊢ 𝐶 ′ .
 //! Applying rule C-Impl with 𝜋 ·𝜌, we get (𝜋 ·𝜌)·Q ′ ⊢ (𝜋 ·𝜌)·(Q1 =◦ 𝐶 ′ ).
 //! In other words: 𝜋 ·Q ⊢ 𝜋 ·(𝜌·(Q =◦ 𝐶)) as expected.
-//! 
+//! 
 //! Proof of Lemma 6.3. By induction on the syntax of 𝐶
 //! • If 𝐶 = Q ′ , then the result follows from Lemma 5.5
 //! • If 𝐶 = 𝐶 1 ⊗ 𝐶 2 , then we can prove the result like we proved the corresponding case in
@@ -2471,7 +2471,7 @@
 //! that 𝜔·Q1′ ⊗ 𝜔·Q2′ ⊢ 𝐶 1 and 𝜔·Q1′ ⊗ 𝜔·Q2′ ⊢ 𝐶 1 (by Lemma B.5) and, ﬁnally, Q = 𝜔·Q (by
 //! Lemma B.6) and Q ⊢ 𝐶 1 & 𝐶 2 .
 //! • If 𝐶 = 𝜌·(Q1 =◦ 𝐶 ′ ), then 𝜋 ·𝐶 = (𝜋 ·𝜌)·(Q1 =◦ 𝐶 ′ ). The result follows immediately by Lemma 6.1.
-//! 
+//! 
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
 //!
 //!
@@ -2547,7 +2547,7 @@
 //! • 𝑄 D ⊗ Q2 ; Γ2 ⊢ e2 : 𝜏2
 //! Hence Qg ; Γ1 + 𝜋 ·Γ2 ⊢ e1 e2 : 𝜏.
 //! G-Pack We have
-//! • Γ ⊢◮  e : ∃a.𝜏 R Q { 𝐶 ⊗ Q[𝜐/a]
+//! • Γ ⊢◮  e : ∃a.𝜏 R Q { 𝐶 ⊗ Q[𝜐/a]
 //! • Qg ⊢ 𝐶 ⊗ Q[𝜐/a]
 //! • Γ ⊢◮ e : 𝜏 [𝜐/a] { 𝐶
 //! By Lemma 6.1, there exist Q1 , 𝑄 D , Q2 such that
@@ -2557,10 +2557,10 @@
 //! • 𝑄D ∈ D
 //! By induction hypothesis
 //! • Q1 ⊗ 𝑄 D ; Γ ⊢ e : 𝜏 [𝜐/a]
-//! So we have Q1 ⊗ 𝑄 D ⊗ Q[𝜐/a]; Γ ⊢  e : ∃a.𝜏 R Q. By Lemma B.3 rule E-Sub, we conclude
-//! Qg ; 𝜔·Γ ⊢  e : ∃a.𝜏 R Q.
+//! So we have Q1 ⊗ 𝑄 D ⊗ Q[𝜐/a]; Γ ⊢  e : ∃a.𝜏 R Q. By Lemma B.3 rule E-Sub, we conclude
+//! Qg ; 𝜔·Γ ⊢  e : ∃a.𝜏 R Q.
 //! G-Unpack We have
-//! • Γ1 + Γ2 ⊢◮ let x = e1 in e2 : 𝜏 { 𝐶 1 ⊗ 1·(Q ′ =◦ 𝐶 2 )
+//! • Γ1 + Γ2 ⊢◮ let x = e1 in e2 : 𝜏 { 𝐶 1 ⊗ 1·(Q ′ =◦ 𝐶 2 )
 //! • Qg ⊢ 𝐶 1 ⊗ 1·(Q ′ =◦ 𝐶 2 )
 //! • Γ1 ⊢◮ e1 : ∃a.𝜏1 R Q ′ { 𝐶 1
 //! • Γ2, x:𝜋 𝜏1 ⊢◮ e2 : 𝜏 { 𝐶 2
@@ -2572,7 +2572,7 @@
 //! By induction hypothesis
 //! • Q1 ⊗ 𝑄 D ; Γ1 ⊢ e1 : ∃a.𝜏1 R Q ′
 //! • 𝑄 D ⊗ Q2 ⊗ Q; Γ2 ⊢ e2 : 𝜏
-//! Therefore Qg ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏.
+//! Therefore Qg ; Γ1 + Γ2 ⊢ let x = e1 in e2 : 𝜏.
 //! G-Case We have
 //! • 𝜋 ·Γ + Δ ⊢◮ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏 { 𝜋 ·𝐶 ⊗ & 𝐶 i
 //! • Qg ⊢ 𝜋 ·𝐶 ⊗ & 𝐶 i
@@ -2596,7 +2596,7 @@
 //! • Q ⊗ 𝑄 D; Γ ⊢ e : T 𝜎
 //! • For each 𝑖, 𝑄 D ⊗ Q ′ ; Δ, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜎/a] ⊢ ei : 𝜏
 //! Therefore Qg ; 𝜋 ·Γ + Δ ⊢ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏.
-//! 
+//! 
 //! Proof of Lemma 6.5. By induction on U ; D; Li ⊢s 𝐶 { Lo
 //! S-Atom We have
 //! • U ; D; Li ⊢s 𝜋 ·q { Lo
@@ -2654,16 +2654,16 @@
 //! • (U ∪ U0, L0 ) ⊢ 𝐶
 //! Then by C-Impl (U , ∅) ⊢ 𝜔·((U0, L0 ) =◦ 𝐶) and ﬁnally by rule C-Tensor we have (U , Li ) ⊢
 //! 𝜔·((U0, L0 ) =◦ 𝐶) ⊗(∅, Li ). Li ⊆ Li holds trivially.
-//! 
+//! 
 //! Lemma B.5 (Weakening of wanteds). If Q ⊢ 𝐶, then 𝜔·Q ′ ⊗ Q ⊢ 𝐶
 //! Proof. This is proved by a straightforward induction on the derivation of Q ⊢ 𝐶, using the
 //! corresponding property on the simple-constraint entailment relation from Deﬁnition 5.3, for the
 //! C-Dom case.
-//! 
+//! 
 //! Lemma B.6. The following equality holds: 𝜋 ·(𝜌·𝐶) = (𝜋 ·𝜌)·𝐶.
 //! Proof. This is proved by a straightforward induction on the structure of 𝐶, using Lemma B.1
 //! for the case 𝐶 = Q.
-//! 
+//! 
 //!
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
 //!
