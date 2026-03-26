@@ -10,3 +10,5 @@ data/output/heliosphere/soho/celias_pm_native_5min.csv    -text
 *.pdf    -text
 *.nsys-rep    -text
 *.sqlite    -text
+*.h5    -text
+*.cdf    -text
