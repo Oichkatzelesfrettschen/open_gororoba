@@ -2364,18 +2364,19 @@ claims we should trust and which search lanes are worth burning time on.
   `10.1007/BF00233101` behaved the same way. These previews are not substitutes
   for the full text, but they are strong provenance artifacts and often expose
   page numbers, venue confirmation, and reprint lineage.
-- Archive.org BookReader can reveal page-level availability even when issue-
-  level PDFs stay closed. Cullen 1965 maps to the Duke issue container
-  `sim_duke-mathematical-journal_1965-03_32_1`; BookReader marks only leaves
-  142-143 (printed pages 139-140) as previewable and the rest of the article
-  leaves as non-viewable. That tells us the bottleneck is a partial issue
-  preview, not a missing metadata record.
+- Archive.org BookReader can reveal more than its coarse protected/unprotected
+  flags suggest. Cullen 1965 maps to the Duke issue container
+  `sim_duke-mathematical-journal_1965-03_32_1`; the direct
+  `/page/<printed-page>/mode/1up` routes render blob-backed images for the full
+  printed run 139-148 even though the issue-level PDF stays closed. That turns
+  Cullen from a DOI-paywall problem into a page-image reconstruction problem.
 - Distinguish "fetchable preview asset" from "meaningful page content." In the
   Jacobson collected-papers volume, BookReader preview URLs around the chapter
   start do return real PNG files at shell level, but they hash to the same
   repeated placeholder image rather than exposing the chapter pages. By
-  contrast, Cullen's BookReader session yields genuinely readable screenshots
-  for printed pages 139 and 140 before falling back to the preview wall.
+  contrast, Cullen's BookReader session yields genuinely readable page images,
+  and a local Selenium pass was able to preserve printed pages 139-148 into a
+  reconstructed paper-level PDF plus OCR sidecar.
 - A borrowed live reader is still not enough unless the container itself is
   title- and volume-verified first. A patient, load-aware Edge capture loop
   can render crisp borrowed Archive pages, but the `collectedmathema0000jaco`
@@ -2417,8 +2418,9 @@ claims we should trust and which search lanes are worth burning time on.
   octave planes, Brada on Cayley-octave geometry, and Dentoni-Sce on regular
   functions in the Cayley algebra.
 - Neighboring volume-contents items are worth probing whenever a journal issue
-  is gated. Cullen 1965 stayed closed at the issue level, but the openly
-  downloadable Duke volume-32 contents item still gave a clean article anchor.
+  is gated. For Cullen 1965, the open Duke volume-32 contents item gave the
+  article anchor first, and the direct Archive `/page/<printed-page>/mode/1up`
+  routes then yielded the exact article pages for local reconstruction.
 - AutoResearchClaw's custom literature sources are not interchangeable.
   CiNii and Google Scholar are best treated as exact-record and alternate-
   container finders, while CORE is better at surfacing OA support papers
@@ -2541,6 +2543,12 @@ claims we should trust and which search lanes are worth burning time on.
   341, page 345, and a TOC snippet on page xvii from a second source scan.
   So the right model here is "multiple weak textual witnesses from distinct
   library-source scans," not just "one locked preview."
+- Google Books `SearchWithinVolume2` can widen those witnesses substantially.
+  For Jacobson volume 2, direct query harvesting across the Berkeley,
+  Michigan, and Virginia scans now exposes chapter snippets on pages 341, 342,
+  345, 346, 347, 348, 349, 351, 354, 360, and 361. It is still not a full
+  chapter extract, but it is much stronger than a single opening-page teaser
+  and is worth preserving as structured residue.
 - Machine-readable catalog ids have to stay in their own namespace. The
   Freudenthal exact-original record's `1178680002` belongs to the
   Heidelberg/K10plus/BSZ graph; treating it like a DNB identifier sends the
@@ -2568,6 +2576,110 @@ claims we should trust and which search lanes are worth burning time on.
   university catalogs, while still exposing `electronicLocator = null`. That
   is exactly the kind of evidence that tells us "scan-requestable print object"
   rather than "missed digital file."
+- Local university catalogs can leak better sidecars than the union layer.
+  RWTH Aachen's Jacobson volume-2 record exposed a scanned `Inhaltsverzeichnis`
+  PDF even though `lobid` itself showed no electronic locator. OCR on that
+  sidecar independently reconfirmed `[60] Composition algebras and their
+  automorphisms ... 341`, which is a nice reminder to probe the local catalog
+  after the union record, not just before it.
+- Shared regional sidecars matter too. Paderborn and Dusseldorf later exposed
+  the same HBZ-hosted Jacobson TOC PDF already seen from RWTH/Bonn. That did
+  not create a new artifact, but it proved the page-341 anchor was replicated
+  across multiple holder catalogs rather than hanging on one brittle leak.
+- K10plus unAPI/SRU can expose exact-original families that the HTML catalog
+  view collapses. For Freudenthal's `1951` Utrecht report, exact-title SRU
+  returns two distinct original-family records, `PPN 1178680002` (`44 S.`)
+  and `PPN 1356848117` (`46 S.`, `graph. Darst.`), plus the `1960` revised
+  edition `PPN 1322146462`. The raw `picaxml` exports also carry embedded
+  local holding fields, which is stronger evidence than a single HTML record
+  page when a rare print object needs a scan-request strategy.
+- Lightweight JS gates are sometimes enough to unlock local catalogs for
+  evidence capture. Leipzig's catalog initially returned only a `419` shell
+  that sets `finc_open=1`, but replaying that cookie made the local Freudenthal
+  `1951` record and holdings tab accessible over plain HTTP requests. That
+  turned the abstract `L1UB / MATH` trace into a concrete requestable holding:
+  `Campus-Bibliothek`, `Magazin`, call number `02B-2023-189`.
+- Once sigels are identified, small specialist catalogs can resolve exact
+  parent identifiers more directly than the union layer. After mapping
+  `DE-291-406` through the ISIL service to the Saarland Campusbibliothek fuer
+  Informatik und Mathematik, its public Koha catalog accepted the parent
+  Freudenthal identifier `1178680002` directly and exposed a full item record
+  with call number `FRE h2 1951:1 1.Ex`, shelving location, and barcode. That
+  is a good reminder that item-level truth sometimes lives in the local ILS,
+  not in WorldCat/K10plus/DOI surfaces.
+- Local ILS pages can also reveal fulfillment capability even when they do not
+  expose a direct digital file. The Saarland Koha HTML for Freudenthal's
+  `1178680002` record contains `ArticleRequest` fields with `PHOTOCOPY` and
+  `SCAN` as allowed formats, which is strong evidence that the holder can
+  service copy/scan requests from that exact-original family. The naive
+  anonymous endpoint guesses still land on Koha `404`, so this is not an open
+  scan API, but it does change the practical model from "find a holder" to
+  "enter the right holder workflow."
+- Google Books has a similar limit in the other direction: `SearchWithinVolume2`
+  gives useful Jacobson text witnesses, but direct `books/content?...&img=1`
+  probes for pages like `341`, `345`, and `346` currently return tiny
+  placeholder PNGs instead of recoverable page images. So that lane should be
+  treated as structured text residue, not as a hidden scan endpoint.
+- A lightweight catalog-tooling bench is worth maintaining locally for this
+  kind of work. System packages like `yaz`, `calibre`, and `thorium-reader`
+  handled the protocol and container edges, while a dedicated venv at
+  `/home/eirikr/.venvs/cd-archive-tools` with `pymarc` and
+  `beautifulsoup4` made it easy to turn DNB SRU and local MARCXML exports into
+  machine-readable summaries. That was immediately useful: it reconfirmed
+  Jacobson volume 2 from DNB record `930503481` and the Freudenthal `44 S.`
+  exact-original imprint from Saarland's MARCXML without relying on screenshot
+  inspection. By contrast, `isbnlib` was not dependable under this Python
+  3.14 venv because it still expects `pkg_resources`, so it should not be
+  treated as a core retrieval dependency here.
+- `perl-furl` is a good complement to that stack once `perl-mozilla-ca` is
+  installed. It is light enough for quick endpoint classification and helped
+  confirm three different response classes cleanly: Google Books chapter-image
+  routes returning tiny placeholder PNGs, Saarland's Koha route returning a
+  real full HTML record, and DNB SRU returning clean XML. That is exactly the
+  sort of fast sanity check that can save a whole browser detour.
+- Koha's public `unapi` layer is especially worth checking before scraping a
+  local holder page to death. For the Saarland Freudenthal record
+  `koha:biblionumber:75817`, it exposes anonymous `marcxml`, `mods`,
+  and `mods-full` exports that restate the `1951` Utrecht `44 S.` original
+  family more cleanly than the raw HTML and without any browser state.
+- VuFind export routes can be just as useful when their lightweight gate is
+  replayable. Leipzig's Freudenthal record `0-1356848117` sits behind the tiny
+  `finc_open=1` cookie wall, but once that cookie is sent the public `BibTeX`
+  and `RIS` exports work cleanly. The RIS payload turned out to be richer than
+  the holdings HTML because it carries multiple call-number residues for the
+  same physical family.
+- Ex Libris `fulltext` buttons need to be verified at the ViewIt page, not
+  trusted from the catalog shell. Dusseldorf's Jacobson record looked
+  promising because it exposed an OpenURL fulltext link, but the resulting
+  ViewIt page explicitly says `No full text available`. That is a useful
+  negative result: the resolver shell exists, but it does not conceal a real
+  chapter or ebook file.
+- Primo `sourceRecord` links deserve the same skepticism. The RWTH and Bonn
+  Jacobson holder pages both expose `sourceRecord` URLs that look like they
+  might reveal Alma-side metadata, but direct shell access only returns the
+  generic Primo app bootstrap, not source MARC or provider details.
+- Public digitization workflows can be more valuable than one more resolver
+  hop when a print-only exact source remains. Bielefeld's Jacobson volume-2
+  record exposes a real local holding plus a public `Suggest for digitization`
+  form for pre-1996 out-of-print works from its own collection. That is not a
+  download, but it is a concrete acquisition path that is far more actionable
+  than a generic WorldCat holding line.
+- Once the holder is known, official service pages matter as much as the
+  catalog record. Leipzig's published `SCAN FOR FREE` guidance turns the
+  alternate Freudenthal `46 S.` family into a plausible local-scan workflow,
+  while Saarland's public `Fernleihe` and document-delivery pages reinforce the
+  `44 S.` family as a copy/scan-capable lane that matches the Koha
+  `ArticleRequest` hints already present in the exact record. For exact
+  originals held as presence-use only, the practical question is often "which
+  reproduction workflow can touch this copy?" rather than "which DOI might
+  still be hiding a PDF?"
+- Browser-session exports can also beat shell access on anti-bot-heavy local
+  catalogs. Bielefeld's Jacobson volume-2 record blocks plain `requests` or
+  `curl` access to `/Export` with a bot-check page, but the live catalog
+  session can still emit a genuine RIS export containing the ISBNs, local call
+  number, and shared HBZ TOC URL. That is a useful reminder to test both the
+  raw endpoint and the in-browser tool menu before writing off a local holder's
+  machine-readable surface.
 - The remaining exact gaps are now narrow and well-typed:
   Freudenthal 1951 is a catalog/scan problem, Jacobson 1958 is a journal-vs-
   collected-papers access problem, and Cullen 1965 is a full-issue/volume scan

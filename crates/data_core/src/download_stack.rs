@@ -669,14 +669,7 @@ impl DownloadStack {
     pub fn fetch_text(&self, request: &TransferRequest) -> Result<String, TransferError> {
         let headers = self.build_headers(request, None)?;
         let client = self.client()?;
-        let response = client
-            .get(&request.url)
-            .headers(headers)
-            .send()
-            .map_err(|source| TransferError::Reqwest {
-                url: request.url.clone(),
-                source,
-            })?;
+        let response = self.send_reqwest_with_retry(&client, request, headers)?;
         let final_url = response.url().to_string();
         let status = response.status().as_u16();
         if !(200..300).contains(&status) {
@@ -1700,6 +1693,23 @@ fn default_host_policies() -> Vec<HostRoutingPolicy> {
                 DownloadBackend::WgetCli,
             ],
             note: Some("Direct Springer article host override".to_string()),
+        },
+        HostRoutingPolicy {
+            name: "nasa_cdaweb".to_string(),
+            host_suffix: "cdaweb.gsfc.nasa.gov".to_string(),
+            retry_class: RetryClass::DefaultHttp,
+            probe_backends: vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::CurlCli,
+                DownloadBackend::Ureq,
+            ],
+            download_backends: vec![
+                DownloadBackend::Reqwest,
+                DownloadBackend::CurlCli,
+                DownloadBackend::WgetCli,
+                DownloadBackend::Aria2Cli,
+            ],
+            note: Some("NASA CDAWeb HAPI and direct download endpoints".to_string()),
         },
         HostRoutingPolicy {
             name: "ftp-family".to_string(),

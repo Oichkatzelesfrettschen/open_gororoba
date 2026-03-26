@@ -41,7 +41,7 @@
 //! | Dickson (1919) | `crates/dickson_1919/` | `proofs/theories/DicksonCDProcess.v` |
 //! | Schafer (1945) | `crates/schafer_1945/` | `proofs/theories/SchaferDivAlg16.v` |
 //! | Brown (1967) | `crates/brown_1967/` | `proofs/theories/BrownGeneralizedCD.v` |
-//! | Brown (1972) | `crates/brown_1972/` | `proofs/theories/C1538_MorZDSymmetry.v` plus companion Moreno/Brown layers |
+//! | Brown (1972) | `crates/brown_1972/` | `proofs/theories/Brown1972.v` |
 //! | Moreno (1997) | `crates/moreno_1997/` | `proofs/theories/Moreno1997.v` |
 //! | de Marrais (2000) | `crates/de_marrais_2000/` | `proofs/theories/DeMarraisAssessors.v` |
 //! | Wilmot (2025) | `crates/wilmot_2025/` | `proofs/theories/WilmotCDStructure.v` and retraction companions |

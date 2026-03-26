@@ -163,10 +163,6 @@ pub fn batch_sedenion_associator_norms_parallel(vectors: &[[f64; 16]]) -> Vec<f6
 }
 
 /// SIMD-optimized octonion associator using flat AVX2 multiply.
-///
-/// Computes Assoc(a,b,c) = (a*b)*c - a*(b*c) for 8D octonions.
-/// Uses octonion_multiply_flat (AVX2 f64x4) for ~96x speedup over
-/// recursive cd_multiply.
 #[inline]
 pub fn octonion_associator_simd(a: &[f64; 8], b: &[f64; 8], c: &[f64; 8]) -> [f64; 8] {
     use super::simd::octonion_multiply_flat;
@@ -182,26 +178,16 @@ pub fn octonion_associator_simd(a: &[f64; 8], b: &[f64; 8], c: &[f64; 8]) -> [f6
 }
 
 /// Batch SIMD octonion associator for all 210 ordered basis triples.
-///
-/// Returns a Vec of (i, j, k, associator) for all distinct i,j,k in {1..7}.
-/// This is the m3 homotopy transfer classification (= Fano incidence).
 pub fn batch_octonion_basis_associators() -> Vec<(usize, usize, usize, [f64; 8])> {
     let mut results = Vec::with_capacity(210);
     for i in 1..8 {
         for j in 1..8 {
-            if j == i {
-                continue;
-            }
+            if j == i { continue; }
             for k in 1..8 {
-                if k == i || k == j {
-                    continue;
-                }
-                let mut ei = [0.0_f64; 8];
-                ei[i] = 1.0;
-                let mut ej = [0.0_f64; 8];
-                ej[j] = 1.0;
-                let mut ek = [0.0_f64; 8];
-                ek[k] = 1.0;
+                if k == i || k == j { continue; }
+                let mut ei = [0.0_f64; 8]; ei[i] = 1.0;
+                let mut ej = [0.0_f64; 8]; ej[j] = 1.0;
+                let mut ek = [0.0_f64; 8]; ek[k] = 1.0;
                 let assoc = octonion_associator_simd(&ei, &ej, &ek);
                 results.push((i, j, k, assoc));
             }
@@ -271,13 +257,7 @@ pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> 
         assoc_sq.push(cd_norm_sq(&assoc_vec));
         ab_c_sq.push(cd_norm_sq(&ab_c_vec));
         a_bc_sq.push(cd_norm_sq(&a_bc_vec));
-        cross.push(
-            ab_c_vec
-                .iter()
-                .zip(&a_bc_vec)
-                .map(|(l, r)| l * r)
-                .sum::<f64>(),
-        );
+        cross.push(ab_c_vec.iter().zip(&a_bc_vec).map(|(l, r)| l * r).sum::<f64>());
     }
 
     let n = n_trials as f64;
@@ -285,11 +265,7 @@ pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> 
     let mean_ab_c = ab_c_sq.iter().sum::<f64>() / n;
     let mean_a_bc = a_bc_sq.iter().sum::<f64>() / n;
     let mean_cross = cross.iter().sum::<f64>() / n;
-    let var_assoc = assoc_sq
-        .iter()
-        .map(|x| (x - mean_assoc).powi(2))
-        .sum::<f64>()
-        / n;
+    let var_assoc = assoc_sq.iter().map(|x| (x - mean_assoc).powi(2)).sum::<f64>() / n;
 
     let corr = if mean_ab_c > 0.0 && mean_a_bc > 0.0 {
         mean_cross / (mean_ab_c * mean_a_bc).sqrt()

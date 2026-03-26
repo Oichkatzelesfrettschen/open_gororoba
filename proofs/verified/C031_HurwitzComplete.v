@@ -33,3 +33,10 @@ Theorem C031_dim16_fails :
   exists x y : CDSed,
     sed_norm_sq (sed_mul x y) <> sed_norm_sq x * sed_norm_sq y.
 Proof. exact hurwitz_fails_dim16. Qed.
+
+(** Across the tracked Cayley-Dickson tower dimensions, square composition
+    occurs exactly at 1, 2, 4, and 8. *)
+Theorem C031_cd_tower_classification : forall n : nat,
+  tracked_cd_tower_dimension n ->
+  (hurwitz_radon n = n <-> hurwitz_square_dimension n).
+Proof. exact hurwitz_cd_tower_classification. Qed.

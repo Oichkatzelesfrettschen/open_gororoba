@@ -589,3 +589,44 @@ Proof. repeat split; reflexivity. Qed.
     the determinant argument.  This is verified exhaustively through n = 20
     and holds asymptotically since 2^{n-2} grows exponentially while
     n*(n-1)/2 grows quadratically. *)
+
+Definition hurwitz_square_dimension (n : nat) : Prop :=
+  n = 1 \/ n = 2 \/ n = 4 \/ n = 8.
+
+Definition higher_cd_tower_dimension (n : nat) : Prop :=
+  n = 16 \/ n = 32 \/ n = 64 \/ n = 128 \/ n = 256.
+
+Definition tracked_cd_tower_dimension (n : nat) : Prop :=
+  hurwitz_square_dimension n \/ higher_cd_tower_dimension n.
+
+Theorem hurwitz_radon_lt_self_higher_cd_tower : forall n : nat,
+  higher_cd_tower_dimension n -> hurwitz_radon n < n.
+Proof.
+  intros n Hn.
+  destruct Hn as [-> | [-> | [-> | [-> | ->]]]]; simpl; lia.
+Qed.
+
+Theorem hurwitz_cd_tower_classification : forall n : nat,
+  tracked_cd_tower_dimension n ->
+  (hurwitz_radon n = n <-> hurwitz_square_dimension n).
+Proof.
+  intros n Hn.
+  destruct Hn as [Hsquare | Hhigher].
+  - destruct Hsquare as [-> | [-> | [-> | ->]]]; simpl; split; intro H; firstorder.
+  - split.
+    + intro Heq.
+      exfalso.
+      pose proof (hurwitz_radon_lt_self_higher_cd_tower n Hhigher) as Hlt.
+      lia.
+    + intro Hsquare.
+      destruct Hsquare as [-> | [-> | [-> | ->]]]; simpl; reflexivity.
+Qed.
+
+Theorem hurwitz_cd_tower_non_square_dimensions : forall n : nat,
+  higher_cd_tower_dimension n ->
+  ~(hurwitz_radon n = n).
+Proof.
+  intros n Hn Heq.
+  pose proof (hurwitz_radon_lt_self_higher_cd_tower n Hn) as Hlt.
+  lia.
+Qed.

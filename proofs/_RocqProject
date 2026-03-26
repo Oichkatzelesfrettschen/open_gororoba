@@ -238,11 +238,14 @@ theories/C1543_MorMod4Bound.v
 theories/Moreno1997.v
 theories/WedderburnPrimitive.v
 theories/DicksonCDProcess.v
+theories/Dickson1921.v
+theories/Schafer1954.v
 theories/SchaferDivAlg16.v
 theories/WalkerFermatAlgebras.v
 theories/CDPowerAssociative.v
 theories/WilmotCDStructure.v
 theories/BrownGeneralizedCD.v
+theories/Brown1972.v
 theories/ZD_Criterion.v
 theories/SStructuralGaps.v
 theories/DeMarraisAssessors.v
