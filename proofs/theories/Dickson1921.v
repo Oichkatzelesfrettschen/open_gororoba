@@ -1175,6 +1175,190 @@ Proof.
     ring.
 Qed.
 
+(** Printed equation (10) on p.112: in the dim-4 lane the relevant sign
+    relation is the skew swap on the first two lower indices when the third
+    index is repeated.  Here it is a formal corollary of the equation (7)
+    vanishing theorem. *)
+Theorem dickson1921_param_eq10_sign_relation : forall c2 c3 i j,
+  (1 <= i <= 3)%nat ->
+  (1 <= j <= 3)%nat ->
+  i <> j ->
+  dickson1921_param_gamma c2 c3 j i i =
+  - dickson1921_param_gamma c2 c3 i j i.
+Proof.
+  intros c2 c3 i j Hi Hj Hneq.
+  destruct (dickson1921_param_eq7_repeated_index_vanish c2 c3 i j Hi Hj Hneq)
+    as [_ [Hij0 _]].
+  destruct (dickson1921_param_eq7_repeated_index_vanish c2 c3 i j Hi Hj Hneq)
+    as [Hji0 _].
+  rewrite Hji0, Hij0.
+  ring.
+Qed.
+
+(** Printed equation (11), specialized to the repo's dim-4 parameterized
+    family.  This is the same concrete transformation law already proved as
+    equation (5), now re-surfaced in the paper's n = 4 specialization slot. *)
+Theorem dickson1921_param_eq11_dim4 : forall c2 c3 x xi,
+  quat_coord (dickson1921_param_mul c2 c3 x xi) 0%nat =
+    quat_coord x 0%nat * quat_coord xi 0%nat +
+    c2 * quat_coord x 1%nat * quat_coord xi 1%nat +
+    c3 * quat_coord x 2%nat * quat_coord xi 2%nat -
+    c2 * c3 * quat_coord x 3%nat * quat_coord xi 3%nat /\
+  quat_coord (dickson1921_param_mul c2 c3 x xi) 1%nat =
+    quat_coord x 0%nat * quat_coord xi 1%nat +
+    quat_coord x 1%nat * quat_coord xi 0%nat -
+    c3 * quat_coord x 2%nat * quat_coord xi 3%nat +
+    c3 * quat_coord x 3%nat * quat_coord xi 2%nat /\
+  quat_coord (dickson1921_param_mul c2 c3 x xi) 2%nat =
+    quat_coord x 0%nat * quat_coord xi 2%nat +
+    quat_coord x 2%nat * quat_coord xi 0%nat +
+    c2 * quat_coord x 1%nat * quat_coord xi 3%nat -
+    c2 * quat_coord x 3%nat * quat_coord xi 1%nat /\
+  quat_coord (dickson1921_param_mul c2 c3 x xi) 3%nat =
+    quat_coord x 0%nat * quat_coord xi 3%nat +
+    quat_coord x 3%nat * quat_coord xi 0%nat +
+    quat_coord x 1%nat * quat_coord xi 2%nat -
+    quat_coord x 2%nat * quat_coord xi 1%nat.
+Proof.
+  exact dickson1921_param_eq5_dim4.
+Qed.
+
+(** Bridge from the paper's n = 4 specialization back to the explicit unit
+    multiplication facts already landed for the parameterized family. *)
+Theorem dickson1921_param_eq11_unit_table : forall c2 c3,
+  dickson1921_param_mul c2 c3 qi qi = quat_scale c2 quat_one /\
+  dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one /\
+  dickson1921_param_mul c2 c3 qk qk = quat_scale (- c2 * c3) quat_one /\
+  dickson1921_param_mul c2 c3 qi qj = qk /\
+  dickson1921_param_mul c2 c3 qj qi = quat_neg qk /\
+  dickson1921_param_mul c2 c3 qi qk = quat_scale c2 qj /\
+  dickson1921_param_mul c2 c3 qk qi = quat_scale (- c2) qj /\
+  dickson1921_param_mul c2 c3 qj qk = quat_scale (- c3) qi /\
+  dickson1921_param_mul c2 c3 qk qj = quat_scale c3 qi.
+Proof.
+  intros c2 c3.
+  repeat split;
+    [ exact (dickson1921_param_i_sq c2 c3)
+    | exact (dickson1921_param_j_sq c2 c3)
+    | exact (dickson1921_param_k_sq c2 c3)
+    | exact (dickson1921_param_ij c2 c3)
+    | exact (dickson1921_param_ji c2 c3)
+    | exact (dickson1921_param_ik c2 c3)
+    | exact (dickson1921_param_ki c2 c3)
+    | exact (dickson1921_param_jk c2 c3)
+    | exact (dickson1921_param_kj c2 c3) ].
+Qed.
+
+Definition dickson1921_matrix_det4 (m : nat -> nat -> R) : R :=
+  m 0%nat 0%nat *
+    (m 1%nat 1%nat * (m 2%nat 2%nat * m 3%nat 3%nat - m 2%nat 3%nat * m 3%nat 2%nat) -
+     m 1%nat 2%nat * (m 2%nat 1%nat * m 3%nat 3%nat - m 2%nat 3%nat * m 3%nat 1%nat) +
+     m 1%nat 3%nat * (m 2%nat 1%nat * m 3%nat 2%nat - m 2%nat 2%nat * m 3%nat 1%nat)) -
+  m 0%nat 1%nat *
+    (m 1%nat 0%nat * (m 2%nat 2%nat * m 3%nat 3%nat - m 2%nat 3%nat * m 3%nat 2%nat) -
+     m 1%nat 2%nat * (m 2%nat 0%nat * m 3%nat 3%nat - m 2%nat 3%nat * m 3%nat 0%nat) +
+     m 1%nat 3%nat * (m 2%nat 0%nat * m 3%nat 2%nat - m 2%nat 2%nat * m 3%nat 0%nat)) +
+  m 0%nat 2%nat *
+    (m 1%nat 0%nat * (m 2%nat 1%nat * m 3%nat 3%nat - m 2%nat 3%nat * m 3%nat 1%nat) -
+     m 1%nat 1%nat * (m 2%nat 0%nat * m 3%nat 3%nat - m 2%nat 3%nat * m 3%nat 0%nat) +
+     m 1%nat 3%nat * (m 2%nat 0%nat * m 3%nat 1%nat - m 2%nat 1%nat * m 3%nat 0%nat)) -
+  m 0%nat 3%nat *
+    (m 1%nat 0%nat * (m 2%nat 1%nat * m 3%nat 2%nat - m 2%nat 2%nat * m 3%nat 1%nat) -
+     m 1%nat 1%nat * (m 2%nat 0%nat * m 3%nat 2%nat - m 2%nat 2%nat * m 3%nat 0%nat) +
+     m 1%nat 2%nat * (m 2%nat 0%nat * m 3%nat 1%nat - m 2%nat 1%nat * m 3%nat 0%nat)).
+
+(** Dickson's section-6 determinant note: the four-rowed determinant of the
+    general number equals o(x)^2. *)
+Theorem dickson1921_param_det_equals_norm_sq : forall c2 c3 x,
+  dickson1921_matrix_det4 (dickson1921_param_matrix_entry c2 c3 x) =
+  (dickson1921_param_norm c2 c3 x)^2.
+Proof.
+  intros c2 c3 [a b c d].
+  unfold dickson1921_matrix_det4, dickson1921_param_matrix_entry,
+         dickson1921_param_norm.
+  simpl.
+  ring.
+Qed.
+
+(** Printed equation (12), surfaced in paper order. *)
+Theorem dickson1921_param_eq12_table : forall c2 c3,
+  dickson1921_param_mul c2 c3 qi qi = quat_scale c2 quat_one /\
+  dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one /\
+  dickson1921_param_mul c2 c3 qk qk = quat_scale (- c2 * c3) quat_one /\
+  dickson1921_param_mul c2 c3 qi qj = qk /\
+  dickson1921_param_mul c2 c3 qj qi = quat_neg qk /\
+  dickson1921_param_mul c2 c3 qi qk = quat_scale c2 qj /\
+  dickson1921_param_mul c2 c3 qk qi = quat_scale (- c2) qj /\
+  dickson1921_param_mul c2 c3 qj qk = quat_scale (- c3) qi /\
+  dickson1921_param_mul c2 c3 qk qj = quat_scale c3 qi.
+Proof.
+  exact dickson1921_param_eq11_unit_table.
+Qed.
+
+(** Dickson's section-6 conclusion packages the associative generalized
+    quaternion family obtained from the printed table (12). *)
+Theorem dickson1921_param_direct_generalization_summary : forall c2 c3,
+  (exists s : Dickson1921Surface CDQuat, True) /\
+  (forall x y z,
+      dickson1921_param_mul c2 c3 (dickson1921_param_mul c2 c3 x y) z =
+      dickson1921_param_mul c2 c3 x (dickson1921_param_mul c2 c3 y z)) /\
+  (forall x,
+      dickson1921_matrix_det4 (dickson1921_param_matrix_entry c2 c3 x) =
+      (dickson1921_param_norm c2 c3 x)^2) /\
+  dickson1921_param_mul c2 c3 qi qi = quat_scale c2 quat_one /\
+  dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one /\
+  dickson1921_param_mul c2 c3 qk qk = quat_scale (- c2 * c3) quat_one /\
+  dickson1921_param_mul c2 c3 qi qj = qk /\
+  dickson1921_param_mul c2 c3 qj qi = quat_neg qk /\
+  dickson1921_param_mul c2 c3 qi qk = quat_scale c2 qj /\
+  dickson1921_param_mul c2 c3 qk qi = quat_scale (- c2) qj /\
+  dickson1921_param_mul c2 c3 qj qk = quat_scale (- c3) qi /\
+  dickson1921_param_mul c2 c3 qk qj = quat_scale c3 qi.
+Proof.
+  intros c2 c3.
+  repeat split.
+  - exact (ex_intro _ (dickson1921_param_surface c2 c3) I).
+  - exact (dickson1921_param_mul_assoc c2 c3).
+  - exact (dickson1921_param_det_equals_norm_sq c2 c3).
+  - exact (dickson1921_param_i_sq c2 c3).
+  - exact (dickson1921_param_j_sq c2 c3).
+  - exact (dickson1921_param_k_sq c2 c3).
+  - exact (dickson1921_param_ij c2 c3).
+  - exact (dickson1921_param_ji c2 c3).
+  - exact (dickson1921_param_ik c2 c3).
+  - exact (dickson1921_param_ki c2 c3).
+  - exact (dickson1921_param_jk c2 c3).
+  - exact (dickson1921_param_kj c2 c3).
+Qed.
+
+(** The customary quaternion algebra is recovered when c2 = c3 = -1. *)
+Theorem dickson1921_param_quaternion_case : forall x,
+  dickson1921_matrix_det4 (dickson1921_param_matrix_entry (-1) (-1) x) =
+  (quat_norm_sq x)^2 /\
+  dickson1921_param_mul (-1) (-1) qi qj = qk /\
+  dickson1921_param_mul (-1) (-1) qj qk = qi /\
+  dickson1921_param_mul (-1) (-1) qk qi = qj.
+Proof.
+  intro x.
+  repeat split.
+  - rewrite dickson1921_param_det_equals_norm_sq.
+    rewrite dickson1921_param_specializes_to_standard_norm.
+    reflexivity.
+  - exact (dickson1921_param_ij (-1) (-1)).
+  - change (dickson1921_param_mul (-1) (-1) qj qk =
+            quat_scale (- (-1)) qi).
+    rewrite dickson1921_param_jk.
+    unfold quat_scale.
+    simpl.
+    f_equal; ring.
+  - change (dickson1921_param_mul (-1) (-1) qk qi =
+            quat_scale (- (-1)) qj).
+    rewrite dickson1921_param_ki.
+    unfold quat_scale.
+    simpl.
+    f_equal; ring.
+Qed.
+
 Theorem dickson1921_param_matrix_specializes_to_standard : forall x i j,
   dickson1921_param_matrix_entry (-1) (-1) x i j = quat_hamilton_entry x i j.
 Proof.

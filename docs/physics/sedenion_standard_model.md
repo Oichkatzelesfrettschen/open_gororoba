@@ -2680,6 +2680,22 @@ claims we should trust and which search lanes are worth burning time on.
   number, and shared HBZ TOC URL. That is a useful reminder to test both the
   raw endpoint and the in-browser tool menu before writing off a local holder's
   machine-readable surface.
+- Koha can split its public machine surfaces across two layers. For the
+  Saarland Freudenthal record, `unapi` serves the XML-family exports cleanly
+  but rejects `bibtex` and `ris` with `406`, while the separate public
+  `opac-export.pl?op=export&bib=75817&format=<fmt>` route returns `bibtex`,
+  `ris`, `dc`, `marcxml`, `mods`, and `isbd` directly from shell. Meanwhile,
+  the adjacent `Place hold` action immediately escalates to Academic Cloud SSO.
+  So the right play is to test both `unapi` and the holder's own export UI
+  before concluding that a local catalog lacks a usable machine-readable lane.
+- VuFind-style local catalogs can have a similar split between public routing
+  and authenticated fulfillment. Leipzig's Freudenthal record exposes a fully
+  formed `StorageRetrievalRequest` URL with concrete `doc_id` and `item_id`
+  values. Without the tiny `finc_open=1` cookie, shell access sees only the
+  lightweight `419` bootstrap page; with the cookie, the same URL serves the
+  real library-account login page. That kind of test is useful because it
+  distinguishes "hidden because JS/bootstrap is missing" from "genuinely
+  authenticated after the bootstrap."
 - The remaining exact gaps are now narrow and well-typed:
   Freudenthal 1951 is a catalog/scan problem, Jacobson 1958 is a journal-vs-
   collected-papers access problem, and Cullen 1965 is a full-issue/volume scan
