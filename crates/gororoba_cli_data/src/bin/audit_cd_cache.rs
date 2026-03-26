@@ -1,9 +1,9 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use clap::Parser;
 use regex::Regex;
-use std::collections::{BTreeMap, HashMap};
+use std::collections::BTreeMap;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use walkdir::WalkDir;
 
 #[derive(Parser, Debug)]

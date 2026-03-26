@@ -1691,13 +1691,23 @@ cpd-audit:
 	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit."; exit 1; }
 	@$(_CPD_REGEN_LIST)
 	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --file-list $(_CPD_FILE_LIST) --format xml 2>/dev/null \
-		| python3 scripts/cpd_report.py --top $(CPD_TOP)
+		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --top $(CPD_TOP)
 
 cpd-audit-strict:
 	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-strict."; exit 1; }
 	@$(_CPD_REGEN_LIST)
 	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --file-list $(_CPD_FILE_LIST) --format xml 2>/dev/null \
-		| python3 scripts/cpd_report.py --strict --top $(CPD_TOP)
+		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --strict --top $(CPD_TOP)
+
+# ---- Heliosphere Quench Map ----
+.PHONY: quench-map
+
+quench-map:
+	@echo "Building full heliosphere feature cube..."
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-feature-cube -- --window full-heliosphere --out-csv data/output/heliosphere/full_feature_cube.csv
+	@echo "Generating quench scan from full cube (including MMS)..."
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-quench-scan -- --cube-csv data/output/heliosphere/full_feature_cube.csv --out-csv data/output/heliosphere/takens_quench_scan.csv
+
 
 # ---- Help ----
 

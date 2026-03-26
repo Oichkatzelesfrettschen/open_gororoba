@@ -1,16 +1,24 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand, ValueEnum};
+use lit_search::{
+    SearchEngine, VerificationReport, check_novelty, search::SourceTier, sources::ApiKeys,
+    verify_citations,
+};
 use provenance_core::{
     ArtifactQueryResult, BinaryRecord, ClaimRecord, ControlPlaneCounts, DoctorReport,
     DocumentQueryResult, DownloadCampaignQueryResult, DownloadQueryResult, ExperimentRecord,
-    InsightRecord, PantheonSeedSummary, TheoremRecord,
+    InsightRecord, LiteratureNoveltySimilarPaperRecord, LiteratureVerificationQueryResult,
+    LiteratureVerificationResultRecord, LiteratureVerificationRunRecord, PantheonSeedSummary,
+    TheoremRecord,
 };
 use provenance_ops::source_provenance;
 use provenance_store::{ExternalSourceContractPatch, ProvenanceStore};
+use regex::Regex;
 use serde_json::json;
 use std::{
     fs,
     path::{Path, PathBuf},
+    time::Duration,
 };
 
 #[derive(Parser, Debug)]
@@ -61,6 +69,8 @@ enum Commands {
     Recover(RecoverArgs),
     /// Seed the Pantheon/PhysicsForge migration SQLite memoization tables.
     PantheonSeed(PantheonSeedArgs),
+    /// Verify a real bibliography input with lit_search and persist results into provenance storage.
+    LiteratureVerify(LiteratureVerifyArgs),
 }
 
 #[derive(Parser, Debug)]
@@ -314,6 +324,10 @@ enum QueryKind {
     Binary {
         needle: String,
     },
+    Literature {
+        #[arg(long, default_value_t = 10)]
+        limit: usize,
+    },
     Theorem {
         needle: String,
     },
@@ -361,11 +375,55 @@ struct PantheonSeedArgs {
     overflow: PathBuf,
 }
 
+#[derive(Parser, Debug)]
+struct LiteratureVerifyArgs {
+    #[arg(long)]
+    bib: PathBuf,
+
+    #[arg(long)]
+    topic: Option<String>,
+
+    #[arg(long)]
+    hypotheses: Option<PathBuf>,
+
+    #[arg(long = "domain")]
+    domains: Vec<String>,
+
+    #[arg(long, value_enum, default_value_t = SearchTierArg::All)]
+    tier: SearchTierArg,
+
+    #[arg(long, default_value_t = 300)]
+    inter_verify_delay_ms: u64,
+
+    #[arg(long, default_value_t = 30)]
+    novelty_limit: usize,
+
+    #[arg(long, default_value_t = 0.25)]
+    similarity_threshold: f32,
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
 enum OutputFormat {
     Text,
     Json,
     Toml,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
+enum SearchTierArg {
+    Core,
+    Open,
+    All,
+}
+
+impl From<SearchTierArg> for SourceTier {
+    fn from(value: SearchTierArg) -> Self {
+        match value {
+            SearchTierArg::Core => SourceTier::Core,
+            SearchTierArg::Open => SourceTier::Open,
+            SearchTierArg::All => SourceTier::All,
+        }
+    }
 }
 
 fn main() -> Result<()> {
@@ -396,6 +454,7 @@ fn main() -> Result<()> {
         Commands::LinkAudit(args) => run_link_audit(&db_path, args),
         Commands::Recover(args) => run_recover(&db_path, &repo_root, args),
         Commands::PantheonSeed(args) => run_pantheon_seed(&db_path, &repo_root, args),
+        Commands::LiteratureVerify(args) => run_literature_verify(&repo_root, &db_path, args),
     }
 }
 
@@ -706,6 +765,130 @@ fn run_verify(repo_root: &Path, db_path: &Path, args: VerifyArgs) -> Result<()> 
     Ok(())
 }
 
+fn run_literature_verify(
+    repo_root: &Path,
+    db_path: &Path,
+    args: LiteratureVerifyArgs,
+) -> Result<()> {
+    let bib_path = repo_path(repo_root, &args.bib);
+    let bib_text = fs::read_to_string(&bib_path)
+        .with_context(|| format!("read bibliography {}", bib_path.display()))?;
+    let hypotheses_path = args
+        .hypotheses
+        .as_ref()
+        .map(|path| repo_path(repo_root, path));
+    let hypotheses_text = if let Some(path) = &hypotheses_path {
+        Some(
+            fs::read_to_string(path)
+                .with_context(|| format!("read hypotheses {}", path.display()))?,
+        )
+    } else {
+        None
+    };
+
+    let engine = SearchEngine::new(ApiKeys::from_env(), args.tier.into());
+    let runtime = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .context("build tokio runtime for literature verification")?;
+
+    let verify_report = runtime.block_on(verify_citations(
+        &bib_text,
+        &engine,
+        Duration::from_millis(args.inter_verify_delay_ms),
+    ));
+
+    let papers_already_seen = verify_report
+        .results
+        .iter()
+        .filter_map(|result| result.matched_paper.clone())
+        .collect::<Vec<_>>();
+
+    let novelty_report = if args.topic.is_some() || hypotheses_text.is_some() {
+        Some(runtime.block_on(check_novelty(
+            &engine,
+            args.topic.as_deref().unwrap_or(""),
+            hypotheses_text.as_deref().unwrap_or(""),
+            &args.domains,
+            &papers_already_seen,
+            args.novelty_limit,
+            args.similarity_threshold,
+        )))
+    } else {
+        None
+    };
+
+    let entry_metadata = parse_bibtex_metadata(&bib_text);
+    let created_at = chrono::Utc::now().to_rfc3339();
+    let run = LiteratureVerificationRunRecord {
+        id: None,
+        input_path: to_repo_display_path(repo_root, &bib_path),
+        topic: args.topic.clone(),
+        hypotheses_path: hypotheses_path
+            .as_ref()
+            .map(|path| to_repo_display_path(repo_root, path)),
+        domains: args.domains.clone(),
+        search_queries: novelty_report
+            .as_ref()
+            .map(|report| report.search_queries.clone())
+            .unwrap_or_default(),
+        total_entries: verify_report.total,
+        verified_count: verify_report.verified,
+        suspicious_count: verify_report.suspicious,
+        hallucinated_count: verify_report.hallucinated,
+        skipped_count: verify_report.skipped,
+        integrity_score: verify_report.integrity_score() as f64,
+        novelty_score: novelty_report
+            .as_ref()
+            .map(|report| report.novelty_score as f64),
+        novelty_assessment: novelty_report
+            .as_ref()
+            .map(|report| report.assessment.clone()),
+        recommendation: novelty_report
+            .as_ref()
+            .map(|report| report.recommendation.clone()),
+        search_coverage: novelty_report
+            .as_ref()
+            .map(|report| report.search_coverage.clone()),
+        total_papers_retrieved: novelty_report
+            .as_ref()
+            .map(|report| report.total_papers_retrieved),
+        created_at,
+    };
+    let result_rows = build_literature_result_rows(&verify_report, &entry_metadata);
+    let similar_rows = novelty_report
+        .as_ref()
+        .map(build_literature_similar_rows)
+        .unwrap_or_default();
+
+    let mut store = ProvenanceStore::open(db_path)?;
+    let run_id = store.record_literature_verification_run(&run, &result_rows, &similar_rows)?;
+
+    println!("Recorded literature verification run {run_id}");
+    println!("Input: {}", run.input_path);
+    println!(
+        "Totals: total={} verified={} suspicious={} hallucinated={} skipped={} integrity_score={:.3}",
+        verify_report.total,
+        verify_report.verified,
+        verify_report.suspicious,
+        verify_report.hallucinated,
+        verify_report.skipped,
+        verify_report.integrity_score(),
+    );
+    if let Some(novelty) = novelty_report {
+        println!(
+            "Novelty: score={:.3} assessment={} recommendation={} coverage={} similar_papers={} retrieved={}",
+            novelty.novelty_score,
+            novelty.assessment,
+            novelty.recommendation,
+            novelty.search_coverage,
+            novelty.similar_papers_found,
+            novelty.total_papers_retrieved,
+        );
+    }
+    Ok(())
+}
+
 fn run_query(db_path: &Path, args: QueryArgs) -> Result<()> {
     let store = ProvenanceStore::open(db_path)?;
     match args.kind {
@@ -797,6 +980,13 @@ fn run_query(db_path: &Path, args: QueryArgs) -> Result<()> {
                 })
                 .with_context(|| format!("no binary matched {needle}"))?;
             print_binary_query(&binary);
+        }
+        QueryKind::Literature { limit } => {
+            let runs = store.recent_literature_verification_runs(limit)?;
+            if runs.is_empty() {
+                bail!("no literature verification runs found");
+            }
+            print_literature_runs(&runs);
         }
         QueryKind::Theorem { needle } => {
             let theorem = store
@@ -900,6 +1090,129 @@ fn repo_path(repo_root: &Path, maybe_relative: &Path) -> PathBuf {
     } else {
         repo_root.join(maybe_relative)
     }
+}
+
+fn to_repo_display_path(repo_root: &Path, path: &Path) -> String {
+    path.strip_prefix(repo_root)
+        .unwrap_or(path)
+        .display()
+        .to_string()
+}
+
+fn parse_bibtex_metadata(
+    bib_text: &str,
+) -> std::collections::BTreeMap<String, (Option<String>, Option<String>)> {
+    let mut rows = std::collections::BTreeMap::new();
+    let entry_head_re = Regex::new(r"^@(\w+)\s*\{\s*([^,\s]+)\s*,").expect("valid regex");
+    let mut current_key: Option<String> = None;
+    let mut current_doi: Option<String> = None;
+    let mut current_arxiv: Option<String> = None;
+
+    for raw_line in bib_text.lines() {
+        let line = raw_line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        if let Some(captures) = entry_head_re.captures(line) {
+            if let Some(key) = current_key.take() {
+                rows.insert(key, (current_doi.take(), current_arxiv.take()));
+            }
+            current_key = captures.get(2).map(|m| m.as_str().to_string());
+            current_doi = None;
+            current_arxiv = None;
+            continue;
+        }
+        if line == "}" {
+            if let Some(key) = current_key.take() {
+                rows.insert(key, (current_doi.take(), current_arxiv.take()));
+            }
+            continue;
+        }
+        let Some((name, value)) = line.split_once('=') else {
+            continue;
+        };
+        let normalized = normalize_bibtex_field(value);
+        match name.trim().to_ascii_lowercase().as_str() {
+            "doi" => current_doi = Some(normalized),
+            "eprint" => current_arxiv = Some(normalized),
+            _ => {}
+        }
+    }
+    if let Some(key) = current_key.take() {
+        rows.insert(key, (current_doi.take(), current_arxiv.take()));
+    }
+    rows
+}
+
+fn normalize_bibtex_field(value: &str) -> String {
+    value
+        .trim()
+        .trim_end_matches(',')
+        .trim()
+        .trim_start_matches('{')
+        .trim_end_matches('}')
+        .trim()
+        .to_string()
+}
+
+fn build_literature_result_rows(
+    report: &VerificationReport,
+    entry_metadata: &std::collections::BTreeMap<String, (Option<String>, Option<String>)>,
+) -> Vec<LiteratureVerificationResultRecord> {
+    report
+        .results
+        .iter()
+        .map(|result| {
+            let (doi, arxiv_id) = entry_metadata
+                .get(&result.cite_key)
+                .cloned()
+                .unwrap_or((None, None));
+            LiteratureVerificationResultRecord {
+                id: None,
+                run_id: None,
+                cite_key: result.cite_key.clone(),
+                title: result.title.clone(),
+                status: result.status.as_str().to_string(),
+                confidence: result.confidence as f64,
+                method: result.method.clone(),
+                details: result.details.clone(),
+                doi,
+                arxiv_id,
+                matched_paper_title: result
+                    .matched_paper
+                    .as_ref()
+                    .map(|paper| paper.title.clone()),
+                matched_paper_source: result
+                    .matched_paper
+                    .as_ref()
+                    .map(|paper| paper.source.clone()),
+                matched_paper_year: result.matched_paper.as_ref().map(|paper| paper.year as i64),
+                matched_paper_url: result.matched_paper.as_ref().map(|paper| paper.url.clone()),
+                relevance_score: result.relevance_score.map(|value| value as f64),
+            }
+        })
+        .collect()
+}
+
+fn build_literature_similar_rows(
+    report: &lit_search::NoveltyReport,
+) -> Vec<LiteratureNoveltySimilarPaperRecord> {
+    report
+        .similar_papers
+        .iter()
+        .map(|paper| LiteratureNoveltySimilarPaperRecord {
+            id: None,
+            run_id: None,
+            title: paper.title.clone(),
+            paper_id: paper.paper_id.clone(),
+            year: i64::from(paper.year),
+            venue: paper.venue.clone(),
+            citation_count: i64::from(paper.citation_count),
+            similarity: paper.similarity as f64,
+            url: paper.url.clone(),
+            cite_key: paper.cite_key.clone(),
+        })
+        .collect()
 }
 
 fn print_artifact_query(result: &ArtifactQueryResult) {
@@ -1069,6 +1382,40 @@ fn print_binary_query(binary: &BinaryRecord) {
     println!("Description: {}", binary.description);
     println!("Experiment: {}", binary.experiment.as_deref().unwrap_or(""));
     println!("Source: {}", binary.source);
+}
+
+fn print_literature_runs(runs: &[LiteratureVerificationQueryResult]) {
+    for run in runs {
+        println!(
+            "Literature run {} | input={} | created_at={}",
+            run.run.id.unwrap_or_default(),
+            run.run.input_path,
+            run.run.created_at
+        );
+        println!(
+            "  totals: total={} verified={} suspicious={} hallucinated={} skipped={} integrity_score={:.3}",
+            run.run.total_entries,
+            run.run.verified_count,
+            run.run.suspicious_count,
+            run.run.hallucinated_count,
+            run.run.skipped_count,
+            run.run.integrity_score
+        );
+        if let Some(score) = run.run.novelty_score {
+            println!(
+                "  novelty: score={:.3} assessment={} recommendation={} coverage={}",
+                score,
+                run.run.novelty_assessment.as_deref().unwrap_or(""),
+                run.run.recommendation.as_deref().unwrap_or(""),
+                run.run.search_coverage.as_deref().unwrap_or(""),
+            );
+        }
+        println!(
+            "  stored rows: verification_results={} similar_papers={}",
+            run.results.len(),
+            run.similar_papers.len()
+        );
+    }
 }
 
 fn print_pantheon_seed_summary(summary: &PantheonSeedSummary) {

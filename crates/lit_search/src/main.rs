@@ -2,74 +2,200 @@
 //!
 //! Usage:
 //!   lit-search "sedenion zero divisor" --limit 10 --tier all
-//!   lit-search --doi "10.1016/S0096-3003(99)00140-X"
-//!   lit-search "cayley dickson" --download ./papers/
+//!   lit-search crawl "https://arxiv.org/abs/2301.00001"
+//!   lit-search extract-pdf ./paper.pdf
 
-use lit_search::{SearchEngine, download, search::SourceTier, sources::ApiKeys};
+use anyhow::{Context, Result};
+use clap::{Parser, Subcommand};
+use lit_search::{
+    crawler::WebCrawler,
+    critique::build_critique_prompt,
+    download,
+    evolution::EvolutionStore,
+    pdf::PdfExtractor,
+    search::SourceTier,
+    sources::ApiKeys,
+    SearchEngine,
+};
 use std::path::PathBuf;
 
-#[tokio::main]
-async fn main() {
-    tracing_subscriber::fmt::init();
+#[derive(Parser, Debug)]
+#[command(name = "lit-search", about = "Academic Research & Literature Intelligence CLI")]
+struct Cli {
+    #[command(subcommand)]
+    command: Option<Commands>,
 
-    let args: Vec<String> = std::env::args().collect();
-    if args.len() < 2 {
-        eprintln!(
-            "Usage: lit-search <query> [--limit N] [--tier core|open|all] [--doi DOI] [--year-min YEAR] [--download DIR]"
-        );
+    /// Default query if no subcommand is used
+    query: Option<String>,
+
+    /// Limit results (default 10)
+    #[arg(long, default_value_t = 10)]
+    limit: usize,
+
+    /// Tier: open, core, or all (default all)
+    #[arg(long, default_value = "all")]
+    tier: String,
+
+    /// Minimum publication year
+    #[arg(long, default_value_t = 0)]
+    year_min: u32,
+
+    /// Download PDFs to directory
+    #[arg(long)]
+    download: Option<PathBuf>,
+
+    /// Search by DOI instead of query
+    #[arg(long)]
+    doi: Option<String>,
+
+    /// Domains to search
+    #[arg(long)]
+    domain: Vec<String>,
+
+    /// Expand domains automatically
+    #[arg(long)]
+    expand_domains: bool,
+}
+
+#[derive(Subcommand, Debug)]
+enum Commands {
+    /// Search for academic papers
+    Search {
+        query: String,
+        #[arg(long, default_value_t = 10)]
+        limit: usize,
+    },
+    /// Crawl a web page and convert to markdown
+    Crawl {
+        url: String,
+        #[arg(long, default_value_t = 30)]
+        timeout: u64,
+    },
+    /// Extract text and math from a scientific PDF
+    ExtractPdf {
+        path: PathBuf,
+    },
+    /// Critique a paper draft using academic personas
+    Critique {
+        #[arg(long)]
+        draft: PathBuf,
+        #[arg(long)]
+        evidence: Option<PathBuf>,
+        #[arg(long)]
+        persona: String, // board, balanced, tank, bros
+    },
+    /// Generate prompt overlay from evolution lessons
+    Evolution {
+        #[arg(long)]
+        stage: String,
+        #[arg(long, default_value = ".evolution")]
+        store: PathBuf,
+        #[arg(long)]
+        skills: Option<PathBuf>,
+    },
+}
+
+struct RunSearchArgs {
+    query: String,
+    limit: usize,
+    tier: String,
+    year_min: u32,
+    download_dir: Option<PathBuf>,
+    doi: Option<String>,
+    domains: Vec<String>,
+    expand_domains: bool,
+}
+
+#[tokio::main]
+async fn main() -> Result<()> {
+    tracing_subscriber::fmt::init();
+    let cli = Cli::parse();
+
+    if let Some(cmd) = cli.command {
+        match cmd {
+            Commands::Search { query, limit } => {
+                run_search(RunSearchArgs {
+                    query,
+                    limit,
+                    tier: cli.tier,
+                    year_min: cli.year_min,
+                    download_dir: cli.download,
+                    doi: cli.doi,
+                    domains: cli.domain,
+                    expand_domains: cli.expand_domains,
+                })
+                .await?;
+            }
+            Commands::Crawl { url, timeout } => {
+                let crawler = WebCrawler::new(timeout, 100_000);
+                println!("Crawling {}...", url);
+                let res = crawler.crawl(&url).await;
+                if res.success {
+                    println!("\n# {}\n", res.title);
+                    println!("{}", res.markdown);
+                } else {
+                    eprintln!("Crawl failed: {:?}", res.error);
+                }
+            }
+            Commands::ExtractPdf { path } => {
+                println!("Extracting PDF: {}...", path.display());
+                let md = PdfExtractor::extract_to_markdown(&path)?;
+                println!("{}", md);
+            }
+            Commands::Critique { draft, evidence, persona } => {
+                let draft_text = std::fs::read_to_string(draft).context("Failed to read draft file")?;
+                let evidence_text = if let Some(e) = evidence {
+                    std::fs::read_to_string(e).unwrap_or_default()
+                } else {
+                    String::new()
+                };
+                let (system, user) = build_critique_prompt(&draft_text, &evidence_text, "", &persona);
+                println!("--- PERSONA: {} ---", persona.to_uppercase());
+                println!("--- SYSTEM PROMPT ---\n{}\n", system);
+                println!("--- USER PROMPT ---\n{}\n", user);
+            }
+            Commands::Evolution { stage, store, skills } => {
+                let store_inst = EvolutionStore::new(store)?;
+                let overlay = store_inst.build_overlay(&stage, 5, skills.as_deref());
+                println!("{}", overlay);
+            }
+        }
+    } else if let Some(query) = cli.query {
+        run_search(RunSearchArgs {
+            query,
+            limit: cli.limit,
+            tier: cli.tier,
+            year_min: cli.year_min,
+            download_dir: cli.download,
+            doi: cli.doi,
+            domains: cli.domain,
+            expand_domains: cli.expand_domains,
+        })
+        .await?;
+    } else {
+        eprintln!("Error: No query or command provided. Use --help for usage.");
         std::process::exit(1);
     }
 
-    let mut query = String::new();
-    let mut limit = 10_usize;
-    let mut tier = SourceTier::All;
-    let mut year_min = 0_u32;
-    let mut doi_mode = false;
-    let mut download_dir: Option<PathBuf> = None;
+    Ok(())
+}
 
-    let mut i = 1;
-    while i < args.len() {
-        match args[i].as_str() {
-            "--limit" => {
-                i += 1;
-                limit = args.get(i).and_then(|s| s.parse().ok()).unwrap_or(10);
-            }
-            "--tier" => {
-                i += 1;
-                tier = match args.get(i).map(|s| s.as_str()) {
-                    Some("core") => SourceTier::Core,
-                    Some("open") => SourceTier::Open,
-                    _ => SourceTier::All,
-                };
-            }
-            "--year-min" => {
-                i += 1;
-                year_min = args.get(i).and_then(|s| s.parse().ok()).unwrap_or(0);
-            }
-            "--doi" => {
-                doi_mode = true;
-                i += 1;
-                query = args.get(i).cloned().unwrap_or_default();
-            }
-            "--download" => {
-                i += 1;
-                download_dir = args.get(i).map(PathBuf::from);
-            }
-            s if !s.starts_with("--") => {
-                query = s.to_string();
-            }
-            _ => {}
-        }
-        i += 1;
-    }
+async fn run_search(args: RunSearchArgs) -> Result<()> {
+    let tier = match args.tier.to_lowercase().as_str() {
+        "core" => SourceTier::Core,
+        "open" => SourceTier::Open,
+        _ => SourceTier::All,
+    };
 
     let keys = ApiKeys::from_env();
     let engine = SearchEngine::new(keys, tier);
 
-    let results = if doi_mode {
-        engine.search_by_doi(&query).await
+    let results = if let Some(d) = args.doi {
+        engine.search_by_doi(&d).await
+    } else if args.expand_domains || !args.domains.is_empty() {
+        engine.search_topic(&args.query, &args.domains, args.limit, args.year_min).await
     } else {
-        engine.search(&query, limit, year_min).await
+        engine.search(&args.query, args.limit, args.year_min).await
     };
 
     println!("Found {} results:\n", results.len());
@@ -91,16 +217,10 @@ async fn main() {
         println!();
     }
 
-    // Download PDFs if requested
-    if let Some(dir) = download_dir {
+    if let Some(dir) = args.download_dir {
         let with_pdf: usize = results.iter().filter(|p| !p.pdf_url.is_empty()).count();
         println!("Downloading {with_pdf} PDFs to {}...\n", dir.display());
-
         let dl_results = download::download_pdfs(&results, &dir, engine.client()).await;
-
-        let success = dl_results.iter().filter(|r| r.path.is_some()).count();
-        let failed = dl_results.iter().filter(|r| r.error.is_some()).count();
-
         for r in &dl_results {
             if let Some(path) = &r.path {
                 println!("  OK: {} -> {}", r.title, path.display());
@@ -108,12 +228,11 @@ async fn main() {
                 println!("  FAIL: {} -- {}", r.title, err);
             }
         }
-
-        println!("\nDownload summary: {success} succeeded, {failed} failed");
     }
 
-    // JSON output for piping
     if std::env::var("LIT_SEARCH_JSON").is_ok() {
         println!("{}", serde_json::to_string_pretty(&results).unwrap());
     }
+
+    Ok(())
 }

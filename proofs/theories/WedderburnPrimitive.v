@@ -124,6 +124,23 @@ Record WedderburnCyclicN2Surface (A : Type) := {
   wcy_y_square : wcy_mul wcy_y wcy_y = wcy_g;
 }.
 
+Record WedderburnPrimitiveN2Surface (A : Type) := {
+  wp_cyclic_surface : WedderburnCyclicN2Surface A;
+  wp_one : A;
+  wp_det : A -> R;
+  wp_norm : A -> R;
+  wp_inv : A -> A;
+  wp_det_norm_sq : forall z : A, wp_det z = (wp_norm z)^2;
+  wp_det_nonzero_iff_norm_nonzero :
+    forall z : A, wp_det z <> 0 <-> wp_norm z <> 0;
+  wp_right_inverse :
+    forall z : A, wp_det z <> 0 ->
+      @wcy_mul A wp_cyclic_surface z (wp_inv z) = wp_one;
+  wp_left_inverse :
+    forall z : A, wp_det z <> 0 ->
+      @wcy_mul A wp_cyclic_surface (wp_inv z) z = wp_one;
+}.
+
 (** Wedderburn's cyclic presentation in the quaternion case:
     choose x = i and y = j. Then xy = y * theta(x) with theta = conjugation,
     and y^2 = -1. *)
@@ -232,6 +249,47 @@ Proof.
   }
   repeat f_equal; field; exact Hn'.
 Qed.
+
+Theorem wedderburn_quaternion_two_sided_inverse :
+  forall q : CDQuat,
+    wedderburn_quaternion_left_det q <> 0 ->
+    quat_mul q (quat_inv q) = quat_one /\
+    quat_mul (quat_inv q) q = quat_one.
+Proof.
+  intros q Hdet.
+  split.
+  - apply dickson_quat_right_inverse.
+    intro Hn.
+    apply Hdet.
+    rewrite wedderburn_quaternion_det_equals_norm_sq.
+    nra.
+  - destruct q as [a b c d].
+    unfold quat_inv, quat_mul, quat_conj, quat_scale, quat_one, quat_norm_sq.
+    simpl in *.
+    assert (Hn' : a * a + b * b + c * c + d * d <> 0).
+    {
+      intro Habs.
+      apply Hdet.
+      rewrite wedderburn_quaternion_det_equals_norm_sq.
+      unfold quat_norm_sq in *.
+      simpl in *.
+      nra.
+    }
+    repeat f_equal; field; exact Hn'.
+Qed.
+
+Definition wedderburn_quaternion_primitive_surface :
+    WedderburnPrimitiveN2Surface CDQuat :=
+  {| wp_cyclic_surface := wedderburn_quaternion_cyclic_surface;
+     wp_one := quat_one;
+     wp_det := wedderburn_quaternion_left_det;
+     wp_norm := quat_norm_sq;
+     wp_inv := quat_inv;
+     wp_det_norm_sq := wedderburn_quaternion_det_equals_norm_sq;
+     wp_det_nonzero_iff_norm_nonzero :=
+       wedderburn_quaternion_det_nonzero_iff_norm_nonzero;
+     wp_right_inverse := fun z Hz => proj1 (wedderburn_quaternion_two_sided_inverse z Hz);
+     wp_left_inverse := fun z Hz => proj2 (wedderburn_quaternion_two_sided_inverse z Hz) |}.
 
 (** Packaged surface for the two main Wedderburn consequences used later:
     cyclic generation in the n=2 quaternion case, and the determinant
@@ -423,6 +481,657 @@ Proof.
   rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
   nra.
 Qed.
+
+Theorem wedderburn_generalized_quaternion_two_sided_inverse :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 ->
+    dickson1921_param_mul c2 c3 q
+      (wedderburn_generalized_quaternion_inv c2 c3 q) = quat_one /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_generalized_quaternion_inv c2 c3 q) q = quat_one.
+Proof.
+  intros c2 c3 q Hdet.
+  split.
+  - apply wedderburn_generalized_quaternion_right_inverse.
+    intro Hn.
+    apply Hdet.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+    nra.
+  - apply wedderburn_generalized_quaternion_left_inverse.
+    intro Hn.
+    apply Hdet.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+    nra.
+Qed.
+
+Definition wedderburn_generalized_quaternion_primitive_surface
+    (c2 c3 : R) : WedderburnPrimitiveN2Surface CDQuat :=
+  {| wp_cyclic_surface := wedderburn_generalized_quaternion_cyclic_surface c2 c3;
+     wp_one := quat_one;
+     wp_det := wedderburn_generalized_quaternion_left_det c2 c3;
+     wp_norm := dickson1921_param_norm c2 c3;
+     wp_inv := wedderburn_generalized_quaternion_inv c2 c3;
+     wp_det_norm_sq := wedderburn_generalized_quaternion_det_equals_norm_sq c2 c3;
+     wp_det_nonzero_iff_norm_nonzero :=
+       wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero c2 c3;
+     wp_right_inverse := fun z Hz =>
+       proj1 (wedderburn_generalized_quaternion_two_sided_inverse c2 c3 z Hz);
+     wp_left_inverse := fun z Hz =>
+       proj2 (wedderburn_generalized_quaternion_two_sided_inverse c2 c3 z Hz) |}.
+
+Definition wedderburn_coeff_elem (a b : R) : CDQuat :=
+  mkQuat a b 0 0.
+
+Definition wedderburn_affine_elem (a b : R) : CDQuat :=
+  quat_add qj (wedderburn_coeff_elem a b).
+
+Definition wedderburn_base_norm (c2 : R) (a b : R) : R :=
+  a^2 - c2 * b^2.
+
+Theorem wedderburn_affine_elem_coords :
+  forall a b : R,
+    wedderburn_affine_elem a b = mkQuat a b 1 0.
+Proof.
+  intros a b.
+  unfold wedderburn_affine_elem, wedderburn_coeff_elem, quat_add, qj.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_generalized_coeff_norm :
+  forall c2 c3 a b : R,
+    dickson1921_param_norm c2 c3 (wedderburn_coeff_elem a b) =
+    wedderburn_base_norm c2 a b.
+Proof.
+  intros c2 c3 a b.
+  unfold wedderburn_coeff_elem, dickson1921_param_norm, wedderburn_base_norm.
+  simpl.
+  ring.
+Qed.
+
+Theorem wedderburn_generalized_affine_norm :
+  forall c2 c3 a b : R,
+    dickson1921_param_norm c2 c3 (wedderburn_affine_elem a b) =
+    wedderburn_base_norm c2 a b - c3.
+Proof.
+  intros c2 c3 a b.
+  unfold wedderburn_affine_elem, wedderburn_coeff_elem,
+         dickson1921_param_norm, wedderburn_base_norm, quat_add, qj.
+  simpl.
+  ring.
+Qed.
+
+Theorem wedderburn_generalized_y_coeff_component :
+  forall c2 c3 a b : R,
+    dickson1921_param_mul c2 c3 qj (wedderburn_coeff_elem a (- b)) =
+    mkQuat 0 0 a b.
+Proof.
+  intros c2 c3 a b.
+  unfold dickson1921_param_mul, wedderburn_coeff_elem, qj.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_generalized_decomposition :
+  forall c2 c3 a b c d : R,
+    mkQuat a b c d =
+    quat_add (wedderburn_coeff_elem a b)
+      (dickson1921_param_mul c2 c3 qj (wedderburn_coeff_elem c (- d))).
+Proof.
+  intros c2 c3 a b c d.
+  rewrite wedderburn_generalized_y_coeff_component.
+  unfold wedderburn_coeff_elem, quat_add.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_generalized_decomposition_any :
+  forall c2 c3 : R, forall q : CDQuat,
+    exists a b c d : R,
+      q = quat_add (wedderburn_coeff_elem a b)
+            (dickson1921_param_mul c2 c3 qj (wedderburn_coeff_elem c (- d))).
+Proof.
+  intros c2 c3 [a b c d].
+  exists a, b, c, d.
+  exact (wedderburn_generalized_decomposition c2 c3 a b c d).
+Qed.
+
+Theorem wedderburn_generalized_coeff_det_nonzero_iff :
+  forall c2 c3 a b : R,
+    wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_coeff_elem a b) <> 0 <->
+    wedderburn_base_norm c2 a b <> 0.
+Proof.
+  intros c2 c3 a b.
+  rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+  rewrite wedderburn_generalized_coeff_norm.
+  split.
+  - intros Hdet Hn.
+    apply Hdet.
+    nra.
+  - intros Hn Hdet.
+    apply Hn.
+    nra.
+Qed.
+
+Theorem wedderburn_generalized_affine_det_nonzero_iff :
+  forall c2 c3 a b : R,
+    wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) <> 0 <->
+    wedderburn_base_norm c2 a b <> c3.
+Proof.
+  intros c2 c3 a b.
+  rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+  rewrite wedderburn_generalized_affine_norm.
+  split.
+  - intros Hdet Hn.
+    apply Hdet.
+    nra.
+  - intros Hn Hdet.
+    apply Hn.
+    nra.
+Qed.
+
+Theorem wedderburn_generalized_coeff_two_sided_inverse :
+  forall c2 c3 a b : R,
+    wedderburn_base_norm c2 a b <> 0 ->
+    dickson1921_param_mul c2 c3 (wedderburn_coeff_elem a b)
+      (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_coeff_elem a b)) = quat_one /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_coeff_elem a b))
+      (wedderburn_coeff_elem a b) = quat_one.
+Proof.
+  intros c2 c3 a b Hn.
+  apply wedderburn_generalized_quaternion_two_sided_inverse.
+  apply (proj2 (wedderburn_generalized_coeff_det_nonzero_iff c2 c3 a b)).
+  exact Hn.
+Qed.
+
+Theorem wedderburn_generalized_affine_two_sided_inverse :
+  forall c2 c3 a b : R,
+    wedderburn_base_norm c2 a b <> c3 ->
+    dickson1921_param_mul c2 c3 (wedderburn_affine_elem a b)
+      (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_affine_elem a b)) = quat_one /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_affine_elem a b))
+      (wedderburn_affine_elem a b) = quat_one.
+Proof.
+  intros c2 c3 a b Hn.
+  apply wedderburn_generalized_quaternion_two_sided_inverse.
+  apply (proj2 (wedderburn_generalized_affine_det_nonzero_iff c2 c3 a b)).
+  exact Hn.
+Qed.
+
+Theorem wedderburn_quaternion_affine_norm :
+  forall a b : R,
+    quat_norm_sq (wedderburn_affine_elem a b) = a^2 + b^2 + 1.
+Proof.
+  intros a b.
+  unfold wedderburn_affine_elem, wedderburn_coeff_elem, quat_norm_sq, quat_add, qj.
+  simpl.
+  ring.
+Qed.
+
+Theorem wedderburn_quaternion_affine_always_invertible :
+  forall a b : R,
+    quat_mul (wedderburn_affine_elem a b) (quat_inv (wedderburn_affine_elem a b)) = quat_one /\
+    quat_mul (quat_inv (wedderburn_affine_elem a b)) (wedderburn_affine_elem a b) = quat_one.
+Proof.
+  intros a b.
+  apply wedderburn_quaternion_two_sided_inverse.
+  intro Hdet.
+  rewrite wedderburn_quaternion_det_equals_norm_sq in Hdet.
+  rewrite wedderburn_quaternion_affine_norm in Hdet.
+  nra.
+Qed.
+
+Theorem wedderburn_generalized_primitive_criterion_summary :
+  (forall c2 c3 : R, forall q : CDQuat,
+      exists a b c d : R,
+        q = quat_add (wedderburn_coeff_elem a b)
+              (dickson1921_param_mul c2 c3 qj (wedderburn_coeff_elem c (- d)))) /\
+  (forall c2 c3 a b : R,
+      wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_coeff_elem a b) <> 0 <->
+      wedderburn_base_norm c2 a b <> 0) /\
+  (forall c2 c3 a b : R,
+      wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) <> 0 <->
+      wedderburn_base_norm c2 a b <> c3) /\
+  (forall c2 c3 a b : R,
+      wedderburn_base_norm c2 a b <> 0 ->
+      dickson1921_param_mul c2 c3 (wedderburn_coeff_elem a b)
+        (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_coeff_elem a b)) = quat_one /\
+      dickson1921_param_mul c2 c3
+        (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_coeff_elem a b))
+        (wedderburn_coeff_elem a b) = quat_one) /\
+  (forall c2 c3 a b : R,
+      wedderburn_base_norm c2 a b <> c3 ->
+      dickson1921_param_mul c2 c3 (wedderburn_affine_elem a b)
+        (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_affine_elem a b)) = quat_one /\
+      dickson1921_param_mul c2 c3
+        (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_affine_elem a b))
+        (wedderburn_affine_elem a b) = quat_one).
+Proof.
+  split.
+  - exact wedderburn_generalized_decomposition_any.
+  - split.
+    + exact wedderburn_generalized_coeff_det_nonzero_iff.
+    + split.
+      * exact wedderburn_generalized_affine_det_nonzero_iff.
+      * split.
+        -- exact wedderburn_generalized_coeff_two_sided_inverse.
+        -- exact wedderburn_generalized_affine_two_sided_inverse.
+Qed.
+
+Definition wedderburn_base_norm_represents (c2 target : R) : Prop :=
+  exists a b : R, wedderburn_base_norm c2 a b = target.
+
+Theorem wedderburn_generalized_affine_singular_iff_base_norm_represents :
+  forall c2 c3 : R,
+    (exists a b : R,
+        wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) = 0) <->
+    wedderburn_base_norm_represents c2 c3.
+Proof.
+  intros c2 c3.
+  split.
+  - intros [a [b Hdet]].
+    exists a, b.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq in Hdet.
+    rewrite wedderburn_generalized_affine_norm in Hdet.
+    nra.
+  - intros [a [b Hab]].
+    exists a, b.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+    rewrite wedderburn_generalized_affine_norm.
+    nra.
+Qed.
+
+Theorem wedderburn_generalized_affine_nonrepresentation_iff_all_det_nonzero :
+  forall c2 c3 : R,
+    ~ wedderburn_base_norm_represents c2 c3 <->
+    forall a b : R,
+      wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) <> 0.
+Proof.
+  intros c2 c3.
+  split.
+  - intros Hnot a b.
+    apply (proj2 (wedderburn_generalized_affine_det_nonzero_iff c2 c3 a b)).
+    intro Hab.
+    apply Hnot.
+    exists a, b.
+    exact Hab.
+  - intros Hall Hrep.
+    destruct (proj2 (wedderburn_generalized_affine_singular_iff_base_norm_represents c2 c3) Hrep)
+      as [a [b Hdet]].
+    apply (Hall a b).
+    exact Hdet.
+Qed.
+
+Theorem wedderburn_generalized_affine_all_invertible_if_not_base_norm :
+  forall c2 c3 : R,
+    ~ wedderburn_base_norm_represents c2 c3 ->
+    forall a b : R,
+      dickson1921_param_mul c2 c3 (wedderburn_affine_elem a b)
+        (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_affine_elem a b)) = quat_one /\
+      dickson1921_param_mul c2 c3
+        (wedderburn_generalized_quaternion_inv c2 c3 (wedderburn_affine_elem a b))
+        (wedderburn_affine_elem a b) = quat_one.
+Proof.
+  intros c2 c3 Hnot a b.
+  apply wedderburn_generalized_affine_two_sided_inverse.
+  intro Hab.
+  apply Hnot.
+  exists a, b.
+  exact Hab.
+Qed.
+
+Theorem wedderburn_quaternion_neg_one_not_base_norm :
+  ~ wedderburn_base_norm_represents (-1) (-1).
+Proof.
+  intros [a [b Hab]].
+  unfold wedderburn_base_norm in Hab.
+  nra.
+Qed.
+
+Theorem wedderburn_quaternion_affine_always_invertible_section2 :
+  forall a b : R,
+    quat_mul (wedderburn_affine_elem a b) (quat_inv (wedderburn_affine_elem a b)) = quat_one /\
+    quat_mul (quat_inv (wedderburn_affine_elem a b)) (wedderburn_affine_elem a b) = quat_one.
+Proof.
+  intros a b.
+  apply wedderburn_quaternion_affine_always_invertible.
+Qed.
+
+Record WedderburnSection2QuaternionSurface (c2 c3 : R) := {
+  ws2_primitive_surface : WedderburnPrimitiveN2Surface CDQuat;
+  ws2_decomposition_any :
+    forall q : CDQuat,
+      exists a b d e : R,
+        q = quat_add (wedderburn_coeff_elem a b)
+              (dickson1921_param_mul c2 c3 qj (wedderburn_coeff_elem d (- e)));
+  ws2_coeff_det_criterion :
+    forall a b : R,
+      wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_coeff_elem a b) <> 0 <->
+      wedderburn_base_norm c2 a b <> 0;
+  ws2_affine_det_criterion :
+    forall a b : R,
+      wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) <> 0 <->
+      wedderburn_base_norm c2 a b <> c3;
+  ws2_affine_singular_criterion :
+    (exists a b : R,
+        wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) = 0) <->
+    wedderburn_base_norm_represents c2 c3;
+  ws2_affine_nonrepresentation_criterion :
+    ~ wedderburn_base_norm_represents c2 c3 <->
+    forall a b : R,
+      wedderburn_generalized_quaternion_left_det c2 c3 (wedderburn_affine_elem a b) <> 0;
+}.
+
+Definition wedderburn_generalized_section2_surface
+    (c2 c3 : R) : WedderburnSection2QuaternionSurface c2 c3 :=
+  {| ws2_primitive_surface :=
+       wedderburn_generalized_quaternion_primitive_surface c2 c3;
+     ws2_decomposition_any := wedderburn_generalized_decomposition_any c2 c3;
+     ws2_coeff_det_criterion := wedderburn_generalized_coeff_det_nonzero_iff c2 c3;
+     ws2_affine_det_criterion := wedderburn_generalized_affine_det_nonzero_iff c2 c3;
+     ws2_affine_singular_criterion :=
+       wedderburn_generalized_affine_singular_iff_base_norm_represents c2 c3;
+     ws2_affine_nonrepresentation_criterion :=
+       wedderburn_generalized_affine_nonrepresentation_iff_all_det_nonzero c2 c3 |}.
+
+Definition wedderburn_base_norm_anisotropic (c2 : R) : Prop :=
+  forall a b : R, wedderburn_base_norm c2 a b = 0 -> a = 0 /\ b = 0.
+
+Theorem wedderburn_base_norm_opp_right :
+  forall c2 a b : R,
+    wedderburn_base_norm c2 a (- b) = wedderburn_base_norm c2 a b.
+Proof.
+  intros c2 a b.
+  unfold wedderburn_base_norm.
+  ring.
+Qed.
+
+Theorem wedderburn_base_norm_nonzero_of_anisotropic :
+  forall c2 a b : R,
+    wedderburn_base_norm_anisotropic c2 ->
+    a <> 0 \/ b <> 0 ->
+    wedderburn_base_norm c2 a b <> 0.
+Proof.
+  intros c2 a b Hani Hnz Hzero.
+  destruct (Hani a b Hzero) as [Ha Hb].
+  destruct Hnz as [Ha' | Hb']; contradiction.
+Qed.
+
+Theorem wedderburn_generalized_nonzero_tail_factorization :
+  forall c2 c3 a b c d : R,
+    wedderburn_base_norm c2 c d <> 0 ->
+    mkQuat a b c d =
+    dickson1921_param_mul c2 c3
+      (wedderburn_affine_elem
+        ((a * c + c2 * b * d) / wedderburn_base_norm c2 c d)
+        ((a * d + b * c) / wedderburn_base_norm c2 c d))
+      (wedderburn_coeff_elem c (- d)).
+Proof.
+  intros c2 c3 a b c d Hden.
+  unfold wedderburn_affine_elem, wedderburn_coeff_elem, quat_add, qj.
+  unfold dickson1921_param_mul, wedderburn_base_norm.
+  simpl.
+  unfold wedderburn_base_norm in Hden.
+  assert (Hden' : c * c - c2 * (d * d) <> 0).
+  {
+    intro Habs.
+    apply Hden.
+    nra.
+  }
+  f_equal.
+  - field; exact Hden'.
+  - field; exact Hden'.
+  - ring.
+  - ring.
+Qed.
+
+Theorem wedderburn_generalized_nonzero_det_nonzero :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_base_norm_anisotropic c2 ->
+    ~ wedderburn_base_norm_represents c2 c3 ->
+    q <> quat_zero ->
+    wedderburn_generalized_quaternion_left_det c2 c3 q <> 0.
+Proof.
+  intros c2 c3 [a b c d] Hani Hnrep Hnz.
+  destruct (Req_EM_T c 0) as [Hc|Hc];
+  destruct (Req_EM_T d 0) as [Hd|Hd].
+  - subst c d.
+    apply (proj2 (wedderburn_generalized_coeff_det_nonzero_iff c2 c3 a b)).
+    apply wedderburn_base_norm_nonzero_of_anisotropic; [exact Hani|].
+    destruct (Req_EM_T a 0) as [Ha|Ha];
+    destruct (Req_EM_T b 0) as [Hb|Hb].
+    + subst a b. exfalso. apply Hnz. reflexivity.
+    + right; exact Hb.
+    + left; exact Ha.
+    + left; exact Ha.
+  - assert (Htail : c <> 0 \/ d <> 0) by (right; exact Hd).
+    assert (Hden : wedderburn_base_norm c2 c d <> 0).
+    {
+      apply wedderburn_base_norm_nonzero_of_anisotropic; [exact Hani|exact Htail].
+    }
+    set (alpha := (a * c + c2 * b * d) / wedderburn_base_norm c2 c d).
+    set (beta := (a * d + b * c) / wedderburn_base_norm c2 c d).
+    assert (Hfac :
+      mkQuat a b c d =
+      dickson1921_param_mul c2 c3 (wedderburn_affine_elem alpha beta)
+        (wedderburn_coeff_elem c (- d))).
+    {
+      unfold alpha, beta.
+      exact (wedderburn_generalized_nonzero_tail_factorization c2 c3 a b c d Hden).
+    }
+    rewrite Hfac.
+    pose proof
+      ((proj1 (wedderburn_generalized_affine_nonrepresentation_iff_all_det_nonzero c2 c3))
+         Hnrep alpha beta) as Haff_det.
+    pose proof
+      ((proj1 (wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero
+         c2 c3 (wedderburn_affine_elem alpha beta))) Haff_det) as Haff_norm.
+    assert (Hcoeff_det :
+      wedderburn_generalized_quaternion_left_det c2 c3
+        (wedderburn_coeff_elem c (- d)) <> 0).
+    {
+      apply (proj2 (wedderburn_generalized_coeff_det_nonzero_iff c2 c3 c (- d))).
+      rewrite wedderburn_base_norm_opp_right.
+      exact Hden.
+    }
+    pose proof
+      ((proj1 (wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero
+         c2 c3 (wedderburn_coeff_elem c (- d)))) Hcoeff_det) as Hcoeff_norm.
+    intro Hdet.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq in Hdet.
+    rewrite dickson1921_param_norm_mul in Hdet.
+    assert (Hprod :
+      dickson1921_param_norm c2 c3 (wedderburn_affine_elem alpha beta) *
+      dickson1921_param_norm c2 c3 (wedderburn_coeff_elem c (- d)) = 0).
+    { nra. }
+    apply Haff_norm.
+    nra.
+  - assert (Htail : c <> 0 \/ d <> 0) by (left; exact Hc).
+    assert (Hden : wedderburn_base_norm c2 c d <> 0).
+    {
+      apply wedderburn_base_norm_nonzero_of_anisotropic; [exact Hani|exact Htail].
+    }
+    set (alpha := (a * c + c2 * b * d) / wedderburn_base_norm c2 c d).
+    set (beta := (a * d + b * c) / wedderburn_base_norm c2 c d).
+    assert (Hfac :
+      mkQuat a b c d =
+      dickson1921_param_mul c2 c3 (wedderburn_affine_elem alpha beta)
+        (wedderburn_coeff_elem c (- d))).
+    {
+      unfold alpha, beta.
+      exact (wedderburn_generalized_nonzero_tail_factorization c2 c3 a b c d Hden).
+    }
+    rewrite Hfac.
+    pose proof
+      ((proj1 (wedderburn_generalized_affine_nonrepresentation_iff_all_det_nonzero c2 c3))
+         Hnrep alpha beta) as Haff_det.
+    pose proof
+      ((proj1 (wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero
+         c2 c3 (wedderburn_affine_elem alpha beta))) Haff_det) as Haff_norm.
+    assert (Hcoeff_det :
+      wedderburn_generalized_quaternion_left_det c2 c3
+        (wedderburn_coeff_elem c (- d)) <> 0).
+    {
+      apply (proj2 (wedderburn_generalized_coeff_det_nonzero_iff c2 c3 c (- d))).
+      rewrite wedderburn_base_norm_opp_right.
+      exact Hden.
+    }
+    pose proof
+      ((proj1 (wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero
+         c2 c3 (wedderburn_coeff_elem c (- d)))) Hcoeff_det) as Hcoeff_norm.
+    intro Hdet.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq in Hdet.
+    rewrite dickson1921_param_norm_mul in Hdet.
+    assert (Hprod :
+      dickson1921_param_norm c2 c3 (wedderburn_affine_elem alpha beta) *
+      dickson1921_param_norm c2 c3 (wedderburn_coeff_elem c (- d)) = 0).
+    { nra. }
+    apply Haff_norm.
+    nra.
+  - assert (Htail : c <> 0 \/ d <> 0) by (left; exact Hc).
+    assert (Hden : wedderburn_base_norm c2 c d <> 0).
+    {
+      apply wedderburn_base_norm_nonzero_of_anisotropic; [exact Hani|exact Htail].
+    }
+    set (alpha := (a * c + c2 * b * d) / wedderburn_base_norm c2 c d).
+    set (beta := (a * d + b * c) / wedderburn_base_norm c2 c d).
+    assert (Hfac :
+      mkQuat a b c d =
+      dickson1921_param_mul c2 c3 (wedderburn_affine_elem alpha beta)
+        (wedderburn_coeff_elem c (- d))).
+    {
+      unfold alpha, beta.
+      exact (wedderburn_generalized_nonzero_tail_factorization c2 c3 a b c d Hden).
+    }
+    rewrite Hfac.
+    pose proof
+      ((proj1 (wedderburn_generalized_affine_nonrepresentation_iff_all_det_nonzero c2 c3))
+         Hnrep alpha beta) as Haff_det.
+    pose proof
+      ((proj1 (wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero
+         c2 c3 (wedderburn_affine_elem alpha beta))) Haff_det) as Haff_norm.
+    assert (Hcoeff_det :
+      wedderburn_generalized_quaternion_left_det c2 c3
+        (wedderburn_coeff_elem c (- d)) <> 0).
+    {
+      apply (proj2 (wedderburn_generalized_coeff_det_nonzero_iff c2 c3 c (- d))).
+      rewrite wedderburn_base_norm_opp_right.
+      exact Hden.
+    }
+    pose proof
+      ((proj1 (wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero
+         c2 c3 (wedderburn_coeff_elem c (- d)))) Hcoeff_det) as Hcoeff_norm.
+    intro Hdet.
+    rewrite wedderburn_generalized_quaternion_det_equals_norm_sq in Hdet.
+    rewrite dickson1921_param_norm_mul in Hdet.
+    assert (Hprod :
+      dickson1921_param_norm c2 c3 (wedderburn_affine_elem alpha beta) *
+      dickson1921_param_norm c2 c3 (wedderburn_coeff_elem c (- d)) = 0).
+    { nra. }
+    apply Haff_norm.
+    nra.
+Qed.
+
+Theorem wedderburn_generalized_nonzero_two_sided_inverse :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_base_norm_anisotropic c2 ->
+    ~ wedderburn_base_norm_represents c2 c3 ->
+    q <> quat_zero ->
+    dickson1921_param_mul c2 c3 q
+      (wedderburn_generalized_quaternion_inv c2 c3 q) = quat_one /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_generalized_quaternion_inv c2 c3 q) q = quat_one.
+Proof.
+  intros c2 c3 q Hani Hnrep Hnz.
+  apply wedderburn_generalized_quaternion_two_sided_inverse.
+  exact (wedderburn_generalized_nonzero_det_nonzero c2 c3 q Hani Hnrep Hnz).
+Qed.
+
+Theorem wedderburn_quaternion_base_norm_anisotropic :
+  wedderburn_base_norm_anisotropic (-1).
+Proof.
+  intros a b Hzero.
+  unfold wedderburn_base_norm in Hzero.
+  nra.
+Qed.
+
+Theorem wedderburn_quaternion_every_nonzero_two_sided_inverse_param :
+  forall q : CDQuat,
+    q <> quat_zero ->
+    dickson1921_param_mul (-1) (-1) q
+      (wedderburn_generalized_quaternion_inv (-1) (-1) q) = quat_one /\
+    dickson1921_param_mul (-1) (-1)
+      (wedderburn_generalized_quaternion_inv (-1) (-1) q) q = quat_one.
+Proof.
+  intros q Hnz.
+  apply wedderburn_generalized_nonzero_two_sided_inverse.
+  - exact wedderburn_quaternion_base_norm_anisotropic.
+  - exact wedderburn_quaternion_neg_one_not_base_norm.
+  - exact Hnz.
+Qed.
+
+Theorem wedderburn_quaternion_every_nonzero_two_sided_inverse :
+  forall q : CDQuat,
+    q <> quat_zero ->
+    quat_mul q (quat_inv q) = quat_one /\
+    quat_mul (quat_inv q) q = quat_one.
+Proof.
+  intros q Hnz.
+  apply wedderburn_quaternion_two_sided_inverse.
+  intro Hdet.
+  apply Hnz.
+  destruct q as [a b c d].
+  unfold quat_zero.
+  rewrite wedderburn_quaternion_det_equals_norm_sq in Hdet.
+  unfold quat_norm_sq in Hdet.
+  simpl in Hdet.
+  assert (Hsum : a * a + b * b + c * c + d * d = 0) by nra.
+  assert (Ha : a = 0) by nra.
+  assert (Hb : b = 0) by nra.
+  assert (Hc : c = 0) by nra.
+  assert (Hd : d = 0) by nra.
+  subst.
+  reflexivity.
+Qed.
+
+Record WedderburnSection2DivisionSurface (c2 c3 : R) := {
+  wsd_section2_surface : WedderburnSection2QuaternionSurface c2 c3;
+  wsd_base_norm_anisotropic : wedderburn_base_norm_anisotropic c2;
+  wsd_nonrepresentation : ~ wedderburn_base_norm_represents c2 c3;
+  wsd_all_nonzero_det :
+    forall q : CDQuat,
+      q <> quat_zero ->
+      wedderburn_generalized_quaternion_left_det c2 c3 q <> 0;
+  wsd_all_nonzero_two_sided_inverse :
+    forall q : CDQuat,
+      q <> quat_zero ->
+      dickson1921_param_mul c2 c3 q
+        (wedderburn_generalized_quaternion_inv c2 c3 q) = quat_one /\
+      dickson1921_param_mul c2 c3
+        (wedderburn_generalized_quaternion_inv c2 c3 q) q = quat_one;
+}.
+
+Definition wedderburn_generalized_division_surface
+    (c2 c3 : R)
+    (Hani : wedderburn_base_norm_anisotropic c2)
+    (Hnrep : ~ wedderburn_base_norm_represents c2 c3)
+    : WedderburnSection2DivisionSurface c2 c3 :=
+  {| wsd_section2_surface := wedderburn_generalized_section2_surface c2 c3;
+     wsd_base_norm_anisotropic := Hani;
+     wsd_nonrepresentation := Hnrep;
+     wsd_all_nonzero_det := fun q Hq =>
+       wedderburn_generalized_nonzero_det_nonzero c2 c3 q Hani Hnrep Hq;
+     wsd_all_nonzero_two_sided_inverse := fun q Hq =>
+       wedderburn_generalized_nonzero_two_sided_inverse c2 c3 q Hani Hnrep Hq |}.
+
+Definition wedderburn_quaternion_division_surface :
+    WedderburnSection2DivisionSurface (-1) (-1) :=
+  wedderburn_generalized_division_surface
+    (-1) (-1)
+    wedderburn_quaternion_base_norm_anisotropic
+    wedderburn_quaternion_neg_one_not_base_norm.
 
 Theorem wedderburn_generalized_quaternion_surface_summary :
   (forall c2 c3 : R,

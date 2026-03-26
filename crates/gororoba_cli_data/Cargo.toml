@@ -464,6 +464,7 @@ gororoba_algebra = { path = "../gororoba_algebra", features = ["gpu"] }
 provenance_core = { path = "../provenance_core" }
 provenance_store = { path = "../provenance_store" }
 provenance_ops = { path = "../provenance_ops" }
+lit_search = { path = "../lit_search" }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
 data_core = { path = "../data_core", features = ["fits"] }
@@ -492,6 +493,7 @@ core_affinity = { workspace = true }
 env_logger = { workspace = true }
 anyhow = { workspace = true }
 reqwest = { workspace = true }
+tokio = { workspace = true }
 md5 = { workspace = true }
 rayon = { workspace = true }
 rand = { workspace = true }
