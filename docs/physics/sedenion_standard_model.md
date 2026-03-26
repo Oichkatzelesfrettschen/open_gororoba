@@ -2680,6 +2680,17 @@ claims we should trust and which search lanes are worth burning time on.
   number, and shared HBZ TOC URL. That is a useful reminder to test both the
   raw endpoint and the in-browser tool menu before writing off a local holder's
   machine-readable surface.
+- Workflow policy is part of the evidence, not an afterthought. In practice,
+  Bielefeld accepted the Jacobson submission and then rejected it because the
+  target was a multi-volume work. That sharpened the real acquisition unit:
+  not the entire collected volume, but the exact article-bearing chapter pages
+  `341-366`. When a digitization workflow is policy-bounded, the next move is
+  often to shrink the request to the smallest valid bibliographic slice.
+- Public library service pages can also expose fallback acquisition channels
+  even when a specific holder says no. In the Jacobson lane, UB Paderborn's
+  document-delivery page explicitly recommends SUBITO and TIB for books and
+  chapters, so the fallback path is now "chapter delivery service" rather than
+  "repeat the same failed whole-volume request at another catalog."
 - Koha can split its public machine surfaces across two layers. For the
   Saarland Freudenthal record, `unapi` serves the XML-family exports cleanly
   but rejects `bibtex` and `ris` with `406`, while the separate public

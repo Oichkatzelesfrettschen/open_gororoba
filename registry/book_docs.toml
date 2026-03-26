@@ -1769,9 +1769,10 @@ pre-Moreno dependency chain and its missing-source audit now live in
 |------|-------|----------------------|--------|
 | 1770 | Euler four-square precursor | reference only | cached off-repo |
 | 1818 | Degen eight-square precursor | reference only | cached off-repo |
+| 1835-1866 | Hamilton, Graves, Cayley, Cockle formation chain | reference only | cached off-repo |
 | 1845 | Cayley quaternion/octave note | reference only | cached off-repo |
 | 1898 | Hurwitz, composition of quadratic forms | paired Rust + Rocq | formalized |
-| 1914 | Wedderburn, primitive algebra | Rocq paper surface | initial theorem surface landed |
+| 1914 | Wedderburn, primitive algebra | Rocq paper surface | quaternion plus generalized quaternion cyclic/determinant theorem surface landed |
 | 1919 | Dickson, Cayley-Dickson process | paired Rust + Rocq | formalized |
 | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
 | 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | initial surface landed |
@@ -1842,12 +1843,18 @@ different first landings:
 1. Keep `./pre-moreno.md` authoritative for the chronological dependency chain
    from Hurwitz through Brown, so Moreno and later bridge work stays grounded
    in the exact earlier paper order.
-2. Extend Wedderburn (1914) beyond the new module-dimension surface,
-   especially the cyclic-generation and determinant criteria.
+2. Extend Wedderburn (1914) beyond the new module-dimension surface and the
+   landed quaternion/generalized-quaternion cyclic-generation and
+   determinant criteria.
 3. Extend Dickson (1921) from the abstract surface plus real-parameter
-   generalized family, generalized/canonical matrix lanes, and generalized
-   basis-generator relations to the fuller field-abstract and broader
-   internal exclusion lane.
+   generalized family, generalized/canonical matrix lanes, generalized
+   basis-generator relations, section-6 determinant/table/conclusion,
+   section-7 exclusion summary and paper-dimension classification, and the
+   FLOAT_OPS-based abstract quaternion lift plus abstract matrix
+   action/Gram/generator slice, abstract parameterized generalized-family
+   lane, abstract near-identity/infinitesimal slice, and abstract
+   section-5/6-to-section-7 handoff to any broader field-abstract
+   section-7 exclusion lift that proves worth landing.
 4. Record Cullen (1965) as source-available rather than blocked, then decide
    where its quaternionic-analysis lane belongs relative to the algebra-first
    pre-Moreno chain.
@@ -1909,9 +1916,9 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | Year | Paper | Current landing | Gap |
 |------|-------|-----------------|-----|
 | 1898 | Hurwitz | `crates/hurwitz_1898/` + `proofs/theories/HurwitzTheorem.v` | tracked CD-tower fixed-point classification is formalized; full all-`n` matrix converse still open |
-| 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | module-dimension surface landed; determinant / cyclic-generation lane still open |
+| 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | module-dimension surface plus quaternion and generalized quaternion cyclic-generation and determinant/invertibility lanes landed; broader primitive-algebra generality still open |
 | 1919 | Dickson | `crates/dickson_1919/` + `proofs/theories/DicksonCDProcess.v` | paired lane is in place |
-| 1921 | Dickson companion note | `proofs/theories/Dickson1921.v` | abstract paper surface plus real-parameter generalized family, generalized/canonical matrix lanes, and generalized basis-generator relations landed; fuller field-abstract / internal exclusion lane still open |
+| 1921 | Dickson companion note | `proofs/theories/Dickson1921.v` | abstract paper surface plus real-parameter generalized family, generalized/canonical matrix lanes, generalized basis-generator relations, section-6 determinant/table/conclusion, section-7 exclusion summary and paper-dimension classification, and a FLOAT_OPS-based abstract quaternion lift plus abstract matrix action/Gram/generator slice, abstract parameterized generalized-family lane, abstract near-identity/infinitesimal slice, and abstract section-5/6-to-section-7 handoff landed; broader field-abstract section-7 exclusion lift still open |
 | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
 | 1945 | Schafer | `crates/schafer_1945/` + `proofs/theories/SchaferDivAlg16.v` | paired lane is in place |
 | 1951 | Freudenthal | support material only | exact original remains missing |
@@ -1927,11 +1934,17 @@ off-repo chronology matrix and roadmap as reference surfaces:
   important blocked pre-Moreno originals in the chain.
 - Newly unblocked source lane: Cullen (1965) is no longer a source gap; the
   reconstructed PDF and OCR now live in the CayleyDickson source cache.
-- Distillation gaps: Wedderburn (1914) still needs its determinant and
-  cyclic-generation lane, Dickson (1921) still needs its fuller
-  field-abstract and broader internal exclusion lane, Schafer (1954) still
+- Distillation gaps: Wedderburn (1914) still needs its broader
+  primitive-algebra generality beyond the generalized quaternion case,
+  Dickson (1921) still needs its fuller field-abstract and broader internal exclusion lane,
+  Schafer (1954) still
   needs its derivation-algebra / type-G lane,
   and Brown (1972) still needs Chapters III-VI plus a Rocq Appendix C bridge.
+- Earlier reference foundation is now explicitly tracked but not yet lifted
+  into dedicated Rocq paper lanes: Euler (1770), Degen (1818), and the
+  Hamilton/Graves/Cayley/Cockle formation chain (1835-1866) are cached
+  off-repo and should remain visible in the chronology while the algebra-first
+  pre-Moreno papers are completed.
 - Context lanes on disk but not yet surfaced as papers: Zorn (1935), Jacobson
   (1939), Albert (1942), and Urbanik-Wright (1960).
 
@@ -1939,10 +1952,12 @@ off-repo chronology matrix and roadmap as reference surfaces:
 
 1. Extend Hurwitz from the tracked CD-tower fixed-point theorem to the fuller
    all-`n` converse/classification lane.
-2. Extend Wedderburn (1914) beyond the new module-dimension surface.
+2. Extend Wedderburn (1914) beyond the quaternion/generalized-quaternion
+   cyclic/determinant lane to a broader primitive-algebra surface.
 3. Extend Dickson (1921) from the abstract surface plus real-parameter
-   generalized family and generalized/canonical matrix lanes to the
-   fuller field-abstract and broader internal exclusion lane.
+   generalized family, generalized/canonical matrix lanes, and abstract
+   section-5/6-to-section-7 handoff to the fuller field-abstract and
+   broader internal exclusion lane.
 4. Record Cullen (1965) as source-available rather than blocked, then decide
    where its quaternionic-analysis lane belongs relative to the algebra-first
    pre-Moreno chain.

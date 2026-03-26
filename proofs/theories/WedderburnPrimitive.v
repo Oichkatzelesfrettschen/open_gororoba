@@ -1,4 +1,4 @@
-(** * WedderburnPrimitive: Wedderburn (1914) Primitive Algebras -- reference stub.
+(** * WedderburnPrimitive: Wedderburn (1914) Primitive Algebras.
 
     Source: Wedderburn, J.H.M. (1914) "A Type of Primitive Algebra",
     Trans. Amer. Math. Soc., 15(2), pp. 162-166.
@@ -44,9 +44,10 @@
 
     * What we formalize:
 
-    This file is a REFERENCE STUB.  The paper's main contribution to
-    our project is STRUCTURAL CONTEXT, not directly computable content.
-    The concrete consequences are:
+    This file now carries a compact paper-scoped theorem surface for the
+    consequences the rest of the repo actually reuses.  It is still not a
+    line-by-line full formalization of Wedderburn's paper, but it is no
+    longer only prose context.  The concrete consequences are:
 
     1. Quaternions are a primitive (division) algebra -- already proved
        in DicksonCDProcess.v (dickson_quat_right_inverse).
@@ -62,8 +63,11 @@
     Mirrors: HModuleDim.v, FinDimHModule.v, DicksonCDProcess.v
     Supports claims: C-1543 (annihilator mod-4 bound). *)
 
-From Stdlib Require Import Reals Arith.
-From OpenGororoba Require Import FinDimHModule.
+From Stdlib Require Import Reals Arith Lra Psatz.
+From OpenGororoba Require Import
+  FinDimHModule CayleyDicksonAlgebra DicksonCDProcess Dickson1921.
+
+Open Scope R_scope.
 
 (** Wedderburn's key structural fact used in our proofs:
 
@@ -90,21 +94,274 @@ From OpenGororoba Require Import FinDimHModule.
     are multiples of 4. This is the nat-level form of the standard
     division-ring module theorem specialized to H. *)
 Theorem wedderburn_h_module_dim_div4 : forall d : nat,
-  is_h_module_dim d -> exists k : nat, d = 4 * k.
+  is_h_module_dim d -> exists k : nat, d = (4 * k)%nat.
 Proof.
   exact FinDimHModule.h_module_dim_div4.
 Qed.
 
 (** Exact characterization of the valid H-module dimensions. *)
 Theorem wedderburn_h_module_dim_iff_div4 : forall d : nat,
-  is_h_module_dim d <-> exists k : nat, d = 4 * k.
+  is_h_module_dim d <-> exists k : nat, d = (4 * k)%nat.
 Proof.
   exact FinDimHModule.h_module_dim_iff_div4.
 Qed.
 
 (** Mod-4 corollary used by the Moreno lane. *)
 Theorem wedderburn_h_module_dim_mod4 : forall d : nat,
-  is_h_module_dim d -> Nat.modulo d 4 = 0.
+  is_h_module_dim d -> Nat.modulo d 4%nat = 0%nat.
 Proof.
   exact FinDimHModule.h_module_dim_mod4.
+Qed.
+
+(** Wedderburn's cyclic presentation in the quaternion case:
+    choose x = i and y = j. Then xy = y * theta(x) with theta = conjugation,
+    and y^2 = -1. *)
+Theorem wedderburn_quaternion_cyclic_relation :
+  quat_mul qi qj = quat_mul qj (quat_conj qi).
+Proof.
+  unfold qi, qj, quat_conj, quat_mul.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_quaternion_y_square :
+  quat_mul qj qj = quat_neg quat_one.
+Proof.
+  unfold qj, quat_neg, quat_one, quat_mul.
+  simpl.
+  f_equal; ring.
+Qed.
+
+(** The full quaternion basis is generated from the cyclic pair {i, j}. *)
+Theorem wedderburn_quaternion_cyclic_generation :
+  qk = quat_mul qi qj /\
+  qi = quat_mul qj qk /\
+  qj = quat_mul qk qi.
+Proof.
+  repeat split.
+  - symmetry. exact dickson_eq3_ij.
+  - symmetry. exact dickson_eq3_jk.
+  - symmetry. exact dickson_eq3_ki.
+Qed.
+
+Definition wedderburn_quaternion_left_det (q : CDQuat) : R :=
+  dickson1921_matrix_det4 (quat_hamilton_entry q).
+
+(** Wedderburn's determinant criterion, specialized to the quaternion case:
+    the left-multiplication determinant is exactly the norm square squared. *)
+Theorem wedderburn_quaternion_det_equals_norm_sq :
+  forall q : CDQuat,
+    wedderburn_quaternion_left_det q = (quat_norm_sq q)^2.
+Proof.
+  intro q.
+  unfold wedderburn_quaternion_left_det.
+  unfold dickson1921_matrix_det4.
+  repeat rewrite <- dickson1921_param_matrix_specializes_to_standard.
+  exact (proj1 (dickson1921_param_quaternion_case q)).
+Qed.
+
+Theorem wedderburn_quaternion_det_nonzero_iff_norm_nonzero :
+  forall q : CDQuat,
+    wedderburn_quaternion_left_det q <> 0 <-> quat_norm_sq q <> 0.
+Proof.
+  intro q.
+  rewrite wedderburn_quaternion_det_equals_norm_sq.
+  split.
+  - intros Hdet Hn.
+    apply Hdet.
+    nra.
+  - intros Hn Hdet.
+    apply Hn.
+    nra.
+Qed.
+
+(** In the quaternion case, Wedderburn's determinant condition is enough to
+    recover a right inverse through Dickson's explicit norm formula. *)
+Theorem wedderburn_quaternion_det_implies_right_inverse :
+  forall q : CDQuat,
+    wedderburn_quaternion_left_det q <> 0 ->
+    exists r : CDQuat, quat_mul q r = quat_one.
+Proof.
+  intros q Hdet.
+  exists (quat_inv q).
+  apply dickson_quat_right_inverse.
+  intro Hn.
+  apply Hdet.
+  rewrite wedderburn_quaternion_det_equals_norm_sq.
+  nra.
+Qed.
+
+(** Packaged surface for the two main Wedderburn consequences used later:
+    cyclic generation in the n=2 quaternion case, and the determinant
+    criterion for invertibility. *)
+Theorem wedderburn_quaternion_surface_summary :
+  quat_mul qi qj = quat_mul qj (quat_conj qi) /\
+  quat_mul qj qj = quat_neg quat_one /\
+  (qk = quat_mul qi qj /\
+   qi = quat_mul qj qk /\
+   qj = quat_mul qk qi) /\
+  (forall q : CDQuat,
+      wedderburn_quaternion_left_det q = (quat_norm_sq q)^2) /\
+  (forall q : CDQuat,
+      wedderburn_quaternion_left_det q <> 0 <-> quat_norm_sq q <> 0) /\
+  (forall q : CDQuat,
+      wedderburn_quaternion_left_det q <> 0 ->
+      exists r : CDQuat, quat_mul q r = quat_one).
+Proof.
+  split.
+  - exact wedderburn_quaternion_cyclic_relation.
+  - split.
+    + exact wedderburn_quaternion_y_square.
+    + split.
+      * exact wedderburn_quaternion_cyclic_generation.
+      * split.
+        -- exact wedderburn_quaternion_det_equals_norm_sq.
+        -- split.
+           ++ exact wedderburn_quaternion_det_nonzero_iff_norm_nonzero.
+           ++ exact wedderburn_quaternion_det_implies_right_inverse.
+Qed.
+
+Definition wedderburn_generalized_quaternion_left_det
+    (c2 c3 : R) (q : CDQuat) : R :=
+  dickson1921_matrix_det4 (dickson1921_param_matrix_entry c2 c3 q).
+
+Definition wedderburn_generalized_quaternion_inv
+    (c2 c3 : R) (q : CDQuat) : CDQuat :=
+  quat_scale (/ (dickson1921_param_norm c2 c3 q)) (quat_conj q).
+
+(** Wedderburn's cyclic presentation extends from the ordinary quaternion
+    case to the generalized quaternion family in Dickson's notation. *)
+Theorem wedderburn_generalized_quaternion_cyclic_relation :
+  forall c2 c3 : R,
+    dickson1921_param_mul c2 c3 qi qj =
+    dickson1921_param_mul c2 c3 qj (quat_conj qi).
+Proof.
+  intros c2 c3.
+  unfold dickson1921_param_mul, qi, qj, quat_conj.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_y_square :
+  forall c2 c3 : R,
+    dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one.
+Proof.
+  exact dickson1921_param_j_sq.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_cyclic_generation :
+  forall c2 c3 : R,
+    c2 <> 0 ->
+    c3 <> 0 ->
+    qk = dickson1921_param_mul c2 c3 qi qj /\
+    qi = quat_scale (- / c3) (dickson1921_param_mul c2 c3 qj qk) /\
+    qj = quat_scale (- / c2) (dickson1921_param_mul c2 c3 qk qi).
+Proof.
+  intros c2 c3 Hc2 Hc3.
+  split.
+  - symmetry. exact (dickson1921_param_ij c2 c3).
+  - split.
+    + rewrite dickson1921_param_jk.
+      unfold quat_scale, qi.
+      simpl.
+      repeat f_equal; field; exact Hc3.
+    + rewrite dickson1921_param_ki.
+      unfold quat_scale, qj.
+      simpl.
+      repeat f_equal; field; exact Hc2.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_det_equals_norm_sq :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_generalized_quaternion_left_det c2 c3 q =
+    (dickson1921_param_norm c2 c3 q)^2.
+Proof.
+  exact dickson1921_param_det_equals_norm_sq.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 <->
+    dickson1921_param_norm c2 c3 q <> 0.
+Proof.
+  intros c2 c3 q.
+  rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+  split.
+  - intros Hdet Hn.
+    apply Hdet.
+    nra.
+  - intros Hn Hdet.
+    apply Hn.
+    nra.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_right_inverse :
+  forall c2 c3 : R, forall q : CDQuat,
+    dickson1921_param_norm c2 c3 q <> 0 ->
+    dickson1921_param_mul c2 c3 q
+      (wedderburn_generalized_quaternion_inv c2 c3 q) = quat_one.
+Proof.
+  intros c2 c3 [a b c d] Hn.
+  unfold dickson1921_param_norm in Hn.
+  simpl in Hn.
+  assert (Hn' : a * a - c2 * (b * b) - c3 * (c * c) + c2 * c3 * (d * d) <> 0).
+  {
+    intro Habs.
+    apply Hn.
+    lra.
+  }
+  unfold wedderburn_generalized_quaternion_inv, dickson1921_param_mul,
+         dickson1921_param_norm, quat_scale, quat_conj, quat_one.
+  simpl in *.
+  repeat f_equal; field;
+  exact Hn'.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_det_implies_right_inverse :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 ->
+    exists r : CDQuat, dickson1921_param_mul c2 c3 q r = quat_one.
+Proof.
+  intros c2 c3 q Hdet.
+  exists (wedderburn_generalized_quaternion_inv c2 c3 q).
+  apply wedderburn_generalized_quaternion_right_inverse.
+  intro Hn.
+  apply Hdet.
+  rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+  nra.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_surface_summary :
+  (forall c2 c3 : R,
+      dickson1921_param_mul c2 c3 qi qj =
+      dickson1921_param_mul c2 c3 qj (quat_conj qi)) /\
+  (forall c2 c3 : R,
+      dickson1921_param_mul c2 c3 qj qj = quat_scale c3 quat_one) /\
+  (forall c2 c3 : R,
+      c2 <> 0 ->
+      c3 <> 0 ->
+      qk = dickson1921_param_mul c2 c3 qi qj /\
+      qi = quat_scale (- / c3) (dickson1921_param_mul c2 c3 qj qk) /\
+      qj = quat_scale (- / c2) (dickson1921_param_mul c2 c3 qk qi)) /\
+  (forall c2 c3 : R, forall q : CDQuat,
+      wedderburn_generalized_quaternion_left_det c2 c3 q =
+      (dickson1921_param_norm c2 c3 q)^2) /\
+  (forall c2 c3 : R, forall q : CDQuat,
+      wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 <->
+      dickson1921_param_norm c2 c3 q <> 0) /\
+  (forall c2 c3 : R, forall q : CDQuat,
+      wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 ->
+      exists r : CDQuat, dickson1921_param_mul c2 c3 q r = quat_one).
+Proof.
+  split.
+  - exact wedderburn_generalized_quaternion_cyclic_relation.
+  - split.
+    + exact wedderburn_generalized_quaternion_y_square.
+    + split.
+      * exact wedderburn_generalized_quaternion_cyclic_generation.
+      * split.
+        -- exact wedderburn_generalized_quaternion_det_equals_norm_sq.
+        -- split.
+           ++ exact wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero.
+           ++ exact wedderburn_generalized_quaternion_det_implies_right_inverse.
 Qed.
