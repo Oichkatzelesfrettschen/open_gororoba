@@ -53,7 +53,9 @@ fn main() -> Result<()> {
     let mut mission_groups: BTreeMap<String, Vec<HeliosphereFeatureRow>> = BTreeMap::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
         let r = result?;
-        mission_groups.entry(r.mission.clone()).or_default().push(r);
+        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+            mission_groups.entry(r.mission.clone()).or_default().push(r);
+        }
     }
 
     let mut all_vectors = Vec::new();
