@@ -1,0 +1,27 @@
+window_name = "mms2024"
+generated_at_utc = "2026-03-26T03:09:18.798502053+00:00"
+temporal_start_utc = "2024-01-01T00:00:00Z"
+temporal_end_utc = "2024-01-01T23:00:00Z"
+row_count = 24
+missions = ["MMS"]
+products = ["MMS:FGM Survey L2 hourly aggregate"]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = ["data/external/mms/mms1_fgm_srvy_l2_2024_1_1.csv"]
+notes = []

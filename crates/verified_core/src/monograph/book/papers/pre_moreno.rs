@@ -32,36 +32,39 @@
 //!
 //! | Year | Paper | Current landing | Gap |
 //! |------|-------|-----------------|-----|
-//! | 1898 | Hurwitz | `crates/hurwitz_1898/` + `proofs/theories/HurwitzTheorem.v` | complete the converse/classification lane |
-//! | 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | still a reference-stub lane, not a full paper extraction |
+//! | 1898 | Hurwitz | `crates/hurwitz_1898/` + `proofs/theories/HurwitzTheorem.v` | tracked CD-tower fixed-point classification is formalized; full all-`n` matrix converse still open |
+//! | 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | module-dimension surface landed; determinant / cyclic-generation lane still open |
 //! | 1919 | Dickson | `crates/dickson_1919/` + `proofs/theories/DicksonCDProcess.v` | paired lane is in place |
-//! | 1921 | Dickson companion note | source on disk | not yet distilled into a dedicated repo lane |
+//! | 1921 | Dickson companion note | `proofs/theories/Dickson1921.v` | initial Rocq companion landed; broader general-field lane still open |
 //! | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
 //! | 1945 | Schafer | `crates/schafer_1945/` + `proofs/theories/SchaferDivAlg16.v` | paired lane is in place |
 //! | 1951 | Freudenthal | support material only | exact original remains missing |
-//! | 1954 | Schafer | source on disk | next dedicated pre-Moreno extraction target |
+//! | 1954 | Schafer | `proofs/theories/Schafer1954.v` | initial Rocq paper index landed; derivation-algebra lane still open |
 //! | 1958 | Jacobson | previews and support on disk | exact full text remains institution-locked |
 //! | 1967 | Brown | `crates/brown_1967/` + `proofs/theories/BrownGeneralizedCD.v` | extend dim-32/dim-64 theorem surfacing |
-//! | 1972 | Brown | `crates/brown_1972/` + Brown/Moreno Rocq companions | add a dedicated Brown paper index |
+//! | 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus initial Chapter VII map landed; Chapters III-VI remain partial |
 //!
 //! ## Chronological gaps we still need to track
 //!
 //! - Exact-source gaps: Freudenthal (1951) and Jacobson (1958) remain the two
 //!   important blocked pre-Moreno originals in the chain.
-//! - Distillation gaps: Wedderburn (1914) is still a stub, Dickson (1921) is only
-//!   on disk, Schafer (1954) lacks a dedicated paired lane, and Brown (1972)
-//!   still needs a first-class paper index inside `proofs/theories/`.
+//! - Distillation gaps: Wedderburn (1914) still needs its determinant and
+//!   cyclic-generation lane, Dickson (1921) still needs its broader
+//!   general-field companion lane, Schafer (1954) still needs its
+//!   derivation-algebra / type-G lane,
+//!   and Brown (1972) still needs Chapters III-VI plus a Rocq Appendix C bridge.
 //! - Context lanes on disk but not yet surfaced as papers: Zorn (1935), Jacobson
 //!   (1939), Albert (1942), and Urbanik-Wright (1960).
 //!
 //! ## Next chronological extraction order
 //!
-//! 1. Finish the Hurwitz classification/converse lane so the oldest formal theorem
-//!    chain is complete.
-//! 2. Promote Schafer (1954) into a dedicated paper lane between Schafer (1945)
-//!    and Brown (1967).
-//! 3. Add a dedicated Brown (1972) paper index and map its theorem companions
-//!    explicitly.
-//! 4. Backfill Wedderburn (1914) and Dickson (1921) beyond stub/reference status.
-//! 5. Continue Moreno only after those pre-Moreno surfaces stay readable and
+//! 1. Extend Hurwitz from the tracked CD-tower fixed-point theorem to the fuller
+//!    all-`n` converse/classification lane.
+//! 2. Extend Wedderburn (1914) beyond the new module-dimension surface.
+//! 3. Extend Dickson (1921) beyond the new companion surface to the broader
+//!    general-field lane.
+//! 4. Extend Schafer (1954) from the new paper index to the derivation-algebra
+//!    and type-G theorem lane.
+//! 5. Extend Brown (1972) beyond the current Chapter VII map.
+//! 6. Continue Moreno only after those pre-Moreno surfaces stay readable and
 //!    tracked in-repo.

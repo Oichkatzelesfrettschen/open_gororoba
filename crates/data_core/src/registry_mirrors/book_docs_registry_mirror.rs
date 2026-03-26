@@ -187,7 +187,7 @@
 //! - Source markdown: `docs/book/src/papers/pre-moreno.md`
 //! - Section: `papers`
 //! - Slug: `docs_book_src_papers_pre-moreno`
-//! - Line count: 67
+//! - Line count: 69
 //!
 //! ### BOOK-020: Proof Inventory
 //!

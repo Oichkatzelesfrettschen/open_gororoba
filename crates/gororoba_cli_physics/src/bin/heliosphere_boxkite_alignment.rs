@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
 use data_core::HeliosphereFeatureRow;
@@ -6,10 +6,13 @@ use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
 use algebra_analysis::{
-    boxkite_alignment::{generate_psl_2_7_permutations_16d},
+    boxkite_alignment::{generate_psl_2_7_permutations_16d, box_kite_alignment_scan_cpu},
     boxkites::{cached_sedenion_boxkites},
 };
+
+#[cfg(feature = "gpu")]
 use lbm_3d_cuda::alignment_gpu::GpuBoxKiteAlignmentEngine;
+use lbm_vulkan::{VulkanContext, alignment_vulkan::VulkanBoxKiteAlignmentEngine};
 
 #[derive(Parser, Debug)]
 #[command(name = "heliosphere-boxkite-alignment")]
@@ -26,6 +29,10 @@ struct Args {
     /// Batch size for GPU processing.
     #[arg(long, default_value_t = 65536)]
     batch_size: usize,
+
+    /// Force CPU fallback.
+    #[arg(long)]
+    cpu_only: bool,
 }
 
 #[derive(Serialize)]
@@ -39,7 +46,7 @@ struct AlignmentResultRow {
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    println!("[1/3] Loading 16D Takens descriptors from {}...", args.input_csv.display());
+    println!("[1/4] Loading 16D Takens descriptors from {}...", args.input_csv.display());
     let mut reader = ReaderBuilder::new().from_path(&args.input_csv)?;
     
     // Group by mission to preserve temporal continuity for Takens
@@ -68,7 +75,7 @@ fn main() -> Result<()> {
                 v16[i * 4 + 2] = window[i].bz / local_mean_b;
                 v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
             }
-            all_vectors.extend_from_slice(&v16);
+            all_vectors.push(v16);
             all_r_aus.push(window[3].r_au);
             all_missions.push(mission.clone());
         }
@@ -83,7 +90,7 @@ fn main() -> Result<()> {
     let mut maxs = [f64::NEG_INFINITY; 16];
     for i in 0..n_vectors {
         for d in 0..16 {
-            let v = all_vectors[i * 16 + d];
+            let v = all_vectors[i][d];
             if v < mins[d] { mins[d] = v; }
             if v > maxs[d] { maxs[d] = v; }
         }
@@ -92,53 +99,111 @@ fn main() -> Result<()> {
     // Compute Morton codes and store with original indices
     let mut indexed_morton: Vec<(u64, usize)> = (0..n_vectors)
         .map(|i| {
-            let mut v = [0.0; 16];
-            v.copy_from_slice(&all_vectors[i * 16..(i + 1) * 16]);
-            (algebra_analysis::boxkite_alignment::morton_code_16d(&v, &mins, &maxs), i)
+            (algebra_analysis::boxkite_alignment::morton_code_16d(&all_vectors[i], &mins, &maxs), i)
         })
         .collect();
 
     // Sort by Morton code (Linear BVH order)
     indexed_morton.sort_by_key(|&(m, _)| m);
 
-    // Reorder vectors for GPU scan (improves cache locality)
-    let mut sorted_vectors = Vec::with_capacity(all_vectors.len());
+    // Reorder vectors for alignment scan (improves cache locality)
+    let mut sorted_vectors = Vec::with_capacity(n_vectors);
     for &(_, idx) in &indexed_morton {
-        sorted_vectors.extend_from_slice(&all_vectors[idx * 16..(idx + 1) * 16]);
+        sorted_vectors.push(all_vectors[idx]);
     }
 
-    println!("[3/4] Initializing GPU and preparing structural constants...");
-    let gpu = GpuBoxKiteAlignmentEngine::try_new()
-        .context("Failed to initialize GPU. Ensure CUDA is available.")?;
-
-    // Prepare Box-Kite indices [7 * 12]
+    // Prepare Box-Kite indices
     let boxkites = cached_sedenion_boxkites();
-    let mut bk_indices = Vec::with_capacity(7 * 12);
-    for bk in boxkites.iter() {
-        let mut indices = std::collections::BTreeSet::new();
-        for a in &bk.assessors {
-            indices.insert(a.low);
-            indices.insert(a.high);
-        }
-        let vec_indices: Vec<u8> = indices.iter().map(|&i| i as u8).collect();
-        bk_indices.extend_from_slice(&vec_indices);
-    }
-
-    // Prepare PSL(2,7) orientations [168 * 16]
     let orientations = generate_psl_2_7_permutations_16d();
-    let mut orient_bytes = Vec::with_capacity(168 * 16);
-    for p in &orientations {
-        for &idx in p {
-            orient_bytes.push(idx as u8);
+
+    let mut max_alignments_sorted = Vec::new();
+    let mut best_orients_sorted = Vec::new();
+
+    let mut used_backend = "None";
+
+    if !args.cpu_only {
+        #[cfg(feature = "gpu")]
+        {
+            println!("[3/4] Attempting CUDA backend...");
+            if let Some(gpu) = GpuBoxKiteAlignmentEngine::try_new() {
+                // Flatten sorted_vectors for CUDA
+                let flat_vectors: Vec<f64> = sorted_vectors.iter().flatten().copied().collect();
+                
+                let mut bk_indices_u8 = Vec::with_capacity(7 * 12);
+                for bk in boxkites.iter() {
+                    let mut indices = std::collections::BTreeSet::new();
+                    for a in &bk.assessors {
+                        indices.insert(a.low);
+                        indices.insert(a.high);
+                    }
+                    let vec_indices: Vec<u8> = indices.iter().map(|&i| i as u8).collect();
+                    bk_indices_u8.extend_from_slice(&vec_indices);
+                }
+
+                let mut orient_bytes = Vec::with_capacity(168 * 16);
+                for p in &orientations {
+                    for &idx in p {
+                        orient_bytes.push(idx as u8);
+                    }
+                }
+
+                match gpu.run_alignment_scan(&flat_vectors, &orient_bytes, &bk_indices_u8) {
+                    Ok((m, b)) => {
+                        max_alignments_sorted = m;
+                        best_orients_sorted = b;
+                        used_backend = "CUDA";
+                    }
+                    Err(e) => eprintln!("      CUDA scan failed: {}. Falling back...", e),
+                }
+            }
+        }
+
+        if used_backend == "None" {
+            println!("[3/4] Attempting Vulkan backend...");
+            if let Ok(v_ctx) = VulkanContext::new(false) {
+                if let Ok(mut v_engine) = VulkanBoxKiteAlignmentEngine::try_new(&v_ctx) {
+                    let flat_vectors: Vec<f64> = sorted_vectors.iter().flatten().copied().collect();
+                    
+                    let mut bk_indices_u32 = Vec::with_capacity(7 * 12);
+                    for bk in boxkites.iter() {
+                        let mut indices = std::collections::BTreeSet::new();
+                        for a in &bk.assessors {
+                            indices.insert(a.low);
+                            indices.insert(a.high);
+                        }
+                        let vec_indices: Vec<u32> = indices.iter().map(|&i| i as u32).collect();
+                        bk_indices_u32.extend_from_slice(&vec_indices);
+                    }
+
+                    let mut orient_u32 = Vec::with_capacity(168 * 16);
+                    for p in &orientations {
+                        for &idx in p {
+                            orient_u32.push(idx as u32);
+                        }
+                    }
+
+                    match v_engine.run_alignment_scan(&v_ctx, &flat_vectors, &orient_u32, &bk_indices_u32) {
+                        Ok((m, b)) => {
+                            max_alignments_sorted = m;
+                            best_orients_sorted = b;
+                            used_backend = "Vulkan";
+                        }
+                        Err(e) => eprintln!("      Vulkan scan failed: {}. Falling back...", e),
+                    }
+                }
+            }
         }
     }
 
-    println!("[3/4] Running GPU-parallel orientation scan...");
-    let (max_alignments_sorted, best_orients_sorted) = gpu.run_alignment_scan(
-        &sorted_vectors,
-        &orient_bytes,
-        &bk_indices,
-    )?;
+    if used_backend == "None" {
+        println!("[3/4] Using CPU backend (Rayon)...");
+        let (m, b) = box_kite_alignment_scan_cpu(&sorted_vectors, &orientations, boxkites);
+        max_alignments_sorted = m;
+        best_orients_sorted = b;
+        used_backend = "CPU";
+    }
+
+    println!("      Alignment scan completed using {} backend.", used_backend);
 
     // Map results back to original order
     let mut max_alignments = vec![0.0; n_vectors];

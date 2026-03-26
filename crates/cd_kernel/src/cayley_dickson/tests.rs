@@ -89,10 +89,11 @@ fn test_batch_sedenion_associator_matches_recursive() {
         );
         assert!((parallel_results[i] - expected).abs() < 1e-10);
     }
-}
+    }
 
-#[test]
-fn test_associator_density_quaternions() {
+    #[test]
+    fn test_associator_density_quaternions() {
+
     let (density, failures) = measure_associator_density(4, 200, 42, 1e-8);
     assert_eq!(failures, 0);
     assert!((density - 0.0).abs() < 1e-10);

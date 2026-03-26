@@ -710,6 +710,7 @@ algebra_experimental = { workspace = true }
 spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }
+lbm_vulkan = { path = "../lbm_vulkan" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core" }
 data_core = { path = "../data_core", features = ["fits"] }
@@ -719,7 +720,6 @@ neural_homotopy = { path = "../neural_homotopy" }
 spin_tomography_core = { path = "../spin_tomography_core" }
 cd_spin_bridge = { path = "../cd_spin_bridge" }
 qgp_scaling = { path = "../qgp_scaling" }
-lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
 gororoba_view_core = { workspace = true }
 gororoba_view_raster = { workspace = true }

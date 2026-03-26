@@ -81,6 +81,71 @@ pub fn morton_code_16d(v: &[f64; 16], min: &[f64; 16], max: &[f64; 16]) -> u64 {
     code
 }
 
+/// CPU fallback for box-kite alignment scan.
+///
+/// Uses Rayon for multi-core scaling.
+pub fn box_kite_alignment_scan_cpu(
+    vectors: &[[f64; 16]],
+    orientations: &[[usize; 16]],
+    boxkites: &[crate::boxkites::BoxKite],
+) -> (Vec<f64>, Vec<u32>) {
+    use rayon::prelude::*;
+
+    // Pre-calculate unique basis indices for each box-kite to avoid overhead
+    let bk_indices: Vec<Vec<usize>> = boxkites
+        .iter()
+        .map(|bk| {
+            let mut indices = std::collections::BTreeSet::new();
+            for a in &bk.assessors {
+                indices.insert(a.low);
+                indices.insert(a.high);
+            }
+            indices.into_iter().collect()
+        })
+        .collect();
+
+    vectors
+        .into_par_iter()
+        .map(|v| {
+            let mut norm_sq = 0.0;
+            for &val in v {
+                norm_sq += val * val;
+            }
+
+            if norm_sq < 1e-30 {
+                return (0.0, 0);
+            }
+
+            let mut global_max_alignment = -1.0;
+            let mut best_orient_idx = 0;
+
+            for (o_idx, perm) in orientations.iter().enumerate() {
+                let mut current_total_captured = 0.0;
+
+                for indices in &bk_indices {
+                    let mut proj_sq = 0.0;
+                    for &basis_idx in indices {
+                        let p_idx = perm[basis_idx];
+                        proj_sq += v[p_idx] * v[p_idx];
+                    }
+
+                    let weight = proj_sq / norm_sq;
+                    if weight > current_total_captured {
+                        current_total_captured = weight;
+                    }
+                }
+
+                if current_total_captured > global_max_alignment {
+                    global_max_alignment = current_total_captured;
+                    best_orient_idx = o_idx;
+                }
+            }
+
+            (global_max_alignment, best_orient_idx as u32)
+        })
+        .unzip()
+}
+
 /// Alignment spectrum: projection weights onto each of the 7 box-kites.
 #[derive(Debug, Clone)]
 pub struct AlignmentSpectrum {

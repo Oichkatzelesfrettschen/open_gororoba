@@ -109,6 +109,30 @@ fn main() -> Result<()> {
         cli.null_iterations,
     ));
 
+    // 4. Magnetic Takens Embedding (16D phase space)
+    results.push(audit_embedding(
+        "magnetic-takens",
+        &groups,
+        |rows| {
+            let mut v16s = Vec::new();
+            for window in rows.windows(4) {
+                let mut v16 = [0.0; 16];
+                let local_mean_b = (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
+                if local_mean_b > 0.0 {
+                    for i in 0..4 {
+                        v16[i * 4 + 0] = window[i].bx / local_mean_b;
+                        v16[i * 4 + 1] = window[i].by / local_mean_b;
+                        v16[i * 4 + 2] = window[i].bz / local_mean_b;
+                        v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
+                    }
+                    v16s.push(v16);
+                }
+            }
+            v16s
+        },
+        cli.null_iterations,
+    ));
+
     let report = AuditReport {
         generated_at_utc: Utc::now().to_rfc3339(),
         cube_csv: cli.cube_csv.to_string_lossy().to_string(),

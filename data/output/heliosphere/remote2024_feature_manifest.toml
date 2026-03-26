@@ -1,0 +1,33 @@
+window_name = "remote2024"
+generated_at_utc = "2026-03-26T03:09:20.348205500+00:00"
+temporal_start_utc = "2024-01-01T00:00:00Z"
+temporal_end_utc = "2024-01-01T23:00:00Z"
+row_count = 48
+missions = ["SOHO"]
+products = [
+    "SOHO:LASCO C2 sample",
+    "SOHO:LASCO C3 sample",
+]
+channel_names = [
+    "r_au",
+    "lat_deg",
+    "lon_deg",
+    "density_cm3",
+    "speed_kms",
+    "temperature_k",
+    "bx",
+    "by",
+    "bz",
+    "b_mag",
+    "crs_flux",
+    "spectral_mean",
+    "spectral_peak",
+    "map_flux_mean",
+    "map_flux_std",
+    "bias",
+]
+source_paths = [
+    "data/external/soho/lasco/level05/240101/c2/img_hdr.txt",
+    "data/external/soho/lasco/level05/240101/c3/img_hdr.txt",
+]
+notes = []

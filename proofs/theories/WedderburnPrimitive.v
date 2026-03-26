@@ -62,7 +62,8 @@
     Mirrors: HModuleDim.v, FinDimHModule.v, DicksonCDProcess.v
     Supports claims: C-1543 (annihilator mod-4 bound). *)
 
-From Stdlib Require Import Reals.
+From Stdlib Require Import Reals Arith.
+From OpenGororoba Require Import FinDimHModule.
 
 (** Wedderburn's key structural fact used in our proofs:
 
@@ -84,3 +85,26 @@ From Stdlib Require Import Reals.
 
     This is exactly the quaternion multiplication table from
     Dickson (1919) eq.3, formalized in DicksonCDProcess.v. *)
+
+(** Wedderburn surface used downstream: valid quaternion-module dimensions
+    are multiples of 4. This is the nat-level form of the standard
+    division-ring module theorem specialized to H. *)
+Theorem wedderburn_h_module_dim_div4 : forall d : nat,
+  is_h_module_dim d -> exists k : nat, d = 4 * k.
+Proof.
+  exact FinDimHModule.h_module_dim_div4.
+Qed.
+
+(** Exact characterization of the valid H-module dimensions. *)
+Theorem wedderburn_h_module_dim_iff_div4 : forall d : nat,
+  is_h_module_dim d <-> exists k : nat, d = 4 * k.
+Proof.
+  exact FinDimHModule.h_module_dim_iff_div4.
+Qed.
+
+(** Mod-4 corollary used by the Moreno lane. *)
+Theorem wedderburn_h_module_dim_mod4 : forall d : nat,
+  is_h_module_dim d -> Nat.modulo d 4 = 0.
+Proof.
+  exact FinDimHModule.h_module_dim_mod4.
+Qed.

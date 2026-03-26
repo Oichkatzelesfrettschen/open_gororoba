@@ -72,25 +72,33 @@ Proof.
 Qed.
 
 (** ================================================================== *)
-(** * Flexible identity FAILURE at dim 16.                             *)
+(** * Flexible identity anchors.                                       *)
 (** ================================================================== *)
 
 (** The flexible identity: (xy)x = x(yx) for all x, y.
-    This holds in all alternative algebras (dim <= 8).
-    It FAILS at dim 16 (sedenions are not flexible).
+    The project-wide position is that flexibility is universal across the
+    standard Cayley-Dickson tower. This file currently records concrete
+    low-dimensional anchors rather than the full all-dim theorem.
 
-    Witness: x = e_1, y = e_2 in sedenions -- BUT actually the flexible
-    law holds for basis elements because basis-element products are
-    always basis elements up to sign.  The failure occurs for LINEAR
-    COMBINATIONS.
-
-    We check a specific non-basis triple. *)
+    Earlier draft comments in this file incorrectly described dim-16
+    flexibility failure. That is not the intended mathematical stance of
+    the repo and is corrected here. *)
 
 (** Flexible identity holds for quaternions (associative => flexible). *)
 Theorem quat_flexible : forall x y : CDQuat,
   quat_mul (quat_mul x y) x = quat_mul x (quat_mul y x).
 Proof.
   intros [a b c d] [e f g h]; unfold quat_mul; simpl; f_equal; ring.
+Qed.
+
+(** Flexible identity also holds for octonions (alternative => flexible). *)
+Theorem oct_flexible : forall x y : CDOct,
+  oct_mul (oct_mul x y) x = oct_mul x (oct_mul y x).
+Proof.
+  intros [[a b c d] [e f g h]] [[i j k l] [m n o p]].
+  cbv [oct_mul oct_conj oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj qa qb qc qd].
+  f_equal; f_equal; ring.
 Qed.
 
 (** ================================================================== *)
@@ -102,6 +110,7 @@ Qed.
     - oct_third_power: x^2*x = x*x^2 (dim 8, by cbv+ring)
     - sed_conj_norm: x*conj(x) = n(x)*1 (dim 16, by cbv+ring)
     - quat_flexible: (xy)x = x(yx) (dim 4, by ring)
+    - oct_flexible: (xy)x = x(yx) (dim 8, by cbv+ring)
 
     The sed_conj_norm theorem at dim 16 is a degree-2 polynomial
     identity in 32 real variables (16 per sedenion), verified by ring

@@ -126,8 +126,14 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
         "imap2025" => build_imap2025(repo_root, &mut rows, &mut sources, &mut notes)?,
         "imap2026" => build_imap2026(repo_root, &mut rows, &mut sources, &mut notes)?,
         "psp2025" => build_psp2025(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "mms2024" => build_mms2024(repo_root, &mut rows, &mut sources, &mut notes)?,
+        "full-heliosphere" => {
+            build_inner1976(repo_root, &mut rows, &mut sources, &mut notes)?;
+            build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?;
+            build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?;
+        }
         other => bail!(
-            "unsupported window {other}; expected fleet2016, inner1976, modern2020, outer2001, boundary2009, remote2024, imap2025, imap2026, or psp2025"
+            "unsupported window {other}; expected fleet2016, inner1976, modern2020, outer2001, boundary2009, remote2024, imap2025, imap2026, psp2025, mms2024, or full-heliosphere"
         ),
     }
 
@@ -1695,6 +1701,57 @@ fn build_psp2025(
         "PSP psp2025 includes {} SWEAP SPC L3 ion-moment daily files, with {} skipped after parser validation.",
         parsed_spc, skipped_spc
     ));
+    Ok(())
+}
+
+fn build_mms2024(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let mms_paths = collect_matching_files(&repo_root.join("data/external/mms"), |path| {
+        file_name_starts_with(path, "mms1_fgm_srvy_l2_2024") && file_name_ends_with(path, ".csv")
+    });
+    if mms_paths.is_empty() {
+        notes.push("MMS FGM 2024 files not found; run fetch-datasets for 'MMS1 FGM Survey L2 (1-day sample)' to populate them.".to_string());
+        return Ok(());
+    }
+
+    for path in &mms_paths {
+        let text = fs::read_to_string(path)?;
+        let records = data_core::catalogs::mms::parse_mms_fgm_hapi_csv(&text);
+        sources.push(rel(repo_root, path));
+        let hourly = data_core::catalogs::mms::average_to_hourly(&records);
+        for record in hourly {
+            rows.push(HeliosphereFeatureRow {
+                window_name: "mms2024".to_string(),
+                mission: "MMS".to_string(),
+                product: "FGM Survey L2 hourly aggregate".to_string(),
+                year: record.year,
+                doy: record.doy,
+                hour: record.hour,
+                r_au: 1.0, // MMS is in Earth orbit, roughly 1 AU heliocentric
+                lat_deg: f64::NAN,
+                lon_deg: f64::NAN,
+                density_cm3: f64::NAN,
+                speed_kms: f64::NAN,
+                temperature_k: f64::NAN,
+                bx: record.bx_gse,
+                by: record.by_gse,
+                bz: record.bz_gse,
+                b_mag: record.b_magnitude,
+                crs_flux: f64::NAN,
+                spectral_mean: f64::NAN,
+                spectral_peak: f64::NAN,
+                map_flux_mean: f64::NAN,
+                map_flux_std: f64::NAN,
+                event_score: None,
+                event_mask: None,
+                event_segment_id: None,
+            });
+        }
+    }
     Ok(())
 }
 

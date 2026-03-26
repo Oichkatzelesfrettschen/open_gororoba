@@ -28,10 +28,10 @@
 //! | 1818 | Degen eight-square precursor | reference only | cached off-repo |
 //! | 1845 | Cayley quaternion/octave note | reference only | cached off-repo |
 //! | 1898 | Hurwitz, composition of quadratic forms | paired Rust + Rocq | formalized |
-//! | 1914 | Wedderburn, primitive algebra | Rocq reference stub | formalized |
+//! | 1914 | Wedderburn, primitive algebra | Rocq paper surface | initial theorem surface landed |
 //! | 1919 | Dickson, Cayley-Dickson process | paired Rust + Rocq | formalized |
 //! | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
-//! | 1954 | Schafer, algebras formed by the CD process | Rocq-first backlog | source on disk |
+//! | 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | initial surface landed |
 //! | 1967 | Brown, generalized CD algebras | paired Rust + Rocq | formalized |
 //! | 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | formalized |
 //! | 1997 | Moreno, zero divisors over the reals | paired Rust + Rocq | extracted |

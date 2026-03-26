@@ -15,7 +15,25 @@
 //! - Major Theorem: AB=0 iff N(a1)=N(a2) AND b2=[(a1*b1)*a2]/N(a1) AND )a1,b1,a2(=0
 //! - Star operator: A* = a1 - ea2 (inner doubling conjugation)
 //!
-//! Mirrors: C1538_MorZDSymmetry.v, CDTraceZero.v, CDPowerAssociative.v
+//! # Chapter map
+//!
+//! - Chapter III, pp. 15-16: norm symmetry and involution identities.
+//!   Rust lane: `norm_symmetry.rs`. Dedicated Rocq lane still open.
+//! - Chapter IV, pp. 20-22: flexibility and associator formulas.
+//!   Rocq support exists, but Brown-numbered theorem surfacing is still partial.
+//! - Chapter V, pp. 27-30: exponent properties and power laws.
+//!   Rust lane: `exponent_properties.rs`. Dedicated Rocq lane still open.
+//! - Chapter VI, pp. 30-37: basis element identities and restricted Moufang laws.
+//!   Rust lane: `basis_element_properties.rs`. Direct Rocq chapter lane still open.
+//! - Chapter VII, pp. 45-56: zero-divisor structure, star operator, and the
+//!   Major Theorem. Rust lanes: `star_operator.rs`, `zd_criterion.rs`.
+//!   Rocq lane: `proofs/theories/Brown1972.v` plus companion theorem files.
+//! - Appendix C, pp. 78-89: PL/1 search program.
+//!   Rust lane: `pl1_emulator.rs`. Rocq extraction bridge still open.
+//!
+//! Mirrors: Brown1972.v, ZD_Criterion.v, BrownAssessorEquivalence.v,
+//! C1538_MorZDSymmetry.v. Brown-adjacent support reused by these lanes includes
+//! CDPowerAssociative.v and CDTraceZero.v.
 
 pub mod associator_properties;
 pub mod basis_element_properties;
