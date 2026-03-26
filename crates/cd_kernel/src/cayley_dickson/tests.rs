@@ -62,6 +62,36 @@ fn test_split_signature_matches_standard() {
 }
 
 #[test]
+fn test_batch_sedenion_associator_matches_recursive() {
+    let mut vectors = Vec::new();
+    for i in 0..10 {
+        let mut v = [0.0_f64; 16];
+        for j in 0..16 {
+            v[j] = (i * 16 + j) as f64 * 0.1;
+        }
+        vectors.push(v);
+    }
+
+    let batch_results = batch_sedenion_associator_norms(&vectors);
+    let parallel_results = batch_sedenion_associator_norms_parallel(&vectors);
+
+    assert_eq!(batch_results.len(), 8);
+    assert_eq!(parallel_results.len(), 8);
+
+    for i in 0..8 {
+        let expected = cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]);
+        assert!(
+            (batch_results[i] - expected).abs() < 1e-10,
+            "at index {}, got {}, expected {}",
+            i,
+            batch_results[i],
+            expected
+        );
+        assert!((parallel_results[i] - expected).abs() < 1e-10);
+    }
+}
+
+#[test]
 fn test_associator_density_quaternions() {
     let (density, failures) = measure_associator_density(4, 200, 42, 1e-8);
     assert_eq!(failures, 0);

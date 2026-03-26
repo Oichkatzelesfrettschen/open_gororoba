@@ -1,5 +1,4 @@
 use anyhow::{Context, Result};
-use cd_kernel::cd_associator_norm;
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
 use data_core::HeliosphereFeatureRow;
@@ -83,15 +82,8 @@ fn main() -> Result<()> {
         }
 
         // Now compute Sedenion associator over triples of these 16D states
-        let mut associators = Vec::new();
-        let mut valid_r = Vec::new();
-        for (i, w) in embedded_vectors.windows(3).enumerate() {
-            let norm = cd_associator_norm(&w[0], &w[1], &w[2]);
-            if norm.is_finite() {
-                associators.push(norm);
-                valid_r.push(r_aus[i + 2]);
-            }
-        }
+        let associators = cd_kernel::batch_sedenion_associator_norms_parallel(&embedded_vectors);
+        let valid_r = &r_aus[2..];
 
         if associators.is_empty() { continue; }
 

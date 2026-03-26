@@ -292,6 +292,49 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
     ]
 }
 
+/// Flat sedenion (16D CD) associator using sedenion_multiply_flat -- zero heap allocation.
+///
+/// Computes Assoc(a,b,c) = (a*b)*c - a*(b*c) for 16D sedenions.
+/// Uses AVX2-accelerated sedenion_multiply_flat.
+#[inline]
+pub fn sedenion_associator_flat(a: &[f64; 16], b: &[f64; 16], c: &[f64; 16]) -> [f64; 16] {
+    let ab = sedenion_multiply_flat(a, b);
+    let abc_left = sedenion_multiply_flat(&ab, c);
+    let bc = sedenion_multiply_flat(b, c);
+    let abc_right = sedenion_multiply_flat(a, &bc);
+
+    let mut assoc = [0.0_f64; 16];
+    // Subtract via SIMD
+    let l0 = f64x4::from([abc_left[0], abc_left[1], abc_left[2], abc_left[3]]);
+    let l1 = f64x4::from([abc_left[4], abc_left[5], abc_left[6], abc_left[7]]);
+    let l2 = f64x4::from([abc_left[8], abc_left[9], abc_left[10], abc_left[11]]);
+    let l3 = f64x4::from([abc_left[12], abc_left[13], abc_left[14], abc_left[15]]);
+
+    let r0 = f64x4::from([abc_right[0], abc_right[1], abc_right[2], abc_right[3]]);
+    let r1 = f64x4::from([abc_right[4], abc_right[5], abc_right[6], abc_right[7]]);
+    let r2 = f64x4::from([abc_right[8], abc_right[9], abc_right[10], abc_right[11]]);
+    let r3 = f64x4::from([abc_right[12], abc_right[13], abc_right[14], abc_right[15]]);
+
+    let d0 = (l0 - r0).to_array();
+    let d1 = (l1 - r1).to_array();
+    let d2 = (l2 - r2).to_array();
+    let d3 = (l3 - r3).to_array();
+
+    assoc[0..4].copy_from_slice(&d0);
+    assoc[4..8].copy_from_slice(&d1);
+    assoc[8..12].copy_from_slice(&d2);
+    assoc[12..16].copy_from_slice(&d3);
+
+    assoc
+}
+
+/// Sedenion associator norm squared using AVX2+FMA.
+#[inline]
+pub fn sedenion_associator_norm_sq_flat(a: &[f64; 16], b: &[f64; 16], c: &[f64; 16]) -> f64 {
+    let assoc = sedenion_associator_flat(a, b, c);
+    crate::avx2_primitives::avx2_norm_sq_16(&assoc)
+}
+
 // ---------------------------------------------------------------------------
 // Flat scalar baselines (no SIMD, no Vec -- pure unrolled arithmetic)
 // ---------------------------------------------------------------------------

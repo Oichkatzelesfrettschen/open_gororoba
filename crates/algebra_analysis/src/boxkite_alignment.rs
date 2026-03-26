@@ -9,6 +9,78 @@
 use crate::boxkites::{BoxKite, cached_sedenion_boxkites};
 use cd_kernel::cayley_dickson::cd_norm_sq;
 
+/// Generate all 168 permutations of indices 0..15 induced by PSL(2,7)
+/// acting on the 7 octonion units (1..7) and their sedenion partners (9..15).
+///
+/// Returns 168 permutations of [0, 1, ..., 15].
+pub fn generate_psl_2_7_permutations_16d() -> Vec<[usize; 16]> {
+    let mut permutations = std::collections::HashSet::new();
+    let mut queue = std::collections::VecDeque::new();
+
+    let identity: [usize; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    queue.push_back(identity);
+    permutations.insert(identity);
+
+    // PSL(2,7) generators for octonion units {1..7}
+    // Shift: (1 2 3 4 5 6 7)
+    // Frobenius: x -> 2x mod 7
+    let gen_shift = |p: [usize; 16]| -> [usize; 16] {
+        let mut next = p;
+        let map = [0, 2, 3, 4, 5, 6, 7, 1]; // 0 fixed, 1->2, 2->3, ..., 7->1
+        for i in 1..=7 {
+            next[i] = p[map[i]];
+            next[i + 8] = p[map[i] + 8];
+        }
+        next
+    };
+
+    let gen_frob = |p: [usize; 16]| -> [usize; 16] {
+        let mut next = p;
+        let map = [0, 2, 4, 6, 1, 3, 5, 7]; // 0 fixed, x -> 2x mod 7
+        for i in 1..=7 {
+            next[i] = p[map[i]];
+            next[i + 8] = p[map[i] + 8];
+        }
+        next
+    };
+
+    while let Some(curr) = queue.pop_front() {
+        for generator in &[gen_shift, gen_frob] {
+            let next = generator(curr);
+            if !permutations.contains(&next) {
+                permutations.insert(next);
+                queue.push_back(next);
+            }
+        }
+    }
+
+    let mut result: Vec<[usize; 16]> = permutations.into_iter().collect();
+    result.sort(); // Deterministic order
+    result
+}
+
+/// Compute a 64-bit Morton code for a 16D vector by interleaving
+/// 4 bits from each dimension. Values are normalized to [0, 1]
+/// before quantization to 4 bits (0..15).
+pub fn morton_code_16d(v: &[f64; 16], min: &[f64; 16], max: &[f64; 16]) -> u64 {
+    let mut code = 0u64;
+    for bit in 0..4 {
+        for dim in 0..16 {
+            let range = max[dim] - min[dim];
+            let norm = if range > 1e-15 {
+                ((v[dim] - min[dim]) / range).clamp(0.0, 1.0)
+            } else {
+                0.5
+            };
+            let quantized = (norm * 15.0).round() as u32;
+            if (quantized & (1 << bit)) != 0 {
+                code |= 1 << (bit * 16 + dim);
+            }
+        }
+    }
+    code
+}
+
 /// Alignment spectrum: projection weights onto each of the 7 box-kites.
 #[derive(Debug, Clone)]
 pub struct AlignmentSpectrum {

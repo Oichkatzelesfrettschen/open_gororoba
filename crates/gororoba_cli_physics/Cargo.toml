@@ -781,6 +781,10 @@ workspace = true
 name = "unified-action-sweep"
 path = "src/bin/unified_action_sweep.rs"
 
+[[bin]]
+name = "heliosphere-boxkite-alignment"
+path = "src/bin/heliosphere_boxkite_alignment.rs"
+
 # ---- GUT (1) ----
 
 [[bin]]
