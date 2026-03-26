@@ -15,7 +15,7 @@
              (cd_braid, measure_topological_friction) *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
-From OpenGororoba Require Import SedenionAssociator.
+From OpenGororoba Require Import SedenionAssociator SedenionGapWitnesses.
 
 Open Scope R_scope.
 
@@ -23,14 +23,7 @@ Open Scope R_scope.
     This is the topological friction incurred by a single braid. *)
 Theorem sed_assoc_e1_e9_e2_norm :
   sed_assoc_norm_sq (sed_e 1) (sed_e 9) (sed_e 2) = 4.
-Proof.
-  unfold sed_assoc_norm_sq, sed_assoc, sed_sub, sed_add, sed_neg.
-  cbv [sed_norm_sq oct_norm_sq sed_mul sed_e
-       oct_add oct_neg oct_mul oct_conj oct_e oct_zero
-       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-       quat_norm_sq sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-  ring_simplify. lra.
-Qed.
+Proof. exact sed_gap_e1_e9_e2_norm. Qed.
 
 (** Corollary: the topological friction is strictly positive. *)
 Corollary topological_friction_positive :
@@ -40,14 +33,7 @@ Proof. rewrite sed_assoc_e1_e9_e2_norm. lra. Qed.
 (** Additional witness: [e1, e2, e4] at dim=16 also has nonzero friction. *)
 Theorem sed_assoc_e1_e2_e4_norm :
   sed_assoc_norm_sq (sed_e 1) (sed_e 2) (sed_e 4) = 4.
-Proof.
-  unfold sed_assoc_norm_sq, sed_assoc, sed_sub, sed_add, sed_neg.
-  cbv [sed_norm_sq oct_norm_sq sed_mul sed_e
-       oct_add oct_neg oct_mul oct_conj oct_e oct_zero
-       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-       quat_norm_sq sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-  ring_simplify. lra.
-Qed.
+Proof. exact sed_gap_e1_e2_e4_norm. Qed.
 
 (** Friction from ZD-crossing triple is >= 4. *)
 Corollary friction_lower_bound :

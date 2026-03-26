@@ -35,6 +35,7 @@ pub mod landsat;
 pub mod lotss;
 pub mod manga;
 pub mod mcgill;
+pub mod mms;
 pub mod nanograv;
 pub mod new_horizons;
 pub mod omni;

@@ -14,10 +14,14 @@ Definition oe4 : CDOct := oct_e 4.  (* (0,0,0,0 | 1,0,0,0) *)
 Theorem C909_octonion_non_associative :
   oct_mul (oct_mul oe1 oe2) oe4 <> oct_mul oe1 (oct_mul oe2 oe4).
 Proof.
-  unfold oe1, oe2, oe4, oct_e, oct_mul, oct_conj,
-         quat_mul, quat_add, quat_neg, quat_conj, quat_zero, quat_one.
-  simpl. intro H.
-  assert (Hhi := f_equal oct_hi H). simpl in Hhi.
-  assert (Hd := f_equal qd Hhi). simpl in Hd.
+  intro H.
+  (* Project directly to the distinguishing scalar to avoid unfolding the
+     full 8-component octonion equality.  The two sides differ only in the
+     qd component of oct_hi: +1 versus -1. *)
+  assert (Hd := f_equal (fun x => qd (oct_hi x)) H).
+  unfold oe1, oe2, oe4, oct_e in Hd.
+  cbv [oct_mul oct_conj oct_hi qd
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd oct_lo] in Hd.
   lra.
 Qed.

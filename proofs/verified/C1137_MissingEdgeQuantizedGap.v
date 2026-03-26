@@ -19,18 +19,9 @@
              (test_missing_edge_protection) *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
-From OpenGororoba Require Import SedenionAssociator.
+From OpenGororoba Require Import SedenionAssociator SedenionGapWitnesses.
 
 Open Scope R_scope.
-
-(** Shared cbv + ring tactic for norm_sq = 4 proofs. *)
-Ltac norm_sq_4 :=
-  unfold sed_assoc_norm_sq, sed_assoc, sed_sub, sed_add, sed_neg;
-  cbv [sed_norm_sq oct_norm_sq sed_mul sed_e
-       oct_add oct_neg oct_mul oct_conj oct_e oct_zero
-       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-       quat_norm_sq sed_lo sed_hi oct_lo oct_hi qa qb qc qd];
-  ring_simplify; lra.
 
 (** * Quantized gap witnesses for each missing edge.
 
@@ -40,37 +31,37 @@ Ltac norm_sq_4 :=
 (** Missing edge (1, 9): probe e_2 gives |[e1, e2, e9]|^2 = 4. *)
 Theorem gap_1_9 :
   sed_assoc_norm_sq (sed_e 1) (sed_e 2) (sed_e 9) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_1_9. Qed.
 
 (** Missing edge (2, 10): probe e_1 gives |[e2, e1, e10]|^2 = 4. *)
 Theorem gap_2_10 :
   sed_assoc_norm_sq (sed_e 2) (sed_e 1) (sed_e 10) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_2_10. Qed.
 
 (** Missing edge (3, 11): probe e_1 gives |[e3, e1, e11]|^2 = 4. *)
 Theorem gap_3_11 :
   sed_assoc_norm_sq (sed_e 3) (sed_e 1) (sed_e 11) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_3_11. Qed.
 
 (** Missing edge (4, 12): probe e_1 gives |[e4, e1, e12]|^2 = 4. *)
 Theorem gap_4_12 :
   sed_assoc_norm_sq (sed_e 4) (sed_e 1) (sed_e 12) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_4_12. Qed.
 
 (** Missing edge (5, 13): probe e_1 gives |[e5, e1, e13]|^2 = 4. *)
 Theorem gap_5_13 :
   sed_assoc_norm_sq (sed_e 5) (sed_e 1) (sed_e 13) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_5_13. Qed.
 
 (** Missing edge (6, 14): probe e_1 gives |[e6, e1, e14]|^2 = 4. *)
 Theorem gap_6_14 :
   sed_assoc_norm_sq (sed_e 6) (sed_e 1) (sed_e 14) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_6_14. Qed.
 
 (** Missing edge (7, 15): probe e_1 gives |[e7, e1, e15]|^2 = 4. *)
 Theorem gap_7_15 :
   sed_assoc_norm_sq (sed_e 7) (sed_e 1) (sed_e 15) = 4.
-Proof. norm_sq_4. Qed.
+Proof. exact sed_missing_gap_7_15. Qed.
 
 (** * Main theorem: ALL 7 missing edges have quantized gap = 4. *)
 

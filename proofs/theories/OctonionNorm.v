@@ -88,6 +88,24 @@ Proof.
   ring.
 Qed.
 
+Lemma sed_zd_product_zero : sed_mul sed_zd_a sed_zd_b = sed_zero.
+Proof.
+  cbv [sed_mul sed_zd_a sed_zd_b sed_zero
+       oct_mul oct_conj oct_zero
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; f_equal; ring.
+Qed.
+
+Lemma sed_zd_product_zero_rev : sed_mul sed_zd_b sed_zd_a = sed_zero.
+Proof.
+  cbv [sed_mul sed_zd_a sed_zd_b sed_zero
+       oct_mul oct_conj oct_zero
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; f_equal; ring.
+Qed.
+
 Lemma sed_zd_product_norm : sed_norm_sq (sed_mul sed_zd_a sed_zd_b) = 0.
 Proof.
   cbv [sed_norm_sq oct_norm_sq sed_mul sed_zd_a sed_zd_b

@@ -9,7 +9,6 @@
     Rocq scope: algebraic structure of the annihilator set. *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
-From OpenGororobaVerified Require Import C908_SedenionZeroDivisor.
 
 (** sed_zd_a * sed_zd_a is NOT zero (not a self-annihilator). *)
 Theorem C015_not_self_annihilating :
@@ -29,4 +28,4 @@ Qed.
 (** sed_zd_b is a valid partner (product = 0). *)
 Theorem C015_partner_exists :
   sed_mul sed_zd_a sed_zd_b = sed_zero.
-Proof. exact C908_sedenion_zero_divisor. Qed.
+Proof. exact sed_zd_product_zero. Qed.

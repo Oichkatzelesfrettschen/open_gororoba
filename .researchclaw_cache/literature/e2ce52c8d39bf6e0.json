@@ -1,0 +1,103 @@
+{
+  "query": "Albert Quadratic Forms Permitting Composition 1942",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455970.0096056,
+  "papers": [
+    {
+      "paper_id": "crossref-10.2307/1968887",
+      "title": "Quadratic Forms Permitting Composition",
+      "authors": [
+        {
+          "name": "A. A. Albert",
+          "affiliation": ""
+        }
+      ],
+      "year": 1942,
+      "abstract": "",
+      "venue": "The Annals of Mathematics",
+      "citation_count": 64,
+      "doi": "10.2307/1968887",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2307/1968887",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.2307/1999007",
+      "title": "Quadratic Forms Permitting Triple Composition",
+      "authors": [
+        {
+          "name": "Kevin McCrimmon",
+          "affiliation": ""
+        }
+      ],
+      "year": 1983,
+      "abstract": "",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 1,
+      "doi": "10.2307/1999007",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2307/1999007",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1090/s0002-9947-1983-0678338-7",
+      "title": "Quadratic forms permitting triple composition",
+      "authors": [
+        {
+          "name": "Kevin McCrimmon",
+          "affiliation": ""
+        }
+      ],
+      "year": 1983,
+      "abstract": "In an algebraic investigation of isoparametric hypersurfaces, J. Dorfmeister and E. Neher encountered a nondegerate quadratic form which permitted composition with a trilinear product, \n\n  \n    \n      Q\n      \n        (\n        {\n        \n          x\n          y\n          z\n        \n        }\n        )\n      \n      =\n      Q\n      (\n      x\n      )\n      Q\n      (\n      y\n      )\n      Q\n      (\n      z\n      )\n    \n    Q\\left (\\{{xyz} \\} \\right ) = Q(x)Q(y)Q(z)\n  \n\n. In this paper we give a complete description of such composition triples: they are all obtained as isotopes of permutations of standard triples \n\n  \n    \n      {\n      x\n      y\n      z\n      }\n      =\n      (\n      x\n      y\n      )\n      z\n    \n    \\{xyz \\} = (xy)z\n  \n\n or \n\n  \n    \n      x\n      (\n      y\n      z\n      )\n    \n    x(yz)\n  \n\n determined by a composition algebra, with the quadratic form \n\n  \n    Q\n    Q\n  \n\n the usual norm form. For any fixed \n\n  \n    Q\n    Q\n  \n\n this leads to \n\n  \n    1\n    1\n  \n\n isotopy class in dimensions \n\n  \n    1\n    1\n  \n\n and \n\n  \n    2\n    2\n  \n\n, \n\n  \n    3\n    3\n  \n\n classes in the dimension \n\n  \n    4\n    4\n  \n\n quaternion case, and \n\n  \n    6\n    6\n  \n\n classes in the dimension \n\n  \n    8\n    8\n  \n\n octonion case.",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 8,
+      "doi": "10.1090/s0002-9947-1983-0678338-7",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9947-1983-0678338-7",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.31390/gradschool_disstheses.1586",
+      "title": "Composition of Binary Quadratic Forms Over Integral Domains.",
+      "authors": [
+        {
+          "name": "Bill Dulin",
+          "affiliation": "Louisiana State University and Agricultural & Mechanical College"
+        }
+      ],
+      "year": 0,
+      "abstract": "",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.31390/gradschool_disstheses.1586",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.31390/gradschool_disstheses.1586",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-1-4612-4542-1_7",
+      "title": "Composition of Forms",
+      "authors": [
+        {
+          "name": "Duncan A. Buell",
+          "affiliation": ""
+        }
+      ],
+      "year": 1989,
+      "abstract": "",
+      "venue": "Binary Quadratic Forms",
+      "citation_count": 0,
+      "doi": "10.1007/978-1-4612-4542-1_7",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-1-4612-4542-1_7",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

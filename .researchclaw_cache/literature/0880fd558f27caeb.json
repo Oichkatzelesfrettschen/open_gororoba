@@ -1,0 +1,107 @@
+{
+  "query": "Composition Algebras and Their Automorphisms Jacobson 1958",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455902.8961797,
+  "papers": [
+    {
+      "paper_id": "oalex-W2240791618",
+      "title": "On convexity, the Weyl group and the Iwasawa decomposition",
+      "authors": [
+        {
+          "name": "Bertram Kostant",
+          "affiliation": ""
+        }
+      ],
+      "year": 1973,
+      "abstract": "locate/ansens) implique l'accord avec les conditions gnrales d'utilisation (http://www.numdam.org/conditions). Toute utilisation commerciale ou impression systmatique est constitutive d'une infraction pnale. Toute copie ou impression de ce fichier doit contenir la prsente mention de copyright.",
+      "venue": "Annales Scientifiques de l \u00c9cole Normale Sup\u00e9rieure",
+      "citation_count": 356,
+      "doi": "10.24033/asens.1254",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.24033/asens.1254",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2034433566",
+      "title": "The generalized Whitehead product",
+      "authors": [
+        {
+          "name": "Martin Arkowitz",
+          "affiliation": ""
+        }
+      ],
+      "year": 1962,
+      "abstract": "",
+      "venue": "Pacific Journal of Mathematics",
+      "citation_count": 124,
+      "doi": "10.2140/pjm.1962.12.7",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2140/pjm.1962.12.7",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1593580708",
+      "title": "Torsion-free rings",
+      "authors": [
+        {
+          "name": "Ross A. Beaumont",
+          "affiliation": "University of Washington"
+        },
+        {
+          "name": "R. S. Pieace",
+          "affiliation": "University of Washington"
+        }
+      ],
+      "year": 1961,
+      "abstract": "",
+      "venue": "Illinois Journal of Mathematics",
+      "citation_count": 119,
+      "doi": "10.1215/ijm/1255629647",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1215/ijm/1255629647",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2089824201",
+      "title": "On generalized Cayley-Dickson algebras",
+      "authors": [
+        {
+          "name": "Robert B. Brown",
+          "affiliation": ""
+        }
+      ],
+      "year": 1967,
+      "abstract": "Among those algebras whose multiplication does not satisfy the associative law is a particular family of noncommutative Jordan algebras, the generalized Cayley-Dickson algebras. These are certain central simple algebras whose dimensions are all powers of two. Most of this paper is concerned with giving the classification up to isomorphism of those of dimensions 16, 32, and 64 and determining the automorphism groups. In addition to this some generalized Cayley-Dickson division algebras are constructed. Precise criteria for when the 16dimensional algebras are division algebras are formulated and applied to algebras over some common fields. For higher dimensions no such criteria are given. However, specific examples of division algebras for each dimension 2 t are constructed over power-series fields.",
+      "venue": "Pacific Journal of Mathematics",
+      "citation_count": 74,
+      "doi": "10.2140/pjm.1967.20.415",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2140/pjm.1967.20.415",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2063529029",
+      "title": "Quadratic division algebras",
+      "authors": [
+        {
+          "name": "J. Marshall Osborn",
+          "affiliation": ""
+        }
+      ],
+      "year": 1962,
+      "abstract": "In this paper we shall investigate the structure of quadratic division algebras over an arbitrary field of characteristic not two.It is shown first that a quadratic algebra may be decomposed into a copy of the field and a skew-commutative algebra with a bilinear form.The standard theory of quadratic forms then rules out the existence of quadratic division algebras over some fields and imposes limitations on its structure over others.It is proved that no quadratic division algebra of order 3 exists over any field, and all quadratic division algebras of order 4 over an arbitrary field F are found in terms of the structure of the quadratic forms over F. If D is a finitely generated quadratic division algebra in which every two elements not in the same subalgebra of order 2 generate a subalgebra of order 4, it is shown that D has order 2\", and the multiplication table of the skew-commutative algebra associated with such an algebra of order 8 is determined in terms of eight parameters.This gives a new class of division algebras of order 8 over any (formally) real field, and shows that any quadratic division algebra of order 4 over a real closed field may be embedded in a quadratic division algebra of order 8.1. Let A be a (possibly infinite dimensional) algebra over a field F of characteristic not two, and let A have an identity element 1.Then A shall be called a a quadratic algebra if 1, a, a2 are linearly dependent over F for every a in A. We shall find it convenient to identify F with the subalgebra PI, and, hence, to replace the phrase \"scalar multiple of the identity element of A\" simply with the word \"scalar.\"If an element x of A squares to a scalar but is not itself a scalar, we shall call it a vector.It follows immediately from these definitions that every element of a quadratic algebra A is uniquely expressible as the sum of a vector and a scalar.That the set of all vectors of A forms a subspace V complementary to F, follows from the following lemma due to L. E. Dickson[3].Lemma 1.In a quadratic algebra, the sum of two vectors is also a vector.Equivalently, for any two vectors, x, y, the quantity xy 4-yx is a scalar.Now, for any x, ye A, let (x, v) denote the scalar component of the product xy.Since (x, y) is linear in both arguments, it is a bilinear form.In general, this form is not symmetric, and, in fact, does not satisfy the property that (x, y) = 0 implies",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 96,
+      "doi": "10.1090/s0002-9947-1962-0140550-x",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9947-1962-0140550-x",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

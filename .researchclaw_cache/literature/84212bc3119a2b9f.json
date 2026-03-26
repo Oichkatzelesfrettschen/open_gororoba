@@ -1,0 +1,27 @@
+{
+  "query": "Composition Algebras and Their Automorphisms",
+  "source": "semantic_scholar",
+  "limit": 5,
+  "timestamp": 1774461521.9499922,
+  "papers": [
+    {
+      "paper_id": "s2-22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c",
+      "title": "Composition algebras and their automorphisms",
+      "authors": [
+        {
+          "name": "N. Jacobson",
+          "affiliation": ""
+        }
+      ],
+      "year": 1958,
+      "abstract": "",
+      "venue": "",
+      "citation_count": 225,
+      "doi": "10.1007/978-1-4612-3694-8_24",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c",
+      "source": "semantic_scholar",
+      "_bibtex_override": ""
+    }
+  ]
+}

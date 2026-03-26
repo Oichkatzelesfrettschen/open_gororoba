@@ -11,6 +11,7 @@
     For the universal statement we prove it for basis e1 as a
     representative, which tests the core algebraic mechanism. *)
 
+From Stdlib Require Import Lia.
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion.
 
 (** Left alternative identity for e1: e1*(e1*b) = (e1*e1)*b. *)
@@ -32,5 +33,19 @@ Proof.
   intros b. destruct b as [[ba bb bc bd] [be bf bg bh]].
   cbv [oct_e oct_mul oct_conj quat_mul quat_add quat_neg
        quat_conj quat_zero quat_one oct_lo oct_hi qa qb qc qd].
+  f_equal; f_equal; abstract ring.
+Qed.
+
+(** Right alternative identity for any octonion basis element. *)
+Theorem C910_octonion_right_alt_basis : forall i a,
+  (i < 8)%nat ->
+  oct_mul (oct_mul a (oct_e i)) (oct_e i) =
+  oct_mul a (oct_mul (oct_e i) (oct_e i)).
+Proof.
+  intros i a Hi.
+  destruct i as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
+  destruct a as [[aa ab ac ad] [ae af ag ah]];
+  cbv [oct_e oct_mul oct_conj quat_mul quat_add quat_neg
+       quat_conj quat_zero quat_one oct_lo oct_hi qa qb qc qd];
   f_equal; f_equal; abstract ring.
 Qed.

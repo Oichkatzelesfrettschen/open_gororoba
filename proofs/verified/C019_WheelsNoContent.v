@@ -9,12 +9,11 @@
     so no multiplicative inverse scheme can recover a from b. *)
 
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
-From OpenGororobaVerified Require Import C908_SedenionZeroDivisor.
 
 (** The product is genuinely zero (both components, all 16 scalars). *)
 Theorem C019_product_zero :
   sed_mul sed_zd_a sed_zd_b = sed_zero.
-Proof. exact C908_sedenion_zero_divisor. Qed.
+Proof. exact sed_zd_product_zero. Qed.
 
 (** Both operands have nonzero norm. *)
 Theorem C019_operands_nonzero :

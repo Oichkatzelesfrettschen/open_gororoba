@@ -1,0 +1,115 @@
+{
+  "query": "Hamilton On Quaternions Philosophical Magazine 1844 1850",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455949.2130728,
+  "papers": [
+    {
+      "paper_id": "oalex-W4310752639",
+      "title": "Construction of dual-generalized complex Fibonacci and Lucas quaternions",
+      "authors": [
+        {
+          "name": "G\u00fcls\u00fcm Yeliz \u015eent\u00fcrk",
+          "affiliation": "Geli\u015fim \u00dcniversitesi"
+        },
+        {
+          "name": "Nurten G\u00fcrses",
+          "affiliation": "Y\u0131ld\u0131z Technical University"
+        },
+        {
+          "name": "Sal\u00eem Y\u00fcce",
+          "affiliation": "Y\u0131ld\u0131z Technical University"
+        }
+      ],
+      "year": 2022,
+      "abstract": "The aim of this paper is to construct dual-generalized complex Fibonacci and Lucas quaternions. It examines the properties both as dual-generalized complex number and as quaternion. Additionally, general recurrence relations, Binet's formulas, Tagiuri's (or Vajda's like), Honsberger's, d'Ocagne's, Cassini's and Catalan's identities are obtained. A series of matrix representations of these special quaternions is introduced. Finally, the multiplication of dual-generalized complex Fibonacci and Lucas quaternions are also expressed as their different matrix representations.",
+      "venue": "Carpathian Mathematical Publications",
+      "citation_count": 14,
+      "doi": "10.15330/cmp.14.2.406-418",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.15330/cmp.14.2.406-418",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2026276110",
+      "title": "Francis Guthrie: A Colourful Life",
+      "authors": [
+        {
+          "name": "P. Maritz",
+          "affiliation": "Stellenbosch University"
+        },
+        {
+          "name": "S. Mouton",
+          "affiliation": "Stellenbosch University"
+        }
+      ],
+      "year": 2012,
+      "abstract": "Does your hometown have any mathematical tourist attractions such as statues, plaques, graves, the cafe here the famous conjecture was made,",
+      "venue": "The Mathematical Intelligencer",
+      "citation_count": 13,
+      "doi": "10.1007/s00283-012-9307-y",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/s00283-012-9307-y",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W568650583",
+      "title": "The development of a publication community: nineteenth-century mathematics in British scientific journals",
+      "authors": [
+        {
+          "name": "Sloan Evans Despeaux",
+          "affiliation": "University of Virginia"
+        }
+      ],
+      "year": 2002,
+      "abstract": "This study traces the development of mathematics in nineteenth-century Britain through the analytic tool of a publication community. Specifically, we consider the nineteenth-century British mathematical publication community to consist of those who authored or read and responded in print to mathematical papers published in nineteenth-century British scientific journals. We examine this community through three different but complementary points of view: the journals, the people, and the mathematical contributions themselves. At the level of the journals, we trace the development and structure of British scientific society-supported, independent, and university-centered journals that contained mathematical work. At the next level, we investigate the extent of professionalization and stratification in this publication community through the use of prosopography. We further trace the extent of internationalization in the community by examining the factors behind international participation in British journals and British participation in foreign journals. Finally, focusing on the journal articles themselves, we trace the\" intellectual contours of the community. In tracking the mathematical developments in their initial form of presentation, we highlight memorable, forgettable, and forgotten contributions, reveal topics that contemporary mathematicians viewed as popular or important, explore the theorems and theories produced by British mathematicians, and indicate trends of mathematical research in nineteenth-century Britain. Note: Abstract extracted from PDF file via OCR.",
+      "venue": "Libra",
+      "citation_count": 11,
+      "doi": "10.18130/v3f18sd70",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.18130/v3f18sd70",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2188467556",
+      "title": "Angular momentum between physics and mathematics",
+      "authors": [
+        {
+          "name": "Arianna Borrelli",
+          "affiliation": "Max Planck Institute for the History of Science"
+        }
+      ],
+      "year": 2011,
+      "abstract": "",
+      "venue": "Qucosa (Saxon State and University Library Dresden)",
+      "citation_count": 8,
+      "doi": "",
+      "arxiv_id": "",
+      "url": "https://openalex.org/W2188467556",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1897692432",
+      "title": "Stereo-Vision-Aided Inertial Navigation",
+      "authors": [
+        {
+          "name": "Denis Grie\u00dfbach",
+          "affiliation": ""
+        }
+      ],
+      "year": 2015,
+      "abstract": "Reliable information about position and attitude is an essential requirement for many applications. The work expounded in this paper aims at a tight integration of low-cost inertial navigation and stereo vision to obtain this information. The method I present here is based on passive measurements and does not rely on external referencing. Thus, it provides a navigation solution for unknown indoor and outdoor environments.",
+      "venue": "Refubium (Universit\u00e4tsbibliothek der Freien Universit\u00e4t Berlin)",
+      "citation_count": 8,
+      "doi": "10.17169/refubium-13104",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.17169/refubium-13104",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

@@ -5,9 +5,9 @@
 //!
 //! Authoritative source: `registry/book_docs.toml`.
 //!
-//! - Updated: 2026-03-23
+//! - Updated: 2026-03-25
 //! - Source markdown glob: `docs/book/src/**/*.md`
-//! - Document count: 26
+//! - Document count: 28
 //!
 //! ## Documents
 //!
@@ -161,12 +161,26 @@
 //! - Slug: `docs_book_src_introduction`
 //! - Line count: 101
 //!
+//! ### BOOK-027: Paper Chronology
+//!
+//! - Source markdown: `docs/book/src/papers/chronology.md`
+//! - Section: `papers`
+//! - Slug: `docs_book_src_papers_chronology`
+//! - Line count: 34
+//!
 //! ### BOOK-015: Paper Collection
 //!
 //! - Source markdown: `docs/book/src/papers/collection.md`
 //! - Section: `papers`
 //! - Slug: `docs_book_src_papers_collection`
-//! - Line count: 77
+//! - Line count: 46
+//!
+//! ### BOOK-028: Formalization Frontier
+//!
+//! - Source markdown: `docs/book/src/papers/frontier.md`
+//! - Section: `papers`
+//! - Slug: `docs_book_src_papers_frontier`
+//! - Line count: 45
 //!
 //! ### BOOK-020: Proof Inventory
 //!

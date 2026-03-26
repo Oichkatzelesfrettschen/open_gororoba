@@ -1,0 +1,98 @@
+{
+  "query": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774463289.4515061,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1007/bf00233101",
+      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "authors": [
+        {
+          "name": "Hans Freudenthal",
+          "affiliation": ""
+        }
+      ],
+      "year": 1985,
+      "abstract": "",
+      "venue": "Geometriae Dedicata",
+      "citation_count": 46,
+      "doi": "10.1007/bf00233101",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/bf00233101",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.53846/goediss-2456",
+      "title": "Oktaven und Reduktionstheorie",
+      "authors": [
+        {
+          "name": "Karsten Roeseler",
+          "affiliation": ""
+        }
+      ],
+      "year": 0,
+      "abstract": "",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.53846/goediss-2456",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.53846/goediss-2456",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/bf01707289",
+      "title": "Die Ausnahmegruppen der Pickschen Geometrie",
+      "authors": [
+        {
+          "name": "Gerhard Kowalewski",
+          "affiliation": ""
+        }
+      ],
+      "year": 1941,
+      "abstract": "",
+      "venue": "Monatshefte f\u00fcr Mathematik und Physik",
+      "citation_count": 0,
+      "doi": "10.1007/bf01707289",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/bf01707289",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.31751/p.148",
+      "title": "\u00bbDie reden die ganze Zeit von Quarten und Oktaven und bei uns steht nur etwas von Terz-Sext-Kl\u00e4ngen.\u00ab. Binnendifferenzierung im Musiktheorieunterricht",
+      "authors": [
+        {
+          "name": "Stefan Garthoff",
+          "affiliation": ""
+        }
+      ],
+      "year": 2022,
+      "abstract": "",
+      "venue": "GMTH Proceedings",
+      "citation_count": 0,
+      "doi": "10.31751/p.148",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.31751/p.148",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.31030/2231136",
+      "title": "DIN EN 61260-1:2014-10, Elektroakustik_- Bandfilter f\u00fcr Oktaven und Bruchteile von Oktaven_- Teil_1: Anforderungen (IEC_61260-1:2014); Deutsche Fassung EN_61260-1:2014",
+      "authors": [],
+      "year": 0,
+      "abstract": "",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.31030/2231136",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.31030/2231136",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

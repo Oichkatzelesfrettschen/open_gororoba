@@ -67,8 +67,8 @@ not a limitation to hide.
 The G2 automorphism group of the octonions is constructively identified
 with su(3) via stabilizer extraction (Rocq-verified). The Jacobi identity
 for the full SU(3) structure constants is formally verified in Rocq using
-Z[sqrt(3)] arithmetic. 43 Rocq theory files, 190+ verified .v files,
-50+ Rust tests across the algebra trilogy.
+Z[sqrt(3)] arithmetic. 88 Rocq theory files, 155 verified .v files
+(243 total .v files), 50+ Rust tests across the algebra trilogy.
 
 ## I. Executive Summary
 
@@ -999,10 +999,51 @@ All C(8,3) = 56 triples x 8 indices = 448 checks via single vm_compute.
 
 ### Proof Statistics
 
-- 43 theory files in proofs/theories/
-- 145+ verified files in proofs/verified/
-- 190+ total .v files
+- 88 theory files in proofs/theories/
+- 155 verified files in proofs/verified/
+- 243 total .v files
 - All proofs compile with Rocq 9.1.1 (nightly-2026-03-05)
+
+### FanoPlane Projective Axioms (2026-03-25)
+
+FanoPlane.v extended from 4 to 8 theorems, adding the missing projective
+plane axioms that downstream files (G2OctonionAutomorphisms.v, OctonionStandardModel.v,
+BrownAssessorEquivalence.v) implicitly depend on:
+
+- `fano_unique_line`: Any two distinct points lie on exactly 1 common line
+  (Baez Section 2.1 p.7: "Each pair of distinct points lies on a unique line")
+- `fano_unique_point`: Any two distinct lines share exactly 1 common point
+  (dual projective axiom, PG(2,2) self-duality)
+- `fano_xor_rule`: All 7 Fano lines satisfy a XOR b = c (Z_2^3 subspace structure)
+- `fano_lines_distinct`: The 7 lines are pairwise distinct (NoDup)
+
+File grew from 51 to ~200 lines (8 theorems). Full paper citations (Baez 2002
+Section 2.1, p.7; arXiv:math/0105155) added to every theorem.
+
+### OctonionStandardModel.v (new, 2026-03-25)
+
+Registered in _RocqProject. Formalizes the arithmetic and combinatorial facts
+of the Baez-Dixon octonion->Standard Model embedding:
+- `g2_contains_su3_dims`: dim G2 = 14, dim SU(3) = 8, coset = 6
+- `oct_su3_decomposition`: 7 = 3 + 3 + 1 (quark + anti-quark + singlet)
+- `quark_triplet_is_fano_line`: {1,2,3} is the first Fano line
+- `singlet_7_lines`, `three_quark_gluon_vertices`, `four_gluon_lines`
+- `sm_gauge_group_dim`: 1 + 3 + 8 = 12
+- `sm_inside_g2`: 12 < 14, excess 2 dimensions
+
+### HurwitzTheorem.v Completeness (2026-03-25)
+
+Paper audit against Hurwitz (1898), pp.309-316. Additions:
+- `hurwitz_A0_dim8_valid`: Explicit octonion A_0 matrix (Part V, p.314)
+  previously missing -- n=2 and n=4 existed but n=8 did not
+- `cd_tower_rho`: Cross-reference theorem verifying the finite match in
+  `hurwitz_radon` agrees with `rho_pow2` (BaezNormedDivAlgebra.v formula)
+  at k=0..8 (n=1..256)
+- `hurwitz_mod4_check`: Arithmetic note for Hurwitz eq.(12): n≡0 mod 4
+  condition (p.313) underlying the full Clifford product = +-I argument
+- Paper equation citations (eq.7, eq.9, eq.10, eq.11', eq.12, eq.13, eq.14-15)
+  added to all section headers
+- German text quotation from p.313 added to explain the dimension bound
 
 ## XIII. Epsilon and Psi Automorphisms
 
@@ -2264,9 +2305,12 @@ should treat as authoritative.
 
 ### Foundational papers added from gap-fill audit
 
-- Schafer (1954): "On the algebras formed by the CD process" [Pacific J. Math.]
-  Classical foundational paper. Cited by all modern CD literature.
-  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/broader_cd_theory/
+- Schafer (1954): "On the Algebras Formed by the Cayley-Dickson Process"
+  [American Journal of Mathematics 76(2), 435-446; DOI/JSTOR 10.2307/2372583]
+  Classical foundational paper. Recovered exactly by correcting the venue
+  metadata via Crossref, locating the full AJM 1954 volume on Archive.org,
+  and extracting the 12-page article PDF.
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_followups/
 
 - Brown (1967): "On generalized Cayley-Dickson algebras" [Pacific J. Math.]
   Classification/isomorphism in dimensions 16, 32, 64.
@@ -2287,6 +2331,204 @@ should treat as authoritative.
 - Kivunge (2004): "Sedenion extension loops" [Iowa State dissertation]
   Loop-theoretic perspective on sedenion structure.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/loop_subalgebra_automorphism/
+
+### Archival lessons from exact-paper recovery
+
+The off-site corpus audit is not just housekeeping; it changes which algebraic
+claims we should trust and which search lanes are worth burning time on.
+
+- Verify venue and DOI metadata before hunting mirrors. Schafer (1954) was
+  carried in local notes as Proc. Amer. Math. Soc., but Crossref pinned the
+  exact paper to American Journal of Mathematics 76(2), 435-446. That one
+  correction unlocked the real container and closed the gap.
+- Prefer whole-volume containers when direct article PDFs are gated. The exact
+  Schafer paper was recovered from the Archive.org AJM volume
+  `sim_american-journal-of-mathematics_1954_76` after JSTOR itself kept
+  returning 403 on the direct PDF route.
+- Treat "support" and "exact original" as different epistemic classes. Open
+  support texts can keep the Rust/Rocq lane moving, but they must not silently
+  replace the exact source in the chronology. This matters for Freudenthal
+  1951, Jacobson 1958, and Cullen 1965.
+- Test suspicious repository bitstreams like data, not like titles. The Utrecht
+  Freudenthal candidate looked promising by filename but resolved to a tiny
+  DSpace HTML shell under `curl`, `wget`, and `fetch`, not a PDF.
+- Old Crossref "text-mining" links are still useful clues, but not guarantees.
+  Jacobson's original DOI and collected-papers chapter DOI both expose concrete
+  Springer PDF endpoints in metadata, yet the live endpoints still auth-loop
+  into HTML instead of yielding a file.
+- Probe Springer `page-one` preview endpoints before giving up on a gated
+  Springer article. For Jacobson 1958, the original DOI
+  `10.1007/BF02854388` and the collected-papers chapter DOI
+  `10.1007/978-1-4612-3694-8_24` both yielded real 2-page preview PDFs from
+  `page-one.springer.com`, and Freudenthal's 1985 reprint DOI
+  `10.1007/BF00233101` behaved the same way. These previews are not substitutes
+  for the full text, but they are strong provenance artifacts and often expose
+  page numbers, venue confirmation, and reprint lineage.
+- Archive.org BookReader can reveal page-level availability even when issue-
+  level PDFs stay closed. Cullen 1965 maps to the Duke issue container
+  `sim_duke-mathematical-journal_1965-03_32_1`; BookReader marks only leaves
+  142-143 (printed pages 139-140) as previewable and the rest of the article
+  leaves as non-viewable. That tells us the bottleneck is a partial issue
+  preview, not a missing metadata record.
+- Distinguish "fetchable preview asset" from "meaningful page content." In the
+  Jacobson collected-papers volume, BookReader preview URLs around the chapter
+  start do return real PNG files at shell level, but they hash to the same
+  repeated placeholder image rather than exposing the chapter pages. By
+  contrast, Cullen's BookReader session yields genuinely readable screenshots
+  for printed pages 139 and 140 before falling back to the preview wall.
+- A borrowed live reader is still not enough unless the container itself is
+  title- and volume-verified first. A patient, load-aware Edge capture loop
+  can render crisp borrowed Archive pages, but the `collectedmathema0000jaco`
+  session proved that those pages can belong to the wrong collected-papers
+  volume. In this case, the harvested pages turned out to be Jacobson's "Some
+  Aspects of the Theory of Representations of Jordan Algebras" from volume 3,
+  not the 1958 composition-algebra paper. Footer text and OCR checks have to
+  happen before any harvested pages are treated as a source recovery.
+- ISBN-specific Archive search can recover mislabeled multi-volume containers.
+  The decisive Jacobson clue was ISBN `0817634118`, but the follow-up lesson is
+  sharper: ISBN search can narrow the field while still leaving the wrong
+  volume in play. `collectedmathema0001jaco` is explicitly volume 1, while
+  `collectedmathema0000jaco` is now doubly ruled out as the needed volume 2:
+  OpenLibrary maps it to edition `OL11388068M` / ISBN `0817634460` / subtitle
+  `1965-1988`, and borrowed-reader OCR also identifies volume-3 Jordan-
+  algebra material. OpenLibrary volume 2 (`OL11388064M`) currently exposes
+  only a `Locate` route rather than an online borrow handoff.
+- Archive borrow mode has a separate DRM tier beyond anonymous derivatives.
+  With live Edge loan cookies, `collectedmathema0000jaco` yields
+  `collectedmathema0000jaco_encrypted.pdf` and `collectedmathema0000jaco_lcp.epub`
+  even while the plain `.pdf` and `.djvu.txt` stay on `401`. That proves the
+  container is real and borrowed, but not yet readable in ordinary shell-side
+  PDF tooling.
+- LCP/EBX assets must be treated as content wrappers, not automatic wins. The
+  Jacobson EPUB can be unzipped and its OPF metadata inspected, but the page
+  bodies remain encrypted byte payloads. A fetched file is not a recovered
+  source until the mathematical content itself is renderable or extractable.
+- "Reader-openable" is a distinct state worth tracking. Thorium can import and
+  display the Jacobson LCP EPUB well enough to create a local Nathan Jacobson
+  publication record, but that still does not imply a plaintext on-disk
+  chapter extract for automation or proof ingestion.
+- Edition metadata can be more decisive than a live reader. When an Archive
+  bundle carries multiple ISBNs, use OpenLibrary edition ids, subtitles, and
+  source-record mappings to verify which physical volume the borrow session is
+  actually serving before treating any rendered pages as evidence.
+- EuDML/Numdam is now part of the standing retrieval playbook for this domain.
+  It does not solve the exact Freudenthal/Jacobson/Cullen trio directly, but it
+  produced mathematically central support texts like Veldkamp on projective
+  octave planes, Brada on Cayley-octave geometry, and Dentoni-Sce on regular
+  functions in the Cayley algebra.
+- Neighboring volume-contents items are worth probing whenever a journal issue
+  is gated. Cullen 1965 stayed closed at the issue level, but the openly
+  downloadable Duke volume-32 contents item still gave a clean article anchor.
+- AutoResearchClaw's custom literature sources are not interchangeable.
+  CiNii and Google Scholar are best treated as exact-record and alternate-
+  container finders, while CORE is better at surfacing OA support papers
+  and repository residue than at producing exact legacy scans. Unpaywall is
+  only a reliable OA verdict if it is queried with a real email; the
+  client's fallback `example.com` address produces `422` responses and can
+  falsely look like "no information" rather than "closed article."
+- Machine-readable library catalogs can tighten the search graph even when
+  they do not open the file. CiNii's CRID/NAID exports and NDL Search's
+  OpenSearch feed exposed two specific Freudenthal 1951 NAIDs, plus a
+  distinct 1960 revised-edition record (`Neuaufl. mit Verbesserungen`,
+  NIIBibID `BA59866043`) that gives a new concrete object to hunt. The same
+  NDL pass also showed a useful anti-pattern for Jacobson: NDL can label an
+  article "digital" and offer "read now" while still only handing the user
+  back to the same closed CiNii/Springer route.
+- WorldCat exact-title and exact-ISBN result pages are now part of the
+  archival playbook. For Freudenthal, exact-title search exposed the 1960
+  revised edition as stable print-book records and matched the same object
+  that CiNii/NDL call `BA59866043`. For Jacobson, ISBN `0817634118` and the
+  exact volume phrase `1947-1965` yielded the cleanest volume-2 cluster yet,
+  including result ids `1466247000` and `1256700323`. The practical lesson is
+  to harvest result-layer identifiers first: WorldCat search pages are often
+  usable while title-detail pages trigger a fresh Cloudflare challenge.
+- University OPACs can add stronger evidence than generic catalog hits.
+  Tokyo and Nagoya both expose public OPAC records for Freudenthal's 1960
+  revised edition, including title, edition, extent (`44 leaves ; 32 cm`),
+  and the note that it was originally published in Utrecht. That does not
+  open the file, but it upgrades the hunt from "rumored edition" to "proved
+  physical object with concrete holdings."
+- The same OPAC tactic scales to collected volumes. For Jacobson, CiNii's
+  `BA08033958` record plus Tokyo, Hokkaido, and Tohoku OPAC pages gave a
+  real holding map for volume 2: Tokyo exposes the `v. 2 : us` row, Hokkaido
+  exposes the full ISBN list including `0817634118`, and Tohoku exposes a
+  concrete `v. 2` holding row with call number `ZENSHU-J-6/閲覧のみ`.
+  That still does not open the file, but it converts the Jacobson lane from
+  "abstract volume-2 theory" into "specific physical holdings with local
+  inventory evidence."
+- Regional union catalogs can beat global catalogs on exact originals.
+  Heidelberg's HEIDI/K10plus record for Freudenthal exposed the exact `1951`
+  Utrecht imprint with year, extent (`44 S.`), and K10plus-PPN `1178680002`,
+  while WorldCat was stronger on the later `1960` revised object. The lesson
+  is to split the hunt: global catalogs for clustering, regional catalogs for
+  exact-imprint confirmation.
+- National-library records can split into two very different evidence classes.
+  DNB's exact author/title query for Freudenthal surfaced only the `1985`
+  Springer online-resource record, and its archived object is restricted to
+  DNB reading-room terminals, so "archived online" does not imply locally
+  retrievable. But the same DNB system gave a real open win for Jacobson:
+  ISBN `0817634118` resolves to `d-nb.info/930503481`, and the public TOC
+  scan at `d-nb.info/930503481/04` OCRs cleanly enough to pin paper `[60]`
+  `Composition algebras and their automorphisms` to page `341` in collected
+  volume 2. That turns the Jacobson lane from "which volume is it in?" into
+  a page-range extraction problem.
+- Machine-readable catalog records can carry higher-value links than the human
+  page makes obvious. In this tranche, DNB MARC/XML and RDF for Jacobson
+  exposed OCLC `722590300`, parent record `(DE-101)552060003`, and the TOC
+  PDF as a first-class `856` / `dcterms:tableOfContents` artifact. ZDB did
+  something similar for Cullen: the journal-level online record surfaced the
+  exact Project Euclid container ids (`dmj100` and `dmj`) even though the
+  article itself remains closed. The lesson is to scrape catalog APIs after
+  the HTML page, not before or instead of it.
+- Journal-container ids are still not the same thing as issue access. The
+  old Euclid routes `dmj100`, `dmj`, the issues page, and the explicit
+  `volume-32/issue-1` URL all collapsed to the same small Incapsula HTML
+  shell in direct probes, so once a journal platform is gating at the
+  perimeter, "older-looking container URL" is not a reliable escape hatch.
+- HathiTrust was still useful as a negative signal. Exact-title and exact-
+  ISBN searches for the Freudenthal and Jacobson lanes returned no results in
+  the current pass, so it is currently a lower-priority branch than CiNii,
+  WorldCat, and institutional OPACs for these specific legacy items.
+- WorldCat's hidden Next.js payloads are stronger than the visible title
+  shells. In-browser fetches to `/_next/data/.../title/<id>.json` exposed
+  structured record metadata, format splits, and per-record `secureToken`
+  values even when direct `curl` to the same endpoint still returned a
+  Cloudflare `403` shell. That let us prove three things cleanly:
+  Freudenthal `11058731` is the `1960` revised print object, Jacobson has a
+  distinct digital volume-2 record at `1256700323`, and Cullen's `670617948`
+  record still points at the legacy Euclid route `euclid.dmj/1077375642`.
+- Those WorldCat `secureToken` values can unlock the hidden holdings API when
+  ordinary shell traffic cannot. The browser-session holdings calls returned
+  real library lists for Freudenthal's revised-edition record, Jacobson's
+  digital volume-2 record, and Cullen's legacy-Euclid article record. That
+  moves the retrieval strategy from "guess direct PDFs" toward "use the
+  browser session to extract concrete holding institutions, then chase those
+  libraries outward."
+- Holder catalogs are sometimes more honest than the union catalog shell.
+  UCLA's discovery layer surfaced both the exact Jacobson 1958 article and the
+  exact collected-volume chapter at `p.341-366`; the article even exposes a
+  concrete LibKey `Download PDF` handoff, but the final page makes the real
+  blocker explicit: `VPN Required` and `Authentication Failed` for the current
+  off-campus IP. Cornell did the analogous thing for Cullen by surfacing the
+  exact title under `Articles & Full Text` as a `Full text academic journal`
+  behind its proxy path. That is a useful lesson: once holdings are known, the
+  next step is not more citation scraping but institutional resolver probing.
+- So far the cleanest anti-pattern is "functional-looking direct file URL."
+  Both the MathNet `getFT.phtml` shortcut and the claimed Archive Jacobson
+  direct PDF route looked plausible, but one resolved to `notfound` HTML and
+  the other to Archive's `503` error shell. For this archival lane, a typed
+  catalog/holding graph is proving more trustworthy than improvised file
+  endpoints.
+- Installing `scholarly` into AutoResearchClaw's `.venv` was worth it for
+  this archival tranche. It did not produce a new open Jacobson/Freudenthal/
+  Cullen mirror, but it did verify the dominant live containers:
+  Freudenthal routes to closed Springer 1985 plus open MathNet translation,
+  Jacobson routes first to the collected-papers reprint chapter, and Cullen
+  routes straight back to Euclid's gated download endpoint.
+- The remaining exact gaps are now narrow and well-typed:
+  Freudenthal 1951 is a catalog/scan problem, Jacobson 1958 is a journal-vs-
+  collected-papers access problem, and Cullen 1965 is a full-issue/volume scan
+  problem more than an article-page problem.
 
 ### Corrections applied
 

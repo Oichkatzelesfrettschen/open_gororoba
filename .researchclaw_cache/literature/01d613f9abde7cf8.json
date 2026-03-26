@@ -1,0 +1,31 @@
+{
+  "query": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+  "source": "europepmc",
+  "limit": 5,
+  "timestamp": 1774461543.17119,
+  "papers": [
+    {
+      "paper_id": "europepmc-16590969",
+      "title": "ON A HILBERT SPACE WITH NONASSOCIATIVE SCALARS",
+      "authors": [
+        {
+          "name": "Goldstine HH",
+          "affiliation": ""
+        },
+        {
+          "name": "Horwitz LP.",
+          "affiliation": ""
+        }
+      ],
+      "year": 1962,
+      "abstract": "",
+      "venue": "Proceedings of the National Academy of Sciences of the United States of America",
+      "citation_count": 0,
+      "doi": "10.1073/pnas.48.7.1134",
+      "arxiv_id": "",
+      "url": "https://europepmc.org/article/PMC/PMC220920",
+      "source": "europepmc",
+      "_bibtex_override": ""
+    }
+  ]
+}

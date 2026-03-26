@@ -1,7 +1,7 @@
 -R theories OpenGororoba
 -R verified OpenGororobaVerified
 -arg -w
--arg +default
+-arg @default
 theories/Prelude.v
 theories/Tanh.v
 theories/Quaternion.v
@@ -92,6 +92,10 @@ verified/C919_QuatLosesCommutativity.v
 verified/C920_QuatIsAssociative.v
 verified/C921_OctLosesAssociativity.v
 theories/OctonionNorm.v
+theories/M3IsAssociator.v
+theories/CDSignBridge.v
+theories/CDSignHalfStep.v
+theories/CDSignSection.v
 theories/HurwitzTheorem.v
 theories/BoxKite.v
 theories/FanoPlane.v
@@ -170,6 +174,8 @@ verified/C958_ZDGraphTopology.v
 verified/C958b_ZDAdjacencyAnalytical.v
 verified/C959_CHSHClassicalBound.v
 theories/SedenionAssociator.v
+theories/SedenionSignBridge.v
+theories/SedenionGapWitnesses.v
 theories/Pathion.v
 theories/PathionAssociator.v
 verified/C1133_BraidParityPreservation.v
@@ -220,8 +226,16 @@ theories/HModuleDim.v
 theories/FinDimHModule.v
 theories/C1538_MorZDSymmetry.v
 theories/C1539_MorSkewSymm.v
+theories/C1540_MorHaQuaternion.v
+theories/C1541_MorDirectSum.v
+theories/C1542_MorVlambdaMod4.v
+theories/C1542_MorVlambdaOrbit.v
+theories/C1544_MorKerSDecomp.v
+theories/C1546_MorEigenZD.v
+theories/C1546_MorEigenIFF.v
+theories/C1547_MorSpecialTripleOct.v
 theories/C1543_MorMod4Bound.v
-theories/HurwitzTheorem.v
+theories/Moreno1997.v
 theories/WedderburnPrimitive.v
 theories/DicksonCDProcess.v
 theories/SchaferDivAlg16.v
@@ -229,3 +243,11 @@ theories/WalkerFermatAlgebras.v
 theories/CDPowerAssociative.v
 theories/WilmotCDStructure.v
 theories/BrownGeneralizedCD.v
+theories/ZD_Criterion.v
+theories/SStructuralGaps.v
+theories/DeMarraisAssessors.v
+theories/BaezNormedDivAlgebra.v
+theories/SedenionXorGroup.v
+theories/BrownAssessorEquivalence.v
+theories/G2OctonionAutomorphisms.v
+theories/OctonionStandardModel.v

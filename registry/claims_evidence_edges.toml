@@ -16460,7 +16460,7 @@ target_kind = "rust_source_path"
 id = "CED-02351"
 claim_id = "C-1538"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16474,7 +16474,7 @@ target_kind = "rust_source_path"
 id = "CED-02353"
 claim_id = "C-1539"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16516,7 +16516,7 @@ target_kind = "python_source_path"
 id = "CED-02359"
 claim_id = "C-1540"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16527,10 +16527,17 @@ target_ref = "moreno.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
+id = "CED-02360A"
+claim_id = "C-1540"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1540_MorHaQuaternion.v"
+target_kind = "proof_source_path"
+
+[[edge]]
 id = "CED-02361"
 claim_id = "C-1541"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16541,10 +16548,17 @@ target_ref = "moreno.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
+id = "CED-02362A"
+claim_id = "C-1541"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1541_MorDirectSum.v"
+target_kind = "proof_source_path"
+
+[[edge]]
 id = "CED-02363"
 claim_id = "C-1542"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16553,6 +16567,20 @@ claim_id = "C-1542"
 edge_role = "where_stated"
 target_ref = "moreno.rs"
 target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-02364A"
+claim_id = "C-1542"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1542_MorVlambdaMod4.v"
+target_kind = "proof_source_path"
+
+[[edge]]
+id = "CED-02364B"
+claim_id = "C-1542"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1542_MorVlambdaOrbit.v"
+target_kind = "proof_source_path"
 
 [[edge]]
 id = "CED-02365"
@@ -16565,7 +16593,7 @@ target_kind = "rust_source_path"
 id = "CED-02366"
 claim_id = "C-1543"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16586,7 +16614,7 @@ target_kind = "rust_source_path"
 id = "CED-02369"
 claim_id = "C-1544"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16597,10 +16625,17 @@ target_ref = "moreno.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
+id = "CED-02370A"
+claim_id = "C-1544"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1544_MorKerSDecomp.v"
+target_kind = "proof_source_path"
+
+[[edge]]
 id = "CED-02371"
 claim_id = "C-1545"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16611,10 +16646,17 @@ target_ref = "moreno.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
+id = "CED-02372A"
+claim_id = "C-1545"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1544_MorKerSDecomp.v"
+target_kind = "proof_source_path"
+
+[[edge]]
 id = "CED-02373"
 claim_id = "C-1546"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16625,10 +16667,24 @@ target_ref = "moreno.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
+id = "CED-02374A"
+claim_id = "C-1546"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1546_MorEigenZD.v"
+target_kind = "proof_source_path"
+
+[[edge]]
+id = "CED-02374B"
+claim_id = "C-1546"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1546_MorEigenIFF.v"
+target_kind = "proof_source_path"
+
+[[edge]]
 id = "CED-02375"
 claim_id = "C-1547"
 edge_role = "where_stated"
-target_ref = "crates/algebra_analysis/src/moreno.rs"
+target_ref = "crates/moreno_1997/src/lib.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -16637,6 +16693,13 @@ claim_id = "C-1547"
 edge_role = "where_stated"
 target_ref = "moreno.rs"
 target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-02376A"
+claim_id = "C-1547"
+edge_role = "where_stated"
+target_ref = "proofs/theories/C1547_MorSpecialTripleOct.v"
+target_kind = "proof_source_path"
 
 [[edge]]
 id = "CED-02377"

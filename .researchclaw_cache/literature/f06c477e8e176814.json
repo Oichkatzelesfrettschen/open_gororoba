@@ -1,0 +1,119 @@
+{
+  "query": "Huang So On Left Eigenvalues of a Quaternionic Matrix 2001",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455983.6493437,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1016/s0024-3795(00)00246-9",
+      "title": "On left eigenvalues of a quaternionic matrix",
+      "authors": [
+        {
+          "name": "Liping Huang",
+          "affiliation": ""
+        },
+        {
+          "name": "Wasin So",
+          "affiliation": ""
+        }
+      ],
+      "year": 2001,
+      "abstract": "",
+      "venue": "Linear Algebra and its Applications",
+      "citation_count": 72,
+      "doi": "10.1016/s0024-3795(00)00246-9",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1016/s0024-3795(00)00246-9",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.5539/jmr.v2n4p141",
+      "title": "Location for the Left Eigenvalues of Quaternionic Matrix",
+      "authors": [
+        {
+          "name": "Xiangyun Chen",
+          "affiliation": ""
+        }
+      ],
+      "year": 2010,
+      "abstract": "",
+      "venue": "Journal of Mathematics Research",
+      "citation_count": 2,
+      "doi": "10.5539/jmr.v2n4p141",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.5539/jmr.v2n4p141",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.2478/spma-2014-0002",
+      "title": "Cayley-Hamilton theorem for left eigenvalues of 3 \u00d7 3 quaternionic matrices",
+      "authors": [
+        {
+          "name": "E. Mac\u00edas-Virg\u00f3s",
+          "affiliation": "Facultade de Matem\u00e1ticas, Universidade de Santiago de Compostela, Spain"
+        },
+        {
+          "name": "M.J. Pereira-S\u00e1ez",
+          "affiliation": "Facultade de Econom\u00eda e Empresa, Universidade da Coru\u00f1a, Spain"
+        }
+      ],
+      "year": 2014,
+      "abstract": "Abstract\n                We prove that any quaternionic matrix of order n \u22643 admits a characteristic function, whose roots are the left eigenvalues, that satisfes Cayley-Hamilton theorem.",
+      "venue": "Special Matrices",
+      "citation_count": 0,
+      "doi": "10.2478/spma-2014-0002",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2478/spma-2014-0002",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1080/03081087.2012.753599",
+      "title": "A topological approach to left eigenvalues of quaternionic matrices",
+      "authors": [
+        {
+          "name": "E. Mac\u00edas-Virg\u00f3s",
+          "affiliation": ""
+        },
+        {
+          "name": "M.J. Pereira-S\u00e1ez",
+          "affiliation": ""
+        }
+      ],
+      "year": 2013,
+      "abstract": "",
+      "venue": "Linear and Multilinear Algebra",
+      "citation_count": 8,
+      "doi": "10.1080/03081087.2012.753599",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1080/03081087.2012.753599",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1142/s0219498822502073",
+      "title": "The existence of left eigenvalues for quaternionic matrix",
+      "authors": [
+        {
+          "name": "Yan Yang",
+          "affiliation": "School of Mathematics (Zhuhai), Sun Yat-Sen University, Zhuhai 519082, P. R. China"
+        },
+        {
+          "name": "Kit Ian Kou",
+          "affiliation": "Department of Mathematics, University of Macau, Macao (Via Hong Kong), Hong Kong"
+        }
+      ],
+      "year": 2021,
+      "abstract": "In this work, an algebraic method to prove the existence of left eigenvalues for the quaternionic matrix is investigated. The left eigenvalues of a [Formula: see text] quaternionic matrix can be derived by solving the zeros of a general quaternionic polynomial of degree [Formula: see text]. Using the Study\u2019s determinant, it can be found by solving the zeros of quaternionic polynomials of degree at most [Formula: see text] or of rational functions.",
+      "venue": "Journal of Algebra and Its Applications",
+      "citation_count": 0,
+      "doi": "10.1142/s0219498822502073",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1142/s0219498822502073",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

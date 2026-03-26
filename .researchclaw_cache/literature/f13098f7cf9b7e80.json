@@ -1,0 +1,139 @@
+{
+  "query": "Cullen An integral theorem for analytic intrinsic functions on quaternions 1965",
+  "source": "openalex",
+  "limit": 5,
+  "timestamp": 1774455980.4321494,
+  "papers": [
+    {
+      "paper_id": "oalex-W1968559293",
+      "title": "Zeros of regular functions and polynomials of a quaternionic variable",
+      "authors": [
+        {
+          "name": "Graziano Gentili",
+          "affiliation": "University of Florence"
+        },
+        {
+          "name": "Caterina Stoppato",
+          "affiliation": "University of Florence"
+        }
+      ],
+      "year": 2008,
+      "abstract": "The fundamental elements of a new theory of regular functions of a quaternionic variable have been recently developed, following an idea of Cullen. In this paper we present a detailed study of the structure of the zero set of Cullen-regular functions. We prove that the zero sets of the functions under investigation consist of isolated points or isolated 2-spheres, in the 4-dimensional real space of quaternions. Moreover, the zeros of a regular function can be factored by means of a non-standard product. The Fundamental Theorem of Algebra for quaternions, and the approach here adopted lead, in particular, to a deeper insight of the geometric and algebraic properties of the zero sets of polynomials with quaternionic coefficients.",
+      "venue": "The Michigan Mathematical Journal",
+      "citation_count": 126,
+      "doi": "10.1307/mmj/1231770366",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1307/mmj/1231770366",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2108115198",
+      "title": "Twistor transforms of quaternionic functions and orthogonal complex structures",
+      "authors": [
+        {
+          "name": "Graziano Gentili",
+          "affiliation": "University of Florence"
+        },
+        {
+          "name": "Simon Salamon",
+          "affiliation": "King's College London"
+        },
+        {
+          "name": "Caterina Stoppato",
+          "affiliation": "University of Florence"
+        }
+      ],
+      "year": 2014,
+      "abstract": "The theory of slice-regular functions of a quaternion variable is applied to the study of orthogonal complex structures on domains \\Omega of \\mathbb R^4 . When \\Omega is a symmetric slice domain, the twistor transform of such a function is a holomorphic curve in the Klein quadric. The case in which \\Omega is the complement of a parabola is studied in detail and described by a rational quartic surface in the twistor space \\mathbb CP^3 .",
+      "venue": "Journal of the European Mathematical Society",
+      "citation_count": 61,
+      "doi": "10.4171/jems/488",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.4171/jems/488",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W1979748001",
+      "title": "The inverse Fueter mapping theorem",
+      "authors": [
+        {
+          "name": "Frank Sommen",
+          "affiliation": "Ghent University"
+        },
+        {
+          "name": "Irene Sabadini",
+          "affiliation": "Politecnico di Milano"
+        },
+        {
+          "name": "Fabrizio Colombo",
+          "affiliation": "Ghent University"
+        }
+      ],
+      "year": 2011,
+      "abstract": "In a recent paper the authors have shown how to give an integral representation of the Fueter mapping theoremusing the Cauchy formula for slice monogenic functions. Specifically, given a slice monogenic function $f$ of the form $f=\\alpha+\\underline{\\omega}\\beta$(where $\\alpha$, $\\beta$ satisfy the Cauchy-Riemann equations) we represent in integral formthe axially monogenic function $\\bar{f}=A+\\underline{\\omega}B$ (where $A,B$ satisfy the Vekua's system) given by $\\bar{f}(x)=\\Delta^{\\frac{n-1}{2}}f(x)$ where $\\Delta$ is the Laplace operator in dimension $n+1$. In this paper we solve the inverse problem: given an axially monogenic function $\\bar{f}$ determine a slice monogenic function $f$ (called Fueter's primitive of $\\bar{f}$ such that $\\bar{f}=\\Delta^{\\frac{n-1}{2}}f(x)$. We prove an integral representation theorem for $f$ in terms of $\\bar{f}$ which we call the inverse Fueter mapping theorem (in integral form). Such a result is obtained also for regular functions of a quaternionic variable of axial type.The solution $f$ of the equation $\\Delta^{\\frac{n-1}{2}}f(x)=\\bar{f} (x)$ in the Clifford analysis setting, i.e. the inversion of the classical Fueter mapping theorem, is new in the literature and has some consequences that are now under investigation.",
+      "venue": "Communications on Pure &amp Applied Analysis",
+      "citation_count": 49,
+      "doi": "10.3934/cpaa.2011.10.1165",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.3934/cpaa.2011.10.1165",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2035560432",
+      "title": "The Runge theorem for slice hyperholomorphic functions",
+      "authors": [
+        {
+          "name": "Fabrizio Colombo",
+          "affiliation": "Politecnico di Milano"
+        },
+        {
+          "name": "Irene Sabadini",
+          "affiliation": "Politecnico di Milano"
+        },
+        {
+          "name": "Daniele C. Struppa",
+          "affiliation": "Chapman University"
+        }
+      ],
+      "year": 2010,
+      "abstract": "In this paper we introduce and study rational slice monogenic functions. After proving a decomposition theorem for such functions, we are able to prove the Runge approximation theorem for slice monogenic functions. We then show how a similar argument can be used to obtain an analogue of the Runge approximation theorem in the slice regular setting.",
+      "venue": "Proceedings of the American Mathematical Society",
+      "citation_count": 28,
+      "doi": "10.1090/s0002-9939-2010-10812-2",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9939-2010-10812-2",
+      "source": "openalex",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "oalex-W2112083406",
+      "title": "A Bloch-Landau Theorem for Slice Regular Functions",
+      "authors": [
+        {
+          "name": "Chiara Della Rocchetta",
+          "affiliation": "University of Florence"
+        },
+        {
+          "name": "Graziano Gentili",
+          "affiliation": "University of Florence"
+        },
+        {
+          "name": "Giulia Sarfatti",
+          "affiliation": "University of Florence"
+        }
+      ],
+      "year": 2012,
+      "abstract": "",
+      "venue": "Springer INdAM series",
+      "citation_count": 23,
+      "doi": "10.1007/978-88-470-2445-8_4",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-88-470-2445-8_4",
+      "source": "openalex",
+      "_bibtex_override": ""
+    }
+  ]
+}

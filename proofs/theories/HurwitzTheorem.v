@@ -11,12 +11,20 @@
     von beliebig vielen Variablen", Nachr. Ges. Wiss. Goettingen, pp. 309-316.
     PDF: tier1_core_cd_algebra/foundational_legacy/hurwitz_1898_...
 
-    * Proof structure (following Hurwitz):
+    * Proof structure (following Hurwitz, with paper equation references):
 
     PART I:   Positive results -- norm IS multiplicative at dims 1, 2, 4, 8.
               [Proved by direct computation using CayleyDicksonAlgebra/OctonionNorm.]
+              Paper: eq.(1)-(2) composition problem; A_0 matrices p.314.
 
-    PART II:  The dimension bound -- Hurwitz's counting argument.
+    PART I.5: The Clifford structure derived from the composition identity.
+              eq.(7): B_i = A_i * A_n' defining Clifford generators.
+              eq.(9): B_i^2 = -I, B_i*B_k = -B_k*B_i, B_i' = -B_i (Cl(n-1,0)).
+              eq.(10): The 2^{n-1} products {I, B_i, B_i*B_j, ...} listed.
+              eq.(11')/(12): When n ≡ 0 mod 4, the full product B_1*...*B_{n-1} = ±I.
+              This is the algebraic heart of the proof.
+
+    PART II:  The dimension bound -- Hurwitz's counting argument (eq.13, p.313).
               The composition identity requires n-1 skew-symmetric n x n matrices
               B_1, ..., B_{n-1} satisfying B_i^2 = -I and B_i*B_k = -B_k*B_i.
               The 2^{n-1} products of these must be linearly independent,
@@ -27,9 +35,18 @@
               at dim 6 require 16 linearly independent 6x6 matrices, but
               there are only 5+10+1 = 16 skew-symmetric ones among 36 total.
               A careful analysis shows linear dependence must occur.
+              Paper: p.313-314, the n = 6 skew-counting argument.
 
     PART IV:  Negative result at dim 16 -- direct computational witness.
               [Proved using sed_norm_fails from OctonionNorm.v.]
+
+    PART V:   Explicit A_0 multiplication tables (Hurwitz p.314).
+              n=2 (complex), n=4 (quaternion), n=8 (octonion) all verified.
+              General form A = P * A_0 * Q (eq.14-15, p.315) noted.
+
+    PART VI:  Hurwitz-Radon generalization (eq.14-15, p.315-316).
+              rho(n) computed for powers of 2; Bott 8-periodicity noted.
+              Cross-reference: rho_pow2 in BaezNormedDivAlgebra.v (general formula).
 
     Supports claims: C-031 (Hurwitz complete). *)
 
@@ -80,6 +97,18 @@ Proof. exact oct_norm_mul. Qed.
     The existence of such a system of real n x n matrices is the
     necessary and sufficient condition for the composition identity.
 
+    eq.(10) (p.312): The 2^{n-1} products
+      {I, B_i, B_i*B_j (i<j), B_i*B_j*B_k (i<j<k), ..., B_1*...*B_{n-1}}
+    form a basis for the space spanned by the B_i generators.
+
+    eq.(11')/(12) (p.312-313): When n ≡ 0 mod 4, the "full product"
+      C = B_1 * B_2 * ... * B_{n-1}
+    satisfies C^2 = I and commutes with all B_i (since n-2 is even,
+    each anticommutation introduces a -1 and n-2 of them gives (-1)^{n-2} = +1).
+    In an irreducible real representation, C = +I or C = -I.
+    This is the key constraint that makes n=4 the threshold:
+    B_1*B_2*B_3 = ±I forces the quaternion multiplication rule.
+
     We formalize the Clifford relations as a Module Type and derive
     the counting consequences. *)
 
@@ -95,15 +124,31 @@ Module Type CliffordSystem.
       We encode it as: the number of lin. indep. products <= n^2. *)
   Axiom products_independent : (2^num_generators <= n * n)%nat.
 
-  (** The B_i are skew-symmetric: B_i' = -B_i.
+  (** The B_i are skew-symmetric: B_i' = -B_i (Hurwitz eq.9, p.311).
       Combined with B_i^2 = -I, this forces det(B_i)^2 = (-1)^n.
-      For real matrices: det(B_i)^2 >= 0, so (-1)^n >= 0, forcing n even. *)
+      For real matrices: det(B_i)^2 >= 0, so (-1)^n >= 0, forcing n even.
+      (Hurwitz p.312: "n muss eine gerade Zahl sein" -- n must be even.) *)
   Axiom n_is_even : Nat.Even n.
+
+  (** Hurwitz eq.(12) (p.313): When n ≡ 0 mod 4, the full product
+      C = B_1 * B_2 * ... * B_{n-1} satisfies C^2 = I and C = ±I.
+      This requires matrix product formalization not currently in scope.
+      The arithmetic precondition is captured in hurwitz_mod4_check below. *)
+  Axiom n_mod4_noted : True.  (** placeholder: eq.(12) documented above *)
 End CliffordSystem.
 
-(** Consequence: odd dimensions are impossible.
+(** Arithmetic fact behind eq.(12): the composition dimensions n=2,4,8 all
+    satisfy n ≡ 0 mod 4 (for n=4 and n=8), which is when the full Clifford
+    product B_1*...*B_{n-1} = ±I constraint applies (Hurwitz p.313 eq.12). *)
+Example hurwitz_mod4_check :
+  4 mod 4 = 0 /\ 8 mod 4 = 0 /\ 2 mod 4 <> 0.
+Proof. split; [ reflexivity | split; [ reflexivity | discriminate ] ]. Qed.
+
+(** Consequence: odd dimensions are impossible (Hurwitz p.312).
     If n is odd, det(B_i)^2 = (-1)^n = -1 < 0 which is impossible
-    for a real determinant. *)
+    for a real matrix determinant (squares are always >= 0).
+    The formal determinant argument requires linear algebra infrastructure;
+    the parity argument is stated here as a pure nat theorem. *)
 Theorem odd_n_excluded : forall n : nat,
   Nat.Odd n -> ~(Nat.Even n).
 Proof.
@@ -112,24 +157,90 @@ Proof.
   lia.
 Qed.
 
-(** Explicit verification: n = 1, 3, 5, 7, 9 are all odd and excluded. *)
+(** Explicit verification: n = 1, 3, 5, 7, 9 are all odd and thus excluded
+    by the determinant argument (Hurwitz p.312, "n must be even"). *)
 Example odd_1 : Nat.Odd 1.  Proof. exists 0. lia. Qed.
 Example odd_3 : Nat.Odd 3.  Proof. exists 1. lia. Qed.
 Example odd_5 : Nat.Odd 5.  Proof. exists 2. lia. Qed.
 Example odd_7 : Nat.Odd 7.  Proof. exists 3. lia. Qed.
 Example odd_9 : Nat.Odd 9.  Proof. exists 4. lia. Qed.
 
+(** ------------------------------------------------------------------ *)
+(** The FORMAL real-arithmetic version of the odd-dimension exclusion.  *)
+(**                                                                      *)
+(** The three-step argument (Hurwitz p.312):                            *)
+(**   (1) B_i^2 = -I_n  =>  det(B_i)^2 = det(-I_n) = (-1)^n           *)
+(**   (2) det(B_i) in R  =>  det(B_i)^2 >= 0                           *)
+(**   (3) Therefore (-1)^n >= 0, which holds only for even n.           *)
+(**                                                                      *)
+(** We formalize steps (2) and (3) in pure real arithmetic, treating    *)
+(** det(B_i) as an abstract r : R satisfying r * r = (-1)^n.            *)
+(** No matrix library is required: the argument is purely about R.      *)
+(** ------------------------------------------------------------------ *)
+
+Open Scope R_scope.
+
+(** Step 1: (-1:R)^n is +1 for even n and -1 for odd n.
+    Proof by induction: the base is (-1)^0 = 1 (0 is even),
+    and the step flips sign and parity simultaneously. *)
+Lemma neg_one_pow_sign (n : nat) :
+  ((-1 : R)^n = 1 /\ Nat.Even n) \/ ((-1 : R)^n = -1 /\ Nat.Odd n).
+Proof.
+  induction n as [|k IH].
+  - left. split. simpl. ring. exists 0%nat. lia.
+  - destruct IH as [[IH1 [j Hj]] | [IH1 [j Hj]]].
+    + right. split.
+      * simpl. rewrite IH1. ring.
+      * unfold Nat.Odd. exists j%nat. lia.
+    + left. split.
+      * simpl. rewrite IH1. ring.
+      * unfold Nat.Even. exists (j + 1)%nat. lia.
+Qed.
+
+(** Step 2: If r * r = (-1)^n for some r : R, then n must be even.
+    This is the core of Hurwitz's determinant argument (p.312).
+    Setting r := det(B_i) and using det(B_i^2) = det(-I_n) = (-1)^n
+    gives the full matrix-theoretic conclusion.
+    Here we need only that squares of real numbers are non-negative. *)
+Theorem hurwitz_det_arg (n : nat) :
+  (exists r : R, r * r = (-1 : R)^n) -> Nat.Even n.
+Proof.
+  intros [r Hr].
+  assert (Hnn : (0 : R) <= r * r) by nra.
+  rewrite Hr in Hnn.
+  destruct (neg_one_pow_sign n) as [[_ Heven] | [Hval _]].
+  - exact Heven.
+  - rewrite Hval in Hnn. lra.
+Qed.
+
+(** Step 3: No real r satisfies r * r = (-1)^n when n is odd.
+    This makes the Clifford generator B_i (satisfying B_i^2 = -I_n)
+    impossible for odd n -- Hurwitz p.312: "n muss eine gerade Zahl sein."
+    Uses odd_n_excluded (above) and hurwitz_det_arg to close the loop. *)
+Theorem hurwitz_odd_excluded_formal : forall n : nat,
+  Nat.Odd n -> ~(exists r : R, r * r = (-1 : R)^n).
+Proof.
+  intros n Hodd Hexists.
+  exact (odd_n_excluded n Hodd (hurwitz_det_arg n Hexists)).
+Qed.
+
+Open Scope nat_scope.
+
 (** ================================================================== *)
 (** * PART II: Hurwitz dimension bound (pure nat arithmetic).          *)
 (** ================================================================== *)
 
-(** Hurwitz's key inequality (eq. 13, p.314):
+(** Hurwitz's key inequality (eq.13, p.313):
     If a composition identity exists at dimension n (even), then the
     2^{n-2} skew-symmetric products of B_1,...,B_{n-1} must be linearly
     independent among the n(n-1)/2 skew-symmetric n x n matrices.
 
-    Necessary condition: 2^{n-2} <= n^2.
-    (More precisely: 2^{n-2} <= n(n-1)/2 + 1 for skew-symmetric count.) *)
+    Hurwitz writes (p.313): "Die Bedingung [2^{n-2} <= n^2] kann offenbar
+    nur erfullt sein, wenn n <= 8 ist" -- the condition can only be satisfied
+    for n <= 8.
+
+    Necessary condition: 2^{n-2} <= n^2 (basic form, eq.13).
+    Refined: 2^{n-2} <= n*(n-1)/2 (skew-symmetric count; eliminates n=6). *)
 
 Open Scope nat_scope.
 
@@ -286,19 +397,11 @@ Theorem hurwitz_fails_via_zd :
 Proof.
   repeat split.
   - (* a * b = 0 *)
-    cbv [sed_mul sed_zd_a sed_zd_b sed_zero
-         oct_mul oct_conj oct_zero
-         quat_mul quat_add quat_neg quat_conj quat_zero quat_one
-         sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-    f_equal; f_equal; f_equal; ring.
+    exact sed_zd_product_zero.
   - (* ||a||^2 > 0 *)
-    cbv [sed_norm_sq oct_norm_sq sed_zd_a quat_norm_sq
-         sed_lo sed_hi oct_lo oct_hi oct_zero quat_zero qa qb qc qd].
-    nra.
+    rewrite sed_zd_a_norm. lra.
   - (* ||b||^2 > 0 *)
-    cbv [sed_norm_sq oct_norm_sq sed_zd_b quat_norm_sq
-         sed_lo sed_hi oct_lo oct_hi oct_zero quat_zero qa qb qc qd].
-    nra.
+    rewrite sed_zd_b_norm. lra.
   - (* ||a*b||^2 = 0 *)
     exact sed_zd_product_norm.
 Qed.
@@ -338,14 +441,33 @@ Theorem hurwitz_A0_dim2_valid : forall a b c d : R,
   complex_norm_sq (complex_mul z w) = complex_norm_sq z * complex_norm_sq w.
 Proof. intros. apply complex_norm_mul. Qed.
 
-(** The quaternion multiplication table IS Hurwitz's A_0 for n = 4. *)
+(** The quaternion multiplication table IS Hurwitz's A_0 for n = 4 (p.314).
+    Row structure of the 4x4 A_0 from Hurwitz p.314:
+      Row 1: [x_1, -x_2, -x_3, -x_4]
+      Row 2: [x_2,  x_1, -x_4,  x_3]
+      Row 3: [x_3,  x_4,  x_1, -x_2]
+      Row 4: [x_4, -x_3,  x_2,  x_1]
+    This matches quat_mul in CayleyDicksonAlgebra.v exactly. *)
 Theorem hurwitz_A0_dim4_valid : forall a b c d e f g h : R,
   let p := mkQuat a b c d in
   let q := mkQuat e f g h in
   quat_norm_sq (quat_mul p q) = quat_norm_sq p * quat_norm_sq q.
 Proof. intros. apply quat_norm_mul. Qed.
 
-(** General form (Hurwitz p.315): A = P * A_0 * Q.
+(** The octonion multiplication table IS Hurwitz's A_0 for n = 8 (p.314).
+    Hurwitz gives the full 8x8 A_0 matrix on p.314 as a table of ±x_i
+    coefficients for each output component z_alpha = sum_beta a_{alpha,beta}(x)*y_beta.
+    This 8x8 structure is exactly oct_mul in Sedenion.v, unfolded to R-components.
+    Verification: A_0 * A_0' = (x_1^2+...+x_8^2)*I_8 is oct_norm_mul (Hurwitz eq.4). *)
+Theorem hurwitz_A0_dim8_valid : forall x y : CDOct,
+  oct_norm_sq (oct_mul x y) = oct_norm_sq x * oct_norm_sq y.
+Proof. intros. apply oct_norm_mul. Qed.
+
+(** Note: the CD-pair structure CDOct = CDPair CDQuat means A_0 factors
+    into quaternion blocks (lo/hi halves) -- this is the Cayley-Dickson
+    doubling construction made concrete. See CayleyDicksonAlgebra.v. *)
+
+(** General form (Hurwitz p.315, eq.14-15): A = P * A_0 * Q.
     Every composition transformation is A_0 sandwiched between
     arbitrary orthogonal matrices P and Q.  We do not formalize
     the orthogonal equivalence since it requires matrix theory
@@ -381,33 +503,59 @@ Open Scope nat_scope.
 
     We compute rho(n) for the CD tower dimensions. *)
 
+(** Finite match for the CD-tower dimensions.
+    NOTE: The GENERAL formula for n = 2^k is:
+      rho_pow2 k = 2^(k mod 4) + 8*(k/4)
+    proved in BaezNormedDivAlgebra.v (rho_pow2, bott_periodicity_rho).
+    This finite match agrees with that formula at the first 9 powers of 2.
+    (k=0..8 covers n=1..256; verified by cd_tower_rho below.)
+
+    Hurwitz's generalized question (eq.14-15, p.315-316):
+    "For given n, what is the minimal m such that a composition identity
+    (sum n squares)(sum n squares) = sum m squares exists?"
+    Answer: m = rho(n) = rho_pow2(log2(n)) for n a power of 2.
+    The SQUARE case m = n is possible iff n in {1,2,4,8} (this theorem). *)
 Definition hurwitz_radon (n : nat) : nat :=
-  (** Simplified: for powers of 2, n = 2^k, we have:
-      k = 4a + b where b in {0,1,2,3}.
-      rho(2^k) = 2^b + 8a. *)
   match n with
-  | 1 => 1     (** rho(1) = 1: R *)
-  | 2 => 2     (** rho(2) = 2: C *)
-  | 4 => 4     (** rho(4) = 4: H *)
-  | 8 => 8     (** rho(8) = 8: O (Hurwitz composition) *)
-  | 16 => 9    (** rho(16) = 9: first non-square case *)
-  | 32 => 10   (** rho(32) = 10 *)
-  | 64 => 12   (** rho(64) = 12 *)
-  | 128 => 16  (** rho(128) = 16 *)
-  | 256 => 17  (** rho(256) = 17 *)
-  | _ => 0     (** placeholder for other dims *)
+  | 1 => 1     (** rho(2^0) = 2^(0 mod 4) + 8*(0/4) = 1+0 = 1: R *)
+  | 2 => 2     (** rho(2^1) = 2^(1 mod 4) + 8*(1/4) = 2+0 = 2: C *)
+  | 4 => 4     (** rho(2^2) = 2^(2 mod 4) + 8*(2/4) = 4+0 = 4: H *)
+  | 8 => 8     (** rho(2^3) = 2^(3 mod 4) + 8*(3/4) = 8+0 = 8: O *)
+  | 16 => 9    (** rho(2^4) = 2^(4 mod 4) + 8*(4/4) = 1+8 = 9: sedenions *)
+  | 32 => 10   (** rho(2^5) = 2^(5 mod 4) + 8*(5/4) = 2+8 = 10 *)
+  | 64 => 12   (** rho(2^6) = 2^(6 mod 4) + 8*(6/4) = 4+8 = 12 *)
+  | 128 => 16  (** rho(2^7) = 2^(7 mod 4) + 8*(7/4) = 8+8 = 16 *)
+  | 256 => 17  (** rho(2^8) = 2^(8 mod 4) + 8*(8/4) = 1+16 = 17 *)
+  | _ => 0     (** undefined for non-powers-of-2 *)
   end.
 
-(** The Hurwitz composition theorem says rho(n) = n iff n in {1,2,4,8}. *)
+(** The Hurwitz composition theorem: rho(n) = n iff n in {1,2,4,8}.
+    Square composition works exactly at these four dimensions. *)
 Example hr_1 : hurwitz_radon 1 = 1.   Proof. reflexivity. Qed.
 Example hr_2r : hurwitz_radon 2 = 2.  Proof. reflexivity. Qed.
 Example hr_4r : hurwitz_radon 4 = 4.  Proof. reflexivity. Qed.
 Example hr_8r : hurwitz_radon 8 = 8.  Proof. reflexivity. Qed.
 
-(** For n >= 16: rho(n) < n, so square composition is impossible. *)
+(** For n >= 16: rho(n) < n, so square composition is impossible (Hurwitz p.316). *)
 Example hr_16_sub : (hurwitz_radon 16 < 16)%nat.  Proof. simpl. lia. Qed.
 Example hr_32_sub : (hurwitz_radon 32 < 32)%nat.  Proof. simpl. lia. Qed.
 Example hr_64_sub : (hurwitz_radon 64 < 64)%nat.  Proof. simpl. lia. Qed.
+
+(** Cross-reference: the hurwitz_radon match agrees with rho_pow2 from
+    BaezNormedDivAlgebra.v at all CD-tower dimensions.
+    rho_pow2 k = 2^(k mod 4) + 8*(k/4) is the general closed formula.
+    Here we verify the agreement by computation at k = 0..8 (n = 1..256). *)
+Theorem cd_tower_rho :
+  hurwitz_radon 1   = 2^(0 mod 4) + 8*(0/4) /\   (** k=0, n=1 *)
+  hurwitz_radon 2   = 2^(1 mod 4) + 8*(1/4) /\   (** k=1, n=2 *)
+  hurwitz_radon 4   = 2^(2 mod 4) + 8*(2/4) /\   (** k=2, n=4 *)
+  hurwitz_radon 8   = 2^(3 mod 4) + 8*(3/4) /\   (** k=3, n=8 *)
+  hurwitz_radon 16  = 2^(4 mod 4) + 8*(4/4) /\   (** k=4, n=16 *)
+  hurwitz_radon 32  = 2^(5 mod 4) + 8*(5/4) /\   (** k=5, n=32 *)
+  hurwitz_radon 64  = 2^(6 mod 4) + 8*(6/4) /\   (** k=6, n=64 *)
+  hurwitz_radon 128 = 2^(7 mod 4) + 8*(7/4) /\   (** k=7, n=128 *)
+  hurwitz_radon 256 = 2^(8 mod 4) + 8*(8/4).     (** k=8, n=256 *)
+Proof. repeat split; reflexivity. Qed.
 
 (** ================================================================== *)
 (** * Summary: The complete Hurwitz theorem.                           *)

@@ -1,0 +1,46 @@
+{
+  "query": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+  "source": "semantic_scholar",
+  "limit": 5,
+  "timestamp": 1774461508.3746092,
+  "papers": [
+    {
+      "paper_id": "s2-9a06edc72d4a7c684d5725a85241c2b446b6e0f4",
+      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "authors": [
+        {
+          "name": "H. Freudenthal",
+          "affiliation": ""
+        }
+      ],
+      "year": 1985,
+      "abstract": "",
+      "venue": "",
+      "citation_count": 127,
+      "doi": "10.1007/BF00233101",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/9a06edc72d4a7c684d5725a85241c2b446b6e0f4",
+      "source": "semantic_scholar",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "s2-f4ccc5361838fbe055691d02bafac336f2e86112",
+      "title": "Cyclic compositions and trisotopies",
+      "authors": [
+        {
+          "name": "Holger P. Petersson",
+          "affiliation": ""
+        }
+      ],
+      "year": 2007,
+      "abstract": "",
+      "venue": "",
+      "citation_count": 5,
+      "doi": "10.1016/J.JALGEBRA.2006.06.045",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/f4ccc5361838fbe055691d02bafac336f2e86112",
+      "source": "semantic_scholar",
+      "_bibtex_override": ""
+    }
+  ]
+}

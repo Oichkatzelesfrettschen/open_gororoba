@@ -59,6 +59,8 @@
 //! # Papers
 //!
 //! - [Paper Collection](./papers/collection.md)
+//! - [Paper Chronology](./papers/chronology.md)
+//! - [Formalization Frontier](./papers/frontier.md)
 //!
 //! # Appendix
 //!

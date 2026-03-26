@@ -99,7 +99,9 @@ Proof. vm_compute. reflexivity. Qed.
 Example sed_zd : zd_count 1 = 1260.
 Proof. vm_compute. reflexivity. Qed.
 
-(** Pathions: Z_2 = 39060. *)
+(** Pathions: Z_2 = 39060.
+    Note: 39060 is a large nat literal; Rocq uses Nat.of_num_uint internally. *)
+#[local] Set Warnings "-abstract-large-number".
 Example path_zd : zd_count 2 = 39060.
 Proof. vm_compute. reflexivity. Qed.
 

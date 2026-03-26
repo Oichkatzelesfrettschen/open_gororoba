@@ -1,0 +1,98 @@
+{
+  "query": "Cayley On certain results relating to quaternions 1845",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455953.4063902,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1080/14786444508562684",
+      "title": "XIII. <i>On certain results relating to quaternions</i>",
+      "authors": [
+        {
+          "name": "Arthur Cayley",
+          "affiliation": "a  Trinity College ,  Cambridge"
+        }
+      ],
+      "year": 1845,
+      "abstract": "",
+      "venue": "The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science",
+      "citation_count": 11,
+      "doi": "10.1080/14786444508562684",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1080/14786444508562684",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1017/cbo9780511703676.021",
+      "title": "On certain results relating to Quaternions",
+      "authors": [],
+      "year": 2009,
+      "abstract": "",
+      "venue": "The Collected Mathematical Papers",
+      "citation_count": 7,
+      "doi": "10.1017/cbo9780511703676.021",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1017/cbo9780511703676.021",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-94-011-5768-1_2",
+      "title": "Quaternions",
+      "authors": [
+        {
+          "name": "J. P. Ward",
+          "affiliation": ""
+        }
+      ],
+      "year": 1997,
+      "abstract": "",
+      "venue": "Quaternions and Cayley Numbers",
+      "citation_count": 2,
+      "doi": "10.1007/978-94-011-5768-1_2",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-94-011-5768-1_2",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-94-011-5768-1_4",
+      "title": "Cayley Numbers",
+      "authors": [
+        {
+          "name": "J. P. Ward",
+          "affiliation": ""
+        }
+      ],
+      "year": 1997,
+      "abstract": "",
+      "venue": "Quaternions and Cayley Numbers",
+      "citation_count": 4,
+      "doi": "10.1007/978-94-011-5768-1_4",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-94-011-5768-1_4",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1007/978-94-011-5768-1_3",
+      "title": "Complexified Quaternions",
+      "authors": [
+        {
+          "name": "J. P. Ward",
+          "affiliation": ""
+        }
+      ],
+      "year": 1997,
+      "abstract": "",
+      "venue": "Quaternions and Cayley Numbers",
+      "citation_count": 0,
+      "doi": "10.1007/978-94-011-5768-1_3",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1007/978-94-011-5768-1_3",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}

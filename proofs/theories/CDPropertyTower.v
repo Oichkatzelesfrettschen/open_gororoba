@@ -51,11 +51,14 @@ Definition associativity_lost_at_8 : Prop :=
 Lemma proof_associativity_lost_at_8 : associativity_lost_at_8.
 Proof.
   unfold associativity_lost_at_8.
-  unfold tower_oe1, tower_oe2, tower_oe4, oct_e, oct_mul, oct_conj,
-         quat_mul, quat_add, quat_neg, quat_conj, quat_zero, quat_one.
-  simpl. intro H.
-  assert (Hhi := f_equal oct_hi H). simpl in Hhi.
-  assert (Hd := f_equal qd Hhi). simpl in Hd.
+  intro H.
+  (* Same focused proof pattern as C909: project to the single distinguishing
+     scalar instead of unfolding the entire octonion equality. *)
+  assert (Hd := f_equal (fun x => qd (oct_hi x)) H).
+  unfold tower_oe1, tower_oe2, tower_oe4, oct_e in Hd.
+  cbv [oct_mul oct_conj oct_hi qd
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd oct_lo] in Hd.
   lra.
 Qed.
 
@@ -69,11 +72,7 @@ Lemma proof_division_lost_at_16 : division_lost_at_16.
 Proof.
   unfold division_lost_at_16.
   split; [| split].
-  - cbv [sed_zd_a sed_zd_b sed_mul oct_mul oct_conj
-         quat_mul quat_add quat_neg quat_conj
-         oct_zero quat_zero quat_one sed_zero
-         sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
-    f_equal; f_equal; f_equal; abstract ring.
+  - exact sed_zd_product_zero.
   - unfold sed_zd_a, sed_zero, oct_zero, quat_zero.
     intro H.
     assert (Hlo := f_equal sed_lo H). simpl in Hlo.

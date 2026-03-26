@@ -1,0 +1,495 @@
+{
+  "generated_at_utc": "2026-03-26T00:38:24.278814382+00:00",
+  "cube_csv": "/home/eirikr/Github/open_gororoba/data/output/heliosphere/feature_cube.csv",
+  "results": [
+    {
+      "embedding_name": "legacy-raw",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 97.82639449232039,
+          "max_associator_norm": 11967.72204387885
+        },
+        {
+          "mission": "ACE",
+          "product": "SWEPAM hourly",
+          "mean_associator_norm": 28860290.446196485,
+          "max_associator_norm": 4639744963.459613
+        },
+        {
+          "mission": "IBEX",
+          "product": "Orbit support",
+          "mean_associator_norm": 3.6841669893283623e-17,
+          "max_associator_norm": 1.1103585416259206e-16
+        },
+        {
+          "mission": "Juno",
+          "product": "Cruise support",
+          "mean_associator_norm": 25.71235644431805,
+          "max_associator_norm": 4201.852460000001
+        },
+        {
+          "mission": "New Horizons",
+          "product": "SWAP+support",
+          "mean_associator_norm": 26.088680232749162,
+          "max_associator_norm": 3923.316012
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 85964008.64550221,
+          "max_associator_norm": 9143775840.680578
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 93871923.71604192,
+          "max_associator_norm": 5331233781.531308
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "CRS daily flux",
+          "mean_associator_norm": 5.32966497465122e-13,
+          "max_associator_norm": 3.637978807091713e-12
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 2910.8205431569154,
+          "max_associator_norm": 13717.400071740954
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "PWS low-rate spectra",
+          "mean_associator_norm": 0.9691390065899536,
+          "max_associator_norm": 50.39756354180935
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "CRS daily flux",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 12735239.44548653,
+          "max_associator_norm": 450753936.14021695
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "PWS low-rate spectra",
+          "mean_associator_norm": 2.8801472772442556,
+          "max_associator_norm": 62.29998081561979
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 97370459.42506512,
+          "max_associator_norm": 10971613397.559195
+        }
+      ],
+      "null_summaries": {
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 418.60348779810556
+          },
+          {
+            "mission": "ACE",
+            "product": "SWEPAM hourly",
+            "null_mean_of_means": 318653778.43427503
+          },
+          {
+            "mission": "IBEX",
+            "product": "Orbit support",
+            "null_mean_of_means": 3.7151384162643434e-17
+          },
+          {
+            "mission": "Juno",
+            "product": "Cruise support",
+            "null_mean_of_means": 1334.7636048378488
+          },
+          {
+            "mission": "New Horizons",
+            "product": "SWAP+support",
+            "null_mean_of_means": 1319.8197640786152
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 900446641.0622307
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 826413098.9951446
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "CRS daily flux",
+            "null_mean_of_means": 5.24945474208099e-13
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 5343.751428707326
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "PWS low-rate spectra",
+            "null_mean_of_means": 4.3991782120910985
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "CRS daily flux",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 12760266.282884056
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "PWS low-rate spectra",
+            "null_mean_of_means": 46.312658392456015
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 937936442.6795874
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "dynamic-bias-free",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 96.92334485444295,
+          "max_associator_norm": 11966.997852115068
+        },
+        {
+          "mission": "ACE",
+          "product": "SWEPAM hourly",
+          "mean_associator_norm": 15922249.491626015,
+          "max_associator_norm": 4634562354.253832
+        },
+        {
+          "mission": "IBEX",
+          "product": "Orbit support",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Juno",
+          "product": "Cruise support",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "New Horizons",
+          "product": "SWAP+support",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 81963706.6431011,
+          "max_associator_norm": 9136436209.65757
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 89352555.0732775,
+          "max_associator_norm": 5331225116.603112
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "CRS daily flux",
+          "mean_associator_norm": 3.39730842548221e-13,
+          "max_associator_norm": 1.8189894035458565e-12
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 433.50176941470187,
+          "max_associator_norm": 4370.927612453055
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "PWS low-rate spectra",
+          "mean_associator_norm": 1.1957586951438662e-22,
+          "max_associator_norm": 2.168470518410302e-19
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "CRS daily flux",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 53801.0448057194,
+          "max_associator_norm": 1532176.3805266274
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "PWS low-rate spectra",
+          "mean_associator_norm": 1.3085639736594896e-22,
+          "max_associator_norm": 5.421052221300379e-20
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 92651011.67566058,
+          "max_associator_norm": 10962686180.189072
+        }
+      ],
+      "null_summaries": {
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 407.71766324435464
+          },
+          {
+            "mission": "ACE",
+            "product": "SWEPAM hourly",
+            "null_mean_of_means": 304956980.8052331
+          },
+          {
+            "mission": "IBEX",
+            "product": "Orbit support",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Juno",
+            "product": "Cruise support",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "New Horizons",
+            "product": "SWAP+support",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 897830436.9607004
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 820052085.243021
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "CRS daily flux",
+            "null_mean_of_means": 3.4558139326138014e-13
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 506.6403008673589
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "PWS low-rate spectra",
+            "null_mean_of_means": 3.6334428786194076e-27
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "CRS daily flux",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 125958.6298357371
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "PWS low-rate spectra",
+            "null_mean_of_means": 2.344236680989442e-24
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 927931465.0990852
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "invariant-residuals",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 3.751415003305183e-14,
+          "max_associator_norm": 2.9999541770795337e-10
+        },
+        {
+          "mission": "ACE",
+          "product": "SWEPAM hourly",
+          "mean_associator_norm": 5.621303127166564e+26,
+          "max_associator_norm": 2.996075967443907e+30
+        },
+        {
+          "mission": "IBEX",
+          "product": "Orbit support",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Juno",
+          "product": "Cruise support",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "New Horizons",
+          "product": "SWAP+support",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 127483520407.9205,
+          "max_associator_norm": 680038665157376.4
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 2.7834541137183434e+22,
+          "max_associator_norm": 1.5474250491067253e+26
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "CRS daily flux",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 0.007287641572385723,
+          "max_associator_norm": 64.00000000011642
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "PWS low-rate spectra",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "CRS daily flux",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 4.3620583007816335e+19,
+          "max_associator_norm": 3.7986643500385895e+23
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "PWS low-rate spectra",
+          "mean_associator_norm": 0.0,
+          "max_associator_norm": 0.0
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 3.633798617652269e+16,
+          "max_associator_norm": 8.922254541510543e+19
+        }
+      ],
+      "null_summaries": {
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 1.4646654071172677e-13
+          },
+          {
+            "mission": "ACE",
+            "product": "SWEPAM hourly",
+            "null_mean_of_means": 7.057095630448514e+27
+          },
+          {
+            "mission": "IBEX",
+            "product": "Orbit support",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Juno",
+            "product": "Cruise support",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "New Horizons",
+            "product": "SWAP+support",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 184831065623.56912
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 2.881873903282083e+21
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "CRS daily flux",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 0.033523182730365024
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "PWS low-rate spectra",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "CRS daily flux",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 1.4967250880571916e+19
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "PWS low-rate spectra",
+            "null_mean_of_means": 0.0
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 15981500180.359756
+          }
+        ]
+      }
+    }
+  ]
+}

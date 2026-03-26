@@ -100,7 +100,7 @@ Theorem h_module_dim_mod4 : forall d,
 Proof.
   intros d Hd.
   destruct (h_module_dim_div4 d Hd) as [k Hk]. subst.
-  rewrite Nat.mul_comm. apply Nat.mod_mul. lia.
+  rewrite Nat.mul_comm. apply Nat.Div0.mod_mul.
 Qed.
 
 Theorem mod4_implies_h_module_dim : forall d,

@@ -1,0 +1,111 @@
+{
+  "query": "Eilenberg Niven The Fundamental Theorem of Algebra for Quaternions 1944",
+  "source": "crossref",
+  "limit": 5,
+  "timestamp": 1774455972.510995,
+  "papers": [
+    {
+      "paper_id": "crossref-10.1090/s0002-9904-1944-08125-1",
+      "title": "The \u201cfundamental theorem of algebra\u201d for quaternions",
+      "authors": [
+        {
+          "name": "Samuel Eilenberg",
+          "affiliation": ""
+        },
+        {
+          "name": "Ivan Niven",
+          "affiliation": ""
+        }
+      ],
+      "year": 1944,
+      "abstract": "",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 96,
+      "doi": "10.1090/s0002-9904-1944-08125-1",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1090/s0002-9904-1944-08125-1",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.2307/2305939",
+      "title": "Extension of a Topological Proof of the Fundamental Theorem of Algebra",
+      "authors": [
+        {
+          "name": "Ivan Niven",
+          "affiliation": ""
+        }
+      ],
+      "year": 1950,
+      "abstract": "",
+      "venue": "The American Mathematical Monthly",
+      "citation_count": 3,
+      "doi": "10.2307/2305939",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2307/2305939",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.2307/2308260",
+      "title": "A Matric Proof of the Fundamental Theorem of Algebra for Real Quaternions",
+      "authors": [
+        {
+          "name": "Mark Leum",
+          "affiliation": ""
+        },
+        {
+          "name": "M. F. Smiley",
+          "affiliation": ""
+        }
+      ],
+      "year": 1953,
+      "abstract": "",
+      "venue": "The American Mathematical Monthly",
+      "citation_count": 0,
+      "doi": "10.2307/2308260",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.2307/2308260",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.1016/j.jpaa.2009.12.030",
+      "title": "The Eilenberg\u2013Watts theorem over schemes",
+      "authors": [
+        {
+          "name": "A. Nyman",
+          "affiliation": ""
+        }
+      ],
+      "year": 2010,
+      "abstract": "",
+      "venue": "Journal of Pure and Applied Algebra",
+      "citation_count": 3,
+      "doi": "10.1016/j.jpaa.2009.12.030",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.1016/j.jpaa.2009.12.030",
+      "source": "crossref",
+      "_bibtex_override": ""
+    },
+    {
+      "paper_id": "crossref-10.23943/princeton/9780691128917.003.0010",
+      "title": "The Fundamental Theorem of Linear Algebra",
+      "authors": [
+        {
+          "name": "Gidon Eshel",
+          "affiliation": ""
+        }
+      ],
+      "year": 2011,
+      "abstract": "This chapter summarizes pictorially some of the linear algebraic foundations discussed thus far by revisiting the fundamental theorem of linear algebra, the unifying view of matrices, vectors, and their interactions. To make the discussion helpful and informal yet rigorous, and to complement the slightly more formal introduction of the basic ideas given in an earlier chapter, here the theorem\u2019s pictorial representation is emphasized. The discussions cover the forward problem, when\n                    A\n                    \u025b \u211dM\u00d7N maps an\n                    x\n                    \u025b \u211dN from\n                    A\n                    \u2019s domain onto\n                    b\n                    \u025b \u211dM in\n                    A\n                    \u2019s range, how\n                    A\n                    transforms\n                    x\n                    into\n                    b\n                    ; and the inverse problem, discussed in detail in chapter 9, section 9.4.1.",
+      "venue": "Spatiotemporal Data Analysis",
+      "citation_count": 0,
+      "doi": "10.23943/princeton/9780691128917.003.0010",
+      "arxiv_id": "",
+      "url": "https://doi.org/10.23943/princeton/9780691128917.003.0010",
+      "source": "crossref",
+      "_bibtex_override": ""
+    }
+  ]
+}
