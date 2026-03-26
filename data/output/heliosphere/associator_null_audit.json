@@ -1,0 +1,946 @@
+{
+  "generated_at_utc": "2026-03-26T15:54:14.941012003+00:00",
+  "cube_csv": "data/output/heliosphere/full_feature_cube.csv",
+  "results": [
+    {
+      "embedding_name": "legacy-raw",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 952.680103565057,
+          "max_associator_norm": 27364.0569971996
+        },
+        {
+          "mission": "Helios 1",
+          "product": "Merged mission support",
+          "mean_associator_norm": 80077465365.04768,
+          "max_associator_norm": 1117487442039.0525
+        },
+        {
+          "mission": "Helios 2",
+          "product": "Merged mission support",
+          "mean_associator_norm": 98085877059.45769,
+          "max_associator_norm": 1596665930770.6643
+        },
+        {
+          "mission": "IMP 8",
+          "product": "Merged 1-minute hourly aggregate",
+          "mean_associator_norm": 431460348058.1775,
+          "max_associator_norm": 7526117419506.804
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 34175567535.748314,
+          "max_associator_norm": 1016298088771.8486
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "FIELDS MAG RTN",
+          "mean_associator_norm": 1090968.4422000686,
+          "max_associator_norm": 15986352.282631941
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "Merged hourly",
+          "mean_associator_norm": 26415175905.277794,
+          "max_associator_norm": 4291524255912.302
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 39891711860.26798,
+          "max_associator_norm": 1007870537466.1384
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "MAG RTN 1-minute",
+          "mean_associator_norm": 71590.93639230596,
+          "max_associator_norm": 342769.0942056165
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "Merged hourly",
+          "mean_associator_norm": 5557080495.1103,
+          "max_associator_norm": 206844893419.86685
+        },
+        {
+          "mission": "Ulysses",
+          "product": "Merged mission support",
+          "mean_associator_norm": 1086674.197655761,
+          "max_associator_norm": 521758353.68904555
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 200096229.43253648,
+          "max_associator_norm": 200097397.6381738
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 72853698.5004378,
+          "max_associator_norm": 463220873.1528552
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 17230689939.945717,
+          "max_associator_norm": 980716222272.5111
+        }
+      ],
+      "null_summaries": {
+        "channel-permutation": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 260.75868108054686
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 7781466906385.771
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 7441402732296162.0
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 82886549785656.6
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 3894677891786.224
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 7331959.864736939
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1995601213196254.0
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 9014400363663.125
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 88771.25649782871
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1716144646815.9302
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 72850140.28255227
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 5629136959.327657
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 886649883.4616743
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 3902609951403.3564
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 612.4835603594494
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 61438396780.408936
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 71061519307.13506
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 201300485642.34024
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 21540792127.73116
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 793629.7967321193
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 12577760538.498526
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 29801016064.732838
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 58526.29036543893
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 2636041507.945081
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 20057676.0173843
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 200096227.5968284
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 79385775.89873575
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 5536142443.662314
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "dynamic-bias-free",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 928.5231626635068,
+          "max_associator_norm": 27272.021967754117
+        },
+        {
+          "mission": "Helios 1",
+          "product": "Merged mission support",
+          "mean_associator_norm": 524640580.20289767,
+          "max_associator_norm": 31078989459.744984
+        },
+        {
+          "mission": "Helios 2",
+          "product": "Merged mission support",
+          "mean_associator_norm": 594065234.8244207,
+          "max_associator_norm": 16254839000.7085
+        },
+        {
+          "mission": "IMP 8",
+          "product": "Merged 1-minute hourly aggregate",
+          "mean_associator_norm": 1203061579.4872425,
+          "max_associator_norm": 74077877715.70477
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 83732416.78540684,
+          "max_associator_norm": 9135891999.56252
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "FIELDS MAG RTN",
+          "mean_associator_norm": 680942.3402770184,
+          "max_associator_norm": 15061583.259093488
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "Merged hourly",
+          "mean_associator_norm": 889590279.8660163,
+          "max_associator_norm": 433196591129.4814
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 90891282.81995977,
+          "max_associator_norm": 5332104167.306133
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "MAG RTN 1-minute",
+          "mean_associator_norm": 1264.2291382792157,
+          "max_associator_norm": 28985.86124990687
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "Merged hourly",
+          "mean_associator_norm": 13742407.954443734,
+          "max_associator_norm": 1062668008.517844
+        },
+        {
+          "mission": "Ulysses",
+          "product": "Merged mission support",
+          "mean_associator_norm": 180877.6854008315,
+          "max_associator_norm": 376240745.214738
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 8196.1370358995,
+          "max_associator_norm": 10608.873240652585
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 82660.50246425258,
+          "max_associator_norm": 907900.8051131344
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 47626704.66629088,
+          "max_associator_norm": 10962295117.685814
+        }
+      ],
+      "null_summaries": {
+        "channel-permutation": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 465.329027696958
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 1.0793747372033894e+16
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 4409671369.866697
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 8.350775866279378e+16
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 1624122098032089.8
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 64426.80400814037
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 4684123097519.682
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 1714014271477242.5
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 457.2246934462825
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 35501040975.08377
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 1555344.7555001583
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 62493871.740698196
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 5436685.851569375
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 5767389701087.468
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 593.5051583753242
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5574241181.131588
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5857074758.070027
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 3412014287.408826
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 905996504.8405311
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 63816.37679078708
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1240092178.3330424
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 815438077.8099655
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 681.8628393377373
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 87929761.37504847
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 266674.81473563396
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 8180.918407006653
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 345329.3795311176
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 342510366.6381022
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "invariant-residuals",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 3.998018917758047e-17,
+          "max_associator_norm": 1.9860273225978185e-15
+        },
+        {
+          "mission": "Helios 1",
+          "product": "Merged mission support",
+          "mean_associator_norm": 120.86757837399041,
+          "max_associator_norm": 78525.31254470613
+        },
+        {
+          "mission": "Helios 2",
+          "product": "Merged mission support",
+          "mean_associator_norm": 74.08588005056733,
+          "max_associator_norm": 10536.557392677592
+        },
+        {
+          "mission": "IMP 8",
+          "product": "Merged 1-minute hourly aggregate",
+          "mean_associator_norm": 1.2917436928443086e+21,
+          "max_associator_norm": 1.34953875350522e+24
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 10224979737.70732,
+          "max_associator_norm": 15398361988919.143
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "FIELDS MAG RTN",
+          "mean_associator_norm": 1.857179402843297e-16,
+          "max_associator_norm": 5.684341886080802e-14
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "Merged hourly",
+          "mean_associator_norm": 2.457728673158938e+24,
+          "max_associator_norm": 1.709057461069467e+28
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 49595804988.45653,
+          "max_associator_norm": 225410535990581.22
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "MAG RTN 1-minute",
+          "mean_associator_norm": 1.735860967751358e-16,
+          "max_associator_norm": 4.0194366942304644e-14
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "Merged hourly",
+          "mean_associator_norm": 117278908313.97821,
+          "max_associator_norm": 122334017601564.06
+        },
+        {
+          "mission": "Ulysses",
+          "product": "Merged mission support",
+          "mean_associator_norm": 43782318355.25554,
+          "max_associator_norm": 55281576524489.805
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 1.927731058565575e-21,
+          "max_associator_norm": 1.0842021724855044e-19
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 5.1081754437342035e+17,
+          "max_associator_norm": 2.5117927295644844e+20
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 6659554946.961935,
+          "max_associator_norm": 17232551668234.88
+        }
+      ],
+      "null_summaries": {
+        "channel-permutation": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 4.025234020123875e-17
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 4014.278872978614
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5154.391880128869
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 5.775476546386383e+21
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 8785943351.495869
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 1.4235878971876446e-16
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 5.015261901874098e+23
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 285260609471.77844
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 0.9025601356362853
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 164454120977.80682
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 2.6328711948608056e+16
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 9.613131420739055e-6
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 1.7112107856876997e+22
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 22390604407.27314
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 3.211729271145763e-17
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 175.81161669328202
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 168.73009440256277
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 1.745269037972533e+25
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 14494213503.97671
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 6.520030658619834e-17
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 4.3163417505997227e+26
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 96852521042.1368
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 1.0163666490208421e-16
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 2795668003909759.0
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 117320506946.07962
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 1.695469596687299e-21
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 1.5849284468859777e+19
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 2377094700.383548
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "magnetic-takens",
+      "base_summaries": [
+        {
+          "mission": "ACE",
+          "product": "MAG hourly",
+          "mean_associator_norm": 3.090537722106203,
+          "max_associator_norm": 19.304937525348866
+        },
+        {
+          "mission": "Helios 1",
+          "product": "Merged mission support",
+          "mean_associator_norm": 3.8420540147105005,
+          "max_associator_norm": 40.16989566760953
+        },
+        {
+          "mission": "Helios 2",
+          "product": "Merged mission support",
+          "mean_associator_norm": 3.544293905515138,
+          "max_associator_norm": 24.63933333563302
+        },
+        {
+          "mission": "IMP 8",
+          "product": "Merged 1-minute hourly aggregate",
+          "mean_associator_norm": 3.3933896288547967,
+          "max_associator_norm": 22.74026648162782
+        },
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 3.1240081641399158,
+          "max_associator_norm": 15.342396118653452
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "FIELDS MAG RTN",
+          "mean_associator_norm": 4.788037078136288,
+          "max_associator_norm": 26.214364414354197
+        },
+        {
+          "mission": "Parker Solar Probe",
+          "product": "Merged hourly",
+          "mean_associator_norm": 5.838052685581968,
+          "max_associator_norm": 33.92604798772202
+        },
+        {
+          "mission": "STEREO-A",
+          "product": "PLASTIC+MAG merged",
+          "mean_associator_norm": 5.541214133606515,
+          "max_associator_norm": 27.99194391084504
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "MAG RTN 1-minute",
+          "mean_associator_norm": 6.465975619205598,
+          "max_associator_norm": 30.887177786198603
+        },
+        {
+          "mission": "Solar Orbiter",
+          "product": "Merged hourly",
+          "mean_associator_norm": 6.484087101720624,
+          "max_associator_norm": 31.306773735057398
+        },
+        {
+          "mission": "Ulysses",
+          "product": "Merged mission support",
+          "mean_associator_norm": 3.3011917042888563,
+          "max_associator_norm": 21.257451280555482
+        },
+        {
+          "mission": "Voyager 1",
+          "product": "Merged support",
+          "mean_associator_norm": 0.16250521464571438,
+          "max_associator_norm": 1.3312410239818504
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 2.872514559770903,
+          "max_associator_norm": 31.705393596574837
+        },
+        {
+          "mission": "WIND",
+          "product": "SWE+MFI merged",
+          "mean_associator_norm": 3.2566538277559096,
+          "max_associator_norm": 17.96579700515019
+        }
+      ],
+      "null_summaries": {
+        "channel-permutation": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 5.088732924406267
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5.473905537804439
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5.123305205965609
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 6.5015629152859
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 4.645271048715509
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 7.14993608431743
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 7.762929842508877
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 7.526950374344148
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 8.312945831008369
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 8.63811962706107
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 4.906274640503248
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 18.12894026375576
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 14.34759596013925
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 4.594910010356864
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "ACE",
+            "product": "MAG hourly",
+            "null_mean_of_means": 5.054610103753381
+          },
+          {
+            "mission": "Helios 1",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5.609349838762212
+          },
+          {
+            "mission": "Helios 2",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5.442338215503615
+          },
+          {
+            "mission": "IMP 8",
+            "product": "Merged 1-minute hourly aggregate",
+            "null_mean_of_means": 5.366543078731228
+          },
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 5.1062706853682345
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "FIELDS MAG RTN",
+            "null_mean_of_means": 6.8221617338156495
+          },
+          {
+            "mission": "Parker Solar Probe",
+            "product": "Merged hourly",
+            "null_mean_of_means": 8.908097047299549
+          },
+          {
+            "mission": "STEREO-A",
+            "product": "PLASTIC+MAG merged",
+            "null_mean_of_means": 8.086060573930618
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "MAG RTN 1-minute",
+            "null_mean_of_means": 9.10055452709814
+          },
+          {
+            "mission": "Solar Orbiter",
+            "product": "Merged hourly",
+            "null_mean_of_means": 9.543085162512508
+          },
+          {
+            "mission": "Ulysses",
+            "product": "Merged mission support",
+            "null_mean_of_means": 5.9128577267938836
+          },
+          {
+            "mission": "Voyager 1",
+            "product": "Merged support",
+            "null_mean_of_means": 0.6019533653704089
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 9.081250746599462
+          },
+          {
+            "mission": "WIND",
+            "product": "SWE+MFI merged",
+            "null_mean_of_means": 5.43648648092428
+          }
+        ]
+      }
+    }
+  ]
+}

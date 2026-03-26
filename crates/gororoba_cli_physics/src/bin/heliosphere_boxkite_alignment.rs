@@ -49,20 +49,30 @@ fn main() -> Result<()> {
     println!("[1/4] Loading 16D Takens descriptors from {}...", args.input_csv.display());
     let mut reader = ReaderBuilder::new().from_path(&args.input_csv)?;
     
-    // Group by mission to preserve temporal continuity for Takens
-    let mut mission_groups: BTreeMap<String, Vec<HeliosphereFeatureRow>> = BTreeMap::new();
+    // Group by mission + product to preserve temporal continuity for Takens
+    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
         let r = result?;
         if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
-            mission_groups.entry(r.mission.clone()).or_default().push(r);
+            mission_groups.entry((r.mission.clone(), r.product.clone())).or_default().push(r);
         }
+    }
+
+    // Sort rows by time within each group
+    for rows in mission_groups.values_mut() {
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
     }
 
     let mut all_vectors = Vec::new();
     let mut all_r_aus = Vec::new();
     let mut all_missions = Vec::new();
 
-    for (mission, rows) in mission_groups {
+    for ((mission, _product), rows) in mission_groups {
         if rows.len() < 4 { continue; }
         
         // 16D reconstruction from 4-sample delay of (Bx, By, Bz, |B|)

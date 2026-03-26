@@ -78,6 +78,16 @@ fn main() -> Result<()> {
             .push(row.clone());
     }
 
+    // Sort rows by time within each group
+    for rows in groups.values_mut() {
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
+    }
+
     let mut results = Vec::new();
 
     // 1. Legacy Raw Embedding
@@ -98,12 +108,23 @@ fn main() -> Result<()> {
 
     // 3. Invariant Embedding (Dimensionless residuals)
     let invariant_samples = compute_invariant_samples(&all_rows);
-    let mut inv_groups: BTreeMap<(String, String), Vec<HeliosphereInvariantSample>> = BTreeMap::new();
+    let mut inv_groups: BTreeMap<(String, String), Vec<HeliosphereInvariantSample>> =
+        BTreeMap::new();
     for sample in invariant_samples {
         inv_groups
             .entry((sample.mission.clone(), sample.product.clone()))
             .or_default()
             .push(sample);
+    }
+
+    // Sort rows by time within each group
+    for rows in inv_groups.values_mut() {
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
     }
 
     results.push(audit_invariant_embedding(
@@ -142,11 +163,11 @@ fn main() -> Result<()> {
         results,
     };
 
-    let toml = serde_json::to_string_pretty(&report)?;
+    let json = serde_json::to_string_pretty(&report)?;
     if let Some(out_path) = cli.out {
-        fs::write(out_path, toml)?;
+        fs::write(out_path, json)?;
     } else {
-        println!("{}", toml);
+        println!("{}", json);
     }
 
     Ok(())
