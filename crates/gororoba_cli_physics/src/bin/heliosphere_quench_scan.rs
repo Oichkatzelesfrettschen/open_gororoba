@@ -55,6 +55,16 @@ fn main() -> Result<()> {
         mission_groups.entry((row.mission.clone(), row.product.clone())).or_default().push(row);
     }
 
+    // Sort rows by time within each group
+    for rows in mission_groups.values_mut() {
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
+    }
+
     let mut associator_data: Vec<(f64, f64, f64, String)> = Vec::new(); // (r_au, lat_deg, associator, mission)
 
     println!("[1/2] Computing Takens associators with 3D (r, lat) awareness...");

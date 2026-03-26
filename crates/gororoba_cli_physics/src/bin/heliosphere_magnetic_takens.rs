@@ -52,6 +52,16 @@ fn main() -> Result<()> {
             .push(row);
     }
 
+    // Sort rows by time within each group
+    for rows in groups.values_mut() {
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
+    }
+
     let mut results = Vec::new();
 
     println!("[1/2] Computing Takens 16D embedding (4-step delay) for B-field...");
